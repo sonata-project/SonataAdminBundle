@@ -1,0 +1,61 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+<h1>{% block title %}{% trans 'title_list' from 'BaseApplicationBundle'%}{% endblock %}</h1>
+
+
+{% block actions %}
+    <div>
+        <ul>
+            <li><a href="{{ url(urls.create.url) }}">{% trans "link_action_create" from "BaseApplicationBundle" %}</a></li>
+        </ul>
+    </div>
+{% endblock %}
+
+<table>
+
+    {% block table_header %}
+        <tr>
+            {% for field_name, field_description in fields %}
+                <td>{{ field_name }}</td>
+            {% endfor %}
+        </tr>
+    {% endblock %}
+    
+    {% block table_body %}{% endblock %}
+
+    {% block table_footer %}
+        {% if pager.haveToPaginate() %}
+            <tr>
+                <td colspan="{{ fields|length }}">
+
+                    {% if pager.page != pager.previouspage %}
+                        <li><a href="{{ pager.renderLink(pager.previouspage) }}">{% trans 'link_previous_pager' from 'BaseApplicationBundle' %}</a></li>
+                    {% endif %}
+
+                    {# Set the number of pages to display in the pager #}
+                    {% for page in pager.getLinks(5) %}
+                        {% if page == pager.page %}
+                            <li>{{ page }}</li>
+                        {% else %}
+                            <li><a href="{{ pager.renderLink(page) }}">{{ page }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if pager.page != pager.nextpage %}
+                        <li><a href="{{ pager.renderLink(pager.nextpage) }}">{% trans 'link_previous_pager' from 'BaseApplicationBundle' %}</a></li>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endif %}
+    {% endblock %}
+
+</table>

@@ -1,0 +1,28 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+
+<h1>View</h1>
+
+<form action="{{ url(urls.update.url, {'id': object.id}) }}" method="POST">
+
+    {{ form|render_hidden }}
+
+    {% for field in fields %}
+        {{ field|render_form_element(form, object, {'urls' : urls}) }}
+    {% endfor %}
+
+    {% if object.id %}
+        <input type="submit" value="{% trans "btn_update" from "BaseApplicationBundle" %}"/>
+    {% else %}
+        <input type="submit" value="{% trans "btn_create" from "BaseApplicationBundle" %}"/>
+    {% endif %}
+</form>
