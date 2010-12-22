@@ -319,7 +319,9 @@ class CRUDController extends Controller
 
             $action = 'edit';
         } else {
-            $object = new $this->getClass();
+            $class = $this->getClass();
+            $object = new $class;
+
             $action = 'create';
         }
 
@@ -344,9 +346,27 @@ class CRUDController extends Controller
         ));
     }
 
-    public function createAction()
+    public function createAction($form = null)
     {
+        $this->get('session')->start();
 
+        $fields = $this->getFormFields();
+
+        if($form instanceof Form) {
+            $object = $form->getData();
+        } else {
+            $class = $this->getClass();
+            $object = new $class;
+
+            $form   = $this->getForm($object, $fields);
+        }
+
+        return $this->render($this->getEditTemplate(), array(
+            'form'   => $form,
+            'object' => $object,
+            'fields' => $fields,
+            'urls'   => $this->getUrls()
+        ));
     }
 
     public function setBaseControllerName($base_controller_name)
