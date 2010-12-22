@@ -59,6 +59,14 @@ class CRUDController extends Controller
         return $query_buidler;
     }
 
+    public function getBatchActions()
+    {
+        
+        return array(
+            'delete' => 'Delete'
+        );
+    }
+
     public function getUrls()
     {
         return array(
@@ -80,6 +88,10 @@ class CRUDController extends Controller
             ),
             'edit'   => array(
                 'url'       => $this->base_route.'_edit',
+                'params'    => array()
+            ),
+            'batch'   => array(
+                'url'       => $this->base_route.'_batch',
                 'params'    => array()
             )
         );
@@ -114,7 +126,8 @@ class CRUDController extends Controller
             'pager'             => $pager,
             'fields'            => $this->getListFields(),
             'class_meta_data'   => $this->getClassMetaData(),
-            'urls'              => $this->getUrls()
+            'urls'              => $this->getUrls(),
+            'batch_actions'     => $this->getBatchActions(),
         ));
 
     }
@@ -174,6 +187,11 @@ class CRUDController extends Controller
         return $fields;
     }
 
+    /**
+     * Construct and build the form field definitions
+     *
+     * @return list form field definition
+     */
     public function getFormFields()
     {
         $this->form_fields = $this->getBaseFields($this->form_fields);
@@ -210,7 +228,36 @@ class CRUDController extends Controller
             }
         }
 
+        if(!isset($this->list_fields['_batch'])) {
+            $this->list_fields = array('_batch' => array(
+                'template' => 'BaseApplicationBundle:CRUD:list__batch.twig'
+            ) ) + $this->list_fields;
+        }
+        
         return $this->list_fields;
+    }
+
+    public function batchActionDelete($idx)
+    {
+        $em = $this->getEntityManager();
+
+        $query_builder = $em->createQueryBuilder();
+        $objects = $query_builder
+            ->select('o')
+            ->from($this->getClass(), 'o')
+            ->add('where', $query_builder->expr()->in('o.id', $idx))
+            ->getQuery()
+            ->execute();
+
+        foreach($objects as $object) {
+            $em->remove($object);
+        }
+
+        $em->flush();
+
+        // todo : add confirmation flash var
+        $url = $this->getUrl('list');
+        return $this->redirect($this->generateUrl($url['url']));
     }
 
     public function deleteAction($id)
@@ -344,6 +391,28 @@ class CRUDController extends Controller
         return $this->forward(sprintf('%s:%s', $this->getBaseControllerName(), $action), array(
             'id' => $form
         ));
+    }
+
+    public function batchAction()
+    {
+        if($this->get('request')->getMethod() != 'POST') {
+           throw new \RuntimeException('invalid request type, POST expected');
+        }
+
+        $action = $this->get('request')->get('action');
+        $idx    = $this->get('request')->get('idx');
+
+        if(count($idx) == 0) { // no item selected
+            // todo : add flash information
+        }
+
+        // execute the action, batchActionXxxxx
+        $final_action = sprintf('batchAction%s', ucfirst($action));
+        if(!method_exists($this, $final_action)) {
+            throw new \RuntimeException(sprintf('A %s::%s method must be created', get_class($this), $final_action));
+        }
+
+        return call_user_func(array($this, $final_action), $idx);
     }
 
     public function createAction($form = null)
