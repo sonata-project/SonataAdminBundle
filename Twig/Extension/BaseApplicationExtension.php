@@ -66,6 +66,10 @@ class BaseApplicationExtension extends \Twig_Extension
     public function renderFormElement($field_description, $form, $object, $params = array())
     {
 
+        if(!isset($field_description['fieldName'])) {
+            return '';
+        }
+        
         $field = $form->get($field_description['fieldName']);
 
         if($field->isHidden())

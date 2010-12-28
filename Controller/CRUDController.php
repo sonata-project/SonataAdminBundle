@@ -31,6 +31,24 @@ class CRUDController extends Controller
 
     protected $base_controller_name;
 
+    /**
+     * Sets the Container associated with this Controller.
+     *
+     * @param ContainerInterface $container A ContainerInterface instance
+     */
+    public function setContainer(\Symfony\Component\DependencyInjection\ContainerInterface $container = null)
+    {
+        $this->container = $container;
+
+        $this->configure();
+    }
+
+    public function configure()
+    {
+        $this->buildFormFields();
+        $this->buildListFields();
+    }
+
     public function getClass()
     {
         return $this->class;
@@ -157,13 +175,12 @@ class CRUDController extends Controller
     {
         // if nothing is defined we display all fields
         if(!$selected_fields) {
-            $selected_fields = array_keys($this->getClassMetaData()->reflFields);
+            $selected_fields = array_keys($this->getClassMetaData()->reflFields) + array_keys($this->getClassMetaData()->associationMappings);
         }
 
         $metadata = $this->getClassMetaData();
-        
+
         // make sure we works with array
-        $fields = array();
         foreach($selected_fields as $name => $options) {
             if(is_array($options)) {
                 $fields[$name] = $options;
@@ -179,6 +196,14 @@ class CRUDController extends Controller
                 );
             }
 
+
+            if(isset($metadata->associationMappings[$name])) {
+                $fields[$name] = array_merge(
+                    $metadata->associationMappings[$name],
+                    $fields[$name]
+                );
+            }
+
             if(isset($metadata->reflFields[$name])) {
                 $fields[$name]['reflection']  =& $metadata->reflFields[$name];
             }
@@ -188,17 +213,35 @@ class CRUDController extends Controller
     }
 
     /**
-     * Construct and build the form field definitions
-     *
-     * @return list form field definition
+     * @return void
      */
-    public function getFormFields()
+    public function configureFormFields()
+    {
+
+    }
+
+    public function buildFormFields()
     {
         $this->form_fields = $this->getBaseFields($this->form_fields);
 
         foreach($this->form_fields as $name => $options) {
-            if(!isset($this->form_fields[$name]['template'])) {
+
+            if(!isset($this->form_fields[$name]['options'])) {
+                $this->form_fields[$name]['options'] = array(); 
+            }
+
+            if(!isset($this->form_fields[$name]['template']) && isset($this->form_fields[$name]['type'])) {
                 $this->form_fields[$name]['template'] = sprintf('BaseApplicationBundle:CRUD:edit_%s.twig', $this->form_fields[$name]['type']);
+
+                if($this->form_fields[$name]['type'] == \Doctrine\ORM\Mapping\ClassMetadataInfo::ONE_TO_ONE)
+                {
+                    $this->form_fields[$name]['template'] = 'BaseApplicationBundle:CRUD:edit_one_to_one.twig';
+                }
+
+                if($this->form_fields[$name]['type'] == \Doctrine\ORM\Mapping\ClassMetadataInfo::MANY_TO_MANY)
+                {
+                    $this->form_fields[$name]['template'] = 'BaseApplicationBundle:CRUD:edit_many_to_many.twig';
+                }
             }
 
             if(isset($this->form_fields[$name]['id'])) {
@@ -206,12 +249,13 @@ class CRUDController extends Controller
             }
         }
 
+        $this->configureFormFields();
+
         return $this->form_fields;
     }
 
-    public function getListFields()
+    public function buildListFields()
     {
-        
         $this->list_fields = $this->getBaseFields($this->list_fields);
 
         foreach($this->list_fields as $name => $options) {
@@ -234,6 +278,20 @@ class CRUDController extends Controller
             ) ) + $this->list_fields;
         }
         
+    }
+
+    /**
+     * Construct and build the form field definitions
+     *
+     * @return list form field definition
+     */
+    public function getFormFields()
+    {
+        return $this->form_fields;
+    }
+
+    public function getListFields()
+    {
         return $this->list_fields;
     }
 
@@ -293,6 +351,29 @@ class CRUDController extends Controller
         ));
     }
 
+    public function getChoices($description)
+    {
+        $targets = $this->getEntityManager()
+            ->createQueryBuilder()
+            ->select('t')
+            ->from($description['targetEntity'], 't')
+            ->getQuery()
+            ->execute();
+
+        $choices = array();
+        foreach($targets as $target) {
+            // todo : puts this into a configuration option and use reflection
+            foreach(array('getTitle', 'getName', '__toString') as $getter) {
+                if(method_exists($target, $getter)) {
+                    $choices[$target->getId()] = $target->$getter();
+                    break;
+                }
+            }
+        }
+
+        return $choices;
+    }
+
     public function getForm($object, $fields)
     {
 
@@ -300,43 +381,88 @@ class CRUDController extends Controller
 
         foreach($fields as $name => $description) {
 
+            if(!isset($description['type'])) {
+
+                continue;
+            }
+
             switch($description['type']) {
+
+                case \Doctrine\ORM\Mapping\ClassMetadataInfo::MANY_TO_MANY:
+
+                    $transformer = new \Symfony\Bundle\DoctrineBundle\Form\ValueTransformer\CollectionToChoiceTransformer(array(
+                        'em'        =>  $this->getEntityManager(),
+                        'className' => $description['targetEntity']
+                    ));
+
+                    $field = new \Symfony\Component\Form\ChoiceField($name, array_merge(array(
+                        'expanded' => true,
+                        'multiple' => true,
+                        'choices' => $this->getChoices($description),
+                        'value_transformer' => $transformer,
+                    ), $description['options']));
+
+                    break;
+
+                case \Doctrine\ORM\Mapping\ClassMetadataInfo::ONE_TO_ONE:
+
+                    $transformer = new \Symfony\Bundle\DoctrineBundle\Form\ValueTransformer\EntityToIDTransformer(array(
+                        'em'        =>  $this->getEntityManager(),
+                        'className' => $description['targetEntity']
+                    ));
+                    
+                    $field = new \Symfony\Component\Form\ChoiceField($name, array_merge(array(
+                        'expanded' => false,
+                        'choices' => $this->getChoices($description),
+                        'value_transformer' => $transformer,
+                    ), $description['options']));
+
+                    break;
+                
                 case 'string':
-                    $field = new \Symfony\Component\Form\TextField($name);
+                    $field = new \Symfony\Component\Form\TextField($name, $description['options']);
                     break;
 
                 case 'text':
-                    $field = new \Symfony\Component\Form\TextareaField($name);
+                    $field = new \Symfony\Component\Form\TextareaField($name, $description['options']);
                     break;
 
                 case 'boolean':
-                    $field = new \Symfony\Component\Form\CheckboxField($name);
+                    $field = new \Symfony\Component\Form\CheckboxField($name, $description['options']);
                     break;
 
                 case 'integer':
-                    $field = new \Symfony\Component\Form\IntegerField($name);
+                    $field = new \Symfony\Component\Form\IntegerField($name, $description['options']);
                     break;
 
                 case 'decimal':
-                    $field = new \Symfony\Component\Form\NumberField($name);
+                    $field = new \Symfony\Component\Form\NumberField($name, $description['options']);
                     break;
 
                 case 'datetime':
-                    $field = new \Symfony\Component\Form\DateTimeField($name);
+                    $field = new \Symfony\Component\Form\DateTimeField($name, $description['options']);
                     break;
 
                 case 'date':
-                    $field = new \Symfony\Component\Form\DateField($name);
+                    $field = new \Symfony\Component\Form\DateField($name, $description['options']);
+                    break;
+
+                case 'choice':
+                    $field = new \Symfony\Component\Form\ChoiceField($name, $description['options']);
                     break;
 
                 case 'array':
-                    $field = new \Symfony\Component\Form\FieldGroup($name);
+                    $field = new \Symfony\Component\Form\FieldGroup($name, $description['options']);
 
                     $values = $description['reflection']->getValue($object);
 
                     foreach((array)$values as $k => $v) {
                         $field->add(new \Symfony\Component\Form\TextField($k));
                     }
+                    break;
+
+                default:
+                    throw new \RuntimeException(sprintf('unknow type `%s`', $description['type']));
             }
 
             $form->add($field);
@@ -404,6 +530,9 @@ class CRUDController extends Controller
 
         if(count($idx) == 0) { // no item selected
             // todo : add flash information
+
+            $url = $this->getUrl('list');
+            return $this->redirect($this->generateUrl($url['url']));
         }
 
         // execute the action, batchActionXxxxx

@@ -9,8 +9,4 @@ file that was distributed with this source code.
 
 #}
 
-<p>
-    {{ field_element|render_label }} <br />
-    {{ field_element|render }}
-    {{ field_element|render_errors }}
-</p>
+{% extends 'BaseApplicationBundle:CRUD:base_edit_field.twig' %}

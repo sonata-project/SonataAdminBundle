@@ -69,7 +69,8 @@ class DoctrinePager extends Pager implements \Serializable
         return $query_builder->getQuery();
     }
 
-    public function getCountColumn() {
+    public function getCountColumn()
+    {
 
         return $this->count_column;
     }

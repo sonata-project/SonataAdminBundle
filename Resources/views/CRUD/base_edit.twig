@@ -9,37 +9,38 @@ file that was distributed with this source code.
 
 #}
 
+{% extends 'BaseApplicationBundle::layout.twig' %}
 
 {% block title %}
     {% if object.id %}
-        <h1>Edit</h1>
+        {% trans 'title_edit' from 'BaseApplicationBundle'%}
     {% else %}
-        <h1>Create</h1>
+        {% trans 'title_create' from 'BaseApplicationBundle'%}
     {% endif %}
 {% endblock %}
 
 {% block actions %}
-    <div>
-        <ul>
-            <li><a href="{{ url(urls.create.url) }}">{% trans "link_action_create" from "BaseApplicationBundle" %}</a></li>
-            <li><a href="{{ url(urls.list.url) }}">{% trans "link_action_list" from "BaseApplicationBundle" %}</a></li>
-        </ul>
-    </div>
+    <ul>
+        <li><a href="{{ url(urls.create.url) }}">{% trans "link_action_create" from "BaseApplicationBundle" %}</a></li>
+        <li><a href="{{ url(urls.list.url) }}">{% trans "link_action_list" from "BaseApplicationBundle" %}</a></li>
+    </ul>
 {% endblock %}
 
-{% block form %}
-    <form action="{{ url(urls.update.url, {'id': object.id}) }}" method="POST">
+{% block content %}
+    {% block form %}
+        <form action="{{ url(urls.update.url, {'id': object.id}) }}" method="POST">
 
-        {{ form|render_hidden }}
+            {{ form|render_hidden }}
 
-        {% for field in fields %}
-            {{ field|render_form_element(form, object, {'urls' : urls}) }}
-        {% endfor %}
+            {% for field in fields %}
+                {{ field|render_form_element(form, object, {'urls' : urls}) }}
+            {% endfor %}
 
-        {% if object.id %}
-            <input type="submit" value="{% trans "btn_update" from "BaseApplicationBundle" %}"/>
-        {% else %}
-            <input type="submit" value="{% trans "btn_create" from "BaseApplicationBundle" %}"/>
-        {% endif %}
-    </form>
+            {% if object.id %}
+                <input type="submit" value="{% trans "btn_update" from "BaseApplicationBundle" %}"/>
+            {% else %}
+                <input type="submit" value="{% trans "btn_create" from "BaseApplicationBundle" %}"/>
+            {% endif %}
+        </form>
+    {% endblock %}
 {% endblock %}
