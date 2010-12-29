@@ -15,18 +15,18 @@ file that was distributed with this source code.
 
 {% block actions %}
     <ul>
-        <li><a href="{{ url(urls.create.url) }}">{% trans "link_action_create" from "BaseApplicationBundle" %}</a></li>
+        <li><a href="{{ configuration.generateUrl('create') }}">{% trans "link_action_create" from "BaseApplicationBundle" %}</a></li>
     </ul>
 {% endblock %}
 
 {% block content %}
     {% block list %}
-        <form action="{{ url(urls.batch.url) }}" method="POST" >
+        <form action="{{ configuration.generateUrl('batch') }}" method="POST" >
             <table>
                 {% block table_header %}
                     <tr>
-                        {% for field_name, field_description in fields %}
-                            <td>{{ field_name }}</td>
+                        {% for field_description in fields %}
+                            <th>{{ field_description.label }}</th>
                         {% endfor %}
                     </tr>
                 {% endblock %}

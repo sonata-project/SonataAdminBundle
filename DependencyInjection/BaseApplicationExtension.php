@@ -44,14 +44,14 @@ class BaseApplicationExtension extends Extension
             ->addMethodCall('setTemplating', array(new Reference('templating')))
             ->addTag('twig.extension');
 
-        // register the form generator
-//        $definition = new Definition($config['generator']['class']);
-//
-//        foreach((array)$config['generator']['definitions'] as $name => $definition) {
-//            $definition->addMethodCall('addTypes', array($name, $definition));
-//        }
-//
-//        $container->setDefinition('base_appliction.form.generator', $definition);
+        // registers crud action
+        $definition = new Definition('Bundle\\BaseApplicationBundle\\Admin\\Pool');
+        $definition->addMethodCall('setContainer', array(new Reference('service_container')));
+        foreach($config['entities'] as $code => $configuration) {
+            $definition->addMethodCall('addConfiguration', array($code, $configuration));
+        }
+
+        $container->setDefinition('base_application.admin.pool', $definition);
 
     }
 

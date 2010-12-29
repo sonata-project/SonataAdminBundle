@@ -53,7 +53,13 @@ class BaseApplicationExtension extends \Twig_Extension
         $value = null;
 
         if(isset($field_description['reflection'])) {
+
             $value = $field_description['reflection']->getValue($object);
+
+        } else if(method_exists($object, $field_description['code'])) {
+
+            $value = call_user_func(array($object, $field_description['code']));
+            
         }
 
         return $this->templating->render($field_description['template'], array_merge($params, array(
@@ -72,8 +78,7 @@ class BaseApplicationExtension extends \Twig_Extension
         
         $field = $form->get($field_description['fieldName']);
 
-        if($field->isHidden())
-        {
+        if($field->isHidden()) {
             return '';
         }
 

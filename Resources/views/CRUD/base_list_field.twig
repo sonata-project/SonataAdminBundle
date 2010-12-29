@@ -9,7 +9,12 @@ file that was distributed with this source code.
 
 #}
 
-{% extends 'BaseApplicationBundle:CRUD:base_list_field.twig' %}
+{% if field_description.identifier %}
+    <a href="{{ configuration.generateUrl('edit', {'id': object.id}) }}">
+{% endif %}
 
-{% block field%}{{ value|date }}{% endblock %}
+{% block field%}{{ value }}{% endblock %}
 
+{% if field_description.identifier %}
+    </a>
+{% endif %}

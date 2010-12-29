@@ -15,7 +15,7 @@ file that was distributed with this source code.
     {% for element in pager.results %}
         <tr>
             {% for field_description in fields %}
-                <td>{{ element|render_list_element(field_description, {'urls' : urls}) }}</td>
+                <td>{{ element|render_list_element(field_description, {'configuration' : configuration}) }}</td>
             {% endfor %}
         </tr>
     {% endfor %}

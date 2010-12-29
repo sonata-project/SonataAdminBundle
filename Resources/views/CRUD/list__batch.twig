@@ -8,4 +8,7 @@ For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 
 #}
-<input type="checkbox" name="idx" value="{{ object.id }}" />
+
+{% extends 'BaseApplicationBundle:CRUD:base_list_field.twig' %}
+
+{% block field%}<input type="checkbox" name="idx" value="{{ object.id }}" />{% endblock %}
