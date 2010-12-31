@@ -48,6 +48,14 @@ class BaseApplicationExtension extends Extension
         $definition = new Definition('Bundle\\BaseApplicationBundle\\Admin\\Pool');
         $definition->addMethodCall('setContainer', array(new Reference('service_container')));
         foreach($config['entities'] as $code => $configuration) {
+            if(!isset($configuration['group'])) {
+                $configuration['group'] = 'default';
+            }
+
+            if(!isset($configuration['label'])) {
+                $configuration['label'] = $code;
+            }
+            
             $definition->addMethodCall('addConfiguration', array($code, $configuration));
         }
 

@@ -14,9 +14,11 @@ file that was distributed with this source code.
 {% block title %}{% trans 'title_list' from 'BaseApplicationBundle'%}{% endblock %}
 
 {% block actions %}
-    <ul>
-        <li><a href="{{ configuration.generateUrl('create') }}">{% trans "link_action_create" from "BaseApplicationBundle" %}</a></li>
-    </ul>
+    <div class="sonata-actions">
+        <ul>
+            <li class="sonata-action-element"><a href="{{ configuration.generateUrl('create') }}">{% trans "link_action_create" from "BaseApplicationBundle" %}</a></li>
+        </ul>
+    </div>
 {% endblock %}
 
 {% block content %}
@@ -36,23 +38,25 @@ file that was distributed with this source code.
                 {% block table_footer %}
                     {% if pager.haveToPaginate() %}
                         <tr>
-                            <td colspan="{{ fields|length }}">
-                                {% if pager.page != pager.previouspage %}
-                                    <li><a href="{{ pager.renderLink(pager.previouspage) }}">{% trans 'link_previous_pager' from 'BaseApplicationBundle' %}</a></li>
-                                {% endif %}
-
-                                {# Set the number of pages to display in the pager #}
-                                {% for page in pager.getLinks(5) %}
-                                    {% if page == pager.page %}
-                                        <li>{{ page }}</li>
-                                    {% else %}
-                                        <li><a href="{{ pager.renderLink(page) }}">{{ page }}</a></li>
+                            <td colspan="{{ fields|length }}" class="pager">
+                                <ul>
+                                    {% if pager.page != pager.previouspage %}
+                                        <li><a href="{{ pager.renderLink(pager.previouspage) }}">{% trans 'link_previous_pager' from 'BaseApplicationBundle' %}</a></li>
                                     {% endif %}
-                                {% endfor %}
 
-                                {% if pager.page != pager.nextpage %}
-                                    <li><a href="{{ pager.renderLink(pager.nextpage) }}">{% trans 'link_previous_pager' from 'BaseApplicationBundle' %}</a></li>
-                                {% endif %}
+                                    {# Set the number of pages to display in the pager #}
+                                    {% for page in pager.getLinks(5) %}
+                                        {% if page == pager.page %}
+                                            <li>{{ page }}</li>
+                                        {% else %}
+                                            <li><a href="{{ pager.renderLink(page) }}">{{ page }}</a></li>
+                                        {% endif %}
+                                    {% endfor %}
+
+                                    {% if pager.page != pager.nextpage %}
+                                        <li><a href="{{ pager.renderLink(pager.nextpage) }}">{% trans 'link_previous_pager' from 'BaseApplicationBundle' %}</a></li>
+                                    {% endif %}
+                                </ul>
                             </td>
                         </tr>
                     {% endif %}

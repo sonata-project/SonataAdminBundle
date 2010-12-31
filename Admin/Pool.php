@@ -22,7 +22,26 @@ class Pool
 
     public function addConfiguration($code, $configuration)
     {
+        $configuration['code'] = $code;
+        
         $this->configuration[$code] = $configuration;
+    }
+
+    public function getGroups()
+    {
+
+        $groups = array();
+
+        foreach($this->configuration as $configuration) {
+
+            if(!isset($groups[$configuration['group']])) {
+                $groups[$configuration['group']] = array();
+            }
+
+            $groups[$configuration['group']][$configuration['code']] = $this->getInstance($configuration['code']);
+        }
+
+        return $groups;
     }
 
     /**
@@ -77,6 +96,8 @@ class Pool
             $this->instances[$code] = new $class;
             $this->instances[$code]->setContainer($this->getContainer());
             $this->instances[$code]->setConfigurationPool($this);
+            $this->instances[$code]->setCode($code);
+            $this->instances[$code]->setLabel($this->configuration[$code]['label']);
             $this->instances[$code]->configure();
         }
 

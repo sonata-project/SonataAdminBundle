@@ -1,0 +1,108 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+
+{#
+
+This code manage the many-to-[one|many] association field popup
+
+#}
+
+<script>
+
+    // handle the add link
+    var field_dialog_form_add_{{ configuration.code }}_{{ field_element.id }} = function(event) {
+        event.preventDefault();
+
+        var a = jQuery(this);
+
+        field_dialog_{{ configuration.code }}_{{ field_element.id }}.html('');
+
+        // retrieve the form element from the related admin generator
+        jQuery.ajax({
+            url: a.attr('href'),
+            success: function(html) {
+
+                var html = jQuery(html);
+                
+                // populate the popup container
+                field_dialog_{{ configuration.code }}_{{ field_element.id }}.html(html);
+
+                // capture the submit event to make an ajax call, ie : POST data to the
+                // related create admin
+                jQuery('form', field_dialog_{{ configuration.code }}_{{ field_element.id }}).submit(field_dialog_form_action_{{ configuration.code }}_{{ field_element.id }});
+
+                // open the dialog in modal mode
+                field_dialog_{{ configuration.code }}_{{ field_element.id }}.dialog({
+                    height: 'auto',
+                    width: 'auto',
+                    modal: true,
+                    resizable: false
+                });
+            }
+        });
+    };
+    
+    // handle the post data
+    var field_dialog_form_action_{{ configuration.code }}_{{ field_element.id }} = function(event) {
+        event.preventDefault();
+
+        var form = jQuery(this);
+
+        // the ajax post
+        jQuery.ajax({
+            url: form.attr('action'),
+            type: "POST",
+            data: form.serializeArray(),
+            success: function(html) {
+                // if the crud action return ok, then the element has been added
+                // so the widget container must be refresh with the last option available
+                if(html == 'ok') {
+                    field_dialog_{{ configuration.code }}_{{ field_element.id }}.dialog('close');
+
+                    // reload the form element
+                    jQuery.ajax({
+                        url: '{{ url('base_application_retrieve_form_element', {
+                            'code':         configuration.code,
+                            'element_id':   field_element.id,
+                            'object_id':    form.data.id,
+                        }) }}',
+                        data: jQuery('#field_widget_{{ configuration.code }}_{{ field_element.id}}').closest('form').serializeArray(),
+                        type: 'POST',
+                        success: function(html) {
+                            jQuery('#field_widget_{{ configuration.code }}_{{ field_element.id}}').html(html);
+                        }
+                    });
+
+                    return;
+                }
+
+                // otherwise, display form error
+                field_dialog_{{ configuration.code }}_{{ field_element.id }}.html(html);
+
+                // reattach the event
+                jQuery('form', field_dialog_{{ configuration.code }}_{{ field_element.id }}).submit(field_dialog_form_action_{{ configuration.code }}_{{ field_element.id }});
+            }
+        });
+
+        return false;
+    }
+
+
+    var field_dialog_{{ configuration.code }}_{{ field_element.id }} = jQuery("#field_dialog_{{ configuration.code }}_{{ field_element.id }}");
+
+    // move the dialog as a child of the root element, nested form break html ...
+    jQuery(document).append(field_dialog_{{ configuration.code }}_{{ field_element.id }});
+
+    // attach event on the add link
+    jQuery('#field_actions_{{ configuration.code }}_{{ field_element.id}} a').click(field_dialog_form_add_{{ configuration.code }}_{{ field_element.id }});
+    
+</script>

@@ -9,8 +9,17 @@ file that was distributed with this source code.
 
 #}
 
-<p>
+<div>
     {% block label %}{{ field_element|render_label }} <br />{% endblock %}
-    {% block field %}{{ field_element|render }}{% endblock %}
-    {% block errors %}{{ field_element|render_errors }}{% endblock %}
-</p>
+
+    <div class="sonata-ba-field {% if field_element.haserrors %}sonata-ba-field-error"{% endif %}">
+
+        {% block field %}{{ field_element|render }}{% endblock %}
+
+        <div class="sonata-ba-field-error-messages">
+            {% block errors %}{{ field_element|render_errors }}{% endblock %}
+        </div>
+
+    </div>
+
+</div>

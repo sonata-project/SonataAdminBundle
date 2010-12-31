@@ -70,6 +70,7 @@ class CRUDController extends Controller
             ->getQuery()
             ->execute();
 
+        
         foreach($objects as $object) {
             $em->remove($object);
         }
@@ -82,7 +83,7 @@ class CRUDController extends Controller
 
     public function deleteAction($id)
     {
-
+        // todo
     }
 
     public function editAction($id)
@@ -96,7 +97,7 @@ class CRUDController extends Controller
             $object = $id->getData();
             $form   = $id;
         } else {
-            $object = $this->configuration->getEntityManager()->find($this->configuration->getClass(), $id);
+            $object = $this->configuration->getObject($id);
 
             if(!$object) {
                 throw new NotFoundHttpException(sprintf('unable to find the object with id : %s', $id));
@@ -125,7 +126,7 @@ class CRUDController extends Controller
         $id = $this->get('request')->get('id');
 
         if(is_numeric($id)) {
-            $object = $this->configuration->getEntityManager()->find($this->configuration->getClass(), $id);
+            $object = $this->configuration->getObject($id);
 
             if(!$object) {
                 throw new NotFoundHttpException(sprintf('unable to find the object with id : %s', $id));
@@ -149,6 +150,10 @@ class CRUDController extends Controller
             $this->configuration->getEntityManager()->persist($object);
             $this->configuration->getEntityManager()->flush($object);
 
+            if($this->get('request')->isXmlHttpRequest()) {
+                return $this->createResponse('ok');
+            }
+            
             // redirect to edit mode
             return $this->redirect($this->configuration->generateUrl('edit', array('id' => $object->getId())));
         }
@@ -182,14 +187,15 @@ class CRUDController extends Controller
         return call_user_func(array($this, $final_action), $idx);
     }
 
-    public function createAction($form = null)
+    public function createAction($id = null)
     {
         $this->get('session')->start();
 
         $fields = $this->configuration->getFormFields();
 
-        if($form instanceof Form) {
-            $object = $form->getData();
+        if($id instanceof Form) {
+            $object = $id->getData();
+            $form   = $id;
         } else {
             $class = $this->configuration->getClass();
             $object = new $class;

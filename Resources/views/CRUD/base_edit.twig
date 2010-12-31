@@ -20,10 +20,12 @@ file that was distributed with this source code.
 {% endblock %}
 
 {% block actions %}
-    <ul>
-        <li><a href="{{ configuration.generateUrl('create') }}">{% trans "link_action_create" from "BaseApplicationBundle" %}</a></li>
-        <li><a href="{{ configuration.generateUrl('list') }}">{% trans "link_action_list" from "BaseApplicationBundle" %}</a></li>
-    </ul>
+    <div class="sonata-actions">
+        <ul>
+            <li class="sonata-action-element"><a href="{{ configuration.generateUrl('create') }}">{% trans "link_action_create" from "BaseApplicationBundle" %}</a></li>
+            <li class="sonata-action-element"><a href="{{ configuration.generateUrl('list') }}">{% trans "link_action_list" from "BaseApplicationBundle" %}</a></li>
+        </ul>
+    </div>
 {% endblock %}
 
 {% block content %}

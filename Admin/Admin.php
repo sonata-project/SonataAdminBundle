@@ -30,6 +30,10 @@ abstract class Admin extends ContainerAware
     // note : don't like this, but havn't find a better way to do it
     protected $configuration_pool;
 
+    protected $code;
+
+    protected $label;
+    
     public function configure()
     {
         $this->buildFormFields();
@@ -129,9 +133,17 @@ abstract class Admin extends ContainerAware
         return $urls[$name];
     }
 
-    public function generateUrl($url, $params = array())
+    public function generateUrl($name, $params = array())
     {
-        $url = $this->getUrl($url);
+        $url = $this->getUrl($name);
+
+        if(!$url) {
+            throw new \RuntimeException(sprintf('unable to find the url `%s`', $name));
+        }
+
+        if(!is_array($params)) {
+            $params = array();
+        }
 
         return $this->container->get('router')->generate($url['url'], array_merge($url['params'], $params));
     }
@@ -206,14 +218,32 @@ abstract class Admin extends ContainerAware
 
     }
 
+    /**
+     * return the target objet
+     *
+     * @param  $id
+     * @return
+     */
+    public function getObject($id)
+    {
+        
+        return $this->getEntityManager()
+            ->find($this->getClass(), $id);
+    }
+
+    /**
+     * build the fields to use in the form
+     *
+     * @throws RuntimeException
+     * @return
+     */
     public function buildFormFields()
     {
         $this->form_fields = $this->getBaseFields($this->form_fields);
 
         foreach($this->form_fields as $name => $options) {
 
-            if(!isset($this->form_fields[$name]['type']))
-            {
+            if(!isset($this->form_fields[$name]['type'])) {
                 throw new \RuntimeException(sprintf('You must declare a type for the field `%s`', $name));
             }
 
@@ -231,9 +261,19 @@ abstract class Admin extends ContainerAware
                     $this->form_fields[$name]['template'] = 'BaseApplicationBundle:CRUD:edit_one_to_one.twig';
                 }
 
+                if($this->form_fields[$name]['type'] == \Doctrine\ORM\Mapping\ClassMetadataInfo::MANY_TO_ONE)
+                {
+                    $this->form_fields[$name]['template'] = 'BaseApplicationBundle:CRUD:edit_many_to_one.twig';
+                    $this->form_fields[$name]['configuration']  = $this->getConfigurationPool()
+                        ->getConfigurationByClass($this->form_fields[$name]['targetEntity']);
+                }
+
                 if($this->form_fields[$name]['type'] == \Doctrine\ORM\Mapping\ClassMetadataInfo::MANY_TO_MANY)
                 {
                     $this->form_fields[$name]['template'] = 'BaseApplicationBundle:CRUD:edit_many_to_many.twig';
+                    $this->form_fields[$name]['configuration']  = $this->getConfigurationPool()
+                        ->getConfigurationByClass($this->form_fields[$name]['targetEntity']);
+
                 }
             }
 
@@ -261,6 +301,11 @@ abstract class Admin extends ContainerAware
         return $this->form_fields;
     }
 
+    /**
+     * build the field to use in the list view
+     *
+     * @return void
+     */
     public function buildListFields()
     {
         $this->list_fields = $this->getBaseFields($this->list_fields);
@@ -281,8 +326,7 @@ abstract class Admin extends ContainerAware
             }
 
             // fix template for mapping
-            if($this->list_fields[$name]['type'] == \Doctrine\ORM\Mapping\ClassMetadataInfo::MANY_TO_ONE)
-            {
+            if($this->list_fields[$name]['type'] == \Doctrine\ORM\Mapping\ClassMetadataInfo::MANY_TO_ONE) {
                 $this->list_fields[$name]['template']       = 'BaseApplicationBundle:CRUD:list_many_to_one.twig';
                 $this->list_fields[$name]['configuration']  = $this->getConfigurationPool()
                     ->getConfigurationByClass($this->list_fields[$name]['targetEntity']);
@@ -351,6 +395,8 @@ abstract class Admin extends ContainerAware
     public function getForm($object, $fields)
     {
 
+        $this->container->get('session')->start();
+
         $form = new Form('data', $object, $this->container->get('validator'));
 
         foreach($fields as $name => $description) {
@@ -378,6 +424,7 @@ abstract class Admin extends ContainerAware
 
                     break;
 
+                case \Doctrine\ORM\Mapping\ClassMetadataInfo::MANY_TO_ONE:
                 case \Doctrine\ORM\Mapping\ClassMetadataInfo::ONE_TO_ONE:
 
                     $transformer = new \Symfony\Bundle\DoctrineBundle\Form\ValueTransformer\EntityToIDTransformer(array(
@@ -474,5 +521,25 @@ abstract class Admin extends ContainerAware
     public function getConfigurationPool()
     {
         return $this->configuration_pool;
+    }
+
+    public function setCode($code)
+    {
+        $this->code = $code;
+    }
+
+    public function getCode()
+    {
+        return $this->code;
+    }
+
+    public function setLabel($label)
+    {
+        $this->label = $label;
+    }
+
+    public function getLabel()
+    {
+        return $this->label;
     }
 }
