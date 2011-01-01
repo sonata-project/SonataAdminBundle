@@ -44,6 +44,16 @@ class CRUDController extends Controller
            ->getAdminConfigurationByControllerName(get_class($this));
     }
 
+    public function getBaseTemplate()
+    {
+
+        if($this->get('request')->isXmlHttpRequest()) {
+            return 'BaseApplicationBundle::ajax_layout.twig';
+        }
+
+        return 'BaseApplicationBundle::standard_layout.twig';
+    }
+
     public function listAction()
     {
 
@@ -53,6 +63,7 @@ class CRUDController extends Controller
             'class_meta_data'   => $this->configuration->getClassMetaData(),
             'configuration'     => $this->configuration,
             'batch_actions'     => $this->configuration->getBatchActions(),
+            'base_template'     => $this->getBaseTemplate(),
         ));
 
     }
@@ -111,6 +122,7 @@ class CRUDController extends Controller
             'object' => $object,
             'fields' => $fields,
             'configuration'  => $this->configuration,
+            'base_template'  => $this->getBaseTemplate(),
         ));
     }
 
@@ -208,6 +220,7 @@ class CRUDController extends Controller
             'object' => $object,
             'fields' => $fields,
             'configuration'     => $this->configuration,
+            'base_template'     => $this->getBaseTemplate(),
         ));
     }
 
