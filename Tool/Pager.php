@@ -10,9 +10,6 @@
 
 namespace Bundle\BaseApplicationBundle\Tool;
 
-
-use Symfony\Component\HttpFoundation\ParameterBag;
-
 /**
  * sfPager class.
  *
@@ -51,7 +48,6 @@ abstract class Pager implements \Iterator, \Countable
     {
         $this->setClass($class);
         $this->setMaxPerPage($maxPerPage);
-        $this->parameterBag = new ParameterBag();
     }
 
     /**
@@ -132,14 +128,6 @@ abstract class Pager implements \Iterator, \Countable
 
         return $links;
     }
-
-//    public function renderLink($page)
-//    {
-//        $params = $this->getParameterHolder()->all();
-//        $params['page'] = $page;
-//
-//        return $this->getRouter()->generate($this->getRoute(), $params);
-//    }
 
     /**
      * Returns true if the current query requires pagination.
@@ -458,9 +446,9 @@ abstract class Pager implements \Iterator, \Countable
      *
      * @return sfParameterHolder
      */
-    public function getParameterHolder()
+    public function getParameters()
     {
-        return $this->parameterBag;
+        return $this->parameters;
     }
 
     /**
@@ -473,7 +461,7 @@ abstract class Pager implements \Iterator, \Countable
      */
     public function getParameter($name, $default = null)
     {
-        return $this->parameterBag->get($name, $default);
+        return isset($this->parameters[$name]) ? $this->parameters[$name] : $default;
     }
 
     /**
@@ -485,7 +473,7 @@ abstract class Pager implements \Iterator, \Countable
      */
     public function hasParameter($name)
     {
-        return $this->parameterBag->has($name);
+        return isset($this->parameters[$name]);
     }
 
     /**
@@ -496,7 +484,7 @@ abstract class Pager implements \Iterator, \Countable
      */
     public function setParameter($name, $value)
     {
-        $this->parameterBag->set($name, $value);
+        $this->parameters[$name] = $value;
     }
 
     /**

@@ -88,7 +88,7 @@ class DoctrinePager extends Pager implements \Serializable
         $this->resetIterator();
 
         $countQuery = $this->getCountQuery();
-        $countQuery->setParameters($this->getParameterHolder()->all());
+        $countQuery->setParameters($this->getParameters());
 
         $count = $countQuery->getSingleScalarResult();
 
@@ -97,7 +97,7 @@ class DoctrinePager extends Pager implements \Serializable
         $query = $this->getQuery();
         
         $query
-            ->setParameters($this->getParameterHolder()->all())
+            ->setParameters($this->getParameters())
             ->setFirstResult(0)
             ->setMaxResults(0);
 

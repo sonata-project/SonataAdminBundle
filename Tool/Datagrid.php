@@ -20,8 +20,6 @@ use Bundle\BaseApplicationBundle\Filter\CallbackFilter;
 use Bundle\BaseApplicationBundle\Filter\ChoiceFilter;
 
 
-
-
 class Datagrid
 {
 
@@ -44,10 +42,13 @@ class Datagrid
 
     protected $values;
 
-    public function __construct($classname, $entity_manager)
+    protected $pager;
+
+    public function __construct($classname, $entity_manager, $values = array())
     {
         $this->classname = $classname;
         $this->entity_manager = $entity_manager;
+        $this->values = $values;
     }
 
     public function getClassMetaData()
@@ -57,15 +58,18 @@ class Datagrid
         return $em->getClassMetaData($this->getClassname());
     }
 
-    public function getPager($values)
+    public function getPager()
     {
-        $pager = new Pager($this->getClassname());
 
-        $pager->setQueryBuilder($this->getQueryBuilder($values));
-        $pager->setPage(isset($values['page']) ? $values['page'] : 1);
-        $pager->init();
+        if(!$this->pager) {
+            $this->pager = new Pager($this->getClassname());
 
-        return $pager;
+            $this->pager->setQueryBuilder($this->getQueryBuilder($this->values));
+            $this->pager->setPage(isset($this->values['page']) ? $this->values['page'] : 1);
+            $this->pager->init();
+        }
+
+        return $this->pager;
     }
 
     public function getResults()

@@ -352,7 +352,10 @@ abstract class Admin extends ContainerAware
     {
         if(!$this->filter_datagrid) {
 
-            $this->filter_datagrid = new \Bundle\BaseApplicationBundle\Tool\Datagrid($this->getClass(), $this->getEntityManager());
+            $this->filter_datagrid = new \Bundle\BaseApplicationBundle\Tool\Datagrid(
+                $this->getClass(),
+                $this->getEntityManager()
+            );
 
             $this->configureFilterFields();
             

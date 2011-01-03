@@ -35,25 +35,26 @@ file that was distributed with this source code.
             {% block table_body %}{% endblock %}
 
             {% block table_footer %}
-                {% if pager.haveToPaginate() %}
+
+                {% if datagrid.pager.haveToPaginate() %}
                     <tr>
                         <td colspan="{{ fields|length }}" class="pager">
                             <ul>
-                                {% if pager.page != pager.previouspage %}
-                                    <li><a href="{{ pager.renderLink(pager.previouspage) }}">{% trans 'link_previous_pager' from 'BaseApplicationBundle' %}</a></li>
+                                {% if datagrid.pager.page != datagrid.pager.previouspage %}
+                                    <li><a href="{{ configuration.generateUrl('list', datagrid.values|merge({'page': datagrid.pager.previouspage})) }}">{% trans 'link_previous_pager' from 'BaseApplicationBundle' %}</a></li>
                                 {% endif %}
 
                                 {# Set the number of pages to display in the pager #}
-                                {% for page in pager.getLinks(5) %}
-                                    {% if page == pager.page %}
+                                {% for page in datagrid.pager.getLinks(5) %}
+                                    {% if page == datagrid.pager.page %}
                                         <li>{{ page }}</li>
                                     {% else %}
-                                        <li><a href="{{ pager.renderLink(page) }}">{{ page }}</a></li>
+                                        <li><a href="{{ configuration.generateUrl('list', datagrid.values|merge({'page': page})) }}">{{ page }}</a></li>
                                     {% endif %}
                                 {% endfor %}
 
-                                {% if pager.page != pager.nextpage %}
-                                    <li><a href="{{ pager.renderLink(pager.nextpage) }}">{% trans 'link_previous_pager' from 'BaseApplicationBundle' %}</a></li>
+                                {% if datagrid.pager.page != datagrid.pager.nextpage %}
+                                    <li><a href="{{ configuration.generateUrl('list', datagrid.values|merge({'page': datagrid.pager.nextpage})) }}">{% trans 'link_previous_pager' from 'BaseApplicationBundle' %}</a></li>
                                 {% endif %}
                             </ul>
                         </td>
@@ -84,6 +85,9 @@ file that was distributed with this source code.
         {% endfor %}
 
         <input type="submit" value="{% trans 'btn_filter' from 'BaseApplicationBundle' %}" />
+
+        <a href="{{ configuration.generateUrl('list') }}">{% trans 'link_reset_filter' from 'BaseApplicationBundle' %}</a>
+
     </form>
 {% endblock %}
 
