@@ -28,21 +28,19 @@ file that was distributed with this source code.
     </div>
 {% endblock %}
 
-{% block content %}
-    {% block form %}
-        <form action="{{ configuration.generateUrl('update', {'id': object.id}) }}" method="POST">
+{% block form %}
+    <form action="{{ configuration.generateUrl('update', {'id': object.id}) }}" method="POST">
 
-            {{ form|render_hidden }}
+        {{ form|render_hidden }}
 
-            {% for field in fields %}
-                {{ field|render_form_element(form, object, {'configuration' : configuration}) }}
-            {% endfor %}
+        {% for field in fields %}
+            {{ field|render_form_element(form, object, {'configuration' : configuration}) }}
+        {% endfor %}
 
-            {% if object.id %}
-                <input type="submit" value="{% trans "btn_update" from "BaseApplicationBundle" %}"/>
-            {% else %}
-                <input type="submit" value="{% trans "btn_create" from "BaseApplicationBundle" %}"/>
-            {% endif %}
-        </form>
-    {% endblock %}
+        {% if object.id %}
+            <input type="submit" value="{% trans "btn_update" from "BaseApplicationBundle" %}"/>
+        {% else %}
+            <input type="submit" value="{% trans "btn_create" from "BaseApplicationBundle" %}"/>
+        {% endif %}
+    </form>
 {% endblock %}

@@ -41,10 +41,6 @@ abstract class Pager implements \Iterator, \Countable
         $results = null,
         $resultsCounter = 0;
 
-    protected $router;
-
-    protected $route;
-
     /**
      * Constructor.
      *
@@ -137,14 +133,13 @@ abstract class Pager implements \Iterator, \Countable
         return $links;
     }
 
-    public function renderLink($page)
-    {
-        $params = $this->getParameterHolder()->all();
-        $params['page'] = $page;
-
-        return $this->getRouter()->generate($this->getRoute(), $params);
-
-    }
+//    public function renderLink($page)
+//    {
+//        $params = $this->getParameterHolder()->all();
+//        $params['page'] = $page;
+//
+//        return $this->getRouter()->generate($this->getRoute(), $params);
+//    }
 
     /**
      * Returns true if the current query requires pagination.
@@ -614,25 +609,5 @@ abstract class Pager implements \Iterator, \Countable
     public function count()
     {
         return $this->getNbResults();
-    }
-
-    public function setRoute($route)
-    {
-        $this->route = $route;
-    }
-
-    public function getRoute()
-    {
-        return $this->route;
-    }
-
-    public function setRouter($router)
-    {
-        $this->router = $router;
-    }
-
-    public function getRouter()
-    {
-        return $this->router;
     }
 }

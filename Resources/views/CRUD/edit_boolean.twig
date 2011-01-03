@@ -9,4 +9,15 @@ file that was distributed with this source code.
 
 #}
 
-{% extends 'BaseApplicationBundle:CRUD:base_edit_field.twig' %}
+<div>
+
+    <div class="sonata-ba-field {% if field_element.haserrors %}sonata-ba-field-error"{% endif %}">
+
+        {% block field %}{{ field_element|render }}{% endblock %}{% block label %}{{ field_element|render_label }} <br />{% endblock %}
+
+        <div class="sonata-ba-field-error-messages">
+            {% block errors %}{{ field_element|render_errors }}{% endblock %}
+        </div>
+
+    </div>
+</div>

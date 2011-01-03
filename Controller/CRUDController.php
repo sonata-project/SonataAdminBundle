@@ -57,8 +57,11 @@ class CRUDController extends Controller
     public function listAction()
     {
 
+        $datagrid = $this->configuration->getFilterDatagrid();
+        $datagrid->setValues($this->get('request')->query->all());
+
         return $this->render($this->configuration->getListTemplate(), array(
-            'pager'             => $this->configuration->getListPager(),
+            'datagrid'          => $datagrid,
             'fields'            => $this->configuration->getListFields(),
             'class_meta_data'   => $this->configuration->getClassMetaData(),
             'configuration'     => $this->configuration,

@@ -28,6 +28,7 @@ class BaseApplicationExtension extends \Twig_Extension
         return array(
             'render_list_element'         => new \Twig_Filter_Method($this, 'renderListElement', array('is_safe' => array('html'))),
             'render_form_element'         => new \Twig_Filter_Method($this, 'renderFormElement', array('is_safe' => array('html'))),
+            'render_filter_element'       => new \Twig_Filter_Method($this, 'renderFilterElement', array('is_safe' => array('html'))),
         );
     }
 
@@ -66,6 +67,15 @@ class BaseApplicationExtension extends \Twig_Extension
             'object' => $object,
             'value'  => $value,
             'field_description' => $field_description
+        )));
+    }
+
+    public function renderFilterElement($filter, $params = array())
+    {
+        $description = $filter->getDescription();
+
+        return $this->templating->render($description['template'], array_merge($params, array(
+            'filter' => $filter
         )));
     }
 

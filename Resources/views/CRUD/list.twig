@@ -12,7 +12,7 @@ file that was distributed with this source code.
 {% extends 'BaseApplicationBundle:CRUD:base_list.twig' %}
 
 {% block table_body %}
-    {% for element in pager.results %}
+    {% for element in datagrid.results %}
         <tr>
             {% for field_description in fields %}
                 <td>{{ element|render_list_element(field_description, {'configuration' : configuration}) }}</td>

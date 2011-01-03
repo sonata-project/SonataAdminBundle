@@ -13,7 +13,6 @@ namespace Bundle\BaseApplicationBundle\Admin;
 
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\Form\Form;
-use Bundle\BaseApplicationBundle\Tool\DoctrinePager as Pager;
 
 abstract class Admin extends ContainerAware
 {
@@ -22,6 +21,10 @@ abstract class Admin extends ContainerAware
     protected $list_fields = false;
 
     protected $form_fields = false;
+
+    protected $filter_fields = array(); // by default there is no filter
+
+    protected $filter_datagrid;
 
     protected $base_route = '';
 
@@ -57,38 +60,11 @@ abstract class Admin extends ContainerAware
         return $em->getClassMetaData($this->getClass());
     }
 
-    public function getListPager()
-    {
-        $pager = new Pager($this->getClass());
-
-        $url = $this->getUrl('list');
-
-        $pager->setRouter($this->container->get('router'));
-        $pager->setRoute($url['url']);
-
-        $pager->setQueryBuilder($this->getListQueryBuilder());
-        $pager->setPage($this->container->get('request')->get('page', 1));
-        $pager->init();
-
-        return $pager;
-    }
-
-    public function getListQueryBuilder()
-    {
-        $em             = $this->getEntityManager();
-        $repository     = $em->getRepository($this->getClass());
-
-        $query_buidler = $repository
-            ->createQueryBuilder('c');
-
-        return $query_buidler;
-    }
-
     public function getBatchActions()
     {
 
         return array(
-            'delete' => 'Delete'
+            'delete' => 'action_delete'
         );
     }
 
@@ -169,14 +145,12 @@ abstract class Admin extends ContainerAware
      * @param  $selected_fields
      * @return array
      */
-    public function getBaseFields($selected_fields)
+    static public function getBaseFields($metadata, $selected_fields)
     {
         // if nothing is defined we display all fields
         if(!$selected_fields) {
-            $selected_fields = array_keys($this->getClassMetaData()->reflFields) + array_keys($this->getClassMetaData()->associationMappings);
+            $selected_fields = array_keys($metadata->reflFields) + array_keys($metadata->associationMappings);
         }
-
-        $metadata = $this->getClassMetaData();
 
         // make sure we works with array
         foreach($selected_fields as $name => $options) {
@@ -239,7 +213,7 @@ abstract class Admin extends ContainerAware
      */
     public function buildFormFields()
     {
-        $this->form_fields = $this->getBaseFields($this->form_fields);
+        $this->form_fields = self::getBaseFields($this->getClassMetaData(), $this->form_fields);
 
         foreach($this->form_fields as $name => $options) {
 
@@ -273,7 +247,6 @@ abstract class Admin extends ContainerAware
                     $this->form_fields[$name]['template'] = 'BaseApplicationBundle:CRUD:edit_many_to_many.twig';
                     $this->form_fields[$name]['configuration']  = $this->getConfigurationPool()
                         ->getConfigurationByClass($this->form_fields[$name]['targetEntity']);
-
                 }
             }
 
@@ -308,7 +281,7 @@ abstract class Admin extends ContainerAware
      */
     public function buildListFields()
     {
-        $this->list_fields = $this->getBaseFields($this->list_fields);
+        $this->list_fields = self::getBaseFields($this->getClassMetaData(), $this->list_fields);
 
         foreach($this->list_fields as $name => $options) {
 
@@ -352,6 +325,35 @@ abstract class Admin extends ContainerAware
             ) ) + $this->list_fields;
         }
 
+         $this->configureListFields();
+
+        return $this->list_fields;
+    }
+
+    public function configureListFields()
+    {
+
+    }
+
+    public function configureFilterFields()
+    {
+        
+    }
+
+    public function getFilterDatagrid()
+    {
+        if(!$this->filter_datagrid) {
+
+            $this->filter_datagrid = new \Bundle\BaseApplicationBundle\Tool\Datagrid($this->getClass(), $this->getEntityManager());
+
+            $this->configureFilterFields();
+            
+            $this->filter_datagrid->setFilterFields($this->filter_fields);
+
+            $this->filter_datagrid->buildFilterFields();
+        }
+
+        return $this->filter_datagrid;
     }
 
     /**

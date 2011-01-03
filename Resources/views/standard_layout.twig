@@ -56,24 +56,27 @@ file that was distributed with this source code.
 
                 <h1>{% block title %}{% endblock %}</h1>
             </div>
-
             <div class="span-24 last content clear">
-                {% block content %}
+                <div class="sonata-ba-content">
+                    {% block content %}{% endblock %}
+                </div>
 
-                    <div class="sonata-ba-preview">
-                        {% block preview %}{% endblock %}
+                <div class="sonata-ba-preview">
+                    {% block preview %}{% endblock %}
+                </div>
+
+                <div class="sonata-ba-form">
+                    {% block form %}{% endblock %}
+                </div>
+
+                <div class="sonata-ba-list">
+                    <div class="span-18">
+                        {% block list_table %}{% endblock %}
                     </div>
-
-                    <div class="sonata-ba-form">
-                        {% block form %}{% endblock %}
+                    <div class="span-6 last">
+                        {% block list_filters %}{% endblock %}
                     </div>
-
-                    <div class="sonata-ba-list">
-                        {% block list %}{% endblock %}
-                    </div>
-
-                {% endblock %}
-
+                </div>
             </div>
 
             <!-- footer -->
