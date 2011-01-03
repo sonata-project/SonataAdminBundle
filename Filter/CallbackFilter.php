@@ -15,7 +15,7 @@ namespace Bundle\BaseApplicationBundle\Filter;
 class CallbackFilter extends Filter
 {
 
-    protected function association($query_builder)
+    protected function association($query_builder, $value)
     {
         return array($query_builder->getRootAlias(), false);
     }

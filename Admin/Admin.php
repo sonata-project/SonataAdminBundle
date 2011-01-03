@@ -26,6 +26,8 @@ abstract class Admin extends ContainerAware
 
     protected $filter_datagrid;
 
+    protected $max_per_page = 25;
+
     protected $base_route = '';
 
     protected $base_controller_name;
@@ -357,6 +359,8 @@ abstract class Admin extends ContainerAware
                 $this->getEntityManager()
             );
 
+            $this->filter_datagrid->setMaxPerPage($this->max_per_page);
+
             $this->configureFilterFields();
             
             $this->filter_datagrid->setFilterFields($this->filter_fields);
@@ -554,5 +558,25 @@ abstract class Admin extends ContainerAware
     public function getLabel()
     {
         return $this->label;
+    }
+
+    public function setFilterFields($filter_fields)
+    {
+        $this->filter_fields = $filter_fields;
+    }
+
+    public function getFilterFields()
+    {
+        return $this->filter_fields;
+    }
+
+    public function setMaxPerPage($max_per_page)
+    {
+        $this->max_per_page = $max_per_page;
+    }
+
+    public function getMaxPerPage()
+    {
+        return $this->max_per_page;
     }
 }

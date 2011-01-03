@@ -44,25 +44,27 @@ class Datagrid
 
     protected $pager;
 
+    protected $max_per_page = 25;
+
     public function __construct($classname, $entity_manager, $values = array())
     {
-        $this->classname = $classname;
-        $this->entity_manager = $entity_manager;
-        $this->values = $values;
+        $this->classname        = $classname;
+        $this->entity_manager   = $entity_manager;
+        $this->values           = $values;
     }
 
     public function getClassMetaData()
     {
-        $em             = $this->getEntityManager();
 
-        return $em->getClassMetaData($this->getClassname());
+        return $this->getEntityManager()
+            ->getClassMetaData($this->getClassname());
     }
 
     public function getPager()
     {
 
         if(!$this->pager) {
-            $this->pager = new Pager($this->getClassname());
+            $this->pager = new Pager($this->getClassname(), $this->getMaxPerPage());
 
             $this->pager->setQueryBuilder($this->getQueryBuilder($this->values));
             $this->pager->setPage(isset($this->values['page']) ? $this->values['page'] : 1);
@@ -293,5 +295,15 @@ class Datagrid
     public function getValues()
     {
         return $this->values;
+    }
+
+    public function setMaxPerPage($max_per_page)
+    {
+        $this->max_per_page = $max_per_page;
+    }
+
+    public function getMaxPerPage()
+    {
+        return $this->max_per_page;
     }
 }

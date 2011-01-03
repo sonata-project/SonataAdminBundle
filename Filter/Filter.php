@@ -60,23 +60,26 @@ abstract class Filter extends Configurable
 
         $this->field->bind($value);
 
-        list($alias, $field) = $this->association($query_builder);
+        list($alias, $field) = $this->association($query_builder, $this->field->getData());
 
         $this->filter($query_builder, $alias, $field, $this->field->getData());
     }
 
-    protected function association($query_builder)
+    protected function association($query_builder, $value)
     {
-        if($this->description['type'] == \Doctrine\ORM\Mapping\ClassMetadataInfo::MANY_TO_MANY) {
-            $query_builder->leftJoin(
-                sprintf('%s.%s', $query_builder->getRootAlias(), $this->description['fieldName']),
-                $this->getName()
-            );
+        if($value) {
 
-            // todo : use the metadata information to find the correct column name
-            return array($this->getName(), 'id');
+            if($this->description['type'] == \Doctrine\ORM\Mapping\ClassMetadataInfo::MANY_TO_MANY) {
+                $query_builder->leftJoin(
+                    sprintf('%s.%s', $query_builder->getRootAlias(), $this->description['fieldName']),
+                    $this->getName()
+                );
+
+                // todo : use the metadata information to find the correct column name
+                return array($this->getName(), 'id');
+            }
         }
-
+        
         return array($query_builder->getRootAlias(), $this->description['fieldName']);
     }
 
