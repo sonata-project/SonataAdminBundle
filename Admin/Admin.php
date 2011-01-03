@@ -305,6 +305,14 @@ abstract class Admin extends ContainerAware
                     ->getConfigurationByClass($this->list_fields[$name]['targetEntity']);
             }
 
+            if($this->list_fields[$name]['type'] == \Doctrine\ORM\Mapping\ClassMetadataInfo::ONE_TO_MANY) {
+                $this->list_fields[$name]['template']       = 'BaseApplicationBundle:CRUD:list_one_to_many.twig';
+            }
+
+            if($this->list_fields[$name]['type'] == \Doctrine\ORM\Mapping\ClassMetadataInfo::MANY_TO_MANY) {
+                $this->list_fields[$name]['template']       = 'BaseApplicationBundle:CRUD:list_many_to_many.twig';
+            }
+
             // define the default template
             if(!isset($this->list_fields[$name]['template'])) {
                 $this->list_fields[$name]['template'] = sprintf('BaseApplicationBundle:CRUD:list_%s.twig', $this->list_fields[$name]['type']);

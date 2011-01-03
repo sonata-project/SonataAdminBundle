@@ -1,24 +1,19 @@
 Prototype to easily create uniform backend application
+======================================================
 
-## Installation
+Please read the related documentation in the docs folder.
 
-### Add BaseApplicationBundle to your src/Bundle dir
+*WARNING* : this is a prototype, and not a final/stable bundle.
 
-    git submodule add git@github.com:sonata-project/BaseApplicationBundle.git src/Bundle/BaseApplicationBundle
-
-### Add EasyExtendsBundle to your application kernel
-
-    // app/AppKernel.php
-    public function registerBundles()
-    {
-        return array(
-            // ...
-            new Bundle\BaseApplicationBundle\BaseApplicationBundle(),
-            // ...
-        );
-    }
+   - code can be irrelevant
+   - code might not use properly Symfony2 or Doctrine components
+   - code might change with no notices.
 
 
-### Add this line into your config.yml file 
+TODO :
 
-    base_application.config: ~
+   - use the admin class to register route information
+   - save filter criteria
+   - export list
+   - edit group field
+   - add inline editing (Invoice with InvoiceLine)
