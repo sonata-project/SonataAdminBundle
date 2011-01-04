@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Bundle\BaseApplicationBundle\Filter;
+namespace Bundle\Sonata\BaseApplicationBundle\Filter;
 
 
 class CallbackFilter extends Filter

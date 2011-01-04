@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Bundle\BaseApplicationBundle\Controller;
+namespace Bundle\Sonata\BaseApplicationBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -17,7 +17,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Form\Form;
 
 
-use Bundle\BaseApplicationBundle\Tool\DoctrinePager as Pager;
+use Bundle\Sonata\BaseApplicationBundle\Tool\DoctrinePager as Pager;
 
 class CRUDController extends Controller
 {

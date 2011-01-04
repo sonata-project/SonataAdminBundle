@@ -9,7 +9,7 @@
  */
 
 
-namespace Bundle\BaseApplicationBundle\DependencyInjection;
+namespace Bundle\Sonata\BaseApplicationBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\Resource\FileResource;

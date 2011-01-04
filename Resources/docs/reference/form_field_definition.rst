@@ -11,7 +11,7 @@ Example
     <?php
     namespace Bundle\NewsBundle\Admin;
 
-    use Bundle\BaseApplicationBundle\Admin\Admin;
+    use Bundle\Sonata\BaseApplicationBundle\Admin\Admin;
 
     class PostAdmin extends Admin
     {

@@ -9,15 +9,15 @@
  * file that was distributed with this source code.
  */
 
-namespace Bundle\BaseApplicationBundle\Tool;
+namespace Bundle\Sonata\BaseApplicationBundle\Tool;
 
-use Bundle\BaseApplicationBundle\Tool\DoctrinePager as Pager;
+use Bundle\Sonata\BaseApplicationBundle\Tool\DoctrinePager as Pager;
 
-use Bundle\BaseApplicationBundle\Filter\StringFilter;
-use Bundle\BaseApplicationBundle\Filter\BooleanFilter;
-use Bundle\BaseApplicationBundle\Filter\IntegerFilter;
-use Bundle\BaseApplicationBundle\Filter\CallbackFilter;
-use Bundle\BaseApplicationBundle\Filter\ChoiceFilter;
+use Bundle\Sonata\BaseApplicationBundle\Filter\StringFilter;
+use Bundle\Sonata\BaseApplicationBundle\Filter\BooleanFilter;
+use Bundle\Sonata\BaseApplicationBundle\Filter\IntegerFilter;
+use Bundle\Sonata\BaseApplicationBundle\Filter\CallbackFilter;
+use Bundle\Sonata\BaseApplicationBundle\Filter\ChoiceFilter;
 
 
 class Datagrid

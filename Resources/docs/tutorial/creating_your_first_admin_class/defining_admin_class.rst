@@ -19,7 +19,7 @@ By convention Admin files are set under a Admin folder.
 
     namespace Application\NewsBundle\Admin;
 
-    use Bundle\BaseApplicationBundle\Admin\Admin;
+    use Bundle\Sonata\BaseApplicationBundle\Admin\Admin;
 
     class PostAdmin extends Admin
     {
@@ -94,7 +94,7 @@ TagAdmin
 
     namespace Bundle\NewsBundle\Admin;
 
-    use Bundle\BaseApplicationBundle\Admin\Admin;
+    use Bundle\Sonata\BaseApplicationBundle\Admin\Admin;
 
     class TagAdmin extends Admin
     {
@@ -123,7 +123,7 @@ CommentAdmin
 
     namespace Bundle\NewsBundle\Admin;
 
-    use Bundle\BaseApplicationBundle\Admin\Admin;
+    use Bundle\Sonata\BaseApplicationBundle\Admin\Admin;
 
     class CommentAdmin extends Admin
     {
