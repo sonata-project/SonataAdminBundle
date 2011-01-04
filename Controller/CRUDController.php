@@ -124,6 +124,7 @@ class CRUDController extends Controller
             'form'   => $form,
             'object' => $object,
             'fields' => $fields,
+            'form_groups'    => $this->configuration->getFormGroups(),
             'configuration'  => $this->configuration,
             'base_template'  => $this->getBaseTemplate(),
         ));
@@ -222,6 +223,7 @@ class CRUDController extends Controller
             'form'   => $form,
             'object' => $object,
             'fields' => $fields,
+            'form_groups'    => $this->configuration->getFormGroups(),
             'configuration'     => $this->configuration,
             'base_template'     => $this->getBaseTemplate(),
         ));
