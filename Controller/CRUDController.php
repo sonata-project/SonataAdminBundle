@@ -48,10 +48,10 @@ class CRUDController extends Controller
     {
 
         if($this->get('request')->isXmlHttpRequest()) {
-            return 'BaseApplicationBundle::ajax_layout.twig';
+            return 'Sonata\BaseApplicationBundle::ajax_layout.twig';
         }
 
-        return 'BaseApplicationBundle::standard_layout.twig';
+        return 'Sonata\BaseApplicationBundle::standard_layout.twig';
     }
 
     public function listAction()
@@ -168,7 +168,7 @@ class CRUDController extends Controller
             if($this->get('request')->isXmlHttpRequest()) {
                 return $this->createResponse('ok');
             }
-            
+
             // redirect to edit mode
             return $this->redirect($this->configuration->generateUrl('edit', array('id' => $object->getId())));
         }

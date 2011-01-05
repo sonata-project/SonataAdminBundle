@@ -9,6 +9,6 @@ file that was distributed with this source code.
 
 #}
 
-{% extends 'BaseApplicationBundle:CRUD:base_edit_field.twig' %}
+{% extends 'Sonata/BaseApplicationBundle:CRUD:base_edit_field.twig' %}
 
-{% block field %}{{ field_element|render({'class' : 'title'}) }}{% endblock %}
+{% block field %}{{ form_field(field_element, {'class' : 'title'}) }}{% endblock %}

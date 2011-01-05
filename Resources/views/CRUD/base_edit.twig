@@ -34,7 +34,7 @@ file that was distributed with this source code.
 {% block form %}
     <form action="{{ configuration.generateUrl('update', {'id': object.id}) }}" method="POST">
 
-        {{ form|render_hidden }}
+        {{ form_hidden(form) }}
 
         {% for field in fields %}
             {{ field|render_form_element(form, object, {'configuration' : configuration}) }}

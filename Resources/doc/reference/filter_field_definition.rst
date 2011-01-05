@@ -10,7 +10,7 @@ Example
 .. code-block:: php
 
     <?php
-    namespace Bundle\NewsBundle\Admin;
+    namespace Bundle\Sonata\NewsBundle\Admin;
 
     use Bundle\Sonata\BaseApplicationBundle\Admin\Admin;
 

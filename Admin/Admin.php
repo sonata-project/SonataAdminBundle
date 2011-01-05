@@ -14,6 +14,8 @@ namespace Bundle\Sonata\BaseApplicationBundle\Admin;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\Form\Form;
 
+use Bundle\Sonata\BaseApplicationBundle\Tool\Datagrid;
+
 abstract class Admin extends ContainerAware
 {
     protected $class;
@@ -128,12 +130,12 @@ abstract class Admin extends ContainerAware
 
     public function getListTemplate()
     {
-        return 'BaseApplicationBundle:CRUD:list.twig';
+        return 'Sonata\BaseApplicationBundle:CRUD:list.twig';
     }
 
     public function getEditTemplate()
     {
-        return 'BaseApplicationBundle:CRUD:edit.twig';
+        return 'Sonata\BaseApplicationBundle:CRUD:edit.twig';
     }
 
     public function getReflectionFields()
@@ -149,10 +151,12 @@ abstract class Admin extends ContainerAware
      */
     static public function getBaseFields($metadata, $selected_fields)
     {
+
         // if nothing is defined we display all fields
         if(!$selected_fields) {
             $selected_fields = array_keys($metadata->reflFields) + array_keys($metadata->associationMappings);
         }
+
 
         // make sure we works with array
         foreach($selected_fields as $name => $options) {
@@ -230,23 +234,23 @@ abstract class Admin extends ContainerAware
 
             // fix template value for doctrine association fields
             if(!isset($this->form_fields[$name]['template']) && isset($this->form_fields[$name]['type'])) {
-                $this->form_fields[$name]['template'] = sprintf('BaseApplicationBundle:CRUD:edit_%s.twig', $this->form_fields[$name]['type']);
+                $this->form_fields[$name]['template'] = sprintf('Sonata\BaseApplicationBundle:CRUD:edit_%s.twig', $this->form_fields[$name]['type']);
 
                 if($this->form_fields[$name]['type'] == \Doctrine\ORM\Mapping\ClassMetadataInfo::ONE_TO_ONE)
                 {
-                    $this->form_fields[$name]['template'] = 'BaseApplicationBundle:CRUD:edit_one_to_one.twig';
+                    $this->form_fields[$name]['template'] = 'Sonata\BaseApplicationBundle:CRUD:edit_one_to_one.twig';
                 }
 
                 if($this->form_fields[$name]['type'] == \Doctrine\ORM\Mapping\ClassMetadataInfo::MANY_TO_ONE)
                 {
-                    $this->form_fields[$name]['template'] = 'BaseApplicationBundle:CRUD:edit_many_to_one.twig';
+                    $this->form_fields[$name]['template'] = 'Sonata\BaseApplicationBundle:CRUD:edit_many_to_one.twig';
                     $this->form_fields[$name]['configuration']  = $this->getConfigurationPool()
                         ->getConfigurationByClass($this->form_fields[$name]['targetEntity']);
                 }
 
                 if($this->form_fields[$name]['type'] == \Doctrine\ORM\Mapping\ClassMetadataInfo::MANY_TO_MANY)
                 {
-                    $this->form_fields[$name]['template'] = 'BaseApplicationBundle:CRUD:edit_many_to_many.twig';
+                    $this->form_fields[$name]['template'] = 'Sonata\BaseApplicationBundle:CRUD:edit_many_to_many.twig';
                     $this->form_fields[$name]['configuration']  = $this->getConfigurationPool()
                         ->getConfigurationByClass($this->form_fields[$name]['targetEntity']);
                 }
@@ -302,27 +306,27 @@ abstract class Admin extends ContainerAware
 
             // fix template for mapping
             if($this->list_fields[$name]['type'] == \Doctrine\ORM\Mapping\ClassMetadataInfo::MANY_TO_ONE) {
-                $this->list_fields[$name]['template']       = 'BaseApplicationBundle:CRUD:list_many_to_one.twig';
+                $this->list_fields[$name]['template']       = 'Sonata/BaseApplicationBundle:CRUD:list_many_to_one.twig';
                 $this->list_fields[$name]['configuration']  = $this->getConfigurationPool()
                     ->getConfigurationByClass($this->list_fields[$name]['targetEntity']);
             }
 
             if($this->list_fields[$name]['type'] == \Doctrine\ORM\Mapping\ClassMetadataInfo::ONE_TO_MANY) {
-                $this->list_fields[$name]['template']       = 'BaseApplicationBundle:CRUD:list_one_to_many.twig';
+                $this->list_fields[$name]['template']       = 'Sonata/BaseApplicationBundle:CRUD:list_one_to_many.twig';
             }
 
             if($this->list_fields[$name]['type'] == \Doctrine\ORM\Mapping\ClassMetadataInfo::MANY_TO_MANY) {
-                $this->list_fields[$name]['template']       = 'BaseApplicationBundle:CRUD:list_many_to_many.twig';
+                $this->list_fields[$name]['template']       = 'Sonata/BaseApplicationBundle:CRUD:list_many_to_many.twig';
             }
 
             // define the default template
             if(!isset($this->list_fields[$name]['template'])) {
-                $this->list_fields[$name]['template'] = sprintf('BaseApplicationBundle:CRUD:list_%s.twig', $this->list_fields[$name]['type']);
+                $this->list_fields[$name]['template'] = sprintf('Sonata/BaseApplicationBundle:CRUD:list_%s.twig', $this->list_fields[$name]['type']);
             }
 
             // define the default template for identifier field
             if(isset($this->list_fields[$name]['id'])) {
-                $this->list_fields[$name]['template'] = 'BaseApplicationBundle:CRUD:list_identifier.twig';
+                $this->list_fields[$name]['identifier'] = true;
             }
 
         }
@@ -330,7 +334,7 @@ abstract class Admin extends ContainerAware
         if(!isset($this->list_fields['_batch'])) {
             $this->list_fields = array('_batch' => array(
                 'code'     => '_batch',
-                'template' => 'BaseApplicationBundle:CRUD:list__batch.twig',
+                'template' => 'Sonata/BaseApplicationBundle:CRUD:list__batch.twig',
                 'label'    => 'batch',
             ) ) + $this->list_fields;
         }
@@ -354,7 +358,7 @@ abstract class Admin extends ContainerAware
     {
         if(!$this->filter_datagrid) {
 
-            $this->filter_datagrid = new \Bundle\BaseApplicationBundle\Tool\Datagrid(
+            $this->filter_datagrid = new Datagrid(
                 $this->getClass(),
                 $this->getEntityManager()
             );

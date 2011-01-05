@@ -73,7 +73,7 @@ This code manage the many-to-[one|many] association field popup
 
                     // reload the form element
                     jQuery.ajax({
-                        url: '{{ url('base_application_retrieve_form_element', {
+                        url: '{{ url('sonata_base_application_retrieve_form_element', {
                             'code':         configuration.code,
                             'element_id':   field_element.id,
                             'object_id':    form.data.id,

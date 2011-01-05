@@ -10,14 +10,14 @@ file that was distributed with this source code.
 #}
 
 <div>
-    {% block label %}{{ field_element|render_label }} <br />{% endblock %}
+    {% block label %}{{ form_label(field_element) }} <br />{% endblock %}
 
     <div class="sonata-ba-field {% if field_element.haserrors %}sonata-ba-field-error"{% endif %}">
 
-        {% block field %}{{ field_element|render }}{% endblock %}
+        {% block field %}{{ form_field(field_element) }}{% endblock %}
 
         <div class="sonata-ba-field-error-messages">
-            {% block errors %}{{ field_element|render_errors }}{% endblock %}
+            {% block errors %}{{ form_errors(field_element) }}{% endblock %}
         </div>
 
     </div>
