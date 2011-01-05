@@ -26,8 +26,8 @@ file that was distributed with this source code.
                 {% for admin in group %}
                     <tr>
                         <td class="sonata-ba-list-label">{{ admin.label}}</td>
-                        <td><a href="{{ admin.generateUrl('create')}}"><img src="/bundles/baseapplication/famfamfam/add.png" /> {% trans 'link_add' from 'BaseApplicationBundle' %}</a></td>
-                        <td><a href="{{ admin.generateUrl('list')}}"><img src="/bundles/baseapplication/famfamfam/application_view_list.png" />{% trans 'link_list' from 'BaseApplicationBundle' %}</a></td>
+                        <td><a href="{{ admin.generateUrl('create')}}"><img src="{{ asset('bundles/baseapplication/famfamfam/add.png') }}" /> {% trans 'link_add' from 'BaseApplicationBundle' %}</a></td>
+                        <td><a href="{{ admin.generateUrl('list')}}"><img src="{{ asset('bundles/baseapplication/famfamfam/application_view_list.png') }}" />{% trans 'link_list' from 'BaseApplicationBundle' %}</a></td>
                     </tr>
                 {% endfor %}
             </tbody>
