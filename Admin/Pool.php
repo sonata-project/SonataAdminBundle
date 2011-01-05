@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Bundle\BaseApplicationBundle\Admin;
+namespace Bundle\Sonata\BaseApplicationBundle\Admin;
 
 
 class Pool

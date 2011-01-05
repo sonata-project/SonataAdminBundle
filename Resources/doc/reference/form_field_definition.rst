@@ -9,9 +9,9 @@ Example
 .. code-block:: php
 
     <?php
-    namespace Bundle\NewsBundle\Admin;
+    namespace Bundle\Sonta\NewsBundle\Admin;
 
-    use Bundle\BaseApplicationBundle\Admin\Admin;
+    use Bundle\Sonata\BaseApplicationBundle\Admin\Admin;
 
     class PostAdmin extends Admin
     {
@@ -32,7 +32,7 @@ Example
         public function configureFormFields()
         {
             $this->form_fields['comments_default_status']['type'] = 'choice';
-            $this->form_fields['comments_default_status']['options']['choices'] = \Application\NewsBundle\Entity\Comment::getStatusList();
+            $this->form_fields['comments_default_status']['options']['choices'] = \Application\Sonata\NewsBundle\Entity\Comment::getStatusList();
         }
     }
 

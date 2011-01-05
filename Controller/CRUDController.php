@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Bundle\BaseApplicationBundle\Controller;
+namespace Bundle\Sonata\BaseApplicationBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -17,7 +17,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Form\Form;
 
 
-use Bundle\BaseApplicationBundle\Tool\DoctrinePager as Pager;
+use Bundle\Sonata\BaseApplicationBundle\Tool\DoctrinePager as Pager;
 
 class CRUDController extends Controller
 {
@@ -48,10 +48,10 @@ class CRUDController extends Controller
     {
 
         if($this->get('request')->isXmlHttpRequest()) {
-            return 'BaseApplicationBundle::ajax_layout.twig';
+            return 'Sonata\BaseApplicationBundle::ajax_layout.twig';
         }
 
-        return 'BaseApplicationBundle::standard_layout.twig';
+        return 'Sonata\BaseApplicationBundle::standard_layout.twig';
     }
 
     public function listAction()
@@ -169,7 +169,7 @@ class CRUDController extends Controller
             if($this->get('request')->isXmlHttpRequest()) {
                 return $this->createResponse('ok');
             }
-            
+
             // redirect to edit mode
             return $this->redirect($this->configuration->generateUrl('edit', array('id' => $object->getId())));
         }

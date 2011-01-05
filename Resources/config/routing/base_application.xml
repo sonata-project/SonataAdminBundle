@@ -4,12 +4,12 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.symfony-project.org/schema/routing http://www.symfony-project.org/schema/routing/routing-1.0.xsd">
 
-    <route id="base_application_dashboard" pattern="/dashboard">
-        <default key="_controller">BaseApplicationBundle:Core:dashboard</default>
+    <route id="sonata_base_application_dashboard" pattern="/dashboard">
+        <default key="_controller">Sonata\BaseApplicationBundle:Core:dashboard</default>
     </route>
 
-    <route id="base_application_retrieve_form_element" pattern="/core/:code/get-form-field-element/:element_id">
-        <default key="_controller">BaseApplicationBundle:Core:retrieveFormFieldElement</default>
+    <route id="sonata_base_application_retrieve_form_element" pattern="/core/:code/get-form-field-element/:element_id">
+        <default key="_controller">Sonata\BaseApplicationBundle:Core:retrieveFormFieldElement</default>
     </route>
 
 </routes>

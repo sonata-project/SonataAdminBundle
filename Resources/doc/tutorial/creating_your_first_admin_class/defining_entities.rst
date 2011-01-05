@@ -159,7 +159,7 @@ Mapping definition
 
   <doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xsi="http://www.w3.org/2001/XMLSchema-instance" schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
   
-      <entity name="Application\NewsBundle\Entity\Comment" table="news__comment" repository-class="Application\NewsBundle\Entity\CommentRepository">
+      <entity name="Application\Sonata\NewsBundle\Entity\Comment" table="news__comment" repository-class="Application\Sonata\NewsBundle\Entity\CommentRepository">
 
           <id name="id" type="integer" column="id">
               <generator strategy="AUTO"/>
@@ -281,7 +281,7 @@ Mapping definition
 
           <one-to-many
               field="comments"
-              target-entity="Application\NewsBundle\Entity\Comment"
+              target-entity="Application\Sonata\NewsBundle\Entity\Comment"
               mapped-by="post">
 
               <cascade>

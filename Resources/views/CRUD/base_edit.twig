@@ -34,7 +34,7 @@ file that was distributed with this source code.
 {% block form %}
     <form action="{{ configuration.generateUrl('update', {'id': object.id}) }}" method="POST">
 
-        {{ form|render_hidden }}
+        {{ form_hidden(form) }}
         
         {% for name, form_group in form_groups %}
             {% if name %}
@@ -45,7 +45,7 @@ file that was distributed with this source code.
                             <a href="" class="sonata-ba-collapsed">{% trans 'link_expand' from 'BaseApplicationBundle' %}</a>
                         {% endif %}
                     </legend>
-
+                    
                     <div class="sonata-ba-collapsed-fields">
             {% endif %}
 

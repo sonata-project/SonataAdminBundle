@@ -9,7 +9,7 @@
  */
 
 
-namespace Bundle\BaseApplicationBundle\DependencyInjection;
+namespace Bundle\Sonata\BaseApplicationBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\Resource\FileResource;
@@ -40,12 +40,12 @@ class BaseApplicationExtension extends Extension
 
         // register the twig extension
         $container
-            ->register('twig.extension.base_application', 'Bundle\BaseApplicationBundle\Twig\Extension\BaseApplicationExtension')
+            ->register('twig.extension.base_application', 'Bundle\Sonata\BaseApplicationBundle\Twig\Extension\BaseApplicationExtension')
             ->addMethodCall('setTemplating', array(new Reference('templating')))
             ->addTag('twig.extension');
 
         // registers crud action
-        $definition = new Definition('Bundle\\BaseApplicationBundle\\Admin\\Pool');
+        $definition = new Definition('Bundle\Sonata\BaseApplicationBundle\Admin\Pool');
         $definition->addMethodCall('setContainer', array(new Reference('service_container')));
         foreach($config['entities'] as $code => $configuration) {
             if(!isset($configuration['group'])) {

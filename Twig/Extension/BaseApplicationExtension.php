@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Bundle\BaseApplicationBundle\Twig\Extension;
+namespace Bundle\Sonata\BaseApplicationBundle\Twig\Extension;
 
 use Symfony\Bundle\TwigBundle\TokenParser\HelperTokenParser;
 

@@ -10,9 +10,9 @@ Example
 .. code-block:: php
 
     <?php
-    namespace Bundle\NewsBundle\Admin;
+    namespace Bundle\Sonata\NewsBundle\Admin;
 
-    use Bundle\BaseApplicationBundle\Admin\Admin;
+    use Bundle\Sonata\BaseApplicationBundle\Admin\Admin;
 
     class PostAdmin extends Admin
     {
@@ -45,7 +45,7 @@ Example
 
             $query_builder->leftJoin(sprintf('%s.comments', $alias), 'c');
             $query_builder->andWhere('c.status = :status');
-            $query_builder->setParameter('status', \Application\NewsBundle\Entity\Comment::STATUS_MODERATE);
+            $query_builder->setParameter('status', \Application\Sonata\NewsBundle\Entity\Comment::STATUS_MODERATE);
         }
 
         public function getWithOpenCommentField($filter)

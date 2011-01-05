@@ -8,10 +8,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Bundle\BaseApplicationBundle;
+namespace Bundle\Sonata\BaseApplicationBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class BaseApplicationBundle extends Bundle {
+class SonataBaseApplicationBundle extends Bundle {
 
 }

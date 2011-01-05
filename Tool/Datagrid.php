@@ -9,15 +9,15 @@
  * file that was distributed with this source code.
  */
 
-namespace Bundle\BaseApplicationBundle\Tool;
+namespace Bundle\Sonata\BaseApplicationBundle\Tool;
 
-use Bundle\BaseApplicationBundle\Tool\DoctrinePager as Pager;
+use Bundle\Sonata\BaseApplicationBundle\Tool\DoctrinePager as Pager;
 
-use Bundle\BaseApplicationBundle\Filter\StringFilter;
-use Bundle\BaseApplicationBundle\Filter\BooleanFilter;
-use Bundle\BaseApplicationBundle\Filter\IntegerFilter;
-use Bundle\BaseApplicationBundle\Filter\CallbackFilter;
-use Bundle\BaseApplicationBundle\Filter\ChoiceFilter;
+use Bundle\Sonata\BaseApplicationBundle\Filter\StringFilter;
+use Bundle\Sonata\BaseApplicationBundle\Filter\BooleanFilter;
+use Bundle\Sonata\BaseApplicationBundle\Filter\IntegerFilter;
+use Bundle\Sonata\BaseApplicationBundle\Filter\CallbackFilter;
+use Bundle\Sonata\BaseApplicationBundle\Filter\ChoiceFilter;
 
 
 class Datagrid
@@ -140,7 +140,7 @@ class Datagrid
 
     public function buildFilterFields()
     {
-        $this->filter_fields = \Bundle\BaseApplicationBundle\Admin\Admin::getBaseFields($this->getClassMetaData(), $this->filter_fields);
+        $this->filter_fields = \Bundle\Sonata\BaseApplicationBundle\Admin\Admin::getBaseFields($this->getClassMetaData(), $this->filter_fields);
 
         foreach($this->filter_fields as $name => $options) {
 
@@ -159,21 +159,16 @@ class Datagrid
 
             // fix template for mapping
             if($this->filter_fields[$name]['type'] == \Doctrine\ORM\Mapping\ClassMetadataInfo::MANY_TO_ONE) {
-                $this->filter_fields[$name]['template']       = 'BaseApplicationBundle:CRUD:filter_many_to_one.twig';
+                $this->filter_fields[$name]['template']       = 'Sonata/BaseApplicationBundle:CRUD:filter_many_to_one.twig';
             }
 
             if($this->filter_fields[$name]['type'] == \Doctrine\ORM\Mapping\ClassMetadataInfo::MANY_TO_MANY) {
-                $this->filter_fields[$name]['template']       = 'BaseApplicationBundle:CRUD:filter_many_to_many.twig';
+                $this->filter_fields[$name]['template']       = 'Sonata/BaseApplicationBundle:CRUD:filter_many_to_many.twig';
             }
 
             // define the default template
             if(!isset($this->filter_fields[$name]['template'])) {
-                $this->filter_fields[$name]['template'] = sprintf('BaseApplicationBundle:CRUD:filter_%s.twig', $this->filter_fields[$name]['type']);
-            }
-
-            // define the default template for identifier field
-            if(isset($this->filter_fields[$name]['id'])) {
-                $this->filter_fields[$name]['template'] = 'BaseApplicationBundle:CRUD:filter_identifier.twig';
+                $this->filter_fields[$name]['template'] = sprintf('Sonata/BaseApplicationBundle:CRUD:filter_%s.twig', $this->filter_fields[$name]['type']);
             }
 
             if(!isset($this->filter_fields[$name]['filter_value'])) {

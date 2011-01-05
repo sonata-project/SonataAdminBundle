@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Bundle\BaseApplicationBundle\Controller;
+namespace Bundle\Sonata\BaseApplicationBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-use Symfony\Component\Form\Iterator\RecursiveFieldsWithPropertyPathIterator;
+use Symfony\Component\Form\RecursiveFieldIterator;
 
 class CoreController extends Controller
 {
@@ -44,7 +44,7 @@ class CoreController extends Controller
         // bind the form so the form element will be populated with the lastest elements
         $form->bind($this->get('request')->get('data'));
 
-        $iterator = new RecursiveFieldsWithPropertyPathIterator($form);
+        $iterator = new RecursiveFieldIterator($form);
         $iterator = new \RecursiveIteratorIterator($iterator);
 
         $field_element = false;
@@ -74,7 +74,7 @@ class CoreController extends Controller
         $extension = $twig->getExtension('form');
         $extension->initRuntime($this->get('twig'));
 
-        return $this->createResponse($extension->render($field_element));
+        return $this->createResponse($extension->renderField($field_element));
 
 
 //        return $this->render($field_description['template'], array(
@@ -88,7 +88,7 @@ class CoreController extends Controller
     public function dashboardAction()
     {
 
-        return $this->render('BaseApplicationBundle:Core:dashboard.twig', array(
+        return $this->render('Sonata/BaseApplicationBundle:Core:dashboard.twig', array(
             'groups' => $this->get('base_application.admin.pool')->getGroups()
         ));
     }

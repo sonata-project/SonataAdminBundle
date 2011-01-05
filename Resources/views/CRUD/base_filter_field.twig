@@ -10,9 +10,9 @@ file that was distributed with this source code.
 #}
 
 <div>
-    {% block label %}{{ filter.field|render_label }} <br />{% endblock %}
+    {% block label %}{{ form_label(filter.field) }} <br />{% endblock %}
 
     <div class="sonata-ba-field {% if field.field.haserrors %}sonata-ba-field-error"{% endif %}">
-        {% block field %}{{ filter.field|render }}{% endblock %}
+        {% block field %}{{ form_field(filter.field) }}{% endblock %}
     </div>
 </div>
