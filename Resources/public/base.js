@@ -1,8 +1,7 @@
 jQuery(document).ready(function() {
 
     BaseApplication.add_pretty_errors(document);
-    BaseApplication.add_collapsed_toggle(document);
-
+    BaseApplication.add_collapsed_toggle();
 });
 
 
@@ -46,7 +45,7 @@ var BaseApplication = {
     },
 
     add_collapsed_toggle: function(subject) {
-        jQuery('fieldset legend a.sonata-ba-collapsed', subject).click(function(event) {
+        jQuery('fieldset legend a.sonata-ba-collapsed', subject).live('click', function(event) {
             event.preventDefault();
 
             var fieldset = jQuery(this).closest('fieldset');
@@ -54,8 +53,5 @@ var BaseApplication = {
             jQuery('div.sonata-ba-collapsed-fields', fieldset).toggle();
             fieldset.toggleClass('sonata-ba-collapsed-fields-close');
         });
-
-         jQuery('fieldset legend a.sonata-ba-collapsed', subject).trigger('click');
-        
     }
 }
