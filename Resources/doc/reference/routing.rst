@@ -20,7 +20,7 @@ represents the each route prefix.
     class PostAdmin extends Admin
     {
 
-        protected $class = 'Application\NewsBundle\Entity\Post';
+        protected $class = 'Application\Sonata\NewsBundle\Entity\Post';
 
         protected $base_route = 'news_post_admin';
     }

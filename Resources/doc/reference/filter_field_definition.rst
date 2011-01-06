@@ -17,7 +17,7 @@ Example
     class PostAdmin extends Admin
     {
 
-        protected $class = 'Application\NewsBundle\Entity\Post';
+        protected $class = 'Application\Sonata\NewsBundle\Entity\Post';
 
         protected $filter_fields = array(
             'title',

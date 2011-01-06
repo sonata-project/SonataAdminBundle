@@ -187,7 +187,7 @@ Mapping definition
 
           </lifecycle-callbacks>
 
-          <many-to-one field="post" target-entity="Application\NewsBundle\Entity\Post">
+          <many-to-one field="post" target-entity="Application\Sonata\NewsBundle\Entity\Post">
 
              <join-column name="post_id" referenced-column-name="id" />
 
@@ -206,7 +206,7 @@ Mapping definition
 
   <doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xsi="http://www.w3.org/2001/XMLSchema-instance" schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
-      <entity name="Application\NewsBundle\Entity\Post" table="news__post" repository-class="Application\NewsBundle\Entity\PostRepository">
+      <entity name="Application\Sonata\NewsBundle\Entity\Post" table="news__post" repository-class="Application\Sonata\NewsBundle\Entity\PostRepository">
 
           <id name="id" type="integer" column="id">
               <generator strategy="AUTO"/>
@@ -244,7 +244,7 @@ Mapping definition
 
           <many-to-many
               field="tags"
-              target-entity="Application\NewsBundle\Entity\Tag"
+              target-entity="Application\Sonata\NewsBundle\Entity\Tag"
               inversed-by="posts"
               fetch="EAGER"
               >
@@ -317,7 +317,7 @@ Mapping definition
 
   <doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xsi="http://www.w3.org/2001/XMLSchema-instance" schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
-      <entity name="Application\NewsBundle\Entity\Tag" table="news__tag" repository-class="Application\NewsBundle\Entity\TagRepository">
+      <entity name="Application\Sonata\NewsBundle\Entity\Tag" table="news__tag" repository-class="Application\Sonata\NewsBundle\Entity\TagRepository">
 
           <id name="id" type="integer" column="id">
               <generator strategy="AUTO"/>
@@ -341,7 +341,7 @@ Mapping definition
 
           </lifecycle-callbacks>
 
-          <many-to-many field="posts" target-entity="Application\NewsBundle\Entity\Post" mapped-by="tags" >
+          <many-to-many field="posts" target-entity="Application\Sonata\NewsBundle\Entity\Post" mapped-by="tags" >
           </many-to-many>
 
       </entity>
