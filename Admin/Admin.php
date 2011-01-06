@@ -226,6 +226,13 @@ abstract class Admin extends ContainerAware
 
             return;
         }
+
+        // normalize array
+        foreach($this->form_groups as $name => &$group) {
+            if(!isset($group['collapsed'])) {
+                $group['collapsed'] = false;
+            }
+        }
     }
 
     /**

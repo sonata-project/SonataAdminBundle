@@ -28,7 +28,7 @@ class CoreController extends Controller
            ->getInstance($code);
 
         if(is_numeric($this->get('request')->get('object_id'))) {
-            $object = $this->configuration->getObject($this->get('request')->get('object_id'));
+            $object = $admin->getObject($this->get('request')->get('object_id'));
         } else {
             $class = $admin->getClass();
             $object = new $class;
@@ -60,14 +60,6 @@ class CoreController extends Controller
             throw new NotFoundHttpException(sprintf('unable to retrieve the form field element with id : `%s`', $element_id));
         }
 
-//        $key = $field_element->getKey();
-//
-//        if(!isset($fields[$key])) {
-//            throw new NotFoundHttpException(sprintf('unable to retrieve the form field description with key : %s', $key));
-//        }
-//
-//        $field_description = $fields[$key];
-
         // render the widget
         // todo : fix this, the twig environment variable is not set inside the extension ...
         $twig = $this->get('twig');
@@ -75,14 +67,6 @@ class CoreController extends Controller
         $extension->initRuntime($this->get('twig'));
 
         return $this->createResponse($extension->renderField($field_element));
-
-
-//        return $this->render($field_description['template'], array(
-//            'configuration'     => $admin,
-//            'field_description' => $field_description,
-//            'object'            => $object,
-//            'field_element'     => $field_element,
-//        ));
     }
 
     public function dashboardAction()

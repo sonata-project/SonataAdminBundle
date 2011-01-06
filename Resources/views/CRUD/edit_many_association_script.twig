@@ -76,7 +76,7 @@ This code manage the many-to-[one|many] association field popup
                         url: '{{ url('sonata_base_application_retrieve_form_element', {
                             'code':         configuration.code,
                             'element_id':   field_element.id,
-                            'object_id':    form.data.id,
+                            'object_id':    object.id,
                         }) }}',
                         data: jQuery('#field_widget_{{ configuration.code }}_{{ field_element.id}}').closest('form').serializeArray(),
                         type: 'POST',
