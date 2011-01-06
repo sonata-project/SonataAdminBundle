@@ -24,7 +24,7 @@ By convention Admin files are set under a Admin folder.
     class PostAdmin extends Admin
     {
 
-        protected $class = 'Application\NewsBundle\Entity\Post';
+        protected $class = 'Application\Sonata\NewsBundle\Entity\Post';
 
         protected $base_route = 'news_post_admin';
 
@@ -40,7 +40,7 @@ By convention Admin files are set under a Admin folder.
 
         class:      Bundle\NewsBundle\Admin\PostAdmin
 
-        entity:     Application\NewsBundle\Entity\Post
+        entity:     Application\Sonata\NewsBundle\Entity\Post
 
         controller: Bundle\NewsBundle\Controller\PostAdminController
 
@@ -98,7 +98,7 @@ TagAdmin
 
     class TagAdmin extends Admin
     {
-        protected $class = 'Application\NewsBundle\Entity\Tag';
+        protected $class = 'Application\Sonata\NewsBundle\Entity\Tag';
 
         protected $list_fields = array(
             'name' => array('identifier' => true),
@@ -128,7 +128,7 @@ CommentAdmin
     class CommentAdmin extends Admin
     {
 
-        protected $class = 'Application\NewsBundle\Entity\Comment';
+        protected $class = 'Application\Sonata\NewsBundle\Entity\Comment';
 
         protected $list_fields = array(
             'name' => array('identifier' => true),

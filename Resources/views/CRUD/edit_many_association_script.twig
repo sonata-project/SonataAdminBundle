@@ -92,7 +92,7 @@ This code manage the many-to-[one|many] association field popup
                 field_dialog_{{ configuration.code }}_{{ field_element.id }}.html(html);
 
                 BaseApplication.add_pretty_errors(field_dialog_{{ configuration.code }}_{{ field_element.id }});
-                
+
                 // reattach the event
                 jQuery('form', field_dialog_{{ configuration.code }}_{{ field_element.id }}).submit(field_dialog_form_action_{{ configuration.code }}_{{ field_element.id }});
             }
@@ -128,5 +128,5 @@ This code manage the many-to-[one|many] association field popup
     }
 
     BaseApplication.add_pretty_errors(field_dialog_{{ configuration.code }}_{{ field_element.id }});
-
+    
 </script>

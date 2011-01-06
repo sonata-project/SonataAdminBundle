@@ -34,6 +34,8 @@ abstract class Admin extends ContainerAware
 
     protected $base_controller_name;
 
+    protected $form_groups = false;
+
     // note : don't like this, but havn't find a better way to do it
     protected $configuration_pool;
 
@@ -44,7 +46,10 @@ abstract class Admin extends ContainerAware
     public function configure()
     {
         $this->buildFormFields();
+        $this->buildFormGroups();
+        
         $this->buildListFields();
+
     }
 
     public function getClass()
@@ -59,9 +64,9 @@ abstract class Admin extends ContainerAware
 
     public function getClassMetaData()
     {
-        $em             = $this->getEntityManager();
 
-        return $em->getClassMetaData($this->getClass());
+        return $this->getEntityManager()
+            ->getClassMetaData($this->getClass());
     }
 
     public function getBatchActions()
@@ -209,6 +214,18 @@ abstract class Admin extends ContainerAware
         
         return $this->getEntityManager()
             ->find($this->getClass(), $id);
+    }
+
+    public function buildFormGroups()
+    {
+
+        if(!$this->form_groups) {
+            $this->form_groups = array(
+                false => array('fields' => array_keys($this->form_fields))
+            );
+
+            return;
+        }
     }
 
     /**
@@ -582,5 +599,15 @@ abstract class Admin extends ContainerAware
     public function getMaxPerPage()
     {
         return $this->max_per_page;
+    }
+
+    public function setFormGroups($form_groups)
+    {
+        $this->form_groups = $form_groups;
+    }
+
+    public function getFormGroups()
+    {
+        return $this->form_groups;
     }
 }

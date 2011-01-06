@@ -35,9 +35,29 @@ file that was distributed with this source code.
     <form action="{{ configuration.generateUrl('update', {'id': object.id}) }}" method="POST">
 
         {{ form_hidden(form) }}
+        
+        {% for name, form_group in form_groups %}
+            {% if name %}
+                <fieldset>
+                    <legend>
+                        {{ name }}
+                        {% if form_group.collapsed %}
+                            <a href="" class="sonata-ba-collapsed">{% trans 'link_expand' from 'BaseApplicationBundle' %}</a>
+                        {% endif %}
+                    </legend>
+                    
+                    <div class="sonata-ba-collapsed-fields">
+            {% endif %}
 
-        {% for field in fields %}
-            {{ field|render_form_element(form, object, {'configuration' : configuration}) }}
+
+            {% for field_name in form_group.fields %}
+                {{ fields[field_name]|render_form_element(form, object, {'configuration' : configuration}) }}
+            {% endfor %}
+
+            {% if name %}
+                    </div>
+                </fieldset>
+            {% endif %}
         {% endfor %}
 
         {% if object.id %}

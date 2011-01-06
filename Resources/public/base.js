@@ -1,7 +1,7 @@
 jQuery(document).ready(function() {
 
     BaseApplication.add_pretty_errors(document);
-
+    BaseApplication.add_collapsed_toggle();
 });
 
 
@@ -41,6 +41,17 @@ var BaseApplication = {
                     tip: 'leftMiddle'
                 }
             })
+        });
+    },
+
+    add_collapsed_toggle: function(subject) {
+        jQuery('fieldset legend a.sonata-ba-collapsed', subject).live('click', function(event) {
+            event.preventDefault();
+
+            var fieldset = jQuery(this).closest('fieldset');
+            
+            jQuery('div.sonata-ba-collapsed-fields', fieldset).toggle();
+            fieldset.toggleClass('sonata-ba-collapsed-fields-close');
         });
     }
 }

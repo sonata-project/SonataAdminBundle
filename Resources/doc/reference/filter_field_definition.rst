@@ -17,7 +17,7 @@ Example
     class PostAdmin extends Admin
     {
 
-        protected $class = 'Application\NewsBundle\Entity\Post';
+        protected $class = 'Application\Sonata\NewsBundle\Entity\Post';
 
         protected $filter_fields = array(
             'title',
@@ -45,7 +45,7 @@ Example
 
             $query_builder->leftJoin(sprintf('%s.comments', $alias), 'c');
             $query_builder->andWhere('c.status = :status');
-            $query_builder->setParameter('status', \Application\NewsBundle\Entity\Comment::STATUS_MODERATE);
+            $query_builder->setParameter('status', \Application\Sonata\NewsBundle\Entity\Comment::STATUS_MODERATE);
         }
 
         public function getWithOpenCommentField($filter)
