@@ -306,6 +306,9 @@ abstract class Admin extends ContainerAware
     {
         $this->list_fields = self::getBaseFields($this->getClassMetaData(), $this->list_fields);
 
+        $this->configureListFields();
+
+        // normalize field
         foreach($this->list_fields as $name => $options) {
 
             $this->list_fields[$name]['code'] = $name;
@@ -346,6 +349,9 @@ abstract class Admin extends ContainerAware
                 $this->list_fields[$name]['identifier'] = true;
             }
 
+            if(!isset($this->list_fields[$name]['identifier'])) {
+                $this->list_fields[$name]['identifier'] = false;
+            }
         }
 
         if(!isset($this->list_fields['_batch'])) {
@@ -353,10 +359,9 @@ abstract class Admin extends ContainerAware
                 'code'     => '_batch',
                 'template' => 'Sonata/BaseApplicationBundle:CRUD:list__batch.twig',
                 'label'    => 'batch',
+                'identifier' => false
             ) ) + $this->list_fields;
         }
-
-         $this->configureListFields();
 
         return $this->list_fields;
     }
