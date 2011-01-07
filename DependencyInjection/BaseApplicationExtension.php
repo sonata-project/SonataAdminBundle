@@ -41,7 +41,6 @@ class BaseApplicationExtension extends Extension
         // register the twig extension
         $container
             ->register('twig.extension.base_application', 'Bundle\Sonata\BaseApplicationBundle\Twig\Extension\BaseApplicationExtension')
-            ->addMethodCall('setTemplating', array(new Reference('templating')))
             ->addTag('twig.extension');
 
         // registers crud action

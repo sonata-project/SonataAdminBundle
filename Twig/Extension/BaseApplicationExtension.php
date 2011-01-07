@@ -19,6 +19,14 @@ class BaseApplicationExtension extends \Twig_Extension
     protected $templating;
 
     /**
+     * {@inheritdoc}
+     */
+    public function initRuntime(\Twig_Environment $environment)
+    {
+        $this->environment = $environment;
+    }
+
+    /**
      * Returns a list of filters to add to the existing list.
      *
      * @return array An array of filters
@@ -63,7 +71,9 @@ class BaseApplicationExtension extends \Twig_Extension
             
         }
 
-        return $this->templating->render($field_description['template'], array_merge($params, array(
+        $template = $this->environment->loadTemplate($field_description['template']);
+
+        return $template->render(array_merge($params, array(
             'object' => $object,
             'value'  => $value,
             'field_description' => $field_description
@@ -74,7 +84,9 @@ class BaseApplicationExtension extends \Twig_Extension
     {
         $description = $filter->getDescription();
 
-        return $this->templating->render($description['template'], array_merge($params, array(
+        $template = $this->environment->loadTemplate($description['template']);
+
+        return $template->render(array_merge($params, array(
             'filter' => $filter
         )));
     }
@@ -92,7 +104,9 @@ class BaseApplicationExtension extends \Twig_Extension
             return '';
         }
 
-        return $this->templating->render($field_description['template'], array_merge($params, array(
+        $template = $this->environment->loadTemplate($field_description['template']);
+        
+        return $template->render(array_merge($params, array(
             'object'            => $object,
             'field_description' => $field_description,
             'field_element'     => $form->get($field_description['fieldName']),
