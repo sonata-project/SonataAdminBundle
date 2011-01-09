@@ -11,5 +11,8 @@ file that was distributed with this source code.
 
 {% extends 'Sonata/BaseApplicationBundle:CRUD:base_list_field.twig' %}
 
-
-{% block field%}<a href="{{ field_description.configuration.generateUrl('edit', {'id': value.id}) }}">{{ value }}</a>{% endblock %}
+{% block field%}
+    {% if value %}
+        <a href="{{ field_description.configuration.generateUrl('edit', {'id': value.id}) }}">{{ value }}</a>
+    {% endif %}
+{% endblock %}
