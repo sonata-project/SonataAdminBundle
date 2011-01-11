@@ -203,6 +203,13 @@ abstract class Admin extends ContainerAware
 
     }
 
+    public function getNewInstance()
+    {
+        $class = $this->getClass();
+
+        return new $class;
+    }
+
     /**
      * return the target objet
      *
@@ -235,6 +242,26 @@ abstract class Admin extends ContainerAware
         }
     }
 
+    public function preUpdate($object)
+    {
+
+    }
+
+    public function postUpdate($object)
+    {
+
+    }
+
+    public function preInsert($object)
+    {
+
+    }
+
+    public function postInsert($object)
+    {
+        
+    }
+
     /**
      * build the fields to use in the form
      *
@@ -252,6 +279,11 @@ abstract class Admin extends ContainerAware
             }
 
             // make sure the options field is set
+            if(!isset($this->form_fields[$name]['fieldName'])) {
+                $this->form_fields[$name]['fieldName'] = $name;
+            }
+
+            // make sure the options field is set
             if(!isset($this->form_fields[$name]['options'])) {
                 $this->form_fields[$name]['options'] = array();
             }
@@ -263,6 +295,9 @@ abstract class Admin extends ContainerAware
                 if($this->form_fields[$name]['type'] == \Doctrine\ORM\Mapping\ClassMetadataInfo::ONE_TO_ONE)
                 {
                     $this->form_fields[$name]['template'] = 'Sonata\BaseApplicationBundle:CRUD:edit_one_to_one.twig';
+                    $this->form_fields[$name]['configuration']  = $this->getConfigurationPool()
+                        ->getConfigurationByClass($this->form_fields[$name]['targetEntity']);
+
                 }
 
                 if($this->form_fields[$name]['type'] == \Doctrine\ORM\Mapping\ClassMetadataInfo::MANY_TO_ONE)
@@ -278,6 +313,14 @@ abstract class Admin extends ContainerAware
                     $this->form_fields[$name]['configuration']  = $this->getConfigurationPool()
                         ->getConfigurationByClass($this->form_fields[$name]['targetEntity']);
                 }
+
+                if($this->form_fields[$name]['type'] == \Doctrine\ORM\Mapping\ClassMetadataInfo::ONE_TO_MANY)
+                {
+                    $this->form_fields[$name]['template'] = 'Sonata\BaseApplicationBundle:CRUD:edit_one_to_many.twig';
+                    $this->form_fields[$name]['configuration']  = $this->getConfigurationPool()
+                        ->getConfigurationByClass($this->form_fields[$name]['targetEntity']);
+                }
+                
             }
 
             // set correct default value
@@ -334,6 +377,13 @@ abstract class Admin extends ContainerAware
             // fix template for mapping
             if($this->list_fields[$name]['type'] == \Doctrine\ORM\Mapping\ClassMetadataInfo::MANY_TO_ONE) {
                 $this->list_fields[$name]['template']       = 'Sonata/BaseApplicationBundle:CRUD:list_many_to_one.twig';
+                $this->list_fields[$name]['configuration']  = $this->getConfigurationPool()
+                    ->getConfigurationByClass($this->list_fields[$name]['targetEntity']);
+            }
+
+            // fix template for mapping
+            if($this->list_fields[$name]['type'] == \Doctrine\ORM\Mapping\ClassMetadataInfo::ONE_TO_ONE) {
+                $this->list_fields[$name]['template']       = 'Sonata/BaseApplicationBundle:CRUD:list_one_to_one.twig';
                 $this->list_fields[$name]['configuration']  = $this->getConfigurationPool()
                     ->getConfigurationByClass($this->list_fields[$name]['targetEntity']);
             }
@@ -458,6 +508,7 @@ abstract class Admin extends ContainerAware
 
             switch($description['type']) {
 
+                case \Doctrine\ORM\Mapping\ClassMetadataInfo::ONE_TO_MANY:
                 case \Doctrine\ORM\Mapping\ClassMetadataInfo::MANY_TO_MANY:
 
                     $transformer = new \Symfony\Bundle\DoctrineBundle\Form\ValueTransformer\CollectionToChoiceTransformer(array(

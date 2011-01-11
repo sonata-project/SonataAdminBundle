@@ -150,8 +150,7 @@ class CRUDController extends Controller
 
             $action = 'edit';
         } else {
-            $class = $this->configuration->getClass();
-            $object = new $class;
+            $object = $this->configuration->getNewInstance();
 
             $action = 'create';
         }
@@ -163,8 +162,20 @@ class CRUDController extends Controller
 
         if($form->isValid()) {
 
+            if($action == 'create') {
+                $this->configuration->preInsert($object);
+            } else {
+                $this->configuration->preUpdate($object);
+            }
+
             $this->configuration->getEntityManager()->persist($object);
             $this->configuration->getEntityManager()->flush($object);
+
+            if($action == 'create') {
+                $this->configuration->postInsert($object);
+            } else {
+                $this->configuration->postUpdate($object);
+            }
 
             if($this->get('request')->isXmlHttpRequest()) {
                 return $this->createResponse('ok');
@@ -214,7 +225,7 @@ class CRUDController extends Controller
             $form   = $id;
         } else {
             $class = $this->configuration->getClass();
-            $object = new $class;
+            $object = $this->configuration->getNewInstance();
 
             $form   = $this->configuration->getForm($object, $fields);
         }

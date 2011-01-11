@@ -68,7 +68,6 @@ class BaseApplicationExtension extends \Twig_Extension
         } else if(method_exists($object, $field_description['code'])) {
 
             $value = call_user_func(array($object, $field_description['code']));
-            
         }
 
         $template = $this->environment->loadTemplate($field_description['template']);

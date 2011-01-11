@@ -9,10 +9,10 @@ file that was distributed with this source code.
 
 #}
 
-{% extends 'Sonata/BaseApplicationBundle:CRUD:base_edit_field.twig' %}
+{% extends 'Sonata/BaseApplicationBundle:CRUD:base_list_field.twig' %}
 
-{% block field %}
-    <span class="edit">
-        {{ form_field(field_element, {'class' : 'title'}) }}
-    </span>
+{% block field%}
+    {% for key, val in value %}
+        [{{ key }} => {{ val }}]
+    {% endfor %}
 {% endblock %}
