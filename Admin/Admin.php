@@ -294,6 +294,8 @@ abstract class Admin extends ContainerAware
 
                 if($this->form_fields[$name]['type'] == \Doctrine\ORM\Mapping\ClassMetadataInfo::ONE_TO_ONE)
                 {
+                    $this->form_fields[$name]['edit'] = isset($this->form_fields[$name]['edit']) ? $this->form_fields[$name]['edit'] : 'popup';
+                    
                     $this->form_fields[$name]['template'] = 'Sonata\BaseApplicationBundle:CRUD:edit_one_to_one.twig';
                     $this->form_fields[$name]['configuration']  = $this->getConfigurationPool()
                         ->getConfigurationByClass($this->form_fields[$name]['targetEntity']);
@@ -302,6 +304,8 @@ abstract class Admin extends ContainerAware
 
                 if($this->form_fields[$name]['type'] == \Doctrine\ORM\Mapping\ClassMetadataInfo::MANY_TO_ONE)
                 {
+                    $this->form_fields[$name]['edit'] = isset($this->form_fields[$name]['edit']) ? $this->form_fields[$name]['edit'] : 'popup';
+
                     $this->form_fields[$name]['template'] = 'Sonata\BaseApplicationBundle:CRUD:edit_many_to_one.twig';
                     $this->form_fields[$name]['configuration']  = $this->getConfigurationPool()
                         ->getConfigurationByClass($this->form_fields[$name]['targetEntity']);
@@ -309,6 +313,8 @@ abstract class Admin extends ContainerAware
 
                 if($this->form_fields[$name]['type'] == \Doctrine\ORM\Mapping\ClassMetadataInfo::MANY_TO_MANY)
                 {
+                    $this->form_fields[$name]['edit'] = isset($this->form_fields[$name]['edit']) ? $this->form_fields[$name]['edit'] : 'popup';
+
                     $this->form_fields[$name]['template'] = 'Sonata\BaseApplicationBundle:CRUD:edit_many_to_many.twig';
                     $this->form_fields[$name]['configuration']  = $this->getConfigurationPool()
                         ->getConfigurationByClass($this->form_fields[$name]['targetEntity']);
@@ -316,6 +322,8 @@ abstract class Admin extends ContainerAware
 
                 if($this->form_fields[$name]['type'] == \Doctrine\ORM\Mapping\ClassMetadataInfo::ONE_TO_MANY)
                 {
+                    $this->form_fields[$name]['edit'] = isset($this->form_fields[$name]['edit']) ? $this->form_fields[$name]['edit'] : 'popup';
+                    
                     $this->form_fields[$name]['template'] = 'Sonata\BaseApplicationBundle:CRUD:edit_one_to_many.twig';
                     $this->form_fields[$name]['configuration']  = $this->getConfigurationPool()
                         ->getConfigurationByClass($this->form_fields[$name]['targetEntity']);
@@ -528,16 +536,51 @@ abstract class Admin extends ContainerAware
                 case \Doctrine\ORM\Mapping\ClassMetadataInfo::MANY_TO_ONE:
                 case \Doctrine\ORM\Mapping\ClassMetadataInfo::ONE_TO_ONE:
 
-                    $transformer = new \Symfony\Bundle\DoctrineBundle\Form\ValueTransformer\EntityToIDTransformer(array(
-                        'em'        =>  $this->getEntityManager(),
-                        'className' => $description['targetEntity']
-                    ));
+                    if($description['edit'] == 'inline') {
 
-                    $field = new \Symfony\Component\Form\ChoiceField($name, array_merge(array(
-                        'expanded' => false,
-                        'choices' => $this->getChoices($description),
-                        'value_transformer' => $transformer,
-                    ), $description['options']));
+                        // retrieve the related object
+                        $target_object = $description['reflection']->getValue($object);
+
+                        if(!$target_object) {
+                            $target_object = $description['configuration']->getNewInstance();
+                        }
+
+                        // retrieve the related form
+                        $target_fields = $description['configuration']->getFormFields();
+                        $target_form    = $description['configuration']->getForm($target_object, $target_fields);
+
+                        // create the transformer
+                        $transformer = new \Bundle\Sonata\BaseApplicationBundle\Form\ValueTransformer\ArrayToObjectTransformer(array(
+                            'em'        =>  $this->getEntityManager(),
+                            'className' => $description['targetEntity']
+                        ));
+
+                        // create the "embedded" field
+                        $field = new \Symfony\Component\Form\FieldGroup($name, array(
+                            'value_transformer' => $transformer,
+                        ));
+
+                        foreach($target_form->getFields() as $name => $form_field) {
+                            if($name == '_token') {
+                                continue;
+                            }
+
+                            $field->add($form_field);
+                        }
+                    }
+                    else
+                    {
+                        $transformer = new \Symfony\Bundle\DoctrineBundle\Form\ValueTransformer\EntityToIDTransformer(array(
+                            'em'        =>  $this->getEntityManager(),
+                            'className' => $description['targetEntity']
+                        ));
+
+                        $field = new \Symfony\Component\Form\ChoiceField($name, array_merge(array(
+                            'expanded' => false,
+                            'choices' => $this->getChoices($description),
+                            'value_transformer' => $transformer,
+                        ), $description['options']));
+                    }
 
                     break;
 

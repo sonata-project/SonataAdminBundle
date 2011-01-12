@@ -59,24 +59,31 @@ class BaseApplicationExtension extends \Twig_Extension
 
     public function renderListElement($object, $field_description, $params = array())
     {
+
+
+        $template = $this->environment->loadTemplate($field_description['template']);
+
+        return $template->render(array_merge($params, array(
+            'object' => $object,
+            'value'  => $this->getValueFromFieldDescription($object, $field_description),
+            'field_description' => $field_description
+        )));
+    }
+
+    public function getValueFromFieldDescription($object, $field_description)
+    {
         $value = null;
 
         if(isset($field_description['reflection'])) {
 
             $value = $field_description['reflection']->getValue($object);
 
-        } else if(method_exists($object, $field_description['code'])) {
+        } else if(array_key_exists('code', $field_description) && method_exists($object, $field_description)) {
 
             $value = call_user_func(array($object, $field_description['code']));
         }
 
-        $template = $this->environment->loadTemplate($field_description['template']);
-
-        return $template->render(array_merge($params, array(
-            'object' => $object,
-            'value'  => $value,
-            'field_description' => $field_description
-        )));
+        return $value;
     }
 
     public function renderFilterElement($filter, $params = array())
@@ -108,6 +115,7 @@ class BaseApplicationExtension extends \Twig_Extension
         return $template->render(array_merge($params, array(
             'object'            => $object,
             'field_description' => $field_description,
+            'value'             => $this->getValueFromFieldDescription($object, $field_description),
             'field_element'     => $form->get($field_description['fieldName']),
         )));
     }

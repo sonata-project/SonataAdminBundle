@@ -167,7 +167,7 @@ class CRUDController extends Controller
             } else {
                 $this->configuration->preUpdate($object);
             }
-
+            
             $this->configuration->getEntityManager()->persist($object);
             $this->configuration->getEntityManager()->flush($object);
 
@@ -224,7 +224,6 @@ class CRUDController extends Controller
             $object = $id->getData();
             $form   = $id;
         } else {
-            $class = $this->configuration->getClass();
             $object = $this->configuration->getNewInstance();
 
             $form   = $this->configuration->getForm($object, $fields);
