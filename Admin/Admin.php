@@ -554,6 +554,10 @@ abstract class Admin extends ContainerAware
                     break;
 
                 case 'integer':
+                case 'tinyint';
+                case 'smallint':
+                case 'mediumint':
+                case 'bigint':
                     $field = new \Symfony\Component\Form\IntegerField($name, $description['options']);
                     break;
 
