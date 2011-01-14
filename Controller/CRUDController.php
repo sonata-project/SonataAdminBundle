@@ -45,13 +45,12 @@ class CRUDController extends Controller
     }
 
     public function getBaseTemplate()
-    {
-
+    {        
         if($this->get('request')->isXmlHttpRequest()) {
-            return 'Sonata\BaseApplicationBundle::ajax_layout.twig';
+            return $this->container->getParameter('base_application.templates.ajax');
         }
 
-        return 'Sonata\BaseApplicationBundle::standard_layout.twig';
+        return $this->container->getParameter('base_application.templates.layout');
     }
 
     public function listAction()

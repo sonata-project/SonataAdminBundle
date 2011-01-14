@@ -28,7 +28,13 @@ use Symfony\Component\Finder\Finder;
  */
 class BaseApplicationExtension extends Extension
 {
-
+    protected $configNamespaces = array(
+      'templates' => array(
+        'layout',
+        'ajax'
+      )
+    );
+    
     /**
      * Loads the url shortener configuration.
      *
@@ -37,7 +43,12 @@ class BaseApplicationExtension extends Extension
      */
     public function configLoad($config, ContainerBuilder $container)
     {
-
+        // loads config from external files
+        $this->configLoadFiles($container);
+        
+        // setups parameters with values in config.yml, default values from external files used if not
+        $this->configSetup($config, $container);
+       
         // register the twig extension
         $container
             ->register('twig.extension.base_application', 'Bundle\Sonata\BaseApplicationBundle\Twig\Extension\BaseApplicationExtension')
@@ -59,7 +70,33 @@ class BaseApplicationExtension extends Extension
         }
 
         $container->setDefinition('base_application.admin.pool', $definition);
-
+    }
+    
+    protected function configLoadFiles($container)
+    {
+      $loader = new XmlFileLoader($container, __DIR__ . '/../Resources/config');
+      
+      foreach ($this->configNamespaces as $ns => $params)
+      {
+        $loader->load(sprintf('%s.xml', $ns));
+      }
+    }
+    
+    protected function configSetup($config, $container)
+    {
+      foreach ($this->configNamespaces as $ns => $params)
+      {
+        if (isset($config[$ns]))
+        {
+          foreach ($config[$ns] as $type => $template)
+          {
+            if (isset($config[$ns][$type]))
+            {
+              $container->setParameter(sprintf('base_application.templates.%s', $type), $template);
+            }
+          }
+        }
+      }
     }
 
     /**
