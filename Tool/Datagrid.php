@@ -19,19 +19,23 @@ use Bundle\Sonata\BaseApplicationBundle\Filter\IntegerFilter;
 use Bundle\Sonata\BaseApplicationBundle\Filter\CallbackFilter;
 use Bundle\Sonata\BaseApplicationBundle\Filter\ChoiceFilter;
 
+use Bundle\Sonata\BaseApplicationBundle\Admin\EntityAdmin;
+use Bundle\Sonata\BaseApplicationBundle\Admin\FieldDescription;
+
+use Doctrine\ORM\Mapping\ClassMetadataInfo;
 
 class Datagrid
 {
 
     protected $classname;
 
-    protected $entity_manager;
+    protected $entityManager;
 
     /**
      * The filter descriptions
      * @var array
      */
-    protected $filter_fields = array();
+    protected $filterFields = array();
 
     /**
      *
@@ -44,12 +48,12 @@ class Datagrid
 
     protected $pager;
 
-    protected $max_per_page = 25;
+    protected $maxPerPage = 25;
 
-    public function __construct($classname, $entity_manager, $values = array())
+    public function __construct($classname, $entityManager, $values = array())
     {
         $this->classname        = $classname;
-        $this->entity_manager   = $entity_manager;
+        $this->entityManager    = $entityManager;
         $this->values           = $values;
     }
 
@@ -86,25 +90,25 @@ class Datagrid
         $em             = $this->getEntityManager();
         $repository     = $em->getRepository($this->getClassname());
 
-        $query_buidler = $repository
+        $queryBuidler = $repository
             ->createQueryBuilder('o');
 
-        return $query_buidler;
+        return $queryBuidler;
     }
 
     public function getQueryBuilder($values = array())
     {
 
-        $query_buidler = $this->getBaseQueryBuilder();
+        $queryBuidler = $this->getBaseQueryBuilder();
 
         foreach($this->getFilters() as $name => $filter) {
 
             $value = isset($values[$name]) ? $values[$name] : null;
 
-            $filter->apply($query_buidler, $value);
+            $filter->apply($queryBuidler, $value);
         }
 
-        return $query_buidler;
+        return $queryBuidler;
     }
 
     public function setClassname($classname)
@@ -117,89 +121,68 @@ class Datagrid
         return $this->classname;
     }
 
-    public function setEntityManager($entity_manager)
+    public function setEntityManager($entityManager)
     {
-        $this->entity_manager = $entity_manager;
+        $this->entityManager = $entityManager;
     }
 
     public function getEntityManager()
     {
-        return $this->entity_manager;
+        return $this->entityManager;
     }
 
-    public function setFilterFields($filter_fields)
+    public function setFilterFields($filterFields)
     {
-        $this->filter_fields = $filter_fields;
+        $this->filterFields = $filterFields;
     }
 
     public function getFilterFields()
     {
-        return $this->filter_fields;
+        return $this->filterFields;
     }
 
 
     public function buildFilterFields()
     {
-        $this->filter_fields = \Bundle\Sonata\BaseApplicationBundle\Admin\Admin::getBaseFields($this->getClassMetaData(), $this->filter_fields);
+        $this->filterFields = EntityAdmin::getBaseFields($this->getClassMetaData(), $this->filterFields);
 
-        foreach($this->filter_fields as $name => $options) {
+        foreach($this->filterFields as $name => $fieldDescription) {
 
-            $this->filter_fields[$name]['code'] = $name;
-
-            // set the label if filter_fields is set
-            if(!isset($this->filter_fields[$name]['label']))
-            {
-                $this->filter_fields[$name]['label'] = $name;
-            }
+            // set default values
+            $fieldDescription->setOption('code', $fieldDescription->getOption('code', $name));
+            $fieldDescription->setOption('label', $fieldDescription->getOption('label', $name));
+            $fieldDescription->setOption('filter_value', $fieldDescription->getOption('filter_value', null));
+            $fieldDescription->setOption('filter_options', $fieldDescription->getOption('filter_options', null));
+            $fieldDescription->setOption('filter_field_options', $fieldDescription->getOption('filter_field_options', null));
+            $fieldDescription->setOption('name', $fieldDescription->getOption('name', $name));
 
             // set the default type if none is set
-            if(!isset($this->filter_fields[$name]['type'])) {
-                $this->filter_fields[$name]['type'] = 'string';
+            if(!$fieldDescription->getType()) {
+                $fieldDescription->setType('string');
             }
 
-            // fix template for mapping
-            if($this->filter_fields[$name]['type'] == \Doctrine\ORM\Mapping\ClassMetadataInfo::MANY_TO_ONE) {
-                $this->filter_fields[$name]['template']       = 'Sonata/BaseApplicationBundle:CRUD:filter_many_to_one.twig';
-            }
+            if(!$fieldDescription->getTemplate()) {
+                $fieldDescription->setTemplate(sprintf('Sonata/BaseApplicationBundle:CRUD:filter_%s.twig', $fieldDescription->getType()));
 
-            if($this->filter_fields[$name]['type'] == \Doctrine\ORM\Mapping\ClassMetadataInfo::MANY_TO_MANY) {
-                $this->filter_fields[$name]['template']       = 'Sonata/BaseApplicationBundle:CRUD:filter_many_to_many.twig';
-            }
+                if($fieldDescription->getType() == ClassMetadataInfo::MANY_TO_ONE) {
+                    $fieldDescription->setTemplate('Sonata/BaseApplicationBundle:CRUD:filter_many_to_one.twig');
+                }
 
-            // define the default template
-            if(!isset($this->filter_fields[$name]['template'])) {
-                $this->filter_fields[$name]['template'] = sprintf('Sonata/BaseApplicationBundle:CRUD:filter_%s.twig', $this->filter_fields[$name]['type']);
-            }
-
-            if(!isset($this->filter_fields[$name]['filter_value'])) {
-                $this->filter_fields[$name]['filter_value'] = null;
-            }
-
-            // options given to the Filter object
-            if(!isset($this->filter_fields[$name]['filter_options'])) {
-                $this->filter_fields[$name]['filter_options'] = array();
-            }
-
-            // options given to the Form Field object
-            if(!isset($this->filter_fields[$name]['filter_field_options'])) {
-                $this->filter_fields[$name]['filter_field_options'] = array();
-            }
-
-            if(!isset($this->filter_fields[$name]['name']))
-            {
-                $this->filter_fields[$name]['name'] = $name;
+                if($fieldDescription->getType() == ClassMetadataInfo::MANY_TO_MANY) {
+                    $fieldDescription->setTemplate('Sonata/BaseApplicationBundle:CRUD:filter_many_to_many.twig');
+                }
             }
         }
 
         $this->configureFilterFields();
     }
 
-    public function getChoices($description)
+    public function getChoices(FieldDescription $fieldDescription)
     {
         $targets = $this->getEntityManager()
             ->createQueryBuilder()
             ->select('t')
-            ->from($description['targetEntity'], 't')
+            ->from($fieldDescription->getTargetEntity(), 't')
             ->getQuery()
             ->execute();
 
@@ -217,41 +200,44 @@ class Datagrid
         return $choices;
     }
 
-    public function getFilterInstance($description)
+    public function getFilterInstance(FieldDescription $fieldDescription)
     {
 
-        if(!isset($description['type'])) {
+        if(!$fieldDescription->getType()) {
 
             return false;
         }
 
-        $name = $description['name'];
+        $name = $fieldDescription->getName();
 
-        switch($description['type']) {
+        switch($fieldDescription->getType()) {
 
-            case \Doctrine\ORM\Mapping\ClassMetadataInfo::MANY_TO_MANY:
+            case ClassMetadataInfo::MANY_TO_MANY:
 
-                $description['filter_field_options']['choices'] = $this->getChoices($description);
+                $options = $fieldDescription->getOption('filter_field_options');
+                $options['choices'] = $this->getChoices($fieldDescription);
+                
+                $fieldDescription->setOption('filter_field_options', $options);
 
-                $filter = new ChoiceFilter($name, $description);
+                $filter = new ChoiceFilter($name, $fieldDescription);
 
                 break;
 
             case 'string':
             case 'text':
-                $filter = new StringFilter($name, $description);
+                $filter = new StringFilter($name, $fieldDescription);
                 break;
 
             case 'boolean':
-                $filter = new BooleanFilter($name, $description);
+                $filter = new BooleanFilter($name, $fieldDescription);
                 break;
 
             case 'integer':
-                $filter = new IntegerFilter($name, $description);
+                $filter = new IntegerFilter($name, $fieldDescription);
                 break;
 
             case 'callback':
-                $filter = new CallbackFilter($name, $description);
+                $filter = new CallbackFilter($name, $fieldDescription);
                 break;
 
             default:
@@ -270,8 +256,8 @@ class Datagrid
     {
 
         if(!$this->filters) {
-            foreach($this->filter_fields as $name => $description) {
-                $filter = $this->getFilterInstance($this->filter_fields[$name]);
+            foreach($this->filterFields as $name => $description) {
+                $filter = $this->getFilterInstance($this->filterFields[$name]);
 
                 if($filter) {
                     $this->filters[$name] = $filter;
@@ -292,13 +278,13 @@ class Datagrid
         return $this->values;
     }
 
-    public function setMaxPerPage($max_per_page)
+    public function setMaxPerPage($maxPerPage)
     {
-        $this->max_per_page = $max_per_page;
+        $this->maxPerPage = $maxPerPage;
     }
 
     public function getMaxPerPage()
     {
-        return $this->max_per_page;
+        return $this->maxPerPage;
     }
 }

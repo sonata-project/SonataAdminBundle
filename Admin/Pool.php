@@ -51,7 +51,7 @@ class Pool
      * @param  $name
      * @return
      */
-    public function getAdminConfigurationByControllerName($name)
+    public function getAdminByControllerName($name)
     {
         $configuration_code = false;
         foreach($this->configuration as $code => $configuration) {
@@ -61,13 +61,13 @@ class Pool
         }
 
         if(!$configuration_code) {
-            throw new \RuntimeException(sprintf('Unable to retrieve the admin object for controller `%s`', $name));
+            return null;
         }
 
         return $this->getInstance($configuration_code);
     }
 
-    public function getConfigurationByClass($class)
+    public function getAdminByClass($class)
     {
 
         $configuration_code = false;
@@ -81,9 +81,8 @@ class Pool
         }
 
         if(!$configuration_code) {
-            throw new \RuntimeException(sprintf('Unable to retrieve the admin object for class `%s`', $class));
+            return null;
         }
-
 
         return $this->getInstance($code);
     }
@@ -104,6 +103,17 @@ class Pool
         return $this->instances[$code];
     }
 
+    public function getInstances()
+    {
+        if(count($this->configuration) != count($this->instances)) {
+            foreach($this->configuration as $code => $configuration) {
+                $this->getInstance($code);
+            }
+        }
+
+        return $this->instances;
+    }
+
     public function setConfiguration($configuration)
     {
         $this->configuration = $configuration;
@@ -112,16 +122,6 @@ class Pool
     public function getConfiguration()
     {
         return $this->configuration;
-    }
-
-    public function setInstances($instances)
-    {
-        $this->instances = $instances;
-    }
-
-    public function getInstances()
-    {
-        return $this->instances;
     }
 
     public function setContainer($container)

@@ -11,11 +11,13 @@
 
 namespace Bundle\Sonata\BaseApplicationBundle\Filter;
 
+use Bundle\Sonata\BaseApplicationBundle\Admin\FieldDescription;
+use Doctrine\ORM\QueryBuilder;
 
 class BooleanFilter extends Filter
 {
 
-    public function filter($query_builder, $alias, $field, $value)
+    public function filter(QueryBuilder $queryBuilder, $alias, $field, $value)
     {
 
         if($this->getField()->isMultipleChoice()) {
@@ -33,7 +35,7 @@ class BooleanFilter extends Filter
                 return;
             }
             
-            $query_builder->andWhere($query_builder->expr()->in(sprintf('%s.%s',
+            $queryBuilder->andWhere($queryBuilder->expr()->in(sprintf('%s.%s',
                 $alias,
                 $field
             ), $values));
@@ -46,13 +48,13 @@ class BooleanFilter extends Filter
 
             $value      = $value == 'true' ? 1 : 0;
             
-            $query_builder->andWhere(sprintf('%s.%s = :%s',
+            $queryBuilder->andWhere(sprintf('%s.%s = :%s',
                 $alias,
                 $field,
                 $this->getName()
             ));
 
-            $query_builder->setParameter($this->getName(), $value);
+            $queryBuilder->setParameter($this->getName(), $value);
         }
     }
 
@@ -73,7 +75,7 @@ class BooleanFilter extends Filter
             )
         );
 
-        $options = array_merge($options, $this->description['filter_field_options']);
+        $options = array_merge($options, $this->description->getOption('filter_field_options', array()));
 
         return new \Symfony\Component\Form\ChoiceField(
             $this->getName(),

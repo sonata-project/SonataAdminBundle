@@ -11,11 +11,13 @@
 
 namespace Bundle\Sonata\BaseApplicationBundle\Filter;
 
+use Bundle\Sonata\BaseApplicationBundle\Admin\FieldDescription;
+use Doctrine\ORM\QueryBuilder;
 
 class StringFilter extends Filter
 {
 
-    public function filter($query_builder, $alias, $field, $value)
+    public function filter(QueryBuilder $queryBuilder, $alias, $field, $value)
     {
 
         if($value == null) {
@@ -25,13 +27,13 @@ class StringFilter extends Filter
         $value      = sprintf($this->getOption('format'), $value);
 
         // c.name LIKE '%word%' => c.name LIKE :fieldName
-        $query_builder->andWhere(sprintf('%s.%s LIKE :%s',
+        $queryBuilder->andWhere(sprintf('%s.%s LIKE :%s',
             $alias,
             $field,
             $this->getName()
         ));
 
-        $query_builder->setParameter($this->getName(), $value);
+        $queryBuilder->setParameter($this->getName(), $value);
     }
 
     protected function configure()
@@ -45,7 +47,7 @@ class StringFilter extends Filter
    {
        return new \Symfony\Component\Form\TextField(
            $this->getName(),
-           $this->description['filter_field_options']
+           $this->description->getOption('filter_field_options', array())
        );
    }
 }

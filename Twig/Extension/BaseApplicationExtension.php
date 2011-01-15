@@ -11,7 +11,9 @@
 
 namespace Bundle\Sonata\BaseApplicationBundle\Twig\Extension;
 
-use Symfony\Bundle\TwigBundle\TokenParser\HelperTokenParser;
+
+use Bundle\Sonata\BaseApplicationBundle\Admin\FieldDescription;
+use Bundle\Sonata\BaseApplicationBundle\Filter\Filter;
 
 class BaseApplicationExtension extends \Twig_Extension
 {
@@ -57,66 +59,126 @@ class BaseApplicationExtension extends \Twig_Extension
         return 'base_application';
     }
 
-    public function renderListElement($object, $field_description, $params = array())
+    /**
+     * render a list element from the FieldDescription
+     *
+     * @param  $object
+     * @param FieldDescription $fieldDescription
+     * @param array $params
+     * @return
+     */
+    public function renderListElement($object, FieldDescription $fieldDescription, $params = array())
     {
-        $value = null;
 
-        if(isset($field_description['reflection'])) {
-
-            $value = $field_description['reflection']->getValue($object);
-
-        } else if(method_exists($object, $field_description['code'])) {
-
-            $value = call_user_func(array($object, $field_description['code']));
-        }
-
-        $template = $this->environment->loadTemplate($field_description['template']);
+        $template = $this->environment->loadTemplate($fieldDescription->getTemplate());
 
         return $template->render(array_merge($params, array(
+            'admin'  => $fieldDescription->getAdmin(),
             'object' => $object,
-            'value'  => $value,
-            'field_description' => $field_description
+            'value'  => $this->getValueFromFieldDescription($object, $fieldDescription),
+            'field_description' => $fieldDescription
         )));
     }
 
-    public function renderFilterElement($filter, $params = array())
+    /**
+     * return the value related to FieldDescription, if the associated object does no
+     * exists => a temporary one is created
+     *
+     * @param  $object
+     * @param FieldDescription $fieldDescription
+     * @return
+     */
+    public function getValueFromFieldDescription($object, FieldDescription $fieldDescription)
+    {
+
+        $value = $fieldDescription->getValue($object);
+
+        // no value defined, chek if the field_description point to an association
+        // if so, create an empty object instance
+        // fixme: not sure this is the best place to do that
+        if(!$value && $fieldDescription->getAssociationAdmin()) {
+
+            $value = $fieldDescription->getAssociationAdmin()->getNewInstance();
+        }
+
+        return $value;
+    }
+
+    /**
+     * render a filter element
+     *
+     * @param Filter $filter
+     * @param array $params
+     * @return
+     */
+    public function renderFilterElement(Filter $filter, array $params = array())
     {
         $description = $filter->getDescription();
 
-        $template = $this->environment->loadTemplate($description['template']);
+        $template = $this->environment->loadTemplate($description->getTemplate());
 
         return $template->render(array_merge($params, array(
             'filter' => $filter
         )));
     }
 
-    public function renderFormElement($field_description, $form, $object, $params = array())
+    /**
+     * render a field element from the FieldDescription
+     *
+     *
+     * @throws InvalidArgumentException
+     * @param FieldDescription $fieldDescription
+     * @param  $form
+     * @param  $object
+     * @param array $params
+     * @return string
+     */
+    public function renderFormElement(FieldDescription $fieldDescription, $form, $object, $params = array())
     {
 
-        if(!isset($field_description['fieldName'])) {
+        if(!$fieldDescription->getFieldName()) {
+
             return '';
         }
-        
-        $field = $form->get($field_description['fieldName']);
+
+        try {
+            $field = $form->get($fieldDescription->getFieldName());
+        } catch (\InvalidArgumentException $e) {
+            
+            throw $e;
+        }
 
         if($field->isHidden()) {
             return '';
         }
-
-        $template = $this->environment->loadTemplate($field_description['template']);
         
+        $template = $this->environment->loadTemplate($fieldDescription->getTemplate());
+
         return $template->render(array_merge($params, array(
+            'admin'             => $fieldDescription->getAdmin(),
             'object'            => $object,
-            'field_description' => $field_description,
-            'field_element'     => $form->get($field_description['fieldName']),
+            'field_description' => $fieldDescription,
+            'value'             => $this->getValueFromFieldDescription($object, $fieldDescription),
+            'field_element'     => $field,
         )));
     }
 
+    /**
+     * set the templating engine
+     *
+     * @param  $templating
+     * @return void
+     */
     public function setTemplating($templating)
     {
         $this->templating = $templating;
     }
 
+    /**
+     * return the templating engine
+     *
+     * @return Engine
+     */
     public function getTemplating()
     {
         return $this->templating;

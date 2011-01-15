@@ -12,6 +12,8 @@
 namespace Bundle\Sonata\BaseApplicationBundle\Filter;
 
 use Symfony\Component\Form\Configurable;
+use Bundle\Sonata\BaseApplicationBundle\Admin\FieldDescription;
+use Doctrine\ORM\QueryBuilder;
 
 abstract class Filter extends Configurable
 {
@@ -24,12 +26,12 @@ abstract class Filter extends Configurable
 
     protected $value = null;
 
-    public function __construct($name, array $description)
+    public function __construct($name, FieldDescription $description)
     {
         $this->name         = $name;
         $this->description  = $description;
 
-        parent::__construct($description['filter_options']);
+        parent::__construct($description->getOption('filter_options', array()));
 
         $this->field        = $this->getFormField();
     }
@@ -54,24 +56,24 @@ abstract class Filter extends Configurable
         return $this->description;
     }
 
-    public function apply($query_builder, $value)
+    public function apply(QueryBuilder $queryBuilder, $value)
     {
         $this->value = $value;
 
         $this->field->bind($value);
 
-        list($alias, $field) = $this->association($query_builder, $this->field->getData());
+        list($alias, $field) = $this->association($queryBuilder, $this->field->getData());
 
-        $this->filter($query_builder, $alias, $field, $this->field->getData());
+        $this->filter($queryBuilder, $alias, $field, $this->field->getData());
     }
 
-    protected function association($query_builder, $value)
+    protected function association(QueryBuilder $queryBuilder, $value)
     {
         if($value) {
 
             if($this->description['type'] == \Doctrine\ORM\Mapping\ClassMetadataInfo::MANY_TO_MANY) {
-                $query_builder->leftJoin(
-                    sprintf('%s.%s', $query_builder->getRootAlias(), $this->description['fieldName']),
+                $queryBuilder->leftJoin(
+                    sprintf('%s.%s', $queryBuilder->getRootAlias(), $this->description->getFieldName()),
                     $this->getName()
                 );
 
@@ -80,7 +82,7 @@ abstract class Filter extends Configurable
             }
         }
         
-        return array($query_builder->getRootAlias(), $this->description['fieldName']);
+        return array($queryBuilder->getRootAlias(), $this->description->getFieldName());
     }
 
     /**
@@ -92,7 +94,7 @@ abstract class Filter extends Configurable
      * @param  $alias the root alias 
      * @return void
      */
-    abstract public function filter($query, $alias, $field, $value);
+    abstract public function filter(QueryBuilder $queryBuilder, $alias, $field, $value);
 
     /**
      * get the related form field filter

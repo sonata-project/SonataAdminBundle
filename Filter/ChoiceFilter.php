@@ -11,11 +11,13 @@
 
 namespace Bundle\Sonata\BaseApplicationBundle\Filter;
 
+use Bundle\Sonata\BaseApplicationBundle\Admin\FieldDescription;
+use Doctrine\ORM\QueryBuilder;
 
 class ChoiceFilter extends Filter
 {
 
-    public function filter($query_builder, $alias, $field, $value)
+    public function filter(QueryBuilder $queryBuilder, $alias, $field, $value)
     {
 
 
@@ -29,7 +31,7 @@ class ChoiceFilter extends Filter
                 return;
             }
 
-            $query_builder->andWhere($query_builder->expr()->in(sprintf('%s.%s',
+            $queryBuilder->andWhere($queryBuilder->expr()->in(sprintf('%s.%s',
                 $alias,
                 $field
             ), $value));
@@ -40,13 +42,13 @@ class ChoiceFilter extends Filter
                 return;
             }
 
-            $query_builder->andWhere(sprintf('%s.%s = :%s',
+            $queryBuilder->andWhere(sprintf('%s.%s = :%s',
                 $alias,
                 $field,
                 $this->getName()
             ));
 
-            $query_builder->setParameter($this->getName(), $value);
+            $queryBuilder->setParameter($this->getName(), $value);
         }
     }
 
@@ -60,7 +62,7 @@ class ChoiceFilter extends Filter
     {
         return new \Symfony\Component\Form\ChoiceField(
             $this->getName(),
-            $this->description['filter_field_options']
+            $this->description->getOption('filter_field_options', array())
         );
     }
 }
