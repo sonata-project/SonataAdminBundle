@@ -29,10 +29,10 @@ use Symfony\Component\Finder\Finder;
 class BaseApplicationExtension extends Extension
 {
     protected $configNamespaces = array(
-      'templates' => array(
-        'layout',
-        'ajax'
-      )
+        'templates' => array(
+            'layout',
+            'ajax'
+        )
     );
     
     /**
@@ -81,29 +81,29 @@ class BaseApplicationExtension extends Extension
     
     protected function configLoadFiles($container)
     {
-      $loader = new XmlFileLoader($container, __DIR__ . '/../Resources/config');
-      
-      foreach ($this->configNamespaces as $ns => $params)
-      {
-        $loader->load(sprintf('%s.xml', $ns));
-      }
+        $loader = new XmlFileLoader($container, __DIR__ . '/../Resources/config');
+
+        foreach ($this->configNamespaces as $ns => $params) {
+            $loader->load(sprintf('%s.xml', $ns));
+        }
     }
     
     protected function configSetup($config, $container)
     {
-      foreach ($this->configNamespaces as $ns => $params)
-      {
-        if (isset($config[$ns]))
-        {
-          foreach ($config[$ns] as $type => $template)
-          {
-            if (isset($config[$ns][$type]))
-            {
-              $container->setParameter(sprintf('base_application.templates.%s', $type), $template);
+        foreach ($this->configNamespaces as $ns => $params) {
+
+            if (!isset($config[$ns])) {
+                continue;
             }
-          }
+
+            foreach ($config[$ns] as $type => $template) {
+                if (!isset($config[$ns][$type])) {
+                    continue;
+                }
+
+                $container->setParameter(sprintf('base_application.templates.%s', $type), $template);
+            }
         }
-      }
     }
 
     /**

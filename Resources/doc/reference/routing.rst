@@ -22,7 +22,7 @@ represents the route prefix.
 
         protected $class = 'Application\Sonata\NewsBundle\Entity\Post';
 
-        protected $baseRoute = 'news_post_admin';
+        protected $baseRouteName = 'news_post_admin';
     }
 
 

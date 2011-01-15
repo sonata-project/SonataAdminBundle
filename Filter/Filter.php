@@ -71,7 +71,7 @@ abstract class Filter extends Configurable
     {
         if($value) {
 
-            if($this->description['type'] == \Doctrine\ORM\Mapping\ClassMetadataInfo::MANY_TO_MANY) {
+            if($this->description->getType() == \Doctrine\ORM\Mapping\ClassMetadataInfo::MANY_TO_MANY) {
                 $queryBuilder->leftJoin(
                     sprintf('%s.%s', $queryBuilder->getRootAlias(), $this->description->getFieldName()),
                     $this->getName()
