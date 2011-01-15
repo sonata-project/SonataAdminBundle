@@ -13,7 +13,7 @@ Routing Definition
 ------------------
 
 You can set a ``baseRouteName`` property inside your ``Admin`` class, which
-represents the each route prefix.
+represents the route prefix.
 
 .. code-block:: php
 
@@ -26,9 +26,9 @@ represents the each route prefix.
     }
 
 
-If no ``baseRouteName`` is defined then the Admin will pick on for you built on
+If no ``baseRouteName`` is defined then the Admin will pick on for you, built on
 following format : 'admin_vendor_bundlename_entityname_action'. If the Admin
-fails to find the best baseRouteName then the an ``RuntimeException`` will
+fails to find the best baseRouteName then a ``RuntimeException`` will
 be throw.
 
 The same goes for the ``baseRoutePattern``.
