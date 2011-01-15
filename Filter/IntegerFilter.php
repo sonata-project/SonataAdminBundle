@@ -11,11 +11,13 @@
 
 namespace Bundle\Sonata\BaseApplicationBundle\Filter;
 
+use Bundle\Sonata\BaseApplicationBundle\Admin\FieldDescription;
+use Doctrine\ORM\QueryBuilder;
 
 class IntegerFilter extends Filter
 {
 
-    public function filter($query_builder, $alias, $field, $value)
+   public function filter(QueryBuilder $queryBuilder, $alias, $field, $value)
     {
 
         if($value == null) {
@@ -25,14 +27,14 @@ class IntegerFilter extends Filter
         $value      = sprintf($this->getOption('format'), $value);
 
         // c.name > '1' => c.name OPERATOR :FIELDNAME
-        $query_builder->andWhere(sprintf('%s.%s %s :%s',
+        $queryBuilder->andWhere(sprintf('%s.%s %s :%s',
             $alias,
             $field,
             $this->getOption('operator'),
             $this->getName()
         ));
 
-        $query_builder->setParameter($this->getName(), $value);
+        $queryBuilder->setParameter($this->getName(), $value);
     }
 
     protected function configure()
@@ -47,7 +49,7 @@ class IntegerFilter extends Filter
    {
        return new \Symfony\Component\Form\TextField(
            $this->getName(),
-           $this->description['filter_field_options']
+           $this->description->getOption('filter_field_options', array())
        );
    }
 }

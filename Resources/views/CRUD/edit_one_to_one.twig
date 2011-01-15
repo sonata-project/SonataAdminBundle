@@ -12,21 +12,22 @@ file that was distributed with this source code.
 {% extends 'Sonata/BaseApplicationBundle:CRUD:base_edit_field.twig' %}
 
 {% block field %}
-    {% if field_description.edit == 'inline' %}
-        {% for nested_field_description in field_description.configuration.formfields %}
-            {{ nested_field_description|render_form_element(field_element, value, {'configuration' : field_description.configuration}) }}
+    {% if field_description.options.edit == 'inline' %}
+        {% for nested_field_description in field_description.associationadmin.formfields %}
+            {{ nested_field_description|render_form_element(field_element, value) }}
         {% endfor %}
     {% else %}
-        <div id="field_container_{{ configuration.code }}_{{ field_element.id}}">
-            <span id="field_widget_{{ configuration.code }}_{{ field_element.id}}" >
+
+        <div id="field_container_{{ admin.code }}_{{ field_element.id}}">
+            <span id="field_widget_{{ admin.code }}_{{ field_element.id}}" >
                 {{ form_field(field_element) }}
             </span>
 
-            <span id="field_actions_{{ configuration.code }}_{{ field_element.id}}" >
-                <a href="{{ field_description.configuration.generateUrl('create') }}" onclick="start_field_dialog_form_add_{{ configuration.code }}_{{ field_element.id }}(event)" class="action"><img src="{{ asset('bundles/baseapplication/famfamfam/add.png') }}" alt="{% trans 'btn_add' from 'BaseApplicationBundle' %}" /></a>
+            <span id="field_actions_{{ admin.code }}_{{ field_element.id}}" >
+                <a href="{{ field_description.associationadmin.generateUrl('create') }}" onclick="start_field_dialog_form_add_{{ admin.code }}_{{ field_element.id }}(event)" class="action"><img src="{{ asset('bundles/baseapplication/famfamfam/add.png') }}" alt="{% trans 'btn_add' from 'BaseApplicationBundle' %}" /></a>
             </span>
 
-            <div style="display: hidden" id="field_dialog_{{ configuration.code }}_{{ field_element.id }}">
+            <div style="display: hidden" id="field_dialog_{{ admin.code }}_{{ field_element.id }}">
 
             </div>
         </div>

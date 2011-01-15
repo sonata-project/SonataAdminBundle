@@ -13,7 +13,7 @@ file that was distributed with this source code.
 
 {% block title %}
 
-    <a href="{{ configuration.generateUrl('list') }}">{{ configuration.label }}</a> &gt;
+    <a href="{{ admin.generateUrl('list') }}">{{ admin.label }}</a> &gt;
 
     {% if object.id %}
         {% trans 'title_edit' from 'BaseApplicationBundle'%}
@@ -25,14 +25,14 @@ file that was distributed with this source code.
 {% block actions %}
     <div class="sonata-actions">
         <ul>
-            <li class="sonata-action-element"><a href="{{ configuration.generateUrl('create') }}">{% trans "link_action_create" from "BaseApplicationBundle" %}</a></li>
-            <li class="sonata-action-element"><a href="{{ configuration.generateUrl('list') }}">{% trans "link_action_list" from "BaseApplicationBundle" %}</a></li>
+            <li class="sonata-action-element"><a href="{{ admin.generateUrl('create') }}">{% trans "link_action_create" from "BaseApplicationBundle" %}</a></li>
+            <li class="sonata-action-element"><a href="{{ admin.generateUrl('list') }}">{% trans "link_action_list" from "BaseApplicationBundle" %}</a></li>
         </ul>
     </div>
 {% endblock %}
 
 {% block form %}
-    <form action="{{ configuration.generateUrl('update', {'id': object.id}) }}" method="POST">
+    <form action="{{ admin.generateUrl('update', {'id': object.id}) }}" method="POST">
 
         {{ form_hidden(form) }}
         
@@ -51,7 +51,7 @@ file that was distributed with this source code.
 
 
             {% for field_name in form_group.fields %}
-                {{ fields[field_name]|render_form_element(form, object, {'configuration' : configuration}) }}
+                {{ fields[field_name]|render_form_element(form, object) }}
             {% endfor %}
 
             {% if name %}

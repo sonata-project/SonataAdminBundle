@@ -1,0 +1,7 @@
+
+* respect symfony conventions
+* add a FieldDescription
+* register routes by using the getUrls from each Admin class
+* build admin information "on demand"
+* create an EntityAdmin and add new abstract method into the Admin class
+* add inline edition for one-to-one association

@@ -11,19 +11,21 @@
 
 namespace Bundle\Sonata\BaseApplicationBundle\Filter;
 
+use Bundle\Sonata\BaseApplicationBundle\Admin\FieldDescription;
+use Doctrine\ORM\QueryBuilder;
 
 class CallbackFilter extends Filter
 {
 
-    protected function association($query_builder, $value)
+    protected function association(QueryBuilder $queryBuilder, $value)
     {
-        return array($query_builder->getRootAlias(), false);
+        return array($queryBuilder->getRootAlias(), false);
     }
 
-    public function filter($query_builder, $alias, $field, $value)
+    public function filter(QueryBuilder $queryBuilder, $alias, $field, $value)
     {
 
-        call_user_func($this->getOption('filter'), $query_builder, $alias, $field, $value);
+        call_user_func($this->getOption('filter'), $queryBuilder, $alias, $field, $value);
     }
 
     /**

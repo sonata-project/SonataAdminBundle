@@ -16,18 +16,18 @@ file that was distributed with this source code.
 {% block actions %}
     <div class="sonata-actions">
         <ul>
-            <li class="sonata-action-element"><a href="{{ configuration.generateUrl('create') }}">{% trans "link_action_create" from "BaseApplicationBundle" %}</a></li>
+            <li class="sonata-action-element"><a href="{{ admin.generateUrl('create') }}">{% trans "link_action_create" from "BaseApplicationBundle" %}</a></li>
         </ul>
     </div>
 {% endblock %}
 
 {% block list_table %}
-    <form action="{{ configuration.generateUrl('batch') }}" method="POST" >
+    <form action="{{ admin.generateUrl('batch') }}" method="POST" >
         <table>
             {% block table_header %}
                 <tr>
                     {% for field_description in fields %}
-                        <th>{{ field_description.label }}</th>
+                        <th>{{ field_description.name }}</th>
                     {% endfor %}
                 </tr>
             {% endblock %}
@@ -41,7 +41,7 @@ file that was distributed with this source code.
                         <td colspan="{{ fields|length }}" class="pager">
                             <ul>
                                 {% if datagrid.pager.page != datagrid.pager.previouspage %}
-                                    <li><a href="{{ configuration.generateUrl('list', datagrid.values|merge({'page': datagrid.pager.previouspage})) }}">{% trans 'link_previous_pager' from 'BaseApplicationBundle' %}</a></li>
+                                    <li><a href="{{ admin.generateUrl('list', datagrid.values|merge({'page': datagrid.pager.previouspage})) }}">{% trans 'link_previous_pager' from 'BaseApplicationBundle' %}</a></li>
                                 {% endif %}
 
                                 {# Set the number of pages to display in the pager #}
@@ -49,12 +49,12 @@ file that was distributed with this source code.
                                     {% if page == datagrid.pager.page %}
                                         <li>{{ page }}</li>
                                     {% else %}
-                                        <li><a href="{{ configuration.generateUrl('list', datagrid.values|merge({'page': page})) }}">{{ page }}</a></li>
+                                        <li><a href="{{ admin.generateUrl('list', datagrid.values|merge({'page': page})) }}">{{ page }}</a></li>
                                     {% endif %}
                                 {% endfor %}
 
                                 {% if datagrid.pager.page != datagrid.pager.nextpage %}
-                                    <li><a href="{{ configuration.generateUrl('list', datagrid.values|merge({'page': datagrid.pager.nextpage})) }}">{% trans 'link_previous_pager' from 'BaseApplicationBundle' %}</a></li>
+                                    <li><a href="{{ admin.generateUrl('list', datagrid.values|merge({'page': datagrid.pager.nextpage})) }}">{% trans 'link_previous_pager' from 'BaseApplicationBundle' %}</a></li>
                                 {% endif %}
                             </ul>
                         </td>
@@ -77,7 +77,7 @@ file that was distributed with this source code.
 
 
 {% block list_filters %}
-    <form action="{{ configuration.generateUrl('list') }}" method="GET">
+    <form action="{{ admin.generateUrl('list') }}" method="GET">
         {% for filter in datagrid.filters %}
             <div>
                 {{ filter|render_filter_element }}</td>
@@ -86,7 +86,7 @@ file that was distributed with this source code.
 
         <input type="submit" value="{% trans 'btn_filter' from 'BaseApplicationBundle' %}" />
 
-        <a href="{{ configuration.generateUrl('list') }}">{% trans 'link_reset_filter' from 'BaseApplicationBundle' %}</a>
+        <a href="{{ admin.generateUrl('list') }}">{% trans 'link_reset_filter' from 'BaseApplicationBundle' %}</a>
 
     </form>
 {% endblock %}

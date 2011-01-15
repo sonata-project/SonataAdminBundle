@@ -37,7 +37,7 @@ class BaseApplicationExtension extends Extension
      */
     public function configLoad($config, ContainerBuilder $container)
     {
-
+        
         // register the twig extension
         $container
             ->register('twig.extension.base_application', 'Bundle\Sonata\BaseApplicationBundle\Twig\Extension\BaseApplicationExtension')
@@ -60,6 +60,10 @@ class BaseApplicationExtension extends Extension
 
         $container->setDefinition('base_application.admin.pool', $definition);
 
+        $definition = new Definition('Bundle\Sonata\BaseApplicationBundle\Route\AdminPoolLoader', array(new Reference('base_application.admin.pool')));
+        $definition->addTag('routing.loader');
+
+        $container->setDefinition('base_application.route_loader', $definition);
     }
 
     /**

@@ -20,48 +20,149 @@ abstract class Admin extends ContainerAware
 {
     protected $class;
 
-    protected $list_fields = false;
+    protected $listFields = false;
 
-    protected $form_fields = false;
+    protected $formFields = false;
 
-    protected $filter_fields = array(); // by default there is no filter
+    protected $filterFields = array(); // by default there is no filter
 
-    protected $filter_datagrid;
+    protected $filterDatagrid;
 
-    protected $max_per_page = 25;
+    protected $maxPerPage = 25;
 
-    protected $base_route = '';
+    protected $baseRouteName = '';
 
-    protected $base_controller_name;
+    protected $baseRoutePattern;
+    
+    protected $baseControllerName;
 
-    protected $form_groups = false;
+    protected $formGroups = false;
 
     // note : don't like this, but havn't find a better way to do it
-    protected $configuration_pool;
+    protected $configurationPool;
 
     protected $code;
 
     protected $label;
+
+    protected $urls = array();
+
+    protected $subject;
     
+    /**
+     * Reference the parent FieldDescription related to this admin
+     * only set for FieldDescription which is associated to an Sub Admin instance
+     *
+     * FieldDescription
+     */
+    protected $parentFieldDescription;
+
+    protected $loaded = array(
+        'form_fields' => false,
+        'form_groups' => false,
+        'list_fields' => false,
+        'urls'        => false,
+    );
+
+    /**
+     * return the entity manager
+     *
+     * @return EntityManager
+     */
+    abstract public function getEntityManager();
+
+    /**
+     * build the fields to use in the form
+     *
+     * @throws RuntimeException
+     * @return
+     */
+    abstract public function buildFormFields();
+
+    /**
+     * build the field to use in the list view
+     *
+     * @return void
+     */
+    abstract public function buildListFields();
+
+    abstract public function getChoices(FieldDescription $description);
+
+    abstract public function getForm($object, $fields);
+
     public function configure()
     {
-        $this->buildFormFields();
-        $this->buildFormGroups();
-        
-        $this->buildListFields();
 
     }
+    
+    /**
+     * return the baseRoutePattern used to generate the routing information
+     * 
+     * @throws RuntimeException
+     * @return string the baseRoutePattern used to generate the routing information
+     */
+    public function getBaseRoutePattern()
+    {
 
+        if(!$this->baseRoutePattern) {
+            if(preg_match('@(Application|Bundle)\\\([A-Za-z]*)\\\([A-Za-z]*)Bundle\\\(Entity|Document)\\\([A-Za-z]*)@', $this->getClass(), $matches)) {
+
+                $this->baseRoutePattern = sprintf('/%s/%s/%s',
+                    $this->urlize($matches[2], '-'),
+                    $this->urlize($matches[4], '-'),
+                    $this->urlize($matches[5], '-')
+                );
+            } else {
+                throw new \RuntimeException(sprintf('Please define a default `baseRoutePattern` value for the admin class `%s`', get_class($this)));
+            }
+        }
+
+        return $this->baseRoutePattern;
+    }
+
+    /**
+     * return the baseRouteName used to generate the routing information
+     *
+     * @throws RuntimeException
+     * @return string the baseRouteName used to generate the routing information
+     */
+    public function getBaseRouteName()
+    {
+        if(!$this->baseRouteName) {
+            if(preg_match('@(Application|Bundle)\\\([A-Za-z]*)\\\([A-Za-z]*)Bundle\\\(Entity|Document)\\\([A-Za-z]*)@', $this->getClass(), $matches)) {
+
+                $this->baseRouteName = sprintf('admin_%s_%s_%s',
+                    $this->urlize($matches[2]),
+                    $this->urlize($matches[4]),
+                    $this->urlize($matches[5])
+                );
+            } else {
+                throw new \RuntimeException(sprintf('Please define a default `baseRoutePattern` value for the admin class `%s`', get_class($this)));
+            }
+        }
+
+        return $this->baseRouteName;
+    }
+
+    public function urlize($word, $sep = '_') {
+        return strtolower(preg_replace('~(?<=\\w)([A-Z])~', $sep.'$1', $word));
+    }
+
+    /**
+     * return the class name handled by the Admin instance
+     *
+     * @return string the class name handled by the Admin instance
+     */
     public function getClass()
     {
         return $this->class;
     }
 
-    public function getEntityManager()
-    {
-        return $this->container->get('doctrine.orm.default_entity_manager');
-    }
-
+    /**
+     * return the doctrine class metadata handled by the Admin instance
+     * 
+     * @return ClassMetadataInfo the doctrine class metadata handled by the Admin instance
+     */
     public function getClassMetaData()
     {
 
@@ -69,6 +170,11 @@ abstract class Admin extends ContainerAware
             ->getClassMetaData($this->getClass());
     }
 
+    /**
+     * return the list of batchs actions
+     *
+     * @return array the list of batchs actions
+     */
     public function getBatchActions()
     {
 
@@ -77,36 +183,92 @@ abstract class Admin extends ContainerAware
         );
     }
 
+    /**
+     * return the list of available urls
+     *
+     * @return array the list of available urls
+     */
     public function getUrls()
     {
-        return array(
+
+        $this->buildUrls();
+
+        return $this->urls;
+    }
+
+    public function buildUrls()
+    {
+        if($this->loaded['urls']) {
+            return;
+        }
+
+        $this->urls =  array(
             'list' => array(
-                'url'       => $this->base_route.'_list',
+                'name'      => $this->getBaseRouteName().'_list',
+                'pattern'   => $this->getBaseRoutePattern().'/list',
+                'defaults'  => array(
+                    '_controller' => $this->getBaseControllerName().':list'
+                ),
+                'requirements' => array(),
+                'options' => array(),
                 'params'    => array(),
             ),
             'create' => array(
-                'url'       => $this->base_route.'_create',
+                'name'      => $this->getBaseRouteName().'_create',
+                'pattern'       => $this->getBaseRoutePattern().'/create',
+                'defaults'  => array(
+                    '_controller' => $this->getBaseControllerName().':create'
+                ),
+                'requirements' => array(),
+                'options' => array(),
+                'params'    => array(),
+            ),
+            'edit' => array(
+                'name'      => $this->getBaseRouteName().'_edit',
+                'pattern'       => $this->getBaseRoutePattern().'/{id}/edit',
+                'defaults'  => array(
+                    '_controller' => $this->getBaseControllerName().':edit'
+                ),
+                'requirements' => array(),
+                'options' => array(),
                 'params'    => array(),
             ),
             'update' => array(
-                'url'       => $this->base_route.'_update',
-                'params'    => array()
+                'name'      => $this->getBaseRouteName().'_update',
+                'pattern'       => $this->getBaseRoutePattern().'/update',
+                'defaults'  => array(
+                    '_controller' => $this->getBaseControllerName().':update'
+                ),
+                'requirements' => array(),
+                'options' => array(),
+                'params'    => array(),
             ),
-            'delete' => array(
-                'url'       => $this->base_route.'_delete',
-                'params'    => array()
-            ),
-            'edit'   => array(
-                'url'       => $this->base_route.'_edit',
-                'params'    => array()
-            ),
-            'batch'   => array(
-                'url'       => $this->base_route.'_batch',
-                'params'    => array()
+            'batch' => array(
+                'name'      => $this->getBaseRouteName().'_batch',
+                'pattern'       => $this->getBaseRoutePattern().'/batch',
+                'defaults'  => array(
+                    '_controller' => $this->getBaseControllerName().':batch'
+                ),
+                'requirements' => array(),
+                'options' => array(),
+                'params'    => array(),
             )
         );
+
+        $this->configureUrls();
     }
 
+    public function configureUrls()
+    {
+        
+    }
+
+    /**
+     * return the url defined by the $name
+     *
+     * @param  $name
+     * @return bool
+     */
     public function getUrl($name)
     {
         $urls = $this->getUrls();
@@ -118,6 +280,15 @@ abstract class Admin extends ContainerAware
         return $urls[$name];
     }
 
+    /**
+     * generate the url with the given $name
+     *
+     * @throws RuntimeException
+     * @param  $name
+     * @param array $params
+     *
+     * @return return a complete url
+     */
     public function generateUrl($name, $params = array())
     {
         $url = $this->getUrl($name);
@@ -130,14 +301,24 @@ abstract class Admin extends ContainerAware
             $params = array();
         }
 
-        return $this->container->get('router')->generate($url['url'], array_merge($url['params'], $params));
+        return $this->container->get('router')->generate($url['name'], array_merge($url['params'], $params));
     }
 
+    /**
+     * return the list template
+     *
+     * @return string the list template
+     */
     public function getListTemplate()
     {
         return 'Sonata\BaseApplicationBundle:CRUD:list.twig';
     }
 
+    /**
+     * return the edit template
+     *
+     * @return string the edit template
+     */
     public function getEditTemplate()
     {
         return 'Sonata\BaseApplicationBundle:CRUD:edit.twig';
@@ -146,61 +327,6 @@ abstract class Admin extends ContainerAware
     public function getReflectionFields()
     {
         return $this->getClassMetaData()->reflFields;
-    }
-
-    /**
-     * make sure the base field are set in the correct format
-     *
-     * @param  $selected_fields
-     * @return array
-     */
-    static public function getBaseFields($metadata, $selected_fields)
-    {
-
-        // if nothing is defined we display all fields
-        if(!$selected_fields) {
-            $selected_fields = array_keys($metadata->reflFields) + array_keys($metadata->associationMappings);
-        }
-
-
-        // make sure we works with array
-        foreach($selected_fields as $name => $options) {
-            if(is_array($options)) {
-                $fields[$name] = $options;
-            } else {
-                $fields[$options] = array();
-                $name = $options;
-            }
-
-            if(isset($metadata->fieldMappings[$name])) {
-                $fields[$name] = array_merge(
-                    $metadata->fieldMappings[$name],
-                    $fields[$name]
-                );
-            }
-
-
-            if(isset($metadata->associationMappings[$name])) {
-                $fields[$name] = array_merge(
-                    $metadata->associationMappings[$name],
-                    $fields[$name]
-                );
-            }
-
-            if(isset($metadata->reflFields[$name])) {
-                $fields[$name]['reflection']  =& $metadata->reflFields[$name];
-            }
-        }
-
-        return $fields;
-    }
-
-    /**
-     * @return void
-     */
-    public function configureFormFields()
-    {
-
     }
 
     public function getNewInstance()
@@ -226,18 +352,23 @@ abstract class Admin extends ContainerAware
     public function buildFormGroups()
     {
 
-        if(!$this->form_groups) {
-            $this->form_groups = array(
-                false => array('fields' => array_keys($this->form_fields))
-            );
-
+        if($this->loaded['form_groups']) {
             return;
         }
 
+        $this->loaded['form_groups'] = true;
+                
+
+        if(!$this->formGroups) {
+            $this->formGroups = array(
+                false => array('fields' => array_keys($this->formFields))
+            );
+        }
+
         // normalize array
-        foreach($this->form_groups as $name => &$group) {
-            if(!isset($group['collapsed'])) {
-                $group['collapsed'] = false;
+        foreach($this->formGroups as $name => $group) {
+            if(!isset($this->formGroups[$name]['collapsed'])) {
+                $this->formGroups[$name]['collapsed'] = false;
             }
         }
     }
@@ -262,175 +393,6 @@ abstract class Admin extends ContainerAware
         
     }
 
-    /**
-     * build the fields to use in the form
-     *
-     * @throws RuntimeException
-     * @return
-     */
-    public function buildFormFields()
-    {
-        $this->form_fields = self::getBaseFields($this->getClassMetaData(), $this->form_fields);
-
-        foreach($this->form_fields as $name => $options) {
-
-            if(!isset($this->form_fields[$name]['type'])) {
-                throw new \RuntimeException(sprintf('You must declare a type for the field `%s`', $name));
-            }
-
-            // make sure the options field is set
-            if(!isset($this->form_fields[$name]['fieldName'])) {
-                $this->form_fields[$name]['fieldName'] = $name;
-            }
-
-            // make sure the options field is set
-            if(!isset($this->form_fields[$name]['options'])) {
-                $this->form_fields[$name]['options'] = array();
-            }
-
-            // fix template value for doctrine association fields
-            if(!isset($this->form_fields[$name]['template']) && isset($this->form_fields[$name]['type'])) {
-                $this->form_fields[$name]['template'] = sprintf('Sonata\BaseApplicationBundle:CRUD:edit_%s.twig', $this->form_fields[$name]['type']);
-
-                if($this->form_fields[$name]['type'] == \Doctrine\ORM\Mapping\ClassMetadataInfo::ONE_TO_ONE)
-                {
-                    $this->form_fields[$name]['edit'] = isset($this->form_fields[$name]['edit']) ? $this->form_fields[$name]['edit'] : 'popup';
-                    
-                    $this->form_fields[$name]['template'] = 'Sonata\BaseApplicationBundle:CRUD:edit_one_to_one.twig';
-                    $this->form_fields[$name]['configuration']  = $this->getConfigurationPool()
-                        ->getConfigurationByClass($this->form_fields[$name]['targetEntity']);
-
-                }
-
-                if($this->form_fields[$name]['type'] == \Doctrine\ORM\Mapping\ClassMetadataInfo::MANY_TO_ONE)
-                {
-                    $this->form_fields[$name]['edit'] = isset($this->form_fields[$name]['edit']) ? $this->form_fields[$name]['edit'] : 'popup';
-
-                    $this->form_fields[$name]['template'] = 'Sonata\BaseApplicationBundle:CRUD:edit_many_to_one.twig';
-                    $this->form_fields[$name]['configuration']  = $this->getConfigurationPool()
-                        ->getConfigurationByClass($this->form_fields[$name]['targetEntity']);
-                }
-
-                if($this->form_fields[$name]['type'] == \Doctrine\ORM\Mapping\ClassMetadataInfo::MANY_TO_MANY)
-                {
-                    $this->form_fields[$name]['edit'] = isset($this->form_fields[$name]['edit']) ? $this->form_fields[$name]['edit'] : 'popup';
-
-                    $this->form_fields[$name]['template'] = 'Sonata\BaseApplicationBundle:CRUD:edit_many_to_many.twig';
-                    $this->form_fields[$name]['configuration']  = $this->getConfigurationPool()
-                        ->getConfigurationByClass($this->form_fields[$name]['targetEntity']);
-                }
-
-                if($this->form_fields[$name]['type'] == \Doctrine\ORM\Mapping\ClassMetadataInfo::ONE_TO_MANY)
-                {
-                    $this->form_fields[$name]['edit'] = isset($this->form_fields[$name]['edit']) ? $this->form_fields[$name]['edit'] : 'popup';
-                    
-                    $this->form_fields[$name]['template'] = 'Sonata\BaseApplicationBundle:CRUD:edit_one_to_many.twig';
-                    $this->form_fields[$name]['configuration']  = $this->getConfigurationPool()
-                        ->getConfigurationByClass($this->form_fields[$name]['targetEntity']);
-                }
-                
-            }
-
-            // set correct default value
-            if($this->form_fields[$name]['type'] == 'datetime') {
-
-                if(!isset($this->form_fields[$name]['options']['date_widget'])) {
-                    $this->form_fields[$name]['options']['date_widget'] = \Symfony\Component\Form\DateField::CHOICE;
-                }
-
-                if(!isset($this->form_fields[$name]['options']['years'])) {
-                    $this->form_fields[$name]['options']['years'] = range(1900, 2100);
-                }
-
-            }
-
-            // unset the identifier field as it is not required to update an object
-            if(isset($this->form_fields[$name]['id'])) {
-                unset($this->form_fields[$name]);
-            }
-        }
-
-        $this->configureFormFields();
-
-        return $this->form_fields;
-    }
-
-    /**
-     * build the field to use in the list view
-     *
-     * @return void
-     */
-    public function buildListFields()
-    {
-        $this->list_fields = self::getBaseFields($this->getClassMetaData(), $this->list_fields);
-
-        $this->configureListFields();
-
-        // normalize field
-        foreach($this->list_fields as $name => $options) {
-
-            $this->list_fields[$name]['code'] = $name;
-
-            // set the label if none is set
-            if(!isset($this->list_fields[$name]['label']))
-            {
-                $this->list_fields[$name]['label'] = $name;
-            }
-
-            // set the default type if none is set
-            if(!isset($this->list_fields[$name]['type'])) {
-                $this->list_fields[$name]['type'] = 'string';
-            }
-
-            // fix template for mapping
-            if($this->list_fields[$name]['type'] == \Doctrine\ORM\Mapping\ClassMetadataInfo::MANY_TO_ONE) {
-                $this->list_fields[$name]['template']       = 'Sonata/BaseApplicationBundle:CRUD:list_many_to_one.twig';
-                $this->list_fields[$name]['configuration']  = $this->getConfigurationPool()
-                    ->getConfigurationByClass($this->list_fields[$name]['targetEntity']);
-            }
-
-            // fix template for mapping
-            if($this->list_fields[$name]['type'] == \Doctrine\ORM\Mapping\ClassMetadataInfo::ONE_TO_ONE) {
-                $this->list_fields[$name]['template']       = 'Sonata/BaseApplicationBundle:CRUD:list_one_to_one.twig';
-                $this->list_fields[$name]['configuration']  = $this->getConfigurationPool()
-                    ->getConfigurationByClass($this->list_fields[$name]['targetEntity']);
-            }
-
-            if($this->list_fields[$name]['type'] == \Doctrine\ORM\Mapping\ClassMetadataInfo::ONE_TO_MANY) {
-                $this->list_fields[$name]['template']       = 'Sonata/BaseApplicationBundle:CRUD:list_one_to_many.twig';
-            }
-
-            if($this->list_fields[$name]['type'] == \Doctrine\ORM\Mapping\ClassMetadataInfo::MANY_TO_MANY) {
-                $this->list_fields[$name]['template']       = 'Sonata/BaseApplicationBundle:CRUD:list_many_to_many.twig';
-            }
-
-            // define the default template
-            if(!isset($this->list_fields[$name]['template'])) {
-                $this->list_fields[$name]['template'] = sprintf('Sonata/BaseApplicationBundle:CRUD:list_%s.twig', $this->list_fields[$name]['type']);
-            }
-
-            // define the default template for identifier field
-            if(isset($this->list_fields[$name]['id'])) {
-                $this->list_fields[$name]['identifier'] = true;
-            }
-
-            if(!isset($this->list_fields[$name]['identifier'])) {
-                $this->list_fields[$name]['identifier'] = false;
-            }
-        }
-
-        if(!isset($this->list_fields['_batch'])) {
-            $this->list_fields = array('_batch' => array(
-                'code'     => '_batch',
-                'template' => 'Sonata/BaseApplicationBundle:CRUD:list__batch.twig',
-                'label'    => 'batch',
-                'identifier' => false
-            ) ) + $this->list_fields;
-        }
-
-        return $this->list_fields;
-    }
-
     public function configureListFields()
     {
 
@@ -441,25 +403,63 @@ abstract class Admin extends ContainerAware
         
     }
 
+    public function configureFormFields()
+    {
+
+    }
+
     public function getFilterDatagrid()
     {
-        if(!$this->filter_datagrid) {
+        if(!$this->filterDatagrid) {
 
-            $this->filter_datagrid = new Datagrid(
+            $this->filterDatagrid = new Datagrid(
                 $this->getClass(),
                 $this->getEntityManager()
             );
 
-            $this->filter_datagrid->setMaxPerPage($this->max_per_page);
+            $this->filterDatagrid->setMaxPerPage($this->maxPerPage);
 
+            // first pass, configure and normalize the filterFields array
+            $this->filterDatagrid->setFilterFields($this->filterFields);
+            $this->filterDatagrid->buildFilterFields();
+
+            // update the current filterFields array and apply admin custom code
+            $this->filterFields = $this->filterDatagrid->getFilterFields();
             $this->configureFilterFields();
-            
-            $this->filter_datagrid->setFilterFields($this->filter_fields);
 
-            $this->filter_datagrid->buildFilterFields();
+            // set the final value to the datagrid
+            $this->filterDatagrid->setFilterFields($this->filterFields);
+            
         }
 
-        return $this->filter_datagrid;
+        return $this->filterDatagrid;
+    }
+
+
+    /**
+     *
+     */
+    public function getRootCode()
+    {
+        return $this->getRoot()->getCode();
+    }
+
+    /**
+     * return the master admin
+     *
+     */
+    public function getRoot()
+    {
+        while($parent_field_description = $this->getParentFieldDescription()) {
+
+            if(!$parent_field_description) {
+                return $this;
+            }
+
+            return $parent_field_description->getAdmin()->getRoot();
+        }
+
+        return $this;
     }
 
     /**
@@ -469,202 +469,46 @@ abstract class Admin extends ContainerAware
      */
     public function getFormFields()
     {
-        return $this->form_fields;
+        $this->buildFormFields();
+
+        return $this->formFields;
     }
 
     public function getListFields()
     {
-        return $this->list_fields;
+        $this->buildListFields();
+        
+        return $this->listFields;
     }
 
-    public function getChoices($description)
+    public function setBaseControllerName($baseControllerName)
     {
-        $targets = $this->getEntityManager()
-            ->createQueryBuilder()
-            ->select('t')
-            ->from($description['targetEntity'], 't')
-            ->getQuery()
-            ->execute();
-
-        $choices = array();
-        foreach($targets as $target) {
-            // todo : puts this into a configuration option and use reflection
-            foreach(array('getTitle', 'getName', '__toString') as $getter) {
-                if(method_exists($target, $getter)) {
-                    $choices[$target->getId()] = $target->$getter();
-                    break;
-                }
-            }
-        }
-
-        return $choices;
-    }
-
-    public function getForm($object, $fields)
-    {
-
-        $this->container->get('session')->start();
-
-        $form = new Form('data', $object, $this->container->get('validator'));
-
-        foreach($fields as $name => $description) {
-
-            if(!isset($description['type'])) {
-
-                continue;
-            }
-
-            switch($description['type']) {
-
-                case \Doctrine\ORM\Mapping\ClassMetadataInfo::ONE_TO_MANY:
-                case \Doctrine\ORM\Mapping\ClassMetadataInfo::MANY_TO_MANY:
-
-                    $transformer = new \Symfony\Bundle\DoctrineBundle\Form\ValueTransformer\CollectionToChoiceTransformer(array(
-                        'em'        =>  $this->getEntityManager(),
-                        'className' => $description['targetEntity']
-                    ));
-
-                    $field = new \Symfony\Component\Form\ChoiceField($name, array_merge(array(
-                        'expanded' => true,
-                        'multiple' => true,
-                        'choices' => $this->getChoices($description),
-                        'value_transformer' => $transformer,
-                    ), $description['options']));
-
-                    break;
-
-                case \Doctrine\ORM\Mapping\ClassMetadataInfo::MANY_TO_ONE:
-                case \Doctrine\ORM\Mapping\ClassMetadataInfo::ONE_TO_ONE:
-
-                    if($description['edit'] == 'inline') {
-
-                        // retrieve the related object
-                        $target_object = $description['reflection']->getValue($object);
-
-                        if(!$target_object) {
-                            $target_object = $description['configuration']->getNewInstance();
-                        }
-
-                        // retrieve the related form
-                        $target_fields = $description['configuration']->getFormFields();
-                        $target_form    = $description['configuration']->getForm($target_object, $target_fields);
-
-                        // create the transformer
-                        $transformer = new \Bundle\Sonata\BaseApplicationBundle\Form\ValueTransformer\ArrayToObjectTransformer(array(
-                            'em'        =>  $this->getEntityManager(),
-                            'className' => $description['targetEntity']
-                        ));
-
-                        // create the "embedded" field
-                        $field = new \Symfony\Component\Form\FieldGroup($name, array(
-                            'value_transformer' => $transformer,
-                        ));
-
-                        foreach($target_form->getFields() as $name => $form_field) {
-                            if($name == '_token') {
-                                continue;
-                            }
-
-                            $field->add($form_field);
-                        }
-                    }
-                    else
-                    {
-                        $transformer = new \Symfony\Bundle\DoctrineBundle\Form\ValueTransformer\EntityToIDTransformer(array(
-                            'em'        =>  $this->getEntityManager(),
-                            'className' => $description['targetEntity']
-                        ));
-
-                        $field = new \Symfony\Component\Form\ChoiceField($name, array_merge(array(
-                            'expanded' => false,
-                            'choices' => $this->getChoices($description),
-                            'value_transformer' => $transformer,
-                        ), $description['options']));
-                    }
-
-                    break;
-
-                case 'string':
-                    $field = new \Symfony\Component\Form\TextField($name, $description['options']);
-                    break;
-
-                case 'text':
-                    $field = new \Symfony\Component\Form\TextareaField($name, $description['options']);
-                    break;
-
-                case 'boolean':
-                    $field = new \Symfony\Component\Form\CheckboxField($name, $description['options']);
-                    break;
-
-                case 'integer':
-                    $field = new \Symfony\Component\Form\IntegerField($name, $description['options']);
-                    break;
-
-                case 'decimal':
-                    $field = new \Symfony\Component\Form\NumberField($name, $description['options']);
-                    break;
-
-                case 'datetime':
-                    $field = new \Symfony\Component\Form\DateTimeField($name, $description['options']);
-                    break;
-
-                case 'date':
-                    $field = new \Symfony\Component\Form\DateField($name, $description['options']);
-                    break;
-
-                case 'choice':
-                    $field = new \Symfony\Component\Form\ChoiceField($name, $description['options']);
-                    break;
-
-                case 'array':
-                    $field = new \Symfony\Component\Form\FieldGroup($name, $description['options']);
-
-                    $values = $description['reflection']->getValue($object);
-
-                    foreach((array)$values as $k => $v) {
-                        $field->add(new \Symfony\Component\Form\TextField($k));
-                    }
-                    break;
-
-                default:
-                    throw new \RuntimeException(sprintf('unknow type `%s`', $description['type']));
-            }
-
-            $form->add($field);
-
-        }
-
-        return $form;
-    }
-
-    public function setBaseControllerName($base_controller_name)
-    {
-        $this->base_controller_name = $base_controller_name;
+        $this->baseControllerName = $baseControllerName;
     }
 
     public function getBaseControllerName()
     {
-        return $this->base_controller_name;
+        return $this->baseControllerName;
     }
 
-    public function setBaseRoute($base_route)
+    public function setBaseRoute($baseRoute)
     {
-        $this->base_route = $base_route;
+        $this->baseRoute = $baseRoute;
     }
 
     public function getBaseRoute()
     {
-        return $this->base_route;
+        return $this->baseRoute;
     }
 
-    public function setConfigurationPool($configuration_pool)
+    public function setConfigurationPool($configurationPool)
     {
-        $this->configuration_pool = $configuration_pool;
+        $this->configurationPool = $configurationPool;
     }
 
     public function getConfigurationPool()
     {
-        return $this->configuration_pool;
+        return $this->configurationPool;
     }
 
     public function setCode($code)
@@ -687,33 +531,55 @@ abstract class Admin extends ContainerAware
         return $this->label;
     }
 
-    public function setFilterFields($filter_fields)
+    public function setFilterFields($filterFields)
     {
-        $this->filter_fields = $filter_fields;
+        $this->filterFields = $filterFields;
     }
 
     public function getFilterFields()
     {
-        return $this->filter_fields;
+        return $this->filterFields;
     }
 
-    public function setMaxPerPage($max_per_page)
+    public function setMaxPerPage($maxPerPage)
     {
-        $this->max_per_page = $max_per_page;
+        $this->maxPerPage = $maxPerPage;
     }
 
     public function getMaxPerPage()
     {
-        return $this->max_per_page;
+        return $this->maxPerPage;
     }
 
-    public function setFormGroups($form_groups)
+    public function setFormGroups($formGroups)
     {
-        $this->form_groups = $form_groups;
+        $this->formGroups = $formGroups;
     }
 
     public function getFormGroups()
     {
-        return $this->form_groups;
+        $this->buildFormGroups();
+        
+        return $this->formGroups;
+    }
+
+    public function setParentFieldDescription($parentFieldDescription)
+    {
+        $this->parentFieldDescription = $parentFieldDescription;
+    }
+
+    public function getParentFieldDescription()
+    {
+        return $this->parentFieldDescription;
+    }
+
+    public function setSubject($subject)
+    {
+        $this->subject = $subject;
+    }
+
+    public function getSubject()
+    {
+        return $this->subject;
     }
 }

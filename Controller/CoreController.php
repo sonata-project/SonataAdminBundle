@@ -14,7 +14,7 @@ namespace Bundle\Sonata\BaseApplicationBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-use Symfony\Component\Form\RecursiveFieldIterator;
+use Bundle\Sonata\BaseApplicationBundle\Form\RecursiveFieldIterator;
 
 class CoreController extends Controller
 {

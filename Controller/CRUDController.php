@@ -13,6 +13,7 @@ namespace Bundle\Sonata\BaseApplicationBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 use Symfony\Component\Form\Form;
 
@@ -22,14 +23,14 @@ use Bundle\Sonata\BaseApplicationBundle\Tool\DoctrinePager as Pager;
 class CRUDController extends Controller
 {
 
-    protected $configuration;
+    protected $admin;
 
     /**
      * Sets the Container associated with this Controller.
      *
      * @param ContainerInterface $container A ContainerInterface instance
      */
-    public function setContainer(\Symfony\Component\DependencyInjection\ContainerInterface $container = null)
+    public function setContainer(ContainerInterface $container = null)
     {
         $this->container = $container;
 
@@ -39,9 +40,9 @@ class CRUDController extends Controller
     public function configure()
     {
 
-       $this->configuration = $this->container
+       $this->admin = $this->container
            ->get('base_application.admin.pool')
-           ->getAdminConfigurationByControllerName(get_class($this));
+           ->getAdminByControllerName(get_class($this));
     }
 
     public function getBaseTemplate()
@@ -57,15 +58,15 @@ class CRUDController extends Controller
     public function listAction()
     {
 
-        $datagrid = $this->configuration->getFilterDatagrid();
+        $datagrid = $this->admin->getFilterDatagrid();
         $datagrid->setValues($this->get('request')->query->all());
 
-        return $this->render($this->configuration->getListTemplate(), array(
+        return $this->render($this->admin->getListTemplate(), array(
             'datagrid'          => $datagrid,
-            'fields'            => $this->configuration->getListFields(),
-            'class_meta_data'   => $this->configuration->getClassMetaData(),
-            'configuration'     => $this->configuration,
-            'batch_actions'     => $this->configuration->getBatchActions(),
+            'fields'            => $this->admin->getListFields(),
+            'class_meta_data'   => $this->admin->getClassMetaData(),
+            'admin'             => $this->admin,
+            'batch_actions'     => $this->admin->getBatchActions(),
             'base_template'     => $this->getBaseTemplate(),
         ));
 
@@ -74,12 +75,12 @@ class CRUDController extends Controller
 
     public function batchActionDelete($idx)
     {
-        $em = $this->configuration->getEntityManager();
+        $em = $this->admin->getEntityManager();
 
         $query_builder = $em->createQueryBuilder();
         $objects = $query_builder
             ->select('o')
-            ->from($this->configuration->getClass(), 'o')
+            ->from($this->admin->getClass(), 'o')
             ->add('where', $query_builder->expr()->in('o.id', $idx))
             ->getQuery()
             ->execute();
@@ -92,7 +93,7 @@ class CRUDController extends Controller
         $em->flush();
 
         // todo : add confirmation flash var
-        return $this->redirect($this->configuration->generateUrl('list'));
+        return $this->redirect($this->admin->generateUrl('list'));
     }
 
     public function deleteAction($id)
@@ -105,27 +106,29 @@ class CRUDController extends Controller
 
         $this->get('session')->start();
 
-        $fields = $this->configuration->getFormFields();
+        $fields = $this->admin->getFormFields();
 
         if($id instanceof Form) {
             $object = $id->getData();
             $form   = $id;
         } else {
-            $object = $this->configuration->getObject($id);
+            $object = $this->admin->getObject($id);
 
             if(!$object) {
                 throw new NotFoundHttpException(sprintf('unable to find the object with id : %s', $id));
             }
 
-            $form   = $this->configuration->getForm($object, $fields);
+            $form   = $this->admin->getForm($object, $fields);
         }
 
-        return $this->render($this->configuration->getEditTemplate(), array(
-            'form'   => $form,
-            'object' => $object,
-            'fields' => $fields,
-            'form_groups'    => $this->configuration->getFormGroups(),
-            'configuration'  => $this->configuration,
+        $this->admin->setSubject($object);
+
+        return $this->render($this->admin->getEditTemplate(), array(
+            'form'           => $form,
+            'object'         => $object,
+            'fields'         => $fields,
+            'form_groups'    => $this->admin->getFormGroups(),
+            'admin'          => $this->admin,
             'base_template'  => $this->getBaseTemplate(),
         ));
     }
@@ -142,7 +145,7 @@ class CRUDController extends Controller
         $id = $this->get('request')->get('id');
 
         if(is_numeric($id)) {
-            $object = $this->configuration->getObject($id);
+            $object = $this->admin->getObject($id);
 
             if(!$object) {
                 throw new NotFoundHttpException(sprintf('unable to find the object with id : %s', $id));
@@ -150,31 +153,31 @@ class CRUDController extends Controller
 
             $action = 'edit';
         } else {
-            $object = $this->configuration->getNewInstance();
+            $object = $this->admin->getNewInstance();
 
             $action = 'create';
         }
 
-        $fields = $this->configuration->getFormFields();
-        $form   = $this->configuration->getForm($object, $fields);
+        $fields = $this->admin->getFormFields();
+        $form   = $this->admin->getForm($object, $fields);
 
         $form->bind($this->get('request')->get('data'));
 
         if($form->isValid()) {
 
             if($action == 'create') {
-                $this->configuration->preInsert($object);
+                $this->admin->preInsert($object);
             } else {
-                $this->configuration->preUpdate($object);
+                $this->admin->preUpdate($object);
             }
             
-            $this->configuration->getEntityManager()->persist($object);
-            $this->configuration->getEntityManager()->flush($object);
+            $this->admin->getEntityManager()->persist($object);
+            $this->admin->getEntityManager()->flush($object);
 
             if($action == 'create') {
-                $this->configuration->postInsert($object);
+                $this->admin->postInsert($object);
             } else {
-                $this->configuration->postUpdate($object);
+                $this->admin->postUpdate($object);
             }
 
             if($this->get('request')->isXmlHttpRequest()) {
@@ -182,10 +185,10 @@ class CRUDController extends Controller
             }
 
             // redirect to edit mode
-            return $this->redirect($this->configuration->generateUrl('edit', array('id' => $object->getId())));
+            return $this->redirect($this->admin->generateUrl('edit', array('id' => $object->getId())));
         }
 
-        return $this->forward(sprintf('%s:%s', $this->configuration->getBaseControllerName(), $action), array(
+        return $this->forward(sprintf('%s:%s', $this->admin->getBaseControllerName(), $action), array(
             'id' => $form
         ));
     }
@@ -202,7 +205,7 @@ class CRUDController extends Controller
         if(count($idx) == 0) { // no item selected
             // todo : add flash information
 
-            return $this->redirect($this->configuration->generateUrl('list'));
+            return $this->redirect($this->admin->generateUrl('list'));
         }
 
         // execute the action, batchActionXxxxx
@@ -218,34 +221,36 @@ class CRUDController extends Controller
     {
         $this->get('session')->start();
 
-        $fields = $this->configuration->getFormFields();
+        $fields = $this->admin->getFormFields();
 
         if($id instanceof Form) {
             $object = $id->getData();
             $form   = $id;
         } else {
-            $object = $this->configuration->getNewInstance();
+            $object = $this->admin->getNewInstance();
 
-            $form   = $this->configuration->getForm($object, $fields);
+            $form   = $this->admin->getForm($object, $fields);
         }
 
-        return $this->render($this->configuration->getEditTemplate(), array(
+        $this->admin->setSubject($object);
+
+        return $this->render($this->admin->getEditTemplate(), array(
             'form'   => $form,
             'object' => $object,
             'fields' => $fields,
-            'form_groups'    => $this->configuration->getFormGroups(),
-            'configuration'     => $this->configuration,
+            'form_groups'    => $this->admin->getFormGroups(),
+            'admin'     => $this->admin,
             'base_template'     => $this->getBaseTemplate(),
         ));
     }
 
     public function setConfiguration($configuration)
     {
-        $this->configuration = $configuration;
+        $this->admin = $configuration;
     }
 
     public function getConfiguration()
     {
-        return $this->configuration;
+        return $this->admin;
     }
 }
