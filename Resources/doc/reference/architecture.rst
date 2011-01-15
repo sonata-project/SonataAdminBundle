@@ -12,9 +12,10 @@ The ``Admin`` class is the CRUD definition of one Doctrine entity. It contains
 all the configuration necessary to display a rich CRUD for the entity. From
 within an admin class, the following information can be defined:
 
-* ``list_fields``: The fields displayed in the list table;
-* ``filter_fields``: The fields available for filter the list;
-* ``form_fields``: The fields used to edit the entity;
+* ``listFields``: The fields displayed in the list table;
+* ``filterFields``: The fields available for filter the list;
+* ``formFields``: The fields used to edit the entity;
+* ``formGroups``: The group definition where a field must be displayed (edit form)
 * The batch actions: Actions that can be performed on a group of entities
   (e.g. bulk delete)
 
@@ -32,7 +33,7 @@ do things such as:
 Field Definition
 ----------------
 
-A field definition is an simple array. There is one definition per list
+A field definition is a FieldDescription object. There is one definition per list
 field.
 
 The definition contains:

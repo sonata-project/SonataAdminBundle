@@ -26,9 +26,7 @@ By convention Admin files are set under a Admin folder.
 
         protected $class = 'Application\Sonata\NewsBundle\Entity\Post';
 
-        protected $base_route = 'news_post_admin';
-
-        protected $base_controller_name = 'NewsBundle:PostAdmin';
+        protected $baseControllerName = 'Sonata\NewsBundle:PostAdmin';
 
     }
 
@@ -58,14 +56,14 @@ Now, let's specify the differents we want to use:
 
 ..
 
-    protected $list_fields = array(
+    protected $listFields = array(
         'title' => array('identifier' => true),
         'slug',
         'enabled',
         'comments_enabled',
     );
 
-    protected $form_fields = array(
+    protected $formFields = array(
         'enabled',
         'title',
         'abstract',
@@ -75,7 +73,7 @@ Now, let's specify the differents we want to use:
         'comments_default_status'
     );
 
-    protected $filter_fields = array(
+    protected $filterFields = array(
         'title',
         'enabled',
         'tags' => array('filter_field_options' => array('expanded' => true, 'multiple' => true))
@@ -100,20 +98,18 @@ TagAdmin
     {
         protected $class = 'Application\Sonata\NewsBundle\Entity\Tag';
 
-        protected $list_fields = array(
+        protected $listFields = array(
             'name' => array('identifier' => true),
             'slug',
             'enabled',
         );
 
-        protected $form_fields = array(
+        protected $formFields = array(
             'name',
             'enabled'
         );
 
-        protected $base_route = 'news_tag_admin';
-
-        protected $base_controller_name = 'NewsBundle:TagAdmin';
+        protected $baseControllerName = 'Sonata\NewsBundle:TagAdmin';
     }
 
 CommentAdmin
@@ -130,7 +126,7 @@ CommentAdmin
 
         protected $class = 'Application\Sonata\NewsBundle\Entity\Comment';
 
-        protected $list_fields = array(
+        protected $listFields = array(
             'name' => array('identifier' => true),
             'getStatusCode' => array('label' => 'status_code'),
             'post',
@@ -139,7 +135,7 @@ CommentAdmin
             'message',
         );
 
-        protected $form_fields = array(
+        protected $formFields = array(
             'name',
             'email',
             'url',
@@ -148,7 +144,5 @@ CommentAdmin
             'status' => array('type' => 'choice'),
         );
 
-        protected $base_route = 'news_comment_admin';
-
-        protected $base_controller_name = 'NewsBundle:CommentAdmin';
+        protected $baseControllerName = 'Sonata\NewsBundle:CommentAdmin';
     }

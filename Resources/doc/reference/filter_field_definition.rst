@@ -19,7 +19,7 @@ Example
 
         protected $class = 'Application\Sonata\NewsBundle\Entity\Post';
 
-        protected $filter_fields = array(
+        protected $filterFields = array(
             'title',
             'enabled',
             'tags' => array('filter_field_options' => array('expanded' => true, 'multiple' => true))
@@ -27,13 +27,14 @@ Example
 
         public function configureFilterFields()
         {
-            $this->filter_fields['with_open_comments'] = array(
-                'type'           => 'callback',
-                'filter_options' => array(
-                    'filter'  => array($this, 'getWithOpenCommentFilter'),
-                    'field'   => array($this, 'getWithOpenCommentField')
-                )
-            );
+            $this->filterFields['with_open_comments'] = new FieldDescription;
+            $this->filterFields['with_open_comments']->setName('label');
+            $this->filterFields['with_open_comments']->setTemplate('Sonata\BaseApplicationBundle:CRUD:filter_callback.twig');
+            $this->filterFields['with_open_comments']->setType('callback');
+            $this->filterFields['with_open_comments']->setOption('filter_options', array(
+                'filter' => array($this, 'getWithOpenCommentFilter'),
+                'field'  => array($this, 'getWithOpenCommentField')
+            ));
         }
 
         public function getWithOpenCommentFilter($query_builder, $alias, $field, $value)

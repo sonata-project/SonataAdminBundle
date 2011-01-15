@@ -46,6 +46,10 @@ code to your application's routing file:
         resource: BaseApplicationBundle/Resources/config/routing/base_application.xml
         prefix: /admin
 
+    admin:
+        resource: base_application
+        prefix: /admin
+
 At this point you can access to the dashboard with the url: ``http://yoursite.local/admin/dashboard``.
 
 .. note::

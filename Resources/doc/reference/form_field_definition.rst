@@ -18,7 +18,7 @@ Example
 
         protected $class = 'Application\Sonata\NewsBundle\Entity\Post';
 
-        protected $form_fields = array(
+        protected $formFields = array(
             'enabled',
             'title',
             'abstract',
@@ -31,8 +31,12 @@ Example
 
         public function configureFormFields()
         {
-            $this->form_fields['comments_default_status']['type'] = 'choice';
-            $this->form_fields['comments_default_status']['options']['choices'] = \Application\Sonata\NewsBundle\Entity\Comment::getStatusList();
+            $this->formFields['comments_default_status']->setType('choice');
+    
+            $options = $this->formFields['comments_default_status']->getOption('form_field_options', array());
+            $options['choices'] = Comment::getStatusList();
+
+            $this->formFields['comments_default_status']->setOption('form_field_options', $options);
         }
     }
 
