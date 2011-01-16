@@ -162,14 +162,14 @@ class Datagrid
             }
 
             if(!$fieldDescription->getTemplate()) {
-                $fieldDescription->setTemplate(sprintf('Sonata/BaseApplicationBundle:CRUD:filter_%s.twig', $fieldDescription->getType()));
+                $fieldDescription->setTemplate(sprintf('SonataBaseApplicationBundle:CRUD:filter_%s.twig.html', $fieldDescription->getType()));
 
                 if($fieldDescription->getType() == ClassMetadataInfo::MANY_TO_ONE) {
-                    $fieldDescription->setTemplate('Sonata/BaseApplicationBundle:CRUD:filter_many_to_one.twig');
+                    $fieldDescription->setTemplate('SonataBaseApplicationBundle:CRUD:filter_many_to_one.twig.html');
                 }
 
                 if($fieldDescription->getType() == ClassMetadataInfo::MANY_TO_MANY) {
-                    $fieldDescription->setTemplate('Sonata/BaseApplicationBundle:CRUD:filter_many_to_many.twig');
+                    $fieldDescription->setTemplate('SonataBaseApplicationBundle:CRUD:filter_many_to_many.twig.html');
                 }
             }
         }

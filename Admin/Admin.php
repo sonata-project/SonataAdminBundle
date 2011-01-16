@@ -109,7 +109,7 @@ abstract class Admin extends ContainerAware
 
                 $this->baseRoutePattern = sprintf('/%s/%s/%s',
                     $this->urlize($matches[2], '-'),
-                    $this->urlize($matches[4], '-'),
+                    $this->urlize($matches[3], '-'),
                     $this->urlize($matches[5], '-')
                 );
             } else {
@@ -133,7 +133,7 @@ abstract class Admin extends ContainerAware
 
                 $this->baseRouteName = sprintf('admin_%s_%s_%s',
                     $this->urlize($matches[2]),
-                    $this->urlize($matches[4]),
+                    $this->urlize($matches[3]),
                     $this->urlize($matches[5])
                 );
             } else {
@@ -311,7 +311,7 @@ abstract class Admin extends ContainerAware
      */
     public function getListTemplate()
     {
-        return 'Sonata\BaseApplicationBundle:CRUD:list.twig';
+        return 'SonataBaseApplicationBundle:CRUD:list.twig.html';
     }
 
     /**
@@ -321,7 +321,7 @@ abstract class Admin extends ContainerAware
      */
     public function getEditTemplate()
     {
-        return 'Sonata\BaseApplicationBundle:CRUD:edit.twig';
+        return 'SonataBaseApplicationBundle:CRUD:edit.twig.html';
     }
 
     public function getReflectionFields()

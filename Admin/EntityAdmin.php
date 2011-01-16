@@ -119,22 +119,22 @@ abstract class EntityAdmin extends Admin
             // fix template value for doctrine association fields
             if(!$formDescription->getTemplate()) {
 
-                $formDescription->setTemplate(sprintf('Sonata\BaseApplicationBundle:CRUD:edit_%s.twig', $formDescription->getType()));
+                $formDescription->setTemplate(sprintf('SonataBaseApplicationBundle:CRUD:edit_%s.twig.html', $formDescription->getType()));
                 
                 if($formDescription->getType() == ClassMetadataInfo::ONE_TO_ONE) {
-                    $formDescription->setTemplate('Sonata\BaseApplicationBundle:CRUD:edit_one_to_one.twig');
+                    $formDescription->setTemplate('SonataBaseApplicationBundle:CRUD:edit_one_to_one.twig.html');
                 }
 
                 if($formDescription->getType() == ClassMetadataInfo::MANY_TO_ONE) {
-                    $formDescription->setTemplate('Sonata\BaseApplicationBundle:CRUD:edit_many_to_one.twig');
+                    $formDescription->setTemplate('SonataBaseApplicationBundle:CRUD:edit_many_to_one.twig.html');
                 }
 
                 if($formDescription->getType() == ClassMetadataInfo::MANY_TO_MANY) {
-                    $formDescription->setTemplate('Sonata\BaseApplicationBundle:CRUD:edit_many_to_many.twig');
+                    $formDescription->setTemplate('SonataBaseApplicationBundle:CRUD:edit_many_to_many.twig.html');
                 }
 
                 if($formDescription->getType() == ClassMetadataInfo::ONE_TO_MANY) {
-                    $formDescription->setTemplate('Sonata\BaseApplicationBundle:CRUD:edit_one_to_many.twig');
+                    $formDescription->setTemplate('SonataBaseApplicationBundle:CRUD:edit_one_to_many.twig.html');
                 }
 
             }
@@ -197,22 +197,22 @@ abstract class EntityAdmin extends Admin
 
             if(!$fieldDescription->getTemplate()) {
 
-                $fieldDescription->setTemplate(sprintf('Sonata/BaseApplicationBundle:CRUD:list_%s.twig', $fieldDescription->getType()));
+                $fieldDescription->setTemplate(sprintf('SonataBaseApplicationBundle:CRUD:list_%s.twig.html', $fieldDescription->getType()));
 
                 if($fieldDescription->getType() == ClassMetadataInfo::MANY_TO_ONE) {
-                    $fieldDescription->setTemplate('Sonata/BaseApplicationBundle:CRUD:list_many_to_one.twig');
+                    $fieldDescription->setTemplate('SonataBaseApplicationBundle:CRUD:list_many_to_one.twig.html');
                 }
 
                 if($fieldDescription->getType() == ClassMetadataInfo::ONE_TO_ONE) {
-                    $fieldDescription->setTemplate('Sonata/BaseApplicationBundle:CRUD:list_one_to_one.twig');
+                    $fieldDescription->setTemplate('SonataBaseApplicationBundle:CRUD:list_one_to_one.twig.html');
                 }
 
                 if($fieldDescription->getType() == ClassMetadataInfo::ONE_TO_MANY) {
-                    $fieldDescription->setTemplate('Sonata/BaseApplicationBundle:CRUD:list_one_to_many.twig');
+                    $fieldDescription->setTemplate('SonataBaseApplicationBundle:CRUD:list_one_to_many.twig.html');
                 }
 
                 if($fieldDescription->getType() == ClassMetadataInfo::MANY_TO_MANY) {
-                    $fieldDescription->setTemplate('Sonata/BaseApplicationBundle:CRUD:list_many_to_many.twig');
+                    $fieldDescription->setTemplate('SonataBaseApplicationBundle:CRUD:list_many_to_many.twig.html');
                 }
             }
 
@@ -230,7 +230,7 @@ abstract class EntityAdmin extends Admin
                 'label' => 'batch',
                 'code'  => '_batch'
             ));
-            $fieldDescription->setTemplate('Sonata/BaseApplicationBundle:CRUD:list__batch.twig');
+            $fieldDescription->setTemplate('SonataBaseApplicationBundle:CRUD:list__batch.twig.html');
             $this->listFields = array( '_batch' => $fieldDescription ) + $this->listFields;
         }
 
