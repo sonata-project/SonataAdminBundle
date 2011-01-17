@@ -54,7 +54,7 @@ file that was distributed with this source code.
                                 {% endfor %}
 
                                 {% if datagrid.pager.page != datagrid.pager.nextpage %}
-                                    <li><a href="{{ admin.generateUrl('list', datagrid.values|merge({'page': datagrid.pager.nextpage})) }}">{% trans 'link_previous_pager' from 'BaseApplicationBundle' %}</a></li>
+                                    <li><a href="{{ admin.generateUrl('list', datagrid.values|merge({'page': datagrid.pager.nextpage})) }}">{% trans 'link_next_pager' from 'BaseApplicationBundle' %}</a></li>
                                 {% endif %}
                             </ul>
                         </td>
