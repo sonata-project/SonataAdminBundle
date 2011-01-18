@@ -347,7 +347,7 @@ abstract class Admin extends ContainerAware
 
         $admin = $pool->getAdminByClass($fieldDescription->getTargetEntity());
         if (!$admin) {
-            throw new \RuntimeException(sprintf('You must define an Admin class for the `%s` field', $name));
+            throw new \RuntimeException(sprintf('You must define an Admin class for the `%s` field', $fieldDescription->getFieldName()));
         }
 
         $fieldDescription->setAssociationAdmin($admin);
