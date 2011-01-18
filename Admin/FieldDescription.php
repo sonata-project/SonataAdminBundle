@@ -11,27 +11,90 @@
 
 namespace Bundle\Sonata\BaseApplicationBundle\Admin;
 
+/**
+ * A FieldDescription hold the information about a field. A typical
+ * admin instance contains different collections of fields
+ *
+ * - formFields: used by the form
+ * - listFields: used by the list
+ * - filderFields: used by the list filter
+ *
+ * Some options are global accross the different contexts, other are
+ * context specifics.
+ *
+ * Global options :
+ *   - type (m): define the field type (use to tweak the form or the list)
+ *   - template (o) : the template used to render the field
+ *   - name (o) : the name used (label in the form, title in the list)
+ *
+ * Form Field options :
+ *   - field_widget (o): the widget class to use to render the field
+ *   - field_options (o): the options to give to the widget
+ *   - edit (o) : list|inline|standard (only used for associated admin)
+ *      - list : open a popup where the user can search, filter and click on one field
+ *               to select one item
+ *      - inline : the associated form admin is embedded into the current form
+ *      - standard : the associated admin is created through a popup
+ *
+ * List Field options :
+ *   - identifier (o): if set to true a link appear on to edit the element
+ *
+ * Filter Field options :
+ *   - filter_options (o): options given to the Filter object
+ *   - filter_field_options (o): options given to the filter field object
+ *
+ */
 class FieldDescription
 {
 
+    /**
+     * @var string the field name
+     */
     protected $name;
 
+    /**
+     * @var Admin the related admin instance
+     */
     protected $admin;
 
+    /**
+     * @var string|integer the type
+     */
     protected $type;
 
+    /**
+     * @var string the field name (of the form)
+     */
     protected $fieldName;
 
+    /**
+     * @var Admin the associated admin class if the object is associated to another entity
+     */
     protected $associationAdmin;
 
+    /**
+     * @var array the Doctrine association mapping
+     */
     protected $associationMapping;
 
+    /**
+     * @var array the Doctrine field information
+     */
     protected $fieldMapping;
 
+    /**
+     * @var string the template name
+     */
     protected $template;
 
+    /**
+     * @var array the option collection
+     */
     protected $options = array();
 
+    /**
+     * @var admin|null the parent Admin instance
+     */
     protected $parent = null;
 
     public function setFieldName($fieldName)
