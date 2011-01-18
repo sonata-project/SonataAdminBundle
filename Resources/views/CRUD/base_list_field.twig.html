@@ -11,10 +11,8 @@ file that was distributed with this source code.
 
 {% if field_description.getOption('identifier') %}
     <a href="{{ admin.generateUrl('edit', {'id': object.id}) }}">
-{% endif %}
-
-{% block field%}{{ value }}{% endblock %}
-
-{% if field_description.getOption('identifier') %}
+        {% block field %}{{ value }}{% endblock %}
     </a>
+{% else %}
+    {{ block('field') }}
 {% endif %}
