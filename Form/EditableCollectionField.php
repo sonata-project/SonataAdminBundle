@@ -109,12 +109,6 @@ class EditableCollectionField extends FieldGroup
             throw new UnexpectedTypeException($collection, 'array or \Traversable');
         }
 
-//        foreach ($this as $name => $field) {
-//            if (!$this->getOption('modifiable') || '$$key$$' != $name) {
-//                $this->remove($name);
-//            }
-//        }
-
         foreach ($collection as $name => $value) {
             $this->add($this->newField($name, $name));
         }
