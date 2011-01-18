@@ -33,7 +33,7 @@ class AdminPoolLoader extends Loader
     function supports($resource, $type = null)
     {
 
-        if($resource == 'base_application') {
+        if ($resource == 'base_application') {
             return true;
         }
 
@@ -44,8 +44,8 @@ class AdminPoolLoader extends Loader
     {
 
         $collection = new RouteCollection;
-        foreach($this->pool->getInstances() as $admin) {
-            foreach($admin->getUrls() as $code => $configuration) {
+        foreach ($this->pool->getInstances() as $admin) {
+            foreach ($admin->getUrls() as $code => $configuration) {
 
                 $collection->add($configuration['name'], new Route(
                     $configuration['pattern'],

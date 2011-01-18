@@ -12,4 +12,8 @@
         <default key="_controller">SonataBaseApplicationBundle:Core:retrieveFormFieldElement</default>
     </route>
 
+    <route id="sonata_base_application_append_form_element" pattern="/core/{code}/append-form-field-element/{element_id}">
+        <default key="_controller">SonataBaseApplicationBundle:Core:appendFormFieldElement</default>
+    </route>
+
 </routes>

@@ -58,12 +58,12 @@ class BaseApplicationExtension extends Extension
         // registers crud action
         $definition = new Definition('Bundle\Sonata\BaseApplicationBundle\Admin\Pool');
         $definition->addMethodCall('setContainer', array(new Reference('service_container')));
-        foreach($config['entities'] as $code => $configuration) {
-            if(!isset($configuration['group'])) {
+        foreach ($config['entities'] as $code => $configuration) {
+            if (!isset($configuration['group'])) {
                 $configuration['group'] = 'default';
             }
 
-            if(!isset($configuration['label'])) {
+            if (!isset($configuration['label'])) {
                 $configuration['label'] = $code;
             }
             

@@ -68,7 +68,7 @@ This code manage the many-to-[one|many] association field popup
             success: function(html) {
                 // if the crud action return ok, then the element has been added
                 // so the widget container must be refresh with the last option available
-                if(html == 'ok') {
+                if (html == 'ok') {
                     field_dialog_{{ admin.code }}_{{ field_element.id }}.dialog('close');
 
                     // reload the form element

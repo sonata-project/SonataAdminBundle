@@ -15,11 +15,11 @@ var BaseApplication = {
 
             var message = jQuery('div.sonata-ba-field-error-messages', element).html();
             jQuery('div.sonata-ba-field-error-messages', element).html('');
-            if(!message) {
+            if (!message) {
                 message = '';
             }
 
-            if(message.length == 0) {
+            if (message.length == 0) {
                 return;
             }
 

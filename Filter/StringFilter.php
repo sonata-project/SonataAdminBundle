@@ -20,7 +20,7 @@ class StringFilter extends Filter
     public function filter(QueryBuilder $queryBuilder, $alias, $field, $value)
     {
 
-        if($value == null) {
+        if ($value == null) {
             return;
         }
 

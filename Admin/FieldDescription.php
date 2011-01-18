@@ -48,7 +48,7 @@ class FieldDescription
     {
         $this->name = $name;
 
-        if(!$this->getFieldName()) {
+        if (!$this->getFieldName()) {
             $this->setFieldName($name);
         }
     }
@@ -123,7 +123,7 @@ class FieldDescription
 
     public function getTargetEntity()
     {
-        if($this->associationMapping) {
+        if ($this->associationMapping) {
             return $this->associationMapping['targetEntity'];
         }
 
@@ -150,7 +150,6 @@ class FieldDescription
     public function setAssociationAdmin(Admin $associationAdmin)
     {
         $this->associationAdmin = $associationAdmin;
-
         $this->associationAdmin->setParentFieldDescription($this);
     }
 
@@ -195,7 +194,7 @@ class FieldDescription
 
             $value = call_user_func(array($object, $getter));
             
-        } else if($this->getOption('code') && method_exists($object, $this->getOption('code'))) {
+        } else if ($this->getOption('code') && method_exists($object, $this->getOption('code'))) {
 
             $value = call_user_func(array($object, $this->getOption('code')));
         }

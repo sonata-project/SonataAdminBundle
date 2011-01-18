@@ -18,8 +18,6 @@ class Pool
     
     protected $configuration = array();
 
-    protected $instances = array();
-
     public function addConfiguration($code, $configuration)
     {
         $configuration['code'] = $code;
@@ -32,9 +30,9 @@ class Pool
 
         $groups = array();
 
-        foreach($this->configuration as $configuration) {
+        foreach ($this->configuration as $configuration) {
 
-            if(!isset($groups[$configuration['group']])) {
+            if (!isset($groups[$configuration['group']])) {
                 $groups[$configuration['group']] = array();
             }
 
@@ -54,13 +52,13 @@ class Pool
     public function getAdminByControllerName($name)
     {
         $configuration_code = false;
-        foreach($this->configuration as $code => $configuration) {
-            if($configuration['controller'] == $name) {
+        foreach ($this->configuration as $code => $configuration) {
+            if ($configuration['controller'] == $name) {
                 $configuration_code = $code;
             }
         }
 
-        if(!$configuration_code) {
+        if (!$configuration_code) {
             return null;
         }
 
@@ -72,49 +70,58 @@ class Pool
 
         $configuration_code = false;
 
-        foreach($this->configuration as $code => $configuration) {
+        foreach ($this->configuration as $code => $configuration) {
 
-            if($configuration['entity'] == $class) {
+            if ($configuration['entity'] == $class) {
                 $configuration_code = $code;
                 break;
             }
         }
 
-        if(!$configuration_code) {
+        if (!$configuration_code) {
             return null;
         }
 
         return $this->getInstance($code);
     }
 
+    /**
+     *
+     * return a new admin instance depends on the given code
+     *
+     * @param $code
+     * @return
+     */
     public function getInstance($code)
     {
-        if(!isset($this->instances[$code])) {
-            
-            $class = $this->configuration[$code]['class'];
-            $this->instances[$code] = new $class;
-            $this->instances[$code]->setContainer($this->getContainer());
-            $this->instances[$code]->setConfigurationPool($this);
-            $this->instances[$code]->setCode($code);
-            $this->instances[$code]->setLabel($this->configuration[$code]['label']);
-            $this->instances[$code]->configure();
-        }
 
-        return $this->instances[$code];
+        $class = $this->configuration[$code]['class'];
+        $instance = new $class;
+        $instance->setContainer($this->getContainer());
+        $instance->setConfigurationPool($this);
+        $instance->setCode($code);
+        $instance->setLabel($this->configuration[$code]['label']);
+        $instance->configure();
+
+        return $instance;
     }
 
+    /**
+     * return a group of admin instance
+     *
+     * @return array
+     */
     public function getInstances()
     {
-        if(count($this->configuration) != count($this->instances)) {
-            foreach($this->configuration as $code => $configuration) {
-                $this->getInstance($code);
-            }
+        $instances = array();
+        foreach ($this->configuration as $code => $configuration) {
+            $instances[] = $this->getInstance($code);
         }
 
-        return $this->instances;
+        return $instances;
     }
 
-    public function setConfiguration($configuration)
+    public function setConfiguration(array $configuration = array())
     {
         $this->configuration = $configuration;
     }

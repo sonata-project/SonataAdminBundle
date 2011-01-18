@@ -40,7 +40,7 @@ Example
         public function getWithOpenCommentFilter($query_builder, $alias, $field, $value)
         {
 
-            if(!$value) {
+            if (!$value) {
                 return;
             }
 

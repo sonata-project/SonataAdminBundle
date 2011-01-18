@@ -69,9 +69,9 @@ abstract class Filter extends Configurable
 
     protected function association(QueryBuilder $queryBuilder, $value)
     {
-        if($value) {
+        if ($value) {
 
-            if($this->description->getType() == \Doctrine\ORM\Mapping\ClassMetadataInfo::MANY_TO_MANY) {
+            if ($this->description->getType() == \Doctrine\ORM\Mapping\ClassMetadataInfo::MANY_TO_MANY) {
                 $queryBuilder->leftJoin(
                     sprintf('%s.%s', $queryBuilder->getRootAlias(), $this->description->getFieldName()),
                     $this->getName()

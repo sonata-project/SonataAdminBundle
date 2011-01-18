@@ -96,7 +96,7 @@ class BaseApplicationExtension extends \Twig_Extension
         // no value defined, chek if the field_description point to an association
         // if so, create an empty object instance
         // fixme: not sure this is the best place to do that
-        if(!$value && $fieldDescription->getAssociationAdmin()) {
+        if (!$value && $fieldDescription->getAssociationAdmin()) {
 
             $value = $fieldDescription->getAssociationAdmin()->getNewInstance();
         }
@@ -136,7 +136,7 @@ class BaseApplicationExtension extends \Twig_Extension
     public function renderFormElement(FieldDescription $fieldDescription, $form, $object, $params = array())
     {
 
-        if(!$fieldDescription->getFieldName()) {
+        if (!$fieldDescription->getFieldName()) {
 
             return '';
         }
@@ -148,18 +148,37 @@ class BaseApplicationExtension extends \Twig_Extension
             throw $e;
         }
 
-        if($field->isHidden()) {
+        if ($field->isHidden()) {
             return '';
         }
-        
-        $template = $this->environment->loadTemplate($fieldDescription->getTemplate());
 
+        // find the correct edit parameter
+        //  edit   : standard | inline
+        //  inline : natural | table
+        $parentFieldDescription = $fieldDescription->getAdmin()->getParentFieldDescription();
+
+        if (!$parentFieldDescription) {
+            $params['edit']          = $fieldDescription->getOption('edit', 'standard');
+            $params['inline']        = $fieldDescription->getOption('inline', 'natural');
+
+            $base_template = sprintf('SonataBaseApplicationBundle:CRUD:base_%s_edit_field.twig.html', 'standard');
+        } else {
+            $params['edit']          = $parentFieldDescription->getOption('edit', 'standard');
+            $params['inline']        = $parentFieldDescription->getOption('inline', 'natural');
+
+            $base_template = sprintf('SonataBaseApplicationBundle:CRUD:base_%s_edit_field.twig.html', $params['edit']);
+        }
+
+
+        $template = $this->environment->loadTemplate($fieldDescription->getTemplate());
+        
         return $template->render(array_merge($params, array(
             'admin'             => $fieldDescription->getAdmin(),
             'object'            => $object,
             'field_description' => $fieldDescription,
             'value'             => $this->getValueFromFieldDescription($object, $fieldDescription),
             'field_element'     => $field,
+            'base_template'     => $fieldDescription->getOption('base_template', $base_template)
         )));
     }
 

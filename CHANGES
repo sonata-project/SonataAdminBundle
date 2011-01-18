@@ -1,3 +1,14 @@
+18/01/2001
+----------
+
+* respect symfony conventions
+* add new base edit template (standard and inline)
+* admin instances are not singletons anymore
+* add inline edition
+
+
+15/01/2011
+----------
 
 * respect symfony conventions
 * add a FieldDescription

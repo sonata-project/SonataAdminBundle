@@ -20,18 +20,18 @@ class BooleanFilter extends Filter
     public function filter(QueryBuilder $queryBuilder, $alias, $field, $value)
     {
 
-        if($this->getField()->isMultipleChoice()) {
+        if ($this->getField()->isMultipleChoice()) {
 
             $values = array();
-            foreach($value as $v) {
-                if($v == 'all') {
+            foreach ($value as $v) {
+                if ($v == 'all') {
                     return;
                 }
 
                 $values[] = $v == 'true' ? 1 : 0;
             }
 
-            if(count($values) == 0) {
+            if (count($values) == 0) {
                 return;
             }
             

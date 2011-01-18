@@ -146,7 +146,7 @@ class DoctrinePager extends Pager implements \Serializable
     public function getQuery()
     {
 
-        if(!$this->query) {
+        if (!$this->query) {
             $this->query = $this->getQueryBuilder()->getQuery();
         }
 

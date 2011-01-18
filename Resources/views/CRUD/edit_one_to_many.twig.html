@@ -9,4 +9,69 @@ file that was distributed with this source code.
 
 #}
 
-{% extends 'SonataBaseApplicationBundle:CRUD:base_edit_field.twig.html' %}
+{% extends base_template %}
+
+
+{% block field %}
+    {% if edit == 'inline' %}
+
+        <div id="field_container_{{ admin.code }}_{{ field_element.id}}">
+            <span id="field_widget_{{ admin.code }}_{{ field_element.id}}" >
+                {% if inline == 'table' %}
+                    <table>
+                        {% for nested_group_field_name, nested_group_field in field_element.fields %}
+                            <tr>
+                                {% for field_name, nested_field in nested_group_field.fields %}
+                                    <td>
+                                        {% if field_description.associationadmin.formfields[field_name] is defined %}
+                                            {{ field_description.associationadmin.formfields[field_name]|render_form_element(
+                                                nested_group_field,
+                                                value
+                                            ) }}
+                                        {% else %}
+                                            {{ form_field(nested_field) }}
+                                        {% endif %}
+                                    </td>
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                    </table>
+                {% else %}
+                    <div>
+                        {% for nested_group_field_name, nested_group_field in field_element.fields %}
+                            {% for field_name, nested_field in nested_group_field.fields %}
+                                {% if field_description.associationadmin.formfields[field_name] is defined %}
+                                    {{ field_description.associationadmin.formfields[field_name]|render_form_element(
+                                        nested_group_field,
+                                        value, {
+                                            'inline': 'natural',
+                                            'edit'  : 'inline'
+                                        }
+                                    ) }}
+                                {% else %}
+                                    {{ form_field(nested_field) }}
+                                {% endif %}
+                            {% endfor %}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </span>
+
+            <span id="field_actions_{{ admin.code }}_{{ field_element.id}}" >
+                <a
+                    href="{{ field_description.associationadmin.generateUrl('create') }}"
+                    onclick="start_field_retrieve_{{ admin.code }}_{{ field_element.id }}(event)"
+                    class="action">
+                    <img
+                        src="{{ asset('bundles/baseapplication/famfamfam/add.png') }}"
+                        alt="{% trans 'btn_add' from 'BaseApplicationBundle' %}"
+                     />
+                </a>
+            </span>
+
+            {% include 'SonataBaseApplicationBundle:CRUD:edit_one_association_script.twig.html' %}
+        </div>
+    {% else %}
+        {{ form_field(field_element) }}
+    {% endif %}
+{% endblock %}

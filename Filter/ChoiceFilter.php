@@ -21,13 +21,13 @@ class ChoiceFilter extends Filter
     {
 
 
-        if($this->getField()->isMultipleChoice()) {
+        if ($this->getField()->isMultipleChoice()) {
 
-            if(in_array('all', $value)) {
+            if (in_array('all', $value)) {
                 return;
             }
 
-            if(count($value) == 0) {
+            if (count($value) == 0) {
                 return;
             }
 

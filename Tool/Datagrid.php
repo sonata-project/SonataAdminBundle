@@ -67,7 +67,7 @@ class Datagrid
     public function getPager()
     {
 
-        if(!$this->pager) {
+        if (!$this->pager) {
             $this->pager = new Pager($this->getClassname(), $this->getMaxPerPage());
 
             $this->pager->setQueryBuilder($this->getQueryBuilder($this->values));
@@ -101,7 +101,7 @@ class Datagrid
 
         $queryBuidler = $this->getBaseQueryBuilder();
 
-        foreach($this->getFilters() as $name => $filter) {
+        foreach ($this->getFilters() as $name => $filter) {
 
             $value = isset($values[$name]) ? $values[$name] : null;
 
@@ -146,7 +146,7 @@ class Datagrid
     {
         $this->filterFields = EntityAdmin::getBaseFields($this->getClassMetaData(), $this->filterFields);
 
-        foreach($this->filterFields as $name => $fieldDescription) {
+        foreach ($this->filterFields as $name => $fieldDescription) {
 
             // set default values
             $fieldDescription->setOption('code', $fieldDescription->getOption('code', $name));
@@ -157,18 +157,18 @@ class Datagrid
             $fieldDescription->setOption('name', $fieldDescription->getOption('name', $name));
 
             // set the default type if none is set
-            if(!$fieldDescription->getType()) {
+            if (!$fieldDescription->getType()) {
                 $fieldDescription->setType('string');
             }
 
-            if(!$fieldDescription->getTemplate()) {
+            if (!$fieldDescription->getTemplate()) {
                 $fieldDescription->setTemplate(sprintf('SonataBaseApplicationBundle:CRUD:filter_%s.twig.html', $fieldDescription->getType()));
 
-                if($fieldDescription->getType() == ClassMetadataInfo::MANY_TO_ONE) {
+                if ($fieldDescription->getType() == ClassMetadataInfo::MANY_TO_ONE) {
                     $fieldDescription->setTemplate('SonataBaseApplicationBundle:CRUD:filter_many_to_one.twig.html');
                 }
 
-                if($fieldDescription->getType() == ClassMetadataInfo::MANY_TO_MANY) {
+                if ($fieldDescription->getType() == ClassMetadataInfo::MANY_TO_MANY) {
                     $fieldDescription->setTemplate('SonataBaseApplicationBundle:CRUD:filter_many_to_many.twig.html');
                 }
             }
@@ -187,10 +187,10 @@ class Datagrid
             ->execute();
 
         $choices = array();
-        foreach($targets as $target) {
+        foreach ($targets as $target) {
             // todo : puts this into a configuration option and use reflection
-            foreach(array('getTitle', 'getName', '__toString') as $getter) {
-                if(method_exists($target, $getter)) {
+            foreach (array('getTitle', 'getName', '__toString') as $getter) {
+                if (method_exists($target, $getter)) {
                     $choices[$target->getId()] = $target->$getter();
                     break;
                 }
@@ -203,7 +203,7 @@ class Datagrid
     public function getFilterInstance(FieldDescription $fieldDescription)
     {
 
-        if(!$fieldDescription->getType()) {
+        if (!$fieldDescription->getType()) {
 
             return false;
         }
@@ -255,11 +255,11 @@ class Datagrid
     public function getFilters()
     {
 
-        if(!$this->filters) {
-            foreach($this->filterFields as $name => $description) {
+        if (!$this->filters) {
+            foreach ($this->filterFields as $name => $description) {
                 $filter = $this->getFilterInstance($this->filterFields[$name]);
 
-                if($filter) {
+                if ($filter) {
                     $this->filters[$name] = $filter;
                 }
             }

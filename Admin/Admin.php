@@ -104,8 +104,8 @@ abstract class Admin extends ContainerAware
     public function getBaseRoutePattern()
     {
 
-        if(!$this->baseRoutePattern) {
-            if(preg_match('@(Application|Bundle)\\\([A-Za-z]*)\\\([A-Za-z]*)Bundle\\\(Entity|Document)\\\([A-Za-z]*)@', $this->getClass(), $matches)) {
+        if (!$this->baseRoutePattern) {
+            if (preg_match('@(Application|Bundle)\\\([A-Za-z]*)\\\([A-Za-z]*)Bundle\\\(Entity|Document)\\\([A-Za-z]*)@', $this->getClass(), $matches)) {
 
                 $this->baseRoutePattern = sprintf('/%s/%s/%s',
                     $this->urlize($matches[2], '-'),
@@ -128,8 +128,8 @@ abstract class Admin extends ContainerAware
      */
     public function getBaseRouteName()
     {
-        if(!$this->baseRouteName) {
-            if(preg_match('@(Application|Bundle)\\\([A-Za-z]*)\\\([A-Za-z]*)Bundle\\\(Entity|Document)\\\([A-Za-z]*)@', $this->getClass(), $matches)) {
+        if (!$this->baseRouteName) {
+            if (preg_match('@(Application|Bundle)\\\([A-Za-z]*)\\\([A-Za-z]*)Bundle\\\(Entity|Document)\\\([A-Za-z]*)@', $this->getClass(), $matches)) {
 
                 $this->baseRouteName = sprintf('admin_%s_%s_%s',
                     $this->urlize($matches[2]),
@@ -198,7 +198,7 @@ abstract class Admin extends ContainerAware
 
     public function buildUrls()
     {
-        if($this->loaded['urls']) {
+        if ($this->loaded['urls']) {
             return;
         }
 
@@ -273,7 +273,7 @@ abstract class Admin extends ContainerAware
     {
         $urls = $this->getUrls();
 
-        if(!isset($urls[$name])) {
+        if (!isset($urls[$name])) {
             return false;
         }
 
@@ -293,11 +293,11 @@ abstract class Admin extends ContainerAware
     {
         $url = $this->getUrl($name);
 
-        if(!$url) {
+        if (!$url) {
             throw new \RuntimeException(sprintf('unable to find the url `%s`', $name));
         }
 
-        if(!is_array($params)) {
+        if (!is_array($params)) {
             $params = array();
         }
 
@@ -336,6 +336,23 @@ abstract class Admin extends ContainerAware
         return new $class;
     }
 
+
+    /**
+     * attach an admin instance to the given FieldDescription
+     *
+     */
+    public function attachAdminClass(FieldDescription $fieldDescription)
+    {
+        $pool = $this->getConfigurationPool();
+
+        $admin = $pool->getAdminByClass($fieldDescription->getTargetEntity());
+        if (!$admin) {
+            throw new \RuntimeException(sprintf('You must define an Admin class for the `%s` field', $name));
+        }
+
+        $fieldDescription->setAssociationAdmin($admin);
+    }
+
     /**
      * return the target objet
      *
@@ -352,22 +369,22 @@ abstract class Admin extends ContainerAware
     public function buildFormGroups()
     {
 
-        if($this->loaded['form_groups']) {
+        if ($this->loaded['form_groups']) {
             return;
         }
 
         $this->loaded['form_groups'] = true;
                 
 
-        if(!$this->formGroups) {
+        if (!$this->formGroups) {
             $this->formGroups = array(
                 false => array('fields' => array_keys($this->formFields))
             );
         }
 
         // normalize array
-        foreach($this->formGroups as $name => $group) {
-            if(!isset($this->formGroups[$name]['collapsed'])) {
+        foreach ($this->formGroups as $name => $group) {
+            if (!isset($this->formGroups[$name]['collapsed'])) {
                 $this->formGroups[$name]['collapsed'] = false;
             }
         }
@@ -410,7 +427,7 @@ abstract class Admin extends ContainerAware
 
     public function getFilterDatagrid()
     {
-        if(!$this->filterDatagrid) {
+        if (!$this->filterDatagrid) {
 
             $this->filterDatagrid = new Datagrid(
                 $this->getClass(),
@@ -450,16 +467,15 @@ abstract class Admin extends ContainerAware
      */
     public function getRoot()
     {
-        while($parent_field_description = $this->getParentFieldDescription()) {
 
-            if(!$parent_field_description) {
-                return $this;
-            }
+        $parentFieldDescription = $this->getParentFieldDescription();
 
-            return $parent_field_description->getAdmin()->getRoot();
+        if (!$parentFieldDescription) {
+
+            return $this;
         }
 
-        return $this;
+        return $parentFieldDescription->getAdmin()->getRoot();
     }
 
     /**

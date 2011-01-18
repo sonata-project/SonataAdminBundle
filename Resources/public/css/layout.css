@@ -2,6 +2,14 @@ table.sonata-ba-list {
     width: 500px;
 }
 
+div.sonata-ba-field-inline-table input.title {
+    width: 100px;
+}
+
+div.sonata-ba-field-inline-table textarea.title {
+    width: 150px;
+    height: 50px;
+}
 
 table.sonata-ba-list td {
     width: 75px;

@@ -37,24 +37,24 @@ class ArrayToObjectTransformer extends BaseValueTransformer
 
         // when the object is created the form return an array
         // one the object is persited, the edit $array is the user instance
-        if($array instanceof $class)
+        if ($array instanceof $class)
         {
             return $array;
         }
 
         $instance = new $class;
 
-        if(!is_array($array)) {
+        if (!is_array($array)) {
             
             return $instance;
         }
 
         $reflClass = $metadata->reflClass;
-        foreach($array as $name => $value) {
+        foreach ($array as $name => $value) {
 
             $reflection_property = false;
             // property or association ?
-            if(array_key_exists($name, $metadata->fieldMappings)) {
+            if (array_key_exists($name, $metadata->fieldMappings)) {
 
                 $property = $metadata->fieldMappings[$name]['fieldName'];
                 $reflection_property = $metadata->reflFields[$name];
@@ -82,7 +82,7 @@ class ArrayToObjectTransformer extends BaseValueTransformer
                 }
 
                 $instance->$property = $value;
-            } else if($reflection_property) {
+            } else if ($reflection_property) {
                 $reflection_property->setValue($instance, $value);
             }
         }
