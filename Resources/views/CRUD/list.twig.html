@@ -15,7 +15,7 @@ file that was distributed with this source code.
     {% for element in datagrid.results %}
         <tr>
             {% for field_description in fields %}
-                <td>{{ element|render_list_element(field_description) }}</td>
+                {{ element|render_list_element(field_description) }}
             {% endfor %}
         </tr>
     {% endfor %}

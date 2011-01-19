@@ -530,16 +530,6 @@ abstract class Admin extends ContainerAware
         return $this->baseControllerName;
     }
 
-    public function setBaseRoute($baseRoute)
-    {
-        $this->baseRoute = $baseRoute;
-    }
-
-    public function getBaseRoute()
-    {
-        return $this->baseRoute;
-    }
-
     public function setConfigurationPool($configurationPool)
     {
         $this->configurationPool = $configurationPool;

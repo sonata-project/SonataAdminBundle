@@ -302,7 +302,7 @@ abstract class EntityAdmin extends Admin
         ));
 
         // create the "embedded" field
-        if($fieldDescription->getType() == ClassMetadataInfo::ONE_TO_MANY) {
+        if ($fieldDescription->getType() == ClassMetadataInfo::ONE_TO_MANY) {
             $field = new \Bundle\Sonata\BaseApplicationBundle\Form\EditableFieldGroup($fieldName, array(
                 'value_transformer' => $transformer,
             ));
@@ -377,8 +377,10 @@ abstract class EntityAdmin extends Admin
      */
     protected function getOneToOneField($object, FieldDescription $fieldDescription)
     {
-        
+
+        // tweak the widget depend on the edit mode
         if ($fieldDescription->getOption('edit') == 'inline') {
+
             return $this->getRelatedAssociatedField($object, $fieldDescription);
         }
 
@@ -388,8 +390,13 @@ abstract class EntityAdmin extends Admin
                 'className' => $fieldDescription->getTargetEntity()
             ))
         );
-
         $options = array_merge($options, $fieldDescription->getOption('form_field_options', array()));
+
+
+        if ($fieldDescription->getOption('edit') == 'list') {
+
+            return new \Symfony\Component\Form\TextField($fieldDescription->getFieldName(), $options);
+        }
 
         $class = $fieldDescription->getOption('form_field_widget', 'Symfony\\Component\\Form\\ChoiceField');
 
@@ -467,6 +474,7 @@ abstract class EntityAdmin extends Admin
     {
 
         switch ($fieldDescription->getType()) {
+
             case ClassMetadataInfo::ONE_TO_MANY:
 
                 return $this->getOneToManyField($object, $fieldDescription);
@@ -475,6 +483,7 @@ abstract class EntityAdmin extends Admin
 
                 return $this->getManyToManyField($object, $fieldDescription);
 
+            case ClassMetadataInfo::MANY_TO_ONE:
             case ClassMetadataInfo::ONE_TO_ONE:
 
                 return $this->getOneToOneField($object, $fieldDescription);
