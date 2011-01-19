@@ -160,7 +160,7 @@ abstract class Admin extends ContainerAware
                     $this->urlize($matches[5])
                 );
             } else {
-                throw new \RuntimeException(sprintf('Please define a default `baseRoutePattern` value for the admin class `%s`', get_class($this)));
+                throw new \RuntimeException(sprintf('Please define a default `baseRouteName` value for the admin class `%s`', get_class($this)));
             }
         }
 
