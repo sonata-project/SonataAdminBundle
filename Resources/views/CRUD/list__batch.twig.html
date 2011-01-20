@@ -9,6 +9,6 @@ file that was distributed with this source code.
 
 #}
 
-{% extends 'SonataBaseApplicationBundle:CRUD:base_list_field.twig.html' %}
-
-{% block field%}<input type="checkbox" name="idx[]" value="{{ object.id }}" />{% endblock %}
+<td class="sonata-ba-list-field sonata-ba-list-field-batch">
+  <input type="checkbox" name="idx[]" value="{{ object.id }}" />
+</td>

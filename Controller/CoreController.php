@@ -146,6 +146,27 @@ class CoreController extends Controller
         return $this->createResponse($extension->renderFormElement($fieldDescription, $form, $form->getData()));
     }
 
+    public function getShortObjectDescriptionAction($code, $object_id)
+    {
+
+        $admin            = $this->container->get('base_application.admin.pool')->getInstance($code);
+
+        $object = $admin->getObject($object_id);
+
+        if (!$object) {
+            throw new NotFoundHttpException(sprintf('unable to find the object with id : %s', $object_id));
+        }
+
+        $description = 'no description available';
+        foreach (array('getTitle', 'getName', '__toString') as $method) {
+            if (method_exists($object, $method)) {
+                $description = $object->$method();
+                break;
+            }
+        }
+
+        return $this->createResponse($description);
+    }
 
     public function dashboardAction()
     {

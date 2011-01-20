@@ -65,6 +65,29 @@ abstract class Admin extends ContainerAware
     );
 
     /**
+     * todo: put this in the DIC
+     *
+     * @var array
+     */
+    protected $formFieldClasses = array(
+        'string'     =>  'Symfony\\Component\\Form\\TextField',
+        'text'       =>  'Symfony\\Component\\Form\\TextareaField',
+        'boolean'    =>  'Symfony\\Component\\Form\\CheckboxField',
+        'integer'    =>  'Symfony\\Component\\Form\\IntegerField',
+        'tinyint'    =>  'Symfony\\Component\\Form\\IntegerField',
+        'smallint'   =>  'Symfony\\Component\\Form\\IntegerField',
+        'mediumint'  =>  'Symfony\\Component\\Form\\IntegerField',
+        'bigint'     =>  'Symfony\\Component\\Form\\IntegerField',
+        'decimal'    =>  'Symfony\\Component\\Form\\NumberField',
+        'datetime'   =>  'Symfony\\Component\\Form\\DateTimeField',
+        'date'       =>  'Symfony\\Component\\Form\\DateField',
+        'choice'     =>  'Symfony\\Component\\Form\\ChoiceField',
+        'array'      =>  'Symfony\\Component\\Form\\FieldGroup',
+    );
+
+    protected $choicesCache = array();
+
+    /**
      * return the entity manager
      *
      * @return EntityManager
@@ -77,16 +100,16 @@ abstract class Admin extends ContainerAware
      * @throws RuntimeException
      * @return
      */
-    abstract public function buildFormFields();
+    abstract protected function buildFormFields();
 
     /**
      * build the field to use in the list view
      *
      * @return void
      */
-    abstract public function buildListFields();
+    abstract protected function buildListFields();
 
-    abstract public function getChoices(FieldDescription $description);
+    abstract protected function getChoices(FieldDescription $description);
 
     abstract public function getForm($object, $fields);
 
@@ -137,7 +160,7 @@ abstract class Admin extends ContainerAware
                     $this->urlize($matches[5])
                 );
             } else {
-                throw new \RuntimeException(sprintf('Please define a default `baseRoutePattern` value for the admin class `%s`', get_class($this)));
+                throw new \RuntimeException(sprintf('Please define a default `baseRouteName` value for the admin class `%s`', get_class($this)));
             }
         }
 
@@ -347,7 +370,7 @@ abstract class Admin extends ContainerAware
 
         $admin = $pool->getAdminByClass($fieldDescription->getTargetEntity());
         if (!$admin) {
-            throw new \RuntimeException(sprintf('You must define an Admin class for the `%s` field', $name));
+            throw new \RuntimeException(sprintf('You must define an Admin class for the `%s` field', $fieldDescription->getFieldName()));
         }
 
         $fieldDescription->setAssociationAdmin($admin);
@@ -505,16 +528,6 @@ abstract class Admin extends ContainerAware
     public function getBaseControllerName()
     {
         return $this->baseControllerName;
-    }
-
-    public function setBaseRoute($baseRoute)
-    {
-        $this->baseRoute = $baseRoute;
-    }
-
-    public function getBaseRoute()
-    {
-        return $this->baseRoute;
     }
 
     public function setConfigurationPool($configurationPool)

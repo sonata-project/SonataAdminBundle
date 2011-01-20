@@ -16,4 +16,8 @@
         <default key="_controller">SonataBaseApplicationBundle:Core:appendFormFieldElement</default>
     </route>
 
+    <route id="sonata_base_application_short_object_information" pattern="/core/{code}/get-short-object-description/{object_id}">
+        <default key="_controller">SonataBaseApplicationBundle:Core:getShortObjectDescription</default>
+    </route>
+
 </routes>

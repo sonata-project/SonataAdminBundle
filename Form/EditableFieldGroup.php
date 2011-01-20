@@ -30,8 +30,7 @@ class EditableFieldGroup extends FieldGroup
     {
 
         $this->add(new CheckboxField('_delete'));
-//        $this->add(new TextField('_position'));
-        
+
         parent::__construct($key, $options);
     }
 
@@ -45,10 +44,6 @@ class EditableFieldGroup extends FieldGroup
 
         foreach ($iterator as $field) {
             if($field->getKey() == '_delete') {
-                continue;
-            }
-
-            if($field->getKey() == '_position') {
                 continue;
             }
 
@@ -66,10 +61,6 @@ class EditableFieldGroup extends FieldGroup
 
         foreach ($iterator as $field) {
             if($field->getKey() == '_delete') {
-                continue;
-            }
-
-            if($field->getKey() == '_position') {
                 continue;
             }
 
