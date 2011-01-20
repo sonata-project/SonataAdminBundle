@@ -28,9 +28,9 @@ file that was distributed with this source code.
                 <tr>
                     {% for field_description in fields %}
                         {% if field_description.getOption('code') == '_batch' %}
-                          <th><input type="checkbox" id="list_batch_checkbox" /></th>
+                          <th class="sonata-ba-list-field-header sonata-ba-list-field-header-batch"><input type="checkbox" id="list_batch_checkbox" /></th>
                         {% else %}
-                          <th>{{ field_description.name }}</th>
+                          <th class="sonata-ba-list-field-header sonata-ba-list-field-header-{{ field_description.type}}">{{ field_description.name }}</th>
                         {% endif %}
                     {% endfor %}
                 </tr>
@@ -74,7 +74,7 @@ file that was distributed with this source code.
             });
         </script>
 
-        <div>
+        <div class="sonata-ba-list-actions">
             <select name="action" >
                 {% for action, label in batch_actions %}
                     <option value="{{ action }}">{{ label }}</option>

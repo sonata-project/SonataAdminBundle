@@ -43,3 +43,15 @@ td.pager ul li a {
     padding: 4px;
     margin: 2px;
 }
+
+
+div.sonata-ba-modal-edit-one-to-one td.sonata-ba-list-field-batch,
+div.sonata-ba-modal-edit-one-to-one div.sonata-ba-list-actions,
+div.sonata-ba-modal-edit-one-to-one th.sonata-ba-list-field-header-batch
+{
+    display: none;
+}
+
+div.sonata-ba-modal-edit-one-to-one div.sonata-ba-list-actions {
+    display: none;
+}

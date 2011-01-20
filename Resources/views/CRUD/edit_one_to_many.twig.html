@@ -13,7 +13,7 @@ file that was distributed with this source code.
 
 
 {% block field %}
-    {% if edit == 'inline' %}
+    {% if field_description.options.edit == 'inline' %}
 
         <div id="field_container_{{ admin.code }}_{{ field_element.id}}">
             <span id="field_widget_{{ admin.code }}_{{ field_element.id}}" >
