@@ -197,8 +197,8 @@ class FieldDescription
     {
         $this->fieldMapping = $fieldMapping;
 
-        $this->type      = $fieldMapping['type'];
-        $this->fieldName = $fieldMapping['fieldName'];
+        $this->type      = $this->type ?: $fieldMapping['type'];
+        $this->fieldName = $this->fieldName ?: $fieldMapping['fieldName'];
     }
 
     public function getFieldMapping()
