@@ -9,7 +9,7 @@
  */
 
 
-namespace Bundle\Sonata\BaseApplicationBundle\DependencyInjection;
+namespace Sonata\BaseApplicationBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\Resource\FileResource;
@@ -52,11 +52,11 @@ class BaseApplicationExtension extends Extension
 
         // register the twig extension
         $container
-            ->register('twig.extension.base_application', 'Bundle\Sonata\BaseApplicationBundle\Twig\Extension\BaseApplicationExtension')
+            ->register('twig.extension.base_application', 'Sonata\BaseApplicationBundle\Twig\Extension\BaseApplicationExtension')
             ->addTag('twig.extension');
 
         // registers crud action
-        $definition = new Definition('Bundle\Sonata\BaseApplicationBundle\Admin\Pool');
+        $definition = new Definition('Sonata\BaseApplicationBundle\Admin\Pool');
         $definition->addMethodCall('setContainer', array(new Reference('service_container')));
         foreach ($config['entities'] as $code => $configuration) {
             if (!isset($configuration['group'])) {
@@ -72,7 +72,7 @@ class BaseApplicationExtension extends Extension
 
         $container->setDefinition('base_application.admin.pool', $definition);
 
-        $definition = new Definition('Bundle\Sonata\BaseApplicationBundle\Route\AdminPoolLoader', array(new Reference('base_application.admin.pool')));
+        $definition = new Definition('Sonata\BaseApplicationBundle\Route\AdminPoolLoader', array(new Reference('base_application.admin.pool')));
         $definition->addTag('routing.loader');
 
         $container->setDefinition('base_application.route_loader', $definition);

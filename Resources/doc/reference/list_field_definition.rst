@@ -9,9 +9,9 @@ Example
 .. code-block:: php
 
     <?php
-    namespace Bundle\NewsBundle\Admin;
+    namespace Sonata\NewsBundle\Admin;
 
-    use Bundle\Sonata\BaseApplicationBundle\Admin\Admin;
+    use Sonata\BaseApplicationBundle\Admin\Admin;
 
     class PostAdmin extends Admin
     {

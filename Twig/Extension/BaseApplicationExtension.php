@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Bundle\Sonata\BaseApplicationBundle\Twig\Extension;
+namespace Sonata\BaseApplicationBundle\Twig\Extension;
 
 
-use Bundle\Sonata\BaseApplicationBundle\Admin\FieldDescription;
-use Bundle\Sonata\BaseApplicationBundle\Filter\Filter;
+use Sonata\BaseApplicationBundle\Admin\FieldDescription;
+use Sonata\BaseApplicationBundle\Filter\Filter;
 
 class BaseApplicationExtension extends \Twig_Extension
 {

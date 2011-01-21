@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Bundle\Sonata\BaseApplicationBundle\Filter;
+namespace Sonata\BaseApplicationBundle\Filter;
 
-use Bundle\Sonata\BaseApplicationBundle\Admin\FieldDescription;
+use Sonata\BaseApplicationBundle\Admin\FieldDescription;
 use Doctrine\ORM\QueryBuilder;
 
 class CallbackFilter extends Filter

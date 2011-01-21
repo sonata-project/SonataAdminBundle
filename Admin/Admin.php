@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Bundle\Sonata\BaseApplicationBundle\Admin;
+namespace Sonata\BaseApplicationBundle\Admin;
 
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\Form\Form;
 
-use Bundle\Sonata\BaseApplicationBundle\Tool\Datagrid;
+use Sonata\BaseApplicationBundle\Tool\Datagrid;
 
 abstract class Admin extends ContainerAware
 {

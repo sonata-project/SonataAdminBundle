@@ -9,14 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Bundle\Sonata\BaseApplicationBundle\Admin;
+namespace Sonata\BaseApplicationBundle\Admin;
 
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\Form\Form;
 
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 
-use Bundle\Sonata\BaseApplicationBundle\Tool\Datagrid;
+use Sonata\BaseApplicationBundle\Tool\Datagrid;
 
 abstract class EntityAdmin extends Admin
 {
@@ -296,14 +296,14 @@ abstract class EntityAdmin extends Admin
         $targetForm   = $associatedAdmin->getForm($targetObject, $targetFields);
 
         // create the transformer
-        $transformer = new \Bundle\Sonata\BaseApplicationBundle\Form\ValueTransformer\ArrayToObjectTransformer(array(
+        $transformer = new \Sonata\BaseApplicationBundle\Form\ValueTransformer\ArrayToObjectTransformer(array(
             'em'        => $this->getEntityManager(),
             'className' => $fieldDescription->getTargetEntity()
         ));
 
         // create the "embedded" field
         if ($fieldDescription->getType() == ClassMetadataInfo::ONE_TO_MANY) {
-            $field = new \Bundle\Sonata\BaseApplicationBundle\Form\EditableFieldGroup($fieldName, array(
+            $field = new \Sonata\BaseApplicationBundle\Form\EditableFieldGroup($fieldName, array(
                 'value_transformer' => $transformer,
             ));
 
@@ -437,7 +437,7 @@ abstract class EntityAdmin extends Admin
             }
 
             // use custom one to expose the newfield method
-            return new \Bundle\Sonata\BaseApplicationBundle\Form\EditableCollectionField($prototype);
+            return new \Sonata\BaseApplicationBundle\Form\EditableCollectionField($prototype);
         }
 
         return $this->getManyToManyField($object, $fieldDescription);

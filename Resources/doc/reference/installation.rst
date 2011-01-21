@@ -4,8 +4,8 @@ Installation
 To begin, add the dependent bundles to the ``src/Bundle`` directory. If using
 git, you can add them as submodules::
 
-  git submodule add git@github.com:sonata-project/jQueryBundle.git src/Bundle/Sonata/jQueryBundle
-  git submodule add git@github.com:sonata-project/BaseApplicationBundle.git src/Bundle/Sonata/BaseApplicationBundle
+  git submodule add git@github.com:sonata-project/jQueryBundle.git src/Sonata/jQueryBundle
+  git submodule add git@github.com:sonata-project/BaseApplicationBundle.git src/Sonata/BaseApplicationBundle
 
 Next, be sure to enable the bundles in your application kernel:
 
@@ -16,9 +16,9 @@ Next, be sure to enable the bundles in your application kernel:
   {
       return array(
           // ...
-          new Bundle\Sonata\jQueryBundle\SonatajQueryBundle(),
-          new Bundle\Sonata\BluePrintBundle\SonataBluePrintBundle(),
-          new Bundle\Sonata\BaseApplicationBundle\SonataBaseApplicationBundle(),
+          new Sonata\jQueryBundle\SonatajQueryBundle(),
+          new Sonata\BluePrintBundle\SonataBluePrintBundle(),
+          new Sonata\BaseApplicationBundle\SonataBaseApplicationBundle(),
           // ...
       );
   }
@@ -43,11 +43,11 @@ code to your application's routing file:
 
     # app/config/routing.yml
     base_application:
-        resource: BaseApplicationBundle/Resources/config/routing/base_application.xml
+        resource: @BaseApplicationBundle/Resources/config/routing/base_application.xml
         prefix: /admin
 
     admin:
-        resource: base_application
+        resource: @SonataBaseApplicationBundle/Resources/config/routing/base_application.admin
         prefix: /admin
 
 At this point you can access to the dashboard with the url: ``http://yoursite.local/admin/dashboard``.
@@ -72,20 +72,20 @@ Once you have created an admin class, you must declare the class to use it. Like
             post:
                 label:      Post
                 group:      blog
-                class:      Bundle\Sonata\NewsBundle\Admin\PostAdmin
+                class:      Sonata\NewsBundle\Admin\PostAdmin
                 entity:     Application\Sonata\NewsBundle\Entity\Post
-                controller: Bundle\Sonata\NewsBundle\Controller\PostAdminController
+                controller: Sonata\NewsBundle\Controller\PostAdminController
 
             tag:
                 label:      Tag
                 group:      blog
-                class:      Bundle\Sonata\NewsBundle\Admin\TagAdmin
+                class:      Sonata\NewsBundle\Admin\TagAdmin
                 entity:     Application\Sonata\NewsBundle\Entity\Tag
-                controller: Bundle\Sonata\NewsBundle\Controller\TagAdminController
+                controller: Sonata\NewsBundle\Controller\TagAdminController
 
             comment:
                 label:      Comment
                 group:      blog
-                class:      Bundle\Sonata\NewsBundle\Admin\CommentAdmin
+                class:      Sonata\NewsBundle\Admin\CommentAdmin
                 entity:     Application\Sonata\NewsBundle\Entity\Comment
-                controller: Bundle\Sonata\NewsBundle\Controller\CommentAdminController
+                controller: Sonata\NewsBundle\Controller\CommentAdminController

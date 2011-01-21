@@ -9,18 +9,18 @@
  * file that was distributed with this source code.
  */
 
-namespace Bundle\Sonata\BaseApplicationBundle\Tool;
+namespace Sonata\BaseApplicationBundle\Tool;
 
-use Bundle\Sonata\BaseApplicationBundle\Tool\DoctrinePager as Pager;
+use Sonata\BaseApplicationBundle\Tool\DoctrinePager as Pager;
 
-use Bundle\Sonata\BaseApplicationBundle\Filter\StringFilter;
-use Bundle\Sonata\BaseApplicationBundle\Filter\BooleanFilter;
-use Bundle\Sonata\BaseApplicationBundle\Filter\IntegerFilter;
-use Bundle\Sonata\BaseApplicationBundle\Filter\CallbackFilter;
-use Bundle\Sonata\BaseApplicationBundle\Filter\ChoiceFilter;
+use Sonata\BaseApplicationBundle\Filter\StringFilter;
+use Sonata\BaseApplicationBundle\Filter\BooleanFilter;
+use Sonata\BaseApplicationBundle\Filter\IntegerFilter;
+use Sonata\BaseApplicationBundle\Filter\CallbackFilter;
+use Sonata\BaseApplicationBundle\Filter\ChoiceFilter;
 
-use Bundle\Sonata\BaseApplicationBundle\Admin\EntityAdmin;
-use Bundle\Sonata\BaseApplicationBundle\Admin\FieldDescription;
+use Sonata\BaseApplicationBundle\Admin\EntityAdmin;
+use Sonata\BaseApplicationBundle\Admin\FieldDescription;
 
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 

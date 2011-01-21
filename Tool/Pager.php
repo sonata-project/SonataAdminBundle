@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Bundle\Sonata\BaseApplicationBundle\Tool;
+namespace Sonata\BaseApplicationBundle\Tool;
 
 /**
  * sfPager class.

@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Bundle\Sonata\BaseApplicationBundle\Filter;
+namespace Sonata\BaseApplicationBundle\Filter;
 
 use Symfony\Component\Form\Configurable;
-use Bundle\Sonata\BaseApplicationBundle\Admin\FieldDescription;
+use Sonata\BaseApplicationBundle\Admin\FieldDescription;
 use Doctrine\ORM\QueryBuilder;
 
 abstract class Filter extends Configurable

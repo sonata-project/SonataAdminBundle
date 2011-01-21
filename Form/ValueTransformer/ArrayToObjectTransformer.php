@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Bundle\Sonata\BaseApplicationBundle\Form\ValueTransformer;
+namespace Sonata\BaseApplicationBundle\Form\ValueTransformer;
 
 use Symfony\Component\Form\ValueTransformer\BaseValueTransformer;
 use Symfony\Component\Form\Exception\InvalidPropertyException;

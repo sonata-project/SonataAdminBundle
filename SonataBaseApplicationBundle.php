@@ -8,10 +8,25 @@
  * file that was distributed with this source code.
  */
 
-namespace Bundle\Sonata\BaseApplicationBundle;
+namespace Sonata\BaseApplicationBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class SonataBaseApplicationBundle extends Bundle {
 
+    /**
+     * {@inheritdoc}
+     */
+    public function getNamespace()
+    {
+        return __NAMESPACE__;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPath()
+    {
+        return strtr(__DIR__, '\\', '/');
+    }
 }

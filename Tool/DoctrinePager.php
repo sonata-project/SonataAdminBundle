@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Bundle\Sonata\BaseApplicationBundle\Tool;
+namespace Sonata\BaseApplicationBundle\Tool;
 
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
