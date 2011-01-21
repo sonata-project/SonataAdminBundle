@@ -43,7 +43,7 @@ code to your application's routing file:
 
     # app/config/routing.yml
     base_application:
-        resource: @BaseApplicationBundle/Resources/config/routing/base_application.xml
+        resource: @SonataBaseApplicationBundle/Resources/config/routing/base_application.xml
         prefix: /admin
 
     admin:
