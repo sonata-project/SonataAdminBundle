@@ -34,7 +34,6 @@ class ArrayToObjectTransformer extends BaseValueTransformer
         $class      = $this->getOption('className');
         $metadata   = $this->getOption('em')->getClassMetadata($class);
 
-
         // when the object is created the form return an array
         // one the object is persited, the edit $array is the user instance
         if ($array instanceof $class)

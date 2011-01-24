@@ -1,4 +1,12 @@
-18/01/2001
+24/01/2011
+----------
+
+* add list mode
+* add 'add_empty' option to association widget (ie: select)
+* add country field type
+* refactor the form creation
+
+18/01/2011
 ----------
 
 * respect symfony conventions

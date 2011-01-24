@@ -109,6 +109,10 @@ class CoreController extends Controller
         // retrieve the posted data
         $data = $this->get('request')->get('data');
 
+        if(!isset($data[$field_element->getKey()])) {
+            $data[$field_element->getKey()] = array();
+        }
+
         $object_count   = count($value);
         $post_count     = count($data[$field_element->getKey()]);
 

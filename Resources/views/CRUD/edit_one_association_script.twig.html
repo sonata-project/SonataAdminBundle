@@ -18,6 +18,8 @@ This code manage the one-to-many association field popup
 
 <script>
 
+    <!-- edit one association -->
+
     // handle the add link
     var field_add_{{ admin.code }}_{{ field_element.id }} = function(event) {
 
@@ -44,6 +46,7 @@ This code manage the one-to-many association field popup
 
     var field_widget_{{ admin.code }}_{{ field_element.id }} = false;
 
+    
     // this function initialize the popup
     // this can be only done this way has popup can be cascaded
     function start_field_retrieve_{{ admin.code }}_{{ field_element.id }}(event) {
@@ -64,5 +67,7 @@ This code manage the one-to-many association field popup
 
         return false;
     }
+
+    <!-- edit one association -->
     
 </script>

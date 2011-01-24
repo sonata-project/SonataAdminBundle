@@ -240,7 +240,7 @@ abstract class EntityAdmin extends Admin
      * @param FieldDescription $description
      * @return array
      */
-    protected function getChoices(FieldDescription $description)
+    protected function getChoices(FieldDescription $description, $prependChoices = array())
     {
 
         if (!isset($this->choicesCache[$description->getTargetEntity()])) {
@@ -265,7 +265,7 @@ abstract class EntityAdmin extends Admin
             $this->choicesCache[$description->getTargetEntity()] = $choices;
         }
 
-        return $this->choicesCache[$description->getTargetEntity()];
+        return $prependChoices + $this->choicesCache[$description->getTargetEntity()];
     }
 
     /**
@@ -313,7 +313,6 @@ abstract class EntityAdmin extends Admin
             ));
         }
         
-
         foreach ($targetForm->getFields() as $name => $formField) {
             if ($name == '_token') {
                 continue;
@@ -363,7 +362,7 @@ abstract class EntityAdmin extends Admin
         $instance = $fieldDescription->getAssociationAdmin()->getNewInstance();
         $mapping  = $fieldDescription->getAssociationMapping();
 
-        $method = sprintf('add%s', $mapping['fieldName']);
+        $method = sprintf('add%s', FieldDescription::camelize($mapping['fieldName']));
 
         $object->$method($instance);
     }
@@ -403,9 +402,17 @@ abstract class EntityAdmin extends Admin
         // set valid default value
         if ($class == 'Symfony\\Component\\Form\\ChoiceField') {
 
+            $choices = array();
+            if($fieldDescription->getOption('add_empty', false)) {
+                $choices = array(
+                    $fieldDescription->getOption('add_empty_value', '') => $fieldDescription->getOption('add_empty_value', '')
+                );
+            }
+
             $options = array_merge(array(
-                'expanded' => false,
-                'choices' => $this->getChoices($fieldDescription),
+                'expanded'      => false,
+                'choices'       => $this->getChoices($fieldDescription, $choices),
+                'empty_value'   => $fieldDescription->getOption('add_empty_value', '')
              ), $options);
         }
 
@@ -460,16 +467,68 @@ abstract class EntityAdmin extends Admin
         // set valid default value
         if ($class == 'Symfony\\Component\\Form\\ChoiceField') {
 
+            $choices = array();
+            if($fieldDescription->getOption('add_empty', false)) {
+                $choices = array(
+                    $fieldDescription->getOption('add_empty_value', '') => $fieldDescription->getOption('add_empty_value', '')
+                );
+            }
+
             $options = array_merge(array(
-                'expanded' => true,
-                'multiple' => true,
-                'choices' => $this->getChoices($fieldDescription),
+                'expanded'      => true,
+                'multiple'      => true,
+                'choices'       => $this->getChoices($fieldDescription, $choices),
+                'empty_value'   => $fieldDescription->getOption('add_empty_value', '')
              ), $options);
         }
 
         return new $class($fieldDescription->getFieldName(), $options);
     }
-    
+
+    protected function getManyToOneField($object, FieldDescription $fieldDescription)
+    {
+                // tweak the widget depend on the edit mode
+        if ($fieldDescription->getOption('edit') == 'inline') {
+
+            return $this->getRelatedAssociatedField($object, $fieldDescription);
+        }
+
+        $options = array(
+            'value_transformer' => new \Symfony\Bundle\DoctrineBundle\Form\ValueTransformer\EntityToIDTransformer(array(
+                'em'        =>  $this->getEntityManager(),
+                'className' => $fieldDescription->getTargetEntity()
+            ))
+        );
+        $options = array_merge($options, $fieldDescription->getOption('form_field_options', array()));
+
+
+        if ($fieldDescription->getOption('edit') == 'list') {
+
+            return new \Symfony\Component\Form\TextField($fieldDescription->getFieldName(), $options);
+        }
+
+        $class = $fieldDescription->getOption('form_field_widget', 'Symfony\\Component\\Form\\ChoiceField');
+
+        // set valid default value
+        if ($class == 'Symfony\\Component\\Form\\ChoiceField') {
+
+            $choices = array();
+            if($fieldDescription->getOption('add_empty', false)) {
+                $choices = array(
+                    $fieldDescription->getOption('add_empty_value', '') => $fieldDescription->getOption('add_empty_value', '')
+                );
+            }
+
+            $options = array_merge(array(
+                'expanded'      => false,
+                'choices'       => $this->getChoices($fieldDescription, $choices),
+                'empty_value'   => $fieldDescription->getOption('add_empty_value', '')
+             ), $options);
+        }
+
+        return new $class($fieldDescription->getFieldName(), $options);
+    }
+
     protected function getFormFieldInstance($object, FieldDescription $fieldDescription)
     {
 
@@ -484,15 +543,16 @@ abstract class EntityAdmin extends Admin
                 return $this->getManyToManyField($object, $fieldDescription);
 
             case ClassMetadataInfo::MANY_TO_ONE:
+                return $this->getManyToOneField($object, $fieldDescription);
+
             case ClassMetadataInfo::ONE_TO_ONE:
 
                 return $this->getOneToOneField($object, $fieldDescription);
 
             default:
+                $class   = $this->getFormFieldClass($fieldDescription);
                 $options = $fieldDescription->getOption('form_field_options', array());
 
-                $class = $this->getFormFieldClass($fieldDescription);
-                
                 return new $class($fieldDescription->getFieldName(), $options);
         }
     }
@@ -508,9 +568,7 @@ abstract class EntityAdmin extends Admin
     public function getForm($object, $fields)
     {
 
-        $this->container->get('session')->start();
-
-        $form = new Form('data', $object, $this->container->get('validator'));
+        $form = $this->getBaseForm($object);
 
         foreach ($fields as $fieldDescription) {
 

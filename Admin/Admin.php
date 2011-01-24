@@ -30,13 +30,19 @@ abstract class Admin extends ContainerAware
 
     protected $maxPerPage = 25;
 
-    protected $baseRouteName = '';
+    protected $baseRouteName;
 
     protected $baseRoutePattern;
     
     protected $baseControllerName;
 
     protected $formGroups = false;
+
+    /**
+     *
+     * @var array options to set to the form (ie, validation_groups)
+     */
+    protected $formOptions = array();
 
     // note : don't like this, but havn't find a better way to do it
     protected $configurationPool;
@@ -83,6 +89,7 @@ abstract class Admin extends ContainerAware
         'date'       =>  'Symfony\\Component\\Form\\DateField',
         'choice'     =>  'Symfony\\Component\\Form\\ChoiceField',
         'array'      =>  'Symfony\\Component\\Form\\FieldGroup',
+        'country'    =>  'Symfony\\Component\\Form\\CountryField',
     );
 
     protected $choicesCache = array();
@@ -160,6 +167,7 @@ abstract class Admin extends ContainerAware
                     $this->urlize($matches[5])
                 );
             } else {
+
                 throw new \RuntimeException(sprintf('Please define a default `baseRouteName` value for the admin class `%s`', get_class($this)));
             }
         }
@@ -167,7 +175,9 @@ abstract class Admin extends ContainerAware
         return $this->baseRouteName;
     }
 
-    public function urlize($word, $sep = '_') {
+    public function urlize($word, $sep = '_')
+    {
+        
         return strtolower(preg_replace('~(?<=\\w)([A-Z])~', $sep.'$1', $word));
     }
 
@@ -359,6 +369,17 @@ abstract class Admin extends ContainerAware
         return new $class;
     }
 
+    /**
+     *
+     * @return Form the base form
+     */
+    public function getBaseForm($object)
+    {
+        $this->container->get('session')->start();
+
+        return new Form('data', $object, $this->container->get('validator'), $this->formOptions);
+    }
+
 
     /**
      * attach an admin instance to the given FieldDescription
@@ -370,7 +391,7 @@ abstract class Admin extends ContainerAware
 
         $admin = $pool->getAdminByClass($fieldDescription->getTargetEntity());
         if (!$admin) {
-            throw new \RuntimeException(sprintf('You must define an Admin class for the `%s` field', $fieldDescription->getFieldName()));
+            throw new \RuntimeException(sprintf('You must define an Admin class for the `%s` field (targetEntity=%s)', $fieldDescription->getFieldName(), $fieldDescription->getTargetEntity()));
         }
 
         $fieldDescription->setAssociationAdmin($admin);
@@ -474,7 +495,6 @@ abstract class Admin extends ContainerAware
 
         return $this->filterDatagrid;
     }
-
 
     /**
      *

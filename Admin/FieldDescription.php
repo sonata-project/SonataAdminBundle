@@ -280,4 +280,13 @@ class FieldDescription
        return preg_replace(array('/(^|_)+(.)/e', '/\.(.)/e'), array("strtoupper('\\2')", "'_'.strtoupper('\\1')"), $property);
     }
 
+    public function mergeOption($name, array $options = array())
+    {
+        if(!isset($this->options[$name])) {
+            $this->options[$name] = array();
+        }
+
+        $this->options[$name] = array_merge($this->options[$name], $options);
+    }
+
 }
