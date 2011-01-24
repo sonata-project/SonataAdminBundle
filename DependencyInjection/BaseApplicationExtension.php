@@ -41,14 +41,14 @@ class BaseApplicationExtension extends Extension
      * @param array            $config    An array of configuration settings
      * @param ContainerBuilder $container A ContainerBuilder instance
      */
-    public function configLoad($config, ContainerBuilder $container)
+    public function configLoad($configs, ContainerBuilder $container)
     {
 
         // loads config from external files
         $this->configLoadFiles($container);
         
         // setups parameters with values in config.yml, default values from external files used if not
-        $this->configSetup($config, $container);
+        $this->configSetup($configs, $container);
 
         // register the twig extension
         $container
@@ -58,16 +58,18 @@ class BaseApplicationExtension extends Extension
         // registers crud action
         $definition = new Definition('Sonata\BaseApplicationBundle\Admin\Pool');
         $definition->addMethodCall('setContainer', array(new Reference('service_container')));
-        foreach ($config['entities'] as $code => $configuration) {
-            if (!isset($configuration['group'])) {
-                $configuration['group'] = 'default';
-            }
+        foreach ($configs as $config) {
+            foreach ($config['entities'] as $code => $configuration) {
+                if (!isset($configuration['group'])) {
+                    $configuration['group'] = 'default';
+                }
 
-            if (!isset($configuration['label'])) {
-                $configuration['label'] = $code;
-            }
+                if (!isset($configuration['label'])) {
+                    $configuration['label'] = $code;
+                }
             
-            $definition->addMethodCall('addConfiguration', array($code, $configuration));
+                $definition->addMethodCall('addConfiguration', array($code, $configuration));
+            }
         }
 
         $container->setDefinition('base_application.admin.pool', $definition);
@@ -88,20 +90,22 @@ class BaseApplicationExtension extends Extension
         }
     }
     
-    protected function configSetup($config, $container)
+    protected function configSetup($configs, $container)
     {
-        foreach ($this->configNamespaces as $ns => $params) {
+        foreach ($configs as $config) {
+            foreach ($this->configNamespaces as $ns => $params) {
 
-            if (!isset($config[$ns])) {
-                continue;
-            }
-
-            foreach ($config[$ns] as $type => $template) {
-                if (!isset($config[$ns][$type])) {
+                if (!isset($config[$ns])) {
                     continue;
                 }
 
-                $container->setParameter(sprintf('base_application.templates.%s', $type), $template);
+                foreach ($config[$ns] as $type => $template) {
+                    if (!isset($config[$ns][$type])) {
+                        continue;
+                    }
+
+                    $container->setParameter(sprintf('base_application.templates.%s', $type), $template);
+                }
             }
         }
     }
