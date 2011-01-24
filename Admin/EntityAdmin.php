@@ -412,7 +412,6 @@ abstract class EntityAdmin extends Admin
             $options = array_merge(array(
                 'expanded'      => false,
                 'choices'       => $this->getChoices($fieldDescription, $choices),
-                'empty_value'   => $fieldDescription->getOption('add_empty_value', '')
              ), $options);
         }
 
@@ -478,7 +477,6 @@ abstract class EntityAdmin extends Admin
                 'expanded'      => true,
                 'multiple'      => true,
                 'choices'       => $this->getChoices($fieldDescription, $choices),
-                'empty_value'   => $fieldDescription->getOption('add_empty_value', '')
              ), $options);
         }
 
@@ -522,7 +520,6 @@ abstract class EntityAdmin extends Admin
             $options = array_merge(array(
                 'expanded'      => false,
                 'choices'       => $this->getChoices($fieldDescription, $choices),
-                'empty_value'   => $fieldDescription->getOption('add_empty_value', '')
              ), $options);
         }
 
