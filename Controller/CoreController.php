@@ -18,6 +18,14 @@ use Symfony\Component\Form\RecursiveFieldIterator;
 
 class CoreController extends Controller
 {
+    public function getBaseTemplate()
+    {        
+        if ($this->get('request')->isXmlHttpRequest()) {
+            return $this->container->getParameter('base_application.templates.ajax');
+        }
+
+        return $this->container->getParameter('base_application.templates.layout');
+    }
 
     public function retrieveFormFieldElementAction($code, $element_id)
     {
@@ -176,7 +184,8 @@ class CoreController extends Controller
     {
 
         return $this->render('SonataBaseApplicationBundle:Core:dashboard.twig.html', array(
-            'groups' => $this->get('base_application.admin.pool')->getGroups()
+            'groups' => $this->get('base_application.admin.pool')->getGroups(),
+            'base_template'  => $this->getBaseTemplate(),
         ));
     }
 }
