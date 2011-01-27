@@ -20,7 +20,7 @@ use Sonata\BaseApplicationBundle\Tool\Datagrid;
 
 abstract class EntityAdmin extends Admin
 {
-    
+
     /**
      * make sure the base fields are set in the correct format
      *
@@ -55,7 +55,7 @@ abstract class EntityAdmin extends Admin
                     $description->setTemplate($options['template']);
                     unset($options['template']);
                 }
-                
+
                 $description->setOptions($options);
             } else {
                 $name = $options;
@@ -88,83 +88,6 @@ abstract class EntityAdmin extends Admin
     }
 
     /**
-     * build the fields to use in the form
-     *
-     * @throws RuntimeException
-     * @return
-     */
-    protected function buildFormFields()
-    {
-
-        if ($this->loaded['form_fields']) {
-            return;
-        }
-
-        $this->loaded['form_fields'] = true;
-        
-        $this->formFields = self::getBaseFields($this->getClassMetaData(), $this->formFields);
-
-        foreach ($this->formFields as $name => $fieldDescription) {
-
-            if (!$fieldDescription->getType()) {
-                throw new \RuntimeException(sprintf('You must declare a type for the field `%s`', $name));
-            }
-
-            $fieldDescription->setAdmin($this);
-            $fieldDescription->setOption('edit', $fieldDescription->getOption('edit', 'standard'));
-
-            // fix template value for doctrine association fields
-            if (!$fieldDescription->getTemplate()) {
-
-                $fieldDescription->setTemplate(sprintf('SonataBaseApplicationBundle:CRUD:edit_%s.twig.html', $fieldDescription->getType()));
-                
-                if ($fieldDescription->getType() == ClassMetadataInfo::ONE_TO_ONE) {
-                    $fieldDescription->setTemplate('SonataBaseApplicationBundle:CRUD:edit_one_to_one.twig.html');
-                    $this->attachAdminClass($fieldDescription);
-                }
-
-                if ($fieldDescription->getType() == ClassMetadataInfo::MANY_TO_ONE) {
-                    $fieldDescription->setTemplate('SonataBaseApplicationBundle:CRUD:edit_many_to_one.twig.html');
-                    $this->attachAdminClass($fieldDescription);
-                }
-
-                if ($fieldDescription->getType() == ClassMetadataInfo::MANY_TO_MANY) {
-                    $fieldDescription->setTemplate('SonataBaseApplicationBundle:CRUD:edit_many_to_many.twig.html');
-                    $this->attachAdminClass($fieldDescription);
-                }
-
-                if ($fieldDescription->getType() == ClassMetadataInfo::ONE_TO_MANY) {
-                    $fieldDescription->setTemplate('SonataBaseApplicationBundle:CRUD:edit_one_to_many.twig.html');
-
-                    if($fieldDescription->getOption('edit') == 'inline' && !$fieldDescription->getOption('widget')) {
-                        $fieldDescription->setOption('widget', 'Bundle\\Sonata\\BaseApplicationBundle\\Form\\EditableGroupField');
-                    }
-
-                    $this->attachAdminClass($fieldDescription);
-                }
-            }
-            
-            // set correct default value
-            if ($fieldDescription->getType() == 'datetime') {
-                $options = $fieldDescription->getOption('form_fields', array());
-                if (!isset($options['years'])) {
-                    $options['years'] = range(1900, 2100);
-                }
-                $fieldDescription->setOption('form_field', $options);
-            }
-
-            // unset the identifier field as it is not required to update an object
-            if ($fieldDescription->isIdentifier()) {
-                unset($this->formFields[$name]);
-            }
-        }
-
-        $this->configureFormFields();
-
-        return $this->formFields;
-    }
-
-    /**
      * build the field to use in the list view
      *
      * @return void
@@ -177,7 +100,7 @@ abstract class EntityAdmin extends Admin
         }
 
         $this->loaded['list_fields'] = true;
-        
+
         $this->listFields = self::getBaseFields($this->getClassMetaData(), $this->listFields);
 
         // normalize field
@@ -220,7 +143,7 @@ abstract class EntityAdmin extends Admin
         }
 
         $this->configureListFields();
-        
+
         if (!isset($this->listFields['_batch'])) {
             $fieldDescription = new FieldDescription();
             $fieldDescription->setOptions(array(
@@ -242,6 +165,9 @@ abstract class EntityAdmin extends Admin
      */
     protected function getChoices(FieldDescription $description, $prependChoices = array())
     {
+        /*
+
+        UNUSED RIGHT NOW
 
         if (!isset($this->choicesCache[$description->getTargetEntity()])) {
             $targets = $this->getEntityManager()
@@ -266,6 +192,8 @@ abstract class EntityAdmin extends Admin
         }
 
         return $prependChoices + $this->choicesCache[$description->getTargetEntity()];
+
+        */
     }
 
     /**
@@ -280,14 +208,18 @@ abstract class EntityAdmin extends Admin
      */
     protected function getRelatedAssociatedField($object, FieldDescription $fieldDescription, $fieldName = null)
     {
+        /*
+
+        UNUSED RIGHT NOW
+
         $fieldName = $fieldName ?: $fieldDescription->getFieldName();
-        
+
         $associatedAdmin = $fieldDescription->getAssociationAdmin();
-        
+
         if (!$associatedAdmin) {
             throw new \RuntimeException(sprintf('inline mode for field `%s` required an Admin definition', $fieldName));
         }
-        
+
         // retrieve the related object
         $targetObject = $associatedAdmin->getNewInstance();
 
@@ -312,7 +244,7 @@ abstract class EntityAdmin extends Admin
                 'value_transformer' => $transformer,
             ));
         }
-        
+
         foreach ($targetForm->getFields() as $name => $formField) {
             if ($name == '_token') {
                 continue;
@@ -322,6 +254,8 @@ abstract class EntityAdmin extends Admin
         }
 
         return $field;
+
+        */
     }
 
 
@@ -334,6 +268,9 @@ abstract class EntityAdmin extends Admin
      */
     public function getFormFieldClass(FieldDescription $fieldDescription)
     {
+        /*
+
+        UNUSED RIGHT NOW
 
         $class = isset($this->formFieldClasses[$fieldDescription->getType()]) ? $this->formFieldClasses[$fieldDescription->getType()] : false;
 
@@ -348,6 +285,8 @@ abstract class EntityAdmin extends Admin
         }
 
         return $class;
+
+        */
     }
 
     /**
@@ -359,12 +298,18 @@ abstract class EntityAdmin extends Admin
      */
     public function addNewInstance($object, FieldDescription $fieldDescription)
     {
+        /*
+
+        UNUSED RIGHT NOW
+
         $instance = $fieldDescription->getAssociationAdmin()->getNewInstance();
         $mapping  = $fieldDescription->getAssociationMapping();
 
         $method = sprintf('add%s', FieldDescription::camelize($mapping['fieldName']));
 
         $object->$method($instance);
+
+        */
     }
 
     /**
@@ -376,6 +321,9 @@ abstract class EntityAdmin extends Admin
      */
     protected function getOneToOneField($object, FieldDescription $fieldDescription)
     {
+        /*
+
+        UNUSED RIGHT NOW
 
         // tweak the widget depend on the edit mode
         if ($fieldDescription->getOption('edit') == 'inline') {
@@ -416,6 +364,8 @@ abstract class EntityAdmin extends Admin
         }
 
         return new $class($fieldDescription->getFieldName(), $options);
+
+        */
     }
 
     /**
@@ -427,6 +377,9 @@ abstract class EntityAdmin extends Admin
      */
     protected function getOneToManyField($object, FieldDescription $fieldDescription)
     {
+        /*
+
+        UNUSED RIGHT NOW
 
         if ($fieldDescription->getOption('edit') == 'inline') {
             $prototype = $this->getRelatedAssociatedField($object, $fieldDescription);
@@ -447,10 +400,15 @@ abstract class EntityAdmin extends Admin
         }
 
         return $this->getManyToManyField($object, $fieldDescription);
+
+        */
     }
 
     protected function getManyToManyField($object, FieldDescription $fieldDescription)
     {
+        /*
+
+        UNUSED RIGHT NOW
 
         $options = array(
             'value_transformer' => new \Symfony\Bundle\DoctrineBundle\Form\ValueTransformer\CollectionToChoiceTransformer(array(
@@ -481,10 +439,16 @@ abstract class EntityAdmin extends Admin
         }
 
         return new $class($fieldDescription->getFieldName(), $options);
+
+        */
     }
 
     protected function getManyToOneField($object, FieldDescription $fieldDescription)
     {
+        /*
+
+        UNUSED RIGHT NOW
+
                 // tweak the widget depend on the edit mode
         if ($fieldDescription->getOption('edit') == 'inline') {
 
@@ -524,10 +488,15 @@ abstract class EntityAdmin extends Admin
         }
 
         return new $class($fieldDescription->getFieldName(), $options);
+
+        */
     }
 
     protected function getFormFieldInstance($object, FieldDescription $fieldDescription)
     {
+        /*
+
+        UNUSED RIGHT NOW
 
         switch ($fieldDescription->getType()) {
 
@@ -552,31 +521,7 @@ abstract class EntityAdmin extends Admin
 
                 return new $class($fieldDescription->getFieldName(), $options);
         }
-    }
-    
-    /**
-     * return a form depend on the given $object and FieldDescription $fields array
-     *
-     * @throws RuntimeException
-     * @param  $object
-     * @param  $fields
-     * @return Symfony\Component\Form\Form
-     */
-    public function getForm($object, $fields)
-    {
 
-        $form = $this->getBaseForm($object);
-
-        foreach ($fields as $fieldDescription) {
-
-            if (!$fieldDescription->getType()) {
-
-                continue;
-            }
-
-            $form->add($this->getFormFieldInstance($object, $fieldDescription));
-        }
-
-        return $form;
+        */
     }
 }

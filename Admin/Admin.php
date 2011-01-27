@@ -33,7 +33,7 @@ abstract class Admin extends ContainerAware
     protected $baseRouteName;
 
     protected $baseRoutePattern;
-    
+
     protected $baseControllerName;
 
     protected $formGroups = false;
@@ -54,7 +54,7 @@ abstract class Admin extends ContainerAware
     protected $urls = array();
 
     protected $subject;
-    
+
     /**
      * Reference the parent FieldDescription related to this admin
      * only set for FieldDescription which is associated to an Sub Admin instance
@@ -70,28 +70,6 @@ abstract class Admin extends ContainerAware
         'urls'        => false,
     );
 
-    /**
-     * todo: put this in the DIC
-     *
-     * @var array
-     */
-    protected $formFieldClasses = array(
-        'string'     =>  'Symfony\\Component\\Form\\TextField',
-        'text'       =>  'Symfony\\Component\\Form\\TextareaField',
-        'boolean'    =>  'Symfony\\Component\\Form\\CheckboxField',
-        'integer'    =>  'Symfony\\Component\\Form\\IntegerField',
-        'tinyint'    =>  'Symfony\\Component\\Form\\IntegerField',
-        'smallint'   =>  'Symfony\\Component\\Form\\IntegerField',
-        'mediumint'  =>  'Symfony\\Component\\Form\\IntegerField',
-        'bigint'     =>  'Symfony\\Component\\Form\\IntegerField',
-        'decimal'    =>  'Symfony\\Component\\Form\\NumberField',
-        'datetime'   =>  'Symfony\\Component\\Form\\DateTimeField',
-        'date'       =>  'Symfony\\Component\\Form\\DateField',
-        'choice'     =>  'Symfony\\Component\\Form\\ChoiceField',
-        'array'      =>  'Symfony\\Component\\Form\\FieldGroup',
-        'country'    =>  'Symfony\\Component\\Form\\CountryField',
-    );
-
     protected $choicesCache = array();
 
     /**
@@ -102,14 +80,6 @@ abstract class Admin extends ContainerAware
     abstract public function getEntityManager();
 
     /**
-     * build the fields to use in the form
-     *
-     * @throws RuntimeException
-     * @return
-     */
-    abstract protected function buildFormFields();
-
-    /**
      * build the field to use in the list view
      *
      * @return void
@@ -118,16 +88,23 @@ abstract class Admin extends ContainerAware
 
     abstract protected function getChoices(FieldDescription $description);
 
-    abstract public function getForm($object, $fields);
+    public function getForm($object)
+    {
+        $form = $this->getBaseForm($object);
+
+        $this->configureFormFields($form);
+
+        return $form;
+    }
 
     public function configure()
     {
 
     }
-    
+
     /**
      * return the baseRoutePattern used to generate the routing information
-     * 
+     *
      * @throws RuntimeException
      * @return string the baseRoutePattern used to generate the routing information
      */
@@ -177,7 +154,7 @@ abstract class Admin extends ContainerAware
 
     public function urlize($word, $sep = '_')
     {
-        
+
         return strtolower(preg_replace('~(?<=\\w)([A-Z])~', $sep.'$1', $word));
     }
 
@@ -193,7 +170,7 @@ abstract class Admin extends ContainerAware
 
     /**
      * return the doctrine class metadata handled by the Admin instance
-     * 
+     *
      * @return ClassMetadataInfo the doctrine class metadata handled by the Admin instance
      */
     public function getClassMetaData()
@@ -293,7 +270,7 @@ abstract class Admin extends ContainerAware
 
     public function configureUrls()
     {
-        
+
     }
 
     /**
@@ -375,9 +352,9 @@ abstract class Admin extends ContainerAware
      */
     public function getBaseForm($object)
     {
-        $this->container->get('session')->start();
+        // TODO $this->formOptions
 
-        return new Form('data', $object, $this->container->get('validator'), $this->formOptions);
+        return $this->container->get('form.factory')->getForm('data', $object);
     }
 
 
@@ -405,12 +382,12 @@ abstract class Admin extends ContainerAware
      */
     public function getObject($id)
     {
-        
+
         return $this->getEntityManager()
             ->find($this->getClass(), $id);
     }
 
-    public function buildFormGroups()
+    public function buildFormGroups(Form $form)
     {
 
         if ($this->loaded['form_groups']) {
@@ -418,11 +395,11 @@ abstract class Admin extends ContainerAware
         }
 
         $this->loaded['form_groups'] = true;
-                
+
 
         if (!$this->formGroups) {
             $this->formGroups = array(
-                false => array('fields' => array_keys($this->formFields))
+                false => array('fields' => array_keys($this->getFormFields($form)))
             );
         }
 
@@ -451,7 +428,7 @@ abstract class Admin extends ContainerAware
 
     public function postInsert($object)
     {
-        
+
     }
 
     public function configureListFields()
@@ -461,13 +438,10 @@ abstract class Admin extends ContainerAware
 
     public function configureFilterFields()
     {
-        
-    }
-
-    public function configureFormFields()
-    {
 
     }
+
+    abstract protected function configureFormFields(Form $form);
 
     public function getFilterDatagrid()
     {
@@ -490,7 +464,7 @@ abstract class Admin extends ContainerAware
 
             // set the final value to the datagrid
             $this->filterDatagrid->setFilterFields($this->filterFields);
-            
+
         }
 
         return $this->filterDatagrid;
@@ -526,17 +500,84 @@ abstract class Admin extends ContainerAware
      *
      * @return list form field definition
      */
-    public function getFormFields()
+    public function getFormFields(Form $form)
     {
-        $this->buildFormFields();
+        $fields = array();
 
-        return $this->formFields;
+        foreach ($form as $fieldName => $field) {
+            $fields[$fieldName] = new FieldDescription();
+            $fields[$fieldName]->setFieldName($fieldName);
+            $fields[$fieldName]->setAdmin($this);
+            $fields[$fieldName]->setTemplate('SonataBaseApplicationBundle:CRUD:edit_text.twig.html');
+
+            // TODO: set description properties
+        }
+
+        /*
+        $this->formFields = self::getBaseFields($form);
+
+        foreach ($this->formFields as $name => $fieldDescription) {
+
+            if (!$fieldDescription->getType()) {
+                throw new \RuntimeException(sprintf('You must declare a type for the field `%s`', $name));
+            }
+
+            $fieldDescription->setAdmin($this);
+            $fieldDescription->setOption('edit', $fieldDescription->getOption('edit', 'standard'));
+
+            // fix template value for doctrine association fields
+            if (!$fieldDescription->getTemplate()) {
+
+                $fieldDescription->setTemplate(sprintf('SonataBaseApplicationBundle:CRUD:edit_%s.twig.html', $fieldDescription->getType()));
+
+                if ($fieldDescription->getType() == ClassMetadataInfo::ONE_TO_ONE) {
+                    $fieldDescription->setTemplate('SonataBaseApplicationBundle:CRUD:edit_one_to_one.twig.html');
+                    $this->attachAdminClass($fieldDescription);
+                }
+
+                if ($fieldDescription->getType() == ClassMetadataInfo::MANY_TO_ONE) {
+                    $fieldDescription->setTemplate('SonataBaseApplicationBundle:CRUD:edit_many_to_one.twig.html');
+                    $this->attachAdminClass($fieldDescription);
+                }
+
+                if ($fieldDescription->getType() == ClassMetadataInfo::MANY_TO_MANY) {
+                    $fieldDescription->setTemplate('SonataBaseApplicationBundle:CRUD:edit_many_to_many.twig.html');
+                    $this->attachAdminClass($fieldDescription);
+                }
+
+                if ($fieldDescription->getType() == ClassMetadataInfo::ONE_TO_MANY) {
+                    $fieldDescription->setTemplate('SonataBaseApplicationBundle:CRUD:edit_one_to_many.twig.html');
+
+                    if($fieldDescription->getOption('edit') == 'inline' && !$fieldDescription->getOption('widget')) {
+                        $fieldDescription->setOption('widget', 'Bundle\\Sonata\\BaseApplicationBundle\\Form\\EditableGroupField');
+                    }
+
+                    $this->attachAdminClass($fieldDescription);
+                }
+            }
+
+            // set correct default value
+            if ($fieldDescription->getType() == 'datetime') {
+                $options = $fieldDescription->getOption('form_fields', array());
+                if (!isset($options['years'])) {
+                    $options['years'] = range(1900, 2100);
+                }
+                $fieldDescription->setOption('form_field', $options);
+            }
+
+            // unset the identifier field as it is not required to update an object
+            if ($fieldDescription->isIdentifier()) {
+                unset($this->formFields[$name]);
+            }
+        */
+
+        return $fields;
     }
 
     public function getListFields()
     {
         $this->buildListFields();
-        
+
         return $this->listFields;
     }
 
@@ -605,10 +646,10 @@ abstract class Admin extends ContainerAware
         $this->formGroups = $formGroups;
     }
 
-    public function getFormGroups()
+    public function getFormGroups(Form $form)
     {
-        $this->buildFormGroups();
-        
+        $this->buildFormGroups($form);
+
         return $this->formGroups;
     }
 

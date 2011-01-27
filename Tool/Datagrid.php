@@ -42,7 +42,7 @@ class Datagrid
      * The filter instances
      * @var array
      */
-    protected $filters;
+    protected $filters = array();
 
     protected $values;
 
@@ -216,7 +216,7 @@ class Datagrid
 
                 $options = $fieldDescription->getOption('filter_field_options');
                 $options['choices'] = $this->getChoices($fieldDescription);
-                
+
                 $fieldDescription->setOption('filter_field_options', $options);
 
                 $filter = new ChoiceFilter($name, $fieldDescription);
@@ -249,7 +249,7 @@ class Datagrid
 
     public function configureFilterFields()
     {
-        
+
     }
 
     public function getFilters()

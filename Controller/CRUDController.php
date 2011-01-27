@@ -46,7 +46,7 @@ class CRUDController extends Controller
     }
 
     public function getBaseTemplate()
-    {        
+    {
         if ($this->get('request')->isXmlHttpRequest()) {
             return $this->container->getParameter('base_application.templates.ajax');
         }
@@ -81,7 +81,7 @@ class CRUDController extends Controller
             ->add('where', $query_builder->expr()->in('o.id', $idx))
             ->getQuery()
             ->execute();
-        
+
         foreach ($objects as $object) {
             $em->remove($object);
         }
@@ -99,11 +99,6 @@ class CRUDController extends Controller
 
     public function editAction($id)
     {
-
-        $this->get('session')->start();
-
-        $fields = $this->admin->getFormFields();
-
         if ($id instanceof Form) {
             $object = $id->getData();
             $form   = $id;
@@ -114,7 +109,7 @@ class CRUDController extends Controller
                 throw new NotFoundHttpException(sprintf('unable to find the object with id : %s', $id));
             }
 
-            $form   = $this->admin->getForm($object, $fields);
+            $form = $this->admin->getForm($object);
         }
 
         $this->admin->setSubject($object);
@@ -122,8 +117,8 @@ class CRUDController extends Controller
         return $this->render($this->admin->getEditTemplate(), array(
             'form'           => $form,
             'object'         => $object,
-            'fields'         => $fields,
-            'form_groups'    => $this->admin->getFormGroups(),
+            'fields'         => $this->admin->getFormFields($form),
+            'form_groups'    => $this->admin->getFormGroups($form),
             'admin'          => $this->admin,
             'base_template'  => $this->getBaseTemplate(),
         ));
@@ -131,9 +126,6 @@ class CRUDController extends Controller
 
     public function updateAction()
     {
-
-        $this->get('session')->start();
-
         if ($this->get('request')->getMethod() != 'POST') {
            throw new \RuntimeException('invalid request type, POST expected');
         }
@@ -154,10 +146,13 @@ class CRUDController extends Controller
             $action = 'create';
         }
 
-        $fields = $this->admin->getFormFields();
-        $form   = $this->admin->getForm($object, $fields);
-
+        $form = $this->admin->getForm($object);
         $form->bind($this->get('request')->get('data'));
+
+        var_dump($this->get('request')->get('data'));
+        var_dump($object);
+        var_dump($this->get('validator')->validate($form));
+        die;
 
         if ($form->isValid()) {
 
@@ -166,7 +161,7 @@ class CRUDController extends Controller
             } else {
                 $this->admin->preUpdate($object);
             }
-            
+
             $this->admin->getEntityManager()->persist($object);
             $this->admin->getEntityManager()->flush($object);
 
@@ -206,7 +201,7 @@ class CRUDController extends Controller
         if ($this->get('request')->get('btn_create_and_create')) {
             $url = $this->admin->generateUrl('create');
         }
-        
+
         if (!$url) {
             $url = $this->admin->generateUrl('edit', array('id' => $object->getId()));
         }
@@ -240,28 +235,23 @@ class CRUDController extends Controller
 
     public function createAction($id = null)
     {
-        $this->get('session')->start();
-
-        $fields = $this->admin->getFormFields();
-
         if ($id instanceof Form) {
             $object = $id->getData();
-            $form   = $id;
+            $form = $id;
         } else {
             $object = $this->admin->getNewInstance();
-
-            $form   = $this->admin->getForm($object, $fields);
+            $form = $this->admin->getForm($object);
         }
 
         $this->admin->setSubject($object);
 
         return $this->render($this->admin->getEditTemplate(), array(
-            'form'   => $form,
+            'form' => $form,
             'object' => $object,
-            'fields' => $fields,
-            'form_groups'    => $this->admin->getFormGroups(),
-            'admin'     => $this->admin,
-            'base_template'     => $this->getBaseTemplate(),
+            'fields' => $this->admin->getFormFields($form),
+            'form_groups' => $this->admin->getFormGroups($form),
+            'admin' => $this->admin,
+            'base_template' => $this->getBaseTemplate(),
         ));
     }
 
