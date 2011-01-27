@@ -149,11 +149,6 @@ class CRUDController extends Controller
         $form = $this->admin->getForm($object);
         $form->bind($this->get('request')->get('data'));
 
-        var_dump($this->get('request')->get('data'));
-        var_dump($object);
-        var_dump($this->get('validator')->validate($form));
-        die;
-
         if ($form->isValid()) {
 
             if ($action == 'create') {
