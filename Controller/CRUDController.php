@@ -23,7 +23,18 @@ use Sonata\BaseApplicationBundle\Tool\DoctrinePager as Pager;
 class CRUDController extends Controller
 {
 
+
     protected $admin;
+
+    public function renderJson($data)
+    {
+        $response = new \Symfony\Component\HttpFoundation\Response;
+        $response->setContent(json_encode($data));
+        $response->headers->set('Content-Type', 'application/json');
+//        $response->headers->set('Content-Type', 'text/plain');
+
+        return $response;
+    }
 
     /**
      * Sets the Container associated with this Controller.

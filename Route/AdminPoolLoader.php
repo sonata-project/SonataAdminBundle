@@ -45,11 +45,17 @@ class AdminPoolLoader extends Loader
 
         $collection = new RouteCollection;
         foreach ($this->pool->getInstances() as $admin) {
-            foreach ($admin->getUrls() as $code => $configuration) {
+            foreach ($admin->getUrls() as $action => $configuration) {
 
+                $default = isset($configuration['defaults'])       ? $configuration['defaults'] : array();
+
+                if(!isset($default['_controller'])) {
+                    $default['_controller'] = sprintf('%s:%s', $admin->getBaseControllerName(), $action);
+                }
+                
                 $collection->add($configuration['name'], new Route(
                     $configuration['pattern'],
-                    isset($configuration['defaults'])       ? $configuration['defaults'] : array(),
+                    isset($configuration['defaults'])       ? $configuration['defaults'] : array('_controller'),
                     isset($configuration['requirements'])   ? $configuration['requirements'] : array(),
                     isset($configuration['options'])        ? $configuration['options'] : array()
                 ));
