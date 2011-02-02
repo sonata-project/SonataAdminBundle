@@ -11,15 +11,16 @@ namespace Sonata\BaseApplicationBundle\Form;
  * with this source code in the file LICENSE.
  */
 
-use Symfony\Component\Form\FieldGroup;
+use Symfony\Component\Form\Form;
 use Symfony\Component\Form\CheckboxField;
 use Symfony\Component\Form\FieldInterface;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 
 /**
+ * @author     Thomas Rabaix <thomas.rabaix@sonata-project.com>
  * @author     Bernhard Schussek <bernhard.schussek@symfony-project.com>
  */
-class EditableCollectionField extends FieldGroup
+class EditableCollectionField extends Form
 {
     /**
      * The prototype for the inner fields
@@ -49,7 +50,7 @@ class EditableCollectionField extends FieldGroup
     }
 
     
-    public function bind($taintedData)
+    public function submit($taintedData)
     {
         $this->removedFields = array();
 
@@ -70,7 +71,7 @@ class EditableCollectionField extends FieldGroup
             }
         }
 
-        parent::bind($taintedData);
+        parent::submit($taintedData);
     }
 
     /**

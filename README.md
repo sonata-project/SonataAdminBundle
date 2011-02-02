@@ -10,10 +10,12 @@ Please read the related documentation in the docs folder.
    - code might change with no notices.
 
 
+
 TODO :
 
-   - use the admin class to register route information
+   - use the admin class to register route information (done)
+   - edit group field (done)
+   - add inline editing (Invoice with InvoiceLine) (done)
    - save filter criteria
    - export list
-   - edit group field
-   - add inline editing (Invoice with InvoiceLine)
+

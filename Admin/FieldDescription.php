@@ -53,24 +53,19 @@ class FieldDescription
     protected $name;
 
     /**
-     * @var Admin the related admin instance
-     */
-    protected $admin;
-
-    /**
      * @var string|integer the type
      */
     protected $type;
 
     /**
+     * @var string|integer the original mapping type
+     */
+    protected $mappingType;
+
+    /**
      * @var string the field name (of the form)
      */
     protected $fieldName;
-
-    /**
-     * @var Admin the associated admin class if the object is associated to another entity
-     */
-    protected $associationAdmin;
 
     /**
      * @var array the Doctrine association mapping
@@ -96,6 +91,16 @@ class FieldDescription
      * @var admin|null the parent Admin instance
      */
     protected $parent = null;
+
+    /**
+     * @var Admin the related admin instance
+     */
+    protected $admin;
+    
+    /**
+     * @var Admin the associated admin class if the object is associated to another entity
+     */
+    protected $associationAdmin;
 
     public function setFieldName($fieldName)
     {
@@ -197,8 +202,9 @@ class FieldDescription
     {
         $this->fieldMapping = $fieldMapping;
 
-        $this->type      = $this->type ?: $fieldMapping['type'];
-        $this->fieldName = $this->fieldName ?: $fieldMapping['fieldName'];
+        $this->type         = $this->type ?: $fieldMapping['type'];
+        $this->mappingType  = $this->mappingType ?: $fieldMapping['type'];
+        $this->fieldName    = $this->fieldName ?: $fieldMapping['fieldName'];
     }
 
     public function getFieldMapping()
@@ -288,5 +294,16 @@ class FieldDescription
 
         $this->options[$name] = array_merge($this->options[$name], $options);
     }
+
+    public function setMappingType(string $mappingType)
+    {
+        $this->mappingType = $mappingType;
+    }
+
+    public function getMappingType()
+    {
+        return $this->mappingType;
+    }
+
 
 }

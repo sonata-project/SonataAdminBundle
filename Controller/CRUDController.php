@@ -158,7 +158,7 @@ class CRUDController extends Controller
         }
 
         $form = $this->admin->getForm($object);
-        $form->bind($this->get('request')->get('data'));
+        $form->bind($this->get('request'));
 
         if ($form->isValid()) {
 
@@ -252,11 +252,11 @@ class CRUDController extends Controller
         $this->admin->setSubject($object);
 
         return $this->render($this->admin->getEditTemplate(), array(
-            'form' => $form,
-            'object' => $object,
-            'fields' => $this->admin->getFormFields($form),
-            'form_groups' => $this->admin->getFormGroups($form),
-            'admin' => $this->admin,
+            'form'          => $form,
+            'object'        => $object,
+            'fields'        => $this->admin->getFormFields($form),
+            'form_groups'   => $this->admin->getFormGroups($form),
+            'admin'         => $this->admin,
             'base_template' => $this->getBaseTemplate(),
         ));
     }

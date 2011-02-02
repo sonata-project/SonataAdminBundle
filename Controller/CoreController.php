@@ -14,7 +14,8 @@ namespace Sonata\BaseApplicationBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-use Symfony\Component\Form\RecursiveFieldIterator;
+use Sonata\BaseApplicationBundle\Form\RecursiveFieldIterator;
+//use Symfony\Component\Form\RecursiveFieldIterator;
 
 class CoreController extends Controller
 {
@@ -31,7 +32,7 @@ class CoreController extends Controller
     {
         $form = $this->getForm($code);
 
-        $form->bind($this->get('request')->get('data'));
+//        $form->bind($this->get('request'));
         
         $field_element = $this->getFieldElement($form, $element_id);
 
@@ -70,25 +71,21 @@ class CoreController extends Controller
 
     public function getFieldElement($form, $element_id)
     {
-
         $iterator = new RecursiveFieldIterator($form);
-        $iterator = new \RecursiveIteratorIterator($iterator);
+        $iterator = new \RecursiveIteratorIterator($iterator, \RecursiveIteratorIterator::CHILD_FIRST);
 
         $field_element = false;
         foreach ($iterator as $field) {
 
             if ($field->getId() == $element_id) {
                 // find the targeted element
-                $field_element = $field;
-                break;
+                return $field;
             }
         }
 
         if (!$field_element) {
             throw new NotFoundHttpException(sprintf('unable to retrieve the form field element with id : `%s`', $element_id));
         }
-
-        return $field_element;
     }
     
     public function appendFormFieldElementAction($code, $element_id)
@@ -115,7 +112,7 @@ class CoreController extends Controller
         $value = $fieldDescription->getValue($subject);
 
         // retrieve the posted data
-        $data = $this->get('request')->get('data');
+        $data = $this->get('request')->get($form->getName());
 
         if(!isset($data[$field_element->getKey()])) {
             $data[$field_element->getKey()] = array();
@@ -145,7 +142,7 @@ class CoreController extends Controller
         $form   = $admin->getForm($subject, $fields);
 
         // bind the data
-        $form->bind($data);
+        $form->submit($data);
 
         $admin->setSubject($subject);
         
@@ -161,7 +158,7 @@ class CoreController extends Controller
     public function getShortObjectDescriptionAction($code, $object_id)
     {
 
-        $admin            = $this->container->get('base_application.admin.pool')->getInstance($code);
+        $admin  = $this->container->get('base_application.admin.pool')->getInstance($code);
 
         $object = $admin->getObject($object_id);
 

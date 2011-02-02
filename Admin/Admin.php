@@ -73,6 +73,30 @@ abstract class Admin extends ContainerAware
     protected $choicesCache = array();
 
     /**
+     * todo: put this in the DIC
+     *
+     * built-in definition
+     * 
+     * @var array
+     */
+    protected $formFieldClasses = array(
+        'string'     =>  'Symfony\\Component\\Form\\TextField',
+        'text'       =>  'Symfony\\Component\\Form\\TextareaField',
+        'boolean'    =>  'Symfony\\Component\\Form\\CheckboxField',
+        'integer'    =>  'Symfony\\Component\\Form\\IntegerField',
+        'tinyint'    =>  'Symfony\\Component\\Form\\IntegerField',
+        'smallint'   =>  'Symfony\\Component\\Form\\IntegerField',
+        'mediumint'  =>  'Symfony\\Component\\Form\\IntegerField',
+        'bigint'     =>  'Symfony\\Component\\Form\\IntegerField',
+        'decimal'    =>  'Symfony\\Component\\Form\\NumberField',
+        'datetime'   =>  'Symfony\\Component\\Form\\DateTimeField',
+        'date'       =>  'Symfony\\Component\\Form\\DateField',
+        'choice'     =>  'Symfony\\Component\\Form\\ChoiceField',
+        'array'      =>  'Symfony\\Component\\Form\\FieldGroup',
+        'country'    =>  'Symfony\\Component\\Form\\CountryField',
+    );
+    
+    /**
      * return the entity manager
      *
      * @return EntityManager
@@ -86,16 +110,7 @@ abstract class Admin extends ContainerAware
      */
     abstract protected function buildListFields();
 
-    abstract protected function getChoices(FieldDescription $description);
-
-    public function getForm($object)
-    {
-        $form = $this->getBaseForm($object);
-
-        $this->configureFormFields($form);
-
-        return $form;
-    }
+    abstract public function getForm($object);
 
     public function configure()
     {
@@ -354,7 +369,11 @@ abstract class Admin extends ContainerAware
     {
         // TODO $this->formOptions
 
-        return $this->container->get('form.factory')->getForm('data', $object);
+        return new Form('object', array(
+            'data'      => $object,
+            'validator' => $this->container->get('validator'),
+            'context'   => $this->container->get('form.context')
+        ));
     }
 
 
@@ -441,7 +460,10 @@ abstract class Admin extends ContainerAware
 
     }
 
-    abstract protected function configureFormFields(Form $form);
+    protected function configureFormFields()
+    {
+        
+    }
 
     public function getFilterDatagrid()
     {
@@ -494,86 +516,7 @@ abstract class Admin extends ContainerAware
 
         return $parentFieldDescription->getAdmin()->getRoot();
     }
-
-    /**
-     * Construct and build the form field definitions
-     *
-     * @return list form field definition
-     */
-    public function getFormFields(Form $form)
-    {
-        $fields = array();
-
-        foreach ($form as $fieldName => $field) {
-            $fields[$fieldName] = new FieldDescription();
-            $fields[$fieldName]->setFieldName($fieldName);
-            $fields[$fieldName]->setAdmin($this);
-            $fields[$fieldName]->setTemplate('SonataBaseApplicationBundle:CRUD:edit_text.twig.html');
-
-            // TODO: set description properties
-        }
-
-        /*
-        $this->formFields = self::getBaseFields($form);
-
-        foreach ($this->formFields as $name => $fieldDescription) {
-
-            if (!$fieldDescription->getType()) {
-                throw new \RuntimeException(sprintf('You must declare a type for the field `%s`', $name));
-            }
-
-            $fieldDescription->setAdmin($this);
-            $fieldDescription->setOption('edit', $fieldDescription->getOption('edit', 'standard'));
-
-            // fix template value for doctrine association fields
-            if (!$fieldDescription->getTemplate()) {
-
-                $fieldDescription->setTemplate(sprintf('SonataBaseApplicationBundle:CRUD:edit_%s.twig.html', $fieldDescription->getType()));
-
-                if ($fieldDescription->getType() == ClassMetadataInfo::ONE_TO_ONE) {
-                    $fieldDescription->setTemplate('SonataBaseApplicationBundle:CRUD:edit_one_to_one.twig.html');
-                    $this->attachAdminClass($fieldDescription);
-                }
-
-                if ($fieldDescription->getType() == ClassMetadataInfo::MANY_TO_ONE) {
-                    $fieldDescription->setTemplate('SonataBaseApplicationBundle:CRUD:edit_many_to_one.twig.html');
-                    $this->attachAdminClass($fieldDescription);
-                }
-
-                if ($fieldDescription->getType() == ClassMetadataInfo::MANY_TO_MANY) {
-                    $fieldDescription->setTemplate('SonataBaseApplicationBundle:CRUD:edit_many_to_many.twig.html');
-                    $this->attachAdminClass($fieldDescription);
-                }
-
-                if ($fieldDescription->getType() == ClassMetadataInfo::ONE_TO_MANY) {
-                    $fieldDescription->setTemplate('SonataBaseApplicationBundle:CRUD:edit_one_to_many.twig.html');
-
-                    if($fieldDescription->getOption('edit') == 'inline' && !$fieldDescription->getOption('widget')) {
-                        $fieldDescription->setOption('widget', 'Bundle\\Sonata\\BaseApplicationBundle\\Form\\EditableGroupField');
-                    }
-
-                    $this->attachAdminClass($fieldDescription);
-                }
-            }
-
-            // set correct default value
-            if ($fieldDescription->getType() == 'datetime') {
-                $options = $fieldDescription->getOption('form_fields', array());
-                if (!isset($options['years'])) {
-                    $options['years'] = range(1900, 2100);
-                }
-                $fieldDescription->setOption('form_field', $options);
-            }
-
-            // unset the identifier field as it is not required to update an object
-            if ($fieldDescription->isIdentifier()) {
-                unset($this->formFields[$name]);
-            }
-        */
-
-        return $fields;
-    }
-
+    
     public function getListFields()
     {
         $this->buildListFields();
@@ -671,5 +614,17 @@ abstract class Admin extends ContainerAware
     public function getSubject()
     {
         return $this->subject;
+    }
+
+    public function setFormFields($formFields)
+    {
+        $this->formFields = $formFields;
+    }
+
+    public function getFormFields()
+    {
+        $this->buildFormFields();
+        
+        return $this->formFields;
     }
 }

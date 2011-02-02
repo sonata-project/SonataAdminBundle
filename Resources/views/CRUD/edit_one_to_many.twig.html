@@ -13,10 +13,11 @@ file that was distributed with this source code.
 
 
 {% block field %}
-    {% if field_description.options.edit == 'inline' %}
 
-        <div id="field_container_{{ admin.code }}_{{ field_element.id}}">
-            <span id="field_widget_{{ admin.code }}_{{ field_element.id}}" >
+
+    <div id="field_container_{{ admin.code }}_{{ field_element.id}}">
+        <span id="field_widget_{{ admin.code }}_{{ field_element.id}}" >
+            {% if field_description.options.edit == 'inline' %}
                 {% if inline == 'table' %}
                     <table>
                         {% for nested_group_field_name, nested_group_field in field_element.fields %}
@@ -55,23 +56,28 @@ file that was distributed with this source code.
                         {% endfor %}
                     </div>
                 {% endif %}
-            </span>
+            {% else %}
+                {{ form_field(field_element) }}
+            {% endif %}
 
-            <span id="field_actions_{{ admin.code }}_{{ field_element.id}}" >
-                <a
-                    href="{{ field_description.associationadmin.generateUrl('create') }}"
-                    onclick="start_field_retrieve_{{ admin.code }}_{{ field_element.id }}(event)"
-                    class="action">
-                    <img
-                        src="{{ asset('bundles/sonatabaseapplication/famfamfam/add.png') }}"
-                        alt="{% trans 'btn_add' from 'BaseApplicationBundle' %}"
-                     />
-                </a>
-            </span>
+        </span>
 
+        <span id="field_actions_{{ admin.code }}_{{ field_element.id}}" >
+            <a
+                href="{{ field_description.associationadmin.generateUrl('create') }}"
+                onclick="start_field_retrieve_{{ admin.code }}_{{ field_element.id }}(event)"
+                class="action">
+                <img
+                    src="{{ asset('bundles/sonatabaseapplication/famfamfam/add.png') }}"
+                    alt="{% trans 'btn_add' from 'BaseApplicationBundle' %}"
+                 />
+            </a>
+        </span>
+
+        {% if field_description.options.edit == 'inline' %}
             {% include 'SonataBaseApplicationBundle:CRUD:edit_one_association_script.twig.html' %}
-        </div>
-    {% else %}
-        {{ form_field(field_element) }}
-    {% endif %}
+        {% else %}
+            {% include 'SonataBaseApplicationBundle:CRUD:edit_many_association_script.twig.html' %}
+        {% endif %}
+    </div>
 {% endblock %}

@@ -60,7 +60,7 @@ abstract class Filter extends Configurable
     {
         $this->value = $value;
 
-        $this->field->bind($value);
+        $this->field->submit($value);
 
         list($alias, $field) = $this->association($queryBuilder, $this->field->getData());
 

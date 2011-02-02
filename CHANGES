@@ -1,4 +1,10 @@
-24/01/2011
+02/02/2011
+----------
+
+* starting to use the form.field_factory service
+* update code to integrate the last symfony changes
+
+ 24/01/2011
 ----------
 
 * add list mode

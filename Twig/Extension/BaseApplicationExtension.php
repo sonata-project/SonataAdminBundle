@@ -72,12 +72,19 @@ class BaseApplicationExtension extends \Twig_Extension
 
         $template = $this->environment->loadTemplate($fieldDescription->getTemplate());
 
-        return $template->render(array_merge($params, array(
+        return $this->output($fieldDescription, $template->render(array_merge($params, array(
             'admin'  => $fieldDescription->getAdmin(),
             'object' => $object,
             'value'  => $this->getValueFromFieldDescription($object, $fieldDescription),
             'field_description' => $fieldDescription
-        )));
+        ))));
+    }
+
+
+    public function output(FieldDescription $fieldDescription, $content)
+    {
+
+        return sprintf("\n<!-- fieldName: %s, template: %s -->\n%s\n", $fieldDescription->getFieldName(), $fieldDescription->getTemplate(), $content);
     }
 
     /**
@@ -172,14 +179,14 @@ class BaseApplicationExtension extends \Twig_Extension
 
         $template = $this->environment->loadTemplate($fieldDescription->getTemplate());
         
-        return $template->render(array_merge($params, array(
+        return $this->output($fieldDescription, $template->render(array_merge($params, array(
             'admin'             => $fieldDescription->getAdmin(),
             'object'            => $object,
             'field_description' => $fieldDescription,
             'value'             => $this->getValueFromFieldDescription($object, $fieldDescription),
             'field_element'     => $field,
             'base_template'     => $fieldDescription->getOption('base_template', $base_template)
-        )));
+        ))));
     }
 
     /**

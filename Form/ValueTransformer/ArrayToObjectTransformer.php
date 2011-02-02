@@ -11,11 +11,13 @@
 
 namespace Sonata\BaseApplicationBundle\Form\ValueTransformer;
 
-use Symfony\Component\Form\ValueTransformer\BaseValueTransformer;
+use Symfony\Component\Form\ValueTransformer\ValueTransformerInterface;
+use Symfony\Component\Form\ValueTransformer\TransformationFailedException;
+use Symfony\Component\Form\Configurable;
 use Symfony\Component\Form\Exception\InvalidPropertyException;
 use Symfony\Component\Form\Exception\PropertyAccessDeniedException;
 
-class ArrayToObjectTransformer extends BaseValueTransformer
+class ArrayToObjectTransformer extends Configurable implements ValueTransformerInterface
 {
     protected function configure()
     {

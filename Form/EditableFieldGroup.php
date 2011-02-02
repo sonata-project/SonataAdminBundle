@@ -11,7 +11,7 @@ namespace Sonata\BaseApplicationBundle\Form;
  * with this source code in the file LICENSE.
  */
 
-use Symfony\Component\Form\FieldGroup;
+use Symfony\Component\Form\Form;
 use Symfony\Component\Form\CheckboxField;
 use Symfony\Component\Form\TextField;
 use Symfony\Component\Form\RecursiveFieldIterator;
@@ -20,7 +20,7 @@ use Symfony\Component\Form\FieldInterface;
 /**
  * @author     Bernhard Schussek <bernhard.schussek@symfony-project.com>
  */
-class EditableFieldGroup extends FieldGroup
+class EditableFieldGroup extends Form
 {
 
     /**
@@ -37,7 +37,7 @@ class EditableFieldGroup extends FieldGroup
     /**
      * @inheritDoc
      */
-    protected function updateFromObject(&$objectOrArray)
+    protected function readObject(&$objectOrArray)
     {
         $iterator = new RecursiveFieldIterator($this);
         $iterator = new \RecursiveIteratorIterator($iterator);
@@ -47,14 +47,14 @@ class EditableFieldGroup extends FieldGroup
                 continue;
             }
 
-            $field->updateFromProperty($objectOrArray);
+            $field->readProperty($objectOrArray);
         }
     }
 
     /**
      * @inheritDoc
      */
-    protected function updateObject(&$objectOrArray)
+    protected function writeObject(&$objectOrArray)
     {
         $iterator = new RecursiveFieldIterator($this);
         $iterator = new \RecursiveIteratorIterator($iterator);
@@ -64,7 +64,7 @@ class EditableFieldGroup extends FieldGroup
                 continue;
             }
 
-            $field->updateProperty($objectOrArray);
+            $field->writeProperty($objectOrArray);
         }
     }
 
