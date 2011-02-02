@@ -36,6 +36,12 @@ file that was distributed with this source code.
 
         {{ form_hidden(form) }}
         
+        {% if form.errors %}
+            <div class="sonata-ba-form-error">
+                {{ form_errors(form) }}
+            </div>
+        {% endif %}
+        
         {% for name, form_group in form_groups %}
             {% if name %}
                 <fieldset>
