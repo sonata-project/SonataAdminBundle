@@ -24,15 +24,15 @@ abstract class Admin extends ContainerAware
 {
     protected $class;
 
-    protected $list = false;
+    protected $list = array();
 
     protected $listFieldDescriptions = array();
 
-    protected $form = false;
+    protected $form = array();
     
     protected $formFieldDescriptions = array();
 
-    protected $filter = false;
+    protected $filter = array();
 
     protected $filterFieldDescriptions = array(); 
 
@@ -95,36 +95,6 @@ abstract class Admin extends ContainerAware
     abstract public function getDatagridBuilder();
 
     abstract public function getClassMetaData();
-
-    /**
-     * This method can be overwritten to tweak the FieldDescription linked to the form
-     *
-     * @return void
-     */
-    protected function configureFormFieldDescriptions()
-    {
-
-    }
-
-    /**
-     * This method can be overwritten to tweak the FieldDescription linked to the form
-     *
-     * @return void
-     */
-    protected function configureListFieldDescriptions()
-    {
-
-    }
-
-    /**
-     * This method can be overwritten to tweak the FieldDescription linked to the form
-     *
-     * @return void
-     */
-    protected function configureFilterFieldDescriptions()
-    {
-
-    }
 
     /**
      * This method can be overwritten to tweak the form construction, by default the form
@@ -190,14 +160,17 @@ abstract class Admin extends ContainerAware
 
         // normalize field
         foreach ($this->listFieldDescriptions as $fieldDescription) {
+
             $this->getListBuilder()->fixFieldDescription($this, $fieldDescription);
         }
 
-        if (!isset($this->listFieldsDescription['_batch'])) {
+        if (!isset($this->listFieldDescriptions['_batch'])) {
+
             $fieldDescription = new FieldDescription();
             $fieldDescription->setOptions(array(
                 'label' => 'batch',
-                'code'  => '_batch'
+                'code'  => '_batch',
+                'type'  => 'batch',
             ));
             $fieldDescription->setTemplate('SonataBaseApplicationBundle:CRUD:list__batch.twig.html');
             $this->listFieldDescriptions = array( '_batch' => $fieldDescription ) + $this->listFieldDescriptions;
@@ -256,11 +229,6 @@ abstract class Admin extends ContainerAware
      */
     static public function getBaseFields($metadata, $selectedFields)
     {
-
-        // if nothing is defined we display all fields
-        if (!$selectedFields) {
-            $selectedFields = array_keys($metadata->reflFields) + array_keys($metadata->associationMappings);
-        }
 
         $fields = array();
 
@@ -617,10 +585,10 @@ abstract class Admin extends ContainerAware
      * return a list depend on the given $object
      *
      * @param  $object
-     * @return Symfony\Component\Form\Form
+     * @return Symfony\Component\Datagrid\ListCollection
      */
     public function getList(array $options = array())
-    {
+    {   
 
         $list = $this->getListBuilder()->getBaseList($options);
 
@@ -645,7 +613,7 @@ abstract class Admin extends ContainerAware
      * return a list depend on the given $object
      *
      * @param  $object
-     * @return Symfony\Component\Form\Form
+     * @return Symfony\Component\Datagrid\Datagrid
      */
     public function getDatagrid()
     {

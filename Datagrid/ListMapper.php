@@ -42,7 +42,7 @@ class ListMapper
             $fieldDescription = $name;
             $fieldDescription->mergeOptions($fieldDescriptionOptions);
 
-        } else if (is_string($name) && !$this->admin->hasFormFieldDescription($name)) {
+        } else if (is_string($name) && !$this->admin->hasListFieldDescription($name)) {
 
             $fieldDescription = new FieldDescription;
             $fieldDescription->setOptions($fieldDescriptionOptions);
@@ -51,7 +51,7 @@ class ListMapper
             $this->listBuilder->fixFieldDescription($this->admin, $fieldDescription, $fieldDescriptionOptions);
             $this->admin->addListFieldDescription($name, $fieldDescription);
 
-        } else if (is_string($name) && $this->admin->hasFormFieldDescription($name)) {
+        } else if (is_string($name) && $this->admin->hasListFieldDescription($name)) {
             $fieldDescription = $this->admin->getFormFieldDescription($name);
         } else {
 
