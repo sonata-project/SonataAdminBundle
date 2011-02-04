@@ -12,6 +12,7 @@ Example
     <?php
     namespace Bundle\Sonata\NewsBundle\Admin;
 
+    use Sonata\BaseApplicationBundle\Datagrid\DatagridMapper;
     use Bundle\Sonata\BaseApplicationBundle\Admin\Admin;
 
     class PostAdmin extends Admin
@@ -19,34 +20,35 @@ Example
 
         protected $class = 'Application\Sonata\NewsBundle\Entity\Post';
 
-        protected $filterFields = array(
+        protected $filter = array(
             'title',
             'enabled',
             'tags' => array('filter_field_options' => array('expanded' => true, 'multiple' => true))
         );
 
-        public function configureFilterFields()
+        public function configureDatagridFilters(DatagridMapper $datagrid)
         {
-            $this->filterFields['with_open_comments'] = new FieldDescription;
-            $this->filterFields['with_open_comments']->setName('label');
-            $this->filterFields['with_open_comments']->setTemplate('Sonata\BaseApplicationBundle:CRUD:filter_callback.twig');
-            $this->filterFields['with_open_comments']->setType('callback');
-            $this->filterFields['with_open_comments']->setOption('filter_options', array(
-                'filter' => array($this, 'getWithOpenCommentFilter'),
-                'field'  => array($this, 'getWithOpenCommentField')
+
+            $datagrid->add('with_open_comments', array(
+                'template' => 'SonataBaseApplicationBundle:CRUD:filter_callback.twig.html',
+                'type' => 'callback',
+                'filter_options' => array(
+                    'filter' => array($this, 'getWithOpenCommentFilter'),
+                    'field'  => array($this, 'getWithOpenCommentField')
+                )
             ));
         }
 
-        public function getWithOpenCommentFilter($query_builder, $alias, $field, $value)
+        public function getWithOpenCommentFilter($queryBuilder, $alias, $field, $value)
         {
 
             if (!$value) {
                 return;
             }
 
-            $query_builder->leftJoin(sprintf('%s.comments', $alias), 'c');
-            $query_builder->andWhere('c.status = :status');
-            $query_builder->setParameter('status', \Application\Sonata\NewsBundle\Entity\Comment::STATUS_MODERATE);
+            $queryBuilder->leftJoin(sprintf('%s.comments', $alias), 'c');
+            $queryBuilder->andWhere('c.status = :status');
+            $queryBuilder->setParameter('status', \Application\Sonata\NewsBundle\Entity\Comment::STATUS_MODERATE);
         }
 
         public function getWithOpenCommentField($filter)

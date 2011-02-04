@@ -32,7 +32,7 @@ class CoreController extends Controller
     {
         $form = $this->getForm($code);
 
-//        $form->bind($this->get('request'));
+        $form->bind($this->get('request'));
         
         $field_element = $this->getFieldElement($form, $element_id);
 
@@ -63,10 +63,7 @@ class CoreController extends Controller
             throw new NotFoundHttpException(sprintf('unable to find the object with id : `%s`', $this->get('request')->get('object_id')));
         }
 
-        $fields = $admin->getFormFields();
-        $form   = $admin->getForm($object, $fields);
-
-        return $form;
+        return $admin->getForm($object);
     }
 
     public function getFieldElement($form, $element_id)

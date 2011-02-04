@@ -11,6 +11,7 @@ Example
     <?php
     namespace Sonta\NewsBundle\Admin;
 
+    use Sonata\BaseApplicationBundle\Form\FormMapper;
     use Sonata\BaseApplicationBundle\Admin\Admin;
 
     class PostAdmin extends Admin
@@ -18,7 +19,8 @@ Example
 
         protected $class = 'Application\Sonata\NewsBundle\Entity\Post';
 
-        protected $formFields = array(
+        protected $form = array(
+            'author' => array('edit' => 'list'),
             'enabled',
             'title',
             'abstract',
@@ -29,14 +31,16 @@ Example
             'comments_default_status'
         );
 
-        public function configureFormFields()
+        public function configureFormFields(FormMapper $form)
         {
-            $this->formFields['comments_default_status']->setType('choice');
-    
-            $options = $this->formFields['comments_default_status']->getOption('form_field_options', array());
-            $options['choices'] = Comment::getStatusList();
+            $form->add('author', array(), array('edit' => 'list'));
+            $form->add('title');
 
-            $this->formFields['comments_default_status']->setOption('form_field_options', $options);
+            // add comments_default_status by configuring an internal FieldDescription
+            $form->add('comments_default_status', array('choices' => Comment::getStatusList()), array('type' => 'choice'));
+
+            // or by creating the FormField
+            $form->add(new \Symfony\Component\Form\ChoiceField('comments_default_status', array('choices' => Comment::getStatusList())));
         }
     }
 

@@ -23,7 +23,6 @@ use Sonata\BaseApplicationBundle\Tool\DoctrinePager as Pager;
 class CRUDController extends Controller
 {
 
-
     protected $admin;
 
     public function renderJson($data)
@@ -68,15 +67,12 @@ class CRUDController extends Controller
     public function listAction()
     {
 
-        $datagrid = $this->admin->getFilterDatagrid();
-        $datagrid->setValues($this->get('request')->query->all());
+        $datagrid = $this->admin->getDatagrid();
 
         return $this->render($this->admin->getListTemplate(), array(
             'datagrid'          => $datagrid,
-            'fields'            => $this->admin->getListFields(),
-            'class_meta_data'   => $this->admin->getClassMetaData(),
+            'list'              => $this->admin->getList(),
             'admin'             => $this->admin,
-            'batch_actions'     => $this->admin->getBatchActions(),
             'base_template'     => $this->getBaseTemplate(),
         ));
     }
@@ -128,7 +124,7 @@ class CRUDController extends Controller
         return $this->render($this->admin->getEditTemplate(), array(
             'form'           => $form,
             'object'         => $object,
-            'fields'         => $this->admin->getFormFields($form),
+            'fields'         => $this->admin->getFormFieldDescriptions($form),
             'form_groups'    => $this->admin->getFormGroups($form),
             'admin'          => $this->admin,
             'base_template'  => $this->getBaseTemplate(),
@@ -254,7 +250,7 @@ class CRUDController extends Controller
         return $this->render($this->admin->getEditTemplate(), array(
             'form'          => $form,
             'object'        => $object,
-            'fields'        => $this->admin->getFormFields($form),
+            'fields'        => $this->admin->getFormFieldDescriptions($form),
             'form_groups'   => $this->admin->getFormGroups($form),
             'admin'         => $this->admin,
             'base_template' => $this->getBaseTemplate(),

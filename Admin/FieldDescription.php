@@ -138,6 +138,20 @@ class FieldDescription
     
     public function setOptions($options)
     {
+
+        // set the type if provided
+        if (isset($options['type'])) {
+            $this->setType($options['type']);
+            unset($options['type']);
+        }
+
+        // remove property value
+        if (isset($options['template'])) {
+            $this->setTemplate($options['template']);
+            unset($options['template']);
+        }
+
+
         $this->options = $options;
     }
 
@@ -180,8 +194,9 @@ class FieldDescription
     {
         $this->associationMapping = $associationMapping;
 
-        $this->type      = $associationMapping['type'];
-        $this->fieldName = $associationMapping['fieldName'];
+        $this->type         = $this->type ?: $associationMapping['type'];
+        $this->mappingType  = $this->mappingType ?: $associationMapping['type'];
+        $this->fieldName    = $associationMapping['fieldName'];
     }
 
     public function getAssociationMapping()
@@ -293,6 +308,12 @@ class FieldDescription
         }
 
         $this->options[$name] = array_merge($this->options[$name], $options);
+    }
+
+    public function mergeOptions(array $options = array())
+    {
+
+        $this->setOptions(array_merge($this->options, $options));
     }
 
     public function setMappingType(string $mappingType)

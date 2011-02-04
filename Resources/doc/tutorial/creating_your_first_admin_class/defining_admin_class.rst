@@ -20,13 +20,15 @@ By convention Admin files are set under a Admin folder.
     namespace Application\NewsBundle\Admin;
 
     use Bundle\Sonata\BaseApplicationBundle\Admin\Admin;
+    use Sonata\BaseApplicationBundle\Form\FormMapper;
+    use Sonata\BaseApplicationBundle\Datagrid\DatagridMapper;
+    use Sonata\BaseApplicationBundle\Datagrid\ListMapper;
 
     class PostAdmin extends Admin
     {
 
         protected $class = 'Application\Sonata\NewsBundle\Entity\Post';
-
-        protected $baseControllerName = 'Sonata\NewsBundle:PostAdmin';
+        protected $baseControllerName = 'SonataNewsBundle:PostAdmin';
 
     }
 
@@ -35,11 +37,8 @@ By convention Admin files are set under a Admin folder.
 ..
 
     post:
-
         class:      Bundle\NewsBundle\Admin\PostAdmin
-
         entity:     Application\Sonata\NewsBundle\Entity\Post
-
         controller: Bundle\NewsBundle\Controller\PostAdminController
 
 
@@ -51,19 +50,19 @@ of them are not mean to be displayed.
 Tweak the PostAdmin class
 -------------------------
 
-Now, let's specify the differents we want to use:
+Now, let's specify the differents fields we want to use:
  
 
 ..
 
-    protected $listFields = array(
+    protected $list = array(
         'title' => array('identifier' => true),
         'slug',
         'enabled',
         'comments_enabled',
     );
 
-    protected $formFields = array(
+    protected $form = array(
         'enabled',
         'title',
         'abstract',
@@ -73,7 +72,7 @@ Now, let's specify the differents we want to use:
         'comments_default_status'
     );
 
-    protected $filterFields = array(
+    protected $filter = array(
         'title',
         'enabled',
         'tags' => array('filter_field_options' => array('expanded' => true, 'multiple' => true))
@@ -98,18 +97,18 @@ TagAdmin
     {
         protected $class = 'Application\Sonata\NewsBundle\Entity\Tag';
 
-        protected $listFields = array(
+        protected $list = array(
             'name' => array('identifier' => true),
             'slug',
             'enabled',
         );
 
-        protected $formFields = array(
+        protected $form = array(
             'name',
             'enabled'
         );
 
-        protected $baseControllerName = 'Sonata\NewsBundle:TagAdmin';
+        protected $baseControllerName = 'SonataNewsBundle:TagAdmin';
     }
 
 CommentAdmin
@@ -144,5 +143,5 @@ CommentAdmin
             'status' => array('type' => 'choice'),
         );
 
-        protected $baseControllerName = 'Sonata\NewsBundle:CommentAdmin';
+        protected $baseControllerName = 'SonataNewsBundle:CommentAdmin';
     }

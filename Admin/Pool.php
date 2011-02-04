@@ -101,7 +101,6 @@ class Pool
         $instance->setConfigurationPool($this);
         $instance->setCode($code);
         $instance->setLabel($this->configuration[$code]['label']);
-        $instance->configure();
 
         return $instance;
     }

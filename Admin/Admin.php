@@ -14,19 +14,27 @@ namespace Sonata\BaseApplicationBundle\Admin;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\Form\Form;
 
-use Sonata\BaseApplicationBundle\Tool\Datagrid;
+use Sonata\BaseApplicationBundle\Form\FormMapper;
+use Sonata\BaseApplicationBundle\Datagrid\ListMapper;
+use Sonata\BaseApplicationBundle\Datagrid\DatagridMapper;
+use Sonata\BaseApplicationBundle\Datagrid\Datagrid;
+
 
 abstract class Admin extends ContainerAware
 {
     protected $class;
 
-    protected $listFields = false;
+    protected $list = false;
 
-    protected $formFields = false;
+    protected $listFieldDescriptions = array();
 
-    protected $filterFields = array(); // by default there is no filter
+    protected $form = false;
+    
+    protected $formFieldDescriptions = array();
 
-    protected $filterDatagrid;
+    protected $filter = false;
+
+    protected $filterFieldDescriptions = array(); 
 
     protected $maxPerPage = 25;
 
@@ -67,34 +75,11 @@ abstract class Admin extends ContainerAware
         'form_fields' => false,
         'form_groups' => false,
         'list_fields' => false,
+        'filter_fields' => false,
         'urls'        => false,
     );
 
     protected $choicesCache = array();
-
-    /**
-     * todo: put this in the DIC
-     *
-     * built-in definition
-     * 
-     * @var array
-     */
-    protected $formFieldClasses = array(
-        'string'     =>  'Symfony\\Component\\Form\\TextField',
-        'text'       =>  'Symfony\\Component\\Form\\TextareaField',
-        'boolean'    =>  'Symfony\\Component\\Form\\CheckboxField',
-        'integer'    =>  'Symfony\\Component\\Form\\IntegerField',
-        'tinyint'    =>  'Symfony\\Component\\Form\\IntegerField',
-        'smallint'   =>  'Symfony\\Component\\Form\\IntegerField',
-        'mediumint'  =>  'Symfony\\Component\\Form\\IntegerField',
-        'bigint'     =>  'Symfony\\Component\\Form\\IntegerField',
-        'decimal'    =>  'Symfony\\Component\\Form\\NumberField',
-        'datetime'   =>  'Symfony\\Component\\Form\\DateTimeField',
-        'date'       =>  'Symfony\\Component\\Form\\DateField',
-        'choice'     =>  'Symfony\\Component\\Form\\ChoiceField',
-        'array'      =>  'Symfony\\Component\\Form\\FieldGroup',
-        'country'    =>  'Symfony\\Component\\Form\\CountryField',
-    );
     
     /**
      * return the entity manager
@@ -103,18 +88,199 @@ abstract class Admin extends ContainerAware
      */
     abstract public function getEntityManager();
 
+    abstract public function getListBuilder();
+
+    abstract public function getFormBuilder();
+
+    abstract public function getDatagridBuilder();
+
+    abstract public function getClassMetaData();
+
+    /**
+     * This method can be overwritten to tweak the FieldDescription linked to the form
+     *
+     * @return void
+     */
+    protected function configureFormFieldDescriptions()
+    {
+
+    }
+
+    /**
+     * This method can be overwritten to tweak the FieldDescription linked to the form
+     *
+     * @return void
+     */
+    protected function configureListFieldDescriptions()
+    {
+
+    }
+
+    /**
+     * This method can be overwritten to tweak the FieldDescription linked to the form
+     *
+     * @return void
+     */
+    protected function configureFilterFieldDescriptions()
+    {
+
+    }
+
+    /**
+     * This method can be overwritten to tweak the form construction, by default the form
+     * is built by reading the FieldDescription
+     *
+     * @return void
+     */
+    protected function configureFormFields(FormMapper $form)
+    {
+
+    }
+
+    protected function configureListFields(ListMapper $list)
+    {
+
+    }
+
+    protected function configureDatagridFilters(DatagridMapper $filter)
+    {
+
+    }
+
+    public function configureUrls()
+    {
+
+    }
+
+    public function preUpdate($object)
+    {
+
+    }
+
+    public function postUpdate($object)
+    {
+
+    }
+
+    public function preInsert($object)
+    {
+
+    }
+
+    public function postInsert($object)
+    {
+
+    }
+
     /**
      * build the field to use in the list view
      *
      * @return void
      */
-    abstract protected function buildListFields();
-
-    abstract public function getForm($object);
-
-    public function configure()
+    protected function buildListFieldDescriptions()
     {
 
+        if ($this->loaded['list_fields']) {
+            return;
+        }
+
+        $this->loaded['list_fields'] = true;
+
+        $this->listFieldDescriptions = self::getBaseFields($this->getClassMetaData(), $this->list);
+
+        // normalize field
+        foreach ($this->listFieldDescriptions as $fieldDescription) {
+            $this->getListBuilder()->fixFieldDescription($this, $fieldDescription);
+        }
+
+        if (!isset($this->listFieldsDescription['_batch'])) {
+            $fieldDescription = new FieldDescription();
+            $fieldDescription->setOptions(array(
+                'label' => 'batch',
+                'code'  => '_batch'
+            ));
+            $fieldDescription->setTemplate('SonataBaseApplicationBundle:CRUD:list__batch.twig.html');
+            $this->listFieldDescriptions = array( '_batch' => $fieldDescription ) + $this->listFieldDescriptions;
+        }
+
+        return $this->listFieldDescriptions;
+    }
+
+    public function buildFilterFieldDescriptions()
+    {
+        if ($this->loaded['filter_fields']) {
+            return;
+        }
+
+        $this->loaded['filter_fields'] = true;
+
+        $this->filterFieldDescriptions = self::getBaseFields($this->getClassMetaData(), $this->filter);
+
+        foreach ($this->filterFieldDescriptions as $fieldDescription) {
+            $this->getDatagridBuilder()->fixFieldDescription($this, $fieldDescription);
+        }
+    }
+
+    /**
+     * Build the form's FieldDescription collection
+     *
+     * @return
+     */
+    protected function buildFormFieldDescriptions()
+    {
+
+        if ($this->loaded['form_fields']) {
+            return;
+        }
+
+        $this->loaded['form_fields'] = true;
+
+        $this->formFieldDescriptions = self::getBaseFields($this->getClassMetaData(), $this->form);
+
+        foreach ($this->formFieldDescriptions as $name => &$fieldDescription) {
+
+            $this->getFormBuilder()->fixFieldDescription($this, $fieldDescription);
+
+            // unset the identifier field as it is not required to update an object
+            if ($fieldDescription->isIdentifier()) {
+                unset($this->formFieldDescriptions[$name]);
+            }
+        }
+    }
+
+    /**
+     * make sure the base fields are set in the correct format
+     *
+     * @param  $selected_fields
+     * @return array
+     */
+    static public function getBaseFields($metadata, $selectedFields)
+    {
+
+        // if nothing is defined we display all fields
+        if (!$selectedFields) {
+            $selectedFields = array_keys($metadata->reflFields) + array_keys($metadata->associationMappings);
+        }
+
+        $fields = array();
+
+        // make sure we works with array
+        foreach ($selectedFields as $name => $options) {
+
+            $description = new FieldDescription;
+
+            if (!is_array($options)) {
+                $name = $options;
+                $options = array();
+            }
+
+            $description->setName($name);
+            $description->setOptions($options);
+
+            $fields[$name] = $description;
+        }
+
+        return $fields;
     }
 
     /**
@@ -183,17 +349,6 @@ abstract class Admin extends ContainerAware
         return $this->class;
     }
 
-    /**
-     * return the doctrine class metadata handled by the Admin instance
-     *
-     * @return ClassMetadataInfo the doctrine class metadata handled by the Admin instance
-     */
-    public function getClassMetaData()
-    {
-
-        return $this->getEntityManager()
-            ->getClassMetaData($this->getClass());
-    }
 
     /**
      * return the list of batchs actions
@@ -283,11 +438,6 @@ abstract class Admin extends ContainerAware
         $this->configureUrls();
     }
 
-    public function configureUrls()
-    {
-
-    }
-
     /**
      * return the url defined by the $name
      *
@@ -365,17 +515,22 @@ abstract class Admin extends ContainerAware
      *
      * @return Form the base form
      */
-    public function getBaseForm($object)
+    public function getBaseForm($object, $options = array())
     {
-        // TODO $this->formOptions
-
-        return new Form('object', array(
-            'data'      => $object,
-            'validator' => $this->container->get('validator'),
-            'context'   => $this->container->get('form.context')
-        ));
+        return $this->getFormBuilder()->getBaseForm($object, array_merge($this->formOptions, $options));
     }
 
+    /**
+     *
+     * @return Form the base form
+     */
+    public function getBaseDatagrid()
+    {
+        return new Datagrid(
+            $this->getClass(),
+            $this->getEntityManager()
+        );
+    }
 
     /**
      * attach an admin instance to the given FieldDescription
@@ -415,10 +570,9 @@ abstract class Admin extends ContainerAware
 
         $this->loaded['form_groups'] = true;
 
-
         if (!$this->formGroups) {
             $this->formGroups = array(
-                false => array('fields' => array_keys($this->getFormFields($form)))
+                false => array('fields' => array_keys($this->getFormFieldDescriptions()))
             );
         }
 
@@ -430,66 +584,91 @@ abstract class Admin extends ContainerAware
         }
     }
 
-    public function preUpdate($object)
+    /**
+     * return a form depend on the given $object
+     *
+     * @param  $object
+     * @return Symfony\Component\Form\Form
+     */
+    public function getForm($object, array $options = array())
     {
 
-    }
+        $form = $this->getBaseForm($object, $options);
 
-    public function postUpdate($object)
-    {
+        $mapper = new FormMapper($this->getFormBuilder(), $form, $this);
 
-    }
+        foreach ($this->getFormFieldDescriptions() as $fieldDescription) {
 
-    public function preInsert($object)
-    {
+            if (!$fieldDescription->getType()) {
 
-    }
+                continue;
+            }
 
-    public function postInsert($object)
-    {
-
-    }
-
-    public function configureListFields()
-    {
-
-    }
-
-    public function configureFilterFields()
-    {
-
-    }
-
-    protected function configureFormFields()
-    {
-        
-    }
-
-    public function getFilterDatagrid()
-    {
-        if (!$this->filterDatagrid) {
-
-            $this->filterDatagrid = new Datagrid(
-                $this->getClass(),
-                $this->getEntityManager()
-            );
-
-            $this->filterDatagrid->setMaxPerPage($this->maxPerPage);
-
-            // first pass, configure and normalize the filterFields array
-            $this->filterDatagrid->setFilterFields($this->filterFields);
-            $this->filterDatagrid->buildFilterFields();
-
-            // update the current filterFields array and apply admin custom code
-            $this->filterFields = $this->filterDatagrid->getFilterFields();
-            $this->configureFilterFields();
-
-            // set the final value to the datagrid
-            $this->filterDatagrid->setFilterFields($this->filterFields);
-
+            $mapper->add($fieldDescription);
         }
 
-        return $this->filterDatagrid;
+        $this->configureFormFields($mapper);
+
+        return $form;
+    }
+
+
+    /**
+     * return a list depend on the given $object
+     *
+     * @param  $object
+     * @return Symfony\Component\Form\Form
+     */
+    public function getList(array $options = array())
+    {
+
+        $list = $this->getListBuilder()->getBaseList($options);
+
+        $mapper = new ListMapper($this->getListBuilder(), $list, $this);
+
+        foreach ($this->getListFieldDescriptions() as $fieldDescription) {
+
+            if (!$fieldDescription->getType()) {
+
+                continue;
+            }
+
+            $mapper->add($fieldDescription);
+        }
+
+        $this->configureListFields($mapper);
+
+        return $list;
+    }
+
+    /**
+     * return a list depend on the given $object
+     *
+     * @param  $object
+     * @return Symfony\Component\Form\Form
+     */
+    public function getDatagrid()
+    {
+        
+        $datagrid = $this->getBaseDatagrid();
+        $datagrid->setMaxPerPage($this->maxPerPage);
+        $datagrid->setValues($this->container->get('request')->query->all());
+
+        $mapper = new DatagridMapper($this->getDatagridBuilder(), $datagrid, $this);
+
+        foreach ($this->getFilterFieldDescriptions() as $fieldDescription) {
+
+            if (!$fieldDescription->getType()) {
+
+                continue;
+            }
+
+            $mapper->add($fieldDescription);
+        }
+
+        $this->configureDatagridFilters($mapper);
+
+        return $datagrid;
     }
 
     /**
@@ -501,7 +680,7 @@ abstract class Admin extends ContainerAware
     }
 
     /**
-     * return the master admin
+     * return the master admin      
      *
      */
     public function getRoot()
@@ -515,13 +694,6 @@ abstract class Admin extends ContainerAware
         }
 
         return $parentFieldDescription->getAdmin()->getRoot();
-    }
-    
-    public function getListFields()
-    {
-        $this->buildListFields();
-
-        return $this->listFields;
     }
 
     public function setBaseControllerName($baseControllerName)
@@ -562,16 +734,6 @@ abstract class Admin extends ContainerAware
     public function getLabel()
     {
         return $this->label;
-    }
-
-    public function setFilterFields($filterFields)
-    {
-        $this->filterFields = $filterFields;
-    }
-
-    public function getFilterFields()
-    {
-        return $this->filterFields;
     }
 
     public function setMaxPerPage($maxPerPage)
@@ -616,15 +778,91 @@ abstract class Admin extends ContainerAware
         return $this->subject;
     }
 
-    public function setFormFields($formFields)
+    public function getFormFieldDescriptions()
     {
-        $this->formFields = $formFields;
+        $this->buildFormFieldDescriptions();
+        
+        return $this->formFieldDescriptions;
     }
 
-    public function getFormFields()
+    public function getFormFieldDescription($name) {
+
+        return $this->hasFormFieldDescription($name) ? $this->formFieldDescriptions[$name] : null;
+    }
+
+    public function hasFormFieldDescription($name)
     {
-        $this->buildFormFields();
+        $this->buildFormFieldDescriptions();
+
+        return array_key_exists($name, $this->formFieldDescriptions) ? true : false;
+    }
+
+    public function addFormFieldDescription($name, FieldDescription $fieldDescription)
+    {
+        $this->formFieldDescriptions[$name] = $fieldDescription;
+    }
+
+    public function removeFormFieldDescription($name)
+    {
+        unset($this->formFieldDescriptions[$name]);
+    }
+
+    public function getListFieldDescriptions()
+    {
+
+        $this->buildListFieldDescriptions();
         
-        return $this->formFields;
+        return $this->listFieldDescriptions;
+    }
+
+    public function getListFieldDescription($name) {
+
+        return $this->hasListFieldDescription($name) ? $this->listFieldDescriptions[$name] : null;
+    }
+
+    public function hasListFieldDescription($name)
+    {
+        $this->buildListFieldDescriptions();
+
+        return array_key_exists($name, $this->listFieldDescriptions) ? true : false;
+    }
+
+    public function addListFieldDescription($name, FieldDescription $fieldDescription)
+    {
+        $this->listFieldDescriptions[$name] = $fieldDescription;
+    }
+
+    public function removeListFieldDescription($name)
+    {
+        unset($this->listFieldDescriptions[$name]);
+    }
+
+    public function getFilterFieldDescription($name) {
+
+        return $this->hasFilterFieldDescription($name) ? $this->filterFieldDescriptions[$name] : null;
+    }
+
+    public function hasFilterFieldDescription($name)
+    {
+        $this->buildFilterFieldDescriptions();
+
+        return array_key_exists($name, $this->filterFieldDescriptions) ? true : false;
+    }
+
+    public function addFilterFieldDescription($name, FieldDescription $fieldDescription)
+    {
+        $this->filterFieldDescriptions[$name] = $fieldDescription;
+    }
+
+    public function removeFilterFieldDescription($name)
+    {
+        unset($this->filterFieldDescriptions[$name]);
+    }
+
+    public function getFilterFieldDescriptions()
+    {
+        $this->buildFilterFieldDescriptions();
+        
+        return $this->filterFieldDescriptions;
     }
 }

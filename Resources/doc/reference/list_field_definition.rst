@@ -18,7 +18,7 @@ Example
 
         protected $class = 'Application\Sonata\NewsBundle\Entity\Post';
 
-        protected $listFields = array(
+        protected $list = array(
             'title' => array(),
             'enabled' => array('type' => 'boolean'),
             'tags' => array()
@@ -27,7 +27,7 @@ Example
         public function configureListFields() // optional
         {
 
-            $this->list_fields['summary']->setTemplate('NewsBundle:NewsAdmin:list_summary.twig');
+            $this->listFields['summary']->setTemplate('NewsBundle:NewsAdmin:list_summary.twig');
         }
     }
 

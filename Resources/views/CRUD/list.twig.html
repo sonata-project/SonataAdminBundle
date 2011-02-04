@@ -12,10 +12,10 @@ file that was distributed with this source code.
 {% extends 'SonataBaseApplicationBundle:CRUD:base_list.twig.html' %}
 
 {% block table_body %}
-    {% for element in datagrid.results %}
+    {% for object in datagrid.results %}
         <tr>
-            {% for field_description in fields %}
-                {{ element|render_list_element(field_description) }}
+            {% for field_description in list.elements %}
+                {{ object|render_list_element(field_description) }}
             {% endfor %}
         </tr>
     {% endfor %}

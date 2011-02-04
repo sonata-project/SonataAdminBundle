@@ -55,6 +55,18 @@ class BaseApplicationExtension extends Extension
             ->register('twig.extension.base_application', 'Sonata\BaseApplicationBundle\Twig\Extension\BaseApplicationExtension')
             ->addTag('twig.extension');
 
+        // register form builder
+        $definition = new Definition('Sonata\BaseApplicationBundle\Builder\FormBuilder', array(new Reference('form.field_factory'), new Reference('form.context'), new Reference('validator')));
+        $container->setDefinition('base_application.builder.orm_form', $definition);
+
+        // register list builder
+        $definition = new Definition('Sonata\BaseApplicationBundle\Builder\ListBuilder');
+        $container->setDefinition('base_application.builder.orm_list', $definition);
+
+        // register filter builder
+        $definition = new Definition('Sonata\BaseApplicationBundle\Builder\DatagridBuilder');
+        $container->setDefinition('base_application.builder.orm_datagrid', $definition);
+
         // registers crud action
         $definition = new Definition('Sonata\BaseApplicationBundle\Admin\Pool');
         $definition->addMethodCall('setContainer', array(new Reference('service_container')));

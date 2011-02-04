@@ -26,12 +26,31 @@ abstract class Filter extends Configurable
 
     protected $value = null;
 
-    public function __construct($name, FieldDescription $description)
-    {
-        $this->name         = $name;
-        $this->description  = $description;
+    /**
+     * apply the filter to the QueryBuilder instance
+     *
+     * @abstract
+     * @param  $query
+     * @param  $value
+     * @param  $alias the root alias
+     * @return void
+     */
+    abstract public function filter(QueryBuilder $queryBuilder, $alias, $field, $value);
 
-        parent::__construct($description->getOption('filter_options', array()));
+    /**
+     * get the related form field filter
+     *
+     * @abstract
+     * @return Field
+     */
+    abstract public function getFormField();
+
+    public function __construct(FieldDescription $fieldDescription)
+    {
+        $this->name         = $fieldDescription->getName();
+        $this->description  = $fieldDescription;
+
+        parent::__construct($fieldDescription->getOption('filter_options', array()));
 
         $this->field        = $this->getFormField();
     }
@@ -84,25 +103,6 @@ abstract class Filter extends Configurable
         
         return array($queryBuilder->getRootAlias(), $this->description->getFieldName());
     }
-
-    /**
-     * apply the filter to the QueryBuilder instance
-     *
-     * @abstract
-     * @param  $query
-     * @param  $value
-     * @param  $alias the root alias 
-     * @return void
-     */
-    abstract public function filter(QueryBuilder $queryBuilder, $alias, $field, $value);
-
-    /**
-     * get the related form field filter
-     *
-     * @abstract
-     * @return Field
-     */
-    abstract public function getFormField();
 
     public function setName($name)
     {

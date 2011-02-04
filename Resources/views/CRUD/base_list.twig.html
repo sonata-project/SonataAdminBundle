@@ -26,7 +26,7 @@ file that was distributed with this source code.
         <table>
             {% block table_header %}
                 <tr>
-                    {% for field_description in fields %}
+                    {% for field_description in list %}
                         {% if field_description.getOption('code') == '_batch' %}
                           <th class="sonata-ba-list-field-header sonata-ba-list-field-header-batch"><input type="checkbox" id="list_batch_checkbox" /></th>
                         {% else %}
@@ -42,7 +42,7 @@ file that was distributed with this source code.
 
                 {% if datagrid.pager.haveToPaginate() %}
                     <tr>
-                        <td colspan="{{ fields|length }}" class="pager">
+                        <td colspan="{{ list|length }}" class="pager">
                             <ul>
                                 {% if datagrid.pager.page != datagrid.pager.previouspage %}
                                     <li><a href="{{ admin.generateUrl('list', datagrid.values|merge({'page': datagrid.pager.previouspage})) }}">{% trans 'link_previous_pager' from 'BaseApplicationBundle' %}</a></li>
@@ -76,7 +76,7 @@ file that was distributed with this source code.
 
         <div class="sonata-ba-list-actions">
             <select name="action" >
-                {% for action, label in batch_actions %}
+                {% for action, label in admin.batchactions %}
                     <option value="{{ action }}">{{ label }}</option>
                 {% endfor %}
             </select>
