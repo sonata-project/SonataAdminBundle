@@ -54,6 +54,10 @@ class ListBuilder implements ListBuilderInterface
             $fieldDescription->setAssociationMapping($admin->getClassMetaData()->associationMappings[$fieldDescription->getName()]);
         }
 
+        if(!$fieldDescription->getType()) {
+            throw new \RuntimeException(sprintf('Please define a type for field `%s` in `%s`', $fieldDescription->getName(), get_class($admin)));
+        }        
+
         $fieldDescription->setOption('code', $fieldDescription->getOption('code', $fieldDescription->getName()));
         $fieldDescription->setOption('label', $fieldDescription->getOption('label', $fieldDescription->getName()));
 
