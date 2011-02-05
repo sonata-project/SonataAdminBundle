@@ -24,8 +24,8 @@ file that was distributed with this source code.
                             <tr>
                                 {% for field_name, nested_field in nested_group_field.fields %}
                                     <td>
-                                        {% if field_description.associationadmin.formfields[field_name] is defined %}
-                                            {{ field_description.associationadmin.formfields[field_name]|render_form_element(
+                                        {% if field_description.associationadmin.formfielddescriptions[field_name] is defined %}
+                                            {{ field_description.associationadmin.formfielddescriptions[field_name]|render_form_element(
                                                 nested_group_field,
                                                 value
                                             ) }}
@@ -41,8 +41,8 @@ file that was distributed with this source code.
                     <div>
                         {% for nested_group_field_name, nested_group_field in field_element.fields %}
                             {% for field_name, nested_field in nested_group_field.fields %}
-                                {% if field_description.associationadmin.formfields[field_name] is defined %}
-                                    {{ field_description.associationadmin.formfields[field_name]|render_form_element(
+                                {% if field_description.associationadmin.formfielddescriptions[field_name] is defined %}
+                                    {{ field_description.associationadmin.formfielddescriptions[field_name]|render_form_element(
                                         nested_group_field,
                                         value, {
                                             'inline': 'natural',

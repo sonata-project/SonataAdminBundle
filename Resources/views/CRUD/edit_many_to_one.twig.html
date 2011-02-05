@@ -13,7 +13,7 @@ file that was distributed with this source code.
 
 {% block field %}
     {% if field_description.options.edit == 'inline' %}
-        {% for nested_field_description in field_description.associationadmin.formfields %}
+        {% for nested_field_description in field_description.associationadmin.formfielddescriptions %}
             {{ nested_field_description|render_form_element(field_element, value) }}
         {% endfor %}
 
