@@ -125,7 +125,7 @@ CommentAdmin
 
         protected $class = 'Application\Sonata\NewsBundle\Entity\Comment';
 
-        protected $listFields = array(
+        protected $list = array(
             'name' => array('identifier' => true),
             'getStatusCode' => array('label' => 'status_code'),
             'post',
@@ -134,7 +134,7 @@ CommentAdmin
             'message',
         );
 
-        protected $formFields = array(
+        protected $form = array(
             'name',
             'email',
             'url',
