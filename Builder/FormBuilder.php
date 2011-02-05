@@ -66,7 +66,7 @@ class FormBuilder implements FormBuilderInterface
         'country'    =>  'Symfony\\Component\\Form\\CountryField',
     );
 
-        /**
+    /**
      * return the field associated to a FieldDescription
      *   ie : build the embedded form from the related Admin instance
      *

@@ -236,7 +236,7 @@ abstract class Admin extends ContainerAware
         foreach ($selectedFields as $name => $options) {
 
             $description = new FieldDescription;
-
+            
             if (!is_array($options)) {
                 $name = $options;
                 $options = array();
@@ -565,18 +565,15 @@ abstract class Admin extends ContainerAware
 
         $mapper = new FormMapper($this->getFormBuilder(), $form, $this);
 
-        foreach ($this->getFormFieldDescriptions() as $fieldDescription) {
-
-            if (!$fieldDescription->getType()) {
-
-                continue;
-            }
-
-            $mapper->add($fieldDescription);
-        }
+        $this->buildFormFieldDescriptions();
 
         $this->configureFormFields($mapper);
 
+        foreach ($this->getFormFieldDescriptions() as $fieldDescription) {
+
+            $mapper->add($fieldDescription);
+        }
+        
         return $form;
     }
 
@@ -594,17 +591,14 @@ abstract class Admin extends ContainerAware
 
         $mapper = new ListMapper($this->getListBuilder(), $list, $this);
 
+        $this->buildListFieldDescriptions();
+        
+        $this->configureListFields($mapper);
+
         foreach ($this->getListFieldDescriptions() as $fieldDescription) {
-
-            if (!$fieldDescription->getType()) {
-
-                continue;
-            }
 
             $mapper->add($fieldDescription);
         }
-
-        $this->configureListFields($mapper);
 
         return $list;
     }
@@ -624,17 +618,13 @@ abstract class Admin extends ContainerAware
 
         $mapper = new DatagridMapper($this->getDatagridBuilder(), $datagrid, $this);
 
+        $this->buildFilterFieldDescriptions();
+        $this->configureDatagridFilters($mapper);
+
         foreach ($this->getFilterFieldDescriptions() as $fieldDescription) {
-
-            if (!$fieldDescription->getType()) {
-
-                continue;
-            }
 
             $mapper->add($fieldDescription);
         }
-
-        $this->configureDatagridFilters($mapper);
 
         return $datagrid;
     }

@@ -67,11 +67,18 @@ class FormMapper
             $fieldDescription->setOptions($fieldDescriptionOptions);
             $fieldDescription->setName($name);
 
+            // set default configuration
             $this->formBuilder->fixFieldDescription($this->admin, $fieldDescription, $fieldDescriptionOptions);
+
+            // add the FieldDescription
             $this->admin->addFormFieldDescription($name, $fieldDescription);
 
         } else if (is_string($name) && $this->admin->hasFormFieldDescription($name)) {
             $fieldDescription = $this->admin->getFormFieldDescription($name);
+
+            // update configuration
+            $this->formBuilder->fixFieldDescription($this->admin, $fieldDescription, $fieldDescriptionOptions);
+            
         } else {
 
             throw new \RuntimeException('invalid state');

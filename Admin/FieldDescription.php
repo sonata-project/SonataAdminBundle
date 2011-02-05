@@ -15,9 +15,9 @@ namespace Sonata\BaseApplicationBundle\Admin;
  * A FieldDescription hold the information about a field. A typical
  * admin instance contains different collections of fields
  *
- * - formFields: used by the form
- * - listFields: used by the list
- * - filderFields: used by the list filter
+ * - form: used by the form
+ * - list: used by the list
+ * - filter: used by the list filter
  *
  * Some options are global accross the different contexts, other are
  * context specifics.
@@ -325,6 +325,4 @@ class FieldDescription
     {
         return $this->mappingType;
     }
-
-
 }
