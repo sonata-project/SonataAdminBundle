@@ -102,8 +102,7 @@ class CoreController extends Controller
         $field_element = $this->getFieldElement($form, $element_id);
 
         // retrieve the FieldDescription
-        $formFields       = $admin->getFormFields();
-        $fieldDescription = $formFields[$field_element->getKey()];
+        $fieldDescription       = $admin->getFormFieldDescription($field_element->getKey());
 
         $subject = $form->getData();
         $value = $fieldDescription->getValue($subject);
@@ -127,16 +126,15 @@ class CoreController extends Controller
         // add new elements to the subject
         while($object_count < $post_count) {
             // append a new instance into the object
-            $admin->addNewInstance($subject, $fieldDescription);
+            $admin->getFormBuilder()->addNewInstance($subject, $fieldDescription);
 
             $object_count++;
         }
 
-        $admin->addNewInstance($subject, $fieldDescription);
+        $admin->getFormBuilder()->addNewInstance($subject, $fieldDescription);
         $data[$field_element->getKey()][] = $value;
 
-        $fields = $admin->getFormFields();
-        $form   = $admin->getForm($subject, $fields);
+        $form   = $admin->getForm($subject);
 
         // bind the data
         $form->submit($data);
