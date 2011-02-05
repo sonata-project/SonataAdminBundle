@@ -26,11 +26,11 @@ file that was distributed with this source code.
         <table>
             {% block table_header %}
                 <tr>
-                    {% for field_description in list %}
+                    {% for field_description in list.elements %}
                         {% if field_description.getOption('code') == '_batch' %}
-                          <th class="sonata-ba-list-field-header sonata-ba-list-field-header-batch"><input type="checkbox" id="list_batch_checkbox" /></th>
+                            <th class="sonata-ba-list-field-header sonata-ba-list-field-header-batch"><input type="checkbox" id="list_batch_checkbox" /></th>
                         {% else %}
-                          <th class="sonata-ba-list-field-header sonata-ba-list-field-header-{{ field_description.type}}">{{ field_description.name }}</th>
+                            <th class="sonata-ba-list-field-header sonata-ba-list-field-header-{{ field_description.type}}">{{ field_description.name }}</th>
                         {% endif %}
                     {% endfor %}
                 </tr>
@@ -42,7 +42,7 @@ file that was distributed with this source code.
 
                 {% if datagrid.pager.haveToPaginate() %}
                     <tr>
-                        <td colspan="{{ list|length }}" class="pager">
+                        <td colspan="{{ list.elements|length }}" class="pager">
                             <ul>
                                 {% if datagrid.pager.page != datagrid.pager.previouspage %}
                                     <li><a href="{{ admin.generateUrl('list', datagrid.values|merge({'page': datagrid.pager.previouspage})) }}">{% trans 'link_previous_pager' from 'BaseApplicationBundle' %}</a></li>
@@ -66,6 +66,7 @@ file that was distributed with this source code.
                 {% endif %}
             {% endblock %}
         </table>
+        
         <script type="text/javascript">
             jQuery(document).ready(function($){
                $('#list_batch_checkbox').click(function(){
@@ -86,7 +87,6 @@ file that was distributed with this source code.
     </form>
 {% endblock %}
 
-
 {% block list_filters %}
     <form action="{{ admin.generateUrl('list') }}" method="GET">
         {% for filter in datagrid.filters %}
@@ -98,7 +98,6 @@ file that was distributed with this source code.
         <input type="submit" value="{% trans 'btn_filter' from 'BaseApplicationBundle' %}" />
 
         <a href="{{ admin.generateUrl('list') }}">{% trans 'link_reset_filter' from 'BaseApplicationBundle' %}</a>
-
     </form>
 {% endblock %}
 
