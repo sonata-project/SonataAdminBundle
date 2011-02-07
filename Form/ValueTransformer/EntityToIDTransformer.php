@@ -41,7 +41,7 @@ class EntityToIDTransformer extends Configurable implements ValueTransformerInte
      * @param  object $oldEntity
      * @return object
      */
-    public function reverseTransform($newId, $oldEntity)
+    public function reverseTransform($newId)
     {
         if (empty($newId)) {
             return null;
