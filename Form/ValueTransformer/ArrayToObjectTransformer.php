@@ -31,7 +31,7 @@ class ArrayToObjectTransformer extends Configurable implements ValueTransformerI
      * @param array $ids
      * @param Collection $collection
      */
-    public function reverseTransform($array, $originalValue)
+    public function reverseTransform($array)
     {
         $class      = $this->getOption('className');
         $metadata   = $this->getOption('em')->getClassMetadata($class);
