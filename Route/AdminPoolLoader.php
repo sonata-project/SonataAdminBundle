@@ -47,15 +47,15 @@ class AdminPoolLoader extends Loader
         foreach ($this->pool->getInstances() as $admin) {
             foreach ($admin->getUrls() as $action => $configuration) {
 
-                $default = isset($configuration['defaults'])       ? $configuration['defaults'] : array();
+                $defaults = isset($configuration['defaults'])       ? $configuration['defaults'] : array();
 
-                if(!isset($default['_controller'])) {
-                    $default['_controller'] = sprintf('%s:%s', $admin->getBaseControllerName(), $action);
+                if(!isset($defaults['_controller'])) {
+                    $defaults['_controller'] = sprintf('%s:%s', $admin->getBaseControllerName(), $this->actionify($action));
                 }
-                
+
                 $collection->add($configuration['name'], new Route(
                     $configuration['pattern'],
-                    isset($configuration['defaults'])       ? $configuration['defaults'] : array('_controller'),
+                    $defaults,
                     isset($configuration['requirements'])   ? $configuration['requirements'] : array(),
                     isset($configuration['options'])        ? $configuration['options'] : array()
                 ));
@@ -66,5 +66,17 @@ class AdminPoolLoader extends Loader
         }
 
         return $collection;
+    }
+
+
+    /**
+     * Convert a word in to the format for a symfony action action_name => actionName
+     *
+     * @param string  $word  Word to actionify
+     * @return string $word  Actionified word
+     */
+    public static function actionify($word)
+    {
+        return lcfirst(str_replace(" ", "", ucwords(strtr($word, "_-", "  "))));
     }
 }
