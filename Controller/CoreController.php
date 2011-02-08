@@ -169,6 +169,8 @@ class CoreController extends Controller
             }
         }
 
+        $description = sprintf('<a href="%s" target="new">%s</a>', $admin->generateUrl('edit', array('id' => $object_id)), $description);
+
         return $this->createResponse($description);
     }
 
