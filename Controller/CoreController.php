@@ -15,7 +15,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 use Sonata\BaseApplicationBundle\Form\RecursiveFieldIterator;
-//use Symfony\Component\Form\RecursiveFieldIterator;
 
 class CoreController extends Controller
 {
@@ -28,13 +27,16 @@ class CoreController extends Controller
         return $this->container->getParameter('base_application.templates.layout');
     }
 
-    public function retrieveFormFieldElementAction($code, $element_id)
+    public function retrieveFormFieldElementAction()
     {
+        $code = $this->get('request')->get('code');
+        $elementId = $this->get('request')->get('elementId');
+        
         $form = $this->getForm($code);
 
         $form->bind($this->get('request'));
         
-        $field_element = $this->getFieldElement($form, $element_id);
+        $field_element = $this->getFieldElement($form, $elementId);
 
         // render the widget
         // todo : fix this, the twig environment variable is not set inside the extension ...
@@ -85,8 +87,11 @@ class CoreController extends Controller
         }
     }
     
-    public function appendFormFieldElementAction($code, $element_id)
+    public function appendFormFieldElementAction()
     {
+
+        $code = $this->get('request')->get('code');
+        $elementId = $this->get('request')->get('elementId');
 
         // Note : This code is ugly, I guess there is a better way of doing it.
         //        For now the append form element action used to add a new row works
@@ -99,7 +104,7 @@ class CoreController extends Controller
         $form = $this->getForm($code);
 
         // get the field element
-        $field_element = $this->getFieldElement($form, $element_id);
+        $field_element = $this->getFieldElement($form, $elementId);
 
         // retrieve the FieldDescription
         $fieldDescription       = $admin->getFormFieldDescription($field_element->getKey());
@@ -150,15 +155,18 @@ class CoreController extends Controller
         return $this->createResponse($extension->renderFormElement($fieldDescription, $form, $form->getData()));
     }
 
-    public function getShortObjectDescriptionAction($code, $object_id)
+    public function getShortObjectDescriptionAction()
     {
 
+        $code = $this->get('request')->query->get('code');
+        $objectId = $this->get('request')->query->get('objectId');
+        
         $admin  = $this->container->get('base_application.admin.pool')->getInstance($code);
 
-        $object = $admin->getObject($object_id);
+        $object = $admin->getObject($objectId);
 
         if (!$object) {
-            throw new NotFoundHttpException(sprintf('unable to find the object with id : %s', $object_id));
+            throw new NotFoundHttpException(sprintf('unable to find the object with id : %s', $objectId));
         }
 
         $description = 'no description available';
@@ -169,7 +177,7 @@ class CoreController extends Controller
             }
         }
 
-        $description = sprintf('<a href="%s" target="new">%s</a>', $admin->generateUrl('edit', array('id' => $object_id)), $description);
+        $description = sprintf('<a href="%s" target="new">%s</a>', $admin->generateUrl('edit', array('id' => $objectId)), $description);
 
         return $this->createResponse($description);
     }

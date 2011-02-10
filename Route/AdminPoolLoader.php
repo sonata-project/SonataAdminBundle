@@ -52,6 +52,7 @@ class AdminPoolLoader extends Loader
                 if(!isset($defaults['_controller'])) {
                     $defaults['_controller'] = sprintf('%s:%s', $admin->getBaseControllerName(), $this->actionify($action));
                 }
+                $defaults['_bab_action'] = sprintf('%s.%s', $admin->getCode(), $action);
 
                 $collection->add($configuration['name'], new Route(
                     $configuration['pattern'],

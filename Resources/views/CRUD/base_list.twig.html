@@ -21,6 +21,8 @@ file that was distributed with this source code.
     </div>
 {% endblock %}
 
+{% block side_menu %}{% if side_menu %}{{ side_menu.render|raw }}{% endif %}{% endblock %}
+
 {% block list_table %}
     <form action="{{ admin.generateUrl('batch') }}" method="POST" >
         <table>
@@ -36,10 +38,17 @@ file that was distributed with this source code.
                 </tr>
             {% endblock %}
 
-            {% block table_body %}{% endblock %}
+            {% block table_body %}
+                {% for object in datagrid.results %}
+                    <tr>
+                        {% for field_description in list.elements %}
+                            {{ object|render_list_element(field_description) }}
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            {% endblock %}
 
             {% block table_footer %}
-
                 {% if datagrid.pager.haveToPaginate() %}
                     <tr>
                         <td colspan="{{ list.elements|length }}" class="pager">

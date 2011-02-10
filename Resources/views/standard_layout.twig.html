@@ -55,26 +55,59 @@ file that was distributed with this source code.
             </div>
             <div class="span-24 last content clear">
 
-                <div class="sonata-ba-content">
-                    {% block content %}{% endblock %}
-                </div>
+                {% set side_menu %}{% block side_menu %}{% endblock %}{% endset %}
+                {% set content %}{% block content %}{% endblock %}{% endset %}
+                {% set preview %}{% block preview %}{% endblock %}{% endset %}
+                {% set form %}{% block form %}{% endblock %}{% endset %}
+                {% set list_table %}{% block list_table %}{% endblock %}{% endset %}
+                {% set list_filters %}{% block list_filters %}{% endblock %}{% endset %}
 
-                <div class="sonata-ba-preview">
-                    {% block preview %}{% endblock %}
-                </div>
 
-                <div class="sonata-ba-form">
-                    {% block form %}{% endblock %}
-                </div>
+                {% if side_menu|length > 0 %}
+                        <div class="span-4">
+                            <div class="sonata-ba-side-menu">{{ side_menu|raw }}</div>
+                        </div>
+                        <div class="span-18 last content">
+                {% endif %}
 
-                <div class="sonata-ba-list">
-                    <div class="span-18">
-                        {% block list_table %}{% endblock %}
+                    {% if content|length > 0 %}
+                        <div class="sonata-ba-content">{{ content|raw }}</div>
+                    {% endif %}
+
+                    {% if preview|length > 0 %}
+                        <div class="sonata-ba-preview">{{ preview|raw }}</div>
+                    {% endif %}
+
+                    {% if form|length > 0 %}
+                        <div class="sonata-ba-form">{{ form|raw }}</div>
+                    {% endif %}
+    
+                    {% if list_table|length > 0 or list_filters|length > 0 %}
+                        {% if side_menu|length > 0 %}
+                            <div class="sonata-ba-list">
+                                <div class="span-13">
+                                    {{ list_table|raw }}
+                                </div>
+                                <div class="span-5 last">
+                                    {{ list_filters|raw }}
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="sonata-ba-list">
+                                <div class="span-19">
+                                    {{ list_table|raw }}
+                                </div>
+                                <div class="span-5 last">
+                                    {{ list_filters|raw }}
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+
+                {% if side_menu|length > 0 %}
                     </div>
-                    <div class="span-6 last">
-                        {% block list_filters %}{% endblock %}
-                    </div>
-                </div>
+                {% endif %}
+
             </div>
 
             <!-- footer -->

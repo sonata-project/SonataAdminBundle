@@ -142,17 +142,6 @@ class Datagrid
     
     public function getFilters()
     {
-
-        if (!$this->filters) {
-            foreach ($this->filterFields as $name => $description) {
-                $filter = $this->getFilterInstance($this->filterFields[$name]);
-
-                if ($filter) {
-                    $this->filters[$name] = $filter;
-                }
-            }
-        }
-
         return $this->filters;
     }
 

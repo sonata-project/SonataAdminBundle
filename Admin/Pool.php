@@ -65,6 +65,12 @@ class Pool
         return $this->getInstance($configuration_code);
     }
 
+    /**
+     * return the admin related to the given $class
+     *
+     * @param string $class
+     * @return Admin|null
+     */
     public function getAdminByClass($class)
     {
 
@@ -86,6 +92,42 @@ class Pool
     }
 
     /**
+     * return the admin related to the given $actionName
+     *
+     * @param string $actionName
+     * @return Admin|null
+     */
+    public function getAdminByActionName($actionName)
+    {
+        $codes = explode('.', $actionName);
+
+        $instance = false;
+        foreach ($codes as $pos => $code) {
+            if ($pos == 0) {
+                $instance = $this->getInstance($code);
+            } else if($instance->hasChildren()) {
+                if(!$instance->hasChild($code)) {
+                    break;
+                }
+
+                $instance = $instance->getChild($code);
+
+                if(!$instance instanceof Admin) {
+                    throw new \RuntimeException(sprintf('unable to retrieve the child admin related to the actionName : `%s`', $actionName));
+                }
+            } else {
+                break;
+            }
+        }
+
+        if(!$instance instanceof Admin) {
+            throw new \RuntimeException(sprintf('unable to retrieve the admin related to the actionName : `%s`', $actionName));
+        }
+
+        return $instance;
+    }
+
+    /**
      *
      * return a new admin instance depends on the given code
      *
@@ -94,15 +136,30 @@ class Pool
      */
     public function getInstance($code)
     {
+        if(!isset($this->configuration[$code])) {
+            throw new \RuntimeException(sprintf('The code `%s` does not exist', $code));
+        }
 
-        $class = $this->configuration[$code]['class'];
-        $instance = new $class;
-        $instance->setContainer($this->getContainer());
+        return $this->getInstanceFromConfiguration($code, $this->configuration[$code]);
+    }
+
+    protected function getInstanceFromConfiguration($code, $configuration)
+    {
+        $class = $configuration['class'];
+        
+        $instance = new $class($this->getContainer());
         $instance->setConfigurationPool($this);
         $instance->setCode($code);
-        $instance->setLabel($this->configuration[$code]['label']);
+        $instance->setLabel($configuration['label']);
+
+        if(isset($configuration['children'])) {
+            foreach($configuration['children'] as $code => $child) {
+                $instance->addChild($code, $this->getInstanceFromConfiguration($code, $child));
+            }
+        }
 
         return $instance;
+
     }
 
     /**

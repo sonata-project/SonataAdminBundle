@@ -1,11 +1,18 @@
 Installation
 ============
 
-To begin, add the dependent bundles to the ``src/Bundle`` directory. If using
+Make sure you have ``Sonata`` and ``Knplabs`` exists, if not create them::
+
+  mkdir src/Sonata
+  mkdir src/Knplabs
+
+To begin, add the dependent bundles to the ``src/`` directory. If using
 git, you can add them as submodules::
 
   git submodule add git@github.com:sonata-project/jQueryBundle.git src/Sonata/jQueryBundle
+  git submodule add git@github.com:sonata-project/BluePrintBundle.git src/Sonata/BluePrintBundle
   git submodule add git@github.com:sonata-project/BaseApplicationBundle.git src/Sonata/BaseApplicationBundle
+  git submodule add git@github.com:sonata-project/MenuBundle.git src/Knplabs/MenuBundle
 
 Next, be sure to enable the bundles in your application kernel:
 
@@ -19,6 +26,7 @@ Next, be sure to enable the bundles in your application kernel:
           new Sonata\jQueryBundle\SonatajQueryBundle(),
           new Sonata\BluePrintBundle\SonataBluePrintBundle(),
           new Sonata\BaseApplicationBundle\SonataBaseApplicationBundle(),
+          new Knplabs\Knplabs\KnplabsMenuBundle(),
           // ...
       );
   }
@@ -33,6 +41,8 @@ configuration file.
 
     # app/config/config.yml
     base_application.config: ~
+
+    menu.twig:   ~
 
 The bundle also contains several routes. Import them by adding the following
 code to your application's routing file:

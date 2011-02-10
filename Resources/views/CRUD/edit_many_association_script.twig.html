@@ -16,12 +16,14 @@ This code manage the many-to-[one|many] association field popup
 
 #}
 
+{% autoescape false %}
+
 <script>
     <!-- edit many association -->
 
     {#
       handle link click in a list :
-        - if the parent has an object_id defined then the related input get updated
+        - if the parent has an objectId defined then the related input get updated
         - if the parent has NO object then an ajax request is made to refresh the popup
     #}
     var field_dialog_form_list_link_{{ admin.code }}_{{ field_element.id }} = function(event) {
@@ -45,7 +47,7 @@ This code manage the many-to-[one|many] association field popup
             return;
         }
 
-        jQuery('#{{ field_element.id}}').val(element.attr('object_id'));
+        jQuery('#{{ field_element.id}}').val(element.attr('objectId'));
         jQuery('#{{ field_element.id}}').change();
 
         field_dialog_{{ admin.code }}_{{ field_element.id }}.dialog('close');
@@ -168,7 +170,7 @@ This code manage the many-to-[one|many] association field popup
                            in this case we update the hidden input, and call the change event to
                            retrieve the post information
                         #}
-                        jQuery('#{{ field_element.id}}').val(json.object_id);
+                        jQuery('#{{ field_element.id}}').val(json.objectId);
                         jQuery('#{{ field_element.id}}').change();
 
                     {% else %}
@@ -177,8 +179,8 @@ This code manage the many-to-[one|many] association field popup
                         jQuery.ajax({
                             url: '{{ url('sonata_base_application_retrieve_form_element', {
                                 'code':         admin.root.code,
-                                'element_id':   field_element.id,
-                                'object_id':    admin.root.subject.id,
+                                'elementId':   field_element.id,
+                                'objectId':    admin.root.subject.id,
                             }) }}',
                             data: jQuery('#field_widget_{{ admin.code }}_{{ field_element.id}}').closest('form').serializeArray(),
                             type: 'POST',
@@ -279,7 +281,7 @@ This code manage the many-to-[one|many] association field popup
                 type: 'GET',
                 url: '{{ url('sonata_base_application_short_object_information', {
                     'code': field_description.associationadmin.code,
-                    'object_id': 'OBJECT_ID'
+                    'objectId': 'OBJECT_ID'
                 })}}'.replace('OBJECT_ID', jQuery(this).val()),
                 success: function(html) {
                     jQuery('#field_widget_{{ admin.code }}_{{ field_element.id}}').html(html);
@@ -291,3 +293,5 @@ This code manage the many-to-[one|many] association field popup
 
     <!-- / edit many association -->
 </script>
+
+{% endautoescape %}

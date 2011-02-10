@@ -79,7 +79,11 @@ class BaseApplicationExtension extends Extension
                 if (!isset($configuration['label'])) {
                     $configuration['label'] = $code;
                 }
-            
+
+                if (!isset($configuration['children'])) {
+                    $configuration['children'] = array();
+                }
+
                 $definition->addMethodCall('addConfiguration', array($code, $configuration));
             }
         }

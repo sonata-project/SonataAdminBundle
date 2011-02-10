@@ -100,7 +100,7 @@ class BaseApplicationExtension extends \Twig_Extension
 
         $value = $fieldDescription->getValue($object);
 
-        // no value defined, chek if the field_description point to an association
+        // no value defined, check if the fieldDescription point to an association
         // if so, create an empty object instance
         // fixme: not sure this is the best place to do that
         if (!$value && $fieldDescription->getAssociationAdmin()) {

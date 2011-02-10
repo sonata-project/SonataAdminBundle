@@ -12,6 +12,7 @@
 namespace Sonata\BaseApplicationBundle\Admin;
 
 use Symfony\Component\DependencyInjection\ContainerAware;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\Form;
 
 use Sonata\BaseApplicationBundle\Form\FormMapper;
@@ -64,10 +65,40 @@ abstract class Admin extends ContainerAware
     protected $subject;
 
     /**
+     * define a Collection of child admin, ie /admin/order/{id}/order-element/{childId}
+     *
+     * @var array
+     */
+    protected $children = array();
+
+    /**
+     * reference the parent collection
+     *
+     * @var Admin
+     */
+    protected $parent = null;
+
+    /**
+     * The base code route refer to the prefix used to generate the route name
+     *
+     * @var string
+     */
+    protected $baseCodeRoute = '';
+
+    /**
+     * The related field reflection, ie if OrderElement is linked to Order,
+     * then the $parentReflectionProperty must be the ReflectionProperty of
+     * the order (OrderElement::$order)
+     *
+     * @var \ReflectionProperty $parentReflectionProperty
+     */
+    protected $parentAssociationMapping = null;
+
+    /**
      * Reference the parent FieldDescription related to this admin
      * only set for FieldDescription which is associated to an Sub Admin instance
      *
-     * FieldDescription
+     * @var FieldDescription
      */
     protected $parentFieldDescription;
 
@@ -115,6 +146,22 @@ abstract class Admin extends ContainerAware
     protected function configureDatagridFilters(DatagridMapper $filter)
     {
 
+    }
+
+    public function __construct(ContainerInterface $container)
+    {
+        $this->setContainer($container);
+        $this->configure();
+    }
+
+    public function configure()
+    {
+        if($this->parentAssociationMapping) {
+            if(!isset($this->getClassMetaData()->associationMappings[$this->parentAssociationMapping])) {
+                throw new \RuntimeException(sprintf('The value set to `relatedReflectionProperty` refer to a non existant association', $this->relatedReflectionProperty));
+            }
+            $this->parentAssociationMapping = $this->getClassMetaData()->associationMappings[$this->parentAssociationMapping];
+        }
     }
 
     public function configureUrls()
@@ -181,6 +228,7 @@ abstract class Admin extends ContainerAware
 
     public function buildFilterFieldDescriptions()
     {
+
         if ($this->loaded['filter_fields']) {
             return;
         }
@@ -189,9 +237,31 @@ abstract class Admin extends ContainerAware
 
         $this->filterFieldDescriptions = self::getBaseFields($this->getClassMetaData(), $this->filter);
 
+        // ok, try to limit to add parent filter
+        $parentAssociationMapping = $this->getParentAssociationMapping();
+
+        if ($parentAssociationMapping) {
+            
+            $fieldName = $parentAssociationMapping['fieldName'];
+            $this->filterFieldDescriptions[$fieldName] = new FieldDescription;
+            $this->filterFieldDescriptions[$fieldName]->setName($parentAssociationMapping['fieldName']);
+            $this->filterFieldDescriptions[$fieldName]->setAssociationMapping($parentAssociationMapping);
+        }
+
         foreach ($this->filterFieldDescriptions as $fieldDescription) {
             $this->getDatagridBuilder()->fixFieldDescription($this, $fieldDescription);
         }
+    }
+
+    /**
+     * return the name of the parent related field, so the field can be use to set the default
+     * value (ie the parent object) or to filter the object
+     *
+     * @return string the name of the parent related field
+     */
+    public function getParentAssociationMapping()
+    {
+        return $this->parentAssociationMapping;
     }
 
     /**
@@ -261,15 +331,24 @@ abstract class Admin extends ContainerAware
     {
 
         if (!$this->baseRoutePattern) {
-            if (preg_match('@(Application|Bundle)\\\([A-Za-z]*)\\\([A-Za-z]*)Bundle\\\(Entity|Document)\\\([A-Za-z]*)@', $this->getClass(), $matches)) {
+            preg_match('@(Application|Bundle)\\\([A-Za-z]*)\\\([A-Za-z]*)Bundle\\\(Entity|Document)\\\([A-Za-z]*)@', $this->getClass(), $matches);
+
+            if(!$matches) {
+                throw new \RuntimeException(sprintf('Please define a default `baseRoutePattern` value for the admin class `%s`', get_class($this)));
+            }
+            
+            if ($this->isChild()) { // the admin class is a child, prefix it with the parent route name
+                $this->baseRoutePattern = sprintf('%s/{id}/%s',
+                    $this->getParent()->getBaseRoutePattern(),
+                    $this->urlize($matches[5], '-')
+                );
+            } else {
 
                 $this->baseRoutePattern = sprintf('/%s/%s/%s',
                     $this->urlize($matches[2], '-'),
                     $this->urlize($matches[3], '-'),
                     $this->urlize($matches[5], '-')
                 );
-            } else {
-                throw new \RuntimeException(sprintf('Please define a default `baseRoutePattern` value for the admin class `%s`', get_class($this)));
             }
         }
 
@@ -285,16 +364,24 @@ abstract class Admin extends ContainerAware
     public function getBaseRouteName()
     {
         if (!$this->baseRouteName) {
-            if (preg_match('@(Application|Bundle)\\\([A-Za-z]*)\\\([A-Za-z]*)Bundle\\\(Entity|Document)\\\([A-Za-z]*)@', $this->getClass(), $matches)) {
+            preg_match('@(Application|Bundle)\\\([A-Za-z]*)\\\([A-Za-z]*)Bundle\\\(Entity|Document)\\\([A-Za-z]*)@', $this->getClass(), $matches);
+
+            if(!$matches) {
+                throw new \RuntimeException(sprintf('Please define a default `baseRouteName` value for the admin class `%s`', get_class($this)));
+            }
+
+            if ($this->isChild()) { // the admin class is a child, prefix it with the parent route name
+                $this->baseRouteName = sprintf('%s_%s',
+                    $this->getParent()->getBaseRouteName(),
+                    $this->urlize($matches[5])
+                );
+            } else {
 
                 $this->baseRouteName = sprintf('admin_%s_%s_%s',
                     $this->urlize($matches[2]),
                     $this->urlize($matches[3]),
                     $this->urlize($matches[5])
                 );
-            } else {
-
-                throw new \RuntimeException(sprintf('Please define a default `baseRouteName` value for the admin class `%s`', get_class($this)));
             }
         }
 
@@ -336,22 +423,52 @@ abstract class Admin extends ContainerAware
      *
      * @return array the list of available urls
      */
-    public function getUrls()
+    public function getUrls($baseCode = '')
     {
 
-        $this->buildUrls();
+        $this->buildUrls($baseCode);
 
         return $this->urls;
     }
 
-    public function buildUrls()
+    /**
+     * return the parameter representing router id, ie: {id} or {childId}
+     *
+     * @return string
+     */
+    public function getRouterIdParameter()
+    {
+        return $this->isChild() ? '{childId}' : '{id}';
+    }
+
+    /**
+     * return the parameter representing request id, ie: id or childId
+     *
+     * @return string
+     */
+    public function getIdParameter()
+    {
+        return $this->isChild() ? 'childId' : 'id';
+    }
+
+    /**
+     * Build all the related urls to the current admin
+     *
+     * @param string $baseCode
+     * @return void
+     */
+    public function buildUrls($baseCode = '')
     {
         if ($this->loaded['urls']) {
             return;
         }
 
+        $this->baseCodeRoute = $baseCode;
+
+        $this->loaded['urls'] = true;
+        
         $this->urls =  array(
-            'list' => array(
+            $baseCode . 'list' => array(
                 'name'      => $this->getBaseRouteName().'_list',
                 'pattern'   => $this->getBaseRoutePattern().'/list',
                 'defaults'  => array(
@@ -361,7 +478,7 @@ abstract class Admin extends ContainerAware
                 'options' => array(),
                 'params'    => array(),
             ),
-            'create' => array(
+            $baseCode . 'create' => array(
                 'name'      => $this->getBaseRouteName().'_create',
                 'pattern'       => $this->getBaseRoutePattern().'/create',
                 'defaults'  => array(
@@ -371,9 +488,9 @@ abstract class Admin extends ContainerAware
                 'options' => array(),
                 'params'    => array(),
             ),
-            'edit' => array(
+            $baseCode . 'edit' => array(
                 'name'      => $this->getBaseRouteName().'_edit',
-                'pattern'       => $this->getBaseRoutePattern().'/{id}/edit',
+                'pattern'   => $this->getBaseRoutePattern().'/'.$this->getRouterIdParameter().'/edit',
                 'defaults'  => array(
                     '_controller' => $this->getBaseControllerName().':edit'
                 ),
@@ -381,7 +498,7 @@ abstract class Admin extends ContainerAware
                 'options' => array(),
                 'params'    => array(),
             ),
-            'update' => array(
+            $baseCode . 'update' => array(
                 'name'      => $this->getBaseRouteName().'_update',
                 'pattern'       => $this->getBaseRoutePattern().'/update',
                 'defaults'  => array(
@@ -391,7 +508,7 @@ abstract class Admin extends ContainerAware
                 'options' => array(),
                 'params'    => array(),
             ),
-            'batch' => array(
+            $baseCode . 'batch' => array(
                 'name'      => $this->getBaseRouteName().'_batch',
                 'pattern'       => $this->getBaseRoutePattern().'/batch',
                 'defaults'  => array(
@@ -402,6 +519,11 @@ abstract class Admin extends ContainerAware
                 'params'    => array(),
             )
         );
+
+        // add children urls
+        foreach ($this->getChildren() as $code => $children) {
+            $this->urls = array_merge($this->urls, $children->getUrls($code.'.'));
+        }
 
         $this->configureUrls();
     }
@@ -434,6 +556,22 @@ abstract class Admin extends ContainerAware
      */
     public function generateUrl($name, $params = array())
     {
+        // if the admin is a child we automatically append the parent's id
+        if($this->isChild()) {
+            $name = $this->baseCodeRoute.$name;
+
+            // twig template does not accept variable hash key ... so cannot use admin.idparameter ...
+            // switch value
+            if(isset($params['id'])) {
+                $params[$this->getIdParameter()] = $params['id'];
+                unset($params['id']);
+            }
+
+            $params[$this->getParent()->getIdParameter()] = $this->container->get('request')->get($this->getParent()->getIdParameter());
+
+
+        }
+
         $url = $this->getUrl($name);
 
         if (!$url) {
@@ -444,7 +582,7 @@ abstract class Admin extends ContainerAware
             $params = array();
         }
 
-        return $this->container->get('router')->generate($url['name'], array_merge($url['params'], $params));
+        return $this->container->get('router')->generate($url['name'], $params);
     }
 
     /**
@@ -492,11 +630,12 @@ abstract class Admin extends ContainerAware
      *
      * @return Form the base form
      */
-    public function getBaseDatagrid()
+    public function getBaseDatagrid($values = array())
     {
         return new Datagrid(
             $this->getClass(),
-            $this->getEntityManager()
+            $this->getEntityManager(),
+            $values
         );
     }
 
@@ -529,7 +668,7 @@ abstract class Admin extends ContainerAware
             ->find($this->getClass(), $id);
     }
 
-    public function buildFormGroups(Form $form)
+    public function buildFormGroups()
     {
 
         if ($this->loaded['form_groups']) {
@@ -560,6 +699,16 @@ abstract class Admin extends ContainerAware
      */
     public function getForm($object, array $options = array())
     {
+
+        // append parent object if any
+        // todo : clean the way the Admin class can retrieve set the object
+        if ($this->isChild() && $this->getParentAssociationMapping()) {
+            $mapping = $this->getParentAssociationMapping();
+            $parent = $this->getParent()->getObject($this->container->get('request')->get($this->getParent()->getIdParameter()));
+
+            $propertyPath = new \Symfony\Component\Form\PropertyPath($mapping['fieldName']);
+            $propertyPath->setValue($object, $parent);
+        }
 
         $form = $this->getBaseForm($object, $options);
 
@@ -596,7 +745,6 @@ abstract class Admin extends ContainerAware
         $this->configureListFields($mapper);
 
         foreach ($this->getListFieldDescriptions() as $fieldDescription) {
-
             $mapper->add($fieldDescription);
         }
 
@@ -611,11 +759,18 @@ abstract class Admin extends ContainerAware
      */
     public function getDatagrid()
     {
-        
-        $datagrid = $this->getBaseDatagrid();
-        $datagrid->setMaxPerPage($this->maxPerPage);
-        $datagrid->setValues($this->container->get('request')->query->all());
 
+        $parameters = $this->container->get('request')->query->all();
+
+        $datagrid = $this->getBaseDatagrid($parameters);
+        $datagrid->setMaxPerPage($this->maxPerPage);
+
+        if($this->isChild() && $this->getParentAssociationMapping()) {
+            $mapping = $this->getParentAssociationMapping();
+            $parameters[$mapping['fieldName']] = $this->container->get('request')->get($this->getParent()->getIdParameter());
+        }
+
+        $datagrid->setValues($parameters);
         $mapper = new DatagridMapper($this->getDatagridBuilder(), $datagrid, $this);
 
         $this->buildFilterFieldDescriptions();
@@ -627,6 +782,17 @@ abstract class Admin extends ContainerAware
         }
 
         return $datagrid;
+    }
+
+    /**
+     * Build the side menu related to the current action
+     *
+     * @return MenuItem|false
+     */
+    public function getSideMenu($action)
+    {
+
+        return false;
     }
 
     /**
@@ -709,9 +875,9 @@ abstract class Admin extends ContainerAware
         $this->formGroups = $formGroups;
     }
 
-    public function getFormGroups(Form $form)
+    public function getFormGroups()
     {
-        $this->buildFormGroups($form);
+        $this->buildFormGroups();
 
         return $this->formGroups;
     }
@@ -822,5 +988,91 @@ abstract class Admin extends ContainerAware
         $this->buildFilterFieldDescriptions();
         
         return $this->filterFieldDescriptions;
+    }
+
+    /**
+     * add an Admin child to the current one
+     *
+     * @param string $code
+     * @param Admin $child
+     * @return void
+     */
+    public function addChild($code, Admin $child)
+    {
+        $this->children[$code] = $child;
+        $child->setParent($this);
+    }
+
+    /**
+     * return true or false if an Admin child exists for the given $code
+     *
+     * @param string $code
+     * @return Admin|bool
+     */
+    public function hasChild($code)
+    {
+        return isset($this->children[$code]) ? $this->children[$code] : false;
+    }
+
+    /**
+     * return an collection of admin children
+     *
+     * @return array list of Admin children
+     */
+    public function getChildren()
+    {
+        return $this->children;
+    }
+
+    /**
+     * return an admin child with the given $code
+     *
+     * @param string $code
+     * @return array|null
+     */
+    public function getChild($code)
+    {
+        return $this->hasChild($code) ? $this->children[$code] : null;
+    }
+
+    /**
+     * set the Parent Admin
+     *
+     * @param Admin $parent
+     * @return void
+     */
+    public function setParent(Admin $parent)
+    {
+        $this->parent = $parent;
+    }
+
+    /**
+     * get the Parent Admin
+     *
+     * @return Admin|null
+     */
+    public function getParent()
+    {
+        return $this->parent;
+    }
+
+    /**
+     * return true if the Admin class has an Parent Admin defined
+     *
+     * @return boolean
+     */
+    public function isChild()
+    {
+        return $this->parent instanceof Admin;
+    }
+
+    /**
+     * return true if the admin has childre, false otherwise
+     *
+     * @return bool if the admin has children
+     */
+    public function hasChildren()
+    {
+        return count($this->children) > 0;
     }
 }

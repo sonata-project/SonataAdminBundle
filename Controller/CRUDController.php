@@ -14,7 +14,6 @@ namespace Sonata\BaseApplicationBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-
 use Symfony\Component\Form\Form;
 
 
@@ -25,12 +24,16 @@ class CRUDController extends Controller
 
     protected $admin;
 
+    /**
+     * @param mixed $data
+     *
+     * @return Response with json encoded data
+     */
     public function renderJson($data)
     {
         $response = new \Symfony\Component\HttpFoundation\Response;
         $response->setContent(json_encode($data));
         $response->headers->set('Content-Type', 'application/json');
-//        $response->headers->set('Content-Type', 'text/plain');
 
         return $response;
     }
@@ -49,12 +52,23 @@ class CRUDController extends Controller
 
     public function configure()
     {
+        $actionName = $this->container->get('request')->get('_bab_action');
+        
+        $this->admin = $this->container
+            ->get('base_application.admin.pool')
+            ->getAdminByActionName($actionName);
 
-       $this->admin = $this->container
-           ->get('base_application.admin.pool')
-           ->getAdminByControllerName(get_class($this));
+        if(!$this->admin) {
+            throw new \RuntimeException(sprintf('Unable to find the admin class related to the current controller (%s)', get_class($this)));
+        }
+
     }
 
+    /**
+     * return the base template name
+     * 
+     * @return string the template name
+     */
     public function getBaseTemplate()
     {
         if ($this->get('request')->isXmlHttpRequest()) {
@@ -64,6 +78,11 @@ class CRUDController extends Controller
         return $this->container->getParameter('base_application.templates.layout');
     }
 
+    /**
+     * return the Response object associated to the list action
+     *
+     * @return Response
+     */
     public function listAction()
     {
 
@@ -73,7 +92,9 @@ class CRUDController extends Controller
             'datagrid'          => $datagrid,
             'list'              => $this->admin->getList(),
             'admin'             => $this->admin,
+            'side_menu'         => $this->admin->getSideMenu('list'),
             'base_template'     => $this->getBaseTemplate(),
+            'side_menu'         => $this->admin->getSideMenu('list'),
         ));
     }
 
@@ -104,11 +125,22 @@ class CRUDController extends Controller
         // todo
     }
 
+    /**
+     * return the Response object associated to the edit action
+     *
+     * @return Response
+     */
     public function editAction($id)
     {
+
+        $id = $this->get('request')->get($this->admin->getIdParameter());
+
         if ($id instanceof Form) {
             $object = $id->getData();
             $form   = $id;
+
+            // todo : refactor the Form Creation
+            $this->admin->getForm($object);
         } else {
             $object = $this->admin->getObject($id);
 
@@ -124,20 +156,26 @@ class CRUDController extends Controller
         return $this->render($this->admin->getEditTemplate(), array(
             'form'           => $form,
             'object'         => $object,
-            'fields'         => $this->admin->getFormFieldDescriptions($form),
-            'form_groups'    => $this->admin->getFormGroups($form),
+            'fields'         => $this->admin->getFormFieldDescriptions(),
+            'form_groups'    => $this->admin->getFormGroups(),
             'admin'          => $this->admin,
             'base_template'  => $this->getBaseTemplate(),
+            'side_menu'      => $this->admin->getSideMenu('edit'),
         ));
     }
 
+    /**
+     * return the Response object associated to the update action
+     *
+     * @return Response
+     */
     public function updateAction()
     {
         if ($this->get('request')->getMethod() != 'POST') {
            throw new \RuntimeException('invalid request type, POST expected');
         }
 
-        $id = $this->get('request')->get('id');
+        $id = $this->get('request')->get($this->admin->getIdParameter());
 
         if (is_numeric($id)) {
             $object = $this->admin->getObject($id);
@@ -154,6 +192,9 @@ class CRUDController extends Controller
         }
 
         $form = $this->admin->getForm($object);
+
+        $this->admin->setSubject($object);
+
         $form->bind($this->get('request'));
 
         if ($form->isValid()) {
@@ -211,6 +252,12 @@ class CRUDController extends Controller
         return $this->redirect($url);
     }
 
+    /**
+     * return the Response object associated to the batch action
+     *
+     * @throws \RuntimeException
+     * @return Response
+     */
     public function batchAction()
     {
         if ($this->get('request')->getMethod() != 'POST') {
@@ -235,6 +282,11 @@ class CRUDController extends Controller
         return call_user_func(array($this, $final_action), $idx);
     }
 
+    /**
+     * return the Response object associated to the create action
+     *
+     * @return Response
+     */
     public function createAction($id = null)
     {
         if ($id instanceof Form) {
@@ -250,20 +302,11 @@ class CRUDController extends Controller
         return $this->render($this->admin->getEditTemplate(), array(
             'form'          => $form,
             'object'        => $object,
-            'fields'        => $this->admin->getFormFieldDescriptions($form),
-            'form_groups'   => $this->admin->getFormGroups($form),
+            'fields'        => $this->admin->getFormFieldDescriptions(),
+            'form_groups'   => $this->admin->getFormGroups(),
             'admin'         => $this->admin,
             'base_template' => $this->getBaseTemplate(),
+            'side_menu'     => $this->admin->getSideMenu('create'),
         ));
-    }
-
-    public function setConfiguration($configuration)
-    {
-        $this->admin = $configuration;
-    }
-
-    public function getConfiguration()
-    {
-        return $this->admin;
     }
 }

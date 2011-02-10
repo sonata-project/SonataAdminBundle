@@ -31,6 +31,8 @@ file that was distributed with this source code.
     </div>
 {% endblock %}
 
+{% block side_menu %}{% if side_menu %}{{ side_menu.render|raw }}{% endif %}{% endblock %}
+
 {% block form %}
     <form action="{{ admin.generateUrl('update', {'id': object.id}) }}" method="POST">
 
