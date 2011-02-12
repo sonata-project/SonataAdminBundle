@@ -59,7 +59,9 @@ file that was distributed with this source code.
 
 
             {% for field_name in form_group.fields %}
-                {{ fields[field_name]|render_form_element(form, object) }}
+                {% if fields[field_name] is defined %}
+                    {{ fields[field_name]|render_form_element(form, object) }}
+                {% endif %}
             {% endfor %}
 
             {% if name %}

@@ -89,15 +89,20 @@ class CRUDController extends Controller
     public function listAction()
     {
 
+        if($this->admin->isChild()) {
+            $side_menu = $this->admin->getParent()->getSideMenu('list', $this->admin);
+        } else {
+            $side_menu = $this->admin->getSideMenu('list');
+        }
+
         $datagrid = $this->admin->getDatagrid();
 
         return $this->render($this->admin->getListTemplate(), array(
             'datagrid'          => $datagrid,
             'list'              => $this->admin->getList(),
             'admin'             => $this->admin,
-            'side_menu'         => $this->admin->getSideMenu('list'),
+            'side_menu'         => $side_menu,
             'base_template'     => $this->getBaseTemplate(),
-            'side_menu'         => $this->admin->getSideMenu('list'),
         ));
     }
 
@@ -156,6 +161,12 @@ class CRUDController extends Controller
 
         $this->admin->setSubject($object);
 
+        if($this->admin->isChild()) {
+            $side_menu = $this->admin->getParent()->getSideMenu('edit', $this->admin);
+        } else {
+            $side_menu = $this->admin->getSideMenu('edit');
+        }
+
         return $this->render($this->admin->getEditTemplate(), array(
             'form'           => $form,
             'object'         => $object,
@@ -163,7 +174,7 @@ class CRUDController extends Controller
             'form_groups'    => $this->admin->getFormGroups(),
             'admin'          => $this->admin,
             'base_template'  => $this->getBaseTemplate(),
-            'side_menu'      => $this->admin->getSideMenu('edit'),
+            'side_menu'      => $side_menu,
         ));
     }
 
@@ -301,6 +312,11 @@ class CRUDController extends Controller
         }
 
         $this->admin->setSubject($object);
+        if($this->admin->isChild()) {
+            $side_menu = $this->admin->getParent()->getSideMenu('list', $this->admin);
+        } else {
+            $side_menu = $this->admin->getSideMenu('list');
+        }
 
         return $this->render($this->admin->getEditTemplate(), array(
             'form'          => $form,
@@ -309,7 +325,7 @@ class CRUDController extends Controller
             'form_groups'   => $this->admin->getFormGroups(),
             'admin'         => $this->admin,
             'base_template' => $this->getBaseTemplate(),
-            'side_menu'     => $this->admin->getSideMenu('create'),
+            'side_menu'     => $side_menu,
         ));
     }
 }

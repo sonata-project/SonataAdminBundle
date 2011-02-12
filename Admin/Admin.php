@@ -203,7 +203,7 @@ abstract class Admin extends ContainerAware
     }
 
     /**
-     * build the field to use in the list view
+     * build the list FieldDescription array
      *
      * @return void
      */
@@ -239,6 +239,11 @@ abstract class Admin extends ContainerAware
         return $this->listFieldDescriptions;
     }
 
+    /**
+     * build the filter FieldDescription array
+     *
+     * @return void
+     */
     public function buildFilterFieldDescriptions()
     {
 
@@ -278,9 +283,9 @@ abstract class Admin extends ContainerAware
     }
 
     /**
-     * Build the form's FieldDescription collection
+     * Build the form FieldDescription collection
      *
-     * @return
+     * @return void
      */
     protected function buildFormFieldDescriptions()
     {
@@ -401,6 +406,12 @@ abstract class Admin extends ContainerAware
         return $this->baseRouteName;
     }
 
+    /**
+     * urlize the given word
+     *
+     * @param string $word
+     * @param string $sep the separator
+     */
     public function urlize($word, $sep = '_')
     {
 
@@ -626,11 +637,21 @@ abstract class Admin extends ContainerAware
         return 'SonataBaseApplicationBundle:CRUD:edit.twig.html';
     }
 
+    /**
+     * return the reflection fields related to the classname
+     *
+     * @return array the reflection fields related to the classname
+     */
     public function getReflectionFields()
     {
         return $this->getClassMetaData()->reflFields;
     }
 
+    /**
+     * return a instance of the related classname
+     *
+     * @return object a instance of the related classname
+     */
     public function getNewInstance()
     {
         $class = $this->getClass();
@@ -693,6 +714,11 @@ abstract class Admin extends ContainerAware
             ->find($this->getClass(), $id);
     }
 
+    /**
+     * build the form group array
+     *
+     * @return void
+     */
     public function buildFormGroups()
     {
 
@@ -750,7 +776,6 @@ abstract class Admin extends ContainerAware
         
         return $form;
     }
-
 
     /**
      * return a list depend on the given $object
@@ -821,7 +846,9 @@ abstract class Admin extends ContainerAware
     }
 
     /**
+     * return the root code
      *
+     * @return string the root code
      */
     public function getRootCode()
     {
@@ -861,11 +888,6 @@ abstract class Admin extends ContainerAware
         return $this->container->get('base_application.admin.pool');
     }
 
-    public function setCode($code)
-    {
-        $this->code = $code;
-    }
-
     public function getCode()
     {
         return $this->code;
@@ -903,32 +925,62 @@ abstract class Admin extends ContainerAware
         return $this->formGroups;
     }
 
-    public function setParentFieldDescription($parentFieldDescription)
+    /**
+     * set the parent FieldDescription
+     *
+     * @param FieldDescription $parentFieldDescription
+     * @return void
+     */
+    public function setParentFieldDescription(FieldDescription $parentFieldDescription)
     {
         $this->parentFieldDescription = $parentFieldDescription;
     }
 
+    /**
+     *
+     * @return FieldDescription the parent field description
+     */
     public function getParentFieldDescription()
     {
         return $this->parentFieldDescription;
     }
 
+    /**
+     * return true if the Admin is linked to a parent FieldDescription
+     *
+     * @return bool
+     */
     public function hasParentFieldDescription()
     {
 
         return $this->parentFieldDescription instanceof FieldDescription;
     }
 
+    /**
+     * set the subject linked to the admin, the subject is the related model
+     *
+     * @param object $subject
+     * @return void
+     */
     public function setSubject($subject)
     {
         $this->subject = $subject;
     }
 
+    /**
+     *
+     * @return $object the subject 
+     */
     public function getSubject()
     {
         return $this->subject;
     }
 
+    /**
+     * build and return the collection of form FieldDescription
+     *
+     * @return array collection of form FieldDescription
+     */
     public function getFormFieldDescriptions()
     {
         $this->buildFormFieldDescriptions();
@@ -936,11 +988,23 @@ abstract class Admin extends ContainerAware
         return $this->formFieldDescriptions;
     }
 
+    /**
+     * return the form FieldDescription with the given $name
+     *
+     * @param string $name
+     * @return FieldDescription
+     */
     public function getFormFieldDescription($name) {
 
         return $this->hasFormFieldDescription($name) ? $this->formFieldDescriptions[$name] : null;
     }
 
+    /**
+     * return true if the admin has a FieldDescription with the given $name
+     *
+     * @param string $name
+     * @return bool
+     */
     public function hasFormFieldDescription($name)
     {
         $this->buildFormFieldDescriptions();
@@ -948,16 +1012,34 @@ abstract class Admin extends ContainerAware
         return array_key_exists($name, $this->formFieldDescriptions) ? true : false;
     }
 
+    /**
+     * add a FieldDescription
+     *
+     * @param string $name
+     * @param FieldDescription $fieldDescription
+     * @return void
+     */
     public function addFormFieldDescription($name, FieldDescription $fieldDescription)
     {
         $this->formFieldDescriptions[$name] = $fieldDescription;
     }
 
+    /**
+     * remove a FieldDescription
+     *
+     * @param string $name
+     * @return void
+     */
     public function removeFormFieldDescription($name)
     {
         unset($this->formFieldDescriptions[$name]);
     }
 
+    /**
+     * return the collection of list FieldDescriptions
+     *
+     * @return array
+     */
     public function getListFieldDescriptions()
     {
 
@@ -966,11 +1048,23 @@ abstract class Admin extends ContainerAware
         return $this->listFieldDescriptions;
     }
 
+    /**
+     * return a list FieldDescription
+     *
+     * @param string $name
+     * @return FieldDescription
+     */
     public function getListFieldDescription($name) {
 
         return $this->hasListFieldDescription($name) ? $this->listFieldDescriptions[$name] : null;
     }
 
+    /**
+     * return true if the list FieldDescription exists
+     *
+     * @param string $name
+     * @return bool
+     */
     public function hasListFieldDescription($name)
     {
         $this->buildListFieldDescriptions();
@@ -978,21 +1072,46 @@ abstract class Admin extends ContainerAware
         return array_key_exists($name, $this->listFieldDescriptions) ? true : false;
     }
 
+    /**
+     * add a list FieldDescription
+     *
+     * @param string $name
+     * @param FieldDescription $fieldDescription
+     * @return void
+     */
     public function addListFieldDescription($name, FieldDescription $fieldDescription)
     {
         $this->listFieldDescriptions[$name] = $fieldDescription;
     }
 
+    /**
+     * remove a list FieldDescription
+     *
+     * @param string $name
+     * @return void
+     */
     public function removeListFieldDescription($name)
     {
         unset($this->listFieldDescriptions[$name]);
     }
 
+    /**
+     * return a filter FieldDescription
+     *
+     * @param string $name
+     * @return array|null
+     */
     public function getFilterFieldDescription($name) {
 
         return $this->hasFilterFieldDescription($name) ? $this->filterFieldDescriptions[$name] : null;
     }
 
+    /**
+     * return true if the filter FieldDescription exists
+     *
+     * @param string $name
+     * @return bool
+     */
     public function hasFilterFieldDescription($name)
     {
         $this->buildFilterFieldDescriptions();
@@ -1000,16 +1119,33 @@ abstract class Admin extends ContainerAware
         return array_key_exists($name, $this->filterFieldDescriptions) ? true : false;
     }
 
+    /**
+     * add a filter FieldDescription
+     *
+     * @param string $name
+     * @param FieldDescription $fieldDescription
+     * @return void
+     */
     public function addFilterFieldDescription($name, FieldDescription $fieldDescription)
     {
         $this->filterFieldDescriptions[$name] = $fieldDescription;
     }
 
+    /**
+     * remove a filter FieldDescription
+     *
+     * @param string $name
+     */
     public function removeFilterFieldDescription($name)
     {
         unset($this->filterFieldDescriptions[$name]);
     }
 
+    /**
+     * return the filter FieldDescription collection
+     *
+     * @param array filter FieldDescription collection
+     */
     public function getFilterFieldDescriptions()
     {
         $this->buildFilterFieldDescriptions();
@@ -1103,13 +1239,29 @@ abstract class Admin extends ContainerAware
         return count($this->children) > 0;
     }
 
+    /**
+     * set the uniqid
+     *
+     * @param  $uniqid
+     * @return void
+     */
     public function setUniqid($uniqid)
     {
         $this->uniqid = $uniqid;
     }
 
+    /**
+     * return the uniqid
+     * 
+     * @return integer
+     */
     public function getUniqid()
     {
         return $this->uniqid;
+    }
+
+    public function getBreadcrumbs()
+    {
+        
     }
 }
