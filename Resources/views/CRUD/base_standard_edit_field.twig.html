@@ -9,7 +9,7 @@ file that was distributed with this source code.
 
 #}
 
-<div id="sonata-ba-field-container-{{ admin.code }}-{{ field_element.id}}">
+<div id="sonata-ba-field-container-{{ admin.uniqid }}-{{ field_element.id}}">
     {% block label %}{{ form_label(field_element) }} <br />{% endblock %}
 
     <div class="sonata-ba-field sonata-ba-field-{{ edit }}-{{ inline }} {% if field_element.haserrors %}sonata-ba-field-error{% endif %}">

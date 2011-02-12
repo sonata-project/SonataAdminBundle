@@ -54,6 +54,10 @@ class CoreController extends Controller
            ->get('base_application.admin.pool')
            ->getInstance($code);
 
+        if($this->container->get('request')->get('uniqid')) {
+            $admin->setUniqid($this->container->get('request')->get('uniqid'));
+        }
+
         if (is_numeric($this->get('request')->get('object_id'))) {
             $object = $admin->getObject($this->get('request')->get('object_id'));
         } else {
@@ -155,14 +159,18 @@ class CoreController extends Controller
         return $this->createResponse($extension->renderFormElement($fieldDescription, $form, $form->getData()));
     }
 
-    public function getShortObjectDescriptionAction()
+    public function getShortObjectDescriptionAction($code = null, $objectId = null, $uniqid = null)
     {
 
-        $code = $this->get('request')->query->get('code');
-        $objectId = $this->get('request')->query->get('objectId');
-        
-        $admin  = $this->container->get('base_application.admin.pool')->getInstance($code);
+        $code       = $code     ?: $this->get('request')->query->get('code');
+        $objectId   = $objectId ?: $this->get('request')->query->get('objectId');
+        $uniqid     = $uniqid   ?: $this->get('request')->get('uniqid');
 
+        $admin  = $this->container->get('base_application.admin.pool')->getInstance($code);
+        if($uniqid) {
+            $admin->setUniqid($uniqid);
+        }
+        
         $object = $admin->getObject($objectId);
 
         if (!$object) {

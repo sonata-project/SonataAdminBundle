@@ -466,9 +466,9 @@ class FormBuilder implements FormBuilderInterface
         return $this->formFieldClasses;
     }
 
-    public function getBaseForm($object, array $options = array())
+    public function getBaseForm($name, $object, array $options = array())
     {
-        return new Form('object', array_merge(array(
+        return new Form($name, array_merge(array(
             'data'      => $object,
             'validator' => $this->getValidator(),
             'context'   => $this->getFormContext(),

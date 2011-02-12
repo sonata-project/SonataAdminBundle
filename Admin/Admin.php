@@ -102,6 +102,14 @@ abstract class Admin extends ContainerAware
      */
     protected $parentFieldDescription;
 
+    /**
+     * The uniqid is used to avoid clashing with 2 admin related to the code
+     * ie: a Block linked to a Block
+     *
+     * @var
+     */
+    protected $uniqid;
+
     protected $loaded = array(
         'form_fields' => false,
         'form_groups' => false,
@@ -148,14 +156,19 @@ abstract class Admin extends ContainerAware
 
     }
 
-    public function __construct(ContainerInterface $container)
+    public function __construct($code, ContainerInterface $container)
     {
+        $this->code = $code;
+        
         $this->setContainer($container);
         $this->configure();
     }
 
     public function configure()
     {
+
+        $this->uniqid = uniqid();
+        
         if($this->parentAssociationMapping) {
             if(!isset($this->getClassMetaData()->associationMappings[$this->parentAssociationMapping])) {
                 throw new \RuntimeException(sprintf('The value set to `relatedReflectionProperty` refer to a non existant association', $this->relatedReflectionProperty));
@@ -554,8 +567,9 @@ abstract class Admin extends ContainerAware
      *
      * @return return a complete url
      */
-    public function generateUrl($name, $params = array())
+    public function generateUrl($name, array $params = array())
     {
+        
         // if the admin is a child we automatically append the parent's id
         if($this->isChild()) {
             $name = $this->baseCodeRoute.$name;
@@ -568,18 +582,25 @@ abstract class Admin extends ContainerAware
             }
 
             $params[$this->getParent()->getIdParameter()] = $this->container->get('request')->get($this->getParent()->getIdParameter());
-
-
         }
 
+        // if the admin is linked to a FieldDescription (ie, embeded widget)
+        if($this->hasParentFieldDescription()) {
+            $params['uniqid']  = $this->getUniqid();
+            $params['code']    = $this->getCode();
+            $params['pcode']   = $this->getParentFieldDescription()->getAdmin()->getCode();
+            $params['puniqid'] = $this->getParentFieldDescription()->getAdmin()->getUniqid();
+        }
+
+        if($name == 'update' || substr($name, -7) == '.update') {
+            $params['uniqid'] = $this->getUniqid();
+            $params['code']   = $this->getCode();
+        }
+        
         $url = $this->getUrl($name);
 
         if (!$url) {
             throw new \RuntimeException(sprintf('unable to find the url `%s`', $name));
-        }
-
-        if (!is_array($params)) {
-            $params = array();
         }
 
         return $this->container->get('router')->generate($url['name'], $params);
@@ -623,7 +644,11 @@ abstract class Admin extends ContainerAware
      */
     public function getBaseForm($object, $options = array())
     {
-        return $this->getFormBuilder()->getBaseForm($object, array_merge($this->formOptions, $options));
+        return $this->getFormBuilder()->getBaseForm(
+            'object_'.$this->getUniqid(),
+            $object,
+            array_merge($this->formOptions, $options)
+        );
     }
 
     /**
@@ -806,6 +831,7 @@ abstract class Admin extends ContainerAware
     /**
      * return the master admin      
      *
+     * @return Admin the root admin class
      */
     public function getRoot()
     {
@@ -830,14 +856,9 @@ abstract class Admin extends ContainerAware
         return $this->baseControllerName;
     }
 
-    public function setConfigurationPool($configurationPool)
-    {
-        $this->configurationPool = $configurationPool;
-    }
-
     public function getConfigurationPool()
     {
-        return $this->configurationPool;
+        return $this->container->get('base_application.admin.pool');
     }
 
     public function setCode($code)
@@ -890,6 +911,12 @@ abstract class Admin extends ContainerAware
     public function getParentFieldDescription()
     {
         return $this->parentFieldDescription;
+    }
+
+    public function hasParentFieldDescription()
+    {
+
+        return $this->parentFieldDescription instanceof FieldDescription;
     }
 
     public function setSubject($subject)
@@ -1074,5 +1101,15 @@ abstract class Admin extends ContainerAware
     public function hasChildren()
     {
         return count($this->children) > 0;
+    }
+
+    public function setUniqid($uniqid)
+    {
+        $this->uniqid = $uniqid;
+    }
+
+    public function getUniqid()
+    {
+        return $this->uniqid;
     }
 }

@@ -62,6 +62,9 @@ class CRUDController extends Controller
             throw new \RuntimeException(sprintf('Unable to find the admin class related to the current controller (%s)', get_class($this)));
         }
 
+        if($this->container->get('request')->get('uniqid')) {
+            $this->admin->setUniqid($this->container->get('request')->get('uniqid'));
+        }
     }
 
     /**
@@ -191,9 +194,9 @@ class CRUDController extends Controller
             $action = 'create';
         }
 
-        $form = $this->admin->getForm($object);
-
         $this->admin->setSubject($object);
+        
+        $form = $this->admin->getForm($object);
 
         $form->bind($this->get('request'));
 

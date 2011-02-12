@@ -23,7 +23,7 @@ This code manage the one-to-many association field popup
     <!-- edit one association -->
 
     // handle the add link
-    var field_add_{{ admin.code }}_{{ field_element.id }} = function(event) {
+    var field_add_{{ admin.uniqid }}_{{ field_element.id }} = function(event) {
 
         event.preventDefault();
 
@@ -32,37 +32,38 @@ This code manage the one-to-many association field popup
         // the ajax post
         jQuery.ajax({
             url: '{{ url('sonata_base_application_append_form_element', {
-                'code':         admin.root.code,
-                'elementId':   field_element.id,
-                'objectId':    admin.root.subject.id,
+                'code': admin.root.code,
+                'elementId': field_element.id,
+                'objectId': admin.root.subject.id,
+                'uniqid': admin.root.uniqid
             }) }}',
             type: "POST",
             data: form.serializeArray(),
             success: function(html) {
-                jQuery('#sonata-ba-field-container-{{ admin.code }}-{{ field_element.id}}').replaceWith(html);
+                jQuery('#sonata-ba-field-container-{{ admin.uniqid }}-{{ field_element.id}}').replaceWith(html);
             }
         });
 
         return false;
     };
 
-    var field_widget_{{ admin.code }}_{{ field_element.id }} = false;
+    var field_widget_{{ admin.uniqid }}_{{ field_element.id }} = false;
 
-    
     // this function initialize the popup
     // this can be only done this way has popup can be cascaded
-    function start_field_retrieve_{{ admin.code }}_{{ field_element.id }}(event) {
+    function start_field_retrieve_{{ admin.uniqid }}_{{ field_element.id }}(event) {
         event.preventDefault();
 
+        alert('jer');
         // remove the html event a
         var a = jQuery(event.target).closest('a');
         a.attr('onclick', '');
 
         // initialize component
-        field_widget_{{ admin.code }}_{{ field_element.id }} = jQuery("#field_widget_{{ admin.code }}_{{ field_element.id}}");
+        field_widget_{{ admin.uniqid }}_{{ field_element.id }} = jQuery("#field_widget_{{ admin.uniqid }}_{{ field_element.id}}");
 
         // add the jQuery event to the a element
-        a.click(field_add_{{ admin.code }}_{{ field_element.id }});
+        a.click(field_add_{{ admin.uniqid }}_{{ field_element.id }});
 
         // trigger the event
         a.trigger('click');

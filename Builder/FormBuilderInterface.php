@@ -28,5 +28,5 @@ interface FormBuilderInterface
 
     function fixFieldDescription(Admin $admin, FieldDescription $fieldDescription, array $options = array());
 
-    function getBaseForm($object, array $options = array());
+    function getBaseForm($name, $object, array $options = array());
 }

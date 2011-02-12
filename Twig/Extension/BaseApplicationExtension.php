@@ -176,7 +176,6 @@ class BaseApplicationExtension extends \Twig_Extension
             $base_template = sprintf('SonataBaseApplicationBundle:CRUD:base_%s_edit_field.twig.html', $params['edit']);
         }
 
-
         $template = $this->environment->loadTemplate($fieldDescription->getTemplate());
         
         return $this->output($fieldDescription, $template->render(array_merge($params, array(

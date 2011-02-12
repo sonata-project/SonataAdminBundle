@@ -43,7 +43,7 @@ class FormMapper
 
     public function add($name, array $fieldOptions = array(), array $fieldDescriptionOptions = array())
     {
-
+        
         $field = false;
         if ($name instanceof FieldDescription) {
 

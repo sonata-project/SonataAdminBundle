@@ -147,9 +147,7 @@ class Pool
     {
         $class = $configuration['class'];
         
-        $instance = new $class($this->getContainer());
-        $instance->setConfigurationPool($this);
-        $instance->setCode($code);
+        $instance = new $class($code, $this->getContainer());
         $instance->setLabel($configuration['label']);
 
         if(isset($configuration['children'])) {
@@ -159,7 +157,6 @@ class Pool
         }
 
         return $instance;
-
     }
 
     /**
