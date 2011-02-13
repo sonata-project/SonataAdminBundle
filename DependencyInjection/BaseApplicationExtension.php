@@ -11,6 +11,7 @@
 
 namespace Sonata\BaseApplicationBundle\DependencyInjection;
 
+use Symfony\Component\DependencyInjection\Loader\FileLocator;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\Resource\FileResource;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -99,7 +100,7 @@ class BaseApplicationExtension extends Extension
     
     protected function configLoadFiles($container)
     {
-        $loader = new XmlFileLoader($container, __DIR__ . '/../Resources/config');
+        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 
         foreach ($this->configNamespaces as $ns => $params) {
             $loader->load(sprintf('%s.xml', $ns));
