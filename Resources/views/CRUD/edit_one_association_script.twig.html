@@ -54,7 +54,6 @@ This code manage the one-to-many association field popup
     function start_field_retrieve_{{ admin.uniqid }}_{{ field_element.id }}(event) {
         event.preventDefault();
 
-        alert('jer');
         // remove the html event a
         var a = jQuery(event.target).closest('a');
         a.attr('onclick', '');
