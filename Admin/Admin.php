@@ -20,6 +20,9 @@ use Sonata\BaseApplicationBundle\Datagrid\ListMapper;
 use Sonata\BaseApplicationBundle\Datagrid\DatagridMapper;
 use Sonata\BaseApplicationBundle\Datagrid\Datagrid;
 
+use Knplabs\MenuBundle\Menu;
+use Knplabs\MenuBundle\MenuItem;
+
 
 abstract class Admin extends ContainerAware
 {
@@ -46,6 +49,12 @@ abstract class Admin extends ContainerAware
     protected $baseControllerName;
 
     protected $formGroups = false;
+
+    /**
+     * 
+     * @var string the classname label (used in the title/breadcrumb ...)
+     */
+    protected $classnameLabel;
 
     /**
      *
@@ -101,6 +110,14 @@ abstract class Admin extends ContainerAware
      * @var FieldDescription
      */
     protected $parentFieldDescription;
+
+
+    /**
+     * If true then the current admin is part of the nested admin set (from the url)
+     *
+     * @var boolean
+     */
+    protected $currentChild = false;
 
     /**
      * The uniqid is used to avoid clashing with 2 admin related to the code
@@ -175,6 +192,12 @@ abstract class Admin extends ContainerAware
             }
             $this->parentAssociationMapping = $this->getClassMetaData()->associationMappings[$this->parentAssociationMapping];
         }
+
+        if(!$this->classnameLabel) {
+
+            $this->classnameLabel = $this->urlize(substr($this->class, strrpos($this->class, '\\') + 1), '_');
+        }
+
     }
 
     public function configureUrls()
@@ -968,11 +991,25 @@ abstract class Admin extends ContainerAware
     }
 
     /**
+     * return the subject, if none is set try to load one from the request
      *
      * @return $object the subject 
      */
     public function getSubject()
     {
+        if($this->subject === null) {
+
+            $id = $this->container->get('request')->get($this->getIdParameter());
+            if(!is_numeric($id)) {
+                $this->subject = false;
+            } else {
+                $this->subject = $this->getEntityManager()->find(
+                    $this->getClass(),
+                    $id
+                );
+            }
+        }
+
         return $this->subject;
     }
 
@@ -1260,8 +1297,107 @@ abstract class Admin extends ContainerAware
         return $this->uniqid;
     }
 
-    public function getBreadcrumbs()
+    /**
+     * return the classname label
+     *
+     * @return string the classname label
+     */
+    public function getClassnameLabel()
     {
+
+        return $this->classnameLabel;
+    }
+
+    /**
+     * generate the breadcrumbs array
+     *
+     * @param  $action
+     * @param \Knplabs\MenuBundle\MenuItem|null $menu
+     * @return array the breadcrumbs
+     */
+    public function getBreadcrumbs($action, MenuItem $menu = null)
+    {
+        $menu = $menu ?: new Menu;
+
+        $translator = $this->container->get('translator');
+
+        $child = $menu->addChild(
+            $translator->trans(sprintf('link_%s_list', $this->getClassnameLabel()), array()),
+            $this->generateUrl('list')
+        );
         
+        $childAdmin = $this->getCurrentChildAdmin();
+
+        if ($childAdmin) {
+            $id = $this->container->get('request')->get($this->getIdParameter());
+
+            $child = $child->addChild(
+                (string) $this->getSubject(),
+                $this->generateUrl('edit', array('id' => $id))
+            );
+
+            return $childAdmin->getBreadcrumbs($action, $child);
+        
+        } elseif ($this->isChild()) {
+
+            if($action != 'list') {
+                $menu = $menu->addChild(
+                    sprintf('link_%s_list', $this->getClassnameLabel()),
+                    $this->generateUrl('list')
+                );
+            }
+
+            $breadcrumbs = $menu->getBreadcrumbsArray(sprintf('link_%s_%s', $this->getClassnameLabel(), $action));
+
+        } else if($action != 'list') {
+
+            $breadcrumbs = $child->getBreadcrumbsArray(sprintf('link_%s_%s', $this->getClassnameLabel(), $action));
+
+        } else {
+
+            $breadcrumbs = $child->getBreadcrumbsArray();
+        }
+
+        // the generated $breadcrumbs contains an empty element
+        array_shift($breadcrumbs);
+
+        return $breadcrumbs;
+    }
+
+    /**
+     * set the current child status
+     *
+     * @param boolean $currentChild
+     * @return void
+     */
+    public function setCurrentChild($currentChild)
+    {
+        $this->currentChild = $currentChild;
+    }
+
+    /**
+     * return the current child status
+     *
+     * @return bool
+     */
+    public function getCurrentChild()
+    {
+        return $this->currentChild;
+    }
+
+    /**
+     * return the current child admin instance
+     *
+     * @return Admin|null the current child admin instance
+     */
+    public function getCurrentChildAdmin()
+    {
+        foreach($this->children as $children) {
+            if($children->getCurrentChild()) {
+                return $children;
+            }
+        }
+
+        return null;
     }
 }

@@ -51,8 +51,22 @@ file that was distributed with this source code.
                     {% block actions %}{% endblock %}
                 </div>
 
-                <h1>{% block title %}{% endblock %}</h1>
+                <div class="sonata-ba-breadcrumbs">
+                    <h1>
+                    {% block breadcrumb %}
+                        {% if breadcrumbs is defined %}
+                            {% for label, uri in breadcrumbs %}
+                                {% if not loop.first  %}
+                                    &gt;
+                                {% endif %}
+                                <a href="{{ uri }}">{{ label }}</a>
+                            {% endfor %}
+                        {% endif %}
+                    {% endblock %}
+                    </h1>
+                </div>
             </div>
+            
             <div class="span-24 last content clear">
 
                 {% set side_menu %}{% block side_menu %}{% endblock %}{% endset %}
@@ -61,7 +75,6 @@ file that was distributed with this source code.
                 {% set form %}{% block form %}{% endblock %}{% endset %}
                 {% set list_table %}{% block list_table %}{% endblock %}{% endset %}
                 {% set list_filters %}{% block list_filters %}{% endblock %}{% endset %}
-
 
                 {% if side_menu|length > 0 %}
                         <div class="span-4">

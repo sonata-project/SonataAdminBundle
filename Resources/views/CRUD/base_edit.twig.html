@@ -11,17 +11,6 @@ file that was distributed with this source code.
 
 {% extends base_template %}
 
-{% block title %}
-
-    <a href="{{ admin.generateUrl('list') }}">{{ admin.label }}</a> &gt;
-
-    {% if object.id %}
-        {% trans 'title_edit' from 'BaseApplicationBundle'%}
-    {% else %}
-        {% trans 'title_create' from 'BaseApplicationBundle'%}
-    {% endif %}
-{% endblock %}
-
 {% block actions %}
     <div class="sonata-actions">
         <ul>

@@ -115,6 +115,7 @@ class Pool
                 if(!$instance instanceof Admin) {
                     throw new \RuntimeException(sprintf('unable to retrieve the child admin related to the actionName : `%s`', $actionName));
                 }
+                
             } else {
                 break;
             }

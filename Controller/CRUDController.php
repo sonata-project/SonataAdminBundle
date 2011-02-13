@@ -17,6 +17,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\Form;
 
 
+
 use Sonata\BaseApplicationBundle\Tool\DoctrinePager as Pager;
 
 class CRUDController extends Controller
@@ -65,6 +66,10 @@ class CRUDController extends Controller
         if($this->container->get('request')->get('uniqid')) {
             $this->admin->setUniqid($this->container->get('request')->get('uniqid'));
         }
+
+        if($this->admin->isChild()) {
+            $this->admin->setCurrentChild(true);
+        }
     }
 
     /**
@@ -89,20 +94,15 @@ class CRUDController extends Controller
     public function listAction()
     {
 
-        if($this->admin->isChild()) {
-            $side_menu = $this->admin->getParent()->getSideMenu('list', $this->admin);
-        } else {
-            $side_menu = $this->admin->getSideMenu('list');
-        }
-
         $datagrid = $this->admin->getDatagrid();
 
         return $this->render($this->admin->getListTemplate(), array(
             'datagrid'          => $datagrid,
             'list'              => $this->admin->getList(),
             'admin'             => $this->admin,
-            'side_menu'         => $side_menu,
             'base_template'     => $this->getBaseTemplate(),
+            'side_menu'         => $this->getSideMenu('list'),
+            'breadcrumbs'       => $this->getBreadcrumbs('list'),
         ));
     }
 
@@ -161,12 +161,6 @@ class CRUDController extends Controller
 
         $this->admin->setSubject($object);
 
-        if($this->admin->isChild()) {
-            $side_menu = $this->admin->getParent()->getSideMenu('edit', $this->admin);
-        } else {
-            $side_menu = $this->admin->getSideMenu('edit');
-        }
-
         return $this->render($this->admin->getEditTemplate(), array(
             'form'           => $form,
             'object'         => $object,
@@ -174,7 +168,8 @@ class CRUDController extends Controller
             'form_groups'    => $this->admin->getFormGroups(),
             'admin'          => $this->admin,
             'base_template'  => $this->getBaseTemplate(),
-            'side_menu'      => $side_menu,
+            'side_menu'      => $this->getSideMenu('edit'),
+            'breadcrumbs'    => $this->getBreadcrumbs('edit'),
         ));
     }
 
@@ -312,11 +307,6 @@ class CRUDController extends Controller
         }
 
         $this->admin->setSubject($object);
-        if($this->admin->isChild()) {
-            $side_menu = $this->admin->getParent()->getSideMenu('list', $this->admin);
-        } else {
-            $side_menu = $this->admin->getSideMenu('list');
-        }
 
         return $this->render($this->admin->getEditTemplate(), array(
             'form'          => $form,
@@ -325,7 +315,35 @@ class CRUDController extends Controller
             'form_groups'   => $this->admin->getFormGroups(),
             'admin'         => $this->admin,
             'base_template' => $this->getBaseTemplate(),
-            'side_menu'     => $side_menu,
+            'side_menu'     => $this->getSideMenu('create'),
+            'breadcrumbs'   => $this->getBreadcrumbs('create'),
         ));
+    }
+
+    /**
+     * @param  $action
+     * @return Knplabs\MenuBundle\Menu
+     */
+    public function getSideMenu($action)
+    {
+        if($this->admin->isChild()) {
+            return $this->admin->getParent()->getSideMenu($action, $this->admin);
+        }
+
+        return $this->admin->getSideMenu($action);
+    }
+
+    /**
+     * @param  $action
+     * @return array
+     */
+    public function getBreadcrumbs($action)
+    {
+        
+        if($this->admin->isChild()) {
+            return $this->admin->getParent()->getBreadcrumbs($action);
+        }
+
+        return $this->admin->getBreadcrumbs($action);
     }
 }
