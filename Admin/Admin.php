@@ -56,6 +56,13 @@ abstract class Admin extends ContainerAware
      */
     protected $classnameLabel;
 
+
+    /**
+     *
+     * @var string the translation domain to be used to translate messages
+     */
+    protected $translationDomain = 'BaseApplicationBundle';
+
     /**
      *
      * @var array options to set to the form (ie, validation_groups)
@@ -1319,10 +1326,8 @@ abstract class Admin extends ContainerAware
     {
         $menu = $menu ?: new Menu;
 
-        $translator = $this->container->get('translator');
-
         $child = $menu->addChild(
-            $translator->trans(sprintf('link_%s_list', $this->getClassnameLabel()), array()),
+            $this->trans(sprintf('link_%s_list', $this->getClassnameLabel())),
             $this->generateUrl('list')
         );
         
@@ -1342,16 +1347,20 @@ abstract class Admin extends ContainerAware
 
             if($action != 'list') {
                 $menu = $menu->addChild(
-                    sprintf('link_%s_list', $this->getClassnameLabel()),
+                    $this->trans(sprintf('link_%s_list', $this->getClassnameLabel())),
                     $this->generateUrl('list')
                 );
             }
 
-            $breadcrumbs = $menu->getBreadcrumbsArray(sprintf('link_%s_%s', $this->getClassnameLabel(), $action));
+            $breadcrumbs = $menu->getBreadcrumbsArray(
+                $this->trans(sprintf('link_%s_%s', $this->getClassnameLabel(), $action))
+            );
 
         } else if($action != 'list') {
 
-            $breadcrumbs = $child->getBreadcrumbsArray(sprintf('link_%s_%s', $this->getClassnameLabel(), $action));
+            $breadcrumbs = $child->getBreadcrumbsArray(
+                $this->trans(sprintf('link_%s_%s', $this->getClassnameLabel(), $action))
+            );
 
         } else {
 
@@ -1399,5 +1408,43 @@ abstract class Admin extends ContainerAware
         }
 
         return null;
+    }
+
+    /**
+     * translate a message id 
+     *
+     * @param string $id
+     * @param array $parameters
+     * @param null $domain
+     * @param null $locale
+     * @return string the translated string
+     */
+    public function trans($id, array $parameters = array(), $domain = null, $locale = null)
+    {
+
+        $domain = $domain ?: $this->translationDomain;
+        
+        return $this->container->get('translator')->trans($id, $parameters, $domain, $locale);
+    }
+
+    /**
+     * set the translation domain
+     *
+     * @param string $translationDomain the translation domain
+     * @return void
+     */
+    public function setTranslationDomain($translationDomain)
+    {
+        $this->translationDomain = $translationDomain;
+    }
+
+    /**
+     * return the translation domain
+     *
+     * @return string the translation domain
+     */
+    public function getTranslationDomain()
+    {
+        return $this->translationDomain;
     }
 }
