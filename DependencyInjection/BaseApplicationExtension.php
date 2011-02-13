@@ -99,7 +99,7 @@ class BaseApplicationExtension extends Extension
     
     protected function configLoadFiles($container)
     {
-        $loader = new XmlFileLoader($container, __DIR__ . '/../Resources/config');
+        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 
         foreach ($this->configNamespaces as $ns => $params) {
             $loader->load(sprintf('%s.xml', $ns));
