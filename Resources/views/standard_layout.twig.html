@@ -47,6 +47,13 @@ file that was distributed with this source code.
     </head>
     <body>
 
+        {% set side_menu %}{% block side_menu %}{% endblock %}{% endset %}
+        {% set content %}{% block content %}{% endblock %}{% endset %}
+        {% set preview %}{% block preview %}{% endblock %}{% endset %}
+        {% set form %}{% block form %}{% endblock %}{% endset %}
+        {% set list_table %}{% block list_table %}{% endblock %}{% endset %}
+        {% set list_filters %}{% block list_filters %}{% endblock %}{% endset %}
+
         <div class="container">
             <div class="span-24 last header">
                 <div class="span-20">
@@ -78,15 +85,14 @@ file that was distributed with this source code.
                     </h1>
                 </div>
             </div>
-            
-            <div class="span-24 last content clear">
 
-                {% set side_menu %}{% block side_menu %}{% endblock %}{% endset %}
-                {% set content %}{% block content %}{% endblock %}{% endset %}
-                {% set preview %}{% block preview %}{% endblock %}{% endset %}
-                {% set form %}{% block form %}{% endblock %}{% endset %}
-                {% set list_table %}{% block list_table %}{% endblock %}{% endset %}
-                {% set list_filters %}{% block list_filters %}{% endblock %}{% endset %}
+            {% if preview|length > 0 %}
+                <div class="span-24 last content clear">
+                    <div class="sonata-ba-preview">{{ preview|raw }}</div>
+                </div>
+            {% endif %}
+
+            <div class="span-24 last content clear">
 
                 {% if side_menu|length > 0 %}
                         <div class="span-4">
@@ -97,10 +103,6 @@ file that was distributed with this source code.
 
                     {% if content|length > 0 %}
                         <div class="sonata-ba-content">{{ content|raw }}</div>
-                    {% endif %}
-
-                    {% if preview|length > 0 %}
-                        <div class="sonata-ba-preview">{{ preview|raw }}</div>
                     {% endif %}
 
                     {% if form|length > 0 %}
