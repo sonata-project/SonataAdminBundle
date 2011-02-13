@@ -9,4 +9,10 @@ file that was distributed with this source code.
 
 #}
 
-{% extends 'SonataBaseApplicationBundle:CRUD:edit_integer.twig.html' %}
+{% extends 'SonataBaseApplicationBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field%}
+    {% for key, val in value %}
+        [{{ key }} => {{ val }}]
+    {% endfor %}
+{% endblock %}

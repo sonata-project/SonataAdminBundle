@@ -30,7 +30,7 @@ Example
         {
 
             $datagrid->add('with_open_comments', array(
-                'template' => 'SonataBaseApplicationBundle:CRUD:filter_callback.twig.html',
+                'template' => 'SonataBaseApplicationBundle:CRUD:filter_callback.html.twig',
                 'type' => 'callback',
                 'filter_options' => array(
                     'filter' => array($this, 'getWithOpenCommentFilter'),

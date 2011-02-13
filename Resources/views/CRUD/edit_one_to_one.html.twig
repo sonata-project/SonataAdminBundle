@@ -39,7 +39,6 @@ file that was distributed with this source code.
                     {{ form_field(field_element) }}
                 </span>
             {% endif %}
-            
             <span id="field_actions_{{ admin.uniqid }}_{{ field_element.id}}" >
 
                 {% if field_description.options.edit == 'list' %}
@@ -54,6 +53,6 @@ file that was distributed with this source code.
             </div>
         </div>
 
-        {% include 'SonataBaseApplicationBundle:CRUD:edit_many_association_script.twig.html' %}
+        {% include 'SonataBaseApplicationBundle:CRUD:edit_many_association_script.html.twig' %}
     {% endif %}
 {% endblock %}

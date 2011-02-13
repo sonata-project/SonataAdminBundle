@@ -262,7 +262,7 @@ abstract class Admin extends ContainerAware
                 'code'  => '_batch',
                 'type'  => 'batch',
             ));
-            $fieldDescription->setTemplate('SonataBaseApplicationBundle:CRUD:list__batch.twig.html');
+            $fieldDescription->setTemplate('SonataBaseApplicationBundle:CRUD:list__batch.html.twig');
             $this->listFieldDescriptions = array( '_batch' => $fieldDescription ) + $this->listFieldDescriptions;
         }
 
@@ -654,7 +654,7 @@ abstract class Admin extends ContainerAware
      */
     public function getListTemplate()
     {
-        return 'SonataBaseApplicationBundle:CRUD:list.twig.html';
+        return 'SonataBaseApplicationBundle:CRUD:list.html.twig';
     }
 
     /**
@@ -664,7 +664,7 @@ abstract class Admin extends ContainerAware
      */
     public function getEditTemplate()
     {
-        return 'SonataBaseApplicationBundle:CRUD:edit.twig.html';
+        return 'SonataBaseApplicationBundle:CRUD:edit.html.twig';
     }
 
     /**

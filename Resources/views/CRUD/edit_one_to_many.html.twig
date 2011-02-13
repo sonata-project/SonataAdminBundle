@@ -72,7 +72,7 @@ file that was distributed with this source code.
                 </a>
             </span>
         
-            {% include 'SonataBaseApplicationBundle:CRUD:edit_one_association_script.twig.html' %}
+            {% include 'SonataBaseApplicationBundle:CRUD:edit_one_association_script.html.twig' %}
         {% else %}
             <span id="field_actions_{{ admin.uniqid }}_{{ field_element.id}}" >
                 <a
@@ -90,7 +90,7 @@ file that was distributed with this source code.
 
             </div>
         
-            {% include 'SonataBaseApplicationBundle:CRUD:edit_many_association_script.twig.html' %}
+            {% include 'SonataBaseApplicationBundle:CRUD:edit_many_association_script.html.twig' %}
         {% endif %}
     </div>
 {% endblock %}

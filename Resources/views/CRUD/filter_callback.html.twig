@@ -9,7 +9,4 @@ file that was distributed with this source code.
 
 #}
 
-{% extends 'SonataBaseApplicationBundle:CRUD:base_list_field.twig.html' %}
-
-{% block field%}<img src="/bundles/sonatabaseapplication/famfamfam/{% if value %}accept{% else %}exclamation{% endif %}.png" />{% endblock %}
-
+{% extends 'SonataBaseApplicationBundle:CRUD:base_filter_field.html.twig' %}

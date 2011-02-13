@@ -63,22 +63,22 @@ class ListBuilder implements ListBuilderInterface
 
         if (!$fieldDescription->getTemplate()) {
 
-            $fieldDescription->setTemplate(sprintf('SonataBaseApplicationBundle:CRUD:list_%s.twig.html', $fieldDescription->getType()));
+            $fieldDescription->setTemplate(sprintf('SonataBaseApplicationBundle:CRUD:list_%s.html.twig', $fieldDescription->getType()));
 
             if ($fieldDescription->getType() == ClassMetadataInfo::MANY_TO_ONE) {
-                $fieldDescription->setTemplate('SonataBaseApplicationBundle:CRUD:list_many_to_one.twig.html');
+                $fieldDescription->setTemplate('SonataBaseApplicationBundle:CRUD:list_many_to_one.html.twig');
             }
 
             if ($fieldDescription->getType() == ClassMetadataInfo::ONE_TO_ONE) {
-                $fieldDescription->setTemplate('SonataBaseApplicationBundle:CRUD:list_one_to_one.twig.html');
+                $fieldDescription->setTemplate('SonataBaseApplicationBundle:CRUD:list_one_to_one.html.twig');
             }
 
             if ($fieldDescription->getType() == ClassMetadataInfo::ONE_TO_MANY) {
-                $fieldDescription->setTemplate('SonataBaseApplicationBundle:CRUD:list_one_to_many.twig.html');
+                $fieldDescription->setTemplate('SonataBaseApplicationBundle:CRUD:list_one_to_many.html.twig');
             }
 
             if ($fieldDescription->getType() == ClassMetadataInfo::MANY_TO_MANY) {
-                $fieldDescription->setTemplate('SonataBaseApplicationBundle:CRUD:list_many_to_many.twig.html');
+                $fieldDescription->setTemplate('SonataBaseApplicationBundle:CRUD:list_many_to_many.html.twig');
             }
         }
 

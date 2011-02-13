@@ -398,26 +398,26 @@ class FormBuilder implements FormBuilderInterface
 
         // fix template value for doctrine association fields
         if (!$fieldDescription->getTemplate()) {
-             $fieldDescription->setTemplate(sprintf('SonataBaseApplicationBundle:CRUD:edit_%s.twig.html', $fieldDescription->getType()));
+             $fieldDescription->setTemplate(sprintf('SonataBaseApplicationBundle:CRUD:edit_%s.html.twig', $fieldDescription->getType()));
         }
 
         if ($fieldDescription->getType() == ClassMetadataInfo::ONE_TO_ONE) {
-            $fieldDescription->setTemplate('SonataBaseApplicationBundle:CRUD:edit_one_to_one.twig.html');
+            $fieldDescription->setTemplate('SonataBaseApplicationBundle:CRUD:edit_one_to_one.html.twig');
             $admin->attachAdminClass($fieldDescription);
         }
 
         if ($fieldDescription->getType() == ClassMetadataInfo::MANY_TO_ONE) {
-            $fieldDescription->setTemplate('SonataBaseApplicationBundle:CRUD:edit_many_to_one.twig.html');
+            $fieldDescription->setTemplate('SonataBaseApplicationBundle:CRUD:edit_many_to_one.html.twig');
             $admin->attachAdminClass($fieldDescription);
         }
 
         if ($fieldDescription->getType() == ClassMetadataInfo::MANY_TO_MANY) {
-            $fieldDescription->setTemplate('SonataBaseApplicationBundle:CRUD:edit_many_to_many.twig.html');
+            $fieldDescription->setTemplate('SonataBaseApplicationBundle:CRUD:edit_many_to_many.html.twig');
             $admin->attachAdminClass($fieldDescription);
         }
 
         if ($fieldDescription->getType() == ClassMetadataInfo::ONE_TO_MANY) {
-            $fieldDescription->setTemplate('SonataBaseApplicationBundle:CRUD:edit_one_to_many.twig.html');
+            $fieldDescription->setTemplate('SonataBaseApplicationBundle:CRUD:edit_one_to_many.html.twig');
 
             if($fieldDescription->getOption('edit') == 'inline' && !$fieldDescription->getOption('widget_form_field')) {
                 $fieldDescription->setOption('widget_form_field', 'Bundle\\Sonata\\BaseApplicationBundle\\Form\\EditableFieldGroup');
