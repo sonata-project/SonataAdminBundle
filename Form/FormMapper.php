@@ -59,6 +59,7 @@ class FormMapper
             $fieldDescription->setName($field->getKey());
 
             $this->formBuilder->fixFieldDescription($this->admin, $fieldDescription, $fieldDescriptionOptions);
+
             $this->admin->addFormFieldDescription($field->getKey(), $fieldDescription);
 
         } else if (is_string($name) && !$this->admin->hasFormFieldDescription($name)) {

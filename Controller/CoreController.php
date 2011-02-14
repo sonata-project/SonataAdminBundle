@@ -31,8 +31,10 @@ class CoreController extends Controller
     {
         $code = $this->get('request')->get('code');
         $elementId = $this->get('request')->get('elementId');
+
+        $admin = $this->getAdmin($code);
         
-        $form = $this->getForm($code);
+        $form = $this->getForm($admin, $code);
 
         $form->bind($this->get('request'));
         
@@ -47,7 +49,7 @@ class CoreController extends Controller
         return $this->createResponse($extension->renderField($field_element));
     }
 
-    public function getForm($code)
+    public function getAdmin($code)
     {
         // todo : refactor the code into inside the admin
         $admin = $this->container
@@ -57,6 +59,12 @@ class CoreController extends Controller
         if($this->container->get('request')->get('uniqid')) {
             $admin->setUniqid($this->container->get('request')->get('uniqid'));
         }
+
+        return $admin;
+    }
+    
+    public function getForm($admin, $code)
+    {
 
         if (is_numeric($this->get('request')->get('object_id'))) {
             $object = $admin->getObject($this->get('request')->get('object_id'));
@@ -102,10 +110,10 @@ class CoreController extends Controller
         //        only for direct FieldDescription (not nested one)
 
         // retrieve the admin
-        $admin            = $this->container->get('base_application.admin.pool')->getInstance($code);
+        $admin            = $this->getAdmin($code);
         
         // retrieve the subject
-        $form = $this->getForm($code);
+        $form = $this->getForm($admin, $code);
 
         // get the field element
         $field_element = $this->getFieldElement($form, $elementId);

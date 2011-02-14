@@ -177,7 +177,7 @@ class BaseApplicationExtension extends \Twig_Extension
         }
 
         $template = $this->environment->loadTemplate($fieldDescription->getTemplate());
-        
+
         return $this->output($fieldDescription, $template->render(array_merge($params, array(
             'admin'             => $fieldDescription->getAdmin(),
             'object'            => $object,
