@@ -377,9 +377,8 @@ abstract class Admin extends ContainerAware
      */
     public function getBaseRoutePattern()
     {
-
         if (!$this->baseRoutePattern) {
-            preg_match('@(Application|Bundle)\\\([A-Za-z]*)\\\([A-Za-z]*)Bundle\\\(Entity|Document)\\\([A-Za-z]*)@', $this->getClass(), $matches);
+            preg_match('@([A-Za-z]*)\\\([A-Za-z]*)Bundle\\\(Entity|Document)\\\([A-Za-z]*)@', $this->getClass(), $matches);
 
             if(!$matches) {
                 throw new \RuntimeException(sprintf('Please define a default `baseRoutePattern` value for the admin class `%s`', get_class($this)));
@@ -388,14 +387,14 @@ abstract class Admin extends ContainerAware
             if ($this->isChild()) { // the admin class is a child, prefix it with the parent route name
                 $this->baseRoutePattern = sprintf('%s/{id}/%s',
                     $this->getParent()->getBaseRoutePattern(),
-                    $this->urlize($matches[5], '-')
+                    $this->urlize($matches[4], '-')
                 );
             } else {
 
                 $this->baseRoutePattern = sprintf('/%s/%s/%s',
+                    $this->urlize($matches[1], '-'),
                     $this->urlize($matches[2], '-'),
-                    $this->urlize($matches[3], '-'),
-                    $this->urlize($matches[5], '-')
+                    $this->urlize($matches[4], '-')
                 );
             }
         }
@@ -412,7 +411,7 @@ abstract class Admin extends ContainerAware
     public function getBaseRouteName()
     {
         if (!$this->baseRouteName) {
-            preg_match('@(Application|Bundle)\\\([A-Za-z]*)\\\([A-Za-z]*)Bundle\\\(Entity|Document)\\\([A-Za-z]*)@', $this->getClass(), $matches);
+            preg_match('@([A-Za-z]*)\\\([A-Za-z]*)Bundle\\\(Entity|Document)\\\([A-Za-z]*)@', $this->getClass(), $matches);
 
             if(!$matches) {
                 throw new \RuntimeException(sprintf('Please define a default `baseRouteName` value for the admin class `%s`', get_class($this)));
@@ -421,14 +420,14 @@ abstract class Admin extends ContainerAware
             if ($this->isChild()) { // the admin class is a child, prefix it with the parent route name
                 $this->baseRouteName = sprintf('%s_%s',
                     $this->getParent()->getBaseRouteName(),
-                    $this->urlize($matches[5])
+                    $this->urlize($matches[4])
                 );
             } else {
 
                 $this->baseRouteName = sprintf('admin_%s_%s_%s',
+                    $this->urlize($matches[1]),
                     $this->urlize($matches[2]),
-                    $this->urlize($matches[3]),
-                    $this->urlize($matches[5])
+                    $this->urlize($matches[4])
                 );
             }
         }

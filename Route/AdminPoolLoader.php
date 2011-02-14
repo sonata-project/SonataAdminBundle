@@ -13,12 +13,13 @@ namespace Sonata\BaseApplicationBundle\Route;
 
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\Route;
-use Symfony\Component\Routing\Loader\Loader;
+    
+use Symfony\Component\Config\Loader\FileLoader;
+use Symfony\Component\Config\Resource\FileResource;
 
-use Symfony\Component\Routing\Resource\FileResource;
 use Sonata\BaseApplicationBundle\Admin\Pool;
 
-class AdminPoolLoader extends Loader
+class AdminPoolLoader extends FileLoader
 {
     /**
      * @var Bundle\Soanta\BaseApplicationBundle\Admin\Pool
