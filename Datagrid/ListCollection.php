@@ -28,5 +28,9 @@ class ListCollection
         return $this->elements;
     }
 
+    public function has($name)
+    {
+        return array_key_exists($name, $this->elements);
+    }
     
 }

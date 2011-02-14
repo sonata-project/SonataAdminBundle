@@ -800,6 +800,11 @@ abstract class Admin extends ContainerAware
 
         foreach ($this->getFormFieldDescriptions() as $fieldDescription) {
 
+            // do not add field already set in the configureFormField method
+            if($mapper->has($fieldDescription->getFieldName())) {
+                continue;
+            }
+
             $mapper->add($fieldDescription);
         }
         
@@ -824,6 +829,12 @@ abstract class Admin extends ContainerAware
         $this->configureListFields($mapper);
 
         foreach ($this->getListFieldDescriptions() as $fieldDescription) {
+
+            // do not add field already set in the configureFormField method
+            if($mapper->has($fieldDescription->getFieldName())) {
+                continue;
+            }
+
             $mapper->add($fieldDescription);
         }
 
