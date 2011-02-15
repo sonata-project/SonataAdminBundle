@@ -47,8 +47,8 @@ This code manage the many-to-[one|many] association field popup
             return;
         }
 
-        jQuery('#{{ field_element.id}}').val(element.attr('objectId'));
-        jQuery('#{{ field_element.id}}').trigger('change');
+        jQuery('#{{ field_element.id }}').val(element.attr('objectId'));
+        jQuery('#{{ field_element.id }}').trigger('change');
 
         field_dialog_{{ admin.uniqid }}_{{ field_element.id }}.dialog('close');
     }
@@ -195,9 +195,9 @@ This code manage the many-to-[one|many] association field popup
                            in this case we update the hidden input, and call the change event to
                            retrieve the post information
                         #}
-                        console.log(jQuery('#{{ field_element.id}}'));
-                        jQuery('#{{ field_element.id}}').val(data.objectId);
-                        jQuery('#{{ field_element.id}}').change();
+                        console.log(jQuery('#{{ field_element.id }}'));
+                        jQuery('#{{ field_element.id }}').val(data.objectId);
+                        jQuery('#{{ field_element.id }}').change();
 
                     {% else %}
 
@@ -209,10 +209,10 @@ This code manage the many-to-[one|many] association field popup
                                 'uniqid':    admin.root.uniqid,
                                 'code':      admin.root.code
                             }) }}',
-                            data: jQuery('#field_widget_{{ admin.uniqid }}_{{ field_element.id}}').closest('form').serializeArray(),
+                            data: jQuery('#field_widget_{{ admin.uniqid }}_{{ field_element.id }}').closest('form').serializeArray(),
                             type: 'POST',
                             success: function(html) {
-                                jQuery('#field_widget_{{ admin.uniqid }}_{{ field_element.id}}').html(html);
+                                jQuery('#field_widget_{{ admin.uniqid }}_{{ field_element.id }}').html(html);
                             }
                         });
 
@@ -301,7 +301,7 @@ This code manage the many-to-[one|many] association field popup
         #}
 
         // update the 
-        jQuery('#{{ field_element.id}}').live('change', function(event) {
+        jQuery('#{{ field_element.id }}').live('change', function(event) {
             jQuery.ajax({
                 type: 'GET',
                 url: '{{ url('sonata_base_application_short_object_information', {
@@ -310,7 +310,7 @@ This code manage the many-to-[one|many] association field popup
                     'code': field_description.associationadmin.code
                 })}}'.replace('OBJECT_ID', jQuery(this).val()),
                 success: function(html) {
-                    jQuery('#field_widget_{{ admin.uniqid }}_{{ field_element.id}}').html(html);
+                    jQuery('#field_widget_{{ admin.uniqid }}_{{ field_element.id }}').html(html);
                 }
             });
         });
