@@ -31,7 +31,7 @@ This code manage the many-to-[one|many] association field popup
         
         event.preventDefault();
 
-        var element = jQuery(this).parents('td.sonata-ba-list-field');
+        var element = jQuery(this).parents('#field_dialog_{{ admin.uniqid }}_{{ field_element.id }} td.sonata-ba-list-field');
 
         // the user does does click on a row column
         if(element.length == 0) {
@@ -48,7 +48,7 @@ This code manage the many-to-[one|many] association field popup
         }
 
         jQuery('#{{ field_element.id}}').val(element.attr('objectId'));
-        jQuery('#{{ field_element.id}}').change();
+        jQuery('#{{ field_element.id}}').trigger('change');
 
         field_dialog_{{ admin.uniqid }}_{{ field_element.id }}.dialog('close');
     }
@@ -76,12 +76,6 @@ This code manage the many-to-[one|many] association field popup
 
                 // capture the submit event to make an ajax call, ie : POST data to the
                 // related create admin
-
-                // make sure we have a clean state
-                jQuery('a', field_dialog_{{ admin.uniqid }}_{{ field_element.id }}).die('click');
-                jQuery('form', field_dialog_{{ admin.uniqid }}_{{ field_element.id }}).die('submit');
-
-                // add live event
                 jQuery('a', field_dialog_{{ admin.uniqid }}_{{ field_element.id }}).live('click', field_dialog_form_list_link_{{ admin.uniqid }}_{{ field_element.id }});
                 jQuery('form', field_dialog_{{ admin.uniqid }}_{{ field_element.id }}).live('submit', function(event) {
                     event.preventDefault();
@@ -104,8 +98,12 @@ This code manage the many-to-[one|many] association field popup
                     width: 980,
                     modal: true,
                     resizable: false,
-                    title: '{{ field_description.associationadmin.label }}'
-
+                    title: '{{ field_description.associationadmin.label }}',
+                    close: function(event, ui) {
+                        // make sure we have a clean state
+                        jQuery('a', field_dialog_{{ admin.uniqid }}_{{ field_element.id }}).die('click');
+                        jQuery('form', field_dialog_{{ admin.uniqid }}_{{ field_element.id }}).die('submit');
+                    }
                 });
             }
         });
@@ -131,7 +129,8 @@ This code manage the many-to-[one|many] association field popup
 
                 // capture the submit event to make an ajax call, ie : POST data to the
                 // related create admin
-                jQuery('form', field_dialog_{{ admin.uniqid }}_{{ field_element.id }}).submit(field_dialog_form_action_{{ admin.uniqid }}_{{ field_element.id }});
+                jQuery('a', field_dialog_{{ admin.uniqid }}_{{ field_element.id }}).live('click', field_dialog_form_action_{{ admin.uniqid }}_{{ field_element.id }});
+                jQuery('form', field_dialog_{{ admin.uniqid }}_{{ field_element.id }}).live('submit', field_dialog_form_action_{{ admin.uniqid }}_{{ field_element.id }});
 
                 // open the dialog in modal mode
                 field_dialog_{{ admin.uniqid }}_{{ field_element.id }}.dialog({
@@ -139,7 +138,12 @@ This code manage the many-to-[one|many] association field popup
                     width: 650,
                     modal: true,
                     resizable: false,
-                    title: '{{ field_description.associationadmin.label }}'
+                    title: '{{ field_description.associationadmin.label }}',
+                    close: function(event, ui) {
+                        // make sure we have a clean state
+                        jQuery('a', field_dialog_{{ admin.uniqid }}_{{ field_element.id }}).die('click');
+                        jQuery('form', field_dialog_{{ admin.uniqid }}_{{ field_element.id }}).die('submit');
+                    }
                 });
             }
         });
@@ -148,22 +152,42 @@ This code manage the many-to-[one|many] association field popup
     // handle the post data
     var field_dialog_form_action_{{ admin.uniqid }}_{{ field_element.id }} = function(event) {
 
-        initialize_popup_{{ admin.uniqid }}_{{ field_element.id }}();
-
         event.preventDefault();
 
+        initialize_popup_{{ admin.uniqid }}_{{ field_element.id }}();
+
+        var element = jQuery(this);
+
+        if (this.nodeName == 'FORM') {
+            var url  = element.attr('action');
+            var type = element.attr('method');
+            var data = element.serializeArray();
+        } else if (this.nodeName == 'A') {
+            var url  = element.attr('href');
+            var type = 'GET';
+            var data = {};
+        } else {
+            alert('unexpected element : @' + this.nodeName + '@');
+            return;
+        }
+        
         var form = jQuery(this);
 
         // the ajax post
         jQuery.ajax({
-            url: form.attr('action'),
-            type: "POST",
-            data: form.serializeArray(),
-            dataType: 'json',
-            success: function(json) {
+            url: url,
+            type: type,
+            data: data,
+            success: function(data) {
+
+                if(typeof data == 'string') {
+                    field_dialog_{{ admin.uniqid }}_{{ field_element.id }}.html(data);
+                    return;
+                };
+
                 // if the crud action return ok, then the element has been added
                 // so the widget container must be refresh with the last option available
-                if (json.result == 'ok') {
+                if (data.result == 'ok') {
                     field_dialog_{{ admin.uniqid }}_{{ field_element.id }}.dialog('close');
 
                     {% if field_description.options.edit == 'list' %}
@@ -171,7 +195,8 @@ This code manage the many-to-[one|many] association field popup
                            in this case we update the hidden input, and call the change event to
                            retrieve the post information
                         #}
-                        jQuery('#{{ field_element.id}}').val(json.objectId);
+                        console.log(jQuery('#{{ field_element.id}}'));
+                        jQuery('#{{ field_element.id}}').val(data.objectId);
                         jQuery('#{{ field_element.id}}').change();
 
                     {% else %}
@@ -276,7 +301,7 @@ This code manage the many-to-[one|many] association field popup
         #}
 
         // update the 
-        jQuery('#{{ field_element.id}}').change(function(event) {
+        jQuery('#{{ field_element.id}}').live('change', function(event) {
             jQuery.ajax({
                 type: 'GET',
                 url: '{{ url('sonata_base_application_short_object_information', {
