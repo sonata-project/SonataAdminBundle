@@ -10,7 +10,14 @@ file that was distributed with this source code.
 #}
 
 <div>
-    {% block label %}{{ form_label(filter.field) }} <br />{% endblock %}
+    {% block label %}
+        {% if filter.description.options.name is defined %}
+            {{ form_label(filter.field, filter.description.options.name) }}
+        {% else %}
+            {{ form_label(filter.field) }}
+        {% endif %}
+        <br />
+    {% endblock %}
 
     <div class="sonata-ba-field {% if filter.field.haserrors %}sonata-ba-field-error"{% endif %}">
         {% block field %}{{ form_field(filter.field) }}{% endblock %}
