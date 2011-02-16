@@ -11,9 +11,17 @@ file that was distributed with this source code.
 
 <div>
 
-    <div class="sonata-ba-field {% if field_element.haserrors %}sonata-ba-field-error"{% endif %}">
+    <div class="sonata-ba-field {% if field_element.haserrors %}sonata-ba-field-error{% endif %}">
 
-        {% block field %}{{ form_field(field_element) }}{% endblock %}{% block label %}{{ form_label(field_element) }} <br />{% endblock %}
+        {% block field %}{{ form_field(field_element) }}{% endblock %}
+        {% block label %}
+            {% if field_description.options.name is defined %}
+                {{ form_label(field_element, field_description.options.name) }}
+            {% else %}
+                {{ form_label(field_element) }}
+            {% endif %}
+            <br />
+        {% endblock %}
 
         <div class="sonata-ba-field-error-messages">
             {% block errors %}{{ form_errors(field_element) }}{% endblock %}

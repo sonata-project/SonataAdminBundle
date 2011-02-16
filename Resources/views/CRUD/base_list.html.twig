@@ -30,7 +30,13 @@ file that was distributed with this source code.
                         {% if field_description.getOption('code') == '_batch' %}
                             <th class="sonata-ba-list-field-header sonata-ba-list-field-header-batch"><input type="checkbox" id="list_batch_checkbox" /></th>
                         {% else %}
-                            <th class="sonata-ba-list-field-header sonata-ba-list-field-header-{{ field_description.type}}">{{ field_description.name }}</th>
+                                {% spaceless %}<th class="sonata-ba-list-field-header sonata-ba-list-field-header-{{ field_description.type}}">
+                                    {% if field_description.options.name is defined %}
+                                        {{ field_description.options.name }}
+                                    {% else %}
+                                        {{ field_description.name }}
+                                    {% endif %}
+                                </th>{% endspaceless %}
                         {% endif %}
                     {% endfor %}
                 </tr>
