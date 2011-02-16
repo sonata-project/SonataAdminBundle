@@ -53,11 +53,9 @@ class CRUDController extends Controller
 
     public function configure()
     {
-        $actionName = $this->container->get('request')->get('_bab_action');
-        
         $this->admin = $this->container
             ->get('sonata_base_application.admin.pool')
-            ->getAdminByActionName($actionName);
+            ->getAdminByControllerName(get_class($this));
 
         if(!$this->admin) {
             throw new \RuntimeException(sprintf('Unable to find the admin class related to the current controller (%s)', get_class($this)));
