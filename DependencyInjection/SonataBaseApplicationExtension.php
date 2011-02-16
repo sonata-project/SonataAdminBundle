@@ -43,7 +43,7 @@ class SonataBaseApplicationExtension extends Extension
      * @param array            $config    An array of configuration settings
      * @param ContainerBuilder $container A ContainerBuilder instance
      */
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $config, ContainerBuilder $container)
     {
 
         $config = call_user_func_array('array_merge_recursive', $config);
