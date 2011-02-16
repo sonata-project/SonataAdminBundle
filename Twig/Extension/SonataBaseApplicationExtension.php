@@ -15,7 +15,7 @@ namespace Sonata\BaseApplicationBundle\Twig\Extension;
 use Sonata\BaseApplicationBundle\Admin\FieldDescription;
 use Sonata\BaseApplicationBundle\Filter\Filter;
 
-class BaseApplicationExtension extends \Twig_Extension
+class SonataBaseApplicationExtension extends \Twig_Extension
 {
 
     protected $templating;
@@ -56,7 +56,7 @@ class BaseApplicationExtension extends \Twig_Extension
      */
     public function getName()
     {
-        return 'base_application';
+        return 'sonata_base_application';
     }
 
     /**

@@ -44,7 +44,7 @@ abstract class EntityAdmin extends Admin
      */
     public function getFormBuilder()
     {
-        return $this->container->get('base_application.builder.orm_form');
+        return $this->container->get('sonata_base_application.builder.orm_form');
     }
 
     /**
@@ -54,7 +54,7 @@ abstract class EntityAdmin extends Admin
      */
     public function getListBuilder()
     {
-        return $this->container->get('base_application.builder.orm_list');
+        return $this->container->get('sonata_base_application.builder.orm_list');
     }
 
     /**
@@ -64,7 +64,7 @@ abstract class EntityAdmin extends Admin
      */
     public function getDatagridBuilder()
     {
-        return $this->container->get('base_application.builder.orm_datagrid');
+        return $this->container->get('sonata_base_application.builder.orm_datagrid');
     }
 
 }

@@ -40,7 +40,7 @@ configuration file.
 .. code-block:: yaml
 
     # app/config/config.yml
-    base_application.config: ~
+    sonata_base_application: ~
 
     menu.twig:   ~
 
@@ -77,7 +77,7 @@ Once you have created an admin class, you must declare the class to use it. Like
 .. code-block:: yaml
 
     # app/config/config.yml
-    base_application.config:
+    sonata_base_application:
         entities:
             post:
                 label:      Post

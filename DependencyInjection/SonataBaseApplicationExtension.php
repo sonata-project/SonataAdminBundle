@@ -23,12 +23,12 @@ use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\Finder\Finder;
 
 /**
- * BaseApplicationExtension
+ * SonataBaseApplicationExtension
  *
  *
  * @author     Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class BaseApplicationExtension extends Extension
+class SonataBaseApplicationExtension extends Extension
 {
     protected $configNamespaces = array(
         'templates' => array(
@@ -43,7 +43,7 @@ class BaseApplicationExtension extends Extension
      * @param array            $config    An array of configuration settings
      * @param ContainerBuilder $container A ContainerBuilder instance
      */
-    public function configLoad($configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container)
     {
 
         // loads config from external files
@@ -54,48 +54,50 @@ class BaseApplicationExtension extends Extension
 
         // register the twig extension
         $container
-            ->register('twig.extension.base_application', 'Sonata\BaseApplicationBundle\Twig\Extension\BaseApplicationExtension')
+            ->register('twig.extension.sonata_base_application', 'Sonata\BaseApplicationBundle\Twig\Extension\SonataBaseApplicationExtension')
             ->addTag('twig.extension');
 
         // register form builder
         $definition = new Definition('Sonata\BaseApplicationBundle\Builder\FormBuilder', array(new Reference('form.field_factory'), new Reference('form.context'), new Reference('validator')));
-        $container->setDefinition('base_application.builder.orm_form', $definition);
+        $container->setDefinition('sonata_base_application.builder.orm_form', $definition);
 
         // register list builder
         $definition = new Definition('Sonata\BaseApplicationBundle\Builder\ListBuilder');
-        $container->setDefinition('base_application.builder.orm_list', $definition);
+        $container->setDefinition('sonata_base_application.builder.orm_list', $definition);
 
         // register filter builder
         $definition = new Definition('Sonata\BaseApplicationBundle\Builder\DatagridBuilder');
-        $container->setDefinition('base_application.builder.orm_datagrid', $definition);
+        $container->setDefinition('sonata_base_application.builder.orm_datagrid', $definition);
 
         // registers crud action
         $definition = new Definition('Sonata\BaseApplicationBundle\Admin\Pool');
         $definition->addMethodCall('setContainer', array(new Reference('service_container')));
         foreach ($configs as $config) {
-            foreach ($config['entities'] as $code => $configuration) {
-                if (!isset($configuration['group'])) {
-                    $configuration['group'] = 'default';
-                }
+            if(isset($config['entities'])) {
+                foreach ($config['entities'] as $code => $configuration) {
+                    if (!isset($configuration['group'])) {
+                        $configuration['group'] = 'default';
+                    }
 
-                if (!isset($configuration['label'])) {
-                    $configuration['label'] = $code;
-                }
+                    if (!isset($configuration['label'])) {
+                        $configuration['label'] = $code;
+                    }
 
-                if (!isset($configuration['children'])) {
-                    $configuration['children'] = array();
-                }
+                    if (!isset($configuration['children'])) {
+                        $configuration['children'] = array();
+                    }
 
-                $definition->addMethodCall('addConfiguration', array($code, $configuration));
+                    $definition->addMethodCall('addConfiguration', array($code, $configuration));
+                }
             }
         }
 
-        $container->setDefinition('base_application.admin.pool', $definition);
+        $container->setDefinition('sonata_base_application.admin.pool', $definition);
 
-        $definition = new Definition('Sonata\BaseApplicationBundle\Route\AdminPoolLoader', array(new Reference('base_application.admin.pool')));
+        $definition = new Definition('Sonata\BaseApplicationBundle\Route\AdminPoolLoader', array(new Reference('sonata_base_application.admin.pool')));
         $definition->addTag('routing.loader');
 
-        $container->setDefinition('base_application.route_loader', $definition);
+        $container->setDefinition('sonata_base_application.route_loader', $definition);
 
     }
     
@@ -122,7 +124,7 @@ class BaseApplicationExtension extends Extension
                         continue;
                     }
 
-                    $container->setParameter(sprintf('base_application.templates.%s', $type), $template);
+                    $container->setParameter(sprintf('sonata_base_application.templates.%s', $type), $template);
                 }
             }
         }
@@ -148,6 +150,6 @@ class BaseApplicationExtension extends Extension
     public function getAlias()
     {
 
-        return "base_application";
+        return "sonata_base_application";
     }
 }

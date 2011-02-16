@@ -56,7 +56,7 @@ class CRUDController extends Controller
         $actionName = $this->container->get('request')->get('_bab_action');
         
         $this->admin = $this->container
-            ->get('base_application.admin.pool')
+            ->get('sonata_base_application.admin.pool')
             ->getAdminByActionName($actionName);
 
         if(!$this->admin) {
@@ -80,10 +80,10 @@ class CRUDController extends Controller
     public function getBaseTemplate()
     {
         if ($this->get('request')->isXmlHttpRequest()) {
-            return $this->container->getParameter('base_application.templates.ajax');
+            return $this->container->getParameter('sonata_base_application.templates.ajax');
         }
 
-        return $this->container->getParameter('base_application.templates.layout');
+        return $this->container->getParameter('sonata_base_application.templates.layout');
     }
 
     /**

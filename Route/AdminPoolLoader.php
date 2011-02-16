@@ -33,8 +33,7 @@ class AdminPoolLoader extends FileLoader
 
     function supports($resource, $type = null)
     {
-
-        if (substr($resource, -22) == 'base_application.admin') {
+        if (substr($resource, -29) == 'sonata_base_application.admin') {
             return true;
         }
 

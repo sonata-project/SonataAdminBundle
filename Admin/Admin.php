@@ -925,7 +925,7 @@ abstract class Admin extends ContainerAware
 
     public function getConfigurationPool()
     {
-        return $this->container->get('base_application.admin.pool');
+        return $this->container->get('sonata_base_application.admin.pool');
     }
 
     public function getCode()
