@@ -12,21 +12,7 @@ namespace Sonata\BaseApplicationBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class SonataBaseApplicationBundle extends Bundle {
+class SonataBaseApplicationBundle extends Bundle
+{
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getNamespace()
-    {
-        return __NAMESPACE__;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPath()
-    {
-        return strtr(__DIR__, '\\', '/');
-    }
 }

@@ -46,11 +46,13 @@ class SonataBaseApplicationExtension extends Extension
     public function load(array $configs, ContainerBuilder $container)
     {
 
+        $config = call_user_func_array('array_merge_recursive', $config);
+        
         // loads config from external files
         $this->configLoadFiles($container);
         
         // setups parameters with values in config.yml, default values from external files used if not
-        $this->configSetup($configs, $container);
+        $this->configSetup($config, $container);
 
         // register the twig extension
         $container
@@ -72,24 +74,21 @@ class SonataBaseApplicationExtension extends Extension
         // registers crud action
         $definition = new Definition('Sonata\BaseApplicationBundle\Admin\Pool');
         $definition->addMethodCall('setContainer', array(new Reference('service_container')));
-        foreach ($configs as $config) {
-            if(isset($config['entities'])) {
-                foreach ($config['entities'] as $code => $configuration) {
-                    if (!isset($configuration['group'])) {
-                        $configuration['group'] = 'default';
-                    }
-
-                    if (!isset($configuration['label'])) {
-                        $configuration['label'] = $code;
-                    }
-
-                    if (!isset($configuration['children'])) {
-                        $configuration['children'] = array();
-                    }
-
-                    $definition->addMethodCall('addConfiguration', array($code, $configuration));
-                }
+        
+        foreach ($config['entities'] as $code => $configuration) {
+            if (!isset($configuration['group'])) {
+                $configuration['group'] = 'default';
             }
+
+            if (!isset($configuration['label'])) {
+                $configuration['label'] = $code;
+            }
+
+            if (!isset($configuration['children'])) {
+                $configuration['children'] = array();
+            }
+
+            $definition->addMethodCall('addConfiguration', array($code, $configuration));
         }
 
         $container->setDefinition('sonata_base_application.admin.pool', $definition);
