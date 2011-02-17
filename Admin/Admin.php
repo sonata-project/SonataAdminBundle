@@ -467,7 +467,7 @@ abstract class Admin extends ContainerAware
     {
 
         return array(
-            'delete' => 'action_delete'
+            'delete' => $this->trans('action_delete')
         );
     }
 
