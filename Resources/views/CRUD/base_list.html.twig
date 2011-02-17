@@ -101,16 +101,18 @@ file that was distributed with this source code.
 {% endblock %}
 
 {% block list_filters %}
-    <form action="{{ admin.generateUrl('list') }}" method="GET">
-        {% for filter in datagrid.filters %}
-            <div>
-                {{ filter|render_filter_element }}</td>
-            </div>
-        {% endfor %}
+    {% if datagrid.filters %}
+        <form action="{{ admin.generateUrl('list') }}" method="GET">
+            {% for filter in datagrid.filters %}
+                <div>
+                    {{ filter|render_filter_element }}</td>
+                </div>
+            {% endfor %}
 
-        <input type="submit" value="{% trans 'btn_filter' from 'BaseApplicationBundle' %}" />
+            <input type="submit" value="{% trans 'btn_filter' from 'BaseApplicationBundle' %}" />
 
-        <a href="{{ admin.generateUrl('list') }}">{% trans 'link_reset_filter' from 'BaseApplicationBundle' %}</a>
-    </form>
+            <a href="{{ admin.generateUrl('list') }}">{% trans 'link_reset_filter' from 'BaseApplicationBundle' %}</a>
+        </form>
+    {% endif %}
 {% endblock %}
 
