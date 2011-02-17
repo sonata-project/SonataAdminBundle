@@ -10,6 +10,10 @@
                 <source>btn_batch</source>
                 <target>Ok</target>
             </trans-unit>
+            <trans-unit id="btn_create">
+                 <source>btn_create</source>
+                 <target>Créer</target>
+             </trans-unit>
             <trans-unit id="btn_create_and_edit_again">
                 <source>btn_create_and_edit_again</source>
                 <target>Créer</target>
