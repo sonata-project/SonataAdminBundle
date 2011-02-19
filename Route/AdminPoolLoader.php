@@ -33,7 +33,7 @@ class AdminPoolLoader extends FileLoader
 
     function supports($resource, $type = null)
     {
-        if (substr($resource, -29) == 'sonata_base_application.admin') {
+        if ($type == 'sonata_base_application') {
             return true;
         }
 
@@ -42,7 +42,6 @@ class AdminPoolLoader extends FileLoader
 
     function load($resource, $type = null)
     {
-
         $collection = new RouteCollection;
         foreach ($this->pool->getInstances() as $admin) {
             foreach ($admin->getUrls() as $action => $configuration) {
