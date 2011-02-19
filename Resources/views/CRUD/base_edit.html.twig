@@ -23,7 +23,7 @@ file that was distributed with this source code.
 {% block side_menu %}{% if side_menu %}{{ side_menu.render|raw }}{% endif %}{% endblock %}
 
 {% block form %}
-    <form action="{{ admin.generateUrl('update', {'id': object.id}) }}" method="POST">
+    <form action="{{ admin.generateUrl('update', {'id': object.id}) }}"{% if form.isMultipart %} enctype="multipart/form-data"{% endif %} method="POST">
 
         {{ form_hidden(form) }}
         
