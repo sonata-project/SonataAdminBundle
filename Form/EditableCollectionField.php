@@ -42,7 +42,9 @@ class EditableCollectionField extends Form
     public function __construct(FieldInterface $innerField, array $options = array())
     {
 
-        $innerField->add(new CheckboxField('_delete'));
+        $innerField->add(new CheckboxField('_delete', array(
+            'required' => false
+        )));
 
         $this->prototype = $innerField;
 
