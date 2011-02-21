@@ -10,16 +10,13 @@ Example
 .. code-block:: php
 
     <?php
-    namespace Bundle\Sonata\NewsBundle\Admin;
+    namespace Sonata\NewsBundle\Admin;
 
     use Sonata\BaseApplicationBundle\Datagrid\DatagridMapper;
-    use Bundle\Sonata\BaseApplicationBundle\Admin\Admin;
+    use Sonata\BaseApplicationBundle\Admin\EntityAdmin;
 
-    class PostAdmin extends Admin
+    class PostAdmin extends EntityAdmin
     {
-
-        protected $class = 'Application\Sonata\NewsBundle\Entity\Post';
-
         protected $filter = array(
             'title',
             'enabled',

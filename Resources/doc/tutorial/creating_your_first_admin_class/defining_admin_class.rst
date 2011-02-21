@@ -17,18 +17,15 @@ By convention Admin files are set under a Admin folder.
 
 ..
 
-    namespace Application\NewsBundle\Admin;
+    namespace Sonata\NewsBundle\Admin;
 
-    use Bundle\Sonata\BaseApplicationBundle\Admin\Admin;
+    use Sonata\BaseApplicationBundle\Admin\EntityAdmin;
     use Sonata\BaseApplicationBundle\Form\FormMapper;
     use Sonata\BaseApplicationBundle\Datagrid\DatagridMapper;
     use Sonata\BaseApplicationBundle\Datagrid\ListMapper;
 
-    class PostAdmin extends Admin
+    class PostAdmin extends EntityAdmin
     {
-
-        protected $class = 'Application\Sonata\NewsBundle\Entity\Post';
-        protected $baseControllerName = 'SonataNewsBundle:PostAdmin';
 
     }
 
@@ -39,13 +36,13 @@ By convention Admin files are set under a Admin folder.
     post:
         class:      Bundle\NewsBundle\Admin\PostAdmin
         entity:     Application\Sonata\NewsBundle\Entity\Post
-        controller: Bundle\NewsBundle\Controller\PostAdminController
+        controller: SonataNewsBundle:PostAdmin
 
 
 
 These is the minimal configuration required to display the entity inside the dashboard and
-interact with the CRUD interfance. However the interface will display to many fields as some
-of them are not mean to be displayed.
+interact with the CRUD interfance. However the interface will display too many fields as some
+of them are not meant to be displayed.
 
 Tweak the PostAdmin class
 -------------------------
@@ -89,13 +86,12 @@ TagAdmin
 
 ..
 
-    namespace Bundle\NewsBundle\Admin;
+    namespace Sonata\NewsBundle\Admin;
 
-    use Bundle\Sonata\BaseApplicationBundle\Admin\Admin;
+    use Sonata\BaseApplicationBundle\Admin\EntityAdmin;
 
-    class TagAdmin extends Admin
+    class TagAdmin extends EntityAdmin
     {
-        protected $class = 'Application\Sonata\NewsBundle\Entity\Tag';
 
         protected $list = array(
             'name' => array('identifier' => true),
@@ -107,8 +103,6 @@ TagAdmin
             'name',
             'enabled'
         );
-
-        protected $baseControllerName = 'SonataNewsBundle:TagAdmin';
     }
 
 CommentAdmin
@@ -116,15 +110,12 @@ CommentAdmin
 
 ..
 
-    namespace Bundle\NewsBundle\Admin;
+    namespace Sonata\NewsBundle\Admin;
 
-    use Bundle\Sonata\BaseApplicationBundle\Admin\Admin;
+    use Sonata\BaseApplicationBundle\Admin\EntityAdmin;
 
-    class CommentAdmin extends Admin
+    class CommentAdmin extends EntityAdmin
     {
-
-        protected $class = 'Application\Sonata\NewsBundle\Entity\Comment';
-
         protected $list = array(
             'name' => array('identifier' => true),
             'getStatusCode' => array('label' => 'status_code'),
@@ -142,6 +133,4 @@ CommentAdmin
             'post',
             'status' => array('type' => 'choice'),
         );
-
-        protected $baseControllerName = 'SonataNewsBundle:CommentAdmin';
     }
