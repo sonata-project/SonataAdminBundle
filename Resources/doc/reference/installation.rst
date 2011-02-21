@@ -56,8 +56,9 @@ code to your application's routing file:
         resource: '@SonataBaseApplicationBundle/Resources/config/routing/base_application.xml'
         prefix: /admin
 
-    admin:
-        resource: '@SonataBaseApplicationBundle/Resources/config/routing/base_application.admin'
+    _sonata_base_application:
+        resource: .
+        type: sonata_base_application
         prefix: /admin
 
 At this point you can access to the dashboard with the url: ``http://yoursite.local/admin/dashboard``.
