@@ -19,12 +19,14 @@ file that was distributed with this source code.
                     <table>
                         {% for nested_group_field_name, nested_group_field in field_element.fields %}
                             <tr>
+                                {% set parent_loop = loop %}
                                 {% for field_name, nested_field in nested_group_field.fields %}
                                     <td>
                                         {% if field_description.associationadmin.formfielddescriptions[field_name] is defined %}
                                             {{ field_description.associationadmin.formfielddescriptions[field_name]|render_form_element(
                                                 nested_group_field,
-                                                value
+                                                value,
+                                                { 'loop': parent_loop }
                                             ) }}
                                         {% else %}
                                             {{ form_field(nested_field) }}

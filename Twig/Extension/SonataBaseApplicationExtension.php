@@ -11,7 +11,6 @@
 
 namespace Sonata\BaseApplicationBundle\Twig\Extension;
 
-
 use Sonata\BaseApplicationBundle\Admin\FieldDescription;
 use Sonata\BaseApplicationBundle\Filter\Filter;
 
@@ -95,11 +94,15 @@ class SonataBaseApplicationExtension extends \Twig_Extension
      * @param FieldDescription $fieldDescription
      * @return
      */
-    public function getValueFromFieldDescription($object, FieldDescription $fieldDescription)
+    public function getValueFromFieldDescription($object, FieldDescription $fieldDescription, array $params = array())
     {
 
-        $value = $fieldDescription->getValue($object);
+        if(isset($params['loop']) && $object instanceof \ArrayAccess) {
+            $object = $object[$params['loop']['index0']];
+        }
 
+        $value = $fieldDescription->getValue($object);
+        
         // no value defined, check if the fieldDescription point to an association
         // if so, create an empty object instance
         // fixme: not sure this is the best place to do that
@@ -182,7 +185,7 @@ class SonataBaseApplicationExtension extends \Twig_Extension
             'admin'             => $fieldDescription->getAdmin(),
             'object'            => $object,
             'field_description' => $fieldDescription,
-            'value'             => $this->getValueFromFieldDescription($object, $fieldDescription),
+            'value'             => $this->getValueFromFieldDescription($object, $fieldDescription, $params),
             'field_element'     => $field,
             'base_template'     => $fieldDescription->getOption('base_template', $base_template)
         ))));
