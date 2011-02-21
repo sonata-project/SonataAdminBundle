@@ -12,6 +12,7 @@ file that was distributed with this source code.
 {% extends base_template %}
 
 {% block title %}{% trans 'title_dashboard' from 'BaseApplicationBundle' %}{% endblock%}
+{% block breadcrumb %}{% trans 'title_dashboard' from 'BaseApplicationBundle' %}{% endblock %}
 {% block content %}
 
     {% for code, group in groups %}
