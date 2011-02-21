@@ -148,7 +148,7 @@ class Pool
     {
         $class = $configuration['class'];
         
-        $instance = new $class($code, $this->getContainer());
+        $instance = new $class($code, $this->getContainer(), $configuration['entity']);
         $instance->setLabel($configuration['label']);
 
         if(isset($configuration['children'])) {

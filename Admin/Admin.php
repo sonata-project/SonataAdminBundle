@@ -180,9 +180,10 @@ abstract class Admin extends ContainerAware
 
     }
 
-    public function __construct($code, ContainerInterface $container)
+    public function __construct($code, ContainerInterface $container, $class)
     {
         $this->code = $code;
+        $this->class = $class;
         
         $this->setContainer($container);
         $this->configure();
