@@ -29,7 +29,9 @@ class EditableFieldGroup extends Form
     public function __construct($key, array $options = array())
     {
 
-        $this->add(new CheckboxField('_delete'));
+        $this->add(new CheckboxField('_delete', array(
+            'required' => false
+        )));
 
         parent::__construct($key, $options);
     }

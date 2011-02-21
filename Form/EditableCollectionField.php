@@ -41,11 +41,6 @@ class EditableCollectionField extends Form
      */
     public function __construct(FieldInterface $innerField, array $options = array())
     {
-
-        $innerField->add(new CheckboxField('_delete', array(
-            'required' => false
-        )));
-
         $this->prototype = $innerField;
 
         parent::__construct($innerField->getKey(), $options);
@@ -67,9 +62,10 @@ class EditableCollectionField extends Form
             }
         }
 
+        // add new element (+ icon)
         foreach ($taintedData as $name => $value) {
             if (!isset($this[$name])) {
-                $this->add($this->newField($name, $name));
+                $this->addField($name, $name);
             }
         }
 
@@ -99,12 +95,12 @@ class EditableCollectionField extends Form
     protected function newField($key, $propertyPath)
     {
         $field = clone $this->prototype;
+    
         $field->setKey($key);
         $field->setPropertyPath(null === $propertyPath ? null : '['.$propertyPath.']');
         
         return $field;
     }
-
 
     public function setData($collection)
     {
@@ -119,9 +115,10 @@ class EditableCollectionField extends Form
         parent::setData($collection);
     }
 
-    protected function updateObject(&$objectOrArray)
+    protected function writeObject(&$objectOrArray)
     {
-        parent::updateObject($objectOrArray);
+
+        parent::writeObject($objectOrArray);
 
         foreach ($this->removedFields as $name) {
             unset($objectOrArray[$name]);
