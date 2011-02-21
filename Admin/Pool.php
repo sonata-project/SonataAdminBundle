@@ -41,6 +41,25 @@ class Pool
 
         return $groups;
     }
+    
+    public function getDashboardGroups()
+    {
+
+        $groups = array();
+
+        foreach ($this->configuration as $configuration) {
+            
+            if($configuration['options']['show_in_dashboard']) {
+                if (!isset($groups[$configuration['group']])) {
+                    $groups[$configuration['group']] = array();
+                }
+
+                $groups[$configuration['group']][$configuration['code']] = $this->getInstance($configuration['code']);
+            }
+        }
+
+        return $groups;
+    }
 
     /**
      * The admin classes are lazy loaded to avoid overhead
