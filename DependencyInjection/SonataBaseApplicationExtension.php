@@ -117,22 +117,20 @@ class SonataBaseApplicationExtension extends Extension
         }
     }
     
-    protected function configSetup($configs, $container)
+    protected function configSetup($config, $container)
     {
-        foreach ($configs as $config) {
-            foreach ($this->configNamespaces as $ns => $params) {
+        foreach ($this->configNamespaces as $ns => $params) {
 
-                if (!isset($config[$ns])) {
+            if (!isset($config[$ns])) {
+                continue;
+            }
+
+            foreach ($config[$ns] as $type => $template) {
+                if (!isset($config[$ns][$type])) {
                     continue;
                 }
 
-                foreach ($config[$ns] as $type => $template) {
-                    if (!isset($config[$ns][$type])) {
-                        continue;
-                    }
-
-                    $container->setParameter(sprintf('sonata_base_application.templates.%s', $type), $template);
-                }
+                $container->setParameter(sprintf('sonata_base_application.templates.%s', $type), $template);
             }
         }
     }
