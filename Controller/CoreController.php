@@ -202,7 +202,7 @@ class CoreController extends Controller
     {
 
         return $this->render('SonataBaseApplicationBundle:Core:dashboard.html.twig', array(
-            'groups' => $this->get('sonata_base_application.admin.pool')->getGroups(),
+            'groups' => $this->get('sonata_base_application.admin.pool')->getDashboardGroups(),
             'base_template'  => $this->getBaseTemplate(),
         ));
     }
