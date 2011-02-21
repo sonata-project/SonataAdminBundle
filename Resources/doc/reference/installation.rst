@@ -84,18 +84,18 @@ Once you have created an admin class, you must declare the class to use it. Like
                 group:      blog
                 class:      Sonata\NewsBundle\Admin\PostAdmin
                 entity:     Application\Sonata\NewsBundle\Entity\Post
-                controller: Sonata\NewsBundle\Controller\PostAdminController
+                controller: SonataNewsBundle:PostAdmin
 
             tag:
                 label:      Tag
                 group:      blog
                 class:      Sonata\NewsBundle\Admin\TagAdmin
                 entity:     Application\Sonata\NewsBundle\Entity\Tag
-                controller: Sonata\NewsBundle\Controller\TagAdminController
+                controller: SonataNewsBundle:TagAdmin
 
             comment:
                 label:      Comment
                 group:      blog
                 class:      Sonata\NewsBundle\Admin\CommentAdmin
                 entity:     Application\Sonata\NewsBundle\Entity\Comment
-                controller: Sonata\NewsBundle\Controller\CommentAdminController
+                controller: SonataNewsBundle:CommentAdmin

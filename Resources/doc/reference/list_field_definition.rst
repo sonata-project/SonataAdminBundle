@@ -11,13 +11,10 @@ Example
     <?php
     namespace Sonata\NewsBundle\Admin;
 
-    use Sonata\BaseApplicationBundle\Admin\Admin;
+    use Sonata\BaseApplicationBundle\Admin\EntityAdmin;
 
-    class PostAdmin extends Admin
+    class PostAdmin extends EntityAdmin
     {
-
-        protected $class = 'Application\Sonata\NewsBundle\Entity\Post';
-
         protected $list = array(
             'title' => array(),
             'enabled' => array('type' => 'boolean'),

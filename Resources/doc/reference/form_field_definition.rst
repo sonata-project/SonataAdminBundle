@@ -12,13 +12,10 @@ Example
     namespace Sonta\NewsBundle\Admin;
 
     use Sonata\BaseApplicationBundle\Form\FormMapper;
-    use Sonata\BaseApplicationBundle\Admin\Admin;
+    use Sonata\BaseApplicationBundle\Admin\EntityAdmin;
 
-    class PostAdmin extends Admin
+    class PostAdmin extends EntityAdmin
     {
-
-        protected $class = 'Application\Sonata\NewsBundle\Entity\Post';
-
         protected $form = array(
             'author' => array('edit' => 'list'),
             'enabled',
