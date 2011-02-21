@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the Sonata project.
  *
@@ -7,7 +8,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 
 namespace Sonata\BaseApplicationBundle\DependencyInjection;
 
@@ -19,18 +19,19 @@ use Symfony\Component\DependencyInjection\Extension\Extension;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Resource\FileResource;
+use Symfony\Component\Config\Definition\Processor;
 
 use Symfony\Component\Finder\Finder;
 
 /**
  * SonataBaseApplicationExtension
  *
- *
- * @author     Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * @author      Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * @author      Michael Williams <michael.williams@funsational.com>   
  */
 class SonataBaseApplicationExtension extends Extension
-{
-    protected $configNamespaces = array(
+{    
+	protected $configNamespaces = array(
         'templates' => array(
             'layout',
             'ajax'
@@ -43,17 +44,20 @@ class SonataBaseApplicationExtension extends Extension
      * @param array            $config    An array of configuration settings
      * @param ContainerBuilder $container A ContainerBuilder instance
      */
-    public function load(array $config, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container)
     {
-
-        $config = call_user_func_array('array_merge_recursive', $config);
+    	$config = call_user_func_array('array_merge_recursive', $configs);
+    	
+        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('templates.xml');
         
-        // loads config from external files
-        $this->configLoadFiles($container);
+        $configuration = new Configuration();
+        $processor = new Processor();
+        $config = $processor->process($configuration->getConfigTree($container->getParameter('kernel.debug')), $configs);
         
         // setups parameters with values in config.yml, default values from external files used if not
-        $this->configSetup($config, $container);
-
+        $this->configSetupTemplates($config, $container);
+        
         // register the twig extension
         $container
             ->register('twig.extension.sonata_base_application', 'Sonata\BaseApplicationBundle\Twig\Extension\SonataBaseApplicationExtension')
@@ -105,7 +109,6 @@ class SonataBaseApplicationExtension extends Extension
         $definition->addTag('routing.loader');
 
         $container->setDefinition('sonata_base_application.route_loader', $definition);
-
     }
     
     protected function configLoadFiles($container)
@@ -142,19 +145,16 @@ class SonataBaseApplicationExtension extends Extension
      */
     public function getXsdValidationBasePath()
     {
-
         return __DIR__.'/../Resources/config/schema';
     }
 
     public function getNamespace()
     {
-
         return 'http://www.sonata-project.org/schema/dic/base-application';
     }
 
     public function getAlias()
     {
-
         return "sonata_base_application";
     }
 }
