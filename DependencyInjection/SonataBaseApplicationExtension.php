@@ -87,6 +87,14 @@ class SonataBaseApplicationExtension extends Extension
             if (!isset($configuration['children'])) {
                 $configuration['children'] = array();
             }
+            
+            if (!isset($configuration['options'])) {
+                $configuration['options'] = array();
+            }
+            
+            if (!isset($configuration['options']['show_in_dashboard'])) {
+                $configuration['options']['show_in_dashboard'] = true;
+            }
 
             $definition->addMethodCall('addConfiguration', array($code, $configuration));
         }
