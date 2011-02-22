@@ -11,6 +11,8 @@
 
 namespace Sonata\BaseApplicationBundle\Controller;
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -125,7 +127,7 @@ class CRUDController extends Controller
         $em->flush();
 
         // todo : add confirmation flash var
-        return $this->redirect($this->admin->generateUrl('list'));
+        return new RedirectResponse($this->admin->generateUrl('list'));
     }
 
     public function deleteAction($id)
@@ -258,7 +260,7 @@ class CRUDController extends Controller
             $url = $this->admin->generateUrl('edit', array('id' => $object->getId()));
         }
 
-        return $this->redirect($url);
+        return new RedirectResponse($url);
     }
 
     /**
@@ -279,7 +281,7 @@ class CRUDController extends Controller
         if (count($idx) == 0) { // no item selected
             // todo : add flash information
 
-            return $this->redirect($this->admin->generateUrl('list'));
+            return new RedirectResponse($this->admin->generateUrl('list'));
         }
 
         // execute the action, batchActionXxxxx
