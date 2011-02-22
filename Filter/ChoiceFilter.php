@@ -62,7 +62,7 @@ class ChoiceFilter extends Filter
     {
         return new \Symfony\Component\Form\ChoiceField(
             $this->getName(),
-            $this->description->getOption('filter_field_options', array())
+            $this->description->getOption('filter_field_options', array('required' => false))
         );
     }
 }

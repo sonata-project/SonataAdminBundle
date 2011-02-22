@@ -72,7 +72,8 @@ class BooleanFilter extends Filter
                 'all'   => 'all',
                 'true'  => 'true',
                 'false' => 'false'
-            )
+            ),
+            'required' => false
         );
 
         $options = array_merge($options, $this->description->getOption('filter_field_options', array()));
