@@ -13,11 +13,13 @@ namespace Sonata\BaseApplicationBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpFoundation\Response;
 
 use Sonata\BaseApplicationBundle\Form\RecursiveFieldIterator;
 
 class CoreController extends Controller
 {
+
     public function getBaseTemplate()
     {        
         if ($this->get('request')->isXmlHttpRequest()) {
@@ -46,7 +48,7 @@ class CoreController extends Controller
         $extension = $twig->getExtension('form');
         $extension->initRuntime($this->get('twig'));
 
-        return $this->createResponse($extension->renderField($field_element));
+        return new Response($extension->renderField($field_element));
     }
 
     public function getAdmin($code)
@@ -164,7 +166,7 @@ class CoreController extends Controller
         $extension = $twig->getExtension('sonata_base_application');
         $extension->initRuntime($this->get('twig'));
 
-        return $this->createResponse($extension->renderFormElement($fieldDescription, $form, $form->getData()));
+        return new Response($extension->renderFormElement($fieldDescription, $form, $form->getData()));
     }
 
     public function getShortObjectDescriptionAction($code = null, $objectId = null, $uniqid = null)
@@ -195,7 +197,7 @@ class CoreController extends Controller
 
         $description = sprintf('<a href="%s" target="new">%s</a>', $admin->generateUrl('edit', array('id' => $objectId)), $description);
 
-        return $this->createResponse($description);
+        return new Response($description);
     }
 
     public function dashboardAction()

@@ -12,15 +12,12 @@
 namespace Sonata\BaseApplicationBundle\Controller;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
-
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\Form;
 
-
-
-use Sonata\BaseApplicationBundle\Tool\DoctrinePager as Pager;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class CRUDController extends Controller
 {
@@ -32,13 +29,11 @@ class CRUDController extends Controller
      *
      * @return Response with json encoded data
      */
-    public function renderJson($data)
+    public function renderJson($data, $status = 200, $headers = array())
     {
-        $response = new \Symfony\Component\HttpFoundation\Response;
-        $response->setContent(json_encode($data));
-        $response->headers->set('Content-Type', 'application/json');
-
-        return $response;
+        return new Response(json_encode($data), $status, array_merge(array(
+          'Content-Type' => 'application/json'
+        ), $headers));
     }
 
     /**
@@ -226,7 +221,7 @@ class CRUDController extends Controller
             }
 
             if ($this->get('request')->isXmlHttpRequest()) {
-                return $this->createResponse(json_encode(array('result' => 'ok', 'object_id' => $object->getId())));
+                return $this->renderJson(array('result' => 'ok', 'object_id' => $object->getId()));
             }
 
             // redirect to edit mode
@@ -323,7 +318,7 @@ class CRUDController extends Controller
     }
 
     /**
-     * @param  $action
+     * @param string $action
      * @return Knplabs\MenuBundle\Menu
      */
     public function getSideMenu($action)
@@ -336,7 +331,7 @@ class CRUDController extends Controller
     }
 
     /**
-     * @param  $action
+     * @param string $action
      * @return array
      */
     public function getBreadcrumbs($action)
