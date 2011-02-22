@@ -221,7 +221,7 @@ class CRUDController extends Controller
             }
 
             if ($this->get('request')->isXmlHttpRequest()) {
-                return $this->renderJson(array('result' => 'ok', 'object_id' => $object->getId()));
+                return $this->renderJson(array('result' => 'ok', 'objectId' => $object->getId()));
             }
 
             // redirect to edit mode
