@@ -51,7 +51,7 @@ class Configuration
                         ->useAttributeAsKey('entity_name')
                         ->prototype('array')
                             ->scalarNode('label')->cannotBeEmpty()->addDefaultsIfNotSet('default')->end()
-                            ->scalarNode('group')->isRequired()->cannotBeEmpty()->end()
+                            ->scalarNode('group')->cannotBeEmpty()->addDefaultsIfNotSet('default')->end()
                             ->scalarNode('class')->isRequired()->cannotBeEmpty()->end()
                             ->scalarNode('entity')->isRequired()->cannotBeEmpty()->end()
                             ->scalarNode('controller')->isRequired()->end()
