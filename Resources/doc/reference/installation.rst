@@ -18,6 +18,14 @@ Next, be sure to enable the bundles in your application kernel:
 
 .. code-block:: php
 
+  // app/autoload.php
+  $loader->registerNamespaces(array(
+      // ...
+      'Sonata'                         => __DIR__.'/../src',
+      'Knplabs'                         => __DIR__.'/../src',
+      // ...
+  ));
+
   // app/AppKernel.php
   public function registerBundles()
   {
@@ -26,7 +34,7 @@ Next, be sure to enable the bundles in your application kernel:
           new Sonata\jQueryBundle\SonatajQueryBundle(),
           new Sonata\BluePrintBundle\SonataBluePrintBundle(),
           new Sonata\BaseApplicationBundle\SonataBaseApplicationBundle(),
-          new Knplabs\Knplabs\KnplabsMenuBundle(),
+          new Knplabs\MenuBundle\KnplabsMenuBundle(),
           // ...
       );
   }
@@ -53,7 +61,7 @@ code to your application's routing file:
 
     # app/config/routing.yml
     base_application:
-        resource: '@SonataBaseApplicationBundle/Resources/config/routing/base_application.xml'
+        resource: '@SonataBaseApplicationBundle/Resources/config/routing/sonata_base_application.xml'
         prefix: /admin
 
     _sonata_base_application:
