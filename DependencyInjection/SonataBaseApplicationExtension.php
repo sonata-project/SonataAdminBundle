@@ -46,19 +46,19 @@ class SonataBaseApplicationExtension extends Extension
      *    entities:
      *        post:
      *           label:      post
-     *       	 group:      posts
-     *       	 class:      Funsational\SimpleBlogBundle\Admin\Entity\PostAdmin
-     *       	 entity:     Funsational\SimpleBlogBundle\Entity\Post
-     *       	 controller: Funsational\SimpleBlogBundle\Controller\PostAdminController
-     *       	 children:
-     *            	comment:
-     *              	label:      comment
-     *               	group:      comments
-     *               	class:      Funsational\SimpleBlogBundle\Admin\Entity\CommentAdmin
-     *               	entity:     Funsational\SimpleBlogBundle\Entity\Comment
-     *               	controller: Funsational\SimpleBlogBundle\Controller\CommentAdminController
-     *       	options:
-     *           	show_in_dashboard: true
+     *           group:      posts
+     *           class:      Funsational\SimpleBlogBundle\Admin\Entity\PostAdmin
+     *           entity:     Funsational\SimpleBlogBundle\Entity\Post
+     *           controller: Funsational\SimpleBlogBundle\Controller\PostAdminController
+     *           children:
+     *               comment:
+     *                  label:      comment
+     *                  group:      comments
+     *                  class:      Funsational\SimpleBlogBundle\Admin\Entity\CommentAdmin
+     *                  entity:     Funsational\SimpleBlogBundle\Entity\Comment
+     *                  controller: Funsational\SimpleBlogBundle\Controller\CommentAdminController
+     *          options:
+     *              show_in_dashboard: true
      *
      * @param array            $config    An array of configuration settings
      * @param ContainerBuilder $container A ContainerBuilder instance
