@@ -39,15 +39,32 @@ class SonataBaseApplicationExtension extends Extension
     );
     
     /**
-     * Loads the url shortener configuration.
+     * Parses the configuration to setup the admin controllers and setup rouing
+     * information. Format is following:
+     * 
+     * sonata_base_application:
+     *    entities:
+     *        post:
+     *           label:      post
+     *       	 group:      posts
+     *       	 class:      Funsational\SimpleBlogBundle\Admin\Entity\PostAdmin
+     *       	 entity:     Funsational\SimpleBlogBundle\Entity\Post
+     *       	 controller: Funsational\SimpleBlogBundle\Controller\PostAdminController
+     *       	 children:
+     *            	comment:
+     *              	label:      comment
+     *               	group:      comments
+     *               	class:      Funsational\SimpleBlogBundle\Admin\Entity\CommentAdmin
+     *               	entity:     Funsational\SimpleBlogBundle\Entity\Comment
+     *               	controller: Funsational\SimpleBlogBundle\Controller\CommentAdminController
+     *       	options:
+     *           	show_in_dashboard: true
      *
      * @param array            $config    An array of configuration settings
      * @param ContainerBuilder $container A ContainerBuilder instance
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-    	$config = call_user_func_array('array_merge_recursive', $configs);
-    	
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('templates.xml');
         
@@ -80,26 +97,6 @@ class SonataBaseApplicationExtension extends Extension
         $definition->addMethodCall('setContainer', array(new Reference('service_container')));
         
         foreach ($config['entities'] as $code => $configuration) {
-            if (!isset($configuration['group'])) {
-                $configuration['group'] = 'default';
-            }
-
-            if (!isset($configuration['label'])) {
-                $configuration['label'] = $code;
-            }
-
-            if (!isset($configuration['children'])) {
-                $configuration['children'] = array();
-            }
-            
-            if (!isset($configuration['options'])) {
-                $configuration['options'] = array();
-            }
-            
-            if (!isset($configuration['options']['show_in_dashboard'])) {
-                $configuration['options']['show_in_dashboard'] = true;
-            }
-
             $definition->addMethodCall('addConfiguration', array($code, $configuration));
         }
 
@@ -111,16 +108,7 @@ class SonataBaseApplicationExtension extends Extension
         $container->setDefinition('sonata_base_application.route_loader', $definition);
     }
     
-    protected function configLoadFiles($container)
-    {
-        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-
-        foreach ($this->configNamespaces as $ns => $params) {
-            $loader->load(sprintf('%s.xml', $ns));
-        }
-    }
-    
-    protected function configSetup($config, $container)
+    protected function configSetupTemplates($config, $container)
     {
         foreach ($this->configNamespaces as $ns => $params) {
 
