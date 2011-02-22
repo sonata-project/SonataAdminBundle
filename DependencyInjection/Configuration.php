@@ -43,7 +43,7 @@ class Configuration
                 ->requiresAtLeastOneElement()
                 ->prototype('array')
                     ->scalarNode('label')->cannotBeEmpty()->defaultValue('default')->end()
-                    ->scalarNode('group')->isRequired()->cannotBeEmpty()->end()
+                    ->scalarNode('group')->cannotBeEmpty()->defaultValue('default')->end()
                     ->scalarNode('class')->isRequired()->cannotBeEmpty()->end()
                     ->scalarNode('entity')->isRequired()->cannotBeEmpty()->end()
                     ->scalarNode('controller')->isRequired()->end()
