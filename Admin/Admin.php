@@ -380,7 +380,7 @@ abstract class Admin extends ContainerAware
     public function getBaseRoutePattern()
     {
         if (!$this->baseRoutePattern) {
-            preg_match('@([A-Za-z]*)\\\([A-Za-z]*)Bundle\\\(Entity|Document)\\\([A-Za-z]*)@', $this->getClass(), $matches);
+            preg_match('@([A-Za-z]*)\\\([A-Za-z]*)Bundle\\\(Entity|Document)\\\(.*)@', $this->getClass(), $matches);
 
             if(!$matches) {
                 throw new \RuntimeException(sprintf('Please define a default `baseRoutePattern` value for the admin class `%s`', get_class($this)));
@@ -413,11 +413,12 @@ abstract class Admin extends ContainerAware
     public function getBaseRouteName()
     {
         if (!$this->baseRouteName) {
-            preg_match('@([A-Za-z]*)\\\([A-Za-z]*)Bundle\\\(Entity|Document)\\\([A-Za-z]*)@', $this->getClass(), $matches);
+            preg_match('@([A-Za-z]*)\\\([A-Za-z]*)Bundle\\\(Entity|Document)\\\(.*)@', $this->getClass(), $matches);
 
             if(!$matches) {
                 throw new \RuntimeException(sprintf('Please define a default `baseRouteName` value for the admin class `%s`', get_class($this)));
             }
+            
 
             if ($this->isChild()) { // the admin class is a child, prefix it with the parent route name
                 $this->baseRouteName = sprintf('%s_%s',
@@ -446,7 +447,7 @@ abstract class Admin extends ContainerAware
     public function urlize($word, $sep = '_')
     {
 
-        return strtolower(preg_replace('~(?<=\\w)([A-Z])~', $sep.'$1', $word));
+        return strtolower(preg_replace('/[^a-z0-9_]/i', $sep.'$1', $word));
     }
 
     /**
