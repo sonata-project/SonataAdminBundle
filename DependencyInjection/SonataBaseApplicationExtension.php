@@ -39,7 +39,7 @@ class SonataBaseApplicationExtension extends Extension
     );
     
     /**
-     * Parses the configuration to setup the admin controllers and setup rouing
+     * Parses the configuration to setup the admin controllers and setup routing
      * information. Format is following:
      * 
      * sonata_base_application:

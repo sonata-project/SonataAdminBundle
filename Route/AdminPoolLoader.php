@@ -22,7 +22,7 @@ use Sonata\BaseApplicationBundle\Admin\Pool;
 class AdminPoolLoader extends FileLoader
 {
     /**
-     * @var Bundle\Soanta\BaseApplicationBundle\Admin\Pool
+     * @var Bundle\Sonata\BaseApplicationBundle\Admin\Pool
      */
     protected $pool;
 
@@ -72,11 +72,11 @@ class AdminPoolLoader extends FileLoader
     /**
      * Convert a word in to the format for a symfony action action_name => actionName
      *
-     * @param string  $word  Word to actionify
-     * @return string $word  Actionified word
+     * @param string  $word Word to actionify
+     * @return string $word Actionified word
      */
     public static function actionify($word)
     {
-        return lcfirst(str_replace(" ", "", ucwords(strtr($word, "_-", "  "))));
+        return lcfirst(str_replace(' ', '', ucwords(strtr($word, '_-', '  '))));
     }
 }
