@@ -60,7 +60,7 @@ abstract class Filter extends Configurable
      * set the object description
      *
      */
-    public function setDescription(array $description)
+    public function setDescription(FieldDescription $description)
     {
         $this->description = $description;
     }
