@@ -310,13 +310,13 @@ class FormBuilder implements FormBuilderInterface
      * The method add a new field to the provided Form, there are 4 ways to add new field :
      *
      *   - if $name is a string with no related FieldDescription, then the form will use the FieldFactory
-     *     to instanciate a new Field
+     *     to instantiate a new Field
      *   - if $name is a FormDescription, the method uses information defined in the FormDescription to
-     *     instanciate a new Field
+     *     instantiate a new Field
      *   - if $name is a FieldInterface, then a FieldDescription is created, the FieldInterface is added to
      *     the form
-     *   - if $name is a string with a related FieldDescription, then the medhod uses information defined in the
-     *     FormDescription to instanciate a new Field
+     *   - if $name is a string with a related FieldDescription, then the method uses information defined in the
+     *     FormDescription to instantiate a new Field
      *
      *
      * @param Form $form

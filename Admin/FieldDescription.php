@@ -19,7 +19,7 @@ namespace Sonata\BaseApplicationBundle\Admin;
  * - list: used by the list
  * - filter: used by the list filter
  *
- * Some options are global accross the different contexts, other are
+ * Some options are global across the different contexts, other are
  * context specifics.
  *
  * Global options :

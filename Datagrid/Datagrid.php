@@ -84,25 +84,25 @@ class Datagrid
         $em             = $this->getEntityManager();
         $repository     = $em->getRepository($this->getClassname());
 
-        $queryBuidler = $repository
+        $queryBuilder = $repository
             ->createQueryBuilder('o');
 
-        return $queryBuidler;
+        return $queryBuilder;
     }
 
     public function getQueryBuilder($values = array())
     {
 
-        $queryBuidler = $this->getBaseQueryBuilder();
+        $queryBuilder = $this->getBaseQueryBuilder();
 
         foreach ($this->getFilters() as $name => $filter) {
 
             $value = isset($values[$name]) ? $values[$name] : null;
 
-            $filter->apply($queryBuidler, $value);
+            $filter->apply($queryBuilder, $value);
         }
 
-        return $queryBuidler;
+        return $queryBuilder;
     }
 
     public function setClassname($classname)

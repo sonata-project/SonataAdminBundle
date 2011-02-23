@@ -52,7 +52,7 @@ abstract class Admin extends ContainerAware
 
     /**
      * 
-     * @var string the classname label (used in the title/breadcrumb ...)
+     * @var string the label class name  (used in the title/breadcrumb ...)
      */
     protected $classnameLabel;
 
@@ -69,7 +69,7 @@ abstract class Admin extends ContainerAware
      */
     protected $formOptions = array();
 
-    // note : don't like this, but havn't find a better way to do it
+    // note : don't like this, but haven't find a better way to do it
     protected $configurationPool;
 
     protected $code;
@@ -197,7 +197,7 @@ abstract class Admin extends ContainerAware
         
         if($this->parentAssociationMapping) {
             if(!isset($this->getClassMetaData()->associationMappings[$this->parentAssociationMapping])) {
-                throw new \RuntimeException(sprintf('The value set to `relatedReflectionProperty` refer to a non existant association', $this->relatedReflectionProperty));
+                throw new \RuntimeException(sprintf('The value set to `relatedReflectionProperty` refer to a non existent association', $this->relatedReflectionProperty));
             }
             $this->parentAssociationMapping = $this->getClassMetaData()->associationMappings[$this->parentAssociationMapping];
         }
@@ -627,7 +627,7 @@ abstract class Admin extends ContainerAware
             $params[$this->getParent()->getIdParameter()] = $this->container->get('request')->get($this->getParent()->getIdParameter());
         }
 
-        // if the admin is linked to a FieldDescription (ie, embeded widget)
+        // if the admin is linked to a FieldDescription (ie, embedded widget)
         if($this->hasParentFieldDescription()) {
             $params['uniqid']  = $this->getUniqid();
             $params['code']    = $this->getCode();
@@ -672,7 +672,7 @@ abstract class Admin extends ContainerAware
     /**
      * return the reflection fields related to the classname
      *
-     * @return array the reflection fields related to the classname
+     * @return array The reflection fields related to the classname
      */
     public function getReflectionFields()
     {
@@ -680,9 +680,9 @@ abstract class Admin extends ContainerAware
     }
 
     /**
-     * return a instance of the related classname
+     * return an instance of the related classname
      *
-     * @return object a instance of the related classname
+     * @return Object An instance of the related classname
      */
     public function getNewInstance()
     {
@@ -734,7 +734,7 @@ abstract class Admin extends ContainerAware
     }
 
     /**
-     * return the target objet
+     * return the target object
      *
      * @param  $id
      * @return
@@ -1287,7 +1287,7 @@ abstract class Admin extends ContainerAware
     }
 
     /**
-     * return true if the admin has childre, false otherwise
+     * return true if the admin has children, false otherwise
      *
      * @return bool if the admin has children
      */

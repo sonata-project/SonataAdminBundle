@@ -37,7 +37,7 @@ class ArrayToObjectTransformer extends Configurable implements ValueTransformerI
         $metadata   = $this->getOption('em')->getClassMetadata($class);
 
         // when the object is created the form return an array
-        // one the object is persited, the edit $array is the user instance
+        // one the object is persisted, the edit $array is the user instance
         if ($array instanceof $class)
         {
             return $array;

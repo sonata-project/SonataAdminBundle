@@ -7,10 +7,10 @@ jQuery(document).ready(function() {
 
 var BaseApplication = {
 
-    add_pretty_errors: function(subjet) {
+    add_pretty_errors: function(subject) {
 
 
-        jQuery('div.sonata-ba-field-error', subjet).each(function(index, element) {
+        jQuery('div.sonata-ba-field-error', subject).each(function(index, element) {
             var input = jQuery('input, textarea', element);
 
             var message = jQuery('div.sonata-ba-field-error-messages', element).html();
