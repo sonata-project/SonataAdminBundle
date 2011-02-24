@@ -95,7 +95,7 @@ file that was distributed with this source code.
                 </div>
             </div>
 
-            {% if preview|length > 0 %}
+            {% if preview is not empty %}
                 <div class="span-24 last content clear">
                     <div class="sonata-ba-preview">{{ preview|raw }}</div>
                 </div>
@@ -103,23 +103,23 @@ file that was distributed with this source code.
 
             <div class="span-24 last content clear">
 
-                {% if side_menu|length > 0 %}
+                {% if side_menu is not empty %}
                         <div class="span-4">
                             <div class="sonata-ba-side-menu">{{ side_menu|raw }}</div>
                         </div>
                         <div class="span-18 last content">
                 {% endif %}
 
-                    {% if content|length > 0 %}
+                    {% if content is not empty %}
                         <div class="sonata-ba-content">{{ content|raw }}</div>
                     {% endif %}
 
-                    {% if form|length > 0 %}
+                    {% if form is not empty %}
                         <div class="sonata-ba-form">{{ form|raw }}</div>
                     {% endif %}
     
-                    {% if list_table|length > 0 or list_filters|length > 0 %}
-                        {% if side_menu|length > 0 %}
+                    {% if list_table is not empty or list_filters is not empty %}
+                        {% if side_menu is not empty %}
                             <div class="sonata-ba-list">
                                 <div class="span-13">
                                     {{ list_table|raw }}
@@ -140,7 +140,7 @@ file that was distributed with this source code.
                         {% endif %}
                     {% endif %}
 
-                {% if side_menu|length > 0 %}
+                {% if side_menu is not empty %}
                     </div>
                 {% endif %}
 
