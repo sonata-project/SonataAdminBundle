@@ -13,6 +13,8 @@ file that was distributed with this source code.
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
+        {% block stylesheets %}
+        
         <!-- jQuery code -->
         <link rel="stylesheet" href="{{ asset('bundles/sonatajquery/themes/flick/jquery-ui-1.8.6.custom.css') }}" type="text/css" media="all" />
         <script src="{{ asset('bundles/sonatajquery/jquery-1.4.4.js') }}" type="text/javascript"></script>
@@ -28,8 +30,15 @@ file that was distributed with this source code.
         <link rel="stylesheet" href="{{ asset('bundles/sonatabaseapplication/css/layout.css') }}" type="text/css" media="all">
         <link rel="stylesheet" href="{{ asset('bundles/sonatabaseapplication/css/colors.css') }}" type="text/css" media="all">
 
+        {% endblock %}
+        
+        {% block javascripts %}
+        
         <script src="{{ asset('bundles/sonatabaseapplication/qtip/jquery.qtip-1.0.0-rc3.min.js') }}" type="text/javascript"></script>
         <script src="{{ asset('bundles/sonatabaseapplication/base.js') }}" type="text/javascript"></script>
+        
+        {% endblock %}
+        
 
         <title>
             {% block title %} Admin
@@ -61,7 +70,7 @@ file that was distributed with this source code.
                 </div>
 
                 <div class="span-4 last">
-                    Add here logout option / user options
+                    {% block user_panel %}Add here logout option / user options{% endblock %}
                 </div>
             </div>
 
@@ -139,7 +148,7 @@ file that was distributed with this source code.
 
             <!-- footer -->
             <div class="span-24 last">
-
+                        {% block footer %}{% endblock %}
             </div>
         </div>
     </body>
