@@ -37,7 +37,7 @@ file that was distributed with this source code.
             {% if name %}
                 <fieldset>
                     <legend>
-                        {{ name }}
+                        {% trans name %}
                         {% if form_group.collapsed %}
                             <a href="" class="sonata-ba-collapsed">{% trans 'link_expand' from 'BaseApplicationBundle' %}</a>
                         {% endif %}
