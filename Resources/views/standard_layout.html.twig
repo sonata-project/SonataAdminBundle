@@ -41,7 +41,7 @@ file that was distributed with this source code.
         
 
         <title>
-            {% block title %} Admin
+            {% block title %} {% trans 'Admin' from 'BaseApplicationBundle' %}
                 {% if breadcrumbs is defined %}
                     -
                     {% for label, uri in breadcrumbs %}
@@ -66,7 +66,7 @@ file that was distributed with this source code.
         <div class="container">
             <div class="span-24 last header">
                 <div class="span-20">
-                    <a href="{{ url('sonata_base_application_dashboard') }}" class="home">Admin</a>
+                    <a href="{{ url('sonata_base_application_dashboard') }}" class="home">{% trans 'Admin' from 'BaseApplicationBundle' %}</a>
                 </div>
 
                 <div class="span-4 last">

@@ -70,6 +70,22 @@
                 <source>title_list</source>
                 <target>Wylistuj</target>
             </trans-unit>
+            <trans-unit id="link_next_pager">
+                <source>link_next_pager</source>
+                <target>Nastepna</target>
+            </trans-unit>
+            <trans-unit id="link_previous_pager">
+                <source>link_previous_pager</source>
+                <target>Poprzednia</target>
+            </trans-unit>
+            <trans-unit id="Admin">
+                <source>Admin</source>
+                <target>Panel administracyjny</target>
+            </trans-unit>
+            <trans-unit id="link_expand">
+                <source>link_expand</source>
+                <target>pokaż/ukryj</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
