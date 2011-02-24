@@ -44,11 +44,11 @@
             </trans-unit>
             <trans-unit id="link_add">
                 <source>link_add</source>
-                <target>Dodaj nowy</target>
+                <target>Dodaj</target>
             </trans-unit>
             <trans-unit id="link_list">
                 <source>link_list</source>
-                <target>Wylistuj</target>
+                <target>Zarządzaj</target>
             </trans-unit>
             <trans-unit id="link_reset_filter">
                 <source>link_reset_filter</source>
@@ -72,7 +72,7 @@
             </trans-unit>
             <trans-unit id="link_next_pager">
                 <source>link_next_pager</source>
-                <target>Nastepna</target>
+                <target>Następna</target>
             </trans-unit>
             <trans-unit id="link_previous_pager">
                 <source>link_previous_pager</source>
