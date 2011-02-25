@@ -3,7 +3,7 @@
 /*
  * This file is part of the Sonata package.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) 2010-2011 Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -43,6 +43,7 @@ namespace Sonata\BaseApplicationBundle\Admin;
  *   - filter_options (o): options given to the Filter object
  *   - filter_field_options (o): options given to the filter field object
  *
+ * @author Thomas Rabaix <thomas.rabaix@sonata-project.com>
  */
 class FieldDescription
 {
@@ -88,7 +89,7 @@ class FieldDescription
     protected $options = array();
 
     /**
-     * @var admin|null the parent Admin instance
+     * @var Admin|null the parent Admin instance
      */
     protected $parent = null;
 
@@ -102,16 +103,33 @@ class FieldDescription
      */
     protected $associationAdmin;
 
+    /**
+     * set the field name
+     *
+     * @param string $fieldName
+     * @return void
+     */
     public function setFieldName($fieldName)
     {
         $this->fieldName = $fieldName;
     }
 
+    /**
+     * return the field name
+     *
+     * @return string the field name
+     */
     public function getFieldName()
     {
         return $this->fieldName;
     }
 
+    /**
+     * Set the name 
+     *
+     * @param string $name
+     * @return void
+     */
     public function setName($name)
     {
         $this->name = $name;
@@ -121,22 +139,51 @@ class FieldDescription
         }
     }
 
+    /**
+     * Return the name, the name can be used as a form label or table header
+     *
+     * @return string the name
+     */
     public function getName()
     {
         return $this->name;
     }
 
+    /**
+     * Return the value represented by the provided name
+     *
+     * @param string $name
+     * @param null $default
+     * @return array|null the value represented by the provided name
+     */
     public function getOption($name, $default = null)
     {
         return isset($this->options[$name]) ? $this->options[$name] : $default;
     }
 
+    /**
+     * Define an option, an option is has a name and a value
+     *
+     * @param string $name
+     * @param mixed $value
+     * @return void set the option value
+     */
     public function setOption($name, $value)
     {
         $this->options[$name] = $value;
     }
-    
-    public function setOptions($options)
+
+    /**
+     * Define the options value, if the options array contains the reserved keywords
+     *   - type
+     *   - template
+     *
+     * Then the value are copied across to the related property value
+     *
+     * @param array $options
+     * @return void
+     */
+    public function setOptions(array $options)
     {
 
         // set the type if provided
@@ -151,45 +198,89 @@ class FieldDescription
             unset($options['template']);
         }
 
-
         $this->options = $options;
     }
 
+    /**
+     * return options
+     *
+     * @return array options
+     */
     public function getOptions()
     {
         return $this->options;
     }
 
+    /**
+     * return the template used to render the field
+     *
+     * @param string $template
+     * @return void
+     */
     public function setTemplate($template)
     {
         $this->template = $template;
     }
 
+    /**
+     * return the template name
+     *
+     * @return string the template name
+     */
     public function getTemplate()
     {
         return $this->template;
     }
 
+    /**
+     * return the field type, the type is a mandatory field as it used to select the correct template
+     * or the logic associated to the current FieldDescription object
+     *
+     * @param string $type
+     * @return void the field type
+     */
     public function setType($type)
     {
         $this->type = $type;
     }
 
+    /**
+     * return the type
+     * 
+     * @return int|string
+     */
     public function getType()
     {
         return $this->type;
     }
 
-    public function setParent($parent)
+    /**
+     * set the parent Admin (only used in nested admin)
+     *
+     * @param Admin $parent
+     * @return void
+     */
+    public function setParent(Admin $parent)
     {
         $this->parent = $parent;
     }
 
+    /**
+     * return the parent Admin (only used in nested admin)
+     *
+     * @return Admin
+     */
     public function getParent()
     {
         return $this->parent;
     }
 
+    /**
+     * Define the association mapping definition
+     *
+     * @param array $associationMapping
+     * @return void
+     */
     public function setAssociationMapping(array $associationMapping)
     {
         $this->associationMapping = $associationMapping;
@@ -199,11 +290,21 @@ class FieldDescription
         $this->fieldName    = $associationMapping['fieldName'];
     }
 
+    /**
+     * return the association mapping definition
+     *
+     * @return array
+     */
     public function getAssociationMapping()
     {
         return $this->associationMapping;
     }
 
+    /**
+     * return the related Target Entity
+     *
+     * @return string|null
+     */
     public function getTargetEntity()
     {
         if ($this->associationMapping) {
@@ -213,6 +314,12 @@ class FieldDescription
         return null;
     }
 
+    /**
+     * set the field mapping information
+     *
+     * @param array $fieldMapping
+     * @return void
+     */
     public function setFieldMapping(array $fieldMapping)
     {
         $this->fieldMapping = $fieldMapping;
@@ -222,14 +329,20 @@ class FieldDescription
         $this->fieldName    = $this->fieldName ?: $fieldMapping['fieldName'];
     }
 
+    /**
+     * return the field mapping definition
+     *
+     * @return array the field mapping definition
+     */
     public function getFieldMapping()
     {
         return $this->fieldMapping;
     }
 
     /**
-     * set the association admin instance
+     * set the association admin instance (only used if the field is linked to an Admin)
      *
+     * @param Admin $associationAdmin the associated admin
      */
     public function setAssociationAdmin(Admin $associationAdmin)
     {
@@ -238,9 +351,7 @@ class FieldDescription
     }
 
     /**
-     * return the associated Admin instance, only available when the property
-     * is linked to an entity
-     *
+     * return the associated Admin instance (only used if the field is linked to an Admin)
      * @return Admin
      */
     public function getAssociationAdmin()
@@ -249,7 +360,6 @@ class FieldDescription
     }
 
     /**
-     *
      * return true if the FieldDescription is linked to an identifier field
      *
      * @return bool
@@ -286,41 +396,86 @@ class FieldDescription
         return $value;
     }
 
-    public function setAdmin($admin)
+    /**
+     * set the admin class linked to this FieldDescription
+     *
+     * @param Admin $admin
+     * @return void
+     */
+    public function setAdmin(Admin $admin)
     {
         $this->admin = $admin;
     }
 
+    /**
+     * @return Admin the admin class linked to this FieldDescription
+     */
     public function getAdmin()
     {
         return $this->admin;
     }
 
+    /**
+     * Camelize a string
+     *
+     * @static
+     * @param string $property
+     * @return string
+     */
     public static function camelize($property)
     {
-       return preg_replace(array('/(^|_)+(.)/e', '/\.(.)/e'), array("strtoupper('\\2')", "'_'.strtoupper('\\1')"), $property);
+       return preg_replace(array('/(^|_| )+(.)/e', '/\.(.)/e'), array("strtoupper('\\2')", "'_'.strtoupper('\\1')"), $property);
     }
 
+    /**
+     * merge option values related to the provided option name
+     *
+     * @throws \RuntimeException
+     * @param  $name
+     * @param array $options
+     * @return void
+     */
     public function mergeOption($name, array $options = array())
     {
         if(!isset($this->options[$name])) {
             $this->options[$name] = array();
         }
 
+        if(!is_array($this->options[$name]))
+        {
+            throw new \RuntimeException(sprintf('The key `%s` does not point to an array value', $name));
+        }
+
         $this->options[$name] = array_merge($this->options[$name], $options);
     }
 
+    /**
+     * merge options values
+     * 
+     * @param array $options
+     * @return void
+     */
     public function mergeOptions(array $options = array())
     {
-
         $this->setOptions(array_merge($this->options, $options));
     }
 
-    public function setMappingType(string $mappingType)
+    /**
+     * set the original mapping type (only used if the field is linked to an entity)
+     *
+     * @param string|int $mappingType
+     * @return void
+     */
+    public function setMappingType($mappingType)
     {
         $this->mappingType = $mappingType;
     }
 
+    /**
+     * return the mapping type
+     *
+     * @return int|string
+     */
     public function getMappingType()
     {
         return $this->mappingType;
