@@ -43,7 +43,7 @@ namespace Sonata\BaseApplicationBundle\Admin;
  *   - filter_options (o): options given to the Filter object
  *   - filter_field_options (o): options given to the filter field object
  *
- * @author Thomas Rabaix <thomas.rabaix@sonata-project.com>
+ * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class FieldDescription
 {

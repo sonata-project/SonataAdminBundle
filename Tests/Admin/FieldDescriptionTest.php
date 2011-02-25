@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\BaseApplicationBundle\Tests\Provider;
+namespace Sonata\BaseApplicationBundle\Tests\Admin;
 
 use Sonata\BaseApplicationBundle\Admin\FieldDescription;
 
