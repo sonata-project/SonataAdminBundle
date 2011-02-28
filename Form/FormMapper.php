@@ -16,7 +16,7 @@ use Sonata\BaseApplicationBundle\Admin\Admin;
 use Sonata\BaseApplicationBundle\Admin\FieldDescription;
 
 use Symfony\Component\Form\Form;
-use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FieldInterface;
 use Symfony\Component\Form\FormContextInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\Form\FieldFactory\FieldFactoryInterface;
@@ -50,7 +50,7 @@ class FormMapper
             $fieldDescription = $name;
             $fieldDescription->mergeOptions($fieldDescriptionOptions);
 
-        } else if ($name instanceof FormInterface) {
+        } else if ($name instanceof FieldInterface) {
 
             $field   = $name;
 
