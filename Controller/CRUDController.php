@@ -40,7 +40,8 @@ class CRUDController extends Controller
         // fake content-type so browser does not show the download popup when this
         // response is rendered through an iframe (used by the jquery.form.js plugin)
         //  => don't know yet if it is the best solution
-        if($this->get('request')->get('_xml_http_request')) {
+        if($this->get('request')->get('_xml_http_request')
+           && strpos($this->get('request')->headers->get('Content-Type'), 'multipart/form-data') === 0) {
             $headers['Content-Type'] = 'text/plain';
         } else {
             $headers['Content-Type'] = 'application/json';
