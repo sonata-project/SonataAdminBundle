@@ -9,7 +9,7 @@ file that was distributed with this source code.
 
 #}
 
-<div id="sonata-ba-field-container-{{ admin.uniqid }}-{{ field_element.id }}">
+<div id="sonata-ba-field-container-{{ field_element.id }}">
     {% block label %}
         {% if field_description.options.name is defined %}
             {{ form_label(field_element, field_description.options.name) }}

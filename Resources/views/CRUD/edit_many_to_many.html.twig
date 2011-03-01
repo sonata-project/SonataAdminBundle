@@ -12,21 +12,21 @@ file that was distributed with this source code.
 {% extends base_template %}
 
 {% block field %}
-    <div id="field_container_{{ admin.uniqid }}_{{ field_element.id }}">
-        <span id="field_widget_{{ admin.uniqid }}_{{ field_element.id }}" >
+    <div id="field_container_{{ field_element.id }}">
+        <span id="field_widget_{{ field_element.id }}" >
             {{ form_field(field_element) }}
         </span>
         
-        <span id="field_actions_{{ admin.uniqid }}_{{ field_element.id }}" >
+        <span id="field_actions_{{ field_element.id }}" >
             <a
                 href="{{ field_description.associationadmin.generateUrl('create') }}"
-                onclick="start_field_dialog_form_add_{{ admin.uniqid }}_{{ field_element.id }}(event)"
+                onclick="start_field_dialog_form_add_{{ field_element.id }}(event)"
                 class="action">
                     <img src="{{ asset('bundles/sonatabaseapplication/famfamfam/add.png') }}" alt="{% trans 'btn_add' from 'BaseApplicationBundle' %}" />
             </a>
         </span>
         
-        <div style="display: none" id="field_dialog_{{ admin.uniqid }}_{{ field_element.id }}">
+        <div style="display: none" id="field_dialog_{{ field_element.id }}">
 
         </div>
     </div>
