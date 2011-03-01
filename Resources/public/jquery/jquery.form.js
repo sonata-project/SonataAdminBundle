@@ -368,7 +368,6 @@ $.fn.ajaxSubmit = function(options) {
 				else if (s.dataType == 'xml' && !xhr.responseXML && xhr.responseText != null) {
 					xhr.responseXML = toXml(xhr.responseText);
 				}
-				
 				data = httpData(xhr, s.dataType, s);
 			}
 			catch(e){
@@ -438,10 +437,10 @@ $.fn.ajaxSubmit = function(options) {
                 // -- custom hack to make the ajax request works with non typed dataType
                 // author : Thomas Rabaix <thomas.rabaix@sonata-project.org>
                 // account for browsers injecting pre around json response
-                var matches = xhr.responseText.match(/^(<pre>|<body>)(.*)(<\/pre>|<\/body>)$/);
+                var matches = xhr.responseText.match(/^(<pre([^>]*)>|<body([^>]*)>)(.*)(<\/pre>|<\/body>)$/);
 
-                if(matches.length == 4){
-                    xhr.responseText = matches[2];
+                if(matches && matches.length == 6){
+                    xhr.responseText = matches[4];
                 }
 
                 if(xhr.responseText[0] == '{') {
