@@ -65,7 +65,6 @@ This code manage the many-to-[one|many] association field popup
 
         field_dialog_{{ field_element.id }}.html('');
 
-
         // retrieve the form element from the related admin generator
         jQuery.ajax({
             url: a.attr('href'),
@@ -82,10 +81,10 @@ This code manage the many-to-[one|many] association field popup
 
                     var form = jQuery(this);
 
-                    jQuery.ajax({
+                    jQuery(form).ajaxSubmit({
                         type: form.attr('method'),
                         url: form.attr('action'),
-                        data: form.serializeArray(),
+                        data: {_xml_http_request: true},
                         success: function(html) {
                            field_dialog_{{ field_element.id }}.html(html);
                         }
@@ -161,20 +160,22 @@ This code manage the many-to-[one|many] association field popup
         if (this.nodeName == 'FORM') {
             var url  = element.attr('action');
             var type = element.attr('method');
-            var data = element.serializeArray();
         } else if (this.nodeName == 'A') {
             var url  = element.attr('href');
             var type = 'GET';
-            var data = {};
         } else {
             alert('unexpected element : @' + this.nodeName + '@');
             return;
         }
-        
+
+        var data = {
+            _xml_http_request: true
+        }
+
         var form = jQuery(this);
 
         // the ajax post
-        jQuery.ajax({
+        jQuery(form).ajaxSubmit({
             url: url,
             type: type,
             data: data,
@@ -195,21 +196,20 @@ This code manage the many-to-[one|many] association field popup
                            in this case we update the hidden input, and call the change event to
                            retrieve the post information
                         #}
-                        console.log(jQuery('#{{ field_element.id }}'));
                         jQuery('#{{ field_element.id }}').val(data.objectId);
                         jQuery('#{{ field_element.id }}').change();
 
                     {% else %}
 
                         // reload the form element
-                        jQuery.ajax({
+                        jQuery('#field_widget_{{ field_element.id }}').closest('form').ajaxSubmit({
                             url: '{{ url('sonata_base_application_retrieve_form_element', {
                                 'elementId': field_element.id,
                                 'objectId':  admin.root.subject.id,
                                 'uniqid':    admin.root.uniqid,
                                 'code':      admin.root.code
                             }) }}',
-                            data: jQuery('#field_widget_{{ field_element.id }}').closest('form').serializeArray(),
+                            data: {_xml_http_request: true },
                             type: 'POST',
                             success: function(html) {
                                 jQuery('#field_widget_{{ field_element.id }}').html(html);

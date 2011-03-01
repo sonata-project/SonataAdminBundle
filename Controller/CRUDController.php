@@ -22,6 +22,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class CRUDController extends Controller
 {
 
+    /**
+     * The related Admin class
+     * 
+     * @var Admin
+     */
     protected $admin;
 
     /**
@@ -31,9 +36,27 @@ class CRUDController extends Controller
      */
     public function renderJson($data, $status = 200, $headers = array())
     {
-        return new Response(json_encode($data), $status, array_merge(array(
-          'Content-Type' => 'application/json'
-        ), $headers));
+
+        // fake content-type so browser does not show the download popup when this
+        // response is rendered through an iframe (used by the jquery.form.js plugin)
+        //  => don't know yet if it is the best solution
+        if($this->get('request')->get('_xml_http_request')) {
+            $headers['Content-Type'] = 'text/plain';
+        } else {
+            $headers['Content-Type'] = 'application/json';
+        }
+
+        return new Response(json_encode($data), $status, $headers);
+    }
+
+    /**
+     *
+     * @return boolean true if the request is done by an ajax like query
+     */
+    public function isXmlHttpRequest()
+    {
+
+        return $this->get('request')->isXmlHttpRequest() || $this->get('request')->get('_xml_http_request');
     }
 
     /**
@@ -76,7 +99,7 @@ class CRUDController extends Controller
      */
     public function getBaseTemplate()
     {
-        if ($this->get('request')->isXmlHttpRequest()) {
+        if ($this->isXmlHttpRequest()) {
             return $this->container->getParameter('sonata_base_application.templates.ajax');
         }
 
@@ -220,7 +243,7 @@ class CRUDController extends Controller
                 $this->admin->postUpdate($object);
             }
 
-            if ($this->get('request')->isXmlHttpRequest()) {
+            if ($this->isXmlHttpRequest()) {
                 return $this->renderJson(array('result' => 'ok', 'objectId' => $object->getId()));
             }
 

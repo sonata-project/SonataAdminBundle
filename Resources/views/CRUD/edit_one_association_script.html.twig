@@ -30,7 +30,7 @@ This code manage the one-to-many association field popup
         var form = jQuery(this).closest('form');
 
         // the ajax post
-        jQuery.ajax({
+        jQuery(form).ajaxSubmit({
             url: '{{ url('sonata_base_application_append_form_element', {
                 'code': admin.root.code,
                 'elementId': field_element.id,
@@ -38,7 +38,7 @@ This code manage the one-to-many association field popup
                 'uniqid': admin.root.uniqid
             }) }}',
             type: "POST",
-            data: form.serializeArray(),
+            data: { _xml_http_request: true },
             success: function(html) {
                 jQuery('#sonata-ba-field-container-{{ field_element.id }}').replaceWith(html);
             }
