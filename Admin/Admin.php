@@ -23,72 +23,153 @@ use Sonata\BaseApplicationBundle\Datagrid\Datagrid;
 use Knplabs\MenuBundle\Menu;
 use Knplabs\MenuBundle\MenuItem;
 
-
 abstract class Admin extends ContainerAware
 {
+    /**
+     * The class name managed by the admin class
+     *
+     * @var string
+     */
     protected $class;
 
+    /**
+     * The list field definitions (quick property definition)
+     *
+     * @var array
+     */
     protected $list = array();
 
+    /**
+     * The list FieldDescription constructed from the $list property
+     * and the the configureListField method
+     *
+     * @var array
+     */
     protected $listFieldDescriptions = array();
 
+    /**
+     * The form field definition (quick property definition)
+     *
+     * @var array
+     */
     protected $form = array();
-    
+
+    /**
+     * The list FieldDescription constructed from the $list property
+     * and the the configureFormField method
+     *
+     * @var array
+     */
     protected $formFieldDescriptions = array();
 
+    /**
+     * The filter field definition (quick property definition)
+     *
+     * @var array
+     */
     protected $filter = array();
 
+    /**
+     * The filter FieldDescription constructed from the $list property
+     * and the the configureFilterField method
+     *
+     * @var array
+     */
     protected $filterFieldDescriptions = array(); 
 
+    /**
+     * The number of result to display in the list
+     *
+     * @var integer
+     */
     protected $maxPerPage = 25;
 
+    /**
+     * The base route name used to generate the routing information
+     *
+     * @var string
+     */
     protected $baseRouteName;
 
+    /**
+     * The base route pattern used to generate the routing information
+     *
+     * @var string
+     */
     protected $baseRoutePattern;
 
+    /**
+     * The base name controller used to generate the routing information
+     *
+     * @var string
+     */
     protected $baseControllerName;
 
+    /**
+     * The form group disposition
+     *
+     * @var array|boolean
+     */
     protected $formGroups = false;
 
     /**
-     * 
-     * @var string the label class name  (used in the title/breadcrumb ...)
+     * The label class name  (used in the title/breadcrumb ...)
+     *
+     * @var string
      */
     protected $classnameLabel;
 
-
     /**
+     * The translation domain to be used to translate messages
      *
-     * @var string the translation domain to be used to translate messages
+     * @var string
      */
     protected $translationDomain = 'BaseApplicationBundle';
 
     /**
+     * options to set to the form (ie, validation_groups)
      *
-     * @var array options to set to the form (ie, validation_groups)
+     * @var array
      */
     protected $formOptions = array();
 
-    // note : don't like this, but haven't find a better way to do it
-    protected $configurationPool;
-
+    /**
+     * The code related to the admin
+     *
+     * @var string
+     */
     protected $code;
 
+    /**
+     * The label
+     *
+     * @var string
+     */
     protected $label;
 
+    /**
+     * Array of urls related to this admin
+     *
+     * @var array
+     */
     protected $urls = array();
 
+    /**
+     * The subject only set in edit/update/create mode
+     *
+     * @var object
+     */
     protected $subject;
 
     /**
-     * define a Collection of child admin, ie /admin/order/{id}/order-element/{childId}
+     * Define a Collection of child admin, ie /admin/order/{id}/order-element/{childId}
      *
      * @var array
      */
     protected $children = array();
 
     /**
-     * reference the parent collection
+     * Reference the parent collection
      *
      * @var Admin
      */
@@ -130,7 +211,7 @@ abstract class Admin extends ContainerAware
      * The uniqid is used to avoid clashing with 2 admin related to the code
      * ie: a Block linked to a Block
      *
-     * @var
+     * @var string
      */
     protected $uniqid;
 
@@ -141,8 +222,6 @@ abstract class Admin extends ContainerAware
         'filter_fields' => false,
         'urls'        => false,
     );
-
-    protected $choicesCache = array();
     
     /**
      * return the entity manager
@@ -170,6 +249,11 @@ abstract class Admin extends ContainerAware
 
     }
 
+    /**
+     * overwrite this method to configure the list FormField definition
+     *
+     * @param ListMapper $list
+     */
     protected function configureListFields(ListMapper $list)
     {
 
@@ -180,6 +264,12 @@ abstract class Admin extends ContainerAware
 
     }
 
+    /**
+     * @param string $code
+     * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
+     * @param string $class
+     * @param string $baseControllerName
+     */
     public function __construct($code, ContainerInterface $container, $class, $baseControllerName)
     {
         $this->code = $code;
@@ -248,16 +338,14 @@ abstract class Admin extends ContainerAware
 
         $this->loaded['list_fields'] = true;
 
-        $this->listFieldDescriptions = self::getBaseFields($this->getClassMetaData(), $this->list);
+        $this->listFieldDescriptions = self::getBaseFields($this->list);
 
         // normalize field
         foreach ($this->listFieldDescriptions as $fieldDescription) {
-
             $this->getListBuilder()->fixFieldDescription($this, $fieldDescription);
         }
 
         if (!isset($this->listFieldDescriptions['_batch'])) {
-
             $fieldDescription = new FieldDescription();
             $fieldDescription->setOptions(array(
                 'label' => 'batch',
@@ -285,7 +373,7 @@ abstract class Admin extends ContainerAware
 
         $this->loaded['filter_fields'] = true;
 
-        $this->filterFieldDescriptions = self::getBaseFields($this->getClassMetaData(), $this->filter);
+        $this->filterFieldDescriptions = self::getBaseFields($this->filter);
 
         // ok, try to limit to add parent filter
         $parentAssociationMapping = $this->getParentAssociationMapping();
@@ -328,7 +416,7 @@ abstract class Admin extends ContainerAware
 
         $this->loaded['form_fields'] = true;
 
-        $this->formFieldDescriptions = self::getBaseFields($this->getClassMetaData(), $this->form);
+        $this->formFieldDescriptions = self::getBaseFields($this->form);
 
         foreach ($this->formFieldDescriptions as $name => &$fieldDescription) {
 
@@ -344,10 +432,10 @@ abstract class Admin extends ContainerAware
     /**
      * make sure the base fields are set in the correct format
      *
-     * @param  $selected_fields
+     * @param array $selectedFields
      * @return array
      */
-    static public function getBaseFields($metadata, $selectedFields)
+    static public function getBaseFields($selectedFields)
     {
 
         $fields = array();
@@ -899,7 +987,7 @@ abstract class Admin extends ContainerAware
     }
 
     /**
-     * return the master admin      
+     * return the master admin
      *
      * @return Admin the root admin class
      */
@@ -995,7 +1083,6 @@ abstract class Admin extends ContainerAware
      */
     public function hasParentFieldDescription()
     {
-
         return $this->parentFieldDescription instanceof FieldDescription;
     }
 
@@ -1051,8 +1138,8 @@ abstract class Admin extends ContainerAware
      * @param string $name
      * @return FieldDescription
      */
-    public function getFormFieldDescription($name) {
-
+    public function getFormFieldDescription($name) 
+    {
         return $this->hasFormFieldDescription($name) ? $this->formFieldDescriptions[$name] : null;
     }
 
