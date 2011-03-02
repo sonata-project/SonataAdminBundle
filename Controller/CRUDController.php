@@ -31,6 +31,8 @@ class CRUDController extends Controller
 
     /**
      * @param mixed $data
+     * @param integer $status
+     * @param array $headers
      *
      * @return Response with json encoded data
      */
@@ -127,6 +129,12 @@ class CRUDController extends Controller
         ));
     }
 
+    /**
+     * execute a batch delete
+     *
+     * @param array $idx
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
     public function batchActionDelete($idx)
     {
         $em = $this->admin->getEntityManager();
@@ -154,10 +162,13 @@ class CRUDController extends Controller
         // todo
     }
 
+
     /**
      * return the Response object associated to the edit action
      *
-     * @return Response
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     * @param  $id
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function editAction($id)
     {
@@ -197,7 +208,7 @@ class CRUDController extends Controller
     /**
      * return the Response object associated to the update action
      *
-     * @return Response
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function updateAction()
     {
@@ -261,7 +272,7 @@ class CRUDController extends Controller
      * redirect the user depend on this choice
      *
      * @param  $object
-     * @return Response
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function redirectTo($object) {
 
@@ -286,7 +297,7 @@ class CRUDController extends Controller
      * return the Response object associated to the batch action
      *
      * @throws \RuntimeException
-     * @return Response
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function batchAction()
     {
@@ -315,7 +326,7 @@ class CRUDController extends Controller
     /**
      * return the Response object associated to the create action
      *
-     * @return Response
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function createAction($id = null)
     {
