@@ -40,7 +40,9 @@ This code manage the one-to-many association field popup
             type: "POST",
             data: { _xml_http_request: true },
             success: function(html) {
-                jQuery('#sonata-ba-field-container-{{ field_element.id }}').replaceWith(html);
+                jQuery('#sonata-ba-field-container-{{ field_element.id }}')
+                    .replaceWith(html) // replace the html
+                    .trigger('sonata.add_element');
             }
         });
 

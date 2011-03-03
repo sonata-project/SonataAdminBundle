@@ -17,24 +17,26 @@ file that was distributed with this source code.
             {% if field_description.options.edit == 'inline' %}
                 {% if inline == 'table' %}
                     <table>
-                        {% for nested_group_field_name, nested_group_field in field_element.fields %}
-                            <tr>
-                                {% set parent_loop = loop %}
-                                {% for field_name, nested_field in nested_group_field.fields %}
-                                    <td>
-                                        {% if field_description.associationadmin.formfielddescriptions[field_name] is defined %}
-                                            {{ field_description.associationadmin.formfielddescriptions[field_name]|render_form_element(
-                                                nested_group_field,
-                                                value,
-                                                { 'loop': parent_loop }
-                                            ) }}
-                                        {% else %}
-                                            {{ form_field(nested_field) }}
-                                        {% endif %}
-                                    </td>
-                                {% endfor %}
-                            </tr>
-                        {% endfor %}
+                        <tbody class="sonata-ba-tbody">
+                            {% for nested_group_field_name, nested_group_field in field_element.fields %}
+                                <tr>
+                                    {% set parent_loop = loop %}
+                                    {% for field_name, nested_field in nested_group_field.fields %}
+                                        <td class="sonata-ba-td-{{ field_element.id }}-{{ field_name }}">
+                                            {% if field_description.associationadmin.formfielddescriptions[field_name] is defined %}
+                                                {{ field_description.associationadmin.formfielddescriptions[field_name]|render_form_element(
+                                                    nested_group_field,
+                                                    value,
+                                                    { 'loop': parent_loop }
+                                                ) }}
+                                            {% else %}
+                                                {{ form_field(nested_field) }}
+                                            {% endif %}
+                                        </td>
+                                    {% endfor %}
+                                </tr>
+                            {% endfor %}
+                        </tbody>
                     </table>
                 {% else %}
                     <div>
@@ -73,8 +75,47 @@ file that was distributed with this source code.
                      />
                 </a>
             </span>
-        
+
+            {# add code for the sortable options #}
+            {% if field_description.options.sortable is defined %}
+                <script>
+                    jQuery('div#field_container_{{ field_element.id }} tbody.sonata-ba-tbody').sortable({
+                        axis: 'y',
+                        opacity: 0.6,
+                        items: 'tr',
+                        stop: apply_position_value_{{ field_element.id }}
+                    });
+
+                    function apply_position_value_{{ field_element.id }}() {
+                        // update the input value position
+                        jQuery('div#field_container_{{ field_element.id }} tbody.sonata-ba-tbody td.sonata-ba-td-{{ field_element.id }}-position').each(function(index, element) {
+                            // remove the sortable handler and put it back
+
+                            // <span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
+
+                            jQuery('span.sonata-ba-sortable-handler', element).remove();
+                            jQuery(element).append('<span class="sonata-ba-sortable-handler ui-icon ui-icon-arrowthick-2-n-s"></span>');
+                            jQuery('input', element).hide();
+                        });
+                        jQuery('div#field_container_{{ field_element.id }} tbody.sonata-ba-tbody td.sonata-ba-td-{{ field_element.id }}-position input').each(function(index, value) {
+                            jQuery(value).val(index + 1);
+                        });
+                    }
+
+                    // refresh the sortable option when a new element is added
+                    jQuery('#sonata-ba-field-container-{{ field_element.id }}').bind('sonata.add_element', function() {
+                        apply_position_value_{{ field_element.id }}();
+                        jQuery('div#field_container_{{ field_element.id }} tbody.sonata-ba-tbody').sortable('refresh');
+                    });
+
+                    apply_position_value_{{ field_element.id }}();
+
+                </script>
+            {% endif %}
+
+            {# include association code #}
             {% include 'SonataBaseApplicationBundle:CRUD:edit_one_association_script.html.twig' %}
+            
         {% else %}
             <span id="field_actions_{{ field_element.id }}" >
                 <a
