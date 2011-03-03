@@ -19,17 +19,17 @@ By convention Admin files are set under a Admin folder.
 
     namespace Sonata\NewsBundle\Admin;
 
-    use Sonata\BaseApplicationBundle\Admin\EntityAdmin;
-    use Sonata\BaseApplicationBundle\Form\FormMapper;
-    use Sonata\BaseApplicationBundle\Datagrid\DatagridMapper;
-    use Sonata\BaseApplicationBundle\Datagrid\ListMapper;
+    use Sonata\AdminBundle\Admin\EntityAdmin;
+    use Sonata\AdminBundle\Form\FormMapper;
+    use Sonata\AdminBundle\Datagrid\DatagridMapper;
+    use Sonata\AdminBundle\Datagrid\ListMapper;
 
     class PostAdmin extends EntityAdmin
     {
 
     }
 
-- register the AdminClass inside the base_application.config from the config.yml file
+- register the AdminClass inside the admin.config from the config.yml file
 
 ..
 
@@ -88,7 +88,7 @@ TagAdmin
 
     namespace Sonata\NewsBundle\Admin;
 
-    use Sonata\BaseApplicationBundle\Admin\EntityAdmin;
+    use Sonata\AdminBundle\Admin\EntityAdmin;
 
     class TagAdmin extends EntityAdmin
     {
@@ -112,7 +112,7 @@ CommentAdmin
 
     namespace Sonata\NewsBundle\Admin;
 
-    use Sonata\BaseApplicationBundle\Admin\EntityAdmin;
+    use Sonata\AdminBundle\Admin\EntityAdmin;
 
     class CommentAdmin extends EntityAdmin
     {

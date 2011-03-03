@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\BaseApplicationBundle\Admin;
+namespace Sonata\AdminBundle\Admin;
 
 /**
  * A FieldDescription hold the information about a field. A typical

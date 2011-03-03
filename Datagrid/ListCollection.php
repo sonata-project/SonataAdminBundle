@@ -8,10 +8,10 @@
  * file that was distributed with this source code.
  *
  */
-namespace Sonata\BaseApplicationBundle\Datagrid;
+namespace Sonata\AdminBundle\Datagrid;
 
 
-use Sonata\BaseApplicationBundle\Admin\FieldDescription;
+use Sonata\AdminBundle\Admin\FieldDescription;
     
 class ListCollection
 {

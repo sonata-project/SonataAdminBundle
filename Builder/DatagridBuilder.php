@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\BaseApplicationBundle\Builder;
+namespace Sonata\AdminBundle\Builder;
 
-use Sonata\BaseApplicationBundle\Admin\FieldDescription;
-use Sonata\BaseApplicationBundle\Admin\Admin;
-use Sonata\BaseApplicationBundle\Datagrid\Datagrid;
+use Sonata\AdminBundle\Admin\FieldDescription;
+use Sonata\AdminBundle\Admin\Admin;
+use Sonata\AdminBundle\Datagrid\Datagrid;
 
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 
@@ -28,16 +28,16 @@ class DatagridBuilder implements DatagridBuilderInterface
      * @var array
      */
     protected $filterClasses = array(
-        'string'     =>  'Sonata\\BaseApplicationBundle\\Filter\\StringFilter',
-        'text'       =>  'Sonata\\BaseApplicationBundle\\Filter\\StringFilter',
-        'boolean'    =>  'Sonata\\BaseApplicationBundle\\Filter\\BooleanFilter',
-        'integer'    =>  'Sonata\\BaseApplicationBundle\\Filter\\IntegerFilter',
-        'tinyint'    =>  'Sonata\\BaseApplicationBundle\\Filter\\IntegerFilter',
-        'smallint'   =>  'Sonata\\BaseApplicationBundle\\Filter\\IntegerFilter',
-        'mediumint'  =>  'Sonata\\BaseApplicationBundle\\Filter\\IntegerFilter',
-        'bigint'     =>  'Sonata\\BaseApplicationBundle\\Filter\\IntegerFilter',
-        'decimal'    =>  'Sonata\\BaseApplicationBundle\\Filter\\IntegerFilter',
-        'callback'   =>  'Sonata\\BaseApplicationBundle\\Filter\\CallbackFilter',
+        'string'     =>  'Sonata\\AdminBundle\\Filter\\StringFilter',
+        'text'       =>  'Sonata\\AdminBundle\\Filter\\StringFilter',
+        'boolean'    =>  'Sonata\\AdminBundle\\Filter\\BooleanFilter',
+        'integer'    =>  'Sonata\\AdminBundle\\Filter\\IntegerFilter',
+        'tinyint'    =>  'Sonata\\AdminBundle\\Filter\\IntegerFilter',
+        'smallint'   =>  'Sonata\\AdminBundle\\Filter\\IntegerFilter',
+        'mediumint'  =>  'Sonata\\AdminBundle\\Filter\\IntegerFilter',
+        'bigint'     =>  'Sonata\\AdminBundle\\Filter\\IntegerFilter',
+        'decimal'    =>  'Sonata\\AdminBundle\\Filter\\IntegerFilter',
+        'callback'   =>  'Sonata\\AdminBundle\\Filter\\CallbackFilter',
     );
 
     public function fixFieldDescription(Admin $admin, FieldDescription $fieldDescription)
@@ -72,14 +72,14 @@ class DatagridBuilder implements DatagridBuilderInterface
         }
 
         if (!$fieldDescription->getTemplate()) {
-            $fieldDescription->setTemplate(sprintf('SonataBaseApplicationBundle:CRUD:filter_%s.html.twig', $fieldDescription->getType()));
+            $fieldDescription->setTemplate(sprintf('SonataAdminBundle:CRUD:filter_%s.html.twig', $fieldDescription->getType()));
 
             if ($fieldDescription->getType() == ClassMetadataInfo::MANY_TO_ONE) {
-                $fieldDescription->setTemplate('SonataBaseApplicationBundle:CRUD:filter_many_to_one.html.twig');
+                $fieldDescription->setTemplate('SonataAdminBundle:CRUD:filter_many_to_one.html.twig');
             }
 
             if ($fieldDescription->getType() == ClassMetadataInfo::MANY_TO_MANY) {
-                $fieldDescription->setTemplate('SonataBaseApplicationBundle:CRUD:filter_many_to_many.html.twig');
+                $fieldDescription->setTemplate('SonataAdminBundle:CRUD:filter_many_to_many.html.twig');
             }
         }
     }
@@ -144,7 +144,7 @@ class DatagridBuilder implements DatagridBuilderInterface
 
             case ClassMetadataInfo::MANY_TO_ONE:
                 $options = $fieldDescription->getOption('filter_field_options');
-                $filter = new \Sonata\BaseApplicationBundle\Filter\IntegerFilter($fieldDescription);
+                $filter = new \Sonata\AdminBundle\Filter\IntegerFilter($fieldDescription);
 
                 break;
             case ClassMetadataInfo::MANY_TO_MANY:
@@ -154,7 +154,7 @@ class DatagridBuilder implements DatagridBuilderInterface
 
                 $fieldDescription->setOption('filter_field_options', $options);
 
-                $filter = new \Sonata\BaseApplicationBundle\Filter\ChoiceFilter($fieldDescription);
+                $filter = new \Sonata\AdminBundle\Filter\ChoiceFilter($fieldDescription);
 
                 break;
 

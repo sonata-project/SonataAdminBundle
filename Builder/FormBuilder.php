@@ -9,14 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\BaseApplicationBundle\Builder;
+namespace Sonata\AdminBundle\Builder;
 
-use Sonata\BaseApplicationBundle\Form\ValueTransformer\EntityToIDTransformer;
-use Sonata\BaseApplicationBundle\Form\ValueTransformer\ArrayToObjectTransformer;
-use Sonata\BaseApplicationBundle\Form\EditableCollectionField;
-use Sonata\BaseApplicationBundle\Form\EditableFieldGroup;
-use Sonata\BaseApplicationBundle\Admin\FieldDescription;
-use Sonata\BaseApplicationBundle\Admin\Admin;
+use Sonata\AdminBundle\Form\ValueTransformer\EntityToIDTransformer;
+use Sonata\AdminBundle\Form\ValueTransformer\ArrayToObjectTransformer;
+use Sonata\AdminBundle\Form\EditableCollectionField;
+use Sonata\AdminBundle\Form\EditableFieldGroup;
+use Sonata\AdminBundle\Admin\FieldDescription;
+use Sonata\AdminBundle\Admin\Admin;
 
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormInterface;
@@ -240,7 +240,7 @@ class FormBuilder implements FormBuilderInterface
             }
 
             // use custom one to expose the newfield method
-            return new \Sonata\BaseApplicationBundle\Form\EditableCollectionField($prototype);
+            return new \Sonata\AdminBundle\Form\EditableCollectionField($prototype);
         }
 
         return $this->getManyToManyField($object, $fieldDescription);
@@ -398,29 +398,29 @@ class FormBuilder implements FormBuilderInterface
 
         // fix template value for doctrine association fields
         if (!$fieldDescription->getTemplate()) {
-             $fieldDescription->setTemplate(sprintf('SonataBaseApplicationBundle:CRUD:edit_%s.html.twig', $fieldDescription->getType()));
+             $fieldDescription->setTemplate(sprintf('SonataAdminBundle:CRUD:edit_%s.html.twig', $fieldDescription->getType()));
         }
 
         if ($fieldDescription->getType() == ClassMetadataInfo::ONE_TO_ONE) {
-            $fieldDescription->setTemplate('SonataBaseApplicationBundle:CRUD:edit_one_to_one.html.twig');
+            $fieldDescription->setTemplate('SonataAdminBundle:CRUD:edit_one_to_one.html.twig');
             $admin->attachAdminClass($fieldDescription);
         }
 
         if ($fieldDescription->getType() == ClassMetadataInfo::MANY_TO_ONE) {
-            $fieldDescription->setTemplate('SonataBaseApplicationBundle:CRUD:edit_many_to_one.html.twig');
+            $fieldDescription->setTemplate('SonataAdminBundle:CRUD:edit_many_to_one.html.twig');
             $admin->attachAdminClass($fieldDescription);
         }
 
         if ($fieldDescription->getType() == ClassMetadataInfo::MANY_TO_MANY) {
-            $fieldDescription->setTemplate('SonataBaseApplicationBundle:CRUD:edit_many_to_many.html.twig');
+            $fieldDescription->setTemplate('SonataAdminBundle:CRUD:edit_many_to_many.html.twig');
             $admin->attachAdminClass($fieldDescription);
         }
 
         if ($fieldDescription->getType() == ClassMetadataInfo::ONE_TO_MANY) {
-            $fieldDescription->setTemplate('SonataBaseApplicationBundle:CRUD:edit_one_to_many.html.twig');
+            $fieldDescription->setTemplate('SonataAdminBundle:CRUD:edit_one_to_many.html.twig');
 
             if($fieldDescription->getOption('edit') == 'inline' && !$fieldDescription->getOption('widget_form_field')) {
-                $fieldDescription->setOption('widget_form_field', 'Bundle\\Sonata\\BaseApplicationBundle\\Form\\EditableFieldGroup');
+                $fieldDescription->setOption('widget_form_field', 'Bundle\\Sonata\\AdminBundle\\Form\\EditableFieldGroup');
             }
 
             $admin->attachAdminClass($fieldDescription);

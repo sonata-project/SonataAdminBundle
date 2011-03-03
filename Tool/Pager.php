@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\BaseApplicationBundle\Tool;
+namespace Sonata\AdminBundle\Tool;
 
 /**
  * Pager class.

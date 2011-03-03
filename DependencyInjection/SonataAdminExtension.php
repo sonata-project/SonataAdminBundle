@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\BaseApplicationBundle\DependencyInjection;
+namespace Sonata\AdminBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -24,12 +24,12 @@ use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Finder\Finder;
 
 /**
- * SonataBaseApplicationExtension
+ * SonataAdminBundleExtension
  *
  * @author      Thomas Rabaix <thomas.rabaix@sonata-project.org>
  * @author      Michael Williams <michael.williams@funsational.com>   
  */
-class SonataBaseApplicationExtension extends Extension
+class SonataAdminExtension extends Extension
 {    
 	protected $configNamespaces = array(
         'templates' => array(
@@ -42,7 +42,7 @@ class SonataBaseApplicationExtension extends Extension
      * Parses the configuration to setup the admin controllers and setup routing
      * information. Format is following:
      * 
-     * sonata_base_application:
+     * sonata_admin:
      *    entities:
      *        post:
      *           label:      post
@@ -77,35 +77,35 @@ class SonataBaseApplicationExtension extends Extension
         
         // register the twig extension
         $container
-            ->register('twig.extension.sonata_base_application', 'Sonata\BaseApplicationBundle\Twig\Extension\SonataBaseApplicationExtension')
+            ->register('twig.extension.sonata_admin', 'Sonata\AdminBundle\Twig\Extension\SonataAdminExtension')
             ->addTag('twig.extension');
 
         // register form builder
-        $definition = new Definition('Sonata\BaseApplicationBundle\Builder\FormBuilder', array(new Reference('form.field_factory'), new Reference('form.context'), new Reference('validator')));
-        $container->setDefinition('sonata_base_application.builder.orm_form', $definition);
+        $definition = new Definition('Sonata\AdminBundle\Builder\FormBuilder', array(new Reference('form.field_factory'), new Reference('form.context'), new Reference('validator')));
+        $container->setDefinition('sonata_admin.builder.orm_form', $definition);
 
         // register list builder
-        $definition = new Definition('Sonata\BaseApplicationBundle\Builder\ListBuilder');
-        $container->setDefinition('sonata_base_application.builder.orm_list', $definition);
+        $definition = new Definition('Sonata\AdminBundle\Builder\ListBuilder');
+        $container->setDefinition('sonata_admin.builder.orm_list', $definition);
 
         // register filter builder
-        $definition = new Definition('Sonata\BaseApplicationBundle\Builder\DatagridBuilder');
-        $container->setDefinition('sonata_base_application.builder.orm_datagrid', $definition);
+        $definition = new Definition('Sonata\AdminBundle\Builder\DatagridBuilder');
+        $container->setDefinition('sonata_admin.builder.orm_datagrid', $definition);
 
         // registers crud action
-        $definition = new Definition('Sonata\BaseApplicationBundle\Admin\Pool');
+        $definition = new Definition('Sonata\AdminBundle\Admin\Pool');
         $definition->addMethodCall('setContainer', array(new Reference('service_container')));
         
         foreach ($config['entities'] as $code => $configuration) {
             $definition->addMethodCall('addConfiguration', array($code, $configuration));
         }
 
-        $container->setDefinition('sonata_base_application.admin.pool', $definition);
+        $container->setDefinition('sonata_admin.admin.pool', $definition);
 
-        $definition = new Definition('Sonata\BaseApplicationBundle\Route\AdminPoolLoader', array(new Reference('sonata_base_application.admin.pool')));
+        $definition = new Definition('Sonata\AdminBundle\Route\AdminPoolLoader', array(new Reference('sonata_admin.admin.pool')));
         $definition->addTag('routing.loader');
 
-        $container->setDefinition('sonata_base_application.route_loader', $definition);
+        $container->setDefinition('sonata_admin.route_loader', $definition);
     }
     
     protected function configSetupTemplates($config, $container)
@@ -121,7 +121,7 @@ class SonataBaseApplicationExtension extends Extension
                     continue;
                 }
 
-                $container->setParameter(sprintf('sonata_base_application.templates.%s', $type), $template);
+                $container->setParameter(sprintf('sonata_admin.templates.%s', $type), $template);
             }
         }
     }
@@ -138,11 +138,11 @@ class SonataBaseApplicationExtension extends Extension
 
     public function getNamespace()
     {
-        return 'http://www.sonata-project.org/schema/dic/base-application';
+        return 'http://www.sonata-project.org/schema/dic/admin';
     }
 
     public function getAlias()
     {
-        return "sonata_base_application";
+        return "sonata_admin";
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Sonata\BaseApplicationBundle\Form;
+namespace Sonata\AdminBundle\Form;
 
 /*
  * This file is part of the Symfony framework.

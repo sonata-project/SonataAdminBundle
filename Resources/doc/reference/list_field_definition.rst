@@ -11,7 +11,7 @@ Example
     <?php
     namespace Sonata\NewsBundle\Admin;
 
-    use Sonata\BaseApplicationBundle\Admin\EntityAdmin;
+    use Sonata\AdminBundle\Admin\EntityAdmin;
 
     class PostAdmin extends EntityAdmin
     {

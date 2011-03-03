@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\BaseApplicationBundle\Form;
+namespace Sonata\AdminBundle\Form;
 
 use Symfony\Component\Form\FormInterface;
     

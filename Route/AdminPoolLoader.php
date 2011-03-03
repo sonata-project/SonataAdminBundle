@@ -9,7 +9,7 @@
  */
 
 
-namespace Sonata\BaseApplicationBundle\Route;
+namespace Sonata\AdminBundle\Route;
 
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\Route;
@@ -17,12 +17,12 @@ use Symfony\Component\Routing\Route;
 use Symfony\Component\Config\Loader\FileLoader;
 use Symfony\Component\Config\Resource\FileResource;
 
-use Sonata\BaseApplicationBundle\Admin\Pool;
+use Sonata\AdminBundle\Admin\Pool;
 
 class AdminPoolLoader extends FileLoader
 {
     /**
-     * @var Bundle\Sonata\BaseApplicationBundle\Admin\Pool
+     * @var Bundle\Sonata\AdminBundle\Admin\Pool
      */
     protected $pool;
 
@@ -33,7 +33,7 @@ class AdminPoolLoader extends FileLoader
 
     function supports($resource, $type = null)
     {
-        if ($type == 'sonata_base_application') {
+        if ($type == 'sonata_admin') {
             return true;
         }
 

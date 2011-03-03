@@ -8,12 +8,12 @@
  * file that was distributed with this source code.
  *
  */
-namespace Sonata\BaseApplicationBundle\Datagrid;
+namespace Sonata\AdminBundle\Datagrid;
 
-use Sonata\BaseApplicationBundle\Admin\Admin;
-use Sonata\BaseApplicationBundle\Admin\FieldDescription;
-use Sonata\BaseApplicationBundle\Datagrid\ListCollection;
-use Sonata\BaseApplicationBundle\Builder\ListBuilderInterface;
+use Sonata\AdminBundle\Admin\Admin;
+use Sonata\AdminBundle\Admin\FieldDescription;
+use Sonata\AdminBundle\Datagrid\ListCollection;
+use Sonata\AdminBundle\Builder\ListBuilderInterface;
 
 /**
  * This class is use to simulate the Form API

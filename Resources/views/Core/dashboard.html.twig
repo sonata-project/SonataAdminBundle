@@ -11,15 +11,15 @@ file that was distributed with this source code.
 
 {% extends base_template %}
 
-{% block title %}{% trans 'title_dashboard' from 'BaseApplicationBundle' %}{% endblock%}
-{% block breadcrumb %}{% trans 'title_dashboard' from 'BaseApplicationBundle' %}{% endblock %}
+{% block title %}{% trans 'title_dashboard' from 'AdminBundle' %}{% endblock%}
+{% block breadcrumb %}{% trans 'title_dashboard' from 'AdminBundle' %}{% endblock %}
 {% block content %}
 
     {% for code, group in groups %}
         <table class="sonata-ba-list">
             <thead>
                 <tr>
-                    <th  colspan="3">{% trans code from 'BaseApplicationBundle' %}</td>
+                    <th  colspan="3">{% trans code from 'AdminBundle' %}</td>
                 </tr>
             </thead>
 
@@ -27,8 +27,8 @@ file that was distributed with this source code.
                 {% for admin in group %}
                     <tr>
                         <td class="sonata-ba-list-label">{% trans admin.label from admin.translationdomain  %}</td>
-                        <td><a href="{{ admin.generateUrl('create')}}"><img src="{{ asset('bundles/sonatabaseapplication/famfamfam/add.png') }}" /> {% trans 'link_add' from 'BaseApplicationBundle' %}</a></td>
-                        <td><a href="{{ admin.generateUrl('list')}}"><img src="{{ asset('bundles/sonatabaseapplication/famfamfam/application_view_list.png') }}" />{% trans 'link_list' from 'BaseApplicationBundle' %}</a></td>
+                        <td><a href="{{ admin.generateUrl('create')}}"><img src="{{ asset('bundles/sonataadmin/famfamfam/add.png') }}" /> {% trans 'link_add' from 'AdminBundle' %}</a></td>
+                        <td><a href="{{ admin.generateUrl('list')}}"><img src="{{ asset('bundles/sonataadmin/famfamfam/application_view_list.png') }}" />{% trans 'link_list' from 'AdminBundle' %}</a></td>
                     </tr>
                 {% endfor %}
             </tbody>

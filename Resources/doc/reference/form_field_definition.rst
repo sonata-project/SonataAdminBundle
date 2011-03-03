@@ -11,8 +11,8 @@ Example
     <?php
     namespace Sonta\NewsBundle\Admin;
 
-    use Sonata\BaseApplicationBundle\Form\FormMapper;
-    use Sonata\BaseApplicationBundle\Admin\EntityAdmin;
+    use Sonata\AdminBundle\Form\FormMapper;
+    use Sonata\AdminBundle\Admin\EntityAdmin;
 
     class PostAdmin extends EntityAdmin
     {

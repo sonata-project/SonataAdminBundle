@@ -9,13 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\BaseApplicationBundle\Controller;
+namespace Sonata\AdminBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Response;
 
-use Sonata\BaseApplicationBundle\Form\RecursiveFieldIterator;
+use Sonata\AdminBundle\Form\RecursiveFieldIterator;
 
 class CoreController extends Controller
 {
@@ -23,10 +23,10 @@ class CoreController extends Controller
     public function getBaseTemplate()
     {        
         if ($this->get('request')->isXmlHttpRequest()) {
-            return $this->container->getParameter('sonata_base_application.templates.ajax');
+            return $this->container->getParameter('sonata_admin.templates.ajax');
         }
 
-        return $this->container->getParameter('sonata_base_application.templates.layout');
+        return $this->container->getParameter('sonata_admin.templates.layout');
     }
 
     public function retrieveFormFieldElementAction()
@@ -55,7 +55,7 @@ class CoreController extends Controller
     {
         // todo : refactor the code into inside the admin
         $admin = $this->container
-           ->get('sonata_base_application.admin.pool')
+           ->get('sonata_admin.admin.pool')
            ->getInstance($code);
 
         if($this->container->get('request')->get('uniqid')) {
@@ -163,7 +163,7 @@ class CoreController extends Controller
         // render the widget
         // todo : fix this, the twig environment variable is not set inside the extension ...
         $twig = $this->get('twig');
-        $extension = $twig->getExtension('sonata_base_application');
+        $extension = $twig->getExtension('sonata_admin');
         $extension->initRuntime($this->get('twig'));
 
         return new Response($extension->renderFormElement($fieldDescription, $form, $form->getData()));
@@ -176,7 +176,7 @@ class CoreController extends Controller
         $objectId   = $objectId ?: $this->get('request')->query->get('objectId');
         $uniqid     = $uniqid   ?: $this->get('request')->get('uniqid');
 
-        $admin  = $this->container->get('sonata_base_application.admin.pool')->getInstance($code);
+        $admin  = $this->container->get('sonata_admin.admin.pool')->getInstance($code);
         if($uniqid) {
             $admin->setUniqid($uniqid);
         }
@@ -203,8 +203,8 @@ class CoreController extends Controller
     public function dashboardAction()
     {
 
-        return $this->render('SonataBaseApplicationBundle:Core:dashboard.html.twig', array(
-            'groups' => $this->get('sonata_base_application.admin.pool')->getDashboardGroups(),
+        return $this->render('SonataAdminBundle:Core:dashboard.html.twig', array(
+            'groups' => $this->get('sonata_admin.admin.pool')->getDashboardGroups(),
             'base_template'  => $this->getBaseTemplate(),
         ));
     }

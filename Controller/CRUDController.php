@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\BaseApplicationBundle\Controller;
+namespace Sonata\AdminBundle\Controller;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -79,7 +79,7 @@ class CRUDController extends Controller
         $actionName = $this->container->get('request')->get('_bab_action');
         
         $this->admin = $this->container
-            ->get('sonata_base_application.admin.pool')
+            ->get('sonata_admin.admin.pool')
             ->getAdminByActionName($actionName);
 
         if(!$this->admin) {
@@ -103,10 +103,10 @@ class CRUDController extends Controller
     public function getBaseTemplate()
     {
         if ($this->isXmlHttpRequest()) {
-            return $this->container->getParameter('sonata_base_application.templates.ajax');
+            return $this->container->getParameter('sonata_admin.templates.ajax');
         }
 
-        return $this->container->getParameter('sonata_base_application.templates.layout');
+        return $this->container->getParameter('sonata_admin.templates.layout');
     }
 
     /**

@@ -203,7 +203,7 @@ This code manage the many-to-[one|many] association field popup
 
                         // reload the form element
                         jQuery('#field_widget_{{ field_element.id }}').closest('form').ajaxSubmit({
-                            url: '{{ url('sonata_base_application_retrieve_form_element', {
+                            url: '{{ url('sonata_admin_retrieve_form_element', {
                                 'elementId': field_element.id,
                                 'objectId':  admin.root.subject.id,
                                 'uniqid':    admin.root.uniqid,
@@ -224,7 +224,7 @@ This code manage the many-to-[one|many] association field popup
                 // otherwise, display form error
                 field_dialog_{{ field_element.id }}.html(html);
 
-                BaseApplication.add_pretty_errors(field_dialog_{{ field_element.id }});
+                Admin.add_pretty_errors(field_dialog_{{ field_element.id }});
 
                 // reattach the event
                 jQuery('form', field_dialog_{{ field_element.id }}).submit(field_dialog_form_action_{{ field_element.id }});
@@ -269,7 +269,7 @@ This code manage the many-to-[one|many] association field popup
         return false;
     }
 
-    BaseApplication.add_pretty_errors(field_dialog_{{ field_element.id }});
+    Admin.add_pretty_errors(field_dialog_{{ field_element.id }});
 
 
     {% if field_description.options.edit == 'list' %}
@@ -304,7 +304,7 @@ This code manage the many-to-[one|many] association field popup
         jQuery('#{{ field_element.id }}').live('change', function(event) {
             jQuery.ajax({
                 type: 'GET',
-                url: '{{ url('sonata_base_application_short_object_information', {
+                url: '{{ url('sonata_admin_short_object_information', {
                     'objectId': 'OBJECT_ID',
                     'uniqid': field_description.associationadmin.uniqid,
                     'code': field_description.associationadmin.code

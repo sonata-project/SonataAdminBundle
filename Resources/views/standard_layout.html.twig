@@ -23,21 +23,21 @@ file that was distributed with this source code.
             <!--[if lt IE 8]><link rel="stylesheet" href="{{ asset('bundles/sonatablueprint/ie.css') }}" type="text/css" media="screen, projection"><![endif]-->
 
             <!-- base application asset -->
-            <link rel="stylesheet" href="{{ asset('bundles/sonatabaseapplication/css/layout.css') }}" type="text/css" media="all">
-            <link rel="stylesheet" href="{{ asset('bundles/sonatabaseapplication/css/colors.css') }}" type="text/css" media="all">
+            <link rel="stylesheet" href="{{ asset('bundles/sonataadmin/css/layout.css') }}" type="text/css" media="all">
+            <link rel="stylesheet" href="{{ asset('bundles/sonataadmin/css/colors.css') }}" type="text/css" media="all">
         {% endblock %}
         
         {% block javascripts %}
             <script src="{{ asset('bundles/sonatajquery/jquery-1.4.4.js') }}" type="text/javascript"></script>
             <script src="{{ asset('bundles/sonatajquery/jquery-ui-1.8.6.custom.js') }}" type="text/javascript"></script>
             <script src="{{ asset('bundles/sonatajquery/jquery-ui-i18n.js') }}" type="text/javascript"></script>        
-            <script src="{{ asset('bundles/sonatabaseapplication/qtip/jquery.qtip-1.0.0-rc3.min.js') }}" type="text/javascript"></script>
-            <script src="{{ asset('bundles/sonatabaseapplication/jquery/jquery.form.js') }}" type="text/javascript"></script>
-            <script src="{{ asset('bundles/sonatabaseapplication/base.js') }}" type="text/javascript"></script>
+            <script src="{{ asset('bundles/sonataadmin/qtip/jquery.qtip-1.0.0-rc3.min.js') }}" type="text/javascript"></script>
+            <script src="{{ asset('bundles/sonataadmin/jquery/jquery.form.js') }}" type="text/javascript"></script>
+            <script src="{{ asset('bundles/sonataadmin/base.js') }}" type="text/javascript"></script>
         {% endblock %}
 
         <title>
-            {% block title %} {% trans 'Admin' from 'BaseApplicationBundle' %}
+            {% block title %} {% trans 'Admin' from 'AdminBundle' %}
                 {% if breadcrumbs is defined %}
                     -
                     {% for label, uri in breadcrumbs %}
@@ -62,7 +62,7 @@ file that was distributed with this source code.
         <div class="container">
             <div class="span-24 last header">
                 <div class="span-20">
-                    <a href="{{ url('sonata_base_application_dashboard') }}" class="home">{% trans 'Admin' from 'BaseApplicationBundle' %}</a>
+                    <a href="{{ url('sonata_admin_dashboard') }}" class="home">{% trans 'Admin' from 'AdminBundle' %}</a>
                 </div>
 
                 <div class="span-4 last">

@@ -13,7 +13,7 @@ Just create 3 files inside the Controller directory
 
     namespace Sonata\NewsBundle\Controller;
 
-    use Sonata\BaseApplicationBundle\Controller\CRUDController as Controller;
+    use Sonata\AdminBundle\Controller\CRUDController as Controller;
     
     class TagAdminController extends Controller
     {
@@ -26,7 +26,7 @@ Just create 3 files inside the Controller directory
 
     namespace Sonata\NewsBundle\Controller;
 
-    use Sonata\BaseApplicationBundle\Controller\CRUDController as Controller;
+    use Sonata\AdminBundle\Controller\CRUDController as Controller;
 
     class PostAdminController extends Controller
     {
@@ -39,7 +39,7 @@ Just create 3 files inside the Controller directory
 
     namespace Sonata\NewsBundle\Controller;
 
-    use Sonata\BaseApplicationBundle\Controller\CRUDController as Controller;
+    use Sonata\AdminBundle\Controller\CRUDController as Controller;
 
     class TagAdminController extends Controller
     {

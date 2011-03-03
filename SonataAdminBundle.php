@@ -8,11 +8,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\BaseApplicationBundle;
+namespace Sonata\AdminBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class SonataBaseApplicationBundle extends Bundle
+class SonataAdminBundle extends Bundle
 {
 
 }

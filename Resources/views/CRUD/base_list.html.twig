@@ -58,7 +58,7 @@ file that was distributed with this source code.
                         <td colspan="{{ list.elements|length }}" class="pager">
                             <ul>
                                 {% if datagrid.pager.page != datagrid.pager.previouspage %}
-                                    <li><a href="{{ admin.generateUrl('list', datagrid.values|merge({'page': datagrid.pager.previouspage})) }}">{% trans 'link_previous_pager' from 'BaseApplicationBundle' %}</a></li>
+                                    <li><a href="{{ admin.generateUrl('list', datagrid.values|merge({'page': datagrid.pager.previouspage})) }}">{% trans 'link_previous_pager' from 'AdminBundle' %}</a></li>
                                 {% endif %}
 
                                 {# Set the number of pages to display in the pager #}
@@ -71,7 +71,7 @@ file that was distributed with this source code.
                                 {% endfor %}
 
                                 {% if datagrid.pager.page != datagrid.pager.nextpage %}
-                                    <li><a href="{{ admin.generateUrl('list', datagrid.values|merge({'page': datagrid.pager.nextpage})) }}">{% trans 'link_next_pager' from 'BaseApplicationBundle' %}</a></li>
+                                    <li><a href="{{ admin.generateUrl('list', datagrid.values|merge({'page': datagrid.pager.nextpage})) }}">{% trans 'link_next_pager' from 'AdminBundle' %}</a></li>
                                 {% endif %}
                             </ul>
                         </td>
@@ -94,7 +94,7 @@ file that was distributed with this source code.
                     <option value="{{ action }}">{{ label }}</option>
                 {% endfor %}
             </select>
-            <input type="submit" value="{% trans 'btn_batch' from 'BaseApplicationBundle' %}" />
+            <input type="submit" value="{% trans 'btn_batch' from 'AdminBundle' %}" />
 
         </div>
     </form>
@@ -109,9 +109,9 @@ file that was distributed with this source code.
                 </div>
             {% endfor %}
 
-            <input type="submit" value="{% trans 'btn_filter' from 'BaseApplicationBundle' %}" />
+            <input type="submit" value="{% trans 'btn_filter' from 'AdminBundle' %}" />
 
-            <a href="{{ admin.generateUrl('list') }}">{% trans 'link_reset_filter' from 'BaseApplicationBundle' %}</a>
+            <a href="{{ admin.generateUrl('list') }}">{% trans 'link_reset_filter' from 'AdminBundle' %}</a>
         </form>
     {% endif %}
 {% endblock %}

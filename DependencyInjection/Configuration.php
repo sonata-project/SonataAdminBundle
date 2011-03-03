@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\BaseApplicationBundle\DependencyInjection;
+namespace Sonata\AdminBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder;
 
@@ -34,7 +34,7 @@ class Configuration
     public function getConfigTree($kernelDebug)
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('sonata_base_application', 'array');
+        $rootNode = $treeBuilder->root('sonata_admin', 'array');
 
         $rootNode
             ->arrayNode('entities')

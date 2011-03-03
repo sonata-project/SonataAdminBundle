@@ -8,12 +8,12 @@
  * file that was distributed with this source code.
  *
  */
-namespace Sonata\BaseApplicationBundle\Form;
+namespace Sonata\AdminBundle\Form;
 
-use Sonata\BaseApplicationBundle\Builder\FormBuilderInterface;
-use Sonata\BaseApplicationBundle\Admin\Admin;
+use Sonata\AdminBundle\Builder\FormBuilderInterface;
+use Sonata\AdminBundle\Admin\Admin;
 
-use Sonata\BaseApplicationBundle\Admin\FieldDescription;
+use Sonata\AdminBundle\Admin\FieldDescription;
 
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FieldInterface;

@@ -11,7 +11,7 @@ git, you can add them as submodules::
 
   git submodule add git@github.com:sonata-project/jQueryBundle.git src/Sonata/jQueryBundle
   git submodule add git@github.com:sonata-project/BluePrintBundle.git src/Sonata/BluePrintBundle
-  git submodule add git@github.com:sonata-project/BaseApplicationBundle.git src/Sonata/BaseApplicationBundle
+  git submodule add git@github.com:sonata-project/AdminBundle.git src/Sonata/AdminBundle
   git submodule add git@github.com:sonata-project/MenuBundle.git src/Knplabs/MenuBundle
 
 Next, be sure to enable the bundles in your application kernel:
@@ -33,7 +33,7 @@ Next, be sure to enable the bundles in your application kernel:
           // ...
           new Sonata\jQueryBundle\SonatajQueryBundle(),
           new Sonata\BluePrintBundle\SonataBluePrintBundle(),
-          new Sonata\BaseApplicationBundle\SonataBaseApplicationBundle(),
+          new Sonata\AdminBundle\SonataAdminBundle(),
           new Knplabs\MenuBundle\KnplabsMenuBundle(),
           // ...
       );
@@ -42,31 +42,31 @@ Next, be sure to enable the bundles in your application kernel:
 Configuration
 -------------
 
-To use the ``BaseApplicationBundle``, add the following to your application
+To use the ``AdminBundle``, add the following to your application
 configuration file.
 
 .. code-block:: yaml
 
     # app/config/config.yml
-    sonata_base_application: ~
+    sonata_admin: ~
 
     menu.twig:   ~
 
 The bundle also contains several routes. Import them by adding the following
 code to your application's routing file:
 
-- Add the BaseApplicationBundle's routing definition
+- Add the AdminBundle's routing definition
 
 .. code-block:: yaml
 
     # app/config/routing.yml
-    base_application:
-        resource: '@SonataBaseApplicationBundle/Resources/config/routing/sonata_base_application.xml'
+    admin:
+        resource: '@SonataAdminBundle/Resources/config/routing/sonata_admin.xml'
         prefix: /admin
 
-    _sonata_base_application:
+    _sonata_admin:
         resource: .
-        type: sonata_base_application
+        type: sonata_admin
         prefix: /admin
 
 At this point you can access to the dashboard with the url: ``http://yoursite.local/admin/dashboard``.
@@ -86,7 +86,7 @@ Once you have created an admin class, you must declare the class to use it. Like
 .. code-block:: yaml
 
     # app/config/config.yml
-    sonata_base_application:
+    sonata_admin:
         entities:
             post:
                 label:      Post

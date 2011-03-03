@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\BaseApplicationBundle\Builder;
+namespace Sonata\AdminBundle\Builder;
 
-use Sonata\BaseApplicationBundle\Admin\FieldDescription;
-use Sonata\BaseApplicationBundle\Admin\Admin;
+use Sonata\AdminBundle\Admin\FieldDescription;
+use Sonata\AdminBundle\Admin\Admin;
 
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormContextInterface;

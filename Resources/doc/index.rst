@@ -1,7 +1,7 @@
-Welcome to BaseApplicationBundle documentation
+Welcome to AdminBundle documentation
 ==============================================
 
-The ``BaseApplicationBundle`` provides a CRUD interface for a Doctrine entity.
+The ``AdminBundle`` provides a CRUD interface for a Doctrine entity.
 
 Reference Guide
 ---------------

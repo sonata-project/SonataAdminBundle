@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\BaseApplicationBundle\Filter;
+namespace Sonata\AdminBundle\Filter;
 
-use Sonata\BaseApplicationBundle\Admin\FieldDescription;
+use Sonata\AdminBundle\Admin\FieldDescription;
 use Doctrine\ORM\QueryBuilder;
 
 class StringFilter extends Filter

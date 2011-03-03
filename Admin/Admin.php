@@ -9,16 +9,16 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\BaseApplicationBundle\Admin;
+namespace Sonata\AdminBundle\Admin;
 
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\Form;
 
-use Sonata\BaseApplicationBundle\Form\FormMapper;
-use Sonata\BaseApplicationBundle\Datagrid\ListMapper;
-use Sonata\BaseApplicationBundle\Datagrid\DatagridMapper;
-use Sonata\BaseApplicationBundle\Datagrid\Datagrid;
+use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Datagrid\DatagridMapper;
+use Sonata\AdminBundle\Datagrid\Datagrid;
 
 use Knplabs\MenuBundle\Menu;
 use Knplabs\MenuBundle\MenuItem;
@@ -124,7 +124,7 @@ abstract class Admin extends ContainerAware
      *
      * @var string
      */
-    protected $translationDomain = 'BaseApplicationBundle';
+    protected $translationDomain = 'AdminBundle';
 
     /**
      * options to set to the form (ie, validation_groups)
@@ -352,7 +352,7 @@ abstract class Admin extends ContainerAware
                 'code'  => '_batch',
                 'type'  => 'batch',
             ));
-            $fieldDescription->setTemplate('SonataBaseApplicationBundle:CRUD:list__batch.html.twig');
+            $fieldDescription->setTemplate('SonataAdminBundle:CRUD:list__batch.html.twig');
             $this->listFieldDescriptions = array( '_batch' => $fieldDescription ) + $this->listFieldDescriptions;
         }
 
@@ -744,7 +744,7 @@ abstract class Admin extends ContainerAware
      */
     public function getListTemplate()
     {
-        return 'SonataBaseApplicationBundle:CRUD:list.html.twig';
+        return 'SonataAdminBundle:CRUD:list.html.twig';
     }
 
     /**
@@ -754,7 +754,7 @@ abstract class Admin extends ContainerAware
      */
     public function getEditTemplate()
     {
-        return 'SonataBaseApplicationBundle:CRUD:edit.html.twig';
+        return 'SonataAdminBundle:CRUD:edit.html.twig';
     }
 
     /**
@@ -1016,7 +1016,7 @@ abstract class Admin extends ContainerAware
 
     public function getConfigurationPool()
     {
-        return $this->container->get('sonata_base_application.admin.pool');
+        return $this->container->get('sonata_admin.admin.pool');
     }
 
     public function getCode()

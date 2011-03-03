@@ -12,8 +12,8 @@ Example
     <?php
     namespace Sonata\NewsBundle\Admin;
 
-    use Sonata\BaseApplicationBundle\Datagrid\DatagridMapper;
-    use Sonata\BaseApplicationBundle\Admin\EntityAdmin;
+    use Sonata\AdminBundle\Datagrid\DatagridMapper;
+    use Sonata\AdminBundle\Admin\EntityAdmin;
 
     class PostAdmin extends EntityAdmin
     {
@@ -27,7 +27,7 @@ Example
         {
 
             $datagrid->add('with_open_comments', array(
-                'template' => 'SonataBaseApplicationBundle:CRUD:filter_callback.html.twig',
+                'template' => 'SonataAdminBundle:CRUD:filter_callback.html.twig',
                 'type' => 'callback',
                 'filter_options' => array(
                     'filter' => array($this, 'getWithOpenCommentFilter'),

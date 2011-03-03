@@ -51,8 +51,8 @@ The current implementation uses Twig as the template engine. All templates
 are located in the Resources/views/CRUD directory of the bundle. The base
 template extends two layouts:
 
-* ``BaseApplicationBundle::standard_layout.twig``
-* ``BaseApplicationBundle::ajax_layout.twig``
+* ``AdminBundle::standard_layout.twig``
+* ``AdminBundle::ajax_layout.twig``
 
 Each field is rendered in three different ways and each has its own Twig
 template. For example, for a field with a ``text`` type, the following three
@@ -78,7 +78,7 @@ property.
 Obtaining an ``Admin`` Service
 ------------------------------
 
-``Admin`` definition are accessible through the 'base_application.pool' service.
+``Admin`` definition are accessible through the 'admin.pool' service.
 The ``Admin`` definitions are lazy loaded from the Pool to avoid overhead.
 
 Filter and Datagrid

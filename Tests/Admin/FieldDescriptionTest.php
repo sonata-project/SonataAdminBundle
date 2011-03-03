@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\BaseApplicationBundle\Tests\Admin;
+namespace Sonata\AdminBundle\Tests\Admin;
 
-use Sonata\BaseApplicationBundle\Admin\FieldDescription;
+use Sonata\AdminBundle\Admin\FieldDescription;
 
 class FieldDescriptionTest extends \PHPUnit_Framework_TestCase
 {

@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\BaseApplicationBundle\Datagrid;
+namespace Sonata\AdminBundle\Datagrid;
 
-use Sonata\BaseApplicationBundle\Tool\DoctrinePager as Pager;
+use Sonata\AdminBundle\Tool\DoctrinePager as Pager;
 
-use Sonata\BaseApplicationBundle\Admin\EntityAdmin;
-use Sonata\BaseApplicationBundle\Admin\FieldDescription;
+use Sonata\AdminBundle\Admin\EntityAdmin;
+use Sonata\AdminBundle\Admin\FieldDescription;
 
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 

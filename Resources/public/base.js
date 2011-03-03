@@ -1,11 +1,11 @@
 jQuery(document).ready(function() {
 
-    BaseApplication.add_pretty_errors(document);
-    BaseApplication.add_collapsed_toggle();
+    Admin.add_pretty_errors(document);
+    Admin.add_collapsed_toggle();
 });
 
 
-var BaseApplication = {
+var Admin = {
 
     add_pretty_errors: function(subject) {
 
