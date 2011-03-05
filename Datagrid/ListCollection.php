@@ -32,5 +32,13 @@ class ListCollection
     {
         return array_key_exists($name, $this->elements);
     }
-    
+
+    public function get($name)
+    {
+        if ($this->has($name)) {
+            return $this->elements[$name];
+        }
+
+        throw new \InvalidArgumentException(sprintf('Element "%s" does not exist.', $name));
+    }
 }
