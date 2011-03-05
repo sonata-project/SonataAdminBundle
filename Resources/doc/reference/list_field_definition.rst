@@ -12,19 +12,20 @@ Example
     namespace Sonata\NewsBundle\Admin;
 
     use Sonata\AdminBundle\Admin\EntityAdmin;
+    use Sonata\AdminBundle\Datagrid\ListMapper;
 
     class PostAdmin extends EntityAdmin
     {
         protected $list = array(
-            'title' => array(),
+            'title'   => array(),
             'enabled' => array('type' => 'boolean'),
-            'tags' => array()
+            'tags'    => array(),
+            'summary' => array(),
         );
 
-        public function configureListFields() // optional
+        protected function configureListFields(ListMapper $list) // optional
         {
-
-            $this->listFields['summary']->setTemplate('NewsBundle:NewsAdmin:list_summary.twig');
+            $list->get('summary')->setTemplate('NewsBundle:NewsAdmin:list_summary.twig');
         }
     }
 
