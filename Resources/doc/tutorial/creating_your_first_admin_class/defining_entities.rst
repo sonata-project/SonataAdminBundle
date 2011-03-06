@@ -45,16 +45,15 @@ Model definition
             );
         }
 
-        public function prePersist()
+        public function preInsert($object)
         {
-            $this->setCreatedAt(new \DateTime);
-
-            $this->setUpdatedAt(new \DateTime);
+            $object->setCreatedAt(new \DateTime);
+            $object->setUpdatedAt(new \DateTime);
         }
 
-        public function preUpdate()
+        public function preUpdate($object)
         {
-            $this->setUpdatedAt(new \DateTime);
+            $object->setUpdatedAt(new \DateTime);
         }
 
     }
@@ -101,16 +100,15 @@ Model definition
             
         }
 
-        public function prePersist()
+        public function preInsert($object)
         {
-            $this->setCreatedAt(new \DateTime);
-
-            $this->setUpdatedAt(new \DateTime);
+            $object->setCreatedAt(new \DateTime);
+            $object->setUpdatedAt(new \DateTime);
         }
 
-        public function preUpdate()
+        public function preUpdate($object)
         {
-            $this->setUpdatedAt(new \DateTime);
+            $object->setUpdatedAt(new \DateTime);
         }
     }
     
@@ -134,16 +132,15 @@ Model definition
         protected $posts;
 
 
-        public function prePersist()
+        public function preInsert($object)
         {
-            $this->setCreatedAt(new \DateTime);
-
-            $this->setUpdatedAt(new \DateTime);
+            $object->setCreatedAt(new \DateTime);
+            $object->setUpdatedAt(new \DateTime);
         }
 
-        public function preUpdate()
+        public function preUpdate($object)
         {
-            $this->setUpdatedAt(new \DateTime);
+            $object->setUpdatedAt(new \DateTime);
         }
     }
 
