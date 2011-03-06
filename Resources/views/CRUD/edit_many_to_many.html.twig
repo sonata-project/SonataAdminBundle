@@ -21,8 +21,11 @@ file that was distributed with this source code.
             <a
                 href="{{ field_description.associationadmin.generateUrl('create') }}"
                 onclick="start_field_dialog_form_add_{{ field_element.id }}(event)"
-                class="action">
-                    <img src="{{ asset('bundles/sonataadmin/famfamfam/add.png') }}" alt="{% trans 'btn_add' from 'AdminBundle' %}" />
+                class="sonata-ba-action">
+                    <img
+                        src="{{ asset('bundles/sonataadmin/famfamfam/add.png') }}"
+                        alt="{% trans 'btn_add' from 'AdminBundle' %}"
+                    />
             </a>
         </span>
         

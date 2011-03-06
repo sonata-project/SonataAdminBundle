@@ -7,9 +7,26 @@ jQuery(document).ready(function() {
 
 var Admin = {
 
+    /**
+     * render log message
+     * @param mixed
+     */
+    log: function() {
+        var msg = '[Sonata.Admin] ' + Array.prototype.join.call(arguments,', ');
+        if (window.console && window.console.log) {
+            window.console.log(msg);
+        }
+        else if (window.opera && window.opera.postError) {
+            window.opera.postError(msg);
+        }
+    },
+
+    /**
+     * display related errors messages
+     * 
+     * @param subject
+     */
     add_pretty_errors: function(subject) {
-
-
         jQuery('div.sonata-ba-field-error', subject).each(function(index, element) {
             var input = jQuery('input, textarea', element);
 
@@ -44,6 +61,11 @@ var Admin = {
         });
     },
 
+    /**
+     * Add the collapsed toggle option to the admin
+     *
+     * @param subject
+     */
     add_collapsed_toggle: function(subject) {
         jQuery('fieldset legend a.sonata-ba-collapsed', subject).live('click', function(event) {
             event.preventDefault();

@@ -26,6 +26,7 @@ This code manage the one-to-many association field popup
     var field_add_{{ field_element.id }} = function(event) {
 
         event.preventDefault();
+        event.stopPropagation();
 
         var form = jQuery(this).closest('form');
 

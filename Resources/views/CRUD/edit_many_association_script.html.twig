@@ -30,7 +30,8 @@ This code manage the many-to-[one|many] association field popup
         initialize_popup_{{ field_element.id }}();
         
         event.preventDefault();
-
+        event.stopPropagation();
+        
         var element = jQuery(this).parents('#field_dialog_{{ field_element.id }} td.sonata-ba-list-field');
 
         // the user does does click on a row column
@@ -60,7 +61,8 @@ This code manage the many-to-[one|many] association field popup
         initialize_popup_{{ field_element.id }}();
 
         event.preventDefault();
-
+        event.stopPropagation();
+        
         var a = jQuery(this);
 
         field_dialog_{{ field_element.id }}.html('');
@@ -113,15 +115,19 @@ This code manage the many-to-[one|many] association field popup
         initialize_popup_{{ field_element.id }}();
 
         event.preventDefault();
+        event.stopPropagation();
 
         var a = jQuery(this);
 
         field_dialog_{{ field_element.id }}.html('');
 
+        Admin.log('[{{ field_element.id }}|field_dialog_form_add] add link action');
         // retrieve the form element from the related admin generator
         jQuery.ajax({
             url: a.attr('href'),
             success: function(html) {
+
+                Admin.log('[{{ field_element.id }}|field_dialog_form_add] ajax success', field_dialog_{{ field_element.id }});
                 
                 // populate the popup container
                 field_dialog_{{ field_element.id }}.html(html);
@@ -139,6 +145,7 @@ This code manage the many-to-[one|many] association field popup
                     resizable: false,
                     title: '{{ field_description.associationadmin.label }}',
                     close: function(event, ui) {
+                        Admin.log('[{{ field_element.id }}|field_dialog_form_add] dialog closed - removing `live` events');
                         // make sure we have a clean state
                         jQuery('a', field_dialog_{{ field_element.id }}).die('click');
                         jQuery('form', field_dialog_{{ field_element.id }}).die('submit');
@@ -152,7 +159,9 @@ This code manage the many-to-[one|many] association field popup
     var field_dialog_form_action_{{ field_element.id }} = function(event) {
 
         event.preventDefault();
-
+        event.stopPropagation();
+        
+        Admin.log('[{{ field_element.id }}|field_dialog_form_action] action catch', this);
         initialize_popup_{{ field_element.id }}();
 
         var element = jQuery(this);
@@ -168,12 +177,19 @@ This code manage the many-to-[one|many] association field popup
             return;
         }
 
+        if(element.hasClass('sonata-ba-action')) {
+            Admin.log('[{{ field_element.id }}|field_dialog_form_action] reserved action stop catch all events');
+            return;
+        }
+
         var data = {
             _xml_http_request: true
         }
 
         var form = jQuery(this);
 
+        Admin.log('[{{ field_element.id }}|field_dialog_form_action] execute ajax call');
+        
         // the ajax post
         jQuery(form).ajaxSubmit({
             url: url,
@@ -181,6 +197,7 @@ This code manage the many-to-[one|many] association field popup
             data: data,
             success: function(data) {
 
+                Admin.log('[{{ field_element.id }}|field_dialog_form_action] ajax success');
                 if(typeof data == 'string') {
                     field_dialog_{{ field_element.id }}.html(data);
                     return;
@@ -243,6 +260,8 @@ This code manage the many-to-[one|many] association field popup
 
             // move the dialog as a child of the root element, nested form breaks html ...
             jQuery(document).append(field_dialog_{{ field_element.id }});
+
+            Admin.log('[{{ field_element.id }}|field_dialog] move dialog container as a document child');
         }
     }
 
