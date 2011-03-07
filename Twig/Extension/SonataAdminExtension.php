@@ -97,7 +97,7 @@ class SonataAdminExtension extends \Twig_Extension
     public function getValueFromFieldDescription($object, FieldDescription $fieldDescription, array $params = array())
     {
 
-        if(isset($params['loop']) && $object instanceof \ArrayAccess) {
+        if (isset($params['loop']) && $object instanceof \ArrayAccess) {
             $object = $object[$params['loop']['index0']];
         }
 

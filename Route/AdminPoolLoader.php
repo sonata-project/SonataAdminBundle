@@ -26,9 +26,15 @@ class AdminPoolLoader extends FileLoader
      */
     protected $pool;
 
-    public function __construct(Pool $pool)
+    /**
+     * @var array
+     */
+    protected $adminServiceIds = array();
+
+    public function __construct(Pool $pool, $adminServiceIds)
     {
         $this->pool = $pool;
+        $this->adminServiceIds = $adminServiceIds;
     }
 
     function supports($resource, $type = null)
@@ -43,16 +49,18 @@ class AdminPoolLoader extends FileLoader
     function load($resource, $type = null)
     {
         $collection = new RouteCollection;
-        foreach ($this->pool->getInstances() as $admin) {
+        foreach ($this->adminServiceIds as $id) {
+
+            $admin = $this->pool->getInstance($id);
+
             foreach ($admin->getUrls() as $action => $configuration) {
 
                 $defaults = isset($configuration['defaults'])       ? $configuration['defaults'] : array();
 
-                if(!isset($defaults['_controller'])) {
+                if (!isset($defaults['_controller'])) {
                     $defaults['_controller'] = sprintf('%s:%s', $admin->getBaseControllerName(), $this->actionify($action));
                 }
-                $defaults['_bab_action'] = sprintf('%s.%s', $admin->getCode(), $action);
-
+                
                 $collection->add($configuration['name'], new Route(
                     $configuration['pattern'],
                     $defaults,

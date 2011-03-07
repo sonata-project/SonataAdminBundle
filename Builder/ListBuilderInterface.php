@@ -18,10 +18,27 @@ use Sonata\AdminBundle\Datagrid\ListCollection;
 
 interface ListBuilderInterface
 {
+    /**
+     * @abstract
+     * @param array $options
+     * @return void
+     */
     function getBaseList(array $options = array());
 
+    /**
+     * @abstract
+     * @param \Sonata\AdminBundle\Datagrid\ListCollection $list
+     * @param \Sonata\AdminBundle\Admin\FieldDescription $fieldDescription
+     * @return void
+     */
     function addField(ListCollection $list, FieldDescription $fieldDescription);
 
+    /**
+     * @abstract
+     * @param \Sonata\AdminBundle\Admin\Admin $admin
+     * @param \Sonata\AdminBundle\Admin\FieldDescription $fieldDescription
+     * @param array $options
+     * @return void
+     */
     function fixFieldDescription(Admin $admin, FieldDescription $fieldDescription, array $options = array());
-
 }

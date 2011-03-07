@@ -22,11 +22,37 @@ use Symfony\Component\Form\FieldFactory\FieldFactoryInterface;
 interface FormBuilderInterface
 {
 
+    /**
+     * @abstract
+     * @param \Symfony\Component\Form\FieldFactory\FieldFactoryInterface $fieldFactory
+     * @param \Symfony\Component\Form\FormContextInterface $formContext
+     * @param \Symfony\Component\Validator\ValidatorInterface $validator
+     */
     function __construct(FieldFactoryInterface $fieldFactory, FormContextInterface $formContext, ValidatorInterface $validator);
 
+    /**
+     * @abstract
+     * @param \Symfony\Component\Form\Form $form
+     * @param \Sonata\AdminBundle\Admin\FieldDescription $fieldDescription
+     * @return void
+     */
     function addField(Form $form, FieldDescription $fieldDescription);
 
+    /**
+     * @abstract
+     * @param \Sonata\AdminBundle\Admin\Admin $admin
+     * @param \Sonata\AdminBundle\Admin\FieldDescription $fieldDescription
+     * @param array $options
+     * @return void
+     */
     function fixFieldDescription(Admin $admin, FieldDescription $fieldDescription, array $options = array());
 
+    /**
+     * @abstract
+     * @param  $name
+     * @param  $object
+     * @param array $options
+     * @return void
+     */
     function getBaseForm($name, $object, array $options = array());
 }

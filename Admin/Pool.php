@@ -16,27 +16,21 @@ class Pool
 {
     protected $container = null;
     
-    protected $configuration = array();
+    protected $adminServiceIds = array();
 
-    public function addConfiguration($code, $configuration)
-    {
-        $configuration['code'] = $code;
-        
-        $this->configuration[$code] = $configuration;
-    }
+    protected $adminGroups = array();
 
+    protected $adminClasses = array();
+    
     public function getGroups()
     {
+        $groups = $this->adminGroups;
 
-        $groups = array();
+        foreach ($this->adminGroups as $name => $adminGroup) {
 
-        foreach ($this->configuration as $configuration) {
-
-            if (!isset($groups[$configuration['group']])) {
-                $groups[$configuration['group']] = array();
+            foreach ($adminGroup as $id => $options) {
+                $groups[$name][$id] = $this->getInstance($id);
             }
-
-            $groups[$configuration['group']][$configuration['code']] = $this->getInstance($configuration['code']);
         }
 
         return $groups;
@@ -44,44 +38,23 @@ class Pool
     
     public function getDashboardGroups()
     {
+        $groups = $this->adminGroups;
 
-        $groups = array();
+        foreach ($this->adminGroups as $name => $adminGroup) {
 
-        foreach ($this->configuration as $configuration) {
-            
-            if($configuration['options']['show_in_dashboard']) {
-                if (!isset($groups[$configuration['group']])) {
-                    $groups[$configuration['group']] = array();
+            foreach ($adminGroup as $id => $options) {
+
+                if (!$options['show_in_dashboard']) {
+                    unset($groups[$name][$id]);
+                    continue;
+
                 }
 
-                $groups[$configuration['group']][$configuration['code']] = $this->getInstance($configuration['code']);
+                $groups[$name][$id] = $this->container->get($id);
             }
         }
 
         return $groups;
-    }
-
-    /**
-     * The admin classes are lazy loaded to avoid overhead
-     *
-     * @throws RuntimeException
-     * @param  $name
-     * @return
-     */
-    public function getAdminByControllerName($name)
-    {
-        $configuration_code = false;
-        foreach ($this->configuration as $code => $configuration) {
-            if ($configuration['controller'] == $name) {
-                $configuration_code = $code;
-            }
-        }
-
-        if (!$configuration_code) {
-            return null;
-        }
-
-        return $this->getInstance($configuration_code);
     }
 
     /**
@@ -93,58 +66,34 @@ class Pool
     public function getAdminByClass($class)
     {
 
-        $configuration_code = false;
-
-        foreach ($this->configuration as $code => $configuration) {
-
-            if ($configuration['entity'] == $class) {
-                $configuration_code = $code;
-                break;
-            }
-        }
-
-        if (!$configuration_code) {
+        if (!isset($this->adminClasses[$class])) {
             return null;
         }
 
-        return $this->getInstance($code);
+        return $this->getInstance($this->adminClasses[$class]);
     }
 
     /**
-     * return the admin related to the given $actionName
+     * return an admin clas by its Admin code
+     * ie : sonata.news.admin.post|sonata.news.admin.comment => return the child class of post
      *
-     * @param string $actionName
+     * @param string $adminCode
      * @return Admin|null
      */
-    public function getAdminByActionName($actionName)
+    public function getAdminByAdminCode($adminCode)
     {
-        $codes = explode('.', $actionName);
 
-        $instance = false;
-        foreach ($codes as $pos => $code) {
-            if ($pos == 0) {
-                $instance = $this->getInstance($code);
-            } else if($instance->hasChildren()) {
-                if(!$instance->hasChild($code)) {
-                    break;
-                }
-
-                $instance = $instance->getChild($code);
-
-                if(!$instance instanceof Admin) {
-                    throw new \RuntimeException(sprintf('unable to retrieve the child admin related to the actionName : `%s`', $actionName));
-                }
-                
-            } else {
-                break;
+        $codes = explode('|', $adminCode);
+        $admin = false;
+        foreach ($codes as $code) {
+            if ($admin == false) {
+                $admin = $this->getInstance($code);
+            } else if ($admin->hasChild($code)) {
+                $admin = $admin->getChild($code);
             }
         }
 
-        if(!$instance instanceof Admin) {
-            throw new \RuntimeException(sprintf('unable to retrieve the admin related to the actionName : `%s`', $actionName));
-        }
-
-        return $instance;
+        return $admin;
     }
 
     /**
@@ -154,54 +103,9 @@ class Pool
      * @param $code
      * @return
      */
-    public function getInstance($code)
+    public function getInstance($id)
     {
-        if(!isset($this->configuration[$code])) {
-            throw new \RuntimeException(sprintf('The code `%s` does not exist', $code));
-        }
-
-        return $this->getInstanceFromConfiguration($code, $this->configuration[$code]);
-    }
-
-    protected function getInstanceFromConfiguration($code, $configuration)
-    {
-        $class = $configuration['class'];
-        
-        $instance = new $class($code, $this->getContainer(), $configuration['entity'], $configuration['controller']);
-        $instance->setLabel($configuration['label']);
-
-        if(isset($configuration['children'])) {
-            foreach($configuration['children'] as $code => $child) {
-                $instance->addChild($code, $this->getInstanceFromConfiguration($code, $child));
-            }
-        }
-
-        return $instance;
-    }
-
-    /**
-     * return a group of admin instance
-     *
-     * @return array
-     */
-    public function getInstances()
-    {
-        $instances = array();
-        foreach ($this->configuration as $code => $configuration) {
-            $instances[] = $this->getInstance($code);
-        }
-
-        return $instances;
-    }
-
-    public function setConfiguration(array $configuration = array())
-    {
-        $this->configuration = $configuration;
-    }
-
-    public function getConfiguration()
-    {
-        return $this->configuration;
+        return $this->container->get($id);
     }
 
     public function setContainer($container)
@@ -212,5 +116,35 @@ class Pool
     public function getContainer()
     {
         return $this->container;
+    }
+
+    public function setAdminGroups($adminGroups)
+    {
+        $this->adminGroups = $adminGroups;
+    }
+
+    public function getAdminGroups()
+    {
+        return $this->adminGroups;
+    }
+
+    public function setAdminServiceIds($adminServiceIds)
+    {
+        $this->adminServiceIds = $adminServiceIds;
+    }
+
+    public function getAdminServiceIds()
+    {
+        return $this->adminServiceIds;
+    }
+
+    public function setAdminClasses($adminClasses)
+    {
+        $this->adminClasses = $adminClasses;
+    }
+
+    public function getAdminClasses()
+    {
+        return $this->adminClasses;
     }
 }

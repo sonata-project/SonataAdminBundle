@@ -11,19 +11,25 @@
 
 namespace Sonata\AdminBundle\Admin;
 
-use Symfony\Component\DependencyInjection\ContainerAware;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\Form;
-
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\HttpFoundation\Request;
+    
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\Datagrid;
 
+use Sonata\AdminBundle\Admin\Pool;
+use Sonata\AdminBundle\Builder\FormBuilderInterface;
+use Sonata\AdminBundle\Builder\ListBuilderInterface;
+use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
+
 use Knplabs\MenuBundle\Menu;
 use Knplabs\MenuBundle\MenuItem;
 
-abstract class Admin extends ContainerAware
+abstract class Admin implements AdminInterface
 {
     /**
      * The class name managed by the admin class
@@ -215,6 +221,62 @@ abstract class Admin extends ContainerAware
      */
     protected $uniqid;
 
+    /**
+     * The Entity or Document manager
+     *
+     * @var object
+     */
+    protected $modelManager;
+
+    /**
+     * The current request object
+     *
+     * @var Symfony\Component\HttpFoundation\Request
+     */
+    protected $request;
+
+    /**
+     * The translator component
+     *
+     * @var Symfony\Component\Translation\TranslatorInterface
+     */
+    protected $translator;
+
+    /**
+     * The related form builder
+     *
+     * @var Sonata\AdminBundle\Builder\FormBuilderInterface
+     */
+    protected $formBuilder;
+
+    /**
+     * The related list builder
+     *
+     * @var Sonata\AdminBundle\Builder\ListBuilderInterface
+     */
+    protected $listBuilder;
+
+    /**
+     * The related datagrid builder
+     *
+     * @var Sonata\AdminBundle\Builder\DatagridBuilderInterface
+     */
+    protected $datagridBuilder;
+
+    /**
+     * The router intance
+     *
+     * @var Symfony\Component\Routing\RouterInterface
+     */
+    protected $router;
+
+    /**
+     * The configuration pool
+     * 
+     * @var Pool
+     */
+    protected $configurationPool;
+
     protected $loaded = array(
         'form_fields' => false,
         'form_groups' => false,
@@ -222,21 +284,18 @@ abstract class Admin extends ContainerAware
         'filter_fields' => false,
         'urls'        => false,
     );
-    
+
     /**
-     * return the entity manager
+     * return the doctrine class metadata handled by the Admin instance
      *
-     * @return EntityManager
+     * @return ClassMetadataInfo the doctrine class metadata handled by the Admin instance
      */
-    abstract public function getEntityManager();
+    public function getClassMetaData()
+    {
 
-    abstract public function getListBuilder();
-
-    abstract public function getFormBuilder();
-
-    abstract public function getDatagridBuilder();
-
-    abstract public function getClassMetaData();
+        return $this->getModelManager()
+            ->getClassMetaData($this->getClass());
+    }
 
     /**
      * This method can be overwritten to tweak the form construction, by default the form
@@ -265,19 +324,13 @@ abstract class Admin extends ContainerAware
     }
 
     /**
-     * @param string $code
-     * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
      * @param string $class
      * @param string $baseControllerName
      */
-    public function __construct($code, ContainerInterface $container, $class, $baseControllerName)
+    public function __construct($class, $baseControllerName)
     {
-        $this->code = $code;
         $this->class = $class;
         $this->baseControllerName = $baseControllerName;
-        
-        $this->setContainer($container);
-        $this->configure();
     }
 
     public function configure()
@@ -285,18 +338,19 @@ abstract class Admin extends ContainerAware
 
         $this->uniqid = uniqid();
         
-        if($this->parentAssociationMapping) {
-            if(!isset($this->getClassMetaData()->associationMappings[$this->parentAssociationMapping])) {
+        if ($this->parentAssociationMapping) {
+            if (!isset($this->getClassMetaData()->associationMappings[$this->parentAssociationMapping])) {
                 throw new \RuntimeException(sprintf('The value set to `relatedReflectionProperty` refer to a non existent association', $this->relatedReflectionProperty));
             }
             $this->parentAssociationMapping = $this->getClassMetaData()->associationMappings[$this->parentAssociationMapping];
         }
 
-        if(!$this->classnameLabel) {
+        if (!$this->classnameLabel) {
 
             $this->classnameLabel = $this->urlize(substr($this->class, strrpos($this->class, '\\') + 1), '_');
         }
 
+        $this->baseCodeRoute = $this->getCode();
     }
 
     public function configureUrls()
@@ -470,7 +524,7 @@ abstract class Admin extends ContainerAware
         if (!$this->baseRoutePattern) {
             preg_match('@([A-Za-z]*)\\\([A-Za-z]*)Bundle\\\(Entity|Document)\\\(.*)@', $this->getClass(), $matches);
 
-            if(!$matches) {
+            if (!$matches) {
                 throw new \RuntimeException(sprintf('Please define a default `baseRoutePattern` value for the admin class `%s`', get_class($this)));
             }
             
@@ -503,7 +557,7 @@ abstract class Admin extends ContainerAware
         if (!$this->baseRouteName) {
             preg_match('@([A-Za-z]*)\\\([A-Za-z]*)Bundle\\\(Entity|Document)\\\(.*)@', $this->getClass(), $matches);
 
-            if(!$matches) {
+            if (!$matches) {
                 throw new \RuntimeException(sprintf('Please define a default `baseRouteName` value for the admin class `%s`', get_class($this)));
             }
             
@@ -598,75 +652,77 @@ abstract class Admin extends ContainerAware
     /**
      * Build all the related urls to the current admin
      *
-     * @param string $baseCode
      * @return void
      */
-    public function buildUrls($baseCode = '')
+    public function buildUrls()
     {
         if ($this->loaded['urls']) {
             return;
         }
 
-        $this->baseCodeRoute = $baseCode;
-
         $this->loaded['urls'] = true;
         
         $this->urls =  array(
-            $baseCode . 'list' => array(
+            $this->baseCodeRoute . '.list' => array(
                 'name'      => $this->getBaseRouteName().'_list',
                 'pattern'   => $this->getBaseRoutePattern().'/list',
                 'defaults'  => array(
-                    '_controller' => $this->getBaseControllerName().':list'
+                    '_controller' => $this->getBaseControllerName().':list',
+                    '_sonata_admin' => $this->baseCodeRoute
                 ),
                 'requirements' => array(),
                 'options' => array(),
                 'params'    => array(),
             ),
-            $baseCode . 'create' => array(
+            $this->baseCodeRoute . '.create' => array(
                 'name'      => $this->getBaseRouteName().'_create',
                 'pattern'       => $this->getBaseRoutePattern().'/create',
                 'defaults'  => array(
-                    '_controller' => $this->getBaseControllerName().':create'
+                    '_controller' => $this->getBaseControllerName().':create',
+                    '_sonata_admin' => $this->baseCodeRoute
                 ),
                 'requirements' => array(),
                 'options' => array(),
                 'params'    => array(),
             ),
-            $baseCode . 'edit' => array(
+            $this->baseCodeRoute . '.edit' => array(
                 'name'      => $this->getBaseRouteName().'_edit',
                 'pattern'   => $this->getBaseRoutePattern().'/'.$this->getRouterIdParameter().'/edit',
                 'defaults'  => array(
-                    '_controller' => $this->getBaseControllerName().':edit'
+                    '_controller' => $this->getBaseControllerName().':edit',
+                    '_sonata_admin' => $this->baseCodeRoute
                 ),
                 'requirements' => array(),
                 'options' => array(),
                 'params'    => array(),
             ),
-            $baseCode . 'update' => array(
+            $this->baseCodeRoute . '.update' => array(
                 'name'      => $this->getBaseRouteName().'_update',
                 'pattern'       => $this->getBaseRoutePattern().'/update',
                 'defaults'  => array(
-                    '_controller' => $this->getBaseControllerName().':update'
+                    '_controller' => $this->getBaseControllerName().':update',
+                    '_sonata_admin' => $this->baseCodeRoute
                 ),
                 'requirements' => array(),
                 'options' => array(),
                 'params'    => array(),
             ),
-            $baseCode . 'batch' => array(
+            $this->baseCodeRoute . '.batch' => array(
                 'name'      => $this->getBaseRouteName().'_batch',
                 'pattern'       => $this->getBaseRoutePattern().'/batch',
                 'defaults'  => array(
-                    '_controller' => $this->getBaseControllerName().':batch'
+                    '_controller' => $this->getBaseControllerName().':batch',
+                    '_sonata_admin' => $this->baseCodeRoute
                 ),
                 'requirements' => array(),
                 'options' => array(),
                 'params'    => array(),
             )
         );
-
+        
         // add children urls
-        foreach ($this->getChildren() as $code => $children) {
-            $this->urls = array_merge($this->urls, $children->getUrls($code.'.'));
+        foreach ($this->getChildren() as $children) {
+            $this->urls = array_merge($this->urls, $children->getUrls());
         }
 
         $this->configureUrls();
@@ -700,30 +756,37 @@ abstract class Admin extends ContainerAware
      */
     public function generateUrl($name, array $params = array())
     {
-        
+
+        if (!$this->isChild()) {
+            if (strpos($name, '.')) {
+                $name = $this->getCode().'|'.$name;
+            } else {
+                $name = $this->getCode().'.'.$name;
+            }
+        }
         // if the admin is a child we automatically append the parent's id
-        if($this->isChild()) {
-            $name = $this->baseCodeRoute.$name;
+        else if ($this->isChild()) {
+            $name = $this->baseCodeRoute.'.'.$name;
 
             // twig template does not accept variable hash key ... so cannot use admin.idparameter ...
             // switch value
-            if(isset($params['id'])) {
+            if (isset($params['id'])) {
                 $params[$this->getIdParameter()] = $params['id'];
                 unset($params['id']);
             }
 
-            $params[$this->getParent()->getIdParameter()] = $this->container->get('request')->get($this->getParent()->getIdParameter());
+            $params[$this->getParent()->getIdParameter()] = $this->request->get($this->getParent()->getIdParameter());
         }
 
         // if the admin is linked to a FieldDescription (ie, embedded widget)
-        if($this->hasParentFieldDescription()) {
+        if ($this->hasParentFieldDescription()) {
             $params['uniqid']  = $this->getUniqid();
             $params['code']    = $this->getCode();
             $params['pcode']   = $this->getParentFieldDescription()->getAdmin()->getCode();
             $params['puniqid'] = $this->getParentFieldDescription()->getAdmin()->getUniqid();
         }
 
-        if($name == 'update' || substr($name, -7) == '.update') {
+        if ($name == 'update' || substr($name, -7) == '|update') {
             $params['uniqid'] = $this->getUniqid();
             $params['code']   = $this->getCode();
         }
@@ -734,7 +797,7 @@ abstract class Admin extends ContainerAware
             throw new \RuntimeException(sprintf('unable to find the url `%s`', $name));
         }
 
-        return $this->container->get('router')->generate($url['name'], $params);
+        return $this->router->generate($url['name'], $params);
     }
 
     /**
@@ -786,7 +849,7 @@ abstract class Admin extends ContainerAware
     public function getBaseForm($object, $options = array())
     {
         return $this->getFormBuilder()->getBaseForm(
-            'object_'.$this->getUniqid(),
+            $this->getUniqid(),
             $object,
             array_merge($this->formOptions, $options)
         );
@@ -800,7 +863,7 @@ abstract class Admin extends ContainerAware
     {
         return new Datagrid(
             $this->getClass(),
-            $this->getEntityManager(),
+            $this->getModelManager(),
             $values
         );
     }
@@ -830,7 +893,7 @@ abstract class Admin extends ContainerAware
     public function getObject($id)
     {
 
-        return $this->getEntityManager()
+        return $this->getModelManager()
             ->find($this->getClass(), $id);
     }
 
@@ -875,7 +938,7 @@ abstract class Admin extends ContainerAware
         // todo : clean the way the Admin class can retrieve set the object
         if ($this->isChild() && $this->getParentAssociationMapping()) {
             $mapping = $this->getParentAssociationMapping();
-            $parent = $this->getParent()->getObject($this->container->get('request')->get($this->getParent()->getIdParameter()));
+            $parent = $this->getParent()->getObject($this->request->get($this->getParent()->getIdParameter()));
 
             $propertyPath = new \Symfony\Component\Form\PropertyPath($mapping['fieldName']);
             $propertyPath->setValue($object, $parent);
@@ -892,7 +955,7 @@ abstract class Admin extends ContainerAware
         foreach ($this->getFormFieldDescriptions() as $fieldDescription) {
 
             // do not add field already set in the configureFormField method
-            if($mapper->has($fieldDescription->getFieldName())) {
+            if ($mapper->has($fieldDescription->getFieldName())) {
                 continue;
             }
 
@@ -922,7 +985,7 @@ abstract class Admin extends ContainerAware
         foreach ($this->getListFieldDescriptions() as $fieldDescription) {
 
             // do not add field already set in the configureFormField method
-            if($mapper->has($fieldDescription->getFieldName())) {
+            if ($mapper->has($fieldDescription->getFieldName())) {
                 continue;
             }
 
@@ -941,14 +1004,14 @@ abstract class Admin extends ContainerAware
     public function getDatagrid()
     {
 
-        $parameters = $this->container->get('request')->query->all();
+        $parameters = $this->request->query->all();
 
         $datagrid = $this->getBaseDatagrid($parameters);
         $datagrid->setMaxPerPage($this->maxPerPage);
 
-        if($this->isChild() && $this->getParentAssociationMapping()) {
+        if ($this->isChild() && $this->getParentAssociationMapping()) {
             $mapping = $this->getParentAssociationMapping();
-            $parameters[$mapping['fieldName']] = $this->container->get('request')->get($this->getParent()->getIdParameter());
+            $parameters[$mapping['fieldName']] = $this->request->get($this->getParent()->getIdParameter());
         }
 
         $datagrid->setValues($parameters);
@@ -1012,16 +1075,6 @@ abstract class Admin extends ContainerAware
     public function getBaseControllerName()
     {
         return $this->baseControllerName;
-    }
-
-    public function getConfigurationPool()
-    {
-        return $this->container->get('sonata_admin.admin.pool');
-    }
-
-    public function getCode()
-    {
-        return $this->code;
     }
 
     public function setLabel($label)
@@ -1104,13 +1157,13 @@ abstract class Admin extends ContainerAware
      */
     public function getSubject()
     {
-        if($this->subject === null) {
+        if ($this->subject === null) {
 
-            $id = $this->container->get('request')->get($this->getIdParameter());
-            if(!is_numeric($id)) {
+            $id = $this->request->get($this->getIdParameter());
+            if (!is_numeric($id)) {
                 $this->subject = false;
             } else {
-                $this->subject = $this->getEntityManager()->find(
+                $this->subject = $this->getModelManager()->find(
                     $this->getClass(),
                     $id
                 );
@@ -1304,9 +1357,12 @@ abstract class Admin extends ContainerAware
      * @param Admin $child
      * @return void
      */
-    public function addChild($code, Admin $child)
+    public function addChild($code, AdminInterface $child)
     {
         $this->children[$code] = $child;
+        
+        $child->setCode($code);
+        $child->setBaseCodeRoute($this->getCode().'|'.$code);
         $child->setParent($this);
     }
 
@@ -1348,7 +1404,7 @@ abstract class Admin extends ContainerAware
      * @param Admin $parent
      * @return void
      */
-    public function setParent(Admin $parent)
+    public function setParent(AdminInterface $parent)
     {
         $this->parent = $parent;
     }
@@ -1370,7 +1426,7 @@ abstract class Admin extends ContainerAware
      */
     public function isChild()
     {
-        return $this->parent instanceof Admin;
+        return $this->parent instanceof AdminInterface;
     }
 
     /**
@@ -1434,7 +1490,7 @@ abstract class Admin extends ContainerAware
         $childAdmin = $this->getCurrentChildAdmin();
 
         if ($childAdmin) {
-            $id = $this->container->get('request')->get($this->getIdParameter());
+            $id = $this->request->get($this->getIdParameter());
 
             $child = $child->addChild(
                 (string) $this->getSubject(),
@@ -1445,7 +1501,7 @@ abstract class Admin extends ContainerAware
         
         } elseif ($this->isChild()) {
 
-            if($action != 'list') {
+            if ($action != 'list') {
                 $menu = $menu->addChild(
                     $this->trans(sprintf('link_%s_list', $this->getClassnameLabel())),
                     $this->generateUrl('list')
@@ -1456,7 +1512,7 @@ abstract class Admin extends ContainerAware
                 $this->trans(sprintf('link_%s_%s', $this->getClassnameLabel(), $action))
             );
 
-        } else if($action != 'list') {
+        } else if ($action != 'list') {
 
             $breadcrumbs = $child->getBreadcrumbsArray(
                 $this->trans(sprintf('link_%s_%s', $this->getClassnameLabel(), $action))
@@ -1501,8 +1557,8 @@ abstract class Admin extends ContainerAware
      */
     public function getCurrentChildAdmin()
     {
-        foreach($this->children as $children) {
-            if($children->getCurrentChild()) {
+        foreach ($this->children as $children) {
+            if ($children->getCurrentChild()) {
                 return $children;
             }
         }
@@ -1523,8 +1579,12 @@ abstract class Admin extends ContainerAware
     {
 
         $domain = $domain ?: $this->translationDomain;
-        
-        return $this->container->get('translator')->trans($id, $parameters, $domain, $locale);
+
+        if (!$this->translator) {
+            return $id;
+        }
+
+        return $this->translator->trans($id, $parameters, $domain, $locale);
     }
 
     /**
@@ -1546,5 +1606,105 @@ abstract class Admin extends ContainerAware
     public function getTranslationDomain()
     {
         return $this->translationDomain;
+    }
+
+    public function setTranslator(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
+    public function getTranslator()
+    {
+        return $this->translator;
+    }
+
+    public function setRequest(Request $request)
+    {
+        $this->request = $request;
+    }
+
+    public function getRequest()
+    {
+        return $this->request;
+    }
+
+    public function setFormBuilder(FormBuilderInterface $formBuilder)
+    {
+        $this->formBuilder = $formBuilder;
+    }
+
+    public function getFormBuilder()
+    {
+        return $this->formBuilder;
+    }
+
+    public function setDatagridBuilder(DatagridBuilderInterface $datagridBuilder)
+    {
+        $this->datagridBuilder = $datagridBuilder;
+    }
+
+    public function getDatagridBuilder()
+    {
+        return $this->datagridBuilder;
+    }
+
+    public function setListBuilder(ListBuilderInterface $listBuilder)
+    {
+        $this->listBuilder = $listBuilder;
+    }
+
+    public function getListBuilder()
+    {
+        return $this->listBuilder;
+    }
+
+    public function setConfigurationPool(Pool $configurationPool)
+    {
+        $this->configurationPool = $configurationPool;
+    }
+
+    public function getConfigurationPool()
+    {
+        return $this->configurationPool;
+    }
+
+    public function setRouter(RouterInterface $router)
+    {
+        $this->router = $router;
+    }
+
+    public function getRouter()
+    {
+        return $this->router;
+    }
+
+    public function setModelManager($modelManager)
+    {
+        $this->modelManager = $modelManager;
+    }
+
+    public function getModelManager()
+    {
+        return $this->modelManager;
+    }
+
+    public function setCode($code)
+    {
+        $this->code = $code;
+    }
+
+    public function getCode()
+    {
+        return $this->code;
+    }
+
+    public function setBaseCodeRoute($baseCodeRoute)
+    {
+        $this->baseCodeRoute = $baseCodeRoute;
+    }
+
+    public function getBaseCodeRoute()
+    {
+        return $this->baseCodeRoute;
     }
 }

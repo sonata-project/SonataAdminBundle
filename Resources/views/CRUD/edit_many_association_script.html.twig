@@ -35,7 +35,7 @@ This code manage the many-to-[one|many] association field popup
         var element = jQuery(this).parents('#field_dialog_{{ field_element.id }} td.sonata-ba-list-field');
 
         // the user does does click on a row column
-        if(element.length == 0) {
+        if (element.length == 0) {
             // make a recursive call (ie: reset the filter)
             jQuery.ajax({
                 type: 'GET',
@@ -177,7 +177,7 @@ This code manage the many-to-[one|many] association field popup
             return;
         }
 
-        if(element.hasClass('sonata-ba-action')) {
+        if (element.hasClass('sonata-ba-action')) {
             Admin.log('[{{ field_element.id }}|field_dialog_form_action] reserved action stop catch all events');
             return;
         }
@@ -198,7 +198,7 @@ This code manage the many-to-[one|many] association field popup
             success: function(data) {
 
                 Admin.log('[{{ field_element.id }}|field_dialog_form_action] ajax success');
-                if(typeof data == 'string') {
+                if (typeof data == 'string') {
                     field_dialog_{{ field_element.id }}.html(data);
                     return;
                 };
@@ -255,7 +255,7 @@ This code manage the many-to-[one|many] association field popup
 
     function initialize_popup_{{ field_element.id }}() {
         // initialize component
-        if(!field_dialog_{{ field_element.id }}) {
+        if (!field_dialog_{{ field_element.id }}) {
             field_dialog_{{ field_element.id }} = jQuery("#field_dialog_{{ field_element.id }}");
 
             // move the dialog as a child of the root element, nested form breaks html ...

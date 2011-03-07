@@ -55,7 +55,7 @@ class DatagridBuilder implements DatagridBuilderInterface
             $fieldDescription->setAssociationMapping($admin->getClassMetaData()->associationMappings[$fieldDescription->getName()]);
         }
 
-        if(!$fieldDescription->getType()) {
+        if (!$fieldDescription->getType()) {
             throw new \RuntimeException(sprintf('Please define a type for field `%s` in `%s`', $fieldDescription->getName(), get_class($admin)));
         }
 
@@ -94,7 +94,7 @@ class DatagridBuilder implements DatagridBuilderInterface
     public function getFilterFieldClass(FieldDescription $fieldDescription)
     {
 
-        if($fieldDescription->getOption('filter_field_widget', false)) {
+        if ($fieldDescription->getOption('filter_field_widget', false)) {
 
             $class = $fieldDescription->getOption('filter_field_widget', false);
         } else {
@@ -111,7 +111,7 @@ class DatagridBuilder implements DatagridBuilderInterface
 
     public function getChoices(FieldDescription $fieldDescription)
     {
-        $targets = $fieldDescription->getAdmin()->getEntityManager()
+        $targets = $fieldDescription->getAdmin()->getModelManager()
             ->createQueryBuilder()
             ->select('t')
             ->from($fieldDescription->getTargetEntity(), 't')

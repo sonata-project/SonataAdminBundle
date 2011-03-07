@@ -31,7 +31,7 @@ use Symfony\Component\Finder\Finder;
  */
 class SonataAdminExtension extends Extension
 {    
-	protected $configNamespaces = array(
+    protected $configNamespaces = array(
         'templates' => array(
             'layout',
             'ajax'
@@ -39,27 +39,7 @@ class SonataAdminExtension extends Extension
     );
     
     /**
-     * Parses the configuration to setup the admin controllers and setup routing
-     * information. Format is following:
      * 
-     * sonata_admin:
-     *    entities:
-     *        post:
-     *           label:      post
-     *           group:      posts
-     *           class:      Funsational\SimpleBlogBundle\Admin\Entity\PostAdmin
-     *           entity:     Funsational\SimpleBlogBundle\Entity\Post
-     *           controller: Funsational\SimpleBlogBundle\Controller\PostAdminController
-     *           children:
-     *               comment:
-     *                  label:      comment
-     *                  group:      comments
-     *                  class:      Funsational\SimpleBlogBundle\Admin\Entity\CommentAdmin
-     *                  entity:     Funsational\SimpleBlogBundle\Entity\Comment
-     *                  controller: Funsational\SimpleBlogBundle\Controller\CommentAdminController
-     *          options:
-     *              show_in_dashboard: true
-     *
      * @param array            $config    An array of configuration settings
      * @param ContainerBuilder $container A ContainerBuilder instance
      */
@@ -95,14 +75,11 @@ class SonataAdminExtension extends Extension
         // registers crud action
         $definition = new Definition('Sonata\AdminBundle\Admin\Pool');
         $definition->addMethodCall('setContainer', array(new Reference('service_container')));
-        
-        foreach ($config['entities'] as $code => $configuration) {
-            $definition->addMethodCall('addConfiguration', array($code, $configuration));
-        }
-
         $container->setDefinition('sonata_admin.admin.pool', $definition);
 
-        $definition = new Definition('Sonata\AdminBundle\Route\AdminPoolLoader', array(new Reference('sonata_admin.admin.pool')));
+        $definition = new Definition('Sonata\AdminBundle\Route\AdminPoolLoader', array(
+            new Reference('sonata_admin.admin.pool'),
+        ));
         $definition->addTag('routing.loader');
 
         $container->setDefinition('sonata_admin.route_loader', $definition);

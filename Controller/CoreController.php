@@ -58,7 +58,7 @@ class CoreController extends Controller
            ->get('sonata_admin.admin.pool')
            ->getInstance($code);
 
-        if($this->container->get('request')->get('uniqid')) {
+        if ($this->container->get('request')->get('uniqid')) {
             $admin->setUniqid($this->container->get('request')->get('uniqid'));
         }
 
@@ -129,7 +129,7 @@ class CoreController extends Controller
         // retrieve the posted data
         $data = $this->get('request')->get($form->getName());
 
-        if(!isset($data[$field_element->getKey()])) {
+        if (!isset($data[$field_element->getKey()])) {
             $data[$field_element->getKey()] = array();
         }
 
@@ -177,7 +177,7 @@ class CoreController extends Controller
         $uniqid     = $uniqid   ?: $this->get('request')->get('uniqid');
 
         $admin  = $this->container->get('sonata_admin.admin.pool')->getInstance($code);
-        if($uniqid) {
+        if ($uniqid) {
             $admin->setUniqid($uniqid);
         }
         

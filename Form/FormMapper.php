@@ -88,7 +88,7 @@ class FormMapper
         $fieldDescription->mergeOption('form_field_options', $fieldOptions);
 
         // nothing to build as a Field is provided
-        if($field) {
+        if ($field) {
             return $this->form->add($field);
         }
 

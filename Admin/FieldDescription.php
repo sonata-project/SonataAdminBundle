@@ -437,11 +437,11 @@ class FieldDescription
      */
     public function mergeOption($name, array $options = array())
     {
-        if(!isset($this->options[$name])) {
+        if (!isset($this->options[$name])) {
             $this->options[$name] = array();
         }
 
-        if(!is_array($this->options[$name]))
+        if (!is_array($this->options[$name]))
         {
             throw new \RuntimeException(sprintf('The key `%s` does not point to an array value', $name));
         }

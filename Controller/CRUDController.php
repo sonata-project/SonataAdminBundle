@@ -42,7 +42,7 @@ class CRUDController extends Controller
         // fake content-type so browser does not show the download popup when this
         // response is rendered through an iframe (used by the jquery.form.js plugin)
         //  => don't know yet if it is the best solution
-        if($this->get('request')->get('_xml_http_request')
+        if ($this->get('request')->get('_xml_http_request')
            && strpos($this->get('request')->headers->get('Content-Type'), 'multipart/form-data') === 0) {
             $headers['Content-Type'] = 'text/plain';
         } else {
@@ -76,21 +76,19 @@ class CRUDController extends Controller
 
     public function configure()
     {
-        $actionName = $this->container->get('request')->get('_bab_action');
-        
-        $this->admin = $this->container
-            ->get('sonata_admin.admin.pool')
-            ->getAdminByActionName($actionName);
+        $adminCode = $this->container->get('request')->get('_sonata_admin');
 
-        if(!$this->admin) {
+        $this->admin = $this->container->get('sonata_admin.admin.pool')->getAdminByAdminCode($adminCode);
+
+        if (!$this->admin) {
             throw new \RuntimeException(sprintf('Unable to find the admin class related to the current controller (%s)', get_class($this)));
         }
 
-        if($this->container->get('request')->get('uniqid')) {
+        if ($this->container->get('request')->get('uniqid')) {
             $this->admin->setUniqid($this->container->get('request')->get('uniqid'));
         }
 
-        if($this->admin->isChild()) {
+        if ($this->admin->isChild()) {
             $this->admin->setCurrentChild(true);
         }
     }
@@ -137,7 +135,7 @@ class CRUDController extends Controller
      */
     public function batchActionDelete($idx)
     {
-        $em = $this->admin->getEntityManager();
+        $em = $this->admin->getModelManager();
 
         $query_builder = $em->createQueryBuilder();
         $objects = $query_builder
@@ -246,8 +244,8 @@ class CRUDController extends Controller
                 $this->admin->preUpdate($object);
             }
 
-            $this->admin->getEntityManager()->persist($object);
-            $this->admin->getEntityManager()->flush($object);
+            $this->admin->getModelManager()->persist($object);
+            $this->admin->getModelManager()->flush($object);
 
             if ($action == 'create') {
                 $this->admin->postInsert($object);
@@ -358,7 +356,7 @@ class CRUDController extends Controller
      */
     public function getSideMenu($action)
     {
-        if($this->admin->isChild()) {
+        if ($this->admin->isChild()) {
             return $this->admin->getParent()->getSideMenu($action, $this->admin);
         }
 
@@ -372,7 +370,7 @@ class CRUDController extends Controller
     public function getBreadcrumbs($action)
     {
         
-        if($this->admin->isChild()) {
+        if ($this->admin->isChild()) {
             return $this->admin->getParent()->getBreadcrumbs($action);
         }
 

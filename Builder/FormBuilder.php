@@ -94,7 +94,7 @@ class FormBuilder implements FormBuilderInterface
 
         // create the transformer
         $transformer = new ArrayToObjectTransformer(array(
-            'em'        => $fieldDescription->getAdmin()->getEntityManager(),
+            'em'        => $fieldDescription->getAdmin()->getModelManager(),
             'className' => $fieldDescription->getTargetEntity()
         ));
 
@@ -139,7 +139,7 @@ class FormBuilder implements FormBuilderInterface
 
             $class = array_key_exists($fieldDescription->getType(), $this->formFieldClasses) ? $this->formFieldClasses[$fieldDescription->getType()] : false;
 
-        } else if($fieldDescription->getOption('form_field_widget', false)) {
+        } else if ($fieldDescription->getOption('form_field_widget', false)) {
 
             $class = $fieldDescription->getOption('form_field_widget', false);
 
@@ -188,7 +188,7 @@ class FormBuilder implements FormBuilderInterface
         // TODO : remove this once an EntityField will be available
         $options = array(
             'value_transformer' => new EntityToIDTransformer(array(
-                'em'        => $fieldDescription->getAdmin()->getEntityManager(),
+                'em'        => $fieldDescription->getAdmin()->getModelManager(),
                 'className' => $fieldDescription->getTargetEntity()
             ))
         );
@@ -279,7 +279,7 @@ class FormBuilder implements FormBuilderInterface
 
         $options = array(
             'value_transformer' => new EntityToIDTransformer(array(
-                'em'        =>  $fieldDescription->getAdmin()->getEntityManager(),
+                'em'        =>  $fieldDescription->getAdmin()->getModelManager(),
                 'className' =>  $fieldDescription->getTargetEntity()
             ))
         );
@@ -351,7 +351,7 @@ class FormBuilder implements FormBuilderInterface
                 $class   = $this->getFormFieldClass($fieldDescription);
 
                 // there is no way to use a custom widget with the FieldFactory
-                if($class) {
+                if ($class) {
                     $field = new $class(
                         $fieldDescription->getFieldName(),
                         $fieldDescription->getOption('form_field_options', array())
@@ -389,7 +389,7 @@ class FormBuilder implements FormBuilderInterface
             $fieldDescription->setAssociationMapping($admin->getClassMetaData()->associationMappings[$fieldDescription->getName()]);
         }
 
-        if(!$fieldDescription->getType()) {
+        if (!$fieldDescription->getType()) {
             throw new \RuntimeException(sprintf('Please define a type for field `%s` in `%s`', $fieldDescription->getName(), get_class($admin)));
         }
 
@@ -419,7 +419,7 @@ class FormBuilder implements FormBuilderInterface
         if ($fieldDescription->getType() == ClassMetadataInfo::ONE_TO_MANY) {
             $fieldDescription->setTemplate('SonataAdminBundle:CRUD:edit_one_to_many.html.twig');
 
-            if($fieldDescription->getOption('edit') == 'inline' && !$fieldDescription->getOption('widget_form_field')) {
+            if ($fieldDescription->getOption('edit') == 'inline' && !$fieldDescription->getOption('widget_form_field')) {
                 $fieldDescription->setOption('widget_form_field', 'Bundle\\Sonata\\AdminBundle\\Form\\EditableFieldGroup');
             }
 

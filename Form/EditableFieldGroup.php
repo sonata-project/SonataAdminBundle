@@ -45,7 +45,7 @@ class EditableFieldGroup extends Form
         $iterator = new \RecursiveIteratorIterator($iterator);
 
         foreach ($iterator as $field) {
-            if($field->getKey() == '_delete') {
+            if ($field->getKey() == '_delete') {
                 continue;
             }
 
@@ -62,7 +62,7 @@ class EditableFieldGroup extends Form
         $iterator = new \RecursiveIteratorIterator($iterator);
 
         foreach ($iterator as $field) {
-            if($field->getKey() == '_delete') {
+            if ($field->getKey() == '_delete') {
                 continue;
             }
 
