@@ -29,15 +29,17 @@ By convention Admin files are set under a Admin folder.
 
     }
 
-- register the AdminClass inside the admin.config from the config.yml file
+- register the PostAdmin class inside the DIC
 
 ..
 
-    post:
-        class:      Bundle\NewsBundle\Admin\PostAdmin
-        entity:     Application\Sonata\NewsBundle\Entity\Post
-        controller: SonataNewsBundle:PostAdmin
+    <service id="sonata.news.admin.post" class="Sonata\NewsBundle\Admin\PostAdmin">
 
+        <tag name="sonata.admin" manager_type="orm" group="sonata_blog" label="post"/>
+
+        <argument>Application\Sonata\NewsBundle\Entity\Post</argument>
+        <argument>SonataNewsBundle:PostAdmin</argument>
+    </service>
 
 
 These is the minimal configuration required to display the entity inside the dashboard and

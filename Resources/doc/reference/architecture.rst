@@ -23,12 +23,36 @@ If a field is associated with another entity (and that entity also has an
 ``Admin`` class), then the related ``Admin`` class will be accessible from
 within the first ``Admin`` class.
 
-The admin class is ContainerAware, meaning that the entire dependency injection
-container is injected. Therefore, you have access to every service and can
-do things such as:
+The admin class is a service implementing the ``AdminInterface``, meaning that
+only required dependencies are injected:
 
-* Access user permissions to define the list fields;
-* Access the ``Router`` to generate custom routes.
+* ``ListBuilder``
+* ``FormBuildre``
+* ``DatagridBuilder``
+* ``Router``
+* ``Request``
+* ``EntityManager``
+* ``Translator``
+
+
+Therefore, you have access to every service you want by injecting them into the
+admin class, like:
+
+.. code-block:: xml
+
+    <service id="sonata.news.admin.post" class="%sonata.news.admin.post.class%">
+        <tag name="sonata.admin" manager_type="orm" group="sonata_blog" label="post"/>
+        <argument>%sonata.news.admin.post.entity%</argument>
+        <argument>%sonata.news.admin.post.controller%</argument>
+
+        <call method="setUserManager">
+            <argument type="service" id="fos_user.user_manager" />
+        </call>
+
+    </service>
+
+Here, the FOS' User Manager is injected into the Post service.
+
 
 Field Definition
 ----------------
@@ -78,8 +102,8 @@ property.
 Obtaining an ``Admin`` Service
 ------------------------------
 
-``Admin`` definition are accessible through the 'admin.pool' service.
-The ``Admin`` definitions are lazy loaded from the Pool to avoid overhead.
+``Admin`` definition are accessible through the 'sonata_admin.pool' service or directly from the DIC.
+The ``Admin`` definitions are lazy loaded from the DIC to avoid overhead.
 
 Filter and Datagrid
 -------------------

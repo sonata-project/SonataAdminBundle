@@ -22,7 +22,7 @@ Next, be sure to enable the bundles in your application kernel:
   $loader->registerNamespaces(array(
       // ...
       'Sonata'                         => __DIR__.'/../src',
-      'Knplabs'                         => __DIR__.'/../src',
+      'Knplabs'                        => __DIR__.'/../src',
       // ...
   ));
 
@@ -41,16 +41,6 @@ Next, be sure to enable the bundles in your application kernel:
 
 Configuration
 -------------
-
-To use the ``AdminBundle``, add the following to your application
-configuration file.
-
-.. code-block:: yaml
-
-    # app/config/config.yml
-    sonata_admin: ~
-
-    menu.twig:   ~
 
 The bundle also contains several routes. Import them by adding the following
 code to your application's routing file:
@@ -85,26 +75,12 @@ Once you have created an admin class, you must declare the class to use it. Like
 
 .. code-block:: yaml
 
-    # app/config/config.yml
-    sonata_admin:
-        entities:
-            post:
-                label:      Post
-                group:      blog
-                class:      Sonata\NewsBundle\Admin\PostAdmin
-                entity:     Application\Sonata\NewsBundle\Entity\Post
-                controller: SonataNewsBundle:PostAdmin
+    # app/config/config.xml
 
-            tag:
-                label:      Tag
-                group:      blog
-                class:      Sonata\NewsBundle\Admin\TagAdmin
-                entity:     Application\Sonata\NewsBundle\Entity\Tag
-                controller: SonataNewsBundle:TagAdmin
+    <service id="sonata.news.admin.post" class="Sonata\NewsBundle\Admin\PostAdmin">
 
-            comment:
-                label:      Comment
-                group:      blog
-                class:      Sonata\NewsBundle\Admin\CommentAdmin
-                entity:     Application\Sonata\NewsBundle\Entity\Comment
-                controller: SonataNewsBundle:CommentAdmin
+        <tag name="sonata.admin" manager_type="orm" group="sonata_blog" label="post"/>
+
+        <argument>Application\Sonata\NewsBundle\Entity\Post</argument>
+        <argument>SonataNewsBundle:PostAdmin</argument>
+    </service>
