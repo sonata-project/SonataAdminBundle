@@ -46,6 +46,8 @@ class AddDependencyCallsPass implements CompilerPassInterface
             $arguments = $definition->getArguments();
             if (preg_match('/%(.*)%/', $arguments[0], $matches)) {
                 $class = $container->getParameter($matches[1]);
+            } else {
+                $class = $arguments[0];
             }
 
             $admins[] = $id;
@@ -123,7 +125,7 @@ class AddDependencyCallsPass implements CompilerPassInterface
         }
 
         $definition->addMethodCall('configure');
-        
+
         return $definition;
     }
 }
