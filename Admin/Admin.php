@@ -305,7 +305,6 @@ abstract class Admin implements AdminInterface
      */
     protected function configureFormFields(FormMapper $form)
     {
-
     }
 
     /**
@@ -315,12 +314,10 @@ abstract class Admin implements AdminInterface
      */
     protected function configureListFields(ListMapper $list)
     {
-
     }
 
     protected function configureDatagridFilters(DatagridMapper $filter)
     {
-
     }
 
     /**
@@ -340,7 +337,7 @@ abstract class Admin implements AdminInterface
         
         if ($this->parentAssociationMapping) {
             if (!isset($this->getClassMetaData()->associationMappings[$this->parentAssociationMapping])) {
-                throw new \RuntimeException(sprintf('The value set to `relatedReflectionProperty` refer to a non existent association', $this->relatedReflectionProperty));
+                throw new \RuntimeException(sprintf('The value set to `parentAssociationMapping` refer to a non existent association', $this->parentAssociationMapping));
             }
             $this->parentAssociationMapping = $this->getClassMetaData()->associationMappings[$this->parentAssociationMapping];
         }
@@ -1367,14 +1364,14 @@ abstract class Admin implements AdminInterface
     }
 
     /**
-     * return true or false if an Admin child exists for the given $code
+     * Returns true or false if an Admin child exists for the given $code
      *
-     * @param string $code
-     * @return Admin|bool
+     * @param string $code Admin code
+     * @return bool True if child exist, false otherwise
      */
     public function hasChild($code)
     {
-        return isset($this->children[$code]) ? $this->children[$code] : false;
+        return isset($this->children[$code]);
     }
 
     /**
