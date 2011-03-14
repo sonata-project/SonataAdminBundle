@@ -35,7 +35,7 @@ abstract class Filter extends Configurable
      * @param  $alias the root alias
      * @return void
      */
-    abstract public function filter(QueryBuilder $queryBuilder, $alias, $field, $value);
+    abstract public function doFilter(QueryBuilder $queryBuilder, $alias, $field, $value);
 
     /**
      * get the related form field filter
@@ -83,7 +83,7 @@ abstract class Filter extends Configurable
 
         list($alias, $field) = $this->association($queryBuilder, $this->field->getData());
 
-        $this->filter($queryBuilder, $alias, $field, $this->field->getData());
+        $this->doFilter($queryBuilder, $alias, $field, $this->field->getData());
     }
 
     protected function association(QueryBuilder $queryBuilder, $value)

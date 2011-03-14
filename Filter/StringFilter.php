@@ -17,7 +17,7 @@ use Doctrine\ORM\QueryBuilder;
 class StringFilter extends Filter
 {
 
-    public function filter(QueryBuilder $queryBuilder, $alias, $field, $value)
+    public function doFilter(QueryBuilder $queryBuilder, $alias, $field, $value)
     {
 
         if ($value == null) {

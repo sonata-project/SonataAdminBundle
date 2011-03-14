@@ -22,7 +22,7 @@ class CallbackFilter extends Filter
         return array($queryBuilder->getRootAlias(), false);
     }
 
-    public function filter(QueryBuilder $queryBuilder, $alias, $field, $value)
+    public function doFilter(QueryBuilder $queryBuilder, $alias, $field, $value)
     {
 
         call_user_func($this->getOption('filter'), $queryBuilder, $alias, $field, $value);
