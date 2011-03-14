@@ -73,7 +73,7 @@ Declaring new Entity
 
 Once you have created an admin class, you must declare the class to use it. Like ::
 
-.. code-block:: yaml
+.. code-block:: xml
 
     # app/config/config.xml
 
@@ -81,6 +81,6 @@ Once you have created an admin class, you must declare the class to use it. Like
 
         <tag name="sonata.admin" manager_type="orm" group="sonata_blog" label="post"/>
 
-        <argument>Application\Sonata\NewsBundle\Entity\Post</argument>
+        <argument>Sonata\NewsBundle\Entity\Post</argument>
         <argument>SonataNewsBundle:PostAdmin</argument>
     </service>
