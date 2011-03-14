@@ -13,9 +13,9 @@ Example
     namespace Sonata\NewsBundle\Admin;
 
     use Sonata\AdminBundle\Datagrid\DatagridMapper;
-    use Sonata\AdminBundle\Admin\EntityAdmin;
+    use Sonata\AdminBundle\Admin\Admin;
 
-    class PostAdmin extends EntityAdmin
+    class PostAdmin extends Admin
     {
         protected $filter = array(
             'title',

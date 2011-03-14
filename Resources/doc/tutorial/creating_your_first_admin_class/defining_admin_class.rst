@@ -19,12 +19,12 @@ By convention Admin files are set under a Admin folder.
 
     namespace Sonata\NewsBundle\Admin;
 
-    use Sonata\AdminBundle\Admin\EntityAdmin;
+    use Sonata\AdminBundle\Admin\Admin;
     use Sonata\AdminBundle\Form\FormMapper;
     use Sonata\AdminBundle\Datagrid\DatagridMapper;
     use Sonata\AdminBundle\Datagrid\ListMapper;
 
-    class PostAdmin extends EntityAdmin
+    class PostAdmin extends Admin
     {
 
     }
@@ -37,7 +37,7 @@ By convention Admin files are set under a Admin folder.
 
         <tag name="sonata.admin" manager_type="orm" group="sonata_blog" label="post"/>
 
-        <argument>Application\Sonata\NewsBundle\Entity\Post</argument>
+        <argument>Sonata\NewsBundle\Entity\Post</argument>
         <argument>SonataNewsBundle:PostAdmin</argument>
     </service>
 
@@ -66,7 +66,7 @@ Now, let's specify the differents fields we want to use:
         'title',
         'abstract',
         'content',
-        'tags' => array('options' => array('expanded' => true)),
+        'tags' => array('form_field_options' => array('expanded' => true)),
         'comments_enabled',
         'comments_default_status'
     );
@@ -90,9 +90,9 @@ TagAdmin
 
     namespace Sonata\NewsBundle\Admin;
 
-    use Sonata\AdminBundle\Admin\EntityAdmin;
+    use Sonata\AdminBundle\Admin\Admin;
 
-    class TagAdmin extends EntityAdmin
+    class TagAdmin extends Admin
     {
 
         protected $list = array(
@@ -114,9 +114,9 @@ CommentAdmin
 
     namespace Sonata\NewsBundle\Admin;
 
-    use Sonata\AdminBundle\Admin\EntityAdmin;
+    use Sonata\AdminBundle\Admin\Admin;
 
-    class CommentAdmin extends EntityAdmin
+    class CommentAdmin extends Admin
     {
         protected $list = array(
             'name' => array('identifier' => true),

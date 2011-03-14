@@ -12,9 +12,9 @@ Example
     namespace Sonta\NewsBundle\Admin;
 
     use Sonata\AdminBundle\Form\FormMapper;
-    use Sonata\AdminBundle\Admin\EntityAdmin;
+    use Sonata\AdminBundle\Admin\Admin;
 
-    class PostAdmin extends EntityAdmin
+    class PostAdmin extends Admin
     {
         protected $form = array(
             'author' => array('edit' => 'list'),
@@ -22,7 +22,7 @@ Example
             'title',
             'abstract',
             'content',
-            'tags' => array('options' => array('expanded' => true)),
+            'tags' => array('form_field_options' => array('expanded' => true)),
             'comments_close_at',
             'comments_enabled',
             'comments_default_status'
