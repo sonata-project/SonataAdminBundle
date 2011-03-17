@@ -74,6 +74,12 @@ class CRUDController extends Controller
         $this->configure();
     }
 
+    /**
+     * Contextualize the admin class depends on the current request
+     *
+     * @throws \RuntimeException
+     * @return void
+     */
     public function configure()
     {
         $adminCode = $this->container->get('request')->get('_sonata_admin');
@@ -84,9 +90,7 @@ class CRUDController extends Controller
             throw new \RuntimeException(sprintf('Unable to find the admin class related to the current controller (%s)', get_class($this)));
         }
 
-        if ($this->container->get('request')->get('uniqid')) {
-            $this->admin->setUniqid($this->container->get('request')->get('uniqid'));
-        }
+        $this->admin->setRequest($this->container->get('request'));
 
         if ($this->admin->isChild()) {
             $this->admin->setCurrentChild(true);
@@ -170,9 +174,6 @@ class CRUDController extends Controller
      */
     public function editAction($id)
     {
-
-        $id = $this->get('request')->get($this->admin->getIdParameter());
-
         if ($id instanceof Form) {
             $object = $id->getData();
             $form   = $id;
@@ -180,6 +181,7 @@ class CRUDController extends Controller
             // todo : refactor the Form Creation
             $this->admin->getForm($object);
         } else {
+            $id = $this->get('request')->get($this->admin->getIdParameter());
             $object = $this->admin->getObject($id);
 
             if (!$object) {

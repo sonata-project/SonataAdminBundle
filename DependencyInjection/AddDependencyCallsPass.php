@@ -103,10 +103,6 @@ class AddDependencyCallsPass implements CompilerPassInterface
             $definition->addMethodCall('setDatagridBuilder', array(new Reference(sprintf('sonata_admin.builder.%s_datagrid', $manager_type))));
         }
 
-        if (!$definition->hasMethodCall('setRequest')) {
-            $definition->addMethodCall('setRequest', array(new Reference('request')));
-        }
-
         if (!$definition->hasMethodCall('setTranslator')) {
             $definition->addMethodCall('setTranslator', array(new Reference('translator')));
         }

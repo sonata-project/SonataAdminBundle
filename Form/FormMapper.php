@@ -114,4 +114,20 @@ class FormMapper
         $this->admin->removeFormFieldDescription($key);
         $this->form->remove($key);
     }
+
+    /**
+     * @return \Symfony\Component\Form\Form
+     */
+    public function getForm()
+    {
+        return $this->form;
+    }
+
+    /**
+     * @return \Sonata\AdminBundle\Admin\Admin
+     */
+    public function getAdmin()
+    {
+        return $this->admin;
+    }
 }

@@ -747,11 +747,11 @@ abstract class Admin implements AdminInterface
      *
      * @throws RuntimeException
      * @param  $name
-     * @param array $params
+     * @param array $parameters
      *
      * @return return a complete url
      */
-    public function generateUrl($name, array $params = array())
+    public function generateUrl($name, array $parameters = array())
     {
 
         if (!$this->isChild()) {
@@ -767,25 +767,25 @@ abstract class Admin implements AdminInterface
 
             // twig template does not accept variable hash key ... so cannot use admin.idparameter ...
             // switch value
-            if (isset($params['id'])) {
-                $params[$this->getIdParameter()] = $params['id'];
-                unset($params['id']);
+            if (isset($parameters['id'])) {
+                $parameters[$this->getIdParameter()] = $parameters['id'];
+                unset($parameters['id']);
             }
 
-            $params[$this->getParent()->getIdParameter()] = $this->request->get($this->getParent()->getIdParameter());
+            $parameters[$this->getParent()->getIdParameter()] = $this->request->get($this->getParent()->getIdParameter());
         }
 
         // if the admin is linked to a FieldDescription (ie, embedded widget)
         if ($this->hasParentFieldDescription()) {
-            $params['uniqid']  = $this->getUniqid();
-            $params['code']    = $this->getCode();
-            $params['pcode']   = $this->getParentFieldDescription()->getAdmin()->getCode();
-            $params['puniqid'] = $this->getParentFieldDescription()->getAdmin()->getUniqid();
+            $parameters['uniqid']  = $this->getUniqid();
+            $parameters['code']    = $this->getCode();
+            $parameters['pcode']   = $this->getParentFieldDescription()->getAdmin()->getCode();
+            $parameters['puniqid'] = $this->getParentFieldDescription()->getAdmin()->getUniqid();
         }
 
         if ($name == 'update' || substr($name, -7) == '|update') {
-            $params['uniqid'] = $this->getUniqid();
-            $params['code']   = $this->getCode();
+            $parameters['uniqid'] = $this->getUniqid();
+            $parameters['code']   = $this->getCode();
         }
         
         $url = $this->getUrl($name);
@@ -794,7 +794,7 @@ abstract class Admin implements AdminInterface
             throw new \RuntimeException(sprintf('unable to find the url `%s`', $name));
         }
 
-        return $this->router->generate($url['name'], $params);
+        return $this->router->generate($url['name'], $parameters);
     }
 
     /**
@@ -868,6 +868,7 @@ abstract class Admin implements AdminInterface
     /**
      * attach an admin instance to the given FieldDescription
      *
+     * @param FieldDescription $fieldDescription
      */
     public function attachAdminClass(FieldDescription $fieldDescription)
     {
@@ -884,7 +885,7 @@ abstract class Admin implements AdminInterface
     /**
      * return the target object
      *
-     * @param  $id
+     * @param integer $id
      * @return
      */
     public function getObject($id)
@@ -925,7 +926,8 @@ abstract class Admin implements AdminInterface
     /**
      * return a form depend on the given $object
      *
-     * @param  $object
+     * @param object $object
+     * @param array $options the form options
      * @return Symfony\Component\Form\Form
      */
     public function getForm($object, array $options = array())
@@ -1618,6 +1620,10 @@ abstract class Admin implements AdminInterface
     public function setRequest(Request $request)
     {
         $this->request = $request;
+
+        if ($request->get('uniqid')) {
+            $this->setUniqid($request->get('uniqid'));
+        }
     }
 
     public function getRequest()
