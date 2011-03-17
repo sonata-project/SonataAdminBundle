@@ -11,10 +11,10 @@ Example
     <?php
     namespace Sonata\NewsBundle\Admin;
 
-    use Sonata\AdminBundle\Admin\EntityAdmin;
+    use Sonata\AdminBundle\Admin\Admin;
     use Sonata\AdminBundle\Datagrid\ListMapper;
 
-    class PostAdmin extends EntityAdmin
+    class PostAdmin extends Admin
     {
         protected $list = array(
             'title'   => array(),
