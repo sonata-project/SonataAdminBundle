@@ -241,7 +241,7 @@ class CRUDController extends Controller
         if ($form->isValid()) {
 
             if ($action == 'create') {
-                $this->admin->preInsert($object);
+                $this->admin->prePersist($object);
             } else {
                 $this->admin->preUpdate($object);
             }
@@ -250,7 +250,7 @@ class CRUDController extends Controller
             $this->admin->getModelManager()->flush($object);
 
             if ($action == 'create') {
-                $this->admin->postInsert($object);
+                $this->admin->postPersist($object);
             } else {
                 $this->admin->postUpdate($object);
             }
@@ -378,4 +378,5 @@ class CRUDController extends Controller
 
         return $this->admin->getBreadcrumbs($action);
     }
+
 }

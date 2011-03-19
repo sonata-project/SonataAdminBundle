@@ -365,12 +365,12 @@ abstract class Admin implements AdminInterface
 
     }
 
-    public function preInsert($object)
+    public function prePersist($object)
     {
 
     }
 
-    public function postInsert($object)
+    public function postPersist($object)
     {
 
     }
@@ -787,6 +787,9 @@ abstract class Admin implements AdminInterface
             $parameters['uniqid'] = $this->getUniqid();
             $parameters['code']   = $this->getCode();
         }
+
+        // allows to define persistent parameters 
+        $parameters = array_merge($this->getPersitentParameters(), $parameters);
         
         $url = $this->getUrl($name);
 
@@ -1466,8 +1469,17 @@ abstract class Admin implements AdminInterface
      */
     public function getClassnameLabel()
     {
-
         return $this->classnameLabel;
+    }
+
+    /**
+     * return an array of persistent parameters
+     *
+     * @return array
+     */
+    public function getPersitentParameters()
+    {
+        return array();
     }
 
     /**
@@ -1607,16 +1619,26 @@ abstract class Admin implements AdminInterface
         return $this->translationDomain;
     }
 
+    /**
+     *
+     */
     public function setTranslator(TranslatorInterface $translator)
     {
         $this->translator = $translator;
     }
 
+    /**
+     * 
+     */
     public function getTranslator()
     {
         return $this->translator;
     }
 
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @return void
+     */
     public function setRequest(Request $request)
     {
         $this->request = $request;
@@ -1626,66 +1648,111 @@ abstract class Admin implements AdminInterface
         }
     }
 
+    /**
+     * @return Symfony\Component\HttpFoundation\Request
+     */
     public function getRequest()
     {
         return $this->request;
     }
 
+    /**
+     * @param \Sonata\AdminBundle\Builder\FormBuilderInterface $formBuilder
+     * @return void
+     */
     public function setFormBuilder(FormBuilderInterface $formBuilder)
     {
         $this->formBuilder = $formBuilder;
     }
 
+    /**
+     * @return Sonata\AdminBundle\Builder\FormBuilderInterface
+     */
     public function getFormBuilder()
     {
         return $this->formBuilder;
     }
 
+    /**
+     * @param \Sonata\AdminBundle\Builder\DatagridBuilderInterface $datagridBuilder
+     * @return void
+     */
     public function setDatagridBuilder(DatagridBuilderInterface $datagridBuilder)
     {
         $this->datagridBuilder = $datagridBuilder;
     }
 
+    /**
+     * @return Sonata\AdminBundle\Builder\DatagridBuilderInterface
+     */
     public function getDatagridBuilder()
     {
         return $this->datagridBuilder;
     }
 
+    /**
+     * @param \Sonata\AdminBundle\Builder\ListBuilderInterface $listBuilder
+     * @return void
+     */
     public function setListBuilder(ListBuilderInterface $listBuilder)
     {
         $this->listBuilder = $listBuilder;
     }
 
+    /**
+     * @return Sonata\AdminBundle\Builder\ListBuilderInterface
+     */
     public function getListBuilder()
     {
         return $this->listBuilder;
     }
 
+    /**
+     * @param Pool $configurationPool
+     * @return void
+     */
     public function setConfigurationPool(Pool $configurationPool)
     {
         $this->configurationPool = $configurationPool;
     }
 
+    /**
+     * @return Pool
+     */
     public function getConfigurationPool()
     {
         return $this->configurationPool;
     }
 
+    /**
+     * @param \Symfony\Component\Routing\RouterInterface $router
+     * @return void
+     */
     public function setRouter(RouterInterface $router)
     {
         $this->router = $router;
     }
 
+    /**
+     * @return Symfony\Component\Routing\RouterInterface
+     */
     public function getRouter()
     {
         return $this->router;
     }
 
+    /**
+     * @param  $modelManager
+     * @return void
+     */
     public function setModelManager($modelManager)
     {
         $this->modelManager = $modelManager;
     }
 
+    /**
+     * @return object
+     */
     public function getModelManager()
     {
         return $this->modelManager;
