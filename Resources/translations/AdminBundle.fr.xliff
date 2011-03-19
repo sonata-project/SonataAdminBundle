@@ -70,6 +70,10 @@
                 <source>title_list</source>
                 <target>Liste</target>
             </trans-unit>
+            <trans-unit id="no_result">
+                <source>no_result</source>
+                <target>Aucun résultat</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
