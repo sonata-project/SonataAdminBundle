@@ -703,6 +703,17 @@ abstract class Admin implements AdminInterface
                 'options' => array(),
                 'params'    => array(),
             ),
+            $this->baseCodeRoute . '.delete' => array(
+                'name'      => $this->getBaseRouteName().'_delete',
+                'pattern'   => $this->getBaseRoutePattern().'/'.$this->getRouterIdParameter().'/delete',
+                'defaults'  => array(
+                    '_controller' => $this->getBaseControllerName().':delete',
+                    '_sonata_admin' => $this->baseCodeRoute
+                ),
+                'requirements' => array(),
+                'options' => array(),
+                'params'    => array(),
+            ),
             $this->baseCodeRoute . '.batch' => array(
                 'name'      => $this->getBaseRouteName().'_batch',
                 'pattern'       => $this->getBaseRoutePattern().'/batch',

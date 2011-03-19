@@ -90,6 +90,10 @@
                 <source>no_result</source>
                 <target>No result</target>
             </trans-unit>
+            <trans-unit id="confirm_msg">
+                <source>confirm_msg</source>
+                <target>Are you sure ?</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

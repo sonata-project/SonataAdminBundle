@@ -74,6 +74,10 @@
                 <source>no_result</source>
                 <target>Aucun résultat</target>
             </trans-unit>
+            <trans-unit id="confirm_msg">
+                <source>confirm_msg</source>
+                <target>Êtes-vous sûr ?</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

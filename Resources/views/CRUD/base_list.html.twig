@@ -22,10 +22,36 @@ file that was distributed with this source code.
 {% block side_menu %}{% if side_menu %}{{ side_menu.render|raw }}{% endif %}{% endblock %}
 
 {% block list_table %}
+<<<<<<< HEAD
     {% if datagrid.results|length > 0 %}
         <form action="{{ admin.generateUrl('batch') }}" method="POST" >
             <table>
                 {% block table_header %}
+=======
+    <form action="{{ admin.generateUrl('batch') }}" method="POST" >
+        <table>
+            {% block table_header %}
+                <tr>
+                    {% for field_description in list.elements %}
+                        {% if field_description.getOption('code') == '_batch' %}
+                            <th class="sonata-ba-list-field-header sonata-ba-list-field-header-batch"><input type="checkbox" id="list_batch_checkbox" /></th>
+                        {% else %}
+                                {% spaceless %}<th class="sonata-ba-list-field-header sonata-ba-list-field-header-{{ field_description.type}}">
+                                    {% if field_description.options.name is defined %}
+                                        {% trans field_description.options.name from admin.translationdomain %}
+                                    {% else %}
+                                        {% trans field_description.name from admin.translationdomain %}
+                                    {% endif %}
+                                </th>{% endspaceless %}
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+            {% endblock %}
+
+
+            {% block table_body %}
+                {% for object in datagrid.results %}
+>>>>>>> first implementation for delete in view list
                     <tr>
                         {% for field_description in list.elements %}
                             {% if field_description.getOption('code') == '_batch' %}
@@ -42,6 +68,11 @@ file that was distributed with this source code.
                                     </th>{% endspaceless %}
                             {% endif %}
                         {% endfor %}
+                        <td>
+                            <a href="{{ admin.generateUrl('delete', {'id': object.id}) }}" class="delete_link">
+                              <img src="{{ asset('bundles/sonataadmin/famfamfam/delete.png') }}" alt="{% trans 'list_delete' from 'AdminBundle' %}" title="{% trans 'list_delete' from 'AdminBundle' %}" />
+                            </a>
+                        </td>
                     </tr>
                 {% endblock %}
 
@@ -82,11 +113,14 @@ file that was distributed with this source code.
                     {% endif %}
                 {% endblock %}
             </table>
-        
+
             <script type="text/javascript">
                 jQuery(document).ready(function($){
                    $('#list_batch_checkbox').click(function(){
                        $(this).closest('table').find("td input[type='checkbox']").attr('checked', $(this).is(':checked'));
+                   });
+                   $('.delete_link').click(function(e){
+                      if (!confirm('{% trans 'confirm_msg' from 'AdminBundle' %}')) e.preventDefault();
                    });
                 });
             </script>
