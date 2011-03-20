@@ -205,7 +205,6 @@ abstract class Admin implements AdminInterface
      */
     protected $parentFieldDescription;
 
-
     /**
      * If true then the current admin is part of the nested admin set (from the url)
      *
@@ -789,7 +788,7 @@ abstract class Admin implements AdminInterface
         }
 
         // allows to define persistent parameters 
-        $parameters = array_merge($this->getPersitentParameters(), $parameters);
+        $parameters = array_merge($this->getPersistentParameters(), $parameters);
         
         $url = $this->getUrl($name);
 
@@ -1477,7 +1476,7 @@ abstract class Admin implements AdminInterface
      *
      * @return array
      */
-    public function getPersitentParameters()
+    public function getPersistentParameters()
     {
         return array();
     }
