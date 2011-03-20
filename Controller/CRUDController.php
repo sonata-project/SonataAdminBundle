@@ -168,7 +168,6 @@ class CRUDController extends Controller
         // todo
     }
 
-
     /**
      * return the Response object associated to the edit action
      *

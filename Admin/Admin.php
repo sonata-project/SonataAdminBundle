@@ -774,7 +774,7 @@ abstract class Admin implements AdminInterface
             $parameters[$this->getParent()->getIdParameter()] = $this->request->get($this->getParent()->getIdParameter());
         }
 
-        // if the admin is lnked to a parent FieldDescription (ie, embedded widget)
+        // if the admin is linked to a parent FieldDescription (ie, embedded widget)
         if ($this->hasParentFieldDescription()) {
             // merge link parameter if any provided by the parent field
             $parameters = array_merge($parameters, $this->getParentFieldDescription()->getOption('link_parameters', array()));
