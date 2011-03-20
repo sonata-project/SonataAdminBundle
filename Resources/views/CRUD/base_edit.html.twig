@@ -23,7 +23,14 @@ file that was distributed with this source code.
 {% block side_menu %}{% if side_menu %}{{ side_menu.render|raw }}{% endif %}{% endblock %}
 
 {% block form %}
-    <form action="{{ admin.generateUrl('update', {'id': object.id, 'uniqid': admin.uniqid}) }}"{% if form.isMultipart %} enctype="multipart/form-data"{% endif %} method="POST">
+
+    {% if object.id > 0 %}
+        {% set url = 'edit' %}
+    {% else %}
+        {% set url = 'create' %}
+    {% endif %}
+
+    <form action="{{ admin.generateUrl(url, {'id': object.id, 'uniqid': admin.uniqid}) }}"{% if form.isMultipart %} enctype="multipart/form-data"{% endif %} method="POST">
 
         {{ form_hidden(form) }}
         

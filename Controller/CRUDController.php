@@ -84,6 +84,10 @@ class CRUDController extends Controller
     {
         $adminCode = $this->container->get('request')->get('_sonata_admin');
 
+        if (!$adminCode) {
+            throw new \RuntimeException(sprintf('There is no `_sonata_admin` defined for the controller `%s` and the current route `%s`', get_class($this), $this->container->get('request')->get('_route')));
+        }
+
         $this->admin = $this->container->get('sonata_admin.admin.pool')->getAdminByAdminCode($adminCode);
 
         if (!$this->admin) {
@@ -174,24 +178,33 @@ class CRUDController extends Controller
      */
     public function editAction($id)
     {
-        if ($id instanceof Form) {
-            $object = $id->getData();
-            $form   = $id;
+        $object = $this->admin->getObject($this->get('request')->get($this->admin->getIdParameter()));
 
-            // todo : refactor the Form Creation
-            $this->admin->getForm($object);
-        } else {
-            $id = $this->get('request')->get($this->admin->getIdParameter());
-            $object = $this->admin->getObject($id);
-
-            if (!$object) {
-                throw new NotFoundHttpException(sprintf('unable to find the object with id : %s', $id));
-            }
-
-            $form = $this->admin->getForm($object);
+        if (!$object) {
+            throw new NotFoundHttpException(sprintf('unable to find the object with id : %s', $id));
         }
 
         $this->admin->setSubject($object);
+
+        $form = $this->admin->getForm($object);
+
+        if ($this->get('request')->getMethod() == 'POST') {
+            $form->bind($this->get('request'));
+
+            if ($form->isValid()) {
+                $this->admin->preUpdate($object);
+                $this->admin->getModelManager()->persist($object);
+                $this->admin->getModelManager()->flush($object);
+                $this->admin->postUpdate($object);
+
+                if ($this->isXmlHttpRequest()) {
+                   return $this->renderJson(array('result' => 'ok', 'objectId' => $object->getId()));
+                }
+
+                // redirect to edit mode
+                return $this->redirectTo($object);
+            }
+        }
 
         return $this->render($this->admin->getEditTemplate(), array(
             'form'           => $form,
@@ -202,69 +215,6 @@ class CRUDController extends Controller
             'base_template'  => $this->getBaseTemplate(),
             'side_menu'      => $this->getSideMenu('edit'),
             'breadcrumbs'    => $this->getBreadcrumbs('edit'),
-        ));
-    }
-
-    /**
-     * return the Response object associated to the update action
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function updateAction()
-    {
-        if ($this->get('request')->getMethod() != 'POST') {
-           throw new \RuntimeException('invalid request type, POST expected');
-        }
-
-        $id = $this->get('request')->get($this->admin->getIdParameter());
-
-        if (is_numeric($id)) {
-            $object = $this->admin->getObject($id);
-
-            if (!$object) {
-                throw new NotFoundHttpException(sprintf('unable to find the object with id : %s', $id));
-            }
-
-            $action = 'edit';
-        } else {
-            $object = $this->admin->getNewInstance();
-
-            $action = 'create';
-        }
-
-        $this->admin->setSubject($object);
-        
-        $form = $this->admin->getForm($object);
-
-        $form->bind($this->get('request'));
-
-        if ($form->isValid()) {
-
-            if ($action == 'create') {
-                $this->admin->prePersist($object);
-            } else {
-                $this->admin->preUpdate($object);
-            }
-
-            $this->admin->getModelManager()->persist($object);
-            $this->admin->getModelManager()->flush($object);
-
-            if ($action == 'create') {
-                $this->admin->postPersist($object);
-            } else {
-                $this->admin->postUpdate($object);
-            }
-
-            if ($this->isXmlHttpRequest()) {
-                return $this->renderJson(array('result' => 'ok', 'objectId' => $object->getId()));
-            }
-
-            // redirect to edit mode
-            return $this->redirectTo($object);
-        }
-
-        return $this->forward(sprintf('%s:%s', $this->admin->getBaseControllerName(), $action), array(
-            'id' => $form
         ));
     }
 
@@ -339,6 +289,24 @@ class CRUDController extends Controller
         }
 
         $this->admin->setSubject($object);
+
+        if ($this->get('request')->getMethod() == 'POST') {
+            $form->bind($this->get('request'));
+
+            if ($form->isValid()) {
+                $this->admin->prePersist($object);
+                $this->admin->getModelManager()->persist($object);
+                $this->admin->getModelManager()->flush($object);
+                $this->admin->postPersist($object);
+
+                if ($this->isXmlHttpRequest()) {
+                   return $this->renderJson(array('result' => 'ok', 'objectId' => $object->getId()));
+                }
+
+                // redirect to edit mode
+                return $this->redirectTo($object);
+            }
+        }
 
         return $this->render($this->admin->getEditTemplate(), array(
             'form'          => $form,
