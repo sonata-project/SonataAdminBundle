@@ -1,0 +1,5 @@
+<td>
+    {% for actions in field_description.options.actions %}
+        {% include 'SonataAdminBundle:CRUD:list__action' ~ actions ~ '.html.twig' %}
+    {% endfor %}
+</td>
