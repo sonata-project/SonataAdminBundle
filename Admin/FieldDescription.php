@@ -26,6 +26,8 @@ namespace Sonata\AdminBundle\Admin;
  *   - type (m): define the field type (use to tweak the form or the list)
  *   - template (o) : the template used to render the field
  *   - name (o) : the name used (label in the form, title in the list)
+ *   - link_parameters (o) : add link parameter to the related Admin class when
+ *                           the Admin.generateUrl is called
  *
  * Form Field options :
  *   - form_field_widget (o): the widget class to use to render the field
