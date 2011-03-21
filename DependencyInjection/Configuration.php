@@ -37,11 +37,16 @@ class Configuration
         $rootNode = $treeBuilder->root('sonata_admin', 'array');
 
         $rootNode
-            ->arrayNode('templates')
-                ->scalarNode('layout')->cannotBeEmpty()->end()
-                ->scalarNode('ajax')->cannotBeEmpty()->end()
-            ->end();
-            
+            ->children()
+                ->arrayNode('templates')
+                    ->children()
+                        ->scalarNode('layout')->cannotBeEmpty()->end()
+                        ->scalarNode('ajax')->cannotBeEmpty()->end()
+                    ->end()
+                ->end()
+            ->end()
+        ->end();
+
         return $treeBuilder->buildTree();
     }
 }
