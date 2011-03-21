@@ -60,7 +60,11 @@ class AdminPoolLoader extends FileLoader
                 if (!isset($defaults['_controller'])) {
                     $defaults['_controller'] = sprintf('%s:%s', $admin->getBaseControllerName(), $this->actionify($action));
                 }
-                
+
+                if (!isset($defaults['_sonata_admin'])) {
+                    $defaults['_sonata_admin'] = $admin->getBaseCodeRoute();
+                }
+
                 $collection->add($configuration['name'], new Route(
                     $configuration['pattern'],
                     $defaults,
@@ -83,8 +87,13 @@ class AdminPoolLoader extends FileLoader
      * @param string  $word Word to actionify
      * @return string $word Actionified word
      */
-    public static function actionify($word)
+    public static function actionify($action)
     {
-        return lcfirst(str_replace(' ', '', ucwords(strtr($word, '_-', '  '))));
+        if(($pos = strrpos($action, '.')) !== false) {
+
+          $action = substr($action, $pos + 1);
+        }
+
+        return lcfirst(str_replace(' ', '', ucwords(strtr($action, '_-', '  '))));
     }
 }
