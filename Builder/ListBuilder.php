@@ -105,24 +105,31 @@ class ListBuilder implements ListBuilderInterface
     
     public function buildActionFieldDescription(FieldDescription $fieldDescription)
     {
-        if (null === $fieldDescription->getTemplate())
-        {
+        if (null === $fieldDescription->getTemplate()) {
             $fieldDescription->setTemplate('SonataAdminBundle:CRUD:list__action.html.twig');
         }
         
-        if (null === $fieldDescription->getType())
-        {
+        if (null === $fieldDescription->getType()) {
             $fieldDescription->setType('action');
         }
         
-        if (null === $fieldDescription->getOption('name'))
-        {
+        if (null === $fieldDescription->getOption('name')) {
             $fieldDescription->setOption('name', 'Action');
         }
         
-        if (null === $fieldDescription->getOption('code'))
-        {
+        if (null === $fieldDescription->getOption('code')) {
             $fieldDescription->setOption('code', 'Action');
+        }
+        
+        if (null !== $fieldDescription->getOption('actions')) {
+            $actions = $fieldDescription->getOption('actions');
+            foreach ($actions as $k => $action) {
+                if (!isset($action['template'])) {
+                    $actions[$k]['template'] = sprintf('SonataAdminBundle:CRUD:list__action%s.html.twig', $k);
+                }
+            }
+            
+            $fieldDescription->setOption('actions', $actions);
         }
       
         return $fieldDescription;

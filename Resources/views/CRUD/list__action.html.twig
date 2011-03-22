@@ -1,5 +1,5 @@
 <td class="sonata-ba-list-field sonata-ba-list-field-action">
     {% for actions in field_description.options.actions %}
-        {% include 'SonataAdminBundle:CRUD:list__action' ~ actions ~ '.html.twig' %}
+        {% include actions.template %}
     {% endfor %}
 </td>
