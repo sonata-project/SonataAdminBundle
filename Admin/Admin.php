@@ -392,10 +392,6 @@ abstract class Admin implements AdminInterface
 
         // normalize field
         foreach ($this->listFieldDescriptions as $fieldDescription) {
-            if ($fieldDescription->getName() == '_action')
-            {
-              $this->buildActionFieldDescription($fieldDescription);
-            }
             $this->getListBuilder()->fixFieldDescription($this, $fieldDescription);
         }
 
@@ -411,31 +407,6 @@ abstract class Admin implements AdminInterface
         }
 
         return $this->listFieldDescriptions;
-    }
-    
-    public function buildActionFieldDescription(FieldDescription $fieldDescription)
-    {
-        if (null === $fieldDescription->getTemplate())
-        {
-            $fieldDescription->setTemplate('SonataAdminBundle:CRUD:list__action.html.twig');
-        }
-        
-        if (null === $fieldDescription->getType())
-        {
-            $fieldDescription->setType('action');
-        }
-        
-        if (null === $fieldDescription->getOption('name'))
-        {
-            $fieldDescription->setOption('name', 'Action');
-        }
-        
-        if (null === $fieldDescription->getOption('code'))
-        {
-            $fieldDescription->setOption('code', 'Action');
-        }
-      
-        return $fieldDescription;
     }
 
     /**

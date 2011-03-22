@@ -40,6 +40,10 @@ class ListBuilder implements ListBuilderInterface
      */
     public function fixFieldDescription(Admin $admin, FieldDescription $fieldDescription, array $options = array())
     {
+        if ($fieldDescription->getName() == '_action')
+        {
+          $this->buildActionFieldDescription($fieldDescription);
+        }
 
         $fieldDescription->mergeOptions($options);
         $fieldDescription->setAdmin($admin);
@@ -97,5 +101,30 @@ class ListBuilder implements ListBuilderInterface
         if ($fieldDescription->getType() == ClassMetadataInfo::MANY_TO_MANY) {
             $admin->attachAdminClass($fieldDescription);
         }
+    }
+    
+    public function buildActionFieldDescription(FieldDescription $fieldDescription)
+    {
+        if (null === $fieldDescription->getTemplate())
+        {
+            $fieldDescription->setTemplate('SonataAdminBundle:CRUD:list__action.html.twig');
+        }
+        
+        if (null === $fieldDescription->getType())
+        {
+            $fieldDescription->setType('action');
+        }
+        
+        if (null === $fieldDescription->getOption('name'))
+        {
+            $fieldDescription->setOption('name', 'Action');
+        }
+        
+        if (null === $fieldDescription->getOption('code'))
+        {
+            $fieldDescription->setOption('code', 'Action');
+        }
+      
+        return $fieldDescription;
     }
 }
