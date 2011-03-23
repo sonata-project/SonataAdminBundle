@@ -277,15 +277,10 @@ class CRUDController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function createAction($id = null)
+    public function createAction()
     {
-        if ($id instanceof Form) {
-            $object = $id->getData();
-            $form = $id;
-        } else {
-            $object = $this->admin->getNewInstance();
-            $form = $this->admin->getForm($object);
-        }
+        $object = $this->admin->getNewInstance();
+        $form = $this->admin->getForm($object);
 
         $this->admin->setSubject($object);
 
