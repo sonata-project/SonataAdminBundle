@@ -1,0 +1,29 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{% extends base_template %}
+
+{% block actions %}
+    <div class="sonata-actions">
+        <ul>
+            <li class="sonata-action-element"><a href="{{ admin.generateUrl('create') }}">{% trans "link_action_create" from admin.translationdomain %}</a></li>
+            <li class="sonata-action-element"><a href="{{ admin.generateUrl('list') }}">{% trans "link_action_list" from admin.translationdomain %}</a></li>
+        </ul>
+    </div>
+{% endblock %}
+
+{% block side_menu %}{% if side_menu %}{{ side_menu.render|raw }}{% endif %}{% endblock %}
+
+{% block content %}
+
+    Redefine the content block in your action template
+
+{% endblock %}
