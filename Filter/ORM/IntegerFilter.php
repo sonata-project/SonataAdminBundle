@@ -17,7 +17,7 @@ use Doctrine\ORM\QueryBuilder;
 class IntegerFilter extends Filter
 {
 
-   public function filter(QueryBuilder $queryBuilder, $alias, $field, $value)
+   public function filter($queryBuilder, $alias, $field, $value)
     {
 
         if ($value == null) {
