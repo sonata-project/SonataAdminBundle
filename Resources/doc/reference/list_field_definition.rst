@@ -20,7 +20,7 @@ Example
             'title'   => array(),
             'enabled' => array('type' => 'boolean'),
             'tags'    => array(),
-            'summary' => array(),
+            'summary' => array()
         );
 
         protected function configureListFields(ListMapper $list) // optional
@@ -51,6 +51,33 @@ types include:
 
 If no type is set, the ``Admin`` class will use the type defined in the doctrine
 mapping definition.
+
+List Actions
+------------
+
+You can set actions for each items in list by adding in $list, the '_action' field :
+
+.. code-block:: php
+
+    '_action' => array(
+      'actions' => array(
+        '_delete' => array(),
+        '_edit' => array()
+      )
+    )
+
+Edit and delete actions are available in default configuration. You can add your own! Default template file is :
+    SonataAdminBundle:CRUD:list__action[ACTION_NAME].html.twig
+  
+But you can specify yours by setup 'template' option like :
+.. code-block:: php
+
+    '_action' => array(
+      'actions' => array(
+        '_delete' => array('template' => 'MyBundle:MyController:my_partial.html.twig'),
+        '_edit' => array()
+      )
+    )
 
 Tweak it!
 ---------

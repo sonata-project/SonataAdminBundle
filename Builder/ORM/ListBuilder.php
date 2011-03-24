@@ -41,6 +41,10 @@ class ListBuilder implements ListBuilderInterface
      */
     public function fixFieldDescription(Admin $admin, FieldDescription $fieldDescription, array $options = array())
     {
+        if ($fieldDescription->getName() == '_action')
+        {
+          $this->buildActionFieldDescription($fieldDescription);
+        }
 
         $fieldDescription->mergeOptions($options);
         $fieldDescription->setAdmin($admin);
@@ -98,5 +102,37 @@ class ListBuilder implements ListBuilderInterface
         if ($fieldDescription->getType() == ClassMetadataInfo::MANY_TO_MANY) {
             $admin->attachAdminClass($fieldDescription);
         }
+    }
+    
+    public function buildActionFieldDescription(FieldDescription $fieldDescription)
+    {
+        if (null === $fieldDescription->getTemplate()) {
+            $fieldDescription->setTemplate('SonataAdminBundle:CRUD:list__action.html.twig');
+        }
+        
+        if (null === $fieldDescription->getType()) {
+            $fieldDescription->setType('action');
+        }
+        
+        if (null === $fieldDescription->getOption('name')) {
+            $fieldDescription->setOption('name', 'Action');
+        }
+        
+        if (null === $fieldDescription->getOption('code')) {
+            $fieldDescription->setOption('code', 'Action');
+        }
+        
+        if (null !== $fieldDescription->getOption('actions')) {
+            $actions = $fieldDescription->getOption('actions');
+            foreach ($actions as $k => $action) {
+                if (!isset($action['template'])) {
+                    $actions[$k]['template'] = sprintf('SonataAdminBundle:CRUD:list__action%s.html.twig', $k);
+                }
+            }
+            
+            $fieldDescription->setOption('actions', $actions);
+        }
+      
+        return $fieldDescription;
     }
 }

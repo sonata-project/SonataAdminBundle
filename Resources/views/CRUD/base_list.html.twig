@@ -82,11 +82,14 @@ file that was distributed with this source code.
                     {% endif %}
                 {% endblock %}
             </table>
-        
+
             <script type="text/javascript">
                 jQuery(document).ready(function($){
                    $('#list_batch_checkbox').click(function(){
                        $(this).closest('table').find("td input[type='checkbox']").attr('checked', $(this).is(':checked'));
+                   });
+                   $('.delete_link').click(function(e){
+                      if (!confirm('{% trans 'confirm_msg' from 'AdminBundle' %}')) e.preventDefault();
                    });
                 });
             </script>

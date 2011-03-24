@@ -165,7 +165,18 @@ class CRUDController extends Controller
 
     public function deleteAction($id)
     {
-        // todo
+        $id = $this->get('request')->get($this->admin->getIdParameter());
+        $object = $this->admin->getObject($id);
+
+        if (!$object) {
+            throw new NotFoundHttpException(sprintf('unable to find the object with id : %s', $id));
+        }
+        
+        $em = $this->admin->getModelManager();
+        $em->remove($object);
+        $em->flush();
+        
+        return new RedirectResponse($this->admin->generateUrl('list'));
     }
 
     /**
