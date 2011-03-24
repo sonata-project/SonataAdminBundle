@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Filter;
+namespace Sonata\AdminBundle\Filter\ORM;
 
 use Sonata\AdminBundle\Admin\FieldDescription;
 use Doctrine\ORM\QueryBuilder;

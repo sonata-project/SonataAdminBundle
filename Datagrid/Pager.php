@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tool;
+namespace Sonata\AdminBundle\Datagrid;
 
 /**
  * Pager class.
@@ -17,25 +17,28 @@ namespace Sonata\AdminBundle\Tool;
  * @subpackage addon
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  */
-abstract class Pager implements \Iterator, \Countable
+abstract class Pager implements \Iterator, \Countable, \Serializable
 {
-    protected
-        $page = 1,
-        $maxPerPage = 0,
-        $lastPage = 1,
-        $nbResults = 0,
-        $class = '',
-        $tableName = '',
-        $objects = null,
-        $cursor = 1,
-        $parameters = array(),
-        $currentMaxLink = 1,
-        $parameterBag = null,
-        $maxRecordLimit = false,
 
-        // used by iterator interface
-        $results = null,
-        $resultsCounter = 0;
+    protected $page = 1;
+    protected $maxPerPage = 0;
+    protected $lastPage = 1;
+    protected $nbResults = 0;
+    protected $class = '';
+    protected $tableName = '';
+    protected $objects = null;
+    protected $cursor = 1;
+    protected $parameters = array();
+    protected $currentMaxLink = 1;
+    protected $parameterBag = null;
+    protected $maxRecordLimit = false;
+
+    // used by iterator interface
+    protected $results = null;
+    protected $resultsCounter = 0;
+    protected $query            = null;
+    protected $queryBuilder     = null;
+    protected $countColumn      = 'id';
 
     /**
      * Constructor.
@@ -62,15 +65,6 @@ abstract class Pager implements \Iterator, \Countable
      * @return array
      */
     abstract public function getResults();
-
-    /**
-     * Returns an object at a certain offset.
-     *
-     * Used internally by {@link getCurrent()}.
-     *
-     * @return mixed
-     */
-    abstract protected function retrieveObject($offset);
 
     /**
      * Returns the current pager's max link.
@@ -596,5 +590,99 @@ abstract class Pager implements \Iterator, \Countable
     public function count()
     {
         return $this->getNbResults();
+    }
+
+    /**
+     * Get the query builder for the pager.
+     *
+     * @return Doctrine\ORM\QueryBuilder
+     */
+    public function getQueryBuilder()
+    {
+
+        return $this->queryBuilder;
+    }
+
+    /**
+     * Set query object for the pager
+     *
+     * @param Doctrine\ORM\QueryBuilder $query
+     */
+    public function setQueryBuilder($queryBuilder)
+    {
+        $this->queryBuilder = $queryBuilder;
+    }
+
+    /**
+     * Get the query for the pager.
+     *
+     * @return Doctrine\ORM\Query
+     */
+
+    public function getQuery()
+    {
+
+        if (!$this->query) {
+            $this->query = $this->getQueryBuilder()->getQuery();
+        }
+
+        return $this->query;
+    }
+
+    /**
+     * Serialize the pager object
+     *
+     * @return string $serialized
+     */
+    public function serialize()
+    {
+        $vars = get_object_vars($this);
+        unset($vars['query']);
+        return serialize($vars);
+    }
+
+    /**
+     * Unserialize a pager object
+     *
+     * @param string $serialized
+     */
+    public function unserialize($serialized)
+    {
+        $array = unserialize($serialized);
+
+        foreach ($array as $name => $values)
+        {
+            $this->$name = $values;
+        }
+    }
+
+    public function getCountColumn()
+    {
+
+        return $this->countColumn;
+    }
+
+    public function setCountColumn($countColumn) {
+
+        return $this->countColumn = $countColumn;
+    }
+
+    /**
+     * Retrieve the object for a certain offset
+     *
+     * @param integer $offset
+     *
+     * @return object
+     */
+    protected function retrieveObject($offset)
+    {
+        $queryForRetrieve = clone $this->getQuery();
+        $queryForRetrieve
+            ->setFirstResult($offset - 1)
+            ->setMaxResults(1);
+
+        $results = $queryForRetrieve->execute();
+
+        return $results[0];
     }
 }

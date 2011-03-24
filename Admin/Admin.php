@@ -19,7 +19,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
-use Sonata\AdminBundle\Datagrid\Datagrid;
 
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Builder\FormBuilderInterface;
@@ -863,11 +862,7 @@ abstract class Admin implements AdminInterface
      */
     public function getBaseDatagrid($values = array())
     {
-        return new Datagrid(
-            $this->getClass(),
-            $this->getModelManager(),
-            $values
-        );
+        return $this->getDatagridBuilder()->getBaseDatagrid($this, $values);
     }
 
     /**

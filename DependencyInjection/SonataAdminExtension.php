@@ -61,15 +61,15 @@ class SonataAdminExtension extends Extension
             ->addTag('twig.extension');
 
         // register form builder
-        $definition = new Definition('Sonata\AdminBundle\Builder\FormBuilder', array(new Reference('form.field_factory'), new Reference('form.context'), new Reference('validator')));
+        $definition = new Definition('Sonata\AdminBundle\Builder\ORM\FormBuilder', array(new Reference('form.field_factory'), new Reference('form.context'), new Reference('validator')));
         $container->setDefinition('sonata_admin.builder.orm_form', $definition);
 
         // register list builder
-        $definition = new Definition('Sonata\AdminBundle\Builder\ListBuilder');
+        $definition = new Definition('Sonata\AdminBundle\Builder\ORM\ListBuilder');
         $container->setDefinition('sonata_admin.builder.orm_list', $definition);
 
         // register filter builder
-        $definition = new Definition('Sonata\AdminBundle\Builder\DatagridBuilder');
+        $definition = new Definition('Sonata\AdminBundle\Builder\ORM\DatagridBuilder');
         $container->setDefinition('sonata_admin.builder.orm_datagrid', $definition);
 
         // registers crud action

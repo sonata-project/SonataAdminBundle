@@ -12,7 +12,7 @@ namespace Sonata\AdminBundle\Datagrid;
 
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Admin\FieldDescription;
-use Sonata\AdminBundle\Datagrid\Datagrid;
+use Sonata\AdminBundle\Datagrid\ORM\Datagrid;
 use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
 
 /**

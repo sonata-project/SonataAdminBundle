@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Filter;
+namespace Sonata\AdminBundle\Filter\ORM;
 
 use Sonata\AdminBundle\Admin\FieldDescription;
 use Doctrine\ORM\QueryBuilder;
@@ -17,7 +17,7 @@ use Doctrine\ORM\QueryBuilder;
 class BooleanFilter extends Filter
 {
 
-    public function filter(QueryBuilder $queryBuilder, $alias, $field, $value)
+    public function filter($queryBuilder, $alias, $field, $value)
     {
 
         if ($this->getField()->isMultipleChoice()) {
@@ -56,12 +56,6 @@ class BooleanFilter extends Filter
 
             $queryBuilder->setParameter($this->getName(), $value);
         }
-    }
-
-    protected function configure()
-    {
-
-        parent::configure();
     }
 
     public function getFormField()

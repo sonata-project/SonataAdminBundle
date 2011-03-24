@@ -9,12 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Builder;
+namespace Sonata\AdminBundle\Builder\ORM;
 
 use Sonata\AdminBundle\Admin\FieldDescription;
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Datagrid\ListCollection;
-    
+use Sonata\AdminBundle\Builder\ListBuilderInterface;
+
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 
 class ListBuilder implements ListBuilderInterface
@@ -66,19 +67,19 @@ class ListBuilder implements ListBuilderInterface
             $fieldDescription->setTemplate(sprintf('SonataAdminBundle:CRUD:list_%s.html.twig', $fieldDescription->getType()));
 
             if ($fieldDescription->getType() == ClassMetadataInfo::MANY_TO_ONE) {
-                $fieldDescription->setTemplate('SonataAdminBundle:CRUD:list_many_to_one.html.twig');
+                $fieldDescription->setTemplate('SonataAdminBundle:CRUD:list_orm_many_to_one.html.twig');
             }
 
             if ($fieldDescription->getType() == ClassMetadataInfo::ONE_TO_ONE) {
-                $fieldDescription->setTemplate('SonataAdminBundle:CRUD:list_one_to_one.html.twig');
+                $fieldDescription->setTemplate('SonataAdminBundle:CRUD:list_orm_one_to_one.html.twig');
             }
 
             if ($fieldDescription->getType() == ClassMetadataInfo::ONE_TO_MANY) {
-                $fieldDescription->setTemplate('SonataAdminBundle:CRUD:list_one_to_many.html.twig');
+                $fieldDescription->setTemplate('SonataAdminBundle:CRUD:list_orm_one_to_many.html.twig');
             }
 
             if ($fieldDescription->getType() == ClassMetadataInfo::MANY_TO_MANY) {
-                $fieldDescription->setTemplate('SonataAdminBundle:CRUD:list_many_to_many.html.twig');
+                $fieldDescription->setTemplate('SonataAdminBundle:CRUD:list_orm_many_to_many.html.twig');
             }
         }
 

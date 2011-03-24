@@ -11,11 +11,12 @@
 
 namespace Sonata\AdminBundle\Filter;
 
-use Symfony\Component\Form\Configurable;
 use Sonata\AdminBundle\Admin\FieldDescription;
+use Sonata\AdminBundle\Filter\FilterInterface;
+use Symfony\Component\Form\Configurable;
 use Doctrine\ORM\QueryBuilder;
 
-abstract class Filter extends Configurable
+abstract class Filter extends Configurable implements FilterInterface
 {
 
     protected $description = array();
@@ -25,25 +26,6 @@ abstract class Filter extends Configurable
     protected $field = null;
 
     protected $value = null;
-
-    /**
-     * apply the filter to the QueryBuilder instance
-     *
-     * @abstract
-     * @param  $query
-     * @param  $value
-     * @param  $alias the root alias
-     * @return void
-     */
-    abstract public function filter(QueryBuilder $queryBuilder, $alias, $field, $value);
-
-    /**
-     * get the related form field filter
-     *
-     * @abstract
-     * @return Field
-     */
-    abstract public function getFormField();
 
     public function __construct(FieldDescription $fieldDescription)
     {
@@ -73,35 +55,6 @@ abstract class Filter extends Configurable
     public function getDescription()
     {
         return $this->description;
-    }
-
-    public function apply(QueryBuilder $queryBuilder, $value)
-    {
-        $this->value = $value;
-
-        $this->field->submit($value);
-
-        list($alias, $field) = $this->association($queryBuilder, $this->field->getData());
-
-        $this->filter($queryBuilder, $alias, $field, $this->field->getData());
-    }
-
-    protected function association(QueryBuilder $queryBuilder, $value)
-    {
-        if ($value) {
-
-            if ($this->description->getType() == \Doctrine\ORM\Mapping\ClassMetadataInfo::MANY_TO_MANY) {
-                $queryBuilder->leftJoin(
-                    sprintf('%s.%s', $queryBuilder->getRootAlias(), $this->description->getFieldName()),
-                    $this->getName()
-                );
-
-                // todo : use the metadata information to find the correct column name
-                return array($this->getName(), 'id');
-            }
-        }
-        
-        return array($queryBuilder->getRootAlias(), $this->description->getFieldName());
     }
 
     public function setName($name)

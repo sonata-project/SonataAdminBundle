@@ -9,11 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Builder;
+namespace Sonata\AdminBundle\Builder\ORM;
 
 use Sonata\AdminBundle\Admin\FieldDescription;
 use Sonata\AdminBundle\Admin\Admin;
-use Sonata\AdminBundle\Datagrid\Datagrid;
+use Sonata\AdminBundle\Datagrid\ORM\Datagrid;
+use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
 
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 
@@ -28,18 +29,24 @@ class DatagridBuilder implements DatagridBuilderInterface
      * @var array
      */
     protected $filterClasses = array(
-        'string'     =>  'Sonata\\AdminBundle\\Filter\\StringFilter',
-        'text'       =>  'Sonata\\AdminBundle\\Filter\\StringFilter',
-        'boolean'    =>  'Sonata\\AdminBundle\\Filter\\BooleanFilter',
-        'integer'    =>  'Sonata\\AdminBundle\\Filter\\IntegerFilter',
-        'tinyint'    =>  'Sonata\\AdminBundle\\Filter\\IntegerFilter',
-        'smallint'   =>  'Sonata\\AdminBundle\\Filter\\IntegerFilter',
-        'mediumint'  =>  'Sonata\\AdminBundle\\Filter\\IntegerFilter',
-        'bigint'     =>  'Sonata\\AdminBundle\\Filter\\IntegerFilter',
-        'decimal'    =>  'Sonata\\AdminBundle\\Filter\\IntegerFilter',
-        'callback'   =>  'Sonata\\AdminBundle\\Filter\\CallbackFilter',
+        'string'     =>  'Sonata\\AdminBundle\\Filter\\ORM\\StringFilter',
+        'text'       =>  'Sonata\\AdminBundle\\Filter\\ORM\\StringFilter',
+        'boolean'    =>  'Sonata\\AdminBundle\\Filter\\ORM\\BooleanFilter',
+        'integer'    =>  'Sonata\\AdminBundle\\Filter\\ORM\\IntegerFilter',
+        'tinyint'    =>  'Sonata\\AdminBundle\\Filter\\ORM\\IntegerFilter',
+        'smallint'   =>  'Sonata\\AdminBundle\\Filter\\ORM\\IntegerFilter',
+        'mediumint'  =>  'Sonata\\AdminBundle\\Filter\\ORM\\IntegerFilter',
+        'bigint'     =>  'Sonata\\AdminBundle\\Filter\\ORM\\IntegerFilter',
+        'decimal'    =>  'Sonata\\AdminBundle\\Filter\\ORM\\IntegerFilter',
+        'callback'   =>  'Sonata\\AdminBundle\\Filter\\ORM\\CallbackFilter',
     );
 
+    /**
+     * @throws \RuntimeException
+     * @param \Sonata\AdminBundle\Admin\Admin $admin
+     * @param \Sonata\AdminBundle\Admin\FieldDescription $fieldDescription
+     * @return void
+     */
     public function fixFieldDescription(Admin $admin, FieldDescription $fieldDescription)
     {
         // set default values
@@ -109,6 +116,10 @@ class DatagridBuilder implements DatagridBuilderInterface
         return $class;
     }
 
+    /**
+     * @param \Sonata\AdminBundle\Admin\FieldDescription $fieldDescription
+     * @return array
+     */
     public function getChoices(FieldDescription $fieldDescription)
     {
         $targets = $fieldDescription->getAdmin()->getModelManager()
@@ -132,6 +143,11 @@ class DatagridBuilder implements DatagridBuilderInterface
         return $choices;
     }
 
+    /**
+     * @param \Sonata\AdminBundle\Datagrid\ORM\Datagrid $datagrid
+     * @param \Sonata\AdminBundle\Admin\FieldDescription $fieldDescription
+     * @return bool
+     */
     public function addFilter(Datagrid $datagrid, FieldDescription $fieldDescription)
     {
 
@@ -168,5 +184,18 @@ class DatagridBuilder implements DatagridBuilderInterface
 
         $datagrid->addFilter($filter);
     }
-   
+
+    /**
+     * @param \Sonata\AdminBundle\Admin\Admin $admin
+     * @param array $values
+     * @return \Sonata\AdminBundle\Datagrid\ORM\Datagrid
+     */
+    public function getBaseDatagrid(Admin $admin, array $values)
+    {
+        return new Datagrid(
+            $admin->getClass(),
+            $admin->getModelManager(),
+            $admin
+        );
+    }
 }

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Filter;
+namespace Sonata\AdminBundle\Filter\ORM;
 
 use Sonata\AdminBundle\Admin\FieldDescription;
 use Doctrine\ORM\QueryBuilder;
@@ -17,12 +17,12 @@ use Doctrine\ORM\QueryBuilder;
 class CallbackFilter extends Filter
 {
 
-    protected function association(QueryBuilder $queryBuilder, $value)
+    protected function association($queryBuilder, $value)
     {
         return array($queryBuilder->getRootAlias(), false);
     }
 
-    public function filter(QueryBuilder $queryBuilder, $alias, $field, $value)
+    public function filter($queryBuilder, $alias, $field, $value)
     {
 
         call_user_func($this->getOption('filter'), $queryBuilder, $alias, $field, $value);

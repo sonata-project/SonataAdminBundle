@@ -9,14 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Datagrid;
+namespace Sonata\AdminBundle\Datagrid\ORM;
 
-use Sonata\AdminBundle\Tool\DoctrinePager as Pager;
-
-use Sonata\AdminBundle\Admin\EntityAdmin;
-use Sonata\AdminBundle\Admin\FieldDescription;
-
-use Doctrine\ORM\Mapping\ClassMetadataInfo;
+use Sonata\AdminBundle\Datagrid\ORM\Pager;
 
 class Datagrid
 {

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Builder;
+namespace Sonata\AdminBundle\Builder\ORM;
 
 use Sonata\AdminBundle\Form\ValueTransformer\EntityToIDTransformer;
 use Sonata\AdminBundle\Form\ValueTransformer\ArrayToObjectTransformer;
@@ -17,7 +17,8 @@ use Sonata\AdminBundle\Form\EditableCollectionField;
 use Sonata\AdminBundle\Form\EditableFieldGroup;
 use Sonata\AdminBundle\Admin\FieldDescription;
 use Sonata\AdminBundle\Admin\Admin;
-
+use Sonata\AdminBundle\Builder\FormBuilderInterface;
+    
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormContextInterface;
@@ -402,22 +403,22 @@ class FormBuilder implements FormBuilderInterface
         }
 
         if ($fieldDescription->getType() == ClassMetadataInfo::ONE_TO_ONE) {
-            $fieldDescription->setTemplate('SonataAdminBundle:CRUD:edit_one_to_one.html.twig');
+            $fieldDescription->setTemplate('SonataAdminBundle:CRUD:edit_orm_one_to_one.html.twig');
             $admin->attachAdminClass($fieldDescription);
         }
 
         if ($fieldDescription->getType() == ClassMetadataInfo::MANY_TO_ONE) {
-            $fieldDescription->setTemplate('SonataAdminBundle:CRUD:edit_many_to_one.html.twig');
+            $fieldDescription->setTemplate('SonataAdminBundle:CRUD:edit_orm_many_to_one.html.twig');
             $admin->attachAdminClass($fieldDescription);
         }
 
         if ($fieldDescription->getType() == ClassMetadataInfo::MANY_TO_MANY) {
-            $fieldDescription->setTemplate('SonataAdminBundle:CRUD:edit_many_to_many.html.twig');
+            $fieldDescription->setTemplate('SonataAdminBundle:CRUD:edit_orm_many_to_many.html.twig');
             $admin->attachAdminClass($fieldDescription);
         }
 
         if ($fieldDescription->getType() == ClassMetadataInfo::ONE_TO_MANY) {
-            $fieldDescription->setTemplate('SonataAdminBundle:CRUD:edit_one_to_many.html.twig');
+            $fieldDescription->setTemplate('SonataAdminBundle:CRUD:edit_orm_one_to_many.html.twig');
 
             if ($fieldDescription->getOption('edit') == 'inline' && !$fieldDescription->getOption('widget_form_field')) {
                 $fieldDescription->setOption('widget_form_field', 'Bundle\\Sonata\\AdminBundle\\Form\\EditableFieldGroup');
