@@ -67,7 +67,7 @@ You can set actions for each items in list by adding in $list, the '_action' fie
     )
 
 Edit and delete actions are available in default configuration. You can add your own! Default template file is :
-    SonataAdminBundle:CRUD:list__action[ACTION_NAME].html.twig
+    SonataAdminBundle:CRUD:list__action_[ACTION_NAME].html.twig
   
 But you can specify yours by setup 'template' option like :
 .. code-block:: php

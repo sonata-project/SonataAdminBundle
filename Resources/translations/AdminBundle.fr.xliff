@@ -82,6 +82,10 @@
                 <source>action_edit</source>
                 <target>Editer</target>
             </trans-unit>
+            <trans-unit id="action_view">
+                <source>action_view</source>
+                <target>Afficher</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

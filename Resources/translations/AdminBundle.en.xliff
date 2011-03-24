@@ -98,6 +98,10 @@
                 <source>action_edit</source>
                 <target>Edit</target>
             </trans-unit>
+            <trans-unit id="action_view">
+                <source>action_view</source>
+                <target>View</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

@@ -23,20 +23,19 @@ class ListBuilder implements ListBuilderInterface
 
     public function getBaseList(array $options = array())
     {
-
         return new ListCollection;
     }
 
+
     public function addField(ListCollection $list, FieldDescription $fieldDescription)
     {
-
         return $list->add($fieldDescription);
     }
 
     /**
      * The method define the correct default settings for the provided FieldDescription
      *
-     * @param FieldDescription $fieldDescription
+     * @param \Sonata\AdminBundle\Admin\FieldDescription $fieldDescription
      * @return void
      */
     public function fixFieldDescription(Admin $admin, FieldDescription $fieldDescription, array $options = array())
@@ -103,7 +102,11 @@ class ListBuilder implements ListBuilderInterface
             $admin->attachAdminClass($fieldDescription);
         }
     }
-    
+
+    /**
+     * @param \Sonata\AdminBundle\Admin\FieldDescription $fieldDescription
+     * @return \Sonata\AdminBundle\Admin\FieldDescription
+     */
     public function buildActionFieldDescription(FieldDescription $fieldDescription)
     {
         if (null === $fieldDescription->getTemplate()) {
@@ -126,7 +129,7 @@ class ListBuilder implements ListBuilderInterface
             $actions = $fieldDescription->getOption('actions');
             foreach ($actions as $k => $action) {
                 if (!isset($action['template'])) {
-                    $actions[$k]['template'] = sprintf('SonataAdminBundle:CRUD:list__action%s.html.twig', $k);
+                    $actions[$k]['template'] = sprintf('SonataAdminBundle:CRUD:list__action_%s.html.twig', $k);
                 }
             }
             
