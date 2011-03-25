@@ -61,8 +61,8 @@ You can set actions for each items in list by adding in $list, the '_action' fie
 
     '_action' => array(
       'actions' => array(
-        '_delete' => array(),
-        '_edit' => array()
+        'delete' => array(),
+        'edit' => array()
       )
     )
 
@@ -74,8 +74,8 @@ But you can specify yours by setup 'template' option like :
 
     '_action' => array(
       'actions' => array(
-        '_delete' => array('template' => 'MyBundle:MyController:my_partial.html.twig'),
-        '_edit' => array()
+        'delete' => array('template' => 'MyBundle:MyController:my_partial.html.twig'),
+        'edit' => array()
       )
     )
 
