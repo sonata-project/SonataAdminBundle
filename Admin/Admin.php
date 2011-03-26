@@ -25,6 +25,8 @@ use Sonata\AdminBundle\Builder\FormBuilderInterface;
 use Sonata\AdminBundle\Builder\ListBuilderInterface;
 use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
 
+use Sonata\AdminBundle\Route\RouteCollection;
+
 use Knplabs\MenuBundle\Menu;
 use Knplabs\MenuBundle\MenuItem;
 
@@ -153,11 +155,11 @@ abstract class Admin implements AdminInterface
     protected $label;
 
     /**
-     * Array of urls related to this admin
+     * Array of routes related to this admin
      *
      * @var array
      */
-    protected $urls = array();
+    protected $routes = array();
 
     /**
      * The subject only set in edit/update/create mode
@@ -280,7 +282,7 @@ abstract class Admin implements AdminInterface
         'form_groups' => false,
         'list_fields' => false,
         'filter_fields' => false,
-        'urls'        => false,
+        'routes'        => false,
     );
 
     /**
@@ -348,7 +350,7 @@ abstract class Admin implements AdminInterface
         $this->baseCodeRoute = $this->getCode();
     }
 
-    public function configureUrls()
+    public function configureRoutes(RouteCollection $collection)
     {
 
     }
@@ -555,7 +557,6 @@ abstract class Admin implements AdminInterface
             if (!$matches) {
                 throw new \RuntimeException(sprintf('Please define a default `baseRouteName` value for the admin class `%s`', get_class($this)));
             }
-            
 
             if ($this->isChild()) { // the admin class is a child, prefix it with the parent route name
                 $this->baseRouteName = sprintf('%s_%s',
@@ -583,7 +584,6 @@ abstract class Admin implements AdminInterface
      */
     public function urlize($word, $sep = '_')
     {
-
         return strtolower(preg_replace('/[^a-z0-9_]/i', $sep.'$1', $word));
     }
 
@@ -605,7 +605,6 @@ abstract class Admin implements AdminInterface
      */
     public function getBatchActions()
     {
-
         return array(
             'delete' => $this->trans('action_delete')
         );
@@ -616,12 +615,11 @@ abstract class Admin implements AdminInterface
      *
      * @return array the list of available urls
      */
-    public function getUrls($baseCode = '')
+    public function getRoutes()
     {
+        $this->buildRoutes();
 
-        $this->buildUrls($baseCode);
-
-        return $this->urls;
+        return $this->routes;
     }
 
     /**
@@ -649,106 +647,54 @@ abstract class Admin implements AdminInterface
      *
      * @return void
      */
-    public function buildUrls()
+    public function buildRoutes()
     {
-        if ($this->loaded['urls']) {
+        if ($this->loaded['routes']) {
             return;
         }
 
-        $this->loaded['urls'] = true;
-        
-        $this->urls =  array(
-            $this->baseCodeRoute . '.list' => array(
-                'name'      => $this->getBaseRouteName().'_list',
-                'pattern'   => $this->getBaseRoutePattern().'/list',
-                'defaults'  => array(
-                    '_controller' => $this->getBaseControllerName().':list',
-                    '_sonata_admin' => $this->baseCodeRoute
-                ),
-                'requirements' => array(),
-                'options' => array(),
-                'params'    => array(),
-            ),
-            $this->baseCodeRoute . '.create' => array(
-                'name'      => $this->getBaseRouteName().'_create',
-                'pattern'       => $this->getBaseRoutePattern().'/create',
-                'defaults'  => array(
-                    '_controller' => $this->getBaseControllerName().':create',
-                    '_sonata_admin' => $this->baseCodeRoute
-                ),
-                'requirements' => array(),
-                'options' => array(),
-                'params'    => array(),
-            ),
-            $this->baseCodeRoute . '.edit' => array(
-                'name'      => $this->getBaseRouteName().'_edit',
-                'pattern'   => $this->getBaseRoutePattern().'/'.$this->getRouterIdParameter().'/edit',
-                'defaults'  => array(
-                    '_controller' => $this->getBaseControllerName().':edit',
-                    '_sonata_admin' => $this->baseCodeRoute
-                ),
-                'requirements' => array(),
-                'options' => array(),
-                'params'    => array(),
-            ),
-            $this->baseCodeRoute . '.update' => array(
-                'name'      => $this->getBaseRouteName().'_update',
-                'pattern'       => $this->getBaseRoutePattern().'/update',
-                'defaults'  => array(
-                    '_controller' => $this->getBaseControllerName().':update',
-                    '_sonata_admin' => $this->baseCodeRoute
-                ),
-                'requirements' => array(),
-                'options' => array(),
-                'params'    => array(),
-            ),
-            $this->baseCodeRoute . '.delete' => array(
-                'name'      => $this->getBaseRouteName().'_delete',
-                'pattern'   => $this->getBaseRoutePattern().'/'.$this->getRouterIdParameter().'/delete',
-                'defaults'  => array(
-                    '_controller' => $this->getBaseControllerName().':delete',
-                    '_sonata_admin' => $this->baseCodeRoute
-                ),
-                'requirements' => array(),
-                'options' => array(),
-                'params'    => array(),
-            ),
-            $this->baseCodeRoute . '.batch' => array(
-                'name'      => $this->getBaseRouteName().'_batch',
-                'pattern'       => $this->getBaseRoutePattern().'/batch',
-                'defaults'  => array(
-                    '_controller' => $this->getBaseControllerName().':batch',
-                    '_sonata_admin' => $this->baseCodeRoute
-                ),
-                'requirements' => array(),
-                'options' => array(),
-                'params'    => array(),
-            )
+        $this->loaded['routes'] = true;
+
+        $collection = new \Sonata\AdminBundle\Route\RouteCollection(
+            $this->getBaseCodeRoute(),
+            $this->getBaseRouteName(),
+            $this->getBaseRoutePattern(),
+            $this->getBaseControllerName()
         );
-        
+
+        $collection->add('list');
+        $collection->add('create');
+        $collection->add('update');
+        $collection->add('create');
+        $collection->add('batch');
+        $collection->add('edit', $this->getRouterIdParameter().'/edit');
+        $collection->add('delete', $this->getRouterIdParameter().'/delete');
+
         // add children urls
         foreach ($this->getChildren() as $children) {
-            $this->urls = array_merge($this->urls, $children->getUrls());
+            $collection->addCollection($children->getRoutes());
         }
 
-        $this->configureUrls();
+        $this->configureRoutes($collection);
+
+        $this->routes = $collection;
     }
 
     /**
      * return the url defined by the $name
      *
-     * @param  $name
-     * @return bool
+     * @param strinf $name
+     * @return Route
      */
-    public function getUrl($name)
+    public function getRoute($name)
     {
-        $urls = $this->getUrls();
+        $this->buildRoutes();
 
-        if (!isset($urls[$name])) {
+        if (!$this->routes->has($name)) {
             return false;
         }
 
-        return $urls[$name];
+        return $this->routes->get($name);
     }
 
     /**
@@ -803,13 +749,13 @@ abstract class Admin implements AdminInterface
         // allows to define persistent parameters 
         $parameters = array_merge($this->getPersistentParameters(), $parameters);
 
-        $url = $this->getUrl($name);
+        $route = $this->getRoute($name);
 
-        if (!$url) {
-            throw new \RuntimeException(sprintf('unable to find the url `%s`', $name));
+        if (!$route) {
+            throw new \RuntimeException(sprintf('unable to find the route `%s`', $name));
         }
 
-        return $this->router->generate($url['name'], $parameters);
+        return $this->router->generate($route->getDefault('_sonata_name'), $parameters);
     }
 
     /**

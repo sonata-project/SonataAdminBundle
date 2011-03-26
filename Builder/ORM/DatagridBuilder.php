@@ -160,7 +160,7 @@ class DatagridBuilder implements DatagridBuilderInterface
 
             case ClassMetadataInfo::MANY_TO_ONE:
                 $options = $fieldDescription->getOption('filter_field_options');
-                $filter = new \Sonata\AdminBundle\Filter\IntegerFilter($fieldDescription);
+                $filter = new \Sonata\AdminBundle\Filter\ORM\IntegerFilter($fieldDescription);
 
                 break;
             case ClassMetadataInfo::MANY_TO_MANY:
@@ -170,7 +170,7 @@ class DatagridBuilder implements DatagridBuilderInterface
 
                 $fieldDescription->setOption('filter_field_options', $options);
 
-                $filter = new \Sonata\AdminBundle\Filter\ChoiceFilter($fieldDescription);
+                $filter = new \Sonata\AdminBundle\Filter\ORM\ChoiceFilter($fieldDescription);
 
                 break;
 

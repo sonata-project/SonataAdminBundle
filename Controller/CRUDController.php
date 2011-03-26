@@ -123,10 +123,8 @@ class CRUDController extends Controller
     public function listAction()
     {
 
-        $datagrid = $this->admin->getDatagrid();
-
         return $this->render($this->admin->getListTemplate(), array(
-            'datagrid'          => $datagrid,
+            'datagrid'          => $this->admin->getDatagrid(),
             'list'              => $this->admin->getList(),
             'admin'             => $this->admin,
             'base_template'     => $this->getBaseTemplate(),

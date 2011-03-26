@@ -31,12 +31,21 @@ class AdminPoolLoader extends FileLoader
      */
     protected $adminServiceIds = array();
 
+    /**
+     * @param \Sonata\AdminBundle\Admin\Pool $pool
+     * @param  $adminServiceIds
+     */
     public function __construct(Pool $pool, $adminServiceIds)
     {
         $this->pool = $pool;
         $this->adminServiceIds = $adminServiceIds;
     }
 
+    /**
+     * @param string $resource
+     * @param null $type
+     * @return bool
+     */
     function supports($resource, $type = null)
     {
         if ($type == 'sonata_admin') {
@@ -46,6 +55,11 @@ class AdminPoolLoader extends FileLoader
         return false;
     }
 
+    /**
+     * @param string $resource
+     * @param null $type
+     * @return \Symfony\Component\Routing\RouteCollection
+     */
     function load($resource, $type = null)
     {
         $collection = new RouteCollection;
@@ -53,24 +67,8 @@ class AdminPoolLoader extends FileLoader
 
             $admin = $this->pool->getInstance($id);
 
-            foreach ($admin->getUrls() as $action => $configuration) {
-
-                $defaults = isset($configuration['defaults'])       ? $configuration['defaults'] : array();
-
-                if (!isset($defaults['_controller'])) {
-                    $defaults['_controller'] = sprintf('%s:%s', $admin->getBaseControllerName(), $this->actionify($action));
-                }
-
-                if (!isset($defaults['_sonata_admin'])) {
-                    $defaults['_sonata_admin'] = $admin->getBaseCodeRoute();
-                }
-
-                $collection->add($configuration['name'], new Route(
-                    $configuration['pattern'],
-                    $defaults,
-                    isset($configuration['requirements'])   ? $configuration['requirements'] : array(),
-                    isset($configuration['options'])        ? $configuration['options'] : array()
-                ));
+            foreach ($admin->getRoutes()->getElements() as $code => $route) {
+                $collection->add($route->getDefault('_sonata_name'), $route);
             }
 
             $reflection = new \ReflectionObject($admin);
@@ -78,22 +76,5 @@ class AdminPoolLoader extends FileLoader
         }
 
         return $collection;
-    }
-
-
-    /**
-     * Convert a word in to the format for a symfony action action_name => actionName
-     *
-     * @param string  $word Word to actionify
-     * @return string $word Actionified word
-     */
-    public static function actionify($action)
-    {
-        if(($pos = strrpos($action, '.')) !== false) {
-
-          $action = substr($action, $pos + 1);
-        }
-
-        return lcfirst(str_replace(' ', '', ucwords(strtr($action, '_-', '  '))));
     }
 }
