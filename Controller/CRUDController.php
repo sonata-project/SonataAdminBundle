@@ -94,11 +94,14 @@ class CRUDController extends Controller
             throw new \RuntimeException(sprintf('Unable to find the admin class related to the current controller (%s)', get_class($this)));
         }
 
-        $this->admin->setRequest($this->container->get('request'));
+        $rootAdmin = $this->admin;
 
         if ($this->admin->isChild()) {
             $this->admin->setCurrentChild(true);
+            $rootAdmin = $rootAdmin->getParent();
         }
+
+        $rootAdmin->setRequest($this->container->get('request'));
     }
 
     /**

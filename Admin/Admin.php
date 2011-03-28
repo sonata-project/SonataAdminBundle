@@ -746,9 +746,11 @@ abstract class Admin implements AdminInterface
             $parameters['code']   = $this->getCode();
         }
 
-        // allows to define persistent parameters 
-        $parameters = array_merge($this->getPersistentParameters(), $parameters);
-
+        // allows to define persistent parameters
+        if ($this->hasRequest()) {
+            $parameters = array_merge($this->getPersistentParameters(), $parameters);
+        }
+        
         $route = $this->getRoute($name);
 
         if (!$route) {
@@ -1600,6 +1602,10 @@ abstract class Admin implements AdminInterface
         if ($request->get('uniqid')) {
             $this->setUniqid($request->get('uniqid'));
         }
+
+        foreach ($this->getChildren() as $children) {
+            $children->setRequest($request);
+        }
     }
 
     /**
@@ -1607,7 +1613,20 @@ abstract class Admin implements AdminInterface
      */
     public function getRequest()
     {
+        if (!$this->request) {
+            throw new \RuntimeException('The Request object has not been set');
+        }
+        
         return $this->request;
+    }
+
+    /**
+     *
+     * @return true if the request object is linked to the Admin
+     */
+    public function hasRequest()
+    {
+        return $this->request !== null;
     }
 
     /**
