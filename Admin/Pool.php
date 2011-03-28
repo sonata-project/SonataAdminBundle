@@ -47,7 +47,6 @@ class Pool
                 if (!$options['show_in_dashboard']) {
                     unset($groups[$name][$id]);
                     continue;
-
                 }
 
                 $groups[$name][$id] = $this->container->get($id);

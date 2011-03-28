@@ -25,7 +25,7 @@ Example
 
         protected function configureListFields(ListMapper $list) // optional
         {
-            $list->get('summary')->setTemplate('NewsBundle:NewsAdmin:list_summary.twig');
+            $list->get('summary')->setTemplate('News:NewsAdmin:list_summary.twig');
         }
     }
 
@@ -74,7 +74,7 @@ But you can specify yours by setup 'template' option like :
 
     '_action' => array(
       'actions' => array(
-        'delete' => array('template' => 'MyBundle:MyController:my_partial.html.twig'),
+        'delete' => array('template' => 'My:MyController:my_partial.html.twig'),
         'edit' => array()
       )
     )

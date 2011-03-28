@@ -24,7 +24,7 @@ file that was distributed with this source code.
             {% if field_description.options.edit == 'list' %}
                 <span id="field_widget_{{ field_element.id }}" >
                     {% if value.id %}
-                        {% render 'SonataAdminBundle:Core:getShortObjectDescription' with {
+                        {% render 'SonataAdmin:Core:getShortObjectDescription' with {
                             'code': field_description.associationadmin.code,
                             'objectId': value.id,
                             'uniqid':  field_description.associationadmin.uniqid
@@ -67,6 +67,6 @@ file that was distributed with this source code.
             </div>
         </div>
 
-        {% include 'SonataAdminBundle:CRUD:edit_orm_many_association_script.html.twig' %}
+        {% include 'SonataAdmin:CRUD:edit_orm_many_association_script.html.twig' %}
     {% endif %}
 {% endblock %}

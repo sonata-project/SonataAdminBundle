@@ -5,8 +5,8 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="sonata_admin.templates.layout">SonataAdminBundle::standard_layout.html.twig</parameter>
-        <parameter key="sonata_admin.templates.ajax">SonataAdminBundle::ajax_layout.html.twig</parameter>
+        <parameter key="sonata_admin.templates.layout">SonataAdmin::standard_layout.html.twig</parameter>
+        <parameter key="sonata_admin.templates.ajax">SonataAdmin::ajax_layout.html.twig</parameter>
     </parameters>
 
 </container>
