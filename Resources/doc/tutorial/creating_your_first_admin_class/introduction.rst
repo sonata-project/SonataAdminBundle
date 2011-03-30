@@ -7,7 +7,7 @@ a blog application.
 
 The tutorial will explains how to define:
 
-* entities
-* routing
+* Entities
+* The routing
 * CRUD controller
 * The ``Admin`` class
