@@ -58,10 +58,8 @@ class CoreController extends Controller
            ->get('sonata_admin.admin.pool')
            ->getInstance($code);
 
-        if ($this->container->get('request')->get('uniqid')) {
-            $admin->setUniqid($this->container->get('request')->get('uniqid'));
-        }
-
+        $admin->setRequest($this->container->get('request'));
+        
         return $admin;
     }
     
