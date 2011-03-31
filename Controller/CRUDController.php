@@ -131,7 +131,7 @@ class CRUDController extends Controller
             'list'              => $this->admin->getList(),
             'admin'             => $this->admin,
             'base_template'     => $this->getBaseTemplate(),
-            'side_menu'         => $this->getSideMenu('list'),
+            'side_menu'         => $this->admin->getSideMenu('list'),
             'breadcrumbs'       => $this->admin->getBreadcrumbs('list'),
         ));
     }
@@ -224,7 +224,7 @@ class CRUDController extends Controller
             'form_groups'    => $this->admin->getFormGroups(),
             'admin'          => $this->admin,
             'base_template'  => $this->getBaseTemplate(),
-            'side_menu'      => $this->getSideMenu('edit'),
+            'side_menu'      => $this->admin->getSideMenu('edit'),
             'breadcrumbs'    => $this->admin->getBreadcrumbs('edit'),
         ));
     }
@@ -321,23 +321,8 @@ class CRUDController extends Controller
             'form_groups'   => $this->admin->getFormGroups(),
             'admin'         => $this->admin,
             'base_template' => $this->getBaseTemplate(),
-            'side_menu'     => $this->getSideMenu('create'),
+            'side_menu'     => $this->admin->getSideMenu('create'),
             'breadcrumbs'   => $this->admin->getBreadcrumbs('create'),
         ));
     }
-
-    /**
-     * @param string $action
-     * @return Knplabs\MenuBundle\Menu
-     */
-    public function getSideMenu($action)
-    {
-        
-        if ($this->admin->isChild()) {
-            return $this->admin->getParent()->getSideMenu($action, $this->admin);
-        }
-
-        return $this->admin->getSideMenu($action);
-    }
-
 }

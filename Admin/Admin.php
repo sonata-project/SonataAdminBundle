@@ -1002,10 +1002,24 @@ abstract class Admin implements AdminInterface
      *
      * @return MenuItem|false
      */
-    public function getSideMenu($action)
+    public function buildSideMenu($action)
     {
 
         return false;
+    }
+
+    /**
+     * @param string $action
+     * @return Knplabs\MenuBundle\Menu
+     */
+    public function getSideMenu($action)
+    {
+
+        if ($this->isChild()) {
+            return $this->getParent()->getSideMenu($action, $this);
+        }
+
+        return $this->buildSideMenu($action);
     }
 
     /**
