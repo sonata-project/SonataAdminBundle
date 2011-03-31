@@ -58,7 +58,6 @@ class CRUDController extends Controller
      */
     public function isXmlHttpRequest()
     {
-
         return $this->get('request')->isXmlHttpRequest() || $this->get('request')->get('_xml_http_request');
     }
 
@@ -125,7 +124,6 @@ class CRUDController extends Controller
      */
     public function listAction()
     {
-
         return $this->render($this->admin->getListTemplate(), array(
             'datagrid'          => $this->admin->getDatagrid(),
             'list'              => $this->admin->getList(),
@@ -172,11 +170,9 @@ class CRUDController extends Controller
         if (!$object) {
             throw new NotFoundHttpException(sprintf('unable to find the object with id : %s', $id));
         }
-        
-        $em = $this->admin->getModelManager();
-        $em->remove($object);
-        $em->flush();
-        
+
+        $this->admin->delete($object);
+
         return new RedirectResponse($this->admin->generateUrl('list'));
     }
 
@@ -203,10 +199,7 @@ class CRUDController extends Controller
             $form->bind($this->get('request'));
 
             if ($form->isValid()) {
-                $this->admin->preUpdate($object);
-                $this->admin->getModelManager()->persist($object);
-                $this->admin->getModelManager()->flush($object);
-                $this->admin->postUpdate($object);
+                $this->admin->update($object);
 
                 if ($this->isXmlHttpRequest()) {
                    return $this->renderJson(array('result' => 'ok', 'objectId' => $object->getId()));
@@ -300,10 +293,7 @@ class CRUDController extends Controller
             $form->bind($this->get('request'));
 
             if ($form->isValid()) {
-                $this->admin->prePersist($object);
-                $this->admin->getModelManager()->persist($object);
-                $this->admin->getModelManager()->flush($object);
-                $this->admin->postPersist($object);
+                $this->admin->create($object);
 
                 if ($this->isXmlHttpRequest()) {
                    return $this->renderJson(array('result' => 'ok', 'objectId' => $object->getId()));

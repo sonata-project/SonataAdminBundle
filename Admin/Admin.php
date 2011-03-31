@@ -366,6 +366,30 @@ abstract class Admin implements AdminInterface
 
     }
 
+    public function update($object)
+    {
+        $this->preUpdate($object);
+        $this->getModelManager()->persist($object);
+        $this->getModelManager()->flush($object);
+        $this->postUpdate($object);
+    }
+
+    public function create($object)
+    {
+        $this->prePersist($object);
+        $this->getModelManager()->persist($object);
+        $this->getModelManager()->flush($object);
+        $this->postPersist($object);
+    }
+
+    public function delete($object)
+    {
+        $this->preRemove($object);
+        $this->getModelManager()->remove($object);
+        $this->getModelManager()->flush();
+        $this->postRemove($object);
+    }
+
     public function preUpdate($object)
     {
 
@@ -382,6 +406,16 @@ abstract class Admin implements AdminInterface
     }
 
     public function postPersist($object)
+    {
+
+    }
+
+    public function preRemove($object)
+    {
+
+    }
+
+    public function postRemove($object)
     {
 
     }
