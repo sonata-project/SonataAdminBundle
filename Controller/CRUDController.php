@@ -132,7 +132,7 @@ class CRUDController extends Controller
             'admin'             => $this->admin,
             'base_template'     => $this->getBaseTemplate(),
             'side_menu'         => $this->getSideMenu('list'),
-            'breadcrumbs'       => $this->getBreadcrumbs('list'),
+            'breadcrumbs'       => $this->admin->getBreadcrumbs('list'),
         ));
     }
 
@@ -225,7 +225,7 @@ class CRUDController extends Controller
             'admin'          => $this->admin,
             'base_template'  => $this->getBaseTemplate(),
             'side_menu'      => $this->getSideMenu('edit'),
-            'breadcrumbs'    => $this->getBreadcrumbs('edit'),
+            'breadcrumbs'    => $this->admin->getBreadcrumbs('edit'),
         ));
     }
 
@@ -322,7 +322,7 @@ class CRUDController extends Controller
             'admin'         => $this->admin,
             'base_template' => $this->getBaseTemplate(),
             'side_menu'     => $this->getSideMenu('create'),
-            'breadcrumbs'   => $this->getBreadcrumbs('create'),
+            'breadcrumbs'   => $this->admin->getBreadcrumbs('create'),
         ));
     }
 
@@ -332,25 +332,12 @@ class CRUDController extends Controller
      */
     public function getSideMenu($action)
     {
+        
         if ($this->admin->isChild()) {
             return $this->admin->getParent()->getSideMenu($action, $this->admin);
         }
 
         return $this->admin->getSideMenu($action);
-    }
-
-    /**
-     * @param string $action
-     * @return array
-     */
-    public function getBreadcrumbs($action)
-    {
-        
-        if ($this->admin->isChild()) {
-            return $this->admin->getParent()->getBreadcrumbs($action);
-        }
-
-        return $this->admin->getBreadcrumbs($action);
     }
 
 }

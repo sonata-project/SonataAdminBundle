@@ -45,6 +45,7 @@ class SonataAdminExtension extends \Twig_Extension
     {
 
         return array(
+
         );
     }
 

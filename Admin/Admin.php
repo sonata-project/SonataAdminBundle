@@ -271,6 +271,13 @@ abstract class Admin implements AdminInterface
     protected $router;
 
     /**
+     * The generated breadcrumbs
+     *
+     * @var array
+     */
+    protected $breadcrumbs = array();
+
+    /**
      * The configuration pool
      * 
      * @var Pool
@@ -316,6 +323,10 @@ abstract class Admin implements AdminInterface
     {
     }
 
+    /**
+     *
+     * @param DatagridMapper
+     */
     protected function configureDatagridFilters(DatagridMapper $filter)
     {
     }
@@ -1439,61 +1450,79 @@ abstract class Admin implements AdminInterface
     }
 
     /**
+     * @param string $action
+     * @return array
+     */
+    public function getBreadcrumbs($action)
+    {
+
+        if ($this->isChild()) {
+            return $this->getParent()->getBreadcrumbs($action);
+        }
+
+        return $this->buildBreadcrumbs($action);
+    }
+
+    /**
      * generate the breadcrumbs array
      *
      * @param  $action
      * @param \Knplabs\MenuBundle\MenuItem|null $menu
      * @return array the breadcrumbs
      */
-    public function getBreadcrumbs($action, MenuItem $menu = null)
+    public function buildBreadcrumbs($action, MenuItem $menu = null)
     {
-        $menu = $menu ?: new Menu;
+        if (!isset($this->breadcrumbs[$action])) {
+            $menu = $menu ?: new Menu;
 
-        $child = $menu->addChild(
-            $this->trans(sprintf('link_%s_list', $this->getClassnameLabel())),
-            $this->generateUrl('list')
-        );
-        
-        $childAdmin = $this->getCurrentChildAdmin();
-
-        if ($childAdmin) {
-            $id = $this->request->get($this->getIdParameter());
-
-            $child = $child->addChild(
-                (string) $this->getSubject(),
-                $this->generateUrl('edit', array('id' => $id))
+            $child = $menu->addChild(
+                $this->trans(sprintf('link_%s_list', $this->getClassnameLabel())),
+                $this->generateUrl('list')
             );
 
-            return $childAdmin->getBreadcrumbs($action, $child);
-        
-        } elseif ($this->isChild()) {
+            $childAdmin = $this->getCurrentChildAdmin();
 
-            if ($action != 'list') {
-                $menu = $menu->addChild(
-                    $this->trans(sprintf('link_%s_list', $this->getClassnameLabel())),
-                    $this->generateUrl('list')
+            if ($childAdmin) {
+                $id = $this->request->get($this->getIdParameter());
+
+                $child = $child->addChild(
+                    (string) $this->getSubject(),
+                    $this->generateUrl('edit', array('id' => $id))
                 );
+
+                return $childAdmin->buildBreadcrumbs($action, $child);
+
+            } elseif ($this->isChild()) {
+
+                if ($action != 'list') {
+                    $menu = $menu->addChild(
+                        $this->trans(sprintf('link_%s_list', $this->getClassnameLabel())),
+                        $this->generateUrl('list')
+                    );
+                }
+
+                $breadcrumbs = $menu->getBreadcrumbsArray(
+                    $this->trans(sprintf('link_%s_%s', $this->getClassnameLabel(), $action))
+                );
+
+            } else if ($action != 'list') {
+
+                $breadcrumbs = $child->getBreadcrumbsArray(
+                    $this->trans(sprintf('link_%s_%s', $this->getClassnameLabel(), $action))
+                );
+
+            } else {
+
+                $breadcrumbs = $child->getBreadcrumbsArray();
             }
 
-            $breadcrumbs = $menu->getBreadcrumbsArray(
-                $this->trans(sprintf('link_%s_%s', $this->getClassnameLabel(), $action))
-            );
+            // the generated $breadcrumbs contains an empty element
+            array_shift($breadcrumbs);
 
-        } else if ($action != 'list') {
-
-            $breadcrumbs = $child->getBreadcrumbsArray(
-                $this->trans(sprintf('link_%s_%s', $this->getClassnameLabel(), $action))
-            );
-
-        } else {
-
-            $breadcrumbs = $child->getBreadcrumbsArray();
+            $this->breadcrumbs[$action] = $breadcrumbs;
         }
 
-        // the generated $breadcrumbs contains an empty element
-        array_shift($breadcrumbs);
-
-        return $breadcrumbs;
+        return $this->breadcrumbs[$action];
     }
 
     /**
