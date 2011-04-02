@@ -27,8 +27,8 @@ use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
 
 use Sonata\AdminBundle\Route\RouteCollection;
 
-use Knplabs\MenuBundle\Menu;
-use Knplabs\MenuBundle\MenuItem;
+use Knplabs\Bundle\MenuBundle\Menu;
+use Knplabs\Bundle\MenuBundle\MenuItem;
 
 abstract class Admin implements AdminInterface
 {
