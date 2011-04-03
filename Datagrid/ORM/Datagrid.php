@@ -60,7 +60,7 @@ class Datagrid
             $this->pager = new Pager($this->getClassname(), $this->getMaxPerPage());
 
             $this->pager->setQueryBuilder($this->getQueryBuilder($this->values));
-            $this->pager->setPage(isset($this->values['page']) ? $this->values['page'] : 1);
+            $this->pager->setPage(isset($this->values['_page']) ? $this->values['_page'] : 1);
             $this->pager->init();
         }
 

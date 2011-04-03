@@ -61,7 +61,7 @@ file that was distributed with this source code.
                             <td colspan="{{ list.elements|length }}" class="pager">
                                 <ul>
                                     {% if datagrid.pager.page != datagrid.pager.previouspage %}
-                                        <li><a href="{{ admin.generateUrl('list', datagrid.values|merge({'page': datagrid.pager.previouspage})) }}">{% trans 'link_previous_pager' from 'AdminBundle' %}</a></li>
+                                        <li><a href="{{ admin.generateUrl('list', datagrid.values|merge({'_page': datagrid.pager.previouspage})) }}">{% trans 'link_previous_pager' from 'AdminBundle' %}</a></li>
                                     {% endif %}
 
                                     {# Set the number of pages to display in the pager #}
@@ -69,12 +69,12 @@ file that was distributed with this source code.
                                         {% if page == datagrid.pager.page %}
                                             <li>{{ page }}</li>
                                         {% else %}
-                                            <li><a href="{{ admin.generateUrl('list', datagrid.values|merge({'page': page})) }}">{{ page }}</a></li>
+                                            <li><a href="{{ admin.generateUrl('list', datagrid.values|merge({'_page': page})) }}">{{ page }}</a></li>
                                         {% endif %}
                                     {% endfor %}
 
                                     {% if datagrid.pager.page != datagrid.pager.nextpage %}
-                                        <li><a href="{{ admin.generateUrl('list', datagrid.values|merge({'page': datagrid.pager.nextpage})) }}">{% trans 'link_next_pager' from 'AdminBundle' %}</a></li>
+                                        <li><a href="{{ admin.generateUrl('list', datagrid.values|merge({'_page': datagrid.pager.nextpage})) }}">{% trans 'link_next_pager' from 'AdminBundle' %}</a></li>
                                     {% endif %}
                                 </ul>
                             </td>
