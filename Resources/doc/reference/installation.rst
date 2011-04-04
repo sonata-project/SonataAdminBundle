@@ -12,7 +12,7 @@ git, you can add them as submodules::
   git submodule add git@github.com:sonata-project/jQueryBundle.git src/Sonata/jQueryBundle
   git submodule add git@github.com:sonata-project/BluePrintBundle.git src/Sonata/BluePrintBundle
   git submodule add git@github.com:sonata-project/AdminBundle.git src/Sonata/AdminBundle
-  git submodule add git@github.com:sonata-project/MenuBundle.git src/Knplabs/MenuBundle
+  git submodule add git@github.com:sonata-project/MenuBundle.git src/Knplabs/Bundle/MenuBundle
 
 Next, be sure to enable the bundles in your application kernel:
 
