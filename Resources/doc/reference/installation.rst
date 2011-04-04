@@ -34,7 +34,7 @@ Next, be sure to enable the bundles in your application kernel:
           new Sonata\jQueryBundle\SonatajQueryBundle(),
           new Sonata\BluePrintBundle\SonataBluePrintBundle(),
           new Sonata\AdminBundle\SonataAdminBundle(),
-          new Knplabs\Bundle\MenuBundle\KnplabsMenuBundle(),
+          new Knplabs\MenuBundle\KnplabsMenuBundle(),
           // ...
       );
   }
