@@ -112,7 +112,7 @@ file that was distributed with this source code.
             {% endif %}
 
             {# include association code #}
-            {% include 'SonataAdmin:CRUD:edit_orm_one_association_script.html.twig' %}
+            {% include 'SonataAdminBundle:CRUD:edit_orm_one_association_script.html.twig' %}
             
         {% else %}
             <span id="field_actions_{{ field_element.id }}" >
@@ -131,7 +131,7 @@ file that was distributed with this source code.
 
             </div>
         
-            {% include 'SonataAdmin:CRUD:edit_orm_many_association_script.html.twig' %}
+            {% include 'SonataAdminBundle:CRUD:edit_orm_many_association_script.html.twig' %}
         {% endif %}
     </div>
 {% endblock %}

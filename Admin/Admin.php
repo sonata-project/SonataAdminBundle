@@ -448,7 +448,7 @@ abstract class Admin implements AdminInterface
                 'code'  => '_batch',
                 'type'  => 'batch',
             ));
-            $fieldDescription->setTemplate('SonataAdmin:CRUD:list__batch.html.twig');
+            $fieldDescription->setTemplate('SonataAdminBundle:CRUD:list__batch.html.twig');
             $this->listFieldDescriptions = array( '_batch' => $fieldDescription ) + $this->listFieldDescriptions;
         }
 
@@ -812,7 +812,7 @@ abstract class Admin implements AdminInterface
      */
     public function getListTemplate()
     {
-        return 'SonataAdmin:CRUD:list.html.twig';
+        return 'SonataAdminBundle:CRUD:list.html.twig';
     }
 
     /**
@@ -822,7 +822,7 @@ abstract class Admin implements AdminInterface
      */
     public function getEditTemplate()
     {
-        return 'SonataAdmin:CRUD:edit.html.twig';
+        return 'SonataAdminBundle:CRUD:edit.html.twig';
     }
 
     /**

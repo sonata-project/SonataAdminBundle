@@ -172,12 +172,12 @@ class SonataAdminExtension extends \Twig_Extension
             $params['edit']          = $fieldDescription->getOption('edit', 'standard');
             $params['inline']        = $fieldDescription->getOption('inline', 'natural');
 
-            $base_template = sprintf('SonataAdmin:CRUD:base_%s_edit_field.html.twig', 'standard');
+            $base_template = sprintf('SonataAdminBundle:CRUD:base_%s_edit_field.html.twig', 'standard');
         } else {
             $params['edit']          = $parentFieldDescription->getOption('edit', 'standard');
             $params['inline']        = $parentFieldDescription->getOption('inline', 'natural');
 
-            $base_template = sprintf('SonataAdmin:CRUD:base_%s_edit_field.html.twig', $params['edit']);
+            $base_template = sprintf('SonataAdminBundle:CRUD:base_%s_edit_field.html.twig', $params['edit']);
         }
 
         $template = $this->environment->loadTemplate($fieldDescription->getTemplate());
