@@ -201,7 +201,7 @@ class CoreController extends Controller
     public function dashboardAction()
     {
 
-        return $this->render('SonataAdmin:Core:dashboard.html.twig', array(
+        return $this->render('SonataAdminBundle:Core:dashboard.html.twig', array(
             'groups' => $this->get('sonata_admin.admin.pool')->getDashboardGroups(),
             'base_template'  => $this->getBaseTemplate(),
         ));

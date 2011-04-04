@@ -67,22 +67,22 @@ class ListBuilder implements ListBuilderInterface
 
         if (!$fieldDescription->getTemplate()) {
 
-            $fieldDescription->setTemplate(sprintf('SonataAdmin:CRUD:list_%s.html.twig', $fieldDescription->getType()));
+            $fieldDescription->setTemplate(sprintf('SonataAdminBundle:CRUD:list_%s.html.twig', $fieldDescription->getType()));
 
             if ($fieldDescription->getType() == ClassMetadataInfo::MANY_TO_ONE) {
-                $fieldDescription->setTemplate('SonataAdmin:CRUD:list_orm_many_to_one.html.twig');
+                $fieldDescription->setTemplate('SonataAdminBundle:CRUD:list_orm_many_to_one.html.twig');
             }
 
             if ($fieldDescription->getType() == ClassMetadataInfo::ONE_TO_ONE) {
-                $fieldDescription->setTemplate('SonataAdmin:CRUD:list_orm_one_to_one.html.twig');
+                $fieldDescription->setTemplate('SonataAdminBundle:CRUD:list_orm_one_to_one.html.twig');
             }
 
             if ($fieldDescription->getType() == ClassMetadataInfo::ONE_TO_MANY) {
-                $fieldDescription->setTemplate('SonataAdmin:CRUD:list_orm_one_to_many.html.twig');
+                $fieldDescription->setTemplate('SonataAdminBundle:CRUD:list_orm_one_to_many.html.twig');
             }
 
             if ($fieldDescription->getType() == ClassMetadataInfo::MANY_TO_MANY) {
-                $fieldDescription->setTemplate('SonataAdmin:CRUD:list_orm_many_to_many.html.twig');
+                $fieldDescription->setTemplate('SonataAdminBundle:CRUD:list_orm_many_to_many.html.twig');
             }
         }
 
@@ -110,7 +110,7 @@ class ListBuilder implements ListBuilderInterface
     public function buildActionFieldDescription(FieldDescription $fieldDescription)
     {
         if (null === $fieldDescription->getTemplate()) {
-            $fieldDescription->setTemplate('SonataAdmin:CRUD:list__action.html.twig');
+            $fieldDescription->setTemplate('SonataAdminBundle:CRUD:list__action.html.twig');
         }
         
         if (null === $fieldDescription->getType()) {
@@ -129,7 +129,7 @@ class ListBuilder implements ListBuilderInterface
             $actions = $fieldDescription->getOption('actions');
             foreach ($actions as $k => $action) {
                 if (!isset($action['template'])) {
-                    $actions[$k]['template'] = sprintf('SonataAdmin:CRUD:list__action_%s.html.twig', $k);
+                    $actions[$k]['template'] = sprintf('SonataAdminBundle:CRUD:list__action_%s.html.twig', $k);
                 }
             }
             
