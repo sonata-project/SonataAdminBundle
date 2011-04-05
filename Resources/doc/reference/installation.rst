@@ -12,7 +12,7 @@ git, you can add them as submodules::
   git submodule add git@github.com:sonata-project/jQueryBundle.git src/Sonata/jQueryBundle
   git submodule add git@github.com:sonata-project/BluePrintBundle.git src/Sonata/BluePrintBundle
   git submodule add git@github.com:sonata-project/AdminBundle.git src/Sonata/AdminBundle
-  git submodule add git@github.com:sonata-project/MenuBundle.git src/Knplabs/MenuBundle
+  git submodule add git@github.com:sonata-project/MenuBundle.git src/Knplabs/Bundle/MenuBundle
 
 Next, be sure to enable the bundles in your application kernel:
 
@@ -51,7 +51,7 @@ code to your application's routing file:
 
     # app/config/routing.yml
     admin:
-        resource: '@SonataAdmin/Resources/config/routing/sonata_admin.xml'
+        resource: '@SonataAdminBundle/Resources/config/routing/sonata_admin.xml'
         prefix: /admin
 
     _sonata_admin:

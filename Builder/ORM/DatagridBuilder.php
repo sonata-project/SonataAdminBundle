@@ -79,14 +79,14 @@ class DatagridBuilder implements DatagridBuilderInterface
         }
 
         if (!$fieldDescription->getTemplate()) {
-            $fieldDescription->setTemplate(sprintf('SonataAdmin:CRUD:filter_%s.html.twig', $fieldDescription->getType()));
+            $fieldDescription->setTemplate(sprintf('SonataAdminBundle:CRUD:filter_%s.html.twig', $fieldDescription->getType()));
 
             if ($fieldDescription->getType() == ClassMetadataInfo::MANY_TO_ONE) {
-                $fieldDescription->setTemplate('SonataAdmin:CRUD:filter_many_to_one.html.twig');
+                $fieldDescription->setTemplate('SonataAdminBundle:CRUD:filter_many_to_one.html.twig');
             }
 
             if ($fieldDescription->getType() == ClassMetadataInfo::MANY_TO_MANY) {
-                $fieldDescription->setTemplate('SonataAdmin:CRUD:filter_many_to_many.html.twig');
+                $fieldDescription->setTemplate('SonataAdminBundle:CRUD:filter_many_to_many.html.twig');
             }
         }
     }
