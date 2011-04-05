@@ -15,7 +15,7 @@ use Symfony\Component\Form\Form;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\HttpFoundation\Request;
-    
+
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -82,7 +82,7 @@ abstract class Admin implements AdminInterface
      *
      * @var array
      */
-    protected $filterFieldDescriptions = array(); 
+    protected $filterFieldDescriptions = array();
 
     /**
      * The number of result to display in the list
@@ -279,17 +279,20 @@ abstract class Admin implements AdminInterface
 
     /**
      * The configuration pool
-     * 
+     *
      * @var Pool
      */
     protected $configurationPool;
 
+    protected $menu;
+
     protected $loaded = array(
-        'form_fields' => false,
-        'form_groups' => false,
-        'list_fields' => false,
+        'form_fields'   => false,
+        'form_groups'   => false,
+        'list_fields'   => false,
         'filter_fields' => false,
         'routes'        => false,
+        'side_menu'     => false,
     );
 
     /**
@@ -332,6 +335,21 @@ abstract class Admin implements AdminInterface
     }
 
     /**
+     * configure the Admin routes
+     *
+     * @param RouteCollection
+     */
+    public function configureRoutes(RouteCollection $collection)
+    {
+
+    }
+
+    public function configureSideMenu(Menu $menu, $action, Admin $childAdmin = null)
+    {
+
+    }
+
+    /**
      * @param string $class
      * @param string $baseControllerName
      */
@@ -345,7 +363,7 @@ abstract class Admin implements AdminInterface
     {
 
         $this->uniqid = uniqid();
-        
+
         if ($this->parentAssociationMapping) {
             if (!isset($this->getClassMetaData()->associationMappings[$this->parentAssociationMapping])) {
                 throw new \RuntimeException(sprintf('The value set to `parentAssociationMapping` refer to a non existent association', $this->parentAssociationMapping));
@@ -359,11 +377,6 @@ abstract class Admin implements AdminInterface
         }
 
         $this->baseCodeRoute = $this->getCode();
-    }
-
-    public function configureRoutes(RouteCollection $collection)
-    {
-
     }
 
     public function update($object)
@@ -475,7 +488,7 @@ abstract class Admin implements AdminInterface
         $parentAssociationMapping = $this->getParentAssociationMapping();
 
         if ($parentAssociationMapping) {
-            
+
             $fieldName = $parentAssociationMapping['fieldName'];
             $this->filterFieldDescriptions[$fieldName] = new FieldDescription;
             $this->filterFieldDescriptions[$fieldName]->setName($parentAssociationMapping['fieldName']);
@@ -540,7 +553,7 @@ abstract class Admin implements AdminInterface
         foreach ($selectedFields as $name => $options) {
 
             $description = new FieldDescription;
-            
+
             if (!is_array($options)) {
                 $name = $options;
                 $options = array();
@@ -569,7 +582,7 @@ abstract class Admin implements AdminInterface
             if (!$matches) {
                 throw new \RuntimeException(sprintf('Please define a default `baseRoutePattern` value for the admin class `%s`', get_class($this)));
             }
-            
+
             if ($this->isChild()) { // the admin class is a child, prefix it with the parent route name
                 $this->baseRoutePattern = sprintf('%s/{id}/%s',
                     $this->getParent()->getBaseRoutePattern(),
@@ -700,7 +713,7 @@ abstract class Admin implements AdminInterface
 
         $this->loaded['routes'] = true;
 
-        $collection = new \Sonata\AdminBundle\Route\RouteCollection(
+        $collection = new RouteCollection(
             $this->getBaseCodeRoute(),
             $this->getBaseRouteName(),
             $this->getBaseRoutePattern(),
@@ -779,7 +792,7 @@ abstract class Admin implements AdminInterface
         if ($this->hasParentFieldDescription()) {
             // merge link parameter if any provided by the parent field
             $parameters = array_merge($parameters, $this->getParentFieldDescription()->getOption('link_parameters', array()));
-            
+
             $parameters['uniqid']  = $this->getUniqid();
             $parameters['code']    = $this->getCode();
             $parameters['pcode']   = $this->getParentFieldDescription()->getAdmin()->getCode();
@@ -795,7 +808,7 @@ abstract class Admin implements AdminInterface
         if ($this->hasRequest()) {
             $parameters = array_merge($this->getPersistentParameters(), $parameters);
         }
-        
+
         $route = $this->getRoute($name);
 
         if (!$route) {
@@ -862,7 +875,7 @@ abstract class Admin implements AdminInterface
 
     /**
      *
-     * @return Form the base form
+     * @return Datagrid
      */
     public function getBaseDatagrid($values = array())
     {
@@ -964,7 +977,7 @@ abstract class Admin implements AdminInterface
 
             $mapper->add($fieldDescription);
         }
-        
+
         return $form;
     }
 
@@ -975,14 +988,14 @@ abstract class Admin implements AdminInterface
      * @return Symfony\Component\Datagrid\ListCollection
      */
     public function getList(array $options = array())
-    {   
+    {
 
         $list = $this->getListBuilder()->getBaseList($options);
 
         $mapper = new ListMapper($this->getListBuilder(), $list, $this);
 
         $this->buildListFieldDescriptions();
-        
+
         $this->configureListFields($mapper);
 
         foreach ($this->getListFieldDescriptions() as $fieldDescription) {
@@ -1036,24 +1049,34 @@ abstract class Admin implements AdminInterface
      *
      * @return MenuItem|false
      */
-    public function buildSideMenu($action)
+    public function buildSideMenu($action, Admin $childAdmin = null)
     {
+        if ($this->loaded['side_menu']) {
+            return;
+        }
 
-        return false;
+        $this->loaded['side_menu'] = true;
+
+        $menu = new Menu;
+
+        $this->configureSideMenu($menu, $action, $childAdmin);
+
+        $this->menu = $menu;
     }
 
     /**
      * @param string $action
      * @return Knplabs\MenuBundle\Menu
      */
-    public function getSideMenu($action)
+    public function getSideMenu($action, Admin $childAdmin = null)
     {
-
         if ($this->isChild()) {
             return $this->getParent()->getSideMenu($action, $this);
         }
 
-        return $this->buildSideMenu($action);
+        $this->buildSideMenu($action, $childAdmin);
+
+        return $this->menu;
     }
 
     /**
@@ -1170,7 +1193,7 @@ abstract class Admin implements AdminInterface
     /**
      * return the subject, if none is set try to load one from the request
      *
-     * @return $object the subject 
+     * @return $object the subject
      */
     public function getSubject()
     {
@@ -1198,7 +1221,7 @@ abstract class Admin implements AdminInterface
     public function getFormFieldDescriptions()
     {
         $this->buildFormFieldDescriptions();
-        
+
         return $this->formFieldDescriptions;
     }
 
@@ -1208,7 +1231,7 @@ abstract class Admin implements AdminInterface
      * @param string $name
      * @return FieldDescription
      */
-    public function getFormFieldDescription($name) 
+    public function getFormFieldDescription($name)
     {
         return $this->hasFormFieldDescription($name) ? $this->formFieldDescriptions[$name] : null;
     }
@@ -1258,7 +1281,7 @@ abstract class Admin implements AdminInterface
     {
 
         $this->buildListFieldDescriptions();
-        
+
         return $this->listFieldDescriptions;
     }
 
@@ -1363,7 +1386,7 @@ abstract class Admin implements AdminInterface
     public function getFilterFieldDescriptions()
     {
         $this->buildFilterFieldDescriptions();
-        
+
         return $this->filterFieldDescriptions;
     }
 
@@ -1377,7 +1400,7 @@ abstract class Admin implements AdminInterface
     public function addChild($code, AdminInterface $child)
     {
         $this->children[$code] = $child;
-        
+
         $child->setCode($code);
         $child->setBaseCodeRoute($this->getCode().'|'.$code);
         $child->setParent($this);
@@ -1469,7 +1492,7 @@ abstract class Admin implements AdminInterface
 
     /**
      * return the uniqid
-     * 
+     *
      * @return integer
      */
     public function getUniqid()
@@ -1611,7 +1634,7 @@ abstract class Admin implements AdminInterface
     }
 
     /**
-     * translate a message id 
+     * translate a message id
      *
      * @param string $id
      * @param array $parameters
@@ -1661,7 +1684,7 @@ abstract class Admin implements AdminInterface
     }
 
     /**
-     * 
+     *
      */
     public function getTranslator()
     {
@@ -1693,7 +1716,7 @@ abstract class Admin implements AdminInterface
         if (!$this->request) {
             throw new \RuntimeException('The Request object has not been set');
         }
-        
+
         return $this->request;
     }
 
