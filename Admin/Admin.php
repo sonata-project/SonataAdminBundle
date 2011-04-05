@@ -839,16 +839,6 @@ abstract class Admin implements AdminInterface
     }
 
     /**
-     * return the reflection fields related to the classname
-     *
-     * @return array The reflection fields related to the classname
-     */
-    public function getReflectionFields()
-    {
-        return $this->getClassMetaData()->reflFields;
-    }
-
-    /**
      * return an instance of the related classname
      *
      * @return Object An instance of the related classname
