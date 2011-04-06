@@ -39,8 +39,11 @@ class AddDependencyCallsPass implements CompilerPassInterface
         foreach ($container->findTaggedServiceIds('sonata.admin') as $id => $attributes) {
 
             $definition = $container->getDefinition($id);
-            $calls = array(array('setCode', array($id))) + $definition->getMethodCalls();
-            $definition->setMethodCalls($calls);
+
+            if (!$definition->hasMethodCall('setCode')) {
+                $definition->addMethodCall('setCode', array($id));
+            }
+
             $this->applyDefaults($definition, $attributes);
 
             $arguments = $definition->getArguments();
