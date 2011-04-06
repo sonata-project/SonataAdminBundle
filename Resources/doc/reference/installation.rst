@@ -51,7 +51,7 @@ code to your application's routing file:
 
     # app/config/routing.yml
     admin:
-        resource: '@SonataAdmin/Resources/config/routing/sonata_admin.xml'
+        resource: '@SonataAdminBundle/Resources/config/routing/sonata_admin.xml'
         prefix: /admin
 
     _sonata_admin:
