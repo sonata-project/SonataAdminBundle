@@ -59,6 +59,7 @@ code to your application's routing file:
         type: sonata_admin
         prefix: /admin
 
+Now, install the assets of the different bundles: ``php app/console assets:install web``.
 At this point you can access to the dashboard with the url: ``http://yoursite.local/admin/dashboard``.
 
 .. note::
