@@ -118,9 +118,11 @@ class ModelManager implements ModelManagerInterface
 
         $metadata = $this->getMetadata($class);
 
+        $associatingMapping = $metadata->associationMappings[$parentAssociationMapping];
+
         $fieldDescription = $this->getNewFieldDescriptionInstance($class, $fieldName);
-        $fieldDescription[$fieldName]->setName($metadata->associationMappings[$parentAssociationMapping]);
-        $fieldDescription[$fieldName]->setAssociationMapping($metadata->associationMappings);
+        $fieldDescription->setName($parentAssociationMapping);
+        $fieldDescription->setAssociationMapping($associatingMapping);
 
         return $fieldDescription;
     }
@@ -175,7 +177,6 @@ class ModelManager implements ModelManagerInterface
      */
     public function getModelInstance($class)
     {
-
         return new $class;
     }
 
