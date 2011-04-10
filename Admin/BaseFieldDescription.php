@@ -47,7 +47,7 @@ namespace Sonata\AdminBundle\Admin;
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class FieldDescription
+abstract class BaseFieldDescription implements FieldDescriptionInterface
 {
 
     /**
@@ -99,7 +99,7 @@ class FieldDescription
      * @var Admin the related admin instance
      */
     protected $admin;
-    
+
     /**
      * @var Admin the associated admin class if the object is associated to another entity
      */
@@ -127,7 +127,7 @@ class FieldDescription
     }
 
     /**
-     * Set the name 
+     * Set the name
      *
      * @param string $name
      * @return void
@@ -248,7 +248,7 @@ class FieldDescription
 
     /**
      * return the type
-     * 
+     *
      * @return int|string
      */
     public function getType()
@@ -259,7 +259,7 @@ class FieldDescription
     /**
      * set the parent Admin (only used in nested admin)
      *
-     * @param Admin $parent
+     * @param \Sonata\AdminBundle\Admin\Admin $parent
      * @return void
      */
     public function setParent(Admin $parent)
@@ -270,26 +270,11 @@ class FieldDescription
     /**
      * return the parent Admin (only used in nested admin)
      *
-     * @return Admin
+     * @return \Sonata\AdminBundle\Admin\Admin
      */
     public function getParent()
     {
         return $this->parent;
-    }
-
-    /**
-     * Define the association mapping definition
-     *
-     * @param array $associationMapping
-     * @return void
-     */
-    public function setAssociationMapping(array $associationMapping)
-    {
-        $this->associationMapping = $associationMapping;
-
-        $this->type         = $this->type ?: $associationMapping['type'];
-        $this->mappingType  = $this->mappingType ?: $associationMapping['type'];
-        $this->fieldName    = $associationMapping['fieldName'];
     }
 
     /**
@@ -300,35 +285,6 @@ class FieldDescription
     public function getAssociationMapping()
     {
         return $this->associationMapping;
-    }
-
-    /**
-     * return the related Target Entity
-     *
-     * @return string|null
-     */
-    public function getTargetEntity()
-    {
-        if ($this->associationMapping) {
-            return $this->associationMapping['targetEntity'];
-        }
-
-        return null;
-    }
-
-    /**
-     * set the field mapping information
-     *
-     * @param array $fieldMapping
-     * @return void
-     */
-    public function setFieldMapping(array $fieldMapping)
-    {
-        $this->fieldMapping = $fieldMapping;
-
-        $this->type         = $this->type ?: $fieldMapping['type'];
-        $this->mappingType  = $this->mappingType ?: $fieldMapping['type'];
-        $this->fieldName    = $this->fieldName ?: $fieldMapping['fieldName'];
     }
 
     /**
@@ -344,7 +300,7 @@ class FieldDescription
     /**
      * set the association admin instance (only used if the field is linked to an Admin)
      *
-     * @param Admin $associationAdmin the associated admin
+     * @param \Sonata\AdminBundle\Admin\Admin $associationAdmin the associated admin
      */
     public function setAssociationAdmin(Admin $associationAdmin)
     {
@@ -354,23 +310,13 @@ class FieldDescription
 
     /**
      * return the associated Admin instance (only used if the field is linked to an Admin)
-     * @return Admin
+     * @return \Sonata\AdminBundle\Admin\Admin
      */
     public function getAssociationAdmin()
     {
         return $this->associationAdmin;
     }
 
-    /**
-     * return true if the FieldDescription is linked to an identifier field
-     *
-     * @return bool
-     */
-    public function isIdentifier()
-    {
-
-        return isset($this->fieldMapping['id']) ? $this->fieldMapping['id'] : false; 
-    }
 
     /**
      * return the value linked to the description
@@ -389,7 +335,7 @@ class FieldDescription
         if (method_exists($object, $getter)) {
 
             $value = call_user_func(array($object, $getter));
-            
+
         } else if ($this->getOption('code') && method_exists($object, $this->getOption('code'))) {
 
             $value = call_user_func(array($object, $this->getOption('code')));
@@ -401,7 +347,7 @@ class FieldDescription
     /**
      * set the admin class linked to this FieldDescription
      *
-     * @param Admin $admin
+     * @param \Sonata\AdminBundle\Admin\Admin $admin
      * @return void
      */
     public function setAdmin(Admin $admin)
@@ -410,7 +356,7 @@ class FieldDescription
     }
 
     /**
-     * @return Admin the admin class linked to this FieldDescription
+     * @return \Sonata\AdminBundle\Admin\Admin the admin class linked to this FieldDescription
      */
     public function getAdmin()
     {
@@ -453,7 +399,7 @@ class FieldDescription
 
     /**
      * merge options values
-     * 
+     *
      * @param array $options
      * @return void
      */

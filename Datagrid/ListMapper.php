@@ -10,13 +10,14 @@
  */
 namespace Sonata\AdminBundle\Datagrid;
 
-use Sonata\AdminBundle\Admin\admin;
-use Sonata\AdminBundle\Admin\FieldDescription;
+use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
+use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Datagrid\ListCollection;
 use Sonata\AdminBundle\Builder\ListBuilderInterface;
 
 /**
- * This class is use to simulate the Form API
+ * This class is used to simulate the Form API
  *
  */
 class ListMapper
@@ -27,26 +28,34 @@ class ListMapper
 
     protected $admin;
 
-    public function __construct(ListBuilderInterface $listBuilder, ListCollection $list, Admin $admin)
+    public function __construct(ListBuilderInterface $listBuilder, ListCollection $list, AdminInterface $admin)
     {
-        $this->listBuilder = $listBuilder;
-        $this->list = $list;
-        $this->admin = $admin;
+        $this->listBuilder  = $listBuilder;
+        $this->list         = $list;
+        $this->admin        = $admin;
     }
 
+    /**
+     * @throws \RuntimeException
+     * @param string $name
+     * @param array $fieldDescriptionOptions
+     * @return
+     */
     public function add($name, array $fieldDescriptionOptions = array())
     {
 
-        if ($name instanceof FieldDescription) {
+        if ($name instanceof FieldDescriptionInterface) {
 
             $fieldDescription = $name;
             $fieldDescription->mergeOptions($fieldDescriptionOptions);
 
         } else if (is_string($name) && !$this->admin->hasListFieldDescription($name)) {
 
-            $fieldDescription = new FieldDescription;
-            $fieldDescription->setOptions($fieldDescriptionOptions);
-            $fieldDescription->setName($name);
+            $fieldDescription = $this->admin->getModelManager()->getNewFieldDescriptionInstance(
+                $this->admin->getClass(),
+                $field->getKey(),
+                $fieldDescriptionOptions
+            );
 
             $this->listBuilder->fixFieldDescription($this->admin, $fieldDescription, $fieldDescriptionOptions);
             $this->admin->addListFieldDescription($name, $fieldDescription);
@@ -65,16 +74,28 @@ class ListMapper
         );
     }
 
+    /**
+     * @param string $name
+     * @return array
+     */
     public function get($name)
     {
         return $this->list->get($name);
     }
 
+    /**
+     * @param string $key
+     * @return bool
+     */
     public function has($key)
     {
         return $this->list->has($key);
     }
 
+    /**
+     * @param  $key
+     * @return void
+     */
     public function remove($key)
     {
         $this->admin->removeListFieldDescription($key);

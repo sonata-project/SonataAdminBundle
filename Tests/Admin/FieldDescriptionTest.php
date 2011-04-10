@@ -11,7 +11,7 @@
 
 namespace Sonata\AdminBundle\Tests\Admin;
 
-use Sonata\AdminBundle\Admin\FieldDescription;
+use Sonata\AdminBundle\Admin\ORM\FieldDescription;
 
 class FieldDescriptionTest extends \PHPUnit_Framework_TestCase
 {
@@ -41,7 +41,7 @@ class FieldDescriptionTest extends \PHPUnit_Framework_TestCase
         $field->mergeOption('array', array('key1' => 'key_1', 'key2' => 'key_2'));
 
         $this->assertEquals(array('key1' => 'key_1', 'key2' => 'key_2'), $field->getOption('array'));
-        
+
         $field->mergeOption('non_existant', array('key1' => 'key_1', 'key2' => 'key_2'));
         $this->assertEquals(array('key1' => 'key_1', 'key2' => 'key_2'), $field->getOption('array'));
 
@@ -50,7 +50,7 @@ class FieldDescriptionTest extends \PHPUnit_Framework_TestCase
             $field->mergeOption('integer', array());
             $this->fail('no exception raised !!');
         } catch (\RuntimeException $e) {
-            
+
         }
 
         $field->mergeOptions(array('final' => 'test'));
@@ -70,7 +70,7 @@ class FieldDescriptionTest extends \PHPUnit_Framework_TestCase
           'integer' => 1,
           'final' => 'test',
         );
-        
+
         $this->assertEquals($expected, $field->getOptions());
     }
 

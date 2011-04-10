@@ -40,17 +40,19 @@ class AddDependencyCallsPass implements CompilerPassInterface
 
             $definition = $container->getDefinition($id);
 
-            if (!$definition->hasMethodCall('setCode')) {
-                $definition->addMethodCall('setCode', array($id));
+            $arguments = $definition->getArguments();
+
+            if (strlen($arguments[0]) == 0) {
+                $definition->setArgument(0, $id);
             }
 
             $this->applyDefaults($definition, $attributes);
 
             $arguments = $definition->getArguments();
-            if (preg_match('/%(.*)%/', $arguments[0], $matches)) {
+            if (preg_match('/%(.*)%/', $arguments[1], $matches)) {
                 $class = $container->getParameter($matches[1]);
             } else {
-                $class = $arguments[0];
+                $class = $arguments[1];
             }
 
             $admins[] = $id;
@@ -91,7 +93,7 @@ class AddDependencyCallsPass implements CompilerPassInterface
         $manager_type = $attributes[0]['manager_type'];
 
         if (!$definition->hasMethodCall('setModelManager')) {
-            $definition->addMethodCall('setModelManager', array(new Reference(sprintf('doctrine.%s.default_entity_manager', $manager_type))));
+            $definition->addMethodCall('setModelManager', array(new Reference(sprintf('sonata_admin.manager.%s', $manager_type))));
         }
 
         if (!$definition->hasMethodCall('setFormBuilder')) {

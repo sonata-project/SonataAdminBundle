@@ -11,14 +11,16 @@
 
 namespace Sonata\AdminBundle\Builder\ORM;
 
+use Sonata\AdminBundle\Admin\ORM\FieldDescription;
 use Sonata\AdminBundle\Form\ValueTransformer\EntityToIDTransformer;
 use Sonata\AdminBundle\Form\ValueTransformer\ArrayToObjectTransformer;
 use Sonata\AdminBundle\Form\EditableCollectionField;
 use Sonata\AdminBundle\Form\EditableFieldGroup;
-use Sonata\AdminBundle\Admin\FieldDescription;
-use Sonata\AdminBundle\Admin\Admin;
+use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
+use Sonata\AdminBundle\Model\ModelManagerInterface;
+use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Builder\FormBuilderInterface;
-    
+
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormContextInterface;
@@ -35,13 +37,6 @@ class FormBuilder implements FormBuilderInterface
     protected $formContext;
 
     protected $validator;
-
-    public function __construct(FieldFactoryInterface $fieldFactory, FormContextInterface $formContext, ValidatorInterface $validator)
-    {
-        $this->fieldFactory = $fieldFactory;
-        $this->formContext  = $formContext;
-        $this->validator    = $validator;
-    }
 
     /**
      * todo: put this in the DIC
@@ -67,17 +62,24 @@ class FormBuilder implements FormBuilderInterface
         'country'    =>  'Symfony\\Component\\Form\\CountryField',
     );
 
+    public function __construct(FieldFactoryInterface $fieldFactory, FormContextInterface $formContext, ValidatorInterface $validator)
+    {
+        $this->fieldFactory = $fieldFactory;
+        $this->formContext  = $formContext;
+        $this->validator    = $validator;
+    }
+
     /**
      * return the field associated to a FieldDescription
-     *   ie : build the embedded form from the related Admin instance
+     *   ie : build the embedded form from the related AdminInterface instance
      *
      * @throws RuntimeException
      * @param  $object
-     * @param FieldDescription $fieldDescription
+     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
      * @param null $fieldName
      * @return FieldGroup
      */
-    protected function getRelatedAssociatedField($object, FieldDescription $fieldDescription, $fieldName = null)
+    protected function getRelatedAssociatedField($object, FieldDescriptionInterface $fieldDescription, $fieldName = null)
     {
         $fieldName = $fieldName ?: $fieldDescription->getFieldName();
 
@@ -124,26 +126,21 @@ class FormBuilder implements FormBuilderInterface
 
 
     /**
-     * return the class associated to a FieldDescription if any defined
+     * return the class associated to a FieldDescriptionInterface if any defined
      *
      * @throws RuntimeException
-     * @param FieldDescription $fieldDescription
+     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
      * @return bool|string
      */
-    public function getFormFieldClass(FieldDescription $fieldDescription)
+    public function getFormFieldClass(FieldDescriptionInterface $fieldDescription)
     {
-
         $class = false;
 
         // the user redefined the mapping type, use the default built in definition
         if (!$fieldDescription->getFieldMapping() || $fieldDescription->getType() != $fieldDescription->getMappingType()) {
-
             $class = array_key_exists($fieldDescription->getType(), $this->formFieldClasses) ? $this->formFieldClasses[$fieldDescription->getType()] : false;
-
         } else if ($fieldDescription->getOption('form_field_widget', false)) {
-
             $class = $fieldDescription->getOption('form_field_widget', false);
-
         }
 
         if ($class && !class_exists($class)) {
@@ -154,13 +151,13 @@ class FormBuilder implements FormBuilderInterface
     }
 
     /**
-     * Add a new instance to the related FieldDescription value
+     * Add a new instance to the related FieldDescriptionInterface value
      *
      * @param  $object
-     * @param FieldDescription $fieldDescription
+     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
      * @return void
      */
-    public function addNewInstance($object, FieldDescription $fieldDescription)
+    public function addNewInstance($object, FieldDescriptionInterface $fieldDescription)
     {
         $instance = $fieldDescription->getAssociationAdmin()->getNewInstance();
         $mapping  = $fieldDescription->getAssociationMapping();
@@ -174,22 +171,20 @@ class FormBuilder implements FormBuilderInterface
      * return an OneToOne associated field
      *
      * @param  $object
-     * @param FieldDescription $fieldDescription
+     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
      * @return ChoiceField
      */
-    protected function getOneToOneField($object, FieldDescription $fieldDescription)
+    protected function getOneToOneField($object, FieldDescriptionInterface $fieldDescription)
     {
-
         // tweak the widget depend on the edit mode
         if ($fieldDescription->getOption('edit') == 'inline') {
-
             return $this->getRelatedAssociatedField($object, $fieldDescription);
         }
 
         // TODO : remove this once an EntityField will be available
         $options = array(
             'value_transformer' => new EntityToIDTransformer(array(
-                'em'        => $fieldDescription->getAdmin()->getModelManager(),
+                'em'        => $fieldDescription->getAdmin()->getModelManager()->getEntityManager(),
                 'className' => $fieldDescription->getTargetEntity()
             ))
         );
@@ -220,10 +215,10 @@ class FormBuilder implements FormBuilderInterface
      * return the OneToMany associated field
      *
      * @param  $object
-     * @param FieldDescription $fieldDescription
+     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
      * @return ChoiceField|CollectionField
      */
-    protected function getOneToManyField($object, FieldDescription $fieldDescription)
+    protected function getOneToManyField($object, FieldDescriptionInterface $fieldDescription)
     {
 
         if ($fieldDescription->getOption('edit') == 'inline') {
@@ -247,7 +242,7 @@ class FormBuilder implements FormBuilderInterface
         return $this->getManyToManyField($object, $fieldDescription);
     }
 
-    protected function getManyToManyField($object, FieldDescription $fieldDescription)
+    protected function getManyToManyField($object, FieldDescriptionInterface $fieldDescription)
     {
 
         $class = $fieldDescription->getOption('form_field_widget', false);
@@ -269,7 +264,7 @@ class FormBuilder implements FormBuilderInterface
         return $instance;
     }
 
-    protected function getManyToOneField($object, FieldDescription $fieldDescription)
+    protected function getManyToOneField($object, FieldDescriptionInterface $fieldDescription)
     {
 
         // tweak the widget depend on the edit mode
@@ -314,18 +309,18 @@ class FormBuilder implements FormBuilderInterface
      *     to instantiate a new Field
      *   - if $name is a FormDescription, the method uses information defined in the FormDescription to
      *     instantiate a new Field
-     *   - if $name is a FieldInterface, then a FieldDescription is created, the FieldInterface is added to
+     *   - if $name is a FieldInterface, then a FieldDescriptionInterface is created, the FieldInterface is added to
      *     the form
      *   - if $name is a string with a related FieldDescription, then the method uses information defined in the
      *     FormDescription to instantiate a new Field
      *
      *
      * @param Form $form
-     * @param FieldDescription $name
+     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $name
      * @param array $options
      * @return void
      */
-    public function addField(Form $form, FieldDescription $fieldDescription)
+    public function addField(Form $form, FieldDescriptionInterface $fieldDescription)
     {
 
         switch ($fieldDescription->getType()) {
@@ -372,22 +367,27 @@ class FormBuilder implements FormBuilderInterface
     /**
      * The method define the correct default settings for the provided FieldDescription
      *
-     * @param FieldDescription $fieldDescription
+     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
      * @return void
      */
-    public function fixFieldDescription(Admin $admin, FieldDescription $fieldDescription, array $options = array())
+    public function fixFieldDescription(AdminInterface $admin, FieldDescriptionInterface $fieldDescription, array $options = array())
     {
 
         $fieldDescription->mergeOptions($options);
 
-        // set the default field mapping
-        if (isset($admin->getClassMetaData()->fieldMappings[$fieldDescription->getName()])) {
-            $fieldDescription->setFieldMapping($admin->getClassMetaData()->fieldMappings[$fieldDescription->getName()]);
-        }
+        if($admin->getModelManager()->hasMetadata($admin->getClass()))
+        {
+            $metadata = $admin->getModelManager()->getMetadata($admin->getClass());
 
-        // set the default association mapping
-        if (isset($admin->getClassMetaData()->associationMappings[$fieldDescription->getName()])) {
-            $fieldDescription->setAssociationMapping($admin->getClassMetaData()->associationMappings[$fieldDescription->getName()]);
+            // set the default field mapping
+            if (isset($metadata->fieldMappings[$fieldDescription->getName()])) {
+                $fieldDescription->setFieldMapping($metadata->fieldMappings[$fieldDescription->getName()]);
+            }
+
+            // set the default association mapping
+            if (isset($metadata->associationMappings[$fieldDescription->getName()])) {
+                $fieldDescription->setAssociationMapping($metadata->associationMappings[$fieldDescription->getName()]);
+            }
         }
 
         if (!$fieldDescription->getType()) {
@@ -485,5 +485,4 @@ class FormBuilder implements FormBuilderInterface
     {
         return $this->validator;
     }
-   
 }

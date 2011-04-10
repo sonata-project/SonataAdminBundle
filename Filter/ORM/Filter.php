@@ -15,6 +15,7 @@ use Sonata\AdminBundle\Admin\FieldDescription;
 use Sonata\AdminBundle\Filter\Filter as BaseFilter;
 use Symfony\Component\Form\Configurable;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\Mapping\ClassMetadataInfo;
 
 abstract class Filter extends BaseFilter
 {
@@ -32,19 +33,16 @@ abstract class Filter extends BaseFilter
 
     protected function association($queryBuilder, $value)
     {
-        if ($value) {
+        if ($value && $this->description->getType() == ClassMetadataInfo::MANY_TO_MANY) {
+            $queryBuilder->leftJoin(
+                sprintf('%s.%s', $queryBuilder->getRootAlias(), $this->description->getFieldName()),
+                $this->getName()
+            );
 
-            if ($this->description->getType() == \Doctrine\ORM\Mapping\ClassMetadataInfo::MANY_TO_MANY) {
-                $queryBuilder->leftJoin(
-                    sprintf('%s.%s', $queryBuilder->getRootAlias(), $this->description->getFieldName()),
-                    $this->getName()
-                );
-
-                // todo : use the metadata information to find the correct column name
-                return array($this->getName(), 'id');
-            }
+            // todo : use the metadata information to find the correct column name
+            return array($this->getName(), 'id');
         }
-        
+
         return array($queryBuilder->getRootAlias(), $this->description->getFieldName());
     }
 }

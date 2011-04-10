@@ -24,7 +24,7 @@ class CRUDController extends Controller
 
     /**
      * The related Admin class
-     * 
+     *
      * @var Admin
      */
     protected $admin;
@@ -105,7 +105,7 @@ class CRUDController extends Controller
 
     /**
      * return the base template name
-     * 
+     *
      * @return string the template name
      */
     public function getBaseTemplate()
@@ -142,21 +142,8 @@ class CRUDController extends Controller
      */
     public function batchActionDelete($idx)
     {
-        $em = $this->admin->getModelManager();
-
-        $query_builder = $em->createQueryBuilder();
-        $objects = $query_builder
-            ->select('o')
-            ->from($this->admin->getClass(), 'o')
-            ->add('where', $query_builder->expr()->in('o.id', $idx))
-            ->getQuery()
-            ->execute();
-
-        foreach ($objects as $object) {
-            $em->remove($object);
-        }
-
-        $em->flush();
+        $modelManager = $this->admin->getModelManager();
+        $modelManager->batchDelete($this->admin->getClass(), $idx);
 
         // todo : add confirmation flash var
         return new RedirectResponse($this->admin->generateUrl('list'));

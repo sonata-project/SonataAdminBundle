@@ -10,34 +10,29 @@
 
 namespace Sonata\AdminBundle\Datagrid;
 
+use Sonata\AdminBundle\Model\ModelManagerInterface;
+
 /**
  * Pager class.
- *
- * @package    symfony
- * @subpackage addon
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
+ * @author     Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-abstract class Pager implements \Iterator, \Countable, \Serializable
+abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInterface
 {
 
     protected $page = 1;
     protected $maxPerPage = 0;
     protected $lastPage = 1;
     protected $nbResults = 0;
-    protected $class = '';
-    protected $tableName = '';
-    protected $objects = null;
     protected $cursor = 1;
     protected $parameters = array();
     protected $currentMaxLink = 1;
-    protected $parameterBag = null;
     protected $maxRecordLimit = false;
 
     // used by iterator interface
     protected $results = null;
     protected $resultsCounter = 0;
     protected $query            = null;
-    protected $queryBuilder     = null;
     protected $countColumn      = 'id';
 
     /**
@@ -46,18 +41,10 @@ abstract class Pager implements \Iterator, \Countable, \Serializable
      * @param string  $class      The model class
      * @param integer $maxPerPage Number of records to display per page
      */
-    public function __construct($class, $maxPerPage = 10)
+    public function __construct($maxPerPage = 10)
     {
-        $this->setClass($class);
         $this->setMaxPerPage($maxPerPage);
     }
-
-    /**
-     * Initialize the pager.
-     *
-     * Function to be called after parameters have been set.
-     */
-    abstract public function init();
 
     /**
      * Returns an array of results on the given page.
@@ -112,8 +99,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable
         $begin = $tmp > 0 ? ($tmp > $limit ? $limit : $tmp) : 1;
 
         $i = (int) $begin;
-        while ($i < $begin + $nb_links && $i <= $this->lastPage)
-        {
+        while ($i < $begin + $nb_links && $i <= $this->lastPage) {
             $links[] = $i++;
         }
 
@@ -151,13 +137,10 @@ abstract class Pager implements \Iterator, \Countable, \Serializable
     {
         if ($pos < 1) {
             $this->cursor = 1;
-        }
-        else {
+        } else {
             if ($pos > $this->nbResults) {
                 $this->cursor = $this->nbResults;
-            }
-            else
-            {
+            } else {
                 $this->cursor = $pos;
             }
         }
@@ -196,9 +179,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable
     {
         if ($this->cursor + 1 > $this->nbResults) {
             return null;
-        }
-        else
-        {
+        } else {
             return $this->retrieveObject($this->cursor + 1);
         }
     }
@@ -212,9 +193,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable
     {
         if ($this->cursor - 1 < 1) {
             return null;
-        }
-        else
-        {
+        } else {
             return $this->retrieveObject($this->cursor - 1);
         }
     }
@@ -228,9 +207,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable
     {
         if ($this->page == 0) {
             return 1;
-        }
-        else
-        {
+        } else {
             return ($this->page - 1) * $this->maxPerPage + 1;
         }
     }
@@ -244,37 +221,13 @@ abstract class Pager implements \Iterator, \Countable, \Serializable
     {
         if ($this->page == 0) {
             return $this->nbResults;
-        }
-        else
-        {
+        } else {
             if ($this->page * $this->maxPerPage >= $this->nbResults) {
                 return $this->nbResults;
-            }
-            else
-            {
+            } else {
                 return $this->page * $this->maxPerPage;
             }
         }
-    }
-
-    /**
-     * Returns the current class.
-     *
-     * @return string
-     */
-    public function getClass()
-    {
-        return $this->class;
-    }
-
-    /**
-     * Sets the current class.
-     *
-     * @param string $class
-     */
-    public function setClass($class)
-    {
-        $this->class = $class;
     }
 
     /**
@@ -403,9 +356,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable
             if ($max == 0) {
                 $this->maxPerPage = 0;
                 $this->page = 0;
-            }
-            else
-            {
+            } else {
                 $this->maxPerPage = 1;
                 if ($this->page == 0) {
                     $this->page = 1;
@@ -593,43 +544,6 @@ abstract class Pager implements \Iterator, \Countable, \Serializable
     }
 
     /**
-     * Get the query builder for the pager.
-     *
-     * @return Doctrine\ORM\QueryBuilder
-     */
-    public function getQueryBuilder()
-    {
-
-        return $this->queryBuilder;
-    }
-
-    /**
-     * Set query object for the pager
-     *
-     * @param Doctrine\ORM\QueryBuilder $query
-     */
-    public function setQueryBuilder($queryBuilder)
-    {
-        $this->queryBuilder = $queryBuilder;
-    }
-
-    /**
-     * Get the query for the pager.
-     *
-     * @return Doctrine\ORM\Query
-     */
-
-    public function getQuery()
-    {
-
-        if (!$this->query) {
-            $this->query = $this->getQueryBuilder()->getQuery();
-        }
-
-        return $this->query;
-    }
-
-    /**
      * Serialize the pager object
      *
      * @return string $serialized
@@ -684,5 +598,15 @@ abstract class Pager implements \Iterator, \Countable, \Serializable
         $results = $queryForRetrieve->execute();
 
         return $results[0];
+    }
+
+    public function setQuery($query)
+    {
+        $this->query = $query;
+    }
+
+    public function getQuery()
+    {
+        return $this->query;
     }
 }

@@ -15,13 +15,13 @@ namespace Sonata\AdminBundle\Admin;
 class Pool
 {
     protected $container = null;
-    
+
     protected $adminServiceIds = array();
 
     protected $adminGroups = array();
 
     protected $adminClasses = array();
-    
+
     public function getGroups()
     {
         $groups = $this->adminGroups;
@@ -35,7 +35,7 @@ class Pool
 
         return $groups;
     }
-    
+
     public function getDashboardGroups()
     {
         $groups = $this->adminGroups;
@@ -61,11 +61,10 @@ class Pool
      * return the admin related to the given $class
      *
      * @param string $class
-     * @return Admin|null
+     * @return \Sonata\AdminBundle\Admin\Admin|null
      */
     public function getAdminByClass($class)
     {
-
         if (!isset($this->adminClasses[$class])) {
             return null;
         }
@@ -78,7 +77,7 @@ class Pool
      * ie : sonata.news.admin.post|sonata.news.admin.comment => return the child class of post
      *
      * @param string $adminCode
-     * @return Admin|null
+     * @return \Sonata\AdminBundle\Admin\Admin|null
      */
     public function getAdminByAdminCode($adminCode)
     {

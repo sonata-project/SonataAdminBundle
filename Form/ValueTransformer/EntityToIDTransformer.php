@@ -60,6 +60,6 @@ class EntityToIDTransformer extends Configurable implements ValueTransformerInte
             return 0;
         }
 
-        return current( $this->getOption('em')->getUnitOfWork()->getEntityIdentifier($entity) );
+        return current( $this->getOption('em')->getEntityIdentifier($entity) );
     }
 }

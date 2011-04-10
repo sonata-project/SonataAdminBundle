@@ -13,8 +13,7 @@ namespace Sonata\AdminBundle\Form;
 use Sonata\AdminBundle\Builder\FormBuilderInterface;
 use Sonata\AdminBundle\Admin\Admin;
 
-use Sonata\AdminBundle\Admin\FieldDescription;
-
+use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FieldInterface;
 use Symfony\Component\Form\FormContextInterface;
@@ -43,9 +42,9 @@ class FormMapper
 
     public function add($name, array $fieldOptions = array(), array $fieldDescriptionOptions = array())
     {
-        
+
         $field = false;
-        if ($name instanceof FieldDescription) {
+        if ($name instanceof FieldDescriptionInterface) {
 
             $fieldDescription = $name;
             $fieldDescription->mergeOptions($fieldDescriptionOptions);
@@ -54,9 +53,11 @@ class FormMapper
 
             $field   = $name;
 
-            $fieldDescription = new FieldDescription;
-            $fieldDescription->setOptions($fieldDescriptionOptions);
-            $fieldDescription->setName($field->getKey());
+            $fieldDescription = $this->admin->getModelManager()->getNewFieldDescriptionInstance(
+                $this->admin->getClass(),
+                $field->getKey(),
+                $fieldDescriptionOptions
+            );
 
             $this->formBuilder->fixFieldDescription($this->admin, $fieldDescription, $fieldDescriptionOptions);
 
@@ -64,9 +65,11 @@ class FormMapper
 
         } else if (is_string($name) && !$this->admin->hasFormFieldDescription($name)) {
 
-            $fieldDescription = new FieldDescription;
-            $fieldDescription->setOptions($fieldDescriptionOptions);
-            $fieldDescription->setName($name);
+            $fieldDescription = $this->admin->getModelManager()->getNewFieldDescriptionInstance(
+                $this->admin->getClass(),
+                $name,
+                $fieldDescriptionOptions
+            );
 
             // set default configuration
             $this->formBuilder->fixFieldDescription($this->admin, $fieldDescription, $fieldDescriptionOptions);
@@ -79,7 +82,7 @@ class FormMapper
 
             // update configuration
             $this->formBuilder->fixFieldDescription($this->admin, $fieldDescription, $fieldDescriptionOptions);
-            
+
         } else {
 
             throw new \RuntimeException('invalid state');

@@ -29,49 +29,15 @@ class Pager extends BasePager
      *
      * @return Doctrine\ORM\Query
      */
-    public function getCountQuery()
+    public function computeNbResult()
     {
-        $queryBuilder = clone $this->getQueryBuilder();
+        $countQuery = clone $this->getQuery();
 
-        $queryBuilder->select(sprintf('count(%s.%s) as nb', $queryBuilder->getRootAlias(), $this->getCountColumn()));
-        
-        return $queryBuilder->getQuery();
-    }
-
-    /**
-     * @see Pager
-     */
-    public function init()
-    {
-        $this->resetIterator();
-
-        $countQuery = $this->getCountQuery();
         $countQuery->setParameters($this->getParameters());
 
-        $count = $countQuery->getSingleScalarResult();
+        $countQuery->select(sprintf('count(%s.%s) as nb', $countQuery->getRootAlias(), $this->getCountColumn()));
 
-        $this->setNbResults($count);
-
-        $query = $this->getQuery();
-        
-        $query
-            ->setParameters($this->getParameters())
-            ->setFirstResult(0)
-            ->setMaxResults(0);
-
-        if (0 == $this->getPage() || 0 == $this->getMaxPerPage() || 0 == $this->getNbResults()) {
-            $this->setLastPage(0);
-        }
-        else
-        {
-            $offset = ($this->getPage() - 1) * $this->getMaxPerPage();
-
-            $this->setLastPage(ceil($this->getNbResults() / $this->getMaxPerPage()));
-
-            $query
-                ->setFirstResult($offset)
-                ->setMaxResults($this->getMaxPerPage());
-        }
+        return $countQuery->getQuery()->getSingleScalarResult();
     }
 
     /**
@@ -83,6 +49,48 @@ class Pager extends BasePager
      */
     public function getResults($hydrationMode = Query::HYDRATE_OBJECT)
     {
-        return $this->getQuery()->execute(array(), $hydrationMode);
+        return $this->getQuery()->getQuery()->execute(array(), $hydrationMode);
+    }
+
+    /**
+     * Get the query for the pager.
+     *
+     * @return Doctrine\ORM\Query
+     */
+
+    public function getQuery()
+    {
+        if (!$this->query) {
+            $this->query = $this->getQuery()->getQuery();
+        }
+
+        return $this->query;
+    }
+
+    public function init()
+    {
+        $this->resetIterator();
+
+        $count = $this->computeNbResult();
+        $this->setNbResults($count);
+
+        $query = $this->getQuery();
+
+        $query
+            ->setParameters($this->getParameters())
+            ->setFirstResult(0)
+            ->setMaxResults(0);
+
+        if (0 == $this->getPage() || 0 == $this->getMaxPerPage() || 0 == $this->getNbResults()) {
+            $this->setLastPage(0);
+        } else {
+            $offset = ($this->getPage() - 1) * $this->getMaxPerPage();
+
+            $this->setLastPage(ceil($this->getNbResults() / $this->getMaxPerPage()));
+
+            $query
+                ->setFirstResult($offset)
+                ->setMaxResults($this->getMaxPerPage());
+        }
     }
 }

@@ -26,6 +26,7 @@ use Sonata\AdminBundle\Builder\ListBuilderInterface;
 use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
 
 use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\AdminBundle\Model\ModelManagerInterface;
 
 use Knplabs\Bundle\MenuBundle\Menu;
 use Knplabs\Bundle\MenuBundle\MenuItem;
@@ -157,9 +158,9 @@ abstract class Admin implements AdminInterface
     /**
      * Array of routes related to this admin
      *
-     * @var array
+     * @var \Sonata\AdminBundle\Route\RouteCollection
      */
-    protected $routes = array();
+    protected $routes;
 
     /**
      * The subject only set in edit/update/create mode
@@ -224,49 +225,49 @@ abstract class Admin implements AdminInterface
     /**
      * The Entity or Document manager
      *
-     * @var object
+     * @var \Sonata\AdminBundle\Model\ModelManagerInterface
      */
     protected $modelManager;
 
     /**
      * The current request object
      *
-     * @var Symfony\Component\HttpFoundation\Request
+     * @var \Symfony\Component\HttpFoundation\Request
      */
     protected $request;
 
     /**
      * The translator component
      *
-     * @var Symfony\Component\Translation\TranslatorInterface
+     * @var \Symfony\Component\Translation\TranslatorInterface
      */
     protected $translator;
 
     /**
      * The related form builder
      *
-     * @var Sonata\AdminBundle\Builder\FormBuilderInterface
+     * @var \Sonata\AdminBundle\Builder\FormBuilderInterface
      */
     protected $formBuilder;
 
     /**
      * The related list builder
      *
-     * @var Sonata\AdminBundle\Builder\ListBuilderInterface
+     * @var \Sonata\AdminBundle\Builder\ListBuilderInterface
      */
     protected $listBuilder;
 
     /**
      * The related datagrid builder
      *
-     * @var Sonata\AdminBundle\Builder\DatagridBuilderInterface
+     * @var \Sonata\AdminBundle\Builder\DatagridBuilderInterface
      */
     protected $datagridBuilder;
 
     /**
      * The router intance
      *
-     * @var Symfony\Component\Routing\RouterInterface
+     * @var \Symfony\Component\Routing\RouterInterface
      */
     protected $router;
 
@@ -276,6 +277,7 @@ abstract class Admin implements AdminInterface
      * @var array
      */
     protected $breadcrumbs = array();
+
 
     /**
      * The configuration pool
@@ -294,18 +296,6 @@ abstract class Admin implements AdminInterface
         'routes'        => false,
         'side_menu'     => false,
     );
-
-    /**
-     * return the doctrine class metadata handled by the Admin instance
-     *
-     * @return ClassMetadataInfo the doctrine class metadata handled by the Admin instance
-     */
-    public function getClassMetaData()
-    {
-
-        return $this->getModelManager()
-            ->getClassMetaData($this->getClass());
-    }
 
     /**
      * This method can be overwritten to tweak the form construction, by default the form
@@ -353,10 +343,11 @@ abstract class Admin implements AdminInterface
      * @param string $class
      * @param string $baseControllerName
      */
-    public function __construct($class, $baseControllerName)
+    public function __construct($code, $class, $baseControllerName)
     {
-        $this->class = $class;
-        $this->baseControllerName = $baseControllerName;
+        $this->code                 = $code;
+        $this->class                = $class;
+        $this->baseControllerName   = $baseControllerName;
     }
 
     public function configure()
@@ -364,15 +355,7 @@ abstract class Admin implements AdminInterface
 
         $this->uniqid = uniqid();
 
-        if ($this->parentAssociationMapping) {
-            if (!isset($this->getClassMetaData()->associationMappings[$this->parentAssociationMapping])) {
-                throw new \RuntimeException(sprintf('The value set to `parentAssociationMapping` refer to a non existent association', $this->parentAssociationMapping));
-            }
-            $this->parentAssociationMapping = $this->getClassMetaData()->associationMappings[$this->parentAssociationMapping];
-        }
-
         if (!$this->classnameLabel) {
-
             $this->classnameLabel = $this->urlize(substr($this->class, strrpos($this->class, '\\') + 1), '_');
         }
 
@@ -382,24 +365,21 @@ abstract class Admin implements AdminInterface
     public function update($object)
     {
         $this->preUpdate($object);
-        $this->getModelManager()->persist($object);
-        $this->getModelManager()->flush($object);
+        $this->modelManager->update($object);
         $this->postUpdate($object);
     }
 
     public function create($object)
     {
         $this->prePersist($object);
-        $this->getModelManager()->persist($object);
-        $this->getModelManager()->flush($object);
+        $this->modelManager->create($object);
         $this->postPersist($object);
     }
 
     public function delete($object)
     {
         $this->preRemove($object);
-        $this->getModelManager()->remove($object);
-        $this->getModelManager()->flush();
+        $this->modelManager->delete($object);
         $this->postRemove($object);
     }
 
@@ -447,7 +427,7 @@ abstract class Admin implements AdminInterface
 
         $this->loaded['list_fields'] = true;
 
-        $this->listFieldDescriptions = self::getBaseFields($this->list);
+        $this->listFieldDescriptions = $this->getBaseFields($this->list);
 
         // normalize field
         foreach ($this->listFieldDescriptions as $fieldDescription) {
@@ -455,12 +435,12 @@ abstract class Admin implements AdminInterface
         }
 
         if (!isset($this->listFieldDescriptions['_batch'])) {
-            $fieldDescription = new FieldDescription();
-            $fieldDescription->setOptions(array(
+            $fieldDescription = $this->modelManager->getNewFieldDescriptionInstance($this->getClass(), 'batch', array(
                 'label' => 'batch',
                 'code'  => '_batch',
                 'type'  => 'batch',
             ));
+
             $fieldDescription->setTemplate('SonataAdminBundle:CRUD:list__batch.html.twig');
             $this->listFieldDescriptions = array( '_batch' => $fieldDescription ) + $this->listFieldDescriptions;
         }
@@ -482,17 +462,12 @@ abstract class Admin implements AdminInterface
 
         $this->loaded['filter_fields'] = true;
 
-        $this->filterFieldDescriptions = self::getBaseFields($this->filter);
+        $this->filterFieldDescriptions = $this->getBaseFields($this->filter);
 
         // ok, try to limit to add parent filter
-        $parentAssociationMapping = $this->getParentAssociationMapping();
-
-        if ($parentAssociationMapping) {
-
-            $fieldName = $parentAssociationMapping['fieldName'];
-            $this->filterFieldDescriptions[$fieldName] = new FieldDescription;
-            $this->filterFieldDescriptions[$fieldName]->setName($parentAssociationMapping['fieldName']);
-            $this->filterFieldDescriptions[$fieldName]->setAssociationMapping($parentAssociationMapping);
+        if ($this->getParentAssociationMapping()) {
+            $fieldDescription = $this->getModelManager()->getParentFieldDescription($this->getParentAssociationMapping(), $this->getClass());
+            $this->filterFieldDescriptions[$this->getParentAssociationMapping()] = $fieldDescription;
         }
 
         foreach ($this->filterFieldDescriptions as $fieldDescription) {
@@ -525,7 +500,7 @@ abstract class Admin implements AdminInterface
 
         $this->loaded['form_fields'] = true;
 
-        $this->formFieldDescriptions = self::getBaseFields($this->form);
+        $this->formFieldDescriptions = $this->getBaseFields($this->form);
 
         foreach ($this->formFieldDescriptions as $name => &$fieldDescription) {
 
@@ -544,23 +519,18 @@ abstract class Admin implements AdminInterface
      * @param array $selectedFields
      * @return array
      */
-    static public function getBaseFields($selectedFields)
+    private function getBaseFields(array $selectedFields)
     {
-
         $fields = array();
 
         // make sure we works with array
         foreach ($selectedFields as $name => $options) {
-
-            $description = new FieldDescription;
-
             if (!is_array($options)) {
                 $name = $options;
                 $options = array();
             }
 
-            $description->setName($name);
-            $description->setOptions($options);
+            $description = $this->modelManager->getNewFieldDescriptionInstance($this->getClass(), $name, $options);
 
             $fields[$name] = $description;
         }
@@ -671,11 +641,11 @@ abstract class Admin implements AdminInterface
     /**
      * return the list of available urls
      *
-     * @return array the list of available urls
+     * @return \Sonata\AdminBundle\Route\RouteCollection the list of available urls
      */
-    public function getRoutes()
+    public function getRoutes($prefix = '')
     {
-        $this->buildRoutes();
+        $this->buildRoutes($prefix);
 
         return $this->routes;
     }
@@ -705,7 +675,7 @@ abstract class Admin implements AdminInterface
      *
      * @return void
      */
-    public function buildRoutes()
+    public function buildRoutes($prefix = '')
     {
         if ($this->loaded['routes']) {
             return;
@@ -845,9 +815,7 @@ abstract class Admin implements AdminInterface
      */
     public function getNewInstance()
     {
-        $class = $this->getClass();
-
-        return new $class;
+        return $this->modelManager->getModelInstance($this->getClass());
     }
 
     /**
@@ -864,20 +832,11 @@ abstract class Admin implements AdminInterface
     }
 
     /**
-     *
-     * @return Datagrid
-     */
-    public function getBaseDatagrid($values = array())
-    {
-        return $this->getDatagridBuilder()->getBaseDatagrid($this, $values);
-    }
-
-    /**
      * attach an admin instance to the given FieldDescription
      *
-     * @param FieldDescription $fieldDescription
+     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
      */
-    public function attachAdminClass(FieldDescription $fieldDescription)
+    public function attachAdminClass(FieldDescriptionInterface $fieldDescription)
     {
         $pool = $this->getConfigurationPool();
 
@@ -897,9 +856,7 @@ abstract class Admin implements AdminInterface
      */
     public function getObject($id)
     {
-
-        return $this->getModelManager()
-            ->find($this->getClass(), $id);
+        return $this->modelManager->find($this->getClass(), $id);
     }
 
     /**
@@ -909,7 +866,6 @@ abstract class Admin implements AdminInterface
      */
     public function buildFormGroups()
     {
-
         if ($this->loaded['form_groups']) {
             return;
         }
@@ -935,7 +891,7 @@ abstract class Admin implements AdminInterface
      *
      * @param object $object
      * @param array $options the form options
-     * @return Symfony\Component\Form\Form
+     * @return \Symfony\Component\Form\Form
      */
     public function getForm($object, array $options = array())
     {
@@ -943,10 +899,9 @@ abstract class Admin implements AdminInterface
         // append parent object if any
         // todo : clean the way the Admin class can retrieve set the object
         if ($this->isChild() && $this->getParentAssociationMapping()) {
-            $mapping = $this->getParentAssociationMapping();
             $parent = $this->getParent()->getObject($this->request->get($this->getParent()->getIdParameter()));
 
-            $propertyPath = new \Symfony\Component\Form\PropertyPath($mapping['fieldName']);
+            $propertyPath = new \Symfony\Component\Form\PropertyPath($this->getParentAssociationMapping());
             $propertyPath->setValue($object, $parent);
         }
 
@@ -975,7 +930,7 @@ abstract class Admin implements AdminInterface
      * return a list depend on the given $object
      *
      * @param  $object
-     * @return Symfony\Component\Datagrid\ListCollection
+     * @return \Symfony\Component\Datagrid\ListCollection
      */
     public function getList(array $options = array())
     {
@@ -1009,25 +964,24 @@ abstract class Admin implements AdminInterface
      */
     public function getDatagrid()
     {
-
+        // retrieve the parameters
         $parameters = $this->request->query->all();
-
-        $datagrid = $this->getBaseDatagrid($parameters);
-        $datagrid->setMaxPerPage($this->maxPerPage);
 
         if ($this->isChild() && $this->getParentAssociationMapping()) {
             $mapping = $this->getParentAssociationMapping();
             $parameters[$mapping['fieldName']] = $this->request->get($this->getParent()->getIdParameter());
         }
 
-        $datagrid->setValues($parameters);
+        // build the datagrid filter
+        $datagrid = $this->getDatagridBuilder()->getBaseDatagrid($this, $parameters);
+        $datagrid->getPager()->setMaxPerPage($this->maxPerPage);
+
         $mapper = new DatagridMapper($this->getDatagridBuilder(), $datagrid, $this);
 
         $this->buildFilterFieldDescriptions();
         $this->configureDatagridFilters($mapper);
 
         foreach ($this->getFilterFieldDescriptions() as $fieldDescription) {
-
             $mapper->add($fieldDescription);
         }
 
@@ -1082,7 +1036,7 @@ abstract class Admin implements AdminInterface
     /**
      * return the master admin
      *
-     * @return Admin the root admin class
+     * @return \Sonata\AdminBundle\Admin\Admin the root admin class
      */
     public function getRoot()
     {
@@ -1142,17 +1096,17 @@ abstract class Admin implements AdminInterface
     /**
      * set the parent FieldDescription
      *
-     * @param FieldDescription $parentFieldDescription
+     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $parentFieldDescription
      * @return void
      */
-    public function setParentFieldDescription(FieldDescription $parentFieldDescription)
+    public function setParentFieldDescription(FieldDescriptionInterface $parentFieldDescription)
     {
         $this->parentFieldDescription = $parentFieldDescription;
     }
 
     /**
      *
-     * @return FieldDescription the parent field description
+     * @return \Sonata\AdminBundle\Admin\FieldDescriptionInterface the parent field description
      */
     public function getParentFieldDescription()
     {
@@ -1166,7 +1120,7 @@ abstract class Admin implements AdminInterface
      */
     public function hasParentFieldDescription()
     {
-        return $this->parentFieldDescription instanceof FieldDescription;
+        return $this->parentFieldDescription instanceof FieldDescriptionInterface;
     }
 
     /**
@@ -1187,7 +1141,7 @@ abstract class Admin implements AdminInterface
      */
     public function getSubject()
     {
-        if ($this->subject === null) {
+        if ($this->subject === null && $this->request) {
 
             $id = $this->request->get($this->getIdParameter());
             if (!is_numeric($id)) {
@@ -1219,7 +1173,7 @@ abstract class Admin implements AdminInterface
      * return the form FieldDescription with the given $name
      *
      * @param string $name
-     * @return FieldDescription
+     * @return \Sonata\AdminBundle\Admin\FieldDescriptionInterface
      */
     public function getFormFieldDescription($name)
     {
@@ -1243,10 +1197,10 @@ abstract class Admin implements AdminInterface
      * add a FieldDescription
      *
      * @param string $name
-     * @param FieldDescription $fieldDescription
+     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
      * @return void
      */
-    public function addFormFieldDescription($name, FieldDescription $fieldDescription)
+    public function addFormFieldDescription($name, FieldDescriptionInterface $fieldDescription)
     {
         $this->formFieldDescriptions[$name] = $fieldDescription;
     }
@@ -1279,7 +1233,7 @@ abstract class Admin implements AdminInterface
      * return a list FieldDescription
      *
      * @param string $name
-     * @return FieldDescription
+     * @return \Sonata\AdminBundle\Admin\FieldDescriptionInterface
      */
     public function getListFieldDescription($name) {
 
@@ -1303,10 +1257,10 @@ abstract class Admin implements AdminInterface
      * add a list FieldDescription
      *
      * @param string $name
-     * @param FieldDescription $fieldDescription
+     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
      * @return void
      */
-    public function addListFieldDescription($name, FieldDescription $fieldDescription)
+    public function addListFieldDescription($name, FieldDescriptionInterface $fieldDescription)
     {
         $this->listFieldDescriptions[$name] = $fieldDescription;
     }
@@ -1350,10 +1304,10 @@ abstract class Admin implements AdminInterface
      * add a filter FieldDescription
      *
      * @param string $name
-     * @param FieldDescription $fieldDescription
+     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
      * @return void
      */
-    public function addFilterFieldDescription($name, FieldDescription $fieldDescription)
+    public function addFilterFieldDescription($name, FieldDescriptionInterface $fieldDescription)
     {
         $this->filterFieldDescriptions[$name] = $fieldDescription;
     }
@@ -1384,15 +1338,14 @@ abstract class Admin implements AdminInterface
      * add an Admin child to the current one
      *
      * @param string $code
-     * @param Admin $child
+     * @param \Sonata\AdminBundle\Admin\Admin $child
      * @return void
      */
-    public function addChild($code, AdminInterface $child)
+    public function addChild(AdminInterface $child)
     {
-        $this->children[$code] = $child;
+        $this->children[$child->getCode()] = $child;
 
-        $child->setCode($code);
-        $child->setBaseCodeRoute($this->getCode().'|'.$code);
+        $child->setBaseCodeRoute($this->getCode().'|'.$child->getCode());
         $child->setParent($this);
     }
 
@@ -1431,7 +1384,7 @@ abstract class Admin implements AdminInterface
     /**
      * set the Parent Admin
      *
-     * @param Admin $parent
+     * @param \Sonata\AdminBundle\Admin\Admin $parent
      * @return void
      */
     public function setParent(AdminInterface $parent)
@@ -1442,7 +1395,7 @@ abstract class Admin implements AdminInterface
     /**
      * get the Parent Admin
      *
-     * @return Admin|null
+     * @return \Sonata\AdminBundle\Admin\Admin|null
      */
     public function getParent()
     {
@@ -1610,7 +1563,7 @@ abstract class Admin implements AdminInterface
     /**
      * return the current child admin instance
      *
-     * @return Admin|null the current child admin instance
+     * @return \Sonata\AdminBundle\Admin\Admin|null the current child admin instance
      */
     public function getCurrentChildAdmin()
     {
@@ -1699,7 +1652,7 @@ abstract class Admin implements AdminInterface
     }
 
     /**
-     * @return Symfony\Component\HttpFoundation\Request
+     * @return \Symfony\Component\HttpFoundation\Request
      */
     public function getRequest()
     {
@@ -1729,7 +1682,7 @@ abstract class Admin implements AdminInterface
     }
 
     /**
-     * @return Sonata\AdminBundle\Builder\FormBuilderInterface
+     * @return \Sonata\AdminBundle\Builder\FormBuilderInterface
      */
     public function getFormBuilder()
     {
@@ -1746,7 +1699,7 @@ abstract class Admin implements AdminInterface
     }
 
     /**
-     * @return Sonata\AdminBundle\Builder\DatagridBuilderInterface
+     * @return \Sonata\AdminBundle\Builder\DatagridBuilderInterface
      */
     public function getDatagridBuilder()
     {
@@ -1763,7 +1716,7 @@ abstract class Admin implements AdminInterface
     }
 
     /**
-     * @return Sonata\AdminBundle\Builder\ListBuilderInterface
+     * @return \Sonata\AdminBundle\Builder\ListBuilderInterface
      */
     public function getListBuilder()
     {
@@ -1797,33 +1750,11 @@ abstract class Admin implements AdminInterface
     }
 
     /**
-     * @return Symfony\Component\Routing\RouterInterface
+     * @return \Symfony\Component\Routing\RouterInterface
      */
     public function getRouter()
     {
         return $this->router;
-    }
-
-    /**
-     * @param  $modelManager
-     * @return void
-     */
-    public function setModelManager($modelManager)
-    {
-        $this->modelManager = $modelManager;
-    }
-
-    /**
-     * @return object
-     */
-    public function getModelManager()
-    {
-        return $this->modelManager;
-    }
-
-    public function setCode($code)
-    {
-        $this->code = $code;
     }
 
     public function getCode()
@@ -1839,5 +1770,18 @@ abstract class Admin implements AdminInterface
     public function getBaseCodeRoute()
     {
         return $this->baseCodeRoute;
+    }
+
+    /**
+     * @return \Sonata\AdminBundle\Model\ModelManagerInterface
+     */
+    public function getModelManager()
+    {
+        return $this->modelManager;
+    }
+
+    public function setModelManager(ModelManagerInterface $modelManager)
+    {
+        $this->modelManager = $modelManager;
     }
 }

@@ -11,8 +11,9 @@
 
 namespace Sonata\AdminBundle\Builder;
 
-use Sonata\AdminBundle\Admin\FieldDescription;
-use Sonata\AdminBundle\Admin\Admin;
+use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
+use Sonata\AdminBundle\Model\ModelManagerInterface;
+use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\ListCollection;
 
 
@@ -31,14 +32,14 @@ interface ListBuilderInterface
      * @param \Sonata\AdminBundle\Admin\FieldDescription $fieldDescription
      * @return void
      */
-    function addField(ListCollection $list, FieldDescription $fieldDescription);
+    function addField(ListCollection $list, FieldDescriptionInterface $fieldDescription);
 
     /**
      * @abstract
-     * @param \Sonata\AdminBundle\Admin\Admin $admin
+     * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
      * @param \Sonata\AdminBundle\Admin\FieldDescription $fieldDescription
      * @param array $options
      * @return void
      */
-    function fixFieldDescription(Admin $admin, FieldDescription $fieldDescription, array $options = array());
+    function fixFieldDescription(AdminInterface $admin, FieldDescriptionInterface $fieldDescription, array $options = array());
 }

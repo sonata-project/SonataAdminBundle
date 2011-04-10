@@ -15,11 +15,11 @@ use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Builder\FormBuilderInterface;
 use Sonata\AdminBundle\Builder\ListBuilderInterface;
 use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
-    
+
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\HttpFoundation\Request;
-    
+
 interface AdminInterface
 {
 
@@ -65,18 +65,25 @@ interface AdminInterface
      */
     function setConfigurationPool(Pool $pool);
 
-
-    /**
-     * @abstract
-     * @param Doctrine\ORM\EntityManager|Doctrine\ODM\MongoDB\DocumentManager
-     * @return void
-     */
-    function setModelManager($manager);
-
     /**
      * @abstract
      * @param \Symfony\Component\Routing\RouterInterface $router
      * @return void
      */
     function setRouter(RouterInterface $router);
+
+    /**
+     * Returns the class name managed
+     *
+     * @abstract
+     * @return void
+     */
+    function getClass();
+
+    /**
+     * @abstract
+     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
+     * @return void
+     */
+    function attachAdminClass(FieldDescriptionInterface $fieldDescription);
 }

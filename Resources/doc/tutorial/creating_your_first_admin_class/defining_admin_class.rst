@@ -48,7 +48,7 @@ Or if you're using an YML configuration file,
           class: Sonata\NewsBundle\Admin\PostAdmin
           tags:
             - { name: sonata.admin, manager_type: orm, group: sonata_blog, label: post }
-          arguments: [Sonata\NewsBundle\Entity\Post, SonataNewsBundle:PostAdmin]
+          arguments: ['', Sonata\NewsBundle\Entity\Post, SonataNewsBundle:PostAdmin]
 
 
 These is the minimal configuration required to display the entity inside the dashboard and

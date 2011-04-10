@@ -11,7 +11,7 @@
 
 namespace Sonata\AdminBundle\Filter;
 
-use Sonata\AdminBundle\Admin\FieldDescription;
+use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Filter\FilterInterface;
 use Symfony\Component\Form\Configurable;
 use Doctrine\ORM\QueryBuilder;
@@ -27,7 +27,7 @@ abstract class Filter extends Configurable implements FilterInterface
 
     protected $value = null;
 
-    public function __construct(FieldDescription $fieldDescription)
+    public function __construct(FieldDescriptionInterface $fieldDescription)
     {
         $this->name         = $fieldDescription->getName();
         $this->description  = $fieldDescription;
@@ -35,16 +35,6 @@ abstract class Filter extends Configurable implements FilterInterface
         parent::__construct($fieldDescription->getOption('filter_options', array()));
 
         $this->field        = $this->getFormField();
-    }
-
-    /**
-     *
-     * set the object description
-     *
-     */
-    public function setDescription(FieldDescription $description)
-    {
-        $this->description = $description;
     }
 
     /**

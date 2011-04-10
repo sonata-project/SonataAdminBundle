@@ -11,9 +11,12 @@
 
 namespace Sonata\AdminBundle\Builder\ORM;
 
-use Sonata\AdminBundle\Admin\FieldDescription;
-use Sonata\AdminBundle\Admin\Admin;
-use Sonata\AdminBundle\Datagrid\ORM\Datagrid;
+use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
+use Sonata\AdminBundle\Model\ModelManagerInterface;
+use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\Datagrid\DatagridInterface;
+use Sonata\AdminBundle\Datagrid\Datagrid;
+use Sonata\AdminBundle\Datagrid\ORM\Pager;
 use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
 
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
@@ -43,23 +46,27 @@ class DatagridBuilder implements DatagridBuilderInterface
 
     /**
      * @throws \RuntimeException
-     * @param \Sonata\AdminBundle\Admin\Admin $admin
+     * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
      * @param \Sonata\AdminBundle\Admin\FieldDescription $fieldDescription
      * @return void
      */
-    public function fixFieldDescription(Admin $admin, FieldDescription $fieldDescription)
+    public function fixFieldDescription(AdminInterface $admin, FieldDescriptionInterface $fieldDescription)
     {
         // set default values
         $fieldDescription->setAdmin($admin);
 
-        // set the default field mapping
-        if (isset($admin->getClassMetaData()->fieldMappings[$fieldDescription->getName()])) {
-            $fieldDescription->setFieldMapping($admin->getClassMetaData()->fieldMappings[$fieldDescription->getName()]);
-        }
+        if ($admin->getModelManager()->hasMetadata($admin->getClass())) {
+            $metadata = $admin->getModelManager()->getMetadata($admin->getClass());
 
-        // set the default association mapping
-        if (isset($admin->getClassMetaData()->associationMappings[$fieldDescription->getName()])) {
-            $fieldDescription->setAssociationMapping($admin->getClassMetaData()->associationMappings[$fieldDescription->getName()]);
+            // set the default field mapping
+            if (isset($metadata->fieldMappings[$fieldDescription->getName()])) {
+                $fieldDescription->setFieldMapping($metadata->fieldMappings[$fieldDescription->getName()]);
+            }
+
+            // set the default association mapping
+            if (isset($metadata->associationMappings[$fieldDescription->getName()])) {
+                $fieldDescription->setAssociationMapping($metadata->associationMappings[$fieldDescription->getName()]);
+            }
         }
 
         if (!$fieldDescription->getType()) {
@@ -95,17 +102,15 @@ class DatagridBuilder implements DatagridBuilderInterface
      * return the class associated to a FieldDescription if any defined
      *
      * @throws RuntimeException
-     * @param FieldDescription $fieldDescription
+     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
      * @return bool|string
      */
-    public function getFilterFieldClass(FieldDescription $fieldDescription)
+    public function getFilterFieldClass(FieldDescriptionInterface $fieldDescription)
     {
 
         if ($fieldDescription->getOption('filter_field_widget', false)) {
-
             $class = $fieldDescription->getOption('filter_field_widget', false);
         } else {
-
             $class = array_key_exists($fieldDescription->getType(), $this->filterClasses) ? $this->filterClasses[$fieldDescription->getType()] : false;
         }
 
@@ -117,10 +122,10 @@ class DatagridBuilder implements DatagridBuilderInterface
     }
 
     /**
-     * @param \Sonata\AdminBundle\Admin\FieldDescription $fieldDescription
+     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
      * @return array
      */
-    public function getChoices(FieldDescription $fieldDescription)
+    public function getChoices(FieldDescriptionInterface $fieldDescription)
     {
         $targets = $fieldDescription->getAdmin()->getModelManager()
             ->createQueryBuilder()
@@ -148,7 +153,7 @@ class DatagridBuilder implements DatagridBuilderInterface
      * @param \Sonata\AdminBundle\Admin\FieldDescription $fieldDescription
      * @return bool
      */
-    public function addFilter(Datagrid $datagrid, FieldDescription $fieldDescription)
+    public function addFilter(DatagridInterface $datagrid, FieldDescriptionInterface $fieldDescription)
     {
 
         if (!$fieldDescription->getType()) {
@@ -186,16 +191,17 @@ class DatagridBuilder implements DatagridBuilderInterface
     }
 
     /**
-     * @param \Sonata\AdminBundle\Admin\Admin $admin
+     * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
      * @param array $values
      * @return \Sonata\AdminBundle\Datagrid\ORM\Datagrid
      */
-    public function getBaseDatagrid(Admin $admin, array $values)
+    public function getBaseDatagrid(AdminInterface $admin, array $values = array())
     {
         return new Datagrid(
-            $admin->getClass(),
-            $admin->getModelManager(),
-            $admin
+            $admin->getModelManager()->createQuery($admin->getClass()),
+            $admin->getList(),
+            new Pager,
+            $values
         );
     }
 }

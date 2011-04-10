@@ -9,4 +9,10 @@
         <parameter key="sonata_admin.templates.ajax">SonataAdminBundle::ajax_layout.html.twig</parameter>
     </parameters>
 
+    <services>
+        <service id="sonata_admin.manager.orm" class="Sonata\AdminBundle\Model\ORM\ModelManager">
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+        </service>
+    </services>
+
 </container>

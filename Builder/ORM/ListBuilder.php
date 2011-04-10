@@ -11,8 +11,9 @@
 
 namespace Sonata\AdminBundle\Builder\ORM;
 
-use Sonata\AdminBundle\Admin\FieldDescription;
-use Sonata\AdminBundle\Admin\Admin;
+use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
+use Sonata\AdminBundle\Model\ModelManagerInterface;
+use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\ListCollection;
 use Sonata\AdminBundle\Builder\ListBuilderInterface;
 
@@ -27,7 +28,7 @@ class ListBuilder implements ListBuilderInterface
     }
 
 
-    public function addField(ListCollection $list, FieldDescription $fieldDescription)
+    public function addField(ListCollection $list, FieldDescriptionInterface $fieldDescription)
     {
         return $list->add($fieldDescription);
     }
@@ -38,7 +39,7 @@ class ListBuilder implements ListBuilderInterface
      * @param \Sonata\AdminBundle\Admin\FieldDescription $fieldDescription
      * @return void
      */
-    public function fixFieldDescription(Admin $admin, FieldDescription $fieldDescription, array $options = array())
+    public function fixFieldDescription(AdminInterface $admin, FieldDescriptionInterface $fieldDescription, array $options = array())
     {
         if ($fieldDescription->getName() == '_action')
         {
@@ -48,19 +49,24 @@ class ListBuilder implements ListBuilderInterface
         $fieldDescription->mergeOptions($options);
         $fieldDescription->setAdmin($admin);
 
-        // set the default field mapping
-        if (isset($admin->getClassMetaData()->fieldMappings[$fieldDescription->getName()])) {
-            $fieldDescription->setFieldMapping($admin->getClassMetaData()->fieldMappings[$fieldDescription->getName()]);
-        }
+        if($admin->getModelManager()->hasMetadata($admin->getClass()))
+        {
+            $metadata = $admin->getModelManager()->getMetadata($admin->getClass());
 
-        // set the default association mapping
-        if (isset($admin->getClassMetaData()->associationMappings[$fieldDescription->getName()])) {
-            $fieldDescription->setAssociationMapping($admin->getClassMetaData()->associationMappings[$fieldDescription->getName()]);
+            // set the default field mapping
+            if (isset($metadata->fieldMappings[$fieldDescription->getName()])) {
+                $fieldDescription->setFieldMapping($metadata->fieldMappings[$fieldDescription->getName()]);
+            }
+
+            // set the default association mapping
+            if (isset($metadata->associationMappings[$fieldDescription->getName()])) {
+                $fieldDescription->setAssociationMapping($metadata->associationMappings[$fieldDescription->getName()]);
+            }
         }
 
         if (!$fieldDescription->getType()) {
             throw new \RuntimeException(sprintf('Please define a type for field `%s` in `%s`', $fieldDescription->getName(), get_class($admin)));
-        }        
+        }
 
         $fieldDescription->setOption('code', $fieldDescription->getOption('code', $fieldDescription->getName()));
         $fieldDescription->setOption('label', $fieldDescription->getOption('label', $fieldDescription->getName()));
@@ -107,24 +113,24 @@ class ListBuilder implements ListBuilderInterface
      * @param \Sonata\AdminBundle\Admin\FieldDescription $fieldDescription
      * @return \Sonata\AdminBundle\Admin\FieldDescription
      */
-    public function buildActionFieldDescription(FieldDescription $fieldDescription)
+    public function buildActionFieldDescription(FieldDescriptionInterface $fieldDescription)
     {
         if (null === $fieldDescription->getTemplate()) {
             $fieldDescription->setTemplate('SonataAdminBundle:CRUD:list__action.html.twig');
         }
-        
+
         if (null === $fieldDescription->getType()) {
             $fieldDescription->setType('action');
         }
-        
+
         if (null === $fieldDescription->getOption('name')) {
             $fieldDescription->setOption('name', 'Action');
         }
-        
+
         if (null === $fieldDescription->getOption('code')) {
             $fieldDescription->setOption('code', 'Action');
         }
-        
+
         if (null !== $fieldDescription->getOption('actions')) {
             $actions = $fieldDescription->getOption('actions');
             foreach ($actions as $k => $action) {
@@ -132,10 +138,10 @@ class ListBuilder implements ListBuilderInterface
                     $actions[$k]['template'] = sprintf('SonataAdminBundle:CRUD:list__action_%s.html.twig', $k);
                 }
             }
-            
+
             $fieldDescription->setOption('actions', $actions);
         }
-      
+
         return $fieldDescription;
     }
 }

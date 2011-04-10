@@ -42,6 +42,7 @@ admin class, like:
 
     <service id="sonata.news.admin.post" class="%sonata.news.admin.post.class%">
         <tag name="sonata.admin" manager_type="orm" group="sonata_blog" label="post"/>
+        <argument />
         <argument>%sonata.news.admin.post.entity%</argument>
         <argument>%sonata.news.admin.post.controller%</argument>
 

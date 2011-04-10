@@ -11,18 +11,18 @@
 namespace Sonata\AdminBundle\Datagrid;
 
 
-use Sonata\AdminBundle\Admin\FieldDescription;
-    
+use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
+
 class ListCollection
 {
 
     protected $elements = array();
 
     /**
-     * @param \Sonata\AdminBundle\Admin\FieldDescription $fieldDescription
+     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
      * @return void
      */
-    public function add(FieldDescription $fieldDescription)
+    public function add(FieldDescriptionInterface $fieldDescription)
     {
         $this->elements[$fieldDescription->getName()] = $fieldDescription;
     }
@@ -36,7 +36,7 @@ class ListCollection
     }
 
     /**
-     * @param  $name
+     * @param string $name
      * @return bool
      */
     public function has($name)
@@ -46,7 +46,7 @@ class ListCollection
 
     /**
      * @throws \InvalidArgumentException
-     * @param  $name
+     * @param string $name
      * @return array
      */
     public function get($name)
@@ -59,7 +59,7 @@ class ListCollection
     }
 
     /**
-     * @param  $name
+     * @param string $name
      * @return void
      */
     public function remove($name)

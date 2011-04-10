@@ -11,8 +11,8 @@
 
 namespace Sonata\AdminBundle\Twig\Extension;
 
-use Sonata\AdminBundle\Admin\FieldDescription;
-use Sonata\AdminBundle\Filter\Filter;
+use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
+use Sonata\AdminBundle\Filter\FilterInterface;
 
 class SonataAdminExtension extends \Twig_Extension
 {
@@ -63,11 +63,11 @@ class SonataAdminExtension extends \Twig_Extension
      * render a list element from the FieldDescription
      *
      * @param  $object
-     * @param FieldDescription $fieldDescription
+     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
      * @param array $params
      * @return
      */
-    public function renderListElement($object, FieldDescription $fieldDescription, $params = array())
+    public function renderListElement($object, FieldDescriptionInterface $fieldDescription, $params = array())
     {
 
         $template = $this->environment->loadTemplate($fieldDescription->getTemplate());
@@ -81,7 +81,7 @@ class SonataAdminExtension extends \Twig_Extension
     }
 
 
-    public function output(FieldDescription $fieldDescription, $content)
+    public function output(FieldDescriptionInterface $fieldDescription, $content)
     {
 
         return sprintf("\n<!-- fieldName: %s, template: %s -->\n%s\n", $fieldDescription->getFieldName(), $fieldDescription->getTemplate(), $content);
@@ -92,10 +92,10 @@ class SonataAdminExtension extends \Twig_Extension
      * exists => a temporary one is created
      *
      * @param  $object
-     * @param FieldDescription $fieldDescription
+     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
      * @return
      */
-    public function getValueFromFieldDescription($object, FieldDescription $fieldDescription, array $params = array())
+    public function getValueFromFieldDescription($object, FieldDescriptionInterface $fieldDescription, array $params = array())
     {
 
         if (isset($params['loop']) && $object instanceof \ArrayAccess) {
@@ -103,7 +103,7 @@ class SonataAdminExtension extends \Twig_Extension
         }
 
         $value = $fieldDescription->getValue($object);
-        
+
         // no value defined, check if the fieldDescription point to an association
         // if so, create an empty object instance
         // fixme: not sure this is the best place to do that
@@ -122,7 +122,7 @@ class SonataAdminExtension extends \Twig_Extension
      * @param array $params
      * @return
      */
-    public function renderFilterElement(Filter $filter, array $params = array())
+    public function renderFilterElement(FilterInterface $filter, array $params = array())
     {
         $description = $filter->getDescription();
 
@@ -138,13 +138,13 @@ class SonataAdminExtension extends \Twig_Extension
      *
      *
      * @throws InvalidArgumentException
-     * @param FieldDescription $fieldDescription
+     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
      * @param  $form
      * @param  $object
      * @param array $params
      * @return string
      */
-    public function renderFormElement(FieldDescription $fieldDescription, $form, $object, $params = array())
+    public function renderFormElement(FieldDescriptionInterface $fieldDescription, $form, $object, $params = array())
     {
 
         if (!$fieldDescription->getFieldName()) {
@@ -155,7 +155,7 @@ class SonataAdminExtension extends \Twig_Extension
         try {
             $field = $form->get($fieldDescription->getFieldName());
         } catch (\InvalidArgumentException $e) {
-            
+
             throw $e;
         }
 

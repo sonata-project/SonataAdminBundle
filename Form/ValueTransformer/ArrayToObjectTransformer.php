@@ -34,7 +34,7 @@ class ArrayToObjectTransformer extends Configurable implements ValueTransformerI
     public function reverseTransform($array)
     {
         $class      = $this->getOption('className');
-        $metadata   = $this->getOption('em')->getClassMetadata($class);
+        $metadata   = $this->getOption('em')->getMetadata($class);
 
         // when the object is created the form return an array
         // one the object is persisted, the edit $array is the user instance
@@ -46,7 +46,7 @@ class ArrayToObjectTransformer extends Configurable implements ValueTransformerI
         $instance = new $class;
 
         if (!is_array($array)) {
-            
+
             return $instance;
         }
 
