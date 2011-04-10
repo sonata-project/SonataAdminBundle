@@ -55,6 +55,7 @@ Types available
 - one_to_one
 - string
 - text
+- date
 
 if no type is set, the Admin class will use the one set in the doctrine mapping definition.
 
