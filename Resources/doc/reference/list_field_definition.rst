@@ -29,10 +29,10 @@ Example
         }
     }
 
-As you can see, the filter fields are defined by overriding the ``filter_fields``
-property and giving each definition an array of options. You can also customize
-each field further by overriding the ``configureListFields()`` method, which
-is blank in the parent class.
+As you can see, the list fields are defined by overriding the ``list`` property
+and giving each definition an array of options. You can also customize each 
+field further by overriding the ``configureListFields()`` method, which is 
+blank in the parent class.
 
 Types available
 ---------------
@@ -48,6 +48,7 @@ types include:
 * many_to_one : a link will be added to the related edit action
 * string
 * text
+* date
 
 If no type is set, the ``Admin`` class will use the type defined in the doctrine
 mapping definition.
