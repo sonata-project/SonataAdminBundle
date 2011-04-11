@@ -35,6 +35,7 @@ Secondly, register the PostAdmin class inside the DIC in your config.xml file.
 
         <tag name="sonata.admin" manager_type="orm" group="sonata_blog" label="post"/>
 
+        <argument />
         <argument>Sonata\NewsBundle\Entity\Post</argument>
         <argument>SonataNewsBundle:PostAdmin</argument>
     </service>
