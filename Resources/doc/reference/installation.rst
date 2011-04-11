@@ -82,6 +82,18 @@ Once you have created an admin class, you must declare the class to use it. Like
 
         <tag name="sonata.admin" manager_type="orm" group="sonata_blog" label="post"/>
 
+        <argument/>
         <argument>Sonata\NewsBundle\Entity\Post</argument>
         <argument>SonataNewsBundle:PostAdmin</argument>
     </service>
+
+Or if you're using an YML configuration file,
+
+.. code-block:: yml
+
+    services:
+       sonata.news.admin.post:
+          class: Sonata\NewsBundle\Admin\PostAdmin
+          tags:
+            - { name: sonata.admin, manager_type: orm, group: sonata_blog, label: post }
+          arguments: [null, Sonata\NewsBundle\Entity\Post, SonataNewsBundle:PostAdmin]
