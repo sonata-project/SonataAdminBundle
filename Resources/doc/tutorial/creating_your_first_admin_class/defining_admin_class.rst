@@ -35,6 +35,7 @@ Secondly, register the PostAdmin class inside the DIC in your config.xml file.
 
         <tag name="sonata.admin" manager_type="orm" group="sonata_blog" label="post"/>
 
+        <argument/>
         <argument>Sonata\NewsBundle\Entity\Post</argument>
         <argument>SonataNewsBundle:PostAdmin</argument>
     </service>
@@ -48,8 +49,7 @@ Or if you're using an YML configuration file,
           class: Sonata\NewsBundle\Admin\PostAdmin
           tags:
             - { name: sonata.admin, manager_type: orm, group: sonata_blog, label: post }
-          arguments: ['', Sonata\NewsBundle\Entity\Post, SonataNewsBundle:PostAdmin]
-
+          arguments: [null, Sonata\NewsBundle\Entity\Post, SonataNewsBundle:PostAdmin]
 
 These is the minimal configuration required to display the entity inside the dashboard and
 interact with the CRUD interface. However, you need to create your admin Controller.
