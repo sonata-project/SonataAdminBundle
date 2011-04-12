@@ -34,9 +34,14 @@ class ExplainAdminCommand extends Command
 
         $admin = $this->container->get($input->getArgument('admin'));
 
-        $output->writeln(sprintf('<info>% -15s</info> : %s', 'id', $admin->getCode()));
-        $output->writeln(sprintf('<info>% -15s</info> : %s', 'Model', $admin->getClass()));
-        $output->writeln(sprintf('<info>% -15s</info> : %s', 'Controller', $admin->getBaseControllerName()));
+        $output->writeln('<comment>AdminBundle Information</comment>');
+        $output->writeln(sprintf('<info>% -20s</info> : %s', 'id', $admin->getCode()));
+        $output->writeln(sprintf('<info>% -20s</info> : %s', 'Model', $admin->getClass()));
+        $output->writeln(sprintf('<info>% -20s</info> : %s', 'Controller', $admin->getBaseControllerName()));
+        $output->writeln(sprintf('<info>% -20s</info> : %s', 'Model Manager', get_class($admin->getModelManager())));
+        $output->writeln(sprintf('<info>% -20s</info> : %s', 'Form Builder', get_class($admin->getFormBuilder())));
+        $output->writeln(sprintf('<info>% -20s</info> : %s', 'Datagrid Builder', get_class($admin->getDatagridBuilder())));
+        $output->writeln(sprintf('<info>% -20s</info> : %s', 'List Builder', get_class($admin->getListBuilder())));
 
         if ($admin->isChild()) {
             $output->writeln(sprintf('<info>% -15s</info> : %s', 'Parent', $admin->getParent()->getCode()));
@@ -49,19 +54,19 @@ class ExplainAdminCommand extends Command
         }
 
         $output->writeln('');
-        $output->writeln('<info>Columns</info>');
+        $output->writeln('<info>Datagrid Columns</info>');
         foreach ($admin->getListFieldDescriptions() as $name => $fieldDescription) {
             $output->writeln(sprintf('  - % -25s  % -15s % -15s', $name, $fieldDescription->getType(), $fieldDescription->getTemplate()));
         }
 
         $output->writeln('');
-        $output->writeln('<info>Filters</info>');
+        $output->writeln('<info>Datagrid Filters</info>');
         foreach ($admin->getFilterFieldDescriptions() as $name => $fieldDescription) {
             $output->writeln(sprintf('  - % -25s  % -15s % -15s', $name, $fieldDescription->getType(), $fieldDescription->getTemplate()));
         }
 
         $output->writeln('');
-        $output->writeln('<info>Form</info>');
+        $output->writeln('<info>Form Fields</info>');
         foreach ($admin->getFormFieldDescriptions() as $name => $fieldDescription) {
             $output->writeln(sprintf('  - % -25s  % -15s % -15s', $name, $fieldDescription->getType(), $fieldDescription->getTemplate()));
         }
@@ -70,10 +75,14 @@ class ExplainAdminCommand extends Command
         $metadata = $validatorFactory->getClassMetadata($admin->getClass());
 
         $output->writeln('');
+        $output->writeln('<comment>Validation Framework</comment> - http://symfony.com/doc/2.0/book/validation.html');
         $output->writeln('<info>Properties constraints</info>');
 
-        foreach($metadata->getConstrainedProperties() as $name) {
+        if (count($metadata->getConstrainedProperties()) == 0) {
+            $output->writeln('    <error>no properties constraints defined !!</error>');
+        }
 
+        foreach ($metadata->getConstrainedProperties() as $name) {
             $output->writeln(sprintf('  <info>%s</info>', $name));
             $propertyMetadatas = $metadata->getMemberMetadatas($name);
             foreach ($propertyMetadatas as $propertyMetadata) {
@@ -85,9 +94,9 @@ class ExplainAdminCommand extends Command
 
         $output->writeln('');
         $output->writeln('<info>Getter constraints</info>');
-
-        foreach($metadata->getters as $name => $value) {
-            $output->writeln('TODO ...');
-        }
+        $output->writeln('  <comment>todo ;)</comment>');
+//        foreach ($metadata->getters as $name => $value) {
+//            $output->writeln('TODO ...');
+//        }
     }
 }
