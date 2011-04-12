@@ -547,7 +547,7 @@ abstract class Admin implements AdminInterface
     public function getBaseRoutePattern()
     {
         if (!$this->baseRoutePattern) {
-            preg_match('@([A-Za-z]*)\\\([A-Za-z]*)Bundle\\\(Entity|Document)\\\(.*)@', $this->getClass(), $matches);
+            preg_match('@([A-Za-z0-9]*)\\\([A-Za-z0-9]*)Bundle\\\(Entity|Document|Model)\\\(.*)@', $this->getClass(), $matches);
 
             if (!$matches) {
                 throw new \RuntimeException(sprintf('Please define a default `baseRoutePattern` value for the admin class `%s`', get_class($this)));
@@ -580,7 +580,7 @@ abstract class Admin implements AdminInterface
     public function getBaseRouteName()
     {
         if (!$this->baseRouteName) {
-            preg_match('@([A-Za-z]*)\\\([A-Za-z]*)Bundle\\\(Entity|Document)\\\(.*)@', $this->getClass(), $matches);
+            preg_match('@([A-Za-z0-9]*)\\\([A-Za-z0-9]*)Bundle\\\(Entity|Document|Model)\\\(.*)@', $this->getClass(), $matches);
 
             if (!$matches) {
                 throw new \RuntimeException(sprintf('Please define a default `baseRouteName` value for the admin class `%s`', get_class($this)));
