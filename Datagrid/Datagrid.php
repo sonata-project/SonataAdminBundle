@@ -12,10 +12,10 @@
 namespace Sonata\AdminBundle\Datagrid;
 
 use Sonata\AdminBundle\Datagrid\PagerInterface;
+use Sonata\AdminBundle\Filter\FilterInterface;
 
 class Datagrid implements DatagridInterface
 {
-
     /**
      *
      * The filter instances
@@ -60,7 +60,7 @@ class Datagrid implements DatagridInterface
         foreach ($this->getFilters() as $name => $filter) {
             $filter->apply(
                 $this->query,
-                isset($values[$name]) ? $this->values[$name] : null
+                isset($this->values[$name]) ? $this->values[$name] : null
             );
         }
 
@@ -71,9 +71,9 @@ class Datagrid implements DatagridInterface
         $this->bound = true;
     }
 
-    public function addFilter($filter)
+    public function addFilter(FilterInterface $filter)
     {
-        $this->filters[$filter->getName()] = $filter;
+        return $this->filters[$filter->getName()] = $filter;
     }
 
     public function getFilters()

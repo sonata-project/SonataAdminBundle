@@ -19,15 +19,15 @@ file that was distributed with this source code.
     </div>
 {% endblock %}
 
-{% block side_menu %}{% if side_menu %}{{ side_menu.render|raw }}{% endif %}{% endblock %}
+{% block side_menu %}{{ admin.sidemenu(action).render|raw }}{% endblock %}
 
 {% block list_table %}
-    {% if datagrid.results|length > 0 %}
+    {% if admin.datagrid.results|length > 0 %}
         <form action="{{ admin.generateUrl('batch') }}" method="POST" >
             <table>
                 {% block table_header %}
                     <tr>
-                        {% for field_description in list.elements %}
+                        {% for field_description in admin.list.elements %}
                             {% if field_description.getOption('code') == '_batch' %}
                                 <th class="sonata-ba-list-field-header sonata-ba-list-field-header-batch">
                                   <input type="checkbox" id="list_batch_checkbox" />
@@ -46,9 +46,9 @@ file that was distributed with this source code.
                 {% endblock %}
 
                 {% block table_body %}
-                    {% for object in datagrid.results %}
+                    {% for object in admin.datagrid.results %}
                         <tr>
-                            {% for field_description in list.elements %}
+                            {% for field_description in admin.list.elements %}
                                 {{ object|render_list_element(field_description) }}
                             {% endfor %}
                         </tr>
@@ -56,25 +56,25 @@ file that was distributed with this source code.
                 {% endblock %}
 
                 {% block table_footer %}
-                    {% if datagrid.pager.haveToPaginate() %}
+                    {% if admin.datagrid.pager.haveToPaginate() %}
                         <tr>
-                            <td colspan="{{ list.elements|length }}" class="pager">
+                            <td colspan="{{ admin.list.elements|length }}" class="pager">
                                 <ul>
-                                    {% if datagrid.pager.page != datagrid.pager.previouspage %}
-                                        <li><a href="{{ admin.generateUrl('list', datagrid.values|merge({'_page': datagrid.pager.previouspage})) }}">{% trans 'link_previous_pager' from 'AdminBundle' %}</a></li>
+                                    {% if admin.datagrid.pager.page != admin.datagrid.pager.previouspage %}
+                                        <li><a href="{{ admin.generateUrl('list', admin.datagrid.values|merge({'_page': admin.datagrid.pager.previouspage})) }}">{% trans 'link_previous_pager' from 'AdminBundle' %}</a></li>
                                     {% endif %}
 
                                     {# Set the number of pages to display in the pager #}
-                                    {% for page in datagrid.pager.getLinks(5) %}
-                                        {% if page == datagrid.pager.page %}
+                                    {% for page in admin.datagrid.pager.getLinks(5) %}
+                                        {% if page == admin.datagrid.pager.page %}
                                             <li>{{ page }}</li>
                                         {% else %}
-                                            <li><a href="{{ admin.generateUrl('list', datagrid.values|merge({'_page': page})) }}">{{ page }}</a></li>
+                                            <li><a href="{{ admin.generateUrl('list', admin.datagrid.values|merge({'_page': page})) }}">{{ page }}</a></li>
                                         {% endif %}
                                     {% endfor %}
 
-                                    {% if datagrid.pager.page != datagrid.pager.nextpage %}
-                                        <li><a href="{{ admin.generateUrl('list', datagrid.values|merge({'_page': datagrid.pager.nextpage})) }}">{% trans 'link_next_pager' from 'AdminBundle' %}</a></li>
+                                    {% if admin.datagrid.pager.page != admin.datagrid.pager.nextpage %}
+                                        <li><a href="{{ admin.generateUrl('list', admin.datagrid.values|merge({'_page': admin.datagrid.pager.nextpage})) }}">{% trans 'link_next_pager' from 'AdminBundle' %}</a></li>
                                     {% endif %}
                                 </ul>
                             </td>
@@ -106,14 +106,14 @@ file that was distributed with this source code.
     {% else %}
         <p class="notice">
           {% trans 'no_result' from 'AdminBundle' %}
-        </p>    
+        </p>
     {% endif %}
 {% endblock %}
 
 {% block list_filters %}
-    {% if datagrid.filters %}
+    {% if admin.datagrid.filters %}
         <form action="{{ admin.generateUrl('list') }}" method="GET">
-            {% for filter in datagrid.filters %}
+            {% for filter in admin.datagrid.filters %}
                 <div>
                     {{ filter|render_filter_element }}</td>
                 </div>

@@ -40,6 +40,24 @@ class FormMapper
         $this->admin = $admin;
     }
 
+    /**
+     * The method add a new field to the provided Form, there are 4 ways to add new field :
+     *
+     *   - if $name is a string with no related FieldDescription, then the form will use the FieldFactory
+     *     to instantiate a new Field
+     *   - if $name is a FormDescription, the method uses information defined in the FormDescription to
+     *     instantiate a new Field
+     *   - if $name is a FieldInterface, then a FieldDescriptionInterface is created, the FieldInterface is added to
+     *     the form
+     *   - if $name is a string with a related FieldDescription, then the method uses information defined in the
+     *     FormDescription to instantiate a new Field
+     *
+     * @throws \RuntimeException
+     * @param string $name
+     * @param array $fieldOptions
+     * @param array $fieldDescriptionOptions
+     * @return \Symfony\Component\Form\FieldInterface|void
+     */
     public function add($name, array $fieldOptions = array(), array $fieldDescriptionOptions = array())
     {
 
@@ -102,16 +120,28 @@ class FormMapper
         );
     }
 
+    /**
+     * @param string $name
+     * @return \Symfony\Component\Form\FieldInterface
+     */
     public function get($name)
     {
         return $this->form->get($name);
     }
 
+    /**
+     *
+     * @return boolean
+     */
     public function has($key)
     {
         return $this->form->has($key);
     }
 
+    /**
+     *
+     * @return void
+     */
     public function remove($key)
     {
         $this->admin->removeFormFieldDescription($key);

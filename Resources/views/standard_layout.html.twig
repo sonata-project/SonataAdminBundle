@@ -26,11 +26,11 @@ file that was distributed with this source code.
             <link rel="stylesheet" href="{{ asset('bundles/sonataadmin/css/layout.css') }}" type="text/css" media="all">
             <link rel="stylesheet" href="{{ asset('bundles/sonataadmin/css/colors.css') }}" type="text/css" media="all">
         {% endblock %}
-        
+
         {% block javascripts %}
             <script src="{{ asset('bundles/sonatajquery/jquery-1.4.4.js') }}" type="text/javascript"></script>
             <script src="{{ asset('bundles/sonatajquery/jquery-ui-1.8.6.custom.js') }}" type="text/javascript"></script>
-            <script src="{{ asset('bundles/sonatajquery/jquery-ui-i18n.js') }}" type="text/javascript"></script>        
+            <script src="{{ asset('bundles/sonatajquery/jquery-ui-i18n.js') }}" type="text/javascript"></script>
             <script src="{{ asset('bundles/sonataadmin/qtip/jquery.qtip-1.0.0-rc3.min.js') }}" type="text/javascript"></script>
             <script src="{{ asset('bundles/sonataadmin/jquery/jquery.form.js') }}" type="text/javascript"></script>
             <script src="{{ asset('bundles/sonataadmin/base.js') }}" type="text/javascript"></script>
@@ -38,9 +38,9 @@ file that was distributed with this source code.
 
         <title>
             {% block title %} {% trans 'Admin' from 'AdminBundle' %}
-                {% if breadcrumbs is defined %}
+                {% if action is defined %}
                     -
-                    {% for label, uri in breadcrumbs %}
+                    {% for label, uri in admin.breadcrumbs(action) %}
                         {% if not loop.first  %}
                             &gt;
                         {% endif %}
@@ -78,8 +78,8 @@ file that was distributed with this source code.
                 <div class="sonata-ba-breadcrumbs">
                     <h1>
                     {% block breadcrumb %}
-                        {% if breadcrumbs is defined %}
-                            {% for label, uri in breadcrumbs %}
+                        {% if action is defined %}
+                            {% for label, uri in admin.breadcrumbs(action) %}
                                 {% if not loop.first  %}
                                     &gt;
                                 {% endif %}
@@ -113,7 +113,7 @@ file that was distributed with this source code.
                     {% if form is not empty %}
                         <div class="sonata-ba-form">{{ form|raw }}</div>
                     {% endif %}
-    
+
                     {% if list_table is not empty or list_filters is not empty %}
                         {% if side_menu is not empty %}
                             <div class="sonata-ba-list">

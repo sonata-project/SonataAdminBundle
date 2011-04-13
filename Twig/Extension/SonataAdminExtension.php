@@ -91,9 +91,10 @@ class SonataAdminExtension extends \Twig_Extension
      * return the value related to FieldDescription, if the associated object does no
      * exists => a temporary one is created
      *
-     * @param  $object
+     * @param object $object
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
-     * @return
+     * @param array $params
+     * @return mixed
      */
     public function getValueFromFieldDescription($object, FieldDescriptionInterface $fieldDescription, array $params = array())
     {

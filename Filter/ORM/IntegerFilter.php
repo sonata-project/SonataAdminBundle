@@ -11,15 +11,12 @@
 
 namespace Sonata\AdminBundle\Filter\ORM;
 
-use Sonata\AdminBundle\Admin\FieldDescription;
 use Doctrine\ORM\QueryBuilder;
 
 class IntegerFilter extends Filter
 {
-
-   public function filter($queryBuilder, $alias, $field, $value)
+    public function filter($queryBuilder, $alias, $field, $value)
     {
-
         if ($value == null) {
             return;
         }
@@ -34,7 +31,7 @@ class IntegerFilter extends Filter
             $this->getName()
         ));
 
-        $queryBuilder->setParameter($this->getName(), $value);
+        $queryBuilder->setParameter($this->getName(), (int)$value);
     }
 
     protected function configure()

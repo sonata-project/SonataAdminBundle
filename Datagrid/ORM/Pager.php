@@ -27,15 +27,17 @@ class Pager extends BasePager
     /**
      * Returns a query for counting the total results.
      *
-     * @return Doctrine\ORM\Query
+     * @return integer
      */
     public function computeNbResult()
     {
         $countQuery = clone $this->getQuery();
 
-        $countQuery->setParameters($this->getParameters());
+        if(count($this->getParameters()) > 0) {
+            $countQuery->setParameters($this->getParameters());
+        }
 
-        $countQuery->select(sprintf('count(%s.%s) as nb', $countQuery->getRootAlias(), $this->getCountColumn()));
+        $countQuery->select(sprintf('count(%s.%s) as cnt', $countQuery->getRootAlias(), $this->getCountColumn()));
 
         return $countQuery->getQuery()->getSingleScalarResult();
     }
@@ -44,8 +46,7 @@ class Pager extends BasePager
      * Get all the results for the pager instance
      *
      * @param mixed $hydrationMode A hydration mode identifier
-     *
-     * @return  array
+     * @return array
      */
     public function getResults($hydrationMode = Query::HYDRATE_OBJECT)
     {
@@ -71,15 +72,17 @@ class Pager extends BasePager
     {
         $this->resetIterator();
 
-        $count = $this->computeNbResult();
-        $this->setNbResults($count);
+        $this->setNbResults($this->computeNbResult());
 
         $query = $this->getQuery();
 
         $query
-            ->setParameters($this->getParameters())
             ->setFirstResult(0)
             ->setMaxResults(0);
+
+        if (count($this->getParameters()) > 0) {
+            $query->setParameters($this->getParameters());
+        }
 
         if (0 == $this->getPage() || 0 == $this->getMaxPerPage() || 0 == $this->getNbResults()) {
             $this->setLastPage(0);

@@ -139,7 +139,9 @@ abstract class Admin implements AdminInterface
      *
      * @var array
      */
-    protected $formOptions = array();
+    protected $formOptions = array(
+        'validation_groups' => 'Default'
+    );
 
     /**
      * The code related to the admin
@@ -265,6 +267,13 @@ abstract class Admin implements AdminInterface
     protected $datagridBuilder;
 
     /**
+     * The datagrid instance
+     *
+     * @var \Sonata\AdminBundle\Datagrid\DatagridInterface
+     */
+    protected $datagrid;
+
+    /**
      * The router intance
      *
      * @var \Symfony\Component\Routing\RouterInterface
@@ -334,7 +343,7 @@ abstract class Admin implements AdminInterface
 
     }
 
-    public function configureSideMenu(Menu $menu, $action, Admin $childAdmin = null)
+    public function configureSideMenu(MenuItem $menu, $action, Admin $childAdmin = null)
     {
 
     }
@@ -476,7 +485,7 @@ abstract class Admin implements AdminInterface
     }
 
     /**
-     * return the name of the parent related field, so the field can be use to set the default
+     * Returns the name of the parent related field, so the field can be use to set the default
      * value (ie the parent object) or to filter the object
      *
      * @return string the name of the parent related field
@@ -539,7 +548,7 @@ abstract class Admin implements AdminInterface
     }
 
     /**
-     * return the baseRoutePattern used to generate the routing information
+     * Returns the baseRoutePattern used to generate the routing information
      *
      * @throws RuntimeException
      * @return string the baseRoutePattern used to generate the routing information
@@ -572,7 +581,7 @@ abstract class Admin implements AdminInterface
     }
 
     /**
-     * return the baseRouteName used to generate the routing information
+     * Returns the baseRouteName used to generate the routing information
      *
      * @throws RuntimeException
      * @return string the baseRouteName used to generate the routing information
@@ -609,6 +618,8 @@ abstract class Admin implements AdminInterface
      *
      * @param string $word
      * @param string $sep the separator
+     *
+     * @return string
      */
     public function urlize($word, $sep = '_')
     {
@@ -616,7 +627,7 @@ abstract class Admin implements AdminInterface
     }
 
     /**
-     * return the class name handled by the Admin instance
+     * Returns the class name handled by the Admin instance
      *
      * @return string the class name handled by the Admin instance
      */
@@ -627,7 +638,7 @@ abstract class Admin implements AdminInterface
 
 
     /**
-     * return the list of batchs actions
+     * Returns the list of batchs actions
      *
      * @return array the list of batchs actions
      */
@@ -639,19 +650,19 @@ abstract class Admin implements AdminInterface
     }
 
     /**
-     * return the list of available urls
+     * Returns the list of available urls
      *
      * @return \Sonata\AdminBundle\Route\RouteCollection the list of available urls
      */
-    public function getRoutes($prefix = '')
+    public function getRoutes()
     {
-        $this->buildRoutes($prefix);
+        $this->buildRoutes();
 
         return $this->routes;
     }
 
     /**
-     * return the parameter representing router id, ie: {id} or {childId}
+     * Returns the parameter representing router id, ie: {id} or {childId}
      *
      * @return string
      */
@@ -661,7 +672,7 @@ abstract class Admin implements AdminInterface
     }
 
     /**
-     * return the parameter representing request id, ie: id or childId
+     * Returns the parameter representing request id, ie: id or childId
      *
      * @return string
      */
@@ -675,7 +686,7 @@ abstract class Admin implements AdminInterface
      *
      * @return void
      */
-    public function buildRoutes($prefix = '')
+    public function buildRoutes()
     {
         if ($this->loaded['routes']) {
             return;
@@ -693,7 +704,6 @@ abstract class Admin implements AdminInterface
         $collection->add('list');
         $collection->add('create');
         $collection->add('update');
-        $collection->add('create');
         $collection->add('batch');
         $collection->add('edit', $this->getRouterIdParameter().'/edit');
         $collection->add('delete', $this->getRouterIdParameter().'/delete');
@@ -709,7 +719,7 @@ abstract class Admin implements AdminInterface
     }
 
     /**
-     * return the url defined by the $name
+     * Returns the url defined by the $name
      *
      * @param strinf $name
      * @return Route
@@ -736,7 +746,6 @@ abstract class Admin implements AdminInterface
      */
     public function generateUrl($name, array $parameters = array())
     {
-
         if (!$this->isChild()) {
             if (strpos($name, '.')) {
                 $name = $this->getCode().'|'.$name;
@@ -789,7 +798,7 @@ abstract class Admin implements AdminInterface
     }
 
     /**
-     * return the list template
+     * Returns the list template
      *
      * @return string the list template
      */
@@ -799,7 +808,7 @@ abstract class Admin implements AdminInterface
     }
 
     /**
-     * return the edit template
+     * Returns the edit template
      *
      * @return string the edit template
      */
@@ -809,7 +818,7 @@ abstract class Admin implements AdminInterface
     }
 
     /**
-     * return an instance of the related classname
+     * Returns an instance of the related classname
      *
      * @return Object An instance of the related classname
      */
@@ -849,10 +858,10 @@ abstract class Admin implements AdminInterface
     }
 
     /**
-     * return the target object
+     * Returns the target object
      *
      * @param integer $id
-     * @return
+     * @return object
      */
     public function getObject($id)
     {
@@ -887,14 +896,17 @@ abstract class Admin implements AdminInterface
     }
 
     /**
-     * return a form depend on the given $object
+     * Returns a form depend on the given $object
      *
      * @param object $object
      * @param array $options the form options
      * @return \Symfony\Component\Form\Form
      */
-    public function getForm($object, array $options = array())
+    public function getForm($object = null, array $options = array())
     {
+        if (!$object) {
+            $object = $this->getNewInstance();
+        }
 
         // append parent object if any
         // todo : clean the way the Admin class can retrieve set the object
@@ -927,14 +939,13 @@ abstract class Admin implements AdminInterface
     }
 
     /**
-     * return a list depend on the given $object
+     * Returns a list depend on the given $object
      *
-     * @param  $object
-     * @return \Symfony\Component\Datagrid\ListCollection
+     * @param array $options
+     * @return \Sonata\AdminBundle\Datagrid\ListCollection
      */
     public function getList(array $options = array())
     {
-
         $list = $this->getListBuilder()->getBaseList($options);
 
         $mapper = new ListMapper($this->getListBuilder(), $list, $this);
@@ -957,43 +968,45 @@ abstract class Admin implements AdminInterface
     }
 
     /**
-     * return a list depend on the given $object
+     * Returns a list depend on the given $object
      *
-     * @param  $object
-     * @return Symfony\Component\Datagrid\Datagrid
+     * @return \Sonata\AdminBundle\Datagrid\DatagridInterface
      */
     public function getDatagrid()
     {
-        // retrieve the parameters
-        $parameters = $this->request->query->all();
+        if (!$this->datagrid) {
+            // retrieve the parameters
+            $parameters = $this->request->query->all();
 
-        if ($this->isChild() && $this->getParentAssociationMapping()) {
-            $mapping = $this->getParentAssociationMapping();
-            $parameters[$mapping['fieldName']] = $this->request->get($this->getParent()->getIdParameter());
+            if ($this->isChild() && $this->getParentAssociationMapping()) {
+                $parameters[$this->getParentAssociationMapping()] = $this->request->get($this->getParent()->getIdParameter());
+            }
+
+            // build the datagrid filter
+            $this->datagrid = $this->getDatagridBuilder()->getBaseDatagrid($this, $parameters);
+            $this->datagrid->getPager()->setMaxPerPage($this->maxPerPage);
+
+            $mapper = new DatagridMapper($this->getDatagridBuilder(), $this->datagrid, $this);
+
+            $this->buildFilterFieldDescriptions();
+            $this->configureDatagridFilters($mapper);
+
+            foreach ($this->getFilterFieldDescriptions() as $fieldDescription) {
+                $mapper->add($fieldDescription);
+            }
         }
 
-        // build the datagrid filter
-        $datagrid = $this->getDatagridBuilder()->getBaseDatagrid($this, $parameters);
-        $datagrid->getPager()->setMaxPerPage($this->maxPerPage);
-
-        $mapper = new DatagridMapper($this->getDatagridBuilder(), $datagrid, $this);
-
-        $this->buildFilterFieldDescriptions();
-        $this->configureDatagridFilters($mapper);
-
-        foreach ($this->getFilterFieldDescriptions() as $fieldDescription) {
-            $mapper->add($fieldDescription);
-        }
-
-        return $datagrid;
+        return $this->datagrid;
     }
 
     /**
      * Build the side menu related to the current action
      *
+     * @param string $action
+     * @param \Sonata\AdminBundle\Admin\AdminInterface $childAdmin
      * @return MenuItem|false
      */
-    public function buildSideMenu($action, Admin $childAdmin = null)
+    public function buildSideMenu($action, AdminInterface $childAdmin = null)
     {
         if ($this->loaded['side_menu']) {
             return;
@@ -1010,9 +1023,10 @@ abstract class Admin implements AdminInterface
 
     /**
      * @param string $action
-     * @return Knplabs\MenuBundle\Menu
+     * @param \Sonata\AdminBundle\Admin\AdminInterface $childAdmin
+     * @return \Knplabs\MenuBundle\Menu
      */
-    public function getSideMenu($action, Admin $childAdmin = null)
+    public function getSideMenu($action, AdminInterface $childAdmin = null)
     {
         if ($this->isChild()) {
             return $this->getParent()->getSideMenu($action, $this);
@@ -1024,7 +1038,7 @@ abstract class Admin implements AdminInterface
     }
 
     /**
-     * return the root code
+     * Returns the root code
      *
      * @return string the root code
      */
@@ -1034,13 +1048,12 @@ abstract class Admin implements AdminInterface
     }
 
     /**
-     * return the master admin
+     * Returns the master admin
      *
      * @return \Sonata\AdminBundle\Admin\Admin the root admin class
      */
     public function getRoot()
     {
-
         $parentFieldDescription = $this->getParentFieldDescription();
 
         if (!$parentFieldDescription) {
@@ -1114,7 +1127,7 @@ abstract class Admin implements AdminInterface
     }
 
     /**
-     * return true if the Admin is linked to a parent FieldDescription
+     * Returns true if the Admin is linked to a parent FieldDescription
      *
      * @return bool
      */
@@ -1135,7 +1148,7 @@ abstract class Admin implements AdminInterface
     }
 
     /**
-     * return the subject, if none is set try to load one from the request
+     * Returns the subject, if none is set try to load one from the request
      *
      * @return $object the subject
      */
@@ -1170,7 +1183,7 @@ abstract class Admin implements AdminInterface
     }
 
     /**
-     * return the form FieldDescription with the given $name
+     * Returns the form FieldDescription with the given $name
      *
      * @param string $name
      * @return \Sonata\AdminBundle\Admin\FieldDescriptionInterface
@@ -1181,7 +1194,7 @@ abstract class Admin implements AdminInterface
     }
 
     /**
-     * return true if the admin has a FieldDescription with the given $name
+     * Returns true if the admin has a FieldDescription with the given $name
      *
      * @param string $name
      * @return bool
@@ -1217,7 +1230,7 @@ abstract class Admin implements AdminInterface
     }
 
     /**
-     * return the collection of list FieldDescriptions
+     * Returns the collection of list FieldDescriptions
      *
      * @return array
      */
@@ -1230,18 +1243,19 @@ abstract class Admin implements AdminInterface
     }
 
     /**
-     * return a list FieldDescription
+     * Returns a list FieldDescription
      *
      * @param string $name
      * @return \Sonata\AdminBundle\Admin\FieldDescriptionInterface
      */
-    public function getListFieldDescription($name) {
+    public function getListFieldDescription($name)
+    {
 
         return $this->hasListFieldDescription($name) ? $this->listFieldDescriptions[$name] : null;
     }
 
     /**
-     * return true if the list FieldDescription exists
+     * Returns true if the list FieldDescription exists
      *
      * @param string $name
      * @return bool
@@ -1277,18 +1291,19 @@ abstract class Admin implements AdminInterface
     }
 
     /**
-     * return a filter FieldDescription
+     * Returns a filter FieldDescription
      *
      * @param string $name
      * @return array|null
      */
-    public function getFilterFieldDescription($name) {
+    public function getFilterFieldDescription($name)
+    {
 
         return $this->hasFilterFieldDescription($name) ? $this->filterFieldDescriptions[$name] : null;
     }
 
     /**
-     * return true if the filter FieldDescription exists
+     * Returns true if the filter FieldDescription exists
      *
      * @param string $name
      * @return bool
@@ -1323,7 +1338,7 @@ abstract class Admin implements AdminInterface
     }
 
     /**
-     * return the filter FieldDescription collection
+     * Returns the filter FieldDescription collection
      *
      * @param array filter FieldDescription collection
      */
@@ -1361,7 +1376,7 @@ abstract class Admin implements AdminInterface
     }
 
     /**
-     * return an collection of admin children
+     * Returns an collection of admin children
      *
      * @return array list of Admin children
      */
@@ -1371,7 +1386,7 @@ abstract class Admin implements AdminInterface
     }
 
     /**
-     * return an admin child with the given $code
+     * Returns an admin child with the given $code
      *
      * @param string $code
      * @return array|null
@@ -1384,7 +1399,7 @@ abstract class Admin implements AdminInterface
     /**
      * set the Parent Admin
      *
-     * @param \Sonata\AdminBundle\Admin\Admin $parent
+     * @param \Sonata\AdminBundle\Admin\AdminInterface $parent
      * @return void
      */
     public function setParent(AdminInterface $parent)
@@ -1403,7 +1418,7 @@ abstract class Admin implements AdminInterface
     }
 
     /**
-     * return true if the Admin class has an Parent Admin defined
+     * Returns true if the Admin class has an Parent Admin defined
      *
      * @return boolean
      */
@@ -1413,7 +1428,7 @@ abstract class Admin implements AdminInterface
     }
 
     /**
-     * return true if the admin has children, false otherwise
+     * Returns true if the admin has children, false otherwise
      *
      * @return bool if the admin has children
      */
@@ -1434,7 +1449,7 @@ abstract class Admin implements AdminInterface
     }
 
     /**
-     * return the uniqid
+     * Returns the uniqid
      *
      * @return integer
      */
@@ -1444,7 +1459,7 @@ abstract class Admin implements AdminInterface
     }
 
     /**
-     * return the classname label
+     * Returns the classname label
      *
      * @return string the classname label
      */
@@ -1454,7 +1469,7 @@ abstract class Admin implements AdminInterface
     }
 
     /**
-     * return an array of persistent parameters
+     * Returns an array of persistent parameters
      *
      * @return array
      */
@@ -1469,7 +1484,6 @@ abstract class Admin implements AdminInterface
      */
     public function getBreadcrumbs($action)
     {
-
         if ($this->isChild()) {
             return $this->getParent()->getBreadcrumbs($action);
         }
@@ -1478,65 +1492,65 @@ abstract class Admin implements AdminInterface
     }
 
     /**
-     * generate the breadcrumbs array
+     * Generates the breadcrumbs array
      *
-     * @param  $action
+     * @param string $action
      * @param \Knplabs\MenuBundle\MenuItem|null $menu
      * @return array the breadcrumbs
      */
     public function buildBreadcrumbs($action, MenuItem $menu = null)
     {
-        if (!isset($this->breadcrumbs[$action])) {
-            $menu = $menu ?: new Menu;
-
-            $child = $menu->addChild(
-                $this->trans(sprintf('link_%s_list', $this->getClassnameLabel())),
-                $this->generateUrl('list')
-            );
-
-            $childAdmin = $this->getCurrentChildAdmin();
-
-            if ($childAdmin) {
-                $id = $this->request->get($this->getIdParameter());
-
-                $child = $child->addChild(
-                    (string) $this->getSubject(),
-                    $this->generateUrl('edit', array('id' => $id))
-                );
-
-                return $childAdmin->buildBreadcrumbs($action, $child);
-
-            } elseif ($this->isChild()) {
-
-                if ($action != 'list') {
-                    $menu = $menu->addChild(
-                        $this->trans(sprintf('link_%s_list', $this->getClassnameLabel())),
-                        $this->generateUrl('list')
-                    );
-                }
-
-                $breadcrumbs = $menu->getBreadcrumbsArray(
-                    $this->trans(sprintf('link_%s_%s', $this->getClassnameLabel(), $action))
-                );
-
-            } else if ($action != 'list') {
-
-                $breadcrumbs = $child->getBreadcrumbsArray(
-                    $this->trans(sprintf('link_%s_%s', $this->getClassnameLabel(), $action))
-                );
-
-            } else {
-
-                $breadcrumbs = $child->getBreadcrumbsArray();
-            }
-
-            // the generated $breadcrumbs contains an empty element
-            array_shift($breadcrumbs);
-
-            $this->breadcrumbs[$action] = $breadcrumbs;
+        if (isset($this->breadcrumbs[$action])) {
+            return $this->breadcrumbs[$action];
         }
 
-        return $this->breadcrumbs[$action];
+        $menu = $menu ?: new Menu;
+
+        $child = $menu->addChild(
+            $this->trans(sprintf('link_%s_list', $this->getClassnameLabel())),
+            $this->generateUrl('list')
+        );
+
+        $childAdmin = $this->getCurrentChildAdmin();
+
+        if ($childAdmin) {
+            $id = $this->request->get($this->getIdParameter());
+
+            $child = $child->addChild(
+                (string) $this->getSubject(),
+                $this->generateUrl('edit', array('id' => $id))
+            );
+
+            return $childAdmin->buildBreadcrumbs($action, $child);
+
+        } elseif ($this->isChild()) {
+
+            if ($action != 'list') {
+                $menu = $menu->addChild(
+                    $this->trans(sprintf('link_%s_list', $this->getClassnameLabel())),
+                    $this->generateUrl('list')
+                );
+            }
+
+            $breadcrumbs = $menu->getBreadcrumbsArray(
+                $this->trans(sprintf('link_%s_%s', $this->getClassnameLabel(), $action))
+            );
+
+        } else if ($action != 'list') {
+
+            $breadcrumbs = $child->getBreadcrumbsArray(
+                $this->trans(sprintf('link_%s_%s', $this->getClassnameLabel(), $action))
+            );
+
+        } else {
+
+            $breadcrumbs = $child->getBreadcrumbsArray();
+        }
+
+        // the generated $breadcrumbs contains an empty element
+        array_shift($breadcrumbs);
+
+        return $this->breadcrumbs[$action] = $breadcrumbs;
     }
 
     /**
@@ -1551,7 +1565,7 @@ abstract class Admin implements AdminInterface
     }
 
     /**
-     * return the current child status
+     * Returns the current child status
      *
      * @return bool
      */
@@ -1561,9 +1575,9 @@ abstract class Admin implements AdminInterface
     }
 
     /**
-     * return the current child admin instance
+     * Returns the current child admin instance
      *
-     * @return \Sonata\AdminBundle\Admin\Admin|null the current child admin instance
+     * @return \Sonata\AdminBundle\Admin\AdminInterface|null the current child admin instance
      */
     public function getCurrentChildAdmin()
     {
@@ -1587,7 +1601,6 @@ abstract class Admin implements AdminInterface
      */
     public function trans($id, array $parameters = array(), $domain = null, $locale = null)
     {
-
         $domain = $domain ?: $this->translationDomain;
 
         if (!$this->translator) {
@@ -1609,7 +1622,7 @@ abstract class Admin implements AdminInterface
     }
 
     /**
-     * return the translation domain
+     * Returns the translation domain
      *
      * @return string the translation domain
      */

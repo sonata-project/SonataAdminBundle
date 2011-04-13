@@ -11,10 +11,7 @@
 
 namespace Sonata\AdminBundle\Filter\ORM;
 
-use Sonata\AdminBundle\Admin\FieldDescription;
 use Sonata\AdminBundle\Filter\Filter as BaseFilter;
-use Symfony\Component\Form\Configurable;
-use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 
 abstract class Filter extends BaseFilter

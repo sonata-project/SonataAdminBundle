@@ -10,6 +10,8 @@
  */
 namespace Sonata\AdminBundle\Datagrid;
 
+use Sonata\AdminBundle\Filter\FilterInterface;
+
 interface DatagridInterface
 {
 
@@ -19,7 +21,7 @@ interface DatagridInterface
 
     function buildPager();
 
-    function addFilter($filter);
+    function addFilter(FilterInterface $filter);
 
     function getFilters();
 

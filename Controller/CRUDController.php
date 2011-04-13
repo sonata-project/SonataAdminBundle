@@ -125,12 +125,9 @@ class CRUDController extends Controller
     public function listAction()
     {
         return $this->render($this->admin->getListTemplate(), array(
-            'datagrid'          => $this->admin->getDatagrid(),
-            'list'              => $this->admin->getList(),
+            'action'            => 'list',
             'admin'             => $this->admin,
             'base_template'     => $this->getBaseTemplate(),
-            'side_menu'         => $this->admin->getSideMenu('list'),
-            'breadcrumbs'       => $this->admin->getBreadcrumbs('list'),
         ));
     }
 
@@ -198,14 +195,10 @@ class CRUDController extends Controller
         }
 
         return $this->render($this->admin->getEditTemplate(), array(
+            'action'         => 'edit',
             'form'           => $form,
-            'object'         => $object,
-            'fields'         => $this->admin->getFormFieldDescriptions(),
-            'form_groups'    => $this->admin->getFormGroups(),
             'admin'          => $this->admin,
             'base_template'  => $this->getBaseTemplate(),
-            'side_menu'      => $this->admin->getSideMenu('edit'),
-            'breadcrumbs'    => $this->admin->getBreadcrumbs('edit'),
         ));
     }
 
@@ -292,14 +285,10 @@ class CRUDController extends Controller
         }
 
         return $this->render($this->admin->getEditTemplate(), array(
+            'action'        => 'create',
             'form'          => $form,
-            'object'        => $object,
-            'fields'        => $this->admin->getFormFieldDescriptions(),
-            'form_groups'   => $this->admin->getFormGroups(),
             'admin'         => $this->admin,
             'base_template' => $this->getBaseTemplate(),
-            'side_menu'     => $this->admin->getSideMenu('create'),
-            'breadcrumbs'   => $this->admin->getBreadcrumbs('create'),
         ));
     }
 }

@@ -149,27 +149,25 @@ class DatagridBuilder implements DatagridBuilderInterface
     }
 
     /**
-     * @param \Sonata\AdminBundle\Datagrid\ORM\Datagrid $datagrid
-     * @param \Sonata\AdminBundle\Admin\FieldDescription $fieldDescription
+     * @param \Sonata\AdminBundle\Datagrid\DatagridInterface $datagrid
+     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
      * @return bool
      */
     public function addFilter(DatagridInterface $datagrid, FieldDescriptionInterface $fieldDescription)
     {
-
         if (!$fieldDescription->getType()) {
 
             return false;
         }
 
         switch($fieldDescription->getType()) {
-
             case ClassMetadataInfo::MANY_TO_ONE:
                 $options = $fieldDescription->getOption('filter_field_options');
                 $filter = new \Sonata\AdminBundle\Filter\ORM\IntegerFilter($fieldDescription);
 
                 break;
-            case ClassMetadataInfo::MANY_TO_MANY:
 
+            case ClassMetadataInfo::MANY_TO_MANY:
                 $options = $fieldDescription->getOption('filter_field_options');
                 $options['choices'] = $this->getChoices($fieldDescription);
 
@@ -180,20 +178,17 @@ class DatagridBuilder implements DatagridBuilderInterface
                 break;
 
             default:
-
                 $class = $this->getFilterFieldClass($fieldDescription);
-
                 $filter = new $class($fieldDescription);
-
         }
 
-        $datagrid->addFilter($filter);
+        return $datagrid->addFilter($filter);
     }
 
     /**
      * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
      * @param array $values
-     * @return \Sonata\AdminBundle\Datagrid\ORM\Datagrid
+     * @return \Sonata\AdminBundle\Datagrid\DatagridInterface
      */
     public function getBaseDatagrid(AdminInterface $admin, array $values = array())
     {

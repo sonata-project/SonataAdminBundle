@@ -70,7 +70,7 @@ class FormBuilder implements FormBuilderInterface
     }
 
     /**
-     * return the field associated to a FieldDescription
+     * Returns the field associated to a FieldDescription
      *   ie : build the embedded form from the related AdminInterface instance
      *
      * @throws RuntimeException
@@ -126,7 +126,7 @@ class FormBuilder implements FormBuilderInterface
 
 
     /**
-     * return the class associated to a FieldDescriptionInterface if any defined
+     * Returns the class associated to a FieldDescriptionInterface if any defined
      *
      * @throws RuntimeException
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
@@ -153,7 +153,7 @@ class FormBuilder implements FormBuilderInterface
     /**
      * Add a new instance to the related FieldDescriptionInterface value
      *
-     * @param  $object
+     * @param object $object
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
      * @return void
      */
@@ -168,9 +168,9 @@ class FormBuilder implements FormBuilderInterface
     }
 
     /**
-     * return an OneToOne associated field
+     * Returns an OneToOne associated field
      *
-     * @param  $object
+     * @param object $object
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
      * @return ChoiceField
      */
@@ -212,7 +212,7 @@ class FormBuilder implements FormBuilderInterface
     }
 
     /**
-     * return the OneToMany associated field
+     * Returns the OneToMany associated field
      *
      * @param  $object
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
@@ -242,6 +242,11 @@ class FormBuilder implements FormBuilderInterface
         return $this->getManyToManyField($object, $fieldDescription);
     }
 
+    /**
+     * @param object $object
+     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
+     * @return \Symfony\Component\Form\FieldFactory\FieldInterface
+     */
     protected function getManyToManyField($object, FieldDescriptionInterface $fieldDescription)
     {
 
@@ -264,6 +269,11 @@ class FormBuilder implements FormBuilderInterface
         return $instance;
     }
 
+    /**
+     * @param object $object
+     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
+     * @return FieldGroup|\Symfony\Component\Form\FieldFactory\FieldInterface|\Symfony\Component\Form\TextField
+     */
     protected function getManyToOneField($object, FieldDescriptionInterface $fieldDescription)
     {
 
@@ -303,18 +313,6 @@ class FormBuilder implements FormBuilderInterface
     }
 
     /**
-     * The method add a new field to the provided Form, there are 4 ways to add new field :
-     *
-     *   - if $name is a string with no related FieldDescription, then the form will use the FieldFactory
-     *     to instantiate a new Field
-     *   - if $name is a FormDescription, the method uses information defined in the FormDescription to
-     *     instantiate a new Field
-     *   - if $name is a FieldInterface, then a FieldDescriptionInterface is created, the FieldInterface is added to
-     *     the form
-     *   - if $name is a string with a related FieldDescription, then the method uses information defined in the
-     *     FormDescription to instantiate a new Field
-     *
-     *
      * @param Form $form
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $name
      * @param array $options

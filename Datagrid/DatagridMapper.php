@@ -39,7 +39,7 @@ class DatagridMapper
      * @throws \RuntimeException
      * @param string $name
      * @param array $fieldDescriptionOptions
-     * @return
+     * @return \Sonata\AdminBundle\Datagrid\FilterInterface
      */
     public function add($name, array $fieldDescriptionOptions = array())
     {
@@ -52,7 +52,7 @@ class DatagridMapper
 
             $fieldDescription = $this->admin->getModelManager()->getNewFieldDescriptionInstance(
                 $this->admin->getClass(),
-                $field->getKey(),
+                $name,
                 $fieldDescriptionOptions
             );
 
@@ -85,8 +85,8 @@ class DatagridMapper
     }
 
     /**
-     * @param  $key
-     * @return
+     * @param string $key
+     * @return boolean
      */
     public function has($key)
     {
@@ -94,7 +94,7 @@ class DatagridMapper
     }
 
     /**
-     * @param  $key
+     * @param string $key
      * @return void
      */
     public function remove($key)

@@ -10,7 +10,6 @@
  */
 namespace Sonata\AdminBundle\Route;
 
-use Sonata\AdminBundle\Admin\FieldDescription;
 use Symfony\Component\Routing\Route;
 
 class RouteCollection
