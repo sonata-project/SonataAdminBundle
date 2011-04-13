@@ -46,6 +46,10 @@ class AddDependencyCallsPass implements CompilerPassInterface
                 $definition->setArgument(0, $id);
             }
 
+            if (strlen($arguments[2]) == 0) {
+                $definition->setArgument(2, 'SonataAdminBundle:CRUD');
+            }
+
             $this->applyDefaults($definition, $attributes);
 
             $arguments = $definition->getArguments();
