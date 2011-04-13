@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Filter\ORM;
+namespace Sonata\AdminBundle\ModelManager\Doctrine\Filter;
 
 use Sonata\AdminBundle\Admin\FieldDescription;
 use Doctrine\ORM\QueryBuilder;
 
-class IntegerFilter extends Filter
+class DoctrineIntegerFilter extends DoctrineFilter
 {
 
    public function filter($queryBuilder, $alias, $field, $value)

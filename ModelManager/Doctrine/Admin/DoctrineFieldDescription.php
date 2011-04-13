@@ -9,13 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Admin\ORM;
+namespace Sonata\AdminBundle\ModelManager\Doctrine\Admin;
 
 use Sonata\AdminBundle\Admin\BaseFieldDescription;
 
-class FieldDescription extends BaseFieldDescription
+class DoctrineFieldDescription extends BaseFieldDescription
 {
-
     /**
      * Define the association mapping definition
      *

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Builder\ORM;
+namespace Sonata\AdminBundle\ModelManager\Doctrine\Builder;
 
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
@@ -19,7 +19,7 @@ use Sonata\AdminBundle\Builder\ListBuilderInterface;
 
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 
-class ListBuilder implements ListBuilderInterface
+class DoctrineListBuilder implements ListBuilderInterface
 {
 
     public function getBaseList(array $options = array())

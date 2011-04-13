@@ -33,13 +33,13 @@ file that was distributed with this source code.
     <form action="{{ admin.generateUrl(url, {'id': object.id, 'uniqid': admin.uniqid}) }}"{% if form.isMultipart %} enctype="multipart/form-data"{% endif %} method="POST">
 
         {{ form_hidden(form) }}
-        
+
         {% if form.errors %}
             <div class="sonata-ba-form-error">
                 {{ form_errors(form) }}
             </div>
         {% endif %}
-        
+
         {% for name, form_group in form_groups %}
             {% if name %}
                 <fieldset>
@@ -49,7 +49,7 @@ file that was distributed with this source code.
                             <a href="" class="sonata-ba-collapsed">{% trans 'link_expand' from 'AdminBundle' %}</a>
                         {% endif %}
                     </legend>
-                    
+
                     <div class="sonata-ba-collapsed-fields">
             {% endif %}
 

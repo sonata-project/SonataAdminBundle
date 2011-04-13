@@ -22,6 +22,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * in the configuration files.
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * @author Pablo Díez <pablodip@gmail.com>
  */
 class AddDependencyCallsPass implements CompilerPassInterface
 {
@@ -30,16 +31,13 @@ class AddDependencyCallsPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-
         $groups = $admins = $classes = array();
 
-        //
+        // Admin Pool
         $pool = $container->getDefinition('sonata_admin.admin.pool');
 
         foreach ($container->findTaggedServiceIds('sonata.admin') as $id => $attributes) {
-
             $definition = $container->getDefinition($id);
-
             $arguments = $definition->getArguments();
 
             if (strlen($arguments[0]) == 0) {
@@ -58,14 +56,14 @@ class AddDependencyCallsPass implements CompilerPassInterface
             $admins[] = $id;
             $classes[$class] = $id;
 
-            $group_name = isset($attributes[0]['group']) ? $attributes[0]['group'] : 'default';
+            $groupName = isset($attributes[0]['group']) ? $attributes[0]['group'] : 'default';
 
-            if (!isset($groups[$group_name])) {
-                $groups[$group_name] = array();
+            if (!isset($groups[$groupName])) {
+                $groups[$groupName] = array();
             }
 
-            $groups[$group_name][$id] = array(
-                'show_in_dashboard' => (boolean)(isset($attributes[0]['show_in_dashboard']) ? $attributes[0]['show_in_dashboard'] : true)
+            $groups[$groupName][$id] = array(
+                'show_in_dashboard' => isset($attributes[0]['show_in_dashboard']) ? (Boolean) $attributes[0]['show_in_dashboard'] : true,
             );
         }
 
@@ -73,8 +71,8 @@ class AddDependencyCallsPass implements CompilerPassInterface
         $pool->addMethodCall('setAdminGroups', array($groups));
         $pool->addMethodCall('setAdminClasses', array($classes));
 
-        //
-        $routeLoader = $container->getDefinition('sonata_admin.route_loader');
+        // Routing Loader
+        $routeLoader = $container->getDefinition('routing.loader.sonata_admin');
         $routeLoader->addArgument($admins);
     }
 
@@ -85,27 +83,26 @@ class AddDependencyCallsPass implements CompilerPassInterface
      * @param array $attributes
      * @return \Symfony\Component\DependencyInjection\Definition
      */
-    public function applyDefaults(Definition $definition, array $attributes = array())
+    private function applyDefaults(Definition $definition, array $attributes = array())
     {
-
         $definition->setScope(ContainerInterface::SCOPE_PROTOTYPE);
 
-        $manager_type = $attributes[0]['manager_type'];
+        $modelManager = $attributes[0]['model_manager'];
 
         if (!$definition->hasMethodCall('setModelManager')) {
-            $definition->addMethodCall('setModelManager', array(new Reference(sprintf('sonata_admin.manager.%s', $manager_type))));
+            $definition->addMethodCall('setModelManager', array(new Reference(sprintf('sonata_admin.model_manager.%s', $modelManager))));
         }
 
         if (!$definition->hasMethodCall('setFormBuilder')) {
-            $definition->addMethodCall('setFormBuilder', array(new Reference(sprintf('sonata_admin.builder.%s_form', $manager_type))));
+            $definition->addMethodCall('setFormBuilder', array(new Reference(sprintf('sonata_admin.model_manager.%s.form_builder', $modelManager))));
         }
 
         if (!$definition->hasMethodCall('setListBuilder')) {
-            $definition->addMethodCall('setListBuilder', array(new Reference(sprintf('sonata_admin.builder.%s_list', $manager_type))));
+            $definition->addMethodCall('setListBuilder', array(new Reference(sprintf('sonata_admin.model_manager.%s.list_builder', $modelManager))));
         }
 
         if (!$definition->hasMethodCall('setDatagridBuilder')) {
-            $definition->addMethodCall('setDatagridBuilder', array(new Reference(sprintf('sonata_admin.builder.%s_datagrid', $manager_type))));
+            $definition->addMethodCall('setDatagridBuilder', array(new Reference(sprintf('sonata_admin.model_manager.%s.data_grid_builder', $modelManager))));
         }
 
         if (!$definition->hasMethodCall('setTranslator')) {

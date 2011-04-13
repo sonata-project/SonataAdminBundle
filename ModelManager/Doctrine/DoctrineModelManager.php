@@ -9,16 +9,15 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Model\ORM;
+namespace Sonata\AdminBundle\ModelManager\Doctrine;
 
-use Sonata\AdminBundle\Model\ModelManagerInterface;
-use Sonata\AdminBundle\Admin\ORM\FieldDescription;
+use Sonata\AdminBundle\ModelManager\ModelManagerInterface;
+use Sonata\AdminBundle\ModelManager\Doctrine\Admin\DoctrineFieldDescription;
 use Doctrine\ORM\EntityManager;
 
 
-class ModelManager implements ModelManagerInterface
+class DoctrineModelManager implements ModelManagerInterface
 {
-
     protected $entityManager;
 
     /**
@@ -61,7 +60,7 @@ class ModelManager implements ModelManagerInterface
     {
         $metadata = $this->getMetadata($class);
 
-        $fieldDescription = new FieldDescription;
+        $fieldDescription = new DoctrineFieldDescription;
         $fieldDescription->setName($name);
         $fieldDescription->setOptions($options);
 

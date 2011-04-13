@@ -1,0 +1,36 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="sonata.admin.model_manager.mandango.class">Sonata\AdminBundle\ModelManager\Mandango\MandangoModelManager</parameter>
+        <parameter key="sonata_admin.model_manager.mandango.form_builder.class">Sonata\AdminBundle\ModelManager\Mandango\Builder\MandangoFormBuilder</parameter>
+        <parameter key="sonata_admin.model_manager.mandango.list_builder.class">Sonata\AdminBundle\ModelManager\Mandango\Builder\MandangoListBuilder</parameter>
+        <parameter key="sonata.admin.model_manager.mandango.data_grid_builder.class">Sonata\AdminBundle\ModelManager\Mandango\Builder\MandangoDataGridBuilder</parameter>
+    </parameters>
+
+    <services>
+        <!-- Manager -->
+        <service id="sonata_admin.model_manager.mandango" class="%sonata.admin.model_manager.mandango.class%">
+            <argument type="service" id="mandango" />
+        </service>
+
+        <!-- Form Builder -->
+        <service id="sonata_admin.model_manager.mandango.form_builder" class="%sonata_admin.model_manager.mandango.form_builder.class%">
+            <argument type="service" id="form.field_factory" />
+            <argument type="service" id="form.context" />
+            <argument type="service" id="validator" />
+        </service>
+
+        <!-- List Builder -->
+        <service id="sonata_admin.model_manager.mandango.list_builder" class="%sonata_admin.model_manager.mandango.list_builder.class%">
+        </service>
+
+        <!-- DataGrid Builder -->
+        <service id="sonata_admin.model_manager.mandango.data_grid_builder" class="%sonata.admin.model_manager.mandango.data_grid_builder.class%">
+        </service>
+    </services>
+
+</container>

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Datagrid\ORM;
+namespace Sonata\AdminBundle\ModelManager\Doctrine\DataGrid;
 
 use Sonata\AdminBundle\Datagrid\Pager as BasePager;
 use Doctrine\ORM\Query;
@@ -21,7 +21,7 @@ use Doctrine\ORM\QueryBuilder;
  * @author     Jonathan H. Wage <jonwage@gmail.com>
  * @version    SVN: $Id: sfDoctrinePager.class.php 28897 2010-03-30 20:30:24Z Jonathan.Wage $
  */
-class Pager extends BasePager
+class DoctrinePager extends BasePager
 {
 
     /**

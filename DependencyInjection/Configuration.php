@@ -11,10 +11,8 @@
 
 namespace Sonata\AdminBundle\DependencyInjection;
 
-use Symfony\Component\Config\Definition\Builder;
-
-use Symfony\Component\Config\Definition\Builder\NodeBuilder;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
+use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 /**
  * This class contains the configuration information for the bundle
@@ -23,19 +21,42 @@ use Symfony\Component\Config\Definition\Builder\TreeBuilder;
  * sections are normalized, and merged.
  *
  * @author Michael Williams <mtotheikle@gmail.com>
+ * @author Pablo Díez <pablodip@gmail.com>
  */
-class Configuration
+class Configuration implements ConfigurationInterface
 {
     /**
-     * Generates the configuration tree.
+     * Generates the configuration tree builder.
      *
-     * @return \Symfony\Component\Config\Definition\NodeInterface
+     * @return \Symfony\Component\Config\Definition\Builder\TreeBuilder The tree builder
      */
-    public function getConfigTree($kernelDebug)
+    public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('sonata_admin', 'array');
+        $rootNode = $treeBuilder->root('sonata_admin');
 
+        $this->addModelManagersSection($rootNode);
+        $this->addTemplatesSection($rootNode);
+
+        return $treeBuilder;
+    }
+
+    private function addModelManagersSection($rootNode)
+    {
+        $rootNode
+            ->children()
+                ->arrayNode('model_managers')
+                    ->children()
+                        ->booleanNode('doctrine')->end()
+                        ->booleanNode('mandango')->end()
+                    ->end()
+                ->end()
+            ->end()
+        ;
+    }
+
+    private function addTemplatesSection($rootNode)
+    {
         $rootNode
             ->children()
                 ->arrayNode('templates')
@@ -45,8 +66,6 @@ class Configuration
                     ->end()
                 ->end()
             ->end()
-        ->end();
-
-        return $treeBuilder->buildTree();
+        ;
     }
 }

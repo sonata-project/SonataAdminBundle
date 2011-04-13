@@ -142,6 +142,8 @@ class CRUDController extends Controller
      */
     public function batchActionDelete($idx)
     {
+        print_r($idx);exit();
+
         $modelManager = $this->admin->getModelManager();
         $modelManager->batchDelete($this->admin->getClass(), $idx);
 

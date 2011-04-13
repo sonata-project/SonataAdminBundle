@@ -9,36 +9,44 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Filter\ORM;
+namespace Sonata\AdminBundle\ModelManager\Doctrine\Filter;
 
 use Sonata\AdminBundle\Admin\FieldDescription;
 use Doctrine\ORM\QueryBuilder;
 
-class ChoiceFilter extends Filter
+class DoctrineBooleanFilter extends DoctrineFilter
 {
 
     public function filter($queryBuilder, $alias, $field, $value)
     {
+
         if ($this->getField()->isMultipleChoice()) {
 
-            if (in_array('all', $value)) {
-                return;
+            $values = array();
+            foreach ($value as $v) {
+                if ($v == 'all') {
+                    return;
+                }
+
+                $values[] = $v == 'true' ? 1 : 0;
             }
 
-            if (count($value) == 0) {
+            if (count($values) == 0) {
                 return;
             }
 
             $queryBuilder->andWhere($queryBuilder->expr()->in(sprintf('%s.%s',
                 $alias,
                 $field
-            ), $value));
+            ), $values));
 
         } else {
 
             if ($value === null || $value == 'all') {
                 return;
             }
+
+            $value      = $value == 'true' ? 1 : 0;
 
             $queryBuilder->andWhere(sprintf('%s.%s = :%s',
                 $alias,
@@ -52,9 +60,22 @@ class ChoiceFilter extends Filter
 
     public function getFormField()
     {
+
+        $options = array(
+            'choices' => array(
+                'all'   => 'all',
+                'true'  => 'true',
+                'false' => 'false'
+            ),
+            'required' => false
+        );
+
+        $options = array_merge($options, $this->description->getOption('filter_field_options', array()));
+
         return new \Symfony\Component\Form\ChoiceField(
             $this->getName(),
-            $this->description->getOption('filter_field_options', array('required' => false))
+            $options
         );
     }
+
 }

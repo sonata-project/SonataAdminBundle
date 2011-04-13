@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Filter\ORM;
+namespace Sonata\AdminBundle\ModelManager\Doctrine\Filter;
 
 use Sonata\AdminBundle\Admin\FieldDescription;
 use Sonata\AdminBundle\Filter\Filter as BaseFilter;
@@ -17,7 +17,7 @@ use Symfony\Component\Form\Configurable;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 
-abstract class Filter extends BaseFilter
+abstract class DoctrineFilter extends BaseFilter
 {
 
     public function apply($queryBuilder, $value)

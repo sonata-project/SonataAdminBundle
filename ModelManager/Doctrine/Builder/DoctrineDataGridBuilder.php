@@ -9,19 +9,19 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Builder\ORM;
+namespace Sonata\AdminBundle\ModelManager\Doctrine\Builder;
 
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\Datagrid;
-use Sonata\AdminBundle\Datagrid\ORM\Pager;
+use Sonata\AdminBundle\ModelManager\Doctrine\DataGrid\DoctrinePager;
 use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
 
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 
-class DatagridBuilder implements DatagridBuilderInterface
+class DoctrineDataGridBuilder implements DatagridBuilderInterface
 {
 
     /**
@@ -32,16 +32,16 @@ class DatagridBuilder implements DatagridBuilderInterface
      * @var array
      */
     protected $filterClasses = array(
-        'string'     =>  'Sonata\\AdminBundle\\Filter\\ORM\\StringFilter',
-        'text'       =>  'Sonata\\AdminBundle\\Filter\\ORM\\StringFilter',
-        'boolean'    =>  'Sonata\\AdminBundle\\Filter\\ORM\\BooleanFilter',
-        'integer'    =>  'Sonata\\AdminBundle\\Filter\\ORM\\IntegerFilter',
-        'tinyint'    =>  'Sonata\\AdminBundle\\Filter\\ORM\\IntegerFilter',
-        'smallint'   =>  'Sonata\\AdminBundle\\Filter\\ORM\\IntegerFilter',
-        'mediumint'  =>  'Sonata\\AdminBundle\\Filter\\ORM\\IntegerFilter',
-        'bigint'     =>  'Sonata\\AdminBundle\\Filter\\ORM\\IntegerFilter',
-        'decimal'    =>  'Sonata\\AdminBundle\\Filter\\ORM\\IntegerFilter',
-        'callback'   =>  'Sonata\\AdminBundle\\Filter\\ORM\\CallbackFilter',
+        'string'     =>  'Sonata\\AdminBundle\\ModelManager\\Doctrine\\Filter\\DoctrineStringFilter',
+        'text'       =>  'Sonata\\AdminBundle\\ModelManager\\Doctrine\\Filter\\DoctrineStringFilter',
+        'boolean'    =>  'Sonata\\AdminBundle\\ModelManager\\Doctrine\\Filter\\DoctrineBooleanFilter',
+        'integer'    =>  'Sonata\\AdminBundle\\ModelManager\\Doctrine\\Filter\\DoctrineIntegerFilter',
+        'tinyint'    =>  'Sonata\\AdminBundle\\ModelManager\\Doctrine\\Filter\\DoctrineIntegerFilter',
+        'smallint'   =>  'Sonata\\AdminBundle\\ModelManager\\Doctrine\\Filter\\DoctrineIntegerFilter',
+        'mediumint'  =>  'Sonata\\AdminBundle\\ModelManager\\Doctrine\\Filter\\DoctrineIntegerFilter',
+        'bigint'     =>  'Sonata\\AdminBundle\\ModelManager\\Doctrine\\Filter\\DoctrineIntegerFilter',
+        'decimal'    =>  'Sonata\\AdminBundle\\ModelManager\\Doctrine\\Filter\\DoctrineIntegerFilter',
+        'callback'   =>  'Sonata\\AdminBundle\\ModelManager\\Doctrine\\Filter\\DoctrineCallbackFilter',
     );
 
     /**
@@ -200,7 +200,7 @@ class DatagridBuilder implements DatagridBuilderInterface
         return new Datagrid(
             $admin->getModelManager()->createQuery($admin->getClass()),
             $admin->getList(),
-            new Pager,
+            new DoctrinePager,
             $values
         );
     }

@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Builder\ORM;
+namespace Sonata\AdminBundle\ModelManager\Doctrine\Builder;
 
-use Sonata\AdminBundle\Admin\ORM\FieldDescription;
+use Sonata\AdminBundle\ModelManager\Doctrine\Admin\DoctrineFieldDescription;
 use Sonata\AdminBundle\Form\ValueTransformer\EntityToIDTransformer;
 use Sonata\AdminBundle\Form\ValueTransformer\ArrayToObjectTransformer;
 use Sonata\AdminBundle\Form\EditableCollectionField;
@@ -29,7 +29,7 @@ use Symfony\Component\Form\FieldFactory\FieldFactoryInterface;
 
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 
-class FormBuilder implements FormBuilderInterface
+class DoctrineFormBuilder implements FormBuilderInterface
 {
 
     protected $fieldFactory;

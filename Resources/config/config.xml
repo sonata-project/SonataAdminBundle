@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <!-- Admin Pool -->
+        <parameter key="sonata_admin.admin.pool.class">Sonata\AdminBundle\Admin\Pool</parameter>
+
+        <!-- Routing Loader -->
+        <parameter key="routing.loader.sonata_admin.class">Sonata\AdminBundle\Route\AdminPoolLoader</parameter>
+
+        <!-- Templates -->
+        <parameter key="sonata_admin.templates.layout">SonataAdminBundle::standard_layout.html.twig</parameter>
+        <parameter key="sonata_admin.templates.ajax">SonataAdminBundle::ajax_layout.html.twig</parameter>
+    </parameters>
+
+    <services>
+        <!-- Admin Pool -->
+        <service id="sonata_admin.admin.pool" class="%sonata_admin.admin.pool.class%">
+            <call method="setContainer"><argument type="service" id="service_container" /></call>
+        </service>
+
+        <!-- Routing Loader -->
+        <service id="routing.loader.sonata_admin" class="%routing.loader.sonata_admin.class%">
+            <tag name="routing.loader" />
+            <argument type="service" id="sonata_admin.admin.pool" />
+        </service>
+
+        <!-- Twig Extension -->
+        <service id="twig.extension.sonata_admin" class="Sonata\AdminBundle\Twig\Extension\SonataAdminExtension">
+            <tag name="twig.extension" />
+        </service>
+    </services>
+
+</container>

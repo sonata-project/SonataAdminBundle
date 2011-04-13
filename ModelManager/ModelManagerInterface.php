@@ -9,11 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Model;
+namespace Sonata\AdminBundle\ModelManager;
 
 interface ModelManagerInterface
 {
-
     /**
      * Returns true if the model has a relation
      *

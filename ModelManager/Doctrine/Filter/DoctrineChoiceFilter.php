@@ -9,36 +9,30 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Filter\ORM;
+namespace Sonata\AdminBundle\ModelManager\Doctrine\Filter;
 
 use Sonata\AdminBundle\Admin\FieldDescription;
 use Doctrine\ORM\QueryBuilder;
 
-class BooleanFilter extends Filter
+class DoctrineChoiceFilter extends DoctrineFilter
 {
 
     public function filter($queryBuilder, $alias, $field, $value)
     {
-
         if ($this->getField()->isMultipleChoice()) {
 
-            $values = array();
-            foreach ($value as $v) {
-                if ($v == 'all') {
-                    return;
-                }
-
-                $values[] = $v == 'true' ? 1 : 0;
-            }
-
-            if (count($values) == 0) {
+            if (in_array('all', $value)) {
                 return;
             }
-            
+
+            if (count($value) == 0) {
+                return;
+            }
+
             $queryBuilder->andWhere($queryBuilder->expr()->in(sprintf('%s.%s',
                 $alias,
                 $field
-            ), $values));
+            ), $value));
 
         } else {
 
@@ -46,8 +40,6 @@ class BooleanFilter extends Filter
                 return;
             }
 
-            $value      = $value == 'true' ? 1 : 0;
-            
             $queryBuilder->andWhere(sprintf('%s.%s = :%s',
                 $alias,
                 $field,
@@ -60,22 +52,9 @@ class BooleanFilter extends Filter
 
     public function getFormField()
     {
-
-        $options = array(
-            'choices' => array(
-                'all'   => 'all',
-                'true'  => 'true',
-                'false' => 'false'
-            ),
-            'required' => false
-        );
-
-        $options = array_merge($options, $this->description->getOption('filter_field_options', array()));
-
         return new \Symfony\Component\Form\ChoiceField(
             $this->getName(),
-            $options
+            $this->description->getOption('filter_field_options', array('required' => false))
         );
     }
-
 }

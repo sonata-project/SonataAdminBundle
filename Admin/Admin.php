@@ -26,7 +26,7 @@ use Sonata\AdminBundle\Builder\ListBuilderInterface;
 use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
 
 use Sonata\AdminBundle\Route\RouteCollection;
-use Sonata\AdminBundle\Model\ModelManagerInterface;
+use Sonata\AdminBundle\ModelManager\ModelManagerInterface;
 
 use Knplabs\Bundle\MenuBundle\Menu;
 use Knplabs\Bundle\MenuBundle\MenuItem;
@@ -548,23 +548,30 @@ abstract class Admin implements AdminInterface
     {
         if (!$this->baseRoutePattern) {
             preg_match('@([A-Za-z0-9]*)\\\([A-Za-z0-9]*)Bundle\\\(Entity|Document|Model)\\\(.*)@', $this->getClass(), $matches);
-
-            if (!$matches) {
-                throw new \RuntimeException(sprintf('Please define a default `baseRoutePattern` value for the admin class `%s`', get_class($this)));
-            }
-
-            if ($this->isChild()) { // the admin class is a child, prefix it with the parent route name
-                $this->baseRoutePattern = sprintf('%s/{id}/%s',
-                    $this->getParent()->getBaseRoutePattern(),
-                    $this->urlize($matches[4], '-')
-                );
+            if ($matches) {
+                if ($this->isChild()) { // the admin class is a child, prefix it with the parent route name
+                    $this->baseRoutePattern = sprintf('%s/{id}/%s',
+                        $this->getParent()->getBaseRoutePattern(),
+                        $this->urlize($matches[4], '-')
+                    );
+                } else {
+                    $this->baseRoutePattern = sprintf('/%s/%s/%s',
+                        $this->urlize($matches[1], '-'),
+                        $this->urlize($matches[2], '-'),
+                        $this->urlize($matches[4], '-')
+                    );
+                }
             } else {
+                $classNameUrlized = $this->urlize(str_replace('\\', '/', $this->getClass()), '-');
 
-                $this->baseRoutePattern = sprintf('/%s/%s/%s',
-                    $this->urlize($matches[1], '-'),
-                    $this->urlize($matches[2], '-'),
-                    $this->urlize($matches[4], '-')
-                );
+                if ($this->isChild()) {
+                    $this->baseRoutePattern = sprintf('%s/{id}/%s',
+                        $this->getParent()->getBaseRoutePattern(),
+                        $classNameUrlized
+                    );
+                } else {
+                    $this->baseRoutePattern = '/'.$classNameUrlized;
+                }
             }
         }
 
@@ -581,23 +588,31 @@ abstract class Admin implements AdminInterface
     {
         if (!$this->baseRouteName) {
             preg_match('@([A-Za-z0-9]*)\\\([A-Za-z0-9]*)Bundle\\\(Entity|Document|Model)\\\(.*)@', $this->getClass(), $matches);
+            if ($matches) {
+                if ($this->isChild()) { // the admin class is a child, prefix it with the parent route name
+                    $this->baseRouteName = sprintf('%s_%s',
+                        $this->getParent()->getBaseRouteName(),
+                        $this->urlize($matches[4])
+                    );
+                } else {
 
-            if (!$matches) {
-                throw new \RuntimeException(sprintf('Please define a default `baseRouteName` value for the admin class `%s`', get_class($this)));
-            }
-
-            if ($this->isChild()) { // the admin class is a child, prefix it with the parent route name
-                $this->baseRouteName = sprintf('%s_%s',
-                    $this->getParent()->getBaseRouteName(),
-                    $this->urlize($matches[4])
-                );
+                    $this->baseRouteName = sprintf('admin_%s_%s_%s',
+                        $this->urlize($matches[1]),
+                        $this->urlize($matches[2]),
+                        $this->urlize($matches[4])
+                    );
+                }
             } else {
+                $classNameUrlized = $this->urlize(str_replace('\\', '_', $this->getClass()));
 
-                $this->baseRouteName = sprintf('admin_%s_%s_%s',
-                    $this->urlize($matches[1]),
-                    $this->urlize($matches[2]),
-                    $this->urlize($matches[4])
-                );
+                if ($this->isChild()) {
+                    $this->baseRouteName = sprintf('%s_%s',
+                        $this->getParent()->getBaseRouteName(),
+                        $classNameUrlized
+                    );
+                } else {
+                    $this->baseRouteName = 'admin_'.$classNameUrlized;
+                }
             }
         }
 
