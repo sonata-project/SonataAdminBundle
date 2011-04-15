@@ -12,6 +12,7 @@
 namespace Sonata\AdminBundle\Datagrid;
 
 use Sonata\AdminBundle\Datagrid\PagerInterface;
+use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Filter\FilterInterface;
 
 class Datagrid implements DatagridInterface
@@ -31,7 +32,9 @@ class Datagrid implements DatagridInterface
 
     protected $bound = false;
 
-    public function __construct($query, ListCollection $columns, PagerInterface $pager, array $values = array())
+    protected $query;
+
+    public function __construct(ProxyQueryInterface $query, ListCollection $columns, PagerInterface $pager, array $values = array())
     {
         $this->pager    = $pager;
         $this->query    = $query;
@@ -39,10 +42,14 @@ class Datagrid implements DatagridInterface
         $this->columns  = $columns;
     }
 
+    /**
+     * @return \Sonata\AdminBundle\Datagrid\PagerInterface
+     */
     public function getPager()
     {
         return $this->pager;
     }
+
 
     public function getResults()
     {
@@ -64,6 +71,9 @@ class Datagrid implements DatagridInterface
             );
         }
 
+        $this->query->setSortBy(isset($this->values['_sort_by']) ? $this->values['_sort_by'] : null);
+        $this->query->setSortOrder(isset($this->values['_sort_order']) ? $this->values['_sort_order'] : null);
+
         $this->pager->setPage(isset($this->values['_page']) ? $this->values['_page'] : 1);
         $this->pager->setQuery($this->query);
         $this->pager->init();
@@ -71,6 +81,10 @@ class Datagrid implements DatagridInterface
         $this->bound = true;
     }
 
+    /**
+     * @param \Sonata\AdminBundle\Filter\FilterInterface $filter
+     * @return \Sonata\AdminBundle\Filter\FilterInterface
+     */
     public function addFilter(FilterInterface $filter)
     {
         return $this->filters[$filter->getName()] = $filter;
@@ -89,5 +103,10 @@ class Datagrid implements DatagridInterface
     public function getColumns()
     {
         return $this->columns;
+    }
+
+    public function getQuery()
+    {
+        return $this->query;
     }
 }

@@ -13,6 +13,8 @@ namespace Sonata\AdminBundle\Model\ORM;
 
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Admin\ORM\FieldDescription;
+use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
+use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Doctrine\ORM\EntityManager;
 
 
@@ -144,7 +146,7 @@ class ModelManager implements ModelManagerInterface
      */
     public function getEntityIdentifier($class)
     {
-        return $this->getEntityManager()->getUnitOfWork()->getEntityIdentifier($class);
+        return $this->getMetadata($class)->identifier;
     }
 
     /**
@@ -180,4 +182,40 @@ class ModelManager implements ModelManagerInterface
         return new $class;
     }
 
+    /**
+     * Returns the parameters used in the columns header
+     *
+     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
+     * @param \Sonata\AdminBundle\Datagrid\DatagridInterface $datagrid
+     * @return string
+     */
+    public function getSortParameters(FieldDescriptionInterface $fieldDescription, DatagridInterface $datagrid)
+    {
+        $values = $datagrid->getValues();
+
+        if ($fieldDescription->getOption('sortable') == $values['_sort_by']) {
+            if ($values['_sort_order'] == 'ASC') {
+                $values['_sort_order'] = 'DESC';
+            } else {
+                $values['_sort_order'] = 'ASC';
+            }
+        } else {
+            $values['_sort_order']  = 'ASC';
+            $values['_sort_by']     = $fieldDescription->getOption('sortable');
+        }
+
+        return $values;
+    }
+
+    /**
+     * @param sring $class
+     * @return array
+     */
+    public function getDefaultSortValues($class)
+    {
+        return array(
+            '_sort_order' => 'ASC',
+            '_sort_by'    => implode(',', $this->getEntityIdentifier($class))
+        );
+    }
 }

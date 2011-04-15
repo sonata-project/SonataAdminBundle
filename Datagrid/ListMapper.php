@@ -53,7 +53,7 @@ class ListMapper
 
             $fieldDescription = $this->admin->getModelManager()->getNewFieldDescriptionInstance(
                 $this->admin->getClass(),
-                $field->getKey(),
+                $name,
                 $fieldDescriptionOptions
             );
 

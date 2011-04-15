@@ -86,4 +86,18 @@ interface AdminInterface
      * @return void
      */
     function attachAdminClass(FieldDescriptionInterface $fieldDescription);
+
+    /**
+     * @abstract
+     * @return \Sonata\AdminBundle\Datagrid\DatagridInterface
+     */
+    function getDatagrid();
+
+    /**
+     * @abstract
+     * @param string $name
+     * @param array $parameters
+     * @return void
+     */
+    function generateUrl($name, array $parameters = array());
 }

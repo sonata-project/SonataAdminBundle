@@ -15,17 +15,52 @@ use Sonata\AdminBundle\Filter\FilterInterface;
 interface DatagridInterface
 {
 
+    /**
+     * @abstract
+     * @return \Sonata\AdminBundle\Datagrid\PagerInterface
+     */
     function getPager();
 
+    /**
+     * @abstract
+     * @return \Sonata\AdminBundle\Datagrid\ProxyQueryInterface
+     */
+    function getQuery();
+
+    /**
+     * @abstract
+     * @return array
+     */
     function getResults();
 
+    /**
+     * @abstract
+     * @return void
+     */
     function buildPager();
 
+    /**
+     * @abstract
+     * @param \Sonata\AdminBundle\Filter\FilterInterface $filter
+     * @return \Sonata\AdminBundle\Filter\FilterInterface
+     */
     function addFilter(FilterInterface $filter);
 
+    /**
+     * @abstract
+     * @return array
+     */
     function getFilters();
 
+    /**
+     * @abstract
+     * @return array
+     */
     function getValues();
 
+    /**
+     * @abstract
+     * @return array
+     */
     function getColumns();
 }

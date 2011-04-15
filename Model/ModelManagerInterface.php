@@ -11,6 +11,9 @@
 
 namespace Sonata\AdminBundle\Model;
 
+use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
+use Sonata\AdminBundle\Datagrid\DatagridInterface;
+
 interface ModelManagerInterface
 {
 
@@ -101,4 +104,20 @@ interface ModelManagerInterface
      * @return void
      */
     function getModelInstance($class);
+
+
+    /**
+     * Returns the parameters used in the columns header
+     *
+     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
+     * @param \Sonata\AdminBundle\Datagrid\DatagridInterface $datagrid
+     * @return string
+     */
+    function getSortParameters(FieldDescriptionInterface $fieldDescription, DatagridInterface $datagrid);
+
+    /**
+     * @param sring $class
+     * @return array
+     */
+    function getDefaultSortValues($class);
 }

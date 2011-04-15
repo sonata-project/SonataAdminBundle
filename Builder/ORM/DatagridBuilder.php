@@ -17,6 +17,7 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\Datagrid;
 use Sonata\AdminBundle\Datagrid\ORM\Pager;
+use Sonata\AdminBundle\Datagrid\ORM\ProxyQuery;
 use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
 
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
@@ -192,8 +193,12 @@ class DatagridBuilder implements DatagridBuilderInterface
      */
     public function getBaseDatagrid(AdminInterface $admin, array $values = array())
     {
+        $queryBuilder = $admin->getModelManager()->createQuery($admin->getClass());
+
+        $query = new ProxyQuery($queryBuilder);
+
         return new Datagrid(
-            $admin->getModelManager()->createQuery($admin->getClass()),
+            $query,
             $admin->getList(),
             new Pager,
             $values

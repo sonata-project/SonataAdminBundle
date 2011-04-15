@@ -15,17 +15,14 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Form\Form;
-
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class CRUDController extends Controller
 {
-
     /**
      * The related Admin class
      *
-     * @var Admin
+     * @var \Sonata\AdminBundle\Admin\AdminInterface
      */
     protected $admin;
 

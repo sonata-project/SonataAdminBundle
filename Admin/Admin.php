@@ -135,12 +135,21 @@ abstract class Admin implements AdminInterface
     protected $translationDomain = 'AdminBundle';
 
     /**
-     * options to set to the form (ie, validation_groups)
+     * Options to set to the form (ie, validation_groups)
      *
      * @var array
      */
     protected $formOptions = array(
         'validation_groups' => 'Default'
+    );
+
+    /**
+     * Default values to the datagrid
+     *
+     * @var array
+     */
+    protected $datagridValues = array(
+        '_page'       => 1,
     );
 
     /**
@@ -323,6 +332,7 @@ abstract class Admin implements AdminInterface
      */
     protected function configureListFields(ListMapper $list)
     {
+
     }
 
     /**
@@ -331,6 +341,7 @@ abstract class Admin implements AdminInterface
      */
     protected function configureDatagridFilters(DatagridMapper $filter)
     {
+
     }
 
     /**
@@ -349,6 +360,7 @@ abstract class Admin implements AdminInterface
     }
 
     /**
+     * @param string $code
      * @param string $class
      * @param string $baseControllerName
      */
@@ -361,7 +373,6 @@ abstract class Admin implements AdminInterface
 
     public function configure()
     {
-
         $this->uniqid = uniqid();
 
         if (!$this->classnameLabel) {
@@ -429,7 +440,6 @@ abstract class Admin implements AdminInterface
      */
     protected function buildListFieldDescriptions()
     {
-
         if ($this->loaded['list_fields']) {
             return;
         }
@@ -445,9 +455,10 @@ abstract class Admin implements AdminInterface
 
         if (!isset($this->listFieldDescriptions['_batch'])) {
             $fieldDescription = $this->modelManager->getNewFieldDescriptionInstance($this->getClass(), 'batch', array(
-                'label' => 'batch',
-                'code'  => '_batch',
-                'type'  => 'batch',
+                'label'    => 'batch',
+                'code'     => '_batch',
+                'type'     => 'batch',
+                'sortable' => false
             ));
 
             $fieldDescription->setTemplate('SonataAdminBundle:CRUD:list__batch.html.twig');
@@ -464,7 +475,6 @@ abstract class Admin implements AdminInterface
      */
     public function buildFilterFieldDescriptions()
     {
-
         if ($this->loaded['filter_fields']) {
             return;
         }
@@ -502,7 +512,6 @@ abstract class Admin implements AdminInterface
      */
     protected function buildFormFieldDescriptions()
     {
-
         if ($this->loaded['form_fields']) {
             return;
         }
@@ -956,7 +965,7 @@ abstract class Admin implements AdminInterface
 
         foreach ($this->getListFieldDescriptions() as $fieldDescription) {
 
-            // do not add field already set in the configureFormField method
+            // do not add field already set in the configureListFields method
             if ($mapper->has($fieldDescription->getFieldName())) {
                 continue;
             }
@@ -975,19 +984,25 @@ abstract class Admin implements AdminInterface
     public function getDatagrid()
     {
         if (!$this->datagrid) {
-            // retrieve the parameters
-            $parameters = $this->request->query->all();
+            // build the values array
+            $parameters = array_merge(
+                $this->getModelManager()->getDefaultSortValues($this->getClass()),
+                $this->datagridValues,
+                $this->request->query->all()
+            );
 
+            // always force the parent value
             if ($this->isChild() && $this->getParentAssociationMapping()) {
                 $parameters[$this->getParentAssociationMapping()] = $this->request->get($this->getParent()->getIdParameter());
             }
 
-            // build the datagrid filter
+            // initialize the datagrid
             $this->datagrid = $this->getDatagridBuilder()->getBaseDatagrid($this, $parameters);
             $this->datagrid->getPager()->setMaxPerPage($this->maxPerPage);
 
             $mapper = new DatagridMapper($this->getDatagridBuilder(), $this->datagrid, $this);
 
+            // build the datagrid filter
             $this->buildFilterFieldDescriptions();
             $this->configureDatagridFilters($mapper);
 
@@ -1236,7 +1251,6 @@ abstract class Admin implements AdminInterface
      */
     public function getListFieldDescriptions()
     {
-
         $this->buildListFieldDescriptions();
 
         return $this->listFieldDescriptions;
@@ -1250,7 +1264,6 @@ abstract class Admin implements AdminInterface
      */
     public function getListFieldDescription($name)
     {
-
         return $this->hasListFieldDescription($name) ? $this->listFieldDescriptions[$name] : null;
     }
 
@@ -1298,7 +1311,6 @@ abstract class Admin implements AdminInterface
      */
     public function getFilterFieldDescription($name)
     {
-
         return $this->hasFilterFieldDescription($name) ? $this->filterFieldDescriptions[$name] : null;
     }
 

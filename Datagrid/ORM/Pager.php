@@ -19,10 +19,10 @@ use Doctrine\ORM\QueryBuilder;
  * Doctrine pager class.
  *
  * @author     Jonathan H. Wage <jonwage@gmail.com>
- * @version    SVN: $Id: sfDoctrinePager.class.php 28897 2010-03-30 20:30:24Z Jonathan.Wage $
  */
 class Pager extends BasePager
 {
+    protected $queryBuilder     = null;
 
     /**
      * Returns a query for counting the total results.
@@ -37,10 +37,11 @@ class Pager extends BasePager
             $countQuery->setParameters($this->getParameters());
         }
 
-        $countQuery->select(sprintf('count(%s.%s) as cnt', $countQuery->getRootAlias(), $this->getCountColumn()));
+        $countQuery->select(sprintf('DISTINCT count(%s.%s) as cnt', $countQuery->getRootAlias(), $this->getCountColumn()));
 
-        return $countQuery->getQuery()->getSingleScalarResult();
+        return $countQuery->getSingleScalarResult();
     }
+
 
     /**
      * Get all the results for the pager instance
@@ -50,21 +51,16 @@ class Pager extends BasePager
      */
     public function getResults($hydrationMode = Query::HYDRATE_OBJECT)
     {
-        return $this->getQuery()->getQuery()->execute(array(), $hydrationMode);
+        return $this->getQuery()->execute(array(), $hydrationMode);
     }
 
     /**
      * Get the query for the pager.
      *
-     * @return Doctrine\ORM\Query
+     * @return \AdminBundle\Datagrid\ORM\ProxyQuery
      */
-
     public function getQuery()
     {
-        if (!$this->query) {
-            $this->query = $this->getQuery()->getQuery();
-        }
-
         return $this->query;
     }
 
@@ -74,14 +70,11 @@ class Pager extends BasePager
 
         $this->setNbResults($this->computeNbResult());
 
-        $query = $this->getQuery();
-
-        $query
-            ->setFirstResult(0)
-            ->setMaxResults(0);
+        $this->getQuery()->setFirstResult(0);
+        $this->getQuery()->setMaxResults(0);
 
         if (count($this->getParameters()) > 0) {
-            $query->setParameters($this->getParameters());
+            $this->getQuery()->setParameters($this->getParameters());
         }
 
         if (0 == $this->getPage() || 0 == $this->getMaxPerPage() || 0 == $this->getNbResults()) {
@@ -91,9 +84,8 @@ class Pager extends BasePager
 
             $this->setLastPage(ceil($this->getNbResults() / $this->getMaxPerPage()));
 
-            $query
-                ->setFirstResult($offset)
-                ->setMaxResults($this->getMaxPerPage());
+            $this->getQuery()->setFirstResult($offset);
+            $this->getQuery()->setMaxResults($this->getMaxPerPage());
         }
     }
 }

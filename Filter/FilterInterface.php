@@ -14,7 +14,7 @@ namespace Sonata\AdminBundle\Filter;
 interface FilterInterface
 {
     /**
-     * apply the filter to the QueryBuilder instance
+     * Apply the filter to the QueryBuilder instance
      *
      * @abstract
      * @param  $queryBuilder
@@ -26,10 +26,17 @@ interface FilterInterface
     function filter($queryBuilder, $alias, $field, $value);
 
     /**
-     * get the related form field filter
+     * Get the related form field filter
      *
      * @abstract
      * @return Field
      */
     function getFormField();
+
+    /**
+     * Returns the filter name
+     * @abstract
+     * @return void
+     */
+    function getName();
 }

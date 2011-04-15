@@ -10,7 +10,6 @@
  */
 namespace Sonata\AdminBundle\Datagrid;
 
-
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 
 class ListCollection

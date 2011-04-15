@@ -55,3 +55,32 @@ div.sonata-ba-modal-edit-one-to-one th.sonata-ba-list-field-header-batch
 div.sonata-ba-modal-edit-one-to-one div.sonata-ba-list-actions {
     display: none;
 }
+
+th.sonata-ba-list-field-header-order-desc:hover {
+    background: url(../famfamfam/bullet_arrow_up.png) no-repeat center left;
+}
+
+th.sonata-ba-list-field-header-order-asc:hover {
+    background: url(../famfamfam/bullet_arrow_down.png) no-repeat center left;
+}
+
+th.sonata-ba-list-field-header-order-desc,
+th.sonata-ba-list-field-header-order-asc {
+    padding-left: 15px;
+}
+
+th.sonata-ba-list-field-header-order-desc.sonata-ba-list-field-order-active {
+    background: url(../famfamfam/bullet_arrow_up.png) no-repeat center left;
+}
+
+th.sonata-ba-list-field-header-order-asc.sonata-ba-list-field-order-active {
+    background: url(../famfamfam/bullet_arrow_down.png) no-repeat center left;
+}
+
+th.sonata-ba-list-field-header-order-desc.sonata-ba-list-field-order-active:hover {
+    background: url(../famfamfam/bullet_arrow_down.png) no-repeat center left;
+}
+
+th.sonata-ba-list-field-header-order-asc.sonata-ba-list-field-order-active:hover {
+    background: url(../famfamfam/bullet_arrow_up.png) no-repeat center left;
+}

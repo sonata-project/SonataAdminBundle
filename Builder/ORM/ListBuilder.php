@@ -41,27 +41,30 @@ class ListBuilder implements ListBuilderInterface
      */
     public function fixFieldDescription(AdminInterface $admin, FieldDescriptionInterface $fieldDescription, array $options = array())
     {
-        if ($fieldDescription->getName() == '_action')
-        {
+        if ($fieldDescription->getName() == '_action') {
           $this->buildActionFieldDescription($fieldDescription);
         }
 
         $fieldDescription->mergeOptions($options);
         $fieldDescription->setAdmin($admin);
 
-        if($admin->getModelManager()->hasMetadata($admin->getClass()))
-        {
+        if($admin->getModelManager()->hasMetadata($admin->getClass())) {
             $metadata = $admin->getModelManager()->getMetadata($admin->getClass());
 
             // set the default field mapping
             if (isset($metadata->fieldMappings[$fieldDescription->getName()])) {
                 $fieldDescription->setFieldMapping($metadata->fieldMappings[$fieldDescription->getName()]);
+                if ($fieldDescription->getOption('sortable') !== false) {
+                    $fieldDescription->setOption('sortable', $fieldDescription->getOption('sortable', $fieldDescription->getName()));
+                }
             }
 
             // set the default association mapping
             if (isset($metadata->associationMappings[$fieldDescription->getName()])) {
                 $fieldDescription->setAssociationMapping($metadata->associationMappings[$fieldDescription->getName()]);
             }
+
+            $fieldDescription->setOption('_sort_order', $fieldDescription->getOption('_sort_order', 'ASC'));
         }
 
         if (!$fieldDescription->getType()) {

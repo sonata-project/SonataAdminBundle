@@ -26,20 +26,35 @@ file that was distributed with this source code.
         <form action="{{ admin.generateUrl('batch') }}" method="POST" >
             <table>
                 {% block table_header %}
-                    <tr>
+                    <tr class="sonata-ba-list-field-header">
                         {% for field_description in admin.list.elements %}
                             {% if field_description.getOption('code') == '_batch' %}
                                 <th class="sonata-ba-list-field-header sonata-ba-list-field-header-batch">
                                   <input type="checkbox" id="list_batch_checkbox" />
                                 </th>
                             {% else %}
-                                    {% spaceless %}<th class="sonata-ba-list-field-header sonata-ba-list-field-header-{{ field_description.type}}">
+                                {% set sortable = false %}
+                                {% if field_description.options.sortable is defined and field_description.options.sortable%}
+                                    {% set sortable             = true %}
+                                    {% set current              = admin.datagrid.values._sort_by == field_description.options.sortable %}
+                                    {% set sort_parameters      = admin.modelmanager.sortparameters(field_description, admin.datagrid) %}
+                                    {% set sort_active_class    = current ? 'sonata-ba-list-field-order-active' : '' %}
+                                    {% set sort_by              = current ? admin.datagrid.values._sort_order : field_description.options._sort_order %}
+                                {% endif %}
+
+                                {% spaceless %}
+                                    <th class="sonata-ba-list-field-header-{{ field_description.type}} {% if sortable %} sonata-ba-list-field-header-order-{{ sort_by|lower }} {{ sort_active_class }}{% endif %}">
+                                        {% if sortable %}<a href="{{ admin.generateUrl('list', sort_parameters) }}">{% endif %}
+
                                         {% if field_description.options.name is defined %}
                                             {% trans field_description.options.name from admin.translationdomain %}
                                         {% else %}
                                             {% trans field_description.name from admin.translationdomain %}
                                         {% endif %}
-                                    </th>{% endspaceless %}
+
+                                        {% if sortable %}</a>{% endif %}
+                                    </th>
+                                {% endspaceless %}
                             {% endif %}
                         {% endfor %}
                     </tr>
