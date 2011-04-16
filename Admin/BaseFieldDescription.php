@@ -30,7 +30,7 @@ namespace Sonata\AdminBundle\Admin;
  *                           the Admin.generateUrl is called
  *
  * Form Field options :
- *   - form_field_widget (o): the widget class to use to render the field
+ *   - form_field_type (o): the widget class to use to render the field
  *   - form_field_options (o): the options to give to the widget
  *   - edit (o) : list|inline|standard (only used for associated admin)
  *      - list : open a popup where the user can search, filter and click on one field

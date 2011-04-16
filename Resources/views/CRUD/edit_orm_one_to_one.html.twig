@@ -32,11 +32,11 @@ file that was distributed with this source code.
                     {% endif %}
                 </span>
                 <span style="display: none" >
-                    {{ form_field(field_element) }}
+                    {{ form_widget(field_element) }}
                 </span>
             {% else %}
                 <span id="field_widget_{{ field_element.id }}" >
-                    {{ form_field(field_element) }}
+                    {{ form_widget(field_element) }}
                 </span>
             {% endif %}
             <span id="field_actions_{{ field_element.id }}" >

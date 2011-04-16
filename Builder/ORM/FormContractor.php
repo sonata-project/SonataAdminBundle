@@ -19,22 +19,19 @@ use Sonata\AdminBundle\Form\EditableFieldGroup;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\Builder\FormBuilderInterface;
+use Sonata\AdminBundle\Builder\FormContractorInterface;
 
-use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\FormContextInterface;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
-use Symfony\Component\Form\FieldFactory\FieldFactoryInterface;
 
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 
-class FormBuilder implements FormBuilderInterface
+class FormContractor implements FormContractorInterface
 {
 
     protected $fieldFactory;
-
-    protected $formContext;
 
     protected $validator;
 
@@ -45,27 +42,27 @@ class FormBuilder implements FormBuilderInterface
      *
      * @var array
      */
-    protected $formFieldClasses = array(
-        'string'     =>  'Symfony\\Component\\Form\\TextField',
-        'text'       =>  'Symfony\\Component\\Form\\TextareaField',
-        'boolean'    =>  'Symfony\\Component\\Form\\CheckboxField',
-        'integer'    =>  'Symfony\\Component\\Form\\IntegerField',
-        'tinyint'    =>  'Symfony\\Component\\Form\\IntegerField',
-        'smallint'   =>  'Symfony\\Component\\Form\\IntegerField',
-        'mediumint'  =>  'Symfony\\Component\\Form\\IntegerField',
-        'bigint'     =>  'Symfony\\Component\\Form\\IntegerField',
-        'decimal'    =>  'Symfony\\Component\\Form\\NumberField',
-        'datetime'   =>  'Symfony\\Component\\Form\\DateTimeField',
-        'date'       =>  'Symfony\\Component\\Form\\DateField',
-        'choice'     =>  'Symfony\\Component\\Form\\ChoiceField',
-        'array'      =>  'Symfony\\Component\\Form\\FieldGroup',
-        'country'    =>  'Symfony\\Component\\Form\\CountryField',
+    protected $formTypes = array(
+        'string'     =>  'text',
+        'text'       =>  'textarea',
+        'boolean'    =>  'checkbox',
+        'checkbox'   =>  'checkbox',
+        'integer'    =>  'integer',
+        'tinyint'    =>  'integer',
+        'smallint'   =>  'integer',
+        'mediumint'  =>  'integer',
+        'bigint'     =>  'integer',
+        'decimal'    =>  'number',
+        'datetime'   =>  'datetime',
+        'date'       =>  'date',
+        'choice'     =>  'choice',
+        'array'      =>  'collection',
+        'country'    =>  'country',
     );
 
-    public function __construct(FieldFactoryInterface $fieldFactory, FormContextInterface $formContext, ValidatorInterface $validator)
+    public function __construct(FormFactoryInterface $formFactory, ValidatorInterface $validator)
     {
-        $this->fieldFactory = $fieldFactory;
-        $this->formContext  = $formContext;
+        $this->formFactory = $formFactory;
         $this->validator    = $validator;
     }
 
@@ -132,22 +129,24 @@ class FormBuilder implements FormBuilderInterface
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
      * @return bool|string
      */
-    public function getFormFieldClass(FieldDescriptionInterface $fieldDescription)
+    public function getFormTypeName(FieldDescriptionInterface $fieldDescription)
     {
-        $class = false;
+        $typeName = false;
 
         // the user redefined the mapping type, use the default built in definition
         if (!$fieldDescription->getFieldMapping() || $fieldDescription->getType() != $fieldDescription->getMappingType()) {
-            $class = array_key_exists($fieldDescription->getType(), $this->formFieldClasses) ? $this->formFieldClasses[$fieldDescription->getType()] : false;
-        } else if ($fieldDescription->getOption('form_field_widget', false)) {
-            $class = $fieldDescription->getOption('form_field_widget', false);
+            $typeName = array_key_exists($fieldDescription->getType(), $this->formTypes) ? $this->formTypes[$fieldDescription->getType()] : false;
+        } else if ($fieldDescription->getOption('form_field_type', false)) {
+            $typeName = $fieldDescription->getOption('form_field_type', false);
+        } else if (array_key_exists($fieldDescription->getType(), $this->formTypes)) {
+            $typeName = $this->formTypes[$fieldDescription->getType()];
         }
 
-        if ($class && !class_exists($class)) {
-            throw new \RuntimeException(sprintf('The class `%s` does not exist for field `%s`', $class, $fieldDescription->getType()));
+        if (!$typeName) {
+            throw new \RuntimeException(sprintf('No known form type for field `%s` (`%s`) is not implemented', $fieldDescription->getFieldName(), $fieldDescription->getType()));
         }
 
-        return $class;
+        return $typeName;
     }
 
     /**
@@ -195,7 +194,7 @@ class FormBuilder implements FormBuilderInterface
             return new \Symfony\Component\Form\TextField($fieldDescription->getFieldName(), $options);
         }
 
-        $class = $fieldDescription->getOption('form_field_widget', false);
+        $class = $fieldDescription->getOption('form_field_type', false);
 
         // set valid default value
         if (!$class) {
@@ -250,7 +249,7 @@ class FormBuilder implements FormBuilderInterface
     protected function getManyToManyField($object, FieldDescriptionInterface $fieldDescription)
     {
 
-        $class = $fieldDescription->getOption('form_field_widget', false);
+        $class = $fieldDescription->getOption('form_field_type', false);
 
         // set valid default value
         if (!$class) {
@@ -297,7 +296,7 @@ class FormBuilder implements FormBuilderInterface
             return new \Symfony\Component\Form\TextField($fieldDescription->getFieldName(), $options);
         }
 
-        $class = $fieldDescription->getOption('form_field_widget', false);
+        $class = $fieldDescription->getOption('form_field_type', false);
 
         if (!$class) {
             $instance = $this->getFieldFactory()->getInstance(
@@ -313,53 +312,41 @@ class FormBuilder implements FormBuilderInterface
     }
 
     /**
-     * @param Form $form
+     * @param \Symfony\Component\Form\FormBuilder $form
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $name
      * @param array $options
      * @return void
      */
-    public function addField(Form $form, FieldDescriptionInterface $fieldDescription)
+    public function addField(FormBuilder $formBuilder, FieldDescriptionInterface $fieldDescription)
     {
-
         switch ($fieldDescription->getType()) {
-
             case ClassMetadataInfo::ONE_TO_MANY:
 
-                $field = $this->getOneToManyField($form->getData(), $fieldDescription);
+                $formTypeName = $this->getOneToManyField($formBuilder->getData(), $fieldDescription);
                 break;
 
             case ClassMetadataInfo::MANY_TO_MANY:
 
-                $field = $this->getManyToManyField($form->getData(), $fieldDescription);
+                $formTypeName = $this->getManyToManyField($formBuilder->getData(), $fieldDescription);
                 break;
 
             case ClassMetadataInfo::MANY_TO_ONE:
-                $field = $this->getManyToOneField($form->getData(), $fieldDescription);
+                $formTypeName = $this->getManyToOneField($formBuilder->getData(), $fieldDescription);
                 break;
 
             case ClassMetadataInfo::ONE_TO_ONE:
-                $field = $this->getOneToOneField($form->getData(), $fieldDescription);
+                $formTypeName = $this->getOneToOneField($formBuilder->getData(), $fieldDescription);
                 break;
 
             default:
-                $class   = $this->getFormFieldClass($fieldDescription);
-
-                // there is no way to use a custom widget with the FieldFactory
-                if ($class) {
-                    $field = new $class(
-                        $fieldDescription->getFieldName(),
-                        $fieldDescription->getOption('form_field_options', array())
-                    );
-                } else {
-                    $field = $this->getFieldFactory()->getInstance(
-                        $fieldDescription->getAdmin()->getClass(),
-                        $fieldDescription->getFieldName(),
-                        $fieldDescription->getOption('form_field_options', array())
-                    );
-                }
+                $formTypeName = $this->getFormTypeName($fieldDescription);
         }
 
-        return $form->add($field);
+        return $formBuilder->add(
+            $fieldDescription->getFieldName(),
+            $formTypeName,
+            $fieldDescription->getOption('form_field_options', array())
+        );
     }
 
     /**
@@ -435,48 +422,19 @@ class FormBuilder implements FormBuilderInterface
         }
     }
 
-    public function setFieldFactory($fieldFactory)
+    public function getFormFactory()
     {
-        $this->fieldFactory = $fieldFactory;
+        return $this->formFactory;
     }
 
-    public function getFieldFactory()
+    /**
+     * @param string $name
+     * @param array $options
+     * @return \Symfony\Component\Form\FormBuilder
+     */
+    public function getFormBuilder($name, array $options = array())
     {
-        return $this->fieldFactory;
-    }
-
-    public function setFormContext($formContext)
-    {
-        $this->formContext = $formContext;
-    }
-
-    public function getFormContext()
-    {
-        return $this->formContext;
-    }
-
-    public function setFormFieldClasses(array $formFieldClasses)
-    {
-        $this->formFieldClasses = $formFieldClasses;
-    }
-
-    public function getFormFieldClasses()
-    {
-        return $this->formFieldClasses;
-    }
-
-    public function getBaseForm($name, $object, array $options = array())
-    {
-        return new Form($name, array_merge(array(
-            'data'      => $object,
-            'validator' => $this->getValidator(),
-            'context'   => $this->getFormContext(),
-        ), $options));
-    }
-
-    public function setValidator($validator)
-    {
-        $this->validator = $validator;
+        return $this->getFormFactory()->createBuilder('form', $name, $options);
     }
 
     public function getValidator()

@@ -24,17 +24,15 @@ file that was distributed with this source code.
 
 {% block form %}
 
-    {% if form.data.id > 0 %}
+    {% if object.id > 0 %}
         {% set url = 'edit' %}
     {% else %}
         {% set url = 'create' %}
     {% endif %}
 
-    <form action="{{ admin.generateUrl(url, {'id': form.data.id, 'uniqid': admin.uniqid}) }}"{% if form.isMultipart %} enctype="multipart/form-data"{% endif %} method="POST">
+    <form action="{{ admin.generateUrl(url, {'id': object.id, 'uniqid': admin.uniqid}) }}" {{ form_enctype(form) }} method="POST">
 
-        {{ form_hidden(form) }}
-
-        {% if form.errors %}
+        {% if form.vars.errors|length > 0 %}
             <div class="sonata-ba-form-error">
                 {{ form_errors(form) }}
             </div>
@@ -56,7 +54,7 @@ file that was distributed with this source code.
 
             {% for field_name in form_group.fields %}
                 {% if admin.formfielddescriptions[field_name] is defined %}
-                    {{ admin.formfielddescriptions[field_name]|render_form_element(form, form.data) }}
+                    {{ admin.formfielddescriptions[field_name]|render_form_element(form, object) }}
                 {% endif %}
             {% endfor %}
 
@@ -67,13 +65,13 @@ file that was distributed with this source code.
         {% endfor %}
 
         {% if app.request.isxmlhttprequest %}
-            {% if form.data.id %}
+            {% if object.id %}
                 <input type="submit" name="btn_update" value="{% trans "btn_update" from admin.translationdomain %}"/>
             {% else %}
                 <input type="submit" name="btn_create" value="{% trans "btn_create" from admin.translationdomain %}"/>
             {% endif %}
         {% else %}
-            {% if form.data.id %}
+            {% if object.id %}
                 <input type="submit" name="btn_update_and_edit" value="{% trans "btn_update_and_edit_again" from admin.translationdomain %}"/>
                 <input type="submit" name="btn_update_and_list" value="{% trans "btn_update_and_return_to_list" from admin.translationdomain %}"/>
             {% else %}
@@ -81,5 +79,8 @@ file that was distributed with this source code.
                 <input type="submit" name="btn_create_and_create" value="{% trans "btn_create_and_create_a_new_one" from admin.translationdomain %}"/>
             {% endif %}
         {% endif %}
+
+        {{ form_rest(form) }}
+
     </form>
 {% endblock %}

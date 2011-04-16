@@ -10,15 +10,13 @@
  */
 namespace Sonata\AdminBundle\Form;
 
-use Sonata\AdminBundle\Builder\FormBuilderInterface;
+use Sonata\AdminBundle\Builder\FormContractorInterface;
 use Sonata\AdminBundle\Admin\Admin;
 
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
-use Symfony\Component\Form\Form;
-use Symfony\Component\Form\FieldInterface;
-use Symfony\Component\Form\FormContextInterface;
+use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Validator\ValidatorInterface;
-use Symfony\Component\Form\FieldFactory\FieldFactoryInterface;
+use Symfony\Component\Form\Type\FormTypeInterface;
 
 
 /**
@@ -29,25 +27,25 @@ class FormMapper
 {
     protected $formBuilder;
 
-    protected $form;
+    protected $formContractor;
 
     protected $admin;
 
-    public function __construct(FormBuilderInterface $formBuilder, Form $form, Admin $admin)
+    public function __construct(FormContractorInterface $formContractor, FormBuilder $formBuilder, Admin $admin)
     {
-        $this->formBuilder = $formBuilder;
-        $this->form = $form;
-        $this->admin = $admin;
+        $this->formBuilder      = $formBuilder;
+        $this->formContractor   = $formContractor;
+        $this->admin            = $admin;
     }
 
     /**
-     * The method add a new field to the provided Form, there are 4 ways to add new field :
+     * The method add a new field to the provided FormBuilder, there are 4 ways to add new field :
      *
-     *   - if $name is a string with no related FieldDescription, then the form will use the FieldFactory
+     *   - if $name is a string with no related FieldDescription, then the form will use the FormFactory
      *     to instantiate a new Field
      *   - if $name is a FormDescription, the method uses information defined in the FormDescription to
      *     instantiate a new Field
-     *   - if $name is a FieldInterface, then a FieldDescriptionInterface is created, the FieldInterface is added to
+     *   - if $name is a FormTypeInterface, then a FieldDescriptionInterface is created, the FormTypeInterface is added to
      *     the form
      *   - if $name is a string with a related FieldDescription, then the method uses information defined in the
      *     FormDescription to instantiate a new Field
@@ -61,25 +59,25 @@ class FormMapper
     public function add($name, array $fieldOptions = array(), array $fieldDescriptionOptions = array())
     {
 
-        $field = false;
+        $fieldType = false;
         if ($name instanceof FieldDescriptionInterface) {
 
             $fieldDescription = $name;
             $fieldDescription->mergeOptions($fieldDescriptionOptions);
 
-        } else if ($name instanceof FieldInterface) {
+        } else if ($name instanceof FormTypeInterface) {
 
-            $field   = $name;
+            $fieldType   = $name;
 
             $fieldDescription = $this->admin->getModelManager()->getNewFieldDescriptionInstance(
                 $this->admin->getClass(),
-                $field->getKey(),
+                $fieldType->getName(),
                 $fieldDescriptionOptions
             );
 
-            $this->formBuilder->fixFieldDescription($this->admin, $fieldDescription, $fieldDescriptionOptions);
+            $this->formContractor->fixFieldDescription($this->admin, $fieldDescription, $fieldDescriptionOptions);
 
-            $this->admin->addFormFieldDescription($field->getKey(), $fieldDescription);
+            $this->admin->addFormFieldDescription($fieldType->getName(), $fieldDescription);
 
         } else if (is_string($name) && !$this->admin->hasFormFieldDescription($name)) {
 
@@ -90,7 +88,7 @@ class FormMapper
             );
 
             // set default configuration
-            $this->formBuilder->fixFieldDescription($this->admin, $fieldDescription, $fieldDescriptionOptions);
+            $this->formContractor->fixFieldDescription($this->admin, $fieldDescription, $fieldDescriptionOptions);
 
             // add the FieldDescription
             $this->admin->addFormFieldDescription($name, $fieldDescription);
@@ -99,7 +97,7 @@ class FormMapper
             $fieldDescription = $this->admin->getFormFieldDescription($name);
 
             // update configuration
-            $this->formBuilder->fixFieldDescription($this->admin, $fieldDescription, $fieldDescriptionOptions);
+            $this->formContractor->fixFieldDescription($this->admin, $fieldDescription, $fieldDescriptionOptions);
 
         } else {
 
@@ -109,13 +107,13 @@ class FormMapper
         $fieldDescription->mergeOption('form_field_options', $fieldOptions);
 
         // nothing to build as a Field is provided
-        if ($field) {
-            return $this->form->add($field);
+        if ($fieldType) {
+            return $this->formBuilder->add($fieldType);
         }
 
         // add the field with the FormBuilder
-        return $this->formBuilder->addField(
-            $this->form,
+        return $this->formContractor->addField(
+            $this->formBuilder,
             $fieldDescription
         );
     }
@@ -126,38 +124,38 @@ class FormMapper
      */
     public function get($name)
     {
-        return $this->form->get($name);
+        return $this->formBuilder->get($name);
     }
 
     /**
-     *
+     * @param string $key
      * @return boolean
      */
     public function has($key)
     {
-        return $this->form->has($key);
+        return $this->formBuilder->has($key);
     }
 
     /**
-     *
+     * @param string $key
      * @return void
      */
     public function remove($key)
     {
         $this->admin->removeFormFieldDescription($key);
-        $this->form->remove($key);
+        $this->formBuilder->remove($key);
     }
 
     /**
-     * @return \Symfony\Component\Form\Form
+     * @return \Symfony\Component\Form\FormBuilder
      */
-    public function getForm()
+    public function getFormBuilder()
     {
-        return $this->form;
+        return $this->formBuilder;
     }
 
     /**
-     * @return \Sonata\AdminBundle\Admin\Admin
+     * @return \Sonata\AdminBundle\Admin\AdminInterface
      */
     public function getAdmin()
     {

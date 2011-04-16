@@ -13,6 +13,7 @@ namespace Sonata\AdminBundle\Twig\Extension;
 
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Filter\FilterInterface;
+use Symfony\Component\Form\FormView;
 
 class SonataAdminExtension extends \Twig_Extension
 {
@@ -140,27 +141,25 @@ class SonataAdminExtension extends \Twig_Extension
      *
      * @throws InvalidArgumentException
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
-     * @param  $form
+     * @param \Sumfony\Component\Form\FormView $formView
      * @param  $object
      * @param array $params
      * @return string
      */
-    public function renderFormElement(FieldDescriptionInterface $fieldDescription, $form, $object, $params = array())
+    public function renderFormElement(FieldDescriptionInterface $fieldDescription, FormView $formView, $object, $params = array())
     {
 
         if (!$fieldDescription->getFieldName()) {
-
             return '';
         }
 
-        try {
-            $field = $form->get($fieldDescription->getFieldName());
-        } catch (\InvalidArgumentException $e) {
-
-            throw $e;
+        if (!$formView->offsetExists($fieldDescription->getFieldName())) {
+            throw new \RuntimeException(sprintf('No child named %s', $fieldDescription->getFieldName()));
         }
 
-        if ($field->isHidden()) {
+        $children = $formView->offsetGet($fieldDescription->getFieldName());
+
+        if (in_array('hidden', $children->get('types'))) {
             return '';
         }
 
@@ -188,7 +187,7 @@ class SonataAdminExtension extends \Twig_Extension
             'object'            => $object,
             'field_description' => $fieldDescription,
             'value'             => $this->getValueFromFieldDescription($object, $fieldDescription, $params),
-            'field_element'     => $field,
+            'field_element'     => $children,
             'base_template'     => $fieldDescription->getOption('base_template', $base_template)
         ))));
     }

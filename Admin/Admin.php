@@ -21,7 +21,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 
 use Sonata\AdminBundle\Admin\Pool;
-use Sonata\AdminBundle\Builder\FormBuilderInterface;
+use Sonata\AdminBundle\Builder\FormContractorInterface;
 use Sonata\AdminBundle\Builder\ListBuilderInterface;
 use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
 
@@ -255,11 +255,11 @@ abstract class Admin implements AdminInterface
     protected $translator;
 
     /**
-     * The related form builder
+     * The related form contractor
      *
-     * @var \Sonata\AdminBundle\Builder\FormBuilderInterface
+     * @var \Sonata\AdminBundle\Builder\FormContractorInterface
      */
-    protected $formBuilder;
+    protected $formContractor;
 
     /**
      * The related list builder
@@ -522,7 +522,7 @@ abstract class Admin implements AdminInterface
 
         foreach ($this->formFieldDescriptions as $name => &$fieldDescription) {
 
-            $this->getFormBuilder()->fixFieldDescription($this, $fieldDescription);
+            $this->getFormContractor()->fixFieldDescription($this, $fieldDescription);
 
             // unset the identifier field as it is not required to update an object
             if ($fieldDescription->isIdentifier()) {
@@ -838,13 +838,12 @@ abstract class Admin implements AdminInterface
 
     /**
      *
-     * @return Form the base form
+     * @return \Symfony\Component\FormBuilder the form builder
      */
-    public function getBaseForm($object, $options = array())
+    public function getFormBuilder($options = array())
     {
-        return $this->getFormBuilder()->getBaseForm(
+        return $this->getFormContractor()->getFormBuilder(
             $this->getUniqid(),
-            $object,
             array_merge($this->formOptions, $options)
         );
     }
@@ -922,13 +921,13 @@ abstract class Admin implements AdminInterface
         if ($this->isChild() && $this->getParentAssociationMapping()) {
             $parent = $this->getParent()->getObject($this->request->get($this->getParent()->getIdParameter()));
 
-            $propertyPath = new \Symfony\Component\Form\PropertyPath($this->getParentAssociationMapping());
+            $propertyPath = new \Symfony\Component\Form\Util\PropertyPath($this->getParentAssociationMapping());
             $propertyPath->setValue($object, $parent);
         }
 
-        $form = $this->getBaseForm($object, $options);
+        $formBuilder = $this->getFormBuilder($options);
 
-        $mapper = new FormMapper($this->getFormBuilder(), $form, $this);
+        $mapper = new FormMapper($this->getFormContractor(), $formBuilder, $this);
 
         $this->buildFormFieldDescriptions();
 
@@ -943,6 +942,9 @@ abstract class Admin implements AdminInterface
 
             $mapper->add($fieldDescription);
         }
+
+        $form = $formBuilder->getForm();
+        $form->setData($object);
 
         return $form;
     }
@@ -1698,20 +1700,20 @@ abstract class Admin implements AdminInterface
     }
 
     /**
-     * @param \Sonata\AdminBundle\Builder\FormBuilderInterface $formBuilder
+     * @param \Sonata\AdminBundle\Builder\FormContractorInterface $formBuilder
      * @return void
      */
-    public function setFormBuilder(FormBuilderInterface $formBuilder)
+    public function setFormContractor(FormContractorInterface $formBuilder)
     {
-        $this->formBuilder = $formBuilder;
+        $this->formContractor = $formBuilder;
     }
 
     /**
-     * @return \Sonata\AdminBundle\Builder\FormBuilderInterface
+     * @return \Sonata\AdminBundle\Builder\FormContractorInterface
      */
-    public function getFormBuilder()
+    public function getFormContractor()
     {
-        return $this->formBuilder;
+        return $this->formContractor;
     }
 
     /**

@@ -15,21 +15,19 @@ use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 
-use Symfony\Component\Form\Form;
-use Symfony\Component\Form\FormContextInterface;
+use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
-use Symfony\Component\Form\FieldFactory\FieldFactoryInterface;
 
-interface FormBuilderInterface
+interface FormContractorInterface
 {
 
     /**
      * @abstract
-     * @param \Symfony\Component\Form\FieldFactory\FieldFactoryInterface $fieldFactory
-     * @param \Symfony\Component\Form\FormContextInterface $formContext
+     * @param \Symfony\Component\Form\FieldFactory\FormFactoryInterface $formFactory
      * @param \Symfony\Component\Validator\ValidatorInterface $validator
      */
-    function __construct(FieldFactoryInterface $fieldFactory, FormContextInterface $formContext, ValidatorInterface $validator);
+    function __construct(FormFactoryInterface $formFactory, ValidatorInterface $validator);
 
     /**
      * @abstract
@@ -37,7 +35,7 @@ interface FormBuilderInterface
      * @param \Sonata\AdminBundle\Admin\FieldDescription $fieldDescription
      * @return void
      */
-    function addField(Form $form, FieldDescriptionInterface $fieldDescription);
+    function addField(FormBuilder $form, FieldDescriptionInterface $fieldDescription);
 
     /**
      * @abstract
@@ -51,9 +49,8 @@ interface FormBuilderInterface
     /**
      * @abstract
      * @param string $name
-     * @param object $object
      * @param array $options
      * @return void
      */
-    function getBaseForm($name, $object, array $options = array());
+    function getFormBuilder($name, array $options = array());
 }

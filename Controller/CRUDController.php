@@ -177,7 +177,7 @@ class CRUDController extends Controller
         $form = $this->admin->getForm($object);
 
         if ($this->get('request')->getMethod() == 'POST') {
-            $form->bind($this->get('request'));
+            $form->bindRequest($this->get('request'));
 
             if ($form->isValid()) {
                 $this->admin->update($object);
@@ -193,7 +193,8 @@ class CRUDController extends Controller
 
         return $this->render($this->admin->getEditTemplate(), array(
             'action'         => 'edit',
-            'form'           => $form,
+            'form'           => $form->createView(),
+            'object'         => $object,
             'admin'          => $this->admin,
             'base_template'  => $this->getBaseTemplate(),
         ));
@@ -267,7 +268,7 @@ class CRUDController extends Controller
         $this->admin->setSubject($object);
 
         if ($this->get('request')->getMethod() == 'POST') {
-            $form->bind($this->get('request'));
+            $form->bindRequest($this->get('request'));
 
             if ($form->isValid()) {
                 $this->admin->create($object);
@@ -283,8 +284,9 @@ class CRUDController extends Controller
 
         return $this->render($this->admin->getEditTemplate(), array(
             'action'        => 'create',
-            'form'          => $form,
+            'form'          => $form->createView(),
             'admin'         => $this->admin,
+            'object'        => $object,
             'base_template' => $this->getBaseTemplate(),
         ));
     }

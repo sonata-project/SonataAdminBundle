@@ -12,7 +12,7 @@
 namespace Sonata\AdminBundle\Admin;
 
 use Sonata\AdminBundle\Admin\Pool;
-use Sonata\AdminBundle\Builder\FormBuilderInterface;
+use Sonata\AdminBundle\Builder\FormContractorInterface;
 use Sonata\AdminBundle\Builder\ListBuilderInterface;
 use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
 
@@ -25,10 +25,10 @@ interface AdminInterface
 
     /**
      * @abstract
-     * @param \Sonata\AdminBundle\Builder\FormBuilderInterface $formBuilder
+     * @param \Sonata\AdminBundle\Builder\FormContractorInterface $formContractor
      * @return void
      */
-    function setFormBuilder(FormBuilderInterface $formBuilder);
+    function setFormContractor(FormContractorInterface $formContractor);
 
     /**
      * @abstract

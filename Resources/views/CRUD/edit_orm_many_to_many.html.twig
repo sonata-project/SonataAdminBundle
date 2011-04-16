@@ -14,9 +14,9 @@ file that was distributed with this source code.
 {% block field %}
     <div id="field_container_{{ field_element.id }}">
         <span id="field_widget_{{ field_element.id }}" >
-            {{ form_field(field_element) }}
+            {{ form_widget(field_element) }}
         </span>
-        
+
         <span id="field_actions_{{ field_element.id }}" >
             <a
                 href="{{ field_description.associationadmin.generateUrl('create') }}"
@@ -28,7 +28,7 @@ file that was distributed with this source code.
                     />
             </a>
         </span>
-        
+
         <div style="display: none" id="field_dialog_{{ field_element.id }}">
 
         </div>
