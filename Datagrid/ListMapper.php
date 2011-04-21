@@ -43,7 +43,6 @@ class ListMapper
      */
     public function add($name, array $fieldDescriptionOptions = array())
     {
-
         if ($name instanceof FieldDescriptionInterface) {
 
             $fieldDescription = $name;

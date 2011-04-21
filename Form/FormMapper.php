@@ -58,7 +58,6 @@ class FormMapper
      */
     public function add($name, array $fieldOptions = array(), array $fieldDescriptionOptions = array())
     {
-
         $fieldType = false;
         if ($name instanceof FieldDescriptionInterface) {
 

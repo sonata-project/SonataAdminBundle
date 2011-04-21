@@ -12,15 +12,15 @@ file that was distributed with this source code.
 {% extends base_template %}
 
 {% block field %}
-    <div id="field_container_{{ field_element.id }}">
-        <span id="field_widget_{{ field_element.id }}" >
+    <div id="field_container_{{ field_element.vars.id }}">
+        <span id="field_widget_{{ field_element.vars.id }}" >
             {{ form_widget(field_element) }}
         </span>
 
-        <span id="field_actions_{{ field_element.id }}" >
+        <span id="field_actions_{{ field_element.vars.id }}" >
             <a
                 href="{{ field_description.associationadmin.generateUrl('create') }}"
-                onclick="start_field_dialog_form_add_{{ field_element.id }}(event)"
+                onclick="start_field_dialog_form_add_{{ field_element.vars.id }}(event)"
                 class="sonata-ba-action">
                     <img
                         src="{{ asset('bundles/sonataadmin/famfamfam/add.png') }}"
@@ -29,7 +29,7 @@ file that was distributed with this source code.
             </a>
         </span>
 
-        <div style="display: none" id="field_dialog_{{ field_element.id }}">
+        <div style="display: none" id="field_dialog_{{ field_element.vars.id }}">
 
         </div>
     </div>

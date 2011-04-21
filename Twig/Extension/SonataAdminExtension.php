@@ -101,7 +101,8 @@ class SonataAdminExtension extends \Twig_Extension
     {
 
         if (isset($params['loop']) && $object instanceof \ArrayAccess) {
-            $object = $object[$params['loop']['index0']];
+            throw new \RuntimeException('remove the loop requirement');
+//            $object = $object[$params['loop']['index0']];
         }
 
         $value = $fieldDescription->getValue($object);
@@ -148,7 +149,6 @@ class SonataAdminExtension extends \Twig_Extension
      */
     public function renderFormElement(FieldDescriptionInterface $fieldDescription, FormView $formView, $object, $params = array())
     {
-
         if (!$fieldDescription->getFieldName()) {
             return '';
         }

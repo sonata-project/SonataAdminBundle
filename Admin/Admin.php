@@ -11,7 +11,7 @@
 
 namespace Sonata\AdminBundle\Admin;
 
-use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -837,15 +837,44 @@ abstract class Admin implements AdminInterface
     }
 
     /**
-     *
-     * @return \Symfony\Component\FormBuilder the form builder
+     * @param Object $object
+     * @param array $options
+     * @return \Symfony\Component\Form\FormBuilder the form builder
      */
-    public function getFormBuilder($options = array())
+    public function getFormBuilder($object, $options = array())
     {
-        return $this->getFormContractor()->getFormBuilder(
+        $formBuilder = $this->getFormContractor()->getFormBuilder(
             $this->getUniqid(),
             array_merge($this->formOptions, $options)
         );
+
+        $formBuilder->setData($object);
+
+        $this->defineFormBuilder($formBuilder);
+
+        return $formBuilder;
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilder $formBuilder
+     * @return void
+     */
+    public function defineFormBuilder(FormBuilder $formBuilder)
+    {
+        $mapper = new FormMapper($this->getFormContractor(), $formBuilder, $this);
+
+        $this->buildFormFieldDescriptions();
+
+        $this->configureFormFields($mapper);
+
+        foreach ($this->getFormFieldDescriptions() as $fieldDescription) {
+           // do not add field already set in the configureFormField method
+           if ($mapper->has($fieldDescription->getFieldName())) {
+               continue;
+           }
+
+           $mapper->add($fieldDescription);
+        }
     }
 
     /**
@@ -925,28 +954,9 @@ abstract class Admin implements AdminInterface
             $propertyPath->setValue($object, $parent);
         }
 
-        $formBuilder = $this->getFormBuilder($options);
+        $formBuilder = $this->getFormBuilder($object, $options);
 
-        $mapper = new FormMapper($this->getFormContractor(), $formBuilder, $this);
-
-        $this->buildFormFieldDescriptions();
-
-        $this->configureFormFields($mapper);
-
-        foreach ($this->getFormFieldDescriptions() as $fieldDescription) {
-
-            // do not add field already set in the configureFormField method
-            if ($mapper->has($fieldDescription->getFieldName())) {
-                continue;
-            }
-
-            $mapper->add($fieldDescription);
-        }
-
-        $form = $formBuilder->getForm();
-        $form->setData($object);
-
-        return $form;
+        return $formBuilder->getForm();
     }
 
     /**
