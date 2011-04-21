@@ -14,8 +14,8 @@ file that was distributed with this source code.
 {% block actions %}
     <div class="sonata-actions">
         <ul>
-            <li class="sonata-action-element"><a href="{{ admin.generateUrl('create') }}">{% trans "link_action_create" from admin.translationdomain %}</a></li>
-            <li class="sonata-action-element"><a href="{{ admin.generateUrl('list') }}">{% trans "link_action_list" from admin.translationdomain %}</a></li>
+            <li class="sonata-action-element"><a href="{{ admin.generateUrl('create') }}">{% trans from admin.translationdomain %}link_action_create{% endtrans %}</a></li>
+            <li class="sonata-action-element"><a href="{{ admin.generateUrl('list') }}">{% trans from admin.translationdomain %}link_action_list{% endtrans %}</a></li>
         </ul>
     </div>
 {% endblock %}
@@ -44,9 +44,9 @@ file that was distributed with this source code.
             {% if name %}
                 <fieldset>
                     <legend>
-                        {% trans name %}
+                        {% trans %}name{% endtrans %}
                         {% if form_group.collapsed %}
-                            <a href="" class="sonata-ba-collapsed">{% trans 'link_expand' from 'AdminBundle' %}</a>
+                            <a href="" class="sonata-ba-collapsed">{% trans from 'AdminBundle' %}link_expand{% endtrans %}</a>
                         {% endif %}
                     </legend>
 
@@ -68,17 +68,17 @@ file that was distributed with this source code.
 
         {% if app.request.isxmlhttprequest %}
             {% if form.data.id %}
-                <input type="submit" name="btn_update" value="{% trans "btn_update" from admin.translationdomain %}"/>
+                <input type="submit" name="btn_update" value="{% trans from admin.translationdomain %}btn_update{% endtrans %}"/>
             {% else %}
-                <input type="submit" name="btn_create" value="{% trans "btn_create" from admin.translationdomain %}"/>
+                <input type="submit" name="btn_create" value="{% trans from admin.translationdomain %}btn_create{% endtrans %}"/>
             {% endif %}
         {% else %}
             {% if form.data.id %}
-                <input type="submit" name="btn_update_and_edit" value="{% trans "btn_update_and_edit_again" from admin.translationdomain %}"/>
-                <input type="submit" name="btn_update_and_list" value="{% trans "btn_update_and_return_to_list" from admin.translationdomain %}"/>
+                <input type="submit" name="btn_update_and_edit" value="{% trans from admin.translationdomain %}btn_update_and_edit_again{% endtrans %}"/>
+                <input type="submit" name="btn_update_and_list" value="{% trans from admin.translationdomain %}btn_update_and_return_to_list{% endtrans %}"/>
             {% else %}
-                <input type="submit" name="btn_create_and_edit" value="{% trans "btn_create_and_edit_again" from admin.translationdomain %}"/>
-                <input type="submit" name="btn_create_and_create" value="{% trans "btn_create_and_create_a_new_one" from admin.translationdomain %}"/>
+                <input type="submit" name="btn_create_and_edit" value="{% trans from admin.translationdomain %}btn_create_and_edit_again{% endtrans %}"/>
+                <input type="submit" name="btn_create_and_create" value="{% trans from admin.translationdomain %}btn_create_and_create_a_new_one{% endtrans %}"/>
             {% endif %}
         {% endif %}
     </form>

@@ -37,7 +37,7 @@ file that was distributed with this source code.
         {% endblock %}
 
         <title>
-            {% block title %} {% trans 'Admin' from 'AdminBundle' %}
+            {% block title %} {% trans from 'AdminBundle' %}Admin{% endtrans %}
                 {% if action is defined %}
                     -
                     {% for label, uri in admin.breadcrumbs(action) %}
@@ -62,7 +62,7 @@ file that was distributed with this source code.
         <div class="container">
             <div class="span-24 last header">
                 <div class="span-20">
-                    <a href="{{ url('sonata_admin_dashboard') }}" class="home">{% trans 'Admin' from 'AdminBundle' %}</a>
+                    <a href="{{ url('sonata_admin_dashboard') }}" class="home">{% trans from 'AdminBundle' %}Admin{% endtrans %}</a>
                 </div>
 
                 <div class="span-4 last">

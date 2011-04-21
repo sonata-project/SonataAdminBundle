@@ -16,7 +16,7 @@ file that was distributed with this source code.
         <span id="field_widget_{{ field_element.id }}" >
             {{ form_field(field_element) }}
         </span>
-        
+
         <span id="field_actions_{{ field_element.id }}" >
             <a
                 href="{{ field_description.associationadmin.generateUrl('create') }}"
@@ -24,11 +24,11 @@ file that was distributed with this source code.
                 class="sonata-ba-action">
                     <img
                         src="{{ asset('bundles/sonataadmin/famfamfam/add.png') }}"
-                        alt="{% trans 'btn_add' from 'AdminBundle' %}"
+                        alt="{% trans from 'AdminBundle' %}btn_add{% endtrans %}"
                     />
             </a>
         </span>
-        
+
         <div style="display: none" id="field_dialog_{{ field_element.id }}">
 
         </div>
