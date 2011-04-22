@@ -19,7 +19,7 @@ file that was distributed with this source code.
         <br />
     {% endblock %}
 
-    <div class="sonata-ba-field {% if filter.field.haserrors %}sonata-ba-field-error"{% endif %}">
+    <div class="sonata-ba-field{% if filter.field.haserrors %} sonata-ba-field-error"{% endif %}">
         {% block field %}{{ form_field(filter.field) }}{% endblock %}
     </div>
 </div>

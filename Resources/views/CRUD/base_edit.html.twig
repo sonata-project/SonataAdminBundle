@@ -44,7 +44,7 @@ file that was distributed with this source code.
             {% if name %}
                 <fieldset>
                     <legend>
-                        {% trans %}name{% endtrans %}
+                        {{ name|trans }}
                         {% if form_group.collapsed %}
                             <a href="" class="sonata-ba-collapsed">{% trans from 'AdminBundle' %}link_expand{% endtrans %}</a>
                         {% endif %}
