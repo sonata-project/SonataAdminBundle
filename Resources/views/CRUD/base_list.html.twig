@@ -14,7 +14,7 @@ file that was distributed with this source code.
 {% block actions %}
     <div class="sonata-actions">
         <ul>
-            <li class="sonata-action-element"><a href="{{ admin.generateUrl('create') }}">{% trans "link_action_create" from admin.translationdomain %}</a></li>
+            <li class="sonata-action-element"><a href="{{ admin.generateUrl('create') }}">{% trans from admin.translationdomain %}link_action_create{% endtrans %}</a></li>
         </ul>
     </div>
 {% endblock %}
@@ -47,9 +47,9 @@ file that was distributed with this source code.
                                         {% if sortable %}<a href="{{ admin.generateUrl('list', sort_parameters) }}">{% endif %}
 
                                         {% if field_description.options.name is defined %}
-                                            {% trans field_description.options.name from admin.translationdomain %}
+                                            {{ field_description.options.name|trans({}, admin.translationdomain) }}
                                         {% else %}
-                                            {% trans field_description.name from admin.translationdomain %}
+                                            {{ field_description.name|trans({}, admin.translationdomain) }}
                                         {% endif %}
 
                                         {% if sortable %}</a>{% endif %}
@@ -76,7 +76,7 @@ file that was distributed with this source code.
                             <td colspan="{{ admin.list.elements|length }}" class="pager">
                                 <ul>
                                     {% if admin.datagrid.pager.page != admin.datagrid.pager.previouspage %}
-                                        <li><a href="{{ admin.generateUrl('list', admin.datagrid.values|merge({'_page': admin.datagrid.pager.previouspage})) }}">{% trans 'link_previous_pager' from 'AdminBundle' %}</a></li>
+                                        <li><a href="{{ admin.generateUrl('list', admin.datagrid.values|merge({'_page': admin.datagrid.pager.previouspage})) }}">{% trans from 'AdminBundle' %}link_previous_pager{% endtrans %}</a></li>
                                     {% endif %}
 
                                     {# Set the number of pages to display in the pager #}
@@ -89,7 +89,7 @@ file that was distributed with this source code.
                                     {% endfor %}
 
                                     {% if admin.datagrid.pager.page != admin.datagrid.pager.nextpage %}
-                                        <li><a href="{{ admin.generateUrl('list', admin.datagrid.values|merge({'_page': admin.datagrid.pager.nextpage})) }}">{% trans 'link_next_pager' from 'AdminBundle' %}</a></li>
+                                        <li><a href="{{ admin.generateUrl('list', admin.datagrid.values|merge({'_page': admin.datagrid.pager.nextpage})) }}">{% trans from 'AdminBundle' %}link_next_pager{% endtrans %}</a></li>
                                     {% endif %}
                                 </ul>
                             </td>
@@ -104,7 +104,7 @@ file that was distributed with this source code.
                        $(this).closest('table').find("td input[type='checkbox']").attr('checked', $(this).is(':checked'));
                    });
                    $('.delete_link').click(function(e){
-                      if (!confirm('{% trans 'confirm_msg' from 'AdminBundle' %}')) e.preventDefault();
+                      if (!confirm('{% trans from 'AdminBundle' %}confirm_msg{% endtrans %}')) e.preventDefault();
                    });
                 });
             </script>
@@ -115,12 +115,12 @@ file that was distributed with this source code.
                         <option value="{{ action }}">{{ label }}</option>
                     {% endfor %}
                 </select>
-                <input type="submit" value="{% trans 'btn_batch' from 'AdminBundle' %}" />
+                <input type="submit" value="{% trans from 'AdminBundle' %}btn_batch{% endtrans %}" />
             </div>
         </form>
     {% else %}
         <p class="notice">
-          {% trans 'no_result' from 'AdminBundle' %}
+          {% trans from 'AdminBundle' %}no_result{% endtrans %}
         </p>
     {% endif %}
 {% endblock %}
@@ -134,9 +134,9 @@ file that was distributed with this source code.
                 </div>
             {% endfor %}
 
-            <input type="submit" value="{% trans 'btn_filter' from 'AdminBundle' %}" />
+            <input type="submit" value="{% trans from 'AdminBundle' %}btn_filter{% endtrans %}" />
 
-            <a href="{{ admin.generateUrl('list') }}">{% trans 'link_reset_filter' from 'AdminBundle' %}</a>
+            <a href="{{ admin.generateUrl('list') }}">{% trans from 'AdminBundle' %}link_reset_filter{% endtrans %}</a>
         </form>
     {% endif %}
 {% endblock %}

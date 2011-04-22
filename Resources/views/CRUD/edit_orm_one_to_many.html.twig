@@ -71,7 +71,7 @@ file that was distributed with this source code.
                     class="sonata-ba-action">
                     <img
                         src="{{ asset('bundles/sonataadmin/famfamfam/add.png') }}"
-                        alt="{% trans 'btn_add' from 'AdminBundle' %}"
+                        alt="{% trans from 'AdminBundle' %}btn_add{% endtrans %}"
                      />
                 </a>
             </span>
@@ -95,8 +95,8 @@ file that was distributed with this source code.
                             jQuery('input', element).hide();
                         });
 
-                        jQuery('div#field_container_{{ field_element.vars.id }} tbody.sonata-ba-tbody td.sonata-ba-td-{{ field_element.vars.id }}-position input').each(function(index, value) {
-                            //jQuery(value).val(index + 1);
+                        jQuery('div#field_container_{{ field_element.id }} tbody.sonata-ba-tbody td.sonata-ba-td-{{ field_element.id }}-position input').each(function(index, value) {
+                            jQuery(value).val(index + 1);
                         });
                     }
 
@@ -122,7 +122,7 @@ file that was distributed with this source code.
                     class="sonata-ba-action">
                     <img
                         src="{{ asset('bundles/sonataadmin/famfamfam/add.png') }}"
-                        alt="{% trans 'btn_add' from 'AdminBundle' %}"
+                        alt="{% trans from 'AdminBundle' %}btn_add{% endtrans %}"
                      />
                 </a>
             </span>
