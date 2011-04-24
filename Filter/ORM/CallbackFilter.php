@@ -11,12 +11,11 @@
 
 namespace Sonata\AdminBundle\Filter\ORM;
 
-use Sonata\AdminBundle\Admin\FieldDescription;
+use Symfony\Component\Form\FormFactory;
 use Doctrine\ORM\QueryBuilder;
 
 class CallbackFilter extends Filter
 {
-
     protected function association($queryBuilder, $value)
     {
         return array($queryBuilder->getRootAlias(), false);
@@ -24,6 +23,9 @@ class CallbackFilter extends Filter
 
     public function filter($queryBuilder, $alias, $field, $value)
     {
+        if (is_callable($this->getOption('filter'))) {
+            throw new \RuntimeException('Please provide a valid callback option');
+        }
 
         call_user_func($this->getOption('filter'), $queryBuilder, $alias, $field, $value);
     }
@@ -33,24 +35,22 @@ class CallbackFilter extends Filter
      *        'type'           => 'callback',
      *        'filter_options' => array(
      *           'filter'  => array($this, 'getCustomFilter'),
-     *           'field'   => array($this, 'getCustomField')
+     *           'type'    => 'type_name'
      *       )
      *    );
      *
      * @return void
      */
-    protected function configure()
+    public function getDefaultOptions()
     {
-
-        $this->addRequiredOption('filter');
-        $this->addRequiredOption('field');
-
-        parent::configure();
+        return array(
+            'filter' => null,
+            'type'   => 'text',
+        );
     }
 
-    public function getFormField()
+    public function defineFieldBuilder(FormFactory $formFactory)
     {
-
-        return call_user_func($this->getOption('field'), $this);
+        return $formFactory->createNamedBuilder($this->getOption('type'), $this->getName(), null);
     }
 }

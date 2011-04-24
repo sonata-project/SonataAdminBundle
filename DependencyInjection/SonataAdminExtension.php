@@ -71,6 +71,8 @@ class SonataAdminExtension extends Extension
 
         // register filter builder
         $definition = new Definition('Sonata\AdminBundle\Builder\ORM\DatagridBuilder');
+        $definition->addArgument(new Reference('form.factory'));
+
         $container->setDefinition('sonata_admin.builder.orm_datagrid', $definition);
 
         // registers crud action

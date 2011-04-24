@@ -13,6 +13,7 @@ namespace Sonata\AdminBundle\Filter\ORM;
 
 use Sonata\AdminBundle\Filter\Filter as BaseFilter;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
+use Symfony\Component\Form\FormBuilder;
 
 abstract class Filter extends BaseFilter
 {
@@ -21,18 +22,16 @@ abstract class Filter extends BaseFilter
     {
         $this->value = $value;
 
-        $this->field->submit($value);
+        list($alias, $field) = $this->association($queryBuilder, $value);
 
-        list($alias, $field) = $this->association($queryBuilder, $this->field->getData());
-
-        $this->filter($queryBuilder, $alias, $field, $this->field->getData());
+        $this->filter($queryBuilder, $alias, $field, $value);
     }
 
     protected function association($queryBuilder, $value)
     {
-        if ($value && $this->description->getType() == ClassMetadataInfo::MANY_TO_MANY) {
+        if ($value && $this->getFieldDescription()->getType() == ClassMetadataInfo::MANY_TO_MANY) {
             $queryBuilder->leftJoin(
-                sprintf('%s.%s', $queryBuilder->getRootAlias(), $this->description->getFieldName()),
+                sprintf('%s.%s', $queryBuilder->getRootAlias(), $this->getFieldDescription()->getFieldName()),
                 $this->getName()
             );
 
@@ -40,6 +39,6 @@ abstract class Filter extends BaseFilter
             return array($this->getName(), 'id');
         }
 
-        return array($queryBuilder->getRootAlias(), $this->description->getFieldName());
+        return array($queryBuilder->getRootAlias(), $this->getFieldDescription()->getFieldName());
     }
 }

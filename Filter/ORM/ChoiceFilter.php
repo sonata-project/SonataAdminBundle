@@ -11,16 +11,14 @@
 
 namespace Sonata\AdminBundle\Filter\ORM;
 
-use Sonata\AdminBundle\Admin\FieldDescription;
+use Symfony\Component\Form\FormFactory;
 use Doctrine\ORM\QueryBuilder;
 
 class ChoiceFilter extends Filter
 {
-
     public function filter($queryBuilder, $alias, $field, $value)
     {
-        if ($this->getField()->isMultipleChoice()) {
-
+        if ($this->getField()->getAttribute('multiple')) {
             if (in_array('all', $value)) {
                 return;
             }
@@ -50,11 +48,10 @@ class ChoiceFilter extends Filter
         }
     }
 
-    public function getFormField()
+    public function defineFieldBuilder(FormFactory $formFactory, $value = null)
     {
-        return new \Symfony\Component\Form\ChoiceField(
-            $this->getName(),
-            $this->description->getOption('filter_field_options', array('required' => false))
-        );
+        $options = $this->getFieldDescription()->getOption('filter_field_options', array('required' => false));
+
+        $this->field = $formFactory->createNamedBuilder('choice', $this->getName(), $value, $options);
     }
 }

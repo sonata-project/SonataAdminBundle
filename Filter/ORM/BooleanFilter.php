@@ -11,16 +11,14 @@
 
 namespace Sonata\AdminBundle\Filter\ORM;
 
-use Sonata\AdminBundle\Admin\FieldDescription;
 use Doctrine\ORM\QueryBuilder;
+use Symfony\Component\Form\FormFactory;
 
 class BooleanFilter extends Filter
 {
-
     public function filter($queryBuilder, $alias, $field, $value)
     {
-
-        if ($this->getField()->isMultipleChoice()) {
+        if ($this->getField()->getAttribute('multiple')) {
 
             $values = array();
             foreach ($value as $v) {
@@ -34,7 +32,7 @@ class BooleanFilter extends Filter
             if (count($values) == 0) {
                 return;
             }
-            
+
             $queryBuilder->andWhere($queryBuilder->expr()->in(sprintf('%s.%s',
                 $alias,
                 $field
@@ -46,21 +44,18 @@ class BooleanFilter extends Filter
                 return;
             }
 
-            $value      = $value == 'true' ? 1 : 0;
-            
             $queryBuilder->andWhere(sprintf('%s.%s = :%s',
                 $alias,
                 $field,
                 $this->getName()
             ));
 
-            $queryBuilder->setParameter($this->getName(), $value);
+            $queryBuilder->setParameter($this->getName(), $value == 'true' ? 1 : 0);
         }
     }
 
-    public function getFormField()
+    public function defineFieldBuilder(FormFactory $formFactory)
     {
-
         $options = array(
             'choices' => array(
                 'all'   => 'all',
@@ -70,12 +65,8 @@ class BooleanFilter extends Filter
             'required' => false
         );
 
-        $options = array_merge($options, $this->description->getOption('filter_field_options', array()));
+        $options = array_merge($options, $this->getFieldDescription()->getOption('filter_field_options', array()));
 
-        return new \Symfony\Component\Form\ChoiceField(
-            $this->getName(),
-            $options
-        );
+        $this->field = $formFactory->createNamedBuilder('choice', $this->getName(), null, $options);
     }
-
 }

@@ -11,15 +11,15 @@ file that was distributed with this source code.
 
 <div>
     {% block label %}
-        {% if filter.description.options.name is defined %}
-            {{ form_label(filter.field, filter.description.options.name) }}
+        {% if filter.fielddescription.options.name is defined %}
+            {{ form_label(filter_form, filter.fielddescription.options.name) }}
         {% else %}
-            {{ form_label(filter.field) }}
+            {{ form_label(filter_form) }}
         {% endif %}
         <br />
     {% endblock %}
 
-    <div class="sonata-ba-field{% if filter.field.haserrors %} sonata-ba-field-error"{% endif %}">
-        {% block field %}{{ form_field(filter.field) }}{% endblock %}
+    <div class="sonata-ba-field{% if filter_form.vars.errors %} sonata-ba-field-error"{% endif %}">
+        {% block field %}{{ form_widget(filter_form) }}{% endblock %}
     </div>
 </div>

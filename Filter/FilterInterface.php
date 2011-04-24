@@ -11,6 +11,8 @@
 
 namespace Sonata\AdminBundle\Filter;
 
+use Symfony\Component\Form\FormFactory;
+
 interface FilterInterface
 {
     /**
@@ -26,17 +28,47 @@ interface FilterInterface
     function filter($queryBuilder, $alias, $field, $value);
 
     /**
-     * Get the related form field filter
+     * Define the related field builder
      *
      * @abstract
-     * @return Field
+     * @param \Symfony\Component\Form\FormFactory
+     * @return void
      */
-    function getFormField();
+    function defineFieldBuilder(FormFactory $formFactory);
 
     /**
      * Returns the filter name
      * @abstract
-     * @return void
+     * @return string
      */
     function getName();
+
+    /**
+     * Returns the formBuilder instance
+     *
+     * @abstract
+     * @return \Symfony\Component\Form\FormBuilder
+     */
+    function getField();
+
+    /**
+     * @abstract
+     * @return array
+     */
+    function getDefaultOptions();
+
+    /**
+     * @abstract
+     * @param string $name
+     * @param null $default
+     * @return void
+     */
+    function getOption($name, $default = null);
+
+    /**
+     * @abstract
+     * @return \Sonata\AdminBundle\Admin\FieldDescriptionInterface
+     */
+    function getFieldDescription();
+
 }

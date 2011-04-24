@@ -12,6 +12,7 @@
 namespace Sonata\AdminBundle\Filter\ORM;
 
 use Doctrine\ORM\QueryBuilder;
+use Symfony\Component\Form\FormFactory;
 
 class IntegerFilter extends Filter
 {
@@ -34,19 +35,18 @@ class IntegerFilter extends Filter
         $queryBuilder->setParameter($this->getName(), (int)$value);
     }
 
-    protected function configure()
+    public function getDefaultOptions()
     {
-        $this->addOption('operator', '=');
-        $this->addOption('format', '%d');
-
-        parent::configure();
+        return array(
+            'operator' => '=',
+            'format'   => '%d'
+        );
     }
 
-   public function getFormField()
+   public function defineFieldBuilder(FormFactory $formFactory)
    {
-       return new \Symfony\Component\Form\TextField(
-           $this->getName(),
-           $this->description->getOption('filter_field_options', array('required' => false))
-       );
+       $options = $this->fieldDescription->getOption('filter_field_options', array('required' => false));
+
+       $this->field = $formFactory->createNamedBuilder('text', $this->getName(), null, $options);
    }
 }

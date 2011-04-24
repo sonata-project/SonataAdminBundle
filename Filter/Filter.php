@@ -13,13 +13,11 @@ namespace Sonata\AdminBundle\Filter;
 
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Filter\FilterInterface;
-use Symfony\Component\Form\Configurable;
 use Doctrine\ORM\QueryBuilder;
 
-abstract class Filter extends Configurable implements FilterInterface
+abstract class Filter implements FilterInterface
 {
-
-    protected $description = array();
+    protected $fieldDescription = array();
 
     protected $name = null;
 
@@ -27,29 +25,17 @@ abstract class Filter extends Configurable implements FilterInterface
 
     protected $value = null;
 
+    protected $options = array();
+
     public function __construct(FieldDescriptionInterface $fieldDescription)
     {
         $this->name         = $fieldDescription->getName();
-        $this->description  = $fieldDescription;
+        $this->fieldDescription  = $fieldDescription;
+        $this->options      = array_replace(
+            $this->getDefaultOptions(),
+            $this->fieldDescription->getOption('filter_options', array())
+        );
 
-        parent::__construct($fieldDescription->getOption('filter_options', array()));
-
-        $this->field        = $this->getFormField();
-    }
-
-    /**
-     * get the object description
-     *
-     * @return array
-     */
-    public function getDescription()
-    {
-        return $this->description;
-    }
-
-    public function setName($name)
-    {
-        $this->name = $name;
     }
 
     public function getName()
@@ -57,14 +43,34 @@ abstract class Filter extends Configurable implements FilterInterface
         return $this->name;
     }
 
-    public function setField($field)
-    {
-        $this->field = $field;
-    }
-
     public function getField()
     {
+        if (!$this->field) {
+            throw new \RuntimeException('No field attached');
+        }
+
         return $this->field;
     }
 
+    /**
+     * @return \Sonata\AdminBundle\Admin\FieldDescriptionInterface
+     */
+    public function getFieldDescription()
+    {
+        return $this->fieldDescription;
+    }
+
+    public function getDefaultOptions()
+    {
+        return array();
+    }
+
+    public function getOption($name, $default = null)
+    {
+        if (array_keys($this->options, $name)) {
+            return $this->options[$name];
+        }
+
+        return $default;
+    }
 }

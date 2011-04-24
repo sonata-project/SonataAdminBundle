@@ -127,12 +127,13 @@ class SonataAdminExtension extends \Twig_Extension
      */
     public function renderFilterElement(FilterInterface $filter, array $params = array())
     {
-        $description = $filter->getDescription();
+        $description = $filter->getFieldDescription();
 
         $template = $this->environment->loadTemplate($description->getTemplate());
 
         return $template->render(array_merge($params, array(
-            'filter' => $filter
+            'filter'        => $filter,
+            'filter_form'   => $filter->getField()->getForm()->createView()
         )));
     }
 

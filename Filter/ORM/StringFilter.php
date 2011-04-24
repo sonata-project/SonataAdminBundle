@@ -11,7 +11,7 @@
 
 namespace Sonata\AdminBundle\Filter\ORM;
 
-use Sonata\AdminBundle\Admin\FieldDescription;
+use Symfony\Component\Form\FormFactory;
 use Doctrine\ORM\QueryBuilder;
 
 class StringFilter extends Filter
@@ -19,7 +19,6 @@ class StringFilter extends Filter
 
     public function filter($queryBuilder, $alias, $field, $value)
     {
-
         if ($value == null) {
             return;
         }
@@ -36,18 +35,17 @@ class StringFilter extends Filter
         $queryBuilder->setParameter($this->getName(), $value);
     }
 
-    protected function configure()
+    public function getDefaultOptions()
     {
-        $this->addOption('format', '%%%s%%');
-
-        parent::configure();
+        return array(
+            'format'   => '%%%s%%'
+        );
     }
 
-   public function getFormField()
+   public function defineFieldBuilder(FormFactory $formFactory)
    {
-       return new \Symfony\Component\Form\TextField(
-           $this->getName(),
-           $this->description->getOption('filter_field_options', array('required' => false))
-       );
+       $options = $this->fieldDescription->getOption('filter_field_options', array('required' => false));
+
+       $this->field = $formFactory->createNamedBuilder('text', $this->getName(), null, $options);
    }
 }

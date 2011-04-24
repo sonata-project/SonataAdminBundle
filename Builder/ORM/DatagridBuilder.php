@@ -19,11 +19,14 @@ use Sonata\AdminBundle\Datagrid\Datagrid;
 use Sonata\AdminBundle\Datagrid\ORM\Pager;
 use Sonata\AdminBundle\Datagrid\ORM\ProxyQuery;
 use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
+use Symfony\Component\Form\FormFactory;
 
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 
 class DatagridBuilder implements DatagridBuilderInterface
 {
+
+    protected $formFactory;
 
     /**
      * todo: put this in the DIC
@@ -44,6 +47,11 @@ class DatagridBuilder implements DatagridBuilderInterface
         'decimal'    =>  'Sonata\\AdminBundle\\Filter\\ORM\\IntegerFilter',
         'callback'   =>  'Sonata\\AdminBundle\\Filter\\ORM\\CallbackFilter',
     );
+
+    public function __construct(FormFactory $formFactory)
+    {
+        $this->formFactory = $formFactory;
+    }
 
     /**
      * @throws \RuntimeException
@@ -157,7 +165,6 @@ class DatagridBuilder implements DatagridBuilderInterface
     public function addFilter(DatagridInterface $datagrid, FieldDescriptionInterface $fieldDescription)
     {
         if (!$fieldDescription->getType()) {
-
             return false;
         }
 
@@ -201,6 +208,7 @@ class DatagridBuilder implements DatagridBuilderInterface
             $query,
             $admin->getList(),
             new Pager,
+            $this->formFactory,
             $values
         );
     }
