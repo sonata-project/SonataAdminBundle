@@ -11,6 +11,8 @@
 
 namespace Sonata\AdminBundle\Admin;
 
+use Sonata\AdminBundle\Admin\AdminInterface;
+
 /**
  * A FieldDescription hold the information about a field. A typical
  * admin instance contains different collections of fields
@@ -259,10 +261,10 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     /**
      * set the parent Admin (only used in nested admin)
      *
-     * @param \Sonata\AdminBundle\Admin\Admin $parent
+     * @param \Sonata\AdminBundle\Admin\AdminInterface $parent
      * @return void
      */
-    public function setParent(Admin $parent)
+    public function setParent(AdminInterface $parent)
     {
         $this->parent = $parent;
     }
@@ -270,7 +272,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     /**
      * return the parent Admin (only used in nested admin)
      *
-     * @return \Sonata\AdminBundle\Admin\Admin
+     * @return \Sonata\AdminBundle\Admin\AdminInterface
      */
     public function getParent()
     {
@@ -300,9 +302,9 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     /**
      * set the association admin instance (only used if the field is linked to an Admin)
      *
-     * @param \Sonata\AdminBundle\Admin\Admin $associationAdmin the associated admin
+     * @param \Sonata\AdminBundle\Admin\AdminInterface $associationAdmin the associated admin
      */
-    public function setAssociationAdmin(Admin $associationAdmin)
+    public function setAssociationAdmin(AdminInterface $associationAdmin)
     {
         $this->associationAdmin = $associationAdmin;
         $this->associationAdmin->setParentFieldDescription($this);
@@ -310,7 +312,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
 
     /**
      * return the associated Admin instance (only used if the field is linked to an Admin)
-     * @return \Sonata\AdminBundle\Admin\Admin
+     * @return \Sonata\AdminBundle\Admin\AdminInterface
      */
     public function getAssociationAdmin()
     {
@@ -326,7 +328,6 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
      */
     public function getValue($object)
     {
-
         $value = false;
 
         $fieldName  = $this->getFieldName();
@@ -347,16 +348,16 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     /**
      * set the admin class linked to this FieldDescription
      *
-     * @param \Sonata\AdminBundle\Admin\Admin $admin
+     * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
      * @return void
      */
-    public function setAdmin(Admin $admin)
+    public function setAdmin(AdminInterface $admin)
     {
         $this->admin = $admin;
     }
 
     /**
-     * @return \Sonata\AdminBundle\Admin\Admin the admin class linked to this FieldDescription
+     * @return \Sonata\AdminBundle\Admin\AdminInterface the admin class linked to this FieldDescription
      */
     public function getAdmin()
     {
@@ -379,7 +380,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
      * merge option values related to the provided option name
      *
      * @throws \RuntimeException
-     * @param  $name
+     * @param string $name
      * @param array $options
      * @return void
      */

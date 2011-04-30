@@ -100,4 +100,11 @@ interface AdminInterface
      * @return void
      */
     function generateUrl($name, array $parameters = array());
+
+    /**
+     * @abstract
+     * @return \Sonata\AdminBundle\ModelManagerInterface;
+     */
+    function getModelManager();
+
 }

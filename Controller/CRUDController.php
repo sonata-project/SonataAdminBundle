@@ -35,7 +35,6 @@ class CRUDController extends Controller
      */
     public function renderJson($data, $status = 200, $headers = array())
     {
-
         // fake content-type so browser does not show the download popup when this
         // response is rendered through an iframe (used by the jquery.form.js plugin)
         //  => don't know yet if it is the best solution

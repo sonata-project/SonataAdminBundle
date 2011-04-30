@@ -139,9 +139,7 @@ abstract class Admin implements AdminInterface
      *
      * @var array
      */
-    protected $formOptions = array(
-        'validation_groups' => 'Default'
-    );
+    protected $formOptions = array();
 
     /**
      * Default values to the datagrid
@@ -902,7 +900,7 @@ abstract class Admin implements AdminInterface
      */
     public function getObject($id)
     {
-        return $this->modelManager->find($this->getClass(), $id);
+        return $this->modelManager->findOne($this->getClass(), $id);
     }
 
     /**

@@ -16,7 +16,8 @@ use Sonata\AdminBundle\Admin\ORM\FieldDescription;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Doctrine\ORM\EntityManager;
-
+use Doctrine\ORM\QueryBuilder;
+use Symfony\Component\Form\Exception\PropertyAccessDeniedException;
 
 class ModelManager implements ModelManagerInterface
 {
@@ -36,7 +37,7 @@ class ModelManager implements ModelManagerInterface
      *
      * @abstract
      * @param string $name
-     * @return void
+     * @return \Doctrine\ORM\Mapping\ClassMetadataInfo
      */
     public function getMetadata($class)
     {
@@ -96,9 +97,14 @@ class ModelManager implements ModelManagerInterface
         $this->entityManager->flush();
     }
 
-    public function find($class, $id)
+    public function findOne($class, $id)
     {
-        return $this->entityManager->find($class, $id);
+        return $this->entityManager->getRepository($class)->find($id);
+    }
+
+    public function find($class, array $criteria = array())
+    {
+        return $this->entityManager->getRepository($class)->findBy($criteria);
     }
 
     /**
@@ -140,13 +146,36 @@ class ModelManager implements ModelManagerInterface
         return $repository->createQueryBuilder($alias);
     }
 
+    public function executeQuery($query)
+    {
+        if ($query instanceof QueryBuilder) {
+          return $query->getQuery()->execute();
+        }
+
+        return $query->execute();
+    }
+
     /**
      * @param string $class
      * @return string
      */
-    public function getEntityIdentifier($class)
+    public function getModelIdentifier($class)
     {
         return $this->getMetadata($class)->identifier;
+    }
+
+    public function getIdentifierValues($entity)
+    {
+        if (!$this->getEntityManager()->getUnitOfWork()->isInIdentityMap($entity)) {
+            throw new \RuntimeException('Entities passed to the choice field must be managed');
+        }
+
+        return $this->getEntityManager()->getUnitOfWork()->getEntityIdentifier($entity);
+    }
+
+    public function getIdentifierFieldNames($class)
+    {
+        $this->getMetadata($class)->getIdentifierFieldNames();
     }
 
     /**
@@ -215,7 +244,88 @@ class ModelManager implements ModelManagerInterface
     {
         return array(
             '_sort_order' => 'ASC',
-            '_sort_by'    => implode(',', $this->getEntityIdentifier($class))
+            '_sort_by'    => implode(',', $this->getModelIdentifier($class))
         );
+    }
+
+    /**
+     * @param string $class
+     * @param object $instance
+     * @return void
+     */
+    function modelTransform($class, $instance)
+    {
+        return $instance;
+    }
+
+    /**
+     * @param string $class
+     * @param array $array
+     * @return object
+     */
+    function modelReverseTransform($class, array $array = array())
+    {
+        $instance = $this->getModelInstance($class);
+        $metadata = $this->getMetadata($class);
+
+        $reflClass = $metadata->reflClass;
+        foreach ($array as $name => $value) {
+
+            $reflection_property = false;
+            // property or association ?
+            if (array_key_exists($name, $metadata->fieldMappings)) {
+
+                $property = $metadata->fieldMappings[$name]['fieldName'];
+                $reflection_property = $metadata->reflFields[$name];
+
+            } else if (array_key_exists($name, $metadata->associationMappings)) {
+                $property = $metadata->associationMappings[$name]['fieldName'];
+            } else {
+                $property = $name;
+            }
+
+            $setter = 'set'.$this->camelize($name);
+
+            if ($reflClass->hasMethod($setter)) {
+                if (!$reflClass->getMethod($setter)->isPublic()) {
+                    throw new PropertyAccessDeniedException(sprintf('Method "%s()" is not public in class "%s"', $setter, $reflClass->getName()));
+                }
+
+                $instance->$setter($value);
+            } else if ($reflClass->hasMethod('__set')) {
+                // needed to support magic method __set
+                $instance->$property = $value;
+            } else if ($reflClass->hasProperty($property)) {
+                if (!$reflClass->getProperty($property)->isPublic()) {
+                    throw new PropertyAccessDeniedException(sprintf('Property "%s" is not public in class "%s". Maybe you should create the method "set%s()"?', $property, $reflClass->getName(), ucfirst($property)));
+                }
+
+                $instance->$property = $value;
+            } else if ($reflection_property) {
+                $reflection_property->setValue($instance, $value);
+            }
+        }
+
+        return $instance;
+    }
+
+    /**
+     * method taken from PropertyPath
+     *
+     * @param  $property
+     * @return mixed
+     */
+    protected function camelize($property)
+    {
+       return preg_replace(array('/(^|_)+(.)/e', '/\.(.)/e'), array("strtoupper('\\2')", "'_'.strtoupper('\\1')"), $property);
+    }
+
+    /**
+     * @param string $class
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     */
+    public function getModelCollectionInstance($class)
+    {
+        return new \Doctrine\Common\Collections\ArrayCollection();
     }
 }

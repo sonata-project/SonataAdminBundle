@@ -65,13 +65,13 @@ file that was distributed with this source code.
         {% endfor %}
 
         {% if app.request.isxmlhttprequest %}
-            {% if form.data.id %}
+            {% if object.id %}
                 <input type="submit" name="btn_update" value="{% trans from admin.translationdomain %}btn_update{% endtrans %}"/>
             {% else %}
                 <input type="submit" name="btn_create" value="{% trans from admin.translationdomain %}btn_create{% endtrans %}"/>
             {% endif %}
         {% else %}
-            {% if form.data.id %}
+            {% if object.id %}
                 <input type="submit" name="btn_update_and_edit" value="{% trans from admin.translationdomain %}btn_update_and_edit_again{% endtrans %}"/>
                 <input type="submit" name="btn_update_and_list" value="{% trans from admin.translationdomain %}btn_update_and_return_to_list{% endtrans %}"/>
             {% else %}

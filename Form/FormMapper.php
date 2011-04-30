@@ -11,13 +11,9 @@
 namespace Sonata\AdminBundle\Form;
 
 use Sonata\AdminBundle\Builder\FormContractorInterface;
-use Sonata\AdminBundle\Admin\Admin;
-
+use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Symfony\Component\Form\FormBuilder;
-use Symfony\Component\Validator\ValidatorInterface;
-use Symfony\Component\Form\Type\FormTypeInterface;
-
 
 /**
  * This class is use to simulate the Form API
@@ -31,7 +27,7 @@ class FormMapper
 
     protected $admin;
 
-    public function __construct(FormContractorInterface $formContractor, FormBuilder $formBuilder, Admin $admin)
+    public function __construct(FormContractorInterface $formContractor, FormBuilder $formBuilder, AdminInterface $admin)
     {
         $this->formBuilder      = $formBuilder;
         $this->formContractor   = $formContractor;
@@ -45,7 +41,7 @@ class FormMapper
      *     to instantiate a new Field
      *   - if $name is a FormDescription, the method uses information defined in the FormDescription to
      *     instantiate a new Field
-     *   - if $name is a FormTypeInterface, then a FieldDescriptionInterface is created, the FormTypeInterface is added to
+     *   - if $name is a FormBuilder, then a FieldDescriptionInterface is created, the FormBuilder is added to
      *     the form
      *   - if $name is a string with a related FieldDescription, then the method uses information defined in the
      *     FormDescription to instantiate a new Field
@@ -64,7 +60,7 @@ class FormMapper
             $fieldDescription = $name;
             $fieldDescription->mergeOptions($fieldDescriptionOptions);
 
-        } else if ($name instanceof FormTypeInterface) {
+        } else if ($name instanceof FormBuilder) {
 
             $fieldType   = $name;
 
@@ -115,6 +111,32 @@ class FormMapper
             $this->formBuilder,
             $fieldDescription
         );
+    }
+
+    /**
+     * @param string $name
+     * @param string $type
+     * @param array $options
+     * @param array $fieldDescriptionOptions
+     * @return \Symfony\Component\Form\FormInterface
+     */
+    public function addType($name, $type, array $options = array(), array $fieldDescriptionOptions = array())
+    {
+        if (!isset($fieldDescriptionOptions['type'])) {
+            $fieldDescriptionOptions['type'] = $type;
+        }
+
+        $fieldDescription = $this->admin->getModelManager()->getNewFieldDescriptionInstance(
+            $this->admin->getClass(),
+            $name,
+            $fieldDescriptionOptions
+        );
+
+        $this->formContractor->fixFieldDescription($this->admin, $fieldDescription, $fieldDescriptionOptions);
+
+        $this->admin->addFormFieldDescription($name, $fieldDescription);
+
+        return $this->formBuilder->add($name, $type, $options);
     }
 
     /**

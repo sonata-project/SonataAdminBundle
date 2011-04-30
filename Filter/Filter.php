@@ -35,7 +35,6 @@ abstract class Filter implements FilterInterface
             $this->getDefaultOptions(),
             $this->fieldDescription->getOption('filter_options', array())
         );
-
     }
 
     public function getName()

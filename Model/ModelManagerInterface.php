@@ -64,10 +64,17 @@ interface ModelManagerInterface
 
     /**
      * @param string $class
-     * @param string integer
+     * @param array $criteria
      * @return object
      */
-    function find($class, $id);
+    function find($class, array $criteria = array());
+
+    /**
+     * @param string $class
+     * @param integer $id
+     * @return object
+     */
+    function findOne($class, $id);
 
     /**
      * @param string $class classname
@@ -86,6 +93,7 @@ interface ModelManagerInterface
 
     /**
      * @abstract
+     * @param string $class
      * @param string $alias
      * @return a query instance
      */
@@ -96,7 +104,20 @@ interface ModelManagerInterface
      * @param string $class
      * @return string
      */
-    function getEntityIdentifier($class);
+    function getModelIdentifier($class);
+
+    /**
+     *
+     * @param object
+     * @return mixed
+     */
+    function getIdentifierValues($model);
+
+    /**
+     *
+     * @return array
+     */
+    function getIdentifierFieldNames($cass);
 
     /**
      * @abstract
@@ -105,6 +126,12 @@ interface ModelManagerInterface
      */
     function getModelInstance($class);
 
+    /**
+     * @abstract
+     * @param string $class
+     * @return void
+     */
+    function getModelCollectionInstance($class);
 
     /**
      * Returns the parameters used in the columns header
@@ -120,4 +147,27 @@ interface ModelManagerInterface
      * @return array
      */
     function getDefaultSortValues($class);
+
+    /**
+     * @abstract
+     * @param string $class
+     * @param array $array
+     * @return void
+     */
+    function modelReverseTransform($class, array $array = array());
+
+    /**
+     * @abstract
+     * @param string $class
+     * @param object $instance
+     * @return void
+     */
+    function modelTransform($class, $instance);
+
+    /**
+     * @abstract
+     * @param mixed $query
+     * @return void
+     */
+    function executeQuery($query);
 }

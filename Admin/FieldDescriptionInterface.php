@@ -11,6 +11,7 @@
 
 namespace Sonata\AdminBundle\Admin;
 
+use Sonata\AdminBundle\Admin\AdminInterface;
 
 interface FieldDescriptionInterface
 {
@@ -116,15 +117,15 @@ interface FieldDescriptionInterface
     /**
      * set the parent Admin (only used in nested admin)
      *
-     * @param \Sonata\AdminBundle\Admin\Admin $parent
+     * @param \Sonata\AdminBundle\Admin\AdminInterface $parent
      * @return void
      */
-    function setParent(Admin $parent);
+    function setParent(AdminInterface $parent);
 
     /**
      * return the parent Admin (only used in nested admin)
      *
-     * @return \Sonata\AdminBundle\Admin\Admin
+     * @return \Sonata\AdminBundle\Admin\AdminInterface
      */
     function getParent();
 
@@ -168,13 +169,13 @@ interface FieldDescriptionInterface
     /**
      * set the association admin instance (only used if the field is linked to an Admin)
      *
-     * @param \Sonata\AdminBundle\Admin\Admin $associationAdmin the associated admin
+     * @param \Sonata\AdminBundle\Admin\AdminInterface $associationAdmin the associated admin
      */
-    function setAssociationAdmin(Admin $associationAdmin);
+    function setAssociationAdmin(AdminInterface $associationAdmin);
 
     /**
      * return the associated Admin instance (only used if the field is linked to an Admin)
-     * @return \Sonata\AdminBundle\Admin\Admin
+     * @return \Sonata\AdminBundle\Admin\AdminInterface
      */
     function getAssociationAdmin();
 
@@ -196,24 +197,15 @@ interface FieldDescriptionInterface
     /**
      * set the admin class linked to this FieldDescription
      *
-     * @param \Sonata\AdminBundle\Admin\Admin $admin
+     * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
      * @return void
      */
-    function setAdmin(Admin $admin);
+    function setAdmin(AdminInterface $admin);
 
     /**
-     * @return \Sonata\AdminBundle\Admin\Admin the admin class linked to this FieldDescription
+     * @return \Sonata\AdminBundle\Admin\AdminInterface the admin class linked to this FieldDescription
      */
     function getAdmin();
-
-    /**
-     * Camelize a string
-     *
-     * @static
-     * @param string $property
-     * @return string
-     */
-    static function camelize($property);
 
     /**
      * merge option values related to the provided option name

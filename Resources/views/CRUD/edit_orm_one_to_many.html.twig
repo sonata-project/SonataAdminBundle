@@ -29,7 +29,6 @@ file that was distributed with this source code.
                                                     value[nested_group_field_name]
                                                 ) }}
                                             {% else %}
-                                                LA
                                                 {{ form_widget(nested_field) }}
                                             {% endif %}
                                         </td>
@@ -40,8 +39,8 @@ file that was distributed with this source code.
                     </table>
                 {% else %}
                     <div>
-                        {% for nested_group_field_name, nested_group_field in field_element.fields %}
-                            {% for field_name, nested_field in nested_group_field.fields %}
+                        {% for nested_group_field_name, nested_group_field in field_element.children %}
+                            {% for field_name, nested_field in nested_group_field.children %}
                                 {% if field_description.associationadmin.formfielddescriptions[field_name] is defined %}
                                     {{ field_description.associationadmin.formfielddescriptions[field_name]|render_form_element(
                                         nested_group_field,
@@ -95,7 +94,7 @@ file that was distributed with this source code.
                             jQuery('input', element).hide();
                         });
 
-                        jQuery('div#field_container_{{ field_element.id }} tbody.sonata-ba-tbody td.sonata-ba-td-{{ field_element.id }}-position input').each(function(index, value) {
+                        jQuery('div#field_container_{{ field_element.vars.id }} tbody.sonata-ba-tbody td.sonata-ba-td-{{ field_element.vars.id }}-position input').each(function(index, value) {
                             jQuery(value).val(index + 1);
                         });
                     }
