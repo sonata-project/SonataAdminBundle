@@ -17,7 +17,6 @@ use Sonata\AdminBundle\Model\ModelManagerInterface;
 
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\Validator\ValidatorInterface;
 
 interface FormContractorInterface
 {
@@ -25,22 +24,21 @@ interface FormContractorInterface
     /**
      * @abstract
      * @param \Symfony\Component\Form\FieldFactory\FormFactoryInterface $formFactory
-     * @param \Symfony\Component\Validator\ValidatorInterface $validator
      */
-    function __construct(FormFactoryInterface $formFactory, ValidatorInterface $validator);
+    function __construct(FormFactoryInterface $formFactory);
 
     /**
      * @abstract
-     * @param \Symfony\Component\Form\Form $form
-     * @param \Sonata\AdminBundle\Admin\FieldDescription $fieldDescription
+     * @param \Symfony\Component\Form\FormBuilder $formBuilder
+     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
      * @return void
      */
-    function addField(FormBuilder $form, FieldDescriptionInterface $fieldDescription);
+    function addField(FormBuilder $formBuilder, FieldDescriptionInterface $fieldDescription);
 
     /**
      * @abstract
      * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
-     * @param \Sonata\AdminBundle\Admin\FieldDescription $fieldDescription
+     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
      * @param array $options
      * @return void
      */

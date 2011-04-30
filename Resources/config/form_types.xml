@@ -4,9 +4,10 @@
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <parameters>
-        <parameter key="sonata.admin.templates.layout">SonataAdminBundle::standard_layout.html.twig</parameter>
-        <parameter key="sonata.admin.templates.ajax">SonataAdminBundle::ajax_layout.html.twig</parameter>
-    </parameters>
-
+    <services>
+        <service id="sonata.admin.form.type.admin" class="Sonata\AdminBundle\Form\Type\AdminType">
+            <tag name="form.type" alias="sonata_model_admin" />
+        </service>
+    </services>
+    
 </container>

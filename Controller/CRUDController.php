@@ -83,7 +83,7 @@ class CRUDController extends Controller
             throw new \RuntimeException(sprintf('There is no `_sonata_admin` defined for the controller `%s` and the current route `%s`', get_class($this), $this->container->get('request')->get('_route')));
         }
 
-        $this->admin = $this->container->get('sonata_admin.admin.pool')->getAdminByAdminCode($adminCode);
+        $this->admin = $this->container->get('sonata.admin.pool')->getAdminByAdminCode($adminCode);
 
         if (!$this->admin) {
             throw new \RuntimeException(sprintf('Unable to find the admin class related to the current controller (%s)', get_class($this)));
@@ -107,10 +107,10 @@ class CRUDController extends Controller
     public function getBaseTemplate()
     {
         if ($this->isXmlHttpRequest()) {
-            return $this->container->getParameter('sonata_admin.templates.ajax');
+            return $this->container->getParameter('sonata.admin.templates.ajax');
         }
 
-        return $this->container->getParameter('sonata_admin.templates.layout');
+        return $this->container->getParameter('sonata.admin.templates.layout');
     }
 
     /**

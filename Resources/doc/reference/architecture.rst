@@ -103,7 +103,7 @@ property.
 Obtaining an ``Admin`` Service
 ------------------------------
 
-``Admin`` definition are accessible through the 'sonata_admin.pool' service or directly from the DIC.
+``Admin`` definition are accessible through the 'sonata.admin.pool' service or directly from the DIC.
 The ``Admin`` definitions are lazy loaded from the DIC to avoid overhead.
 
 Filter and Datagrid

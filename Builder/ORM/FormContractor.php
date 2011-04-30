@@ -24,7 +24,6 @@ use Sonata\AdminBundle\Form\Type\ModelType;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\Validator\ValidatorInterface;
 
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 
@@ -58,7 +57,7 @@ class FormContractor implements FormContractorInterface
         'country'    =>  'country',
     );
 
-    public function __construct(FormFactoryInterface $formFactory, ValidatorInterface $validator)
+    public function __construct(FormFactoryInterface $formFactory)
     {
         $this->formFactory = $formFactory;
     }
@@ -342,10 +341,5 @@ class FormContractor implements FormContractorInterface
     public function getFormBuilder($name, array $options = array())
     {
         return $this->getFormFactory()->createNamedBuilder('form', $name, $options);
-    }
-
-    public function getValidator()
-    {
-        return $this->validator;
     }
 }

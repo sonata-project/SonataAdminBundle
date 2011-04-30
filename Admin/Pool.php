@@ -11,6 +11,7 @@
 
 namespace Sonata\AdminBundle\Admin;
 
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class Pool
 {
@@ -22,12 +23,16 @@ class Pool
 
     protected $adminClasses = array();
 
+    public function __construct(ContainerInterface $container)
+    {
+        $this->container = $container;
+    }
+
     public function getGroups()
     {
         $groups = $this->adminGroups;
 
         foreach ($this->adminGroups as $name => $adminGroup) {
-
             foreach ($adminGroup as $id => $options) {
                 $groups[$name][$id] = $this->getInstance($id);
             }
@@ -81,7 +86,6 @@ class Pool
      */
     public function getAdminByAdminCode($adminCode)
     {
-
         $codes = explode('|', $adminCode);
         $admin = false;
         foreach ($codes as $code) {
@@ -105,11 +109,6 @@ class Pool
     public function getInstance($id)
     {
         return $this->container->get($id);
-    }
-
-    public function setContainer($container)
-    {
-        $this->container = $container;
     }
 
     public function getContainer()

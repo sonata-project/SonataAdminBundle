@@ -107,4 +107,22 @@ interface AdminInterface
      */
     function getModelManager();
 
+    /**
+     *
+     * @return \Symfony\Component\Form\FormBuilder the form builder
+     */
+    function getFormBuilder($object = null, $options = array());
+
+    /**
+     * @abstract
+     * @param  $name
+     * @return \Sonata\AdminBundle\Admin\FieldDescriptionInterface
+     */
+    function getFormFieldDescription($name);
+
+    /**
+     * @abstract
+     * @return \Symfony\Component\HttpFoundation\Request
+     */
+    function getRequest();
 }

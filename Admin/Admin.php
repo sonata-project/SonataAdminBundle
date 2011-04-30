@@ -839,8 +839,13 @@ abstract class Admin implements AdminInterface
      * @param array $options
      * @return \Symfony\Component\Form\FormBuilder the form builder
      */
-    public function getFormBuilder($object, $options = array())
+    public function getFormBuilder($object = null, $options = array())
     {
+
+        if (!$object) {
+            $object = $this->getSubject();
+        }
+
         $formBuilder = $this->getFormContractor()->getFormBuilder(
             $this->getUniqid(),
             array_merge($this->formOptions, $options)

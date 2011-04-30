@@ -21,7 +21,6 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\Config\Definition\Processor;
 
-use Symfony\Component\Finder\Finder;
 
 /**
  * SonataAdminBundleExtension
@@ -40,14 +39,17 @@ class SonataAdminExtension extends Extension
 
     /**
      *
-     * @param array            $config    An array of configuration settings
+     * @param array            $configs    An array of configuration settings
      * @param ContainerBuilder $container A ContainerBuilder instance
      */
     public function load(array $configs, ContainerBuilder $container)
     {
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('templates.xml');
-        $loader->load('field_types.xml');
+        $loader->load('doctrine_orm.xml');
+        $loader->load('twig.xml');
+        $loader->load('core.xml');
+        $loader->load('form_types.xml');
 
         $configuration = new Configuration();
         $processor = new Processor();
@@ -55,37 +57,6 @@ class SonataAdminExtension extends Extension
 
         // setups parameters with values in config.yml, default values from external files used if not
         $this->configSetupTemplates($config, $container);
-
-        // register the twig extension
-        $container
-            ->register('twig.extension.sonata_admin', 'Sonata\AdminBundle\Twig\Extension\SonataAdminExtension')
-            ->addTag('twig.extension');
-
-        // register form builder
-        $definition = new Definition('Sonata\AdminBundle\Builder\ORM\FormContractor', array(new Reference('form.factory'), new Reference('validator')));
-        $container->setDefinition('sonata_admin.builder.orm_form', $definition);
-
-        // register list builder
-        $definition = new Definition('Sonata\AdminBundle\Builder\ORM\ListBuilder');
-        $container->setDefinition('sonata_admin.builder.orm_list', $definition);
-
-        // register filter builder
-        $definition = new Definition('Sonata\AdminBundle\Builder\ORM\DatagridBuilder');
-        $definition->addArgument(new Reference('form.factory'));
-
-        $container->setDefinition('sonata_admin.builder.orm_datagrid', $definition);
-
-        // registers crud action
-        $definition = new Definition('Sonata\AdminBundle\Admin\Pool');
-        $definition->addMethodCall('setContainer', array(new Reference('service_container')));
-        $container->setDefinition('sonata_admin.admin.pool', $definition);
-
-        $definition = new Definition('Sonata\AdminBundle\Route\AdminPoolLoader', array(
-            new Reference('sonata_admin.admin.pool'),
-        ));
-        $definition->addTag('routing.loader');
-
-        $container->setDefinition('sonata_admin.route_loader', $definition);
     }
 
     protected function configSetupTemplates($config, $container)
@@ -101,7 +72,7 @@ class SonataAdminExtension extends Extension
                     continue;
                 }
 
-                $container->setParameter(sprintf('sonata_admin.templates.%s', $type), $template);
+                $container->setParameter(sprintf('sonata.admin.templates.%s', $type), $template);
             }
         }
     }

@@ -34,7 +34,7 @@ class AddDependencyCallsPass implements CompilerPassInterface
         $groups = $admins = $classes = array();
 
         //
-        $pool = $container->getDefinition('sonata_admin.admin.pool');
+        $pool = $container->getDefinition('sonata.admin.pool');
 
         foreach ($container->findTaggedServiceIds('sonata.admin') as $id => $attributes) {
 
@@ -78,7 +78,7 @@ class AddDependencyCallsPass implements CompilerPassInterface
         $pool->addMethodCall('setAdminClasses', array($classes));
 
         //
-        $routeLoader = $container->getDefinition('sonata_admin.route_loader');
+        $routeLoader = $container->getDefinition('sonata.admin.route_loader');
         $routeLoader->addArgument($admins);
     }
 
@@ -97,19 +97,19 @@ class AddDependencyCallsPass implements CompilerPassInterface
         $manager_type = $attributes[0]['manager_type'];
 
         if (!$definition->hasMethodCall('setModelManager')) {
-            $definition->addMethodCall('setModelManager', array(new Reference(sprintf('sonata_admin.manager.%s', $manager_type))));
+            $definition->addMethodCall('setModelManager', array(new Reference(sprintf('sonata.admin.manager.%s', $manager_type))));
         }
 
         if (!$definition->hasMethodCall('setFormContractor')) {
-            $definition->addMethodCall('setFormContractor', array(new Reference(sprintf('sonata_admin.builder.%s_form', $manager_type))));
+            $definition->addMethodCall('setFormContractor', array(new Reference(sprintf('sonata.admin.builder.%s_form', $manager_type))));
         }
 
         if (!$definition->hasMethodCall('setListBuilder')) {
-            $definition->addMethodCall('setListBuilder', array(new Reference(sprintf('sonata_admin.builder.%s_list', $manager_type))));
+            $definition->addMethodCall('setListBuilder', array(new Reference(sprintf('sonata.admin.builder.%s_list', $manager_type))));
         }
 
         if (!$definition->hasMethodCall('setDatagridBuilder')) {
-            $definition->addMethodCall('setDatagridBuilder', array(new Reference(sprintf('sonata_admin.builder.%s_datagrid', $manager_type))));
+            $definition->addMethodCall('setDatagridBuilder', array(new Reference(sprintf('sonata.admin.builder.%s_datagrid', $manager_type))));
         }
 
         if (!$definition->hasMethodCall('setTranslator')) {
@@ -117,7 +117,7 @@ class AddDependencyCallsPass implements CompilerPassInterface
         }
 
         if (!$definition->hasMethodCall('setConfigurationPool')) {
-            $definition->addMethodCall('setConfigurationPool', array(new Reference('sonata_admin.admin.pool')));
+            $definition->addMethodCall('setConfigurationPool', array(new Reference('sonata.admin.pool')));
         }
 
         if (!$definition->hasMethodCall('setRouter')) {
