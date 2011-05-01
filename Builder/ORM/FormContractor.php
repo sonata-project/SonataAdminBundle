@@ -252,7 +252,7 @@ class FormContractor implements FormContractorInterface
     {
         $fieldDescription->mergeOptions($options);
 
-        if($admin->getModelManager()->hasMetadata($admin->getClass()))
+        if ($admin->getModelManager()->hasMetadata($admin->getClass()))
         {
             $metadata = $admin->getModelManager()->getMetadata($admin->getClass());
 

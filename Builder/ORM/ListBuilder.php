@@ -48,7 +48,7 @@ class ListBuilder implements ListBuilderInterface
         $fieldDescription->mergeOptions($options);
         $fieldDescription->setAdmin($admin);
 
-        if($admin->getModelManager()->hasMetadata($admin->getClass())) {
+        if ($admin->getModelManager()->hasMetadata($admin->getClass())) {
             $metadata = $admin->getModelManager()->getMetadata($admin->getClass());
 
             // set the default field mapping

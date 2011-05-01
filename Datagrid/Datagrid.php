@@ -64,7 +64,7 @@ class Datagrid implements DatagridInterface
 
     public function buildPager()
     {
-        if($this->bound) {
+        if ($this->bound) {
             return;
         }
 

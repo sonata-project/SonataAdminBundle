@@ -71,7 +71,7 @@ class RouteCollection
      */
     public function addCollection(RouteCollection $collection)
     {
-        foreach($collection->getElements() as $name => $route) {
+        foreach ($collection->getElements() as $name => $route) {
             $this->elements[$name] = $route;
         }
     }
@@ -114,7 +114,7 @@ class RouteCollection
      */
     public function actionify($action)
     {
-        if(($pos = strrpos($action, '.')) !== false) {
+        if (($pos = strrpos($action, '.')) !== false) {
 
           $action = substr($action, $pos + 1);
         }

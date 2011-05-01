@@ -52,7 +52,7 @@ A route is always generated with the ``Admin`` context, that is why a route can 
 .. code-block:: php
 
     use Sonata\AdminBundle\Route\RouteCollection;
-    
+
     class MediaAdmin extends Admin
     {
         public function configureRoutes(RouteCollection $collection)
@@ -76,7 +76,7 @@ method. This method will be used when a link is being generated.
     {
         public function getPersistentParameters()
         {
-            if(!$this->getRequest()) {
+            if (!$this->getRequest()) {
                 return array();
             }
 
