@@ -29,9 +29,9 @@ abstract class Filter implements FilterInterface
 
     public function __construct(FieldDescriptionInterface $fieldDescription)
     {
-        $this->name         = $fieldDescription->getName();
-        $this->fieldDescription  = $fieldDescription;
-        $this->options      = array_replace(
+        $this->name               = $fieldDescription->getName();
+        $this->fieldDescription   = $fieldDescription;
+        $this->options            = array_replace(
             $this->getDefaultOptions(),
             $this->fieldDescription->getOption('filter_options', array())
         );
@@ -66,7 +66,7 @@ abstract class Filter implements FilterInterface
 
     public function getOption($name, $default = null)
     {
-        if (array_keys($this->options, $name)) {
+        if (array_key_exists($name, $this->options)) {
             return $this->options[$name];
         }
 

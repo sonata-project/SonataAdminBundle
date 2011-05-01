@@ -22,8 +22,6 @@ class IntegerFilter extends Filter
             return;
         }
 
-        $value      = sprintf($this->getOption('format'), $value);
-
         // c.name > '1' => c.name OPERATOR :FIELDNAME
         $queryBuilder->andWhere(sprintf('%s.%s %s :%s',
             $alias,
@@ -32,7 +30,7 @@ class IntegerFilter extends Filter
             $this->getName()
         ));
 
-        $queryBuilder->setParameter($this->getName(), (int)$value);
+        $queryBuilder->setParameter($this->getName(), (int)sprintf($this->getOption('format'), $value));
     }
 
     public function getDefaultOptions()

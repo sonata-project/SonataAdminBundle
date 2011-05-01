@@ -1193,7 +1193,7 @@ abstract class Admin implements AdminInterface
             if (!is_numeric($id)) {
                 $this->subject = false;
             } else {
-                $this->subject = $this->getModelManager()->find(
+                $this->subject = $this->getModelManager()->findOne(
                     $this->getClass(),
                     $id
                 );

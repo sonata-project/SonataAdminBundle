@@ -17,7 +17,6 @@ use Symfony\Component\Form\FormBuilder;
 
 abstract class Filter extends BaseFilter
 {
-
     public function apply($queryBuilder, $value)
     {
         $this->value = $value;
