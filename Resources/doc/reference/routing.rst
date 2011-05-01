@@ -13,7 +13,7 @@ Routing Definition
 ------------------
 
 You can set a ``baseRouteName`` property inside your ``Admin`` class, which
-represents the route prefix.
+represents the route prefix.  
 
 .. code-block:: php
 

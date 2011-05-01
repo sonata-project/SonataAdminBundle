@@ -1,14 +1,14 @@
 Architecture
 ============
 
-The architecture of the bundle is mostly based off of the Django Admin Project,
+The architecture of the bundle is mostly based on the Django Admin Project,
 which is a truly great project. More information can be found at the
 `Django Project Website`_.
 
 The Admin Class
 ---------------
 
-The ``Admin`` class is the CRUD definition of one Doctrine entity. It contains
+The ``Admin`` class is the CRUD definition of one model. It contains
 all the configuration necessary to display a rich CRUD for the entity. From
 within an admin class, the following information can be defined:
 
@@ -26,12 +26,12 @@ within the first ``Admin`` class.
 The admin class is a service implementing the ``AdminInterface``, meaning that
 only required dependencies are injected:
 
-* ``ListBuilder``
-* ``FormBuildre``
-* ``DatagridBuilder``
-* ``Router``
-* ``Request``
-* ``EntityManager``
+* ``ListBuilder`` : build the list fields
+* ``FormContractor`` : construct the form using the Symfony ``FormBuilder``
+* ``DatagridBuilder`` : build the filter fields
+* ``Router`` : generate the different urls
+* ``Request`` 
+* ``ModelManager`` : Service which handle specific ORM code
 * ``Translator``
 
 
@@ -58,7 +58,7 @@ Here, the FOS' User Manager is injected into the Post service.
 Field Definition
 ----------------
 
-A field definition is a FieldDescription object. There is one definition per list
+A field definition is a ``FieldDescription`` object. There is one definition per list
 field.
 
 The definition contains:
@@ -70,14 +70,17 @@ The definition contains:
 * ``options``: Certain field types have additional options;
 
 Template Configuration
-~~~~~~~~~~~~~~~~~~~~~~
+-----------------------
 
 The current implementation uses Twig as the template engine. All templates
-are located in the Resources/views/CRUD directory of the bundle. The base
+are located in the ``Resources/views/CRUD`` directory of the bundle. The base
 template extends two layouts:
 
 * ``AdminBundle::standard_layout.twig``
 * ``AdminBundle::ajax_layout.twig``
+
+The base templates can be configured in the Service Container. So you can easily tweak
+the layout upon your requirements.
 
 Each field is rendered in three different ways and each has its own Twig
 template. For example, for a field with a ``text`` type, the following three
@@ -106,9 +109,34 @@ Obtaining an ``Admin`` Service
 ``Admin`` definition are accessible through the 'sonata.admin.pool' service or directly from the DIC.
 The ``Admin`` definitions are lazy loaded from the DIC to avoid overhead.
 
-Filter and Datagrid
--------------------
 
-todo ...
+Declaring a new Admin class
+---------------------------
+
+Once you have created an admin class, you must declare the class to use it. Like
+
+.. code-block:: xml
+
+    <!-- app/config/config.xml -->
+    <service id="sonata.news.admin.post" class="Sonata\NewsBundle\Admin\PostAdmin">
+
+        <tag name="sonata.admin" manager_type="orm" group="sonata_blog" label="post"/>
+
+        <argument />
+        <argument>Sonata\NewsBundle\Entity\Post</argument>
+        <argument>SonataNewsBundle:PostAdmin</argument>
+    </service>
+
+Or if you're using an YML configuration file,
+
+.. code-block:: yml
+
+    services:
+       sonata.news.admin.post:
+          class: Sonata\NewsBundle\Admin\PostAdmin
+          tags:
+            - { name: sonata.admin, manager_type: orm, group: sonata_blog, label: post }
+          arguments: [null, Sonata\NewsBundle\Entity\Post, SonataNewsBundle:PostAdmin]
+
 
 .. _`Django Project Website`: http://www.djangoproject.com/

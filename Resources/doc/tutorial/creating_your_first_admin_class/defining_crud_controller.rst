@@ -1,29 +1,37 @@
 Defining the CRUD controller
-===========================
+============================
 
 A crud controller class is just an empty class with no methods. However, you can easily add here
 new action or overwrite the default CRUD actions.
 
+.. note::
+  
+    The controller declaration is optional, if none is defined, then the ``AdminBundle`` will use
+    the ``CRUDController``.
+
 Just create 3 files inside the Controller directory
 
+CommendAdminController
+~~~~~~~~~~~~~~~~~~~~~~
 
-- CommendAdminController.php
+.. code-block:: php
 
-..
-
+    <?php
     namespace Sonata\NewsBundle\Controller;
 
     use Sonata\AdminBundle\Controller\CRUDController as Controller;
     
-    class TagAdminController extends Controller
+    class CommentAdminController extends Controller
     {
 
     }
 
-- PostAdminController.php
+PostAdminController
+~~~~~~~~~~~~~~~~~~~
 
-..
+.. code-block:: php
 
+    <?php
     namespace Sonata\NewsBundle\Controller;
 
     use Sonata\AdminBundle\Controller\CRUDController as Controller;
@@ -33,10 +41,12 @@ Just create 3 files inside the Controller directory
 
     }
 
-- TagAdminController.php
+TagAdminController
+~~~~~~~~~~~~~~~~~~
 
-..
+.. code-block:: php
 
+    <?php
     namespace Sonata\NewsBundle\Controller;
 
     use Sonata\AdminBundle\Controller\CRUDController as Controller;

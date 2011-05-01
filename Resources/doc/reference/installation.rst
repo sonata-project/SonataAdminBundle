@@ -1,12 +1,10 @@
 Installation
 ============
 
-Make sure you have ``Sonata`` and ``Knplabs`` exists, if not create them::
+Download bundles
+----------------
 
-  mkdir src/Sonata
-  mkdir src/Knplabs
-
-To begin, add the dependent bundles to the ``src/`` directory. If using
+To begin, add the dependent bundles to the ``src/`` directory. If you are using
 git, you can add them as submodules::
 
   git submodule add git@github.com:sonata-project/jQueryBundle.git src/Sonata/jQueryBundle
@@ -14,6 +12,16 @@ git, you can add them as submodules::
   git submodule add git@github.com:sonata-project/AdminBundle.git src/Sonata/AdminBundle
   git submodule add git@github.com:sonata-project/MenuBundle.git src/Knplabs/Bundle/MenuBundle
 
+If you are not using git, you will have to download them :
+
+  - https://github.com/sonata-project/jQueryBundle/archives/master
+  - https://github.com/sonata-project/BluePrintBundle/archives/master
+  - https://github.com/sonata-project/AdminBundle/archives/master
+  - https://github.com/sonata-project/MenuBundle/archives/master
+  
+Configuration
+-------------
+  
 Next, be sure to enable the bundles in your application kernel:
 
 .. code-block:: php
@@ -39,13 +47,9 @@ Next, be sure to enable the bundles in your application kernel:
       );
   }
 
-Configuration
--------------
 
 The bundle also contains several routes. Import them by adding the following
 code to your application's routing file:
-
-- Add the AdminBundle's routing definition
 
 .. code-block:: yaml
 
@@ -68,32 +72,3 @@ At this point you can access to the dashboard with the url: ``http://yoursite.lo
     the above configuration and routing will actually be placed in those
     files, with the correct format (i.e. XML or PHP).
 
-
-Declaring new Entity
---------------------
-
-Once you have created an admin class, you must declare the class to use it. Like ::
-
-.. code-block:: xml
-
-    # app/config/config.xml
-
-    <service id="sonata.news.admin.post" class="Sonata\NewsBundle\Admin\PostAdmin">
-
-        <tag name="sonata.admin" manager_type="orm" group="sonata_blog" label="post"/>
-
-        <argument />
-        <argument>Sonata\NewsBundle\Entity\Post</argument>
-        <argument>SonataNewsBundle:PostAdmin</argument>
-    </service>
-
-Or if you're using an YML configuration file,
-
-.. code-block:: yml
-
-    services:
-       sonata.news.admin.post:
-          class: Sonata\NewsBundle\Admin\PostAdmin
-          tags:
-            - { name: sonata.admin, manager_type: orm, group: sonata_blog, label: post }
-          arguments: [null, Sonata\NewsBundle\Entity\Post, SonataNewsBundle:PostAdmin]

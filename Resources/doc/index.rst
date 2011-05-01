@@ -1,7 +1,12 @@
-Welcome to AdminBundle documentation
-==============================================
+.. Sonata - AdminBundle documentation master file, created by
+   sphinx-quickstart on Sun May  1 16:09:38 2011.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
 
-The ``AdminBundle`` provides a CRUD interface for a Doctrine entity.
+Welcome to Sonata - AdminBundle's documentation!
+================================================
+
+The ``AdminBundle`` provides a CRUD interface for model entity.
 
 Reference Guide
 ---------------
@@ -32,3 +37,4 @@ Tutorial
    tutorial/creating_your_first_admin_class/defining_crud_controller
    tutorial/creating_your_first_admin_class/defining_admin_class
    
+

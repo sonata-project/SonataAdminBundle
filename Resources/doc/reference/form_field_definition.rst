@@ -1,8 +1,6 @@
 Form field definition
 =====================
 
-These fields are used to display inside the edit form.
-
 Example
 -------
 
@@ -22,24 +20,25 @@ Example
             'title',
             'abstract',
             'content',
-            'tags' => array('form_field_options' => array('expanded' => true)),
-            'comments_close_at',
-            'comments_enabled',
-            'comments_default_status'
         );
 
         public function configureFormFields(FormMapper $form)
         {
-            $form->add('author', array(), array('edit' => 'list'));
-            $form->add('title');
-
-            // add comments_default_status by configuring an internal FieldDescription
-            $form->add('comments_default_status', array('choices' => Comment::getStatusList()), array('type' => 'choice'));
-
-            // or by creating the FormField
-            $form->add(new \Symfony\Component\Form\ChoiceField('comments_default_status', array('choices' => Comment::getStatusList())));
+            // equivalent to :
+            $formMapper
+              ->add('author', array(), array('edit' => 'list'))
+              ->add('enabled')
+              ->add('title')
+              ->add('abtract', array(), array('required' => false))
+              ->add('content');
         }
     }
+
+.. note::
+
+    By default, the form framework always set ``required=true`` for field. This can be an issue for
+    HTML5 browsers as they provide client side validation.
+
 
 Types available
 ---------------
@@ -59,10 +58,96 @@ Types available
 
 if no type is set, the Admin class will use the one set in the doctrine mapping definition.
 
-Tweak it!
----------
+Advanced Usage : File Management
+--------------------------------
 
-- It is possible to tweak the default template by setting a template key in the
-- If the project required specific behaviors, they can be implemented in the
-configureFormFields() method.
+If you want to use custom type from the Form framework you must used the ``addType`` method. (The ``add`` method uses
+the information provided by the model definition).
 
+.. code-block:: php
+
+    <?php
+    namespace Sonta\NewsBundle\Admin;
+
+    use Sonata\AdminBundle\Form\FormMapper;
+    use Sonata\AdminBundle\Admin\Admin;
+
+    class MediaAdmin extends Admin
+    {
+        public function configureFormFields(FormMapper $form)
+        {
+            $formMapper
+                ->add('name', array('required' => false))
+                ->add('enabled', array('required' => false))
+                ->add('authorName', array('required' => false))
+                ->add('cdnIsFlushable', array('required' => false))
+                ->add('description', array('required' => false))
+                ->add('copyright', array('required' => false))
+                // add a custom type, using the native form factory
+                ->addType('binaryContent', 'file', array('type' => false, 'required' => false));
+        }
+  }
+
+.. note::
+
+    By setting ``type=false`` in the file definition, the Form framework will provide an instance of
+    ``UploadedFile`` for the ``Media::setBinaryContent`` method. Otherwise, the full path will be provided.
+
+
+
+
+Advanced Usage : Many-to-one
+----------------------------
+
+If you have many ``Post`` linked to one ``User``, then the ``Post`` form should display a ``User`` field. 
+The AdminBundle provides 3 edit options :
+
+ - ``standard`` : default value, the user list is set in a select widget
+ - ``list`` : the user list is set in a model where you can search and select a user
+ 
+In both case, you can create a new ``User`` by clicking on the "+" icon.
+
+The last option, is ``inline`` this option embed the ``User`` form into the ``Post`` Form. This option is
+great for One-to-one, or if your want to allow the user to edit the ``User`` information.
+
+.. code-block:: php
+
+    <?php
+    namespace Sonata\NewsBundle\Admin;
+
+    class PostAdmin extends Admin
+    {
+        protected $form = array(
+            'author'  => array('edit' => 'list'),
+        );
+    }
+
+Advanced Usage : One-to-many
+----------------------------
+
+Let's say you have a ``Gallery`` links to some ``Media`` with a join table ``galleryHasMedias``. You
+can easily add new ``galleryHasMedias`` row by defining the different options :
+
+  - ``edit`` : ``inline|standard``, the inline mode allows you to add new rows
+  - ``inline`` : ``table|standard``, the fields are displayed into table
+  - ``sortable`` : if the model has an position field, you can enable a drag and drop sortable effect by setting ``sortable=field_name``
+
+
+.. code-block:: php
+
+    <?php
+    namespace Sonata\MediaBundle\Admin;
+
+    use Sonata\AdminBundle\Admin\Admin;
+
+    class GalleryAdmin extends Admin
+    {
+        protected $form = array(
+            'name',
+            'galleryHasMedias' => array(
+                'edit' => 'inline',
+                'inline' => 'table',
+                'sortable' => 'position'
+            ),
+        );
+    }

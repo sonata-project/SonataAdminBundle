@@ -17,15 +17,19 @@ Example
     class PostAdmin extends Admin
     {
         protected $list = array(
-            'title'   => array(),
-            'enabled' => array('type' => 'boolean'),
-            'tags'    => array(),
-            'summary' => array()
+            'title' => array('identifier' => true), // add edit link
+            'enabled',
+            'tags',
+            'summary',
         );
 
         protected function configureListFields(ListMapper $list) // optional
         {
-            $list->get('summary')->setTemplate('NewsBundle:NewsAdmin:list_summary.twig');
+            // or equivalent to :
+            $list->add('title', array('identifier' => true));
+            $list->add('enabled');
+            $list->add('tags);
+            $list->add('summary');
         }
     }
 
@@ -40,7 +44,7 @@ Types available
 The most important option for each field is the ``type``: The available
 types include:
 
-* boolean
+* boolean 
 * datetime
 * decimal
 * identifier
@@ -67,10 +71,11 @@ You can set actions for each items in list by adding in $list, the '_action' fie
       )
     )
 
-Edit and delete actions are available in default configuration. You can add your own! Default template file is :
-    SonataAdminBundle:CRUD:list__action_[ACTION_NAME].html.twig
+Edit and delete actions are available in default configuration. You can add your own! Default template 
+file is : ``SonataAdminBundle:CRUD:list__action_[ACTION_NAME].html.twig``
   
 But you can specify yours by setup 'template' option like :
+
 .. code-block:: php
 
     '_action' => array(
@@ -80,12 +85,31 @@ But you can specify yours by setup 'template' option like :
       )
     )
 
-Tweak it!
----------
+Advance Usage
+-------------
 
-It is possible to change the default template by setting a template key in the
-definition.
+If you need a specific layout for a row cell, you can define a custom template
 
-- if the identifier key is set, then the field will be encapsulate by a link to
-the edit action
 
+.. code-block:: php
+
+    class MediaAdmin extends Admin
+    {
+        protected $list = array(
+            'custom' => array('template' => 'SonataMediaBundle:MediaAdmin:list_custom.html.twig', 'type' => 'string'),
+            'enabled',
+        )
+    }
+
+The related template :
+
+.. code-block:: jinja
+
+    {% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+    {% block field%}
+        <div>
+            <strong>{{ object.name }}</strong> <br />
+            {{ object.providername}} : {{ object.width }}x{{ object.height }} <br />
+        </div>
+    {% endblock %}
