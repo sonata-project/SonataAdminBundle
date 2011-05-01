@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony package.
  *
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,7 +15,6 @@ use Symfony\Component\Form\Events;
 use Symfony\Component\Form\Event\DataEvent;
 use Symfony\Component\Form\Event\FilterDataEvent;
 use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -32,20 +31,23 @@ class ResizeFormListener implements EventSubscriberInterface
     private $factory;
 
     /**
-     * @var array
+     * @var string
      */
-    private $prototype;
+    private $type;
 
     /**
-     * @var bool
+     * @var Boolean
      */
     private $resizeOnBind;
 
-    public function __construct(FormFactoryInterface $factory, $prototype, $resizeOnBind = false)
+    private $typeOptions;
+
+    public function __construct(FormFactoryInterface $factory, $type, array $typeOptions = array(), $resizeOnBind = false)
     {
         $this->factory = $factory;
-        $this->prototype = $prototype;
+        $this->type = $type;
         $this->resizeOnBind = $resizeOnBind;
+        $this->typeOptions = $typeOptions;
     }
 
     public static function getSubscribedEvents()
@@ -70,28 +72,18 @@ class ResizeFormListener implements EventSubscriberInterface
             throw new UnexpectedTypeException($data, 'array or \Traversable');
         }
 
-        // at this point the data should a Collection with
-        //  $name = the position
-        //  $value = the object
-        foreach ($data as $name => $value) {
-            $form->add($this->factory->create('text', $name, array(
-                'property_path' => '['.$name.']',
-            )));
-
-            $subChildForm = $form->get($name);
-
-            $prototype = clone $this->prototype;
-            $prototype->setData($value);
-            $prototypeForm = $prototype->getForm();
-
-            foreach($prototypeForm->getChildren() as $field) {
-                $subChildForm->add($field);
-            }
-
-            $form->add($subChildForm);
+        // First remove all rows except for the prototype row
+        foreach ($form as $name => $child) {
+            $form->remove($name);
         }
 
-        // todo : deal with min and max value
+        // Then add all rows again in the correct order
+        foreach ($data as $name => $value) {
+            $options = array_merge($this->typeOptions, array(
+                'property_path' => '['.$name.']',
+            ));
+            $form->add($this->factory->createNamed($this->type, $name, null, $options));
+        }
     }
 
     public function preBind(DataEvent $event)
@@ -111,24 +103,19 @@ class ResizeFormListener implements EventSubscriberInterface
             throw new UnexpectedTypeException($data, 'array or \Traversable');
         }
 
+        // Remove all empty rows except for the prototype row
+        foreach ($form as $name => $child) {
+            $form->remove($name);
+        }
+
         // Add all additional rows
         foreach ($data as $name => $value) {
             if (!$form->has($name)) {
-                $form->add($this->factory->create($this->type, $name, array(
+                $options = array_merge($this->typeOptions, array(
                     'property_path' => '['.$name.']',
-                )));
+                ));
 
-                $subChildForm = $form->get($name);
-
-                $prototype = clone $this->prototype;
-                $prototype->setData($value);
-                $prototypeForm = $prototype->getForm();
-
-                foreach($prototypeForm->getChildren() as $field) {
-                    $subChildForm->add($field);
-                }
-
-                $form->add($subChildForm);
+                $form->add($this->factory->createNamed($this->type, $name, null, $options));
             }
         }
     }
