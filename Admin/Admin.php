@@ -841,9 +841,12 @@ abstract class Admin implements AdminInterface
      */
     public function getFormBuilder($object = null, $options = array())
     {
-
         if (!$object) {
             $object = $this->getSubject();
+        }
+
+        if (!$object) {
+            $object = $this->getNewInstance();
         }
 
         $formBuilder = $this->getFormContractor()->getFormBuilder(

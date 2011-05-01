@@ -121,23 +121,6 @@ class FormContractor implements FormContractorInterface
     }
 
     /**
-     * Add a new instance to the related FieldDescriptionInterface value
-     *
-     * @param object $object
-     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
-     * @return void
-     */
-    public function addNewInstance($object, FieldDescriptionInterface $fieldDescription)
-    {
-        $instance = $fieldDescription->getAssociationAdmin()->getNewInstance();
-        $mapping  = $fieldDescription->getAssociationMapping();
-
-        $method = sprintf('add%s', FieldDescription::camelize($mapping['fieldName']));
-
-        $object->$method($instance);
-    }
-
-    /**
      * Returns an OneToOne associated field
      *
      * @param \Symfony\Component\Form\FormBuilder $formBuilder
@@ -178,11 +161,12 @@ class FormContractor implements FormContractorInterface
             // create a collection type with the generated prototype
             $options = $fieldDescription->getOption('form_field_options', array());
             $options['type'] = new AdminType;
+            $options['modifiable'] = true;
             $options['type_options'] = array(
                 'field_description' => $fieldDescription,
             );
 
-            $formBuilder->add($fieldDescription->getFieldName(), 'collection', $options);
+            $formBuilder->add($fieldDescription->getFieldName(), 'sonata_admin_collection', $options);
 
             return;
 //            $value = $fieldDescription->getValue($formBuilder->getData());
@@ -257,9 +241,11 @@ class FormContractor implements FormContractorInterface
     }
 
     /**
-     * The method define the correct default settings for the provided FieldDescription
+     * The method defines the correct default settings for the provided FieldDescription
      *
+     * @param \Sonata\AdminBundle\Admin\AdminInterface
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
+     * @param array $options
      * @return void
      */
     public function fixFieldDescription(AdminInterface $admin, FieldDescriptionInterface $fieldDescription, array $options = array())

@@ -103,14 +103,16 @@ class FormMapper
 
         // nothing to build as a Field is provided
         if ($fieldType) {
-            return $this->formBuilder->add($fieldType);
+            $this->formBuilder->add($fieldType);
         }
 
         // add the field with the FormBuilder
-        return $this->formContractor->addField(
+        $this->formContractor->addField(
             $this->formBuilder,
             $fieldDescription
         );
+
+        return $this;
     }
 
     /**
@@ -136,7 +138,9 @@ class FormMapper
 
         $this->admin->addFormFieldDescription($name, $fieldDescription);
 
-        return $this->formBuilder->add($name, $type, $options);
+        $this->formBuilder->add($name, $type, $options);
+
+        return $this;
     }
 
     /**

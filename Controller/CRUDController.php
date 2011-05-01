@@ -205,8 +205,8 @@ class CRUDController extends Controller
      * @param  $object
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function redirectTo($object) {
-
+    public function redirectTo($object)
+    {
         $url = false;
 
         if ($this->get('request')->get('btn_update_and_list')) {

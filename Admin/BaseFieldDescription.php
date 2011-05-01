@@ -365,18 +365,6 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     }
 
     /**
-     * Camelize a string
-     *
-     * @static
-     * @param string $property
-     * @return string
-     */
-    public static function camelize($property)
-    {
-       return preg_replace(array('/(^|_| )+(.)/e', '/\.(.)/e'), array("strtoupper('\\2')", "'_'.strtoupper('\\1')"), $property);
-    }
-
-    /**
      * merge option values related to the provided option name
      *
      * @throws \RuntimeException
@@ -428,5 +416,17 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     public function getMappingType()
     {
         return $this->mappingType;
+    }
+
+    /**
+     * Camelize a string
+     *
+     * @static
+     * @param string $property
+     * @return string
+     */
+    public static function camelize($property)
+    {
+       return preg_replace(array('/(^|_| )+(.)/e', '/\.(.)/e'), array("strtoupper('\\2')", "'_'.strtoupper('\\1')"), $property);
     }
 }

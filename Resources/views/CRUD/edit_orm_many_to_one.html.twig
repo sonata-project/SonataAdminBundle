@@ -24,14 +24,14 @@ file that was distributed with this source code.
             {% if field_description.options.edit == 'list' %}
                 <span id="field_widget_{{ field_element.vars.id }}" >
                     {% if value.id %}
-                        {% render 'SonataAdminBundle:Core:getShortObjectDescription' with {
+                        {% render 'SonataAdminBundle:Helper:getShortObjectDescription' with {
                             'code': field_description.associationadmin.code,
                             'objectId': value.id,
                             'uniqid':  field_description.associationadmin.uniqid
                         }%}
                     {% endif %}
                 </span>
-                <span style="display: block" >
+                <span style="display: none" >
                     {{ form_widget(field_element) }}
                 </span>
             {% else %}
