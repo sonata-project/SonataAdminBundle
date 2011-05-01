@@ -71,7 +71,7 @@ class Datagrid implements DatagridInterface
         foreach ($this->getFilters() as $name => $filter) {
             $value = isset($this->values[$name]) ? $this->values[$name] : null;
 
-            $filter->getField()->setData($value);
+            $filter->getField()->bind($value);
             $filter->apply($this->query, $value);
         }
 

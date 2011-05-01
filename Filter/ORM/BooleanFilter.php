@@ -62,11 +62,11 @@ class BooleanFilter extends Filter
                 'true'  => 'true',
                 'false' => 'false'
             ),
-            'required' => false
+            'required' => true
         );
 
         $options = array_merge($options, $this->getFieldDescription()->getOption('filter_field_options', array()));
 
-        $this->field = $formFactory->createNamedBuilder('choice', $this->getName(), null, $options);
+        $this->field = $formFactory->createNamedBuilder('choice', $this->getName(), null, $options)->getForm();
     }
 }

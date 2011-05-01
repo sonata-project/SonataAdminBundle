@@ -137,6 +137,7 @@ class DatagridBuilder implements DatagridBuilderInterface
     public function getChoices(FieldDescriptionInterface $fieldDescription)
     {
         $targets = $fieldDescription->getAdmin()->getModelManager()
+            ->getEntityManager()
             ->createQueryBuilder()
             ->select('t')
             ->from($fieldDescription->getTargetEntity(), 't')

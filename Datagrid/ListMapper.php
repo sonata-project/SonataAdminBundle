@@ -39,7 +39,7 @@ class ListMapper
      * @throws \RuntimeException
      * @param string $name
      * @param array $fieldDescriptionOptions
-     * @return
+     * @return \Sonata\AdminBundle\Datagrid\ListMapper
      */
     public function add($name, array $fieldDescriptionOptions = array())
     {
@@ -67,10 +67,12 @@ class ListMapper
         }
 
         // add the field with the FormBuilder
-        return $this->listBuilder->addField(
+        $this->listBuilder->addField(
             $this->list,
             $fieldDescription
         );
+
+        return $this;
     }
 
     /**

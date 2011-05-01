@@ -39,17 +39,15 @@ class DatagridMapper
      * @throws \RuntimeException
      * @param string $name
      * @param array $fieldDescriptionOptions
-     * @return \Sonata\AdminBundle\Datagrid\FilterInterface
+     * @return \Sonata\AdminBundle\Datagrid\DatagridMapper
      */
     public function add($name, array $fieldDescriptionOptions = array())
     {
         if ($name instanceof FieldDescriptionInterface) {
-
             $fieldDescription = $name;
             $fieldDescription->mergeOptions($fieldDescriptionOptions);
 
         } else if (is_string($name) && !$this->admin->hasFormFieldDescription($name)) {
-
             $fieldDescription = $this->admin->getModelManager()->getNewFieldDescriptionInstance(
                 $this->admin->getClass(),
                 $name,
@@ -57,22 +55,22 @@ class DatagridMapper
             );
 
             $this->datagridBuilder->fixFieldDescription($this->admin, $fieldDescription, $fieldDescriptionOptions);
-            $this->admin->addListFieldDescription($name, $fieldDescription);
+            $this->admin->addFilterFieldDescription($name, $fieldDescription);
 
         } else if (is_string($name) && $this->admin->hasFormFieldDescription($name)) {
-
             $fieldDescription = $this->admin->getFormFieldDescription($name);
 
         } else {
-
             throw new \RuntimeException('invalid state');
         }
 
         // add the field with the FormBuilder
-        return $this->datagridBuilder->addFilter(
+        $this->datagridBuilder->addFilter(
             $this->datagrid,
             $fieldDescription
         );
+
+        return $this;
     }
 
     /**

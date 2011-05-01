@@ -490,6 +490,35 @@ abstract class Admin implements AdminInterface
         foreach ($this->filterFieldDescriptions as $fieldDescription) {
             $this->getDatagridBuilder()->fixFieldDescription($this, $fieldDescription);
         }
+
+        $parameters = array();
+        // build the values array
+        if ($this->hasRequest()) {
+            $parameters = array_merge(
+                $this->getModelManager()->getDefaultSortValues($this->getClass()),
+                $this->datagridValues,
+                $this->request->query->all()
+            );
+
+            // always force the parent value
+            if ($this->isChild() && $this->getParentAssociationMapping()) {
+                $parameters[$this->getParentAssociationMapping()] = $this->request->get($this->getParent()->getIdParameter());
+            }
+        }
+
+        // initialize the datagrid
+        $this->datagrid = $this->getDatagridBuilder()->getBaseDatagrid($this, $parameters);
+        $this->datagrid->getPager()->setMaxPerPage($this->maxPerPage);
+
+        $mapper = new DatagridMapper($this->getDatagridBuilder(), $this->datagrid, $this);
+
+        // build the datagrid filter
+        $this->buildFilterFieldDescriptions();
+        $this->configureDatagridFilters($mapper);
+
+        foreach ($this->getFilterFieldDescriptions() as $fieldDescription) {
+            $mapper->add($fieldDescription);
+        }
     }
 
     /**
@@ -1001,33 +1030,7 @@ abstract class Admin implements AdminInterface
      */
     public function getDatagrid()
     {
-        if (!$this->datagrid) {
-            // build the values array
-            $parameters = array_merge(
-                $this->getModelManager()->getDefaultSortValues($this->getClass()),
-                $this->datagridValues,
-                $this->request->query->all()
-            );
-
-            // always force the parent value
-            if ($this->isChild() && $this->getParentAssociationMapping()) {
-                $parameters[$this->getParentAssociationMapping()] = $this->request->get($this->getParent()->getIdParameter());
-            }
-
-            // initialize the datagrid
-            $this->datagrid = $this->getDatagridBuilder()->getBaseDatagrid($this, $parameters);
-            $this->datagrid->getPager()->setMaxPerPage($this->maxPerPage);
-
-            $mapper = new DatagridMapper($this->getDatagridBuilder(), $this->datagrid, $this);
-
-            // build the datagrid filter
-            $this->buildFilterFieldDescriptions();
-            $this->configureDatagridFilters($mapper);
-
-            foreach ($this->getFilterFieldDescriptions() as $fieldDescription) {
-                $mapper->add($fieldDescription);
-            }
-        }
+        $this->buildFilterFieldDescriptions();
 
         return $this->datagrid;
     }

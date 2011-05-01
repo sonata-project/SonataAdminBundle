@@ -18,6 +18,10 @@ class ChoiceFilter extends Filter
 {
     public function filter($queryBuilder, $alias, $field, $value)
     {
+        if (!is_array($value)) {
+            return;
+        }
+
         if ($this->getField()->getAttribute('multiple')) {
             if (in_array('all', $value)) {
                 return;
@@ -52,6 +56,6 @@ class ChoiceFilter extends Filter
     {
         $options = $this->getFieldDescription()->getOption('filter_field_options', array('required' => false));
 
-        $this->field = $formFactory->createNamedBuilder('choice', $this->getName(), $value, $options);
+        $this->field = $formFactory->createNamedBuilder('choice', $this->getName(), $value, $options)->getForm();
     }
 }

@@ -45,7 +45,7 @@ abstract class Filter implements FilterInterface
     public function getField()
     {
         if (!$this->field) {
-            throw new \RuntimeException('No field attached');
+            throw new \RuntimeException(sprintf('No field instance attached for the filter `%s`', $this->name));
         }
 
         return $this->field;

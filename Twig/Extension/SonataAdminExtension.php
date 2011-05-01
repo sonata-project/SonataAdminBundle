@@ -18,8 +18,6 @@ use Symfony\Component\Form\FormView;
 class SonataAdminExtension extends \Twig_Extension
 {
 
-    protected $templating;
-
     /**
      * {@inheritdoc}
      */
@@ -44,10 +42,7 @@ class SonataAdminExtension extends \Twig_Extension
 
     public function getTokenParsers()
     {
-
-        return array(
-
-        );
+        return array();
     }
 
     /**
@@ -70,7 +65,6 @@ class SonataAdminExtension extends \Twig_Extension
      */
     public function renderListElement($object, FieldDescriptionInterface $fieldDescription, $params = array())
     {
-
         $template = $this->environment->loadTemplate($fieldDescription->getTemplate());
 
         return $this->output($fieldDescription, $template->render(array_merge($params, array(
@@ -84,7 +78,6 @@ class SonataAdminExtension extends \Twig_Extension
 
     public function output(FieldDescriptionInterface $fieldDescription, $content)
     {
-
         return sprintf("\n<!-- fieldName: %s, template: %s -->\n%s\n", $fieldDescription->getFieldName(), $fieldDescription->getTemplate(), $content);
     }
 
@@ -99,10 +92,8 @@ class SonataAdminExtension extends \Twig_Extension
      */
     public function getValueFromFieldDescription($object, FieldDescriptionInterface $fieldDescription, array $params = array())
     {
-
         if (isset($params['loop']) && $object instanceof \ArrayAccess) {
             throw new \RuntimeException('remove the loop requirement');
-//            $object = $object[$params['loop']['index0']];
         }
 
         $value = $fieldDescription->getValue($object);
@@ -111,7 +102,6 @@ class SonataAdminExtension extends \Twig_Extension
         // if so, create an empty object instance
         // fixme: not sure this is the best place to do that
         if (!$value && $fieldDescription->getAssociationAdmin()) {
-
             $value = $fieldDescription->getAssociationAdmin()->getNewInstance();
         }
 
@@ -121,7 +111,7 @@ class SonataAdminExtension extends \Twig_Extension
     /**
      * render a filter element
      *
-     * @param Filter $filter
+     * @param \Sonata\AdminBundle\Filter\FilterInterface $filter
      * @param array $params
      * @return
      */
@@ -133,7 +123,7 @@ class SonataAdminExtension extends \Twig_Extension
 
         return $template->render(array_merge($params, array(
             'filter'        => $filter,
-            'filter_form'   => $filter->getField()->getForm()->createView()
+            'filter_form'   => $filter->getField()->createView()
         )));
     }
 
@@ -191,27 +181,6 @@ class SonataAdminExtension extends \Twig_Extension
             'field_element'     => $children,
             'base_template'     => $fieldDescription->getOption('base_template', $base_template)
         ))));
-    }
-
-    /**
-     * set the templating engine
-     *
-     * @param  $templating
-     * @return void
-     */
-    public function setTemplating($templating)
-    {
-        $this->templating = $templating;
-    }
-
-    /**
-     * return the templating engine
-     *
-     * @return Engine
-     */
-    public function getTemplating()
-    {
-        return $this->templating;
     }
 }
 

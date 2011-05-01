@@ -23,7 +23,7 @@ class CallbackFilter extends Filter
 
     public function filter($queryBuilder, $alias, $field, $value)
     {
-        if (is_callable($this->getOption('filter'))) {
+        if (!is_callable($this->getOption('filter'))) {
             throw new \RuntimeException('Please provide a valid callback option');
         }
 
@@ -51,6 +51,8 @@ class CallbackFilter extends Filter
 
     public function defineFieldBuilder(FormFactory $formFactory)
     {
-        return $formFactory->createNamedBuilder($this->getOption('type'), $this->getName(), null);
+        $options = $this->getFieldDescription()->getOption('filter_field_options', array());
+
+        $this->field = $formFactory->createNamedBuilder($this->getOption('type'), $this->getName(), null, $options)->getForm();
     }
 }

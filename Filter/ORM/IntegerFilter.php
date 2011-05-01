@@ -45,6 +45,6 @@ class IntegerFilter extends Filter
    {
        $options = $this->fieldDescription->getOption('filter_field_options', array('required' => false));
 
-       $this->field = $formFactory->createNamedBuilder('text', $this->getName(), null, $options);
+       $this->field = $formFactory->createNamedBuilder('text', $this->getName(), null, $options)->getForm();
    }
 }
