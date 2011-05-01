@@ -15,8 +15,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Response;
 
-use Sonata\AdminBundle\Form\RecursiveFieldIterator;
-
 class CoreController extends Controller
 {
     public function getBaseTemplate()

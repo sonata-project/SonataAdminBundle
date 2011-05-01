@@ -42,6 +42,8 @@ class ResizeFormListener implements EventSubscriberInterface
 
     private $typeOptions;
 
+    private $removed = array();
+
     public function __construct(FormFactoryInterface $factory, $type, array $typeOptions = array(), $resizeOnBind = false)
     {
         $this->factory = $factory;
@@ -117,6 +119,10 @@ class ResizeFormListener implements EventSubscriberInterface
 
                 $form->add($this->factory->createNamed($this->type, $name, null, $options));
             }
+
+            if (isset($value['_delete'])) {
+                $this->removed[] = $name;
+            }
         }
     }
 
@@ -141,6 +147,11 @@ class ResizeFormListener implements EventSubscriberInterface
             if (!$form->has($name)) {
                 unset($data[$name]);
             }
+        }
+
+        // remove selected elements
+        foreach($this->removed as $pos) {
+            unset($data[$pos]);
         }
 
         $event->setData($data);
