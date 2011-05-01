@@ -67,7 +67,7 @@ class ExplainAdminCommand extends Command
 
         $output->writeln('');
         $output->writeln('<info>Form Options</info>');
-        $output->writeln(sprintf('  -  % -25s % -15s', 'validation_groups', implode('|', $admin->getForm()->getOption('validation_groups'))));
+//        $output->writeln(sprintf('  -  % -25s % -15s', 'validation_groups', implode('|', $admin->getFormBuilder()->getForm()->getOption('validation_groups'))));
         $output->writeln('');
 
         $output->writeln('<info>Form Fields</info>');

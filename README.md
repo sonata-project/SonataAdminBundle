@@ -76,6 +76,7 @@ Features
     - side menu option
     - Translated into 7 languages : DE, EN, ES, FR, NL, PL and RU.
     - Built to be extended
+    - Explain command line utility
 
 
 More information
