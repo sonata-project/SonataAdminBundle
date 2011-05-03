@@ -108,16 +108,16 @@ interface ModelManagerInterface
 
     /**
      *
-     * @param object
+     * @param object $model
      * @return mixed
      */
     function getIdentifierValues($model);
 
     /**
-     *
+     * @param string $class
      * @return array
      */
-    function getIdentifierFieldNames($cass);
+    function getIdentifierFieldNames($class);
 
     /**
      * @abstract
@@ -164,7 +164,6 @@ interface ModelManagerInterface
      * Clear the collection
      *
      * @param mixed $collection
-     * @param mixed $element
      * @return mixed
      */
     function collectionClear(&$collection);

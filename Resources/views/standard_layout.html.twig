@@ -85,7 +85,7 @@ file that was distributed with this source code.
 
             {% if block('preview') is not empty %}
                 <div class="span-24 last content clear">
-                    <div class="sonata-ba-preview">{{ preview|raw }}</div>
+                    <div class="sonata-ba-preview">{{ block('preview')|raw }}</div>
                 </div>
             {% endif %}
 
