@@ -51,14 +51,6 @@ file that was distributed with this source code.
         </title>
     </head>
     <body>
-
-        {% set side_menu %}{% block side_menu %}{% endblock %}{% endset %}
-        {% set content %}{% block content %}{% endblock %}{% endset %}
-        {% set preview %}{% block preview %}{% endblock %}{% endset %}
-        {% set form %}{% block form %}{% endblock %}{% endset %}
-        {% set list_table %}{% block list_table %}{% endblock %}{% endset %}
-        {% set list_filters %}{% block list_filters %}{% endblock %}{% endset %}
-
         <div class="container">
             <div class="span-24 last header">
                 <div class="span-20">
@@ -91,7 +83,7 @@ file that was distributed with this source code.
                 </div>
             </div>
 
-            {% if preview is not empty %}
+            {% if block('preview') is not empty %}
                 <div class="span-24 last content clear">
                     <div class="sonata-ba-preview">{{ preview|raw }}</div>
                 </div>
@@ -99,44 +91,44 @@ file that was distributed with this source code.
 
             <div class="span-24 last content clear">
 
-                {% if side_menu is not empty %}
+                {% if block('side_menu') is not empty %}
                         <div class="span-4">
-                            <div class="sonata-ba-side-menu">{{ side_menu|raw }}</div>
+                            <div class="sonata-ba-side-menu">{{ block('side_menu')|raw }}</div>
                         </div>
                         <div class="span-18 last content">
                 {% endif %}
 
-                    {% if content is not empty %}
-                        <div class="sonata-ba-content">{{ content|raw }}</div>
+                    {% if block('content') is not empty %}
+                        <div class="sonata-ba-content">{{ block('content')|raw }}</div>
                     {% endif %}
 
-                    {% if form is not empty %}
-                        <div class="sonata-ba-form">{{ form|raw }}</div>
+                    {% if block('form') is not empty %}
+                        <div class="sonata-ba-form">{{ block('form')|raw }}</div>
                     {% endif %}
 
-                    {% if list_table is not empty or list_filters is not empty %}
-                        {% if side_menu is not empty %}
+                    {% if block('list_table') is not empty or block('list_filters') is not empty %}
+                        {% if block('side_menu') is not empty %}
                             <div class="sonata-ba-list">
                                 <div class="span-13">
-                                    {{ list_table|raw }}
+                                    {{ block('list_table')|raw }}
                                 </div>
                                 <div class="span-5 last">
-                                    {{ list_filters|raw }}
+                                    {{ block('list_filters')|raw }}
                                 </div>
                             </div>
                         {% else %}
                             <div class="sonata-ba-list">
                                 <div class="span-19">
-                                    {{ list_table|raw }}
+                                    {{ block('list_table')|raw }}
                                 </div>
                                 <div class="span-5 last">
-                                    {{ list_filters|raw }}
+                                    {{ block('list_filters')|raw }}
                                 </div>
                             </div>
                         {% endif %}
                     {% endif %}
 
-                {% if side_menu is not empty %}
+                {% if block('side_menu') is not empty %}
                     </div>
                 {% endif %}
 
