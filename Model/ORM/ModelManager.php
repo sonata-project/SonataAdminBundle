@@ -328,4 +328,24 @@ class ModelManager implements ModelManagerInterface
     {
         return new \Doctrine\Common\Collections\ArrayCollection();
     }
+
+    function collectionClear(&$collection)
+    {
+        return $collection->clear();
+    }
+
+    function collectionHasElement(&$collection, &$element)
+    {
+        return $collection->contains($element);
+    }
+
+    function collectionAddElement(&$collection, &$element)
+    {
+        return $collection->add($element);
+    }
+
+    function collectionRemoveElement(&$collection, &$element)
+    {
+        return $collection->removeElement($element);
+    }
 }

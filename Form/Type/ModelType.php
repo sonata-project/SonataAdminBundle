@@ -14,9 +14,9 @@ namespace Sonata\AdminBundle\Form\Type;
 
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Bridge\Doctrine\Form\EventListener\MergeCollectionListener;
 use Symfony\Component\Form\AbstractType;
 
+use Sonata\AdminBundle\Form\EventListener\MergeCollectionListener;
 use Sonata\AdminBundle\Form\ChoiceList\ModelChoiceList;
 use Sonata\AdminBundle\Form\DataTransformer\ModelsToArrayTransformer;
 use Sonata\AdminBundle\Form\DataTransformer\ModelToIdTransformer;
@@ -35,9 +35,8 @@ class ModelType extends AbstractType
     {
         if ($options['multiple']) {
             $builder
-                ->addEventSubscriber(new MergeCollectionListener())
+                ->addEventSubscriber(new MergeCollectionListener($this->modelManager))
                 ->prependClientTransformer(new ModelsToArrayTransformer($options['choice_list']));
-
         } else {
             $builder->prependClientTransformer(new ModelToIdTransformer($this->modelManager, $options['class']));
         }

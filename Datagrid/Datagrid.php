@@ -54,7 +54,6 @@ class Datagrid implements DatagridInterface
         return $this->pager;
     }
 
-
     public function getResults()
     {
         $this->buildPager();

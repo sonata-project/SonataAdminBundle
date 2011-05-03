@@ -134,6 +134,42 @@ interface ModelManagerInterface
     function getModelCollectionInstance($class);
 
     /**
+     * Removes an element from the collection
+     *
+     * @param mixed $collection
+     * @param mixed $element
+     * @return void
+     */
+    function collectionRemoveElement(&$collection, &$element);
+
+    /**
+     * Add an element from the collection
+     *
+     * @param mixed $collection
+     * @param mixed $element
+     * @return mixed
+     */
+    function collectionAddElement(&$collection, &$element);
+
+    /**
+     * Check if the element exists in the collection
+     *
+     * @param mixed $collection
+     * @param mixed $element
+     * @return boolean
+     */
+    function collectionHasElement(&$collection, &$element);
+
+    /**
+     * Clear the collection
+     *
+     * @param mixed $collection
+     * @param mixed $element
+     * @return mixed
+     */
+    function collectionClear(&$collection);
+
+    /**
      * Returns the parameters used in the columns header
      *
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
