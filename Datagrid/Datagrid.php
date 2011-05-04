@@ -37,6 +37,8 @@ class Datagrid implements DatagridInterface
 
     protected $formFactory;
 
+    protected $results;
+
     public function __construct(ProxyQueryInterface $query, ListCollection $columns, PagerInterface $pager, FormFactory $formFactory, array $values = array())
     {
         $this->pager    = $pager;
@@ -58,7 +60,11 @@ class Datagrid implements DatagridInterface
     {
         $this->buildPager();
 
-        return $this->pager->getResults();
+        if (!$this->results) {
+            $this->results = $this->pager->getResults();
+        }
+
+        return $this->results;
     }
 
     public function buildPager()

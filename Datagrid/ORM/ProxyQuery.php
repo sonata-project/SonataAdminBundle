@@ -11,6 +11,7 @@
 namespace Sonata\AdminBundle\Datagrid\ORM;
 
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\Query;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 
 /**
@@ -31,16 +32,54 @@ class ProxyQuery implements ProxyQueryInterface
 
     public function execute(array $params = array(), $hydrationMode = null)
     {
+        // always clone the original queryBuilder
+        $queryBuilder = clone $this->queryBuilder;
+
         // todo : check how doctrine behave, potential SQL injection here ...
         if ($this->getSortBy()) {
             $sortBy = $this->getSortBy();
             if (strpos($sortBy, '.') === false) { // add the current alias
-                $sortBy = $this->queryBuilder->getRootAlias().'.'.$sortBy;
+                $sortBy = $queryBuilder->getRootAlias().'.'.$sortBy;
             }
-            $this->queryBuilder->orderBy($sortBy, $this->getSortOrder());
+            $queryBuilder->orderBy($sortBy, $this->getSortOrder());
         }
 
-        return $this->queryBuilder->getQuery()->execute($params, $hydrationMode);
+        return $this->getFixedQueryBuilder($queryBuilder)->getQuery()->execute($params, $hydrationMode);
+    }
+
+    /**
+     * This method alters the query to return a clean set of object with a working
+     * set of Object
+     *
+     * @param \Doctrine\ORM\QueryBuilder $queryBuilder
+     * @return void
+     */
+    private function getFixedQueryBuilder(QueryBuilder $queryBuilder)
+    {
+        $queryBuilderId = clone $queryBuilder;
+
+        // step 1 : retrieve the targeted class
+        $from = $queryBuilderId->getDQLPart('from');
+        $class = $from[0]->getFrom();
+
+        // step 2 : retrieve the column id
+        $idName = current($queryBuilderId->getEntityManager()->getMetadataFactory()->getMetadataFor($class)->getIdentifierFieldNames());
+
+        // step 3 : retrieve the different subjects id
+        $select = sprintf('%s.%s', $queryBuilderId->getRootAlias(), $idName);
+        $queryBuilderId->select($select);
+        $results  = $queryBuilderId->getQuery()->execute(array(), Query::HYDRATE_ARRAY);
+        $idx      = array();
+        foreach($results as $id) {
+            $idx[] = $id[$idName];
+        }
+
+        // step 4 : alter the query to match the targeted ids
+        $queryBuilder->andWhere(sprintf('%s IN (%s)', $select, implode(',', $idx)));
+        $queryBuilder->setMaxResults(null);
+        $queryBuilder->setFirstResult(null);
+
+        return $queryBuilder;
     }
 
     public function __call($name, $args)

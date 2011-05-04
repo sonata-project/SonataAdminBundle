@@ -51,7 +51,7 @@ class ListMapper
         } else if (is_string($name) && !$this->admin->hasListFieldDescription($name)) {
 
             $fieldDescription = $this->admin->getModelManager()->getNewFieldDescriptionInstance(
-                $this->admin->getClass(),
+                $this->admin->getClass(),   
                 $name,
                 $fieldDescriptionOptions
             );

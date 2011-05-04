@@ -175,7 +175,7 @@ class ModelManager implements ModelManagerInterface
 
     public function getIdentifierFieldNames($class)
     {
-        $this->getMetadata($class)->getIdentifierFieldNames();
+        return $this->getMetadata($class)->getIdentifierFieldNames();
     }
 
     /**
