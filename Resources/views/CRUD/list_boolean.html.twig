@@ -11,5 +11,5 @@ file that was distributed with this source code.
 
 {% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
 
-{% block field%}<img src="/bundles/sonataadmin/famfamfam/{% if value %}accept{% else %}exclamation{% endif %}.png" />{% endblock %}
+{% block field%}<img src="{{ asset('bundles/sonataadmin/famfamfam/') }}{% if value %}accept{% else %}exclamation{% endif %}.png" />{% endblock %}
 
