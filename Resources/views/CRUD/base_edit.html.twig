@@ -80,6 +80,8 @@ file that was distributed with this source code.
             {% endif %}
         {% endif %}
 
+        {{ form_widget(form._token) }}
+
         {{ form_rest(form) }}
 
     </form>
