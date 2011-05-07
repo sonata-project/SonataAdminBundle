@@ -1,42 +1,43 @@
 Architecture
 ============
 
-The architecture of the bundle is mostly based on the Django Admin Project,
-which is a truly great project. More information can be found at the
+The architecture of the bundle is primarily inspired by the Django Admin
+Project, which is truly a great project. More information can be found at the
 `Django Project Website`_.
 
 The Admin Class
 ---------------
 
-The ``Admin`` class is the CRUD definition of one model. It contains
-all the configuration necessary to display a rich CRUD for the entity. From
-within an admin class, the following information can be defined:
+The ``Admin`` class represents the CRUD definition for a specific model. It
+contains all the configuration necessary to display a rich CRUD interface for
+the entity.
+
+Within the admin class, the following information can be defined:
 
 * ``list``: The fields displayed in the list table;
-* ``filter``: The fields available for filter the list;
+* ``filter``: The fields available for filtering the list;
 * ``form``: The fields used to edit the entity;
 * ``formGroups``: The group definition where a field must be displayed (edit form)
-* The batch actions: Actions that can be performed on a group of entities
+* Batch actions: Actions that can be performed on a group of entities
   (e.g. bulk delete)
 
 If a field is associated with another entity (and that entity also has an
 ``Admin`` class), then the related ``Admin`` class will be accessible from
-within the first ``Admin`` class.
+within the first class.
 
-The admin class is a service implementing the ``AdminInterface``, meaning that
-only required dependencies are injected:
+The admin class is a service implementing the ``AdminInterface`` interface,
+meaning that the following required dependencies are automatically injected:
 
-* ``ListBuilder`` : build the list fields
-* ``FormContractor`` : construct the form using the Symfony ``FormBuilder``
-* ``DatagridBuilder`` : build the filter fields
-* ``Router`` : generate the different urls
+* ``ListBuilder``: builds the list fields
+* ``FormContractor``: constructs the form using the Symfony ``FormBuilder``
+* ``DatagridBuilder``: builds the filter fields
+* ``Router``: generates the different urls
 * ``Request`` 
-* ``ModelManager`` : Service which handle specific ORM code
+* ``ModelManager``: Service which handles specific ORM code
 * ``Translator``
 
-
-Therefore, you have access to every service you want by injecting them into the
-admin class, like:
+Therefore, you can gain access to any service you want by injecting them into
+the admin class, like so:
 
 .. code-block:: xml
 
@@ -53,7 +54,6 @@ admin class, like:
     </service>
 
 Here, the FOS' User Manager is injected into the Post service.
-
 
 Field Definition
 ----------------
@@ -80,35 +80,35 @@ template extends two layouts:
 * ``AdminBundle::ajax_layout.twig``
 
 The base templates can be configured in the Service Container. So you can easily tweak
-the layout upon your requirements.
+the layout to suit your requirements.
 
 Each field is rendered in three different ways and each has its own Twig
 template. For example, for a field with a ``text`` type, the following three
 templates will be used:
 
-* ``edit_text.twig``: template used in the form edition
+* ``edit_text.twig``: template used in the edit form
 * ``filter_text.twig``: template used in the filter box
 * ``list_text.twig``: template used in the list table
 
 CrudController
 --------------
 
-The controller contains the basic CRUD actions, the controller is
-related to one ``Admin`` class by mapping the controller name to the correct
-``Admin`` instance.
+The controller contains the basic CRUD actions, it controller is related to one
+``Admin`` class by mapping the controller name to the correct ``Admin``
+instance.
 
-All actions can be easily overwritten depending on the project's requirements.
+Any or all actions can be overwritten to suit the project's requirements.
 
 The controller uses the ``Admin`` class to construct the different actions.
-Inside the controller, the ``Admin`` object is accessible through the ``configuration``
-property.
+Inside the controller, the ``Admin`` object is accessible through the
+``configuration`` property.
 
 Obtaining an ``Admin`` Service
 ------------------------------
 
-``Admin`` definition are accessible through the 'sonata.admin.pool' service or directly from the DIC.
-The ``Admin`` definitions are lazy loaded from the DIC to avoid overhead.
-
+``Admin`` definitions are accessible through the 'sonata.admin.pool' service or
+directly from the DIC. The ``Admin`` definitions are lazy loaded from the DIC to
+reduce overhead.
 
 Declaring a new Admin class
 ---------------------------
@@ -127,7 +127,7 @@ Once you have created an admin class, you must declare the class to use it. Like
         <argument>SonataNewsBundle:PostAdmin</argument>
     </service>
 
-Or if you're using an YML configuration file,
+Or if you're using a YML configuration file,
 
 .. code-block:: yml
 

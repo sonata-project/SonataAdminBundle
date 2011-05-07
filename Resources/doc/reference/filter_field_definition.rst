@@ -44,22 +44,24 @@ Types available
 - string
 - text
 
-if no type is set, the Admin class will use the one set in the doctrine mapping definition.
+If no type is set, the Admin class will use the one set in the Doctrine mapping
+definition.
 
 Tweak it!
 ---------
 
-- It is possible to tweak the default template by setting a ``template`` key in the 
-  options array.
-- If the project required specific behaviors, they can be implemented in the
+- It is possible to change the default template by setting a ``template`` key
+  in the options array.
+- If the project requires specific behaviors, they can be implemented in the
   ``configureFilterFields()`` method.
-  
+
 Advanced usage
 --------------
 
-If you want to create a custom callback filter, this is how to do. ``getWithOpenCommentField`` and
-``getWithOpenCommentFilter``  are callback method used to define the field type and how to filter 
-the provided value.
+To create a custom callback filter, two methods need to be implemented; one to
+define the field type and one to define how to use the field's value. In this
+example, ``getWithOpenCommentField`` and ``getWithOpenCommentFilter`` implement
+this functionality.
 
 .. code-block:: php
 

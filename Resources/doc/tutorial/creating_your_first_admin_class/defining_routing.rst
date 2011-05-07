@@ -1,7 +1,7 @@
 Defining the routing
 ====================
 
-Each entity required 6 routes :
+Each entity requires 6 routes :
 
 - list
 - create
@@ -10,4 +10,5 @@ Each entity required 6 routes :
 - edit
 - delete
 
-The route information are automatically generated for you. So you can jump to the next chapitre.
+The route information is automatically generated for you, so you can jump
+straight into the next chapter.

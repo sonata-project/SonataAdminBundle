@@ -60,7 +60,7 @@ mapping definition.
 List Actions
 ------------
 
-You can set actions for each items in list by adding in $list, the '_action' field :
+You can set actions for the list items by adding an '_action' field in $list:
 
 .. code-block:: php
 
@@ -71,10 +71,10 @@ You can set actions for each items in list by adding in $list, the '_action' fie
       )
     )
 
-Edit and delete actions are available in default configuration. You can add your own! Default template 
-file is : ``SonataAdminBundle:CRUD:list__action_[ACTION_NAME].html.twig``
-  
-But you can specify yours by setup 'template' option like :
+Edit and delete actions are enabled in the default configuration. You can add
+your own! Default template  file is: ``SonataAdminBundle:CRUD:list__action_[ACTION_NAME].html.twig``
+
+You can specify your own by setting up the 'template' option like so:
 
 .. code-block:: php
 
@@ -89,7 +89,6 @@ Advance Usage
 -------------
 
 If you need a specific layout for a row cell, you can define a custom template
-
 
 .. code-block:: php
 
