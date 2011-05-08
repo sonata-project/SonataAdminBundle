@@ -1,9 +1,9 @@
 Defining Entities
 =================
 
-This tutorial use the verbose xml definition, the other alternative will be to use the annotation driver.
-
-
+This tutorial uses the more verbose xml format of defining entities, but any
+metadata driver will work fine. The ``AdminBundle`` simply interacts with the
+entities as provided by Doctrine.
 
 Model definition
 ----------------
@@ -259,6 +259,6 @@ Comment
 Generate getter and setter
 --------------------------
 
-start the doctrine command : php project/console doctrine:generate:entities
-
-At this point doctrine just added all required setter and getter.
+Run the doctrine command "doctrine:generate:entities" to fill in the relevant
+getter/setter methods for your new entities. This is usually accomplished by
+using the "console" application in your application directory.

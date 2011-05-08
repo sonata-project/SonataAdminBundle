@@ -36,9 +36,9 @@ Example
 
 .. note::
 
-    By default, the form framework always set ``required=true`` for field. This can be an issue for
-    HTML5 browsers as they provide client side validation.
-
+    By default, the form framework always sets ``required=true`` for each
+    field. This can be an issue for HTML5 browsers as they provide client-side
+    validation.
 
 Types available
 ---------------
@@ -56,13 +56,15 @@ Types available
 - text
 - date
 
-if no type is set, the Admin class will use the one set in the doctrine mapping definition.
+If no type is set, the Admin class will use the one set in the doctrine mapping
+definition.
 
-Advanced Usage : File Management
+Advanced Usage: File Management
 --------------------------------
 
-If you want to use custom type from the Form framework you must used the ``addType`` method. (The ``add`` method uses
-the information provided by the model definition).
+If you want to use custom types from the Form framework you must use the
+``addType`` method. (The ``add`` method uses the information provided by the
+model definition).
 
 .. code-block:: php
 
@@ -90,25 +92,25 @@ the information provided by the model definition).
 
 .. note::
 
-    By setting ``type=false`` in the file definition, the Form framework will provide an instance of
-    ``UploadedFile`` for the ``Media::setBinaryContent`` method. Otherwise, the full path will be provided.
+    By setting ``type=false`` in the file definition, the Form framework will
+    provide an instance of ``UploadedFile`` for the ``Media::setBinaryContent``
+    method. Otherwise, the full path will be provided.
 
-
-
-
-Advanced Usage : Many-to-one
+Advanced Usage: Many-to-one
 ----------------------------
 
-If you have many ``Post`` linked to one ``User``, then the ``Post`` form should display a ``User`` field. 
-The AdminBundle provides 3 edit options :
+If you have many ``Post``s linked to one ``User``, then the ``Post`` form should
+display a ``User`` field.
 
- - ``standard`` : default value, the user list is set in a select widget
- - ``list`` : the user list is set in a model where you can search and select a user
- 
+The AdminBundle provides 3 edit options:
+
+ - ``standard``: default value, the user list is set in a select widget
+ - ``list``: the user list is set in a model where you can search and select a user
+
 In both case, you can create a new ``User`` by clicking on the "+" icon.
 
 The last option, is ``inline`` this option embed the ``User`` form into the ``Post`` Form. This option is
-great for One-to-one, or if your want to allow the user to edit the ``User`` information.
+great for one-to-one, or if your want to allow the user to edit the ``User`` information.
 
 .. code-block:: php
 
@@ -122,16 +124,17 @@ great for One-to-one, or if your want to allow the user to edit the ``User`` inf
         );
     }
 
-Advanced Usage : One-to-many
+Advanced Usage: One-to-many
 ----------------------------
 
-Let's say you have a ``Gallery`` links to some ``Media`` with a join table ``galleryHasMedias``. You
-can easily add new ``galleryHasMedias`` row by defining the different options :
+Let's say you have a ``Gallery`` that links to some ``Media``s with a join table
+``galleryHasMedias``. You can easily add a new ``galleryHasMedias`` row by
+defining one of these options:
 
-  - ``edit`` : ``inline|standard``, the inline mode allows you to add new rows
-  - ``inline`` : ``table|standard``, the fields are displayed into table
-  - ``sortable`` : if the model has an position field, you can enable a drag and drop sortable effect by setting ``sortable=field_name``
-
+  - ``edit``: ``inline|standard``, the inline mode allows you to add new rows
+  - ``inline``: ``table|standard``, the fields are displayed into table
+  - ``sortable``: if the model has a position field, you can enable a drag and
+    drop sortable effect by setting ``sortable=field_name``
 
 .. code-block:: php
 

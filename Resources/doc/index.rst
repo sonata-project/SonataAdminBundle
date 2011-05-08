@@ -6,7 +6,7 @@
 Welcome to Sonata - AdminBundle's documentation!
 ================================================
 
-The ``AdminBundle`` provides a CRUD interface for model entity.
+The ``AdminBundle`` provides a CRUD interface for model entities.
 
 Reference Guide
 ---------------
@@ -36,5 +36,3 @@ Tutorial
    tutorial/creating_your_first_admin_class/defining_routing
    tutorial/creating_your_first_admin_class/defining_crud_controller
    tutorial/creating_your_first_admin_class/defining_admin_class
-   
-
