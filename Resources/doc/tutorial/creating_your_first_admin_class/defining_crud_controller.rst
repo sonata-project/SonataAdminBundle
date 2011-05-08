@@ -1,17 +1,17 @@
 Defining the CRUD controller
 ============================
 
-A crud controller class is just an empty class with no methods. However, you can easily add here
-new action or overwrite the default CRUD actions.
+A crud controller class is just an empty class with no methods. However, you can
+add new actions or overwrite the default CRUD actions to suit your application.
 
 .. note::
-  
+
     The controller declaration is optional, if none is defined, then the ``AdminBundle`` will use
     the ``CRUDController``.
 
 Just create 3 files inside the Controller directory
 
-CommendAdminController
+CommentAdminController
 ~~~~~~~~~~~~~~~~~~~~~~
 
 .. code-block:: php
@@ -56,7 +56,7 @@ TagAdminController
 
     }
 
-
-When the controller class is instanciated, the admin class is attached to the controller.
+When the controller class is instantiated, the admin class is attached to the
+controller.
 
 Let's create the admin classes ...

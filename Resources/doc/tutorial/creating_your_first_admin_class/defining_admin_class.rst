@@ -1,15 +1,13 @@
 Defining admin class
 ====================
 
-
-The admin class contains all information required to generate the CRUD interface.
-Let's create the Post Admin class.
-
+The admin class contains all the information required to generate the CRUD
+interface. Let's create the Post Admin class.
 
 PostAdmin
 ---------
 
-By convention Admin files are set under a Admin folder.
+By convention, Admin files are located in an Admin namespace.
 
 First, you need to create an Admin/PostAdmin.php file
 
@@ -60,7 +58,7 @@ First, you need to create an Admin/PostAdmin.php file
         }
     }
 
-Secondly, register the PostAdmin class inside the DIC in your config.xml file.
+Second, register the PostAdmin class inside the DIC in your config file:
 
 .. code-block:: xml
 
@@ -72,7 +70,7 @@ Secondly, register the PostAdmin class inside the DIC in your config.xml file.
         <argument>SonataNewsBundle:PostAdmin</argument>
     </service>
 
-Or if you're using an YML configuration file,
+Or if you're using a YML configuration file:
 
 .. code-block:: yaml
 
@@ -83,10 +81,13 @@ Or if you're using an YML configuration file,
             - { name: sonata.admin, manager_type: orm, group: sonata_blog, label: post }
           arguments: [null, Sonata\NewsBundle\Entity\Post, SonataNewsBundle:PostAdmin]
 
-These is the minimal configuration required to display the entity inside the dashboard and
-interact with the CRUD interface. However, you need to create your admin Controller.
-The interface will display too many fields as some of them are not meant to be displayed.
-We'll see how we can specify the differents fields we want to use
+These is the minimal configuration required to display the entity inside the
+dashboard and interact with the CRUD interface. Following this however, you will
+need to create an admin Controller.
+
+This interface will display too many fields as some of them are not relevant to
+a general overview. Next We'll see how to specify the fields we want to use and
+how we want to use them.
 
 Tweak the PostAdmin class
 -------------------------
@@ -134,7 +135,6 @@ You can specify which field you want displayed for each action (list, form and f
      }
 
 Now the different CRUD interfaces will look nicer!
-
 
 So same goes for the TagAdmin and CommentAdmin class.
 

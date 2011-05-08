@@ -22,7 +22,8 @@ If you are not using git, you will have to download them :
 Configuration
 -------------
   
-Next, be sure to enable the bundles in your application kernel:
+Next, be sure to enable the bundles in your autoload.php and AppKernel.php
+files:
 
 .. code-block:: php
 
@@ -47,7 +48,6 @@ Next, be sure to enable the bundles in your application kernel:
       );
   }
 
-
 The bundle also contains several routes. Import them by adding the following
 code to your application's routing file:
 
@@ -63,8 +63,10 @@ code to your application's routing file:
         type: sonata_admin
         prefix: /admin
 
-Now, install the assets of the different bundles: ``php app/console assets:install web --symlink``.
-At this point you can access to the dashboard with the url: ``http://yoursite.local/admin/dashboard``.
+Now, install the assets from the different bundles:
+``php app/console assets:install web --symlink``.
+At this point you can access to the dashboard with the url:
+``http://yoursite.local/admin/dashboard``.
 
 .. note::
 
