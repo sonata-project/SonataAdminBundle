@@ -18,7 +18,7 @@ Example
             'author' => array('edit' => 'list'),
             'enabled',
             'title',
-            'abstract',
+            'abstract' => array('form_field_options' => array('required' => false)),
             'content',
         );
 
