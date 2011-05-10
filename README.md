@@ -1,6 +1,10 @@
 AdminBundle - The missing Symfony2 Admin Generator
 ==================================================
 
+There is online documentation here:
+
+ - http://rabaix.net/AdminBundle/html/index.html
+
 Quick example
 -------------
 
@@ -82,7 +86,12 @@ Features
 More information
 ----------------
 
-You need to go to the ``Ressources/doc`` folder where the reStructuredText documentation is available.
+There is online documentation here:
+
+ - http://rabaix.net/AdminBundle/html/index.html
+
+If you want to contribute to this documentation, you need to go to the ``Ressources/doc`` folder where 
+the reStructuredText documentation is available.
 Please note the Github preview might break and hide some content.
 
 Usage examples
