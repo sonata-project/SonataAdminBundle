@@ -122,23 +122,27 @@ class FormMapper
      * @param array $fieldDescriptionOptions
      * @return \Symfony\Component\Form\FormInterface
      */
-    public function addType($name, $type, array $options = array(), array $fieldDescriptionOptions = array())
+    public function addType($name, $type = null, array $options = array(), array $fieldDescriptionOptions = array())
     {
-        if (!isset($fieldDescriptionOptions['type'])) {
+        if (!isset($fieldDescriptionOptions['type']) && is_string($type)) {
             $fieldDescriptionOptions['type'] = $type;
         }
 
         $fieldDescription = $this->admin->getModelManager()->getNewFieldDescriptionInstance(
             $this->admin->getClass(),
-            $name,
+            $name instanceof FormBuilder ? $name->getName() : $name,
             $fieldDescriptionOptions
         );
 
         $this->formContractor->fixFieldDescription($this->admin, $fieldDescription, $fieldDescriptionOptions);
 
-        $this->admin->addFormFieldDescription($name, $fieldDescription);
+        $this->admin->addFormFieldDescription($name instanceof FormBuilder ? $name->getName() : $name, $fieldDescription);
 
-        $this->formBuilder->add($name, $type, $options);
+        if ($name instanceof FormBuilder) {
+            $this->formBuilder->add($name);
+        } else {
+            $this->formBuilder->add($name, $type, $options);
+        }
 
         return $this;
     }

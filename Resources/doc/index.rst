@@ -33,6 +33,7 @@ Doctrine ORM
    :numbered:
 
    doctrine_orm/query_proxy
+   doctrine_orm/troubleshootings
 
 
 Tutorial

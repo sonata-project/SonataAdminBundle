@@ -6,15 +6,15 @@
 
     <services>
         <service id="sonata.admin.form.type.admin" class="Sonata\AdminBundle\Form\Type\AdminType">
-            <tag name="form.type" alias="sonata_model_admin" />
+            <tag name="form.type" alias="sonata_type_admin" />
         </service>
 
         <service id="sonata.admin.form.type.collection" class="Sonata\AdminBundle\Form\Type\CollectionType">
-            <tag name="form.type" alias="sonata_admin_collection" />
+            <tag name="form.type" alias="sonata_type_collection" />
         </service>
 
         <service id="sonata.admin.form.type.model" class="Sonata\AdminBundle\Form\Type\ModelType">
-            <tag name="form.type" alias="sonata_admin_model" />
+            <tag name="form.type" alias="sonata_type_model" />
         </service>
 
     </services>

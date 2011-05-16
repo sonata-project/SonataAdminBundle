@@ -14,8 +14,6 @@ namespace Sonata\AdminBundle\Builder\ORM;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\ORM\FieldDescription;
-use Sonata\AdminBundle\Form\EditableCollectionField;
-use Sonata\AdminBundle\Form\EditableFieldGroup;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Builder\FormContractorInterface;
 use Sonata\AdminBundle\Form\Type\AdminType;
@@ -83,7 +81,7 @@ class FormContractor implements FormContractorInterface
         }
 
         // retrieve the related object
-        $childBuilder = $formBuilder->create($fieldName, 'sonata_model_admin', array(
+        $childBuilder = $formBuilder->create($fieldName, 'sonata_type_admin', array(
             'field_description' => $fieldDescription
         ));
 
@@ -134,10 +132,11 @@ class FormContractor implements FormContractorInterface
             return $this->defineChildFormBuilder($formBuilder, $fieldDescription);
         }
 
-        $type = new ModelType($fieldDescription->getAssociationAdmin()->getModelManager());
+        $type = 'sonata_type_model';
 
         $options = $fieldDescription->getOption('form_field_options', array());
-        $options['class'] = $fieldDescription->getTargetEntity();
+        $options['class']         = $fieldDescription->getTargetEntity();
+        $options['model_manager'] = $fieldDescription->getAdmin()->getModelManager();
 
         if ($fieldDescription->getOption('edit') == 'list') {
             $options['parent'] = 'text';
@@ -160,13 +159,13 @@ class FormContractor implements FormContractorInterface
 
             // create a collection type with the generated prototype
             $options = $fieldDescription->getOption('form_field_options', array());
-            $options['type'] = 'sonata_model_admin';
+            $options['type'] = 'sonata_type_admin';
             $options['modifiable'] = true;
             $options['type_options'] = array(
                 'field_description' => $fieldDescription,
             );
 
-            $formBuilder->add($fieldDescription->getFieldName(), 'sonata_admin_collection', $options);
+            $formBuilder->add($fieldDescription->getFieldName(), 'sonata_type_collection', $options);
 
             return;
 //            $value = $fieldDescription->getValue($formBuilder->getData());
@@ -211,8 +210,8 @@ class FormContractor implements FormContractorInterface
     /**
      * Add a new field type into the provided FormBuilder
      *
-     * @param \Symfony\Component\Form\FormBuilder $form
-     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $name
+     * @param \Symfony\Component\Form\FormBuilder $formBuilder
+     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
      * @return void
      */
     public function addField(FormBuilder $formBuilder, FieldDescriptionInterface $fieldDescription)
@@ -243,7 +242,7 @@ class FormContractor implements FormContractorInterface
     /**
      * The method defines the correct default settings for the provided FieldDescription
      *
-     * @param \Sonata\AdminBundle\Admin\AdminInterface
+     * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
      * @param array $options
      * @return void

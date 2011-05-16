@@ -28,25 +28,25 @@ class ModelType extends AbstractType
     {
         if ($options['multiple']) {
             $builder
-                ->addEventSubscriber(new MergeCollectionListener($this->modelManager))
+                ->addEventSubscriber(new MergeCollectionListener($options['model_manager']))
                 ->prependClientTransformer(new ModelsToArrayTransformer($options['choice_list']));
         } else {
-            $builder->prependClientTransformer(new ModelToIdTransformer($this->modelManager, $options['class']));
+            $builder->prependClientTransformer(new ModelToIdTransformer($options['model_manager'], $options['class']));
         }
     }
 
     public function getDefaultOptions(array $options)
     {
         $defaultOptions = array(
-            'template'      => 'choice',
-            'multiple'      => false,
-            'expanded'      => false,
-            'model_manager' => null,
-            'class'         => null,
-            'property'      => null,
-            'query'         => null,
-            'choices'       => array(),
-            'parent'        => 'choice',
+            'template'          => 'choice',
+            'multiple'          => false,
+            'expanded'          => false,
+            'model_manager'     => null,
+            'class'             => null,
+            'property'          => null,
+            'query'             => null,
+            'choices'           => array(),
+            'parent'            => 'choice',
             'preferred_choices' => array(),
             'field_description' => false,
         );

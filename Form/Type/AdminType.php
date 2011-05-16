@@ -66,8 +66,8 @@ class AdminType extends AbstractType
         return $this->getFieldDescription($options)->getAssociationAdmin();
     }
 
-      public function getName()
-      {
-          return 'sonata_model_admin';
-      }
+    public function getName()
+    {
+        return 'sonata_model_admin';
+    }
 }

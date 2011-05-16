@@ -7,12 +7,12 @@ to handle the diffent model's workflows and lifecycle.
 Form types
 ----------
 
-    - ``sonata_model_admin`` : this type is linked to an Admin class and the field construction is
+    - ``sonata_type_admin`` : this type is linked to an Admin class and the field construction is
       delegated to an Admin class.
-    - ``sonata_admin_collection`` : this type works like the native ``CollectionType`` but contains two extra
+    - ``sonata_type_collection`` : this type works like the native ``CollectionType`` but contains two extra
       features : the data layer is abstracted to work with any implemented layer and a delete option is added
       so a collection entry can be deleted.
-    - ``sonata_admin_model`` : this type works like the native ``EntityType`` but this internal is abstracted
+    - ``sonata_type_model`` : this type works like the native ``EntityType`` but this internal is abstracted
       to work with any implemented layer.
 
 
