@@ -39,7 +39,7 @@ class Pager extends BasePager
 
         $countQuery->select(sprintf('DISTINCT count(%s.%s) as cnt', $countQuery->getRootAlias(), $this->getCountColumn()));
 
-        return $countQuery->getSingleScalarResult();
+        return $countQuery->getQuery()->getSingleScalarResult();
     }
 
     /**
@@ -50,7 +50,7 @@ class Pager extends BasePager
      */
     public function getResults($hydrationMode = Query::HYDRATE_OBJECT)
     {
-        return $this->getQuery()->execute(array(), $hydrationMode);
+        return $this->getQuery()->getQuery()->execute(array(), $hydrationMode);
     }
 
     /**
