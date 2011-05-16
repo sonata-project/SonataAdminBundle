@@ -25,6 +25,15 @@ Reference Guide
    reference/routing
    reference/dashboard
 
+Doctrine ORM
+------------
+
+.. toctree::
+   :maxdepth: 1
+   :numbered:
+
+   doctrine_orm/query_proxy
+
 
 Tutorial
 --------

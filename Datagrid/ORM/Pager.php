@@ -42,7 +42,6 @@ class Pager extends BasePager
         return $countQuery->getSingleScalarResult();
     }
 
-
     /**
      * Get all the results for the pager instance
      *
