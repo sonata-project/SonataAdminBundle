@@ -24,13 +24,6 @@ use Sonata\AdminBundle\Model\ModelManagerInterface;
 
 class ModelType extends AbstractType
 {
-    private $modelManager;
-
-    public function __construct(ModelManagerInterface $modelManager)
-    {
-        $this->modelManager = $modelManager;
-    }
-
     public function buildForm(FormBuilder $builder, array $options)
     {
         if ($options['multiple']) {
@@ -45,16 +38,16 @@ class ModelType extends AbstractType
     public function getDefaultOptions(array $options)
     {
         $defaultOptions = array(
-            'template' => 'choice',
-            'multiple' => false,
-            'expanded' => false,
-            'model_manager' => $this->modelManager,
-            'class' => null,
-            'property' => null,
-            'query' => null,
-            'choices' => array(),
+            'template'      => 'choice',
+            'multiple'      => false,
+            'expanded'      => false,
+            'model_manager' => null,
+            'class'         => null,
+            'property'      => null,
+            'query'         => null,
+            'choices'       => array(),
+            'parent'        => 'choice',
             'preferred_choices' => array(),
-            'parent'  => 'choice',
             'field_description' => false,
         );
 

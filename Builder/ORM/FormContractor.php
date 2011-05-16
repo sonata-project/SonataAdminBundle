@@ -83,7 +83,7 @@ class FormContractor implements FormContractorInterface
         }
 
         // retrieve the related object
-        $childBuilder = $formBuilder->create($fieldName, new AdminType(), array(
+        $childBuilder = $formBuilder->create($fieldName, 'sonata_model_admin', array(
             'field_description' => $fieldDescription
         ));
 
@@ -160,7 +160,7 @@ class FormContractor implements FormContractorInterface
 
             // create a collection type with the generated prototype
             $options = $fieldDescription->getOption('form_field_options', array());
-            $options['type'] = new AdminType;
+            $options['type'] = 'sonata_model_admin';
             $options['modifiable'] = true;
             $options['type_options'] = array(
                 'field_description' => $fieldDescription,
@@ -194,15 +194,15 @@ class FormContractor implements FormContractorInterface
      */
     protected function defineManyToManyField(FormBuilder $formBuilder, FieldDescriptionInterface $fieldDescription)
     {
-        $type     = $fieldDescription->getOption('form_field_type', false);
+        $type     = $fieldDescription->getOption('form_field_type', 'sonata_admin_model');
         $options  = $fieldDescription->getOption('form_field_options', array());
 
-        if (!$type) {
-            $type = new ModelType($fieldDescription->getAdmin()->getModelManager());
+        if ($type == 'sonata_admin_model') {
             $options['class']               = $fieldDescription->getTargetEntity();
             $options['multiple']            = true;
             $options['field_description']   = $fieldDescription;
             $options['parent']              = 'choice';
+            $options['model_manager']       = $fieldDescription->getAdmin()->getModelManager();
         }
 
         $formBuilder->add($fieldDescription->getName(), $type, $options);
