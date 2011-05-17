@@ -193,10 +193,10 @@ class FormContractor implements FormContractorInterface
      */
     protected function defineManyToManyField(FormBuilder $formBuilder, FieldDescriptionInterface $fieldDescription)
     {
-        $type     = $fieldDescription->getOption('form_field_type', 'sonata_admin_model');
+        $type     = $fieldDescription->getOption('form_field_type', 'sonata_type_model');
         $options  = $fieldDescription->getOption('form_field_options', array());
 
-        if ($type == 'sonata_admin_model') {
+        if ($type == 'sonata_type_model') {
             $options['class']               = $fieldDescription->getTargetEntity();
             $options['multiple']            = true;
             $options['field_description']   = $fieldDescription;
