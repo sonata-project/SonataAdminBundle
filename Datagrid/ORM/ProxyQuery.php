@@ -67,7 +67,9 @@ class ProxyQuery implements ProxyQueryInterface
 
         // step 3 : retrieve the different subjects id
         $select = sprintf('%s.%s', $queryBuilderId->getRootAlias(), $idName);
-        $queryBuilderId->select($select);
+        $queryBuilderId->resetDQLPart('select');
+        $queryBuilderId->add('select', 'DISTINCT '.$select);
+
         $results  = $queryBuilderId->getQuery()->execute(array(), Query::HYDRATE_ARRAY);
         $idx      = array();
         $connection = $queryBuilder->getEntityManager()->getConnection();
