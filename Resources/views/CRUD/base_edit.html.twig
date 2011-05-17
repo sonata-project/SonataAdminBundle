@@ -64,6 +64,8 @@ file that was distributed with this source code.
             {% endif %}
         {% endfor %}
 
+        {{ form_rest(form) }}
+
         {% if app.request.isxmlhttprequest %}
             {% if object.id %}
                 <input type="submit" name="btn_update" value="{% trans from admin.translationdomain %}btn_update{% endtrans %}"/>
@@ -79,8 +81,5 @@ file that was distributed with this source code.
                 <input type="submit" name="btn_create_and_create" value="{% trans from admin.translationdomain %}btn_create_and_create_a_new_one{% endtrans %}"/>
             {% endif %}
         {% endif %}
-
-        {{ form_rest(form) }}
-
     </form>
 {% endblock %}
