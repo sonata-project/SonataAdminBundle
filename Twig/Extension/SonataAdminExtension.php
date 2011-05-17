@@ -58,7 +58,7 @@ class SonataAdminExtension extends \Twig_Extension
     /**
      * render a list element from the FieldDescription
      *
-     * @param  $object
+     * @param mixed $object
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
      * @param array $params
      * @return
@@ -78,7 +78,12 @@ class SonataAdminExtension extends \Twig_Extension
 
     public function output(FieldDescriptionInterface $fieldDescription, $content)
     {
-        return sprintf("\n<!-- fieldName: %s, template: %s -->\n%s\n", $fieldDescription->getFieldName(), $fieldDescription->getTemplate(), $content);
+        return sprintf("\n<!-- START - fieldName: %s, template: %s -->\n%s\n<!-- END - fieldName: %s -->",
+            $fieldDescription->getFieldName(),
+            $fieldDescription->getTemplate(),
+            $content,
+            $fieldDescription->getFieldName()
+        );
     }
 
     /**
@@ -134,7 +139,7 @@ class SonataAdminExtension extends \Twig_Extension
      * @throws InvalidArgumentException
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
      * @param \Sumfony\Component\Form\FormView $formView
-     * @param  $object
+     * @param mixed $object
      * @param array $params
      * @return string
      */
