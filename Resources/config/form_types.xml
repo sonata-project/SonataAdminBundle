@@ -17,6 +17,10 @@
             <tag name="form.type" alias="sonata_type_model" />
         </service>
 
+        <service id="sonata.admin.form.type.array" class="Sonata\AdminBundle\Form\Type\ImmutableArrayType">
+            <tag name="form.type" alias="sonata_type_immutable_array" />
+        </service>
+
     </services>
 
 </container>
