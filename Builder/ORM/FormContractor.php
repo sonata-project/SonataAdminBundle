@@ -38,21 +38,21 @@ class FormContractor implements FormContractorInterface
      * @var array
      */
     protected $formTypes = array(
-        'string'     =>  'text',
-        'text'       =>  'textarea',
-        'boolean'    =>  'checkbox',
-        'checkbox'   =>  'checkbox',
-        'integer'    =>  'integer',
-        'tinyint'    =>  'integer',
-        'smallint'   =>  'integer',
-        'mediumint'  =>  'integer',
-        'bigint'     =>  'integer',
-        'decimal'    =>  'number',
-        'datetime'   =>  'datetime',
-        'date'       =>  'date',
-        'choice'     =>  'choice',
-        'array'      =>  'collection',
-        'country'    =>  'country',
+        'string'     =>  array('text', array()),
+        'text'       =>  array('textarea', array()),
+        'boolean'    =>  array('checkbox', array()),
+        'checkbox'   =>  array('checkbox', array()),
+        'integer'    =>  array('integer', array()),
+        'tinyint'    =>  array('integer', array()),
+        'smallint'   =>  array('integer', array()),
+        'mediumint'  =>  array('integer', array()),
+        'bigint'     =>  array('integer', array()),
+        'decimal'    =>  array('number', array()),
+        'datetime'   =>  array('datetime', array()),
+        'date'       =>  array('date', array()),
+        'choice'     =>  array('choice', array()),
+        'array'      =>  array('collection', array()),
+        'country'    =>  array('country', array()),
     );
 
     public function __construct(FormFactoryInterface $formFactory)
@@ -231,10 +231,11 @@ class FormContractor implements FormContractorInterface
                 break;
 
             default:
+                list($type, $default_options) = $this->getFormTypeName($fieldDescription);
                 $formBuilder->add(
                     $fieldDescription->getFieldName(),
-                    $this->getFormTypeName($fieldDescription),
-                    $fieldDescription->getOption('form_field_options', array())
+                    $type,
+                    array_merge($default_options, $fieldDescription->getOption('form_field_options', array()))
                 );
         }
     }

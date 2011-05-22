@@ -190,4 +190,15 @@ class FormMapper
     {
         return $this->admin;
     }
+
+    /**
+     * @param string $name
+     * @param mixed $type
+     * @param array $options
+     * @return void
+     */
+    public function create($name, $type = null, array $options = array())
+    {
+        return $this->formBuilder->create($name, $type, $options);
+    }
 }

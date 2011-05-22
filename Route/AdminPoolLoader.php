@@ -13,7 +13,7 @@ namespace Sonata\AdminBundle\Route;
 
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\Route;
-    
+
 use Symfony\Component\Config\Loader\FileLoader;
 use Symfony\Component\Config\Resource\FileResource;
 
@@ -46,7 +46,7 @@ class AdminPoolLoader extends FileLoader
      * @param null $type
      * @return bool
      */
-    function supports($resource, $type = null)
+    public function supports($resource, $type = null)
     {
         if ($type == 'sonata_admin') {
             return true;
@@ -60,7 +60,7 @@ class AdminPoolLoader extends FileLoader
      * @param null $type
      * @return \Symfony\Component\Routing\RouteCollection
      */
-    function load($resource, $type = null)
+    public function load($resource, $type = null)
     {
         $collection = new RouteCollection;
         foreach ($this->adminServiceIds as $id) {
