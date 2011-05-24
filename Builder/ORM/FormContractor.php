@@ -216,6 +216,18 @@ class FormContractor implements FormContractorInterface
      */
     public function addField(FormBuilder $formBuilder, FieldDescriptionInterface $fieldDescription)
     {
+
+        // There is a bug in the GraphWalker, so for now we always load related associations
+        // for more information : https://github.com/symfony/symfony/pull/1056
+        if ($formBuilder->getData() && in_array($fieldDescription->getType(), array(ClassMetadataInfo::ONE_TO_MANY, ClassMetadataInfo::MANY_TO_MANY, ClassMetadataInfo::MANY_TO_ONE, ClassMetadataInfo::ONE_TO_ONE ))) {
+            $value = $fieldDescription->getValue($formBuilder->getData());
+            $infos = $fieldDescription->getAssociationMapping();
+            if ($value instanceof $infos['targetEntity'] && $value instanceof \Doctrine\ORM\Proxy\Proxy) {
+                $relatedId = 'get'.current($fieldDescription->getAdmin()->getModelManager()->getIdentifierFieldNames($infos['targetEntity']));
+                $value->{$relatedId}(); // force to load the lazy loading method __load in the proxy methode
+            }
+        }
+
         switch ($fieldDescription->getType()) {
             case ClassMetadataInfo::ONE_TO_MANY:
                 $this->getOneToManyField($formBuilder, $fieldDescription);
