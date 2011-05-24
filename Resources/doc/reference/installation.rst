@@ -10,18 +10,18 @@ git, you can add them as submodules::
   git submodule add git@github.com:sonata-project/jQueryBundle.git src/Sonata/jQueryBundle
   git submodule add git@github.com:sonata-project/BluePrintBundle.git src/Sonata/BluePrintBundle
   git submodule add git@github.com:sonata-project/AdminBundle.git src/Sonata/AdminBundle
-  git submodule add git@github.com:sonata-project/MenuBundle.git src/Knplabs/Bundle/MenuBundle
+  git submodule add git://github.com/knplabs/MenuBundle.git src/Knplabs/Bundle/MenuBundle
 
 If you are not using git, you will have to download them :
 
   - https://github.com/sonata-project/jQueryBundle/archives/master
   - https://github.com/sonata-project/BluePrintBundle/archives/master
   - https://github.com/sonata-project/AdminBundle/archives/master
-  - https://github.com/sonata-project/MenuBundle/archives/master
-  
+  - https://github.com/knplabs/MenuBundle/archives/master
+
 Configuration
 -------------
-  
+
 Next, be sure to enable the bundles in your autoload.php and AppKernel.php
 files:
 
