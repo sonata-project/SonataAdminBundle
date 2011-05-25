@@ -18,7 +18,6 @@ file that was distributed with this source code.
                 {% if inline == 'table' %}
                     <table>
                         <tbody class="sonata-ba-tbody">
-                            {% set dummy = field_element.setrendered %}
                             {% for nested_group_field_name, nested_group_field in field_element.children %}
                                 <tr>
                                     {% for field_name, nested_field in nested_group_field.children %}
@@ -28,6 +27,8 @@ file that was distributed with this source code.
                                                     nested_group_field,
                                                     value[nested_group_field_name]
                                                 ) }}
+
+                                                {% set dummy = nested_group_field.setrendered %}
                                             {% else %}
                                                 {{ form_widget(nested_field) }}
                                             {% endif %}
@@ -49,6 +50,8 @@ file that was distributed with this source code.
                                             'edit'  : 'inline'
                                         }
                                     ) }}
+
+                                    {% set dummy = nested_group_field.setrendered %}
                                 {% else %}
                                     {{ form_widget(nested_field) }}
                                 {% endif %}
