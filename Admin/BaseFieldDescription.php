@@ -328,21 +328,23 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
      */
     public function getValue($object)
     {
-        $value = false;
+        $camelizedFieldName = $this->getFieldName();
+        $getters = array(
+            'get'.$camelizedFieldName,
+            'is'.$camelizedFieldName,
+        );
 
-        $fieldName  = $this->getFieldName();
-        $getter     = 'get'.self::camelize($fieldName);
-
-        if (method_exists($object, $getter)) {
-
-            $value = call_user_func(array($object, $getter));
-
-        } else if ($this->getOption('code') && method_exists($object, $this->getOption('code'))) {
-
-            $value = call_user_func(array($object, $this->getOption('code')));
+        if ($this->getOption('code')) {
+            $getters[] = $this->getOption('code');
         }
 
-        return $value;
+        foreach ($getters as $getter) {
+            if (method_exists($object, $getter)) {
+                return call_user_func(array($object, $getter));
+            }
+        }
+
+        return false;
     }
 
     /**
