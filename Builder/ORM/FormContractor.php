@@ -112,7 +112,7 @@ class FormContractor implements FormContractorInterface
         }
 
         if (!$typeName) {
-            throw new \RuntimeException(sprintf('No known form type for field `%s` (`%s`) is not implemented', $fieldDescription->getFieldName(), $fieldDescription->getType()));
+            throw new \RuntimeException(sprintf('No known form type for field `%s` (`%s`) is implemented.', $fieldDescription->getFieldName(), $fieldDescription->getType()));
         }
 
         return $typeName;
