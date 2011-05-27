@@ -124,6 +124,10 @@ class AddDependencyCallsPass implements CompilerPassInterface
             $definition->addMethodCall('setRouter', array(new Reference('router')));
         }
 
+        if (!$definition->hasMethodCall('setSecurityContext')) {
+            $definition->addMethodCall('setSecurityContext', array(new Reference('security.context')));
+        }
+
         if (!$definition->hasMethodCall('setLabel')) {
             $label = isset($attributes[0]['label']) ? $attributes[0]['label'] : '-';
             $definition->addMethodCall('setLabel', array($label));

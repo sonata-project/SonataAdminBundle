@@ -16,6 +16,8 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 
+use Symfony\Component\Security\Acl\Model\DomainObjectInterface;
+
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -31,7 +33,7 @@ use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Knplabs\Bundle\MenuBundle\Menu;
 use Knplabs\Bundle\MenuBundle\MenuItem;
 
-abstract class Admin implements AdminInterface
+abstract class Admin implements AdminInterface, DomainObjectInterface
 {
     /**
      * The class name managed by the admin class
@@ -294,6 +296,7 @@ abstract class Admin implements AdminInterface
      */
     protected $breadcrumbs = array();
 
+    protected $securityContext = null;
 
     /**
      * The configuration pool
@@ -739,7 +742,6 @@ abstract class Admin implements AdminInterface
 
         $collection->add('list');
         $collection->add('create');
-        $collection->add('update');
         $collection->add('batch');
         $collection->add('edit', $this->getRouterIdParameter().'/edit');
         $collection->add('delete', $this->getRouterIdParameter().'/delete');
@@ -1829,5 +1831,48 @@ abstract class Admin implements AdminInterface
     public function setModelManager(ModelManagerInterface $modelManager)
     {
         $this->modelManager = $modelManager;
+    }
+
+    /**
+     * Returns a unique identifier for this domain object.
+     *
+     * @return string
+     */
+    function getObjectIdentifier()
+    {
+        return $this->getCode();
+    }
+
+    public function getAclInformation()
+    {
+        $baseRole = 'ROLE_'.str_replace('.', '_', strtoupper($this->getCode())).'_%s';
+
+        return array(
+            sprintf($baseRole, 'EDIT')      => array('EDIT'),
+            sprintf($baseRole, 'LIST')      => array('LIST'),
+            sprintf($baseRole, 'CREATE')    => array('CREATE'),
+            sprintf($baseRole, 'DELETE')    => array('DELETE'),
+            sprintf($baseRole, 'BATCH')     => array('BATCH'),
+            sprintf($baseRole, 'OPERATOR')  => array('OPERATOR'),
+        );
+    }
+
+    public function setSecurityContext($securityContext)
+    {
+        $this->securityContext = $securityContext;
+    }
+
+    public function getSecurityContext()
+    {
+        return $this->securityContext;
+    }
+
+    /**
+     * @param string $name
+     * @return boolean
+     */
+    public function isGranted($name)
+    {
+        return $this->securityContext->isGranted($name, $this);
     }
 }

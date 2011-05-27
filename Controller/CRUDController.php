@@ -14,6 +14,7 @@ namespace Sonata\AdminBundle\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -120,6 +121,10 @@ class CRUDController extends Controller
      */
     public function listAction()
     {
+        if ($this->admin->isGranted('LIST')) {
+            throw new AccessDeniedException();
+        }
+
         return $this->render($this->admin->getListTemplate(), array(
             'action'            => 'list',
             'admin'             => $this->admin,
@@ -135,6 +140,10 @@ class CRUDController extends Controller
      */
     public function batchActionDelete($idx)
     {
+        if ($this->admin->isGranted('DELETE')) {
+            throw new AccessDeniedException();
+        }
+
         $modelManager = $this->admin->getModelManager();
         $modelManager->batchDelete($this->admin->getClass(), $idx);
 
@@ -144,6 +153,10 @@ class CRUDController extends Controller
 
     public function deleteAction($id)
     {
+        if ($this->admin->isGranted('DELETE')) {
+            throw new AccessDeniedException();
+        }
+
         $id = $this->get('request')->get($this->admin->getIdParameter());
         $object = $this->admin->getObject($id);
 
@@ -165,6 +178,10 @@ class CRUDController extends Controller
      */
     public function editAction($id)
     {
+        if ($this->admin->isGranted('EDIT')) {
+            throw new AccessDeniedException();
+        }
+
         $object = $this->admin->getObject($this->get('request')->get($this->admin->getIdParameter()));
 
         if (!$object) {
@@ -261,6 +278,10 @@ class CRUDController extends Controller
      */
     public function createAction()
     {
+        if ($this->admin->isGranted('CREATE')) {
+            throw new AccessDeniedException();
+        }
+
         $object = $this->admin->getNewInstance();
         $form = $this->admin->getForm($object);
 
