@@ -86,6 +86,22 @@
                 <source>link_expand</source>
                 <target>Uitklappen/inklappen</target>
             </trans-unit>
+            <trans-unit id="no_result">
+                <source>no_result</source>
+                <target>Geen resultaten</target>
+            </trans-unit>
+            <trans-unit id="confirm_msg">
+                <source>confirm_msg</source>
+                <target>Weet je het zeker ?</target>
+            </trans-unit>
+            <trans-unit id="action_edit">
+                <source>action_edit</source>
+                <target>Bijwerken</target>
+            </trans-unit>
+            <trans-unit id="action_view">
+                <source>action_view</source>
+                <target>Bekijk</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
