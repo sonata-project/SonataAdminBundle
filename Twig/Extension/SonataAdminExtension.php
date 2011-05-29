@@ -17,6 +17,10 @@ use Symfony\Component\Form\FormView;
 
 class SonataAdminExtension extends \Twig_Extension
 {
+    /**
+     * @var \Twig_Environment
+     */
+    protected $environment;
 
     /**
      * {@inheritdoc}
@@ -78,12 +82,16 @@ class SonataAdminExtension extends \Twig_Extension
 
     public function output(FieldDescriptionInterface $fieldDescription, $content)
     {
-        return sprintf("\n<!-- START - fieldName: %s, template: %s -->\n%s\n<!-- END - fieldName: %s -->",
-            $fieldDescription->getFieldName(),
-            $fieldDescription->getTemplate(),
-            $content,
-            $fieldDescription->getFieldName()
-        );
+        if ($this->environment->isDebug()) {
+            return sprintf("\n<!-- START - fieldName: %s, template: %s -->\n%s\n<!-- END - fieldName: %s -->",
+                $fieldDescription->getFieldName(),
+                $fieldDescription->getTemplate(),
+                $content,
+                $fieldDescription->getFieldName()
+            );
+        }
+
+        return $content;
     }
 
     /**
@@ -188,4 +196,3 @@ class SonataAdminExtension extends \Twig_Extension
         ))));
     }
 }
-
