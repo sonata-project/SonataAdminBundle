@@ -55,7 +55,7 @@ class SonataAdminExtension extends Extension
 
         $configuration = new Configuration();
         $processor = new Processor();
-        $config = $processor->process($configuration->getConfigTree($container->getParameter('kernel.debug')), $configs);
+        $config = $processor->processConfiguration($configuration, $configs);
 
         // setups parameters with values in config.yml, default values from external files used if not
         $this->configSetupTemplates($config, $container);

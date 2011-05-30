@@ -12,11 +12,10 @@ namespace Sonata\AdminBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Sonata\AdminBundle\DependencyInjection\AddDependencyCallsPass;
+use Sonata\AdminBundle\DependencyInjection\Compiler\AddDependencyCallsPass;
 
 class SonataAdminBundle extends Bundle
 {
-
     public function build(ContainerBuilder $container)
     {
         parent::build($container);
