@@ -59,8 +59,6 @@ class SonataAdminExtension extends Extension
 
         // setups parameters with values in config.yml, default values from external files used if not
         $this->configSetupTemplates($config, $container);
-
-        $container->setDefinition('sonata_dummy_security', new Definition('stdClass', $config));
     }
 
     protected function configSetupTemplates($config, $container)
