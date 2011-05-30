@@ -132,7 +132,7 @@ abstract class Admin implements AdminInterface
      *
      * @var string
      */
-    protected $translationDomain = 'AdminBundle';
+    protected $translationDomain = 'messages';
 
     /**
      * Options to set to the form (ie, validation_groups)
