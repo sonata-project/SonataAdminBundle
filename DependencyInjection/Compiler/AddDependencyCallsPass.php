@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\DependencyInjection;
+namespace Sonata\AdminBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -30,10 +30,8 @@ class AddDependencyCallsPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-
         $groups = $admins = $classes = array();
 
-        //
         $pool = $container->getDefinition('sonata.admin.pool');
 
         foreach ($container->findTaggedServiceIds('sonata.admin') as $id => $attributes) {
@@ -77,7 +75,6 @@ class AddDependencyCallsPass implements CompilerPassInterface
         $pool->addMethodCall('setAdminGroups', array($groups));
         $pool->addMethodCall('setAdminClasses', array($classes));
 
-        //
         $routeLoader = $container->getDefinition('sonata.admin.route_loader');
         $routeLoader->addArgument($admins);
     }
@@ -91,7 +88,6 @@ class AddDependencyCallsPass implements CompilerPassInterface
      */
     public function applyDefaults(Definition $definition, array $attributes = array())
     {
-
         $definition->setScope(ContainerInterface::SCOPE_PROTOTYPE);
 
         $manager_type = $attributes[0]['manager_type'];

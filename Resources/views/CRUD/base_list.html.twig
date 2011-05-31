@@ -14,7 +14,7 @@ file that was distributed with this source code.
 {% block actions %}
     <div class="sonata-actions">
         <ul>
-            <li class="sonata-action-element"><a href="{{ admin.generateUrl('create') }}">{% trans from admin.translationdomain %}link_action_create{% endtrans %}</a></li>
+            <li class="sonata-action-element"><a href="{{ admin.generateUrl('create') }}">{% trans from 'SonataAdminBundle' %}link_action_create{% endtrans %}</a></li>
         </ul>
     </div>
 {% endblock %}
@@ -76,7 +76,7 @@ file that was distributed with this source code.
                             <td colspan="{{ admin.list.elements|length }}" class="pager">
                                 <ul>
                                     {% if admin.datagrid.pager.page != admin.datagrid.pager.previouspage %}
-                                        <li><a href="{{ admin.generateUrl('list', admin.datagrid.values|merge({'_page': admin.datagrid.pager.previouspage})) }}">{% trans from 'AdminBundle' %}link_previous_pager{% endtrans %}</a></li>
+                                        <li><a href="{{ admin.generateUrl('list', admin.datagrid.values|merge({'_page': admin.datagrid.pager.previouspage})) }}">{% trans from 'SonataAdminBundle' %}link_previous_pager{% endtrans %}</a></li>
                                     {% endif %}
 
                                     {# Set the number of pages to display in the pager #}
@@ -89,7 +89,7 @@ file that was distributed with this source code.
                                     {% endfor %}
 
                                     {% if admin.datagrid.pager.page != admin.datagrid.pager.nextpage %}
-                                        <li><a href="{{ admin.generateUrl('list', admin.datagrid.values|merge({'_page': admin.datagrid.pager.nextpage})) }}">{% trans from 'AdminBundle' %}link_next_pager{% endtrans %}</a></li>
+                                        <li><a href="{{ admin.generateUrl('list', admin.datagrid.values|merge({'_page': admin.datagrid.pager.nextpage})) }}">{% trans from 'SonataAdminBundle' %}link_next_pager{% endtrans %}</a></li>
                                     {% endif %}
                                 </ul>
                             </td>
@@ -104,7 +104,7 @@ file that was distributed with this source code.
                        $(this).closest('table').find("td input[type='checkbox']").attr('checked', $(this).is(':checked'));
                    });
                    $('.delete_link').click(function(e){
-                      if (!confirm('{% trans from 'AdminBundle' %}confirm_msg{% endtrans %}')) e.preventDefault();
+                      if (!confirm('{% trans from 'SonataAdminBundle' %}confirm_msg{% endtrans %}')) e.preventDefault();
                    });
                 });
             </script>
@@ -115,12 +115,12 @@ file that was distributed with this source code.
                         <option value="{{ action }}">{{ label }}</option>
                     {% endfor %}
                 </select>
-                <input type="submit" value="{% trans from 'AdminBundle' %}btn_batch{% endtrans %}" />
+                <input type="submit" value="{% trans from 'SonataAdminBundle' %}btn_batch{% endtrans %}" />
             </div>
         </form>
     {% else %}
         <p class="notice">
-          {% trans from 'AdminBundle' %}no_result{% endtrans %}
+          {% trans from 'SonataAdminBundle' %}no_result{% endtrans %}
         </p>
     {% endif %}
 {% endblock %}
@@ -134,9 +134,9 @@ file that was distributed with this source code.
                 </div>
             {% endfor %}
 
-            <input type="submit" value="{% trans from 'AdminBundle' %}btn_filter{% endtrans %}" />
+            <input type="submit" value="{% trans from 'SonataAdminBundle' %}btn_filter{% endtrans %}" />
 
-            <a href="{{ admin.generateUrl('list') }}">{% trans from 'AdminBundle' %}link_reset_filter{% endtrans %}</a>
+            <a href="{{ admin.generateUrl('list') }}">{% trans from 'SonataAdminBundle' %}link_reset_filter{% endtrans %}</a>
         </form>
     {% endif %}
 {% endblock %}
