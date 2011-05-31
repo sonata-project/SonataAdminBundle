@@ -681,7 +681,7 @@ abstract class Admin implements AdminInterface
     public function getBatchActions()
     {
         return array(
-            'delete' => $this->trans('action_delete', array(), 'AdminBundle')
+            'delete' => $this->trans('action_delete', array(), 'SonataAdminBundle')
         );
     }
 

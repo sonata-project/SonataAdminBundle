@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-    <file source-language="en" datatype="plaintext" original="AdminBundle.en.xliff" >
+    <file source-language="en" datatype="plaintext" original="SonataAdminBundle.en.xliff" >
         <body>
             <trans-unit id="action_delete">
                 <source>action_delete</source>
-                <target>Borrar</target>
+                <target>Löschen</target>
             </trans-unit>
             <trans-unit id="btn_batch">
                 <source>btn_batch</source>
@@ -12,79 +12,63 @@
             </trans-unit>
             <trans-unit id="btn_create">
                 <source>btn_create</source>
-                <target>Crear</target>
+                <target>Hinzufügen</target>
             </trans-unit>
             <trans-unit id="btn_create_and_edit_again">
                 <source>btn_create_and_edit_again</source>
-                <target>Crear y editar</target>
+                <target>Hinzufügen</target>
             </trans-unit>
             <trans-unit id="btn_create_and_create_a_new_one">
                 <source>btn_create_and_create_a_new_one</source>
-                <target>Crear y agregar otro</target>
+                <target>Hinzufügen und neu</target>
             </trans-unit>
             <trans-unit id="btn_filter">
                 <source>btn_filter</source>
-                <target>Filtrar</target>
+                <target>Filtern</target>
             </trans-unit>
             <trans-unit id="btn_update_and_edit_again">
                 <source>btn_update_and_edit_again</source>
-                <target>Actualizar</target>
+                <target>Speichern</target>
             </trans-unit>
             <trans-unit id="btn_update_and_return_to_list">
                 <source>btn_update_and_return_to_list</source>
-                <target>Actualizar y cerrar</target>
+                <target>Speichern und schliessen</target>
             </trans-unit>
             <trans-unit id="link_action_create">
                 <source>link_action_create</source>
-                <target>Agregar nuevo</target>
+                <target>Neu</target>
             </trans-unit>
             <trans-unit id="link_action_list">
                 <source>link_action_list</source>
-                <target>Volver a la lista</target>
+                <target>Zurück zur Liste</target>
             </trans-unit>
             <trans-unit id="link_add">
                 <source>link_add</source>
-                <target>Agregar nuevo</target>
+                <target>Neu</target>
             </trans-unit>
             <trans-unit id="link_list">
                 <source>link_list</source>
-                <target>Listar</target>
+                <target>Liste</target>
             </trans-unit>
             <trans-unit id="link_reset_filter">
                 <source>link_reset_filter</source>
-                <target>Resetear</target>
+                <target>Löschen</target>
             </trans-unit>
             <trans-unit id="title_create">
                 <source>title_create</source>
-                <target>Crear</target>
+                <target>Hinzufügen</target>
             </trans-unit>
             <trans-unit id="title_dashboard">
                 <source>title_dashboard</source>
-                <target>Dashboard</target>
+                <target>Startseite</target>
             </trans-unit>
             <trans-unit id="title_edit">
                 <source>title_edit</source>
-                <target>Editar</target>
+                <target>Bearbeiten</target>
             </trans-unit>
             <trans-unit id="title_list">
                 <source>title_list</source>
-                <target>Listar</target>
-            </trans-unit>
-            <trans-unit id="link_next_pager">
-                <source>link_next_pager</source>
-                <target>Siguiente</target>
-            </trans-unit>
-            <trans-unit id="link_previous_pager">
-                <source>link_previous_pager</source>
-                <target>Previo</target>
-            </trans-unit>
-            <trans-unit id="Admin">
-                <source>Admin</source>
-                <target>Admin</target>
-            </trans-unit>
-            <trans-unit id="link_expand">
-                <source>link_expand</source>
-                <target>expandir/colapsar</target>
+                <target>Liste</target>
             </trans-unit>
         </body>
     </file>
