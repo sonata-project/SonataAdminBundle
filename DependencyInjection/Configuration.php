@@ -15,7 +15,6 @@ use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
-
 /**
  * This class contains the configuration information for the bundle
  *
@@ -24,23 +23,21 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  *
  * @author Michael Williams <mtotheikle@gmail.com>
  */
-class Configuration
+class Configuration implements ConfigurationInterface
 {
     /**
      * Generates the configuration tree.
      *
-     * @return \Symfony\Component\Config\Definition\NodeInterface
+     * @return \Symfony\Component\Config\Definition\Builder\TreeBuilder
      */
-    public function getConfigTree($kernelDebug)
+    public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('sonata_admin', 'array');
 
         $this->addTemplateSection($rootNode);
-        $this->addAccessControlSection($rootNode);
-        $this->addRoleHierarchySection($rootNode);
 
-        return $treeBuilder->buildTree();
+        return $treeBuilder;
     }
 
     private function addTemplateSection(ArrayNodeDefinition $rootNode)
@@ -55,57 +52,5 @@ class Configuration
                 ->end()
             ->end()
         ->end();
-    }
-
-    private function addAccessControlSection(ArrayNodeDefinition $rootNode)
-    {
-        $rootNode
-            ->fixXmlConfig('rule', 'access_control')
-            ->children()
-                ->arrayNode('access_control')
-                    ->cannotBeOverwritten()
-                    ->prototype('array')
-                        ->children()
-                            ->scalarNode('requires_channel')->defaultNull()->end()
-                            ->scalarNode('path')->defaultNull()->end()
-                            ->scalarNode('host')->defaultNull()->end()
-                            ->scalarNode('ip')->defaultNull()->end()
-                            ->arrayNode('methods')
-                                ->beforeNormalization()->ifString()->then(function($v) { return preg_split('/\s*,\s*/', $v); })->end()
-                                ->prototype('scalar')->end()
-                            ->end()
-                        ->end()
-                        ->fixXmlConfig('role')
-                        ->children()
-                            ->arrayNode('roles')
-                                ->beforeNormalization()->ifString()->then(function($v) { return preg_split('/\s*,\s*/', $v); })->end()
-                                ->prototype('scalar')->end()
-                            ->end()
-                        ->end()
-                    ->end()
-                ->end()
-            ->end()
-        ;
-    }
-
-    private function addRoleHierarchySection(ArrayNodeDefinition $rootNode)
-    {
-        $rootNode
-            ->fixXmlConfig('role', 'role_hierarchy')
-            ->children()
-                ->arrayNode('role_hierarchy')
-                    ->useAttributeAsKey('id')
-                    ->prototype('array')
-                        ->performNoDeepMerging()
-                        ->beforeNormalization()->ifString()->then(function($v) { return array('value' => $v); })->end()
-                        ->beforeNormalization()
-                            ->ifTrue(function($v) { return is_array($v) && isset($v['value']); })
-                            ->then(function($v) { return preg_split('/\s*,\s*/', $v['value']); })
-                        ->end()
-                        ->prototype('scalar')->end()
-                    ->end()
-                ->end()
-            ->end()
-        ;
     }
 }
