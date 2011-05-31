@@ -132,7 +132,7 @@ abstract class Admin implements AdminInterface
      *
      * @var string
      */
-    protected $translationDomain = 'AdminBundle';
+    protected $translationDomain = 'messages';
 
     /**
      * Options to set to the form (ie, validation_groups)
@@ -681,7 +681,7 @@ abstract class Admin implements AdminInterface
     public function getBatchActions()
     {
         return array(
-            'delete' => $this->trans('action_delete')
+            'delete' => $this->trans('action_delete', array(), 'AdminBundle')
         );
     }
 
