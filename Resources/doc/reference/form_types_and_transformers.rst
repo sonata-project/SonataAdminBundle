@@ -68,8 +68,8 @@ Now you can edit the settings array with :
 the output will be :
 
 .. image:: ../images/sonata_type_immutable_array.png
-           :alt: Dashboard
-
+           :alt: Immutable Array Type
+           :width: 200
 
 
 Datatransformer

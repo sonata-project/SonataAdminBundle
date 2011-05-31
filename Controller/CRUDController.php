@@ -121,7 +121,7 @@ class CRUDController extends Controller
      */
     public function listAction()
     {
-        if ($this->admin->isGranted('LIST')) {
+        if (false === $this->admin->isGranted('LIST')) {
             throw new AccessDeniedException();
         }
 
@@ -140,7 +140,7 @@ class CRUDController extends Controller
      */
     public function batchActionDelete($idx)
     {
-        if ($this->admin->isGranted('DELETE')) {
+        if (false === $this->admin->isGranted('DELETE')) {
             throw new AccessDeniedException();
         }
 
@@ -153,7 +153,7 @@ class CRUDController extends Controller
 
     public function deleteAction($id)
     {
-        if ($this->admin->isGranted('DELETE')) {
+        if (false === $this->admin->isGranted('DELETE')) {
             throw new AccessDeniedException();
         }
 
@@ -178,7 +178,7 @@ class CRUDController extends Controller
      */
     public function editAction($id)
     {
-        if ($this->admin->isGranted('EDIT')) {
+        if (false === $this->admin->isGranted('EDIT')) {
             throw new AccessDeniedException();
         }
 
@@ -278,7 +278,7 @@ class CRUDController extends Controller
      */
     public function createAction()
     {
-        if ($this->admin->isGranted('CREATE')) {
+        if (false === $this->admin->isGranted('CREATE')) {
             throw new AccessDeniedException();
         }
 

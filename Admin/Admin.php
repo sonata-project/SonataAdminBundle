@@ -1852,7 +1852,6 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
             sprintf($baseRole, 'LIST')      => array('LIST'),
             sprintf($baseRole, 'CREATE')    => array('CREATE'),
             sprintf($baseRole, 'DELETE')    => array('DELETE'),
-            sprintf($baseRole, 'BATCH')     => array('BATCH'),
             sprintf($baseRole, 'OPERATOR')  => array('OPERATOR'),
         );
     }
