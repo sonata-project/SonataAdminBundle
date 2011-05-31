@@ -24,13 +24,17 @@ use Symfony\Component\Config\Resource\FileResource;
 
 class DumpActionRolesCommand extends Command
 {
-
     public function configure()
     {
         $this->setName('sonata:admin:dump-action-roles');
-        $this->setDescription('');
-        $this->addOption('format', null, InputOption::VALUE_OPTIONAL, 'define the output format (default: yaml)', 'yaml');
-        $this->addOption('prefix', null, InputOption::VALUE_OPTIONAL, 'define the admin route prefix (default: /admin)', '/admin');
+        $this->setDescription('Dumps a set of access control rules for the classes');
+        $this->addOption('format', null, InputOption::VALUE_OPTIONAL, 'define the output format', 'yaml');
+        $this->addOption('prefix', null, InputOption::VALUE_OPTIONAL, 'define the admin route prefix', '/admin');
+        $this->setHelp(<<<EOF
+Dumps a role hierachy and a set of access control rules using a different role
+for each admin actions.
+EOF
+            );
     }
 
     public function execute(InputInterface $input, OutputInterface $output)
@@ -70,7 +74,7 @@ class DumpActionRolesCommand extends Command
     public function dumpYaml(OutputInterface $output, array $infos)
     {
 
-        $output->writeln('sonata_admin:');
+        $output->writeln('security:');
         $output->writeln('    access_control:');
         foreach ($infos as $groups) {
             foreach ($groups as $group) {
