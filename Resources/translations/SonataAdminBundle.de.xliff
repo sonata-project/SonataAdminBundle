@@ -4,7 +4,7 @@
         <body>
             <trans-unit id="action_delete">
                 <source>action_delete</source>
-                <target>LÃ¶schen</target>
+                <target>Löschen</target>
             </trans-unit>
             <trans-unit id="btn_batch">
                 <source>btn_batch</source>
@@ -12,15 +12,15 @@
             </trans-unit>
             <trans-unit id="btn_create">
                 <source>btn_create</source>
-                <target>HinzufÃ¼gen</target>
+                <target>Hinzufügen</target>
             </trans-unit>
             <trans-unit id="btn_create_and_edit_again">
                 <source>btn_create_and_edit_again</source>
-                <target>HinzufÃ¼gen</target>
+                <target>Hinzufügen</target>
             </trans-unit>
             <trans-unit id="btn_create_and_create_a_new_one">
                 <source>btn_create_and_create_a_new_one</source>
-                <target>HinzufÃ¼gen und neu</target>
+                <target>Hinzufügen und neu</target>
             </trans-unit>
             <trans-unit id="btn_filter">
                 <source>btn_filter</source>
@@ -40,7 +40,7 @@
             </trans-unit>
             <trans-unit id="link_action_list">
                 <source>link_action_list</source>
-                <target>ZurÃ¼ck zur Liste</target>
+                <target>Zurück zur Liste</target>
             </trans-unit>
             <trans-unit id="link_add">
                 <source>link_add</source>
@@ -52,11 +52,11 @@
             </trans-unit>
             <trans-unit id="link_reset_filter">
                 <source>link_reset_filter</source>
-                <target>LÃ¶schen</target>
+                <target>Löschen</target>
             </trans-unit>
             <trans-unit id="title_create">
                 <source>title_create</source>
-                <target>HinzufÃ¼gen</target>
+                <target>Hinzufügen</target>
             </trans-unit>
             <trans-unit id="title_dashboard">
                 <source>title_dashboard</source>

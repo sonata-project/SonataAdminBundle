@@ -12,15 +12,15 @@
             </trans-unit>
             <trans-unit id="btn_create">
                  <source>btn_create</source>
-                 <target>CrÃ©er</target>
+                 <target>Créer</target>
              </trans-unit>
             <trans-unit id="btn_create_and_edit_again">
                 <source>btn_create_and_edit_again</source>
-                <target>CrÃ©er</target>
+                <target>Créer</target>
             </trans-unit>
             <trans-unit id="btn_create_and_create_a_new_one">
                 <source>btn_create_and_create_a_new_one</source>
-                <target>CrÃ©er et ajouter</target>
+                <target>Créer et ajouter</target>
             </trans-unit>
             <trans-unit id="btn_filter">
                 <source>btn_filter</source>
@@ -28,11 +28,11 @@
             </trans-unit>
             <trans-unit id="btn_update_and_edit_again">
                 <source>btn_update_and_edit_again</source>
-                <target>Mettre Ã  jour</target>
+                <target>Mettre à jour</target>
             </trans-unit>
             <trans-unit id="btn_update_and_return_to_list">
                 <source>btn_update_and_return_to_list</source>
-                <target>Mettre Ã  jour et fermer</target>
+                <target>Mettre à jour et fermer</target>
             </trans-unit>
             <trans-unit id="link_action_create">
                 <source>link_action_create</source>
@@ -40,7 +40,7 @@
             </trans-unit>
             <trans-unit id="link_action_list">
                 <source>link_action_list</source>
-                <target>Retourner Ã  la liste</target>
+                <target>Retourner à la liste</target>
             </trans-unit>
             <trans-unit id="link_add">
                 <source>link_add</source>
@@ -56,7 +56,7 @@
             </trans-unit>
             <trans-unit id="title_create">
                 <source>title_create</source>
-                <target>CrÃ©er</target>
+                <target>Créer</target>
             </trans-unit>
             <trans-unit id="title_dashboard">
                 <source>title_dashboard</source>
@@ -72,11 +72,11 @@
             </trans-unit>
             <trans-unit id="no_result">
                 <source>no_result</source>
-                <target>Aucun rÃ©sultat</target>
+                <target>Aucun résultat</target>
             </trans-unit>
             <trans-unit id="confirm_msg">
                 <source>confirm_msg</source>
-                <target>ÃŠtes-vous sÃ»r ?</target>
+                <target>Êtes-vous sûr ?</target>
             </trans-unit>
             <trans-unit id="action_edit">
                 <source>action_edit</source>
