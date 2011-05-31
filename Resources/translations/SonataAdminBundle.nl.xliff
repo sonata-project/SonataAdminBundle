@@ -1,90 +1,106 @@
 <?xml version="1.0"?>
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-    <file source-language="uk" datatype="plaintext" original="" >
+    <file source-language="en" datatype="plaintext" original="SonataAdminBundle.en.xliff" >
         <body>
             <trans-unit id="action_delete">
                 <source>action_delete</source>
-                <target>Видалити</target>
+                <target>Verwijder</target>
             </trans-unit>
             <trans-unit id="btn_batch">
                 <source>btn_batch</source>
-                <target>Ok</target>
+                <target>Oke</target>
             </trans-unit>
             <trans-unit id="btn_create">
                 <source>btn_create</source>
-                <target>Створити</target>
+                <target>Aanmaken</target>
             </trans-unit>
             <trans-unit id="btn_create_and_edit_again">
                 <source>btn_create_and_edit_again</source>
-                <target>Створити й редагувати</target>
+                <target>Aanmaken</target>
             </trans-unit>
             <trans-unit id="btn_create_and_create_a_new_one">
                 <source>btn_create_and_create_a_new_one</source>
-                <target>Створити й додати новий</target>
+                <target>Aanmaken en nieuwe toevoegen</target>
             </trans-unit>
             <trans-unit id="btn_filter">
                 <source>btn_filter</source>
-                <target>Фільтрувати</target>
+                <target>Filter</target>
             </trans-unit>
             <trans-unit id="btn_update_and_edit_again">
                 <source>btn_update_and_edit_again</source>
-                <target>Зберегти</target>
+                <target>Bijwerken</target>
             </trans-unit>
             <trans-unit id="btn_update_and_return_to_list">
                 <source>btn_update_and_return_to_list</source>
-                <target>Зберегти й повернутись до списку</target>
+                <target>Bijwerken en sluiten</target>
             </trans-unit>
             <trans-unit id="link_action_create">
                 <source>link_action_create</source>
-                <target>Додати новий</target>
+                <target>Nieuwe toevoegen</target>
             </trans-unit>
             <trans-unit id="link_action_list">
                 <source>link_action_list</source>
-                <target>Повернутись до списку</target>
+                <target>Terug naar lijst</target>
             </trans-unit>
             <trans-unit id="link_add">
                 <source>link_add</source>
-                <target>Додати новий</target>
+                <target>Nieuwe toevoegen</target>
             </trans-unit>
             <trans-unit id="link_list">
                 <source>link_list</source>
-                <target>Список</target>
+                <target>Lijst</target>
             </trans-unit>
             <trans-unit id="link_reset_filter">
                 <source>link_reset_filter</source>
-                <target>Скинути</target>
+                <target>Opnieuw</target>
             </trans-unit>
             <trans-unit id="title_create">
                 <source>title_create</source>
-                <target>Створити</target>
+                <target>Aanmaken</target>
             </trans-unit>
             <trans-unit id="title_dashboard">
                 <source>title_dashboard</source>
-                <target>Панель</target>
+                <target>Dashboard</target>
             </trans-unit>
             <trans-unit id="title_edit">
                 <source>title_edit</source>
-                <target>Редагувати</target>
+                <target>Wijzig</target>
             </trans-unit>
             <trans-unit id="title_list">
                 <source>title_list</source>
-                <target>Список</target>
+                <target>Lijst</target>
             </trans-unit>
             <trans-unit id="link_next_pager">
                 <source>link_next_pager</source>
-                <target>Наступні</target>
+                <target>Volgende</target>
             </trans-unit>
             <trans-unit id="link_previous_pager">
                 <source>link_previous_pager</source>
-                <target>Попередні</target>
+                <target>Vorige</target>
             </trans-unit>
             <trans-unit id="Admin">
                 <source>Admin</source>
-                <target>Адмін</target>
+                <target>Admin</target>
             </trans-unit>
             <trans-unit id="link_expand">
                 <source>link_expand</source>
-                <target>розвернути/звернути</target>
+                <target>Uitklappen/inklappen</target>
+            </trans-unit>
+            <trans-unit id="no_result">
+                <source>no_result</source>
+                <target>Geen resultaten</target>
+            </trans-unit>
+            <trans-unit id="confirm_msg">
+                <source>confirm_msg</source>
+                <target>Weet je het zeker ?</target>
+            </trans-unit>
+            <trans-unit id="action_edit">
+                <source>action_edit</source>
+                <target>Bijwerken</target>
+            </trans-unit>
+            <trans-unit id="action_view">
+                <source>action_view</source>
+                <target>Bekijk</target>
             </trans-unit>
         </body>
     </file>

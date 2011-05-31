@@ -1,90 +1,90 @@
 <?xml version="1.0"?>
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-    <file source-language="en" datatype="plaintext" original="AdminBundle.en.xliff" >
+    <file source-language="en" datatype="plaintext" original="SonataAdminBundle.en.xliff" >
         <body>
             <trans-unit id="action_delete">
                 <source>action_delete</source>
-                <target>Borrar</target>
+                <target>Supprimer</target>
             </trans-unit>
             <trans-unit id="btn_batch">
                 <source>btn_batch</source>
                 <target>Ok</target>
             </trans-unit>
             <trans-unit id="btn_create">
-                <source>btn_create</source>
-                <target>Crear</target>
-            </trans-unit>
+                 <source>btn_create</source>
+                 <target>CrÃ©er</target>
+             </trans-unit>
             <trans-unit id="btn_create_and_edit_again">
                 <source>btn_create_and_edit_again</source>
-                <target>Crear y editar</target>
+                <target>CrÃ©er</target>
             </trans-unit>
             <trans-unit id="btn_create_and_create_a_new_one">
                 <source>btn_create_and_create_a_new_one</source>
-                <target>Crear y agregar otro</target>
+                <target>CrÃ©er et ajouter</target>
             </trans-unit>
             <trans-unit id="btn_filter">
                 <source>btn_filter</source>
-                <target>Filtrar</target>
+                <target>Filtrer</target>
             </trans-unit>
             <trans-unit id="btn_update_and_edit_again">
                 <source>btn_update_and_edit_again</source>
-                <target>Actualizar</target>
+                <target>Mettre Ã  jour</target>
             </trans-unit>
             <trans-unit id="btn_update_and_return_to_list">
                 <source>btn_update_and_return_to_list</source>
-                <target>Actualizar y cerrar</target>
+                <target>Mettre Ã  jour et fermer</target>
             </trans-unit>
             <trans-unit id="link_action_create">
                 <source>link_action_create</source>
-                <target>Agregar nuevo</target>
+                <target>Ajouter</target>
             </trans-unit>
             <trans-unit id="link_action_list">
                 <source>link_action_list</source>
-                <target>Volver a la lista</target>
+                <target>Retourner Ã  la liste</target>
             </trans-unit>
             <trans-unit id="link_add">
                 <source>link_add</source>
-                <target>Agregar nuevo</target>
+                <target>Ajouter</target>
             </trans-unit>
             <trans-unit id="link_list">
                 <source>link_list</source>
-                <target>Listar</target>
+                <target>Liste</target>
             </trans-unit>
             <trans-unit id="link_reset_filter">
                 <source>link_reset_filter</source>
-                <target>Resetear</target>
+                <target>Effacer</target>
             </trans-unit>
             <trans-unit id="title_create">
                 <source>title_create</source>
-                <target>Crear</target>
+                <target>CrÃ©er</target>
             </trans-unit>
             <trans-unit id="title_dashboard">
                 <source>title_dashboard</source>
-                <target>Dashboard</target>
+                <target>Tableau de bord</target>
             </trans-unit>
             <trans-unit id="title_edit">
                 <source>title_edit</source>
-                <target>Editar</target>
+                <target>Editer</target>
             </trans-unit>
             <trans-unit id="title_list">
                 <source>title_list</source>
-                <target>Listar</target>
+                <target>Liste</target>
             </trans-unit>
-            <trans-unit id="link_next_pager">
-                <source>link_next_pager</source>
-                <target>Siguiente</target>
+            <trans-unit id="no_result">
+                <source>no_result</source>
+                <target>Aucun rÃ©sultat</target>
             </trans-unit>
-            <trans-unit id="link_previous_pager">
-                <source>link_previous_pager</source>
-                <target>Previo</target>
+            <trans-unit id="confirm_msg">
+                <source>confirm_msg</source>
+                <target>ÃŠtes-vous sÃ»r ?</target>
             </trans-unit>
-            <trans-unit id="Admin">
-                <source>Admin</source>
-                <target>Admin</target>
+            <trans-unit id="action_edit">
+                <source>action_edit</source>
+                <target>Editer</target>
             </trans-unit>
-            <trans-unit id="link_expand">
-                <source>link_expand</source>
-                <target>expandir/colapsar</target>
+            <trans-unit id="action_view">
+                <source>action_view</source>
+                <target>Afficher</target>
             </trans-unit>
         </body>
     </file>
