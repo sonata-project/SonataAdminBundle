@@ -14,8 +14,8 @@ file that was distributed with this source code.
 {% block actions %}
     <div class="sonata-actions">
         <ul>
-            <li class="sonata-action-element"><a href="{{ admin.generateUrl('create') }}">{% trans from 'AdminBundle' %}link_action_create{% endtrans %}</a></li>
-            <li class="sonata-action-element"><a href="{{ admin.generateUrl('list') }}">{% trans from 'AdminBundle' %}link_action_list{% endtrans %}</a></li>
+            <li class="sonata-action-element"><a href="{{ admin.generateUrl('create') }}">{% trans from 'SonataAdminBundle' %}link_action_create{% endtrans %}</a></li>
+            <li class="sonata-action-element"><a href="{{ admin.generateUrl('list') }}">{% trans from 'SonataAdminBundle' %}link_action_list{% endtrans %}</a></li>
         </ul>
     </div>
 {% endblock %}
@@ -44,7 +44,7 @@ file that was distributed with this source code.
                     <legend>
                         {{ name|trans({}, admin.translationdomain) }}
                         {% if form_group.collapsed %}
-                            <a href="" class="sonata-ba-collapsed">{% trans from 'AdminBundle' %}link_expand{% endtrans %}</a>
+                            <a href="" class="sonata-ba-collapsed">{% trans from 'SonataAdminBundle' %}link_expand{% endtrans %}</a>
                         {% endif %}
                     </legend>
 
@@ -68,17 +68,17 @@ file that was distributed with this source code.
 
         {% if app.request.isxmlhttprequest %}
             {% if object.id %}
-                <input type="submit" name="btn_update" value="{% trans from 'AdminBundle' %}btn_update{% endtrans %}"/>
+                <input type="submit" name="btn_update" value="{% trans from 'SonataAdminBundle' %}btn_update{% endtrans %}"/>
             {% else %}
-                <input type="submit" name="btn_create" value="{% trans from 'AdminBundle' %}btn_create{% endtrans %}"/>
+                <input type="submit" name="btn_create" value="{% trans from 'SonataAdminBundle' %}btn_create{% endtrans %}"/>
             {% endif %}
         {% else %}
             {% if object.id %}
-                <input type="submit" name="btn_update_and_edit" value="{% trans from 'AdminBundle' %}btn_update_and_edit_again{% endtrans %}"/>
-                <input type="submit" name="btn_update_and_list" value="{% trans from 'AdminBundle' %}btn_update_and_return_to_list{% endtrans %}"/>
+                <input type="submit" name="btn_update_and_edit" value="{% trans from 'SonataAdminBundle' %}btn_update_and_edit_again{% endtrans %}"/>
+                <input type="submit" name="btn_update_and_list" value="{% trans from 'SonataAdminBundle' %}btn_update_and_return_to_list{% endtrans %}"/>
             {% else %}
-                <input type="submit" name="btn_create_and_edit" value="{% trans from 'AdminBundle' %}btn_create_and_edit_again{% endtrans %}"/>
-                <input type="submit" name="btn_create_and_create" value="{% trans from 'AdminBundle' %}btn_create_and_create_a_new_one{% endtrans %}"/>
+                <input type="submit" name="btn_create_and_edit" value="{% trans from 'SonataAdminBundle' %}btn_create_and_edit_again{% endtrans %}"/>
+                <input type="submit" name="btn_create_and_create" value="{% trans from 'SonataAdminBundle' %}btn_create_and_create_a_new_one{% endtrans %}"/>
             {% endif %}
         {% endif %}
     </form>
