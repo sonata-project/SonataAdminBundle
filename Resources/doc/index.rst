@@ -24,6 +24,7 @@ Reference Guide
    reference/saving_hooks
    reference/routing
    reference/dashboard
+   reference/security
 
 Doctrine ORM
 ------------

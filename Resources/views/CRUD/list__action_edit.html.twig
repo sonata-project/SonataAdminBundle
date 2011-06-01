@@ -1,3 +1,5 @@
-<a href="{{ admin.generateUrl('edit', {'id': object.id}) }}" class="edit_link" title="{% trans from 'SonataAdminBundle' %}action_edit{% endtrans %}">
-    <img src="{{ asset('bundles/sonataadmin/famfamfam/page_white_edit.png') }}" alt="{% trans from 'SonataAdminBundle' %}action_edit{% endtrans %}" />
-</a>
+{% if admin.isGranted('EDIT')%}
+    <a href="{{ admin.generateUrl('edit', {'id': object.id}) }}" class="edit_link" title="{% trans from 'SonataAdminBundle' %}action_edit{% endtrans %}">
+        <img src="{{ asset('bundles/sonataadmin/famfamfam/page_white_edit.png') }}" alt="{% trans from 'SonataAdminBundle' %}action_edit{% endtrans %}" />
+    </a>
+{% endif %}

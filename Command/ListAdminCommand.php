@@ -29,7 +29,6 @@ class ListAdminCommand extends Command
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
-
         $pool = $this->container->get('sonata.admin.pool');
 
         $output->writeln("<info>Admin services:</info>");
