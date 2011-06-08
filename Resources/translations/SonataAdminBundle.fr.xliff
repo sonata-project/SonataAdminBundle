@@ -11,9 +11,9 @@
                 <target>Ok</target>
             </trans-unit>
             <trans-unit id="btn_create">
-                 <source>btn_create</source>
-                 <target>Créer</target>
-             </trans-unit>
+                <source>btn_create</source>
+                <target>Créer</target>
+            </trans-unit>
             <trans-unit id="btn_create_and_edit_again">
                 <source>btn_create_and_edit_again</source>
                 <target>Créer</target>
@@ -64,11 +64,27 @@
             </trans-unit>
             <trans-unit id="title_edit">
                 <source>title_edit</source>
-                <target>Editer</target>
+                <target>Éditer</target>
             </trans-unit>
             <trans-unit id="title_list">
                 <source>title_list</source>
                 <target>Liste</target>
+            </trans-unit>
+            <trans-unit id="link_next_pager">
+                <source>link_next_pager</source>
+                <target>Suivant</target>
+            </trans-unit>
+            <trans-unit id="link_previous_pager">
+                <source>link_previous_pager</source>
+                <target>Précédent</target>
+            </trans-unit>
+            <trans-unit id="Admin">
+                <source>Admin</source>
+                <target>Admin</target>
+            </trans-unit>
+            <trans-unit id="link_expand">
+                <source>link_expand</source>
+                <target>Étendre/Réduire</target>
             </trans-unit>
             <trans-unit id="no_result">
                 <source>no_result</source>
@@ -80,7 +96,7 @@
             </trans-unit>
             <trans-unit id="action_edit">
                 <source>action_edit</source>
-                <target>Editer</target>
+                <target>Éditer</target>
             </trans-unit>
             <trans-unit id="action_view">
                 <source>action_view</source>
