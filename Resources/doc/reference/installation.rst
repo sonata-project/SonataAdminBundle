@@ -74,3 +74,4 @@ At this point you can access to the dashboard with the url:
     the above configuration and routing will actually be placed in those
     files, with the correct format (i.e. XML or PHP).
 
+The last important step is security, please refer to the dedicated section.

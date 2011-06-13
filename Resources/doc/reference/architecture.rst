@@ -32,7 +32,7 @@ meaning that the following required dependencies are automatically injected:
 * ``FormContractor``: constructs the form using the Symfony ``FormBuilder``
 * ``DatagridBuilder``: builds the filter fields
 * ``Router``: generates the different urls
-* ``Request`` 
+* ``Request``
 * ``ModelManager``: Service which handles specific ORM code
 * ``Translator``
 
@@ -129,7 +129,7 @@ Once you have created an admin class, you must declare the class to use it. Like
 
 Or if you're using a YML configuration file,
 
-.. code-block:: yml
+.. code-block:: yaml
 
     services:
        sonata.news.admin.post:

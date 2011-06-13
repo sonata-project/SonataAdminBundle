@@ -42,7 +42,6 @@ Now you can edit the settings array with :
     use Sonata\AdminBundle\Admin\Admin;
     use Sonata\AdminBundle\Route\RouteCollection;
     use Sonata\AdminBundle\Form\FormMapper;
-    use Sonata\PageBundle\Page\Manager;
 
     class PageAdmin extends Admin
     {
@@ -68,8 +67,8 @@ Now you can edit the settings array with :
 the output will be :
 
 .. image:: ../images/sonata_type_immutable_array.png
-           :alt: Dashboard
-
+           :alt: Immutable Array Type
+           :width: 200
 
 
 Datatransformer

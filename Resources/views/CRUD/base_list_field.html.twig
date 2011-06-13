@@ -10,7 +10,7 @@ file that was distributed with this source code.
 #}
 
 <td class="sonata-ba-list-field sonata-ba-list-field-{{ field_description.type }}" objectId="{{ object.id }}">
-    {% if field_description.options.identifier is defined %}
+    {% if field_description.options.identifier is defined and admin.isGranted('EDIT') %}
         <a href="{{ admin.generateUrl('edit', {'id': object.id}) }}">
             {% block field %}{{ value }}{% endblock %}
         </a>
