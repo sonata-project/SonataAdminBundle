@@ -42,7 +42,6 @@ Now you can edit the settings array with :
     use Sonata\AdminBundle\Admin\Admin;
     use Sonata\AdminBundle\Route\RouteCollection;
     use Sonata\AdminBundle\Form\FormMapper;
-    use Sonata\PageBundle\Page\Manager;
 
     class PageAdmin extends Admin
     {
