@@ -60,11 +60,12 @@ class HelperController extends Controller
         $helper     = $this->getAdminHelper();
         $code       = $this->get('request')->get('code');
         $elementId  = $this->get('request')->get('elementId');
+        $objectId   = $this->get('request')->get('objectId');
         $admin      = $helper->getAdmin($code);
 
-        $subject = $admin->getModelManager()->findOne($admin->getClass(), $elementId);
+        $subject = $admin->getModelManager()->findOne($admin->getClass(), $objectId);
         if (!$subject) {
-            throw new NotFoundHttpException(sprintf('Unable to find the object id: %s, class: %s', $admin->getClass(), $elementId));
+            throw new NotFoundHttpException(sprintf('Unable to find the object id: %s, class: %s', $objectId, $admin->getClass()));
         }
 
         $formBuilder = $admin->getFormBuilder($subject);
