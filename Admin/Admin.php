@@ -1870,8 +1870,18 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      * @param string $name
      * @return boolean
      */
-    public function isGranted($name)
+    public function isGranted($names)
     {
-        return $this->securityContext->isGranted($name, $this);
+        if (!is_array($names)) {
+            $names = (array) $names;
+        }
+
+        foreach($names as $name) {
+            if (true === $this->securityContext->isGranted($name, $this)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
