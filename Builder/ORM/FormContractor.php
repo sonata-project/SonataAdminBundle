@@ -127,6 +127,10 @@ class FormContractor implements FormContractorInterface
      */
     protected function defineOneToOneField(FormBuilder $formBuilder, FieldDescriptionInterface $fieldDescription)
     {
+        if (!$fieldDescription->hasAssociationAdmin()) {
+            return;
+        }
+
         // tweak the widget depend on the edit mode
         if ($fieldDescription->getOption('edit') == 'inline') {
             return $this->defineChildFormBuilder($formBuilder, $fieldDescription);
@@ -154,6 +158,9 @@ class FormContractor implements FormContractorInterface
      */
     protected function getOneToManyField(FormBuilder $formBuilder, FieldDescriptionInterface $fieldDescription)
     {
+        if (!$fieldDescription->hasAssociationAdmin()) {
+            return;
+        }
 
         if ($fieldDescription->getOption('edit') == 'inline') {
 
@@ -193,6 +200,10 @@ class FormContractor implements FormContractorInterface
      */
     protected function defineManyToManyField(FormBuilder $formBuilder, FieldDescriptionInterface $fieldDescription)
     {
+        if (!$fieldDescription->hasAssociationAdmin()) {
+            return;
+        }
+
         $type     = $fieldDescription->getOption('form_field_type', 'sonata_type_model');
         $options  = $fieldDescription->getOption('form_field_options', array());
 
@@ -216,7 +227,6 @@ class FormContractor implements FormContractorInterface
      */
     public function addField(FormBuilder $formBuilder, FieldDescriptionInterface $fieldDescription)
     {
-
         // There is a bug in the GraphWalker, so for now we always load related associations
         // for more information : https://github.com/symfony/symfony/pull/1056
         if ($formBuilder->getData() && in_array($fieldDescription->getType(), array(ClassMetadataInfo::ONE_TO_MANY, ClassMetadataInfo::MANY_TO_MANY, ClassMetadataInfo::MANY_TO_ONE, ClassMetadataInfo::ONE_TO_ONE ))) {
@@ -264,8 +274,7 @@ class FormContractor implements FormContractorInterface
     {
         $fieldDescription->mergeOptions($options);
 
-        if ($admin->getModelManager()->hasMetadata($admin->getClass()))
-        {
+        if ($admin->getModelManager()->hasMetadata($admin->getClass())) {
             $metadata = $admin->getModelManager()->getMetadata($admin->getClass());
 
             // set the default field mapping

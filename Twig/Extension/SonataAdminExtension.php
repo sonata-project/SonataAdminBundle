@@ -158,7 +158,7 @@ class SonataAdminExtension extends \Twig_Extension
         }
 
         if (!$formView->offsetExists($fieldDescription->getFieldName())) {
-            throw new \RuntimeException(sprintf('No child named %s', $fieldDescription->getFieldName()));
+            return;
         }
 
         $children = $formView->offsetGet($fieldDescription->getFieldName());

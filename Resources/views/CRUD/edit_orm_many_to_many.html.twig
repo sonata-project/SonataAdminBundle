@@ -12,28 +12,30 @@ file that was distributed with this source code.
 {% extends base_template %}
 
 {% block field %}
-    <div id="field_container_{{ field_element.vars.id }}">
-        <span id="field_widget_{{ field_element.vars.id }}" >
-            {{ form_widget(field_element) }}
-        </span>
+    {% if field_description.associationadmin %}
+        <div id="field_container_{{ field_element.vars.id }}">
+            <span id="field_widget_{{ field_element.vars.id }}" >
+                {{ form_widget(field_element) }}
+            </span>
 
-        <span id="field_actions_{{ field_element.vars.id }}" >
-            <a
-                href="{{ field_description.associationadmin.generateUrl('create') }}"
-                onclick="start_field_dialog_form_add_{{ field_element.vars.id }}(event)"
-                class="sonata-ba-action"
-                style="{% if not field_description.associationadmin.isGranted('CREATE')%}display:none{% endif %}"
-                >
-                    <img
-                        src="{{ asset('bundles/sonataadmin/famfamfam/add.png') }}"
-                        alt="{% trans from 'SonataAdminBundle' %}btn_add{% endtrans %}"
-                    />
-            </a>
-        </span>
+            <span id="field_actions_{{ field_element.vars.id }}" >
+                <a
+                    href="{{ field_description.associationadmin.generateUrl('create') }}"
+                    onclick="start_field_dialog_form_add_{{ field_element.vars.id }}(event)"
+                    class="sonata-ba-action"
+                    style="{% if not field_description.associationadmin.isGranted('CREATE')%}display:none{% endif %}"
+                    >
+                        <img
+                            src="{{ asset('bundles/sonataadmin/famfamfam/add.png') }}"
+                            alt="{% trans from 'SonataAdminBundle' %}btn_add{% endtrans %}"
+                        />
+                </a>
+            </span>
 
-        <div style="display: none" id="field_dialog_{{ field_element.vars.id }}">
+            <div style="display: none" id="field_dialog_{{ field_element.vars.id }}">
+            </div>
         </div>
-    </div>
 
-    {% include 'SonataAdminBundle:CRUD:edit_orm_many_association_script.html.twig' %}
+        {% include 'SonataAdminBundle:CRUD:edit_orm_many_association_script.html.twig' %}
+    {% endif %}
 {% endblock %}

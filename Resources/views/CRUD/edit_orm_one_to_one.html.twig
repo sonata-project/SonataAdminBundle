@@ -12,7 +12,9 @@ file that was distributed with this source code.
 {% extends base_template %}
 
 {% block field %}
-    {% if field_description.options.edit == 'inline' %}
+    {% if not field_description.hasassociationadmin%}
+        {# TODO : add some logic here #}
+    {% elseif field_description.options.edit == 'inline' %}
         {% for nested_field_description in field_description.associationadmin.formfielddescriptions %}
             {{ nested_field_description|render_form_element(field_element, value) }}
         {% endfor %}

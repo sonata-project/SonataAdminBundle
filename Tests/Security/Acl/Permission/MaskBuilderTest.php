@@ -8,6 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Sonata\AdminBundle\Tests\Admin\Security\Acl\Permission;
 
 use Sonata\AdminBundle\Security\Acl\Permission\MaskBuilder;

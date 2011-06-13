@@ -9,18 +9,16 @@
  * file that was distributed with this source code.
  */
 
-
 namespace Sonata\AdminBundle\Security\Handler;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
 
 class NoopSecurityHandler implements SecurityHandlerInterface
 {
-
     /**
      * {@inheritDoc}
      */
-    function isGranted($attributes, $object = null)
+    public function isGranted($attributes, $object = null)
     {
         return true;
     }
@@ -28,7 +26,7 @@ class NoopSecurityHandler implements SecurityHandlerInterface
     /**
      * {@inheritDoc}
      */
-    function buildSecurityInformation(AdminInterface $admin)
+    public function buildSecurityInformation(AdminInterface $admin)
     {
         return array();
     }

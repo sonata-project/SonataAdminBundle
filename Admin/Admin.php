@@ -924,7 +924,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
         $admin = $pool->getAdminByClass($fieldDescription->getTargetEntity());
         if (!$admin) {
-            throw new \RuntimeException(sprintf('You must define an Admin class for the `%s` field (targetEntity=%s)', $fieldDescription->getFieldName(), $fieldDescription->getTargetEntity()));
+            return;
         }
 
         $fieldDescription->setAssociationAdmin($admin);

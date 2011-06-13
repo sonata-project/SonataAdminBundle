@@ -9,7 +9,6 @@
  * file that was distributed with this source code.
  */
 
-
 namespace Sonata\AdminBundle\Security\Handler;
 
 use Symfony\Component\Security\Core\SecurityContextInterface;
@@ -25,7 +24,7 @@ class AclSecurityHandler implements SecurityHandlerInterface
     /**
      * {@inheritDoc}
      */
-    function isGranted($attributes, $object = null)
+    public function isGranted($attributes, $object = null)
     {
         return $this->securityContext->isGranted($attributes, $this);
     }
@@ -33,7 +32,7 @@ class AclSecurityHandler implements SecurityHandlerInterface
     /**
      * {@inheritDoc}
      */
-    function buildSecurityInformation(AdminInterface $admin)
+    public function buildSecurityInformation(AdminInterface $admin)
     {
         $baseRole = 'ROLE_'.str_replace('.', '_', strtoupper($admin->getCode())).'_%s';
 

@@ -319,6 +319,14 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         return $this->associationAdmin;
     }
 
+    /**
+     *
+     * @return boolean
+     */
+    public function hasAssociationAdmin()
+    {
+        return $this->associationAdmin !== null;
+    }
 
     /**
      * return the value linked to the description

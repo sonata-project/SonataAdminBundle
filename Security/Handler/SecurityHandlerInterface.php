@@ -9,7 +9,6 @@
  * file that was distributed with this source code.
  */
 
-
 namespace Sonata\AdminBundle\Security\Handler;
 
 use Sonata\AdminBundle\Admin\AdminInterface;

@@ -16,7 +16,6 @@ class NoopSecurityHandlerTest extends \PHPUnit_Framework_TestCase
 {
     public function testNoop()
     {
-
         $handler = new NoopSecurityHandler;
 
         $this->assertTrue($handler->isGranted(array('TOTO')));

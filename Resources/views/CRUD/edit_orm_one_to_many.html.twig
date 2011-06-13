@@ -12,132 +12,136 @@ file that was distributed with this source code.
 {% extends base_template %}
 
 {% block field %}
-    <div id="field_container_{{ field_element.vars.id }}">
-        <span id="field_widget_{{ field_element.vars.id }}" >
-            {% if field_description.options.edit == 'inline' %}
-                {% if inline == 'table' %}
-                    <table>
-                        <tbody class="sonata-ba-tbody">
+    {% if not field_description.hasassociationadmin%}
+        {# TODO : add logic here #}
+    {% else %}
+        <div id="field_container_{{ field_element.vars.id }}">
+            <span id="field_widget_{{ field_element.vars.id }}" >
+                {% if field_description.options.edit == 'inline' %}
+                    {% if inline == 'table' %}
+                        <table>
+                            <tbody class="sonata-ba-tbody">
+                                {% for nested_group_field_name, nested_group_field in field_element.children %}
+                                    <tr>
+                                        {% for field_name, nested_field in nested_group_field.children %}
+                                            <td class="sonata-ba-td-{{ field_element.vars.id }}-{{ field_name  }}">
+                                                {% if field_description.associationadmin.formfielddescriptions[field_name] is defined %}
+                                                    {{ field_description.associationadmin.formfielddescriptions[field_name]|render_form_element(
+                                                        nested_group_field,
+                                                        value[nested_group_field_name]
+                                                    ) }}
+
+                                                    {% set dummy = nested_group_field.setrendered %}
+                                                {% else %}
+                                                    {{ form_widget(nested_field) }}
+                                                {% endif %}
+                                            </td>
+                                        {% endfor %}
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    {% else %}
+                        <div>
                             {% for nested_group_field_name, nested_group_field in field_element.children %}
-                                <tr>
-                                    {% for field_name, nested_field in nested_group_field.children %}
-                                        <td class="sonata-ba-td-{{ field_element.vars.id }}-{{ field_name  }}">
-                                            {% if field_description.associationadmin.formfielddescriptions[field_name] is defined %}
-                                                {{ field_description.associationadmin.formfielddescriptions[field_name]|render_form_element(
-                                                    nested_group_field,
-                                                    value[nested_group_field_name]
-                                                ) }}
+                                {% for field_name, nested_field in nested_group_field.children %}
+                                    {% if field_description.associationadmin.formfielddescriptions[field_name] is defined %}
+                                        {{ field_description.associationadmin.formfielddescriptions[field_name]|render_form_element(
+                                            nested_group_field,
+                                            value, {
+                                                'inline': 'natural',
+                                                'edit'  : 'inline'
+                                            }
+                                        ) }}
 
-                                                {% set dummy = nested_group_field.setrendered %}
-                                            {% else %}
-                                                {{ form_widget(nested_field) }}
-                                            {% endif %}
-                                        </td>
-                                    {% endfor %}
-                                </tr>
+                                        {% set dummy = nested_group_field.setrendered %}
+                                    {% else %}
+                                        {{ form_widget(nested_field) }}
+                                    {% endif %}
+                                {% endfor %}
                             {% endfor %}
-                        </tbody>
-                    </table>
+                        </div>
+                    {% endif %}
                 {% else %}
-                    <div>
-                        {% for nested_group_field_name, nested_group_field in field_element.children %}
-                            {% for field_name, nested_field in nested_group_field.children %}
-                                {% if field_description.associationadmin.formfielddescriptions[field_name] is defined %}
-                                    {{ field_description.associationadmin.formfielddescriptions[field_name]|render_form_element(
-                                        nested_group_field,
-                                        value, {
-                                            'inline': 'natural',
-                                            'edit'  : 'inline'
-                                        }
-                                    ) }}
-
-                                    {% set dummy = nested_group_field.setrendered %}
-                                {% else %}
-                                    {{ form_widget(nested_field) }}
-                                {% endif %}
-                            {% endfor %}
-                        {% endfor %}
-                    </div>
+                    {{ form_widget(field_element) }}
                 {% endif %}
-            {% else %}
-                {{ form_widget(field_element) }}
-            {% endif %}
 
-        </span>
-
-        {% if field_description.options.edit == 'inline' %}
-            <span id="field_actions_{{ field_element.vars.id }}" >
-                <a
-                    href="{{ field_description.associationadmin.generateUrl('create') }}"
-                    onclick="start_field_retrieve_{{ field_element.vars.id }}(event)"
-                    class="sonata-ba-action"
-                    style="{% if not field_description.associationadmin.isGranted('CREATE')%}display:none{% endif %}"
-                    >
-                    <img
-                        src="{{ asset('bundles/sonataadmin/famfamfam/add.png') }}"
-                        alt="{% trans from 'SonataAdminBundle' %}btn_add{% endtrans %}"
-                     />
-                </a>
             </span>
 
-            {# add code for the sortable options #}
-            {% if field_description.options.sortable is defined %}
-                <script>
-                    jQuery('div#field_container_{{ field_element.vars.id }} tbody.sonata-ba-tbody').sortable({
-                        axis: 'y',
-                        opacity: 0.6,
-                        items: 'tr',
-                        stop: apply_position_value_{{ field_element.vars.id }}
-                    });
+            {% if field_description.options.edit == 'inline' %}
+                <span id="field_actions_{{ field_element.vars.id }}" >
+                    <a
+                        href="{{ field_description.associationadmin.generateUrl('create') }}"
+                        onclick="start_field_retrieve_{{ field_element.vars.id }}(event)"
+                        class="sonata-ba-action"
+                        style="{% if not field_description.associationadmin.isGranted('CREATE')%}display:none{% endif %}"
+                        >
+                        <img
+                            src="{{ asset('bundles/sonataadmin/famfamfam/add.png') }}"
+                            alt="{% trans from 'SonataAdminBundle' %}btn_add{% endtrans %}"
+                         />
+                    </a>
+                </span>
 
-                    function apply_position_value_{{ field_element.vars.id }}() {
-                        // update the input value position
-                        jQuery('div#field_container_{{ field_element.vars.id }} tbody.sonata-ba-tbody td.sonata-ba-td-{{ field_element.vars.id }}-position').each(function(index, element) {
-                            // remove the sortable handler and put it back
-                            jQuery('span.sonata-ba-sortable-handler', element).remove();
-                            jQuery(element).append('<span class="sonata-ba-sortable-handler ui-icon ui-icon-grip-solid-horizontal"></span>');
-                            jQuery('input', element).hide();
+                {# add code for the sortable options #}
+                {% if field_description.options.sortable is defined %}
+                    <script>
+                        jQuery('div#field_container_{{ field_element.vars.id }} tbody.sonata-ba-tbody').sortable({
+                            axis: 'y',
+                            opacity: 0.6,
+                            items: 'tr',
+                            stop: apply_position_value_{{ field_element.vars.id }}
                         });
 
-                        jQuery('div#field_container_{{ field_element.vars.id }} tbody.sonata-ba-tbody td.sonata-ba-td-{{ field_element.vars.id }}-position input').each(function(index, value) {
-                            jQuery(value).val(index + 1);
-                        });
-                    }
+                        function apply_position_value_{{ field_element.vars.id }}() {
+                            // update the input value position
+                            jQuery('div#field_container_{{ field_element.vars.id }} tbody.sonata-ba-tbody td.sonata-ba-td-{{ field_element.vars.id }}-position').each(function(index, element) {
+                                // remove the sortable handler and put it back
+                                jQuery('span.sonata-ba-sortable-handler', element).remove();
+                                jQuery(element).append('<span class="sonata-ba-sortable-handler ui-icon ui-icon-grip-solid-horizontal"></span>');
+                                jQuery('input', element).hide();
+                            });
 
-                    // refresh the sortable option when a new element is added
-                    jQuery('#sonata-ba-field-container-{{ field_element.vars.id }}').bind('sonata.add_element', function() {
+                            jQuery('div#field_container_{{ field_element.vars.id }} tbody.sonata-ba-tbody td.sonata-ba-td-{{ field_element.vars.id }}-position input').each(function(index, value) {
+                                jQuery(value).val(index + 1);
+                            });
+                        }
+
+                        // refresh the sortable option when a new element is added
+                        jQuery('#sonata-ba-field-container-{{ field_element.vars.id }}').bind('sonata.add_element', function() {
+                            apply_position_value_{{ field_element.vars.id }}();
+                            jQuery('div#field_container_{{ field_element.vars.id }} tbody.sonata-ba-tbody').sortable('refresh');
+                        });
+
                         apply_position_value_{{ field_element.vars.id }}();
-                        jQuery('div#field_container_{{ field_element.vars.id }} tbody.sonata-ba-tbody').sortable('refresh');
-                    });
 
-                    apply_position_value_{{ field_element.vars.id }}();
+                    </script>
+                {% endif %}
 
-                </script>
+                {# include association code #}
+                {% include 'SonataAdminBundle:CRUD:edit_orm_one_association_script.html.twig' %}
+
+            {% else %}
+                <span id="field_actions_{{ field_element.vars.id }}" >
+                    <a
+                        href="{{ field_description.associationadmin.generateUrl('create') }}"
+                        onclick="start_field_dialog_form_add_{{ field_element.vars.id }}(event)"
+                        class="sonata-ba-action"
+                        style="{% if not field_description.associationadmin.isGranted('CREATE')%}display:none{% endif %}"
+                        >
+                        <img
+                            src="{{ asset('bundles/sonataadmin/famfamfam/add.png') }}"
+                            alt="{% trans from 'SonataAdminBundle' %}btn_add{% endtrans %}"
+                         />
+                    </a>
+                </span>
+
+                <div style="display: none" id="field_dialog_{{ field_element.vars.id }}">
+
+                </div>
+
+                {% include 'SonataAdminBundle:CRUD:edit_orm_many_association_script.html.twig' %}
             {% endif %}
-
-            {# include association code #}
-            {% include 'SonataAdminBundle:CRUD:edit_orm_one_association_script.html.twig' %}
-
-        {% else %}
-            <span id="field_actions_{{ field_element.vars.id }}" >
-                <a
-                    href="{{ field_description.associationadmin.generateUrl('create') }}"
-                    onclick="start_field_dialog_form_add_{{ field_element.vars.id }}(event)"
-                    class="sonata-ba-action"
-                    style="{% if not field_description.associationadmin.isGranted('CREATE')%}display:none{% endif %}"
-                    >
-                    <img
-                        src="{{ asset('bundles/sonataadmin/famfamfam/add.png') }}"
-                        alt="{% trans from 'SonataAdminBundle' %}btn_add{% endtrans %}"
-                     />
-                </a>
-            </span>
-
-            <div style="display: none" id="field_dialog_{{ field_element.vars.id }}">
-
-            </div>
-
-            {% include 'SonataAdminBundle:CRUD:edit_orm_many_association_script.html.twig' %}
-        {% endif %}
-    </div>
+        </div>
+    {% endif %}
 {% endblock %}

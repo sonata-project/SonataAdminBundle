@@ -16,7 +16,6 @@ class AclSecurityHandlerTest extends \PHPUnit_Framework_TestCase
 {
     public function testAcl()
     {
-
         $securityContext = $this->getMock('Symfony\Component\Security\Core\SecurityContextInterface');
         $securityContext->expects($this->any())
             ->method('isGranted')

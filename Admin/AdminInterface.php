@@ -109,13 +109,15 @@ interface AdminInterface
 
     /**
      *
+     * @param mixed $object
+     * @param array $options
      * @return \Symfony\Component\Form\FormBuilder the form builder
      */
     function getFormBuilder($object = null, $options = array());
 
     /**
      * @abstract
-     * @param  $name
+     * @param string $name
      * @return \Sonata\AdminBundle\Admin\FieldDescriptionInterface
      */
     function getFormFieldDescription($name);

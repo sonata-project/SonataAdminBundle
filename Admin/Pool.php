@@ -66,7 +66,7 @@ class Pool
      * return the admin related to the given $class
      *
      * @param string $class
-     * @return \Sonata\AdminBundle\Admin\Admin|null
+     * @return \Sonata\AdminBundle\Admin\AdminInterface|null
      */
     public function getAdminByClass($class)
     {
@@ -78,11 +78,11 @@ class Pool
     }
 
     /**
-     * return an admin clas by its Admin code
+     * Returns an admin class by its Admin code
      * ie : sonata.news.admin.post|sonata.news.admin.comment => return the child class of post
      *
      * @param string $adminCode
-     * @return \Sonata\AdminBundle\Admin\Admin|null
+     * @return \Sonata\AdminBundle\Admin\AdminInterface|null
      */
     public function getAdminByAdminCode($adminCode)
     {
@@ -100,11 +100,10 @@ class Pool
     }
 
     /**
+     * Returns a new admin instance depends on the given code
      *
-     * return a new admin instance depends on the given code
-     *
-     * @param $code
-     * @return
+     * @param $id
+     * @return \Sonata\AdminBundle\Admin\AdminInterface
      */
     public function getInstance($id)
     {
