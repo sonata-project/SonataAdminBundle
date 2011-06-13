@@ -454,7 +454,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
             $this->getListBuilder()->fixFieldDescription($this, $fieldDescription);
         }
 
-        if (!isset($this->listFieldDescriptions['_batch'])) {
+        if (!isset($this->listFieldDescriptions['_batch']) && count($this->getBatchActions()) > 0) {
             $fieldDescription = $this->modelManager->getNewFieldDescriptionInstance($this->getClass(), 'batch', array(
                 'label'    => 'batch',
                 'code'     => '_batch',
@@ -1867,7 +1867,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * @param string $name
+     * @param string $names
      * @return boolean
      */
     public function isGranted($names)
@@ -1876,7 +1876,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
             $names = (array) $names;
         }
 
-        foreach($names as $name) {
+        foreach ($names as $name) {
             if (true === $this->securityContext->isGranted($name, $this)) {
                 return true;
             }
