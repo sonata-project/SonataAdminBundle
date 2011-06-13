@@ -1,7 +1,23 @@
 Security
 ========
 
-The current ``AdminBundle`` implementation uses ACL and ROLES to handle permissions.
+The security part is managed by a ``SecurityHandler``, the bundle comes with 2 handlers
+
+  - ``sonata.admin.security.handler.acl`` : ACL and ROLES to handle permissions
+  - ``sonata.admin.security.handler.noop`` : always return true, can be used with the Symfony2 firewall
+
+The default value is ``sonata.admin.security.handler.noop``, if you want to change the default value
+you can set the ``security_handler`` to ``sonata.admin.security.handler.acl``.
+
+.. code-block:: yaml
+
+    sonata_admin:
+        security_handler: sonata.admin.security.handler.acl
+
+The following section explains how to set up ACL with the ``FriendsOfSymfony/UserBundle``.
+
+ACL and FriendsOfSymfony/UserBundle
+-----------------------------------
 
 If you want an easy way to handle users, please use :
 
@@ -15,8 +31,7 @@ The security integration is a work in progress and have some knows issues :
 
 
 Configuration
--------------
-
+~~~~~~~~~~~~~
 
     - The following configuration defines :
 
@@ -78,7 +93,7 @@ Configuration
 
         role_hierarchy:
             ROLE_ADMIN:       ROLE_USER
-            ROLE_SUPERADMIN: [ROLE_ADMIN, ROLE_SONATA_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+            ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_SONATA_ADMIN, ROLE_ALLOWED_TO_SWITCH]
 
         acl:
             connection: default
@@ -120,7 +135,7 @@ If you have Admin classes, you can install the related CRUD ACL rules :
 If you try to access to the admin class you should see the login form, just logon with the ``root`` user.
 
 Usage
------
+~~~~~
 
 Everytime you create a new ``Admin`` class, you should create start the command ``php app/console sonata:admin:setup-acl``
 so the ACL database will be updated with the latest masks and roles informations.

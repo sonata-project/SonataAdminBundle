@@ -15,7 +15,6 @@ use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\HttpFoundation\Request;
-
 use Symfony\Component\Security\Acl\Model\DomainObjectInterface;
 
 use Sonata\AdminBundle\Form\FormMapper;
@@ -26,7 +25,7 @@ use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Builder\FormContractorInterface;
 use Sonata\AdminBundle\Builder\ListBuilderInterface;
 use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
-
+use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 
@@ -296,7 +295,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      */
     protected $breadcrumbs = array();
 
-    protected $securityContext = null;
+    protected $securityHandler = null;
 
     /**
      * The configuration pool
@@ -1843,45 +1842,39 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         return $this->getCode();
     }
 
-    public function getAclInformation()
+    /**
+     * Return the list of security name available for the current admin
+     * This should be used by experimented users
+     *
+     * @return array
+     */
+    public function getSecurityInformation()
     {
-        $baseRole = 'ROLE_'.str_replace('.', '_', strtoupper($this->getCode())).'_%s';
-
         return array(
-            sprintf($baseRole, 'EDIT')      => array('EDIT'),
-            sprintf($baseRole, 'LIST')      => array('LIST'),
-            sprintf($baseRole, 'CREATE')    => array('CREATE'),
-            sprintf($baseRole, 'DELETE')    => array('DELETE'),
-            sprintf($baseRole, 'OPERATOR')  => array('OPERATOR'),
+            'EDIT'      => array('EDIT'),
+            'LIST'      => array('LIST'),
+            'CREATE'    => array('CREATE'),
+            'DELETE'    => array('DELETE'),
+            'OPERATOR'  => array('OPERATOR')
         );
     }
 
-    public function setSecurityContext($securityContext)
+    public function setSecurityHandler(SecurityHandlerInterface $securityHandler)
     {
-        $this->securityContext = $securityContext;
+        $this->securityHandler = $securityHandler;
     }
 
-    public function getSecurityContext()
+    public function getSecurityHandler()
     {
-        return $this->securityContext;
+        return $this->securityHandler;
     }
 
     /**
-     * @param string $names
+     * @param string $name
      * @return boolean
      */
-    public function isGranted($names)
+    public function isGranted($name)
     {
-        if (!is_array($names)) {
-            $names = (array) $names;
-        }
-
-        foreach ($names as $name) {
-            if (true === $this->securityContext->isGranted($name, $this)) {
-                return true;
-            }
-        }
-
-        return false;
+        return $this->securityHandler->isGranted($name, $this);
     }
 }

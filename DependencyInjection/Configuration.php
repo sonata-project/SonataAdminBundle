@@ -44,6 +44,7 @@ class Configuration implements ConfigurationInterface
     {
         $rootNode
             ->children()
+                ->scalarNode('security_handler')->defaultValue('sonata.admin.security.handler.noop')->end()
                 ->arrayNode('templates')
                     ->children()
                         ->scalarNode('layout')->cannotBeEmpty()->end()

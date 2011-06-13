@@ -59,6 +59,8 @@ class SonataAdminExtension extends Extension
 
         // setups parameters with values in config.yml, default values from external files used if not
         $this->configSetupTemplates($config, $container);
+
+        $container->getDefinition('sonata.admin.pool')->addMethodCall('__hack__', $config);
     }
 
     protected function configSetupTemplates($config, $container)

@@ -24,6 +24,7 @@ use Sonata\AdminBundle\Security\Acl\Permission\MaskBuilder;
 use Symfony\Component\Security\Acl\Exception\AclAlreadyExistsException;
 use Symfony\Component\Security\Acl\Exception\AclNotFoundException;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
+use Sonata\AdminBundle\Security\Handler\AclSecurityHandler;
 
 class SetupAclCommand extends Command
 {
@@ -51,6 +52,12 @@ class SetupAclCommand extends Command
                 continue;
             }
 
+            $securityHandler = $admin->getSecurityHandler();
+            if (!$securityHandler instanceof AclSecurityHandler) {
+                $output->writeln('Admin class is not configured to use ACL : <info>ignoring</info>');
+                continue;
+            }
+
             $objectIdentity = ObjectIdentity::fromDomainObject($admin);
             try {
                 $acl = $aclProvider->findAcl($objectIdentity);
@@ -58,7 +65,8 @@ class SetupAclCommand extends Command
                 $acl = $aclProvider->createAcl($objectIdentity);
             }
 
-            $this->configureACL($output, $acl, $builder, $admin->getAclInformation());
+
+            $this->configureACL($output, $acl, $builder, $securityHandler->buildSecurityInformation($admin));
 
             $aclProvider->updateAcl($acl);
         }

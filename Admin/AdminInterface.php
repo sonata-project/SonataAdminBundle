@@ -125,4 +125,16 @@ interface AdminInterface
      * @return \Symfony\Component\HttpFoundation\Request
      */
     function getRequest();
+
+    /**
+     *
+     * @return string
+     */
+    function getCode();
+
+    /**
+     * @abstract
+     * @return array
+     */
+    function getSecurityInformation();
 }
