@@ -60,7 +60,7 @@ class ListMapper
             $this->admin->addListFieldDescription($name, $fieldDescription);
 
         } else if (is_string($name) && $this->admin->hasListFieldDescription($name)) {
-            $fieldDescription = $this->admin->getFormFieldDescription($name);
+            $fieldDescription = $this->admin->getListFieldDescription($name);
         } else {
 
             throw new \RuntimeException('invalid state');
