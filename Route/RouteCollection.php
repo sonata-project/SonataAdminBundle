@@ -48,7 +48,6 @@ class RouteCollection
      */
     public function add($name, $pattern = null, array $defaults = array(), array $requirements = array(), array $options = array())
     {
-
         $pattern    = sprintf('%s/%s', $this->baseRoutePattern, $pattern ?: $name);
         $code       = sprintf('%s.%s', $this->baseCodeRoute, $name);
         $name       = sprintf('%s_%s', $this->baseRouteName, $name);

@@ -79,7 +79,7 @@ class AddDependencyCallsPass implements CompilerPassInterface
         $pool->addMethodCall('setAdminClasses', array($classes));
 
         $routeLoader = $container->getDefinition('sonata.admin.route_loader');
-        $routeLoader->addArgument($admins);
+        $routeLoader->replaceArgument(1, $admins);
     }
 
     /**

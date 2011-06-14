@@ -31,14 +31,17 @@ class AdminPoolLoader extends FileLoader
      */
     protected $adminServiceIds = array();
 
+    protected $container;
+
     /**
      * @param \Sonata\AdminBundle\Admin\Pool $pool
      * @param  $adminServiceIds
      */
-    public function __construct(Pool $pool, $adminServiceIds)
+    public function __construct(Pool $pool, $adminServiceIds, $container)
     {
-        $this->pool = $pool;
-        $this->adminServiceIds = $adminServiceIds;
+        $this->pool             = $pool;
+        $this->adminServiceIds  = $adminServiceIds;
+        $this->container        = $container;
     }
 
     /**
@@ -74,6 +77,9 @@ class AdminPoolLoader extends FileLoader
             $reflection = new \ReflectionObject($admin);
             $collection->addResource(new FileResource($reflection->getFileName()));
         }
+
+        $reflection = new \ReflectionObject($this->container);
+        $collection->addResource(new FileResource($reflection->getFileName()));
 
         return $collection;
     }
