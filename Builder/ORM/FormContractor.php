@@ -27,7 +27,6 @@ use Doctrine\ORM\Mapping\ClassMetadataInfo;
 
 class FormContractor implements FormContractorInterface
 {
-
     protected $fieldFactory;
 
     protected $validator;

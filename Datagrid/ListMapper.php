@@ -13,7 +13,7 @@ namespace Sonata\AdminBundle\Datagrid;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
-use Sonata\AdminBundle\Datagrid\ListCollection;
+use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
 use Sonata\AdminBundle\Builder\ListBuilderInterface;
 
 /**
@@ -28,7 +28,7 @@ class ListMapper
 
     protected $admin;
 
-    public function __construct(ListBuilderInterface $listBuilder, ListCollection $list, AdminInterface $admin)
+    public function __construct(ListBuilderInterface $listBuilder, FieldDescriptionCollection $list, AdminInterface $admin)
     {
         $this->listBuilder  = $listBuilder;
         $this->list         = $list;
@@ -51,7 +51,7 @@ class ListMapper
         } else if (is_string($name) && !$this->admin->hasListFieldDescription($name)) {
 
             $fieldDescription = $this->admin->getModelManager()->getNewFieldDescriptionInstance(
-                $this->admin->getClass(),   
+                $this->admin->getClass(),
                 $name,
                 $fieldDescriptionOptions
             );

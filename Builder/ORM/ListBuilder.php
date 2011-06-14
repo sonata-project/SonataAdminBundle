@@ -14,29 +14,29 @@ namespace Sonata\AdminBundle\Builder\ORM;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\Datagrid\ListCollection;
+use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
 use Sonata\AdminBundle\Builder\ListBuilderInterface;
 
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 
 class ListBuilder implements ListBuilderInterface
 {
-
     public function getBaseList(array $options = array())
     {
-        return new ListCollection;
+        return new FieldDescriptionCollection;
     }
 
-
-    public function addField(ListCollection $list, FieldDescriptionInterface $fieldDescription)
+    public function addField(FieldDescriptionCollection $list, FieldDescriptionInterface $fieldDescription)
     {
         return $list->add($fieldDescription);
     }
 
     /**
-     * The method define the correct default settings for the provided FieldDescription
+     * The method defines the correct default settings for the provided FieldDescription
      *
-     * @param \Sonata\AdminBundle\Admin\FieldDescription $fieldDescription
+     * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
+     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
+     * @param array $options
      * @return void
      */
     public function fixFieldDescription(AdminInterface $admin, FieldDescriptionInterface $fieldDescription, array $options = array())
@@ -113,8 +113,8 @@ class ListBuilder implements ListBuilderInterface
     }
 
     /**
-     * @param \Sonata\AdminBundle\Admin\FieldDescription $fieldDescription
-     * @return \Sonata\AdminBundle\Admin\FieldDescription
+     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
+     * @return \Sonata\AdminBundle\Admin\FieldDescriptionInterface
      */
     public function buildActionFieldDescription(FieldDescriptionInterface $fieldDescription)
     {

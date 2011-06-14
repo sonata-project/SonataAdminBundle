@@ -14,6 +14,8 @@ namespace Sonata\AdminBundle\Datagrid;
 use Sonata\AdminBundle\Datagrid\PagerInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Filter\FilterInterface;
+use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
+
 use Symfony\Component\Form\FormFactory;
 
 class Datagrid implements DatagridInterface
@@ -39,7 +41,7 @@ class Datagrid implements DatagridInterface
 
     protected $results;
 
-    public function __construct(ProxyQueryInterface $query, ListCollection $columns, PagerInterface $pager, FormFactory $formFactory, array $values = array())
+    public function __construct(ProxyQueryInterface $query, FieldDescriptionCollection $columns, PagerInterface $pager, FormFactory $formFactory, array $values = array())
     {
         $this->pager    = $pager;
         $this->query    = $query;

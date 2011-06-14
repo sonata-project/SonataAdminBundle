@@ -8,13 +8,12 @@
  * file that was distributed with this source code.
  *
  */
-namespace Sonata\AdminBundle\Datagrid;
+namespace Sonata\AdminBundle\Admin;
 
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 
-class ListCollection
+class FieldDescriptionCollection
 {
-
     protected $elements = array();
 
     /**

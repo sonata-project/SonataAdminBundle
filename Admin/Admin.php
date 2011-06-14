@@ -999,7 +999,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      * Returns a list depend on the given $object
      *
      * @param array $options
-     * @return \Sonata\AdminBundle\Datagrid\ListCollection
+     * @return \Sonata\AdminBundle\Admin\FieldDescriptionCollection
      */
     public function getList(array $options = array())
     {
