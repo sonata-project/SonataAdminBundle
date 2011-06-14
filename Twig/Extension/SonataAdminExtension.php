@@ -38,9 +38,10 @@ class SonataAdminExtension extends \Twig_Extension
     public function getFilters()
     {
         return array(
-            'render_list_element'         => new \Twig_Filter_Method($this, 'renderListElement', array('is_safe' => array('html'))),
-            'render_form_element'         => new \Twig_Filter_Method($this, 'renderFormElement', array('is_safe' => array('html'))),
-            'render_filter_element'       => new \Twig_Filter_Method($this, 'renderFilterElement', array('is_safe' => array('html'))),
+            'render_list_element'    => new \Twig_Filter_Method($this, 'renderListElement', array('is_safe' => array('html'))),
+            'render_form_element'    => new \Twig_Filter_Method($this, 'renderFormElement', array('is_safe' => array('html'))),
+            'render_filter_element'  => new \Twig_Filter_Method($this, 'renderFilterElement', array('is_safe' => array('html'))),
+            'render_view_element'    => new \Twig_Filter_Method($this, 'renderViewElement', array('is_safe' => array('html'))),
         );
     }
 
@@ -60,6 +61,23 @@ class SonataAdminExtension extends \Twig_Extension
     }
 
     /**
+     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
+     * @param string $default
+     * @return \Twig_TemplateInterface
+     */
+    protected function getTemplate(FieldDescriptionInterface $fieldDescription, $default)
+    {
+        // todo: find a better solution
+        try {
+            $template = $this->environment->loadTemplate($fieldDescription->getTemplate());
+        } catch(\Twig_Error_Loader $e) {
+            $template = $this->environment->loadTemplate($default);
+        }
+
+        return $template;
+    }
+
+    /**
      * render a list element from the FieldDescription
      *
      * @param mixed $object
@@ -69,23 +87,30 @@ class SonataAdminExtension extends \Twig_Extension
      */
     public function renderListElement($object, FieldDescriptionInterface $fieldDescription, $params = array())
     {
-        $template = $this->environment->loadTemplate($fieldDescription->getTemplate());
+        $template = $this->getTemplate($fieldDescription, 'SonataAdminBundle:CRUD:base_list.html.twig');
 
-        return $this->output($fieldDescription, $template->render(array_merge($params, array(
+        return $this->output($fieldDescription, $template, array_merge($params, array(
             'admin'  => $fieldDescription->getAdmin(),
             'object' => $object,
             'value'  => $this->getValueFromFieldDescription($object, $fieldDescription),
             'field_description' => $fieldDescription
-        ))));
+        )));
     }
 
-
-    public function output(FieldDescriptionInterface $fieldDescription, $content)
+    /**
+     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
+     * @param string $content
+     * @return string
+     */
+    public function output(FieldDescriptionInterface $fieldDescription, \Twig_TemplateInterface $template, array $parameters = array())
     {
+        $content = $template->render($parameters);
+
         if ($this->environment->isDebug()) {
-            return sprintf("\n<!-- START - fieldName: %s, template: %s -->\n%s\n<!-- END - fieldName: %s -->",
+            return sprintf("\n<!-- START  \n  fieldName: %s\n  template: %s\n  compiled template: %s\n -->\n%s\n<!-- END - fieldName: %s -->",
                 $fieldDescription->getFieldName(),
                 $fieldDescription->getTemplate(),
+                $template->getTemplateName(),
                 $content,
                 $fieldDescription->getFieldName()
             );
@@ -126,23 +151,40 @@ class SonataAdminExtension extends \Twig_Extension
      *
      * @param \Sonata\AdminBundle\Filter\FilterInterface $filter
      * @param array $params
-     * @return
+     * @return string
      */
     public function renderFilterElement(FilterInterface $filter, array $params = array())
     {
-        $description = $filter->getFieldDescription();
+        $fieldDescription = $filter->getFieldDescription();
 
-        $template = $this->environment->loadTemplate($description->getTemplate());
+        $template = $this->getTemplate($fieldDescription, 'SonataAdminBundle:CRUD:base_filter_field.html.twig');
 
-        return $template->render(array_merge($params, array(
+        return $this->output($fieldDescription, $template, array_merge($params, array(
             'filter'        => $filter,
             'filter_form'   => $filter->getField()->createView()
         )));
     }
 
     /**
-     * render a field element from the FieldDescription
+     * render a view element
      *
+     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
+     * @param mixed $object
+     * @return string
+     */
+    public function renderViewElement(FieldDescriptionInterface $fieldDescription, $object)
+    {
+        $template = $this->getTemplate($fieldDescription, 'SonataAdminBundle:CRUD:base_view_field.html.twig');
+
+        return $this->output($fieldDescription, $template, array(
+            'field_description' => $fieldDescription,
+            'object'            => $object,
+            'value'             => $fieldDescription->getValue($object)
+        ));
+    }
+
+    /**
+     * render a field element from the FieldDescription
      *
      * @throws InvalidArgumentException
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
@@ -184,15 +226,15 @@ class SonataAdminExtension extends \Twig_Extension
             $base_template = sprintf('SonataAdminBundle:CRUD:base_%s_edit_field.html.twig', $params['edit']);
         }
 
-        $template = $this->environment->loadTemplate($fieldDescription->getTemplate());
+        $template = $this->getTemplate($fieldDescription, 'SonataAdminBundle:CRUD:base_standard_edit_field.html');
 
-        return $this->output($fieldDescription, $template->render(array_merge($params, array(
+        return $this->output($fieldDescription, $template, array_merge($params, array(
             'admin'             => $fieldDescription->getAdmin(),
             'object'            => $object,
             'field_description' => $fieldDescription,
             'value'             => $this->getValueFromFieldDescription($object, $fieldDescription, $params),
             'field_element'     => $children,
             'base_template'     => $fieldDescription->getOption('base_template', $base_template)
-        ))));
+        )));
     }
 }

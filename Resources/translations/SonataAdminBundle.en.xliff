@@ -42,6 +42,14 @@
                 <source>link_action_list</source>
                 <target>Return to list</target>
             </trans-unit>
+            <trans-unit id="link_action_view">
+                <source>link_action_view</source>
+                <target>View</target>
+            </trans-unit>
+            <trans-unit id="link_action_edit">
+                <source>link_action_edit</source>
+                <target>Edit</target>
+            </trans-unit>
             <trans-unit id="link_add">
                 <source>link_add</source>
                 <target>Add new</target>

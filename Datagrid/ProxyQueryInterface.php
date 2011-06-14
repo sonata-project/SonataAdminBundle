@@ -16,7 +16,6 @@ namespace Sonata\AdminBundle\Datagrid;
  */
 interface ProxyQueryInterface
 {
-
     function execute(array $params = array(), $hydrationMode = null);
 
     function __call($name, $args);

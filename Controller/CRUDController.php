@@ -310,4 +310,31 @@ class CRUDController extends Controller
             'base_template' => $this->getBaseTemplate(),
         ));
     }
+
+    /**
+     * return the Response object associated to the view action
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function viewAction($id)
+    {
+        if (false === $this->admin->isGranted('VIEW')) {
+            throw new AccessDeniedException();
+        }
+
+        $object = $this->admin->getObject($this->get('request')->get($this->admin->getIdParameter()));
+
+        if (!$object) {
+            throw new NotFoundHttpException(sprintf('unable to find the object with id : %s', $id));
+        }
+
+        $this->admin->setSubject($object);
+
+        return $this->render($this->admin->getViewTemplate(), array(
+            'action'         => 'view',
+            'object'         => $object,
+            'admin'          => $this->admin,
+            'base_template'  => $this->getBaseTemplate(),
+        ));
+    }
 }

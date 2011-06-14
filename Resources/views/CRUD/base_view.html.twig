@@ -1,0 +1,53 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{% extends base_template %}
+
+{% block actions %}
+    <div class="sonata-actions">
+        <ul>
+            {% if admin.isGranted('EDIT')%}
+                <li class="sonata-action-element"><a href="{{ admin.generateUrl('edit', {'id' : object.id}) }}">{% trans from 'SonataAdminBundle' %}link_action_edit{% endtrans %}</a></li>
+            {% endif %}
+
+            {% if admin.isGranted('CREATE')%}
+                <li class="sonata-action-element"><a href="{{ admin.generateUrl('create') }}">{% trans from 'SonataAdminBundle' %}link_action_create{% endtrans %}</a></li>
+            {% endif %}
+        </ul>
+    </div>
+{% endblock %}
+
+{% block side_menu %}{{ admin.sidemenu(action).render|raw }}{% endblock %}
+
+{% block view %}
+    <div class="sonata-ba-view">
+        {% for name, view_group in admin.viewgroups %}
+            <table>
+                {% if name %}
+                    <tr class="sonata-ba-view-title">
+                        <td colspan="2">
+                            {{ name|trans({}, admin.translationdomain) }}
+                        </td>
+                    </tr>
+                {% endif %}
+
+                {% for field_name in view_group.fields %}
+                    <tr class="sonata-ba-view-container">
+                        {% if admin.viewfielddescriptions[field_name] is defined %}
+                            {{ admin.viewfielddescriptions[field_name]|render_view_element(object) }}
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+            </table>
+        {% endfor %}
+    </div>
+{% endblock %}
+
