@@ -11,4 +11,4 @@ file that was distributed with this source code.
 
 {% extends base_template %}
 
-{% block field %}{{ form_widget(field_element, {'class' : 'title'}) }}{% endblock %}
+{% block field %}{{ form_widget(field_element, {'attr': {'class' : 'title'}}) }}{% endblock %}
