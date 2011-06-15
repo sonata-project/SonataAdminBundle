@@ -204,11 +204,13 @@ class DatagridBuilder implements DatagridBuilderInterface
         $queryBuilder = $admin->getModelManager()->createQuery($admin->getClass());
 
         $query = new ProxyQuery($queryBuilder);
+        $pager = new Pager;
+        $pager->setCountColumn($admin->getModelManager()->getIdentifierFieldNames($admin->getClass()));
 
         return new Datagrid(
             $query,
             $admin->getList(),
-            new Pager,
+            $pager,
             $this->formFactory,
             $values
         );

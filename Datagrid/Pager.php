@@ -33,7 +33,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     protected $results = null;
     protected $resultsCounter = 0;
     protected $query            = null;
-    protected $countColumn      = 'id';
+    protected $countColumn      = array('id');
 
     /**
      * Constructor.
@@ -572,11 +572,10 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
 
     public function getCountColumn()
     {
-
         return $this->countColumn;
     }
 
-    public function setCountColumn($countColumn) {
+    public function setCountColumn(array $countColumn) {
 
         return $this->countColumn = $countColumn;
     }
