@@ -267,6 +267,10 @@ class CRUDController extends Controller
             return new RedirectResponse($this->admin->generateUrl('list'));
         }
 
+        if (!array_key_exists($action, $this->admin->getBatchActions())) {
+            throw new \RuntimeException(sprintf('The `%s` batch action is not defined', $action));
+        }
+
         // execute the action, batchActionXxxxx
         $final_action = sprintf('batchAction%s', ucfirst($action));
         if (!method_exists($this, $final_action)) {

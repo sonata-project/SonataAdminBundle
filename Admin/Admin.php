@@ -749,9 +749,13 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      */
     public function getBatchActions()
     {
-        return array(
-            'delete' => $this->trans('action_delete', array(), 'SonataAdminBundle')
-        );
+        $actions = array();
+
+        if ($this->isGranted('DELETE')) {
+            $actions['delete'] = $this->trans('action_delete', array(), 'SonataAdminBundle');
+        }
+
+        return $actions;
     }
 
     /**
