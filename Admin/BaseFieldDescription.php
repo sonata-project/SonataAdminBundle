@@ -108,6 +108,11 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     protected $associationAdmin;
 
     /**
+     * @var string the help message to display
+     */
+    protected $help;
+
+    /**
      * set the field name
      *
      * @param string $fieldName
@@ -189,7 +194,6 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
      */
     public function setOptions(array $options)
     {
-
         // set the type if provided
         if (isset($options['type'])) {
             $this->setType($options['type']);
@@ -438,5 +442,15 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     public static function camelize($property)
     {
        return preg_replace(array('/(^|_| )+(.)/e', '/\.(.)/e'), array("strtoupper('\\2')", "'_'.strtoupper('\\1')"), $property);
+    }
+
+    public function setHelp($help)
+    {
+        $this->help = $help;
+    }
+
+    public function getHelp()
+    {
+        return $this->help;
     }
 }

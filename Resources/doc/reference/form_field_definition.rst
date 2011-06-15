@@ -26,11 +26,17 @@ Example
         {
             // equivalent to :
             $formMapper
-              ->add('author', array(), array('edit' => 'list'))
-              ->add('enabled')
-              ->add('title')
-              ->add('abtract', array(), array('required' => false))
-              ->add('content');
+                ->add('author', array(), array('edit' => 'list'))
+                ->add('enabled')
+                ->add('title')
+                ->add('abtract', array(), array('required' => false))
+                ->add('content')
+
+                // you can define help messages like this
+                ->setHelps(array(
+                   'title' => $this->trans('help_post_title')
+                ));
+
         }
     }
 
@@ -40,21 +46,22 @@ Example
     field. This can be an issue for HTML5 browsers as they provide client-side
     validation.
 
+
 Types available
 ---------------
 
-- array
-- boolean
-- choice
-- datetime
-- decimal
-- integer
-- many_to_many
-- many_to_one
-- one_to_one
-- string
-- text
-- date
+    - array
+    - boolean
+    - choice
+    - datetime
+    - decimal
+    - integer
+    - many_to_many
+    - many_to_one
+    - one_to_one
+    - string
+    - text
+    - date
 
 If no type is set, the Admin class will use the one set in the doctrine mapping
 definition.
@@ -85,6 +92,7 @@ model definition).
                 ->add('cdnIsFlushable', array('required' => false))
                 ->add('description', array('required' => false))
                 ->add('copyright', array('required' => false))
+
                 // add a custom type, using the native form factory
                 ->addType('binaryContent', 'file', array('type' => false, 'required' => false));
         }

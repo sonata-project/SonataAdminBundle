@@ -201,4 +201,15 @@ class FormMapper
     {
         return $this->formBuilder->create($name, $type, $options);
     }
+
+    public function setHelps(array $helps = array())
+    {
+        foreach($helps as $name => $help) {
+            if ($this->admin->hasFormFieldDescription($name)) {
+                $this->admin->getFormFieldDescription($name)->setHelp($help);
+            }
+        }
+
+        return $this;
+    }
 }
