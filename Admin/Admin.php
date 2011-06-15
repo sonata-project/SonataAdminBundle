@@ -527,6 +527,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
                 'sortable' => false
             ));
 
+            $fieldDescription->setAdmin($this);
             $fieldDescription->setTemplate('SonataAdminBundle:CRUD:list__batch.html.twig');
             $this->listFieldDescriptions = array( '_batch' => $fieldDescription ) + $this->listFieldDescriptions;
         }
@@ -2059,5 +2060,21 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     public function isGranted($name)
     {
         return $this->securityHandler->isGranted($name, $this);
+    }
+
+    public function getNormalizedIdentifier($entity)
+    {
+        return $this->getModelManager()->getNormalizedIdentifier($entity);
+    }
+
+    /**
+     * Shorthand method for templating
+     *
+     * @param object $entity
+     * @return
+     */
+    public function id($entity)
+    {
+        return $this->getNormalizedIdentifier($entity);
     }
 }

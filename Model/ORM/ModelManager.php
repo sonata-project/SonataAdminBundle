@@ -32,6 +32,7 @@ class ModelManager implements ModelManagerInterface
     {
         $this->entityManager = $entityManager;
     }
+
     /**
      * Returns the related model's metadata
      *
@@ -176,6 +177,18 @@ class ModelManager implements ModelManagerInterface
     public function getIdentifierFieldNames($class)
     {
         return $this->getMetadata($class)->getIdentifierFieldNames();
+    }
+
+    public function getNormalizedIdentifier($entity)
+    {
+        // the entities is not managed
+        if (!$this->getEntityManager()->getUnitOfWork()->isInIdentityMap($entity)) {
+            return null;
+        }
+
+        $values = $this->getIdentifierValues($entity);
+
+        return implode('-', $values);
     }
 
     /**

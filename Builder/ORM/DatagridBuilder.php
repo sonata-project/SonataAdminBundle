@@ -136,8 +136,8 @@ class DatagridBuilder implements DatagridBuilderInterface
      */
     public function getChoices(FieldDescriptionInterface $fieldDescription)
     {
-        $targets = $fieldDescription->getAdmin()->getModelManager()
-            ->getEntityManager()
+        $modelManager = $fieldDescription->getAdmin()->getModelManager();
+        $targets = $modelManager->getEntityManager()
             ->createQueryBuilder()
             ->select('t')
             ->from($fieldDescription->getTargetEntity(), 't')
@@ -149,7 +149,7 @@ class DatagridBuilder implements DatagridBuilderInterface
             // todo : puts this into a configuration option and use reflection
             foreach (array('getTitle', 'getName', '__toString') as $getter) {
                 if (method_exists($target, $getter)) {
-                    $choices[$target->getId()] = $target->$getter();
+                    $choices[$modelManager->getNormalizedIdentifier($target)] = $target->$getter();
                     break;
                 }
             }

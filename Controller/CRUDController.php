@@ -199,7 +199,10 @@ class CRUDController extends Controller
                 $this->admin->update($object);
 
                 if ($this->isXmlHttpRequest()) {
-                   return $this->renderJson(array('result' => 'ok', 'objectId' => $object->getId()));
+                    return $this->renderJson(array(
+                        'result'    => 'ok',
+                        'objectId'  => $this->admin->getNormalizedIdentifier($object)
+                    ));
                 }
 
                 // redirect to edit mode
@@ -235,7 +238,9 @@ class CRUDController extends Controller
         }
 
         if (!$url) {
-            $url = $this->admin->generateUrl('edit', array('id' => $object->getId()));
+            $url = $this->admin->generateUrl('edit', array(
+                'id' => $this->admin->getNormalizedIdentifier($object),
+            ));
         }
 
         return new RedirectResponse($url);
@@ -294,7 +299,10 @@ class CRUDController extends Controller
                 $this->admin->create($object);
 
                 if ($this->isXmlHttpRequest()) {
-                   return $this->renderJson(array('result' => 'ok', 'objectId' => $object->getId()));
+                    return $this->renderJson(array(
+                        'result' => 'ok',
+                        'objectId' => $this->admin->getNormalizedIdentifier($object)
+                    ));
                 }
 
                 // redirect to edit mode

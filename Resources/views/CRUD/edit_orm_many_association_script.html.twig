@@ -222,7 +222,7 @@ This code manage the many-to-[one|many] association field popup
                         jQuery('#field_widget_{{ field_element.vars.id }}').closest('form').ajaxSubmit({
                             url: '{{ url('sonata_admin_retrieve_form_element', {
                                 'elementId': field_element.vars.id,
-                                'objectId':  admin.root.subject.id,
+                                'objectId':  admin.root.id(admin.root.subject),
                                 'uniqid':    admin.root.uniqid,
                                 'code':      admin.root.code
                             }) }}',

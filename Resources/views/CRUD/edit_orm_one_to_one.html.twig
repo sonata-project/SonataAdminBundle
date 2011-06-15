@@ -25,10 +25,10 @@ file that was distributed with this source code.
 
             {% if field_description.options.edit == 'list' %}
                 <span id="field_widget_{{ field_element.vars.id }}" >
-                    {% if value.id %}
+                    {% if admin.id(value) %}
                         {% render 'SonataAdminBundle:Helper:getShortObjectDescription' with {
                             'code': field_description.associationadmin.code,
-                            'objectId': value.id,
+                            'objectId': admin.id(value),
                             'uniqid':  field_description.associationadmin.uniqid
                         }%}
                     {% endif %}
