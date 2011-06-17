@@ -272,6 +272,8 @@ class CRUDController extends Controller
         }
 
         // execute the action, batchActionXxxxx
+        $action = \Sonata\AdminBundle\Admin\BaseFieldDescription::camelize($action);
+
         $final_action = sprintf('batchAction%s', ucfirst($action));
         if (!method_exists($this, $final_action)) {
             throw new \RuntimeException(sprintf('A `%s::%s` method must be created', get_class($this), $final_action));
