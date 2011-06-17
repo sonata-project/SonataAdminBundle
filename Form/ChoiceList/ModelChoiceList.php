@@ -111,7 +111,7 @@ class ModelChoiceList extends ArrayChoiceList
     {
         parent::load();
 
-        if ($this->choices) {
+        if (is_array($this->choices)) {
             $entities = $this->choices;
         } else if ($this->query) {
             $entities = $this->modelManager->executeQuery($this->query);

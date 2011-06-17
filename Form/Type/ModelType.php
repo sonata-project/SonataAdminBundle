@@ -45,7 +45,7 @@ class ModelType extends AbstractType
             'class'             => null,
             'property'          => null,
             'query'             => null,
-            'choices'           => array(),
+            'choices'           => null,
             'parent'            => 'choice',
             'preferred_choices' => array(),
             'field_description' => false,
