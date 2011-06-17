@@ -85,7 +85,7 @@ class ModelChoiceList extends ArrayChoiceList
             $this->propertyPath = new PropertyPath($property);
         }
 
-        parent::__construct($choices);
+        $this->choices = $choices;
     }
 
     /**
