@@ -31,7 +31,7 @@ file that was distributed with this source code.
 
 {% block form %}
 
-    {% if admin.id(object) > 0 %}
+    {% if admin.id(object) %}
         {% set url = 'edit' %}
     {% else %}
         {% set url = 'create' %}
