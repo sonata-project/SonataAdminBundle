@@ -23,7 +23,7 @@ var Admin = {
 
     /**
      * display related errors messages
-     * 
+     *
      * @param subject
      */
     add_pretty_errors: function(subject) {
@@ -71,9 +71,9 @@ var Admin = {
             event.preventDefault();
 
             var fieldset = jQuery(this).closest('fieldset');
-            
+
             jQuery('div.sonata-ba-collapsed-fields', fieldset).toggle();
             fieldset.toggleClass('sonata-ba-collapsed-fields-close');
-        });
+        }).click();
     }
 }
