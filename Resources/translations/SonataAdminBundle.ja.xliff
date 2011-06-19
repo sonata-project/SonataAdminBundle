@@ -1,0 +1,115 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" datatype="plaintext" original="" >
+        <body>
+            <trans-unit id="action_delete">
+                <source>action_delete</source>
+                <target>削除</target>
+            </trans-unit>
+            <trans-unit id="btn_batch">
+                <source>btn_batch</source>
+                <target>Ok</target>
+            </trans-unit>
+            <trans-unit id="btn_create">
+                <source>btn_create</source>
+                <target>作成</target>
+            </trans-unit>
+            <trans-unit id="btn_create_and_edit_again">
+                <source>btn_create_and_edit_again</source>
+                <target>作成</target>
+            </trans-unit>
+            <trans-unit id="btn_create_and_create_a_new_one">
+                <source>btn_create_and_create_a_new_one</source>
+                <target>作成して次へ</target>
+            </trans-unit>
+            <trans-unit id="btn_filter">
+                <source>btn_filter</source>
+                <target>絞り込み</target>
+            </trans-unit>
+            <trans-unit id="btn_update_and_edit_again">
+                <source>btn_update_and_edit_again</source>
+                <target>更新</target>
+            </trans-unit>
+            <trans-unit id="btn_update_and_return_to_list">
+                <source>btn_update_and_return_to_list</source>
+                <target>更新して一覧に戻る</target>
+            </trans-unit>
+            <trans-unit id="link_action_create">
+                <source>link_action_create</source>
+                <target>新規作成</target>
+            </trans-unit>
+            <trans-unit id="link_action_list">
+                <source>link_action_list</source>
+                <target>一覧に戻る</target>
+            </trans-unit>
+            <trans-unit id="link_action_view">
+                <source>link_action_view</source>
+                <target>表示</target>
+            </trans-unit>
+            <trans-unit id="link_action_edit">
+                <source>link_action_edit</source>
+                <target>編集</target>
+            </trans-unit>
+            <trans-unit id="link_add">
+                <source>link_add</source>
+                <target>追加</target>
+            </trans-unit>
+            <trans-unit id="link_list">
+                <source>link_list</source>
+                <target>一覧</target>
+            </trans-unit>
+            <trans-unit id="link_reset_filter">
+                <source>link_reset_filter</source>
+                <target>リセット</target>
+            </trans-unit>
+            <trans-unit id="title_create">
+                <source>title_create</source>
+                <target>作成</target>
+            </trans-unit>
+            <trans-unit id="title_dashboard">
+                <source>title_dashboard</source>
+                <target>ダッシュボード</target>
+            </trans-unit>
+            <trans-unit id="title_edit">
+                <source>title_edit</source>
+                <target>編集</target>
+            </trans-unit>
+            <trans-unit id="title_list">
+                <source>title_list</source>
+                <target>一覧</target>
+            </trans-unit>
+            <trans-unit id="link_next_pager">
+                <source>link_next_pager</source>
+                <target>次へ</target>
+            </trans-unit>
+            <trans-unit id="link_previous_pager">
+                <source>link_previous_pager</source>
+                <target>前へ</target>
+            </trans-unit>
+            <trans-unit id="Admin">
+                <source>Admin</source>
+                <target>Admin</target>
+            </trans-unit>
+            <trans-unit id="link_expand">
+                <source>link_expand</source>
+                <target>展開/折り畳む</target>
+            </trans-unit>
+            <trans-unit id="no_result">
+                <source>no_result</source>
+                <target>データがありません</target>
+            </trans-unit>
+            <trans-unit id="confirm_msg">
+                <source>confirm_msg</source>
+                <target>よろしいですか？</target>
+            </trans-unit>
+            <trans-unit id="action_edit">
+                <source>action_edit</source>
+                <target>編集</target>
+            </trans-unit>
+            <trans-unit id="action_view">
+                <source>action_view</source>
+                <target>表示</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>
