@@ -172,10 +172,13 @@ class ModelManager implements ModelManagerInterface
         }
 
         $data = $this->getEntityManager()->getUnitOfWork()->getOriginalEntityData($entity);
-        $values = array();
-        foreach ($this->getEntityManager()->getUnitOfWork()->getEntityIdentifier($entity) as $identifier => $oldvalue) {
-            if(isset($data[$identifier]))
-                $values[$identifier] = $data[$identifier];
+        $values = $this->getEntityManager()->getUnitOfWork()->getEntityIdentifier($entity);
+        foreach ($values as $identifier => $oldvalue) {
+            if(isset($data[$identifier])) {
+                if(!is_object($data[$identifier])) {
+                    $values[$identifier] = $data[$identifier];
+                }
+            }
         }
         return $values;
     }
