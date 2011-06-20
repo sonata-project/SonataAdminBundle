@@ -33,7 +33,7 @@ class ChoiceFilter extends Filter
             ), $value));
         } else {
 
-            if ($value === null || $value == 'all') {
+            if (empty($value) || $value == 'all') {
                 return;
             }
 
