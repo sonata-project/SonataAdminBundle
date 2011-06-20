@@ -98,9 +98,17 @@ class ModelManager implements ModelManagerInterface
         $this->entityManager->flush();
     }
 
+    /**
+     * Find one object from the given class repository.
+     * 
+     * @param string $class Class name
+     * @param string|int $id Identifier. Can be a string with several IDs concatenated, separated by '-'.
+     * @return Object 
+     */
     public function findOne($class, $id)
     {
-        return $this->entityManager->getRepository($class)->find($id);
+        $values = array_combine($this->getIdentifierFieldNames($class), explode('-', $id));
+        return $this->entityManager->getRepository($class)->find($values);
     }
 
     public function find($class, array $criteria = array())
