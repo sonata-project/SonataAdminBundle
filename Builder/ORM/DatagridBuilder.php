@@ -46,6 +46,7 @@ class DatagridBuilder implements DatagridBuilderInterface
         'bigint'     =>  'Sonata\\AdminBundle\\Filter\\ORM\\IntegerFilter',
         'decimal'    =>  'Sonata\\AdminBundle\\Filter\\ORM\\IntegerFilter',
         'callback'   =>  'Sonata\\AdminBundle\\Filter\\ORM\\CallbackFilter',
+        'choice'     =>  'Sonata\\AdminBundle\\Filter\\ORM\\ChoiceFilter',
     );
 
     public function __construct(FormFactory $formFactory)
@@ -116,7 +117,6 @@ class DatagridBuilder implements DatagridBuilderInterface
      */
     public function getFilterFieldClass(FieldDescriptionInterface $fieldDescription)
     {
-
         if ($fieldDescription->getOption('filter_field_widget', false)) {
             $class = $fieldDescription->getOption('filter_field_widget', false);
         } else {

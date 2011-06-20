@@ -18,16 +18,12 @@ class ChoiceFilter extends Filter
 {
     public function filter($queryBuilder, $alias, $field, $value)
     {
-        if (!is_array($value)) {
-            return;
-        }
-
         if ($this->getField()->getAttribute('multiple')) {
-            if (in_array('all', $value)) {
+            if (!is_array($value) || count($value) == 0) {
                 return;
             }
 
-            if (count($value) == 0) {
+            if (in_array('all', $value)) {
                 return;
             }
 
@@ -35,7 +31,6 @@ class ChoiceFilter extends Filter
                 $alias,
                 $field
             ), $value));
-
         } else {
 
             if ($value === null || $value == 'all') {
