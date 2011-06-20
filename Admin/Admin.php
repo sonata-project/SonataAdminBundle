@@ -1015,12 +1015,13 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     /**
      * Returns the target object
      *
-     * @param integer $id
+     * @param mixed $id
      * @return object
      */
     public function getObject($id)
     {
-        return $this->modelManager->findOne($this->getClass(), $id);
+        $values = array_combine($this->getModelManager()->getIdentifierFieldNames($this->getClass()), explode('-', $id));
+        return $this->modelManager->findOne($this->getClass(), $values);
     }
 
     /**
