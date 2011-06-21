@@ -11,14 +11,14 @@
 
 namespace Sonata\AdminBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\Command;
+use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Output\Output;
 
-class ListAdminCommand extends Command
+class ListAdminCommand extends ContainerAwareCommand
 {
 
     public function configure()
@@ -29,11 +29,11 @@ class ListAdminCommand extends Command
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $pool = $this->container->get('sonata.admin.pool');
+        $pool = $this->getContainer()->get('sonata.admin.pool');
 
         $output->writeln("<info>Admin services:</info>");
         foreach ($pool->getAdminServiceIds() as $id) {
-            $instance = $this->container->get($id);
+            $instance = $this->getContainer()->get($id);
             $output->writeln(sprintf("  <info>%-40s</info> %-60s",
                 $id,
                 $instance->getClass()

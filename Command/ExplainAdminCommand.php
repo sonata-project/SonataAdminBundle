@@ -11,14 +11,14 @@
 
 namespace Sonata\AdminBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\Command;
+use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Output\Output;
 
-class ExplainAdminCommand extends Command
+class ExplainAdminCommand extends ContainerAwareCommand
 {
 
     public function configure()
@@ -32,7 +32,7 @@ class ExplainAdminCommand extends Command
     public function execute(InputInterface $input, OutputInterface $output)
     {
 
-        $admin = $this->container->get($input->getArgument('admin'));
+        $admin = $this->getContainer()->get($input->getArgument('admin'));
 
         $output->writeln('<comment>AdminBundle Information</comment>');
         $output->writeln(sprintf('<info>% -20s</info> : %s', 'id', $admin->getCode()));
@@ -75,7 +75,7 @@ class ExplainAdminCommand extends Command
             $output->writeln(sprintf('  - % -25s  % -15s % -15s', $name, $fieldDescription->getType(), $fieldDescription->getTemplate()));
         }
 
-        $validatorFactory = $this->container->get('validator.mapping.class_metadata_factory');
+        $validatorFactory = $this->getContainer()->get('validator.mapping.class_metadata_factory');
         $metadata = $validatorFactory->getClassMetadata($admin->getClass());
 
         $output->writeln('');
