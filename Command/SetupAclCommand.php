@@ -11,7 +11,7 @@
 
 namespace Sonata\AdminBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\Command;
+use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
@@ -26,7 +26,7 @@ use Symfony\Component\Security\Acl\Exception\AclNotFoundException;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Sonata\AdminBundle\Security\Handler\AclSecurityHandler;
 
-class SetupAclCommand extends Command
+class SetupAclCommand extends ContainerAwareCommand
 {
     public function configure()
     {
