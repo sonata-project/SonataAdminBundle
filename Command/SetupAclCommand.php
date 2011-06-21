@@ -11,7 +11,7 @@
 
 namespace Sonata\AdminBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\Command;
+use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
@@ -26,7 +26,7 @@ use Symfony\Component\Security\Acl\Exception\AclNotFoundException;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Sonata\AdminBundle\Security\Handler\AclSecurityHandler;
 
-class SetupAclCommand extends Command
+class SetupAclCommand extends ContainerAwareCommand
 {
     public function configure()
     {
@@ -36,16 +36,16 @@ class SetupAclCommand extends Command
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $aclProvider = $this->container->get('security.acl.provider');
+        $aclProvider = $this->getContainer()->get('security.acl.provider');
 
         $output->writeln('Starting ACL AdminBundle configuration');
 
         $builder = new MaskBuilder();
-        foreach ($this->container->get('sonata.admin.pool')->getAdminServiceIds() as $id) {
+        foreach ($this->getContainer()->get('sonata.admin.pool')->getAdminServiceIds() as $id) {
             $output->writeln(sprintf(' > install ACL for %s', $id));
 
             try {
-                $admin = $this->container->get($id);
+                $admin = $this->getContainer()->get($id);
             } catch (\Exception $e) {
                 $output->writeln('<error>Warning : The admin class cannot be initiated from the command line</error>');
                 $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
