@@ -32,7 +32,7 @@ class ExplainAdminCommand extends ContainerAwareCommand
     public function execute(InputInterface $input, OutputInterface $output)
     {
 
-        $admin = $this->container->get($input->getArgument('admin'));
+        $admin = $this->getContainer()->get($input->getArgument('admin'));
 
         $output->writeln('<comment>AdminBundle Information</comment>');
         $output->writeln(sprintf('<info>% -20s</info> : %s', 'id', $admin->getCode()));
@@ -75,7 +75,7 @@ class ExplainAdminCommand extends ContainerAwareCommand
             $output->writeln(sprintf('  - % -25s  % -15s % -15s', $name, $fieldDescription->getType(), $fieldDescription->getTemplate()));
         }
 
-        $validatorFactory = $this->container->get('validator.mapping.class_metadata_factory');
+        $validatorFactory = $this->getContainer()->get('validator.mapping.class_metadata_factory');
         $metadata = $validatorFactory->getClassMetadata($admin->getClass());
 
         $output->writeln('');

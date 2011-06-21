@@ -36,16 +36,16 @@ class SetupAclCommand extends ContainerAwareCommand
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $aclProvider = $this->container->get('security.acl.provider');
+        $aclProvider = $this->getContainer()->get('security.acl.provider');
 
         $output->writeln('Starting ACL AdminBundle configuration');
 
         $builder = new MaskBuilder();
-        foreach ($this->container->get('sonata.admin.pool')->getAdminServiceIds() as $id) {
+        foreach ($this->getContainer()->get('sonata.admin.pool')->getAdminServiceIds() as $id) {
             $output->writeln(sprintf(' > install ACL for %s', $id));
 
             try {
-                $admin = $this->container->get($id);
+                $admin = $this->getContainer()->get($id);
             } catch (\Exception $e) {
                 $output->writeln('<error>Warning : The admin class cannot be initiated from the command line</error>');
                 $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
