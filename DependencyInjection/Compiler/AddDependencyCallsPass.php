@@ -30,9 +30,6 @@ class AddDependencyCallsPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-
-        $settings = $this->fixSettings($container);
-
         $groups = $admins = $classes = array();
 
         $pool = $container->getDefinition('sonata.admin.pool');
@@ -51,7 +48,7 @@ class AddDependencyCallsPass implements CompilerPassInterface
                 $definition->replaceArgument(2, 'SonataAdminBundle:CRUD');
             }
 
-            $this->applyDefaults($definition, $attributes, $settings);
+            $this->applyDefaults($definition, $attributes);
 
             $arguments = $definition->getArguments();
             if (preg_match('/%(.*)%/', $arguments[1], $matches)) {
@@ -89,7 +86,7 @@ class AddDependencyCallsPass implements CompilerPassInterface
      * @param array $attributes
      * @return \Symfony\Component\DependencyInjection\Definition
      */
-    public function applyDefaults(Definition $definition, array $attributes = array(), array $settings)
+    public function applyDefaults(Definition $definition, array $attributes = array())
     {
         $definition->setScope(ContainerInterface::SCOPE_PROTOTYPE);
 
@@ -128,7 +125,7 @@ class AddDependencyCallsPass implements CompilerPassInterface
         }
 
         if (!$definition->hasMethodCall('setSecurityHandler')) {
-            $definition->addMethodCall('setSecurityHandler', array(new Reference($settings['security_handler'])));
+            $definition->addMethodCall('setSecurityHandler', array(new Reference('sonata.admin.security.handler')));
         }
 
         if (!$definition->hasMethodCall('setLabel')) {
@@ -139,32 +136,5 @@ class AddDependencyCallsPass implements CompilerPassInterface
         $definition->addMethodCall('configure');
 
         return $definition;
-    }
-
-    /**
-     * @param ContainerBuilder $container
-     * @return array
-     */
-    public function fixSettings(ContainerBuilder $container)
-    {
-        $pool = $container->getDefinition('sonata.admin.pool');
-
-        // not very clean but don't know how to do that for now
-        $settings = false;
-        $methods  = $pool->getMethodCalls();
-        foreach ($methods as $pos => $calls) {
-            if ($calls[0] == '__hack__') {
-                $settings = $calls[1];
-                break;
-            }
-        }
-
-        if ($settings) {
-            unset($methods[$pos]);
-        }
-
-        $pool->setMethodCalls($methods);
-
-        return $settings;
     }
 }
