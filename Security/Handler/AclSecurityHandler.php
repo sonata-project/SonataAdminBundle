@@ -26,7 +26,7 @@ class AclSecurityHandler implements SecurityHandlerInterface
      */
     public function isGranted($attributes, $object = null)
     {
-        return $this->securityContext->isGranted($attributes, $this);
+        return $this->securityContext->isGranted($attributes, $object);
     }
 
     /**
