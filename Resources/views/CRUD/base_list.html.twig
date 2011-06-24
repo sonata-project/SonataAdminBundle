@@ -132,7 +132,7 @@ file that was distributed with this source code.
 
 {% block list_filters %}
     {% if admin.datagrid.filters %}
-        <form action="{{ admin.generateUrl('list') }}" method="GET">
+        <form class="sonata-filter-form" action="{{ admin.generateUrl('list') }}" method="GET">
             {% for filter in admin.datagrid.filters %}
                 <div>
                     {{ filter|render_filter_element }}</td>
