@@ -52,6 +52,7 @@ class SonataAdminExtension extends Extension
         $loader->load('twig.xml');
         $loader->load('core.xml');
         $loader->load('form_types.xml');
+        $loader->load('validator.xml');
 
         $configuration = new Configuration();
         $processor = new Processor();
