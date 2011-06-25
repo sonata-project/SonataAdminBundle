@@ -226,7 +226,7 @@ class SonataAdminExtension extends \Twig_Extension
             $base_template = sprintf('SonataAdminBundle:CRUD:base_%s_edit_field.html.twig', $params['edit']);
         }
 
-        $template = $this->getTemplate($fieldDescription, 'SonataAdminBundle:CRUD:base_standard_edit_field.html');
+        $template = $this->getTemplate($fieldDescription, 'SonataAdminBundle:CRUD:base_standard_edit_field.html.twig');
 
         return $this->output($fieldDescription, $template, array_merge($params, array(
             'admin'             => $fieldDescription->getAdmin(),
