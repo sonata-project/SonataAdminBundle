@@ -11,6 +11,7 @@
 namespace Sonata\AdminBundle\Admin;
 
 use Symfony\Component\Form\FormBuilder;
+use Sonata\AdminBundle\Util\FormBuilderIterator;
 
 class AdminHelper
 {
@@ -26,28 +27,19 @@ class AdminHelper
 
     /**
      * @throws \RuntimeException
-     * @param \Symfony\Component\Form\FormBuilder $formBuider
+     * @param \Symfony\Component\Form\FormBuilder $formBuilder
      * @param  $elementId
      * @return \Symfony\Component\Form\FormBuilder
      */
-    public function getChildFormBuilder(FormBuilder $formBuider, $elementId)
+    public function getChildFormBuilder(FormBuilder $formBuilder, $elementId)
     {
-        // todo : warning this introduce a bug if the field name = 'field_name',
-        //        add a check to field will always be 'fieldName'
-        $elements = explode('_', $elementId);
-
-        // always remove the first element : form's name
-        array_shift($elements);
-
-        while ($elementName = array_shift($elements)) {
-            if (!$formBuider->has($elementName)) {
-                throw new \RuntimeException(sprintf('The element `%s` does not exists', $elementName));
+        foreach (new FormBuilderIterator($formBuilder) as $name => $formBuilder) {
+            if ($name == $elementId) {
+                return $formBuilder;
             }
-
-            $formBuider = $formBuider->get($elementName);
         }
 
-        return $formBuider;
+        return null;
     }
 
     /**
