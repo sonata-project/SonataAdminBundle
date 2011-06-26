@@ -757,6 +757,11 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
         return $actions;
     }
+    
+    public function getFilterActions()
+    {
+        return array();
+    }
 
     /**
      * Returns the list of available urls
