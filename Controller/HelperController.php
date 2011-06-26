@@ -64,7 +64,7 @@ class HelperController extends Controller
         $admin      = $helper->getAdmin($code);
 
         $subject = $admin->getModelManager()->findOne($admin->getClass(), $objectId);
-        if (!$subject) {
+        if (!$subject && $objectId) {
             throw new NotFoundHttpException(sprintf('Unable to find the object id: %s, class: %s', $objectId, $admin->getClass()));
         }
 
