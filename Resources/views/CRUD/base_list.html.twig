@@ -143,6 +143,17 @@ file that was distributed with this source code.
 
             <a href="{{ admin.generateUrl('list') }}">{% trans from 'SonataAdminBundle' %}link_reset_filter{% endtrans %}</a>
         </form>
+    
+        {% if admin.filterActions %}
+        <form class="sonata-filter-action-form" action="{{ admin.generateUrl('filter') }}?{% for k,v in admin.filterParameters %}&{{k}}={{v}}{% endfor %}" method="POST">
+            <select name="action">
+                {% for action, label in admin.filterActions %}
+                    <option value="{{ action }}">{{ label }}</option>
+                {% endfor %}
+            </select>
+            <input type="submit" value="{% trans from 'SonataAdminBundle' %}btn_batch{% endtrans %}" />
+        </form>
+        {% endif %}
     {% endif %}
 {% endblock %}
 
