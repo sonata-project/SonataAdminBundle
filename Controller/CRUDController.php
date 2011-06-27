@@ -245,6 +245,38 @@ class CRUDController extends Controller
 
         return new RedirectResponse($url);
     }
+    
+    /**
+     * Execute a filter action, an action performed on all filter entries of a datagrid.
+     * 
+     * @return Response
+     */
+    public function filterAction()
+    {
+        if ($this->get('request')->getMethod() != 'POST') {
+           throw new \RuntimeException('invalid request type, POST expected');
+        }        
+        
+        $action = $this->get('request')->get('action');
+        
+        if (!array_key_exists($action, $this->admin->getFilterActions())) {
+            throw new \RuntimeException(sprintf('The `%s` batch action is not defined', $action));
+        }
+        
+        // execute the action, filterActionXxxxx
+        $action = \Sonata\AdminBundle\Admin\BaseFieldDescription::camelize($action);
+
+        $final_action = sprintf('filterAction%s', ucfirst($action));
+        if (!method_exists($this, $final_action)) {
+            throw new \RuntimeException(sprintf('A `%s::%s` method must be created', get_class($this), $final_action));
+        }
+        
+        $grid = $this->admin->getDatagrid();
+        $grid->buildPager();
+        $query = $grid->getQuery();
+
+        return call_user_func(array($this, $final_action), $query);
+    }
 
     /**
      * return the Response object associated to the batch action
