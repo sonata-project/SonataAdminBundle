@@ -13,10 +13,10 @@ namespace Sonata\AdminBundle\Model;
 
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
+use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 
 interface ModelManagerInterface
 {
-
     /**
      * Returns true if the model has a relation
      *
@@ -81,7 +81,7 @@ interface ModelManagerInterface
      * @param array $idx
      * @return void
      */
-    function batchDelete($class, $idx);
+    function batchDelete($class, ProxyQueryInterface $queryProxy);
 
     /**
      * @abstract

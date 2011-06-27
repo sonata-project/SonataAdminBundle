@@ -138,17 +138,17 @@ class CRUDController extends Controller
      * @param array $idx
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function batchActionDelete($idx)
+    public function batchActionDelete($query)
     {
         if (false === $this->admin->isGranted('DELETE')) {
             throw new AccessDeniedException();
         }
 
         $modelManager = $this->admin->getModelManager();
-        $modelManager->batchDelete($this->admin->getClass(), $idx);
+        $modelManager->batchDelete($this->admin->getClass(), $query);
 
         // todo : add confirmation flash var
-        return new RedirectResponse($this->admin->generateUrl('list'));
+        return new RedirectResponse($this->admin->generateUrl('list', $this->admin->getFilterParameters()));
     }
 
     public function deleteAction($id)
@@ -245,38 +245,6 @@ class CRUDController extends Controller
 
         return new RedirectResponse($url);
     }
-    
-    /**
-     * Execute a filter action, an action performed on all filter entries of a datagrid.
-     * 
-     * @return Response
-     */
-    public function filterAction()
-    {
-        if ($this->get('request')->getMethod() != 'POST') {
-           throw new \RuntimeException('invalid request type, POST expected');
-        }        
-        
-        $action = $this->get('request')->get('action');
-        
-        if (!array_key_exists($action, $this->admin->getFilterActions())) {
-            throw new \RuntimeException(sprintf('The `%s` batch action is not defined', $action));
-        }
-        
-        // execute the action, filterActionXxxxx
-        $action = \Sonata\AdminBundle\Admin\BaseFieldDescription::camelize($action);
-
-        $final_action = sprintf('filterAction%s', ucfirst($action));
-        if (!method_exists($this, $final_action)) {
-            throw new \RuntimeException(sprintf('A `%s::%s` method must be created', get_class($this), $final_action));
-        }
-        
-        $grid = $this->admin->getDatagrid();
-        $grid->buildPager();
-        $query = $grid->getQuery();
-
-        return call_user_func(array($this, $final_action), $query);
-    }
 
     /**
      * return the Response object associated to the batch action
@@ -290,13 +258,14 @@ class CRUDController extends Controller
            throw new \RuntimeException('invalid request type, POST expected');
         }
 
-        $action = $this->get('request')->get('action');
-        $idx    = $this->get('request')->get('idx');
+        $action       = $this->get('request')->get('action');
+        $idx          = $this->get('request')->get('idx');
+        $all_elements = $this->get('request')->get('all_elements', false);
 
-        if (count($idx) == 0) { // no item selected
+        if (count($idx) == 0 && !$all_elements) { // no item selected
             // todo : add flash information
 
-            return new RedirectResponse($this->admin->generateUrl('list'));
+            return new RedirectResponse($this->admin->generateUrl('list', $this->admin->getFilterParameters()));
         }
 
         if (!array_key_exists($action, $this->admin->getBatchActions())) {
@@ -311,7 +280,15 @@ class CRUDController extends Controller
             throw new \RuntimeException(sprintf('A `%s::%s` method must be created', get_class($this), $final_action));
         }
 
-        return call_user_func(array($this, $final_action), $idx);
+        $datagrid = $this->admin->getDatagrid();
+        $datagrid->buildPager();
+        $query = $datagrid->getQuery();
+
+        if (!$all_elements && count($idx) > 0) {
+            $this->admin->getModelManager()->addIdentifiersToQuery($this->admin->getClass(), $query, $idx);
+        }
+
+        return call_user_func(array($this, $final_action), $query);
     }
 
     /**

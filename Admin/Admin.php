@@ -534,15 +534,16 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
         return $this->listFieldDescriptions;
     }
-    
+
     /**
      * Get parameters that are currently bound to the filter.
-     * 
+     *
      * @return array
      */
     public function getFilterParameters()
     {
         $parameters = array();
+
         // build the values array
         if ($this->hasRequest()) {
             $parameters = array_merge(
@@ -556,6 +557,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
                 $parameters[$this->getParentAssociationMapping()] = $this->request->get($this->getParent()->getIdParameter());
             }
         }
+
         return $parameters;
     }
 
@@ -768,7 +770,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
         return $actions;
     }
-    
+
     public function getFilterActions()
     {
         return array();
@@ -829,7 +831,6 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         $collection->add('list');
         $collection->add('create');
         $collection->add('batch');
-        $collection->add('filter');
         $collection->add('edit', $this->getRouterIdParameter().'/edit');
         $collection->add('delete', $this->getRouterIdParameter().'/delete');
         $collection->add('view', $this->getRouterIdParameter().'/view');

@@ -15,13 +15,14 @@ use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Admin\ORM\FieldDescription;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
+use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
+
 use Symfony\Component\Form\Exception\PropertyAccessDeniedException;
 
 class ModelManager implements ModelManagerInterface
 {
-
     protected $entityManager;
 
     /**
@@ -199,6 +200,26 @@ class ModelManager implements ModelManagerInterface
         return implode('-', $values);
     }
 
+    public function addIdentifiersToQuery($class, ProxyQueryInterface $queryProxy, array $idx)
+    {
+        $fieldNames = $this->getIdentifierFieldNames($class);
+        $qb = $queryProxy->getQueryBuilder();
+
+        $prefix = uniqid();
+        foreach ($idx as $pos => $id) {
+            $ids     = explode('-', $id);
+
+            $ands = array();
+            foreach ($fieldNames as $posName => $name) {
+                $parameterName = sprintf('field_%s_%s_%d', $prefix, $name, $pos);
+                $ands[] = sprintf('%s.%s = :%s', $qb->getRootAlias(), $name, $parameterName);
+                $qb->setParameter($parameterName, $ids[$posName]);
+            }
+
+            $qb->orWhere(implode(' AND ', $ands));
+        }
+    }
+
     /**
      * Deletes a set of $class identified by the provided $idx array
      *
@@ -206,20 +227,20 @@ class ModelManager implements ModelManagerInterface
      * @param array $idx
      * @return void
      */
-    public function batchDelete($class, $idx)
+    public function batchDelete($class, ProxyQueryInterface $queryProxy)
     {
-        $queryBuilder = $this->createQuery($class, 'o');
-        $objects = $queryBuilder
-            ->select('o')
-            ->add('where', $queryBuilder->expr()->in('o.id', $idx))
-            ->getQuery()
-            ->execute();
+        $i = 0;
+        foreach ($queryProxy->getQuery()->iterate() as $pos => $object) {
+            $this->entityManager->remove($object[0]);
 
-        foreach ($objects as $object) {
-            $this->entityManager->remove($object);
+            if ((++$i % 20) == 0) {
+                $this->entityManager->flush();
+                $this->entityManager->clear();
+            }
         }
 
         $this->entityManager->flush();
+        $this->entityManager->clear();
     }
 
     /**

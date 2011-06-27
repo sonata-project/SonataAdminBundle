@@ -123,4 +123,9 @@ class ProxyQuery implements ProxyQueryInterface
     {
         $this->queryBuilder = clone $this->queryBuilder;
     }
+
+    public function getQueryBuilder()
+    {
+      return $this->queryBuilder;
+    }
 }

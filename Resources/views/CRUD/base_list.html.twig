@@ -26,7 +26,7 @@ file that was distributed with this source code.
 {% block list_table %}
     {% set batchactions = admin.batchactions %}
     {% if admin.datagrid.results|length > 0 %}
-        <form action="{{ admin.generateUrl('batch') }}" method="POST" >
+        <form action="{{ admin.generateUrl('batch', admin.filterParameters) }}" method="POST" >
             <table>
                 {% block table_header %}
                     <tr class="sonata-ba-list-field-header">
@@ -119,6 +119,8 @@ file that was distributed with this source code.
                             <option value="{{ action }}">{{ label }}</option>
                         {% endfor %}
                     </select>
+                    <input type="checkbox" name="all_elements" id="execute_on_matching"  />
+                    <label for="execute_on_matching">{% trans from 'SonataAdminBundle' %}all_elements{% endtrans %}</label>
                     <input type="submit" value="{% trans from 'SonataAdminBundle' %}btn_batch{% endtrans %}" />
                 </div>
             {% endif %}
@@ -143,17 +145,6 @@ file that was distributed with this source code.
 
             <a href="{{ admin.generateUrl('list') }}">{% trans from 'SonataAdminBundle' %}link_reset_filter{% endtrans %}</a>
         </form>
-    
-        {% if admin.filterActions %}
-        <form class="sonata-filter-action-form" action="{{ admin.generateUrl('filter') }}?{% for k,v in admin.filterParameters %}&{{k}}={{v}}{% endfor %}" method="POST">
-            <select name="action">
-                {% for action, label in admin.filterActions %}
-                    <option value="{{ action }}">{{ label }}</option>
-                {% endfor %}
-            </select>
-            <input type="submit" value="{% trans from 'SonataAdminBundle' %}btn_batch{% endtrans %}" />
-        </form>
-        {% endif %}
     {% endif %}
 {% endblock %}
 
