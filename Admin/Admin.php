@@ -534,6 +534,30 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
         return $this->listFieldDescriptions;
     }
+    
+    /**
+     * Get parameters that are currently bound to the filter.
+     * 
+     * @return array
+     */
+    public function getFilterParameters()
+    {
+        $parameters = array();
+        // build the values array
+        if ($this->hasRequest()) {
+            $parameters = array_merge(
+                $this->getModelManager()->getDefaultSortValues($this->getClass()),
+                $this->datagridValues,
+                $this->request->query->all()
+            );
+
+            // always force the parent value
+            if ($this->isChild() && $this->getParentAssociationMapping()) {
+                $parameters[$this->getParentAssociationMapping()] = $this->request->get($this->getParent()->getIdParameter());
+            }
+        }
+        return $parameters;
+    }
 
     /**
      * build the filter FieldDescription array
@@ -560,20 +584,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
             $this->getDatagridBuilder()->fixFieldDescription($this, $fieldDescription);
         }
 
-        $parameters = array();
-        // build the values array
-        if ($this->hasRequest()) {
-            $parameters = array_merge(
-                $this->getModelManager()->getDefaultSortValues($this->getClass()),
-                $this->datagridValues,
-                $this->request->query->all()
-            );
-
-            // always force the parent value
-            if ($this->isChild() && $this->getParentAssociationMapping()) {
-                $parameters[$this->getParentAssociationMapping()] = $this->request->get($this->getParent()->getIdParameter());
-            }
-        }
+        $parameters = $this->getFilterParameters();
 
         // initialize the datagrid
         $this->datagrid = $this->getDatagridBuilder()->getBaseDatagrid($this, $parameters);
@@ -818,6 +829,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         $collection->add('list');
         $collection->add('create');
         $collection->add('batch');
+        $collection->add('filter');
         $collection->add('edit', $this->getRouterIdParameter().'/edit');
         $collection->add('delete', $this->getRouterIdParameter().'/delete');
         $collection->add('view', $this->getRouterIdParameter().'/view');
