@@ -18,6 +18,7 @@ use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Builder\FormContractorInterface;
 use Sonata\AdminBundle\Form\Type\AdminType;
 use Sonata\AdminBundle\Form\Type\ModelType;
+use Sonata\AdminBundle\Admin\NoValueException;
 
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormInterface;
@@ -229,7 +230,12 @@ class FormContractor implements FormContractorInterface
         // There is a bug in the GraphWalker, so for now we always load related associations
         // for more information : https://github.com/symfony/symfony/pull/1056
         if ($formBuilder->getData() && in_array($fieldDescription->getType(), array(ClassMetadataInfo::ONE_TO_MANY, ClassMetadataInfo::MANY_TO_MANY, ClassMetadataInfo::MANY_TO_ONE, ClassMetadataInfo::ONE_TO_ONE ))) {
-            $value = $fieldDescription->getValue($formBuilder->getData());
+            try {
+                $value = $fieldDescription->getValue($formBuilder->getData());
+            } catch (NoValueException $e) {
+                $value = null;
+            }
+
             $infos = $fieldDescription->getAssociationMapping();
             if ($value instanceof $infos['targetEntity'] && $value instanceof \Doctrine\ORM\Proxy\Proxy) {
                 $relatedId = 'get'.current($fieldDescription->getAdmin()->getModelManager()->getIdentifierFieldNames($infos['targetEntity']));

@@ -76,7 +76,11 @@ class AdminHelper
         // retrieve the FieldDescription
         $fieldDescription = $admin->getFormFieldDescription($childFormBuilder->getName());
 
-        $value = $fieldDescription->getValue($form->getData());
+        try {
+            $value = $fieldDescription->getValue($form->getData());
+        } catch (NoValueException $e) {
+            $value = null;
+        }
 
         // retrieve the posted data
         $data = $admin->getRequest()->get($formBuilder->getName());

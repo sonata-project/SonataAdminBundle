@@ -356,7 +356,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
             }
         }
 
-        return false;
+        throw new NoValueException();
     }
 
     /**

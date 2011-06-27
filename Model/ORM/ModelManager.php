@@ -100,10 +100,10 @@ class ModelManager implements ModelManagerInterface
 
     /**
      * Find one object from the given class repository.
-     * 
+     *
      * @param string $class Class name
      * @param string|int $id Identifier. Can be a string with several IDs concatenated, separated by '-'.
-     * @return Object 
+     * @return Object
      */
     public function findOne($class, $id)
     {
@@ -190,7 +190,7 @@ class ModelManager implements ModelManagerInterface
     public function getNormalizedIdentifier($entity)
     {
         // the entities is not managed
-        if (!$this->getEntityManager()->getUnitOfWork()->isInIdentityMap($entity)) {
+        if (!$entity || !$this->getEntityManager()->getUnitOfWork()->isInIdentityMap($entity)) {
             return null;
         }
 

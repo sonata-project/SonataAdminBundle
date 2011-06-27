@@ -13,6 +13,8 @@ namespace Sonata\AdminBundle\Twig\Extension;
 
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Filter\FilterInterface;
+use Sonata\AdminBundle\Admin\NoValueException;
+
 use Symfony\Component\Form\FormView;
 
 class SonataAdminExtension extends \Twig_Extension
@@ -134,13 +136,13 @@ class SonataAdminExtension extends \Twig_Extension
             throw new \RuntimeException('remove the loop requirement');
         }
 
-        $value = $fieldDescription->getValue($object);
-
-        // no value defined, check if the fieldDescription point to an association
-        // if so, create an empty object instance
-        // fixme: not sure this is the best place to do that
-        if (!$value && $fieldDescription->getAssociationAdmin()) {
-            $value = $fieldDescription->getAssociationAdmin()->getNewInstance();
+        $value = null;
+        try {
+          $value = $fieldDescription->getValue($object);
+        } catch (NoValueException $e) {
+            if ($fieldDescription->getAssociationAdmin()) {
+                $value = $fieldDescription->getAssociationAdmin()->getNewInstance();
+            }
         }
 
         return $value;
@@ -176,10 +178,16 @@ class SonataAdminExtension extends \Twig_Extension
     {
         $template = $this->getTemplate($fieldDescription, 'SonataAdminBundle:CRUD:base_view_field.html.twig');
 
+        try {
+            $value = $fieldDescription->getValue($object);
+        } catch (NoValueException $e) {
+            $value = null;
+        }
+
         return $this->output($fieldDescription, $template, array(
             'field_description' => $fieldDescription,
             'object'            => $object,
-            'value'             => $fieldDescription->getValue($object)
+            'value'             => $value
         ));
     }
 
