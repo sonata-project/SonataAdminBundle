@@ -14,7 +14,8 @@ file that was distributed with this source code.
         {% if field_description.options.name is defined %}
             {{ form_label(field_element, field_description.options.name) }}
         {% else %}
-            {{ form_label(field_element) }}
+            {% set field_label = 'admin.' ~ admin.classnamelabel ~ '.labels.' ~ field_description.name %}
+            {{ form_label(field_element, field_label|trans({}, admin.translationdomain)) }}
         {% endif %}
         <br />
     {% endblock %}
