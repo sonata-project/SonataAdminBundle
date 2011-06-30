@@ -110,6 +110,10 @@
                 <source>action_view</source>
                 <target>Просмотреть</target>
             </trans-unit>
+            <trans-unit id="all_elements">
+                <source>all_elements</source>
+                <target>Для всех записей</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
