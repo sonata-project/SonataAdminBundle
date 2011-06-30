@@ -110,6 +110,10 @@
                 <source>action_view</source>
                 <target>View</target>
             </trans-unit>
+            <trans-unit id="all_elements">
+                <source>all_elements</source>
+                <target>All elements</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
