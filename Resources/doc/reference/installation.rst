@@ -7,9 +7,9 @@ Download bundles
 To begin, add the dependent bundles to the ``src/`` directory. If you are using
 git, you can add them as submodules::
 
-  git submodule add git@github.com:sonata-project/jQueryBundle.git src/Sonata/jQueryBundle
-  git submodule add git@github.com:sonata-project/BluePrintBundle.git src/Sonata/BluePrintBundle
-  git submodule add git@github.com:sonata-project/AdminBundle.git src/Sonata/AdminBundle
+  git submodule add git://github.com/sonata-project/jQueryBundle.git src/Sonata/jQueryBundle
+  git submodule add git://github.com/sonata-project/BluePrintBundle.git src/Sonata/BluePrintBundle
+  git submodule add git://github.com/sonata-project/AdminBundle.git src/Sonata/AdminBundle
   git submodule add git://github.com/knplabs/MenuBundle.git src/Knplabs/Bundle/MenuBundle
 
 If you are not using git, you will have to download them :
