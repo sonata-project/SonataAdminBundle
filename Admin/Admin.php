@@ -38,6 +38,13 @@ use Knp\Bundle\MenuBundle\MenuItem;
 abstract class Admin implements AdminInterface, DomainObjectInterface
 {
     /**
+     * Regular Expression used to 'guess' what the route pattern and names should be
+     * 
+     * @var string
+     */
+    const BASE_ROUTE_REGEX = '@(?:([^\\\\]*)\\\\)?([^\\\\]*)Bundle\\\\(?:Entity|Document|Model)\\\\(.*)@';
+
+    /**
      * The class name managed by the admin class
      *
      * @var string
@@ -674,7 +681,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     public function getBaseRoutePattern()
     {
         if (!$this->baseRoutePattern) {
-            preg_match('@([A-Za-z0-9]*)\\\([A-Za-z0-9]*)Bundle\\\(Entity|Document|Model)\\\(.*)@', $this->getClass(), $matches);
+            preg_match(self::BASE_ROUTE_REGEX, $this->getClass(), $matches);
 
             if (!$matches) {
                 throw new \RuntimeException(sprintf('Please define a default `baseRoutePattern` value for the admin class `%s`', get_class($this)));
@@ -683,14 +690,18 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
             if ($this->isChild()) { // the admin class is a child, prefix it with the parent route name
                 $this->baseRoutePattern = sprintf('%s/{id}/%s',
                     $this->getParent()->getBaseRoutePattern(),
-                    $this->urlize($matches[4], '-')
+                    $this->urlize($matches[3], '-')
                 );
-            } else {
-
+            } elseif ($matches[1]) {
                 $this->baseRoutePattern = sprintf('/%s/%s/%s',
                     $this->urlize($matches[1], '-'),
                     $this->urlize($matches[2], '-'),
-                    $this->urlize($matches[4], '-')
+                    $this->urlize($matches[3], '-')
+                );
+            } else {
+                $this->baseRoutePattern = sprintf('/%s/%s',
+                    $this->urlize($matches[2], '-'),
+                    $this->urlize($matches[3], '-')
                 );
             }
         }
@@ -707,23 +718,28 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     public function getBaseRouteName()
     {
         if (!$this->baseRouteName) {
-            preg_match('@([A-Za-z0-9]*)\\\([A-Za-z0-9]*)Bundle\\\(Entity|Document|Model)\\\(.*)@', $this->getClass(), $matches);
+            preg_match(self::BASE_ROUTE_REGEX, $this->getClass(), $matches);
 
             if (!$matches) {
+                var_dump($regex, $this->getClass(),$matches);die(__METHOD__);
                 throw new \RuntimeException(sprintf('Please define a default `baseRouteName` value for the admin class `%s`', get_class($this)));
             }
 
             if ($this->isChild()) { // the admin class is a child, prefix it with the parent route name
                 $this->baseRouteName = sprintf('%s_%s',
                     $this->getParent()->getBaseRouteName(),
-                    $this->urlize($matches[4])
+                    $this->urlize($matches[3])
                 );
-            } else {
-
+            } elseif ($matches[1]) {
                 $this->baseRouteName = sprintf('admin_%s_%s_%s',
                     $this->urlize($matches[1]),
                     $this->urlize($matches[2]),
-                    $this->urlize($matches[4])
+                    $this->urlize($matches[3])
+                );
+            } else {
+                $this->baseRouteName = sprintf('admin_%s_%s',
+                    $this->urlize($matches[2]),
+                    $this->urlize($matches[3])
                 );
             }
         }
