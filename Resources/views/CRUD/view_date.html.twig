@@ -11,4 +11,4 @@ file that was distributed with this source code.
 
 {% extends 'SonataAdminBundle:CRUD:base_view_field.html.twig' %}
 
-{% block value %}{{ value|date }}{% endblock %}
+{% block value %}{{ value|date('F j, Y') }}{% endblock %}
