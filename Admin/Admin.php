@@ -32,8 +32,8 @@ use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 
-use Knplabs\Bundle\MenuBundle\Menu;
-use Knplabs\Bundle\MenuBundle\MenuItem;
+use Knp\Bundle\MenuBundle\Menu;
+use Knp\Bundle\MenuBundle\MenuItem;
 
 abstract class Admin implements AdminInterface, DomainObjectInterface
 {
