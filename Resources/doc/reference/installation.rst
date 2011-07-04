@@ -7,17 +7,17 @@ Download bundles
 To begin, add the dependent bundles to the ``src/`` directory. If you are using
 git, you can add them as submodules::
 
-  git submodule add git://github.com/sonata-project/jQueryBundle.git src/Sonata/jQueryBundle
-  git submodule add git://github.com/sonata-project/BluePrintBundle.git src/Sonata/BluePrintBundle
-  git submodule add git://github.com/sonata-project/AdminBundle.git src/Sonata/AdminBundle
-  git submodule add git://github.com/knplabs/MenuBundle.git src/Knplabs/Bundle/MenuBundle
+  git submodule add git://github.com/sonata-project/SonatajQueryBundle.git src/Sonata/jQueryBundle
+  git submodule add git://github.com/sonata-project/SonataBluePrintBundle.git src/Sonata/BluePrintBundle
+  git submodule add git://github.com/sonata-project/SonataAdminBundle.git src/Sonata/AdminBundle
+  git submodule add git://github.com/knplabs/KnpMenuBundle.git src/Knplabs/Bundle/MenuBundle
 
 If you are not using git, you will have to download them :
 
-  - https://github.com/sonata-project/jQueryBundle/archives/master
-  - https://github.com/sonata-project/BluePrintBundle/archives/master
-  - https://github.com/sonata-project/AdminBundle/archives/master
-  - https://github.com/knplabs/MenuBundle/archives/master
+  - https://github.com/sonata-project/SonatajQueryBundle/archives/master
+  - https://github.com/sonata-project/SonataBluePrintBundle/archives/master
+  - https://github.com/sonata-project/SonataAdminBundle/archives/master
+  - https://github.com/knplabs/KnpMenuBundle/archives/master
 
 Configuration
 -------------

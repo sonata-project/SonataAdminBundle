@@ -78,7 +78,7 @@ Features
     - Contextual Breadcrumb
     - persistent parameters across an Admin
     - side menu option
-    - Translated into 8 languages : DE, EN, ES, FR, NL, PL, RU and UK.
+    - Translated into 11 languages : DE, EN, ES, FR, IT, JA, NL, PL, PT_BR, RU and UK.
     - Built to be extended
     - Explain command line utility
 
@@ -90,15 +90,15 @@ There is online documentation here:
 
  - http://rabaix.net/AdminBundle/html/index.html
 
-If you want to contribute to this documentation, you need to go to the ``Resources/doc`` folder where 
+If you want to contribute to this documentation, you need to go to the ``Resources/doc`` folder where
 the reStructuredText documentation is available.
 Please note the Github preview might break and hide some content.
 
 Usage examples
 
- - https://github.com/sonata-project/MediaBundle
- - https://github.com/sonata-project/NewsBundle
- - https://github.com/sonata-project/UserBundle (custom fork of FOS/UserBundle)
+ - https://github.com/sonata-project/SonataMediaBundle
+ - https://github.com/sonata-project/SonataNewsBundle
+ - https://github.com/sonata-project/SoantaUserBundle (custom fork of FOS/UserBundle)
 
 TODO
 ----
