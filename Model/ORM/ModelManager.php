@@ -206,6 +206,7 @@ class ModelManager implements ModelManagerInterface
         $qb = $queryProxy->getQueryBuilder();
 
         $prefix = uniqid();
+        $sqls = array();
         foreach ($idx as $pos => $id) {
             $ids     = explode('-', $id);
 
@@ -216,8 +217,10 @@ class ModelManager implements ModelManagerInterface
                 $qb->setParameter($parameterName, $ids[$posName]);
             }
 
-            $qb->orWhere(implode(' AND ', $ands));
+            $sqls[] = implode(' AND ', $ands);
         }
+
+        $qb->andWhere(sprintf('( %s )', implode(' OR ', $sqls)));
     }
 
     /**
