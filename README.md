@@ -98,7 +98,7 @@ Usage examples
 
  - https://github.com/sonata-project/SonataMediaBundle
  - https://github.com/sonata-project/SonataNewsBundle
- - https://github.com/sonata-project/SoantaUserBundle (custom fork of FOS/UserBundle)
+ - https://github.com/sonata-project/SonataUserBundle (integration of FOSUserBundle and SonataAdminBundle)
 
 TODO
 ----
