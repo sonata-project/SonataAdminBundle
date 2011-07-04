@@ -12,5 +12,13 @@ file that was distributed with this source code.
 
 <tr>
     <th>{% block name %}{{ field_description.name }}{% endblock %}</th>
-    <td>{% block value %}{{ value }}{% endblock %}</td>
+    <td>
+        {% block value %}
+            {% if field_description.type == 'date' or field_description.type == 'datetime' %}
+                {{ value|date }}
+            {% else %}
+                {{ value }}
+            {% endif %}
+        {% endblock %}
+    </td>
 </tr>
