@@ -7,10 +7,10 @@ Download bundles
 To begin, add the dependent bundles to the ``src/`` directory. If you are using
 git, you can add them as submodules::
 
-  git submodule add git://github.com/sonata-project/SonatajQueryBundle.git src/Sonata/jQueryBundle
-  git submodule add git://github.com/sonata-project/SonataBluePrintBundle.git src/Sonata/BluePrintBundle
-  git submodule add git://github.com/sonata-project/SonataAdminBundle.git src/Sonata/AdminBundle
-  git submodule add git://github.com/knplabs/KnpMenuBundle.git src/Knplabs/Bundle/MenuBundle
+  git submodule add git://github.com/sonata-project/SonatajQueryBundle.git vendor/bundles/Sonata/jQueryBundle
+  git submodule add git://github.com/sonata-project/SonataBluePrintBundle.git vendor/bundles/Sonata/BluePrintBundle
+  git submodule add git://github.com/sonata-project/SonataAdminBundle.git vendor/bundles/Sonata/AdminBundle
+  git submodule add git://github.com/knplabs/KnpMenuBundle.git vendor/bundles/Knp/Bundle/MenuBundle
 
 If you are not using git, you will have to download them :
 
@@ -30,8 +30,8 @@ files:
   // app/autoload.php
   $loader->registerNamespaces(array(
       // ...
-      'Sonata'                         => __DIR__.'/../src',
-      'Knplabs'                        => __DIR__.'/../src',
+      'Sonata'                         => __DIR__.'/../vendor/bundles',
+      'Knp'                            => __DIR__.'/../vendor/bundles',
       // ...
   ));
 
@@ -43,7 +43,7 @@ files:
           new Sonata\jQueryBundle\SonatajQueryBundle(),
           new Sonata\BluePrintBundle\SonataBluePrintBundle(),
           new Sonata\AdminBundle\SonataAdminBundle(),
-          new Knplabs\Bundle\MenuBundle\KnplabsMenuBundle(),
+          new Knp\Bundle\MenuBundle\KnplabsMenuBundle(),
           // ...
       );
   }
