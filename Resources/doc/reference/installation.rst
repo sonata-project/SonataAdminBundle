@@ -43,7 +43,7 @@ files:
           new Sonata\jQueryBundle\SonatajQueryBundle(),
           new Sonata\BluePrintBundle\SonataBluePrintBundle(),
           new Sonata\AdminBundle\SonataAdminBundle(),
-          new Knp\Bundle\MenuBundle\KnplabsMenuBundle(),
+          new Knp\Bundle\MenuBundle\KnpMenuBundle(),
           // ...
       );
   }
