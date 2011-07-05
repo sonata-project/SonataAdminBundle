@@ -62,10 +62,14 @@ class HelperController extends Controller
         $elementId  = $this->get('request')->get('elementId');
         $objectId   = $this->get('request')->get('objectId');
         $admin      = $helper->getAdmin($code);
+        $uniqid     = $this->get('request')->query->get('uniqid');
 
         $subject = $admin->getModelManager()->findOne($admin->getClass(), $objectId);
         if (!$subject) {
             throw new NotFoundHttpException(sprintf('Unable to find the object id: %s, class: %s', $objectId, $admin->getClass()));
+        }
+        if ($uniqid) {
+            $admin->setUniqid($uniqid);
         }
 
         $formBuilder = $admin->getFormBuilder($subject);
