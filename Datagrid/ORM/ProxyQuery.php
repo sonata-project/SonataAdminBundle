@@ -128,4 +128,24 @@ class ProxyQuery implements ProxyQueryInterface
     {
       return $this->queryBuilder;
     }
+
+    function setFirstResult($firstResult)
+    {
+        $this->queryBuilder->setFirstResult($firstResult);
+    }
+
+    function getFirstResult()
+    {
+        $this->queryBuilder->getFirstResult();
+    }
+
+    function setMaxResults($maxResults)
+    {
+        $this->queryBuilder->setMaxResults($maxResults);
+    }
+
+    function getMaxResults()
+    {
+        $this->queryBuilder->getMaxResults();
+    }
 }

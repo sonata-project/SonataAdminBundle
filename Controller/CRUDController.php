@@ -284,6 +284,9 @@ class CRUDController extends Controller
         $datagrid->buildPager();
         $query = $datagrid->getQuery();
 
+        $query->setFirstResult(null);
+        $query->setMaxResults(null);
+
         if (count($idx) > 0) {
             $this->admin->getModelManager()->addIdentifiersToQuery($this->admin->getClass(), $query, $idx);
         }

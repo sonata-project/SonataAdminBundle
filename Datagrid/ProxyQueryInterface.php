@@ -29,4 +29,12 @@ interface ProxyQueryInterface
     function getSortOrder();
 
     function getSingleScalarResult();
+
+    function setFirstResult($firstResult);
+
+    function getFirstResult();
+
+    function setMaxResults($maxResults);
+
+    function getMaxResults();
 }
