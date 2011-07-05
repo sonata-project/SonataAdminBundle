@@ -13,14 +13,12 @@ file that was distributed with this source code.
 
 {% block field %}
     {% if not field_description.hasassociationadmin%}
-        {# TODO : add some logic here #}
+        {{ value|render_relation_element(field_description) }}
     {% elseif field_description.options.edit == 'inline' %}
         {% for nested_field_description in field_description.associationadmin.formfielddescriptions %}
             {{ nested_field_description|render_form_element(field_element, value) }}
         {% endfor %}
-
     {% else %}
-
         <div id="field_container_{{ field_element.vars.id }}">
 
             {% if field_description.options.edit == 'list' %}

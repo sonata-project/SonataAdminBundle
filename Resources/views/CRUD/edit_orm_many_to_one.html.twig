@@ -14,7 +14,7 @@ file that was distributed with this source code.
 {% block field %}
 
     {% if not field_description.hasassociationadmin%}
-        {{ value }}
+        {{ value|render_relation_element(field_description) }}
     {% elseif field_description.options.edit == 'inline' %}
         {% for nested_field_description in field_description.associationadmin.formfielddescriptions %}
             {{ nested_field_description|render_form_element(field_element, value) }}

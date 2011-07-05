@@ -16,7 +16,7 @@ file that was distributed with this source code.
         {% if field_description.hasAssociationAdmin and field_description.associationadmin.isGranted('EDIT')%}
             <a href="{{ field_description.associationadmin.generateUrl('edit', {'id': field_description.associationadmin.id(value)}) }}">{{ value }}</a>
         {% else %}
-            {{ value }}
+            {{ value|render_relation_element(field_description) }}
         {% endif %}
     {% endif %}
 {% endblock %}

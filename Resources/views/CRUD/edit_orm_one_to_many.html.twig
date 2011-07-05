@@ -13,7 +13,9 @@ file that was distributed with this source code.
 
 {% block field %}
     {% if not field_description.hasassociationadmin%}
-        {# TODO : add logic here #}
+        {% for element in value%}
+            {{ element|render_relation_element(field_description) }}
+        {% endfor %}
     {% else %}
         <div id="field_container_{{ field_element.vars.id }}">
             <span id="field_widget_{{ field_element.vars.id }}" >

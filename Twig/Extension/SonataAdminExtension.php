@@ -40,10 +40,11 @@ class SonataAdminExtension extends \Twig_Extension
     public function getFilters()
     {
         return array(
-            'render_list_element'    => new \Twig_Filter_Method($this, 'renderListElement', array('is_safe' => array('html'))),
-            'render_form_element'    => new \Twig_Filter_Method($this, 'renderFormElement', array('is_safe' => array('html'))),
-            'render_filter_element'  => new \Twig_Filter_Method($this, 'renderFilterElement', array('is_safe' => array('html'))),
-            'render_view_element'    => new \Twig_Filter_Method($this, 'renderViewElement', array('is_safe' => array('html'))),
+            'render_list_element'     => new \Twig_Filter_Method($this, 'renderListElement', array('is_safe' => array('html'))),
+            'render_form_element'     => new \Twig_Filter_Method($this, 'renderFormElement', array('is_safe' => array('html'))),
+            'render_filter_element'   => new \Twig_Filter_Method($this, 'renderFilterElement', array('is_safe' => array('html'))),
+            'render_view_element'     => new \Twig_Filter_Method($this, 'renderViewElement', array('is_safe' => array('html'))),
+            'render_relation_element' => new \Twig_Filter_Method($this, 'renderRelationElement', array('is_safe' => array('html'))),
         );
     }
 
@@ -244,5 +245,22 @@ class SonataAdminExtension extends \Twig_Extension
             'field_element'     => $children,
             'base_template'     => $fieldDescription->getOption('base_template', $base_template)
         )));
+    }
+
+    /**
+     * @throws \RunTimeException
+     * @param $element
+     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
+     * @return mixed
+     */
+    public function renderRelationElement($element, FieldDescriptionInterface $fieldDescription)
+    {
+        $method = $fieldDescription->getOption('associated_tostring', '__toString');
+
+        if (!method_exists($element, $method)) {
+            throw new \RunTimeException(sprintf('You must define an `associated_tostring` option or create a `%s::__toString` method to the field option %s from service %s is ', get_class($element), $fieldDescription->getName(), $fieldDescription->getAdmin()->getCode()));
+        }
+
+        return call_user_func(array($element, $method));
     }
 }

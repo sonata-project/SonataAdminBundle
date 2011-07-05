@@ -12,5 +12,13 @@ file that was distributed with this source code.
 {% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
 
 {% block field%}
-
+    {% if field_description.hasassociationadmin%}
+        {% for element in value%}
+            <a href="{{ field_description.associationadmin.generateUrl('edit', {'id': field_description.associationadmin.id(element)}) }}">{{ element|render_relation_element(field_description) }}</a>
+        {% endfor %}
+    {% else %}
+        {% for element in value%}
+            {{ element|render_relation_element(field_description) }}
+        {% endfor %}
+    {% endif %}
 {% endblock %}

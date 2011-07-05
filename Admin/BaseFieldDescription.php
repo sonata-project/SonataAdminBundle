@@ -30,6 +30,9 @@ use Sonata\AdminBundle\Admin\AdminInterface;
  *   - name (o) : the name used (label in the form, title in the list)
  *   - link_parameters (o) : add link parameter to the related Admin class when
  *                           the Admin.generateUrl is called
+ *   - code : the method name to retrieve the related value
+ *   - associated_tostring : the method to retrieve the "string" representation
+ *                           of the collection element.
  *
  * Form Field options :
  *   - form_field_type (o): the widget class to use to render the field
