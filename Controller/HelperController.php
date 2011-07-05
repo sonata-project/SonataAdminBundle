@@ -33,8 +33,12 @@ class HelperController extends Controller
         $code       = $request->query->get('code');
         $elementId  = $request->query->get('elementId');
         $objectId   = $request->query->get('objectId');
+        $uniqid     = $this->get('request')->query->get('uniqid');
 
         $admin = $helper->getAdmin($code);
+        if ($uniqid) {
+            $admin->setUniqid($uniqid);
+        }
 
         $subject = $admin->getModelManager()->findOne($admin->getClass(), $objectId);
         if (!$subject) {
