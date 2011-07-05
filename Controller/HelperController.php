@@ -30,11 +30,15 @@ class HelperController extends Controller
     {
         $helper     = $this->getAdminHelper();
         $request    = $this->get('request');
-        $code       = $request->get('code');
-        $elementId  = $request->get('elementId');
-        $objectId   = $request->get('objectId');
+        $code       = $request->query->get('code');
+        $elementId  = $request->query->get('elementId');
+        $objectId   = $request->query->get('objectId');
+        $uniqid     = $this->get('request')->query->get('uniqid');
 
         $admin = $helper->getAdmin($code);
+        if ($uniqid) {
+            $admin->setUniqid($uniqid);
+        }
 
         $subject = $admin->getModelManager()->findOne($admin->getClass(), $objectId);
         if (!$subject) {
@@ -58,14 +62,18 @@ class HelperController extends Controller
     public function retrieveFormFieldElementAction()
     {
         $helper     = $this->getAdminHelper();
-        $code       = $this->get('request')->get('code');
-        $elementId  = $this->get('request')->get('elementId');
-        $objectId   = $this->get('request')->get('objectId');
+        $code       = $this->get('request')->query->get('code');
+        $elementId  = $this->get('request')->query->get('elementId');
+        $objectId   = $this->get('request')->query->get('objectId');
         $admin      = $helper->getAdmin($code);
+        $uniqid     = $this->get('request')->query->get('uniqid');
 
         $subject = $admin->getModelManager()->findOne($admin->getClass(), $objectId);
         if (!$subject) {
             throw new NotFoundHttpException(sprintf('Unable to find the object id: %s, class: %s', $objectId, $admin->getClass()));
+        }
+        if ($uniqid) {
+            $admin->setUniqid($uniqid);
         }
 
         $formBuilder = $admin->getFormBuilder($subject);
@@ -84,11 +92,11 @@ class HelperController extends Controller
         return new Response($extension->renderWidget($childFormBuilder->getForm()->createView()));
     }
 
-    public function getShortObjectDescriptionAction($code = null, $objectId = null, $uniqid = null)
+    public function getShortObjectDescriptionAction()
     {
-        $code       = $code     ?: $this->get('request')->query->get('code');
-        $objectId   = $objectId ?: $this->get('request')->query->get('objectId');
-        $uniqid     = $uniqid   ?: $this->get('request')->get('uniqid');
+        $code       = $this->get('request')->query->get('code');
+        $objectId   = $this->get('request')->query->get('objectId');
+        $uniqid     = $this->get('request')->query->get('uniqid');
 
         $admin  = $this->container->get('sonata.admin.pool')->getInstance($code);
         if ($uniqid) {
