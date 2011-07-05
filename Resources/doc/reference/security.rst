@@ -21,8 +21,8 @@ ACL and FriendsOfSymfony/UserBundle
 
 If you want an easy way to handle users, please use :
 
- - https://github.com/FriendsOfSymfony/UserBundle : handle users and group stored from RDMS or MongoDB
- - https://github.com/sonata-project/UserBundle : integrate the ``FriendsOfSymfony/UserBundle`` with
+ - https://github.com/FriendsOfSymfony/FOSUserBundle : handle users and group stored from RDMS or MongoDB
+ - https://github.com/sonata-project/SonataUserBundle : integrate the ``FriendsOfSymfony/UserBundle`` with
    the ``AdminBundle``
 
 The security integration is a work in progress and have some knows issues :
@@ -35,7 +35,7 @@ Configuration
 
     - The following configuration defines :
 
-        - the ``FriendsOfSymfony/UserBundle`` as a security provider
+        - the ``FriendsOfSymfony/FOSUserBundle`` as a security provider
         - the login form for authentification
         - the access control : resources with related required roles, the important part is the admin configuration
         - the ``acl`` option enable the ACL.
