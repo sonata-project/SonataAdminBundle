@@ -22,7 +22,7 @@ Example
             'content',
         );
 
-        public function configureFormFields(FormMapper $form)
+        public function configureFormFields(FormMapper $formMapper)
         {
             // equivalent to :
             $formMapper
