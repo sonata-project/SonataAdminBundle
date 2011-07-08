@@ -14,7 +14,7 @@ file that was distributed with this source code.
 {% block actions %}
     <div class="sonata-actions">
         <ul>
-            {% if admin.id(object) and admin.isGranted('VIEW')%}
+            {% if admin.id(object) and admin.isGranted('VIEW') and admin.getViewFieldDescriptions is not empty %}
                 <li class="sonata-action-element"><a href="{{ admin.generateUrl('view', {'id' : admin.id(object)}) }}">{% trans from 'SonataAdminBundle' %}link_action_view{% endtrans %}</a></li>
             {% endif %}
             {% if admin.isGranted('CREATE')%}
