@@ -633,10 +633,6 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
             $this->getFormContractor()->fixFieldDescription($this, $fieldDescription);
 
-            // unset the identifier field as it is not required to update an object
-            if ($fieldDescription->isIdentifier()) {
-                unset($this->formFieldDescriptions[$name]);
-            }
         }
     }
 

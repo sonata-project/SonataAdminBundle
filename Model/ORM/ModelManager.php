@@ -180,7 +180,16 @@ class ModelManager implements ModelManagerInterface
             throw new \RuntimeException('Entities passed to the choice field must be managed');
         }
 
-        return $this->getEntityManager()->getUnitOfWork()->getEntityIdentifier($entity);
+        $data = $this->getEntityManager()->getUnitOfWork()->getOriginalEntityData($entity);
+        $values = $this->getEntityManager()->getUnitOfWork()->getEntityIdentifier($entity);
+        foreach ($values as $identifier => $oldvalue) {
+            if(isset($data[$identifier])) {
+                if(!is_object($data[$identifier])) {
+                    $values[$identifier] = $data[$identifier];
+                }
+            }
+        }
+        return $values;
     }
 
     public function getIdentifierFieldNames($class)
