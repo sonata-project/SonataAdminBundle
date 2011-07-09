@@ -42,7 +42,7 @@ is how the Admin bundle can be used to solve the issue by using the ``prePersist
             'groups'
         );
 
-        public function prePersist($user)
+        public function preUpdate($user)
         {
             $this->getUserManager()->updateCanonicalFields($user);
             $this->getUserManager()->updatePassword($user);
