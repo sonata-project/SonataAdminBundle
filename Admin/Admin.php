@@ -1183,7 +1183,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     /**
      * @param string $action
      * @param \Sonata\AdminBundle\Admin\AdminInterface $childAdmin
-     * @return \Knplabs\MenuBundle\Menu
+     * @return \Knp\MenuBundle\Menu
      */
     public function getSideMenu($action, AdminInterface $childAdmin = null)
     {
@@ -1712,7 +1712,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      * Generates the breadcrumbs array
      *
      * @param string $action
-     * @param \Knplabs\MenuBundle\MenuItem|null $menu
+     * @param \Knp\MenuBundle\MenuItem|null $menu
      * @return array the breadcrumbs
      */
     public function buildBreadcrumbs($action, MenuItem $menu = null)
