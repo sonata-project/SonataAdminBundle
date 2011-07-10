@@ -104,7 +104,7 @@ You can specify which field you want displayed for each action (list, form and f
     use Sonata\AdminBundle\Datagrid\DatagridMapper;
     use Sonata\AdminBundle\Datagrid\ListMapper;
 
-    use Knplabs\Bundle\MenuBundle\MenuItem;
+    use Knp\Bundle\MenuBundle\MenuItem;
 
     use Application\Sonata\NewsBundle\Entity\Comment;
     
