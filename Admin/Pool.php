@@ -57,6 +57,10 @@ class Pool
 
                 $groups[$name][$id] = $this->container->get($id);
             }
+
+            if (empty($groups[$name])) {
+                unset($groups[$name]);
+            }
         }
 
         return $groups;
