@@ -124,6 +124,10 @@ class AddDependencyCallsPass implements CompilerPassInterface
             $definition->addMethodCall('setRouter', array(new Reference('router')));
         }
 
+        if (!$definition->hasMethodCall('setValidator')) {
+            $definition->addMethodCall('setValidator', array(new Reference('validator')));
+        }
+
         if (!$definition->hasMethodCall('setSecurityHandler')) {
             $definition->addMethodCall('setSecurityHandler', array(new Reference('sonata.admin.security.handler')));
         }

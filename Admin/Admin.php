@@ -11,7 +11,9 @@
 
 namespace Sonata\AdminBundle\Admin;
 
+use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,6 +24,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 
 use Sonata\AdminBundle\Admin\Pool;
+use Sonata\AdminBundle\Validator\ErrorElement;
 
 use Sonata\AdminBundle\Builder\FormContractorInterface;
 use Sonata\AdminBundle\Builder\ListBuilderInterface;
@@ -329,6 +332,8 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
     protected $securityHandler = null;
 
+    protected $validator = null;
+
     /**
      * The configuration pool
      *
@@ -398,6 +403,11 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     public function configureSideMenu(MenuItem $menu, $action, Admin $childAdmin = null)
+    {
+
+    }
+
+    public function validate(ErrorElement $errorElement, $object)
     {
 
     }
@@ -754,7 +764,6 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         return $this->class;
     }
 
-
     /**
      * Returns the list of batchs actions
      *
@@ -973,6 +982,13 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         if (!$object) {
             $object = $this->getNewInstance();
         }
+
+        // add the custom inline validation option
+        $metadata = $this->validator->getMetadataFactory()->getClassMetadata($this->class);
+        $metadata->addConstraint(new \Sonata\AdminBundle\Validator\Constraints\InlineConstraint(array(
+            'service' => $this,
+            'method'  => 'validate'
+        )));
 
         $formBuilder = $this->getFormContractor()->getFormBuilder(
             $this->getUniqid(),
@@ -2093,5 +2109,15 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     public function id($entity)
     {
         return $this->getNormalizedIdentifier($entity);
+    }
+
+    public function setValidator(ValidatorInterface $validator)
+    {
+      $this->validator = $validator;
+    }
+
+    public function getValidator()
+    {
+      return $this->validator;
     }
 }

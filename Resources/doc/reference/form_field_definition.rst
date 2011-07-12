@@ -9,8 +9,9 @@ Example
     <?php
     namespace Sonta\NewsBundle\Admin;
 
-    use Sonata\AdminBundle\Form\FormMapper;
     use Sonata\AdminBundle\Admin\Admin;
+    use Sonata\AdminBundle\Form\FormMapper;
+    use Sonata\AdminBundle\Validator\ErrorElement;
 
     class PostAdmin extends Admin
     {
@@ -37,6 +38,20 @@ Example
                    'title' => $this->trans('help_post_title')
                 ));
 
+        }
+
+        public function validate(ErrorElement $errorElement, $object)
+        {
+            // conditional validation, see the related section for more information
+            if ($object->getEnabled()) {
+                // abstract cannot be empty when the post is enabled
+                $errorElement
+                    ->with('abtract')
+                        ->assertNotBlank()
+                        ->assertNotNull()
+                    ->end()
+                ;
+            }
         }
     }
 

@@ -28,7 +28,11 @@ class InlineValidator extends ConstraintValidator
 
     public function isValid($value, Constraint $constraint)
     {
-        $service = $this->container->get($constraint->getService());
+        if (is_string($constraint->getService())) {
+            $service = $this->container->get($constraint->getService());
+        } else {
+            $service = $constraint->getService();
+        }
 
         $errorElement = new ErrorElement(
             $value,

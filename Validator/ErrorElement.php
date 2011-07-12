@@ -83,7 +83,7 @@ class ErrorElement
 
         $validator->isValid($value, $constraint);
 
-        $this->context->setPropertyPath($this->propertyPaths[$this->current]);
+        $this->context->setPropertyPath($this->getCurrentPropertyPath());
         $this->context->setGroup($this->group);
 
         $validator->initialize($this->context);
@@ -104,7 +104,7 @@ class ErrorElement
      */
     protected function getValue()
     {
-        return $this->propertyPaths[$this->current]->getValue($this->subject);
+        return $this->getCurrentPropertyPath()->getValue($this->subject);
     }
 
     public function getSubject()
@@ -123,9 +123,18 @@ class ErrorElement
         return new $className($options);
     }
 
+    protected function getCurrentPropertyPath()
+    {
+        if (!isset($this->propertyPaths[$this->current])) {
+            throw new \RunTimeException('You must define a property by using the `with` method');
+        }
+
+        return $this->propertyPaths[$this->current];
+    }
+
     public function addViolation($error)
     {
-        $this->context->setPropertyPath($this->propertyPaths[$this->current]);
+        $this->context->setPropertyPath($this->getCurrentPropertyPath());
         $this->context->setGroup($this->group);
 
         if (!is_array($error)) {

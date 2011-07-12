@@ -25,7 +25,7 @@ Reference Guide
    reference/routing
    reference/dashboard
    reference/security
-   reference/inline_validation
+   reference/conditional_validation
 
 
 Doctrine ORM
