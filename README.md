@@ -96,8 +96,9 @@ Please note the Github preview might break and hide some content.
 
 Usage examples
 
- - https://github.com/sonata-project/SonataMediaBundle
- - https://github.com/sonata-project/SonataNewsBundle
+ - https://github.com/sonata-project/SonataMediaBundle : a media manager bundle
+ - https://github.com/sonata-project/SonataNewsBundle : a news/blog bundle
+ - https://github.com/sonata-project/SonataPageBundle : a page (CMS like) bundle
  - https://github.com/sonata-project/SonataUserBundle (integration of FOSUserBundle and SonataAdminBundle)
 
 TODO
