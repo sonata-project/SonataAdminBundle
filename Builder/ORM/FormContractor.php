@@ -318,10 +318,6 @@ class FormContractor implements FormContractorInterface
             
             if ($fieldDescription->getType() == ClassMetadataInfo::ONE_TO_MANY) {
                 $fieldDescription->setTemplate('SonataAdminBundle:CRUD:edit_orm_one_to_many.html.twig');
-            
-                if ($fieldDescription->getOption('edit') == 'inline' && !$fieldDescription->getOption('widget_form_field')) {
-                    $fieldDescription->setOption('widget_form_field', 'Bundle\\Sonata\\AdminBundle\\Form\\EditableFieldGroup');
-                }
             }
         }
         
