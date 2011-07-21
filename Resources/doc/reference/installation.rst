@@ -4,7 +4,7 @@ Installation
 Download bundles
 ----------------
 
-To begin, add the dependent bundles to the ``src/`` directory. If you are using
+To begin, add the dependent bundles to the ``vendor/bundles`` directory. If you are using
 git, you can add them as submodules::
 
   git submodule add git://github.com/sonata-project/SonatajQueryBundle.git vendor/bundles/Sonata/jQueryBundle
