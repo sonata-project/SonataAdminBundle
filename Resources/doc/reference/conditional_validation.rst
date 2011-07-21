@@ -37,8 +37,10 @@ object. The object can be use to check assertion against a model :
                 ->end()
         }
 
-Please note, this solution rely on the validator component so validation defined through
-the validator component will be used.
+.. note::
+
+    This solution rely on the validator component so validation defined through
+    the validator component will be used.
 
 Using this validator
 --------------------

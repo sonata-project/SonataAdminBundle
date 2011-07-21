@@ -78,7 +78,7 @@ Features
     - Contextual Breadcrumb
     - persistent parameters across an Admin
     - side menu option
-    - Translated into 11 languages : DE, EN, ES, FR, IT, JA, NL, PL, PT_BR, RU and UK.
+    - Translated into 12 languages : DE, EN, ES, FR, IT, JA, NL, PL, PT_BR, PT_PT, RU and UK.
     - Built to be extended
     - Explain command line utility
 
@@ -96,8 +96,9 @@ Please note the Github preview might break and hide some content.
 
 Usage examples
 
- - https://github.com/sonata-project/SonataMediaBundle
- - https://github.com/sonata-project/SonataNewsBundle
+ - https://github.com/sonata-project/SonataMediaBundle : a media manager bundle
+ - https://github.com/sonata-project/SonataNewsBundle : a news/blog bundle
+ - https://github.com/sonata-project/SonataPageBundle : a page (CMS like) bundle
  - https://github.com/sonata-project/SonataUserBundle (integration of FOSUserBundle and SonataAdminBundle)
 
 TODO

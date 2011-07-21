@@ -23,7 +23,7 @@
         <service id="sonata.admin.security.handler.noop" class="Sonata\AdminBundle\Security\Handler\NoopSecurityHandler" />
 
         <service id="sonata.admin.security.handler.acl" class="Sonata\AdminBundle\Security\Handler\AclSecurityHandler">
-            <argument type="service" id="security.context" />
+            <argument type="service" id="security.context" on-invalid="null" />
         </service>
 
     </services>

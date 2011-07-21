@@ -9,8 +9,9 @@ Example
     <?php
     namespace Sonta\NewsBundle\Admin;
 
-    use Sonata\AdminBundle\Form\FormMapper;
     use Sonata\AdminBundle\Admin\Admin;
+    use Sonata\AdminBundle\Form\FormMapper;
+    use Sonata\AdminBundle\Validator\ErrorElement;
 
     class PostAdmin extends Admin
     {
@@ -37,6 +38,20 @@ Example
                    'title' => $this->trans('help_post_title')
                 ));
 
+        }
+
+        public function validate(ErrorElement $errorElement, $object)
+        {
+            // conditional validation, see the related section for more information
+            if ($object->getEnabled()) {
+                // abstract cannot be empty when the post is enabled
+                $errorElement
+                    ->with('abtract')
+                        ->assertNotBlank()
+                        ->assertNotNull()
+                    ->end()
+                ;
+            }
         }
     }
 
@@ -112,13 +127,11 @@ display a ``User`` field.
 
 The AdminBundle provides 3 edit options:
 
- - ``standard``: default value, the user list is set in a select widget
- - ``list``: the user list is set in a model where you can search and select a user
+ - ``standard``: default value, the ``User`` list is set in a select widget
+ - ``list``: the ``User`` list is set in a model where you can search and select a user
+ - ``inline``: embed the ``User`` form into the ``Post`` form, great for one-to-one, or if your want to allow the user to edit the ``User`` information.
 
-In both case, you can create a new ``User`` by clicking on the "+" icon.
-
-The last option, is ``inline`` this option embed the ``User`` form into the ``Post`` Form. This option is
-great for one-to-one, or if your want to allow the user to edit the ``User`` information.
+With the ``standard`` and ``list`` options, you can create a new ``User`` by clicking on the "+" icon.
 
 .. code-block:: php
 

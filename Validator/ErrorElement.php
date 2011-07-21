@@ -29,7 +29,9 @@ class ErrorElement
 
     protected $subject;
 
-    protected $current = '';
+    protected $current;
+
+    protected $basePropertyPath;
 
     public function __construct($subject, ConstraintValidatorFactory $constraintValidatorFactory, ExecutionContext $context, $group)
     {
@@ -37,6 +39,9 @@ class ErrorElement
         $this->context = $context;
         $this->group   = $group;
         $this->constraintValidatorFactory = $constraintValidatorFactory;
+
+        $this->current = '';
+        $this->basePropertyPath = $this->context->getPropertyPath();
     }
 
     public function __call($name, array $arguments = array())
@@ -76,24 +81,33 @@ class ErrorElement
         return $this;
     }
 
-    protected function validate($constraint)
+    protected function validate($constraint, $messageTemplate = null, $messageParameters = array())
     {
         $validator  = $this->constraintValidatorFactory->getInstance($constraint);
         $value      = $this->getValue();
 
         $validator->isValid($value, $constraint);
 
-        $this->context->setPropertyPath($this->propertyPaths[$this->current]);
+        $this->context->setPropertyPath($this->getFullPropertyPath());
         $this->context->setGroup($this->group);
 
         $validator->initialize($this->context);
 
         if (!$validator->isValid($value, $constraint)) {
             $this->context->addViolation(
-                $validator->getMessageTemplate(),
-                $validator->getMessageParameters(),
+                $messageTemplate ?: $validator->getMessageTemplate(),
+                array_merge($validator->getMessageParameters(), $messageParameters),
                 $value
             );
+        }
+    }
+
+    public function getFullPropertyPath()
+    {
+        if ($this->getCurrentPropertyPath()) {
+            return sprintf('%s.%s', $this->basePropertyPath, $this->getCurrentPropertyPath());
+        } else {
+            return $this->basePropertyPath;
         }
     }
 
@@ -104,7 +118,7 @@ class ErrorElement
      */
     protected function getValue()
     {
-        return $this->propertyPaths[$this->current]->getValue($this->subject);
+        return $this->getCurrentPropertyPath()->getValue($this->subject);
     }
 
     public function getSubject()
@@ -123,18 +137,27 @@ class ErrorElement
         return new $className($options);
     }
 
-    public function addViolation($error)
+    protected function getCurrentPropertyPath()
     {
-        $this->context->setPropertyPath($this->propertyPaths[$this->current]);
+        if (!isset($this->propertyPaths[$this->current])) {
+            return null; //global error
+        }
+
+        return $this->propertyPaths[$this->current];
+    }
+
+    public function addViolation($message, $parameters = array(), $value = null)
+    {
+        $this->context->setPropertyPath($this->getFullPropertyPath());
         $this->context->setGroup($this->group);
 
-        if (!is_array($error)) {
-            $this->context->addViolation($error, array(), null);
+        if (!is_array($message)) {
+            $this->context->addViolation($message, $parameters, $value);
         } else {
             $this->context->addViolation(
                 isset($error[0]) ? $error[0] : 'error',
                 isset($error[1]) ? (array)$error[1] : array(),
-                isset($error[2]) ? $error[2] : null
+                isset($error[2]) ? $error[2] : $value
             );
         }
 
