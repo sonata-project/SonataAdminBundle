@@ -29,7 +29,7 @@ Example
                 ->add('author', array(), array('edit' => 'list'))
                 ->add('enabled')
                 ->add('title')
-                ->add('abtract', array(), array('required' => false))
+                ->add('abtract', array('required' => false))
                 ->add('content')
 
                 // you can define help messages like this
