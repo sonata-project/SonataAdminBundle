@@ -4,8 +4,34 @@ Installation
 Download bundles
 ----------------
 
-To begin, add the dependent bundles to the ``vendor/bundles`` directory. If you are using
-git, you can add them as submodules::
+To begin, add the dependent bundles to the ``vendor/bundles`` directory. Add
+the following lines to the file ``deps``::
+
+  [SonatajQueryBundle]
+      git=http://github.com/sonata-project/SonatajQueryBundle.git
+      target=/bundles/Sonata/jQueryBundle
+  
+  [SonataBluePrintBundle]
+      git=http://github.com/sonata-project/SonataBluePrintBundle.git
+      target=/bundles/Sonata/BluePrintBundle
+  
+  [SonataUserBundle]
+      git=http://github.com/sonata-project/SonataUserBundle.git
+      target=/bundles/Sonata/UserBundle
+      
+  [SonataAdminBundle]
+      git=http://github.com/sonata-project/SonataAdminBundle.git
+      target=/bundles/Sonata/AdminBundle
+  
+  [MenuBundle]
+      git=http://github.com/knplabs/KnpMenuBundle.git
+      target=/bundles/Knp/Bundle/MenuBundle
+
+and run::
+  
+  bin/vendors install
+
+If you are using git, you can add them as submodules::
 
   git submodule add git://github.com/sonata-project/SonatajQueryBundle.git vendor/bundles/Sonata/jQueryBundle
   git submodule add git://github.com/sonata-project/SonataBluePrintBundle.git vendor/bundles/Sonata/BluePrintBundle
