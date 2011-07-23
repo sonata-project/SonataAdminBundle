@@ -303,30 +303,25 @@ class FormContractor implements FormContractorInterface
         // fix template value for doctrine association fields
         if (!$fieldDescription->getTemplate()) {
              $fieldDescription->setTemplate(sprintf('SonataAdminBundle:CRUD:edit_%s.html.twig', $fieldDescription->getType()));
-        }
 
-        if ($fieldDescription->getType() == ClassMetadataInfo::ONE_TO_ONE) {
-            $fieldDescription->setTemplate('SonataAdminBundle:CRUD:edit_orm_one_to_one.html.twig');
-            $admin->attachAdminClass($fieldDescription);
-        }
-
-        if ($fieldDescription->getType() == ClassMetadataInfo::MANY_TO_ONE) {
-            $fieldDescription->setTemplate('SonataAdminBundle:CRUD:edit_orm_many_to_one.html.twig');
-            $admin->attachAdminClass($fieldDescription);
-        }
-
-        if ($fieldDescription->getType() == ClassMetadataInfo::MANY_TO_MANY) {
-            $fieldDescription->setTemplate('SonataAdminBundle:CRUD:edit_orm_many_to_many.html.twig');
-            $admin->attachAdminClass($fieldDescription);
-        }
-
-        if ($fieldDescription->getType() == ClassMetadataInfo::ONE_TO_MANY) {
-            $fieldDescription->setTemplate('SonataAdminBundle:CRUD:edit_orm_one_to_many.html.twig');
-
-            if ($fieldDescription->getOption('edit') == 'inline' && !$fieldDescription->getOption('widget_form_field')) {
-                $fieldDescription->setOption('widget_form_field', 'Bundle\\Sonata\\AdminBundle\\Form\\EditableFieldGroup');
+            if ($fieldDescription->getType() == ClassMetadataInfo::ONE_TO_ONE) {
+                $fieldDescription->setTemplate('SonataAdminBundle:CRUD:edit_orm_one_to_one.html.twig');
             }
-
+            
+            if ($fieldDescription->getType() == ClassMetadataInfo::MANY_TO_ONE) {
+                $fieldDescription->setTemplate('SonataAdminBundle:CRUD:edit_orm_many_to_one.html.twig');
+            }
+            
+            if ($fieldDescription->getType() == ClassMetadataInfo::MANY_TO_MANY) {
+                $fieldDescription->setTemplate('SonataAdminBundle:CRUD:edit_orm_many_to_many.html.twig');
+            }
+            
+            if ($fieldDescription->getType() == ClassMetadataInfo::ONE_TO_MANY) {
+                $fieldDescription->setTemplate('SonataAdminBundle:CRUD:edit_orm_one_to_many.html.twig');
+            }
+        }
+        
+        if (in_array($fieldDescription->getType(), array(ClassMetadataInfo::ONE_TO_MANY, ClassMetadataInfo::MANY_TO_MANY, ClassMetadataInfo::MANY_TO_ONE, ClassMetadataInfo::ONE_TO_ONE ))) {
             $admin->attachAdminClass($fieldDescription);
         }
 
