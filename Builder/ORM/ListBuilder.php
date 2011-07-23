@@ -41,11 +41,12 @@ class ListBuilder implements ListBuilderInterface
      */
     public function fixFieldDescription(AdminInterface $admin, FieldDescriptionInterface $fieldDescription, array $options = array())
     {
+        $fieldDescription->mergeOptions($options);
+
         if ($fieldDescription->getName() == '_action') {
-          $this->buildActionFieldDescription($fieldDescription);
+            $this->buildActionFieldDescription($fieldDescription);
         }
 
-        $fieldDescription->mergeOptions($options);
         $fieldDescription->setAdmin($admin);
 
         if ($admin->getModelManager()->hasMetadata($admin->getClass())) {
