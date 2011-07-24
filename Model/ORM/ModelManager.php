@@ -267,15 +267,15 @@ class ModelManager implements ModelManagerInterface
     {
         $values = $datagrid->getValues();
 
-        if ($fieldDescription->getOption('sortable') == $values['_sort_by']) {
+        if ($fieldDescription->getFieldName() == $values['_sort_by']) {
             if ($values['_sort_order'] == 'ASC') {
                 $values['_sort_order'] = 'DESC';
             } else {
                 $values['_sort_order'] = 'ASC';
             }
         } else {
-            $values['_sort_order']  = 'ASC';
-            $values['_sort_by']     = $fieldDescription->getOption('sortable');
+            $values['_sort_order']  = $fieldDescription->getOption('_sort_order');
+            $values['_sort_by']     = $fieldDescription->getFieldName();
         }
 
         return $values;
