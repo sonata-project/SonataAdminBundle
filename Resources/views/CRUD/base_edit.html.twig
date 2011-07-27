@@ -61,7 +61,10 @@ file that was distributed with this source code.
 
             {% for field_name in form_group.fields %}
                 {% if admin.formfielddescriptions[field_name] is defined %}
-                    {{ admin.formfielddescriptions[field_name]|render_form_element(form, object) }}
+                    {#{{ admin.formfielddescriptions[field_name]|render_form_element(form, object) }}#}
+
+                    {{ form_row(form[field_name])}}
+
                 {% endif %}
             {% endfor %}
 

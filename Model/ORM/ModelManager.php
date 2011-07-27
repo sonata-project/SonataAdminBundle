@@ -64,6 +64,10 @@ class ModelManager implements ModelManagerInterface
      */
     public function getNewFieldDescriptionInstance($class, $name, array $options = array())
     {
+        if (!is_string($name)) {
+            throw new \RunTimeException('The name argument must be a string');
+        }
+
         $metadata = $this->getMetadata($class);
 
         $fieldDescription = new FieldDescription;
@@ -298,7 +302,7 @@ class ModelManager implements ModelManagerInterface
      * @param object $instance
      * @return void
      */
-    function modelTransform($class, $instance)
+    public function modelTransform($class, $instance)
     {
         return $instance;
     }
@@ -308,7 +312,7 @@ class ModelManager implements ModelManagerInterface
      * @param array $array
      * @return object
      */
-    function modelReverseTransform($class, array $array = array())
+    public function modelReverseTransform($class, array $array = array())
     {
         $instance = $this->getModelInstance($class);
         $metadata = $this->getMetadata($class);
@@ -374,22 +378,22 @@ class ModelManager implements ModelManagerInterface
         return new \Doctrine\Common\Collections\ArrayCollection();
     }
 
-    function collectionClear(&$collection)
+    public function collectionClear(&$collection)
     {
         return $collection->clear();
     }
 
-    function collectionHasElement(&$collection, &$element)
+    public function collectionHasElement(&$collection, &$element)
     {
         return $collection->contains($element);
     }
 
-    function collectionAddElement(&$collection, &$element)
+    public function collectionAddElement(&$collection, &$element)
     {
         return $collection->add($element);
     }
 
-    function collectionRemoveElement(&$collection, &$element)
+    public function collectionRemoveElement(&$collection, &$element)
     {
         return $collection->removeElement($element);
     }

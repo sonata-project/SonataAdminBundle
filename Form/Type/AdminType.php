@@ -43,7 +43,6 @@ class AdminType extends AbstractType
     public function getDefaultOptions(array $options)
     {
         return array(
-            'field_description' => null,
             'delete'            => true,
         );
     }
@@ -54,11 +53,11 @@ class AdminType extends AbstractType
      */
     public function getFieldDescription(array $options)
     {
-        if (!$options['field_description']) {
-            throw new \RuntimeException('Please provide a valid `field_description` option');
+        if (!isset($options['sonata_field_description'])) {
+            throw new \RuntimeException('Please provide a valid `sonata_field_description` option');
         }
 
-        return $options['field_description'];
+        return $options['sonata_field_description'];
     }
 
     /**
@@ -72,6 +71,6 @@ class AdminType extends AbstractType
 
     public function getName()
     {
-        return 'sonata_model_admin';
+        return 'sonata_type_admin';
     }
 }

@@ -15,6 +15,8 @@ namespace Sonata\AdminBundle\Form\Type;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 
 use Sonata\AdminBundle\Form\EventListener\MergeCollectionListener;
 use Sonata\AdminBundle\Form\ChoiceList\ModelChoiceList;
@@ -48,7 +50,6 @@ class ModelType extends AbstractType
             'choices'           => null,
             'parent'            => 'choice',
             'preferred_choices' => array(),
-            'field_description' => false,
         );
 
         $options = array_replace($defaultOptions, $options);
@@ -73,6 +74,6 @@ class ModelType extends AbstractType
 
     public function getName()
     {
-        return 'sonata_model';
+        return 'sonata_type_model';
     }
 }

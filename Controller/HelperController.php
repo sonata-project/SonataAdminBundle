@@ -68,10 +68,15 @@ class HelperController extends Controller
         $admin      = $helper->getAdmin($code);
         $uniqid     = $this->get('request')->query->get('uniqid');
 
-        $subject = $admin->getModelManager()->findOne($admin->getClass(), $objectId);
-        if (!$subject) {
-            throw new NotFoundHttpException(sprintf('Unable to find the object id: %s, class: %s', $objectId, $admin->getClass()));
+        if ($objectId) {
+            $subject = $admin->getModelManager()->findOne($admin->getClass(), $objectId);
+            if (!$subject) {
+                throw new NotFoundHttpException(sprintf('Unable to find the object id: %s, class: %s', $objectId, $admin->getClass()));
+            }
+        } else {
+            $subject = $admin->getNewInstance();
         }
+
         if ($uniqid) {
             $admin->setUniqid($uniqid);
         }
@@ -81,7 +86,7 @@ class HelperController extends Controller
         $form = $formBuilder->getForm();
         $form->bindRequest($this->get('request'));
 
-        $childFormBuilder = $helper->getChildFormBuilder($formBuilder, $elementId);
+        $view = $helper->getChildFormView($form->createView(), $elementId);
 
         // render the widget
         // todo : fix this, the twig environment variable is not set inside the extension ...
@@ -89,7 +94,7 @@ class HelperController extends Controller
         $extension = $twig->getExtension('form');
         $extension->initRuntime($this->get('twig'));
 
-        return new Response($extension->renderWidget($childFormBuilder->getForm()->createView()));
+        return new Response($extension->renderWidget($view));
     }
 
     public function getShortObjectDescriptionAction()

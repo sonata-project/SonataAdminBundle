@@ -46,18 +46,18 @@ class ResizeFormListener implements EventSubscriberInterface
 
     public function __construct(FormFactoryInterface $factory, $type, array $typeOptions = array(), $resizeOnBind = false)
     {
-        $this->factory = $factory;
-        $this->type = $type;
+        $this->factory      = $factory;
+        $this->type         = $type;
         $this->resizeOnBind = $resizeOnBind;
-        $this->typeOptions = $typeOptions;
+        $this->typeOptions  = $typeOptions;
     }
 
     public static function getSubscribedEvents()
     {
         return array(
-            FormEvents::PRE_SET_DATA => 'preSetData',
-            FormEvents::PRE_BIND => 'preBind',
-            FormEvents::BIND_NORM_DATA => 'onBindNormData',
+            FormEvents::PRE_SET_DATA    => 'preSetData',
+            FormEvents::PRE_BIND        => 'preBind',
+            FormEvents::BIND_NORM_DATA  => 'onBindNormData',
         );
     }
 
@@ -84,7 +84,8 @@ class ResizeFormListener implements EventSubscriberInterface
             $options = array_merge($this->typeOptions, array(
                 'property_path' => '['.$name.']',
             ));
-            $form->add($this->factory->createNamed($this->type, $name, null, $options));
+
+            $form->add($this->factory->createNamed($this->type, $name, $value, $options));
         }
     }
 

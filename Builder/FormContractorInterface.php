@@ -29,14 +29,6 @@ interface FormContractorInterface
 
     /**
      * @abstract
-     * @param \Symfony\Component\Form\FormBuilder $formBuilder
-     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
-     * @return void
-     */
-    function addField(FormBuilder $formBuilder, FieldDescriptionInterface $fieldDescription);
-
-    /**
-     * @abstract
      * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
      * @param array $options

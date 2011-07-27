@@ -983,6 +983,8 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
             $object = $this->getNewInstance();
         }
 
+        $this->setSubject($object);
+
         // add the custom inline validation option
         $metadata = $this->validator->getMetadataFactory()->getClassMetadata($this->class);
         $metadata->addConstraint(new \Sonata\AdminBundle\Validator\Constraints\InlineConstraint(array(
@@ -990,12 +992,13 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
             'method'  => 'validate'
         )));
 
+        $options['data']       = $object;
+        $options['data_class'] = $this->getClass();
+
         $formBuilder = $this->getFormContractor()->getFormBuilder(
             $this->getUniqid(),
             array_merge($this->formOptions, $options)
         );
-
-        $formBuilder->setData($object);
 
         $this->defineFormBuilder($formBuilder);
 
@@ -1013,15 +1016,6 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         $this->buildFormFieldDescriptions();
 
         $this->configureFormFields($mapper);
-
-        foreach ($this->getFormFieldDescriptions() as $fieldDescription) {
-           // do not add field already set in the configureFormField method
-           if ($mapper->has($fieldDescription->getFieldName())) {
-               continue;
-           }
-
-           $mapper->add($fieldDescription);
-        }
     }
 
     /**

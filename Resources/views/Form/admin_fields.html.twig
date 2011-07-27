@@ -1,0 +1,97 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{% extends 'form_div_layout.html.twig' %}
+
+{# Rows #}
+
+{% block field_row %}
+    {% if not sonata_admin.field_description %}
+        {{ parent() }}
+    {% else %}
+        <div id="sonata-ba-field-container-{{ form.vars.id }}" style="border: 1px solid red">
+            {% block label %}
+                {% if sonata_admin.field_description.options.name is defined %}
+                    {{ form_label(form, sonata_admin.field_description.options.name) }}
+                {% else %}
+                    {{ form_label(form) }}
+                {% endif %}
+                <br />
+            {% endblock %}
+
+            <div class="sonata-ba-field sonata-ba-field-{{ sonata_admin.edit }}-{{ sonata_admin.inline }} {% if form.vars.errors|length > 0 %}sonata-ba-field-error{% endif %}">
+
+                {{ form_widget(form) }}
+
+                {% if sonata_admin.field_description.help %}
+                    <em class="sonata-ba-field-help">{{ sonata_admin.field_description.help }}</em>
+                {% endif %}
+
+                {% if form.vars.errors|length > 0 %}
+                    <div class="sonata-ba-field-error-messages">
+                        {{ form_errors(form) }}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    {% endif %}
+{% endblock field_row %}
+
+{# Custom Sonata Admin Extension #}
+{% block sonata_admin_orm_one_to_one_widget %}
+    {% include 'SonataAdminBundle:CRUD:edit_orm_one_to_one.html.twig' %}
+{% endblock %}
+
+{% block sonata_admin_orm_many_to_many_widget %}
+    {% include 'SonataAdminBundle:CRUD:edit_orm_many_to_many.html.twig' %}
+{% endblock %}
+
+{% block sonata_admin_orm_many_to_one_widget %}
+    {% include 'SonataAdminBundle:CRUD:edit_orm_many_to_one.html.twig' %}
+{% endblock %}
+
+{% block sonata_admin_orm_one_to_many_widget %}
+    {% include 'SonataAdminBundle:CRUD:edit_orm_one_to_many.html.twig' %}
+{% endblock %}
+
+{% block sonata_type_model_widget %}
+    {#
+        This is not the best way to do if
+        TODO : improve this part
+    #}
+    {% if sonata_admin.field_description.mappingtype == 2 %}
+        {{ block('sonata_admin_orm_one_to_one_widget') }}
+    {% elseif sonata_admin.field_description.mappingtype == 8 %}
+        {{ block('sonata_admin_orm_many_to_many_widget') }}
+    {% elseif sonata_admin.field_description.mappingtype == 4 %}
+        {{ block('sonata_admin_orm_one_to_many_widget') }}
+    {% endif %}
+
+{% endblock %}
+
+{% block sonata_type_admin_widget %}
+    {% if sonata_admin.field_description.mappingtype == 2 %}
+        {{ block('sonata_admin_orm_one_to_one_widget') }}
+    {% elseif sonata_admin.field_description.mappingtype == 8 %}
+        {{ block('sonata_admin_orm_many_to_many_widget') }}
+    {% elseif sonata_admin.field_description.mappingtype == 4 %}
+        sonata_type_admin_widget
+
+        {{ block('sonata_admin_orm_one_to_many_widget') }}
+    {% endif %}
+{% endblock %}
+
+{% block sonata_type_admin_collection_widget %}
+    sonata_type_admin_collection_widget
+   {% if sonata_admin.field_description.mappingtype == 4 %}
+        {{ block('sonata_admin_orm_one_to_many_widget') }}
+   {% endif %}
+{% endblock %}

@@ -23,7 +23,7 @@ This code manage the one-to-many association field popup
     <!-- edit one association -->
 
     // handle the add link
-    var field_add_{{ field_element.vars.id }} = function(event) {
+    var field_add_{{ form.vars.id }} = function(event) {
 
         event.preventDefault();
         event.stopPropagation();
@@ -33,15 +33,15 @@ This code manage the one-to-many association field popup
         // the ajax post
         jQuery(form).ajaxSubmit({
             url: '{{ url('sonata_admin_append_form_element', {
-                'code': admin.root.code,
-                'elementId': field_element.vars.id,
-                'objectId': admin.root.subject.id,
-                'uniqid': admin.root.uniqid
+                'code':      sonata_admin.admin.root.code,
+                'elementId': form.vars.id,
+                'objectId':  sonata_admin.admin.root.subject.id,
+                'uniqid':    sonata_admin.admin.root.uniqid
             }) }}',
             type: "POST",
             data: { _xml_http_request: true },
             success: function(html) {
-                jQuery('#sonata-ba-field-container-{{ field_element.vars.id }}')
+                jQuery('#sonata-ba-field-container-{{ form.vars.id }}')
                     .replaceWith(html) // replace the html
                     .trigger('sonata.add_element');
             }
@@ -50,11 +50,11 @@ This code manage the one-to-many association field popup
         return false;
     };
 
-    var field_widget_{{ field_element.vars.id }} = false;
+    var field_widget_{{ form.vars.id }} = false;
 
     // this function initialize the popup
     // this can be only done this way has popup can be cascaded
-    function start_field_retrieve_{{ field_element.vars.id }}(event) {
+    function start_field_retrieve_{{ form.vars.id }}(event) {
         event.preventDefault();
 
         // remove the html event a
@@ -62,10 +62,10 @@ This code manage the one-to-many association field popup
         a.attr('onclick', '');
 
         // initialize component
-        field_widget_{{ field_element.vars.id }} = jQuery("#field_widget_{{ field_element.vars.id }}");
+        field_widget_{{ form.vars.id }} = jQuery("#field_widget_{{ form.vars.id }}");
 
         // add the jQuery event to the a element
-        a.click(field_add_{{ field_element.vars.id }});
+        a.click(field_add_{{ form.vars.id }});
 
         // trigger the event
         a.trigger('click');
@@ -76,6 +76,5 @@ This code manage the one-to-many association field popup
     <!-- edit one association -->
 
 </script>
-
 
 {% endautoescape %}

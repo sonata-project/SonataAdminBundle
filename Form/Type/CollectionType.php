@@ -42,6 +42,6 @@ class CollectionType extends AbstractType
 
     public function getName()
     {
-        return 'sonata_admin_collection';
+        return 'sonata_type_collection';
     }
 }

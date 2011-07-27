@@ -30,31 +30,6 @@ class FormContractor implements FormContractorInterface
 {
     protected $fieldFactory;
 
-    protected $validator;
-
-    /**
-     * built-in definition
-     *
-     * @var array
-     */
-    protected $formTypes = array(
-        'string'     =>  array('text', array()),
-        'text'       =>  array('textarea', array()),
-        'boolean'    =>  array('checkbox', array()),
-        'checkbox'   =>  array('checkbox', array()),
-        'integer'    =>  array('integer', array()),
-        'tinyint'    =>  array('integer', array()),
-        'smallint'   =>  array('integer', array()),
-        'mediumint'  =>  array('integer', array()),
-        'bigint'     =>  array('integer', array()),
-        'decimal'    =>  array('number', array()),
-        'datetime'   =>  array('datetime', array()),
-        'date'       =>  array('date', array()),
-        'choice'     =>  array('choice', array()),
-        'array'      =>  array('collection', array()),
-        'country'    =>  array('country', array()),
-    );
-
     public function __construct(FormFactoryInterface $formFactory)
     {
         $this->formFactory = $formFactory;
@@ -72,73 +47,44 @@ class FormContractor implements FormContractorInterface
      */
     protected function defineChildFormBuilder(FormBuilder $formBuilder, FieldDescriptionInterface $fieldDescription, $fieldName = null)
     {
-        $fieldName = $fieldName ?: $fieldDescription->getFieldName();
-
-        $associatedAdmin = $fieldDescription->getAssociationAdmin();
-
-        if (!$associatedAdmin) {
-            throw new \RuntimeException(sprintf('inline mode for field `%s` required an Admin definition', $fieldName));
-        }
-
-        // retrieve the related object
-        $childBuilder = $formBuilder->create($fieldName, 'sonata_type_admin', array(
-            'field_description' => $fieldDescription
-        ));
-
-        $formBuilder->add($childBuilder);
-
-        $associatedAdmin->defineFormBuilder($childBuilder);
-    }
-
-
-    /**
-     * Returns the class associated to a FieldDescriptionInterface if any defined
-     *
-     * @throws RuntimeException
-     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
-     * @return bool|string
-     */
-    public function getFormTypeName(FieldDescriptionInterface $fieldDescription)
-    {
-        $typeName = false;
-
-        // the user redefined the mapping type, use the default built in definition
-        if (!$fieldDescription->getFieldMapping() || $fieldDescription->getType() != $fieldDescription->getMappingType()) {
-            $typeName = array_key_exists($fieldDescription->getType(), $this->formTypes) ? $this->formTypes[$fieldDescription->getType()] : false;
-        } else if ($fieldDescription->getOption('form_field_type', false)) {
-            $typeName = $fieldDescription->getOption('form_field_type', false);
-        } else if (array_key_exists($fieldDescription->getType(), $this->formTypes)) {
-            $typeName = $this->formTypes[$fieldDescription->getType()];
-        }
-
-        if (!$typeName) {
-            throw new \RuntimeException(sprintf('No known form type for field `%s` (`%s`) is implemented.', $fieldDescription->getFieldName(), $fieldDescription->getType()));
-        }
-
-        return $typeName;
+//        $fieldName = $fieldName ?: $fieldDescription->getFieldName();
+//
+//        $associatedAdmin = $fieldDescription->getAssociationAdmin();
+//
+//        if (!$associatedAdmin) {
+//            throw new \RuntimeException(sprintf('inline mode for field `%s` required an Admin definition', $fieldName));
+//        }
+//
+//        // retrieve the related object
+//        $childBuilder = $formBuilder->create($fieldName, 'sonata_type_admin', array(
+//            'field_description' => $fieldDescription
+//        ));
+//
+//        $formBuilder->add($childBuilder);
+//
+//        $associatedAdmin->defineFormBuilder($childBuilder);
     }
 
     /**
      * Returns an OneToOne associated field
      *
-     * @param \Symfony\Component\Form\FormBuilder $formBuilder
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
-     * @return \Symfony\Component\Form\Type\FormTypeInterface
+     * @param string
+     * @return array();
      */
-    protected function defineOneToOneField(FormBuilder $formBuilder, FieldDescriptionInterface $fieldDescription)
+    protected function getOneToOneFieldOptions($type, FieldDescriptionInterface $fieldDescription)
     {
+        $options = array();
+
         if (!$fieldDescription->hasAssociationAdmin()) {
-            return;
+            return $options;
         }
 
         // tweak the widget depend on the edit mode
         if ($fieldDescription->getOption('edit') == 'inline') {
-            return $this->defineChildFormBuilder($formBuilder, $fieldDescription);
+            return $options;
         }
 
-        $type = 'sonata_type_model';
-
-        $options = $fieldDescription->getOption('form_field_options', array());
         $options['class']         = $fieldDescription->getTargetEntity();
         $options['model_manager'] = $fieldDescription->getAdmin()->getModelManager();
 
@@ -146,7 +92,7 @@ class FormContractor implements FormContractorInterface
             $options['parent'] = 'text';
         }
 
-        $formBuilder->add($fieldDescription->getFieldName(), $type, $options);
+        return $options;
     }
 
     /**
@@ -154,101 +100,53 @@ class FormContractor implements FormContractorInterface
      *
      * @param \Symfony\Component\Form\FormBuilder $formBuilder
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
-     * @return \Symfony\Component\Form\Type\FormTypeInterface
+     * @return array
      */
-    protected function getOneToManyField(FormBuilder $formBuilder, FieldDescriptionInterface $fieldDescription)
+    protected function getOneToManyFieldOptions($type, FieldDescriptionInterface $fieldDescription)
     {
+        $options = array();
+
         if (!$fieldDescription->hasAssociationAdmin()) {
-            return;
+            return $options;
         }
 
         if ($fieldDescription->getOption('edit') == 'inline') {
 
             // create a collection type with the generated prototype
-            $options = $fieldDescription->getOption('form_field_options', array());
-            $options['type'] = 'sonata_type_admin';
-            $options['modifiable'] = true;
+            $options['type']         = 'sonata_type_admin';
+            $options['modifiable']   = true;
             $options['type_options'] = array(
-                'field_description' => $fieldDescription,
+                'sonata_field_description' => $fieldDescription,
+                'data_class'               => $fieldDescription->getAssociationAdmin()->getClass()
             );
 
-            $formBuilder->add($fieldDescription->getFieldName(), 'sonata_type_collection', $options);
-
-            return;
-//            $value = $fieldDescription->getValue($formBuilder->getData());
-//
-//            // add new instances if the min number is not matched
-//            if ($fieldDescription->getOption('min', 0) > count($value)) {
-//
-//                $diff = $fieldDescription->getOption('min', 0) - count($value);
-//                foreach (range(1, $diff) as $i) {
-//                    $this->addNewInstance($formBuilder->getData(), $fieldDescription);
-//                }
-//            }
-
-            // use custom one to expose the newfield method
-//            return new \Sonata\AdminBundle\Form\EditableCollectionField($prototype);
+            return $options;
         }
 
-        return $this->defineManyToManyField($formBuilder, $fieldDescription);
+        return $this->getManyToManyFieldOptions($type, $fieldDescription);
     }
 
     /**
      * @param \Symfony\Component\Form\FormBuilder $formBuilder
-     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
-     * @return \Symfony\Component\Form\Type\FormTypeInterface
+     * @param string
+     * @return array
      */
-    protected function defineManyToManyField(FormBuilder $formBuilder, FieldDescriptionInterface $fieldDescription)
+    protected function getManyToManyFieldOptions($type, FieldDescriptionInterface $fieldDescription)
     {
-        if (!$fieldDescription->hasAssociationAdmin()) {
-            return;
-        }
+        $options = array();
 
-        $type     = $fieldDescription->getOption('form_field_type', 'sonata_type_model');
-        $options  = $fieldDescription->getOption('form_field_options', array());
+        if (!$fieldDescription->hasAssociationAdmin()) {
+            return array();
+        }
 
         if ($type == 'sonata_type_model') {
             $options['class']               = $fieldDescription->getTargetEntity();
             $options['multiple']            = true;
-            $options['field_description']   = $fieldDescription;
             $options['parent']              = 'choice';
             $options['model_manager']       = $fieldDescription->getAdmin()->getModelManager();
         }
 
-        $formBuilder->add($fieldDescription->getName(), $type, $options);
-    }
-
-    /**
-     * Add a new field type into the provided FormBuilder
-     *
-     * @param \Symfony\Component\Form\FormBuilder $formBuilder
-     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
-     * @return void
-     */
-    public function addField(FormBuilder $formBuilder, FieldDescriptionInterface $fieldDescription)
-    {
-        switch ($fieldDescription->getType()) {
-            case ClassMetadataInfo::ONE_TO_MANY:
-                $this->getOneToManyField($formBuilder, $fieldDescription);
-                break;
-
-            case ClassMetadataInfo::MANY_TO_MANY:
-                $this->defineManyToManyField($formBuilder, $fieldDescription);
-                break;
-
-            case ClassMetadataInfo::MANY_TO_ONE:
-            case ClassMetadataInfo::ONE_TO_ONE:
-                $this->defineOneToOneField($formBuilder, $fieldDescription);
-                break;
-
-            default:
-                list($type, $default_options) = $this->getFormTypeName($fieldDescription);
-                $formBuilder->add(
-                    $fieldDescription->getFieldName(),
-                    $type,
-                    array_merge($default_options, $fieldDescription->getOption('form_field_options', array()))
-                );
-        }
+        return $options;
     }
 
     /**
@@ -284,38 +182,8 @@ class FormContractor implements FormContractorInterface
         $fieldDescription->setAdmin($admin);
         $fieldDescription->setOption('edit', $fieldDescription->getOption('edit', 'standard'));
 
-        // fix template value for doctrine association fields
-        if (!$fieldDescription->getTemplate()) {
-             $fieldDescription->setTemplate(sprintf('SonataAdminBundle:CRUD:edit_%s.html.twig', $fieldDescription->getType()));
-
-            if ($fieldDescription->getType() == ClassMetadataInfo::ONE_TO_ONE) {
-                $fieldDescription->setTemplate('SonataAdminBundle:CRUD:edit_orm_one_to_one.html.twig');
-            }
-            
-            if ($fieldDescription->getType() == ClassMetadataInfo::MANY_TO_ONE) {
-                $fieldDescription->setTemplate('SonataAdminBundle:CRUD:edit_orm_many_to_one.html.twig');
-            }
-            
-            if ($fieldDescription->getType() == ClassMetadataInfo::MANY_TO_MANY) {
-                $fieldDescription->setTemplate('SonataAdminBundle:CRUD:edit_orm_many_to_many.html.twig');
-            }
-            
-            if ($fieldDescription->getType() == ClassMetadataInfo::ONE_TO_MANY) {
-                $fieldDescription->setTemplate('SonataAdminBundle:CRUD:edit_orm_one_to_many.html.twig');
-            }
-        }
-        
-        if (in_array($fieldDescription->getType(), array(ClassMetadataInfo::ONE_TO_MANY, ClassMetadataInfo::MANY_TO_MANY, ClassMetadataInfo::MANY_TO_ONE, ClassMetadataInfo::ONE_TO_ONE ))) {
+        if (in_array($fieldDescription->getMappingType(), array(ClassMetadataInfo::ONE_TO_MANY, ClassMetadataInfo::MANY_TO_MANY, ClassMetadataInfo::MANY_TO_ONE, ClassMetadataInfo::ONE_TO_ONE ))) {
             $admin->attachAdminClass($fieldDescription);
-        }
-
-        // set correct default value
-        if ($fieldDescription->getType() == 'datetime') {
-            $options = $fieldDescription->getOption('form_field_options', array());
-            if (!isset($options['years'])) {
-                $options['years'] = range(1900, 2100);
-            }
-            $fieldDescription->setOption('form_field', $options);
         }
     }
 
@@ -331,6 +199,42 @@ class FormContractor implements FormContractorInterface
      */
     public function getFormBuilder($name, array $options = array())
     {
-        return $this->getFormFactory()->createNamedBuilder('form', $name, $options);
+        return $this->getFormFactory()->createNamedBuilder('form', $name, null, $options);
+    }
+
+    public function getDefaultOptions($type, FieldDescriptionInterface $fieldDescription, array $options = array())
+    {
+        $options['sonata_field_description'] = $fieldDescription;
+
+        if (!is_string($type)) {
+            return $options;
+        }
+
+        // only add default options to Admin Bundle widget ...
+        $types = array('sonata_type_model', 'sonata_type_admin', 'sonata_type_collection');
+
+        if (!in_array($type, $types)) {
+            return $options;
+        }
+
+        $fieldOptions = array();
+
+        switch ($fieldDescription->getMappingType()) {
+            case ClassMetadataInfo::ONE_TO_MANY:
+
+                $fieldOptions = $this->getOneToManyFieldOptions($type, $fieldDescription);
+                break;
+
+            case ClassMetadataInfo::MANY_TO_MANY:
+                $fieldOptions = $this->getManyToManyFieldOptions($type, $fieldDescription);
+                break;
+
+            case ClassMetadataInfo::MANY_TO_ONE:
+            case ClassMetadataInfo::ONE_TO_ONE:
+                $fieldOptions = $this->getOneToOneFieldOptions($type, $fieldDescription);
+                break;
+        }
+
+        return array_merge($fieldOptions, $options);
     }
 }

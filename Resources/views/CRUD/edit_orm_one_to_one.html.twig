@@ -9,70 +9,65 @@ file that was distributed with this source code.
 
 #}
 
-{% extends base_template %}
-
-{% block field %}
-    {% if not field_description.hasassociationadmin%}
-        {{ value|render_relation_element(field_description) }}
-    {% elseif field_description.options.edit == 'inline' %}
-        {% for nested_field_description in field_description.associationadmin.formfielddescriptions %}
-            {{ nested_field_description|render_form_element(field_element, value) }}
-        {% endfor %}
-    {% else %}
-        <div id="field_container_{{ field_element.vars.id }}">
-
-            {% if field_description.options.edit == 'list' %}
-                <span id="field_widget_{{ field_element.vars.id }}" >
-                    {% if admin.id(value) %}
-                        {% render 'SonataAdminBundle:Helper:getShortObjectDescription' with {}, {
-                            'query': {
-                                'code':     field_description.associationadmin.code,
-                                'objectId': admin.id(value),
-                                'uniqid':   field_description.associationadmin.uniqid
-                            }
-                        }%}
-                    {% endif %}
-                </span>
-                <span style="display: none" >
-                    {{ form_widget(field_element) }}
-                </span>
-            {% else %}
-                <span id="field_widget_{{ field_element.vars.id }}" >
-                    {{ form_widget(field_element) }}
-                </span>
-            {% endif %}
-            <span id="field_actions_{{ field_element.vars.id }}" >
-
-                {% if field_description.options.edit == 'list' %}
-                    <a  href="{{ field_description.associationadmin.generateUrl('list') }}"
-                        onclick="start_field_dialog_form_list_{{ field_element.vars.id }}(event)"
-                        class="sonata-ba-action"
-                        style="{% if not field_description.associationadmin.isGranted('LIST')%}display:none{% endif %}"
-                        >
-                            <img
-                                src="{{ asset('bundles/sonataadmin/famfamfam/application_view_list.png') }}"
-                                alt="{% trans from 'SonataAdminBundle' %}btn_add{% endtrans %}"
-                            />
-                          </a>
+{% if not sonata_admin.field_description.hasassociationadmin%}
+    {{ value|render_relation_element(sonata_admin.field_description) }}
+{% elseif sonata_admin.field_description.options.edit == 'inline' %}
+    {% for field_description in sonata_admin.field_description.associationadmin.formfielddescriptions %}
+        {{ form_row(form.getChild(field_description.name)) }}
+    {% endfor %}
+{% else %}
+    <div id="field_container_{{ form.vars.id }}">
+        {% if sonata_admin.field_description.options.edit == 'list' %}
+            <span id="field_widget_{{ form.vars.id }}" >
+                {% if sonata_admin.field_description.associationadmin.id(sonata_admin.value) %}
+                    {% render 'SonataAdminBundle:Helper:getShortObjectDescription' with {}, {
+                        'query': {
+                            'code':     sonata_admin.field_description.associationadmin.code,
+                            'objectId': sonata_admin.admin.id(sonata_admin.value),
+                            'uniqid':   sonata_admin.field_description.associationadmin.uniqid
+                        }
+                    }%}
                 {% endif %}
+            </span>
+            <span style="display: none" >
+                {{ form_widget(form) }}
+            </span>
+        {% else %}
+            <span id="field_widget_{{ form.vars.id }}" >
+                {{ form_widget(form) }}
+            </span>
+        {% endif %}
+        <span id="field_actions_{{ form.vars.id }}" >
 
-                <a  href="{{ field_description.associationadmin.generateUrl('create') }}"
-                    onclick="start_field_dialog_form_add_{{ field_element.vars.id }}(event)"
+            {% if sonata_admin.field_description.options.edit == 'list' %}
+                <a  href="{{ sonata_admin.field_description.associationadmin.generateUrl('list') }}"
+                    onclick="start_field_dialog_form_list_{{ form.vars.id }}(event)"
                     class="sonata-ba-action"
-                    style="{% if not field_description.associationadmin.isGranted('CREATE')%}display:none{% endif %}"
+                    style="{% if not sonata_admin.field_description.associationadmin.isGranted('LIST') %}display:none{% endif %}"
                     >
                         <img
-                            src="{{ asset('bundles/sonataadmin/famfamfam/add.png') }}"
+                            src="{{ asset('bundles/sonataadmin/famfamfam/application_view_list.png') }}"
                             alt="{% trans from 'SonataAdminBundle' %}btn_add{% endtrans %}"
                         />
                 </a>
-            </span>
+            {% endif %}
 
-            <div class="container sonata-ba-modal sonata-ba-modal-edit-one-to-one" style="display: none" id="field_dialog_{{ field_element.vars.id }}">
+            <a  href="{{ sonata_admin.field_description.associationadmin.generateUrl('create') }}"
+                onclick="start_field_dialog_form_add_{{ form.vars.id }}(event)"
+                class="sonata-ba-action"
+                style="{% if not sonata_admin.field_description.associationadmin.isGranted('CREATE')%}display:none{% endif %}"
+                >
+                    <img
+                        src="{{ asset('bundles/sonataadmin/famfamfam/add.png') }}"
+                        alt="{% trans from 'SonataAdminBundle' %}btn_add{% endtrans %}"
+                    />
+            </a>
+        </span>
 
-            </div>
+        <div class="container sonata-ba-modal sonata-ba-modal-edit-one-to-one" style="display: none" id="field_dialog_{{ form.vars.id }}">
+
         </div>
+    </div>
 
-        {% include 'SonataAdminBundle:CRUD:edit_orm_many_association_script.html.twig' %}
-    {% endif %}
-{% endblock %}
+    {% include 'SonataAdminBundle:CRUD:edit_orm_many_association_script.html.twig' %}
+{% endif %}

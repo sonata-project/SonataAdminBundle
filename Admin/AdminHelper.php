@@ -11,6 +11,8 @@
 namespace Sonata\AdminBundle\Admin;
 
 use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\Form\FormView;
+use Sonata\AdminBundle\Util\FormViewIterator;
 use Sonata\AdminBundle\Util\FormBuilderIterator;
 
 class AdminHelper
@@ -36,6 +38,23 @@ class AdminHelper
         foreach (new FormBuilderIterator($formBuilder) as $name => $formBuilder) {
             if ($name == $elementId) {
                 return $formBuilder;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @throws \RuntimeException
+     * @param \Symfony\Component\Form\FormView $formBuilder
+     * @param  $elementId
+     * @return \Symfony\Component\Form\FormView
+     */
+    public function getChildFormView(FormView $formView, $elementId)
+    {
+        foreach (new \RecursiveIteratorIterator(new FormViewIterator($formView), \RecursiveIteratorIterator::SELF_FIRST) as $name => $formView) {
+            if ($name == $elementId) {
+                return $formView;
             }
         }
 
