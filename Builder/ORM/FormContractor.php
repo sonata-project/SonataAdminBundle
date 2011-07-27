@@ -50,8 +50,17 @@ class FormContractor implements FormContractorInterface
             return $options;
         }
 
+        if ($type == 'sonata_type_admin') {
+            $fieldDescription->setOption('edit', 'inline');
+        }
+
         // tweak the widget depend on the edit mode
         if ($fieldDescription->getOption('edit') == 'inline') {
+            return $options;
+        }
+
+        if ($fieldDescription->getOption('edit') == 'standard')
+        {
             return $options;
         }
 

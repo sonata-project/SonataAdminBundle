@@ -14,7 +14,7 @@ file that was distributed with this source code.
 {# Rows #}
 
 {% block field_row %}
-    {% if not sonata_admin.field_description %}
+    {% if not sonata_admin_enabled or not sonata_admin.field_description %}
         {{ parent() }}
     {% else %}
         <div id="sonata-ba-field-container-{{ id }}" style="border: 1px solid red">
