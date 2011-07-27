@@ -17,7 +17,7 @@ file that was distributed with this source code.
     {% if not sonata_admin.field_description %}
         {{ parent() }}
     {% else %}
-        <div id="sonata-ba-field-container-{{ form.vars.id }}" style="border: 1px solid red">
+        <div id="sonata-ba-field-container-{{ id }}" style="border: 1px solid red">
             {% block label %}
                 {% if sonata_admin.field_description.options.name is defined %}
                     {{ form_label(form, sonata_admin.field_description.options.name) }}
@@ -27,7 +27,7 @@ file that was distributed with this source code.
                 <br />
             {% endblock %}
 
-            <div class="sonata-ba-field sonata-ba-field-{{ sonata_admin.edit }}-{{ sonata_admin.inline }} {% if form.vars.errors|length > 0 %}sonata-ba-field-error{% endif %}">
+            <div class="sonata-ba-field sonata-ba-field-{{ sonata_admin.edit }}-{{ sonata_admin.inline }} {% if errors|length > 0 %}sonata-ba-field-error{% endif %}">
 
                 {{ form_widget(form) }}
 
@@ -35,7 +35,7 @@ file that was distributed with this source code.
                     <em class="sonata-ba-field-help">{{ sonata_admin.field_description.help }}</em>
                 {% endif %}
 
-                {% if form.vars.errors|length > 0 %}
+                {% if errors|length > 0 %}
                     <div class="sonata-ba-field-error-messages">
                         {{ form_errors(form) }}
                     </div>
@@ -70,7 +70,6 @@ file that was distributed with this source code.
     {% if sonata_admin.field_description.mappingtype == 2 %}
         w-o-t-o
         {{ block('sonata_admin_orm_one_to_one_widget') }}
-
     {% elseif sonata_admin.field_description.mappingtype == 8 %}
         w-m-t-m
         {{ block('sonata_admin_orm_many_to_many_widget') }}

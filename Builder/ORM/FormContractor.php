@@ -36,36 +36,6 @@ class FormContractor implements FormContractorInterface
     }
 
     /**
-     * Returns the field associated to a FieldDescriptionInterface
-     *   ie : build the embedded form from the related AdminInterface instance
-     *
-     * @throws RuntimeException
-     * @param \Symfony\Component\Form\FormBuilder $formBuilder
-     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
-     * @param null $fieldName
-     * @return FieldGroup
-     */
-    protected function defineChildFormBuilder(FormBuilder $formBuilder, FieldDescriptionInterface $fieldDescription, $fieldName = null)
-    {
-//        $fieldName = $fieldName ?: $fieldDescription->getFieldName();
-//
-//        $associatedAdmin = $fieldDescription->getAssociationAdmin();
-//
-//        if (!$associatedAdmin) {
-//            throw new \RuntimeException(sprintf('inline mode for field `%s` required an Admin definition', $fieldName));
-//        }
-//
-//        // retrieve the related object
-//        $childBuilder = $formBuilder->create($fieldName, 'sonata_type_admin', array(
-//            'field_description' => $fieldDescription
-//        ));
-//
-//        $formBuilder->add($childBuilder);
-//
-//        $associatedAdmin->defineFormBuilder($childBuilder);
-    }
-
-    /**
      * Returns an OneToOne associated field
      *
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
@@ -137,7 +107,7 @@ class FormContractor implements FormContractorInterface
         $options = array();
 
         if (!$fieldDescription->hasAssociationAdmin()) {
-            return array();
+            return $options;
         }
 
         if ($type == 'sonata_type_model') {

@@ -11,13 +11,13 @@ file that was distributed with this source code.
 
 {% if not sonata_admin.field_description.hasassociationadmin%}
     {{ value|render_relation_element(sonata_admin.field_description) }}
-{% elseif sonata_admin.field_description.options.edit == 'inline' %}
+{% elseif sonata_admin.edit == 'inline' %}
     {% for field_description in sonata_admin.field_description.associationadmin.formfielddescriptions %}
         {{ form_row(form.getChild(field_description.name)) }}
     {% endfor %}
 {% else %}
     <div id="field_container_{{ id }}">
-        {% if sonata_admin.field_description.options.edit == 'list' %}
+        {% if sonata_admin.edit == 'list' %}
             <span id="field_widget_{{ id }}" >
                 {% if sonata_admin.field_description.associationadmin.id(sonata_admin.value) %}
                     {% render 'SonataAdminBundle:Helper:getShortObjectDescription' with {}, {
@@ -39,7 +39,7 @@ file that was distributed with this source code.
         {% endif %}
         <span id="field_actions_{{ id }}" >
 
-            {% if sonata_admin.field_description.options.edit == 'list' %}
+            {% if sonata_admin.edit == 'list' %}
                 <a  href="{{ sonata_admin.field_description.associationadmin.generateUrl('list') }}"
                     onclick="start_field_dialog_form_list_{{ id }}(event)"
                     class="sonata-ba-action"
