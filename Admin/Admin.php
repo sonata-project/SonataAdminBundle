@@ -48,26 +48,12 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     protected $class;
 
     /**
-     * The list field definitions (quick property definition)
-     *
-     * @var array
-     */
-    protected $list = array();
-
-    /**
      * The list FieldDescription constructed from the $list property
      * and the configureListField method
      *
      * @var array
      */
     protected $listFieldDescriptions = array();
-
-    /**
-     * The view field definitions (quick property definition)
-     *
-     * @var array
-     */
-    protected $view = array();
 
     /**
      * The view FieldDescription constructed from the $view property
@@ -78,26 +64,12 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     protected $viewFieldDescriptions = array();
 
     /**
-     * The form field definition (quick property definition)
-     *
-     * @var array
-     */
-    protected $form = array();
-
-    /**
      * The list FieldDescription constructed from the $list property
      * and the the configureFormField method
      *
      * @var array
      */
     protected $formFieldDescriptions = array();
-
-    /**
-     * The filter field definition (quick property definition)
-     *
-     * @var array
-     */
-    protected $filter = array();
 
     /**
      * The filter FieldDescription constructed from the $list property
@@ -499,8 +471,6 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
         $this->loaded['view_fields'] = true;
 
-        $this->viewFieldDescriptions = $this->getBaseFields($this->view);
-
         // normalize field
         foreach ($this->viewFieldDescriptions as $fieldDescription) {
             $this->getViewBuilder()->fixFieldDescription($this, $fieldDescription);
@@ -521,8 +491,6 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         }
 
         $this->loaded['list_fields'] = true;
-
-        $this->listFieldDescriptions = $this->getBaseFields($this->list);
 
         // normalize field
         foreach ($this->listFieldDescriptions as $fieldDescription) {
@@ -584,8 +552,6 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
         $this->loaded['filter_fields'] = true;
 
-        $this->filterFieldDescriptions = $this->getBaseFields($this->filter);
-
         // ok, try to limit to add parent filter
         if ($this->getParentAssociationMapping()) {
             $fieldDescription = $this->getModelManager()->getParentFieldDescription($this->getParentAssociationMapping(), $this->getClass());
@@ -637,8 +603,6 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
         $this->loaded['form_fields'] = true;
 
-        $this->formFieldDescriptions = $this->getBaseFields($this->form);
-
         foreach ($this->formFieldDescriptions as $name => &$fieldDescription) {
 
             $this->getFormContractor()->fixFieldDescription($this, $fieldDescription);
@@ -648,31 +612,6 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
                 unset($this->formFieldDescriptions[$name]);
             }
         }
-    }
-
-    /**
-     * make sure the base fields are set in the correct format
-     *
-     * @param array $selectedFields
-     * @return array
-     */
-    private function getBaseFields(array $selectedFields)
-    {
-        $fields = array();
-
-        // make sure we works with array
-        foreach ($selectedFields as $name => $options) {
-            if (!is_array($options)) {
-                $name = $options;
-                $options = array();
-            }
-
-            $description = $this->modelManager->getNewFieldDescriptionInstance($this->getClass(), $name, $options);
-
-            $fields[$name] = $description;
-        }
-
-        return $fields;
     }
 
     /**
