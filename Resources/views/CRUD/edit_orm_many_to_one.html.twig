@@ -18,11 +18,11 @@ file that was distributed with this source code.
 
 {% else %}
 
-    <div id="field_container_{{ form.vars.id }}">
+    <div id="field_container_{{ id }}">
 
         {% if sonata_admin.field_description.options.edit == 'list' %}
-            <span id="field_widget_{{ form.vars.id }}" >
-                {% if admin.id(value) %}
+            <span id="field_widget_{{ id }}" >
+                {% if sonata_admin.admin.id(value) %}
                     {% render 'SonataAdminBundle:Helper:getShortObjectDescription' with {}, {
                         'query': {
                             'code':     sonata_admin.field_description.associationadmin.code,
@@ -36,16 +36,16 @@ file that was distributed with this source code.
                 {{ form_widget(form) }}
             </span>
         {% else %}
-            <span id="field_widget_{{ form.vars.id }}" >
+            <span id="field_widget_{{ id }}" >
                 {{ form_widget(form) }}
             </span>
         {% endif %}
 
-        <span id="field_actions_{{ form.vars.id }}" >
+        <span id="field_actions_{{ id }}" >
 
             {% if sonata_admin.field_description.options.edit == 'list' %}
                 <a  href="{{ sonata_admin.field_description.associationadmin.generateUrl('list') }}"
-                    onclick="start_field_dialog_form_list_{{ form.vars.id }}(event)"
+                    onclick="start_field_dialog_form_list_{{ id }}(event)"
                     class="sonata-ba-action"
                     style="{% if not sonata_admin.field_description.associationadmin.isGranted('LIST')%}display:none{% endif %}"
                     >
@@ -56,7 +56,7 @@ file that was distributed with this source code.
             {% endif %}
 
             <a  href="{{ sonata_admin.field_description.associationadmin.generateUrl('create') }}"
-                onclick="start_field_dialog_form_add_{{ form.vars.id }}(event)"
+                onclick="start_field_dialog_form_add_{{ id }}(event)"
                 class="sonata-ba-action"
                 style="{% if not sonata_admin.field_description.associationadmin.isGranted('CREATE')%}display:none{% endif %}"
                 >
@@ -66,7 +66,7 @@ file that was distributed with this source code.
             </a>
         </span>
 
-        <div class="container sonata-ba-modal sonata-ba-modal-edit-one-to-one" style="display: none" id="field_dialog_{{ form.vars.id }}">
+        <div class="container sonata-ba-modal sonata-ba-modal-edit-one-to-one" style="display: none" id="field_dialog_{{ id }}">
 
         </div>
     </div>

@@ -86,6 +86,7 @@ class FormContractor implements FormContractorInterface
         }
 
         $options['class']         = $fieldDescription->getTargetEntity();
+        $options['data_class']    = $fieldDescription->getTargetEntity();
         $options['model_manager'] = $fieldDescription->getAdmin()->getModelManager();
 
         if ($fieldDescription->getOption('edit') == 'list') {

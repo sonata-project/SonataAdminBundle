@@ -34,21 +34,22 @@ class FormTypeFieldExtension extends AbstractTypeExtension
     public function buildForm(FormBuilder $builder, array $options)
     {
         $sonataAdmin = array(
-            'admin'  => null,
-            'object'    => null,
+            'name'      => null,
+            'admin'     => null,
             'value'     => null,
             'edit'      => 'standard',
-            'inline'    => 'natual',
+            'inline'    => 'natural',
             'field_description' => null,
         );
+
+        $builder->setAttribute('sonata_admin_enabled', false);
 
         if ($options['sonata_field_description'] instanceof FieldDescriptionInterface) {
             $fieldDescription = $options['sonata_field_description'];
 
-            $sonataAdmin['object']            = $fieldDescription->getAdmin()->getSubject();
-            $sonataAdmin['value']             = $this->getValueFromFieldDescription($sonataAdmin['object'], $fieldDescription);
             $sonataAdmin['admin']             = $fieldDescription->getAdmin();
             $sonataAdmin['field_description'] = $fieldDescription;
+            $sonataAdmin['name']              = $fieldDescription->getName();
 
             $parentFieldDescription = $fieldDescription->getAdmin()->getParentFieldDescription();
 
@@ -59,6 +60,8 @@ class FormTypeFieldExtension extends AbstractTypeExtension
                 $sonataAdmin['edit']    = $fieldDescription->getOption('edit', 'standard');
                 $sonataAdmin['inline']  = $fieldDescription->getOption('inline', 'natural');
             }
+
+            $builder->setAttribute('sonata_admin_enabled', true);
         }
 
         $builder->setAttribute('sonata_admin', $sonataAdmin);
@@ -66,7 +69,13 @@ class FormTypeFieldExtension extends AbstractTypeExtension
 
     public function buildView(FormView $view, FormInterface $form)
     {
-        $view->set('sonata_admin', $form->getAttribute('sonata_admin'));
+        // avoid to add extra information not required by non admin field
+        if ($form->getAttribute('sonata_admin_enabled', true)) {
+            $sonataAdmin = $form->getAttribute('sonata_admin');
+            $sonataAdmin['value'] = $form->getData();
+
+            $view->set('sonata_admin', $sonataAdmin);
+        }
     }
 
     /**
@@ -90,8 +99,6 @@ class FormTypeFieldExtension extends AbstractTypeExtension
     {
         return array(
             'sonata_admin'     => null,
-            'sonata_object'    => null,
-            'sonata_value'     => null,
             'sonata_field_description' => null,
         );
     }
@@ -118,14 +125,14 @@ class FormTypeFieldExtension extends AbstractTypeExtension
      */
     public function getValueFromFieldDescription($object, FieldDescriptionInterface $fieldDescription)
     {
+        $value = null;
+
         if (!$object) {
-            return null;
-            throw new \RunTimeException(sprintf('Object cannot be null - id: %s, field: %s ', $fieldDescription->getAdmin()->getCode(), $fieldDescription->getName()));
+            return $value;
         }
 
-        $value = null;
         try {
-          $value = $fieldDescription->getValue($object);
+            $value = $fieldDescription->getValue($object);
         } catch (NoValueException $e) {
             if ($fieldDescription->getAssociationAdmin()) {
                 $value = $fieldDescription->getAssociationAdmin()->getNewInstance();

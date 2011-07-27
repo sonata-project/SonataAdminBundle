@@ -50,13 +50,15 @@ class HelperController extends Controller
 
         list($fieldDescription, $formBuilder) = $helper->appendFormFieldElement($admin, $elementId);
 
+        $view = $helper->getChildFormView($formBuilder->getForm()->createView(), $elementId);
+
         // render the widget
         // todo : fix this, the twig environment variable is not set inside the extension ...
         $twig = $this->get('twig');
-        $extension = $twig->getExtension('sonata_admin');
+        $extension = $twig->getExtension('form');
         $extension->initRuntime($this->get('twig'));
 
-        return new Response($extension->renderFormElement($fieldDescription, $formBuilder->getForm()->createView(), $formBuilder->getData()));
+        return new Response($extension->renderWidget($view));
     }
 
     public function retrieveFormFieldElementAction()
