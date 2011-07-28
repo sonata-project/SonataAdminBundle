@@ -100,8 +100,8 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
             $definition->addMethodCall('setFormContractor', array(new Reference(sprintf('sonata.admin.builder.%s_form', $manager_type))));
         }
 
-        if (!$definition->hasMethodCall('setViewBuilder')) {
-            $definition->addMethodCall('setViewBuilder', array(new Reference(sprintf('sonata.admin.builder.%s_view', $manager_type))));
+        if (!$definition->hasMethodCall('setShowBuilder')) {
+            $definition->addMethodCall('setShowBuilder', array(new Reference(sprintf('sonata.admin.builder.%s_show', $manager_type))));
         }
 
         if (!$definition->hasMethodCall('setListBuilder')) {

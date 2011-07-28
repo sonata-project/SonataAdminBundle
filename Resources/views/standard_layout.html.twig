@@ -55,7 +55,7 @@ file that was distributed with this source code.
         {# initialize block value #}
         {% set preview      = block('preview') %}
         {% set form         = block('form') %}
-        {% set view         = block('view') %}
+        {% set show         = block('show') %}
         {% set list_table   = block('list_table') %}
         {% set list_filters = block('list_filters') %}
         {% set side_menu    = block('side_menu') %}
@@ -126,8 +126,8 @@ file that was distributed with this source code.
                         <div class="sonata-ba-content">{{ content|raw }}</div>
                     {% endif %}
 
-                    {% if view is not empty %}
-                        <div class="sonata-ba-view">{{ view|raw }}</div>
+                    {% if show is not empty %}
+                        <div class="sonata-ba-show">{{ show|raw }}</div>
                     {% endif %}
 
                     {% if form is not empty %}

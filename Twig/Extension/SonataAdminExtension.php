@@ -41,7 +41,6 @@ class SonataAdminExtension extends \Twig_Extension
     {
         return array(
             'render_list_element'     => new \Twig_Filter_Method($this, 'renderListElement', array('is_safe' => array('html'))),
-//            'render_form_element'     => new \Twig_Filter_Method($this, 'renderFormElement', array('is_safe' => array('html'))),
             'render_filter_element'   => new \Twig_Filter_Method($this, 'renderFilterElement', array('is_safe' => array('html'))),
             'render_view_element'     => new \Twig_Filter_Method($this, 'renderViewElement', array('is_safe' => array('html'))),
             'render_relation_element' => new \Twig_Filter_Method($this, 'renderRelationElement', array('is_safe' => array('html'))),
@@ -177,7 +176,7 @@ class SonataAdminExtension extends \Twig_Extension
      */
     public function renderViewElement(FieldDescriptionInterface $fieldDescription, $object)
     {
-        $template = $this->getTemplate($fieldDescription, 'SonataAdminBundle:CRUD:base_view_field.html.twig');
+        $template = $this->getTemplate($fieldDescription, 'SonataAdminBundle:CRUD:base_show_field.html.twig');
 
         try {
             $value = $fieldDescription->getValue($object);
@@ -191,61 +190,6 @@ class SonataAdminExtension extends \Twig_Extension
             'value'             => $value
         ));
     }
-
-//    /**
-//     * render a field element from the FieldDescription
-//     *
-//     * @throws InvalidArgumentException
-//     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
-//     * @param \Sumfony\Component\Form\FormView $formView
-//     * @param mixed $object
-//     * @param array $params
-//     * @return string
-//     */
-//    public function renderFormElement(FieldDescriptionInterface $fieldDescription, FormView $formView, $object, $params = array())
-//    {
-//        if (!$fieldDescription->getFieldName()) {
-//            return '';
-//        }
-//
-//        if (!$formView->offsetExists($fieldDescription->getFieldName())) {
-//            return;
-//        }
-//
-//        $children = $formView->offsetGet($fieldDescription->getFieldName());
-//
-//        if (in_array('hidden', $children->get('types'))) {
-//            return '';
-//        }
-//
-//        // find the correct edit parameter
-//        //  edit   : standard | inline
-//        //  inline : natural | table
-//        $parentFieldDescription = $fieldDescription->getAdmin()->getParentFieldDescription();
-//
-//        if (!$parentFieldDescription) {
-//            $params['edit']          = $fieldDescription->getOption('edit', 'standard');
-//            $params['inline']        = $fieldDescription->getOption('inline', 'natural');
-//
-//            $base_template = sprintf('SonataAdminBundle:CRUD:base_%s_edit_field.html.twig', 'standard');
-//        } else {
-//            $params['edit']          = $parentFieldDescription->getOption('edit', 'standard');
-//            $params['inline']        = $parentFieldDescription->getOption('inline', 'natural');
-//
-//            $base_template = sprintf('SonataAdminBundle:CRUD:base_%s_edit_field.html.twig', $params['edit']);
-//        }
-//
-//        $template = $this->getTemplate($fieldDescription, 'SonataAdminBundle:CRUD:base_standard_edit_field.html.twig');
-//
-//        return $this->output($fieldDescription, $template, array_merge($params, array(
-//            'admin'             => $fieldDescription->getAdmin(),
-//            'object'            => $object,
-//            'field_description' => $fieldDescription,
-//            'value'             => $this->getValueFromFieldDescription($object, $fieldDescription, $params),
-//            'field_element'     => $children,
-//            'base_template'     => $fieldDescription->getOption('base_template', $base_template)
-//        )));
-//    }
 
     /**
      * @throws \RunTimeException

@@ -16,12 +16,11 @@
 
         <service id="sonata.admin.builder.orm_list" class="Sonata\AdminBundle\Builder\ORM\ListBuilder" />
 
-        <service id="sonata.admin.builder.orm_view" class="Sonata\AdminBundle\Builder\ORM\ViewBuilder" />
+        <service id="sonata.admin.builder.orm_show" class="Sonata\AdminBundle\Builder\ORM\ShowBuilder" />
 
         <service id="sonata.admin.builder.orm_datagrid" class="Sonata\AdminBundle\Builder\ORM\DatagridBuilder">
             <argument type="service" id="form.factory" />
         </service>
 
     </services>
-
 </container>

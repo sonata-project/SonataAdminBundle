@@ -22,6 +22,7 @@ use Symfony\Component\Security\Acl\Model\DomainObjectInterface;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
+use Sonata\AdminBundle\Show\ShowMapper;
 
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Validator\ErrorElement;
@@ -29,7 +30,7 @@ use Sonata\AdminBundle\Validator\ErrorElement;
 use Sonata\AdminBundle\Builder\FormContractorInterface;
 use Sonata\AdminBundle\Builder\ListBuilderInterface;
 use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
-use Sonata\AdminBundle\Builder\ViewBuilderInterface;
+use Sonata\AdminBundle\Builder\ShowBuilderInterface;
 
 use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
 use Sonata\AdminBundle\Route\RouteCollection;
@@ -48,32 +49,47 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     protected $class;
 
     /**
-     * The list FieldDescription constructed from the $list property
-     * and the configureListField method
+     * The list collection
+     *
+     * @var array
+     */
+    protected $list;
+
+    /**
+     * The list FieldDescription constructed from the configureListField method
      *
      * @var array
      */
     protected $listFieldDescriptions = array();
 
+    protected $show;
+
     /**
-     * The view FieldDescription constructed from the $view property
-     * and the configureListField method
+     * The show FieldDescription constructed from the configureShowField method
      *
      * @var array
      */
-    protected $viewFieldDescriptions = array();
+    protected $showFieldDescriptions = array();
 
     /**
-     * The list FieldDescription constructed from the $list property
-     * and the the configureFormField method
+     * @var Form
+     */
+    protected $form;
+
+    /**
+     * The list FieldDescription constructed from the configureFormField method
      *
      * @var array
      */
     protected $formFieldDescriptions = array();
 
     /**
-     * The filter FieldDescription constructed from the $list property
-     * and the the configureFilterField method
+     * @var DatagridInterface
+     */
+    protected $filter;
+
+    /**
+     * The filter FieldDescription constructed from the configureFilterField method
      *
      * @var array
      */
@@ -270,9 +286,9 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     /**
      * The related view builder
      *
-     * @var \Sonata\AdminBundle\View\ViewBuilderInterface
+     * @var \Sonata\AdminBundle\View\ShowBuilderInterface
      */
-    protected $viewBuilder;
+    protected $showBuilder;
 
     /**
      * The related datagrid builder
@@ -316,10 +332,6 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     protected $menu;
 
     protected $loaded = array(
-        'form_fields'   => false,
-        'form_groups'   => false,
-        'list_fields'   => false,
-        'filter_fields' => false,
         'view_fields'   => false,
         'view_groups'   => false,
         'routes'        => false,
@@ -359,7 +371,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      *
      * @param DatagridMapper
      */
-    protected function configureViewFields(DatagridMapper $filter)
+    protected function configureShowField(ShowMapper $filter)
     {
 
     }
@@ -463,20 +475,31 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      *
      * @return void
      */
-    protected function buildViewFieldDescriptions()
+    protected function buildShow()
     {
-        if ($this->loaded['view_fields']) {
+        if ($this->show) {
             return;
         }
 
-        $this->loaded['view_fields'] = true;
+        $collection = new FieldDescriptionCollection();
+        $mapper = new ShowMapper($this->showBuilder, $collection, $this);
 
-        // normalize field
-        foreach ($this->viewFieldDescriptions as $fieldDescription) {
-            $this->getViewBuilder()->fixFieldDescription($this, $fieldDescription);
+        $this->configureShowField($mapper);
+
+        if (!$this->viewGroups) {
+            $this->viewGroups = array(
+                false => array('fields' => array_keys($this->getShowFieldDescriptions()))
+            );
         }
 
-        return $this->viewFieldDescriptions;
+        // normalize array
+        foreach ($this->viewGroups as $name => $group) {
+            if (!isset($this->viewGroups[$name]['collapsed'])) {
+                $this->viewGroups[$name]['collapsed'] = false;
+            }
+        }
+
+        $this->show = $collection;
     }
 
     /**
@@ -484,20 +507,17 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      *
      * @return void
      */
-    protected function buildListFieldDescriptions()
+    protected function buildList()
     {
-        if ($this->loaded['list_fields']) {
+        if ($this->list) {
             return;
         }
 
-        $this->loaded['list_fields'] = true;
+        $this->list = $this->getListBuilder()->getBaseList();
 
-        // normalize field
-        foreach ($this->listFieldDescriptions as $fieldDescription) {
-            $this->getListBuilder()->fixFieldDescription($this, $fieldDescription);
-        }
+        $mapper = new ListMapper($this->getListBuilder(), $this->list, $this);
 
-        if (!isset($this->listFieldDescriptions['_batch']) && count($this->getBatchActions()) > 0) {
+        if (count($this->getBatchActions()) > 0) {
             $fieldDescription = $this->modelManager->getNewFieldDescriptionInstance($this->getClass(), 'batch', array(
                 'label'    => 'batch',
                 'code'     => '_batch',
@@ -507,10 +527,11 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
             $fieldDescription->setAdmin($this);
             $fieldDescription->setTemplate('SonataAdminBundle:CRUD:list__batch.html.twig');
-            $this->listFieldDescriptions = array( '_batch' => $fieldDescription ) + $this->listFieldDescriptions;
+
+            $mapper->add($fieldDescription);
         }
 
-        return $this->listFieldDescriptions;
+        $this->configureListFields($mapper);
     }
 
     /**
@@ -544,13 +565,11 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      *
      * @return void
      */
-    public function buildFilterFieldDescriptions()
+    public function buildDatagrid()
     {
-        if ($this->loaded['filter_fields']) {
+        if ($this->datagrid) {
             return;
         }
-
-        $this->loaded['filter_fields'] = true;
 
         // ok, try to limit to add parent filter
         if ($this->getParentAssociationMapping()) {
@@ -571,7 +590,6 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         $mapper = new DatagridMapper($this->getDatagridBuilder(), $this->datagrid, $this);
 
         // build the datagrid filter
-        $this->buildFilterFieldDescriptions();
         $this->configureDatagridFilters($mapper);
 
         foreach ($this->getFilterFieldDescriptions() as $fieldDescription) {
@@ -595,21 +613,34 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      *
      * @return void
      */
-    protected function buildFormFieldDescriptions()
+    protected function buildForm()
     {
-        if ($this->loaded['form_fields']) {
+        if ($this->form) {
             return;
         }
 
-        $this->loaded['form_fields'] = true;
+        // append parent object if any
+        // todo : clean the way the Admin class can retrieve set the object
+        if ($this->isChild() && $this->getParentAssociationMapping()) {
+            $parent = $this->getParent()->getObject($this->request->get($this->getParent()->getIdParameter()));
 
-        foreach ($this->formFieldDescriptions as $name => &$fieldDescription) {
+            $propertyPath = new \Symfony\Component\Form\Util\PropertyPath($this->getParentAssociationMapping());
+            $propertyPath->setValue($object, $parent);
+        }
 
-            $this->getFormContractor()->fixFieldDescription($this, $fieldDescription);
+        $this->form = $this->getFormBuilder()->getForm();
 
-            // unset the identifier field as it is not required to update an object
-            if ($fieldDescription->isIdentifier()) {
-                unset($this->formFieldDescriptions[$name]);
+        // configure the form group thing
+        if (!$this->formGroups) {
+            $this->formGroups = array(
+                false => array('fields' => array_keys($this->formFieldDescriptions))
+            );
+        }
+
+        // normalize array
+        foreach ($this->formGroups as $name => $group) {
+            if (!isset($this->formGroups[$name]['collapsed'])) {
+                $this->formGroups[$name]['collapsed'] = false;
             }
         }
     }
@@ -776,7 +807,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         $collection->add('batch');
         $collection->add('edit', $this->getRouterIdParameter().'/edit');
         $collection->add('delete', $this->getRouterIdParameter().'/delete');
-        $collection->add('view', $this->getRouterIdParameter().'/view');
+        $collection->add('show', $this->getRouterIdParameter().'/show');
 
         // add children urls
         foreach ($this->getChildren() as $children) {
@@ -892,9 +923,9 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      *
      * @return string the view template
      */
-    public function getViewTemplate()
+    public function getShowTemplate()
     {
-        return 'SonataAdminBundle:CRUD:view.html.twig';
+        return 'SonataAdminBundle:CRUD:show.html.twig';
     }
 
     /**
@@ -909,21 +940,10 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
     /**
      * @param Object $object
-     * @param array $options
      * @return \Symfony\Component\Form\FormBuilder the form builder
      */
-    public function getFormBuilder($object = null, $options = array())
+    public function getFormBuilder()
     {
-        if (!$object) {
-            $object = $this->getSubject();
-        }
-
-        if (!$object) {
-            $object = $this->getNewInstance();
-        }
-
-        $this->setSubject($object);
-
         // add the custom inline validation option
         $metadata = $this->validator->getMetadataFactory()->getClassMetadata($this->class);
         $metadata->addConstraint(new \Sonata\AdminBundle\Validator\Constraints\InlineConstraint(array(
@@ -931,12 +951,11 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
             'method'  => 'validate'
         )));
 
-        $options['data']       = $object;
-        $options['data_class'] = $this->getClass();
+        $this->formOptions['data_class'] = $this->getClass();
 
         $formBuilder = $this->getFormContractor()->getFormBuilder(
             $this->getUniqid(),
-            array_merge($this->formOptions, $options)
+            $this->formOptions
         );
 
         $this->defineFormBuilder($formBuilder);
@@ -951,8 +970,6 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     public function defineFormBuilder(FormBuilder $formBuilder)
     {
         $mapper = new FormMapper($this->getFormContractor(), $formBuilder, $this);
-
-        $this->buildFormFieldDescriptions();
 
         $this->configureFormFields($mapper);
     }
@@ -986,84 +1003,17 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * build the form group array
-     *
-     * @return void
-     */
-    public function buildFormGroups()
-    {
-        if ($this->loaded['form_groups']) {
-            return;
-        }
-
-        $this->loaded['form_groups'] = true;
-
-        if (!$this->formGroups) {
-            $this->formGroups = array(
-                false => array('fields' => array_keys($this->getFormFieldDescriptions()))
-            );
-        }
-
-        // normalize array
-        foreach ($this->formGroups as $name => $group) {
-            if (!isset($this->formGroups[$name]['collapsed'])) {
-                $this->formGroups[$name]['collapsed'] = false;
-            }
-        }
-    }
-
-      /**
-     * build the view group array
-     *
-     * @return void
-     */
-    public function buildViewGroups()
-    {
-        if ($this->loaded['view_groups']) {
-            return;
-        }
-
-        $this->loaded['view_groups'] = true;
-
-        if (!$this->viewGroups) {
-            $this->viewGroups = array(
-                false => array('fields' => array_keys($this->getViewFieldDescriptions()))
-            );
-        }
-
-        // normalize array
-        foreach ($this->viewGroups as $name => $group) {
-            if (!isset($this->viewGroups[$name]['collapsed'])) {
-                $this->viewGroups[$name]['collapsed'] = false;
-            }
-        }
-    }
-
-    /**
      * Returns a form depend on the given $object
      *
      * @param object $object
      * @param array $options the form options
      * @return \Symfony\Component\Form\Form
      */
-    public function getForm($object = null, array $options = array())
+    public function getForm()
     {
-        if (!$object) {
-            $object = $this->getNewInstance();
-        }
+        $this->buildForm();
 
-        // append parent object if any
-        // todo : clean the way the Admin class can retrieve set the object
-        if ($this->isChild() && $this->getParentAssociationMapping()) {
-            $parent = $this->getParent()->getObject($this->request->get($this->getParent()->getIdParameter()));
-
-            $propertyPath = new \Symfony\Component\Form\Util\PropertyPath($this->getParentAssociationMapping());
-            $propertyPath->setValue($object, $parent);
-        }
-
-        $formBuilder = $this->getFormBuilder($object, $options);
-
-        return $formBuilder->getForm();
+        return $this->form;
     }
 
     /**
@@ -1072,27 +1022,11 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      * @param array $options
      * @return \Sonata\AdminBundle\Admin\FieldDescriptionCollection
      */
-    public function getList(array $options = array())
+    public function getList()
     {
-        $list = $this->getListBuilder()->getBaseList($options);
+        $this->buildList();
 
-        $mapper = new ListMapper($this->getListBuilder(), $list, $this);
-
-        $this->buildListFieldDescriptions();
-
-        $this->configureListFields($mapper);
-
-        foreach ($this->getListFieldDescriptions() as $fieldDescription) {
-
-            // do not add field already set in the configureListFields method
-            if ($mapper->has($fieldDescription->getFieldName())) {
-                continue;
-            }
-
-            $mapper->add($fieldDescription);
-        }
-
-        return $list;
+        return $this->list;
     }
 
     /**
@@ -1102,7 +1036,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      */
     public function getDatagrid()
     {
-        $this->buildFilterFieldDescriptions();
+        $this->buildDatagrid();
 
         return $this->datagrid;
     }
@@ -1204,15 +1138,11 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
     public function getFormGroups()
     {
-        $this->buildFormGroups();
-
         return $this->formGroups;
     }
 
     public function getViewGroups()
     {
-        $this->buildViewGroups();
-
         return $this->viewGroups;
     }
 
@@ -1287,7 +1217,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      */
     public function getFormFieldDescriptions()
     {
-        $this->buildFormFieldDescriptions();
+        $this->buildForm();
 
         return $this->formFieldDescriptions;
     }
@@ -1311,8 +1241,6 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      */
     public function hasFormFieldDescription($name)
     {
-        $this->buildFormFieldDescriptions();
-
         return array_key_exists($name, $this->formFieldDescriptions) ? true : false;
     }
 
@@ -1344,11 +1272,9 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      *
      * @return array collection of form FieldDescription
      */
-    public function getViewFieldDescriptions()
+    public function getShowFieldDescriptions()
     {
-        $this->buildViewFieldDescriptions();
-
-        return $this->viewFieldDescriptions;
+        return $this->showFieldDescriptions;
     }
 
     /**
@@ -1357,9 +1283,9 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      * @param string $name
      * @return \Sonata\AdminBundle\Admin\FieldDescriptionInterface
      */
-    public function getViewFieldDescription($name)
+    public function getShowFieldDescription($name)
     {
-        return $this->hasViewFieldDescription($name) ? $this->viewFieldDescriptions[$name] : null;
+        return $this->hasShowFieldDescription($name) ? $this->showFieldDescriptions[$name] : null;
     }
 
     /**
@@ -1368,11 +1294,9 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      * @param string $name
      * @return bool
      */
-    public function hasViewFieldDescription($name)
+    public function hasShowFieldDescription($name)
     {
-        $this->buildViewFieldDescriptions();
-
-        return array_key_exists($name, $this->viewFieldDescriptions);
+        return array_key_exists($name, $this->showFieldDescriptions);
     }
 
     /**
@@ -1382,9 +1306,9 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
      * @return void
      */
-    public function addViewFieldDescription($name, FieldDescriptionInterface $fieldDescription)
+    public function addShowFieldDescription($name, FieldDescriptionInterface $fieldDescription)
     {
-        $this->viewFieldDescriptions[$name] = $fieldDescription;
+        $this->showFieldDescriptions[$name] = $fieldDescription;
     }
 
     /**
@@ -1393,9 +1317,9 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      * @param string $name
      * @return void
      */
-    public function removeViewFieldDescription($name)
+    public function removeShowFieldDescription($name)
     {
-        unset($this->viewFieldDescriptions[$name]);
+        unset($this->showFieldDescriptions[$name]);
     }
 
     /**
@@ -1405,7 +1329,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      */
     public function getListFieldDescriptions()
     {
-        $this->buildListFieldDescriptions();
+        $this->buildList();
 
         return $this->listFieldDescriptions;
     }
@@ -1429,7 +1353,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      */
     public function hasListFieldDescription($name)
     {
-        $this->buildListFieldDescriptions();
+        $this->buildList();
 
         return array_key_exists($name, $this->listFieldDescriptions) ? true : false;
     }
@@ -1476,8 +1400,6 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      */
     public function hasFilterFieldDescription($name)
     {
-        $this->buildFilterFieldDescriptions();
-
         return array_key_exists($name, $this->filterFieldDescriptions) ? true : false;
     }
 
@@ -1510,8 +1432,6 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      */
     public function getFilterFieldDescriptions()
     {
-        $this->buildFilterFieldDescriptions();
-
         return $this->filterFieldDescriptions;
     }
 
@@ -1903,20 +1823,20 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * @param \Sonata\AdminBundle\Builder\ViewBuilderInterface $viewBuilder
+     * @param \Sonata\AdminBundle\Builder\ShowBuilderInterface $showBuilder
      * @return void
      */
-    public function setViewBuilder(ViewBuilderInterface $viewBuilder)
+    public function setShowBuilder(ShowBuilderInterface $showBuilder)
     {
-        $this->viewBuilder = $viewBuilder;
+        $this->showBuilder = $showBuilder;
     }
 
     /**
-     * @return \Sonata\AdminBundle\Builder\ViewBuilderInterface
+     * @return \Sonata\AdminBundle\Builder\ShowBuilderInterface
      */
-    public function getViewBuilder()
+    public function getShowBuilder()
     {
-        return $this->viewBuilder;
+        return $this->showBuilder;
     }
 
     /**
@@ -2052,5 +1972,12 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     public function getValidator()
     {
       return $this->validator;
+    }
+
+    public function getShow()
+    {
+        $this->buildShow();
+
+        return $this->show;
     }
 }

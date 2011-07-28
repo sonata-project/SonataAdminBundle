@@ -48,6 +48,7 @@ class DatagridMapper
             $fieldDescription->mergeOptions($fieldDescriptionOptions);
 
         } else if (is_string($name) && !$this->admin->hasFormFieldDescription($name)) {
+
             $fieldDescription = $this->admin->getModelManager()->getNewFieldDescriptionInstance(
                 $this->admin->getClass(),
                 $name,

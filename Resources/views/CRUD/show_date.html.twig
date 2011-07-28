@@ -9,5 +9,6 @@ file that was distributed with this source code.
 
 #}
 
-{% extends 'SonataAdminBundle:CRUD:base_view.html.twig' %}
+{% extends 'SonataAdminBundle:CRUD:base_show_field.html.twig' %}
 
+{% block value %}{{ value|date('F j, Y') }}{% endblock %}

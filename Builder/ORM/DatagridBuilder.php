@@ -25,7 +25,6 @@ use Doctrine\ORM\Mapping\ClassMetadataInfo;
 
 class DatagridBuilder implements DatagridBuilderInterface
 {
-
     protected $formFactory;
 
     /**
@@ -169,7 +168,7 @@ class DatagridBuilder implements DatagridBuilderInterface
             return false;
         }
 
-        switch($fieldDescription->getType()) {
+        switch($fieldDescription->getMappingType()) {
             case ClassMetadataInfo::MANY_TO_ONE:
                 $options = $fieldDescription->getOption('filter_field_options');
                 $filter = new \Sonata\AdminBundle\Filter\ORM\IntegerFilter($fieldDescription);
@@ -179,6 +178,7 @@ class DatagridBuilder implements DatagridBuilderInterface
             case ClassMetadataInfo::MANY_TO_MANY:
                 $options = $fieldDescription->getOption('filter_field_options');
                 $options['choices'] = $this->getChoices($fieldDescription);
+
 
                 $fieldDescription->setOption('filter_field_options', $options);
 

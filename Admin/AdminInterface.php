@@ -109,11 +109,9 @@ interface AdminInterface
 
     /**
      *
-     * @param mixed $object
-     * @param array $options
      * @return \Symfony\Component\Form\FormBuilder the form builder
      */
-    function getFormBuilder($object = null, $options = array());
+    function getFormBuilder();
 
     /**
      * @abstract

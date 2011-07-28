@@ -22,7 +22,7 @@ use Symfony\Component\Security\Acl\Permission\PermissionMapInterface;
  */
 class AdminPermissionMap implements PermissionMapInterface
 {
-    const PERMISSION_VIEW        = 'VIEW';
+    const PERMISSION_SHOW        = 'SHOW';
     const PERMISSION_EDIT        = 'EDIT';
     const PERMISSION_CREATE      = 'CREATE';
     const PERMISSION_DELETE      = 'DELETE';
@@ -38,7 +38,7 @@ class AdminPermissionMap implements PermissionMapInterface
             MaskBuilder::MASK_LIST
         ),
 
-        self::PERMISSION_VIEW => array(
+        self::PERMISSION_SHOW => array(
             MaskBuilder::MASK_VIEW,
         ),
 

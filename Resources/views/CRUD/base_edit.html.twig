@@ -14,8 +14,8 @@ file that was distributed with this source code.
 {% block actions %}
     <div class="sonata-actions">
         <ul>
-            {% if admin.id(object) and admin.isGranted('VIEW') and admin.getViewFieldDescriptions is not empty %}
-                <li class="sonata-action-element"><a href="{{ admin.generateUrl('view', {'id' : admin.id(object)}) }}">{% trans from 'SonataAdminBundle' %}link_action_view{% endtrans %}</a></li>
+            {% if admin.id(object) and admin.isGranted('VIEW') and admin.show|length > 0 %}
+                <li class="sonata-action-element"><a href="{{ admin.generateUrl('show', {'id' : admin.id(object)}) }}">{% trans from 'SonataAdminBundle' %}link_action_show{% endtrans %}</a></li>
             {% endif %}
             {% if admin.isGranted('CREATE')%}
                 <li class="sonata-action-element"><a href="{{ admin.generateUrl('create') }}">{% trans from 'SonataAdminBundle' %}link_action_create{% endtrans %}</a></li>
@@ -58,13 +58,9 @@ file that was distributed with this source code.
                     <div class="sonata-ba-collapsed-fields">
             {% endif %}
 
-
             {% for field_name in form_group.fields %}
                 {% if admin.formfielddescriptions[field_name] is defined %}
-                    {#{{ admin.formfielddescriptions[field_name]|render_form_element(form, object) }}#}
-
                     {{ form_row(form[field_name])}}
-
                 {% endif %}
             {% endfor %}
 

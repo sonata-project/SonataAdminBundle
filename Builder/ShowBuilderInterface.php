@@ -16,7 +16,7 @@ use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
 
-interface ViewBuilderInterface
+interface ShowBuilderInterface
 {
     /**
      * @abstract

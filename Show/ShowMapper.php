@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  *
  */
-namespace Sonata\AdminBundle\Datagrid;
+namespace Sonata\AdminBundle\Show;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
@@ -48,7 +48,7 @@ class ShowMapper
             $fieldDescription = $name;
             $fieldDescription->mergeOptions($fieldDescriptionOptions);
 
-        } else if (is_string($name) && !$this->admin->hasListFieldDescription($name)) {
+        } else if (is_string($name) && !$this->admin->hasShowFieldDescription($name)) {
 
             $fieldDescription = $this->admin->getModelManager()->getNewFieldDescriptionInstance(
                 $this->admin->getClass(),
@@ -57,7 +57,7 @@ class ShowMapper
             );
 
             $this->showBuilder->fixFieldDescription($this->admin, $fieldDescription, $fieldDescriptionOptions);
-            $this->admin->addListFieldDescription($name, $fieldDescription);
+            $this->admin->addShowFieldDescription($name, $fieldDescription);
 
         } else if (is_string($name) && $this->admin->hasShowFieldDescription($name)) {
             $fieldDescription = $this->admin->getShowFieldDescription($name);

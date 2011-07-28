@@ -12,7 +12,7 @@ namespace Sonata\AdminBundle\Admin;
 
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 
-class FieldDescriptionCollection
+class FieldDescriptionCollection implements \ArrayAccess, \Countable
 {
     protected $elements = array();
 
@@ -65,5 +65,30 @@ class FieldDescriptionCollection
         if ($this->has($name)) {
             unset($this->elements[$name]);
         }
+    }
+
+    public function offsetExists($offset)
+    {
+        return $this->has($offset);
+    }
+
+    public function offsetGet($offset)
+    {
+        return $this->get($offset);
+    }
+
+    public function offsetSet($offset, $value)
+    {
+        throw new \RunTimeException('Cannot set value, use add');
+    }
+
+    public function offsetUnset($offset)
+    {
+        $this->remove($offset);
+    }
+
+    public function count()
+    {
+        return count($this->elements);
     }
 }
