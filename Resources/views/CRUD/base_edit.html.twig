@@ -31,6 +31,8 @@ file that was distributed with this source code.
 
 {% block form %}
 
+    {% form_theme form 'SonataAdminBundle:Form:admin_fields.html.twig' %}
+
     {% if admin.id(object) %}
         {% set url = 'edit' %}
     {% else %}
