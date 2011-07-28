@@ -21,6 +21,10 @@
             <tag name="form.type" alias="sonata_type_immutable_array" />
         </service>
 
+        <service id="sonata.admin.form.extension.field" class="Sonata\AdminBundle\Form\Extension\Field\Type\FormTypeFieldExtension">
+            <tag name="form.type_extension" alias="field" />
+        </service>
+
     </services>
 
 </container>

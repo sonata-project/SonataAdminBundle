@@ -21,16 +21,6 @@ use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 
 class FormTypeFieldExtension extends AbstractTypeExtension
 {
-    protected $type;
-
-    /**
-     * @param srting $type
-     */
-    public function __construct($type)
-    {
-        $this->type = $type;
-    }
-
     public function buildForm(FormBuilder $builder, array $options)
     {
         $sonataAdmin = array(
@@ -74,7 +64,10 @@ class FormTypeFieldExtension extends AbstractTypeExtension
             $sonataAdmin = $form->getAttribute('sonata_admin');
             $sonataAdmin['value'] = $form->getData();
 
+            $view->set('sonata_admin_enabled', true);
             $view->set('sonata_admin', $sonataAdmin);
+        } else {
+            $view->set('sonata_admin_enabled', false);
         }
     }
 
@@ -85,7 +78,7 @@ class FormTypeFieldExtension extends AbstractTypeExtension
      */
     function getExtendedType()
     {
-        return $this->type;
+        return 'field';
     }
 
     /**

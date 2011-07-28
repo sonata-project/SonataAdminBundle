@@ -13,7 +13,6 @@ namespace Sonata\AdminBundle;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Sonata\AdminBundle\DependencyInjection\AddDependencyCallsCompilerPass;
-use Sonata\AdminBundle\DependencyInjection\AddFormExtensionCompilerPass;
 
 class SonataAdminBundle extends Bundle
 {
@@ -22,6 +21,5 @@ class SonataAdminBundle extends Bundle
         parent::build($container);
 
         $container->addCompilerPass(new AddDependencyCallsCompilerPass());
-        $container->addCompilerPass(new AddFormExtensionCompilerPass());
     }
 }
