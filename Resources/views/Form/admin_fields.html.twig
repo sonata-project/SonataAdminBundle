@@ -17,7 +17,7 @@ file that was distributed with this source code.
     {% if not sonata_admin_enabled or not sonata_admin.field_description %}
         {{ parent() }}
     {% else %}
-        <div id="sonata-ba-field-container-{{ id }}" style="border: 1px solid red">
+        <div id="sonata-ba-field-container-{{ id }}">
             {% block label %}
                 {% if sonata_admin.field_description.options.name is defined %}
                     {{ form_label(form, sonata_admin.field_description.options.name) }}
@@ -68,34 +68,26 @@ file that was distributed with this source code.
         TODO : improve this part
     #}
     {% if sonata_admin.field_description.mappingtype == 2 %}
-        w-o-t-o
         {{ block('sonata_admin_orm_one_to_one_widget') }}
     {% elseif sonata_admin.field_description.mappingtype == 8 %}
-        w-m-t-m
         {{ block('sonata_admin_orm_many_to_many_widget') }}
     {% elseif sonata_admin.field_description.mappingtype == 4 %}
-        w-o-t-m
         {{ block('sonata_admin_orm_one_to_many_widget') }}
     {% endif %}
 {% endblock %}
 
 {% block sonata_type_admin_widget %}
     {% if sonata_admin.field_description.mappingtype == 2 %}
-        a-o-t-o
         {{ block('sonata_admin_orm_one_to_one_widget') }}
     {% elseif sonata_admin.field_description.mappingtype == 8 %}
-        a-m-t-m
         {{ block('sonata_admin_orm_many_to_many_widget') }}
     {% elseif sonata_admin.field_description.mappingtype == 4 %}
-        a-o-t-m
         {{ block('sonata_admin_orm_one_to_many_widget') }}
     {% endif %}
 {% endblock %}
 
 {% block sonata_type_collection_widget %}
-    sonata_type_admin_collection_widget
     {% if sonata_admin.field_description.mappingtype == 4 %}
-        c-o-t-m
         {{ block('sonata_admin_orm_one_to_many_widget') }}
     {% endif %}
 {% endblock %}
