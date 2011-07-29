@@ -1,5 +1,5 @@
-AdminBundle - The missing Symfony2 Admin Generator
-==================================================
+SonataAdminBundle - The missing Symfony2 Admin Generator
+========================================================
 
 There is online documentation here:
 

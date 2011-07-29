@@ -1,4 +1,4 @@
-.. Sonata - AdminBundle documentation master file, created by
+.. SonataAdminBundle documentation master file, created by
    sphinx-quickstart on Sun May  1 16:09:38 2011.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
