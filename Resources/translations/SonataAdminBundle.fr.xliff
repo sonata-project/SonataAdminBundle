@@ -114,6 +114,42 @@
                 <source>all_elements</source>
                 <target>Tous les éléments</target>
             </trans-unit>
+            <trans-unit id='sonata_flash_batch_empty'>
+              <source>sonata_flash_batch_empty</source>
+              <target>Action interrompue. Aucun élément n'a été séléctionné.</target>
+            </trans-unit>
+            <trans-unit id='sonata_flash_create_success'>
+              <source>sonata_flash_create_success</source>
+              <target>L'élément a été crée avec succès.</target>
+            </trans-unit>
+            <trans-unit id='sonata_flash_create_error'>
+              <source>sonata_flash_create_error</source>
+              <target>Une erreur est intervenue lors de la création de l'élément.</target>
+            </trans-unit>
+            <trans-unit id='sonata_flash_edit_success'>
+              <source>sonata_flash_edit_success</source>
+              <target>L'élément a été mis à jour avec succès.</target>
+            </trans-unit>
+            <trans-unit id='sonata_flash_edit_error'>
+              <source>sonata_flash_edit_error</source>
+              <target>Une erreur est intervenue lors de la mise à jour de l'élément.</target>
+            </trans-unit>
+            <trans-unit id='sonata_flash_batch_delete_success'>
+              <source>sonata_flash_batch_delete_success</source>
+              <target>Les éléments séléctionnés ont été supprimés avec succès.</target>
+            </trans-unit>
+            <trans-unit id='sonata_flash_batch_delete_error'>
+              <source>sonata_flash_batch_delete_error</source>
+              <target>Une erreur est intervenue lors de la suppression des éléments séléctionnés.</target>
+            </trans-unit>
+            <trans-unit id='sonata_flash_delete_error'>
+              <source>sonata_flash_delete_error</source>
+              <target>Une erreur est intervenue lors de la suppression de l'élément.</target>
+            </trans-unit>
+            <trans-unit id='sonata_flash_delete_success'>
+              <source>sonata_flash_delete_success</source>
+              <target>Les éléments ont été supprimés avec succès.</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

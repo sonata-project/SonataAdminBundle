@@ -114,6 +114,42 @@
                 <source>all_elements</source>
                 <target>All elements</target>
             </trans-unit>
+            <trans-unit id='sonata_flash_batch_empty'>
+              <source>sonata_flash_batch_empty</source>
+              <target>Action aborted. No items where selected.</target>
+            </trans-unit>
+            <trans-unit id='sonata_flash_create_success'>
+              <source>sonata_flash_create_success</source>
+              <target>Item has been successfully created.</target>
+            </trans-unit>
+            <trans-unit id='sonata_flash_create_error'>
+              <source>sonata_flash_create_error</source>
+              <target>An error has occurred during item creation.</target>
+            </trans-unit>
+            <trans-unit id='sonata_flash_edit_success'>
+              <source>sonata_flash_edit_success</source>
+              <target>Item has been successfully updated.</target>
+            </trans-unit>
+            <trans-unit id='sonata_flash_edit_error'>
+              <source>sonata_flash_edit_error</source>
+              <target>An error has occurred during item update.</target>
+            </trans-unit>
+            <trans-unit id='sonata_flash_batch_delete_success'>
+              <source>sonata_flash_batch_delete_success</source>
+              <target>Selected items have been successfully deleted.</target>
+            </trans-unit>
+            <trans-unit id='sonata_flash_batch_delete_error'>
+              <source>sonata_flash_batch_delete_error</source>
+              <target>An Error has occurred during selected items deletion.</target>
+            </trans-unit>
+            <trans-unit id='sonata_flash_delete_error'>
+              <source>sonata_flash_delete_error</source>
+              <target>An Error has occurred during item deletion.</target>
+            </trans-unit>
+            <trans-unit id='sonata_flash_delete_success'>
+              <source>sonata_flash_delete_success</source>
+              <target>Item has been deleted successfully.</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

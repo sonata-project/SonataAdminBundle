@@ -146,8 +146,9 @@ class CRUDController extends Controller
 
         $modelManager = $this->admin->getModelManager();
         $modelManager->batchDelete($this->admin->getClass(), $query);
+        $this->get('session')->setFlash('sonata_flash_success', 'sonata_flash_batch_delete_success');
 
-        // todo : add confirmation flash var
+
         return new RedirectResponse($this->admin->generateUrl('list', $this->admin->getFilterParameters()));
     }
 
@@ -165,7 +166,7 @@ class CRUDController extends Controller
         }
 
         $this->admin->delete($object);
-
+        $this->get('session')->setFlash('sonata_flash_success', 'sonata_flash_delete_success');
         return new RedirectResponse($this->admin->generateUrl('list'));
     }
 
@@ -194,10 +195,11 @@ class CRUDController extends Controller
 
         if ($this->get('request')->getMethod() == 'POST') {
             $form->bindRequest($this->get('request'));
-
+            
             if ($form->isValid()) {
                 $this->admin->update($object);
-
+                $this->get('session')->setFlash('sonata_flash_success', 'sonata_flash_edit_success');
+                
                 if ($this->isXmlHttpRequest()) {
                     return $this->renderJson(array(
                         'result'    => 'ok',
@@ -208,6 +210,7 @@ class CRUDController extends Controller
                 // redirect to edit mode
                 return $this->redirectTo($object);
             }
+            $this->get('session')->setFlash('sonata_flash_error', 'sonata_flash_edit_error');
         }
 
         return $this->render($this->admin->getEditTemplate(), array(
@@ -263,7 +266,7 @@ class CRUDController extends Controller
         $all_elements = $this->get('request')->get('all_elements', false);
 
         if (count($idx) == 0 && !$all_elements) { // no item selected
-            // todo : add flash information
+            $this->get('session')->setFlash('sonata_flash_notice', 'sonata_flash_batch_empty');
 
             return new RedirectResponse($this->admin->generateUrl('list', $this->admin->getFilterParameters()));
         }
@@ -290,7 +293,6 @@ class CRUDController extends Controller
         if (count($idx) > 0) {
             $this->admin->getModelManager()->addIdentifiersToQuery($this->admin->getClass(), $query, $idx);
         }
-
         return call_user_func(array($this, $final_action), $query);
     }
 
@@ -322,10 +324,11 @@ class CRUDController extends Controller
                         'objectId' => $this->admin->getNormalizedIdentifier($object)
                     ));
                 }
-
+                $this->get('session')->setFlash('sonata_flash_success','sonata_flash_create_success');
                 // redirect to edit mode
                 return $this->redirectTo($object);
             }
+            $this->get('session')->setFlash('sonata_flash_error', 'sonata_flash_create_error');
         }
 
         return $this->render($this->admin->getEditTemplate(), array(
