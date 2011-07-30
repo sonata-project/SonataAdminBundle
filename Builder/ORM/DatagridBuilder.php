@@ -162,11 +162,16 @@ class DatagridBuilder implements DatagridBuilderInterface
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
      * @return bool
      */
-    public function addFilter(DatagridInterface $datagrid, FieldDescriptionInterface $fieldDescription)
+    public function addFilter(DatagridInterface $datagrid, $type = null, FieldDescriptionInterface $fieldDescription, AdminInterface $admin)
     {
-        if (!$fieldDescription->getType()) {
-            return false;
+        if ($type == null) {
+            throw new \RunTimeException('type guesser on DatagridBuilder is not yet implemented');
         }
+
+        $fieldDescription->setType($type);
+
+        $this->fixFieldDescription($admin, $fieldDescription);
+        $admin->addFilterFieldDescription($fieldDescription->getName(), $fieldDescription);
 
         switch($fieldDescription->getMappingType()) {
             case ClassMetadataInfo::MANY_TO_ONE:

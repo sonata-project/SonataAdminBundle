@@ -45,7 +45,6 @@ class ListBuilder implements ListBuilderInterface
      *
      * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
-     * @param array $options
      * @return void
      */
     public function fixFieldDescription(AdminInterface $admin, FieldDescriptionInterface $fieldDescription)

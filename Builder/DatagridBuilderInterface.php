@@ -18,7 +18,6 @@ use Sonata\AdminBundle\Datagrid\DatagridInterface;
 
 interface DatagridBuilderInterface
 {
-
     /**
      *
      * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
@@ -31,7 +30,7 @@ interface DatagridBuilderInterface
      * Returns the class associated to a FieldDescription if any defined
      *
      * @throws RuntimeException
-     * @param \Sonata\AdminBundle\Datagrid\DatagridInterface $fieldDescription
+     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
      * @return bool|string
      */
     function getFilterFieldClass(FieldDescriptionInterface $fieldDescription);
@@ -43,11 +42,14 @@ interface DatagridBuilderInterface
     function getChoices(FieldDescriptionInterface $fieldDescription);
 
     /**
+     * @abstract
      * @param \Sonata\AdminBundle\Datagrid\DatagridInterface $datagrid
+     * @param $type
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
-     * @return bool
+     * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
+     * @return void
      */
-    function addFilter(DatagridInterface $datagrid, FieldDescriptionInterface $fieldDescription);
+    function addFilter(DatagridInterface $datagrid, $type = null, FieldDescriptionInterface $fieldDescription, AdminInterface $admin);
 
     /**
      * @param \Sonata\AdminBundle\Admin\AdminInterface $admin

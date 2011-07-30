@@ -590,10 +590,6 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
         // build the datagrid filter
         $this->configureDatagridFilters($mapper);
-
-        foreach ($this->getFilterFieldDescriptions() as $fieldDescription) {
-            $mapper->add($fieldDescription);
-        }
     }
 
     /**
