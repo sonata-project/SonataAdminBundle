@@ -15,7 +15,6 @@ use Sonata\AdminBundle\Admin\BaseFieldDescription;
 
 class FieldDescription extends BaseFieldDescription
 {
-
     /**
      * Define the association mapping definition
      *

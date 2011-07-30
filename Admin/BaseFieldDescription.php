@@ -54,7 +54,6 @@ use Sonata\AdminBundle\Admin\AdminInterface;
  */
 abstract class BaseFieldDescription implements FieldDescriptionInterface
 {
-
     /**
      * @var string the field name
      */
