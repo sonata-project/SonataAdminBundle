@@ -41,7 +41,7 @@ class ListMapper
      * @param array $fieldDescriptionOptions
      * @return \Sonata\AdminBundle\Datagrid\ListMapper
      */
-    public function add($name, array $fieldDescriptionOptions = array())
+    public function add($name, $type = null, array $fieldDescriptionOptions = array())
     {
         if ($name instanceof FieldDescriptionInterface) {
 
@@ -56,21 +56,12 @@ class ListMapper
                 $fieldDescriptionOptions
             );
 
-            $this->listBuilder->fixFieldDescription($this->admin, $fieldDescription, $fieldDescriptionOptions);
-            $this->admin->addListFieldDescription($name, $fieldDescription);
-
-        } else if (is_string($name) && $this->admin->hasListFieldDescription($name)) {
-            $fieldDescription = $this->admin->getListFieldDescription($name);
         } else {
-
             throw new \RuntimeException('invalid state');
         }
 
         // add the field with the FormBuilder
-        $this->listBuilder->addField(
-            $this->list,
-            $fieldDescription
-        );
+        $this->listBuilder->addField($this->list, $type, $fieldDescription, $this->admin);
 
         return $this;
     }

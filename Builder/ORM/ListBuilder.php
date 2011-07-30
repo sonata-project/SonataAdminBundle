@@ -26,8 +26,17 @@ class ListBuilder implements ListBuilderInterface
         return new FieldDescriptionCollection;
     }
 
-    public function addField(FieldDescriptionCollection $list, FieldDescriptionInterface $fieldDescription)
+    public function addField(FieldDescriptionCollection $list, $type = null, FieldDescriptionInterface $fieldDescription, AdminInterface $admin)
     {
+        if ($type == null) {
+            throw new \RunTimeException('type guesser on ListBuilder is not yet implemented');
+        }
+
+        $fieldDescription->setType($type);
+
+        $this->fixFieldDescription($admin, $fieldDescription);
+        $admin->addListFieldDescription($fieldDescription->getName(), $fieldDescription);
+
         return $list->add($fieldDescription);
     }
 
@@ -39,10 +48,8 @@ class ListBuilder implements ListBuilderInterface
      * @param array $options
      * @return void
      */
-    public function fixFieldDescription(AdminInterface $admin, FieldDescriptionInterface $fieldDescription, array $options = array())
+    public function fixFieldDescription(AdminInterface $admin, FieldDescriptionInterface $fieldDescription)
     {
-        $fieldDescription->mergeOptions($options);
-
         if ($fieldDescription->getName() == '_action') {
             $this->buildActionFieldDescription($fieldDescription);
         }

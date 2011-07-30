@@ -32,7 +32,7 @@ interface ListBuilderInterface
      * @param \Sonata\AdminBundle\Admin\FieldDescription $fieldDescription
      * @return void
      */
-    function addField(FieldDescriptionCollection $list, FieldDescriptionInterface $fieldDescription);
+    function addField(FieldDescriptionCollection $list, $type = null, FieldDescriptionInterface $fieldDescription, AdminInterface $admin);
 
     /**
      * @abstract
@@ -41,5 +41,5 @@ interface ListBuilderInterface
      * @param array $options
      * @return void
      */
-    function fixFieldDescription(AdminInterface $admin, FieldDescriptionInterface $fieldDescription, array $options = array());
+    function fixFieldDescription(AdminInterface $admin, FieldDescriptionInterface $fieldDescription);
 }

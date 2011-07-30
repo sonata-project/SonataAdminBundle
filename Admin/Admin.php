@@ -521,14 +521,13 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
             $fieldDescription = $this->modelManager->getNewFieldDescriptionInstance($this->getClass(), 'batch', array(
                 'label'    => 'batch',
                 'code'     => '_batch',
-                'type'     => 'batch',
                 'sortable' => false
             ));
 
             $fieldDescription->setAdmin($this);
             $fieldDescription->setTemplate('SonataAdminBundle:CRUD:list__batch.html.twig');
 
-            $mapper->add($fieldDescription);
+            $mapper->add($fieldDescription, 'batch');
         }
 
         $this->configureListFields($mapper);
