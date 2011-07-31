@@ -28,6 +28,13 @@ class ShowMapper
 
     protected $admin;
 
+    protected $currentGroup;
+
+    /**
+     * @param \Sonata\AdminBundle\Builder\ShowBuilderInterface $showBuilder
+     * @param \Sonata\AdminBundle\Admin\FieldDescriptionCollection $list
+     * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
+     */
     public function __construct(ShowBuilderInterface $showBuilder, FieldDescriptionCollection $list, AdminInterface $admin)
     {
         $this->showBuilder  = $showBuilder;
@@ -37,12 +44,22 @@ class ShowMapper
 
     /**
      * @throws \RuntimeException
-     * @param string $name
+     * @param $name
+     * @param null $type
      * @param array $fieldDescriptionOptions
-     * @return \Sonata\AdminBundle\Datagrid\ListMapper
+     * @return ShowMapper
      */
     public function add($name, $type = null, array $fieldDescriptionOptions = array())
     {
+        if (!$this->currentGroup) {
+            $this->with($this->admin->getLabel());
+        }
+
+        $formGroups = $this->admin->getShowGroups();
+        $formGroups[$this->currentGroup]['fields'][$name] = $name;
+        $this->admin->setShowGroups($formGroups);
+
+
         if ($name instanceof FieldDescriptionInterface) {
 
             $fieldDescription = $name;
@@ -92,5 +109,34 @@ class ShowMapper
     {
         $this->admin->removeShowFieldDescription($key);
         $this->list->remove($key);
+    }
+
+    /**
+     * @param $name
+     * @param array $options
+     * @return void
+     */
+    public function with($name, array $options = array())
+    {
+        $showGroups = $this->admin->getShowGroups();
+        if (!isset($showGroups[$name])) {
+            $showGroups[$name] = array_merge(array('collapsed' => false, 'fields' => array()), $options);
+        }
+
+        $this->admin->setFormGroups($showGroups);
+
+        $this->currentGroup = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return void
+     */
+    public function end()
+    {
+        $this->currentGroup = null;
+
+        return $this;
     }
 }

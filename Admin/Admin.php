@@ -135,7 +135,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      *
      * @var array|boolean
      */
-    protected $viewGroups = false;
+    protected $showGroups = false;
 
     /**
      * The label class name  (used in the title/breadcrumb ...)
@@ -485,19 +485,6 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         $mapper = new ShowMapper($this->showBuilder, $collection, $this);
 
         $this->configureShowField($mapper);
-
-        if (!$this->viewGroups) {
-            $this->viewGroups = array(
-                false => array('fields' => array_keys($this->getShowFieldDescriptions()))
-            );
-        }
-
-        // normalize array
-        foreach ($this->viewGroups as $name => $group) {
-            if (!isset($this->viewGroups[$name]['collapsed'])) {
-                $this->viewGroups[$name]['collapsed'] = false;
-            }
-        }
 
         $this->show = $collection;
     }
@@ -1127,9 +1114,14 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         $this->formGroups = $formGroups;
     }
 
-    public function getViewGroups()
+    public function getShowGroups()
     {
-        return $this->viewGroups;
+        return $this->showGroups;
+    }
+
+    public function setShowGroups(array $showGroups)
+    {
+        $this->showGroups = $showGroups;
     }
 
     /**
