@@ -26,11 +26,14 @@ class ShowBuilder implements ShowBuilderInterface
         return new FieldDescriptionCollection;
     }
 
-    public function addField(FieldDescriptionCollection $list, FieldDescriptionInterface $fieldDescription)
+    public function addField(FieldDescriptionCollection $list, $type = null, FieldDescriptionInterface $fieldDescription, AdminInterface $admin)
     {
-        if (!$fieldDescription->getType()) {
-            return false;
+        if ($type == null) {
+            throw new \RunTimeException('type guesser on ShowBuilder is not yet implemented');
         }
+
+        $this->fixFieldDescription($admin, $fieldDescription);
+        $admin->addShowFieldDescription($fieldDescription->getName(), $fieldDescription);
 
         switch($fieldDescription->getMappingType()) {
             case ClassMetadataInfo::MANY_TO_ONE:
@@ -50,12 +53,10 @@ class ShowBuilder implements ShowBuilderInterface
      *
      * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
-     * @param array $options
      * @return void
      */
-    public function fixFieldDescription(AdminInterface $admin, FieldDescriptionInterface $fieldDescription, array $options = array())
+    public function fixFieldDescription(AdminInterface $admin, FieldDescriptionInterface $fieldDescription)
     {
-        $fieldDescription->mergeOptions($options);
         $fieldDescription->setAdmin($admin);
 
         if ($admin->getModelManager()->hasMetadata($admin->getClass())) {

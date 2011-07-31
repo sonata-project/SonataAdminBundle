@@ -28,17 +28,18 @@ interface ShowBuilderInterface
     /**
      * @abstract
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionCollection $list
-     * @param \Sonata\AdminBundle\Admin\FieldDescription $fieldDescription
+     * @param null $type
+     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
+     * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
      * @return void
      */
-    function addField(FieldDescriptionCollection $list, FieldDescriptionInterface $fieldDescription);
+    function addField(FieldDescriptionCollection $list, $type = null, FieldDescriptionInterface $fieldDescription, AdminInterface $admin);
 
     /**
      * @abstract
      * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
-     * @param \Sonata\AdminBundle\Admin\FieldDescription $fieldDescription
-     * @param array $options
+     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
      * @return void
      */
-    function fixFieldDescription(AdminInterface $admin, FieldDescriptionInterface $fieldDescription, array $options = array());
+    function fixFieldDescription(AdminInterface $admin, FieldDescriptionInterface $fieldDescription);
 }
