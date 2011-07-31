@@ -624,20 +624,6 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         }
 
         $this->form = $this->getFormBuilder()->getForm();
-
-        // configure the form group thing
-        if (!$this->formGroups) {
-            $this->formGroups = array(
-                false => array('fields' => array_keys($this->formFieldDescriptions))
-            );
-        }
-
-        // normalize array
-        foreach ($this->formGroups as $name => $group) {
-            if (!isset($this->formGroups[$name]['collapsed'])) {
-                $this->formGroups[$name]['collapsed'] = false;
-            }
-        }
     }
 
     /**
@@ -1134,6 +1120,11 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     public function getFormGroups()
     {
         return $this->formGroups;
+    }
+
+    public function setFormGroups(array $formGroups)
+    {
+        $this->formGroups = $formGroups;
     }
 
     public function getViewGroups()

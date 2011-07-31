@@ -27,11 +27,42 @@ class FormMapper
 
     protected $admin;
 
+    protected $currentGroup;
+
     public function __construct(FormContractorInterface $formContractor, FormBuilder $formBuilder, AdminInterface $admin)
     {
         $this->formBuilder      = $formBuilder;
         $this->formContractor   = $formContractor;
         $this->admin            = $admin;
+    }
+
+    /**
+     * @param $name
+     * @param array $options
+     * @return void
+     */
+    public function with($name, array $options = array())
+    {
+        $formGroups = $this->admin->getFormGroups();
+        if (!isset($formGroups[$name])) {
+            $formGroups[$name] = array_merge(array('collapsed' => false, 'fields' => array()), $options);
+        }
+
+        $this->admin->setFormGroups($formGroups);
+
+        $this->currentGroup = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return void
+     */
+    public function end()
+    {
+        $this->currentGroup = null;
+
+        return $this;
     }
 
     /**
@@ -43,6 +74,14 @@ class FormMapper
      */
     public function add($name, $type = null, array $options = array(), array $fieldDescriptionOptions = array())
     {
+        if (!$this->currentGroup) {
+            $this->with($this->admin->getLabel());
+        }
+
+        $formGroups = $this->admin->getFormGroups();
+        $formGroups[$this->currentGroup]['fields'][$name] = $name;
+        $this->admin->setFormGroups($formGroups);
+
         if (!isset($fieldDescriptionOptions['type']) && is_string($type)) {
             $fieldDescriptionOptions['type'] = $type;
         }
