@@ -28,6 +28,11 @@ class DatagridMapper
 
     protected $admin;
 
+    /**
+     * @param \Sonata\AdminBundle\Builder\DatagridBuilderInterface $datagridBuilder
+     * @param DatagridInterface $datagrid
+     * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
+     */
     public function __construct(DatagridBuilderInterface $datagridBuilder, DatagridInterface $datagrid, AdminInterface $admin)
     {
         $this->datagridBuilder  = $datagridBuilder;
@@ -37,9 +42,10 @@ class DatagridMapper
 
     /**
      * @throws \RuntimeException
-     * @param string $name
+     * @param $name
+     * @param null $type
      * @param array $fieldDescriptionOptions
-     * @return \Sonata\AdminBundle\Datagrid\DatagridMapper
+     * @return DatagridMapper
      */
     public function add($name, $type = null, array $fieldDescriptionOptions = array())
     {
@@ -66,7 +72,7 @@ class DatagridMapper
     }
 
     /**
-     * @param string $name
+     * @param $name
      * @return
      */
     public function get($name)

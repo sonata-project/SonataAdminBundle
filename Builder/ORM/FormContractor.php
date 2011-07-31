@@ -30,6 +30,9 @@ class FormContractor implements FormContractorInterface
 {
     protected $fieldFactory;
 
+    /**
+     * @param \Symfony\Component\Form\FormFactoryInterface $formFactory
+     */
     public function __construct(FormFactoryInterface $formFactory)
     {
         $this->formFactory = $formFactory;
@@ -38,9 +41,9 @@ class FormContractor implements FormContractorInterface
     /**
      * Returns an OneToOne associated field
      *
-     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
      * @param string
-     * @return array();
+     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
+     * @return array
      */
     protected function getOneToOneFieldOptions($type, FieldDescriptionInterface $fieldDescription)
     {
@@ -61,8 +64,7 @@ class FormContractor implements FormContractorInterface
             return $options;
         }
 
-        if ($fieldDescription->getOption('edit') == 'standard')
-        {
+        if ($fieldDescription->getOption('edit') == 'standard') {
             return $options;
         }
 
@@ -79,7 +81,7 @@ class FormContractor implements FormContractorInterface
     /**
      * Returns the OneToMany associated field
      *
-     * @param \Symfony\Component\Form\FormBuilder $formBuilder
+     * @param string
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
      * @return array
      */
@@ -108,8 +110,8 @@ class FormContractor implements FormContractorInterface
     }
 
     /**
-     * @param \Symfony\Component\Form\FormBuilder $formBuilder
      * @param string
+     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
      * @return array
      */
     protected function getManyToManyFieldOptions($type, FieldDescriptionInterface $fieldDescription)
@@ -168,6 +170,9 @@ class FormContractor implements FormContractorInterface
         }
     }
 
+    /**
+     * @return \Symfony\Component\Form\FormFactoryInterface
+     */
     public function getFormFactory()
     {
         return $this->formFactory;
@@ -183,6 +188,12 @@ class FormContractor implements FormContractorInterface
         return $this->getFormFactory()->createNamedBuilder('form', $name, null, $options);
     }
 
+    /**
+     * @param $type
+     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
+     * @param array $options
+     * @return array
+     */
     public function getDefaultOptions($type, FieldDescriptionInterface $fieldDescription, array $options = array())
     {
         $options['sonata_field_description'] = $fieldDescription;

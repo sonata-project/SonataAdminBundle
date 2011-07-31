@@ -84,36 +84,36 @@ class ShowBuilder implements ShowBuilderInterface
 
             $fieldDescription->setTemplate(sprintf('SonataAdminBundle:CRUD:show_%s.html.twig', $fieldDescription->getType()));
 
-            if ($fieldDescription->getType() == ClassMetadataInfo::MANY_TO_ONE) {
+            if ($fieldDescription->getMappingType() == ClassMetadataInfo::MANY_TO_ONE) {
                 $fieldDescription->setTemplate('SonataAdminBundle:CRUD:show_orm_many_to_one.html.twig');
             }
 
-            if ($fieldDescription->getType() == ClassMetadataInfo::ONE_TO_ONE) {
+            if ($fieldDescription->getMappingType() == ClassMetadataInfo::ONE_TO_ONE) {
                 $fieldDescription->setTemplate('SonataAdminBundle:CRUD:show_orm_one_to_one.html.twig');
             }
 
-            if ($fieldDescription->getType() == ClassMetadataInfo::ONE_TO_MANY) {
+            if ($fieldDescription->getMappingType() == ClassMetadataInfo::ONE_TO_MANY) {
                 $fieldDescription->setTemplate('SonataAdminBundle:CRUD:show_orm_one_to_many.html.twig');
             }
 
-            if ($fieldDescription->getType() == ClassMetadataInfo::MANY_TO_MANY) {
+            if ($fieldDescription->getMappingType() == ClassMetadataInfo::MANY_TO_MANY) {
                 $fieldDescription->setTemplate('SonataAdminBundle:CRUD:show_orm_many_to_many.html.twig');
             }
         }
 
-        if ($fieldDescription->getType() == ClassMetadataInfo::MANY_TO_ONE) {
+        if ($fieldDescription->getMappingType() == ClassMetadataInfo::MANY_TO_ONE) {
             $admin->attachAdminClass($fieldDescription);
         }
 
-        if ($fieldDescription->getType() == ClassMetadataInfo::ONE_TO_ONE) {
+        if ($fieldDescription->getMappingType() == ClassMetadataInfo::ONE_TO_ONE) {
             $admin->attachAdminClass($fieldDescription);
         }
 
-        if ($fieldDescription->getType() == ClassMetadataInfo::ONE_TO_MANY) {
+        if ($fieldDescription->getMappingType() == ClassMetadataInfo::ONE_TO_MANY) {
             $admin->attachAdminClass($fieldDescription);
         }
 
-        if ($fieldDescription->getType() == ClassMetadataInfo::MANY_TO_MANY) {
+        if ($fieldDescription->getMappingType() == ClassMetadataInfo::MANY_TO_MANY) {
             $admin->attachAdminClass($fieldDescription);
         }
     }

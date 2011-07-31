@@ -78,10 +78,6 @@ class DatagridBuilder implements DatagridBuilderInterface
             }
         }
 
-        if (!$fieldDescription->getType()) {
-            throw new \RuntimeException(sprintf('Please define a type for field `%s` in `%s`', $fieldDescription->getName(), get_class($admin)));
-        }
-
         $fieldDescription->setOption('code', $fieldDescription->getOption('code', $fieldDescription->getName()));
         $fieldDescription->setOption('label', $fieldDescription->getOption('label', $fieldDescription->getName()));
         $fieldDescription->setOption('filter_value', $fieldDescription->getOption('filter_value', null));
@@ -89,19 +85,14 @@ class DatagridBuilder implements DatagridBuilderInterface
         $fieldDescription->setOption('filter_field_options', $fieldDescription->getOption('filter_field_options', null));
         $fieldDescription->setOption('name', $fieldDescription->getOption('name', $fieldDescription->getName()));
 
-        // set the default type if none is set
-        if (!$fieldDescription->getType()) {
-            $fieldDescription->setType('string');
-        }
-
         if (!$fieldDescription->getTemplate()) {
             $fieldDescription->setTemplate(sprintf('SonataAdminBundle:CRUD:filter_%s.html.twig', $fieldDescription->getType()));
 
-            if ($fieldDescription->getType() == ClassMetadataInfo::MANY_TO_ONE) {
+            if ($fieldDescription->getMappingType() == ClassMetadataInfo::MANY_TO_ONE) {
                 $fieldDescription->setTemplate('SonataAdminBundle:CRUD:filter_many_to_one.html.twig');
             }
 
-            if ($fieldDescription->getType() == ClassMetadataInfo::MANY_TO_MANY) {
+            if ($fieldDescription->getMappingType() == ClassMetadataInfo::MANY_TO_MANY) {
                 $fieldDescription->setTemplate('SonataAdminBundle:CRUD:filter_many_to_many.html.twig');
             }
         }
