@@ -53,7 +53,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      *
      * @var array
      */
-    protected $list;
+    private $list;
 
     /**
      * The list FieldDescription constructed from the configureListField method
@@ -62,7 +62,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      */
     protected $listFieldDescriptions = array();
 
-    protected $show;
+    private $show;
 
     /**
      * The show FieldDescription constructed from the configureShowField method
@@ -74,7 +74,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     /**
      * @var Form
      */
-    protected $form;
+    private $form;
 
     /**
      * The list FieldDescription constructed from the configureFormField method
@@ -86,7 +86,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     /**
      * @var DatagridInterface
      */
-    protected $filter;
+    private $filter;
 
     /**
      * The filter FieldDescription constructed from the configureFilterField method
@@ -128,14 +128,14 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      *
      * @var array|boolean
      */
-    protected $formGroups = false;
+    private $formGroups = false;
 
     /**
      * The view group disposition
      *
      * @var array|boolean
      */
-    protected $showGroups = false;
+    private $showGroups = false;
 
     /**
      * The label class name  (used in the title/breadcrumb ...)

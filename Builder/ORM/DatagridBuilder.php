@@ -20,12 +20,15 @@ use Sonata\AdminBundle\Datagrid\ORM\Pager;
 use Sonata\AdminBundle\Datagrid\ORM\ProxyQuery;
 use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
 use Symfony\Component\Form\FormFactory;
+use Sonata\AdminBundle\Guesser\TypeGuesserInterface;
 
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 
 class DatagridBuilder implements DatagridBuilderInterface
 {
     protected $formFactory;
+
+    protected $guesser;
 
     /**
      * todo: put this in the DIC
@@ -35,22 +38,19 @@ class DatagridBuilder implements DatagridBuilderInterface
      * @var array
      */
     protected $filterClasses = array(
-        'string'     =>  'Sonata\\AdminBundle\\Filter\\ORM\\StringFilter',
         'text'       =>  'Sonata\\AdminBundle\\Filter\\ORM\\StringFilter',
-        'boolean'    =>  'Sonata\\AdminBundle\\Filter\\ORM\\BooleanFilter',
+        'textarea'   =>  'Sonata\\AdminBundle\\Filter\\ORM\\StringFilter',
+        'checkbox'   =>  'Sonata\\AdminBundle\\Filter\\ORM\\BooleanFilter',
         'integer'    =>  'Sonata\\AdminBundle\\Filter\\ORM\\IntegerFilter',
-        'tinyint'    =>  'Sonata\\AdminBundle\\Filter\\ORM\\IntegerFilter',
-        'smallint'   =>  'Sonata\\AdminBundle\\Filter\\ORM\\IntegerFilter',
-        'mediumint'  =>  'Sonata\\AdminBundle\\Filter\\ORM\\IntegerFilter',
-        'bigint'     =>  'Sonata\\AdminBundle\\Filter\\ORM\\IntegerFilter',
-        'decimal'    =>  'Sonata\\AdminBundle\\Filter\\ORM\\IntegerFilter',
+        'number'     =>  'Sonata\\AdminBundle\\Filter\\ORM\\IntegerFilter',
         'callback'   =>  'Sonata\\AdminBundle\\Filter\\ORM\\CallbackFilter',
         'choice'     =>  'Sonata\\AdminBundle\\Filter\\ORM\\ChoiceFilter',
     );
 
-    public function __construct(FormFactory $formFactory)
+    public function __construct(FormFactory $formFactory, TypeGuesserInterface $guesser)
     {
         $this->formFactory = $formFactory;
+        $this->guesser     = $guesser;
     }
 
     /**
@@ -114,7 +114,7 @@ class DatagridBuilder implements DatagridBuilderInterface
         }
 
         if (!class_exists($class)) {
-            throw new \RuntimeException(sprintf('The class `%s` does not exist for field `%s`', $class, $fieldDescription->getType()));
+            throw new \RuntimeException(sprintf('The class `%s` does not exist for field type : `%s` and field name : `%s`', $class, $fieldDescription->getType(), $fieldDescription->getName()));
         }
 
         return $class;
@@ -156,10 +156,11 @@ class DatagridBuilder implements DatagridBuilderInterface
     public function addFilter(DatagridInterface $datagrid, $type = null, FieldDescriptionInterface $fieldDescription, AdminInterface $admin)
     {
         if ($type == null) {
-            throw new \RunTimeException('type guesser on DatagridBuilder is not yet implemented');
+            $guessType = $this->guesser->guessType($admin->getClass(), $fieldDescription->getName());
+            $fieldDescription->setType($guessType->getType());
+        } else {
+            $fieldDescription->setType($type);
         }
-
-        $fieldDescription->setType($type);
 
         $this->fixFieldDescription($admin, $fieldDescription);
         $admin->addFilterFieldDescription($fieldDescription->getName(), $fieldDescription);

@@ -35,6 +35,13 @@ class ListMapper
         $this->admin        = $admin;
     }
 
+    public function addIdentifier($name, $type = null, array $fieldDescriptionOptions = array())
+    {
+        $fieldDescriptionOptions['identifier'] = true;
+
+        return $this->add($name, $type, $fieldDescriptionOptions);
+    }
+
     /**
      * @throws \RuntimeException
      * @param string $name

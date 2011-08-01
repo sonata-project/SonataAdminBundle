@@ -16,11 +16,19 @@ use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
 use Sonata\AdminBundle\Builder\ListBuilderInterface;
+use Sonata\AdminBundle\Guesser\TypeGuesserInterface;
 
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 
 class ListBuilder implements ListBuilderInterface
 {
+    protected $guesser;
+
+    public function __construct(TypeGuesserInterface $guesser)
+    {
+        $this->guesser = $guesser;
+    }
+
     public function getBaseList(array $options = array())
     {
         return new FieldDescriptionCollection;
@@ -29,7 +37,10 @@ class ListBuilder implements ListBuilderInterface
     public function addField(FieldDescriptionCollection $list, $type = null, FieldDescriptionInterface $fieldDescription, AdminInterface $admin)
     {
         if ($type == null) {
-            throw new \RunTimeException('type guesser on ListBuilder is not yet implemented');
+            $guessType = $this->guesser->guessType($admin->getClass(), $fieldDescription->getName());
+            $fieldDescription->setType($guessType->getType());
+        } else {
+            $fieldDescription->setType($type);
         }
 
         $fieldDescription->setType($type);
