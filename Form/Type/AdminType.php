@@ -54,6 +54,10 @@ class AdminType extends AbstractType
      */
     public function getFieldDescription(array $options)
     {
+        if (!$options['field_description']) {
+            throw new \RuntimeException('Please provide a valid `field_description` option');
+        }
+
         return $options['field_description'];
     }
 
