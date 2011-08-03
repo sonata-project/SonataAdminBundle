@@ -167,15 +167,9 @@ class DatagridBuilder implements DatagridBuilderInterface
 
         switch($fieldDescription->getMappingType()) {
             case ClassMetadataInfo::MANY_TO_ONE:
-                $options = $fieldDescription->getOption('filter_field_options');
-                $filter = new \Sonata\AdminBundle\Filter\ORM\IntegerFilter($fieldDescription);
-
-                break;
-
             case ClassMetadataInfo::MANY_TO_MANY:
                 $options = $fieldDescription->getOption('filter_field_options');
                 $options['choices'] = $this->getChoices($fieldDescription);
-
 
                 $fieldDescription->setOption('filter_field_options', $options);
 
