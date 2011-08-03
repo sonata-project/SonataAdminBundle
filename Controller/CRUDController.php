@@ -196,11 +196,11 @@ class CRUDController extends Controller
 
         if ($this->get('request')->getMethod() == 'POST') {
             $form->bindRequest($this->get('request'));
-            
+
             if ($form->isValid()) {
                 $this->admin->update($object);
                 $this->get('session')->setFlash('sonata_flash_success', 'flash_edit_success');
-                
+
                 if ($this->isXmlHttpRequest()) {
                     return $this->renderJson(array(
                         'result'    => 'ok',
@@ -214,9 +214,14 @@ class CRUDController extends Controller
             $this->get('session')->setFlash('sonata_flash_error', 'flash_edit_error');
         }
 
+        $view = $form->createView();
+
+        // set the theme for the current Admin Form
+        $this->get('twig')->getExtension('form')->setTheme($view, $this->admin->getFormTheme());
+
         return $this->render($this->admin->getEditTemplate(), array(
             'action'         => 'edit',
-            'form'           => $form->createView(),
+            'form'           => $view,
             'object'         => $object,
             'admin'          => $this->admin,
             'base_template'  => $this->getBaseTemplate(),
@@ -309,7 +314,9 @@ class CRUDController extends Controller
         }
 
         $object = $this->admin->getNewInstance();
-        $form = $this->admin->getForm($object);
+
+        $form = $this->admin->getForm();
+        $form->setData($object);
 
         $this->admin->setSubject($object);
 
@@ -332,9 +339,14 @@ class CRUDController extends Controller
             $this->get('session')->setFlash('sonata_flash_error', 'flash_create_error');
         }
 
+        $view = $form->createView();
+
+        // set the theme for the current Admin Form
+        $this->get('twig')->getExtension('form')->setTheme($view, $this->admin->getFormTheme());
+
         return $this->render($this->admin->getEditTemplate(), array(
             'action'        => 'create',
-            'form'          => $form->createView(),
+            'form'          => $view,
             'admin'         => $this->admin,
             'object'        => $object,
             'base_template' => $this->getBaseTemplate(),

@@ -14,7 +14,7 @@ file that was distributed with this source code.
 {# Rows #}
 
 {% block field_row %}
-    {% if not sonata_admin_enabled or not sonata_admin.field_description %}
+    {% if sonata_admin is not defined or not sonata_admin_enabled or not sonata_admin.field_description %}
         {{ parent() }}
     {% else %}
         <div id="sonata-ba-field-container-{{ id }}">
@@ -67,27 +67,45 @@ file that was distributed with this source code.
         This is not the best way to do if
         TODO : improve this part
     #}
-    {% if sonata_admin.field_description.mappingtype == 2 %}
+
+    {#model {{ sonata_admin.field_description.mappingtype }}#}
+
+    {% if sonata_admin.field_description is empty %}
+        {{ block('choice_widget') }}
+    {% elseif sonata_admin.field_description.mappingtype == 1 %}
         {{ block('sonata_admin_orm_one_to_one_widget') }}
+    {% elseif sonata_admin.field_description.mappingtype == 2 %}
+        {{ block('sonata_admin_orm_many_to_one_widget') }}
     {% elseif sonata_admin.field_description.mappingtype == 8 %}
         {{ block('sonata_admin_orm_many_to_many_widget') }}
     {% elseif sonata_admin.field_description.mappingtype == 4 %}
+        LA
         {{ block('sonata_admin_orm_one_to_many_widget') }}
+    {% else %}
+        INVALID MODE : {{ id }}
     {% endif %}
 {% endblock %}
 
 {% block sonata_type_admin_widget %}
-    {% if sonata_admin.field_description.mappingtype == 2 %}
+    {#admin {{ sonata_admin.field_description.mappingtype }}#}
+    {% if sonata_admin.field_description.mappingtype == 1 %}
         {{ block('sonata_admin_orm_one_to_one_widget') }}
+    {% elseif sonata_admin.field_description.mappingtype == 2 %}
+        {{ block('sonata_admin_orm_many_to_one_widget') }}
     {% elseif sonata_admin.field_description.mappingtype == 8 %}
         {{ block('sonata_admin_orm_many_to_many_widget') }}
     {% elseif sonata_admin.field_description.mappingtype == 4 %}
+        ICI
         {{ block('sonata_admin_orm_one_to_many_widget') }}
+    {% else %}
+        INVALID MODE : {{ id }}
     {% endif %}
 {% endblock %}
 
 {% block sonata_type_collection_widget %}
     {% if sonata_admin.field_description.mappingtype == 4 %}
         {{ block('sonata_admin_orm_one_to_many_widget') }}
+    {% else %}
+        INVALID MODE : {{ id }} - type : sonata_type_collection - mapping : {{ sonata_admin.field_description.mappingtype }}
     {% endif %}
 {% endblock %}

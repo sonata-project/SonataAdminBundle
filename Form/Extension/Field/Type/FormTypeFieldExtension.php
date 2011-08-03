@@ -30,6 +30,7 @@ class FormTypeFieldExtension extends AbstractTypeExtension
             'edit'      => 'standard',
             'inline'    => 'natural',
             'field_description' => null,
+            'block_name' => false
         );
 
         $builder->setAttribute('sonata_admin_enabled', false);
@@ -40,16 +41,8 @@ class FormTypeFieldExtension extends AbstractTypeExtension
             $sonataAdmin['admin']             = $fieldDescription->getAdmin();
             $sonataAdmin['field_description'] = $fieldDescription;
             $sonataAdmin['name']              = $fieldDescription->getName();
-
-            $parentFieldDescription = $fieldDescription->getAdmin()->getParentFieldDescription();
-
-            if ($parentFieldDescription) {
-                $sonataAdmin['edit']    = $parentFieldDescription->getOption('edit', 'standard');
-                $sonataAdmin['inline']  = $parentFieldDescription->getOption('inline', 'natural');
-            } else {
-                $sonataAdmin['edit']    = $fieldDescription->getOption('edit', 'standard');
-                $sonataAdmin['inline']  = $fieldDescription->getOption('inline', 'natural');
-            }
+            $sonataAdmin['edit']              = $fieldDescription->getOption('edit', 'standard');
+            $sonataAdmin['inline']            = $fieldDescription->getOption('inline', 'natural');
 
             $builder->setAttribute('sonata_admin_enabled', true);
         }
@@ -59,16 +52,30 @@ class FormTypeFieldExtension extends AbstractTypeExtension
 
     public function buildView(FormView $view, FormInterface $form)
     {
+        $sonataAdmin = $form->getAttribute('sonata_admin');
+
         // avoid to add extra information not required by non admin field
         if ($form->getAttribute('sonata_admin_enabled', true)) {
-            $sonataAdmin = $form->getAttribute('sonata_admin');
             $sonataAdmin['value'] = $form->getData();
 
+            // add a new block types, so the Admin Form element can be tweaked based on the admin code
+            $types    = $view->get('types');
+            $baseName = str_replace('.', '_', $sonataAdmin['field_description']->getAdmin()->getCode());
+            $baseType = $types[count($types) - 1];
+            $types[] = sprintf('%s_%s', $baseName, $baseType);
+            $types[] = sprintf('%s_%s_%s', $sonataAdmin['field_description']->getName(), $baseName, $baseType);
+            if ($sonataAdmin['block_name']) {
+                $types[] = $sonataAdmin['block_name'];
+            }
+
+            $view->set('types', $types);
             $view->set('sonata_admin_enabled', true);
             $view->set('sonata_admin', $sonataAdmin);
         } else {
             $view->set('sonata_admin_enabled', false);
         }
+
+        $view->set('sonata_admin', $sonataAdmin);
     }
 
     /**

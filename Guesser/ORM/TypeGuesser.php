@@ -18,7 +18,7 @@ use Symfony\Component\Form\Guess\Guess;
 use Symfony\Component\Form\Guess\TypeGuess;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 
-class DoctrineOrmTypeGuesser implements TypeGuesserInterface
+class TypeGuesser implements TypeGuesserInterface
 {
     protected $registry;
 

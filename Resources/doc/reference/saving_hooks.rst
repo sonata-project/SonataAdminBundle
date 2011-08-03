@@ -28,20 +28,26 @@ is how the Admin bundle can be used to solve the issue by using the ``prePersist
 
     class UserAdmin extends Admin
     {
-        protected $userManager;
-
-        protected $form = array(
-            'username',
-            'email',
-            'enabled',
-            'plainPassword' => array('type' => 'string'),
-            'locked',
-            'expired',
-            'credentialsExpired',
-            'credentialsExpireAt',
-            'groups'
-        );
-
+        public function configureFormFields(FormMapper $formMapper)
+        {
+            $formMapper
+                ->with('General')
+                    ->add('username')
+                    ->add('email')
+                    ->add('plainPassword', 'text')
+                ->end()
+                ->with('Groups')
+                    ->add('groups', 'sonata_type_model', array('required' => false))
+                ->end()
+                ->with('Management')
+                    ->add('roles', 'sonata_security_roles', array( 'multiple' => true))
+                    ->add('locked', null, array('required' => false))
+                    ->add('expired', null, array('required' => false))
+                    ->add('enabled', null, array('required' => false))
+                    ->add('credentialsExpired', null, array('required' => false))
+                ->end()
+            ;
+        }
         public function preUpdate($user)
         {
             $this->getUserManager()->updateCanonicalFields($user);

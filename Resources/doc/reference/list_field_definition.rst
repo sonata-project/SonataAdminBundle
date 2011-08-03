@@ -12,31 +12,32 @@ Example
     namespace Sonata\NewsBundle\Admin;
 
     use Sonata\AdminBundle\Admin\Admin;
+    use Sonata\AdminBundle\Form\FormMapper;
+    use Sonata\AdminBundle\Datagrid\DatagridMapper;
     use Sonata\AdminBundle\Datagrid\ListMapper;
+    use Sonata\AdminBundle\Show\ShowMapper;
 
     class PostAdmin extends Admin
     {
-        protected $list = array(
-            'title' => array('identifier' => true), // add edit link
-            'enabled',
-            'tags',
-            'summary',
-        );
-
-        protected function configureListFields(ListMapper $list) // optional
+        public function configureListFields(ListMapper $listMapper)
         {
-            // or equivalent to :
-            $list->add('title', array('identifier' => true));
-            $list->add('enabled');
-            $list->add('tags);
-            $list->add('summary');
+            $listMapper
+                ->addIdentifier('title')
+                ->add('author')
+                ->add('enabled')
+                ->add('tags')
+                ->add('commentsEnabled')
+
+                // add custom action links
+                ->add('_action', 'actions', array(
+                    'actions' => array(
+                        'view' => array(),
+                        'edit' => array(),
+                    )
+                ))
+            ;
         }
     }
-
-As you can see, the list fields are defined by overriding the ``list`` property
-and giving each definition an array of options. You can also customize each 
-field further by overriding the ``configureListFields()`` method, which is 
-blank in the parent class.
 
 Types available
 ---------------
@@ -44,7 +45,7 @@ Types available
 The most important option for each field is the ``type``: The available
 types include:
 
-* boolean 
+* boolean
 * datetime
 * decimal
 * identifier
@@ -60,16 +61,17 @@ mapping definition.
 List Actions
 ------------
 
-You can set actions for the list items by adding an '_action' field in $list:
+You can set actions for the list items by adding an '_action' field in ``configureListFields``:
 
 .. code-block:: php
 
-    '_action' => array(
-      'actions' => array(
-        'delete' => array(),
-        'edit' => array()
-      )
-    )
+    <?php
+    $listMapper->add('_action', 'actions', array(
+        'actions' => array(
+            'view' => array(),
+            'edit' => array(),
+        )
+    ))
 
 Edit and delete actions are enabled in the default configuration. You can add
 your own! Default template  file is: ``SonataAdminBundle:CRUD:list__action_[ACTION_NAME].html.twig``
@@ -78,12 +80,14 @@ You can specify your own by setting up the 'template' option like so:
 
 .. code-block:: php
 
-    '_action' => array(
-      'actions' => array(
-        'delete' => array('template' => 'MyBundle:MyController:my_partial.html.twig'),
-        'edit' => array()
-      )
-    )
+    <?php
+    $listMapper->add('_action', 'actions', array(
+        'actions' => array(
+            'view' => array(),
+            'edit' => array(),
+            'delete' => array('template' => 'MyBundle:MyController:my_partial.html.twig'),
+        )
+    ))
 
 Advance Usage
 -------------
@@ -92,12 +96,25 @@ If you need a specific layout for a row cell, you can define a custom template
 
 .. code-block:: php
 
+    <?php
+    namespace Sonata\MediaBundle\Admin;
+
+    use Sonata\AdminBundle\Admin\Admin;
+    use Sonata\AdminBundle\Form\FormMapper;
+    use Sonata\AdminBundle\Datagrid\DatagridMapper;
+    use Sonata\AdminBundle\Datagrid\ListMapper;
+    use Sonata\AdminBundle\Show\ShowMapper;
+
     class MediaAdmin extends Admin
     {
-        protected $list = array(
-            'custom' => array('template' => 'SonataMediaBundle:MediaAdmin:list_custom.html.twig', 'type' => 'string'),
-            'enabled',
-        )
+        public function configureListFields(ListMapper $listMapper)
+        {
+            $listMapper
+                ->addIdentifier('id')
+                ->add('image', 'string', array('template' => 'SonataMediaBundle:MediaAdmin:list_image.html.twig'))
+                ->add('custom', 'string', array('template' => 'SonataMediaBundle:MediaAdmin:list_custom.html.twig'))
+            ;
+        }
     }
 
 The related template :

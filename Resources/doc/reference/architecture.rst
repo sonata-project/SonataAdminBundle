@@ -17,7 +17,7 @@ Within the admin class, the following information can be defined:
 * ``list``: The fields displayed in the list table;
 * ``filter``: The fields available for filtering the list;
 * ``form``: The fields used to edit the entity;
-* ``formGroups``: The group definition where a field must be displayed (edit form)
+* ``show``: The fields used to show the entity;
 * Batch actions: Actions that can be performed on a group of entities
   (e.g. bulk delete)
 
@@ -86,7 +86,6 @@ Each field is rendered in three different ways and each has its own Twig
 template. For example, for a field with a ``text`` type, the following three
 templates will be used:
 
-* ``edit_text.twig``: template used in the edit form
 * ``filter_text.twig``: template used in the filter box
 * ``list_text.twig``: template used in the list table
 

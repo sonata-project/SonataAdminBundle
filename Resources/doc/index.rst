@@ -26,6 +26,7 @@ Reference Guide
    reference/dashboard
    reference/security
    reference/conditional_validation
+   reference/update
 
 
 Doctrine ORM

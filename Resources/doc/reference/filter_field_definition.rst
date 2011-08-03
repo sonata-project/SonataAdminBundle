@@ -12,36 +12,33 @@ Example
     <?php
     namespace Sonata\NewsBundle\Admin;
 
-    use Sonata\AdminBundle\Datagrid\DatagridMapper;
     use Sonata\AdminBundle\Admin\Admin;
+    use Sonata\AdminBundle\Form\FormMapper;
+    use Sonata\AdminBundle\Datagrid\DatagridMapper;
+    use Sonata\AdminBundle\Datagrid\ListMapper;
+    use Sonata\AdminBundle\Show\ShowMapper;
+    use Sonata\AdminBundle\Validator\ErrorElement;
 
     class PostAdmin extends Admin
     {
-        protected $filter = array(
-            'title',
-            'enabled',
-            'tags' => array('filter_field_options' => array('expanded' => true, 'multiple' => true))
-        );
-
         public function configureDatagridFilters(DatagridMapper $datagrid)
         {
-            // this is equivalent to :
-            $datagrid->add('title');
-            $datagrid->add('enabled');
-            $datagrid->add('tags', array('filter_field_options' => array('expanded' => true, 'multiple' => true))
+            $datagrid
+                ->add('title');
+                ->add('enabled');
+                ->add('tags', null, array('filter_field_options' => array('expanded' => true, 'multiple' => true))
+            ;
         }
     }
 
 Types available
 ---------------
 
-- boolean
+- checkbox
 - callback
 - decimal
 - identifier
 - integer
-- many_to_many
-- string
 - text
 
 If no type is set, the Admin class will use the one set in the Doctrine mapping
@@ -68,31 +65,34 @@ this functionality.
     <?php
     namespace Sonata\NewsBundle\Admin;
 
-    use Sonata\AdminBundle\Datagrid\DatagridMapper;
     use Sonata\AdminBundle\Admin\Admin;
+    use Sonata\AdminBundle\Form\FormMapper;
+    use Sonata\AdminBundle\Datagrid\DatagridMapper;
+    use Sonata\AdminBundle\Datagrid\ListMapper;
+    use Sonata\AdminBundle\Show\ShowMapper;
+    use Sonata\AdminBundle\Validator\ErrorElement;
+
     use Application\Sonata\NewsBundle\Entity\Comment;
-    
+
     class PostAdmin extends Admin
     {
-        protected $filter = array(
-            'title',
-            'enabled',
-            'tags' => array('filter_field_options' => array('expanded' => true, 'multiple' => true))
-        );
-
-        public function configureDatagridFilters(DatagridMapper $datagrid)
+        public function configureDatagridFilters(DatagridMapper $datagridMapper)
         {
-            $datagrid->add('with_open_comments', array(
-                'template' => 'SonataAdminBundle:CRUD:filter_callback.html.twig',
-                'type' => 'callback',
-                'filter_options' => array(
-                    'filter' => array($this, 'getWithOpenCommentFilter'),
-                    'type'   => 'checkbox'
-                ),
-                'filter_field_options' => array(
-                    'required' => false
-                )
-            ));
+            $datagridMapper
+                ->add('title')
+                ->add('enabled')
+                ->add('tags', 'orm_many_to_many', array('filter_field_options' => array('expanded' => true, 'multiple' => true)))
+                ->add('with_open_comments', 'callback', array(
+                    'template' => 'SonataAdminBundle:CRUD:filter_callback.html.twig',
+                    'filter_options' => array(
+                        'filter' => array($this, 'getWithOpenCommentFilter'),
+                        'type'   => 'checkbox'
+                    ),
+                    'filter_field_options' => array(
+                        'required' => false
+                    )
+                ))
+            ;
         }
 
         public function getWithOpenCommentFilter($queryBuilder, $alias, $field, $value)

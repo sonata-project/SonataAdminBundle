@@ -17,7 +17,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class HelperController extends Controller
 {
-
     /**
      * @return \Sonata\AdminBundle\Admin\AdminHelper
      */
@@ -41,6 +40,10 @@ class HelperController extends Controller
         }
 
         $subject = $admin->getModelManager()->findOne($admin->getClass(), $objectId);
+        if ($objectId && !$subject) {
+            throw new NotFoundHttpException;
+        }
+
         if (!$subject) {
             $subject = $admin->getNewInstance();
         }
@@ -48,15 +51,16 @@ class HelperController extends Controller
         $admin->setSubject($subject);
         $admin->setRequest($request);
 
-        list($fieldDescription, $formBuilder) = $helper->appendFormFieldElement($admin, $elementId);
+        list($fieldDescription, $form) = $helper->appendFormFieldElement($admin, $elementId);
 
-        $view = $helper->getChildFormView($formBuilder->getForm()->createView(), $elementId);
+        $view = $helper->getChildFormView($form->createView(), $elementId);
 
         // render the widget
         // todo : fix this, the twig environment variable is not set inside the extension ...
         $twig = $this->get('twig');
         $extension = $twig->getExtension('form');
         $extension->initRuntime($this->get('twig'));
+        $extension->setTheme($view, $admin->getFormTheme());
 
         return new Response($extension->renderWidget($view));
     }
@@ -95,6 +99,7 @@ class HelperController extends Controller
         $twig = $this->get('twig');
         $extension = $twig->getExtension('form');
         $extension->initRuntime($this->get('twig'));
+        $extension->setTheme($view, array('SonataAdminBundle:Form:admin_fields.html.twig'));
 
         return new Response($extension->renderWidget($view));
     }

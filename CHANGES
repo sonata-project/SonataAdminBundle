@@ -1,3 +1,12 @@
+03/08/2011
+----------
+* remove property definitions
+* add TypeGuesser for list/show/filter
+* refactor [Form|List|Filter|Show]|Mapper to match the Symfony2 Form API
+* add theme form definition from within the Admin class - default : SonataAdminBundle:Form:admin_fields.html.twig
+* add new twig bloc type names to allows custom widget layouts per admin
+* add show
+
 01/04/2011
 ----------
 * migrate to the new form framework

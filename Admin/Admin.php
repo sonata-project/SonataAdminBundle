@@ -338,6 +338,8 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         'side_menu'     => false,
     );
 
+    protected $formTheme = array('SonataAdminBundle:Form:admin_fields.html.twig');
+
     /**
      * This method can be overwritten to tweak the form construction, by default the form
      * is built by reading the FieldDescription
@@ -1957,5 +1959,15 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         $this->buildShow();
 
         return $this->show;
+    }
+
+    public function setFormTheme(array $formTheme)
+    {
+        $this->formTheme = $formTheme;
+    }
+
+    public function getFormTheme()
+    {
+        return $this->formTheme;
     }
 }

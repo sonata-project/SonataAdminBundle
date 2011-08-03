@@ -194,6 +194,10 @@ class ModelManager implements ModelManagerInterface
 
     public function getNormalizedIdentifier($entity)
     {
+        if (is_scalar($entity)) {
+            throw new \RunTimeException('Invalid argument, object or null required');
+        }
+
         // the entities is not managed
         if (!$entity || !$this->getEntityManager()->getUnitOfWork()->isInIdentityMap($entity)) {
             return null;

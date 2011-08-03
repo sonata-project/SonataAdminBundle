@@ -8,33 +8,69 @@ There is online documentation here:
 Quick example
 -------------
 
-Defining an ``Admin`` class is pretty easy: simply define fields as properties
+Defining an ``Admin`` class is pretty easy: simply define ``configure[Show|Form|List|Datagrid]Fields`` methods
+
+    <?php
+    namespace Sonata\NewsBundle\Admin;
+
+    use Sonata\AdminBundle\Admin\Admin;
+    use Sonata\AdminBundle\Form\FormMapper;
+    use Sonata\AdminBundle\Datagrid\DatagridMapper;
+    use Sonata\AdminBundle\Datagrid\ListMapper;
+    use Sonata\AdminBundle\Show\ShowMapper;
 
     class PostAdmin extends Admin
     {
-        protected $form = array(
-            'author' => array('edit' => 'list'),
-            'enabled' => array('form_field_options' => array('required' => false)),
-            'title',
-            'abstract',
-            'content',
-            'tags'     => array('form_field_options' => array('expanded' => true)),
-            'commentsCloseAt',
-            'commentsEnabled' => array('form_field_options' => array('required' => false)),
-        );
+        public function configureShowFields(ShowMapper $showMapper)
+        {
+            $showMapper
+                ->add('author')
+                ->add('enabled')
+                ->add('title')
+                ->add('abstract')
+                ->add('content')
+                ->add('tags')
+            ;
+        }
 
-        protected $list = array(
-            'title' => array('identifier' => true),
-            'author',
-            'enabled',
-            'commentsEnabled',
-        );
+        public function configureFormFields(FormMapper $formMapper)
+        {
+            $formMapper
+                ->with('General')
+                    ->add('enabled', null, array('required' => false))
+                    ->add('author', 'sonata_type_model', array(), array('edit' => 'list'))
+                    ->add('title')
+                    ->add('abstract')
+                    ->add('content')
+                ->end()
+                ->with('Tags')
+                    ->add('tags', 'sonata_type_model', array('expanded' => true))
+                ->end()
+                ->with('Options', array('collapsed' => true))
+                    ->add('commentsCloseAt')
+                    ->add('commentsEnabled', null, array('required' => false))
+                ->end()
+            ;
+        }
 
-        protected $filter = array(
-            'title',
-            'author',
-            'enabled',
-        );
+        public function configureListFields(ListMapper $listMapper)
+        {
+            $listMapper
+                ->addIdentifier('title')
+                ->add('author')
+                ->add('enabled')
+                ->add('tags')
+                ->add('commentsEnabled')
+            ;
+        }
+
+        public function configureDatagridFilters(DatagridMapper $datagridMapper)
+        {
+            $datagridMapper
+                ->add('title')
+                ->add('enabled')
+                ->add('tags', null, array('filter_field_options' => array('expanded' => true, 'multiple' => true)))
+        }
     }
 
 Screenshots : http://www.dropbox.com/gallery/581816/2/BaseApplicationBundle/preview?h=59b2e8

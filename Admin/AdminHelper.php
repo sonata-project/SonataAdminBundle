@@ -134,9 +134,7 @@ class AdminHelper
         // bind the data
         $form->bind($data);
 
-        $admin->setSubject($form->getData());
-
-        return array($fieldDescription, $formBuilder);
+        return array($fieldDescription, $form);
     }
 
     /**

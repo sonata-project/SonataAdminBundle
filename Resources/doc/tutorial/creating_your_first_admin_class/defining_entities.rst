@@ -13,6 +13,8 @@ Comment
 
 .. code-block:: php
 
+    <?php
+
     class Comment
     {
         const STATUS_MODERATE   = 2;
@@ -23,8 +25,8 @@ Comment
         protected $email;
         protected $url;
         protected $message;
-        protected $created_at;
-        protected $updated_at;
+        protected $createdAt;
+        protected $updatedAt;
         protected $status = self::STATUS_VALID;
         protected $post;
 
@@ -54,6 +56,7 @@ Post
 
 .. code-block:: php
 
+    <?php
     class Post
     {
         protected $title;
@@ -63,12 +66,12 @@ Post
         protected $tags;
         protected $comments;
         protected $enabled;
-        protected $publication_date_start;
-        protected $created_at;
-        protected $updated_at;
-        protected $comments_enabled = true;
-        protected $comments_close_at;
-        protected $comments_default_status;
+        protected $publicationDateStart;
+        protected $createdAt;
+        protected $updatedAt;
+        protected $commentsEnabled = true;
+        protected $commentsCloseAt;
+        protected $commentsDefaultStatus;
 
         public function __construct()
         {
@@ -87,7 +90,7 @@ Post
             $object->setUpdatedAt(new \DateTime);
         }
     }
-    
+
 Tag
 ~~~
 
@@ -97,8 +100,8 @@ Tag
     {
         protected $name;
         protected $slug;
-        protected $created_at;
-        protected $updated_at;
+        protected $createdAt;
+        protected $updatedAt;
         protected $enabled;
         protected $posts;
 
@@ -129,14 +132,14 @@ Comment
             <id name="id" type="integer" column="id">
                 <generator strategy="AUTO"/>
             </id>
-         
+
             <field name="name"              type="string"       column="name"          />
             <field name="url"               type="string"       column="url"           />
             <field name="email"             type="string"       column="email"           />
             <field name="message"           type="text"         column="message"       />
             <field name="status"            type="integer"      column="status"        default="false" />
-            <field name="created_at"    type="datetime"   column="created_at" />
-            <field name="updated_at"    type="datetime"   column="updated_at" />
+            <field name="createdAt"         type="datetime"     column="created_at" />
+            <field name="updatedAt"         type="datetime"     column="updated_at" />
 
             <lifecycle-callbacks>
               <lifecycle-callback type="prePersist" method="prePersist"/>
@@ -168,12 +171,12 @@ Post
             <field name="content"           type="text"         column="content"           />
             <field name="enabled"           type="boolean"      column="enabled"        default="false" />
             <field name="slug"              type="string"      column="slug" />
-            <field name="publication_date_start"   type="datetime"   column="publication_date_start"    nullable="true"/>
-            <field name="comments_enabled"    type="boolean"   column="comments_enabled" default="true"/>
-            <field name="comments_close_at"   type="datetime"  column="comments_close_at" nullable="true"/>
-            <field name="comments_default_status"   type="integer"  column="comments_default_status" nullable="false"/>
-            <field name="created_at"    type="datetime"   column="created_at" />
-            <field name="updated_at"    type="datetime"   column="updated_at" />
+            <field name="publicationDateStart"   type="datetime"   column="publication_date_start"    nullable="true"/>
+            <field name="commentsEnabled"    type="boolean"   column="comments_enabled" default="true"/>
+            <field name="commentsClose_at"   type="datetime"  column="comments_close_at" nullable="true"/>
+            <field name="commentsDefaultStatus"   type="integer"  column="comments_default_status" nullable="false"/>
+            <field name="createdAt"          type="datetime"   column="created_at" />
+            <field name="updatedAt"          type="datetime"   column="updated_at" />
 
             <lifecycle-callbacks>
                 <lifecycle-callback type="prePersist" method="prePersist"/>
@@ -240,8 +243,8 @@ Comment
             <field name="name"          type="string"       column="title"           />
             <field name="enabled"       type="boolean"      column="enabled"        default="false" />
             <field name="slug"          type="string"      column="slug"    />
-            <field name="created_at"    type="datetime"   column="created_at" />
-            <field name="updated_at"    type="datetime"   column="updated_at" />
+            <field name="createdAt"     type="datetime"   column="created_at" />
+            <field name="updatedAt"     type="datetime"   column="updated_at" />
 
             <lifecycle-callbacks>
                 <lifecycle-callback type="prePersist" method="prePersist"/>
@@ -252,7 +255,7 @@ Comment
             </many-to-many>
 
         </entity>
-      
+
     </doctrine-mapping>
 
 

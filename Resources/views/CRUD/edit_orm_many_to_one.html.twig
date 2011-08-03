@@ -15,14 +15,12 @@ file that was distributed with this source code.
     {% for field_description in sonata_admin.field_description.associationadmin.formfielddescriptions %}
         {{ form_row(form.getChild(field_description.name))}}
     {% endfor %}
-
 {% else %}
-
     <div id="field_container_{{ id }}">
 
         {% if sonata_admin.edit == 'list' %}
             <span id="field_widget_{{ id }}" >
-                {% if sonata_admin.admin.id(value) %}
+                {% if sonata_admin.admin.id(sonata_admin.value) %}
                     {% render 'SonataAdminBundle:Helper:getShortObjectDescription' with {}, {
                         'query': {
                             'code':     sonata_admin.field_description.associationadmin.code,

@@ -20,7 +20,7 @@
             <argument type="service" id="sonata.admin.guesser.orm_list_chain" />
         </service>
 
-        <service id="sonata.admin.guesser.orm_list" class="Sonata\AdminBundle\Guesser\ORM\DoctrineOrmTypeGuesser">
+        <service id="sonata.admin.guesser.orm_list" class="Sonata\AdminBundle\Guesser\ORM\TypeGuesser">
             <argument type="service" id="doctrine" />
             <tag name="sonata.admin.guesser.orm_list" />
         </service>
@@ -34,7 +34,7 @@
             <argument type="service" id="sonata.admin.guesser.orm_show_chain" />
         </service>
 
-        <service id="sonata.admin.guesser.orm_show" class="Sonata\AdminBundle\Guesser\ORM\DoctrineOrmTypeGuesser">
+        <service id="sonata.admin.guesser.orm_show" class="Sonata\AdminBundle\Guesser\ORM\TypeGuesser">
             <argument type="service" id="doctrine" />
             <tag name="sonata.admin.guesser.orm_show" />
         </service>
@@ -49,7 +49,7 @@
             <argument type="service" id="sonata.admin.guesser.orm_datagrid_chain" />
         </service>
 
-        <service id="sonata.admin.guesser.orm_datagrid" class="Sonata\AdminBundle\Guesser\ORM\DoctrineOrmTypeGuesser">
+        <service id="sonata.admin.guesser.orm_datagrid" class="Sonata\AdminBundle\Guesser\ORM\TypeGuesser">
             <argument type="service" id="doctrine" />
             <tag name="sonata.admin.guesser.orm_datagrid" />
         </service>

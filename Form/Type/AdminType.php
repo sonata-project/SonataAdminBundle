@@ -43,7 +43,7 @@ class AdminType extends AbstractType
     public function getDefaultOptions(array $options)
     {
         return array(
-            'delete'            => true,
+            'delete' => true,
         );
     }
 
