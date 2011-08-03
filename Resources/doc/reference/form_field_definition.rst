@@ -18,7 +18,7 @@ Example
 
     class PostAdmin extends Admin
     {
-        public function configureFormFields(FormMapper $formMapper)
+        protected function configureFormFields(FormMapper $formMapper)
         {
             $formMapper
                 ->add('author', 'sonata_type_model', array(), array('edit' => 'list'))
@@ -92,7 +92,7 @@ model definition).
 
     class MediaAdmin extends Admin
     {
-        public function configureFormFields(FormMapper $form)
+        protected function configureFormFields(FormMapper $form)
         {
             $formMapper
                 ->add('name', null, array('required' => false))
@@ -138,7 +138,7 @@ With the ``standard`` and ``list`` options, you can create a new ``User`` by cli
 
     class PostAdmin extends Admin
     {
-        public function configureFormFields(FormMapper $formMapper)
+        protected function configureFormFields(FormMapper $formMapper)
         {
             $formMapper
                 ->with('General')
@@ -184,7 +184,7 @@ defining one of these options:
 
     class GalleryAdmin extends Admin
     {
-        public function configureFormFields(FormMapper $formMapper)
+        protected function configureFormFields(FormMapper $formMapper)
         {
             $formMapper
                 ->add('code')

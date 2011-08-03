@@ -19,7 +19,7 @@ Example
 
     class PostAdmin extends Admin
     {
-        public function configureListFields(ListMapper $listMapper)
+        protected function configureListFields(ListMapper $listMapper)
         {
             $listMapper
                 ->addIdentifier('title')
@@ -107,7 +107,7 @@ If you need a specific layout for a row cell, you can define a custom template
 
     class MediaAdmin extends Admin
     {
-        public function configureListFields(ListMapper $listMapper)
+        protected function configureListFields(ListMapper $listMapper)
         {
             $listMapper
                 ->addIdentifier('id')

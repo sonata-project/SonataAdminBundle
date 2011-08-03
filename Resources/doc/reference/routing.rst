@@ -13,7 +13,7 @@ Routing Definition
 ------------------
 
 You can set a ``baseRouteName`` property inside your ``Admin`` class, which
-represents the route prefix.  
+represents the route prefix.
 
 .. code-block:: php
 
@@ -56,7 +56,7 @@ defined by its name.
 
     class MediaAdmin extends Admin
     {
-        public function configureRoutes(RouteCollection $collection)
+        protected function configureRoutes(RouteCollection $collection)
         {
             $collection->add('duplicate');
             $collection->add('view', $this->getRouterIdParameter().'/view');

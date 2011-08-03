@@ -28,7 +28,7 @@ is how the Admin bundle can be used to solve the issue by using the ``prePersist
 
     class UserAdmin extends Admin
     {
-        public function configureFormFields(FormMapper $formMapper)
+        protected function configureFormFields(FormMapper $formMapper)
         {
             $formMapper
                 ->with('General')

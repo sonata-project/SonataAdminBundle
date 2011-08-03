@@ -28,7 +28,7 @@ First, you need to create an Admin/PostAdmin.php file
 
     class PostAdmin extends Admin
     {
-        public function configureShowField(ShowMapper $showMapper)
+        protected function configureShowField(ShowMapper $showMapper)
         {
             $showMapper
                 ->add('enabled')
@@ -39,7 +39,7 @@ First, you need to create an Admin/PostAdmin.php file
             ;
         }
 
-        public function configureFormFields(FormMapper $formMapper)
+        protected function configureFormFields(FormMapper $formMapper)
         {
             $formMapper
                 ->with('General')
@@ -59,7 +59,7 @@ First, you need to create an Admin/PostAdmin.php file
             ;
         }
 
-        public function configureListFields(ListMapper $listMapper)
+        protected function configureListFields(ListMapper $listMapper)
         {
             $listMapper
                 ->addIdentifier('title')
@@ -69,7 +69,7 @@ First, you need to create an Admin/PostAdmin.php file
             ;
         }
 
-        public function configureDatagridFilters(DatagridMapper $datagridMapper)
+        protected function configureDatagridFilters(DatagridMapper $datagridMapper)
         {
             $datagridMapper
                 ->add('title')
@@ -99,7 +99,7 @@ First, you need to create an Admin/PostAdmin.php file
             $queryBuilder->setParameter('status', Comment::STATUS_MODERATE);
         }
 
-        public function configureSideMenu(MenuItem $menu, $action, Admin $childAdmin = null)
+        protected function configureSideMenu(MenuItem $menu, $action, Admin $childAdmin = null)
         {
             if (!$childAdmin && !in_array($action, array('edit'))) {
                 return;
@@ -269,7 +269,7 @@ Tweak the CommentAdmin class
             'message'
         );
 
-        public function configureFormFields(FormMapper $form)
+        protected function configureFormFields(FormMapper $form)
         {
             $form->add('status', array('choices' => Comment::getStatusList()), array('type' => 'choice'));
         }

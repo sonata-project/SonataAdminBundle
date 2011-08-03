@@ -50,7 +50,7 @@ Now you can edit the settings array with :
     class PageAdmin extends Admin
     {
 
-        public function configureFormFields(FormMapper $formMapper)
+        protected function configureFormFields(FormMapper $formMapper)
         {
             $formMapper
                 ->add('enabled')
@@ -87,7 +87,7 @@ Other options :
 
     class PostAdmin extends Admin
     {
-        public function configureFormFields(FormMapper $formMapper)
+        protected function configureFormFields(FormMapper $formMapper)
         {
             $formMapper
                 ->with('General')

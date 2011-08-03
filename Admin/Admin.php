@@ -348,6 +348,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      */
     protected function configureFormFields(FormMapper $form)
     {
+
     }
 
     /**
@@ -359,6 +360,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     {
 
     }
+
 
     /**
      *
@@ -383,12 +385,12 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      *
      * @param RouteCollection
      */
-    public function configureRoutes(RouteCollection $collection)
+    protected function configureRoutes(RouteCollection $collection)
     {
 
     }
 
-    public function configureSideMenu(MenuItem $menu, $action, Admin $childAdmin = null)
+    protected function configureSideMenu(MenuItem $menu, $action, Admin $childAdmin = null)
     {
 
     }

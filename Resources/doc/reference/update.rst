@@ -26,7 +26,7 @@ Example :
     {
         protected $userManager;
 
-        public function configureShowField(ShowMapper $showMapper)
+        protected function configureShowField(ShowMapper $showMapper)
         {
             $showMapper
                 ->add('author')
@@ -38,7 +38,7 @@ Example :
             ;
         }
 
-        public function configureFormFields(FormMapper $formMapper)
+        protected function configureFormFields(FormMapper $formMapper)
         {
             $formMapper
                 ->with('General')
@@ -59,7 +59,7 @@ Example :
             ;
         }
 
-        public function configureListFields(ListMapper $listMapper)
+        protected function configureListFields(ListMapper $listMapper)
         {
             $listMapper
                 ->addIdentifier('title')
@@ -70,7 +70,7 @@ Example :
             ;
         }
 
-        public function configureDatagridFilters(DatagridMapper $datagridMapper)
+        protected function configureDatagridFilters(DatagridMapper $datagridMapper)
         {
             $datagridMapper
                 ->add('title')

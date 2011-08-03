@@ -21,7 +21,7 @@ Example
 
     class PostAdmin extends Admin
     {
-        public function configureDatagridFilters(DatagridMapper $datagrid)
+        protected function configureDatagridFilters(DatagridMapper $datagrid)
         {
             $datagrid
                 ->add('title');
@@ -76,7 +76,7 @@ this functionality.
 
     class PostAdmin extends Admin
     {
-        public function configureDatagridFilters(DatagridMapper $datagridMapper)
+        protected function configureDatagridFilters(DatagridMapper $datagridMapper)
         {
             $datagridMapper
                 ->add('title')
