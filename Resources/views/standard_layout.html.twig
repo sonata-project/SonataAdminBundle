@@ -93,16 +93,10 @@ file that was distributed with this source code.
                     </h1>
                 </div>
                 
-                {# flash notice defined in CRUDController after actions- 3 levels #}
-                {% for notice_level in ['success','error','notice'] %}
-
-                   {% set session_var = 'sonata_flash_' ~ notice_level %}
-                    {% if app.session.hasFlash(session_var) %}
-                        <div class="{{notice_level}}">
-                        {{ app.session.flash(session_var) | trans([],'SonataAdminBundle') }}
-                       </div>
-                    {% endif %}
-                
+                {% for level, message in app.session.flashes %}
+                    <div class="{{ level }}">
+                        {{ message|trans([], 'SonataAdminBundle') }}
+                    </div>
                 {% endfor %}
                
             </div>
