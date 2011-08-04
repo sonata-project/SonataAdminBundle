@@ -611,6 +611,9 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
             $parent = $this->getParent()->getObject($this->request->get($this->getParent()->getIdParameter()));
 
             $propertyPath = new \Symfony\Component\Form\Util\PropertyPath($this->getParentAssociationMapping());
+            
+            $object = $this->getSubject();
+
             $propertyPath->setValue($object, $parent);
         }
 
