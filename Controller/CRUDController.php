@@ -115,6 +115,20 @@ class CRUDController extends Controller
     }
 
     /**
+     * @param $view
+     * @param array $parameters
+     * @param null|\Symfony\Component\HttpFoundation\Response $response
+     * @return \Symfony\Bundle\FrameworkBundle\Controller\Response
+     */
+    public function render($view, array $parameters = array(), Response $response = null)
+    {
+        $parameters['admin']         = isset($parameters['admin']) ? $parameters['admin'] : $this->admin;
+        $parameters['base_template'] = isset($parameters['base_template']) ? $parameters['base_template'] : $this->getBaseTemplate();
+
+        return parent::render($view, $parameters);
+    }
+
+    /**
      * return the Response object associated to the list action
      *
      * @return Response
@@ -127,8 +141,6 @@ class CRUDController extends Controller
 
         return $this->render($this->admin->getListTemplate(), array(
             'action'            => 'list',
-            'admin'             => $this->admin,
-            'base_template'     => $this->getBaseTemplate(),
         ));
     }
 
@@ -223,8 +235,6 @@ class CRUDController extends Controller
             'action'         => 'edit',
             'form'           => $view,
             'object'         => $object,
-            'admin'          => $this->admin,
-            'base_template'  => $this->getBaseTemplate(),
         ));
     }
 
@@ -347,9 +357,7 @@ class CRUDController extends Controller
         return $this->render($this->admin->getEditTemplate(), array(
             'action'        => 'create',
             'form'          => $view,
-            'admin'         => $this->admin,
             'object'        => $object,
-            'base_template' => $this->getBaseTemplate(),
         ));
     }
 
@@ -379,8 +387,6 @@ class CRUDController extends Controller
             'action'         => 'show',
             'object'         => $object,
             'elements'       => $this->admin->getShow(),
-            'admin'          => $this->admin,
-            'base_template'  => $this->getBaseTemplate(),
         ));
     }
 }
