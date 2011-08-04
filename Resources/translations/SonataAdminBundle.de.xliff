@@ -32,7 +32,7 @@
             </trans-unit>
             <trans-unit id="btn_update_and_return_to_list">
                 <source>btn_update_and_return_to_list</source>
-                <target>Speichern und schliessen</target>
+                <target>Speichern und schließen</target>
             </trans-unit>
             <trans-unit id="link_action_create">
                 <source>link_action_create</source>
@@ -41,6 +41,14 @@
             <trans-unit id="link_action_list">
                 <source>link_action_list</source>
                 <target>Zurück zur Liste</target>
+            </trans-unit>
+            <trans-unit id="link_action_view">
+                <source>link_action_view</source>
+                <target>Anzeigen</target>
+            </trans-unit>
+            <trans-unit id="link_action_edit">
+                <source>link_action_edit</source>
+                <target>Bearbeiten</target>
             </trans-unit>
             <trans-unit id="link_add">
                 <source>link_add</source>
@@ -69,6 +77,78 @@
             <trans-unit id="title_list">
                 <source>title_list</source>
                 <target>Liste</target>
+            </trans-unit>
+            <trans-unit id="link_next_pager">
+                <source>link_next_pager</source>
+                <target>Nächste</target>
+            </trans-unit>
+            <trans-unit id="link_previous_pager">
+                <source>link_previous_pager</source>
+                <target>Vorherige</target>
+            </trans-unit>
+            <trans-unit id="Admin">
+                <source>Admin</source>
+                <target>Admin</target>
+            </trans-unit>
+            <trans-unit id="link_expand">
+                <source>link_expand</source>
+                <target>auf-/zuklappen</target>
+            </trans-unit>
+            <trans-unit id="no_result">
+                <source>no_result</source>
+                <target>Kein Ergebnis</target>
+            </trans-unit>
+            <trans-unit id="confirm_msg">
+                <source>confirm_msg</source>
+                <target>Sind Sie sicher?</target>
+            </trans-unit>
+            <trans-unit id="action_edit">
+                <source>action_edit</source>
+                <target>Bearbeiten</target>
+            </trans-unit>
+            <trans-unit id="action_view">
+                <source>action_view</source>
+                <target>Anzeigen</target>
+            </trans-unit>
+            <trans-unit id="all_elements">
+                <source>all_elements</source>
+                <target>Alle Elemente</target>
+            </trans-unit>
+            <trans-unit id="flash_batch_empty">
+              <source>flash_batch_empty</source>
+              <target>Aktion abgebrochen. Es waren keine Elemente ausgewählt.</target>
+            </trans-unit>
+            <trans-unit id="flash_create_success">
+              <source>flash_create_success</source>
+              <target>Element wurde erfolgreich hinzugefügt.</target>
+            </trans-unit>
+            <trans-unit id="flash_create_error">
+              <source>flash_create_error</source>
+              <target>Beim Hinzufügen des Elements ist ein Fehler aufgetreten.</target>
+            </trans-unit>
+            <trans-unit id="flash_edit_success">
+              <source>flash_edit_success</source>
+              <target>Element wurde erfolgreich bearbeitet.</target>
+            </trans-unit>
+            <trans-unit id="flash_edit_error">
+              <source>flash_edit_error</source>
+              <target>Beim Bearbeiten des Elements ist ein Fehler aufgetreten.</target>
+            </trans-unit>
+            <trans-unit id="flash_batch_delete_success">
+              <source>flash_batch_delete_success</source>
+              <target>Die ausgewählten Elemente wurden erfolgreich gelöscht.</target>
+            </trans-unit>
+            <trans-unit id="flash_batch_delete_error">
+              <source>flash_batch_delete_error</source>
+              <target>Beim Löschen der ausgewählten Elemente ist ein Fehler aufgetreten.</target>
+            </trans-unit>
+            <trans-unit id="flash_delete_error">
+              <source>flash_delete_error</source>
+              <target>Beim Löschen des Elements ist ein Fehler aufgetreten.</target>
+            </trans-unit>
+            <trans-unit id="flash_delete_success">
+              <source>flash_delete_success</source>
+              <target>Element wurde erfolgreich gelöscht.</target>
             </trans-unit>
         </body>
     </file>
