@@ -14,13 +14,13 @@ file that was distributed with this source code.
 {% block actions %}
     <div class="sonata-actions">
         <ul>
-            {% if admin.id(object) and admin.isGranted('VIEW') and admin.show|length > 0 %}
+            {% if admin.hasroute('show') and admin.id(object) and admin.isGranted('VIEW') and admin.show|length > 0 %}
                 <li class="sonata-action-element"><a href="{{ admin.generateUrl('show', {'id' : admin.id(object)}) }}">{% trans from 'SonataAdminBundle' %}link_action_show{% endtrans %}</a></li>
             {% endif %}
-            {% if admin.isGranted('CREATE')%}
+            {% if admin.hasroute('create') and admin.isGranted('CREATE')%}
                 <li class="sonata-action-element"><a href="{{ admin.generateUrl('create') }}">{% trans from 'SonataAdminBundle' %}link_action_create{% endtrans %}</a></li>
             {% endif %}
-            {% if admin.isGranted('LIST')%}
+            {% if admin.hasroute('list') and admin.isGranted('LIST')%}
                 <li class="sonata-action-element"><a href="{{ admin.generateUrl('list') }}">{% trans from 'SonataAdminBundle' %}link_action_list{% endtrans %}</a></li>
             {% endif %}
         </ul>
@@ -37,55 +37,61 @@ file that was distributed with this source code.
         {% set url = 'create' %}
     {% endif %}
 
-    <form action="{{ admin.generateUrl(url, {'id': admin.id(object), 'uniqid': admin.uniqid}) }}" {{ form_enctype(form) }} method="POST">
+    {% if not admin.hasRoute(url)%}
+        <div>
+            {{ "form_not_available"|trans({}, "SonataAdminBundle") }}
+        </div>
+    {% else %}
+        <form action="{{ admin.generateUrl(url, {'id': admin.id(object), 'uniqid': admin.uniqid}) }}" {{ form_enctype(form) }} method="POST">
 
-        {% if form.vars.errors|length > 0 %}
-            <div class="sonata-ba-form-error">
-                {{ form_errors(form) }}
-            </div>
-        {% endif %}
-
-        {% for name, form_group in admin.formgroups %}
-            {% if name %}
-                <fieldset>
-                    <legend>
-                        {{ name|trans({}, admin.translationdomain) }}
-                        {% if form_group.collapsed %}
-                            <a href="" class="sonata-ba-collapsed">{% trans from 'SonataAdminBundle' %}link_expand{% endtrans %}</a>
-                        {% endif %}
-                    </legend>
-
-                    <div class="sonata-ba-collapsed-fields">
+            {% if form.vars.errors|length > 0 %}
+                <div class="sonata-ba-form-error">
+                    {{ form_errors(form) }}
+                </div>
             {% endif %}
 
-            {% for field_name in form_group.fields %}
-                {% if admin.formfielddescriptions[field_name] is defined %}
-                    {{ form_row(form[field_name])}}
+            {% for name, form_group in admin.formgroups %}
+                {% if name %}
+                    <fieldset>
+                        <legend>
+                            {{ name|trans({}, admin.translationdomain) }}
+                            {% if form_group.collapsed %}
+                                <a href="" class="sonata-ba-collapsed">{% trans from 'SonataAdminBundle' %}link_expand{% endtrans %}</a>
+                            {% endif %}
+                        </legend>
+
+                        <div class="sonata-ba-collapsed-fields">
+                {% endif %}
+
+                {% for field_name in form_group.fields %}
+                    {% if admin.formfielddescriptions[field_name] is defined %}
+                        {{ form_row(form[field_name])}}
+                    {% endif %}
+                {% endfor %}
+
+                {% if name %}
+                        </div>
+                    </fieldset>
                 {% endif %}
             {% endfor %}
 
-            {% if name %}
-                    </div>
-                </fieldset>
-            {% endif %}
-        {% endfor %}
+            {{ form_rest(form) }}
 
-        {{ form_rest(form) }}
-
-        {% if app.request.isxmlhttprequest %}
-            {% if admin.id(object) %}
-                <input type="submit" name="btn_update" value="{% trans from 'SonataAdminBundle' %}btn_update{% endtrans %}"/>
+            {% if app.request.isxmlhttprequest %}
+                {% if admin.id(object) %}
+                    <input type="submit" name="btn_update" value="{% trans from 'SonataAdminBundle' %}btn_update{% endtrans %}"/>
+                {% else %}
+                    <input type="submit" name="btn_create" value="{% trans from 'SonataAdminBundle' %}btn_create{% endtrans %}"/>
+                {% endif %}
             {% else %}
-                <input type="submit" name="btn_create" value="{% trans from 'SonataAdminBundle' %}btn_create{% endtrans %}"/>
+                {% if admin.id(object) %}
+                    <input type="submit" name="btn_update_and_edit" value="{% trans from 'SonataAdminBundle' %}btn_update_and_edit_again{% endtrans %}"/>
+                    <input type="submit" name="btn_update_and_list" value="{% trans from 'SonataAdminBundle' %}btn_update_and_return_to_list{% endtrans %}"/>
+                {% else %}
+                    <input type="submit" name="btn_create_and_edit" value="{% trans from 'SonataAdminBundle' %}btn_create_and_edit_again{% endtrans %}"/>
+                    <input type="submit" name="btn_create_and_create" value="{% trans from 'SonataAdminBundle' %}btn_create_and_create_a_new_one{% endtrans %}"/>
+                {% endif %}
             {% endif %}
-        {% else %}
-            {% if admin.id(object) %}
-                <input type="submit" name="btn_update_and_edit" value="{% trans from 'SonataAdminBundle' %}btn_update_and_edit_again{% endtrans %}"/>
-                <input type="submit" name="btn_update_and_list" value="{% trans from 'SonataAdminBundle' %}btn_update_and_return_to_list{% endtrans %}"/>
-            {% else %}
-                <input type="submit" name="btn_create_and_edit" value="{% trans from 'SonataAdminBundle' %}btn_create_and_edit_again{% endtrans %}"/>
-                <input type="submit" name="btn_create_and_create" value="{% trans from 'SonataAdminBundle' %}btn_create_and_create_a_new_one{% endtrans %}"/>
-            {% endif %}
-        {% endif %}
-    </form>
+        </form>
+    {% endif%}
 {% endblock %}

@@ -12,6 +12,7 @@
 namespace Sonata\AdminBundle\Tests\Admin;
 
 use Sonata\AdminBundle\Admin\Admin;
+use Sonata\AdminBundle\Route\RouteCollection;
 
 class PostAdmin extends Admin
 {
@@ -42,6 +43,11 @@ class CommentAdmin extends Admin
     public function setClassnameLabel($label)
     {
         $this->classnameLabel = $label;
+    }
+
+    public function configureRoutes(RouteCollection $collection)
+    {
+        $collection->remove('edit');
     }
 }
 
@@ -153,10 +159,20 @@ class AdminTest extends \PHPUnit_Framework_TestCase
     public function testGetBaseRouteNameWithChildAdmin()
     {
         $postAdmin = new PostAdmin('sonata.post.admin.post', 'Application\Sonata\NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
+        $postAdmin->configure();
         $commentAdmin = new CommentAdmin('sonata.post.admin.comment', 'Application\Sonata\NewsBundle\Entity\Comment', 'SonataNewsBundle:CommentAdmin');
-        $commentAdmin->setParent($postAdmin);
+        $commentAdmin->configure();
+        $postAdmin->addChild($commentAdmin);
+
 
         $this->assertEquals('admin_sonata_news_post_comment', $commentAdmin->getBaseRouteName());
+
+        $this->assertTrue($postAdmin->hasRoute('show'));
+        $this->assertTrue($postAdmin->hasRoute('sonata.post.admin.post.show'));
+        $this->assertTrue($postAdmin->hasRoute('sonata.post.admin.post|sonata.post.admin.comment.show'));
+
+        $this->assertFalse($postAdmin->hasRoute('sonata.post.admin.post|sonata.post.admin.comment.edit'));
+        $this->assertFalse($commentAdmin->hasRoute('edit'));
     }
 
     /**

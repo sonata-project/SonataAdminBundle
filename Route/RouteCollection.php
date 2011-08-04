@@ -14,7 +14,6 @@ use Symfony\Component\Routing\Route;
 
 class RouteCollection
 {
-
     protected $elements = array();
 
     protected $baseCodeRoute;
@@ -28,6 +27,7 @@ class RouteCollection
     /**
      * @param string $baseCodeRoute
      * @param string $baseRouteName
+     * @param string $baseRoutePattern
      * @param string $baseControllerName
      */
     public function __construct($baseCodeRoute, $baseRouteName, $baseRoutePattern, $baseControllerName)
@@ -49,8 +49,8 @@ class RouteCollection
     public function add($name, $pattern = null, array $defaults = array(), array $requirements = array(), array $options = array())
     {
         $pattern    = sprintf('%s/%s', $this->baseRoutePattern, $pattern ?: $name);
-        $code       = sprintf('%s.%s', $this->baseCodeRoute, $name);
-        $name       = sprintf('%s_%s', $this->baseRouteName, $name);
+        $code       = $this->getCode($name);
+        $routeName  = sprintf('%s_%s', $this->baseRouteName, $name);
 
         if (!isset($defaults['_controller'])) {
             $defaults['_controller'] = sprintf('%s:%s', $this->baseControllerName, $this->actionify($code));
@@ -60,18 +60,26 @@ class RouteCollection
             $defaults['_sonata_admin'] = $this->baseCodeRoute;
         }
 
-        $defaults['_sonata_name'] = $name;
+        $defaults['_sonata_name'] = $routeName;
 
-        $this->elements[$code] = new Route($pattern, $defaults, $requirements, $options);;
+        $this->elements[$this->getCode($name)] = new Route($pattern, $defaults, $requirements, $options);
+    }
+
+    public function getCode($name)
+    {
+        if (strrpos($name, '.') !== false) {
+            return $name;
+        }
+        return sprintf('%s.%s', $this->baseCodeRoute, $name);
     }
 
     /**
-     * @param RouteCollection
+     * @param RouteCollection $collection
      */
     public function addCollection(RouteCollection $collection)
     {
-        foreach ($collection->getElements() as $name => $route) {
-            $this->elements[$name] = $route;
+        foreach ($collection->getElements() as $code => $route) {
+            $this->elements[$code] = $route;
         }
     }
 
@@ -89,7 +97,7 @@ class RouteCollection
      */
     public function has($name)
     {
-        return array_key_exists($name, $this->elements);
+        return array_key_exists($this->getCode($name), $this->elements);
     }
 
     /**
@@ -99,25 +107,66 @@ class RouteCollection
     public function get($name)
     {
         if ($this->has($name)) {
-            return $this->elements[$name];
+            return $this->elements[$this->getCode($name)];
         }
 
         throw new \InvalidArgumentException(sprintf('Element "%s" does not exist.', $name));
     }
 
     /**
+     * @param $name
+     * @return void
+     */
+    public function remove($name)
+    {
+        unset($this->elements[$this->getCode($name)]);
+    }
+
+    /**
      * Convert a word in to the format for a symfony action action_name => actionName
      *
-     * @param string  $word Word to actionify
-     * @return string $word Actionified word
+     * @param string $action Word to actionify
+     * @return string Actionified word
      */
     public function actionify($action)
     {
         if (($pos = strrpos($action, '.')) !== false) {
 
-          $action = substr($action, $pos + 1);
+            $action = substr($action, $pos + 1);
         }
 
         return lcfirst(str_replace(' ', '', ucwords(strtr($action, '_-', '  '))));
+    }
+
+    /**
+     * @return string
+     */
+    public function getBaseCodeRoute()
+    {
+        return $this->baseCodeRoute;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBaseControllerName()
+    {
+        return $this->baseControllerName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBaseRouteName()
+    {
+        return $this->baseRouteName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBaseRoutePattern()
+    {
+        return $this->baseRoutePattern;
     }
 }

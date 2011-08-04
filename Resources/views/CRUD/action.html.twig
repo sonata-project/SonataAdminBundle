@@ -14,10 +14,10 @@ file that was distributed with this source code.
 {% block actions %}
     <div class="sonata-actions">
         <ul>
-            {% if admin.isGranted('CREATE')%}
+            {% if admin.hasRoute('create') and admin.isGranted('CREATE')%}
                 <li class="sonata-action-element"><a href="{{ admin.generateUrl('create') }}">{% trans from 'SonataAdminBundle' %}link_action_create{% endtrans %}</a></li>
             {% endif %}
-            {% if admin.isGranted('LIST')%}
+            {% if admin.hasRoute('list') and  admin.isGranted('LIST')%}
                 <li class="sonata-action-element"><a href="{{ admin.generateUrl('list') }}">{% trans from 'SonataAdminBundle' %}link_action_list{% endtrans %}</a></li>
             {% endif %}
         </ul>

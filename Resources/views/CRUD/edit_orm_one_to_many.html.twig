@@ -60,19 +60,21 @@ file that was distributed with this source code.
         </span>
 
         {% if sonata_admin.edit == 'inline' %}
-            <span id="field_actions_{{ id }}" >
-                <a
-                    href="{{ sonata_admin.field_description.associationadmin.generateUrl('create') }}"
-                    onclick="start_field_retrieve_{{ id }}(event)"
-                    class="sonata-ba-action"
-                    style="{% if not sonata_admin.field_description.associationadmin.isGranted('CREATE')%}display:none{% endif %}"
-                    >
-                    <img
-                        src="{{ asset('bundles/sonataadmin/famfamfam/add.png') }}"
-                        alt="{% trans from 'SonataAdminBundle' %}btn_add{% endtrans %}"
-                     />
-                </a>
-            </span>
+
+            {% if sonata_admin.field_description.associationadmin.hasroute('create') and sonata_admin.field_description.associationadmin.isGranted('CREATE') %}
+                <span id="field_actions_{{ id }}" >
+                    <a
+                        href="{{ sonata_admin.field_description.associationadmin.generateUrl('create') }}"
+                        onclick="start_field_retrieve_{{ id }}(event)"
+                        class="sonata-ba-action"
+                        >
+                        <img
+                            src="{{ asset('bundles/sonataadmin/famfamfam/add.png') }}"
+                            alt="{% trans from 'SonataAdminBundle' %}btn_add{% endtrans %}"
+                         />
+                    </a>
+                </span>
+            {% endif %}
 
             {# add code for the sortable options #}
             {% if sonata_admin.field_description.options.sortable is defined %}
@@ -114,17 +116,18 @@ file that was distributed with this source code.
 
         {% else %}
             <span id="field_actions_{{ id }}" >
-                <a
-                    href="{{ sonata_admin.field_description.associationadmin.generateUrl('create') }}"
-                    onclick="start_field_dialog_form_add_{{ id }}(event)"
-                    class="sonata-ba-action"
-                    style="{% if not sonata_admin.field_description.associationadmin.isGranted('CREATE')%}display:none{% endif %}"
-                    >
-                    <img
-                        src="{{ asset('bundles/sonataadmin/famfamfam/add.png') }}"
-                        alt="{% trans from 'SonataAdminBundle' %}btn_add{% endtrans %}"
-                     />
-                </a>
+                {% if sonata_admin.field_description.associationadmin.hasroute('create') and sonata_admin.field_description.associationadmin.isGranted('CREATE') %}
+                    <a
+                        href="{{ sonata_admin.field_description.associationadmin.generateUrl('create') }}"
+                        onclick="start_field_dialog_form_add_{{ id }}(event)"
+                        class="sonata-ba-action"
+                        >
+                        <img
+                            src="{{ asset('bundles/sonataadmin/famfamfam/add.png') }}"
+                            alt="{% trans from 'SonataAdminBundle' %}btn_add{% endtrans %}"
+                         />
+                    </a>
+                {% endif %}
             </span>
 
             <div style="display: none" id="field_dialog_{{ id }}">
