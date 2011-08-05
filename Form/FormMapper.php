@@ -37,9 +37,9 @@ class FormMapper
     }
 
     /**
-     * @param $name
+     * @param string $name
      * @param array $options
-     * @return void
+     * @return \Sonata\AdminBundle\Form\FormMapper
      */
     public function with($name, array $options = array())
     {
@@ -58,7 +58,7 @@ class FormMapper
     }
 
     /**
-     * @return void
+     * @return \Sonata\AdminBundle\Form\FormMapper
      */
     public function end()
     {
@@ -72,7 +72,7 @@ class FormMapper
      * @param string $type
      * @param array $options
      * @param array $fieldDescriptionOptions
-     * @return \Symfony\Component\Form\FormInterface
+     * @return \Sonata\AdminBundle\Form\FormMapper
      */
     public function add($name, $type = null, array $options = array(), array $fieldDescriptionOptions = array())
     {
@@ -157,13 +157,17 @@ class FormMapper
      * @param string $name
      * @param mixed $type
      * @param array $options
-     * @return void
+     * @return \Symfony\Component\Form\FormBuilder
      */
     public function create($name, $type = null, array $options = array())
     {
         return $this->formBuilder->create($name, $type, $options);
     }
 
+    /**
+     * @param array $helps
+     * @return FormMapper
+     */
     public function setHelps(array $helps = array())
     {
         foreach($helps as $name => $help) {
