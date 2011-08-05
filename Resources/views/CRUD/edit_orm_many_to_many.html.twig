@@ -16,7 +16,7 @@ file that was distributed with this source code.
         </span>
 
         <span id="field_actions_{{ id }}" >
-            {% sonata_admin.field_description.associationadmin.hasRoute('create') and sonata_admin.field_description.associationadmin.isGranted('CREATE') %}
+            {% if sonata_admin.field_description.associationadmin.hasRoute('create') and sonata_admin.field_description.associationadmin.isGranted('CREATE') %}
                 <a
                     href="{{ sonata_admin.field_description.associationadmin.generateUrl('create') }}"
                     onclick="start_field_dialog_form_add_{{ id }}(event)"
