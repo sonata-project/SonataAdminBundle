@@ -344,6 +344,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      * This method can be overwritten to tweak the form construction, by default the form
      * is built by reading the FieldDescription
      *
+     * @param \Sonata\AdminBundle\Form\FormMapper $form
      * @return void
      */
     protected function configureFormFields(FormMapper $form)
@@ -354,7 +355,8 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     /**
      * overwrite this method to configure the list FormField definition
      *
-     * @param ListMapper $list
+     * @param \Sonata\AdminBundle\Datagrid\ListMapper $list
+     * @return void
      */
     protected function configureListFields(ListMapper $list)
     {
@@ -363,8 +365,8 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
 
     /**
-     *
-     * @param DatagridMapper
+     * @param \Sonata\AdminBundle\Datagrid\DatagridMapper $filter
+     * @return void
      */
     protected function configureDatagridFilters(DatagridMapper $filter)
     {
@@ -372,8 +374,8 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     *
-     * @param DatagridMapper
+     * @param \Sonata\AdminBundle\Show\ShowMapper $filter
+     * @return void
      */
     protected function configureShowField(ShowMapper $filter)
     {
@@ -383,18 +385,30 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     /**
      * configure the Admin routes
      *
-     * @param RouteCollection
+     * @param \Sonata\AdminBundle\Route\RouteCollection $collection
+     * @return void
      */
     protected function configureRoutes(RouteCollection $collection)
     {
 
     }
 
+    /**
+     * @param \Knp\Bundle\MenuBundle\MenuItem $menu
+     * @param $action
+     * @param null|Admin $childAdmin
+     * @return void
+     */
     protected function configureSideMenu(MenuItem $menu, $action, Admin $childAdmin = null)
     {
 
     }
 
+    /**
+     * @param \Sonata\AdminBundle\Validator\ErrorElement $errorElement
+     * @param $object
+     * @return void
+     */
     public function validate(ErrorElement $errorElement, $object)
     {
 
@@ -611,7 +625,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
             $parent = $this->getParent()->getObject($this->request->get($this->getParent()->getIdParameter()));
 
             $propertyPath = new \Symfony\Component\Form\Util\PropertyPath($this->getParentAssociationMapping());
-            
+
             $object = $this->getSubject();
 
             $propertyPath->setValue($object, $parent);
@@ -921,7 +935,6 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * @param Object $object
      * @return \Symfony\Component\Form\FormBuilder the form builder
      */
     public function getFormBuilder()
@@ -987,8 +1000,6 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     /**
      * Returns a form depend on the given $object
      *
-     * @param object $object
-     * @param array $options the form options
      * @return \Symfony\Component\Form\Form
      */
     public function getForm()
@@ -1001,7 +1012,6 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     /**
      * Returns a list depend on the given $object
      *
-     * @param array $options
      * @return \Sonata\AdminBundle\Admin\FieldDescriptionCollection
      */
     public function getList()
@@ -1430,8 +1440,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     /**
      * add an Admin child to the current one
      *
-     * @param string $code
-     * @param \Sonata\AdminBundle\Admin\Admin $child
+     * @param \Sonata\AdminBundle\Admin\AdminInterface $child
      * @return void
      */
     public function addChild(AdminInterface $child)
@@ -1488,7 +1497,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     /**
      * get the Parent Admin
      *
-     * @return \Sonata\AdminBundle\Admin\Admin|null
+     * @return \Sonata\AdminBundle\Admin\AdminInterface|null
      */
     public function getParent()
     {
@@ -1573,8 +1582,8 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      * Generates the breadcrumbs array
      *
      * @param string $action
-     * @param \Knp\MenuBundle\MenuItem|null $menu
-     * @return array the breadcrumbs
+     * @param \Knp\Bundle\MenuBundle\MenuItem|null $menu
+     * @return array
      */
     public function buildBreadcrumbs($action, MenuItem $menu = null)
     {
@@ -1710,7 +1719,8 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     *
+     * @param \Symfony\Component\Translation\TranslatorInterface $translator
+     * @return void
      */
     public function setTranslator(TranslatorInterface $translator)
     {
@@ -1718,7 +1728,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     *
+     * @return \Symfony\Component\Translation\TranslatorInterface
      */
     public function getTranslator()
     {
@@ -1949,23 +1959,33 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      * Shorthand method for templating
      *
      * @param object $entity
-     * @return
+     * @return mixed
      */
     public function id($entity)
     {
         return $this->getNormalizedIdentifier($entity);
     }
 
+    /**
+     * @param \Symfony\Component\Validator\ValidatorInterface $validator
+     * @return void
+     */
     public function setValidator(ValidatorInterface $validator)
     {
       $this->validator = $validator;
     }
 
+    /**
+     * @return \Symfony\Component\Validator\ValidatorInterface
+     */
     public function getValidator()
     {
       return $this->validator;
     }
 
+    /**
+     * @return array
+     */
     public function getShow()
     {
         $this->buildShow();
@@ -1973,11 +1993,18 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         return $this->show;
     }
 
+    /**
+     * @param array $formTheme
+     * @return void
+     */
     public function setFormTheme(array $formTheme)
     {
         $this->formTheme = $formTheme;
     }
 
+    /**
+     * @return array
+     */
     public function getFormTheme()
     {
         return $this->formTheme;
