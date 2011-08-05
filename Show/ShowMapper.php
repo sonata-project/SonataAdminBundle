@@ -44,10 +44,10 @@ class ShowMapper
 
     /**
      * @throws \RuntimeException
-     * @param $name
-     * @param null $type
+     * @param mixed $name
+     * @param mixed $type
      * @param array $fieldDescriptionOptions
-     * @return ShowMapper
+     * @return \Sonata\AdminBundle\Show\ShowMapper
      */
     public function add($name, $type = null, array $fieldDescriptionOptions = array())
     {
@@ -61,18 +61,14 @@ class ShowMapper
 
 
         if ($name instanceof FieldDescriptionInterface) {
-
             $fieldDescription = $name;
             $fieldDescription->mergeOptions($fieldDescriptionOptions);
-
         } else if (is_string($name) && !$this->admin->hasShowFieldDescription($name)) {
-
             $fieldDescription = $this->admin->getModelManager()->getNewFieldDescriptionInstance(
                 $this->admin->getClass(),
                 $name,
                 $fieldDescriptionOptions
             );
-
         } else {
             throw new \RuntimeException('invalid state');
         }
@@ -102,7 +98,7 @@ class ShowMapper
     }
 
     /**
-     * @param  $key
+     * @param string $key
      * @return void
      */
     public function remove($key)
@@ -112,9 +108,9 @@ class ShowMapper
     }
 
     /**
-     * @param $name
+     * @param string $name
      * @param array $options
-     * @return void
+     * @return \Sonata\AdminBundle\Show\ShowMapper
      */
     public function with($name, array $options = array())
     {
@@ -131,7 +127,7 @@ class ShowMapper
     }
 
     /**
-     * @return void
+     * @return \Sonata\AdminBundle\Show\ShowMapper
      */
     public function end()
     {

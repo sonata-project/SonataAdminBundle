@@ -42,8 +42,8 @@ class DatagridMapper
 
     /**
      * @throws \RuntimeException
-     * @param $name
-     * @param null $type
+     * @param mixed $name
+     * @param mixed $type
      * @param array $fieldDescriptionOptions
      * @return DatagridMapper
      */
@@ -52,15 +52,12 @@ class DatagridMapper
         if ($name instanceof FieldDescriptionInterface) {
             $fieldDescription = $name;
             $fieldDescription->mergeOptions($fieldDescriptionOptions);
-
         } else if (is_string($name) && !$this->admin->hasFormFieldDescription($name)) {
-
             $fieldDescription = $this->admin->getModelManager()->getNewFieldDescriptionInstance(
                 $this->admin->getClass(),
                 $name,
                 $fieldDescriptionOptions
             );
-
         } else {
             throw new \RuntimeException('invalid state');
         }

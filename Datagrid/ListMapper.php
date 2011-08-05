@@ -44,25 +44,23 @@ class ListMapper
 
     /**
      * @throws \RuntimeException
-     * @param string $name
+     *
+     * @param mixed $name
+     * @param mixed $type
      * @param array $fieldDescriptionOptions
      * @return \Sonata\AdminBundle\Datagrid\ListMapper
      */
     public function add($name, $type = null, array $fieldDescriptionOptions = array())
     {
         if ($name instanceof FieldDescriptionInterface) {
-
             $fieldDescription = $name;
             $fieldDescription->mergeOptions($fieldDescriptionOptions);
-
         } else if (is_string($name) && !$this->admin->hasListFieldDescription($name)) {
-
             $fieldDescription = $this->admin->getModelManager()->getNewFieldDescriptionInstance(
                 $this->admin->getClass(),
                 $name,
                 $fieldDescriptionOptions
             );
-
         } else {
             throw new \RuntimeException('invalid state');
         }
@@ -92,7 +90,7 @@ class ListMapper
     }
 
     /**
-     * @param  $key
+     * @param  string $key
      * @return void
      */
     public function remove($key)
