@@ -11,6 +11,7 @@
 namespace Sonata\AdminBundle\Tests\Admin\Security\Acl\Permission;
 
 use Sonata\AdminBundle\Security\Handler\AclSecurityHandler;
+use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 
 class AclSecurityHandlerTest extends \PHPUnit_Framework_TestCase
 {
@@ -37,26 +38,53 @@ class AclSecurityHandlerTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($handler->isGranted('TOTO'));
     }
 
-  public function testBuildInformation()
-  {
-      $informations = array(
-          'EDIT' => array('EDIT')
-      );
+    public function testBuildInformation()
+    {
+        $informations = array(
+            'EDIT' => array('EDIT')
+        );
 
-      $securityContext = $this->getMock('Symfony\Component\Security\Core\SecurityContextInterface');
-      $admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
-      $admin->expects($this->once())
-          ->method('getCode')
-          ->will($this->returnValue('test'));
+        $securityContext = $this->getMock('Symfony\Component\Security\Core\SecurityContextInterface');
+        $admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $admin->expects($this->once())
+            ->method('getCode')
+            ->will($this->returnValue('test'));
 
-      $admin->expects($this->once())
-          ->method('getSecurityInformation')
-          ->will($this->returnValue($informations));
+        $admin->expects($this->once())
+            ->method('getSecurityInformation')
+            ->will($this->returnValue($informations));
 
-      $handler = new AclSecurityHandler($securityContext);
+        $handler = new AclSecurityHandler($securityContext);
 
-      $results = $handler->buildSecurityInformation($admin);
+        $results = $handler->buildSecurityInformation($admin);
 
-      $this->assertArrayHasKey('ROLE_TEST_EDIT', $results);
-  }
+        $this->assertArrayHasKey('ROLE_TEST_EDIT', $results);
+    }
+
+    public function testWithAuthenticationCredentialsNotFoundException()
+    {
+        $securityContext = $this->getMock('Symfony\Component\Security\Core\SecurityContextInterface');
+        $securityContext->expects($this->any())
+            ->method('isGranted')
+            ->will($this->throwException(new AuthenticationCredentialsNotFoundException('FAIL')));
+
+        $handler = new AclSecurityHandler($securityContext);
+
+        $this->assertFalse($handler->isGranted('raise exception'));
+    }
+
+    /**
+     * @expectedException RuntimeException
+     */
+    public function testWithNonAuthenticationCredentialsNotFoundException()
+    {
+        $securityContext = $this->getMock('Symfony\Component\Security\Core\SecurityContextInterface');
+        $securityContext->expects($this->any())
+            ->method('isGranted')
+            ->will($this->throwException(new \RunTimeException('FAIL')));
+
+        $handler = new AclSecurityHandler($securityContext);
+
+        $this->assertFalse($handler->isGranted('raise exception'));
+    }
 }

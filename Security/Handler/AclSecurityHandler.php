@@ -12,6 +12,7 @@
 namespace Sonata\AdminBundle\Security\Handler;
 
 use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 use Sonata\AdminBundle\Admin\AdminInterface;
 
 class AclSecurityHandler implements SecurityHandlerInterface
@@ -26,7 +27,13 @@ class AclSecurityHandler implements SecurityHandlerInterface
      */
     public function isGranted($attributes, $object = null)
     {
-        return $this->securityContext->isGranted($attributes, $object);
+        try {
+            return $this->securityContext->isGranted($attributes, $object);
+        } catch (AuthenticationCredentialsNotFoundException $e) {
+            return false;
+        } catch (\Exception $e) {
+            throw $e;
+        }
     }
 
     /**
