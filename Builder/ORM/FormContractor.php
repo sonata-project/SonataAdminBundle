@@ -121,7 +121,7 @@ class FormContractor implements FormContractorInterface
         } else if ($type == 'sonata_type_admin') {
 
             // nothing here ...
-            $options['edit'] = 'inline';
+            //$options['edit'] = 'inline';
 
         } else if ($type == 'sonata_type_collection') {
 
