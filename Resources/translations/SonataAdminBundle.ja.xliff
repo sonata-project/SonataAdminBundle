@@ -42,8 +42,8 @@
                 <source>link_action_list</source>
                 <target>一覧に戻る</target>
             </trans-unit>
-            <trans-unit id="link_action_view">
-                <source>link_action_view</source>
+            <trans-unit id="link_action_show">
+                <source>link_action_show</source>
                 <target>表示</target>
             </trans-unit>
             <trans-unit id="link_action_edit">
@@ -106,8 +106,8 @@
                 <source>action_edit</source>
                 <target>編集</target>
             </trans-unit>
-            <trans-unit id="action_view">
-                <source>action_view</source>
+            <trans-unit id="action_show">
+                <source>action_show</source>
                 <target>表示</target>
             </trans-unit>
         </body>
