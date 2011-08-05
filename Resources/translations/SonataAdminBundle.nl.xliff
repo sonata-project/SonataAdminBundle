@@ -98,8 +98,8 @@
                 <source>action_edit</source>
                 <target>Bijwerken</target>
             </trans-unit>
-            <trans-unit id="action_view">
-                <source>action_view</source>
+            <trans-unit id="action_show">
+                <source>action_show</source>
                 <target>Bekijk</target>
             </trans-unit>
         </body>

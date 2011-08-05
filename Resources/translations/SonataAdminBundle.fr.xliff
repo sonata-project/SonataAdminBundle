@@ -38,8 +38,8 @@
                 <source>link_action_create</source>
                 <target>Ajouter</target>
             </trans-unit>
-            <trans-unit id="link_action_view">
-                <source>link_action_view</source>
+            <trans-unit id="link_action_show">
+                <source>link_action_show</source>
                 <target>Afficher</target>
             </trans-unit>
             <trans-unit id="link_action_edit">
@@ -106,8 +106,8 @@
                 <source>action_edit</source>
                 <target>Éditer</target>
             </trans-unit>
-            <trans-unit id="action_view">
-                <source>action_view</source>
+            <trans-unit id="action_show">
+                <source>action_show</source>
                 <target>Afficher</target>
             </trans-unit>
             <trans-unit id="all_elements">
