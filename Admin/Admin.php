@@ -581,14 +581,11 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
             $this->filterFieldDescriptions[$this->getParentAssociationMapping()] = $fieldDescription;
         }
 
-        foreach ($this->filterFieldDescriptions as $fieldDescription) {
-            $this->getDatagridBuilder()->fixFieldDescription($this, $fieldDescription);
-        }
-
         $parameters = $this->getFilterParameters();
 
         // initialize the datagrid
         $this->datagrid = $this->getDatagridBuilder()->getBaseDatagrid($this, $parameters);
+
         $this->datagrid->getPager()->setMaxPerPage($this->maxPerPage);
 
         $mapper = new DatagridMapper($this->getDatagridBuilder(), $this->datagrid, $this);
@@ -1434,6 +1431,8 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      */
     public function getFilterFieldDescriptions()
     {
+        $this->buildDatagrid();
+
         return $this->filterFieldDescriptions;
     }
 
