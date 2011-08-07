@@ -31,11 +31,15 @@ class ExplainAdminCommand extends ContainerAwareCommand
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
-
         $admin = $this->getContainer()->get($input->getArgument('admin'));
+
+        if (!$admin instanceof \Sonata\AdminBundle\Admin\AdminInterface) {
+            throw new \RunTimeException(sprintf('service %s is not an admin class', $input->getArgument('admin')));
+        }
 
         $output->writeln('<comment>AdminBundle Information</comment>');
         $output->writeln(sprintf('<info>% -20s</info> : %s', 'id', $admin->getCode()));
+        $output->writeln(sprintf('<info>% -20s</info> : %s', 'Admin', get_class($admin)));
         $output->writeln(sprintf('<info>% -20s</info> : %s', 'Model', $admin->getClass()));
         $output->writeln(sprintf('<info>% -20s</info> : %s', 'Controller', $admin->getBaseControllerName()));
         $output->writeln(sprintf('<info>% -20s</info> : %s', 'Model Manager', get_class($admin->getModelManager())));
@@ -66,10 +70,12 @@ class ExplainAdminCommand extends ContainerAwareCommand
         }
 
         $output->writeln('');
-        $output->writeln('<info>Form Options</info>');
-//        $output->writeln(sprintf('  -  % -25s % -15s', 'validation_groups', implode('|', $admin->getFormBuilder()->getForm()->getOption('validation_groups'))));
-        $output->writeln('');
+        $output->writeln('<info>Form theme(s)</info>');
+        foreach ($admin->getFormTheme() as $template) {
+            $output->writeln(sprintf('  - %s', $template));
+        }
 
+        $output->writeln('');
         $output->writeln('<info>Form Fields</info>');
         foreach ($admin->getFormFieldDescriptions() as $name => $fieldDescription) {
             $output->writeln(sprintf('  - % -25s  % -15s % -15s', $name, $fieldDescription->getType(), $fieldDescription->getTemplate()));
@@ -82,25 +88,34 @@ class ExplainAdminCommand extends ContainerAwareCommand
         $output->writeln('<comment>Validation Framework</comment> - http://symfony.com/doc/2.0/book/validation.html');
         $output->writeln('<info>Properties constraints</info>');
 
-        if (count($metadata->getConstrainedProperties()) == 0) {
-            $output->writeln('    <error>no properties constraints defined !!</error>');
-        }
+        if (count($metadata->properties) == 0) {
+            $output->writeln('    <error>no property constraints defined !!</error>');
+        } else {
+            foreach ($metadata->properties as $name => $property) {
+                $output->writeln(sprintf('  - %s', $name));
 
-        foreach ($metadata->getConstrainedProperties() as $name) {
-            $output->writeln(sprintf('  <info>%s</info>', $name));
-            $propertyMetadatas = $metadata->getMemberMetadatas($name);
-            foreach ($propertyMetadatas as $propertyMetadata) {
-                foreach ($propertyMetadata->getConstraints() as $constraint) {
+                foreach ($property->getConstraints() as $constraint) {
                     $output->writeln(sprintf('    % -70s %s', get_class($constraint), implode('|', $constraint->groups)));
                 }
             }
         }
 
         $output->writeln('');
-        $output->writeln('<info>Getter constraints</info>');
-        $output->writeln('  <comment>todo ;)</comment>');
-//        foreach ($metadata->getters as $name => $value) {
-//            $output->writeln('TODO ...');
-//        }
+        $output->writeln('<info>Getters constraints</info>');
+
+        if (count($metadata->getters) == 0) {
+            $output->writeln('    <error>no getter constraints defined !!</error>');
+        } else {
+            foreach ($metadata->getters as $name => $property) {
+                $output->writeln(sprintf('  - %s', $name));
+
+                foreach ($property->getConstraints() as $constraint) {
+                    $output->writeln(sprintf('    % -70s %s', get_class($constraint), implode('|', $constraint->groups)));
+                }
+            }
+        }
+
+        $output->writeln('');
+        $output->writeln('<info>done!</info>');
     }
 }
