@@ -575,12 +575,6 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
             return;
         }
 
-        // ok, try to limit to add parent filter
-        if ($this->getParentAssociationMapping()) {
-            $fieldDescription = $this->getModelManager()->getParentFieldDescription($this->getParentAssociationMapping(), $this->getClass());
-            $this->filterFieldDescriptions[$this->getParentAssociationMapping()] = $fieldDescription;
-        }
-
         $parameters = $this->getFilterParameters();
 
         // initialize the datagrid
@@ -592,6 +586,14 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
         // build the datagrid filter
         $this->configureDatagridFilters($mapper);
+
+        // ok, try to limit to add parent filter
+        if ($this->getParentAssociationMapping()) {
+            $fieldDescription = $this->getModelManager()->getParentFieldDescription($this->getParentAssociationMapping(), $this->getClass());
+            $this->filterFieldDescriptions[$this->getParentAssociationMapping()] = $fieldDescription;
+
+            $mapper->add($fieldDescription);
+        }
     }
 
     /**
