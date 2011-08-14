@@ -452,11 +452,10 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     public function delete($object)
-    {    
-        $media = clone $object;
+    {
         $this->preRemove($object);
         $this->modelManager->delete($object);
-        $this->postRemove($media);
+        $this->postRemove($object);
     }
 
     public function preUpdate($object)
