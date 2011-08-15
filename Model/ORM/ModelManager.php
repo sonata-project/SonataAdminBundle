@@ -178,6 +178,11 @@ class ModelManager implements ModelManagerInterface
         return $this->getMetadata($class)->identifier;
     }
 
+    /**
+     * @throws \RuntimeException
+     * @param $entity
+     * @return
+     */
     public function getIdentifierValues($entity)
     {
         if (!$this->getEntityManager()->getUnitOfWork()->isInIdentityMap($entity)) {
@@ -187,11 +192,20 @@ class ModelManager implements ModelManagerInterface
         return $this->getEntityManager()->getUnitOfWork()->getEntityIdentifier($entity);
     }
 
+    /**
+     * @param $class
+     * @return mixed
+     */
     public function getIdentifierFieldNames($class)
     {
         return $this->getMetadata($class)->getIdentifierFieldNames();
     }
 
+    /**
+     * @throws \RunTimeException
+     * @param $entity
+     * @return null|string
+     */
     public function getNormalizedIdentifier($entity)
     {
         if (is_scalar($entity)) {
@@ -208,6 +222,12 @@ class ModelManager implements ModelManagerInterface
         return implode('-', $values);
     }
 
+    /**
+     * @param $class
+     * @param \Sonata\AdminBundle\Datagrid\ProxyQueryInterface $queryProxy
+     * @param array $idx
+     * @return void
+     */
     public function addIdentifiersToQuery($class, ProxyQueryInterface $queryProxy, array $idx)
     {
         $fieldNames = $this->getIdentifierFieldNames($class);
@@ -234,8 +254,8 @@ class ModelManager implements ModelManagerInterface
     /**
      * Deletes a set of $class identified by the provided $idx array
      *
-     * @param string $class
-     * @param array $idx
+     * @param $class
+     * @param \Sonata\AdminBundle\Datagrid\ProxyQueryInterface $queryProxy
      * @return void
      */
     public function batchDelete($class, ProxyQueryInterface $queryProxy)
