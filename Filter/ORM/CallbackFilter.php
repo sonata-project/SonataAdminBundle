@@ -24,7 +24,7 @@ class CallbackFilter extends Filter
     public function filter($queryBuilder, $alias, $field, $value)
     {
         if (!is_callable($this->getOption('filter'))) {
-            throw new \RuntimeException('Please provide a valid callback option');
+            throw new \RuntimeException('Please provide a valid callback option "filter" for field "' . $this->getName() . "'");
         }
 
         call_user_func($this->getOption('filter'), $queryBuilder, $alias, $field, $value);
