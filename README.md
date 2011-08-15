@@ -1,9 +1,10 @@
 SonataAdminBundle - The missing Symfony2 Admin Generator
 ========================================================
 
-There is online documentation here:
+The documentation of the bundle is in ``Resources/doc``.
 
- - http://rabaix.net/AdminBundle/html/index.html
+**Warning**: documentation files are not rendering correctly in Github (reStructuredText format)
+and some content might be broken or hidden, make sure to read raw files.
 
 Quick example
 -------------
@@ -119,18 +120,8 @@ Features
     - Explain command line utility
 
 
-More information
-----------------
-
-There is online documentation here:
-
- - http://rabaix.net/AdminBundle/html/index.html
-
-If you want to contribute to this documentation, you need to go to the ``Resources/doc`` folder where
-the reStructuredText documentation is available.
-Please note the Github preview might break and hide some content.
-
 Usage examples
+--------------
 
  - https://github.com/sonata-project/SonataMediaBundle : a media manager bundle
  - https://github.com/sonata-project/SonataNewsBundle : a news/blog bundle
