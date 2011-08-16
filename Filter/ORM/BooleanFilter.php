@@ -14,19 +14,10 @@ namespace Sonata\AdminBundle\Filter\ORM;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\Translation\TranslatorInterface;
+use Sonata\AdminBundle\Form\Type\Filter\BooleanType;
 
 class BooleanFilter extends Filter
 {
-    protected $translator;
-
-    /**
-     * @param \Symfony\Component\Translation\TranslatorInterface $translator
-     */
-    public function __construct(TranslatorInterface $translator)
-    {
-        $this->translator = $translator;
-    }
-
     /**
      * @param QueryBuilder $queryBuilder
      * @param string $alias
@@ -40,55 +31,27 @@ class BooleanFilter extends Filter
 
             $values = array();
             foreach ($value as $v) {
-                if ($v == 'all') {
+                if ($v === null) {
                     return;
                 }
 
-                $values[] = $v == 'true' ? 1 : 0;
+                $values[] = $v ==  ((int)$value == BooleanType::TYPE_YES) ? 1 : 0;
             }
 
             if (count($values) == 0) {
                 return;
             }
 
-            $queryBuilder->andWhere($queryBuilder->expr()->in(sprintf('%s.%s',
-                $alias,
-                $field
-            ), $values));
+            $queryBuilder->andWhere($queryBuilder->expr()->in(sprintf('%s.%s', $alias, $field), $values));
 
         } else {
 
-            if ($value === null || $value == 'all') {
+            if ($value === null) {
                 return;
             }
 
-            $queryBuilder->andWhere(sprintf('%s.%s = :%s',
-                $alias,
-                $field,
-                $this->getName()
-            ));
-
-            $queryBuilder->setParameter($this->getName(), $value == 'true' ? 1 : 0);
+            $queryBuilder->andWhere(sprintf('%s.%s = :%s', $alias, $field, $this->getName()));
+            $queryBuilder->setParameter($this->getName(), ((int)$value == BooleanType::TYPE_YES) ? 1 : 0);
         }
-    }
-
-    /**
-     * @param \Symfony\Component\Form\FormFactory $formFactory
-     * @return void
-     */
-    public function defineFieldBuilder(FormFactory $formFactory)
-    {
-        $options = array(
-            'choices' => array(
-                'all'   => $this->translator->trans('choice_all', array(), 'SonataAdminBundle'),
-                'true'  => $this->translator->trans('choice_true', array(), 'SonataAdminBundle'),
-                'false' => $this->translator->trans('choice_false', array(), 'SonataAdminBundle'),
-            ),
-            'required' => true
-        );
-
-        $options = array_merge($options, $this->getOption('filter_field_options', array()));
-
-        $this->field = $formFactory->createNamedBuilder('choice', $this->getName(), null, $options)->getForm();
     }
 }

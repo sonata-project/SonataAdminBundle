@@ -42,12 +42,9 @@ class FilterTypeGuesser implements TypeGuesserInterface
         }
 
         $options = array(
-            'field_type' => false,
-            'field_options' => array(
-                'required' => false,
-                'csrf_protection' => false
-            ),
-            'options' => array(),
+            'field_type'     => false,
+            'field_options'  => array(),
+            'options'        => array(),
         );
 
         list($metadata, $name) = $ret;
@@ -75,7 +72,10 @@ class FilterTypeGuesser implements TypeGuesserInterface
             //case 'array':
             //  return new TypeGuess('Collection', $options, Guess::HIGH_CONFIDENCE);
             case 'boolean':
-                return new TypeGuess('doctrine_orm_checkbox', $options, Guess::HIGH_CONFIDENCE);
+                $options['field_type'] = 'sonata_type_filter_boolean';
+                $options['field_options'] = array();
+
+                return new TypeGuess('doctrine_orm_boolean', $options, Guess::HIGH_CONFIDENCE);
             case 'datetime':
             case 'vardatetime':
             case 'datetimetz':
@@ -89,6 +89,9 @@ class FilterTypeGuesser implements TypeGuesserInterface
             case 'bigint':
             case 'smallint':
                 $options['field_type'] = 'sonata_type_filter_number';
+                $options['field_options'] = array(
+                    'csrf_protection' => false
+                );
 
                 return new TypeGuess('doctrine_orm_number', $options, Guess::MEDIUM_CONFIDENCE);
             case 'string':

@@ -83,7 +83,6 @@ class FilterFactory implements FilterFactoryInterface
         }
 
         $filter->setFieldDescription($fieldDescription);
-        $options['field_options']['csrf_protection'] = false;
         $options['field_options']['required'] = false;
 
         $filter->initialize($options);

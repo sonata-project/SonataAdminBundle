@@ -5,9 +5,8 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <service id="sonata.admin.orm.filter.type.admin" class="Sonata\AdminBundle\Filter\ORM\BooleanFilter">
+        <service id="sonata.admin.orm.filter.type.boolean" class="Sonata\AdminBundle\Filter\ORM\BooleanFilter">
             <tag name="sonata.admin.filter.type" alias="doctrine_orm_boolean" />
-            <argument type="service" id="translator" />
         </service>
 
         <service id="sonata.admin.orm.filter.type.callback" class="Sonata\AdminBundle\Filter\ORM\CallbackFilter">
@@ -26,7 +25,7 @@
             <tag name="sonata.admin.filter.type" alias="doctrine_orm_string" />
         </service>
 
-        <service id="sonata.admin.orm.filter.type.string" class="Sonata\AdminBundle\Filter\ORM\NumberFilter">
+        <service id="sonata.admin.orm.filter.type.number" class="Sonata\AdminBundle\Filter\ORM\NumberFilter">
             <tag name="sonata.admin.filter.type" alias="doctrine_orm_number" />
         </service>
     </services>
