@@ -45,7 +45,7 @@
 
         <!-- DatagridBuilder guesser -->
         <service id="sonata.admin.builder.orm_datagrid" class="Sonata\AdminBundle\Builder\ORM\DatagridBuilder">
-            <argument type="service" id="form.factory" />
+            <argument type="service" id="sonata.admin.builder.filter.factory" />
             <argument type="service" id="sonata.admin.guesser.orm_datagrid_chain" />
         </service>
 
