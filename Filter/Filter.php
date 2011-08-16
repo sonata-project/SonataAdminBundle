@@ -14,6 +14,7 @@ namespace Sonata\AdminBundle\Filter;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Filter\FilterInterface;
 use Doctrine\ORM\QueryBuilder;
+use Symfony\Component\Form\FormFactory;
 
 abstract class Filter implements FilterInterface
 {
@@ -72,5 +73,32 @@ abstract class Filter implements FilterInterface
         }
 
         return $default;
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormFactory $formFactory
+     * @return void
+     */
+    public function defineFieldBuilder(FormFactory $formFactory)
+    {
+        $builder = $formFactory->createNamedBuilder($this->getFieldType(), $this->getName(), null, $this->getFieldOptions());
+
+        $this->field = $builder->getForm();
+    }
+
+    /**
+     * @return string
+     */
+    public function getFieldType()
+    {
+        return $this->getOption('field_type', 'text');
+    }
+
+    /**
+     * @return array
+     */
+    public function getFieldOptions()
+    {
+        return $this->getOption('field_options', array('required' => false));
     }
 }

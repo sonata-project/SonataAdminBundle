@@ -16,5 +16,5 @@ use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 
 interface FilterFactoryInterface
 {
-    public function create(FieldDescriptionInterface $fieldDescription);
+    public function create(FieldDescriptionInterface $fieldDescription, array $options = array());
 }

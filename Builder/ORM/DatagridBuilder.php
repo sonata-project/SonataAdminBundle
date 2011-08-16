@@ -125,14 +125,24 @@ class DatagridBuilder implements DatagridBuilderInterface
         if ($type == null) {
             $guessType = $this->guesser->guessType($admin->getClass(), $fieldDescription->getName());
             $fieldDescription->setType($guessType->getType());
+            $options = $guessType->getOptions();
+
+            $fieldDescription->setOption('options', $options['options']);
+            $fieldDescription->setOption('field_options', $options['field_options']);
+            $fieldDescription->setOption('field_type',    $options['field_type']);
         } else {
             $fieldDescription->setType($type);
+            $options = array(
+                'options' => $fieldDescription->getOption('options', array()),
+                'field_options' => $fieldDescription->getOption('field_options', array()),
+                'field_type'    => $fieldDescription->getOption('field_type', array())
+            );
         }
 
         $this->fixFieldDescription($admin, $fieldDescription);
         $admin->addFilterFieldDescription($fieldDescription->getName(), $fieldDescription);
 
-        $filter = $this->filterFactory->create($fieldDescription);
+        $filter = $this->filterFactory->create($fieldDescription, $options);
 
         $datagrid->addFilter($filter);
 
@@ -152,12 +162,6 @@ class DatagridBuilder implements DatagridBuilderInterface
         $pager = new Pager;
         $pager->setCountColumn($admin->getModelManager()->getIdentifierFieldNames($admin->getClass()));
 
-        return new Datagrid(
-            $query,
-            $admin->getList(),
-            $pager,
-            $this->formFactory,
-            $values
-        );
+        return new Datagrid($query, $admin->getList(), $pager, $values);
     }
 }

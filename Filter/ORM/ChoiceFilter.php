@@ -11,7 +11,6 @@
 
 namespace Sonata\AdminBundle\Filter\ORM;
 
-use Symfony\Component\Form\FormFactory;
 use Doctrine\ORM\QueryBuilder;
 
 class ChoiceFilter extends Filter
@@ -44,25 +43,9 @@ class ChoiceFilter extends Filter
                 return;
             }
 
-            $queryBuilder->andWhere(sprintf('%s.%s = :%s',
-                $alias,
-                $field,
-                $this->getName()
-            ));
+            $queryBuilder->andWhere(sprintf('%s.%s = :%s', $alias, $field, $this->getName()));
 
             $queryBuilder->setParameter($this->getName(), $value);
         }
-    }
-
-    /**
-     * @param \Symfony\Component\Form\FormFactory $formFactory
-     * @param null $value
-     * @return void
-     */
-    public function defineFieldBuilder(FormFactory $formFactory, $value = null)
-    {
-        $options = $this->getFieldDescription()->getOption('filter_field_options', array('required' => false));
-
-        $this->field = $formFactory->createNamedBuilder('choice', $this->getName(), $value, $options)->getForm();
     }
 }

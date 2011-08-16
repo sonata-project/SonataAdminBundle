@@ -41,13 +41,12 @@ class Datagrid implements DatagridInterface
 
     protected $results;
 
-    public function __construct(ProxyQueryInterface $query, FieldDescriptionCollection $columns, PagerInterface $pager, FormFactory $formFactory, array $values = array())
+    public function __construct(ProxyQueryInterface $query, FieldDescriptionCollection $columns, PagerInterface $pager, array $values = array())
     {
         $this->pager    = $pager;
         $this->query    = $query;
         $this->values   = $values;
         $this->columns  = $columns;
-        $this->formFactory = $formFactory;
     }
 
     /**
@@ -98,8 +97,6 @@ class Datagrid implements DatagridInterface
      */
     public function addFilter(FilterInterface $filter)
     {
-        $filter->defineFieldBuilder($this->formFactory);
-
         $this->filters[$filter->getName()] = $filter;
     }
 

@@ -5,6 +5,8 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
+
+        <!-- Form Widget-->
         <service id="sonata.admin.form.type.admin" class="Sonata\AdminBundle\Form\Type\AdminType">
             <tag name="form.type" alias="sonata_type_admin" />
         </service>
@@ -23,6 +25,13 @@
 
         <service id="sonata.admin.form.extension.field" class="Sonata\AdminBundle\Form\Extension\Field\Type\FormTypeFieldExtension">
             <tag name="form.type_extension" alias="field" />
+        </service>
+
+        <!-- Form Filter Type -->
+        <service id="sonata.admin.form.filter.type.number" class="Sonata\AdminBundle\Form\Type\Filter\NumberType">
+            <tag name="form.type" alias="sonata_type_filter_number" />
+
+            <argument type="service" id="translator" />
         </service>
 
     </services>

@@ -11,12 +11,8 @@
 
 namespace Sonata\AdminBundle\Filter\ORM;
 
-use Symfony\Component\Form\FormFactory;
-use Doctrine\ORM\QueryBuilder;
-
 class StringFilter extends Filter
 {
-
     /**
      * @param Querybuilder $queryBuilder
      * @param string $alias
@@ -50,16 +46,5 @@ class StringFilter extends Filter
         return array(
             'format'   => '%%%s%%'
         );
-    }
-
-    /**
-     * @param \Symfony\Component\Form\FormFactory $formFactory
-     * @return void
-     */
-    public function defineFieldBuilder(FormFactory $formFactory)
-    {
-        $options = $this->fieldDescription->getOption('filter_field_options', array('required' => false));
-
-        $this->field = $formFactory->createNamedBuilder('text', $this->getName(), null, $options)->getForm();
     }
 }

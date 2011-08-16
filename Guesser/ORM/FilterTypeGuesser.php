@@ -38,8 +38,17 @@ class FilterTypeGuesser implements TypeGuesserInterface
     function guessType($class, $property)
     {
         if (!$ret = $this->getMetadata($class)) {
-            return new TypeGuess('text', array(), Guess::LOW_CONFIDENCE);
+            return false;
         }
+
+        $options = array(
+            'field_type' => false,
+            'field_options' => array(
+                'required' => false,
+                'csrf_protection' => false
+            ),
+            'options' => array(),
+        );
 
         list($metadata, $name) = $ret;
 
@@ -49,44 +58,48 @@ class FilterTypeGuesser implements TypeGuesserInterface
 
             switch ($mapping['type']) {
                 case ClassMetadataInfo::ONE_TO_MANY:
-                    return new TypeGuess('orm_one_to_many', array(), Guess::HIGH_CONFIDENCE);
+                    return new TypeGuess('orm_one_to_many', $options, Guess::HIGH_CONFIDENCE);
 
                 case ClassMetadataInfo::MANY_TO_MANY:
-                    return new TypeGuess('orm_many_to_many', array(), Guess::HIGH_CONFIDENCE);
+                    return new TypeGuess('orm_many_to_many', $options, Guess::HIGH_CONFIDENCE);
 
                 case ClassMetadataInfo::MANY_TO_ONE:
-                    return new TypeGuess('orm_many_to_one', array(), Guess::HIGH_CONFIDENCE);
+                    return new TypeGuess('orm_many_to_one', $options, Guess::HIGH_CONFIDENCE);
 
                 case ClassMetadataInfo::ONE_TO_ONE:
-                    return new TypeGuess('orm_one_to_one', array(), Guess::HIGH_CONFIDENCE);
+                    return new TypeGuess('orm_one_to_one', $options, Guess::HIGH_CONFIDENCE);
             }
         }
 
         switch ($metadata->getTypeOfField($property)) {
             //case 'array':
-            //  return new TypeGuess('Collection', array(), Guess::HIGH_CONFIDENCE);
+            //  return new TypeGuess('Collection', $options, Guess::HIGH_CONFIDENCE);
             case 'boolean':
-                return new TypeGuess('doctrine_orm_checkbox', array(), Guess::HIGH_CONFIDENCE);
+                return new TypeGuess('doctrine_orm_checkbox', $options, Guess::HIGH_CONFIDENCE);
             case 'datetime':
             case 'vardatetime':
             case 'datetimetz':
-                return new TypeGuess('doctrine_orm_datetime', array(), Guess::HIGH_CONFIDENCE);
+                return new TypeGuess('doctrine_orm_datetime', $options, Guess::HIGH_CONFIDENCE);
             case 'date':
-                return new TypeGuess('doctrine_orm_date', array(), Guess::HIGH_CONFIDENCE);
+                return new TypeGuess('doctrine_orm_date', $options, Guess::HIGH_CONFIDENCE);
             case 'decimal':
             case 'float':
-                return new TypeGuess('doctrine_orm_number', array(), Guess::MEDIUM_CONFIDENCE);
+                return new TypeGuess('doctrine_orm_number', $options, Guess::MEDIUM_CONFIDENCE);
             case 'integer':
             case 'bigint':
             case 'smallint':
-                return new TypeGuess('doctrine_orm_integer', array(), Guess::MEDIUM_CONFIDENCE);
+                $options['field_type'] = 'sonata_type_filter_number';
+
+                return new TypeGuess('doctrine_orm_number', $options, Guess::MEDIUM_CONFIDENCE);
             case 'string':
             case 'text':
-                return new TypeGuess('doctrine_orm_textarea', array(), Guess::MEDIUM_CONFIDENCE);
+                $options['field_type'] = 'text';
+
+                return new TypeGuess('doctrine_orm_string', $options, Guess::MEDIUM_CONFIDENCE);
             case 'time':
-                return new TypeGuess('doctrine_orm_time', array(), Guess::HIGH_CONFIDENCE);
+                return new TypeGuess('doctrine_orm_time', $options, Guess::HIGH_CONFIDENCE);
             default:
-                return new TypeGuess('doctrine_orm_text', array(), Guess::LOW_CONFIDENCE);
+                return new TypeGuess('doctrine_orm_string', $options, Guess::LOW_CONFIDENCE);
         }
     }
 

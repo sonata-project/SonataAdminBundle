@@ -25,6 +25,10 @@
         <service id="sonata.admin.orm.filter.type.string" class="Sonata\AdminBundle\Filter\ORM\StringFilter">
             <tag name="sonata.admin.filter.type" alias="doctrine_orm_string" />
         </service>
+
+        <service id="sonata.admin.orm.filter.type.string" class="Sonata\AdminBundle\Filter\ORM\NumberFilter">
+            <tag name="sonata.admin.filter.type" alias="doctrine_orm_number" />
+        </service>
     </services>
 
 </container>

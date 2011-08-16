@@ -37,15 +37,15 @@ class FilterFactory implements FilterFactoryInterface
 
     /**
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
-     * @param array $options
      * @return void
      */
-    public function create($type, array $options = array())
+    public function create(FieldDescriptionInterface $fieldDescription, array $options = array())
     {
-        if (!is_string($type)) {
-            throw new \RunTimeException('Type must be a string');
+        if (!$fieldDescription->getType()) {
+            throw new \RunTimeException('The type must be defined');
         }
 
+        $type = $fieldDescription->getType();
 //        $
 //        switch($fieldDescription->getMappingType()) {
 //            case ClassMetadataInfo::MANY_TO_ONE:
@@ -76,14 +76,19 @@ class FilterFactory implements FilterFactoryInterface
             throw new \RunTimeException(sprintf('No attached service to type named `%s`', $type));
         }
 
-        $type = $this->container->get($id);
+        $filter = $this->container->get($id);
 
-        if (!$type instanceof FilterInterface) {
+        if (!$filter instanceof FilterInterface) {
             throw new \RunTimeException(sprintf('The service `%s` must implement `FilterInterface`', $id));
         }
 
-        $type->initialize($options);
+        $filter->setFieldDescription($fieldDescription);
+        $options['field_options']['csrf_protection'] = false;
+        $options['field_options']['required'] = false;
 
-        return $type;
+        $filter->initialize($options);
+        $filter->defineFieldBuilder($this->container->get('form.factory'));
+
+        return $filter;
     }
 }
