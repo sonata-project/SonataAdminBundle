@@ -49,6 +49,7 @@ class SonataAdminExtension extends Extension
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('templates.xml');
         $loader->load('doctrine_orm.xml');
+        $loader->load('doctrine_orm_filter_types.xml');
         $loader->load('twig.xml');
         $loader->load('core.xml');
         $loader->load('form_types.xml');
