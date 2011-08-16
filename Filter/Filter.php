@@ -27,14 +27,15 @@ abstract class Filter implements FilterInterface
 
     protected $options = array();
 
-    public function __construct(FieldDescriptionInterface $fieldDescription)
+    public function setFieldDescription(FieldDescriptionInterface $fieldDescription)
     {
         $this->name               = $fieldDescription->getName();
         $this->fieldDescription   = $fieldDescription;
-        $this->options            = array_replace(
-            $this->getDefaultOptions(),
-            $this->fieldDescription->getOption('filter_options', array())
-        );
+    }
+
+    public function initialize(array $options = array())
+    {
+        $this->options = array_replace($this->getDefaultOptions(), $options);
     }
 
     public function getName()

@@ -17,13 +17,20 @@ use Doctrine\ORM\QueryBuilder;
 class StringFilter extends Filter
 {
 
+    /**
+     * @param Querybuilder $queryBuilder
+     * @param string $alias
+     * @param string $field
+     * @param mixed $value
+     * @return
+     */
     public function filter($queryBuilder, $alias, $field, $value)
     {
         if ($value == null) {
             return;
         }
 
-        $value      = sprintf($this->getOption('format'), $value);
+        $value  = sprintf($this->getOption('format'), $value);
 
         // c.name LIKE '%word%' => c.name LIKE :fieldName
         $queryBuilder->andWhere(sprintf('%s.%s LIKE :%s',
@@ -35,6 +42,9 @@ class StringFilter extends Filter
         $queryBuilder->setParameter($this->getName(), $value);
     }
 
+    /**
+     * @return array
+     */
     public function getDefaultOptions()
     {
         return array(
@@ -42,10 +52,14 @@ class StringFilter extends Filter
         );
     }
 
-   public function defineFieldBuilder(FormFactory $formFactory)
-   {
-       $options = $this->fieldDescription->getOption('filter_field_options', array('required' => false));
+    /**
+     * @param \Symfony\Component\Form\FormFactory $formFactory
+     * @return void
+     */
+    public function defineFieldBuilder(FormFactory $formFactory)
+    {
+        $options = $this->fieldDescription->getOption('filter_field_options', array('required' => false));
 
-       $this->field = $formFactory->createNamedBuilder('text', $this->getName(), null, $options)->getForm();
-   }
+        $this->field = $formFactory->createNamedBuilder('text', $this->getName(), null, $options)->getForm();
+    }
 }

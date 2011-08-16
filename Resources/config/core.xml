@@ -26,6 +26,11 @@
             <argument type="service" id="security.context" on-invalid="null" />
         </service>
 
+        <service id="sonata.admin.builder.filter.factory" class="Sonata\AdminBundle\Filter\FilterFactory">
+            <argument type="service" id="service_container" />
+            <argument />
+        </service>
+
     </services>
 
 </container>

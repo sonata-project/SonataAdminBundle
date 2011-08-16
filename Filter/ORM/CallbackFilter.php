@@ -16,11 +16,24 @@ use Doctrine\ORM\QueryBuilder;
 
 class CallbackFilter extends Filter
 {
+    /**
+     * @param QueryBuilder $queryBuilder
+     * @param mixed $value
+     * @return array
+     */
     protected function association($queryBuilder, $value)
     {
         return array($queryBuilder->getRootAlias(), false);
     }
 
+    /**
+     * @throws \RuntimeException
+     * @param QueryBuilder $queryBuilder
+     * @param string $alias
+     * @param string $field
+     * @param string $value
+     * @return void
+     */
     public function filter($queryBuilder, $alias, $field, $value)
     {
         if (!is_callable($this->getOption('filter'))) {
@@ -39,7 +52,7 @@ class CallbackFilter extends Filter
      *       )
      *    );
      *
-     * @return void
+     * @return array
      */
     public function getDefaultOptions()
     {
@@ -49,6 +62,10 @@ class CallbackFilter extends Filter
         );
     }
 
+    /**
+     * @param \Symfony\Component\Form\FormFactory $formFactory
+     * @return void
+     */
     public function defineFieldBuilder(FormFactory $formFactory)
     {
         $options = $this->getFieldDescription()->getOption('filter_field_options', array());

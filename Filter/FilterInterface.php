@@ -12,6 +12,7 @@
 namespace Sonata\AdminBundle\Filter;
 
 use Symfony\Component\Form\FormFactory;
+use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 
 interface FilterInterface
 {
@@ -19,7 +20,7 @@ interface FilterInterface
      * Apply the filter to the QueryBuilder instance
      *
      * @abstract
-     * @param  $queryBuilder
+     * @param $queryBuilder
      * @param string $alias
      * @param string $field
      * @param string $value
@@ -71,4 +72,17 @@ interface FilterInterface
      */
     function getFieldDescription();
 
+    /**
+     * @abstract
+     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
+     * @return void
+     */
+    function setFieldDescription(FieldDescriptionInterface $fieldDescription);
+
+    /**
+     * @abstract
+     * @param array $options
+     * @return void
+     */
+    function initialize(array $options = array());
 }

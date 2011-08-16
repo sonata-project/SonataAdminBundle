@@ -49,7 +49,7 @@
             <argument type="service" id="sonata.admin.guesser.orm_datagrid_chain" />
         </service>
 
-        <service id="sonata.admin.guesser.orm_datagrid" class="Sonata\AdminBundle\Guesser\ORM\TypeGuesser">
+        <service id="sonata.admin.guesser.orm_datagrid" class="Sonata\AdminBundle\Guesser\ORM\FilterTypeGuesser">
             <argument type="service" id="doctrine" />
             <tag name="sonata.admin.guesser.orm_datagrid" />
         </service>

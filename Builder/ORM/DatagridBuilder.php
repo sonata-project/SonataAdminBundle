@@ -19,44 +19,30 @@ use Sonata\AdminBundle\Datagrid\Datagrid;
 use Sonata\AdminBundle\Datagrid\ORM\Pager;
 use Sonata\AdminBundle\Datagrid\ORM\ProxyQuery;
 use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
-use Symfony\Component\Form\FormFactory;
 use Sonata\AdminBundle\Guesser\TypeGuesserInterface;
+use Sonata\AdminBundle\Filter\FilterFactoryInterface;
 
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 
 class DatagridBuilder implements DatagridBuilderInterface
 {
-    protected $formFactory;
+    protected $filterFactory;
 
     protected $guesser;
 
     /**
-     * todo: put this in the DIC
-     *
-     * built-in definition
-     *
-     * @var array
+     * @param \Sonata\AdminBundle\Filter\FilterFactoryInterface $filterFactory
+     * @param \Sonata\AdminBundle\Guesser\TypeGuesserInterface $guesser
      */
-    protected $filterClasses = array(
-        'text'       =>  'Sonata\\AdminBundle\\Filter\\ORM\\StringFilter',
-        'textarea'   =>  'Sonata\\AdminBundle\\Filter\\ORM\\StringFilter',
-        'checkbox'   =>  'Sonata\\AdminBundle\\Filter\\ORM\\BooleanFilter',
-        'integer'    =>  'Sonata\\AdminBundle\\Filter\\ORM\\IntegerFilter',
-        'number'     =>  'Sonata\\AdminBundle\\Filter\\ORM\\IntegerFilter',
-        'callback'   =>  'Sonata\\AdminBundle\\Filter\\ORM\\CallbackFilter',
-        'choice'     =>  'Sonata\\AdminBundle\\Filter\\ORM\\ChoiceFilter',
-    );
-
-    public function __construct(FormFactory $formFactory, TypeGuesserInterface $guesser)
+    public function __construct(FilterFactoryInterface $filterFactory, TypeGuesserInterface $guesser)
     {
-        $this->formFactory = $formFactory;
-        $this->guesser     = $guesser;
+        $this->filterFactory = $filterFactory;
+        $this->guesser = $guesser;
     }
 
     /**
-     * @throws \RuntimeException
      * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
-     * @param \Sonata\AdminBundle\Admin\FieldDescription $fieldDescription
+     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
      * @return void
      */
     public function fixFieldDescription(AdminInterface $admin, FieldDescriptionInterface $fieldDescription)
@@ -99,28 +85,6 @@ class DatagridBuilder implements DatagridBuilderInterface
     }
 
     /**
-     * return the class associated to a FieldDescription if any defined
-     *
-     * @throws RuntimeException
-     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
-     * @return bool|string
-     */
-    public function getFilterFieldClass(FieldDescriptionInterface $fieldDescription)
-    {
-        if ($fieldDescription->getOption('filter_field_widget', false)) {
-            $class = $fieldDescription->getOption('filter_field_widget', false);
-        } else {
-            $class = array_key_exists($fieldDescription->getType(), $this->filterClasses) ? $this->filterClasses[$fieldDescription->getType()] : false;
-        }
-
-        if (!class_exists($class)) {
-            throw new \RuntimeException(sprintf('The class `%s` does not exist for field type : `%s` and field name : `%s`', $class, $fieldDescription->getType(), $fieldDescription->getName()));
-        }
-
-        return $class;
-    }
-
-    /**
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
      * @return array
      */
@@ -148,10 +112,13 @@ class DatagridBuilder implements DatagridBuilderInterface
         return $choices;
     }
 
+
     /**
      * @param \Sonata\AdminBundle\Datagrid\DatagridInterface $datagrid
+     * @param null $type
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
-     * @return bool
+     * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
+     * @return \Sonata\AdminBundle\Filter\FilterInterface
      */
     public function addFilter(DatagridInterface $datagrid, $type = null, FieldDescriptionInterface $fieldDescription, AdminInterface $admin)
     {
@@ -165,28 +132,9 @@ class DatagridBuilder implements DatagridBuilderInterface
         $this->fixFieldDescription($admin, $fieldDescription);
         $admin->addFilterFieldDescription($fieldDescription->getName(), $fieldDescription);
 
-        switch($fieldDescription->getMappingType()) {
-            case ClassMetadataInfo::MANY_TO_ONE:
-                $options = $fieldDescription->getOption('filter_field_options');
-                $filter = new \Sonata\AdminBundle\Filter\ORM\IntegerFilter($fieldDescription);
+        $filter = $this->filterFactory->create($fieldDescription);
 
-                break;
-
-            case ClassMetadataInfo::MANY_TO_MANY:
-                $options = $fieldDescription->getOption('filter_field_options');
-                $options['choices'] = $this->getChoices($fieldDescription);
-
-
-                $fieldDescription->setOption('filter_field_options', $options);
-
-                $filter = new \Sonata\AdminBundle\Filter\ORM\ChoiceFilter($fieldDescription);
-
-                break;
-
-            default:
-                $class = $this->getFilterFieldClass($fieldDescription);
-                $filter = new $class($fieldDescription);
-        }
+        $datagrid->addFilter($filter);
 
         return $datagrid->addFilter($filter);
     }

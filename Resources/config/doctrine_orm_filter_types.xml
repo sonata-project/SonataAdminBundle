@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="sonata.admin.orm.filter.type.admin" class="Sonata\AdminBundle\Filter\ORM\BooleanFilter">
+            <tag name="sonata.admin.filter.type" alias="doctrine_orm_boolean" />
+            <argument type="service" id="translator" />
+        </service>
+
+        <service id="sonata.admin.orm.filter.type.callback" class="Sonata\AdminBundle\Filter\ORM\CallbackFilter">
+            <tag name="sonata.admin.filter.type" alias="doctrine_orm_callback" />
+        </service>
+
+        <service id="sonata.admin.orm.filter.type.choice" class="Sonata\AdminBundle\Filter\ORM\ChoiceFilter">
+            <tag name="sonata.admin.filter.type" alias="doctrine_orm_choice" />
+        </service>
+
+        <service id="sonata.admin.orm.filter.type.integer" class="Sonata\AdminBundle\Filter\ORM\IntegerFilter">
+            <tag name="sonata.admin.filter.type" alias="doctrine_orm_integer" />
+        </service>
+
+        <service id="sonata.admin.orm.filter.type.string" class="Sonata\AdminBundle\Filter\ORM\StringFilter">
+            <tag name="sonata.admin.filter.type" alias="doctrine_orm_string" />
+        </service>
+    </services>
+
+</container>

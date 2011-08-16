@@ -16,6 +16,13 @@ use Doctrine\ORM\QueryBuilder;
 
 class ChoiceFilter extends Filter
 {
+    /**
+     * @param QueryBuilder $queryBuilder
+     * @param string $alias
+     * @param string $field
+     * @param mixed $value
+     * @return
+     */
     public function filter($queryBuilder, $alias, $field, $value)
     {
         if ($this->getField()->getAttribute('multiple')) {
@@ -47,6 +54,11 @@ class ChoiceFilter extends Filter
         }
     }
 
+    /**
+     * @param \Symfony\Component\Form\FormFactory $formFactory
+     * @param null $value
+     * @return void
+     */
     public function defineFieldBuilder(FormFactory $formFactory, $value = null)
     {
         $options = $this->getFieldDescription()->getOption('filter_field_options', array('required' => false));

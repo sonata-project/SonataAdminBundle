@@ -13,9 +13,27 @@ namespace Sonata\AdminBundle\Filter\ORM;
 
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Form\FormFactory;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class BooleanFilter extends Filter
 {
+    protected $translator;
+
+    /**
+     * @param \Symfony\Component\Translation\TranslatorInterface $translator
+     */
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
+    /**
+     * @param QueryBuilder $queryBuilder
+     * @param string $alias
+     * @param string $field
+     * @param mixed $value
+     * @return
+     */
     public function filter($queryBuilder, $alias, $field, $value)
     {
         if ($this->getField()->getAttribute('multiple')) {
@@ -54,18 +72,22 @@ class BooleanFilter extends Filter
         }
     }
 
+    /**
+     * @param \Symfony\Component\Form\FormFactory $formFactory
+     * @return void
+     */
     public function defineFieldBuilder(FormFactory $formFactory)
     {
         $options = array(
             'choices' => array(
-                'all'   => 'all',
-                'true'  => 'true',
-                'false' => 'false'
+                'all'   => $this->translator->trans('choice_all', array(), 'SonataAdminBundle'),
+                'true'  => $this->translator->trans('choice_true', array(), 'SonataAdminBundle'),
+                'false' => $this->translator->trans('choice_false', array(), 'SonataAdminBundle'),
             ),
             'required' => true
         );
 
-        $options = array_merge($options, $this->getFieldDescription()->getOption('filter_field_options', array()));
+        $options = array_merge($options, $this->getOption('filter_field_options', array()));
 
         $this->field = $formFactory->createNamedBuilder('choice', $this->getName(), null, $options)->getForm();
     }

@@ -160,7 +160,6 @@ class CRUDController extends Controller
         $modelManager->batchDelete($this->admin->getClass(), $query);
         $this->get('session')->setFlash('sonata_flash_success', 'flash_batch_delete_success');
 
-
         return new RedirectResponse($this->admin->generateUrl('list', $this->admin->getFilterParameters()));
     }
 
@@ -179,6 +178,7 @@ class CRUDController extends Controller
 
         $this->admin->delete($object);
         $this->get('session')->setFlash('sonata_flash_success', 'flash_delete_success');
+
         return new RedirectResponse($this->admin->generateUrl('list'));
     }
 

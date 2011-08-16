@@ -16,6 +16,13 @@ use Symfony\Component\Form\FormFactory;
 
 class IntegerFilter extends Filter
 {
+    /**
+     * @param QueryBuilder $queryBuilder
+     * @param string $alias
+     * @param string $field
+     * @param string $value
+     * @return
+     */
     public function filter($queryBuilder, $alias, $field, $value)
     {
         if ($value == null) {
@@ -33,6 +40,9 @@ class IntegerFilter extends Filter
         $queryBuilder->setParameter($this->getName(), (int)sprintf($this->getOption('format'), $value));
     }
 
+    /**
+     * @return array
+     */
     public function getDefaultOptions()
     {
         return array(
@@ -41,10 +51,14 @@ class IntegerFilter extends Filter
         );
     }
 
-   public function defineFieldBuilder(FormFactory $formFactory)
-   {
-       $options = $this->fieldDescription->getOption('filter_field_options', array('required' => false));
+    /**
+     * @param \Symfony\Component\Form\FormFactory $formFactory
+     * @return void
+     */
+    public function defineFieldBuilder(FormFactory $formFactory)
+    {
+        $options = $this->fieldDescription->getOption('filter_field_options', array('required' => false));
 
-       $this->field = $formFactory->createNamedBuilder('text', $this->getName(), null, $options)->getForm();
-   }
+        $this->field = $formFactory->createNamedBuilder('text', $this->getName(), null, $options)->getForm();
+    }
 }

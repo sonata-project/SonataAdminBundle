@@ -27,15 +27,6 @@ interface DatagridBuilderInterface
     function fixFieldDescription(AdminInterface $admin, FieldDescriptionInterface $fieldDescription);
 
     /**
-     * Returns the class associated to a FieldDescription if any defined
-     *
-     * @throws RuntimeException
-     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
-     * @return bool|string
-     */
-    function getFilterFieldClass(FieldDescriptionInterface $fieldDescription);
-
-    /**
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
      * @return array
      */
