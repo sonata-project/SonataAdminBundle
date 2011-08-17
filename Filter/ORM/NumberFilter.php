@@ -45,7 +45,7 @@ class NumberFilter extends Filter
      */
     private function getOperator($type)
     {
-         $choices = array(
+        $choices = array(
             NumberType::TYPE_EQUAL            => '=',
             NumberType::TYPE_GREATER_EQUAL    => '>=',
             NumberType::TYPE_GREATER_THAN     => '>',

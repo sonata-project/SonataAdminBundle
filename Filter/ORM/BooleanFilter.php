@@ -28,11 +28,10 @@ class BooleanFilter extends Filter
     public function filter($queryBuilder, $alias, $field, $value)
     {
         if ($this->getField()->getAttribute('multiple')) {
-
             $values = array();
             foreach ($value as $v) {
-                if ($v === null) {
-                    return;
+                if (!in_array($v, array(BooleanType::TYPE_NO, BooleanType::TYPE_YES))) {
+                   continue;
                 }
 
                 $values[] = $v ==  ((int)$value == BooleanType::TYPE_YES) ? 1 : 0;
@@ -46,7 +45,7 @@ class BooleanFilter extends Filter
 
         } else {
 
-            if ($value === null) {
+            if (!in_array($value, array(BooleanType::TYPE_NO, BooleanType::TYPE_YES))) {
                 return;
             }
 

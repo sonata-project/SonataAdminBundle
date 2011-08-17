@@ -22,20 +22,14 @@ class StringFilter extends Filter
      */
     public function filter($queryBuilder, $alias, $field, $value)
     {
-        if ($value == null) {
+        if ($value == null || strlen($value) == 0) {
             return;
         }
 
-        $value  = sprintf($this->getOption('format'), $value);
-
         // c.name LIKE '%word%' => c.name LIKE :fieldName
-        $queryBuilder->andWhere(sprintf('%s.%s LIKE :%s',
-            $alias,
-            $field,
-            $this->getName()
-        ));
+        $queryBuilder->andWhere(sprintf('%s.%s LIKE :%s', $alias, $field, $this->getName()));
 
-        $queryBuilder->setParameter($this->getName(), $value);
+        $queryBuilder->setParameter($this->getName(), sprintf($this->getOption('format'), $value));
     }
 
     /**
