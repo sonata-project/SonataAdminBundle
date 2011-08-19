@@ -35,8 +35,8 @@ use Sonata\AdminBundle\Admin\AdminInterface;
  *                           of the collection element.
  *
  * Form Field options :
- *   - form_field_type (o): the widget class to use to render the field
- *   - form_field_options (o): the options to give to the widget
+ *   - field_type (o): the widget class to use to render the field
+ *   - field_options (o): the options to give to the widget
  *   - edit (o) : list|inline|standard (only used for associated admin)
  *      - list : open a popup where the user can search, filter and click on one field
  *               to select one item
@@ -47,8 +47,9 @@ use Sonata\AdminBundle\Admin\AdminInterface;
  *   - identifier (o): if set to true a link appear on to edit the element
  *
  * Filter Field options :
- *   - filter_options (o): options given to the Filter object
- *   - filter_field_options (o): options given to the filter field object
+ *   - options (o): options given to the Filter object
+ *   - field_options (o): options given to the filter field object
+ *   - field_type (o): options given to the filter field object
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
@@ -395,8 +396,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
             $this->options[$name] = array();
         }
 
-        if (!is_array($this->options[$name]))
-        {
+        if (!is_array($this->options[$name])) {
             throw new \RuntimeException(sprintf('The key `%s` does not point to an array value', $name));
         }
 
@@ -444,7 +444,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
      */
     public static function camelize($property)
     {
-       return preg_replace(array('/(^|_| )+(.)/e', '/\.(.)/e'), array("strtoupper('\\2')", "'_'.strtoupper('\\1')"), $property);
+        return preg_replace(array('/(^|_| )+(.)/e', '/\.(.)/e'), array("strtoupper('\\2')", "'_'.strtoupper('\\1')"), $property);
     }
 
     public function setHelp($help)

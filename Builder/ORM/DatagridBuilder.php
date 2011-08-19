@@ -85,35 +85,6 @@ class DatagridBuilder implements DatagridBuilderInterface
     }
 
     /**
-     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
-     * @return array
-     */
-    public function getChoices(FieldDescriptionInterface $fieldDescription)
-    {
-        $modelManager = $fieldDescription->getAdmin()->getModelManager();
-        $targets = $modelManager->getEntityManager()
-            ->createQueryBuilder()
-            ->select('t')
-            ->from($fieldDescription->getTargetEntity(), 't')
-            ->getQuery()
-            ->execute();
-
-        $choices = array();
-        foreach ($targets as $target) {
-            // todo : puts this into a configuration option and use reflection
-            foreach (array('getTitle', 'getName', '__toString') as $getter) {
-                if (method_exists($target, $getter)) {
-                    $choices[$modelManager->getNormalizedIdentifier($target)] = $target->$getter();
-                    break;
-                }
-            }
-        }
-
-        return $choices;
-    }
-
-
-    /**
      * @param \Sonata\AdminBundle\Datagrid\DatagridInterface $datagrid
      * @param null $type
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
@@ -127,17 +98,18 @@ class DatagridBuilder implements DatagridBuilderInterface
             $fieldDescription->setType($guessType->getType());
             $options = $guessType->getOptions();
 
-            $fieldDescription->setOption('options', $options['options']);
-            $fieldDescription->setOption('field_options', $options['field_options']);
-            $fieldDescription->setOption('field_type',    $options['field_type']);
+            $fieldDescription->setOption('options',       array_merge($options['options'], $fieldDescription->getOption('options', array())));
+            $fieldDescription->setOption('field_options', array_merge($options['field_options'], $fieldDescription->getOption('field_options', array())));
+            $fieldDescription->setOption('field_type',    $fieldDescription->getOption('field_type', $options['field_type']));
         } else {
             $fieldDescription->setType($type);
-            $options = array(
-                'options' => $fieldDescription->getOption('options', array()),
-                'field_options' => $fieldDescription->getOption('field_options', array()),
-                'field_type'    => $fieldDescription->getOption('field_type', array())
-            );
         }
+
+        $options = array(
+            'options'       => $fieldDescription->getOption('options', array()),
+            'field_options' => $fieldDescription->getOption('field_options', array()),
+            'field_type'    => $fieldDescription->getOption('field_type', array())
+        );
 
         $this->fixFieldDescription($admin, $fieldDescription);
         $admin->addFilterFieldDescription($fieldDescription->getName(), $fieldDescription);

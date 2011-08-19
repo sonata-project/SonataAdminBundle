@@ -33,10 +33,7 @@ class ChoiceFilter extends Filter
                 return;
             }
 
-            $queryBuilder->andWhere($queryBuilder->expr()->in(sprintf('%s.%s',
-                $alias,
-                $field
-            ), $value));
+            $queryBuilder->andWhere($queryBuilder->expr()->in(sprintf('%s.%s', $alias, $field ), $value));
         } else {
 
             if (empty($value) || $value == 'all') {

@@ -55,16 +55,21 @@ class FilterTypeGuesser implements TypeGuesserInterface
 
             switch ($mapping['type']) {
                 case ClassMetadataInfo::ONE_TO_MANY:
-                    return new TypeGuess('orm_one_to_many', $options, Guess::HIGH_CONFIDENCE);
+                    return new TypeGuess('doctrine_orm_one_to_many', $options, Guess::HIGH_CONFIDENCE);
 
                 case ClassMetadataInfo::MANY_TO_MANY:
-                    return new TypeGuess('orm_many_to_many', $options, Guess::HIGH_CONFIDENCE);
+                    $options['field_type'] = 'entity';
+                    $options['field_options'] = array(
+                        'class' => $class
+                    );
+
+                    return new TypeGuess('doctrine_orm_choice', $options, Guess::HIGH_CONFIDENCE);
 
                 case ClassMetadataInfo::MANY_TO_ONE:
-                    return new TypeGuess('orm_many_to_one', $options, Guess::HIGH_CONFIDENCE);
+                    return new TypeGuess('doctrine_orm_many_to_one', $options, Guess::HIGH_CONFIDENCE);
 
                 case ClassMetadataInfo::ONE_TO_ONE:
-                    return new TypeGuess('orm_one_to_one', $options, Guess::HIGH_CONFIDENCE);
+                    return new TypeGuess('doctrine_orm_one_to_one', $options, Guess::HIGH_CONFIDENCE);
             }
         }
 
@@ -76,12 +81,12 @@ class FilterTypeGuesser implements TypeGuesserInterface
                 $options['field_options'] = array();
 
                 return new TypeGuess('doctrine_orm_boolean', $options, Guess::HIGH_CONFIDENCE);
-            case 'datetime':
-            case 'vardatetime':
-            case 'datetimetz':
-                return new TypeGuess('doctrine_orm_datetime', $options, Guess::HIGH_CONFIDENCE);
-            case 'date':
-                return new TypeGuess('doctrine_orm_date', $options, Guess::HIGH_CONFIDENCE);
+//            case 'datetime':
+//            case 'vardatetime':
+//            case 'datetimetz':
+//                return new TypeGuess('doctrine_orm_datetime', $options, Guess::HIGH_CONFIDENCE);
+//            case 'date':
+//                return new TypeGuess('doctrine_orm_date', $options, Guess::HIGH_CONFIDENCE);
             case 'decimal':
             case 'float':
                 return new TypeGuess('doctrine_orm_number', $options, Guess::MEDIUM_CONFIDENCE);

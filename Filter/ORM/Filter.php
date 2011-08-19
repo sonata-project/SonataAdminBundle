@@ -28,7 +28,7 @@ abstract class Filter extends BaseFilter
 
     protected function association($queryBuilder, $value)
     {
-        if ($value && $this->getFieldDescription()->getType() == ClassMetadataInfo::MANY_TO_MANY) {
+        if ($value && $this->getFieldDescription()->getMappingType() == ClassMetadataInfo::MANY_TO_MANY) {
             $queryBuilder->leftJoin(
                 sprintf('%s.%s', $queryBuilder->getRootAlias(), $this->getFieldDescription()->getFieldName()),
                 $this->getName()

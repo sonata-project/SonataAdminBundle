@@ -27,12 +27,6 @@ interface DatagridBuilderInterface
     function fixFieldDescription(AdminInterface $admin, FieldDescriptionInterface $fieldDescription);
 
     /**
-     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
-     * @return array
-     */
-    function getChoices(FieldDescriptionInterface $fieldDescription);
-
-    /**
      * @abstract
      * @param \Sonata\AdminBundle\Datagrid\DatagridInterface $datagrid
      * @param $type
