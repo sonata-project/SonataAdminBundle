@@ -105,16 +105,10 @@ class DatagridBuilder implements DatagridBuilderInterface
             $fieldDescription->setType($type);
         }
 
-        $options = array(
-            'options'       => $fieldDescription->getOption('options', array()),
-            'field_options' => $fieldDescription->getOption('field_options', array()),
-            'field_type'    => $fieldDescription->getOption('field_type', array())
-        );
-
         $this->fixFieldDescription($admin, $fieldDescription);
         $admin->addFilterFieldDescription($fieldDescription->getName(), $fieldDescription);
 
-        $filter = $this->filterFactory->create($fieldDescription, $options);
+        $filter = $this->filterFactory->create($fieldDescription);
 
         $datagrid->addFilter($filter);
 

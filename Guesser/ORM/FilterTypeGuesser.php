@@ -55,8 +55,6 @@ class FilterTypeGuesser implements TypeGuesserInterface
 
             switch ($mapping['type']) {
                 case ClassMetadataInfo::ONE_TO_MANY:
-                    return new TypeGuess('doctrine_orm_one_to_many', $options, Guess::HIGH_CONFIDENCE);
-
                 case ClassMetadataInfo::MANY_TO_MANY:
                     $options['field_type'] = 'entity';
                     $options['field_options'] = array(

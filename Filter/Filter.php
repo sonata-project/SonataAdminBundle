@@ -32,6 +32,7 @@ abstract class Filter implements FilterInterface
     {
         $this->name               = $fieldDescription->getName();
         $this->fieldDescription   = $fieldDescription;
+        $this->options            = $fieldDescription->getOptions();
     }
 
     public function initialize(array $options = array())

@@ -39,7 +39,7 @@ class FilterFactory implements FilterFactoryInterface
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
      * @return void
      */
-    public function create(FieldDescriptionInterface $fieldDescription, array $options = array())
+    public function create(FieldDescriptionInterface $fieldDescription)
     {
         if (!$fieldDescription->getType()) {
             throw new \RunTimeException('The type must be defined');
@@ -82,10 +82,8 @@ class FilterFactory implements FilterFactoryInterface
             throw new \RunTimeException(sprintf('The service `%s` must implement `FilterInterface`', $id));
         }
 
+        $fieldDescription->mergeOption('field_options', array('required' => false));
         $filter->setFieldDescription($fieldDescription);
-        $options['field_options']['required'] = false;
-
-        $filter->initialize($options);
         $filter->defineFieldBuilder($this->container->get('form.factory'));
 
         return $filter;

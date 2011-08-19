@@ -36,40 +36,21 @@ class CallbackFilter extends Filter
      */
     public function filter($queryBuilder, $alias, $field, $value)
     {
-        if (!is_callable($this->getOption('filter'))) {
-            throw new \RuntimeException('Please provide a valid callback option "filter" for field "' . $this->getName() . "'");
+        if (!is_callable($this->getOption('callback'))) {
+            throw new \RuntimeException(sprintf('Please provide a valid callback option "filter" for field "%s"', $this->getName()));
         }
 
-        call_user_func($this->getOption('filter'), $queryBuilder, $alias, $field, $value);
+        call_user_func($this->getOption('callback'), $queryBuilder, $alias, $field, $value);
     }
 
     /**
-     *    $this->filter_fields['custom'] = array(
-     *        'type'           => 'callback',
-     *        'filter_options' => array(
-     *           'filter'  => array($this, 'getCustomFilter'),
-     *           'type'    => 'type_name'
-     *       )
-     *    );
-     *
      * @return array
      */
     public function getDefaultOptions()
     {
         return array(
-            'filter' => null,
-            'type'   => 'text',
+            'callback'    => null,
+            'field_type'  => 'text',
         );
-    }
-
-    /**
-     * @param \Symfony\Component\Form\FormFactory $formFactory
-     * @return void
-     */
-    public function defineFieldBuilder(FormFactory $formFactory)
-    {
-        $options = $this->getFieldDescription()->getOption('filter_field_options', array());
-
-        $this->field = $formFactory->createNamedBuilder($this->getOption('type'), $this->getName(), null, $options)->getForm();
     }
 }
