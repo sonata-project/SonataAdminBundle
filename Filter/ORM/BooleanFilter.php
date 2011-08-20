@@ -27,7 +27,7 @@ class BooleanFilter extends Filter
      */
     public function filter($queryBuilder, $alias, $field, $value)
     {
-        if ($this->getField()->getAttribute('multiple')) {
+        if (is_array($value)) {
             $values = array();
             foreach ($value as $v) {
                 if (!in_array($v, array(BooleanType::TYPE_NO, BooleanType::TYPE_YES))) {

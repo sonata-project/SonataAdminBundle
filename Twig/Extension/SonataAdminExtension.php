@@ -41,7 +41,6 @@ class SonataAdminExtension extends \Twig_Extension
     {
         return array(
             'render_list_element'     => new \Twig_Filter_Method($this, 'renderListElement', array('is_safe' => array('html'))),
-            'render_filter_element'   => new \Twig_Filter_Method($this, 'renderFilterElement', array('is_safe' => array('html'))),
             'render_view_element'     => new \Twig_Filter_Method($this, 'renderViewElement', array('is_safe' => array('html'))),
             'render_relation_element' => new \Twig_Filter_Method($this, 'renderRelationElement', array('is_safe' => array('html'))),
         );
@@ -146,25 +145,6 @@ class SonataAdminExtension extends \Twig_Extension
         }
 
         return $value;
-    }
-
-    /**
-     * render a filter element
-     *
-     * @param \Sonata\AdminBundle\Filter\FilterInterface $filter
-     * @param array $params
-     * @return string
-     */
-    public function renderFilterElement(FilterInterface $filter, array $params = array())
-    {
-        $fieldDescription = $filter->getFieldDescription();
-
-        $template = $this->getTemplate($fieldDescription, 'SonataAdminBundle:CRUD:base_filter_field.html.twig');
-
-        return $this->output($fieldDescription, $template, array_merge($params, array(
-            'filter'        => $filter,
-            'filter_form'   => $filter->getField()->createView()
-        )));
     }
 
     /**

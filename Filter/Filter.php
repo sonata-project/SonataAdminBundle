@@ -22,8 +22,6 @@ abstract class Filter implements FilterInterface
 
     protected $name = null;
 
-    protected $field = null;
-
     protected $value = null;
 
     protected $options = array();
@@ -32,7 +30,7 @@ abstract class Filter implements FilterInterface
     {
         $this->name               = $fieldDescription->getName();
         $this->fieldDescription   = $fieldDescription;
-        $this->options            = $fieldDescription->getOptions();
+        $this->options            = array_merge($this->getDefaultOptions(), $fieldDescription->getOptions());
     }
 
     public function initialize(array $options = array())
@@ -43,15 +41,6 @@ abstract class Filter implements FilterInterface
     public function getName()
     {
         return $this->name;
-    }
-
-    public function getField()
-    {
-        if (!$this->field) {
-            throw new \RuntimeException(sprintf('No field instance attached for the filter `%s`', $this->name));
-        }
-
-        return $this->field;
     }
 
     /**
@@ -74,17 +63,6 @@ abstract class Filter implements FilterInterface
         }
 
         return $default;
-    }
-
-    /**
-     * @param \Symfony\Component\Form\FormFactory $formFactory
-     * @return void
-     */
-    public function defineFieldBuilder(FormFactory $formFactory)
-    {
-        $builder = $formFactory->createNamedBuilder($this->getFieldType(), $this->getName(), null, $this->getFieldOptions());
-
-        $this->field = $builder->getForm();
     }
 
     /**

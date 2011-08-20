@@ -139,8 +139,16 @@ class CRUDController extends Controller
             throw new AccessDeniedException();
         }
 
+        $datagrid = $this->admin->getDatagrid();
+        $formView = $datagrid->getForm()->createView();
+
+        // set the theme for the current Admin Form
+        $this->get('twig')->getExtension('form')->setTheme($formView, $this->admin->getFilterTheme());
+
         return $this->render($this->admin->getListTemplate(), array(
-            'action'            => 'list',
+            'action'   => 'list',
+            'form'     => $formView,
+            'datagrid' => $this->admin->getDatagrid()
         ));
     }
 

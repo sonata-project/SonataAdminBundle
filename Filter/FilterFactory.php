@@ -54,20 +54,6 @@ class FilterFactory implements FilterFactoryInterface
 //
 //                break;
 //
-//            case ClassMetadataInfo::MANY_TO_MANY:
-//                $options = $fieldDescription->getOption('filter_field_options');
-//                $options['choices'] = $this->getChoices($fieldDescription);
-//
-//
-//                $fieldDescription->setOption('filter_field_options', $options);
-//
-//                $filter = new \Sonata\AdminBundle\Filter\ORM\ChoiceFilter($fieldDescription);
-//
-//                break;
-//
-//            default:
-//                $class = $this->getFilterFieldClass($fieldDescription);
-//                $filter = new $class($fieldDescription);
 //        }
 
         $id = isset($this->types[$type]) ? $this->types[$type] : false;
@@ -84,7 +70,6 @@ class FilterFactory implements FilterFactoryInterface
 
         $fieldDescription->mergeOption('field_options', array('required' => false));
         $filter->setFieldDescription($fieldDescription);
-        $filter->defineFieldBuilder($this->container->get('form.factory'));
 
         return $filter;
     }

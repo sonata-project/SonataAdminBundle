@@ -338,7 +338,9 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         'side_menu'     => false,
     );
 
-    protected $formTheme = array('SonataAdminBundle:Form:admin_fields.html.twig');
+    protected $formTheme = array('SonataAdminBundle:Form:form_admin_fields.html.twig');
+
+    protected $filterTheme = array('SonataAdminBundle:Form:filter_admin_fields.html.twig');
 
     /**
      * This method can be overwritten to tweak the form construction, by default the form
@@ -552,7 +554,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
             $parameters = array_merge(
                 $this->getModelManager()->getDefaultSortValues($this->getClass()),
                 $this->datagridValues,
-                $this->request->query->all()
+                $this->request->query->get('filter', array())
             );
 
             // always force the parent value
@@ -575,10 +577,8 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
             return;
         }
 
-        $parameters = $this->getFilterParameters();
-
         // initialize the datagrid
-        $this->datagrid = $this->getDatagridBuilder()->getBaseDatagrid($this, $parameters);
+        $this->datagrid = $this->getDatagridBuilder()->getBaseDatagrid($this, $this->getFilterParameters());
 
         $this->datagrid->getPager()->setMaxPerPage($this->maxPerPage);
 
@@ -2026,5 +2026,15 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     public function getFormTheme()
     {
         return $this->formTheme;
+    }
+
+    public function setFilterTheme($filterTheme)
+    {
+        $this->filterTheme = $filterTheme;
+    }
+
+    public function getFilterTheme()
+    {
+        return $this->filterTheme;
     }
 }

@@ -24,8 +24,8 @@ class ChoiceFilter extends Filter
      */
     public function filter($queryBuilder, $alias, $field, $value)
     {
-        if ($this->getField()->getAttribute('multiple')) {
-            if (!is_array($value) || count($value) == 0) {
+        if (is_array($value)) {
+            if (count($value) == 0) {
                 return;
             }
 

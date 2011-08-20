@@ -136,10 +136,10 @@ file that was distributed with this source code.
     {% if admin.datagrid.filters %}
         <form class="sonata-filter-form" action="{{ admin.generateUrl('list') }}" method="GET">
             {% for filter in admin.datagrid.filters %}
-                <div>
-                    {{ filter|render_filter_element }}</td>
-                </div>
+                {{ form_row(form.getChild(filter.name)) }}
             {% endfor %}
+
+            {{ form_rest(form) }}
 
             <input type="submit" value="{% trans from 'SonataAdminBundle' %}btn_filter{% endtrans %}" />
 

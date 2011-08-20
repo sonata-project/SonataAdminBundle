@@ -16,7 +16,7 @@ use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Filter\FilterInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
 
-use Symfony\Component\Form\FormFactory;
+use Symfony\Component\Form\FormBuilder;
 
 class Datagrid implements DatagridInterface
 {
@@ -37,16 +37,26 @@ class Datagrid implements DatagridInterface
 
     protected $query;
 
-    protected $formFactory;
+    protected $formBuilder;
+
+    protected $form;
 
     protected $results;
 
-    public function __construct(ProxyQueryInterface $query, FieldDescriptionCollection $columns, PagerInterface $pager, array $values = array())
+    /**
+     * @param ProxyQueryInterface $query
+     * @param \Sonata\AdminBundle\Admin\FieldDescriptionCollection $columns
+     * @param PagerInterface $pager
+     * @param \Symfony\Component\Form\FormBuilder $formBuilder
+     * @param array $values
+     */
+    public function __construct(ProxyQueryInterface $query, FieldDescriptionCollection $columns, PagerInterface $pager, FormBuilder $formBuilder, array $values = array())
     {
         $this->pager    = $pager;
         $this->query    = $query;
         $this->values   = $values;
         $this->columns  = $columns;
+        $this->formBuilder = $formBuilder;
     }
 
     /**
@@ -57,6 +67,9 @@ class Datagrid implements DatagridInterface
         return $this->pager;
     }
 
+    /**
+     * @return array
+     */
     public function getResults()
     {
         $this->buildPager();
@@ -68,6 +81,9 @@ class Datagrid implements DatagridInterface
         return $this->results;
     }
 
+    /**
+     * @return void
+     */
     public function buildPager()
     {
         if ($this->bound) {
@@ -75,11 +91,18 @@ class Datagrid implements DatagridInterface
         }
 
         foreach ($this->getFilters() as $name => $filter) {
-            $value = isset($this->values[$name]) ? $this->values[$name] : null;
+            $this->formBuilder->add($name, $filter->getFieldType(), $filter->getFieldOptions());
 
-            $filter->getField()->bind($value);
-            $filter->apply($this->query, $value);
+            $this->values[$name] = isset($this->values[$name]) ? $this->values[$name] : null;
+            $filter->apply($this->query, $this->values[$name]);
         }
+
+        $this->formBuilder->add('_sort_by', 'hidden');
+        $this->formBuilder->add('_sort_order', 'hidden');
+        $this->formBuilder->add('_page', 'hidden');
+
+        $this->form = $this->formBuilder->getForm();
+        $this->form->bind($this->values);
 
         $this->query->setSortBy(isset($this->values['_sort_by']) ? $this->values['_sort_by'] : null);
         $this->query->setSortOrder(isset($this->values['_sort_order']) ? $this->values['_sort_order'] : null);
@@ -100,23 +123,45 @@ class Datagrid implements DatagridInterface
         $this->filters[$filter->getName()] = $filter;
     }
 
+    /**
+     * @return array
+     */
     public function getFilters()
     {
         return $this->filters;
     }
 
+    /**
+     * @return array
+     */
     public function getValues()
     {
         return $this->values;
     }
 
+    /**
+     * @return \Sonata\AdminBundle\Admin\FieldDescriptionCollection
+     */
     public function getColumns()
     {
         return $this->columns;
     }
 
+    /**
+     * @return ProxyQueryInterface
+     */
     public function getQuery()
     {
         return $this->query;
+    }
+
+    /**
+     * @return \Symfony\Component\Form\Form
+     */
+    public function getForm()
+    {
+        $this->buildPager();
+
+        return $this->form;
     }
 }

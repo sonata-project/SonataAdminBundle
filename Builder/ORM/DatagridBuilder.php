@@ -21,6 +21,7 @@ use Sonata\AdminBundle\Datagrid\ORM\ProxyQuery;
 use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
 use Sonata\AdminBundle\Guesser\TypeGuesserInterface;
 use Sonata\AdminBundle\Filter\FilterFactoryInterface;
+use Symfony\Component\Form\FormFactory;
 
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 
@@ -28,16 +29,20 @@ class DatagridBuilder implements DatagridBuilderInterface
 {
     protected $filterFactory;
 
+    protected $formFactory;
+
     protected $guesser;
 
     /**
+     * @param \Symfony\Component\Form\FormFactory $formFactory
      * @param \Sonata\AdminBundle\Filter\FilterFactoryInterface $filterFactory
      * @param \Sonata\AdminBundle\Guesser\TypeGuesserInterface $guesser
      */
-    public function __construct(FilterFactoryInterface $filterFactory, TypeGuesserInterface $guesser)
+    public function __construct(FormFactory $formFactory, FilterFactoryInterface $filterFactory, TypeGuesserInterface $guesser)
     {
+        $this->formFactory   = $formFactory;
         $this->filterFactory = $filterFactory;
-        $this->guesser = $guesser;
+        $this->guesser       = $guesser;
     }
 
     /**
@@ -66,22 +71,7 @@ class DatagridBuilder implements DatagridBuilderInterface
 
         $fieldDescription->setOption('code', $fieldDescription->getOption('code', $fieldDescription->getName()));
         $fieldDescription->setOption('label', $fieldDescription->getOption('label', $fieldDescription->getName()));
-        $fieldDescription->setOption('filter_value', $fieldDescription->getOption('filter_value', null));
-        $fieldDescription->setOption('filter_options', $fieldDescription->getOption('filter_options', null));
-        $fieldDescription->setOption('filter_field_options', $fieldDescription->getOption('filter_field_options', null));
         $fieldDescription->setOption('name', $fieldDescription->getOption('name', $fieldDescription->getName()));
-
-        if (!$fieldDescription->getTemplate()) {
-            $fieldDescription->setTemplate(sprintf('SonataAdminBundle:CRUD:filter_%s.html.twig', $fieldDescription->getType()));
-
-            if ($fieldDescription->getMappingType() == ClassMetadataInfo::MANY_TO_ONE) {
-                $fieldDescription->setTemplate('SonataAdminBundle:CRUD:filter_many_to_one.html.twig');
-            }
-
-            if ($fieldDescription->getMappingType() == ClassMetadataInfo::MANY_TO_MANY) {
-                $fieldDescription->setTemplate('SonataAdminBundle:CRUD:filter_many_to_many.html.twig');
-            }
-        }
     }
 
     /**
@@ -128,6 +118,8 @@ class DatagridBuilder implements DatagridBuilderInterface
         $pager = new Pager;
         $pager->setCountColumn($admin->getModelManager()->getIdentifierFieldNames($admin->getClass()));
 
-        return new Datagrid($query, $admin->getList(), $pager, $values);
+        $formBuilder = $this->formFactory->createNamedBuilder('form', 'filter');
+
+        return new Datagrid($query, $admin->getList(), $pager, $formBuilder, $values);
     }
 }

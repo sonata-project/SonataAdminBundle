@@ -28,7 +28,6 @@ class StringFilter extends Filter
 
         // c.name LIKE '%word%' => c.name LIKE :fieldName
         $queryBuilder->andWhere(sprintf('%s.%s LIKE :%s', $alias, $field, $this->getName()));
-
         $queryBuilder->setParameter($this->getName(), sprintf($this->getOption('format'), $value));
     }
 
