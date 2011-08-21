@@ -49,7 +49,9 @@ file that was distributed with this source code.
                                     <th class="sonata-ba-list-field-header-{{ field_description.type}} {% if sortable %} sonata-ba-list-field-header-order-{{ sort_by|lower }} {{ sort_active_class }}{% endif %}">
                                         {% if sortable %}<a href="{{ admin.generateUrl('list', sort_parameters) }}">{% endif %}
 
-                                        {% if field_description.options.name is defined %}
+                                        {% if field_description.options.label is defined %}
+                                            {{ field_description.options.label|trans({}, admin.translationdomain) }}
+                                        {% elseif field_description.options.name is defined %}
                                             {{ field_description.options.name|trans({}, admin.translationdomain) }}
                                         {% else %}
                                             {{ field_description.name|trans({}, admin.translationdomain) }}
