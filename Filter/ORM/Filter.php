@@ -28,16 +28,6 @@ abstract class Filter extends BaseFilter
 
     protected function association($queryBuilder, $value)
     {
-        if ($value && $this->getFieldDescription()->getMappingType() == ClassMetadataInfo::MANY_TO_MANY) {
-            $queryBuilder->leftJoin(
-                sprintf('%s.%s', $queryBuilder->getRootAlias(), $this->getFieldDescription()->getFieldName()),
-                $this->getName()
-            );
-
-            // todo : use the metadata information to find the correct column name
-            return array($this->getName(), 'id');
-        }
-
         return array($queryBuilder->getRootAlias(), $this->getFieldDescription()->getFieldName());
     }
 }

@@ -411,7 +411,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
      */
     public function mergeOptions(array $options = array())
     {
-        $this->setOptions(array_merge($this->options, $options));
+        $this->setOptions(array_merge_recursive($this->options, $options));
     }
 
     /**

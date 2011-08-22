@@ -54,26 +54,23 @@ class FilterTypeGuesser implements TypeGuesserInterface
             $mapping = $metadata->getAssociationMapping($property);
 
             switch ($mapping['type']) {
+                case ClassMetadataInfo::ONE_TO_ONE:
                 case ClassMetadataInfo::ONE_TO_MANY:
+                case ClassMetadataInfo::MANY_TO_ONE:
                 case ClassMetadataInfo::MANY_TO_MANY:
+
                     $options['field_type'] = 'entity';
                     $options['field_options'] = array(
-                        'class' => $class
+                        'class' => $mapping['targetEntity']
                     );
+                    $options['field_name'] = $mapping['fieldName'];
+                    $options['mapping_type'] = $mapping['type'];
 
-                    return new TypeGuess('doctrine_orm_choice', $options, Guess::HIGH_CONFIDENCE);
-
-                case ClassMetadataInfo::MANY_TO_ONE:
-                    return new TypeGuess('doctrine_orm_many_to_one', $options, Guess::HIGH_CONFIDENCE);
-
-                case ClassMetadataInfo::ONE_TO_ONE:
-                    return new TypeGuess('doctrine_orm_one_to_one', $options, Guess::HIGH_CONFIDENCE);
+                    return new TypeGuess('doctrine_orm_model', $options, Guess::HIGH_CONFIDENCE);
             }
         }
 
         switch ($metadata->getTypeOfField($property)) {
-            //case 'array':
-            //  return new TypeGuess('Collection', $options, Guess::HIGH_CONFIDENCE);
             case 'boolean':
                 $options['field_type'] = 'sonata_type_filter_boolean';
                 $options['field_options'] = array();

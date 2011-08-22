@@ -12,8 +12,9 @@
 namespace Sonata\AdminBundle\Filter\ORM;
 
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\Mapping\ClassMetadataInfo;
 
-class ChoiceFilter extends Filter
+class ModelFilter extends Filter
 {
     /**
      * @param QueryBuilder $queryBuilder
@@ -29,19 +30,42 @@ class ChoiceFilter extends Filter
                 return;
             }
 
-            if (in_array('all', $value)) {
-                return;
-            }
-
             $queryBuilder->andWhere($queryBuilder->expr()->in(sprintf('%s.%s', $alias, $field ), $value));
         } else {
 
-            if (empty($value) || $value == 'all') {
+            if (empty($value)) {
                 return;
             }
 
             $queryBuilder->andWhere(sprintf('%s.%s = :%s', $alias, $field, $this->getName()));
             $queryBuilder->setParameter($this->getName(), $value);
         }
+    }
+
+    protected function association($queryBuilder, $value)
+    {
+        $types = array(
+            ClassMetadataInfo::ONE_TO_ONE,
+            ClassMetadataInfo::ONE_TO_MANY,
+            ClassMetadataInfo::MANY_TO_MANY,
+            ClassMetadataInfo::MANY_TO_ONE,
+        );
+
+        if (!in_array($this->getOption('mapping_type'), $types)) {
+            throw new \RunTimeException('Invalid mapping type' .$this->getOption('mapping_type'));
+        }
+
+        $queryBuilder->leftJoin(sprintf('%s.%s', $queryBuilder->getRootAlias(), $this->getOption('field_name')), $this->getName());
+
+        // todo : use the metadata information to find the correct column name
+        return array($this->getName(), 'id');
+    }
+
+    public function getDefaultOptions()
+    {
+        return array(
+            'mapping_type' => false,
+            'field_name' => false
+        );
     }
 }

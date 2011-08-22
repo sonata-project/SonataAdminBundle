@@ -28,6 +28,7 @@ class FilterFactory implements FilterFactoryInterface
 
     /**
      * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
+     * @param array $types
      */
     public function __construct(ContainerInterface $container, array $types = array())
     {
@@ -37,7 +38,7 @@ class FilterFactory implements FilterFactoryInterface
 
     /**
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
-     * @return void
+     * @return \Sonata\AdminBundle\Filter\FilterInterface
      */
     public function create(FieldDescriptionInterface $fieldDescription)
     {
@@ -46,15 +47,6 @@ class FilterFactory implements FilterFactoryInterface
         }
 
         $type = $fieldDescription->getType();
-//        $
-//        switch($fieldDescription->getMappingType()) {
-//            case ClassMetadataInfo::MANY_TO_ONE:
-//                $options = $fieldDescription->getOption('filter_field_options');
-//                $filter = new \Sonata\AdminBundle\Filter\ORM\IntegerFilter($fieldDescription);
-//
-//                break;
-//
-//        }
 
         $id = isset($this->types[$type]) ? $this->types[$type] : false;
 

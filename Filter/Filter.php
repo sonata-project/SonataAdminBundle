@@ -18,13 +18,13 @@ use Symfony\Component\Form\FormFactory;
 
 abstract class Filter implements FilterInterface
 {
-    protected $fieldDescription = array();
-
     protected $name = null;
 
     protected $value = null;
 
     protected $options = array();
+
+    protected $fieldDescription = array();
 
     public function setFieldDescription(FieldDescriptionInterface $fieldDescription)
     {
