@@ -49,6 +49,7 @@ class ModelManager implements ModelManagerInterface
     /**
      * Returns true is the model has some metadata
      *
+     * @param $class
      * @return boolean
      */
     public function hasMetadata($class)
@@ -59,7 +60,10 @@ class ModelManager implements ModelManagerInterface
     /**
      * Returns a new FieldDescription
      *
-     * @abstract
+     * @throws \RunTimeException
+     * @param $class
+     * @param $name
+     * @param array $options
      * @return \Sonata\AdminBundle\Admin\ORM\FieldDescription
      */
     public function getNewFieldDescriptionInstance($class, $name, array $options = array())
@@ -306,7 +310,21 @@ class ModelManager implements ModelManagerInterface
             $values['_sort_by']     = $fieldDescription->getOption('sortable');
         }
 
-        return $values;
+        return array('filter' => $values);
+    }
+
+    /**
+     * @param \Sonata\AdminBundle\Datagrid\DatagridInterface $datagrid
+     * @param $page
+     * @return void
+     */
+    public function getPaginationParameters(DatagridInterface $datagrid, $page)
+    {
+        $values = $datagrid->getValues();
+
+        $values['_page'] = $page;
+
+        return array('filter' => $values);
     }
 
     /**
@@ -317,7 +335,8 @@ class ModelManager implements ModelManagerInterface
     {
         return array(
             '_sort_order' => 'ASC',
-            '_sort_by'    => implode(',', $this->getModelIdentifier($class))
+            '_sort_by'    => implode(',', $this->getModelIdentifier($class)),
+            '_page'       => 1
         );
     }
 

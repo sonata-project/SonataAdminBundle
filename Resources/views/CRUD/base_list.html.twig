@@ -79,7 +79,7 @@ file that was distributed with this source code.
                             <td colspan="{{ admin.list.elements|length }}" class="pager">
                                 <ul>
                                     {% if admin.datagrid.pager.page != admin.datagrid.pager.previouspage %}
-                                        <li><a href="{{ admin.generateUrl('list', admin.datagrid.values|merge({'_page': admin.datagrid.pager.previouspage})) }}">{% trans from 'SonataAdminBundle' %}link_previous_pager{% endtrans %}</a></li>
+                                        <li><a href="{{ admin.generateUrl('list', admin.modelmanager.paginationparameters(admin.datagrid, admin.datagrid.pager.previouspage)) }}">{% trans from 'SonataAdminBundle' %}link_previous_pager{% endtrans %}</a></li>
                                     {% endif %}
 
                                     {# Set the number of pages to display in the pager #}
@@ -87,12 +87,12 @@ file that was distributed with this source code.
                                         {% if page == admin.datagrid.pager.page %}
                                             <li>{{ page }}</li>
                                         {% else %}
-                                            <li><a href="{{ admin.generateUrl('list', admin.datagrid.values|merge({'_page': page})) }}">{{ page }}</a></li>
+                                            <li><a href="{{ admin.generateUrl('list', admin.modelmanager.paginationparameters(admin.datagrid, page)) }}">{{ page }}</a></li>
                                         {% endif %}
                                     {% endfor %}
 
                                     {% if admin.datagrid.pager.page != admin.datagrid.pager.nextpage %}
-                                        <li><a href="{{ admin.generateUrl('list', admin.datagrid.values|merge({'_page': admin.datagrid.pager.nextpage})) }}">{% trans from 'SonataAdminBundle' %}link_next_pager{% endtrans %}</a></li>
+                                        <li><a href="{{ admin.generateUrl('list', admin.modelmanager.paginationparameters(admin.datagrid, admin.datagrid.pager.nextpage)) }}">{% trans from 'SonataAdminBundle' %}link_next_pager{% endtrans %}</a></li>
                                     {% endif %}
                                 </ul>
                             </td>
