@@ -116,7 +116,7 @@ class DatagridBuilder implements DatagridBuilderInterface
         $pager = new Pager;
         $pager->setCountColumn($admin->getModelManager()->getIdentifierFieldNames($admin->getClass()));
 
-        $formBuilder = $this->formFactory->createNamedBuilder('form', 'filter');
+        $formBuilder = $this->formFactory->createNamedBuilder('form', 'filter', array(), array('csrf_protection' => false));
 
         return new Datagrid($query, $admin->getList(), $pager, $formBuilder, $values);
     }

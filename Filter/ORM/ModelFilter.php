@@ -52,7 +52,7 @@ class ModelFilter extends Filter
         );
 
         if (!in_array($this->getOption('mapping_type'), $types)) {
-            throw new \RunTimeException('Invalid mapping type' .$this->getOption('mapping_type'));
+            throw new \RunTimeException('Invalid mapping type');
         }
 
         $queryBuilder->leftJoin(sprintf('%s.%s', $queryBuilder->getRootAlias(), $this->getOption('field_name')), $this->getName());
