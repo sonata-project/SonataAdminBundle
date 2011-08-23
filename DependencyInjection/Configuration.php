@@ -59,7 +59,7 @@ class Configuration implements ConfigurationInterface
                 ->end()
 
                 ->arrayNode('admin_services')
-                    ->useAttributeAsKey('__')
+                    ->useAttributeAsKey('id')
                     ->prototype('array')
                         ->children()
                             ->scalarNode('id')->end()

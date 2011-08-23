@@ -164,11 +164,9 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
         if (isset($service['label'])) {
             $label = $service['label'];
-        }
-        elseif (isset($attributes[0]['label'])) {
+        } elseif (isset($attributes[0]['label'])) {
             $label = $attributes[0]['label'];
-        }
-        else {
+        } else {
             $label = '-';
         }
         $definition->addMethodCall('setLabel', array($label));
@@ -186,6 +184,6 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
      */
     protected function camelize($property)
     {
-       return preg_replace(array('/(^|_)+(.)/e', '/\.(.)/e'), array("strtoupper('\\2')", "'_'.strtoupper('\\1')"), $property);
+         return preg_replace(array('/(^|_)+(.)/e', '/\.(.)/e'), array("strtoupper('\\2')", "'_'.strtoupper('\\1')"), $property);
     }
 }

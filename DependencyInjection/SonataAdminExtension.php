@@ -83,7 +83,7 @@ class SonataAdminExtension extends Extension
             }
 
             foreach ($config[$ns] as $type => $template) {
-                if (!isset($configs[$ns][$type])) {
+                if (!isset($config[$ns][$type])) {
                     continue;
                 }
 
