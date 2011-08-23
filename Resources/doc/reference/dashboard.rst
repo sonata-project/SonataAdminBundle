@@ -14,15 +14,15 @@ application's config file:
 
 
 Some examples of config file:
-1 - Set the label group
+1 - Set the label group & add all the default items
 .. code-block:: yaml
 
     # app/config/config.yml
     sonata_admin:
         dashboard:
-          sonata_page:
-            label: Page
-            items: ~
+            sonata_page:
+                label: Page
+                items: ~
 
 2 - Set items group
 .. code-block:: yaml
@@ -30,17 +30,31 @@ Some examples of config file:
     # app/config/config.yml
     sonata_admin:
         dashboard:
-          sonata_page:
-            items:
-                - sonata.page.admin.page
+            sonata_page:
+                items:
+                    - sonata.page.admin.page
 
-3 - Add an item of the group
+3 - Add a group with all the default items
 .. code-block:: yaml
 
     # app/config/config.yml
     sonata_admin:
         dashboard:
-          sonata_page: ~
+            sonata_page: ~
+
+4 - Add some items in a group
+.. code-block:: yaml
+
+    # app/config/config.yml
+    sonata_admin:
+        dashboard:
+            sonata_page:
+                item_adds:
+                    - sonata.page.admin.myitem1
+                    - sonata.page.admin.myitem2
+
+
+
 
 
 .. image:: ../images/dashboard.png

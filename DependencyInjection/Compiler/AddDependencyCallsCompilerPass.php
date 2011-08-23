@@ -79,11 +79,16 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
             $groups = $settings['dashboard_groups'];
 
             foreach ($groups as $group_name => $group) {
-                if(empty($group['items'])) {
+                if (empty($group['items'])) {
                     $groups[$group_name]['items'] = $groupDefaults[$group_name]['items'];
                 }
-                if(empty($group['label'])) {
+
+                if (empty($group['label'])) {
                     $groups[$group_name]['label'] = $groupDefaults[$group_name]['label'];
+                }
+
+                if (!empty($groups[$group_name]['item_adds'])) {
+                    $groups[$group_name]['items'] = array_merge($groupDefaults[$group_name]['items'], $groups[$group_name]['item_adds']);
                 }
             }
         }
@@ -157,7 +162,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
         foreach ($defaultAddServices as $attr => $addServiceId) {
             $method = 'set'.$this->camelize($attr);
 
-            if(isset($addServices[$attr]) || !$definition->hasMethodCall($method)) {
+            if (isset($addServices[$attr]) || !$definition->hasMethodCall($method)) {
                 $definition->addMethodCall($method, array(new Reference(isset($addServices[$attr]) ? $addServices[$attr] : $addServiceId)));
             }
         }
