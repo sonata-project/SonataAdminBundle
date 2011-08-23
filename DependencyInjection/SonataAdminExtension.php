@@ -44,7 +44,7 @@ class SonataAdminExtension extends Extension
      * @param array            $configs    An array of configuration settings
      * @param ContainerBuilder $container A ContainerBuilder instance
      */
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $config, ContainerBuilder $container)
     {
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('templates.xml');
@@ -56,15 +56,25 @@ class SonataAdminExtension extends Extension
 
         $configuration = new Configuration();
         $processor = new Processor();
-        $config = $processor->processConfiguration($configuration, $configs);
+        $config = $processor->processConfiguration($configuration, $config);
 
         // setups parameters with values in config.yml, default values from external files used if not
         $this->configSetupTemplates($config, $container);
 
+        $pool = $container->getDefinition('sonata.admin.pool');
+        $pool->addMethodCall('__hack__', $config);
+
         $container->setAlias('sonata.admin.security.handler', $config['security_handler']);
     }
 
-    protected function configSetupTemplates($config, $container)
+    /**
+     * setup the templates config
+     *
+     * @param array $config An array of configuration settings
+     * @param ContainerBuilder $container A ContainerBuilder instance
+     * @return void
+     */
+    protected function configSetupTemplates(array $config, ContainerBuilder $container)
     {
         foreach ($this->configNamespaces as $ns => $params) {
 
@@ -73,7 +83,7 @@ class SonataAdminExtension extends Extension
             }
 
             foreach ($config[$ns] as $type => $template) {
-                if (!isset($config[$ns][$type])) {
+                if (!isset($configs[$ns][$type])) {
                     continue;
                 }
 

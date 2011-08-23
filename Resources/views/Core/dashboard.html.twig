@@ -15,16 +15,16 @@ file that was distributed with this source code.
 {% block breadcrumb %}{% trans from 'SonataAdminBundle' %}title_dashboard{% endtrans %}{% endblock %}
 {% block content %}
 
-    {% for code, group in groups %}
+    {% for group in groups %}
         <table class="sonata-ba-list">
             <thead>
                 <tr>
-                    <th colspan="3">{{ code|trans({}, 'SonataAdminBundle') }}</th>
+                    <th colspan="3">{{ group.label|trans({}, 'SonataAdminBundle') }}</th>
                 </tr>
             </thead>
 
             <tbody>
-                {% for admin in group %}
+                {% for admin in group.items %}
                     <tr>
                         <td class="sonata-ba-list-label">{{ admin.label|trans({}, admin.translationdomain) }}</td>
                         <td>

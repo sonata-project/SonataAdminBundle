@@ -17,6 +17,8 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
+
 /**
  * Add all dependencies to the Admin class, this avoid to write to many lines
  * in the configuration files.
@@ -30,12 +32,13 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
+        $settings = $this->fixSettings($container);
+
         $groups = $admins = $classes = array();
 
         $pool = $container->getDefinition('sonata.admin.pool');
 
         foreach ($container->findTaggedServiceIds('sonata.admin') as $id => $attributes) {
-
             $definition = $container->getDefinition($id);
 
             $arguments = $definition->getArguments();
@@ -48,7 +51,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
                 $definition->replaceArgument(2, 'SonataAdminBundle:CRUD');
             }
 
-            $this->applyDefaults($definition, $attributes);
+            $this->applyDefaults($container, $id, $attributes, $settings);
 
             $arguments = $definition->getArguments();
             if (preg_match('/%(.*)%/', $arguments[1], $matches)) {
@@ -62,13 +65,30 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
             $group_name = isset($attributes[0]['group']) ? $attributes[0]['group'] : 'default';
 
-            if (!isset($groups[$group_name])) {
-                $groups[$group_name] = array();
+            if (!isset($groupDefaults[$group_name])) {
+                $groupDefaults[$group_name] = array(
+                    'label' => $group_name
+                );
             }
 
-            $groups[$group_name][$id] = array(
-                'show_in_dashboard' => (boolean)(isset($attributes[0]['show_in_dashboard']) ? $attributes[0]['show_in_dashboard'] : true)
-            );
+            $groupDefaults[$group_name]['items'][] = $id;
+        }
+
+        if (isset($settings['dashboard_groups'])) {
+
+            $groups = $settings['dashboard_groups'];
+
+            foreach ($groups as $group_name => $group) {
+                if(empty($group['items'])) {
+                    $groups[$group_name]['items'] = $groupDefaults[$group_name]['items'];
+                }
+                if(empty($group['label'])) {
+                    $groups[$group_name]['label'] = $groupDefaults[$group_name]['label'];
+                }
+            }
+        }
+        else {
+            $groups = $groupDefaults;
         }
 
         $pool->addMethodCall('setAdminServiceIds', array($admins));
@@ -79,66 +99,93 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
         $routeLoader->replaceArgument(1, $admins);
     }
 
+    public function fixSettings($container)
+    {
+        $pool = $container->getDefinition('sonata.admin.pool');
+
+        // not very clean but don't know how to do that for now
+        $settings = false;
+        $methods  = $pool->getMethodCalls();
+        foreach ($methods as $pos => $calls) {
+            if ($calls[0] == '__hack__') {
+                $settings = $calls[1];
+                break;
+            }
+        }
+
+        if ($settings) {
+            unset($methods[$pos]);
+        }
+
+        $pool->setMethodCalls($methods);
+
+        return $settings;
+    }
+
     /**
      * Apply the default values required by the AdminInterface to the Admin service definition
      *
-     * @param \Symfony\Component\DependencyInjection\Definition $definition
+     * @param ContainerBuilder $container
+     * @param interger $serviceId
      * @param array $attributes
+     * @param array $settings
      * @return \Symfony\Component\DependencyInjection\Definition
      */
-    public function applyDefaults(Definition $definition, array $attributes = array())
+    public function applyDefaults(ContainerBuilder $container, $serviceId, array $attributes = array(), array $settings = array())
     {
+        $definition = $container->getDefinition($serviceId);
+
         $definition->setScope(ContainerInterface::SCOPE_PROTOTYPE);
 
         $manager_type = $attributes[0]['manager_type'];
 
-        if (!$definition->hasMethodCall('setModelManager')) {
-            $definition->addMethodCall('setModelManager', array(new Reference(sprintf('sonata.admin.manager.%s', $manager_type))));
+        $addServices = isset($settings['admin_services'][$serviceId]) ? $settings['admin_services'][$serviceId] : false;
+
+        $defaultAddServices = array(
+            'model_manager'      => sprintf('sonata.admin.manager.%s', $manager_type),
+            'form_contractor'    => sprintf('sonata.admin.builder.%s_form', $manager_type),
+            'show_builder'       => sprintf('sonata.admin.builder.%s_show', $manager_type),
+            'list_builder'       => sprintf('sonata.admin.builder.%s_list', $manager_type),
+            'datagrid_builder'   => sprintf('sonata.admin.builder.%s_datagrid', $manager_type),
+            'translator'         => 'translator',
+            'configuration_pool' => 'sonata.admin.pool',
+            'router'             => 'router',
+            'validator'          => 'validator',
+            'security_handler'   => 'sonata.admin.security.handler'
+        );
+
+        foreach ($defaultAddServices as $attr => $addServiceId) {
+            $method = 'set'.$this->camelize($attr);
+
+            if(isset($addServices[$attr]) || !$definition->hasMethodCall($method)) {
+                $definition->addMethodCall($method, array(new Reference(isset($addServices[$attr]) ? $addServices[$attr] : $addServiceId)));
+            }
         }
 
-        if (!$definition->hasMethodCall('setFormContractor')) {
-            $definition->addMethodCall('setFormContractor', array(new Reference(sprintf('sonata.admin.builder.%s_form', $manager_type))));
+        if (isset($service['label'])) {
+            $label = $service['label'];
         }
-
-        if (!$definition->hasMethodCall('setShowBuilder')) {
-            $definition->addMethodCall('setShowBuilder', array(new Reference(sprintf('sonata.admin.builder.%s_show', $manager_type))));
+        elseif (isset($attributes[0]['label'])) {
+            $label = $attributes[0]['label'];
         }
-
-        if (!$definition->hasMethodCall('setListBuilder')) {
-            $definition->addMethodCall('setListBuilder', array(new Reference(sprintf('sonata.admin.builder.%s_list', $manager_type))));
+        else {
+            $label = '-';
         }
-
-        if (!$definition->hasMethodCall('setDatagridBuilder')) {
-            $definition->addMethodCall('setDatagridBuilder', array(new Reference(sprintf('sonata.admin.builder.%s_datagrid', $manager_type))));
-        }
-
-        if (!$definition->hasMethodCall('setTranslator')) {
-            $definition->addMethodCall('setTranslator', array(new Reference('translator')));
-        }
-
-        if (!$definition->hasMethodCall('setConfigurationPool')) {
-            $definition->addMethodCall('setConfigurationPool', array(new Reference('sonata.admin.pool')));
-        }
-
-        if (!$definition->hasMethodCall('setRouter')) {
-            $definition->addMethodCall('setRouter', array(new Reference('router')));
-        }
-
-        if (!$definition->hasMethodCall('setValidator')) {
-            $definition->addMethodCall('setValidator', array(new Reference('validator')));
-        }
-
-        if (!$definition->hasMethodCall('setSecurityHandler')) {
-            $definition->addMethodCall('setSecurityHandler', array(new Reference('sonata.admin.security.handler')));
-        }
-
-        if (!$definition->hasMethodCall('setLabel')) {
-            $label = isset($attributes[0]['label']) ? $attributes[0]['label'] : '-';
-            $definition->addMethodCall('setLabel', array($label));
-        }
+        $definition->addMethodCall('setLabel', array($label));
 
         $definition->addMethodCall('configure');
 
         return $definition;
+    }
+
+    /**
+     * method taken from PropertyPath
+     *
+     * @param  $property
+     * @return mixed
+     */
+    protected function camelize($property)
+    {
+       return preg_replace(array('/(^|_)+(.)/e', '/\.(.)/e'), array("strtoupper('\\2')", "'_'.strtoupper('\\1')"), $property);
     }
 }

@@ -47,15 +47,8 @@ class Pool
 
         foreach ($this->adminGroups as $name => $adminGroup) {
 
-            foreach ($adminGroup as $id => $options) {
-
-                if (!$options['show_in_dashboard']) {
-                    unset($groups[$name][$id]);
-                    continue;
-
-                }
-
-                $groups[$name][$id] = $this->container->get($id);
+            foreach ($adminGroup['items'] as $key => $id) {
+                $groups[$name]['items'][$key] = $this->container->get($id);
             }
 
             if (empty($groups[$name])) {

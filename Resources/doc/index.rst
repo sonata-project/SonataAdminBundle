@@ -27,6 +27,7 @@ Reference Guide
    reference/security
    reference/conditional_validation
    reference/update
+   reference/advance
 
 
 Doctrine ORM
