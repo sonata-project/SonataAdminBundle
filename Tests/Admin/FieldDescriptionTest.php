@@ -45,6 +45,12 @@ class FieldDescriptionTest extends \PHPUnit_Framework_TestCase
         $field->mergeOption('non_existant', array('key1' => 'key_1', 'key2' => 'key_2'));
         $this->assertEquals(array('key1' => 'key_1', 'key2' => 'key_2'), $field->getOption('array'));
 
+
+        $field->mergeOptions(array('array' => array('key3' => 'key_3')));
+
+        $this->assertEquals(array('key1' => 'key_1', 'key2' => 'key_2', 'key3' => 'key_3'), $field->getOption('array'));
+
+
         $field->setOption('integer', 1);
         try {
             $field->mergeOption('integer', array());
@@ -61,6 +67,7 @@ class FieldDescriptionTest extends \PHPUnit_Framework_TestCase
           array (
             'key1' => 'key_1',
             'key2' => 'key_2',
+            'key3' => 'key_3'
           ),
           'non_existant' =>
           array (

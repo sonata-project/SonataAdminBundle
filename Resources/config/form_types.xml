@@ -19,10 +19,15 @@
             <tag name="form.type" alias="sonata_type_model" />
         </service>
 
+        <service id="sonata.admin.form.type.model_reference" class="Sonata\AdminBundle\Form\Type\ModelReferenceType">
+            <tag name="form.type" alias="sonata_type_model_reference" />
+        </service>
+
         <service id="sonata.admin.form.type.array" class="Sonata\AdminBundle\Form\Type\ImmutableArrayType">
             <tag name="form.type" alias="sonata_type_immutable_array" />
         </service>
 
+        <!-- Form Extension -->
         <service id="sonata.admin.form.extension.field" class="Sonata\AdminBundle\Form\Extension\Field\Type\FormTypeFieldExtension">
             <tag name="form.type_extension" alias="field" />
         </service>

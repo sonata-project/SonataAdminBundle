@@ -57,8 +57,7 @@ class ModelFilter extends Filter
 
         $queryBuilder->leftJoin(sprintf('%s.%s', $queryBuilder->getRootAlias(), $this->getOption('field_name')), $this->getName());
 
-        // todo : use the metadata information to find the correct column name
-        return array($this->getName(), 'id');
+        return array($this->getOption('field_name'), 'id');
     }
 
     public function getDefaultOptions()

@@ -88,7 +88,13 @@ class DatagridBuilder implements DatagridBuilderInterface
             $fieldDescription->setType($guessType->getType());
             $options = $guessType->getOptions();
 
-            $fieldDescription->mergeOptions($options);
+            foreach($options as $name => $value) {
+                if (is_array($value)) {
+                    $fieldDescription->setOption($name, array_merge($value, $fieldDescription->getOption($name, array())));
+                } else {
+                    $fieldDescription->setOption($name,    $fieldDescription->getOption($name, $value));
+                }
+            }
         } else {
             $fieldDescription->setType($type);
         }
