@@ -42,4 +42,14 @@ class QueryBuilder
 
         return sprintf('%s IN ("%s")', $name, implode(',', $value));
     }
+
+    public function getRootAlias()
+    {
+        return 'o';
+    }
+
+    public function leftJoin($parameter, $alias)
+    {
+        $this->query[] = $parameter;
+    }
 }

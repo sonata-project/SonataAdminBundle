@@ -55,6 +55,10 @@ class ModelFilter extends Filter
             throw new \RunTimeException('Invalid mapping type');
         }
 
+        if (!$this->getOption('field_name')) {
+            throw new \RunTimeException('please provide a field_name options');
+        }
+
         $queryBuilder->leftJoin(sprintf('%s.%s', $queryBuilder->getRootAlias(), $this->getOption('field_name')), $this->getName());
 
         return array($this->getOption('field_name'), 'id');
