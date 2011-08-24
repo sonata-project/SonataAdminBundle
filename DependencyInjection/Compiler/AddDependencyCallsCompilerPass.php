@@ -74,7 +74,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
             $groupDefaults[$group_name]['items'][] = $id;
         }
 
-        if (isset($settings['dashboard_groups'])) {
+        if (!empty($settings['dashboard_groups'])) {
 
             $groups = $settings['dashboard_groups'];
 
@@ -93,6 +93,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
             }
         }
         else {
+
             $groups = $groupDefaults;
         }
 
