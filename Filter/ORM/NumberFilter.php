@@ -24,7 +24,7 @@ class NumberFilter extends Filter
      */
     public function filter($queryBuilder, $alias, $field, $value)
     {
-        if ($value == null) {
+        if ($value == null || !is_array($value)) {
             return;
         }
 
