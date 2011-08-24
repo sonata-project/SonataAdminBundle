@@ -34,7 +34,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
     {
         $settings = $this->fixSettings($container);
 
-        $groups = $admins = $classes = array();
+        $groups = $groupDefaults = $admins = $classes = array();
 
         $pool = $container->getDefinition('sonata.admin.pool');
 
