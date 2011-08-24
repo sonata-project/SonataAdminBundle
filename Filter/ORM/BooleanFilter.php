@@ -34,7 +34,7 @@ class BooleanFilter extends Filter
                    continue;
                 }
 
-                $values[] = $v ==  ((int)$value == BooleanType::TYPE_YES) ? 1 : 0;
+                $values[] = $v ==  ($value == BooleanType::TYPE_YES) ? 1 : 0;
             }
 
             if (count($values) == 0) {
@@ -50,7 +50,7 @@ class BooleanFilter extends Filter
             }
 
             $queryBuilder->andWhere(sprintf('%s.%s = :%s', $alias, $field, $this->getName()));
-            $queryBuilder->setParameter($this->getName(), ((int)$value == BooleanType::TYPE_YES) ? 1 : 0);
+            $queryBuilder->setParameter($this->getName(), ($value == BooleanType::TYPE_YES) ? 1 : 0);
         }
     }
 }

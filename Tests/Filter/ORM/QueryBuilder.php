@@ -29,4 +29,17 @@ class QueryBuilder
     {
         $this->query[] = $query;
     }
+
+    public function expr()
+    {
+        return $this;
+    }
+
+    public function in($name, $value)
+    {
+        $this->query[] = 'in_'.$name;
+        $this->parameters[] = 'in_'.$value;
+
+        return sprintf('%s IN ("%s")', $name, implode(',', $value));
+    }
 }
