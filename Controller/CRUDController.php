@@ -257,9 +257,7 @@ class CRUDController extends Controller
         }
 
         if (!$url) {
-            $url = $this->admin->generateUrl('edit', array(
-                'id' => $this->admin->getNormalizedIdentifier($object),
-            ));
+            $url = $this->admin->generateObjectUrl('edit', $object);
         }
 
         return new RedirectResponse($url);

@@ -831,11 +831,28 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         return $this->routes->has($name);
     }
 
+
+    /**
+     * generate the object url with the given $name
+     *
+     * @param  string $name
+     * @param  $object
+     * @param array $parameters
+     * 
+     * @return return a complete url
+     */
+    public function generateObjectUrl($name, $object, array $parameters = array())
+    {
+        $parameters['id'] = $this->getNormalizedIdentifier($object);
+
+        return $this->generateUrl($name, $parameters);
+    }
+
     /**
      * generate the url with the given $name
      *
      * @throws RuntimeException
-     * @param  $name
+     * @param string $name
      * @param array $parameters
      *
      * @return return a complete url

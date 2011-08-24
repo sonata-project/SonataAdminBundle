@@ -14,7 +14,7 @@ file that was distributed with this source code.
 {% block field%}
     {% if field_description.hasassociationadmin and field_description.associationadmin.hasRoute('edit') and field_description.associationadmin.isGranted('edit')%}
         {% for element in value%}
-            <a href="{{ field_description.associationadmin.generateUrl('edit', {'id': field_description.associationadmin.id(element)}) }}">{{ element|render_relation_element(field_description) }}</a>
+            <a href="{{ field_description.associationadmin.generateObjectUrl('edit', element) }}">{{ element|render_relation_element(field_description) }}</a>
         {% endfor %}
     {% else %}
         {% for element in value%}

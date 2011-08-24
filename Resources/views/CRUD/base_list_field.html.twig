@@ -13,9 +13,9 @@ file that was distributed with this source code.
     {% if field_description.options.identifier is defined and admin.isGranted(['EDIT', 'SHOW']) %}
 
         {% if admin.hasroute('edit') and admin.isGranted('EDIT') %}
-            <a href="{{ admin.generateUrl('edit', {'id': admin.id(object)}) }}">
+            <a href="{{ admin.generateObjectUrl('edit', object) }}">
         {% elseif admin.hasroute('show') %}
-            <a href="{{ admin.generateUrl('show', {'id': admin.id(object)}) }}">
+            <a href="{{ admin.generateObjectUrl('show', object) }}">
         {% endif %}
 
             {% block field %}{{ value }}{% endblock %}
