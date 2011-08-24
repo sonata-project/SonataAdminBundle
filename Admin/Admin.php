@@ -1612,7 +1612,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         $menu = $menu ?: new Menu;
 
         $child = $menu->addChild(
-            $this->trans(sprintf('link_%s_list', $this->getClassnameLabel())),
+            $this->trans(sprintf('breadcrumb.link_%s_list', $this->getClassnameLabel()), array(), 'SonataAdminBundle'),
             $this->generateUrl('list')
         );
 
@@ -1632,19 +1632,19 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
             if ($action != 'list') {
                 $menu = $menu->addChild(
-                    $this->trans(sprintf('link_%s_list', $this->getClassnameLabel())),
+                    $this->trans(sprintf('breadcrumb.link_%s_list', $this->getClassnameLabel()), array(), 'SonataAdminBundle'),
                     $this->generateUrl('list')
                 );
             }
 
             $breadcrumbs = $menu->getBreadcrumbsArray(
-                $this->trans(sprintf('link_%s_%s', $this->getClassnameLabel(), $action))
+                $this->trans(sprintf('breadcrumb.link_%s_%s', $this->getClassnameLabel(), $action), array(), 'SonataAdminBundle')
             );
 
         } else if ($action != 'list') {
 
             $breadcrumbs = $child->getBreadcrumbsArray(
-                $this->trans(sprintf('link_%s_%s', $this->getClassnameLabel(), $action))
+                $this->trans(sprintf('breadcrumb.link_%s_%s', $this->getClassnameLabel(), $action), array(), 'SonataAdminBundle')
             );
 
         } else {
