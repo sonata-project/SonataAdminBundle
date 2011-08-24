@@ -33,11 +33,6 @@ abstract class Filter implements FilterInterface
         $this->options            = array_merge($this->getDefaultOptions(), $fieldDescription->getOptions());
     }
 
-    public function initialize(array $options = array())
-    {
-        $this->options = array_replace($this->getDefaultOptions(), $options);
-    }
-
     public function getName()
     {
         return $this->name;
@@ -51,11 +46,19 @@ abstract class Filter implements FilterInterface
         return $this->fieldDescription;
     }
 
+    /**
+     * @return array
+     */
     public function getDefaultOptions()
     {
         return array();
     }
 
+    /**
+     * @param $name
+     * @param null $default
+     * @return mixed
+     */
     public function getOption($name, $default = null)
     {
         if (array_key_exists($name, $this->options)) {
@@ -79,5 +82,39 @@ abstract class Filter implements FilterInterface
     public function getFieldOptions()
     {
         return $this->getOption('field_options', array('required' => false));
+    }
+
+    /**
+     * @param $options
+     * @return void
+     */
+    public function setOptions($options)
+    {
+        $this->options = $options;
+    }
+
+    /**
+     * @return array
+     */
+    public function getOptions()
+    {
+        return $this->options;
+    }
+
+    /**
+     * @param $value
+     * @return void
+     */
+    public function setValue($value)
+    {
+        $this->value = $value;
+    }
+
+    /**
+     * @return null
+     */
+    public function getValue()
+    {
+        return $this->value;
     }
 }

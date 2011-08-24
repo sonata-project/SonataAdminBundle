@@ -60,11 +60,4 @@ interface FilterInterface
      * @return void
      */
     function setFieldDescription(FieldDescriptionInterface $fieldDescription);
-
-    /**
-     * @abstract
-     * @param array $options
-     * @return void
-     */
-    function initialize(array $options = array());
 }
