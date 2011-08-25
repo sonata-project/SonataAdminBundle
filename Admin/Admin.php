@@ -840,7 +840,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      * @param  string $name
      * @param  $object
      * @param array $parameters
-     * 
+     *
      * @return return a complete url
      */
     public function generateObjectUrl($name, $object, array $parameters = array())
@@ -1614,7 +1614,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         $menu = $menu ?: new Menu;
 
         $child = $menu->addChild(
-            $this->trans(sprintf('breadcrumb.link_%s_list', $this->getClassnameLabel()), array(), 'SonataAdminBundle'),
+            $this->trans(sprintf('breadcrumb.link_%s_list', $this->getClassnameLabel())),
             $this->generateUrl('list')
         );
 
@@ -1629,28 +1629,22 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
             );
 
             return $childAdmin->buildBreadcrumbs($action, $child);
-
         } elseif ($this->isChild()) {
-
             if ($action != 'list') {
                 $menu = $menu->addChild(
-                    $this->trans(sprintf('breadcrumb.link_%s_list', $this->getClassnameLabel()), array(), 'SonataAdminBundle'),
+                    $this->trans(sprintf('breadcrumb.link_%s_list', $this->getClassnameLabel())),
                     $this->generateUrl('list')
                 );
             }
 
             $breadcrumbs = $menu->getBreadcrumbsArray(
-                $this->trans(sprintf('breadcrumb.link_%s_%s', $this->getClassnameLabel(), $action), array(), 'SonataAdminBundle')
+                $this->trans(sprintf('breadcrumb.link_%s_%s', $this->getClassnameLabel(), $action))
             );
-
         } else if ($action != 'list') {
-
             $breadcrumbs = $child->getBreadcrumbsArray(
-                $this->trans(sprintf('breadcrumb.link_%s_%s', $this->getClassnameLabel(), $action), array(), 'SonataAdminBundle')
+                $this->trans(sprintf('breadcrumb.link_%s_%s', $this->getClassnameLabel(), $action))
             );
-
         } else {
-
             $breadcrumbs = $child->getBreadcrumbsArray();
         }
 
