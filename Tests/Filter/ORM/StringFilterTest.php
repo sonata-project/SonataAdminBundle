@@ -33,7 +33,7 @@ class StringFilterTest extends \PHPUnit_Framework_TestCase
     public function testFilter()
     {
         $filter = new StringFilter;
-        $filter->setFieldDescription($this->getFieldDescription(array('field_options' => array('class' => 'FooBar'))));
+        $filter->initialize('field_name', array('field_options' => array('class' => 'FooBar')));
 
         $builder = new QueryBuilder;
 
@@ -50,7 +50,7 @@ class StringFilterTest extends \PHPUnit_Framework_TestCase
     public function testFormat()
     {
         $filter = new StringFilter;
-        $filter->setFieldDescription($this->getFieldDescription(array('format' => '%s')));
+        $filter->initialize('field_name', array('format' => '%s'));
 
         $builder = new QueryBuilder;
 

@@ -59,9 +59,9 @@ class ModelFilter extends Filter
             throw new \RunTimeException('please provide a field_name options');
         }
 
-        $queryBuilder->leftJoin(sprintf('%s.%s', $queryBuilder->getRootAlias(), $this->getOption('field_name')), $this->getName());
+        $queryBuilder->leftJoin(sprintf('%s.%s', $queryBuilder->getRootAlias(), $this->getFieldName()), $this->getName());
 
-        return array($this->getOption('field_name'), 'id');
+        return array($this->getFieldName(), 'id');
     }
 
     public function getDefaultOptions()

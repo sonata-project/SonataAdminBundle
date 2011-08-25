@@ -33,7 +33,7 @@ class ModelFilterTest extends \PHPUnit_Framework_TestCase
     public function testFilterEmpty()
     {
         $filter = new ModelFilter;
-        $filter->setFieldDescription($this->getFieldDescription(array('field_options' => array('class' => 'FooBar'))));
+        $filter->initialize('field_name', array('field_options' => array('class' => 'FooBar')));
 
         $builder = new QueryBuilder;
 
@@ -46,7 +46,7 @@ class ModelFilterTest extends \PHPUnit_Framework_TestCase
     public function testFilterArray()
     {
         $filter = new ModelFilter;
-        $filter->setFieldDescription($this->getFieldDescription(array('field_options' => array('class' => 'FooBar'))));
+        $filter->initialize('field_name', array('field_options' => array('class' => 'FooBar')));
 
         $builder = new QueryBuilder;
 
@@ -58,7 +58,7 @@ class ModelFilterTest extends \PHPUnit_Framework_TestCase
     public function testFilterScalar()
     {
         $filter = new ModelFilter;
-        $filter->setFieldDescription($this->getFieldDescription(array('field_options' => array('class' => 'FooBar'))));
+        $filter->initialize('field_name', array('field_options' => array('class' => 'FooBar')));
 
         $builder = new QueryBuilder;
 
@@ -74,11 +74,9 @@ class ModelFilterTest extends \PHPUnit_Framework_TestCase
     public function testAssociationWithInvalidMapping()
     {
         $filter = new ModelFilter;
-        $filter->setFieldDescription($this->getFieldDescription(array('mapping_type' => 'foo')));
+        $filter->initialize('field_name', array('mapping_type' => 'foo'));
 
-        $builder = new QueryBuilder;
-
-        $filter->apply($builder, 'asd');
+        $filter->apply(new QueryBuilder, 'asd');
     }
 
     /**
@@ -87,20 +85,18 @@ class ModelFilterTest extends \PHPUnit_Framework_TestCase
     public function testAssociationWithValidMappingAndEmptyFieldName()
     {
         $filter = new ModelFilter;
-        $filter->setFieldDescription($this->getFieldDescription(array('mapping_type' => ClassMetadataInfo::ONE_TO_ONE)));
+        $filter->initialize('field_name', array('mapping_type' => ClassMetadataInfo::ONE_TO_ONE));
 
-        $builder = new QueryBuilder;
-
-        $filter->apply($builder, 'asd');
+        $filter->apply(new QueryBuilder, 'asd');
     }
 
     public function testAssociationWithValidMapping()
     {
         $filter = new ModelFilter;
-        $filter->setFieldDescription($this->getFieldDescription(array(
+        $filter->initialize('field_name', array(
             'mapping_type' => ClassMetadataInfo::ONE_TO_ONE,
-            'field_name' => 'field_name'
-        )));
+            'field_name' => 'field_name',
+        ));
 
         $builder = new QueryBuilder;
 

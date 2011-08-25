@@ -45,16 +45,7 @@ class FilterTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(array('option1' => 2), $filter->getDefaultOptions());
         $this->assertEquals(null, $filter->getOption('1'));
 
-        $fieldDescription = $this->getMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
-        $fieldDescription->expects($this->once())
-            ->method('getOptions')
-            ->will($this->returnValue(array('field_options' => array('class' => 'FooBar'))));
-
-        $fieldDescription->expects($this->once())
-            ->method('getName')
-            ->will($this->returnValue('field_name'));
-
-        $filter->setFieldDescription($fieldDescription);
+        $filter->initialize('field_name', array('field_options' => array('class' => 'FooBar')));
 
         $this->assertEquals(2, $filter->getOption('option1'));
         $this->assertEquals(null, $filter->getOption('foo'));

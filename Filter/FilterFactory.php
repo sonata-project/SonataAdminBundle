@@ -61,7 +61,8 @@ class FilterFactory implements FilterFactoryInterface
         }
 
         $fieldDescription->mergeOption('field_options', array('required' => false));
-        $filter->setFieldDescription($fieldDescription);
+        $fieldDescription->setOption('field_name', $fieldDescription->getOption('field_name', $fieldDescription->getName()));
+        $filter->initialize($fieldDescription->getName(), $fieldDescription->getOptions());
 
         return $filter;
     }

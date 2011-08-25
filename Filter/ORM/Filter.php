@@ -28,6 +28,6 @@ abstract class Filter extends BaseFilter
 
     protected function association($queryBuilder, $value)
     {
-        return array($queryBuilder->getRootAlias(), $this->getFieldDescription()->getFieldName());
+        return array($queryBuilder->getRootAlias(), $this->getFieldName());
     }
 }

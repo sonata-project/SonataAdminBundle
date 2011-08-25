@@ -24,26 +24,22 @@ abstract class Filter implements FilterInterface
 
     protected $options = array();
 
-    protected $fieldDescription = array();
-
-    public function setFieldDescription(FieldDescriptionInterface $fieldDescription)
+    /**
+     * @param $name
+     * @param array $options
+     */
+    public function initialize($name, array $options = array())
     {
-        $this->name               = $fieldDescription->getName();
-        $this->fieldDescription   = $fieldDescription;
-        $this->options            = array_merge($this->getDefaultOptions(), $fieldDescription->getOptions());
-    }
-
-    public function getName()
-    {
-        return $this->name;
+        $this->name = $name;
+        $this->setOptions($options);
     }
 
     /**
-     * @return \Sonata\AdminBundle\Admin\FieldDescriptionInterface
+     * @return null
      */
-    public function getFieldDescription()
+    public function getName()
     {
-        return $this->fieldDescription;
+        return $this->name;
     }
 
     /**
@@ -85,12 +81,26 @@ abstract class Filter implements FilterInterface
     }
 
     /**
+     * @return array
+     */
+    public function getFieldName()
+    {
+        $fieldName = $this->getOption('field_name');
+
+        if (!$fieldName) {
+            throw new \RunTimeException(sprintf('The option `field_name` must be set for field : `%s`', $this->getName()));
+        }
+
+        return $fieldName;
+    }
+
+    /**
      * @param $options
      * @return void
      */
     public function setOptions($options)
     {
-        $this->options = $options;
+        $this->options = array_merge($this->getDefaultOptions(), $options);
     }
 
     /**

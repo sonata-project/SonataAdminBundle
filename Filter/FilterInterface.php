@@ -50,14 +50,27 @@ interface FilterInterface
 
     /**
      * @abstract
-     * @return \Sonata\AdminBundle\Admin\FieldDescriptionInterface
+     * @param $name
+     * @param array $options
+     * @return void
      */
-    function getFieldDescription();
+    function initialize($name, array $options = array());
+
+        /**
+     * @abstract
+     * @return void
+     */
+    function getFieldName();
 
     /**
      * @abstract
-     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
      * @return void
      */
-    function setFieldDescription(FieldDescriptionInterface $fieldDescription);
+    function getFieldOptions();
+
+    /**
+     * @abstract
+     * @return void
+     */
+    function getFieldType();
 }

@@ -70,6 +70,8 @@ class FilterTypeGuesser implements TypeGuesserInterface
             }
         }
 
+        $options['field_name'] = $metadata->fieldMappings[$property]['fieldName'];
+
         switch ($metadata->getTypeOfField($property)) {
             case 'boolean':
                 $options['field_type'] = 'sonata_type_filter_boolean';

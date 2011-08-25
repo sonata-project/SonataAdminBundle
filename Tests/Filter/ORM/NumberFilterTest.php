@@ -16,24 +16,10 @@ use Sonata\AdminBundle\Form\Type\Filter\NumberType;
 
 class NumberFilterTest extends \PHPUnit_Framework_TestCase
 {
-    public function getFieldDescription(array $options)
-    {
-        $fieldDescription = $this->getMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
-        $fieldDescription->expects($this->once())
-            ->method('getOptions')
-            ->will($this->returnValue($options));
-
-        $fieldDescription->expects($this->once())
-            ->method('getName')
-            ->will($this->returnValue('field_name'));
-
-        return $fieldDescription;
-    }
-
     public function testFilterEmpty()
     {
         $filter = new NumberFilter;
-        $filter->setFieldDescription($this->getFieldDescription(array('field_options' => array('class' => 'FooBar'))));
+        $filter->initialize('field_name', array('field_options' => array('class' => 'FooBar')));
 
         $builder = new QueryBuilder;
 
@@ -46,7 +32,7 @@ class NumberFilterTest extends \PHPUnit_Framework_TestCase
     public function testFilterInvalidOperator()
     {
         $filter = new NumberFilter;
-        $filter->setFieldDescription($this->getFieldDescription(array('field_options' => array('class' => 'FooBar'))));
+        $filter->initialize('field_name', array('field_options' => array('class' => 'FooBar')));
 
         $builder = new QueryBuilder;
 
@@ -58,7 +44,7 @@ class NumberFilterTest extends \PHPUnit_Framework_TestCase
     public function testFilter()
     {
         $filter = new NumberFilter;
-        $filter->setFieldDescription($this->getFieldDescription(array('field_options' => array('class' => 'FooBar'))));
+        $filter->initialize('field_name', array('field_options' => array('class' => 'FooBar')));
 
         $builder = new QueryBuilder;
 

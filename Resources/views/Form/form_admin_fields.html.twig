@@ -79,10 +79,10 @@ file that was distributed with this source code.
     {% elseif sonata_admin.field_description.mappingtype == 8 %}
         {{ block('sonata_admin_orm_many_to_many_widget') }}
     {% elseif sonata_admin.field_description.mappingtype == 4 %}
-        LA
         {{ block('sonata_admin_orm_one_to_many_widget') }}
     {% else %}
-        INVALID MODE : {{ id }}
+        {#INVALID MODE : {{ id }}#}
+        {{ block('choice_widget') }}
     {% endif %}
 {% endblock %}
 

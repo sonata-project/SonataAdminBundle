@@ -15,32 +15,17 @@ use Sonata\AdminBundle\Filter\ORM\CallbackFilter;
 
 class CallbackFilterTest extends \PHPUnit_Framework_TestCase
 {
-    public function getFieldDescription(array $options)
-    {
-        $fieldDescription = $this->getMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
-        $fieldDescription->expects($this->once())
-            ->method('getOptions')
-            ->will($this->returnValue($options));
-
-        $fieldDescription->expects($this->once())
-            ->method('getName')
-            ->will($this->returnValue('field_name'));
-
-        return $fieldDescription;
-    }
-
     public function testFilterClosure()
     {
         $builder = new QueryBuilder;
 
         $filter = new CallbackFilter;
-        $filter->setFieldDescription($this->getFieldDescription(array(
+        $filter->initialize('field_name', array(
             'callback' => function($builder, $alias, $field, $value) {
                 $builder->andWhere(sprintf('CUSTOM QUERY %s.%s', $alias, $field));
                 $builder->setParameter('value', $value);
             }
-        )));
-        ;
+        ));
 
         $filter->filter($builder, 'alias', 'field', 'myValue');
 
@@ -53,9 +38,9 @@ class CallbackFilterTest extends \PHPUnit_Framework_TestCase
         $builder = new QueryBuilder;
 
         $filter = new CallbackFilter;
-        $filter->setFieldDescription($this->getFieldDescription(array(
+        $filter->initialize('field_name', array(
             'callback' => array($this, 'customCallback')
-        )));
+        ));
 
         $filter->filter($builder, 'alias', 'field', 'myValue');
 
@@ -76,7 +61,7 @@ class CallbackFilterTest extends \PHPUnit_Framework_TestCase
         $builder = new QueryBuilder;
 
         $filter = new CallbackFilter;
-        $filter->setFieldDescription($this->getFieldDescription(array()));
+        $filter->initialize('field_name', array());
 
         $filter->filter($builder, 'alias', 'field', 'myValue');
     }
