@@ -34,7 +34,7 @@ class FilterFactory implements FilterFactoryInterface
      * @param string $name
      * @param string $type
      * @param array $options
-     * @return Sonata\AdminBundle\Filter\FilterInterface
+     * @return \Sonata\AdminBundle\Filter\FilterInterface
      */
     public function create($name, $type, array $options = array())
     {

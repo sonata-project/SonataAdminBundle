@@ -81,10 +81,10 @@ class SonataAdminExtension extends \Twig_Extension
     /**
      * render a list element from the FieldDescription
      *
-     * @param mixed $object
+     * @param $object
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
      * @param array $params
-     * @return
+     * @return string
      */
     public function renderListElement($object, FieldDescriptionInterface $fieldDescription, $params = array())
     {
@@ -100,7 +100,8 @@ class SonataAdminExtension extends \Twig_Extension
 
     /**
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
-     * @param string $content
+     * @param \Twig_TemplateInterface $template
+     * @param array $parameters
      * @return string
      */
     public function output(FieldDescriptionInterface $fieldDescription, \Twig_TemplateInterface $template, array $parameters = array())
