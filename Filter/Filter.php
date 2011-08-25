@@ -11,10 +11,7 @@
 
 namespace Sonata\AdminBundle\Filter;
 
-use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Filter\FilterInterface;
-use Doctrine\ORM\QueryBuilder;
-use Symfony\Component\Form\FormFactory;
 
 abstract class Filter implements FilterInterface
 {
@@ -25,7 +22,7 @@ abstract class Filter implements FilterInterface
     protected $options = array();
 
     /**
-     * @param $name
+     * @param string $name
      * @param array $options
      */
     public function initialize($name, array $options = array())
@@ -35,7 +32,7 @@ abstract class Filter implements FilterInterface
     }
 
     /**
-     * @return null
+     * @return string
      */
     public function getName()
     {
@@ -51,7 +48,7 @@ abstract class Filter implements FilterInterface
     }
 
     /**
-     * @param $name
+     * @param string $name
      * @param null $default
      * @return mixed
      */
@@ -81,7 +78,7 @@ abstract class Filter implements FilterInterface
     }
 
     /**
-     * @return array
+     * @return string
      */
     public function getFieldName()
     {
@@ -95,10 +92,10 @@ abstract class Filter implements FilterInterface
     }
 
     /**
-     * @param $options
+     * @param array $options
      * @return void
      */
-    public function setOptions($options)
+    public function setOptions(array $options)
     {
         $this->options = array_merge($this->getDefaultOptions(), $options);
     }
@@ -121,7 +118,7 @@ abstract class Filter implements FilterInterface
     }
 
     /**
-     * @return null
+     * @return mixed
      */
     public function getValue()
     {
