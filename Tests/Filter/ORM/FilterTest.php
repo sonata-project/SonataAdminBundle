@@ -64,4 +64,13 @@ class FilterTest extends \PHPUnit_Framework_TestCase
         $filter->setValue(42);
         $this->assertEquals(42, $filter->getValue());
     }
+
+    /**
+     * @expectedException RuntimeException
+     */
+    public function testExceptionOnEmptyFieldName()
+    {
+        $filter = new FilterTest_Filter();
+        $filter->getFieldName();
+    }
 }
