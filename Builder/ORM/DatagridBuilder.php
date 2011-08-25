@@ -106,6 +106,7 @@ class DatagridBuilder implements DatagridBuilderInterface
         $this->fixFieldDescription($admin, $fieldDescription);
         $admin->addFilterFieldDescription($fieldDescription->getName(), $fieldDescription);
 
+        $fieldDescription->mergeOption('field_options', array('required' => false));
         $filter = $this->filterFactory->create($fieldDescription->getName(), $type, $fieldDescription->getOptions());
 
         $datagrid->addFilter($filter);
