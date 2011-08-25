@@ -43,7 +43,7 @@ class FilterFactory implements FilterFactoryInterface
      * @param $options
      * @return object|\Symfony\Component\DependencyInjection\The
      */
-    public function create($name, $type, $options)
+    public function create($name, $type, array $options = array())
     {
         if (!$type) {
             throw new \RunTimeException('The type must be defined');
