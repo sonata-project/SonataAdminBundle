@@ -85,7 +85,11 @@ class DatagridBuilder implements DatagridBuilderInterface
     {
         if ($type == null) {
             $guessType = $this->guesser->guessType($admin->getClass(), $fieldDescription->getName());
-            $fieldDescription->setType($guessType->getType());
+
+            $type = $guessType->getType();
+
+            $fieldDescription->setType($type);
+
             $options = $guessType->getOptions();
 
             foreach($options as $name => $value) {
