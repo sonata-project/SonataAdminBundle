@@ -11,13 +11,6 @@
 
 namespace Sonata\AdminBundle\Filter;
 
-use Sonata\AdminBundle\Filter\Filter as BaseFilter;
-use Doctrine\ORM\Mapping\ClassMetadataInfo;
-use Symfony\Component\Form\FormBuilder;
-use Sonata\AdminBundle\Filter\FilterFactoryInterface;
-use Sonata\AdminBundle\Guesser\TypeGuesserInterface;
-use Symfony\Component\Form\FormFactory;
-use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class FilterFactory implements FilterFactoryInterface
