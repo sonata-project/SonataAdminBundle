@@ -11,10 +11,7 @@
 
 namespace Sonata\AdminBundle\Filter;
 
-use Symfony\Component\Form\FormFactory;
-use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
-
 interface FilterFactoryInterface
 {
-    public function create(FieldDescriptionInterface $fieldDescription);
+    public function create($name, $type, array $options = array());
 }

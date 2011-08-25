@@ -37,16 +37,17 @@ class FilterFactory implements FilterFactoryInterface
     }
 
     /**
-     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
-     * @return \Sonata\AdminBundle\Filter\FilterInterface
+     * @throws \RunTimeException
+     * @param $name
+     * @param $type
+     * @param $options
+     * @return object|\Symfony\Component\DependencyInjection\The
      */
-    public function create(FieldDescriptionInterface $fieldDescription)
+    public function create($name, $type, $options)
     {
-        if (!$fieldDescription->getType()) {
+        if (!$type) {
             throw new \RunTimeException('The type must be defined');
         }
-
-        $type = $fieldDescription->getType();
 
         $id = isset($this->types[$type]) ? $this->types[$type] : false;
 
@@ -60,9 +61,7 @@ class FilterFactory implements FilterFactoryInterface
             throw new \RunTimeException(sprintf('The service `%s` must implement `FilterInterface`', $id));
         }
 
-        $fieldDescription->mergeOption('field_options', array('required' => false));
-        $fieldDescription->setOption('field_name', $fieldDescription->getOption('field_name', $fieldDescription->getName()));
-        $filter->initialize($fieldDescription->getName(), $fieldDescription->getOptions());
+        $filter->initialize($name, $options);
 
         return $filter;
     }

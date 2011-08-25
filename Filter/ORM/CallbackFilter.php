@@ -11,9 +11,6 @@
 
 namespace Sonata\AdminBundle\Filter\ORM;
 
-use Symfony\Component\Form\FormFactory;
-use Doctrine\ORM\QueryBuilder;
-
 class CallbackFilter extends Filter
 {
     /**

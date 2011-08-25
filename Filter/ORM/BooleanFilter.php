@@ -11,9 +11,6 @@
 
 namespace Sonata\AdminBundle\Filter\ORM;
 
-use Doctrine\ORM\QueryBuilder;
-use Symfony\Component\Form\FormFactory;
-use Symfony\Component\Translation\TranslatorInterface;
 use Sonata\AdminBundle\Form\Type\Filter\BooleanType;
 
 class BooleanFilter extends Filter

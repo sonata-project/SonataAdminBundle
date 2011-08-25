@@ -11,7 +11,6 @@
 
 namespace Sonata\AdminBundle\Filter\ORM;
 
-use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 
 class ModelFilter extends Filter

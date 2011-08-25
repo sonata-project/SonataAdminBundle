@@ -102,7 +102,7 @@ class DatagridBuilder implements DatagridBuilderInterface
         $this->fixFieldDescription($admin, $fieldDescription);
         $admin->addFilterFieldDescription($fieldDescription->getName(), $fieldDescription);
 
-        $filter = $this->filterFactory->create($fieldDescription);
+        $filter = $this->filterFactory->create($fieldDescription->getName(), $type, $fieldDescription->getOptions());
 
         $datagrid->addFilter($filter);
 

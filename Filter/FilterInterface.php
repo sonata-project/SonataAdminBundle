@@ -11,8 +11,6 @@
 
 namespace Sonata\AdminBundle\Filter;
 
-use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
-
 interface FilterInterface
 {
     /**

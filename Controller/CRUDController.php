@@ -231,6 +231,7 @@ class CRUDController extends Controller
                 // redirect to edit mode
                 return $this->redirectTo($object);
             }
+
             $this->get('session')->setFlash('sonata_flash_error', 'flash_edit_error');
         }
 

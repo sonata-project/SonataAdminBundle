@@ -12,8 +12,6 @@
 namespace Sonata\AdminBundle\Filter\ORM;
 
 use Sonata\AdminBundle\Filter\Filter as BaseFilter;
-use Doctrine\ORM\Mapping\ClassMetadataInfo;
-use Symfony\Component\Form\FormBuilder;
 
 abstract class Filter extends BaseFilter
 {
