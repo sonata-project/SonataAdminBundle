@@ -12,25 +12,11 @@
 namespace Sonata\AdminBundle\Tests\Filter\ORM;
 
 use Sonata\AdminBundle\Filter\ORM\StringFilter;
+use Sonata\AdminBundle\Form\Type\Filter\StringType;
 
 class StringFilterTest extends \PHPUnit_Framework_TestCase
 {
-
-    public function getFieldDescription(array $options)
-    {
-        $fieldDescription = $this->getMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
-        $fieldDescription->expects($this->once())
-            ->method('getOptions')
-            ->will($this->returnValue($options));
-
-        $fieldDescription->expects($this->once())
-            ->method('getName')
-            ->will($this->returnValue('field_name'));
-
-        return $fieldDescription;
-    }
-
-    public function testFilter()
+    public function testEmpty()
     {
         $filter = new StringFilter;
         $filter->initialize('field_name', array('field_options' => array('class' => 'FooBar')));
@@ -41,26 +27,52 @@ class StringFilterTest extends \PHPUnit_Framework_TestCase
         $filter->filter($builder, 'alias', 'field', '');
 
         $this->assertEquals(array(), $builder->query);
-
-        $filter->filter($builder, 'alias', 'field', 'asd');
-        $this->assertEquals(array('alias.field LIKE :field_name'), $builder->query);
-        $this->assertEquals(array('field_name' => '%asd%'), $builder->parameters);
     }
 
-    public function testFormat()
+    public function testContains()
     {
         $filter = new StringFilter;
         $filter->initialize('field_name', array('format' => '%s'));
 
         $builder = new QueryBuilder;
-
-        $filter->filter($builder, 'alias', 'field', null);
-        $filter->filter($builder, 'alias', 'field', '');
-
         $this->assertEquals(array(), $builder->query);
 
-        $filter->filter($builder, 'alias', 'field', 'asd');
+        $filter->filter($builder, 'alias', 'field', array('text' => 'asd', 'type' => StringType::TYPE_CONTAINS));
         $this->assertEquals(array('alias.field LIKE :field_name'), $builder->query);
+        $this->assertEquals(array('field_name' => 'asd'), $builder->parameters);
+
+
+        $builder = new QueryBuilder;
+        $this->assertEquals(array(), $builder->query);
+
+        $filter->filter($builder, 'alias', 'field', array('text' => 'asd', 'type' => null));
+        $this->assertEquals(array('alias.field LIKE :field_name'), $builder->query);
+        $this->assertEquals(array('field_name' => 'asd'), $builder->parameters);
+    }
+
+    public function testNotContains()
+    {
+        $filter = new StringFilter;
+        $filter->initialize('field_name', array('format' => '%s'));
+
+        $builder = new QueryBuilder;
+        $this->assertEquals(array(), $builder->query);
+
+        $filter->filter($builder, 'alias', 'field', array('text' => 'asd', 'type' => StringType::TYPE_NOT_CONTAINS));
+        $this->assertEquals(array('alias.field NOT LIKE :field_name'), $builder->query);
+        $this->assertEquals(array('field_name' => 'asd'), $builder->parameters);
+    }
+
+    public function testEquals()
+    {
+        $filter = new StringFilter;
+        $filter->initialize('field_name', array('format' => '%s'));
+
+        $builder = new QueryBuilder;
+        $this->assertEquals(array(), $builder->query);
+
+        $filter->filter($builder, 'alias', 'field', array('text' => 'asd', 'type' => StringType::TYPE_EQUAL));
+        $this->assertEquals(array('alias.field = :field_name'), $builder->query);
         $this->assertEquals(array('field_name' => 'asd'), $builder->parameters);
     }
 }

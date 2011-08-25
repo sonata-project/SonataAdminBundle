@@ -11,24 +11,58 @@
 
 namespace Sonata\AdminBundle\Filter\ORM;
 
+use Sonata\AdminBundle\Form\Type\Filter\StringType;
+
 class StringFilter extends Filter
 {
     /**
-     * @param Querybuilder $queryBuilder
+     * @param QueryBuilder $queryBuilder
      * @param string $alias
      * @param string $field
-     * @param mixed $value
+     * @param string $value
      * @return
      */
     public function filter($queryBuilder, $alias, $field, $value)
     {
-        if ($value == null || strlen($value) == 0) {
+        if (!is_array($value)) {
             return;
         }
 
-        // c.name LIKE '%word%' => c.name LIKE :fieldName
-        $queryBuilder->andWhere(sprintf('%s.%s LIKE :%s', $alias, $field, $this->getName()));
-        $queryBuilder->setParameter($this->getName(), sprintf($this->getOption('format'), $value));
+        $value['text'] = trim($value['text']);
+
+        if (strlen($value['text']) == 0) {
+            return;
+        }
+
+        $operator = $this->getOperator((int) $value['type']);
+
+        if (!$operator) {
+            $operator = 'LIKE';
+        }
+
+        // c.name > '1' => c.name OPERATOR :FIELDNAME
+        $queryBuilder->andWhere(sprintf('%s.%s %s :%s', $alias, $field, $operator, $this->getName()));
+
+        if ($value['type'] == StringType::TYPE_EQUAL) {
+            $queryBuilder->setParameter($this->getName(), $value['text']);
+        } else {
+            $queryBuilder->setParameter($this->getName(), sprintf($this->getOption('format'), $value['text']));
+        }
+    }
+
+    /**
+     * @param $type
+     * @return bool
+     */
+    private function getOperator($type)
+    {
+        $choices = array(
+            StringType::TYPE_CONTAINS         => 'LIKE',
+            StringType::TYPE_NOT_CONTAINS     => 'NOT LIKE',
+            StringType::TYPE_EQUAL            => '=',
+        );
+
+        return isset($choices[$type]) ? $choices[$type] : false;
     }
 
     /**
@@ -40,4 +74,5 @@ class StringFilter extends Filter
             'format'   => '%%%s%%'
         );
     }
+
 }
