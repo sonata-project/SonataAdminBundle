@@ -98,7 +98,7 @@ class FilterTypeGuesser implements TypeGuesserInterface
                 return new TypeGuess('doctrine_orm_number', $options, Guess::MEDIUM_CONFIDENCE);
             case 'string':
             case 'text':
-                $options['field_type'] = 'sonata_type_filter_string';
+                $options['field_type'] = 'sonata_type_filter_choice';
 
                 return new TypeGuess('doctrine_orm_string', $options, Guess::MEDIUM_CONFIDENCE);
             case 'time':

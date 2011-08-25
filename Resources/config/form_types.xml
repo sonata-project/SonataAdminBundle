@@ -39,8 +39,8 @@
             <argument type="service" id="translator" />
         </service>
 
-        <service id="sonata.admin.form.filter.type.string" class="Sonata\AdminBundle\Form\Type\Filter\StringType">
-            <tag name="form.type" alias="sonata_type_filter_string" />
+        <service id="sonata.admin.form.filter.type.choice" class="Sonata\AdminBundle\Form\Type\Filter\ChoiceType">
+            <tag name="form.type" alias="sonata_type_filter_choice" />
 
             <argument type="service" id="translator" />
         </service>

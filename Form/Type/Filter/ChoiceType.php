@@ -18,7 +18,7 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
-class StringType extends AbstractType
+class ChoiceType extends AbstractType
 {
     const TYPE_CONTAINS = 1;
 
@@ -40,7 +40,7 @@ class StringType extends AbstractType
      */
     function getName()
     {
-        return 'sonata_type_filter_strinf';
+        return 'sonata_type_filter_choice';
     }
 
     public function buildForm(FormBuilder $builder, array $options)

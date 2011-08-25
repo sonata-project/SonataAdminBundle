@@ -12,7 +12,7 @@
 namespace Sonata\AdminBundle\Tests\Filter\ORM;
 
 use Sonata\AdminBundle\Filter\ORM\StringFilter;
-use Sonata\AdminBundle\Form\Type\Filter\StringType;
+use Sonata\AdminBundle\Form\Type\Filter\ChoiceType;
 
 class StringFilterTest extends \PHPUnit_Framework_TestCase
 {
@@ -37,7 +37,7 @@ class StringFilterTest extends \PHPUnit_Framework_TestCase
         $builder = new QueryBuilder;
         $this->assertEquals(array(), $builder->query);
 
-        $filter->filter($builder, 'alias', 'field', array('text' => 'asd', 'type' => StringType::TYPE_CONTAINS));
+        $filter->filter($builder, 'alias', 'field', array('text' => 'asd', 'type' => ChoiceType::TYPE_CONTAINS));
         $this->assertEquals(array('alias.field LIKE :field_name'), $builder->query);
         $this->assertEquals(array('field_name' => 'asd'), $builder->parameters);
 
@@ -58,7 +58,7 @@ class StringFilterTest extends \PHPUnit_Framework_TestCase
         $builder = new QueryBuilder;
         $this->assertEquals(array(), $builder->query);
 
-        $filter->filter($builder, 'alias', 'field', array('text' => 'asd', 'type' => StringType::TYPE_NOT_CONTAINS));
+        $filter->filter($builder, 'alias', 'field', array('text' => 'asd', 'type' => ChoiceType::TYPE_NOT_CONTAINS));
         $this->assertEquals(array('alias.field NOT LIKE :field_name'), $builder->query);
         $this->assertEquals(array('field_name' => 'asd'), $builder->parameters);
     }
@@ -71,7 +71,7 @@ class StringFilterTest extends \PHPUnit_Framework_TestCase
         $builder = new QueryBuilder;
         $this->assertEquals(array(), $builder->query);
 
-        $filter->filter($builder, 'alias', 'field', array('text' => 'asd', 'type' => StringType::TYPE_EQUAL));
+        $filter->filter($builder, 'alias', 'field', array('text' => 'asd', 'type' => ChoiceType::TYPE_EQUAL));
         $this->assertEquals(array('alias.field = :field_name'), $builder->query);
         $this->assertEquals(array('field_name' => 'asd'), $builder->parameters);
     }

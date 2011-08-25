@@ -11,7 +11,7 @@
 
 namespace Sonata\AdminBundle\Filter\ORM;
 
-use Sonata\AdminBundle\Form\Type\Filter\StringType;
+use Sonata\AdminBundle\Form\Type\Filter\ChoiceType;
 
 class StringFilter extends Filter
 {
@@ -43,7 +43,7 @@ class StringFilter extends Filter
         // c.name > '1' => c.name OPERATOR :FIELDNAME
         $queryBuilder->andWhere(sprintf('%s.%s %s :%s', $alias, $field, $operator, $this->getName()));
 
-        if ($value['type'] == StringType::TYPE_EQUAL) {
+        if ($value['type'] == ChoiceType::TYPE_EQUAL) {
             $queryBuilder->setParameter($this->getName(), $value['text']);
         } else {
             $queryBuilder->setParameter($this->getName(), sprintf($this->getOption('format'), $value['text']));
@@ -57,9 +57,9 @@ class StringFilter extends Filter
     private function getOperator($type)
     {
         $choices = array(
-            StringType::TYPE_CONTAINS         => 'LIKE',
-            StringType::TYPE_NOT_CONTAINS     => 'NOT LIKE',
-            StringType::TYPE_EQUAL            => '=',
+            ChoiceType::TYPE_CONTAINS         => 'LIKE',
+            ChoiceType::TYPE_NOT_CONTAINS     => 'NOT LIKE',
+            ChoiceType::TYPE_EQUAL            => '=',
         );
 
         return isset($choices[$type]) ? $choices[$type] : false;
@@ -74,5 +74,4 @@ class StringFilter extends Filter
             'format'   => '%%%s%%'
         );
     }
-
 }
