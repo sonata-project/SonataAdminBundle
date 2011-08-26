@@ -15,7 +15,6 @@ use Sonata\AdminBundle\Filter\FilterFactory;
 
 class FilterFactoryTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @expectedException RuntimeException
      */
@@ -37,7 +36,6 @@ class FilterFactoryTest extends \PHPUnit_Framework_TestCase
         $filter = new FilterFactory($container, array());
         $filter->create('test', 'mytype');
     }
-
 
     /**
      * @expectedException RuntimeException

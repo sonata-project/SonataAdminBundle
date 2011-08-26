@@ -19,22 +19,24 @@ class StringFilter extends Filter
      * @param QueryBuilder $queryBuilder
      * @param string $alias
      * @param string $field
-     * @param string $value
+     * @param string $data
      * @return
      */
-    public function filter($queryBuilder, $alias, $field, $value)
+    public function filter($queryBuilder, $alias, $field, $data)
     {
-        if (!is_array($value)) {
+        if (!$data || !is_array($data) || !array_key_exists('value', $data)) {
             return;
         }
 
-        $value['text'] = trim($value['text']);
+        $data['value'] = trim($data['value']);
 
-        if (strlen($value['text']) == 0) {
+        if (strlen($data['value']) == 0) {
             return;
         }
 
-        $operator = $this->getOperator((int) $value['type']);
+        $data['type'] = !isset($data['type']) ?  ChoiceType::TYPE_CONTAINS : $data['type'];
+
+        $operator = $this->getOperator((int) $data['type']);
 
         if (!$operator) {
             $operator = 'LIKE';
@@ -43,10 +45,10 @@ class StringFilter extends Filter
         // c.name > '1' => c.name OPERATOR :FIELDNAME
         $queryBuilder->andWhere(sprintf('%s.%s %s :%s', $alias, $field, $operator, $this->getName()));
 
-        if ($value['type'] == ChoiceType::TYPE_EQUAL) {
-            $queryBuilder->setParameter($this->getName(), $value['text']);
+        if ($data['type'] == ChoiceType::TYPE_EQUAL) {
+            $queryBuilder->setParameter($this->getName(), $data['value']);
         } else {
-            $queryBuilder->setParameter($this->getName(), sprintf($this->getOption('format'), $value['text']));
+            $queryBuilder->setParameter($this->getName(), sprintf($this->getOption('format'), $data['value']));
         }
     }
 
@@ -73,5 +75,13 @@ class StringFilter extends Filter
         return array(
             'format'   => '%%%s%%'
         );
+    }
+
+    public function getRenderSettings()
+    {
+        return array('sonata_type_filter_choice', array(
+            'field_type'    => $this->getFieldType(),
+            'field_options' => $this->getFieldOptions(),
+        ));
     }
 }

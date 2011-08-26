@@ -42,21 +42,33 @@ class DatagridMapper
 
     /**
      * @throws \RuntimeException
-     * @param mixed $name
-     * @param mixed $type
-     * @param array $fieldDescriptionOptions
+     * @param $name
+     * @param null $type
+     * @param array $filterOptions
+     * @param null $fieldType
+     * @param array $fieldOptions
      * @return DatagridMapper
      */
-    public function add($name, $type = null, array $fieldDescriptionOptions = array())
+    public function add($name, $type = null, array $filterOptions = array(), $fieldType = null, $fieldOptions = null)
     {
+        if (is_array($fieldOptions)) {
+            $filterOptions['field_options'] = $fieldOptions;
+        }
+
+        if ($fieldType) {
+            $filterOptions['field_type'] = $fieldType;
+        }
+
+        $filterOptions['field_name'] = isset($filterOptions['field_name']) ? $filterOptions['field_name'] : $name;
+
         if ($name instanceof FieldDescriptionInterface) {
             $fieldDescription = $name;
-            $fieldDescription->mergeOptions($fieldDescriptionOptions);
+            $fieldDescription->mergeOptions($filterOptions);
         } else if (is_string($name) && !$this->admin->hasFilterFieldDescription($name)) {
             $fieldDescription = $this->admin->getModelManager()->getNewFieldDescriptionInstance(
                 $this->admin->getClass(),
                 $name,
-                $fieldDescriptionOptions
+                $filterOptions
             );
         } else {
             throw new \RuntimeException('invalid state');
@@ -70,7 +82,7 @@ class DatagridMapper
 
     /**
      * @param string $name
-     * @return
+     * @return FilterInterface
      */
     public function get($name)
     {

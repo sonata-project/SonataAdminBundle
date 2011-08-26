@@ -19,16 +19,16 @@ class NumberFilter extends Filter
      * @param QueryBuilder $queryBuilder
      * @param string $alias
      * @param string $field
-     * @param string $value
+     * @param string $data
      * @return
      */
-    public function filter($queryBuilder, $alias, $field, $value)
+    public function filter($queryBuilder, $alias, $field, $data)
     {
-        if ($value == null || !is_array($value)) {
+        if (!$data || !is_array($data) || !array_key_exists('type', $data) || !array_key_exists('value', $data)) {
             return;
         }
 
-        $operator = $this->getOperator((int) $value['type']);
+        $operator = $this->getOperator((int) $data['type']);
 
         if (!$operator) {
             return;
@@ -36,7 +36,7 @@ class NumberFilter extends Filter
 
         // c.name > '1' => c.name OPERATOR :FIELDNAME
         $queryBuilder->andWhere(sprintf('%s.%s %s :%s', $alias, $field, $operator, $this->getName()));
-        $queryBuilder->setParameter($this->getName(),  $value['value']);
+        $queryBuilder->setParameter($this->getName(),  $data['value']);
     }
 
     /**
@@ -54,5 +54,13 @@ class NumberFilter extends Filter
         );
 
         return isset($choices[$type]) ? $choices[$type] : false;
+    }
+
+    public function getRenderSettings()
+    {
+        return array('sonata_type_filter_number', array(
+            'field_type'    => $this->getFieldType(),
+            'field_options' => $this->getFieldOptions(),
+        ));
     }
 }

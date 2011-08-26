@@ -71,4 +71,12 @@ interface FilterInterface
      * @return void
      */
     function getFieldType();
+
+    /**
+     * Returns the main widget used to render the filter
+     *
+     * @abstract
+     * @return void
+     */
+    function getRenderSettings();
 }

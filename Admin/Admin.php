@@ -559,7 +559,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
             // always force the parent value
             if ($this->isChild() && $this->getParentAssociationMapping()) {
-                $parameters[$this->getParentAssociationMapping()] = $this->request->get($this->getParent()->getIdParameter());
+                $parameters[$this->getParentAssociationMapping()] = array('value' => $this->request->get($this->getParent()->getIdParameter()));
             }
         }
 
@@ -593,7 +593,8 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
                 'field_type' => 'sonata_type_model_reference',
                 'field_options' => array(
                     'model_manager' => $this->getModelManager()
-                )
+                ),
+                'operator_type' => 'hidden'
             ));
         }
     }

@@ -18,21 +18,8 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
-class ChoiceType extends AbstractType
+class DefaultType extends AbstractType
 {
-    const TYPE_CONTAINS = 1;
-
-    const TYPE_NOT_CONTAINS = 2;
-
-    const TYPE_EQUAL = 3;
-
-    protected $translator;
-
-    public function __construct(TranslatorInterface $translator)
-    {
-        $this->translator = $translator;
-    }
-
     /**
      * Returns the name of this type.
      *
@@ -40,19 +27,13 @@ class ChoiceType extends AbstractType
      */
     function getName()
     {
-        return 'sonata_type_filter_choice';
+        return 'sonata_type_filter_default';
     }
 
     public function buildForm(FormBuilder $builder, array $options)
     {
-        $choices = array(
-            self::TYPE_CONTAINS        => $this->translator->trans('label_type_contains', array(), 'SonataAdminBundle'),
-            self::TYPE_NOT_CONTAINS    => $this->translator->trans('label_type_not_contains', array(), 'SonataAdminBundle'),
-            self::TYPE_EQUAL           => $this->translator->trans('label_type_equals', array(), 'SonataAdminBundle'),
-        );
-
         $builder
-            ->add('type', 'choice', array('choices' => $choices, 'required' => false))
+            ->add('type', $options['operator_type'], array_merge(array('required' => false), $options['operator_options']))
             ->add('value', $options['field_type'], array_merge(array('required' => false), $options['field_options']))
         ;
     }
@@ -60,7 +41,9 @@ class ChoiceType extends AbstractType
     public function getDefaultOptions(array $options)
     {
         $defaultOptions = array(
-            'field_type'       => 'choice',
+            'operator_type'    => 'hidden',
+            'operator_options' => array(),
+            'field_type'       => 'text',
             'field_options'    => array()
         );
 

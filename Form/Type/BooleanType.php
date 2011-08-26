@@ -9,7 +9,7 @@
  *
  */
 
-namespace Sonata\AdminBundle\Form\Type\Filter;
+namespace Sonata\AdminBundle\Form\Type;
 
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType as FormChoiceType;
 use Symfony\Component\Translation\TranslatorInterface;

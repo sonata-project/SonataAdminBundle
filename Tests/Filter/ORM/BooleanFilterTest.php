@@ -12,7 +12,7 @@
 namespace Sonata\AdminBundle\Tests\Filter\ORM;
 
 use Sonata\AdminBundle\Filter\ORM\BooleanFilter;
-use Sonata\AdminBundle\Form\Type\Filter\BooleanType;
+use Sonata\AdminBundle\Form\Type\BooleanType;
 
 class BooleanFilterTest extends \PHPUnit_Framework_TestCase
 {
@@ -41,7 +41,7 @@ class BooleanFilterTest extends \PHPUnit_Framework_TestCase
 
         $builder = new QueryBuilder;
 
-        $filter->filter($builder, 'alias', 'field', BooleanType::TYPE_NO);
+        $filter->filter($builder, 'alias', 'field', array('type' => null, 'value' => BooleanType::TYPE_NO));
 
         $this->assertEquals(array('alias.field = :field_name'), $builder->query);
         $this->assertEquals(array('field_name' => 0), $builder->parameters);
@@ -54,7 +54,7 @@ class BooleanFilterTest extends \PHPUnit_Framework_TestCase
 
         $builder = new QueryBuilder;
 
-        $filter->filter($builder, 'alias', 'field', BooleanType::TYPE_YES);
+        $filter->filter($builder, 'alias', 'field', array('type' => null, 'value' => BooleanType::TYPE_YES));
 
         $this->assertEquals(array('alias.field = :field_name'), $builder->query);
         $this->assertEquals(array('field_name' => 1), $builder->parameters);
@@ -67,7 +67,7 @@ class BooleanFilterTest extends \PHPUnit_Framework_TestCase
 
         $builder = new QueryBuilder;
 
-        $filter->filter($builder, 'alias', 'field', array(BooleanType::TYPE_NO));
+        $filter->filter($builder, 'alias', 'field', array('type' => null, 'value' => array(BooleanType::TYPE_NO)));
 
         $this->assertEquals(array('in_alias.field', 'alias.field IN ("0")'), $builder->query);
     }

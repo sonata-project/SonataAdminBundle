@@ -59,6 +59,9 @@ class FilterTypeGuesser implements TypeGuesserInterface
                 case ClassMetadataInfo::MANY_TO_ONE:
                 case ClassMetadataInfo::MANY_TO_MANY:
 
+                    $options['operator_type'] = 'sonata_type_boolean';
+                    $options['operator_options'] = array();
+
                     $options['field_type'] = 'entity';
                     $options['field_options'] = array(
                         'class' => $mapping['targetEntity']
@@ -74,7 +77,7 @@ class FilterTypeGuesser implements TypeGuesserInterface
 
         switch ($metadata->getTypeOfField($property)) {
             case 'boolean':
-                $options['field_type'] = 'sonata_type_filter_boolean';
+                $options['field_type'] = 'sonata_type_boolean';
                 $options['field_options'] = array();
 
                 return new TypeGuess('doctrine_orm_boolean', $options, Guess::HIGH_CONFIDENCE);
@@ -90,7 +93,7 @@ class FilterTypeGuesser implements TypeGuesserInterface
             case 'integer':
             case 'bigint':
             case 'smallint':
-                $options['field_type'] = 'sonata_type_filter_number';
+                $options['field_type'] = 'number';
                 $options['field_options'] = array(
                     'csrf_protection' => false
                 );
@@ -98,7 +101,7 @@ class FilterTypeGuesser implements TypeGuesserInterface
                 return new TypeGuess('doctrine_orm_number', $options, Guess::MEDIUM_CONFIDENCE);
             case 'string':
             case 'text':
-                $options['field_type'] = 'sonata_type_filter_choice';
+                $options['field_type'] = 'text';
 
                 return new TypeGuess('doctrine_orm_string', $options, Guess::MEDIUM_CONFIDENCE);
             case 'time':

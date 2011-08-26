@@ -12,6 +12,7 @@
 namespace Sonata\AdminBundle\Filter\ORM;
 
 use Doctrine\ORM\QueryBuilder;
+use Sonata\AdminBundle\Form\Type\Filter\ChoiceType;
 
 class ChoiceFilter extends Filter
 {
@@ -19,29 +20,62 @@ class ChoiceFilter extends Filter
      * @param QueryBuilder $queryBuilder
      * @param string $alias
      * @param string $field
-     * @param mixed $value
+     * @param mixed $data
      * @return
      */
-    public function filter($queryBuilder, $alias, $field, $value)
+    public function filter($queryBuilder, $alias, $field, $data)
     {
-        if (is_array($value)) {
-            if (count($value) == 0) {
+        if (!$data || !is_array($data) || !array_key_exists('type', $data) || !array_key_exists('value', $data)) {
+            return;
+        }
+
+        if (is_array($data['value'])) {
+            if (count($data['value']) == 0) {
                 return;
             }
 
-            if (in_array('all', $value)) {
+            if (in_array('all', $data['value'])) {
                 return;
             }
 
-            $queryBuilder->andWhere($queryBuilder->expr()->in(sprintf('%s.%s', $alias, $field ), $value));
+            if ($data['type'] == ChoiceType::TYPE_NOT_CONTAINS) {
+                $queryBuilder->andWhere($queryBuilder->expr()->notIn(sprintf('%s.%s', $alias, $field ), $data['value']));
+            } else {
+                $queryBuilder->andWhere($queryBuilder->expr()->in(sprintf('%s.%s', $alias, $field ), $data['value']));
+            }
+
         } else {
 
-            if (empty($value) || $value == 'all') {
+            if (empty($data['value']) || $data['value'] == 'all') {
                 return;
             }
 
             $queryBuilder->andWhere(sprintf('%s.%s = :%s', $alias, $field, $this->getName()));
-            $queryBuilder->setParameter($this->getName(), $value);
+            $queryBuilder->setParameter($this->getName(), $data['value']);
         }
+    }
+
+    /**
+     * @param $type
+     * @return bool
+     */
+    private function getOperator($type)
+    {
+        $choices = array(
+            ChoiceType::TYPE_CONTAINS         => 'IN',
+            ChoiceType::TYPE_NOT_CONTAINS     => 'NOT IN',
+            ChoiceType::TYPE_EQUAL            => '=',
+        );
+
+        return isset($choices[$type]) ? $choices[$type] : false;
+    }
+
+    public function getRenderSettings()
+    {
+        return array('sonata_type_filter_default', array(
+            'operator_type' => 'sonata_type_boolean',
+            'field_type'    => $this->getFieldType(),
+            'field_options' => $this->getFieldOptions(),
+        ));
     }
 }

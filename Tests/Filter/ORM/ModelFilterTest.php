@@ -13,6 +13,7 @@ namespace Sonata\AdminBundle\Tests\Filter\ORM;
 
 use Sonata\AdminBundle\Filter\ORM\ModelFilter;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
+use Sonata\AdminBundle\Form\Type\Filter\ChoiceType;
 
 class ModelFilterTest extends \PHPUnit_Framework_TestCase
 {
@@ -50,7 +51,7 @@ class ModelFilterTest extends \PHPUnit_Framework_TestCase
 
         $builder = new QueryBuilder;
 
-        $filter->filter($builder, 'alias', 'field', array('1', '2'));
+        $filter->filter($builder, 'alias', 'field', array('type' => ChoiceType::TYPE_CONTAINS, 'value' => array('1', '2')));
 
         $this->assertEquals(array('in_alias.field', 'alias.field IN ("1,2")'), $builder->query);
     }
@@ -62,7 +63,7 @@ class ModelFilterTest extends \PHPUnit_Framework_TestCase
 
         $builder = new QueryBuilder;
 
-        $filter->filter($builder, 'alias', 'field', 2);
+        $filter->filter($builder, 'alias', 'field', array('type' => ChoiceType::TYPE_CONTAINS, 'value' => 2));
 
         $this->assertEquals(array('alias.field = :field_name'), $builder->query);
         $this->assertEquals(array('field_name' => 2), $builder->parameters);
@@ -100,7 +101,7 @@ class ModelFilterTest extends \PHPUnit_Framework_TestCase
 
         $builder = new QueryBuilder;
 
-        $filter->apply($builder, 'asd');
+        $filter->apply($builder, array('type' => ChoiceType::TYPE_CONTAINS, 'value' => 'asd'));
 
         $this->assertEquals(array('o.field_name', 'field_name.id = :field_name'), $builder->query);
     }

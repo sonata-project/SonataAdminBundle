@@ -33,6 +33,14 @@ class FilterTest_Filter extends Filter
     {
         return array('option1' => 2);
     }
+
+    public function getRenderSettings()
+    {
+        return array('sonata_type_filter_default', array(
+            'type'    => $this->getFieldType(),
+            'options' => $this->getFieldOptions()
+        ));
+    }
 }
 
 

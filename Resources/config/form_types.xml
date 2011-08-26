@@ -27,6 +27,12 @@
             <tag name="form.type" alias="sonata_type_immutable_array" />
         </service>
 
+        <service id="sonata.admin.form.type.boolean" class="Sonata\AdminBundle\Form\Type\BooleanType">
+            <tag name="form.type" alias="sonata_type_boolean" />
+
+            <argument type="service" id="translator" />
+        </service>
+
         <!-- Form Extension -->
         <service id="sonata.admin.form.extension.field" class="Sonata\AdminBundle\Form\Extension\Field\Type\FormTypeFieldExtension">
             <tag name="form.type_extension" alias="field" />
@@ -45,13 +51,9 @@
             <argument type="service" id="translator" />
         </service>
 
-
-        <service id="sonata.admin.form.filter.type.boolean" class="Sonata\AdminBundle\Form\Type\Filter\BooleanType">
-            <tag name="form.type" alias="sonata_type_filter_boolean" />
-
-            <argument type="service" id="translator" />
+        <service id="sonata.admin.form.filter.type.default" class="Sonata\AdminBundle\Form\Type\Filter\DefaultType">
+            <tag name="form.type" alias="sonata_type_filter_default" />
         </service>
-
     </services>
 
 </container>
