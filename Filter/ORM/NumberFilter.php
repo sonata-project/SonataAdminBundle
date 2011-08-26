@@ -35,7 +35,7 @@ class NumberFilter extends Filter
         }
 
         // c.name > '1' => c.name OPERATOR :FIELDNAME
-        $queryBuilder->andWhere(sprintf('%s.%s %s :%s', $alias, $field, $operator, $this->getName()));
+        $this->applyWhere($queryBuilder, sprintf('%s.%s %s :%s', $alias, $field, $operator, $this->getName()));
         $queryBuilder->setParameter($this->getName(),  $data['value']);
     }
 
@@ -54,6 +54,14 @@ class NumberFilter extends Filter
         );
 
         return isset($choices[$type]) ? $choices[$type] : false;
+    }
+
+    /**
+     * @return array
+     */
+    function getDefaultOptions()
+    {
+        return array();
     }
 
     public function getRenderSettings()

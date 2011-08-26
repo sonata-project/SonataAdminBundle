@@ -39,9 +39,9 @@ class ChoiceFilter extends Filter
             }
 
             if ($data['type'] == ChoiceType::TYPE_NOT_CONTAINS) {
-                $queryBuilder->andWhere($queryBuilder->expr()->notIn(sprintf('%s.%s', $alias, $field ), $data['value']));
+                $this->applyWhere($queryBuilder, $queryBuilder->expr()->notIn(sprintf('%s.%s', $alias, $field ), $data['value']));
             } else {
-                $queryBuilder->andWhere($queryBuilder->expr()->in(sprintf('%s.%s', $alias, $field ), $data['value']));
+                $this->applyWhere($queryBuilder, $queryBuilder->expr()->in(sprintf('%s.%s', $alias, $field ), $data['value']));
             }
 
         } else {
@@ -50,7 +50,7 @@ class ChoiceFilter extends Filter
                 return;
             }
 
-            $queryBuilder->andWhere(sprintf('%s.%s = :%s', $alias, $field, $this->getName()));
+            $this->applyWhere($queryBuilder, sprintf('%s.%s = :%s', $alias, $field, $this->getName()));
             $queryBuilder->setParameter($this->getName(), $data['value']);
         }
     }
@@ -68,6 +68,14 @@ class ChoiceFilter extends Filter
         );
 
         return isset($choices[$type]) ? $choices[$type] : false;
+    }
+
+    /**
+     * @return array
+     */
+    function getDefaultOptions()
+    {
+        return array();
     }
 
     public function getRenderSettings()

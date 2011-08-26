@@ -28,4 +28,13 @@ abstract class Filter extends BaseFilter
     {
         return array($queryBuilder->getRootAlias(), $this->getFieldName());
     }
+
+    protected function applyWhere($queryBuilder, $parameter)
+    {
+        if ($this->getCondition() == self::CONDITION_OR) {
+            $queryBuilder->orWhere($parameter);
+        } else {
+            $queryBuilder->andWhere($parameter);
+        }
+    }
 }
