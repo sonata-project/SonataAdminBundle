@@ -63,6 +63,11 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
             $admins[] = $id;
             $classes[$class] = $id;
 
+            $showInDashBord = (boolean)(isset($attributes[0]['show_in_dashboard']) ? $attributes[0]['show_in_dashboard'] : true);
+            if (!$showInDashBord) {
+                continue;
+            }
+
             $group_name = isset($attributes[0]['group']) ? $attributes[0]['group'] : 'default';
 
             if (!isset($groupDefaults[$group_name])) {
