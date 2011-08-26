@@ -8,8 +8,8 @@ For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 
 #}
-{% if not sonata_admin.field_description.hasassociationadmin%}
-    {% for element in value%}
+{% if not sonata_admin.field_description.hasassociationadmin %}
+    {% for element in value %}
         {{ element|render_relation_element(sonata_admin.field_description) }}
     {% endfor %}
 {% else %}
@@ -17,41 +17,60 @@ file that was distributed with this source code.
         <span id="field_widget_{{ id }}" >
             {% if sonata_admin.edit == 'inline' %}
                 {% if sonata_admin.inline == 'table' %}
-                    <table>
-                        <tbody class="sonata-ba-tbody">
-                            {% for nested_group_field_name, nested_group_field in form.children %}
+                    {% if form.children %}
+                        <table>
+                            <thead>
                                 <tr>
-                                    {% for field_name, nested_field in nested_group_field.children %}
-                                        <td class="sonata-ba-td-{{ id }}-{{ field_name  }}">
-                                            {% if sonata_admin.field_description.associationadmin.formfielddescriptions[field_name] is defined %}
-                                                {{ form_widget(nested_field) }}
-
-                                                {% set dummy = nested_group_field.setrendered %}
+                                    {% for field_name, nested_field in form.children[0].children %}                                                                                                                         
+                                        {% if field_name == '_delete' %}
+                                            <th>{% trans from 'SonataAdminBundle' %}action_delete{% endtrans %}</th>
+                                        {% else %}                  
+                                            {% if nested_field.get('sonata_admin').field_description.options.name is defined %}
+                                                <th>{{ nested_field.get('sonata_admin').field_description.options.name }}</th>
                                             {% else %}
-                                                {{ form_widget(nested_field) }}
-                                            {% endif %}
-                                        </td>
+                                                <th>{{ field_name }}</th>
+                                            {% endif %}                                         
+                                        {% endif %}
                                     {% endfor %}
                                 </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+                            </thead>    
+                            <tbody class="sonata-ba-tbody">
+                                {% for nested_group_field_name, nested_group_field in form.children %}
+                                    <tr>
+                                        {% for field_name, nested_field in nested_group_field.children %}
+                                            <td class="sonata-ba-td-{{ id }}-{{ field_name  }}">
+                                                {% if sonata_admin.field_description.associationadmin.formfielddescriptions[field_name] is defined %}
+                                                    {{ form_widget(nested_field) }}
+    
+                                                    {% set dummy = nested_group_field.setrendered %}
+                                                {% else %}
+                                                    {{ form_widget(nested_field) }}
+                                                {% endif %}
+                                            </td>
+                                        {% endfor %}
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    {% endif %}
                 {% else %}
-                    <div>
-                        {% for nested_group_field_name, nested_group_field in form.children %}
-                            {% for field_name, nested_field in nested_group_field.children %}
-                                {% if sonata_admin.field_description.associationadmin.formfielddescriptions[field_name] is defined %}
-                                    {{ form_widget(nested_field, {
-                                        'inline': 'natural',
-                                        'edit'  : 'inline'
-                                    }) }}
-                                    {% set dummy = nested_group_field.setrendered %}
-                                {% else %}
-                                    {{ form_widget(nested_field) }}
-                                {% endif %}
+                    {% if form.children %}
+                        <div>
+                            {% for nested_group_field_name, nested_group_field in form.children %}
+                                {% for field_name, nested_field in nested_group_field.children %}
+                                    {% if sonata_admin.field_description.associationadmin.formfielddescriptions[field_name] is defined %}
+                                        {{ form_widget(nested_field, {
+                                            'inline': 'natural',
+                                            'edit'  : 'inline'
+                                        }) }}
+                                        {% set dummy = nested_group_field.setrendered %}
+                                    {% else %}
+                                        {{ form_widget(nested_field) }}
+                                    {% endif %}
+                                {% endfor %}
                             {% endfor %}
-                        {% endfor %}
-                    </div>
+                        </div>
+                    {% endif %}
                 {% endif %}
             {% else %}
                 {{ form_widget(form) }}
