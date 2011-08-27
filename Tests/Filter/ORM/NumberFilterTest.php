@@ -53,13 +53,15 @@ class NumberFilterTest extends \PHPUnit_Framework_TestCase
         $filter->filter($builder, 'alias', 'field', array('type' => NumberType::TYPE_GREATER_THAN, 'value' => 42));
         $filter->filter($builder, 'alias', 'field', array('type' => NumberType::TYPE_LESS_EQUAL, 'value' => 42));
         $filter->filter($builder, 'alias', 'field', array('type' => NumberType::TYPE_LESS_THAN, 'value' => 42));
+        $filter->filter($builder, 'alias', 'field', array('value' => 42));
 
         $expected = array(
             'alias.field = :field_name',
             'alias.field >= :field_name',
             'alias.field > :field_name',
             'alias.field <= :field_name',
-            'alias.field < :field_name'
+            'alias.field < :field_name',
+            'alias.field = :field_name',
         );
 
         $this->assertEquals($expected, $builder->query);
