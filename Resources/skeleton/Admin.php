@@ -54,7 +54,7 @@ class {{ admin }} extends Admin
 
         {%- for field in fields_filter %}
 
-            ->add('{{ field.name }}', {{ field.type }}, {{ field.options }}, {{ field.field_type }}, {{ field.field_options }})
+            ->add('{{ field.name }}', {{ field.type }}, {{ field.options }})
 
         {%- endfor %}
 

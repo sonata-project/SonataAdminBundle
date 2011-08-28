@@ -29,17 +29,21 @@ class AdminGenerator extends Generator
         $this->skeletonDir = $skeletonDir;
     }
 
-    public function generate(BundleInterface $bundle, $entityClass, $fields_show, $fields_form, $fields_list, $fields_filter)
+    public function generate(BundleInterface $bundle, $entityClass, $fields_show, $fields_form, $fields_list, $fields_filter, $force = false)
     {
         $admin = $entityClass."Admin";
         $dirPath    = $bundle->getPath().'/Admin';
         
-        if (!file_exists($dirPath))
-        {
+        if (!file_exists($dirPath)) {
             mkdir($dirPath, 0755);
         }
         
         $adminPath = $dirPath.'/'.$admin.'.php';
+        
+        if (file_exists($adminPath) && !$force) {
+            throw new \RuntimeException(sprintf('Admin file %s already exists.', $adminPath));
+        }
+        
         $this->adminClass = $bundle->getNamespace()."\\Admin\\".$admin;
         
         $this->renderFile($this->skeletonDir, 'Admin.php', $adminPath, array(

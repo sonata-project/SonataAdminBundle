@@ -16,7 +16,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 
-use Sensio\Bundle\GeneratorBundle\Command\GenerateDoctrineCommand;
+use Symfony\Bundle\DoctrineBundle\Command\DoctrineCommand;
+use Symfony\Bundle\DoctrineBundle\Mapping\MetadataFactory;
+
 use Sensio\Bundle\GeneratorBundle\Command\Validators;
 
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
@@ -32,111 +34,8 @@ use Sonata\AdminBundle\Generator\AdminGenerator;
  *
  * @author Joel Wurtz <joel.wurtz@gmail.com>
  */
-class GenerateAdminDoctrineCommand extends GenerateDoctrineCommand
+class GenerateAdminDoctrineCommand extends DoctrineCommand
 {
-    /**
-     * Mapping for show fields
-     *
-     * @var array
-     */
-    private $showMapping = array(
-        DoctrineType::TARRAY        => null,
-        DoctrineType::BIGINT        => 'integer',
-        DoctrineType::BOOLEAN       => 'checkbox',
-        DoctrineType::DATETIME      => 'datetime',
-        DoctrineType::DATETIMETZ    => 'datetime',
-        DoctrineType::DATE          => 'date',
-        DoctrineType::TIME          => 'time',
-        DoctrineType::DECIMAL       => 'number',
-        DoctrineType::INTEGER       => 'integer',
-        DoctrineType::OBJECT        => null,
-        DoctrineType::SMALLINT      => 'integer',
-        DoctrineType::STRING        => 'text',
-        DoctrineType::TEXT          => 'textarea',
-        DoctrineType::FLOAT         => 'number',
-        ClassMetadataInfo::ONE_TO_MANY => 'orm_one_to_many',
-        ClassMetadataInfo::MANY_TO_MANY => 'orm_many_to_many',
-        ClassMetadataInfo::MANY_TO_ONE => 'orm_many_to_one',
-        ClassMetadataInfo::ONE_TO_ONE => 'orm_one_to_one',
-    );
-    
-    /**
-     * Mapping for form fields
-     *
-     * @var array
-     */
-    private $formMapping = array(
-        DoctrineType::TARRAY        => null,
-        DoctrineType::BIGINT        => 'integer',
-        DoctrineType::BOOLEAN       => 'checkbox',
-        DoctrineType::DATETIME      => 'datetime',
-        DoctrineType::DATETIMETZ    => 'datetime',
-        DoctrineType::DATE          => 'date',
-        DoctrineType::TIME          => 'time',
-        DoctrineType::DECIMAL       => 'number',
-        DoctrineType::INTEGER       => 'integer',
-        DoctrineType::OBJECT        => null,
-        DoctrineType::SMALLINT      => 'integer',
-        DoctrineType::STRING        => 'text',
-        DoctrineType::TEXT          => 'textarea',
-        DoctrineType::FLOAT         => 'number',
-        ClassMetadataInfo::ONE_TO_MANY => 'sonata_type_model',
-        ClassMetadataInfo::MANY_TO_MANY => 'sonata_type_model',
-        ClassMetadataInfo::MANY_TO_ONE => 'sonata_type_model',
-        ClassMetadataInfo::ONE_TO_ONE => 'sonata_type_model',
-    );
-    
-    /**
-     * Mapping for list fields
-     *
-     * @var array
-     */
-    private $listMapping = array(
-        DoctrineType::TARRAY        => null,
-        DoctrineType::BIGINT        => 'integer',
-        DoctrineType::BOOLEAN       => 'checkbox',
-        DoctrineType::DATETIME      => 'datetime',
-        DoctrineType::DATETIMETZ    => 'datetime',
-        DoctrineType::DATE          => 'date',
-        DoctrineType::TIME          => 'time',
-        DoctrineType::DECIMAL       => 'number',
-        DoctrineType::INTEGER       => 'integer',
-        DoctrineType::OBJECT        => null,
-        DoctrineType::SMALLINT      => 'integer',
-        DoctrineType::STRING        => 'text',
-        DoctrineType::TEXT          => 'textarea',
-        DoctrineType::FLOAT         => 'number',
-        ClassMetadataInfo::ONE_TO_MANY => 'orm_one_to_many',
-        ClassMetadataInfo::MANY_TO_MANY => 'orm_many_to_many',
-        ClassMetadataInfo::MANY_TO_ONE => 'orm_many_to_one',
-        ClassMetadataInfo::ONE_TO_ONE => 'orm_one_to_one',
-    );
-    
-    /**
-     * Mapping for filter fields
-     *
-     * @var string
-     */
-    private $filterMapping = array(
-        DoctrineType::TARRAY        => null,
-        DoctrineType::BIGINT        => 'doctrine_orm_number',
-        DoctrineType::BOOLEAN       => 'doctrine_orm_boolean',
-        DoctrineType::DATETIME      => null,
-        DoctrineType::DATETIMETZ    => null,
-        DoctrineType::DATE          => 'doctrine_orm_date',
-        DoctrineType::TIME          => 'doctrine_orm_time',
-        DoctrineType::DECIMAL       => 'doctrine_orm_number',
-        DoctrineType::INTEGER       => 'doctrine_orm_number',
-        DoctrineType::OBJECT        => null,
-        DoctrineType::SMALLINT      => 'doctrine_orm_number',
-        DoctrineType::STRING        => 'doctrine_orm_string',
-        DoctrineType::TEXT          => 'doctrine_orm_string',
-        DoctrineType::FLOAT         => 'doctrine_orm_number',
-        ClassMetadataInfo::ONE_TO_MANY => null,
-        ClassMetadataInfo::MANY_TO_MANY => null,
-        ClassMetadataInfo::MANY_TO_ONE => null,
-        ClassMetadataInfo::ONE_TO_ONE => null,
-    );
     
     /**
      * @see Command
@@ -148,6 +47,8 @@ class GenerateAdminDoctrineCommand extends GenerateDoctrineCommand
                 new InputArgument('entity', InputArgument::REQUIRED, 'The entity to create his Admin class'),
                 new InputArgument('bundle', InputArgument::OPTIONAL, 'The bundle where admin is generated'),
                 new InputOption('interactive', '', InputOption::VALUE_NONE, 'Output a interactive dialog to configure Admin'),
+                new InputOption('force', '', InputOption::VALUE_NONE, 'Force write of generated files if they already exist'),
+                new InputOption('controller', '', InputOption::VALUE_NONE, 'Generate controller file'),
             ))
             ->setDescription('Generate an admin class for an entity using Doctrine ORM')
             ->setHelp(<<<EOT
@@ -160,6 +61,10 @@ The default command generates all admin fields for an Doctrine entity.
 Using the --interactive option allows to output a dialog helper which let you choose configuration for each field of Doctrine entity.
 
 <info>php app/console sonata:admin:generator-doctrine AcmeBlogBundle:Post AcmeBlogBundle --interactive</info>
+
+Using the --force option will override files and configuration if they exist.
+
+<info>php app/console sonata:admin:generator-doctrine AcmeBlogBundle:Post AcmeBlogBundle --force</info>
 EOT
             )
             ->setName('sonata:admin:generate-doctrine')
@@ -171,11 +76,18 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        //Check for bundle generator if not present throw error
+        if (!class_exists('Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle')) {
+            throw new \RuntimeException("SensioGeneratorBundle must be install to execute this command.");
+        }
+        
+        //Check entity
         $entity = Validators::validateEntityName($input->getArgument('entity'));
         list($bundle, $entity) = $this->parseShortcutNotation($entity);
         
         $adminBundle = $input->getArgument("bundle") ? $input->getArgument("bundle") : $bundle;
         $isInteractive = $input->getOption('interactive');
+        $force = $input->getOption('force');
         
         $entityClass = $this->getContainer()->get('doctrine')->getEntityNamespace($bundle).'\\'.$entity;
         
@@ -192,45 +104,26 @@ EOT
         $fieldsForm = array();
         $fieldsFilter = array();
         
-        foreach($fields as $name => $info)
-        {
+        $listTypeGuesser = $this->getContainer()->get('sonata.admin.guesser.orm_list_chain');
+        $showTypeGuesser = $this->getContainer()->get('sonata.admin.guesser.orm_show_chain');
+        $filterTypeGuesser = $this->getContainer()->get('sonata.admin.guesser.orm_datagrid_chain');
+        
+        $test = $this->getContainer()->get('form.factory');
+        
+        
+        foreach($fields as $name => $info) {
             //Show
-            $showFieldType = $this->getShowMapping($info['type']);
-            $showFieldDescriptionOptions = array();
+            $showTypeGuess = $showTypeGuesser->guessType($entityClass, $name);
             
             $fieldsShow[] = array(
                 'name'      => $name,
-                'type'      => str_replace("\n", '', var_export($showFieldType, true)),
-                'options'   => str_replace("\n", '', var_export($showFieldDescriptionOptions, true))
+                'type'      => str_replace("\n", '', var_export($showTypeGuess->getType(), true)),
+                'options'   => str_replace("\n", '', var_export($showTypeGuess->getOptions(), true))
             );
             
             //Form
-            $formFieldType = $this->getFormMapping($info['type']);
-            
-            //Required field
-            $required = false;
-            if ($metadata->hasAssociation($name))
-            {
-                //Check columns join
-                if (isset($info['joinColumns']))
-                {
-                    $required = true;
-                    foreach($info['joinColumns'] as $joinColumn)
-                    {
-                        if ($joinColumn['nullable'])
-                        {
-                            $required = false;
-                            break;
-                        }
-                    }
-                }
-            }
-            elseif ($info['required'])
-            {
-                $required = true;
-            }
-            
-            $formFieldOptions = array('required' => $required);
+            $formFieldType = null;
+            $formFieldOptions = array();
             $formFieldDescriptionOptions = array();
             
             $fieldsForm[] = array(
@@ -240,30 +133,24 @@ EOT
                 'description_options'   => str_replace("\n", '', var_export($formFieldDescriptionOptions, true))
             );
             
-            $listFieldType = $this->getListMapping($info['type']);
-            $listFieldDescriptionOptions = $showFieldDescriptionOptions;
-            
             //List
+            $listTypeGuess = $listTypeGuesser->guessType($entityClass, $name);
+            
             $fieldsList[] = array(
                 'name'      => $name,
-                'type'      => str_replace("\n", '', var_export($listFieldType, true)),
-                'options'   => str_replace("\n", '', var_export($listFieldDescriptionOptions, true))
+                'type'      => str_replace("\n", '', var_export($listTypeGuess->getType(), true)),
+                'options'   => str_replace("\n", '', var_export($listTypeGuess->getOptions(), true))
             );
             
-            $filterType = $this->getFilterMapping($info['type']);
-            $filterOptions = array();
-            $filterFieldType = null;
-            $filterFieldOptions = array();
-            
             //Filter
-            if (!is_null($filterType))
-            {
+            $filterTypeGuess = $filterTypeGuesser->guessType($entityClass, $name);
+            $filterOptions = $filterTypeGuess->getOptions();
+            
+            if (isset($filterOptions['field_type']) && $filterOptions['field_type'] !== false) {
                 $fieldsFilter[] = array(
                     'name'          => $name,
-                    'type'          => str_replace("\n", '', var_export($filterType, true)),
-                    'options'       => str_replace("\n", '', var_export($filterOptions, true)),
-                    'field_type'    => str_replace("\n", '', var_export($filterFieldType, true)),
-                    'field_options' => str_replace("\n", '', var_export($filterFieldOptions, true)),
+                    'type'          => str_replace("\n", '', var_export($filterTypeGuess->getType(), true)),
+                    'options'       => str_replace("\n", '', var_export($filterTypeGuess->getOptions(), true))
                 );
             }
         }
@@ -282,11 +169,11 @@ EOT
         
         //Controller generation
         $generator = new ControllerGenerator(__DIR__.'/../Resources/skeleton');
-        $generator->generate($adminBundle, $entity);
+        $generator->generate($adminBundle, $entity, $force);
         
         //Admin generation
         $generator = new AdminGenerator(__DIR__.'/../Resources/skeleton');
-        $generator->generate($adminBundle, $entity, $fieldsShow, $fieldsForm, $fieldsList, $fieldsFilter);
+        $generator->generate($adminBundle, $entity, $fieldsShow, $fieldsForm, $fieldsList, $fieldsFilter, $force);
         
         //Service config generation
         $adminClass = $generator->getAdminClass();
@@ -294,61 +181,13 @@ EOT
         
         $configFile = $this->getContainer()->getParameter('kernel.root_dir').'/config/config.yml';
         
-        $this->addConfigService($configFile, $service, $adminClass, $group, $label, $entityClass, $bundleName);
+        $this->addConfigService($configFile, $service, $adminClass, $group, $label, $entityClass, $bundleName, $force);
         
         $output->writeln(sprintf(
             "Admin files generated for %s entity in %s bundle", 
             $entity, 
             $adminBundle->getName()
         ));
-    }
-    
-    /**
-     * Add admin service configuration to config file
-     *
-     * @param string $configFilePath The file path for config
-     * @param string $service Service name
-     * @param string $admin Full class admin name (with namespace)
-     * @param string $group Admin group
-     * @param string $label Admin label
-     * @param string $entityClass Full class entity name (with namespace)
-     * @param string $bundle Bundle name
-     * 
-     * @return void
-     */
-    private function addConfigService($configFilePath, $service, $admin, $group, $label, $entityClass, $bundle)
-    {
-        $parts       = explode('\\', $admin);
-        $adminClass  = array_pop($parts);
-        
-        $code = sprintf(<<<EOC
-    %s:
-        class: %s
-        tags:
-            - { name: sonata.admin, manager_type: orm, group: %s, label: %s }
-        arguments: [null, %s, %s:%s]
-
-EOC
-        , $service, $admin, $group, $label, $entityClass, $bundle, $adminClass);
-        
-        $configContent = file_get_contents($configFilePath);
-        $servicePos = strpos($configContent, 'services');
-        if (false === $servicePos)
-        {
-            $code = "services:\n".$code;
-            $servicePos = 0;
-        }
-        else
-        {
-            $servicePos = strpos($configContent, "\n", $servicePos) + 1;
-        }
-        
-        $startContent = substr($configContent, 0, $servicePos);
-        $endContent = substr($configContent, $servicePos, strlen($configContent) - $servicePos);
-        
-        $fileContent = $startContent.$code.$endContent;
-        
-        file_put_contents($configFilePath, $fileContent);
     }
     
     /**
@@ -366,48 +205,93 @@ EOC
         return $dialog;
     }
     
-    /**
-     * Get form field type from doctrine type
-     *
-     * @param string $fieldType doctrine type
-     * @return string
-     */
-    private function getFormMapping($fieldType)
+    protected function parseShortcutNotation($shortcut)
     {
-        return isset($this->formMapping[$fieldType]) ? $this->formMapping[$fieldType] : null;
+        $entity = str_replace('/', '\\', $shortcut);
+
+        if (false === $pos = strpos($entity, ':')) {
+            throw new \InvalidArgumentException(sprintf('The entity name must contain a : ("%s" given, expecting something like AcmeBlogBundle:Blog/Post)', $entity));
+        }
+
+        return array(substr($entity, 0, $pos), substr($entity, $pos + 1));
+    }
+
+    protected function getEntityMetadata($entity)
+    {
+        $factory = new MetadataFactory($this->getContainer()->get('doctrine'));
+
+        return $factory->getClassMetadata($entity)->getMetadata();
     }
     
     /**
-     * Get show field type from doctrine type
+     * Add admin service configuration to config file
      *
-     * @param string $fieldType doctrine type
-     * @return string
+     * @param string $configFilePath The file path for config
+     * @param string $service Service name
+     * @param string $admin Full class admin name (with namespace)
+     * @param string $group Admin group
+     * @param string $label Admin label
+     * @param string $entityClass Full class entity name (with namespace)
+     * @param string $bundle Bundle name
+     * 
+     * @return void
      */
-    private function getShowMapping($fieldType)
+    private function addConfigService($configFilePath, $service, $admin, $group, $label, $entityClass, $bundle, $force = false)
     {
-        return isset($this->showMapping[$fieldType]) ? $this->showMapping[$fieldType] : null;
-    }
-    
-    /**
-     * Get list field type from doctrine type
-     *
-     * @param string $fieldType doctrine type
-     * @return string
-     */
-    private function getListMapping($fieldType)
-    {
-        return isset($this->listMapping[$fieldType]) ? $this->listMapping[$fieldType] : null;
-    }
-    
-    /**
-     * Get filter field type from doctrine type
-     *
-     * @param string $fieldType doctrine type
-     * @return string
-     */
-    private function getFilterMapping($fieldType)
-    {
-        return isset($this->filterMapping[$fieldType]) ? $this->filterMapping[$fieldType] : null;
+        $parts       = explode('\\', $admin);
+        $adminClass  = array_pop($parts);
+        
+        $code = sprintf(<<<EOC
+    %s:
+        class: %s
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: %s, label: %s }
+        arguments: [null, %s, %s:%s]
+
+EOC
+        , $service, $admin, $group, $label, $entityClass, $bundle, $adminClass);
+        
+        $configContent = file_get_contents($configFilePath);
+        $posOldService = strpos($configContent, $service);
+        if ($posOldService !== false && !$force)
+        {
+            throw new \RuntimeException('Service config already added.');
+        }
+        elseif ($posOldService !== false)
+        {
+            //Remove old config
+            $beginPos = $posOldService - 4;
+            $endPos =  strpos($configContent, "\n", $posOldService);
+            
+            do {
+                $nextLine = $endPos + 1;
+                $lineText = substr($configContent, $nextLine, strpos($configContent, "\n", $nextLine) - $nextLine);
+                $countSpace = strlen($lineText) - strlen(ltrim($lineText, ' '));
+                
+                if ($countSpace >= 8)
+                {
+                    $endPos = strpos($configContent, "\n", $nextLine);
+                }
+            } while ($countSpace >= 8);
+            
+            $configContent = substr($configContent, 0, $beginPos).substr($configContent, $endPos + 1);
+        }
+        
+        $servicePos = strpos($configContent, 'services');
+        if (false === $servicePos) {
+            $code = "services:\n".$code;
+            $servicePos = 0;
+        }
+        else {
+            $servicePos = strpos($configContent, "\n", $servicePos) + 1;
+        }
+        
+        $startContent = substr($configContent, 0, $servicePos);
+        $endContent = substr($configContent, $servicePos, strlen($configContent) - $servicePos);
+        
+        $fileContent = $startContent.$code.$endContent;
+        
+        file_put_contents($configFilePath, $fileContent);
     }
     
     /**
@@ -427,8 +311,7 @@ EOC
         }
         
         $returnFields = array();
-        foreach($fields as $name)
-        {
+        foreach($fields as $name) {
             $returnFields[$name] = array(
                 'type' => $metadata->fieldMappings[$name]['type'],
                 'required' => !(boolean)$metadata->fieldMappings[$name]['nullable']

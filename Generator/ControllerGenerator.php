@@ -28,17 +28,20 @@ class ControllerGenerator extends Generator
         $this->skeletonDir = $skeletonDir;
     }
 
-    public function generate(BundleInterface $bundle, $entityClass)
+    public function generate(BundleInterface $bundle, $entityClass, $force = false)
     {
         $controller = $entityClass."AdminController";
         $dirPath    = $bundle->getPath().'/Controller';
         
-        if (!file_exists($dirPath))
-        {
+        if (!file_exists($dirPath)) {
             mkdir($dirPath, 0755);
         }
         
         $controllerPath = $dirPath.'/'.$controller.'.php';
+        
+        if (file_exists($controllerPath) && !$force) {
+            throw new \RuntimeException(sprintf('Controller file %s already exists.', $controllerPath));
+        }
         
         $this->renderFile($this->skeletonDir, 'Controller.php', $controllerPath, array(
             'namespace'         => $bundle->getNamespace(),
