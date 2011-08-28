@@ -42,16 +42,24 @@ class BooleanFilter extends Filter
                 return;
             }
 
-            $queryBuilder->andWhere($queryBuilder->expr()->in(sprintf('%s.%s', $alias, $field), $values));
+            $this->applyWhere($queryBuilder, $queryBuilder->expr()->in(sprintf('%s.%s', $alias, $field), $values));
         } else {
 
             if (!in_array($data['value'], array(BooleanType::TYPE_NO, BooleanType::TYPE_YES))) {
                 return;
             }
 
-            $queryBuilder->andWhere(sprintf('%s.%s = :%s', $alias, $field, $this->getName()));
+            $this->applyWhere($queryBuilder, sprintf('%s.%s = :%s', $alias, $field, $this->getName()));
             $queryBuilder->setParameter($this->getName(), ($data['value'] == BooleanType::TYPE_YES) ? 1 : 0);
         }
+    }
+
+    /**
+     * @return array
+     */
+    function getDefaultOptions()
+    {
+        return array();
     }
 
     public function getRenderSettings()

@@ -43,7 +43,7 @@ class StringFilter extends Filter
         }
 
         // c.name > '1' => c.name OPERATOR :FIELDNAME
-        $queryBuilder->andWhere(sprintf('%s.%s %s :%s', $alias, $field, $operator, $this->getName()));
+        $this->applyWhere($queryBuilder, sprintf('%s.%s %s :%s', $alias, $field, $operator, $this->getName()));
 
         if ($data['type'] == ChoiceType::TYPE_EQUAL) {
             $queryBuilder->setParameter($this->getName(), $data['value']);

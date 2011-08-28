@@ -24,18 +24,20 @@ class NumberFilter extends Filter
      */
     public function filter($queryBuilder, $alias, $field, $data)
     {
-        if (!$data || !is_array($data) || !array_key_exists('type', $data) || !array_key_exists('value', $data)) {
+        if (!$data || !is_array($data) || !array_key_exists('value', $data)) {
             return;
         }
 
-        $operator = $this->getOperator((int) $data['type']);
+        $type = isset($data['type']) ? $data['type'] : false;
+
+        $operator = $this->getOperator($type);
 
         if (!$operator) {
-            return;
+            $operator = '=';
         }
 
         // c.name > '1' => c.name OPERATOR :FIELDNAME
-        $queryBuilder->andWhere(sprintf('%s.%s %s :%s', $alias, $field, $operator, $this->getName()));
+        $this->applyWhere($queryBuilder, sprintf('%s.%s %s :%s', $alias, $field, $operator, $this->getName()));
         $queryBuilder->setParameter($this->getName(),  $data['value']);
     }
 
@@ -54,6 +56,14 @@ class NumberFilter extends Filter
         );
 
         return isset($choices[$type]) ? $choices[$type] : false;
+    }
+
+    /**
+     * @return array
+     */
+    function getDefaultOptions()
+    {
+        return array();
     }
 
     public function getRenderSettings()

@@ -21,6 +21,12 @@ abstract class Filter implements FilterInterface
 
     protected $options = array();
 
+    protected $condition;
+
+    const CONDITION_OR = 'OR';
+
+    const CONDITION_AND = 'AND';
+
     /**
      * @param string $name
      * @param array $options
@@ -37,14 +43,6 @@ abstract class Filter implements FilterInterface
     public function getName()
     {
         return $this->name;
-    }
-
-    /**
-     * @return array
-     */
-    public function getDefaultOptions()
-    {
-        return array();
     }
 
     /**
@@ -123,5 +121,22 @@ abstract class Filter implements FilterInterface
     public function getValue()
     {
         return $this->value;
+    }
+
+    /**
+     * @param $condition
+     * @return void
+     */
+    public function setCondition($condition)
+    {
+        $this->condition = $condition;
+    }
+
+    /**
+     * @return
+     */
+    public function getCondition()
+    {
+        return $this->condition;
     }
 }
