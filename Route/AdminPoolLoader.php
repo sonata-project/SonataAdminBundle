@@ -11,7 +11,7 @@
 
 namespace Sonata\AdminBundle\Route;
 
-use Symfony\Component\Routing\RouteCollection;
+use Symfony\Component\Routing\RouteCollection as SymfonyRouteCollection;
 use Symfony\Component\Routing\Route;
 
 use Symfony\Component\Config\Loader\FileLoader;
@@ -65,7 +65,7 @@ class AdminPoolLoader extends FileLoader
      */
     public function load($resource, $type = null)
     {
-        $collection = new RouteCollection;
+        $collection = new SymfonyRouteCollection;
         foreach ($this->adminServiceIds as $id) {
 
             $admin = $this->pool->getInstance($id);
