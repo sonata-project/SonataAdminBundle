@@ -99,7 +99,7 @@ class HelperController extends Controller
         $twig = $this->get('twig');
         $extension = $twig->getExtension('form');
         $extension->initRuntime($this->get('twig'));
-        $extension->setTheme($view, array('SonataAdminBundle:Form:admin_fields.html.twig'));
+        $extension->setTheme($view, $admin->getFormTheme());
 
         return new Response($extension->renderWidget($view));
     }

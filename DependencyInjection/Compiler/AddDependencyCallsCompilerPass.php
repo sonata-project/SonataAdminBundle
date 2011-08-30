@@ -84,6 +84,14 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
             $groups = $settings['dashboard_groups'];
 
             foreach ($groups as $group_name => $group) {
+
+                if (!isset($groupDefaults[$group_name])) {
+                    $groupDefaults[$group_name] = array(
+                        'items' => array(),
+                        'label' => $group_name
+                    );
+                }
+
                 if (empty($group['items'])) {
                     $groups[$group_name]['items'] = $groupDefaults[$group_name]['items'];
                 }

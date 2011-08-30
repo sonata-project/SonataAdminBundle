@@ -62,4 +62,16 @@ class NumberType extends AbstractType
             ->add('value', 'number', array('required' => false))
         ;
     }
+
+    public function getDefaultOptions(array $options)
+    {
+        $defaultOptions = array(
+            'field_type'       => 'text',
+            'field_options'    => array()
+        );
+
+        $options = array_replace($options, $defaultOptions);
+
+        return $options;
+    }
 }

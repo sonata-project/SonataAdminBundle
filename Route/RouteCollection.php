@@ -115,11 +115,13 @@ class RouteCollection
 
     /**
      * @param $name
-     * @return void
+     * @return \Sonata\AdminBundle\Route\RouteCollection
      */
     public function remove($name)
     {
         unset($this->elements[$this->getCode($name)]);
+
+        return $this;
     }
 
     /**
