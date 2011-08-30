@@ -15,6 +15,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Sonata\AdminBundle\DependencyInjection\Compiler\AddDependencyCallsCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\AddGuesserCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\AddFilterTypeCompilerPass;
+use Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass;
 
 class SonataAdminBundle extends Bundle
 {
@@ -23,5 +24,6 @@ class SonataAdminBundle extends Bundle
         $container->addCompilerPass(new AddDependencyCallsCompilerPass());
         $container->addCompilerPass(new AddGuesserCompilerPass());
         $container->addCompilerPass(new AddFilterTypeCompilerPass());
+        $container->addCompilerPass(new ExtensionCompilerPass());
     }
 }

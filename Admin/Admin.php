@@ -342,6 +342,8 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
     protected $filterTheme = array('SonataAdminBundle:Form:filter_admin_fields.html.twig');
 
+    protected $extensions = array();
+
     /**
      * This method can be overwritten to tweak the form construction, by default the form
      * is built by reading the FieldDescription
@@ -414,6 +416,20 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     public function validate(ErrorElement $errorElement, $object)
     {
 
+    }
+
+    /**
+     * @param \Sonata\AdminBundle\Validator\ErrorElement $errorElement
+     * @param $object
+     * @return void
+     */
+    public function doValidate(ErrorElement $errorElement, $object)
+    {
+        $this->validate($errorElement, $object);
+
+        foreach ($this->extensions as $extension) {
+            $extension->validate($this, $errorElement, $object);
+        }
     }
 
     /**
@@ -538,6 +554,10 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         }
 
         $this->configureListFields($mapper);
+
+        foreach($this->extensions as $extension) {
+            $extension->configureListFields($mapper);
+        }
     }
 
     /**
@@ -596,6 +616,10 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
                 ),
                 'operator_type' => 'hidden'
             ));
+        }
+
+        foreach($this->extensions as $extension) {
+            $extension->configureDatagridFilters($mapper);
         }
     }
 
@@ -807,6 +831,10 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
         $this->configureRoutes($collection);
 
+        foreach($this->extensions as $extension) {
+            $extension->configureRoutes($this, $collection);
+        }
+
         $this->routes = $collection;
     }
 
@@ -962,7 +990,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         $metadata = $this->validator->getMetadataFactory()->getClassMetadata($this->class);
         $metadata->addConstraint(new \Sonata\AdminBundle\Validator\Constraints\InlineConstraint(array(
             'service' => $this,
-            'method'  => 'validate'
+            'method'  => 'doValidate'
         )));
 
         $this->formOptions['data_class'] = $this->getClass();
@@ -986,6 +1014,10 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         $mapper = new FormMapper($this->getFormContractor(), $formBuilder, $this);
 
         $this->configureFormFields($mapper);
+
+        foreach($this->extensions as $extension) {
+            $extension->configureFormFields($mapper);
+        }
     }
 
     /**
@@ -1070,6 +1102,10 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         $menu = new Menu;
 
         $this->configureSideMenu($menu, $action, $childAdmin);
+
+        foreach ($this->extensions as $extension) {
+            $extension->configureSideMenu($this, $menu, $action, $childAdmin);
+        }
 
         $this->menu = $menu;
     }
@@ -2033,5 +2069,10 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     public function getFilterTheme()
     {
         return $this->filterTheme;
+    }
+
+    public function addExtension(AdminExtensionInterface $extension)
+    {
+        $this->extensions[] = $extension;
     }
 }
