@@ -25,7 +25,7 @@ class ModelFilter extends Filter
      */
     public function filter($queryBuilder, $alias, $field, $data)
     {
-        if (!$data || !is_array($data) || !array_key_exists('type', $data) || !array_key_exists('value', $data)) {
+        if (!$data || !is_array($data) || !array_key_exists('value', $data)) {
             return;
         }
 
@@ -42,7 +42,7 @@ class ModelFilter extends Filter
             return;
         }
 
-        if ($data['type'] == BooleanType::TYPE_NO) {
+        if (isset($data['type']) && $data['type'] == BooleanType::TYPE_NO) {
             $this->applyWhere($queryBuilder, $queryBuilder->expr()->notIn(sprintf('%s.%s', $alias, $field), $data['value']));
         } else {
             $this->applyWhere($queryBuilder, $queryBuilder->expr()->in(sprintf('%s.%s', $alias, $field), $data['value']));
@@ -55,7 +55,7 @@ class ModelFilter extends Filter
             return;
         }
 
-        if ($data['type'] == BooleanType::TYPE_NO) {
+        if (isset($data['type']) && $data['type'] == BooleanType::TYPE_NO) {
             $this->applyWhere($queryBuilder, sprintf('%s.%s != :%s', $alias, $field, $this->getName()));
         } else {
             $this->applyWhere($queryBuilder, sprintf('%s.%s = :%s', $alias, $field, $this->getName()));
