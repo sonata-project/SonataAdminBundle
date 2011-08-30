@@ -14,6 +14,7 @@ use Symfony\Bundle\FrameworkBundle\Validator\ConstraintValidatorFactory;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\ExecutionContext;
 use Symfony\Component\Form\Util\PropertyPath;
+use Symfony\Component\Validator\Constraint;
 
 class ErrorElement
 {
@@ -33,6 +34,14 @@ class ErrorElement
 
     protected $basePropertyPath;
 
+    protected $errors = array();
+
+    /**
+     * @param $subject
+     * @param \Symfony\Bundle\FrameworkBundle\Validator\ConstraintValidatorFactory $constraintValidatorFactory
+     * @param \Symfony\Component\Validator\ExecutionContext $context
+     * @param $group
+     */
     public function __construct($subject, ConstraintValidatorFactory $constraintValidatorFactory, ExecutionContext $context, $group)
     {
         $this->subject = $subject;
@@ -44,6 +53,12 @@ class ErrorElement
         $this->basePropertyPath = $this->context->getPropertyPath();
     }
 
+    /**
+     * @throws \RunTimeException
+     * @param $name
+     * @param array $arguments
+     * @return ErrorElement
+     */
     public function __call($name, array $arguments = array())
     {
         if (substr($name, 0, 6) == 'assert') {
@@ -58,6 +73,11 @@ class ErrorElement
         return $this;
     }
 
+    /**
+     * @param string $name
+     * @param bool $key
+     * @return ErrorElement
+     */
     public function with($name, $key = false)
     {
         $key = $key ? $name.'.'.$key : $name;
@@ -72,6 +92,9 @@ class ErrorElement
         return $this;
     }
 
+    /**
+     * @return ErrorElement
+     */
     public function end()
     {
         array_pop($this->stack);
@@ -81,7 +104,13 @@ class ErrorElement
         return $this;
     }
 
-    protected function validate($constraint, $messageTemplate = null, $messageParameters = array())
+    /**
+     * @param \Symfony\Component\Validator\Constraint $constraint
+     * @param null $messageTemplate
+     * @param array $messageParameters
+     * @return void
+     */
+    protected function validate(Constraint $constraint, $messageTemplate = null, $messageParameters = array())
     {
         $validator  = $this->constraintValidatorFactory->getInstance($constraint);
         $value      = $this->getValue();
@@ -102,6 +131,9 @@ class ErrorElement
         }
     }
 
+    /**
+     * @return string
+     */
     public function getFullPropertyPath()
     {
         if ($this->getCurrentPropertyPath()) {
@@ -121,12 +153,20 @@ class ErrorElement
         return $this->getCurrentPropertyPath()->getValue($this->subject);
     }
 
+    /**
+     * @return mixed
+     */
     public function getSubject()
     {
         return $this->subject;
     }
 
-    protected function newConstraint($name, $options)
+    /**
+     * @param string $name
+     * @param array $options
+     * @return
+     */
+    protected function newConstraint($name, array $options = array())
     {
         if (strpos($name, '\\') !== false && class_exists($name)) {
             $className = (string) $name;
@@ -137,6 +177,9 @@ class ErrorElement
         return new $className($options);
     }
 
+    /**
+     * @return null
+     */
     protected function getCurrentPropertyPath()
     {
         if (!isset($this->propertyPaths[$this->current])) {
@@ -146,21 +189,35 @@ class ErrorElement
         return $this->propertyPaths[$this->current];
     }
 
+    /**
+     * @param string|array $message
+     * @param array $parameters
+     * @param null $value
+     * @return ErrorElement
+     */
     public function addViolation($message, $parameters = array(), $value = null)
     {
         $this->context->setPropertyPath($this->getFullPropertyPath());
         $this->context->setGroup($this->group);
 
-        if (!is_array($message)) {
-            $this->context->addViolation($message, $parameters, $value);
-        } else {
-            $this->context->addViolation(
-                isset($error[0]) ? $error[0] : 'error',
-                isset($error[1]) ? (array)$error[1] : array(),
-                isset($error[2]) ? $error[2] : $value
-            );
+        if (is_array($message)) {
+            $value      = isset($message[2]) ? $message[2] : $value;
+            $parameters = isset($message[1]) ? (array)$message[1] : array();
+            $message    = isset($message[0]) ? $message[0] : 'error';
         }
 
+        $this->context->addViolation($message, $parameters, $value);
+
+        $this->errors[] = array($message, $parameters, $value);
+
         return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getErrors()
+    {
+        return $this->errors;
     }
 }
