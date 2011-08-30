@@ -25,8 +25,8 @@ interface SecurityHandlerInterface
 
     /**
      * @abstract
-     * @param array $informations
-     * @return array
+     * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
+     * @return void
      */
     function buildSecurityInformation(AdminInterface $admin);
 }
