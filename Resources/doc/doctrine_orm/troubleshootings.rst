@@ -6,7 +6,7 @@ Deleted elements from a one-to-many association are not removed!
 
 Make sure the Orphan Removal option is set to ``true``
 
-.. code-block:: xml
+::
 
     <?xml version="1.0" encoding="utf-8"?>
     <doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xsi="http://www.w3.org/2001/XMLSchema-instance" schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
@@ -32,7 +32,7 @@ Ordered fields are not ordered!
 
 Make sure the ``order-by`` option is correctly set.
 
-.. code-block:: xml
+::
 
     <?xml version="1.0" encoding="utf-8"?>
     <doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xsi="http://www.w3.org/2001/XMLSchema-instance" schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">

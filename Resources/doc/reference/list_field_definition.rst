@@ -6,7 +6,7 @@ These fields are used to display the information inside the list table.
 Example
 -------
 
-.. code-block:: php
+::
 
     <?php
     namespace Sonata\NewsBundle\Admin;
@@ -63,7 +63,7 @@ List Actions
 
 You can set actions for the list items by adding an '_action' field in ``configureListFields``:
 
-.. code-block:: php
+::
 
     <?php
     $listMapper->add('_action', 'actions', array(
@@ -78,7 +78,7 @@ your own! Default template  file is: ``SonataAdminBundle:CRUD:list__action_[ACTI
 
 You can specify your own by setting up the 'template' option like so:
 
-.. code-block:: php
+::
 
     <?php
     $listMapper->add('_action', 'actions', array(
@@ -94,7 +94,7 @@ Advance Usage
 
 If you need a specific layout for a row cell, you can define a custom template
 
-.. code-block:: php
+::
 
     <?php
     namespace Sonata\MediaBundle\Admin;
@@ -119,7 +119,7 @@ If you need a specific layout for a row cell, you can define a custom template
 
 The related template :
 
-.. code-block:: jinja
+::
 
     {% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
 

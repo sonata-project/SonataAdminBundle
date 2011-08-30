@@ -8,9 +8,7 @@ can take a while to code for complexe rules. As a rules must be a set of a ``Con
 and ``Validator`` instance.
 
 The inline validation try to provide a nice solution by introducting a ``ErrorElement``
-object. The object can be use to check assertion against a model :
-
-.. code-block:: php
+object. The object can be use to check assertion against a model::
 
         $errorElement
             ->with('settings.url')
@@ -37,7 +35,7 @@ object. The object can be use to check assertion against a model :
                 ->end()
         }
 
-.. note::
+::
 
     This solution rely on the validator component so validation defined through
     the validator component will be used.
@@ -45,9 +43,7 @@ object. The object can be use to check assertion against a model :
 Using this validator
 --------------------
 
-Just add the ``InlineConstraint`` class constraint, like this :
-
-.. code-block:: xml
+Just add the ``InlineConstraint`` class constraint, like this::
 
     <class name="Application\Sonata\PageBundle\Entity\Block">
         <constraint name="Sonata\AdminBundle\Validator\Constraints\InlineConstraint">
@@ -56,12 +52,12 @@ Just add the ``InlineConstraint`` class constraint, like this :
         </constraint>
     </class>
 
-There are two important options :
+There are two important options:
 
   - ``service`` : the service where the validation method is defined
   - ``method``  : the service's method to call
 
-The method must accept two arguments :
+The method must accept two arguments:
 
  - ``ErrorElement`` : the instance where assertion can be check
  - ``value``  : the object instance
@@ -70,7 +66,7 @@ The method must accept two arguments :
 Sample with the ``PageBundle``
 ------------------------------
 
-.. code-block:: php
+::
 
     <?php
     namespace Sonata\PageBundle\Block;

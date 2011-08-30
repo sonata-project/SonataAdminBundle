@@ -18,8 +18,8 @@ By default services who are injected to the admin service are
 Note: %manager-type% is replace by the manager type (orm, odm...)
 
 If you want to modify the service who are going to be injected, add the following code to your
-application's config file:
-.. code-block:: yaml
+application's config file::
+
     # app/config/config.yml
     admins:
         sonata_admin: #method name, you can find the list in the table above

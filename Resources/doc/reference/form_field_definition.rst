@@ -4,7 +4,7 @@ Form field definition
 Example
 -------
 
-.. code-block:: php
+::
 
     <?php
     namespace Sonta\NewsBundle\Admin;
@@ -49,7 +49,7 @@ Example
         }
     }
 
-.. note::
+::
 
     By default, the form framework always sets ``required=true`` for each
     field. This can be an issue for HTML5 browsers as they provide client-side
@@ -79,7 +79,7 @@ If you want to use custom types from the Form framework you must use the
 ``addType`` method. (The ``add`` method uses the information provided by the
 model definition).
 
-.. code-block:: php
+::
 
     <?php
     namespace Sonata\MediaBundle\Admin;
@@ -105,7 +105,7 @@ model definition).
         }
   }
 
-.. note::
+::
 
     By setting ``type=false`` in the file definition, the Form framework will
     provide an instance of ``UploadedFile`` for the ``Media::setBinaryContent``
@@ -125,7 +125,7 @@ The AdminBundle provides 3 edit options:
 
 With the ``standard`` and ``list`` options, you can create a new ``User`` by clicking on the "+" icon.
 
-.. code-block:: php
+::
 
     <?php
     namespace Sonata\NewsBundle\Admin;
@@ -172,7 +172,7 @@ defining one of these options:
   - ``sortable``: if the model has a position field, you can enable a drag and
     drop sortable effect by setting ``sortable=field_name``
 
-.. code-block:: php
+::
 
     <?php
     namespace Sonata\MediaBundle\Admin;

@@ -37,9 +37,7 @@ meaning that the following required dependencies are automatically injected:
 * ``Translator``
 
 Therefore, you can gain access to any service you want by injecting them into
-the admin class, like so:
-
-.. code-block:: xml
+the admin class, like so::
 
     <service id="sonata.news.admin.post" class="%sonata.news.admin.post.class%">
         <tag name="sonata.admin" manager_type="orm" group="sonata_blog" label="post"/>
@@ -114,7 +112,7 @@ Declaring a new Admin class
 
 Once you have created an admin class, you must declare the class to use it. Like
 
-.. code-block:: xml
+::
 
     <!-- app/config/config.xml -->
     <service id="sonata.news.admin.post" class="Sonata\NewsBundle\Admin\PostAdmin">
@@ -128,7 +126,7 @@ Once you have created an admin class, you must declare the class to use it. Like
 
 Or if you're using a YML configuration file,
 
-.. code-block:: yaml
+::
 
     services:
        sonata.news.admin.post:

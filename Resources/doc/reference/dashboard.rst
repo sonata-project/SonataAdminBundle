@@ -4,9 +4,7 @@ Dashboard
 The dashboard is the main landing page. By default the dashboard lists the
 different admin areas available.
 If you want to custom the dashboard, add the following code to your
-application's config file:
-
-.. code-block:: yaml
+application's config file::
 
     # app/config/config.yml
     sonata_admin:
@@ -20,7 +18,7 @@ Examples
 Set the label group & add all the default items
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. code-block:: yaml
+::
 
     # app/config/config.yml
     sonata_admin:
@@ -32,7 +30,7 @@ Set the label group & add all the default items
 Set items group
 ^^^^^^^^^^^^^^^
 
-.. code-block:: yaml
+::
 
     # app/config/config.yml
     sonata_admin:
@@ -44,7 +42,7 @@ Set items group
 Add a group with all the default items
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. code-block:: yaml
+::
 
     # app/config/config.yml
     sonata_admin:
@@ -54,7 +52,7 @@ Add a group with all the default items
 Add some items in a group
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. code-block:: yaml
+::
 
     # app/config/config.yml
     sonata_admin:

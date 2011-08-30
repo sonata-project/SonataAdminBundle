@@ -10,7 +10,7 @@ The ``ProxyQuery`` object is used to add missing features from the original Doct
     not on the full select statement. This simulate the original Doctrine 1 behavior.
 
 
-.. code-block:: php
+::
 
     <?php
     use Sonata\AdminBundle\Datagrid\ORM\ProxyQuery;
