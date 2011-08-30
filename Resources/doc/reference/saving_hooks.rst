@@ -18,7 +18,7 @@ See https://github.com/FriendsOfSymfony/UserBundle for more information.
 The user management system requires to perform specific call when the user password or username are updated. This
 is how the Admin bundle can be used to solve the issue by using the ``prePersist`` saving hook.
 
-.. code-block:: php
+::
 
     <?php
     namespace FOS\UserBundle\Admin\Entity;
@@ -71,7 +71,7 @@ is how the Admin bundle can be used to solve the issue by using the ``prePersist
 
 The service declaration where the ``UserManager`` is injected into the Admin class.
 
-.. code-block:: xml
+::
 
     <service id="fos.user.admin.user" class="%fos.user.admin.user.class%">
         <tag name="sonata.admin" manager_type="orm" group="fos_user" />

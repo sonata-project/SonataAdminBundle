@@ -9,7 +9,7 @@ The security part is managed by a ``SecurityHandler``, the bundle comes with 2 h
 The default value is ``sonata.admin.security.handler.noop``, if you want to change the default value
 you can set the ``security_handler`` to ``sonata.admin.security.handler.acl``.
 
-.. code-block:: yaml
+::
 
     sonata_admin:
         security_handler: sonata.admin.security.handler.acl
@@ -40,7 +40,7 @@ Configuration
         - the access control : resources with related required roles, the important part is the admin configuration
         - the ``acl`` option enable the ACL.
 
-.. code-block:: yaml
+::
 
     parameters:
         # ... other parameters
@@ -102,7 +102,7 @@ Configuration
 
 - Create a new user :
 
-.. code-block::
+::
 
     # php app/console fos:user:create
     Please choose a username:root
@@ -113,14 +113,14 @@ Configuration
 
 - Promote an user as super admin :
 
-.. code-block::
+::
 
     # php app/console fos:user:promote root
     User "root" has been promoted as a super administrator.
 
 If you have Admin classes, you can install the related CRUD ACL rules :
 
-.. code-block::
+::
 
     # php app/console sonata:admin:setup-acl
     Starting ACL AdminBundle configuration

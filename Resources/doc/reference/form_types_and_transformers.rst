@@ -21,7 +21,7 @@ Form types
 
 Let's say, the object have a settings properties
 
-.. code-block:: php
+::
 
     <?php
     class Page
@@ -35,7 +35,7 @@ Let's say, the object have a settings properties
 
 Now you can edit the settings array with :
 
-.. code-block:: php
+::
 
     <?php
     namespace Sonata\PageBundle\Admin;
@@ -72,7 +72,7 @@ the output will be :
 
 Other options :
 
-.. code-block:: php
+::
 
     <?php
     namespace Sonata\NewsBundle\Admin;

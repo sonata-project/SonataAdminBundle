@@ -51,7 +51,7 @@ Configuration
 Next, be sure to enable the bundles in your autoload.php and AppKernel.php
 files:
 
-.. code-block:: php
+::
 
   // app/autoload.php
   $loader->registerNamespaces(array(
@@ -77,7 +77,7 @@ files:
 The bundle also contains several routes. Import them by adding the following
 code to your application's routing file:
 
-.. code-block:: yaml
+::
 
     # app/config/routing.yml
     admin:
@@ -94,7 +94,7 @@ Now, install the assets from the different bundles:
 At this point you can access to the dashboard with the url:
 ``http://yoursite.local/admin/dashboard``.
 
-.. note::
+::
 
     If you're using XML or PHP to specify your application's configuration,
     the above configuration and routing will actually be placed in those

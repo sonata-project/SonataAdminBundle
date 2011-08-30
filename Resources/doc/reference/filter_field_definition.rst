@@ -38,7 +38,7 @@ For now, only Doctrine ORM filters are available
 Example
 -------
 
-.. code-block:: php
+::
 
     <?php
     namespace Sonata\NewsBundle\Admin;
@@ -71,7 +71,7 @@ define the field type and one to define how to use the field's value. In this
 example, ``getWithOpenCommentField`` and ``getWithOpenCommentFilter`` implement
 this functionality.
 
-.. code-block:: php
+::
 
     <?php
     namespace Sonata\NewsBundle\Admin;
