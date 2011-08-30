@@ -9,9 +9,7 @@ PostAdmin
 
 By convention, Admin files are located in an Admin namespace.
 
-First, you need to create an Admin/PostAdmin.php file
-
-.. code-block:: php
+First, you need to create an Admin/PostAdmin.php file::
 
     <?php
     namespace Sonata\NewsBundle\Admin;
@@ -121,9 +119,7 @@ First, you need to create an Admin/PostAdmin.php file
         }
     }
 
-Second, register the PostAdmin class inside the DIC in your config file:
-
-.. code-block:: xml
+Second, register the PostAdmin class inside the DIC in your config file::
 
     <service id="sonata.news.admin.post" class="Sonata\NewsBundle\Admin\PostAdmin">
         <tag name="sonata.admin" manager_type="orm" group="sonata_blog" label="post"/>
@@ -133,9 +129,7 @@ Second, register the PostAdmin class inside the DIC in your config file:
         <argument>SonataNewsBundle:PostAdmin</argument>
     </service>
 
-Or if you're using a YML configuration file:
-
-.. code-block:: yaml
+Or if you're using a YML configuration file::
 
     services:
        sonata.news.admin.post:
@@ -155,9 +149,7 @@ how we want to use them.
 Tweak the PostAdmin class
 -------------------------
 
-You can specify which field you want displayed for each action (list, form and filter)
-
-.. code-block:: php
+You can specify which field you want displayed for each action (list, form and filter)::
 
     <?php
     namespace Sonata\NewsBundle\Admin;
@@ -204,7 +196,7 @@ So same goes for the TagAdmin and CommentAdmin class.
 Tweak the TagAdmin class
 ------------------------
 
-.. code-block:: php
+::
 
     <?php
     namespace Sonata\NewsBundle\Admin;
@@ -233,7 +225,7 @@ Tweak the TagAdmin class
 Tweak the CommentAdmin class
 ----------------------------
 
-.. code-block:: php
+::
 
     <?php
     namespace Sonata\NewsBundle\Admin;

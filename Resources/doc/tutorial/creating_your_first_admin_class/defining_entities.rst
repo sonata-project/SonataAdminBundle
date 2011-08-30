@@ -11,7 +11,7 @@ Model definition
 Comment
 ~~~~~~~
 
-.. code-block:: php
+::
 
     <?php
 
@@ -54,7 +54,7 @@ Comment
 Post
 ~~~~
 
-.. code-block:: php
+::
 
     <?php
     class Post
@@ -94,7 +94,7 @@ Post
 Tag
 ~~~
 
-.. code-block:: php
+::
 
     class Tag
     {
@@ -124,7 +124,7 @@ Mapping definition
 Comment
 ~~~~~~~
 
-.. code-block:: xml
+::
 
     <?xml version="1.0" encoding="utf-8"?>
     <doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xsi="http://www.w3.org/2001/XMLSchema-instance" schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
@@ -156,7 +156,7 @@ Comment
 Post
 ~~~~
 
-.. code-block:: xml
+::
 
     <?xml version="1.0" encoding="utf-8"?>
     <doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xsi="http://www.w3.org/2001/XMLSchema-instance" schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
@@ -229,7 +229,7 @@ Post
 Comment
 ~~~~~~~
 
-.. code-block:: xml
+::
 
     <?xml version="1.0" encoding="utf-8"?>
     <doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xsi="http://www.w3.org/2001/XMLSchema-instance" schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
