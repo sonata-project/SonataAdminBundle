@@ -60,6 +60,7 @@ class CallbackFilter extends Filter
             'field_options' => $this->getFieldOptions(),
             'operator_type' => $this->getOption('operator_type'),
             'operator_options' => $this->getOption('operator_options'),
+            'label'         => $this->getLabel()
         ));
     }
 }

@@ -69,6 +69,7 @@ class BooleanFilter extends Filter
             'field_options' => $this->getFieldOptions(),
             'operator_type' => 'hidden',
             'operator_options' => array(),
+            'label'         => $this->getLabel()
         ));
     }
 }

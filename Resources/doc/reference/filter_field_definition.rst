@@ -66,6 +66,21 @@ Example
 Advanced usage
 --------------
 
+Label
+^^^^^
+
+You can customize the label which appears on the main widget by using a ``label`` option.
+
+.. code-block:: php
+
+    <?php
+
+    ->add('tags', null, array('label' => 'les tags'), null, array('expanded' => true, 'multiple' => true)
+
+
+Callback
+^^^^^^^^
+
 To create a custom callback filter, two methods need to be implemented; one to
 define the field type and one to define how to use the field's value. In this
 example, ``getWithOpenCommentField`` and ``getWithOpenCommentFilter`` implement

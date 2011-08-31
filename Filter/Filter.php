@@ -75,6 +75,11 @@ abstract class Filter implements FilterInterface
         return $this->getOption('field_options', array('required' => false));
     }
 
+    public function getLabel()
+    {
+        return $this->getOption('label', $this->getName());
+    }
+
     /**
      * @return string
      */

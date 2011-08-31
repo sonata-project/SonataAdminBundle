@@ -84,6 +84,7 @@ class ChoiceFilter extends Filter
             'operator_type' => 'sonata_type_boolean',
             'field_type'    => $this->getFieldType(),
             'field_options' => $this->getFieldOptions(),
+            'label'         => $this->getLabel()
         ));
     }
 }

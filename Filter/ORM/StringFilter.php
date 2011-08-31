@@ -82,6 +82,7 @@ class StringFilter extends Filter
         return array('sonata_type_filter_choice', array(
             'field_type'    => $this->getFieldType(),
             'field_options' => $this->getFieldOptions(),
+            'label'         => $this->getLabel()
         ));
     }
 }

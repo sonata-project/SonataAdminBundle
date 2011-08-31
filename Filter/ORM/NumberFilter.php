@@ -71,6 +71,7 @@ class NumberFilter extends Filter
         return array('sonata_type_filter_number', array(
             'field_type'    => $this->getFieldType(),
             'field_options' => $this->getFieldOptions(),
+            'label'         => $this->getLabel()
         ));
     }
 }

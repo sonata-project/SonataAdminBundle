@@ -33,6 +33,14 @@ interface FilterInterface
     function getName();
 
     /**
+     * Returns the label name
+     *
+     * @abstract
+     * @return void
+     */
+    function getLabel();
+
+    /**
      * @abstract
      * @return array
      */
