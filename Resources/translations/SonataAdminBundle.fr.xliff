@@ -150,6 +150,10 @@
               <source>flash_delete_success</source>
               <target>Les éléments ont été supprimés avec succès.</target>
             </trans-unit>
+            <trans-unit id='btn_delete'>
+              <source>btn_delete</source>
+              <target>Supprimer</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
