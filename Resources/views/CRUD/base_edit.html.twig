@@ -93,7 +93,7 @@ file that was distributed with this source code.
                 {% endif %}
             {% endif %}
         </form>
-        {% if admin.id(object) %}
+        {% if admin.hasroute('delete') and admin.id(object) and admin.isGranted('DELETE') %}
         <form action="{{ admin.generateUrl('delete', {'id': admin.id(object), 'uniqid': admin.uniqid}) }}" method="POST">
             <input type="hidden" name="_method" value="DELETE" />
             <input type="hidden" name="_token" value="{{ form._token.get('value') }}" />
