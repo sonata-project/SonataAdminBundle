@@ -177,10 +177,6 @@ class CRUDController extends Controller
             throw new AccessDeniedException();
         }
 
-        if ($this->get('request')->getMethod() != 'DELETE') {
-            throw new HttpException(405);
-        }
-
         $id = $this->get('request')->get($this->admin->getIdParameter());
         $object = $this->admin->getObject($id);
 

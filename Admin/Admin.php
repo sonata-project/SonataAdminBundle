@@ -821,7 +821,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         $collection->add('create');
         $collection->add('batch');
         $collection->add('edit', $this->getRouterIdParameter().'/edit');
-        $collection->add('delete', $this->getRouterIdParameter().'/delete');
+        $collection->add('delete', $this->getRouterIdParameter().'/delete', array(), array('_method' => 'DELETE'));
         $collection->add('show', $this->getRouterIdParameter().'/show');
 
         // add children urls
