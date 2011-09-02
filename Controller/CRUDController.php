@@ -173,7 +173,9 @@ class CRUDController extends Controller
 
     public function deleteAction($id)
     {
-        if (false === $this->admin->isGranted('DELETE')) {
+        if (false === $this->admin->isGranted('DELETE')
+            || $this->get('request')->getMethod() != 'DELETE'
+           ) {
             throw new AccessDeniedException();
         }
 
