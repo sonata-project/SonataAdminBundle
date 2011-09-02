@@ -31,13 +31,13 @@ file that was distributed with this source code.
                 {% block table_header %}
                     <tr class="sonata-ba-list-field-header">
                         {% for field_description in admin.list.elements %}
-                            {% if field_description.getOption('code') == '_batch' and batchactions|length > 0%}
+                            {% if field_description.getOption('code') == '_batch' and batchactions|length > 0 %}
                                 <th class="sonata-ba-list-field-header sonata-ba-list-field-header-batch">
                                   <input type="checkbox" id="list_batch_checkbox" />
                                 </th>
                             {% else %}
                                 {% set sortable = false %}
-                                {% if field_description.options.sortable is defined and field_description.options.sortable%}
+                                {% if field_description.options.sortable is defined and field_description.options.sortable %}
                                     {% set sortable             = true %}
                                     {% set current              = admin.datagrid.values._sort_by == field_description.options.sortable %}
                                     {% set sort_parameters      = admin.modelmanager.sortparameters(field_description, admin.datagrid) %}
