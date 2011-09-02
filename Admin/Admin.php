@@ -759,7 +759,8 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         $actions = array();
 
         if ($this->isGranted('DELETE')) {
-            $actions['delete'] = $this->trans('action_delete', array(), 'SonataAdminBundle');
+            // @TODO add DELETE batch action again once Doctrine2 gets improved concerning QueryIterator
+            //$actions['delete'] = $this->trans('action_delete', array(), 'SonataAdminBundle');
         }
 
         return $actions;
