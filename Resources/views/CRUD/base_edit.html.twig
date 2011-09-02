@@ -94,7 +94,7 @@ file that was distributed with this source code.
             {% endif %}
         </form>
         {% if admin.hasroute('delete') and admin.id(object) and admin.isGranted('DELETE') %}
-        <form action="{{ admin.generateUrl('delete', {'id': admin.id(object), 'uniqid': admin.uniqid}) }}" method="POST">
+        <form action="{{ admin.generateUrl('delete', {'id': admin.id(object), 'uniqid': admin.uniqid}) }}" method="POST" onsubmit="return (confirm('{% trans from 'SonataAdminBundle' %}confirm_msg{% endtrans %}'));">
             <input type="hidden" name="_method" value="DELETE" />
             <input type="hidden" name="_token" value="{{ form._token.get('value') }}" />
             <input type="submit" name="btn_delete" value="{% trans from 'SonataAdminBundle' %}btn_delete{% endtrans %}"/>
