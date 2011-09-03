@@ -22,6 +22,10 @@ the following lines to the file ``deps``::
   [SonataAdminBundle]
       git=http://github.com/sonata-project/SonataAdminBundle.git
       target=/bundles/Sonata/AdminBundle
+    
+  [Menu]
+      git=http://github.com/knplabs/KnpMenu.git
+      target=/bundles/Knp/Bundle/Menu
   
   [MenuBundle]
       git=http://github.com/knplabs/KnpMenuBundle.git
@@ -36,6 +40,7 @@ If you are using git, you can add them as submodules::
   git submodule add git://github.com/sonata-project/SonatajQueryBundle.git vendor/bundles/Sonata/jQueryBundle
   git submodule add git://github.com/sonata-project/SonataBluePrintBundle.git vendor/bundles/Sonata/BluePrintBundle
   git submodule add git://github.com/sonata-project/SonataAdminBundle.git vendor/bundles/Sonata/AdminBundle
+  git submodule add git://github.com/knplabs/KnpMenu.git vendor/bundles/Knp/Bundle/Menu
   git submodule add git://github.com/knplabs/KnpMenuBundle.git vendor/bundles/Knp/Bundle/MenuBundle
 
 If you are not using git, you will have to download them :
@@ -43,6 +48,7 @@ If you are not using git, you will have to download them :
   - https://github.com/sonata-project/SonatajQueryBundle/archives/master
   - https://github.com/sonata-project/SonataBluePrintBundle/archives/master
   - https://github.com/sonata-project/SonataAdminBundle/archives/master
+  - https://github.com/knplabs/KnpMenu/archives/master
   - https://github.com/knplabs/KnpMenuBundle/archives/master
 
 Configuration
@@ -57,7 +63,8 @@ files:
   $loader->registerNamespaces(array(
       // ...
       'Sonata'                         => __DIR__.'/../vendor/bundles',
-      'Knp'                            => __DIR__.'/../vendor/bundles',
+      'Knp\\Bundle'                    => __DIR__.'/../vendor/bundles',
+      'Knp\\Menu'                      => __DIR__.'/../vendor/bundles/Knp/Bundle/Menu/src',
       // ...
   ));
 
