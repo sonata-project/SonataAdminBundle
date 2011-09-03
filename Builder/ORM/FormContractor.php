@@ -118,7 +118,7 @@ class FormContractor implements FormContractorInterface
             }
 
             if ($fieldDescription->getOption('edit') == 'list') {
-                $options['parent'] = 'hidden';
+                $options['parent'] = 'text';
             }
 
         } else if ($type == 'sonata_type_admin') {
