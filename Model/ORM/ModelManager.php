@@ -193,7 +193,19 @@ class ModelManager implements ModelManagerInterface
             throw new \RuntimeException('Entities passed to the choice field must be managed');
         }
 
-        return $this->getEntityManager()->getUnitOfWork()->getEntityIdentifier($entity);
+        // Retrieve the updated data
+        $updatedData = $this->getEntityManager()->getUnitOfWork()->getOriginalEntityData($entity);
+
+        // Replace the original identifier values with the updated data,
+        // so we can later on redirect using the correct IDs.
+        $identifierValues = $this->getEntityManager()->getUnitOfWork()->getEntityIdentifier($entity);
+        foreach ($identifierValues as $identifier => $oldvalue) {
+            if (isset($updatedData[$identifier]) && !is_object($updatedData[$identifier])) {
+                $identifierValues[$identifier] = $updatedData[$identifier];
+            }
+        }
+
+        return $identifierValues;
     }
 
     /**
