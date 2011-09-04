@@ -342,7 +342,7 @@ This code manage the many-to-[one|many] association field popup
 
         // update the
         jQuery('#{{ id }}').live('change', function(event) {
-            jQuery('#field_widget_{{ id }}').html("{{ 'loading_information ...'|trans([], 'SonataAdminBundle') }}");
+            jQuery('#field_widget_{{ id }}').html("<span><img src=\"{{ asset('bundles/sonataadmin/ajax-loader.gif') }}\" style=\"vertical-align: middle; margin-right: 10px\"/>{{ 'loading_information ...'|trans([], 'SonataAdminBundle') }}</span>");
             jQuery.ajax({
                 type: 'GET',
                 url: '{{ url('sonata_admin_short_object_information', {
