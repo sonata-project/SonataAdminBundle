@@ -115,40 +115,40 @@
                 <target>Tutti gli elementi</target>
             </trans-unit>
             <trans-unit id="flash_batch_empty">
-              <source>flash_batch_empty</source>
-              <target>Azione interrotta. Nessun elemento selezionato.</target>
+                <source>flash_batch_empty</source>
+                <target>Azione interrotta. Nessun elemento selezionato.</target>
             </trans-unit>
             <trans-unit id="flash_create_success">
-              <source>flash_create_success</source>
-              <target>Elemento creato con successo.</target>
+                <source>flash_create_success</source>
+                <target>Elemento creato con successo.</target>
             </trans-unit>
             <trans-unit id="flash_create_error">
-              <source>flash_create_error</source>
-              <target>Si è verificato un errore durante l'eliminazione dell'elemento.</target>
+                <source>flash_create_error</source>
+                <target>Si è verificato un errore durante l'eliminazione dell'elemento.</target>
             </trans-unit>
             <trans-unit id="flash_edit_success">
-              <source>flash_edit_success</source>
-              <target>Elemento aggiornato con successo.</target>
+                <source>flash_edit_success</source>
+                <target>Elemento aggiornato con successo.</target>
             </trans-unit>
             <trans-unit id="flash_edit_error">
-              <source>flash_edit_error</source>
-              <target>Si è verificato un errore durante la modifica dell'elemento.</target>
+                <source>flash_edit_error</source>
+                <target>Si è verificato un errore durante la modifica dell'elemento.</target>
             </trans-unit>
             <trans-unit id="flash_batch_delete_success">
-              <source>flash_batch_delete_success</source>
-              <target>Gli elementi selezionati sono stati eliminati con successo.</target>
+                <source>flash_batch_delete_success</source>
+                <target>Gli elementi selezionati sono stati eliminati con successo.</target>
             </trans-unit>
             <trans-unit id="flash_batch_delete_error">
-              <source>flash_batch_delete_error</source>
-              <target>Si è verificato un errore durante l'eliminazione degli elementi.</target>
+                <source>flash_batch_delete_error</source>
+                <target>Si è verificato un errore durante l'eliminazione degli elementi.</target>
             </trans-unit>
             <trans-unit id="flash_delete_error">
-              <source>flash_delete_error</source>
-              <target>Si è verificato un errore durante l'eliminazione dell'elemento.</target>
+                <source>flash_delete_error</source>
+                <target>Si è verificato un errore durante l'eliminazione dell'elemento.</target>
             </trans-unit>
             <trans-unit id="flash_delete_success">
-              <source>flash_delete_success</source>
-              <target>Elemento eliminato con successo.</target>
+                <source>flash_delete_success</source>
+                <target>Elemento eliminato con successo.</target>
             </trans-unit>
             <trans-unit id="link_breadcrumb_dashboard">
                 <source>breadcrumb.dashboard</source>
