@@ -171,6 +171,11 @@ class CRUDController extends Controller
         return new RedirectResponse($this->admin->generateUrl('list', $this->admin->getFilterParameters()));
     }
 
+    /**
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException|\Symfony\Component\Security\Core\Exception\AccessDeniedException
+     * @param $id
+     * @return \Symfony\Bundle\FrameworkBundle\Controller\Response|\Symfony\Component\HttpFoundation\RedirectResponse
+     */
     public function deleteAction($id)
     {
         if (false === $this->admin->isGranted('DELETE')) {
@@ -184,10 +189,17 @@ class CRUDController extends Controller
             throw new NotFoundHttpException(sprintf('unable to find the object with id : %s', $id));
         }
 
-        $this->admin->delete($object);
-        $this->get('session')->setFlash('sonata_flash_success', 'flash_delete_success');
+        if ($this->getRequest()->getMethod() == 'DELETE') {
+            $this->admin->delete($object);
+            $this->get('session')->setFlash('sonata_flash_success', 'flash_delete_success');
 
-        return new RedirectResponse($this->admin->generateUrl('list'));
+            return new RedirectResponse($this->admin->generateUrl('list'));
+        }
+
+        return $this->render('SonataAdminBundle:CRUD:delete.html.twig', array(
+            'object' => $object,
+            'action' => 'delete'
+        ));
     }
 
     /**

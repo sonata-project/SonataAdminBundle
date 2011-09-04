@@ -87,6 +87,10 @@ file that was distributed with this source code.
                 {% if admin.id(object) %}
                     <input type="submit" name="btn_update_and_edit" value="{% trans from 'SonataAdminBundle' %}btn_update_and_edit_again{% endtrans %}"/>
                     <input type="submit" name="btn_update_and_list" value="{% trans from 'SonataAdminBundle' %}btn_update_and_return_to_list{% endtrans %}"/>
+
+                    {% if admin.isGranted('DELETE') %}
+                        <a href="{{ admin.generateObjectUrl('delete', object) }}">{% trans from 'SonataAdminBundle' %}link_delete{% endtrans %}</a>
+                    {% endif %}
                 {% else %}
                     <input type="submit" name="btn_create_and_edit" value="{% trans from 'SonataAdminBundle' %}btn_create_and_edit_again{% endtrans %}"/>
                     <input type="submit" name="btn_create_and_create" value="{% trans from 'SonataAdminBundle' %}btn_create_and_create_a_new_one{% endtrans %}"/>

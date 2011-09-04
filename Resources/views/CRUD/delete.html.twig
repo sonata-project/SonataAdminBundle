@@ -1,0 +1,44 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{% extends base_template %}
+
+{% block actions %}
+    <div class="sonata-actions">
+        <ul>
+            {% if admin.hasRoute('edit') and admin.isGranted('EDIT')%}
+                <li class="sonata-action-element"><a href="{{ admin.generateObjectUrl('edit', object) }}">{% trans from 'SonataAdminBundle' %}link_action_edit{% endtrans %}</a></li>
+            {% endif %}
+
+            {% if admin.hasRoute('create') and admin.isGranted('CREATE')%}
+                <li class="sonata-action-element"><a href="{{ admin.generateUrl('create') }}">{% trans from 'SonataAdminBundle' %}link_action_create{% endtrans %}</a></li>
+            {% endif %}
+        </ul>
+    </div>
+{% endblock %}
+
+{% block side_menu %}{{ admin.sidemenu(action)|knp_menu_render('list') }}{% endblock %}
+
+{% block content %}
+    <div class="sonata-ba-delete">
+
+        <h1>{% trans from 'SonataAdminBundle' %}title_delete{% endtrans %}</h1>
+
+        {% trans with {'%object%': object} from 'SonataAdminBundle' %}message_delete_confirmation{% endtrans %}
+
+        <form method="POST" action="{{ admin.generateObjectUrl('delete', object) }}">
+            <input type="hidden" value="DELETE" name="_method" />
+
+            <input type="submit" value="{% trans from 'SonataAdminBundle' %}btn_delete{% endtrans %}" />
+        </form>
+
+    </div>
+{% endblock %}
