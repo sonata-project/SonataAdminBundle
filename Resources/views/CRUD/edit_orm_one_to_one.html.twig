@@ -63,6 +63,17 @@ file that was distributed with this source code.
                         />
                 </a>
             {% endif %}
+
+            {% if sonata_admin.edit == 'list' and sonata_admin.field_description.associationadmin.hasRoute('list') and sonata_admin.field_description.associationadmin.isGranted('LIST') %}
+                <a  href=""
+                    onclick="remove_selected_element_{{ id }}(event)"
+                    class="sonata-ba-action"
+                    >
+                    <img src="{{ asset('bundles/sonataadmin/famfamfam/cancel.png') }}"
+                         alt="{% trans from 'SonataAdminBundle' %}btn_cancel{% endtrans %}"
+                    />
+                </a>
+            {% endif %}
         </span>
 
         <div class="container sonata-ba-modal sonata-ba-modal-edit-one-to-one" style="display: none" id="field_dialog_{{ id }}">

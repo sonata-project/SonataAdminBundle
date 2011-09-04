@@ -315,12 +315,34 @@ This code manage the many-to-[one|many] association field popup
             return false;
         }
 
+        function remove_selected_element_{{ id }}(event) {
+            event.preventDefault();
+
+            var a = jQuery(event.target).closest('a');
+            a.attr('onclick', '');
+
+            a.click(field_remove_element_{{ id}});
+
+            a.trigger('click');
+
+            return false;
+        }
+
+        function field_remove_element_{{ id }}(event) {
+            event.preventDefault();
+
+            jQuery('#{{ id }}').val('');
+            jQuery('#{{ id }}').trigger('change');
+
+            return false;
+        }
         {#
           attach onchange event on the input
         #}
 
         // update the
         jQuery('#{{ id }}').live('change', function(event) {
+            jQuery('#field_widget_{{ id }}').html("{{ 'loading_information ...'|trans([], 'SonataAdminBundle') }}");
             jQuery.ajax({
                 type: 'GET',
                 url: '{{ url('sonata_admin_short_object_information', {
