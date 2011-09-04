@@ -115,8 +115,8 @@ file that was distributed with this source code.
 
                 <div class="sonata-ba-list-actions">
                     <select name="action">
-                        {% for action, label in batchactions %}
-                            <option value="{{ action }}">{{ label }}</option>
+                        {% for action, options in batchactions %}
+                            <option value="{{ action }}">{{ options.label }}</option>
                         {% endfor %}
                     </select>
                     <input type="checkbox" name="all_elements" id="execute_on_matching"  />
