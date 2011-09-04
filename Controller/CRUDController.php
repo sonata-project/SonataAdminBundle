@@ -373,10 +373,10 @@ class CRUDController extends Controller
 
         $object = $this->admin->getNewInstance();
 
+        $this->admin->setSubject($object);
+
         $form = $this->admin->getForm();
         $form->setData($object);
-
-        $this->admin->setSubject($object);
 
         if ($this->get('request')->getMethod() == 'POST') {
             $form->bindRequest($this->get('request'));
