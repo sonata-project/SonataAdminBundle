@@ -36,8 +36,8 @@ use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 
-use knp\Menu\FactoryInterface as MenuFactoryInterface;
-use knp\Menu\ItemInterface as MenuItemInterface;
+use Knp\Menu\FactoryInterface as MenuFactoryInterface;
+use Knp\Menu\ItemInterface as MenuItemInterface;
 use Knp\Menu\MenuItem;
 
 abstract class Admin implements AdminInterface, DomainObjectInterface
@@ -404,7 +404,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * @param \knp\Menu\ItemInterface $menu
+     * @param \Knp\Menu\ItemInterface $menu
      * @param $action
      * @param null|Admin $childAdmin
      * @return void
@@ -2101,7 +2101,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * @param \knp\Menu\FactoryInterface $menuFactory
+     * @param \Knp\Menu\FactoryInterface $menuFactory
      * @return void
      */
     public function setMenuFactory(MenuFactoryInterface $menuFactory)

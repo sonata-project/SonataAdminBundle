@@ -22,7 +22,7 @@ First, you need to create an Admin/PostAdmin.php file
     use Sonata\AdminBundle\Datagrid\ListMapper;
     use Sonata\AdminBundle\Show\ShowMapper;
 
-    use knp\Menu\ItemInterface as MenuItemInterface;
+    use Knp\Menu\ItemInterface as MenuItemInterface;
 
     use Application\Sonata\NewsBundle\Entity\Comment;
 
