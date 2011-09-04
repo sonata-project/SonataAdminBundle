@@ -331,6 +331,11 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
     protected $menu;
 
+    /**
+     * @var \Knp\Menu\MenuFactory
+     */
+    protected $menuFactory;
+
     protected $loaded = array(
         'view_fields'   => false,
         'view_groups'   => false,
@@ -1099,8 +1104,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
         $this->loaded['side_menu'] = true;
 
-        $menuFactory = new MenuFactory();
-        $menu = $menuFactory->createItem('root');
+        $menu = $this->menuFactory->createItem('root');
 
         $this->configureSideMenu($menu, $action, $childAdmin);
 
@@ -1650,8 +1654,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         }
 
         if (!$menu) {
-            $factory = new MenuFactory();
-            $menu = $factory->createItem('root');
+            $menu = $this->menuFactory->createItem('root');
         }
 
         $child = $menu->addChild(
@@ -2083,5 +2086,21 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     public function addExtension(AdminExtensionInterface $extension)
     {
         $this->extensions[] = $extension;
+    }
+
+    /**
+     * @param \Knp\Menu\MenuFactory $menuFactory
+     */
+    public function setMenuFactory(MenuFactory $menuFactory)
+    {
+        $this->menuFactory = $menuFactory;
+    }
+
+    /**
+     * @return \Knp\Menu\MenuFactory
+     */
+    public function getMenuFactory()
+    {
+        return $this->menuFactory;
     }
 }

@@ -144,8 +144,8 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
     /**
      * Apply the default values required by the AdminInterface to the Admin service definition
      *
-     * @param ContainerBuilder $container
-     * @param interger $serviceId
+     * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
+     * @param $serviceId
      * @param array $attributes
      * @param array $settings
      * @return \Symfony\Component\DependencyInjection\Definition
@@ -170,7 +170,8 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
             'configuration_pool' => 'sonata.admin.pool',
             'router'             => 'router',
             'validator'          => 'validator',
-            'security_handler'   => 'sonata.admin.security.handler'
+            'security_handler'   => 'sonata.admin.security.handler',
+            'menu_factory'       => 'knp_menu.factory',
         );
 
         foreach ($defaultAddServices as $attr => $addServiceId) {
