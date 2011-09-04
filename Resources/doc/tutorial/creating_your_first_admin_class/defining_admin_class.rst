@@ -22,7 +22,7 @@ First, you need to create an Admin/PostAdmin.php file
     use Sonata\AdminBundle\Datagrid\ListMapper;
     use Sonata\AdminBundle\Show\ShowMapper;
 
-    use Knp\Menu\MenuItem;
+    use knp\Menu\ItemInterface as MenuItemInterface;
 
     use Application\Sonata\NewsBundle\Entity\Comment;
 
@@ -99,7 +99,7 @@ First, you need to create an Admin/PostAdmin.php file
             $queryBuilder->setParameter('status', Comment::STATUS_MODERATE);
         }
 
-        protected function configureSideMenu(MenuItem $menu, $action, Admin $childAdmin = null)
+        protected function configureSideMenu(MenuItemInterface $menu, $action, Admin $childAdmin = null)
         {
             if (!$childAdmin && !in_array($action, array('edit'))) {
                 return;

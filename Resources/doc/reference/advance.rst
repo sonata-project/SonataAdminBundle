@@ -1,5 +1,5 @@
 Advance
-=========
+=======
 
 By default services who are injected to the admin service are
     method name         |    Service Id
@@ -19,6 +19,7 @@ Note: %manager-type% is replace by the manager type (orm, odm...)
 
 If you want to modify the service who are going to be injected, add the following code to your
 application's config file:
+
 .. code-block:: yaml
     # app/config/config.yml
     admins:

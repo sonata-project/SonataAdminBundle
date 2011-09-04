@@ -18,7 +18,7 @@ Example :
     use Sonata\AdminBundle\Datagrid\ListMapper;
     use Sonata\AdminBundle\Show\ShowMapper;
 
-    use Knp\Menu\MenuItem;
+    use knp\Menu\ItemInterface as MenuItemInterface;
 
     use Application\Sonata\NewsBundle\Entity\Comment;
 

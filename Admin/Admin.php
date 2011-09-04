@@ -36,7 +36,8 @@ use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 
-use Knp\Menu\MenuFactory;
+use knp\Menu\FactoryInterface as MenuFactoryInterface;
+use knp\Menu\ItemInterface as MenuItemInterface;
 use Knp\Menu\MenuItem;
 
 abstract class Admin implements AdminInterface, DomainObjectInterface
@@ -332,7 +333,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     protected $menu;
 
     /**
-     * @var \Knp\Menu\MenuFactory
+     * @var \Knp\Menu\MenuFactoryInterface
      */
     protected $menuFactory;
 
@@ -403,12 +404,12 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * @param \Knp\Menu\MenuItem $menu
+     * @param \knp\Menu\ItemInterface $menu
      * @param $action
      * @param null|Admin $childAdmin
      * @return void
      */
-    protected function configureSideMenu(MenuItem $menu, $action, Admin $childAdmin = null)
+    protected function configureSideMenu(MenuItemInterface $menu, $action, Admin $childAdmin = null)
     {
 
     }
@@ -1647,7 +1648,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      * @param \Knp\Menu\MenuItem|null $menu
      * @return array
      */
-    public function buildBreadcrumbs($action, MenuItem $menu = null)
+    public function buildBreadcrumbs($action, MenuItemInterface $menu = null)
     {
         if (isset($this->breadcrumbs[$action])) {
             return $this->breadcrumbs[$action];
@@ -2073,31 +2074,43 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         return $this->formTheme;
     }
 
-    public function setFilterTheme($filterTheme)
+    /**
+     * @param array $filterTheme
+     * @return void
+     */
+    public function setFilterTheme(array $filterTheme)
     {
         $this->filterTheme = $filterTheme;
     }
 
+    /**
+     * @return array
+     */
     public function getFilterTheme()
     {
         return $this->filterTheme;
     }
 
+    /**
+     * @param AdminExtensionInterface $extension
+     * @return void
+     */
     public function addExtension(AdminExtensionInterface $extension)
     {
         $this->extensions[] = $extension;
     }
 
     /**
-     * @param \Knp\Menu\MenuFactory $menuFactory
+     * @param \knp\Menu\FactoryInterface $menuFactory
+     * @return void
      */
-    public function setMenuFactory(MenuFactory $menuFactory)
+    public function setMenuFactory(MenuFactoryInterface $menuFactory)
     {
         $this->menuFactory = $menuFactory;
     }
 
     /**
-     * @return \Knp\Menu\MenuFactory
+     * @return \Knp\Menu\FactoryInterface
      */
     public function getMenuFactory()
     {
