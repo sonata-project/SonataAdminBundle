@@ -182,6 +182,10 @@ class SonataAdminExtension extends \Twig_Extension
     {
         $method = $fieldDescription->getOption('associated_tostring', '__toString');
 
+        if (!is_object($element)) {
+            return $element;
+        }
+
         if (!method_exists($element, $method)) {
             throw new \RunTimeException(sprintf('You must define an `associated_tostring` option or create a `%s::__toString` method to the field option %s from service %s is ', get_class($element), $fieldDescription->getName(), $fieldDescription->getAdmin()->getCode()));
         }

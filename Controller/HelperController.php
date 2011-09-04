@@ -134,7 +134,7 @@ class HelperController extends Controller
         }
 
         $description = 'no description available';
-        foreach (array('getTitle', 'getName', '__toString') as $method) {
+        foreach (array('getAdminTitle', 'getTitle', 'getName', '__toString') as $method) {
             if (method_exists($object, $method)) {
                 $description = $object->$method();
                 break;
