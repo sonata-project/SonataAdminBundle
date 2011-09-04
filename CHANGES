@@ -1,3 +1,8 @@
+04/09/2011
+----------
+* Add a delete option on widget with edit = list
+* Refactoring the Menu/Breadcrumb management due to a change in the KnpLab Menu lib
+
 03/08/2011
 ----------
 * remove property definitions

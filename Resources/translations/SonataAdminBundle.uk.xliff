@@ -86,6 +86,10 @@
                 <source>link_expand</source>
                 <target>розвернути/звернути</target>
             </trans-unit>
+            <trans-unit id="link_breadcrumb_dashboard">
+                <source>breadcrumb.dashboard</source>
+                <target>&#8962;</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

@@ -36,8 +36,8 @@ use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 
-use Knp\Bundle\MenuBundle\Menu;
-use Knp\Bundle\MenuBundle\MenuItem;
+use Knp\Menu\MenuFactory;
+use Knp\Menu\MenuItem;
 
 abstract class Admin implements AdminInterface, DomainObjectInterface
 {
@@ -398,7 +398,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * @param \Knp\Bundle\MenuBundle\MenuItem $menu
+     * @param \Knp\Menu\MenuItem $menu
      * @param $action
      * @param null|Admin $childAdmin
      * @return void
@@ -1099,7 +1099,8 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
         $this->loaded['side_menu'] = true;
 
-        $menu = new Menu;
+        $menuFactory = new MenuFactory();
+        $menu = $menuFactory->createItem('root');
 
         $this->configureSideMenu($menu, $action, $childAdmin);
 
@@ -1639,7 +1640,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      * Generates the breadcrumbs array
      *
      * @param string $action
-     * @param \Knp\Bundle\MenuBundle\MenuItem|null $menu
+     * @param \Knp\Menu\MenuItem|null $menu
      * @return array
      */
     public function buildBreadcrumbs($action, MenuItem $menu = null)
@@ -1648,11 +1649,19 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
             return $this->breadcrumbs[$action];
         }
 
-        $menu = $menu ?: new Menu;
+        if (!$menu) {
+            $factory = new MenuFactory();
+            $menu = $factory->createItem('root');
+        }
 
         $child = $menu->addChild(
+            $this->trans('breadcrumb.dashboard', array(), 'SonataAdminBundle'),
+            array('uri' => $this->router->generate('sonata_admin_dashboard'))
+        );
+
+        $child = $child->addChild(
             $this->trans(sprintf('breadcrumb.link_%s_list', $this->getClassnameLabel())),
-            $this->generateUrl('list')
+            array('uri' => $this->generateUrl('list'))
         );
 
         $childAdmin = $this->getCurrentChildAdmin();
@@ -1662,7 +1671,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
             $child = $child->addChild(
                 (string) $this->getSubject(),
-                $this->generateUrl('edit', array('id' => $id))
+                array('uri' => $this->generateUrl('edit', array('id' => $id)))
             );
 
             return $childAdmin->buildBreadcrumbs($action, $child);
@@ -1670,7 +1679,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
             if ($action != 'list') {
                 $menu = $menu->addChild(
                     $this->trans(sprintf('breadcrumb.link_%s_list', $this->getClassnameLabel())),
-                    $this->generateUrl('list')
+                    array('uri' => $this->generateUrl('list'))
                 );
             }
 

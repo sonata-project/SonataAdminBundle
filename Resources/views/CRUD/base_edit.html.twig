@@ -27,7 +27,7 @@ file that was distributed with this source code.
     </div>
 {% endblock %}
 
-{% block side_menu %}{{ admin.sidemenu(action).render|raw }}{% endblock %}
+{% block side_menu %}{{ admin.sidemenu(action)|knp_menu_render('list') }}{% endblock %}
 
 {% block form %}
 

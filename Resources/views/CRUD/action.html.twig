@@ -24,7 +24,7 @@ file that was distributed with this source code.
     </div>
 {% endblock %}
 
-{% block side_menu %}{% if action is defined %}{{ admin.sidemenu(action).render|raw }}{% endif %}{% endblock %}
+{% block side_menu %}{% if action is defined %}{{ admin.sidemenu(action)|knp_menu_render('list') }}{% endif %}{% endblock %}
 
 {% block content %}
 

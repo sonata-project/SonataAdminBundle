@@ -10,25 +10,29 @@ the following lines to the file ``deps``::
   [SonatajQueryBundle]
       git=http://github.com/sonata-project/SonatajQueryBundle.git
       target=/bundles/Sonata/jQueryBundle
-  
+
   [SonataBluePrintBundle]
       git=http://github.com/sonata-project/SonataBluePrintBundle.git
       target=/bundles/Sonata/BluePrintBundle
-  
+
   [SonataUserBundle]
       git=http://github.com/sonata-project/SonataUserBundle.git
       target=/bundles/Sonata/UserBundle
-      
+
   [SonataAdminBundle]
       git=http://github.com/sonata-project/SonataAdminBundle.git
       target=/bundles/Sonata/AdminBundle
-  
+
   [MenuBundle]
       git=http://github.com/knplabs/KnpMenuBundle.git
       target=/bundles/Knp/Bundle/MenuBundle
 
+  [KnpMenu]
+      git=https://github.com/knplabs/KnpMenu.git
+      target=/knp/menu
+
 and run::
-  
+
   bin/vendors install
 
 If you are using git, you can add them as submodules::
@@ -37,6 +41,7 @@ If you are using git, you can add them as submodules::
   git submodule add git://github.com/sonata-project/SonataBluePrintBundle.git vendor/bundles/Sonata/BluePrintBundle
   git submodule add git://github.com/sonata-project/SonataAdminBundle.git vendor/bundles/Sonata/AdminBundle
   git submodule add git://github.com/knplabs/KnpMenuBundle.git vendor/bundles/Knp/Bundle/MenuBundle
+  git submodule add git://github.com/knplabs/KnpMenu.git vendor/knp/menu
 
 If you are not using git, you will have to download them :
 
@@ -44,6 +49,7 @@ If you are not using git, you will have to download them :
   - https://github.com/sonata-project/SonataBluePrintBundle/archives/master
   - https://github.com/sonata-project/SonataAdminBundle/archives/master
   - https://github.com/knplabs/KnpMenuBundle/archives/master
+  - https://github.com/knplabs/KnpMenu/archives/master
 
 Configuration
 -------------
@@ -57,7 +63,10 @@ files:
   $loader->registerNamespaces(array(
       // ...
       'Sonata'                         => __DIR__.'/../vendor/bundles',
-      'Knp'                            => __DIR__.'/../vendor/bundles',
+      'Knp'                             => array(
+          __DIR__.'/../vendor/bundles',
+          __DIR__.'/../vendor/knp/menu/src',
+      ),
       // ...
   ));
 
