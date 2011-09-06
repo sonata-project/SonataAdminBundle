@@ -38,9 +38,7 @@ class ListBuilder implements ListBuilderInterface
     {
         if ($type == null) {
             $guessType = $this->guesser->guessType($admin->getClass(), $fieldDescription->getName());
-            $fieldDescription->setType($guessType->getType());
-        } else {
-            $fieldDescription->setType($type);
+            $type = $guessType->getType();
         }
 
         $fieldDescription->setType($type);
