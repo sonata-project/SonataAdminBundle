@@ -34,7 +34,7 @@ object. The object can be use to check assertion against a model :
                 ->with('enabled')
                     ->assertNotNull()
                     ->assertTrue()
-                ->end()
+                ->end();
         }
 
 .. note::
@@ -45,7 +45,7 @@ object. The object can be use to check assertion against a model :
 Using this validator
 --------------------
 
-Just add the ``InlineConstraint`` class constraint, like this :
+Just add the ``InlineConstraint`` class constraint, like this:
 
 .. code-block:: xml
 
@@ -56,15 +56,15 @@ Just add the ``InlineConstraint`` class constraint, like this :
         </constraint>
     </class>
 
-There are two important options :
+There are two important options:
 
-  - ``service`` : the service where the validation method is defined
-  - ``method``  : the service's method to call
+  - ``service``: the service where the validation method is defined
+  - ``method``: the service's method to call
 
-The method must accept two arguments :
+The method must accept two arguments:
 
- - ``ErrorElement`` : the instance where assertion can be check
- - ``value``  : the object instance
+ - ``ErrorElement``: the instance where assertion can be check
+ - ``value``: the object instance
 
 
 Sample with the ``PageBundle``
@@ -82,7 +82,7 @@ Sample with the ``PageBundle``
     {
         // ... code removed for simplification
 
-        function validateBlock(ErrorElement $errorElement, BlockInterface $block)
+        public function validateBlock(ErrorElement $errorElement, BlockInterface $block)
         {
             $errorElement
                 ->with('settings.url')
