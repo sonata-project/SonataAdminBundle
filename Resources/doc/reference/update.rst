@@ -7,7 +7,7 @@ Update notes for early users
 * ListMapper now have an ``addIdentifier`` method
 * internal Sonata Form Types must be set as second argument of the FormMapper
 
-Example :
+.. code-block:: php
 
     <?php
     namespace Sonata\NewsBundle\Admin;

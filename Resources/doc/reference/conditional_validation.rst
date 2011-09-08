@@ -12,30 +12,31 @@ object. The object can be use to check assertion against a model :
 
 .. code-block:: php
 
+    <?php
+    $errorElement
+        ->with('settings.url')
+            ->assertNotNull(array())
+            ->assertNotBlank()
+        ->end()
+        ->with('settings.title')
+            ->assertNotNull(array())
+            ->assertNotBlank()
+            ->assertMinLength(array('limit' => 50))
+            ->addViolation('ho yeah!')
+        ->end();
+
+    if (/* complex rules */) {
+        $errorElement->with('value')->addViolation('Fail to check the complex rules')->end()
+    }
+
+    /* conditional validation */
+    if ($this->getSubject()->getState() == Post::STATUS_ONLINE) {
         $errorElement
-            ->with('settings.url')
-                ->assertNotNull(array())
-                ->assertNotBlank()
-            ->end()
-            ->with('settings.title')
-                ->assertNotNull(array())
-                ->assertNotBlank()
-                ->assertMinLength(array('limit' => 50))
-                ->addViolation('ho yeah!')
+            ->with('enabled')
+                ->assertNotNull()
+                ->assertTrue()
             ->end();
-
-        if (/* complex rules */) {
-            $errorElement->with('value')->addViolation('Fail to check the complex rules')->end()
-        }
-
-        /* conditional validation */
-        if ($this->getSubject()->getState() == Post::STATUS_ONLINE) {
-            $errorElement
-                ->with('enabled')
-                    ->assertNotNull()
-                    ->assertTrue()
-                ->end();
-        }
+    }
 
 .. note::
 

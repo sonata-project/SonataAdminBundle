@@ -152,53 +152,6 @@ This interface will display too many fields as some of them are not relevant to
 a general overview. Next We'll see how to specify the fields we want to use and
 how we want to use them.
 
-Tweak the PostAdmin class
--------------------------
-
-You can specify which field you want displayed for each action (list, form and filter)
-
-.. code-block:: php
-
-    <?php
-    namespace Sonata\NewsBundle\Admin;
-
-    use Sonata\AdminBundle\Admin\Admin;
-    use Sonata\AdminBundle\Form\FormMapper;
-    use Sonata\AdminBundle\Datagrid\DatagridMapper;
-    use Sonata\AdminBundle\Datagrid\ListMapper;
-
-    use Knp\Menu\MenuItem;
-
-    use Application\Sonata\NewsBundle\Entity\Comment;
-
-    class PostAdmin extends Admin
-    {
-       protected $list = array(
-           'title' => array('identifier' => true),
-           'slug',
-           'enabled',
-           'comments_enabled',
-       );
-
-       protected $form = array(
-           'enabled',
-           'title',
-           'abstract',
-           'content',
-           'tags' => array('form_field_options' => array('expanded' => true)),
-           'comments_enabled',
-           'comments_default_status'
-       );
-
-       protected $filter = array(
-           'title',
-           'enabled',
-           'tags' => array('filter_field_options' => array('expanded' => true, 'multiple' => true))
-       );
-     }
-
-Now the different CRUD interfaces will look nicer!
-
 So same goes for the TagAdmin and CommentAdmin class.
 
 Tweak the TagAdmin class
@@ -210,24 +163,63 @@ Tweak the TagAdmin class
     namespace Sonata\NewsBundle\Admin;
 
     use Sonata\AdminBundle\Admin\Admin;
+    use Sonata\AdminBundle\Datagrid\ListMapper;
+    use Sonata\AdminBundle\Datagrid\DatagridMapper;
+    use Sonata\AdminBundle\Validator\ErrorElement;
+    use Sonata\AdminBundle\Form\FormMapper;
 
     class TagAdmin extends Admin
     {
-        protected $list = array(
-            'name' => array('identifier' => true),
-            'slug',
-            'enabled',
-        );
+        /**
+         * @param \Sonata\AdminBundle\Form\FormMapper $formMapper
+         * @return void
+         */
+        protected function configureFormFields(FormMapper $formMapper)
+        {
+            $formMapper
+                ->add('name')
+                ->add('enabled', null, array('required' => false))
+            ;
+        }
 
-        protected $form = array(
-            'id',
-            'name',
-            'enabled'
-        );
+        /**
+         * @param \Sonata\AdminBundle\Datagrid\DatagridMapper $datagridMapper
+         * @return void
+         */
+        protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+        {
+            $datagridMapper
+                ->add('name')
+                ->add('posts')
+            ;
+        }
 
-        protected $filter = array(
-            'name'
-        );
+        /**
+         * @param \Sonata\AdminBundle\Datagrid\ListMapper $listMapper
+         * @return void
+         */
+        protected function configureListFields(ListMapper $listMapper)
+        {
+            $listMapper
+                ->addIdentifier('name')
+                ->add('slug')
+                ->add('enabled')
+            ;
+        }
+
+        /**
+         * @param \Sonata\AdminBundle\Validator\ErrorElement $errorElement
+         * @param $object
+         * @return void
+         */
+        public function validate(ErrorElement $errorElement, $object)
+        {
+            $errorElement
+                ->with('name')
+                    ->assertMaxLength(array('limit' => 32))
+                ->end()
+            ;
+        }
     }
 
 Tweak the CommentAdmin class
@@ -243,34 +235,77 @@ Tweak the CommentAdmin class
     use Sonata\AdminBundle\Datagrid\DatagridMapper;
     use Sonata\AdminBundle\Datagrid\ListMapper;
 
-    use Sonata\NewsBundle\Entity\Comment;
+    use Application\Sonata\NewsBundle\Entity\Comment;
 
     class CommentAdmin extends Admin
     {
-        protected $list = array(
-            'name' => array('identifier' => true),
-            'getStatusCode' => array('label' => 'status_code', 'type' => 'string', 'sortable' => 'status'),
-            'post',
-            'email',
-            'url',
-            'message',
-        );
+        protected $parentAssociationMapping = 'post';
 
-        protected $form = array(
-            'name',
-            'email',
-            'url',
-            'message',
-        );
-
-        protected $filter = array(
-            'name',
-            'email',
-            'message'
-        );
-
-        protected function configureFormFields(FormMapper $form)
+        /**
+         * @param \Sonata\AdminBundle\Form\FormMapper $formMapper
+         * @return void
+         */
+        protected function configureFormFields(FormMapper $formMapper)
         {
-            $form->add('status', array('choices' => Comment::getStatusList()), array('type' => 'choice'));
+            if(!$this->isChild()) {
+                $formMapper->add('post', 'sonata_type_model', array(), array('edit' => 'list'));
+    //            $formMapper->add('post', 'sonata_type_admin', array(), array('edit' => 'inline'));
+            }
+
+            $formMapper
+                ->add('name')
+                ->add('email')
+                ->add('url', null, array('required' => false))
+                ->add('message')
+                ->add('status', 'choice', array('choices' => Comment::getStatusList(), 'expanded' => true, 'multiple' => false))
+            ;
+        }
+
+        /**
+         * @param \Sonata\AdminBundle\Datagrid\DatagridMapper $datagridMapper
+         * @return void
+         */
+        protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+        {
+            $datagridMapper
+                ->add('name')
+                ->add('email')
+                ->add('message')
+            ;
+        }
+
+        /**
+         * @param \Sonata\AdminBundle\Datagrid\ListMapper $listMapper
+         * @return void
+         */
+        protected function configureListFields(ListMapper $listMapper)
+        {
+            $listMapper
+                ->addIdentifier('name')
+                ->add('getStatusCode', 'text', array('label' => 'status_code', 'sortable' => 'status'))
+                ->add('post')
+                ->add('email')
+                ->add('url')
+                ->add('message');
+        }
+
+        /**
+         * @return array
+         */
+        public function getBatchActions()
+        {
+            $actions = parent::getBatchActions();
+
+            $actions['enabled'] = array(
+                'label' => $this->trans('batch_enable_comments'),
+                'ask_confirmation' => false,
+            );
+
+            $actions['disabled'] = array(
+                'label' => $this->trans('batch_disable_comments'),
+                'ask_confirmation' => false
+            );
+
+            return $actions;
         }
     }

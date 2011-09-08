@@ -59,6 +59,7 @@ files:
 
 .. code-block:: php
 
+  <?php
   // app/autoload.php
   $loader->registerNamespaces(array(
       // ...
