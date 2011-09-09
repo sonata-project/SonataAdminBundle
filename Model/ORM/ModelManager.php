@@ -114,15 +114,30 @@ class ModelManager implements ModelManagerInterface
      * @param string|int $id Identifier. Can be a string with several IDs concatenated, separated by '-'.
      * @return Object
      */
-    public function findOne($class, $id)
+    public function find($class, $id)
     {
         $values = array_combine($this->getIdentifierFieldNames($class), explode('-', $id));
         return $this->entityManager->getRepository($class)->find($values);
     }
 
-    public function find($class, array $criteria = array())
+    /**
+     * @param $class
+     * @param array $criteria
+     * @return array
+     */
+    public function findBy($class, array $criteria = array())
     {
         return $this->entityManager->getRepository($class)->findBy($criteria);
+    }
+
+    /**
+     * @param $class
+     * @param array $criteria
+     * @return array
+     */
+    public function findOneBy($class, array $criteria = array())
+    {
+        return $this->entityManager->getRepository($class)->findOneBy($criteria);
     }
 
     /**
@@ -154,8 +169,9 @@ class ModelManager implements ModelManagerInterface
     }
 
     /**
+     * @param $class
      * @param string $alias
-     * @return \Doctrine\ORM\QueryBuilder a query instance
+     * @return \Doctrine\ORM\QueryBuilder
      */
     public function createQuery($class, $alias = 'o')
     {
@@ -164,6 +180,10 @@ class ModelManager implements ModelManagerInterface
         return $repository->createQueryBuilder($alias);
     }
 
+    /**
+     * @param $query
+     * @return mixed
+     */
     public function executeQuery($query)
     {
         if ($query instanceof QueryBuilder) {
@@ -293,7 +313,7 @@ class ModelManager implements ModelManagerInterface
      *
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
      * @param \Sonata\AdminBundle\Datagrid\DatagridInterface $datagrid
-     * @return string
+     * @return array
      */
     public function getSortParameters(FieldDescriptionInterface $fieldDescription, DatagridInterface $datagrid)
     {
@@ -316,7 +336,7 @@ class ModelManager implements ModelManagerInterface
     /**
      * @param \Sonata\AdminBundle\Datagrid\DatagridInterface $datagrid
      * @param $page
-     * @return void
+     * @return array
      */
     public function getPaginationParameters(DatagridInterface $datagrid, $page)
     {
@@ -343,7 +363,7 @@ class ModelManager implements ModelManagerInterface
     /**
      * @param string $class
      * @param object $instance
-     * @return void
+     * @return mixed
      */
     public function modelTransform($class, $instance)
     {

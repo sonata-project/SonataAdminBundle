@@ -67,18 +67,28 @@ interface ModelManagerInterface
      * @param array $criteria
      * @return object
      */
-    function find($class, array $criteria = array());
+    function findBy($class, array $criteria = array());
 
     /**
-     * @param string $class
-     * @param integer $id
-     * @return object
+     * @abstract
+     * @param $class
+     * @param array $criteria
+     * @return void
      */
-    function findOne($class, $id);
+    function findOneBy($class, array $criteria = array());
 
     /**
-     * @param string $class classname
-     * @param array $idx
+     * @abstract
+     * @param $class
+     * @param $id
+     * @return void
+     */
+    function find($class, $id);
+
+    /**
+     * @abstract
+     * @param $class
+     * @param \Sonata\AdminBundle\Datagrid\ProxyQueryInterface $queryProxy
      * @return void
      */
     function batchDelete($class, ProxyQueryInterface $queryProxy);
