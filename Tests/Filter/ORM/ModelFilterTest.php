@@ -103,6 +103,6 @@ class ModelFilterTest extends \PHPUnit_Framework_TestCase
 
         $filter->apply($builder, array('type' => ChoiceType::TYPE_CONTAINS, 'value' => 'asd'));
 
-        $this->assertEquals(array('o.field_name', 'field_name.id = :field_name'), $builder->query);
+        $this->assertEquals(array('o.field_name', 's_field_name.id = :field_name'), $builder->query);
     }
 }
