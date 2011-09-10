@@ -116,7 +116,7 @@ class ModelChoiceList extends ArrayChoiceList
         } else if ($this->query) {
             $entities = $this->modelManager->executeQuery($this->query);
         } else {
-            $entities = $this->modelManager->find($this->class);
+            $entities = $this->modelManager->findBy($this->class);
         }
 
         $this->choices = array();
@@ -207,7 +207,7 @@ class ModelChoiceList extends ArrayChoiceList
 //                return $qb->andWhere($where)->getQuery()->getSingleResult();
 //            }
 
-        return $this->modelManager->findOne($this->class, $key);
+        return $this->modelManager->find($this->class, $key);
     }
 
     /**

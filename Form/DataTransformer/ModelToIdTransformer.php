@@ -50,7 +50,7 @@ class ModelToIdTransformer implements DataTransformerInterface
             return null;
         }
 
-        return $this->modelManager->findOne($this->className, $newId);
+        return $this->modelManager->find($this->className, $newId);
     }
 
     /**
