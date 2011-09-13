@@ -28,7 +28,7 @@ file that was distributed with this source code.
                                             {% if nested_field.get('sonata_admin').field_description.options.name is defined %}
                                                 <th>{{ nested_field.get('sonata_admin').field_description.options.name }}</th>
                                             {% else %}
-                                                <th>{{ field_name }}</th>
+                                                <th>{{ field_name|trans({},'SonataAdminBundle') }}</th>
                                             {% endif %}                                         
                                         {% endif %}
                                     {% endfor %}
