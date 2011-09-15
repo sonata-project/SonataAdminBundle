@@ -47,7 +47,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      *
      * @var string
      */
-    protected $class;
+    private $class;
 
     /**
      * The list collection
@@ -455,7 +455,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         $this->uniqid = uniqid();
 
         if (!$this->classnameLabel) {
-            $this->classnameLabel = $this->urlize(substr($this->class, strrpos($this->class, '\\') + 1), '_');
+            $this->classnameLabel = $this->urlize(substr($this->getClass(), strrpos($this->getClass(), '\\') + 1), '_');
         }
 
         $this->baseCodeRoute = $this->getCode();
@@ -464,21 +464,21 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     public function update($object)
     {
         $this->preUpdate($object);
-        $this->modelManager->update($object);
+        $this->getModelManager()->update($object);
         $this->postUpdate($object);
     }
 
     public function create($object)
     {
         $this->prePersist($object);
-        $this->modelManager->create($object);
+        $this->getModelManager()->create($object);
         $this->postPersist($object);
     }
 
     public function delete($object)
     {
         $this->preRemove($object);
-        $this->modelManager->delete($object);
+        $this->getModelManager()->delete($object);
         $this->postRemove($object);
     }
 
@@ -547,7 +547,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         $mapper = new ListMapper($this->getListBuilder(), $this->list, $this);
 
         if (count($this->getBatchActions()) > 0) {
-            $fieldDescription = $this->modelManager->getNewFieldDescriptionInstance($this->getClass(), 'batch', array(
+            $fieldDescription = $this->getModelManager()->getNewFieldDescriptionInstance($this->getClass(), 'batch', array(
                 'label'    => 'batch',
                 'code'     => '_batch',
                 'sortable' => false
@@ -987,7 +987,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      */
     public function getNewInstance()
     {
-        return $this->modelManager->getModelInstance($this->getClass());
+        return $this->getModelManager()->getModelInstance($this->getClass());
     }
 
     /**
@@ -996,7 +996,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     public function getFormBuilder()
     {
         // add the custom inline validation option
-        $metadata = $this->validator->getMetadataFactory()->getClassMetadata($this->class);
+        $metadata = $this->validator->getMetadataFactory()->getClassMetadata($this->getClass());
         $metadata->addConstraint(new \Sonata\AdminBundle\Validator\Constraints\InlineConstraint(array(
             'service' => $this,
             'method'  => 'doValidate'
@@ -1054,7 +1054,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      */
     public function getObject($id)
     {
-        return $this->modelManager->find($this->getClass(), $id);
+        return $this->getModelManager()->find($this->getClass(), $id);
     }
 
     /**
@@ -1256,7 +1256,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     /**
      * Returns the subject, if none is set try to load one from the request
      *
-     * @return $object the subject
+     * @return object $object the subject
      */
     public function getSubject()
     {
@@ -1270,6 +1270,14 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         }
 
         return $this->subject;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasSubject()
+    {
+        return $this->subject != null;
     }
 
     /**
