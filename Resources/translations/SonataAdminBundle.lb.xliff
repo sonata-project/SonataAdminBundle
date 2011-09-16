@@ -1,0 +1,159 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" datatype="plaintext" original="SonataAdminBundle.en.xliff" >
+        <body>
+            <trans-unit id="action_delete">
+                <source>action_delete</source>
+                <target>Läschen</target>
+            </trans-unit>
+            <trans-unit id="btn_batch">
+                <source>btn_batch</source>
+                <target>Ok</target>
+            </trans-unit>
+            <trans-unit id="btn_create">
+                <source>btn_create</source>
+                <target>Dobäisetzen</target>
+            </trans-unit>
+            <trans-unit id="btn_create_and_edit_again">
+                <source>btn_create_and_edit_again</source>
+                <target>Dobäisetzen</target>
+            </trans-unit>
+            <trans-unit id="btn_create_and_create_a_new_one">
+                <source>btn_create_and_create_a_new_one</source>
+                <target>Dobäisetzen an nei creéieren</target>
+            </trans-unit>
+            <trans-unit id="btn_filter">
+                <source>btn_filter</source>
+                <target>Filteren</target>
+            </trans-unit>
+            <trans-unit id="btn_update_and_edit_again">
+                <source>btn_update_and_edit_again</source>
+                <target>Späicheren</target>
+            </trans-unit>
+            <trans-unit id="btn_update_and_return_to_list">
+                <source>btn_update_and_return_to_list</source>
+                <target>Späicheren an zoumaachen</target>
+            </trans-unit>
+            <trans-unit id="link_action_create">
+                <source>link_action_create</source>
+                <target>Nei</target>
+            </trans-unit>
+            <trans-unit id="link_action_list">
+                <source>link_action_list</source>
+                <target>Zréck bei d'Lëscht</target>
+            </trans-unit>
+            <trans-unit id="link_action_show">
+                <source>link_action_show</source>
+                <target>Weisen</target>
+            </trans-unit>
+            <trans-unit id="link_action_edit">
+                <source>link_action_edit</source>
+                <target>Beaarbechten</target>
+            </trans-unit>
+            <trans-unit id="link_add">
+                <source>link_add</source>
+                <target>Nei</target>
+            </trans-unit>
+            <trans-unit id="link_list">
+                <source>link_list</source>
+                <target>Lëscht</target>
+            </trans-unit>
+            <trans-unit id="link_reset_filter">
+                <source>link_reset_filter</source>
+                <target>Läschen</target>
+            </trans-unit>
+            <trans-unit id="title_create">
+                <source>title_create</source>
+                <target>Dobäisetzen</target>
+            </trans-unit>
+            <trans-unit id="title_dashboard">
+                <source>title_dashboard</source>
+                <target>Startsäit</target>
+            </trans-unit>
+            <trans-unit id="title_edit">
+                <source>title_edit</source>
+                <target>Beaarbechten</target>
+            </trans-unit>
+            <trans-unit id="title_list">
+                <source>title_list</source>
+                <target>Lëscht</target>
+            </trans-unit>
+            <trans-unit id="link_next_pager">
+                <source>link_next_pager</source>
+                <target>Weider</target>
+            </trans-unit>
+            <trans-unit id="link_previous_pager">
+                <source>link_previous_pager</source>
+                <target>Zréck</target>
+            </trans-unit>
+            <trans-unit id="Admin">
+                <source>Admin</source>
+                <target>Admin</target>
+            </trans-unit>
+            <trans-unit id="link_expand">
+                <source>link_expand</source>
+                <target>op-/zouklappen</target>
+            </trans-unit>
+            <trans-unit id="no_result">
+                <source>no_result</source>
+                <target>Kee Resultat</target>
+            </trans-unit>
+            <trans-unit id="confirm_msg">
+                <source>confirm_msg</source>
+                <target>Bass Du sécher?</target>
+            </trans-unit>
+            <trans-unit id="action_edit">
+                <source>action_edit</source>
+                <target>Beaarbechten</target>
+            </trans-unit>
+            <trans-unit id="action_show">
+                <source>action_show</source>
+                <target>Weisen</target>
+            </trans-unit>
+            <trans-unit id="all_elements">
+                <source>all_elements</source>
+                <target>All d'Elementer</target>
+            </trans-unit>
+            <trans-unit id="flash_batch_empty">
+              <source>flash_batch_empty</source>
+              <target>Aktioun ofgebrach. Et war keen Element ausgewielt.</target>
+            </trans-unit>
+            <trans-unit id="flash_create_success">
+              <source>flash_create_success</source>
+              <target>D'Element gouf erfollegräich dobäigesat.</target>
+            </trans-unit>
+            <trans-unit id="flash_create_error">
+              <source>flash_create_error</source>
+              <target>Beim Dobäisetze vum Element ass e Feeler opgetratt.</target>
+            </trans-unit>
+            <trans-unit id="flash_edit_success">
+              <source>flash_edit_success</source>
+              <target>D'Element gouf erfollegräich beaarbecht.</target>
+            </trans-unit>
+            <trans-unit id="flash_edit_error">
+              <source>flash_edit_error</source>
+              <target>Beim Beaarbechte vum Element ass e Feeler opgetratt.</target>
+            </trans-unit>
+            <trans-unit id="flash_batch_delete_success">
+              <source>flash_batch_delete_success</source>
+              <target>Déi ausgewielten Elementer goufen erfollegräich geläscht.</target>
+            </trans-unit>
+            <trans-unit id="flash_batch_delete_error">
+              <source>flash_batch_delete_error</source>
+              <target>Beim Läsche vun den ausgewielten Elementer ass e Feeler opgetratt.</target>
+            </trans-unit>
+            <trans-unit id="flash_delete_error">
+              <source>flash_delete_error</source>
+              <target>Beim Läsche vum Element ass e Feeler opgetratt.</target>
+            </trans-unit>
+            <trans-unit id="flash_delete_success">
+              <source>flash_delete_success</source>
+              <target>D'Element gouf erfollegräich geläscht.</target>
+            </trans-unit>
+            <trans-unit id="link_breadcrumb_dashboard">
+                <source>breadcrumb.dashboard</source>
+                <target>&#8962;</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>
