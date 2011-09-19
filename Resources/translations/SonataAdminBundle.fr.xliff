@@ -196,7 +196,7 @@
             </trans-unit>
             <trans-unit id="label_type_equals">
               <source>label_type_equals</source>
-              <target>est égal</target>
+              <target>est égal à</target>
             </trans-unit>
             <trans-unit id="label_type_equal">
               <source>label_type_equal</source>

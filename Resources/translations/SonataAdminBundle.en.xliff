@@ -178,7 +178,7 @@
                 <source>btn_execute_batch_action</source>
                 <target>Yes, execute</target>
             </trans-unit>
-<trans-unit id="label_type_yes">
+            <trans-unit id="label_type_yes">
               <source>label_type_yes</source>
               <target>yes</target>
             </trans-unit>
@@ -196,7 +196,7 @@
             </trans-unit>
             <trans-unit id="label_type_equals">
               <source>label_type_equals</source>
-              <target>is equal</target>
+              <target>is equal to</target>
             </trans-unit>
             <trans-unit id="label_type_equal">
               <source>label_type_equal</source>
