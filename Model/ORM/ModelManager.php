@@ -96,7 +96,7 @@ class ModelManager implements ModelManagerInterface
             $this->entityManager->persist($object);
             $this->entityManager->flush();
         } catch ( \PDOException $e ) {
-            throw new ModelManagerException();
+            throw new ModelManagerException('', 0, $e);
         }
     }
 
@@ -106,7 +106,7 @@ class ModelManager implements ModelManagerInterface
             $this->entityManager->persist($object);
             $this->entityManager->flush();
         } catch ( \PDOException $e ) {
-            throw new ModelManagerException();
+            throw new ModelManagerException('', 0, $e);
         }
     }
 
@@ -116,7 +116,7 @@ class ModelManager implements ModelManagerInterface
             $this->entityManager->remove($object);
             $this->entityManager->flush();
         } catch ( \PDOException $e ) {
-            throw new ModelManagerException();
+            throw new ModelManagerException('', 0, $e);
         }
     }
 
@@ -311,7 +311,7 @@ class ModelManager implements ModelManagerInterface
             $this->entityManager->flush();
             $this->entityManager->clear();
         } catch ( \PDOException $e ) {
-            throw new ModelManagerException();
+            throw new ModelManagerException('', 0, $e);
         }
     }
 
