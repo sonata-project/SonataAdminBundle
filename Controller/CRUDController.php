@@ -17,6 +17,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Sonata\AdminBundle\Exception\ModelManagerException;
 
 class CRUDController extends Controller
 {
@@ -169,7 +170,7 @@ class CRUDController extends Controller
         try {
             $modelManager->batchDelete($this->admin->getClass(), $query);
             $this->get('session')->setFlash('sonata_flash_success', 'flash_batch_delete_success');
-        } catch ( \PDOException $e ) {
+        } catch ( ModelManagerException $e ) {
             $this->get('session')->setFlash('sonata_flash_error', 'flash_batch_delete_error');
         }
 
@@ -198,7 +199,7 @@ class CRUDController extends Controller
             try {
                 $this->admin->delete($object);
                 $this->get('session')->setFlash('sonata_flash_success', 'flash_delete_success');
-            } catch ( \PDOException $e ) {
+            } catch ( ModelManagerException $e ) {
                 $this->get('session')->setFlash('sonata_flash_error', 'flash_delete_error');
             }
 
