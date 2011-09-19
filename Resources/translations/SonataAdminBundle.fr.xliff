@@ -178,6 +178,46 @@
                 <source>btn_execute_batch_action</source>
                 <target>Oui, exécuter</target>
             </trans-unit>
+            <trans-unit id="label_type_yes">
+              <source>label_type_yes</source>
+              <target>oui</target>
+            </trans-unit>
+            <trans-unit id="label_type_no">
+              <source>label_type_no</source>
+              <target>non</target>
+            </trans-unit>
+            <trans-unit id="label_type_contains">
+              <source>label_type_contains</source>
+              <target>contient</target>
+            </trans-unit>
+            <trans-unit id="label_type_not_contains">
+              <source>label_type_not_contains</source>
+              <target>ne contient pas</target>
+            </trans-unit>
+            <trans-unit id="label_type_equals">
+              <source>label_type_equals</source>
+              <target>est égal</target>
+            </trans-unit>
+            <trans-unit id="label_type_equal">
+              <source>label_type_equal</source>
+              <target>=</target>
+            </trans-unit>
+            <trans-unit id="label_type_greater_equal">
+              <source>label_type_greater_equal</source>
+              <target>&gt;=</target>
+            </trans-unit>
+            <trans-unit id="label_type_greater_than">
+              <source>label_type_greater_than</source>
+              <target>&gt;</target>
+            </trans-unit>
+            <trans-unit id="label_type_less_equal">
+              <source>label_type_less_equal</source>
+              <target>&lt;=</target>
+            </trans-unit>
+            <trans-unit id="label_type_less_than">
+              <source>label_type_less_than</source>
+              <target>&lt;</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
