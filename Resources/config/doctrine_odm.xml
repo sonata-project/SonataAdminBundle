@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+
+        <service id="sonata.admin.manager.odm" class="Sonata\AdminBundle\Model\ODM\ModelManager">
+            <argument type="service" id="doctrine.odm.mongodb.document_manager" on-invalid="ignore" />
+        </service>
+
+        <!-- FormBuilder -->
+        <service id="sonata.admin.builder.odm_form" class="Sonata\AdminBundle\Builder\ODM\FormContractor">
+            <argument type="service" id="form.factory" on-invalid="ignore" />
+        </service>
+
+        <!-- ListBuilder -->
+        <service id="sonata.admin.builder.odm_list" class="Sonata\AdminBundle\Builder\ODM\ListBuilder" >
+            <argument type="service" id="sonata.admin.guesser.odm_list_chain" on-invalid="ignore" />
+        </service>
+
+        <service id="sonata.admin.guesser.odm_list" class="Sonata\AdminBundle\Guesser\ODM\TypeGuesser">
+            <argument type="service" id="doctrine.odm.mongodb.document_manager" />
+            <tag name="sonata.admin.guesser.odm_list" />
+        </service>
+
+        <service id="sonata.admin.guesser.odm_list_chain" class="Sonata\AdminBundle\Guesser\TypeGuesserChain">
+            <argument type="collection">
+                <argument type="service" id="sonata.admin.guesser.odm_list" />
+            </argument>
+        </service>
+
+        <!-- ShowBuilder  -->
+        <service id="sonata.admin.builder.odm_show" class="Sonata\AdminBundle\Builder\ODM\ShowBuilder" >
+            <argument type="service" id="sonata.admin.guesser.odm_show_chain" on-invalid="ignore" />
+        </service>
+
+        <service id="sonata.admin.guesser.odm_show" class="Sonata\AdminBundle\Guesser\ODM\TypeGuesser">
+            <argument type="service" id="doctrine.odm.mongodb.document_manager" />
+            <tag name="sonata.admin.guesser.odm_show" />
+        </service>
+
+        <service id="sonata.admin.guesser.odm_show_chain" class="Sonata\AdminBundle\Guesser\TypeGuesserChain">
+            <argument type="collection">
+                <argument type="service" id="sonata.admin.guesser.odm_list" />
+            </argument>
+        </service>
+
+        <!-- DatagridBuilder guesser -->
+        <service id="sonata.admin.builder.odm_datagrid" class="Sonata\AdminBundle\Builder\ODM\DatagridBuilder">
+            <argument type="service" id="form.factory" on-invalid="ignore" />
+            <argument type="service" id="sonata.admin.builder.filter.factory" on-invalid="ignore" />
+            <argument type="service" id="sonata.admin.guesser.odm_datagrid_chain" on-invalid="ignore" />
+        </service>
+
+        <service id="sonata.admin.guesser.odm_datagrid" class="Sonata\AdminBundle\Guesser\ODM\FilterTypeGuesser">
+            <argument type="service" id="doctrine.odm.mongodb.document_manager" />
+            <tag name="sonata.admin.guesser.odm_datagrid" />
+        </service>
+
+        <service id="sonata.admin.guesser.odm_datagrid_chain" class="Sonata\AdminBundle\Guesser\TypeGuesserChain">
+            <argument type="collection">
+                <argument type="service" id="sonata.admin.guesser.odm_list" />
+            </argument>
+        </service>
+    </services>
+</container>

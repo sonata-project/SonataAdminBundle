@@ -7,21 +7,21 @@
     <services>
 
         <service id="sonata.admin.manager.orm" class="Sonata\AdminBundle\Model\ORM\ModelManager">
-            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument type="service" id="doctrine.orm.default_entity_manager" on-invalid="ignore" />
         </service>
 
         <!-- FormBuilder -->
         <service id="sonata.admin.builder.orm_form" class="Sonata\AdminBundle\Builder\ORM\FormContractor">
-            <argument type="service" id="form.factory" />
+            <argument type="service" id="form.factory" on-invalid="ignore" />
         </service>
 
         <!-- ListBuilder -->
         <service id="sonata.admin.builder.orm_list" class="Sonata\AdminBundle\Builder\ORM\ListBuilder" >
-            <argument type="service" id="sonata.admin.guesser.orm_list_chain" />
+            <argument type="service" id="sonata.admin.guesser.orm_list_chain" on-invalid="ignore" />
         </service>
 
         <service id="sonata.admin.guesser.orm_list" class="Sonata\AdminBundle\Guesser\ORM\TypeGuesser">
-            <argument type="service" id="doctrine" />
+            <argument type="service" id="doctrine" on-invalid="ignore" />
             <tag name="sonata.admin.guesser.orm_list" />
         </service>
 
@@ -31,11 +31,11 @@
 
         <!-- ShowBuilder  -->
         <service id="sonata.admin.builder.orm_show" class="Sonata\AdminBundle\Builder\ORM\ShowBuilder" >
-            <argument type="service" id="sonata.admin.guesser.orm_show_chain" />
+            <argument type="service" id="sonata.admin.guesser.orm_show_chain" on-invalid="ignore" />
         </service>
 
         <service id="sonata.admin.guesser.orm_show" class="Sonata\AdminBundle\Guesser\ORM\TypeGuesser">
-            <argument type="service" id="doctrine" />
+            <argument type="service" id="doctrine" on-invalid="ignore" />
             <tag name="sonata.admin.guesser.orm_show" />
         </service>
 
@@ -45,13 +45,13 @@
 
         <!-- DatagridBuilder guesser -->
         <service id="sonata.admin.builder.orm_datagrid" class="Sonata\AdminBundle\Builder\ORM\DatagridBuilder">
-            <argument type="service" id="form.factory" />
-            <argument type="service" id="sonata.admin.builder.filter.factory" />
-            <argument type="service" id="sonata.admin.guesser.orm_datagrid_chain" />
+            <argument type="service" id="form.factory" on-invalid="ignore" />
+            <argument type="service" id="sonata.admin.builder.filter.factory" on-invalid="ignore" />
+            <argument type="service" id="sonata.admin.guesser.orm_datagrid_chain" on-invalid="ignore" />
         </service>
 
         <service id="sonata.admin.guesser.orm_datagrid" class="Sonata\AdminBundle\Guesser\ORM\FilterTypeGuesser">
-            <argument type="service" id="doctrine" />
+            <argument type="service" id="doctrine" on-invalid="ignore" />
             <tag name="sonata.admin.guesser.orm_datagrid" />
         </service>
 

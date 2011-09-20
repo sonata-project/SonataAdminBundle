@@ -118,7 +118,7 @@ class ModelChoiceList extends ArrayChoiceList
         } else {
             $entities = $this->modelManager->findBy($this->class);
         }
-
+        
         $this->choices = array();
         $this->entities = array();
 
