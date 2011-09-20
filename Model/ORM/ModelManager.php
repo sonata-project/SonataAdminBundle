@@ -18,6 +18,7 @@ use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
+use Sonata\AdminBundle\Exception\ModelManagerException;
 
 use Symfony\Component\Form\Exception\PropertyAccessDeniedException;
 
@@ -91,20 +92,32 @@ class ModelManager extends BaseModelManager
 
     public function create($object)
     {
-        $this->entityManager->persist($object);
-        $this->entityManager->flush();
+        try {
+            $this->entityManager->persist($object);
+            $this->entityManager->flush();
+        } catch ( \PDOException $e ) {
+            throw new ModelManagerException('', 0, $e);
+        }
     }
 
     public function update($object)
     {
-        $this->entityManager->persist($object);
-        $this->entityManager->flush();
+        try {
+            $this->entityManager->persist($object);
+            $this->entityManager->flush();
+        } catch ( \PDOException $e ) {
+            throw new ModelManagerException('', 0, $e);
+        }
     }
 
     public function delete($object)
     {
-        $this->entityManager->remove($object);
-        $this->entityManager->flush();
+        try {
+            $this->entityManager->remove($object);
+            $this->entityManager->flush();
+        } catch ( \PDOException $e ) {
+            throw new ModelManagerException('', 0, $e);
+        }
     }
 
     /**
@@ -284,18 +297,22 @@ class ModelManager extends BaseModelManager
      */
     public function batchDelete($class, ProxyQueryInterface $queryProxy)
     {
-        $i = 0;
-        foreach ($queryProxy->getQuery()->iterate() as $pos => $object) {
-            $this->entityManager->remove($object[0]);
+        try {
+            $i = 0;
+            foreach ($queryProxy->getQuery()->iterate() as $pos => $object) {
+                $this->entityManager->remove($object[0]);
 
-            if ((++$i % 20) == 0) {
-                $this->entityManager->flush();
-                $this->entityManager->clear();
+                if ((++$i % 20) == 0) {
+                    $this->entityManager->flush();
+                    $this->entityManager->clear();
+                }
             }
-        }
 
-        $this->entityManager->flush();
-        $this->entityManager->clear();
+            $this->entityManager->flush();
+            $this->entityManager->clear();
+        } catch ( \PDOException $e ) {
+            throw new ModelManagerException('', 0, $e);
+        }
     }
 
     /**
