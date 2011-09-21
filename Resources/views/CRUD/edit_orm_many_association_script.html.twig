@@ -271,11 +271,12 @@ This code manage the many-to-[one|many] association field popup
     // this function initialize the popup
     // this can be only done this way has popup can be cascaded
     function start_field_dialog_form_add_{{ id }}(event) {
-        event.preventDefault();
+
+        var targetElement = Admin.stopEvent(event);
 
         // remove the html event a
-        var a = jQuery(event.target).closest('a');
-        a.attr('onclick', '');
+        var a = jQuery(targetElement).closest('a');
+        a.removeAttr('onclick');
 
         initialize_popup_{{ id }}();
 
@@ -298,11 +299,11 @@ This code manage the many-to-[one|many] association field popup
         // this function initialize the popup
         // this can be only done this way has popup can be cascaded
         function start_field_dialog_form_list_{{ id }}(event) {
-            event.preventDefault();
+            var targetElement = Admin.stopEvent(event);
 
             // remove the html event a
-            var a = jQuery(event.target).closest('a');
-            a.attr('onclick', '');
+            var a = jQuery(targetElement).closest('a');
+            a.removeAttr('onclick');
 
             initialize_popup_{{ id }}();
 
@@ -316,10 +317,11 @@ This code manage the many-to-[one|many] association field popup
         }
 
         function remove_selected_element_{{ id }}(event) {
-            event.preventDefault();
+            var targetElement = Admin.stopEvent(event);
 
-            var a = jQuery(event.target).closest('a');
-            a.attr('onclick', '');
+            // remove the html event a
+            var a = jQuery(targetElement).closest('a');
+            a.removeAttr('onclick');
 
             a.click(field_remove_element_{{ id}});
 
