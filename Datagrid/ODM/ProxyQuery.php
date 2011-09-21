@@ -46,7 +46,7 @@ class ProxyQuery implements ProxyQueryInterface
             $queryBuilder->sort($sortBy, $this->getSortOrder());
         }
 
-        return $this->queryBuilder->getQuery()->execute($params, $hydrationMode);
+        return $queryBuilder->getQuery()->execute($params, $hydrationMode);
     }
 
     public function __call($name, $args)
