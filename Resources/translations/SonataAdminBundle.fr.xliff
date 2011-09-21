@@ -34,6 +34,10 @@
                 <source>btn_update_and_return_to_list</source>
                 <target>Mettre à jour et fermer</target>
             </trans-unit>
+            <trans-unit id="link_delete">
+                <source>link_delete</source>
+                <target>Supprimer</target>
+            </trans-unit>
             <trans-unit id="link_action_create">
                 <source>link_action_create</source>
                 <target>Ajouter</target>
