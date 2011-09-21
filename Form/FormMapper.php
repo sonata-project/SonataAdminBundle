@@ -97,7 +97,7 @@ class FormMapper
         $this->formContractor->fixFieldDescription($this->admin, $fieldDescription, $fieldDescriptionOptions);
 
         $options = array_merge($options, $this->formContractor->getDefaultOptions($type, $fieldDescription));
-
+        
         $this->admin->addFormFieldDescription($name instanceof FormBuilder ? $name->getName() : $name, $fieldDescription);
 
         if ($name instanceof FormBuilder) {

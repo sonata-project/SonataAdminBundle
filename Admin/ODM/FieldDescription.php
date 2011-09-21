@@ -15,6 +15,8 @@ use Sonata\AdminBundle\Admin\BaseFieldDescription;
 
 class FieldDescription extends BaseFieldDescription
 {
+    const ONE = 2;
+    const MANY = 8;
     /**
      * Define the association mapping definition
      *
@@ -30,7 +32,17 @@ class FieldDescription extends BaseFieldDescription
         $this->associationMapping = $associationMapping;
 
         $this->type         = $this->type ?: $associationMapping['type'];
-        $this->mappingType  = $this->mappingType ?: $associationMapping['type'];
+        if (!$this->mappingType) {
+            switch ($associationMapping['type']) {
+                case 'one':
+                    $this->mappingType = self::ONE;
+                    break;
+                case 'many':
+                    $this->mappingType = self::MANY;
+                    break;
+            }
+        }
+        
         $this->fieldName    = $associationMapping['fieldName'];
     }
 
