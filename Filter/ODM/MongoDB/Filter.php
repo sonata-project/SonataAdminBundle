@@ -10,7 +10,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Filter\ODM;
+namespace Sonata\AdminBundle\Filter\ODM\MongoDB;
 
 use Sonata\AdminBundle\Filter\Filter as BaseFilter;
 

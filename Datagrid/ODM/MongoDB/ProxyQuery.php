@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Datagrid\ODM;
+namespace Sonata\AdminBundle\Datagrid\ODM\MongoDB;
 
 use Doctrine\ODM\MongoDB\Query;
 use Doctrine\ODM\MongoDB\Query\Builder;

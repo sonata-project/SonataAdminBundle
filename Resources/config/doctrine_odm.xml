@@ -6,21 +6,21 @@
 
     <services>
 
-        <service id="sonata.admin.manager.odm" class="Sonata\AdminBundle\Model\ODM\ModelManager">
+        <service id="sonata.admin.manager.odm" class="Sonata\AdminBundle\Model\ODM\MongoDB\ModelManager">
             <argument type="service" id="doctrine.odm.mongodb.document_manager" on-invalid="ignore" />
         </service>
 
         <!-- FormBuilder -->
-        <service id="sonata.admin.builder.odm_form" class="Sonata\AdminBundle\Builder\ODM\FormContractor">
+        <service id="sonata.admin.builder.odm_form" class="Sonata\AdminBundle\Builder\ODM\MongoDB\FormContractor">
             <argument type="service" id="form.factory" on-invalid="ignore" />
         </service>
 
         <!-- ListBuilder -->
-        <service id="sonata.admin.builder.odm_list" class="Sonata\AdminBundle\Builder\ODM\ListBuilder" >
+        <service id="sonata.admin.builder.odm_list" class="Sonata\AdminBundle\Builder\ODM\MongoDB\ListBuilder" >
             <argument type="service" id="sonata.admin.guesser.odm_list_chain" on-invalid="ignore" />
         </service>
 
-        <service id="sonata.admin.guesser.odm_list" class="Sonata\AdminBundle\Guesser\ODM\TypeGuesser">
+        <service id="sonata.admin.guesser.odm_list" class="Sonata\AdminBundle\Guesser\ODM\MongoDB\TypeGuesser">
             <argument type="service" id="doctrine.odm.mongodb.document_manager" />
             <tag name="sonata.admin.guesser.odm_list" />
         </service>
@@ -32,11 +32,11 @@
         </service>
 
         <!-- ShowBuilder  -->
-        <service id="sonata.admin.builder.odm_show" class="Sonata\AdminBundle\Builder\ODM\ShowBuilder" >
+        <service id="sonata.admin.builder.odm_show" class="Sonata\AdminBundle\Builder\ODM\MongoDB\ShowBuilder" >
             <argument type="service" id="sonata.admin.guesser.odm_show_chain" on-invalid="ignore" />
         </service>
 
-        <service id="sonata.admin.guesser.odm_show" class="Sonata\AdminBundle\Guesser\ODM\TypeGuesser">
+        <service id="sonata.admin.guesser.odm_show" class="Sonata\AdminBundle\Guesser\ODM\MongoDB\TypeGuesser">
             <argument type="service" id="doctrine.odm.mongodb.document_manager" />
             <tag name="sonata.admin.guesser.odm_show" />
         </service>
@@ -48,13 +48,13 @@
         </service>
 
         <!-- DatagridBuilder guesser -->
-        <service id="sonata.admin.builder.odm_datagrid" class="Sonata\AdminBundle\Builder\ODM\DatagridBuilder">
+        <service id="sonata.admin.builder.odm_datagrid" class="Sonata\AdminBundle\Builder\ODM\MongoDB\DatagridBuilder">
             <argument type="service" id="form.factory" on-invalid="ignore" />
             <argument type="service" id="sonata.admin.builder.filter.factory" on-invalid="ignore" />
             <argument type="service" id="sonata.admin.guesser.odm_datagrid_chain" on-invalid="ignore" />
         </service>
 
-        <service id="sonata.admin.guesser.odm_datagrid" class="Sonata\AdminBundle\Guesser\ODM\FilterTypeGuesser">
+        <service id="sonata.admin.guesser.odm_datagrid" class="Sonata\AdminBundle\Guesser\ODM\MongoDB\FilterTypeGuesser">
             <argument type="service" id="doctrine.odm.mongodb.document_manager" />
             <tag name="sonata.admin.guesser.odm_datagrid" />
         </service>

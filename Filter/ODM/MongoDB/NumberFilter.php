@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Filter\ORM;
+namespace Sonata\AdminBundle\Filter\ODM\MongoDB;
 
 use Sonata\AdminBundle\Form\Type\Filter\NumberType;
 

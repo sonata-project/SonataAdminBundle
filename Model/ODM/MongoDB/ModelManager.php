@@ -10,10 +10,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Model\ODM;
+namespace Sonata\AdminBundle\Model\ODM\MongoDB;
 
 use Sonata\AdminBundle\Model\BaseModelManager;
-use Sonata\AdminBundle\Admin\ODM\FieldDescription;
+use Sonata\AdminBundle\Admin\ODM\MongoDB\FieldDescription;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
@@ -117,6 +117,7 @@ class ModelManager extends BaseModelManager
      */
     public function find($class, $id)
     {
+        if (is_numeric($id)) $id = intval($id);
         return $this->documentManager->getRepository($class)->find($id);
     }
 

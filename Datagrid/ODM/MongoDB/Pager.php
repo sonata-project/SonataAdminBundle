@@ -10,7 +10,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Datagrid\ODM;
+namespace Sonata\AdminBundle\Datagrid\ODM\MongoDB;
 
 use Sonata\AdminBundle\Datagrid\Pager as BasePager;
 use Doctrine\ODM\MongoDB\Query\Query;
