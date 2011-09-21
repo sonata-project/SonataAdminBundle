@@ -16,7 +16,7 @@
             </trans-unit>
             <trans-unit id="btn_create_and_edit_again">
                 <source>btn_create_and_edit_again</source>
-                <target>Criar</target>
+                <target>Criar e editar</target>
             </trans-unit>
             <trans-unit id="btn_create_and_create_a_new_one">
                 <source>btn_create_and_create_a_new_one</source>
@@ -24,7 +24,7 @@
             </trans-unit>
             <trans-unit id="btn_filter">
                 <source>btn_filter</source>
-                <target>Filtro</target>
+                <target>Filtrar</target>
             </trans-unit>
             <trans-unit id="btn_update_and_edit_again">
                 <source>btn_update_and_edit_again</source>
@@ -34,9 +34,13 @@
                 <source>btn_update_and_return_to_list</source>
                 <target>Atualizar e fechar</target>
             </trans-unit>
+            <trans-unit id="link_delete">
+                <source>link_delete</source>
+                <target>Apagar</target>
+            </trans-unit>
             <trans-unit id="link_action_create">
                 <source>link_action_create</source>
-                <target>Adicionar</target>
+                <target>Adicionar novo</target>
             </trans-unit>
             <trans-unit id="link_action_list">
                 <source>link_action_list</source>
@@ -52,7 +56,7 @@
             </trans-unit>
             <trans-unit id="link_add">
                 <source>link_add</source>
-                <target>Adicionar</target>
+                <target>Adicionar novo</target>
             </trans-unit>
             <trans-unit id="link_list">
                 <source>link_list</source>
@@ -153,6 +157,70 @@
             <trans-unit id="link_breadcrumb_dashboard">
                 <source>breadcrumb.dashboard</source>
                 <target>&#8962;</target>
+            </trans-unit>
+            <trans-unit id="title_delete">
+                <source>title_delete</source>
+                <target>Confirmar eliminação</target>
+            </trans-unit>
+            <trans-unit id="message_delete_confirmation">
+                <source>message_delete_confirmation</source>
+                <target>Tem a certeza de que deseja eliminar o item selecionado?</target>
+            </trans-unit>
+            <trans-unit id="btn_delete">
+                <source>btn_delete</source>
+                <target>Sim, eliminar</target>
+            </trans-unit>
+            <trans-unit id="title_batch_confirmation">
+                <source>title_batch_confirmation</source>
+                <target>Confirmar ação</target>
+            </trans-unit>
+            <trans-unit id="message_batch_confirmation">
+                <source>message_batch_confirmation</source>
+                <target>Tem a certeza de que deseja confirmar esta ação e executá-la para todos os elementos selecionados?</target>
+            </trans-unit>
+            <trans-unit id="btn_execute_batch_action">
+                <source>btn_execute_batch_action</source>
+                <target>Sim, executar</target>
+            </trans-unit>
+            <trans-unit id="label_type_yes">
+              <source>label_type_yes</source>
+              <target>sim</target>
+            </trans-unit>
+            <trans-unit id="label_type_no">
+              <source>label_type_no</source>
+              <target>não</target>
+            </trans-unit>
+            <trans-unit id="label_type_contains">
+              <source>label_type_contains</source>
+              <target>contem</target>
+            </trans-unit>
+            <trans-unit id="label_type_not_contains">
+              <source>label_type_not_contains</source>
+              <target>não contem</target>
+            </trans-unit>
+            <trans-unit id="label_type_equals">
+              <source>label_type_equals</source>
+              <target>é igual a</target>
+            </trans-unit>
+            <trans-unit id="label_type_equal">
+              <source>label_type_equal</source>
+              <target>=</target>
+            </trans-unit>
+            <trans-unit id="label_type_greater_equal">
+              <source>label_type_greater_equal</source>
+              <target>&gt;=</target>
+            </trans-unit>
+            <trans-unit id="label_type_greater_than">
+              <source>label_type_greater_than</source>
+              <target>&gt;</target>
+            </trans-unit>
+            <trans-unit id="label_type_less_equal">
+              <source>label_type_less_equal</source>
+              <target>&lt;=</target>
+            </trans-unit>
+            <trans-unit id="label_type_less_than">
+              <source>label_type_less_than</source>
+              <target>&lt;</target>
             </trans-unit>
         </body>
     </file>
