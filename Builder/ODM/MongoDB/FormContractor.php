@@ -20,20 +20,21 @@ use Sonata\AdminBundle\Form\Type\AdminType;
 use Sonata\AdminBundle\Form\Type\ModelType;
 use Sonata\AdminBundle\Admin\NoValueException;
 use Sonata\AdminBundle\Admin\ODM\MongoDB\FieldDescription;
-
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Doctrine\ODM\MongoDB\Mapping\ClassMetadataInfo;
 
-class FormContractor implements FormContractorInterface {
+class FormContractor implements FormContractorInterface
+{
 
     protected $fieldFactory;
 
     /**
      * @param \Symfony\Component\Form\FormFactoryInterface $formFactory
      */
-    public function __construct(FormFactoryInterface $formFactory) {
+    public function __construct(FormFactoryInterface $formFactory)
+    {
         $this->formFactory = $formFactory;
     }
 
@@ -44,7 +45,8 @@ class FormContractor implements FormContractorInterface {
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
      * @return void
      */
-    public function fixFieldDescription(AdminInterface $admin, FieldDescriptionInterface $fieldDescription) {
+    public function fixFieldDescription(AdminInterface $admin, FieldDescriptionInterface $fieldDescription)
+    {
         if ($admin->getModelManager()->hasMetadata($admin->getClass())) {
             $metadata = $admin->getModelManager()->getMetadata($admin->getClass());
 
@@ -74,7 +76,8 @@ class FormContractor implements FormContractorInterface {
     /**
      * @return \Symfony\Component\Form\FormFactoryInterface
      */
-    public function getFormFactory() {
+    public function getFormFactory()
+    {
         return $this->formFactory;
     }
 
@@ -83,7 +86,8 @@ class FormContractor implements FormContractorInterface {
      * @param array $options
      * @return \Symfony\Component\Form\FormBuilder
      */
-    public function getFormBuilder($name, array $options = array()) {
+    public function getFormBuilder($name, array $options = array())
+    {
         return $this->getFormFactory()->createNamedBuilder('form', $name, null, $options);
     }
 
@@ -92,7 +96,8 @@ class FormContractor implements FormContractorInterface {
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
      * @return array
      */
-    public function getDefaultOptions($type, FieldDescriptionInterface $fieldDescription) {
+    public function getDefaultOptions($type, FieldDescriptionInterface $fieldDescription)
+    {
         $options = array();
         $options['sonata_field_description'] = $fieldDescription;
 

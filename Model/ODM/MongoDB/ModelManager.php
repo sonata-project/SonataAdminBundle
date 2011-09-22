@@ -19,11 +19,11 @@ use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\Query\Builder;
-
 use Symfony\Component\Form\Exception\PropertyAccessDeniedException;
 
 class ModelManager extends BaseModelManager
 {
+
     protected $documentManager;
 
     /**
@@ -117,7 +117,8 @@ class ModelManager extends BaseModelManager
      */
     public function find($class, $id)
     {
-        if (is_numeric($id)) $id = intval($id);
+        if (is_numeric($id))
+            $id = intval($id);
         return $this->documentManager->getRepository($class)->find($id);
     }
 
@@ -188,7 +189,7 @@ class ModelManager extends BaseModelManager
     public function executeQuery($query)
     {
         if ($query instanceof QueryBuilder) {
-          return $query->getQuery()->execute();
+            return $query->getQuery()->execute();
         }
 
         return $query->execute();
@@ -210,9 +211,9 @@ class ModelManager extends BaseModelManager
      */
     public function getIdentifierValues($document)
     {
-        /*if (!$this->documentManager->getUnitOfWork()->isInIdentityMap($document)) {
-            throw new \RuntimeException('Entities passed to the choice field must be managed');
-        }*/
+        /* if (!$this->documentManager->getUnitOfWork()->isInIdentityMap($document)) {
+          throw new \RuntimeException('Entities passed to the choice field must be managed');
+          } */
 
         return array($this->documentManager->getUnitOfWork()->getDocumentIdentifier($document));
     }
@@ -302,8 +303,8 @@ class ModelManager extends BaseModelManager
                 $values['_sort_order'] = 'ASC';
             }
         } else {
-            $values['_sort_order']  = 'ASC';
-            $values['_sort_by']     = $fieldDescription->getOption('sortable');
+            $values['_sort_order'] = 'ASC';
+            $values['_sort_by'] = $fieldDescription->getOption('sortable');
         }
 
         return array('filter' => $values);
@@ -331,8 +332,8 @@ class ModelManager extends BaseModelManager
     {
         return array(
             '_sort_order' => 'ASC',
-            '_sort_by'    => $this->getModelIdentifier($class),
-            '_page'       => 1
+            '_sort_by' => $this->getModelIdentifier($class),
+            '_page' => 1
         );
     }
 
@@ -365,14 +366,13 @@ class ModelManager extends BaseModelManager
 
                 $property = $metadata->fieldMappings[$name]['fieldName'];
                 $reflection_property = $metadata->reflFields[$name];
-
             } else if (array_key_exists($name, $metadata->associationMappings)) {
                 $property = $metadata->associationMappings[$name]['fieldName'];
             } else {
                 $property = $name;
             }
 
-            $setter = 'set'.$this->camelize($name);
+            $setter = 'set' . $this->camelize($name);
 
             if ($reflClass->hasMethod($setter)) {
                 if (!$reflClass->getMethod($setter)->isPublic()) {
@@ -396,4 +396,5 @@ class ModelManager extends BaseModelManager
 
         return $instance;
     }
+
 }

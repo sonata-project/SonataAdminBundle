@@ -23,7 +23,8 @@ use Doctrine\ODM\MongoDB\Query\Query;
  */
 class Pager extends BasePager
 {
-    protected $queryBuilder     = null;
+
+    protected $queryBuilder = null;
 
     /**
      * Returns a query for counting the total results.
@@ -37,7 +38,7 @@ class Pager extends BasePager
         if (count($this->getParameters()) > 0) {
             $countQuery->setParameters($this->getParameters());
         }
-                
+
         // TODO: use map/reduce for that
         return $this->getQuery()->execute()->count();
     }
@@ -86,4 +87,5 @@ class Pager extends BasePager
             $this->getQuery()->setMaxResults($this->getMaxPerPage());
         }
     }
+
 }

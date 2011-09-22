@@ -18,6 +18,7 @@ class FieldDescription extends BaseFieldDescription
 {
     const ONE = 2;
     const MANY = 8;
+
     /**
      * Define the association mapping definition
      *
@@ -27,12 +28,12 @@ class FieldDescription extends BaseFieldDescription
     public function setAssociationMapping($associationMapping)
     {
         if (!is_array($associationMapping)) {
-           throw new \RuntimeException('The association mapping must be an array');
+            throw new \RuntimeException('The association mapping must be an array');
         }
 
         $this->associationMapping = $associationMapping;
 
-        $this->type         = $this->type ?: $associationMapping['type'];
+        $this->type = $this->type ? : $associationMapping['type'];
         if (!$this->mappingType) {
             switch ($associationMapping['type']) {
                 case 'one':
@@ -43,8 +44,8 @@ class FieldDescription extends BaseFieldDescription
                     break;
             }
         }
-        
-        $this->fieldName    = $associationMapping['fieldName'];
+
+        $this->fieldName = $associationMapping['fieldName'];
     }
 
     /**
@@ -74,10 +75,10 @@ class FieldDescription extends BaseFieldDescription
         }
 
         $this->fieldMapping = $fieldMapping;
-        
-        $this->type         = $this->type ?: $fieldMapping['type'];
-        $this->mappingType  = $this->mappingType ?: $fieldMapping['type'];
-        $this->fieldName    = $this->fieldName ?: $fieldMapping['fieldName'];
+
+        $this->type = $this->type ? : $fieldMapping['type'];
+        $this->mappingType = $this->mappingType ? : $fieldMapping['type'];
+        $this->fieldName = $this->fieldName ? : $fieldMapping['fieldName'];
     }
 
     /**
@@ -89,4 +90,5 @@ class FieldDescription extends BaseFieldDescription
     {
         return isset($this->fieldMapping['id']) ? $this->fieldMapping['id'] : false;
     }
+
 }

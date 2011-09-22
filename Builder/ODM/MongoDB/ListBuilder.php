@@ -20,19 +20,23 @@ use Sonata\AdminBundle\Builder\ListBuilderInterface;
 use Sonata\AdminBundle\Guesser\TypeGuesserInterface;
 use Doctrine\ODM\MongoDB\Mapping\ClassMetadataInfo;
 
-class ListBuilder implements ListBuilderInterface {
+class ListBuilder implements ListBuilderInterface
+{
 
     protected $guesser;
 
-    public function __construct(TypeGuesserInterface $guesser) {
+    public function __construct(TypeGuesserInterface $guesser)
+    {
         $this->guesser = $guesser;
     }
 
-    public function getBaseList(array $options = array()) {
+    public function getBaseList(array $options = array())
+    {
         return new FieldDescriptionCollection;
     }
 
-    public function addField(FieldDescriptionCollection $list, $type = null, FieldDescriptionInterface $fieldDescription, AdminInterface $admin) {
+    public function addField(FieldDescriptionCollection $list, $type = null, FieldDescriptionInterface $fieldDescription, AdminInterface $admin)
+    {
         if ($type == null) {
             $guessType = $this->guesser->guessType($admin->getClass(), $fieldDescription->getName());
             $fieldDescription->setType($guessType->getType());
@@ -55,7 +59,8 @@ class ListBuilder implements ListBuilderInterface {
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
      * @return void
      */
-    public function fixFieldDescription(AdminInterface $admin, FieldDescriptionInterface $fieldDescription) {
+    public function fixFieldDescription(AdminInterface $admin, FieldDescriptionInterface $fieldDescription)
+    {
         if ($fieldDescription->getName() == '_action') {
             $this->buildActionFieldDescription($fieldDescription);
         }
@@ -126,7 +131,8 @@ class ListBuilder implements ListBuilderInterface {
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
      * @return \Sonata\AdminBundle\Admin\FieldDescriptionInterface
      */
-    public function buildActionFieldDescription(FieldDescriptionInterface $fieldDescription) {
+    public function buildActionFieldDescription(FieldDescriptionInterface $fieldDescription)
+    {
         if (null === $fieldDescription->getTemplate()) {
             $fieldDescription->setTemplate('SonataAdminBundle:CRUD:list__action.html.twig');
         }

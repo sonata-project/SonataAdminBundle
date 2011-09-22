@@ -25,7 +25,8 @@ use Sonata\AdminBundle\Filter\FilterFactoryInterface;
 use Symfony\Component\Form\FormFactory;
 use Doctrine\ODM\MongoDB\Mapping\ClassMetadataInfo;
 
-class DatagridBuilder implements DatagridBuilderInterface {
+class DatagridBuilder implements DatagridBuilderInterface
+{
 
     protected $filterFactory;
     protected $formFactory;
@@ -36,7 +37,8 @@ class DatagridBuilder implements DatagridBuilderInterface {
      * @param \Sonata\AdminBundle\Filter\FilterFactoryInterface $filterFactory
      * @param \Sonata\AdminBundle\Guesser\TypeGuesserInterface $guesser
      */
-    public function __construct(FormFactory $formFactory, FilterFactoryInterface $filterFactory, TypeGuesserInterface $guesser) {
+    public function __construct(FormFactory $formFactory, FilterFactoryInterface $filterFactory, TypeGuesserInterface $guesser)
+    {
         $this->formFactory = $formFactory;
         $this->filterFactory = $filterFactory;
         $this->guesser = $guesser;
@@ -47,7 +49,8 @@ class DatagridBuilder implements DatagridBuilderInterface {
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
      * @return void
      */
-    public function fixFieldDescription(AdminInterface $admin, FieldDescriptionInterface $fieldDescription) {
+    public function fixFieldDescription(AdminInterface $admin, FieldDescriptionInterface $fieldDescription)
+    {
         // set default values
         $fieldDescription->setAdmin($admin);
 
@@ -77,7 +80,8 @@ class DatagridBuilder implements DatagridBuilderInterface {
      * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
      * @return \Sonata\AdminBundle\Filter\FilterInterface
      */
-    public function addFilter(DatagridInterface $datagrid, $type = null, FieldDescriptionInterface $fieldDescription, AdminInterface $admin) {
+    public function addFilter(DatagridInterface $datagrid, $type = null, FieldDescriptionInterface $fieldDescription, AdminInterface $admin)
+    {
         if ($type == null) {
             $guessType = $this->guesser->guessType($admin->getClass(), $fieldDescription->getName());
 
@@ -114,7 +118,8 @@ class DatagridBuilder implements DatagridBuilderInterface {
      * @param array $values
      * @return \Sonata\AdminBundle\Datagrid\DatagridInterface
      */
-    public function getBaseDatagrid(AdminInterface $admin, array $values = array()) {
+    public function getBaseDatagrid(AdminInterface $admin, array $values = array())
+    {
         $queryBuilder = $admin->getModelManager()->createQuery($admin->getClass());
 
         $query = new ProxyQuery($queryBuilder);

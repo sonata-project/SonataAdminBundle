@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the symfony package.
  * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
@@ -20,14 +21,11 @@ use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
  */
 class ProxyQuery implements ProxyQueryInterface
 {
+
     protected $queryBuilder;
-
     protected $sortBy;
-
     protected $sortOrder;
-    
     protected $firstResult;
-    
     protected $maxResults;
 
     public function __construct(Builder $queryBuilder)
@@ -88,7 +86,7 @@ class ProxyQuery implements ProxyQueryInterface
 
     public function getQueryBuilder()
     {
-      return $this->queryBuilder;
+        return $this->queryBuilder;
     }
 
     function setFirstResult($firstResult)
@@ -112,4 +110,5 @@ class ProxyQuery implements ProxyQueryInterface
     {
         return $this->maxResults;
     }
+
 }

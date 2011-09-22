@@ -18,11 +18,13 @@ use Symfony\Component\Form\Guess\TypeGuess;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\Mapping\ClassMetadataInfo;
 
-class TypeGuesser implements TypeGuesserInterface {
+class TypeGuesser implements TypeGuesserInterface
+{
 
     protected $documentManager;
 
-    public function __construct(DocumentManager $documentManager) {
+    public function __construct(DocumentManager $documentManager)
+    {
         $this->documentManager = $documentManager;
     }
 
@@ -31,7 +33,8 @@ class TypeGuesser implements TypeGuesserInterface {
      * @param string $property
      * @return TypeGuess
      */
-    function guessType($class, $property) {
+    function guessType($class, $property)
+    {
         if (!$ret = $this->getMetadata($class)) {
             return new TypeGuess('text', array(), Guess::LOW_CONFIDENCE);
         }
@@ -86,7 +89,8 @@ class TypeGuesser implements TypeGuesserInterface {
         }
     }
 
-    protected function getMetadata($class) {
+    protected function getMetadata($class)
+    {
         $this->documentManager->getClassMetadata($class);
     }
 
