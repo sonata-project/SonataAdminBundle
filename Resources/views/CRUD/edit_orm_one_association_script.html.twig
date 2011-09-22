@@ -55,11 +55,11 @@ This code manage the one-to-many association field popup
     // this function initialize the popup
     // this can be only done this way has popup can be cascaded
     function start_field_retrieve_{{ id }}(event) {
-        event.preventDefault();
+        var targetElement = Admin.stopEvent(event);
 
         // remove the html event a
-        var a = jQuery(event.target).closest('a');
-        a.attr('onclick', '');
+        var a = jQuery(targetElement).closest('a');
+        a.removeAttr('onclick');
 
         // initialize component
         field_widget_{{ id }} = jQuery("#field_widget_{{ id }}");
