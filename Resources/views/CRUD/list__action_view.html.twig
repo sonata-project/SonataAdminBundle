@@ -1,5 +1,5 @@
 {% if admin.hasRoute('show') %}
-    <a href="{{ admin.generateObjectUrl('show', object) }}" class="view_link" title="{% trans from 'SonataAdminBundle' %}action_view{% endtrans %}">
-        <img src="{{ asset('bundles/sonataadmin/famfamfam/magnifier.png') }}" alt="{% trans from 'SonataAdminBundle' %}action_view{% endtrans %}" />
+    <a href="{{ admin.generateObjectUrl('show', object) }}" class="view_link" title="{% trans from 'SonataAdminBundle' %}action_show{% endtrans %}">
+        <img src="{{ asset('bundles/sonataadmin/famfamfam/magnifier.png') }}" alt="{% trans from 'SonataAdminBundle' %}action_show{% endtrans %}" />
     </a>
 {% endif %}
