@@ -1979,7 +1979,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      *
      * @return string
      */
-    function getObjectIdentifier()
+    public function getObjectIdentifier()
     {
         return $this->getCode();
     }

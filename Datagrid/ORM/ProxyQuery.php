@@ -144,22 +144,22 @@ class ProxyQuery implements ProxyQueryInterface
       return $this->queryBuilder;
     }
 
-    function setFirstResult($firstResult)
+    public function setFirstResult($firstResult)
     {
         $this->queryBuilder->setFirstResult($firstResult);
     }
 
-    function getFirstResult()
+    public function getFirstResult()
     {
         $this->queryBuilder->getFirstResult();
     }
 
-    function setMaxResults($maxResults)
+    public function setMaxResults($maxResults)
     {
         $this->queryBuilder->setMaxResults($maxResults);
     }
 
-    function getMaxResults()
+    public function getMaxResults()
     {
         $this->queryBuilder->getMaxResults();
     }
