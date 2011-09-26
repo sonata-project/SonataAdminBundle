@@ -15,10 +15,6 @@ table.sonata-ba-list td {
     width: 75px;
 }
 
-table.sonata-ba-list td img{
-    vertical-align: bottom
-}
-
 table.sonata-ba-list td.sonata-ba-list-label {
     width: 350px;
 }
@@ -85,4 +81,13 @@ em.sonata-ba-field-help {
     display: block;
     color: #999;
     margin-bottom: 10px;
+}
+
+span.vertical-helper {
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}
+img.vertical-image {
+    vertical-align: middle;
 }
