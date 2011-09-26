@@ -38,7 +38,7 @@ class ChoiceType extends AbstractType
      *
      * @return string The name of this type
      */
-    function getName()
+    public function getName()
     {
         return 'sonata_type_filter_choice';
     }

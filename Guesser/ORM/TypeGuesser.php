@@ -35,7 +35,7 @@ class TypeGuesser implements TypeGuesserInterface
      * @param string $property
      * @return TypeGuess
      */
-    function guessType($class, $property)
+    public function guessType($class, $property)
     {
         if (!$ret = $this->getMetadata($class)) {
             return new TypeGuess('text', array(), Guess::LOW_CONFIDENCE);
