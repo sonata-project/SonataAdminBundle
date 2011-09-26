@@ -70,6 +70,21 @@ class ProxyQuery implements ProxyQueryInterface
         $queryBuilderId->resetDQLPart('select');
         $queryBuilderId->add('select', 'DISTINCT '.$select);
 
+        //for SELECT DISTINCT, ORDER BY expressions must appear in select list
+        /* Consider
+            SELECT DISTINCT x FROM tab ORDER BY y;
+        For any particular x-value in the table there might be many different y
+        values.  Which one will you use to sort that x-value in the output?
+        */
+        // todo : check how doctrine behave, potential SQL injection here ...
+        if ($this->getSortBy()) {
+            $sortBy = $this->getSortBy();
+            if (strpos($sortBy, '.') === false) { // add the current alias
+                $sortBy = $queryBuilderId->getRootAlias().'.'.$sortBy;
+            }
+            $queryBuilderId->addSelect($sortBy);
+        }
+        
         $results  = $queryBuilderId->getQuery()->execute(array(), Query::HYDRATE_ARRAY);
         $idx      = array();
         $connection = $queryBuilder->getEntityManager()->getConnection();
