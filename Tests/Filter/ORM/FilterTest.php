@@ -24,12 +24,12 @@ class FilterTest_Filter extends Filter
      * @param string $value
      * @return void
      */
-    function filter($queryBuilder, $alias, $field, $value)
+    public function filter($queryBuilder, $alias, $field, $value)
     {
         // TODO: Implement filter() method.
     }
 
-    function getDefaultOptions()
+    public function getDefaultOptions()
     {
         return array('option1' => 2);
     }
@@ -43,10 +43,8 @@ class FilterTest_Filter extends Filter
     }
 }
 
-
 class FilterTest extends \PHPUnit_Framework_TestCase
 {
-
     public function testFieldDescription()
     {
         $filter = new FilterTest_Filter();

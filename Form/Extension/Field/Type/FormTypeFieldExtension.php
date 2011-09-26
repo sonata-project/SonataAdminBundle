@@ -83,7 +83,7 @@ class FormTypeFieldExtension extends AbstractTypeExtension
      *
      * @return string The name of the type being extended
      */
-    function getExtendedType()
+    public function getExtendedType()
     {
         return 'field';
     }

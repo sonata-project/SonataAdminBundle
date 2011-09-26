@@ -78,7 +78,7 @@ class ChoiceFilter extends Filter
     /**
      * @return array
      */
-    function getDefaultOptions()
+    public function getDefaultOptions()
     {
         return array();
     }
