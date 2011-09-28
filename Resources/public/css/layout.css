@@ -86,9 +86,3 @@ em.sonata-ba-field-help {
     color: #999;
     margin-bottom: 10px;
 }
-.required{
-    color:red;
-}
-.required:after{
-  content:"*";
-}

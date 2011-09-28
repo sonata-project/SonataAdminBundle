@@ -20,9 +20,9 @@ file that was distributed with this source code.
         <div id="sonata-ba-field-container-{{ id }}">
             {% block label %}
                 {% if sonata_admin.field_description.options.name is defined %}
-                    {{ form_label(form, sonata_admin.field_description.options.name) }}
+                    {{ form_label(form, sonata_admin.field_description.options.name) }}{{ required ? '*' : '' }}
                 {% else %}
-                    {{ form_label(form) }}
+                    {{ form_label(form) }}{{ required ? '*' : '' }}
                 {% endif %}
                 <br />
             {% endblock %}
