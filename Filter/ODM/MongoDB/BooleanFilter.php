@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Filter\ODM\MongoDB;
+namespace Sonata\AdminBundle\Filter\ORM;
 
 use Sonata\AdminBundle\Form\Type\BooleanType;
 
@@ -57,7 +57,7 @@ class BooleanFilter extends Filter
     /**
      * @return array
      */
-    function getDefaultOptions()
+    public function getDefaultOptions()
     {
         return array();
     }

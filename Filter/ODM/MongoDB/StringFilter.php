@@ -22,7 +22,7 @@ class StringFilter extends Filter
      * @param string $data
      * @return
      */
-    public function filter($queryBuilder, $alias, $field, $data)
+    public function filter($queryBuilder, $name, $field, $data)
     {
         if (!$data || !is_array($data) || !array_key_exists('value', $data)) {
             return;
@@ -36,35 +36,16 @@ class StringFilter extends Filter
 
         $data['type'] = !isset($data['type']) ?  ChoiceType::TYPE_CONTAINS : $data['type'];
 
-        $operator = $this->getOperator((int) $data['type']);
-
-        if (!$operator) {
-            $operator = 'LIKE';
+        switch ($data['type']) {
+            case ChoiceType::TYPE_EQUAL:
+                break;
+            
+            default:
+                throw new \Exception('Only equal type is yet implemented');
+                break;
         }
-
-        // c.name > '1' => c.name OPERATOR :FIELDNAME
-        $this->applyWhere($queryBuilder, sprintf('%s.%s %s :%s', $alias, $field, $operator, $this->getName()));
-
-        if ($data['type'] == ChoiceType::TYPE_EQUAL) {
-            $queryBuilder->setParameter($this->getName(), $data['value']);
-        } else {
-            $queryBuilder->setParameter($this->getName(), sprintf($this->getOption('format'), $data['value']));
-        }
-    }
-
-    /**
-     * @param $type
-     * @return bool
-     */
-    private function getOperator($type)
-    {
-        $choices = array(
-            ChoiceType::TYPE_CONTAINS         => 'LIKE',
-            ChoiceType::TYPE_NOT_CONTAINS     => 'NOT LIKE',
-            ChoiceType::TYPE_EQUAL            => '=',
-        );
-
-        return isset($choices[$type]) ? $choices[$type] : false;
+        
+        $queryBuilder->field($field)->equals($data['value']);
     }
 
     /**

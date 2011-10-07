@@ -35,7 +35,7 @@ class FilterTypeGuesser implements TypeGuesserInterface
      */
     function guessType($class, $property)
     {
-        if (!$ret = $this->getMetadata($class)) {
+        if (!$metadata = $this->getMetadata($class)) {
             return false;
         }
 
@@ -45,11 +45,9 @@ class FilterTypeGuesser implements TypeGuesserInterface
             'options' => array(),
         );
 
-        list($metadata, $name) = $ret;
-
+        $mapping = $metadata->getFieldMapping($property);
         if ($metadata->hasAssociation($property)) {
             $multiple = $metadata->isCollectionValuedAssociation($property);
-            $mapping = $metadata->getAssociationMapping($property);
 
             switch ($mapping['type']) {
                 case ClassMetadataInfo::ONE:
@@ -60,25 +58,26 @@ class FilterTypeGuesser implements TypeGuesserInterface
                     $options['operator_type'] = 'sonata_type_boolean';
                     $options['operator_options'] = array();
 
-                    $options['field_type'] = 'entity';
+                    $options['field_type'] = 'document';
                     $options['field_options'] = array(
                         'class' => $mapping['targetDocument']
                     );
                     $options['field_name'] = $mapping['fieldName'];
                     $options['mapping_type'] = $mapping['type'];
 
-                    return new TypeGuess('doctrine_orm_model', $options, Guess::HIGH_CONFIDENCE);
+                    return new TypeGuess('doctrine_odm_model', $options, Guess::HIGH_CONFIDENCE);
             }
         }
 
-        $options['field_name'] = $metadata->fieldMappings[$property]['fieldName'];
+        
+        $options['field_name'] = $mapping['fieldName'];
 
-        switch ($metadata->getTypeOfField($property)) {
+        switch ($mapping['type']) {
             case 'boolean':
                 $options['field_type'] = 'sonata_type_boolean';
                 $options['field_options'] = array();
 
-                return new TypeGuess('doctrine_orm_boolean', $options, Guess::HIGH_CONFIDENCE);
+                return new TypeGuess('doctrine_odm_boolean', $options, Guess::HIGH_CONFIDENCE);
 //            case 'datetime':
 //            case 'vardatetime':
 //            case 'datetimetz':
@@ -87,7 +86,7 @@ class FilterTypeGuesser implements TypeGuesserInterface
 //                return new TypeGuess('doctrine_orm_date', $options, Guess::HIGH_CONFIDENCE);
             case 'decimal':
             case 'float':
-                return new TypeGuess('doctrine_orm_number', $options, Guess::MEDIUM_CONFIDENCE);
+                return new TypeGuess('doctrine_odm_number', $options, Guess::MEDIUM_CONFIDENCE);
             case 'integer':
             case 'bigint':
             case 'smallint':
@@ -96,22 +95,22 @@ class FilterTypeGuesser implements TypeGuesserInterface
                     'csrf_protection' => false
                 );
 
-                return new TypeGuess('doctrine_orm_number', $options, Guess::MEDIUM_CONFIDENCE);
+                return new TypeGuess('doctrine_odm_number', $options, Guess::MEDIUM_CONFIDENCE);
             case 'string':
             case 'text':
                 $options['field_type'] = 'text';
-
-                return new TypeGuess('doctrine_orm_string', $options, Guess::MEDIUM_CONFIDENCE);
+                
+                return new TypeGuess('doctrine_odm_string', $options, Guess::MEDIUM_CONFIDENCE);
             case 'time':
-                return new TypeGuess('doctrine_orm_time', $options, Guess::HIGH_CONFIDENCE);
+                return new TypeGuess('doctrine_odm_time', $options, Guess::HIGH_CONFIDENCE);
             default:
-                return new TypeGuess('doctrine_orm_string', $options, Guess::LOW_CONFIDENCE);
+                return new TypeGuess('doctrine_odm_string', $options, Guess::LOW_CONFIDENCE);
         }
     }
 
     protected function getMetadata($class)
     {
-        $this->documentManager->getClassMetadata($class);
+        return $this->documentManager->getClassMetadata($class);
     }
 
 }

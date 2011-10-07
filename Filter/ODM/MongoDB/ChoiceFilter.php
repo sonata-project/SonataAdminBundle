@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Filter\ODM\MongoDB;
+namespace Sonata\AdminBundle\Filter\ORM;
 
 use Doctrine\ORM\QueryBuilder;
 use Sonata\AdminBundle\Form\Type\Filter\ChoiceType;
@@ -50,7 +50,12 @@ class ChoiceFilter extends Filter
                 return;
             }
 
-            $this->applyWhere($queryBuilder, sprintf('%s.%s = :%s', $alias, $field, $this->getName()));
+            if ($data['type'] == ChoiceType::TYPE_NOT_CONTAINS) {
+                $this->applyWhere($queryBuilder, sprintf('%s.%s <> :%s', $alias, $field, $this->getName()));
+            } else {
+                $this->applyWhere($queryBuilder, sprintf('%s.%s = :%s', $alias, $field, $this->getName()));
+            }
+
             $queryBuilder->setParameter($this->getName(), $data['value']);
         }
     }
@@ -73,7 +78,7 @@ class ChoiceFilter extends Filter
     /**
      * @return array
      */
-    function getDefaultOptions()
+    public function getDefaultOptions()
     {
         return array();
     }

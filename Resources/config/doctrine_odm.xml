@@ -24,6 +24,11 @@
             <argument type="service" id="doctrine.odm.mongodb.document_manager" />
             <tag name="sonata.admin.guesser.odm_list" />
         </service>
+        
+        <service id="sonata.admin.guesser.odm_list_filter" class="Sonata\AdminBundle\Guesser\ODM\MongoDB\FilterTypeGuesser">
+            <argument type="service" id="doctrine.odm.mongodb.document_manager" />
+            <tag name="sonata.admin.guesser.odm_list" />
+        </service>
 
         <service id="sonata.admin.guesser.odm_list_chain" class="Sonata\AdminBundle\Guesser\TypeGuesserChain">
             <argument type="collection">
@@ -61,7 +66,7 @@
 
         <service id="sonata.admin.guesser.odm_datagrid_chain" class="Sonata\AdminBundle\Guesser\TypeGuesserChain">
             <argument type="collection">
-                <argument type="service" id="sonata.admin.guesser.odm_list" />
+                <argument type="service" id="sonata.admin.guesser.odm_list_filter" />
             </argument>
         </service>
     </services>

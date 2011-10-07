@@ -14,6 +14,9 @@ namespace Sonata\AdminBundle\Filter\ODM\MongoDB;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Sonata\AdminBundle\Form\Type\BooleanType;
 
+/**
+ * @todo Support multiple values and Document with non-default strategy for ID
+ */
 class ModelFilter extends Filter
 {
     /**
@@ -36,56 +39,36 @@ class ModelFilter extends Filter
         }
     }
 
+    /**
+     *
+     * @param $queryBuilder
+     * @param type $alias
+     * @param type $field
+     * @param type $data
+     * @return type 
+     */
     protected function handleMultiple($queryBuilder, $alias, $field, $data)
     {
         if (count($data['value']) == 0) {
             return;
         }
 
-        if (isset($data['type']) && $data['type'] == BooleanType::TYPE_NO) {
-            $this->applyWhere($queryBuilder, $queryBuilder->expr()->notIn(sprintf('%s.%s', $alias, $field), $data['value']));
-        } else {
-            $this->applyWhere($queryBuilder, $queryBuilder->expr()->in(sprintf('%s.%s', $alias, $field), $data['value']));
-        }
+        throw new \Exception('Not yet implemented');
     }
 
     protected function handleScalar($queryBuilder, $alias, $field, $data)
     {
+
         if (empty($data['value'])) {
             return;
         }
 
         if (isset($data['type']) && $data['type'] == BooleanType::TYPE_NO) {
-            $this->applyWhere($queryBuilder, sprintf('%s.%s != :%s', $alias, $field, $this->getName()));
+            
+            $queryBuilder->field($field . '.$id')->notEqual(new \MongoId($data['value']));
         } else {
-            $this->applyWhere($queryBuilder, sprintf('%s.%s = :%s', $alias, $field, $this->getName()));
+            $queryBuilder->field($field . '.$id')->equals(new \MongoId($data['value']));
         }
-
-        $queryBuilder->setParameter($this->getName(), $data['value']);
-    }
-
-    protected function association($queryBuilder, $data)
-    {
-        $types = array(
-            ClassMetadataInfo::ONE_TO_ONE,
-            ClassMetadataInfo::ONE_TO_MANY,
-            ClassMetadataInfo::MANY_TO_MANY,
-            ClassMetadataInfo::MANY_TO_ONE,
-        );
-
-        if (!in_array($this->getOption('mapping_type'), $types)) {
-            throw new \RunTimeException('Invalid mapping type');
-        }
-
-        if (!$this->getOption('field_name')) {
-            throw new \RunTimeException('please provide a field_name options');
-        }
-
-        $alias = 's_'.$this->getName();
-
-        $queryBuilder->leftJoin(sprintf('%s.%s', $queryBuilder->getRootAlias(), $this->getFieldName()), $alias);
-
-        return array($alias, 'id');
     }
 
     public function getDefaultOptions()
@@ -93,7 +76,7 @@ class ModelFilter extends Filter
         return array(
             'mapping_type' => false,
             'field_name'   => false,
-            'field_type'   => 'entity',
+            'field_type'   => 'document',
             'field_options' => array(),
             'operator_type' => 'sonata_type_boolean',
             'operator_options' => array(),

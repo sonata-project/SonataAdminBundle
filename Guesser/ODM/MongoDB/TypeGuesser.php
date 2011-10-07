@@ -35,15 +35,13 @@ class TypeGuesser implements TypeGuesserInterface
      */
     function guessType($class, $property)
     {
-        if (!$ret = $this->getMetadata($class)) {
+        if (!$metadata = $this->getMetadata($class)) {
             return new TypeGuess('text', array(), Guess::LOW_CONFIDENCE);
         }
-
-        list($metadata, $name) = $ret;
-
+        
+        $mapping = $metadata->getFieldMapping($property);
         if ($metadata->hasAssociation($property)) {
             $multiple = $metadata->isCollectionValuedAssociation($property);
-            $mapping = $metadata->getAssociationMapping($property);
 
             switch ($mapping['type']) {
                 case ClassMetadataInfo::ONE:
@@ -59,8 +57,8 @@ class TypeGuesser implements TypeGuesserInterface
                   return new TypeGuess('orm_one_to_one', array(), Guess::HIGH_CONFIDENCE); */
             }
         }
-
-        switch ($metadata->getTypeOfField($property)) {
+        
+        switch ($mapping['type']) {
             //case 'array':
             //  return new TypeGuess('Collection', array(), Guess::HIGH_CONFIDENCE);
             case 'boolean':
@@ -91,7 +89,7 @@ class TypeGuesser implements TypeGuesserInterface
 
     protected function getMetadata($class)
     {
-        $this->documentManager->getClassMetadata($class);
+        return $this->documentManager->getClassMetadata($class);
     }
 
 }
