@@ -35,22 +35,6 @@ and run::
 
   bin/vendors install
 
-If you are using git, you can add them as submodules::
-
-  git submodule add git://github.com/sonata-project/SonatajQueryBundle.git vendor/bundles/Sonata/jQueryBundle
-  git submodule add git://github.com/sonata-project/SonataBluePrintBundle.git vendor/bundles/Sonata/BluePrintBundle
-  git submodule add git://github.com/sonata-project/SonataAdminBundle.git vendor/bundles/Sonata/AdminBundle
-  git submodule add git://github.com/knplabs/KnpMenuBundle.git vendor/bundles/Knp/Bundle/MenuBundle
-  git submodule add git://github.com/knplabs/KnpMenu.git vendor/knp/menu
-
-If you are not using git, you will have to download them :
-
-  - https://github.com/sonata-project/SonatajQueryBundle/archives/master
-  - https://github.com/sonata-project/SonataBluePrintBundle/archives/master
-  - https://github.com/sonata-project/SonataAdminBundle/archives/master
-  - https://github.com/knplabs/KnpMenuBundle/archives/master
-  - https://github.com/knplabs/KnpMenu/archives/master
-
 Configuration
 -------------
 

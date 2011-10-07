@@ -57,7 +57,7 @@ class BooleanFilter extends Filter
     /**
      * @return array
      */
-    function getDefaultOptions()
+    public function getDefaultOptions()
     {
         return array();
     }

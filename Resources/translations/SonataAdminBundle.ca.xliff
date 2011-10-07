@@ -34,6 +34,10 @@
                 <source>btn_update_and_return_to_list</source>
                 <target>Actualitza i tanca</target>
             </trans-unit>
+            <trans-unit id="link_delete">
+                <source>link_delete</source>
+                <target>Elimina</target>
+            </trans-unit>
             <trans-unit id="link_action_create">
                 <source>link_action_create</source>
                 <target>Afegeix</target>
@@ -153,6 +157,70 @@
             <trans-unit id="link_breadcrumb_dashboard">
                 <source>breadcrumb.dashboard</source>
                 <target>&#8962;</target>
+            </trans-unit>
+            <trans-unit id="title_delete">
+                <source>title_delete</source>
+                <target>Confirma l'eliminació</target>
+            </trans-unit>
+            <trans-unit id="message_delete_confirmation">
+                <source>message_delete_confirmation</source>
+                <target>Esteu segur que voleu eliminar l'element seleccionat?</target>
+            </trans-unit>
+            <trans-unit id="btn_delete">
+                <source>btn_delete</source>
+                <target>Sí, elimina</target>
+            </trans-unit>
+            <trans-unit id="title_batch_confirmation">
+                <source>title_batch_confirmation</source>
+                <target>Confirma l'acció per lots</target>
+            </trans-unit>
+            <trans-unit id="message_batch_confirmation">
+                <source>message_batch_confirmation</source>
+                <target>Esteu segur que voleu confirmar aquesta acció i executar-la per tots els elements seleccionats?</target>
+            </trans-unit>
+            <trans-unit id="btn_execute_batch_action">
+                <source>btn_execute_batch_action</source>
+                <target>Sí, executa</target>
+            </trans-unit>
+            <trans-unit id="label_type_yes">
+              <source>label_type_yes</source>
+              <target>sí</target>
+            </trans-unit>
+            <trans-unit id="label_type_no">
+              <source>label_type_no</source>
+              <target>no</target>
+            </trans-unit>
+            <trans-unit id="label_type_contains">
+              <source>label_type_contains</source>
+              <target>conté</target>
+            </trans-unit>
+            <trans-unit id="label_type_not_contains">
+              <source>label_type_not_contains</source>
+              <target>no conté</target>
+            </trans-unit>
+            <trans-unit id="label_type_equals">
+              <source>label_type_equals</source>
+              <target>és igual a</target>
+            </trans-unit>
+            <trans-unit id="label_type_equal">
+              <source>label_type_equal</source>
+              <target>=</target>
+            </trans-unit>
+            <trans-unit id="label_type_greater_equal">
+              <source>label_type_greater_equal</source>
+              <target>&gt;=</target>
+            </trans-unit>
+            <trans-unit id="label_type_greater_than">
+              <source>label_type_greater_than</source>
+              <target>&gt;</target>
+            </trans-unit>
+            <trans-unit id="label_type_less_equal">
+              <source>label_type_less_equal</source>
+              <target>&lt;=</target>
+            </trans-unit>
+            <trans-unit id="label_type_less_than">
+              <source>label_type_less_than</source>
+              <target>&lt;</target>
             </trans-unit>
         </body>
     </file>
