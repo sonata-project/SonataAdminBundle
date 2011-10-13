@@ -51,6 +51,11 @@ class CommentAdmin extends Admin
     }
 }
 
+class PostCommentAdmin extends CommentAdmin
+{
+    protected $baseChildRoutePattern = 'comments';
+}
+
 class AdminTest extends \PHPUnit_Framework_TestCase
 {
     /**
@@ -138,6 +143,16 @@ class AdminTest extends \PHPUnit_Framework_TestCase
         $commentAdmin->setParent($postAdmin);
 
         $this->assertEquals('/sonata/news/post/{id}/comment', $commentAdmin->getBaseRoutePattern());
+    }
+
+    public function testGetBaseRoutePatternWithChildAdminAndBaseRoutePattern()
+    {
+        $postAdmin = new PostAdmin('sonata.post.admin.post', 'Application\Sonata\NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
+        $commentAdmin = new PostCommentAdmin('sonata.post.admin.comment', 'Application\Sonata\NewsBundle\Entity\Comment', 'SonataNewsBundle:CommentAdmin');
+        $postAdmin->addChild($commentAdmin);
+
+        $this->assertEquals('/sonata/news/post', $postAdmin->getBaseRoutePattern());
+        $this->assertEquals('/sonata/news/post/{id}/comments', $commentAdmin->getBaseRoutePattern());
     }
 
     /**
