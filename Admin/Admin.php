@@ -698,7 +698,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
             if ($this->isChild()) { // the admin class is a child, prefix it with the parent route name
                 $this->baseRoutePattern = sprintf('%s/{id}/%s',
                     $this->getParent()->getBaseRoutePattern(),
-                    $this->baseChildRoutePattern?:$this->urlize($matches[4], '-')
+                    $this->baseChildRoutePattern ?: $this->urlize($matches[4], '-')
                 );
             } else {
 
@@ -731,7 +731,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
             if ($this->isChild()) { // the admin class is a child, prefix it with the parent route name
                 $this->baseRouteName = sprintf('%s_%s',
                     $this->getParent()->getBaseRouteName(),
-                    $this->baseChildRouteName?:$this->urlize($matches[4])
+                    $this->baseChildRouteName ?: $this->urlize($matches[4])
                 );
             } else {
 
