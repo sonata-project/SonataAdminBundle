@@ -9,10 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Filter\ORM;
+namespace Sonata\AdminBundle\Filter\ODM\MongoDB;
 
 class CallbackFilter extends Filter
 {
+
     /**
      * @param QueryBuilder $queryBuilder
      * @param mixed $data
@@ -46,8 +47,8 @@ class CallbackFilter extends Filter
     public function getDefaultOptions()
     {
         return array(
-            'callback'    => null,
-            'field_type'  => 'text',
+            'callback' => null,
+            'field_type' => 'text',
             'operator_type' => 'hidden',
             'operator_options' => array()
         );
@@ -56,11 +57,11 @@ class CallbackFilter extends Filter
     public function getRenderSettings()
     {
         return array('sonata_type_filter_default', array(
-            'field_type'    => $this->getFieldType(),
-            'field_options' => $this->getFieldOptions(),
-            'operator_type' => $this->getOption('operator_type'),
-            'operator_options' => $this->getOption('operator_options'),
-            'label'         => $this->getLabel()
+                'field_type' => $this->getFieldType(),
+                'field_options' => $this->getFieldOptions(),
+                'operator_type' => $this->getOption('operator_type'),
+                'operator_options' => $this->getOption('operator_options'),
+                'label' => $this->getLabel()
         ));
     }
 }

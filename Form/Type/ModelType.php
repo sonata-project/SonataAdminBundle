@@ -23,9 +23,11 @@ use Sonata\AdminBundle\Form\DataTransformer\ModelsToArrayTransformer;
 use Sonata\AdminBundle\Form\DataTransformer\ModelToIdTransformer;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 
-class ModelType extends AbstractType {
+class ModelType extends AbstractType
+{
 
-    public function buildForm(FormBuilder $builder, array $options) {
+    public function buildForm(FormBuilder $builder, array $options)
+    {
         if ($options['multiple']) {
             $builder
                     ->addEventSubscriber(new MergeCollectionListener($options['model_manager']))
@@ -35,7 +37,8 @@ class ModelType extends AbstractType {
         }
     }
 
-    public function getDefaultOptions(array $options) {
+    public function getDefaultOptions(array $options)
+    {
         $defaultOptions = array(
             'template' => 'choice',
             'multiple' => false,
@@ -64,12 +67,13 @@ class ModelType extends AbstractType {
         return $defaultOptions;
     }
 
-    public function getParent(array $options) {
+    public function getParent(array $options)
+    {
         return $options['parent'];
     }
 
-    public function getName() {
+    public function getName()
+    {
         return 'sonata_type_model';
     }
-
 }

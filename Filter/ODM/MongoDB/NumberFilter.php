@@ -9,12 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Filter\ORM;
+namespace Sonata\AdminBundle\Filter\ODM\MongoDB;
 
 use Sonata\AdminBundle\Form\Type\Filter\NumberType;
 
 class NumberFilter extends Filter
 {
+
     /**
      * @param QueryBuilder $queryBuilder
      * @param string $alias
@@ -37,8 +38,7 @@ class NumberFilter extends Filter
         }
 
         // c.name > '1' => c.name OPERATOR :FIELDNAME
-        $this->applyWhere($queryBuilder, sprintf('%s.%s %s :%s', $alias, $field, $operator, $this->getName()));
-        $queryBuilder->setParameter($this->getName(),  $data['value']);
+        throw new \Exception('Not yet implemented');
     }
 
     /**
@@ -48,11 +48,11 @@ class NumberFilter extends Filter
     private function getOperator($type)
     {
         $choices = array(
-            NumberType::TYPE_EQUAL            => '=',
-            NumberType::TYPE_GREATER_EQUAL    => '>=',
-            NumberType::TYPE_GREATER_THAN     => '>',
-            NumberType::TYPE_LESS_EQUAL       => '<=',
-            NumberType::TYPE_LESS_THAN        => '<',
+            NumberType::TYPE_EQUAL => '=',
+            NumberType::TYPE_GREATER_EQUAL => '>=',
+            NumberType::TYPE_GREATER_THAN => '>',
+            NumberType::TYPE_LESS_EQUAL => '<=',
+            NumberType::TYPE_LESS_THAN => '<',
         );
 
         return isset($choices[$type]) ? $choices[$type] : false;
@@ -69,9 +69,9 @@ class NumberFilter extends Filter
     public function getRenderSettings()
     {
         return array('sonata_type_filter_number', array(
-            'field_type'    => $this->getFieldType(),
-            'field_options' => $this->getFieldOptions(),
-            'label'         => $this->getLabel()
+                'field_type' => $this->getFieldType(),
+                'field_options' => $this->getFieldOptions(),
+                'label' => $this->getLabel()
         ));
     }
 }

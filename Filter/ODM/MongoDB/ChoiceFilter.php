@@ -9,13 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Filter\ORM;
+namespace Sonata\AdminBundle\Filter\ODM\MongoDB;
 
 use Doctrine\ORM\QueryBuilder;
 use Sonata\AdminBundle\Form\Type\Filter\ChoiceType;
 
 class ChoiceFilter extends Filter
 {
+
     /**
      * @param QueryBuilder $queryBuilder
      * @param string $alias
@@ -39,11 +40,10 @@ class ChoiceFilter extends Filter
             }
 
             if ($data['type'] == ChoiceType::TYPE_NOT_CONTAINS) {
-                $this->applyWhere($queryBuilder, $queryBuilder->expr()->notIn(sprintf('%s.%s', $alias, $field ), $data['value']));
+                throw new \Exception('Not yet implemented');
             } else {
-                $this->applyWhere($queryBuilder, $queryBuilder->expr()->in(sprintf('%s.%s', $alias, $field ), $data['value']));
+                throw new \Exception('Not yet implemented');
             }
-
         } else {
 
             if (empty($data['value']) || $data['value'] == 'all') {
@@ -51,9 +51,9 @@ class ChoiceFilter extends Filter
             }
 
             if ($data['type'] == ChoiceType::TYPE_NOT_CONTAINS) {
-                $this->applyWhere($queryBuilder, sprintf('%s.%s <> :%s', $alias, $field, $this->getName()));
+                throw new \Exception('Not yet implemented');
             } else {
-                $this->applyWhere($queryBuilder, sprintf('%s.%s = :%s', $alias, $field, $this->getName()));
+                throw new \Exception('Not yet implemented');
             }
 
             $queryBuilder->setParameter($this->getName(), $data['value']);
@@ -67,9 +67,9 @@ class ChoiceFilter extends Filter
     private function getOperator($type)
     {
         $choices = array(
-            ChoiceType::TYPE_CONTAINS         => 'IN',
-            ChoiceType::TYPE_NOT_CONTAINS     => 'NOT IN',
-            ChoiceType::TYPE_EQUAL            => '=',
+            ChoiceType::TYPE_CONTAINS => 'IN',
+            ChoiceType::TYPE_NOT_CONTAINS => 'NOT IN',
+            ChoiceType::TYPE_EQUAL => '=',
         );
 
         return isset($choices[$type]) ? $choices[$type] : false;
@@ -86,10 +86,10 @@ class ChoiceFilter extends Filter
     public function getRenderSettings()
     {
         return array('sonata_type_filter_default', array(
-            'operator_type' => 'sonata_type_boolean',
-            'field_type'    => $this->getFieldType(),
-            'field_options' => $this->getFieldOptions(),
-            'label'         => $this->getLabel()
+                'operator_type' => 'sonata_type_boolean',
+                'field_type' => $this->getFieldType(),
+                'field_options' => $this->getFieldOptions(),
+                'label' => $this->getLabel()
         ));
     }
 }

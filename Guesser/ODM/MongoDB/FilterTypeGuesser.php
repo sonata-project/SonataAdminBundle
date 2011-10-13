@@ -20,7 +20,6 @@ use Doctrine\ODM\MongoDB\Mapping\ClassMetadataInfo;
 
 class FilterTypeGuesser implements TypeGuesserInterface
 {
-
     protected $documentManager;
 
     public function __construct(DocumentManager $documentManager)
@@ -33,7 +32,7 @@ class FilterTypeGuesser implements TypeGuesserInterface
      * @param string $property
      * @return TypeGuess
      */
-    function guessType($class, $property)
+    public function guessType($class, $property)
     {
         if (!$metadata = $this->getMetadata($class)) {
             return false;
@@ -69,7 +68,7 @@ class FilterTypeGuesser implements TypeGuesserInterface
             }
         }
 
-        
+
         $options['field_name'] = $mapping['fieldName'];
 
         switch ($mapping['type']) {
@@ -99,7 +98,7 @@ class FilterTypeGuesser implements TypeGuesserInterface
             case 'string':
             case 'text':
                 $options['field_type'] = 'text';
-                
+
                 return new TypeGuess('doctrine_odm_string', $options, Guess::MEDIUM_CONFIDENCE);
             case 'time':
                 return new TypeGuess('doctrine_odm_time', $options, Guess::HIGH_CONFIDENCE);
@@ -112,5 +111,4 @@ class FilterTypeGuesser implements TypeGuesserInterface
     {
         return $this->documentManager->getClassMetadata($class);
     }
-
 }

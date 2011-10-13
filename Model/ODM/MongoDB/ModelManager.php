@@ -117,8 +117,10 @@ class ModelManager extends BaseModelManager
      */
     public function find($class, $id)
     {
-        if (is_numeric($id))
+        if (is_numeric($id)) {
             $id = intval($id);
+        }
+        
         return $this->documentManager->getRepository($class)->find($id);
     }
 
@@ -211,10 +213,6 @@ class ModelManager extends BaseModelManager
      */
     public function getIdentifierValues($document)
     {
-        /* if (!$this->documentManager->getUnitOfWork()->isInIdentityMap($document)) {
-          throw new \RuntimeException('Entities passed to the choice field must be managed');
-          } */
-
         return array($this->documentManager->getUnitOfWork()->getDocumentIdentifier($document));
     }
 

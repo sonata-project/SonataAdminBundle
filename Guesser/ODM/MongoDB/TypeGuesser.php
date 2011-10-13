@@ -20,7 +20,6 @@ use Doctrine\ODM\MongoDB\Mapping\ClassMetadataInfo;
 
 class TypeGuesser implements TypeGuesserInterface
 {
-
     protected $documentManager;
 
     public function __construct(DocumentManager $documentManager)
@@ -33,12 +32,12 @@ class TypeGuesser implements TypeGuesserInterface
      * @param string $property
      * @return TypeGuess
      */
-    function guessType($class, $property)
+    public function guessType($class, $property)
     {
         if (!$metadata = $this->getMetadata($class)) {
             return new TypeGuess('text', array(), Guess::LOW_CONFIDENCE);
         }
-        
+
         $mapping = $metadata->getFieldMapping($property);
         if ($metadata->hasAssociation($property)) {
             $multiple = $metadata->isCollectionValuedAssociation($property);
@@ -57,7 +56,7 @@ class TypeGuesser implements TypeGuesserInterface
                   return new TypeGuess('orm_one_to_one', array(), Guess::HIGH_CONFIDENCE); */
             }
         }
-        
+
         switch ($mapping['type']) {
             //case 'array':
             //  return new TypeGuess('Collection', array(), Guess::HIGH_CONFIDENCE);
@@ -91,5 +90,4 @@ class TypeGuesser implements TypeGuesserInterface
     {
         return $this->documentManager->getClassMetadata($class);
     }
-
 }

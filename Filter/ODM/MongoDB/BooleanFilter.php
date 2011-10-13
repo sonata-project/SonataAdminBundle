@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Filter\ORM;
+namespace Sonata\AdminBundle\Filter\ODM\MongoDB;
 
 use Sonata\AdminBundle\Form\Type\BooleanType;
 
@@ -42,15 +42,14 @@ class BooleanFilter extends Filter
                 return;
             }
 
-            $this->applyWhere($queryBuilder, $queryBuilder->expr()->in(sprintf('%s.%s', $alias, $field), $values));
+            throw new \Exception('Not yet implemented');
         } else {
 
             if (!in_array($data['value'], array(BooleanType::TYPE_NO, BooleanType::TYPE_YES))) {
                 return;
             }
 
-            $this->applyWhere($queryBuilder, sprintf('%s.%s = :%s', $alias, $field, $this->getName()));
-            $queryBuilder->setParameter($this->getName(), ($data['value'] == BooleanType::TYPE_YES) ? 1 : 0);
+            throw new \Exception('Not yet implemented');
         }
     }
 
