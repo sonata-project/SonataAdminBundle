@@ -333,6 +333,10 @@ This code manage the many-to-[one|many] association field popup
         function field_remove_element_{{ id }}(event) {
             event.preventDefault();
 
+            if (jQuery('#{{ id }} option').get(0)) {
+                jQuery('#{{ id }}').attr('selectedIndex', '-1').children("option:selected").attr("selected", false);
+            }
+            
             jQuery('#{{ id }}').val('');
             jQuery('#{{ id }}').trigger('change');
 
