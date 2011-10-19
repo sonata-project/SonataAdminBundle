@@ -75,7 +75,7 @@ class FieldDescription extends BaseFieldDescription
         }
 
         $this->fieldMapping = $fieldMapping;
-
+        
         $this->type = $this->type ? : $fieldMapping['type'];
         $this->mappingType = $this->mappingType ? : $fieldMapping['type'];
         $this->fieldName = $this->fieldName ? : $fieldMapping['fieldName'];
