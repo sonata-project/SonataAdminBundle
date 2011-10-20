@@ -54,7 +54,7 @@ Now you can edit the settings array with :
         {
             $formMapper
                 ->add('enabled')
-                ->addType('settings', 'sonata_type_immutable_array', array(
+                ->add('settings', 'sonata_type_immutable_array', array(
                     'keys' => array(
                         array('content', 'textarea', array()),
                         array('public', 'checkbox', array()),
