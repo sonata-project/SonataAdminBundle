@@ -18,7 +18,7 @@ class NoopSecurityHandler implements SecurityHandlerInterface
     /**
      * {@inheritDoc}
      */
-    public function isGranted($attributes, $object = null)
+    public function isGranted(AdminInterface $admin, $attributes, $object = null)
     {
         return true;
     }

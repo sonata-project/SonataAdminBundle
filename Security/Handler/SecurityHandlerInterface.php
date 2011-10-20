@@ -21,7 +21,7 @@ interface SecurityHandlerInterface
      * @param null $object
      * @return boolean
      */
-    function isGranted($attributes, $object = null);
+    function isGranted(AdminInterface $admin, $attributes, $object = null);
 
     /**
      * @abstract

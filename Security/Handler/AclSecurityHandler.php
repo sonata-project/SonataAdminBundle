@@ -17,16 +17,40 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 
 class AclSecurityHandler implements SecurityHandlerInterface
 {
-    public function __construct(SecurityContextInterface $securityContext)
+    protected $securityContext;
+
+    protected $superAdminRoles;
+
+    /**
+     * @param \Symfony\Component\Security\Core\SecurityContextInterface $securityContext
+     * @param array $superAdminRoles
+     */
+    public function __construct(SecurityContextInterface $securityContext, array $superAdminRoles)
     {
         $this->securityContext = $securityContext;
+        $this->superAdminRoles = $superAdminRoles;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function isGranted($attributes, $object = null)
+    public function isGranted(AdminInterface $admin, $attributes, $object = null)
     {
+        if (!is_array($attributes)) {
+            $attributes = array($attributes);
+        }
+
+        if ($object instanceof AdminInterface) {
+            foreach ($attributes as $pos => $attribute) {
+                $attributes[$pos] = sprintf('ROLE_%s_%s',
+                    str_replace('.', '_', strtoupper($admin->getCode())),
+                    $attribute
+                );
+            }
+        }
+
+        $attributes = array_merge($attributes, $this->superAdminRoles);
+
         try {
             return $this->securityContext->isGranted($attributes, $object);
         } catch (AuthenticationCredentialsNotFoundException $e) {

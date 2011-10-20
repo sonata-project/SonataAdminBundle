@@ -2002,11 +2002,18 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         );
     }
 
+    /**
+     * @param \Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface $securityHandler
+     * @return void
+     */
     public function setSecurityHandler(SecurityHandlerInterface $securityHandler)
     {
         $this->securityHandler = $securityHandler;
     }
 
+    /**
+     * @return \Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface|null
+     */
     public function getSecurityHandler()
     {
         return $this->securityHandler;
@@ -2014,11 +2021,12 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
     /**
      * @param string $name
+     * @param object|null $object
      * @return boolean
      */
-    public function isGranted($name)
+    public function isGranted($name, $object = null)
     {
-        return $this->securityHandler->isGranted($name, $this);
+        return $this->securityHandler->isGranted($this, $name, $object ?: $this);
     }
 
     public function getNormalizedIdentifier($entity)

@@ -24,14 +24,15 @@
 
         <service id="sonata.admin.security.handler.acl" class="Sonata\AdminBundle\Security\Handler\AclSecurityHandler">
             <argument type="service" id="security.context" on-invalid="null" />
+            <argument type="collection">
+                <argument>ROLE_SUPER_ADMIN</argument>
+            </argument>
         </service>
 
         <service id="sonata.admin.builder.filter.factory" class="Sonata\AdminBundle\Filter\FilterFactory">
             <argument type="service" id="service_container" />
             <argument />
         </service>
-
     </services>
-
 </container>
 
