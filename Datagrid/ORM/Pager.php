@@ -69,8 +69,8 @@ class Pager extends BasePager
 
         $this->setNbResults($this->computeNbResult());
 
-        $this->getQuery()->setFirstResult(0);
-        $this->getQuery()->setMaxResults(0);
+        $this->getQuery()->setFirstResult(null);
+        $this->getQuery()->setMaxResults(null);
 
         if (count($this->getParameters()) > 0) {
             $this->getQuery()->setParameters($this->getParameters());
