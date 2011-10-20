@@ -16,6 +16,7 @@ Make sure the Orphan Removal option is set to ``true``
                 field="galleryHasMedias"
                 target-entity="Application\Sonata\MediaBundle\Entity\GalleryHasMedia"
                 mapped-by="gallery"
+                orphan-removal="true"
                 >
 
                 <orphan-removal>true</orphan-removal>
@@ -26,6 +27,9 @@ Make sure the Orphan Removal option is set to ``true``
         </entity>
     </doctrine-mapping>
 
+.. note::
+
+    The last Doctrine version requires to define the ``orphan-removal`` as an attribute and not as a node.
 
 Ordered fields are not ordered!
 -------------------------------
