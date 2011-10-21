@@ -33,10 +33,6 @@
             <argument type="service" id="translator" />
         </service>
 
-        <service id="sonata.admin.form.type.rte" class="Sonata\AdminBundle\Form\Type\RteType">
-            <tag name="form.type" alias="sonata_type_rte" />
-        </service>
-
         <!-- Form Extension -->
         <service id="sonata.admin.form.extension.field" class="Sonata\AdminBundle\Form\Extension\Field\Type\FormTypeFieldExtension">
             <tag name="form.type_extension" alias="field" />
