@@ -23,12 +23,10 @@ class ModelChoiceList extends ArrayChoiceList
      * @var \Sonata\AdminBundle\Model\ModelManagerInterface
      */
     private $modelManager;
-
     /**
      * @var string
      */
     private $class;
-
     /**
      * The entities from which the user can choose
      *
@@ -41,7 +39,6 @@ class ModelChoiceList extends ArrayChoiceList
      * @var mixed
      */
     private $entities = array();
-
     /**
      * Contains the query builder that builds the query for fetching the
      * entities
@@ -51,7 +48,6 @@ class ModelChoiceList extends ArrayChoiceList
      * @var \Doctrine\ORM\QueryBuilder
      */
     private $query;
-
     /**
      * The fields of which the identifier of the underlying class consists
      *
@@ -60,7 +56,6 @@ class ModelChoiceList extends ArrayChoiceList
      * @var array
      */
     private $identifier = array();
-
     /**
      * A cache for \ReflectionProperty instances for the underlying class
      *
@@ -69,15 +64,14 @@ class ModelChoiceList extends ArrayChoiceList
      * @var array
      */
     private $reflProperties = array();
-
     private $propertyPath;
 
     public function __construct(ModelManagerInterface $modelManager, $class, $property = null, $query = null, $choices = array())
     {
-        $this->modelManager   = $modelManager;
-        $this->class          = $class;
-        $this->query          = $query;
-        $this->identifier     = $this->modelManager->getIdentifierFieldNames($this->class);
+        $this->modelManager = $modelManager;
+        $this->class = $class;
+        $this->query = $query;
+        $this->identifier = $this->modelManager->getIdentifierFieldNames($this->class);
 
         // The property option defines, which property (path) is used for
         // displaying entities as strings
@@ -128,7 +122,7 @@ class ModelChoiceList extends ArrayChoiceList
                 $value = $this->propertyPath->getValue($entity);
             } else {
                 // Otherwise expect a __toString() method in the entity
-                $value = (string)$entity;
+                $value = (string) $entity;
             }
 
             if (count($this->identifier) > 1) {
@@ -198,7 +192,7 @@ class ModelChoiceList extends ArrayChoiceList
             return isset($this->entities[$key]) ? $this->entities[$key] : null;
         }
 
-          // todo : I don't see the point of this ..
+        // todo : I don't see the point of this ..
 //            else if ($qb = $this->queryBuilder) {
 //                // should we clone the builder?
 //                $alias = $qb->getRootAlias();
@@ -256,6 +250,6 @@ class ModelChoiceList extends ArrayChoiceList
      */
     public function getClass()
     {
-      return $this->class;
+        return $this->class;
     }
 }

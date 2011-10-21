@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="sonata.admin.odm.filter.type.boolean" class="Sonata\AdminBundle\Filter\ODM\MongoDB\BooleanFilter">
+            <tag name="sonata.admin.filter.type" alias="doctrine_odm_boolean" />
+        </service>
+
+        <service id="sonata.admin.odm.filter.type.callback" class="Sonata\AdminBundle\Filter\ODM\MongoDB\CallbackFilter">
+            <tag name="sonata.admin.filter.type" alias="doctrine_odm_callback" />
+        </service>
+
+        <service id="sonata.admin.odm.filter.type.choice" class="Sonata\AdminBundle\Filter\ODM\MongoDB\ChoiceFilter">
+            <tag name="sonata.admin.filter.type" alias="doctrine_odm_choice" />
+        </service>
+
+        <service id="sonata.admin.odm.filter.type.model" class="Sonata\AdminBundle\Filter\ODM\MongoDB\ModelFilter">
+            <tag name="sonata.admin.filter.type" alias="doctrine_odm_model" />
+        </service>
+
+        <service id="sonata.admin.odm.filter.type.string" class="Sonata\AdminBundle\Filter\ODM\MongoDB\StringFilter">
+            <tag name="sonata.admin.filter.type" alias="doctrine_odm_string" />
+        </service>
+
+        <service id="sonata.admin.odm.filter.type.number" class="Sonata\AdminBundle\Filter\ODM\MongoDB\NumberFilter">
+            <tag name="sonata.admin.filter.type" alias="doctrine_odm_number" />
+        </service>
+    </services>
+
+</container>

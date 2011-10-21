@@ -4,35 +4,35 @@
  * This file is part of the Sonata package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) Kévin Dunglas <dunglas@gmail.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Model\ORM;
+namespace Sonata\AdminBundle\Model\ODM\MongoDB;
 
 use Sonata\AdminBundle\Model\BaseModelManager;
-use Sonata\AdminBundle\Admin\ORM\FieldDescription;
+use Sonata\AdminBundle\Admin\ODM\MongoDB\FieldDescription;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\QueryBuilder;
-use Sonata\AdminBundle\Exception\ModelManagerException;
-
+use Doctrine\ODM\MongoDB\DocumentManager;
+use Doctrine\ODM\MongoDB\Query\Builder;
 use Symfony\Component\Form\Exception\PropertyAccessDeniedException;
 
 class ModelManager extends BaseModelManager
 {
-    protected $entityManager;
+
+    protected $documentManager;
 
     /**
      *
-     * @param \Doctrine\ORM\EntityManager $entityManager
+     * @param \Doctrine\ODM\MongoDB\DocumentManager $documentManager
      */
-    public function __construct(EntityManager $entityManager)
+    public function __construct(DocumentManager $documentManager)
     {
-        $this->entityManager = $entityManager;
+        $this->documentManager = $documentManager;
     }
 
     /**
@@ -44,7 +44,7 @@ class ModelManager extends BaseModelManager
      */
     public function getMetadata($class)
     {
-        return $this->entityManager->getMetadataFactory()->getMetadataFor($class);
+        return $this->documentManager->getMetadataFactory()->getMetadataFor($class);
     }
 
     /**
@@ -55,7 +55,7 @@ class ModelManager extends BaseModelManager
      */
     public function hasMetadata($class)
     {
-        return $this->entityManager->getMetadataFactory()->hasMetadataFor($class);
+        return $this->documentManager->getMetadataFactory()->hasMetadataFor($class);
     }
 
     /**
@@ -79,8 +79,8 @@ class ModelManager extends BaseModelManager
         $fieldDescription->setName($name);
         $fieldDescription->setOptions($options);
 
-        if (isset($metadata->associationMappings[$name])) {
-            $fieldDescription->setAssociationMapping($metadata->associationMappings[$name]);
+        if (isset($metadata->fieldMappings[$name]['reference'])) {
+            $fieldDescription->setAssociationMapping($metadata->fieldMappings[$name]);
         }
 
         if (isset($metadata->fieldMappings[$name])) {
@@ -92,32 +92,20 @@ class ModelManager extends BaseModelManager
 
     public function create($object)
     {
-        try {
-            $this->entityManager->persist($object);
-            $this->entityManager->flush();
-        } catch ( \PDOException $e ) {
-            throw new ModelManagerException('', 0, $e);
-        }
+        $this->documentManager->persist($object);
+        $this->documentManager->flush();
     }
 
     public function update($object)
     {
-        try {
-            $this->entityManager->persist($object);
-            $this->entityManager->flush();
-        } catch ( \PDOException $e ) {
-            throw new ModelManagerException('', 0, $e);
-        }
+        $this->documentManager->persist($object);
+        $this->documentManager->flush();
     }
 
     public function delete($object)
     {
-        try {
-            $this->entityManager->remove($object);
-            $this->entityManager->flush();
-        } catch ( \PDOException $e ) {
-            throw new ModelManagerException('', 0, $e);
-        }
+        $this->documentManager->remove($object);
+        $this->documentManager->flush();
     }
 
     /**
@@ -129,8 +117,11 @@ class ModelManager extends BaseModelManager
      */
     public function find($class, $id)
     {
-        $values = array_combine($this->getIdentifierFieldNames($class), explode('-', $id));
-        return $this->entityManager->getRepository($class)->find($values);
+        if (is_numeric($id)) {
+            $id = intval($id);
+        }
+        
+        return $this->documentManager->getRepository($class)->find($id);
     }
 
     /**
@@ -140,7 +131,7 @@ class ModelManager extends BaseModelManager
      */
     public function findBy($class, array $criteria = array())
     {
-        return $this->entityManager->getRepository($class)->findBy($criteria);
+        return $this->documentManager->getRepository($class)->findBy($criteria);
     }
 
     /**
@@ -150,7 +141,7 @@ class ModelManager extends BaseModelManager
      */
     public function findOneBy($class, array $criteria = array())
     {
-        return $this->entityManager->getRepository($class)->findOneBy($criteria);
+        return $this->documentManager->getRepository($class)->findOneBy($criteria);
     }
 
     /**
@@ -158,7 +149,7 @@ class ModelManager extends BaseModelManager
      */
     public function getEntityManager()
     {
-        return $this->entityManager;
+        return $this->documentManager;
     }
 
     /**
@@ -200,7 +191,7 @@ class ModelManager extends BaseModelManager
     public function executeQuery($query)
     {
         if ($query instanceof QueryBuilder) {
-          return $query->getQuery()->execute();
+            return $query->getQuery()->execute();
         }
 
         return $query->execute();
@@ -220,13 +211,9 @@ class ModelManager extends BaseModelManager
      * @param $entity
      * @return
      */
-    public function getIdentifierValues($entity)
+    public function getIdentifierValues($document)
     {
-        if (!$this->getEntityManager()->getUnitOfWork()->isInIdentityMap($entity)) {
-            throw new \RuntimeException('Entities passed to the choice field must be managed');
-        }
-
-        return $this->getEntityManager()->getUnitOfWork()->getEntityIdentifier($entity);
+        return array($this->documentManager->getUnitOfWork()->getDocumentIdentifier($document));
     }
 
     /**
@@ -235,7 +222,7 @@ class ModelManager extends BaseModelManager
      */
     public function getIdentifierFieldNames($class)
     {
-        return $this->getMetadata($class)->getIdentifierFieldNames();
+        return array($this->getMetadata($class)->getIdentifier());
     }
 
     /**
@@ -243,18 +230,18 @@ class ModelManager extends BaseModelManager
      * @param $entity
      * @return null|string
      */
-    public function getNormalizedIdentifier($entity)
+    public function getNormalizedIdentifier($document)
     {
-        if (is_scalar($entity)) {
+        if (is_scalar($document)) {
             throw new \RunTimeException('Invalid argument, object or null required');
         }
 
         // the entities is not managed
-        if (!$entity || !$this->getEntityManager()->getUnitOfWork()->isInIdentityMap($entity)) {
+        if (!$document || !$this->getEntityManager()->getUnitOfWork()->isInIdentityMap($document)) {
             return null;
         }
 
-        $values = $this->getIdentifierValues($entity);
+        $values = $this->getIdentifierValues($document);
 
         return implode('-', $values);
     }
@@ -267,25 +254,8 @@ class ModelManager extends BaseModelManager
      */
     public function addIdentifiersToQuery($class, ProxyQueryInterface $queryProxy, array $idx)
     {
-        $fieldNames = $this->getIdentifierFieldNames($class);
-        $qb = $queryProxy->getQueryBuilder();
-
-        $prefix = uniqid();
-        $sqls = array();
-        foreach ($idx as $pos => $id) {
-            $ids     = explode('-', $id);
-
-            $ands = array();
-            foreach ($fieldNames as $posName => $name) {
-                $parameterName = sprintf('field_%s_%s_%d', $prefix, $name, $pos);
-                $ands[] = sprintf('%s.%s = :%s', $qb->getRootAlias(), $name, $parameterName);
-                $qb->setParameter($parameterName, $ids[$posName]);
-            }
-
-            $sqls[] = implode(' AND ', $ands);
-        }
-
-        $qb->andWhere(sprintf('( %s )', implode(' OR ', $sqls)));
+        $queryBuilder = $queryProxy->getQueryBuilder();
+        $queryBuilder->field('_id')->in($idx);
     }
 
     /**
@@ -297,22 +267,10 @@ class ModelManager extends BaseModelManager
      */
     public function batchDelete($class, ProxyQueryInterface $queryProxy)
     {
-        try {
-            $i = 0;
-            foreach ($queryProxy->getQuery()->iterate() as $pos => $object) {
-                $this->entityManager->remove($object[0]);
+        $queryBuilder = $queryProxy->getQueryBuilder()->remove()->getQuery()->execute();
 
-                if ((++$i % 20) == 0) {
-                    $this->entityManager->flush();
-                    $this->entityManager->clear();
-                }
-            }
-
-            $this->entityManager->flush();
-            $this->entityManager->clear();
-        } catch ( \PDOException $e ) {
-            throw new ModelManagerException('', 0, $e);
-        }
+        $this->documentManager->flush();
+        $this->documentManager->clear();
     }
 
     /**
@@ -343,8 +301,8 @@ class ModelManager extends BaseModelManager
                 $values['_sort_order'] = 'ASC';
             }
         } else {
-            $values['_sort_order']  = 'ASC';
-            $values['_sort_by']     = $fieldDescription->getOption('sortable');
+            $values['_sort_order'] = 'ASC';
+            $values['_sort_by'] = $fieldDescription->getOption('sortable');
         }
 
         return array('filter' => $values);
@@ -372,8 +330,8 @@ class ModelManager extends BaseModelManager
     {
         return array(
             '_sort_order' => 'ASC',
-            '_sort_by'    => implode(',', $this->getModelIdentifier($class)),
-            '_page'       => 1
+            '_sort_by' => $this->getModelIdentifier($class),
+            '_page' => 1
         );
     }
 
@@ -406,14 +364,13 @@ class ModelManager extends BaseModelManager
 
                 $property = $metadata->fieldMappings[$name]['fieldName'];
                 $reflection_property = $metadata->reflFields[$name];
-
             } else if (array_key_exists($name, $metadata->associationMappings)) {
                 $property = $metadata->associationMappings[$name]['fieldName'];
             } else {
                 $property = $name;
             }
 
-            $setter = 'set'.$this->camelize($name);
+            $setter = 'set' . $this->camelize($name);
 
             if ($reflClass->hasMethod($setter)) {
                 if (!$reflClass->getMethod($setter)->isPublic()) {
@@ -437,4 +394,5 @@ class ModelManager extends BaseModelManager
 
         return $instance;
     }
+
 }

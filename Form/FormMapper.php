@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the Sonata package.
  *
@@ -8,6 +9,7 @@
  * file that was distributed with this source code.
  *
  */
+
 namespace Sonata\AdminBundle\Form;
 
 use Sonata\AdminBundle\Builder\FormContractorInterface;
@@ -22,18 +24,15 @@ use Symfony\Component\Form\FormBuilder;
 class FormMapper
 {
     protected $formBuilder;
-
     protected $formContractor;
-
     protected $admin;
-
     protected $currentGroup;
 
     public function __construct(FormContractorInterface $formContractor, FormBuilder $formBuilder, AdminInterface $admin)
     {
-        $this->formBuilder      = $formBuilder;
-        $this->formContractor   = $formContractor;
-        $this->admin            = $admin;
+        $this->formBuilder = $formBuilder;
+        $this->formContractor = $formContractor;
+        $this->admin = $admin;
     }
 
     /**
@@ -89,15 +88,11 @@ class FormMapper
         }
 
         $fieldDescription = $this->admin->getModelManager()->getNewFieldDescriptionInstance(
-            $this->admin->getClass(),
-            $name instanceof FormBuilder ? $name->getName() : $name,
-            $fieldDescriptionOptions
+                        $this->admin->getClass(), $name instanceof FormBuilder ? $name->getName() : $name, $fieldDescriptionOptions
         );
 
         $this->formContractor->fixFieldDescription($this->admin, $fieldDescription, $fieldDescriptionOptions);
-
         $options = array_merge($options, $this->formContractor->getDefaultOptions($type, $fieldDescription));
-
         $this->admin->addFormFieldDescription($name instanceof FormBuilder ? $name->getName() : $name, $fieldDescription);
 
         if ($name instanceof FormBuilder) {
@@ -170,7 +165,7 @@ class FormMapper
      */
     public function setHelps(array $helps = array())
     {
-        foreach($helps as $name => $help) {
+        foreach ($helps as $name => $help) {
             if ($this->admin->hasFormFieldDescription($name)) {
                 $this->admin->getFormFieldDescription($name)->setHelp($help);
             }

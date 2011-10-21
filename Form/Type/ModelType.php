@@ -17,7 +17,6 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
-
 use Sonata\AdminBundle\Form\EventListener\MergeCollectionListener;
 use Sonata\AdminBundle\Form\ChoiceList\ModelChoiceList;
 use Sonata\AdminBundle\Form\DataTransformer\ModelsToArrayTransformer;
@@ -26,12 +25,13 @@ use Sonata\AdminBundle\Model\ModelManagerInterface;
 
 class ModelType extends AbstractType
 {
+
     public function buildForm(FormBuilder $builder, array $options)
     {
         if ($options['multiple']) {
             $builder
-                ->addEventSubscriber(new MergeCollectionListener($options['model_manager']))
-                ->prependClientTransformer(new ModelsToArrayTransformer($options['choice_list']));
+                    ->addEventSubscriber(new MergeCollectionListener($options['model_manager']))
+                    ->prependClientTransformer(new ModelsToArrayTransformer($options['choice_list']));
         } else {
             $builder->prependClientTransformer(new ModelToIdTransformer($options['model_manager'], $options['class']));
         }
@@ -40,15 +40,15 @@ class ModelType extends AbstractType
     public function getDefaultOptions(array $options)
     {
         $defaultOptions = array(
-            'template'          => 'choice',
-            'multiple'          => false,
-            'expanded'          => false,
-            'model_manager'     => null,
-            'class'             => null,
-            'property'          => null,
-            'query'             => null,
-            'choices'           => null,
-            'parent'            => 'choice',
+            'template' => 'choice',
+            'multiple' => false,
+            'expanded' => false,
+            'model_manager' => null,
+            'class' => null,
+            'property' => null,
+            'query' => null,
+            'choices' => null,
+            'parent' => 'choice',
             'preferred_choices' => array(),
         );
 
@@ -56,11 +56,11 @@ class ModelType extends AbstractType
 
         if (!isset($options['choice_list'])) {
             $defaultOptions['choice_list'] = new ModelChoiceList(
-                $options['model_manager'],
-                $options['class'],
-                $options['property'],
-                $options['query'],
-                $options['choices']
+                            $options['model_manager'],
+                            $options['class'],
+                            $options['property'],
+                            $options['query'],
+                            $options['choices']
             );
         }
 
