@@ -116,3 +116,7 @@ div.sonata-ba-field-error input{
 div.sonata-ba-field-error textarea{
     border: 1px solid #f79992;
 }
+
+div.sonata-ba-field-error select{
+    border: 1px solid #f79992;
+}

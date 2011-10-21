@@ -28,7 +28,7 @@ var Admin = {
      */
     add_pretty_errors: function(subject) {
         jQuery('div.sonata-ba-field-error', subject).each(function(index, element) {
-            var input = jQuery('input, textarea', element);
+            var input = jQuery('input, textarea, select', element);
 
             var message = jQuery('div.sonata-ba-field-error-messages', element).html();
             jQuery('div.sonata-ba-field-error-messages', element).html('');
@@ -39,8 +39,20 @@ var Admin = {
             if (message.length == 0) {
                 return;
             }
-
-            input.qtip({
+            
+            var target;
+            
+            /* Hack to handle qTip on select */
+            if(jQuery(input).is("select")) {
+              jQuery(element).prepend("<span></span>");
+              target = jQuery('span', element);
+              jQuery(input).appendTo(target);
+            }
+            else {
+              target = input;
+            }
+            
+            target.qtip({
                 content: message,
                 show: 'focusin',
                 hide: 'focusout',
@@ -57,7 +69,8 @@ var Admin = {
                     },
                     tip: 'leftMiddle'
                 }
-            })
+            });
+
         });
     },
 
