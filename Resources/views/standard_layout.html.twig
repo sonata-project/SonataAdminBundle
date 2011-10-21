@@ -27,6 +27,8 @@ file that was distributed with this source code.
             <link rel="stylesheet" href="{{ asset('bundles/sonataadmin/css/colors.css') }}" type="text/css" media="all">
         {% endblock %}
 
+        {% block stylesheets_extension %}{% endblock %}
+
         {% block javascripts %}
             <script src="{{ asset('bundles/sonatajquery/jquery-1.4.4.js') }}" type="text/javascript"></script>
             <script src="{{ asset('bundles/sonatajquery/jquery-ui-1.8.6.custom.js') }}" type="text/javascript"></script>
@@ -35,6 +37,8 @@ file that was distributed with this source code.
             <script src="{{ asset('bundles/sonataadmin/jquery/jquery.form.js') }}" type="text/javascript"></script>
             <script src="{{ asset('bundles/sonataadmin/base.js') }}" type="text/javascript"></script>
         {% endblock %}
+
+        {% block javascripts_extension %}{% endblock %}
 
         <title>
             {% block title %} {% trans from 'SonataAdminBundle' %}Admin{% endtrans %}
