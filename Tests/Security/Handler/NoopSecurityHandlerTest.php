@@ -14,11 +14,32 @@ use Sonata\AdminBundle\Security\Handler\NoopSecurityHandler;
 
 class NoopSecurityHandlerTest extends \PHPUnit_Framework_TestCase
 {
-    public function testNoop()
-    {
-        $handler = new NoopSecurityHandler;
+    /**
+     * @var Sonata\AdminBundle\Security\Handler\NoopSecurityHandler
+     */
+    private $handler = null;
 
-        $this->assertTrue($handler->isGranted($this->getMock('Sonata\AdminBundle\Admin\AdminInterface'), array('TOTO')));
-        $this->assertTrue($handler->isGranted($this->getMock('Sonata\AdminBundle\Admin\AdminInterface'), 'TOTO'));
+    public function setUp()
+    {
+        $this->handler = new NoopSecurityHandler();
+    }
+
+    public function testIsGranted()
+    {
+        $this->assertTrue($this->handler->isGranted($this->getSonataAdminObject(), array('TOTO')));
+        $this->assertTrue($this->handler->isGranted($this->getSonataAdminObject(), 'TOTO'));
+    }
+
+    public function testBuildSecurityInformation()
+    {
+        $this->assertEquals(array(), $this->handler->buildSecurityInformation($this->getSonataAdminObject()));
+    }
+
+    /**
+     * @return Sonata\AdminBundle\Admin\AdminInterface
+     */
+    private function getSonataAdminObject()
+    {
+        return $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
     }
 }
