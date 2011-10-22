@@ -18,7 +18,7 @@ class NoopSecurityHandlerTest extends \PHPUnit_Framework_TestCase
     {
         $handler = new NoopSecurityHandler;
 
-        $this->assertTrue($handler->isGranted(array('TOTO')));
-        $this->assertTrue($handler->isGranted('TOTO'));
+        $this->assertTrue($handler->isGranted($this->getMock('Sonata\AdminBundle\Admin\AdminInterface'), array('TOTO')));
+        $this->assertTrue($handler->isGranted($this->getMock('Sonata\AdminBundle\Admin\AdminInterface'), 'TOTO'));
     }
 }
