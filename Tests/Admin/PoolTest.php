@@ -45,7 +45,8 @@ class PoolTest extends \PHPUnit_Framework_TestCase
         $this->pool->setAdminGroups(array(
             'adminGroup1' => array(
                 'items' => array('itemKey' => 'sonata.user.admin.group1')
-            )
+            ),
+            'adminGroup2' => array()
         ));
 
         $expectedOutput = array(
