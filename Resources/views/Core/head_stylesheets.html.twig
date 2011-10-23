@@ -1,0 +1,24 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{% block stylesheets %}
+    <!-- jQuery code -->
+    <link rel="stylesheet" href="{{ asset('bundles/sonatajquery/themes/flick/jquery-ui-1.8.6.custom.css') }}" type="text/css" media="all" />
+
+    <!-- blueprint code -->
+    <link rel="stylesheet" href="{{ asset('bundles/sonatablueprint/screen.css') }}" type="text/css" media="screen, projection">
+    <link rel="stylesheet" href="{{ asset('bundles/sonatablueprint/print.css') }}" type="text/css" media="print">
+    <!--[if lt IE 8]><link rel="stylesheet" href="{{ asset('bundles/sonatablueprint/ie.css') }}" type="text/css" media="screen, projection"><![endif]-->
+
+    <!-- base application asset -->
+    <link rel="stylesheet" href="{{ asset('bundles/sonataadmin/css/layout.css') }}" type="text/css" media="all">
+    <link rel="stylesheet" href="{{ asset('bundles/sonataadmin/css/colors.css') }}" type="text/css" media="all">
+{% endblock %}

@@ -348,6 +348,8 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
     protected $filterTheme = array('SonataAdminBundle:Form:filter_admin_fields.html.twig');
 
+    protected $templates  = array();
+
     protected $extensions = array();
 
     /**
@@ -957,7 +959,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      */
     public function getListTemplate()
     {
-        return 'SonataAdminBundle:CRUD:list.html.twig';
+        return $this->getTemplate('list');
     }
 
     /**
@@ -967,7 +969,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      */
     public function getEditTemplate()
     {
-        return 'SonataAdminBundle:CRUD:edit.html.twig';
+        return $this->getTemplate('edit');
     }
 
     /**
@@ -977,7 +979,37 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      */
     public function getShowTemplate()
     {
-        return 'SonataAdminBundle:CRUD:show.html.twig';
+        return $this->getTemplate('show');
+    }
+
+    /**
+     * @param array $templates
+     * @return void
+     */
+    public function setTemplates(array $templates)
+    {
+        $this->templates = $templates;
+    }
+
+    /**
+     * @return array
+     */
+    public function getTemplates()
+    {
+        return $this->templates;
+    }
+
+    /**
+     * @param $name
+     * @return null|string
+     */
+    public function getTemplate($name)
+    {
+        if (isset($this->templates[$name])) {
+            return $this->templates[$name];
+        }
+
+        return null;
     }
 
     /**

@@ -109,10 +109,10 @@ class CRUDController extends Controller
     public function getBaseTemplate()
     {
         if ($this->isXmlHttpRequest()) {
-            return $this->container->getParameter('sonata.admin.templates.ajax');
+            return $this->admin->getTemplate('ajax');
         }
 
-        return $this->container->getParameter('sonata.admin.templates.layout');
+        return $this->admin->getTemplate('layout');
     }
 
     /**

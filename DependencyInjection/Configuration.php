@@ -83,11 +83,13 @@ class Configuration implements ConfigurationInterface
 
                 ->arrayNode('templates')
                     ->children()
-                        ->scalarNode('layout')->cannotBeEmpty()->end()
-                        ->scalarNode('ajax')->cannotBeEmpty()->end()
+                        ->scalarNode('layout')->defaultValue('SonataAdminBundle::standard_layout.html.twig')->end()
+                        ->scalarNode('ajax')->defaultValue('SonataAdminBundle::ajax_layout.html.twig')->end()
+                        ->scalarNode('list')->defaultValue('SonataAdminBundle:CRUD:list.html.twig')->end()
+                        ->scalarNode('show')->defaultValue('SonataAdminBundle:CRUD:show.html.twig')->end()
+                        ->scalarNode('edit')->defaultValue('SonataAdminBundle:CRUD:edit.html.twig')->end()
                     ->end()
                 ->end()
-        
             ->end()
         ->end();
     }

@@ -21,6 +21,7 @@ Reference Guide
    reference/filter_field_definition
    reference/form_field_definition
    reference/form_types_and_transformers
+   reference/templates
    reference/saving_hooks
    reference/routing
    reference/dashboard

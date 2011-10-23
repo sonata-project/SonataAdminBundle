@@ -193,6 +193,10 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
         $definition->addMethodCall('configure');
 
+        if (!$definition->hasMethodCall('setTemplates')) {
+            $definition->addMethodCall('setTemplates', array($settings['templates']));
+        }
+
         return $definition;
     }
 

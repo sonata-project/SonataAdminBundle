@@ -121,6 +121,16 @@ class PoolTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Symfony\Component\DependencyInjection\ContainerInterface', $this->pool->getContainer());
     }
 
+    public function testTemplates()
+    {
+        $this->assertInternalType('array', $this->pool->getTemplates());
+
+        $this->pool->setTemplates(array('ajax' => 'Foo.html.twig'));
+
+        $this->assertNull($this->pool->getTemplate('bar'));
+        $this->assertEquals('Foo.html.twig', $this->pool->getTemplate('ajax'));
+    }
+
     /**
      * @return Symfony\Component\DependencyInjection\ContainerInterface - the mock of container interface
      */

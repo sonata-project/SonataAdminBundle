@@ -1,0 +1,24 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+<div class="sonata-ba-breadcrumbs">
+    <h1>
+    {% block breadcrumb %}
+        {% if action is defined %}
+            {% for label, uri in admin.breadcrumbs(action) %}
+                {% if not loop.first  %}
+                    &gt;
+                {% endif %}
+                <a href="{{ uri }}">{{ label }}</a>
+            {% endfor %}
+        {% endif %}
+    {% endblock %}
+    </h1>
+</div>
