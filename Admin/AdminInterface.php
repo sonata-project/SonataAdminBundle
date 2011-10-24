@@ -141,8 +141,7 @@ interface AdminInterface
 
     /**
      * @abstract
-     * @param string $name
-     * @param array $parameters
+     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $parentFieldDescription
      * @return void
      */
     function setParentFieldDescription(FieldDescriptionInterface $parentFieldDescription);
