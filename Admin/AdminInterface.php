@@ -12,6 +12,7 @@
 namespace Sonata\AdminBundle\Admin;
 
 use Sonata\AdminBundle\Admin\Pool;
+use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Builder\FormContractorInterface;
 use Sonata\AdminBundle\Builder\ListBuilderInterface;
 use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
@@ -137,4 +138,12 @@ interface AdminInterface
      * @return array
      */
     function getSecurityInformation();
+
+    /**
+     * @abstract
+     * @param string $name
+     * @param array $parameters
+     * @return void
+     */
+    function setParentFieldDescription(FieldDescriptionInterface $parentFieldDescription);
 }
