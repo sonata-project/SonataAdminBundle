@@ -142,6 +142,16 @@ class Datagrid implements DatagridInterface
     }
 
     /**
+     * @param $name
+     * @param $value
+     * @return void
+     */
+    public function setValue($name, $operator, $value)
+    {
+        $this->values[$name] = array('type' => $operator, 'value' => $value);
+    }
+
+    /**
      * @return \Sonata\AdminBundle\Admin\FieldDescriptionCollection
      */
     public function getColumns()

@@ -63,4 +63,18 @@ interface DatagridInterface
      * @return array
      */
     function getColumns();
+
+    /**
+     * @abstract
+     * @param $name
+     * @param $value
+     * @return void
+     */
+    function setValue($name, $operator, $value);
+
+    /**
+     * @abstract
+     * @return \Symfony\Component\Form\Form
+     */
+    function getForm();
 }
