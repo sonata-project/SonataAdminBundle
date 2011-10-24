@@ -46,9 +46,10 @@ class Pool
         $groups = $this->adminGroups;
 
         foreach ($this->adminGroups as $name => $adminGroup) {
-
-            foreach ($adminGroup['items'] as $key => $id) {
-                $groups[$name]['items'][$key] = $this->container->get($id);
+            if (isset($adminGroup['items'])) {
+                foreach ($adminGroup['items'] as $key => $id) {
+                    $groups[$name]['items'][$key] = $this->getInstance($id);
+                }
             }
 
             if (empty($groups[$name])) {

@@ -45,7 +45,8 @@ class PoolTest extends \PHPUnit_Framework_TestCase
         $this->pool->setAdminGroups(array(
             'adminGroup1' => array(
                 'items' => array('itemKey' => 'sonata.user.admin.group1')
-            )
+            ),
+            'adminGroup2' => array()
         ));
 
         $expectedOutput = array(
@@ -71,7 +72,30 @@ class PoolTest extends \PHPUnit_Framework_TestCase
 
     public function testGetAdminByAdminCode()
     {
-        $this->assertEquals('adminUserClass', $this->pool->getAdminByAdminCode('sonata.user.admin.group1'));
+        $this->assertEquals('adminUserClass', $this->pool->getAdminByAdminCode('sonata.news.admin.post'));
+    }
+
+    public function testGetAdminByAdminCodeForChildClass()
+    {
+        $adminMock = $this->getMockBuilder('Sonata\AdminBundle\Admin\Admin')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $adminMock->expects($this->any())
+            ->method('hasChild')
+            ->will($this->returnValue(true));
+        $adminMock->expects($this->once())
+            ->method('getChild')
+            ->with($this->equalTo('sonata.news.admin.comment'))
+            ->will($this->returnValue('commentAdminClass'));
+
+        $containerMock = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
+        $containerMock->expects($this->any())
+            ->method('get')
+            ->will($this->returnValue($adminMock));
+
+        $this->pool = new Pool($containerMock);
+
+        $this->assertEquals('commentAdminClass', $this->pool->getAdminByAdminCode('sonata.news.admin.post|sonata.news.admin.comment'));
     }
 
     public function testGetAdminClasses()
@@ -90,6 +114,11 @@ class PoolTest extends \PHPUnit_Framework_TestCase
     {
         $this->pool->setAdminServiceIds(array('sonata.user.admin.group1', 'sonata.user.admin.group2'));
         $this->assertEquals(array('sonata.user.admin.group1', 'sonata.user.admin.group2'), $this->pool->getAdminServiceIds());
+    }
+
+    public function testGetContainer()
+    {
+        $this->assertInstanceOf('Symfony\Component\DependencyInjection\ContainerInterface', $this->pool->getContainer());
     }
 
     /**
