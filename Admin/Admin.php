@@ -1668,6 +1668,17 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
+     * @param $name
+     * @return null|mixed
+     */
+    public function getPersistentParameter($name)
+    {
+        $parameters = $this->getPersistentParameters();
+
+        return isset($parameters[$name]) ? $parameters[$name] : null;
+    }
+
+    /**
      * @param string $action
      * @return array
      */
