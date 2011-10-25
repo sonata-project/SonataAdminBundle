@@ -51,24 +51,26 @@ file that was distributed with this source code.
                 </a>
             {% endif %}
 
-            {% if sonata_admin.field_description.associationadmin.hasRoute('create') and sonata_admin.field_description.associationadmin.isGranted('CREATE') %}
-                <a  href="{{ sonata_admin.field_description.associationadmin.generateUrl('create') }}"
-                    onclick="start_field_dialog_form_add_{{ id }}(event)"
-                    class="sonata-ba-action"
-                    >
-                        <img src="{{ asset('bundles/sonataadmin/famfamfam/add.png') }}" alt="{% trans from 'SonataAdminBundle' %}btn_add{% endtrans %}" />
-                </a>
-            {% endif %}
+            {% if sonata_admin.edit != 'noaction' %}
+                {% if sonata_admin.field_description.associationadmin.hasRoute('create') and sonata_admin.field_description.associationadmin.isGranted('CREATE') %}
+                    <a  href="{{ sonata_admin.field_description.associationadmin.generateUrl('create') }}"
+                        onclick="start_field_dialog_form_add_{{ id }}(event)"
+                        class="sonata-ba-action"
+                        >
+                            <img src="{{ asset('bundles/sonataadmin/famfamfam/add.png') }}" alt="{% trans from 'SonataAdminBundle' %}btn_add{% endtrans %}" />
+                    </a>
+                {% endif %}
 
-            {% if sonata_admin.edit == 'list' and sonata_admin.field_description.associationadmin.hasRoute('list') and sonata_admin.field_description.associationadmin.isGranted('LIST') %}
-                <a  href=""
-                    onclick="remove_selected_element_{{ id }}(event)"
-                    class="sonata-ba-action"
-                    >
-                    <img src="{{ asset('bundles/sonataadmin/famfamfam/cancel.png') }}"
-                         alt="{% trans from 'SonataAdminBundle' %}btn_cancel{% endtrans %}"
-                    />
-                </a>
+                {% if sonata_admin.edit == 'list' and sonata_admin.field_description.associationadmin.hasRoute('list') and sonata_admin.field_description.associationadmin.isGranted('LIST') %}
+                    <a  href=""
+                        onclick="remove_selected_element_{{ id }}(event)"
+                        class="sonata-ba-action"
+                        >
+                        <img src="{{ asset('bundles/sonataadmin/famfamfam/cancel.png') }}"
+                             alt="{% trans from 'SonataAdminBundle' %}btn_cancel{% endtrans %}"
+                        />
+                    </a>
+                {% endif %}
             {% endif %}
 
         </span>
