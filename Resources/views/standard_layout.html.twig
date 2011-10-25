@@ -13,9 +13,42 @@ file that was distributed with this source code.
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-        {% include 'SonataAdminBundle:Core:head_stylesheets.html.twig' %}
-        {% include 'SonataAdminBundle:Core:head_javascripts.html.twig' %}
-        {% include 'SonataAdminBundle:Core:head_title.html.twig' %}
+        {% block stylesheets %}
+            <!-- jQuery code -->
+            <link rel="stylesheet" href="{{ asset('bundles/sonatajquery/themes/flick/jquery-ui-1.8.6.custom.css') }}" type="text/css" media="all" />
+
+            <!-- blueprint code -->
+            <link rel="stylesheet" href="{{ asset('bundles/sonatablueprint/screen.css') }}" type="text/css" media="screen, projection">
+            <link rel="stylesheet" href="{{ asset('bundles/sonatablueprint/print.css') }}" type="text/css" media="print">
+            <!--[if lt IE 8]><link rel="stylesheet" href="{{ asset('bundles/sonatablueprint/ie.css') }}" type="text/css" media="screen, projection"><![endif]-->
+
+            <!-- base application asset -->
+            <link rel="stylesheet" href="{{ asset('bundles/sonataadmin/css/layout.css') }}" type="text/css" media="all">
+            <link rel="stylesheet" href="{{ asset('bundles/sonataadmin/css/colors.css') }}" type="text/css" media="all">
+        {% endblock %}
+
+        {% block javascripts %}
+            <script src="{{ asset('bundles/sonatajquery/jquery-1.4.4.js') }}" type="text/javascript"></script>
+            <script src="{{ asset('bundles/sonatajquery/jquery-ui-1.8.6.custom.js') }}" type="text/javascript"></script>
+            <script src="{{ asset('bundles/sonatajquery/jquery-ui-i18n.js') }}" type="text/javascript"></script>
+            <script src="{{ asset('bundles/sonataadmin/qtip/jquery.qtip-1.0.0-rc3.min.js') }}" type="text/javascript"></script>
+            <script src="{{ asset('bundles/sonataadmin/jquery/jquery.form.js') }}" type="text/javascript"></script>
+            <script src="{{ asset('bundles/sonataadmin/base.js') }}" type="text/javascript"></script>
+        {% endblock %}
+
+        <title>
+            {% block title %} {% trans from 'SonataAdminBundle' %}Admin{% endtrans %}
+                {% if action is defined %}
+                    -
+                    {% for label, uri in admin.breadcrumbs(action) %}
+                        {% if not loop.first  %}
+                            &gt;
+                        {% endif %}
+                        {{ label }}
+                    {% endfor %}
+                {% endif %}
+            {% endblock %}
+        </title>
     </head>
     <body>
         {# initialize block value #}
@@ -30,12 +63,46 @@ file that was distributed with this source code.
             {% set _side_menu    = block('side_menu') %}
             {% set _content      = block('content') %}
 
-            {% include 'SonataAdminBundle:Core:header.html.twig' %}
+            <div class="span-24 last header">
+                <div class="span-20">
+                    <a href="{{ url('sonata_admin_dashboard') }}" class="home">{% trans from 'SonataAdminBundle' %}Admin{% endtrans %}</a>
+                </div>
+
+                <div class="span-4 last">
+                    {% block user_panel %}{#Add here logout option / user options#}{% endblock %}
+                </div>
+            </div>
 
             <div class="span-24 last content clear">
-                {% include 'SonataAdminBundle:Core:actions.html.twig' %}
-                {% include 'SonataAdminBundle:Core:breadcrumb.html.twig' %}
-                {% include 'SonataAdminBundle:Core:notice.html.twig' %}
+                <div class="right">
+                    {% block actions %}{% endblock %}
+                </div>
+
+                <div class="sonata-ba-breadcrumbs">
+                    <h1>
+                        {% block breadcrumb %}
+                            {% if action is defined %}
+                                {% for label, uri in admin.breadcrumbs(action) %}
+                                    {% if not loop.first  %}
+                                        &gt;
+                                    {% endif %}
+                                    <a href="{{ uri }}">{{ label }}</a>
+                                {% endfor %}
+                            {% endif %}
+                        {% endblock %}
+                    </h1>
+                </div>
+
+                {% block notice %}
+                    {% for notice_level in ['success','error','notice'] %}
+                        {% set session_var = 'sonata_flash_' ~ notice_level %}
+                        {% if app.session.hasFlash(session_var) %}
+                            <div class="{{notice_level}}">
+                            {{ app.session.flash(session_var) | trans([],'SonataAdminBundle') }}
+                           </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endblock %}
             </div>
 
             {% if _preview is not empty %}
@@ -93,7 +160,9 @@ file that was distributed with this source code.
 
             </div>
 
-            {% include 'SonataAdminBundle:Core:footer.html.twig' %}
+            <div class="span-24 last">
+                {% block footer %}{% endblock %}
+            </div>
         </div>
     </body>
 </html>
