@@ -63,6 +63,7 @@ class SonataAdminExtension extends Extension
         $this->configSetupTemplates($config, $container);
 
         $pool = $container->getDefinition('sonata.admin.pool');
+        $pool->addMethodCall('setTemplates', array($config['templates']));
         $pool->addMethodCall('__hack__', $config);
 
         $container->setAlias('sonata.admin.security.handler', $config['security_handler']);
