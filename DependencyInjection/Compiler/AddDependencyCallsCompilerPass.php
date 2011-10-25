@@ -20,7 +20,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
- * Add all dependencies to the Admin class, this avoid to write to many lines
+ * Add all dependencies to the Admin class, this avoid to write too many lines
  * in the configuration files.
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
