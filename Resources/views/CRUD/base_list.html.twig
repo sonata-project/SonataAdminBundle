@@ -50,9 +50,9 @@ file that was distributed with this source code.
                                         {% if sortable %}<a href="{{ admin.generateUrl('list', sort_parameters) }}">{% endif %}
 
                                         {% if field_description.options.name is defined %}
-                                            {{ field_description.options.name|trans({}, admin.translationdomain) }}
+                                            {{ field_description.options.name|trans|capitalize({}, admin.translationdomain) }}
                                         {% else %}
-                                            {{ field_description.name|trans({}, admin.translationdomain) }}
+                                            {{ field_description.name|trans|capitalize({}, admin.translationdomain) }}
                                         {% endif %}
 
                                         {% if sortable %}</a>{% endif %}
