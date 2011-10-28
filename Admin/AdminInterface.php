@@ -145,4 +145,15 @@ interface AdminInterface
      * @return void
      */
     function setParentFieldDescription(FieldDescriptionInterface $parentFieldDescription);
+
+    /**
+     * translate a message id
+     *
+     * @param string $id
+     * @param array $parameters
+     * @param null $domain
+     * @param null $locale
+     * @return string the translated string
+     */
+    function trans($id, array $parameters = array(), $domain = null, $locale = null);
 }
