@@ -56,7 +56,7 @@
             </trans-unit>
             <trans-unit id="link_add">
                 <source>link_add</source>
-                <target>Adicionar novo</target>
+                <target>Novo</target>
             </trans-unit>
             <trans-unit id="link_list">
                 <source>link_list</source>
@@ -72,7 +72,7 @@
             </trans-unit>
             <trans-unit id="title_dashboard">
                 <source>title_dashboard</source>
-                <target>Visão geral</target>
+                <target>Visão Geral</target>
             </trans-unit>
             <trans-unit id="title_edit">
                 <source>title_edit</source>
@@ -104,7 +104,7 @@
             </trans-unit>
             <trans-unit id="confirm_msg">
                 <source>confirm_msg</source>
-                <target>Tem a certeza?</target>
+                <target>Têm a certeza?</target>
             </trans-unit>
             <trans-unit id="action_edit">
                 <source>action_edit</source>
@@ -156,7 +156,7 @@
             </trans-unit>
             <trans-unit id="link_breadcrumb_dashboard">
                 <source>breadcrumb.dashboard</source>
-                <target>&#8962;</target>
+                <target>Visão Geral</target>
             </trans-unit>
             <trans-unit id="title_delete">
                 <source>title_delete</source>
@@ -192,11 +192,11 @@
             </trans-unit>
             <trans-unit id="label_type_contains">
               <source>label_type_contains</source>
-              <target>contem</target>
+              <target>contêm</target>
             </trans-unit>
             <trans-unit id="label_type_not_contains">
               <source>label_type_not_contains</source>
-              <target>não contem</target>
+              <target>não contêm</target>
             </trans-unit>
             <trans-unit id="label_type_equals">
               <source>label_type_equals</source>
