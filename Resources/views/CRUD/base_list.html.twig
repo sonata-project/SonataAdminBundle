@@ -135,15 +135,42 @@ file that was distributed with this source code.
 {% block list_filters %}
     {% if admin.datagrid.filters %}
         <form class="sonata-filter-form" action="{{ admin.generateUrl('list') }}" method="GET">
-            {% for filter in admin.datagrid.filters %}
-                {{ form_row(form.getChild(filter.name)) }}
-            {% endfor %}
+            <fieldset class="filter_legend">
+                <legend class="filter_legend">{% trans from 'SonataAdminBundle' %}label_filters{% endtrans %}</legend>
 
-            {{ form_rest(form) }}
+                <div class="filter_container">
+                    <table>
+                        <tr>
+                            <td>
+                                <table>
+                                    {% for filter in admin.datagrid.filters %}
+                                        <tr id="filter_{{ filter.name }}_row">
+                                            <td class="filter-title">{{ admin.trans(filter.name) }}</td>
+                                            <td class="filter-type">{{ form_widget(form.getChild(filter.name).getChild('type')) }}</td>
+                                            <td class="filter-value">{{ form_widget(form.getChild(filter.name).getChild('value')) }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </table>
+                            </td>
+                            {#<td>#}
+                                {#<label for="add_filter_select">{% trans from 'SonataAdminBundle' %}add_filter{% endtrans %}</label>#}
+                                {#<select id="add_filter_select">#}
+                                    {#{% for filter in admin.datagrid.filters %}#}
+                                        {#<option value="{{ filter.name }}">{{ admin.trans(filter.name) }}</option>#}
+                                    {#{% endfor %}#}
+                                {#</select>#}
+                            {#</td>#}
+                        </tr>
+                    </table>
+                    {{ form_rest(form) }}
 
-            <input type="submit" value="{% trans from 'SonataAdminBundle' %}btn_filter{% endtrans %}" />
+                    <input type="submit" value="{% trans from 'SonataAdminBundle' %}btn_filter{% endtrans %}" />
 
-            <a href="{{ admin.generateUrl('list') }}">{% trans from 'SonataAdminBundle' %}link_reset_filter{% endtrans %}</a>
+                    <a href="{{ admin.generateUrl('list') }}">{% trans from 'SonataAdminBundle' %}link_reset_filter{% endtrans %}</a>
+
+                </div>
+            </fieldset>
+
         </form>
     {% endif %}
 {% endblock %}

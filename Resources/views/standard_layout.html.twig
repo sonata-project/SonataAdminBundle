@@ -135,20 +135,20 @@ file that was distributed with this source code.
                     {% if _list_table is not empty or _list_filters is not empty %}
                         {% if _side_menu is not empty %}
                             <div class="sonata-ba-list">
-                                <div class="span-13">
-                                    {{ _list_table|raw }}
-                                </div>
-                                <div class="span-5 last">
+                                <div class="span-18 last">
                                     {{ _list_filters|raw }}
+                                </div>
+                                <div class="span-18 last">
+                                    {{ _list_table|raw }}
                                 </div>
                             </div>
                         {% else %}
                             <div class="sonata-ba-list">
-                                <div class="span-19">
-                                    {{ _list_table|raw }}
-                                </div>
-                                <div class="span-5 last">
+                                <div class="span-24 last">
                                     {{ _list_filters|raw }}
+                                </div>
+                                <div class="span-24 last">
+                                    {{ _list_table|raw }}
                                 </div>
                             </div>
                         {% endif %}

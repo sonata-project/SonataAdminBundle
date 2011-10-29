@@ -1,9 +1,8 @@
 jQuery(document).ready(function() {
-
     Admin.add_pretty_errors(document);
     Admin.add_collapsed_toggle();
+    Admin.add_filters(document);
 });
-
 
 var Admin = {
 
@@ -15,8 +14,7 @@ var Admin = {
         var msg = '[Sonata.Admin] ' + Array.prototype.join.call(arguments,', ');
         if (window.console && window.console.log) {
             window.console.log(msg);
-        }
-        else if (window.opera && window.opera.postError) {
+        } else if (window.opera && window.opera.postError) {
             window.opera.postError(msg);
         }
     },
@@ -39,9 +37,9 @@ var Admin = {
             if (message.length == 0) {
                 return;
             }
-            
+
             var target;
-            
+
             /* Hack to handle qTip on select */
             if(jQuery(input).is("select")) {
               jQuery(element).prepend("<span></span>");
@@ -51,7 +49,7 @@ var Admin = {
             else {
               target = input;
             }
-            
+
             target.qtip({
                 content: message,
                 show: 'focusin',
@@ -107,5 +105,12 @@ var Admin = {
         }
 
         return targetElement;
+    },
+
+    add_filters: function(subject) {
+        jQuery('div.filter_container', subject).hide();
+        jQuery('fieldset.filter_legend', subject).click(function(event) {
+           jQuery('div.filter_container', jQuery(event.target).parent()).toggle();
+        });
     }
 }

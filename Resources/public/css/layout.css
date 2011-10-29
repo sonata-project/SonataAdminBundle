@@ -11,6 +11,24 @@ div.sonata-ba-field-inline-table textarea.title {
     height: 50px;
 }
 
+
+fieldset.filter_legend {
+    font-weight: bold;
+    border: 1px solid #E4E4E4;
+    margin: 0;
+    border-width: 1px 0 0;
+    padding: 0;
+}
+
+fieldset.filter_legend table {
+    margin: 0;
+}
+
+legend.filter_legend {
+    background: url(../famfamfam/bullet_arrow_down.png) no-repeat center left;
+    padding-left: 16px;
+}
+
 table.sonata-ba-list td {
     width: 75px;
 }

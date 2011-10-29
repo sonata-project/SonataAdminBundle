@@ -32,9 +32,11 @@ This code manage the many-to-[one|many] association field popup
         event.preventDefault();
         event.stopPropagation();
 
+        Admin.log('[{{ id }}|field_dialog_form_list_link] handle link click in a list');
+
         var element = jQuery(this).parents('#field_dialog_{{ id }} td.sonata-ba-list-field');
 
-        // the user does does click on a row column
+        // the user does click on a row column
         if (element.length == 0) {
             // make a recursive call (ie: reset the filter)
             jQuery.ajax({
@@ -63,6 +65,8 @@ This code manage the many-to-[one|many] association field popup
         event.preventDefault();
         event.stopPropagation();
 
+        Admin.log('[{{ id }}|field_dialog_form_list] open the list modal');
+
         var a = jQuery(this);
 
         field_dialog_{{ id }}.html('');
@@ -72,8 +76,12 @@ This code manage the many-to-[one|many] association field popup
             url: a.attr('href'),
             success: function(html) {
 
+                Admin.log('[{{ id }}|field_dialog_form_list] retrieving the list content');
+
                 // populate the popup container
                 field_dialog_{{ id }}.html(html);
+
+                Admin.add_filters(field_dialog_{{ id }});
 
                 // capture the submit event to make an ajax call, ie : POST data to the
                 // related create admin
@@ -122,6 +130,7 @@ This code manage the many-to-[one|many] association field popup
         field_dialog_{{ id }}.html('');
 
         Admin.log('[{{ id }}|field_dialog_form_add] add link action');
+
         // retrieve the form element from the related admin generator
         jQuery.ajax({
             url: a.attr('href'),
@@ -162,6 +171,7 @@ This code manage the many-to-[one|many] association field popup
         event.stopPropagation();
 
         Admin.log('[{{ id }}|field_dialog_form_action] action catch', this);
+
         initialize_popup_{{ id }}();
 
         var element = jQuery(this);
@@ -198,6 +208,7 @@ This code manage the many-to-[one|many] association field popup
             success: function(data) {
 
                 Admin.log('[{{ id }}|field_dialog_form_action] ajax success');
+
                 if (typeof data == 'string') {
                     field_dialog_{{ id }}.html(data);
                     return;
@@ -336,7 +347,7 @@ This code manage the many-to-[one|many] association field popup
             if (jQuery('#{{ id }} option').get(0)) {
                 jQuery('#{{ id }}').attr('selectedIndex', '-1').children("option:selected").attr("selected", false);
             }
-            
+
             jQuery('#{{ id }}').val('');
             jQuery('#{{ id }}').trigger('change');
 
@@ -346,8 +357,11 @@ This code manage the many-to-[one|many] association field popup
           attach onchange event on the input
         #}
 
-        // update the
+        // update the label
         jQuery('#{{ id }}').live('change', function(event) {
+
+            Admin.log('[{{ id }}] update the label');
+
             jQuery('#field_widget_{{ id }}').html("<span><img src=\"{{ asset('bundles/sonataadmin/ajax-loader.gif') }}\" style=\"vertical-align: middle; margin-right: 10px\"/>{{ 'loading_information ...'|trans([], 'SonataAdminBundle') }}</span>");
             jQuery.ajax({
                 type: 'GET',
