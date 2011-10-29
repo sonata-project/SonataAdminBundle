@@ -54,6 +54,7 @@ class SonataAdminExtension extends Extension
         $loader->load('core.xml');
         $loader->load('form_types.xml');
         $loader->load('validator.xml');
+        $loader->load('route.xml');
 
         $configuration = new Configuration();
         $processor = new Processor();

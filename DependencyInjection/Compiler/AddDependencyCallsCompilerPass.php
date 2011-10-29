@@ -182,6 +182,10 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
             }
         }
 
+        if (!$definition->hasMethodCall('setRouteBuilder')) {
+            $definition->addMethodCall('setRouteBuilder', array(new Reference('sonata.admin.route.path_info')));
+        }
+
         if (isset($service['label'])) {
             $label = $service['label'];
         } elseif (isset($attributes[0]['label'])) {

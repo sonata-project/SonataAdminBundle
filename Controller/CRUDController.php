@@ -219,13 +219,15 @@ class CRUDController extends Controller
      * @param  $id
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function editAction($id)
+    public function editAction($id = null)
     {
         if (false === $this->admin->isGranted('EDIT')) {
             throw new AccessDeniedException();
         }
 
-        $object = $this->admin->getObject($this->get('request')->get($this->admin->getIdParameter()));
+        $id = $this->get('request')->get($this->admin->getIdParameter());
+
+        $object = $this->admin->getObject($id);
 
         if (!$object) {
             throw new NotFoundHttpException(sprintf('unable to find the object with id : %s', $id));
@@ -423,13 +425,15 @@ class CRUDController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function showAction($id)
+    public function showAction($id = null)
     {
         if (false === $this->admin->isGranted('SHOW')) {
             throw new AccessDeniedException();
         }
 
-        $object = $this->admin->getObject($this->get('request')->get($this->admin->getIdParameter()));
+        $id = $this->get('request')->get($this->admin->getIdParameter());
+
+        $object = $this->admin->getObject($id);
 
         if (!$object) {
             throw new NotFoundHttpException(sprintf('unable to find the object with id : %s', $id));

@@ -156,4 +156,12 @@ interface AdminInterface
      * @return string the translated string
      */
     function trans($id, array $parameters = array(), $domain = null, $locale = null);
+
+    /**
+     * Return the parameter name used to represente the id in the url
+     *
+     * @abstract
+     * @return string
+     */
+    function getRouterIdParameter();
 }

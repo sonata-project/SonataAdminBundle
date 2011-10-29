@@ -31,6 +31,7 @@ use Sonata\AdminBundle\Builder\FormContractorInterface;
 use Sonata\AdminBundle\Builder\ListBuilderInterface;
 use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
 use Sonata\AdminBundle\Builder\ShowBuilderInterface;
+use Sonata\AdminBundle\Builder\RouteBuilderInterface;
 
 use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
 use Sonata\AdminBundle\Route\RouteCollection;
@@ -297,6 +298,11 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      * @var \Sonata\AdminBundle\Builder\DatagridBuilderInterface
      */
     protected $datagridBuilder;
+
+    /**
+     * @var \Sonata\AdminBundle\Builder\RouteBuilderInterface
+     */
+    protected $routeBuilder;
 
     /**
      * The datagrid instance
@@ -821,32 +827,20 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
         $this->loaded['routes'] = true;
 
-        $collection = new RouteCollection(
+        $this->routes = new RouteCollection(
             $this->getBaseCodeRoute(),
             $this->getBaseRouteName(),
             $this->getBaseRoutePattern(),
             $this->getBaseControllerName()
         );
 
-        $collection->add('list');
-        $collection->add('create');
-        $collection->add('batch');
-        $collection->add('edit', $this->getRouterIdParameter().'/edit');
-        $collection->add('delete', $this->getRouterIdParameter().'/delete');
-        $collection->add('show', $this->getRouterIdParameter().'/show');
+        $this->routeBuilder->build($this, $this->routes);
 
-        // add children urls
-        foreach ($this->getChildren() as $children) {
-            $collection->addCollection($children->getRoutes());
-        }
-
-        $this->configureRoutes($collection);
+        $this->configureRoutes($this->routes);
 
         foreach($this->extensions as $extension) {
-            $extension->configureRoutes($this, $collection);
+            $extension->configureRoutes($this, $this->routes);
         }
-
-        $this->routes = $collection;
     }
 
     /**
@@ -2173,5 +2167,21 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     public function getMenuFactory()
     {
         return $this->menuFactory;
+    }
+
+    /**
+     * @param \Sonata\AdminBundle\Builder\RouteBuilderInterface $routeBuilder
+     */
+    public function setRouteBuilder(RouteBuilderInterface $routeBuilder)
+    {
+        $this->routeBuilder = $routeBuilder;
+    }
+
+    /**
+     * @return \Sonata\AdminBundle\Builder\RouteBuilderInterface
+     */
+    public function getRouteBuilder()
+    {
+        return $this->routeBuilder;
     }
 }
