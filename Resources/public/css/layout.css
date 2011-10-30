@@ -37,10 +37,6 @@ table.sonata-ba-list td img{
     vertical-align: bottom
 }
 
-table.sonata-ba-list td.sonata-ba-list-label {
-    width: 350px;
-}
-
 td.pager ul {
     float: left;
     list-style: none;

@@ -9,22 +9,21 @@ file that was distributed with this source code.
 
 #}
 
-<div id="sonata-ba-field-container-{{ field_element.vars.id }}">
+<div class="clearfix{% if field_element.var.errors|length > 0%} error{%endif%}" id="sonata-ba-field-container-{{ field_element.vars.id }}">
     {% block label %}
         {% if field_description.options.name is defined %}
             {{ form_label(field_element, field_description.options.name) }}
         {% else %}
             {{ form_label(field_element) }}
         {% endif %}
-        <br />
     {% endblock %}
 
-    <div class="sonata-ba-field sonata-ba-field-{{ edit }}-{{ inline }} {% if field_element.vars.errors|length > 0 %}sonata-ba-field-error{% endif %}">
+    <div class="input sonata-ba-field sonata-ba-field-{{ edit }}-{{ inline }} {% if field_element.vars.errors|length > 0 %}sonata-ba-field-error{% endif %}">
 
         {% block field %}{{ form_widget(field_element) }}{% endblock %}
 
         {% if field_description.help %}
-            <em class="sonata-ba-field-help">{% block help %}{{ field_description.help }}{% endblock %}</em>
+            <span class="help-inline">{% block help %}{{ field_description.help }}{% endblock %}</span>
         {% endif %}
 
         <div class="sonata-ba-field-error-messages">

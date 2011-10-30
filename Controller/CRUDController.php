@@ -125,6 +125,7 @@ class CRUDController extends Controller
     {
         $parameters['admin']         = isset($parameters['admin']) ? $parameters['admin'] : $this->admin;
         $parameters['base_template'] = isset($parameters['base_template']) ? $parameters['base_template'] : $this->getBaseTemplate();
+        $parameters['admin_pool']    = $this->get('sonata.admin.pool');
 
         return parent::render($view, $parameters);
     }
@@ -265,9 +266,9 @@ class CRUDController extends Controller
         $this->get('twig')->getExtension('form')->setTheme($view, $this->admin->getFormTheme());
 
         return $this->render($this->admin->getEditTemplate(), array(
-            'action'         => 'edit',
-            'form'           => $view,
-            'object'         => $object,
+            'action' => 'edit',
+            'form'   => $view,
+            'object' => $object,
         ));
     }
 
@@ -324,7 +325,7 @@ class CRUDController extends Controller
         }
 
         if (count($idx) == 0 && !$all_elements) { // no item selected
-            $this->get('session')->setFlash('sonata_flash_notice', 'flash_batch_empty');
+            $this->get('session')->setFlash('sonata_flash_info', 'flash_batch_empty');
 
             return new RedirectResponse($this->admin->generateUrl('list', $this->admin->getFilterParameters()));
         }
@@ -401,6 +402,7 @@ class CRUDController extends Controller
                         'objectId' => $this->admin->getNormalizedIdentifier($object)
                     ));
                 }
+
                 $this->get('session')->setFlash('sonata_flash_success','flash_create_success');
                 // redirect to edit mode
                 return $this->redirectTo($object);

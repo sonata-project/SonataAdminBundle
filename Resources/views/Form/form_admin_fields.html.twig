@@ -9,30 +9,47 @@ file that was distributed with this source code.
 
 #}
 
-{% extends 'form_div_layout.html.twig' %}
+{% extends 'SonataAdminBundle:Form:silex_form_div_layout.html.twig' %}
 
-{# Rows #}
+{# Labels #}
+{% block generic_label %}
+{% spaceless %}
+    {% if required %}
+        {% set attr = attr|merge({'class': attr.class|default('') ~ ' required'}) %}
+    {% endif %}
+    {% if in_list_checkbox is defined and in_list_checkbox and widget is defined %}
+        <label{% for attrname,attrvalue in attr %} {{attrname}}="{{attrvalue}}"{% endfor %}>
+            {{ widget|raw }}
+            <span>
+                {{ label|trans }}
+            </span>
+            {{ required ? '*' : '' }}
+        </label>
+    {% else %}
+        <label{% for attrname,attrvalue in attr %} {{attrname}}="{{attrvalue}}"{% endfor %}>{{ label|trans }} {{ required ? '*' : '' }} </label>
+    {% endif %}
+{% endspaceless %}
+{% endblock %}
 
 {% block field_row %}
     {% if sonata_admin is not defined or not sonata_admin_enabled or not sonata_admin.field_description %}
         {{ parent() }}
     {% else %}
-        <div id="sonata-ba-field-container-{{ id }}">
+        <div class="clearfix{% if errors|length > 0%} error{%endif%}" id="sonata-ba-field-container-{{ id }}">
             {% block label %}
                 {% if sonata_admin.field_description.options.name is defined %}
-                    {{ form_label(form, sonata_admin.field_description.options.name) }}{{ required ? '*' : '' }}
+                    {{ form_label(form, sonata_admin.field_description.options.name) }}
                 {% else %}
-                    {{ form_label(form) }}{{ required ? '*' : '' }}
+                    {{ form_label(form) }}
                 {% endif %}
-                <br />
             {% endblock %}
 
-            <div class="sonata-ba-field sonata-ba-field-{{ sonata_admin.edit }}-{{ sonata_admin.inline }} {% if errors|length > 0 %}sonata-ba-field-error{% endif %}">
+            <div class="input sonata-ba-field sonata-ba-field-{{ sonata_admin.edit }}-{{ sonata_admin.inline }} {% if errors|length > 0 %}sonata-ba-field-error{% endif %}">
 
                 {{ form_widget(form) }}
 
                 {% if sonata_admin.field_description.help %}
-                    <em class="sonata-ba-field-help">{{ sonata_admin.field_description.help }}</em>
+                    <span class="help-block sonata-ba-field-help">{{ sonata_admin.field_description.help }}</span>
                 {% endif %}
 
                 {% if errors|length > 0 %}

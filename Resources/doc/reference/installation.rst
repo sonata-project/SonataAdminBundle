@@ -11,10 +11,6 @@ the following lines to the file ``deps``::
       git=http://github.com/sonata-project/SonatajQueryBundle.git
       target=/bundles/Sonata/jQueryBundle
 
-  [SonataBluePrintBundle]
-      git=http://github.com/sonata-project/SonataBluePrintBundle.git
-      target=/bundles/Sonata/BluePrintBundle
-
   [SonataUserBundle]
       git=http://github.com/sonata-project/SonataUserBundle.git
       target=/bundles/Sonata/UserBundle
@@ -61,7 +57,6 @@ files:
       return array(
           // ...
           new Sonata\jQueryBundle\SonatajQueryBundle(),
-          new Sonata\BluePrintBundle\SonataBluePrintBundle(),
           new Sonata\AdminBundle\SonataAdminBundle(),
           new Knp\Bundle\MenuBundle\KnpMenuBundle(),
           // ...
