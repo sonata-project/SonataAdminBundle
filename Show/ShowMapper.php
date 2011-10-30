@@ -119,7 +119,7 @@ class ShowMapper
             $showGroups[$name] = array_merge(array('collapsed' => false, 'fields' => array()), $options);
         }
 
-        $this->admin->setFormGroups($showGroups);
+        $this->admin->setShowGroups($showGroups);
 
         $this->currentGroup = $name;
 
