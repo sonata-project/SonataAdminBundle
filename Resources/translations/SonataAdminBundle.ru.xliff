@@ -34,17 +34,21 @@
                 <source>btn_update_and_return_to_list</source>
                 <target>Сохранить и вернуться к списку</target>
             </trans-unit>
+            <trans-unit id="link_delete">
+                <source>link_delete</source>
+                <target>Удалить</target>
+            </trans-unit>
             <trans-unit id="link_action_create">
                 <source>link_action_create</source>
                 <target>Добавить новый</target>
             </trans-unit>
             <trans-unit id="link_action_list">
                 <source>link_action_list</source>
-                <target>Вернуться к списку</target>
+                <target>Возврат к списку</target>
             </trans-unit>
             <trans-unit id="link_action_show">
                 <source>link_action_show</source>
-                <target>Просмотреть</target>
+                <target>Показать</target>
             </trans-unit>
             <trans-unit id="link_action_edit">
                 <source>link_action_edit</source>
@@ -60,7 +64,7 @@
             </trans-unit>
             <trans-unit id="link_reset_filter">
                 <source>link_reset_filter</source>
-                <target>Сбросить</target>
+                <target>Сброс</target>
             </trans-unit>
             <trans-unit id="title_create">
                 <source>title_create</source>
@@ -68,7 +72,7 @@
             </trans-unit>
             <trans-unit id="title_dashboard">
                 <source>title_dashboard</source>
-                <target>Панель</target>
+                <target>Панель администрирования</target>
             </trans-unit>
             <trans-unit id="title_edit">
                 <source>title_edit</source>
@@ -80,15 +84,15 @@
             </trans-unit>
             <trans-unit id="link_next_pager">
                 <source>link_next_pager</source>
-                <target>Следущие</target>
+                <target>Следующая</target>
             </trans-unit>
             <trans-unit id="link_previous_pager">
                 <source>link_previous_pager</source>
-                <target>Предыдущие</target>
+                <target>Предыдущая</target>
             </trans-unit>
             <trans-unit id="Admin">
                 <source>Admin</source>
-                <target>Админ</target>
+                <target>Администрирование</target>
             </trans-unit>
             <trans-unit id="link_expand">
                 <source>link_expand</source>
@@ -108,15 +112,123 @@
             </trans-unit>
             <trans-unit id="action_show">
                 <source>action_show</source>
-                <target>Просмотреть</target>
+                <target>Показать</target>
             </trans-unit>
             <trans-unit id="all_elements">
                 <source>all_elements</source>
-                <target>Для всех записей</target>
+                <target>Применить для всех</target>
+            </trans-unit>
+            <trans-unit id='flash_batch_empty'>
+              <source>flash_batch_empty</source>
+              <target>Действие отменено. Нет выбранных объектов.</target>
+            </trans-unit>
+            <trans-unit id='flash_create_success'>
+              <source>flash_create_success</source>
+              <target>Элемент создан успешно</target>
+            </trans-unit>
+            <trans-unit id='flash_create_error'>
+              <source>flash_create_error</source>
+              <target>При создании элемента произошла ошибка.</target>
+            </trans-unit>
+            <trans-unit id='flash_edit_success'>
+              <source>flash_edit_success</source>
+              <target>Элемент успешно обновлен.</target>
+            </trans-unit>
+            <trans-unit id='flash_edit_error'>
+              <source>flash_edit_error</source>
+              <target>Во время обновления элемента произошла ошибка.</target>
+            </trans-unit>
+            <trans-unit id='flash_batch_delete_success'>
+              <source>flash_batch_delete_success</source>
+              <target>Выбранные элементы были успешно удалены.</target>
+            </trans-unit>
+            <trans-unit id='flash_batch_delete_error'>
+              <source>flash_batch_delete_error</source>
+              <target>Во время удаления выбранных элементов произошла ошибка.</target>
+            </trans-unit>
+            <trans-unit id='flash_delete_error'>
+              <source>flash_delete_error</source>
+              <target>Во время удаления элемента произошла ошибка.</target>
+            </trans-unit>
+            <trans-unit id='flash_delete_success'>
+              <source>flash_delete_success</source>
+              <target>Элемент успешно удален.</target>
             </trans-unit>
             <trans-unit id="link_breadcrumb_dashboard">
                 <source>breadcrumb.dashboard</source>
                 <target>&#8962;</target>
+            </trans-unit>
+            <trans-unit id="title_delete">
+                <source>title_delete</source>
+                <target>Подтверждение удаления</target>
+            </trans-unit>
+            <trans-unit id="message_delete_confirmation">
+                <source>message_delete_confirmation</source>
+                <target>Вы действительно хотите удалить выбранный элемент?</target>
+            </trans-unit>
+            <trans-unit id="btn_delete">
+                <source>btn_delete</source>
+                <target>Да, удалить</target>
+            </trans-unit>
+            <trans-unit id="title_batch_confirmation">
+                <source>title_batch_confirmation</source>
+                <target>Подтверждение пакетного действия</target>
+            </trans-unit>
+            <trans-unit id="message_batch_confirmation">
+                <source>message_batch_confirmation</source>
+                <target>Вы действительно хотите произвести выбранное действие для данных элементов?</target>
+            </trans-unit>
+            <trans-unit id="btn_execute_batch_action">
+                <source>btn_execute_batch_action</source>
+                <target>Да, выполнить</target>
+            </trans-unit>
+            <trans-unit id="label_type_yes">
+              <source>label_type_yes</source>
+              <target>да</target>
+            </trans-unit>
+            <trans-unit id="label_type_no">
+              <source>label_type_no</source>
+              <target>нет</target>
+            </trans-unit>
+            <trans-unit id="label_type_contains">
+              <source>label_type_contains</source>
+              <target>содержит</target>
+            </trans-unit>
+            <trans-unit id="label_type_not_contains">
+              <source>label_type_not_contains</source>
+              <target>не содержит</target>
+            </trans-unit>
+            <trans-unit id="label_type_equals">
+              <source>label_type_equals</source>
+              <target>равен</target>
+            </trans-unit>
+            <trans-unit id="label_type_equal">
+              <source>label_type_equal</source>
+              <target>=</target>
+            </trans-unit>
+            <trans-unit id="label_type_greater_equal">
+              <source>label_type_greater_equal</source>
+              <target>&gt;=</target>
+            </trans-unit>
+            <trans-unit id="label_type_greater_than">
+              <source>label_type_greater_than</source>
+              <target>&gt;</target>
+            </trans-unit>
+            <trans-unit id="label_type_less_equal">
+              <source>label_type_less_equal</source>
+              <target>&lt;=</target>
+            </trans-unit>
+            <trans-unit id="label_type_less_than">
+              <source>label_type_less_than</source>
+              <target>&lt;</target>
+            </trans-unit>
+            <trans-unit id="label_filters">
+              <source>label_filters</source>
+              <target>Фильтры</target>
+            </trans-unit>
+            <trans-unit id="delete_or">
+              <source>delete_or</source>
+              <target>или</target>
             </trans-unit>
         </body>
     </file>
