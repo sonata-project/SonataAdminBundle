@@ -84,11 +84,11 @@
             </trans-unit>
             <trans-unit id="link_next_pager">
                 <source>link_next_pager</source>
-                <target>Следующий</target>
+                <target>Следующая</target>
             </trans-unit>
             <trans-unit id="link_previous_pager">
                 <source>link_previous_pager</source>
-                <target>Предыдущий</target>
+                <target>Предыдущая</target>
             </trans-unit>
             <trans-unit id="Admin">
                 <source>Admin</source>
@@ -104,7 +104,7 @@
             </trans-unit>
             <trans-unit id="confirm_msg">
                 <source>confirm_msg</source>
-                <target>Вы уверены ?</target>
+                <target>Вы уверены?</target>
             </trans-unit>
             <trans-unit id="action_edit">
                 <source>action_edit</source>
@@ -116,7 +116,7 @@
             </trans-unit>
             <trans-unit id="all_elements">
                 <source>all_elements</source>
-                <target>Все объекты</target>
+                <target>Применить для всех</target>
             </trans-unit>
             <trans-unit id='flash_batch_empty'>
               <source>flash_batch_empty</source>
