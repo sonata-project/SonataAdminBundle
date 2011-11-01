@@ -350,9 +350,9 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         'side_menu'     => false,
     );
 
-    protected $formTheme = array('SonataAdminBundle:Form:form_admin_fields.html.twig');
+    protected $formTheme = array();
 
-    protected $filterTheme = array('SonataAdminBundle:Form:filter_admin_fields.html.twig');
+    protected $filterTheme = array();
 
     protected $templates  = array();
 

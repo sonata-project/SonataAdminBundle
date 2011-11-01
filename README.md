@@ -5,6 +5,11 @@ The online documentation of the bundle is in http://sonata-project.org/bundles/a
 
 For contribution to the documentation you cand find it on ``Resources/doc``.
 
+**Warning**: The bundle has been split into 2 bundles :
+
+* SonataAdminBundle : the current one, contains core librairies and services
+* SonataDoctrineORMAdminBundle : Integrates the admin bundle into with the Doctrine ORM project
+
 
 **Warning**: documentation files are not rendering correctly in Github (reStructuredText format)
 and some content might be broken or hidden, make sure to read raw files.

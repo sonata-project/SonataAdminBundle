@@ -3,10 +3,16 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to Sonata - AdminBundle's documentation!
-================================================
+Welcome to Sonata - Doctrine ORM Admin's documentation!
+=======================================================
 
-The ``AdminBundle`` provides a CRUD interface for model entities.
+The ``Doctrine ORM Admin`` provides services to work with the ``Admin Bundle`` and the ``Doctrine Project``.
+
+**Warning**: The bundle has been split into 2 bundles :
+
+* SonataAdminBundle : the current one, contains core librairies and services
+* SonataDoctrineORMAdminBundle : Integrates the admin bundle into with the Doctrine ORM project
+
 
 Reference Guide
 ---------------
@@ -17,40 +23,10 @@ Reference Guide
 
    reference/installation
    reference/architecture
-   reference/list_field_definition
-   reference/filter_field_definition
-   reference/form_field_definition
-   reference/form_types_and_transformers
-   reference/templates
-   reference/saving_hooks
-   reference/routing
    reference/dashboard
-   reference/security
+   reference/routing
+   reference/saving_hooks
    reference/conditional_validation
-   reference/update
+   reference/templates
+   reference/security
    reference/advance
-
-
-Doctrine ORM
-------------
-
-.. toctree::
-   :maxdepth: 1
-   :numbered:
-
-   doctrine_orm/query_proxy
-   doctrine_orm/troubleshootings
-
-
-Tutorial
---------
-
-.. toctree::
-   :maxdepth: 1
-   :numbered:
-
-   tutorial/creating_your_first_admin_class/introduction
-   tutorial/creating_your_first_admin_class/defining_entities
-   tutorial/creating_your_first_admin_class/defining_routing
-   tutorial/creating_your_first_admin_class/defining_crud_controller
-   tutorial/creating_your_first_admin_class/defining_admin_class
