@@ -221,7 +221,7 @@
             <trans-unit id="label_type_less_than">
               <source>label_type_less_than</source>
               <target>&lt;</target>
-            </trans-unit
+            </trans-unit>
             <trans-unit id="label_filters">
                 <source>label_filters</source>
                 <target>Filteren</target>
