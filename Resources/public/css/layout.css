@@ -1,3 +1,11 @@
+body {
+    padding-top: 60px;
+}
+
+body.sonata-ba-no-side-menu div.container-fluid > div.content {
+    margin-left: 0px;
+}
+
 table.sonata-ba-list {
     width: 500px;
 }
@@ -99,4 +107,8 @@ em.sonata-ba-field-help {
     display: block;
     color: #999;
     margin-bottom: 10px;
+}
+
+fieldset legend {
+    padding-left: 0px;
 }
