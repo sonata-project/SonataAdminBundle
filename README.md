@@ -43,7 +43,7 @@ class PostAdmin extends Admin
         ;
     }
 
-    public function configureFormFields(FormMapper $formMapper)
+    public function configureFormField(FormMapper $formMapper)
     {
         $formMapper
             ->with('General')
