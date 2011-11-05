@@ -447,13 +447,31 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         return preg_replace(array('/(^|_| )+(.)/e', '/\.(.)/e'), array("strtoupper('\\2')", "'_'.strtoupper('\\1')"), $property);
     }
 
+    /**
+     * Defines the help message
+     *
+     * @param $string help
+     */
     public function setHelp($help)
     {
         $this->help = $help;
     }
 
+    /**
+     * @return string
+     */
     public function getHelp()
     {
         return $this->help;
+    }
+
+    /**
+     * return the label to use for the current field
+     *
+     * @return string
+     */
+    public function getLabel()
+    {
+        return $this->getOption('label', $this->getOption('name', $this->getName()));
     }
 }

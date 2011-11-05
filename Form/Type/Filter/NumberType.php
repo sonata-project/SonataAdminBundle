@@ -32,6 +32,9 @@ class NumberType extends AbstractType
 
     protected $translator;
 
+    /**
+     * @param \Symfony\Component\Translation\TranslatorInterface $translator
+     */
     public function __construct(TranslatorInterface $translator)
     {
         $this->translator = $translator;
@@ -47,6 +50,10 @@ class NumberType extends AbstractType
         return 'sonata_type_filter_number';
     }
 
+    /**
+     * @param \Symfony\Component\Form\FormBuilder $builder
+     * @param array $options
+     */
     public function buildForm(FormBuilder $builder, array $options)
     {
         $choices = array(
@@ -63,6 +70,10 @@ class NumberType extends AbstractType
         ;
     }
 
+    /**
+     * @param array $options
+     * @return array
+     */
     public function getDefaultOptions(array $options)
     {
         $defaultOptions = array(

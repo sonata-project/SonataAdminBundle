@@ -28,5 +28,6 @@ Reference Guide
    reference/saving_hooks
    reference/conditional_validation
    reference/templates
+   reference/translation
    reference/security
    reference/advance

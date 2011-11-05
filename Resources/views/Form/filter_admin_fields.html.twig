@@ -9,15 +9,4 @@ file that was distributed with this source code.
 
 #}
 
-{% extends 'form_div_layout.html.twig' %}
-
-{% block field_row %}
-    <div>
-        {{ form_label(form) }}
-        <br />
-
-        <div class="sonata-ba-field">
-            {% block field %}{{ form_widget(form) }}{% endblock %}
-        </div>
-    </div>
-{% endblock field_row %}
+{% extends 'SonataAdminBundle:Form:silex_form_div_layout.html.twig' %}

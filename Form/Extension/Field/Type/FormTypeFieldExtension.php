@@ -21,6 +21,10 @@ use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 
 class FormTypeFieldExtension extends AbstractTypeExtension
 {
+    /**
+     * @param \Symfony\Component\Form\FormBuilder $builder
+     * @param array $options
+     */
     public function buildForm(FormBuilder $builder, array $options)
     {
         $sonataAdmin = array(
@@ -50,6 +54,10 @@ class FormTypeFieldExtension extends AbstractTypeExtension
         $builder->setAttribute('sonata_admin', $sonataAdmin);
     }
 
+    /**
+     * @param \Symfony\Component\Form\FormView $view
+     * @param \Symfony\Component\Form\FormInterface $form
+     */
     public function buildView(FormView $view, FormInterface $form)
     {
         $sonataAdmin = $form->getAttribute('sonata_admin');

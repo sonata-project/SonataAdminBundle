@@ -14,7 +14,6 @@ use Sonata\AdminBundle\Filter\FilterInterface;
 
 interface DatagridInterface
 {
-
     /**
      * @abstract
      * @return \Sonata\AdminBundle\Datagrid\PagerInterface
@@ -67,8 +66,8 @@ interface DatagridInterface
     /**
      * @abstract
      * @param $name
+     * @param $operator
      * @param $value
-     * @return void
      */
     function setValue($name, $operator, $value);
 
@@ -77,4 +76,18 @@ interface DatagridInterface
      * @return \Symfony\Component\Form\Form
      */
     function getForm();
+
+    /**
+     * @abstract
+     * @param $name
+     * @return \Sonata\AdminBundle\Filter\FilterInterface
+     */
+    function getFilter($name);
+
+    /**
+     * @abstract
+     * @param $name
+     * @return bool
+     */
+    function hasFilter($name);
 }

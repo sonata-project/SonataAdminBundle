@@ -21,12 +21,12 @@ file that was distributed with this source code.
         <label{% for attrname,attrvalue in attr %} {{attrname}}="{{attrvalue}}"{% endfor %}>
             {{ widget|raw }}
             <span>
-                {{ label|trans }}
+                {{ label|trans({}, sonata_admin.admin.translationDomain) }}
             </span>
             {{ required ? '*' : '' }}
         </label>
     {% else %}
-        <label{% for attrname,attrvalue in attr %} {{attrname}}="{{attrvalue}}"{% endfor %}>{{ label|trans }} {{ required ? '*' : '' }} </label>
+        <label{% for attrname,attrvalue in attr %} {{attrname}}="{{attrvalue}}"{% endfor %}>{{ label|trans({}, sonata_admin.admin.translationDomain) }} {{ required ? '*' : '' }} </label>
     {% endif %}
 {% endspaceless %}
 {% endblock %}
