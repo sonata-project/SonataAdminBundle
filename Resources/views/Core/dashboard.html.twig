@@ -31,7 +31,7 @@ file that was distributed with this source code.
                             <td>
                                 {% if admin.hasroute('create') and admin.isGranted('CREATE') %}
                                     <a href="{{ admin.generateUrl('create')}}">
-                                        <img src="{{ asset('bundles/sonataadmin/famfamfam/add.png') }}" />
+                                        <img src="{{ asset('bundles/sonataadmin/famfamfam/add.png') }}"  alt="{%- trans from 'SonataAdminBundle' %}link_add{% endtrans -%}" />
                                         {%- trans from 'SonataAdminBundle' %}link_add{% endtrans -%}
                                     </a>
                                 {% endif %}
@@ -39,7 +39,7 @@ file that was distributed with this source code.
                             <td>
                                 {% if admin.hasroute('list') and admin.isGranted('LIST') %}
                                     <a href="{{ admin.generateUrl('list')}}">
-                                        <img src="{{ asset('bundles/sonataadmin/famfamfam/application_view_list.png') }}" />
+                                        <img src="{{ asset('bundles/sonataadmin/famfamfam/application_view_list.png') }}" alt="{%- trans from 'SonataAdminBundle' %}link_list{% endtrans -%}" />
                                         {%- trans from 'SonataAdminBundle' %}link_list{% endtrans -%}
                                     </a>
                                 {% endif %}
