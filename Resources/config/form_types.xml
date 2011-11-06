@@ -36,6 +36,7 @@
         <!-- Form Extension -->
         <service id="sonata.admin.form.extension.field" class="Sonata\AdminBundle\Form\Extension\Field\Type\FormTypeFieldExtension">
             <tag name="form.type_extension" alias="field" />
+            <argument />
         </service>
 
         <!-- Form Filter Type -->

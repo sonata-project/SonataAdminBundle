@@ -19,7 +19,6 @@ div.sonata-ba-field-inline-table textarea.title {
     height: 50px;
 }
 
-
 fieldset.filter_legend {
     font-weight: bold;
     border: 1px solid #E4E4E4;
@@ -111,4 +110,20 @@ em.sonata-ba-field-help {
 
 fieldset legend {
     padding-left: 0px;
+}
+
+select.sonata-medium, textarea.sonata-medium, input.sonata-medium {
+    width: 400px;
+}
+
+textarea.sonata-medium {
+    height: 125px;
+}
+
+div.sonata-medium-date select {
+    width: 75px;
+}
+
+div.sonata-medium-date div {
+    float: left;
 }

@@ -66,6 +66,19 @@ class SonataAdminExtension extends Extension
         $pool->addMethodCall('__hack__', $config);
 
         $container->setAlias('sonata.admin.security.handler', $config['security_handler']);
+
+        /**
+         * This is a work in progress, so for now it is hardcoded
+         */
+        $classes = array(
+            'textarea' => 'sonata-medium',
+            'text'     => 'sonata-medium',
+            'choice'   => 'sonata-medium',
+            'datetime' => 'sonata-medium-date'
+        );
+
+        $container->getDefinition('sonata.admin.form.extension.field')
+            ->replaceArgument(0, $classes);
     }
 
     /**

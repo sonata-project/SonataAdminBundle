@@ -21,15 +21,62 @@ file that was distributed with this source code.
         <label{% for attrname,attrvalue in attr %} {{attrname}}="{{attrvalue}}"{% endfor %}>
             {{ widget|raw }}
             <span>
-                {{ label|trans({}, sonata_admin.admin.translationDomain) }}
+                {% if not sonata_admin.admin%}
+                    {{- label -}}
+                {% else %}
+                    {{- label|trans({}, sonata_admin.admin.translationDomain) -}}
+                {% endif%}
+                {{ required ? '*' : '' }}
             </span>
-            {{ required ? '*' : '' }}
         </label>
     {% else %}
-        <label{% for attrname,attrvalue in attr %} {{attrname}}="{{attrvalue}}"{% endfor %}>{{ label|trans({}, sonata_admin.admin.translationDomain) }} {{ required ? '*' : '' }} </label>
+        <label{% for attrname,attrvalue in attr %} {{attrname}}="{{attrvalue}}"{% endfor %}>
+            {% if not sonata_admin.admin%}
+                {{ label }}
+            {% else %}
+                {{ label|trans({}, sonata_admin.admin.translationDomain) }}
+            {% endif%}
+            {{ required ? '*' : '' }}
+        </label>
     {% endif %}
 {% endspaceless %}
 {% endblock %}
+
+{% block widget_container_attributes_choice_widget %}
+    {% spaceless %}
+        id="{{ id }}"
+        {% for attrname,attrvalue in attr %}{{attrname}}="{% if attrname == 'class' %}inputs-list {% endif%}{{attrvalue}}" {% endfor %}
+    {% endspaceless %}
+{% endblock %}
+
+{% block choice_widget %}
+{% spaceless %}
+    {% if expanded %}
+        <ul {{ block('widget_container_attributes_choice_widget') }}>
+        {% for child in form %}
+            <li>
+                {{ form_label(child, null, { 'in_list_checkbox' : true, 'widget' : form_widget(child) } ) }}
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+    <select {{ block('widget_attributes') }}{% if multiple %} multiple="multiple"{% endif %}>
+        {% if empty_value is not none %}
+            <option value="">{{ empty_value|trans }}</option>
+        {% endif %}
+        {% if preferred_choices|length > 0 %}
+            {% set options = preferred_choices %}
+            {{ block('widget_choice_options') }}
+            {% if choices|length > 0 %}
+                <option disabled="disabled">{{ separator }}</option>
+            {% endif %}
+        {% endif %}
+        {% set options = choices %}
+        {{ block('widget_choice_options') }}
+    </select>
+    {% endif %}
+{% endspaceless %}
+{% endblock choice_widget %}
 
 {% block field_row %}
     {% if sonata_admin is not defined or not sonata_admin_enabled or not sonata_admin.field_description %}

@@ -21,6 +21,16 @@ use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 
 class FormTypeFieldExtension extends AbstractTypeExtension
 {
+    protected $defaultClasses = array();
+
+    /**
+     * @param array $defaultClasses
+     */
+    public function __construct(array $defaultClasses = array())
+    {
+        $this->defaultClasses = $defaultClasses;
+    }
+
     /**
      * @param \Symfony\Component\Form\FormBuilder $builder
      * @param array $options
@@ -47,11 +57,27 @@ class FormTypeFieldExtension extends AbstractTypeExtension
             $sonataAdmin['name']              = $fieldDescription->getName();
             $sonataAdmin['edit']              = $fieldDescription->getOption('edit', 'standard');
             $sonataAdmin['inline']            = $fieldDescription->getOption('inline', 'natural');
+            $sonataAdmin['class']             = $this->getClass($builder);
 
             $builder->setAttribute('sonata_admin_enabled', true);
         }
 
         $builder->setAttribute('sonata_admin', $sonataAdmin);
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilder $formBuilder
+     * @return string
+     */
+    protected function getClass(FormBuilder $formBuilder)
+    {
+        foreach ($formBuilder->getTypes() as $type) {
+            if (isset($this->defaultClasses[$type->getName()])) {
+                return $this->defaultClasses[$type->getName()];
+            }
+        }
+
+        return '';
     }
 
     /**
@@ -80,6 +106,15 @@ class FormTypeFieldExtension extends AbstractTypeExtension
             $view->set('types', $types);
             $view->set('sonata_admin_enabled', true);
             $view->set('sonata_admin', $sonataAdmin);
+
+            $attr = $view->get('attr', array());
+
+            if (!isset($attr['class'])) {
+                $attr['class'] = $sonataAdmin['class'];
+            }
+
+            $view->set('attr', $attr);
+
         } else {
             $view->set('sonata_admin_enabled', false);
         }
