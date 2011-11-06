@@ -10,4 +10,10 @@ file that was distributed with this source code.
 #}
 {% extends 'SonataAdminBundle:CRUD:list_integer.html.twig' %}
 
-{% block field%}{{ value|date('F j, Y') }}{% endblock %}
+{% block field%}
+    {%- if value is empty -%}
+        &nbsp;
+    {%- else -%}
+        {{ value|date('F j, Y') }}
+    {%- endif -%}
+{% endblock %}
