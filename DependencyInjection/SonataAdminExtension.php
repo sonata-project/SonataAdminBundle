@@ -74,6 +74,7 @@ class SonataAdminExtension extends Extension
             'textarea' => 'sonata-medium',
             'text'     => 'sonata-medium',
             'choice'   => 'sonata-medium',
+            'integer'  => 'sonata-medium',
             'datetime' => 'sonata-medium-date'
         );
 
