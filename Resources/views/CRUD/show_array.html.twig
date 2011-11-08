@@ -9,5 +9,10 @@ file that was distributed with this source code.
 
 #}
 
-<th>{% block name %}{{ field_description.name }}{% endblock %}</th>
-<td>{% block field %}{{ value }}{% endblock %}</td>
+{% extends 'SonataAdminBundle:CRUD:base_show_field.html.twig' %}
+
+{% block field%}
+    {% for key, val in value %}
+        [{{ key }} => {{ val }}]
+    {% endfor %}
+{% endblock %}
