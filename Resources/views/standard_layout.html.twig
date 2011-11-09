@@ -16,6 +16,7 @@ file that was distributed with this source code.
 {% set _side_menu    = block('side_menu') %}
 {% set _content      = block('content') %}
 {% set _title        = block('title') %}
+{% set _breadcrumb   = block('breadcrumb') %}
 <!DOCTYPE html>
 <html>
     <head>
@@ -76,18 +77,20 @@ file that was distributed with this source code.
                 <div class="topbar-inner">
                     <div class="container-fluid">
                         <a href="{{ url('sonata_admin_dashboard') }}" class="brand">{% trans from 'SonataAdminBundle' %}Admin{% endtrans %}</a>
-                        <ul class="nav">
-                            {% for group in admin_pool.dashboardgroups %}
-                                <li class="dropdown">
-                                    <a href="#" class="dropdown-toggle">{{ group.label|trans({}, 'SonataAdminBundle') }}</a>
-                                    <ul class="dropdown-menu">
-                                        {% for admin in group.items %}
-                                            <li><a href="{{ admin.generateUrl('list')}}">{{ admin.label|trans({}, admin.translationdomain) }}</a></li>
-                                        {% endfor %}
-                                    </ul>
-                                </li>
-                            {% endfor %}
-                        </ul>
+                        {% if admin_pool is defined %}
+                            <ul class="nav">
+                                {% for group in admin_pool.dashboardgroups %}
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle">{{ group.label|trans({}, 'SonataAdminBundle') }}</a>
+                                        <ul class="dropdown-menu">
+                                            {% for admin in group.items %}
+                                                <li><a href="{{ admin.generateUrl('list')}}">{{ admin.label|trans({}, admin.translationdomain) }}</a></li>
+                                            {% endfor %}
+                                        </ul>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
                         <p class="pull-right">{% block user_block %}<a href="#">Login/Logout</a>{% endblock %}</p>
                     </div>
                 </div>
@@ -95,9 +98,9 @@ file that was distributed with this source code.
         </div>
 
         <div class="container-fluid">
-            <div style="">
+            {% if _breadcrumb is not empty or action is defined %}
                 <ul class="breadcrumb">
-                    {% block breadcrumb %}
+                    {% if _breadcrumb is empty %}
                         {% if action is defined %}
                             {% for label, uri in admin.breadcrumbs(action) %}
                                 <li>
@@ -110,10 +113,11 @@ file that was distributed with this source code.
                                 </li>
                             {% endfor %}
                         {% endif %}
-                    {% endblock %}
+                    {% else %}
+                        {{ _breadcrumb|raw }}
+                    {% endif %}
                 </ul>
-
-            </div>
+            {% endif %}
 
             <div style="float: right">
                 {%block actions %}{% endblock %}
@@ -139,21 +143,21 @@ file that was distributed with this source code.
                     {% endfor %}
                 {% endblock %}
 
-                <div class="page-header">
-                    <h1>
-                        {% if _title is not empty %}
-                            {{ _title|raw }}
-                        {% else %}
-                            {% if action is defined %}
+                {% if _title is not empty or action is defined %}
+                    <div class="page-header">
+                        <h1>
+                            {% if _title is not empty %}
+                                {{ _title|raw }}
+                            {% elseif action is defined %}
                                 {% for label, uri in admin.breadcrumbs(action) %}
                                     {% if loop.last  %}
                                         {{ label }}
                                     {% endif %}
                                 {% endfor %}
-                            {% endif %}
-                        {% endif%}
-                    </h1>
-                </div>
+                            {% endif%}
+                        </h1>
+                    </div>
+                {% endif%}
 
                 {% if _preview is not empty %}
                     <div class="sonata-ba-preview">{{ _preview|raw }}</div>
