@@ -2011,10 +2011,9 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         $this->modelManager = $modelManager;
     }
     
-    public function getListQuery()
+    public function buildQuery()
     {
-        $queryBuilder = $admin->modelManager->createQuery($admin->class);
-        return new ProxyQuery($queryBuilder);
+        return $this->modelManager->createQuery($this->class);
     }
 
     /**

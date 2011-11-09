@@ -110,9 +110,9 @@ interface AdminInterface
     
     /**
      * @abstract
-     * @return \Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
+     * @return void
      */
-    function getListQuery();
+    function buildQuery();
 
     /**
      *
