@@ -222,6 +222,14 @@
               <source>label_type_less_than</source>
               <target>&lt;</target>
             </trans-unit>
+            <trans-unit id="label_filters">
+              <source>label_filters</source>
+              <target>Filtres</target>
+            </trans-unit>
+            <trans-unit id="delete_or">
+              <source>delete_or</source>
+              <target>o</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
