@@ -107,6 +107,12 @@ interface AdminInterface
      * @return \Sonata\AdminBundle\ModelManagerInterface;
      */
     function getModelManager();
+    
+    /**
+     * @abstract
+     * @return \Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
+     */
+    function getListQuery();
 
     /**
      *
