@@ -128,7 +128,7 @@ Features
     - Contextual Breadcrumb
     - persistent parameters across an Admin
     - side menu option
-    - Translated into 13 languages : DE, EN, ES, FR, IT, JA, NL, PL, PT_BR, PT_PT, RU, UK an HR.
+    - Translated into 14 languages : CA, DE, EN, ES, FR, IT, JA, NL, PL, PT_BR, PT_PT, RU, UK an HR.
     - Built to be extended
     - Explain command line utility
 
