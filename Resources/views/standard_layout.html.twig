@@ -127,6 +127,18 @@ file that was distributed with this source code.
                 </ul>
             {% endif %}
 
+            {% block notice %}
+                {% for notice_level in ['success','error','info', 'warning'] %}
+                    {% set session_var = 'sonata_flash_' ~ notice_level %}
+                    {% if app.session.hasFlash(session_var) %}
+                        <div class="alert-message {{ notice_level }}">
+                            {{ app.session.flash(session_var) | trans([],'SonataAdminBundle') }}
+                            {#<a class="close" href="#">×</a>#}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endblock %}
+
             <div style="float: right">
                 {%block actions %}{% endblock %}
             </div>
@@ -137,19 +149,6 @@ file that was distributed with this source code.
                 </div>
             {% endif %}
             <div class="content">
-
-                {% block notice %}
-
-                    {% for notice_level in ['success','error','info', 'warning'] %}
-                        {% set session_var = 'sonata_flash_' ~ notice_level %}
-                        {% if app.session.hasFlash(session_var) %}
-                            <div class="alert-message {{ notice_level }}">
-                                {{ app.session.flash(session_var) | trans([],'SonataAdminBundle') }}
-                                {#<a class="close" href="#">×</a>#}
-                            </div>
-                        {% endif %}
-                    {% endfor %}
-                {% endblock %}
 
                 {% if _title is not empty or action is defined %}
                     <div class="page-header">
