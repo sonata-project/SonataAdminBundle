@@ -94,6 +94,19 @@
                 <source>breadcrumb.dashboard</source>
                 <target>&#8962;</target>
             </trans-unit>
+            <trans-unit id="label_filters">
+              <source>label_filters</source>
+              <target>Filtros</target>
+            </trans-unit>
+            <trans-unit id="all_elements">
+                <source>all_elements</source>
+                <target>Todos los elementos</target>
+            </trans-unit>
+
+            <trans-unit id="delete_or">
+              <source>delete_or</source>
+              <target>o</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
