@@ -30,21 +30,12 @@ use Symfony\Component\Config\Definition\Processor;
  */
 class SonataAdminExtension extends Extension
 {
-    protected $configNamespaces = array(
-        'templates' => array(
-            'layout',
-            'ajax'
-        )
-    );
-
-    protected $requestMatchers = array();
-
     /**
      *
      * @param array            $configs    An array of configuration settings
      * @param ContainerBuilder $container A ContainerBuilder instance
      */
-    public function load(array $config, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container)
     {
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('templates.xml');
@@ -56,10 +47,7 @@ class SonataAdminExtension extends Extension
 
         $configuration = new Configuration();
         $processor = new Processor();
-        $config = $processor->processConfiguration($configuration, $config);
-
-        // setups parameters with values in config.yml, default values from external files used if not
-        $this->configSetupTemplates($config, $container);
+        $config = $processor->processConfiguration($configuration, $configs);
 
         $pool = $container->getDefinition('sonata.admin.pool');
         $pool->addMethodCall('setTemplates', array($config['templates']));
@@ -82,48 +70,8 @@ class SonataAdminExtension extends Extension
             ->replaceArgument(0, $classes);
     }
 
-    /**
-     * setup the templates config
-     *
-     * @param array $config An array of configuration settings
-     * @param ContainerBuilder $container A ContainerBuilder instance
-     * @return void
-     */
-    protected function configSetupTemplates(array $config, ContainerBuilder $container)
-    {
-        foreach ($this->configNamespaces as $ns => $params) {
-
-            if (!isset($config[$ns])) {
-                continue;
-            }
-
-            foreach ($config[$ns] as $type => $template) {
-                if (!isset($config[$ns][$type])) {
-                    continue;
-                }
-
-                $container->setParameter(sprintf('sonata.admin.templates.%s', $type), $template);
-            }
-        }
-    }
-
-    /**
-     * Returns the base path for the XSD files.
-     *
-     * @return string The XSD base path
-     */
-    public function getXsdValidationBasePath()
-    {
-        return __DIR__.'/../Resources/config/schema';
-    }
-
     public function getNamespace()
     {
         return 'http://www.sonata-project.org/schema/dic/admin';
-    }
-
-    public function getAlias()
-    {
-        return "sonata_admin";
     }
 }
