@@ -2,6 +2,20 @@ body {
     padding-top: 60px;
 }
 
+.topbar a.brand {
+    margin: 0px;
+    padding: 0px;
+    line-height: 40px;
+}
+
+a.brand img {
+    margin:0px;
+    padding: 0px;
+    padding-right: 5px;
+    height: 28px;
+    vertical-align: middle;
+}
+
 body.sonata-ba-no-side-menu div.container-fluid > div.content {
     margin-left: 0px;
 }

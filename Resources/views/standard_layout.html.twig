@@ -78,8 +78,8 @@ file that was distributed with this source code.
                     <div class="container-fluid">
                         {% if admin_pool is defined %}
                             {% block logo %}
-                                <a href="{{ url('sonata_admin_dashboard') }}" class="brand" style="margin: 0px; padding: 0px;  line-height: 40px;">
-                                    <img src="{{ asset(admin_pool.titlelogo) }}" style="margin:0px; padding: 0px;  padding-right: 5px; height: 28px; vertical-align: middle;" />
+                                <a href="{{ url('sonata_admin_dashboard') }}" class="brand">
+                                    <img src="{{ asset(admin_pool.titlelogo) }}"  />
                                     {{ admin_pool.title }}
                                 </a>
                             {% endblock %}
@@ -97,6 +97,7 @@ file that was distributed with this source code.
                                     {% endfor %}
                                 </ul>
                             {% endif %}
+
                             <p class="pull-right">{% include admin_pool.getTemplate('user_block') %}</p>
                         {% endif %}
                     </div>
