@@ -76,22 +76,29 @@ file that was distributed with this source code.
             <div class="topbar">
                 <div class="topbar-inner">
                     <div class="container-fluid">
-                        <a href="{{ url('sonata_admin_dashboard') }}" class="brand">{% trans from 'SonataAdminBundle' %}Admin{% endtrans %}</a>
                         {% if admin_pool is defined %}
-                            <ul class="nav">
-                                {% for group in admin_pool.dashboardgroups %}
-                                    <li class="dropdown">
-                                        <a href="#" class="dropdown-toggle">{{ group.label|trans({}, 'SonataAdminBundle') }}</a>
-                                        <ul class="dropdown-menu">
-                                            {% for admin in group.items %}
-                                                <li><a href="{{ admin.generateUrl('list')}}">{{ admin.label|trans({}, admin.translationdomain) }}</a></li>
-                                            {% endfor %}
-                                        </ul>
-                                    </li>
-                                {% endfor %}
-                            </ul>
+                            {% block logo %}
+                                <a href="{{ url('sonata_admin_dashboard') }}" class="brand" style="margin: 0px; padding: 0px;  line-height: 40px;">
+                                    <img src="{{ asset(admin_pool.titlelogo) }}" style="margin:0px; padding: 0px;  padding-right: 5px; height: 28px; vertical-align: middle;" />
+                                    {{ admin_pool.title }}
+                                </a>
+                            {% endblock %}
+                            {% if app.user %}
+                                <ul class="nav">
+                                    {% for group in admin_pool.dashboardgroups %}
+                                        <li class="dropdown">
+                                            <a href="#" class="dropdown-toggle">{{ group.label|trans({}, 'SonataAdminBundle') }}</a>
+                                            <ul class="dropdown-menu">
+                                                {% for admin in group.items %}
+                                                    <li><a href="{{ admin.generateUrl('list')}}">{{ admin.label|trans({}, admin.translationdomain) }}</a></li>
+                                                {% endfor %}
+                                            </ul>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                            <p class="pull-right">{% include admin_pool.getTemplate('user_block') %}</p>
                         {% endif %}
-                        <p class="pull-right">{% block user_block %}<a href="#">Login/Logout</a>{% endblock %}</p>
                     </div>
                 </div>
             </div>

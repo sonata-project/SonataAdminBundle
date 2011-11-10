@@ -7,6 +7,8 @@
     <services>
         <service id="sonata.admin.pool" class="Sonata\AdminBundle\Admin\Pool">
             <argument type="service" id="service_container" />
+            <argument />
+            <argument />
         </service>
 
         <service id="sonata.admin.route_loader" class="Sonata\AdminBundle\Route\AdminPoolLoader">

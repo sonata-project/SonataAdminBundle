@@ -37,6 +37,15 @@ class SonataAdminExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
+        if (class_exists('Sonata\UserBundle\SonataUserBundle')) {
+            // integrate the SonataUserBundle / FOSUserBundle if the bundle exists
+            array_unshift($configs, array(
+                'templates' => array(
+                    'user_block' => 'SonataUserBundle:Admin:Core/user_block.html.twig'
+                )
+            ));
+        }
+
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('templates.xml');
         $loader->load('twig.xml');
@@ -51,6 +60,8 @@ class SonataAdminExtension extends Extension
 
         $pool = $container->getDefinition('sonata.admin.pool');
         $pool->addMethodCall('setTemplates', array($config['templates']));
+        $pool->replaceArgument(1, $config['title']);
+        $pool->replaceArgument(2, $config['title_logo']);
         $pool->addMethodCall('__hack__', $config);
 
         $container->setAlias('sonata.admin.security.handler', $config['security_handler']);

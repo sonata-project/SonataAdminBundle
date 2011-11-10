@@ -25,12 +25,18 @@ class Pool
 
     protected $templates    = array();
 
+    protected $title;
+
+    protected $titleLogo;
+
     /**
      * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
      */
-    public function __construct(ContainerInterface $container)
+    public function __construct(ContainerInterface $container, $title, $logoTitle)
     {
-        $this->container = $container;
+        $this->container  = $container;
+        $this->title      = $title;
+        $this->titleLogo  = $logoTitle;
     }
 
     /**
@@ -206,5 +212,21 @@ class Pool
         }
 
         return null;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTitleLogo()
+    {
+        return $this->titleLogo;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->title;
     }
 }

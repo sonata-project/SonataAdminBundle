@@ -46,6 +46,9 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->scalarNode('security_handler')->defaultValue('sonata.admin.security.handler.noop')->end()
 
+                ->scalarNode('title')->defaultValue('Sonata > ')->cannotBeEmpty()->end()
+                ->scalarNode('title_logo')->defaultValue('/bundles/sonataadmin/logo_title.png')->cannotBeEmpty()->end()
+
                 ->arrayNode('dashboard_groups')
                     ->useAttributeAsKey('id')
                     ->prototype('array')
@@ -84,6 +87,7 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('templates')
                     ->addDefaultsIfNotSet()
                     ->children()
+                        ->scalarNode('user_block')->defaultValue('SonataAdminBundle:Core:user_block.html.twig')->cannotBeEmpty()->end()
                         ->scalarNode('layout')->defaultValue('SonataAdminBundle::standard_layout.html.twig')->cannotBeEmpty()->end()
                         ->scalarNode('ajax')->defaultValue('SonataAdminBundle::ajax_layout.html.twig')->cannotBeEmpty()->end()
                         ->scalarNode('list')->defaultValue('SonataAdminBundle:CRUD:list.html.twig')->cannotBeEmpty()->end()
