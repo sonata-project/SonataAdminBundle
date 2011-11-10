@@ -107,6 +107,11 @@
               <source>delete_or</source>
               <target>o</target>
             </trans-unit>
+
+            <trans-unit id="no_result">
+                <source>no_result</source>
+                <target>No hay resultados</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
