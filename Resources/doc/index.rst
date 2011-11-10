@@ -8,11 +8,20 @@ Welcome to Sonata - Doctrine ORM Admin's documentation!
 
 The ``Doctrine ORM Admin`` provides services to work with the ``Admin Bundle`` and the ``Doctrine Project``.
 
-**Warning**: The bundle has been split into 2 bundles :
+**Warning**: The bundle has been split into 4 bundles :
 
 * SonataAdminBundle : the current one, contains core librairies and services
-* SonataDoctrineORMAdminBundle : Integrates the admin bundle into with the Doctrine ORM project
+* [SonataDoctrineORMAdminBundle](https://github.com/sonata-project/SonataDoctrineORMAdminBundle) 
+: Integrates the admin bundle into with the Doctrine ORM project
+* [SonataDoctrineMongoDBAdminBundle](https://github.com/sonata-project/SonataDoctrineMongoDBAdminBundle) 
+: Integrates the admin bundle into with MongoDB (early stage)
+* [SonataDoctrinePhpcrAdminBundle](https://github.com/sonata-project/SonataDoctrinePhpcrAdminBundle) 
+: Integrates the admin bundle into with PHPCR (early stage)
 
+**Google Groups**: For questions and proposals you can post on this google groups
+
+* [Sonata Users](https://groups.google.com/group/sonata-users): Only for user questions
+* [Sonata Devs](https://groups.google.com/group/sonata-devs): Only for devs
 
 Reference Guide
 ---------------
