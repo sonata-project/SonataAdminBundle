@@ -143,28 +143,29 @@ file that was distributed with this source code.
                 {%block actions %}{% endblock %}
             </div>
 
+            {% if _title is not empty or action is defined %}
+                <div class="page-header">
+                    <h1>
+                        {% if _title is not empty %}
+                            {{ _title|raw }}
+                        {% elseif action is defined %}
+                            {% for label, uri in admin.breadcrumbs(action) %}
+                                {% if loop.last  %}
+                                    {{ label }}
+                                {% endif %}
+                            {% endfor %}
+                        {% endif%}
+                    </h1>
+                </div>
+            {% endif%}
+
             {% if _side_menu is not empty %}
                 <div class="sidebar">
                     <div class="well sonata-ba-side-menu">{{ _side_menu|raw }}</div>
                 </div>
             {% endif %}
-            <div class="content">
 
-                {% if _title is not empty or action is defined %}
-                    <div class="page-header">
-                        <h1>
-                            {% if _title is not empty %}
-                                {{ _title|raw }}
-                            {% elseif action is defined %}
-                                {% for label, uri in admin.breadcrumbs(action) %}
-                                    {% if loop.last  %}
-                                        {{ label }}
-                                    {% endif %}
-                                {% endfor %}
-                            {% endif%}
-                        </h1>
-                    </div>
-                {% endif%}
+            <div class="content">
 
                 {% if _preview is not empty %}
                     <div class="sonata-ba-preview">{{ _preview|raw }}</div>

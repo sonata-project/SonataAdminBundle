@@ -11,6 +11,14 @@ file that was distributed with this source code.
 
 {% extends base_template %}
 
+{% block title %}
+    {% if admin.id(object) %}
+        {{ "title_edit"|trans({'%name%': object }, 'SonataAdminBundle') }}
+    {% else %}
+        {{ "title_create"|trans({}, 'SonataAdminBundle') }}
+    {% endif %}
+{% endblock%}
+
 {% block actions %}
     <div class="sonata-actions">
         <ul>
@@ -31,11 +39,7 @@ file that was distributed with this source code.
 
 {% block form %}
 
-    {% if admin.id(object) %}
-        {% set url = 'edit' %}
-    {% else %}
-        {% set url = 'create' %}
-    {% endif %}
+    {% set url = admin.id(object) ? 'edit' : 'create' %}
 
     {% if not admin.hasRoute(url)%}
         <div>

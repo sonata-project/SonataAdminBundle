@@ -1689,7 +1689,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      * Generates the breadcrumbs array
      *
      * @param string $action
-     * @param \Knp\Menu\MenuItem|null $menu
+     * @param \Knp\Menu\ItemInterface|null $menu
      * @return array
      */
     public function buildBreadcrumbs($action, MenuItemInterface $menu = null)
@@ -1723,6 +1723,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
             );
 
             return $childAdmin->buildBreadcrumbs($action, $child);
+
         } elseif ($this->isChild()) {
             if ($action != 'list') {
                 $menu = $menu->addChild(
@@ -1731,9 +1732,14 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
                 );
             }
 
-            $breadcrumbs = $menu->getBreadcrumbsArray(
-                $this->trans(sprintf('breadcrumb.link_%s_%s', $this->getClassnameLabel(), $action))
-            );
+            if ($this->hasSubject()) {
+                $breadcrumbs = $menu->getBreadcrumbsArray( (string) $this->getSubject());
+            } else {
+                $breadcrumbs = $menu->getBreadcrumbsArray(
+                    $this->trans(sprintf('breadcrumb.link_%s_%s', $this->getClassnameLabel(), $action))
+                );
+            }
+
         } else if ($action != 'list') {
             $breadcrumbs = $child->getBreadcrumbsArray(
                 $this->trans(sprintf('breadcrumb.link_%s_%s', $this->getClassnameLabel(), $action))
