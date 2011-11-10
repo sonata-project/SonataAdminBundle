@@ -6,6 +6,7 @@ body {
     margin: 0px;
     padding: 0px;
     line-height: 40px;
+    padding-right: 20px;
 }
 
 a.brand img {
@@ -14,6 +15,36 @@ a.brand img {
     padding-right: 5px;
     height: 28px;
     vertical-align: middle;
+}
+
+
+div.border  {
+    border: 1px solid #DDDDDD;
+    border-radius: 6px 6px 6px 6px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.075);
+}
+
+
+div.connection form {
+    padding-top: 15px;
+    margin-bottom: 0px;
+    padding-right: 20px;
+}
+
+div.connection form .actions {
+    margin-bottom: 0px;
+}
+
+
+div.connection .form-stacked .actions {
+    margin-left: -20px;
+    margin-right: -20px;
+    padding-left: 20px;
+}
+
+div.connection div input.big {
+    height: 35px;
+    font-size: 25px;
 }
 
 body.sonata-ba-no-side-menu div.container-fluid > div.content {
