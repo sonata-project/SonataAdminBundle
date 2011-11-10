@@ -46,7 +46,7 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->scalarNode('security_handler')->defaultValue('sonata.admin.security.handler.noop')->end()
 
-                ->scalarNode('title')->defaultValue('Sonata > ')->cannotBeEmpty()->end()
+                ->scalarNode('title')->defaultValue('Sonata Admin')->cannotBeEmpty()->end()
                 ->scalarNode('title_logo')->defaultValue('/bundles/sonataadmin/logo_title.png')->cannotBeEmpty()->end()
 
                 ->arrayNode('dashboard_groups')

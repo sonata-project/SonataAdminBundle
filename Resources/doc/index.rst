@@ -22,6 +22,7 @@ Reference Guide
    :numbered:
 
    reference/installation
+   reference/configuration
    reference/architecture
    reference/dashboard
    reference/routing
