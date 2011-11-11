@@ -11,17 +11,14 @@ The ``Doctrine ORM Admin`` provides services to work with the ``Admin Bundle`` a
 **Warning**: The bundle has been split into 4 bundles :
 
 * SonataAdminBundle : the current one, contains core librairies and services
-* [SonataDoctrineORMAdminBundle](https://github.com/sonata-project/SonataDoctrineORMAdminBundle) 
-: Integrates the admin bundle into with the Doctrine ORM project
-* [SonataDoctrineMongoDBAdminBundle](https://github.com/sonata-project/SonataDoctrineMongoDBAdminBundle) 
-: Integrates the admin bundle into with MongoDB (early stage)
-* [SonataDoctrinePhpcrAdminBundle](https://github.com/sonata-project/SonataDoctrinePhpcrAdminBundle) 
-: Integrates the admin bundle into with PHPCR (early stage)
+* `SonataDoctrineORMAdminBundle <https://github.com/sonata-project/SonataDoctrineORMAdminBundle>`_: Integrates the admin bundle into with the Doctrine ORM project
+* `SonataDoctrineMongoDBAdminBundle <https://github.com/sonata-project/SonataDoctrineMongoDBAdminBundle>`_: Integrates the admin bundle into with MongoDB (early stage)
+* `SonataDoctrinePhpcrAdminBundle <https://github.com/sonata-project/SonataDoctrinePhpcrAdminBundle>`_: Integrates the admin bundle into with PHPCR (early stage)
 
 **Google Groups**: For questions and proposals you can post on this google groups
 
-* [Sonata Users](https://groups.google.com/group/sonata-users): Only for user questions
-* [Sonata Devs](https://groups.google.com/group/sonata-devs): Only for devs
+* `Sonata Users <https://groups.google.com/group/sonata-users>`_: Only for user questions
+* `Sonata Devs <https://groups.google.com/group/sonata-devs>`_: Only for devs
 
 Reference Guide
 ---------------
