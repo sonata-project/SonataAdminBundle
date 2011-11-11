@@ -19,6 +19,10 @@ the following lines to the file ``deps``::
       git=http://github.com/sonata-project/SonataAdminBundle.git
       target=/bundles/Sonata/AdminBundle
 
+  [SonataDoctrineORMAdminBundle]
+      git=http://github.com/sonata-project/SonataDoctrineORMAdminBundle.git
+      target=/bundles/Sonata/DoctrineORMAdminBundle
+
   [MenuBundle]
       git=http://github.com/knplabs/KnpMenuBundle.git
       target=/bundles/Knp/Bundle/MenuBundle
@@ -58,6 +62,7 @@ files:
           // ...
           new Sonata\jQueryBundle\SonatajQueryBundle(),
           new Sonata\AdminBundle\SonataAdminBundle(),
+          new Sonata\DoctrineORMAdminBundle\SonataDoctrineORMAdminBundle(),
           new Knp\Bundle\MenuBundle\KnpMenuBundle(),
           // ...
       );
