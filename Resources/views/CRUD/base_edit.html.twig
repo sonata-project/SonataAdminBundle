@@ -25,6 +25,9 @@ file that was distributed with this source code.
             {% if admin.hasroute('show') and admin.id(object) and admin.isGranted('VIEW') and admin.show|length > 0 %}
                 <li class="btn sonata-action-element"><a href="{{ admin.generateObjectUrl('show', object) }}">{% trans from 'SonataAdminBundle' %}link_action_show{% endtrans %}</a></li>
             {% endif %}
+            {% if admin.hasroute('history') and admin.id(object) and admin.isGranted('EDIT') %}
+                <li class="btn sonata-action-element"><a href="{{ admin.generateObjectUrl('history', object) }}">{% trans from 'SonataAdminBundle' %}link_action_history{% endtrans %}</a></li>
+            {% endif %}
             {% if admin.hasroute('create') and admin.isGranted('CREATE')%}
                 <li class="btn sonata-action-element"><a href="{{ admin.generateUrl('create') }}">{% trans from 'SonataAdminBundle' %}link_action_create{% endtrans %}</a></li>
             {% endif %}

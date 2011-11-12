@@ -12,14 +12,25 @@ namespace Sonata\AdminBundle\Route;
 
 use Sonata\AdminBundle\Builder\RouteBuilderInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\Model\AuditManagerInterface;
 
 class QueryStringBuilder implements RouteBuilderInterface
 {
+    protected $manager;
+
+    /**
+     * @param \Sonata\AdminBundle\Model\AuditManagerInterface $manager
+     */
+    public function __construct(AuditManagerInterface $manager)
+    {
+        $this->manager = $manager;
+    }
+
     /**
      * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
      * @param \Sonata\AdminBundle\Route\RouteCollection $collection
      */
-    function build(AdminInterface $admin, RouteCollection $collection)
+    public function build(AdminInterface $admin, RouteCollection $collection)
     {
         $collection->add('list');
         $collection->add('create');
@@ -27,6 +38,11 @@ class QueryStringBuilder implements RouteBuilderInterface
         $collection->add('edit');
         $collection->add('delete');
         $collection->add('show');
+
+        if ($this->manager->hasReader($admin->getClass())) {
+            $collection->add('history', '/audit-history');
+            $collection->add('history_view_revision', '/audit-history-view');
+        }
 
         // add children urls
         foreach ($admin->getChildren() as $children) {

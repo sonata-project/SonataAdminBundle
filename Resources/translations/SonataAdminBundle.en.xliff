@@ -268,6 +268,30 @@
               <target>or</target>
             </trans-unit>
 
+            <trans-unit id="link_action_history">
+                <source>link_action_history</source>
+                <target>Revisions</target>
+            </trans-unit>
+            <trans-unit id="td_action">
+                <source>td_action</source>
+                <target>Action</target>
+            </trans-unit>
+            <trans-unit id="td_revision">
+                <source>td_revision</source>
+                <target>Revisions</target>
+            </trans-unit>
+            <trans-unit id="td_timestamp">
+                <source>td_timestamp</source>
+                <target>Date</target>
+            </trans-unit>
+            <trans-unit id="td_username">
+                <source>td_username</source>
+                <target>Author</target>
+            </trans-unit>
+            <trans-unit id="label_view_revision">
+                <source>label_view_revision</source>
+                <target>View Revision</target>
+            </trans-unit>
 
         </body>
     </file>

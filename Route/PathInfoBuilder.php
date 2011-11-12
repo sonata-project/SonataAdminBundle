@@ -12,14 +12,25 @@ namespace Sonata\AdminBundle\Route;
 
 use Sonata\AdminBundle\Builder\RouteBuilderInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\Model\AuditManagerInterface;
 
 class PathInfoBuilder implements RouteBuilderInterface
 {
+    protected $manager;
+
+    /**
+     * @param \Sonata\AdminBundle\Model\AuditManagerInterface $manager
+     */
+    public function __construct(AuditManagerInterface $manager)
+    {
+        $this->manager = $manager;
+    }
+
     /**
      * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
      * @param \Sonata\AdminBundle\Route\RouteCollection $collection
      */
-    function build(AdminInterface $admin, RouteCollection $collection)
+    public function build(AdminInterface $admin, RouteCollection $collection)
     {
         $collection->add('list');
         $collection->add('create');
@@ -27,6 +38,11 @@ class PathInfoBuilder implements RouteBuilderInterface
         $collection->add('edit', $admin->getRouterIdParameter().'/edit');
         $collection->add('delete', $admin->getRouterIdParameter().'/delete');
         $collection->add('show', $admin->getRouterIdParameter().'/show');
+
+        if ($this->manager->hasReader($admin->getClass())) {
+            $collection->add('history', $admin->getRouterIdParameter().'/history');
+            $collection->add('history_view_revision', $admin->getRouterIdParameter().'/history/{revision}/view');
+        }
 
         // add children urls
         foreach ($admin->getChildren() as $children) {

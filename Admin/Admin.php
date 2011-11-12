@@ -396,10 +396,10 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
     /**
      * @deprecated Use configureShowFields instead.
-     * @param \Sonata\AdminBundle\Show\ShowMapper $filter
+     * @param \Sonata\AdminBundle\Show\ShowMapper $show
      * @return void
      */
-    protected function configureShowField(ShowMapper $filter)
+    protected function configureShowField(ShowMapper $show)
     {
 
     }

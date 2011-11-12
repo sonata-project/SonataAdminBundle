@@ -61,6 +61,11 @@
             <argument type="service" id="sonata.admin.pool" />
             <argument type="service" id="sonata.admin.helper" />
         </service>
+
+        <!-- audit manager -->
+        <service id="sonata.admin.audit.manager" class="Sonata\AdminBundle\Model\AuditManager">
+            <argument type="service" id="service_container" />
+        </service>
     </services>
 </container>
 

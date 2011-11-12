@@ -1,0 +1,81 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{% extends base_template %}
+
+{% block actions %}
+    <div class="sonata-actions">
+        <ul>
+            {% if admin.hasroute('edit') and admin.id(object) and admin.isGranted('EDIT') and admin.show|length > 0 %}
+                <li class="btn sonata-action-element"><a href="{{ admin.generateObjectUrl('edit', object) }}">{% trans from 'SonataAdminBundle' %}link_action_edit{% endtrans %}</a></li>
+            {% endif %}
+            {% if admin.hasroute('show') and admin.isGranted('SHOW')%}
+                <li class="btn sonata-action-element"><a href="{{ admin.generateObjectUrl('show', object) }}">{% trans from 'SonataAdminBundle' %}link_action_show{% endtrans %}</a></li>
+            {% endif %}
+            {% if admin.hasroute('list') and admin.isGranted('LIST')%}
+                <li class="btn sonata-action-element"><a href="{{ admin.generateUrl('list') }}">{% trans from 'SonataAdminBundle' %}link_action_list{% endtrans %}</a></li>
+            {% endif %}
+        </ul>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="span9">
+            <table id="revisions">
+                <thead>
+                    <tr>
+                        <th>{{ "td_revision"|trans({}, 'SonataAdminBundle') }}</th>
+                        <th>{{ "td_timestamp"|trans({}, 'SonataAdminBundle') }}</th>
+                        <th>{{ "td_username"|trans({}, 'SonataAdminBundle') }}</th>
+                        <th>{{ "td_action"|trans({}, 'SonataAdminBundle') }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for revision in revisions %}
+                        <tr>
+                            <td>{{ revision.rev}}</td>
+                            <td>{{ revision.timestamp | date}}</td>
+                            <td>{{ revision.username}}</td>
+                            <td><a href="{{ admin.generateObjectUrl('history_view_revision', object, {'revision': revision.rev }) }}" class="revision-link" rel="{{ revision.rev }}">{{ "label_view_revision"|trans({}, 'SonataAdminBundle') }}</a></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div id="revision-detail" class="span12 revision-detail">
+
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        jQuery(document).ready(function() {
+
+            jQuery('a.revision-link').bind('click', function(event) {
+                event.stopPropagation();
+                event.preventDefault();
+
+                jQuery('#revision-detail').html('');
+                jQuery('table#revisions tbody tr').removeClass('current');
+                jQuery(this).parent('').removeClass('current');
+
+                jQuery.ajax({
+                    url: jQuery(this).attr('href'),
+                    success: function(data) {
+                        jQuery('#revision-detail').html(data);
+                    }
+                });
+
+                return false;
+            })
+        });
+    </script>
+{% endblock %}

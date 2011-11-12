@@ -15,6 +15,7 @@ By default, an Admin class used a set of templates, it is possible to tweak the 
             list:    SonataAdminBundle:CRUD:list.html.twig
             show:    SonataAdminBundle:CRUD:show.html.twig
             edit:    SonataAdminBundle:CRUD:edit.html.twig
+            history:  SonataAdminBundle:CRUD:history.html.twig
 
 
 Usage of each template :
@@ -24,5 +25,7 @@ Usage of each template :
 * list : the template to use for the list action
 * show : the template to use for the show action
 * edit : the template to use for the edit and create action
+* history : the template to use for the history / audit action
 
 The default values will be set only if the ``Admin::setTemplates`` is not called by the Container.
+
