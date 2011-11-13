@@ -164,4 +164,39 @@ interface AdminInterface
      * @return string
      */
     function getRouterIdParameter();
+
+    /**
+     * add a FieldDescription
+     *
+     * @param string $name
+     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
+     * @return void
+     */
+     function addShowFieldDescription($name, FieldDescriptionInterface $fieldDescription);
+
+    /**
+     * add a list FieldDescription
+     *
+     * @param string $name
+     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
+     * @return void
+     */
+     function addListFieldDescription($name, FieldDescriptionInterface $fieldDescription);
+
+    /**
+     * add a filter FieldDescription
+     *
+     * @param string $name
+     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
+     * @return void
+     */
+    function addFilterFieldDescription($name, FieldDescriptionInterface $fieldDescription);
+
+
+    /**
+     * Returns a list depend on the given $object
+     *
+     * @return \Sonata\AdminBundle\Admin\FieldDescriptionCollection
+     */
+    function getList();
 }
