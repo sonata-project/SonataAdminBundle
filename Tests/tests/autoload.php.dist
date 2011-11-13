@@ -8,7 +8,7 @@ use Symfony\Component\ClassLoader\UniversalClassLoader;
 $loader = new UniversalClassLoader();
 $loader->registerNamespaces(array(
     'Symfony'  => array($vendorDir.'/symfony/src'),
-    'Knp'  => array($vendorDir.'/knpmenu/src'),
+    'Knp'      => array($vendorDir.'/knpmenu/src'),
 ));
 $loader->register();
 
