@@ -35,23 +35,20 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('sonata_admin', 'array');
 
-        $this->addTemplateSection($rootNode);
-
-        return $treeBuilder;
-    }
-
-    private function addTemplateSection(ArrayNodeDefinition $rootNode)
-    {
         $rootNode
+            ->fixXmlConfig('dashboard_group')
+            ->fixXmlConfig('admin_service')
             ->children()
                 ->scalarNode('security_handler')->defaultValue('sonata.admin.security.handler.noop')->end()
 
                 ->scalarNode('title')->defaultValue('Sonata Admin')->cannotBeEmpty()->end()
-                ->scalarNode('title_logo')->defaultValue('/bundles/sonataadmin/logo_title.png')->cannotBeEmpty()->end()
+                ->scalarNode('title_logo')->defaultValue('bundles/sonataadmin/logo_title.png')->cannotBeEmpty()->end()
 
                 ->arrayNode('dashboard_groups')
                     ->useAttributeAsKey('id')
                     ->prototype('array')
+                        ->fixXmlConfig('item')
+                        ->fixXmlConfig('item_add')
                         ->children()
                             ->scalarNode('label')->end()
                             ->arrayNode('items')
@@ -68,7 +65,6 @@ class Configuration implements ConfigurationInterface
                     ->useAttributeAsKey('id')
                     ->prototype('array')
                         ->children()
-                            ->scalarNode('id')->end()
                             ->scalarNode('model_manager')->end()
                             ->scalarNode('form_contractor')->end()
                             ->scalarNode('show_builder')->end()
@@ -97,5 +93,7 @@ class Configuration implements ConfigurationInterface
                 ->end()
             ->end()
         ->end();
+
+        return $treeBuilder;
     }
 }
