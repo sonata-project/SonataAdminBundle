@@ -25,6 +25,12 @@
             <argument type="service" id="sonata.admin.pool" />
         </service>
 
+        <service id="sonata.admin.builder.filter.factory" class="Sonata\AdminBundle\Filter\FilterFactory">
+            <argument type="service" id="service_container" />
+            <argument />
+        </service>
+
+        <!-- Some security services -->
         <service id="sonata.admin.security.handler.noop" class="Sonata\AdminBundle\Security\Handler\NoopSecurityHandler" />
 
         <service id="sonata.admin.security.handler.acl" class="Sonata\AdminBundle\Security\Handler\AclSecurityHandler">
@@ -34,10 +40,12 @@
             </argument>
         </service>
 
-        <service id="sonata.admin.builder.filter.factory" class="Sonata\AdminBundle\Filter\FilterFactory">
-            <argument type="service" id="service_container" />
-            <argument />
-        </service>
+        <!-- Services used to format the label, default is sonata.admin.label.strategy.noop -->
+        <service id="sonata.admin.label.strategy.native" class="Sonata\AdminBundle\Translator\NativeLabelTranslatorStrategy" />
+        <service id="sonata.admin.label.strategy.noop" class="Sonata\AdminBundle\Translator\NoopLabelTranslatorStrategy" />
+        <service id="sonata.admin.label.strategy.underscore" class="Sonata\AdminBundle\Translator\UnderscoreLabelTranslatorStrategy" />
+        <service id="sonata.admin.label.strategy.form_component" class="Sonata\AdminBundle\Translator\UnderscoreLabelTranslatorStrategy" />
+
     </services>
 </container>
 

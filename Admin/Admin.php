@@ -27,6 +27,7 @@ use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Validator\ErrorElement;
 
+use Sonata\Adminbundle\Translator\LabelTranslatorStrategyInterface;
 use Sonata\AdminBundle\Builder\FormContractorInterface;
 use Sonata\AdminBundle\Builder\ListBuilderInterface;
 use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
@@ -357,6 +358,8 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     protected $templates  = array();
 
     protected $extensions = array();
+
+    protected $labelTranslatorStrategy;
 
     /**
      * This method can be overwritten to tweak the form construction, by default the form
@@ -2012,6 +2015,9 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         return $this->modelManager;
     }
 
+    /**
+     * @param \Sonata\AdminBundle\Model\ModelManagerInterface $modelManager
+     */
     public function setModelManager(ModelManagerInterface $modelManager)
     {
         $this->modelManager = $modelManager;
@@ -2202,5 +2208,21 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         }
 
         return '';
+    }
+
+    /**
+     * @param \Sonata\Adminbundle\Translator\LabelTranslatorStrategyInterface $labelTranslatorStrategy
+     */
+    public function setLabelTranslatorStrategy(LabelTranslatorStrategyInterface $labelTranslatorStrategy)
+    {
+        $this->labelTranslatorStrategy = $labelTranslatorStrategy;
+    }
+
+    /**
+     * @return \Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface
+     */
+    public function getLabelTranslatorStrategy()
+    {
+        return $this->labelTranslatorStrategy;
     }
 }
