@@ -59,10 +59,12 @@ class SonataAdminExtension extends Extension
         $config = $processor->processConfiguration($configuration, $configs);
 
         $pool = $container->getDefinition('sonata.admin.pool');
-        $pool->addMethodCall('setTemplates', array($config['templates']));
         $pool->replaceArgument(1, $config['title']);
         $pool->replaceArgument(2, $config['title_logo']);
-        $pool->addMethodCall('__hack__', $config);
+
+        $container->setParameter('sonata.admin.configuration.templates', $config['templates']);
+        $container->setParameter('sonata.admin.configuration.admin_services', $config['admin_services']);
+        $container->setParameter('sonata.admin.configuration.dashboard_groups', $config['dashboard_groups']);
 
         $container->setAlias('sonata.admin.security.handler', $config['security_handler']);
 

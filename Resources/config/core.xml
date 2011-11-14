@@ -9,6 +9,9 @@
             <argument type="service" id="service_container" />
             <argument />
             <argument />
+            <call method="setTemplates">
+                <argument>%sonata.admin.configuration.templates%</argument>
+            </call>
         </service>
 
         <service id="sonata.admin.route_loader" class="Sonata\AdminBundle\Route\AdminPoolLoader">

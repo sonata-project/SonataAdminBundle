@@ -32,8 +32,6 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $settings = $this->fixSettings($container);
-
         $groups = $groupDefaults = $admins = $classes = array();
 
         $pool = $container->getDefinition('sonata.admin.pool');
@@ -51,7 +49,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
                 $definition->replaceArgument(2, 'SonataAdminBundle:CRUD');
             }
 
-            $this->applyDefaults($container, $id, $attributes, $settings);
+            $this->applyDefaults($container, $id, $attributes);
 
             $arguments = $definition->getArguments();
             if (preg_match('/%(.*)%/', $arguments[1], $matches)) {
@@ -68,45 +66,42 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
                 continue;
             }
 
-            $group_name = isset($attributes[0]['group']) ? $attributes[0]['group'] : 'default';
+            $groupName = isset($attributes[0]['group']) ? $attributes[0]['group'] : 'default';
 
-            if (!isset($groupDefaults[$group_name])) {
-                $groupDefaults[$group_name] = array(
-                    'label' => $group_name
+            if (!isset($groupDefaults[$groupName])) {
+                $groupDefaults[$groupName] = array(
+                    'label' => $groupName
                 );
             }
 
-            $groupDefaults[$group_name]['items'][] = $id;
+            $groupDefaults[$groupName]['items'][] = $id;
         }
 
-        if (!empty($settings['dashboard_groups'])) {
+        $dashboardGroupsSettings = $container->getParameter('sonata.admin.configuration.dashboard_groups');
+        if (!empty($dashboardGroupsSettings)) {
+            $groups = $dashboardGroupsSettings;
 
-            $groups = $settings['dashboard_groups'];
-
-            foreach ($groups as $group_name => $group) {
-
-                if (!isset($groupDefaults[$group_name])) {
-                    $groupDefaults[$group_name] = array(
+            foreach ($dashboardGroupsSettings as $groupName => $group) {
+                if (!isset($groupDefaults[$groupName])) {
+                    $groupDefaults[$groupName] = array(
                         'items' => array(),
-                        'label' => $group_name
+                        'label' => $groupName
                     );
                 }
 
                 if (empty($group['items'])) {
-                    $groups[$group_name]['items'] = $groupDefaults[$group_name]['items'];
+                    $groups[$groupName]['items'] = $groupDefaults[$groupName]['items'];
                 }
 
                 if (empty($group['label'])) {
-                    $groups[$group_name]['label'] = $groupDefaults[$group_name]['label'];
+                    $groups[$groupName]['label'] = $groupDefaults[$groupName]['label'];
                 }
 
-                if (!empty($groups[$group_name]['item_adds'])) {
-                    $groups[$group_name]['items'] = array_merge($groupDefaults[$group_name]['items'], $groups[$group_name]['item_adds']);
+                if (!empty($group['item_adds'])) {
+                    $group['items'] = array_merge($groupDefaults[$groupName]['items'], $group['item_adds']);
                 }
             }
-        }
-        else {
-
+        } else {
             $groups = $groupDefaults;
         }
 
@@ -118,47 +113,24 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
         $routeLoader->replaceArgument(1, $admins);
     }
 
-    public function fixSettings($container)
-    {
-        $pool = $container->getDefinition('sonata.admin.pool');
-
-        // not very clean but don't know how to do that for now
-        $settings = false;
-        $methods  = $pool->getMethodCalls();
-        foreach ($methods as $pos => $calls) {
-            if ($calls[0] == '__hack__') {
-                $settings = $calls[1];
-                break;
-            }
-        }
-
-        if ($settings) {
-            unset($methods[$pos]);
-        }
-
-        $pool->setMethodCalls($methods);
-
-        return $settings;
-    }
-
     /**
      * Apply the default values required by the AdminInterface to the Admin service definition
      *
      * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
-     * @param $serviceId
+     * @param string $serviceId
      * @param array $attributes
-     * @param array $settings
      * @return \Symfony\Component\DependencyInjection\Definition
      */
-    public function applyDefaults(ContainerBuilder $container, $serviceId, array $attributes = array(), array $settings = array())
+    public function applyDefaults(ContainerBuilder $container, $serviceId, array $attributes = array())
     {
         $definition = $container->getDefinition($serviceId);
+        $settings = $container->getParameter('sonata.admin.configuration.admin_services');
 
         $definition->setScope(ContainerInterface::SCOPE_PROTOTYPE);
 
         $manager_type = $attributes[0]['manager_type'];
 
-        $addServices = isset($settings['admin_services'][$serviceId]) ? $settings['admin_services'][$serviceId] : false;
+        $addServices = isset($settings[$serviceId]) ? $settings[$serviceId] : array();
 
         $defaultAddServices = array(
             'model_manager'      => sprintf('sonata.admin.manager.%s', $manager_type),
@@ -198,7 +170,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
         $definition->addMethodCall('configure');
 
         if (!$definition->hasMethodCall('setTemplates')) {
-            $definition->addMethodCall('setTemplates', array($settings['templates']));
+            $definition->addMethodCall('setTemplates', array('%sonata.admin.configuration.templates%'));
         }
 
         return $definition;
