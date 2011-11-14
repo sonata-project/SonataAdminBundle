@@ -37,11 +37,12 @@ class SonataAdminExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-        if (class_exists('Sonata\UserBundle\SonataUserBundle')) {
+        $bundles = $container->getParameter('kernel.bundles');
+        if (isset($bundles['SonataUserBundle'])) {
             // integrate the SonataUserBundle / FOSUserBundle if the bundle exists
             array_unshift($configs, array(
                 'templates' => array(
-                    'user_block' => 'SonataUserBundle:Admin:Core/user_block.html.twig'
+                    'user_block' => 'SonataUserBundle:Admin/Core:user_block.html.twig'
                 )
             ));
         }
