@@ -36,45 +36,47 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
         $pool = $container->getDefinition('sonata.admin.pool');
 
-        foreach ($container->findTaggedServiceIds('sonata.admin') as $id => $attributes) {
-            $definition = $container->getDefinition($id);
+        foreach ($container->findTaggedServiceIds('sonata.admin') as $id => $tags) {
+            foreach ($tags as $attributes) {
+                $definition = $container->getDefinition($id);
 
-            $arguments = $definition->getArguments();
+                $arguments = $definition->getArguments();
 
-            if (strlen($arguments[0]) == 0) {
-                $definition->replaceArgument(0, $id);
+                if (strlen($arguments[0]) == 0) {
+                    $definition->replaceArgument(0, $id);
+                }
+
+                if (strlen($arguments[2]) == 0) {
+                    $definition->replaceArgument(2, 'SonataAdminBundle:CRUD');
+                }
+
+                $this->applyDefaults($container, $id, $attributes);
+
+                $arguments = $definition->getArguments();
+                if (preg_match('/%(.*)%/', $arguments[1], $matches)) {
+                    $class = $container->getParameter($matches[1]);
+                } else {
+                    $class = $arguments[1];
+                }
+
+                $admins[] = $id;
+                $classes[$class] = $id;
+
+                $showInDashBord = (boolean)(isset($attributes['show_in_dashboard']) ? $attributes['show_in_dashboard'] : true);
+                if (!$showInDashBord) {
+                    continue;
+                }
+
+                $groupName = isset($attributes['group']) ? $attributes['group'] : 'default';
+
+                if (!isset($groupDefaults[$groupName])) {
+                    $groupDefaults[$groupName] = array(
+                        'label' => $groupName
+                    );
+                }
+
+                $groupDefaults[$groupName]['items'][] = $id;
             }
-
-            if (strlen($arguments[2]) == 0) {
-                $definition->replaceArgument(2, 'SonataAdminBundle:CRUD');
-            }
-
-            $this->applyDefaults($container, $id, $attributes);
-
-            $arguments = $definition->getArguments();
-            if (preg_match('/%(.*)%/', $arguments[1], $matches)) {
-                $class = $container->getParameter($matches[1]);
-            } else {
-                $class = $arguments[1];
-            }
-
-            $admins[] = $id;
-            $classes[$class] = $id;
-
-            $showInDashBord = (boolean)(isset($attributes[0]['show_in_dashboard']) ? $attributes[0]['show_in_dashboard'] : true);
-            if (!$showInDashBord) {
-                continue;
-            }
-
-            $groupName = isset($attributes[0]['group']) ? $attributes[0]['group'] : 'default';
-
-            if (!isset($groupDefaults[$groupName])) {
-                $groupDefaults[$groupName] = array(
-                    'label' => $groupName
-                );
-            }
-
-            $groupDefaults[$groupName]['items'][] = $id;
         }
 
         $dashboardGroupsSettings = $container->getParameter('sonata.admin.configuration.dashboard_groups');
@@ -128,7 +130,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
         $definition->setScope(ContainerInterface::SCOPE_PROTOTYPE);
 
-        $manager_type = $attributes[0]['manager_type'];
+        $manager_type = $attributes['manager_type'];
 
         $addServices = isset($settings[$serviceId]) ? $settings[$serviceId] : array();
 
@@ -160,8 +162,8 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
         if (isset($service['label'])) {
             $label = $service['label'];
-        } elseif (isset($attributes[0]['label'])) {
-            $label = $attributes[0]['label'];
+        } elseif (isset($attributes['label'])) {
+            $label = $attributes['label'];
         } else {
             $label = '-';
         }
