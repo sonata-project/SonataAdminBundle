@@ -14,6 +14,14 @@ namespace Sonata\AdminBundle\Tests\Admin;
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Route\RouteCollection;
 
+class FooTest_AdminTest
+{
+    public function __toString()
+    {
+        return 'salut';
+    }
+}
+
 class PostAdmin extends Admin
 {
     protected $metadataClass = null;
@@ -200,5 +208,17 @@ class AdminTest extends \PHPUnit_Framework_TestCase
         $admin->setUniqid($uniqid);
 
         $this->assertEquals($uniqid, $admin->getUniqid());
+    }
+
+    public function testToString()
+    {
+        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
+
+        $s = new \stdClass();
+
+        $this->assertEquals('', $admin->toString($s));
+
+        $s = new FooTest_AdminTest;
+        $this->assertEquals('Salut', $admin->toString($s));
     }
 }

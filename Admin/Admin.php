@@ -2190,4 +2190,17 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     {
         return $this->routeBuilder;
     }
+
+    /**
+     * @param $object
+     * @return string
+     */
+    public function toString($object)
+    {
+        if (method_exists($object, '__toString')) {
+            return (string) $object;
+        }
+
+        return '';
+    }
 }

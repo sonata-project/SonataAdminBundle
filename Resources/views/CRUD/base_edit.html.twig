@@ -13,7 +13,7 @@ file that was distributed with this source code.
 
 {% block title %}
     {% if admin.id(object) %}
-        {{ "title_edit"|trans({'%name%': object }, 'SonataAdminBundle') }}
+        {{ "title_edit"|trans({'%name%': admin.toString(object) }, 'SonataAdminBundle') }}
     {% else %}
         {{ "title_create"|trans({}, 'SonataAdminBundle') }}
     {% endif %}
