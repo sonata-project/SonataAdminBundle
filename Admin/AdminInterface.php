@@ -16,14 +16,19 @@ use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Builder\FormContractorInterface;
 use Sonata\AdminBundle\Builder\ListBuilderInterface;
 use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
+use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
+use Sonata\AdminBundle\Builder\RouteBuilderInterface;
+use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 
+use Knp\Menu\FactoryInterface as MenuFactoryInterface;
+
+use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 interface AdminInterface
 {
-
     /**
      * @abstract
      * @param \Sonata\AdminBundle\Builder\FormContractorInterface $formContractor
@@ -199,4 +204,148 @@ interface AdminInterface
      * @return \Sonata\AdminBundle\Admin\FieldDescriptionCollection
      */
     function getList();
+
+    /**
+     * @param \Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface $securityHandler
+     * @return void
+     */
+    function setSecurityHandler(SecurityHandlerInterface $securityHandler);
+
+    /**
+     * @return \Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface|null
+     */
+    function getSecurityHandler();
+
+    /**
+     * @param string $name
+     * @param object|null $object
+     * @return boolean
+     */
+    function isGranted($name, $object = null);
+
+    /**
+     * @abstract
+     * @param $entity
+     */
+    function getNormalizedIdentifier($entity);
+
+    /**
+     * Shorthand method for templating
+     *
+     * @param object $entity
+     * @return mixed
+     */
+    function id($entity);
+
+    /**
+     * @param \Symfony\Component\Validator\ValidatorInterface $validator
+     * @return void
+     */
+    function setValidator(ValidatorInterface $validator);
+
+    /**
+     * @return \Symfony\Component\Validator\ValidatorInterface
+     */
+    function getValidator();
+
+    /**
+     * @return array
+     */
+    function getShow();
+
+    /**
+     * @param array $formTheme
+     * @return void
+     */
+    function setFormTheme(array $formTheme);
+
+    /**
+     * @return array
+     */
+    function getFormTheme();
+
+    /**
+     * @param array $filterTheme
+     * @return void
+     */
+    function setFilterTheme(array $filterTheme);
+
+    /**
+     * @return array
+     */
+    function getFilterTheme();
+
+    /**
+     * @param AdminExtensionInterface $extension
+     * @return void
+     */
+    function addExtension(AdminExtensionInterface $extension);
+
+    /**
+     * @param \Knp\Menu\FactoryInterface $menuFactory
+     * @return void
+     */
+    function setMenuFactory(MenuFactoryInterface $menuFactory);
+
+    /**
+     * @return \Knp\Menu\FactoryInterface
+     */
+    function getMenuFactory();
+
+    /**
+     * @param \Sonata\AdminBundle\Builder\RouteBuilderInterface $routeBuilder
+     */
+    function setRouteBuilder(RouteBuilderInterface $routeBuilder);
+
+    /**
+     * @return \Sonata\AdminBundle\Builder\RouteBuilderInterface
+     */
+    function getRouteBuilder();
+
+    /**
+     * @param $object
+     * @return string
+     */
+    function toString($object);
+
+    /**
+     * @param \Sonata\Adminbundle\Translator\LabelTranslatorStrategyInterface $labelTranslatorStrategy
+     */
+    function setLabelTranslatorStrategy(LabelTranslatorStrategyInterface $labelTranslatorStrategy);
+
+    /**
+     * @return \Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface
+     */
+    function getLabelTranslatorStrategy();
+
+    /**
+     * add an Admin child to the current one
+     *
+     * @param \Sonata\AdminBundle\Admin\AdminInterface $child
+     * @return void
+     */
+    function addChild(AdminInterface $child);
+
+    /**
+     * Returns true or false if an Admin child exists for the given $code
+     *
+     * @param string $code Admin code
+     * @return bool True if child exist, false otherwise
+     */
+    function hasChild($code);
+
+    /**
+     * Returns an collection of admin children
+     *
+     * @return array list of Admin children
+     */
+    function getChildren();
+
+    /**
+     * Returns an admin child with the given $code
+     *
+     * @param string $code
+     * @return array|null
+     */
+    function getChild($code);
 }

@@ -77,7 +77,7 @@ class PoolTest extends \PHPUnit_Framework_TestCase
 
     public function testGetAdminByAdminCodeForChildClass()
     {
-        $adminMock = $this->getMockBuilder('Sonata\AdminBundle\Admin\Admin')
+        $adminMock = $this->getMockBuilder('Sonata\AdminBundle\Admin\AdminInterface')
             ->disableOriginalConstructor()
             ->getMock();
         $adminMock->expects($this->any())
