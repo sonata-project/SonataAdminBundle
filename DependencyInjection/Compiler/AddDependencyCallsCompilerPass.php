@@ -53,14 +53,9 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
                 $this->applyDefaults($container, $id, $attributes);
 
                 $arguments = $definition->getArguments();
-                if (preg_match('/%(.*)%/', $arguments[1], $matches)) {
-                    $class = $container->getParameter($matches[1]);
-                } else {
-                    $class = $arguments[1];
-                }
 
                 $admins[] = $id;
-                $classes[$class] = $id;
+                $classes[$arguments[1]] = $id;
 
                 $showInDashBord = (boolean)(isset($attributes['show_in_dashboard']) ? $attributes['show_in_dashboard'] : true);
                 if (!$showInDashBord) {
