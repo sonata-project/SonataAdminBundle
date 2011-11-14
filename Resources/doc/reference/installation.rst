@@ -11,10 +11,6 @@ the following lines to the file ``deps``::
       git=http://github.com/sonata-project/SonatajQueryBundle.git
       target=/bundles/Sonata/jQueryBundle
 
-  [SonataUserBundle]
-      git=http://github.com/sonata-project/SonataUserBundle.git
-      target=/bundles/Sonata/UserBundle
-
   [SonataAdminBundle]
       git=http://github.com/sonata-project/SonataAdminBundle.git
       target=/bundles/Sonata/AdminBundle
@@ -43,8 +39,8 @@ files:
   // app/autoload.php
   $loader->registerNamespaces(array(
       // ...
-      'Sonata'                         => __DIR__.'/../vendor/bundles',
-      'Knp'                             => array(
+      'Sonata' => __DIR__.'/../vendor/bundles',
+      'Knp'    => array(
           __DIR__.'/../vendor/bundles',
           __DIR__.'/../vendor/knp/menu/src',
       ),
@@ -90,3 +86,26 @@ At this point you can access to the dashboard with the url:
     files, with the correct format (i.e. XML or PHP).
 
 The last important step is security, please refer to the dedicated section.
+
+Users management
+----------------
+
+By default, the AdminBundle does not come with any user management, however it is most likely the application
+requires such feature. The Sonata Project includes a ``SonataUserBundle`` which integrates the ``FOSUserBundle``.
+
+The ``FOSUserBundle`` adds support for a database-backed user system in Symfony2. It provides a flexible framework
+for user management that aims to handle common tasks such as user login, registration and password retrieval.
+
+The ``SonataUserBundle`` is just a thin wrapper to include the ``FOSUserBundle`` into the ``AdminBundle``. The
+``SonataUserBundle`` includes :
+
+* A default login area
+* A default ``user_block`` template which is used to display the current user and the logout link
+* 2 Admin class : User and Group
+* A default class for User and Group.
+
+There is a little magic in the ``SonataAdminBundle`` if the bundle detects the ``SonataUserBundle`` class, then
+the default ``user_block`` template will be changed to use the one provided by the ``SonataUserBundle``.
+
+The install process is available on the dedicated `SonataUserBundle's documentation area <http://sonata-project.org/bundles/user/master/doc/reference/installation.html>`_
+

@@ -5,6 +5,9 @@ The online documentation of the bundle is in http://sonata-project.org/bundles/a
 
 For contribution to the documentation you cand find it on [Resources/doc](https://github.com/sonata-project/SonataAdminBundle/tree/master/Resources/doc).
 
+**Warning**: documentation files are not rendering correctly in Github (reStructuredText format)
+and some content might be broken or hidden, make sure to read raw files.
+
 **Warning**: The bundle has been split into 4 bundles :
 
 * SonataAdminBundle : the current one, contains core librairies and services
@@ -15,8 +18,10 @@ For contribution to the documentation you cand find it on [Resources/doc](https:
 * [SonataDoctrinePhpcrAdminBundle](https://github.com/sonata-project/SonataDoctrinePhpcrAdminBundle) 
 : Integrates the admin bundle into with PHPCR (early stage)
 
-**Warning**: documentation files are not rendering correctly in Github (reStructuredText format)
-and some content might be broken or hidden, make sure to read raw files.
+**Google Groups**: For questions and proposals you can post on this google groups
+
+* [Sonata Users](https://groups.google.com/group/sonata-users): Only for user questions
+* [Sonata Devs](https://groups.google.com/group/sonata-devs): Only for devs
 
 Quick example
 -------------

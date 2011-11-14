@@ -22,7 +22,7 @@ class PoolTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->pool = new Pool($this->getContainer());
+        $this->pool = new Pool($this->getContainer(), 'Sonata Admin', '/path/to/pic.png');
     }
 
     public function testGetGroups()
@@ -93,7 +93,7 @@ class PoolTest extends \PHPUnit_Framework_TestCase
             ->method('get')
             ->will($this->returnValue($adminMock));
 
-        $this->pool = new Pool($containerMock);
+        $this->pool = new Pool($containerMock, 'Sonata', '/path/to/logo.png');
 
         $this->assertEquals('commentAdminClass', $this->pool->getAdminByAdminCode('sonata.news.admin.post|sonata.news.admin.comment'));
     }
