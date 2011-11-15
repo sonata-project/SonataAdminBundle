@@ -18,7 +18,7 @@ class NoopLabelTranslatorStrategyTest extends \PHPUnit_Framework_TestCase
     {
         $strategy = new NoopLabelTranslatorStrategy;
 
-        $this->assertEquals('isValid', $strategy->getLabel('isValid'));
-        $this->assertEquals('isValid_SuperCool', $strategy->getLabel('isValid_SuperCool'));
+        $this->assertEquals('isValid', $strategy->getLabel('isValid', 'form', 'label'));
+        $this->assertEquals('isValid_SuperCool', $strategy->getLabel('isValid_SuperCool', 'form', 'label'));
     }
 }

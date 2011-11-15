@@ -91,7 +91,7 @@
                 <target>expandir/colapsar</target>
             </trans-unit>
             <trans-unit id="link_breadcrumb_dashboard">
-                <source>breadcrumb.dashboard</source>
+                <source>breadcrumb.link_dashboard</source>
                 <target>&#8962;</target>
             </trans-unit>
             <trans-unit id="label_filters">

@@ -14,10 +14,9 @@ namespace Sonata\AdminBundle\Translator;
 class FormLabelTranslatorStrategy implements LabelTranslatorStrategyInterface
 {
     /**
-     * @param string $label
-     * @return string
+     * {@inheritDoc}
      */
-    public function getLabel($label)
+    public function getLabel($label, $context = '', $type = '')
     {
         return ucfirst(strtolower($label));
     }

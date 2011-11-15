@@ -18,9 +18,9 @@ class NativeTranslatorStrategyTest extends \PHPUnit_Framework_TestCase
     {
         $strategy = new NativeLabelTranslatorStrategy;
 
-        $this->assertEquals('Is Valid', $strategy->getLabel('isValid'));
-        $this->assertEquals('Is Valid', $strategy->getLabel('is_Valid'));
-        $this->assertEquals('Is0 Valid', $strategy->getLabel('is0Valid'));
-        $this->assertEquals('Is Valid Super Cool', $strategy->getLabel('isValid_SuperCool'));
+        $this->assertEquals('Is Valid', $strategy->getLabel('isValid', 'form', 'label'));
+        $this->assertEquals('Is Valid', $strategy->getLabel('is_Valid', 'form', 'label'));
+        $this->assertEquals('Is0 Valid', $strategy->getLabel('is0Valid', 'form', 'label'));
+        $this->assertEquals('Is Valid Super Cool', $strategy->getLabel('isValid_SuperCool', 'form', 'label'));
     }
 }

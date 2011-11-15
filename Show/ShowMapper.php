@@ -73,6 +73,10 @@ class ShowMapper
             throw new \RuntimeException('invalid state');
         }
 
+        if (!$fieldDescription->getLabel()) {
+            $fieldDescription->setOption('label', $this->admin->getLabelTranslatorStrategy()->getLabel($fieldDescription->getName(), 'show', 'label'));
+        }
+
         // add the field with the FormBuilder
         $this->showBuilder->addField($this->list, $type, $fieldDescription, $this->admin);
 

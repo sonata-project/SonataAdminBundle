@@ -10,15 +10,17 @@
  */
 namespace Sonata\AdminBundle\Tests\Translator;
 
-use Sonata\AdminBundle\Translator\FormLabelTranslatorStrategy;
+use Sonata\AdminBundle\Translator\BCLabelTranslatorStrategy;
 
-class FormLabelTranslatorStrategyTest extends \PHPUnit_Framework_TestCase
+class BCLabelTranslatorStrategyTest extends \PHPUnit_Framework_TestCase
 {
     public function testLabel()
     {
-        $strategy = new FormLabelTranslatorStrategy;
+        $strategy = new BCLabelTranslatorStrategy;
 
         $this->assertEquals('Isvalid', $strategy->getLabel('isValid', 'form', 'label'));
         $this->assertEquals('Plainpassword', $strategy->getLabel('plainPassword', 'form', 'label'));
+
+        $this->assertEquals('breadcrumb.link_projectversion_list', $strategy->getLabel('ProjectVersion_list', 'breadcrumb', 'link'));
     }
 }

@@ -466,7 +466,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         $this->uniqid = uniqid();
 
         if (!$this->classnameLabel) {
-            $this->classnameLabel = $this->urlize(substr($this->getClass(), strrpos($this->getClass(), '\\') + 1), '_');
+            $this->classnameLabel = substr($this->getClass(), strrpos($this->getClass(), '\\') + 1);
         }
 
         $this->baseCodeRoute = $this->getCode();
@@ -1710,12 +1710,12 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         }
 
         $child = $menu->addChild(
-            $this->trans('breadcrumb.dashboard', array(), 'SonataAdminBundle'),
+            $this->trans($this->getLabelTranslatorStrategy()->getLabel('dashboard', 'breadcrumb', 'link'), array(), 'SonataAdminBundle'),
             array('uri' => $this->router->generate('sonata_admin_dashboard'))
         );
 
         $child = $child->addChild(
-            $this->trans(sprintf('breadcrumb.link_%s_list', $this->getClassnameLabel())),
+            $this->trans($this->getLabelTranslatorStrategy()->getLabel(sprintf('%s_list', $this->getClassnameLabel()), 'breadcrumb', 'link')),
             array('uri' => $this->generateUrl('list'))
         );
 
@@ -1734,7 +1734,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         } elseif ($this->isChild()) {
             if ($action != 'list') {
                 $menu = $menu->addChild(
-                    $this->trans(sprintf('breadcrumb.link_%s_list', $this->getClassnameLabel())),
+                    $this->trans($this->getLabelTranslatorStrategy()->getLabel(sprintf('%s_list', $this->getClassnameLabel()), 'breadcrumb', 'link')),
                     array('uri' => $this->generateUrl('list'))
                 );
             }
@@ -1743,13 +1743,13 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
                 $breadcrumbs = $menu->getBreadcrumbsArray( (string) $this->getSubject());
             } else {
                 $breadcrumbs = $menu->getBreadcrumbsArray(
-                    $this->trans(sprintf('breadcrumb.link_%s_%s', $this->getClassnameLabel(), $action))
+                    $this->trans($this->getLabelTranslatorStrategy()->getLabel(sprintf('%s_%s', $this->getClassnameLabel(), $action), 'breadcrumb', 'link'))
                 );
             }
 
         } else if ($action != 'list') {
             $breadcrumbs = $child->getBreadcrumbsArray(
-                $this->trans(sprintf('breadcrumb.link_%s_%s', $this->getClassnameLabel(), $action))
+                $this->trans($this->getLabelTranslatorStrategy()->getLabel(sprintf('%s_%s', $this->getClassnameLabel(), $action), 'breadcrumb', 'link'))
             );
         } else {
             $breadcrumbs = $child->getBreadcrumbsArray();

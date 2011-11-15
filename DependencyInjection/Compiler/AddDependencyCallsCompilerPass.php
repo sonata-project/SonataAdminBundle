@@ -32,7 +32,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $groups = $groupDefaults = $admins = $classes = array();
+        $groupDefaults = $admins = $classes = array();
 
         $pool = $container->getDefinition('sonata.admin.pool');
 
@@ -130,6 +130,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
             'validator',
             'security_handler',
             'menu_factory',
+            'route_builder',
             'label_translator_strategy',
         );
 
@@ -163,17 +164,19 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
         $addServices = isset($settings[$serviceId]) ? $settings[$serviceId] : array();
 
         $defaultAddServices = array(
-            'model_manager'      => sprintf('sonata.admin.manager.%s', $manager_type),
-            'form_contractor'    => sprintf('sonata.admin.builder.%s_form', $manager_type),
-            'show_builder'       => sprintf('sonata.admin.builder.%s_show', $manager_type),
-            'list_builder'       => sprintf('sonata.admin.builder.%s_list', $manager_type),
-            'datagrid_builder'   => sprintf('sonata.admin.builder.%s_datagrid', $manager_type),
-            'translator'         => 'translator',
-            'configuration_pool' => 'sonata.admin.pool',
-            'router'             => 'router',
-            'validator'          => 'validator',
-            'security_handler'   => 'sonata.admin.security.handler',
-            'menu_factory'       => 'knp_menu.factory',
+            'model_manager'             => sprintf('sonata.admin.manager.%s', $manager_type),
+            'form_contractor'           => sprintf('sonata.admin.builder.%s_form', $manager_type),
+            'show_builder'              => sprintf('sonata.admin.builder.%s_show', $manager_type),
+            'list_builder'              => sprintf('sonata.admin.builder.%s_list', $manager_type),
+            'datagrid_builder'          => sprintf('sonata.admin.builder.%s_datagrid', $manager_type),
+            'translator'                => 'translator',
+            'configuration_pool'        => 'sonata.admin.pool',
+            'router'                    => 'router',
+            'validator'                 => 'validator',
+            'security_handler'          => 'sonata.admin.security.handler',
+            'menu_factory'              => 'knp_menu.factory',
+            'route_builder'             => 'sonata.admin.route.path_info',
+            'label_translator_strategy' => 'sonata.admin.label.strategy.native'
         );
 
         foreach ($defaultAddServices as $attr => $addServiceId) {
@@ -182,14 +185,6 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
             if (isset($addServices[$attr]) || !$definition->hasMethodCall($method)) {
                 $definition->addMethodCall($method, array(new Reference(isset($addServices[$attr]) ? $addServices[$attr] : $addServiceId)));
             }
-        }
-
-        if (!$definition->hasMethodCall('setRouteBuilder')) {
-            $definition->addMethodCall('setRouteBuilder', array(new Reference('sonata.admin.route.path_info')));
-        }
-
-        if (!$definition->hasMethodCall('setLabelTranslatorStrategy')) {
-            $definition->addMethodCall('setLabelTranslatorStrategy', array(new Reference('sonata.admin.label.strategy.form_component')));
         }
 
         if (isset($service['label'])) {

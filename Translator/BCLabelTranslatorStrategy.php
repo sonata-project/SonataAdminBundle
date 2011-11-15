@@ -11,13 +11,17 @@
 
 namespace Sonata\AdminBundle\Translator;
 
-class UnderscoreLabelTranslatorStrategy implements LabelTranslatorStrategyInterface
+class BCLabelTranslatorStrategy implements LabelTranslatorStrategyInterface
 {
     /**
      * {@inheritDoc}
      */
     public function getLabel($label, $context = '', $type = '')
     {
-        return sprintf('%s.%s_%s', $context, $type, strtolower(preg_replace('~(?<=\\w)([A-Z])~', '_$1', $label)));
+        if ($context == 'breadcrumb') {
+            return sprintf('%s.%s_%s', $context, $type, strtolower($label));
+        }
+
+        return ucfirst(strtolower($label));
     }
 }

@@ -66,7 +66,7 @@ class ListMapper
         }
 
         if (!$fieldDescription->getLabel()) {
-            $fieldDescription->setOption('label', $this->admin->getLabelTranslatorStrategy()->getLabel($fieldDescription->getName()));
+            $fieldDescription->setOption('label', $this->admin->getLabelTranslatorStrategy()->getLabel($fieldDescription->getName(), 'list', 'label'));
         }
 
         // add the field with the FormBuilder
