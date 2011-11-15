@@ -65,6 +65,10 @@ class ListMapper
             throw new \RuntimeException('invalid state');
         }
 
+        if (!$fieldDescription->getLabel()) {
+            $fieldDescription->setOption('label', $this->admin->getLabelTranslatorStrategy()->getLabel($fieldDescription->getName()));
+        }
+
         // add the field with the FormBuilder
         $this->listBuilder->addField($this->list, $type, $fieldDescription, $this->admin);
 

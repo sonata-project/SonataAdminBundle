@@ -89,7 +89,7 @@ abstract class Filter implements FilterInterface
      */
     public function getLabel()
     {
-        return $this->getOption('label', $this->getName());
+        return $this->getOption('label');
     }
 
     /**

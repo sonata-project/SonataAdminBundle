@@ -151,7 +151,7 @@ file that was distributed with this source code.
                                 <table>
                                     {% for filter in admin.datagrid.filters %}
                                         <tr id="filter_{{ filter.name }}_row">
-                                            <td class="filter-title">{{ admin.trans(filter.name) }}</td>
+                                            <td class="filter-title">{{ admin.trans(filter.label) }}</td>
                                             <td class="filter-type">{{ form_widget(form.getChild(filter.name).getChild('type')) }}</td>
                                             <td class="filter-value">{{ form_widget(form.getChild(filter.name).getChild('value')) }}</td>
                                         </tr>

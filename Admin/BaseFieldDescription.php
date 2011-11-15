@@ -472,6 +472,6 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
      */
     public function getLabel()
     {
-        return $this->getOption('label', $this->getOption('name', $this->getName()));
+        return $this->getOption('label');
     }
 }

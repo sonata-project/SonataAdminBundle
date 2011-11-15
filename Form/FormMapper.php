@@ -96,13 +96,17 @@ class FormMapper
 
         $this->formContractor->fixFieldDescription($this->admin, $fieldDescription, $fieldDescriptionOptions);
 
-        $options = array_merge($options, $this->formContractor->getDefaultOptions($type, $fieldDescription));
-
         $this->admin->addFormFieldDescription($name instanceof FormBuilder ? $name->getName() : $name, $fieldDescription);
 
         if ($name instanceof FormBuilder) {
             $this->formBuilder->add($name);
         } else {
+            $options = array_merge($options, $this->formContractor->getDefaultOptions($type, $fieldDescription));
+
+            if (!isset($options['label'])) {
+                $options['label'] = $this->admin->getLabelTranslatorStrategy()->getLabel($fieldDescription->getName());
+            }
+
             $this->formBuilder->add($name, $type, $options);
         }
 

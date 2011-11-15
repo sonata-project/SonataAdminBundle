@@ -44,7 +44,7 @@
         <service id="sonata.admin.label.strategy.native" class="Sonata\AdminBundle\Translator\NativeLabelTranslatorStrategy" />
         <service id="sonata.admin.label.strategy.noop" class="Sonata\AdminBundle\Translator\NoopLabelTranslatorStrategy" />
         <service id="sonata.admin.label.strategy.underscore" class="Sonata\AdminBundle\Translator\UnderscoreLabelTranslatorStrategy" />
-        <service id="sonata.admin.label.strategy.form_component" class="Sonata\AdminBundle\Translator\UnderscoreLabelTranslatorStrategy" />
+        <service id="sonata.admin.label.strategy.form_component" class="Sonata\AdminBundle\Translator\FormLabelTranslatorStrategy" />
 
     </services>
 </container>

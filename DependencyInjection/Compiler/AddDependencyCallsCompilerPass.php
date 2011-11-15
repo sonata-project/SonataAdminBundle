@@ -155,6 +155,10 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
             $definition->addMethodCall('setRouteBuilder', array(new Reference('sonata.admin.route.path_info')));
         }
 
+        if (!$definition->hasMethodCall('setLabelTranslatorStrategy')) {
+            $definition->addMethodCall('setLabelTranslatorStrategy', array(new Reference('sonata.admin.label.strategy.form_component')));
+        }
+
         if (isset($service['label'])) {
             $label = $service['label'];
         } elseif (isset($attributes['label'])) {
@@ -162,6 +166,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
         } else {
             $label = '-';
         }
+
         $definition->addMethodCall('setLabel', array($label));
 
         $definition->addMethodCall('configure');

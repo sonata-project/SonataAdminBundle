@@ -863,6 +863,10 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         return $this->routes->get($name);
     }
 
+    /**
+     * @param $name
+     * @return bool
+     */
     public function hasRoute($name)
     {
         $this->buildRoutes();
