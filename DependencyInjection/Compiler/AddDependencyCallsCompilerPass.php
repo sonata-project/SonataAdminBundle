@@ -50,6 +50,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
                     $definition->replaceArgument(2, 'SonataAdminBundle:CRUD');
                 }
 
+                $this->applyConfigurationFromAttribute($definition, $attributes);
                 $this->applyDefaults($container, $id, $attributes);
 
                 $arguments = $definition->getArguments();
@@ -108,6 +109,38 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
         $routeLoader = $container->getDefinition('sonata.admin.route_loader');
         $routeLoader->replaceArgument(1, $admins);
+    }
+
+    /**
+     * This method read the attribute keys and configure admin class to use the related dependency
+     *
+     * @param \Symfony\Component\DependencyInjection\Definition $definition
+     * @param array $attributes
+     */
+    public function applyConfigurationFromAttribute(Definition $definition, array $attributes) {
+        $keys = array(
+            'model_manager',
+            'form_contractor',
+            'show_builder',
+            'list_builder',
+            'datagrid_builder',
+            'translator',
+            'configuration_pool',
+            'router',
+            'validator',
+            'security_handler',
+            'menu_factory',
+            'label_translator_strategy',
+        );
+
+        foreach ($keys as $key) {
+            $method = 'set'.$this->camelize($key);
+            if (!isset($attributes[$key]) || $definition->hasMethodCall($method)) {
+                continue;
+            }
+
+            $definition->addMethodCall($method, array(new Reference($attributes[$key])));
+        }
     }
 
     /**
