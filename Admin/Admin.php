@@ -461,7 +461,10 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         $this->baseControllerName   = $baseControllerName;
     }
 
-    public function configure()
+    /**
+     * define custom variable
+     */
+    public function initialize()
     {
         $this->uniqid = uniqid();
 
@@ -470,6 +473,16 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         }
 
         $this->baseCodeRoute = $this->getCode();
+
+        $this->configure();
+    }
+
+    /**
+     *  Allows the user to define custom variables
+     */
+    public function configure()
+    {
+
     }
 
     public function update($object)
