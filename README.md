@@ -89,6 +89,7 @@ class PostAdmin extends Admin
             ->add('title')
             ->add('enabled')
             ->add('tags', null, array('filter_field_options' => array('expanded' => true, 'multiple' => true)))
+        ;
     }
 }
 ```
