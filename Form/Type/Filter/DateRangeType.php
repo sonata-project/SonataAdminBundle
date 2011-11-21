@@ -45,7 +45,7 @@ class DateRangeType extends AbstractType
     public function buildForm(FormBuilder $builder, array $options)
     {
         $choices = array(
-            self::TYPE_RANGE            => $this->translator->trans('label_type_range', array(), 'SonataAdminBundle'),
+            self::TYPE_RANGE            => $this->translator->trans('label_date_type_range', array(), 'SonataAdminBundle'),
         );
 
         $builder
