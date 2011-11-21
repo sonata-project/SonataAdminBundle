@@ -27,7 +27,7 @@ use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Validator\ErrorElement;
 
-use Sonata\Adminbundle\Translator\LabelTranslatorStrategyInterface;
+use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Sonata\AdminBundle\Builder\FormContractorInterface;
 use Sonata\AdminBundle\Builder\ListBuilderInterface;
 use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
