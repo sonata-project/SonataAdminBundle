@@ -222,6 +222,18 @@
               <source>label_type_less_than</source>
               <target>&lt;</target>
             </trans-unit>
+            <trans-unit id="label_type_null">
+              <source>label_type_null</source>
+              <target>is empty</target>
+            </trans-unit>
+            <trans-unit id="label_type_not_null">
+              <source>label_type_not_null</source>
+              <target>is not empty</target>
+            </trans-unit>
+            <trans-unit id="label_type_range">
+              <source>label_type_range</source>
+              <target>range of dates</target>
+            </trans-unit>
             <trans-unit id="label_filters">
               <source>label_filters</source>
               <target>Filters</target>
