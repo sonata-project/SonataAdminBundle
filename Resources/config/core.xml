@@ -47,6 +47,12 @@
         <service id="sonata.admin.label.strategy.underscore" class="Sonata\AdminBundle\Translator\UnderscoreLabelTranslatorStrategy" />
         <service id="sonata.admin.label.strategy.form_component" class="Sonata\AdminBundle\Translator\FormLabelTranslatorStrategy" />
 
+        <!-- Translation extractor -->
+        <service id="sonata.admin.translator.extractor.jms_translator_bundle" class="Sonata\AdminBundle\Translator\Extractor\JMSTranslatorBundle\AdminExtractor" >
+            <tag name="jms_translation.extractor" alias="sonata_admin"/>
+            <argument type="service" id="logger" />
+            <argument type="service" id="sonata.admin.pool" />
+        </service>
     </services>
 </container>
 
