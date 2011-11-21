@@ -176,6 +176,47 @@
                 <source>link_action_edit</source>
                 <target>Editar</target>
             </trans-unit>
+
+            <trans-unit id="label_type_yes">
+              <source>label_type_yes</source>
+              <target>si</target>
+            </trans-unit>
+            <trans-unit id="label_type_no">
+              <source>label_type_no</source>
+              <target>no</target>
+            </trans-unit>
+            <trans-unit id="label_type_contains">
+              <source>label_type_contains</source>
+              <target>contiene</target>
+            </trans-unit>
+            <trans-unit id="label_type_not_contains">
+              <source>label_type_not_contains</source>
+              <target>no contiene</target>
+            </trans-unit>
+            <trans-unit id="label_type_equals">
+              <source>label_type_equals</source>
+              <target>es igual a</target>
+            </trans-unit>
+            <trans-unit id="label_type_equal">
+              <source>label_type_equal</source>
+              <target>=</target>
+            </trans-unit>
+            <trans-unit id="label_type_greater_equal">
+              <source>label_type_greater_equal</source>
+              <target>&gt;=</target>
+            </trans-unit>
+            <trans-unit id="label_type_greater_than">
+              <source>label_type_greater_than</source>
+              <target>&gt;</target>
+            </trans-unit>
+            <trans-unit id="label_type_less_equal">
+              <source>label_type_less_equal</source>
+              <target>&lt;=</target>
+            </trans-unit>
+            <trans-unit id="label_type_less_than">
+              <source>label_type_less_than</source>
+              <target>&lt;</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
