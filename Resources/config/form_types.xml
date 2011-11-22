@@ -32,6 +32,12 @@
 
             <argument type="service" id="translator" />
         </service>
+        
+        <service id="sonata.admin.form.type.date_range" class="Sonata\AdminBundle\Form\Type\DateRangeType">
+            <tag name="form.type" alias="sonata_type_date_range" />
+
+            <argument type="service" id="translator" />
+        </service>
 
         <!-- Form Extension -->
         <service id="sonata.admin.form.extension.field" class="Sonata\AdminBundle\Form\Extension\Field\Type\FormTypeFieldExtension">

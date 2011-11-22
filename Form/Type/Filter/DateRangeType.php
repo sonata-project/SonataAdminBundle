@@ -39,7 +39,7 @@ class DateRangeType extends AbstractType
      */
     public function getName()
     {
-        return 'sonata_type_filter_daterange';
+        return 'sonata_type_filter_date_range';
     }
 
     public function buildForm(FormBuilder $builder, array $options)
@@ -50,8 +50,7 @@ class DateRangeType extends AbstractType
 
         $builder
             ->add('type', 'choice', array('choices' => $choices, 'required' => false))
-            ->add('value', 'date', array('required' => false))
-            ->add('valueb', 'date', array('required' => false))
+            ->add('value', 'sonata_type_date_range', array('required' => false))
         ;
     }
 
