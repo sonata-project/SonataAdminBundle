@@ -3,6 +3,12 @@ table.sonata-ba-list th {
     background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#f8f8f8), to(#e2e2e2));
 }
 
+table.sonata-ba-list tfoot td {
+    background-image: -moz-linear-gradient(-90deg, #f8f8f8 , #e2e2e2);
+    background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#f8f8f8), to(#e2e2e2));
+    border-top: 1px solid #DDD;
+}
+
 /* Form */
 textarea.title {
     font-size: 1em;
