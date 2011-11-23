@@ -33,6 +33,7 @@ Reference Guide
    reference/dashboard
    reference/routing
    reference/saving_hooks
+   reference/form_types
    reference/conditional_validation
    reference/templates
    reference/translation
