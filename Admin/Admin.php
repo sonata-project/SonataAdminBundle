@@ -1128,6 +1128,14 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
+     * @return \Sonata\AdminBundle\Datagrid\ProxyQueryInterface
+     */
+    public function createQuery($context = 'list')
+    {
+        return $this->modelManager->createQuery($this->class);
+    }
+
+    /**
      * Returns a list depend on the given $object
      *
      * @return \Sonata\AdminBundle\Datagrid\DatagridInterface

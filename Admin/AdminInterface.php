@@ -114,6 +114,12 @@ interface AdminInterface
     function getModelManager();
 
     /**
+     * @abstract
+     * @return \Sonata\AdminBundle\Datagrid\ProxyQueryInterface
+     */
+    function createQuery($context = 'list');
+
+    /**
      *
      * @return \Symfony\Component\Form\FormBuilder the form builder
      */
@@ -196,7 +202,6 @@ interface AdminInterface
      * @return void
      */
     function addFilterFieldDescription($name, FieldDescriptionInterface $fieldDescription);
-
 
     /**
      * Returns a list depend on the given $object
