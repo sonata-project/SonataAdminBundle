@@ -2047,6 +2047,11 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     {
         $this->modelManager = $modelManager;
     }
+    
+    public function buildQuery()
+    {
+        return $this->modelManager->createQuery($this->class);
+    }
 
     /**
      * Returns a unique identifier for this domain object.

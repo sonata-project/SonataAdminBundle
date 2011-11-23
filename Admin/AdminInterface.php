@@ -112,6 +112,12 @@ interface AdminInterface
      * @return \Sonata\AdminBundle\ModelManagerInterface;
      */
     function getModelManager();
+    
+    /**
+     * @abstract
+     * @return void
+     */
+    function buildQuery();
 
     /**
      * @abstract
