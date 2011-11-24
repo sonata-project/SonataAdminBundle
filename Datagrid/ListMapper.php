@@ -101,5 +101,7 @@ class ListMapper
     {
         $this->admin->removeListFieldDescription($key);
         $this->list->remove($key);
+
+        return $this;
     }
 }
