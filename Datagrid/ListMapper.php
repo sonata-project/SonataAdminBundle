@@ -95,7 +95,7 @@ class ListMapper
 
     /**
      * @param  string $key
-     * @return void
+     * @return \Sonata\AdminBundle\Datagrid\ListMapper
      */
     public function remove($key)
     {

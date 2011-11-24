@@ -133,12 +133,14 @@ class FormMapper
 
     /**
      * @param string $key
-     * @return void
+     * @return \Sonata\AdminBundle\Form\FormMapper
      */
     public function remove($key)
     {
         $this->admin->removeFormFieldDescription($key);
         $this->formBuilder->remove($key);
+
+        return $this;
     }
 
     /**
