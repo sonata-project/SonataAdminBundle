@@ -1,0 +1,45 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+{% spaceless %}
+{% if admin.isGranted('EDIT') %}
+    {% if value %}
+        <a
+            href="{{ url('sonata_admin_set_boolean_list_field_value') }}" class="sonata-ba-action"
+            onclick="sonata_admin_set_boolean_list_field_value(event)" id="{{ field_description.name }}-{{ object.id }}-0-{{ admin.code(object) }}-{{ admin.uniqid(object) }}"
+            >
+            <img 
+                src="{{ asset('bundles/sonataadmin/famfamfam/accept.png') }}" 
+                alt="{%- trans from 'SonataAdminBundle' %}label_type_yes{% endtrans -%}" 
+                />
+        </a>
+    {% else %}
+        <a
+            href="{{ url('sonata_admin_set_boolean_list_field_value') }}"
+            onclick="sonata_admin_set_boolean_list_field_value(event)" id="{{ field_description.name }}-{{ object.id }}-1-{{ admin.code(object) }}-{{ admin.uniqid(object) }}"
+            >
+            <img 
+                src="{{ asset('bundles/sonataadmin/famfamfam/exclamation.png') }}" 
+                alt="{%- trans from 'SonataAdminBundle' %}label_type_no{% endtrans -%}" />
+        </a>
+    {% endif %}
+{% else %}
+    {% if value %}
+        <img src="{{ asset('bundles/sonataadmin/famfamfam/accept.png') }}" alt="{%- trans from 'SonataAdminBundle' %}label_type_yes{% endtrans -%}" />
+    {% else %}
+        <img src="{{ asset('bundles/sonataadmin/famfamfam/exclamation.png') }}" alt="{%- trans from 'SonataAdminBundle' %}label_type_no{% endtrans -%}" />
+    {% endif %}  
+{% endif %}
+{% endspaceless %}
+{% endblock %}

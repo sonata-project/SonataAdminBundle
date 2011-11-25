@@ -19,4 +19,9 @@
     <route id="sonata_admin_short_object_information" pattern="/core/get-short-object-description">
         <default key="_controller">SonataAdminBundle:Helper:getShortObjectDescription</default>
     </route>
+
+    <route id="sonata_admin_set_boolean_list_field_value" pattern="/core/set-boolean-list-field-value">
+        <default key="_controller">SonataAdminBundle:Helper:setBooleanListFieldValue</default>
+    </route>
+      
 </routes>

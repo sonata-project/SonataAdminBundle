@@ -114,3 +114,38 @@ var Admin = {
         });
     }
 }
+
+/**
+ * toggle list boolean property state (value))
+ * @param MouseEvent
+ */
+function sonata_admin_set_boolean_list_field_value(event)
+{
+    var targetElement = Admin.stopEvent(event);
+    var a = jQuery(targetElement).closest('a');
+
+    var linkId = a.attr('id');
+    var aParams = linkId.split("-");
+
+
+    jQuery.ajax({
+        url: a.attr('href'),
+        type: 'GET',
+        data: "field=" + aParams[0] + "&objectId=" + aParams[1] + "&value=" + aParams[2] + "&code=" + aParams[3] + "&uniqid=" + aParams[4],
+        success: function(json) {
+            var jObj = jQuery.parseJSON(json);
+
+            Admin.log('['+aParams[1]+']|set_boolean_list_field_value] setting new boolean value: ' + aParams[2] + ' of field: ' + aParams[0] + ' for object with id: ' + aParams[1]);
+  
+            if(jObj.status === "OK")
+            {
+                var td = jQuery(a).parent();
+                td.children().remove();
+                td.html(jObj.html);
+                td.effect("highlight", {'color' : '#57A957'}, 2000);
+            }
+            else
+                jQuery(a).parent().effect("highlight", {'color' : '#C43C35'}, 2000);
+        }
+    });
+};
