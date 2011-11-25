@@ -151,7 +151,7 @@ class HelperController extends Controller
      * Toggle boolean value of property in list
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function setBooleanListFieldValueAction()
+    public function setObjectFieldValueAction()
     {
         $field      = $this->get('request')->query->get('field');
         $code       = $this->get('request')->query->get('code');
@@ -160,6 +160,12 @@ class HelperController extends Controller
         $value      = $this->get('request')->query->get('value');
 
         $admin  = $this->container->get('sonata.admin.pool')->getInstance($code);
+        
+        if (false === $admin->isGranted('EDIT')) {
+            $response = new Response(json_encode(array('status' => 'Error')));
+            return $response;
+        }
+               
         if ($uniqid) {
             $admin->setUniqid($uniqid);
         }
@@ -181,7 +187,8 @@ class HelperController extends Controller
         $extension = $twig->getExtension('sonata_admin');
         $extension->initRuntime($this->get('twig'));
         
-        $html = strip_tags($extension->renderListElement($object, $admin->getListFieldDescription($field)), '<a><img>');
+        //$html = strip_tags($extension->renderListElement($object, $admin->getListFieldDescription($field)), '<a><img>');
+        $html = $extension->renderListElement($object, $admin->getListFieldDescription($field));
 
         $response = new Response(json_encode(array('status' => 'OK', 'html' => $html)));
         return $response;
