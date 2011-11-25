@@ -16,8 +16,8 @@ file that was distributed with this source code.
 {% if admin.isGranted('EDIT') %}
     {% if value %}
         <a
-            href="{{ url('sonata_admin_set_boolean_list_field_value') }}" class="sonata-ba-action"
-            onclick="sonata_admin_set_boolean_list_field_value(event)" id="{{ field_description.name }}-{{ object.id }}-0-{{ admin.code(object) }}-{{ admin.uniqid(object) }}"
+            href="{{ url('sonata_admin_set_object_field_value', { 'field': field_description.name, 'objectId': object.id, 'value': 0, 'code': admin.code(object), 'uniqid': admin.uniqid(object) }) }}" class="sonata-ba-action"
+            onclick="sonata_admin_set_object_field_value(event)"
             >
             <img 
                 src="{{ asset('bundles/sonataadmin/famfamfam/accept.png') }}" 
@@ -26,8 +26,8 @@ file that was distributed with this source code.
         </a>
     {% else %}
         <a
-            href="{{ url('sonata_admin_set_boolean_list_field_value') }}"
-            onclick="sonata_admin_set_boolean_list_field_value(event)" id="{{ field_description.name }}-{{ object.id }}-1-{{ admin.code(object) }}-{{ admin.uniqid(object) }}"
+            href="{{ url('sonata_admin_set_object_field_value', { 'field': field_description.name, 'objectId': object.id, 'value': 1, 'code': admin.code(object), 'uniqid': admin.uniqid(object) }) }}" class="sonata-ba-action"
+            onclick="sonata_admin_set_object_field_value(event)"
             >
             <img 
                 src="{{ asset('bundles/sonataadmin/famfamfam/exclamation.png') }}" 
