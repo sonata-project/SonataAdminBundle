@@ -187,10 +187,7 @@ class HelperController extends Controller
         $extension = $twig->getExtension('sonata_admin');
         $extension->initRuntime($this->get('twig'));
         
-        //$html = strip_tags($extension->renderListElement($object, $admin->getListFieldDescription($field)), '<a><img>');
-        $html = $extension->renderListElement($object, $admin->getListFieldDescription($field));
-
-        $response = new Response(json_encode(array('status' => 'OK', 'html' => $html)));
+        $response = new Response(json_encode(array('status' => 'OK', 'html' => $extension->renderListElement($object, $admin->getListFieldDescription($field)))));
         return $response;
     }
 }
