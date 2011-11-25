@@ -90,4 +90,10 @@ interface DatagridInterface
      * @return bool
      */
     function hasFilter($name);
+
+    /**
+     * @abstract
+     * @param $name
+     */
+    function removeFilter($name);
 }

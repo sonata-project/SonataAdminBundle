@@ -136,6 +136,14 @@ class Datagrid implements DatagridInterface
 
     /**
      * @param $name
+     */
+    public function removeFilter($name)
+    {
+        unset($this->filters[$name]);
+    }
+
+    /**
+     * @param $name
      * @return null
      */
     public function getFilter($name)
