@@ -87,7 +87,7 @@ class DatagridMapper
      */
     public function get($name)
     {
-        return $this->datagrid->get($name);
+        return $this->datagrid->getFilter($name);
     }
 
     /**
@@ -96,16 +96,18 @@ class DatagridMapper
      */
     public function has($key)
     {
-        return $this->datagrid->has($key);
+        return $this->datagrid->hasFilter($key);
     }
 
     /**
      * @param string $key
-     * @return void
+     * @return \Sonata\AdminBundle\Datagrid\DatagridMapper
      */
     public function remove($key)
     {
         $this->admin->removeFilterFieldDescription($key);
-        $this->datagrid->remove($key);
+        $this->datagrid->removeFilter($key);
+
+        return $this;
     }
 }

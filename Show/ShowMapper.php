@@ -103,12 +103,14 @@ class ShowMapper
 
     /**
      * @param string $key
-     * @return void
+     * @return \Sonata\AdminBundle\Show\ShowMapper
      */
     public function remove($key)
     {
         $this->admin->removeShowFieldDescription($key);
         $this->list->remove($key);
+
+        return $this;
     }
 
     /**
