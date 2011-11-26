@@ -112,34 +112,32 @@ var Admin = {
         jQuery('fieldset.filter_legend', subject).click(function(event) {
            jQuery('div.filter_container', jQuery(event.target).parent()).toggle();
         });
+    },
+    
+    /**
+     * Change object field value
+     * @param MouseEvent
+     */
+    set_object_field_value: function(event) {
+        var targetElement = Admin.stopEvent(event);
+        var a = jQuery(targetElement).closest('a');
+    
+        jQuery.ajax({
+            url: a.attr('href'),
+            type: 'GET',
+            success: function(json) {
+                if(json.status === "OK")
+                {
+                    var td = jQuery(a).parent();
+                    td.children().remove();
+                    var result_td =json.data.replace(/<!--[\s\S]*?-->/g, "");
+                    result_td = jQuery(result_td).html();
+                    td.html(result_td);
+                    td.effect("highlight", {'color' : '#57A957'}, 2000);
+                }
+                else
+                    jQuery(a).parent().effect("highlight", {'color' : '#C43C35'}, 2000);
+            }
+        });
     }
 }
-
-/**
- * change object field value
- * @param MouseEvent
- */
-function sonata_admin_set_object_field_value(event)
-{
-    var targetElement = Admin.stopEvent(event);
-    var a = jQuery(targetElement).closest('a');
-
-    jQuery.ajax({
-        url: a.attr('href'),
-        type: 'GET',
-        success: function(json) {
-            var jObj = jQuery.parseJSON(json);
-     
-            if(jObj.status === "OK")
-            {
-                var td = jQuery(a).parent();
-                td.children().remove();
-                var result_td = jQuery(jObj.html).html();
-                td.html(result_td);
-                td.effect("highlight", {'color' : '#57A957'}, 2000);
-            }
-            else
-                jQuery(a).parent().effect("highlight", {'color' : '#C43C35'}, 2000);
-        }
-    });
-};

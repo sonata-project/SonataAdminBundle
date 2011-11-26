@@ -163,6 +163,7 @@ class HelperController extends Controller
         
         if (false === $admin->isGranted('EDIT')) {
             $response = new Response(json_encode(array('status' => 'Error')));
+            $response->headers->set('Content-Type', 'application/json');
             return $response;
         }
                
@@ -174,6 +175,7 @@ class HelperController extends Controller
 
         if (!$object) {
             $response = new Response(json_encode(array('status' => 'Error')));
+            $response->headers->set('Content-Type', 'application/json');
             return $response;
         }
         
@@ -187,7 +189,8 @@ class HelperController extends Controller
         $extension = $twig->getExtension('sonata_admin');
         $extension->initRuntime($this->get('twig'));
         
-        $response = new Response(json_encode(array('status' => 'OK', 'html' => $extension->renderListElement($object, $admin->getListFieldDescription($field)))));
+        $response = new Response(json_encode(array('status' => 'OK', 'data' => $extension->renderListElement($object, $admin->getListFieldDescription($field)))));
+        $response->headers->set('Content-Type', 'application/json');
         return $response;
     }
 }
