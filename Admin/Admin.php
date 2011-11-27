@@ -1132,7 +1132,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      */
     public function createQuery($context = 'list')
     {
-        return $this->modelManager->createQuery($this->class);
+        return $this->getModelManager()->createQuery($this->class);
     }
 
     /**
@@ -2103,6 +2103,10 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         return $this->securityHandler->isGranted($this, $name, $object ?: $this);
     }
 
+    /**
+     * @param $entity
+     * @return mixed
+     */
     public function getNormalizedIdentifier($entity)
     {
         return $this->getModelManager()->getNormalizedIdentifier($entity);

@@ -59,7 +59,7 @@ class CommentAdmin extends Admin
     }
 }
 
-class AdminTest extends \PHPUnit_Framework_TestCase
+class BaseAdminTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @covers Sonata\AdminBundle\Admin\Admin::__construct
@@ -114,7 +114,7 @@ class AdminTest extends \PHPUnit_Framework_TestCase
 
         $admin->initialize();
         $this->assertFalse($admin->getUniqid() == "");
-        $this->assertEquals('post', $admin->getClassnameLabel());
+        $this->assertEquals('Post', $admin->getClassnameLabel());
 
 
         $admin = new CommentAdmin('sonata.post.admin.comment', 'Application\Sonata\NewsBundle\Entity\Comment', 'SonataNewsBundle:CommentAdmin');
@@ -219,6 +219,6 @@ class AdminTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('', $admin->toString($s));
 
         $s = new FooTest_AdminTest;
-        $this->assertEquals('Salut', $admin->toString($s));
+        $this->assertEquals('salut', $admin->toString($s));
     }
 }

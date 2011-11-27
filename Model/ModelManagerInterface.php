@@ -131,6 +131,12 @@ interface ModelManagerInterface
 
     /**
      * @abstract
+     * @param $entity
+     */
+    function getNormalizedIdentifier($entity);
+
+    /**
+     * @abstract
      * @param string $class
      * @return void
      */
