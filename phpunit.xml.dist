@@ -17,4 +17,15 @@
         </testsuite>
     </testsuites>
 
+    <filter>
+        <whitelist>
+            <directory>./</directory>
+            <exclude>
+                <directory>./DataFixtures/</directory>
+                <directory>./Resources/</directory>
+                <directory>./DependencyInjection/</directory>
+            </exclude>
+        </whitelist>
+    </filter>
+
 </phpunit>
