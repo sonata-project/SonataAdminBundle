@@ -15,7 +15,7 @@ use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 
-class Admin_BaseAdminModelManagerTest extends Admin
+class BaseAdminModelManager_Admin extends Admin
 {
 
 }
@@ -29,7 +29,7 @@ class BaseAdminModelManagerTest extends \PHPUnit_Framework_TestCase
         $modelManager->expects($this->once())->method('update');
         $modelManager->expects($this->once())->method('delete');
 
-        $admin = new Admin_BaseAdminModelManagerTest('code', 'class', 'controller');
+        $admin = new BaseAdminModelManager_Admin('code', 'class', 'controller');
         $admin->setModelManager($modelManager);
 
         $t = new \stdClass();
@@ -52,7 +52,7 @@ class BaseAdminModelManagerTest extends \PHPUnit_Framework_TestCase
             }
         }));
 
-        $admin = new Admin_BaseAdminModelManagerTest('code', 'class', 'controller');
+        $admin = new BaseAdminModelManager_Admin('code', 'class', 'controller');
         $admin->setModelManager($modelManager);
         $admin->getObject(10);
     }
@@ -66,7 +66,7 @@ class BaseAdminModelManagerTest extends \PHPUnit_Framework_TestCase
             }
         }));
 
-        $admin = new Admin_BaseAdminModelManagerTest('code', 'class', 'controller');
+        $admin = new BaseAdminModelManager_Admin('code', 'class', 'controller');
         $admin->setModelManager($modelManager);
         $admin->createQuery();
     }
@@ -76,7 +76,7 @@ class BaseAdminModelManagerTest extends \PHPUnit_Framework_TestCase
         $modelManager = $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface');
         $modelManager->expects($this->exactly(2))->method('getNormalizedIdentifier');
 
-        $admin = new Admin_BaseAdminModelManagerTest('code', 'class', 'controller');
+        $admin = new BaseAdminModelManager_Admin('code', 'class', 'controller');
         $admin->setModelManager($modelManager);
 
         $admin->id('Entity');

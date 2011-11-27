@@ -14,7 +14,7 @@ namespace Sonata\AdminBundle\Tests\Admin;
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Route\RouteCollection;
 
-class FooTest_AdminTest
+class FooTest_Admin
 {
     public function __toString()
     {
@@ -218,7 +218,7 @@ class BaseAdminTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals('', $admin->toString($s));
 
-        $s = new FooTest_AdminTest;
+        $s = new FooTest_Admin;
         $this->assertEquals('salut', $admin->toString($s));
     }
 }
