@@ -9,6 +9,10 @@ table.sonata-ba-list tfoot td {
     border-top: 1px solid #DDD;
 }
 
+a.sonata-ba-collapsed {
+    color: #404040;
+}
+
 /* Form */
 textarea.title {
     font-size: 1em;

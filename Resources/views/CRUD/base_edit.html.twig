@@ -55,11 +55,12 @@ file that was distributed with this source code.
             {% endif %}
 
             {% for name, form_group in admin.formgroups %}
-                <fieldset>
+                <fieldset {% if form_group.collapsed %}class="sonata-ba-fielset-collapsed"{% endif %}>
                     <legend>
-                        {{ name|trans({}, admin.translationdomain) }}
                         {% if form_group.collapsed %}
-                            <a href="" class="sonata-ba-collapsed">{% trans from 'SonataAdminBundle' %}link_expand{% endtrans %}</a>
+                            <a href="" class="sonata-ba-collapsed" title="{% trans from 'SonataAdminBundle' %}link_expand{% endtrans %}">{{ name|trans({}, admin.translationdomain) }}</a>
+                        {% else %}
+                            {{ name|trans({}, admin.translationdomain) }}
                         {% endif %}
                     </legend>
 
