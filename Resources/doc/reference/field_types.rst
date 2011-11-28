@@ -7,7 +7,8 @@ List and Show Actions
 There are many field types that can be used in the list action or show action :
 
 * array: display value from an array
-* boolean: display a green or red picture depend on the boolean value
+* boolean: display a green or red picture depend on the boolean value, this type accepts an ``editable``
+  parameter to edit the value from within the list or the show actions
 * date: display a formatted date
 * datetime: display a formatted date
 * text: display a text
