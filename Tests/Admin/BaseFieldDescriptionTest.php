@@ -12,6 +12,7 @@
 namespace Sonata\AdminBundle\Tests\Admin;
 
 use Sonata\AdminBundle\Admin\BaseFieldDescription;
+use Sonata\AdminBundle\Admin\AdminInterface;
 
 class BaseFieldDescriptionTest extends \PHPUnit_Framework_TestCase
 {
@@ -43,6 +44,66 @@ class BaseFieldDescriptionTest extends \PHPUnit_Framework_TestCase
         $description->mergeOption('bar', array('hello'));
 
         $this->assertCount(1, $description->getOption('bar'));
+
+        $description->setOption('label', 'trucmuche');
+        $this->assertEquals('trucmuche', $description->getLabel());
+
+        $this->assertNull($description->getTemplate());
+        $description->setOptions(array('type' => 'integer', 'template' => 'foo.twig.html'));
+
+        $this->assertEquals('integer', $description->getType());
+        $this->assertEquals('foo.twig.html', $description->getTemplate());
+
+        $this->assertCount(0, $description->getOptions());
+
+        $description->setHelp('Please enter an integer');
+        $this->assertEquals('Please enter an integer', $description->getHelp());
+
+        $description->setMappingType('int');
+        $this->assertEquals('int', $description->getMappingType());
+    }
+
+    public function testAdmin()
+    {
+        $description = new FieldDescription();
+
+        $admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $description->setAdmin($admin);
+        $this->isInstanceOf('Sonata\AdminBundle\Admin\AdminInterface', $description->getAdmin());
+
+        $associationAdmin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $associationAdmin->expects($this->once())->method('setParentFieldDescription');
+
+        $this->assertFalse($description->hasAssociationAdmin());
+        $description->setAssociationAdmin($associationAdmin);
+        $this->assertTrue($description->hasAssociationAdmin());
+        $this->isInstanceOf('Sonata\AdminBundle\Admin\AdminInterface', $description->getAssociationAdmin());
+
+        $parent = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $description->setParent($parent);
+        $this->isInstanceOf('Sonata\AdminBundle\Admin\AdminInterface', $description->getParent());
+    }
+
+    public function testGetValue()
+    {
+        $description = new FieldDescription();
+        $description->setOption('code', 'getFoo');
+
+        $mock = $this->getMock('stdClass', array('getFoo'));
+        $mock->expects($this->once())->method('getFoo')->will($this->returnValue(42));
+
+        $this->assertEquals(42, $description->getValue($mock));
+    }
+
+    /**
+     * @expectedException Sonata\AdminBundle\Admin\NoValueException
+     */
+    public function testGetValueNoValueException()
+    {
+        $description = new FieldDescription();
+        $mock = $this->getMock('stdClass', array('getFoo'));
+
+        $description->getValue($mock);
     }
 
     /**
