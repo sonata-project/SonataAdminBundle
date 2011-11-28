@@ -353,4 +353,9 @@ interface AdminInterface
      * @return array|null
      */
     function getChild($code);
+
+    /**
+     * @return object a new object instance
+     */
+    function getNewInstance();
 }

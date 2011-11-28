@@ -45,15 +45,14 @@ class AdminHelper
     }
 
     /**
-     * @throws \RuntimeException
-     * @param \Symfony\Component\Form\FormView $formBuilder
-     * @param  $elementId
-     * @return \Symfony\Component\Form\FormView
+     * @param \Symfony\Component\Form\FormView $formView
+     * @param $elementId
+     * @return null|\Symfony\Component\Form\FormView
      */
     public function getChildFormView(FormView $formView, $elementId)
     {
         foreach (new \RecursiveIteratorIterator(new FormViewIterator($formView), \RecursiveIteratorIterator::SELF_FIRST) as $name => $formView) {
-            if ($name == $elementId) {
+            if ($name === $elementId) {
                 return $formView;
             }
         }
@@ -62,6 +61,7 @@ class AdminHelper
     }
 
     /**
+     * @deprecated
      * @param string $code
      * @return \Sonata\AdminBundle\Admin\AdminInterface
      */
@@ -78,8 +78,8 @@ class AdminHelper
      *
      * @throws \RuntimeException
      * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
-     * @param  $elementId
-     * @return void
+     * @param sting $elementId
+     * @return array
      */
     public function appendFormFieldElement(AdminInterface $admin, $elementId)
     {
