@@ -14,6 +14,7 @@ namespace Sonata\AdminBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Form\Util\PropertyPath;
 
 class HelperController extends Controller
 {
@@ -144,5 +145,52 @@ class HelperController extends Controller
         $description = sprintf('<a href="%s" target="new">%s</a>', $admin->generateUrl('edit', array('id' => $objectId)), $description);
 
         return new Response($description);
+    }
+    
+    /**
+     * Toggle boolean value of property in list
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function setObjectFieldValueAction()
+    {
+        $field      = $this->get('request')->query->get('field');
+        $code       = $this->get('request')->query->get('code');
+        $objectId   = $this->get('request')->query->get('objectId');
+        $uniqid     = $this->get('request')->query->get('uniqid');
+        $value      = $this->get('request')->query->get('value');
+
+        $admin  = $this->container->get('sonata.admin.pool')->getInstance($code);
+        
+        if (false === $admin->isGranted('EDIT')) {
+            $response = new Response(json_encode(array('status' => 'Error')));
+            $response->headers->set('Content-Type', 'application/json');
+            return $response;
+        }
+               
+        if ($uniqid) {
+            $admin->setUniqid($uniqid);
+        }
+
+        $object = $admin->getObject($objectId);
+
+        if (!$object) {
+            $response = new Response(json_encode(array('status' => 'Error')));
+            $response->headers->set('Content-Type', 'application/json');
+            return $response;
+        }
+        
+        $propertyPath = new PropertyPath($field);
+        $propertyPath->setValue($object, $value);
+        $admin->update($object);
+
+        // render the widget
+        // todo : fix this, the twig environment variable is not set inside the extension ...
+        $twig = $this->get('twig');
+        $extension = $twig->getExtension('sonata_admin');
+        $extension->initRuntime($this->get('twig'));
+        
+        $response = new Response(json_encode(array('status' => 'OK', 'data' => $extension->renderListElement($object, $admin->getListFieldDescription($field)))));
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
     }
 }
