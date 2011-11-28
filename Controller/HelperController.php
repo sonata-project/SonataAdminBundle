@@ -146,7 +146,7 @@ class HelperController extends Controller
 
         return new Response($description);
     }
-    
+
     /**
      * Toggle boolean value of property in list
      * @return \Symfony\Component\HttpFoundation\Response
@@ -158,15 +158,24 @@ class HelperController extends Controller
         $objectId   = $this->get('request')->query->get('objectId');
         $uniqid     = $this->get('request')->query->get('uniqid');
         $value      = $this->get('request')->query->get('value');
+        $context    = $this->get('request')->query->get('context');
 
         $admin  = $this->container->get('sonata.admin.pool')->getInstance($code);
-        
-        if (false === $admin->isGranted('EDIT')) {
-            $response = new Response(json_encode(array('status' => 'Error')));
-            $response->headers->set('Content-Type', 'application/json');
-            return $response;
+
+        // alter should be done by using a post method
+        if ($this->getRequest()->getMethod() != 'POST') {
+            return new Response(json_encode(array('status' => 'KO', 'message' => 'Expected a POST Request')), 200, array(
+                'Content-Type' => 'application/json'
+            ));
         }
-               
+
+        // check user permission
+        if (false === $admin->isGranted('EDIT')) {
+            return new Response(json_encode(array('status' => 'KO', 'message' => 'Invalid permissions')), 200, array(
+                'Content-Type' => 'application/json'
+            ));
+        }
+
         if ($uniqid) {
             $admin->setUniqid($uniqid);
         }
@@ -174,13 +183,31 @@ class HelperController extends Controller
         $object = $admin->getObject($objectId);
 
         if (!$object) {
-            $response = new Response(json_encode(array('status' => 'Error')));
-            $response->headers->set('Content-Type', 'application/json');
-            return $response;
+            return new Response(json_encode(array('status' => 'KO', 'message' => 'Object does not exist')), 200, array(
+                'Content-Type' => 'application/json'
+            ));
         }
-        
+
+        if ($context == 'list') {
+            $fieldDescription = $admin->getListFieldDescription($field);
+        } else if ($context == 'show') {
+            $fieldDescription = $admin->getShowFieldDescription($field);
+        } else {
+            return new Response(json_encode(array('status' => 'KO', 'message' => 'Invalid context')), 200, array(
+                'Content-Type' => 'application/json'
+            ));
+        }
+
+        if (!$fieldDescription->getOption('editable')) {
+            return new Response(json_encode(array('status' => 'KO', 'message' => 'The field cannot be edit, editable option must be set to true')), 200, array(
+                'Content-Type' => 'application/json'
+            ));
+        }
+
+        // TODO : call the validator component ...
         $propertyPath = new PropertyPath($field);
         $propertyPath->setValue($object, $value);
+
         $admin->update($object);
 
         // render the widget
@@ -188,9 +215,11 @@ class HelperController extends Controller
         $twig = $this->get('twig');
         $extension = $twig->getExtension('sonata_admin');
         $extension->initRuntime($this->get('twig'));
-        
-        $response = new Response(json_encode(array('status' => 'OK', 'data' => $extension->renderListElement($object, $admin->getListFieldDescription($field)))));
-        $response->headers->set('Content-Type', 'application/json');
-        return $response;
+
+        $content = $extension->renderListElement($object, $fieldDescription);
+
+        return new Response(json_encode(array('status' => 'OK', 'content' => $content)), 200, array(
+            'Content-Type' => 'application/json'
+        ));
     }
 }

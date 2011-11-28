@@ -113,7 +113,7 @@ var Admin = {
            jQuery('div.filter_container', jQuery(event.target).parent()).toggle();
         });
     },
-    
+
     /**
      * Change object field value
      * @param MouseEvent
@@ -121,22 +121,20 @@ var Admin = {
     set_object_field_value: function(event) {
         var targetElement = Admin.stopEvent(event);
         var a = jQuery(targetElement).closest('a');
-    
+
         jQuery.ajax({
             url: a.attr('href'),
-            type: 'GET',
+            type: 'POST',
             success: function(json) {
-                if(json.status === "OK")
-                {
-                    var td = jQuery(a).parent();
-                    td.children().remove();
-                    var result_td =json.data.replace(/<!--[\s\S]*?-->/g, "");
-                    result_td = jQuery(result_td).html();
-                    td.html(result_td);
-                    td.effect("highlight", {'color' : '#57A957'}, 2000);
-                }
-                else
+                if(json.status === "OK") {
+                    var elm = jQuery(a).parent();
+                    elm.children().remove();
+                    // fix issue with html comment ...
+                    elm.html(jQuery(json.content.replace(/<!--[\s\S]*?-->/g, "")).html());
+                    elm.effect("highlight", {'color' : '#57A957'}, 2000);
+                } else {
                     jQuery(a).parent().effect("highlight", {'color' : '#C43C35'}, 2000);
+                }
             }
         });
     }
