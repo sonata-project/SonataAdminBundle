@@ -72,8 +72,10 @@ class SonataAdminExtension extends \Twig_Extension
     protected function getTemplate(FieldDescriptionInterface $fieldDescription, $default)
     {
         // todo: find a better solution
+        $templateName = $fieldDescription->getTemplate() ?: $default;
+
         try {
-            $template = $this->environment->loadTemplate($fieldDescription->getTemplate());
+            $template = $this->environment->loadTemplate($templateName);
         } catch(\Twig_Error_Loader $e) {
             $template = $this->environment->loadTemplate($default);
         }
