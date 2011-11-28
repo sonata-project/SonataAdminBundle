@@ -34,6 +34,7 @@ Reference Guide
    reference/routing
    reference/saving_hooks
    reference/form_types
+   reference/field_types
    reference/conditional_validation
    reference/templates
    reference/translation
