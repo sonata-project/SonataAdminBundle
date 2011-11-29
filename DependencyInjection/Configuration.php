@@ -89,7 +89,6 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('list')->defaultValue('SonataAdminBundle:CRUD:list.html.twig')->cannotBeEmpty()->end()
                         ->scalarNode('show')->defaultValue('SonataAdminBundle:CRUD:show.html.twig')->cannotBeEmpty()->end()
                         ->scalarNode('edit')->defaultValue('SonataAdminBundle:CRUD:edit.html.twig')->cannotBeEmpty()->end()
-                        ->scalarNode('boolean_edit')->defaultValue('SonataAdminBundle:CRUD:list_boolean_edit.html.twig')->cannotBeEmpty()->end()
                     ->end()
                 ->end()
             ->end()
