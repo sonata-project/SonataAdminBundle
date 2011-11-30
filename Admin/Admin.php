@@ -44,6 +44,9 @@ use Knp\Menu\MenuItem;
 
 abstract class Admin implements AdminInterface, DomainObjectInterface
 {
+    const CONTEXT_MENU       = 'menu';
+    const CONTEXT_DASHBOARD  = 'dashboard';
+
     /**
      * The class name managed by the admin class
      *
@@ -2078,6 +2081,38 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
             'DELETE'    => array('DELETE'),
             'OPERATOR'  => array('OPERATOR')
         );
+    }
+
+    /**
+     * Return the list of permissions the user should have in order to display the admin
+     *
+     * @param string $context
+     * @return array
+     */
+    public function getPermissionsShow($context)
+    {
+        switch ($context) {
+            case self::CONTEXT_DASHBOARD:
+            case self::CONTEXT_MENU:
+            default:
+                return array('LIST');
+        }
+    }
+
+    /**
+     * Return if this admin is displayed depending on the context
+     *
+     * @param string $context
+     * @return boolean
+     */
+    public function showIn($context)
+    {
+        switch ($context) {
+            case self::CONTEXT_DASHBOARD:
+            case self::CONTEXT_MENU:
+            default:
+                return $this->isGranted($this->getPermissionsShow($context));
+        }
     }
 
     /**
