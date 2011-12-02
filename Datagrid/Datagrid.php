@@ -169,12 +169,11 @@ class Datagrid implements DatagridInterface
 
     /**
      * @param $name
-     * @param $operator
      * @param $value
      */
-    public function setValue($name, $operator, $value)
+    public function setValue($name, $value)
     {
-        $this->values[$name] = array('type' => $operator, 'value' => $value);
+        $this->values[$name] = $value;
     }
 
     /**
