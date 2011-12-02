@@ -39,8 +39,11 @@ Configuration
         - the login form for authentification
         - the access control : resources with related required roles, the important part is the admin configuration
         - the ``acl`` option enable the ACL.
+        - the ``AdminPermissionMap`` defines the permissions of the Admin class
 
 .. code-block:: yaml
+
+    # app/config/security.yml
 
     parameters:
         # ... other parameters
@@ -92,8 +95,8 @@ Configuration
 
 
         role_hierarchy:
-            ROLE_ADMIN:       ROLE_USER
-            ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_SONATA_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+            ROLE_ADMIN:       [ROLE_USER, ROLE_SONATA_ADMIN]
+            ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
 
         acl:
             connection: default
@@ -102,7 +105,7 @@ Configuration
 
 - Create a new user :
 
-.. code-block::
+.. code-block:: sh
 
     # php app/console fos:user:create
     Please choose a username:root
@@ -113,29 +116,208 @@ Configuration
 
 - Promote an user as super admin :
 
-.. code-block::
+.. code-block:: sh
 
     # php app/console fos:user:promote root
     User "root" has been promoted as a super administrator.
 
 If you have Admin classes, you can install the related CRUD ACL rules :
 
-.. code-block::
+.. code-block:: sh
 
     # php app/console sonata:admin:setup-acl
     Starting ACL AdminBundle configuration
     > install ACL for sonata.media.admin.media
-       - add role: ROLE_SONATA_MEDIA_ADMIN_MEDIA_EDIT, ACL: ["EDIT"]
-       - add role: ROLE_SONATA_MEDIA_ADMIN_MEDIA_LIST, ACL: ["LIST"]
-       - add role: ROLE_SONATA_MEDIA_ADMIN_MEDIA_CREATE, ACL: ["CREATE"]
-       - add role: ROLE_SONATA_MEDIA_ADMIN_MEDIA_DELETE, ACL: ["DELETE"]
-       - add role: ROLE_SONATA_MEDIA_ADMIN_MEDIA_OPERATOR, ACL: ["OPERATOR"]
+       - add role: ROLE_SONATA_MEDIA_ADMIN_MEDIA_GUEST, permissions: ["VIEW","LIST"]
+       - add role: ROLE_SONATA_MEDIA_ADMIN_MEDIA_STAFF, permissions: ["EDIT","LIST","CREATE"]
+       - add role: ROLE_SONATA_MEDIA_ADMIN_MEDIA_EDITOR, permissions: ["OPERATOR"]
+       - add role: ROLE_SONATA_MEDIA_ADMIN_MEDIA_ADMIN, permissions: ["MASTER"]
     ... skipped ...
 
 If you try to access to the admin class you should see the login form, just logon with the ``root`` user.
+
+An Admin is displayed in the dashboard (and menu) when the user has the role ``LIST``. To change this override the ``showIn`` 
+method in the Admin class.
+
+Roles and Access control lists
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+A user can have several roles when working with an application. Each Admin class has several roles, and each role specifies the permissions
+of the user for the Admin class. Or more specific, what the user can do with the domain object(s) the Admin class is created for.
+
+By default each Admin class contains the following roles, override the property ``$securityInformation`` to change this:
+
+ - ROLE_SONATA_..._GUEST: a guest that is allowed to view an object and a list of objects;
+ - ROLE_SONATA_..._STAFF: probably the biggest part of the users, a staff user has the same permissions as guests and is additionally 
+   allowed to EDIT and CREATE new objects;
+ - ROLE_SONATA_..._EDITOR: an editor is granted all access and, compared to the staff users, is allowed to DELETE;
+ - ROLE_SONATA_..._ADMIN: an administrative user is granted all access and on top of that, the user is allowed to grant other users access.
+
+Owner:
+ - when an object is created, the currently logged in user is set as owner for that object and is granted all access for that object;
+ - this means the user owning the object is always allowed to DELETE the object, even when it only has the staff role.
+
+Vocabulary used for Access Control Lists:
+    - Role: a user role;
+    - ACL: a list of access rules, the Admin uses 2 types:
+        - Class-Scope: created from the Security information of the Admin class and shares the Access Control Entries for all objects
+          with the class where the Admin is created for;
+        - Object-Scope: created for each new object and specifies the owner;
+    - Sid: Security identity, an ACL role for the Class-Scope ACL and the user for the Object-Scope ACL;
+    - Oid: Object identity, identifies the ACL, for the Admin ACL this is the admin code, for the object ACL this is the object id;
+    - ACE: a role (or sid) and its permissions;
+    - Permission: this tells what the user is allowed to do with the Object identity;
+    - Bitmask: a permission can have several bitmasks, each bitmask represents a permission. When permission VIEW is requested and 
+      it contains the VIEW and EDIT bitmask and the user only has the EDIT permission, then the permission VIEW is granted.
+    - PermissionMap: configures the bitmasks for each permission, to change the default mapping create a voter for the domain class of the Admin. 
+      There can be many voters that may have different permission maps. However, prevent that multiple voters are not allowed to vote on the same 
+      class with overlapping bitmasks.
+   
+See the cookbook article "Advanced ACL concepts" for the meaning of the different permissions: 
+http://symfony.com/doc/current/cookbook/security/acl_advanced.html#pre-authorization-decisions.
+
+How is access granted?
+~~~~~~~~~~~~~~~~~~~~~~
+In the application the security context is asked if access is granted for a role or a permission (admin.isGranted):
+
+ - Token: a token identifies a user between requests;
+ - Voter: sort of judge that returns if access is granted of denied, if the voter should not vote for a case, it returns abstrain;
+ - AccessDecisionManager: decides if access is granted or denied according a specific strategy. It grants access if at least one (affirmative 
+   strategy), all (unanimous strategy) or more then half (consensus strategy) of the counted votes granted access;
+ - RoleVoter: votes for all attributes stating with "ROLE_" and grants access if the user has this role;
+ - RoleHierarchieVoter: when the role ROLE_SONATA_ADMIN is voted for, it also votes "granted" if the user has the role ROLE_SUPER_ADMIN;
+ - AclVoter: grants access for the permissions of the Admin class if the user has the permission, the user has a permission that is
+   included in the bitmasks of the permission requested to vote for or the user owns the object.
+
+Create a custom voter or a custom permission map
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+In some occasions you need to create a custom voter or a custom permission map because for example you want to restrict access using extra rules:
+
+ - create a custom voter class that extends the AclVoter
+
+.. code-block:: php
+
+   namespace Acme\DemoBundle\Security\Authorization\Voter;
+   
+   use FOS\UserBundle\Model\UserInterface;
+   use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+   use Symfony\Component\Security\Acl\Voter\AclVoter;
+   
+   class UserAclVoter extends AclVoter
+   {
+       /**
+        * {@InheritDoc}
+        */
+       public function supportsClass($class)
+       {
+           // support the Class-Scope ACL for votes with the custom permission map
+           // return $class === 'Sonata\UserBundle\Admin\Entity\UserAdmin' || $class === is_subclass_of($class, 'FOS\UserBundle\Model\UserInterface');
+           // if you use php >=5.3.7 you can check the inheritance with is_a($class, 'Sonata\UserBundle\Admin\Entity\UserAdmin');
+           // support the Object-Scope ACL
+           return is_subclass_of($class, 'FOS\UserBundle\Model\UserInterface');
+       }
+
+       public function supportsAttribute($attribute)
+       {
+           return $attribute === 'EDIT' || $attribute === 'DELETE';
+       }
+
+       public function vote(TokenInterface $token, $object, array $attributes)
+       {
+           if (!$this->supportsClass(get_class($object))) {
+               return self::ACCESS_ABSTAIN;
+           }
+
+           foreach ($attributes as $attribute) {
+               if ($this->supportsAttribute($attribute) && $object instanceof UserInterface) {
+                   if ($object->isSuperAdmin() && !$token->getUser()->isSuperAdmin()) {
+                       // deny a non super admin user to edit a super admin user
+                       return self::ACCESS_DENIED;
+                   }
+               }
+           }
+
+           // use the parent vote with the custom permission map:
+           // return parent::vote($token, $object, $attributes);
+           // otherwise leave the permission voting to the AclVoter that is using the default permission map
+           return self::ACCESS_ABSTAIN;
+       }
+   }
+ 
+ - optionally create a custom permission map, copy to start the Sonata\AdminBundle\Security\Acl\Permission\AdminPermissionMap.php to your bundle
+
+ - declare the voter and permission map as a service
+
+.. code-block:: xml
+
+    <!-- src/Acme/DemoBundle/Resources/config/services.xml -->
+
+    <parameters>
+        <parameter key="security.acl.user_voter.class">Acme\DemoBundle\Security\Authorization\Voter\UserAclVoter</parameter>
+        <!-- <parameter key="security.acl.user_permission.map.class">Acme\DemoBundle\Security\Acl\Permission\UserAdminPermissionMap</parameter> -->
+    </parameters>
+
+    <services>
+        <!-- <service id="security.acl.user_permission.map" class="%security.acl.permission.map.class%" public="false"></service> -->
+
+        <service id="security.acl.voter.user_permissions" class="%security.acl.user_voter.class%" public="false">
+            <tag name="monolog.logger" channel="security" />
+            <argument type="service" id="security.acl.provider" />
+            <argument type="service" id="security.acl.object_identity_retrieval_strategy" />
+            <argument type="service" id="security.acl.security_identity_retrieval_strategy" />
+            <argument type="service" id="security.acl.permission.map" />
+            <argument type="service" id="logger" on-invalid="null" />
+            <tag name="security.voter" priority="255" />
+        </service>
+    </services>
+
+ - change the access decission strategy to ``unanimous``
+ 
+.. code-block:: yaml
+
+    # app/config/security.yml
+    security:
+        access_decision_manager:
+            # Strategy can be: affirmative, unanimous or consensus
+            strategy: unanimous
+
+ - to make this work the permission needs to be checked using the Object-Scope
+
+  - modify the template (or code) where applicable:
+
+.. code-block:: html
+
+    {% if admin.isGranted('EDIT', user_object) %} {# ... #} {% endif %}
+
+  - because the permission is checked at Object-Scope each object must have an object ACL with a Class-Scope ACL inherited, otherwise the AclVoter 
+    will deny EDIT access for a non super admin user trying to edit another non super admin user. This is automatically done when the object is 
+    created using the Admin. If objects are also created outside the Admin, have a look at the ``createObjectOwner`` method in the 
+    AclSecurityHandler.
 
 Usage
 ~~~~~
 
 Everytime you create a new ``Admin`` class, you should create start the command ``php app/console sonata:admin:setup-acl``
-so the ACL database will be updated with the latest masks and roles informations.
+so the ACL database will be updated with the latest roles and permissions.
+
+In the templates, or in your code, you can use the Admin method ``isGranted``:
+
+ - check for an admin that the user is allowed to EDIT:
+
+.. code-block:: html
+
+    {# use the admin security method  #}
+    {% if admin.isGranted('EDIT') %} {# ... #} {% endif %}
+
+    {# or use the default is_granted symfony helper, the following will give the same result #} 
+    {% if is_granted('ROLE_SUPER_ADMIN') or is_granted('EDIT', admin) %} {# ... #} {% endif %}
+
+ - check for an admin that the user is allowed to DELETE, the object is added to also check if the object owner is allowed to DELETE:
+
+.. code-block:: html
+
+    {# use the admin security method  #}
+    {% if admin.isGranted('DELETE', object) %} {# ... #} {% endif %}
+
+    {# or use the default is_granted symfony helper, the following will give the same result #} 
+    {% if is_granted('ROLE_SUPER_ADMIN') or is_granted('DELETE', object) %} {# ... #} {% endif %}

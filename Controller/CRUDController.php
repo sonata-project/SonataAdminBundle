@@ -429,7 +429,7 @@ class CRUDController extends Controller
      */
     public function showAction($id = null)
     {
-        if (false === $this->admin->isGranted('SHOW')) {
+        if (false === $this->admin->isGranted('VIEW')) {
             throw new AccessDeniedException();
         }
 
