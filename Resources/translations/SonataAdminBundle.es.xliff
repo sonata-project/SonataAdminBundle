@@ -54,6 +54,10 @@
                 <source>link_list</source>
                 <target>Listar</target>
             </trans-unit>
+            <trans-unit id="link_action_show">
+                <source>link_action_show</source>
+                <target>Mostrar</target>
+            </trans-unit>
             <trans-unit id="link_reset_filter">
                 <source>link_reset_filter</source>
                 <target>Resetear</target>
@@ -111,6 +115,10 @@
             <trans-unit id="no_result">
                 <source>no_result</source>
                 <target>No hay resultados</target>
+            </trans-unit>
+            <trans-unit id="confirm_msg">
+                <source>confirm_msg</source>
+                <target>¿Estás seguro?</target>
             </trans-unit>
             <trans-unit id='flash_batch_empty'>
               <source>flash_batch_empty</source>
