@@ -66,10 +66,9 @@ interface DatagridInterface
     /**
      * @abstract
      * @param $name
-     * @param $operator
      * @param $value
      */
-    function setValue($name, $operator, $value);
+    function setValue($name, $value);
 
     /**
      * @abstract
