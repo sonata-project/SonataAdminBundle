@@ -99,7 +99,7 @@ class HelperController extends Controller
         $formBuilder = $admin->getFormBuilder($subject);
 
         $form = $formBuilder->getForm();
-        $form->bindRequest($this->get('request'));
+        $form->setData($subject);
 
         $view = $helper->getChildFormView($form->createView(), $elementId);
 
