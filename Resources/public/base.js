@@ -2,6 +2,7 @@ jQuery(document).ready(function() {
     Admin.add_pretty_errors(document);
     Admin.add_collapsed_toggle();
     Admin.add_filters(document);
+    Admin.set_object_field_value(document);
 });
 
 var Admin = {
@@ -116,26 +117,31 @@ var Admin = {
 
     /**
      * Change object field value
-     * @param MouseEvent
+     * @param subject
      */
-    set_object_field_value: function(event) {
-        var targetElement = Admin.stopEvent(event);
-        var a = jQuery(targetElement).closest('a');
+    set_object_field_value: function(subject) {
 
-        jQuery.ajax({
-            url: a.attr('href'),
-            type: 'POST',
-            success: function(json) {
-                if(json.status === "OK") {
-                    var elm = jQuery(a).parent();
-                    elm.children().remove();
-                    // fix issue with html comment ...
-                    elm.html(jQuery(json.content.replace(/<!--[\s\S]*?-->/g, "")).html());
-                    elm.effect("highlight", {'color' : '#57A957'}, 2000);
-                } else {
-                    jQuery(a).parent().effect("highlight", {'color' : '#C43C35'}, 2000);
+        console.log(jQuery('a.sonata-ba-edit-inline', subject));
+        jQuery('a.sonata-ba-edit-inline', subject).click(function(event) {
+            Admin.stopEvent(event);
+
+            var subject = jQuery(this);
+            jQuery.ajax({
+                url: subject.attr('href'),
+                type: 'POST',
+                success: function(json) {
+                    if(json.status === "OK") {
+                        var elm = jQuery(subject).parent();
+                        elm.children().remove();
+                        // fix issue with html comment ...
+                        elm.html(jQuery(json.content.replace(/<!--[\s\S]*?-->/g, "")).html());
+                        elm.effect("highlight", {'color' : '#57A957'}, 2000);
+                        Admin.set_object_field_value(elm);
+                    } else {
+                        jQuery(a).parent().effect("highlight", {'color' : '#C43C35'}, 2000);
+                    }
                 }
-            }
+            });
         });
     }
 }

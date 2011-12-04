@@ -13,28 +13,6 @@ file that was distributed with this source code.
 
 {% block field %}
 {% spaceless %}
-{% if field_description.options.editable is defined and field_description.options.editable and admin.isGranted('EDIT') %}
-    {% if value %}
-        <a
-            href="{{ url('sonata_admin_set_object_field_value', { 'context': 'show', 'field': field_description.name, 'objectId': object.id, 'value': 0, 'code': admin.code(object), 'uniqid': admin.uniqid(object) }) }}" class="sonata-ba-action"
-            onclick="Admin.set_object_field_value(event)"
-            >
-            <img
-                src="{{ asset('bundles/sonataadmin/famfamfam/accept.png') }}"
-                alt="{%- trans from 'SonataAdminBundle' %}label_type_yes{% endtrans -%}"
-                />
-        </a>
-    {% else %}
-        <a
-            href="{{ url('sonata_admin_set_object_field_value', { 'context': 'show', 'field': field_description.name, 'objectId': object.id, 'value': 1, 'code': admin.code(object), 'uniqid': admin.uniqid(object) }) }}" class="sonata-ba-action"
-            onclick="Admin.set_object_field_value(event)"
-            >
-            <img
-                src="{{ asset('bundles/sonataadmin/famfamfam/exclamation.png') }}"
-                alt="{%- trans from 'SonataAdminBundle' %}label_type_no{% endtrans -%}" />
-        </a>
-    {% endif %}
-{% else %}
     {% if value %}
         <img src="{{ asset('bundles/sonataadmin/famfamfam/accept.png') }}" alt="{%- trans from 'SonataAdminBundle' %}label_type_yes{% endtrans -%}" />
     {% else %}
