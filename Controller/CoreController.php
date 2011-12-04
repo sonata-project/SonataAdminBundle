@@ -23,7 +23,7 @@ class CoreController extends Controller
      */
     public function getBaseTemplate()
     {
-        if ($this->get('request')->isXmlHttpRequest()) {
+        if ($this->getRequest()->isXmlHttpRequest()) {
             return $this->container->get('sonata.admin.pool')->getTemplate('ajax');
         }
 
