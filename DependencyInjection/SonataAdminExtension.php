@@ -83,6 +83,11 @@ class SonataAdminExtension extends Extension
 
         $container->getDefinition('sonata.admin.form.extension.field')
             ->replaceArgument(0, $classes);
+
+        // remove non used service
+        if (!isset($bundles['JMSTranslationBundle'])) {
+            $container->removeDefinition('sonata.admin.translator.extractor.jms_translator_bundle');
+        }
     }
 
     public function getNamespace()
