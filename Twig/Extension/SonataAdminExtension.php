@@ -173,7 +173,8 @@ class SonataAdminExtension extends \Twig_Extension
         return $this->output($fieldDescription, $template, array(
             'field_description' => $fieldDescription,
             'object'            => $object,
-            'value'             => $value
+            'value'             => $value,
+            'admin'             => $fieldDescription->getAdmin()
         ));
     }
 

@@ -13,6 +13,9 @@ if (is_file($autoload)) {
         'Symfony'  => array($vendorDir.'/symfony/src'),
         'Knp'      => array($vendorDir.'/knpmenu/src'),
     ));
+    $loader->registerPrefixes(array(
+        'Twig_'            => $vendorDir.'/twig/lib',
+    ));
     $loader->register();
 
     spl_autoload_register(function($class) {

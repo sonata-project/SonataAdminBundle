@@ -9,19 +9,19 @@
     </route>
 
     <route id="sonata_admin_retrieve_form_element" pattern="/core/get-form-field-element">
-        <default key="_controller">SonataAdminBundle:Helper:retrieveFormFieldElement</default>
+        <default key="_controller">sonata.admin.controller.admin:retrieveFormFieldElementAction</default>
     </route>
 
     <route id="sonata_admin_append_form_element" pattern="/core/append-form-field-element">
-        <default key="_controller">SonataAdminBundle:Helper:appendFormFieldElement</default>
+        <default key="_controller">sonata.admin.controller.admin:appendFormFieldElementAction</default>
     </route>
 
     <route id="sonata_admin_short_object_information" pattern="/core/get-short-object-description">
-        <default key="_controller">SonataAdminBundle:Helper:getShortObjectDescription</default>
+        <default key="_controller">sonata.admin.controller.admin:getShortObjectDescriptionAction</default>
     </route>
 
     <route id="sonata_admin_set_object_field_value" pattern="/core/set-object-field-value">
-        <default key="_controller">SonataAdminBundle:Helper:setObjectFieldValue</default>
+        <default key="_controller">sonata.admin.controller.admin:setObjectFieldValueAction</default>
     </route>
-      
+
 </routes>

@@ -1398,6 +1398,8 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      */
     public function getShowFieldDescriptions()
     {
+        $this->buildShow();
+
         return $this->showFieldDescriptions;
     }
 
@@ -1409,6 +1411,8 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      */
     public function getShowFieldDescription($name)
     {
+        $this->buildShow();
+
         return $this->hasShowFieldDescription($name) ? $this->showFieldDescriptions[$name] : null;
     }
 

@@ -358,4 +358,41 @@ interface AdminInterface
      * @return object a new object instance
      */
     function getNewInstance();
+
+    function setUniqid($uniqId);
+
+    function getObject($id);
+
+    function setSubject($subject);
+
+    function getSubject();
+
+    /**
+     * Returns a list FieldDescription
+     *
+     * @param string $name
+     * @return \Sonata\AdminBundle\Admin\FieldDescriptionInterface
+     */
+    function getListFieldDescription($name);
+
+
+    function configure();
+
+    function update($object);
+
+    function create($object);
+
+    function delete($object);
+
+    function preUpdate($object);
+
+    function postUpdate($object);
+
+    function prePersist($object);
+
+    function postPersist($object);
+
+    function preRemove($object);
+
+    function postRemove($object);
 }

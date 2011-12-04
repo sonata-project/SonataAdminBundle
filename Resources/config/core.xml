@@ -53,6 +53,14 @@
             <argument type="service" id="logger" />
             <argument type="service" id="sonata.admin.pool" />
         </service>
+
+        <!-- controller as services -->
+        <service id="sonata.admin.controller.admin" class="Sonata\AdminBundle\Controller\HelperController" scope="request">
+            <argument type="service" id="twig" />
+            <argument type="service" id="request" />
+            <argument type="service" id="sonata.admin.pool" />
+            <argument type="service" id="sonata.admin.helper" />
+        </service>
     </services>
 </container>
 
