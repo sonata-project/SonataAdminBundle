@@ -68,8 +68,16 @@ class Pool
                     $groups[$name]['items'][$key] = $this->getInstance($id);
                 }
             }
+            
+            // If access is denied for this function, unset the item from the group
+            foreach ($groups[$name]['items'] as $key => $admin) {
+                if (!$admin->isGranted('DASHBOARD')) {
+                    unset($groups[$name]['items'][$key]);
+                }
+            }
 
-            if (empty($groups[$name])) {
+            // if the group or the group's items are empty, unset the group
+            if (empty($groups[$name]) || empty($groups[$name]['items'])) {
                 unset($groups[$name]);
             }
         }
