@@ -71,7 +71,7 @@
             <argument type="service" id="translator" />
         </service>
         <service id="sonata.admin.form.filter.type.daterange" class="Sonata\AdminBundle\Form\Type\Filter\DateRangeType">
-            <tag name="form.type" alias="sonata_type_filter_daterange" />
+            <tag name="form.type" alias="sonata_type_filter_date_range" />
             <argument type="service" id="translator" />
         </service>
 
