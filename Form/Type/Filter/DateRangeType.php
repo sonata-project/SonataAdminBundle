@@ -47,10 +47,10 @@ class DateRangeType extends AbstractType
         $choices = array(
             self::TYPE_RANGE            => $this->translator->trans('label_date_type_range', array(), 'SonataAdminBundle'),
         );
-
+        
         $builder
             ->add('type', 'choice', array('choices' => $choices, 'required' => false))
-            ->add('value', 'sonata_type_date_range', array('required' => false))
+            ->add('value', 'sonata_type_date_range', array('field_options' => array_merge(array('format' => 'yyyy-MM-dd'), $options['field_options'])))
         ;
     }
 

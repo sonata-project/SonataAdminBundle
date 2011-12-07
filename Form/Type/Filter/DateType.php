@@ -69,7 +69,7 @@ class DateType extends AbstractType
 
         $builder
             ->add('type', 'choice', array('choices' => $choices, 'required' => false))
-            ->add('value', 'date', array('required' => false))
+            ->add('value', 'date', array_merge(array('required' => false, 'format' => 'yyyy-MM-dd'), $options['field_options']))
         ;
     }
 
