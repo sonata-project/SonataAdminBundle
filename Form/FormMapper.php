@@ -101,7 +101,7 @@ class FormMapper
         if ($name instanceof FormBuilder) {
             $this->formBuilder->add($name);
         } else {
-            $options = array_merge($options, $this->formContractor->getDefaultOptions($type, $fieldDescription));
+            $options = array_replace_recursive($this->formContractor->getDefaultOptions($type, $fieldDescription), $options);
 
             if (!isset($options['label'])) {
                 $options['label'] = $this->admin->getLabelTranslatorStrategy()->getLabel($fieldDescription->getName(), 'form', 'label');
