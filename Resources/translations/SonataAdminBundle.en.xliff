@@ -250,9 +250,13 @@
               <source>label_date_type_not_null</source>
               <target>is not empty</target>
             </trans-unit>
-            <trans-unit id="label_date_type_range">
-              <source>label_date_type_range</source>
-              <target>range of dates</target>
+            <trans-unit id="label_date_type_between">
+              <source>label_date_type_between</source>
+              <target>between</target>
+            </trans-unit>
+            <trans-unit id="label_date_not_between">
+              <source>label_date_type_not_between</source>
+              <target>not between</target>
             </trans-unit>
             <trans-unit id="label_filters">
               <source>label_filters</source>
