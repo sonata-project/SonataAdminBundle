@@ -18,7 +18,7 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
-class DateRangeType extends AbstractType
+class DateTimeRangeType extends AbstractType
 {
     const TYPE_BETWEEN = 1;
     const TYPE_NOT_BETWEEN = 2;
@@ -40,7 +40,7 @@ class DateRangeType extends AbstractType
      */
     public function getName()
     {
-        return 'sonata_type_filter_date_range';
+        return 'sonata_type_filter_datetime_range';
     }
 
     public function buildForm(FormBuilder $builder, array $options)
@@ -52,7 +52,7 @@ class DateRangeType extends AbstractType
         
         $builder
             ->add('type', 'choice', array('choices' => $choices, 'required' => false))
-            ->add('value', 'sonata_type_date_range', array('field_options' => array_merge(array('format' => 'yyyy-MM-dd'), $options['field_options'])))
+            ->add('value', 'sonata_type_datetime_range', array('field_options' => array_merge(array('date_format' => 'yyyy-MM-dd'), $options['field_options'])))
         ;
     }
 
@@ -62,7 +62,7 @@ class DateRangeType extends AbstractType
             'operator_type'    => 'hidden',
             'operator_options' => array(),
             'field_type'       => 'text',
-            'field_options'    => array()
+            'field_options'    => array(),
         );
 
         $options = array_replace($options, $defaultOptions);

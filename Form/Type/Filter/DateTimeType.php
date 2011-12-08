@@ -18,11 +18,23 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
-class DateRangeType extends AbstractType
+class DateTimeType extends AbstractType
 {
-    const TYPE_BETWEEN = 1;
-    const TYPE_NOT_BETWEEN = 2;
+    const TYPE_GREATER_EQUAL = 1;
 
+    const TYPE_GREATER_THAN = 2;
+
+    const TYPE_EQUAL = 3;
+
+    const TYPE_LESS_EQUAL = 4;
+
+    const TYPE_LESS_THAN = 5;
+
+    const TYPE_NULL = 6;
+    
+    const TYPE_NOT_NULL = 7;
+
+    
     protected $translator;
 
     /**
@@ -40,19 +52,24 @@ class DateRangeType extends AbstractType
      */
     public function getName()
     {
-        return 'sonata_type_filter_date_range';
+        return 'sonata_type_filter_datetime';
     }
 
     public function buildForm(FormBuilder $builder, array $options)
     {
         $choices = array(
-            self::TYPE_BETWEEN    => $this->translator->trans('label_date_type_between', array(), 'SonataAdminBundle'),
-            self::TYPE_NOT_BETWEEN    => $this->translator->trans('label_date_type_not_between', array(), 'SonataAdminBundle'),
+            self::TYPE_EQUAL            => $this->translator->trans('label_date_type_equal', array(), 'SonataAdminBundle'),
+            self::TYPE_GREATER_EQUAL    => $this->translator->trans('label_date_type_greater_equal', array(), 'SonataAdminBundle'),
+            self::TYPE_GREATER_THAN     => $this->translator->trans('label_date_type_greater_than', array(), 'SonataAdminBundle'),
+            self::TYPE_LESS_EQUAL       => $this->translator->trans('label_date_type_less_equal', array(), 'SonataAdminBundle'),
+            self::TYPE_LESS_THAN        => $this->translator->trans('label_date_type_less_than', array(), 'SonataAdminBundle'),
+            self::TYPE_NULL             => $this->translator->trans('label_date_type_null', array(), 'SonataAdminBundle'),
+            self::TYPE_NOT_NULL         => $this->translator->trans('label_date_type_not_null', array(), 'SonataAdminBundle'),
         );
-        
+
         $builder
             ->add('type', 'choice', array('choices' => $choices, 'required' => false))
-            ->add('value', 'sonata_type_date_range', array('field_options' => array_merge(array('format' => 'yyyy-MM-dd'), $options['field_options'])))
+            ->add('value', 'datetime', array_merge(array('required' => false, 'date_format' => 'yyyy-MM-dd'), $options['field_options']))
         ;
     }
 

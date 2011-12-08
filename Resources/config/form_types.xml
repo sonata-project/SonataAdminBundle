@@ -43,6 +43,12 @@
             <argument type="service" id="translator" />
         </service>
 
+        <service id="sonata.admin.form.type.datetime_range" class="Sonata\AdminBundle\Form\Type\DateTimeRangeType">
+            <tag name="form.type" alias="sonata_type_datetime_range" />
+
+            <argument type="service" id="translator" />
+        </service>
+
         <!-- Form Extension -->
         <service id="sonata.admin.form.extension.field" class="Sonata\AdminBundle\Form\Extension\Field\Type\FormTypeFieldExtension">
             <tag name="form.type_extension" alias="field" />
@@ -70,8 +76,19 @@
             <tag name="form.type" alias="sonata_type_filter_date" />
             <argument type="service" id="translator" />
         </service>
+
         <service id="sonata.admin.form.filter.type.daterange" class="Sonata\AdminBundle\Form\Type\Filter\DateRangeType">
             <tag name="form.type" alias="sonata_type_filter_date_range" />
+            <argument type="service" id="translator" />
+        </service>
+
+        <service id="sonata.admin.form.filter.type.datetime" class="Sonata\AdminBundle\Form\Type\Filter\DateTimeType">
+            <tag name="form.type" alias="sonata_type_filter_datetime" />
+            <argument type="service" id="translator" />
+        </service>
+
+        <service id="sonata.admin.form.filter.type.datetime_range" class="Sonata\AdminBundle\Form\Type\Filter\DateTimeRangeType">
+            <tag name="form.type" alias="sonata_type_filter_datetime_range" />
             <argument type="service" id="translator" />
         </service>
 
