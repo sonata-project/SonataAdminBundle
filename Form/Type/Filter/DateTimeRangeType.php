@@ -52,17 +52,15 @@ class DateTimeRangeType extends AbstractType
         
         $builder
             ->add('type', 'choice', array('choices' => $choices, 'required' => false))
-            ->add('value', 'sonata_type_datetime_range', array('field_options' => array_merge(array('date_format' => 'yyyy-MM-dd'), $options['field_options'])))
+            ->add('value', 'sonata_type_datetime_range', array('field_options' => $options['field_options']))
         ;
     }
 
     public function getDefaultOptions(array $options)
     {
         $defaultOptions = array(
-            'operator_type'    => 'hidden',
-            'operator_options' => array(),
-            'field_type'       => 'text',
-            'field_options'    => array(),
+            'field_type'       => 'sonata_type_datetime_range',
+            'field_options'    => array('date_format' => 'yyyy-MM-dd'),
         );
 
         $options = array_replace($options, $defaultOptions);
