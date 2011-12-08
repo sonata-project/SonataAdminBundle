@@ -15,13 +15,12 @@ the following lines to the file ``deps``::
       git=http://github.com/sonata-project/SonataAdminBundle.git
       target=/bundles/Sonata/AdminBundle
 
-  [MenuBundle]
-      git=http://github.com/KnpLabs/KnpMenuBundle.git
-      target=/bundles/Knp/Bundle/MenuBundle
-
   [KnpMenu]
       git=https://github.com/KnpLabs/KnpMenu.git
-      target=/knp/menu
+  
+  [KnpMenuBundle]
+      git=https://github.com/KnpLabs/KnpMenuBundle.git
+      target=bundles/Knp/Bundle/MenuBundle
 
 and run::
 
