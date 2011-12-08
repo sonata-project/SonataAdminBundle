@@ -14,9 +14,35 @@
     {% if prototype is defined %}
         {% set attr = attr|merge({'data-prototype': form_row(prototype) }) %}
     {% endif %}
-    {{ block('form_widget') }}
+    <div {{ block('widget_container_attributes') }}>
+        {{ form_errors(form) }}
+        {% for child in form %}
+            <div class="clearfix {{ (0 < form_errors(child)|length)? 'error':'' }} ">
+                {{ form_label(child, child.label|default(null)) }}
+                <div class="input">
+                    {{ form_widget(child) }}
+                    {{ form_errors(child) }}
+                    {{ block('collection_widget_delete') }}
+                </div>
+            </div>
+        {% endfor %}
+        {% if allow_add and prototype is defined %}
+            <a href="#" onclick="definition=jQuery(this).closest('[data-prototype]').attr('data-prototype'); obj=jQuery(definition.replace(/\$\$name\$\$/g, jQuery(this).parent().find('.input').length + 1)); obj.find('.input').append('{{ block('collection_widget_delete')|escape('js') }}'); jQuery(this).before(obj); return false;"><img src="{{ asset('bundles/sonataadmin/famfamfam/add.png') }}"/></a>
+        {% endif %}
+        {{ form_rest(form) }}
+    </div>
 {% endspaceless %}
 {% endblock collection_widget %}
+
+{% block collection_widget_delete %}
+{% spaceless %}
+{% if allow_delete %}
+<a href="#" onclick="$(this).parent().parent().remove(); return false;">
+    <img src="{{ asset('bundles/sonataadmin/famfamfam/delete.png') }}"/>
+</a>
+ {% endif %}
+{% endspaceless %}
+{% endblock collection_widget_delete %}
 
 {% block textarea_widget %}
 {% spaceless %}
