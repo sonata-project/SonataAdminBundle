@@ -18,7 +18,7 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
-class DateType extends AbstractType
+class DateTimeType extends AbstractType
 {
     const TYPE_GREATER_EQUAL = 1;
 
@@ -52,7 +52,7 @@ class DateType extends AbstractType
      */
     public function getName()
     {
-        return 'sonata_type_filter_date';
+        return 'sonata_type_filter_datetime';
     }
 
     public function buildForm(FormBuilder $builder, array $options)
@@ -69,14 +69,14 @@ class DateType extends AbstractType
 
         $builder
             ->add('type', 'choice', array('choices' => $choices, 'required' => false))
-            ->add('value', 'date', array_merge(array('required' => false), $options['field_options']))
+            ->add('value', 'datetime', array_merge(array('required' => false), $options['field_options']))
         ;
     }
 
     public function getDefaultOptions(array $options)
     {
         $defaultOptions = array(
-            'field_type'       => 'date',
+            'field_type'       => 'datetime',
             'field_options'    => array('date_format' => 'yyyy-MM-dd')
         );
 
