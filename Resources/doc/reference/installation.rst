@@ -15,8 +15,8 @@ the following lines to the file ``deps``::
       git=http://github.com/sonata-project/SonataAdminBundle.git
       target=/bundles/Sonata/AdminBundle
 
-  [MenuBundle]
-      git=http://github.com/KnpLabs/KnpMenuBundle.git
+  [KnpMenuBundle]
+      git=https://github.com/KnpLabs/KnpMenuBundle.git
       target=/bundles/Knp/Bundle/MenuBundle
 
   [KnpMenu]
@@ -39,11 +39,9 @@ files:
   // app/autoload.php
   $loader->registerNamespaces(array(
       // ...
-      'Sonata' => __DIR__.'/../vendor/bundles',
-      'Knp'    => array(
-          __DIR__.'/../vendor/bundles',
-          __DIR__.'/../vendor/knp/menu/src',
-      ),
+      'Sonata'     => __DIR__.'/../vendor/bundles',
+      'Knp\Bundle' => __DIR__.'/../vendor/bundles',
+      'Knp\Menu'   => __DIR__.'/../vendor/knp/menu/src',
       // ...
   ));
 
