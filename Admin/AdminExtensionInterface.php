@@ -48,7 +48,7 @@ interface AdminExtensionInterface
      * @param \Sonata\AdminBundle\Show\ShowMapper $filter
      * @return void
      */
-    function configureShowField(ShowMapper $filter);
+    function configureShowFields(ShowMapper $filter);
 
     /**
      * @abstract
