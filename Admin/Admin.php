@@ -68,7 +68,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     private $show;
 
     /**
-     * The show FieldDescription constructed from the configureShowField method
+     * The show FieldDescription constructed from the configureShowFields method
      *
      * @var array
      */
@@ -395,10 +395,20 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
+     * @deprecated Use configureShowFields instead.
      * @param \Sonata\AdminBundle\Show\ShowMapper $filter
      * @return void
      */
     protected function configureShowField(ShowMapper $filter)
+    {
+
+    }
+
+    /**
+     * @param \Sonata\AdminBundle\Show\ShowMapper $filter
+     * @return void
+     */
+    protected function configureShowFields(ShowMapper $filter)
     {
 
     }
@@ -550,7 +560,8 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         $collection = new FieldDescriptionCollection();
         $mapper = new ShowMapper($this->showBuilder, $collection, $this);
 
-        $this->configureShowField($mapper);
+        $this->configureShowField($mapper); // deprecated, use configureShowFields instead
+        $this->configureShowFields($mapper);
 
         $this->show = $collection;
     }
