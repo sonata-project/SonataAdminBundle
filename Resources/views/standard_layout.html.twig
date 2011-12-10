@@ -24,7 +24,7 @@ file that was distributed with this source code.
 
         {% block stylesheets %}
             <!-- jQuery code -->
-            <link rel="stylesheet" href="{{ asset('bundles/sonatajquery/themes/flick/jquery-ui-1.8.6.custom.css') }}" type="text/css" media="all" />
+            <link rel="stylesheet" href="{{ asset('bundles/sonatajquery/themes/flick/jquery-ui-1.8.16.custom.css') }}" type="text/css" media="all" />
 
             <link rel="stylesheet" href="{{ asset('bundles/sonataadmin/bootstrap/bootstrap.min.css') }}" type="text/css" media="all" >
 
@@ -79,7 +79,7 @@ file that was distributed with this source code.
                         {% if admin_pool is defined %}
                             {% block logo %}
                                 <a href="{{ url('sonata_admin_dashboard') }}" class="brand">
-                                    <img src="{{ asset(admin_pool.titlelogo) }}"  />
+                                    <img src="{{ asset(admin_pool.titlelogo) }}"  alt="{{ admin_pool.title }}" />
                                     {{ admin_pool.title }}
                                 </a>
                             {% endblock %}
@@ -111,14 +111,11 @@ file that was distributed with this source code.
                     {% if _breadcrumb is empty %}
                         {% if action is defined %}
                             {% for label, uri in admin.breadcrumbs(action) %}
-                                <li>
-                                    {% if not loop.last  %}
-                                        <a href="{{ uri }}">{{ label }}</a>
-                                        <span class="divider">/</span>
-                                    {% else %}
-                                        <li class="active">{{ label }}</li>
-                                    {% endif %}
-                                </li>
+                                {% if not loop.last  %}
+                                    <li><a href="{{ uri }}">{{ label }}</a><span class="divider">/</span></li>
+                                {% else %}
+                                    <li class="active">{{ label }}</li>
+                                {% endif %}
                             {% endfor %}
                         {% endif %}
                     {% else %}
