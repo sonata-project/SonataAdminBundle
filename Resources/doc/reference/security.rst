@@ -134,6 +134,9 @@ If you have Admin classes, you can install the related CRUD ACL rules :
 
 If you try to access to the admin class you should see the login form, just logon with the ``root`` user.
 
+An Admin is displayed in the dashboard (and menu) when the user has the role ``LIST``. To change this override the ``showIn`` 
+method in the Admin class.
+
 Usage
 ~~~~~
 
