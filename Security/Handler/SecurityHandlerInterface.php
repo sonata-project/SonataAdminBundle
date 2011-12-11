@@ -29,4 +29,14 @@ interface SecurityHandlerInterface
      * @return void
      */
     function buildSecurityInformation(AdminInterface $admin);
+
+    /**
+     * Make the current user owner of the object
+     *
+     * @abstract
+     * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
+     * @param object $object
+     * @return void
+     */
+    function createObjectOwner(AdminInterface $admin, $object);
 }

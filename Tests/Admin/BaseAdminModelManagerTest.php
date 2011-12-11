@@ -14,6 +14,7 @@ namespace Sonata\AdminBundle\Tests\Admin;
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
+use Sonata\AdminBundle\Security\Handler\NoopSecurityHandler;
 
 class BaseAdminModelManager_Admin extends Admin
 {
@@ -24,6 +25,9 @@ class BaseAdminModelManagerTest extends \PHPUnit_Framework_TestCase
 {
     public function testHook()
     {
+        $securityHandler = $this->getMock('Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface');
+        $securityHandler->expects($this->once())->method('createObjectOwner');
+
         $modelManager = $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface');
         $modelManager->expects($this->once())->method('create');
         $modelManager->expects($this->once())->method('update');
@@ -31,6 +35,7 @@ class BaseAdminModelManagerTest extends \PHPUnit_Framework_TestCase
 
         $admin = new BaseAdminModelManager_Admin('code', 'class', 'controller');
         $admin->setModelManager($modelManager);
+        $admin->setSecurityHandler($securityHandler);
 
         $t = new \stdClass();
 

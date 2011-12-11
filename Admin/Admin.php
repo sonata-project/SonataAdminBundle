@@ -510,6 +510,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         $this->prePersist($object);
         $this->getModelManager()->create($object);
         $this->postPersist($object);
+        $this->createObjectOwner($object);
     }
 
     public function delete($object)
@@ -2077,20 +2078,18 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * Return the list of security name available for the current admin
+     * Return the roles and permissions per role for the admin ACL
      * This should be used by experimented users
      *
-     * @return array
+     * @return array [role] => array([permission], [permission])
      */
     public function getSecurityInformation()
     {
         return array(
-            'EDIT'      => array('EDIT'),
-            'LIST'      => array('LIST'),
-            'CREATE'    => array('CREATE'),
-            'VIEW'      => array('VIEW'),
-            'DELETE'    => array('DELETE'),
-            'OPERATOR'  => array('OPERATOR')
+            'GUEST'    => array('VIEW', 'LIST'),
+            'STAFF'    => array('EDIT', 'LIST', 'CREATE'),
+            'EDITOR'   => array('OPERATOR'),
+            'ADMIN'    => array('MASTER'),
         );
     }
 
@@ -2124,6 +2123,16 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
             default:
                 return $this->isGranted($this->getPermissionsShow($context));
         }
+    }
+
+    /**
+     * Create security object owner
+     *
+     * @param $object
+     */
+    public function createObjectOwner($object)
+    {
+        $this->getSecurityHandler()->createObjectOwner($this, $object);
     }
 
     /**

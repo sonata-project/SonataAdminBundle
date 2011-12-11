@@ -11,6 +11,7 @@
 
 namespace Sonata\AdminBundle\Command;
 
+
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
@@ -65,7 +66,8 @@ class SetupAclCommand extends ContainerAwareCommand
                 $acl = $aclProvider->createAcl($objectIdentity);
             }
 
-
+            // create admin ACL, fe.
+            // Comment admin ACL
             $this->configureACL($output, $acl, $builder, $securityHandler->buildSecurityInformation($admin));
 
             $aclProvider->updateAcl($acl);
@@ -74,14 +76,14 @@ class SetupAclCommand extends ContainerAwareCommand
 
     public function configureACL(OutputInterface $output, AclInterface $acl, MaskBuilder $builder, array $aclInformations = array())
     {
-        foreach ($aclInformations as $name => $masks) {
-            foreach ($masks as $mask) {
-                $builder->add($mask);
+        foreach ($aclInformations as $role => $permissions) {
+            foreach ($permissions as $permission) {
+                $builder->add($permission);
             }
 
-            $acl->insertClassAce(new RoleSecurityIdentity($name), $builder->get());
+            $acl->insertClassAce(new RoleSecurityIdentity($role), $builder->get());
 
-            $output->writeln(sprintf('   - add role: %s, ACL: %s', $name, json_encode($masks)));
+            $output->writeln(sprintf('   - add role: %s, permissions: %s', $role, json_encode($permissions)));
 
             $builder->reset();
         }

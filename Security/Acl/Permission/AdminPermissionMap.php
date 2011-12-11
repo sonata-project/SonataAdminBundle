@@ -22,48 +22,77 @@ use Symfony\Component\Security\Acl\Permission\PermissionMapInterface;
  */
 class AdminPermissionMap implements PermissionMapInterface
 {
-    const PERMISSION_SHOW        = 'SHOW';
+    const PERMISSION_VIEW        = 'VIEW';
     const PERMISSION_EDIT        = 'EDIT';
     const PERMISSION_CREATE      = 'CREATE';
     const PERMISSION_DELETE      = 'DELETE';
     const PERMISSION_UNDELETE    = 'UNDELETE';
+    const PERMISSION_LIST        = 'LIST';
     const PERMISSION_OPERATOR    = 'OPERATOR';
     const PERMISSION_MASTER      = 'MASTER';
     const PERMISSION_OWNER       = 'OWNER';
 
-    const PERMISSION_LIST        = 'LIST';
-
+    /**
+     * Map each permission to the permissions it should grant access for
+     * fe. grant access for the view permission if the user has the edit permission
+     *
+     * @var array
+     */
     private $map = array(
-        self::PERMISSION_LIST => array(
-            MaskBuilder::MASK_LIST
-        ),
 
-        self::PERMISSION_SHOW => array(
+        self::PERMISSION_VIEW => array(
             MaskBuilder::MASK_VIEW,
+            MaskBuilder::MASK_LIST,
+            MaskBuilder::MASK_EDIT,
+            MaskBuilder::MASK_OPERATOR,
+            MaskBuilder::MASK_MASTER,
+            MaskBuilder::MASK_OWNER
         ),
 
         self::PERMISSION_EDIT => array(
             MaskBuilder::MASK_EDIT,
+            MaskBuilder::MASK_OPERATOR,
+            MaskBuilder::MASK_MASTER,
+            MaskBuilder::MASK_OWNER
         ),
 
         self::PERMISSION_CREATE => array(
             MaskBuilder::MASK_CREATE,
+            MaskBuilder::MASK_OPERATOR,
+            MaskBuilder::MASK_MASTER,
+            MaskBuilder::MASK_OWNER
         ),
 
         self::PERMISSION_DELETE => array(
             MaskBuilder::MASK_DELETE,
+            MaskBuilder::MASK_OPERATOR,
+            MaskBuilder::MASK_MASTER,
+            MaskBuilder::MASK_OWNER
         ),
 
         self::PERMISSION_UNDELETE => array(
             MaskBuilder::MASK_UNDELETE,
+            MaskBuilder::MASK_OPERATOR,
+            MaskBuilder::MASK_MASTER,
+            MaskBuilder::MASK_OWNER
         ),
 
-        self::PERMISSION_OPERATOR => array(
+        self::PERMISSION_LIST => array(
+            MaskBuilder::MASK_LIST,
             MaskBuilder::MASK_OPERATOR,
+            MaskBuilder::MASK_MASTER,
+            MaskBuilder::MASK_OWNER
+        ),
+
+       self::PERMISSION_OPERATOR => array(
+            MaskBuilder::MASK_OPERATOR,
+            MaskBuilder::MASK_MASTER,
+            MaskBuilder::MASK_OWNER
         ),
 
         self::PERMISSION_MASTER => array(
             MaskBuilder::MASK_MASTER,
+            MaskBuilder::MASK_OWNER,
         ),
 
         self::PERMISSION_OWNER => array(

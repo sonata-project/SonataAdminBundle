@@ -375,7 +375,6 @@ interface AdminInterface
      */
     function getListFieldDescription($name);
 
-
     function configure();
 
     function update($object);
@@ -397,4 +396,6 @@ interface AdminInterface
     function postRemove($object);
 
     function showIn($context);
+
+    function createObjectOwner($object);
 }
