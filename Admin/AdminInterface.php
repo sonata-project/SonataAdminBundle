@@ -395,4 +395,6 @@ interface AdminInterface
     function preRemove($object);
 
     function postRemove($object);
+
+    function showIn($context);
 }

@@ -42,20 +42,36 @@ class PoolTest extends \PHPUnit_Framework_TestCase
 
     public function testGetDashboardGroups()
     {
-        $this->pool->setAdminGroups(array(
+
+        $admin_group1 = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $admin_group1->expects($this->once())->method('showIn')->will($this->returnValue(true));
+
+        $admin_group2 = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $admin_group2->expects($this->once())->method('showIn')->will($this->returnValue(false));
+
+        $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
+
+        $container->expects($this->any())->method('get')->will($this->onConsecutiveCalls(
+            $admin_group1, $admin_group2
+        ));
+
+        $pool = new Pool($container, 'Sonata Admin', '/path/to/pic.png');
+
+        $pool->setAdminGroups(array(
             'adminGroup1' => array(
                 'items' => array('itemKey' => 'sonata.user.admin.group1')
             ),
-            'adminGroup2' => array()
+            'adminGroup2' => array(
+                'itmes' => array('itemKey' => 'sonata.user.admin.group1')
+            ),
+            'adminGroup3' => array(
+                'items' => array('itemKey' => 'sonata.user.admin.group2')
+            ),
         ));
 
-        $expectedOutput = array(
-            'adminGroup1' => array(
-                'items' => array('itemKey' => 'adminUserClass')
-            )
-        );
+        $groups = $pool->getDashboardGroups();
 
-        $this->assertEquals($expectedOutput, $this->pool->getDashboardGroups());
+        $this->assertCount(1, $groups);
     }
 
     public function testGetAdminForClassWhenAdminClassIsNotSet()

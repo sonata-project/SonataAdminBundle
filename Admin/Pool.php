@@ -66,6 +66,7 @@ class Pool
             if (isset($adminGroup['items'])) {
                 foreach ($adminGroup['items'] as $key => $id) {
                     $admin = $this->getInstance($id);
+
                     if ($admin->showIn(Admin::CONTEXT_DASHBOARD)) {
                         $groups[$name]['items'][$key] = $admin;
                     } else {
