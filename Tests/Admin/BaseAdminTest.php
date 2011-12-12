@@ -166,7 +166,8 @@ class BaseAdminTest extends \PHPUnit_Framework_TestCase
 
     public function testGetBaseRouteNameWithChildAdmin()
     {
-        $pathInfo = new \Sonata\AdminBundle\Route\PathInfoBuilder();
+
+        $pathInfo = new \Sonata\AdminBundle\Route\PathInfoBuilder($this->getMock('Sonata\AdminBundle\Model\AuditManagerInterface'));
         $postAdmin = new PostAdmin('sonata.post.admin.post', 'Application\Sonata\NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
         $postAdmin->setRouteBuilder($pathInfo);
         $postAdmin->initialize();
