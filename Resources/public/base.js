@@ -121,7 +121,7 @@ var Admin = {
      */
     set_object_field_value: function(subject) {
 
-        console.log(jQuery('a.sonata-ba-edit-inline', subject));
+        this.log(jQuery('a.sonata-ba-edit-inline', subject));
         jQuery('a.sonata-ba-edit-inline', subject).click(function(event) {
             Admin.stopEvent(event);
 
