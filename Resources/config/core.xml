@@ -35,6 +35,7 @@
 
         <service id="sonata.admin.security.handler.acl" class="Sonata\AdminBundle\Security\Handler\AclSecurityHandler">
             <argument type="service" id="security.context" on-invalid="null" />
+            <argument type="service" id="security.acl.provider" on-invalid="null" />
             <argument type="collection">
                 <argument>ROLE_SUPER_ADMIN</argument>
             </argument>
