@@ -365,6 +365,13 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     protected $labelTranslatorStrategy;
 
     /**
+     * Roles and permissions per role
+     *
+     * @var array [role] => array([permission], [permission])
+     */
+    protected $securityInformation = array();
+
+    /**
      * This method can be overwritten to tweak the form construction, by default the form
      * is built by reading the FieldDescription
      *
@@ -2078,19 +2085,26 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * Return the roles and permissions per role for the admin ACL
+     * Set the roles and permissions per role
+     *
+     * @param array $information
+     */
+    public function setSecurityInformation(array $information)
+    {
+        $this->securityInformation = $information;
+    }
+
+    /**
+     * Return the roles and permissions per role
+     * - different permissions per role for the acl handler
+     * - one permission that has the same name as the role for the role handler 
      * This should be used by experimented users
      *
      * @return array [role] => array([permission], [permission])
      */
     public function getSecurityInformation()
     {
-        return array(
-            'GUEST'    => array('VIEW', 'LIST'),
-            'STAFF'    => array('EDIT', 'LIST', 'CREATE'),
-            'EDITOR'   => array('OPERATOR'),
-            'ADMIN'    => array('MASTER'),
-        );
+        return $this->securityInformation;
     }
 
     /**

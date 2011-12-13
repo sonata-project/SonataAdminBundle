@@ -67,7 +67,47 @@ class SonataAdminExtension extends Extension
         $container->setParameter('sonata.admin.configuration.admin_services', $config['admin_services']);
         $container->setParameter('sonata.admin.configuration.dashboard_groups', $config['dashboard_groups']);
 
-        $container->setAlias('sonata.admin.security.handler', $config['security_handler']);
+        $container->setAlias('sonata.admin.security.handler', $config['security']['handler']);
+
+        switch ($config['security']['handler']) {
+            case 'sonata.admin.security.handler.noop':
+                $container->setParameter('sonata.admin.security.handler.noop.class', 'Sonata\AdminBundle\Security\Handler\NoopSecurityHandler');
+                $container->setDefinition('sonata.admin.security.handler.noop', new Definition('%sonata.admin.security.handler.noop.class%'));
+                break;
+            case 'sonata.admin.security.handler.role':
+                $container->setParameter('sonata.admin.security.handler.role.class', 'Sonata\AdminBundle\Security\Handler\RoleSecurityHandler');
+                $roleService = new Definition('%sonata.admin.security.handler.role.class%', array(new Reference('security.context'), array('ROLE_SUPER_ADMIN')));
+                $container->setDefinition('sonata.admin.security.handler.role', $roleService);
+
+                if (count($config['security']['information']) === 0) {
+                    $config['security']['information'] = array(
+                        'EDIT'      => array('EDIT'),
+                        'LIST'      => array('LIST'),
+                        'CREATE'    => array('CREATE'),
+                        'VIEW'      => array('VIEW'),
+                        'DELETE'    => array('DELETE'),
+                        'OPERATOR'  => array('OPERATOR')
+                    );
+                }
+                break;
+            case 'sonata.admin.security.handler.acl':
+                $container->setParameter('sonata.admin.configuration.security.admin_permissions', $config['security']['admin_permissions']);
+                $loader->load('security_acl.xml');
+
+                if (count($config['security']['information']) === 0) {
+                    $config['security']['information'] = array(
+                        'GUEST'    => array('VIEW', 'LIST'),
+                        'STAFF'    => array('EDIT', 'LIST', 'CREATE'),
+                        'EDITOR'   => array('OPERATOR'),
+                        'ADMIN'    => array('MASTER')
+                    );
+                }
+                break;
+            default:
+                throw new \InvalidArgumentException(sprintf('Unknown security handler "%s"', $config['security']['handler']));
+        }
+
+        $container->setParameter('sonata.admin.configuration.security.information', $config['security']['information']);
 
         /**
          * This is a work in progress, so for now it is hardcoded

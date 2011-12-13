@@ -203,6 +203,10 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
             $definition->addMethodCall('setTemplates', array('%sonata.admin.configuration.templates%'));
         }
 
+        if ($container->hasParameter('sonata.admin.configuration.security.information') && !$definition->hasMethodCall('setSecurityInformation')) {
+            $definition->addMethodCall('setSecurityInformation', array('%sonata.admin.configuration.security.information%'));
+        }
+
         return $definition;
     }
 

@@ -30,17 +30,6 @@
             <argument />
         </service>
 
-        <!-- Some security services -->
-        <service id="sonata.admin.security.handler.noop" class="Sonata\AdminBundle\Security\Handler\NoopSecurityHandler" />
-
-        <service id="sonata.admin.security.handler.acl" class="Sonata\AdminBundle\Security\Handler\AclSecurityHandler">
-            <argument type="service" id="security.context" on-invalid="null" />
-            <argument type="service" id="security.acl.provider" on-invalid="null" />
-            <argument type="collection">
-                <argument>ROLE_SUPER_ADMIN</argument>
-            </argument>
-        </service>
-
         <!-- Services used to format the label, default is sonata.admin.label.strategy.noop -->
         <service id="sonata.admin.label.strategy.bc" class="Sonata\AdminBundle\Translator\BCLabelTranslatorStrategy" />
         <service id="sonata.admin.label.strategy.native" class="Sonata\AdminBundle\Translator\NativeLabelTranslatorStrategy" />

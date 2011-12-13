@@ -24,6 +24,15 @@ interface SecurityHandlerInterface
     function isGranted(AdminInterface $admin, $attributes, $object = null);
 
     /**
+     * Get a sprintf template to get the role
+     *
+     * @abstract
+     * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
+     * @return string
+     */
+    function getBaseRole(AdminInterface $admin);
+
+    /**
      * @abstract
      * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
      * @return void

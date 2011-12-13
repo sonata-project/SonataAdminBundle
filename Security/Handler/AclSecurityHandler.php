@@ -25,6 +25,7 @@ class AclSecurityHandler implements SecurityHandlerInterface
     protected $securityContext;
     protected $aclProvider;
     protected $superAdminRoles;
+    protected $adminPermissions;
 
     /**
      * @param \Symfony\Component\Security\Core\SecurityContextInterface $securityContext
@@ -35,6 +36,26 @@ class AclSecurityHandler implements SecurityHandlerInterface
         $this->securityContext = $securityContext;
         $this->aclProvider = $aclProvider;
         $this->superAdminRoles = $superAdminRoles;
+    }
+
+    /**
+     * Set the permissions not related to an object instance and also to be available when objects do not exist
+     *
+     * @param array $permissions
+     */
+    public function setAdminPermissions(array $permissions)
+    {
+        $this->adminPermissions = $permissions;
+    }
+
+    /**
+     * Return the permissions not related to an object instance and also to be available when objects do not exist
+     *
+     * @return array
+     */
+    public function getAdminPermissions()
+    {
+        return $this->adminPermissions;
     }
 
     /**
@@ -55,6 +76,9 @@ class AclSecurityHandler implements SecurityHandlerInterface
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getBaseRole(AdminInterface $admin)
     {
         return 'ROLE_'.str_replace('.', '_', strtoupper($admin->getCode())).'_%s';
