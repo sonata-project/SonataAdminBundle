@@ -27,7 +27,7 @@ file that was distributed with this source code.
     {% set batchactions = admin.batchactions %}
     {% if admin.datagrid.results|length > 0 %}
         <form action="{{ admin.generateUrl('batch', admin.filterParameters) }}" method="POST" >
-            <table class="zebra-striped">
+            <table class="zebra-striped bordered-table">
                 {% block table_header %}
                     <thead>
                         <tr class="sonata-ba-list-field-header">
