@@ -19,7 +19,7 @@ Full Configuration Options
 .. code-block:: yaml
 
     sonata_admin:
-       security_handler: sonata.admin.security.handler.noop
+        security_handler: sonata.admin.security.handler.noop
 
         title:      Sonata Project
         title_logo: /bundles/sonataadmin/logo_title.png
