@@ -3,17 +3,17 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to Sonata - Doctrine ORM Admin's documentation!
-=======================================================
+Welcome to Sonata - Admin's documentation!
+==========================================
 
-The ``Doctrine ORM Admin`` provides services to work with the ``Admin Bundle`` and the ``Doctrine Project``.
+SonataAdminBundle - The missing Symfony2 Admin Generator
 
 **Warning**: The bundle has been split into 4 bundles :
 
 * SonataAdminBundle : the current one, contains core librairies and services
-* `SonataDoctrineORMAdminBundle <https://github.com/sonata-project/SonataDoctrineORMAdminBundle>`_: Integrates the admin bundle into with the Doctrine ORM project
-* `SonataDoctrineMongoDBAdminBundle <https://github.com/sonata-project/SonataDoctrineMongoDBAdminBundle>`_: Integrates the admin bundle into with MongoDB (early stage)
-* `SonataDoctrinePhpcrAdminBundle <https://github.com/sonata-project/SonataDoctrinePhpcrAdminBundle>`_: Integrates the admin bundle into with PHPCR (early stage)
+* `SonataDoctrineORMAdminBundle <https://github.com/sonata-project/SonataDoctrineORMAdminBundle>`_: Integrates the admin bundle with the Doctrine ORM project
+* `SonataDoctrineMongoDBAdminBundle <https://github.com/sonata-project/SonataDoctrineMongoDBAdminBundle>`_: Integrates the admin bundle with MongoDB (early stage)
+* `SonataDoctrinePhpcrAdminBundle <https://github.com/sonata-project/SonataDoctrinePhpcrAdminBundle>`_: Integrates the admin bundle with PHPCR (early stage)
 
 **Google Groups**: For questions and proposals you can post on this google groups
 
