@@ -11,6 +11,7 @@ you can set the ``security_handler`` to ``sonata.admin.security.handler.acl``.
 
 .. code-block:: yaml
 
+    # app/config/config.yml
     sonata_admin:
         security_handler: sonata.admin.security.handler.acl
 
@@ -33,18 +34,65 @@ The security integration is a work in progress and have some knows issues :
 Configuration
 ~~~~~~~~~~~~~
 
-    - The following configuration defines :
+Before you can use ``FriendsOfSymfony/FOSUserBundle`` you need to set it up as described in the documentation
+of the bundle. In step 4 you need to create a User class (in a custom UserBundle). Do it as follows:
 
-        - the ``FriendsOfSymfony/FOSUserBundle`` as a security provider
-        - the login form for authentification
-        - the access control : resources with related required roles, the important part is the admin configuration
-        - the ``acl`` option enable the ACL.
+.. code-block:: php
+
+    <?php
+
+    namespace Acme\UserBundle\Entity;
+
+    use Sonata\UserBundle\Entity\BaseUser as BaseUser;
+    use Doctrine\ORM\Mapping as ORM;
+
+    /**
+     * @ORM\Entity
+     * @ORM\Table(name="fos_user")
+    \*/
+    class User extends BaseUser
+    {
+        /**
+         * @ORM\Id
+         * @ORM\Column(type="integer")
+         * @ORM\GeneratedValue(strategy="AUTO")
+         \*/
+        protected $id;
+
+        public function __construct()
+        {
+            parent::__construct();
+            // your own logic
+        }
+    }
+
+In your ``app/config/config.yml`` you then need to put the following:
+
+.. code-block:: yaml
+
+    fos_user:
+        db_driver: orm
+        firewall_name: main
+        user_class: Acme\UserBundle\Entity\User
+
+The following configuration for the SonataUserBundle defines:
+
+    - the ``FriendsOfSymfony/FOSUserBundle`` as a security provider
+    - the login form for authentification
+    - the access control : resources with related required roles, the important part is the admin configuration
+    - the ``acl`` option enable the ACL.
+
+In ``app/config/config.yml``:
 
 .. code-block:: yaml
 
     parameters:
         # ... other parameters
         security.acl.permission.map.class: Sonata\AdminBundle\Security\Acl\Permission\AdminPermissionMap
+
+In ``app/config/security.yml``:
+
+.. code-block:: yaml
 
     security:
         providers:
@@ -104,19 +152,11 @@ Configuration
 
 .. code-block::
 
-    # php app/console fos:user:create
+    # php app/console fos:user:create --super-admin
     Please choose a username:root
     Please choose an email:root@domain.com
     Please choose a password:root
     Created user root
-
-
-- Promote an user as super admin :
-
-.. code-block::
-
-    # php app/console fos:user:promote root
-    User "root" has been promoted as a super administrator.
 
 If you have Admin classes, you can install the related CRUD ACL rules :
 
