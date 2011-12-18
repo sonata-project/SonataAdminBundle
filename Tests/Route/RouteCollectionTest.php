@@ -27,10 +27,18 @@ class RouteCollectionTest extends \PHPUnit_Framework_TestCase
 
     public function testActionify()
     {
-        $routeCollection = new RouteCollection('base.Code.Route', 'baseRouteName', 'baseRoutePattern', 'baseControllerName');
+        $routeCollection = new RouteCollection('base.Code.Route', 'baseRouteName', 'baseRoutePattern', 'BundleName:ControllerName');
 
         $this->assertEquals('fooBar', $routeCollection->actionify('Foo bar'));
         $this->assertEquals('bar', $routeCollection->actionify('Foo.bar'));
+    }
+
+    public function testActionifyService()
+    {
+        $routeCollection = new RouteCollection('base.Code.Route', 'baseRouteName', 'baseRoutePattern', 'baseControllerService');
+
+        $this->assertEquals('fooBarAction', $routeCollection->actionify('Foo bar'));
+        $this->assertEquals('barAction', $routeCollection->actionify('Foo.bar'));
     }
 
     public function testCode()
@@ -78,13 +86,26 @@ class RouteCollectionTest extends \PHPUnit_Framework_TestCase
 
     public function testRoute()
     {
-        $routeCollection = new RouteCollection('baseCodeRoute', 'baseRouteName', 'baseRoutePattern', 'baseControllerName');
+        $routeCollection = new RouteCollection('baseCodeRoute', 'baseRouteName', 'baseRoutePattern', 'BundleName:ControllerName');
 
         $routeCollection->add('view');
 
         $route = $routeCollection->get('view');
 
-        $this->assertEquals('baseControllerName:view', $route->getDefault('_controller'));
+        $this->assertEquals('BundleName:ControllerName:view', $route->getDefault('_controller'));
+        $this->assertEquals('baseCodeRoute', $route->getDefault('_sonata_admin'));
+        $this->assertEquals('baseRouteName_view', $route->getDefault('_sonata_name'));
+    }
+
+    public function testRouteControllerService()
+    {
+        $routeCollection = new RouteCollection('baseCodeRoute', 'baseRouteName', 'baseRoutePattern', 'baseControllerServiceName');
+
+        $routeCollection->add('view');
+
+        $route = $routeCollection->get('view');
+
+        $this->assertEquals('baseControllerServiceName:viewAction', $route->getDefault('_controller'));
         $this->assertEquals('baseCodeRoute', $route->getDefault('_sonata_admin'));
         $this->assertEquals('baseRouteName_view', $route->getDefault('_sonata_name'));
     }

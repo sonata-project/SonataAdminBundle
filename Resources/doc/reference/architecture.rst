@@ -112,7 +112,14 @@ reduce overhead.
 Declaring a new Admin class
 ---------------------------
 
-Once you have created an admin class, you must declare the class to use it. Like
+Once you have created an admin class, you need to make the framework aware of
+it. To do that, you need to add a tag with the name ``sonata.admin`` to the
+service. Parameters for that tag are:
+* ``manager_type``: Label of the document manager to inject;
+* ``group``: A label to allow grouping on the dashboard;
+* ``label``: Label to use for the name of the entity this manager handles;
+
+Examples:
 
 .. code-block:: xml
 
@@ -137,5 +144,10 @@ Or if you're using a YML configuration file,
             - { name: sonata.admin, manager_type: orm, group: sonata_blog, label: post }
           arguments: [null, Sonata\NewsBundle\Entity\Post, SonataNewsBundle:PostAdmin]
 
+
+You can extend ``Sonata\AdminBundle\Admin\Admin`` to minimize the amount of
+code to write. This base admin uses the routing services to build routes.
+Note that you can use both the Bundle:Controller format or a service name to
+specify what controller to load.
 
 .. _`Django Project Website`: http://www.djangoproject.com/

@@ -137,6 +137,12 @@ class RouteCollection
             $action = substr($action, $pos + 1);
         }
 
+        // if this is a service rather than just a controller name, the suffix
+        // Action is not automatically appended to the method name
+        if (strpos($this->baseControllerName, ':') === false) {
+            $action .= 'Action';
+        }
+
         return lcfirst(str_replace(' ', '', ucwords(strtr($action, '_-', '  '))));
     }
 
