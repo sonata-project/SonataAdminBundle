@@ -1,7 +1,7 @@
 <?php
 
 // try to reuse lib defined in a current symfony2 project
-$autoload = __DIR__.'/../../../../../../app/autoload.php';
+$autoload = __DIR__.'/../../../../../../app/bootstrap.php.cache';
 if (is_file($autoload)) {
     include $autoload;
 } else {
