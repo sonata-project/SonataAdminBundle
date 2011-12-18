@@ -17,6 +17,7 @@ represents the route prefix.
 
 .. code-block:: php
 
+    <?php
     class PostAdmin extends Admin
     {
         protected $baseRouteName = 'news_post_admin';
@@ -52,6 +53,7 @@ defined by its name.
 
 .. code-block:: php
 
+    <?php
     use Sonata\AdminBundle\Route\RouteCollection;
 
     class MediaAdmin extends Admin
@@ -73,6 +75,7 @@ method. This method will be used when a link is being generated.
 
 .. code-block:: php
 
+    <?php
     class MediaAdmin extends Admin
     {
         public function getPersistentParameters()

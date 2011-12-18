@@ -14,7 +14,7 @@ Please see :ref:`templates` for more information about how to configure default 
 
 
 Full Configuration Options
-==========================
+--------------------------
 
 .. code-block:: yaml
 
