@@ -147,7 +147,8 @@ Or if you're using a YML configuration file,
 
 You can extend ``Sonata\AdminBundle\Admin\Admin`` to minimize the amount of
 code to write. This base admin uses the routing services to build routes.
-Note that you can use both the Bundle:Controller format or a service name to
+Note that you can use both the Bundle:Controller format or a `service name`_ to
 specify what controller to load.
 
 .. _`Django Project Website`: http://www.djangoproject.com/
+.. _`service name`: http://symfony.com/doc/2.0/cookbook/controller/service.html
