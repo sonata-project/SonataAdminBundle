@@ -86,7 +86,8 @@ class SonataAdminExtension extends Extension
                         'CREATE'    => array('CREATE'),
                         'VIEW'      => array('VIEW'),
                         'DELETE'    => array('DELETE'),
-                        'OPERATOR'  => array('OPERATOR')
+                        'OPERATOR'  => array('OPERATOR'),
+                        'MASTER'    => array('MASTER'),
                     );
                 }
                 break;
@@ -100,7 +101,7 @@ class SonataAdminExtension extends Extension
                         'GUEST'    => array('VIEW', 'LIST'),
                         'STAFF'    => array('EDIT', 'LIST', 'CREATE'),
                         'EDITOR'   => array('OPERATOR'),
-                        'ADMIN'    => array('MASTER')
+                        'ADMIN'    => array('MASTER'),
                     );
                 }
                 break;

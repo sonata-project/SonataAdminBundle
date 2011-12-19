@@ -1,18 +1,60 @@
 Security
 ========
 
-The security part is managed by a ``SecurityHandler``, the bundle comes with 2 handlers
+The security part is managed by a ``SecurityHandler``, the bundle comes with 3 handlers
 
+  - ``sonata.admin.security.handler.role`` : ROLES to handle permissions
   - ``sonata.admin.security.handler.acl`` : ACL and ROLES to handle permissions
   - ``sonata.admin.security.handler.noop`` : always return true, can be used with the Symfony2 firewall
 
 The default value is ``sonata.admin.security.handler.noop``, if you want to change the default value
-you can set the ``security_handler`` to ``sonata.admin.security.handler.acl``.
+you can set the ``security_handler`` to ``sonata.admin.security.handler.acl`` or ``sonata.admin.security.handler.role``.
+
+To quickly secure an admin the role security can be used. It allows to specify the actions a user can with the admin. The ACL
+security system is more advanced and allows to secure the objects. For people using the previous ACL implementation,
+you can switch the security_handler to the role security handler.
+
+Configuration
+~~~~~~~~~~~~~
+
+Only the security handler is required to determine which type of security to use. The other parameters are set as default,
+change them if needed.
+
+Using roles:
 
 .. code-block:: yaml
 
     sonata_admin:
-        security_handler: sonata.admin.security.handler.acl
+        security:
+            handler: sonata.admin.security.handler.acl
+            # role security information
+            information:
+                EDIT: EDIT
+                LIST: LIST
+                CREATE: CREATE
+                VIEW: VIEW
+                DELETE: DELETE
+                OPERATOR: OPERATOR
+                MASTER: MASTER
+
+Using ACL:
+
+.. code-block:: yaml
+
+    sonata_admin:
+        security:
+            handler: sonata.admin.security.handler.acl
+            # acl security information
+            information:
+                GUEST:    [VIEW, LIST]
+                STAFF:    [EDIT, LIST, CREATE]
+                EDITOR:   [OPERATOR]
+                ADMIN:    [MASTER]
+            # permissions not related to an object instance and also to be available when objects do not exist
+            # the DELETE admin permission means the user is allowed to batch delete objects
+            admin_permissions: [CREATE, LIST, DELETE, UNDELETE, OPERATOR, MASTER]
+            # permission related to the objects
+            object_permissions: [VIEW, EDIT, DELETE, UNDELETE, OPERATOR, MASTER, OWNER]        
 
 The following section explains how to set up ACL with the ``FriendsOfSymfony/UserBundle``.
 
@@ -27,8 +69,8 @@ If you want an easy way to handle users, please use :
 
 The security integration is a work in progress and have some knows issues :
  - ACL permissions are immutables
- - Only one PermissionMap can be defined
-
+ - A listener must be implemented that creates the object Access Control List with the required rules if objects are 
+   created outside the Admin
 
 Configuration
 ~~~~~~~~~~~~~
@@ -48,6 +90,8 @@ Configuration
     parameters:
         # ... other parameters
         security.acl.permission.map.class: Sonata\AdminBundle\Security\Acl\Permission\AdminPermissionMap
+        # optionally use a custom MaskBuilder
+        #sonata.admin.security.mask.builder.class: Sonata\AdminBundle\Security\Acl\Permission\MaskBuilder 
 
     security:
         providers:
@@ -121,7 +165,7 @@ Configuration
     # php app/console fos:user:promote root
     User "root" has been promoted as a super administrator.
 
-If you have Admin classes, you can install the related CRUD ACL rules :
+If you have Admin classes, you can install or update the related CRUD ACL rules :
 
 .. code-block:: sh
 
@@ -157,20 +201,22 @@ Owner:
  - this means the user owning the object is always allowed to DELETE the object, even when it only has the staff role.
 
 Vocabulary used for Access Control Lists:
-    - Role: a user role;
-    - ACL: a list of access rules, the Admin uses 2 types:
-        - Class-Scope: created from the Security information of the Admin class and shares the Access Control Entries for all objects
-          with the class where the Admin is created for;
-        - Object-Scope: created for each new object and specifies the owner;
-    - Sid: Security identity, an ACL role for the Class-Scope ACL and the user for the Object-Scope ACL;
-    - Oid: Object identity, identifies the ACL, for the Admin ACL this is the admin code, for the object ACL this is the object id;
-    - ACE: a role (or sid) and its permissions;
-    - Permission: this tells what the user is allowed to do with the Object identity;
-    - Bitmask: a permission can have several bitmasks, each bitmask represents a permission. When permission VIEW is requested and
-      it contains the VIEW and EDIT bitmask and the user only has the EDIT permission, then the permission VIEW is granted.
-    - PermissionMap: configures the bitmasks for each permission, to change the default mapping create a voter for the domain class of the Admin.
-      There can be many voters that may have different permission maps. However, prevent that multiple voters are not allowed to vote on the same
-      class with overlapping bitmasks.
+ - Role: a user role;
+  - ACL: a list of access rules, the Admin uses 2 types:
+   - Admin ACL: created from the Security information of the Admin class for each admin and shares the Access Control Entries that specify
+     what the user can do (permissions) with the admin
+   - Object ACL: also created from the security information of the Admin class however created for each object, it uses 2 scopes:
+    - Class-Scope: the class scope contains the rules that are valid for all object of a certain class;
+    - Object-Scope: specifies the owner;
+  - Sid: Security identity, an ACL role for the Class-Scope ACL and the user for the Object-Scope ACL;
+  - Oid: Object identity, identifies the ACL, for the admin ACL this is the admin code, for the object ACL this is the object id;
+  - ACE: a role (or sid) and its permissions;
+  - Permission: this tells what the user is allowed to do with the Object identity;
+  - Bitmask: a permission can have several bitmasks, each bitmask represents a permission. When permission VIEW is requested and
+    it contains the VIEW and EDIT bitmask and the user only has the EDIT permission, then the permission VIEW is granted.
+  - PermissionMap: configures the bitmasks for each permission, to change the default mapping create a voter for the domain class of the Admin.
+    There can be many voters that may have different permission maps. However, prevent that multiple voters vote on the same class with 
+    overlapping bitmasks.
 
 See the cookbook article "Advanced ACL concepts" for the meaning of the different permissions:
 http://symfony.com/doc/current/cookbook/security/acl_advanced.html#pre-authorization-decisions.
@@ -211,7 +257,7 @@ In some occasions you need to create a custom voter or a custom permission map b
        public function supportsClass($class)
        {
            // support the Class-Scope ACL for votes with the custom permission map
-           // return $class === 'Sonata\UserBundle\Admin\Entity\UserAdmin' || $class === is_subclass_of($class, 'FOS\UserBundle\Model\UserInterface');
+           // return $class === 'Sonata\UserBundle\Admin\Entity\UserAdmin' || $is_subclass_of($class, 'FOS\UserBundle\Model\UserInterface');
            // if you use php >=5.3.7 you can check the inheritance with is_a($class, 'Sonata\UserBundle\Admin\Entity\UserAdmin');
            // support the Object-Scope ACL
            return is_subclass_of($class, 'FOS\UserBundle\Model\UserInterface');
@@ -281,7 +327,7 @@ In some occasions you need to create a custom voter or a custom permission map b
             # Strategy can be: affirmative, unanimous or consensus
             strategy: unanimous
 
- - to make this work the permission needs to be checked using the Object-Scope
+ - to make this work the permission needs to be checked using the Object ACL
 
   - modify the template (or code) where applicable:
 
@@ -289,9 +335,9 @@ In some occasions you need to create a custom voter or a custom permission map b
 
     {% if admin.isGranted('EDIT', user_object) %} {# ... #} {% endif %}
 
-  - because the permission is checked at Object-Scope each object must have an object ACL with a Class-Scope ACL inherited, otherwise the AclVoter
+  - because the object ACL permission is checked, the ACL for the object must have been created, otherwise the AclVoter
     will deny EDIT access for a non super admin user trying to edit another non super admin user. This is automatically done when the object is
-    created using the Admin. If objects are also created outside the Admin, have a look at the ``createObjectOwner`` method in the
+    created using the Admin. If objects are also created outside the Admin, have a look at the ``createSecurityObject`` method in the
     AclSecurityHandler.
 
 Usage
