@@ -42,7 +42,14 @@ class NoopSecurityHandler implements SecurityHandlerInterface
     /**
      * {@inheritDoc}
      */
-    public function createObjectOwner(AdminInterface $admin, $object)
+    public function createObjectSecurity(AdminInterface $admin, $object)
+    {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function deleteObjectSecurity(AdminInterface $admin, $object)
     {
     }
 }

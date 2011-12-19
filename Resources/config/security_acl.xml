@@ -6,17 +6,22 @@
 
     <parameters>
         <parameter key="sonata.admin.security.handler.acl.class" >Sonata\AdminBundle\Security\Handler\AclSecurityHandler</parameter>
+        <parameter key="sonata.admin.security.mask.builder.class" >Sonata\AdminBundle\Security\Acl\Permission\MaskBuilder</parameter>
     </parameters>
 
     <services>
         <service id="sonata.admin.security.handler.acl" class="%sonata.admin.security.handler.acl.class%">
             <argument type="service" id="security.context" on-invalid="null" />
             <argument type="service" id="security.acl.provider" on-invalid="null" />
+            <argument>%sonata.admin.security.mask.builder.class%</argument>
             <argument type="collection">
                 <argument>ROLE_SUPER_ADMIN</argument>
             </argument>
             <call method="setAdminPermissions">
                 <argument>%sonata.admin.configuration.security.admin_permissions%</argument>
+            </call>
+            <call method="setObjectPermissions">
+                <argument>%sonata.admin.configuration.security.object_permissions%</argument>
             </call>            
         </service>
     </services>    

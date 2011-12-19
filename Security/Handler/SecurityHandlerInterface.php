@@ -40,12 +40,22 @@ interface SecurityHandlerInterface
     function buildSecurityInformation(AdminInterface $admin);
 
     /**
-     * Make the current user owner of the object
+     * Create object security, fe. make the current user owner of the object
      *
      * @abstract
      * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
      * @param object $object
      * @return void
      */
-    function createObjectOwner(AdminInterface $admin, $object);
+    function createObjectSecurity(AdminInterface $admin, $object);
+
+    /**
+     * Remove object security
+     *
+     * @abstract
+     * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
+     * @param object $object
+     * @return void
+     */
+    function deleteObjectSecurity(AdminInterface $admin, $object);
 }

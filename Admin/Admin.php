@@ -517,7 +517,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         $this->prePersist($object);
         $this->getModelManager()->create($object);
         $this->postPersist($object);
-        $this->createObjectOwner($object);
+        $this->createObjectSecurity($object);
     }
 
     public function delete($object)
@@ -525,6 +525,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         $this->preRemove($object);
         $this->getModelManager()->delete($object);
         $this->postRemove($object);
+        $this->getSecurityHandler()->deleteObjectSecurity($this, $object);
     }
 
     public function preUpdate($object)
@@ -2097,7 +2098,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     /**
      * Return the roles and permissions per role
      * - different permissions per role for the acl handler
-     * - one permission that has the same name as the role for the role handler 
+     * - one permission that has the same name as the role for the role handler
      * This should be used by experimented users
      *
      * @return array [role] => array([permission], [permission])
@@ -2140,13 +2141,13 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * Create security object owner
+     * Add object security, fe. make the current user owner of the object
      *
      * @param $object
      */
-    public function createObjectOwner($object)
+    public function createObjectSecurity($object)
     {
-        $this->getSecurityHandler()->createObjectOwner($this, $object);
+        $this->getSecurityHandler()->createObjectSecurity($this, $object);
     }
 
     /**

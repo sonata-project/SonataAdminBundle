@@ -60,7 +60,7 @@ class RoleSecurityHandler implements SecurityHandlerInterface
     {
         return 'ROLE_'.str_replace('.', '_', strtoupper($admin->getCode())).'_%s';
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -68,11 +68,18 @@ class RoleSecurityHandler implements SecurityHandlerInterface
     {
         return array();
     }
-    
+
     /**
      * {@inheritDoc}
      */
-    public function createObjectOwner(AdminInterface $admin, $object)
+    public function createObjectSecurity(AdminInterface $admin, $object)
+    {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function deleteObjectSecurity(AdminInterface $admin, $object)
     {
     }
 }

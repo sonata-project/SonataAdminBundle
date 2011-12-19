@@ -11,13 +11,15 @@
 
 namespace Sonata\AdminBundle\Security\Handler;
 
+use Symfony\Component\Security\Acl\Model\ObjectIdentityInterface;
+
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 use Symfony\Component\Security\Acl\Model\AclProviderInterface;
 use Symfony\Component\Security\Acl\Model\AclInterface;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
-use Symfony\Component\Security\Acl\Permission\MaskBuilder;
+use Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity;
 use Sonata\AdminBundle\Admin\AdminInterface;
 
 class AclSecurityHandler implements SecurityHandlerInterface
@@ -26,15 +28,20 @@ class AclSecurityHandler implements SecurityHandlerInterface
     protected $aclProvider;
     protected $superAdminRoles;
     protected $adminPermissions;
+    protected $objectPermissions;
+    protected $maskBuilderClass;
 
     /**
-     * @param \Symfony\Component\Security\Core\SecurityContextInterface $securityContext
+     * @param SecurityContextInterface $securityContext
+     * @param AclProviderInterface $aclProvider
+     * @param string $maskBuilderClass
      * @param array $superAdminRoles
      */
-    public function __construct(SecurityContextInterface $securityContext, AclProviderInterface $aclProvider, array $superAdminRoles)
+    public function __construct(SecurityContextInterface $securityContext, AclProviderInterface $aclProvider, $maskBuilderClass, array $superAdminRoles)
     {
         $this->securityContext = $securityContext;
         $this->aclProvider = $aclProvider;
+        $this->maskBuilderClass = $maskBuilderClass;
         $this->superAdminRoles = $superAdminRoles;
     }
 
@@ -56,6 +63,26 @@ class AclSecurityHandler implements SecurityHandlerInterface
     public function getAdminPermissions()
     {
         return $this->adminPermissions;
+    }
+
+    /**
+     * Set the permissions related to an object instance
+     *
+     * @param array $permissions
+     */
+    public function setObjectPermissions(array $permissions)
+    {
+        $this->objectPermissions = $permissions;
+    }
+
+    /**
+     * Return the permissions related to an object instance
+     *
+     * @return array
+     */
+    public function getObjectPermissions()
+    {
+        return $this->objectPermissions;
     }
 
     /**
@@ -102,48 +129,222 @@ class AclSecurityHandler implements SecurityHandlerInterface
     /**
      * {@inheritDoc}
      */
-    public function createObjectOwner(AdminInterface $admin, $object)
+    public function createObjectSecurity(AdminInterface $admin, $object)
     {
-        $acl = $this->getNewObjectOwnerAcl($admin, $object);
+        $acl = $this->getNewObjectOwnerAcl($object);
+        $this->addObjectClassAces($acl, $this->buildSecurityInformation($admin));
         $this->updateAcl($acl);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function deleteObjectSecurity(AdminInterface $admin, $object)
+    {
+        $objectIdentity = ObjectIdentity::fromDomainObject($object);
+        if (!is_null($acl = $this->getObjectAcl($objectIdentity)))
+        {
+            $this->deleteAcl($acl);
+        }
+    }
+
+    /**
+     * Get the ACL for the object
+     *
+     * @param ObjectIdentityInterface $objectIdentity
+     * @return \Symfony\Component\Security\Acl\Model\AclInterface
+     */
+    public function getObjectAcl(ObjectIdentityInterface $objectIdentity)
+    {
+        try {
+            $acl = $aclProvider->findAcl($objectIdentity);
+        } catch(AclNotFoundException $e) {
+            return null;
+        }
+
+        return $acl;
     }
 
     /**
      * Get a new ACL with an object ACE where the currently logged in user is set as owner
      *
-     * @param AdminInterface $admin
      * @param object $object
      * @return Symfony\Component\Security\Acl\Model\AclInterface
      */
-    public function getNewObjectOwnerAcl(AdminInterface $admin, $object)
+    public function getNewObjectOwnerAcl($object)
     {
-        // creating the ACL, fe.
-        // Comment 1 ACL
+        // creating the object ACL, fe. Comment 1 ACL
         $objectIdentity = ObjectIdentity::fromDomainObject($object);
         $acl = $this->aclProvider->createAcl($objectIdentity);
-
-        // inherit class ACE's from the admin ACL, fe.
-        // Comment admin ACL
-        //  - Comment 1 ACL
-        $parentOid = ObjectIdentity::fromDomainObject($admin);
-        $parentAcl = $this->aclProvider->findAcl($parentOid);
-        $acl->setParentAcl($parentAcl);
 
         // retrieving the security identity of the currently logged-in user
         $user = $this->securityContext->getToken()->getUser();
         $securityIdentity = UserSecurityIdentity::fromAccount($user);
 
         // grant owner access
-        $acl->insertObjectAce($securityIdentity, MaskBuilder::MASK_OWNER);
+        $this->addObjectOwnwer($acl, $securityIdentity);
 
         return $acl;
     }
 
     /**
+     * Add an object owner ACE to the object ACL
+     *
+     * @param AclInterface $acl
+     * @param UserSecurityIdentity $securityIdentity
+     */
+    public function addObjectOwnwer(AclInterface $acl, UserSecurityIdentity $securityIdentity = null)
+    {
+        if (false === $this->findClassAceIndexByUsername($acl, $securityIdentity->getUsername())) {
+            // only add if not already exists
+            $acl->insertObjectAce($securityIdentity, constant("$this->maskBuilderClass::MASK_OWNER"));
+        }
+    }
+
+    /**
+     * Add the object class ACE's to the object ACL
+     *
+     * @param AclInterface $acl
+     * @param array $roleInformation
+     * @return void
+     */
+    public function addObjectClassAces(AclInterface $acl, array $roleInformation = array())
+    {
+        $builder = new $this->maskBuilderClass();
+
+        foreach ($roleInformation as $role => $permissions) {
+            $aceIndex = $this->findClassAceIndexByRole($acl, $role);
+            $hasRole = false;
+
+            foreach ($permissions as $permission) {
+                // add only the object permissions
+                if (in_array($permission, $this->getObjectPermissions())) {
+                    $builder->add($permission);
+                    $hasRole = true;
+                }
+            }
+
+            if ($hasRole) {
+                if ($aceIndex === false) {
+                    $acl->insertClassAce(new RoleSecurityIdentity($role), $builder->get());
+                } else {
+                    $acl->updateClassAce($aceIndex, $builder->get());
+                }
+
+                $builder->reset();
+            } elseif ($aceIndex !== false) {
+                $acl->deleteClassAce($aceIndex);
+            }
+        }
+    }
+
+    /**
+     * Add the class ACE's to the admin ACL
+     *
+     * @param AclInterface $acl
+     * @param array $roleInformation
+     * @param Symfony\Component\Console\Output\OutputInterface $output
+     * @return boolean TRUE if admin class ACEs are added, FALSE if not
+     */
+    public function addAdminClassAces(AclInterface $acl, array $roleInformation = array(), \Symfony\Component\Console\Output\OutputInterface $output = null)
+    {
+        if (count($this->getAdminPermissions()) > 0 ) {
+            $builder = new $this->maskBuilderClass();
+
+            foreach ($roleInformation as $role => $permissions) {
+                $aceIndex = $this->findClassAceIndexByRole($acl, $role);
+                $roleAdminPermissions = array();
+
+                foreach ($permissions as $permission) {
+                    // add only the admin permissions
+                    if (in_array($permission, $this->getAdminPermissions())) {
+                        $builder->add($permission);
+                        $roleAdminPermissions[] = $permission;
+                    }
+                }
+
+                if (count($roleAdminPermissions) > 0) {
+                    if ($aceIndex === false) {
+                        $acl->insertClassAce(new RoleSecurityIdentity($role), $builder->get());
+                        $action = 'add';
+                    } else {
+                        $acl->updateClassAce($aceIndex, $builder->get());
+                        $action = 'update';
+                    }
+
+                    if (!is_null($output)) {
+                        $output->writeln(sprintf('   - %s role: %s, permissions: %s', $action, $role, json_encode($roleAdminPermissions)));
+                    }
+
+                    $builder->reset();
+                } elseif ($aceIndex !== false) {
+                    $acl->deleteClassAce($aceIndex);
+
+                    if (!is_null($output)) {
+                        $output->writeln(sprintf('   - remove role: %s', $action, $role));
+                    }
+                }
+            }
+
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * Update the ACL
+     *
+     * @param AclInterface $acl
+     * @return void
      */
     public function updateAcl(AclInterface $acl)
     {
         $this->aclProvider->updateAcl($acl);
+    }
+
+    /**
+     * Delete the ACL
+     *
+     * @param AclInterface $acl
+     * @return void
+     */
+    public function deleteAcl(AclInterface $acl)
+    {
+        $this->aclProvider->deleteAcl($acl);
+    }
+
+    /**
+     * Helper method to find the index of a class ACE for a role
+     *
+     * @param AclInterface $acl
+     * @param string $role
+     */
+    protected function findClassAceIndexByRole(AclInterface $acl, $role)
+    {
+        foreach ($acl->getClassAces() as $index => $entry) {
+            if ($entry->getSecurityIdentity() instanceof RoleSecurityIdentity && $entry->getSecurityIdentity()->getRole() === $role) {
+                return $index;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Helper method to find the index of a class ACE for a username
+     *
+     * @param AclInterface $acl
+     * @param string $username
+     */
+    protected function findClassAceIndexByUsername(AclInterface $acl, $username)
+    {
+        foreach ($acl->getClassAces() as $index => $entry) {
+            if ($entry->getSecurityIdentity() instanceof UserSecurityIdentity && $entry->getSecurityIdentity()->getUsername() === $username) {
+                return $index;
+            }
+        }
+
+        return false;
     }
 }

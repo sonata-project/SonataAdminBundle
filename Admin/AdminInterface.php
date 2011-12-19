@@ -397,5 +397,5 @@ interface AdminInterface
 
     function showIn($context);
 
-    function createObjectOwner($object);
+    function createObjectSecurity($object);
 }

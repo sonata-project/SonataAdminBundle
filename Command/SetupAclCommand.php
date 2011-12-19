@@ -12,6 +12,8 @@
 namespace Sonata\AdminBundle\Command;
 
 
+use Symfony\Component\Security\Acl\Model\MutableAclProviderInterface;
+
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
@@ -21,10 +23,12 @@ use Symfony\Component\Console\Output\Output;
 
 use Symfony\Component\Security\Acl\Model\AclInterface;
 use Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity;
-use Sonata\AdminBundle\Security\Acl\Permission\MaskBuilder;
 use Symfony\Component\Security\Acl\Exception\AclAlreadyExistsException;
 use Symfony\Component\Security\Acl\Exception\AclNotFoundException;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
+
+use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
 use Sonata\AdminBundle\Security\Handler\AclSecurityHandler;
 
 class SetupAclCommand extends ContainerAwareCommand
@@ -41,9 +45,7 @@ class SetupAclCommand extends ContainerAwareCommand
 
         $output->writeln('Starting ACL AdminBundle configuration');
 
-        $builder = new MaskBuilder();
         foreach ($this->getContainer()->get('sonata.admin.pool')->getAdminServiceIds() as $id) {
-            $output->writeln(sprintf(' > install ACL for %s', $id));
 
             try {
                 $admin = $this->getContainer()->get($id);
@@ -60,32 +62,24 @@ class SetupAclCommand extends ContainerAwareCommand
             }
 
             $objectIdentity = ObjectIdentity::fromDomainObject($admin);
+            $newAcl = false;
             try {
                 $acl = $aclProvider->findAcl($objectIdentity);
             } catch(AclNotFoundException $e) {
                 $acl = $aclProvider->createAcl($objectIdentity);
+                $newAcl = true;
             }
 
-            // create admin ACL, fe.
-            // Comment admin ACL
-            $this->configureACL($output, $acl, $builder, $securityHandler->buildSecurityInformation($admin));
+            // create admin ACL
+            $output->writeln(sprintf(' > install ACL for %s', $id));
+            $configResult = $securityHandler->addAdminClassAces($acl, $securityHandler->buildSecurityInformation($admin), $output);
 
-            $aclProvider->updateAcl($acl);
-        }
-    }
-
-    public function configureACL(OutputInterface $output, AclInterface $acl, MaskBuilder $builder, array $aclInformations = array())
-    {
-        foreach ($aclInformations as $role => $permissions) {
-            foreach ($permissions as $permission) {
-                $builder->add($permission);
+            if ($configResult) {
+                $aclProvider->updateAcl($acl);
+            } elseif ($aclProvider instanceof MutableAclProviderInterface) {
+                $output->writeln(sprintf('   - %s , no roles and permissions found', ($newAcl ? 'skip' : 'removed')));
+                $aclProvider->deleteAcl($objectIdentity);
             }
-
-            $acl->insertClassAce(new RoleSecurityIdentity($role), $builder->get());
-
-            $output->writeln(sprintf('   - add role: %s, permissions: %s', $role, json_encode($permissions)));
-
-            $builder->reset();
         }
     }
 }

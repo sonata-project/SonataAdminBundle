@@ -92,6 +92,7 @@ class SonataAdminExtension extends Extension
                 break;
             case 'sonata.admin.security.handler.acl':
                 $container->setParameter('sonata.admin.configuration.security.admin_permissions', $config['security']['admin_permissions']);
+                $container->setParameter('sonata.admin.configuration.security.object_permissions', $config['security']['object_permissions']);
                 $loader->load('security_acl.xml');
 
                 if (count($config['security']['information']) === 0) {
