@@ -14,7 +14,7 @@ file that was distributed with this source code.
 {% block actions %}
     <div class="sonata-actions">
         <ul>
-            {% if admin.hasRoute('edit') and admin.isGranted('EDIT')%}
+            {% if admin.hasRoute('edit') and admin.isGranted('EDIT', object)%}
                 <li class="btn sonata-action-element"><a href="{{ admin.generateObjectUrl('edit', object) }}">{% trans from 'SonataAdminBundle' %}link_action_edit{% endtrans %}</a></li>
             {% endif %}
 
