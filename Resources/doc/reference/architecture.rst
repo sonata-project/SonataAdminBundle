@@ -115,6 +115,7 @@ Declaring a new Admin class
 Once you have created an admin class, you need to make the framework aware of
 it. To do that, you need to add a tag with the name ``sonata.admin`` to the
 service. Parameters for that tag are:
+
 * ``manager_type``: Label of the document manager to inject;
 * ``group``: A label to allow grouping on the dashboard;
 * ``label``: Label to use for the name of the entity this manager handles;
