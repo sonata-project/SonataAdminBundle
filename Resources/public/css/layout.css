@@ -81,6 +81,10 @@ body.sonata-bc {
     cursor: pointer;
 }
 
+.sonata-bc form.sonata-filter-form.form-stacked {
+    padding-left: 0;
+}
+
 .sonata-bc table.sonata-ba-list td {
     width: 75px;
 }
