@@ -11,15 +11,15 @@
 
 namespace Sonata\AdminBundle\Security\Handler;
 
-use Symfony\Component\Security\Acl\Model\ObjectIdentityInterface;
-
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 use Symfony\Component\Security\Acl\Model\AclProviderInterface;
 use Symfony\Component\Security\Acl\Model\AclInterface;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
+use Symfony\Component\Security\Acl\Model\ObjectIdentityInterface;
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 use Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity;
+use Symfony\Component\Security\Acl\Exception\AclNotFoundException;
 use Sonata\AdminBundle\Admin\AdminInterface;
 
 class AclSecurityHandler implements SecurityHandlerInterface
@@ -131,7 +131,18 @@ class AclSecurityHandler implements SecurityHandlerInterface
      */
     public function createObjectSecurity(AdminInterface $admin, $object)
     {
-        $acl = $this->getNewObjectOwnerAcl($object);
+        // retrieving the ACL for the object identity
+        $objectIdentity = ObjectIdentity::fromDomainObject($object);
+        $acl = $this->getObjectAcl($objectIdentity);
+        if (is_null($acl)) {
+            $acl = $this->createAcl($objectIdentity);
+        }
+
+        // retrieving the security identity of the currently logged-in user
+        $user = $this->securityContext->getToken()->getUser();
+        $securityIdentity = UserSecurityIdentity::fromAccount($user);
+
+        $this->addObjectOwner($acl, $securityIdentity);
         $this->addObjectClassAces($acl, $this->buildSecurityInformation($admin));
         $this->updateAcl($acl);
     }
@@ -157,32 +168,10 @@ class AclSecurityHandler implements SecurityHandlerInterface
     public function getObjectAcl(ObjectIdentityInterface $objectIdentity)
     {
         try {
-            $acl = $aclProvider->findAcl($objectIdentity);
+            $acl = $this->aclProvider->findAcl($objectIdentity);
         } catch(AclNotFoundException $e) {
             return null;
         }
-
-        return $acl;
-    }
-
-    /**
-     * Get a new ACL with an object ACE where the currently logged in user is set as owner
-     *
-     * @param object $object
-     * @return Symfony\Component\Security\Acl\Model\AclInterface
-     */
-    public function getNewObjectOwnerAcl($object)
-    {
-        // creating the object ACL, fe. Comment 1 ACL
-        $objectIdentity = ObjectIdentity::fromDomainObject($object);
-        $acl = $this->aclProvider->createAcl($objectIdentity);
-
-        // retrieving the security identity of the currently logged-in user
-        $user = $this->securityContext->getToken()->getUser();
-        $securityIdentity = UserSecurityIdentity::fromAccount($user);
-
-        // grant owner access
-        $this->addObjectOwnwer($acl, $securityIdentity);
 
         return $acl;
     }
@@ -193,7 +182,7 @@ class AclSecurityHandler implements SecurityHandlerInterface
      * @param AclInterface $acl
      * @param UserSecurityIdentity $securityIdentity
      */
-    public function addObjectOwnwer(AclInterface $acl, UserSecurityIdentity $securityIdentity = null)
+    public function addObjectOwner(AclInterface $acl, UserSecurityIdentity $securityIdentity = null)
     {
         if (false === $this->findClassAceIndexByUsername($acl, $securityIdentity->getUsername())) {
             // only add if not already exists
@@ -290,6 +279,17 @@ class AclSecurityHandler implements SecurityHandlerInterface
         } else {
             return false;
         }
+    }
+
+    /**
+     * Create an object ACL
+     *
+     * @param ObjectIdentityInterface $objectIdentity
+     * @return AclInterface
+     */
+    public function createAcl(ObjectIdentityInterface $objectIdentity)
+    {
+        return $this->aclProvider->createAcl($objectIdentity);
     }
 
     /**

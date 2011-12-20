@@ -26,7 +26,7 @@ Using roles:
 
     sonata_admin:
         security:
-            handler: sonata.admin.security.handler.acl
+            handler: sonata.admin.security.handler.role
             # role security information
             information:
                 EDIT: EDIT
