@@ -9,6 +9,7 @@
         <parameter key="sonata.admin.security.handler.role.class" >Sonata\AdminBundle\Security\Handler\RoleSecurityHandler</parameter>
         <parameter key="sonata.admin.security.handler.acl.class" >Sonata\AdminBundle\Security\Handler\AclSecurityHandler</parameter>
         <parameter key="sonata.admin.security.mask.builder.class" >Sonata\AdminBundle\Security\Acl\Permission\MaskBuilder</parameter>
+        <parameter key="sonata.admin.manipulator.acl.admin.class">Sonata\AdminBundle\Util\AdminAclManipulator</parameter>
     </parameters>
 
     <services>
@@ -32,6 +33,10 @@
             <call method="setObjectPermissions">
                 <argument>%sonata.admin.configuration.security.object_permissions%</argument>
             </call>
+        </service>
+        <service id="sonata.admin.manipulator.acl.admin" class="%sonata.admin.manipulator.acl.admin.class%" >
+            <argument type="service" id="sonata.admin.security.handler" />
+            <argument>%sonata.admin.security.mask.builder.class%</argument>
         </service>
     </services>
 </container>

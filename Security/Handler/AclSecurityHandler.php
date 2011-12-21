@@ -11,9 +11,10 @@
 
 namespace Sonata\AdminBundle\Security\Handler;
 
+
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
-use Symfony\Component\Security\Acl\Model\AclProviderInterface;
+use Symfony\Component\Security\Acl\Model\MutableAclProviderInterface;
 use Symfony\Component\Security\Acl\Model\AclInterface;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Symfony\Component\Security\Acl\Model\ObjectIdentityInterface;
@@ -22,7 +23,7 @@ use Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity;
 use Symfony\Component\Security\Acl\Exception\AclNotFoundException;
 use Sonata\AdminBundle\Admin\AdminInterface;
 
-class AclSecurityHandler implements SecurityHandlerInterface
+class AclSecurityHandler implements AclSecurityHandlerInterface
 {
     protected $securityContext;
     protected $aclProvider;
@@ -37,7 +38,7 @@ class AclSecurityHandler implements SecurityHandlerInterface
      * @param string $maskBuilderClass
      * @param array $superAdminRoles
      */
-    public function __construct(SecurityContextInterface $securityContext, AclProviderInterface $aclProvider, $maskBuilderClass, array $superAdminRoles)
+    public function __construct(SecurityContextInterface $securityContext, MutableAclProviderInterface $aclProvider, $maskBuilderClass, array $superAdminRoles)
     {
         $this->securityContext = $securityContext;
         $this->aclProvider = $aclProvider;
@@ -46,9 +47,7 @@ class AclSecurityHandler implements SecurityHandlerInterface
     }
 
     /**
-     * Set the permissions not related to an object instance and also to be available when objects do not exist
-     *
-     * @param array $permissions
+     * {@inheritDoc}
      */
     public function setAdminPermissions(array $permissions)
     {
@@ -56,9 +55,7 @@ class AclSecurityHandler implements SecurityHandlerInterface
     }
 
     /**
-     * Return the permissions not related to an object instance and also to be available when objects do not exist
-     *
-     * @return array
+     * {@inheritDoc}
      */
     public function getAdminPermissions()
     {
@@ -66,9 +63,7 @@ class AclSecurityHandler implements SecurityHandlerInterface
     }
 
     /**
-     * Set the permissions related to an object instance
-     *
-     * @param array $permissions
+     * {@inheritDoc}
      */
     public function setObjectPermissions(array $permissions)
     {
@@ -76,9 +71,7 @@ class AclSecurityHandler implements SecurityHandlerInterface
     }
 
     /**
-     * Return the permissions related to an object instance
-     *
-     * @return array
+     * {@inheritDoc}
      */
     public function getObjectPermissions()
     {
@@ -160,10 +153,7 @@ class AclSecurityHandler implements SecurityHandlerInterface
     }
 
     /**
-     * Get the ACL for the object
-     *
-     * @param ObjectIdentityInterface $objectIdentity
-     * @return \Symfony\Component\Security\Acl\Model\AclInterface
+     * {@inheritDoc}
      */
     public function getObjectAcl(ObjectIdentityInterface $objectIdentity)
     {
@@ -177,10 +167,28 @@ class AclSecurityHandler implements SecurityHandlerInterface
     }
 
     /**
-     * Add an object owner ACE to the object ACL
-     *
-     * @param AclInterface $acl
-     * @param UserSecurityIdentity $securityIdentity
+     * {@inheritDoc}
+     */
+    public function findObjectAcls(array $oids, array $sids = array())
+    {
+        try {
+            $acls = $this->aclProvider->findAcls($oids, $sids);
+        } catch(\Exception $e) {
+            if ($e instanceof NotAllAclsFoundException) {
+                $acls = $e->getPartialResult();
+            } elseif ($e instanceof AclNotFoundException) {
+                // if only one oid, this error is thrown
+                $acls = new \SplObjectStorage();
+            } else {
+                throw $e;
+            }
+        }
+
+        return $acls;
+    }
+
+    /**
+     * {@inheritDoc}
      */
     public function addObjectOwner(AclInterface $acl, UserSecurityIdentity $securityIdentity = null)
     {
@@ -191,11 +199,7 @@ class AclSecurityHandler implements SecurityHandlerInterface
     }
 
     /**
-     * Add the object class ACE's to the object ACL
-     *
-     * @param AclInterface $acl
-     * @param array $roleInformation
-     * @return void
+     * {@inheritDoc}
      */
     public function addObjectClassAces(AclInterface $acl, array $roleInformation = array())
     {
@@ -228,64 +232,7 @@ class AclSecurityHandler implements SecurityHandlerInterface
     }
 
     /**
-     * Add the class ACE's to the admin ACL
-     *
-     * @param AclInterface $acl
-     * @param array $roleInformation
-     * @param Symfony\Component\Console\Output\OutputInterface $output
-     * @return boolean TRUE if admin class ACEs are added, FALSE if not
-     */
-    public function addAdminClassAces(AclInterface $acl, array $roleInformation = array(), \Symfony\Component\Console\Output\OutputInterface $output = null)
-    {
-        if (count($this->getAdminPermissions()) > 0 ) {
-            $builder = new $this->maskBuilderClass();
-
-            foreach ($roleInformation as $role => $permissions) {
-                $aceIndex = $this->findClassAceIndexByRole($acl, $role);
-                $roleAdminPermissions = array();
-
-                foreach ($permissions as $permission) {
-                    // add only the admin permissions
-                    if (in_array($permission, $this->getAdminPermissions())) {
-                        $builder->add($permission);
-                        $roleAdminPermissions[] = $permission;
-                    }
-                }
-
-                if (count($roleAdminPermissions) > 0) {
-                    if ($aceIndex === false) {
-                        $acl->insertClassAce(new RoleSecurityIdentity($role), $builder->get());
-                        $action = 'add';
-                    } else {
-                        $acl->updateClassAce($aceIndex, $builder->get());
-                        $action = 'update';
-                    }
-
-                    if (!is_null($output)) {
-                        $output->writeln(sprintf('   - %s role: %s, permissions: %s', $action, $role, json_encode($roleAdminPermissions)));
-                    }
-
-                    $builder->reset();
-                } elseif ($aceIndex !== false) {
-                    $acl->deleteClassAce($aceIndex);
-
-                    if (!is_null($output)) {
-                        $output->writeln(sprintf('   - remove role: %s', $action, $role));
-                    }
-                }
-            }
-
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * Create an object ACL
-     *
-     * @param ObjectIdentityInterface $objectIdentity
-     * @return AclInterface
+     * {@inheritDoc}
      */
     public function createAcl(ObjectIdentityInterface $objectIdentity)
     {
@@ -293,10 +240,7 @@ class AclSecurityHandler implements SecurityHandlerInterface
     }
 
     /**
-     * Update the ACL
-     *
-     * @param AclInterface $acl
-     * @return void
+     * {@inheritDoc}
      */
     public function updateAcl(AclInterface $acl)
     {
@@ -304,10 +248,7 @@ class AclSecurityHandler implements SecurityHandlerInterface
     }
 
     /**
-     * Delete the ACL
-     *
-     * @param AclInterface $acl
-     * @return void
+     * {@inheritDoc}
      */
     public function deleteAcl(AclInterface $acl)
     {
@@ -315,12 +256,9 @@ class AclSecurityHandler implements SecurityHandlerInterface
     }
 
     /**
-     * Helper method to find the index of a class ACE for a role
-     *
-     * @param AclInterface $acl
-     * @param string $role
+     * {@inheritDoc}
      */
-    protected function findClassAceIndexByRole(AclInterface $acl, $role)
+    public function findClassAceIndexByRole(AclInterface $acl, $role)
     {
         foreach ($acl->getClassAces() as $index => $entry) {
             if ($entry->getSecurityIdentity() instanceof RoleSecurityIdentity && $entry->getSecurityIdentity()->getRole() === $role) {
@@ -332,12 +270,9 @@ class AclSecurityHandler implements SecurityHandlerInterface
     }
 
     /**
-     * Helper method to find the index of a class ACE for a username
-     *
-     * @param AclInterface $acl
-     * @param string $username
+     * {@inheritDoc}
      */
-    protected function findClassAceIndexByUsername(AclInterface $acl, $username)
+    public function findClassAceIndexByUsername(AclInterface $acl, $username)
     {
         foreach ($acl->getClassAces() as $index => $entry) {
             if ($entry->getSecurityIdentity() instanceof UserSecurityIdentity && $entry->getSecurityIdentity()->getUsername() === $username) {
