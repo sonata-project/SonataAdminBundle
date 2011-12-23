@@ -178,6 +178,14 @@ If you have Admin classes, you can install or update the related CRUD ACL rules 
        - add role: ROLE_SONATA_MEDIA_ADMIN_MEDIA_ADMIN, permissions: ["MASTER"]
     ... skipped ...
 
+If you already have objects, you can generate the object ACL rules for each object of an admin:
+
+.. code-block:: sh
+
+    $ php app/console sonata:admin:generate-object-acl
+
+Optionally, you can specify an object owner, and step through each admin. See the help of the command for more information.
+
 If you try to access to the admin class you should see the login form, just logon with the ``root`` user.
 
 An Admin is displayed in the dashboard (and menu) when the user has the role ``LIST``. To change this override the ``showIn``
