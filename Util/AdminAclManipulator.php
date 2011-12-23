@@ -31,13 +31,7 @@ class AdminAclManipulator implements AdminAclManipulatorInterface
     }
 
     /**
-     * Configure the object ACL for the passed object identities
-     *
-     * @param AdminInterface $admin
-     * @param array $oids an array of ObjectIdentityInterface implementations
-     * @param UserSecurityIdentity $securityIdentity
-     * @throws \Exception
-     * @return array [countAdded, countUpdated]
+     * {@inheritDoc}
      */
     public function configureAcls(OutputInterface $output, AdminInterface $admin)
     {

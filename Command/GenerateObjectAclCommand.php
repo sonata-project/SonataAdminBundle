@@ -20,13 +20,24 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Output\Output;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\Util\ObjectAclManipulatorInterface;
 
 class GenerateObjectAclCommand extends ContainerAwareCommand
 {
+    /**
+     * @var string
+     */
+    protected $userEntityClass = '';
+
     public function configure()
     {
-        $this->setName('sonata:admin:generate-object-acl');
-        $this->setDescription('Install ACL for the objects of the Admin Classes');
+        $this
+            ->setName('sonata:admin:generate-object-acl')
+            ->setDescription('Install ACL for the objects of the Admin Classes.')
+            ->addOption('object_owner', null, InputOption::VALUE_OPTIONAL, 'If set, the task will set the object owner for each admin.')
+            ->addOption('user_entity', null, InputOption::VALUE_OPTIONAL, 'Shortcut notation like <comment>AcmeDemoBundle:User</comment>. If not set, it will be asked the first time an object owner is set.')
+            ->addOption('step', null, InputOption::VALUE_NONE, 'If set, the task will ask for each admin if the ACLs need to be generated and if and what object owner to set.')
+        ;
     }
 
     public function execute(InputInterface $input, OutputInterface $output)
@@ -38,12 +49,19 @@ class GenerateObjectAclCommand extends ContainerAwareCommand
                 '',
                 'This command helps you generate ACL entities for the objects handled by the AdminBundle.',
                 '',
-                'Foreach Admin, you will be asked to generate the object ACL entities',
+                'If the step option is used, you will be asked for each Admin to generate the object ACL entities.',
                 'You must use the shortcut notation like <comment>AcmeDemoBundle:User</comment> if you want to set an object owner.',
                 ''
         ));
 
-        $userEntityClass = '';
+        if ($input->getOption('user_entity')) {
+            try {
+                $this->getUserEntityClass($input, $output);
+            } catch (\Exception $e) {
+                $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
+                return;
+            }
+        }
 
         foreach ($this->getContainer()->get('sonata.admin.pool')->getAdminServiceIds() as $id) {
 
@@ -55,34 +73,49 @@ class GenerateObjectAclCommand extends ContainerAwareCommand
                 continue;
             }
 
-            if (!$dialog->askConfirmation($output, sprintf("<question>Generate ACLs for the object instances handled by \"%s\"?</question>\n", $id), false)) {
+            if ($input->getOption('step') && !$dialog->askConfirmation($output, sprintf("<question>Generate ACLs for the object instances handled by \"%s\"?</question>\n", $id), false)) {
                 continue;
             }
 
             $securityIdentity = null;
-            if ($dialog->askConfirmation($output,"<question>Set an object owner?</question>\n", false)) {
+            if ($input->getOption('step') && $dialog->askConfirmation($output,"<question>Set an object owner?</question>\n", false)) {
                 $username = $dialog->askAndValidate($output, 'Please enter the username: ', 'Sonata\AdminBundle\Command\Validators::validateUsername');
-                if ($userEntityClass === '') {
-                    list($userBundle, $userEntity) = $dialog->askAndValidate($output, 'Please enter the User Entity shortcut name: ', 'Sonata\AdminBundle\Command\Validators::validateEntityName');
 
-                    // Entity exists?
-                    try {
-                        $userEntityClass = $this->getContainer()->get('doctrine')->getEntityNamespace($userBundle).'\\'.$userEntity;
-                    } catch (\Exception $e) {
-                        $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
-                        continue;
-                    }
-                }
-                $securityIdentity = new UserSecurityIdentity($username, $userEntityClass);
+                $securityIdentity = new UserSecurityIdentity($username, $this->getUserEntityClass($input, $output));
+            }
+            if (!$input->getOption('step') && $input->getOption('object_owner')) {
+                $securityIdentity = new UserSecurityIdentity($this->getOption('object_owner'), $this->getUserEntityClass($input, $output));
             }
 
-            $manipulatorId = 'sonata.admin.manipulator.acl.object.orm';
+            $manipulatorId = sprintf('sonata.admin.manipulator.acl.object.%s', $admin->getManagerType());
             if (!$this->getContainer()->has($manipulatorId)) {
                 $output->writeln('Admin class is using a manager type that has no manipulator implemented : <info>ignoring</info>');
                 continue;
             }
+            $manipulator = $this->getContainer()->get($manipulatorId);
+            if (!$manipulator instanceof ObjectAclManipulatorInterface) {
+                $output->writeln(sprintf('The interface "ObjectAclManipulatorInterface" is not implemented for %s: <info>ignoring</info>', get_class($manipulator)));
+                continue;
+            }
 
-            $this->getContainer()->get($manipulatorId)->batchConfigureAcls($output, $admin, $securityIdentity);
+            $manipulator->batchConfigureAcls($output, $admin, $securityIdentity);
         }
+    }
+
+    protected function getUserEntityClass(InputInterface $input, OutputInterface $output)
+    {
+        if ($this->userEntityClass === '') {
+            if ($input->getOption('user_entity')) {
+               list($userBundle, $userEntity) = Sonata\AdminBundle\Command\Validators::validateEntityName($this->getOption('user_entity'));
+               $this->userEntityClass = $this->getContainer()->get('doctrine')->getEntityNamespace($userBundle).'\\'.$userEntity;
+            } else {
+                list($userBundle, $userEntity) = $this->getHelperSet()->get('dialog')->askAndValidate($output, 'Please enter the User Entity shortcut name: ', 'Sonata\AdminBundle\Command\Validators::validateEntityName');
+
+                // Entity exists?
+               $this->userEntityClass = $this->getContainer()->get('doctrine')->getEntityNamespace($userBundle).'\\'.$userEntity;
+            }
+        }
+
+        return $this->userEntityClass;
     }
 }
