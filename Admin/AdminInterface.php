@@ -115,6 +115,12 @@ interface AdminInterface
 
     /**
      * @abstract
+     * @return string the manager type of the admin
+     */
+    function getManagerType();
+
+    /**
+     * @abstract
      * @return \Sonata\AdminBundle\Datagrid\ProxyQueryInterface
      */
     function createQuery($context = 'list');

@@ -262,6 +262,13 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     protected $modelManager;
 
     /**
+     * The manager type to use for the admin
+     *
+     * @var string
+     */
+    private $managerType;
+
+    /**
      * The current request object
      *
      * @var \Symfony\Component\HttpFoundation\Request
@@ -2073,6 +2080,22 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     public function setModelManager(ModelManagerInterface $modelManager)
     {
         $this->modelManager = $modelManager;
+    }
+
+    /**
+     * @return string the manager type of the admin
+     */
+    public function getManagerType()
+    {
+        return $this->managerType;
+    }
+
+    /**
+     * @param string $type
+     */
+    public function setManagerType($type)
+    {
+        $this->managerType = $type;
     }
 
     /**

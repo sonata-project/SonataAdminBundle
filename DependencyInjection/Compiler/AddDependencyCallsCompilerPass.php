@@ -179,6 +179,8 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
             'label_translator_strategy' => 'sonata.admin.label.strategy.native'
         );
 
+        $definition->addMethodCall('setManagerType', array($manager_type));
+
         foreach ($defaultAddServices as $attr => $addServiceId) {
             $method = 'set'.$this->camelize($attr);
 
