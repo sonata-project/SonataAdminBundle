@@ -1,7 +1,7 @@
 Templates
 =========
 
-By default, an Admin class used a set of templates, it is possible to tweak the default values by editing the configuration
+By default, an Admin class use a set of templates, it is possible to tweak the default values by editing the configuration
 
 .. code-block:: yaml
 
@@ -20,7 +20,7 @@ By default, an Admin class used a set of templates, it is possible to tweak the 
 
 Usage of each template :
 
-* layout : based layout used by the dashboard and an admin class
+* layout : base layout used by the dashboard and an admin class
 * ajax : default layout used when an ajax request is performed
 * list : the template to use for the list action
 * show : the template to use for the show action

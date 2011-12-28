@@ -7,7 +7,7 @@ List and Show Actions
 There are many field types that can be used in the list action or show action :
 
 * array: display value from an array
-* boolean: display a green or red picture depend on the boolean value, this type accepts an ``editable``
+* boolean: display a green or red picture dependant on the boolean value, this type accepts an ``editable``
   parameter to edit the value from within the list or the show actions
 * date: display a formatted date
 * datetime: display a formatted date
@@ -24,5 +24,5 @@ There are many field types that can be used in the list action or show action :
     will be changed to use localized information.
 
 
-More types might be provided depends on the persistency layer defined. Please refer to there
+More types might be provided based on the persistency layer defined. Please refer to their
 related documentations.

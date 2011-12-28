@@ -15,14 +15,14 @@ The bundle comes with some handy form types which are available from outside the
 sonata_type_immutable_array
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The ``Immutable Array`` allows to edit an array property by defining a type per key.
+The ``Immutable Array`` allows you to edit an array property by defining a type per key.
 
 The type has a ``keys`` parameter which contains the definition for each key. A definition is an array with 3 options :
-* the key name
-* the type : a type name or the a ``FormType`` instance
-* the related type parameters : please refer to the related form documentation.
+* key name
+* type : a type name or a ``FormType`` instance
+* related type parameters : please refer to the related form documentation.
 
-Let's say a ``Page`` have a options property with some fixed key-pair values, each value has a type different : integer,
+Let's say a ``Page`` have options property with some fixed key-pair values, each value has a different type : integer,
 url, or string for instance.
 
 .. code-block:: php
