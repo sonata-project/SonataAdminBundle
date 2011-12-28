@@ -83,7 +83,7 @@ At this point you can access to the dashboard with the url:
     the above configuration and routing will actually be placed in those
     files, with the correct format (i.e. XML or PHP).
 
-The last important step is security, please refer to the dedicated section.
+The last important step is security, please refer to the dedicated section of this documentation.
 
 Users management
 ----------------
@@ -99,7 +99,7 @@ The ``SonataUserBundle`` is just a thin wrapper to include the ``FOSUserBundle``
 
 * A default login area
 * A default ``user_block`` template which is used to display the current user and the logout link
-* 2 Admin class : User and Group
+* 2 Admin classes : User and Group
 * A default class for User and Group.
 
 There is a little magic in the ``SonataAdminBundle`` if the bundle detects the ``SonataUserBundle`` class, then
