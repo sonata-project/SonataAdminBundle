@@ -11,21 +11,16 @@
 
 namespace Sonata\AdminBundle\Command;
 
-
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Output\Output;
-
-use Symfony\Component\Security\Acl\Model\AclInterface;
-use Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity;
-use Sonata\AdminBundle\Security\Acl\Permission\MaskBuilder;
-use Symfony\Component\Security\Acl\Exception\AclAlreadyExistsException;
-use Symfony\Component\Security\Acl\Exception\AclNotFoundException;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
-use Sonata\AdminBundle\Security\Handler\AclSecurityHandler;
+
+use Sonata\AdminBundle\Util\AdminAclManipulatorInterface;
+use Sonata\AdminBundle\Admin\AdminInterface;
 
 class SetupAclCommand extends ContainerAwareCommand
 {
@@ -37,13 +32,9 @@ class SetupAclCommand extends ContainerAwareCommand
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $aclProvider = $this->getContainer()->get('security.acl.provider');
-
         $output->writeln('Starting ACL AdminBundle configuration');
 
-        $builder = new MaskBuilder();
         foreach ($this->getContainer()->get('sonata.admin.pool')->getAdminServiceIds() as $id) {
-            $output->writeln(sprintf(' > install ACL for %s', $id));
 
             try {
                 $admin = $this->getContainer()->get($id);
@@ -53,39 +44,12 @@ class SetupAclCommand extends ContainerAwareCommand
                 continue;
             }
 
-            $securityHandler = $admin->getSecurityHandler();
-            if (!$securityHandler instanceof AclSecurityHandler) {
-                $output->writeln('Admin class is not configured to use ACL : <info>ignoring</info>');
+            $manipulator = $this->getContainer()->get('sonata.admin.manipulator.acl.admin');
+            if (!$manipulator instanceof AdminAclManipulatorInterface) {
+                $output->writeln(sprintf('The interface "AdminAclManipulatorInterface" is not implemented for %s: <info>ignoring</info>', get_class($manipulator)));
                 continue;
             }
-
-            $objectIdentity = ObjectIdentity::fromDomainObject($admin);
-            try {
-                $acl = $aclProvider->findAcl($objectIdentity);
-            } catch(AclNotFoundException $e) {
-                $acl = $aclProvider->createAcl($objectIdentity);
-            }
-
-            // create admin ACL, fe.
-            // Comment admin ACL
-            $this->configureACL($output, $acl, $builder, $securityHandler->buildSecurityInformation($admin));
-
-            $aclProvider->updateAcl($acl);
-        }
-    }
-
-    public function configureACL(OutputInterface $output, AclInterface $acl, MaskBuilder $builder, array $aclInformations = array())
-    {
-        foreach ($aclInformations as $role => $permissions) {
-            foreach ($permissions as $permission) {
-                $builder->add($permission);
-            }
-
-            $acl->insertClassAce(new RoleSecurityIdentity($role), $builder->get());
-
-            $output->writeln(sprintf('   - add role: %s, permissions: %s', $role, json_encode($permissions)));
-
-            $builder->reset();
+            $manipulator->configureAcls($output, $admin);
         }
     }
 }

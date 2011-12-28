@@ -262,6 +262,13 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     protected $modelManager;
 
     /**
+     * The manager type to use for the admin
+     *
+     * @var string
+     */
+    private $managerType;
+
+    /**
      * The current request object
      *
      * @var \Symfony\Component\HttpFoundation\Request
@@ -363,6 +370,13 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     protected $extensions = array();
 
     protected $labelTranslatorStrategy;
+
+    /**
+     * Roles and permissions per role
+     *
+     * @var array [role] => array([permission], [permission])
+     */
+    protected $securityInformation = array();
 
     /**
      * This method can be overwritten to tweak the form construction, by default the form
@@ -510,12 +524,13 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         $this->prePersist($object);
         $this->getModelManager()->create($object);
         $this->postPersist($object);
-        $this->createObjectOwner($object);
+        $this->createObjectSecurity($object);
     }
 
     public function delete($object)
     {
         $this->preRemove($object);
+        $this->getSecurityHandler()->deleteObjectSecurity($this, $object);
         $this->getModelManager()->delete($object);
         $this->postRemove($object);
     }
@@ -2068,6 +2083,22 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
+     * @return string the manager type of the admin
+     */
+    public function getManagerType()
+    {
+        return $this->managerType;
+    }
+
+    /**
+     * @param string $type
+     */
+    public function setManagerType($type)
+    {
+        $this->managerType = $type;
+    }
+
+    /**
      * Returns a unique identifier for this domain object.
      *
      * @return string
@@ -2078,19 +2109,26 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * Return the roles and permissions per role for the admin ACL
+     * Set the roles and permissions per role
+     *
+     * @param array $information
+     */
+    public function setSecurityInformation(array $information)
+    {
+        $this->securityInformation = $information;
+    }
+
+    /**
+     * Return the roles and permissions per role
+     * - different permissions per role for the acl handler
+     * - one permission that has the same name as the role for the role handler
      * This should be used by experimented users
      *
      * @return array [role] => array([permission], [permission])
      */
     public function getSecurityInformation()
     {
-        return array(
-            'GUEST'    => array('VIEW', 'LIST'),
-            'STAFF'    => array('EDIT', 'LIST', 'CREATE'),
-            'EDITOR'   => array('OPERATOR'),
-            'ADMIN'    => array('MASTER'),
-        );
+        return $this->securityInformation;
     }
 
     /**
@@ -2126,13 +2164,13 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * Create security object owner
+     * Add object security, fe. make the current user owner of the object
      *
      * @param $object
      */
-    public function createObjectOwner($object)
+    public function createObjectSecurity($object)
     {
-        $this->getSecurityHandler()->createObjectOwner($this, $object);
+        $this->getSecurityHandler()->createObjectSecurity($this, $object);
     }
 
     /**

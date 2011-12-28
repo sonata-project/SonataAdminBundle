@@ -26,6 +26,14 @@ class NoopSecurityHandler implements SecurityHandlerInterface
     /**
      * {@inheritDoc}
      */
+    public function getBaseRole(AdminInterface $admin)
+    {
+        return '';
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function buildSecurityInformation(AdminInterface $admin)
     {
         return array();
@@ -34,7 +42,14 @@ class NoopSecurityHandler implements SecurityHandlerInterface
     /**
      * {@inheritDoc}
      */
-    public function createObjectOwner(AdminInterface $admin, $object)
+    public function createObjectSecurity(AdminInterface $admin, $object)
+    {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function deleteObjectSecurity(AdminInterface $admin, $object)
     {
     }
 }
