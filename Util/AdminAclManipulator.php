@@ -56,7 +56,7 @@ class AdminAclManipulator implements AdminAclManipulatorInterface
             $this->securityHandler->updateAcl($acl);
         } else {
             $output->writeln(sprintf('   - %s , no roles and permissions found', ($newAcl ? 'skip' : 'removed')));
-            $this->securityHandler->deleteAcl($acl);
+            $this->securityHandler->deleteAcl($objectIdentity);
         }
     }
 

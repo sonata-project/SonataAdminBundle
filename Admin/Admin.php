@@ -530,9 +530,9 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     public function delete($object)
     {
         $this->preRemove($object);
+        $this->getSecurityHandler()->deleteObjectSecurity($this, $object);
         $this->getModelManager()->delete($object);
         $this->postRemove($object);
-        $this->getSecurityHandler()->deleteObjectSecurity($this, $object);
     }
 
     public function preUpdate($object)

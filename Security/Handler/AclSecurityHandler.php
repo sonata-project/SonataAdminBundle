@@ -146,10 +146,7 @@ class AclSecurityHandler implements AclSecurityHandlerInterface
     public function deleteObjectSecurity(AdminInterface $admin, $object)
     {
         $objectIdentity = ObjectIdentity::fromDomainObject($object);
-        if (!is_null($acl = $this->getObjectAcl($objectIdentity)))
-        {
-            $this->deleteAcl($acl);
-        }
+        $this->deleteAcl($objectIdentity);
     }
 
     /**
@@ -250,9 +247,9 @@ class AclSecurityHandler implements AclSecurityHandlerInterface
     /**
      * {@inheritDoc}
      */
-    public function deleteAcl(AclInterface $acl)
+    public function deleteAcl(ObjectIdentityInterface $objectIdentity)
     {
-        $this->aclProvider->deleteAcl($acl);
+        $this->aclProvider->deleteAcl($objectIdentity);
     }
 
     /**

@@ -110,10 +110,10 @@ interface AclSecurityHandlerInterface extends SecurityHandlerInterface
      * Delete the ACL
      *
      * @abstract
-     * @param AclInterface $acl
+     * @param ObjectIdentityInterface $objectIdentity
      * @return void
      */
-    function deleteAcl(AclInterface $acl);
+    function deleteAcl(ObjectIdentityInterface $objectIdentity);
 
     /**
      * Helper method to find the index of a class ACE for a role
