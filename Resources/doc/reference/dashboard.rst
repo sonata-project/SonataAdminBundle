@@ -11,7 +11,7 @@ application's config file:
     # app/config/config.yml
     sonata_admin:
         dashboard_groups:
-    ... your config ...
+            ... your config ...
 
 
 Examples
@@ -51,7 +51,7 @@ Add a group with all the default items
         dashboard_groups:
             sonata_page: ~
 
-Add some items in a group
+Add some items to a group
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: yaml

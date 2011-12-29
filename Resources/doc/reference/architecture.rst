@@ -1,7 +1,7 @@
 Architecture
 ============
 
-The architecture of the bundle is primarily inspired by the Django Admin
+The architecture of the SonataAdminBundle is primarily inspired by the Django Admin
 Project, which is truly a great project. More information can be found at the
 `Django Project Website`_.
 
@@ -70,14 +70,14 @@ The definition contains:
 * ``options``: Certain field types have additional options;
 
 Template Configuration
------------------------
+----------------------
 
 The current implementation uses Twig as the template engine. All templates
 are located in the ``Resources/views/CRUD`` directory of the bundle. The base
 template extends two layouts:
 
-* ``AdminBundle::standard_layout.twig``
-* ``AdminBundle::ajax_layout.twig``
+* ``AdminBundle::standard_layout.html.twig``
+* ``AdminBundle::ajax_layout.html.twig``
 
 The base templates can be configured in the Service Container. So you can easily tweak
 the layout to suit your requirements.
@@ -89,10 +89,10 @@ templates will be used:
 * ``filter_text.twig``: template used in the filter box
 * ``list_text.twig``: template used in the list table
 
-CrudController
+CRUDController
 --------------
 
-The controller contains the basic CRUD actions, it controller is related to one
+The controller contains the basic CRUD actions. It is related to one
 ``Admin`` class by mapping the controller name to the correct ``Admin``
 instance.
 
@@ -106,8 +106,8 @@ Obtaining an ``Admin`` Service
 ------------------------------
 
 ``Admin`` definitions are accessible through the 'sonata.admin.pool' service or
-directly from the DIC. The ``Admin`` definitions are lazy loaded from the DIC to
-reduce overhead.
+directly from the DIC (dependency injector). The ``Admin`` definitions are lazy
+loaded from the DIC to reduce overhead.
 
 Declaring a new Admin class
 ---------------------------

@@ -1,11 +1,11 @@
 Saving hooks
 ============
 
-When the model is persited upon on the object stated two Admin methods are always call. You can extends this
+When the model is persited upon on the object stated two Admin methods are always called. You can extend this
 method to add custom business logic.
 
     - new object : ``prePersist($object)`` / ``postPersist($object)``
-    - new object : ``preUpdate($object)`` / ``postUpdate($object)``
+    - edited object : ``preUpdate($object)`` / ``postUpdate($object)``
     - deleted object : ``preRemove($object)`` / ``postRemove($object)``
 
 

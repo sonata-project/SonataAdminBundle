@@ -69,8 +69,8 @@ defined by its name.
 Persistent parameters
 ---------------------
 
-In some cases, the interface might required to pass the same parameters across the different ``Admin``'s actions.
-Instead of settings them in the template or doing other weird hacks, you can defined a ``getPersistentParameters``
+In some cases, the interface might be required to pass the same parameters across the different ``Admin``'s actions.
+Instead of setting them in the template or doing other weird hacks, you can define a ``getPersistentParameters``
 method. This method will be used when a link is being generated.
 
 .. code-block:: php
