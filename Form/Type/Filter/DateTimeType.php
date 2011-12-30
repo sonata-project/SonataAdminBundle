@@ -69,7 +69,7 @@ class DateTimeType extends AbstractType
 
         $builder
             ->add('type', 'choice', array('choices' => $choices, 'required' => false))
-            ->add('value', 'datetime', array_merge(array('required' => false), $options['field_options']))
+            ->add('value', 'datetime', array_merge(array('required' => false, 'date_format' => 'yyyy-MM-dd'), $options['field_options']))
         ;
     }
 
@@ -77,7 +77,7 @@ class DateTimeType extends AbstractType
     {
         $defaultOptions = array(
             'field_type'       => 'datetime',
-            'field_options'    => array('date_format' => 'yyyy-MM-dd')
+            'field_options'    => array()
         );
 
         $options = array_replace($options, $defaultOptions);

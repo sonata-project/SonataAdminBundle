@@ -60,7 +60,7 @@ class DateTimeRangeType extends AbstractType
     {
         $defaultOptions = array(
             'field_type'       => 'sonata_type_datetime_range',
-            'field_options'    => array('date_format' => 'yyyy-MM-dd'),
+            'field_options'    => array(),
         );
 
         $options = array_replace($options, $defaultOptions);
