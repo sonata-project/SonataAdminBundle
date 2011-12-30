@@ -135,7 +135,7 @@ Examples:
 </service>
 
 If you want to define your own controller for handling CRUD operations, change the last argument
-in the servicedefinition to::
+ in the service definition to::
 
   <argument>SonataNewsBundle:PostAdmin</argument>
 
