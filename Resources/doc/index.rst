@@ -16,6 +16,7 @@ Reference Guide
    :numbered:
 
    reference/installation
+   reference/getting-started
    reference/configuration
    reference/architecture
    reference/dashboard
