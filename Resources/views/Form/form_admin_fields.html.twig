@@ -108,3 +108,33 @@ file that was distributed with this source code.
         </div>
     {% endif %}
 {% endblock field_row %}
+
+{% block collection_widget_row %}
+{% spaceless %}
+    <div class="sonata-collection-row">
+        {% if allow_delete %}
+            <a href="#" class="sonata-collection-delete"></a>
+        {% endif %}
+        {{ form_row(child) }}
+    </div>
+{% endspaceless %}
+{% endblock %}
+
+{% block collection_widget %}
+{% spaceless %}
+    {% if prototype is defined %}
+        {% set child = prototype %}
+        {% set attr = attr|merge({'data-prototype': block('collection_widget_row') }) %}
+    {% endif %}
+    <div {{ block('widget_container_attributes') }}>
+        {{ form_errors(form) }}
+        {% for child in form %}
+            {{ block('collection_widget_row') }}
+        {% endfor %}
+        {{ form_rest(form) }}
+        {% if allow_add %}
+            <div><a href="#" class="sonata-collection-add"></a></div>
+        {% endif %}
+    </div>
+{% endspaceless %}
+{% endblock collection_widget %}

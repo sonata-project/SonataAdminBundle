@@ -3,6 +3,7 @@ jQuery(document).ready(function() {
     Admin.add_collapsed_toggle();
     Admin.add_filters(document);
     Admin.set_object_field_value(document);
+    Admin.setup_collection_buttons(document);
 });
 
 var Admin = {
@@ -142,6 +143,24 @@ var Admin = {
                     }
                 }
             });
+        });
+    },
+
+    setup_collection_buttons: function(subject) {
+
+        jQuery(subject).delegate('.sonata-collection-add', 'click', function(event) {
+            Admin.stopEvent(event);
+
+            var container = jQuery(this).closest('[data-prototype]');
+            var proto = container.attr('data-prototype');
+            proto = proto.replace(/\$\$name\$\$/g, '');
+            jQuery(proto).insertBefore(jQuery(this).parent());
+        });
+
+        jQuery(subject).delegate('.sonata-collection-delete', 'click', function(event) {
+            Admin.stopEvent(event);
+
+            jQuery(this).closest('.sonata-collection-row').remove();
         });
     }
 }
