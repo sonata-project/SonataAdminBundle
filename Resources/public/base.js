@@ -1,4 +1,5 @@
 jQuery(document).ready(function() {
+    $('html').removeClass('no-js');
     Admin.add_pretty_errors(document);
     Admin.add_collapsed_toggle();
     Admin.add_filters(document);

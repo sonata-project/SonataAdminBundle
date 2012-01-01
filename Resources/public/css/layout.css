@@ -230,3 +230,7 @@ body.sonata-bc {
     margin-top: 5px;
 }
 
+.no-js .sonata-collection-add, .no-js .sonata-collection-delete {
+    display: none;
+}
+
