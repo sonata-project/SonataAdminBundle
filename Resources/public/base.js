@@ -149,7 +149,7 @@ var Admin = {
 
     setup_collection_buttons: function(subject) {
 
-        jQuery(subject).delegate('.sonata-collection-add', 'click', function(event) {
+        jQuery(subject).on('click', '.sonata-collection-add', function(event) {
             Admin.stopEvent(event);
 
             var container = jQuery(this).closest('[data-prototype]');
@@ -158,7 +158,7 @@ var Admin = {
             jQuery(proto).insertBefore(jQuery(this).parent());
         });
 
-        jQuery(subject).delegate('.sonata-collection-delete', 'click', function(event) {
+        jQuery(subject).on('click', '.sonata-collection-delete', function(event) {
             Admin.stopEvent(event);
 
             jQuery(this).closest('.sonata-collection-row').remove();
