@@ -131,8 +131,13 @@ Examples:
 
         <argument />
         <argument>Sonata\NewsBundle\Entity\Post</argument>
-        <argument>SonataNewsBundle:PostAdmin</argument>
-    </service>
+        <argument>SonataAdminBundle:CRUD</argument>
+</service>
+
+If you want to define your own controller for handling CRUD operations, change the last argument
+ in the service definition to::
+
+  <argument>SonataNewsBundle:PostAdmin</argument>
 
 Or if you're using a YML configuration file,
 
@@ -150,6 +155,8 @@ You can extend ``Sonata\AdminBundle\Admin\Admin`` to minimize the amount of
 code to write. This base admin uses the routing services to build routes.
 Note that you can use both the Bundle:Controller format or a `service name`_ to
 specify what controller to load.
+
+
 
 .. _`Django Project Website`: http://www.djangoproject.com/
 .. _`service name`: http://symfony.com/doc/2.0/cookbook/controller/service.html
