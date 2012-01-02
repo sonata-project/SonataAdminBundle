@@ -19,6 +19,7 @@ use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
 use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
 use Sonata\AdminBundle\Builder\RouteBuilderInterface;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
+use Sonata\AdminBundle\Validator\ErrorElement;
 
 use Knp\Menu\FactoryInterface as MenuFactoryInterface;
 
@@ -287,6 +288,13 @@ interface AdminInterface
     function addExtension(AdminExtensionInterface $extension);
 
     /**
+     * Returns an array of extension related to the current Admin
+     * 
+     * @return void
+     */
+    function getExtensions();
+
+    /**
      * @param \Knp\Menu\FactoryInterface $menuFactory
      * @return void
      */
@@ -375,7 +383,6 @@ interface AdminInterface
      */
     function getListFieldDescription($name);
 
-
     function configure();
 
     function update($object);
@@ -395,4 +402,18 @@ interface AdminInterface
     function preRemove($object);
 
     function postRemove($object);
+
+    /**
+     * Return true if the Admin is related to a subject
+     *
+     * @return boolean
+     */
+    function hasSubject();
+
+    /**
+     * @param \Sonata\AdminBundle\Validator\ErrorElement $errorElement
+     * @param $object
+     * @return void
+     */
+    function validate(ErrorElement $errorElement, $object);
 }

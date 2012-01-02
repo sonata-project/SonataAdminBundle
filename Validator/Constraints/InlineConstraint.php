@@ -23,6 +23,16 @@ class InlineConstraint extends Constraint
         return 'sonata.admin.validator.inline';
     }
 
+    public function isClosure()
+    {
+        return $this->method instanceof \Closure;
+    }
+
+    public function getClosure()
+    {
+        return $this->method;
+    }
+
     /**
      * {@inheritDoc}
      */

@@ -328,6 +328,9 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
     protected $securityHandler = null;
 
+    /**
+     * @var \Symfony\Component\Validator\ValidatorInterface $validator
+     */
     protected $validator = null;
 
     /**
@@ -443,20 +446,6 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     public function validate(ErrorElement $errorElement, $object)
     {
 
-    }
-
-    /**
-     * @param \Sonata\AdminBundle\Validator\ErrorElement $errorElement
-     * @param $object
-     * @return void
-     */
-    public function doValidate(ErrorElement $errorElement, $object)
-    {
-        $this->validate($errorElement, $object);
-
-        foreach ($this->extensions as $extension) {
-            $extension->validate($this, $errorElement, $object);
-        }
     }
 
     /**
@@ -596,7 +585,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
         $this->configureListFields($mapper);
 
-        foreach($this->extensions as $extension) {
+        foreach($this->getExtensions() as $extension) {
             $extension->configureListFields($mapper);
         }
     }
@@ -659,7 +648,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
             ));
         }
 
-        foreach($this->extensions as $extension) {
+        foreach($this->getExtensions() as $extension) {
             $extension->configureDatagridFilters($mapper);
         }
     }
@@ -865,7 +854,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
         $this->configureRoutes($this->routes);
 
-        foreach($this->extensions as $extension) {
+        foreach($this->getExtensions() as $extension) {
             $extension->configureRoutes($this, $this->routes);
         }
     }
@@ -1052,11 +1041,27 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      */
     public function getFormBuilder()
     {
+        $admin = $this;
+
         // add the custom inline validation option
         $metadata = $this->validator->getMetadataFactory()->getClassMetadata($this->getClass());
         $metadata->addConstraint(new \Sonata\AdminBundle\Validator\Constraints\InlineConstraint(array(
             'service' => $this,
-            'method'  => 'doValidate'
+            'method'  => function(ErrorElement $errorElement, $object) use ($admin) {
+                /* @var \Sonata\AdminBundle\Admin\AdminInterface $admin */
+
+                // This avoid the main validation to be cascaded to children
+                // The problem occurs when a model Page has a collection of Page as property
+                if ($admin->hasSubject() && spl_object_hash($object) !== spl_object_hash($admin->getSubject())) {
+                    return;
+                }
+
+                $admin->validate($errorElement, $object);
+
+                foreach ($admin->getExtensions() as $extension) {
+                    $extension->validate($admin, $errorElement, $object);
+                }
+            }
         )));
 
         $this->formOptions['data_class'] = $this->getClass();
@@ -1081,7 +1086,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
         $this->configureFormFields($mapper);
 
-        foreach($this->extensions as $extension) {
+        foreach($this->getExtensions() as $extension) {
             $extension->configureFormFields($mapper);
         }
     }
@@ -1177,7 +1182,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
         $this->configureSideMenu($menu, $action, $childAdmin);
 
-        foreach ($this->extensions as $extension) {
+        foreach ($this->getExtensions() as $extension) {
             $extension->configureSideMenu($this, $menu, $action, $childAdmin);
         }
 
@@ -2206,6 +2211,14 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     public function addExtension(AdminExtensionInterface $extension)
     {
         $this->extensions[] = $extension;
+    }
+
+    /**
+     * @return array
+     */
+    public function getExtensions()
+    {
+        return $this->extensions;
     }
 
     /**

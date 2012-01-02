@@ -28,12 +28,6 @@ class InlineValidator extends ConstraintValidator
 
     public function isValid($value, Constraint $constraint)
     {
-        if (is_string($constraint->getService())) {
-            $service = $this->container->get($constraint->getService());
-        } else {
-            $service = $constraint->getService();
-        }
-
         $errorElement = new ErrorElement(
             $value,
             $this->constraintValidatorFactory,
@@ -41,7 +35,19 @@ class InlineValidator extends ConstraintValidator
             $this->context->getGroup()
         );
 
-        call_user_func(array($service, $constraint->getMethod()), $errorElement, $value);
+        if ($constraint->isClosure()) {
+            $function = $constraint->getClosure();
+        } else {
+            if (is_string($constraint->getService())) {
+                $service = $this->container->get($constraint->getService());
+            } else {
+                $service = $constraint->getService();
+            }
+
+            $function = array($service, $constraint->getMethod());
+        }
+
+        call_user_func($function, $errorElement, $value);
 
         return count($this->context->getViolations()) == 0;
     }
