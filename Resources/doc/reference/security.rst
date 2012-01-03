@@ -1,7 +1,7 @@
 Security
 ========
 
-The security part is managed by a ``SecurityHandler``, the bundle comes with 2 handlers
+The security part is managed by a ``SecurityHandler``, the bundle has 2 handlers
 
   - ``sonata.admin.security.handler.acl`` : ACL and ROLES to handle permissions
   - ``sonata.admin.security.handler.noop`` : always returns true, can be used with the Symfony2 firewall
