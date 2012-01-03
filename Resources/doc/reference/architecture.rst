@@ -29,7 +29,7 @@ The admin class is a service implementing the ``AdminInterface`` interface,
 meaning that the following required dependencies are automatically injected:
 
 * ``ListBuilder``: builds the list fields
-* ``FormContractor``: constructs the form using the Symfony ``FormBuilder``
+* ``FormContractor``: builds the form using the Symfony ``FormBuilder``
 * ``DatagridBuilder``: builds the filter fields
 * ``Router``: generates the different urls
 * ``Request``
@@ -65,7 +65,7 @@ The definition contains:
 
 * ``name``: The name of the field definition;
 * ``type``: The field type;
-* ``template``: The template to use to display the field;
+* ``template``: The template used for displaying the field;
 * ``targetEntity``: The class name of the target entity for relations;
 * ``options``: Certain field types have additional options;
 
@@ -106,7 +106,7 @@ Obtaining an ``Admin`` Service
 ------------------------------
 
 ``Admin`` definitions are accessible through the 'sonata.admin.pool' service or
-directly from the DIC (dependency injector). The ``Admin`` definitions are lazy
+directly from the DIC (dependency injection container). The ``Admin`` definitions are lazy
 loaded from the DIC to reduce overhead.
 
 Declaring a new Admin class
@@ -135,7 +135,7 @@ Examples:
 </service>
 
 If you want to define your own controller for handling CRUD operations, change the last argument
- in the service definition to::
+in the service definition to::
 
   <argument>SonataNewsBundle:PostAdmin</argument>
 
@@ -151,8 +151,8 @@ Or if you're using a YML configuration file,
           arguments: [null, Sonata\NewsBundle\Entity\Post, SonataNewsBundle:PostAdmin]
 
 
-You can extend ``Sonata\AdminBundle\Admin\Admin`` to minimize the amount of
-code to write. This base admin uses the routing services to build routes.
+You can extend ``Sonata\AdminBundle\Admin\Admin`` class to minimize the amount of
+code to write. This base admin class uses the routing services to build routes.
 Note that you can use both the Bundle:Controller format or a `service name`_ to
 specify what controller to load.
 

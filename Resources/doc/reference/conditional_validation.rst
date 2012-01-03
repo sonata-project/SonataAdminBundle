@@ -68,8 +68,8 @@ The method must accept two arguments:
  - ``value``: the object instance
 
 
-Sample with the ``PageBundle``
-------------------------------
+Example from the ``SonataPageBundle``
+-------------------------------------
 
 .. code-block:: php
 
