@@ -1,7 +1,5 @@
-
 Getting started with the Sonata Admin
 =====================================
-
 
 Here is a checklist of what is needed to create an admin interface for one Entity:
 
@@ -15,7 +13,7 @@ Either SonataDoctrineORMAdminBundle, SonataDoctrineMongoDBAdminBundle or SonataD
 
 **3. Create an Admin class that extends the Sonata admin class**
 
-The easiest way to do this is to extend the Sonata\AdminBundle\Admin\Admin class. Heres an example from the SonataNewsBundle:
+The easiest way to do this is to extend the Sonata\AdminBundle\Admin\Admin class. Here's an example from the SonataNewsBundle:
 
 ::
    
@@ -95,12 +93,12 @@ The easiest way to do this is to extend the Sonata\AdminBundle\Admin\Admin class
  
 **4. Link the class to the dashboard.**
  
- The easiest way to do this is to create a default group in the dashboard config::
- 
+The easiest way to do this is to create a default group in the dashboard config::
+
     dashboard_groups:
         default: ~
         
-**5. Create an adminservice**
+**5. Create an admin service**
 
 You need to create a service for the new admin class and link it into the framework by setting the sonata.admin tag.
 

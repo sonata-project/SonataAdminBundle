@@ -3,7 +3,7 @@ Admin Bundle
 
 **Warning**: The bundle has been split into 4 bundles :
 
-* SonataAdminBundle : the current one, contains core librairies and services
+* SonataAdminBundle : the current one, contains core libraries and services
 * `SonataDoctrineORMAdminBundle <https://github.com/sonata-project/SonataDoctrineORMAdminBundle>`_: Integrates the admin bundle with the Doctrine ORM project
 * `SonataDoctrineMongoDBAdminBundle <https://github.com/sonata-project/SonataDoctrineMongoDBAdminBundle>`_: Integrates the admin bundle with MongoDB (early stage)
 * `SonataDoctrinePhpcrAdminBundle <https://github.com/sonata-project/SonataDoctrinePhpcrAdminBundle>`_: Integrates the admin bundle with PHPCR (early stage)

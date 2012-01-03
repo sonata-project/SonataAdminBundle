@@ -74,7 +74,7 @@ code to your application's routing file:
 
 Now, install the assets from the different bundles:
 ``php app/console assets:install web --symlink``.
-At this point you can access to the dashboard with the url:
+At this point you can access the admin dashboard with the url:
 ``http://yoursite.local/admin/dashboard``.
 
 .. note::

@@ -62,7 +62,7 @@ Now, the property can be edited by setting a type for each type
 sonata_type_boolean
 ^^^^^^^^^^^^^^^^^^^
 
-The ``boolean`` type is a specialized ``ChoiceType`` where the choices list is fixed to 'yes' or 'no'.
+The ``boolean`` type is a specialized ``ChoiceType`` where the choices list is locked to 'yes' and 'no'.
 
 
 sonata_type_translatable_choice

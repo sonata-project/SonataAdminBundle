@@ -1,7 +1,7 @@
 Templates
 =========
 
-By default, an Admin class use a set of templates, it is possible to tweak the default values by editing the configuration
+By default, an Admin class uses a set of templates, it is possible to tweak the default values by editing the configuration
 
 .. code-block:: yaml
 
@@ -11,7 +11,7 @@ By default, an Admin class use a set of templates, it is possible to tweak the d
             layout:  SonataAdminBundle::standard_layout.html.twig
             ajax:    SonataAdminBundle::ajax_layout.html.twig
 
-            # default value if done set, actions templates, should extends a global templates
+            # default values of actions templates, they should extend global templates
             list:    SonataAdminBundle:CRUD:list.html.twig
             show:    SonataAdminBundle:CRUD:show.html.twig
             edit:    SonataAdminBundle:CRUD:edit.html.twig

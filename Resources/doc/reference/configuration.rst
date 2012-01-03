@@ -28,7 +28,7 @@ Full Configuration Options
             layout:  SonataAdminBundle::standard_layout.html.twig
             ajax:    SonataAdminBundle::ajax_layout.html.twig
 
-            # default actions templates, should extends a global templates
+            # default actions templates, should extend a global templates
             list:    SonataAdminBundle:CRUD:list.html.twig
             show:    SonataAdminBundle:CRUD:show.html.twig
             edit:    SonataAdminBundle:CRUD:edit.html.twig
