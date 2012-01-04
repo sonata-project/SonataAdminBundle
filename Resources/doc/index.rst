@@ -29,3 +29,4 @@ Reference Guide
    reference/translation
    reference/security
    reference/advance
+   reference/console
