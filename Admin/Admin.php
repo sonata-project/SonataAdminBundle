@@ -1006,6 +1006,16 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
+     * @param $name
+     * @param $template
+     * @return void
+     */
+    public function setTemplate($name, $template)
+    {
+        $this->templates[$name] = $template;
+    }
+
+    /**
      * @return array
      */
     public function getTemplates()
