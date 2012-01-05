@@ -129,7 +129,7 @@ class AdminHelper
         $this->addNewInstance($form->getData(), $fieldDescription);
         $data[$childFormBuilder->getName()][] = $value;
 
-        $form = $admin->getFormBuilder($form->getData())->getForm();
+        $form = $admin->getFormBuilder()->getForm();
 
         // bind the data
         $form->bind($data);
@@ -150,6 +150,10 @@ class AdminHelper
         $mapping  = $fieldDescription->getAssociationMapping();
 
         $method = sprintf('add%s', $this->camelize($mapping['fieldName']));
+
+        if (!method_exists($object, $method)) {
+            throw new \RuntimeException(sprintf('Please add a method %s in the %s class!', $method, get_class($object)));
+        }
 
         $object->$method($instance);
     }
