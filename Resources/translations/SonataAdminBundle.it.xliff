@@ -128,7 +128,7 @@
             </trans-unit>
             <trans-unit id="flash_create_error">
                 <source>flash_create_error</source>
-                <target>Si è verificato un errore durante l'eliminazione dell'elemento.</target>
+                <target>Si è verificato un errore durante la creazione dell'elemento.</target>
             </trans-unit>
             <trans-unit id="flash_edit_success">
                 <source>flash_edit_success</source>
