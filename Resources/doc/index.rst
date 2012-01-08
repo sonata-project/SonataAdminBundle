@@ -1,12 +1,12 @@
 Admin Bundle
 ============
 
-**Warning**: The bundle has been split into 4 bundles :
+**SonataAdminBundle is split into 4 bundles:**
 
-* SonataAdminBundle : the current one, contains core libraries and services
-* `SonataDoctrineORMAdminBundle <https://github.com/sonata-project/SonataDoctrineORMAdminBundle>`_: Integrates the admin bundle with the Doctrine ORM project
-* `SonataDoctrineMongoDBAdminBundle <https://github.com/sonata-project/SonataDoctrineMongoDBAdminBundle>`_: Integrates the admin bundle with MongoDB (early stage)
-* `SonataDoctrinePhpcrAdminBundle <https://github.com/sonata-project/SonataDoctrinePhpcrAdminBundle>`_: Integrates the admin bundle with PHPCR (early stage)
+* SonataAdminBundle: contains core libraries and services
+* `SonataDoctrineORMAdminBundle <https://github.com/sonata-project/SonataDoctrineORMAdminBundle>`_: Integrates Doctrine ORM project with the core admin bundle
+* `SonataDoctrineMongoDBAdminBundle <https://github.com/sonata-project/SonataDoctrineMongoDBAdminBundle>`_: Integrates MongoDB with the core admin bundle (early stage)
+* `SonataDoctrinePhpcrAdminBundle <https://github.com/sonata-project/SonataDoctrinePhpcrAdminBundle>`_: Integrates PHPCR with the core admin bundle (early stage)
 
 Reference Guide
 ---------------
@@ -16,7 +16,7 @@ Reference Guide
    :numbered:
 
    reference/installation
-   reference/getting-started
+   reference/getting_started
    reference/configuration
    reference/architecture
    reference/dashboard
