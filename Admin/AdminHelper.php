@@ -12,6 +12,7 @@ namespace Sonata\AdminBundle\Admin;
 
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormView;
+use Sonata\AdminBundle\Exception\NoValueException;
 use Sonata\AdminBundle\Util\FormViewIterator;
 use Sonata\AdminBundle\Util\FormBuilderIterator;
 

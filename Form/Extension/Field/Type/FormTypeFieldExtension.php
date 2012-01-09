@@ -16,8 +16,8 @@ use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 
-use Sonata\AdminBundle\Admin\NoValueException;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
+use Sonata\AdminBundle\Exception\NoValueException;
 
 class FormTypeFieldExtension extends AbstractTypeExtension
 {
