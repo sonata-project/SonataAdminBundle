@@ -78,6 +78,14 @@
                 <source>link_previous_pager</source>
                 <target>Vorige</target>
             </trans-unit>
+            <trans-unit id="link_first_pager">
+                <source>link_first_pager</source>
+                <target>link_first_pager</target>
+            </trans-unit>
+            <trans-unit id="link_last_pager">
+                <source>link_last_pager</source>
+                <target>link_last_pager</target>
+            </trans-unit>
             <trans-unit id="Admin">
                 <source>Admin</source>
                 <target>Admin</target>
