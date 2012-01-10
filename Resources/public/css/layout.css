@@ -107,7 +107,8 @@ body.sonata-bc {
 
 .sonata-bc td.pager ul li a {
     border: 1px solid #cccccc;
-    padding: 4px;
+    line-height: 25px;
+    padding: 1px 8px 1px 8px;
     margin: 2px;
 }
 
