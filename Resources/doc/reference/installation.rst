@@ -1,109 +1,90 @@
 Installation
 ============
 
-Download bundles
-----------------
+Prerequisites
+-------------
 
-To begin, add the dependent bundles to the ``vendor/bundles`` directory. Add
-the following lines to the file ``deps``::
+**Translations**
+If you wish to use default translation texts provided in this bundle, you have
+to make sure you have translator enabled in your config.
 
-  [SonatajQueryBundle]
-      git=http://github.com/sonata-project/SonatajQueryBundle.git
-      target=/bundles/Sonata/jQueryBundle
+.. code-block:: yaml
+
+    # app/config/config.yml
+    framework:
+        translator: ~
+
+
+Installation
+------------
+
+Download SonataAdminBundle and its dependencies to the ``vendor`` directory. You
+can use the Symfony's vendor script for the automated procces. Add the following
+in your ``deps`` file::
 
   [SonataAdminBundle]
       git=http://github.com/sonata-project/SonataAdminBundle.git
       target=/bundles/Sonata/AdminBundle
 
+  [SonatajQueryBundle]
+      git=http://github.com/sonata-project/SonatajQueryBundle.git
+      target=/bundles/Sonata/jQueryBundle
+
   [KnpMenuBundle]
-      git=https://github.com/KnpLabs/KnpMenuBundle.git
+      git=http://github.com/KnpLabs/KnpMenuBundle.git
       target=/bundles/Knp/Bundle/MenuBundle
 
   [KnpMenu]
-      git=https://github.com/KnpLabs/KnpMenu.git
+      git=http://github.com/KnpLabs/KnpMenu.git
       target=/knp/menu
 
-and run::
+and run the vendors script to download bundles::
 
-  bin/vendors install
+  php bin/vendors install
 
-Configuration
--------------
+If you prefer instead to use git submodules, then run the following:
 
-Next, be sure to enable the bundles in your autoload.php and AppKernel.php
+  git submodule add http://github.com/sonata-project/SonataAdminBundle.git vendor/bundles/Sonata/AdminBundle
+  git submodule add http://github.com/sonata-project/SonatajQueryBundle.git vendor/bundles/Sonata/jQueryBundle
+  git submodule add http://github.com/KnpLabs/KnpMenuBundle.git vendor/bundles/Knp/Bundle/MenuBundle
+  git submodule add http://github.com/KnpLabs/KnpMenu.git vendor/knp/menu
+  git submodule update --init
+
+Next, be sure to enable this bundles in your autoload.php and AppKernel.php
 files:
 
 .. code-block:: php
 
-  <?php
-  // app/autoload.php
-  $loader->registerNamespaces(array(
-      // ...
-      'Sonata'     => __DIR__.'/../vendor/bundles',
-      'Knp\Bundle' => __DIR__.'/../vendor/bundles',
-      'Knp\Menu'   => __DIR__.'/../vendor/knp/menu/src',
-      // ...
-  ));
+    <?php
+    // app/autoload.php
+    $loader->registerNamespaces(array(
+        // ...
+        'Sonata'     => __DIR__.'/../vendor/bundles',
+        'Knp\Bundle' => __DIR__.'/../vendor/bundles',
+        'Knp\Menu'   => __DIR__.'/../vendor/knp/menu/src',
+        // ...
+    ));
 
-  // app/AppKernel.php
-  public function registerBundles()
-  {
-      return array(
-          // ...
-          new Sonata\jQueryBundle\SonatajQueryBundle(),
-          new Sonata\AdminBundle\SonataAdminBundle(),
-          new Knp\Bundle\MenuBundle\KnpMenuBundle(),
-          // ...
-      );
-  }
+    // app/AppKernel.php
+    public function registerBundles()
+    {
+        return array(
+            // ...
+            new Sonata\AdminBundle\SonataAdminBundle(),
+            new Sonata\jQueryBundle\SonatajQueryBundle(),
+            new Knp\Bundle\MenuBundle\KnpMenuBundle(),
+            // ...
+        );
+    }
 
-The bundle also contains several routes. Import them by adding the following
-code to your application's routing file:
+Now, install the assets from the bundles:
+``php app/console assets:install web``.
 
-.. code-block:: yaml
+Usually when installing new bundles a good practice is also to delete your cache:
+``php app/console cache:clear``.
 
-    # app/config/routing.yml
-    admin:
-        resource: '@SonataAdminBundle/Resources/config/routing/sonata_admin.xml'
-        prefix: /admin
 
-    _sonata_admin:
-        resource: .
-        type: sonata_admin
-        prefix: /admin
-
-Now, install the assets from the different bundles:
-``php app/console assets:install web --symlink``.
-At this point you can access the admin dashboard with the url:
-``http://yoursite.local/admin/dashboard``.
-
-.. note::
-
-    If you're using XML or PHP to specify your application's configuration,
-    the above configuration and routing will actually be placed in those
-    files, with the correct format (i.e. XML or PHP).
-
-The last important step is security, please refer to the dedicated section of this documentation.
-
-Users management
-----------------
-
-By default, the AdminBundle does not come with any user management, however it is most likely the application
-requires such feature. The Sonata Project includes a ``SonataUserBundle`` which integrates the ``FOSUserBundle``.
-
-The ``FOSUserBundle`` adds support for a database-backed user system in Symfony2. It provides a flexible framework
-for user management that aims to handle common tasks such as user login, registration and password retrieval.
-
-The ``SonataUserBundle`` is just a thin wrapper to include the ``FOSUserBundle`` into the ``AdminBundle``. The
-``SonataUserBundle`` includes :
-
-* A default login area
-* A default ``user_block`` template which is used to display the current user and the logout link
-* 2 Admin classes : User and Group
-* A default class for User and Group.
-
-There is a little magic in the ``SonataAdminBundle`` if the bundle detects the ``SonataUserBundle`` class, then
-the default ``user_block`` template will be changed to use the one provided by the ``SonataUserBundle``.
-
-The install process is available on the dedicated `SonataUserBundle's documentation area <http://sonata-project.org/bundles/user/master/doc/reference/installation.html>`_
-
+After you have successfully installed above bundles you need to configure
+SonataAdminBundle for administering your models. All that is needed to quickly
+set up SonataAdminBundle is described in the next chapter the Getting started
+with SonataAdminBundle.

@@ -1,6 +1,32 @@
 Security
 ========
 
+Users management
+----------------
+
+By default, the SonataAdminBundle does not come with any user management, however it is most likely the application
+requires such feature. The Sonata Project includes a ``SonataUserBundle`` which integrates the ``FOSUserBundle``.
+
+The ``FOSUserBundle`` adds support for a database-backed user system in Symfony2. It provides a flexible framework
+for user management that aims to handle common tasks such as user login, registration and password retrieval.
+
+The ``SonataUserBundle`` is just a thin wrapper to include the ``FOSUserBundle`` into the ``AdminBundle``. The
+``SonataUserBundle`` includes :
+
+* A default login area
+* A default ``user_block`` template which is used to display the current user and the logout link
+* 2 Admin classes : User and Group
+* A default class for User and Group.
+
+There is a little magic in the ``SonataAdminBundle`` if the bundle detects the ``SonataUserBundle`` class, then
+the default ``user_block`` template will be changed to use the one provided by the ``SonataUserBundle``.
+
+The install process is available on the dedicated `SonataUserBundle's documentation area <http://sonata-project.org/bundles/user/master/doc/reference/installation.html>`_
+
+
+Security handlers
+-----------------
+
 The security part is managed by a ``SecurityHandler``, the bundle has 2 handlers
 
   - ``sonata.admin.security.handler.acl`` : ACL and ROLES to handle permissions
