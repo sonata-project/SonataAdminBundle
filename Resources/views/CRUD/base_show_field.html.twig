@@ -9,5 +9,5 @@ file that was distributed with this source code.
 
 #}
 
-<th>{% block name %}{{ field_description.name }}{% endblock %}</th>
+<th>{% block name %}{{ admin.trans(field_description.label) }}{% endblock %}</th>
 <td>{% block field %}{{ value }}{% endblock %}</td>
