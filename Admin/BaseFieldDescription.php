@@ -190,6 +190,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
      * Define the options value, if the options array contains the reserved keywords
      *   - type
      *   - template
+     *   - help
      *
      * Then the value are copied across to the related property value
      *
@@ -208,6 +209,12 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         if (isset($options['template'])) {
             $this->setTemplate($options['template']);
             unset($options['template']);
+        }
+
+        // set help if provided
+        if (isset($options['help'])) {
+            $this->setHelp($options['help']);
+            unset($options['help']);
         }
 
         $this->options = $options;
