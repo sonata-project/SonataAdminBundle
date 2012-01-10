@@ -49,10 +49,11 @@ class BaseFieldDescriptionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('trucmuche', $description->getLabel());
 
         $this->assertNull($description->getTemplate());
-        $description->setOptions(array('type' => 'integer', 'template' => 'foo.twig.html'));
+        $description->setOptions(array('type' => 'integer', 'template' => 'foo.twig.html', 'help' => 'fooHelp'));
 
         $this->assertEquals('integer', $description->getType());
         $this->assertEquals('foo.twig.html', $description->getTemplate());
+        $this->assertEquals('fooHelp', $description->getHelp());
 
         $this->assertCount(0, $description->getOptions());
 
