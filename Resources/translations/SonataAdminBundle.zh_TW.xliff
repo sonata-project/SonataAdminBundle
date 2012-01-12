@@ -1,0 +1,158 @@
+<?xml version='1.0' encoding='utf-8'?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+    <file source-language="en" datatype="plaintext" original="">
+        <body>
+            <trans-unit id="action_delete">
+                <source>action_delete</source> <target state="needs-translation">刪除</target> </trans-unit>
+            <trans-unit id="btn_batch">
+                <source>btn_batch</source> <target state="needs-translation">衝</target> </trans-unit>
+            <trans-unit id="btn_create">
+                <source>btn_create</source> <target state="needs-translation">建立</target> </trans-unit>
+            <trans-unit id="btn_create_and_edit_again">
+                <source>btn_create_and_edit_again</source> <target state="needs-translation">建立</target> </trans-unit>
+            <trans-unit id="btn_create_and_create_a_new_one">
+                <source>btn_create_and_create_a_new_one</source> <target state="needs-translation">建立後新增</target> </trans-unit>
+            <trans-unit id="btn_filter">
+                <source>btn_filter</source> <target state="needs-translation">過濾</target> </trans-unit>
+            <trans-unit id="btn_update_and_edit_again">
+                <source>btn_update_and_edit_again</source> <target state="needs-translation">更新</target> </trans-unit>
+            <trans-unit id="btn_update_and_return_to_list">
+                <source>btn_update_and_return_to_list</source> <target state="needs-translation">更新後關閉</target> </trans-unit>
+            <trans-unit id="link_delete">
+                <source>link_delete</source> <target state="needs-translation">刪除</target> </trans-unit>
+            <trans-unit id="link_action_create">
+                <source>link_action_create</source> <target state="needs-translation">新增</target> </trans-unit>
+            <trans-unit id="link_action_list">
+                <source>link_action_list</source> <target state="needs-translation">回到列表</target> </trans-unit>
+            <trans-unit id="link_action_show">
+                <source>link_action_show</source> <target state="needs-translation">顯示</target> </trans-unit>
+            <trans-unit id="link_action_edit">
+                <source>link_action_edit</source> <target state="needs-translation">編輯</target> </trans-unit>
+            <trans-unit id="link_add">
+                <source>link_add</source> <target state="needs-translation">新增</target> </trans-unit>
+            <trans-unit id="link_list">
+                <source>link_list</source> <target state="needs-translation">列表</target> </trans-unit>
+            <trans-unit id="link_reset_filter">
+                <source>link_reset_filter</source> <target state="needs-translation">重設</target> </trans-unit>
+            <trans-unit id="title_create">
+                <source>title_create</source> <target state="needs-translation">建立</target> </trans-unit>
+            <trans-unit id="title_dashboard">
+                <source>title_dashboard</source> <target state="needs-translation">首頁</target> </trans-unit>
+            <trans-unit id="title_edit">
+                <source>title_edit</source> <target state="needs-translation">編輯 "%name%"</target> </trans-unit>
+            <trans-unit id="title_list">
+                <source>title_list</source> <target state="needs-translation">列表</target> </trans-unit>
+            <trans-unit id="link_next_pager">
+                <source>link_next_pager</source> <target state="needs-translation">下一個</target> </trans-unit>
+            <trans-unit id="link_previous_pager">
+                <source>link_previous_pager</source> <target state="needs-translation">上一個</target> </trans-unit>
+            <trans-unit id="link_first_pager">
+                <source>link_first_pager</source> <target state="needs-translation">第一個</target> </trans-unit>
+            <trans-unit id="link_last_pager">
+                <source>link_last_pager</source> <target state="needs-translation">最末個</target> </trans-unit>
+            <trans-unit id="Admin">
+                <source>Admin</source> <target state="needs-translation">管理</target> </trans-unit>
+            <trans-unit id="link_expand">
+                <source>link_expand</source> <target state="needs-translation">展開/收合</target> </trans-unit>
+            <trans-unit id="no_result">
+                <source>no_result</source> <target state="needs-translation">沒有結果</target> </trans-unit>
+            <trans-unit id="confirm_msg">
+                <source>confirm_msg</source> <target state="needs-translation">確定？</target> </trans-unit>
+            <trans-unit id="action_edit">
+                <source>action_edit</source> <target state="needs-translation">編輯</target> </trans-unit>
+            <trans-unit id="action_show">
+                <source>action_show</source> <target state="needs-translation">顯示</target> </trans-unit>
+            <trans-unit id="all_elements">
+                <source>all_elements</source> <target state="needs-translation">所有元素</target> </trans-unit>
+            <trans-unit id="flash_batch_empty">
+              <source>flash_batch_empty</source> <target state="needs-translation">操作中止，沒有選擇項目</target> </trans-unit>
+            <trans-unit id="flash_create_success">
+              <source>flash_create_success</source> <target state="needs-translation">項目成功建立</target> </trans-unit>
+            <trans-unit id="flash_create_error">
+              <source>flash_create_error</source> <target state="needs-translation">建立項目時發生錯誤</target> </trans-unit>
+            <trans-unit id="flash_edit_success">
+              <source>flash_edit_success</source> <target state="needs-translation">項目成功更新</target> </trans-unit>
+            <trans-unit id="flash_edit_error">
+              <source>flash_edit_error</source> <target state="needs-translation">更新項目時發生錯誤</target> </trans-unit>
+            <trans-unit id="flash_batch_delete_success">
+              <source>flash_batch_delete_success</source> <target state="needs-translation">選擇的項目已經刪除</target> </trans-unit>
+            <trans-unit id="flash_batch_delete_error">
+              <source>flash_batch_delete_error</source> <target state="needs-translation">刪除選擇的項目時發生錯誤</target> </trans-unit>
+            <trans-unit id="flash_delete_error">
+              <source>flash_delete_error</source> <target state="needs-translation">刪除項目時發生錯誤</target> </trans-unit>
+            <trans-unit id="flash_delete_success">
+              <source>flash_delete_success</source> <target state="needs-translation">項目成功刪除</target> </trans-unit>
+            <trans-unit id="link_breadcrumb_dashboard">
+                <source>breadcrumb.link_dashboard</source> <target state="needs-translation">⌂</target> </trans-unit>
+            <trans-unit id="title_delete">
+                <source>title_delete</source> <target state="needs-translation">確認刪除</target> </trans-unit>
+            <trans-unit id="message_delete_confirmation">
+                <source>message_delete_confirmation</source> <target state="needs-translation">確定要刪除選擇的元素？</target> </trans-unit>
+            <trans-unit id="btn_delete">
+                <source>btn_delete</source> <target state="needs-translation">是的，刪除</target> </trans-unit>
+            <trans-unit id="title_batch_confirmation">
+                <source>title_batch_confirmation</source> <target state="needs-translation">確認批次操作</target> </trans-unit>
+            <trans-unit id="message_batch_confirmation">
+                <source>message_batch_confirmation</source> <target state="needs-translation">確定要再選擇的項目執行這個操作？</target> </trans-unit>
+            <trans-unit id="btn_execute_batch_action">
+                <source>btn_execute_batch_action</source> <target state="needs-translation">是的，執行</target> </trans-unit>
+            <trans-unit id="label_type_yes">
+              <source>label_type_yes</source> <target state="needs-translation">是</target> </trans-unit>
+            <trans-unit id="label_type_no">
+              <source>label_type_no</source> <target state="needs-translation">否</target> </trans-unit>
+            <trans-unit id="label_type_contains">
+              <source>label_type_contains</source> <target state="needs-translation">包含</target> </trans-unit>
+            <trans-unit id="label_type_not_contains">
+              <source>label_type_not_contains</source> <target state="needs-translation">不包含</target> </trans-unit>
+            <trans-unit id="label_type_equals">
+              <source>label_type_equals</source> <target state="needs-translation">相同於</target> </trans-unit>
+            <trans-unit id="label_type_equal">
+              <source>label_type_equal</source> <target state="needs-translation">=</target> </trans-unit>
+            <trans-unit id="label_type_greater_equal">
+              <source>label_type_greater_equal</source> <target state="needs-translation">&gt;=</target> </trans-unit>
+            <trans-unit id="label_type_greater_than">
+              <source>label_type_greater_than</source> <target state="needs-translation">&gt;</target> </trans-unit>
+            <trans-unit id="label_type_less_equal">
+              <source>label_type_less_equal</source> <target state="needs-translation">&lt;=</target> </trans-unit>
+            <trans-unit id="label_type_less_than">
+              <source>label_type_less_than</source> <target state="needs-translation">&lt;</target> </trans-unit>
+            <trans-unit id="label_date_type_equal">
+              <source>label_date_type_equal</source> <target state="needs-translation">=</target> </trans-unit>
+            <trans-unit id="label_date_type_greater_equal">
+              <source>label_date_type_greater_equal</source> <target state="needs-translation">&gt;=</target> </trans-unit>
+            <trans-unit id="label_date_type_greater_than">
+              <source>label_date_type_greater_than</source> <target state="needs-translation">&gt;</target> </trans-unit>
+            <trans-unit id="label_date_type_less_equal">
+              <source>label_date_type_less_equal</source> <target state="needs-translation">&lt;=</target> </trans-unit>
+            <trans-unit id="label_date_type_less_than">
+              <source>label_date_type_less_than</source> <target state="needs-translation">&lt;</target> </trans-unit>
+            <trans-unit id="label_date_type_null">
+              <source>label_date_type_null</source> <target state="needs-translation">空白</target> </trans-unit>
+            <trans-unit id="label_date_type_not_null">
+              <source>label_date_type_not_null</source> <target state="needs-translation">非空白</target> </trans-unit>
+            <trans-unit id="label_date_type_between">
+              <source>label_date_type_between</source> <target state="needs-translation">介於</target> </trans-unit>
+            <trans-unit id="label_date_not_between">
+              <source>label_date_type_not_between</source> <target state="needs-translation">非介於</target> </trans-unit>
+            <trans-unit id="label_filters">
+              <source>label_filters</source> <target state="needs-translation">過濾</target> </trans-unit>
+
+            <trans-unit id="delete_or">
+              <source>delete_or</source> <target state="needs-translation">或</target> </trans-unit>
+
+            <trans-unit id="link_action_history">
+                <source>link_action_history</source> <target state="needs-translation">版本</target> </trans-unit>
+            <trans-unit id="td_action">
+                <source>td_action</source> <target state="needs-translation">操作</target> </trans-unit>
+            <trans-unit id="td_revision">
+                <source>td_revision</source> <target state="needs-translation">版本</target> </trans-unit>
+            <trans-unit id="td_timestamp">
+                <source>td_timestamp</source> <target state="needs-translation">日期</target> </trans-unit>
+            <trans-unit id="td_username">
+                <source>td_username</source> <target state="needs-translation">作者</target> </trans-unit>
+            <trans-unit id="label_view_revision">
+                <source>label_view_revision</source> <target state="needs-translation">檢視版本</target> </trans-unit>
+
+        </body>
+    </file>
+</xliff>
