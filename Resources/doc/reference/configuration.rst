@@ -27,6 +27,7 @@ Full Configuration Options
             # default global templates
             layout:  SonataAdminBundle::standard_layout.html.twig
             ajax:    SonataAdminBundle::ajax_layout.html.twig
+            dashboard: SonataAdminBundle:Core:dashboard.html.twig
 
             # default actions templates, should extend a global templates
             list:    SonataAdminBundle:CRUD:list.html.twig

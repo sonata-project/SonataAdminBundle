@@ -22,6 +22,7 @@ Usage of each template :
 
 * layout : base layout used by the dashboard and an admin class
 * ajax : default layout used when an ajax request is performed
+* dashboard: default layout used at the dashboard
 * list : the template to use for the list action
 * show : the template to use for the show action
 * edit : the template to use for the edit and create action
