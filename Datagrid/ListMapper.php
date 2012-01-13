@@ -39,6 +39,10 @@ class ListMapper
     {
         $fieldDescriptionOptions['identifier'] = true;
 
+        if (!isset($fieldDescriptionOptions['route'])) {
+            $fieldDescriptionOptions['route'] = 'edit';
+        }
+
         return $this->add($name, $type, $fieldDescriptionOptions);
     }
 
