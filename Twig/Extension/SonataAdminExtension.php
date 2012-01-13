@@ -95,10 +95,15 @@ class SonataAdminExtension extends \Twig_Extension
     {
         $template = $this->getTemplate($fieldDescription, 'SonataAdminBundle:CRUD:base_list_field.html.twig');
 
+        $value = $this->getValueFromFieldDescription($object, $fieldDescription);
+        if (is_array($value)) {
+            $value = implode(", ", $value);
+        }
+
         return $this->output($fieldDescription, $template, array_merge($params, array(
             'admin'  => $fieldDescription->getAdmin(),
             'object' => $object,
-            'value'  => $this->getValueFromFieldDescription($object, $fieldDescription),
+            'value'  => $value,
             'field_description' => $fieldDescription
         )));
     }
