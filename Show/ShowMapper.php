@@ -50,13 +50,15 @@ class ShowMapper
      * @return \Sonata\AdminBundle\Show\ShowMapper
      */
     public function add($name, $type = null, array $fieldDescriptionOptions = array())
-    {
+	{
         if (!$this->currentGroup) {
             $this->with($this->admin->getLabel());
         }
 
+        $fieldKey = ($name instanceof FieldDescriptionInterface) ? $name->getName() : $name;
+            
         $formGroups = $this->admin->getShowGroups();
-        $formGroups[$this->currentGroup]['fields'][$name] = $name;
+        $formGroups[$this->currentGroup]['fields'][$fieldKey] = $fieldKey;
         $this->admin->setShowGroups($formGroups);
 
 
@@ -73,7 +75,7 @@ class ShowMapper
             throw new \RuntimeException('invalid state');
         }
 
-        if (!$fieldDescription->getLabel()) {
+        if (!$fieldDescription->getOption('label')) {
             $fieldDescription->setOption('label', $this->admin->getLabelTranslatorStrategy()->getLabel($fieldDescription->getName(), 'show', 'label'));
         }
 
