@@ -239,4 +239,11 @@ interface FieldDescriptionInterface
      * @return int|string
      */
     function getMappingType();
+
+    /**
+     * return the label to use for the current field
+     *
+     * @return string
+     */
+    function getLabel();
 }

@@ -75,7 +75,7 @@ class ShowMapper
             throw new \RuntimeException('invalid state');
         }
 
-        if (!$fieldDescription->getOption('label')) {
+        if (!$fieldDescription->getLabel()) {
             $fieldDescription->setOption('label', $this->admin->getLabelTranslatorStrategy()->getLabel($fieldDescription->getName(), 'show', 'label'));
         }
 
