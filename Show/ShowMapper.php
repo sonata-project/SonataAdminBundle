@@ -55,8 +55,10 @@ class ShowMapper
             $this->with($this->admin->getLabel());
         }
 
+        $fieldKey = ($name instanceof FieldDescriptionInterface) ? $name->getName() : $name;
+
         $formGroups = $this->admin->getShowGroups();
-        $formGroups[$this->currentGroup]['fields'][$name] = $name;
+        $formGroups[$this->currentGroup]['fields'][$fieldKey] = $fieldKey;
         $this->admin->setShowGroups($formGroups);
 
 
