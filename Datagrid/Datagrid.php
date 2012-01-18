@@ -114,6 +114,7 @@ class Datagrid implements DatagridInterface
         ));
         $this->formBuilder->add('_sort_order', 'hidden');
         $this->formBuilder->add('_page', 'hidden');
+        $this->formBuilder->add('_per_page', 'hidden');
 
         $this->form = $this->formBuilder->getForm();
         $this->form->bind($this->values);
@@ -137,6 +138,7 @@ class Datagrid implements DatagridInterface
         }
 
 
+        $this->pager->setMaxPerPage(isset($this->values['_per_page']) ? $this->values['_per_page'] : 10);
         $this->pager->setPage(isset($this->values['_page']) ? $this->values['_page'] : 1);
         $this->pager->setQuery($this->query);
         $this->pager->init();

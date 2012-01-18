@@ -179,6 +179,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      */
     protected $datagridValues = array(
         '_page'       => 1,
+        '_per_page'   => 10,
     );
 
     /**
@@ -388,6 +389,34 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      * @var array [role] => array([permission], [permission])
      */
     protected $securityInformation = array();
+    
+    /**
+     * Predefined per page options
+     *
+     * @var array
+     */
+    protected $perPageOptions = array(
+        10,
+        20,
+        50,
+        100,
+        150,
+        200,
+    );
+    
+    /**
+     * Predefined per page options
+     *
+     * @var array
+     */
+    protected $perPageOptions = array(
+        10,
+        20,
+        50,
+        100,
+        150,
+        200,
+    );
 
     /**
      * {@inheritdoc}
@@ -493,6 +522,8 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         $this->code                 = $code;
         $this->class                = $class;
         $this->baseControllerName   = $baseControllerName;
+        $this->predefinePerPageOptions();
+        $this->datagridValues['_per_page'] = $this->maxPerPage;
     }
 
     /**
@@ -671,6 +702,10 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
                 $this->request->query->get('filter', array())
             );
 
+            if (!$this->determinedPerPageValue($parameters['_per_page'])) {
+                $parameters['_per_page'] = $this->maxPerPage;
+            }
+
             // always force the parent value
             if ($this->isChild() && $this->getParentAssociationMapping()) {
                 $parameters[$this->getParentAssociationMapping()] = array('value' => $this->request->get($this->getParent()->getIdParameter()));
@@ -708,9 +743,6 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
         // initialize the datagrid
         $this->datagrid = $this->getDatagridBuilder()->getBaseDatagrid($this, $filterParameters);
-
-        $this->datagrid->getPager()->setMaxPerPage($this->maxPerPage);
-        $this->datagrid->getPager()->setMaxPageLinks($this->maxPageLinks);
 
         $mapper = new DatagridMapper($this->getDatagridBuilder(), $this->datagrid, $this);
 
@@ -2418,5 +2450,59 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     public function getLabelTranslatorStrategy()
     {
         return $this->labelTranslatorStrategy;
+    }
+
+    /**
+     * Set custom per page options
+     *
+     * @param $options
+     */
+    public function setPerPageOptions($options)
+    {
+        $this->perPageOptions = $options;
+    }
+
+    /**
+     * Returns predefined per page options
+     *
+     * @return array
+     */
+    public function getPerPageOptions()
+    {
+        return $this->perPageOptions;
+    }
+
+    /**
+     * Returns true if the per page value is allowed, false otherwise
+     *
+     * @param $per_page
+     * @return bool
+     */
+    public function determinedPerPageValue($per_page)
+    {
+        return in_array($per_page, $this->perPageOptions);
+    }
+
+    /**
+    * @param $per_page
+    * @return array
+    */
+    public function getPerPageParameters($per_page)
+    {
+        $values = $this->datagrid->getValues();
+
+        $values['_per_page'] = $per_page;
+
+        return array('filter' => $values);
+    }
+
+    /**
+     * Predefine per page options
+     */
+    protected function predefinePerPageOptions()
+    {
+        array_unshift($this->perPageOptions, $this->maxPerPage);
+        $this->perPageOptions = array_unique($this->perPageOptions);
+        sort($this->perPageOptions);
     }
 }
