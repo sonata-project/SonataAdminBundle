@@ -1130,6 +1130,11 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         $pool = $this->getConfigurationPool();
 
         $admin = $pool->getAdminByClass($fieldDescription->getTargetEntity());
+        
+        if ($this->hasSubject() && $this->has($admin->getCode())) {
+            $admin = $this->getChild($admin->getCode());
+        }
+        
         if (!$admin) {
             return;
         }
