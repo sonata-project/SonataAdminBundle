@@ -1809,7 +1809,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
                 );
             }
 
-            if ($this->hasSubject()) {
+            if ($action != 'create' && $this->hasSubject()) {
                 $breadcrumbs = $menu->getBreadcrumbsArray( (string) $this->getSubject());
             } else {
                 $breadcrumbs = $menu->getBreadcrumbsArray(
