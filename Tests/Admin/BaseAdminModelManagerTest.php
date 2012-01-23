@@ -26,7 +26,6 @@ class BaseAdminModelManagerTest extends \PHPUnit_Framework_TestCase
     public function testHook()
     {
         $securityHandler = $this->getMock('Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface');
-        $securityHandler->expects($this->once())->method('createObjectOwner');
 
         $modelManager = $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface');
         $modelManager->expects($this->once())->method('create');
