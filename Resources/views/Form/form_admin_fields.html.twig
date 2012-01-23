@@ -26,7 +26,6 @@ file that was distributed with this source code.
                 {% else %}
                     {{- label|trans({}, sonata_admin.admin.translationDomain) -}}
                 {% endif%}
-                {{ required ? '*' : '' }}
             </span>
         </label>
     {% else %}
@@ -46,6 +45,7 @@ file that was distributed with this source code.
     {% spaceless %}
         id="{{ id }}"
         {% for attrname,attrvalue in attr %}{{attrname}}="{% if attrname == 'class' %}inputs-list {% endif%}{{attrvalue}}" {% endfor %}
+        {% if "class" not in attr %}class="inputs-list"{%endif %}
     {% endspaceless %}
 {% endblock %}
 
