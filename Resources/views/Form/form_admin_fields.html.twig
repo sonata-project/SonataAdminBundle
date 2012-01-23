@@ -45,13 +45,14 @@ file that was distributed with this source code.
     {% spaceless %}
         id="{{ id }}"
         {% for attrname,attrvalue in attr %}{{attrname}}="{% if attrname == 'class' %}inputs-list {% endif%}{{attrvalue}}" {% endfor %}
+        {% if "class" not in attr %}class="inputs-list"{%endif %}
     {% endspaceless %}
 {% endblock %}
 
 {% block choice_widget %}
 {% spaceless %}
     {% if expanded %}
-        <ul {{ block('widget_container_attributes') }}>
+        <ul {{ block('widget_container_attributes_choice_widget') }}>
         {% for child in form %}
             <li>
                 {{ form_label(child, null, { 'in_list_checkbox' : true, 'widget' : form_widget(child) } ) }}
