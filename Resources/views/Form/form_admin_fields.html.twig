@@ -26,7 +26,6 @@ file that was distributed with this source code.
                 {% else %}
                     {{- label|trans({}, sonata_admin.admin.translationDomain) -}}
                 {% endif%}
-                {{ required ? '*' : '' }}
             </span>
         </label>
     {% else %}
@@ -52,7 +51,7 @@ file that was distributed with this source code.
 {% block choice_widget %}
 {% spaceless %}
     {% if expanded %}
-        <ul {{ block('widget_container_attributes_choice_widget') }}>
+        <ul {{ block('widget_container_attributes') }}>
         {% for child in form %}
             <li>
                 {{ form_label(child, null, { 'in_list_checkbox' : true, 'widget' : form_widget(child) } ) }}
