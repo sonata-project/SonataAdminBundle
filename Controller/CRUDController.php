@@ -443,9 +443,6 @@ class CRUDController extends Controller
 
         $this->admin->setSubject($object);
 
-        // build the show list
-        $elements = $this->admin->getShow();
-
         return $this->render($this->admin->getShowTemplate(), array(
             'action'   => 'show',
             'object'   => $object,
