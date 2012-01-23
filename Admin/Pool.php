@@ -65,11 +65,17 @@ class Pool
         foreach ($this->adminGroups as $name => $adminGroup) {
             if (isset($adminGroup['items'])) {
                 foreach ($adminGroup['items'] as $key => $id) {
-                    $groups[$name]['items'][$key] = $this->getInstance($id);
+                    $admin = $this->getInstance($id);
+
+                    if ($admin->showIn(Admin::CONTEXT_DASHBOARD)) {
+                        $groups[$name]['items'][$key] = $admin;
+                    } else {
+                        unset($groups[$name]['items'][$key]);
+                    }
                 }
             }
 
-            if (empty($groups[$name])) {
+            if (empty($groups[$name]['items'])) {
                 unset($groups[$name]);
             }
         }

@@ -44,6 +44,9 @@ use Knp\Menu\MenuItem;
 
 abstract class Admin implements AdminInterface, DomainObjectInterface
 {
+    const CONTEXT_MENU       = 'menu';
+    const CONTEXT_DASHBOARD  = 'dashboard';
+
     /**
      * The class name managed by the admin class
      *
@@ -259,6 +262,13 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     protected $modelManager;
 
     /**
+     * The manager type to use for the admin
+     *
+     * @var string
+     */
+    private $managerType;
+
+    /**
      * The current request object
      *
      * @var \Symfony\Component\HttpFoundation\Request
@@ -363,6 +373,13 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     protected $extensions = array();
 
     protected $labelTranslatorStrategy;
+
+    /**
+     * Roles and permissions per role
+     *
+     * @var array [role] => array([permission], [permission])
+     */
+    protected $securityInformation = array();
 
     /**
      * This method can be overwritten to tweak the form construction, by default the form
@@ -496,11 +513,13 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         $this->prePersist($object);
         $this->getModelManager()->create($object);
         $this->postPersist($object);
+        $this->createObjectSecurity($object);
     }
 
     public function delete($object)
     {
         $this->preRemove($object);
+        $this->getSecurityHandler()->deleteObjectSecurity($this, $object);
         $this->getModelManager()->delete($object);
         $this->postRemove($object);
     }
@@ -2079,6 +2098,22 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
+     * @return string the manager type of the admin
+     */
+    public function getManagerType()
+    {
+        return $this->managerType;
+    }
+
+    /**
+     * @param string $type
+     */
+    public function setManagerType($type)
+    {
+        $this->managerType = $type;
+    }
+
+    /**
      * Returns a unique identifier for this domain object.
      *
      * @return string
@@ -2089,21 +2124,68 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * Return the list of security name available for the current admin
+     * Set the roles and permissions per role
+     *
+     * @param array $information
+     */
+    public function setSecurityInformation(array $information)
+    {
+        $this->securityInformation = $information;
+    }
+
+    /**
+     * Return the roles and permissions per role
+     * - different permissions per role for the acl handler
+     * - one permission that has the same name as the role for the role handler
      * This should be used by experimented users
      *
-     * @return array
+     * @return array [role] => array([permission], [permission])
      */
     public function getSecurityInformation()
     {
-        return array(
-            'EDIT'      => array('EDIT'),
-            'LIST'      => array('LIST'),
-            'CREATE'    => array('CREATE'),
-            'VIEW'      => array('VIEW'),
-            'DELETE'    => array('DELETE'),
-            'OPERATOR'  => array('OPERATOR')
-        );
+        return $this->securityInformation;
+    }
+
+    /**
+     * Return the list of permissions the user should have in order to display the admin
+     *
+     * @param string $context
+     * @return array
+     */
+    public function getPermissionsShow($context)
+    {
+        switch ($context) {
+            case self::CONTEXT_DASHBOARD:
+            case self::CONTEXT_MENU:
+            default:
+                return array('LIST');
+        }
+    }
+
+    /**
+     * Return if this admin is displayed depending on the context
+     *
+     * @param string $context
+     * @return boolean
+     */
+    public function showIn($context)
+    {
+        switch ($context) {
+            case self::CONTEXT_DASHBOARD:
+            case self::CONTEXT_MENU:
+            default:
+                return $this->isGranted($this->getPermissionsShow($context));
+        }
+    }
+
+    /**
+     * Add object security, fe. make the current user owner of the object
+     *
+     * @param $object
+     */
+    public function createObjectSecurity($object)
+    {
+        $this->getSecurityHandler()->createObjectSecurity($this, $object);
     }
 
     /**

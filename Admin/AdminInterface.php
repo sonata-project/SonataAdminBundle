@@ -116,6 +116,12 @@ interface AdminInterface
 
     /**
      * @abstract
+     * @return string the manager type of the admin
+     */
+    function getManagerType();
+
+    /**
+     * @abstract
      * @return \Sonata\AdminBundle\Datagrid\ProxyQueryInterface
      */
     function createQuery($context = 'list');
@@ -289,7 +295,7 @@ interface AdminInterface
 
     /**
      * Returns an array of extension related to the current Admin
-     * 
+     *
      * @return void
      */
     function getExtensions();
@@ -416,4 +422,18 @@ interface AdminInterface
      * @return void
      */
     function validate(ErrorElement $errorElement, $object);
+
+    /**
+     * @abstract
+     * @param $context
+     * @return boolean
+     */
+    function showIn($context);
+
+    /**
+     * @abstract
+     * @param $object
+     * @return void
+     */
+    function createObjectSecurity($object);
 }

@@ -67,7 +67,37 @@ class SonataAdminExtension extends Extension
         $container->setParameter('sonata.admin.configuration.admin_services', $config['admin_services']);
         $container->setParameter('sonata.admin.configuration.dashboard_groups', $config['dashboard_groups']);
 
-        $container->setAlias('sonata.admin.security.handler', $config['security_handler']);
+        $container->setAlias('sonata.admin.security.handler', $config['security']['handler']);
+
+        switch ($config['security']['handler']) {
+            case 'sonata.admin.security.handler.role':
+                if (count($config['security']['information']) === 0) {
+                    $config['security']['information'] = array(
+                        'EDIT'      => array('EDIT'),
+                        'LIST'      => array('LIST'),
+                        'CREATE'    => array('CREATE'),
+                        'VIEW'      => array('VIEW'),
+                        'DELETE'    => array('DELETE'),
+                        'OPERATOR'  => array('OPERATOR'),
+                        'MASTER'    => array('MASTER'),
+                    );
+                }
+                break;
+            case 'sonata.admin.security.handler.acl':
+                if (count($config['security']['information']) === 0) {
+                    $config['security']['information'] = array(
+                        'GUEST'    => array('VIEW', 'LIST'),
+                        'STAFF'    => array('EDIT', 'LIST', 'CREATE'),
+                        'EDITOR'   => array('OPERATOR'),
+                        'ADMIN'    => array('MASTER'),
+                    );
+                }
+                break;
+        }
+        $container->setParameter('sonata.admin.configuration.security.information', $config['security']['information']);
+        $container->setParameter('sonata.admin.configuration.security.admin_permissions', $config['security']['admin_permissions']);
+        $container->setParameter('sonata.admin.configuration.security.object_permissions', $config['security']['object_permissions']);
+        $loader->load('security.xml');
 
         /**
          * This is a work in progress, so for now it is hardcoded

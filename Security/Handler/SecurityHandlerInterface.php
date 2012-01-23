@@ -24,9 +24,38 @@ interface SecurityHandlerInterface
     function isGranted(AdminInterface $admin, $attributes, $object = null);
 
     /**
+     * Get a sprintf template to get the role
+     *
+     * @abstract
+     * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
+     * @return string
+     */
+    function getBaseRole(AdminInterface $admin);
+
+    /**
      * @abstract
      * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
      * @return void
      */
     function buildSecurityInformation(AdminInterface $admin);
+
+    /**
+     * Create object security, fe. make the current user owner of the object
+     *
+     * @abstract
+     * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
+     * @param object $object
+     * @return void
+     */
+    function createObjectSecurity(AdminInterface $admin, $object);
+
+    /**
+     * Remove object security
+     *
+     * @abstract
+     * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
+     * @param object $object
+     * @return void
+     */
+    function deleteObjectSecurity(AdminInterface $admin, $object);
 }
