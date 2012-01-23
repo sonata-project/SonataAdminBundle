@@ -39,7 +39,6 @@ class Configuration implements ConfigurationInterface
             ->fixXmlConfig('dashboard_group')
             ->fixXmlConfig('admin_service')
             ->children()
-
                 ->arrayNode('security')
                     ->addDefaultsIfNotSet()
                     ->children()

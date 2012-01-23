@@ -35,7 +35,6 @@
             </call>
         </service>
         <service id="sonata.admin.manipulator.acl.admin" class="%sonata.admin.manipulator.acl.admin.class%" >
-            <argument type="service" id="sonata.admin.security.handler" />
             <argument>%sonata.admin.security.mask.builder.class%</argument>
         </service>
     </services>

@@ -21,13 +21,11 @@ use Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface;
 
 class AdminAclManipulator implements AdminAclManipulatorInterface
 {
-    protected $securityHandler;
     protected $maskBuilderClass;
 
-    public function __construct(AclSecurityHandlerInterface $securityHandler, $maskBuilderClass)
+    public function __construct($maskBuilderClass)
     {
-        $this->securityHandler = $securityHandler;
-        $this->maskBuilderClass =$maskBuilderClass;
+        $this->maskBuilderClass = $maskBuilderClass;
     }
 
     /**
@@ -37,44 +35,44 @@ class AdminAclManipulator implements AdminAclManipulatorInterface
     {
         $securityHandler = $admin->getSecurityHandler();
         if (!$securityHandler instanceof AclSecurityHandlerInterface) {
-            $output->writeln('Admin class is not configured to use ACL : <info>ignoring</info>');
+            $output->writeln(sprintf('Admin `%s` is not configured to use ACL : <info>ignoring</info>', $admin->getCode()));
             return;
         }
 
         $objectIdentity = ObjectIdentity::fromDomainObject($admin);
         $newAcl = false;
-        if (is_null($acl = $this->securityHandler->getObjectAcl($objectIdentity))) {
-            $acl = $this->securityHandler->createAcl($objectIdentity);
+        if (is_null($acl = $securityHandler->getObjectAcl($objectIdentity))) {
+            $acl = $securityHandler->createAcl($objectIdentity);
             $newAcl = true;
         }
 
         // create admin ACL
         $output->writeln(sprintf(' > install ACL for %s', $admin->getCode()));
-        $configResult = $this->addAdminClassAces($output, $acl, $securityHandler->buildSecurityInformation($admin));
+        $configResult = $this->addAdminClassAces($output, $acl, $securityHandler, $securityHandler->buildSecurityInformation($admin));
 
         if ($configResult) {
-            $this->securityHandler->updateAcl($acl);
+            $securityHandler->updateAcl($acl);
         } else {
             $output->writeln(sprintf('   - %s , no roles and permissions found', ($newAcl ? 'skip' : 'removed')));
-            $this->securityHandler->deleteAcl($objectIdentity);
+            $securityHandler->deleteAcl($objectIdentity);
         }
     }
 
     /**
      * {@inheritDoc}
      */
-    public function addAdminClassAces(OutputInterface $output, AclInterface $acl, array $roleInformation = array())
+    public function addAdminClassAces(OutputInterface $output, AclInterface $acl, AclSecurityHandlerInterface $securityHandler, array $roleInformation = array())
     {
-        if (count($this->securityHandler->getAdminPermissions()) > 0 ) {
+        if (count($securityHandler->getAdminPermissions()) > 0 ) {
             $builder = new $this->maskBuilderClass();
 
             foreach ($roleInformation as $role => $permissions) {
-                $aceIndex = $this->securityHandler->findClassAceIndexByRole($acl, $role);
+                $aceIndex = $securityHandler->findClassAceIndexByRole($acl, $role);
                 $roleAdminPermissions = array();
 
                 foreach ($permissions as $permission) {
                     // add only the admin permissions
-                    if (in_array($permission, $this->securityHandler->getAdminPermissions())) {
+                    if (in_array($permission, $securityHandler->getAdminPermissions())) {
                         $builder->add($permission);
                         $roleAdminPermissions[] = $permission;
                     }

@@ -94,9 +94,11 @@ class SonataAdminExtension extends Extension
                 }
                 break;
         }
+
         $container->setParameter('sonata.admin.configuration.security.information', $config['security']['information']);
         $container->setParameter('sonata.admin.configuration.security.admin_permissions', $config['security']['admin_permissions']);
         $container->setParameter('sonata.admin.configuration.security.object_permissions', $config['security']['object_permissions']);
+
         $loader->load('security.xml');
 
         /**
