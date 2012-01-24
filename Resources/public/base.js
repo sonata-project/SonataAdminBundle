@@ -1,8 +1,10 @@
 jQuery(document).ready(function() {
+    jQuery('html').removeClass('no-js');
     Admin.add_pretty_errors(document);
     Admin.add_collapsed_toggle();
     Admin.add_filters(document);
     Admin.set_object_field_value(document);
+    Admin.setup_collection_buttons(document);
 });
 
 var Admin = {
@@ -142,6 +144,24 @@ var Admin = {
                     }
                 }
             });
+        });
+    },
+
+    setup_collection_buttons: function(subject) {
+
+        jQuery(subject).on('click', '.sonata-collection-add', function(event) {
+            Admin.stopEvent(event);
+
+            var container = jQuery(this).closest('[data-prototype]');
+            var proto = container.attr('data-prototype');
+            proto = proto.replace(/\$\$name\$\$/g, '');
+            jQuery(proto).insertBefore(jQuery(this).parent());
+        });
+
+        jQuery(subject).on('click', '.sonata-collection-delete', function(event) {
+            Admin.stopEvent(event);
+
+            jQuery(this).closest('.sonata-collection-row').remove();
         });
     }
 }

@@ -217,3 +217,21 @@ body.sonata-bc {
 {
     top: auto;
 }
+
+.sonata-collection-add, .sonata-collection-delete {
+    display: inline-block;
+    width: 16px;
+    height: 28px;
+    background: url(../famfamfam/add.png) no-repeat 50% 50%;
+}
+
+.sonata-collection-delete {
+    background-image: url(../famfamfam/delete.png);
+    float: left;
+    margin-top: 5px;
+}
+
+.no-js .sonata-collection-add, .no-js .sonata-collection-delete {
+    display: none;
+}
+
