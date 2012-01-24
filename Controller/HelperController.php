@@ -125,6 +125,8 @@ class HelperController
             $admin->setUniqid($uniqid);
         }
 
+        $admin->setSubject($subject);
+        
         $formBuilder = $admin->getFormBuilder($subject);
 
         $form = $formBuilder->getForm();
