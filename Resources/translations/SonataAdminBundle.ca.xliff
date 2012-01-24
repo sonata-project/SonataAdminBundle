@@ -76,7 +76,7 @@
             </trans-unit>
             <trans-unit id="title_edit">
                 <source>title_edit</source>
-                <target>Edita</target>
+                <target>Edita "%name%"</target>
             </trans-unit>
             <trans-unit id="title_list">
                 <source>title_list</source>
@@ -92,11 +92,11 @@
             </trans-unit>
             <trans-unit id="link_first_pager">
                 <source>link_first_pager</source>
-                <target>link_first_pager</target>
+                <target>Primer</target>
             </trans-unit>
             <trans-unit id="link_last_pager">
                 <source>link_last_pager</source>
-                <target>link_last_pager</target>
+                <target>Últim</target>
             </trans-unit>
             <trans-unit id="Admin">
                 <source>Admin</source>
@@ -163,7 +163,7 @@
               <target>S'ha eliminat correctament l'element.</target>
             </trans-unit>
             <trans-unit id="link_breadcrumb_dashboard">
-                <source>breadcrumb.link_dashboard</source>
+                <source>breadcrumb.dashboard</source>
                 <target>&#8962;</target>
             </trans-unit>
             <trans-unit id="title_delete">
@@ -230,6 +230,42 @@
               <source>label_type_less_than</source>
               <target>&lt;</target>
             </trans-unit>
+            <trans-unit id="label_date_type_equal">
+              <source>label_date_type_equal</source>
+              <target>=</target>
+            </trans-unit>
+            <trans-unit id="label_date_type_greater_equal">
+              <source>label_date_type_greater_equal</source>
+              <target>&gt;=</target>
+            </trans-unit>
+            <trans-unit id="label_date_type_greater_than">
+              <source>label_date_type_greater_than</source>
+              <target>&gt;</target>
+            </trans-unit>
+            <trans-unit id="label_date_type_less_equal">
+              <source>label_date_type_less_equal</source>
+              <target>&lt;=</target>
+            </trans-unit>
+            <trans-unit id="label_date_type_less_than">
+              <source>label_date_type_less_than</source>
+              <target>&lt;</target>
+            </trans-unit>
+            <trans-unit id="label_date_type_null">
+              <source>label_date_type_null</source>
+              <target>està buit</target>
+            </trans-unit>
+            <trans-unit id="label_date_type_not_null">
+              <source>label_date_type_not_null</source>
+              <target>no està buit</target>
+            </trans-unit>
+            <trans-unit id="label_date_type_between">
+              <source>label_date_type_between</source>
+              <target>entre</target>
+            </trans-unit>
+            <trans-unit id="label_date_not_between">
+              <source>label_date_type_not_between</source>
+              <target>no entre</target>
+            </trans-unit>
             <trans-unit id="label_filters">
               <source>label_filters</source>
               <target>Filtres</target>
@@ -237,6 +273,30 @@
             <trans-unit id="delete_or">
               <source>delete_or</source>
               <target>o</target>
+            </trans-unit>
+            <trans-unit id="link_action_history">
+                <source>link_action_history</source>
+                <target>Revisions</target>
+            </trans-unit>
+            <trans-unit id="td_action">
+                <source>td_action</source>
+                <target>Acció</target>
+            </trans-unit>
+            <trans-unit id="td_revision">
+                <source>td_revision</source>
+                <target>Revisions</target>
+            </trans-unit>
+            <trans-unit id="td_timestamp">
+                <source>td_timestamp</source>
+                <target>Data</target>
+            </trans-unit>
+            <trans-unit id="td_username">
+                <source>td_username</source>
+                <target>Autor</target>
+            </trans-unit>
+            <trans-unit id="label_view_revision">
+                <source>label_view_revision</source>
+                <target>Mostrar revisió</target>
             </trans-unit>
         </body>
     </file>
