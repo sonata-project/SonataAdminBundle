@@ -270,10 +270,12 @@
               <source>label_filters</source>
               <target>Filtres</target>
             </trans-unit>
+            
             <trans-unit id="delete_or">
               <source>delete_or</source>
               <target>o</target>
             </trans-unit>
+            
             <trans-unit id="link_action_history">
                 <source>link_action_history</source>
                 <target>Revisions</target>
