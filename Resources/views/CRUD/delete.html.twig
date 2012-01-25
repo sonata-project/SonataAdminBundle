@@ -40,7 +40,7 @@ file that was distributed with this source code.
 
                 <input type="submit" class="btn danger" value="{% trans from 'SonataAdminBundle' %}btn_delete{% endtrans %}" />
 
-                {% if admin.hasRoute('edit') and admin.isGranted('EDIT') %}
+                {% if admin.hasRoute('edit') and admin.isGranted('EDIT', object) %}
                     {% trans from 'SonataAdminBundle' %}delete_or{% endtrans %}
 
                     <a class="btn success" href="{{ admin.generateObjectUrl('edit', object) }}">{% trans from 'SonataAdminBundle' %}link_action_edit{% endtrans %}</a>
