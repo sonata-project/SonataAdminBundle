@@ -34,16 +34,23 @@ file that was distributed with this source code.
 
         {% trans from 'SonataAdminBundle' %}message_batch_confirmation{% endtrans %}
 
-        <form action="{{ admin.generateUrl('batch', admin.filterParameters) }}" method="POST" >
-            <input type="hidden" name="confirmation" value="ok" />
-            <input type="hidden" name="data" value="{{ data }}" />
+        <div class="actions">
+            <form action="{{ admin.generateUrl('batch', admin.filterParameters) }}" method="POST" >
+                <input type="hidden" name="confirmation" value="ok" />
+                <input type="hidden" name="data" value="{{ data }}" />
 
-            <div style="display: none">
-                {{ form_rest(form) }}
-            </div>
+                <div style="display: none">
+                    {{ form_rest(form) }}
+                </div>
 
-            <input type="submit" value="{% trans from 'SonataAdminBundle' %}btn_execute_batch_action{% endtrans %}" />
-        </form>
+                <input type="submit" class="btn danger" value="{% trans from 'SonataAdminBundle' %}btn_execute_batch_action{% endtrans %}" />
 
+                {% if admin.hasRoute('list') and admin.isGranted('LIST') %}
+                    {% trans from 'SonataAdminBundle' %}delete_or{% endtrans %}
+
+                    <a class="btn success" href="{{ admin.generateUrl('list') }}">{% trans from 'SonataAdminBundle' %}link_action_list{% endtrans %}</a>
+                {% endif %}
+            </form>
+        </div>
     </div>
 {% endblock %}
