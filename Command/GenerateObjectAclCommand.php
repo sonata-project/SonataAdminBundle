@@ -84,7 +84,7 @@ class GenerateObjectAclCommand extends ContainerAwareCommand
                 $securityIdentity = new UserSecurityIdentity($username, $this->getUserEntityClass($input, $output));
             }
             if (!$input->getOption('step') && $input->getOption('object_owner')) {
-                $securityIdentity = new UserSecurityIdentity($this->getOption('object_owner'), $this->getUserEntityClass($input, $output));
+                $securityIdentity = new UserSecurityIdentity($input->getOption('object_owner'), $this->getUserEntityClass($input, $output));
             }
 
             $manipulatorId = sprintf('sonata.admin.manipulator.acl.object.%s', $admin->getManagerType());
@@ -106,7 +106,7 @@ class GenerateObjectAclCommand extends ContainerAwareCommand
     {
         if ($this->userEntityClass === '') {
             if ($input->getOption('user_entity')) {
-               list($userBundle, $userEntity) = Sonata\AdminBundle\Command\Validators::validateEntityName($this->getOption('user_entity'));
+               list($userBundle, $userEntity) = Validators::validateEntityName($input->getOption('user_entity'));
                $this->userEntityClass = $this->getContainer()->get('doctrine')->getEntityNamespace($userBundle).'\\'.$userEntity;
             } else {
                 list($userBundle, $userEntity) = $this->getHelperSet()->get('dialog')->askAndValidate($output, 'Please enter the User Entity shortcut name: ', 'Sonata\AdminBundle\Command\Validators::validateEntityName');
