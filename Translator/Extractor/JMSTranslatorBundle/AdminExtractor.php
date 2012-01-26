@@ -177,6 +177,32 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
      */
     public function buildSecurityInformation(AdminInterface $admin)
     {
+    }
+
+    /**
+     * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
+     * @param $object
+     * @return void
+     */
+    public function createObjectSecurity(AdminInterface $admin, $object)
+    {
+    }
+
+    /**
+     * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
+     * @param $object
+     * @return void
+     */
+    public function deleteObjectSecurity(AdminInterface $admin, $object)
+    {
+    }
+
+    /**
+     * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
+     * @return void
+     */
+    public function getBaseRole(AdminInterface $admin)
+    {
 
     }
 
