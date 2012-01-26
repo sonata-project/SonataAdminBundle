@@ -72,7 +72,7 @@
             </trans-unit>
             <trans-unit id="title_edit">
                 <source>title_edit</source>
-                <target>編集</target>
+                <target>編集 "%name%"</target>
             </trans-unit>
             <trans-unit id="title_list">
                 <source>title_list</source>
