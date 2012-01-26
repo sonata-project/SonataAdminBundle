@@ -194,4 +194,26 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
 
         return $label;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getBaseRole(AdminInterface $admin)
+    {
+        return '';
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function createObjectSecurity(AdminInterface $admin, $object)
+    {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function deleteObjectSecurity(AdminInterface $admin, $object)
+    {
+    }
 }
