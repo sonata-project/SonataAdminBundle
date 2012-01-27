@@ -71,5 +71,9 @@ class TranslatableChoiceType extends ChoiceType
         }
 
         $view->set('choices', $choices);
+
+        if ('' !== $view->get('empty_value') && null !== $view->get('empty_value')) {
+            $view->set('empty_value', $this->translator->trans($view->get('empty_value'), array(), $catalogue));
+        }
     }
 }
