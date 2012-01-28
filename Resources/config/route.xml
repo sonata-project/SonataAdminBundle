@@ -12,5 +12,9 @@
         <service id="sonata.admin.route.query_string" class="Sonata\AdminBundle\Route\QueryStringBuilder">
             <argument type="service" id="sonata.admin.audit.manager" />
         </service>
+
+        <service id="sonata.admin.route.default_generator" class="Sonata\AdminBundle\Route\DefaultRouteGenerator">
+            <argument type="service" id="router" />
+        </service>
     </services>
 </container>

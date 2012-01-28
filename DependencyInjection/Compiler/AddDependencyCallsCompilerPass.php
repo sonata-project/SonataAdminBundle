@@ -171,7 +171,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
             'datagrid_builder'          => sprintf('sonata.admin.builder.%s_datagrid', $manager_type),
             'translator'                => 'translator',
             'configuration_pool'        => 'sonata.admin.pool',
-            'router'                    => 'router',
+            'route_generator'           => 'sonata.admin.route.default_generator',
             'validator'                 => 'validator',
             'security_handler'          => 'sonata.admin.security.handler',
             'menu_factory'              => 'knp_menu.factory',

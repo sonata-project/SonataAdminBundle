@@ -33,6 +33,7 @@ use Sonata\AdminBundle\Builder\ListBuilderInterface;
 use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
 use Sonata\AdminBundle\Builder\ShowBuilderInterface;
 use Sonata\AdminBundle\Builder\RouteBuilderInterface;
+use Sonata\AdminBundle\Route\RouteGeneratorInterface;
 
 use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
 use Sonata\AdminBundle\Route\RouteCollection;
@@ -325,9 +326,9 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     /**
      * The router intance
      *
-     * @var \Symfony\Component\Routing\RouterInterface
+     * @var \Sonata\AdminBundle\Route\RouterGeneratorInterface
      */
-    protected $router;
+    protected $routeGenerator;
 
     /**
      * The generated breadcrumbs
@@ -908,7 +909,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
 
     /**
-     * generate the object url with the given $name
+     * Generates the object url with the given $name
      *
      * @param  string $name
      * @param  $object
@@ -916,15 +917,15 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      *
      * @return return a complete url
      */
-    public function generateObjectUrl($name, $object, array $parameters = array())
+    public function generateObjectUrl($name, $object, array $parameters = array(), $absolute = false)
     {
         $parameters['id'] = $this->getNormalizedIdentifier($object);
 
-        return $this->generateUrl($name, $parameters);
+        return $this->generateUrl($name, $parameters, $absolute);
     }
 
     /**
-     * generate the url with the given $name
+     * Generates the url with the given $name
      *
      * @throws RuntimeException
      * @param string $name
@@ -932,57 +933,9 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      *
      * @return return a complete url
      */
-    public function generateUrl($name, array $parameters = array())
+    public function generateUrl($name, array $parameters = array(), $absolute = false)
     {
-        if (!$this->isChild()) {
-            if (strpos($name, '.')) {
-                $name = $this->getCode().'|'.$name;
-            } else {
-                $name = $this->getCode().'.'.$name;
-            }
-        }
-        // if the admin is a child we automatically append the parent's id
-        else if ($this->isChild()) {
-            $name = $this->baseCodeRoute.'.'.$name;
-
-            // twig template does not accept variable hash key ... so cannot use admin.idparameter ...
-            // switch value
-            if (isset($parameters['id'])) {
-                $parameters[$this->getIdParameter()] = $parameters['id'];
-                unset($parameters['id']);
-            }
-
-            $parameters[$this->getParent()->getIdParameter()] = $this->request->get($this->getParent()->getIdParameter());
-        }
-
-        // if the admin is linked to a parent FieldDescription (ie, embedded widget)
-        if ($this->hasParentFieldDescription()) {
-            // merge link parameter if any provided by the parent field
-            $parameters = array_merge($parameters, $this->getParentFieldDescription()->getOption('link_parameters', array()));
-
-            $parameters['uniqid']  = $this->getUniqid();
-            $parameters['code']    = $this->getCode();
-            $parameters['pcode']   = $this->getParentFieldDescription()->getAdmin()->getCode();
-            $parameters['puniqid'] = $this->getParentFieldDescription()->getAdmin()->getUniqid();
-        }
-
-        if ($name == 'update' || substr($name, -7) == '|update') {
-            $parameters['uniqid'] = $this->getUniqid();
-            $parameters['code']   = $this->getCode();
-        }
-
-        // allows to define persistent parameters
-        if ($this->hasRequest()) {
-            $parameters = array_merge($this->getPersistentParameters(), $parameters);
-        }
-
-        $route = $this->getRoute($name);
-
-        if (!$route) {
-            throw new \RuntimeException(sprintf('unable to find the route `%s`', $name));
-        }
-
-        return $this->router->generate($route->getDefault('_sonata_name'), $parameters);
+        return $this->routeGenerator->generateUrl($this, $name, $parameters, $absolute);
     }
 
     /**
@@ -1781,7 +1734,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
         $child = $menu->addChild(
             $this->trans($this->getLabelTranslatorStrategy()->getLabel('dashboard', 'breadcrumb', 'link'), array(), 'SonataAdminBundle'),
-            array('uri' => $this->router->generate('sonata_admin_dashboard'))
+            array('uri' => $this->routeGenerator->generate('sonata_admin_dashboard'))
         );
 
         $child = $child->addChild(
@@ -2071,20 +2024,20 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * @param \Symfony\Component\Routing\RouterInterface $router
+     * @param \Sonata\AdminBundle\Route\RouteGeneratorInterface $routeGenerator
      * @return void
      */
-    public function setRouter(RouterInterface $router)
+    public function setRouteGenerator(RouteGeneratorInterface $routeGenerator)
     {
-        $this->router = $router;
+        $this->routeGenerator = $routeGenerator;
     }
 
     /**
-     * @return \Symfony\Component\Routing\RouterInterface
+     * @return \Sonata\AdminBundle\Route\RouteGeneratorInterface
      */
-    public function getRouter()
+    public function getRouteGenerator()
     {
-        return $this->router;
+        return $this->routeGenerator;
     }
 
     public function getCode()
