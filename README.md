@@ -1,6 +1,8 @@
 SonataAdminBundle - The missing Symfony2 Admin Generator
 ========================================================
 
+[![Build Status](https://secure.travis-ci.org/sonata-project/SonataAdminBundle.png?branch=master)](http://travis-ci.org/sonata-project/SonataAdminBundle)
+
 The online documentation of the bundle is in http://sonata-project.org/bundles/admin
 
 For contribution to the documentation you can find it on [Resources/doc](https://github.com/sonata-project/SonataAdminBundle/tree/master/Resources/doc).
