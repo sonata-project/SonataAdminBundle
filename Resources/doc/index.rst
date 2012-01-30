@@ -8,6 +8,8 @@ Admin Bundle
 * `SonataDoctrineMongoDBAdminBundle <https://github.com/sonata-project/SonataDoctrineMongoDBAdminBundle>`_: Integrates MongoDB with the core admin bundle (early stage)
 * `SonataDoctrinePhpcrAdminBundle <https://github.com/sonata-project/SonataDoctrinePhpcrAdminBundle>`_: Integrates PHPCR with the core admin bundle (early stage)
 
+The demo website can be found in http://demo.sonata-project.org/admin/dashboard (admin as user and password)
+
 Reference Guide
 ---------------
 
