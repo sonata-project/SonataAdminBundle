@@ -12,51 +12,56 @@
 namespace Sonata\AdminBundle\Util;
 
 use Symfony\Component\Console\Output\OutputInterface;
-use Sonata\AdminBundle\Admin\AdminInterface;
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
+use Symfony\Component\Security\Acl\Exception\AclAlreadyExistsException;
+use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface;
 
 abstract class ObjectAclManipulator implements ObjectAclManipulatorInterface
 {
-    protected $securityHandler;
-
-    public function __construct(AclSecurityHandlerInterface $securityHandler)
-    {
-        $this->securityHandler = $securityHandler;
-    }
-
     /**
      * Configure the object ACL for the passed object identities
      *
+     * @param OutputInterface $output
      * @param AdminInterface $admin
      * @param array $oids an array of ObjectIdentityInterface implementations
      * @param UserSecurityIdentity $securityIdentity
      * @throws \Exception
      * @return array [countAdded, countUpdated]
      */
-    public function configureAcls(AdminInterface $admin, array $oids, UserSecurityIdentity $securityIdentity = null)
+    public function configureAcls(OutputInterface $output, AdminInterface $admin, array $oids, UserSecurityIdentity $securityIdentity = null)
     {
         $countAdded = 0;
         $countUpdated = 0;
+        $securityHandler = $admin->getSecurityHandler();
+        if (!$securityHandler instanceof AclSecurityHandlerInterface) {
+            $output->writeln(sprintf('Admin `%s` is not configured to use ACL : <info>ignoring</info>', $admin->getCode()));
+            return;
+        }
 
-        $acls = $this->securityHandler->findObjectAcls($oids);
+        $acls = $securityHandler->findObjectAcls($oids);
 
         foreach ($oids as $oid) {
             if ($acls->contains($oid)) {
                 $acl = $acls->offsetGet($oid);
                 $countUpdated++;
             } else {
-                $acl = $this->securityHandler->createAcl($oid);
+                $acl = $securityHandler->createAcl($oid);
                 $countAdded++;
             }
 
             if (!is_null($securityIdentity)) {
                 // add object owner
-                $this->securityHandler->addObjectOwner($acl, $securityIdentity);
+                $securityHandler->addObjectOwner($acl, $securityIdentity);
             }
 
-            $this->securityHandler->addObjectClassAces($acl, $this->securityHandler->buildSecurityInformation($admin));
-            $this->securityHandler->updateAcl($acl);
+            $securityHandler->addObjectClassAces($acl, $securityHandler->buildSecurityInformation($admin));
+
+            try {
+                $securityHandler->updateAcl($acl);
+            } catch(\Exception $e) {
+                $output->writeln(sprintf('Error saving ObjectIdentity (%s, %s) ACL : %s <info>ignoring</info>', $oid->getIdentifier(), $oid->getType(), $e->getMessage()));
+            }
         }
 
         return array($countAdded, $countUpdated);
