@@ -178,6 +178,10 @@ file that was distributed with this source code.
                             {#</td>#}
                         </tr>
                     </table>
+
+                    <input type="hidden" name="filter[_page]" id="filter__page" value="1" />
+
+                    {% set foo = form.getChild('_page').setRendered() %}
                     {{ form_rest(form) }}
 
                     <input type="submit" class="btn primary" value="{% trans from 'SonataAdminBundle' %}btn_filter{% endtrans %}" />
