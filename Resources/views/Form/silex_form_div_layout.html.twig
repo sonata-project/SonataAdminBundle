@@ -26,15 +26,15 @@
 
 {% block widget_choice_options %}
 {% spaceless %}
-    {% for choice, label in options %}
-        {% if _form_is_choice_group(label) %}
-            <optgroup label="{{ choice|trans }}">
-                {% for nestedChoice, nestedLabel in label %}
-                    <option value="{{ nestedChoice }}"{% if _form_is_choice_selected(form, nestedChoice) %} selected="selected"{% endif %}>{{ nestedLabel|trans }}</option>
+    {% for index, choice in options %}
+        {% if _form_is_choice_group(choice) %}
+            <optgroup label="{{ choice.label|trans }}">
+                {% for nestedIndex, nestedChoice in choice %}
+                    <option value="{{ nestedChoice.value }}"{% if _form_is_choice_selected(form, nestedChoice) %} selected="selected"{% endif %}>{{ nestedChoice.label|trans }}</option>
                 {% endfor %}
             </optgroup>
         {% else %}
-            <option value="{{ choice }}"{% if _form_is_choice_selected(form, choice) %} selected="selected"{% endif %}>{{ label|trans }}</option>
+            <option value="{{ choice.value }}"{% if _form_is_choice_selected(form, choice) %} selected="selected"{% endif %}>{{ choice.label|trans }}</option>
         {% endif %}
     {% endfor %}
 {% endspaceless %}
