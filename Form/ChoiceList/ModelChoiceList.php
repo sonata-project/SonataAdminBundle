@@ -14,10 +14,10 @@ namespace Sonata\AdminBundle\Form\ChoiceList;
 use Symfony\Component\Form\Util\PropertyPath;
 use Symfony\Component\Form\Exception\FormException;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
-use Symfony\Component\Form\Extension\Core\ChoiceList\ArrayChoiceList;
+use Symfony\Component\Form\Extension\Core\ChoiceList\SimpleChoiceList;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 
-class ModelChoiceList extends ArrayChoiceList
+class ModelChoiceList extends SimpleChoiceList
 {
     /**
      * @var \Sonata\AdminBundle\Model\ModelManagerInterface
