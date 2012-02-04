@@ -1,6 +1,7 @@
 jQuery(document).ready(function() {
     jQuery('html').removeClass('no-js');
     Admin.add_pretty_errors(document);
+    $('.dropdown-toggle').dropdown();
     Admin.add_collapsed_toggle();
     Admin.add_filters(document);
     Admin.set_object_field_value(document);

@@ -15,35 +15,37 @@ file that was distributed with this source code.
 {% block breadcrumb %}{% endblock %}
 {% block content %}
 
-    <div class="span7">
+    <div class="">
         {% for group in groups %}
-            <table class="zebra-striped sonata-ba-list bordered-table">
+            <table class="table table-striped table-bordered table-condensed">
                 <thead>
                     <tr>
-                        <th colspan="3">{{ group.label|trans({}, 'SonataAdminBundle') }}</th>
+                        <td>
+                            <h3>
+                                {{ group.label|trans({}, 'SonataAdminBundle') }}
+                            </h3>
+                        </td>
                     </tr>
                 </thead>
-
                 <tbody>
                     {% for admin in group.items %}
                         <tr>
-                            <td class="sonata-ba-list-label">{{ admin.label|trans({}, admin.translationdomain) }}</td>
                             <td>
-                                {% if admin.hasroute('create') and admin.isGranted('CREATE') %}
-                                    <a href="{{ admin.generateUrl('create')}}">
-                                        <img src="{{ asset('bundles/sonataadmin/famfamfam/add.png') }}"  alt="{%- trans from 'SonataAdminBundle' %}link_add{% endtrans -%}" />
-                                        {%- trans from 'SonataAdminBundle' %}link_add{% endtrans -%}
-                                    </a>
-                                {% endif %}
-                            </td>
-                            <td>
-                                {% if admin.hasroute('list') and admin.isGranted('LIST') %}
-                                    <a href="{{ admin.generateUrl('list')}}">
-                                        <img src="{{ asset('bundles/sonataadmin/famfamfam/application_view_list.png') }}" alt="{%- trans from 'SonataAdminBundle' %}link_list{% endtrans -%}" />
-                                        {%- trans from 'SonataAdminBundle' %}link_list{% endtrans -%}
-                                    </a>
-                                {% endif %}
-                            </td>
+                                <strong class="pull-left">
+                                    {{ admin.label|trans({}, admin.translationdomain) }}
+                                </strong>
+                                <div class="pull-right">
+                                    {% if admin.hasroute('create') and admin.isGranted('CREATE') %}
+                                        <a class="btn" href="{{ admin.generateUrl('create')}}">
+                                            <i class="icon-plus"></i> {%- trans from 'SonataAdminBundle' %}link_add{% endtrans -%}
+                                        </a>
+                                    {% endif %}
+                                    {% if admin.hasroute('list') and admin.isGranted('LIST') %}
+                                        <a class="btn" href="{{ admin.generateUrl('list')}}">
+                                            <i class="icon-list-alt"></i> {%- trans from 'SonataAdminBundle' %}link_list{% endtrans -%}
+                                        </a>
+                                    {% endif %}
+                                </div>
                         </tr>
                     {% endfor %}
                 </tbody>

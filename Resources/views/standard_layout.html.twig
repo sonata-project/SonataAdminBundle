@@ -19,18 +19,24 @@ file that was distributed with this source code.
 {% set _breadcrumb   = block('breadcrumb') %}
 <!DOCTYPE html>
 <html class="no-js">
+
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
         {% block stylesheets %}
-            <!-- jQuery code -->
             <link rel="stylesheet" href="{{ asset('bundles/sonatajquery/themes/flick/jquery-ui-1.8.16.custom.css') }}" type="text/css" media="all" />
 
-            <link rel="stylesheet" href="{{ asset('bundles/sonataadmin/bootstrap/bootstrap.min.css') }}" type="text/css" media="all" >
+            <link rel="stylesheet" href="{{ asset('bundles/sonataadmin/bootstrap/css/bootstrap.min.css') }}" type="text/css" media="all" >
+            <style type="text/css">
+              body {
+                padding-top: 40px;
+                padding-bottom: 40px;
+              }
+            </style>
+            <link rel="stylesheet" href="{{ asset('bundles/sonataadmin/bootstrap/css/bootstrap-responsive.min.css') }}" type="text/css" media="all" >
 
-            <!-- base application asset -->
-            <link rel="stylesheet" href="{{ asset('bundles/sonataadmin/css/layout.css') }}" type="text/css" media="all">
-            <link rel="stylesheet" href="{{ asset('bundles/sonataadmin/css/colors.css') }}" type="text/css" media="all">
+            <!--<link rel="stylesheet" href="{{ asset('bundles/sonataadmin/css/layout.css') }}" type="text/css" media="all">-->
+            <!--<link rel="stylesheet" href="{{ asset('bundles/sonataadmin/css/colors.css') }}" type="text/css" media="all">-->
         {% endblock %}
 
         {% block javascripts %}
@@ -38,13 +44,17 @@ file that was distributed with this source code.
             <script src="{{ asset('bundles/sonatajquery/jquery-ui-1.8.17.js') }}" type="text/javascript"></script>
             <script src="{{ asset('bundles/sonatajquery/jquery-ui-i18n.js') }}" type="text/javascript"></script>
 
-            <script src="{{ asset('bundles/sonataadmin/bootstrap/js/bootstrap-tabs.js') }}" type="text/javascript"></script>
-            <script src="{{ asset('bundles/sonataadmin/bootstrap/js/bootstrap-alerts.js') }}" type="text/javascript"></script>
+            <script src="{{ asset('bundles/sonataadmin/bootstrap/js/bootstrap-alert.js') }}" type="text/javascript"></script>
+            <script src="{{ asset('bundles/sonataadmin/bootstrap/js/bootstrap-button.js') }}" type="text/javascript"></script>
+            <script src="{{ asset('bundles/sonataadmin/bootstrap/js/bootstrap-carrousel.js') }}" type="text/javascript"></script>
+            <script src="{{ asset('bundles/sonataadmin/bootstrap/js/bootstrap-collapse.js') }}" type="text/javascript"></script>
+            <script src="{{ asset('bundles/sonataadmin/bootstrap/js/bootstrap-dropdown.js') }}" type="text/javascript"></script>
             <script src="{{ asset('bundles/sonataadmin/bootstrap/js/bootstrap-modal.js') }}" type="text/javascript"></script>
-            <script src="{{ asset('bundles/sonataadmin/bootstrap/js/bootstrap-twipsy.js') }}" type="text/javascript"></script>
             <script src="{{ asset('bundles/sonataadmin/bootstrap/js/bootstrap-popover.js') }}" type="text/javascript"></script>
             <script src="{{ asset('bundles/sonataadmin/bootstrap/js/bootstrap-scrollspy.js') }}" type="text/javascript"></script>
-            <script src="{{ asset('bundles/sonataadmin/bootstrap/js/bootstrap-dropdown.js') }}" type="text/javascript"></script>
+            <script src="{{ asset('bundles/sonataadmin/bootstrap/js/bootstrap-tab.js') }}" type="text/javascript"></script>
+            <script src="{{ asset('bundles/sonataadmin/bootstrap/js/bootstrap-tooltip.js') }}" type="text/javascript"></script>
+            <script src="{{ asset('bundles/sonataadmin/bootstrap/js/bootstrap-typeahead.js') }}" type="text/javascript"></script>
 
             <script src="{{ asset('bundles/sonataadmin/qtip/jquery.qtip-1.0.0-rc3.min.js') }}" type="text/javascript"></script>
             <script src="{{ asset('bundles/sonataadmin/jquery/jquery.form.js') }}" type="text/javascript"></script>
@@ -68,26 +78,35 @@ file that was distributed with this source code.
                 {% endif %}
             {% endif%}
         </title>
+
     </head>
+
     <body class="sonata-bc {% if _side_menu is empty %}sonata-ba-no-side-menu{% endif %}">
         {# initialize block value #}
 
-        <div class="topbar" data-dropdown="dropdown" >
-            <div class="topbar">
-                <div class="topbar-inner">
-                    <div class="container-fluid">
-                        {% if admin_pool is defined %}
-                            {% block logo %}
-                                <a href="{{ url('sonata_admin_dashboard') }}" class="brand">
-                                    <img src="{{ asset(admin_pool.titlelogo) }}"  alt="{{ admin_pool.title }}" />
-                                    {{ admin_pool.title }}
-                                </a>
-                            {% endblock %}
+        <div class="navbar navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container-fluid">
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+                    {% if admin_pool is defined %}
+                        {% block logo %}
+                            <a href="{{ url('sonata_admin_dashboard') }}" class="brand">
+                                <img src="{{ asset(admin_pool.titlelogo) }}"  alt="{{ admin_pool.title }}" />
+                                {{ admin_pool.title }}
+                            </a>
+                        {% endblock %}
+                        <div class="nav-collapse">
                             {% if app.user %}
                                 <ul class="nav">
                                     {% for group in admin_pool.dashboardgroups %}
                                         <li class="dropdown">
-                                            <a href="#" class="dropdown-toggle">{{ group.label|trans({}, 'SonataAdminBundle') }}</a>
+                                            <a data-toggle="dropdown" href="#" class="dropdown-toggle">{{ group.label|trans({}, 'SonataAdminBundle') }}
+                                                <b class="caret"></b>
+                                            </a>
                                             <ul class="dropdown-menu">
                                                 {% for admin in group.items %}
                                                     <li><a href="{{ admin.generateUrl('list')}}">{{ admin.label|trans({}, admin.translationdomain) }}</a></li>
@@ -97,10 +116,9 @@ file that was distributed with this source code.
                                     {% endfor %}
                                 </ul>
                             {% endif %}
-
-                            <p class="pull-right">{% include admin_pool.getTemplate('user_block') %}</p>
-                        {% endif %}
-                    </div>
+                            <p class="navbar-text pull-right">{% include admin_pool.getTemplate('user_block') %}</p>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -112,7 +130,10 @@ file that was distributed with this source code.
                         {% if action is defined %}
                             {% for label, uri in admin.breadcrumbs(action) %}
                                 {% if not loop.last  %}
-                                    <li><a href="{{ uri }}">{{ label }}</a><span class="divider">/</span></li>
+                                    <li>
+                                        <a href="{{ uri }}">{{ label }}</a>
+                                        <span class="divider">/</span>
+                                    </li>
                                 {% else %}
                                     <li class="active">{{ label }}</li>
                                 {% endif %}
@@ -136,7 +157,7 @@ file that was distributed with this source code.
                 {% endfor %}
             {% endblock %}
 
-            <div style="float: right">
+            <div class="pull-right">
                 {%block actions %}{% endblock %}
             </div>
 
@@ -162,40 +183,42 @@ file that was distributed with this source code.
                 </div>
             {% endif %}
 
-            <div class="content">
+            <div class="content row">
 
                 {% if _preview is not empty %}
-                    <div class="sonata-ba-preview">{{ _preview|raw }}</div>
+                    <div class="sonata-ba-preview span6">{{ _preview|raw }}</div>
                 {% endif %}
 
 
                 {% if _content is not empty %}
-                    <div class="sonata-ba-content">{{ _content|raw }}</div>
+                    <div class="sonata-ba-content span6">{{ _content|raw }}</div>
                 {% endif %}
 
                 {% if _show is not empty %}
-                    <div class="sonata-ba-show">{{ _show|raw }}</div>
+                    <div class="sonata-ba-show" span6>{{ _show|raw }}</div>
                 {% endif %}
 
                 {% if _form is not empty %}
-                    <div class="sonata-ba-form">{{ _form|raw }}</div>
+                    <div class="sonata-ba-form" span6>{{ _form|raw }}</div>
                 {% endif %}
 
                 {% if _list_table is not empty or _list_filters is not empty %}
-                    <div class="sonata-ba-filter">
+                    <div class="sonata-ba-filter span6">
                         {{ _list_filters|raw }}
                     </div>
-                    <div class="sonata-ba-list">
+                    <div class="sonata-ba-list span6">
                         {{ _list_table|raw }}
                     </div>
                 {% endif %}
 
-                {% block footer %}
-                    <div class="pull-right clearfix">
-                        <span class="label"><a href="http://sonata-project.org" rel="noreferrer" style="text-decoration: none; color: black">Sonata Project</a></span>
-                    </div>
-                {% endblock %}
             </div>
+
+            {% block footer %}
+                <div class="footer">
+                    <span class="pull-right label"><a href="http://sonata-project.org" rel="noreferrer" style="text-decoration: none; color: black">Sonata Project</a></span>
+                </div>
+            {% endblock %}
+
         </div>
     </body>
 </html>
