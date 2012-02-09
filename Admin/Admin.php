@@ -1889,6 +1889,27 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
+     * translate a message id
+     *
+     * @param string $id
+     * @param array $parameters
+     * @param null $domain
+     * @param null $locale
+     * @return string the translated string
+     */
+    public function transChoice($id, $count, array $parameters = array(), $domain = null, $locale = null)
+    {
+        $domain = $domain ?: $this->translationDomain;
+
+        if (!$this->translator) {
+            return $id;
+        }
+
+        return $this->translator->transChoice($id, $count, $parameters, $domain, $locale);
+    }
+
+
+    /**
      * set the translation domain
      *
      * @param string $translationDomain the translation domain
