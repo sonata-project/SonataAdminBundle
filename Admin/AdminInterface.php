@@ -416,4 +416,12 @@ interface AdminInterface
      * @return void
      */
     function createObjectSecurity($object);
+
+    /**
+     * Returns the url defined by the $name
+     *
+     * @param strinf $name
+     * @return Route
+     */
+    function getRoute($name);
 }
