@@ -70,7 +70,7 @@ class ListMapper
                 $fieldDescriptionOptions
             );
         } else {
-            throw new \RuntimeException('invalid state');
+            throw new \RuntimeException('Unknown or duplicate field name in list mapper. Field name should be either of FieldDescriptionInterface interface or string. Names should be unique.');
         }
 
         if (!$fieldDescription->getLabel()) {
