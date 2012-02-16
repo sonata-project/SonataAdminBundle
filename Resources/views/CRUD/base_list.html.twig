@@ -150,11 +150,11 @@ file that was distributed with this source code.
 
 {% block list_filters %}
     {% if admin.datagrid.filters %}
-        <form class="accordion sonata-filter-form {{ admin.isChild and 1 == admin.datagrid.filters|length ? 'hide' : '' }}" action="{{ admin.generateUrl('list') }}" method="GET">
-            <fieldset class="filter_legend accordion-group">
-                <legend class="filter_legend accordion-heading">{% trans from 'SonataAdminBundle' %}label_filters{% endtrans %}</legend>
+        <form class="sonata-filter-form {{ admin.isChild and 1 == admin.datagrid.filters|length ? 'hide' : '' }}" action="{{ admin.generateUrl('list') }}" method="GET">
+            <fieldset class="filter_legend">
+                <legend class="filter_legend" data-toggle="collapse" data-target=".filter_container">{% trans from 'SonataAdminBundle' %}label_filters{% endtrans %}</legend>
 
-                <div class="filter_container">
+                <div id="filter_container" class="filter_container collapse">
                     <table>
                         <tr>
                             <td>
