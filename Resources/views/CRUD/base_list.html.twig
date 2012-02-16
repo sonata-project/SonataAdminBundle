@@ -27,7 +27,7 @@ file that was distributed with this source code.
     {% set batchactions = admin.batchactions %}
     {% if admin.datagrid.results|length > 0 %}
         <form action="{{ admin.generateUrl('batch', admin.filterParameters) }}" method="POST" >
-            <table class="zebra-striped bordered-table">
+            <table class="table table-striped table-bordered">
                 {% block table_header %}
                     <thead>
                         <tr class="sonata-ba-list-field-header">
@@ -74,9 +74,9 @@ file that was distributed with this source code.
                 {% block table_footer %}
                     {% if admin.datagrid.pager.haveToPaginate() %}
                         <tr>
-                            <td colspan="{{ admin.list.elements|length }}" class="pager">
+                            <td colspan="{{ admin.list.elements|length }}" class="">
 
-                                <div class="pagination">
+                                <div class="pagination pagination-centered">
                                   <ul>
 
                                       {% if admin.datagrid.pager.page != 1  %}
@@ -150,9 +150,9 @@ file that was distributed with this source code.
 
 {% block list_filters %}
     {% if admin.datagrid.filters %}
-        <form class="sonata-filter-form form-stacked {{ admin.isChild and 1 == admin.datagrid.filters|length ? 'hide' : '' }}" action="{{ admin.generateUrl('list') }}" method="GET">
-            <fieldset class="filter_legend">
-                <legend class="filter_legend">{% trans from 'SonataAdminBundle' %}label_filters{% endtrans %}</legend>
+        <form class="accordion sonata-filter-form {{ admin.isChild and 1 == admin.datagrid.filters|length ? 'hide' : '' }}" action="{{ admin.generateUrl('list') }}" method="GET">
+            <fieldset class="filter_legend accordion-group">
+                <legend class="filter_legend accordion-heading">{% trans from 'SonataAdminBundle' %}label_filters{% endtrans %}</legend>
 
                 <div class="filter_container">
                     <table>

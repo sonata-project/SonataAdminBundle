@@ -23,6 +23,7 @@ file that was distributed with this source code.
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
+        <meta name="viewport" content="initial-scale=1.0, width=device-width;"/>
         {% block stylesheets %}
             <link rel="stylesheet" href="{{ asset('bundles/sonatajquery/themes/flick/jquery-ui-1.8.16.custom.css') }}" type="text/css" media="all" />
 
@@ -183,30 +184,30 @@ file that was distributed with this source code.
                 </div>
             {% endif %}
 
-            <div class="content row">
+            <div class="content">
 
                 {% if _preview is not empty %}
-                    <div class="sonata-ba-preview span6">{{ _preview|raw }}</div>
+                    <div class="sonata-ba-preview row-fluid">{{ _preview|raw }}</div>
                 {% endif %}
 
 
                 {% if _content is not empty %}
-                    <div class="sonata-ba-content span6">{{ _content|raw }}</div>
+                    <div class="sonata-ba-content row-fluid">{{ _content|raw }}</div>
                 {% endif %}
 
                 {% if _show is not empty %}
-                    <div class="sonata-ba-show" span6>{{ _show|raw }}</div>
+                    <div class="sonata-ba-show row-fluid">{{ _show|raw }}</div>
                 {% endif %}
 
                 {% if _form is not empty %}
-                    <div class="sonata-ba-form" span6>{{ _form|raw }}</div>
+                    <div class="sonata-ba-form row-fluid">{{ _form|raw }}</div>
                 {% endif %}
 
                 {% if _list_table is not empty or _list_filters is not empty %}
-                    <div class="sonata-ba-filter span6">
+                    <div class="sonata-ba-filter row-fluid">
                         {{ _list_filters|raw }}
                     </div>
-                    <div class="sonata-ba-list span6">
+                    <div class="sonata-ba-list row-fluid">
                         {{ _list_table|raw }}
                     </div>
                 {% endif %}

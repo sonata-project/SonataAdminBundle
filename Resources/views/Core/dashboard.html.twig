@@ -11,10 +11,13 @@ file that was distributed with this source code.
 
 {% extends base_template %}
 
-{% block title %}{% trans from 'SonataAdminBundle' %}title_dashboard{% endtrans %}{% endblock%}
-{% block breadcrumb %}{% endblock %}
-{% block content %}
+{% block title %}
+    {% trans from 'SonataAdminBundle' %}title_dashboard{% endtrans %}
+{% endblock%}
 
+{% block breadcrumb %}{% endblock %}
+
+{% block content %}
     <div class="">
         {% for group in groups %}
             <table class="table table-striped table-bordered table-condensed">
