@@ -12,11 +12,9 @@ file that was distributed with this source code.
 {% extends 'SonataAdminBundle:CRUD:base_show_field.html.twig' %}
 
 {% block field %}
-{% spaceless %}
     {% if value %}
-        <img src="{{ asset('bundles/sonataadmin/famfamfam/accept.png') }}" alt="{%- trans from 'SonataAdminBundle' %}label_type_yes{% endtrans -%}" />
+        <span class="label label-success"><i class="icon-ok icon-white"> </i> {%- trans from 'SonataAdminBundle' %}label_type_yes{% endtrans -%}</span>
     {% else %}
-        <img src="{{ asset('bundles/sonataadmin/famfamfam/exclamation.png') }}" alt="{%- trans from 'SonataAdminBundle' %}label_type_no{% endtrans -%}" />
+        <span class="label label-important"><i class="icon-remove icon-white"> </i> {%- trans from 'SonataAdminBundle' %}label_type_no{% endtrans -%}</span>
     {% endif %}
-{% endspaceless %}
 {% endblock %}
