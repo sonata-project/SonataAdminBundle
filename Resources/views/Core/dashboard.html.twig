@@ -20,7 +20,7 @@ file that was distributed with this source code.
 {% block content %}
     <div class="">
         {% for group in groups %}
-            <table class="table table-striped table-bordered table-condensed">
+            <table class="table table-bordered table-condensed">
                 <thead>
                     <tr>
                         <td>
@@ -40,12 +40,12 @@ file that was distributed with this source code.
                                 <div class="pull-right">
                                     {% if admin.hasroute('create') and admin.isGranted('CREATE') %}
                                         <a class="btn" href="{{ admin.generateUrl('create')}}">
-                                            <i class="icon-plus"></i> {%- trans from 'SonataAdminBundle' %}link_add{% endtrans -%}
+                                            {%- trans from 'SonataAdminBundle' %}link_add{% endtrans -%}
                                         </a>
                                     {% endif %}
                                     {% if admin.hasroute('list') and admin.isGranted('LIST') %}
                                         <a class="btn" href="{{ admin.generateUrl('list')}}">
-                                            <i class="icon-list-alt"></i> {%- trans from 'SonataAdminBundle' %}link_list{% endtrans -%}
+                                            {%- trans from 'SonataAdminBundle' %}link_list{% endtrans -%}
                                         </a>
                                     {% endif %}
                                 </div>

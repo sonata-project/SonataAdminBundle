@@ -15,18 +15,18 @@ file that was distributed with this source code.
 {% if field_description.options.editable is defined and field_description.options.editable and admin.isGranted('EDIT', object) %}
     {% if value %}
         <a href="{{ url('sonata_admin_set_object_field_value', { 'context': 'list', 'field': field_description.name, 'objectId': admin.id(object), 'value': 0, 'code': admin.code(object) }) }}" class="sonata-ba-action sonata-ba-edit-inline">
-            <span class="label label-success"><i class="icon-ok icon-white"> </i> {%- trans from 'SonataAdminBundle' %}label_type_yes{% endtrans -%}</span>
+            <span class="label label-success">{%- trans from 'SonataAdminBundle' %}label_type_yes{% endtrans -%}</span>
         </a>
     {% else %}
         <a href="{{ url('sonata_admin_set_object_field_value', { 'context': 'list', 'field': field_description.name, 'objectId': admin.id(object), 'value': 1, 'code': admin.code(object) }) }}" class="sonata-ba-action sonata-ba-edit-inline">
-            <span class="label label-important"><i class="icon-remove icon-white"> </i> {%- trans from 'SonataAdminBundle' %}label_type_no{% endtrans -%}</span>
+            <span class="label label-important">{%- trans from 'SonataAdminBundle' %}label_type_no{% endtrans -%}</span>
         </a>
     {% endif %}
 {% else %}
     {% if value %}
-        <span class="label label-success"><i class="icon-ok icon-white"> </i> {%- trans from 'SonataAdminBundle' %}label_type_yes{% endtrans -%}</span>
+        <span class="label label-success">{%- trans from 'SonataAdminBundle' %}label_type_yes{% endtrans -%}</span>
     {% else %}
-        <span class="label label-important"><i class="icon-remove icon-white"> </i> {%- trans from 'SonataAdminBundle' %}label_type_no{% endtrans -%}</span>
+        <span class="label label-important">{%- trans from 'SonataAdminBundle' %}label_type_no{% endtrans -%}</span>
     {% endif %}
 {% endif %}
 {% endblock %}

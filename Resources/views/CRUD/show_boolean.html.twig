@@ -13,8 +13,8 @@ file that was distributed with this source code.
 
 {% block field %}
     {% if value %}
-        <span class="label label-success"><i class="icon-ok icon-white"> </i> {%- trans from 'SonataAdminBundle' %}label_type_yes{% endtrans -%}</span>
+        <span class="label label-success">{%- trans from 'SonataAdminBundle' %}label_type_yes{% endtrans -%}</span>
     {% else %}
-        <span class="label label-important"><i class="icon-remove icon-white"> </i> {%- trans from 'SonataAdminBundle' %}label_type_no{% endtrans -%}</span>
+        <span class="label label-important">{%- trans from 'SonataAdminBundle' %}label_type_no{% endtrans -%}</span>
     {% endif %}
 {% endblock %}
