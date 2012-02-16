@@ -125,7 +125,7 @@ file that was distributed with this source code.
                     });
                 </script>
 
-                <div class="actions sonata-ba-list-actions">
+                <div class="form-inline actions sonata-ba-list-actions">
                     <select name="action">
                         {% for action, options in batchactions %}
                             <option value="{{ action }}">{{ options.label }}</option>
@@ -137,7 +137,7 @@ file that was distributed with this source code.
                         {% trans from 'SonataAdminBundle' %}all_elements{% endtrans %}
                     </label>
 
-                    <input type="submit" class="btn primary" value="{% trans from 'SonataAdminBundle' %}btn_batch{% endtrans %}" />
+                    <input type="submit" class="btn btn-primary" value="{% trans from 'SonataAdminBundle' %}btn_batch{% endtrans %}" />
                 </div>
             {% endif %}
         </form>
@@ -184,7 +184,7 @@ file that was distributed with this source code.
                     {% set foo = form.getChild('_page').setRendered() %}
                     {{ form_rest(form) }}
 
-                    <input type="submit" class="btn primary" value="{% trans from 'SonataAdminBundle' %}btn_filter{% endtrans %}" />
+                    <input type="submit" class="btn btn-primary" value="{% trans from 'SonataAdminBundle' %}btn_filter{% endtrans %}" />
 
                     <a class="btn" href="{{ admin.generateUrl('list') }}">{% trans from 'SonataAdminBundle' %}link_reset_filter{% endtrans %}</a>
 
