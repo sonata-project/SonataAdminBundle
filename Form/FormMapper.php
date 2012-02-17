@@ -80,8 +80,10 @@ class FormMapper
             $this->with($this->admin->getLabel());
         }
 
+        $label = $name instanceof FormBuilder ? $name->getName() : $name;
+
         $formGroups = $this->admin->getFormGroups();
-        $formGroups[$this->currentGroup]['fields'][$name] = $name;
+        $formGroups[$this->currentGroup]['fields'][$label] = $label;
         $this->admin->setFormGroups($formGroups);
 
         if (!isset($fieldDescriptionOptions['type']) && is_string($type)) {
