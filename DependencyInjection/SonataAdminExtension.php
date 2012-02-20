@@ -110,7 +110,8 @@ class SonataAdminExtension extends Extension
             'text'     => 'sonata-medium',
             'choice'   => 'sonata-medium',
             'integer'  => 'sonata-medium',
-            'datetime' => 'sonata-medium-date'
+            'datetime' => 'sonata-medium-date',
+            'date' => 'sonata-medium-date'
         );
 
         $container->getDefinition('sonata.admin.form.extension.field')
