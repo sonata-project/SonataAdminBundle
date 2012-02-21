@@ -72,7 +72,7 @@ body.sonata-bc {
 }
 
 .sonata-bc fieldset.filter_legend table {
-    margin: 0;
+    margin: 10px 0;
 }
 
 .sonata-bc legend.filter_legend {
