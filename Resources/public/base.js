@@ -154,7 +154,7 @@ var Admin = {
 
             var container = jQuery(this).closest('[data-prototype]');
             var proto = container.attr('data-prototype');
-            proto = proto.replace(/\$\$name\$\$/g, '');
+            proto = proto.replace(/\$\$name\$\$/g, container.children().length);
             jQuery(proto).insertBefore(jQuery(this).parent());
         });
 
