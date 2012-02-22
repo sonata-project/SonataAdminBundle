@@ -152,12 +152,12 @@ file that was distributed with this source code.
     {% if admin.datagrid.filters %}
         <form class="sonata-filter-form form-stacked {{ admin.isChild and 1 == admin.datagrid.filters|length ? 'hide' : '' }}" action="{{ admin.generateUrl('list') }}" method="GET">
             <fieldset class="filter_legend">
-                <legend class="filter_legend">{% trans from 'SonataAdminBundle' %}label_filters{% endtrans %}</legend>
+                <legend class="filter_legend {{ admin.datagrid.hasActiveFilters ? 'active' : 'inactive' }}">{% trans from 'SonataAdminBundle' %}label_filters{% endtrans %}</legend>
 
-                <div class="filter_container">
+                <div class="filter_container {{ admin.datagrid.hasActiveFilters ? 'active' : 'inactive' }}">
                     <table class="bordered-table">
                         {% for filter in admin.datagrid.filters %}
-                            <tr id="filter_{{ filter.name }}_row">
+                        <tr id="filter_{{ filter.name }}_row" class="filter {{ admin.datagrid.hasActiveFilter(filter.name) ? 'active' : 'inactive' }}">
                                 <td class="filter-title">{{ admin.trans(filter.label) }}</td>
                                 <td class="filter-type">{{ form_widget(form.getChild(filter.name).getChild('type')) }}</td>
                                 <td class="filter-value">{{ form_widget(form.getChild(filter.name).getChild('value')) }}</td>

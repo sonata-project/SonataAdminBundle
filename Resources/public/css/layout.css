@@ -85,6 +85,13 @@ body.sonata-bc {
     padding-left: 0;
 }
 
+
+.sonata-bc legend.filter_legend.active,
+.sonata-bc tr.filter.active * {
+    font-weight: bold;
+    color: #000;
+}
+
 .sonata-bc table.sonata-ba-list td {
     width: 75px;
 }
