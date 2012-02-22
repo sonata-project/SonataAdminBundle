@@ -96,4 +96,17 @@ interface DatagridInterface
      * @param $name
      */
     function removeFilter($name);
+
+    /**
+     * @abstract
+     * @return boolean
+     */
+    public function hasActiveFilters();
+
+    /**
+     * @abstract
+     * @param $name
+     * @return bool
+     */
+    public function hasActiveFilter($name);
 }

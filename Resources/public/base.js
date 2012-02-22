@@ -111,7 +111,7 @@ var Admin = {
     },
 
     add_filters: function(subject) {
-        jQuery('div.filter_container', subject).hide();
+        jQuery('div.filter_container.inactive', subject).hide();
         jQuery('fieldset.filter_legend', subject).click(function(event) {
            jQuery('div.filter_container', jQuery(event.target).parent()).toggle();
         });
