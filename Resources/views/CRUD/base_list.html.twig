@@ -72,6 +72,15 @@ file that was distributed with this source code.
                 {% endblock %}
 
                 {% block table_footer %}
+                    <tr>
+                        <th colspan="{{ admin.list.elements|length - 1 }}">
+                            {{ admin.datagrid.pager.page }} / {{ admin.datagrid.pager.lastpage }}
+                        </th>
+                        <th>
+                            {% transchoice admin.datagrid.pager.nbresults with {'%count%': admin.datagrid.pager.nbresults} from 'SonataAdminBundle' %}list_results_count{% endtranschoice %}
+                        </th>
+                    </tr>
+
                     {% if admin.datagrid.pager.haveToPaginate() %}
                         <tr>
                             <td colspan="{{ admin.list.elements|length }}" class="pager">
