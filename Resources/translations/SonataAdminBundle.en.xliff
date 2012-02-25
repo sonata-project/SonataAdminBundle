@@ -303,9 +303,8 @@
 
             <trans-unit id="list_results_count">
                 <source>list_results_count</source>
-                <target>{1}1 result|]1,Inf] %count% results</target>
+                <target>1 result|%count% results</target>
             </trans-unit>
-
         </body>
     </file>
 </xliff>
