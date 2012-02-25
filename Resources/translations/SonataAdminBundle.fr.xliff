@@ -261,7 +261,7 @@
 
             <trans-unit id="list_results_count">
                 <source>list_results_count</source>
-                <target>{1}1 résultat|]1,Inf] %count% résultats</target>
+                <target>1 résultat|%count% résultats</target>
             </trans-unit>
         </body>
     </file>
