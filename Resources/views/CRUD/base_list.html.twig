@@ -97,7 +97,7 @@ file that was distributed with this source code.
                                       {% endif %}
 
                                       {# Set the number of pages to display in the pager #}
-                                      {% for page in admin.datagrid.pager.getLinks(5) %}
+                                      {% for page in admin.datagrid.pager.getLinks() %}
                                           {% if page == admin.datagrid.pager.page %}
                                               <li class="active"><a href="{{ admin.generateUrl('list', admin.modelmanager.paginationparameters(admin.datagrid, page)) }}">{{ page }}</a></li>
                                           {% else %}
