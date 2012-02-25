@@ -110,6 +110,13 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     protected $maxPerPage = 25;
 
     /**
+     * The maximum number of page numbers to display in the list
+     *
+     * @var integer
+     */
+    protected $maxPageLinks = 25;
+
+    /**
      * The base route name used to generate the routing information
      *
      * @var string
@@ -651,6 +658,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         $this->datagrid = $this->getDatagridBuilder()->getBaseDatagrid($this, $this->getFilterParameters());
 
         $this->datagrid->getPager()->setMaxPerPage($this->maxPerPage);
+        $this->datagrid->getPager()->setMaxPageLinks($this->maxPageLinks);
 
         $mapper = new DatagridMapper($this->getDatagridBuilder(), $this->datagrid, $this);
 
@@ -1242,6 +1250,15 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     public function getMaxPerPage()
     {
         return $this->maxPerPage;
+    }
+    public function setMaxPageLinks($maxPageLinks)
+    {
+        $this->maxPageLinks = $maxPageLinks;
+    }
+
+    public function getMaxPageLinks()
+    {
+        return $this->maxPageLinks;
     }
 
     public function getFormGroups()
