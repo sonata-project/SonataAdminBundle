@@ -303,7 +303,7 @@
 
             <trans-unit id="list_results_count">
                 <source>list_results_count</source>
-                <target>list_results_count|list_results_count</target>
+                <target>1 záznam|%count% záznamy|%count% záznamov</target>
             </trans-unit>
         </body>
     </file>
