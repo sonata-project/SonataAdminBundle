@@ -266,10 +266,6 @@
               <source>label_date_type_not_between</source>
               <target>nicht zwischen</target>
             </trans-unit>
-            <trans-unit id="label_filters">
-              <source>label_filters</source>
-              <target>Filter</target>
-            </trans-unit>
 
             <trans-unit id="delete_or">
                 <source>delete_or</source>
