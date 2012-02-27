@@ -242,7 +242,7 @@
 
             <trans-unit id="list_results_count">
                 <source>list_results_count</source>
-                <target>list_results_count|list_results_count</target>
+                <target>%count% wynik|%count% wyniki|%count% wyników</target>
             </trans-unit>
         </body>
     </file>
