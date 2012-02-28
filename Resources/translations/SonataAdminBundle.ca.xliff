@@ -301,11 +301,11 @@
 
             <trans-unit id="list_results_count">
                 <source>list_results_count</source>
-                <target>list_results_count|list_results_count</target>
+                <target>1 resultat|%count% resultats</target>
             </trans-unit>
             <trans-unit id="label_export_download">
                 <source>label_export_download</source>
-                <target>label_export_download</target>
+                <target>Exportar: </target>
             </trans-unit>
         </body>
     </file>
