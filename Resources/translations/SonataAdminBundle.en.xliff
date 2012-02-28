@@ -305,6 +305,10 @@
                 <source>list_results_count</source>
                 <target>1 result|%count% results</target>
             </trans-unit>
+            <trans-unit id="label_export_download">
+                <source>label_export_download</source>
+                <target>Download : </target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

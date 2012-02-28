@@ -244,6 +244,10 @@
                 <source>list_results_count</source>
                 <target>%count% wynik|%count% wyniki|%count% wyników</target>
             </trans-unit>
+            <trans-unit id="label_export_download">
+                <source>label_export_download</source>
+                <target>label_export_download</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

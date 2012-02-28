@@ -38,6 +38,10 @@ in your ``deps`` file::
       git=http://github.com/KnpLabs/KnpMenu.git
       target=/knp/menu
 
+  [Exporter]
+      git=http://github.com/sonata-project/exporter.git
+      target=/exporter
+
 and run the vendors script to download bundles::
 
   php bin/vendors install
@@ -60,6 +64,7 @@ files:
     $loader->registerNamespaces(array(
         // ...
         'Sonata'     => __DIR__.'/../vendor/bundles',
+        'Exporter'   => __DIR__.'/../vendor/exporter/lib',
         'Knp\Bundle' => __DIR__.'/../vendor/bundles',
         'Knp\Menu'   => __DIR__.'/../vendor/knp/menu/src',
         // ...

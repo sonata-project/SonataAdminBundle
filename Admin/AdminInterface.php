@@ -138,7 +138,12 @@ interface AdminInterface
     function getCode();
 
     /**
-     * @return array
+     * Return the roles and permissions per role
+     * - different permissions per role for the acl handler
+     * - one permission that has the same name as the role for the role handler
+     * This should be used by experimented users
+     *
+     * @return array [role] => array([permission], [permission])
      */
     function getSecurityInformation();
 
@@ -412,8 +417,9 @@ interface AdminInterface
     function showIn($context);
 
     /**
+     * Add object security, fe. make the current user owner of the object
+     *
      * @param $object
-     * @return void
      */
     function createObjectSecurity($object);
 
