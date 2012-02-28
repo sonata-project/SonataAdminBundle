@@ -290,7 +290,7 @@
             </trans-unit>
             <trans-unit id="td_username">
                 <source>td_username</source>
-                <target>Author</target>
+                <target>Autor</target>
             </trans-unit>
             <trans-unit id="label_view_revision">
                 <source>label_view_revision</source>
