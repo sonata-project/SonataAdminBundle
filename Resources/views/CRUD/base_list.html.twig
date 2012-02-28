@@ -166,7 +166,7 @@ file that was distributed with this source code.
                 <div class="filter_container {{ admin.datagrid.hasActiveFilters ? 'active' : 'inactive' }}">
                     <table class="bordered-table">
                         {% for filter in admin.datagrid.filters %}
-                        <tr id="filter_{{ filter.name }}_row" class="filter {{ admin.datagrid.hasActiveFilter(filter.name) ? 'active' : 'inactive' }}">
+                        <tr id="filter_{{ filter.name }}_row" class="filter {{ filter.isActive ? 'active' : 'inactive' }}">
                                 <td class="filter-title">{{ admin.trans(filter.label) }}</td>
                                 <td class="filter-type">{{ form_widget(form.getChild(filter.name).getChild('type')) }}</td>
                                 <td class="filter-value">{{ form_widget(form.getChild(filter.name).getChild('value')) }}</td>
