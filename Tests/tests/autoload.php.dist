@@ -12,6 +12,7 @@ if (is_file($autoload)) {
     $loader->registerNamespaces(array(
         'Symfony'  => array($vendorDir.'/symfony/src'),
         'Knp'      => array($vendorDir.'/knpmenu/src'),
+        'Exporter' => array($vendorDir.'/exporter/lib'),
     ));
     $loader->registerPrefixes(array(
         'Twig_'            => $vendorDir.'/twig/lib',

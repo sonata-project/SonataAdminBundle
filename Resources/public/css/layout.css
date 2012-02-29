@@ -72,7 +72,7 @@ body.sonata-bc {
 }
 
 .sonata-bc fieldset.filter_legend table {
-    margin: 0;
+    margin: 10px 0;
 }
 
 .sonata-bc legend.filter_legend {
@@ -83,6 +83,13 @@ body.sonata-bc {
 
 .sonata-bc form.sonata-filter-form.form-stacked {
     padding-left: 0;
+}
+
+
+.sonata-bc legend.filter_legend.active,
+.sonata-bc tr.filter.active * {
+    font-weight: bold;
+    color: #000;
 }
 
 .sonata-bc table.sonata-ba-list td {

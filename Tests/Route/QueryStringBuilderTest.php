@@ -31,6 +31,6 @@ class QueryStringBuilderTest extends \PHPUnit_Framework_TestCase
 
         $pathBuilder->build($admin, $routeCollection);
 
-        $this->assertCount(8,$routeCollection->getElements());
+        $this->assertCount(9,$routeCollection->getElements());
     }
 }
