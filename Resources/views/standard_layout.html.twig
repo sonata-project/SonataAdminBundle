@@ -90,9 +90,7 @@ file that was distributed with this source code.
                                             <a href="#" class="dropdown-toggle">{{ group.label|trans({}, 'SonataAdminBundle') }}</a>
                                             <ul class="dropdown-menu">
                                                 {% for admin in group.items %}
-                                                    {% if admin.hasroute('create') and admin.isGranted('CREATE') or admin.hasroute('list') and admin.isGranted('LIST') %}
-                                                        <li><a href="{{ admin.generateUrl('list')}}">{{ admin.label|trans({}, admin.translationdomain) }}</a></li>
-                                                    {% endif %}
+                                                    <li><a href="{{ admin.generateUrl('list')}}">{{ admin.label|trans({}, admin.translationdomain) }}</a></li>
                                                 {% endfor %}
                                             </ul>
                                         </li>
