@@ -176,7 +176,8 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
             'security_handler'          => 'sonata.admin.security.handler',
             'menu_factory'              => 'knp_menu.factory',
             'route_builder'             => 'sonata.admin.route.path_info',
-            'label_translator_strategy' => 'sonata.admin.label.strategy.native'
+            'label_translator_strategy' => 'sonata.admin.label.strategy.native',
+            'securityContext'           => 'security.context',
         );
 
         $definition->addMethodCall('setManagerType', array($manager_type));
