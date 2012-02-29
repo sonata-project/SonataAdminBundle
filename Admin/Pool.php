@@ -67,7 +67,7 @@ class Pool
                 foreach ($adminGroup['items'] as $key => $id) {
                     $admin = $this->getInstance($id);
 
-                    if ($admin->showIn(Admin::CONTEXT_DASHBOARD)) {
+                    if ($admin->showIn(Admin::CONTEXT_DASHBOARD) && ($admin->hasroute('create') && $admin->isGranted('CREATE') || $admin->hasroute('list') && $admin->isGranted('LIST'))) {
                         $groups[$name]['items'][$key] = $admin;
                     } else {
                         unset($groups[$name]['items'][$key]);
