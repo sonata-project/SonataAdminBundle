@@ -1,0 +1,50 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{% extends 'SonataBlockBundle:Block:block_base.html.twig' %}
+
+{% block block %}
+    {% for group in admin_pool.dashboardGroups %}
+        <table class="zebra-striped sonata-ba-list bordered-table">
+            <thead>
+                <tr>
+                    <th colspan="3">{{ group.label|trans({}, 'SonataAdminBundle') }}</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for admin in group.items %}
+                    {% if admin.hasroute('create') and admin.isGranted('CREATE') or admin.hasroute('list') and admin.isGranted('LIST') %}
+                        <tr>
+                            <td class="sonata-ba-list-label">{{ admin.label|trans({}, admin.translationdomain) }}</td>
+                            <td>
+                                {% if admin.hasroute('create') and admin.isGranted('CREATE') %}
+                                    <a href="{{ admin.generateUrl('create')}}">
+                                        <img src="{{ asset('bundles/sonataadmin/famfamfam/add.png') }}"  alt="{%- trans from 'SonataAdminBundle' %}link_add{% endtrans -%}" />
+                                        {%- trans from 'SonataAdminBundle' %}link_add{% endtrans -%}
+                                    </a>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if admin.hasroute('list') and admin.isGranted('LIST') %}
+                                    <a href="{{ admin.generateUrl('list')}}">
+                                        <img src="{{ asset('bundles/sonataadmin/famfamfam/application_view_list.png') }}" alt="{%- trans from 'SonataAdminBundle' %}link_list{% endtrans -%}" />
+                                        {%- trans from 'SonataAdminBundle' %}link_list{% endtrans -%}
+                                    </a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endfor %}
+{% endblock %}
