@@ -246,7 +246,7 @@
             </trans-unit>
             <trans-unit id="label_export_download">
                 <source>label_export_download</source>
-                <target>label_export_download</target>
+                <target>Eksportuj</target>
             </trans-unit>
         </body>
     </file>
