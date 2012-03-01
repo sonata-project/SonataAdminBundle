@@ -23,4 +23,5 @@ class MaskBuilder extends BaseMaskBuilder
     const MASK_EXPORT       = 8192;       // 1 << 13
 
     const CODE_LIST         = 'L';
+    const CODE_EXPORT       = 'E';
 }
