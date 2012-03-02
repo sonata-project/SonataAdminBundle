@@ -44,7 +44,6 @@ class AdminPermissionMap implements PermissionMapInterface
         self::PERMISSION_VIEW => array(
             MaskBuilder::MASK_VIEW,
             MaskBuilder::MASK_LIST,
-            MaskBuilder::MASK_EXPORT,
             MaskBuilder::MASK_EDIT,
             MaskBuilder::MASK_OPERATOR,
             MaskBuilder::MASK_MASTER,
@@ -81,7 +80,6 @@ class AdminPermissionMap implements PermissionMapInterface
 
         self::PERMISSION_LIST => array(
             MaskBuilder::MASK_LIST,
-            MaskBuilder::MASK_EXPORT,
             MaskBuilder::MASK_OPERATOR,
             MaskBuilder::MASK_MASTER,
             MaskBuilder::MASK_OWNER
