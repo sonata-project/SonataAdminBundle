@@ -69,6 +69,7 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('title_logo')->defaultValue('bundles/sonataadmin/logo_title.png')->cannotBeEmpty()->end()
 
                 ->arrayNode('dashboard')
+                    ->addDefaultsIfNotSet()
                     ->children()
                         ->arrayNode('groups')
                             ->useAttributeAsKey('id')
@@ -87,6 +88,7 @@ class Configuration implements ConfigurationInterface
                             ->end()
                         ->end()
                         ->arrayNode('blocks')
+                            ->defaultValue(array('position' => 'left', 'type' => 'sonata.admin.block.admin_list'))
                             ->prototype('array')
                                 ->children()
                                     ->scalarNode('type')->cannotBeEmpty()->end()
