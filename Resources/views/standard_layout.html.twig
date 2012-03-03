@@ -178,40 +178,39 @@ file that was distributed with this source code.
                 </div>
             {% endif%}
 
-            {% if _side_menu is not empty %}
-                <div class="sidebar">
-                    <div class="well sonata-ba-side-menu">{{ _side_menu|raw }}</div>
+            <div class="row-fluid">
+                {% if _side_menu is not empty %}
+                    <div class="sidebar span3">
+                        <div class="well sonata-ba-side-menu">{{ _side_menu|raw }}</div>
+                    </div>
+                {% endif %}
+
+                <div class="content {% if _side_menu is not empty %}span9{% endif %}">
+                    {% if _preview is not empty %}
+                        <div class="sonata-ba-preview row-fluid">{{ _preview|raw }}</div>
+                    {% endif %}
+
+                    {% if _content is not empty %}
+                        <div class="sonata-ba-content row-fluid">{{ _content|raw }}</div>
+                    {% endif %}
+
+                    {% if _show is not empty %}
+                        <div class="sonata-ba-show row-fluid">{{ _show|raw }}</div>
+                    {% endif %}
+
+                    {% if _form is not empty %}
+                        <div class="sonata-ba-form row-fluid">{{ _form|raw }}</div>
+                    {% endif %}
+
+                    {% if _list_table is not empty or _list_filters is not empty %}
+                        <div class="sonata-ba-filter row-fluid">
+                            {{ _list_filters|raw }}
+                        </div>
+                        <div class="sonata-ba-list row-fluid">
+                            {{ _list_table|raw }}
+                        </div>
+                    {% endif %}
                 </div>
-            {% endif %}
-
-            <div class="content">
-
-                {% if _preview is not empty %}
-                    <div class="sonata-ba-preview row-fluid">{{ _preview|raw }}</div>
-                {% endif %}
-
-
-                {% if _content is not empty %}
-                    <div class="sonata-ba-content row-fluid">{{ _content|raw }}</div>
-                {% endif %}
-
-                {% if _show is not empty %}
-                    <div class="sonata-ba-show row-fluid">{{ _show|raw }}</div>
-                {% endif %}
-
-                {% if _form is not empty %}
-                    <div class="sonata-ba-form row-fluid">{{ _form|raw }}</div>
-                {% endif %}
-
-                {% if _list_table is not empty or _list_filters is not empty %}
-                    <div class="sonata-ba-filter row-fluid">
-                        {{ _list_filters|raw }}
-                    </div>
-                    <div class="sonata-ba-list row-fluid">
-                        {{ _list_table|raw }}
-                    </div>
-                {% endif %}
-
             </div>
 
             {% block footer %}
