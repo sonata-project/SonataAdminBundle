@@ -102,11 +102,4 @@ interface DatagridInterface
      * @return boolean
      */
     public function hasActiveFilters();
-
-    /**
-     * @abstract
-     * @param $name
-     * @return bool
-     */
-    public function hasActiveFilter($name);
 }
