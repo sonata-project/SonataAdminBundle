@@ -1,7 +1,7 @@
 jQuery(document).ready(function() {
     jQuery('html').removeClass('no-js');
     $('.dropdown-toggle').dropdown();
-    $(".collapse").collapse();
+    //$(".collapse").collapse();
     //Admin.add_pretty_errors(document);
     //Admin.add_collapsed_toggle();
     //Admin.add_filters(document);

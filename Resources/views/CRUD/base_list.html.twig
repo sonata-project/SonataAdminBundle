@@ -152,7 +152,7 @@ file that was distributed with this source code.
     {% if admin.datagrid.filters %}
         <form class="sonata-filter-form {{ admin.isChild and 1 == admin.datagrid.filters|length ? 'hide' : '' }}" action="{{ admin.generateUrl('list') }}" method="GET">
             <fieldset class="filter_legend">
-                <legend class="filter_legend" data-toggle="collapse" data-target=".filter_container">{% trans from 'SonataAdminBundle' %}label_filters{% endtrans %}</legend>
+                <legend class="filter_legend" data-toggle="collapse" data-target=".filter_container">{% trans from 'SonataAdminBundle' %}label_filters{% endtrans %}<span class="caret"></span></legend>
 
                 <div id="filter_container" class="filter_container collapse">
                     <table>
