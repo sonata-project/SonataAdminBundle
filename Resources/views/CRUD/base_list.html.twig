@@ -125,17 +125,17 @@ file that was distributed with this source code.
                     });
                 </script>
 
-                <div class="form-inline actions sonata-ba-list-actions">
+                <div class="form-inline form-actions sonata-ba-list-actions">
+                    <label>
+                        <input type="checkbox" name="all_elements"/>
+                        {% trans from 'SonataAdminBundle' %}all_elements{% endtrans %}
+                    </label>
+
                     <select name="action">
                         {% for action, options in batchactions %}
                             <option value="{{ action }}">{{ options.label }}</option>
                         {% endfor %}
                     </select>
-
-                    <label>
-                        <input type="checkbox" name="all_elements"/>
-                        {% trans from 'SonataAdminBundle' %}all_elements{% endtrans %}
-                    </label>
 
                     <input type="submit" class="btn btn-primary" value="{% trans from 'SonataAdminBundle' %}btn_batch{% endtrans %}" />
                 </div>
@@ -179,14 +179,16 @@ file that was distributed with this source code.
                         </tr>
                     </table>
 
-                    <input type="hidden" name="filter[_page]" id="filter__page" value="1" />
-
-                    {% set foo = form.getChild('_page').setRendered() %}
-                    {{ form_rest(form) }}
-
-                    <input type="submit" class="btn btn-primary" value="{% trans from 'SonataAdminBundle' %}btn_filter{% endtrans %}" />
-
-                    <a class="btn" href="{{ admin.generateUrl('list') }}">{% trans from 'SonataAdminBundle' %}link_reset_filter{% endtrans %}</a>
+                    <div class="actions">
+                        <input type="hidden" name="filter[_page]" id="filter__page" value="1" />
+                        
+                        {% set foo = form.getChild('_page').setRendered() %}
+                        {{ form_rest(form) }}
+                        
+                        <input type="submit" class="btn btn-primary" value="{% trans from 'SonataAdminBundle' %}btn_filter{% endtrans %}" />
+                        
+                        <a class="btn" href="{{ admin.generateUrl('list') }}">{% trans from 'SonataAdminBundle' %}link_reset_filter{% endtrans %}</a>
+                    </div>
 
                 </div>
             </fieldset>
