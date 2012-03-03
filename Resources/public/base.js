@@ -3,7 +3,7 @@ jQuery(document).ready(function() {
     $('.dropdown-toggle').dropdown();
     //$(".collapse").collapse();
     //Admin.add_pretty_errors(document);
-    //Admin.add_collapsed_toggle();
+    Admin.add_collapsed_toggle();
     //Admin.add_filters(document);
     //Admin.set_object_field_value(document);
     //Admin.setup_collection_buttons(document);
@@ -83,7 +83,7 @@ var Admin = {
      * @param subject
      */
     add_collapsed_toggle: function(subject) {
-        jQuery('fieldset legend a.sonata-ba-collapsed', subject).live('click', function(event) {
+        jQuery('fieldset legend a.sonata-ba-collapsed', subject).on('click', function(event) {
             event.preventDefault();
 
             var fieldset = jQuery(this).closest('fieldset');
