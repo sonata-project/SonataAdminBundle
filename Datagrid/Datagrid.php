@@ -183,22 +183,12 @@ class Datagrid implements DatagridInterface
     public function hasActiveFilters()
     {
         foreach ($this->filters as $name => $filter) {
-            if ($this->hasActiveFilter($name)) {
+            if ($filter->isActive()) {
                 return true;
             }
         }
 
         return false;
-    }
-
-    /**
-     * @param $name
-     * @return bool
-     */
-    public function hasActiveFilter($name)
-    {
-        return isset($this->values[$name])
-            && ! empty($this->values[$name]['value']);
     }
 
     /**

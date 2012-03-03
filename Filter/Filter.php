@@ -149,6 +149,15 @@ abstract class Filter implements FilterInterface
     }
 
     /**
+     * @return string
+     */
+    public function isActive()
+    {
+        $values = $this->getValue();
+        return ! empty($values['value']);
+    }
+
+    /**
      * @param $condition
      * @return void
      */
