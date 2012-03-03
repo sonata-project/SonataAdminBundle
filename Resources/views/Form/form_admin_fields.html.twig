@@ -82,7 +82,7 @@ file that was distributed with this source code.
     {% if sonata_admin is not defined or not sonata_admin_enabled or not sonata_admin.field_description %}
         {{ parent() }}
     {% else %}
-        <div class="clearfix{% if errors|length > 0%} error{%endif%}" id="sonata-ba-field-container-{{ id }}">
+        <div class="control-group{% if errors|length > 0%} error{%endif%}" id="sonata-ba-field-container-{{ id }}">
             {% block label %}
                 {% if sonata_admin.field_description.options.name is defined %}
                     {{ form_label(form, sonata_admin.field_description.options.name) }}
@@ -91,7 +91,7 @@ file that was distributed with this source code.
                 {% endif %}
             {% endblock %}
 
-            <div class="input sonata-ba-field sonata-ba-field-{{ sonata_admin.edit }}-{{ sonata_admin.inline }} {% if errors|length > 0 %}sonata-ba-field-error{% endif %}">
+            <div class="controls input sonata-ba-field sonata-ba-field-{{ sonata_admin.edit }}-{{ sonata_admin.inline }} {% if errors|length > 0 %}sonata-ba-field-error{% endif %}">
 
                 {{ form_widget(form) }}
 

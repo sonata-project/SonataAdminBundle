@@ -49,7 +49,7 @@ file that was distributed with this source code.
             {{ "form_not_available"|trans({}, "SonataAdminBundle") }}
         </div>
     {% else %}
-        <form action="{{ admin.generateUrl(url, {'id': admin.id(object), 'uniqid': admin.uniqid}) }}" {{ form_enctype(form) }} method="POST">
+        <form class="form-horizontal" action="{{ admin.generateUrl(url, {'id': admin.id(object), 'uniqid': admin.uniqid}) }}" {{ form_enctype(form) }} method="POST">
 
             {% if form.vars.errors|length > 0 %}
                 <div class="sonata-ba-form-error">
