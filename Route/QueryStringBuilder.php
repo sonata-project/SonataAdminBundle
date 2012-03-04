@@ -38,6 +38,7 @@ class QueryStringBuilder implements RouteBuilderInterface
         $collection->add('edit');
         $collection->add('delete');
         $collection->add('show');
+        $collection->add('export');
 
         if ($this->manager->hasReader($admin->getClass())) {
             $collection->add('history', '/audit-history');

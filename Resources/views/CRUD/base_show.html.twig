@@ -23,6 +23,9 @@ file that was distributed with this source code.
             {% if admin.hasRoute('create') and admin.isGranted('CREATE')%}
                 <li class="btn sonata-action-element"><a href="{{ admin.generateUrl('create') }}">{% trans from 'SonataAdminBundle' %}link_action_create{% endtrans %}</a></li>
             {% endif %}
+            {% if admin.hasroute('list') and admin.isGranted('LIST')%}
+                <li class="btn sonata-action-element"><a href="{{ admin.generateUrl('list') }}">{% trans from 'SonataAdminBundle' %}link_action_list{% endtrans %}</a></li>
+            {% endif %}
         </ul>
     </div>
 {% endblock %}

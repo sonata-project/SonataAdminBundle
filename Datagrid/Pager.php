@@ -28,6 +28,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     protected $parameters = array();
     protected $currentMaxLink = 1;
     protected $maxRecordLimit = false;
+    protected $maxPageLinks = 0;
 
     // used by iterator interface
     protected $results = null;
@@ -90,8 +91,11 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
      *
      * @return array
      */
-    public function getLinks($nb_links = 5)
+    public function getLinks($nb_links=null)
     {
+        if($nb_links==null){
+            $nb_links=$this->getMaxPageLinks();
+        }
         $links = array();
         $tmp = $this->page - floor($nb_links / 2);
         $check = $this->lastPage - $nb_links + 1;
@@ -363,6 +367,24 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
                 }
             }
         }
+    }
+    /**
+     * Returns the maximum number of page numbers.
+     *
+     * @return integer
+     */
+    public function getMaxPageLinks()
+    {
+        return $this->maxPageLinks;
+    }
+    /**
+     * Sets the maximum number of page numbers.
+     *
+     * @param integer $maxPageLinks
+     */
+    public function setMaxPageLinks($maxPageLinks)
+    {
+        $this->maxPageLinks = $maxPageLinks;
     }
 
     /**

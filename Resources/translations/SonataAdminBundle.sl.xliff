@@ -301,6 +301,14 @@
                 <target>Poglej revizijo</target>
             </trans-unit>
 
+            <trans-unit id="list_results_count">
+                <source>list_results_count</source>
+                <target>1 rezultat|%count% rezultata|%count% rezultati|%count% rezultatov</target>
+            </trans-unit>
+            <trans-unit id="label_export_download">
+                <source>label_export_download</source>
+                <target>Prenesi izvoz</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

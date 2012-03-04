@@ -54,26 +54,16 @@ class TranslatableChoiceType extends ChoiceType
 
     public function buildForm(FormBuilder $builder, array $options)
     {
+        // translate options before building form
+        foreach ($options['choices'] as $name => $value) {
+            $options['choices'][$name] = $this->translator->trans($value, array(), $options['catalogue']);
+        }
+        
+        // translate empty value
+        if (!empty($options['empty_value'])) {
+            $options['empty_value'] = $this->translator->trans($options['empty_value'], array(), $options['catalogue']);
+        }
+        
         parent::buildForm($builder, $options);
-
-        $builder->setAttribute('catalogue', $options['catalogue']);
-    }
-
-    public function buildView(FormView $view, FormInterface $form)
-    {
-        parent::buildView($view, $form);
-
-        $choices = array();
-        $catalogue = $form->getAttribute('catalogue');
-
-        foreach ($view->get('choices') as $name => $value) {
-            $choices[$name] = $this->translator->trans($value, array(), $catalogue);
-        }
-
-        $view->set('choices', $choices);
-        $empty_value = $view->get('empty_value');
-        if (!empty($empty_value)) {
-            $view->set('empty_value', $this->translator->trans($view->get('empty_value'), array(), $catalogue));
-        }
     }
 }

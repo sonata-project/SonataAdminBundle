@@ -36,9 +36,9 @@ class CoreController extends Controller
     public function dashboardAction()
     {
         return $this->render($this->container->get('sonata.admin.pool')->getTemplate('dashboard'), array(
-            'groups'          => $this->get('sonata.admin.pool')->getDashboardGroups(),
             'base_template'   => $this->getBaseTemplate(),
-            'admin_pool'      => $this->container->get('sonata.admin.pool')
+            'admin_pool'      => $this->container->get('sonata.admin.pool'),
+            'blocks'          => $this->container->getParameter('sonata.admin.configuration.dashboard_blocks')
         ));
     }
 }

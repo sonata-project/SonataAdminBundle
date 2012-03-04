@@ -72,39 +72,52 @@ file that was distributed with this source code.
                 {% endblock %}
 
                 {% block table_footer %}
+                    <tr>
+                        <th colspan="{{ admin.list.elements|length - 1 }}">
+                            {{ admin.datagrid.pager.page }} / {{ admin.datagrid.pager.lastpage }} -
+                            {{ "label_export_download"|trans({}, "SonataAdminBundle") }}
+                            {% for format in admin.getExportFormats() %}
+                                <a href="{{ admin.generateUrl('export', admin.modelmanager.paginationparameters(admin.datagrid, 0) + {'format' : format}) }}">{{ format }}</a>{% if not loop.last%},{% endif %}
+                            {% endfor %}
+                        </th>
+
+                        <th>
+                            {% transchoice admin.datagrid.pager.nbresults with {'%count%': admin.datagrid.pager.nbresults} from 'SonataAdminBundle' %}list_results_count{% endtranschoice %}
+                        </th>
+                    </tr>
+
                     {% if admin.datagrid.pager.haveToPaginate() %}
                         <tr>
                             <td colspan="{{ admin.list.elements|length }}" class="">
-
                                 <div class="pagination pagination-centered">
-                                  <ul>
+                                    <ul>
 
-                                      {% if admin.datagrid.pager.page != 1  %}
-                                          <li><a href="{{ admin.generateUrl('list', admin.modelmanager.paginationparameters(admin.datagrid, 1)) }}" title="{% trans from 'SonataAdminBundle' %}link_first_pager{% endtrans %}">&laquo;</a></li>
-                                      {% endif %}
+                                        {% if admin.datagrid.pager.page != 1  %}
+                                            <li><a href="{{ admin.generateUrl('list', admin.modelmanager.paginationparameters(admin.datagrid, 1)) }}" title="{% trans from 'SonataAdminBundle' %}link_first_pager{% endtrans %}">&laquo;</a></li>
+                                        {% endif %}
 
-                                      {% if admin.datagrid.pager.page != admin.datagrid.pager.previouspage %}
-                                          <li><a href="{{ admin.generateUrl('list', admin.modelmanager.paginationparameters(admin.datagrid, admin.datagrid.pager.previouspage)) }}" title="{% trans from 'SonataAdminBundle' %}link_previous_pager{% endtrans %}">&lsaquo;</a></li>
-                                      {% endif %}
+                                        {% if admin.datagrid.pager.page != admin.datagrid.pager.previouspage %}
+                                            <li><a href="{{ admin.generateUrl('list', admin.modelmanager.paginationparameters(admin.datagrid, admin.datagrid.pager.previouspage)) }}" title="{% trans from 'SonataAdminBundle' %}link_previous_pager{% endtrans %}">&lsaquo;</a></li>
+                                        {% endif %}
 
-                                      {# Set the number of pages to display in the pager #}
-                                      {% for page in admin.datagrid.pager.getLinks(5) %}
-                                          {% if page == admin.datagrid.pager.page %}
-                                              <li class="active"><a href="{{ admin.generateUrl('list', admin.modelmanager.paginationparameters(admin.datagrid, page)) }}">{{ page }}</a></li>
-                                          {% else %}
-                                              <li><a href="{{ admin.generateUrl('list', admin.modelmanager.paginationparameters(admin.datagrid, page)) }}">{{ page }}</a></li>
-                                          {% endif %}
-                                      {% endfor %}
+                                        {# Set the number of pages to display in the pager #}
+                                        {% for page in admin.datagrid.pager.getLinks() %}
+                                            {% if page == admin.datagrid.pager.page %}
+                                                <li class="active"><a href="{{ admin.generateUrl('list', admin.modelmanager.paginationparameters(admin.datagrid, page)) }}">{{ page }}</a></li>
+                                            {% else %}
+                                                <li><a href="{{ admin.generateUrl('list', admin.modelmanager.paginationparameters(admin.datagrid, page)) }}">{{ page }}</a></li>
+                                            {% endif %}
+                                        {% endfor %}
 
-                                      {% if admin.datagrid.pager.page != admin.datagrid.pager.nextpage %}
-                                          <li><a href="{{ admin.generateUrl('list', admin.modelmanager.paginationparameters(admin.datagrid, admin.datagrid.pager.nextpage)) }}" title="{% trans from 'SonataAdminBundle' %}link_next_pager{% endtrans %}">&rsaquo;</a></li>
-                                      {% endif %}
+                                        {% if admin.datagrid.pager.page != admin.datagrid.pager.nextpage %}
+                                            <li><a href="{{ admin.generateUrl('list', admin.modelmanager.paginationparameters(admin.datagrid, admin.datagrid.pager.nextpage)) }}" title="{% trans from 'SonataAdminBundle' %}link_next_pager{% endtrans %}">&rsaquo;</a></li>
+                                        {% endif %}
 
-                                      {% if admin.datagrid.pager.page != admin.datagrid.pager.lastpage  %}
-                                          <li><a href="{{ admin.generateUrl('list', admin.modelmanager.paginationparameters(admin.datagrid, admin.datagrid.pager.lastpage)) }}" title="{% trans from 'SonataAdminBundle' %}link_last_pager{% endtrans %}">&raquo;</a></li>
-                                      {% endif %}
+                                        {% if admin.datagrid.pager.page != admin.datagrid.pager.lastpage  %}
+                                            <li><a href="{{ admin.generateUrl('list', admin.modelmanager.paginationparameters(admin.datagrid, admin.datagrid.pager.lastpage)) }}" title="{% trans from 'SonataAdminBundle' %}link_last_pager{% endtrans %}">&raquo;</a></li>
+                                        {% endif %}
 
-                                  </ul>
+                                    </ul>
                                 </div>
 
                             </td>
@@ -152,41 +165,27 @@ file that was distributed with this source code.
     {% if admin.datagrid.filters %}
         <form class="sonata-filter-form {{ admin.isChild and 1 == admin.datagrid.filters|length ? 'hide' : '' }}" action="{{ admin.generateUrl('list') }}" method="GET">
             <fieldset class="filter_legend">
-                <legend class="filter_legend" data-toggle="collapse" data-target=".filter_container">{% trans from 'SonataAdminBundle' %}label_filters{% endtrans %}<span class="caret"></span></legend>
+                <legend class="filter_legend {{ admin.datagrid.hasActiveFilters ? 'active' : 'inactive' }}" data-toggle="collapse" data-target=".filter_container">{% trans from 'SonataAdminBundle' %}label_filters{% endtrans %}</legend>
 
-                <div id="filter_container" class="filter_container collapse">
-                    <table>
-                        <tr>
-                            <td>
-                                <table class="table table-bordered">
-                                    {% for filter in admin.datagrid.filters %}
-                                        <tr id="filter_{{ filter.name }}_row">
-                                            <td class="filter-title">{{ admin.trans(filter.label) }}</td>
-                                            <td class="filter-type">{{ form_widget(form.getChild(filter.name).getChild('type')) }}</td>
-                                            <td class="filter-value">{{ form_widget(form.getChild(filter.name).getChild('value')) }}</td>
-                                        </tr>
-                                    {% endfor %}
-                                </table>
-                            </td>
-                            {#<td>#}
-                                {#<label for="add_filter_select">{% trans from 'SonataAdminBundle' %}add_filter{% endtrans %}</label>#}
-                                {#<select id="add_filter_select">#}
-                                    {#{% for filter in admin.datagrid.filters %}#}
-                                        {#<option value="{{ filter.name }}">{{ admin.trans(filter.name) }}</option>#}
-                                    {#{% endfor %}#}
-                                {#</select>#}
-                            {#</td>#}
-                        </tr>
+                <div class="filter_container collapse {{ admin.datagrid.hasActiveFilters ? 'active' : 'inactive' }}">
+                    <table class="table table-bordered">
+                        {% for filter in admin.datagrid.filters %}
+                        <tr id="filter_{{ filter.name }}_row" class="filter {{ filter.isActive ? 'active' : 'inactive' }}">
+                                <td class="filter-title">{{ admin.trans(filter.label) }}</td>
+                                <td class="filter-type">{{ form_widget(form.getChild(filter.name).getChild('type')) }}</td>
+                                <td class="filter-value">{{ form_widget(form.getChild(filter.name).getChild('value')) }}</td>
+                            </tr>
+                        {% endfor %}
                     </table>
 
                     <div class="actions">
                         <input type="hidden" name="filter[_page]" id="filter__page" value="1" />
-                        
+
                         {% set foo = form.getChild('_page').setRendered() %}
                         {{ form_rest(form) }}
-                        
+
                         <input type="submit" class="btn btn-primary" value="{% trans from 'SonataAdminBundle' %}btn_filter{% endtrans %}" />
-                        
+
                         <a class="btn" href="{{ admin.generateUrl('list') }}">{% trans from 'SonataAdminBundle' %}link_reset_filter{% endtrans %}</a>
                     </div>
 

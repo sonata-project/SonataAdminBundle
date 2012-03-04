@@ -230,6 +230,42 @@
               <source>label_type_less_than</source>
               <target>&lt;</target>
             </trans-unit>
+            <trans-unit id="label_date_type_equal">
+              <source>label_date_type_equal</source>
+              <target>=</target>
+            </trans-unit>
+            <trans-unit id="label_date_type_greater_equal">
+              <source>label_date_type_greater_equal</source>
+              <target>&gt;=</target>
+            </trans-unit>
+            <trans-unit id="label_date_type_greater_than">
+              <source>label_date_type_greater_than</source>
+              <target>&gt;</target>
+            </trans-unit>
+            <trans-unit id="label_date_type_less_equal">
+              <source>label_date_type_less_equal</source>
+              <target>&lt;=</target>
+            </trans-unit>
+            <trans-unit id="label_date_type_less_than">
+              <source>label_date_type_less_than</source>
+              <target>&lt;</target>
+            </trans-unit>
+            <trans-unit id="label_date_type_null">
+              <source>label_date_type_null</source>
+              <target>jest puste</target>
+            </trans-unit>
+            <trans-unit id="label_date_type_not_null">
+              <source>label_date_type_not_null</source>
+              <target>nie jest puste</target>
+            </trans-unit>
+            <trans-unit id="label_date_type_between">
+              <source>label_date_type_between</source>
+              <target>jest pomiędzy</target>
+            </trans-unit>
+            <trans-unit id="label_date_not_between">
+              <source>label_date_type_not_between</source>
+              <target>nie jest pomiędzy</target>
+            </trans-unit>
             <trans-unit id="label_filters">
               <source>label_filters</source>
               <target>Filtry</target>
@@ -238,6 +274,40 @@
             <trans-unit id="delete_or">
               <source>delete_or</source>
               <target>albo</target>
+            </trans-unit>
+
+            <trans-unit id="link_action_history">
+                <source>link_action_history</source>
+                <target>Historia zmian</target>
+            </trans-unit>
+            <trans-unit id="td_action">
+                <source>td_action</source>
+                <target>Akcja</target>
+            </trans-unit>
+            <trans-unit id="td_revision">
+                <source>td_revision</source>
+                <target>Wersja</target>
+            </trans-unit>
+            <trans-unit id="td_timestamp">
+                <source>td_timestamp</source>
+                <target>Data</target>
+            </trans-unit>
+            <trans-unit id="td_username">
+                <source>td_username</source>
+                <target>Użytkownik</target>
+            </trans-unit>
+            <trans-unit id="label_view_revision">
+                <source>label_view_revision</source>
+                <target>Pokaż wersję</target>
+            </trans-unit>
+
+            <trans-unit id="list_results_count">
+                <source>list_results_count</source>
+                <target>%count% wynik|%count% wyniki|%count% wyników</target>
+            </trans-unit>
+            <trans-unit id="label_export_download">
+                <source>label_export_download</source>
+                <target>Eksportuj : </target>
             </trans-unit>
         </body>
     </file>

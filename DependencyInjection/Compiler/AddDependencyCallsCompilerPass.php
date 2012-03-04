@@ -171,7 +171,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
             'datagrid_builder'          => sprintf('sonata.admin.builder.%s_datagrid', $manager_type),
             'translator'                => 'translator',
             'configuration_pool'        => 'sonata.admin.pool',
-            'router'                    => 'router',
+            'route_generator'           => 'sonata.admin.route.default_generator',
             'validator'                 => 'validator',
             'security_handler'          => 'sonata.admin.security.handler',
             'menu_factory'              => 'knp_menu.factory',
@@ -199,8 +199,6 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
         $definition->addMethodCall('setLabel', array($label));
 
-        $definition->addMethodCall('initialize');
-
         if (!$definition->hasMethodCall('setTemplates')) {
             $definition->addMethodCall('setTemplates', array('%sonata.admin.configuration.templates%'));
         }
@@ -208,6 +206,8 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
         if ($container->hasParameter('sonata.admin.configuration.security.information') && !$definition->hasMethodCall('setSecurityInformation')) {
             $definition->addMethodCall('setSecurityInformation', array('%sonata.admin.configuration.security.information%'));
         }
+
+        $definition->addMethodCall('initialize');
 
         return $definition;
     }

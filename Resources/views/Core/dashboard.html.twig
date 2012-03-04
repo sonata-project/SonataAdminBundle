@@ -18,41 +18,20 @@ file that was distributed with this source code.
 {% block breadcrumb %}{% endblock %}
 
 {% block content %}
-    <div class="">
-        {% for group in groups %}
-            <table class="table table-bordered table-condensed">
-                <thead>
-                    <tr>
-                        <td>
-                            <h3>
-                                {{ group.label|trans({}, 'SonataAdminBundle') }}
-                            </h3>
-                        </td>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for admin in group.items %}
-                        <tr>
-                            <td>
-                                <strong class="pull-left">
-                                    {{ admin.label|trans({}, admin.translationdomain) }}
-                                </strong>
-                                <div class="pull-right">
-                                    {% if admin.hasroute('create') and admin.isGranted('CREATE') %}
-                                        <a class="btn" href="{{ admin.generateUrl('create')}}">
-                                            {%- trans from 'SonataAdminBundle' %}link_add{% endtrans -%}
-                                        </a>
-                                    {% endif %}
-                                    {% if admin.hasroute('list') and admin.isGranted('LIST') %}
-                                        <a class="btn" href="{{ admin.generateUrl('list')}}">
-                                            {%- trans from 'SonataAdminBundle' %}link_list{% endtrans -%}
-                                        </a>
-                                    {% endif %}
-                                </div>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        {% endfor %}
+    <div class="row">
+        <div class="span9">
+            {% for block in blocks %}
+                {% if block.position == 'left' %}
+                    {{ sonata_block_render({ 'type': block.type, 'settings': block.settings}) }}
+                {% endif %}
+            {% endfor %}
+        </div>
+        <div class="span10">
+            {% for block in blocks %}
+                {% if block.position == 'right' %}
+                    {{ sonata_block_render({ 'type': block.type, 'settings': block.settings}) }}
+                {% endif %}
+            {% endfor %}
+        </div>
     </div>
 {% endblock %}

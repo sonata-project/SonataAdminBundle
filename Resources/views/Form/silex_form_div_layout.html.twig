@@ -24,22 +24,6 @@
 {% endspaceless %}
 {% endblock textarea_widget %}
 
-{% block widget_choice_options %}
-{% spaceless %}
-    {% for choice, label in options %}
-        {% if _form_is_choice_group(label) %}
-            <optgroup label="{{ choice|trans }}">
-                {% for nestedChoice, nestedLabel in label %}
-                    <option value="{{ nestedChoice }}"{% if _form_is_choice_selected(form, nestedChoice) %} selected="selected"{% endif %}>{{ nestedLabel|trans }}</option>
-                {% endfor %}
-            </optgroup>
-        {% else %}
-            <option value="{{ choice }}"{% if _form_is_choice_selected(form, choice) %} selected="selected"{% endif %}>{{ label|trans }}</option>
-        {% endif %}
-    {% endfor %}
-{% endspaceless %}
-{% endblock widget_choice_options %}
-
 {% block choice_widget %}
 {% spaceless %}
     {% if expanded %}
