@@ -87,8 +87,6 @@ class AdminClassGenerator extends Generator
      */
     private function getFieldsFromMetadata(ClassMetadataInfo $metadata)
     {
-        print_r($metadata);
-        die();
         $fields = (array) $metadata->fieldNames;
 
         // Remove the primary key field if it's not managed manually
