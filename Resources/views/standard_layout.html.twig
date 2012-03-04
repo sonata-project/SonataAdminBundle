@@ -33,6 +33,16 @@ file that was distributed with this source code.
                 padding-top: 40px;
                 padding-bottom: 40px;
               }
+
+              legend.filter_legend .caret {
+                margin-top: 18px;
+                margin-left: 5px;
+              }
+
+              .actions input {
+                vertical-align: inherit;
+              }
+
             </style>
             <link rel="stylesheet" href="{{ asset('bundles/sonataadmin/bootstrap/css/bootstrap-responsive.min.css') }}" type="text/css" media="all" >
 
@@ -45,17 +55,7 @@ file that was distributed with this source code.
             <script src="{{ asset('bundles/sonatajquery/jquery-ui-1.8.17.js') }}" type="text/javascript"></script>
             <script src="{{ asset('bundles/sonatajquery/jquery-ui-i18n.js') }}" type="text/javascript"></script>
 
-            <script src="{{ asset('bundles/sonataadmin/bootstrap/js/bootstrap-alert.js') }}" type="text/javascript"></script>
-            <script src="{{ asset('bundles/sonataadmin/bootstrap/js/bootstrap-button.js') }}" type="text/javascript"></script>
-            <script src="{{ asset('bundles/sonataadmin/bootstrap/js/bootstrap-carrousel.js') }}" type="text/javascript"></script>
-            <script src="{{ asset('bundles/sonataadmin/bootstrap/js/bootstrap-collapse.js') }}" type="text/javascript"></script>
-            <script src="{{ asset('bundles/sonataadmin/bootstrap/js/bootstrap-dropdown.js') }}" type="text/javascript"></script>
-            <script src="{{ asset('bundles/sonataadmin/bootstrap/js/bootstrap-modal.js') }}" type="text/javascript"></script>
-            <script src="{{ asset('bundles/sonataadmin/bootstrap/js/bootstrap-popover.js') }}" type="text/javascript"></script>
-            <script src="{{ asset('bundles/sonataadmin/bootstrap/js/bootstrap-scrollspy.js') }}" type="text/javascript"></script>
-            <script src="{{ asset('bundles/sonataadmin/bootstrap/js/bootstrap-tab.js') }}" type="text/javascript"></script>
-            <script src="{{ asset('bundles/sonataadmin/bootstrap/js/bootstrap-tooltip.js') }}" type="text/javascript"></script>
-            <script src="{{ asset('bundles/sonataadmin/bootstrap/js/bootstrap-typeahead.js') }}" type="text/javascript"></script>
+            <script src="{{ asset('bundles/sonataadmin/bootstrap/js/bootstrap.min.js') }}" type="text/javascript"></script>
 
             <script src="{{ asset('bundles/sonataadmin/qtip/jquery.qtip-1.0.0-rc3.min.js') }}" type="text/javascript"></script>
             <script src="{{ asset('bundles/sonataadmin/jquery/jquery.form.js') }}" type="text/javascript"></script>
@@ -178,40 +178,39 @@ file that was distributed with this source code.
                 </div>
             {% endif%}
 
-            {% if _side_menu is not empty %}
-                <div class="sidebar">
-                    <div class="well sonata-ba-side-menu">{{ _side_menu|raw }}</div>
+            <div class="row-fluid">
+                {% if _side_menu is not empty %}
+                    <div class="sidebar span3">
+                        <div class="well sonata-ba-side-menu">{{ _side_menu|raw }}</div>
+                    </div>
+                {% endif %}
+
+                <div class="content {% if _side_menu is not empty %}span9{% endif %}">
+                    {% if _preview is not empty %}
+                        <div class="sonata-ba-preview row-fluid">{{ _preview|raw }}</div>
+                    {% endif %}
+
+                    {% if _content is not empty %}
+                        <div class="sonata-ba-content row-fluid">{{ _content|raw }}</div>
+                    {% endif %}
+
+                    {% if _show is not empty %}
+                        <div class="sonata-ba-show row-fluid">{{ _show|raw }}</div>
+                    {% endif %}
+
+                    {% if _form is not empty %}
+                        <div class="sonata-ba-form row-fluid">{{ _form|raw }}</div>
+                    {% endif %}
+
+                    {% if _list_table is not empty or _list_filters is not empty %}
+                        <div class="sonata-ba-filter row-fluid">
+                            {{ _list_filters|raw }}
+                        </div>
+                        <div class="sonata-ba-list row-fluid">
+                            {{ _list_table|raw }}
+                        </div>
+                    {% endif %}
                 </div>
-            {% endif %}
-
-            <div class="content">
-
-                {% if _preview is not empty %}
-                    <div class="sonata-ba-preview row-fluid">{{ _preview|raw }}</div>
-                {% endif %}
-
-
-                {% if _content is not empty %}
-                    <div class="sonata-ba-content row-fluid">{{ _content|raw }}</div>
-                {% endif %}
-
-                {% if _show is not empty %}
-                    <div class="sonata-ba-show row-fluid">{{ _show|raw }}</div>
-                {% endif %}
-
-                {% if _form is not empty %}
-                    <div class="sonata-ba-form row-fluid">{{ _form|raw }}</div>
-                {% endif %}
-
-                {% if _list_table is not empty or _list_filters is not empty %}
-                    <div class="sonata-ba-filter row-fluid">
-                        {{ _list_filters|raw }}
-                    </div>
-                    <div class="sonata-ba-list row-fluid">
-                        {{ _list_table|raw }}
-                    </div>
-                {% endif %}
-
             </div>
 
             {% block footer %}
