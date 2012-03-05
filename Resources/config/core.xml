@@ -45,9 +45,8 @@
         </service>
 
         <!-- controller as services -->
-        <service id="sonata.admin.controller.admin" class="Sonata\AdminBundle\Controller\HelperController" scope="request">
+        <service id="sonata.admin.controller.admin" class="Sonata\AdminBundle\Controller\HelperController">
             <argument type="service" id="twig" />
-            <argument type="service" id="request" />
             <argument type="service" id="sonata.admin.pool" />
             <argument type="service" id="sonata.admin.helper" />
         </service>

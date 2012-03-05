@@ -27,11 +27,6 @@ class HelperController
     protected $twig;
 
     /**
-     * @var Symfony\Component\HttpFoundation\Request
-     */
-    protected $request;
-
-    /**
      * @var \Sonata\AdminBundle\Admin\AdminHelper
      */
     protected $helper;
@@ -43,30 +38,30 @@ class HelperController
 
     /**
      * @param \Twig_Environment $twig
-     * @param \Symfony\Component\HttpFoundation\Request $request
      * @param \Sonata\AdminBundle\Admin\Pool $pool
      * @param \Sonata\AdminBundle\Admin\AdminHelper $helper
      */
-    public function __construct(\Twig_Environment $twig, Request $request, Pool $pool, AdminHelper $helper)
+    public function __construct(\Twig_Environment $twig, Pool $pool, AdminHelper $helper)
     {
         $this->twig     = $twig;
-        $this->request  = $request;
         $this->pool     = $pool;
         $this->helper   = $helper;
     }
 
     /**
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     * @param \Symfony\Component\HttpFoundation\Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function appendFormFieldElementAction()
+    public function appendFormFieldElementAction(Request $request)
     {
-        $code       = $this->request->get('code');
-        $elementId  = $this->request->get('elementId');
-        $objectId   = $this->request->get('objectId');
-        $uniqid     = $this->request->get('uniqid');
+        $code       = $request->get('code');
+        $elementId  = $request->get('elementId');
+        $objectId   = $request->get('objectId');
+        $uniqid     = $request->get('uniqid');
 
         $admin      = $this->pool->getInstance($code);
+        $admin->setRequest($request);
 
         if ($uniqid) {
             $admin->setUniqid($uniqid);
@@ -82,7 +77,6 @@ class HelperController
         }
 
         $admin->setSubject($subject);
-        $admin->setRequest($this->request);
 
         list($fieldDescription, $form) = $this->helper->appendFormFieldElement($admin, $elementId);
 
@@ -100,17 +94,21 @@ class HelperController
 
     /**
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     * @param \Symfony\Component\HttpFoundation\Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function retrieveFormFieldElementAction()
+    public function retrieveFormFieldElementAction(Request $request)
     {
-
-        $code       = $this->request->get('code');
-        $elementId  = $this->request->get('elementId');
-        $objectId   = $this->request->get('objectId');
-        $uniqid     = $this->request->get('uniqid');
+        $code       = $request->get('code');
+        $elementId  = $request->get('elementId');
+        $objectId   = $request->get('objectId');
+        $uniqid     = $request->get('uniqid');
 
         $admin       = $this->pool->getInstance($code);
+
+        if ($uniqid) {
+            $admin->setUniqid($uniqid);
+        }
 
         if ($objectId) {
             $subject = $admin->getModelManager()->find($admin->getClass(), $objectId);
@@ -121,16 +119,12 @@ class HelperController
             $subject = $admin->getNewInstance();
         }
 
-        if ($uniqid) {
-            $admin->setUniqid($uniqid);
-        }
-
         $admin->setSubject($subject);
-        
+
         $formBuilder = $admin->getFormBuilder($subject);
 
         $form = $formBuilder->getForm();
-        $form->bindRequest($this->request);
+        $form->bindRequest($request);
 
         $view = $this->helper->getChildFormView($form->createView(), $elementId);
 
@@ -145,13 +139,14 @@ class HelperController
 
     /**
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     * @param \Symfony\Component\HttpFoundation\Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function getShortObjectDescriptionAction()
+    public function getShortObjectDescriptionAction(Request $request)
     {
-        $code       = $this->request->get('code');
-        $objectId   = $this->request->get('objectId');
-        $uniqid     = $this->request->get('uniqid');
+        $code       = $request->get('code');
+        $objectId   = $request->get('objectId');
+        $uniqid     = $request->get('uniqid');
 
         $admin       = $this->pool->getInstance($code);
 
@@ -183,21 +178,21 @@ class HelperController
     }
 
     /**
-     * Toggle boolean value of property in list
+     * @param \Symfony\Component\HttpFoundation\Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function setObjectFieldValueAction()
+    public function setObjectFieldValueAction(Request $request)
     {
-        $field      = $this->request->get('field');
-        $code       = $this->request->get('code');
-        $objectId   = $this->request->get('objectId');
-        $value      = $this->request->get('value');
-        $context    = $this->request->get('context');
+        $field      = $request->get('field');
+        $code       = $request->get('code');
+        $objectId   = $request->get('objectId');
+        $value      = $request->get('value');
+        $context    = $request->get('context');
 
         $admin       = $this->pool->getInstance($code);
 
         // alter should be done by using a post method
-        if ($this->request->getMethod() != 'POST') {
+        if ($request->getMethod() != 'POST') {
             return new Response(json_encode(array('status' => 'KO', 'message' => 'Expected a POST Request')), 200, array(
                 'Content-Type' => 'application/json'
             ));

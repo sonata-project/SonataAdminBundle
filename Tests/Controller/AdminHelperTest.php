@@ -43,7 +43,7 @@ class AdminControllerHelper_Foo
     }
 }
 
-class AdminControllerHelperTest extends \PHPUnit_Framework_TestCase
+class AdminHelperTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @expectedException Symfony\Component\HttpKernel\Exception\NotFoundHttpException
@@ -59,9 +59,9 @@ class AdminControllerHelperTest extends \PHPUnit_Framework_TestCase
         ));
         $pool = new Pool($container, 'title', 'logo');
         $helper = new AdminHelper($pool);
-        $controller = new HelperController($twig, $request, $pool, $helper);
+        $controller = new HelperController($twig, $pool, $helper);
 
-        $controller->getShortObjectDescriptionAction();
+        $controller->getShortObjectDescriptionAction($request);
     }
 
     public function testgetShortObjectDescriptionActionObjectDoesNotExist()
@@ -84,9 +84,9 @@ class AdminControllerHelperTest extends \PHPUnit_Framework_TestCase
 
         $helper = new AdminHelper($pool);
 
-        $controller = new HelperController($twig, $request, $pool, $helper);
+        $controller = new HelperController($twig, $pool, $helper);
 
-        $response = $controller->getShortObjectDescriptionAction();
+        $response = $controller->getShortObjectDescriptionAction($request);
 
         $this->assertEmpty($response->getContent());
     }
@@ -121,9 +121,9 @@ class AdminControllerHelperTest extends \PHPUnit_Framework_TestCase
 
         $helper = new AdminHelper($pool);
 
-        $controller = new HelperController($twig, $request, $pool, $helper);
+        $controller = new HelperController($twig, $pool, $helper);
 
-        $response = $controller->getShortObjectDescriptionAction();
+        $response = $controller->getShortObjectDescriptionAction($request);
 
         $expected = '<a href="/ok/url" target="new">bar</a>';
         $this->assertEquals($expected, $response->getContent());
@@ -163,9 +163,9 @@ class AdminControllerHelperTest extends \PHPUnit_Framework_TestCase
 
         $helper = new AdminHelper($pool);
 
-        $controller = new HelperController($twig, $request, $pool, $helper);
+        $controller = new HelperController($twig, $pool, $helper);
 
-        $response = $controller->setObjectFieldValueAction();
+        $response = $controller->setObjectFieldValueAction($request);
 
         $this->assertEquals('{"status":"OK","content":"<foo \/>"}', $response->getContent() );
     }
@@ -212,8 +212,8 @@ class AdminControllerHelperTest extends \PHPUnit_Framework_TestCase
             $form
         )));
 
-        $controller = new HelperController($twig, $request, $pool, $helper);
-        $response = $controller->appendFormFieldElementAction();
+        $controller = new HelperController($twig, $pool, $helper);
+        $response = $controller->appendFormFieldElementAction($request);
 
         $this->isInstanceOf('Symfony\Component\HttpFoundation\Response', $response);
     }
@@ -262,8 +262,8 @@ class AdminControllerHelperTest extends \PHPUnit_Framework_TestCase
         $helper = $this->getMock('Sonata\AdminBundle\Admin\AdminHelper', array('getChildFormView'), array($pool));
         $helper->expects($this->once())->method('getChildFormView')->will($this->returnValue($formView));
 
-        $controller = new HelperController($twig, $request, $pool, $helper);
-        $response = $controller->retrieveFormFieldElementAction();
+        $controller = new HelperController($twig, $pool, $helper);
+        $response = $controller->retrieveFormFieldElementAction($request);
 
         $this->isInstanceOf('Symfony\Component\HttpFoundation\Response', $response);
     }
