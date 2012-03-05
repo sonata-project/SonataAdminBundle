@@ -21,9 +21,8 @@
         "symfony/security-bundle": "2.*",
         "knplabs/knp-menu-bundle": "master-dev",
         "sonata/jquery-bundle": "master-dev",
-        "sonata-project/exporter": "master-dev",
-        "sonata-project/block-bundle": "master-dev",
-        "sonata-project/cache-bundle": "master-dev",
+        "sonata/exporter": "master-dev",
+        "sonata/block-bundle": "master-dev"
     },
     "suggest": {
         "sonata/doctrine-orm-admin-bundle": "*"
