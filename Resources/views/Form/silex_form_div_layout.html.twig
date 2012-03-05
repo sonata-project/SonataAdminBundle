@@ -295,3 +295,13 @@
     {% for attrname,attrvalue in attr %}{{attrname}}="{{attrvalue}}" {% endfor %}
 {% endspaceless %}
 {% endblock widget_container_attributes %}
+
+{% block datepicker_widget %}
+<input {{ block('widget_attributes') }} type="text" {% if value is not empty %}value="{{ value }}" {% endif %} />
+<script>
+    $(function(){
+        $('.sonata-datepicker').datepicker($.datepicker.regional['{{ locale }}']);
+    });
+</script>
+{% endblock %}
+
