@@ -7,7 +7,6 @@
  */
 
 namespace Sonata\AdminBundle\Form\Type;
-//namespace Mtools\ProjectBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilder;
