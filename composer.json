@@ -1,5 +1,5 @@
 {
-    "name": "sonata/admin-bundle",
+    "name": "sonata-project/admin-bundle",
     "type": "symfony-bundle",
     "description": "Symfony SonataAdminBundle",
     "keywords": ["Admin Generator", "admin", "sonata", "bootstrap"],
@@ -20,9 +20,9 @@
         "symfony/framework-bundle": "2.*",
         "symfony/security-bundle": "2.*",
         "knplabs/knp-menu-bundle": "master-dev",
-        "sonata/jquery-bundle": "master-dev",
-        "sonata/exporter": "master-dev",
-        "sonata/block-bundle": "master-dev"
+        "sonata-project/jquery-bundle": "master-dev",
+        "sonata-project/exporter": "master-dev",
+        "sonata-project/block-bundle": "master-dev"
     },
     "suggest": {
         "sonata/doctrine-orm-admin-bundle": "*"
