@@ -463,6 +463,21 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     {
         return $this->getModelManager()->getExportFields($this->getClass());
     }
+    
+    /**
+     * @return array
+     */
+    public function getExportAssociationMappings()
+    {
+        $modelManager = $this->getModelManager();
+        $associationMappings = array();
+        
+        if(method_exists($modelManager, 'getExportAssociationMappings')){
+            $associationMappings = $modelManager->getExportAssociationMappings($this->getClass());
+        }
+        
+        return $associationMappings;
+    }
 
     /**
      * @return
@@ -472,7 +487,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         $datagrid = $this->getDatagrid();
         $datagrid->buildPager();
 
-        return $this->getModelManager()->getDataSourceIterator($datagrid, $this->getExportFields());
+        return $this->getModelManager()->getDataSourceIterator($datagrid, $this->getExportFields(), null, null, $this->getExportAssociationMappings());
     }
 
     /**
