@@ -24,6 +24,8 @@ class DatepickerType extends AbstractType
     public function buildForm(FormBuilder $builder, array $options)
     {
 
+        parent::buildForm($builder, $options);
+
         $formatter = new \IntlDateFormatter(
             \Locale::getDefault(),
             $options['format'],
@@ -32,9 +34,6 @@ class DatepickerType extends AbstractType
             \IntlDateFormatter::GREGORIAN,
             $options['pattern']
         );
-
-        $builder->resetClientTransformers();
-        $builder->appendClientTransformer(new \Symfony\Component\Form\Extension\Core\DataTransformer\DateTimeToStringTransformer(null, null, 'd.m.Y'));
 
         $builder->setAttribute('formatter', $formatter)
                 ->setAttribute('locale', $options['locale'])
@@ -46,13 +45,14 @@ class DatepickerType extends AbstractType
     {
         return array(
             'format'         => \IntlDateFormatter::SHORT,
-            'locale' => 'en-GB'
+            'locale' => 'en-GB',
+            'widget' => 'single_text',
         );
     }
 
     public function getParent(array $options)
     {
-        return 'text';
+        return 'date';
     }
 
     public function getName()
