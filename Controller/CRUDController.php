@@ -99,7 +99,13 @@ class CRUDController extends Controller
             $rootAdmin = $rootAdmin->getParent();
         }
 
-        $rootAdmin->setRequest($this->container->get('request'));
+        $request = $this->container->get('request');
+
+        $rootAdmin->setRequest($request);
+
+        if ($request->get('uniqid')) {
+            $rootAdmin->setUniqid($request->get('uniqid'));
+        }
     }
 
     /**

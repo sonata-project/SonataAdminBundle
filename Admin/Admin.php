@@ -1111,6 +1111,10 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
             return;
         }
 
+        if ($this->hasRequest()) {
+            $admin->setRequest($this->getRequest());
+        }
+
         $fieldDescription->setAssociationAdmin($admin);
     }
 
@@ -1885,10 +1889,6 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     public function setRequest(Request $request)
     {
         $this->request = $request;
-
-        if ($request->get('uniqid')) {
-            $this->setUniqid($request->get('uniqid'));
-        }
 
         foreach ($this->getChildren() as $children) {
             $children->setRequest($request);
