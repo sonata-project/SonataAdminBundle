@@ -100,8 +100,6 @@ class SonataAdminExtension extends Extension
         $container->setParameter('sonata.admin.configuration.security.information', $config['security']['information']);
         $container->setParameter('sonata.admin.configuration.security.admin_permissions', $config['security']['admin_permissions']);
         $container->setParameter('sonata.admin.configuration.security.object_permissions', $config['security']['object_permissions']);
-        $container->setParameter('sonata.admin.configuration.form_types.datepicker.date_format', $config['form_types']['datepicker']['date_format']);
-        $container->setParameter('sonata.admin.configuration.form_types.datepicker.locale', $config['form_types']['datepicker']['locale']);
 
         $loader->load('security.xml');
 

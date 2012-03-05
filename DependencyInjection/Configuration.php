@@ -137,16 +137,6 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('action')->defaultValue('SonataAdminBundle:CRUD:action.html.twig')->cannotBeEmpty()->end()
                     ->end()
                 ->end()
-                ->arrayNode('form_types')
-                    ->addDefaultsIfNotSet()
-                    ->children()
-                    ->arrayNode('datepicker')
-                        ->addDefaultsIfNotSet()
-                        ->children()
-                            ->scalarNode('date_format')->defaultValue('Y-m-d')->cannotBeEmpty()->end()
-                            ->scalarNode('locale')->defaultValue('en-GB')->cannotBeEmpty()->end()
-                        ->end()
-                ->end()
         ->end();
 
         return $treeBuilder;

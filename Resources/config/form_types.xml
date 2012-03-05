@@ -47,8 +47,6 @@
             <tag name="form.type" alias="sonata_type_datepicker" />
 
             <argument type="service" id="translator" />
-            <argument>%sonata.admin.configuration.form_types.datepicker.date_format%</argument>
-            <argument>%sonata.admin.configuration.form_types.datepicker.locale%</argument>
         </service>
 
 
