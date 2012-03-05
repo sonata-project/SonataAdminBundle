@@ -88,7 +88,7 @@ class Configuration implements ConfigurationInterface
                             ->end()
                         ->end()
                         ->arrayNode('blocks')
-                            ->defaultValue(array('position' => 'left', 'type' => 'sonata.admin.block.admin_list'))
+                            ->defaultValue(array(array('position' => 'left', 'type' => 'sonata.admin.block.admin_list')))
                             ->prototype('array')
                                 ->children()
                                     ->scalarNode('type')->cannotBeEmpty()->end()
