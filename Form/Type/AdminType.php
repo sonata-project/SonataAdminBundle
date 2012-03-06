@@ -31,6 +31,10 @@ class AdminType extends AbstractType
             $builder->add('_delete', 'checkbox', array('required' => false, 'property_path' => false));
         }
 
+        if (!$admin->hasSubject()) {
+            $admin->setSubject($builder->getData());
+        }
+
         $admin->defineFormBuilder($builder);
 
         $builder->prependClientTransformer(new ArrayToModelTransformer($admin->getModelManager(), $admin->getClass()));
