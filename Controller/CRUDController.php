@@ -104,7 +104,7 @@ class CRUDController extends Controller
         $rootAdmin->setRequest($request);
 
         if ($request->get('uniqid')) {
-            $rootAdmin->setUniqid($request->get('uniqid'));
+            $this->admin->setUniqid($request->get('uniqid'));
         }
     }
 
