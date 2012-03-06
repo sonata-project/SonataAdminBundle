@@ -45,6 +45,11 @@ class PathInfoBuilder implements RouteBuilderInterface
             $collection->add('history_view_revision', $admin->getRouterIdParameter().'/history/{revision}/view');
         }
 
+        // an admin can have only one level of nested child
+        if ($admin->getParent()) {
+            return;
+        }
+
         // add children urls
         foreach ($admin->getChildren() as $children) {
             $collection->addCollection($children->getRoutes());
