@@ -430,4 +430,15 @@ interface AdminInterface
      * @return Route
      */
     function getRoute($name);
+
+    /**
+     * @return AdminInterface
+     */
+    function getParent();
+
+    /**
+     * @param AdminInterface $admin
+     * @return void
+     */
+    function setParent(AdminInterface $admin);
 }
