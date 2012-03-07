@@ -29,6 +29,10 @@ class Exporter
         $privateFilename = sprintf('%s/%s', sys_get_temp_dir(), uniqid('sonata_export_', true));
 
         switch($format) {
+            case 'xls':
+                $writer = new \Exporter\Writer\XlsWriter($privateFilename);
+                $contentType = 'application/vnd.ms-excel';
+                break;
             case 'xml':
                 $writer = new \Exporter\Writer\XmlWriter($privateFilename);
                 $contentType = 'text/xml';
@@ -38,7 +42,7 @@ class Exporter
                 $contentType = 'application/json';
                 break;
             case 'csv':
-                $writer = new \Exporter\Writer\CsvWriter($privateFilename);
+                $writer = new \Exporter\Writer\CsvWriter($privateFilename, ',', '"', "", true);
                 $contentType = 'text/csv';
                 break;
             default:

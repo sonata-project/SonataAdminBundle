@@ -452,7 +452,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     public function getExportFormats()
     {
         return array(
-            'json', 'xml', 'csv'
+            'json', 'xml', 'csv', 'xls'
         );
     }
 
