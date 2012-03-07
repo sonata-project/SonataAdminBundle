@@ -9,9 +9,9 @@ CHANGELOG
 ### 2012-03-01
 
 * [BC BREAK] Introduce Block Into the Admin Bundle
-  The AdminBundle has now a dependency to BlockBundle : http://github.com/sonata-project/SonataBlockBundle
-  The dashboard list is now a block, so it can be removed from the sonata_admin configuration.
-  More blocks can be created please follow the instruction here : http://sonata-project.org/bundles/block/master/doc/reference/your_first_block.html
+    * The AdminBundle has now a dependency to BlockBundle : http://github.com/sonata-project/SonataBlockBundle
+    * The dashboard list is now a block, so it can be removed from the sonata_admin configuration.
+    * More blocks can be created please follow the instruction here : http://sonata-project.org/bundles/block/master/doc/reference/your_first_block.html
 
 * [BC BREAK] New configuration format for the dasboard section.
 
