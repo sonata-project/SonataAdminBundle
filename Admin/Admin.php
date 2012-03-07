@@ -1153,7 +1153,13 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      */
     public function createQuery($context = 'list')
     {
-        return $this->getModelManager()->createQuery($this->class);
+        $query = $this->getModelManager()->createQuery($this->class);
+
+        foreach ($this->extensions as $extension) {
+            $extension->configureQuery($this, $query, $context);
+        }
+
+        return $query;
     }
 
     /**

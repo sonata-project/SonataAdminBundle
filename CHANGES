@@ -1,3 +1,8 @@
+07/03/2012
+----------
+
+* Extension : refactor the AdminExtensionInterface to use the proper AdminInterface, add a new configureQuery method
+
 04/09/2011
 ----------
 * Add a delete option on widget with edit = list
