@@ -93,6 +93,7 @@ class Configuration implements ConfigurationInterface
                                 ->children()
                                     ->scalarNode('type')->cannotBeEmpty()->end()
                                     ->arrayNode('settings')
+                                        ->useAttributeAsKey('id')
                                         ->prototype('scalar')->defaultValue(array())->end()
                                     ->end()
                                     ->scalarNode('position')->defaultValue('right')->end()
