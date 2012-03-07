@@ -69,15 +69,15 @@ the Sonata\AdminBundle\Admin\Admin class. Here is a simple example from the
 SonataNewsBundle:
 
 .. code-block:: php
-   
+
    namespace Sonata\NewsBundle\Admin;
-   
+
    use Sonata\AdminBundle\Admin\Admin;
    use Sonata\AdminBundle\Datagrid\ListMapper;
    use Sonata\AdminBundle\Datagrid\DatagridMapper;
    use Sonata\AdminBundle\Validator\ErrorElement;
    use Sonata\AdminBundle\Form\FormMapper;
-   
+
    class TagAdmin extends Admin
    {
        protected function configureFormFields(FormMapper $formMapper)
@@ -163,22 +163,37 @@ and change them according to your requirements:
             list:    SonataAdminBundle:CRUD:list.html.twig
             show:    SonataAdminBundle:CRUD:show.html.twig
             edit:    SonataAdminBundle:CRUD:edit.html.twig
-        dashboard_groups:
-            default: ~
+        dashboard:
+            blocks:
+                # display a dashboard block
+                - { position: left, type: sonata.admin.block.admin_list }
+
+            groups:
+                default: ~
 
 
 Linking the admin class to the dashboard is done automatically because of the
 default option you defined above:
 
-    dashboard_groups:
-        default: ~
+    dashboard
+        blocks:
+            # display a dashboard block
+            - { position: left, type: sonata.admin.block.admin_list }
+
+        groups:
+            default: ~
 
 However you can define only admin groups you want to show in the dashboard by:
 
-    dashboard_groups:
-        sonata_page:
-            label: Page
-            items: ~
+    dashboard
+        blocks:
+            # display a dashboard block
+            - { position: left, type: sonata.admin.block.admin_list }
+
+        groups:
+            sonata_page:
+                label: Page
+                items: ~
 
 More information can be found in the configuration chapter of this documentation.
 
