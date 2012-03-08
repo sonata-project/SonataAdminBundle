@@ -140,7 +140,7 @@ var Admin = {
                         elm.effect("highlight", {'color' : '#57A957'}, 2000);
                         Admin.set_object_field_value(elm);
                     } else {
-                        jQuery(a).parent().effect("highlight", {'color' : '#C43C35'}, 2000);
+                        jQuery(subject).parent().effect("highlight", {'color' : '#C43C35'}, 2000);
                     }
                 }
             });
