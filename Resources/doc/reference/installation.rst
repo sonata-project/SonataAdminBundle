@@ -4,7 +4,7 @@ Installation
 Prerequisites
 -------------
 
-**Translations**
+**Translations.**
 If you wish to use default translation texts provided in this bundle, you have
 to make sure you have translator enabled in your config.
 
@@ -20,7 +20,9 @@ Installation
 
 Download SonataAdminBundle and its dependencies to the ``vendor`` directory. You
 can use the Symfony's vendor script for the automated procces. Add the following
-in your ``deps`` file::
+in your ``deps`` file:
+
+.. code-block:: ini
 
   [SonataAdminBundle]
       git=http://github.com/sonata-project/SonataAdminBundle.git
@@ -84,12 +86,13 @@ files:
         );
     }
 
-Now, install the assets from the bundles:
-``php app/console assets:install web``.
+Now, install the assets from the bundles::
 
-Usually when installing new bundles a good practice is also to delete your cache:
-``php app/console cache:clear``.
+    php app/console assets:install web
 
+Usually when installing new bundles a good practice is also to delete your cache::
+
+    php app/console cache:clear
 
 After you have successfully installed above bundles you need to configure
 SonataAdminBundle for administering your models. All that is needed to quickly
