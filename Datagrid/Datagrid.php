@@ -178,13 +178,21 @@ class Datagrid implements DatagridInterface
     }
 
     /**
-     * @return boolean
+     * @param bool $excludeHidden exclude from the check the filters marked as hidden
+     * 
+     * @return bool
      */
-    public function hasActiveFilters()
+    public function hasActiveFilters($excludeHidden = false)
     {
         foreach ($this->filters as $name => $filter) {
             if ($filter->isActive()) {
-                return true;
+                if ($excludeHidden) {
+                    if (!$filter->isHidden()) {
+                        return true;
+                    }
+                } else {
+                    return true;
+                }
             }
         }
 
