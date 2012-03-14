@@ -69,7 +69,7 @@ class ModelType extends AbstractType
 
     public function getParent(array $options)
     {
-        return $options['parent'];
+        return isset($options['parent']) ? $options['parent'] : 'choice';
     }
 
     public function getName()
