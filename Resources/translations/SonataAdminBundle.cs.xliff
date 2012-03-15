@@ -208,7 +208,7 @@
             </trans-unit>
             <trans-unit id="label_type_equals">
               <source>label_type_equals</source>
-              <target>je rovno</target>
+              <target>rovná se</target>
             </trans-unit>
             <trans-unit id="label_type_equal">
               <source>label_type_equal</source>
@@ -260,7 +260,7 @@
             </trans-unit>
             <trans-unit id="label_date_type_between">
               <source>label_date_type_between</source>
-              <target>mezi</target>
+              <target>je mezi</target>
             </trans-unit>
             <trans-unit id="label_date_not_between">
               <source>label_date_type_not_between</source>
