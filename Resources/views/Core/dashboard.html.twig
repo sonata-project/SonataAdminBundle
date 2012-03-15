@@ -19,14 +19,14 @@ file that was distributed with this source code.
 
 {% block content %}
     <div class="row">
-        <div class="span9">
+        <div class="span6">
             {% for block in blocks %}
                 {% if block.position == 'left' %}
                     {{ sonata_block_render({ 'type': block.type, 'settings': block.settings}) }}
                 {% endif %}
             {% endfor %}
         </div>
-        <div class="span10">
+        <div class="span5">
             {% for block in blocks %}
                 {% if block.position == 'right' %}
                     {{ sonata_block_render({ 'type': block.type, 'settings': block.settings}) }}
