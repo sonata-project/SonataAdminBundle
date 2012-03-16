@@ -1,7 +1,7 @@
 //add some ajax default datatype
-$.ajaxSetup({
+jQuery.ajaxSetup({
     dataType: 'html'
-	});
+});
 
 jQuery(document).ready(function() {
     jQuery('html').removeClass('no-js');
