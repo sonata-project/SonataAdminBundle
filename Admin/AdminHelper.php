@@ -130,12 +130,12 @@ class AdminHelper
         $this->addNewInstance($form->getData(), $fieldDescription);
         $data[$childFormBuilder->getName()][] = $value;
 
-        $form = $admin->getFormBuilder()->getForm();
+        $finalForm = $admin->getFormBuilder()->getForm();
 
         // bind the data
-        $form->bind($data);
+        $finalForm->setData($form->getData());
 
-        return array($fieldDescription, $form);
+        return array($fieldDescription, $finalForm);
     }
 
     /**
