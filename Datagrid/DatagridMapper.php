@@ -15,6 +15,7 @@ use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
+use Sonata\AdminBundle\Filter\FilterProxy;
 
 /**
  * This class is use to simulate the Form API
@@ -86,7 +87,7 @@ class DatagridMapper
      */
     public function get($name)
     {
-        return $this->datagrid->get($name);
+        return $this->datagrid->getFilter($name);
     }
 
     /**
@@ -95,16 +96,18 @@ class DatagridMapper
      */
     public function has($key)
     {
-        return $this->datagrid->has($key);
+        return $this->datagrid->hasFilter($key);
     }
 
     /**
      * @param string $key
-     * @return void
+     * @return \Sonata\AdminBundle\Datagrid\DatagridMapper
      */
     public function remove($key)
     {
         $this->admin->removeFilterFieldDescription($key);
-        $this->datagrid->remove($key);
+        $this->datagrid->removeFilter($key);
+
+        return $this;
     }
 }

@@ -14,31 +14,55 @@ namespace Sonata\AdminBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Form\Util\PropertyPath;
+use Symfony\Component\HttpFoundation\Request;
+use Sonata\AdminBundle\Admin\Pool;
+use Sonata\AdminBundle\Admin\AdminHelper;
 
-class HelperController extends Controller
+class HelperController
 {
     /**
-     * @return \Sonata\AdminBundle\Admin\AdminHelper
+     * @var \Twig_Environment
      */
-    public function getAdminHelper()
+    protected $twig;
+
+    /**
+     * @var \Sonata\AdminBundle\Admin\AdminHelper
+     */
+    protected $helper;
+
+    /**
+     * @var \Sonata\AdminBundle\Admin\Pool
+     */
+    protected $pool;
+
+    /**
+     * @param \Twig_Environment $twig
+     * @param \Sonata\AdminBundle\Admin\Pool $pool
+     * @param \Sonata\AdminBundle\Admin\AdminHelper $helper
+     */
+    public function __construct(\Twig_Environment $twig, Pool $pool, AdminHelper $helper)
     {
-        return $this->container->get('sonata.admin.helper');
+        $this->twig     = $twig;
+        $this->pool     = $pool;
+        $this->helper   = $helper;
     }
 
     /**
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     * @param \Symfony\Component\HttpFoundation\Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function appendFormFieldElementAction()
+    public function appendFormFieldElementAction(Request $request)
     {
-        $helper     = $this->getAdminHelper();
-        $request    = $this->get('request');
-        $code       = $request->query->get('code');
-        $elementId  = $request->query->get('elementId');
-        $objectId   = $request->query->get('objectId');
-        $uniqid     = $this->get('request')->query->get('uniqid');
+        $code       = $request->get('code');
+        $elementId  = $request->get('elementId');
+        $objectId   = $request->get('objectId');
+        $uniqid     = $request->get('uniqid');
 
-        $admin = $helper->getAdmin($code);
+        $admin      = $this->pool->getInstance($code);
+        $admin->setRequest($request);
+
         if ($uniqid) {
             $admin->setUniqid($uniqid);
         }
@@ -53,17 +77,16 @@ class HelperController extends Controller
         }
 
         $admin->setSubject($subject);
-        $admin->setRequest($request);
 
-        list($fieldDescription, $form) = $helper->appendFormFieldElement($admin, $elementId);
+        list($fieldDescription, $form) = $this->helper->appendFormFieldElement($admin, $elementId);
 
-        $view = $helper->getChildFormView($form->createView(), $elementId);
+        $view = $this->helper->getChildFormView($form->createView(), $elementId);
 
         // render the widget
         // todo : fix this, the twig environment variable is not set inside the extension ...
-        $twig = $this->get('twig');
-        $extension = $twig->getExtension('form');
-        $extension->initRuntime($this->get('twig'));
+
+        $extension = $this->twig->getExtension('form');
+        $extension->initRuntime($this->twig);
         $extension->setTheme($view, $admin->getFormTheme());
 
         return new Response($extension->renderWidget($view));
@@ -71,16 +94,21 @@ class HelperController extends Controller
 
     /**
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     * @param \Symfony\Component\HttpFoundation\Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function retrieveFormFieldElementAction()
+    public function retrieveFormFieldElementAction(Request $request)
     {
-        $helper     = $this->getAdminHelper();
-        $code       = $this->get('request')->query->get('code');
-        $elementId  = $this->get('request')->query->get('elementId');
-        $objectId   = $this->get('request')->query->get('objectId');
-        $admin      = $helper->getAdmin($code);
-        $uniqid     = $this->get('request')->query->get('uniqid');
+        $code       = $request->get('code');
+        $elementId  = $request->get('elementId');
+        $objectId   = $request->get('objectId');
+        $uniqid     = $request->get('uniqid');
+
+        $admin       = $this->pool->getInstance($code);
+
+        if ($uniqid) {
+            $admin->setUniqid($uniqid);
+        }
 
         if ($objectId) {
             $subject = $admin->getModelManager()->find($admin->getClass(), $objectId);
@@ -91,22 +119,19 @@ class HelperController extends Controller
             $subject = $admin->getNewInstance();
         }
 
-        if ($uniqid) {
-            $admin->setUniqid($uniqid);
-        }
+        $admin->setSubject($subject);
 
         $formBuilder = $admin->getFormBuilder($subject);
 
         $form = $formBuilder->getForm();
-        $form->bindRequest($this->get('request'));
+        $form->bindRequest($request);
 
-        $view = $helper->getChildFormView($form->createView(), $elementId);
+        $view = $this->helper->getChildFormView($form->createView(), $elementId);
 
         // render the widget
         // todo : fix this, the twig environment variable is not set inside the extension ...
-        $twig = $this->get('twig');
-        $extension = $twig->getExtension('form');
-        $extension->initRuntime($this->get('twig'));
+        $extension = $this->twig->getExtension('form');
+        $extension->initRuntime($this->twig);
         $extension->setTheme($view, $admin->getFormTheme());
 
         return new Response($extension->renderWidget($view));
@@ -114,15 +139,21 @@ class HelperController extends Controller
 
     /**
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     * @param \Symfony\Component\HttpFoundation\Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function getShortObjectDescriptionAction()
+    public function getShortObjectDescriptionAction(Request $request)
     {
-        $code       = $this->get('request')->query->get('code');
-        $objectId   = $this->get('request')->query->get('objectId');
-        $uniqid     = $this->get('request')->query->get('uniqid');
+        $code       = $request->get('code');
+        $objectId   = $request->get('objectId');
+        $uniqid     = $request->get('uniqid');
 
-        $admin  = $this->container->get('sonata.admin.pool')->getInstance($code);
+        $admin       = $this->pool->getInstance($code);
+
+        if (!$admin) {
+            throw new NotFoundHttpException();
+        }
+
         if ($uniqid) {
             $admin->setUniqid($uniqid);
         }
@@ -136,7 +167,7 @@ class HelperController extends Controller
         $description = 'no description available';
         foreach (array('getAdminTitle', 'getTitle', 'getName', '__toString') as $method) {
             if (method_exists($object, $method)) {
-                $description = $object->$method();
+                $description = call_user_func(array($object, $method));
                 break;
             }
         }
@@ -144,5 +175,79 @@ class HelperController extends Controller
         $description = sprintf('<a href="%s" target="new">%s</a>', $admin->generateUrl('edit', array('id' => $objectId)), $description);
 
         return new Response($description);
+    }
+
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function setObjectFieldValueAction(Request $request)
+    {
+        $field      = $request->get('field');
+        $code       = $request->get('code');
+        $objectId   = $request->get('objectId');
+        $value      = $request->get('value');
+        $context    = $request->get('context');
+
+        $admin       = $this->pool->getInstance($code);
+
+        // alter should be done by using a post method
+        if ($request->getMethod() != 'POST') {
+            return new Response(json_encode(array('status' => 'KO', 'message' => 'Expected a POST Request')), 200, array(
+                'Content-Type' => 'application/json'
+            ));
+        }
+
+        $object = $admin->getObject($objectId);
+
+        if (!$object) {
+            return new Response(json_encode(array('status' => 'KO', 'message' => 'Object does not exist')), 200, array(
+                'Content-Type' => 'application/json'
+            ));
+        }
+
+        // check user permission
+        if (false === $admin->isGranted('EDIT', $object)) {
+            return new Response(json_encode(array('status' => 'KO', 'message' => 'Invalid permissions')), 200, array(
+                'Content-Type' => 'application/json'
+            ));
+        }
+
+        if ($context == 'list') {
+            $fieldDescription = $admin->getListFieldDescription($field);
+        } else {
+            return new Response(json_encode(array('status' => 'KO', 'message' => 'Invalid context')), 200, array(
+                'Content-Type' => 'application/json'
+            ));
+        }
+
+        if (!$fieldDescription) {
+            return new Response(json_encode(array('status' => 'KO', 'message' => 'The field does not exist')), 200, array(
+                'Content-Type' => 'application/json'
+            ));
+        }
+
+        if (!$fieldDescription->getOption('editable')) {
+            return new Response(json_encode(array('status' => 'KO', 'message' => 'The field cannot be edit, editable option must be set to true')), 200, array(
+                'Content-Type' => 'application/json'
+            ));
+        }
+
+        // TODO : call the validator component ...
+        $propertyPath = new PropertyPath($field);
+        $propertyPath->setValue($object, $value);
+
+        $admin->update($object);
+
+        // render the widget
+        // todo : fix this, the twig environment variable is not set inside the extension ...
+        $extension = $this->twig->getExtension('sonata_admin');
+        $extension->initRuntime($this->twig);
+
+        $content = $extension->renderListElement($object, $fieldDescription);
+
+        return new Response(json_encode(array('status' => 'OK', 'content' => $content)), 200, array(
+            'Content-Type' => 'application/json'
+        ));
     }
 }

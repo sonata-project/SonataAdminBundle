@@ -76,7 +76,7 @@
             </trans-unit>
             <trans-unit id="title_edit">
                 <source>title_edit</source>
-                <target>Beaarbechten</target>
+                <target>"%name%" beaarbechten</target>
             </trans-unit>
             <trans-unit id="title_list">
                 <source>title_list</source>
@@ -89,6 +89,14 @@
             <trans-unit id="link_previous_pager">
                 <source>link_previous_pager</source>
                 <target>Zréck</target>
+            </trans-unit>
+            <trans-unit id="link_first_pager">
+                <source>link_first_pager</source>
+                <target>link_first_pager</target>
+            </trans-unit>
+            <trans-unit id="link_last_pager">
+                <source>link_last_pager</source>
+                <target>link_last_pager</target>
             </trans-unit>
             <trans-unit id="Admin">
                 <source>Admin</source>
@@ -155,7 +163,7 @@
               <target>D'Element gouf erfollegräich geläscht.</target>
             </trans-unit>
             <trans-unit id="link_breadcrumb_dashboard">
-                <source>breadcrumb.dashboard</source>
+                <source>breadcrumb.link_dashboard</source>
                 <target>&#8962;</target>
             </trans-unit>
             <trans-unit id="title_delete">
@@ -221,6 +229,23 @@
             <trans-unit id="label_type_less_than">
               <source>label_type_less_than</source>
               <target>&lt;</target>
+            </trans-unit>
+            <trans-unit id="label_filters">
+                <source>label_filters</source>
+                <target>Filteren</target>
+            </trans-unit>
+            <trans-unit id="delete_or">
+                <source>delete_or</source>
+                <target>oder</target>
+            </trans-unit>
+
+            <trans-unit id="list_results_count">
+                <source>list_results_count</source>
+                <target>1 Resultat|%count% Resultater</target>
+            </trans-unit>
+            <trans-unit id="label_export_download">
+                <source>label_export_download</source>
+                <target>Download : </target>
             </trans-unit>
         </body>
     </file>

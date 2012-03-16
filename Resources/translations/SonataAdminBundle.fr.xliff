@@ -76,7 +76,7 @@
             </trans-unit>
             <trans-unit id="title_edit">
                 <source>title_edit</source>
-                <target>Éditer</target>
+                <target>Éditer "%name%"</target>
             </trans-unit>
             <trans-unit id="title_list">
                 <source>title_list</source>
@@ -89,6 +89,14 @@
             <trans-unit id="link_previous_pager">
                 <source>link_previous_pager</source>
                 <target>Précédent</target>
+            </trans-unit>
+            <trans-unit id="link_first_pager">
+                <source>link_first_pager</source>
+                <target>Première</target>
+            </trans-unit>
+            <trans-unit id="link_last_pager">
+                <source>link_last_pager</source>
+                <target>Dernière</target>
             </trans-unit>
             <trans-unit id="Admin">
                 <source>Admin</source>
@@ -155,7 +163,7 @@
               <target>Les éléments ont été supprimés avec succès.</target>
             </trans-unit>
             <trans-unit id="link_breadcrumb_dashboard">
-                <source>breadcrumb.dashboard</source>
+                <source>breadcrumb.link_dashboard</source>
                 <target>&#8962;</target>
             </trans-unit>
             <trans-unit id="title_delete">
@@ -222,6 +230,44 @@
               <source>label_type_less_than</source>
               <target>&lt;</target>
             </trans-unit>
+            <trans-unit id="label_filters">
+              <source>label_filters</source>
+              <target>Filtres</target>
+            </trans-unit>
+            <trans-unit id="delete_or">
+              <source>delete_or</source>
+              <target>ou</target>
+            </trans-unit>
+            <trans-unit id="link_action_history">
+                <source>link_action_history</source>
+                <target>Révisions</target>
+            </trans-unit>
+            <trans-unit id="td_revision">
+                <source>td_revision</source>
+                <target>Révisions</target>
+            </trans-unit>
+            <trans-unit id="td_timestamp">
+                <source>td_timestamp</source>
+                <target>Date</target>
+            </trans-unit>
+            <trans-unit id="td_username">
+                <source>td_username</source>
+                <target>Auteur</target>
+            </trans-unit>
+            <trans-unit id="label_view_revision">
+                <source>label_view_revision</source>
+                <target>Afficher la révision</target>
+            </trans-unit>
+
+            <trans-unit id="list_results_count">
+                <source>list_results_count</source>
+                <target>1 résultat|%count% résultats</target>
+            </trans-unit>
+            <trans-unit id="label_export_download">
+                <source>label_export_download</source>
+                <target>Export : </target>
+            </trans-unit>
+
         </body>
     </file>
 </xliff>

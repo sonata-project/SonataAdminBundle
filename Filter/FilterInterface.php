@@ -26,6 +26,13 @@ interface FilterInterface
     function filter($queryBuilder, $alias, $field, $value);
 
     /**
+     * @abstract
+     * @param $query
+     * @param $value
+     */
+    function apply($query, $value);
+
+    /**
      * Returns the filter name
      * @abstract
      * @return string
@@ -36,9 +43,16 @@ interface FilterInterface
      * Returns the label name
      *
      * @abstract
-     * @return void
+     * @return string
      */
     function getLabel();
+
+    /**
+     * @abstract
+     *
+     * @param string $label
+     */
+    function setLabel($name);
 
     /**
      * @abstract
@@ -50,9 +64,16 @@ interface FilterInterface
      * @abstract
      * @param string $name
      * @param null $default
-     * @return void
+     * @return mixed
      */
     function getOption($name, $default = null);
+
+    /**
+     * @abstract
+     * @param $name
+     * @param $value
+     */
+    function setOption($name, $value);
 
     /**
      * @abstract
@@ -62,21 +83,21 @@ interface FilterInterface
      */
     function initialize($name, array $options = array());
 
-        /**
+    /**
      * @abstract
-     * @return void
+     * @return string
      */
     function getFieldName();
 
     /**
      * @abstract
-     * @return void
+     * @return array
      */
     function getFieldOptions();
 
     /**
      * @abstract
-     * @return void
+     * @return string
      */
     function getFieldType();
 
@@ -84,7 +105,7 @@ interface FilterInterface
      * Returns the main widget used to render the filter
      *
      * @abstract
-     * @return void
+     * @return array
      */
     function getRenderSettings();
 }

@@ -14,12 +14,17 @@ file that was distributed with this source code.
 {% block actions %}
     <div class="sonata-actions">
         <ul>
-            {% if admin.hasRoute('edit') and admin.isGranted('EDIT')%}
-                <li class="sonata-action-element"><a href="{{ admin.generateObjectUrl('edit', object) }}">{% trans from 'SonataAdminBundle' %}link_action_edit{% endtrans %}</a></li>
+            {% if admin.hasRoute('edit') and admin.isGranted('EDIT', object)%}
+                <li class="btn sonata-action-element"><a href="{{ admin.generateObjectUrl('edit', object) }}">{% trans from 'SonataAdminBundle' %}link_action_edit{% endtrans %}</a></li>
             {% endif %}
-
+            {% if admin.hasroute('history') and admin.id(object) and admin.isGranted('EDIT', object) %}
+                <li class="btn sonata-action-element"><a href="{{ admin.generateObjectUrl('history', object) }}">{% trans from 'SonataAdminBundle' %}link_action_history{% endtrans %}</a></li>
+            {% endif %}
             {% if admin.hasRoute('create') and admin.isGranted('CREATE')%}
-                <li class="sonata-action-element"><a href="{{ admin.generateUrl('create') }}">{% trans from 'SonataAdminBundle' %}link_action_create{% endtrans %}</a></li>
+                <li class="btn sonata-action-element"><a href="{{ admin.generateUrl('create') }}">{% trans from 'SonataAdminBundle' %}link_action_create{% endtrans %}</a></li>
+            {% endif %}
+            {% if admin.hasroute('list') and admin.isGranted('LIST')%}
+                <li class="btn sonata-action-element"><a href="{{ admin.generateUrl('list') }}">{% trans from 'SonataAdminBundle' %}link_action_list{% endtrans %}</a></li>
             {% endif %}
         </ul>
     </div>
@@ -30,11 +35,11 @@ file that was distributed with this source code.
 {% block show %}
     <div class="sonata-ba-view">
         {% for name, view_group in admin.showgroups %}
-            <table>
+            <table class="bordered-table">
                 {% if name %}
                     <tr class="sonata-ba-view-title">
                         <td colspan="2">
-                            {{ name|trans({}, admin.translationdomain) }}
+                            {{ admin.trans(name) }}
                         </td>
                     </tr>
                 {% endif %}

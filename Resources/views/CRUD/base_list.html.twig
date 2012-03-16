@@ -15,7 +15,7 @@ file that was distributed with this source code.
     <div class="sonata-actions">
         <ul>
             {% if admin.hasRoute('create') and admin.isGranted('CREATE')%}
-                <li class="sonata-action-element"><a href="{{ admin.generateUrl('create') }}">{% trans from 'SonataAdminBundle' %}link_action_create{% endtrans %}</a></li>
+                <li class="btn"><a href="{{ admin.generateUrl('create') }}">{% trans from 'SonataAdminBundle' %}link_action_create{% endtrans %}</a></li>
             {% endif %}
         </ul>
     </div>
@@ -27,74 +27,100 @@ file that was distributed with this source code.
     {% set batchactions = admin.batchactions %}
     {% if admin.datagrid.results|length > 0 %}
         <form action="{{ admin.generateUrl('batch', admin.filterParameters) }}" method="POST" >
-            <table>
+            <table class="zebra-striped bordered-table">
                 {% block table_header %}
-                    <tr class="sonata-ba-list-field-header">
-                        {% for field_description in admin.list.elements %}
-                            {% if field_description.getOption('code') == '_batch' and batchactions|length > 0%}
-                                <th class="sonata-ba-list-field-header sonata-ba-list-field-header-batch">
-                                  <input type="checkbox" id="list_batch_checkbox" />
-                                </th>
-                            {% else %}
-                                {% set sortable = false %}
-                                {% if field_description.options.sortable is defined and field_description.options.sortable%}
-                                    {% set sortable             = true %}
-                                    {% set current              = admin.datagrid.values._sort_by == field_description.options.sortable %}
-                                    {% set sort_parameters      = admin.modelmanager.sortparameters(field_description, admin.datagrid) %}
-                                    {% set sort_active_class    = current ? 'sonata-ba-list-field-order-active' : '' %}
-                                    {% set sort_by              = current ? admin.datagrid.values._sort_order : field_description.options._sort_order %}
-                                {% endif %}
-
-                                {% spaceless %}
-                                    <th class="sonata-ba-list-field-header-{{ field_description.type}} {% if sortable %} sonata-ba-list-field-header-order-{{ sort_by|lower }} {{ sort_active_class }}{% endif %}">
-                                        {% if sortable %}<a href="{{ admin.generateUrl('list', sort_parameters) }}">{% endif %}
-
-                                        {% if field_description.options.name is defined %}
-                                            {{ field_description.options.name|trans({}, admin.translationdomain) }}
-                                        {% else %}
-                                            {{ field_description.name|trans({}, admin.translationdomain) }}
-                                        {% endif %}
-
-                                        {% if sortable %}</a>{% endif %}
+                    <thead>
+                        <tr class="sonata-ba-list-field-header">
+                            {% for field_description in admin.list.elements %}
+                                {% if field_description.getOption('code') == '_batch' and batchactions|length > 0%}
+                                    <th class="sonata-ba-list-field-header sonata-ba-list-field-header-batch">
+                                      <input type="checkbox" id="list_batch_checkbox" />
                                     </th>
-                                {% endspaceless %}
-                            {% endif %}
-                        {% endfor %}
-                    </tr>
+                                {% else %}
+                                    {% set sortable = false %}
+                                    {% if field_description.options.sortable is defined and field_description.options.sortable%}
+                                        {% set sortable             = true %}
+                                        {% set current              = admin.datagrid.values._sort_by == field_description.options.sortable %}
+                                        {% set sort_parameters      = admin.modelmanager.sortparameters(field_description, admin.datagrid) %}
+                                        {% set sort_active_class    = current ? 'sonata-ba-list-field-order-active' : '' %}
+                                        {% set sort_by              = current ? admin.datagrid.values._sort_order : field_description.options._sort_order %}
+                                    {% endif %}
+
+                                    {% spaceless %}
+                                        <th class="sonata-ba-list-field-header-{{ field_description.type}} {% if sortable %} sonata-ba-list-field-header-order-{{ sort_by|lower }} {{ sort_active_class }}{% endif %}">
+                                            {% if sortable %}<a href="{{ admin.generateUrl('list', sort_parameters) }}">{% endif %}
+                                            {{ admin.trans(field_description.label) }}
+                                            {% if sortable %}</a>{% endif %}
+                                        </th>
+                                    {% endspaceless %}
+                                {% endif %}
+                            {% endfor %}
+                        </tr>
+                    </thead>
                 {% endblock %}
 
                 {% block table_body %}
-                    {% for object in admin.datagrid.results %}
-                        <tr>
-                            {% for field_description in admin.list.elements %}
-                                {{ object|render_list_element(field_description) }}
-                            {% endfor %}
-                        </tr>
-                    {% endfor %}
+                    <tbody>
+                        {% for object in admin.datagrid.results %}
+                            <tr>
+                                {% for field_description in admin.list.elements %}
+                                    {{ object|render_list_element(field_description) }}
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                    </tbody>
                 {% endblock %}
 
                 {% block table_footer %}
+                    <tr>
+                        <th colspan="{{ admin.list.elements|length - 1 }}">
+                            {{ admin.datagrid.pager.page }} / {{ admin.datagrid.pager.lastpage }} -
+                            {{ "label_export_download"|trans({}, "SonataAdminBundle") }}
+                            {% for format in admin.getExportFormats() %}
+                                <a href="{{ admin.generateUrl('export', admin.modelmanager.paginationparameters(admin.datagrid, 0) + {'format' : format}) }}">{{ format }}</a>{% if not loop.last%},{% endif %}
+                            {% endfor %}
+                        </th>
+
+                        <th>
+                            {% transchoice admin.datagrid.pager.nbresults with {'%count%': admin.datagrid.pager.nbresults} from 'SonataAdminBundle' %}list_results_count{% endtranschoice %}
+                        </th>
+                    </tr>
+
                     {% if admin.datagrid.pager.haveToPaginate() %}
                         <tr>
                             <td colspan="{{ admin.list.elements|length }}" class="pager">
-                                <ul>
-                                    {% if admin.datagrid.pager.page != admin.datagrid.pager.previouspage %}
-                                        <li><a href="{{ admin.generateUrl('list', admin.modelmanager.paginationparameters(admin.datagrid, admin.datagrid.pager.previouspage)) }}">{% trans from 'SonataAdminBundle' %}link_previous_pager{% endtrans %}</a></li>
-                                    {% endif %}
 
-                                    {# Set the number of pages to display in the pager #}
-                                    {% for page in admin.datagrid.pager.getLinks(5) %}
-                                        {% if page == admin.datagrid.pager.page %}
-                                            <li>{{ page }}</li>
-                                        {% else %}
-                                            <li><a href="{{ admin.generateUrl('list', admin.modelmanager.paginationparameters(admin.datagrid, page)) }}">{{ page }}</a></li>
+                                <div class="pagination">
+                                    <ul>
+
+                                        {% if admin.datagrid.pager.page != 1  %}
+                                            <li><a href="{{ admin.generateUrl('list', admin.modelmanager.paginationparameters(admin.datagrid, 1)) }}" title="{% trans from 'SonataAdminBundle' %}link_first_pager{% endtrans %}">&laquo;</a></li>
                                         {% endif %}
-                                    {% endfor %}
 
-                                    {% if admin.datagrid.pager.page != admin.datagrid.pager.nextpage %}
-                                        <li><a href="{{ admin.generateUrl('list', admin.modelmanager.paginationparameters(admin.datagrid, admin.datagrid.pager.nextpage)) }}">{% trans from 'SonataAdminBundle' %}link_next_pager{% endtrans %}</a></li>
-                                    {% endif %}
-                                </ul>
+                                        {% if admin.datagrid.pager.page != admin.datagrid.pager.previouspage %}
+                                            <li><a href="{{ admin.generateUrl('list', admin.modelmanager.paginationparameters(admin.datagrid, admin.datagrid.pager.previouspage)) }}" title="{% trans from 'SonataAdminBundle' %}link_previous_pager{% endtrans %}">&lsaquo;</a></li>
+                                        {% endif %}
+
+                                        {# Set the number of pages to display in the pager #}
+                                        {% for page in admin.datagrid.pager.getLinks() %}
+                                            {% if page == admin.datagrid.pager.page %}
+                                                <li class="active"><a href="{{ admin.generateUrl('list', admin.modelmanager.paginationparameters(admin.datagrid, page)) }}">{{ page }}</a></li>
+                                            {% else %}
+                                                <li><a href="{{ admin.generateUrl('list', admin.modelmanager.paginationparameters(admin.datagrid, page)) }}">{{ page }}</a></li>
+                                            {% endif %}
+                                        {% endfor %}
+
+                                        {% if admin.datagrid.pager.page != admin.datagrid.pager.nextpage %}
+                                            <li><a href="{{ admin.generateUrl('list', admin.modelmanager.paginationparameters(admin.datagrid, admin.datagrid.pager.nextpage)) }}" title="{% trans from 'SonataAdminBundle' %}link_next_pager{% endtrans %}">&rsaquo;</a></li>
+                                        {% endif %}
+
+                                        {% if admin.datagrid.pager.page != admin.datagrid.pager.lastpage  %}
+                                            <li><a href="{{ admin.generateUrl('list', admin.modelmanager.paginationparameters(admin.datagrid, admin.datagrid.pager.lastpage)) }}" title="{% trans from 'SonataAdminBundle' %}link_last_pager{% endtrans %}">&raquo;</a></li>
+                                        {% endif %}
+
+                                    </ul>
+                                </div>
+
                             </td>
                         </tr>
                     {% endif %}
@@ -113,15 +139,19 @@ file that was distributed with this source code.
                     });
                 </script>
 
-                <div class="sonata-ba-list-actions">
+                <div class="actions sonata-ba-list-actions">
                     <select name="action">
                         {% for action, options in batchactions %}
                             <option value="{{ action }}">{{ options.label }}</option>
                         {% endfor %}
                     </select>
-                    <input type="checkbox" name="all_elements" id="execute_on_matching"  />
-                    <label for="execute_on_matching">{% trans from 'SonataAdminBundle' %}all_elements{% endtrans %}</label>
-                    <input type="submit" value="{% trans from 'SonataAdminBundle' %}btn_batch{% endtrans %}" />
+
+                    <label>
+                        <input type="checkbox" name="all_elements"/>
+                        {% trans from 'SonataAdminBundle' %}all_elements{% endtrans %}
+                    </label>
+
+                    <input type="submit" class="btn primary" value="{% trans from 'SonataAdminBundle' %}btn_batch{% endtrans %}" />
                 </div>
             {% endif %}
         </form>
@@ -134,16 +164,33 @@ file that was distributed with this source code.
 
 {% block list_filters %}
     {% if admin.datagrid.filters %}
-        <form class="sonata-filter-form" action="{{ admin.generateUrl('list') }}" method="GET">
-            {% for filter in admin.datagrid.filters %}
-                {{ form_row(form.getChild(filter.name)) }}
-            {% endfor %}
+        <form class="sonata-filter-form form-stacked {{ admin.isChild and 1 == admin.datagrid.filters|length ? 'hide' : '' }}" action="{{ admin.generateUrl('list') }}" method="GET">
+            <fieldset class="filter_legend">
+                <legend class="filter_legend {{ admin.datagrid.hasActiveFilters ? 'active' : 'inactive' }}">{% trans from 'SonataAdminBundle' %}label_filters{% endtrans %}</legend>
 
-            {{ form_rest(form) }}
+                <div class="filter_container {{ admin.datagrid.hasActiveFilters ? 'active' : 'inactive' }}">
+                    <table class="bordered-table">
+                        {% for filter in admin.datagrid.filters %}
+                        <tr id="filter_{{ filter.name }}_row" class="filter {{ filter.isActive ? 'active' : 'inactive' }}">
+                                <td class="filter-title">{{ admin.trans(filter.label) }}</td>
+                                <td class="filter-type">{{ form_widget(form.getChild(filter.name).getChild('type')) }}</td>
+                                <td class="filter-value">{{ form_widget(form.getChild(filter.name).getChild('value')) }}</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
 
-            <input type="submit" value="{% trans from 'SonataAdminBundle' %}btn_filter{% endtrans %}" />
+                    <input type="hidden" name="filter[_page]" id="filter__page" value="1" />
 
-            <a href="{{ admin.generateUrl('list') }}">{% trans from 'SonataAdminBundle' %}link_reset_filter{% endtrans %}</a>
+                    {% set foo = form.getChild('_page').setRendered() %}
+                    {{ form_rest(form) }}
+
+                    <input type="submit" class="btn primary" value="{% trans from 'SonataAdminBundle' %}btn_filter{% endtrans %}" />
+
+                    <a class="btn" href="{{ admin.generateUrl('list') }}">{% trans from 'SonataAdminBundle' %}link_reset_filter{% endtrans %}</a>
+
+                </div>
+            </fieldset>
+
         </form>
     {% endif %}
 {% endblock %}

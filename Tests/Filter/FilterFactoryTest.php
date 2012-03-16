@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\Filter\ORM;
+namespace Sonata\AdminBundle\Tests\Filter;
 
 use Sonata\AdminBundle\Filter\FilterFactory;
 

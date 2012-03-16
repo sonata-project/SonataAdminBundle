@@ -23,7 +23,7 @@ class CoreController extends Controller
      */
     public function getBaseTemplate()
     {
-        if ($this->get('request')->isXmlHttpRequest()) {
+        if ($this->getRequest()->isXmlHttpRequest()) {
             return $this->container->get('sonata.admin.pool')->getTemplate('ajax');
         }
 
@@ -35,9 +35,10 @@ class CoreController extends Controller
      */
     public function dashboardAction()
     {
-        return $this->render('SonataAdminBundle:Core:dashboard.html.twig', array(
-            'groups' => $this->get('sonata.admin.pool')->getDashboardGroups(),
-            'base_template'  => $this->getBaseTemplate(),
+        return $this->render($this->container->get('sonata.admin.pool')->getTemplate('dashboard'), array(
+            'base_template'   => $this->getBaseTemplate(),
+            'admin_pool'      => $this->container->get('sonata.admin.pool'),
+            'blocks'          => $this->container->getParameter('sonata.admin.configuration.dashboard_blocks')
         ));
     }
 }

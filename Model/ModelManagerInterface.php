@@ -14,6 +14,7 @@ namespace Sonata\AdminBundle\Model;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
+use Sonata\AdminBundle\Admin\AdminInterface;
 
 interface ModelManagerInterface
 {
@@ -131,6 +132,12 @@ interface ModelManagerInterface
 
     /**
      * @abstract
+     * @param $entity
+     */
+    function getNormalizedIdentifier($entity);
+
+    /**
+     * @abstract
      * @param string $class
      * @return void
      */
@@ -194,7 +201,6 @@ interface ModelManagerInterface
     function getDefaultSortValues($class);
 
     /**
-     * @abstract
      * @param string $class
      * @param array $array
      * @return void
@@ -202,7 +208,6 @@ interface ModelManagerInterface
     function modelReverseTransform($class, array $array = array());
 
     /**
-     * @abstract
      * @param string $class
      * @param object $instance
      * @return void
@@ -210,9 +215,23 @@ interface ModelManagerInterface
     function modelTransform($class, $instance);
 
     /**
-     * @abstract
      * @param mixed $query
      * @return void
      */
     function executeQuery($query);
+
+    /**
+     * @param \Sonata\AdminBundle\Datagrid\DatagridInterface $datagrid
+     * @param array $fields
+     * @param null $firstResult
+     * @param null $maxResult
+     * @return void
+     */
+    function getDataSourceIterator(DatagridInterface $datagrid, array $fields, $firstResult = null, $maxResult = null);
+
+    /**
+     * @param $class
+     * @return array
+     */
+    function getExportFields($class);
 }

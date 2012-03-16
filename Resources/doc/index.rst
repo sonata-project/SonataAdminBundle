@@ -1,12 +1,14 @@
-.. SonataAdminBundle documentation master file, created by
-   sphinx-quickstart on Sun May  1 16:09:38 2011.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+Admin Bundle
+============
 
-Welcome to Sonata - AdminBundle's documentation!
-================================================
+**SonataAdminBundle is split into 4 bundles:**
 
-The ``AdminBundle`` provides a CRUD interface for model entities.
+* SonataAdminBundle: contains core libraries and services
+* `SonataDoctrineORMAdminBundle <https://github.com/sonata-project/SonataDoctrineORMAdminBundle>`_: integrates Doctrine ORM project with the core admin bundle
+* `SonataDoctrineMongoDBAdminBundle <https://github.com/sonata-project/SonataDoctrineMongoDBAdminBundle>`_: integrates MongoDB with the core admin bundle (early stage)
+* `SonataDoctrinePhpcrAdminBundle <https://github.com/sonata-project/SonataDoctrinePhpcrAdminBundle>`_: integrates PHPCR with the core admin bundle (early stage)
+
+The demo website can be found in http://demo.sonata-project.org/admin/dashboard (admin as user and password).
 
 Reference Guide
 ---------------
@@ -16,41 +18,17 @@ Reference Guide
    :numbered:
 
    reference/installation
+   reference/getting_started
+   reference/configuration
    reference/architecture
-   reference/list_field_definition
-   reference/filter_field_definition
-   reference/form_field_definition
-   reference/form_types_and_transformers
-   reference/templates
-   reference/saving_hooks
-   reference/routing
    reference/dashboard
-   reference/security
+   reference/routing
+   reference/saving_hooks
+   reference/form_types
+   reference/field_types
    reference/conditional_validation
-   reference/update
+   reference/templates
+   reference/translation
+   reference/security
    reference/advance
-
-
-Doctrine ORM
-------------
-
-.. toctree::
-   :maxdepth: 1
-   :numbered:
-
-   doctrine_orm/query_proxy
-   doctrine_orm/troubleshootings
-
-
-Tutorial
---------
-
-.. toctree::
-   :maxdepth: 1
-   :numbered:
-
-   tutorial/creating_your_first_admin_class/introduction
-   tutorial/creating_your_first_admin_class/defining_entities
-   tutorial/creating_your_first_admin_class/defining_routing
-   tutorial/creating_your_first_admin_class/defining_crud_controller
-   tutorial/creating_your_first_admin_class/defining_admin_class
+   reference/console

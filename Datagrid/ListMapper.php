@@ -39,6 +39,14 @@ class ListMapper
     {
         $fieldDescriptionOptions['identifier'] = true;
 
+        if (!isset($fieldDescriptionOptions['route']['name'])) {
+            $fieldDescriptionOptions['route']['name'] = 'edit';
+        }
+
+        if (!isset($fieldDescriptionOptions['route']['parameters'])) {
+            $fieldDescriptionOptions['route']['parameters'] = array();
+        }
+
         return $this->add($name, $type, $fieldDescriptionOptions);
     }
 
@@ -62,7 +70,11 @@ class ListMapper
                 $fieldDescriptionOptions
             );
         } else {
-            throw new \RuntimeException('invalid state');
+            throw new \RuntimeException('Unknown or duplicate field name in list mapper. Field name should be either of FieldDescriptionInterface interface or string. Names should be unique.');
+        }
+
+        if (!$fieldDescription->getLabel()) {
+            $fieldDescription->setOption('label', $this->admin->getLabelTranslatorStrategy()->getLabel($fieldDescription->getName(), 'list', 'label'));
         }
 
         // add the field with the FormBuilder
@@ -91,11 +103,13 @@ class ListMapper
 
     /**
      * @param  string $key
-     * @return void
+     * @return \Sonata\AdminBundle\Datagrid\ListMapper
      */
     public function remove($key)
     {
         $this->admin->removeListFieldDescription($key);
         $this->list->remove($key);
+
+        return $this;
     }
 }

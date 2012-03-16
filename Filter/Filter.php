@@ -60,6 +60,15 @@ abstract class Filter implements FilterInterface
     }
 
     /**
+     * @param $name
+     * @param $value
+     */
+    public function setOption($name, $value)
+    {
+        $this->options[$name] = $value;
+    }
+
+    /**
      * @return string
      */
     public function getFieldType()
@@ -75,9 +84,20 @@ abstract class Filter implements FilterInterface
         return $this->getOption('field_options', array('required' => false));
     }
 
+    /**
+     * @return string
+     */
     public function getLabel()
     {
-        return $this->getOption('label', $this->getName());
+        return $this->getOption('label');
+    }
+
+    /**
+     * @param $label
+     */
+    public function setLabel($label)
+    {
+        $this->setOption('label', $label);
     }
 
     /**
@@ -126,6 +146,15 @@ abstract class Filter implements FilterInterface
     public function getValue()
     {
         return $this->value;
+    }
+
+    /**
+     * @return string
+     */
+    public function isActive()
+    {
+        $values = $this->getValue();
+        return ! empty($values['value']);
     }
 
     /**

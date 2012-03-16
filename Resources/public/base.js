@@ -1,9 +1,11 @@
 jQuery(document).ready(function() {
-
+    jQuery('html').removeClass('no-js');
     Admin.add_pretty_errors(document);
     Admin.add_collapsed_toggle();
+    Admin.add_filters(document);
+    Admin.set_object_field_value(document);
+    Admin.setup_collection_buttons(document);
 });
-
 
 var Admin = {
 
@@ -15,8 +17,7 @@ var Admin = {
         var msg = '[Sonata.Admin] ' + Array.prototype.join.call(arguments,', ');
         if (window.console && window.console.log) {
             window.console.log(msg);
-        }
-        else if (window.opera && window.opera.postError) {
+        } else if (window.opera && window.opera.postError) {
             window.opera.postError(msg);
         }
     },
@@ -39,9 +40,9 @@ var Admin = {
             if (message.length == 0) {
                 return;
             }
-            
+
             var target;
-            
+
             /* Hack to handle qTip on select */
             if(jQuery(input).is("select")) {
               jQuery(element).prepend("<span></span>");
@@ -51,7 +52,7 @@ var Admin = {
             else {
               target = input;
             }
-            
+
             target.qtip({
                 content: message,
                 show: 'focusin',
@@ -107,5 +108,60 @@ var Admin = {
         }
 
         return targetElement;
+    },
+
+    add_filters: function(subject) {
+        jQuery('div.filter_container.inactive', subject).hide();
+        jQuery('fieldset.filter_legend', subject).click(function(event) {
+           jQuery('div.filter_container', jQuery(event.target).parent()).toggle();
+        });
+    },
+
+    /**
+     * Change object field value
+     * @param subject
+     */
+    set_object_field_value: function(subject) {
+
+        this.log(jQuery('a.sonata-ba-edit-inline', subject));
+        jQuery('a.sonata-ba-edit-inline', subject).click(function(event) {
+            Admin.stopEvent(event);
+
+            var subject = jQuery(this);
+            jQuery.ajax({
+                url: subject.attr('href'),
+                type: 'POST',
+                success: function(json) {
+                    if(json.status === "OK") {
+                        var elm = jQuery(subject).parent();
+                        elm.children().remove();
+                        // fix issue with html comment ...
+                        elm.html(jQuery(json.content.replace(/<!--[\s\S]*?-->/g, "")).html());
+                        elm.effect("highlight", {'color' : '#57A957'}, 2000);
+                        Admin.set_object_field_value(elm);
+                    } else {
+                        jQuery(subject).parent().effect("highlight", {'color' : '#C43C35'}, 2000);
+                    }
+                }
+            });
+        });
+    },
+
+    setup_collection_buttons: function(subject) {
+
+        jQuery(subject).on('click', '.sonata-collection-add', function(event) {
+            Admin.stopEvent(event);
+
+            var container = jQuery(this).closest('[data-prototype]');
+            var proto = container.attr('data-prototype');
+            proto = proto.replace(/\$\$name\$\$/g, container.children().length);
+            jQuery(proto).insertBefore(jQuery(this).parent());
+        });
+
+        jQuery(subject).on('click', '.sonata-collection-delete', function(event) {
+            Admin.stopEvent(event);
+
+            jQuery(this).closest('.sonata-collection-row').remove();
+        });
     }
 }

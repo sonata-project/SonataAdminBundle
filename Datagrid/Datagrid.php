@@ -126,6 +126,32 @@ class Datagrid implements DatagridInterface
     }
 
     /**
+     * @param $name
+     * @return bool
+     */
+    public function hasFilter($name)
+    {
+        return isset($this->filters[$name]);
+    }
+
+    /**
+     * @param $name
+     */
+    public function removeFilter($name)
+    {
+        unset($this->filters[$name]);
+    }
+
+    /**
+     * @param $name
+     * @return null
+     */
+    public function getFilter($name)
+    {
+        return $this->hasFilter($name) ? $this->filters[$name] : null;
+    }
+
+    /**
      * @return array
      */
     public function getFilters()
@@ -143,12 +169,26 @@ class Datagrid implements DatagridInterface
 
     /**
      * @param $name
+     * @param $operator
      * @param $value
-     * @return void
      */
     public function setValue($name, $operator, $value)
     {
         $this->values[$name] = array('type' => $operator, 'value' => $value);
+    }
+
+    /**
+     * @return boolean
+     */
+    public function hasActiveFilters()
+    {
+        foreach ($this->filters as $name => $filter) {
+            if ($filter->isActive()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

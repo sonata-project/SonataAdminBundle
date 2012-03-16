@@ -30,87 +30,103 @@ use Symfony\Component\Config\Definition\Processor;
  */
 class SonataAdminExtension extends Extension
 {
-    protected $configNamespaces = array(
-        'templates' => array(
-            'layout',
-            'ajax'
-        )
-    );
-
-    protected $requestMatchers = array();
-
     /**
      *
      * @param array            $configs    An array of configuration settings
      * @param ContainerBuilder $container A ContainerBuilder instance
      */
-    public function load(array $config, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container)
     {
+        $bundles = $container->getParameter('kernel.bundles');
+        if (isset($bundles['SonataUserBundle'])) {
+            // integrate the SonataUserBundle / FOSUserBundle if the bundle exists
+            array_unshift($configs, array(
+                'templates' => array(
+                    'user_block' => 'SonataUserBundle:Admin/Core:user_block.html.twig'
+                )
+            ));
+        }
+
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('templates.xml');
-        $loader->load('doctrine_orm.xml');
-        $loader->load('doctrine_orm_filter_types.xml');
         $loader->load('twig.xml');
         $loader->load('core.xml');
         $loader->load('form_types.xml');
         $loader->load('validator.xml');
+        $loader->load('route.xml');
+        $loader->load('block.xml');
 
         $configuration = new Configuration();
         $processor = new Processor();
-        $config = $processor->processConfiguration($configuration, $config);
-
-        // setups parameters with values in config.yml, default values from external files used if not
-        $this->configSetupTemplates($config, $container);
+        $config = $processor->processConfiguration($configuration, $configs);
 
         $pool = $container->getDefinition('sonata.admin.pool');
-        $pool->addMethodCall('setTemplates', array($config['templates']));
-        $pool->addMethodCall('__hack__', $config);
+        $pool->replaceArgument(1, $config['title']);
+        $pool->replaceArgument(2, $config['title_logo']);
 
-        $container->setAlias('sonata.admin.security.handler', $config['security_handler']);
-    }
+        $container->setParameter('sonata.admin.configuration.templates', $config['templates']);
+        $container->setParameter('sonata.admin.configuration.admin_services', $config['admin_services']);
+        $container->setParameter('sonata.admin.configuration.dashboard_groups', $config['dashboard']['groups']);
+        $container->setParameter('sonata.admin.configuration.dashboard_blocks', $config['dashboard']['blocks']);
 
-    /**
-     * setup the templates config
-     *
-     * @param array $config An array of configuration settings
-     * @param ContainerBuilder $container A ContainerBuilder instance
-     * @return void
-     */
-    protected function configSetupTemplates(array $config, ContainerBuilder $container)
-    {
-        foreach ($this->configNamespaces as $ns => $params) {
+        $container->setAlias('sonata.admin.security.handler', $config['security']['handler']);
 
-            if (!isset($config[$ns])) {
-                continue;
-            }
-
-            foreach ($config[$ns] as $type => $template) {
-                if (!isset($config[$ns][$type])) {
-                    continue;
+        switch ($config['security']['handler']) {
+            case 'sonata.admin.security.handler.role':
+                if (count($config['security']['information']) === 0) {
+                    $config['security']['information'] = array(
+                        'EDIT'      => array('EDIT'),
+                        'LIST'      => array('LIST'),
+                        'CREATE'    => array('CREATE'),
+                        'VIEW'      => array('VIEW'),
+                        'DELETE'    => array('DELETE'),
+                        'OPERATOR'  => array('OPERATOR'),
+                        'MASTER'    => array('MASTER'),
+                    );
                 }
-
-                $container->setParameter(sprintf('sonata.admin.templates.%s', $type), $template);
-            }
+                break;
+            case 'sonata.admin.security.handler.acl':
+                if (count($config['security']['information']) === 0) {
+                    $config['security']['information'] = array(
+                        'GUEST'    => array('VIEW', 'LIST'),
+                        'STAFF'    => array('EDIT', 'LIST', 'CREATE'),
+                        'EDITOR'   => array('OPERATOR'),
+                        'ADMIN'    => array('MASTER'),
+                    );
+                }
+                break;
         }
-    }
 
-    /**
-     * Returns the base path for the XSD files.
-     *
-     * @return string The XSD base path
-     */
-    public function getXsdValidationBasePath()
-    {
-        return __DIR__.'/../Resources/config/schema';
+        $container->setParameter('sonata.admin.configuration.security.information', $config['security']['information']);
+        $container->setParameter('sonata.admin.configuration.security.admin_permissions', $config['security']['admin_permissions']);
+        $container->setParameter('sonata.admin.configuration.security.object_permissions', $config['security']['object_permissions']);
+
+        $loader->load('security.xml');
+
+        /**
+         * This is a work in progress, so for now it is hardcoded
+         */
+        $classes = array(
+            'email'    => 'sonata-medium',
+            'textarea' => 'sonata-medium',
+            'text'     => 'sonata-medium',
+            'choice'   => 'sonata-medium',
+            'integer'  => 'sonata-medium',
+            'datetime' => 'sonata-medium-date',
+            'date' => 'sonata-medium-date'
+        );
+
+        $container->getDefinition('sonata.admin.form.extension.field')
+            ->replaceArgument(0, $classes);
+
+        // remove non used service
+        if (!isset($bundles['JMSTranslationBundle'])) {
+            $container->removeDefinition('sonata.admin.translator.extractor.jms_translator_bundle');
+        }
     }
 
     public function getNamespace()
     {
         return 'http://www.sonata-project.org/schema/dic/admin';
-    }
-
-    public function getAlias()
-    {
-        return "sonata_admin";
     }
 }

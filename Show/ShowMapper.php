@@ -55,8 +55,10 @@ class ShowMapper
             $this->with($this->admin->getLabel());
         }
 
+        $fieldKey = ($name instanceof FieldDescriptionInterface) ? $name->getName() : $name;
+
         $formGroups = $this->admin->getShowGroups();
-        $formGroups[$this->currentGroup]['fields'][$name] = $name;
+        $formGroups[$this->currentGroup]['fields'][$fieldKey] = $fieldKey;
         $this->admin->setShowGroups($formGroups);
 
 
@@ -71,6 +73,10 @@ class ShowMapper
             );
         } else {
             throw new \RuntimeException('invalid state');
+        }
+
+        if (!$fieldDescription->getLabel()) {
+            $fieldDescription->setOption('label', $this->admin->getLabelTranslatorStrategy()->getLabel($fieldDescription->getName(), 'show', 'label'));
         }
 
         // add the field with the FormBuilder
@@ -99,12 +105,14 @@ class ShowMapper
 
     /**
      * @param string $key
-     * @return void
+     * @return \Sonata\AdminBundle\Show\ShowMapper
      */
     public function remove($key)
     {
         $this->admin->removeShowFieldDescription($key);
         $this->list->remove($key);
+
+        return $this;
     }
 
     /**
@@ -119,7 +127,7 @@ class ShowMapper
             $showGroups[$name] = array_merge(array('collapsed' => false, 'fields' => array()), $options);
         }
 
-        $this->admin->setFormGroups($showGroups);
+        $this->admin->setShowGroups($showGroups);
 
         $this->currentGroup = $name;
 

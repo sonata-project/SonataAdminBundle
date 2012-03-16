@@ -1,13 +1,31 @@
 SonataAdminBundle - The missing Symfony2 Admin Generator
 ========================================================
 
+[![Build Status](https://secure.travis-ci.org/sonata-project/SonataAdminBundle.png?branch=master)](http://travis-ci.org/sonata-project/SonataAdminBundle)
+
 The online documentation of the bundle is in http://sonata-project.org/bundles/admin
 
-For contribution to the documentation you cand find it on ``Resources/doc``.
+The demo website can be found in http://demo.sonata-project.org/admin/dashboard (admin as user and password)
 
+For contribution to the documentation you can find it on [Resources/doc](https://github.com/sonata-project/SonataAdminBundle/tree/master/Resources/doc).
 
 **Warning**: documentation files are not rendering correctly in Github (reStructuredText format)
 and some content might be broken or hidden, make sure to read raw files.
+
+**Warning**: The bundle has been split into 4 bundles :
+
+* SonataAdminBundle : the current one, contains core libraries and services
+* [SonataDoctrineORMAdminBundle](https://github.com/sonata-project/SonataDoctrineORMAdminBundle) 
+: Integrates the admin bundle into with the Doctrine ORM project
+* [SonataDoctrineMongoDBAdminBundle](https://github.com/sonata-project/SonataDoctrineMongoDBAdminBundle) 
+: Integrates the admin bundle into with MongoDB (early stage)
+* [SonataDoctrinePhpcrAdminBundle](https://github.com/sonata-project/SonataDoctrinePhpcrAdminBundle) 
+: Integrates the admin bundle into with PHPCR (early stage)
+
+**Google Groups**: For questions and proposals you can post on this google groups
+
+* [Sonata Users](https://groups.google.com/group/sonata-users): Only for user questions
+* [Sonata Devs](https://groups.google.com/group/sonata-devs): Only for devs
 
 Quick example
 -------------
@@ -75,13 +93,14 @@ class PostAdmin extends Admin
             ->add('title')
             ->add('enabled')
             ->add('tags', null, array('filter_field_options' => array('expanded' => true, 'multiple' => true)))
+        ;
     }
 }
 ```
 Screenshots : http://www.dropbox.com/gallery/581816/2/BaseApplicationBundle/preview?h=59b2e8
 
 Of course, power users will be happy as an ``Admin`` class is very flexible as all dependencies are
-injected by the DIC.
+injected by the DIC (dependency injection container).
 
 Features
 --------
@@ -119,7 +138,7 @@ Features
     - Contextual Breadcrumb
     - persistent parameters across an Admin
     - side menu option
-    - Translated into 12 languages : DE, EN, ES, FR, IT, JA, NL, PL, PT_BR, PT_PT, RU and UK.
+    - Translated into 17 languages : CA, DE, EN, ES, FR, HR, IT, JA, LB, NL, PL, PT_BR, PT_PT, RU, SK, SL and UK.
     - Built to be extended
     - Explain command line utility
 
@@ -127,10 +146,10 @@ Features
 Usage examples
 --------------
 
- - https://github.com/sonata-project/SonataMediaBundle : a media manager bundle
- - https://github.com/sonata-project/SonataNewsBundle : a news/blog bundle
- - https://github.com/sonata-project/SonataPageBundle : a page (CMS like) bundle
- - https://github.com/sonata-project/SonataUserBundle (integration of FOSUserBundle and SonataAdminBundle)
+ - [SonataMediaBundle](https://github.com/sonata-project/SonataMediaBundle) : a media manager bundle
+ - [SonataNewsBundle](https://github.com/sonata-project/SonataNewsBundle) : a news/blog bundle
+ - [SonataPageBundle](https://github.com/sonata-project/SonataPageBundle) : a page (CMS like) bundle
+ - [SonataUserBundle](https://github.com/sonata-project/SonataUserBundle) : integration of FOSUserBundle and SonataAdminBundle
 
 TODO
 ----

@@ -1,29 +1,106 @@
-table.sonata-ba-list {
+body.sonata-bc {
+    padding-top: 60px;
+}
+
+.sonata-bc .topbar a.brand {
+    margin: 0px;
+    padding: 0px;
+    line-height: 40px;
+    padding-right: 20px;
+}
+
+.sonata-bc a.brand img {
+    margin:0px;
+    padding: 0px;
+    padding-right: 5px;
+    height: 28px;
+    vertical-align: middle;
+}
+
+.sonata-bc div.border  {
+    border: 1px solid #DDDDDD;
+    border-radius: 6px 6px 6px 6px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.075);
+}
+
+
+.sonata-bc div.connection form {
+    padding-top: 15px;
+    margin-bottom: 0px;
+    padding-right: 20px;
+}
+
+.sonata-bc div.connection form .actions {
+    margin-bottom: 0px;
+}
+
+
+.sonata-bc div.connection .form-stacked .actions {
+    margin-left: -20px;
+    margin-right: -20px;
+    padding-left: 20px;
+}
+
+.sonata-bc div.connection div input.big {
+    height: 35px;
+    font-size: 25px;
+}
+
+.sonata-bc.sonata-ba-no-side-menu div.container-fluid > div.content {
+    margin-left: 0px;
+}
+
+.sonata-bc table.sonata-ba-list {
     width: 500px;
 }
 
-div.sonata-ba-field-inline-table input.title {
+.sonata-bc div.sonata-ba-field-inline-table input.title {
     width: 100px;
 }
 
-div.sonata-ba-field-inline-table textarea.title {
+.sonata-bc div.sonata-ba-field-inline-table textarea.title {
     width: 150px;
     height: 50px;
 }
 
-table.sonata-ba-list td {
+.sonata-bc fieldset.filter_legend {
+    font-weight: bold;
+    border: 1px solid #E4E4E4;
+    margin: 0;
+    border-width: 1px 0 0;
+    padding: 0;
+}
+
+.sonata-bc fieldset.filter_legend table {
+    margin: 10px 0;
+}
+
+.sonata-bc legend.filter_legend {
+    background: url(../famfamfam/bullet_arrow_down.png) no-repeat center left;
+    padding-left: 16px;
+    cursor: pointer;
+}
+
+.sonata-bc form.sonata-filter-form.form-stacked {
+    padding-left: 0;
+}
+
+
+.sonata-bc legend.filter_legend.active,
+.sonata-bc tr.filter.active * {
+    font-weight: bold;
+    color: #000;
+}
+
+.sonata-bc table.sonata-ba-list td {
     width: 75px;
 }
 
-table.sonata-ba-list td img{
+.sonata-bc table.sonata-ba-list td img{
     vertical-align: bottom
 }
 
-table.sonata-ba-list td.sonata-ba-list-label {
-    width: 350px;
-}
-
-td.pager ul {
+.sonata-bc td.pager ul {
     float: left;
     list-style: none;
     margin: 2px;
@@ -31,58 +108,137 @@ td.pager ul {
     margin-right: auto;
 }
 
-td.pager ul li {
+.sonata-bc td.pager ul li {
     float: left;
 }
 
-td.pager ul li a {
+.sonata-bc td.pager ul li a {
     border: 1px solid #cccccc;
-    padding: 4px;
+    line-height: 25px;
+    padding: 1px 8px 1px 8px;
     margin: 2px;
 }
 
-div.sonata-ba-modal-edit-one-to-one td.sonata-ba-list-field-batch,
-div.sonata-ba-modal-edit-one-to-one div.sonata-ba-list-actions,
-div.sonata-ba-modal-edit-one-to-one th.sonata-ba-list-field-header-batch
+.sonata-bc div.sonata-ba-modal-edit-one-to-one td.sonata-ba-list-field-batch,
+.sonata-bc div.sonata-ba-modal-edit-one-to-one div.sonata-ba-list-actions,
+.sonata-bc div.sonata-ba-modal-edit-one-to-one th.sonata-ba-list-field-header-batch
 {
     display: none;
 }
 
-div.sonata-ba-modal-edit-one-to-one div.sonata-ba-list-actions {
+.sonata-bc div.sonata-ba-modal-edit-one-to-one div.sonata-ba-list-actions {
     display: none;
 }
 
-th.sonata-ba-list-field-header-order-desc:hover {
+.sonata-bc th.sonata-ba-list-field-header-order-desc:hover {
     background: url(../famfamfam/bullet_arrow_up.png) no-repeat center left;
 }
 
-th.sonata-ba-list-field-header-order-asc:hover {
+.sonata-bc th.sonata-ba-list-field-header-order-asc:hover {
     background: url(../famfamfam/bullet_arrow_down.png) no-repeat center left;
 }
 
-th.sonata-ba-list-field-header-order-desc,
-th.sonata-ba-list-field-header-order-asc {
+.sonata-bc th.sonata-ba-list-field-header-order-desc,
+.sonata-bc th.sonata-ba-list-field-header-order-asc {
     padding-left: 15px;
 }
 
-th.sonata-ba-list-field-header-order-desc.sonata-ba-list-field-order-active {
+.sonata-bc th.sonata-ba-list-field-header-order-desc.sonata-ba-list-field-order-active {
     background: url(../famfamfam/bullet_arrow_up.png) no-repeat center left;
 }
 
-th.sonata-ba-list-field-header-order-asc.sonata-ba-list-field-order-active {
+.sonata-bc th.sonata-ba-list-field-header-order-asc.sonata-ba-list-field-order-active {
     background: url(../famfamfam/bullet_arrow_down.png) no-repeat center left;
 }
 
-th.sonata-ba-list-field-header-order-desc.sonata-ba-list-field-order-active:hover {
+.sonata-bc th.sonata-ba-list-field-header-order-desc.sonata-ba-list-field-order-active:hover {
     background: url(../famfamfam/bullet_arrow_down.png) no-repeat center left;
 }
 
-th.sonata-ba-list-field-header-order-asc.sonata-ba-list-field-order-active:hover {
+.sonata-bc th.sonata-ba-list-field-header-order-asc.sonata-ba-list-field-order-active:hover {
     background: url(../famfamfam/bullet_arrow_up.png) no-repeat center left;
 }
 
-em.sonata-ba-field-help {
+.sonata-bc em.sonata-ba-field-help {
     display: block;
     color: #999;
     margin-bottom: 10px;
 }
+
+.sonata-bc fieldset legend {
+    padding-left: 0px;
+}
+
+.sonata-bc select.sonata-medium, textarea.sonata-medium, input.sonata-medium {
+    width: 400px;
+}
+
+.sonata-bc textarea.sonata-medium {
+    height: 125px;
+}
+
+.sonata-bc div.sonata-medium-date select {
+    width: 75px;
+}
+
+.sonata-bc div.sonata-medium-date div {
+    float: left;
+}
+
+.sonata-bc .sonata-ba-field-inline-table select.sonata-medium,
+.sonata-bc .sonata-ba-field-inline-table textarea.sonata-medium,
+.sonata-bc .sonata-ba-field-inline-table input.sonata-medium {
+    width: 150px;
+}
+
+.sonata-bc .sonata-ba-view-title {
+  font-size:19.5px;
+  line-height:1;
+  color:#404040;
+  *padding:0 0 5px 0;
+  *line-height:1.5;
+}
+
+.sonata-bc .sonata-ba-view-title td, .sonata-ba-view-title th {
+  border:0;
+}
+
+.sonata-bc .sonata-ba-view-container th {
+  width:130px;
+}
+
+.sonata-bc .sonata-ba-view-container td, .sonata-ba-view-container th {
+  border-bottom:0;
+  border-top: 1px solid #eee;
+}
+
+.sonata-bc .sonata-ba-view-container:nth-child(2n) td, .sonata-ba-view-container:nth-child(2n) th {
+  background-color:#f9f9f9;
+}
+
+.sonata-bc .sonata-ba-view-container:nth-child(2n):hover td, .sonata-ba-view-container:nth-child(2n):hover th {
+  background-color:#f5f5f5;
+}
+
+.sonata-bc .container-fluid > .sidebar
+{
+    top: auto;
+}
+
+.sonata-collection-add, .sonata-collection-delete {
+    display: inline-block;
+    width: 16px;
+    height: 28px;
+    background: url(../famfamfam/add.png) no-repeat 50% 50%;
+}
+
+.sonata-collection-delete {
+    background-image: url(../famfamfam/delete.png);
+    float: left;
+    margin-top: 5px;
+}
+
+.no-js .sonata-collection-add, .no-js .sonata-collection-delete {
+    display: none;
+}
+

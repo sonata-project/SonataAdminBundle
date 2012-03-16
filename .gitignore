@@ -2,3 +2,4 @@
 phpunit.xml
 Resources/doc/_build/*
 nbproject
+coverage

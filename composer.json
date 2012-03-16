@@ -1,0 +1,36 @@
+{
+    "name": "sonata-project/admin-bundle",
+    "type": "symfony-bundle",
+    "description": "Symfony SonataAdminBundle",
+    "keywords": ["Admin Generator", "admin", "sonata", "bootstrap"],
+    "homepage": "http://sonata-project.org/bundles/admin",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Thomas Rabaix",
+            "email": "thomas.rabaix@sonata-project.org",
+            "homepage": "http://sonata-project.org"
+        },
+        {
+            "name": "Sonata Community",
+            "homepage": "https://github.com/sonata-project/SonataAdminBundle/contributors"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.2",
+        "symfony/framework-bundle": "2.*",
+        "symfony/security-bundle": "2.*",
+        "knplabs/knp-menu-bundle": "master-dev",
+        "sonata-project/jquery-bundle": "master-dev",
+        "sonata-project/exporter": "master-dev",
+        "sonata-project/block-bundle": "master-dev"
+    },
+    "suggest": {
+        "sonata-project/doctrine-orm-admin-bundle": "*",
+        "sonata-project/intl-bundle": "master-dev"
+    },
+    "autoload": {
+        "psr-0": { "Sonata\\AdminBundle": "" }
+    },
+    "target-dir": "Sonata/AdminBundle"
+}

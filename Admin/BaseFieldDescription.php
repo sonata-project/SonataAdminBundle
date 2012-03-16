@@ -12,6 +12,7 @@
 namespace Sonata\AdminBundle\Admin;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\Exception\NoValueException;
 
 /**
  * A FieldDescription hold the information about a field. A typical
@@ -189,6 +190,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
      * Define the options value, if the options array contains the reserved keywords
      *   - type
      *   - template
+     *   - help
      *
      * Then the value are copied across to the related property value
      *
@@ -207,6 +209,12 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         if (isset($options['template'])) {
             $this->setTemplate($options['template']);
             unset($options['template']);
+        }
+
+        // set help if provided
+        if (isset($options['help'])) {
+            $this->setHelp($options['help']);
+            unset($options['help']);
         }
 
         $this->options = $options;
@@ -447,13 +455,31 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         return preg_replace(array('/(^|_| )+(.)/e', '/\.(.)/e'), array("strtoupper('\\2')", "'_'.strtoupper('\\1')"), $property);
     }
 
+    /**
+     * Defines the help message
+     *
+     * @param $string help
+     */
     public function setHelp($help)
     {
         $this->help = $help;
     }
 
+    /**
+     * @return string
+     */
     public function getHelp()
     {
         return $this->help;
+    }
+
+    /**
+     * return the label to use for the current field
+     *
+     * @return string
+     */
+    public function getLabel()
+    {
+        return $this->getOption('label');
     }
 }

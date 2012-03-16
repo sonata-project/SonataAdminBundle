@@ -12,8 +12,8 @@
 namespace Sonata\AdminBundle\Twig\Extension;
 
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
+use Sonata\AdminBundle\Exception\NoValueException;
 use Sonata\AdminBundle\Filter\FilterInterface;
-use Sonata\AdminBundle\Admin\NoValueException;
 
 use Symfony\Component\Form\FormView;
 
@@ -46,6 +46,9 @@ class SonataAdminExtension extends \Twig_Extension
         );
     }
 
+    /**
+     * @return array
+     */
     public function getTokenParsers()
     {
         return array();
@@ -69,8 +72,10 @@ class SonataAdminExtension extends \Twig_Extension
     protected function getTemplate(FieldDescriptionInterface $fieldDescription, $default)
     {
         // todo: find a better solution
+        $templateName = $fieldDescription->getTemplate() ?: $default;
+
         try {
-            $template = $this->environment->loadTemplate($fieldDescription->getTemplate());
+            $template = $this->environment->loadTemplate($templateName);
         } catch(\Twig_Error_Loader $e) {
             $template = $this->environment->loadTemplate($default);
         }
@@ -168,7 +173,8 @@ class SonataAdminExtension extends \Twig_Extension
         return $this->output($fieldDescription, $template, array(
             'field_description' => $fieldDescription,
             'object'            => $object,
-            'value'             => $value
+            'value'             => $value,
+            'admin'             => $fieldDescription->getAdmin()
         ));
     }
 

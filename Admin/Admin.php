@@ -27,10 +27,13 @@ use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Validator\ErrorElement;
 
+use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Sonata\AdminBundle\Builder\FormContractorInterface;
 use Sonata\AdminBundle\Builder\ListBuilderInterface;
 use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
 use Sonata\AdminBundle\Builder\ShowBuilderInterface;
+use Sonata\AdminBundle\Builder\RouteBuilderInterface;
+use Sonata\AdminBundle\Route\RouteGeneratorInterface;
 
 use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
 use Sonata\AdminBundle\Route\RouteCollection;
@@ -42,6 +45,9 @@ use Knp\Menu\MenuItem;
 
 abstract class Admin implements AdminInterface, DomainObjectInterface
 {
+    const CONTEXT_MENU       = 'menu';
+    const CONTEXT_DASHBOARD  = 'dashboard';
+
     /**
      * The class name managed by the admin class
      *
@@ -66,7 +72,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     private $show;
 
     /**
-     * The show FieldDescription constructed from the configureShowField method
+     * The show FieldDescription constructed from the configureShowFields method
      *
      * @var array
      */
@@ -102,6 +108,13 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      * @var integer
      */
     protected $maxPerPage = 25;
+
+    /**
+     * The maximum number of page numbers to display in the list
+     *
+     * @var integer
+     */
+    protected $maxPageLinks = 25;
 
     /**
      * The base route name used to generate the routing information
@@ -257,6 +270,13 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     protected $modelManager;
 
     /**
+     * The manager type to use for the admin
+     *
+     * @var string
+     */
+    private $managerType;
+
+    /**
      * The current request object
      *
      * @var \Symfony\Component\HttpFoundation\Request
@@ -299,6 +319,11 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     protected $datagridBuilder;
 
     /**
+     * @var \Sonata\AdminBundle\Builder\RouteBuilderInterface
+     */
+    protected $routeBuilder;
+
+    /**
      * The datagrid instance
      *
      * @var \Sonata\AdminBundle\Datagrid\DatagridInterface
@@ -308,9 +333,9 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     /**
      * The router intance
      *
-     * @var \Symfony\Component\Routing\RouterInterface
+     * @var \Sonata\AdminBundle\Route\RouterGeneratorInterface
      */
-    protected $router;
+    protected $routeGenerator;
 
     /**
      * The generated breadcrumbs
@@ -321,6 +346,9 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
     protected $securityHandler = null;
 
+    /**
+     * @var \Symfony\Component\Validator\ValidatorInterface $validator
+     */
     protected $validator = null;
 
     /**
@@ -344,20 +372,25 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         'side_menu'     => false,
     );
 
-    protected $formTheme = array('SonataAdminBundle:Form:form_admin_fields.html.twig');
+    protected $formTheme = array();
 
-    protected $filterTheme = array('SonataAdminBundle:Form:filter_admin_fields.html.twig');
+    protected $filterTheme = array();
 
     protected $templates  = array();
 
     protected $extensions = array();
 
+    protected $labelTranslatorStrategy;
+
     /**
-     * This method can be overwritten to tweak the form construction, by default the form
-     * is built by reading the FieldDescription
+     * Roles and permissions per role
      *
-     * @param \Sonata\AdminBundle\Form\FormMapper $form
-     * @return void
+     * @var array [role] => array([permission], [permission])
+     */
+    protected $securityInformation = array();
+
+    /**
+     * {@inheritdoc}
      */
     protected function configureFormFields(FormMapper $form)
     {
@@ -365,10 +398,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * overwrite this method to configure the list FormField definition
-     *
-     * @param \Sonata\AdminBundle\Datagrid\ListMapper $list
-     * @return void
+     * {@inheritdoc}
      */
     protected function configureListFields(ListMapper $list)
     {
@@ -377,8 +407,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
 
     /**
-     * @param \Sonata\AdminBundle\Datagrid\DatagridMapper $filter
-     * @return void
+     * {@inheritdoc}
      */
     protected function configureDatagridFilters(DatagridMapper $filter)
     {
@@ -386,19 +415,23 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * @param \Sonata\AdminBundle\Show\ShowMapper $filter
-     * @return void
+     * {@inheritdoc}
      */
-    protected function configureShowField(ShowMapper $filter)
+    protected function configureShowField(ShowMapper $show)
     {
 
     }
 
     /**
-     * configure the Admin routes
-     *
-     * @param \Sonata\AdminBundle\Route\RouteCollection $collection
-     * @return void
+     * {@inheritdoc}
+     */
+    protected function configureShowFields(ShowMapper $filter)
+    {
+
+    }
+
+    /**
+     * {@inheritdoc}
      */
     protected function configureRoutes(RouteCollection $collection)
     {
@@ -406,10 +439,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * @param \Knp\Menu\ItemInterface $menu
-     * @param $action
-     * @param null|Admin $childAdmin
-     * @return void
+     * {@inheritdoc}
      */
     protected function configureSideMenu(MenuItemInterface $menu, $action, Admin $childAdmin = null)
     {
@@ -417,27 +447,40 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * @param \Sonata\AdminBundle\Validator\ErrorElement $errorElement
-     * @param $object
-     * @return void
+     * {@inheritdoc}
+     */
+    public function getExportFormats()
+    {
+        return array(
+            'json', 'xml', 'csv', 'xls'
+        );
+    }
+
+    /**
+     * @return array
+     */
+    public function getExportFields()
+    {
+        return $this->getModelManager()->getExportFields($this->getClass());
+    }
+
+    /**
+     * @return
+     */
+    public function getDataSourceIterator()
+    {
+        $datagrid = $this->getDatagrid();
+        $datagrid->buildPager();
+
+        return $this->getModelManager()->getDataSourceIterator($datagrid, $this->getExportFields());
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function validate(ErrorElement $errorElement, $object)
     {
 
-    }
-
-    /**
-     * @param \Sonata\AdminBundle\Validator\ErrorElement $errorElement
-     * @param $object
-     * @return void
-     */
-    public function doValidate(ErrorElement $errorElement, $object)
-    {
-        $this->validate($errorElement, $object);
-
-        foreach ($this->extensions as $extension) {
-            $extension->validate($this, $errorElement, $object);
-        }
     }
 
     /**
@@ -452,17 +495,33 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         $this->baseControllerName   = $baseControllerName;
     }
 
-    public function configure()
+    /**
+     * define custom variable
+     */
+    public function initialize()
     {
-        $this->uniqid = uniqid();
+        $this->uniqid = "s".uniqid();
 
         if (!$this->classnameLabel) {
-            $this->classnameLabel = $this->urlize(substr($this->getClass(), strrpos($this->getClass(), '\\') + 1), '_');
+            $this->classnameLabel = substr($this->getClass(), strrpos($this->getClass(), '\\') + 1);
         }
 
         $this->baseCodeRoute = $this->getCode();
+
+        $this->configure();
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function configure()
+    {
+
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function update($object)
     {
         $this->preUpdate($object);
@@ -470,45 +529,71 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         $this->postUpdate($object);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function create($object)
     {
         $this->prePersist($object);
         $this->getModelManager()->create($object);
         $this->postPersist($object);
+        $this->createObjectSecurity($object);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function delete($object)
     {
         $this->preRemove($object);
+        $this->getSecurityHandler()->deleteObjectSecurity($this, $object);
         $this->getModelManager()->delete($object);
         $this->postRemove($object);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function preUpdate($object)
     {
 
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function postUpdate($object)
     {
 
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function prePersist($object)
     {
 
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function postPersist($object)
     {
 
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function preRemove($object)
     {
 
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function postRemove($object)
     {
 
@@ -528,7 +613,8 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         $collection = new FieldDescriptionCollection();
         $mapper = new ShowMapper($this->showBuilder, $collection, $this);
 
-        $this->configureShowField($mapper);
+        $this->configureShowField($mapper); // deprecated, use configureShowFields instead
+        $this->configureShowFields($mapper);
 
         $this->show = $collection;
     }
@@ -563,15 +649,13 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
         $this->configureListFields($mapper);
 
-        foreach($this->extensions as $extension) {
+        foreach($this->getExtensions() as $extension) {
             $extension->configureListFields($mapper);
         }
     }
 
     /**
-     * Get parameters that are currently bound to the filter.
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function getFilterParameters()
     {
@@ -595,9 +679,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * build the filter FieldDescription array
-     *
-     * @return void
+     * {@inheritdoc}
      */
     public function buildDatagrid()
     {
@@ -609,6 +691,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         $this->datagrid = $this->getDatagridBuilder()->getBaseDatagrid($this, $this->getFilterParameters());
 
         $this->datagrid->getPager()->setMaxPerPage($this->maxPerPage);
+        $this->datagrid->getPager()->setMaxPageLinks($this->maxPageLinks);
 
         $mapper = new DatagridMapper($this->getDatagridBuilder(), $this->datagrid, $this);
 
@@ -616,7 +699,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         $this->configureDatagridFilters($mapper);
 
         // ok, try to limit to add parent filter
-        if ($this->getParentAssociationMapping()) {
+        if ($this->isChild() && $this->getParentAssociationMapping() && !$mapper->has($this->getParentAssociationMapping())) {
             $mapper->add($this->getParentAssociationMapping(), null, array(
                 'field_type' => 'sonata_type_model_reference',
                 'field_options' => array(
@@ -626,7 +709,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
             ));
         }
 
-        foreach($this->extensions as $extension) {
+        foreach($this->getExtensions() as $extension) {
             $extension->configureDatagridFilters($mapper);
         }
     }
@@ -748,9 +831,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * Returns the class name handled by the Admin instance
-     *
-     * @return string the class name handled by the Admin instance
+     * {@inheritdoc}
      */
     public function getClass()
     {
@@ -766,7 +847,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     {
         $actions = array();
 
-        if ($this->isGranted('DELETE')) {
+        if ($this->hasRoute('delete') && $this->isGranted('DELETE')) {
             $actions['delete'] = array(
                 'label' => $this->trans('action_delete', array(), 'SonataAdminBundle'),
                 'ask_confirmation' => true, // by default always true
@@ -789,9 +870,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * Returns the parameter representing router id, ie: {id} or {childId}
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getRouterIdParameter()
     {
@@ -821,39 +900,24 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
         $this->loaded['routes'] = true;
 
-        $collection = new RouteCollection(
+        $this->routes = new RouteCollection(
             $this->getBaseCodeRoute(),
             $this->getBaseRouteName(),
             $this->getBaseRoutePattern(),
             $this->getBaseControllerName()
         );
 
-        $collection->add('list');
-        $collection->add('create');
-        $collection->add('batch');
-        $collection->add('edit', $this->getRouterIdParameter().'/edit');
-        $collection->add('delete', $this->getRouterIdParameter().'/delete');
-        $collection->add('show', $this->getRouterIdParameter().'/show');
+        $this->routeBuilder->build($this, $this->routes);
 
-        // add children urls
-        foreach ($this->getChildren() as $children) {
-            $collection->addCollection($children->getRoutes());
+        $this->configureRoutes($this->routes);
+
+        foreach($this->getExtensions() as $extension) {
+            $extension->configureRoutes($this, $this->routes);
         }
-
-        $this->configureRoutes($collection);
-
-        foreach($this->extensions as $extension) {
-            $extension->configureRoutes($this, $collection);
-        }
-
-        $this->routes = $collection;
     }
 
     /**
-     * Returns the url defined by the $name
-     *
-     * @param strinf $name
-     * @return Route
+     * {@inheritdoc}
      */
     public function getRoute($name)
     {
@@ -866,6 +930,10 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         return $this->routes->get($name);
     }
 
+    /**
+     * @param $name
+     * @return bool
+     */
     public function hasRoute($name)
     {
         $this->buildRoutes();
@@ -875,7 +943,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
 
     /**
-     * generate the object url with the given $name
+     * Generates the object url with the given $name
      *
      * @param  string $name
      * @param  $object
@@ -883,73 +951,19 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      *
      * @return return a complete url
      */
-    public function generateObjectUrl($name, $object, array $parameters = array())
+    public function generateObjectUrl($name, $object, array $parameters = array(), $absolute = false)
     {
         $parameters['id'] = $this->getNormalizedIdentifier($object);
 
-        return $this->generateUrl($name, $parameters);
+        return $this->generateUrl($name, $parameters, $absolute);
     }
 
     /**
-     * generate the url with the given $name
-     *
-     * @throws RuntimeException
-     * @param string $name
-     * @param array $parameters
-     *
-     * @return return a complete url
+     * {@inheritdoc}
      */
-    public function generateUrl($name, array $parameters = array())
+    public function generateUrl($name, array $parameters = array(), $absolute = false)
     {
-        if (!$this->isChild()) {
-            if (strpos($name, '.')) {
-                $name = $this->getCode().'|'.$name;
-            } else {
-                $name = $this->getCode().'.'.$name;
-            }
-        }
-        // if the admin is a child we automatically append the parent's id
-        else if ($this->isChild()) {
-            $name = $this->baseCodeRoute.'.'.$name;
-
-            // twig template does not accept variable hash key ... so cannot use admin.idparameter ...
-            // switch value
-            if (isset($parameters['id'])) {
-                $parameters[$this->getIdParameter()] = $parameters['id'];
-                unset($parameters['id']);
-            }
-
-            $parameters[$this->getParent()->getIdParameter()] = $this->request->get($this->getParent()->getIdParameter());
-        }
-
-        // if the admin is linked to a parent FieldDescription (ie, embedded widget)
-        if ($this->hasParentFieldDescription()) {
-            // merge link parameter if any provided by the parent field
-            $parameters = array_merge($parameters, $this->getParentFieldDescription()->getOption('link_parameters', array()));
-
-            $parameters['uniqid']  = $this->getUniqid();
-            $parameters['code']    = $this->getCode();
-            $parameters['pcode']   = $this->getParentFieldDescription()->getAdmin()->getCode();
-            $parameters['puniqid'] = $this->getParentFieldDescription()->getAdmin()->getUniqid();
-        }
-
-        if ($name == 'update' || substr($name, -7) == '|update') {
-            $parameters['uniqid'] = $this->getUniqid();
-            $parameters['code']   = $this->getCode();
-        }
-
-        // allows to define persistent parameters
-        if ($this->hasRequest()) {
-            $parameters = array_merge($this->getPersistentParameters(), $parameters);
-        }
-
-        $route = $this->getRoute($name);
-
-        if (!$route) {
-            throw new \RuntimeException(sprintf('unable to find the route `%s`', $name));
-        }
-
-        return $this->router->generate($route->getDefault('_sonata_name'), $parameters);
+        return $this->routeGenerator->generateUrl($this, $name, $parameters, $absolute);
     }
 
     /**
@@ -992,6 +1006,16 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
+     * @param $name
+     * @param $template
+     * @return void
+     */
+    public function setTemplate($name, $template)
+    {
+        $this->templates[$name] = $template;
+    }
+
+    /**
      * @return array
      */
     public function getTemplates()
@@ -1013,9 +1037,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * Returns an instance of the related classname
-     *
-     * @return Object An instance of the related classname
+     * {@inheritdoc}
      */
     public function getNewInstance()
     {
@@ -1023,15 +1045,31 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * @return \Symfony\Component\Form\FormBuilder the form builder
+     * {@inheritdoc}
      */
     public function getFormBuilder()
     {
+        $admin = $this;
+
         // add the custom inline validation option
         $metadata = $this->validator->getMetadataFactory()->getClassMetadata($this->getClass());
         $metadata->addConstraint(new \Sonata\AdminBundle\Validator\Constraints\InlineConstraint(array(
             'service' => $this,
-            'method'  => 'doValidate'
+            'method'  => function(ErrorElement $errorElement, $object) use ($admin) {
+                /* @var \Sonata\AdminBundle\Admin\AdminInterface $admin */
+
+                // This avoid the main validation to be cascaded to children
+                // The problem occurs when a model Page has a collection of Page as property
+                if ($admin->hasSubject() && spl_object_hash($object) !== spl_object_hash($admin->getSubject())) {
+                    return;
+                }
+
+                $admin->validate($errorElement, $object);
+
+                foreach ($admin->getExtensions() as $extension) {
+                    $extension->validate($admin, $errorElement, $object);
+                }
+            }
         )));
 
         $this->formOptions['data_class'] = $this->getClass();
@@ -1056,15 +1094,13 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
         $this->configureFormFields($mapper);
 
-        foreach($this->extensions as $extension) {
+        foreach($this->getExtensions() as $extension) {
             $extension->configureFormFields($mapper);
         }
     }
 
     /**
-     * attach an admin instance to the given FieldDescription
-     *
-     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
+     * {@inheritdoc}
      */
     public function attachAdminClass(FieldDescriptionInterface $fieldDescription)
     {
@@ -1075,14 +1111,15 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
             return;
         }
 
+        if ($this->hasRequest()) {
+            $admin->setRequest($this->getRequest());
+        }
+
         $fieldDescription->setAssociationAdmin($admin);
     }
 
     /**
-     * Returns the target object
-     *
-     * @param integer $id
-     * @return object
+     * {@inheritdoc}
      */
     public function getObject($id)
     {
@@ -1102,9 +1139,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * Returns a list depend on the given $object
-     *
-     * @return \Sonata\AdminBundle\Admin\FieldDescriptionCollection
+     * {@inheritdoc}
      */
     public function getList()
     {
@@ -1114,9 +1149,21 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * Returns a list depend on the given $object
-     *
-     * @return \Sonata\AdminBundle\Datagrid\DatagridInterface
+     * {@inheritdoc}
+     */
+    public function createQuery($context = 'list')
+    {
+        $query = $this->getModelManager()->createQuery($this->class);
+
+        foreach ($this->extensions as $extension) {
+            $extension->configureQuery($this, $query, $context);
+        }
+
+        return $query;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function getDatagrid()
     {
@@ -1144,7 +1191,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
         $this->configureSideMenu($menu, $action, $childAdmin);
 
-        foreach ($this->extensions as $extension) {
+        foreach ($this->getExtensions() as $extension) {
             $extension->configureSideMenu($this, $menu, $action, $childAdmin);
         }
 
@@ -1223,6 +1270,15 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     {
         return $this->maxPerPage;
     }
+    public function setMaxPageLinks($maxPageLinks)
+    {
+        $this->maxPageLinks = $maxPageLinks;
+    }
+
+    public function getMaxPageLinks()
+    {
+        return $this->maxPageLinks;
+    }
 
     public function getFormGroups()
     {
@@ -1245,10 +1301,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * set the parent FieldDescription
-     *
-     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $parentFieldDescription
-     * @return void
+     * {@inheritdoc}
      */
     public function setParentFieldDescription(FieldDescriptionInterface $parentFieldDescription)
     {
@@ -1275,10 +1328,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * set the subject linked to the admin, the subject is the related model
-     *
-     * @param object $subject
-     * @return void
+     * {@inheritdoc}
      */
     public function setSubject($subject)
     {
@@ -1286,9 +1336,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * Returns the subject, if none is set try to load one from the request
-     *
-     * @return object $object the subject
+     * {@inheritdoc}
      */
     public function getSubject()
     {
@@ -1305,7 +1353,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * @return bool
+     * {@inheritdoc}
      */
     public function hasSubject()
     {
@@ -1325,10 +1373,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * Returns the form FieldDescription with the given $name
-     *
-     * @param string $name
-     * @return \Sonata\AdminBundle\Admin\FieldDescriptionInterface
+     * {@inheritdoc}
      */
     public function getFormFieldDescription($name)
     {
@@ -1376,6 +1421,8 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      */
     public function getShowFieldDescriptions()
     {
+        $this->buildShow();
+
         return $this->showFieldDescriptions;
     }
 
@@ -1387,6 +1434,8 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      */
     public function getShowFieldDescription($name)
     {
+        $this->buildShow();
+
         return $this->hasShowFieldDescription($name) ? $this->showFieldDescriptions[$name] : null;
     }
 
@@ -1402,11 +1451,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * add a FieldDescription
-     *
-     * @param string $name
-     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
-     * @return void
+     * {@inheritdoc}
      */
     public function addShowFieldDescription($name, FieldDescriptionInterface $fieldDescription)
     {
@@ -1437,10 +1482,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * Returns a list FieldDescription
-     *
-     * @param string $name
-     * @return \Sonata\AdminBundle\Admin\FieldDescriptionInterface
+     * {@inheritdoc}
      */
     public function getListFieldDescription($name)
     {
@@ -1461,11 +1503,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * add a list FieldDescription
-     *
-     * @param string $name
-     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
-     * @return void
+     * {@inheritdoc}
      */
     public function addListFieldDescription($name, FieldDescriptionInterface $fieldDescription)
     {
@@ -1506,11 +1544,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * add a filter FieldDescription
-     *
-     * @param string $name
-     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
-     * @return void
+     * {@inheritdoc}
      */
     public function addFilterFieldDescription($name, FieldDescriptionInterface $fieldDescription)
     {
@@ -1540,10 +1574,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * add an Admin child to the current one
-     *
-     * @param \Sonata\AdminBundle\Admin\AdminInterface $child
-     * @return void
+     * {@inheritdoc}
      */
     public function addChild(AdminInterface $child)
     {
@@ -1554,10 +1585,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * Returns true or false if an Admin child exists for the given $code
-     *
-     * @param string $code Admin code
-     * @return bool True if child exist, false otherwise
+     * {@inheritdoc}
      */
     public function hasChild($code)
     {
@@ -1565,9 +1593,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * Returns an collection of admin children
-     *
-     * @return array list of Admin children
+     * {@inheritdoc}
      */
     public function getChildren()
     {
@@ -1575,10 +1601,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * Returns an admin child with the given $code
-     *
-     * @param string $code
-     * @return array|null
+     * {@inheritdoc}
      */
     public function getChild($code)
     {
@@ -1627,10 +1650,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * set the uniqid
-     *
-     * @param  $uniqid
-     * @return void
+     * {@inheritdoc}
      */
     public function setUniqid($uniqid)
     {
@@ -1695,7 +1715,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      * Generates the breadcrumbs array
      *
      * @param string $action
-     * @param \Knp\Menu\MenuItem|null $menu
+     * @param \Knp\Menu\ItemInterface|null $menu
      * @return array
      */
     public function buildBreadcrumbs($action, MenuItemInterface $menu = null)
@@ -1709,12 +1729,12 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         }
 
         $child = $menu->addChild(
-            $this->trans('breadcrumb.dashboard', array(), 'SonataAdminBundle'),
-            array('uri' => $this->router->generate('sonata_admin_dashboard'))
+            $this->trans($this->getLabelTranslatorStrategy()->getLabel('dashboard', 'breadcrumb', 'link'), array(), 'SonataAdminBundle'),
+            array('uri' => $this->routeGenerator->generate('sonata_admin_dashboard'))
         );
 
         $child = $child->addChild(
-            $this->trans(sprintf('breadcrumb.link_%s_list', $this->getClassnameLabel())),
+            $this->trans($this->getLabelTranslatorStrategy()->getLabel(sprintf('%s_list', $this->getClassnameLabel()), 'breadcrumb', 'link')),
             array('uri' => $this->generateUrl('list'))
         );
 
@@ -1729,20 +1749,26 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
             );
 
             return $childAdmin->buildBreadcrumbs($action, $child);
+
         } elseif ($this->isChild()) {
             if ($action != 'list') {
                 $menu = $menu->addChild(
-                    $this->trans(sprintf('breadcrumb.link_%s_list', $this->getClassnameLabel())),
+                    $this->trans($this->getLabelTranslatorStrategy()->getLabel(sprintf('%s_list', $this->getClassnameLabel()), 'breadcrumb', 'link')),
                     array('uri' => $this->generateUrl('list'))
                 );
             }
 
-            $breadcrumbs = $menu->getBreadcrumbsArray(
-                $this->trans(sprintf('breadcrumb.link_%s_%s', $this->getClassnameLabel(), $action))
-            );
+            if ($action != 'create' && $this->hasSubject()) {
+                $breadcrumbs = $menu->getBreadcrumbsArray( (string) $this->getSubject());
+            } else {
+                $breadcrumbs = $menu->getBreadcrumbsArray(
+                    $this->trans($this->getLabelTranslatorStrategy()->getLabel(sprintf('%s_%s', $this->getClassnameLabel(), $action), 'breadcrumb', 'link'))
+                );
+            }
+
         } else if ($action != 'list') {
             $breadcrumbs = $child->getBreadcrumbsArray(
-                $this->trans(sprintf('breadcrumb.link_%s_%s', $this->getClassnameLabel(), $action))
+                $this->trans($this->getLabelTranslatorStrategy()->getLabel(sprintf('%s_%s', $this->getClassnameLabel(), $action), 'breadcrumb', 'link'))
             );
         } else {
             $breadcrumbs = $child->getBreadcrumbsArray();
@@ -1792,13 +1818,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * translate a message id
-     *
-     * @param string $id
-     * @param array $parameters
-     * @param null $domain
-     * @param null $locale
-     * @return string the translated string
+     * {@inheritdoc}
      */
     public function trans($id, array $parameters = array(), $domain = null, $locale = null)
     {
@@ -1810,6 +1830,27 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
         return $this->translator->trans($id, $parameters, $domain, $locale);
     }
+
+    /**
+     * translate a message id
+     *
+     * @param string $id
+     * @param array $parameters
+     * @param null $domain
+     * @param null $locale
+     * @return string the translated string
+     */
+    public function transChoice($id, $count, array $parameters = array(), $domain = null, $locale = null)
+    {
+        $domain = $domain ?: $this->translationDomain;
+
+        if (!$this->translator) {
+            return $id;
+        }
+
+        return $this->translator->transChoice($id, $count, $parameters, $domain, $locale);
+    }
+
 
     /**
      * set the translation domain
@@ -1833,8 +1874,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * @param \Symfony\Component\Translation\TranslatorInterface $translator
-     * @return void
+     * {@inheritdoc}
      */
     public function setTranslator(TranslatorInterface $translator)
     {
@@ -1850,16 +1890,11 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @return void
+     * {@inheritdoc}
      */
     public function setRequest(Request $request)
     {
         $this->request = $request;
-
-        if ($request->get('uniqid')) {
-            $this->setUniqid($request->get('uniqid'));
-        }
 
         foreach ($this->getChildren() as $children) {
             $children->setRequest($request);
@@ -1867,7 +1902,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * @return \Symfony\Component\HttpFoundation\Request
+     * {@inheritdoc}
      */
     public function getRequest()
     {
@@ -1888,8 +1923,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * @param \Sonata\AdminBundle\Builder\FormContractorInterface $formBuilder
-     * @return void
+     * {@inheritdoc}
      */
     public function setFormContractor(FormContractorInterface $formBuilder)
     {
@@ -1905,8 +1939,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * @param \Sonata\AdminBundle\Builder\DatagridBuilderInterface $datagridBuilder
-     * @return void
+     * {@inheritdoc}
      */
     public function setDatagridBuilder(DatagridBuilderInterface $datagridBuilder)
     {
@@ -1922,8 +1955,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * @param \Sonata\AdminBundle\Builder\ListBuilderInterface $listBuilder
-     * @return void
+     * {@inheritdoc}
      */
     public function setListBuilder(ListBuilderInterface $listBuilder)
     {
@@ -1956,8 +1988,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * @param Pool $configurationPool
-     * @return void
+     * {@inheritdoc}
      */
     public function setConfigurationPool(Pool $configurationPool)
     {
@@ -1973,22 +2004,24 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * @param \Symfony\Component\Routing\RouterInterface $router
-     * @return void
+     * {@inheritdoc}
      */
-    public function setRouter(RouterInterface $router)
+    public function setRouteGenerator(RouteGeneratorInterface $routeGenerator)
     {
-        $this->router = $router;
+        $this->routeGenerator = $routeGenerator;
     }
 
     /**
-     * @return \Symfony\Component\Routing\RouterInterface
+     * @return \Sonata\AdminBundle\Route\RouteGeneratorInterface
      */
-    public function getRouter()
+    public function getRouteGenerator()
     {
-        return $this->router;
+        return $this->routeGenerator;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getCode()
     {
         return $this->code;
@@ -2005,22 +2038,39 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * @return \Sonata\AdminBundle\Model\ModelManagerInterface
+     * {@inheritdoc}
      */
     public function getModelManager()
     {
         return $this->modelManager;
     }
 
+    /**
+     * @param \Sonata\AdminBundle\Model\ModelManagerInterface $modelManager
+     */
     public function setModelManager(ModelManagerInterface $modelManager)
     {
         $this->modelManager = $modelManager;
     }
 
     /**
-     * Returns a unique identifier for this domain object.
-     *
-     * @return string
+     * {@inheritdoc}
+     */
+    public function getManagerType()
+    {
+        return $this->managerType;
+    }
+
+    /**
+     * @param string $type
+     */
+    public function setManagerType($type)
+    {
+        $this->managerType = $type;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function getObjectIdentifier()
     {
@@ -2028,26 +2078,62 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * Return the list of security name available for the current admin
-     * This should be used by experimented users
+     * Set the roles and permissions per role
      *
-     * @return array
+     * @param array $information
      */
-    public function getSecurityInformation()
+    public function setSecurityInformation(array $information)
     {
-        return array(
-            'EDIT'      => array('EDIT'),
-            'LIST'      => array('LIST'),
-            'CREATE'    => array('CREATE'),
-            'VIEW'      => array('VIEW'),
-            'DELETE'    => array('DELETE'),
-            'OPERATOR'  => array('OPERATOR')
-        );
+        $this->securityInformation = $information;
     }
 
     /**
-     * @param \Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface $securityHandler
-     * @return void
+     * {@inheritdoc}
+     */
+    public function getSecurityInformation()
+    {
+        return $this->securityInformation;
+    }
+
+    /**
+     * Return the list of permissions the user should have in order to display the admin
+     *
+     * @param string $context
+     * @return array
+     */
+    public function getPermissionsShow($context)
+    {
+        switch ($context) {
+            case self::CONTEXT_DASHBOARD:
+            case self::CONTEXT_MENU:
+            default:
+                return array('LIST');
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function showIn($context)
+    {
+        switch ($context) {
+            case self::CONTEXT_DASHBOARD:
+            case self::CONTEXT_MENU:
+            default:
+                return $this->isGranted($this->getPermissionsShow($context));
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function createObjectSecurity($object)
+    {
+        $this->getSecurityHandler()->createObjectSecurity($this, $object);
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function setSecurityHandler(SecurityHandlerInterface $securityHandler)
     {
@@ -2055,7 +2141,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * @return \Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface|null
+     * {@inheritdoc}
      */
     public function getSecurityHandler()
     {
@@ -2063,25 +2149,23 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * @param string $name
-     * @param object|null $object
-     * @return boolean
+     * {@inheritdoc}
      */
     public function isGranted($name, $object = null)
     {
         return $this->securityHandler->isGranted($this, $name, $object ?: $this);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getNormalizedIdentifier($entity)
     {
         return $this->getModelManager()->getNormalizedIdentifier($entity);
     }
 
     /**
-     * Shorthand method for templating
-     *
-     * @param object $entity
-     * @return mixed
+     * {@inheritdoc}
      */
     public function id($entity)
     {
@@ -2089,8 +2173,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * @param \Symfony\Component\Validator\ValidatorInterface $validator
-     * @return void
+     * {@inheritdoc}
      */
     public function setValidator(ValidatorInterface $validator)
     {
@@ -2098,7 +2181,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * @return \Symfony\Component\Validator\ValidatorInterface
+     * {@inheritdoc}
      */
     public function getValidator()
     {
@@ -2106,7 +2189,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * @return array
+     * {@inheritdoc}
      */
     public function getShow()
     {
@@ -2116,8 +2199,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * @param array $formTheme
-     * @return void
+     * {@inheritdoc}
      */
     public function setFormTheme(array $formTheme)
     {
@@ -2125,7 +2207,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * @return array
+     * {@inheritdoc}
      */
     public function getFormTheme()
     {
@@ -2133,8 +2215,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * @param array $filterTheme
-     * @return void
+     * {@inheritdoc}
      */
     public function setFilterTheme(array $filterTheme)
     {
@@ -2142,7 +2223,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * @return array
+     * {@inheritdoc}
      */
     public function getFilterTheme()
     {
@@ -2150,8 +2231,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * @param AdminExtensionInterface $extension
-     * @return void
+     * {@inheritdoc}
      */
     public function addExtension(AdminExtensionInterface $extension)
     {
@@ -2159,8 +2239,15 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * @param \Knp\Menu\FactoryInterface $menuFactory
-     * @return void
+     * {@inheritdoc}
+     */
+    public function getExtensions()
+    {
+        return $this->extensions;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function setMenuFactory(MenuFactoryInterface $menuFactory)
     {
@@ -2168,10 +2255,54 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * @return \Knp\Menu\FactoryInterface
+     * {@inheritdoc}
      */
     public function getMenuFactory()
     {
         return $this->menuFactory;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setRouteBuilder(RouteBuilderInterface $routeBuilder)
+    {
+        $this->routeBuilder = $routeBuilder;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getRouteBuilder()
+    {
+        return $this->routeBuilder;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function toString($object)
+    {
+        if (method_exists($object, '__toString')) {
+            return (string) $object;
+        }
+
+        return '';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setLabelTranslatorStrategy(LabelTranslatorStrategyInterface $labelTranslatorStrategy)
+    {
+        $this->labelTranslatorStrategy = $labelTranslatorStrategy;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getLabelTranslatorStrategy()
+    {
+        return $this->labelTranslatorStrategy;
     }
 }

@@ -3,12 +3,12 @@ Inline Validation
 
 The inline validation is about delegating model validation to a dedicated service.
 The current validation implementation built in the Symfony2 framework is very powerful
-as it allows to declare validation on : class, field and getter. However these declaration
-can take a while to code for complexe rules. As a rules must be a set of a ``Constraint``
-and ``Validator`` instance.
+as it allows to declare validation on : class, field and getter. However these declarations
+can take a while to code for complex rules. Rules must be a set of a ``Constraint``
+and ``Validator`` instances.
 
-The inline validation try to provide a nice solution by introducting a ``ErrorElement``
-object. The object can be use to check assertion against a model :
+The inline validation tries to provide a nice solution by introducting an ``ErrorElement``
+object. The object can be used to check assertion against the model :
 
 .. code-block:: php
 
@@ -40,7 +40,7 @@ object. The object can be use to check assertion against a model :
 
 .. note::
 
-    This solution rely on the validator component so validation defined through
+    This solution relies on the validator component so validation defined through
     the validator component will be used.
 
 Using this validator
@@ -68,8 +68,8 @@ The method must accept two arguments:
  - ``value``: the object instance
 
 
-Sample with the ``PageBundle``
-------------------------------
+Example from the ``SonataPageBundle``
+-------------------------------------
 
 .. code-block:: php
 

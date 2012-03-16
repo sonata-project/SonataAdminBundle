@@ -1,11 +1,11 @@
 Saving hooks
 ============
 
-When the model is persited upon on the object stated two Admin methods are always call. You can extends this
+When the model is persited upon on the stated object two Admin methods are always called. You can extend this
 method to add custom business logic.
 
     - new object : ``prePersist($object)`` / ``postPersist($object)``
-    - new object : ``preUpdate($object)`` / ``postUpdate($object)``
+    - edited object : ``preUpdate($object)`` / ``postUpdate($object)``
     - deleted object : ``preRemove($object)`` / ``postRemove($object)``
 
 
@@ -48,6 +48,7 @@ is how the Admin bundle can be used to solve the issue by using the ``prePersist
                 ->end()
             ;
         }
+        
         public function preUpdate($user)
         {
             $this->getUserManager()->updateCanonicalFields($user);

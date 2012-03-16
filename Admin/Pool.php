@@ -25,12 +25,18 @@ class Pool
 
     protected $templates    = array();
 
+    protected $title;
+
+    protected $titleLogo;
+
     /**
      * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
      */
-    public function __construct(ContainerInterface $container)
+    public function __construct(ContainerInterface $container, $title, $logoTitle)
     {
-        $this->container = $container;
+        $this->container  = $container;
+        $this->title      = $title;
+        $this->titleLogo  = $logoTitle;
     }
 
     /**
@@ -59,11 +65,17 @@ class Pool
         foreach ($this->adminGroups as $name => $adminGroup) {
             if (isset($adminGroup['items'])) {
                 foreach ($adminGroup['items'] as $key => $id) {
-                    $groups[$name]['items'][$key] = $this->getInstance($id);
+                    $admin = $this->getInstance($id);
+
+                    if ($admin->showIn(Admin::CONTEXT_DASHBOARD)) {
+                        $groups[$name]['items'][$key] = $admin;
+                    } else {
+                        unset($groups[$name]['items'][$key]);
+                    }
                 }
             }
 
-            if (empty($groups[$name])) {
+            if (empty($groups[$name]['items'])) {
                 unset($groups[$name]);
             }
         }
@@ -79,11 +91,20 @@ class Pool
      */
     public function getAdminByClass($class)
     {
-        if (!isset($this->adminClasses[$class])) {
+        if (!$this->hasAdminByClass($class)) {
             return null;
         }
 
         return $this->getInstance($this->adminClasses[$class]);
+    }
+
+    /**
+     * @param $class
+     * @return bool
+     */
+    public function hasAdminByClass($class)
+    {
+        return isset($this->adminClasses[$class]);
     }
 
     /**
@@ -206,5 +227,21 @@ class Pool
         }
 
         return null;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTitleLogo()
+    {
+        return $this->titleLogo;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->title;
     }
 }

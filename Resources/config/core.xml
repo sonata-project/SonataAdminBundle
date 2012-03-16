@@ -7,6 +7,11 @@
     <services>
         <service id="sonata.admin.pool" class="Sonata\AdminBundle\Admin\Pool">
             <argument type="service" id="service_container" />
+            <argument />
+            <argument />
+            <call method="setTemplates">
+                <argument>%sonata.admin.configuration.templates%</argument>
+            </call>
         </service>
 
         <service id="sonata.admin.route_loader" class="Sonata\AdminBundle\Route\AdminPoolLoader">
@@ -20,18 +25,39 @@
             <argument type="service" id="sonata.admin.pool" />
         </service>
 
-        <service id="sonata.admin.security.handler.noop" class="Sonata\AdminBundle\Security\Handler\NoopSecurityHandler" />
-
-        <service id="sonata.admin.security.handler.acl" class="Sonata\AdminBundle\Security\Handler\AclSecurityHandler">
-            <argument type="service" id="security.context" on-invalid="null" />
-            <argument type="collection">
-                <argument>ROLE_SUPER_ADMIN</argument>
-            </argument>
-        </service>
-
         <service id="sonata.admin.builder.filter.factory" class="Sonata\AdminBundle\Filter\FilterFactory">
             <argument type="service" id="service_container" />
             <argument />
+        </service>
+
+        <!-- Services used to format the label, default is sonata.admin.label.strategy.noop -->
+        <service id="sonata.admin.label.strategy.bc" class="Sonata\AdminBundle\Translator\BCLabelTranslatorStrategy" />
+        <service id="sonata.admin.label.strategy.native" class="Sonata\AdminBundle\Translator\NativeLabelTranslatorStrategy" />
+        <service id="sonata.admin.label.strategy.noop" class="Sonata\AdminBundle\Translator\NoopLabelTranslatorStrategy" />
+        <service id="sonata.admin.label.strategy.underscore" class="Sonata\AdminBundle\Translator\UnderscoreLabelTranslatorStrategy" />
+        <service id="sonata.admin.label.strategy.form_component" class="Sonata\AdminBundle\Translator\FormLabelTranslatorStrategy" />
+
+        <!-- Translation extractor -->
+        <service id="sonata.admin.translator.extractor.jms_translator_bundle" class="Sonata\AdminBundle\Translator\Extractor\JMSTranslatorBundle\AdminExtractor" >
+            <tag name="jms_translation.extractor" alias="sonata_admin"/>
+            <argument type="service" id="logger" />
+            <argument type="service" id="sonata.admin.pool" />
+        </service>
+
+        <!-- controller as services -->
+        <service id="sonata.admin.controller.admin" class="Sonata\AdminBundle\Controller\HelperController">
+            <argument type="service" id="twig" />
+            <argument type="service" id="sonata.admin.pool" />
+            <argument type="service" id="sonata.admin.helper" />
+        </service>
+
+        <!-- audit manager -->
+        <service id="sonata.admin.audit.manager" class="Sonata\AdminBundle\Model\AuditManager">
+            <argument type="service" id="service_container" />
+        </service>
+
+        <service id="sonata.admin.exporter" class="Sonata\AdminBundle\Export\Exporter">
+
         </service>
     </services>
 </container>
