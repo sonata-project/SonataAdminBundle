@@ -1,3 +1,8 @@
+//add some ajax default datatype
+$.ajaxSetup({
+    dataType: 'html'
+	});
+
 jQuery(document).ready(function() {
     jQuery('html').removeClass('no-js');
     Admin.add_pretty_errors(document);
