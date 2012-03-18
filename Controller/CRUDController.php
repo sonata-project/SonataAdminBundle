@@ -440,10 +440,13 @@ class CRUDController extends Controller
         $askConfirmation = isset($batchActions[$action]['ask_confirmation']) ? $batchActions[$action]['ask_confirmation'] : true;
 
         if ($askConfirmation && $confirmation != 'ok') {
+            $label = isset($batchActions[$action]['label']) ? $batchActions[$action]['label'] : $action;
+
             $formView = $datagrid->getForm()->createView();
 
             return $this->render($this->admin->getTemplate('batch_confirmation'), array(
                 'action'     => 'list',
+                'action_label' => $label,
                 'datagrid'   => $datagrid,
                 'form'       => $formView,
                 'data'       => $data,
