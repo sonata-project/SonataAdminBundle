@@ -30,7 +30,7 @@ file that was distributed with this source code.
 {% block content %}
     <div class="sonata-ba-delete">
 
-        <h1>{% trans from 'SonataAdminBundle' %}title_batch_confirmation{% endtrans %}</h1>
+        <h1>{% trans from 'SonataAdminBundle' %}title_batch_confirmation{% endtrans %} '{{ action_label | lower }}'</h1>
 
         {% trans from 'SonataAdminBundle' %}message_batch_confirmation{% endtrans %}
 
