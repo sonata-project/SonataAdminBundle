@@ -131,7 +131,7 @@ file that was distributed with this source code.
                     {% set session_var = 'sonata_flash_' ~ notice_level %}
                     {% if app.session.hasFlash(session_var) %}
                         <div class="alert-message {{ notice_level }}">
-                            {{ app.session.flash(session_var) | trans([],'SonataAdminBundle') }}
+                            {{ app.session.flash(session_var) }}
                             {#<a class="close" href="#">×</a>#}
                         </div>
                     {% endif %}
