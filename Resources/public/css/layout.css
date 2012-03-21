@@ -242,3 +242,6 @@ body.sonata-bc {
     display: none;
 }
 
+ul.inputs-list {
+    padding-left: 150px;
+}
