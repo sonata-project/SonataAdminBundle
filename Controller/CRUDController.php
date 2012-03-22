@@ -177,9 +177,9 @@ class CRUDController extends Controller
         $modelManager = $this->admin->getModelManager();
         try {
             $modelManager->batchDelete($this->admin->getClass(), $query);
-            $this->setFlash('sonata_flash_success', 'flash_batch_delete_success');
+            $this->get('session')->setFlash('sonata_flash_success', 'flash_batch_delete_success');
         } catch ( ModelManagerException $e ) {
-            $this->setFlash('sonata_flash_error', 'flash_batch_delete_error');
+            $this->get('session')->setFlash('sonata_flash_error', 'flash_batch_delete_error');
         }
 
         return new RedirectResponse($this->admin->generateUrl('list', $this->admin->getFilterParameters()));
@@ -203,12 +203,16 @@ class CRUDController extends Controller
             throw new AccessDeniedException();
         }
 
+        $flash_vars = array('%name%' =>$this->admin->toString($object));
+
         if ($this->getRequest()->getMethod() == 'DELETE') {
             try {
                 $this->admin->delete($object);
-                $this->setFlash('sonata_flash_success', 'flash_delete_success', $object);
+                $flash_msg = $this->admin->trans('flash_delete_success', $flash_vars, 'SonataAdminBundle');
+                $this->get('session')->setFlash('sonata_flash_success', $flash_msg);
             } catch ( ModelManagerException $e ) {
-                $this->setFlash('sonata_flash_error', 'flash_delete_error', $object);
+                $flash_msg = $this->admin->trans('flash_delete_error', $flash_vars, 'SonataAdminBundle');
+                $this->get('session')->setFlash('sonata_flash_error', $flash_msg);
             }
 
             return new RedirectResponse($this->admin->generateUrl('list'));
@@ -230,7 +234,6 @@ class CRUDController extends Controller
     public function editAction($id = null)
     {
         $id = $this->get('request')->get($this->admin->getIdParameter());
-
         $object = $this->admin->getObject($id);
 
         if (!$object) {
@@ -251,7 +254,9 @@ class CRUDController extends Controller
 
             if ($form->isValid()) {
                 $this->admin->update($object);
-                $this->setFlash('sonata_flash_success', 'flash_edit_success', $object);
+                $flash_vars = array('%name%' =>$this->admin->toString($object));
+                $flash_msg = $this->admin->trans('flash_edit_success', $flash_vars, 'SonataAdminBundle');
+                $this->get('session')->setFlash('sonata_flash_success', $flash_msg);
 
                 if ($this->isXmlHttpRequest()) {
                     return $this->renderJson(array(
@@ -264,7 +269,9 @@ class CRUDController extends Controller
                 return $this->redirectTo($object);
             }
 
-            $this->setFlash('sonata_flash_error', 'flash_edit_error', $object);
+            $flash_vars = array('%name%' =>$this->admin->toString($object));
+            $flash_msg = $this->admin->trans('flash_edit_error', $flash_vars, 'SonataAdminBundle');
+            $this->get('session')->setFlash('sonata_flash_error', $flash_msg);
         }
 
         $view = $form->createView();
@@ -332,7 +339,7 @@ class CRUDController extends Controller
         }
 
         if (count($idx) == 0 && !$all_elements) { // no item selected
-            $this->setFlash('sonata_flash_info', 'flash_batch_empty');
+            $this->get('session')->setFlash('sonata_flash_info', 'flash_batch_empty');
 
             return new RedirectResponse($this->admin->generateUrl('list', $this->admin->getFilterParameters()));
         }
@@ -410,12 +417,14 @@ class CRUDController extends Controller
                     ));
                 }
 
-                $this->setFlash('sonata_flash_success', 'flash_create_success', $object);
+                $flash_vars = array('%name%' =>$this->admin->toString($object));
+                $flash_msg = $this->admin->trans('flash_create_success', $flash_vars, 'SonataAdminBundle');
+                $this->get('session')->setFlash('sonata_flash_success', $flash_msg);
 
                 // redirect to edit mode
                 return $this->redirectTo($object);
             }
-            $this->setFlash('sonata_flash_error', 'flash_create_error', $object);
+            $this->get('session')->setFlash('sonata_flash_error', 'flash_create_error');
         }
 
         $view = $form->createView();
@@ -552,22 +561,4 @@ class CRUDController extends Controller
         return $this->get('sonata.admin.exporter')->getResponse($format, $filename, $this->admin->getDataSourceIterator());
     }
 
-    /**
-     * Sets a flash message for an action on some object.
-     *
-     * @param string $name
-     * @param string $value
-     * @param array $object
-     * @return void
-     */
-    protected function setFlash($name, $value, $object = null)
-    {
-        $parameters = array();
-        if ($object) {
-            $parameters = array('%name%' =>$this->admin->toString($object));
-        }
-        $message = $this->admin->trans($value, $parameters, 'SonataAdminBundle');
-
-        $this->get('session')->setFlash($name, $message);
-    }
 }
