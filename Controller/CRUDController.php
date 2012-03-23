@@ -540,6 +540,10 @@ class CRUDController extends Controller
      */
     public function exportAction(Request $request)
     {
+        if (false === $this->admin->isGranted('EXPORT')) {
+            throw new AccessDeniedException();
+        }
+
         $format = $request->get('format');
 
         $filename = sprintf('export_%s_%s.%s',
