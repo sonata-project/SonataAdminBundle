@@ -55,7 +55,7 @@ class Configuration implements ConfigurationInterface
                             ->end()
                         ->end()
                         ->arrayNode('admin_permissions')
-                            ->defaultValue(array('CREATE', 'LIST', 'DELETE', 'UNDELETE', 'OPERATOR', 'MASTER'))
+                            ->defaultValue(array('CREATE', 'LIST', 'DELETE', 'UNDELETE', 'EXPORT', 'OPERATOR', 'MASTER'))
                             ->prototype('scalar')->end()
                         ->end()
                         ->arrayNode('object_permissions')

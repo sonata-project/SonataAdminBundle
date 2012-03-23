@@ -29,7 +29,10 @@ class MaskBuilderTest extends \PHPUnit_Framework_TestCase
         $builder->add('list');
         $this->assertEquals(str_repeat('.', 19).'L....N......V', $builder->getPattern());
 
+        $builder->add('export');
+        $this->assertEquals(str_repeat('.', 18).'EL....N......V', $builder->getPattern());
+
         $builder->add(1 << 10);
-        $this->assertEquals(str_repeat('.', 19).'L.'.MaskBuilder::ON.'..N......V', $builder->getPattern());
+        $this->assertEquals(str_repeat('.', 18).'EL.'.MaskBuilder::ON.'..N......V', $builder->getPattern());
     }
 }

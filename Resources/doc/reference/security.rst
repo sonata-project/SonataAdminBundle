@@ -60,6 +60,7 @@ Using roles:
                 CREATE: CREATE
                 VIEW: VIEW
                 DELETE: DELETE
+                EXPORT: EXPORT
                 OPERATOR: OPERATOR
                 MASTER: MASTER
 
@@ -75,11 +76,11 @@ Using ACL:
             information:
                 GUEST:    [VIEW, LIST]
                 STAFF:    [EDIT, LIST, CREATE]
-                EDITOR:   [OPERATOR]
+                EDITOR:   [OPERATOR, EXPORT]
                 ADMIN:    [MASTER]
             # permissions not related to an object instance and also to be available when objects do not exist
             # the DELETE admin permission means the user is allowed to batch delete objects
-            admin_permissions: [CREATE, LIST, DELETE, UNDELETE, OPERATOR, MASTER]
+            admin_permissions: [CREATE, LIST, DELETE, UNDELETE, EXPORT, OPERATOR, MASTER]
             # permission related to the objects
             object_permissions: [VIEW, EDIT, DELETE, UNDELETE, OPERATOR, MASTER, OWNER]
 
@@ -238,7 +239,7 @@ If you have Admin classes, you can install or update the related CRUD ACL rules 
     > install ACL for sonata.media.admin.media
        - add role: ROLE_SONATA_MEDIA_ADMIN_MEDIA_GUEST, permissions: ["VIEW","LIST"]
        - add role: ROLE_SONATA_MEDIA_ADMIN_MEDIA_STAFF, permissions: ["EDIT","LIST","CREATE"]
-       - add role: ROLE_SONATA_MEDIA_ADMIN_MEDIA_EDITOR, permissions: ["OPERATOR"]
+       - add role: ROLE_SONATA_MEDIA_ADMIN_MEDIA_EDITOR, permissions: ["OPERATOR","EXPORT"]
        - add role: ROLE_SONATA_MEDIA_ADMIN_MEDIA_ADMIN, permissions: ["MASTER"]
     ... skipped ...
 
@@ -266,7 +267,7 @@ By default each Admin class contains the following roles, override the property 
  - ROLE_SONATA_..._GUEST: a guest that is allowed to view an object and a list of objects;
  - ROLE_SONATA_..._STAFF: probably the biggest part of the users, a staff user has the same permissions as guests and is additionally
    allowed to EDIT and CREATE new objects;
- - ROLE_SONATA_..._EDITOR: an editor is granted all access and, compared to the staff users, is allowed to DELETE;
+ - ROLE_SONATA_..._EDITOR: an editor is granted all access and, compared to the staff users, is allowed to DELETE and EXPORT;
  - ROLE_SONATA_..._ADMIN: an administrative user is granted all access and on top of that, the user is allowed to grant other users access.
 
 Owner:
@@ -312,60 +313,60 @@ Create a custom voter or a custom permission map
 
 In some occasions you need to create a custom voter or a custom permission map because for example you want to restrict access using extra rules:
 
- - create a custom voter class that extends the AclVoter
+- create a custom voter class that extends the AclVoter
 
 .. code-block:: php
 
-   namespace Acme\DemoBundle\Security\Authorization\Voter;
+    namespace Acme\DemoBundle\Security\Authorization\Voter;
 
-   use FOS\UserBundle\Model\UserInterface;
-   use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-   use Symfony\Component\Security\Acl\Voter\AclVoter;
+    use FOS\UserBundle\Model\UserInterface;
+    use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+    use Symfony\Component\Security\Acl\Voter\AclVoter;
 
-   class UserAclVoter extends AclVoter
-   {
-       /**
-        * {@InheritDoc}
-        */
-       public function supportsClass($class)
-       {
-           // support the Class-Scope ACL for votes with the custom permission map
-           // return $class === 'Sonata\UserBundle\Admin\Entity\UserAdmin' || $is_subclass_of($class, 'FOS\UserBundle\Model\UserInterface');
-           // if you use php >=5.3.7 you can check the inheritance with is_a($class, 'Sonata\UserBundle\Admin\Entity\UserAdmin');
-           // support the Object-Scope ACL
-           return is_subclass_of($class, 'FOS\UserBundle\Model\UserInterface');
-       }
+    class UserAclVoter extends AclVoter
+    {
+        /**
+         * {@InheritDoc}
+         */
+        public function supportsClass($class)
+        {
+            // support the Class-Scope ACL for votes with the custom permission map
+            // return $class === 'Sonata\UserBundle\Admin\Entity\UserAdmin' || $is_subclass_of($class, 'FOS\UserBundle\Model\UserInterface');
+            // if you use php >=5.3.7 you can check the inheritance with is_a($class, 'Sonata\UserBundle\Admin\Entity\UserAdmin');
+            // support the Object-Scope ACL
+            return is_subclass_of($class, 'FOS\UserBundle\Model\UserInterface');
+        }
 
-       public function supportsAttribute($attribute)
-       {
-           return $attribute === 'EDIT' || $attribute === 'DELETE';
-       }
+        public function supportsAttribute($attribute)
+        {
+            return $attribute === 'EDIT' || $attribute === 'DELETE';
+        }
 
-       public function vote(TokenInterface $token, $object, array $attributes)
-       {
-           if (!$this->supportsClass(get_class($object))) {
-               return self::ACCESS_ABSTAIN;
-           }
+        public function vote(TokenInterface $token, $object, array $attributes)
+        {
+            if (!$this->supportsClass(get_class($object))) {
+                return self::ACCESS_ABSTAIN;
+            }
 
-           foreach ($attributes as $attribute) {
-               if ($this->supportsAttribute($attribute) && $object instanceof UserInterface) {
-                   if ($object->isSuperAdmin() && !$token->getUser()->isSuperAdmin()) {
-                       // deny a non super admin user to edit a super admin user
-                       return self::ACCESS_DENIED;
-                   }
-               }
-           }
+            foreach ($attributes as $attribute) {
+                if ($this->supportsAttribute($attribute) && $object instanceof UserInterface) {
+                    if ($object->isSuperAdmin() && !$token->getUser()->isSuperAdmin()) {
+                        // deny a non super admin user to edit a super admin user
+                        return self::ACCESS_DENIED;
+                    }
+                }
+            }
 
-           // use the parent vote with the custom permission map:
-           // return parent::vote($token, $object, $attributes);
-           // otherwise leave the permission voting to the AclVoter that is using the default permission map
-           return self::ACCESS_ABSTAIN;
-       }
-   }
+            // use the parent vote with the custom permission map:
+            // return parent::vote($token, $object, $attributes);
+            // otherwise leave the permission voting to the AclVoter that is using the default permission map
+            return self::ACCESS_ABSTAIN;
+        }
+    }
 
- - optionally create a custom permission map, copy to start the Sonata\AdminBundle\Security\Acl\Permission\AdminPermissionMap.php to your bundle
+- optionally create a custom permission map, copy to start the Sonata\AdminBundle\Security\Acl\Permission\AdminPermissionMap.php to your bundle
 
- - declare the voter and permission map as a service
+- declare the voter and permission map as a service
 
 .. code-block:: xml
 
@@ -390,7 +391,7 @@ In some occasions you need to create a custom voter or a custom permission map b
         </service>
     </services>
 
- - change the access decission strategy to ``unanimous``
+- change the access decission strategy to ``unanimous``
 
 .. code-block:: yaml
 
@@ -400,7 +401,7 @@ In some occasions you need to create a custom voter or a custom permission map b
             # Strategy can be: affirmative, unanimous or consensus
             strategy: unanimous
 
- - to make this work the permission needs to be checked using the Object ACL
+- to make this work the permission needs to be checked using the Object ACL
 
   - modify the template (or code) where applicable:
 
@@ -421,7 +422,7 @@ so the ACL database will be updated with the latest roles and permissions.
 
 In the templates, or in your code, you can use the Admin method ``isGranted``:
 
- - check for an admin that the user is allowed to EDIT:
+- check for an admin that the user is allowed to EDIT:
 
 .. code-block:: html
 
@@ -431,7 +432,7 @@ In the templates, or in your code, you can use the Admin method ``isGranted``:
     {# or use the default is_granted symfony helper, the following will give the same result #}
     {% if is_granted('ROLE_SUPER_ADMIN') or is_granted('EDIT', admin) %} {# ... #} {% endif %}
 
- - check for an admin that the user is allowed to DELETE, the object is added to also check if the object owner is allowed to DELETE:
+- check for an admin that the user is allowed to DELETE, the object is added to also check if the object owner is allowed to DELETE:
 
 .. code-block:: html
 
