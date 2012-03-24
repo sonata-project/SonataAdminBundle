@@ -72,7 +72,7 @@
             </trans-unit>
             <trans-unit id="title_dashboard">
                 <source>title_dashboard</source>
-                <target>Dashboard</target>
+                <target>Administrační panel</target>
             </trans-unit>
             <trans-unit id="title_edit">
                 <source>title_edit</source>
@@ -307,7 +307,7 @@
             </trans-unit>
             <trans-unit id="label_export_download">
                 <source>label_export_download</source>
-                <target>Stáhnout : </target>
+                <target>Stáhnout: </target>
             </trans-unit>
         </body>
     </file>
