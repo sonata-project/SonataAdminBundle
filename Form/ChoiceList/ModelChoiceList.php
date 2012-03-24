@@ -14,10 +14,10 @@ namespace Sonata\AdminBundle\Form\ChoiceList;
 use Symfony\Component\Form\Util\PropertyPath;
 use Symfony\Component\Form\Exception\FormException;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
-use Symfony\Component\Form\Extension\Core\ChoiceList\SimpleChoiceList;
+use Symfony\Component\Form\Extension\Core\ChoiceList\ArrayChoiceList;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 
-class ModelChoiceList extends SimpleChoiceList
+class ModelChoiceList extends ArrayChoiceList
 {
     /**
      * @var \Sonata\AdminBundle\Model\ModelManagerInterface
@@ -71,6 +71,7 @@ class ModelChoiceList extends SimpleChoiceList
     private $reflProperties = array();
 
     private $propertyPath;
+    private $_loaded = false;
 
     public function __construct(ModelManagerInterface $modelManager, $class, $property = null, $query = null, $choices = array())
     {
@@ -111,6 +112,9 @@ class ModelChoiceList extends SimpleChoiceList
      */
     protected function load()
     {
+        if ($this -> _loaded) return;
+        $this -> _loaded = true;
+        
         if (is_array($this->choices)) {
             $entities = $this->choices;
         } else if ($this->query) {
