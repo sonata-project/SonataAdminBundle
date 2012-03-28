@@ -1290,6 +1290,13 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         $this->formGroups = $formGroups;
     }
 
+    public function reorderFormGroup($group, array $keys)
+    {
+        $formGroups = $this->getFormGroups();
+        $formGroups[$group]['fields'] = array_merge(array_flip($keys), $formGroups[$group]['fields']);
+        $this->setFormGroups($formGroups);
+    }
+
     public function getShowGroups()
     {
         return $this->showGroups;
