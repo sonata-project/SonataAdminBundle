@@ -1307,6 +1307,13 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         $this->showGroups = $showGroups;
     }
 
+    public function reorderShowGroup($group, array $keys)
+    {
+        $showGroups = $this->getShowGroups();
+        $showGroups[$group]['fields'] = array_merge(array_flip($keys), $showGroups[$group]['fields']);
+        $this->setShowGroups($showGroups);
+    }
+
     /**
      * {@inheritdoc}
      */
