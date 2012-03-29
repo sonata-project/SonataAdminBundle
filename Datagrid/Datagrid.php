@@ -159,6 +159,11 @@ class Datagrid implements DatagridInterface
         return $this->filters;
     }
 
+    public function reorderFilters(array $keys)
+    {
+        $this->filters = array_merge(array_flip($keys), $this->filters);
+    }
+
     /**
      * @return array
      */

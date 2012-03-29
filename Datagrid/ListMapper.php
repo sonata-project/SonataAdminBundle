@@ -112,4 +112,15 @@ class ListMapper
 
         return $this;
     }
+
+    /**
+     * @param array $keys field names
+     * @return \Sonata\AdminBundle\Datagrid\ListMapper
+     */
+    public function reorder(array $keys)
+    {
+        $this->list->reorder($keys);
+
+        return $this;
+    }
 }

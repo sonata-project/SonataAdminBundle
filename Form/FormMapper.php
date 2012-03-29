@@ -68,6 +68,21 @@ class FormMapper
     }
 
     /**
+     * @param array $keys field names
+     * @return \Sonata\AdminBundle\Form\FormMapper
+     */
+    public function reorder(array $keys)
+    {
+        if (!$this->currentGroup) {
+            $this->with($this->admin->getLabel());
+        }
+
+        $this->admin->reorderFormGroup($this->currentGroup, $keys);
+
+        return $this;
+    }
+
+    /**
      * @param string $name
      * @param string $type
      * @param array $options
