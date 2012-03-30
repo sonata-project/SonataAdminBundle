@@ -116,6 +116,21 @@ class ShowMapper
     }
 
     /**
+     * @param array $keys field names
+     * @return \Sonata\AdminBundle\Show\ShowMapper
+     */
+    public function reorder(array $keys)
+    {
+        if (!$this->currentGroup) {
+            $this->with($this->admin->getLabel());
+        }
+
+        $this->admin->reorderShowGroup($this->currentGroup, $keys);
+
+        return $this;
+    }
+
+    /**
      * @param string $name
      * @param array $options
      * @return \Sonata\AdminBundle\Show\ShowMapper
