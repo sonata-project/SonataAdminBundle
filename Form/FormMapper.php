@@ -124,7 +124,17 @@ class FormMapper
                 $options['label'] = $this->admin->getLabelTranslatorStrategy()->getLabel($fieldDescription->getName(), 'form', 'label');
             }
 
+            $help = null;
+            if (isset($options['help'])) {
+                $help = $options['help'];
+                unset($options['help']);
+            }
+
             $this->formBuilder->add($name, $type, $options);
+
+            if (null !== $help) {
+                $this->admin->getFormFieldDescription($name)->setHelp($help);
+            }
         }
 
         return $this;
