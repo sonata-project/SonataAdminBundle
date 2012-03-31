@@ -542,6 +542,12 @@ class CRUDController extends Controller
     {
         $format = $request->get('format');
 
+        $allowedExportFormats = (array) $this->admin->getExportFormats();
+
+        if(!in_array($format, $allowedExportFormats) ) {
+            throw new \RuntimeException(sprintf('Export in format `%s` is not allowed for class: `%s`. Allowed formats are: `%s`', $format, $this->admin->getClass(), implode(', ', $allowedExportFormats)));
+        }
+
         $filename = sprintf('export_%s_%s.%s',
             strtolower(substr($this->admin->getClass(), strripos($this->admin->getClass(), '\\') + 1)),
             date('Y_m_d_H_i_s', strtotime('now')),
