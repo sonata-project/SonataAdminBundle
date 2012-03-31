@@ -74,11 +74,15 @@ file that was distributed with this source code.
                 {% block table_footer %}
                     <tr>
                         <th colspan="{{ admin.list.elements|length - (app.request.isXmlHttpRequest ? 2 : 1) }}">
-                            {{ admin.datagrid.pager.page }} / {{ admin.datagrid.pager.lastpage }} -
-                            {{ "label_export_download"|trans({}, "SonataAdminBundle") }}
-                            {% for format in admin.getExportFormats() %}
-                                <a href="{{ admin.generateUrl('export', admin.modelmanager.paginationparameters(admin.datagrid, 0) + {'format' : format}) }}">{{ format }}</a>{% if not loop.last%},{% endif %}
-                            {% endfor %}
+                            {{ admin.datagrid.pager.page }} / {{ admin.datagrid.pager.lastpage }}
+
+                            {% if admin.getExportFormats()|length > 0 %}
+                                -
+                                {{ "label_export_download"|trans({}, "SonataAdminBundle") }}
+                                {% for format in admin.getExportFormats() %}
+                                    <a href="{{ admin.generateUrl('export', admin.modelmanager.paginationparameters(admin.datagrid, 0) + {'format' : format}) }}">{{ format }}</a>{% if not loop.last%},{% endif %}
+                                {% endfor %}
+                            {% endif %}
                         </th>
 
                         <th>
