@@ -25,6 +25,7 @@ Reference Guide
    reference/routing
    reference/saving_hooks
    reference/form_types
+   reference/form_help_message
    reference/field_types
    reference/conditional_validation
    reference/templates
