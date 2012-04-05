@@ -4,11 +4,11 @@
         <body>
             <trans-unit id="action_delete">
                 <source>action_delete</source>
-                <target>Verwijder</target>
+                <target>Verwijderen</target>
             </trans-unit>
             <trans-unit id="btn_batch">
                 <source>btn_batch</source>
-                <target>Okee</target>
+                <target>Ok</target>
             </trans-unit>
             <trans-unit id="btn_create">
                 <source>btn_create</source>
@@ -100,7 +100,7 @@
             </trans-unit>
             <trans-unit id="Admin">
                 <source>Admin</source>
-                <target>Admin</target>
+                <target>Beheer</target>
             </trans-unit>
             <trans-unit id="link_expand">
                 <source>link_expand</source>
