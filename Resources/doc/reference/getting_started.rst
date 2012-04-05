@@ -141,6 +141,15 @@ admin service and link it into the framework by setting the sonata.admin tag.
    </container>
 
 
+Note: If you don't already have a configuration file for the purpose, you can register this service in a ``services.xml`` file, save the file in ``app/config``, and then import it from ``config.yml``: 
+
+.. code-block:: yaml
+
+    # app/config/config.yml
+    imports:
+        - { resource: services.xml }
+
+
 Step 5: Configuration
 ---------------------
 
