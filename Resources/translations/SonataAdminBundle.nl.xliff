@@ -4,11 +4,11 @@
         <body>
             <trans-unit id="action_delete">
                 <source>action_delete</source>
-                <target>Verwijder</target>
+                <target>Verwijderen</target>
             </trans-unit>
             <trans-unit id="btn_batch">
                 <source>btn_batch</source>
-                <target>Oke</target>
+                <target>Ok</target>
             </trans-unit>
             <trans-unit id="btn_create">
                 <source>btn_create</source>
@@ -34,6 +34,10 @@
                 <source>btn_update_and_return_to_list</source>
                 <target>Bijwerken en sluiten</target>
             </trans-unit>
+            <trans-unit id="link_delete">
+                <source>link_delete</source>
+                <target>Verwijderen</target>
+            </trans-unit>
             <trans-unit id="link_action_create">
                 <source>link_action_create</source>
                 <target>Nieuwe toevoegen</target>
@@ -41,6 +45,14 @@
             <trans-unit id="link_action_list">
                 <source>link_action_list</source>
                 <target>Terug naar lijst</target>
+            </trans-unit>
+            <trans-unit id="link_action_show">
+                <source>link_action_show</source>
+                <target>Tonen</target>
+            </trans-unit>
+            <trans-unit id="link_action_edit">
+                <source>link_action_edit</source>
+                <target>Bijwerken</target>
             </trans-unit>
             <trans-unit id="link_add">
                 <source>link_add</source>
@@ -80,15 +92,15 @@
             </trans-unit>
             <trans-unit id="link_first_pager">
                 <source>link_first_pager</source>
-                <target>link_first_pager</target>
+                <target>Eerste</target>
             </trans-unit>
             <trans-unit id="link_last_pager">
                 <source>link_last_pager</source>
-                <target>link_last_pager</target>
+                <target>Laatste</target>
             </trans-unit>
             <trans-unit id="Admin">
                 <source>Admin</source>
-                <target>Admin</target>
+                <target>Beheer</target>
             </trans-unit>
             <trans-unit id="link_expand">
                 <source>link_expand</source>
@@ -100,7 +112,7 @@
             </trans-unit>
             <trans-unit id="confirm_msg">
                 <source>confirm_msg</source>
-                <target>Weet je het zeker ?</target>
+                <target>Weet je het zeker?</target>
             </trans-unit>
             <trans-unit id="action_edit">
                 <source>action_edit</source>
@@ -110,18 +122,192 @@
                 <source>action_show</source>
                 <target>Bekijk</target>
             </trans-unit>
+            <trans-unit id="all_elements">
+                <source>all_elements</source>
+                <target>Alle elementen</target>
+            </trans-unit>
+            <trans-unit id='flash_batch_empty'>
+                <source>flash_batch_empty</source>
+                <target>Handeling gestopt. Geen items geselecteerd.</target>
+            </trans-unit>
+            <trans-unit id='flash_create_success'>
+                <source>flash_create_success</source>
+                <target>Item is succesvol aangemaakt.</target>
+            </trans-unit>
+            <trans-unit id='flash_create_error'>
+                <source>flash_create_error</source>
+                <target>Het item kon door een fout niet worden aangemaakt.</target>
+            </trans-unit>
+            <trans-unit id='flash_edit_success'>
+                <source>flash_edit_success</source>
+                <target>Het item is succesvol bijgewerkt.</target>
+            </trans-unit>
+            <trans-unit id='flash_edit_error'>
+                <source>flash_edit_error</source>
+                <target>Het item kon door een fout niet worden bijgewerkt.</target>
+            </trans-unit>
+            <trans-unit id='flash_batch_delete_success'>
+                <source>flash_batch_delete_success</source>
+                <target>Het geselecteerde items zijn succesvol verwijderd.</target>
+            </trans-unit>
+            <trans-unit id='flash_batch_delete_error'>
+                <source>flash_batch_delete_error</source>
+                <target>De geselecteerde items konden door een fout niet worden verwijderd.</target>
+            </trans-unit>
+            <trans-unit id='flash_delete_error'>
+                <source>flash_delete_error</source>
+                <target>Het item kon door een fout niet worden verwijderd.</target>
+            </trans-unit>
+            <trans-unit id='flash_delete_success'>
+                <source>flash_delete_success</source>
+                <target>Het item is succesvol verwijder.</target>
+            </trans-unit>
             <trans-unit id="link_breadcrumb_dashboard">
                 <source>breadcrumb.link_dashboard</source>
                 <target>&#8962;</target>
             </trans-unit>
+            <trans-unit id="title_delete">
+                <source>title_delete</source>
+                <target>Bevestig verwijdering</target>
+            </trans-unit>
+            <trans-unit id="message_delete_confirmation">
+                <source>message_delete_confirmation</source>
+                <target>Weet je zeker dat het geselecteerde item moet worden verwijderd?</target>
+            </trans-unit>
+            <trans-unit id="btn_delete">
+                <source>btn_delete</source>
+                <target>Ja, verwijder</target>
+            </trans-unit>
+            <trans-unit id="title_batch_confirmation">
+                <source>title_batch_confirmation</source>
+                <target>Bevestig groep handeling</target>
+            </trans-unit>
+            <trans-unit id="message_batch_confirmation">
+                <source>message_batch_confirmation</source>
+                <target>Weet je zeker dat voor alle geselecteerde items het handeling moet worden uitgevoerd?</target>
+            </trans-unit>
+            <trans-unit id="btn_execute_batch_action">
+                <source>btn_execute_batch_action</source>
+                <target>Ja, voeruit</target>
+            </trans-unit>
+            <trans-unit id="label_type_yes">
+                <source>label_type_yes</source>
+                <target>ja</target>
+            </trans-unit>
+            <trans-unit id="label_type_no">
+                <source>label_type_no</source>
+                <target>nee</target>
+            </trans-unit>
+            <trans-unit id="label_type_contains">
+                <source>label_type_contains</source>
+                <target>bevat</target>
+            </trans-unit>
+            <trans-unit id="label_type_not_contains">
+                <source>label_type_not_contains</source>
+                <target>bevat niet</target>
+            </trans-unit>
+            <trans-unit id="label_type_equals">
+                <source>label_type_equals</source>
+                <target>is gelijk aan</target>
+            </trans-unit>
+            <trans-unit id="label_type_equal">
+                <source>label_type_equal</source>
+                <target>=</target>
+            </trans-unit>
+            <trans-unit id="label_type_greater_equal">
+                <source>label_type_greater_equal</source>
+                <target>&gt;=</target>
+            </trans-unit>
+            <trans-unit id="label_type_greater_than">
+                <source>label_type_greater_than</source>
+                <target>&gt;</target>
+            </trans-unit>
+            <trans-unit id="label_type_less_equal">
+                <source>label_type_less_equal</source>
+                <target>&lt;=</target>
+            </trans-unit>
+            <trans-unit id="label_type_less_than">
+                <source>label_type_less_than</source>
+                <target>&lt;</target>
+            </trans-unit>
+            <trans-unit id="label_date_type_equal">
+                <source>label_date_type_equal</source>
+                <target>=</target>
+            </trans-unit>
+            <trans-unit id="label_date_type_greater_equal">
+                <source>label_date_type_greater_equal</source>
+                <target>&gt;=</target>
+            </trans-unit>
+            <trans-unit id="label_date_type_greater_than">
+                <source>label_date_type_greater_than</source>
+                <target>&gt;</target>
+            </trans-unit>
+            <trans-unit id="label_date_type_less_equal">
+                <source>label_date_type_less_equal</source>
+                <target>&lt;=</target>
+            </trans-unit>
+            <trans-unit id="label_date_type_less_than">
+                <source>label_date_type_less_than</source>
+                <target>&lt;</target>
+            </trans-unit>
+            <trans-unit id="label_date_type_null">
+                <source>label_date_type_null</source>
+                <target>is leeg</target>
+            </trans-unit>
+            <trans-unit id="label_date_type_not_null">
+                <source>label_date_type_not_null</source>
+                <target>is niet leeg</target>
+            </trans-unit>
+            <trans-unit id="label_date_type_between">
+                <source>label_date_type_between</source>
+                <target>tussen</target>
+            </trans-unit>
+            <trans-unit id="label_date_not_between">
+                <source>label_date_type_not_between</source>
+                <target>niet tussen</target>
+            </trans-unit>
+            <trans-unit id="label_filters">
+                <source>label_filters</source>
+                <target>Filters</target>
+            </trans-unit>
+
+            <trans-unit id="delete_or">
+                <source>delete_or</source>
+                <target>of</target>
+            </trans-unit>
+
+            <trans-unit id="link_action_history">
+                <source>link_action_history</source>
+                <target>Revisies</target>
+            </trans-unit>
+            <trans-unit id="td_action">
+                <source>td_action</source>
+                <target>Handeling</target>
+            </trans-unit>
+            <trans-unit id="td_revision">
+                <source>td_revision</source>
+                <target>Revisies</target>
+            </trans-unit>
+            <trans-unit id="td_timestamp">
+                <source>td_timestamp</source>
+                <target>Datum</target>
+            </trans-unit>
+            <trans-unit id="td_username">
+                <source>td_username</source>
+                <target>Auteur</target>
+            </trans-unit>
+            <trans-unit id="label_view_revision">
+                <source>label_view_revision</source>
+                <target>Toon revisie</target>
+            </trans-unit>
 
             <trans-unit id="list_results_count">
                 <source>list_results_count</source>
-                <target>list_results_count|list_results_count</target>
+                <target>1 resultaat|%count% resultaten</target>
             </trans-unit>
             <trans-unit id="label_export_download">
                 <source>label_export_download</source>
-                <target>label_export_download</target>
+                <target>Download : </target>
             </trans-unit>
         </body>
     </file>
