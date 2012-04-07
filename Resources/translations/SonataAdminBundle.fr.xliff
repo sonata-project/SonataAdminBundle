@@ -267,7 +267,10 @@
                 <source>label_export_download</source>
                 <target>Export : </target>
             </trans-unit>
-
+            <trans-unit id="loading_information">
+                <source>loading_information</source>
+                <target>Chargement des informations…</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
