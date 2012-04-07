@@ -1225,6 +1225,15 @@
 .sonata-bc .zebra-striped tbody tr:hover td, .sonata-bc .zebra-striped tbody tr:hover th {
   background-color: #f5f5f5;
 }
+.sonata-bc .zebra-striped tbody tr.sonata-ba-list-row-selected td, .sonata-bc .zebra-striped tbody tr.sonata-ba-list-row-selected th {
+  background-color:#fcffc4;
+}
+.sonata-bc .zebra-striped tbody tr.sonata-ba-list-row-selected:nth-child(odd) td, .sonata-bc .zebra-striped tbody tr.sonata-ba-list-row-selected:nth-child(odd) th {
+  background-color:#fdffd8;
+}
+.sonata-bc .zebra-striped tbody tr.sonata-ba-list-row-selected:hover td, .sonata-bc .zebra-striped tbody tr.sonata-ba-list-row-selected:hover th {
+  background-color:#faff9e;
+}
 .sonata-bc table .header {
   cursor: pointer;
 }

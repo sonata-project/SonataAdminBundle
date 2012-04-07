@@ -212,6 +212,9 @@
 .sonata-bc table .span16{width:620px;}
 .sonata-bc .zebra-striped tbody tr:nth-child(odd) td,.sonata-bc .zebra-striped tbody tr:nth-child(odd) th{background-color:#f9f9f9;}
 .sonata-bc .zebra-striped tbody tr:hover td,.sonata-bc .zebra-striped tbody tr:hover th{background-color:#f5f5f5;}
+.sonata-bc .zebra-striped tbody tr.sonata-ba-list-row-selected td,.sonata-bc .zebra-striped tbody tr.sonata-ba-list-row-selected th{background-color:#fcffc4;}
+.sonata-bc .zebra-striped tbody tr.sonata-ba-list-row-selected:nth-child(odd) td,.sonata-bc .zebra-striped tbody tr.sonata-ba-list-row-selected:nth-child(odd) th{background-color:#fdffd8;}
+.sonata-bc .zebra-striped tbody tr.sonata-ba-list-row-selected:hover td,.sonata-bc .zebra-striped tbody tr.sonata-ba-list-row-selected:hover th{background-color:#faff9e;}
 .sonata-bc table .header{cursor:pointer;}.sonata-bc table .header:after{content:"";float:right;margin-top:7px;border-width:0 4px 4px;border-style:solid;border-color:#000 transparent;visibility:hidden;}
 .sonata-bc table .headerSortUp,.sonata-bc table .headerSortDown{background-color:rgba(141, 192, 219, 0.25);text-shadow:0 1px 1px rgba(255, 255, 255, 0.75);}
 .sonata-bc table .header:hover:after{visibility:visible;}
