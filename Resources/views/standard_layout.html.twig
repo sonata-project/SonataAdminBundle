@@ -85,6 +85,7 @@ file that was distributed with this source code.
                             {% endblock %}
                             {% if app.user %}
                                 <ul class="nav">
+                                    {% block top_bar_before_nav %} {% endblock %}
                                     {% for group in admin_pool.dashboardgroups %}
                                         <li class="dropdown">
                                             <a href="#" class="dropdown-toggle">{{ group.label|trans({}, 'SonataAdminBundle') }}</a>
@@ -97,6 +98,7 @@ file that was distributed with this source code.
                                             </ul>
                                         </li>
                                     {% endfor %}
+                                    {% block top_bar_after_nav %} {% endblock %}
                                 </ul>
                             {% endif %}
 
