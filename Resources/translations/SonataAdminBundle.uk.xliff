@@ -208,7 +208,11 @@
             </trans-unit>
             <trans-unit id="label_type_equals">
               <source>label_type_equals</source>
-              <target>label_type_equals</target>
+              <target>дорівнює</target>
+            </trans-unit>
+            <trans-unit id="label_type_not_equals">
+              <source>label_type_not_equals</source>
+              <target>не дорівнює</target>
             </trans-unit>
             <trans-unit id="label_type_equal">
               <source>label_type_equal</source>
