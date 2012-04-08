@@ -71,6 +71,7 @@ class ModelChoiceList extends ArrayChoiceList
     private $reflProperties = array();
 
     private $propertyPath;
+    private $_loaded = false;
 
     public function __construct(ModelManagerInterface $modelManager, $class, $property = null, $query = null, $choices = array())
     {
@@ -86,6 +87,8 @@ class ModelChoiceList extends ArrayChoiceList
         }
 
         $this->choices = $choices;
+        $this->load();
+        parent::__construct($this->choices);
     }
 
     /**
@@ -109,8 +112,9 @@ class ModelChoiceList extends ArrayChoiceList
      */
     protected function load()
     {
-        parent::load();
-
+        if ($this -> _loaded) return;
+        $this -> _loaded = true;
+        
         if (is_array($this->choices)) {
             $entities = $this->choices;
         } else if ($this->query) {
