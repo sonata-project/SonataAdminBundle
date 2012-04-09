@@ -17,22 +17,22 @@ file that was distributed with this source code.
     {% if value %}
         <a href="{{ url('sonata_admin_set_object_field_value', { 'context': 'list', 'field': field_description.name, 'objectId': admin.id(object), 'value': 0, 'code': admin.code(object) }) }}" class="sonata-ba-action sonata-ba-edit-inline">
             <img
-                src="{{ asset('bundles/sonataadmin/famfamfam/accept.png') }}"
+                src="{{ asset('bundles/sonataadmin/uidesign/checkbox_yes.png') }}"
                 alt="{%- trans from 'SonataAdminBundle' %}label_type_yes{% endtrans -%}"
                 />
         </a>
     {% else %}
         <a href="{{ url('sonata_admin_set_object_field_value', { 'context': 'list', 'field': field_description.name, 'objectId': admin.id(object), 'value': 1, 'code': admin.code(object) }) }}" class="sonata-ba-action sonata-ba-edit-inline">
             <img
-                src="{{ asset('bundles/sonataadmin/famfamfam/exclamation.png') }}"
+                src="{{ asset('bundles/sonataadmin/uidesign/checkbox_no.png') }}"
                 alt="{%- trans from 'SonataAdminBundle' %}label_type_no{% endtrans -%}" />
         </a>
     {% endif %}
 {% else %}
     {% if value %}
-        <img src="{{ asset('bundles/sonataadmin/famfamfam/accept.png') }}" alt="{%- trans from 'SonataAdminBundle' %}label_type_yes{% endtrans -%}" />
+        <img src="{{ asset('bundles/sonataadmin/uidesign/checkbox_yes.png') }}" alt="{%- trans from 'SonataAdminBundle' %}label_type_yes{% endtrans -%}" />
     {% else %}
-        <img src="{{ asset('bundles/sonataadmin/famfamfam/exclamation.png') }}" alt="{%- trans from 'SonataAdminBundle' %}label_type_no{% endtrans -%}" />
+        <img src="{{ asset('bundles/sonataadmin/uidesign/checkbox_no.png') }}" alt="{%- trans from 'SonataAdminBundle' %}label_type_no{% endtrans -%}" />
     {% endif %}
 {% endif %}
 {% endspaceless %}
