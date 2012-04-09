@@ -245,3 +245,7 @@ body.sonata-bc {
 ul.inputs-list {
     padding-left: 150px;
 }
+
+.bordered-table tbody.ui-sortable tr {
+	cursor: move;	
+}
