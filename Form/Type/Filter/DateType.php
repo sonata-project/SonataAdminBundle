@@ -66,10 +66,10 @@ class DateType extends AbstractType
             self::TYPE_NULL             => $this->translator->trans('label_date_type_null', array(), 'SonataAdminBundle'),
             self::TYPE_NOT_NULL         => $this->translator->trans('label_date_type_not_null', array(), 'SonataAdminBundle'),
         );
-
+        
         $builder
             ->add('type', 'choice', array('choices' => $choices, 'required' => false))
-            ->add('value', 'date', array_merge(array('required' => false), $options['field_options']))
+            ->add('value', 'date', array_merge(array('required' => false, 'format' => 'yyyy-MM-dd'), $options['field_options']))
         ;
     }
 
@@ -77,7 +77,7 @@ class DateType extends AbstractType
     {
         $defaultOptions = array(
             'field_type'       => 'date',
-            'field_options'    => array('date_format' => 'yyyy-MM-dd')
+            'field_options'    => array()
         );
 
         $options = array_replace($options, $defaultOptions);

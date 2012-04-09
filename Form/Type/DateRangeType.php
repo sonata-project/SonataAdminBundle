@@ -28,8 +28,8 @@ class DateRangeType extends AbstractType
 
     public function buildForm(FormBuilder $builder, array $options)
     {
-        $builder->add('start', 'date', array_merge(array('required' => false), $options['field_options']));
-        $builder->add('end', 'date', array_merge(array('required' => false), $options['field_options']));
+        $builder->add('start', 'date', array_merge(array('required' => false, 'format' => 'yyyy-MM-dd'), $options['field_options']));
+        $builder->add('end', 'date', array_merge(array('required' => false, 'format' => 'yyyy-MM-dd'), $options['field_options']));
     }
 
     public function getDefaultOptions(array $options)
