@@ -96,7 +96,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
                 }
 
                 if (!empty($group['item_adds'])) {
-                    $group['items'] = array_merge($groupDefaults[$groupName]['items'], $group['item_adds']);
+                    $groups[$groupName]['items'] = array_merge($groupDefaults[$groupName]['items'], $group['item_adds']);
                 }
             }
         } else {
