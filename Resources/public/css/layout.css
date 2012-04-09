@@ -254,3 +254,6 @@ body.sonata-bc {
     display: none;
 }
 
+.bordered-table tbody.ui-sortable tr {
+	cursor: move;	
+}
