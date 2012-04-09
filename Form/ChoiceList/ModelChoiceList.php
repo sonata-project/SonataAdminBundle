@@ -162,10 +162,6 @@ class ModelChoiceList extends SimpleChoiceList
      */
     public function getEntities()
     {
-        if (!$this->loaded) {
-            $this->load();
-        }
-
         return $this->entities;
     }
 
@@ -186,10 +182,6 @@ class ModelChoiceList extends SimpleChoiceList
      */
     public function getEntity($key)
     {
-        if (!$this->loaded) {
-            $this->load();
-        }
-
         if (count($this->identifier) > 1) {
             // $key is a collection index
             $entities = $this->getEntities();
