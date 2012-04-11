@@ -59,7 +59,7 @@ class ChoiceType extends AbstractType
 
     public function getDefaultOptions()
     {
-        rerturn array(
+        return array(
             'field_type'       => 'choice',
             'field_options'    => array()
         );
