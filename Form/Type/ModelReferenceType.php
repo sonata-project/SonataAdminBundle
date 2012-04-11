@@ -31,17 +31,13 @@ class ModelReferenceType extends AbstractType
         $builder->prependClientTransformer(new ModelToIdTransformer($options['model_manager'], $options['class']));
     }
 
-    public function getDefaultOptions(array $options)
+    public function getDefaultOptions()
     {
-        $defaultOptions = array(
+        return array(
             'model_manager'     => null,
             'class'             => null,
             'parent'            => 'hidden',
         );
-
-        $options = array_replace($defaultOptions, $options);
-
-        return $options;
     }
 
     public function getParent(array $options)

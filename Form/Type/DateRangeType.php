@@ -32,11 +32,11 @@ class DateRangeType extends AbstractType
         $builder->add('end', 'date', array_merge(array('required' => false), $options['field_options']));
     }
 
-    public function getDefaultOptions(array $options)
+    public function getDefaultOptions()
     {
-        return $options;
+        return array();
     }
-    
+
     public function getName()
     {
         return 'sonata_type_date_range';

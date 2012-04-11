@@ -139,10 +139,10 @@ class FormTypeFieldExtension extends AbstractTypeExtension
      *
      * @return array
      */
-    public function getDefaultOptions(array $options)
+    public function getDefaultOptions()
     {
         return array(
-            'sonata_admin'     => null,
+            'sonata_admin'             => null,
             'sonata_field_description' => null,
         );
     }

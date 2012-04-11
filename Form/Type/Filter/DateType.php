@@ -31,10 +31,10 @@ class DateType extends AbstractType
     const TYPE_LESS_THAN = 5;
 
     const TYPE_NULL = 6;
-    
+
     const TYPE_NOT_NULL = 7;
 
-    
+
     protected $translator;
 
     /**
@@ -73,15 +73,11 @@ class DateType extends AbstractType
         ;
     }
 
-    public function getDefaultOptions(array $options)
+    public function getDefaultOptions()
     {
-        $defaultOptions = array(
+        return array(
             'field_type'       => 'date',
             'field_options'    => array('date_format' => 'yyyy-MM-dd')
         );
-
-        $options = array_replace($options, $defaultOptions);
-
-        return $options;
     }
 }

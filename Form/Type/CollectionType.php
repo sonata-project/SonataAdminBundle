@@ -31,7 +31,7 @@ class CollectionType extends AbstractType
         $builder->addEventSubscriber($listener);
     }
 
-    public function getDefaultOptions(array $options)
+    public function getDefaultOptions()
     {
         return array(
             'modifiable'    => false,

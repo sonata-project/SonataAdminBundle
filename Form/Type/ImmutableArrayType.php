@@ -30,7 +30,7 @@ class ImmutableArrayType extends AbstractType
         }
     }
 
-    public function getDefaultOptions(array $options)
+    public function getDefaultOptions()
     {
         return array(
             'keys'    => array(),
