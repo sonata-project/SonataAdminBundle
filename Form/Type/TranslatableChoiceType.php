@@ -17,6 +17,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\Form\Options;
 
 class TranslatableChoiceType extends ChoiceType
 {
@@ -34,11 +35,8 @@ class TranslatableChoiceType extends ChoiceType
      * @param array $options
      * @return array
      */
-    public function getDefaultOptions(array $options)
+    public function getDefaultOptions()
     {
-        $multiple = isset($options['multiple']) && $options['multiple'];
-        $expanded = isset($options['expanded']) && $options['expanded'];
-
         return array(
             'multiple'          => false,
             'expanded'          => false,
@@ -46,8 +44,18 @@ class TranslatableChoiceType extends ChoiceType
             'choices'           => array(),
             'preferred_choices' => array(),
             'catalogue'         => 'messages',
-            'empty_data'        => $multiple || $expanded ? array() : '',
-            'empty_value'       => $multiple || $expanded || !isset($options['empty_value']) ? null : '',
+            'empty_data'        => function (Options $options, $previousValue) {
+                $multiple = isset($options['multiple']) && $options['multiple'];
+                $expanded = isset($options['expanded']) && $options['expanded'];
+
+                return $multiple || $expanded ? array() : '';
+            },
+            'empty_value'       => function (Options $options, $previousValue) {
+                $multiple = isset($options['multiple']) && $options['multiple'];
+                $expanded = isset($options['expanded']) && $options['expanded'];
+
+                return $multiple || $expanded || !isset($options['empty_value']) ? null : '';
+            },
             'error_bubbling'    => false,
         );
     }
@@ -58,12 +66,12 @@ class TranslatableChoiceType extends ChoiceType
         foreach ($options['choices'] as $name => $value) {
             $options['choices'][$name] = $this->translator->trans($value, array(), $options['catalogue']);
         }
-        
+
         // translate empty value
         if (!empty($options['empty_value'])) {
             $options['empty_value'] = $this->translator->trans($options['empty_value'], array(), $options['catalogue']);
         }
-        
+
         parent::buildForm($builder, $options);
     }
 }
