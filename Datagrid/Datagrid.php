@@ -94,9 +94,6 @@ class Datagrid implements DatagridInterface
             list($type, $options) = $filter->getRenderSettings();
 
             $this->formBuilder->add($name, $type, $options);
-
-            $this->values[$name] = isset($this->values[$name]) ? $this->values[$name] : null;
-            $filter->apply($this->query, $this->values[$name]);
         }
 
         $this->formBuilder->add('_sort_by', 'hidden');
@@ -105,6 +102,13 @@ class Datagrid implements DatagridInterface
 
         $this->form = $this->formBuilder->getForm();
         $this->form->bind($this->values);
+
+        $data = $this->form->getData();
+
+        foreach ($this->getFilters() as $name => $filter) {
+            $this->values[$name] = isset($this->values[$name]) ? $this->values[$name] : null;
+            $filter->apply($this->query, $data[$name]);
+        }
 
         $this->query->setSortBy(isset($this->values['_sort_by']) ? $this->values['_sort_by'] : null);
         $this->query->setSortOrder(isset($this->values['_sort_order']) ? $this->values['_sort_order'] : null);
