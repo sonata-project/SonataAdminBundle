@@ -17,6 +17,7 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\Form\Options;
 
 use Sonata\AdminBundle\Form\EventListener\MergeCollectionListener;
 use Sonata\AdminBundle\Form\ChoiceList\ModelChoiceList;
@@ -37,9 +38,9 @@ class ModelType extends AbstractType
         }
     }
 
-    public function getDefaultOptions(array $options)
+    public function getDefaultOptions()
     {
-        $defaultOptions = array(
+        $options = array(
             'template'          => 'choice',
             'multiple'          => false,
             'expanded'          => false,
@@ -50,21 +51,20 @@ class ModelType extends AbstractType
             'choices'           => null,
             'parent'            => 'choice',
             'preferred_choices' => array(),
+            'choice_list'       => function (Options $options, $previousValue) {
+                if (null === $previousValue) {
+                    return new ModelChoiceList(
+                        $options['model_manager'],
+                        $options['class'],
+                        $options['property'],
+                        $options['query'],
+                        $options['choices']
+                    );
+                }
+            }
         );
 
-        $options = array_replace($defaultOptions, $options);
-
-        if (!isset($options['choice_list'])) {
-            $defaultOptions['choice_list'] = new ModelChoiceList(
-                $options['model_manager'],
-                $options['class'],
-                $options['property'],
-                $options['query'],
-                $options['choices']
-            );
-        }
-
-        return $defaultOptions;
+        return $options;
     }
 
     public function getParent(array $options)

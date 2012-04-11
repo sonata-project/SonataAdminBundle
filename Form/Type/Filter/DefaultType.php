@@ -38,17 +38,13 @@ class DefaultType extends AbstractType
         ;
     }
 
-    public function getDefaultOptions(array $options)
+    public function getDefaultOptions()
     {
-        $defaultOptions = array(
+        return array(
             'operator_type'    => 'hidden',
             'operator_options' => array(),
             'field_type'       => 'text',
             'field_options'    => array()
         );
-
-        $options = array_replace($options, $defaultOptions);
-
-        return $options;
     }
 }

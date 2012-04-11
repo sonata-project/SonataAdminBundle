@@ -27,9 +27,9 @@ class BooleanType extends FormChoiceType
         $this->translator = $translator;
     }
 
-    public function getDefaultOptions(array $options)
+    public function getDefaultOptions()
     {
-        $options = parent::getDefaultOptions($options);
+        $options = parent::getDefaultOptions();
 
         $options['choices'] = array(
             self::TYPE_YES  => $this->translator->trans('label_type_yes', array(), 'SonataAdminBundle'),

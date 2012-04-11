@@ -44,7 +44,7 @@ class AdminType extends AbstractType
      * @param array $options
      * @return $options
      */
-    public function getDefaultOptions(array $options)
+    public function getDefaultOptions()
     {
         return array(
             'delete' => true,

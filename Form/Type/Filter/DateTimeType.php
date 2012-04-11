@@ -73,15 +73,11 @@ class DateTimeType extends AbstractType
         ;
     }
 
-    public function getDefaultOptions(array $options)
+    public function getDefaultOptions()
     {
-        $defaultOptions = array(
+        return array(
             'field_type'       => 'datetime',
             'field_options'    => array('date_format' => 'yyyy-MM-dd')
         );
-
-        $options = array_replace($options, $defaultOptions);
-
-        return $options;
     }
 }
