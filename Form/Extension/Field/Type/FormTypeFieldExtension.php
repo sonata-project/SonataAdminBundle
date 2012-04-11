@@ -150,11 +150,9 @@ class FormTypeFieldExtension extends AbstractTypeExtension
     /**
      * Returns the allowed option values for each option (if any).
      *
-     * @param array $options
-     *
      * @return array The allowed option values
      */
-    public function getAllowedOptionValues(array $options)
+    public function getAllowedOptionValues()
     {
         return array();
     }
