@@ -340,7 +340,7 @@ class CRUDController extends Controller
         $askConfirmation = isset($batchActions[$action]['ask_confirmation']) ? $batchActions[$action]['ask_confirmation'] : true;
 
         if ($askConfirmation && $this->get('request')->get('confirmation') != 'ok') {
-            $label = isset($batchActions[$action]['label']) ? $batchActions[$action]['label'] : $action;
+            $label = $this->admin->trans($this->admin->getLabelTranslatorStrategy()->getLabel($action, 'action'));
 
             $data = json_encode(array(
                 'action' => $action,
