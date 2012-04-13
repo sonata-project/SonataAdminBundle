@@ -9,3 +9,6 @@ env:
 
 before_script: php Tests/tests/vendors.php
 script: phpunit
+
+notifications:
+    webhooks: http://sonata-project.org/bundles/admin/2-0/travis
