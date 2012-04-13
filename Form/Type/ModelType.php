@@ -53,12 +53,11 @@ class ModelType extends AbstractType
             'parent'            => 'choice',
             'preferred_choices' => array(),
             'choice_list'       => function (Options $options, $previousValue) {
-            
-                if ($previousValue instanceof ChoiceListInterface 
+                if ($previousValue instanceof ChoiceListInterface
                         && count($choices = $previousValue->getChoices())) {
                     return $choices;
                 }
-            
+
                 return new ModelChoiceList(
                     $options['model_manager'],
                     $options['class'],
