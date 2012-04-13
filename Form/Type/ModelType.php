@@ -12,6 +12,7 @@
 
 namespace Sonata\AdminBundle\Form\Type;
 
+use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceListInterface;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\AbstractType;
@@ -52,15 +53,18 @@ class ModelType extends AbstractType
             'parent'            => 'choice',
             'preferred_choices' => array(),
             'choice_list'       => function (Options $options, $previousValue) {
-                if (null === $previousValue) {
-                    return new ModelChoiceList(
-                        $options['model_manager'],
-                        $options['class'],
-                        $options['property'],
-                        $options['query'],
-                        $options['choices']
-                    );
+                if ($previousValue instanceof ChoiceListInterface
+                        && count($choices = $previousValue->getChoices())) {
+                    return $choices;
                 }
+
+                return new ModelChoiceList(
+                    $options['model_manager'],
+                    $options['class'],
+                    $options['property'],
+                    $options['query'],
+                    $options['choices']
+                );
             }
         );
 
