@@ -23,7 +23,7 @@
         "knplabs/knp-menu-bundle": "master-dev",
         "sonata-project/jquery-bundle": "master-dev",
         "sonata-project/exporter": "master-dev",
-        "sonata-project/block-bundle": "master-dev"
+        "sonata-project/block-bundle": "2.0.*"
     },
     "suggest": {
         "sonata-project/doctrine-orm-admin-bundle": "*",
