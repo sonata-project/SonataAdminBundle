@@ -29,11 +29,12 @@ class BooleanType extends FormChoiceType
 
     public function getDefaultOptions(array $options)
     {
+        $expanded = $options['expanded'] == true;
         $options = parent::getDefaultOptions($options);
 
         $options['choices'] = array(
-            self::TYPE_YES  => $this->translator->trans('label_type_yes', array(), 'SonataAdminBundle'),
-            self::TYPE_NO   => $this->translator->trans('label_type_no', array(), 'SonataAdminBundle'),
+            ($expanded ? true : self::TYPE_YES)  => $this->translator->trans('label_type_yes', array(), 'SonataAdminBundle'),
+            ($expanded ? false : self::TYPE_NO)   => $this->translator->trans('label_type_no', array(), 'SonataAdminBundle'),
         );
 
         return $options;
