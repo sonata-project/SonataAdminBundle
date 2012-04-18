@@ -209,6 +209,8 @@ class CRUDController extends Controller
                 $this->get('session')->setFlash('sonata_flash_success', 'flash_delete_success');
             } catch ( ModelManagerException $e ) {
                 $this->get('session')->setFlash('sonata_flash_error', 'flash_delete_error');
+            } catch ( \Exception $e ) {
+                $this->get('session')->setFlash('sonata_flash_error', $e->getMessage());
             }
 
             return new RedirectResponse($this->admin->generateUrl('list'));
