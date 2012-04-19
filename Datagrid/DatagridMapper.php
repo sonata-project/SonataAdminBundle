@@ -60,7 +60,7 @@ class DatagridMapper
             $filterOptions['field_type'] = $fieldType;
         }
 
-        $filterOptions['field_name'] = isset($filterOptions['field_name']) ? $filterOptions['field_name'] : $name;
+        $filterOptions['field_name'] = isset($filterOptions['field_name']) ? $filterOptions['field_name'] : substr(strrchr('.'.$name,'.'), 1);
 
         if ($name instanceof FieldDescriptionInterface) {
             $fieldDescription = $name;

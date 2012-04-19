@@ -40,6 +40,13 @@ interface FilterInterface
     function getName();
 
     /**
+     * Returns the filter form name
+     * @abstract
+     * @return string
+     */
+    function getFormName();
+
+    /**
      * Returns the label name
      *
      * @abstract
@@ -88,6 +95,11 @@ interface FilterInterface
      * @return string
      */
     function getFieldName();
+
+    /**
+     * @return array of mappings
+     */
+    function getParentAssociationMappings();
 
     /**
      * @abstract

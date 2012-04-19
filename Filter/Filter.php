@@ -46,6 +46,19 @@ abstract class Filter implements FilterInterface
     }
 
     /**
+     * @return string
+     */
+    public function getFormName()
+    {
+        /* Symfony default form class sadly can't handle
+           form element with dots in its name (when data
+           get bound, the default dataMapper is a PropertyPathMapper).
+           So use this trick to avoid any issue.
+        */
+        return str_replace('.','~',$this->name);
+    }
+
+    /**
      * @param string $name
      * @param null $default
      * @return mixed
@@ -112,6 +125,14 @@ abstract class Filter implements FilterInterface
         }
 
         return $fieldName;
+    }
+
+    /**
+     * @return array of mappings
+     */
+    public function getParentAssociationMappings()
+    {
+        return $this->getOption('parent_association_mappings', array());
     }
 
     /**

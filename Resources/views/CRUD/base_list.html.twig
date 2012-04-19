@@ -177,8 +177,8 @@ file that was distributed with this source code.
                         {% for filter in admin.datagrid.filters %}
                         <tr id="filter_{{ filter.name }}_row" class="filter {{ filter.isActive ? 'active' : 'inactive' }}">
                                 <td class="filter-title">{{ admin.trans(filter.label) }}</td>
-                                <td class="filter-type">{{ form_widget(form.getChild(filter.name).getChild('type')) }}</td>
-                                <td class="filter-value">{{ form_widget(form.getChild(filter.name).getChild('value')) }}</td>
+                                <td class="filter-type">{{ form_widget(form.getChild(filter.formName).getChild('type')) }}</td>
+                                <td class="filter-value">{{ form_widget(form.getChild(filter.formName).getChild('value')) }}</td>
                             </tr>
                         {% endfor %}
                     </table>
