@@ -12,6 +12,8 @@
 
 namespace Sonata\AdminBundle\Guesser;
 
+use Sonata\AdminBundle\Model\ModelManagerInterface;
+
 interface TypeGuesserInterface
 {
     /**
@@ -20,5 +22,5 @@ interface TypeGuesserInterface
      * @param string $property
      * @return TypeGuess
      */
-    function guessType($class, $property);
+    function guessType($class, $property, ModelManagerInterface $modelManager);
 }
