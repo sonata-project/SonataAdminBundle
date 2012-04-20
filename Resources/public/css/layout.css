@@ -97,15 +97,15 @@ body.sonata-bc {
 }
 
 .sonata-bc .zebra-striped tbody tr.sonata-ba-list-row-selected td, .sonata-bc .zebra-striped tbody tr.sonata-ba-list-row-selected th {
-    background-color:#fcffc4;
+    background-color: #fcffc4;
 }
 
 .sonata-bc .zebra-striped tbody tr.sonata-ba-list-row-selected:nth-child(odd) td, .sonata-bc .zebra-striped tbody tr.sonata-ba-list-row-selected:nth-child(odd) th {
-    background-color:#fdffd8;
+    background-color: #faff9e;
 }
 
 .sonata-bc .zebra-striped tbody tr.sonata-ba-list-row-selected:hover td, .sonata-bc .zebra-striped tbody tr.sonata-ba-list-row-selected:hover th {
-    background-color:#faff9e;
+    background-color: #fdffd8;
 }
 
 .sonata-bc table.sonata-ba-list td img{
