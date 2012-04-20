@@ -115,14 +115,10 @@ class ErrorElement
         $validator  = $this->constraintValidatorFactory->getInstance($constraint);
         $value      = $this->getValue();
 
-        $validator->isValid($value, $constraint);
-
-        $this->context->setPropertyPath($this->getFullPropertyPath());
-        $this->context->setGroup($this->group);
-
         $validator->initialize($this->context);
+        $validator->validate($value, $constraint);
 
-        if (!$validator->isValid($value, $constraint)) {
+        if (count($this->context->getViolations())) {
             $this->context->addViolation(
                 $messageTemplate ?: $validator->getMessageTemplate(),
                 array_merge($validator->getMessageParameters(), $messageParameters),
