@@ -26,7 +26,7 @@ file that was distributed with this source code.
             <!-- jQuery code -->
             <link rel="stylesheet" href="{{ asset('bundles/sonatajquery/themes/flick/jquery-ui-1.8.16.custom.css') }}" type="text/css" media="all" />
 
-            <link rel="stylesheet" href="{{ asset('bundles/sonataadmin/bootstrap/bootstrap.min.css') }}" type="text/css" media="all" >
+            <link rel="stylesheet" href="{{ asset('bundles/sonataadmin/bootstrap/css/bootstrap.min.css') }}" type="text/css" media="all" >
 
             <!-- base application asset -->
             <link rel="stylesheet" href="{{ asset('bundles/sonataadmin/css/layout.css') }}" type="text/css" media="all">
@@ -38,13 +38,7 @@ file that was distributed with this source code.
             <script src="{{ asset('bundles/sonatajquery/jquery-ui-1.8.17.js') }}" type="text/javascript"></script>
             <script src="{{ asset('bundles/sonatajquery/jquery-ui-i18n.js') }}" type="text/javascript"></script>
 
-            <script src="{{ asset('bundles/sonataadmin/bootstrap/js/bootstrap-tabs.js') }}" type="text/javascript"></script>
-            <script src="{{ asset('bundles/sonataadmin/bootstrap/js/bootstrap-alerts.js') }}" type="text/javascript"></script>
-            <script src="{{ asset('bundles/sonataadmin/bootstrap/js/bootstrap-modal.js') }}" type="text/javascript"></script>
-            <script src="{{ asset('bundles/sonataadmin/bootstrap/js/bootstrap-twipsy.js') }}" type="text/javascript"></script>
-            <script src="{{ asset('bundles/sonataadmin/bootstrap/js/bootstrap-popover.js') }}" type="text/javascript"></script>
-            <script src="{{ asset('bundles/sonataadmin/bootstrap/js/bootstrap-scrollspy.js') }}" type="text/javascript"></script>
-            <script src="{{ asset('bundles/sonataadmin/bootstrap/js/bootstrap-dropdown.js') }}" type="text/javascript"></script>
+            <script src="{{ asset('bundles/sonataadmin/bootstrap/js/bootstrap.min.js') }}" type="text/javascript"></script>
 
             <script src="{{ asset('bundles/sonataadmin/qtip/jquery.qtip-1.0.0-rc3.min.js') }}" type="text/javascript"></script>
             <script src="{{ asset('bundles/sonataadmin/jquery/jquery.form.js') }}" type="text/javascript"></script>
@@ -72,9 +66,8 @@ file that was distributed with this source code.
     <body class="sonata-bc {% if _side_menu is empty %}sonata-ba-no-side-menu{% endif %}">
         {# initialize block value #}
 
-        <div class="topbar" data-dropdown="dropdown" >
-            <div class="topbar">
-                <div class="topbar-inner">
+        <div class="navbar navbar-fixed-top">
+                <div class="navbar-inner">
                     <div class="container-fluid">
                         {% if admin_pool is defined %}
                             {% block logo %}
@@ -87,7 +80,7 @@ file that was distributed with this source code.
                                 <ul class="nav">
                                     {% for group in admin_pool.dashboardgroups %}
                                         <li class="dropdown">
-                                            <a href="#" class="dropdown-toggle">{{ group.label|trans({}, 'SonataAdminBundle') }}</a>
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ group.label|trans({}, 'SonataAdminBundle') }} <b class="caret"></b></a>
                                             <ul class="dropdown-menu">
                                                 {% for admin in group.items %}
                                                     {% if admin.hasroute('create') and admin.isGranted('CREATE') or admin.hasroute('list') and admin.isGranted('LIST') %}
@@ -100,11 +93,10 @@ file that was distributed with this source code.
                                 </ul>
                             {% endif %}
 
-                            <p class="pull-right">{% include admin_pool.getTemplate('user_block') %}</p>
+                            <p class="navbar-text pull-right">{% include admin_pool.getTemplate('user_block') %}</p>
                         {% endif %}
                     </div>
                 </div>
-            </div>
         </div>
 
         <div class="container-fluid">
@@ -130,9 +122,9 @@ file that was distributed with this source code.
                 {% for notice_level in ['success','error','info', 'warning'] %}
                     {% set session_var = 'sonata_flash_' ~ notice_level %}
                     {% if app.session.hasFlash(session_var) %}
-                        <div class="alert-message {{ notice_level }}">
+                        <div class="alert alert-{{ notice_level }}">
                             {{ app.session.flash(session_var) | trans([],'SonataAdminBundle') }}
-                            {#<a class="close" href="#">×</a>#}
+                            {#<a class="close" data-dismiss="alert" href="#">×</a>#}
                         </div>
                     {% endif %}
                 {% endfor %}
@@ -158,46 +150,47 @@ file that was distributed with this source code.
                 </div>
             {% endif%}
 
-            {% if _side_menu is not empty %}
-                <div class="sidebar">
-                    <div class="well sonata-ba-side-menu">{{ _side_menu|raw }}</div>
+            <div class="row-fluid">
+                <div class="content {{ _side_menu is not empty ? ' span10' : 'span12' }}">
+
+                    {% if _preview is not empty %}
+                        <div class="sonata-ba-preview">{{ _preview|raw }}</div>
+                    {% endif %}
+
+                    {% if _content is not empty %}
+                        <div class="sonata-ba-content">{{ _content|raw }}</div>
+                    {% endif %}
+    
+                    {% if _show is not empty %}
+                        <div class="sonata-ba-show">{{ _show|raw }}</div>
+                    {% endif %}
+    
+                    {% if _form is not empty %}
+                        <div class="sonata-ba-form">{{ _form|raw }}</div>
+                    {% endif %}
+    
+                    {% if _list_table is not empty or _list_filters is not empty %}
+                        <div class="sonata-ba-filter">
+                            {{ _list_filters|raw }}
+                        </div>
+                        <div class="sonata-ba-list">
+                            {{ _list_table|raw }}
+                        </div>
+                    {% endif %}
                 </div>
-            {% endif %}
 
-            <div class="content">
-
-                {% if _preview is not empty %}
-                    <div class="sonata-ba-preview">{{ _preview|raw }}</div>
-                {% endif %}
-
-
-                {% if _content is not empty %}
-                    <div class="sonata-ba-content">{{ _content|raw }}</div>
-                {% endif %}
-
-                {% if _show is not empty %}
-                    <div class="sonata-ba-show">{{ _show|raw }}</div>
-                {% endif %}
-
-                {% if _form is not empty %}
-                    <div class="sonata-ba-form">{{ _form|raw }}</div>
-                {% endif %}
-
-                {% if _list_table is not empty or _list_filters is not empty %}
-                    <div class="sonata-ba-filter">
-                        {{ _list_filters|raw }}
-                    </div>
-                    <div class="sonata-ba-list">
-                        {{ _list_table|raw }}
+                {% if _side_menu is not empty %}
+                    <div class="sidebar span2">
+                        <div class="well sonata-ba-side-menu" style="padding: 8px 0;">{{ _side_menu|raw }}</div>
                     </div>
                 {% endif %}
-
-                {% block footer %}
-                    <div class="pull-right clearfix">
-                        <span class="label"><a href="http://sonata-project.org" rel="noreferrer" style="text-decoration: none; color: black">Sonata Project</a></span>
-                    </div>
-                {% endblock %}
             </div>
+
+            {% block footer %}
+                <div class="pull-right">
+                    <span class="label"><a href="http://sonata-project.org" rel="noreferrer" style="text-decoration: none; color: black">Sonata Project</a></span>
+                </div>
+            {% endblock %}
         </div>
     </body>
 </html>

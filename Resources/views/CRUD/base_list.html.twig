@@ -13,21 +13,19 @@ file that was distributed with this source code.
 
 {% block actions %}
     <div class="sonata-actions">
-        <ul>
-            {% if admin.hasRoute('create') and admin.isGranted('CREATE')%}
-                <li class="btn"><a href="{{ admin.generateUrl('create') }}">{% trans from 'SonataAdminBundle' %}link_action_create{% endtrans %}</a></li>
-            {% endif %}
-        </ul>
+        {% if admin.hasRoute('create') and admin.isGranted('CREATE')%}
+            <a class="btn" href="{{ admin.generateUrl('create') }}">{% trans from 'SonataAdminBundle' %}link_action_create{% endtrans %}</a>
+        {% endif %}
     </div>
 {% endblock %}
 
-{% block side_menu %}{{ knp_menu_render(admin.sidemenu(action), {}, 'list') }}{% endblock %}
+{% block side_menu %}{{ knp_menu_render(admin.sidemenu(action), {'currentClass' : 'active'}, 'list') }}{% endblock %}
 
 {% block list_table %}
     {% set batchactions = admin.batchactions %}
     {% if admin.datagrid.results|length > 0 %}
         <form action="{{ admin.generateUrl('batch', admin.filterParameters) }}" method="POST" >
-            <table class="zebra-striped bordered-table">
+            <table class="table table-bordered table-striped">
                 {% block table_header %}
                     <thead>
                         <tr class="sonata-ba-list-field-header">
@@ -143,7 +141,7 @@ file that was distributed with this source code.
                     });
                 </script>
 
-                <div class="actions sonata-ba-list-actions">
+                <div class="well form-inline sonata-ba-list-actions">
                     <select name="action">
                         {% for action, options in batchactions %}
                             <option value="{{ action }}">{{ options.label }}</option>
@@ -155,7 +153,7 @@ file that was distributed with this source code.
                         {% trans from 'SonataAdminBundle' %}all_elements{% endtrans %}
                     </label>
 
-                    <input type="submit" class="btn primary" value="{% trans from 'SonataAdminBundle' %}btn_batch{% endtrans %}" />
+                    <input type="submit" class="btn btn-primary" value="{% trans from 'SonataAdminBundle' %}btn_batch{% endtrans %}" />
                 </div>
             {% endif %}
         </form>
@@ -168,12 +166,12 @@ file that was distributed with this source code.
 
 {% block list_filters %}
     {% if admin.datagrid.filters %}
-        <form class="sonata-filter-form form-stacked {{ admin.isChild and 1 == admin.datagrid.filters|length ? 'hide' : '' }}" action="{{ admin.generateUrl('list') }}" method="GET">
+        <form class="sonata-filter-form {{ admin.isChild and 1 == admin.datagrid.filters|length ? 'hide' : '' }}" action="{{ admin.generateUrl('list') }}" method="GET">
             <fieldset class="filter_legend">
                 <legend class="filter_legend {{ admin.datagrid.hasActiveFilters ? 'active' : 'inactive' }}">{% trans from 'SonataAdminBundle' %}label_filters{% endtrans %}</legend>
 
                 <div class="filter_container {{ admin.datagrid.hasActiveFilters ? 'active' : 'inactive' }}">
-                    <table class="bordered-table">
+                    <table class="table table-bordered">
                         {% for filter in admin.datagrid.filters %}
                         <tr id="filter_{{ filter.name }}_row" class="filter {{ filter.isActive ? 'active' : 'inactive' }}">
                                 <td class="filter-title">{{ admin.trans(filter.label) }}</td>
@@ -188,7 +186,7 @@ file that was distributed with this source code.
                     {% set foo = form.getChild('_page').setRendered() %}
                     {{ form_rest(form) }}
 
-                    <input type="submit" class="btn primary" value="{% trans from 'SonataAdminBundle' %}btn_filter{% endtrans %}" />
+                    <input type="submit" class="btn btn-primary" value="{% trans from 'SonataAdminBundle' %}btn_filter{% endtrans %}" />
 
                     <a class="btn" href="{{ admin.generateUrl('list') }}">{% trans from 'SonataAdminBundle' %}link_reset_filter{% endtrans %}</a>
 
