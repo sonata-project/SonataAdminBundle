@@ -24,20 +24,35 @@ body.sonata-bc {
 }
 
 
+.sonata-bc div.connection {
+    position:absolute;
+    left: 50%;
+    top: 35%;
+    width: 460px;
+    margin: -130px 0 0 -250px;
+    box-shadow:2px 2px 10px #ccc;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+}
+
+.sonata-bc div.connection .control-group {
+    padding: 0 20px 0 20px;
+}
+
+.sonata-bc div.connection .alert {
+	margin: 0 20px 20px 20px;
+}
+
 .sonata-bc div.connection form {
     padding-top: 15px;
     margin-bottom: 0px;
-    padding-right: 20px;
 }
 
 .sonata-bc div.connection form .form-actions {
     margin-bottom: 0px;
 }
 
-
 .sonata-bc div.connection .form-actions {
-    margin-left: -20px;
-    margin-right: -20px;
     padding-left: 20px;
 }
 
