@@ -113,7 +113,7 @@ class SonataAdminExtension extends Extension
             'choice'   => 'sonata-medium',
             'integer'  => 'sonata-medium',
             'datetime' => 'sonata-medium-date',
-            'date' => 'sonata-medium-date'
+            'date'     => 'sonata-medium-date'
         );
 
         $container->getDefinition('sonata.admin.form.extension.field')
@@ -123,10 +123,5 @@ class SonataAdminExtension extends Extension
         if (!isset($bundles['JMSTranslationBundle'])) {
             $container->removeDefinition('sonata.admin.translator.extractor.jms_translator_bundle');
         }
-    }
-
-    public function getNamespace()
-    {
-        return 'http://www.sonata-project.org/schema/dic/admin';
     }
 }
