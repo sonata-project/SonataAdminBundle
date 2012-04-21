@@ -37,8 +37,7 @@ class MergeCollectionListener implements EventSubscriberInterface
         $collection = $event->getForm()->getData();
         $data       = $event->getData();
         
-        if (spl_object_hash($collection) === spl_object_hash($data)) {
-            $event->setData($collection);
+        if ($collection === $data) {
             return;
         }
 
