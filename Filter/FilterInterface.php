@@ -102,6 +102,16 @@ interface FilterInterface
     function getParentAssociationMappings();
 
     /**
+     * @return array field mapping
+     */
+    function getFieldMapping();
+
+    /**
+     * @return array association mapping
+     */
+    function getAssociationMapping();
+
+    /**
      * @abstract
      * @return array
      */

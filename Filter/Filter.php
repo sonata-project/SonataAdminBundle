@@ -136,6 +136,34 @@ abstract class Filter implements FilterInterface
     }
 
     /**
+     * @return array field mapping
+     */
+    public function getFieldMapping()
+    {
+        $fieldMapping = $this->getOption('field_mapping');
+
+        if (!$fieldMapping) {
+            throw new \RunTimeException(sprintf('The option `field_mapping` must be set for field : `%s`', $this->getName()));
+        }
+
+        return $fieldMapping;
+    }
+
+    /**
+     * @return array association mapping
+     */
+    public function getAssociationMapping()
+    {
+        $associationMapping = $this->getOption('association_mapping');
+
+        if (!$associationMapping) {
+            throw new \RunTimeException(sprintf('The option `association_mapping` must be set for field : `%s`', $this->getName()));
+        }
+
+        return $associationMapping;
+    }
+
+    /**
      * @param array $options
      * @return void
      */
