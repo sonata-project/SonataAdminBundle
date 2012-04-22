@@ -23,16 +23,16 @@ file that was distributed with this source code.
     <div class="sonata-actions">
         <ul>
             {% if admin.hasroute('show') and admin.id(object) and admin.isGranted('VIEW', object) and admin.show|length > 0 %}
-                <li class="btn sonata-action-element"><a href="{{ admin.generateObjectUrl('show', object) }}">{% trans from 'SonataAdminBundle' %}link_action_show{% endtrans %}</a></li>
+                <li class="sonata-action-element"><a class="btn" href="{{ admin.generateObjectUrl('show', object) }}">{% trans from 'SonataAdminBundle' %}link_action_show{% endtrans %}</a></li>
             {% endif %}
             {% if admin.hasroute('history') and admin.id(object) and admin.isGranted('EDIT', object) %}
-                <li class="btn sonata-action-element"><a href="{{ admin.generateObjectUrl('history', object) }}">{% trans from 'SonataAdminBundle' %}link_action_history{% endtrans %}</a></li>
+                <li class="sonata-action-element"><a class="btn" href="{{ admin.generateObjectUrl('history', object) }}">{% trans from 'SonataAdminBundle' %}link_action_history{% endtrans %}</a></li>
             {% endif %}
             {% if admin.hasroute('create') and admin.isGranted('CREATE')%}
-                <li class="btn sonata-action-element"><a href="{{ admin.generateUrl('create') }}">{% trans from 'SonataAdminBundle' %}link_action_create{% endtrans %}</a></li>
+                <li class="sonata-action-element"><a class="btn" href="{{ admin.generateUrl('create') }}">{% trans from 'SonataAdminBundle' %}link_action_create{% endtrans %}</a></li>
             {% endif %}
             {% if admin.hasroute('list') and admin.isGranted('LIST')%}
-                <li class="btn sonata-action-element"><a href="{{ admin.generateUrl('list') }}">{% trans from 'SonataAdminBundle' %}link_action_list{% endtrans %}</a></li>
+                <li class="sonata-action-element"><a class="btn" href="{{ admin.generateUrl('list') }}">{% trans from 'SonataAdminBundle' %}link_action_list{% endtrans %}</a></li>
             {% endif %}
         </ul>
     </div>
