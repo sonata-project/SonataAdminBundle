@@ -22,7 +22,7 @@ file that was distributed with this source code.
     </div>
 {% endblock %}
 
-{% block side_menu %}{% if action is defined %}{{ knp_menu_render(admin.sidemenu(action), 'currentClass' : 'active', 'list') }}{% endif %}{% endblock %}
+{% block side_menu %}{% if action is defined %}{{ knp_menu_render(admin.sidemenu(action), {'currentClass' : 'active'}, 'list') }}{% endif %}{% endblock %}
 
 {% block content %}
 
