@@ -199,9 +199,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
         $definition->addMethodCall('setLabel', array($label));
 
-        if (!$definition->hasMethodCall('setTemplates')) {
-            $definition->addMethodCall('setTemplates', array('%sonata.admin.configuration.templates%'));
-        }
+        $this->fixTemplates($container, $definition);
 
         if ($container->hasParameter('sonata.admin.configuration.security.information') && !$definition->hasMethodCall('setSecurityInformation')) {
             $definition->addMethodCall('setSecurityInformation', array('%sonata.admin.configuration.security.information%'));
@@ -210,6 +208,49 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
         $definition->addMethodCall('initialize');
 
         return $definition;
+    }
+
+    /**
+     * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
+     * @param \Symfony\Component\DependencyInjection\Definition $definition
+     * @return void
+     */
+    public function fixTemplates(ContainerBuilder $container, Definition $definition)
+    {
+        $definedTemplates = $container->getParameter('sonata.admin.configuration.templates');
+
+        $methods = array();
+        $pos = 0;
+        foreach ($definition->getMethodCalls() as $method) {
+            if ($method[0] == 'setTemplates') {
+                $definedTemplates = array_merge($definedTemplates, $method[1][0]);
+                continue;
+            }
+
+            if ($method[1] == 'setTemplate') {
+                $definedTemplates[$method[0]] = $method[1][0];
+                continue;
+            }
+
+            $methods[$pos] = $method;
+            $pos++;
+        }
+
+        // make sure the default templates are defined
+        $definedTemplates = array_merge(array(
+            'user_block'        => 'SonataAdminBundle:Core:user_block.html.twig',
+            'layout'            => 'SonataAdminBundle::standard_layout.html.twig',
+            'ajax'              => 'SonataAdminBundle::ajax_layout.html.twig',
+            'dashboard'         => 'SonataAdminBundle:Core:dashboard.html.twig',
+            'list'              => 'SonataAdminBundle:CRUD:list.html.twig',
+            'show'              => 'SonataAdminBundle:CRUD:show.html.twig',
+            'edit'              => 'SonataAdminBundle:CRUD:edit.html.twig',
+            'history'           => 'SonataAdminBundle:CRUD:history.html.twig',
+            'history_revision'  => 'SonataAdminBundle:CRUD:history_revision.html.twig',
+            'action'            => 'SonataAdminBundle:CRUD:action.html.twig',
+        ), $definedTemplates);
+
+        $definition->addMethodCall('setTemplates', array($definedTemplates));
     }
 
     /**
