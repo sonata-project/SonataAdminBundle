@@ -36,6 +36,10 @@ class MergeCollectionListener implements EventSubscriberInterface
     {
         $collection = $event->getForm()->getData();
         $data       = $event->getData();
+        
+        if ($collection === $data) {
+            return;
+        }
 
         if (!$collection) {
             $collection = $data;
