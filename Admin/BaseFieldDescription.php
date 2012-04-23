@@ -77,14 +77,19 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     protected $fieldName;
 
     /**
-     * @var array the Doctrine association mapping
+     * @var array the ORM association mapping
      */
     protected $associationMapping;
 
     /**
-     * @var array the Doctrine field information
+     * @var array the ORM field information
      */
     protected $fieldMapping;
+
+    /*
+     * var array the ORM parent mapping association
+     */
+    protected $parentAssociationMappings;
 
     /**
      * @var string the template name
@@ -148,7 +153,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         $this->name = $name;
 
         if (!$this->getFieldName()) {
-            $this->setFieldName($name);
+            $this->setFieldName(substr(strrchr('.'.$name, '.') ,1));
         }
     }
 
@@ -315,6 +320,16 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     }
 
     /**
+     * return the parent association mapping definitions
+     *
+     * @return array the parent association mapping definitions
+     */
+    public function getParentAssociationMappings()
+    {
+        return $this->parentAssociationMappings;
+    }
+
+    /**
      * set the association admin instance (only used if the field is linked to an Admin)
      *
      * @param \Sonata\AdminBundle\Admin\AdminInterface $associationAdmin the associated admin
@@ -347,11 +362,12 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
      * return the value linked to the description
      *
      * @param  $object
+     * @param string $fieldName
      * @return bool|mixed
      */
-    public function getValue($object)
+    public function getFieldValue($object, $fieldName)
     {
-        $camelizedFieldName = self::camelize($this->getFieldName());
+        $camelizedFieldName = self::camelize($fieldName);
 
         $getters = array();
         // prefer method name given in the code option
@@ -481,5 +497,33 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     public function getLabel()
     {
         return $this->getOption('label');
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isSortable()
+    {
+        return $this->getOption('sortable', false);
+    }
+
+    /**
+     * return the field mapping definition used when sorting
+     *
+     * @return array the field mapping definition
+     */
+    public function getSortFieldMapping()
+    {
+        return $this->getOption('sort_field_mapping');
+    }
+
+    /**
+     * return the parent association mapping definitions used when sorting
+     *
+     * @return array the parent association mapping definitions
+     */
+    public function getSortParentAssociationMapping()
+    {
+        return $this->getOption('sort_parent_association_mappings');
     }
 }
