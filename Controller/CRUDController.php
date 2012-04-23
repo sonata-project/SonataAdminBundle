@@ -340,6 +340,8 @@ class CRUDController extends Controller
         $askConfirmation = isset($batchActions[$action]['ask_confirmation']) ? $batchActions[$action]['ask_confirmation'] : true;
 
         if ($askConfirmation && $this->get('request')->get('confirmation') != 'ok') {
+            $label = $this->admin->trans($this->admin->getLabelTranslatorStrategy()->getLabel($action, 'action'));
+
             $data = json_encode(array(
                 'action' => $action,
                 'idx'    => $idx,
@@ -350,10 +352,11 @@ class CRUDController extends Controller
             $formView = $datagrid->getForm()->createView();
 
             return $this->render('SonataAdminBundle:CRUD:batch_confirmation.html.twig', array(
-                'action'   => 'list',
-                'datagrid' => $datagrid,
-                'form'     => $formView,
-                'data'     => $data,
+                'action'       => 'list',
+                'action_label' => $label,
+                'datagrid'     => $datagrid,
+                'form'         => $formView,
+                'data'         => $data,
             ));
         }
 
