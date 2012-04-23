@@ -64,10 +64,12 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
                 }
 
                 $groupName = isset($attributes['group']) ? $attributes['group'] : 'default';
+                $labelCatalogue = isset($attributes['label_catalogue']) ? $attributes['label_catalogue'] : 'SonataAdminBundle';
 
                 if (!isset($groupDefaults[$groupName])) {
                     $groupDefaults[$groupName] = array(
-                        'label' => $groupName
+                        'label'           => $groupName,
+                        'label_catalogue' => $labelCatalogue
                     );
                 }
 
@@ -93,6 +95,10 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
                 if (empty($group['label'])) {
                     $groups[$groupName]['label'] = $groupDefaults[$groupName]['label'];
+                }
+
+                if (empty($group['label_catalogue'])) {
+                    $groups[$groupName]['label_catalogue'] = 'SonataAdminBundle';
                 }
 
                 if (!empty($group['item_adds'])) {
