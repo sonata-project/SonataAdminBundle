@@ -13,19 +13,17 @@ file that was distributed with this source code.
 
 {% block actions %}
     <div class="sonata-actions">
-        <ul>
-            {% if admin.hasRoute('list') and admin.isGranted('LIST')%}
-                <li class="btn sonata-action-element"><a href="{{ admin.generateUrl('list') }}">{% trans from 'SonataAdminBundle' %}link_action_list{% endtrans %}</a></li>
-            {% endif %}
+        {% if admin.hasRoute('list') and admin.isGranted('LIST')%}
+            <a class="btn sonata-action-element" href="{{ admin.generateUrl('list') }}">{% trans from 'SonataAdminBundle' %}link_action_list{% endtrans %}</a>
+        {% endif %}
 
-            {% if admin.hasRoute('create') and admin.isGranted('CREATE')%}
-                <li class="btn sonata-action-element"><a href="{{ admin.generateUrl('create') }}">{% trans from 'SonataAdminBundle' %}link_action_create{% endtrans %}</a></li>
-            {% endif %}
-        </ul>
+        {% if admin.hasRoute('create') and admin.isGranted('CREATE')%}
+            <a class="btn sonata-action-element" href="{{ admin.generateUrl('create') }}">{% trans from 'SonataAdminBundle' %}link_action_create{% endtrans %}</a>
+        {% endif %}
     </div>
 {% endblock %}
 
-{% block side_menu %}{{ knp_menu_render(admin.sidemenu(action), {}, 'list') }}{% endblock %}
+{% block side_menu %}{{ knp_menu_render(admin.sidemenu(action), {'currentClass' : 'active'}, 'list') }}{% endblock %}
 
 {% block content %}
     <div class="sonata-ba-delete">
@@ -34,7 +32,7 @@ file that was distributed with this source code.
 
         {% trans from 'SonataAdminBundle' %}message_batch_confirmation{% endtrans %}
 
-        <div class="actions">
+        <div class="well form-actions">
             <form action="{{ admin.generateUrl('batch', admin.filterParameters) }}" method="POST" >
                 <input type="hidden" name="confirmation" value="ok" />
                 <input type="hidden" name="data" value="{{ data }}" />
@@ -43,12 +41,12 @@ file that was distributed with this source code.
                     {{ form_rest(form) }}
                 </div>
 
-                <input type="submit" class="btn danger" value="{% trans from 'SonataAdminBundle' %}btn_execute_batch_action{% endtrans %}" />
+                <input type="submit" class="btn btn-danger" value="{% trans from 'SonataAdminBundle' %}btn_execute_batch_action{% endtrans %}" />
 
                 {% if admin.hasRoute('list') and admin.isGranted('LIST') %}
                     {% trans from 'SonataAdminBundle' %}delete_or{% endtrans %}
 
-                    <a class="btn success" href="{{ admin.generateUrl('list') }}">{% trans from 'SonataAdminBundle' %}link_action_list{% endtrans %}</a>
+                    <a class="btn btn-success" href="{{ admin.generateUrl('list') }}">{% trans from 'SonataAdminBundle' %}link_action_list{% endtrans %}</a>
                 {% endif %}
             </form>
         </div>

@@ -219,9 +219,9 @@
 
 {% block field_row %}
 {% spaceless %}
-    <div class="clearfix {{ (0 < form_errors(form)|length)? 'error':'' }} ">
+    <div class="control-group {{ (0 < form_errors(form)|length)? 'error':'' }} ">
         {{ form_label(form, label|default(null)) }}
-        <div class="input">
+        <div class="controls">
             {{ form_widget(form) }}
             {{ form_errors(form) }}
         </div>
@@ -245,7 +245,7 @@
 {% spaceless %}
     {% if errors|length > 0 %}
         {% if not form.hasParent  or 'repeated' in form.get('types') %}
-            <div class="clearfix error">
+            <div class="control-group error">
         {% endif %}
         <span class="help-inline">
             {% for error in errors %}
