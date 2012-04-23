@@ -81,7 +81,7 @@ file that was distributed with this source code.
                                 {% block top_bar_before_nav %} {% endblock %}
                                 {% for group in admin_pool.dashboardgroups %}
                                     <li class="dropdown">
-                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ group.label|trans({}, 'SonataAdminBundle') }}</a>
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ group.label|trans({}, 'SonataAdminBundle') }} <span class="caret"></span></a>
                                         <ul class="dropdown-menu">
                                             {% for admin in group.items %}
                                                 {% if admin.hasroute('create') and admin.isGranted('CREATE') or admin.hasroute('list') and admin.isGranted('LIST') %}
