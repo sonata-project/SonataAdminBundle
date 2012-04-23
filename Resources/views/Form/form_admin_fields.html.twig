@@ -45,7 +45,7 @@ file that was distributed with this source code.
     {% spaceless %}
         id="{{ id }}"
         {% for attrname,attrvalue in attr %}{{attrname}}="{% if attrname == 'class' %}inputs-list {% endif%}{{attrvalue}}" {% endfor %}
-        {% if "class" not in attr %}class="inputs-list"{%endif %}
+        {% if "class" not in attr|keys %}class="inputs-list"{%endif %}
     {% endspaceless %}
 {% endblock %}
 
