@@ -236,6 +236,8 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
             $pos++;
         }
 
+        $definition->setMethodCalls($methods);
+
         // make sure the default templates are defined
         $definedTemplates = array_merge(array(
             'user_block'        => 'SonataAdminBundle:Core:user_block.html.twig',
