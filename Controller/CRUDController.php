@@ -321,9 +321,12 @@ class CRUDController extends Controller
             $idx    = $data['idx'];
             $all_elements = $data['all_elements'];
         } else {
+            $this->get('request')->request->set('all_elements', $this->get('request')->get('all_elements', false));
+
             $action       = $this->get('request')->get('action');
             $idx          = $this->get('request')->get('idx');
-            $all_elements = $this->get('request')->get('all_elements', false);
+            $all_elements = $this->get('request')->get('all_elements');
+            $data         = $this->get('request')->request->all();
         }
 
         $batchActions = $this->admin->getBatchActions();
@@ -339,22 +342,20 @@ class CRUDController extends Controller
 
         $askConfirmation = isset($batchActions[$action]['ask_confirmation']) ? $batchActions[$action]['ask_confirmation'] : true;
 
-        if ($askConfirmation && $this->get('request')->get('confirmation') != 'ok') {
-            $data = json_encode(array(
-                'action' => $action,
-                'idx'    => $idx,
-                'all_elements' => $all_elements,
-            ));
+        if ($askConfirmation) {
+            if ($this->get('request')->get('confirmation') != 'ok') {
+                $datagrid = $this->admin->getDatagrid();
+                $formView = $datagrid->getForm()->createView();
 
-            $datagrid = $this->admin->getDatagrid();
-            $formView = $datagrid->getForm()->createView();
-
-            return $this->render('SonataAdminBundle:CRUD:batch_confirmation.html.twig', array(
-                'action'   => 'list',
-                'datagrid' => $datagrid,
-                'form'     => $formView,
-                'data'     => $data,
-            ));
+                return $this->render('SonataAdminBundle:CRUD:batch_confirmation.html.twig', array(
+                    'action'   => 'list',
+                    'datagrid' => $datagrid,
+                    'form'     => $formView,
+                    'data'     => json_encode($data),
+                ));
+            } else {
+                $this->get('request')->request->replace($data);
+            }
         }
 
         // execute the action, batchActionXxxxx
