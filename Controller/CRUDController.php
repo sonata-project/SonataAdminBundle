@@ -224,7 +224,7 @@ class CRUDController extends Controller
      * return the Response object associated to the edit action
      *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
-     * @param  $id
+     * @param mixed $id
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function editAction($id = null)
@@ -282,7 +282,7 @@ class CRUDController extends Controller
     /**
      * redirect the user depend on this choice
      *
-     * @param  $object
+     * @param object $object
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function redirectTo($object)
@@ -458,8 +458,9 @@ class CRUDController extends Controller
     }
 
     /**
-     * @param null $id
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException|\Symfony\Component\Security\Core\Exception\AccessDeniedException
+     * @param mixed $id
+     * @return \Symfony\Bundle\FrameworkBundle\Controller\Response
      */
     public function historyAction($id = null)
     {
@@ -495,6 +496,7 @@ class CRUDController extends Controller
     /**
      * @param null $id
      * @param $revision
+     * @return \Symfony\Bundle\FrameworkBundle\Controller\Response
      */
     public function historyViewRevisionAction($id = null, $revision = null)
     {
