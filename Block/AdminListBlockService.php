@@ -48,10 +48,20 @@ class AdminListBlockService extends BaseBlockService
     {
         $settings = array_merge($this->getDefaultSettings(), $block->getSettings());
 
+        $dashboardGroups = $this->pool->getDashboardGroups();
+
+        $visibleGroups = array();
+        foreach ($dashboardGroups as $name => $dashboardGroup) {
+            if (!$settings['groups'] || in_array($name, $settings['groups'])) {
+                $visibleGroups[] = $dashboardGroup;
+            }
+        }
+
         return $this->renderResponse('SonataAdminBundle:Block:block_admin_list.html.twig', array(
-            'block'     => $block,
-            'settings'  => $settings,
-            'admin_pool' => $this->pool
+            'block'         => $block,
+            'settings'      => $settings,
+            'admin_pool'    => $this->pool,
+            'groups'        => $visibleGroups
         ), $response);
     }
 
@@ -84,6 +94,8 @@ class AdminListBlockService extends BaseBlockService
      */
     function getDefaultSettings()
     {
-        return array();
+        return array(
+            'groups' => false
+        );
     }
 }
