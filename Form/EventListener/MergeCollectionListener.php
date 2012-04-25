@@ -22,9 +22,10 @@ class MergeCollectionListener implements EventSubscriberInterface
 {
     protected $modelManager;
 
-    public function __construct(ModelManagerInterface $modelManager)
+    public function __construct(ModelManagerInterface $modelManager, $associationMapping = null)
     {
         $this->modelManager = $modelManager;
+        $this->associationMapping = $associationMapping;
     }
 
     public static function getSubscribedEvents()
@@ -42,17 +43,23 @@ class MergeCollectionListener implements EventSubscriberInterface
         } else if (count($data) === 0) {
             $this->modelManager->collectionClear($collection);
         } else {
-            // merge $data into $collection
-            foreach ($collection as $entity) {
-                if (!$this->modelManager->collectionHasElement($data, $entity)) {
-                    $this->modelManager->collectionRemoveElement($collection, $entity);
-                } else {
-                    $this->modelManager->collectionRemoveElement($data, $entity);
+            if ($this->associationMapping && !$this->associationMapping['isOwningSide']) {
+                foreach ($data as $value) {
+                    $value->{$this->associationMapping['mappedBy']} = $data->getOwner();
                 }
-            }
+            } else {
+                // merge $data into $collection
+                foreach ($collection as $entity) {
+                    if (!$this->modelManager->collectionHasElement($data, $entity)) {
+                        $this->modelManager->collectionRemoveElement($collection, $entity);
+                    } else {
+                        $this->modelManager->collectionRemoveElement($data, $entity);
+                    }
+                }
 
-            foreach ($data as $entity) {
-                $this->modelManager->collectionAddElement($collection, $entity);
+                foreach ($data as $entity) {
+                    $this->modelManager->collectionAddElement($collection, $entity);
+                }
             }
         }
 
