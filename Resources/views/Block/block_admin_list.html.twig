@@ -12,7 +12,7 @@ file that was distributed with this source code.
 {% extends 'SonataBlockBundle:Block:block_base.html.twig' %}
 
 {% block block %}
-    {% for group in admin_pool.dashboardGroups %}
+    {% for group in groups %}
         <table class="zebra-striped sonata-ba-list bordered-table">
             <thead>
                 <tr>
