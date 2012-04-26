@@ -4,8 +4,35 @@ Form Types
 Admin related form types
 ------------------------
 
-// todo
+The bundle come with different form types to handle model values:
 
+sonata_type_model
+^^^^^^^^^^^^^^^^^
+
+The ``Model Type`` allows you to choose an existing model or create new ones. This type doesn't allow to directly edit the selected model.
+
+sonata_type_admin
+^^^^^^^^^^^^^^^^^
+
+The ``Admin Type`` will delegate the form construction for this model to its related admin class. This type is useful to cascade edition or creation of linked models.
+
+sonata_type_collection
+^^^^^^^^^^^^^^^^^^^^^^
+
+The ``Collection Type`` is meant to handle creation and edition of model collections. Rows can be added and deleted, and your model abstraction layer may allow you to edit fields inline.
+
+Type configuration
+^^^^^^^^^^^^^^^^^^
+
+todo
+
+
+Field configuration
+^^^^^^^^^^^^^^^^^^^
+
+- ``admin_code``: Force for any field involving a model the admin class used to handle it (useful for inline editing with ``sonata_type_admin``). The expected value here is the admin service name, not the class name. If not defined, the default admin class for the model type will be used (even if you didn't define any admin for the model type).
+
+Other specific field configuration options are detailed in the related abstraction layer documentation.
 
 Other form types
 ----------------
