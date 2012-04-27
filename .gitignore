@@ -1,5 +1,9 @@
+.idea
 .DS_Store
+build
 phpunit.xml
 Resources/doc/_build/*
 nbproject
 coverage
+composer.lock
+vendor
