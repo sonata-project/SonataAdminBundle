@@ -1,4 +1,5 @@
 language: php
+
 php:
   - 5.3
   # - 5.4
@@ -7,7 +8,10 @@ env:
   - SYMFONY_VERSION=v2.0.11
   - SYMFONY_VERSION=origin/2.0
 
-before_script: php Tests/tests/vendors.php
+before_script:
+  - wget -nc http://getcomposer.org/composer.phar
+  - php composer.phar install
+
 script: phpunit
 
 notifications:
