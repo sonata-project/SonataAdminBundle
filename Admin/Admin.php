@@ -1106,7 +1106,14 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     {
         $pool = $this->getConfigurationPool();
 
-        $admin = $pool->getAdminByClass($fieldDescription->getTargetEntity());
+        $adminCode = $fieldDescription->getOption('admin_code');
+
+        if ($adminCode !== null) {
+            $admin = $pool->getAdminByAdminCode($adminCode);
+        } else {
+            $admin = $pool->getAdminByClass($fieldDescription->getTargetEntity());
+        }
+
         if (!$admin) {
             return;
         }
@@ -1292,6 +1299,13 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         $this->formGroups = $formGroups;
     }
 
+    public function reorderFormGroup($group, array $keys)
+    {
+        $formGroups = $this->getFormGroups();
+        $formGroups[$group]['fields'] = array_merge(array_flip($keys), $formGroups[$group]['fields']);
+        $this->setFormGroups($formGroups);
+    }
+
     public function getShowGroups()
     {
         return $this->showGroups;
@@ -1300,6 +1314,13 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     public function setShowGroups(array $showGroups)
     {
         $this->showGroups = $showGroups;
+    }
+
+    public function reorderShowGroup($group, array $keys)
+    {
+        $showGroups = $this->getShowGroups();
+        $showGroups[$group]['fields'] = array_merge(array_flip($keys), $showGroups[$group]['fields']);
+        $this->setShowGroups($showGroups);
     }
 
     /**

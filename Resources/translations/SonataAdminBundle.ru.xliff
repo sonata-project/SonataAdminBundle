@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-    <file source-language="ru" datatype="plaintext" original="SonataAdminBundle.en.xliff" >
+    <file source-language="en" datatype="plaintext" original="SonataAdminBundle.en.xliff" >
         <body>
             <trans-unit id="action_delete">
                 <source>action_delete</source>
@@ -210,6 +210,10 @@
               <source>label_type_equals</source>
               <target>равен</target>
             </trans-unit>
+            <trans-unit id="label_type_not_equals">
+              <source>label_type_not_equals</source>
+              <target>не равен</target>
+            </trans-unit>
             <trans-unit id="label_type_equal">
               <source>label_type_equal</source>
               <target>=</target>
@@ -230,13 +234,75 @@
               <source>label_type_less_than</source>
               <target>&lt;</target>
             </trans-unit>
+            <trans-unit id="label_date_type_equal">
+              <source>label_date_type_equal</source>
+              <target>=</target>
+            </trans-unit>
+            <trans-unit id="label_date_type_greater_equal">
+              <source>label_date_type_greater_equal</source>
+              <target>&gt;=</target>
+            </trans-unit>
+            <trans-unit id="label_date_type_greater_than">
+              <source>label_date_type_greater_than</source>
+              <target>&gt;</target>
+            </trans-unit>
+            <trans-unit id="label_date_type_less_equal">
+              <source>label_date_type_less_equal</source>
+              <target>&lt;=</target>
+            </trans-unit>
+            <trans-unit id="label_date_type_less_than">
+              <source>label_date_type_less_than</source>
+              <target>&lt;</target>
+            </trans-unit>
+            <trans-unit id="label_date_type_null">
+              <source>label_date_type_null</source>
+              <target>пусто</target>
+            </trans-unit>
+            <trans-unit id="label_date_type_not_null">
+              <source>label_date_type_not_null</source>
+              <target>не пуст</target>
+            </trans-unit>
+            <trans-unit id="label_date_type_between">
+              <source>label_date_type_between</source>
+              <target>между</target>
+            </trans-unit>
+            <trans-unit id="label_date_not_between">
+              <source>label_date_type_not_between</source>
+              <target>не между</target>
+            </trans-unit>
             <trans-unit id="label_filters">
               <source>label_filters</source>
               <target>Фильтры</target>
             </trans-unit>
+
             <trans-unit id="delete_or">
               <source>delete_or</source>
               <target>или</target>
+            </trans-unit>
+
+            <trans-unit id="link_action_history">
+                <source>link_action_history</source>
+                <target>Изменения</target>
+            </trans-unit>
+            <trans-unit id="td_action">
+                <source>td_action</source>
+                <target>td_action</target>
+            </trans-unit>
+            <trans-unit id="td_revision">
+                <source>td_revision</source>
+                <target>Изменения</target>
+            </trans-unit>
+            <trans-unit id="td_timestamp">
+                <source>td_timestamp</source>
+                <target>Дата</target>
+            </trans-unit>
+            <trans-unit id="td_username">
+                <source>td_username</source>
+                <target>Автор</target>
+            </trans-unit>
+            <trans-unit id="label_view_revision">
+                <source>label_view_revision</source>
+                <target>Просмотр изменений</target>
             </trans-unit>
 
             <trans-unit id="list_results_count">
@@ -245,7 +311,11 @@
             </trans-unit>
             <trans-unit id="label_export_download">
                 <source>label_export_download</source>
-                <target>label_export_download</target>
+                <target>Экспорт: </target>
+            </trans-unit>
+            <trans-unit id="loading_information">
+                <source>loading_information</source>
+                <target>Загрузка информации…</target>
             </trans-unit>
         </body>
     </file>

@@ -210,6 +210,10 @@
               <source>label_type_equals</source>
               <target>je točno enako</target>
             </trans-unit>
+            <trans-unit id="label_type_not_equals">
+              <source>label_type_not_equals</source>
+              <target>ni enako</target>
+            </trans-unit>
             <trans-unit id="label_type_equal">
               <source>label_type_equal</source>
               <target>=</target>
@@ -308,6 +312,10 @@
             <trans-unit id="label_export_download">
                 <source>label_export_download</source>
                 <target>Prenesi izvoz</target>
+            </trans-unit>
+            <trans-unit id="loading_information">
+                <source>loading_information</source>
+                <target>Nalaganje informacij…</target>
             </trans-unit>
         </body>
     </file>

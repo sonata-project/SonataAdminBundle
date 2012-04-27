@@ -25,16 +25,19 @@ in your ``deps`` file:
 .. code-block:: ini
 
   [SonataAdminBundle]
-      git=http://github.com/sonata-project/SonataAdminBundle.git
+      git=git://github.com/sonata-project/SonataAdminBundle.git
       target=/bundles/Sonata/AdminBundle
+      version=origin/2.0
 
   [SonataBlockBundle]
-      git=http://github.com/sonata-project/SonataBlockBundle.git
+      git=git://github.com/sonata-project/SonataBlockBundle.git
       target=/bundles/Sonata/BlockBundle
+      version=origin/2.0
 
   [SonataCacheBundle]
-      git=http://github.com/sonata-project/SonataCacheBundle.git
+      git=git://github.com/sonata-project/SonataCacheBundle.git
       target=/bundles/Sonata/CacheBundle
+      version=origin/2.0
 
   [SonatajQueryBundle]
       git=http://github.com/sonata-project/SonatajQueryBundle.git

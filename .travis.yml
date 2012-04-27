@@ -1,4 +1,5 @@
 language: php
+
 php:
   - 5.3
   # - 5.4
@@ -6,5 +7,11 @@ php:
 env:
   - SYMFONY_VERSION=origin/master
 
-before_script: php Tests/tests/vendors.php
+before_script:
+  - wget -nc http://getcomposer.org/composer.phar
+  - php composer.phar install
+
 script: phpunit
+
+notifications:
+    webhooks: http://sonata-project.org/bundles/admin/2-0/travis
