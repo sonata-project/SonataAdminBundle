@@ -224,7 +224,7 @@ class CRUDController extends Controller
      * return the Response object associated to the edit action
      *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
-     * @param  $id
+     * @param mixed $id
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function editAction($id = null)
@@ -282,7 +282,7 @@ class CRUDController extends Controller
     /**
      * redirect the user depend on this choice
      *
-     * @param  $object
+     * @param object $object
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function redirectTo($object)
@@ -321,9 +321,12 @@ class CRUDController extends Controller
             $idx    = $data['idx'];
             $all_elements = $data['all_elements'];
         } else {
+            $this->get('request')->request->set('all_elements', $this->get('request')->get('all_elements', false));
+
             $action       = $this->get('request')->get('action');
             $idx          = $this->get('request')->get('idx');
-            $all_elements = $this->get('request')->get('all_elements', false);
+            $all_elements = $this->get('request')->get('all_elements');
+            $data         = $this->get('request')->request->all();
         }
 
         $batchActions = $this->admin->getBatchActions();
@@ -339,22 +342,20 @@ class CRUDController extends Controller
 
         $askConfirmation = isset($batchActions[$action]['ask_confirmation']) ? $batchActions[$action]['ask_confirmation'] : true;
 
-        if ($askConfirmation && $this->get('request')->get('confirmation') != 'ok') {
-            $data = json_encode(array(
-                'action' => $action,
-                'idx'    => $idx,
-                'all_elements' => $all_elements,
-            ));
+        if ($askConfirmation) {
+            if ($this->get('request')->get('confirmation') != 'ok') {
+                $datagrid = $this->admin->getDatagrid();
+                $formView = $datagrid->getForm()->createView();
 
-            $datagrid = $this->admin->getDatagrid();
-            $formView = $datagrid->getForm()->createView();
-
-            return $this->render('SonataAdminBundle:CRUD:batch_confirmation.html.twig', array(
-                'action'   => 'list',
-                'datagrid' => $datagrid,
-                'form'     => $formView,
-                'data'     => $data,
-            ));
+                return $this->render('SonataAdminBundle:CRUD:batch_confirmation.html.twig', array(
+                    'action'   => 'list',
+                    'datagrid' => $datagrid,
+                    'form'     => $formView,
+                    'data'     => json_encode($data),
+                ));
+            } else {
+                $this->get('request')->request->replace($data);
+            }
         }
 
         // execute the action, batchActionXxxxx
@@ -458,8 +459,9 @@ class CRUDController extends Controller
     }
 
     /**
-     * @param null $id
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException|\Symfony\Component\Security\Core\Exception\AccessDeniedException
+     * @param mixed $id
+     * @return \Symfony\Bundle\FrameworkBundle\Controller\Response
      */
     public function historyAction($id = null)
     {
@@ -495,6 +497,7 @@ class CRUDController extends Controller
     /**
      * @param null $id
      * @param $revision
+     * @return \Symfony\Bundle\FrameworkBundle\Controller\Response
      */
     public function historyViewRevisionAction($id = null, $revision = null)
     {
@@ -545,6 +548,12 @@ class CRUDController extends Controller
         }
 
         $format = $request->get('format');
+
+        $allowedExportFormats = (array) $this->admin->getExportFormats();
+
+        if(!in_array($format, $allowedExportFormats) ) {
+            throw new \RuntimeException(sprintf('Export in format `%s` is not allowed for class: `%s`. Allowed formats are: `%s`', $format, $this->admin->getClass(), implode(', ', $allowedExportFormats)));
+        }
 
         $filename = sprintf('export_%s_%s.%s',
             strtolower(substr($this->admin->getClass(), strripos($this->admin->getClass(), '\\') + 1)),

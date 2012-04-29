@@ -94,7 +94,7 @@ class Configuration implements ConfigurationInterface
                                     ->scalarNode('type')->cannotBeEmpty()->end()
                                     ->arrayNode('settings')
                                         ->useAttributeAsKey('id')
-                                        ->prototype('scalar')->defaultValue(array())->end()
+                                        ->prototype('variable')->defaultValue(array())->end()
                                     ->end()
                                     ->scalarNode('position')->defaultValue('right')->end()
                                 ->end()

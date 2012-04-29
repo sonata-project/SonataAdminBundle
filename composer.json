@@ -18,16 +18,16 @@
     ],
     "require": {
         "php": ">=5.3.2",
-        "symfony/framework-bundle": "master-dev",
-        "symfony/security-bundle": "master-dev",
-        "knplabs/knp-menu-bundle": "master-dev",
-        "sonata-project/jquery-bundle": "master-dev",
-        "sonata-project/exporter": "master-dev",
-        "sonata-project/block-bundle": "master-dev"
+        "symfony/symfony": "2.1.*",
+        "jms/translation-bundle": "dev-master",
+        "knplabs/knp-menu-bundle": "dev-master",
+        "sonata-project/jquery-bundle": "dev-master",
+        "sonata-project/exporter": "dev-master",
+        "sonata-project/block-bundle": "dev-master"
     },
     "suggest": {
-        "sonata-project/doctrine-orm-admin-bundle": "master-dev",
-        "sonata-project/intl-bundle": "master-dev"
+        "sonata-project/doctrine-orm-admin-bundle": "dev-master",
+        "sonata-project/intl-bundle": "dev-master"
     },
     "autoload": {
         "psr-0": { "Sonata\\AdminBundle": "" }
