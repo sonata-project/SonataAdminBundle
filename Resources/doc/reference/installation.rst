@@ -27,7 +27,7 @@ in your ``deps`` file:
   [SonataAdminBundle]
       git=git://github.com/sonata-project/SonataAdminBundle.git
       target=/bundles/Sonata/AdminBundle
-      version=origin/2.0
+      version=origin/master
 
   [SonataBlockBundle]
       git=git://github.com/sonata-project/SonataBlockBundle.git

@@ -14,4 +14,4 @@ before_script:
 script: phpunit
 
 notifications:
-    webhooks: http://sonata-project.org/bundles/admin/2-0/travis
+    webhooks: http://sonata-project.org/bundles/admin/master/travis
