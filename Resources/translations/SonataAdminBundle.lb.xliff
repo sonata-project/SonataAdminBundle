@@ -210,6 +210,10 @@
               <source>label_type_equals</source>
               <target>ass gläich</target>
             </trans-unit>
+            <trans-unit id="label_type_not_equals">
+              <source>label_type_not_equals</source>
+              <target>label_type_not_equals</target>
+            </trans-unit>
             <trans-unit id="label_type_equal">
               <source>label_type_equal</source>
               <target>=</target>
@@ -246,6 +250,10 @@
             <trans-unit id="label_export_download">
                 <source>label_export_download</source>
                 <target>Download : </target>
+            </trans-unit>
+            <trans-unit id="loading_information">
+                <source>loading_information</source>
+                <target>loading_information …</target>
             </trans-unit>
         </body>
     </file>

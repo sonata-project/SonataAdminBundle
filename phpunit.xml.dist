@@ -21,10 +21,11 @@
         <whitelist>
             <directory>./</directory>
             <exclude>
-                <directory>./Tests/tests</directory>
+                <directory>./Tests/</directory>
                 <directory>./DataFixtures/</directory>
                 <directory>./Resources/</directory>
                 <directory>./DependencyInjection/</directory>
+                <directory>./vendor/</directory>
             </exclude>
         </whitelist>
     </filter>

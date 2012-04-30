@@ -11,5 +11,9 @@ file that was distributed with this source code.
 {% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
 
 {% block field%}
-    {{value|trans({}, field_description.options.catalogue)}}
+    {% if field_description.options.catalogue is not defined %}
+        {{value|trans}}
+    {% else %}
+        {{value|trans({}, field_description.options.catalogue)}}
+    {% endif %}
 {% endblock %}

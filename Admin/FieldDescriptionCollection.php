@@ -45,7 +45,7 @@ class FieldDescriptionCollection implements \ArrayAccess, \Countable
     /**
      * @throws \InvalidArgumentException
      * @param string $name
-     * @return array
+     * @return FieldDescriptionInterface
      */
     public function get($name)
     {
@@ -90,5 +90,11 @@ class FieldDescriptionCollection implements \ArrayAccess, \Countable
     public function count()
     {
         return count($this->elements);
+    }
+
+    public function reorder(array $keys)
+    {
+        array_unshift($keys, 'batch');
+        $this->elements = array_merge(array_flip($keys), $this->elements);
     }
 }

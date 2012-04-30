@@ -210,6 +210,10 @@
               <source>label_type_equals</source>
               <target>és igual a</target>
             </trans-unit>
+            <trans-unit id="label_type_not_equals">
+              <source>label_type_not_equals</source>
+              <target>label_type_not_equals</target>
+            </trans-unit>
             <trans-unit id="label_type_equal">
               <source>label_type_equal</source>
               <target>=</target>
@@ -306,6 +310,10 @@
             <trans-unit id="label_export_download">
                 <source>label_export_download</source>
                 <target>Exportar: </target>
+            </trans-unit>
+            <trans-unit id="loading_information">
+                <source>loading_information</source>
+                <target>S'està carregant informació…</target>
             </trans-unit>
         </body>
     </file>

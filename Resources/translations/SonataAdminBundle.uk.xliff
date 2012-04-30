@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-    <file source-language="uk" datatype="plaintext" original="SonataAdminBundle.en.xliff" >
+    <file source-language="en" datatype="plaintext" original="SonataAdminBundle.en.xliff" >
         <body>
             <trans-unit id="action_delete">
                 <source>action_delete</source>
@@ -34,6 +34,10 @@
                 <source>btn_update_and_return_to_list</source>
                 <target>Зберегти й повернутись до списку</target>
             </trans-unit>
+            <trans-unit id="link_delete">
+                <source>link_delete</source>
+                <target>Видаляти</target>
+            </trans-unit>
             <trans-unit id="link_action_create">
                 <source>link_action_create</source>
                 <target>Додати новий</target>
@@ -41,6 +45,14 @@
             <trans-unit id="link_action_list">
                 <source>link_action_list</source>
                 <target>Повернутись до списку</target>
+            </trans-unit>
+            <trans-unit id="link_action_show">
+                <source>link_action_show</source>
+                <target>Показувати</target>
+            </trans-unit>
+            <trans-unit id="link_action_edit">
+                <source>link_action_edit</source>
+                <target>link_action_edit</target>
             </trans-unit>
             <trans-unit id="link_add">
                 <source>link_add</source>
@@ -94,9 +106,203 @@
                 <source>link_expand</source>
                 <target>розвернути/звернути</target>
             </trans-unit>
+            <trans-unit id="no_result">
+                <source>no_result</source>
+                <target>no_result</target>
+            </trans-unit>
+            <trans-unit id="confirm_msg">
+                <source>confirm_msg</source>
+                <target>Ви впевнені?</target>
+            </trans-unit>
+            <trans-unit id="action_edit">
+                <source>action_edit</source>
+                <target>action_edit</target>
+            </trans-unit>
+            <trans-unit id="action_show">
+                <source>action_show</source>
+                <target>Показувати</target>
+            </trans-unit>
+            <trans-unit id="all_elements">
+                <source>all_elements</source>
+                <target>all_elements</target>
+            </trans-unit>
+            <trans-unit id='flash_batch_empty'>
+              <source>flash_batch_empty</source>
+              <target>flash_batch_empty</target>
+            </trans-unit>
+            <trans-unit id='flash_create_success'>
+              <source>flash_create_success</source>
+              <target>flash_create_success</target>
+            </trans-unit>
+            <trans-unit id='flash_create_error'>
+              <source>flash_create_error</source>
+              <target>flash_create_error</target>
+            </trans-unit>
+            <trans-unit id='flash_edit_success'>
+              <source>flash_edit_success</source>
+              <target>flash_edit_success</target>
+            </trans-unit>
+            <trans-unit id='flash_edit_error'>
+              <source>flash_edit_error</source>
+              <target>flash_edit_error</target>
+            </trans-unit>
+            <trans-unit id='flash_batch_delete_success'>
+              <source>flash_batch_delete_success</source>
+              <target>flash_batch_delete_success</target>
+            </trans-unit>
+            <trans-unit id='flash_batch_delete_error'>
+              <source>flash_batch_delete_error</source>
+              <target>flash_batch_delete_error</target>
+            </trans-unit>
+            <trans-unit id='flash_delete_error'>
+              <source>flash_delete_error</source>
+              <target>flash_delete_error</target>
+            </trans-unit>
+            <trans-unit id='flash_delete_success'>
+              <source>flash_delete_success</source>
+              <target>flash_delete_success</target>
+            </trans-unit>
             <trans-unit id="link_breadcrumb_dashboard">
                 <source>breadcrumb.link_dashboard</source>
                 <target>&#8962;</target>
+            </trans-unit>
+            <trans-unit id="title_delete">
+                <source>title_delete</source>
+                <target>title_delete</target>
+            </trans-unit>
+            <trans-unit id="message_delete_confirmation">
+                <source>message_delete_confirmation</source>
+                <target>message_delete_confirmation</target>
+            </trans-unit>
+            <trans-unit id="btn_delete">
+                <source>btn_delete</source>
+                <target>btn_delete</target>
+            </trans-unit>
+            <trans-unit id="title_batch_confirmation">
+                <source>title_batch_confirmation</source>
+                <target>title_batch_confirmation</target>
+            </trans-unit>
+            <trans-unit id="message_batch_confirmation">
+                <source>message_batch_confirmation</source>
+                <target>message_batch_confirmation</target>
+            </trans-unit>
+            <trans-unit id="btn_execute_batch_action">
+                <source>btn_execute_batch_action</source>
+                <target>btn_execute_batch_action</target>
+            </trans-unit>
+            <trans-unit id="label_type_yes">
+              <source>label_type_yes</source>
+              <target>да</target>
+            </trans-unit>
+            <trans-unit id="label_type_no">
+              <source>label_type_no</source>
+              <target>немає</target>
+            </trans-unit>
+            <trans-unit id="label_type_contains">
+              <source>label_type_contains</source>
+              <target>містити</target>
+            </trans-unit>
+            <trans-unit id="label_type_not_contains">
+              <source>label_type_not_contains</source>
+              <target>не містить</target>
+            </trans-unit>
+            <trans-unit id="label_type_equals">
+              <source>label_type_equals</source>
+              <target>дорівнює</target>
+            </trans-unit>
+            <trans-unit id="label_type_not_equals">
+              <source>label_type_not_equals</source>
+              <target>не дорівнює</target>
+            </trans-unit>
+            <trans-unit id="label_type_equal">
+              <source>label_type_equal</source>
+              <target>=</target>
+            </trans-unit>
+            <trans-unit id="label_type_greater_equal">
+              <source>label_type_greater_equal</source>
+              <target>&gt;=</target>
+            </trans-unit>
+            <trans-unit id="label_type_greater_than">
+              <source>label_type_greater_than</source>
+              <target>&gt;</target>
+            </trans-unit>
+            <trans-unit id="label_type_less_equal">
+              <source>label_type_less_equal</source>
+              <target>&lt;=</target>
+            </trans-unit>
+            <trans-unit id="label_type_less_than">
+              <source>label_type_less_than</source>
+              <target>&lt;</target>
+            </trans-unit>
+            <trans-unit id="label_date_type_equal">
+              <source>label_date_type_equal</source>
+              <target>=</target>
+            </trans-unit>
+            <trans-unit id="label_date_type_greater_equal">
+              <source>label_date_type_greater_equal</source>
+              <target>&gt;=</target>
+            </trans-unit>
+            <trans-unit id="label_date_type_greater_than">
+              <source>label_date_type_greater_than</source>
+              <target>&gt;</target>
+            </trans-unit>
+            <trans-unit id="label_date_type_less_equal">
+              <source>label_date_type_less_equal</source>
+              <target>&lt;=</target>
+            </trans-unit>
+            <trans-unit id="label_date_type_less_than">
+              <source>label_date_type_less_than</source>
+              <target>&lt;</target>
+            </trans-unit>
+            <trans-unit id="label_date_type_null">
+              <source>label_date_type_null</source>
+              <target>порожній</target>
+            </trans-unit>
+            <trans-unit id="label_date_type_not_null">
+              <source>label_date_type_not_null</source>
+              <target>не порожній</target>
+            </trans-unit>
+            <trans-unit id="label_date_type_between">
+              <source>label_date_type_between</source>
+              <target>між</target>
+            </trans-unit>
+            <trans-unit id="label_date_not_between">
+              <source>label_date_type_not_between</source>
+              <target>не між</target>
+            </trans-unit>
+            <trans-unit id="label_filters">
+              <source>label_filters</source>
+              <target>Фільтри</target>
+            </trans-unit>
+
+            <trans-unit id="delete_or">
+              <source>delete_or</source>
+              <target>або</target>
+            </trans-unit>
+
+            <trans-unit id="link_action_history">
+                <source>link_action_history</source>
+                <target>Зміни</target>
+            </trans-unit>
+            <trans-unit id="td_action">
+                <source>td_action</source>
+                <target>Дія</target>
+            </trans-unit>
+            <trans-unit id="td_revision">
+                <source>td_revision</source>
+                <target>Зміни</target>
+            </trans-unit>
+            <trans-unit id="td_timestamp">
+                <source>td_timestamp</source>
+                <target>Дата</target>
+            </trans-unit>
+            <trans-unit id="td_username">
+                <source>td_username</source>
+                <target>Автор</target>
+            </trans-unit>
+            <trans-unit id="label_view_revision">
+                <source>label_view_revision</source>
+                <target>Перегляд змін</target>
             </trans-unit>
 
             <trans-unit id="list_results_count">
@@ -105,7 +311,11 @@
             </trans-unit>
             <trans-unit id="label_export_download">
                 <source>label_export_download</source>
-                <target>label_export_download</target>
+                <target>Експорт:</target>
+            </trans-unit>
+            <trans-unit id="loading_information">
+                <source>loading_information</source>
+                <target>Завантаження інформації…</target>
             </trans-unit>
         </body>
     </file>
