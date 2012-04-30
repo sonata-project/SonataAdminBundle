@@ -19,7 +19,6 @@
     "require": {
         "php": ">=5.3.2",
 
-        "jms/translation-bundle": "*",
         "symfony/symfony": "2.0.*",
 
         "symfony/framework-bundle": "2.0.*",
@@ -28,6 +27,9 @@
         "sonata-project/jquery-bundle": "master-dev",
         "sonata-project/exporter": "master-dev",
         "sonata-project/block-bundle": "2.0.*"
+    },
+    "require-dev": {
+        "jms/translation-bundle": "*"
     },
     "suggest": {
         "sonata-project/doctrine-orm-admin-bundle": "2.0.*",
