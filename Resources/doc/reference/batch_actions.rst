@@ -11,6 +11,8 @@ You can easily add some custom batch action in the list view. By default the ``d
 Override the ``getBatchActions`` from your ``Admin`` class to define custom batch actions. For example, we define here a new ``merge`` action.
 
 .. code-block:: php
+    <?php
+
     // In your Admin class
 
     public function getBatchActions()
@@ -52,6 +54,8 @@ Obviously, a merge action requires two kind of selection : a set of source model
 And add this:
 
 .. code-block:: php
+    <?php
+
     // In Acme/ProjectBundle/AcmeProjectBundle.php
 
     public function getParent()
@@ -70,6 +74,8 @@ By default, batch actions are not executed if no model was selected, and the use
  - ``false``: Same as above, with the default "action aborted, no model selected" notification message.
 
 .. code-block:: php
+    <?php
+
     // In Acme/Controller/CRUDController.php
 
     public function batchActionMergeIsRelevant(array $normalizedSelectedIds, $allEntitiesSelected)
@@ -108,6 +114,8 @@ Define the core action logic
 The method ``batchActionMyAction`` will be executed to achieve the core logic. The selected models are passed to the method through a query argument retrieving them. If for some reason it makes sense to perform your batch action without the default selection method (for example you defined another way, at template level, to select model at a lower granularity), the passed query is ``null``.
 
 .. code-block:: php
+    <?php
+
     // In Acme/Controller/CRUDController.php
 
     public function batchActionMerge(ProxyQueryInterface $selectedModelQuery)
