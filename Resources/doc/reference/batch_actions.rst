@@ -11,6 +11,7 @@ You can easily add some custom batch action in the list view. By default the ``d
 Override the ``getBatchActions`` from your ``Admin`` class to define custom batch actions. For example, we define here a new ``merge`` action.
 
 .. code-block:: php
+
     <?php
 
     // In your Admin class
@@ -39,6 +40,7 @@ Override the ``getBatchActions`` from your ``Admin`` class to define custom batc
 Obviously, a merge action requires two kind of selection : a set of source model to merge into one target model. By default, this bundle only enable the user to select some model, but there is only one selection kind. Thus you will need to override the ``list__batch.html.twig`` template to display both a checkbox (source selection) and a radio (target selection) for each model row. See Symfony bundle overriding mechanism for further explanation.
 
 .. code-block::
+
     {# in Acme/ProjectBundle/Resources/views/CRUD/list__batch.html.twig #}
 
 
@@ -54,6 +56,7 @@ Obviously, a merge action requires two kind of selection : a set of source model
 And add this:
 
 .. code-block:: php
+
     <?php
 
     // In Acme/ProjectBundle/AcmeProjectBundle.php
@@ -74,6 +77,7 @@ By default, batch actions are not executed if no model was selected, and the use
  - ``false``: Same as above, with the default "action aborted, no model selected" notification message.
 
 .. code-block:: php
+
     <?php
 
     // In Acme/Controller/CRUDController.php
@@ -114,6 +118,7 @@ Define the core action logic
 The method ``batchActionMyAction`` will be executed to achieve the core logic. The selected models are passed to the method through a query argument retrieving them. If for some reason it makes sense to perform your batch action without the default selection method (for example you defined another way, at template level, to select model at a lower granularity), the passed query is ``null``.
 
 .. code-block:: php
+
     <?php
 
     // In Acme/Controller/CRUDController.php
