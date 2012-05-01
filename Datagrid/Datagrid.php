@@ -93,7 +93,7 @@ class Datagrid implements DatagridInterface
         foreach ($this->getFilters() as $name => $filter) {
             list($type, $options) = $filter->getRenderSettings();
 
-            $this->formBuilder->add($name, $type, $options);
+            $this->formBuilder->add($filter->getFormName(), $type, $options);
         }
 
         $this->formBuilder->add('_sort_by', 'hidden');
@@ -107,11 +107,20 @@ class Datagrid implements DatagridInterface
 
         foreach ($this->getFilters() as $name => $filter) {
             $this->values[$name] = isset($this->values[$name]) ? $this->values[$name] : null;
-            $filter->apply($this->query, $data[$name]);
+            $filter->apply($this->query, $data[$filter->getFormName()]);
         }
 
-        $this->query->setSortBy(isset($this->values['_sort_by']) ? $this->values['_sort_by'] : null);
-        $this->query->setSortOrder(isset($this->values['_sort_order']) ? $this->values['_sort_order'] : null);
+        if (isset($this->values['_sort_by'])) {
+            foreach ($this->getColumns()->getElements() as $fieldDescription){
+                if ($fieldDescription->isSortable() && $fieldDescription->getName() == $this->values['_sort_by']) {
+                    $this->query->setSortBy($fieldDescription->getParentAssociationMappings(), $fieldDescription->getSortFieldMapping());
+                    $this->query->setSortOrder(isset($this->values['_sort_order']) ? $this->values['_sort_order'] : null);
+
+                    break;
+                }
+            }
+        }
+
 
         $this->pager->setPage(isset($this->values['_page']) ? $this->values['_page'] : 1);
         $this->pager->setQuery($this->query);

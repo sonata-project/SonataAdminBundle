@@ -20,7 +20,7 @@ interface ProxyQueryInterface
 
     function __call($name, $args);
 
-    function setSortBy($sortBy);
+    function setSortBy($parentAssociationMappings, $fieldMapping);
 
     function getSortBy();
 
