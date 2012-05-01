@@ -167,6 +167,21 @@ interface FieldDescriptionInterface
     function getFieldMapping();
 
     /**
+     * set the parent association mappings information
+     *
+     * @param array $parentAssociationMappings
+     * @return void
+     */
+    function setParentAssociationMappings($parentAssociationMappings);
+
+    /**
+     * return the parent association mapping definitions
+     *
+     * @return array the parent association mapping definitions
+     */
+    function getParentAssociationMappings();
+
+    /**
      * set the association admin instance (only used if the field is linked to an Admin)
      *
      * @param \Sonata\AdminBundle\Admin\AdminInterface $associationAdmin the associated admin
@@ -246,4 +261,23 @@ interface FieldDescriptionInterface
      * @return string
      */
     function getLabel();
+
+    /*
+     * @return boolean
+     */
+    function isSortable();
+
+    /**
+     * return the field mapping definition used when sorting
+     *
+     * @return array the field mapping definition
+     */
+    function getSortFieldMapping();
+
+    /**
+     * return the parent association mapping definitions used when sorting
+     *
+     * @return array the parent association mapping definitions
+     */
+    function getSortParentAssociationMapping();
 }
