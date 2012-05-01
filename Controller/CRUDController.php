@@ -316,11 +316,15 @@ class CRUDController extends Controller
            throw new \RuntimeException('invalid request type, POST expected');
         }
 
+        $confirmation = $this->get('request')->get('confirmation', false);
+
         if ($data = json_decode($this->get('request')->get('data'), true)) {
             $action = $data['action'];
             $idx    = $data['idx'];
             $all_elements = $data['all_elements'];
+            $this->get('request')->request->replace($data);
         } else {
+            $this->get('request')->request->set('idx', $this->get('request')->get('idx', array()));
             $this->get('request')->request->set('all_elements', $this->get('request')->get('all_elements', false));
 
             $action       = $this->get('request')->get('action');
@@ -334,34 +338,41 @@ class CRUDController extends Controller
             throw new \RuntimeException(sprintf('The `%s` batch action is not defined', $action));
         }
 
-        if (count($idx) == 0 && !$all_elements) { // no item selected
-            $this->get('session')->setFlash('sonata_flash_info', 'flash_batch_empty');
+        $camelizedAction = \Sonata\AdminBundle\Admin\BaseFieldDescription::camelize($action);
+        $isRelevantAction = sprintf('batchAction%sIsRelevant', ucfirst($camelizedAction));
+
+        if (method_exists($this, $isRelevantAction)) {
+            $nonRelevantMessage = call_user_func(array($this, $isRelevantAction), $idx, $all_elements);
+        } else {
+            $nonRelevantMessage = count($idx) != 0 || $all_elements; // at least one item is selected
+        }
+
+        if (!$nonRelevantMessage) { // default non relevant message (if false of null)
+            $nonRelevantMessage = 'flash_batch_empty';
+        }
+
+        if (true !== $nonRelevantMessage) {
+            $this->get('session')->setFlash('sonata_flash_info', $nonRelevantMessage);
 
             return new RedirectResponse($this->admin->generateUrl('list', $this->admin->getFilterParameters()));
         }
 
         $askConfirmation = isset($batchActions[$action]['ask_confirmation']) ? $batchActions[$action]['ask_confirmation'] : true;
 
-        if ($askConfirmation) {
-            if ($this->get('request')->get('confirmation') != 'ok') {
-                $datagrid = $this->admin->getDatagrid();
-                $formView = $datagrid->getForm()->createView();
+        if ($askConfirmation && $confirmation != 'ok') {
+            $datagrid = $this->admin->getDatagrid();
+            $formView = $datagrid->getForm()->createView();
 
-                return $this->render('SonataAdminBundle:CRUD:batch_confirmation.html.twig', array(
-                    'action'   => 'list',
-                    'datagrid' => $datagrid,
-                    'form'     => $formView,
-                    'data'     => json_encode($data),
-                ));
-            } else {
-                $this->get('request')->request->replace($data);
-            }
+            return $this->render('SonataAdminBundle:CRUD:batch_confirmation.html.twig', array(
+                'action'   => 'list',
+                'datagrid' => $datagrid,
+                'form'     => $formView,
+                'data'     => json_encode($data),
+            ));
         }
 
         // execute the action, batchActionXxxxx
-        $action = \Sonata\AdminBundle\Admin\BaseFieldDescription::camelize($action);
-
-        $final_action = sprintf('batchAction%s', ucfirst($action));
+        $final_action = sprintf('batchAction%s', ucfirst($camelizedAction));
         if (!method_exists($this, $final_action)) {
             throw new \RuntimeException(sprintf('A `%s::%s` method must be created', get_class($this), $final_action));
         }
@@ -375,6 +386,8 @@ class CRUDController extends Controller
 
         if (count($idx) > 0) {
             $this->admin->getModelManager()->addIdentifiersToQuery($this->admin->getClass(), $query, $idx);
+        } else if (!$all_elements) {
+            $query = null;
         }
 
         return call_user_func(array($this, $final_action), $query);
