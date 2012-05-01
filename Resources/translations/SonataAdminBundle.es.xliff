@@ -315,7 +315,7 @@
             </trans-unit>
             <trans-unit id="loading_information">
                 <source>loading_information</source>
-                <target>Andmete laadimine…</target>
+                <target>Cargando información...</target>
             </trans-unit>
         </body>
     </file>
