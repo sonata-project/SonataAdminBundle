@@ -172,7 +172,7 @@ interface FieldDescriptionInterface
      * @param array $parentAssociationMappings
      * @return void
      */
-    function setParentAssociationMappings($parentAssociationMappings);
+    function setParentAssociationMappings(array $parentAssociationMappings);
 
     /**
      * return the parent association mapping definitions

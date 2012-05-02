@@ -28,8 +28,7 @@ abstract class Filter implements FilterInterface
     const CONDITION_AND = 'AND';
 
     /**
-     * @param string $name
-     * @param array $options
+     * {@inheritdoc}
      */
     public function initialize($name, array $options = array())
     {
@@ -38,7 +37,7 @@ abstract class Filter implements FilterInterface
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getName()
     {
@@ -46,7 +45,7 @@ abstract class Filter implements FilterInterface
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getFormName()
     {
@@ -59,9 +58,7 @@ abstract class Filter implements FilterInterface
     }
 
     /**
-     * @param string $name
-     * @param null $default
-     * @return mixed
+     * {@inheritdoc}
      */
     public function getOption($name, $default = null)
     {
@@ -73,8 +70,7 @@ abstract class Filter implements FilterInterface
     }
 
     /**
-     * @param $name
-     * @param $value
+     * {@inheritdoc}
      */
     public function setOption($name, $value)
     {
@@ -82,7 +78,7 @@ abstract class Filter implements FilterInterface
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getFieldType()
     {
@@ -90,7 +86,7 @@ abstract class Filter implements FilterInterface
     }
 
     /**
-     * @return array
+     * {@inheritdoc}
      */
     public function getFieldOptions()
     {
@@ -98,7 +94,7 @@ abstract class Filter implements FilterInterface
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getLabel()
     {
@@ -106,7 +102,7 @@ abstract class Filter implements FilterInterface
     }
 
     /**
-     * @param $label
+     * {@inheritdoc}
      */
     public function setLabel($label)
     {
@@ -114,7 +110,7 @@ abstract class Filter implements FilterInterface
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getFieldName()
     {
@@ -128,7 +124,7 @@ abstract class Filter implements FilterInterface
     }
 
     /**
-     * @return array of mappings
+     * {@inheritdoc}
      */
     public function getParentAssociationMappings()
     {
@@ -136,7 +132,7 @@ abstract class Filter implements FilterInterface
     }
 
     /**
-     * @return array field mapping
+     * {@inheritdoc}
      */
     public function getFieldMapping()
     {
@@ -150,7 +146,7 @@ abstract class Filter implements FilterInterface
     }
 
     /**
-     * @return array association mapping
+     * {@inheritdoc}
      */
     public function getAssociationMapping()
     {

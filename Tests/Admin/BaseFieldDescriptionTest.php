@@ -146,7 +146,7 @@ class FieldDescription extends BaseFieldDescription
      * @param array $parentAssociationMappings
      * @return void
      */
-    function setParentAssociationMappings($parentAssociationMappings)
+    function setParentAssociationMappings(array $parentAssociationMappings)
     {
         // TODO: Implement setParentAssociationMappings() method.
     }

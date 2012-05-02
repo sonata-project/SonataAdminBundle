@@ -11,22 +11,22 @@
 
 namespace Sonata\AdminBundle\Filter;
 
+use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
+
 interface FilterInterface
 {
     /**
      * Apply the filter to the QueryBuilder instance
      *
-     * @abstract
-     * @param $queryBuilder
+     * @param ProxyQueryInterface $queryBuilder
      * @param string $alias
      * @param string $field
      * @param string $value
      * @return void
      */
-    function filter($queryBuilder, $alias, $field, $value);
+    function filter(ProxyQueryInterface $queryBuilder, $alias, $field, $value);
 
     /**
-     * @abstract
      * @param $query
      * @param $value
      */
@@ -34,14 +34,14 @@ interface FilterInterface
 
     /**
      * Returns the filter name
-     * @abstract
+     *
      * @return string
      */
     function getName();
 
     /**
      * Returns the filter form name
-     * @abstract
+     *
      * @return string
      */
     function getFormName();
@@ -49,26 +49,21 @@ interface FilterInterface
     /**
      * Returns the label name
      *
-     * @abstract
      * @return string
      */
     function getLabel();
 
     /**
-     * @abstract
-     *
      * @param string $label
      */
-    function setLabel($name);
+    function setLabel($label);
 
     /**
-     * @abstract
      * @return array
      */
     function getDefaultOptions();
 
     /**
-     * @abstract
      * @param string $name
      * @param null $default
      * @return mixed
@@ -76,14 +71,12 @@ interface FilterInterface
     function getOption($name, $default = null);
 
     /**
-     * @abstract
      * @param $name
      * @param $value
      */
     function setOption($name, $value);
 
     /**
-     * @abstract
      * @param $name
      * @param array $options
      * @return void
@@ -91,7 +84,6 @@ interface FilterInterface
     function initialize($name, array $options = array());
 
     /**
-     * @abstract
      * @return string
      */
     function getFieldName();
@@ -112,13 +104,11 @@ interface FilterInterface
     function getAssociationMapping();
 
     /**
-     * @abstract
      * @return array
      */
     function getFieldOptions();
 
     /**
-     * @abstract
      * @return string
      */
     function getFieldType();
@@ -126,7 +116,6 @@ interface FilterInterface
     /**
      * Returns the main widget used to render the filter
      *
-     * @abstract
      * @return array
      */
     function getRenderSettings();
