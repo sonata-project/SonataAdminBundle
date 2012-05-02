@@ -193,16 +193,19 @@ class ErrorElement
      */
     public function addViolation($message, $parameters = array(), $value = null)
     {
-        $this->context->setPropertyPath($this->getFullPropertyPath());
-        $this->context->setGroup($this->group);
-
         if (is_array($message)) {
             $value      = isset($message[2]) ? $message[2] : $value;
             $parameters = isset($message[1]) ? (array)$message[1] : array();
             $message    = isset($message[0]) ? $message[0] : 'error';
         }
 
-        $this->context->addViolation($message, $parameters, $value);
+        if (method_exists($this->context, 'setPropertyPath')) {
+            $this->context->setPropertyPath($this->getFullPropertyPath());
+            $this->context->setGroup($this->group);
+            $this->context->addViolation($message, $parameters, $value);
+        } else {
+            $this->context->addViolationAtPath($this->getFullPropertyPath(), $message, $parameters, $value);
+        }
 
         $this->errors[] = array($message, $parameters, $value);
 
