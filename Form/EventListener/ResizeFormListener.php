@@ -44,12 +44,13 @@ class ResizeFormListener implements EventSubscriberInterface
 
     private $removed = array();
 
-    public function __construct(FormFactoryInterface $factory, $type, array $typeOptions = array(), $resizeOnBind = false)
+    public function __construct(FormFactoryInterface $factory, $type, array $typeOptions = array(), $resizeOnBind = false, $associationMapping = null)
     {
         $this->factory      = $factory;
         $this->type         = $type;
         $this->resizeOnBind = $resizeOnBind;
         $this->typeOptions  = $typeOptions;
+        $this->associationMapping = $associationMapping;
     }
 
     public static function getSubscribedEvents()
@@ -152,6 +153,9 @@ class ResizeFormListener implements EventSubscriberInterface
 
         // remove selected elements
         foreach($this->removed as $pos) {
+            if ($this->associationMapping && !$this->associationMapping['isOwningSide']) {
+                $data[$pos]->{$this->associationMapping['mappedBy']} = null;
+            }
             unset($data[$pos]);
         }
 

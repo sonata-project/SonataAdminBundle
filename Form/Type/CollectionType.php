@@ -21,19 +21,29 @@ class CollectionType extends AbstractType
 {
     public function buildForm(FormBuilder $builder, array $options)
     {
+        $assocationMapping = $options['sonata_field_description']->getAssociationMapping();
+
         $listener = new ResizeFormListener(
             $builder->getFormFactory(),
             $options['type'],
             $options['type_options'],
-            $options['modifiable']
+            $options['modifiable'],
+            $assocationMapping
         );
 
+        $builder->addEventSubscriber(
+            new \Sonata\AdminBundle\Form\EventListener\MergeCollectionListener(
+                $options['model_manager'],
+                $assocationMapping
+            )
+        );
         $builder->addEventSubscriber($listener);
     }
 
     public function getDefaultOptions(array $options)
     {
         return array(
+            'model_manager' => null,
             'modifiable'    => false,
             'type'          => 'text',
             'type_options'  => array()
