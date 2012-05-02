@@ -199,13 +199,7 @@ class ErrorElement
             $message    = isset($message[0]) ? $message[0] : 'error';
         }
 
-        if (method_exists($this->context, 'setPropertyPath')) {
-            $this->context->setPropertyPath($this->getFullPropertyPath());
-            $this->context->setGroup($this->group);
-            $this->context->addViolation($message, $parameters, $value);
-        } else {
-            $this->context->addViolationAtPath($this->getFullPropertyPath(), $message, $parameters, $value);
-        }
+        $this->context->addViolationAtPath($this->getFullPropertyPath(), $message, $parameters, $value);
 
         $this->errors[] = array($message, $parameters, $value);
 
