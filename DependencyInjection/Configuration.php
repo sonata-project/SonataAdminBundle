@@ -137,7 +137,6 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('action')->defaultValue('SonataAdminBundle:CRUD:action.html.twig')->cannotBeEmpty()->end()
                     ->end()
                 ->end()
-            ->end()
         ->end();
 
         return $treeBuilder;
