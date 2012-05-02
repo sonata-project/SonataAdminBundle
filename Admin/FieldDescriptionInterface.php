@@ -280,4 +280,12 @@ interface FieldDescriptionInterface
      * @return array the parent association mapping definitions
      */
     function getSortParentAssociationMapping();
+
+    /**
+     *
+     * @param object $object
+     * @param string $fieldName
+     * @return mixed
+     */
+    function getFieldValue($object, $fieldName);
 }
