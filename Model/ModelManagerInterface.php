@@ -21,9 +21,8 @@ interface ModelManagerInterface
     /**
      * Returns true if the model has a relation
      *
-     * @abstract
      * @param string $name
-     * @return booleab
+     * @return boolean
      */
     function hasMetadata($name);
 
@@ -37,7 +36,6 @@ interface ModelManagerInterface
     /**
      * Returns a new FieldDescription
      *
-     * @abstract
      * @param string $class
      * @param string $name
      * @param array $options
@@ -106,7 +104,7 @@ interface ModelManagerInterface
      * @abstract
      * @param string $class
      * @param string $alias
-     * @return a query instance
+     * @return mixed a query instance
      */
     function createQuery($class, $alias = 'o');
 
@@ -195,7 +193,7 @@ interface ModelManagerInterface
     function getSortParameters(FieldDescriptionInterface $fieldDescription, DatagridInterface $datagrid);
 
     /**
-     * @param sring $class
+     * @param string $class
      * @return array
      */
     function getDefaultSortValues($class);
@@ -234,4 +232,11 @@ interface ModelManagerInterface
      * @return array
      */
     function getExportFields($class);
+
+    /**
+     * @param \Sonata\AdminBundle\Datagrid\DatagridInterface $datagrid
+     * @param $page
+     * @return mixed
+     */
+    function getPaginationParameters(DatagridInterface $datagrid, $page);
 }
