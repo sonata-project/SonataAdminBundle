@@ -71,7 +71,7 @@ file that was distributed with this source code.
 
                 {% block table_footer %}
                     <tr>
-                        <th colspan="{{ admin.list.elements|length - 1 }}">
+                    	<th colspan="{% if 'SonataAdminBundle::ajax_layout.html.twig' == base_template %}{{ admin.list.elements|length - 2 }}{% else %}{{ admin.list.elements|length - 1 }}{% endif %}">
                             {{ admin.datagrid.pager.page }} / {{ admin.datagrid.pager.lastpage }}
                             {% if admin.isGranted("EXPORT") %}
                                 -
