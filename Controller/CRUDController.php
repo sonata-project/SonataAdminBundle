@@ -126,7 +126,7 @@ class CRUDController extends Controller
      * @param $view
      * @param array $parameters
      * @param null|\Symfony\Component\HttpFoundation\Response $response
-     * @return \Symfony\Bundle\FrameworkBundle\Controller\Response
+     * @return Response
      */
     public function render($view, array $parameters = array(), Response $response = null)
     {
@@ -188,7 +188,7 @@ class CRUDController extends Controller
     /**
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException|\Symfony\Component\Security\Core\Exception\AccessDeniedException
      * @param $id
-     * @return \Symfony\Bundle\FrameworkBundle\Controller\Response|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @return Response|RedirectResponse
      */
     public function deleteAction($id)
     {
@@ -474,7 +474,7 @@ class CRUDController extends Controller
     /**
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException|\Symfony\Component\Security\Core\Exception\AccessDeniedException
      * @param mixed $id
-     * @return \Symfony\Bundle\FrameworkBundle\Controller\Response
+     * @return Response
      */
     public function historyAction($id = null)
     {
@@ -510,7 +510,7 @@ class CRUDController extends Controller
     /**
      * @param null $id
      * @param $revision
-     * @return \Symfony\Bundle\FrameworkBundle\Controller\Response
+     * @return Response
      */
     public function historyViewRevisionAction($id = null, $revision = null)
     {

@@ -76,7 +76,7 @@ interface AdminInterface
     /**
      * Returns the class name managed
      *
-     * @return void
+     * @return string
      */
     function getClass();
 
@@ -100,7 +100,7 @@ interface AdminInterface
     function generateUrl($name, array $parameters = array(), $absolute = false);
 
     /**
-     * @return \Sonata\AdminBundle\ModelManagerInterface;
+     * @return \Sonata\AdminBundle\Model\ModelManagerInterface;
      */
     function getModelManager();
 
@@ -426,8 +426,8 @@ interface AdminInterface
     /**
      * Returns the url defined by the $name
      *
-     * @param strinf $name
-     * @return Route
+     * @param string $name
+     * @return \Symfony\Component\Routing\Route
      */
     function getRoute($name);
 
