@@ -458,7 +458,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     /**
      * Defines the help message
      *
-     * @param $string help
+     * @param string $help
      */
     public function setHelp($help)
     {

@@ -142,7 +142,7 @@ class FormMapper
 
     /**
      * @param string $name
-     * @return \Symfony\Component\Form\FieldInterface
+     * @return \Symfony\Component\Form\FormInterface
      */
     public function get($name)
     {
