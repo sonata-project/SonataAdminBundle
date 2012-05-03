@@ -22,7 +22,7 @@ interface ListBuilderInterface
     /**
      * @abstract
      * @param array $options
-     * @return void
+     * @return \Sonata\AdminBundle\Admin\FieldDescriptionCollection
      */
     function getBaseList(array $options = array());
 

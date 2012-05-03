@@ -79,7 +79,7 @@ class AdminHelper
      *
      * @throws \RuntimeException
      * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
-     * @param sting $elementId
+     * @param string $elementId
      * @return array
      */
     public function appendFormFieldElement(AdminInterface $admin, $elementId)

@@ -23,7 +23,7 @@ interface ModelManagerInterface
      *
      * @abstract
      * @param string $name
-     * @return booleab
+     * @return boolean
      */
     function hasMetadata($name);
 
@@ -106,7 +106,7 @@ interface ModelManagerInterface
      * @abstract
      * @param string $class
      * @param string $alias
-     * @return a query instance
+     * @return ProxyQueryInterface
      */
     function createQuery($class, $alias = 'o');
 
@@ -190,12 +190,12 @@ interface ModelManagerInterface
      *
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
      * @param \Sonata\AdminBundle\Datagrid\DatagridInterface $datagrid
-     * @return string
+     * @return array
      */
     function getSortParameters(FieldDescriptionInterface $fieldDescription, DatagridInterface $datagrid);
 
     /**
-     * @param sring $class
+     * @param string $class
      * @return array
      */
     function getDefaultSortValues($class);
@@ -225,7 +225,7 @@ interface ModelManagerInterface
      * @param array $fields
      * @param null $firstResult
      * @param null $maxResult
-     * @return void
+     * @return \Exporter\Source\SourceIteratorInterface
      */
     function getDataSourceIterator(DatagridInterface $datagrid, array $fields, $firstResult = null, $maxResult = null);
 

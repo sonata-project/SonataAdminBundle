@@ -91,7 +91,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     protected $formFieldDescriptions = array();
 
     /**
-     * @var DatagridInterface
+     * @var \Sonata\AdminBundle\Datagrid\DatagridInterface
      */
     private $filter;
 
@@ -243,7 +243,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      * Reference the parent FieldDescription related to this admin
      * only set for FieldDescription which is associated to an Sub Admin instance
      *
-     * @var FieldDescription
+     * @var FieldDescriptionInterface
      */
     protected $parentFieldDescription;
 
@@ -307,7 +307,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     /**
      * The related view builder
      *
-     * @var \Sonata\AdminBundle\View\ShowBuilderInterface
+     * @var ShowBuilderInterface
      */
     protected $showBuilder;
 
@@ -333,7 +333,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     /**
      * The router intance
      *
-     * @var \Sonata\AdminBundle\Route\RouterGeneratorInterface
+     * @var RouteGeneratorInterface
      */
     protected $routeGenerator;
 
@@ -361,7 +361,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     protected $menu;
 
     /**
-     * @var \Knp\Menu\MenuFactoryInterface
+     * @var \Knp\Menu\FactoryInterface
      */
     protected $menuFactory;
 
