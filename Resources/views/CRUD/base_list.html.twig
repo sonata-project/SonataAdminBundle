@@ -132,31 +132,37 @@ file that was distributed with this source code.
             </table>
 
             {% if batchactions|length > 0%}
-                <script type="text/javascript">
-                    jQuery(document).ready(function($){
-                       $('#list_batch_checkbox').click(function(){
-                           $(this).closest('table').find("td input[type='checkbox']").attr('checked', $(this).is(':checked')).parent().parent().toggleClass('sonata-ba-list-row-selected', $(this).is(':checked'));
-                       });
-                       $("td.sonata-ba-list-field-batch input[type='checkbox']").change(function(){
-                           $(this).parent().parent().toggleClass('sonata-ba-list-row-selected', $(this).is(':checked'));
-                       });
-                    });
-                </script>
+                {% block batch %}
+                    <script type="text/javascript">
+                        {% block batch_javascript %}
+                            jQuery(document).ready(function($){
+                               $('#list_batch_checkbox').click(function(){
+                                   $(this).closest('table').find("td input[type='checkbox']").attr('checked', $(this).is(':checked')).parent().parent().toggleClass('sonata-ba-list-row-selected', $(this).is(':checked'));
+                               });
+                               $("td.sonata-ba-list-field-batch input[type='checkbox']").change(function(){
+                                   $(this).parent().parent().toggleClass('sonata-ba-list-row-selected', $(this).is(':checked'));
+                               });
+                            });
+                        {% endblock %}
+                    </script>
 
-                <div class="actions sonata-ba-list-actions">
-                    <select name="action">
-                        {% for action, options in batchactions %}
-                            <option value="{{ action }}">{{ options.label }}</option>
-                        {% endfor %}
-                    </select>
+                    <div class="actions sonata-ba-list-actions">
+                        {% block batch_actions %}
+                            <select name="action">
+                                {% for action, options in batchactions %}
+                                    <option value="{{ action }}">{{ options.label }}</option>
+                                {% endfor %}
+                            </select>
 
-                    <label>
-                        <input type="checkbox" name="all_elements"/>
-                        {% trans from 'SonataAdminBundle' %}all_elements{% endtrans %}
-                    </label>
+                            <label>
+                                <input type="checkbox" name="all_elements"/>
+                                {% trans from 'SonataAdminBundle' %}all_elements{% endtrans %}
+                            </label>
 
-                    <input type="submit" class="btn primary" value="{% trans from 'SonataAdminBundle' %}btn_batch{% endtrans %}" />
-                </div>
+                            <input type="submit" class="btn primary" value="{% trans from 'SonataAdminBundle' %}btn_batch{% endtrans %}" />
+                        {% endblock %}
+                    </div>
+                {% endblock %}
             {% endif %}
         </form>
     {% else %}
