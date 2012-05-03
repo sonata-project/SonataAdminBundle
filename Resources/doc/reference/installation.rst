@@ -114,4 +114,4 @@ Usually when installing new bundles a good practice is to also delete your cache
 
 After you have successfully installed above bundles you need to configure
 SonataAdminBundle for administering your models. All that is needed to quickly
-set up SonataAdminBundle is described in the next chapter : :ref:`getting_started`.
+set up SonataAdminBundle is described in the next chapter : :doc:`getting_started`.
