@@ -76,16 +76,18 @@ interface AdminExtensionInterface
     function configureSideMenu(AdminInterface $admin, MenuItemInterface $menu, $action, AdminInterface $childAdmin = null);
 
     /**
-     * @param AdminInterface $admin
+     * @param AdminInterface                             $admin
      * @param \Sonata\AdminBundle\Validator\ErrorElement $errorElement
-     * @param $object
+     * @param                                            $object
+     *
      * @return void
      */
     function validate(AdminInterface $admin, ErrorElement $errorElement, $object);
 
     /**
      * @param \Sonata\AdminBundle\Datagrid\ProxyQueryInterface $query
-     * @param string $context
+     * @param string                                           $context
+     *
      * @return void
      */
     function configureQuery(AdminInterface $admin, ProxyQueryInterface $query, $context = 'list');

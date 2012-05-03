@@ -32,6 +32,7 @@ class TranslatableChoiceType extends ChoiceType
 
     /**
      * @param array $options
+     *
      * @return array
      */
     public function getDefaultOptions(array $options)
@@ -58,12 +59,12 @@ class TranslatableChoiceType extends ChoiceType
         foreach ($options['choices'] as $name => $value) {
             $options['choices'][$name] = $this->translator->trans($value, array(), $options['catalogue']);
         }
-        
+
         // translate empty value
         if (!empty($options['empty_value'])) {
             $options['empty_value'] = $this->translator->trans($options['empty_value'], array(), $options['catalogue']);
         }
-        
+
         parent::buildForm($builder, $options);
     }
 }

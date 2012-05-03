@@ -30,7 +30,7 @@ class AuditManager implements AuditManagerInterface
     }
 
     /**
-     * @param $serviceId
+     * @param       $serviceId
      * @param array $classes
      */
     public function setReader($serviceId, array $classes)
@@ -40,6 +40,7 @@ class AuditManager implements AuditManagerInterface
 
     /**
      * @param $class
+     *
      * @return bool
      */
     public function hasReader($class)
@@ -55,6 +56,7 @@ class AuditManager implements AuditManagerInterface
 
     /**
      * @param $class
+     *
      * @return \Sonata\AdminBundle\Model\AuditReaderInterface
      * @throws \RuntimeException
      */

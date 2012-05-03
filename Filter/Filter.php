@@ -54,7 +54,7 @@ abstract class Filter implements FilterInterface
            get bound, the default dataMapper is a PropertyPathMapper).
            So use this trick to avoid any issue.
         */
-        return str_replace('.','~',$this->name);
+        return str_replace('.', '~', $this->name);
     }
 
     /**
@@ -161,6 +161,7 @@ abstract class Filter implements FilterInterface
 
     /**
      * @param array $options
+     *
      * @return void
      */
     public function setOptions(array $options)
@@ -178,6 +179,7 @@ abstract class Filter implements FilterInterface
 
     /**
      * @param $value
+     *
      * @return void
      */
     public function setValue($value)
@@ -199,11 +201,12 @@ abstract class Filter implements FilterInterface
     public function isActive()
     {
         $values = $this->getValue();
-        return ! empty($values['value']);
+        return !empty($values['value']);
     }
 
     /**
      * @param $condition
+     *
      * @return void
      */
     public function setCondition($condition)

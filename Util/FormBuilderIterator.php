@@ -35,6 +35,7 @@ class FormBuilderIterator extends \RecursiveArrayIterator
 
     /**
      * @static
+     *
      * @param \Symfony\Component\Form\FormBuilder $formBuilder
      *
      * @return array

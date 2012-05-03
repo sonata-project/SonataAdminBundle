@@ -23,7 +23,7 @@ class ImmutableArrayType extends AbstractType
      */
     public function buildForm(FormBuilder $builder, array $options)
     {
-        foreach($options['keys'] as $infos) {
+        foreach ($options['keys'] as $infos) {
             if ($infos instanceof FormBuilder) {
                 $builder->add($infos);
             } else {

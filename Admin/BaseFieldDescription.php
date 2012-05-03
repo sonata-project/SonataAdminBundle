@@ -145,7 +145,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         $this->name = $name;
 
         if (!$this->getFieldName()) {
-            $this->setFieldName(substr(strrchr('.'.$name, '.') ,1));
+            $this->setFieldName(substr(strrchr('.' . $name, '.'), 1));
         }
     }
 
@@ -316,8 +316,8 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         if ($this->getOption('code')) {
             $getters[] = $this->getOption('code');
         }
-        $getters[] = 'get'.$camelizedFieldName;
-        $getters[] = 'is'.$camelizedFieldName;
+        $getters[] = 'get' . $camelizedFieldName;
+        $getters[] = 'is' . $camelizedFieldName;
 
 
         foreach ($getters as $getter) {
@@ -389,7 +389,9 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
      * Camelize a string
      *
      * @static
+     *
      * @param string $property
+     *
      * @return string
      */
     public static function camelize($property)

@@ -18,21 +18,23 @@ use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 interface AuditManagerInterface
 {
     /**
-      * @param $serviceId
-      * @param array $classes
-      */
+     * @param       $serviceId
+     * @param array $classes
+     */
     function setReader($serviceId, array $classes);
 
     /**
-      * @param $class
-      * @return bool
-      */
+     * @param $class
+     *
+     * @return bool
+     */
     function hasReader($class);
 
-     /**
-      * @param $class
-      * @return \Sonata\AdminBundle\Model\AuditReaderInterface
-      * @throws \RuntimeException
-      */
+    /**
+     * @param $class
+     *
+     * @return \Sonata\AdminBundle\Model\AuditReaderInterface
+     * @throws \RuntimeException
+     */
     function getReader($class);
 }

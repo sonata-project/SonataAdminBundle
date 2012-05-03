@@ -29,21 +29,22 @@ class ListMapper
     protected $admin;
 
     /**
-     * @param \Sonata\AdminBundle\Builder\ListBuilderInterface $listBuilder
+     * @param \Sonata\AdminBundle\Builder\ListBuilderInterface     $listBuilder
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionCollection $list
-     * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
+     * @param \Sonata\AdminBundle\Admin\AdminInterface             $admin
      */
     public function __construct(ListBuilderInterface $listBuilder, FieldDescriptionCollection $list, AdminInterface $admin)
     {
-        $this->listBuilder  = $listBuilder;
-        $this->list         = $list;
-        $this->admin        = $admin;
+        $this->listBuilder = $listBuilder;
+        $this->list        = $list;
+        $this->admin       = $admin;
     }
 
     /**
      * @param string $name
-     * @param null $type
-     * @param array $fieldDescriptionOptions
+     * @param null   $type
+     * @param array  $fieldDescriptionOptions
+     *
      * @return ListMapper
      */
     public function addIdentifier($name, $type = null, array $fieldDescriptionOptions = array())
@@ -67,6 +68,7 @@ class ListMapper
      * @param mixed $name
      * @param mixed $type
      * @param array $fieldDescriptionOptions
+     *
      * @return \Sonata\AdminBundle\Datagrid\ListMapper
      */
     public function add($name, $type = null, array $fieldDescriptionOptions = array())
@@ -96,6 +98,7 @@ class ListMapper
 
     /**
      * @param string $name
+     *
      * @return \Sonata\AdminBundle\Admin\FieldDescriptionInterface
      */
     public function get($name)
@@ -105,6 +108,7 @@ class ListMapper
 
     /**
      * @param string $key
+     *
      * @return bool
      */
     public function has($key)
@@ -114,6 +118,7 @@ class ListMapper
 
     /**
      * @param  string $key
+     *
      * @return \Sonata\AdminBundle\Datagrid\ListMapper
      */
     public function remove($key)
@@ -126,6 +131,7 @@ class ListMapper
 
     /**
      * @param array $keys field names
+     *
      * @return \Sonata\AdminBundle\Datagrid\ListMapper
      */
     public function reorder(array $keys)

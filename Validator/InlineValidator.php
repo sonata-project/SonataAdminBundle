@@ -26,7 +26,7 @@ class InlineValidator extends ConstraintValidator
      */
     public function __construct(ContainerInterface $container, ConstraintValidatorFactory $constraintValidatorFactory)
     {
-        $this->container = $container;
+        $this->container                  = $container;
         $this->constraintValidatorFactory = $constraintValidatorFactory;
     }
 

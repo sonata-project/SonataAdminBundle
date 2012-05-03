@@ -33,8 +33,8 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     // used by iterator interface
     protected $results = null;
     protected $resultsCounter = 0;
-    protected $query            = null;
-    protected $countColumn      = array('id');
+    protected $query = null;
+    protected $countColumn = array('id');
 
     /**
      * Constructor.
@@ -91,18 +91,18 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
      *
      * @return array
      */
-    public function getLinks($nb_links=null)
+    public function getLinks($nb_links = null)
     {
-        if($nb_links==null){
-            $nb_links=$this->getMaxPageLinks();
+        if ($nb_links == null) {
+            $nb_links = $this->getMaxPageLinks();
         }
         $links = array();
-        $tmp = $this->page - floor($nb_links / 2);
+        $tmp   = $this->page - floor($nb_links / 2);
         $check = $this->lastPage - $nb_links + 1;
         $limit = $check > 0 ? $check : 1;
         $begin = $tmp > 0 ? ($tmp > $limit ? $limit : $tmp) : 1;
 
-        $i = (int) $begin;
+        $i = (int)$begin;
         while ($i < $begin + $nb_links && $i <= $this->lastPage) {
             $links[] = $i++;
         }
@@ -358,7 +358,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
         } else {
             if ($max == 0) {
                 $this->maxPerPage = 0;
-                $this->page = 0;
+                $this->page       = 0;
             } else {
                 $this->maxPerPage = 1;
                 if ($this->page == 0) {
@@ -367,6 +367,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
             }
         }
     }
+
     /**
      * Returns the maximum number of page numbers.
      *
@@ -376,6 +377,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     {
         return $this->maxPageLinks;
     }
+
     /**
      * Sets the maximum number of page numbers.
      *
@@ -467,7 +469,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
      */
     protected function initializeIterator()
     {
-        $this->results = $this->getResults();
+        $this->results        = $this->getResults();
         $this->resultsCounter = count($this->results);
     }
 
@@ -476,7 +478,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
      */
     protected function resetIterator()
     {
-        $this->results = null;
+        $this->results        = null;
         $this->resultsCounter = 0;
     }
 

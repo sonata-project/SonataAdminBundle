@@ -169,9 +169,9 @@ interface AdminInterface
      * translate a message id
      *
      * @param string $id
-     * @param array $parameters
-     * @param null $domain
-     * @param null $locale
+     * @param array  $parameters
+     * @param null   $domain
+     * @param null   $locale
      *
      * @return string the translated string
      */
@@ -192,16 +192,17 @@ interface AdminInterface
      *
      * @return void
      */
-     function addShowFieldDescription($name, FieldDescriptionInterface $fieldDescription);
+    function addShowFieldDescription($name, FieldDescriptionInterface $fieldDescription);
 
     /**
      * add a list FieldDescription
      *
      * @param string                                              $name
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
+     *
      * @return void
      */
-     function addListFieldDescription($name, FieldDescriptionInterface $fieldDescription);
+    function addListFieldDescription($name, FieldDescriptionInterface $fieldDescription);
 
     /**
      * add a filter FieldDescription
@@ -233,7 +234,7 @@ interface AdminInterface
     function getSecurityHandler();
 
     /**
-     * @param string $name
+     * @param string      $name
      * @param object|null $object
      *
      * @return boolean

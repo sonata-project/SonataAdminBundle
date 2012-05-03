@@ -16,17 +16,19 @@ interface RouteGeneratorInterface
 {
     /**
      * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
-     * @param $name
-     * @param array $parameters
-     * @param bool $absolute
+     * @param                                          $name
+     * @param array                                    $parameters
+     * @param bool                                     $absolute
+     *
      * @return string
      */
     function generateUrl(AdminInterface $admin, $name, array $parameters = array(), $absolute = false);
 
     /**
-     * @param $name
+     * @param       $name
      * @param array $parameters
-     * @param bool $absolute
+     * @param bool  $absolute
+     *
      * @return void
      */
     function generate($name, array $parameters = array(), $absolute = false);

@@ -15,6 +15,7 @@ class Validators
 {
     /**
      * @static
+     *
      * @param string $username
      *
      * @return mixed
@@ -31,6 +32,7 @@ class Validators
 
     /**
      * @static
+     *
      * @param string $shortcut
      *
      * @return array

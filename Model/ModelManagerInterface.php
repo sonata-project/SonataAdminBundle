@@ -99,7 +99,7 @@ interface ModelManagerInterface
     function batchDelete($class, ProxyQueryInterface $queryProxy);
 
     /**
-     * @param array $parentAssociationMapping
+     * @param array  $parentAssociationMapping
      * @param string $class
      *
      * @return void

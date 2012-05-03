@@ -19,6 +19,7 @@ interface AuditReaderInterface
 {
     /**
      * @abstract
+     *
      * @param $className
      * @param $id
      * @param $revision
@@ -27,7 +28,8 @@ interface AuditReaderInterface
 
     /**
      * @abstract
-     * @param $className
+     *
+     * @param     $className
      * @param int $limit
      * @param int $offset
      */
@@ -35,6 +37,7 @@ interface AuditReaderInterface
 
     /**
      * @abstract
+     *
      * @param $classname
      * @param $revision
      */
@@ -42,6 +45,7 @@ interface AuditReaderInterface
 
     /**
      * @abstract
+     *
      * @param $className
      * @param $id
      */

@@ -19,9 +19,10 @@ interface FilterInterface
      * Apply the filter to the QueryBuilder instance
      *
      * @param ProxyQueryInterface $queryBuilder
-     * @param string $alias
-     * @param string $field
-     * @param string $value
+     * @param string              $alias
+     * @param string              $field
+     * @param string              $value
+     *
      * @return void
      */
     function filter(ProxyQueryInterface $queryBuilder, $alias, $field, $value);
@@ -65,7 +66,8 @@ interface FilterInterface
 
     /**
      * @param string $name
-     * @param null $default
+     * @param null   $default
+     *
      * @return mixed
      */
     function getOption($name, $default = null);
@@ -77,8 +79,9 @@ interface FilterInterface
     function setOption($name, $value);
 
     /**
-     * @param $name
+     * @param       $name
      * @param array $options
+     *
      * @return void
      */
     function initialize($name, array $options = array());

@@ -15,9 +15,11 @@ interface LabelTranslatorStrategyInterface
 {
     /**
      * @abstract
+     *
      * @param $label
      * @param $context
      * @param $type
+     *
      * @return string
      */
     function getLabel($label, $context = '', $type = '');

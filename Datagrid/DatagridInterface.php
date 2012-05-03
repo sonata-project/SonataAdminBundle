@@ -40,7 +40,9 @@ interface DatagridInterface
 
     /**
      * @abstract
+     *
      * @param \Sonata\AdminBundle\Filter\FilterInterface $filter
+     *
      * @return \Sonata\AdminBundle\Filter\FilterInterface
      */
     function addFilter(FilterInterface $filter);
@@ -65,6 +67,7 @@ interface DatagridInterface
 
     /**
      * @abstract
+     *
      * @param $name
      * @param $operator
      * @param $value
@@ -79,20 +82,25 @@ interface DatagridInterface
 
     /**
      * @abstract
+     *
      * @param $name
+     *
      * @return \Sonata\AdminBundle\Filter\FilterInterface
      */
     function getFilter($name);
 
     /**
      * @abstract
+     *
      * @param $name
+     *
      * @return bool
      */
     function hasFilter($name);
 
     /**
      * @abstract
+     *
      * @param $name
      */
     function removeFilter($name);

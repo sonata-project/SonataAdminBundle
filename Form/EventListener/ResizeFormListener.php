@@ -46,9 +46,9 @@ class ResizeFormListener implements EventSubscriberInterface
 
     /**
      * @param \Symfony\Component\Form\FormFactoryInterface $factory
-     * @param $type
-     * @param array $typeOptions
-     * @param bool $resizeOnBind
+     * @param                                              $type
+     * @param array                                        $typeOptions
+     * @param bool                                         $resizeOnBind
      */
     public function __construct(FormFactoryInterface $factory, $type, array $typeOptions = array(), $resizeOnBind = false)
     {
@@ -72,6 +72,7 @@ class ResizeFormListener implements EventSubscriberInterface
 
     /**
      * @param \Symfony\Component\Form\Event\DataEvent $event
+     *
      * @throws \Symfony\Component\Form\Exception\UnexpectedTypeException
      */
     public function preSetData(DataEvent $event)
@@ -95,7 +96,7 @@ class ResizeFormListener implements EventSubscriberInterface
         // Then add all rows again in the correct order
         foreach ($data as $name => $value) {
             $options = array_merge($this->typeOptions, array(
-                'property_path' => '['.$name.']',
+                'property_path' => '[' . $name . ']',
             ));
 
             $form->add($this->factory->createNamed($this->type, $name, $value, $options));
@@ -134,7 +135,7 @@ class ResizeFormListener implements EventSubscriberInterface
         foreach ($data as $name => $value) {
             if (!$form->has($name)) {
                 $options = array_merge($this->typeOptions, array(
-                    'property_path' => '['.$name.']',
+                    'property_path' => '[' . $name . ']',
                 ));
 
                 $form->add($this->factory->createNamed($this->type, $name, null, $options));

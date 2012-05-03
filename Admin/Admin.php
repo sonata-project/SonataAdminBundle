@@ -649,7 +649,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
         $this->configureListFields($mapper);
 
-        foreach($this->getExtensions() as $extension) {
+        foreach ($this->getExtensions() as $extension) {
             $extension->configureListFields($mapper);
         }
     }
@@ -709,7 +709,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
             ));
         }
 
-        foreach($this->getExtensions() as $extension) {
+        foreach ($this->getExtensions() as $extension) {
             $extension->configureDatagridFilters($mapper);
         }
     }
@@ -851,7 +851,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
         if ($this->hasRoute('delete') && $this->isGranted('DELETE')) {
             $actions['delete'] = array(
-                'label' => $this->trans('action_delete', array(), 'SonataAdminBundle'),
+                'label'            => $this->trans('action_delete', array(), 'SonataAdminBundle'),
                 'ask_confirmation' => true, // by default always true
             );
         }
@@ -934,6 +934,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
     /**
      * @param $name
+     *
      * @return bool
      */
     public function hasRoute($name)
@@ -948,8 +949,8 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      * Generates the object url with the given $name
      *
      * @param  string $name
-     * @param  $object
-     * @param array $parameters
+     * @param         $object
+     * @param array   $parameters
      *
      * @return return a complete url
      */
@@ -1100,7 +1101,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
         $this->configureFormFields($mapper);
 
-        foreach($this->getExtensions() as $extension) {
+        foreach ($this->getExtensions() as $extension) {
             $extension->configureFormFields($mapper);
         }
     }
@@ -1365,11 +1366,11 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
     /**
      * @param string $group
-     * @param array $keys
+     * @param array  $keys
      */
     public function reorderShowGroup($group, array $keys)
     {
-        $showGroups = $this->getShowGroups();
+        $showGroups                   = $this->getShowGroups();
         $showGroups[$group]['fields'] = array_merge(array_flip($keys), $showGroups[$group]['fields']);
         $this->setShowGroups($showGroups);
     }
@@ -1469,7 +1470,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     /**
      * add a FieldDescription
      *
-     * @param string $name
+     * @param string                                              $name
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
      *
      * @return void
@@ -1866,6 +1867,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      * set the current child status
      *
      * @param boolean $currentChild
+     *
      * @return void
      */
     public function setCurrentChild($currentChild)
@@ -2270,7 +2272,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      */
     public function setValidator(ValidatorInterface $validator)
     {
-      $this->validator = $validator;
+        $this->validator = $validator;
     }
 
     /**
@@ -2278,7 +2280,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      */
     public function getValidator()
     {
-      return $this->validator;
+        return $this->validator;
     }
 
     /**
@@ -2377,7 +2379,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     public function toString($object)
     {
         if (method_exists($object, '__toString')) {
-            return (string) $object;
+            return (string)$object;
         }
 
         return '';
