@@ -55,7 +55,22 @@ in your ``deps`` file:
       git=http://github.com/sonata-project/exporter.git
       target=/exporter
 
-and run the vendors script to download bundles::
+You will also need to alter your ``app/config/config.yml`` file :
+
+.. code-block:: yaml
+
+    # app/config/config.yml
+    sonata_block:
+        default_contexts: [cms]
+        blocks:
+            sonata.admin.block.admin_list:
+                contexts:   [admin]
+
+            sonata.block.service.text:
+            sonata.block.service.action:
+            sonata.block.service.rss:
+
+and finally run the vendors script to download bundles::
 
   php bin/vendors install
 
@@ -93,11 +108,10 @@ Now, install the assets from the bundles::
 
     php app/console assets:install web
 
-Usually when installing new bundles a good practice is also to delete your cache::
+Usually when installing new bundles a good practice is to also delete your cache::
 
     php app/console cache:clear
 
 After you have successfully installed above bundles you need to configure
 SonataAdminBundle for administering your models. All that is needed to quickly
-set up SonataAdminBundle is described in the next chapter the Getting started
-with SonataAdminBundle.
+set up SonataAdminBundle is described in the next chapter : :ref:`getting_started`.
