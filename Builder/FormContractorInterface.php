@@ -23,7 +23,7 @@ interface FormContractorInterface
 
     /**
      * @abstract
-     * @param \Symfony\Component\Form\FieldFactory\FormFactoryInterface $formFactory
+     * @param \Symfony\Component\Form\FormFactoryInterface $formFactory
      */
     function __construct(FormFactoryInterface $formFactory);
 
@@ -39,7 +39,15 @@ interface FormContractorInterface
      * @abstract
      * @param string $name
      * @param array $options
-     * @return void
+     * @return FormBuilder
      */
     function getFormBuilder($name, array $options = array());
+
+    /**
+     * @abstract
+     * @param string $type
+     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
+     * @return array
+     */
+    function getDefaultOptions($type, FieldDescriptionInterface $fieldDescription);
 }
