@@ -28,7 +28,7 @@ Note: %manager-type% is to be replaced by the manager type (orm, odm...)
 
 You have 2 ways of defining the dependencies inside a ``services.xml``.
 
-* With a tag attribute, less verbose::
+* With a tag attribute, less verbose :
 
 .. code-block:: xml
 
