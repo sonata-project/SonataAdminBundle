@@ -18,6 +18,9 @@ use Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass;
 
 class SonataAdminBundle extends Bundle
 {
+    /**
+     * {@inheritDoc}
+     */
     public function build(ContainerBuilder $container)
     {
         $container->addCompilerPass(new AddDependencyCallsCompilerPass());

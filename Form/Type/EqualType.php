@@ -22,11 +22,17 @@ class EqualType extends FormChoiceType
 
     protected $translator;
 
+    /**
+     * @param \Symfony\Component\Translation\TranslatorInterface $translator
+     */
     public function __construct(TranslatorInterface $translator)
     {
         $this->translator = $translator;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getDefaultOptions(array $options)
     {
         $options = parent::getDefaultOptions($options);

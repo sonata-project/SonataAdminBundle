@@ -116,6 +116,7 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
 
     /**
      * @param string $id
+     *
      * @return \Sonata\AdminBundle\Admin\AdminInterface
      */
     private function getAdmin($id)
@@ -141,30 +142,40 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
         $this->catalogue->add($message);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function trans($id, array $parameters = array(), $domain = null, $locale = null)
     {
         $this->addMessage($id, $domain);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function transChoice($id, $number, array $parameters = array(), $domain = null, $locale = null)
     {
         $this->addMessage($id, $domain);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function setLocale($locale)
     {
         $this->translator->setLocale($locale);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getLocale()
     {
         return $this->translator->getLocale();
     }
 
     /**
-     * @param string|array $attributes
-     * @param null $object
-     * @return boolean
+     * {@inheritDoc}
      */
     public function isGranted(AdminInterface $admin, $attributes, $object = null)
     {
@@ -172,45 +183,35 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
     }
 
     /**
-     * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
-     * @return void
+     * {@inheritDoc}
      */
     public function buildSecurityInformation(AdminInterface $admin)
     {
     }
 
     /**
-     * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
-     * @param $object
-     * @return void
+     * {@inheritDoc}
      */
     public function createObjectSecurity(AdminInterface $admin, $object)
     {
     }
 
     /**
-     * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
-     * @param $object
-     * @return void
+     * {@inheritDoc}
      */
     public function deleteObjectSecurity(AdminInterface $admin, $object)
     {
     }
 
     /**
-     * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
-     * @return void
+     * {@inheritDoc}
      */
     public function getBaseRole(AdminInterface $admin)
     {
-
     }
 
     /**
-     * @param $label
-     * @param $context
-     * @param $type
-     * @return string
+     * {@inheritDoc}
      */
     public function getLabel($label, $context = '', $type = '')
     {

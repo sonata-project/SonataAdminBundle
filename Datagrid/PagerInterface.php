@@ -15,8 +15,6 @@ interface PagerInterface
     /**
      * Initialize the Pager.
      *
-     * @abstract
-     *
      * @return void
      */
     function init();

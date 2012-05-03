@@ -18,6 +18,9 @@ use Sonata\AdminBundle\Form\EventListener\ResizeFormListener;
 
 class ImmutableArrayType extends AbstractType
 {
+    /**
+     * {@inheritDoc}
+     */
     public function buildForm(FormBuilder $builder, array $options)
     {
         foreach($options['keys'] as $infos) {
@@ -30,6 +33,9 @@ class ImmutableArrayType extends AbstractType
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getDefaultOptions(array $options)
     {
         return array(
@@ -37,6 +43,9 @@ class ImmutableArrayType extends AbstractType
         );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getName()
     {
         return 'sonata_type_immutable_array';

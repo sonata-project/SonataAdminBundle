@@ -20,9 +20,7 @@ use Sonata\AdminBundle\Form\DataTransformer\ArrayToModelTransformer;
 class AdminType extends AbstractType
 {
     /**
-     * @param \Symfony\Component\Form\FormBuilder $builder
-     * @param array $options
-     * @return void
+     * {@inheritDoc}
      */
     public function buildForm(FormBuilder $builder, array $options)
     {
@@ -41,8 +39,7 @@ class AdminType extends AbstractType
     }
 
     /**
-     * @param array $options
-     * @return $options
+     * {@inheritDoc}
      */
     public function getDefaultOptions(array $options)
     {
@@ -53,7 +50,9 @@ class AdminType extends AbstractType
 
     /**
      * @param array $options
+     *
      * @return \Sonata\AdminBundle\Admin\FieldDescriptionInterface
+     * @throws \RuntimeException
      */
     public function getFieldDescription(array $options)
     {
@@ -66,6 +65,7 @@ class AdminType extends AbstractType
 
     /**
      * @param array $options
+     *
      * @return \Sonata\AdminBundle\Admin\AdminInterface
      */
     public function getAdmin(array $options)
@@ -73,6 +73,9 @@ class AdminType extends AbstractType
         return $this->getFieldDescription($options)->getAssociationAdmin();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getName()
     {
         return 'sonata_type_admin';

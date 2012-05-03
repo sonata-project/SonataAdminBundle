@@ -22,13 +22,14 @@ interface ModelManagerInterface
      * Returns true if the model has a relation
      *
      * @param string $name
+     *
      * @return boolean
      */
     function hasMetadata($name);
 
     /**
-     *
      * @param string $name
+     *
      * @return \Doctrine\ORM\Mapping\ClassMetadataInfo
      */
     function getMetadata($name);
@@ -38,79 +39,84 @@ interface ModelManagerInterface
      *
      * @param string $class
      * @param string $name
-     * @param array $options
+     * @param array  $options
+     *
      * @return \Sonata\AdminBundle\Admin\FieldDescriptionInterface
      */
     function getNewFieldDescriptionInstance($class, $name, array $options = array());
 
     /**
      * @param $object
+     *
      * @return void
      */
     function create($object);
 
     /**
      * @param object $object
+     *
      * @return void
      */
     function update($object);
 
     /**
      * @param object $object
+     *
      * @return void
      */
     function delete($object);
 
     /**
      * @param string $class
-     * @param array $criteria
+     * @param array  $criteria
+     *
      * @return object
      */
     function findBy($class, array $criteria = array());
 
     /**
-     * @abstract
-     * @param $class
-     * @param array $criteria
+     * @param string $class
+     * @param array  $criteria
+     *
      * @return void
      */
     function findOneBy($class, array $criteria = array());
 
     /**
-     * @abstract
-     * @param $class
-     * @param $id
+     * @param string $class
+     * @param mixed  $id
+     *
      * @return void
      */
     function find($class, $id);
 
     /**
-     * @abstract
-     * @param $class
+     * @param string                                           $class
      * @param \Sonata\AdminBundle\Datagrid\ProxyQueryInterface $queryProxy
+     *
      * @return void
      */
     function batchDelete($class, ProxyQueryInterface $queryProxy);
 
     /**
-     * @abstract
-     * @param  $parentAssociationMapping
-     * @param  $class
+     * @param array $parentAssociationMapping
+     * @param string $class
+     *
      * @return void
      */
     function getParentFieldDescription($parentAssociationMapping, $class);
 
     /**
-     * @abstract
      * @param string $class
      * @param string $alias
+     *
      * @return ProxyQueryInterface
      */
     function createQuery($class, $alias = 'o');
 
     /**
-     * @abstract
      * @param string $class
+     *
      * @return string
      */
     function getModelIdentifier($class);
@@ -118,32 +124,33 @@ interface ModelManagerInterface
     /**
      *
      * @param object $model
+     *
      * @return mixed
      */
     function getIdentifierValues($model);
 
     /**
      * @param string $class
+     *
      * @return array
      */
     function getIdentifierFieldNames($class);
 
     /**
-     * @abstract
-     * @param $entity
+     * @param mixed $entity
      */
     function getNormalizedIdentifier($entity);
 
     /**
-     * @abstract
      * @param string $class
-     * @return void
+     *
+     * @return mixed
      */
     function getModelInstance($class);
 
     /**
-     * @abstract
      * @param string $class
+     *
      * @return void
      */
     function getModelCollectionInstance($class);
@@ -153,6 +160,7 @@ interface ModelManagerInterface
      *
      * @param mixed $collection
      * @param mixed $element
+     *
      * @return void
      */
     function collectionRemoveElement(&$collection, &$element);
@@ -162,6 +170,7 @@ interface ModelManagerInterface
      *
      * @param mixed $collection
      * @param mixed $element
+     *
      * @return mixed
      */
     function collectionAddElement(&$collection, &$element);
@@ -171,6 +180,7 @@ interface ModelManagerInterface
      *
      * @param mixed $collection
      * @param mixed $element
+     *
      * @return boolean
      */
     function collectionHasElement(&$collection, &$element);
@@ -179,6 +189,7 @@ interface ModelManagerInterface
      * Clear the collection
      *
      * @param mixed $collection
+     *
      * @return mixed
      */
     function collectionClear(&$collection);
@@ -187,20 +198,23 @@ interface ModelManagerInterface
      * Returns the parameters used in the columns header
      *
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
-     * @param \Sonata\AdminBundle\Datagrid\DatagridInterface $datagrid
+     * @param \Sonata\AdminBundle\Datagrid\DatagridInterface      $datagrid
+     *
      * @return array
      */
     function getSortParameters(FieldDescriptionInterface $fieldDescription, DatagridInterface $datagrid);
 
     /**
      * @param string $class
+     *
      * @return array
      */
     function getDefaultSortValues($class);
 
     /**
      * @param string $class
-     * @param array $array
+     * @param array  $array
+     *
      * @return void
      */
     function modelReverseTransform($class, array $array = array());
@@ -208,34 +222,39 @@ interface ModelManagerInterface
     /**
      * @param string $class
      * @param object $instance
+     *
      * @return void
      */
     function modelTransform($class, $instance);
 
     /**
      * @param mixed $query
+     *
      * @return void
      */
     function executeQuery($query);
 
     /**
      * @param \Sonata\AdminBundle\Datagrid\DatagridInterface $datagrid
-     * @param array $fields
-     * @param null $firstResult
-     * @param null $maxResult
+     * @param array                                          $fields
+     * @param null                                           $firstResult
+     * @param null                                           $maxResult
+     *
      * @return \Exporter\Source\SourceIteratorInterface
      */
     function getDataSourceIterator(DatagridInterface $datagrid, array $fields, $firstResult = null, $maxResult = null);
 
     /**
-     * @param $class
+     * @param string $class
+     *
      * @return array
      */
     function getExportFields($class);
 
     /**
      * @param \Sonata\AdminBundle\Datagrid\DatagridInterface $datagrid
-     * @param $page
+     * @param int                                            $page
+     *
      * @return mixed
      */
     function getPaginationParameters(DatagridInterface $datagrid, $page);

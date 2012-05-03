@@ -92,7 +92,7 @@ class AdminListBlockService extends BaseBlockService
     /**
      * {@inheritdoc}
      */
-    function getDefaultSettings()
+    public function getDefaultSettings()
     {
         return array(
             'groups' => false

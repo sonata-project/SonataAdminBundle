@@ -29,6 +29,11 @@ class FormMapper
 
     protected $currentGroup;
 
+    /**
+     * @param \Sonata\AdminBundle\Builder\FormContractorInterface $formContractor
+     * @param \Symfony\Component\Form\FormBuilder                 $formBuilder
+     * @param \Sonata\AdminBundle\Admin\AdminInterface            $admin
+     */
     public function __construct(FormContractorInterface $formContractor, FormBuilder $formBuilder, AdminInterface $admin)
     {
         $this->formBuilder      = $formBuilder;

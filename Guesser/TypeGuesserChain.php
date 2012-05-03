@@ -28,6 +28,9 @@ class TypeGuesserChain implements TypeGuesserInterface
 {
     protected $guessers = array();
 
+    /**
+     * @param array $guessers
+     */
     public function __construct(array $guessers)
     {
         foreach ($guessers as $guesser) {
@@ -44,9 +47,7 @@ class TypeGuesserChain implements TypeGuesserInterface
     }
 
     /**
-     * @param $class
-     * @param $property
-     * @return FieldFactoryGuess
+     * {@inheritDoc}
      */
     public function guessType($class, $property, ModelManagerInterface $modelManager)
     {

@@ -355,8 +355,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
             if ($this->page == 0) {
                 $this->page = 1;
             }
-        }
-        else {
+        } else {
             if ($max == 0) {
                 $this->maxPerPage = 0;
                 $this->page = 0;
@@ -482,9 +481,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     }
 
     /**
-     * Returns the current result.
-     *
-     * @see Iterator
+     * {@inheritdoc}
      */
     public function current()
     {
@@ -496,9 +493,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     }
 
     /**
-     * Returns the current key.
-     *
-     * @see Iterator
+     * {@inheritdoc}
      */
     public function key()
     {
@@ -510,9 +505,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     }
 
     /**
-     * Advances the internal pointer and returns the current result.
-     *
-     * @see Iterator
+     * {@inheritdoc}
      */
     public function next()
     {
@@ -526,9 +519,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     }
 
     /**
-     * Resets the internal pointer and returns the current result.
-     *
-     * @see Iterator
+     * {@inheritdoc}
      */
     public function rewind()
     {
@@ -542,9 +533,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     }
 
     /**
-     * Returns true if pointer is within bounds.
-     *
-     * @see Iterator
+     * {@inheritdoc}
      */
     public function valid()
     {
@@ -556,9 +545,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     }
 
     /**
-     * Returns the total number of results.
-     *
-     * @see Countable
+     * {@inheritdoc}
      */
     public function count()
     {
@@ -566,9 +553,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     }
 
     /**
-     * Serialize the pager object
-     *
-     * @return string $serialized
+     * {@inheritdoc}
      */
     public function serialize()
     {
@@ -578,27 +563,32 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     }
 
     /**
-     * Unserialize a pager object
-     *
-     * @param string $serialized
+     * {@inheritdoc}
      */
     public function unserialize($serialized)
     {
         $array = unserialize($serialized);
 
-        foreach ($array as $name => $values)
-        {
+        foreach ($array as $name => $values) {
             $this->$name = $values;
         }
     }
 
+    /**
+     * @return array
+     */
     public function getCountColumn()
     {
         return $this->countColumn;
     }
 
-    public function setCountColumn(array $countColumn) {
-
+    /**
+     * @param array $countColumn
+     *
+     * @return array
+     */
+    public function setCountColumn(array $countColumn)
+    {
         return $this->countColumn = $countColumn;
     }
 
@@ -621,11 +611,17 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
         return $results[0];
     }
 
+    /**
+     * @param $query
+     */
     public function setQuery($query)
     {
         $this->query = $query;
     }
 
+    /**
+     * @return null
+     */
     public function getQuery()
     {
         return $this->query;

@@ -18,16 +18,25 @@ class InlineConstraint extends Constraint
 
     protected $method;
 
+    /**
+     * {@inheritDoc}
+     */
     public function validatedBy()
     {
         return 'sonata.admin.validator.inline';
     }
 
+    /**
+     * @return bool
+     */
     public function isClosure()
     {
         return $this->method instanceof \Closure;
     }
 
+    /**
+     * @return mixed
+     */
     public function getClosure()
     {
         return $this->method;
@@ -41,6 +50,9 @@ class InlineConstraint extends Constraint
         return self::CLASS_CONSTRAINT;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getRequiredOptions()
     {
         return array(
@@ -49,13 +61,19 @@ class InlineConstraint extends Constraint
         );
     }
 
+    /**
+     * @return string
+     */
     public function getMethod()
     {
-      return $this->method;
+        return $this->method;
     }
 
+    /**
+     * @return mixed
+     */
     public function getService()
     {
-      return $this->service;
+        return $this->service;
     }
 }

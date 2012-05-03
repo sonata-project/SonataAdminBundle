@@ -13,6 +13,13 @@ namespace Sonata\AdminBundle\Command;
 
 class Validators
 {
+    /**
+     * @static
+     * @param string $username
+     *
+     * @return mixed
+     * @throws \InvalidArgumentException
+     */
     static public function validateUsername($username)
     {
         if (is_null($username)) {
@@ -22,6 +29,13 @@ class Validators
         return $username;
     }
 
+    /**
+     * @static
+     * @param string $shortcut
+     *
+     * @return array
+     * @throws \InvalidArgumentException
+     */
     static public function validateEntityName($shortcut)
     {
         $entity = str_replace('/', '\\', $shortcut);
