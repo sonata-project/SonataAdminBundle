@@ -104,7 +104,7 @@ interface ModelManagerInterface
      * @abstract
      * @param string $class
      * @param string $alias
-     * @return mixed a query instance
+     * @return ProxyQueryInterface
      */
     function createQuery($class, $alias = 'o');
 
@@ -188,7 +188,7 @@ interface ModelManagerInterface
      *
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
      * @param \Sonata\AdminBundle\Datagrid\DatagridInterface $datagrid
-     * @return string
+     * @return array
      */
     function getSortParameters(FieldDescriptionInterface $fieldDescription, DatagridInterface $datagrid);
 
@@ -223,7 +223,7 @@ interface ModelManagerInterface
      * @param array $fields
      * @param null $firstResult
      * @param null $maxResult
-     * @return void
+     * @return \Exporter\Source\SourceIteratorInterface
      */
     function getDataSourceIterator(DatagridInterface $datagrid, array $fields, $firstResult = null, $maxResult = null);
 

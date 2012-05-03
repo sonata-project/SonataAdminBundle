@@ -165,7 +165,7 @@ class Datagrid implements DatagridInterface
     }
 
     /**
-     * @return array
+     * @return FilterInterface[]
      */
     public function getFilters()
     {

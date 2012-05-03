@@ -410,7 +410,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * Returns the current pager's parameter holder.
      *
-     * @return sfParameterHolder
+     * @return array
      */
     public function getParameters()
     {
