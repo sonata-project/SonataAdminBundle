@@ -46,7 +46,7 @@ class ResizeFormListener implements EventSubscriberInterface
 
     /**
      * @param \Symfony\Component\Form\FormFactoryInterface $factory
-     * @param                                              $type
+     * @param string                                       $type
      * @param array                                        $typeOptions
      * @param bool                                         $resizeOnBind
      */

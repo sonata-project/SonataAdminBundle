@@ -44,11 +44,11 @@ class DatagridMapper
     /**
      * @throws \RuntimeException
      *
-     * @param       $name
-     * @param null  $type
-     * @param array $filterOptions
-     * @param null  $fieldType
-     * @param array $fieldOptions
+     * @param string  $name
+     * @param string  $type
+     * @param array   $filterOptions
+     * @param string  $fieldType
+     * @param array   $fieldOptions
      *
      * @return DatagridMapper
      */

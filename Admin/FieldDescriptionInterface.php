@@ -215,7 +215,7 @@ interface FieldDescriptionInterface
     /**
      * return the value linked to the description
      *
-     * @param  $object
+     * @param mixed $object
      *
      * @return bool|mixed
      */
@@ -240,8 +240,8 @@ interface FieldDescriptionInterface
      *
      * @throws \RuntimeException
      *
-     * @param       $name
-     * @param array $options
+     * @param string $name
+     * @param array  $options
      *
      * @return void
      */

@@ -178,7 +178,7 @@ abstract class Filter implements FilterInterface
     }
 
     /**
-     * @param $value
+     * @param mixed $value
      *
      * @return void
      */
@@ -205,7 +205,7 @@ abstract class Filter implements FilterInterface
     }
 
     /**
-     * @param $condition
+     * @param string $condition
      *
      * @return void
      */

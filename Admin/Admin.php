@@ -933,7 +933,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * @param $name
+     * @param string $name
      *
      * @return bool
      */
@@ -948,11 +948,11 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     /**
      * Generates the object url with the given $name
      *
-     * @param  string $name
-     * @param         $object
+     * @param string  $name
+     * @param mixed   $object
      * @param array   $parameters
      *
-     * @return return a complete url
+     * @return string return a complete url
      */
     public function generateObjectUrl($name, $object, array $parameters = array(), $absolute = false)
     {

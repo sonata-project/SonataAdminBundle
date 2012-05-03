@@ -24,7 +24,7 @@ class AdminAclManipulator implements AdminAclManipulatorInterface
     protected $maskBuilderClass;
 
     /**
-     * @param $maskBuilderClass
+     * @param string $maskBuilderClass
      */
     public function __construct($maskBuilderClass)
     {

@@ -39,7 +39,6 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * Constructor.
      *
-     * @param string  $class      The model class
      * @param integer $maxPerPage Number of records to display per page
      */
     public function __construct($maxPerPage = 10)
@@ -614,7 +613,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     }
 
     /**
-     * @param $query
+     * @param mixed $query
      */
     public function setQuery($query)
     {

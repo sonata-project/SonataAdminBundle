@@ -20,8 +20,8 @@ class Exporter
     /**
      * @throws \RuntimeException
      *
-     * @param                                          $format
-     * @param                                          $filename
+     * @param string                                   $format
+     * @param string                                   $filename
      * @param \Exporter\Source\SourceIteratorInterface $source
      *
      * @return \Symfony\Component\HttpFoundation\Response

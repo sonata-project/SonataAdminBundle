@@ -25,16 +25,16 @@ interface ProxyQueryInterface
     function execute(array $params = array(), $hydrationMode = null);
 
     /**
-     * @param $name
-     * @param $args
+     * @param string $name
+     * @param array  $args
      *
      * @return mixed
      */
     function __call($name, $args);
 
     /**
-     * @param $parentAssociationMappings
-     * @param $fieldMapping
+     * @param array $parentAssociationMappings
+     * @param array $fieldMapping
      *
      * @return mixed
      */
@@ -46,14 +46,13 @@ interface ProxyQueryInterface
     function getSortBy();
 
     /**
-     * @param $sortOrder
+     * @param mixed $sortOrder
      *
-     * @return mixed
+     * @return void
      */
     function setSortOrder($sortOrder);
 
     /**
-     * @abstract
      * @return mixed
      */
     function getSortOrder();
@@ -64,7 +63,7 @@ interface ProxyQueryInterface
     function getSingleScalarResult();
 
     /**
-     * @param $firstResult
+     * @param int $firstResult
      *
      * @return mixed
      */
@@ -76,7 +75,7 @@ interface ProxyQueryInterface
     function getFirstResult();
 
     /**
-     * @param $maxResults
+     * @param int $maxResults
      *
      * @return mixed
      */

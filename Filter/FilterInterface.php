@@ -28,8 +28,8 @@ interface FilterInterface
     function filter(ProxyQueryInterface $queryBuilder, $alias, $field, $value);
 
     /**
-     * @param $query
-     * @param $value
+     * @param mixed $query
+     * @param mixed $value
      */
     function apply($query, $value);
 
@@ -73,14 +73,14 @@ interface FilterInterface
     function getOption($name, $default = null);
 
     /**
-     * @param $name
-     * @param $value
+     * @param string $name
+     * @param mixed $value
      */
     function setOption($name, $value);
 
     /**
-     * @param       $name
-     * @param array $options
+     * @param string $name
+     * @param array  $options
      *
      * @return void
      */

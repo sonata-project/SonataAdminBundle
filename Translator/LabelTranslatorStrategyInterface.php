@@ -14,11 +14,9 @@ namespace Sonata\AdminBundle\Translator;
 interface LabelTranslatorStrategyInterface
 {
     /**
-     * @abstract
-     *
-     * @param $label
-     * @param $context
-     * @param $type
+     * @param string $label
+     * @param string $context
+     * @param string $type
      *
      * @return string
      */

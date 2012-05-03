@@ -19,6 +19,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sonata\AdminBundle\Exception\ModelManagerException;
 use Symfony\Component\HttpFoundation\Request;
+use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 
 class CRUDController extends Controller
 {
@@ -30,9 +31,9 @@ class CRUDController extends Controller
     protected $admin;
 
     /**
-     * @param mixed $data
+     * @param mixed   $data
      * @param integer $status
-     * @param array $headers
+     * @param array   $headers
      *
      * @return Response with json encoded data
      */
@@ -123,9 +124,10 @@ class CRUDController extends Controller
     }
 
     /**
-     * @param $view
-     * @param array $parameters
+     * @param string                                          $view
+     * @param array                                           $parameters
      * @param null|\Symfony\Component\HttpFoundation\Response $response
+     *
      * @return Response
      */
     public function render($view, array $parameters = array(), Response $response = null)
@@ -165,10 +167,12 @@ class CRUDController extends Controller
      * execute a batch delete
      *
      * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
-     * @param $query
+     *
+     * @param \Sonata\AdminBundle\Datagrid\ProxyQueryInterface $query
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function batchActionDelete($query)
+    public function batchActionDelete(ProxyQueryInterface $query)
     {
         if (false === $this->admin->isGranted('DELETE')) {
             throw new AccessDeniedException();
@@ -187,12 +191,14 @@ class CRUDController extends Controller
 
     /**
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException|\Symfony\Component\Security\Core\Exception\AccessDeniedException
-     * @param $id
+     *
+     * @param mixed $id
+     *
      * @return Response|RedirectResponse
      */
     public function deleteAction($id)
     {
-        $id = $this->get('request')->get($this->admin->getIdParameter());
+        $id     = $this->get('request')->get($this->admin->getIdParameter());
         $object = $this->admin->getObject($id);
 
         if (!$object) {
@@ -207,7 +213,7 @@ class CRUDController extends Controller
             try {
                 $this->admin->delete($object);
                 $this->get('session')->setFlash('sonata_flash_success', 'flash_delete_success');
-            } catch ( ModelManagerException $e ) {
+            } catch (ModelManagerException $e) {
                 $this->get('session')->setFlash('sonata_flash_error', 'flash_delete_error');
             }
 
@@ -224,7 +230,9 @@ class CRUDController extends Controller
      * return the Response object associated to the edit action
      *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     *
      * @param mixed $id
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function editAction($id = null)
@@ -283,6 +291,7 @@ class CRUDController extends Controller
      * redirect the user depend on this choice
      *
      * @param object $object
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function redirectTo($object)
@@ -313,14 +322,14 @@ class CRUDController extends Controller
     public function batchAction()
     {
         if ($this->get('request')->getMethod() != 'POST') {
-           throw new \RuntimeException('invalid request type, POST expected');
+            throw new \RuntimeException('invalid request type, POST expected');
         }
 
         $confirmation = $this->get('request')->get('confirmation', false);
 
         if ($data = json_decode($this->get('request')->get('data'), true)) {
-            $action = $data['action'];
-            $idx    = $data['idx'];
+            $action       = $data['action'];
+            $idx          = $data['idx'];
             $all_elements = $data['all_elements'];
             $this->get('request')->request->replace($data);
         } else {
@@ -473,7 +482,9 @@ class CRUDController extends Controller
 
     /**
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException|\Symfony\Component\Security\Core\Exception\AccessDeniedException
+     *
      * @param mixed $id
+     *
      * @return Response
      */
     public function historyAction($id = null)
@@ -501,15 +512,16 @@ class CRUDController extends Controller
         $revisions = $reader->findRevisions($this->admin->getClass(), $id);
 
         return $this->render($this->admin->getTemplate('history'), array(
-            'action'   => 'history',
-            'object'   => $object,
+            'action'    => 'history',
+            'object'    => $object,
             'revisions' => $revisions,
         ));
     }
 
     /**
-     * @param null $id
-     * @param $revision
+     * @param null    $id
+     * @param string  $revision
+     *
      * @return Response
      */
     public function historyViewRevisionAction($id = null, $revision = null)

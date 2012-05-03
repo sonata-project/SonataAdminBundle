@@ -27,18 +27,18 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
 
     /**
      * @param \Symfony\Component\HttpKernel\Log\LoggerInterface $logger
-     * @param \Sonata\AdminBundle\Admin\Pool $adminPool
+     * @param \Sonata\AdminBundle\Admin\Pool                    $adminPool
      */
     public function __construct(LoggerInterface $logger, Pool $adminPool)
     {
-        $this->logger     = $logger;
-        $this->adminPool  = $adminPool;
+        $this->logger    = $logger;
+        $this->adminPool = $adminPool;
 
         // state variable
-        $this->catalogue  = false;
-        $this->translator = false;
+        $this->catalogue     = false;
+        $this->translator    = false;
         $this->labelStrategy = false;
-        $this->domain      = false;
+        $this->domain        = false;
     }
 
     /**
@@ -125,14 +125,14 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
     }
 
     /**
-     * @param $id
-     * @param $domain
+     * @param string $id
+     * @param string $domain
      */
     private function addMessage($id, $domain)
     {
         $message = new Message($id, $domain);
 
-//        $this->logger->debug(sprintf('extract: %s - domain:%s', $id, $domain));
+        //        $this->logger->debug(sprintf('extract: %s - domain:%s', $id, $domain));
 
         $trace = debug_backtrace(false);
         if (isset($trace[1]['file'])) {

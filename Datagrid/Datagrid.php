@@ -44,18 +44,18 @@ class Datagrid implements DatagridInterface
     protected $results;
 
     /**
-     * @param ProxyQueryInterface $query
+     * @param ProxyQueryInterface                                  $query
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionCollection $columns
-     * @param PagerInterface $pager
-     * @param \Symfony\Component\Form\FormBuilder $formBuilder
-     * @param array $values
+     * @param PagerInterface                                       $pager
+     * @param \Symfony\Component\Form\FormBuilder                  $formBuilder
+     * @param array                                                $values
      */
     public function __construct(ProxyQueryInterface $query, FieldDescriptionCollection $columns, PagerInterface $pager, FormBuilder $formBuilder, array $values = array())
     {
-        $this->pager    = $pager;
-        $this->query    = $query;
-        $this->values   = $values;
-        $this->columns  = $columns;
+        $this->pager       = $pager;
+        $this->query       = $query;
+        $this->values      = $values;
+        $this->columns     = $columns;
         $this->formBuilder = $formBuilder;
     }
 
@@ -131,6 +131,7 @@ class Datagrid implements DatagridInterface
 
     /**
      * @param \Sonata\AdminBundle\Filter\FilterInterface $filter
+     *
      * @return void
      */
     public function addFilter(FilterInterface $filter)
@@ -139,7 +140,8 @@ class Datagrid implements DatagridInterface
     }
 
     /**
-     * @param $name
+     * @param string $name
+     *
      * @return bool
      */
     public function hasFilter($name)
@@ -148,7 +150,7 @@ class Datagrid implements DatagridInterface
     }
 
     /**
-     * @param $name
+     * @param string $name
      */
     public function removeFilter($name)
     {
@@ -156,7 +158,8 @@ class Datagrid implements DatagridInterface
     }
 
     /**
-     * @param $name
+     * @param string $name
+     *
      * @return null
      */
     public function getFilter($name)
@@ -186,13 +189,16 @@ class Datagrid implements DatagridInterface
     }
 
     /**
-     * @param $name
-     * @param $operator
-     * @param $value
+     * @param string $name
+     * @param string $operator
+     * @param mixed  $value
      */
     public function setValue($name, $operator, $value)
     {
-        $this->values[$name] = array('type' => $operator, 'value' => $value);
+        $this->values[$name] = array(
+            'type'  => $operator,
+            'value' => $value
+        );
     }
 
     /**

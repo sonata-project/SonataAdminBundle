@@ -123,7 +123,7 @@ class RouteCollection
     }
 
     /**
-     * @param $name
+     * @param string $name
      *
      * @return \Sonata\AdminBundle\Route\RouteCollection
      */

@@ -31,7 +31,7 @@ interface DatagridBuilderInterface
      * @abstract
      *
      * @param \Sonata\AdminBundle\Datagrid\DatagridInterface      $datagrid
-     * @param                                                     $type
+     * @param string                                              $type
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
      * @param \Sonata\AdminBundle\Admin\AdminInterface            $admin
      *

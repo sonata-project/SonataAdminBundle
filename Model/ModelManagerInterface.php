@@ -46,14 +46,14 @@ interface ModelManagerInterface
     function getNewFieldDescriptionInstance($class, $name, array $options = array());
 
     /**
-     * @param $object
+     * @param mixed $object
      *
      * @return void
      */
     function create($object);
 
     /**
-     * @param object $object
+     * @param mixed $object
      *
      * @return void
      */

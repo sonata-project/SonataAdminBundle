@@ -32,7 +32,7 @@ class AdminHelper
      * @throws \RuntimeException
      *
      * @param \Symfony\Component\Form\FormBuilder $formBuilder
-     * @param                                     $elementId
+     * @param string                              $elementId
      *
      * @return \Symfony\Component\Form\FormBuilder
      */
@@ -49,7 +49,7 @@ class AdminHelper
 
     /**
      * @param \Symfony\Component\Form\FormView $formView
-     * @param                                  $elementId
+     * @param string                           $elementId
      *
      * @return null|\Symfony\Component\Form\FormView
      */

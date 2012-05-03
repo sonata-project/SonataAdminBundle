@@ -16,7 +16,7 @@ interface RouteGeneratorInterface
 {
     /**
      * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
-     * @param                                          $name
+     * @param string                                   $name
      * @param array                                    $parameters
      * @param bool                                     $absolute
      *
@@ -25,11 +25,11 @@ interface RouteGeneratorInterface
     function generateUrl(AdminInterface $admin, $name, array $parameters = array(), $absolute = false);
 
     /**
-     * @param       $name
-     * @param array $parameters
-     * @param bool  $absolute
+     * @param string $name
+     * @param array  $parameters
+     * @param bool   $absolute
      *
-     * @return void
+     * @return string
      */
     function generate($name, array $parameters = array(), $absolute = false);
 }

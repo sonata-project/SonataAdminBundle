@@ -37,10 +37,10 @@ class ErrorElement
     protected $errors = array();
 
     /**
-     * @param                                                                      $subject
+     * @param mixed                                                                $subject
      * @param \Symfony\Bundle\FrameworkBundle\Validator\ConstraintValidatorFactory $constraintValidatorFactory
      * @param \Symfony\Component\Validator\ExecutionContext                        $context
-     * @param                                                                      $group
+     * @param string                                                               $group
      */
     public function __construct($subject, ConstraintValidatorFactory $constraintValidatorFactory, ExecutionContext $context, $group)
     {
@@ -56,8 +56,8 @@ class ErrorElement
     /**
      * @throws \RunTimeException
      *
-     * @param       $name
-     * @param array $arguments
+     * @param string $name
+     * @param array  $arguments
      *
      * @return ErrorElement
      */

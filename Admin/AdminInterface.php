@@ -74,7 +74,7 @@ interface AdminInterface
     function setConfigurationPool(Pool $pool);
 
     /**
-     * @param \Sonata\AdminBundle\Route\RouteGeneratorInterface $routerGenerator
+     * @param \Sonata\AdminBundle\Route\RouteGeneratorInterface $routeGenerator
      *
      * @return void
      */
@@ -429,63 +429,63 @@ interface AdminInterface
     function configure();
 
     /**
-     * @param $object
+     * @param mixed $object
      *
      * @return mixed
      */
     function update($object);
 
     /**
-     * @param $object
+     * @param mixed $object
      *
      * @return mixed
      */
     function create($object);
 
     /**
-     * @param $object
+     * @param mixed $object
      *
      * @return mixed
      */
     function delete($object);
 
     /**
-     * @param $object
+     * @param mixed $object
      *
      * @return mixed
      */
     function preUpdate($object);
 
     /**
-     * @param $object
+     * @param mixed $object
      *
      * @return mixed
      */
     function postUpdate($object);
 
     /**
-     * @param $object
+     * @param mixed $object
      *
      * @return mixed
      */
     function prePersist($object);
 
     /**
-     * @param $object
+     * @param mixed $object
      *
      * @return mixed
      */
     function postPersist($object);
 
     /**
-     * @param $object
+     * @param mixed $object
      *
      * @return mixed
      */
     function preRemove($object);
 
     /**
-     * @param $object
+     * @param mixed $object
      *
      * @return mixed
      */
@@ -507,7 +507,7 @@ interface AdminInterface
     function validate(ErrorElement $errorElement, $object);
 
     /**
-     * @param $context
+     * @param string $context
      *
      * @return boolean
      */
@@ -516,7 +516,7 @@ interface AdminInterface
     /**
      * Add object security, fe. make the current user owner of the object
      *
-     * @param $object
+     * @param mixed $object
      */
     function createObjectSecurity($object);
 

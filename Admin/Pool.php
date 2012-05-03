@@ -102,7 +102,7 @@ class Pool
     }
 
     /**
-     * @param $class
+     * @param string $class
      *
      * @return bool
      */
@@ -137,7 +137,7 @@ class Pool
     /**
      * Returns a new admin instance depends on the given code
      *
-     * @param $id
+     * @param string $id
      *
      * @return \Sonata\AdminBundle\Admin\AdminInterface
      */
@@ -227,7 +227,7 @@ class Pool
     }
 
     /**
-     * @param $name
+     * @param string $name
      *
      * @return null|string
      */

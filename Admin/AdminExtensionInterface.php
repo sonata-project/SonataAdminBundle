@@ -78,7 +78,7 @@ interface AdminExtensionInterface
     /**
      * @param AdminInterface                             $admin
      * @param \Sonata\AdminBundle\Validator\ErrorElement $errorElement
-     * @param                                            $object
+     * @param mixed                                      $object
      *
      * @return void
      */

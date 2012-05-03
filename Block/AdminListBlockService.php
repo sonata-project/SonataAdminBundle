@@ -30,7 +30,7 @@ class AdminListBlockService extends BaseBlockService
     protected $pool;
 
     /**
-     * @param                                                            $name
+     * @param string                                                     $name
      * @param \Symfony\Bundle\FrameworkBundle\Templating\EngineInterface $templating
      * @param \Sonata\AdminBundle\Admin\Pool                             $pool
      */
