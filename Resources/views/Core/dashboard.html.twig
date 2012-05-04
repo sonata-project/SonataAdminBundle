@@ -11,43 +11,27 @@ file that was distributed with this source code.
 
 {% extends base_template %}
 
-{% block title %}{% trans from 'SonataAdminBundle' %}title_dashboard{% endtrans %}{% endblock%}
+{% block title %}
+    {% trans from 'SonataAdminBundle' %}title_dashboard{% endtrans %}
+{% endblock%}
+
 {% block breadcrumb %}{% endblock %}
+
 {% block content %}
-
-    <div class="span7">
-        {% for group in groups %}
-            <table class="zebra-striped sonata-ba-list bordered-table">
-                <thead>
-                    <tr>
-                        <th colspan="3">{{ group.label|trans({}, 'SonataAdminBundle') }}</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    {% for admin in group.items %}
-                        <tr>
-                            <td class="sonata-ba-list-label">{{ admin.label|trans({}, admin.translationdomain) }}</td>
-                            <td>
-                                {% if admin.hasroute('create') and admin.isGranted('CREATE') %}
-                                    <a href="{{ admin.generateUrl('create')}}">
-                                        <img src="{{ asset('bundles/sonataadmin/famfamfam/add.png') }}"  alt="{%- trans from 'SonataAdminBundle' %}link_add{% endtrans -%}" />
-                                        {%- trans from 'SonataAdminBundle' %}link_add{% endtrans -%}
-                                    </a>
-                                {% endif %}
-                            </td>
-                            <td>
-                                {% if admin.hasroute('list') and admin.isGranted('LIST') %}
-                                    <a href="{{ admin.generateUrl('list')}}">
-                                        <img src="{{ asset('bundles/sonataadmin/famfamfam/application_view_list.png') }}" alt="{%- trans from 'SonataAdminBundle' %}link_list{% endtrans -%}" />
-                                        {%- trans from 'SonataAdminBundle' %}link_list{% endtrans -%}
-                                    </a>
-                                {% endif %}
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        {% endfor %}
+    <div class="row">
+        <div class="span6">
+            {% for block in blocks %}
+                {% if block.position == 'left' %}
+                    {{ sonata_block_render({ 'type': block.type, 'settings': block.settings}) }}
+                {% endif %}
+            {% endfor %}
+        </div>
+        <div class="span5">
+            {% for block in blocks %}
+                {% if block.position == 'right' %}
+                    {{ sonata_block_render({ 'type': block.type, 'settings': block.settings}) }}
+                {% endif %}
+            {% endfor %}
+        </div>
     </div>
 {% endblock %}

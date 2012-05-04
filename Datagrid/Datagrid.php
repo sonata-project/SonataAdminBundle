@@ -178,6 +178,20 @@ class Datagrid implements DatagridInterface
     }
 
     /**
+     * @return boolean
+     */
+    public function hasActiveFilters()
+    {
+        foreach ($this->filters as $name => $filter) {
+            if ($filter->isActive()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * @return \Sonata\AdminBundle\Admin\FieldDescriptionCollection
      */
     public function getColumns()

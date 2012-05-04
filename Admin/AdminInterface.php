@@ -20,6 +20,7 @@ use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
 use Sonata\AdminBundle\Builder\RouteBuilderInterface;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Sonata\AdminBundle\Validator\ErrorElement;
+use Sonata\AdminBundle\Route\RouteGeneratorInterface;
 
 use Knp\Menu\FactoryInterface as MenuFactoryInterface;
 
@@ -31,97 +32,84 @@ use Symfony\Component\HttpFoundation\Request;
 interface AdminInterface
 {
     /**
-     * @abstract
      * @param \Sonata\AdminBundle\Builder\FormContractorInterface $formContractor
      * @return void
      */
     function setFormContractor(FormContractorInterface $formContractor);
 
     /**
-     * @abstract
      * @param ListBuilderInterface $listBuilder
      * @return void
      */
     function setListBuilder(ListBuilderInterface $listBuilder);
 
     /**
-     * @abstract
      * @param \Sonata\AdminBundle\Builder\DatagridBuilderInterface $datagridBuilder
      * @return void
      */
     function setDatagridBuilder(DatagridBuilderInterface $datagridBuilder);
 
     /**
-     * @abstract
      * @param \Symfony\Component\Translation\TranslatorInterface $translator
      * @return void
      */
     function setTranslator(TranslatorInterface $translator);
 
     /**
-     * @abstract
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @return void
      */
     function setRequest(Request $request);
 
     /**
-     * @abstract
      * @param Pool $pool
      * @return void
      */
     function setConfigurationPool(Pool $pool);
 
     /**
-     * @abstract
-     * @param \Symfony\Component\Routing\RouterInterface $router
+     * @param \Sonata\AdminBundle\Route\RouteGeneratorInterface $router
      * @return void
      */
-    function setRouter(RouterInterface $router);
+    function setRouteGenerator(RouteGeneratorInterface $routeGenerator);
 
     /**
      * Returns the class name managed
      *
-     * @abstract
      * @return void
      */
     function getClass();
 
     /**
-     * @abstract
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
      * @return void
      */
     function attachAdminClass(FieldDescriptionInterface $fieldDescription);
 
     /**
-     * @abstract
      * @return \Sonata\AdminBundle\Datagrid\DatagridInterface
      */
     function getDatagrid();
 
     /**
-     * @abstract
-     * @param string $name
+     * @param $name
      * @param array $parameters
+     * @param bool $absolute
      * @return void
      */
-    function generateUrl($name, array $parameters = array());
+    function generateUrl($name, array $parameters = array(), $absolute = false);
 
     /**
-     * @abstract
      * @return \Sonata\AdminBundle\ModelManagerInterface;
      */
     function getModelManager();
 
     /**
-     * @abstract
      * @return string the manager type of the admin
      */
     function getManagerType();
 
     /**
-     * @abstract
      * @return \Sonata\AdminBundle\Datagrid\ProxyQueryInterface
      */
     function createQuery($context = 'list');
@@ -133,14 +121,12 @@ interface AdminInterface
     function getFormBuilder();
 
     /**
-     * @abstract
      * @param string $name
      * @return \Sonata\AdminBundle\Admin\FieldDescriptionInterface
      */
     function getFormFieldDescription($name);
 
     /**
-     * @abstract
      * @return \Symfony\Component\HttpFoundation\Request
      */
     function getRequest();
@@ -152,13 +138,16 @@ interface AdminInterface
     function getCode();
 
     /**
-     * @abstract
-     * @return array
+     * Return the roles and permissions per role
+     * - different permissions per role for the acl handler
+     * - one permission that has the same name as the role for the role handler
+     * This should be used by experimented users
+     *
+     * @return array [role] => array([permission], [permission])
      */
     function getSecurityInformation();
 
     /**
-     * @abstract
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $parentFieldDescription
      * @return void
      */
@@ -178,7 +167,6 @@ interface AdminInterface
     /**
      * Return the parameter name used to represente the id in the url
      *
-     * @abstract
      * @return string
      */
     function getRouterIdParameter();
@@ -236,7 +224,6 @@ interface AdminInterface
     function isGranted($name, $object = null);
 
     /**
-     * @abstract
      * @param $entity
      */
     function getNormalizedIdentifier($entity);
@@ -424,16 +411,23 @@ interface AdminInterface
     function validate(ErrorElement $errorElement, $object);
 
     /**
-     * @abstract
      * @param $context
      * @return boolean
      */
     function showIn($context);
 
     /**
-     * @abstract
+     * Add object security, fe. make the current user owner of the object
+     *
      * @param $object
-     * @return void
      */
     function createObjectSecurity($object);
+
+    /**
+     * Returns the url defined by the $name
+     *
+     * @param strinf $name
+     * @return Route
+     */
+    function getRoute($name);
 }

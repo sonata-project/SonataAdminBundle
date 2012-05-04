@@ -301,6 +301,14 @@
                 <target>Ver Revisión</target>
             </trans-unit>
 
+            <trans-unit id="list_results_count">
+                <source>list_results_count</source>
+                <target>1 resultado|%count% resultados</target>
+            </trans-unit>
+            <trans-unit id="label_export_download">
+                <source>label_export_download</source>
+                <target>Exportar: </target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

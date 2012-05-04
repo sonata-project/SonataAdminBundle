@@ -91,11 +91,20 @@ class Pool
      */
     public function getAdminByClass($class)
     {
-        if (!isset($this->adminClasses[$class])) {
+        if (!$this->hasAdminByClass($class)) {
             return null;
         }
 
         return $this->getInstance($this->adminClasses[$class]);
+    }
+
+    /**
+     * @param $class
+     * @return bool
+     */
+    public function hasAdminByClass($class)
+    {
+        return isset($this->adminClasses[$class]);
     }
 
     /**

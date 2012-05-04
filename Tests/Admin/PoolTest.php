@@ -77,12 +77,14 @@ class PoolTest extends \PHPUnit_Framework_TestCase
     public function testGetAdminForClassWhenAdminClassIsNotSet()
     {
         $this->pool->setAdminClasses(array('someclass' => 'sonata.user.admin.group1'));
+        $this->assertFalse($this->pool->hasAdminByClass('notexists'));
         $this->assertNull($this->pool->getAdminByClass('notexists'));
     }
 
     public function testGetAdminForClassWhenAdminClassIsSet()
     {
         $this->pool->setAdminClasses(array('someclass' => 'sonata.user.admin.group1'));
+        $this->assertTrue($this->pool->hasAdminByClass('someclass'));
         $this->assertEquals('adminUserClass', $this->pool->getAdminByClass('someclass'));
     }
 

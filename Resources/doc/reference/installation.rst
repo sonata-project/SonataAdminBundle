@@ -26,6 +26,14 @@ in your ``deps`` file::
       git=http://github.com/sonata-project/SonataAdminBundle.git
       target=/bundles/Sonata/AdminBundle
 
+  [SonataBlockBundle]
+      git=http://github.com/sonata-project/SonataBlockBundle.git
+      target=/bundles/Sonata/BlockBundle
+
+  [SonataCacheBundle]
+      git=http://github.com/sonata-project/SonataCacheBundle.git
+      target=/bundles/Sonata/CacheBundle
+
   [SonatajQueryBundle]
       git=http://github.com/sonata-project/SonatajQueryBundle.git
       target=/bundles/Sonata/jQueryBundle
@@ -38,17 +46,13 @@ in your ``deps`` file::
       git=http://github.com/KnpLabs/KnpMenu.git
       target=/knp/menu
 
+  [Exporter]
+      git=http://github.com/sonata-project/exporter.git
+      target=/exporter
+
 and run the vendors script to download bundles::
 
   php bin/vendors install
-
-If you prefer instead to use git submodules, then run the following:
-
-  git submodule add http://github.com/sonata-project/SonataAdminBundle.git vendor/bundles/Sonata/AdminBundle
-  git submodule add http://github.com/sonata-project/SonatajQueryBundle.git vendor/bundles/Sonata/jQueryBundle
-  git submodule add http://github.com/KnpLabs/KnpMenuBundle.git vendor/bundles/Knp/Bundle/MenuBundle
-  git submodule add http://github.com/KnpLabs/KnpMenu.git vendor/knp/menu
-  git submodule update --init
 
 Next, be sure to enable this bundles in your autoload.php and AppKernel.php
 files:
@@ -60,6 +64,7 @@ files:
     $loader->registerNamespaces(array(
         // ...
         'Sonata'     => __DIR__.'/../vendor/bundles',
+        'Exporter'   => __DIR__.'/../vendor/exporter/lib',
         'Knp\Bundle' => __DIR__.'/../vendor/bundles',
         'Knp\Menu'   => __DIR__.'/../vendor/knp/menu/src',
         // ...
@@ -71,6 +76,8 @@ files:
         return array(
             // ...
             new Sonata\AdminBundle\SonataAdminBundle(),
+            new Sonata\BlockBundle\SonataBlockBundle(),
+            new Sonata\CacheBundle\SonataCacheBundle(),
             new Sonata\jQueryBundle\SonatajQueryBundle(),
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
             // ...

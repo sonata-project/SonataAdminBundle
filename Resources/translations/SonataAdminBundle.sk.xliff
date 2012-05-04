@@ -301,6 +301,14 @@
                 <target>Zobraziť revízie</target>
             </trans-unit>
 
+            <trans-unit id="list_results_count">
+                <source>list_results_count</source>
+                <target>1 záznam|%count% záznamy|%count% záznamov</target>
+            </trans-unit>
+            <trans-unit id="label_export_download">
+                <source>label_export_download</source>
+                <target>label_export_download</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

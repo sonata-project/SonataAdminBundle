@@ -54,6 +54,7 @@ class SonataAdminExtension extends Extension
         $loader->load('form_types.xml');
         $loader->load('validator.xml');
         $loader->load('route.xml');
+        $loader->load('block.xml');
 
         $configuration = new Configuration();
         $processor = new Processor();
@@ -65,7 +66,8 @@ class SonataAdminExtension extends Extension
 
         $container->setParameter('sonata.admin.configuration.templates', $config['templates']);
         $container->setParameter('sonata.admin.configuration.admin_services', $config['admin_services']);
-        $container->setParameter('sonata.admin.configuration.dashboard_groups', $config['dashboard_groups']);
+        $container->setParameter('sonata.admin.configuration.dashboard_groups', $config['dashboard']['groups']);
+        $container->setParameter('sonata.admin.configuration.dashboard_blocks', $config['dashboard']['blocks']);
 
         $container->setAlias('sonata.admin.security.handler', $config['security']['handler']);
 
@@ -110,7 +112,8 @@ class SonataAdminExtension extends Extension
             'text'     => 'sonata-medium',
             'choice'   => 'sonata-medium',
             'integer'  => 'sonata-medium',
-            'datetime' => 'sonata-medium-date'
+            'datetime' => 'sonata-medium-date',
+            'date' => 'sonata-medium-date'
         );
 
         $container->getDefinition('sonata.admin.form.extension.field')

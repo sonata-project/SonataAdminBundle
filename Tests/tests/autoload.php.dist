@@ -1,7 +1,7 @@
 <?php
 
 // try to reuse lib defined in a current symfony2 project
-$autoload = __DIR__.'/../../../../../../app/bootstrap.php.cache';
+$autoload = __DIR__.'/../../../../../../app/autoload.php';
 if (is_file($autoload)) {
     include $autoload;
 } else {
@@ -12,6 +12,7 @@ if (is_file($autoload)) {
     $loader->registerNamespaces(array(
         'Symfony'  => array($vendorDir.'/symfony/src'),
         'Knp'      => array($vendorDir.'/knpmenu/src'),
+        'Exporter' => array($vendorDir.'/exporter/lib'),
     ));
     $loader->registerPrefixes(array(
         'Twig_'            => $vendorDir.'/twig/lib',

@@ -38,6 +38,7 @@ class PathInfoBuilder implements RouteBuilderInterface
         $collection->add('edit', $admin->getRouterIdParameter().'/edit');
         $collection->add('delete', $admin->getRouterIdParameter().'/delete');
         $collection->add('show', $admin->getRouterIdParameter().'/show');
+        $collection->add('export');
 
         if ($this->manager->hasReader($admin->getClass())) {
             $collection->add('history', $admin->getRouterIdParameter().'/history');

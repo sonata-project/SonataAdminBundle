@@ -238,6 +238,15 @@
               <source>delete_or</source>
               <target>или</target>
             </trans-unit>
+
+            <trans-unit id="list_results_count">
+                <source>list_results_count</source>
+                <target>{0} Нет данных |{1} Всего %count% запись |{2,3,4} Всего %count% записи |[5,Inf] Всего %count% записей</target>
+            </trans-unit>
+            <trans-unit id="label_export_download">
+                <source>label_export_download</source>
+                <target>label_export_download</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

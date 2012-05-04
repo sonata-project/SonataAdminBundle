@@ -294,6 +294,15 @@
                 <source>label_view_revision</source>
                 <target>Visualizza revisione</target>
             </trans-unit>
+
+            <trans-unit id="list_results_count">
+                <source>list_results_count</source>
+                <target>1 risultato|%count% risultati</target>
+            </trans-unit>
+            <trans-unit id="label_export_download">
+                <source>label_export_download</source>
+                <target>Esporta in formato</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

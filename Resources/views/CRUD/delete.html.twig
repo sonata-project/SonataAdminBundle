@@ -38,12 +38,12 @@ file that was distributed with this source code.
             <form method="POST" action="{{ admin.generateObjectUrl('delete', object) }}">
                 <input type="hidden" value="DELETE" name="_method" />
 
-                <input type="submit" class="btn danger" value="{% trans from 'SonataAdminBundle' %}btn_delete{% endtrans %}" />
+                <input type="submit" class="btn btn-danger" value="{% trans from 'SonataAdminBundle' %}btn_delete{% endtrans %}" />
 
                 {% if admin.hasRoute('edit') and admin.isGranted('EDIT', object) %}
                     {% trans from 'SonataAdminBundle' %}delete_or{% endtrans %}
 
-                    <a class="btn success" href="{{ admin.generateObjectUrl('edit', object) }}">{% trans from 'SonataAdminBundle' %}link_action_edit{% endtrans %}</a>
+                    <a class="btn btn-success" href="{{ admin.generateObjectUrl('edit', object) }}">{% trans from 'SonataAdminBundle' %}link_action_edit{% endtrans %}</a>
                 {% endif %}
             </form>
         </div>

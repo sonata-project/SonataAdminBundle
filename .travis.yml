@@ -4,7 +4,7 @@ php:
   # - 5.4
 
 env:
-  - SYMFONY_VERSION=v2.0.6
+  - SYMFONY_VERSION=v2.0.11
   - SYMFONY_VERSION=origin/master
 
 before_script: php Tests/tests/vendors.php

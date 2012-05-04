@@ -1,0 +1,52 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{% extends 'SonataBlockBundle:Block:block_base.html.twig' %}
+
+{% block block %}
+    {% for group in admin_pool.dashboardGroups %}
+        <table class="sonata-ba-list table table-striped table-bordered table">
+            <thead>
+                <tr>
+                    <th colspan="3">{{ group.label|trans({}, 'SonataAdminBundle') }}</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for admin in group.items %}
+                    {% if admin.hasroute('create') and admin.isGranted('CREATE') or admin.hasroute('list') and admin.isGranted('LIST') %}
+                        <tr>
+                            <td>
+                                <div class="sonata-ba-list-label pull-left">
+                                    {{ admin.label|trans({}, admin.translationdomain) }}
+                                </div>
+                                <div class="pull-right">
+                                    {% if admin.hasroute('create') and admin.isGranted('CREATE') %}
+                                        <a class="btn" href="{{ admin.generateUrl('create')}}">
+                                            <i class="icon-plus"></i>
+                                            {%- trans from 'SonataAdminBundle' %}link_add{% endtrans -%}
+                                        </a>
+                                    {% endif %}
+                                    {% if admin.hasroute('list') and admin.isGranted('LIST') %}
+                                        <a class="btn" href="{{ admin.generateUrl('list')}}">
+                                            <i class="icon-list-alt"></i>
+                                            {%- trans from 'SonataAdminBundle' %}link_list{% endtrans -%}
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            </td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endfor %}
+{% endblock %}
