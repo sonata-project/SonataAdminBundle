@@ -19,22 +19,6 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 interface ModelManagerInterface
 {
     /**
-     * Returns true if the model has a relation
-     *
-     * @param string $name
-     *
-     * @return boolean
-     */
-    function hasMetadata($name);
-
-    /**
-     * @param string $name
-     *
-     * @return \Doctrine\ORM\Mapping\ClassMetadataInfo
-     */
-    function getMetadata($name);
-
-    /**
      * Returns a new FieldDescription
      *
      * @param string $class
@@ -258,4 +242,13 @@ interface ModelManagerInterface
      * @return mixed
      */
     function getPaginationParameters(DatagridInterface $datagrid, $page);
+
+    /**
+     * @param string                                           $class
+     * @param \Sonata\AdminBundle\Datagrid\ProxyQueryInterface $query
+     * @param array                                            $idx
+     *
+     * @return void
+     */
+    function addIdentifiersToQuery($class, ProxyQueryInterface $query, $idx);
 }
