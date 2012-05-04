@@ -32,11 +32,11 @@ class AddFilterTypeCompilerPass implements CompilerPassInterface
         $types      = array();
 
         foreach ($container->findTaggedServiceIds('sonata.admin.filter.type') as $id => $attributes) {
-            $name = $attributes[0]['alias'];
-
             $container->getDefinition($id)->setScope(ContainerInterface::SCOPE_PROTOTYPE);
 
-            $types[$name] = $id;
+            foreach ($attributes as $eachTag) {
+                $types[$eachTag['alias']] = $id;
+            }
         }
 
         $definition->replaceArgument(1, $types);
