@@ -250,5 +250,5 @@ interface ModelManagerInterface
      *
      * @return void
      */
-    function addIdentifiersToQuery($class, ProxyQueryInterface $query, $idx);
+    function addIdentifiersToQuery($class, ProxyQueryInterface $query, array $idx);
 }
