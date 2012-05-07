@@ -25,6 +25,9 @@
         "sonata-project/exporter": "dev-master",
         "sonata-project/block-bundle": "dev-master"
     },
+    "require-dev": {
+        "jms/translation-bundle": "*"
+    },
     "suggest": {
         "sonata-project/doctrine-orm-admin-bundle": "dev-master",
         "sonata-project/intl-bundle": "dev-master"

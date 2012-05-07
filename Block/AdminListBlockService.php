@@ -30,9 +30,9 @@ class AdminListBlockService extends BaseBlockService
     protected $pool;
 
     /**
-     * @param $name
+     * @param string                                                     $name
      * @param \Symfony\Bundle\FrameworkBundle\Templating\EngineInterface $templating
-     * @param \Sonata\AdminBundle\Admin\Pool $pool
+     * @param \Sonata\AdminBundle\Admin\Pool                             $pool
      */
     public function __construct($name, EngineInterface $templating, Pool $pool)
     {
@@ -92,7 +92,7 @@ class AdminListBlockService extends BaseBlockService
     /**
      * {@inheritdoc}
      */
-    function getDefaultSettings()
+    public function getDefaultSettings()
     {
         return array(
             'groups' => false

@@ -135,7 +135,7 @@
         <mkdir dir="${dir.reports.test}" />
 
         <echo msg="Installing/Updating vendors..." />
-        <exec command="composer update" passthru="true"/>
+        <exec command="composer update --dev" passthru="true"/>
 
     </target>
 

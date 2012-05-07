@@ -12,13 +12,16 @@
 
 namespace Sonata\AdminBundle\Guesser;
 
+use Sonata\AdminBundle\Model\ModelManagerInterface;
+
 interface TypeGuesserInterface
 {
     /**
-     * @abstract
-     * @param string $class
-     * @param string $property
-     * @return TypeGuess
+     * @param string                                          $class
+     * @param string                                          $property
+     * @param \Sonata\AdminBundle\Model\ModelManagerInterface $modelManager
+     *
+     * @return mixed
      */
-    function guessType($class, $property);
+    function guessType($class, $property, ModelManagerInterface $modelManager);
 }

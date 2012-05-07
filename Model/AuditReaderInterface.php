@@ -18,32 +18,28 @@ use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 interface AuditReaderInterface
 {
     /**
-     * @abstract
-     * @param $className
-     * @param $id
-     * @param $revision
+     * @param string $className
+     * @param string $id
+     * @param string $revision
      */
     function find($className, $id, $revision);
 
     /**
-     * @abstract
-     * @param $className
-     * @param int $limit
-     * @param int $offset
+     * @param string $className
+     * @param int    $limit
+     * @param int    $offset
      */
     function findRevisionHistory($className, $limit = 20, $offset = 0);
 
     /**
-     * @abstract
-     * @param $classname
-     * @param $revision
+     * @param string $classname
+     * @param string $revision
      */
     function findRevision($classname, $revision);
 
     /**
-     * @abstract
-     * @param $className
-     * @param $id
+     * @param string $className
+     * @param string $id
      */
     function findRevisions($className, $id);
 }

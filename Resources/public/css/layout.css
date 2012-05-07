@@ -278,6 +278,15 @@ legend + .sonata-ba-collapsed-fields {
 }
 
 .bordered-table tbody.ui-sortable tr {
-	cursor: move;	
+	cursor: move;
+}
+
+.sonata-ba-fielset-collapsed legend:before {
+    content: '+ ';
+}
+
+.sonata-ba-collapsed-fields-close legend:before {
+    content: '- ';
+    padding-left: 5px;
 }
 

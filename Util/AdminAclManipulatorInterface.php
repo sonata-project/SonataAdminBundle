@@ -22,7 +22,8 @@ interface AdminAclManipulatorInterface
      * Batch configure the ACLs for all objects handled by an Admin
      *
      * @param \Symfony\Component\Console\Output\OutputInterface $output
-     * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
+     * @param \Sonata\AdminBundle\Admin\AdminInterface          $admin
+     *
      * @return void
      */
     function configureAcls(OutputInterface $output, AdminInterface $admin);
@@ -30,10 +31,11 @@ interface AdminAclManipulatorInterface
     /**
      * Add the class ACE's to the admin ACL
      *
-     * @param \Symfony\Component\Console\Output\OutputInterface $output
-     * @param \Symfony\Component\Security\Acl\Model\AclInterface $acl
+     * @param \Symfony\Component\Console\Output\OutputInterface                $output
+     * @param \Symfony\Component\Security\Acl\Model\AclInterface               $acl
      * @param \Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface $securityHandler
-     * @param array $roleInformation
+     * @param array                                                            $roleInformation
+     *
      * @return boolean TRUE if admin class ACEs are added, FALSE if not
      */
     function addAdminClassAces(OutputInterface $output, AclInterface $acl, AclSecurityHandlerInterface $securityHandler, array $roleInformation = array());

@@ -29,6 +29,10 @@ class ModelToIdTransformer implements DataTransformerInterface
 
     protected $className;
 
+    /**
+     * @param \Sonata\AdminBundle\Model\ModelManagerInterface $modelManager
+     * @param string                                          $className
+     */
     public function __construct(ModelManagerInterface $modelManager, $className)
     {
         $this->modelManager = $modelManager;
@@ -36,13 +40,7 @@ class ModelToIdTransformer implements DataTransformerInterface
     }
 
     /**
-     * Reverse Transforming the selected id value to an Doctrine Entity.
-     *
-     * This handles NULL, the EntityManager#find method returns null if no entity was found.
-     *
-     * @param  int|string $newId
-     * @param  object $oldEntity
-     * @return object
+     * {@inheritDoc}
      */
     public function reverseTransform($newId)
     {
@@ -54,8 +52,7 @@ class ModelToIdTransformer implements DataTransformerInterface
     }
 
     /**
-     * @param  object $entity
-     * @return int|string
+     * {@inheritDoc}
      */
     public function transform($entity)
     {

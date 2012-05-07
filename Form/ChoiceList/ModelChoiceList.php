@@ -72,6 +72,13 @@ class ModelChoiceList extends SimpleChoiceList
 
     private $propertyPath;
 
+    /**
+     * @param \Sonata\AdminBundle\Model\ModelManagerInterface $modelManager
+     * @param string                                          $class
+     * @param null                                            $property
+     * @param null                                            $query
+     * @param array                                           $choices
+     */
     public function __construct(ModelManagerInterface $modelManager, $class, $property = null, $query = null, $choices = array())
     {
         $this->modelManager   = $modelManager;
@@ -146,6 +153,9 @@ class ModelChoiceList extends SimpleChoiceList
         }
     }
 
+    /**
+     * @return array
+     */
     public function getIdentifier()
     {
         return $this->identifier;
@@ -207,6 +217,7 @@ class ModelChoiceList extends SimpleChoiceList
      * underlying class
      *
      * @param  string $property     The name of the property
+     *
      * @return \ReflectionProperty  The reflection instsance
      */
     private function getReflProperty($property)
