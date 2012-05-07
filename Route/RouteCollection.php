@@ -41,9 +41,10 @@ class RouteCollection
     /**
      * @param string $name
      * @param string $pattern
-     * @param array $defaults
-     * @param array $requirements
-     * @param array $options
+     * @param array  $defaults
+     * @param array  $requirements
+     * @param array  $options
+     *
      * @return void
      */
     public function add($name, $pattern = null, array $defaults = array(), array $requirements = array(), array $options = array())
@@ -65,11 +66,17 @@ class RouteCollection
         $this->elements[$this->getCode($name)] = new Route($pattern, $defaults, $requirements, $options);
     }
 
+    /**
+     * @param string $name
+     *
+     * @return string
+     */
     public function getCode($name)
     {
         if (strrpos($name, '.') !== false) {
             return $name;
         }
+
         return sprintf('%s.%s', $this->baseCodeRoute, $name);
     }
 
@@ -93,6 +100,7 @@ class RouteCollection
 
     /**
      * @param string $name
+     *
      * @return bool
      */
     public function has($name)
@@ -102,6 +110,7 @@ class RouteCollection
 
     /**
      * @param string $name
+     *
      * @return Route
      */
     public function get($name)
@@ -114,7 +123,8 @@ class RouteCollection
     }
 
     /**
-     * @param $name
+     * @param string $name
+     *
      * @return \Sonata\AdminBundle\Route\RouteCollection
      */
     public function remove($name)
@@ -128,6 +138,7 @@ class RouteCollection
      * Convert a word in to the format for a symfony action action_name => actionName
      *
      * @param string $action Word to actionify
+     *
      * @return string Actionified word
      */
     public function actionify($action)

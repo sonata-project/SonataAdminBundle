@@ -17,11 +17,11 @@ use Sonata\AdminBundle\Model\ModelManagerInterface;
 interface TypeGuesserInterface
 {
     /**
-     * @abstract
-     * @param string $class
-     * @param string $property
+     * @param string                                          $class
+     * @param string                                          $property
      * @param \Sonata\AdminBundle\Model\ModelManagerInterface $modelManager
-     * @return TypeGuess
+     *
+     * @return mixed
      */
     function guessType($class, $property, ModelManagerInterface $modelManager);
 }

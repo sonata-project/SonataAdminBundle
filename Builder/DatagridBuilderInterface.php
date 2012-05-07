@@ -20,25 +20,29 @@ interface DatagridBuilderInterface
 {
     /**
      *
-     * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
+     * @param \Sonata\AdminBundle\Admin\AdminInterface            $admin
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
+     *
      * @return void
      */
     function fixFieldDescription(AdminInterface $admin, FieldDescriptionInterface $fieldDescription);
 
     /**
      * @abstract
-     * @param \Sonata\AdminBundle\Datagrid\DatagridInterface $datagrid
-     * @param $type
+     *
+     * @param \Sonata\AdminBundle\Datagrid\DatagridInterface      $datagrid
+     * @param string                                              $type
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
-     * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
+     * @param \Sonata\AdminBundle\Admin\AdminInterface            $admin
+     *
      * @return void
      */
     function addFilter(DatagridInterface $datagrid, $type = null, FieldDescriptionInterface $fieldDescription, AdminInterface $admin);
 
     /**
      * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
-     * @param array $values
+     * @param array                                    $values
+     *
      * @return \Sonata\AdminBundle\Datagrid\DatagridInterface
      */
     function getBaseDatagrid(AdminInterface $admin, array $values = array());

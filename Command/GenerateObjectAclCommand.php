@@ -29,6 +29,9 @@ class GenerateObjectAclCommand extends ContainerAwareCommand
      */
     protected $userEntityClass = '';
 
+    /**
+     * {@inheritDoc}
+     */
     public function configure()
     {
         $this
@@ -40,6 +43,9 @@ class GenerateObjectAclCommand extends ContainerAwareCommand
         ;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $dialog = $this->getHelperSet()->get('dialog');
@@ -102,6 +108,12 @@ class GenerateObjectAclCommand extends ContainerAwareCommand
         }
     }
 
+    /**
+     * @param \Symfony\Component\Console\Input\InputInterface   $input
+     * @param \Symfony\Component\Console\Output\OutputInterface $output
+     *
+     * @return string
+     */
     protected function getUserEntityClass(InputInterface $input, OutputInterface $output)
     {
         if ($this->userEntityClass === '') {

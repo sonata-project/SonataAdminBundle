@@ -33,18 +33,18 @@ class FormTypeFieldExtension extends AbstractTypeExtension
 
     /**
      * @param \Symfony\Component\Form\FormBuilder $builder
-     * @param array $options
+     * @param array                               $options
      */
     public function buildForm(FormBuilder $builder, array $options)
     {
         $sonataAdmin = array(
-            'name'      => null,
-            'admin'     => null,
-            'value'     => null,
-            'edit'      => 'standard',
-            'inline'    => 'natural',
+            'name'              => null,
+            'admin'             => null,
+            'value'             => null,
+            'edit'              => 'standard',
+            'inline'            => 'natural',
             'field_description' => null,
-            'block_name' => false
+            'block_name'        => false
         );
 
         $builder->setAttribute('sonata_admin_enabled', false);
@@ -67,6 +67,7 @@ class FormTypeFieldExtension extends AbstractTypeExtension
 
     /**
      * @param \Symfony\Component\Form\FormBuilder $formBuilder
+     *
      * @return string
      */
     protected function getClass(FormBuilder $formBuilder)
@@ -81,7 +82,7 @@ class FormTypeFieldExtension extends AbstractTypeExtension
     }
 
     /**
-     * @param \Symfony\Component\Form\FormView $view
+     * @param \Symfony\Component\Form\FormView      $view
      * @param \Symfony\Component\Form\FormInterface $form
      */
     public function buildView(FormView $view, FormInterface $form)
@@ -161,8 +162,9 @@ class FormTypeFieldExtension extends AbstractTypeExtension
      * return the value related to FieldDescription, if the associated object does no
      * exists => a temporary one is created
      *
-     * @param object $object
+     * @param object                                              $object
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
+     *
      * @return mixed
      */
     public function getValueFromFieldDescription($object, FieldDescriptionInterface $fieldDescription)

@@ -21,6 +21,9 @@ use Symfony\Component\Console\Output\Output;
 class ExplainAdminCommand extends ContainerAwareCommand
 {
 
+    /**
+     * {@inheritDoc}
+     */
     public function configure()
     {
         $this->setName('sonata:admin:explain');
@@ -29,6 +32,9 @@ class ExplainAdminCommand extends ContainerAwareCommand
         $this->addArgument('admin', InputArgument::REQUIRED, 'The admin service id');
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $admin = $this->getContainer()->get($input->getArgument('admin'));

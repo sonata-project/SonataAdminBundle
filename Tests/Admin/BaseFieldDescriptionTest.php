@@ -93,7 +93,7 @@ class BaseFieldDescriptionTest extends \PHPUnit_Framework_TestCase
         $mock = $this->getMock('stdClass', array('getFoo'));
         $mock->expects($this->once())->method('getFoo')->will($this->returnValue(42));
 
-        $this->assertEquals(42, $description->getValue($mock));
+        $this->assertEquals(42, $description->getFieldValue($mock, 'fake'));
     }
 
     /**
@@ -104,7 +104,7 @@ class BaseFieldDescriptionTest extends \PHPUnit_Framework_TestCase
         $description = new FieldDescription();
         $mock = $this->getMock('stdClass', array('getFoo'));
 
-        $description->getValue($mock);
+        $description->getFieldValue($mock, 'fake');
     }
 
     /**
@@ -138,5 +138,27 @@ class FieldDescription extends BaseFieldDescription
     function isIdentifier()
     {
         // TODO: Implement isIdentifier() method.
+    }
+
+    /**
+     * set the parent association mappings information
+     *
+     * @param array $parentAssociationMappings
+     * @return void
+     */
+    function setParentAssociationMappings(array $parentAssociationMappings)
+    {
+        // TODO: Implement setParentAssociationMappings() method.
+    }
+
+    /**
+     * return the value linked to the description
+     *
+     * @param  $object
+     * @return bool|mixed
+     */
+    function getValue($object)
+    {
+        // TODO: Implement getValue() method.
     }
 }

@@ -34,17 +34,17 @@ class AclSecurityHandler implements AclSecurityHandlerInterface
     protected $maskBuilderClass;
 
     /**
-     * @param SecurityContextInterface $securityContext
-     * @param AclProviderInterface $aclProvider
-     * @param string $maskBuilderClass
-     * @param array $superAdminRoles
+     * @param \Symfony\Component\Security\Core\SecurityContextInterface          $securityContext
+     * @param \Symfony\Component\Security\Acl\Model\MutableAclProviderInterface  $aclProvider
+     * @param string                                                             $maskBuilderClass
+     * @param array                                                              $superAdminRoles
      */
     public function __construct(SecurityContextInterface $securityContext, MutableAclProviderInterface $aclProvider, $maskBuilderClass, array $superAdminRoles)
     {
-        $this->securityContext = $securityContext;
-        $this->aclProvider = $aclProvider;
+        $this->securityContext  = $securityContext;
+        $this->aclProvider      = $aclProvider;
         $this->maskBuilderClass = $maskBuilderClass;
-        $this->superAdminRoles = $superAdminRoles;
+        $this->superAdminRoles  = $superAdminRoles;
     }
 
     /**
@@ -102,7 +102,7 @@ class AclSecurityHandler implements AclSecurityHandlerInterface
      */
     public function getBaseRole(AdminInterface $admin)
     {
-        return 'ROLE_'.str_replace('.', '_', strtoupper($admin->getCode())).'_%s';
+        return 'ROLE_' . str_replace('.', '_', strtoupper($admin->getCode())) . '_%s';
     }
 
     /**
@@ -127,13 +127,13 @@ class AclSecurityHandler implements AclSecurityHandlerInterface
     {
         // retrieving the ACL for the object identity
         $objectIdentity = ObjectIdentity::fromDomainObject($object);
-        $acl = $this->getObjectAcl($objectIdentity);
+        $acl            = $this->getObjectAcl($objectIdentity);
         if (is_null($acl)) {
             $acl = $this->createAcl($objectIdentity);
         }
 
         // retrieving the security identity of the currently logged-in user
-        $user = $this->securityContext->getToken()->getUser();
+        $user             = $this->securityContext->getToken()->getUser();
         $securityIdentity = UserSecurityIdentity::fromAccount($user);
 
         $this->addObjectOwner($acl, $securityIdentity);
@@ -157,7 +157,7 @@ class AclSecurityHandler implements AclSecurityHandlerInterface
     {
         try {
             $acl = $this->aclProvider->findAcl($objectIdentity);
-        } catch(AclNotFoundException $e) {
+        } catch (AclNotFoundException $e) {
             return null;
         }
 
@@ -171,7 +171,7 @@ class AclSecurityHandler implements AclSecurityHandlerInterface
     {
         try {
             $acls = $this->aclProvider->findAcls($oids, $sids);
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             if ($e instanceof NotAllAclsFoundException) {
                 $acls = $e->getPartialResult();
             } elseif ($e instanceof AclNotFoundException) {
@@ -205,7 +205,7 @@ class AclSecurityHandler implements AclSecurityHandlerInterface
 
         foreach ($roleInformation as $role => $permissions) {
             $aceIndex = $this->findClassAceIndexByRole($acl, $role);
-            $hasRole = false;
+            $hasRole  = false;
 
             foreach ($permissions as $permission) {
                 // add only the object permissions

@@ -33,42 +33,49 @@ interface AdminInterface
 {
     /**
      * @param \Sonata\AdminBundle\Builder\FormContractorInterface $formContractor
+     *
      * @return void
      */
     function setFormContractor(FormContractorInterface $formContractor);
 
     /**
      * @param ListBuilderInterface $listBuilder
+     *
      * @return void
      */
     function setListBuilder(ListBuilderInterface $listBuilder);
 
     /**
      * @param \Sonata\AdminBundle\Builder\DatagridBuilderInterface $datagridBuilder
+     *
      * @return void
      */
     function setDatagridBuilder(DatagridBuilderInterface $datagridBuilder);
 
     /**
      * @param \Symfony\Component\Translation\TranslatorInterface $translator
+     *
      * @return void
      */
     function setTranslator(TranslatorInterface $translator);
 
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
+     *
      * @return void
      */
     function setRequest(Request $request);
 
     /**
      * @param Pool $pool
+     *
      * @return void
      */
     function setConfigurationPool(Pool $pool);
 
     /**
-     * @param \Sonata\AdminBundle\Route\RouteGeneratorInterface $router
+     * @param \Sonata\AdminBundle\Route\RouteGeneratorInterface $routeGenerator
+     *
      * @return void
      */
     function setRouteGenerator(RouteGeneratorInterface $routeGenerator);
@@ -76,12 +83,13 @@ interface AdminInterface
     /**
      * Returns the class name managed
      *
-     * @return void
+     * @return string
      */
     function getClass();
 
     /**
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
+     *
      * @return void
      */
     function attachAdminClass(FieldDescriptionInterface $fieldDescription);
@@ -92,15 +100,16 @@ interface AdminInterface
     function getDatagrid();
 
     /**
-     * @param $name
-     * @param array $parameters
-     * @param bool $absolute
+     * @param string $name
+     * @param array  $parameters
+     * @param bool   $absolute
+     *
      * @return void
      */
     function generateUrl($name, array $parameters = array(), $absolute = false);
 
     /**
-     * @return \Sonata\AdminBundle\ModelManagerInterface;
+     * @return \Sonata\AdminBundle\Model\ModelManagerInterface;
      */
     function getModelManager();
 
@@ -110,18 +119,20 @@ interface AdminInterface
     function getManagerType();
 
     /**
+     * @param string $context
+     *
      * @return \Sonata\AdminBundle\Datagrid\ProxyQueryInterface
      */
     function createQuery($context = 'list');
 
     /**
-     *
      * @return \Symfony\Component\Form\FormBuilder the form builder
      */
     function getFormBuilder();
 
     /**
      * @param string $name
+     *
      * @return \Sonata\AdminBundle\Admin\FieldDescriptionInterface
      */
     function getFormFieldDescription($name);
@@ -149,6 +160,7 @@ interface AdminInterface
 
     /**
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $parentFieldDescription
+     *
      * @return void
      */
     function setParentFieldDescription(FieldDescriptionInterface $parentFieldDescription);
@@ -157,9 +169,10 @@ interface AdminInterface
      * translate a message id
      *
      * @param string $id
-     * @param array $parameters
-     * @param null $domain
-     * @param null $locale
+     * @param array  $parameters
+     * @param null   $domain
+     * @param null   $locale
+     *
      * @return string the translated string
      */
     function trans($id, array $parameters = array(), $domain = null, $locale = null);
@@ -174,26 +187,29 @@ interface AdminInterface
     /**
      * add a FieldDescription
      *
-     * @param string $name
+     * @param string                                              $name
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
+     *
      * @return void
      */
-     function addShowFieldDescription($name, FieldDescriptionInterface $fieldDescription);
+    function addShowFieldDescription($name, FieldDescriptionInterface $fieldDescription);
 
     /**
      * add a list FieldDescription
      *
-     * @param string $name
+     * @param string                                              $name
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
+     *
      * @return void
      */
-     function addListFieldDescription($name, FieldDescriptionInterface $fieldDescription);
+    function addListFieldDescription($name, FieldDescriptionInterface $fieldDescription);
 
     /**
      * add a filter FieldDescription
      *
-     * @param string $name
+     * @param string                                              $name
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
+     *
      * @return void
      */
     function addFilterFieldDescription($name, FieldDescriptionInterface $fieldDescription);
@@ -207,6 +223,7 @@ interface AdminInterface
 
     /**
      * @param \Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface $securityHandler
+     *
      * @return void
      */
     function setSecurityHandler(SecurityHandlerInterface $securityHandler);
@@ -217,14 +234,15 @@ interface AdminInterface
     function getSecurityHandler();
 
     /**
-     * @param string $name
+     * @param string      $name
      * @param object|null $object
+     *
      * @return boolean
      */
     function isGranted($name, $object = null);
 
     /**
-     * @param $entity
+     * @param mixed $entity
      */
     function getNormalizedIdentifier($entity);
 
@@ -232,12 +250,14 @@ interface AdminInterface
      * Shorthand method for templating
      *
      * @param object $entity
+     *
      * @return mixed
      */
     function id($entity);
 
     /**
      * @param \Symfony\Component\Validator\ValidatorInterface $validator
+     *
      * @return void
      */
     function setValidator(ValidatorInterface $validator);
@@ -254,6 +274,7 @@ interface AdminInterface
 
     /**
      * @param array $formTheme
+     *
      * @return void
      */
     function setFormTheme(array $formTheme);
@@ -265,6 +286,7 @@ interface AdminInterface
 
     /**
      * @param array $filterTheme
+     *
      * @return void
      */
     function setFilterTheme(array $filterTheme);
@@ -276,6 +298,7 @@ interface AdminInterface
 
     /**
      * @param AdminExtensionInterface $extension
+     *
      * @return void
      */
     function addExtension(AdminExtensionInterface $extension);
@@ -289,6 +312,7 @@ interface AdminInterface
 
     /**
      * @param \Knp\Menu\FactoryInterface $menuFactory
+     *
      * @return void
      */
     function setMenuFactory(MenuFactoryInterface $menuFactory);
@@ -309,7 +333,8 @@ interface AdminInterface
     function getRouteBuilder();
 
     /**
-     * @param $object
+     * @param mixed $object
+     *
      * @return string
      */
     function toString($object);
@@ -328,6 +353,7 @@ interface AdminInterface
      * add an Admin child to the current one
      *
      * @param \Sonata\AdminBundle\Admin\AdminInterface $child
+     *
      * @return void
      */
     function addChild(AdminInterface $child);
@@ -336,6 +362,7 @@ interface AdminInterface
      * Returns true or false if an Admin child exists for the given $code
      *
      * @param string $code Admin code
+     *
      * @return bool True if child exist, false otherwise
      */
     function hasChild($code);
@@ -351,49 +378,117 @@ interface AdminInterface
      * Returns an admin child with the given $code
      *
      * @param string $code
+     *
      * @return array|null
      */
     function getChild($code);
 
     /**
-     * @return object a new object instance
+     * @return mixed a new object instance
      */
     function getNewInstance();
 
+    /**
+     * @param string $uniqId
+     *
+     * @return mixed
+     */
     function setUniqid($uniqId);
 
+    /**
+     * @param mixed $id
+     *
+     * @return mixed
+     */
     function getObject($id);
 
+    /**
+     * @param string $subject
+     *
+     * @return mixed
+     */
     function setSubject($subject);
 
+    /**
+     * @return mixed
+     */
     function getSubject();
 
     /**
      * Returns a list FieldDescription
      *
      * @param string $name
+     *
      * @return \Sonata\AdminBundle\Admin\FieldDescriptionInterface
      */
     function getListFieldDescription($name);
 
+    /**
+     * @return void
+     */
     function configure();
 
+    /**
+     * @param mixed $object
+     *
+     * @return mixed
+     */
     function update($object);
 
+    /**
+     * @param mixed $object
+     *
+     * @return mixed
+     */
     function create($object);
 
+    /**
+     * @param mixed $object
+     *
+     * @return mixed
+     */
     function delete($object);
 
+    /**
+     * @param mixed $object
+     *
+     * @return mixed
+     */
     function preUpdate($object);
 
+    /**
+     * @param mixed $object
+     *
+     * @return mixed
+     */
     function postUpdate($object);
 
+    /**
+     * @param mixed $object
+     *
+     * @return mixed
+     */
     function prePersist($object);
 
+    /**
+     * @param mixed $object
+     *
+     * @return mixed
+     */
     function postPersist($object);
 
+    /**
+     * @param mixed $object
+     *
+     * @return mixed
+     */
     function preRemove($object);
 
+    /**
+     * @param mixed $object
+     *
+     * @return mixed
+     */
     function postRemove($object);
 
     /**
@@ -405,13 +500,15 @@ interface AdminInterface
 
     /**
      * @param \Sonata\AdminBundle\Validator\ErrorElement $errorElement
-     * @param $object
+     * @param mixed                                      $object
+     *
      * @return void
      */
     function validate(ErrorElement $errorElement, $object);
 
     /**
-     * @param $context
+     * @param string $context
+     *
      * @return boolean
      */
     function showIn($context);
@@ -419,15 +516,16 @@ interface AdminInterface
     /**
      * Add object security, fe. make the current user owner of the object
      *
-     * @param $object
+     * @param mixed $object
      */
     function createObjectSecurity($object);
 
     /**
      * Returns the url defined by the $name
      *
-     * @param strinf $name
-     * @return Route
+     * @param string $name
+     *
+     * @return \Symfony\Component\Routing\Route
      */
     function getRoute($name);
 
@@ -438,6 +536,7 @@ interface AdminInterface
 
     /**
      * @param AdminInterface $admin
+     *
      * @return void
      */
     function setParent(AdminInterface $admin);

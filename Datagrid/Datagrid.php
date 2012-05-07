@@ -44,18 +44,18 @@ class Datagrid implements DatagridInterface
     protected $results;
 
     /**
-     * @param ProxyQueryInterface $query
+     * @param ProxyQueryInterface                                  $query
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionCollection $columns
-     * @param PagerInterface $pager
-     * @param \Symfony\Component\Form\FormBuilder $formBuilder
-     * @param array $values
+     * @param PagerInterface                                       $pager
+     * @param \Symfony\Component\Form\FormBuilder                  $formBuilder
+     * @param array                                                $values
      */
     public function __construct(ProxyQueryInterface $query, FieldDescriptionCollection $columns, PagerInterface $pager, FormBuilder $formBuilder, array $values = array())
     {
-        $this->pager    = $pager;
-        $this->query    = $query;
-        $this->values   = $values;
-        $this->columns  = $columns;
+        $this->pager       = $pager;
+        $this->query       = $query;
+        $this->values      = $values;
+        $this->columns     = $columns;
         $this->formBuilder = $formBuilder;
     }
 
@@ -93,7 +93,7 @@ class Datagrid implements DatagridInterface
         foreach ($this->getFilters() as $name => $filter) {
             list($type, $options) = $filter->getRenderSettings();
 
-            $this->formBuilder->add($name, $type, $options);
+            $this->formBuilder->add($filter->getFormName(), $type, $options);
         }
 
         $this->formBuilder->add('_sort_by', 'hidden');
@@ -107,7 +107,7 @@ class Datagrid implements DatagridInterface
 
         foreach ($this->getFilters() as $name => $filter) {
             $this->values[$name] = isset($this->values[$name]) ? $this->values[$name] : null;
-            $filter->apply($this->query, $data[$name]);
+            $filter->apply($this->query, $data[$filter->getFormName()]);
         }
 
         if (isset($this->values['_sort_by'])) {
@@ -130,6 +130,7 @@ class Datagrid implements DatagridInterface
 
     /**
      * @param \Sonata\AdminBundle\Filter\FilterInterface $filter
+     *
      * @return void
      */
     public function addFilter(FilterInterface $filter)
@@ -138,7 +139,8 @@ class Datagrid implements DatagridInterface
     }
 
     /**
-     * @param $name
+     * @param string $name
+     *
      * @return bool
      */
     public function hasFilter($name)
@@ -147,7 +149,7 @@ class Datagrid implements DatagridInterface
     }
 
     /**
-     * @param $name
+     * @param string $name
      */
     public function removeFilter($name)
     {
@@ -155,7 +157,8 @@ class Datagrid implements DatagridInterface
     }
 
     /**
-     * @param $name
+     * @param string $name
+     *
      * @return null
      */
     public function getFilter($name)
@@ -164,7 +167,7 @@ class Datagrid implements DatagridInterface
     }
 
     /**
-     * @return array
+     * @return FilterInterface[]
      */
     public function getFilters()
     {
@@ -185,13 +188,16 @@ class Datagrid implements DatagridInterface
     }
 
     /**
-     * @param $name
-     * @param $operator
-     * @param $value
+     * @param string $name
+     * @param string $operator
+     * @param mixed  $value
      */
     public function setValue($name, $operator, $value)
     {
-        $this->values[$name] = array('type' => $operator, 'value' => $value);
+        $this->values[$name] = array(
+            'type'  => $operator,
+            'value' => $value
+        );
     }
 
     /**

@@ -22,6 +22,10 @@ class FormBuilderIterator extends \RecursiveArrayIterator
 
     protected $prefix;
 
+    /**
+     * @param \Symfony\Component\Form\FormBuilder $formBuilder
+     * @param bool                                $prefix
+     */
     public function __construct(FormBuilder $formBuilder, $prefix = false)
     {
         $this->formBuilder = $formBuilder;
@@ -29,6 +33,13 @@ class FormBuilderIterator extends \RecursiveArrayIterator
         $this->iterator    = new \ArrayIterator(self::getKeys($formBuilder));
     }
 
+    /**
+     * @static
+     *
+     * @param \Symfony\Component\Form\FormBuilder $formBuilder
+     *
+     * @return array
+     */
     private static function getKeys(FormBuilder $formBuilder)
     {
         if (!self::$reflection) {
@@ -39,16 +50,25 @@ class FormBuilderIterator extends \RecursiveArrayIterator
         return array_keys(self::$reflection->getValue($formBuilder));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function rewind()
     {
-        return $this->iterator->rewind();
+        $this->iterator->rewind();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function valid()
     {
         return $this->iterator->valid();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function key()
     {
         $name = $this->iterator->current();
@@ -56,21 +76,33 @@ class FormBuilderIterator extends \RecursiveArrayIterator
         return sprintf('%s_%s', $this->prefix, $name);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function next()
     {
-        return $this->iterator->next();
+        $this->iterator->next();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function current()
     {
         return $this->formBuilder->get($this->iterator->current());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getChildren()
     {
         return new self($this->formBuilder->get($this->iterator->current()), $this->current());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function hasChildren()
     {
         return count(self::getKeys($this->current())) > 0;

@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+### 2012-05-02
+
+* [BC BREAK] add ProxyQueryInterface hint into the FilterInterface class
+
 ### 2012-03-07
 
 * [BC BREAK] Extension : refactor the AdminExtensionInterface to use the proper AdminInterface, add a new configureQuery method

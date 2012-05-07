@@ -19,30 +19,32 @@ class Exporter
 {
     /**
      * @throws \RuntimeException
-     * @param $format
-     * @param $filename
+     *
+     * @param string                                   $format
+     * @param string                                   $filename
      * @param \Exporter\Source\SourceIteratorInterface $source
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function getResponse($format, $filename, SourceIteratorInterface $source)
     {
         $privateFilename = sprintf('%s/%s', sys_get_temp_dir(), uniqid('sonata_export_', true));
 
-        switch($format) {
+        switch ($format) {
             case 'xls':
-                $writer = new \Exporter\Writer\XlsWriter($privateFilename);
+                $writer      = new \Exporter\Writer\XlsWriter($privateFilename);
                 $contentType = 'application/vnd.ms-excel';
                 break;
             case 'xml':
-                $writer = new \Exporter\Writer\XmlWriter($privateFilename);
+                $writer      = new \Exporter\Writer\XmlWriter($privateFilename);
                 $contentType = 'text/xml';
                 break;
             case 'json':
-                $writer = new \Exporter\Writer\JsonWriter($privateFilename);
+                $writer      = new \Exporter\Writer\JsonWriter($privateFilename);
                 $contentType = 'application/json';
                 break;
             case 'csv':
-                $writer = new \Exporter\Writer\CsvWriter($privateFilename, ',', '"', "", true);
+                $writer      = new \Exporter\Writer\CsvWriter($privateFilename, ',', '"', "", true);
                 $contentType = 'text/csv';
                 break;
             default:

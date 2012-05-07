@@ -22,21 +22,24 @@ abstract class ObjectAclManipulator implements ObjectAclManipulatorInterface
     /**
      * Configure the object ACL for the passed object identities
      *
-     * @param OutputInterface $output
-     * @param AdminInterface $admin
-     * @param array $oids an array of ObjectIdentityInterface implementations
+     * @param OutputInterface      $output
+     * @param AdminInterface       $admin
+     * @param array                $oids an array of ObjectIdentityInterface implementations
      * @param UserSecurityIdentity $securityIdentity
+     *
      * @throws \Exception
+     *
      * @return array [countAdded, countUpdated]
      */
     public function configureAcls(OutputInterface $output, AdminInterface $admin, array $oids, UserSecurityIdentity $securityIdentity = null)
     {
-        $countAdded = 0;
-        $countUpdated = 0;
+        $countAdded      = 0;
+        $countUpdated    = 0;
         $securityHandler = $admin->getSecurityHandler();
         if (!$securityHandler instanceof AclSecurityHandlerInterface) {
             $output->writeln(sprintf('Admin `%s` is not configured to use ACL : <info>ignoring</info>', $admin->getCode()));
-            return;
+
+            return array(0, 0);
         }
 
         $acls = $securityHandler->findObjectAcls($oids);
@@ -59,7 +62,7 @@ abstract class ObjectAclManipulator implements ObjectAclManipulatorInterface
 
             try {
                 $securityHandler->updateAcl($acl);
-            } catch(\Exception $e) {
+            } catch (\Exception $e) {
                 $output->writeln(sprintf('Error saving ObjectIdentity (%s, %s) ACL : %s <info>ignoring</info>', $oid->getIdentifier(), $oid->getType(), $e->getMessage()));
             }
         }

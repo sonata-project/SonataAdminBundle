@@ -33,13 +33,12 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     // used by iterator interface
     protected $results = null;
     protected $resultsCounter = 0;
-    protected $query            = null;
-    protected $countColumn      = array('id');
+    protected $query = null;
+    protected $countColumn = array('id');
 
     /**
      * Constructor.
      *
-     * @param string  $class      The model class
      * @param integer $maxPerPage Number of records to display per page
      */
     public function __construct($maxPerPage = 10)
@@ -91,18 +90,18 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
      *
      * @return array
      */
-    public function getLinks($nb_links=null)
+    public function getLinks($nb_links = null)
     {
-        if($nb_links==null){
-            $nb_links=$this->getMaxPageLinks();
+        if ($nb_links == null) {
+            $nb_links = $this->getMaxPageLinks();
         }
         $links = array();
-        $tmp = $this->page - floor($nb_links / 2);
+        $tmp   = $this->page - floor($nb_links / 2);
         $check = $this->lastPage - $nb_links + 1;
         $limit = $check > 0 ? $check : 1;
         $begin = $tmp > 0 ? ($tmp > $limit ? $limit : $tmp) : 1;
 
-        $i = (int) $begin;
+        $i = (int)$begin;
         while ($i < $begin + $nb_links && $i <= $this->lastPage) {
             $links[] = $i++;
         }
@@ -355,11 +354,10 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
             if ($this->page == 0) {
                 $this->page = 1;
             }
-        }
-        else {
+        } else {
             if ($max == 0) {
                 $this->maxPerPage = 0;
-                $this->page = 0;
+                $this->page       = 0;
             } else {
                 $this->maxPerPage = 1;
                 if ($this->page == 0) {
@@ -368,6 +366,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
             }
         }
     }
+
     /**
      * Returns the maximum number of page numbers.
      *
@@ -377,6 +376,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     {
         return $this->maxPageLinks;
     }
+
     /**
      * Sets the maximum number of page numbers.
      *
@@ -410,7 +410,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * Returns the current pager's parameter holder.
      *
-     * @return sfParameterHolder
+     * @return array
      */
     public function getParameters()
     {
@@ -468,7 +468,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
      */
     protected function initializeIterator()
     {
-        $this->results = $this->getResults();
+        $this->results        = $this->getResults();
         $this->resultsCounter = count($this->results);
     }
 
@@ -477,14 +477,12 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
      */
     protected function resetIterator()
     {
-        $this->results = null;
+        $this->results        = null;
         $this->resultsCounter = 0;
     }
 
     /**
-     * Returns the current result.
-     *
-     * @see Iterator
+     * {@inheritdoc}
      */
     public function current()
     {
@@ -496,9 +494,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     }
 
     /**
-     * Returns the current key.
-     *
-     * @see Iterator
+     * {@inheritdoc}
      */
     public function key()
     {
@@ -510,9 +506,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     }
 
     /**
-     * Advances the internal pointer and returns the current result.
-     *
-     * @see Iterator
+     * {@inheritdoc}
      */
     public function next()
     {
@@ -526,9 +520,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     }
 
     /**
-     * Resets the internal pointer and returns the current result.
-     *
-     * @see Iterator
+     * {@inheritdoc}
      */
     public function rewind()
     {
@@ -542,9 +534,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     }
 
     /**
-     * Returns true if pointer is within bounds.
-     *
-     * @see Iterator
+     * {@inheritdoc}
      */
     public function valid()
     {
@@ -556,9 +546,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     }
 
     /**
-     * Returns the total number of results.
-     *
-     * @see Countable
+     * {@inheritdoc}
      */
     public function count()
     {
@@ -566,9 +554,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     }
 
     /**
-     * Serialize the pager object
-     *
-     * @return string $serialized
+     * {@inheritdoc}
      */
     public function serialize()
     {
@@ -578,27 +564,32 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     }
 
     /**
-     * Unserialize a pager object
-     *
-     * @param string $serialized
+     * {@inheritdoc}
      */
     public function unserialize($serialized)
     {
         $array = unserialize($serialized);
 
-        foreach ($array as $name => $values)
-        {
+        foreach ($array as $name => $values) {
             $this->$name = $values;
         }
     }
 
+    /**
+     * @return array
+     */
     public function getCountColumn()
     {
         return $this->countColumn;
     }
 
-    public function setCountColumn(array $countColumn) {
-
+    /**
+     * @param array $countColumn
+     *
+     * @return array
+     */
+    public function setCountColumn(array $countColumn)
+    {
         return $this->countColumn = $countColumn;
     }
 
@@ -621,11 +612,17 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
         return $results[0];
     }
 
+    /**
+     * @param mixed $query
+     */
     public function setQuery($query)
     {
         $this->query = $query;
     }
 
+    /**
+     * @return null
+     */
     public function getQuery()
     {
         return $this->query;
