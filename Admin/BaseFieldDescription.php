@@ -315,6 +315,14 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getParentAssociationMappings()
+    {
+        return $this->parentAssociationMappings;
+    }
+
+    /**
      * set the association admin instance (only used if the field is linked to an Admin)
      *
      * @param \Sonata\AdminBundle\Admin\AdminInterface $associationAdmin the associated admin
@@ -341,6 +349,31 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     public function hasAssociationAdmin()
     {
         return $this->associationAdmin !== null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFieldValue($object, $fieldName)
+    {
+        $camelizedFieldName = self::camelize($fieldName);
+
+        $getters = array();
+        // prefer method name given in the code option
+        if ($this->getOption('code')) {
+            $getters[] = $this->getOption('code');
+        }
+        $getters[] = 'get'.$camelizedFieldName;
+        $getters[] = 'is'.$camelizedFieldName;
+
+
+        foreach ($getters as $getter) {
+            if (method_exists($object, $getter)) {
+                return call_user_func(array($object, $getter));
+            }
+        }
+
+        throw new NoValueException(sprintf('Unable to retrieve the value of `%s`', $this->getName()));
     }
 
     /**
@@ -481,5 +514,29 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     public function getLabel()
     {
         return $this->getOption('label');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isSortable()
+    {
+        return $this->getOption('sortable', false);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSortFieldMapping()
+    {
+        return $this->getOption('sort_field_mapping');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSortParentAssociationMapping()
+    {
+        return $this->getOption('sort_parent_association_mappings');
     }
 }

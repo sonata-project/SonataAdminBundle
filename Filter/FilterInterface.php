@@ -10,6 +10,7 @@
  */
 
 namespace Sonata\AdminBundle\Filter;
+use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 
 interface FilterInterface
 {
@@ -17,13 +18,13 @@ interface FilterInterface
      * Apply the filter to the QueryBuilder instance
      *
      * @abstract
-     * @param $queryBuilder
+     * @param ProxyQueryInterface $queryBuilder
      * @param string $alias
      * @param string $field
      * @param string $value
      * @return void
      */
-    function filter($queryBuilder, $alias, $field, $value);
+    function filter(ProxyQueryInterface $queryBuilder, $alias, $field, $value);
 
     /**
      * @abstract

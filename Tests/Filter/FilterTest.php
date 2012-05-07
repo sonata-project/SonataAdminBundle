@@ -12,10 +12,11 @@
 namespace Sonata\AdminBundle\Tests\Filter;
 
 use Sonata\AdminBundle\Filter\Filter;
+use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 
 class FilterTest_Filter extends Filter
 {
-    function filter($queryBuilder, $alias, $field, $value)
+    function filter(ProxyQueryInterface $queryBuilder, $alias, $field, $value)
     {
     }
 

@@ -7,3 +7,4 @@ nbproject
 coverage
 composer.lock
 vendor
+composer.phar

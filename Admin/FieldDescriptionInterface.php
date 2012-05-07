@@ -167,6 +167,22 @@ interface FieldDescriptionInterface
     function getFieldMapping();
 
     /**
+     * set the parent association mappings information
+     *
+     * @param array $parentAssociationMappings
+     *
+     * @return void
+     */
+    function setParentAssociationMappings(array $parentAssociationMappings);
+
+    /**
+     * return the parent association mapping definitions
+     *
+     * @return array the parent association mapping definitions
+     */
+    function getParentAssociationMappings();
+
+    /**
      * set the association admin instance (only used if the field is linked to an Admin)
      *
      * @param \Sonata\AdminBundle\Admin\AdminInterface $associationAdmin the associated admin
