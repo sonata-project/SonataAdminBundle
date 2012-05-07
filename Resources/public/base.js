@@ -81,14 +81,15 @@ var Admin = {
      * @param subject
      */
     add_collapsed_toggle: function(subject) {
+        jQuery('fieldset.sonata-ba-fielset-collapsed div.sonata-ba-collapsed-fields').hide();
         jQuery('fieldset legend a.sonata-ba-collapsed', subject).live('click', function(event) {
             event.preventDefault();
 
             var fieldset = jQuery(this).closest('fieldset');
 
-            jQuery('div.sonata-ba-collapsed-fields', fieldset).toggle();
+            jQuery('div.sonata-ba-collapsed-fields', fieldset).slideToggle();
             fieldset.toggleClass('sonata-ba-collapsed-fields-close');
-        }).click();
+        });
     },
 
     stopEvent: function(event) {
