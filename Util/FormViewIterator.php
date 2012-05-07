@@ -16,43 +16,67 @@ class FormViewIterator implements \RecursiveIterator
 {
     protected $formView;
 
+    /**
+     * @param \Symfony\Component\Form\FormView $formView
+     */
     public function __construct(FormView $formView)
     {
         $this->iterator = $formView->getIterator();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getChildren()
     {
         return new FormViewIterator($this->current());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function hasChildren()
     {
         return $this->current()->hasChildren();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function current()
     {
         return $this->iterator->current();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function next()
     {
-        return $this->iterator->next();
+        $this->iterator->next();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function key()
     {
         return $this->current()->get('id');
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function valid()
     {
         return $this->iterator->valid();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function rewind()
     {
-        return $this->iterator->rewind();
+        $this->iterator->rewind();
     }
 }

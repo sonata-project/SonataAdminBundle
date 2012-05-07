@@ -34,15 +34,16 @@ class DateTimeRangeType extends AbstractType
     }
 
     /**
-     * Returns the name of this type.
-     *
-     * @return string The name of this type
+     * {@inheritDoc}
      */
     public function getName()
     {
         return 'sonata_type_filter_datetime_range';
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function buildForm(FormBuilder $builder, array $options)
     {
         $choices = array(
@@ -56,6 +57,9 @@ class DateTimeRangeType extends AbstractType
         ;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getDefaultOptions()
     {
         return array(

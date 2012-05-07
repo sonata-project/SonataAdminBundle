@@ -10,31 +10,91 @@
 
 namespace Sonata\AdminBundle\Datagrid;
 
-
 /**
  * Interface used by the Datagrid to build the query
  */
 interface ProxyQueryInterface
 {
+    /**
+     *
+     * @param array $params
+     * @param null  $hydrationMode
+     *
+     * @return mixed
+     */
     function execute(array $params = array(), $hydrationMode = null);
 
+    /**
+     * @param string $name
+     * @param array  $args
+     *
+     * @return mixed
+     */
     function __call($name, $args);
 
-    function setSortBy($sortBy);
+    /**
+     * @param array $parentAssociationMappings
+     * @param array $fieldMapping
+     *
+     * @return mixed
+     */
+    function setSortBy($parentAssociationMappings, $fieldMapping);
 
+    /**
+     * @return mixed
+     */
     function getSortBy();
 
+    /**
+     * @param mixed $sortOrder
+     *
+     * @return void
+     */
     function setSortOrder($sortOrder);
 
+    /**
+     * @return mixed
+     */
     function getSortOrder();
 
+    /**
+     * @return mixed
+     */
     function getSingleScalarResult();
 
+    /**
+     * @param int $firstResult
+     *
+     * @return mixed
+     */
     function setFirstResult($firstResult);
 
+    /**
+     * @return mixed
+     */
     function getFirstResult();
 
+    /**
+     * @param int $maxResults
+     *
+     * @return mixed
+     */
     function setMaxResults($maxResults);
 
+    /**
+     * @return mixed
+     */
     function getMaxResults();
+
+    /**
+     * @return mixed
+     */
+    function getUniqueParameterId();
+
+    /**
+     * @param array $associationMappings
+     *
+     * @return mixed
+     */
+    function entityJoin(array $associationMappings);
 }

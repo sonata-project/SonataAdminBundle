@@ -33,6 +33,7 @@ class TranslatableChoiceType extends ChoiceType
 
     /**
      * @param array $options
+     *
      * @return array
      */
     public function getDefaultOptions()

@@ -233,8 +233,8 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
                 continue;
             }
 
-            if ($method[1] == 'setTemplate') {
-                $definedTemplates[$method[0]] = $method[1][0];
+            if ($method[0] == 'setTemplate') {
+                $definedTemplates[$method[1][0]] = $method[1][1];
                 continue;
             }
 

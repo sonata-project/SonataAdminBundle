@@ -33,9 +33,7 @@ class SonataAdminExtension extends \Twig_Extension
     }
 
     /**
-     * Returns a list of filters to add to the existing list.
-     *
-     * @return array An array of filters
+     * {@inheritDoc}
      */
     public function getFilters()
     {
@@ -47,7 +45,7 @@ class SonataAdminExtension extends \Twig_Extension
     }
 
     /**
-     * @return array
+     * {@inheritDoc}
      */
     public function getTokenParsers()
     {
@@ -55,9 +53,7 @@ class SonataAdminExtension extends \Twig_Extension
     }
 
     /**
-     * Returns the name of the extension.
-     *
-     * @return string The extension name
+     * {@inheritDoc}
      */
     public function getName()
     {
@@ -66,17 +62,18 @@ class SonataAdminExtension extends \Twig_Extension
 
     /**
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
-     * @param string $default
+     * @param string                                              $default
+     *
      * @return \Twig_TemplateInterface
      */
     protected function getTemplate(FieldDescriptionInterface $fieldDescription, $default)
     {
         // todo: find a better solution
-        $templateName = $fieldDescription->getTemplate() ?: $default;
+        $templateName = $fieldDescription->getTemplate() ? : $default;
 
         try {
             $template = $this->environment->loadTemplate($templateName);
-        } catch(\Twig_Error_Loader $e) {
+        } catch (\Twig_Error_Loader $e) {
             $template = $this->environment->loadTemplate($default);
         }
 
@@ -86,9 +83,10 @@ class SonataAdminExtension extends \Twig_Extension
     /**
      * render a list element from the FieldDescription
      *
-     * @param $object
-     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
-     * @param array $params
+     * @param mixed                                                $object
+     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface  $fieldDescription
+     * @param array                                                $params
+     *
      * @return string
      */
     public function renderListElement($object, FieldDescriptionInterface $fieldDescription, $params = array())
@@ -96,17 +94,18 @@ class SonataAdminExtension extends \Twig_Extension
         $template = $this->getTemplate($fieldDescription, 'SonataAdminBundle:CRUD:base_list_field.html.twig');
 
         return $this->output($fieldDescription, $template, array_merge($params, array(
-            'admin'  => $fieldDescription->getAdmin(),
-            'object' => $object,
-            'value'  => $this->getValueFromFieldDescription($object, $fieldDescription),
+            'admin'             => $fieldDescription->getAdmin(),
+            'object'            => $object,
+            'value'             => $this->getValueFromFieldDescription($object, $fieldDescription),
             'field_description' => $fieldDescription
         )));
     }
 
     /**
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
-     * @param \Twig_TemplateInterface $template
-     * @param array $parameters
+     * @param \Twig_TemplateInterface                             $template
+     * @param array                                               $parameters
+     *
      * @return string
      */
     public function output(FieldDescriptionInterface $fieldDescription, \Twig_TemplateInterface $template, array $parameters = array())
@@ -130,9 +129,10 @@ class SonataAdminExtension extends \Twig_Extension
      * return the value related to FieldDescription, if the associated object does no
      * exists => a temporary one is created
      *
-     * @param object $object
+     * @param object                                              $object
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
-     * @param array $params
+     * @param array                                               $params
+     *
      * @return mixed
      */
     public function getValueFromFieldDescription($object, FieldDescriptionInterface $fieldDescription, array $params = array())
@@ -143,7 +143,7 @@ class SonataAdminExtension extends \Twig_Extension
 
         $value = null;
         try {
-          $value = $fieldDescription->getValue($object);
+            $value = $fieldDescription->getValue($object);
         } catch (NoValueException $e) {
             if ($fieldDescription->getAssociationAdmin()) {
                 $value = $fieldDescription->getAssociationAdmin()->getNewInstance();
@@ -157,7 +157,8 @@ class SonataAdminExtension extends \Twig_Extension
      * render a view element
      *
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
-     * @param mixed $object
+     * @param mixed                                               $object
+     *
      * @return string
      */
     public function renderViewElement(FieldDescriptionInterface $fieldDescription, $object)
@@ -180,8 +181,10 @@ class SonataAdminExtension extends \Twig_Extension
 
     /**
      * @throws \RunTimeException
-     * @param $element
+     *
+     * @param mixed                                               $element
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
+     *
      * @return mixed
      */
     public function renderRelationElement($element, FieldDescriptionInterface $fieldDescription)

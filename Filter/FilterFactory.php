@@ -21,7 +21,7 @@ class FilterFactory implements FilterFactoryInterface
 
     /**
      * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
-     * @param array $types
+     * @param array                                                     $types
      */
     public function __construct(ContainerInterface $container, array $types = array())
     {
@@ -31,9 +31,11 @@ class FilterFactory implements FilterFactoryInterface
 
     /**
      * @throws \RunTimeException
+     *
      * @param string $name
      * @param string $type
-     * @param array $options
+     * @param array  $options
+     *
      * @return \Sonata\AdminBundle\Filter\FilterInterface
      */
     public function create($name, $type, array $options = array())

@@ -26,11 +26,17 @@ use Sonata\AdminBundle\Model\ModelManagerInterface;
 
 class ModelReferenceType extends AbstractType
 {
+    /**
+     * {@inheritDoc}
+     */
     public function buildForm(FormBuilder $builder, array $options)
     {
         $builder->prependClientTransformer(new ModelToIdTransformer($options['model_manager'], $options['class']));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getDefaultOptions()
     {
         return array(
@@ -40,11 +46,17 @@ class ModelReferenceType extends AbstractType
         );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getParent(array $options)
     {
         return $options['parent'];
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getName()
     {
         return 'sonata_type_model_reference';

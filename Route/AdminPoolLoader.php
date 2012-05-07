@@ -18,6 +18,7 @@ use Symfony\Component\Config\Loader\FileLoader;
 use Symfony\Component\Config\Resource\FileResource;
 
 use Sonata\AdminBundle\Admin\Pool;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class AdminPoolLoader extends FileLoader
 {
@@ -34,10 +35,11 @@ class AdminPoolLoader extends FileLoader
     protected $container;
 
     /**
-     * @param \Sonata\AdminBundle\Admin\Pool $pool
-     * @param  $adminServiceIds
+     * @param \Sonata\AdminBundle\Admin\Pool                            $pool
+     * @param array                                                     $adminServiceIds
+     * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
      */
-    public function __construct(Pool $pool, $adminServiceIds, $container)
+    public function __construct(Pool $pool, $adminServiceIds, ContainerInterface $container)
     {
         $this->pool             = $pool;
         $this->adminServiceIds  = $adminServiceIds;
@@ -45,9 +47,7 @@ class AdminPoolLoader extends FileLoader
     }
 
     /**
-     * @param string $resource
-     * @param null $type
-     * @return bool
+     * {@inheritDoc}
      */
     public function supports($resource, $type = null)
     {
@@ -59,9 +59,7 @@ class AdminPoolLoader extends FileLoader
     }
 
     /**
-     * @param string $resource
-     * @param null $type
-     * @return \Symfony\Component\Routing\RouteCollection
+     * {@inheritDoc}
      */
     public function load($resource, $type = null)
     {

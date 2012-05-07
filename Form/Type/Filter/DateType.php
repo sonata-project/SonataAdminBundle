@@ -34,7 +34,6 @@ class DateType extends AbstractType
 
     const TYPE_NOT_NULL = 7;
 
-
     protected $translator;
 
     /**
@@ -46,15 +45,16 @@ class DateType extends AbstractType
     }
 
     /**
-     * Returns the name of this type.
-     *
-     * @return string The name of this type
+     * {@inheritDoc}
      */
     public function getName()
     {
         return 'sonata_type_filter_date';
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function buildForm(FormBuilder $builder, array $options)
     {
         $choices = array(
@@ -73,6 +73,9 @@ class DateType extends AbstractType
         ;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getDefaultOptions()
     {
         return array(
