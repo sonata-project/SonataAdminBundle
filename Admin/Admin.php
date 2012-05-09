@@ -616,6 +616,10 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         $this->configureShowField($mapper); // deprecated, use configureShowFields instead
         $this->configureShowFields($mapper);
 
+        foreach ($this->getExtensions() as $extension) {
+            $extension->configureShowFields($mapper);
+        }
+
         $this->show = $collection;
     }
 
