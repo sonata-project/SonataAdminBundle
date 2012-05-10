@@ -41,6 +41,11 @@ body.sonata-bc {
     padding-left: 20px;
 }
 
+li.sonata-action-element {
+    list-style: none;
+    display: inline-block;
+}
+
 .sonata-bc div.connection div input.big {
     height: 35px;
     font-size: 25px;
