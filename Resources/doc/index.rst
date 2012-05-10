@@ -29,6 +29,7 @@ Reference Guide
    reference/field_types
    reference/conditional_validation
    reference/templates
+   reference/batch_actions
    reference/translation
    reference/security
    reference/advance

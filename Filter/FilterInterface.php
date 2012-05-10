@@ -11,92 +11,107 @@
 
 namespace Sonata\AdminBundle\Filter;
 
+use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
+
 interface FilterInterface
 {
     /**
      * Apply the filter to the QueryBuilder instance
      *
-     * @abstract
-     * @param $queryBuilder
-     * @param string $alias
-     * @param string $field
-     * @param string $value
+     * @param ProxyQueryInterface $queryBuilder
+     * @param string              $alias
+     * @param string              $field
+     * @param string              $value
+     *
      * @return void
      */
-    function filter($queryBuilder, $alias, $field, $value);
+    function filter(ProxyQueryInterface $queryBuilder, $alias, $field, $value);
 
     /**
-     * @abstract
-     * @param $query
-     * @param $value
+     * @param mixed $query
+     * @param mixed $value
      */
     function apply($query, $value);
 
     /**
      * Returns the filter name
-     * @abstract
+     *
      * @return string
      */
     function getName();
 
     /**
+     * Returns the filter form name
+     *
+     * @return string
+     */
+    function getFormName();
+
+    /**
      * Returns the label name
      *
-     * @abstract
      * @return string
      */
     function getLabel();
 
     /**
-     * @abstract
-     *
      * @param string $label
      */
-    function setLabel($name);
+    function setLabel($label);
 
     /**
-     * @abstract
      * @return array
      */
     function getDefaultOptions();
 
     /**
-     * @abstract
      * @param string $name
-     * @param null $default
+     * @param null   $default
+     *
      * @return mixed
      */
     function getOption($name, $default = null);
 
     /**
-     * @abstract
-     * @param $name
-     * @param $value
+     * @param string $name
+     * @param mixed $value
      */
     function setOption($name, $value);
 
     /**
-     * @abstract
-     * @param $name
-     * @param array $options
+     * @param string $name
+     * @param array  $options
+     *
      * @return void
      */
     function initialize($name, array $options = array());
 
     /**
-     * @abstract
      * @return string
      */
     function getFieldName();
 
     /**
-     * @abstract
+     * @return array of mappings
+     */
+    function getParentAssociationMappings();
+
+    /**
+     * @return array field mapping
+     */
+    function getFieldMapping();
+
+    /**
+     * @return array association mapping
+     */
+    function getAssociationMapping();
+
+    /**
      * @return array
      */
     function getFieldOptions();
 
     /**
-     * @abstract
      * @return string
      */
     function getFieldType();
@@ -104,7 +119,6 @@ interface FilterInterface
     /**
      * Returns the main widget used to render the filter
      *
-     * @abstract
      * @return array
      */
     function getRenderSettings();

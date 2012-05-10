@@ -20,6 +20,7 @@ interface FieldDescriptionInterface
      * set the field name
      *
      * @param string $fieldName
+     *
      * @return void
      */
     function setFieldName($fieldName);
@@ -35,6 +36,7 @@ interface FieldDescriptionInterface
      * Set the name
      *
      * @param string $name
+     *
      * @return void
      */
     function setName($name);
@@ -50,7 +52,8 @@ interface FieldDescriptionInterface
      * Return the value represented by the provided name
      *
      * @param string $name
-     * @param null $default
+     * @param null   $default
+     *
      * @return array|null the value represented by the provided name
      */
     function getOption($name, $default = null);
@@ -59,7 +62,8 @@ interface FieldDescriptionInterface
      * Define an option, an option is has a name and a value
      *
      * @param string $name
-     * @param mixed $value
+     * @param mixed  $value
+     *
      * @return void set the option value
      */
     function setOption($name, $value);
@@ -72,6 +76,7 @@ interface FieldDescriptionInterface
      * Then the value are copied across to the related property value
      *
      * @param array $options
+     *
      * @return void
      */
     function setOptions(array $options);
@@ -87,6 +92,7 @@ interface FieldDescriptionInterface
      * return the template used to render the field
      *
      * @param string $template
+     *
      * @return void
      */
     function setTemplate($template);
@@ -103,6 +109,7 @@ interface FieldDescriptionInterface
      * or the logic associated to the current FieldDescription object
      *
      * @param string $type
+     *
      * @return void the field type
      */
     function setType($type);
@@ -118,6 +125,7 @@ interface FieldDescriptionInterface
      * set the parent Admin (only used in nested admin)
      *
      * @param \Sonata\AdminBundle\Admin\AdminInterface $parent
+     *
      * @return void
      */
     function setParent(AdminInterface $parent);
@@ -133,6 +141,7 @@ interface FieldDescriptionInterface
      * Define the association mapping definition
      *
      * @param array $associationMapping
+     *
      * @return void
      */
     function setAssociationMapping($associationMapping);
@@ -155,6 +164,7 @@ interface FieldDescriptionInterface
      * set the field mapping information
      *
      * @param array $fieldMapping
+     *
      * @return void
      */
     function setFieldMapping($fieldMapping);
@@ -165,6 +175,22 @@ interface FieldDescriptionInterface
      * @return array the field mapping definition
      */
     function getFieldMapping();
+
+    /**
+     * set the parent association mappings information
+     *
+     * @param array $parentAssociationMappings
+     *
+     * @return void
+     */
+    function setParentAssociationMappings(array $parentAssociationMappings);
+
+    /**
+     * return the parent association mapping definitions
+     *
+     * @return array the parent association mapping definitions
+     */
+    function getParentAssociationMappings();
 
     /**
      * set the association admin instance (only used if the field is linked to an Admin)
@@ -189,7 +215,8 @@ interface FieldDescriptionInterface
     /**
      * return the value linked to the description
      *
-     * @param  $object
+     * @param mixed $object
+     *
      * @return bool|mixed
      */
     function getValue($object);
@@ -198,6 +225,7 @@ interface FieldDescriptionInterface
      * set the admin class linked to this FieldDescription
      *
      * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
+     *
      * @return void
      */
     function setAdmin(AdminInterface $admin);
@@ -211,8 +239,10 @@ interface FieldDescriptionInterface
      * merge option values related to the provided option name
      *
      * @throws \RuntimeException
-     * @param  $name
-     * @param array $options
+     *
+     * @param string $name
+     * @param array  $options
+     *
      * @return void
      */
     function mergeOption($name, array $options = array());
@@ -221,6 +251,7 @@ interface FieldDescriptionInterface
      * merge options values
      *
      * @param array $options
+     *
      * @return void
      */
     function mergeOptions(array $options = array());
@@ -229,6 +260,7 @@ interface FieldDescriptionInterface
      * set the original mapping type (only used if the field is linked to an entity)
      *
      * @param string|int $mappingType
+     *
      * @return void
      */
     function setMappingType($mappingType);
@@ -246,4 +278,32 @@ interface FieldDescriptionInterface
      * @return string
      */
     function getLabel();
+
+    /*
+     * @return boolean
+     */
+    function isSortable();
+
+    /**
+     * return the field mapping definition used when sorting
+     *
+     * @return array the field mapping definition
+     */
+    function getSortFieldMapping();
+
+    /**
+     * return the parent association mapping definitions used when sorting
+     *
+     * @return array the parent association mapping definitions
+     */
+    function getSortParentAssociationMapping();
+
+    /**
+     *
+     * @param object $object
+     * @param string $fieldName
+     *
+     * @return mixed
+     */
+    function getFieldValue($object, $fieldName);
 }

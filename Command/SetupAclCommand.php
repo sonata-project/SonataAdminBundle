@@ -24,12 +24,18 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 
 class SetupAclCommand extends ContainerAwareCommand
 {
+    /**
+     * {@inheritDoc}
+     */
     public function configure()
     {
         $this->setName('sonata:admin:setup-acl');
         $this->setDescription('Install ACL for Admin Classes');
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln('Starting ACL AdminBundle configuration');

@@ -15,6 +15,7 @@ namespace Sonata\AdminBundle\Guesser;
 use Sonata\AdminBundle\Guesser\TypeGuesserInterface;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Form\Guess\Guess;
+use Sonata\AdminBundle\Model\ModelManagerInterface;
 
 /**
  *
@@ -27,6 +28,9 @@ class TypeGuesserChain implements TypeGuesserInterface
 {
     protected $guessers = array();
 
+    /**
+     * @param array $guessers
+     */
     public function __construct(array $guessers)
     {
         foreach ($guessers as $guesser) {
@@ -43,14 +47,12 @@ class TypeGuesserChain implements TypeGuesserInterface
     }
 
     /**
-     * @param $class
-     * @param $property
-     * @return FieldFactoryGuess
+     * {@inheritDoc}
      */
-    public function guessType($class, $property)
+    public function guessType($class, $property, ModelManagerInterface $modelManager)
     {
-        return $this->guess(function ($guesser) use ($class, $property) {
-            return $guesser->guessType($class, $property);
+        return $this->guess(function ($guesser) use ($class, $property, $modelManager) {
+            return $guesser->guessType($class, $property, $modelManager);
         });
     }
 

@@ -25,6 +25,10 @@ class ArrayToModelTransformer implements DataTransformerInterface
 
     protected $className;
 
+    /**
+     * @param \Sonata\AdminBundle\Model\ModelManagerInterface $modelManager
+     * @param string                                          $className
+     */
     public function __construct(ModelManagerInterface $modelManager, $className)
     {
         $this->modelManager = $modelManager;
@@ -32,22 +36,19 @@ class ArrayToModelTransformer implements DataTransformerInterface
     }
 
     /**
-     * @param array $ids
-     * @return $object
+     * {@inheritdoc}
      */
     public function reverseTransform($array)
     {
         // when the object is created the form return an array
         // one the object is persisted, the edit $array is the user instance
-        if ($array instanceof $this->className)
-        {
+        if ($array instanceof $this->className) {
             return $array;
         }
 
         $instance = new $this->className;
 
         if (!is_array($array)) {
-
             return $instance;
         }
 
@@ -55,7 +56,7 @@ class ArrayToModelTransformer implements DataTransformerInterface
     }
 
     /**
-     * @param Collection $value
+     * {@inheritdoc}
      */
     public function transform($value)
     {

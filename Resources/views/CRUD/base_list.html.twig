@@ -40,7 +40,7 @@ file that was distributed with this source code.
                                     {% set sortable = false %}
                                     {% if field_description.options.sortable is defined and field_description.options.sortable%}
                                         {% set sortable             = true %}
-                                        {% set current              = admin.datagrid.values._sort_by == field_description.options.sortable %}
+                                        {% set current              = admin.datagrid.values._sort_by == field_description.name %}
                                         {% set sort_parameters      = admin.modelmanager.sortparameters(field_description, admin.datagrid) %}
                                         {% set sort_active_class    = current ? 'sonata-ba-list-field-order-active' : '' %}
                                         {% set sort_by              = current ? admin.datagrid.values._sort_order : field_description.options._sort_order %}
@@ -132,31 +132,37 @@ file that was distributed with this source code.
             </table>
 
             {% if batchactions|length > 0%}
-                <script type="text/javascript">
-                    jQuery(document).ready(function($){
-                       $('#list_batch_checkbox').click(function(){
-                           $(this).closest('table').find("td input[type='checkbox']").attr('checked', $(this).is(':checked')).parent().parent().toggleClass('sonata-ba-list-row-selected', $(this).is(':checked'));
-                       });
-                       $("td.sonata-ba-list-field-batch input[type='checkbox']").change(function(){
-                           $(this).parent().parent().toggleClass('sonata-ba-list-row-selected', $(this).is(':checked'));
-                       });
-                    });
-                </script>
+                {% block batch %}
+                    <script type="text/javascript">
+                        {% block batch_javascript %}
+                            jQuery(document).ready(function($){
+                               $('#list_batch_checkbox').click(function(){
+                                   $(this).closest('table').find("td input[type='checkbox']").attr('checked', $(this).is(':checked')).parent().parent().toggleClass('sonata-ba-list-row-selected', $(this).is(':checked'));
+                               });
+                               $("td.sonata-ba-list-field-batch input[type='checkbox']").change(function(){
+                                   $(this).parent().parent().toggleClass('sonata-ba-list-row-selected', $(this).is(':checked'));
+                               });
+                            });
+                        {% endblock %}
+                    </script>
 
-                <div class="actions sonata-ba-list-actions">
-                    <select name="action">
-                        {% for action, options in batchactions %}
-                            <option value="{{ action }}">{{ options.label }}</option>
-                        {% endfor %}
-                    </select>
+                    <div class="actions sonata-ba-list-actions">
+                        {% block batch_actions %}
+                            <select name="action">
+                                {% for action, options in batchactions %}
+                                    <option value="{{ action }}">{{ options.label }}</option>
+                                {% endfor %}
+                            </select>
 
-                    <label>
-                        <input type="checkbox" name="all_elements"/>
-                        {% trans from 'SonataAdminBundle' %}all_elements{% endtrans %}
-                    </label>
+                            <label>
+                                <input type="checkbox" name="all_elements"/>
+                                {% trans from 'SonataAdminBundle' %}all_elements{% endtrans %}
+                            </label>
 
-                    <input type="submit" class="btn primary" value="{% trans from 'SonataAdminBundle' %}btn_batch{% endtrans %}" />
-                </div>
+                            <input type="submit" class="btn primary" value="{% trans from 'SonataAdminBundle' %}btn_batch{% endtrans %}" />
+                        {% endblock %}
+                    </div>
+                {% endblock %}
             {% endif %}
         </form>
     {% else %}
@@ -177,8 +183,8 @@ file that was distributed with this source code.
                         {% for filter in admin.datagrid.filters %}
                         <tr id="filter_{{ filter.name }}_row" class="filter {{ filter.isActive ? 'active' : 'inactive' }}">
                                 <td class="filter-title">{{ admin.trans(filter.label) }}</td>
-                                <td class="filter-type">{{ form_widget(form.getChild(filter.name).getChild('type')) }}</td>
-                                <td class="filter-value">{{ form_widget(form.getChild(filter.name).getChild('value')) }}</td>
+                                <td class="filter-type">{{ form_widget(form.getChild(filter.formName).getChild('type')) }}</td>
+                                <td class="filter-value">{{ form_widget(form.getChild(filter.formName).getChild('value')) }}</td>
                             </tr>
                         {% endfor %}
                     </table>

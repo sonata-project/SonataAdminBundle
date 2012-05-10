@@ -23,7 +23,7 @@ class RoleSecurityHandler implements SecurityHandlerInterface
 
     /**
      * @param \Symfony\Component\Security\Core\SecurityContextInterface $securityContext
-     * @param array $superAdminRoles
+     * @param array                                                     $superAdminRoles
      */
     public function __construct(SecurityContextInterface $securityContext, array $superAdminRoles)
     {
@@ -58,7 +58,7 @@ class RoleSecurityHandler implements SecurityHandlerInterface
      */
     public function getBaseRole(AdminInterface $admin)
     {
-        return 'ROLE_'.str_replace('.', '_', strtoupper($admin->getCode())).'_%s';
+        return 'ROLE_' . str_replace('.', '_', strtoupper($admin->getCode())) . '_%s';
     }
 
     /**

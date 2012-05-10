@@ -30,8 +30,10 @@ class AdminHelper
 
     /**
      * @throws \RuntimeException
+     *
      * @param \Symfony\Component\Form\FormBuilder $formBuilder
-     * @param  $elementId
+     * @param string                              $elementId
+     *
      * @return \Symfony\Component\Form\FormBuilder
      */
     public function getChildFormBuilder(FormBuilder $formBuilder, $elementId)
@@ -47,7 +49,8 @@ class AdminHelper
 
     /**
      * @param \Symfony\Component\Form\FormView $formView
-     * @param $elementId
+     * @param string                           $elementId
+     *
      * @return null|\Symfony\Component\Form\FormView
      */
     public function getChildFormView(FormView $formView, $elementId)
@@ -63,7 +66,9 @@ class AdminHelper
 
     /**
      * @deprecated
+     *
      * @param string $code
+     *
      * @return \Sonata\AdminBundle\Admin\AdminInterface
      */
     public function getAdmin($code)
@@ -78,8 +83,10 @@ class AdminHelper
      *   only for direct FieldDescription (not nested one)
      *
      * @throws \RuntimeException
+     *
      * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
-     * @param sting $elementId
+     * @param string                                   $elementId
+     *
      * @return array
      */
     public function appendFormFieldElement(AdminInterface $admin, $elementId)
@@ -87,7 +94,7 @@ class AdminHelper
         // retrieve the subject
         $formBuilder = $admin->getFormBuilder();
 
-        $form  = $formBuilder->getForm();
+        $form = $formBuilder->getForm();
         $form->bindRequest($admin->getRequest());
 
         // get the field element
@@ -109,8 +116,8 @@ class AdminHelper
             $data[$childFormBuilder->getName()] = array();
         }
 
-        $objectCount   = count($value);
-        $postCount     = count($data[$childFormBuilder->getName()]);
+        $objectCount = count($value);
+        $postCount   = count($data[$childFormBuilder->getName()]);
 
         $fields = array_keys($fieldDescription->getAssociationAdmin()->getFormFieldDescriptions());
 
@@ -121,7 +128,7 @@ class AdminHelper
         }
 
         // add new elements to the subject
-        while($objectCount < $postCount) {
+        while ($objectCount < $postCount) {
             // append a new instance into the object
             $this->addNewInstance($form->getData(), $fieldDescription);
             $objectCount++;
@@ -141,8 +148,9 @@ class AdminHelper
     /**
      * Add a new instance to the related FieldDescriptionInterface value
      *
-     * @param object $object
+     * @param object                                              $object
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
+     *
      * @return void
      */
     public function addNewInstance($object, FieldDescriptionInterface $fieldDescription)
@@ -163,11 +171,13 @@ class AdminHelper
      * Camelize a string
      *
      * @static
+     *
      * @param string $property
+     *
      * @return string
      */
     public function camelize($property)
     {
-       return preg_replace(array('/(^|_| )+(.)/e', '/\.(.)/e'), array("strtoupper('\\2')", "'_'.strtoupper('\\1')"), $property);
+        return preg_replace(array('/(^|_| )+(.)/e', '/\.(.)/e'), array("strtoupper('\\2')", "'_'.strtoupper('\\1')"), $property);
     }
 }

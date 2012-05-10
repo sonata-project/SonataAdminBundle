@@ -52,7 +52,7 @@ class NumberType extends AbstractType
 
     /**
      * @param \Symfony\Component\Form\FormBuilder $builder
-     * @param array $options
+     * @param array                               $options
      */
     public function buildForm(FormBuilder $builder, array $options)
     {
@@ -66,7 +66,7 @@ class NumberType extends AbstractType
 
         $builder
             ->add('type', 'choice', array('choices' => $choices, 'required' => false))
-            ->add('value', 'number', array('required' => false))
+            ->add('value', $options['field_type'], array_merge(array('required' => false), $options['field_options']))
         ;
     }
 
@@ -77,7 +77,7 @@ class NumberType extends AbstractType
     public function getDefaultOptions(array $options)
     {
         $defaultOptions = array(
-            'field_type'       => 'text',
+            'field_type'       => 'number',
             'field_options'    => array()
         );
 

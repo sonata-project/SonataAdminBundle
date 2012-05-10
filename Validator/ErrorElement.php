@@ -37,35 +37,34 @@ class ErrorElement
     protected $errors = array();
 
     /**
-     * @param $subject
+     * @param mixed                                                                $subject
      * @param \Symfony\Bundle\FrameworkBundle\Validator\ConstraintValidatorFactory $constraintValidatorFactory
-     * @param \Symfony\Component\Validator\ExecutionContext $context
-     * @param $group
+     * @param \Symfony\Component\Validator\ExecutionContext                        $context
+     * @param string                                                               $group
      */
     public function __construct($subject, ConstraintValidatorFactory $constraintValidatorFactory, ExecutionContext $context, $group)
     {
-        $this->subject = $subject;
-        $this->context = $context;
-        $this->group   = $group;
+        $this->subject                    = $subject;
+        $this->context                    = $context;
+        $this->group                      = $group;
         $this->constraintValidatorFactory = $constraintValidatorFactory;
 
-        $this->current = '';
+        $this->current          = '';
         $this->basePropertyPath = $this->context->getPropertyPath();
     }
 
     /**
      * @throws \RunTimeException
-     * @param $name
-     * @param array $arguments
+     *
+     * @param string $name
+     * @param array  $arguments
+     *
      * @return ErrorElement
      */
     public function __call($name, array $arguments = array())
     {
         if (substr($name, 0, 6) == 'assert') {
-            $this->validate($this->newConstraint(
-                substr($name, 6),
-                isset($arguments[0]) ? $arguments[0] : array()
-            ));
+            $this->validate($this->newConstraint(substr($name, 6), isset($arguments[0]) ? $arguments[0] : array()));
         } else {
             throw new \RunTimeException('Unable to recognize the command');
         }
@@ -75,12 +74,13 @@ class ErrorElement
 
     /**
      * @param string $name
-     * @param bool $key
+     * @param bool   $key
+     *
      * @return ErrorElement
      */
     public function with($name, $key = false)
     {
-        $key = $key ? $name.'.'.$key : $name;
+        $key           = $key ? $name . '.' . $key : $name;
         $this->stack[] = $key;
 
         $this->current = implode('.', $this->stack);
@@ -106,14 +106,15 @@ class ErrorElement
 
     /**
      * @param \Symfony\Component\Validator\Constraint $constraint
-     * @param null $messageTemplate
-     * @param array $messageParameters
+     * @param null                                    $messageTemplate
+     * @param array                                   $messageParameters
+     *
      * @return void
      */
     protected function validate(Constraint $constraint, $messageTemplate = null, $messageParameters = array())
     {
-        $validator  = $this->constraintValidatorFactory->getInstance($constraint);
-        $value      = $this->getValue();
+        $validator = $this->constraintValidatorFactory->getInstance($constraint);
+        $value     = $this->getValue();
 
         $validator->isValid($value, $constraint);
 
@@ -163,15 +164,16 @@ class ErrorElement
 
     /**
      * @param string $name
-     * @param array $options
+     * @param array  $options
+     *
      * @return
      */
     protected function newConstraint($name, array $options = array())
     {
         if (strpos($name, '\\') !== false && class_exists($name)) {
-            $className = (string) $name;
+            $className = (string)$name;
         } else {
-            $className = 'Symfony\\Component\\Validator\\Constraints\\'.$name;
+            $className = 'Symfony\\Component\\Validator\\Constraints\\' . $name;
         }
 
         return new $className($options);
@@ -191,8 +193,9 @@ class ErrorElement
 
     /**
      * @param string|array $message
-     * @param array $parameters
-     * @param null $value
+     * @param array        $parameters
+     * @param null         $value
+     *
      * @return ErrorElement
      */
     public function addViolation($message, $parameters = array(), $value = null)

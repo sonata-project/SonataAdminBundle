@@ -34,28 +34,32 @@ class DateRangeType extends AbstractType
     }
 
     /**
-     * Returns the name of this type.
-     *
-     * @return string The name of this type
+     * {@inheritDoc}
      */
     public function getName()
     {
         return 'sonata_type_filter_date_range';
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function buildForm(FormBuilder $builder, array $options)
     {
         $choices = array(
             self::TYPE_BETWEEN    => $this->translator->trans('label_date_type_between', array(), 'SonataAdminBundle'),
             self::TYPE_NOT_BETWEEN    => $this->translator->trans('label_date_type_not_between', array(), 'SonataAdminBundle'),
         );
-        
+
         $builder
             ->add('type', 'choice', array('choices' => $choices, 'required' => false))
             ->add('value', 'sonata_type_date_range', array('field_options' => $options['field_options']))
         ;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getDefaultOptions(array $options)
     {
         $defaultOptions = array(

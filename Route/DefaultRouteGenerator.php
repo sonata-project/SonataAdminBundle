@@ -26,9 +26,10 @@ class DefaultRouteGenerator implements RouteGeneratorInterface
     }
 
     /**
-     * @param $name
-     * @param array $parameters
-     * @param bool $absolute
+     * @param string $name
+     * @param array  $parameters
+     * @param bool   $absolute
+     *
      * @return string
      */
     public function generate($name, array $parameters = array(), $absolute = false)

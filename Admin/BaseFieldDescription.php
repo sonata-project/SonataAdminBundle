@@ -77,14 +77,19 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     protected $fieldName;
 
     /**
-     * @var array the Doctrine association mapping
+     * @var array the ORM association mapping
      */
     protected $associationMapping;
 
     /**
-     * @var array the Doctrine field information
+     * @var array the ORM field information
      */
     protected $fieldMapping;
+
+    /*
+     * var array the ORM parent mapping association
+     */
+    protected $parentAssociationMappings;
 
     /**
      * @var string the template name
@@ -117,10 +122,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     protected $help;
 
     /**
-     * set the field name
-     *
-     * @param string $fieldName
-     * @return void
+     * {@inheritdoc}
      */
     public function setFieldName($fieldName)
     {
@@ -128,9 +130,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     }
 
     /**
-     * return the field name
-     *
-     * @return string the field name
+     * {@inheritdoc}
      */
     public function getFieldName()
     {
@@ -138,24 +138,19 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     }
 
     /**
-     * Set the name
-     *
-     * @param string $name
-     * @return void
+     * {@inheritdoc}
      */
     public function setName($name)
     {
         $this->name = $name;
 
         if (!$this->getFieldName()) {
-            $this->setFieldName($name);
+            $this->setFieldName(substr(strrchr('.' . $name, '.'), 1));
         }
     }
 
     /**
-     * Return the name, the name can be used as a form label or table header
-     *
-     * @return string the name
+     * {@inheritdoc}
      */
     public function getName()
     {
@@ -163,11 +158,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     }
 
     /**
-     * Return the value represented by the provided name
-     *
-     * @param string $name
-     * @param null $default
-     * @return array|null the value represented by the provided name
+     * {@inheritdoc}
      */
     public function getOption($name, $default = null)
     {
@@ -175,11 +166,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     }
 
     /**
-     * Define an option, an option is has a name and a value
-     *
-     * @param string $name
-     * @param mixed $value
-     * @return void set the option value
+     * {@inheritdoc}
      */
     public function setOption($name, $value)
     {
@@ -187,15 +174,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     }
 
     /**
-     * Define the options value, if the options array contains the reserved keywords
-     *   - type
-     *   - template
-     *   - help
-     *
-     * Then the value are copied across to the related property value
-     *
-     * @param array $options
-     * @return void
+     * {@inheritdoc}
      */
     public function setOptions(array $options)
     {
@@ -221,9 +200,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     }
 
     /**
-     * return options
-     *
-     * @return array options
+     * {@inheritdoc}
      */
     public function getOptions()
     {
@@ -231,10 +208,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     }
 
     /**
-     * return the template used to render the field
-     *
-     * @param string $template
-     * @return void
+     * {@inheritdoc}
      */
     public function setTemplate($template)
     {
@@ -242,9 +216,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     }
 
     /**
-     * return the template name
-     *
-     * @return string the template name
+     * {@inheritdoc}
      */
     public function getTemplate()
     {
@@ -252,11 +224,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     }
 
     /**
-     * return the field type, the type is a mandatory field as it used to select the correct template
-     * or the logic associated to the current FieldDescription object
-     *
-     * @param string $type
-     * @return void the field type
+     * {@inheritdoc}
      */
     public function setType($type)
     {
@@ -264,9 +232,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     }
 
     /**
-     * return the type
-     *
-     * @return int|string
+     * {@inheritdoc}
      */
     public function getType()
     {
@@ -274,10 +240,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     }
 
     /**
-     * set the parent Admin (only used in nested admin)
-     *
-     * @param \Sonata\AdminBundle\Admin\AdminInterface $parent
-     * @return void
+     * {@inheritdoc}
      */
     public function setParent(AdminInterface $parent)
     {
@@ -285,9 +248,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     }
 
     /**
-     * return the parent Admin (only used in nested admin)
-     *
-     * @return \Sonata\AdminBundle\Admin\AdminInterface
+     * {@inheritdoc}
      */
     public function getParent()
     {
@@ -295,9 +256,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     }
 
     /**
-     * return the association mapping definition
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function getAssociationMapping()
     {
@@ -305,9 +264,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     }
 
     /**
-     * return the field mapping definition
-     *
-     * @return array the field mapping definition
+     * {@inheritdoc}
      */
     public function getFieldMapping()
     {
@@ -315,9 +272,15 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     }
 
     /**
-     * set the association admin instance (only used if the field is linked to an Admin)
-     *
-     * @param \Sonata\AdminBundle\Admin\AdminInterface $associationAdmin the associated admin
+     * {@inheritdoc}
+     */
+    public function getParentAssociationMappings()
+    {
+        return $this->parentAssociationMappings;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function setAssociationAdmin(AdminInterface $associationAdmin)
     {
@@ -326,8 +289,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     }
 
     /**
-     * return the associated Admin instance (only used if the field is linked to an Admin)
-     * @return \Sonata\AdminBundle\Admin\AdminInterface
+     * {@inheritdoc}
      */
     public function getAssociationAdmin()
     {
@@ -335,8 +297,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     }
 
     /**
-     *
-     * @return boolean
+     * {@inheritdoc}
      */
     public function hasAssociationAdmin()
     {
@@ -344,22 +305,19 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     }
 
     /**
-     * return the value linked to the description
-     *
-     * @param  $object
-     * @return bool|mixed
+     * {@inheritdoc}
      */
-    public function getValue($object)
+    public function getFieldValue($object, $fieldName)
     {
-        $camelizedFieldName = self::camelize($this->getFieldName());
+        $camelizedFieldName = self::camelize($fieldName);
 
         $getters = array();
         // prefer method name given in the code option
         if ($this->getOption('code')) {
             $getters[] = $this->getOption('code');
         }
-        $getters[] = 'get'.$camelizedFieldName;
-        $getters[] = 'is'.$camelizedFieldName;
+        $getters[] = 'get' . $camelizedFieldName;
+        $getters[] = 'is' . $camelizedFieldName;
 
 
         foreach ($getters as $getter) {
@@ -372,10 +330,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     }
 
     /**
-     * set the admin class linked to this FieldDescription
-     *
-     * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
-     * @return void
+     * {@inheritdoc}
      */
     public function setAdmin(AdminInterface $admin)
     {
@@ -383,7 +338,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     }
 
     /**
-     * @return \Sonata\AdminBundle\Admin\AdminInterface the admin class linked to this FieldDescription
+     * {@inheritdoc}
      */
     public function getAdmin()
     {
@@ -391,12 +346,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     }
 
     /**
-     * merge option values related to the provided option name
-     *
-     * @throws \RuntimeException
-     * @param string $name
-     * @param array $options
-     * @return void
+     * {@inheritdoc}
      */
     public function mergeOption($name, array $options = array())
     {
@@ -412,10 +362,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     }
 
     /**
-     * merge options values
-     *
-     * @param array $options
-     * @return void
+     * {@inheritdoc}
      */
     public function mergeOptions(array $options = array())
     {
@@ -423,10 +370,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     }
 
     /**
-     * set the original mapping type (only used if the field is linked to an entity)
-     *
-     * @param string|int $mappingType
-     * @return void
+     * {@inheritdoc}
      */
     public function setMappingType($mappingType)
     {
@@ -434,9 +378,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     }
 
     /**
-     * return the mapping type
-     *
-     * @return int|string
+     * {@inheritdoc}
      */
     public function getMappingType()
     {
@@ -447,7 +389,9 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
      * Camelize a string
      *
      * @static
+     *
      * @param string $property
+     *
      * @return string
      */
     public static function camelize($property)
@@ -458,7 +402,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     /**
      * Defines the help message
      *
-     * @param $string help
+     * @param string $help
      */
     public function setHelp($help)
     {
@@ -466,7 +410,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getHelp()
     {
@@ -474,12 +418,34 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     }
 
     /**
-     * return the label to use for the current field
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getLabel()
     {
         return $this->getOption('label');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isSortable()
+    {
+        return $this->getOption('sortable', false);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSortFieldMapping()
+    {
+        return $this->getOption('sort_field_mapping');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSortParentAssociationMapping()
+    {
+        return $this->getOption('sort_parent_association_mappings');
     }
 }

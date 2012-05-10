@@ -21,15 +21,16 @@ use Symfony\Component\Translation\TranslatorInterface;
 class DefaultType extends AbstractType
 {
     /**
-     * Returns the name of this type.
-     *
-     * @return string The name of this type
+     * {@inheritDoc}
      */
     public function getName()
     {
         return 'sonata_type_filter_default';
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function buildForm(FormBuilder $builder, array $options)
     {
         $builder
@@ -38,6 +39,9 @@ class DefaultType extends AbstractType
         ;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getDefaultOptions(array $options)
     {
         $defaultOptions = array(

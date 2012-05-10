@@ -20,20 +20,18 @@ use Sonata\AdminBundle\Form\ChoiceList\ModelChoiceList;
 
 class ModelsToArrayTransformer implements DataTransformerInterface
 {
-
     protected $choiceList;
 
+    /**
+     * @param \Sonata\AdminBundle\Form\ChoiceList\ModelChoiceList $choiceList
+     */
     public function __construct(ModelChoiceList $choiceList)
     {
         $this->choiceList = $choiceList;
     }
 
     /**
-     * Transforms entities into choice keys
-     *
-     * @param Collection|object $collection A collection of entities, a single entity or
-     *                                      NULL
-     * @return mixed An array of choice keys, a single key or NULL
+     * {@inheritDoc}
      */
     public function transform($collection)
     {
@@ -62,11 +60,7 @@ class ModelsToArrayTransformer implements DataTransformerInterface
     }
 
     /**
-     * Transforms choice keys into entities
-     *
-     * @param  mixed $keys   An array of keys, a single key or NULL
-     * @return Collection|object  A collection of entities, a single entity
-     *                            or NULL
+     * {@inheritDoc}
      */
     public function reverseTransform($keys)
     {

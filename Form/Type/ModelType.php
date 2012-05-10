@@ -26,6 +26,9 @@ use Sonata\AdminBundle\Model\ModelManagerInterface;
 
 class ModelType extends AbstractType
 {
+    /**
+     * {@inheritDoc}
+     */
     public function buildForm(FormBuilder $builder, array $options)
     {
         if ($options['multiple']) {
@@ -37,6 +40,9 @@ class ModelType extends AbstractType
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getDefaultOptions(array $options)
     {
         $defaultOptions = array(
@@ -67,11 +73,17 @@ class ModelType extends AbstractType
         return $defaultOptions;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getParent(array $options)
     {
         return $options['parent'];
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getName()
     {
         return 'sonata_type_model';

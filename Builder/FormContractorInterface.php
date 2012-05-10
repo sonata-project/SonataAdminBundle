@@ -23,23 +23,38 @@ interface FormContractorInterface
 
     /**
      * @abstract
-     * @param \Symfony\Component\Form\FieldFactory\FormFactoryInterface $formFactory
+     *
+     * @param \Symfony\Component\Form\FormFactoryInterface $formFactory
      */
     function __construct(FormFactoryInterface $formFactory);
 
     /**
      * @abstract
-     * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
+     *
+     * @param \Sonata\AdminBundle\Admin\AdminInterface            $admin
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
+     *
      * @return void
      */
     function fixFieldDescription(AdminInterface $admin, FieldDescriptionInterface $fieldDescription);
 
     /**
      * @abstract
+     *
      * @param string $name
-     * @param array $options
-     * @return void
+     * @param array  $options
+     *
+     * @return FormBuilder
      */
     function getFormBuilder($name, array $options = array());
+
+    /**
+     * @abstract
+     *
+     * @param string                                              $type
+     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
+     *
+     * @return array
+     */
+    function getDefaultOptions($type, FieldDescriptionInterface $fieldDescription);
 }

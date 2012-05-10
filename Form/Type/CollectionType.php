@@ -19,6 +19,9 @@ use Sonata\AdminBundle\Form\EventListener\ResizeFormListener;
 
 class CollectionType extends AbstractType
 {
+    /**
+     * {@inheritDoc}
+     */
     public function buildForm(FormBuilder $builder, array $options)
     {
         $listener = new ResizeFormListener(
@@ -31,6 +34,9 @@ class CollectionType extends AbstractType
         $builder->addEventSubscriber($listener);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getDefaultOptions(array $options)
     {
         return array(
@@ -40,6 +46,9 @@ class CollectionType extends AbstractType
         );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getName()
     {
         return 'sonata_type_collection';
