@@ -96,7 +96,7 @@ file that was distributed with this source code.
                 {{ form_widget(form) }}
 
                 {% if sonata_admin.field_description.help %}
-                    <span class="help-block sonata-ba-field-help">{{ sonata_admin.field_description.help }}</span>
+                    <span class="help-block sonata-ba-field-help">{{ sonata_admin.field_description.help|trans({}, sonata_admin.admin.translationdomain) }}</span>
                 {% endif %}
 
                 {% if errors|length > 0 %}
