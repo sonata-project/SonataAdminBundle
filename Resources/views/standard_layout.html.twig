@@ -123,12 +123,11 @@ file that was distributed with this source code.
             {% block notice %}
                 {% for notice_level in ['success','error','info', 'warning'] %}
                     {% set session_var = 'sonata_flash_' ~ notice_level %}
-                    {% if app.session.hasFlash(session_var) %}
-                        <div class="alert alert-{{ notice_level }}">
-                            {{ app.session.flash(session_var) | trans([],'SonataAdminBundle') }}
-                            {#<a class="close" data-dismiss="alert" href="#">×</a>#}
+                    {% for flash in app.session.flashbag.get(session_var) %}
+                        <div class="alert {{ 'alert-' ~ notice_level }}">
+                            {{ flash|trans([], 'SonataAdminBundle') }}
                         </div>
-                    {% endif %}
+                    {% endfor %}
                 {% endfor %}
             {% endblock %}
 
