@@ -95,3 +95,28 @@ Add some items to a group
 .. image:: ../images/dashboard.png
            :alt: Dashboard
            :width: 200
+
+Display two blocks with different dashboard groups
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code-block:: yaml
+
+    # app/config/config.yml
+    sonata_admin:
+        dashboard
+            blocks:
+                # display two dashboard blocks
+                - { position: left,  type: sonata.admin.block.admin_list, settings: { groups: [sonata_page1, sonata_page2] } }
+                - { position: right, type: sonata.admin.block.admin_list, settings: { groups: [sonata_page3] } }
+
+            groups:
+                sonata_page1:
+                    items:
+                        - sonata.page.admin.myitem1
+                sonata_page2:
+                    items:
+                        - sonata.page.admin.myitem2
+                        - sonata.page.admin.myitem3
+                sonata_page3:
+                    items:
+                        - sonata.page.admin.myitem4
