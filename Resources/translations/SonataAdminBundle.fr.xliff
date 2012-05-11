@@ -210,6 +210,10 @@
               <source>label_type_equals</source>
               <target>est égal à</target>
             </trans-unit>
+            <trans-unit id="label_type_not_equals">
+              <source>label_type_not_equals</source>
+              <target>n'est pas égal à</target>
+            </trans-unit>
             <trans-unit id="label_type_equal">
               <source>label_type_equal</source>
               <target>=</target>
@@ -229,6 +233,42 @@
             <trans-unit id="label_type_less_than">
               <source>label_type_less_than</source>
               <target>&lt;</target>
+            </trans-unit>
+            <trans-unit id="label_date_type_equal">
+              <source>label_date_type_equal</source>
+              <target>=</target>
+            </trans-unit>
+            <trans-unit id="label_date_type_greater_equal">
+              <source>label_date_type_greater_equal</source>
+              <target>&gt;=</target>
+            </trans-unit>
+            <trans-unit id="label_date_type_greater_than">
+              <source>label_date_type_greater_than</source>
+              <target>&gt;</target>
+            </trans-unit>
+            <trans-unit id="label_date_type_less_equal">
+              <source>label_date_type_less_equal</source>
+              <target>&lt;=</target>
+            </trans-unit>
+            <trans-unit id="label_date_type_less_than">
+              <source>label_date_type_less_than</source>
+              <target>&lt;</target>
+            </trans-unit>
+            <trans-unit id="label_date_type_null">
+              <source>label_date_type_null</source>
+              <target>est vide</target>
+            </trans-unit>
+            <trans-unit id="label_date_type_not_null">
+              <source>label_date_type_not_null</source>
+              <target>n'est pas vide</target>
+            </trans-unit>
+            <trans-unit id="label_date_type_between">
+              <source>label_date_type_between</source>
+              <target>est entre</target>
+            </trans-unit>
+            <trans-unit id="label_date_not_between">
+              <source>label_date_type_not_between</source>
+              <target>n'est pas entre</target>
             </trans-unit>
             <trans-unit id="label_filters">
               <source>label_filters</source>
@@ -267,7 +307,10 @@
                 <source>label_export_download</source>
                 <target>Export : </target>
             </trans-unit>
-
+            <trans-unit id="loading_information">
+                <source>loading_information</source>
+                <target>Chargement des informations…</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

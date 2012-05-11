@@ -257,7 +257,7 @@ class AdminHelperTest extends \PHPUnit_Framework_TestCase
 
         $dispatcher = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
 
-        $formView = new FormView();
+        $formView = new FormView('test');
 
         $helper = $this->getMock('Sonata\AdminBundle\Admin\AdminHelper', array('getChildFormView'), array($pool));
         $helper->expects($this->once())->method('getChildFormView')->will($this->returnValue($formView));

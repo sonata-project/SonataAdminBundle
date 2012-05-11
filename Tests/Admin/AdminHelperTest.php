@@ -50,11 +50,11 @@ class AdminHelperTest extends \PHPUnit_Framework_TestCase
         $pool = new Pool($container, 'title', 'logo.png');
         $helper = new AdminHelper($pool);
 
-        $formView = new FormView();
+        $formView = new FormView('test');
         $formView->set('id', 'test');
-        $child = new FormView();
+        $child = new FormView('test');
         $child->set('id', 'test_elementId');
-        $formView->setChildren(array('elementId' => $child));
+	$formView->addChild($child);
 
         $this->assertNull($helper->getChildFormView($formView, 'foo'));
         $this->isInstanceOf('Symfony\Component\Form\FormView', $helper->getChildFormView($formView, 'test_elementId'));
