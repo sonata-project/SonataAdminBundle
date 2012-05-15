@@ -95,6 +95,7 @@ class AdminHelper
         $formBuilder = $admin->getFormBuilder();
 
         $form = $formBuilder->getForm();
+        $form->setData($admin->getObject($admin->getRequest()->get('objectId')));
         $form->bindRequest($admin->getRequest());
 
         // get the field element
