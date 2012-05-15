@@ -64,7 +64,7 @@
             </trans-unit>
             <trans-unit id="link_reset_filter">
                 <source>link_reset_filter</source>
-                <target>Opnieuw zetten</target>
+                <target>Herstellen</target>
             </trans-unit>
             <trans-unit id="title_create">
                 <source>title_create</source>
@@ -122,17 +122,21 @@
                 <source>action_show</source>
                 <target>Tonen</target>
             </trans-unit>
-            <trans-unit id="all_elements">
-                <source>all_elements</source>
-                <target>Alle elementen</target>
-            </trans-unit>
             <trans-unit id='flash_batch_empty'>
                 <source>flash_batch_empty</source>
                 <target>Handeling gestopt. Geen items geselecteerd.</target>
             </trans-unit>
-            <trans-unit id='flash_create_success'>
-                <source>flash_create_success</source>
-                <target>Item is succesvol aangemaakt.</target>
+            <trans-unit id='flash_batch_delete_success'>
+                <source>flash_batch_delete_success</source>
+                <target>De geselecteerde items zijn succesvol verwijderd.</target>
+            </trans-unit>
+            <trans-unit id='flash_delete_success'>
+                <source>flash_delete_success</source>
+                <target>Het item is succesvol verwijderd.</target>
+            </trans-unit>
+            <trans-unit id="all_elements">
+                <source>all_elements</source>
+                <target>Alle elementen</target>
             </trans-unit>
             <trans-unit id='flash_create_error'>
                 <source>flash_create_error</source>
@@ -146,10 +150,6 @@
                 <source>flash_edit_error</source>
                 <target>Het item kon door een fout niet worden bijgewerkt.</target>
             </trans-unit>
-            <trans-unit id='flash_batch_delete_success'>
-                <source>flash_batch_delete_success</source>
-                <target>Het geselecteerde items zijn succesvol verwijderd.</target>
-            </trans-unit>
             <trans-unit id='flash_batch_delete_error'>
                 <source>flash_batch_delete_error</source>
                 <target>De geselecteerde items konden door een fout niet worden verwijderd.</target>
@@ -157,50 +157,6 @@
             <trans-unit id='flash_delete_error'>
                 <source>flash_delete_error</source>
                 <target>Het item kon door een fout niet worden verwijderd.</target>
-            </trans-unit>
-            <trans-unit id='flash_delete_success'>
-                <source>flash_delete_success</source>
-                <target>Het item is succesvol verwijder.</target>
-            </trans-unit>
-            <trans-unit id="all_elements">
-                <source>all_elements</source>
-                <target>Alle elementen</target>
-            </trans-unit>
-            <trans-unit id='flash_batch_empty'>
-                <source>flash_batch_empty</source>
-                <target>Handeling gestopt. Geen items geselecteerd.</target>
-            </trans-unit>
-            <trans-unit id='flash_create_success'>
-                <source>flash_create_success</source>
-                <target>Item is succesvol aangemaakt.</target>
-            </trans-unit>
-            <trans-unit id='flash_create_error'>
-                <source>flash_create_error</source>
-                <target>Het item kon door een fout niet worden aangemaakt.</target>
-            </trans-unit>
-            <trans-unit id='flash_edit_success'>
-                <source>flash_edit_success</source>
-                <target>Het item is succesvol bijgewerkt.</target>
-            </trans-unit>
-            <trans-unit id='flash_edit_error'>
-                <source>flash_edit_error</source>
-                <target>Het item kon door een fout niet worden bijgewerkt.</target>
-            </trans-unit>
-            <trans-unit id='flash_batch_delete_success'>
-                <source>flash_batch_delete_success</source>
-                <target>Het geselecteerde items zijn succesvol verwijderd.</target>
-            </trans-unit>
-            <trans-unit id='flash_batch_delete_error'>
-                <source>flash_batch_delete_error</source>
-                <target>De geselecteerde items konden door een fout niet worden verwijderd.</target>
-            </trans-unit>
-            <trans-unit id='flash_delete_error'>
-                <source>flash_delete_error</source>
-                <target>Het item kon door een fout niet worden verwijderd.</target>
-            </trans-unit>
-            <trans-unit id='flash_delete_success'>
-                <source>flash_delete_success</source>
-                <target>Het item is succesvol verwijder.</target>
             </trans-unit>
             <trans-unit id="link_breadcrumb_dashboard">
                 <source>breadcrumb.link_dashboard</source>
@@ -224,11 +180,11 @@
             </trans-unit>
             <trans-unit id="message_batch_confirmation">
                 <source>message_batch_confirmation</source>
-                <target>Weet je zeker dat voor alle geselecteerde items het handeling moet worden uitgevoerd?</target>
+                <target>Weet je zeker dat voor alle geselecteerde items de handeling moet worden uitgevoerd?</target>
             </trans-unit>
             <trans-unit id="btn_execute_batch_action">
                 <source>btn_execute_batch_action</source>
-                <target>Ja, voeruit</target>
+                <target>Ja, voer uit</target>
             </trans-unit>
             <trans-unit id="label_type_yes">
                 <source>label_type_yes</source>
@@ -355,7 +311,7 @@
             </trans-unit>
             <trans-unit id="loading_information">
                 <source>loading_information</source>
-                <target>Laden van informatie…</target>
+                <target>Laden van informatie...</target>
             </trans-unit>
         </body>
     </file>
