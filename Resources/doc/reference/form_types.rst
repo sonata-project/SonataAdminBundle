@@ -21,6 +21,8 @@ sonata_type_collection
 
 The ``Collection Type`` is meant to handle creation and edition of model collections. Rows can be added and deleted, and your model abstraction layer may allow you to edit fields inline.
 
+**TIP**: A jQuery event is fired after a row has been added(*sonata-collection-item-added*) or deleted(*sonata-collection-item-deleted*). You can bind to them to trigger some custom javascript imported into your templates(eg: add a calendar widget to a just added date field)
+
 Type configuration
 ^^^^^^^^^^^^^^^^^^
 
