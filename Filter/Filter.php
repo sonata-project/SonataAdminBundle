@@ -221,4 +221,12 @@ abstract class Filter implements FilterInterface
     {
         return $this->condition;
     }
+
+    /**
+     * @return bool
+     */
+    public function isHidden()
+    {
+        return array_key_exists('hidden', $this->options) ? $this->options['hidden'] : false;
+    }
 }
