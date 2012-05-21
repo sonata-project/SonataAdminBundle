@@ -46,10 +46,12 @@ in your ``deps`` file:
   [KnpMenuBundle]
       git=http://github.com/KnpLabs/KnpMenuBundle.git
       target=/bundles/Knp/Bundle/MenuBundle
+      version=v1.1.0
 
   [KnpMenu]
       git=http://github.com/KnpLabs/KnpMenu.git
       target=/knp/menu
+      version=v1.1.1
 
   [Exporter]
       git=http://github.com/sonata-project/exporter.git
