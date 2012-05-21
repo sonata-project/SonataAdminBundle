@@ -85,16 +85,18 @@ class AdminHelper
      * @throws \RuntimeException
      *
      * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
+     * @param object                                   $subject
      * @param string                                   $elementId
      *
      * @return array
      */
-    public function appendFormFieldElement(AdminInterface $admin, $elementId)
+    public function appendFormFieldElement(AdminInterface $admin, $subject, $elementId)
     {
         // retrieve the subject
         $formBuilder = $admin->getFormBuilder();
 
         $form = $formBuilder->getForm();
+        $form->setData($subject);
         $form->bindRequest($admin->getRequest());
 
         // get the field element
@@ -138,6 +140,7 @@ class AdminHelper
         $data[$childFormBuilder->getName()][] = $value;
 
         $finalForm = $admin->getFormBuilder()->getForm();
+        $finalForm->setData($subject);
 
         // bind the data
         $finalForm->setData($form->getData());

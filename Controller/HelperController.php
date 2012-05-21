@@ -80,7 +80,7 @@ class HelperController
 
         $admin->setSubject($subject);
 
-        list($fieldDescription, $form) = $this->helper->appendFormFieldElement($admin, $elementId);
+        list($fieldDescription, $form) = $this->helper->appendFormFieldElement($admin, $subject, $elementId);
 
         $view = $this->helper->getChildFormView($form->createView(), $elementId);
 
