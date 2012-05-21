@@ -71,7 +71,7 @@ file that was distributed with this source code.
 
                 {% block table_footer %}
                     <tr>
-                        <th colspan="{{ admin.list.elements|length - 1 }}">
+                        <th colspan="{{ admin.list.elements|length - (app.request.isXmlHttpRequest ? 2 : 1) }}">
                             {{ admin.datagrid.pager.page }} / {{ admin.datagrid.pager.lastpage }}
                             {% if admin.isGranted("EXPORT") %}
                                 -
