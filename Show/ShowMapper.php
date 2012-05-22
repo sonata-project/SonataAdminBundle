@@ -53,6 +53,14 @@ class ShowMapper
      */
     public function add($name, $type = null, array $fieldDescriptionOptions = array())
     {
+        if (!isset($fieldDescriptionOptions['route']['name'])) {
+            $fieldDescriptionOptions['route']['name'] = 'edit';
+        }
+
+        if (!isset($fieldDescriptionOptions['route']['parameters'])) {
+            $fieldDescriptionOptions['route']['parameters'] = array();
+        }
+
         if (!$this->currentGroup) {
             $this->with($this->admin->getLabel());
         }
