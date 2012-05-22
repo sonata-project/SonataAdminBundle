@@ -691,8 +691,25 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
             return;
         }
 
+        $filterParameters = $this->getFilterParameters();
+
+        // transform _sort_by from a string to a FieldDescriptionInterface for the datagrid.
+        if (isset($filterParameters['_sort_by']) && is_string($filterParameters['_sort_by'])) {
+            if ($this->hasListFieldDescription($filterParameters['_sort_by'])) {
+                $filterParameters['_sort_by'] = $this->getListFieldDescription($filterParameters['_sort_by']);
+            } else {
+                $filterParameters['_sort_by'] = $this->getModelManager()->getNewFieldDescriptionInstance(
+                    $this->getClass(),
+                    $filterParameters['_sort_by'],
+                    array()
+                );
+
+                $this->getListBuilder()->buildField(null, $filterParameters['_sort_by'], $this);
+            }
+        }
+
         // initialize the datagrid
-        $this->datagrid = $this->getDatagridBuilder()->getBaseDatagrid($this, $this->getFilterParameters());
+        $this->datagrid = $this->getDatagridBuilder()->getBaseDatagrid($this, $filterParameters);
 
         $this->datagrid->getPager()->setMaxPerPage($this->maxPerPage);
         $this->datagrid->getPager()->setMaxPageLinks($this->maxPageLinks);
