@@ -30,3 +30,33 @@ Usage of each template :
 
 The default values will be set only if the ``Admin::setTemplates`` is not called by the Container.
 
+You can easily extend the provided templates in your own and customize only the blocks you need to change:
+
+.. code-block:: jinja
+
+    {% extends 'SonataAdminBundle:CRUD:edit.html.twig' %}
+    {# Acme/MyBundle/Ressources/view/my-custom-edit.html.twig #}
+
+    {% block title %}
+        {{ "My title"|trans }}
+    {% endblock%}
+
+    {% block actions %}
+         <div class="sonata-actions">
+             <ul>
+                 {% if admin.hasroute('list') and admin.isGranted('LIST')%}
+                     <li class="btn sonata-action-element"><a href="{{ admin.generateUrl('list') }}">{% trans from 'SonataAdminBundle' %}link_action_list{% endtrans %}</a></li>
+                 {% endif %}
+             </ul>
+         </div>
+    {% endblock %}
+
+
+.. code-block:: php
+
+    <?php // MyAdmin.php
+
+    public function getEditTemplate()
+    {
+        return 'AcmeMyBundle:my-custom-edit.html.twig';
+    }
