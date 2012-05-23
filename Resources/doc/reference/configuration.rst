@@ -10,7 +10,7 @@ Configuration options
 * ``title`` : The admin's title, can be the client name for instance (default: Sonata Admin)
 * ``title_logo`` : logo to use, must be an image with a height of 28px (default : /bundles/sonataadmin/logo_title.png)
 
-Please see :ref:`templates` for more information on how to configure default templates.
+Please see :doc:`templates` for more information on how to configure default templates.
 
 
 Full Configuration Options

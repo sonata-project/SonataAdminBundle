@@ -105,9 +105,9 @@ Inside the controller, the ``Admin`` object is accessible through the
 Obtaining an ``Admin`` Service
 ------------------------------
 
-``Admin`` definitions are accessible through the 'sonata.admin.pool' service or
-directly from the DIC (dependency injection container). The ``Admin`` definitions are lazy
-loaded from the DIC to reduce overhead.
+``Admin`` definitions are accessible through the ``sonata.admin.pool`` service or
+directly from the DIC (dependency injection container). The ``Admin`` definitions 
+are lazy-loaded from the DIC to reduce overhead.
 
 Declaring a new Admin class
 ---------------------------
@@ -116,7 +116,7 @@ Once you have created an admin class, you need to make the framework aware of
 it. To do that, you need to add a tag with the name ``sonata.admin`` to the
 service. Parameters for that tag are:
 
-* ``manager_type``: Label of the document manager to inject;
+* ``manager_type``: Label of the database manager to use;
 * ``group``: A label to allow grouping on the dashboard;
 * ``label``: Label to use for the name of the entity this manager handles;
 
@@ -132,7 +132,7 @@ Examples:
         <argument />
         <argument>Sonata\NewsBundle\Entity\Post</argument>
         <argument>SonataAdminBundle:CRUD</argument>
-</service>
+    </service>
 
 If you want to define your own controller for handling CRUD operations, change the last argument
 in the service definition to::

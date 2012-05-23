@@ -4,11 +4,11 @@ Advance
 Service Configuration
 ---------------------
 
-When you create a new Admin service you can configure its dependencies, by default services which are injected are:
+When you create a new Admin service you can configure its dependencies, the services which are injected by default are:
 
-========================      =============================================
+=========================     =============================================
 Dependencies                  Service Id
-========================      =============================================
+=========================     =============================================
 model_manager                 sonata.admin.manager.%manager-type%
 form_contractor               sonata.admin.builder.%manager-type%_form
 show_builder                  sonata.admin.builder.%manager-type%_show
@@ -24,11 +24,11 @@ router_builder                sonata.admin.route.path_info
 label_translator_strategy     sonata.admin.label.strategy.form_component
 =========================     =============================================
 
-Note: %manager-type% is replaced by the manager type (orm, odm...)
+Note: %manager-type% is to be replaced by the manager type (orm, odm...)
 
 You have 2 ways of defining the dependencies inside a ``services.xml``.
 
-* With a tag attribute, less verbose::
+* With a tag attribute, less verbose :
 
 .. code-block:: xml
 
@@ -71,7 +71,7 @@ You have 2 ways of defining the dependencies inside a ``services.xml``.
         </service>
 
 
-If you want to modify the service which is going to be injected, add the following code to your
+If you want to modify the service that is going to be injected, add the following code to your
 application's config file:
 
 .. code-block:: yaml
