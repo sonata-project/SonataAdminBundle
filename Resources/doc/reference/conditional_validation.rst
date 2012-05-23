@@ -64,7 +64,7 @@ There are two important options:
 
 The method must accept two arguments:
 
- - ``ErrorElement``: the instance where assertion can be check
+ - ``ErrorElement``: the instance where assertion can be checked
  - ``value``: the object instance
 
 
