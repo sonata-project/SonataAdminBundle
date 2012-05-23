@@ -57,6 +57,8 @@ file that was distributed with this source code.
                 </div>
             {% endif %}
 
+            {% block pre_fieldsets %}{% endblock %}
+
             {% for name, form_group in admin.formgroups %}
                 <fieldset {% if form_group.collapsed %}class="sonata-ba-fielset-collapsed"{% endif %}>
                     <legend>
@@ -76,6 +78,8 @@ file that was distributed with this source code.
                     </div>
                 </fieldset>
             {% endfor %}
+
+            {% block post_fieldsets %}{% endblock %}
 
             {{ form_rest(form) }}
 
