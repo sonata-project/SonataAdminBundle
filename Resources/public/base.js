@@ -3,6 +3,7 @@ jQuery(document).ready(function() {
     Admin.add_pretty_errors(document);
     Admin.add_collapsed_toggle();
     Admin.add_filters(document);
+    Admin.handle_preview_mode(document);
     Admin.set_object_field_value(document);
     Admin.setup_collection_buttons(document);
 });
@@ -115,6 +116,24 @@ var Admin = {
         jQuery('div.filter_container.inactive', subject).hide();
         jQuery('fieldset.filter_legend', subject).click(function(event) {
            jQuery('div.filter_container', jQuery(event.target).parent()).toggle();
+        });
+    },
+    
+    handle_preview_mode: function(subject) {
+        // we hijack the click on the preview button
+        jQuery('.btn.persist-preview', subject).click(function(){
+            var form = jQuery('.sonata-ba-form form', subject);
+            // make the form submit in a new window
+            form.attr('target', '_blank');
+            form.submit();
+            return false;
+        });
+        
+        // we reset the target of the form the moment the 
+        // preview button loses focus
+        jQuery('.btn.persist-preview', subject).blur(function() {
+            var form = jQuery('.sonata-ba-form form', subject);
+            form.attr('target', '');
         });
     },
 

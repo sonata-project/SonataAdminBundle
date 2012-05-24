@@ -994,6 +994,16 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
+     * Returns the preview template
+     *
+     * @return string the preview template
+     */
+    public function getPreviewTemplate()
+    {
+        return $this->getTemplate('preview');
+    }
+
+    /**
      * Returns the view template
      *
      * @return string the view template
@@ -2405,5 +2415,26 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     public function getLabelTranslatorStrategy()
     {
         return $this->labelTranslatorStrategy;
+    }
+    
+    /**
+     * Returning true will enable preview mode for
+     * the target entity and show a preview button
+     * when editing/creating an entity
+     * 
+     * @return boolean
+     */
+    public function supportsPreviewMode()
+    {
+        return false;
+    }
+    
+    /**
+     * Enables the preview template for the create/edit actions
+     */
+    public function enablePreviewTemplate()
+    {
+        $this->setTemplate('edit', $this->getPreviewTemplate());
+        $this->setTemplate('create', $this->getPreviewTemplate());
     }
 }

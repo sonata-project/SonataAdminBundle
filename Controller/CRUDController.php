@@ -257,7 +257,10 @@ class CRUDController extends Controller
         if ($this->get('request')->getMethod() == 'POST') {
             $form->bindRequest($this->get('request'));
 
-            if ($form->isValid()) {
+            // if the preview button has been used to submit the form
+            $isPreview = $this->get('request')->get('btn_preview') !== null;
+            
+            if ($form->isValid() && ! $isPreview) {
                 $this->admin->update($object);
                 $this->get('session')->setFlash('sonata_flash_success', 'flash_edit_success');
 
@@ -271,8 +274,13 @@ class CRUDController extends Controller
                 // redirect to edit mode
                 return $this->redirectTo($object);
             }
-
-            $this->get('session')->setFlash('sonata_flash_error', 'flash_edit_error');
+            
+            // if this is not a preview it means validation failed
+            if ( ! $isPreview) {
+                $this->get('session')->setFlash('sonata_flash_error', 'flash_edit_error');
+            } else {
+                $this->admin->enablePreviewTemplate();
+            }
         }
 
         $view = $form->createView();
@@ -423,7 +431,10 @@ class CRUDController extends Controller
         if ($this->get('request')->getMethod() == 'POST') {
             $form->bindRequest($this->get('request'));
 
-            if ($form->isValid()) {
+            // if the preview button has been used to submit the form
+            $isPreview = $this->get('request')->get('btn_preview') !== null;
+            
+            if ($form->isValid() && ! $isPreview) {
                 $this->admin->create($object);
 
                 if ($this->isXmlHttpRequest()) {
@@ -437,7 +448,12 @@ class CRUDController extends Controller
                 // redirect to edit mode
                 return $this->redirectTo($object);
             }
-            $this->get('session')->setFlash('sonata_flash_error', 'flash_create_error');
+            
+            if ( ! $isPreview) {
+                $this->get('session')->setFlash('sonata_flash_error', 'flash_create_error');
+            } else {
+                $this->admin->enablePreviewTemplate();
+            }
         }
 
         $view = $form->createView();
