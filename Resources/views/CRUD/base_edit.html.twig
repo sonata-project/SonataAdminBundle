@@ -77,6 +77,7 @@ file that was distributed with this source code.
 
             {{ form_rest(form) }}
 
+            {% block formactions %}
             <div class="form-actions">
                 {% if app.request.isxmlhttprequest %}
                     {% if admin.id(object) %}
@@ -85,8 +86,8 @@ file that was distributed with this source code.
                         <input type="submit" class="btn" name="btn_create" value="{% trans from 'SonataAdminBundle' %}btn_create{% endtrans %}"/>
                     {% endif %}
                 {% else %}
-                    {% if admin.supportsPreviewMode() %}
-                        <input class="btn btn-info persist-preview" name="btn_preview" value="{% trans from 'SonataAdminBundle' %}btn_preview{% endtrans %}"/>
+                    {% if admin.supportsPreviewMode %}
+                        <input class="btn btn-info persist-preview" name="btn_preview" type="submit" value="{% trans from 'SonataAdminBundle' %}btn_preview{% endtrans %}"/>
                     {% endif %}
                     {% if admin.id(object) %}
                         <input type="submit" class="btn btn-primary" name="btn_update_and_edit" value="{% trans from 'SonataAdminBundle' %}btn_update_and_edit_again{% endtrans %}"/>
@@ -104,6 +105,7 @@ file that was distributed with this source code.
                     {% endif %}
                 {% endif %}
             </div>
+            {% endblock formactions %}
         </form>
     {% endif%}
 {% endblock %}
