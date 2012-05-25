@@ -260,7 +260,7 @@ class CRUDController extends Controller
             // if the preview button has been used to submit the form
             $isPreview = $this->get('request')->get('btn_preview') !== null;
             
-            if ($form->isValid() && ! $isPreview) {
+            if ($form->isValid() && !$isPreview) {
                 $this->admin->update($object);
                 $this->get('session')->setFlash('sonata_flash_success', 'flash_edit_success');
 
@@ -276,7 +276,7 @@ class CRUDController extends Controller
             }
             
             // if this is not a preview it means validation failed
-            if ( ! $isPreview) {
+            if (!$isPreview) {
                 $this->get('session')->setFlash('sonata_flash_error', 'flash_edit_error');
             } else {
                 $this->admin->enablePreviewTemplate();
@@ -434,7 +434,7 @@ class CRUDController extends Controller
             // if the preview button has been used to submit the form
             $isPreview = $this->get('request')->get('btn_preview') !== null;
             
-            if ($form->isValid() && ! $isPreview) {
+            if ($form->isValid() && !$isPreview) {
                 $this->admin->create($object);
 
                 if ($this->isXmlHttpRequest()) {
@@ -449,7 +449,7 @@ class CRUDController extends Controller
                 return $this->redirectTo($object);
             }
             
-            if ( ! $isPreview) {
+            if (!$isPreview) {
                 $this->get('session')->setFlash('sonata_flash_error', 'flash_create_error');
             } else {
                 $this->admin->enablePreviewTemplate();
