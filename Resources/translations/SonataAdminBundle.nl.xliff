@@ -2,10 +2,6 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
     <file source-language="en" datatype="plaintext" original="SonataAdminBundle.en.xliff" >
         <body>
-            <trans-unit id="btn_preview">
-                <source>btn_preview</source>
-                <target>Voorvertoning</target>
-            </trans-unit>
             <trans-unit id="action_delete">
                 <source>action_delete</source>
                 <target>Verwijderen</target>
@@ -316,6 +312,11 @@
             <trans-unit id="loading_information">
                 <source>loading_information</source>
                 <target>Laden van informatie...</target>
+            </trans-unit>
+            
+            <trans-unit id="btn_preview">
+                <source>btn_preview</source>
+                <target>Voorvertoning</target>
             </trans-unit>
         </body>
     </file>

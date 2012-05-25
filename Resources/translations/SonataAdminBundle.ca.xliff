@@ -315,6 +315,11 @@
                 <source>loading_information</source>
                 <target>S'està carregant informació…</target>
             </trans-unit>
+            
+            <trans-unit id="btn_preview">
+                <source>btn_preview</source>
+                <target>btn_preview</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
