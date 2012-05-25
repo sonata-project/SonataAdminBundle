@@ -262,7 +262,7 @@ class CRUDController extends Controller
             // preview-approved was clicked
             $isPreviewApproved = $this->get('request')->get('btn_preview_approve') !== null;
             // preview-decline was clicked
-            $isPreviewDeclined = $this->get('request')->get('btn_preview_deny') !== null;
+            $isPreviewDeclined = $this->get('request')->get('btn_preview_decline') !== null;
             
             // call it preview mode if one of the preview buttons was clicked
             $inPreviewMode = ($isPreviewRequested || $isPreviewApproved || $isPreviewDeclined);
@@ -447,7 +447,7 @@ class CRUDController extends Controller
             // preview-approved was clicked
             $isPreviewApproved = $this->get('request')->get('btn_preview_approve') !== null;
             // preview-decline was clicked
-            $isPreviewDeclined = $this->get('request')->get('btn_preview_deny') !== null;
+            $isPreviewDeclined = $this->get('request')->get('btn_preview_decline') !== null;
             
             // call it preview mode if one of the preview buttons was clicked
             $inPreviewMode = ($isPreviewRequested || $isPreviewApproved || $isPreviewDeclined);
