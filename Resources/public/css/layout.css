@@ -290,3 +290,6 @@ legend + .sonata-ba-collapsed-fields {
     padding-left: 5px;
 }
 
+.sonata-preview-form-container fieldset {
+	display: none;
+}
