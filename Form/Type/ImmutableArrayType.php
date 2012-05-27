@@ -12,7 +12,7 @@
 namespace Sonata\AdminBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\Form\FormBuilderInterface;
 
 use Sonata\AdminBundle\Form\EventListener\ResizeFormListener;
 
@@ -21,10 +21,10 @@ class ImmutableArrayType extends AbstractType
     /**
      * {@inheritDoc}
      */
-    public function buildForm(FormBuilder $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         foreach ($options['keys'] as $infos) {
-            if ($infos instanceof FormBuilder) {
+            if ($infos instanceof FormBuilderInterface) {
                 $builder->add($infos);
             } else {
                 list($name, $type, $options) = $infos;
