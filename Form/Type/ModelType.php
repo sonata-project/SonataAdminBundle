@@ -19,6 +19,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\Options;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 use Sonata\AdminBundle\Form\EventListener\MergeCollectionListener;
 use Sonata\AdminBundle\Form\ChoiceList\ModelChoiceList;
@@ -28,8 +29,6 @@ use Sonata\AdminBundle\Model\ModelManagerInterface;
 
 class ModelType extends AbstractType
 {
-    private $parent;
-
     /**
      * {@inheritDoc}
      */
@@ -42,13 +41,17 @@ class ModelType extends AbstractType
         } else {
             $builder->prependClientTransformer(new ModelToIdTransformer($options['model_manager'], $options['class']));
         }
-        $this->parent = isset($options['parent']) ? $options['parent'] : 'choice';
+    }
+
+    public function createBuilder($name, FormFactoryInterface $factory, array $options)
+    {
+        return parent::createBuilder($name, $factory, $options);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getDefaultOptions()
+    public function getDefaultOptions(OptionsResolverInterface $resolver)
     {
         $options = array(
             'template'          => 'choice',
@@ -77,6 +80,13 @@ class ModelType extends AbstractType
             }
         );
 
+        $compound = function (Options $options) {
+            return isset($options['parent']) ? $options['parent'] : 'choice';
+        };
+        $resolver->setDefaults(array(
+            'compound' => $compound,
+        ));
+
         return $options;
     }
 
@@ -85,7 +95,7 @@ class ModelType extends AbstractType
      */
     public function getParent()
     {
-        return $this->parent;
+        return 'choice';
     }
 
     /**
