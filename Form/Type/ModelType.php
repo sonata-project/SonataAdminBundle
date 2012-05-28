@@ -48,10 +48,22 @@ class ModelType extends AbstractType
         return parent::createBuilder($name, $factory, $options);
     }
 
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        parent::setDefaultOptions($resolver);
+        $compound = function (Options $options) {
+            return isset($options['parent']) ? $options['parent'] : 'choice';
+        };
+        $resolver->setDefaults(array(
+            'compound' => $compound,
+        ));
+    }
+
+
     /**
      * {@inheritDoc}
      */
-    public function getDefaultOptions(OptionsResolverInterface $resolver)
+    public function getDefaultOptions()
     {
         $options = array(
             'template'          => 'choice',
@@ -79,13 +91,6 @@ class ModelType extends AbstractType
                 );
             }
         );
-
-        $compound = function (Options $options) {
-            return isset($options['parent']) ? $options['parent'] : 'choice';
-        };
-        $resolver->setDefaults(array(
-            'compound' => $compound,
-        ));
 
         return $options;
     }

@@ -41,22 +41,27 @@ class ModelReferenceType extends AbstractType
         $this->parent = $options['parent'];
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getDefaultOptions(OptionsResolverInterface $resolver)
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        return array(
-            'model_manager'     => null,
-            'class'             => null,
-            'parent'            => 'hidden',
-        );
+        parent::setDefaultOptions($resolver);
         $compound = function (Options $options) {
             return $options['parent'];
         };
         $resolver->setDefaults(array(
             'compound' => $compound,
         ));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getDefaultOptions()
+    {
+        return array(
+            'model_manager'     => null,
+            'class'             => null,
+            'parent'            => 'hidden',
+        );
     }
 
     /**
