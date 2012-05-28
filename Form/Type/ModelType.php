@@ -28,6 +28,8 @@ use Sonata\AdminBundle\Model\ModelManagerInterface;
 
 class ModelType extends AbstractType
 {
+    private $parent;
+
     /**
      * {@inheritDoc}
      */
@@ -40,6 +42,7 @@ class ModelType extends AbstractType
         } else {
             $builder->prependClientTransformer(new ModelToIdTransformer($options['model_manager'], $options['class']));
         }
+        $this->parent = isset($options['parent']) ? $options['parent'] : 'choice';
     }
 
     /**
@@ -80,9 +83,9 @@ class ModelType extends AbstractType
     /**
      * {@inheritDoc}
      */
-    public function getParent(array $options)
+    public function getParent()
     {
-        return isset($options['parent']) ? $options['parent'] : 'choice';
+        return $this->parent;
     }
 
     /**
