@@ -33,17 +33,10 @@ class ModelReferenceType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->prependClientTransformer(new ModelToIdTransformer($options['model_manager'], $options['class']));
-}
-
-    public function createBuilder($name, FormFactoryInterface $factory, array $options)
-    {
-        return parent::createBuilder($name, $factory, $options);
-        $this->parent = $options['parent'];
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        parent::setDefaultOptions($resolver);
         $compound = function (Options $options) {
             return $options['parent'];
         };
@@ -62,14 +55,6 @@ class ModelReferenceType extends AbstractType
             'class'             => null,
             'parent'            => 'hidden',
         );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getParent()
-    {
-        return 'form';
     }
 
     /**

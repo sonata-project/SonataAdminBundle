@@ -43,14 +43,8 @@ class ModelType extends AbstractType
         }
     }
 
-    public function createBuilder($name, FormFactoryInterface $factory, array $options)
-    {
-        return parent::createBuilder($name, $factory, $options);
-    }
-
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        parent::setDefaultOptions($resolver);
         $compound = function (Options $options) {
             return isset($options['parent']) ? $options['parent'] : 'choice';
         };
