@@ -388,6 +388,15 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     protected $extensions = array();
 
     protected $labelTranslatorStrategy;
+    
+    /**
+     * Setting to true will enable preview mode for
+     * the entity and show a preview button in the
+     * edit/create forms
+     * 
+     * @var boolean	
+     */
+    protected $supportsPreviewMode = false;
 
     /**
      * Roles and permissions per role
@@ -2505,5 +2514,26 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     public function getLabelTranslatorStrategy()
     {
         return $this->labelTranslatorStrategy;
+    }
+    
+    /**
+     * Returning true will enable preview mode for
+     * the target entity and show a preview button
+     * when editing/creating an entity
+     * 
+     * @return boolean
+     */
+    public function supportsPreviewMode()
+    {
+        return $this->supportsPreviewMode;
+    }
+    
+    /**
+     * Enables the preview template for the create/edit actions
+     */
+    public function enablePreviewTemplate()
+    {
+        $this->setTemplate('edit', $this->getTemplate('preview'));
+        $this->setTemplate('create', $this->getTemplate('preview'));
     }
 }

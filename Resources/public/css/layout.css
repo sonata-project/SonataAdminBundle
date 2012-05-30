@@ -10,26 +10,26 @@ body.sonata-bc {
 }
 
 .sonata-bc a.brand img {
-    margin:0px;
+    margin: 0px;
     padding: 0px;
     padding-right: 5px;
     height: 28px;
     vertical-align: middle;
 }
 
-.sonata-bc div.border  {
+.sonata-bc div.border {
     border: 1px solid #DDDDDD;
     border-radius: 6px 6px 6px 6px;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.075);
 }
 
 .sonata-bc div.connection {
-    position:absolute;
+    position: absolute;
     left: 50%;
     top: 35%;
     width: 460px;
     margin: -130px 0 0 -250px;
-    box-shadow:2px 2px 10px #ccc;
+    box-shadow: 2px 2px 10px #ccc;
     border: 1px solid #ddd;
     border-radius: 6px;
 }
@@ -99,7 +99,6 @@ body.sonata-bc {
     padding-left: 0;
 }
 
-
 .sonata-bc legend.filter_legend.active,
 .sonata-bc tr.filter.active * {
     font-weight: bold;
@@ -122,7 +121,7 @@ body.sonata-bc {
     background-color: #fdffd8;
 }
 
-.sonata-bc table.sonata-ba-list td img{
+.sonata-bc table.sonata-ba-list td img {
     vertical-align: bottom
 }
 
@@ -147,8 +146,7 @@ body.sonata-bc {
 
 .sonata-bc div.sonata-ba-modal-edit-one-to-one td.sonata-ba-list-field-batch,
 .sonata-bc div.sonata-ba-modal-edit-one-to-one div.sonata-ba-list-actions,
-.sonata-bc div.sonata-ba-modal-edit-one-to-one th.sonata-ba-list-field-header-batch
-{
+.sonata-bc div.sonata-ba-modal-edit-one-to-one th.sonata-ba-list-field-header-batch {
     display: none;
 }
 
@@ -218,32 +216,32 @@ body.sonata-bc {
 }
 
 .sonata-bc .sonata-ba-view-title {
-  font-size:19.5px;
-  line-height:1;
-  color:#404040;
-  *padding:0 0 5px 0;
-  *line-height:1.5;
+    font-size: 19.5px;
+    line-height: 1;
+    color: #404040;
+    *padding: 0 0 5px 0;
+    *line-height: 1.5;
 }
 
 .sonata-bc .sonata-ba-view-title td, .sonata-ba-view-title th {
-  border:0;
+    border: 0;
 }
 
 .sonata-bc .sonata-ba-view-container th {
-  width:130px;
+    width: 130px;
 }
 
 .sonata-bc .sonata-ba-view-container td, .sonata-ba-view-container th {
-  border-bottom:0;
-  border-top: 1px solid #eee;
+    border-bottom: 0;
+    border-top: 1px solid #eee;
 }
 
 .sonata-bc .sonata-ba-view-container:nth-child(2n) td, .sonata-ba-view-container:nth-child(2n) th {
-  background-color:#f9f9f9;
+    background-color: #f9f9f9;
 }
 
 .sonata-bc .sonata-ba-view-container:nth-child(2n):hover td, .sonata-ba-view-container:nth-child(2n):hover th {
-  background-color:#f5f5f5;
+    background-color: #f5f5f5;
 }
 
 .sonata-bc .container-fluid > .sidebar {
@@ -283,7 +281,7 @@ legend + .sonata-ba-collapsed-fields {
 }
 
 .bordered-table tbody.ui-sortable tr {
-	cursor: move;
+    cursor: move;
 }
 
 .sonata-ba-fielset-collapsed legend:before {
@@ -295,3 +293,6 @@ legend + .sonata-ba-collapsed-fields {
     padding-left: 5px;
 }
 
+.sonata-preview-form-container fieldset {
+    display: none;
+}

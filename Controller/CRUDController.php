@@ -257,7 +257,20 @@ class CRUDController extends Controller
         if ($this->get('request')->getMethod() == 'POST') {
             $form->bindRequest($this->get('request'));
 
-            if ($form->isValid()) {
+            // preview mode was requested
+            $isPreviewRequested = $this->get('request')->get('btn_preview') !== null;
+            // preview-approved was clicked
+            $isPreviewApproved = $this->get('request')->get('btn_preview_approve') !== null;
+            // preview-decline was clicked
+            $isPreviewDeclined = $this->get('request')->get('btn_preview_decline') !== null;
+            
+            // call it preview mode if one of the preview buttons was clicked
+            $inPreviewMode = ($isPreviewRequested || $isPreviewApproved || $isPreviewDeclined);
+            
+            $isFormValid = $form->isValid(); 
+            
+             // persist if the form was valid and if in preview mode the preview was approved
+            if ($isFormValid && (!$inPreviewMode || $isPreviewApproved)) {
                 $this->admin->update($object);
                 $this->get('session')->setFlash('sonata_flash_success', 'flash_edit_success');
 
@@ -271,8 +284,14 @@ class CRUDController extends Controller
                 // redirect to edit mode
                 return $this->redirectTo($object);
             }
-
-            $this->get('session')->setFlash('sonata_flash_error', 'flash_edit_error');
+            
+            // show an error message if the form failed validation
+            if (!$isFormValid) {
+                $this->get('session')->setFlash('sonata_flash_error', 'flash_edit_error');
+            } elseif ($isPreviewRequested) {
+                // enable the preview template if the form was valid and preview was requested
+                $this->admin->enablePreviewTemplate();
+            }
         }
 
         $view = $form->createView();
@@ -426,8 +445,21 @@ class CRUDController extends Controller
 
         if ($this->get('request')->getMethod() == 'POST') {
             $form->bindRequest($this->get('request'));
-
-            if ($form->isValid()) {
+            
+            // preview mode was requested
+            $isPreviewRequested = $this->get('request')->get('btn_preview') !== null;
+            // preview-approved was clicked
+            $isPreviewApproved = $this->get('request')->get('btn_preview_approve') !== null;
+            // preview-decline was clicked
+            $isPreviewDeclined = $this->get('request')->get('btn_preview_decline') !== null;
+            
+            // call it preview mode if one of the preview buttons was clicked
+            $inPreviewMode = ($isPreviewRequested || $isPreviewApproved || $isPreviewDeclined);
+            
+            $isFormValid = $form->isValid(); 
+            
+            // persist if the form was valid and if in preview mode the preview was approved
+            if ($isFormValid && (!$inPreviewMode || $isPreviewApproved)) {
                 $this->admin->create($object);
 
                 if ($this->isXmlHttpRequest()) {
@@ -441,7 +473,14 @@ class CRUDController extends Controller
                 // redirect to edit mode
                 return $this->redirectTo($object);
             }
-            $this->get('session')->setFlash('sonata_flash_error', 'flash_create_error');
+            
+            // show an error message if the form failed validation
+            if (!$isFormValid) {
+                $this->get('session')->setFlash('sonata_flash_error', 'flash_create_error');
+            } elseif ($isPreviewRequested) {
+                // enable the preview template if the form was valid and preview was requested
+                $this->admin->enablePreviewTemplate();
+            }
         }
 
         $view = $form->createView();
