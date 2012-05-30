@@ -256,21 +256,11 @@ class CRUDController extends Controller
 
         if ($this->get('request')->getMethod() == 'POST') {
             $form->bindRequest($this->get('request'));
-
-            // preview mode was requested
-            $isPreviewRequested = $this->get('request')->get('btn_preview') !== null;
-            // preview-approved was clicked
-            $isPreviewApproved = $this->get('request')->get('btn_preview_approve') !== null;
-            // preview-decline was clicked
-            $isPreviewDeclined = $this->get('request')->get('btn_preview_decline') !== null;
-            
-            // call it preview mode if one of the preview buttons was clicked
-            $inPreviewMode = ($isPreviewRequested || $isPreviewApproved || $isPreviewDeclined);
             
             $isFormValid = $form->isValid(); 
             
              // persist if the form was valid and if in preview mode the preview was approved
-            if ($isFormValid && (!$inPreviewMode || $isPreviewApproved)) {
+            if ($isFormValid && (!$this->isInPreviewMode() || $this->isPreviewApproved())) {
                 $this->admin->update($object);
                 $this->get('session')->setFlash('sonata_flash_success', 'flash_edit_success');
 
@@ -288,7 +278,7 @@ class CRUDController extends Controller
             // show an error message if the form failed validation
             if (!$isFormValid) {
                 $this->get('session')->setFlash('sonata_flash_error', 'flash_edit_error');
-            } elseif ($isPreviewRequested) {
+            } elseif ($this->isPreviewRequested()) {
                 // enable the preview template if the form was valid and preview was requested
                 $this->admin->enablePreviewTemplate();
             }
@@ -442,20 +432,10 @@ class CRUDController extends Controller
         if ($this->get('request')->getMethod() == 'POST') {
             $form->bindRequest($this->get('request'));
             
-            // preview mode was requested
-            $isPreviewRequested = $this->get('request')->get('btn_preview') !== null;
-            // preview-approved was clicked
-            $isPreviewApproved = $this->get('request')->get('btn_preview_approve') !== null;
-            // preview-decline was clicked
-            $isPreviewDeclined = $this->get('request')->get('btn_preview_decline') !== null;
-            
-            // call it preview mode if one of the preview buttons was clicked
-            $inPreviewMode = ($isPreviewRequested || $isPreviewApproved || $isPreviewDeclined);
-            
             $isFormValid = $form->isValid(); 
             
             // persist if the form was valid and if in preview mode the preview was approved
-            if ($isFormValid && (!$inPreviewMode || $isPreviewApproved)) {
+            if ($isFormValid && (!$this->isInPreviewMode() || $this->isPreviewApproved())) {
                 $this->admin->create($object);
 
                 if ($this->isXmlHttpRequest()) {
@@ -473,7 +453,7 @@ class CRUDController extends Controller
             // show an error message if the form failed validation
             if (!$isFormValid) {
                 $this->get('session')->setFlash('sonata_flash_error', 'flash_create_error');
-            } elseif ($isPreviewRequested) {
+            } elseif ($this->isPreviewRequested()) {
                 // enable the preview template if the form was valid and preview was requested
                 $this->admin->enablePreviewTemplate();
             }
@@ -489,6 +469,49 @@ class CRUDController extends Controller
             'form'   => $view,
             'object' => $object,
         ));
+    }
+    
+    /**
+     * Returns true if the preview is requested to be shown
+     * 
+     * @return boolean
+     */
+    protected function isPreviewRequested()
+    {
+        return ($this->get('request')->get('btn_preview') !== null);
+    }
+
+    /**
+     * Returns true if the preview has been approved
+     * 
+     * @return boolean
+     */
+    protected function isPreviewApproved()
+    {
+        return ($this->get('request')->get('btn_preview_approve') !== null);
+    }
+    
+    /**
+     * Returns true if the request is in the preview workflow
+     * 
+     * That means either a preview is requested or the preview has already been shown
+     * and it got approved/declined.
+     * 
+     * @return boolean
+     */
+    protected function isInPreviewMode()
+    {
+        return ($this->isPreviewRequested() || $this->isPreviewApproved() || $this->isPreviewDeclined());
+    }
+
+    /**
+     * Returns true if the preview has been declined
+     * 
+     * @return boolean
+     */
+    protected function isPreviewDeclined()
+    {
+        return ($this->get('request')->get('btn_preview_decline') !== null);
     }
 
     /**
