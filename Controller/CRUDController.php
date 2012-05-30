@@ -472,7 +472,7 @@ class CRUDController extends Controller
         
             // show an error message if the form failed validation
             if (!$isFormValid) {
-                $this->get('session')->setFlash('sonata_flash_error', 'flash_edit_error');
+                $this->get('session')->setFlash('sonata_flash_error', 'flash_create_error');
             } elseif ($isPreviewRequested) {
                 // enable the preview template if the form was valid and preview was requested
                 $this->admin->enablePreviewTemplate();
