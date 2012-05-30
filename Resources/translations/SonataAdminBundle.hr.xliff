@@ -314,6 +314,19 @@
                 <source>loading_information</source>
                 <target>Učitavam podatke...</target>
             </trans-unit>
+
+            <trans-unit id="btn_preview">
+                <source>btn_preview</source>
+                <target>btn_preview</target>
+            </trans-unit>
+            <trans-unit id="btn_preview_approve">
+                <source>btn_preview_approve</source>
+                <target>btn_preview_approve</target>
+            </trans-unit>
+            <trans-unit id="btn_preview_decline">
+                <source>btn_preview_decline</source>
+                <target>btn_preview_decline</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
