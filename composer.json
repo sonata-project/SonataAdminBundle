@@ -20,7 +20,7 @@
         "php": ">=5.3.2",
         "symfony/symfony": "2.1.*",
         "jms/translation-bundle": "dev-master",
-        "knplabs/knp-menu-bundle": "dev-master",
+        "knplabs/knp-menu-bundle": "1.1.*",
         "sonata-project/jquery-bundle": "dev-master",
         "sonata-project/exporter": "dev-master",
         "sonata-project/block-bundle": "dev-master"
