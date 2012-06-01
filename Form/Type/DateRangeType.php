@@ -38,11 +38,6 @@ class DateRangeType extends AbstractType
         $builder->add('end', 'date', array_merge(array('required' => false), $options['field_options']));
     }
 
-    public function getDefaultOptions()
-    {
-        return array();
-    }
-
     /**
      * {@inheritDoc}
      */
