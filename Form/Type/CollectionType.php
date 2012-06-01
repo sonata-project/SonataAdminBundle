@@ -15,6 +15,8 @@ namespace Sonata\AdminBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+
 use Sonata\AdminBundle\Form\EventListener\ResizeFormListener;
 
 class CollectionType extends AbstractType
@@ -34,13 +36,13 @@ class CollectionType extends AbstractType
         $builder->addEventSubscriber($listener);
     }
 
-    public function getDefaultOptions()
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        return array(
+        $resolver->setDefaults(array(
             'modifiable'    => false,
             'type'          => 'text',
             'type_options'  => array()
-        );
+        ));
     }
 
     /**
