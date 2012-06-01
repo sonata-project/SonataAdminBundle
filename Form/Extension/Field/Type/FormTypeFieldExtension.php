@@ -90,10 +90,10 @@ class FormTypeFieldExtension extends AbstractTypeExtension
      */
     public function buildView(FormViewInterface $view, FormInterface $form, array $options)
     {
-        $sonataAdmin = $form->getAttribute('sonata_admin');
+        $sonataAdmin = $form->getConfig()->getAttribute('sonata_admin');
 
         // avoid to add extra information not required by non admin field
-        if ($form->getAttribute('sonata_admin_enabled', true)) {
+        if ($form->getConfig()->getAttribute('sonata_admin_enabled', true)) {
             $sonataAdmin['value'] = $form->getData();
 
             // add a new block types, so the Admin Form element can be tweaked based on the admin code
@@ -103,6 +103,7 @@ class FormTypeFieldExtension extends AbstractTypeExtension
 
             $types[] = sprintf('%s_%s', $baseName, $baseType);
             $types[] = sprintf('%s_%s_%s', $baseName, $sonataAdmin['field_description']->getName(), $baseType);
+            
             if ($sonataAdmin['block_name']) {
                 $types[] = $sonataAdmin['block_name'];
             }
