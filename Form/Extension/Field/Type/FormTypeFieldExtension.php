@@ -12,9 +12,9 @@
 namespace Sonata\AdminBundle\Form\Extension\Field\Type;
 
 use Symfony\Component\Form\AbstractTypeExtension;
-use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\FormView;
+use Symfony\Component\Form\FormViewInterface;
 
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Exception\NoValueException;
@@ -32,10 +32,10 @@ class FormTypeFieldExtension extends AbstractTypeExtension
     }
 
     /**
-     * @param \Symfony\Component\Form\FormBuilder $builder
-     * @param array                               $options
+     * @param FormBuilderInterface $builder
+     * @param array                $options
      */
-    public function buildForm(FormBuilder $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $sonataAdmin = array(
             'name'              => null,
@@ -66,11 +66,11 @@ class FormTypeFieldExtension extends AbstractTypeExtension
     }
 
     /**
-     * @param \Symfony\Component\Form\FormBuilder $formBuilder
+     * @param FormBuilderInterface $formBuilder
      *
      * @return string
      */
-    protected function getClass(FormBuilder $formBuilder)
+    protected function getClass(FormBuilderInterface $formBuilder)
     {
         foreach ($formBuilder->getTypes() as $type) {
             if (isset($this->defaultClasses[$type->getName()])) {
@@ -82,10 +82,11 @@ class FormTypeFieldExtension extends AbstractTypeExtension
     }
 
     /**
-     * @param \Symfony\Component\Form\FormView      $view
-     * @param \Symfony\Component\Form\FormInterface $form
+     * @param FormViewInterface $view
+     * @param FormInterface     $form
+     * @param array             $options
      */
-    public function buildView(FormView $view, FormInterface $form)
+    public function buildView(FormViewInterface $view, FormInterface $form, array $options)
     {
         $sonataAdmin = $form->getAttribute('sonata_admin');
 
@@ -94,7 +95,7 @@ class FormTypeFieldExtension extends AbstractTypeExtension
             $sonataAdmin['value'] = $form->getData();
 
             // add a new block types, so the Admin Form element can be tweaked based on the admin code
-            $types    = $view->get('types');
+            $types    = $view->getVar('types');
             $baseName = str_replace('.', '_', $sonataAdmin['field_description']->getAdmin()->getCode());
             $baseType = $types[count($types) - 1];
 
@@ -104,23 +105,23 @@ class FormTypeFieldExtension extends AbstractTypeExtension
                 $types[] = $sonataAdmin['block_name'];
             }
 
-            $view->set('types', $types);
-            $view->set('sonata_admin_enabled', true);
-            $view->set('sonata_admin', $sonataAdmin);
+            $view->setVar('types', $types);
+            $view->setVar('sonata_admin_enabled', true);
+            $view->setVar('sonata_admin', $sonataAdmin);
 
-            $attr = $view->get('attr', array());
+            $attr = $view->getVar('attr', array());
 
             if (!isset($attr['class'])) {
                 $attr['class'] = $sonataAdmin['class'];
             }
 
-            $view->set('attr', $attr);
+            $view->setVar('attr', $attr);
 
         } else {
-            $view->set('sonata_admin_enabled', false);
+            $view->setVar('sonata_admin_enabled', false);
         }
 
-        $view->set('sonata_admin', $sonataAdmin);
+        $view->setVar('sonata_admin', $sonataAdmin);
     }
 
     /**
