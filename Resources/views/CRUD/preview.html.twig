@@ -23,33 +23,32 @@ file that was distributed with this source code.
 {% endblock %}
 
 {% block preview %}
-        <div class="sonata-ba-view">
-            {% for name, view_group in admin.showgroups %}
-                <table class="table table-bordered">
-                    {% if name %}
-                        <tr class="sonata-ba-view-title">
-                            <td colspan="2">
-                                {{ admin.trans(name) }}
-                            </td>
-                        </tr>
-                    {% endif %}
-    
-                    {% for field_name in view_group.fields %}
-                        <tr class="sonata-ba-view-container">
-                            {% if admin.show[field_name] is defined %}
-                                {{ admin.show[field_name]|render_view_element(object) }}
-                            {% endif %}
-                        </tr>
-                    {% endfor %}
-                </table>
-            {% endfor %}
-        </div>
+    <div class="sonata-ba-view">
+        {% for name, view_group in admin.showgroups %}
+            <table class="table table-bordered">
+                {% if name %}
+                    <tr class="sonata-ba-view-title">
+                        <td colspan="2">
+                            {{ admin.trans(name) }}
+                        </td>
+                    </tr>
+                {% endif %}
+
+                {% for field_name in view_group.fields %}
+                    <tr class="sonata-ba-view-container">
+                        {% if admin.show[field_name] is defined %}
+                            {{ admin.show[field_name]|render_view_element(object) }}
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+            </table>
+        {% endfor %}
+    </div>
 {% endblock %}
     
 {% block form %}
-    
     <div class="sonata-preview-form-container">
-        {{parent()}}
+        {{ parent() }}
     </div>
 {% endblock %}
 
