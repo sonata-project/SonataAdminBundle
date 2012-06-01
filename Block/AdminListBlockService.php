@@ -57,7 +57,7 @@ class AdminListBlockService extends BaseBlockService
             }
         }
 
-        return $this->renderResponse('SonataAdminBundle:Block:block_admin_list.html.twig', array(
+        return $this->renderResponse($this->pool->getTemplate('list_block'), array(
             'block'         => $block,
             'settings'      => $settings,
             'admin_pool'    => $this->pool,
