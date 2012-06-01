@@ -13,7 +13,7 @@ namespace Sonata\AdminBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormTypeInterface;
-use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\Form\FormBuilderInterface;
 
 use Sonata\AdminBundle\Form\DataTransformer\ArrayToModelTransformer;
 
@@ -22,7 +22,7 @@ class AdminType extends AbstractType
     /**
      * {@inheritDoc}
      */
-    public function buildForm(FormBuilder $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $admin = $this->getAdmin($options);
         if ($options['delete'] && $admin->isGranted('DELETE') ) {

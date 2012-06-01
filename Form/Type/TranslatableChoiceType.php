@@ -16,7 +16,7 @@ use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
-use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\Options;
 
 class TranslatableChoiceType extends ChoiceType
@@ -61,7 +61,7 @@ class TranslatableChoiceType extends ChoiceType
         );
     }
 
-    public function buildForm(FormBuilder $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         // translate options before building form
         foreach ($options['choices'] as $name => $value) {
