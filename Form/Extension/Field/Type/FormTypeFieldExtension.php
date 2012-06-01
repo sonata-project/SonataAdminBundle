@@ -16,6 +16,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormViewInterface;
 
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Exception\NoValueException;
 
@@ -135,28 +137,16 @@ class FormTypeFieldExtension extends AbstractTypeExtension
     }
 
     /**
-     * Overrides the default options form the extended type.
-     *
-     * @param array $options
-     *
-     * @return array
+     * Sets the default options
+     * 
+     * @param OptionsResolverInterface $resolver Options Resolver
      */
-    public function getDefaultOptions()
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        return array(
+        $resolver->setDefaults(array(
             'sonata_admin'             => null,
             'sonata_field_description' => null,
-        );
-    }
-
-    /**
-     * Returns the allowed option values for each option (if any).
-     *
-     * @return array The allowed option values
-     */
-    public function getAllowedOptionValues()
-    {
-        return array();
+        ));
     }
 
     /**
