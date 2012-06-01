@@ -17,7 +17,9 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormBuilderInterface;
+
 use Symfony\Component\OptionsResolver\Options;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class TranslatableChoiceType extends ChoiceType
 {
@@ -32,33 +34,34 @@ class TranslatableChoiceType extends ChoiceType
     }
 
     /**
-     * @param array $options
-     *
-     * @return array
+     * {@inheritedDoc}
      */
-    public function getDefaultOptions()
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        return array(
+        $resolver->setDefaults(array(
             'multiple'          => false,
             'expanded'          => false,
             'choice_list'       => null,
             'choices'           => array(),
             'preferred_choices' => array(),
             'catalogue'         => 'messages',
+            
             'empty_data'        => function (Options $options, $previousValue) {
                 $multiple = isset($options['multiple']) && $options['multiple'];
                 $expanded = isset($options['expanded']) && $options['expanded'];
 
                 return $multiple || $expanded ? array() : '';
             },
+                    
             'empty_value'       => function (Options $options, $previousValue) {
                 $multiple = isset($options['multiple']) && $options['multiple'];
                 $expanded = isset($options['expanded']) && $options['expanded'];
 
                 return $multiple || $expanded || !isset($options['empty_value']) ? null : '';
             },
+                    
             'error_bubbling'    => false,
-        );
+        ));
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)

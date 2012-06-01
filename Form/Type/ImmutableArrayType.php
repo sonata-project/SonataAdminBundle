@@ -14,6 +14,8 @@ namespace Sonata\AdminBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+
 use Sonata\AdminBundle\Form\EventListener\ResizeFormListener;
 
 class ImmutableArrayType extends AbstractType
@@ -36,11 +38,11 @@ class ImmutableArrayType extends AbstractType
     /**
      * {@inheritDoc}
      */
-    public function getDefaultOptions()
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        return array(
+        $resolver->setDefaults(array(
             'keys'    => array(),
-        );
+        ));
     }
 
     /**

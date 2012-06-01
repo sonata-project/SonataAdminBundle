@@ -17,7 +17,9 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
+
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\Options;
 
 use Sonata\AdminBundle\Form\EventListener\MergeCollectionListener;
 use Sonata\AdminBundle\Form\ChoiceList\ModelChoiceList;
@@ -38,23 +40,14 @@ class ModelReferenceType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $compound = function (Options $options) {
-            return $options['parent'];
+            return isset($options['parent']) ? $options['parent'] : 'hidden';
         };
+        
         $resolver->setDefaults(array(
             'compound' => $compound,
+            'model_manager' => null,
+            'class' => null
         ));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getDefaultOptions()
-    {
-        return array(
-            'model_manager'     => null,
-            'class'             => null,
-            'parent'            => 'hidden',
-        );
     }
 
     /**

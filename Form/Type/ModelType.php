@@ -45,21 +45,11 @@ class ModelType extends AbstractType
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $compound = function (Options $options) {
-            return isset($options['parent']) ? $options['parent'] : 'choice';
-        };
         $resolver->setDefaults(array(
-            'compound' => $compound,
-        ));
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getDefaultOptions()
-    {
-        $options = array(
+            'compound'          => function (Options $options) {
+                return isset($options['parent']) ? $options['parent'] : 'choice';
+            },
+                    
             'template'          => 'choice',
             'multiple'          => false,
             'expanded'          => false,
@@ -70,6 +60,7 @@ class ModelType extends AbstractType
             'choices'           => null,
             'parent'            => 'choice',
             'preferred_choices' => array(),
+            
             'choice_list'       => function (Options $options, $previousValue) {
                 if ($previousValue instanceof ChoiceListInterface
                         && count($choices = $previousValue->getChoices())) {
@@ -84,9 +75,7 @@ class ModelType extends AbstractType
                     $options['choices']
                 );
             }
-        );
-
-        return $options;
+        ));
     }
 
     /**
