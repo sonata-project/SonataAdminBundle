@@ -180,15 +180,15 @@ file that was distributed with this source code.
                         {% for filter in admin.datagrid.filters %}
                         <tr id="filter_{{ filter.name }}_row" class="filter {{ filter.isActive ? 'active' : 'inactive' }}">
                                 <td class="filter-title">{{ admin.trans(filter.label) }}</td>
-                                <td class="filter-type">{{ form_widget(form.getChild(filter.formName).getChild('type')) }}</td>
-                                <td class="filter-value">{{ form_widget(form.getChild(filter.formName).getChild('value')) }}</td>
+                                <td class="filter-type">{{ form_widget(form.get(filter.formName).get('type')) }}</td>
+                                <td class="filter-value">{{ form_widget(form.get(filter.formName).get('value')) }}</td>
                             </tr>
                         {% endfor %}
                     </table>
 
                     <input type="hidden" name="filter[_page]" id="filter__page" value="1" />
 
-                    {% set foo = form.getChild('_page').setRendered() %}
+                    {% set foo = form.get('_page').setRendered() %}
                     {{ form_rest(form) }}
 
                     <input type="submit" class="btn btn-primary" value="{% trans from 'SonataAdminBundle' %}btn_filter{% endtrans %}" />

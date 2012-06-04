@@ -13,10 +13,11 @@ namespace Sonata\AdminBundle\Form\Type\Filter;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormTypeInterface;
-use Symfony\Component\Form\FormBuilder;
-use Symfony\Component\Form\FormView;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Translation\TranslatorInterface;
+
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class NumberType extends AbstractType
 {
@@ -51,10 +52,10 @@ class NumberType extends AbstractType
     }
 
     /**
-     * @param \Symfony\Component\Form\FormBuilder $builder
-     * @param array                               $options
+     * @param FormBuilderInterface $builder
+     * @param array                $options
      */
-    public function buildForm(FormBuilder $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $choices = array(
             self::TYPE_EQUAL            => $this->translator->trans('label_type_equal', array(), 'SonataAdminBundle'),
@@ -71,14 +72,13 @@ class NumberType extends AbstractType
     }
 
     /**
-     * @param array $options
-     * @return array
+     * {@inheritDoc}
      */
-    public function getDefaultOptions()
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        return array(
+        $resolver->setDefaults(array(
             'field_type'    => 'number',
             'field_options' => array(),
-        );
+        ));
     }
 }

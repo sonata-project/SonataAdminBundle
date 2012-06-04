@@ -13,7 +13,9 @@ namespace Sonata\AdminBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormTypeInterface;
-use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\Form\FormBuilderInterface;
+
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 use Sonata\AdminBundle\Form\DataTransformer\ArrayToModelTransformer;
 
@@ -22,9 +24,10 @@ class AdminType extends AbstractType
     /**
      * {@inheritDoc}
      */
-    public function buildForm(FormBuilder $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $admin = $this->getAdmin($options);
+        
         if ($options['delete'] && $admin->isGranted('DELETE') ) {
             $builder->add('_delete', 'checkbox', array('required' => false, 'property_path' => false));
         }
@@ -37,15 +40,10 @@ class AdminType extends AbstractType
 
         $builder->prependClientTransformer(new ArrayToModelTransformer($admin->getModelManager(), $admin->getClass()));
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getDefaultOptions()
+    
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        return array(
-            'delete' => true,
-        );
+        $resolver->setDefaults(array('delete' => true));
     }
 
     /**

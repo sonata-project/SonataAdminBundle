@@ -14,6 +14,8 @@ namespace Sonata\AdminBundle\Form\Type;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType as FormChoiceType;
 use Symfony\Component\Translation\TranslatorInterface;
 
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+
 class EqualType extends FormChoiceType
 {
     const TYPE_IS_EQUAL = 1;
@@ -33,15 +35,15 @@ class EqualType extends FormChoiceType
     /**
      * {@inheritDoc}
      */
-    public function getDefaultOptions()
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $options = parent::getDefaultOptions();
+        parent::setDefaultOptions($resolver);
 
-        $options['choices'] = array(
-            self::TYPE_IS_EQUAL     => $this->translator->trans('label_type_equals', array(), 'SonataAdminBundle'),
-            self::TYPE_IS_NOT_EQUAL => $this->translator->trans('label_type_not_equals', array(), 'SonataAdminBundle'),
-        );
-
-        return $options;
+        $resolver->setDefaults(array(
+            'choices' => array(
+                self::TYPE_IS_EQUAL     => $this->translator->trans('label_type_equals', array(), 'SonataAdminBundle'),
+                self::TYPE_IS_NOT_EQUAL => $this->translator->trans('label_type_not_equals', array(), 'SonataAdminBundle'),
+            )
+        ));
     }
 }

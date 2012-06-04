@@ -13,12 +13,13 @@
 namespace Sonata\AdminBundle\Form\Type;
 
 use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceListInterface;
-use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\Options;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 use Sonata\AdminBundle\Form\EventListener\MergeCollectionListener;
 use Sonata\AdminBundle\Form\ChoiceList\ModelChoiceList;
@@ -31,7 +32,7 @@ class ModelType extends AbstractType
     /**
      * {@inheritDoc}
      */
-    public function buildForm(FormBuilder $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         if ($options['multiple']) {
             $builder
@@ -42,12 +43,13 @@ class ModelType extends AbstractType
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getDefaultOptions()
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $options = array(
+        $resolver->setDefaults(array(
+            'compound'          => function (Options $options) {
+                return isset($options['parent']) ? $options['parent'] : 'choice';
+            },
+                    
             'template'          => 'choice',
             'multiple'          => false,
             'expanded'          => false,
@@ -58,6 +60,7 @@ class ModelType extends AbstractType
             'choices'           => null,
             'parent'            => 'choice',
             'preferred_choices' => array(),
+            
             'choice_list'       => function (Options $options, $previousValue) {
                 if ($previousValue instanceof ChoiceListInterface
                         && count($choices = $previousValue->getChoices())) {
@@ -72,17 +75,15 @@ class ModelType extends AbstractType
                     $options['choices']
                 );
             }
-        );
-
-        return $options;
+        ));
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getParent(array $options)
+    public function getParent()
     {
-        return isset($options['parent']) ? $options['parent'] : 'choice';
+        return 'choice';
     }
 
     /**
