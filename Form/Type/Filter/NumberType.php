@@ -17,6 +17,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+
 class NumberType extends AbstractType
 {
     const TYPE_GREATER_EQUAL = 1;
@@ -70,14 +72,13 @@ class NumberType extends AbstractType
     }
 
     /**
-     * @param array $options
-     * @return array
+     * {@inheritDoc}
      */
-    public function getDefaultOptions()
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        return array(
+        $resolver->setDefaults(array(
             'field_type'    => 'number',
             'field_options' => array(),
-        );
+        ));
     }
 }

@@ -17,6 +17,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+
 class DefaultType extends AbstractType
 {
     /**
@@ -41,13 +43,13 @@ class DefaultType extends AbstractType
     /**
      * {@inheritDoc}
      */
-    public function getDefaultOptions()
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        return array(
+        $resolver->setDefaults(array(
             'operator_type'    => 'hidden',
             'operator_options' => array(),
             'field_type'       => 'text',
             'field_options'    => array()
-        );
+        ));
     }
 }

@@ -17,6 +17,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+
 class DateTimeType extends AbstractType
 {
     const TYPE_GREATER_EQUAL = 1;
@@ -75,11 +77,11 @@ class DateTimeType extends AbstractType
     /**
      * {@inheritDoc}
      */
-    public function getDefaultOptions()
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        return array(
+        $resolver->setDefaults(array(
             'field_type'       => 'datetime',
             'field_options'    => array('date_format' => 'yyyy-MM-dd')
-        );
+        ));
     }
 }

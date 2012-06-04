@@ -17,6 +17,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+
 class ChoiceType extends AbstractType
 {
     const TYPE_CONTAINS = 1;
@@ -63,11 +65,11 @@ class ChoiceType extends AbstractType
     /**
      * {@inheritDoc}
      */
-    public function getDefaultOptions()
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        return array(
+        $resolver->setDefaults(array(
             'field_type'       => 'choice',
             'field_options'    => array()
-        );
+        ));
     }
 }

@@ -17,6 +17,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+
 class DateTimeRangeType extends AbstractType
 {
     const TYPE_BETWEEN = 1;
@@ -59,11 +61,11 @@ class DateTimeRangeType extends AbstractType
     /**
      * {@inheritDoc}
      */
-    public function getDefaultOptions()
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        return array(
+        $resolver->setDefaults(array(
             'field_type'       => 'sonata_type_datetime_range',
-            'field_options'    => array('date_format' => 'yyyy-MM-dd'),
-        );
+            'field_options'    => array('date_format' => 'yyyy-MM-dd')
+        ));
     }
 }
