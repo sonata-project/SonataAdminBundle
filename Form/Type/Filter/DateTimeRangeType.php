@@ -13,10 +13,11 @@ namespace Sonata\AdminBundle\Form\Type\Filter;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormTypeInterface;
-use Symfony\Component\Form\FormBuilder;
-use Symfony\Component\Form\FormView;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Translation\TranslatorInterface;
+
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class DateTimeRangeType extends AbstractType
 {
@@ -44,7 +45,7 @@ class DateTimeRangeType extends AbstractType
     /**
      * {@inheritDoc}
      */
-    public function buildForm(FormBuilder $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $choices = array(
             self::TYPE_BETWEEN    => $this->translator->trans('label_date_type_between', array(), 'SonataAdminBundle'),
@@ -60,11 +61,11 @@ class DateTimeRangeType extends AbstractType
     /**
      * {@inheritDoc}
      */
-    public function getDefaultOptions()
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        return array(
+        $resolver->setDefaults(array(
             'field_type'       => 'sonata_type_datetime_range',
-            'field_options'    => array('date_format' => 'yyyy-MM-dd'),
-        );
+            'field_options'    => array('date_format' => 'yyyy-MM-dd')
+        ));
     }
 }
