@@ -246,16 +246,17 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
         // make sure the default templates are defined
         $definedTemplates = array_merge(array(
-            'user_block'        => 'SonataAdminBundle:Core:user_block.html.twig',
-            'layout'            => 'SonataAdminBundle::standard_layout.html.twig',
-            'ajax'              => 'SonataAdminBundle::ajax_layout.html.twig',
-            'dashboard'         => 'SonataAdminBundle:Core:dashboard.html.twig',
-            'list'              => 'SonataAdminBundle:CRUD:list.html.twig',
-            'show'              => 'SonataAdminBundle:CRUD:show.html.twig',
-            'edit'              => 'SonataAdminBundle:CRUD:edit.html.twig',
-            'history'           => 'SonataAdminBundle:CRUD:history.html.twig',
-            'history_revision'  => 'SonataAdminBundle:CRUD:history_revision.html.twig',
-            'action'            => 'SonataAdminBundle:CRUD:action.html.twig',
+            'user_block'               => 'SonataAdminBundle:Core:user_block.html.twig',
+            'layout'                   => 'SonataAdminBundle::standard_layout.html.twig',
+            'ajax'                     => 'SonataAdminBundle::ajax_layout.html.twig',
+            'dashboard'                => 'SonataAdminBundle:Core:dashboard.html.twig',
+            'list'                     => 'SonataAdminBundle:CRUD:list.html.twig',
+            'show'                     => 'SonataAdminBundle:CRUD:show.html.twig',
+            'edit'                     => 'SonataAdminBundle:CRUD:edit.html.twig',
+            'history'                  => 'SonataAdminBundle:CRUD:history.html.twig',
+            'history_revision'         => 'SonataAdminBundle:CRUD:history_revision.html.twig',
+            'action'                   => 'SonataAdminBundle:CRUD:action.html.twig',
+            'short_object_description' => 'SonataAdminBundle:Helper:short-object-description.html.twig',
         ), $definedTemplates);
 
         $definition->addMethodCall('setTemplates', array($definedTemplates));
