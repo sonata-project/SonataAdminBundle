@@ -256,6 +256,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
             'history'           => 'SonataAdminBundle:CRUD:history.html.twig',
             'history_revision'  => 'SonataAdminBundle:CRUD:history_revision.html.twig',
             'action'            => 'SonataAdminBundle:CRUD:action.html.twig',
+            'list_block'        => 'SonataAdminBundle:Block:block_admin_list.html.twig',
         ), $definedTemplates);
 
         $definition->addMethodCall('setTemplates', array($definedTemplates));

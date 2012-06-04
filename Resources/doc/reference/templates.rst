@@ -17,6 +17,9 @@ By default, an Admin class uses a set of templates, it is possible to tweak the 
             edit:    SonataAdminBundle:CRUD:edit.html.twig
             history:  SonataAdminBundle:CRUD:history.html.twig
 
+            # default values of block templates, they should extend the base_block template
+            list_block: SonataAdminBundle:Block:block_admin_list.html.twig
+
 
 Usage of each template :
 
@@ -27,6 +30,7 @@ Usage of each template :
 * show : the template to use for the show action
 * edit : the template to use for the edit and create action
 * history : the template to use for the history / audit action
+* list_block : the template used for the list of admin blocks on the dashboard
 
 The default values will be set only if the ``Admin::setTemplates`` is not called by the Container.
 
