@@ -25,7 +25,7 @@ interface ModelManagerInterface
      * @param string $name
      * @param array  $options
      *
-     * @return \Sonata\AdminBundle\Admin\FieldDescriptionInterface
+     * @return FieldDescriptionInterface
      */
     function getNewFieldDescriptionInstance($class, $name, array $options = array());
 
@@ -54,7 +54,7 @@ interface ModelManagerInterface
      * @param string $class
      * @param array  $criteria
      *
-     * @return object
+     * @return array all objects matching the criteria
      */
     function findBy($class, array $criteria = array());
 
@@ -62,7 +62,7 @@ interface ModelManagerInterface
      * @param string $class
      * @param array  $criteria
      *
-     * @return void
+     * @return object an object matching the criteria or null if none match
      */
     function findOneBy($class, array $criteria = array());
 
@@ -70,13 +70,13 @@ interface ModelManagerInterface
      * @param string $class
      * @param mixed  $id
      *
-     * @return void
+     * @return object the object with id or null if not found
      */
     function find($class, $id);
 
     /**
      * @param string                                           $class
-     * @param \Sonata\AdminBundle\Datagrid\ProxyQueryInterface $queryProxy
+     * @param ProxyQueryInterface $queryProxy
      *
      * @return void
      */
@@ -181,8 +181,8 @@ interface ModelManagerInterface
     /**
      * Returns the parameters used in the columns header
      *
-     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
-     * @param \Sonata\AdminBundle\Datagrid\DatagridInterface      $datagrid
+     * @param FieldDescriptionInterface $fieldDescription
+     * @param DatagridInterface      $datagrid
      *
      * @return array
      */
@@ -219,7 +219,7 @@ interface ModelManagerInterface
     function executeQuery($query);
 
     /**
-     * @param \Sonata\AdminBundle\Datagrid\DatagridInterface $datagrid
+     * @param DatagridInterface $datagrid
      * @param array                                          $fields
      * @param null                                           $firstResult
      * @param null                                           $maxResult
@@ -236,7 +236,7 @@ interface ModelManagerInterface
     function getExportFields($class);
 
     /**
-     * @param \Sonata\AdminBundle\Datagrid\DatagridInterface $datagrid
+     * @param DatagridInterface $datagrid
      * @param int                                            $page
      *
      * @return mixed
@@ -245,7 +245,7 @@ interface ModelManagerInterface
 
     /**
      * @param string                                           $class
-     * @param \Sonata\AdminBundle\Datagrid\ProxyQueryInterface $query
+     * @param ProxyQueryInterface $query
      * @param array                                            $idx
      *
      * @return void
