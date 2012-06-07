@@ -12,7 +12,9 @@
 namespace Sonata\AdminBundle\Form\Type;
 
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType as FormChoiceType;
+use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Translation\TranslatorInterface;
+use Sonata\AdminBundle\Form\DataTransformer\BooleanTransformer;
 
 class BooleanType extends FormChoiceType
 {
@@ -28,6 +30,15 @@ class BooleanType extends FormChoiceType
     public function __construct(TranslatorInterface $translator)
     {
         $this->translator = $translator;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    function buildForm(FormBuilder $builder, array $options)
+    {
+        parent::buildForm($builder, $options);
+        $builder->appendClientTransformer(new BooleanTransformer);
     }
 
     /**
