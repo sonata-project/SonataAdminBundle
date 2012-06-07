@@ -89,11 +89,7 @@ file that was distributed with this source code.
                                     {# There is no hasRole in a TokenInterface ... #}
                                     {% set allowed = false %}
                                     {% if app.security %}
-                                        {% for role in app.security.token.roles %}
-                                            {% if not allowed %}
-                                                {% set allowed = role.role == 'ROLE_SONATA_ADMIN' %}
-                                            {% endif %}
-                                        {% endfor %}
+                                    {% set allowed = is_granted('ROLE_SONATA_ADMIN') %}
                                     {% endif %}
 
                                     {% if allowed %}
