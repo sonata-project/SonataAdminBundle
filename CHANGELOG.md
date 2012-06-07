@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+### 2012-05-31
+
+* Update batch action confirmation message (breaks some translations)
+
 ### 2012-05-02
 
 * [BC BREAK] add ProxyQueryInterface hint into the FilterInterface class
