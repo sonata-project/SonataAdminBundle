@@ -40,7 +40,7 @@ file that was distributed with this source code.
                                     {% set sortable = false %}
                                     {% if field_description.options.sortable is defined and field_description.options.sortable%}
                                         {% set sortable             = true %}
-                                        {% set current              = admin.datagrid.values._sort_by == field_description.name %}
+                                        {% set current              = admin.datagrid.values._sort_by == field_description %}
                                         {% set sort_parameters      = admin.modelmanager.sortparameters(field_description, admin.datagrid) %}
                                         {% set sort_active_class    = current ? 'sonata-ba-list-field-order-active' : '' %}
                                         {% set sort_by              = current ? admin.datagrid.values._sort_order : field_description.options._sort_order %}

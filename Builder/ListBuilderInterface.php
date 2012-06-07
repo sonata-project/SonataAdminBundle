@@ -29,6 +29,17 @@ interface ListBuilderInterface
     function getBaseList(array $options = array());
 
     /**
+     * Modify a field description to display it in the list view.
+     *
+     * @param null|mixed                                           $type
+     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface  $fieldDescription
+     * @param \Sonata\AdminBundle\Admin\AdminInterface             $admin
+     */
+    function buildField($type = null, FieldDescriptionInterface $fieldDescription, AdminInterface $admin);
+
+    /**
+     * Modify a field description and add it to the displayed columns.
+     *
      * @abstract
      *
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionCollection $list
