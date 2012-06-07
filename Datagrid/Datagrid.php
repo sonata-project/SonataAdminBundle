@@ -15,8 +15,11 @@ use Sonata\AdminBundle\Datagrid\PagerInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Filter\FilterInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
+use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 
 use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\Form\Exception\UnexpectedTypeException;
+use Symfony\Component\Form\CallbackTransformer;
 
 class Datagrid implements DatagridInterface
 {
@@ -97,6 +100,18 @@ class Datagrid implements DatagridInterface
         }
 
         $this->formBuilder->add('_sort_by', 'hidden');
+        $this->formBuilder->get('_sort_by')->appendClientTransformer(new CallbackTransformer(
+            function($value) {
+                return $value;
+            },
+            function($value) {
+                if ($value instanceof FieldDescriptionInterface) {
+                    return $value->getName();
+                } else {
+                    return $value;
+                }
+            }
+        ));
         $this->formBuilder->add('_sort_order', 'hidden');
         $this->formBuilder->add('_page', 'hidden');
 
@@ -111,13 +126,13 @@ class Datagrid implements DatagridInterface
         }
 
         if (isset($this->values['_sort_by'])) {
-            foreach ($this->getColumns()->getElements() as $fieldDescription){
-                if ($fieldDescription->isSortable() && $fieldDescription->getName() == $this->values['_sort_by']) {
-                    $this->query->setSortBy($fieldDescription->getParentAssociationMappings(), $fieldDescription->getSortFieldMapping());
-                    $this->query->setSortOrder(isset($this->values['_sort_order']) ? $this->values['_sort_order'] : null);
+            if (!$this->values['_sort_by'] instanceof FieldDescriptionInterface) {
+                throw new UnexpectedTypeException($this->values['_sort_by'],'FieldDescriptionInterface');
+            }
 
-                    break;
-                }
+            if ($this->values['_sort_by']->isSortable()) {
+                $this->query->setSortBy($this->values['_sort_by']->getParentAssociationMappings(), $this->values['_sort_by']->getSortFieldMapping());
+                $this->query->setSortOrder(isset($this->values['_sort_order']) ? $this->values['_sort_order'] : null);
             }
         }
 
