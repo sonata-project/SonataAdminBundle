@@ -619,8 +619,8 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
             return;
         }
 
-        $collection = new FieldDescriptionCollection();
-        $mapper = new ShowMapper($this->showBuilder, $collection, $this);
+        $this->show = new FieldDescriptionCollection();
+        $mapper = new ShowMapper($this->showBuilder, $this->show, $this);
 
         $this->configureShowField($mapper); // deprecated, use configureShowFields instead
         $this->configureShowFields($mapper);
@@ -628,8 +628,6 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         foreach ($this->getExtensions() as $extension) {
             $extension->configureShowFields($mapper);
         }
-
-        $this->show = $collection;
     }
 
     /**

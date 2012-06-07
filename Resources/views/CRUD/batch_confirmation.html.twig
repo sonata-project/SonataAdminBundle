@@ -32,12 +32,16 @@ file that was distributed with this source code.
 
         <h1>{% trans from 'SonataAdminBundle' %}title_batch_confirmation{% endtrans %}</h1>
 
-        {% trans from 'SonataAdminBundle' %}message_batch_confirmation{% endtrans %}
+        {% if data.all_elements %}
+            {% trans from 'SonataAdminBundle' %}message_batch_all_confirmation{% endtrans %}
+        {% else %}
+            {% transchoice data.idx|length with {'%count%': data.idx|length} from 'SonataAdminBundle' %}message_batch_confirmation{% endtranschoice %}
+        {% endif %}
 
         <div class="actions">
             <form action="{{ admin.generateUrl('batch', admin.filterParameters) }}" method="POST" >
                 <input type="hidden" name="confirmation" value="ok" />
-                <input type="hidden" name="data" value="{{ data }}" />
+                <input type="hidden" name="data" value="{{ data|json_encode }}" />
 
                 <div style="display: none">
                     {{ form_rest(form) }}

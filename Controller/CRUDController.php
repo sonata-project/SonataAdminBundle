@@ -385,7 +385,7 @@ class CRUDController extends Controller
                 'action'   => 'list',
                 'datagrid' => $datagrid,
                 'form'     => $formView,
-                'data'     => json_encode($data),
+                'data'     => $data,
             ));
         }
 

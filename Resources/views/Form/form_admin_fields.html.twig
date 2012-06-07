@@ -9,8 +9,6 @@ file that was distributed with this source code.
 
 #}
 
-{% extends 'SonataAdminBundle:Form:silex_form_div_layout.html.twig' %}
-
 {# Labels #}
 {% block generic_label %}
 {% spaceless %}
@@ -80,7 +78,7 @@ file that was distributed with this source code.
 
 {% block field_row %}
     {% if sonata_admin is not defined or not sonata_admin_enabled or not sonata_admin.field_description %}
-        {{ parent() }}
+        {{ form_row(form) }}
     {% else %}
         <div class="clearfix{% if errors|length > 0%} error{%endif%}" id="sonata-ba-field-container-{{ id }}">
             {% block label %}
