@@ -505,7 +505,10 @@ class CRUDController extends Controller
      */
     protected function isInPreviewMode()
     {
-        return ($this->isPreviewRequested() || $this->isPreviewApproved() || $this->isPreviewDeclined());
+        return $this->admin->supportsPreviewMode()
+            && ($this->isPreviewRequested()
+                || $this->isPreviewApproved()
+                || $this->isPreviewDeclined());
     }
 
     /**
