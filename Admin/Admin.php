@@ -389,7 +389,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      * 
      * @var boolean	
      */
-    public $supportsPreviewMode = false;
+    protected $supportsPreviewMode = false;
 
     /**
      * Roles and permissions per role
@@ -2410,6 +2410,18 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     public function getLabelTranslatorStrategy()
     {
         return $this->labelTranslatorStrategy;
+    }
+    
+	/**
+     * Returning true will enable preview mode for
+     * the target entity and show a preview button
+     * when editing/creating an entity
+     * 
+     * @return boolean
+     */
+    public function supportsPreviewMode()
+    {
+        return $this->supportsPreviewMode;
     }
     
 }
