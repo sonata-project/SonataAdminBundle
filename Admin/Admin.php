@@ -2516,12 +2516,4 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         return $this->labelTranslatorStrategy;
     }
     
-    /**
-     * Enables the preview template for the create/edit actions
-     */
-    public function enablePreviewTemplate()
-    {
-        $this->setTemplate('edit', $this->getTemplate('preview'));
-        $this->setTemplate('create', $this->getTemplate('preview'));
-    }
 }
