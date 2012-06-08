@@ -99,7 +99,7 @@ class ResizeFormListener implements EventSubscriberInterface
                 'property_path' => '[' . $name . ']',
             ));
 
-            $form->add($this->factory->createNamed($this->type, $name, $value, $options));
+            $form->add($this->factory->createNamed($name, $this->type, $value, $options));
         }
     }
 
