@@ -540,4 +540,11 @@ interface AdminInterface
      * @return void
      */
     function setParent(AdminInterface $admin);
+    
+    /**
+     * @param string $name
+     *
+     * @return null|string
+     */
+    public function getTemplate($name);
 }

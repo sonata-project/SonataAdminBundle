@@ -39,7 +39,7 @@ Override the ``getBatchActions`` from your ``Admin`` class to define custom batc
 
 Obviously, a merge action requires two kind of selection : a set of source model to merge into one target model. By default, this bundle only enable the user to select some model, but there is only one selection kind. Thus you will need to override the ``list__batch.html.twig`` template to display both a checkbox (source selection) and a radio (target selection) for each model row. See Symfony bundle overriding mechanism for further explanation.
 
-.. code-block::
+.. code-block:: html+jinja
 
     {# in Acme/ProjectBundle/Resources/views/CRUD/list__batch.html.twig #}
 

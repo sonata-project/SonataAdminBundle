@@ -93,8 +93,11 @@ class AdminHelperTest extends \PHPUnit_Framework_TestCase
 
     public function testgetShortObjectDescriptionActionObject()
     {
+        $mockTemplate = 'AdminHelperTest:mock-short-object-description.html.twig';
+        
         $admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
         $admin->expects($this->once())->method('setUniqid');
+        $admin->expects($this->once())->method('getTemplate')->will($this->returnValue($mockTemplate));
         $admin->expects($this->once())->method('getObject')->will($this->returnValue(new AdminControllerHelper_Foo));
         $admin->expects($this->once())->method('generateUrl')->will($this->returnCallback(function($name, $parameters) {
             if ($name != 'edit') {
@@ -110,7 +113,14 @@ class AdminHelperTest extends \PHPUnit_Framework_TestCase
         $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
         $container->expects($this->any())->method('get')->will($this->returnValue($admin));
 
-        $twig = new Twig;
+        $twig = $this->getMock('Twig_Environment');
+        
+        $twig->expects($this->once())->method('render')
+            ->with($mockTemplate)
+            ->will($this->returnCallback(function($templateName, $templateParams) {
+                return sprintf('<a href="%s" target="new">%s</a>', $templateParams['url'], $templateParams['description']);
+            }));
+            
         $request = new Request(array(
             'code'     => 'sonata.post.admin',
             'objectId' => 42,

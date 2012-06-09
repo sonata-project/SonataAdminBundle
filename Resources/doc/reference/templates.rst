@@ -17,6 +17,9 @@ By default, an Admin class uses a set of templates, it is possible to tweak the 
             edit:    SonataAdminBundle:CRUD:edit.html.twig
             history:  SonataAdminBundle:CRUD:history.html.twig
 
+            # default values of helper templates
+            short_object_description: SonataAdminBundle:Helper:short-object-description.html.twig
+
             # default values of block templates, they should extend the base_block template
             list_block: SonataAdminBundle:Block:block_admin_list.html.twig
 
@@ -31,6 +34,37 @@ Usage of each template :
 * edit : the template to use for the edit and create action
 * history : the template to use for the history / audit action
 * list_block : the template used for the list of admin blocks on the dashboard
+* short_object_description: used to represent the entity in one-to-one/many-to-one relations
 
 The default values will be set only if the ``Admin::setTemplates`` is not called by the Container.
 
+You can easily extend the provided templates in your own and customize only the blocks you need to change:
+
+.. code-block:: jinja
+
+    {% extends 'SonataAdminBundle:CRUD:edit.html.twig' %}
+    {# Acme/MyBundle/Ressources/view/my-custom-edit.html.twig #}
+
+    {% block title %}
+        {{ "My title"|trans }}
+    {% endblock%}
+
+    {% block actions %}
+         <div class="sonata-actions">
+             <ul>
+                 {% if admin.hasroute('list') and admin.isGranted('LIST')%}
+                     <li class="btn sonata-action-element"><a href="{{ admin.generateUrl('list') }}">{% trans from 'SonataAdminBundle' %}link_action_list{% endtrans %}</a></li>
+                 {% endif %}
+             </ul>
+         </div>
+    {% endblock %}
+
+
+.. code-block:: php
+
+    <?php // MyAdmin.php
+
+    public function getEditTemplate()
+    {
+        return 'AcmeMyBundle:my-custom-edit.html.twig';
+    }

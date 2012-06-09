@@ -80,7 +80,7 @@ class HelperController
 
         $admin->setSubject($subject);
 
-        list($fieldDescription, $form) = $this->helper->appendFormFieldElement($admin, $elementId);
+        list($fieldDescription, $form) = $this->helper->appendFormFieldElement($admin, $subject, $elementId);
 
         $view = $this->helper->getChildFormView($form->createView(), $elementId);
 
@@ -178,9 +178,17 @@ class HelperController
             }
         }
 
-        $description = sprintf('<a href="%s" target="new">%s</a>', $admin->generateUrl('edit', array('id' => $objectId)), $description);
+        $url = $admin->generateUrl('edit', array('id' => $objectId));
+        
+        $htmlOutput = $this->twig->render($admin->getTemplate('short_object_description'),
+            array(
+                'description' => $description,
+                'object' => $object,
+                'url' => $url
+            )
+        );
 
-        return new Response($description);
+        return new Response($htmlOutput);
     }
 
     /**
