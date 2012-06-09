@@ -14,66 +14,20 @@ to make sure you have translator enabled in your config.
     framework:
         translator: ~
 
-
 Installation
 ------------
 
 Download SonataAdminBundle and its dependencies to the ``vendor`` directory. You
-can use the Symfony's vendor script for the automated procces. Add the following
-in your ``deps`` file:
+can use Composer for the automated procces.
 
-.. code-block:: ini
+  php composer.phar require sonata-project/admin-bundle
+  php composer.phar install
 
-  [SonataAdminBundle]
-      git=git://github.com/sonata-project/SonataAdminBundle.git
-      target=/bundles/Sonata/AdminBundle
-      version=origin/master
-
-  [SonataBlockBundle]
-      git=git://github.com/sonata-project/SonataBlockBundle.git
-      target=/bundles/Sonata/BlockBundle
-      version=origin/2.0
-
-  [SonataCacheBundle]
-      git=git://github.com/sonata-project/SonataCacheBundle.git
-      target=/bundles/Sonata/CacheBundle
-      version=origin/2.0
-
-  [SonatajQueryBundle]
-      git=http://github.com/sonata-project/SonatajQueryBundle.git
-      target=/bundles/Sonata/jQueryBundle
-
-  [KnpMenuBundle]
-      git=http://github.com/KnpLabs/KnpMenuBundle.git
-      target=/bundles/Knp/Bundle/MenuBundle
-
-  [KnpMenu]
-      git=http://github.com/KnpLabs/KnpMenu.git
-      target=/knp/menu
-
-  [Exporter]
-      git=http://github.com/sonata-project/exporter.git
-      target=/exporter
-
-and run the vendors script to download bundles::
-
-  php bin/vendors install
-
-Next, be sure to enable this bundles in your autoload.php and AppKernel.php
-files:
+Next, be sure to enable this bundles in your AppKernel.php file:
 
 .. code-block:: php
 
     <?php
-    // app/autoload.php
-    $loader->registerNamespaces(array(
-        // ...
-        'Sonata'     => __DIR__.'/../vendor/bundles',
-        'Exporter'   => __DIR__.'/../vendor/exporter/lib',
-        'Knp\Bundle' => __DIR__.'/../vendor/bundles',
-        'Knp\Menu'   => __DIR__.'/../vendor/knp/menu/src',
-        // ...
-    ));
 
     // app/AppKernel.php
     public function registerBundles()
@@ -89,11 +43,27 @@ files:
         );
     }
 
-Now, install the assets from the bundles::
+If you didn't use Composer, you also need to add the bundle namespaces to your
+autoload.php:
+
+.. code-block:: php
+
+    <?php
+    // app/autoload.php
+    $loader->registerNamespaces(array(
+        // ...
+        'Sonata'     => __DIR__.'/../vendor/bundles',
+        'Exporter'   => __DIR__.'/../vendor/exporter/lib',
+        'Knp\Bundle' => __DIR__.'/../vendor/bundles',
+        'Knp\Menu'   => __DIR__.'/../vendor/knp/menu/src',
+        // ...
+    ));
+
+Now, install the assets from the bundles:
 
     php app/console assets:install web
 
-Usually when installing new bundles a good practice is also to delete your cache::
+Usually when installing new bundles a good practice is also to delete your cache:
 
     php app/console cache:clear
 
