@@ -546,5 +546,13 @@ interface AdminInterface
      *
      * @return null|string
      */
-    public function getTemplate($name);
+    function getTemplate($name);
+
+    /**
+     * Return an optional array of blocks for the given position of the block in the template
+     * @param string $position currently only 'left' is implemented
+     *
+     * @return array
+     */
+    function getBlocks($position);
 }

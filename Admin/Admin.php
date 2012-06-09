@@ -2421,4 +2421,13 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     {
         return $this->labelTranslatorStrategy;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBlocks($position)
+    {
+        return array();
+    }
+
 }
