@@ -247,6 +247,11 @@
                 <source>loading_information</source>
                 <target>Carregando informações…</target>
             </trans-unit>
+
+            <trans-unit id="label_per_page">
+              <source>label_per_page</source>
+              <target>Per page</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

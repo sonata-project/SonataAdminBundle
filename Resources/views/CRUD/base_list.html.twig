@@ -123,24 +123,29 @@ file that was distributed with this source code.
                                         {% endif %}
 
                                   </ul>
-                                  <ul>
-                                      <li>
-                                          {% trans from 'SonataAdminBundle' %}label_per_page{% endtrans %}
-                                          <select onchange="window.top.location.href=this.options[this.selectedIndex].value">
-                                              <option value="" selected="selected">{{ admin.datagrid.pager.maxperpage }}</option>
-                                              {% for per_page in admin.getperpageoptions %}
-                                                  {% if per_page != admin.datagrid.pager.maxperpage %}
-                                                      <option value="{{ admin.generateUrl('list', admin.getperpageparameters(per_page)) }}">{{ per_page }}</option>
-                                                  {% endif %}
-                                              {% endfor %}
-                                          </select>
-                                      </li>
-                                </ul>
                                 </div>
 
                             </td>
                         </tr>
                     {% endif %}
+
+                    <tr>
+                        <td colspan="{{ admin.list.elements|length }}" class="pager">
+                            <ul>
+                                <li>
+                                    {% trans from 'SonataAdminBundle' %}label_per_page{% endtrans %}
+                                    <select class="per-page">
+                                        {% for per_page in admin.getperpageoptions %}
+                                            <option {% if per_page == admin.datagrid.pager.maxperpage %}selected="selected"{% endif %}
+                                                    value="{{ admin.generateUrl('list', {'filter': admin.datagrid.values | merge({'_per_page': per_page})}) }}">
+                                                {{ per_page }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
                 {% endblock %}
             </table>
 

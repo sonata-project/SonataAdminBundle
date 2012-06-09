@@ -274,6 +274,10 @@
               <source>label_filters</source>
               <target>Filtres</target>
             </trans-unit>
+            <trans-unit id="label_per_page">
+              <source>label_per_page</source>
+              <target>Per page</target>
+            </trans-unit>
             <trans-unit id="delete_or">
               <source>delete_or</source>
               <target>o</target>

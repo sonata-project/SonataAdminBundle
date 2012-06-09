@@ -403,20 +403,6 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         150,
         200,
     );
-    
-    /**
-     * Predefined per page options
-     *
-     * @var array
-     */
-    protected $perPageOptions = array(
-        10,
-        20,
-        50,
-        100,
-        150,
-        200,
-    );
 
     /**
      * {@inheritdoc}
@@ -2481,19 +2467,6 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     public function determinedPerPageValue($per_page)
     {
         return in_array($per_page, $this->perPageOptions);
-    }
-
-    /**
-    * @param $per_page
-    * @return array
-    */
-    public function getPerPageParameters($per_page)
-    {
-        $values = $this->datagrid->getValues();
-
-        $values['_per_page'] = $per_page;
-
-        return array('filter' => $values);
     }
 
     /**
