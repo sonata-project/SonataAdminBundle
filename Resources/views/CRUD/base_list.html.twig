@@ -122,12 +122,30 @@ file that was distributed with this source code.
                                             <li><a href="{{ admin.generateUrl('list', admin.modelmanager.paginationparameters(admin.datagrid, admin.datagrid.pager.lastpage)) }}" title="{% trans from 'SonataAdminBundle' %}link_last_pager{% endtrans %}">&raquo;</a></li>
                                         {% endif %}
 
-                                    </ul>
+                                  </ul>
                                 </div>
 
                             </td>
                         </tr>
                     {% endif %}
+
+                    <tr>
+                        <td colspan="{{ admin.list.elements|length }}" class="pager">
+                            <ul>
+                                <li>
+                                    {% trans from 'SonataAdminBundle' %}label_per_page{% endtrans %}
+                                    <select class="per-page">
+                                        {% for per_page in admin.getperpageoptions %}
+                                            <option {% if per_page == admin.datagrid.pager.maxperpage %}selected="selected"{% endif %}
+                                                    value="{{ admin.generateUrl('list', {'filter': admin.datagrid.values | merge({'_per_page': per_page})}) }}">
+                                                {{ per_page }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
                 {% endblock %}
             </table>
 

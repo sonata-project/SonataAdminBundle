@@ -275,6 +275,11 @@
               <target>Фильтры</target>
             </trans-unit>
 
+            <trans-unit id="label_per_page">
+              <source>label_per_page</source>
+              <target>На страницу</target>
+            </trans-unit>
+
             <trans-unit id="delete_or">
               <source>delete_or</source>
               <target>или</target>
