@@ -27,10 +27,27 @@ file that was distributed with this source code.
                             <td class="sonata-ba-list-label">{{ admin.label|trans({}, admin.translationdomain) }}</td>
                             <td>
                                 {% if admin.hasroute('create') and admin.isGranted('CREATE') %}
-                                    <a href="{{ admin.generateUrl('create')}}">
-                                        <img src="{{ asset('bundles/sonataadmin/famfamfam/add.png') }}"  alt="{%- trans from 'SonataAdminBundle' %}link_add{% endtrans -%}" />
-                                        {%- trans from 'SonataAdminBundle' %}link_add{% endtrans -%}
-                                    </a>
+                                    {% if admin.subClasses is empty %}
+                                        <a href="{{ admin.generateUrl('create')}}">
+                                            <img src="{{ asset('bundles/sonataadmin/famfamfam/add.png') }}"  alt="{%- trans from 'SonataAdminBundle' %}link_add{% endtrans -%}" />
+                                            {%- trans from 'SonataAdminBundle' %}link_add{% endtrans -%}
+                                        </a>
+                                    {% else %}
+                                        <div class="btn-group">
+                                            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                                                <img src="{{ asset('bundles/sonataadmin/famfamfam/add.png') }}"  alt="{%- trans from 'SonataAdminBundle' %}link_add{% endtrans -%}" />
+                                                {% trans from 'SonataAdminBundle' %}link_add{% endtrans %}
+                                                <span class="caret"></span>
+                                            </a>
+                                            <ul class="dropdown-menu">
+                                                {% for subclass in admin.subclasses|keys %}
+                                                <li>
+                                                    <a href="{{ admin.generateUrl('create', {'subclass': subclass}) }}">{{ subclass }}</a>
+                                                </li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                    {% endif %}
                                 {% endif %}
                             </td>
                             <td>

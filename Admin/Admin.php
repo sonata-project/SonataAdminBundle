@@ -56,6 +56,13 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     private $class;
 
     /**
+     * The subclasses supported by the admin class
+     *
+     * @var array
+     */
+    private $subClasses = array();
+
+    /**
      * The list collection
      *
      * @var array
@@ -860,6 +867,84 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
+     * Returns the list of supported sub classes
+     *
+     * @return array the list of sub classes
+     */
+    public function getSubClasses()
+    {
+        return $this->subClasses;
+    }
+
+    /**
+     * Sets the list of supported sub classes
+     *
+     * @param array $subClasses the list of sub classes
+     */
+    public function setSubClasses(array $subClasses)
+    {
+        $this->subClasses = $subClasses;
+    }
+
+    /**
+     * Gets the subclass corresponding to the given name
+     *
+     * @param  string $name The name of the sub class
+     *
+     * @return string the subclass
+     */
+    protected function getSubClass($name)
+    {
+        if ($this->hasSubClass($name)) {
+            return $this->subClasses[$name];
+        }
+
+        return null;
+    }
+
+    /**
+     * Returns true if the admin has the sub classes
+     *
+     * @param  string $name The name of the sub class
+     *
+     * @return bool
+     */
+    public function hasSubClass($name)
+    {
+        return isset($this->subClasses[$name]);
+    }
+
+    /**
+     * Returns true if a subclass is currently active
+     *
+     * @return bool
+     */
+    public function hasActiveSubClass()
+    {
+        if ($this->request) {
+            return null !== $this->getRequest()->get('subclass');
+        }
+
+        return false;
+    }
+
+    /**
+     * Returns the currently active sub class
+     *
+     * @return string the active sub class
+     */
+    public function getActiveSubClass()
+    {
+        if (!$this->hasActiveSubClass()) {
+            return null;
+        }
+
+        $subClass = $this->getRequest()->get('subclass');
+
+        return $this->getSubClass($subClass);
+    }
+
+    /**
      * Returns the list of batchs actions
      *
      * @return array the list of batchs actions
@@ -1066,7 +1151,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      */
     public function getNewInstance()
     {
-        return $this->getModelManager()->getModelInstance($this->getClass());
+        return $this->getModelManager()->getModelInstance($this->getActiveSubClass() ?: $this->getClass());
     }
 
     /**
@@ -1097,7 +1182,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
             }
         )));
 
-        $this->formOptions['data_class'] = $this->getClass();
+        $this->formOptions['data_class'] = $this->getActiveSubClass() ?: $this->getClass();
 
         $formBuilder = $this->getFormContractor()->getFormBuilder(
             $this->getUniqid(),

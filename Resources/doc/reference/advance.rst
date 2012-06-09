@@ -117,3 +117,47 @@ the ``datagridValues`` array property. All three keys ``_page``, ``_sort_order``
 
         // ...
     }
+
+Inherited classes
+-----------------
+
+You can manage inherited classes by injected subclasses using the service configuration.
+
+Lets consider a base class named `Person` and its subclasses `Student` and `Teacher`:
+
+.. code-block:: xml
+
+    <services>
+        <service id="sonata.admin.person" class="YourNS\AdminBundle\Admin\PersonAdmin">
+            <tag name="sonata.admin" manager_type="orm" group="admin" label="Person"/>
+            <argument/>
+            <argument>YourNS\AdminBundle\Entity\Person</argument>
+            <argument></argument>
+            <call method="setSubClasses">
+                <argument type="collection">
+                    <argument key="student">YourNS\AdminBundle\Entity\Student</argument>
+                    <argument key="teacher">YourNS\AdminBundle\Entity\Teacher</argument>
+                </argument>
+            </call>
+        </service>
+    </services>
+
+You will just need to change the way forms are configured in order to take into account this new subclasses:
+
+.. code-block:: php
+
+    <?php
+
+    protected function configureFormFields(FormMapper $form)
+    {
+        $subject = $this->getSubject();
+
+        $form->add('name');
+
+        if ($subject instanceof Teacher) {
+            $form->add('course', 'text');
+        }
+        elseif ($subject instanceof Student) {
+            $form->add('year', 'integer');
+        }
+    }
