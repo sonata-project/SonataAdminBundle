@@ -237,6 +237,9 @@ class CRUDController extends Controller
      */
     public function editAction($id = null)
     {
+        // the key used to lookup the template
+        $templateKey = 'edit';
+        
         $id = $this->get('request')->get($this->admin->getIdParameter());
 
         $object = $this->admin->getObject($id);
@@ -280,7 +283,7 @@ class CRUDController extends Controller
                 $this->get('session')->setFlash('sonata_flash_error', 'flash_edit_error');
             } elseif ($this->isPreviewRequested()) {
                 // enable the preview template if the form was valid and preview was requested
-                $this->admin->setTemplate('edit', $this->admin->getTemplate('preview'));
+                $templateKey = 'preview';
             }
         }
 
@@ -289,7 +292,7 @@ class CRUDController extends Controller
         // set the theme for the current Admin Form
         $this->get('twig')->getExtension('form')->setTheme($view, $this->admin->getFormTheme());
 
-        return $this->render($this->admin->getEditTemplate(), array(
+        return $this->render($this->admin->getTemplate($templateKey), array(
             'action' => 'edit',
             'form'   => $view,
             'object' => $object,
@@ -422,6 +425,9 @@ class CRUDController extends Controller
      */
     public function createAction()
     {
+        // the key used to lookup the template
+        $templateKey = 'edit';
+        
         if (false === $this->admin->isGranted('CREATE')) {
             throw new AccessDeniedException();
         }
@@ -458,8 +464,8 @@ class CRUDController extends Controller
             if (!$isFormValid) {
                 $this->get('session')->setFlash('sonata_flash_error', 'flash_create_error');
             } elseif ($this->isPreviewRequested()) {
-                // enable the preview template if the form was valid and preview was requested
-                $this->admin->setTemplate('edit', $this->admin->getTemplate('preview'));
+                // pick the preview template if the form was valid and preview was requested
+                $templateKey = 'preview';
             }
         }
 
@@ -468,7 +474,7 @@ class CRUDController extends Controller
         // set the theme for the current Admin Form
         $this->get('twig')->getExtension('form')->setTheme($view, $this->admin->getFormTheme());
 
-        return $this->render($this->admin->getEditTemplate(), array(
+        return $this->render($this->admin->getTemplate($templateKey), array(
             'action' => 'create',
             'form'   => $view,
             'object' => $object,
