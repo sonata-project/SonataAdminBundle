@@ -26,6 +26,10 @@
                 <source>btn_filter</source>
                 <target>Filter</target>
             </trans-unit>
+            <trans-unit id="btn_update">
+                <source>btn_update</source>
+                <target>Update</target>
+            </trans-unit>
             <trans-unit id="btn_update_and_edit_again">
                 <source>btn_update_and_edit_again</source>
                 <target>Update</target>
