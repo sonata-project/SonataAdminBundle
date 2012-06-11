@@ -127,40 +127,40 @@
                 <target>All d'Elementer</target>
             </trans-unit>
             <trans-unit id="flash_batch_empty">
-              <source>flash_batch_empty</source>
-              <target>Aktioun ofgebrach. Et war keen Element ausgewielt.</target>
+                <source>flash_batch_empty</source>
+                <target>Aktioun ofgebrach. Et war keen Element ausgewielt.</target>
             </trans-unit>
             <trans-unit id="flash_create_success">
-              <source>flash_create_success</source>
-              <target>D'Element gouf erfollegräich dobäigesat.</target>
+                <source>flash_create_success</source>
+                <target>D'Element gouf erfollegräich dobäigesat.</target>
             </trans-unit>
             <trans-unit id="flash_create_error">
-              <source>flash_create_error</source>
-              <target>Beim Dobäisetze vum Element ass e Feeler opgetratt.</target>
+                <source>flash_create_error</source>
+                <target>Beim Dobäisetze vum Element ass e Feeler opgetratt.</target>
             </trans-unit>
             <trans-unit id="flash_edit_success">
-              <source>flash_edit_success</source>
-              <target>D'Element gouf erfollegräich beaarbecht.</target>
+                <source>flash_edit_success</source>
+                <target>D'Element gouf erfollegräich beaarbecht.</target>
             </trans-unit>
             <trans-unit id="flash_edit_error">
-              <source>flash_edit_error</source>
-              <target>Beim Beaarbechte vum Element ass e Feeler opgetratt.</target>
+                <source>flash_edit_error</source>
+                <target>Beim Beaarbechte vum Element ass e Feeler opgetratt.</target>
             </trans-unit>
             <trans-unit id="flash_batch_delete_success">
-              <source>flash_batch_delete_success</source>
-              <target>Déi ausgewielten Elementer goufen erfollegräich geläscht.</target>
+                <source>flash_batch_delete_success</source>
+                <target>Déi ausgewielten Elementer goufen erfollegräich geläscht.</target>
             </trans-unit>
             <trans-unit id="flash_batch_delete_error">
-              <source>flash_batch_delete_error</source>
-              <target>Beim Läsche vun den ausgewielten Elementer ass e Feeler opgetratt.</target>
+                <source>flash_batch_delete_error</source>
+                <target>Beim Läsche vun den ausgewielten Elementer ass e Feeler opgetratt.</target>
             </trans-unit>
             <trans-unit id="flash_delete_error">
-              <source>flash_delete_error</source>
-              <target>Beim Läsche vum Element ass e Feeler opgetratt.</target>
+                <source>flash_delete_error</source>
+                <target>Beim Läsche vum Element ass e Feeler opgetratt.</target>
             </trans-unit>
             <trans-unit id="flash_delete_success">
-              <source>flash_delete_success</source>
-              <target>D'Element gouf erfollegräich geläscht.</target>
+                <source>flash_delete_success</source>
+                <target>D'Element gouf erfollegräich geläscht.</target>
             </trans-unit>
             <trans-unit id="link_breadcrumb_dashboard">
                 <source>breadcrumb.link_dashboard</source>
@@ -191,48 +191,84 @@
                 <target>Jo, ausféieren</target>
             </trans-unit>
             <trans-unit id="label_type_yes">
-              <source>label_type_yes</source>
-              <target>jo</target>
+                <source>label_type_yes</source>
+                <target>jo</target>
             </trans-unit>
             <trans-unit id="label_type_no">
-              <source>label_type_no</source>
-              <target>nee</target>
+                <source>label_type_no</source>
+                <target>nee</target>
             </trans-unit>
             <trans-unit id="label_type_contains">
-              <source>label_type_contains</source>
-              <target>enthält</target>
+                <source>label_type_contains</source>
+                <target>enthält</target>
             </trans-unit>
             <trans-unit id="label_type_not_contains">
-              <source>label_type_not_contains</source>
-              <target>enthält net</target>
+                <source>label_type_not_contains</source>
+                <target>enthält net</target>
             </trans-unit>
             <trans-unit id="label_type_equals">
-              <source>label_type_equals</source>
-              <target>ass gläich</target>
+                <source>label_type_equals</source>
+                <target>ass gläich</target>
             </trans-unit>
             <trans-unit id="label_type_not_equals">
-              <source>label_type_not_equals</source>
-              <target>label_type_not_equals</target>
+                <source>label_type_not_equals</source>
+                <target>label_type_not_equals</target>
             </trans-unit>
             <trans-unit id="label_type_equal">
-              <source>label_type_equal</source>
-              <target>=</target>
+                <source>label_type_equal</source>
+                <target>=</target>
             </trans-unit>
             <trans-unit id="label_type_greater_equal">
-              <source>label_type_greater_equal</source>
-              <target>&gt;=</target>
+                <source>label_type_greater_equal</source>
+                <target>&gt;=</target>
             </trans-unit>
             <trans-unit id="label_type_greater_than">
-              <source>label_type_greater_than</source>
-              <target>&gt;</target>
+                <source>label_type_greater_than</source>
+                <target>&gt;</target>
             </trans-unit>
             <trans-unit id="label_type_less_equal">
-              <source>label_type_less_equal</source>
-              <target>&lt;=</target>
+                <source>label_type_less_equal</source>
+                <target>&lt;=</target>
             </trans-unit>
             <trans-unit id="label_type_less_than">
-              <source>label_type_less_than</source>
-              <target>&lt;</target>
+                <source>label_type_less_than</source>
+                <target>&lt;</target>
+            </trans-unit>
+            <trans-unit id="label_date_type_equal">
+                <source>label_date_type_equal</source>
+                <target>=</target>
+            </trans-unit>
+            <trans-unit id="label_date_type_greater_equal">
+                <source>label_date_type_greater_equal</source>
+                <target>&gt;=</target>
+            </trans-unit>
+            <trans-unit id="label_date_type_greater_than">
+                <source>label_date_type_greater_than</source>
+                <target>&gt;</target>
+            </trans-unit>
+            <trans-unit id="label_date_type_less_equal">
+                <source>label_date_type_less_equal</source>
+                <target>&lt;=</target>
+            </trans-unit>
+            <trans-unit id="label_date_type_less_than">
+                <source>label_date_type_less_than</source>
+                <target>&lt;</target>
+            </trans-unit>
+            <trans-unit id="label_date_type_null">
+                <source>label_date_type_null</source>
+                <target>ass eidel</target>
+            </trans-unit>
+            <trans-unit id="label_date_type_not_null">
+                <source>label_date_type_not_null</source>
+                <target>ass net eidel</target>
+            </trans-unit>
+            <trans-unit id="label_date_type_between">
+                <source>label_date_type_between</source>
+                <target>tëschent</target>
+            </trans-unit>
+            <trans-unit id="label_date_not_between">
+                <source>label_date_type_not_between</source>
+                <target>net tëschent</target>
             </trans-unit>
             <trans-unit id="label_filters">
                 <source>label_filters</source>
@@ -243,17 +279,42 @@
                 <target>oder</target>
             </trans-unit>
 
+            <trans-unit id="link_action_history">
+                <source>link_action_history</source>
+                <target>Versiounen</target>
+            </trans-unit>
+            <trans-unit id="td_action">
+                <source>td_action</source>
+                <target>Aktioun</target>
+            </trans-unit>
+            <trans-unit id="td_revision">
+                <source>td_revision</source>
+                <target>Versioun</target>
+            </trans-unit>
+            <trans-unit id="td_timestamp">
+                <source>td_timestamp</source>
+                <target>Datum</target>
+            </trans-unit>
+            <trans-unit id="td_username">
+                <source>td_username</source>
+                <target>Auteur</target>
+            </trans-unit>
+            <trans-unit id="label_view_revision">
+                <source>label_view_revision</source>
+                <target>Versioune weisen</target>
+            </trans-unit>
+
             <trans-unit id="list_results_count">
                 <source>list_results_count</source>
                 <target>1 Resultat|%count% Resultater</target>
             </trans-unit>
             <trans-unit id="label_export_download">
                 <source>label_export_download</source>
-                <target>Download : </target>
+                <target>Eroflueden: </target>
             </trans-unit>
             <trans-unit id="loading_information">
                 <source>loading_information</source>
-                <target>loading_information …</target>
+                <target>Informatioune gi gelueden …</target>
             </trans-unit>
         </body>
     </file>
