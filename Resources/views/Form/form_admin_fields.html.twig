@@ -10,8 +10,11 @@ file that was distributed with this source code.
 #}
 
 {# Labels #}
-{% block generic_label %}
+{% block form_label %}
 {% spaceless %}
+    {% if not compound %}
+        {% set attr = attr|merge({'for': id}) %}
+    {% endif %}
     {% if required %}
         {% set attr = attr|merge({'class': attr.class|default('') ~ ' required'}) %}
     {% endif %}
