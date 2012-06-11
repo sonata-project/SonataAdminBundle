@@ -66,7 +66,7 @@ class ResizeFormListener implements EventSubscriberInterface
         return array(
             FormEvents::PRE_SET_DATA    => 'preSetData',
             FormEvents::PRE_BIND        => 'preBind',
-            FormEvents::BIND_NORM_DATA  => 'onBindNormData',
+            FormEvents::BIND            => 'onBind',
         );
     }
 
@@ -138,7 +138,7 @@ class ResizeFormListener implements EventSubscriberInterface
                     'property_path' => '[' . $name . ']',
                 ));
 
-                $form->add(new FormProxy($this->factory->createNamed($this->type, $name, null, $options), isset($value['_delete'])));
+                $form->add(new FormProxy($this->factory->createNamed($name, $this->type, null, $options), isset($value['_delete'])));
             }
 
             if (isset($value['_delete'])) {
@@ -153,7 +153,7 @@ class ResizeFormListener implements EventSubscriberInterface
      * @return mixed
      * @throws \Symfony\Component\Form\Exception\UnexpectedTypeException
      */
-    public function onBindNormData(FilterDataEvent $event)
+    public function onBind(FilterDataEvent $event)
     {
         if (!$this->resizeOnBind) {
             return;

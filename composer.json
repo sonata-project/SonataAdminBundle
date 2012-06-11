@@ -18,24 +18,13 @@
     ],
     "require": {
         "php": ">=5.3.2",
-<<<<<<< HEAD
         "symfony/symfony": "2.1.*",
-        "jms/translation-bundle": "dev-master",
+        "symfony/framework-bundle": "2.1.*",
+        "symfony/security-bundle": "2.1.*",
         "knplabs/knp-menu-bundle": "1.1.*",
         "sonata-project/jquery-bundle": "dev-master",
         "sonata-project/exporter": "dev-master",
         "sonata-project/block-bundle": "dev-master"
-=======
-
-        "symfony/symfony": "2.0.*",
-
-        "symfony/framework-bundle": "2.0.*",
-        "symfony/security-bundle": "2.0.*",
-        "knplabs/knp-menu-bundle": "1.1.*",
-        "sonata-project/jquery-bundle": "master-dev",
-        "sonata-project/exporter": "master-dev",
-        "sonata-project/block-bundle": "2.0.*"
->>>>>>> origin/2.0
     },
     "require-dev": {
         "jms/translation-bundle": "*"

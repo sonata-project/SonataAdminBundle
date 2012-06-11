@@ -4,7 +4,7 @@ namespace Sonata\AdminBundle\Form\EventListener;
 
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormError;
-use Symfony\Component\Form\FormView;
+use Symfony\Component\Form\FormViewInterface;
 
 class FormProxy implements \IteratorAggregate, FormInterface
 {
@@ -68,6 +68,11 @@ class FormProxy implements \IteratorAggregate, FormInterface
         return $this->__call('add', func_get_args());
     }
 
+    public function get($name)
+    {
+        return $this->__call('get', func_get_args());
+    }
+
     public function has($name)
     {
         return $this->__call('has', func_get_args());
@@ -78,17 +83,12 @@ class FormProxy implements \IteratorAggregate, FormInterface
         return $this->__call('remove', func_get_args());
     }
 
-    public function getChildren()
+    public function all()
     {
-        return $this->__call('getChildren', func_get_args());
+        return $this->__call('all', func_get_args());
     }
 
-    public function hasChildren()
-    {
-        return $this->__call('hasChildren', func_get_args());
-    }
-
-    public function setData($appData)
+    public function setData($modelData)
     {
         return $this->__call('setData', func_get_args());
     }
@@ -103,9 +103,9 @@ class FormProxy implements \IteratorAggregate, FormInterface
         return $this->__call('getNormData', func_get_args());
     }
 
-    public function getClientData()
+    public function getViewData()
     {
-        return $this->__call('getClientData', func_get_args());
+        return $this->__call('getViewData', func_get_args());
     }
 
     public function getExtraData()
@@ -113,19 +113,24 @@ class FormProxy implements \IteratorAggregate, FormInterface
         return $this->__call('getExtraData', func_get_args());
     }
 
+    public function getConfig()
+    {
+        return $this->__call('getConfig', func_get_args());
+    }
+
     public function isBound()
     {
         return $this->__call('isBound', func_get_args());
     }
 
-    public function getTypes()
-    {
-        return $this->__call('getTypes', func_get_args());
-    }
-
     public function getName()
     {
         return $this->__call('getName', func_get_args());
+    }
+
+    public function getPropertyPath()
+    {
+        return $this->__call('getPropertyPath', func_get_args());
     }
 
     public function addError(FormError $error)
@@ -138,9 +143,9 @@ class FormProxy implements \IteratorAggregate, FormInterface
         return $this->__call('isRequired', func_get_args());
     }
 
-    public function isReadOnly()
+    public function isDisabled()
     {
-        return $this->__call('isReadOnly', func_get_args());
+        return $this->__call('isDisabled', func_get_args());
     }
 
     public function isEmpty()
@@ -158,16 +163,6 @@ class FormProxy implements \IteratorAggregate, FormInterface
         return $this->__call('bind', func_get_args());
     }
 
-    public function hasAttribute($name)
-    {
-        return $this->__call('hasAttribute', func_get_args());
-    }
-
-    public function getAttribute($name)
-    {
-        return $this->__call('getAttribute', func_get_args());
-    }
-
     public function getRoot()
     {
         return $this->__call('getRoot', func_get_args());
@@ -178,7 +173,7 @@ class FormProxy implements \IteratorAggregate, FormInterface
         return $this->__call('isRoot', func_get_args());
     }
 
-    public function createView(FormView $parent = null)
+    public function createView(FormViewInterface $parent = null)
     {
         return $this->__call('createView', func_get_args());
     }
