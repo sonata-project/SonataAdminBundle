@@ -31,12 +31,14 @@ class Pool
 
     /**
      * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
+     * @param string                                                    $title
+     * @param string                                                    $logoTitle
      */
     public function __construct(ContainerInterface $container, $title, $logoTitle)
     {
-        $this->container  = $container;
-        $this->title      = $title;
-        $this->titleLogo  = $logoTitle;
+        $this->container = $container;
+        $this->title     = $title;
+        $this->titleLogo = $logoTitle;
     }
 
     /**
@@ -87,6 +89,7 @@ class Pool
      * return the admin related to the given $class
      *
      * @param string $class
+     *
      * @return \Sonata\AdminBundle\Admin\AdminInterface|null
      */
     public function getAdminByClass($class)
@@ -99,7 +102,8 @@ class Pool
     }
 
     /**
-     * @param $class
+     * @param string $class
+     *
      * @return bool
      */
     public function hasAdminByClass($class)
@@ -112,6 +116,7 @@ class Pool
      * ie : sonata.news.admin.post|sonata.news.admin.comment => return the child class of post
      *
      * @param string $adminCode
+     *
      * @return \Sonata\AdminBundle\Admin\AdminInterface|null
      */
     public function getAdminByAdminCode($adminCode)
@@ -132,7 +137,8 @@ class Pool
     /**
      * Returns a new admin instance depends on the given code
      *
-     * @param $id
+     * @param string $id
+     *
      * @return \Sonata\AdminBundle\Admin\AdminInterface
      */
     public function getInstance($id)
@@ -150,6 +156,7 @@ class Pool
 
     /**
      * @param array $adminGroups
+     *
      * @return void
      */
     public function setAdminGroups(array $adminGroups)
@@ -167,6 +174,7 @@ class Pool
 
     /**
      * @param array $adminServiceIds
+     *
      * @return void
      */
     public function setAdminServiceIds(array $adminServiceIds)
@@ -184,6 +192,7 @@ class Pool
 
     /**
      * @param array $adminClasses
+     *
      * @return void
      */
     public function setAdminClasses(array $adminClasses)
@@ -201,6 +210,7 @@ class Pool
 
     /**
      * @param array $templates
+     *
      * @return void
      */
     public function setTemplates(array $templates)
@@ -217,7 +227,8 @@ class Pool
     }
 
     /**
-     * @param $name
+     * @param string $name
+     *
      * @return null|string
      */
     public function getTemplate($name)

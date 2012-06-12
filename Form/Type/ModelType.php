@@ -12,11 +12,14 @@
 
 namespace Sonata\AdminBundle\Form\Type;
 
-use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceListInterface;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\OptionsResolver\Options;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 use Sonata\AdminBundle\Form\EventListener\MergeCollectionListener;
 use Sonata\AdminBundle\Form\ChoiceList\ModelChoiceList;
@@ -26,7 +29,10 @@ use Sonata\AdminBundle\Model\ModelManagerInterface;
 
 class ModelType extends AbstractType
 {
-    public function buildForm(FormBuilder $builder, array $options)
+    /**
+     * {@inheritDoc}
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         if ($options['multiple']) {
             $builder
@@ -37,9 +43,13 @@ class ModelType extends AbstractType
         }
     }
 
-    public function getDefaultOptions(array $options)
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $defaultOptions = array(
+        $resolver->setDefaults(array(
+            'compound'          => function (Options $options) {
+                return isset($options['parent']) ? $options['parent'] : 'choice';
+            },
+                    
             'template'          => 'choice',
             'multiple'          => false,
             'expanded'          => false,
@@ -50,28 +60,35 @@ class ModelType extends AbstractType
             'choices'           => null,
             'parent'            => 'choice',
             'preferred_choices' => array(),
-        );
+            
+            'choice_list'       => function (Options $options, $previousValue) {
+                if ($previousValue instanceof ChoiceListInterface
+                        && count($choices = $previousValue->getChoices())) {
+                    return $choices;
+                }
 
-        $options = array_replace($defaultOptions, $options);
-
-        if (!isset($options['choice_list'])) {
-            $defaultOptions['choice_list'] = new ModelChoiceList(
-                $options['model_manager'],
-                $options['class'],
-                $options['property'],
-                $options['query'],
-                $options['choices']
-            );
-        }
-
-        return $defaultOptions;
+                return new ModelChoiceList(
+                    $options['model_manager'],
+                    $options['class'],
+                    $options['property'],
+                    $options['query'],
+                    $options['choices']
+                );
+            }
+        ));
     }
 
-    public function getParent(array $options)
+    /**
+     * {@inheritDoc}
+     */
+    public function getParent()
     {
-        return isset($options['parent']) ? $options['parent'] : 'choice';
+        return 'choice';
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getName()
     {
         return 'sonata_type_model';

@@ -31,23 +31,25 @@ class DatagridMapper
 
     /**
      * @param \Sonata\AdminBundle\Builder\DatagridBuilderInterface $datagridBuilder
-     * @param DatagridInterface $datagrid
-     * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
+     * @param DatagridInterface                                    $datagrid
+     * @param \Sonata\AdminBundle\Admin\AdminInterface             $admin
      */
     public function __construct(DatagridBuilderInterface $datagridBuilder, DatagridInterface $datagrid, AdminInterface $admin)
     {
-        $this->datagridBuilder  = $datagridBuilder;
-        $this->datagrid         = $datagrid;
-        $this->admin            = $admin;
+        $this->datagridBuilder = $datagridBuilder;
+        $this->datagrid        = $datagrid;
+        $this->admin           = $admin;
     }
 
     /**
      * @throws \RuntimeException
-     * @param $name
-     * @param null $type
-     * @param array $filterOptions
-     * @param null $fieldType
-     * @param array $fieldOptions
+     *
+     * @param string  $name
+     * @param string  $type
+     * @param array   $filterOptions
+     * @param string  $fieldType
+     * @param array   $fieldOptions
+     *
      * @return DatagridMapper
      */
     public function add($name, $type = null, array $filterOptions = array(), $fieldType = null, $fieldOptions = null)
@@ -60,7 +62,7 @@ class DatagridMapper
             $filterOptions['field_type'] = $fieldType;
         }
 
-        $filterOptions['field_name'] = isset($filterOptions['field_name']) ? $filterOptions['field_name'] : $name;
+        $filterOptions['field_name'] = isset($filterOptions['field_name']) ? $filterOptions['field_name'] : substr(strrchr('.'.$name,'.'), 1);
 
         if ($name instanceof FieldDescriptionInterface) {
             $fieldDescription = $name;
@@ -83,6 +85,7 @@ class DatagridMapper
 
     /**
      * @param string $name
+     *
      * @return FilterInterface
      */
     public function get($name)
@@ -92,6 +95,7 @@ class DatagridMapper
 
     /**
      * @param string $key
+     *
      * @return boolean
      */
     public function has($key)
@@ -101,12 +105,25 @@ class DatagridMapper
 
     /**
      * @param string $key
+     *
      * @return \Sonata\AdminBundle\Datagrid\DatagridMapper
      */
     public function remove($key)
     {
         $this->admin->removeFilterFieldDescription($key);
         $this->datagrid->removeFilter($key);
+
+        return $this;
+    }
+
+    /**
+     * @param array $keys field names
+     *
+     * @return \Sonata\AdminBundle\Datagrid\ListMapper
+     */
+    public function reorder(array $keys)
+    {
+        $this->datagrid->reorderFilters($keys);
 
         return $this;
     }

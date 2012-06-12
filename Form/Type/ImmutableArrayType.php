@@ -12,16 +12,21 @@
 namespace Sonata\AdminBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\Form\FormBuilderInterface;
+
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 use Sonata\AdminBundle\Form\EventListener\ResizeFormListener;
 
 class ImmutableArrayType extends AbstractType
 {
-    public function buildForm(FormBuilder $builder, array $options)
+    /**
+     * {@inheritDoc}
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        foreach($options['keys'] as $infos) {
-            if ($infos instanceof FormBuilder) {
+        foreach ($options['keys'] as $infos) {
+            if ($infos instanceof FormBuilderInterface) {
                 $builder->add($infos);
             } else {
                 list($name, $type, $options) = $infos;
@@ -30,13 +35,19 @@ class ImmutableArrayType extends AbstractType
         }
     }
 
-    public function getDefaultOptions(array $options)
+    /**
+     * {@inheritDoc}
+     */
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        return array(
+        $resolver->setDefaults(array(
             'keys'    => array(),
-        );
+        ));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getName()
     {
         return 'sonata_type_immutable_array';

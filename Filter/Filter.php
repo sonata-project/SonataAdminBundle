@@ -28,8 +28,7 @@ abstract class Filter implements FilterInterface
     const CONDITION_AND = 'AND';
 
     /**
-     * @param string $name
-     * @param array $options
+     * {@inheritdoc}
      */
     public function initialize($name, array $options = array())
     {
@@ -38,7 +37,7 @@ abstract class Filter implements FilterInterface
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getName()
     {
@@ -46,9 +45,20 @@ abstract class Filter implements FilterInterface
     }
 
     /**
-     * @param string $name
-     * @param null $default
-     * @return mixed
+     * {@inheritdoc}
+     */
+    public function getFormName()
+    {
+        /* Symfony default form class sadly can't handle
+           form element with dots in its name (when data
+           get bound, the default dataMapper is a PropertyPathMapper).
+           So use this trick to avoid any issue.
+        */
+        return str_replace('.', '~', $this->name);
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function getOption($name, $default = null)
     {
@@ -60,8 +70,7 @@ abstract class Filter implements FilterInterface
     }
 
     /**
-     * @param $name
-     * @param $value
+     * {@inheritdoc}
      */
     public function setOption($name, $value)
     {
@@ -69,7 +78,7 @@ abstract class Filter implements FilterInterface
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getFieldType()
     {
@@ -77,7 +86,7 @@ abstract class Filter implements FilterInterface
     }
 
     /**
-     * @return array
+     * {@inheritdoc}
      */
     public function getFieldOptions()
     {
@@ -85,7 +94,7 @@ abstract class Filter implements FilterInterface
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getLabel()
     {
@@ -93,7 +102,7 @@ abstract class Filter implements FilterInterface
     }
 
     /**
-     * @param $label
+     * {@inheritdoc}
      */
     public function setLabel($label)
     {
@@ -101,7 +110,7 @@ abstract class Filter implements FilterInterface
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getFieldName()
     {
@@ -115,7 +124,44 @@ abstract class Filter implements FilterInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getParentAssociationMappings()
+    {
+        return $this->getOption('parent_association_mappings', array());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFieldMapping()
+    {
+        $fieldMapping = $this->getOption('field_mapping');
+
+        if (!$fieldMapping) {
+            throw new \RunTimeException(sprintf('The option `field_mapping` must be set for field : `%s`', $this->getName()));
+        }
+
+        return $fieldMapping;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAssociationMapping()
+    {
+        $associationMapping = $this->getOption('association_mapping');
+
+        if (!$associationMapping) {
+            throw new \RunTimeException(sprintf('The option `association_mapping` must be set for field : `%s`', $this->getName()));
+        }
+
+        return $associationMapping;
+    }
+
+    /**
      * @param array $options
+     *
      * @return void
      */
     public function setOptions(array $options)
@@ -132,7 +178,8 @@ abstract class Filter implements FilterInterface
     }
 
     /**
-     * @param $value
+     * @param mixed $value
+     *
      * @return void
      */
     public function setValue($value)
@@ -154,11 +201,12 @@ abstract class Filter implements FilterInterface
     public function isActive()
     {
         $values = $this->getValue();
-        return ! empty($values['value']);
+        return !empty($values['value']);
     }
 
     /**
-     * @param $condition
+     * @param string $condition
+     *
      * @return void
      */
     public function setCondition($condition)

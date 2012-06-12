@@ -9,11 +9,12 @@ file that was distributed with this source code.
 
 #}
 
-{% extends 'SonataAdminBundle:Form:silex_form_div_layout.html.twig' %}
-
 {# Labels #}
-{% block generic_label %}
+{% block form_label %}
 {% spaceless %}
+    {% if not compound %}
+        {% set attr = attr|merge({'for': id}) %}
+    {% endif %}
     {% if required %}
         {% set attr = attr|merge({'class': attr.class|default('') ~ ' required'}) %}
     {% endif %}
@@ -44,8 +45,8 @@ file that was distributed with this source code.
 {% block widget_container_attributes_choice_widget %}
     {% spaceless %}
         id="{{ id }}"
-        {% for attrname,attrvalue in attr %}{{attrname}}="{% if attrname == 'class' %}inputs-list {% endif%}{{attrvalue}}" {% endfor %}
-        {% if "class" not in attr %}class="inputs-list"{%endif %}
+        {% for attrname,attrvalue in attr %}{{attrname}}="{% if attrname == 'class' %}unstyled {% endif%}{{attrvalue}}" {% endfor %}
+        {% if "class" not in attr %}class="unstyled"{%endif %}
     {% endspaceless %}
 {% endblock %}
 
@@ -80,29 +81,29 @@ file that was distributed with this source code.
 
 {% block field_row %}
     {% if sonata_admin is not defined or not sonata_admin_enabled or not sonata_admin.field_description %}
-        {{ parent() }}
+        {{ form_row(form) }}
     {% else %}
-        <div class="clearfix{% if errors|length > 0%} error{%endif%}" id="sonata-ba-field-container-{{ id }}">
+        <div class="control-group{% if errors|length > 0%} error{%endif%}" id="sonata-ba-field-container-{{ id }}">
             {% block label %}
                 {% if sonata_admin.field_description.options.name is defined %}
-                    {{ form_label(form, sonata_admin.field_description.options.name) }}
+                    {{ form_label(form, sonata_admin.field_description.options.name, { 'attr' : {'class' : 'control-label'} }) }}
                 {% else %}
-                    {{ form_label(form) }}
+                    {{ form_label(form, null, { 'attr' : {'class' : 'control-label'} }) }}
                 {% endif %}
             {% endblock %}
 
-            <div class="input sonata-ba-field sonata-ba-field-{{ sonata_admin.edit }}-{{ sonata_admin.inline }} {% if errors|length > 0 %}sonata-ba-field-error{% endif %}">
+            <div class="controls sonata-ba-field sonata-ba-field-{{ sonata_admin.edit }}-{{ sonata_admin.inline }} {% if errors|length > 0 %}sonata-ba-field-error{% endif %}">
 
                 {{ form_widget(form) }}
 
-                {% if sonata_admin.field_description.help %}
-                    <span class="help-block sonata-ba-field-help">{{ sonata_admin.field_description.help }}</span>
-                {% endif %}
-
                 {% if errors|length > 0 %}
-                    <div class="sonata-ba-field-error-messages">
+                    <div class="help-inline sonata-ba-field-error-messages">
                         {{ form_errors(form) }}
                     </div>
+                {% endif %}
+
+                {% if sonata_admin.field_description.help %}
+                    <span class="help-block sonata-ba-field-help">{{ sonata_admin.field_description.help }}</span>
                 {% endif %}
             </div>
         </div>

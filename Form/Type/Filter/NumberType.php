@@ -13,10 +13,11 @@ namespace Sonata\AdminBundle\Form\Type\Filter;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormTypeInterface;
-use Symfony\Component\Form\FormBuilder;
-use Symfony\Component\Form\FormView;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Translation\TranslatorInterface;
+
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class NumberType extends AbstractType
 {
@@ -51,10 +52,10 @@ class NumberType extends AbstractType
     }
 
     /**
-     * @param \Symfony\Component\Form\FormBuilder $builder
-     * @param array $options
+     * @param FormBuilderInterface $builder
+     * @param array                $options
      */
-    public function buildForm(FormBuilder $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $choices = array(
             self::TYPE_EQUAL            => $this->translator->trans('label_type_equal', array(), 'SonataAdminBundle'),
@@ -66,23 +67,18 @@ class NumberType extends AbstractType
 
         $builder
             ->add('type', 'choice', array('choices' => $choices, 'required' => false))
-            ->add('value', 'number', array('required' => false))
+            ->add('value', $options['field_type'], array_merge(array('required' => false), $options['field_options']))
         ;
     }
 
     /**
-     * @param array $options
-     * @return array
+     * {@inheritDoc}
      */
-    public function getDefaultOptions(array $options)
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $defaultOptions = array(
-            'field_type'       => 'text',
-            'field_options'    => array()
-        );
-
-        $options = array_replace($options, $defaultOptions);
-
-        return $options;
+        $resolver->setDefaults(array(
+            'field_type'    => 'number',
+            'field_options' => array(),
+        ));
     }
 }

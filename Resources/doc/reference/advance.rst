@@ -4,11 +4,11 @@ Advance
 Service Configuration
 ---------------------
 
-When you create a new Admin service you can configure its dependencies, by default services which are injected are:
+When you create a new Admin service you can configure its dependencies, the services which are injected by default are:
 
-========================      =============================================
+=========================     =============================================
 Dependencies                  Service Id
-========================      =============================================
+=========================     =============================================
 model_manager                 sonata.admin.manager.%manager-type%
 form_contractor               sonata.admin.builder.%manager-type%_form
 show_builder                  sonata.admin.builder.%manager-type%_show
@@ -24,11 +24,11 @@ router_builder                sonata.admin.route.path_info
 label_translator_strategy     sonata.admin.label.strategy.form_component
 =========================     =============================================
 
-Note: %manager-type% is replaced by the manager type (orm, odm...)
+Note: %manager-type% is to be replaced by the manager type (orm, odm...)
 
 You have 2 ways of defining the dependencies inside a ``services.xml``.
 
-* With a tag attribute, less verbose::
+* With a tag attribute, less verbose :
 
 .. code-block:: xml
 
@@ -71,7 +71,7 @@ You have 2 ways of defining the dependencies inside a ``services.xml``.
         </service>
 
 
-If you want to modify the service which is going to be injected, add the following code to your
+If you want to modify the service that is going to be injected, add the following code to your
 application's config file:
 
 .. code-block:: yaml
@@ -86,4 +86,34 @@ application's config file:
 Admin Extension
 ---------------
 
-S
+Configure the default page and ordering in the list view
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Configuring the default page and ordering column can simply be achieved by overriding
+the ``datagridValues`` array property. All three keys ``_page``, ``_sort_order`` and
+``_sort_by`` can be omitted.
+
+.. code-block:: php
+
+    <?php
+
+    use Sonata\AdminBundle\Admin\Admin;
+
+    class PageAdmin extends Admin
+    {
+        // ...
+
+        /**
+         * Default Datagrid values
+         *
+         * @var array
+         */
+        protected $datagridValues = array(
+            '_page' => 1, // Display the first page (default = 1)
+            '_sort_order' => 'DESC', // Descendant ordering (default = 'ASC')
+            '_sort_by' => 'updated' // name of the ordered field (default = the model id field, if any)
+            // the '_sort_by' key can be of the form 'mySubModel.mySubSubModel.myField'.
+        );
+
+        // ...
+    }

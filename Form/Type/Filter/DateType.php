@@ -13,10 +13,11 @@ namespace Sonata\AdminBundle\Form\Type\Filter;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormTypeInterface;
-use Symfony\Component\Form\FormBuilder;
-use Symfony\Component\Form\FormView;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Translation\TranslatorInterface;
+
+use Symfony\Component\Optionsresolver\OptionsResolverInterface;
 
 class DateType extends AbstractType
 {
@@ -31,10 +32,9 @@ class DateType extends AbstractType
     const TYPE_LESS_THAN = 5;
 
     const TYPE_NULL = 6;
-    
+
     const TYPE_NOT_NULL = 7;
 
-    
     protected $translator;
 
     /**
@@ -46,16 +46,17 @@ class DateType extends AbstractType
     }
 
     /**
-     * Returns the name of this type.
-     *
-     * @return string The name of this type
+     * {@inheritDoc}
      */
     public function getName()
     {
         return 'sonata_type_filter_date';
     }
 
-    public function buildForm(FormBuilder $builder, array $options)
+    /**
+     * {@inheritDoc}
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $choices = array(
             self::TYPE_EQUAL            => $this->translator->trans('label_date_type_equal', array(), 'SonataAdminBundle'),
@@ -73,15 +74,14 @@ class DateType extends AbstractType
         ;
     }
 
-    public function getDefaultOptions(array $options)
+    /**
+     * {@inheritDoc}
+     */
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $defaultOptions = array(
+        $resolver->setDefaults(array(
             'field_type'       => 'date',
             'field_options'    => array('date_format' => 'yyyy-MM-dd')
-        );
-
-        $options = array_replace($options, $defaultOptions);
-
-        return $options;
+        ));
     }
 }

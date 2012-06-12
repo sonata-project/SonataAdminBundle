@@ -20,12 +20,19 @@ class InlineValidator extends ConstraintValidator
 {
     protected $container;
 
+    /**
+     * @param \Symfony\Component\DependencyInjection\ContainerInterface            $container
+     * @param \Symfony\Bundle\FrameworkBundle\Validator\ConstraintValidatorFactory $constraintValidatorFactory
+     */
     public function __construct(ContainerInterface $container, ConstraintValidatorFactory $constraintValidatorFactory)
     {
-        $this->container = $container;
+        $this->container                  = $container;
         $this->constraintValidatorFactory = $constraintValidatorFactory;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function isValid($value, Constraint $constraint)
     {
         $errorElement = new ErrorElement(

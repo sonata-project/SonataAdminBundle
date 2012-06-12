@@ -33,7 +33,7 @@ class SonataAdminExtension extends Extension
     /**
      *
      * @param array            $configs    An array of configuration settings
-     * @param ContainerBuilder $container A ContainerBuilder instance
+     * @param ContainerBuilder $container  A ContainerBuilder instance
      */
     public function load(array $configs, ContainerBuilder $container)
     {
@@ -80,6 +80,7 @@ class SonataAdminExtension extends Extension
                         'CREATE'    => array('CREATE'),
                         'VIEW'      => array('VIEW'),
                         'DELETE'    => array('DELETE'),
+                        'EXPORT'    => array('EXPORT'),
                         'OPERATOR'  => array('OPERATOR'),
                         'MASTER'    => array('MASTER'),
                     );
@@ -90,7 +91,7 @@ class SonataAdminExtension extends Extension
                     $config['security']['information'] = array(
                         'GUEST'    => array('VIEW', 'LIST'),
                         'STAFF'    => array('EDIT', 'LIST', 'CREATE'),
-                        'EDITOR'   => array('OPERATOR'),
+                        'EDITOR'   => array('OPERATOR', 'EXPORT'),
                         'ADMIN'    => array('MASTER'),
                     );
                 }
@@ -113,7 +114,7 @@ class SonataAdminExtension extends Extension
             'choice'   => 'sonata-medium',
             'integer'  => 'sonata-medium',
             'datetime' => 'sonata-medium-date',
-            'date' => 'sonata-medium-date'
+            'date'     => 'sonata-medium-date'
         );
 
         $container->getDefinition('sonata.admin.form.extension.field')
@@ -123,10 +124,5 @@ class SonataAdminExtension extends Extension
         if (!isset($bundles['JMSTranslationBundle'])) {
             $container->removeDefinition('sonata.admin.translator.extractor.jms_translator_bundle');
         }
-    }
-
-    public function getNamespace()
-    {
-        return 'http://www.sonata-project.org/schema/dic/admin';
     }
 }

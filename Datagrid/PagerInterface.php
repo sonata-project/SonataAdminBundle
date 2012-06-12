@@ -12,5 +12,10 @@ namespace Sonata\AdminBundle\Datagrid;
 
 interface PagerInterface
 {
-
+    /**
+     * Initialize the Pager.
+     *
+     * @return void
+     */
+    function init();
 }

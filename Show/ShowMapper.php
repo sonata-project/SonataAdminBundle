@@ -31,22 +31,24 @@ class ShowMapper
     protected $currentGroup;
 
     /**
-     * @param \Sonata\AdminBundle\Builder\ShowBuilderInterface $showBuilder
+     * @param \Sonata\AdminBundle\Builder\ShowBuilderInterface     $showBuilder
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionCollection $list
-     * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
+     * @param \Sonata\AdminBundle\Admin\AdminInterface             $admin
      */
     public function __construct(ShowBuilderInterface $showBuilder, FieldDescriptionCollection $list, AdminInterface $admin)
     {
-        $this->showBuilder  = $showBuilder;
-        $this->list         = $list;
-        $this->admin        = $admin;
+        $this->showBuilder = $showBuilder;
+        $this->list        = $list;
+        $this->admin       = $admin;
     }
 
     /**
      * @throws \RuntimeException
+     *
      * @param mixed $name
      * @param mixed $type
      * @param array $fieldDescriptionOptions
+     *
      * @return \Sonata\AdminBundle\Show\ShowMapper
      */
     public function add($name, $type = null, array $fieldDescriptionOptions = array())
@@ -87,6 +89,7 @@ class ShowMapper
 
     /**
      * @param string $name
+     *
      * @return array
      */
     public function get($name)
@@ -96,6 +99,7 @@ class ShowMapper
 
     /**
      * @param string $key
+     *
      * @return bool
      */
     public function has($key)
@@ -105,6 +109,7 @@ class ShowMapper
 
     /**
      * @param string $key
+     *
      * @return \Sonata\AdminBundle\Show\ShowMapper
      */
     public function remove($key)
@@ -116,15 +121,35 @@ class ShowMapper
     }
 
     /**
+     * @param array $keys field names
+     *
+     * @return \Sonata\AdminBundle\Show\ShowMapper
+     */
+    public function reorder(array $keys)
+    {
+        if (!$this->currentGroup) {
+            $this->with($this->admin->getLabel());
+        }
+
+        $this->admin->reorderShowGroup($this->currentGroup, $keys);
+
+        return $this;
+    }
+
+    /**
      * @param string $name
-     * @param array $options
+     * @param array  $options
+     *
      * @return \Sonata\AdminBundle\Show\ShowMapper
      */
     public function with($name, array $options = array())
     {
         $showGroups = $this->admin->getShowGroups();
         if (!isset($showGroups[$name])) {
-            $showGroups[$name] = array_merge(array('collapsed' => false, 'fields' => array()), $options);
+            $showGroups[$name] = array_merge(array(
+                'collapsed' => false,
+                'fields'    => array()
+            ), $options);
         }
 
         $this->admin->setShowGroups($showGroups);

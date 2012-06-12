@@ -19,6 +19,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sonata\AdminBundle\Exception\ModelManagerException;
 use Symfony\Component\HttpFoundation\Request;
+use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 
 class CRUDController extends Controller
 {
@@ -30,9 +31,9 @@ class CRUDController extends Controller
     protected $admin;
 
     /**
-     * @param mixed $data
+     * @param mixed   $data
      * @param integer $status
-     * @param array $headers
+     * @param array   $headers
      *
      * @return Response with json encoded data
      */
@@ -123,10 +124,11 @@ class CRUDController extends Controller
     }
 
     /**
-     * @param $view
-     * @param array $parameters
+     * @param string                                          $view
+     * @param array                                           $parameters
      * @param null|\Symfony\Component\HttpFoundation\Response $response
-     * @return \Symfony\Bundle\FrameworkBundle\Controller\Response
+     *
+     * @return Response
      */
     public function render($view, array $parameters = array(), Response $response = null)
     {
@@ -165,10 +167,12 @@ class CRUDController extends Controller
      * execute a batch delete
      *
      * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
-     * @param $query
+     *
+     * @param \Sonata\AdminBundle\Datagrid\ProxyQueryInterface $query
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function batchActionDelete($query)
+    public function batchActionDelete(ProxyQueryInterface $query)
     {
         if (false === $this->admin->isGranted('DELETE')) {
             throw new AccessDeniedException();
@@ -187,12 +191,14 @@ class CRUDController extends Controller
 
     /**
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException|\Symfony\Component\Security\Core\Exception\AccessDeniedException
-     * @param $id
-     * @return \Symfony\Bundle\FrameworkBundle\Controller\Response|\Symfony\Component\HttpFoundation\RedirectResponse
+     *
+     * @param mixed $id
+     *
+     * @return Response|RedirectResponse
      */
     public function deleteAction($id)
     {
-        $id = $this->get('request')->get($this->admin->getIdParameter());
+        $id     = $this->get('request')->get($this->admin->getIdParameter());
         $object = $this->admin->getObject($id);
 
         if (!$object) {
@@ -208,11 +214,9 @@ class CRUDController extends Controller
         if ($this->getRequest()->getMethod() == 'DELETE') {
             try {
                 $this->admin->delete($object);
-                $flashMsg = $this->admin->trans('flash_delete_success', $flashVars, 'SonataAdminBundle');
-                $this->get('session')->setFlash('sonata_flash_success', $flashMsg);
+                $this->get('session')->setFlash('sonata_flash_success', $this->admin->trans('flash_delete_success', $flashVars, 'SonataAdminBundle'));
             } catch ( ModelManagerException $e ) {
-                $flashMsg = $this->admin->trans('flash_delete_error', $flashVars, 'SonataAdminBundle');
-                $this->get('session')->setFlash('sonata_flash_error', $flashMsg);
+                $this->get('session')->setFlash('sonata_flash_error', $this->admin->trans('flash_delete_error', $flashVars, 'SonataAdminBundle'));
             }
 
             return new RedirectResponse($this->admin->generateUrl('list'));
@@ -228,7 +232,9 @@ class CRUDController extends Controller
      * return the Response object associated to the edit action
      *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
-     * @param  $id
+     *
+     * @param mixed $id
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function editAction($id = null)
@@ -289,7 +295,8 @@ class CRUDController extends Controller
     /**
      * redirect the user depend on this choice
      *
-     * @param  $object
+     * @param object $object
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function redirectTo($object)
@@ -320,17 +327,24 @@ class CRUDController extends Controller
     public function batchAction()
     {
         if ($this->get('request')->getMethod() != 'POST') {
-           throw new \RuntimeException('invalid request type, POST expected');
+            throw new \RuntimeException('invalid request type, POST expected');
         }
 
+        $confirmation = $this->get('request')->get('confirmation', false);
+
         if ($data = json_decode($this->get('request')->get('data'), true)) {
-            $action = $data['action'];
-            $idx    = $data['idx'];
+            $action       = $data['action'];
+            $idx          = $data['idx'];
             $all_elements = $data['all_elements'];
+            $this->get('request')->request->replace($data);
         } else {
+            $this->get('request')->request->set('idx', $this->get('request')->get('idx', array()));
+            $this->get('request')->request->set('all_elements', $this->get('request')->get('all_elements', false));
+
             $action       = $this->get('request')->get('action');
             $idx          = $this->get('request')->get('idx');
-            $all_elements = $this->get('request')->get('all_elements', false);
+            $all_elements = $this->get('request')->get('all_elements');
+            $data         = $this->get('request')->request->all();
         }
 
         $batchActions = $this->admin->getBatchActions();
@@ -338,21 +352,28 @@ class CRUDController extends Controller
             throw new \RuntimeException(sprintf('The `%s` batch action is not defined', $action));
         }
 
-        if (count($idx) == 0 && !$all_elements) { // no item selected
-            $this->get('session')->setFlash('sonata_flash_info', 'flash_batch_empty');
+        $camelizedAction = \Sonata\AdminBundle\Admin\BaseFieldDescription::camelize($action);
+        $isRelevantAction = sprintf('batchAction%sIsRelevant', ucfirst($camelizedAction));
+
+        if (method_exists($this, $isRelevantAction)) {
+            $nonRelevantMessage = call_user_func(array($this, $isRelevantAction), $idx, $all_elements);
+        } else {
+            $nonRelevantMessage = count($idx) != 0 || $all_elements; // at least one item is selected
+        }
+
+        if (!$nonRelevantMessage) { // default non relevant message (if false of null)
+            $nonRelevantMessage = 'flash_batch_empty';
+        }
+
+        if (true !== $nonRelevantMessage) {
+            $this->get('session')->setFlash('sonata_flash_info', $nonRelevantMessage);
 
             return new RedirectResponse($this->admin->generateUrl('list', $this->admin->getFilterParameters()));
         }
 
         $askConfirmation = isset($batchActions[$action]['ask_confirmation']) ? $batchActions[$action]['ask_confirmation'] : true;
 
-        if ($askConfirmation && $this->get('request')->get('confirmation') != 'ok') {
-            $data = json_encode(array(
-                'action' => $action,
-                'idx'    => $idx,
-                'all_elements' => $all_elements,
-            ));
-
+        if ($askConfirmation && $confirmation != 'ok') {
             $datagrid = $this->admin->getDatagrid();
             $formView = $datagrid->getForm()->createView();
 
@@ -365,9 +386,7 @@ class CRUDController extends Controller
         }
 
         // execute the action, batchActionXxxxx
-        $action = \Sonata\AdminBundle\Admin\BaseFieldDescription::camelize($action);
-
-        $final_action = sprintf('batchAction%s', ucfirst($action));
+        $final_action = sprintf('batchAction%s', ucfirst($camelizedAction));
         if (!method_exists($this, $final_action)) {
             throw new \RuntimeException(sprintf('A `%s::%s` method must be created', get_class($this), $final_action));
         }
@@ -381,6 +400,8 @@ class CRUDController extends Controller
 
         if (count($idx) > 0) {
             $this->admin->getModelManager()->addIdentifiersToQuery($this->admin->getClass(), $query, $idx);
+        } else if (!$all_elements) {
+            $query = null;
         }
 
         return call_user_func(array($this, $final_action), $query);
@@ -468,8 +489,11 @@ class CRUDController extends Controller
     }
 
     /**
-     * @param null $id
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException|\Symfony\Component\Security\Core\Exception\AccessDeniedException
+     *
+     * @param mixed $id
+     *
+     * @return Response
      */
     public function historyAction($id = null)
     {
@@ -496,15 +520,17 @@ class CRUDController extends Controller
         $revisions = $reader->findRevisions($this->admin->getClass(), $id);
 
         return $this->render($this->admin->getTemplate('history'), array(
-            'action'   => 'history',
-            'object'   => $object,
+            'action'    => 'history',
+            'object'    => $object,
             'revisions' => $revisions,
         ));
     }
 
     /**
-     * @param null $id
-     * @param $revision
+     * @param null    $id
+     * @param string  $revision
+     *
+     * @return Response
      */
     public function historyViewRevisionAction($id = null, $revision = null)
     {
@@ -550,7 +576,17 @@ class CRUDController extends Controller
      */
     public function exportAction(Request $request)
     {
+        if (false === $this->admin->isGranted('EXPORT')) {
+            throw new AccessDeniedException();
+        }
+
         $format = $request->get('format');
+
+        $allowedExportFormats = (array) $this->admin->getExportFormats();
+
+        if(!in_array($format, $allowedExportFormats) ) {
+            throw new \RuntimeException(sprintf('Export in format `%s` is not allowed for class: `%s`. Allowed formats are: `%s`', $format, $this->admin->getClass(), implode(', ', $allowedExportFormats)));
+        }
 
         $filename = sprintf('export_%s_%s.%s',
             strtolower(substr($this->admin->getClass(), strripos($this->admin->getClass(), '\\') + 1)),
@@ -560,5 +596,4 @@ class CRUDController extends Controller
 
         return $this->get('sonata.admin.exporter')->getResponse($format, $filename, $this->admin->getDataSourceIterator());
     }
-
 }

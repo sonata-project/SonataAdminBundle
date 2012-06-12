@@ -22,17 +22,26 @@ class MergeCollectionListener implements EventSubscriberInterface
 {
     protected $modelManager;
 
+    /**
+     * @param \Sonata\AdminBundle\Model\ModelManagerInterface $modelManager
+     */
     public function __construct(ModelManagerInterface $modelManager)
     {
         $this->modelManager = $modelManager;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public static function getSubscribedEvents()
     {
-        return array(FormEvents::BIND_NORM_DATA => 'onBindNormData');
+        return array(FormEvents::BIND => 'onBind');
     }
 
-    public function onBindNormData(FilterDataEvent $event)
+    /**
+     * @param \Symfony\Component\Form\Event\FilterDataEvent $event
+     */
+    public function onBind(FilterDataEvent $event)
     {
         $collection = $event->getForm()->getData();
         $data       = $event->getData();

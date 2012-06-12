@@ -18,6 +18,7 @@ class FieldDescriptionCollection implements \ArrayAccess, \Countable
 
     /**
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
+     *
      * @return void
      */
     public function add(FieldDescriptionInterface $fieldDescription)
@@ -35,6 +36,7 @@ class FieldDescriptionCollection implements \ArrayAccess, \Countable
 
     /**
      * @param string $name
+     *
      * @return bool
      */
     public function has($name)
@@ -44,8 +46,10 @@ class FieldDescriptionCollection implements \ArrayAccess, \Countable
 
     /**
      * @throws \InvalidArgumentException
+     *
      * @param string $name
-     * @return array
+     *
+     * @return FieldDescriptionInterface
      */
     public function get($name)
     {
@@ -58,6 +62,7 @@ class FieldDescriptionCollection implements \ArrayAccess, \Countable
 
     /**
      * @param string $name
+     *
      * @return void
      */
     public function remove($name)
@@ -67,28 +72,52 @@ class FieldDescriptionCollection implements \ArrayAccess, \Countable
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function offsetExists($offset)
     {
         return $this->has($offset);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function offsetGet($offset)
     {
         return $this->get($offset);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function offsetSet($offset, $value)
     {
         throw new \RunTimeException('Cannot set value, use add');
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function offsetUnset($offset)
     {
         $this->remove($offset);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function count()
     {
         return count($this->elements);
+    }
+
+    /**
+     * @param array $keys
+     */
+    public function reorder(array $keys)
+    {
+        array_unshift($keys, 'batch');
+        $this->elements = array_merge(array_flip($keys), $this->elements);
     }
 }

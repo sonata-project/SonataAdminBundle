@@ -26,6 +26,10 @@
                 <source>btn_filter</source>
                 <target>Filtruj</target>
             </trans-unit>
+            <trans-unit id="btn_update">
+                <source>btn_update</source>
+                <target>Zapisz zmiany</target>
+            </trans-unit>
             <trans-unit id="btn_update_and_edit_again">
                 <source>btn_update_and_edit_again</source>
                 <target>Zapisz zmiany</target>
@@ -210,6 +214,10 @@
               <source>label_type_equals</source>
               <target>jest równe</target>
             </trans-unit>
+            <trans-unit id="label_type_not_equals">
+              <source>label_type_not_equals</source>
+              <target>nie jest równe</target>
+            </trans-unit>
             <trans-unit id="label_type_equal">
               <source>label_type_equal</source>
               <target>=</target>
@@ -308,6 +316,10 @@
             <trans-unit id="label_export_download">
                 <source>label_export_download</source>
                 <target>Eksportuj : </target>
+            </trans-unit>
+            <trans-unit id="loading_information">
+                <source>loading_information</source>
+                <target>Ładowanie informacji…</target>
             </trans-unit>
         </body>
     </file>

@@ -1,8 +1,8 @@
 Saving hooks
 ============
 
-When the model is persited upon on the stated object two Admin methods are always called. You can extend this
-method to add custom business logic.
+When the model is persited upon on the stated object two Admin methods are 
+always called. You can extend this method to add custom business logic.
 
     - new object : ``prePersist($object)`` / ``postPersist($object)``
     - edited object : ``preUpdate($object)`` / ``postUpdate($object)``
@@ -12,11 +12,13 @@ method to add custom business logic.
 Example used with the FOS/UserBundle
 ------------------------------------
 
-The ``FOSUserBundle`` provides authentication features for your Symfony2 Project. Compatible with Doctrine ORM & ODM.
-See https://github.com/FriendsOfSymfony/UserBundle for more information.
+The ``FOSUserBundle`` provides authentication features for your Symfony2 Project,
+and is compatible with Doctrine ORM & ODM. See 
+https://github.com/FriendsOfSymfony/UserBundle for more information.
 
-The user management system requires to perform specific call when the user password or username are updated. This
-is how the Admin bundle can be used to solve the issue by using the ``prePersist`` saving hook.
+The user management system requires to perform specific call when the user 
+password or username are updated. This is how the Admin bundle can be used to 
+solve the issue by using the ``prePersist`` saving hook.
 
 .. code-block:: php
 

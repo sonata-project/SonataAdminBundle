@@ -12,7 +12,6 @@ and create your first admin interface for the models of your application:
 * Step 5: Configuration
 * Step 6: Security
 
-
 Step 1: Define SonataAdminBundle routes
 ---------------------------------------
 
@@ -55,7 +54,7 @@ bundle:
 * SonataDoctrinePhpcrAdminBundle
 
 Propel users are warmly welcome to contribute and create a new bundle for Propel
-ORM that will integrate in SonataAdminBundle.
+ORM that will be integrated in SonataAdminBundle.
 
 Install a persistance servise you need and configure it according to their
 related documentation.
@@ -65,8 +64,11 @@ Step 3: Create Admin class
 
 Admin class represents mapping of your model and administration sections (forms,
 list, show). The easiest way to create an admin class for your model is to extend
-the Sonata\AdminBundle\Admin\Admin class. Here is a simple example from the
-SonataNewsBundle:
+the Sonata\AdminBundle\Admin\Admin class. For filter, list and show views, you can
+target a sub model property thanks to the dot-separated notation
+(eg: ``mySubModel.mySubSubModel.myProperty``).
+
+Here is a simple example from the SonataNewsBundle:
 
 .. code-block:: php
 
@@ -126,7 +128,7 @@ admin service and link it into the framework by setting the sonata.admin tag.
 
    <container xmlns="http://symfony.com/schema/dic/services"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+       xsi:schemaLocation="http://symfony.com/schema/dic/services/services-1.0.xsd">
        <services>
           <service id="sonata.admin.course" class="YourNS\AdminBundle\Admin\BlogAdmin">
              <tag name="sonata.admin" manager_type="orm" group="Posts" label="Blog"/>
@@ -139,6 +141,15 @@ admin service and link it into the framework by setting the sonata.admin tag.
          </service>
       </services>
    </container>
+
+
+Note: If you don't already have a configuration file for the purpose, you can register this service in a ``services.xml`` file, save the file in ``app/config``, and then import it from ``config.yml``: 
+
+.. code-block:: yaml
+
+    # app/config/config.yml
+    imports:
+        - { resource: services.xml }
 
 
 Step 5: Configuration
@@ -204,7 +215,7 @@ Step 6: Security
 The last important step is security. By default, the SonataAdminBundle does not
 come with any user management for ultimate flexibility, however it is most
 likely your application requires such feature. The Sonata Project includes a
-``SonataUserBundle`` which integrates very popular ``FOSUserBundle``. Please
+``SonataUserBundle`` which integrates the very popular ``FOSUserBundle``. Please
 refer to the security section of this documentation for more information.
 
 

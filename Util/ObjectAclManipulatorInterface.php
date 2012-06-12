@@ -21,9 +21,11 @@ interface ObjectAclManipulatorInterface
      * Batch configure the ACLs for all objects handled by an Admin
      *
      * @abstract
-     * @param OutputInterface $output
-     * @param AdminInterface $admin
+     *
+     * @param OutputInterface      $output
+     * @param AdminInterface       $admin
      * @param UserSecurityIdentity $securityIdentity
+     *
      * @throws ModelManagerException
      * @return void
      */

@@ -22,12 +22,18 @@ use Symfony\Component\ClassLoader\ClassCollectionLoader;
 class CreateClassCacheCommand extends ContainerAwareCommand
 {
 
+    /**
+     * {@inheritDoc}
+     */
     public function configure()
     {
         $this->setName('cache:create-cache-class');
         $this->setDescription('Generate the classes.php files');
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $kernel = $this->getContainer()->get('kernel');

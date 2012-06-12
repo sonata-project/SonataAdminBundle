@@ -37,30 +37,32 @@ class HelperController
     protected $pool;
 
     /**
-     * @param \Twig_Environment $twig
-     * @param \Sonata\AdminBundle\Admin\Pool $pool
+     * @param \Twig_Environment                     $twig
+     * @param \Sonata\AdminBundle\Admin\Pool        $pool
      * @param \Sonata\AdminBundle\Admin\AdminHelper $helper
      */
     public function __construct(\Twig_Environment $twig, Pool $pool, AdminHelper $helper)
     {
-        $this->twig     = $twig;
-        $this->pool     = $pool;
-        $this->helper   = $helper;
+        $this->twig   = $twig;
+        $this->pool   = $pool;
+        $this->helper = $helper;
     }
 
     /**
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     *
      * @param \Symfony\Component\HttpFoundation\Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function appendFormFieldElementAction(Request $request)
     {
-        $code       = $request->get('code');
-        $elementId  = $request->get('elementId');
-        $objectId   = $request->get('objectId');
-        $uniqid     = $request->get('uniqid');
+        $code      = $request->get('code');
+        $elementId = $request->get('elementId');
+        $objectId  = $request->get('objectId');
+        $uniqid    = $request->get('uniqid');
 
-        $admin      = $this->pool->getInstance($code);
+        $admin = $this->pool->getInstance($code);
         $admin->setRequest($request);
 
         if ($uniqid) {
@@ -78,7 +80,7 @@ class HelperController
 
         $admin->setSubject($subject);
 
-        list($fieldDescription, $form) = $this->helper->appendFormFieldElement($admin, $elementId);
+        list($fieldDescription, $form) = $this->helper->appendFormFieldElement($admin, $subject, $elementId);
 
         $view = $this->helper->getChildFormView($form->createView(), $elementId);
 
@@ -94,17 +96,19 @@ class HelperController
 
     /**
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     *
      * @param \Symfony\Component\HttpFoundation\Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function retrieveFormFieldElementAction(Request $request)
     {
-        $code       = $request->get('code');
-        $elementId  = $request->get('elementId');
-        $objectId   = $request->get('objectId');
-        $uniqid     = $request->get('uniqid');
+        $code      = $request->get('code');
+        $elementId = $request->get('elementId');
+        $objectId  = $request->get('objectId');
+        $uniqid    = $request->get('uniqid');
 
-        $admin       = $this->pool->getInstance($code);
+        $admin = $this->pool->getInstance($code);
 
         if ($uniqid) {
             $admin->setUniqid($uniqid);
@@ -139,16 +143,18 @@ class HelperController
 
     /**
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     *
      * @param \Symfony\Component\HttpFoundation\Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function getShortObjectDescriptionAction(Request $request)
     {
-        $code       = $request->get('code');
-        $objectId   = $request->get('objectId');
-        $uniqid     = $request->get('uniqid');
+        $code     = $request->get('code');
+        $objectId = $request->get('objectId');
+        $uniqid   = $request->get('uniqid');
 
-        $admin       = $this->pool->getInstance($code);
+        $admin = $this->pool->getInstance($code);
 
         if (!$admin) {
             throw new NotFoundHttpException();
@@ -172,9 +178,17 @@ class HelperController
             }
         }
 
-        $description = sprintf('<a href="%s" target="new">%s</a>', $admin->generateUrl('edit', array('id' => $objectId)), $description);
+        $url = $admin->generateUrl('edit', array('id' => $objectId));
+        
+        $htmlOutput = $this->twig->render($admin->getTemplate('short_object_description'),
+            array(
+                'description' => $description,
+                'object' => $object,
+                'url' => $url
+            )
+        );
 
-        return new Response($description);
+        return new Response($htmlOutput);
     }
 
     /**

@@ -44,6 +44,12 @@ class ResizeFormListener implements EventSubscriberInterface
 
     private $removed = array();
 
+    /**
+     * @param \Symfony\Component\Form\FormFactoryInterface $factory
+     * @param string                                       $type
+     * @param array                                        $typeOptions
+     * @param bool                                         $resizeOnBind
+     */
     public function __construct(FormFactoryInterface $factory, $type, array $typeOptions = array(), $resizeOnBind = false)
     {
         $this->factory      = $factory;
@@ -52,15 +58,23 @@ class ResizeFormListener implements EventSubscriberInterface
         $this->typeOptions  = $typeOptions;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public static function getSubscribedEvents()
     {
         return array(
             FormEvents::PRE_SET_DATA    => 'preSetData',
             FormEvents::PRE_BIND        => 'preBind',
-            FormEvents::BIND_NORM_DATA  => 'onBindNormData',
+            FormEvents::BIND            => 'onBind',
         );
     }
 
+    /**
+     * @param \Symfony\Component\Form\Event\DataEvent $event
+     *
+     * @throws \Symfony\Component\Form\Exception\UnexpectedTypeException
+     */
     public function preSetData(DataEvent $event)
     {
         $form = $event->getForm();
@@ -82,13 +96,19 @@ class ResizeFormListener implements EventSubscriberInterface
         // Then add all rows again in the correct order
         foreach ($data as $name => $value) {
             $options = array_merge($this->typeOptions, array(
-                'property_path' => '['.$name.']',
+                'property_path' => '[' . $name . ']',
             ));
 
-            $form->add($this->factory->createNamed($this->type, $name, $value, $options));
+            $form->add($this->factory->createNamed($name, $this->type, $value, $options));
         }
     }
 
+    /**
+     * @param \Symfony\Component\Form\Event\DataEvent $event
+     *
+     * @return mixed
+     * @throws \Symfony\Component\Form\Exception\UnexpectedTypeException
+     */
     public function preBind(DataEvent $event)
     {
         if (!$this->resizeOnBind) {
@@ -115,10 +135,10 @@ class ResizeFormListener implements EventSubscriberInterface
         foreach ($data as $name => $value) {
             if (!$form->has($name)) {
                 $options = array_merge($this->typeOptions, array(
-                    'property_path' => '['.$name.']',
+                    'property_path' => '[' . $name . ']',
                 ));
 
-                $form->add($this->factory->createNamed($this->type, $name, null, $options));
+                $form->add(new FormProxy($this->factory->createNamed($name, $this->type, null, $options), isset($value['_delete'])));
             }
 
             if (isset($value['_delete'])) {
@@ -127,7 +147,13 @@ class ResizeFormListener implements EventSubscriberInterface
         }
     }
 
-    public function onBindNormData(FilterDataEvent $event)
+    /**
+     * @param \Symfony\Component\Form\Event\FilterDataEvent $event
+     *
+     * @return mixed
+     * @throws \Symfony\Component\Form\Exception\UnexpectedTypeException
+     */
+    public function onBind(FilterDataEvent $event)
     {
         if (!$this->resizeOnBind) {
             return;
@@ -151,7 +177,7 @@ class ResizeFormListener implements EventSubscriberInterface
         }
 
         // remove selected elements
-        foreach($this->removed as $pos) {
+        foreach ($this->removed as $pos) {
             unset($data[$pos]);
         }
 

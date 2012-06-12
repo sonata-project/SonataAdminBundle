@@ -13,24 +13,26 @@ namespace Sonata\AdminBundle\Form\Type\Filter;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormTypeInterface;
-use Symfony\Component\Form\FormBuilder;
-use Symfony\Component\Form\FormView;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Translation\TranslatorInterface;
+
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class DefaultType extends AbstractType
 {
     /**
-     * Returns the name of this type.
-     *
-     * @return string The name of this type
+     * {@inheritDoc}
      */
     public function getName()
     {
         return 'sonata_type_filter_default';
     }
 
-    public function buildForm(FormBuilder $builder, array $options)
+    /**
+     * {@inheritDoc}
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('type', $options['operator_type'], array_merge(array('required' => false), $options['operator_options']))
@@ -38,17 +40,16 @@ class DefaultType extends AbstractType
         ;
     }
 
-    public function getDefaultOptions(array $options)
+    /**
+     * {@inheritDoc}
+     */
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $defaultOptions = array(
+        $resolver->setDefaults(array(
             'operator_type'    => 'hidden',
             'operator_options' => array(),
             'field_type'       => 'text',
             'field_options'    => array()
-        );
-
-        $options = array_replace($options, $defaultOptions);
-
-        return $options;
+        ));
     }
 }

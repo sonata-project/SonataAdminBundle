@@ -29,16 +29,22 @@ class FormMapper
 
     protected $currentGroup;
 
+    /**
+     * @param \Sonata\AdminBundle\Builder\FormContractorInterface $formContractor
+     * @param \Symfony\Component\Form\FormBuilder                 $formBuilder
+     * @param \Sonata\AdminBundle\Admin\AdminInterface            $admin
+     */
     public function __construct(FormContractorInterface $formContractor, FormBuilder $formBuilder, AdminInterface $admin)
     {
-        $this->formBuilder      = $formBuilder;
-        $this->formContractor   = $formContractor;
-        $this->admin            = $admin;
+        $this->formBuilder    = $formBuilder;
+        $this->formContractor = $formContractor;
+        $this->admin          = $admin;
     }
 
     /**
      * @param string $name
-     * @param array $options
+     * @param array  $options
+     *
      * @return \Sonata\AdminBundle\Form\FormMapper
      */
     public function with($name, array $options = array())
@@ -48,7 +54,10 @@ class FormMapper
             $formGroups[$name] = array();
         }
 
-        $formGroups[$name] = array_merge(array('collapsed' => false, 'fields' => array()), $formGroups[$name], $options);
+        $formGroups[$name] = array_merge(array(
+            'collapsed' => false,
+            'fields'    => array()
+        ), $formGroups[$name], $options);
 
         $this->admin->setFormGroups($formGroups);
 
@@ -68,10 +77,27 @@ class FormMapper
     }
 
     /**
+     * @param array $keys field names
+     *
+     * @return \Sonata\AdminBundle\Form\FormMapper
+     */
+    public function reorder(array $keys)
+    {
+        if (!$this->currentGroup) {
+            $this->with($this->admin->getLabel());
+        }
+
+        $this->admin->reorderFormGroup($this->currentGroup, $keys);
+
+        return $this;
+    }
+
+    /**
      * @param string $name
      * @param string $type
-     * @param array $options
-     * @param array $fieldDescriptionOptions
+     * @param array  $options
+     * @param array  $fieldDescriptionOptions
+     *
      * @return \Sonata\AdminBundle\Form\FormMapper
      */
     public function add($name, $type = null, array $options = array(), array $fieldDescriptionOptions = array())
@@ -82,7 +108,7 @@ class FormMapper
 
         $label = $name instanceof FormBuilder ? $name->getName() : $name;
 
-        $formGroups = $this->admin->getFormGroups();
+        $formGroups                                        = $this->admin->getFormGroups();
         $formGroups[$this->currentGroup]['fields'][$label] = $label;
         $this->admin->setFormGroups($formGroups);
 
@@ -109,7 +135,17 @@ class FormMapper
                 $options['label'] = $this->admin->getLabelTranslatorStrategy()->getLabel($fieldDescription->getName(), 'form', 'label');
             }
 
+            $help = null;
+            if (isset($options['help'])) {
+                $help = $options['help'];
+                unset($options['help']);
+            }
+
             $this->formBuilder->add($name, $type, $options);
+
+            if (null !== $help) {
+                $this->admin->getFormFieldDescription($name)->setHelp($help);
+            }
         }
 
         return $this;
@@ -117,7 +153,8 @@ class FormMapper
 
     /**
      * @param string $name
-     * @return \Symfony\Component\Form\FieldInterface
+     *
+     * @return \Symfony\Component\Form\FormInterface
      */
     public function get($name)
     {
@@ -126,6 +163,7 @@ class FormMapper
 
     /**
      * @param string $key
+     *
      * @return boolean
      */
     public function has($key)
@@ -135,6 +173,7 @@ class FormMapper
 
     /**
      * @param string $key
+     *
      * @return \Sonata\AdminBundle\Form\FormMapper
      */
     public function remove($key)
@@ -163,8 +202,9 @@ class FormMapper
 
     /**
      * @param string $name
-     * @param mixed $type
-     * @param array $options
+     * @param mixed  $type
+     * @param array  $options
+     *
      * @return \Symfony\Component\Form\FormBuilder
      */
     public function create($name, $type = null, array $options = array())
@@ -174,11 +214,12 @@ class FormMapper
 
     /**
      * @param array $helps
+     *
      * @return FormMapper
      */
     public function setHelps(array $helps = array())
     {
-        foreach($helps as $name => $help) {
+        foreach ($helps as $name => $help) {
             if ($this->admin->hasFormFieldDescription($name)) {
                 $this->admin->getFormFieldDescription($name)->setHelp($help);
             }

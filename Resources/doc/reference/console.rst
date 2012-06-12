@@ -3,17 +3,17 @@ Console/Command-Line Commands
 
 SonataAdminBundle provides the following console commands:
 
-* cache:create-cache-class
-* sonata:admin:explain
-* sonata:admin:list
-* sonata:admin:setup-acl
+* ``cache:create-cache-class``
+* ``sonata:admin:explain``
+* ``sonata:admin:list``
+* ``sonata:admin:setup-acl``
 
 
 cache:create-cache-class
 ------------------------
 
 The ``cache:create-cache-class`` command generates the cache class
-(app/cache/...env.../classes.php) from the classes.map file.
+(``app/cache/...env.../classes.php``) from the classes.map file.
 
 Usage example:
 

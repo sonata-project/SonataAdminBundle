@@ -23,6 +23,9 @@ class AdminAclManipulator implements AdminAclManipulatorInterface
 {
     protected $maskBuilderClass;
 
+    /**
+     * @param string $maskBuilderClass
+     */
     public function __construct($maskBuilderClass)
     {
         $this->maskBuilderClass = $maskBuilderClass;

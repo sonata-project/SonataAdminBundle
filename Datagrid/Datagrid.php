@@ -15,8 +15,11 @@ use Sonata\AdminBundle\Datagrid\PagerInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Filter\FilterInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
+use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 
 use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\Form\Exception\UnexpectedTypeException;
+use Symfony\Component\Form\CallbackTransformer;
 
 class Datagrid implements DatagridInterface
 {
@@ -44,18 +47,18 @@ class Datagrid implements DatagridInterface
     protected $results;
 
     /**
-     * @param ProxyQueryInterface $query
+     * @param ProxyQueryInterface                                  $query
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionCollection $columns
-     * @param PagerInterface $pager
-     * @param \Symfony\Component\Form\FormBuilder $formBuilder
-     * @param array $values
+     * @param PagerInterface                                       $pager
+     * @param \Symfony\Component\Form\FormBuilder                  $formBuilder
+     * @param array                                                $values
      */
     public function __construct(ProxyQueryInterface $query, FieldDescriptionCollection $columns, PagerInterface $pager, FormBuilder $formBuilder, array $values = array())
     {
-        $this->pager    = $pager;
-        $this->query    = $query;
-        $this->values   = $values;
-        $this->columns  = $columns;
+        $this->pager       = $pager;
+        $this->query       = $query;
+        $this->values      = $values;
+        $this->columns     = $columns;
         $this->formBuilder = $formBuilder;
     }
 
@@ -93,21 +96,45 @@ class Datagrid implements DatagridInterface
         foreach ($this->getFilters() as $name => $filter) {
             list($type, $options) = $filter->getRenderSettings();
 
-            $this->formBuilder->add($name, $type, $options);
-
-            $this->values[$name] = isset($this->values[$name]) ? $this->values[$name] : null;
-            $filter->apply($this->query, $this->values[$name]);
+            $this->formBuilder->add($filter->getFormName(), $type, $options);
         }
 
         $this->formBuilder->add('_sort_by', 'hidden');
+        $this->formBuilder->get('_sort_by')->appendClientTransformer(new CallbackTransformer(
+            function($value) {
+                return $value;
+            },
+            function($value) {
+                if ($value instanceof FieldDescriptionInterface) {
+                    return $value->getName();
+                } else {
+                    return $value;
+                }
+            }
+        ));
         $this->formBuilder->add('_sort_order', 'hidden');
         $this->formBuilder->add('_page', 'hidden');
 
         $this->form = $this->formBuilder->getForm();
         $this->form->bind($this->values);
 
-        $this->query->setSortBy(isset($this->values['_sort_by']) ? $this->values['_sort_by'] : null);
-        $this->query->setSortOrder(isset($this->values['_sort_order']) ? $this->values['_sort_order'] : null);
+        $data = $this->form->getData();
+
+        foreach ($this->getFilters() as $name => $filter) {
+            $this->values[$name] = isset($this->values[$name]) ? $this->values[$name] : null;
+            $filter->apply($this->query, $data[$filter->getFormName()]);
+        }
+
+        if (isset($this->values['_sort_by'])) {
+            if (!$this->values['_sort_by'] instanceof FieldDescriptionInterface) {
+                throw new UnexpectedTypeException($this->values['_sort_by'],'FieldDescriptionInterface');
+            }
+
+            if ($this->values['_sort_by']->isSortable()) {
+                $this->query->setSortBy($this->values['_sort_by']->getParentAssociationMappings(), $this->values['_sort_by']->getSortFieldMapping());
+                $this->query->setSortOrder(isset($this->values['_sort_order']) ? $this->values['_sort_order'] : null);
+            }
+        }
 
         $this->pager->setPage(isset($this->values['_page']) ? $this->values['_page'] : 1);
         $this->pager->setQuery($this->query);
@@ -118,6 +145,7 @@ class Datagrid implements DatagridInterface
 
     /**
      * @param \Sonata\AdminBundle\Filter\FilterInterface $filter
+     *
      * @return void
      */
     public function addFilter(FilterInterface $filter)
@@ -126,7 +154,8 @@ class Datagrid implements DatagridInterface
     }
 
     /**
-     * @param $name
+     * @param string $name
+     *
      * @return bool
      */
     public function hasFilter($name)
@@ -135,7 +164,7 @@ class Datagrid implements DatagridInterface
     }
 
     /**
-     * @param $name
+     * @param string $name
      */
     public function removeFilter($name)
     {
@@ -143,7 +172,8 @@ class Datagrid implements DatagridInterface
     }
 
     /**
-     * @param $name
+     * @param string $name
+     *
      * @return null
      */
     public function getFilter($name)
@@ -152,11 +182,16 @@ class Datagrid implements DatagridInterface
     }
 
     /**
-     * @return array
+     * @return FilterInterface[]
      */
     public function getFilters()
     {
         return $this->filters;
+    }
+
+    public function reorderFilters(array $keys)
+    {
+        $this->filters = array_merge(array_flip($keys), $this->filters);
     }
 
     /**
@@ -168,13 +203,16 @@ class Datagrid implements DatagridInterface
     }
 
     /**
-     * @param $name
-     * @param $operator
-     * @param $value
+     * @param string $name
+     * @param string $operator
+     * @param mixed  $value
      */
     public function setValue($name, $operator, $value)
     {
-        $this->values[$name] = array('type' => $operator, 'value' => $value);
+        $this->values[$name] = array(
+            'type'  => $operator,
+            'value' => $value
+        );
     }
 
     /**

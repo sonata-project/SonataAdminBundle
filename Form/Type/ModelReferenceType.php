@@ -12,11 +12,14 @@
 
 namespace Sonata\AdminBundle\Form\Type;
 
-use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
+
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\Options;
 
 use Sonata\AdminBundle\Form\EventListener\MergeCollectionListener;
 use Sonata\AdminBundle\Form\ChoiceList\ModelChoiceList;
@@ -26,29 +29,30 @@ use Sonata\AdminBundle\Model\ModelManagerInterface;
 
 class ModelReferenceType extends AbstractType
 {
-    public function buildForm(FormBuilder $builder, array $options)
+    /**
+     * {@inheritDoc}
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->prependClientTransformer(new ModelToIdTransformer($options['model_manager'], $options['class']));
     }
 
-    public function getDefaultOptions(array $options)
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $defaultOptions = array(
-            'model_manager'     => null,
-            'class'             => null,
-            'parent'            => 'hidden',
-        );
-
-        $options = array_replace($defaultOptions, $options);
-
-        return $options;
+        $compound = function (Options $options) {
+            return isset($options['parent']) ? $options['parent'] : 'hidden';
+        };
+        
+        $resolver->setDefaults(array(
+            'compound' => $compound,
+            'model_manager' => null,
+            'class' => null
+        ));
     }
 
-    public function getParent(array $options)
-    {
-        return $options['parent'];
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     public function getName()
     {
         return 'sonata_type_model_reference';
