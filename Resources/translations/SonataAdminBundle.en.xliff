@@ -136,19 +136,19 @@
             </trans-unit>
             <trans-unit id='flash_create_success'>
               <source>flash_create_success</source>
-              <target>Item has been successfully created.</target>
+              <target>Item "%name%" has been successfully created.</target>
             </trans-unit>
             <trans-unit id='flash_create_error'>
               <source>flash_create_error</source>
-              <target>An error has occurred during item creation.</target>
+              <target>An error has occurred during the creation of item "%name%".</target>
             </trans-unit>
             <trans-unit id='flash_edit_success'>
               <source>flash_edit_success</source>
-              <target>Item has been successfully updated.</target>
+              <target>Item "%name%" has been successfully updated.</target>
             </trans-unit>
             <trans-unit id='flash_edit_error'>
               <source>flash_edit_error</source>
-              <target>An error has occurred during item update.</target>
+              <target>An error has occurred during update of item "%name%".</target>
             </trans-unit>
             <trans-unit id='flash_batch_delete_success'>
               <source>flash_batch_delete_success</source>
@@ -160,11 +160,11 @@
             </trans-unit>
             <trans-unit id='flash_delete_error'>
               <source>flash_delete_error</source>
-              <target>An Error has occurred during item deletion.</target>
+              <target>An Error has occurred during deletion of item "%name%".</target>
             </trans-unit>
             <trans-unit id='flash_delete_success'>
               <source>flash_delete_success</source>
-              <target>Item has been deleted successfully.</target>
+              <target>Item "%name%" has been deleted successfully.</target>
             </trans-unit>
             <trans-unit id="link_breadcrumb_dashboard">
                 <source>breadcrumb.link_dashboard</source>
