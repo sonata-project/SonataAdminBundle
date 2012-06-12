@@ -61,7 +61,7 @@ class FormViewIterator implements \RecursiveIterator
      */
     public function key()
     {
-        return $this->current()->get('id');
+        return $this->current()->getVar('id');
     }
 
     /**
