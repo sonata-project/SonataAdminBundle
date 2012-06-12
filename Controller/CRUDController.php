@@ -209,7 +209,7 @@ class CRUDController extends Controller
             throw new AccessDeniedException();
         }
 
-        $flashVars = array('%name%' =>$this->admin->toString($object));
+        $flashVars = array('%name%' => $this->admin->toString($object));
 
         if ($this->getRequest()->getMethod() == 'DELETE') {
             try {
@@ -261,8 +261,7 @@ class CRUDController extends Controller
             if ($form->isValid()) {
                 $this->admin->update($object);
                 $flashVars = array('%name%' =>$this->admin->toString($object));
-                $flashMsg = $this->admin->trans('flash_edit_success', $flashVars, 'SonataAdminBundle');
-                $this->get('session')->setFlash('sonata_flash_success', $flashMsg);
+                $this->get('session')->setFlash('sonata_flash_success', $this->admin->trans('flash_edit_success', $flashVars, 'SonataAdminBundle'));
 
                 if ($this->isXmlHttpRequest()) {
                     return $this->renderJson(array(
@@ -276,8 +275,7 @@ class CRUDController extends Controller
             }
 
             $flashVars = array('%name%' =>$this->admin->toString($object));
-            $flashMsg = $this->admin->trans('flash_edit_error', $flashVars, 'SonataAdminBundle');
-            $this->get('session')->setFlash('sonata_flash_error', $flashMsg);
+            $this->get('session')->setFlash('sonata_flash_error', $this->admin->trans('flash_edit_error', $flashVars, 'SonataAdminBundle'));
         }
 
         $view = $form->createView();
@@ -439,8 +437,7 @@ class CRUDController extends Controller
                 }
 
                 $flashVars = array('%name%' =>$this->admin->toString($object));
-                $flashMsg = $this->admin->trans('flash_create_success', $flashVars, 'SonataAdminBundle');
-                $this->get('session')->setFlash('sonata_flash_success', $flashMsg);
+                $this->get('session')->setFlash('sonata_flash_success', $this->admin->trans('flash_create_success', $flashVars, 'SonataAdminBundle'));
 
                 // redirect to edit mode
                 return $this->redirectTo($object);
