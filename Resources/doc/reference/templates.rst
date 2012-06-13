@@ -15,7 +15,8 @@ By default, an Admin class uses a set of templates, it is possible to tweak the 
             list:    SonataAdminBundle:CRUD:list.html.twig
             show:    SonataAdminBundle:CRUD:show.html.twig
             edit:    SonataAdminBundle:CRUD:edit.html.twig
-            history:  SonataAdminBundle:CRUD:history.html.twig
+            history: SonataAdminBundle:CRUD:history.html.twig
+            preview: SonataAdminBundle:CRUD:preview.html.twig
 
             # default values of helper templates
             short_object_description: SonataAdminBundle:Helper:short-object-description.html.twig
@@ -34,6 +35,7 @@ Usage of each template :
 * edit : the template to use for the edit and create action
 * history : the template to use for the history / audit action
 * list_block : the template used for the list of admin blocks on the dashboard
+* preview : the template to use for previewing an edit / create action
 * short_object_description: used to represent the entity in one-to-one/many-to-one relations
 
 The default values will be set only if the ``Admin::setTemplates`` is not called by the Container.
@@ -64,7 +66,14 @@ You can easily extend the provided templates in your own and customize only the 
 
     <?php // MyAdmin.php
 
-    public function getEditTemplate()
+    public function getTemplate($name)
     {
-        return 'AcmeMyBundle:my-custom-edit.html.twig';
+        switch ($name) {
+            case 'edit':
+                return 'AcmeMyBundle::my-custom-edit.html.twig';
+                break;
+            default:
+                return parent::getTemplate($name);
+                break;
+        }
     }
