@@ -665,11 +665,25 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
         // build the values array
         if ($this->hasRequest()) {
+            // remembered parameters in the session
+            if ($this->request->query->has('reset_filter')) {
+                $this->request->getSession()->set(sprintf('filter_%s', $this->getCode()), array());
+                $sessionParameters = array();
+            } else {
+                $sessionParameters = $this->request->getSession()->get(sprintf('filter_%s', $this->getCode()), array());
+            }
+
             $parameters = array_merge(
                 $this->getModelManager()->getDefaultSortValues($this->getClass()),
                 $this->datagridValues,
+                $sessionParameters,
                 $this->request->query->get('filter', array())
             );
+
+            // remember the filter parameters in the session
+            if ($this->request->query->has('filter')) {
+                $this->request->getSession()->set(sprintf('filter_%s', $this->getCode()), $this->request->query->get('filter', array()));
+            }
 
             // always force the parent value
             if ($this->isChild() && $this->getParentAssociationMapping()) {
