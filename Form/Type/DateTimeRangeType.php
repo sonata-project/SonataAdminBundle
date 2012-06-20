@@ -16,6 +16,7 @@ use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 
 use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class DateTimeRangeType extends AbstractType
 {
@@ -44,5 +45,15 @@ class DateTimeRangeType extends AbstractType
     public function getName()
     {
         return 'sonata_type_datetime_range';
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(array(
+            'field_options'    => array()
+        ));
     }
 }
