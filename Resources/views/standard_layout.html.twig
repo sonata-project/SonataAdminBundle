@@ -87,16 +87,7 @@ file that was distributed with this source code.
 
                                 {% block sonata_top_bar_nav %}
                                     {# There is no hasRole in a TokenInterface ... #}
-                                    {% set allowed = false %}
-                                    {% if app.security %}
-                                        {% for role in app.security.token.roles %}
-                                            {% if not allowed %}
-                                                {% set allowed = role.role == 'ROLE_SONATA_ADMIN' %}
-                                            {% endif %}
-                                        {% endfor %}
-                                    {% endif %}
-
-                                    {% if allowed %}
+                                    {% if app.security.token and is_granted('ROLE_SONATA_ADMIN') %}
                                         {% for group in admin_pool.dashboardgroups %}
                                             <li class="dropdown">
                                                 <a href="#" class="dropdown-toggle">{{ group.label|trans({}, group.label_catalogue) }}</a>
