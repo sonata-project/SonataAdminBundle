@@ -154,7 +154,22 @@ file that was distributed with this source code.
             {% endif%}
 
             <div class="row-fluid">
-                <div class="content {{ _side_menu is not empty ? ' span10' : 'span12' }}">
+                {% set _content_span = 12 %}
+
+                {% if admin is defined and admin.blocks('left') is not empty %}
+                    {% set _content_span = _content_span - 2 %}
+                    <div class="span2">
+                        {% for block in admin.blocks('left') %}
+                            {{ sonata_block_render(block) }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                {% if _side_menu is not empty %}
+                    {% set _content_span = _content_span - 2 %}
+                {% endif %}
+
+                <div class="content span{{ _content_span }}">
 
                     {% if _preview is not empty %}
                         <div class="sonata-ba-preview">{{ _preview|raw }}</div>
