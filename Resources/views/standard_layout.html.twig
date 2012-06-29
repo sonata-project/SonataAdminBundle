@@ -152,9 +152,9 @@ file that was distributed with this source code.
                         {% if _title is not empty %}
                             {{ _title|raw }}
                         {% elseif action is defined %}
-                            {% for label, uri in admin.breadcrumbs(action) %}
+                            {% for item in admin.breadcrumbs(action) %}
                                 {% if loop.last  %}
-                                    {{ label }}
+                                    {{ item.label }}
                                 {% endif %}
                             {% endfor %}
                         {% endif%}
