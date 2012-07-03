@@ -34,3 +34,4 @@ Reference Guide
    reference/security
    reference/advance
    reference/console
+   reference/preview_mode
