@@ -1,0 +1,73 @@
+{% block form %}
+    {% set url = admin.id(object) ? 'edit' : 'create' %}
+
+    {% if not admin.hasRoute(url)%}
+        <div>
+            {{ "form_not_available"|trans({}, "SonataAdminBundle") }}
+        </div>
+    {% else %}
+        <form action="{{ admin.generateUrl(url, {'id': admin.id(object), 'uniqid': admin.uniqid}) }}" {{ form_enctype(form) }} method="POST">
+
+            {% if form.vars.errors|length > 0 %}
+                <div class="sonata-ba-form-error">
+                    {{ form_errors(form) }}
+                </div>
+            {% endif %}
+
+            {% block sonata_pre_fieldsets %}{% endblock %}
+
+            {% for name, form_group in admin.formgroups %}
+                <fieldset {% if form_group.collapsed %}class="sonata-ba-fielset-collapsed"{% endif %}>
+                    <legend>
+                        {% if form_group.collapsed %}
+                            <a href="" class="sonata-ba-collapsed" title="{% trans from 'SonataAdminBundle' %}link_expand{% endtrans %}">{{ name|trans({}, admin.translationdomain) }}</a>
+                        {% else %}
+                            {{ name|trans({}, admin.translationdomain) }}
+                        {% endif %}
+                    </legend>
+
+                    <div class="sonata-ba-collapsed-fields">
+                        {% for field_name in form_group.fields %}
+                            {% if admin.formfielddescriptions[field_name] is defined %}
+                                {{ form_row(form[field_name])}}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </fieldset>
+            {% endfor %}
+
+            {% block sonata_post_fieldsets %}{% endblock %}
+
+            {{ form_rest(form) }}
+
+            {% block formactions %}
+            <div class="actions">
+                {% if app.request.isxmlhttprequest %}
+                    {% if admin.id(object) %}
+                        <input type="submit" class="btn primary" name="btn_update" value="{% trans from 'SonataAdminBundle' %}btn_update{% endtrans %}"/>
+                    {% else %}
+                        <input type="submit" class="btn" name="btn_create" value="{% trans from 'SonataAdminBundle' %}btn_create{% endtrans %}"/>
+                    {% endif %}
+                {% else %}
+                    {% if admin.supportsPreviewMode %}
+                        <input class="btn btn-info persist-preview" name="btn_preview" type="submit" value="{% trans from 'SonataAdminBundle' %}btn_preview{% endtrans %}"/>
+                    {% endif %}
+                    {% if admin.id(object) %}
+                        <input type="submit" class="btn primary" name="btn_update_and_edit" value="{% trans from 'SonataAdminBundle' %}btn_update_and_edit_again{% endtrans %}"/>
+                        <input type="submit" class="btn" name="btn_update_and_list" value="{% trans from 'SonataAdminBundle' %}btn_update_and_return_to_list{% endtrans %}"/>
+
+                        {% if admin.hasroute('delete') and admin.isGranted('DELETE', object) %}
+                            {% trans from 'SonataAdminBundle' %}delete_or{% endtrans %}
+                            <a class="btn danger" href="{{ admin.generateObjectUrl('delete', object) }}">{% trans from 'SonataAdminBundle' %}link_delete{% endtrans %}</a>
+                        {% endif %}
+                    {% else %}
+                        <input class="btn primary" type="submit" name="btn_create_and_edit" value="{% trans from 'SonataAdminBundle' %}btn_create_and_edit_again{% endtrans %}"/>
+                        <input class="btn" type="submit" name="btn_create_and_create" value="{% trans from 'SonataAdminBundle' %}btn_create_and_create_a_new_one{% endtrans %}"/>
+                    {% endif %}
+                {% endif %}
+            </div>
+            {% endblock formactions %}
+        </form>
+    {% endif%}
+    
+{% endblock %}    
