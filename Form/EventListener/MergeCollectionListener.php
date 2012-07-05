@@ -35,7 +35,9 @@ class MergeCollectionListener implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(FormEvents::BIND => 'onBind');
+        return array(
+            FormEvents::BIND => array('onBind', 10),
+        );
     }
 
     /**
@@ -45,6 +47,9 @@ class MergeCollectionListener implements EventSubscriberInterface
     {
         $collection = $event->getForm()->getData();
         $data       = $event->getData();
+
+        // looks like there is no way to remove other listeners
+        $event->stopPropagation();
 
         if (!$collection) {
             $collection = $data;

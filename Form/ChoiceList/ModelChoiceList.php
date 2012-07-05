@@ -73,11 +73,11 @@ class ModelChoiceList extends SimpleChoiceList
     private $propertyPath;
 
     /**
-     * @param \Sonata\AdminBundle\Model\ModelManagerInterface $modelManager
-     * @param string                                          $class
-     * @param null                                            $property
-     * @param null                                            $query
-     * @param array                                           $choices
+     * @param ModelManagerInterface $modelManager
+     * @param string                $class
+     * @param null                  $property
+     * @param null                  $query
+     * @param array                 $choices
      */
     public function __construct(ModelManagerInterface $modelManager, $class, $property = null, $query = null, $choices = array())
     {
@@ -92,9 +92,7 @@ class ModelChoiceList extends SimpleChoiceList
             $this->propertyPath = new PropertyPath($property);
         }
 
-        $this->choices = $choices;
-        $this->load();
-        parent::__construct($this->choices);
+        parent::__construct($this->load($choices));
     }
 
     /**
@@ -116,17 +114,17 @@ class ModelChoiceList extends SimpleChoiceList
      *
      * @return array  An array of choices
      */
-    protected function load()
+    protected function load($choices)
     {
-        if (is_array($this->choices)) {
-            $entities = $this->choices;
+        if (is_array($choices)) {
+            $entities = $choices;
         } else if ($this->query) {
             $entities = $this->modelManager->executeQuery($this->query);
         } else {
             $entities = $this->modelManager->findBy($this->class);
         }
 
-        $this->choices = array();
+        $choices = array();
         $this->entities = array();
 
         foreach ($entities as $key => $entity) {
@@ -141,16 +139,18 @@ class ModelChoiceList extends SimpleChoiceList
             if (count($this->identifier) > 1) {
                 // When the identifier consists of multiple field, use
                 // naturally ordered keys to refer to the choices
-                $this->choices[$key] = $value;
+                $choices[$key] = $value;
                 $this->entities[$key] = $entity;
             } else {
                 // When the identifier is a single field, index choices by
                 // entity ID for performance reasons
                 $id = current($this->getIdentifierValues($entity));
-                $this->choices[$id] = $value;
+                $choices[$id] = $value;
                 $this->entities[$id] = $entity;
             }
         }
+
+        return $choices;
     }
 
     /**
@@ -192,6 +192,7 @@ class ModelChoiceList extends SimpleChoiceList
      */
     public function getEntity($key)
     {
+
         if (count($this->identifier) > 1) {
             // $key is a collection index
             $entities = $this->getEntities();
@@ -199,15 +200,6 @@ class ModelChoiceList extends SimpleChoiceList
         } else if ($this->entities) {
             return isset($this->entities[$key]) ? $this->entities[$key] : null;
         }
-
-          // todo : I don't see the point of this ..
-//            else if ($qb = $this->queryBuilder) {
-//                // should we clone the builder?
-//                $alias = $qb->getRootAlias();
-//                $where = $qb->expr()->eq($alias.'.'.current($this->identifier), $key);
-//
-//                return $qb->andWhere($where)->getQuery()->getSingleResult();
-//            }
 
         return $this->modelManager->find($this->class, $key);
     }
@@ -259,6 +251,6 @@ class ModelChoiceList extends SimpleChoiceList
      */
     public function getClass()
     {
-      return $this->class;
+        return $this->class;
     }
 }

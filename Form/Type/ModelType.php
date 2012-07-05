@@ -27,6 +27,10 @@ use Sonata\AdminBundle\Form\DataTransformer\ModelsToArrayTransformer;
 use Sonata\AdminBundle\Form\DataTransformer\ModelToIdTransformer;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 
+/**
+ * This type define a standard select input with a + sign to add new associated object
+ *
+ */
 class ModelType extends AbstractType
 {
     /**
@@ -37,19 +41,24 @@ class ModelType extends AbstractType
         if ($options['multiple']) {
             $builder
                 ->addEventSubscriber(new MergeCollectionListener($options['model_manager']))
-                ->prependClientTransformer(new ModelsToArrayTransformer($options['choice_list']));
+                ->addViewTransformer(new ModelsToArrayTransformer($options['choice_list']), true);
         } else {
-            $builder->prependClientTransformer(new ModelToIdTransformer($options['model_manager'], $options['class']));
+            $builder
+                ->addViewTransformer(new ModelToIdTransformer($options['model_manager'], $options['class']), true)
+            ;
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
             'compound'          => function (Options $options) {
-                return isset($options['parent']) ? $options['parent'] : 'choice';
+                return isset($options['multiple']) ? $options['multiple'] : false;
             },
-                    
+
             'template'          => 'choice',
             'multiple'          => false,
             'expanded'          => false,
@@ -58,12 +67,9 @@ class ModelType extends AbstractType
             'property'          => null,
             'query'             => null,
             'choices'           => null,
-            'parent'            => 'choice',
             'preferred_choices' => array(),
-            
             'choice_list'       => function (Options $options, $previousValue) {
-                if ($previousValue instanceof ChoiceListInterface
-                        && count($choices = $previousValue->getChoices())) {
+                if ($previousValue instanceof ChoiceListInterface && count($choices = $previousValue->getChoices())) {
                     return $choices;
                 }
 

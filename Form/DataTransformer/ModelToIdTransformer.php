@@ -30,8 +30,8 @@ class ModelToIdTransformer implements DataTransformerInterface
     protected $className;
 
     /**
-     * @param \Sonata\AdminBundle\Model\ModelManagerInterface $modelManager
-     * @param string                                          $className
+     * @param ModelManagerInterface $modelManager
+     * @param string                $className
      */
     public function __construct(ModelManagerInterface $modelManager, $className)
     {
