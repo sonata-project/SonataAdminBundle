@@ -143,7 +143,7 @@ admin service and link it into the framework by setting the sonata.admin tag.
    </container>
 
 
-Note: If you don't already have a configuration file for the purpose, you can register this service in a ``services.xml`` file, save the file in ``app/config``, and then import it from ``config.yml``: 
+Note: If you don't already have a configuration file for the purpose, you can register this service in a ``services.xml`` file, save the file in ``app/config``, and then import it from ``config.yml``:
 
 .. code-block:: yaml
 
@@ -179,10 +179,6 @@ and change them according to your requirements:
                 # display a dashboard block
                 - { position: left, type: sonata.admin.block.admin_list }
 
-            groups:
-                default: ~
-
-
 Linking the admin class to the dashboard is done automatically because of the
 default option you defined above:
 
@@ -191,8 +187,6 @@ default option you defined above:
             # display a dashboard block
             - { position: left, type: sonata.admin.block.admin_list }
 
-        groups:
-            default: ~
 
 However you can define only admin groups you want to show in the dashboard by:
 
