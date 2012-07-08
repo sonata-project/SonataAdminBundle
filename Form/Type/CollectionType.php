@@ -36,6 +36,9 @@ class CollectionType extends AbstractType
         $builder->addEventSubscriber($listener);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(

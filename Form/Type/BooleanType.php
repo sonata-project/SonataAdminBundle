@@ -32,10 +32,13 @@ class BooleanType extends FormChoiceType
         $this->translator = $translator;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         parent::setDefaultOptions($resolver);
-        
+
         $resolver->setDefaults(array(
             'choices' => array(
                 self::TYPE_YES  => $this->translator->trans('label_type_yes', array(), 'SonataAdminBundle'),

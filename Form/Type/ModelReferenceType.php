@@ -37,16 +37,19 @@ class ModelReferenceType extends AbstractType
         $builder->prependClientTransformer(new ModelToIdTransformer($options['model_manager'], $options['class']));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $compound = function (Options $options) {
             return isset($options['parent']) ? $options['parent'] : 'hidden';
         };
-        
+
         $resolver->setDefaults(array(
-            'compound' => $compound,
+            'compound'      => $compound,
             'model_manager' => null,
-            'class' => null
+            'class'         => null
         ));
     }
 

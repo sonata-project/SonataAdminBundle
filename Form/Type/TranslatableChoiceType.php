@@ -45,25 +45,28 @@ class TranslatableChoiceType extends ChoiceType
             'choices'           => array(),
             'preferred_choices' => array(),
             'catalogue'         => 'messages',
-            
+
             'empty_data'        => function (Options $options, $previousValue) {
                 $multiple = isset($options['multiple']) && $options['multiple'];
                 $expanded = isset($options['expanded']) && $options['expanded'];
 
                 return $multiple || $expanded ? array() : '';
             },
-                    
+
             'empty_value'       => function (Options $options, $previousValue) {
                 $multiple = isset($options['multiple']) && $options['multiple'];
                 $expanded = isset($options['expanded']) && $options['expanded'];
 
                 return $multiple || $expanded || !isset($options['empty_value']) ? null : '';
             },
-                    
+
             'error_bubbling'    => false,
         ));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         // translate options before building form

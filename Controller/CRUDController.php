@@ -124,9 +124,9 @@ class CRUDController extends Controller
     }
 
     /**
-     * @param string                                          $view
-     * @param array                                           $parameters
-     * @param null|\Symfony\Component\HttpFoundation\Response $response
+     * @param string   $view
+     * @param array    $parameters
+     * @param Response $response
      *
      * @return Response
      */
@@ -233,7 +233,7 @@ class CRUDController extends Controller
      *
      * @param mixed $id
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function editAction($id = null)
     {
@@ -292,7 +292,7 @@ class CRUDController extends Controller
      *
      * @param object $object
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function redirectTo($object)
     {
@@ -317,7 +317,7 @@ class CRUDController extends Controller
      * return the Response object associated to the batch action
      *
      * @throws \RuntimeException
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function batchAction()
     {
@@ -405,7 +405,7 @@ class CRUDController extends Controller
     /**
      * return the Response object associated to the create action
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function createAction()
     {
@@ -455,7 +455,7 @@ class CRUDController extends Controller
     /**
      * return the Response object associated to the view action
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function showAction($id = null)
     {
@@ -563,8 +563,9 @@ class CRUDController extends Controller
     }
 
     /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @param Request $request
+     *
+     * @return Response
      */
     public function exportAction(Request $request)
     {

@@ -135,7 +135,7 @@ interface ModelManagerInterface
     /**
      * @param string $class
      *
-     * @return void
+     * @return array
      */
     function getModelCollectionInstance($class);
 
