@@ -34,7 +34,7 @@ class ModelReferenceType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->prependClientTransformer(new ModelToIdTransformer($options['model_manager'], $options['class']));
+        $builder->addModelTransformer(new ModelToIdTransformer($options['model_manager'], $options['class']));
     }
 
     /**
@@ -42,12 +42,8 @@ class ModelReferenceType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $compound = function (Options $options) {
-            return isset($options['parent']) ? $options['parent'] : 'hidden';
-        };
-
         $resolver->setDefaults(array(
-            'compound'      => $compound,
+            'compound'      => false,
             'model_manager' => null,
             'class'         => null
         ));

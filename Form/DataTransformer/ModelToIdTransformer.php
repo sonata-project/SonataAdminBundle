@@ -57,9 +57,9 @@ class ModelToIdTransformer implements DataTransformerInterface
     public function transform($entity)
     {
         if (empty($entity)) {
-            return 0;
+            return null;
         }
 
-        return current( $this->modelManager->getIdentifierValues($entity) );
+        return current($this->modelManager->getIdentifierValues($entity));
     }
 }
