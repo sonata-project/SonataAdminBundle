@@ -13,9 +13,9 @@ file that was distributed with this source code.
 
 {% block actions %}
     <div class="sonata-actions">
-        {% if admin.hasRoute('create') and admin.isGranted('CREATE')%}
-            <a class="btn" href="{{ admin.generateUrl('create') }}">{% trans from 'SonataAdminBundle' %}link_action_create{% endtrans %}</a>
-        {% endif %}
+        <ul>
+            {% include 'SonataAdminBundle:Core:create_button.html.twig' %}
+        </ul>
     </div>
 {% endblock %}
 
