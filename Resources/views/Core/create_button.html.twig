@@ -1,0 +1,30 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{% if admin.hasRoute('create') and admin.isGranted('CREATE')%}
+    {% if admin.subClasses is empty %}
+        <li class="btn sonata-action-element"><a href="{{ admin.generateUrl('create') }}">{% trans from 'SonataAdminBundle' %}link_action_create{% endtrans %}</a>
+    {% else %}
+        <span class="btn-group sonata-action-element">
+            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                {% trans from 'SonataAdminBundle' %}link_action_create{% endtrans %}
+                <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+                {% for subclass in admin.subclasses|keys %}
+                    <li>
+                        <a href="{{ admin.generateUrl('create', {'subclass': subclass}) }}">{{ subclass }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </span>
+    {% endif %}
+{% endif %}
