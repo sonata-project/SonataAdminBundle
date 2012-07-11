@@ -303,7 +303,13 @@ class CRUDController extends Controller
         }
 
         if ($this->get('request')->get('btn_create_and_create')) {
-            $url = $this->admin->generateUrl('create');
+            $params = array();
+            if ($this->admin->hasActiveSubClass())
+            {
+                $params['subclass'] = $this->get('request')->get('subclass');
+            }
+
+            $url = $this->admin->generateUrl('create', $params);
         }
 
         if (!$url) {
