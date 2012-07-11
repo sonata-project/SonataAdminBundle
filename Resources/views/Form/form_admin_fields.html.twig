@@ -110,6 +110,10 @@ file that was distributed with this source code.
     {% endif %}
 {% endblock field_row %}
 
+{% block form_row %}
+    {{ block('field_row') }}
+{% endblock form_row %}
+
 {% block collection_widget_row %}
 {% spaceless %}
     <div class="sonata-collection-row">
