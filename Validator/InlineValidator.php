@@ -56,6 +56,6 @@ class InlineValidator extends ConstraintValidator
 
         call_user_func($function, $errorElement, $value);
 
-        return count($this->context->getViolations()) == 0;
+        return true;
     }
 }
