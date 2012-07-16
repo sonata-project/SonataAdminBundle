@@ -46,4 +46,12 @@ class BooleanType extends FormChoiceType
             )
         ));
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getName()
+    {
+        return 'sonata_type_boolean';
+    }
 }
