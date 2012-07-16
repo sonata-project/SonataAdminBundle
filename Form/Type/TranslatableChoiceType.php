@@ -67,4 +67,12 @@ class TranslatableChoiceType extends ChoiceType
 
         parent::buildForm($builder, $options);
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getName()
+    {
+        return 'sonata_type_translatable_choice';
+    }
 }
