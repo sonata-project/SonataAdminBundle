@@ -1,5 +1,7 @@
-body.sonata-bc {
-    padding-top: 60px;
+@media (min-width: 979px) {
+    body.sonata-bc {
+        padding-top: 60px;
+    }
 }
 
 .sonata-bc .navbar a.brand {
@@ -295,4 +297,8 @@ legend + .sonata-ba-collapsed-fields {
 
 .sonata-preview-form-container fieldset {
     display: none;
+}
+
+.sonata-bc .pagination {
+    margin: 0px;
 }

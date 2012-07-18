@@ -89,9 +89,9 @@ file that was distributed with this source code.
 
                     {% if admin.datagrid.pager.haveToPaginate() %}
                         <tr>
-                            <td colspan="{{ admin.list.elements|length }}" class="pager">
+                            <td colspan="{{ admin.list.elements|length }}">
 
-                                <div class="pagination">
+                                <div class="pagination pagination-centered">
                                     <ul>
 
                                         {% if admin.datagrid.pager.page != 1  %}
