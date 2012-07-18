@@ -18,32 +18,40 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class BooleanType extends FormChoiceType
 {
-    const TYPE_YES = 1;
+	const TYPE_YES = 1;
 
-    const TYPE_NO = 2;
+	const TYPE_NO = 2;
 
-    protected $translator;
+	protected $translator;
 
-    /**
-     * @param \Symfony\Component\Translation\TranslatorInterface $translator
-     */
-    public function __construct(TranslatorInterface $translator)
-    {
-        $this->translator = $translator;
-    }
+	/**
+	 * @param \Symfony\Component\Translation\TranslatorInterface $translator
+	 */
+	public function __construct(TranslatorInterface $translator)
+	{
+		$this->translator = $translator;
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        parent::setDefaultOptions($resolver);
+	/**
+	 * {@inheritDoc}
+	 */
+	public function setDefaultOptions(OptionsResolverInterface $resolver)
+	{
+		parent::setDefaultOptions($resolver);
 
-        $resolver->setDefaults(array(
-            'choices' => array(
-                self::TYPE_YES  => $this->translator->trans('label_type_yes', array(), 'SonataAdminBundle'),
-                self::TYPE_NO   => $this->translator->trans('label_type_no', array(), 'SonataAdminBundle')
-            )
-        ));
-    }
+		$resolver->setDefaults(array(
+			'choices' => array(
+				self::TYPE_YES => $this->translator->trans('label_type_yes', array(), 'SonataAdminBundle'),
+				self::TYPE_NO => $this->translator->trans('label_type_no', array(), 'SonataAdminBundle')
+			)
+		));
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function getName()
+	{
+		return 'sonata_type_boolean';
+	}
 }
