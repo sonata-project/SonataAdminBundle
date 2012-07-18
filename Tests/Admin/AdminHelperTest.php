@@ -34,9 +34,9 @@ class AdminHelperTest extends \PHPUnit_Framework_TestCase
         $formFactory = $this->getMock('Symfony\Component\Form\FormFactoryInterface');
         $eventDispatcher = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
 
-        $formBuilder = new FormBuilder('test', $formFactory, $eventDispatcher);
+        $formBuilder = new FormBuilder('test', 'stdClass', $eventDispatcher, $formFactory);
 
-        $childFormBuilder = new FormBuilder('elementId', $formFactory, $eventDispatcher);
+        $childFormBuilder = new FormBuilder('elementId', 'stdClass', $eventDispatcher, $formFactory);
         $formBuilder->add($childFormBuilder);
 
         $this->assertNull($helper->getChildFormBuilder($formBuilder, 'foo'));
@@ -51,10 +51,10 @@ class AdminHelperTest extends \PHPUnit_Framework_TestCase
         $helper = new AdminHelper($pool);
 
         $formView = new FormView('test');
-        $formView->set('id', 'test');
+        $formView->setVar('id', 'test');
         $child = new FormView('test');
-        $child->set('id', 'test_elementId');
-        $formView->addChild($child);
+        $child->setVar('id', 'test_elementId');
+        $formView->add($child);
 
         $this->assertNull($helper->getChildFormView($formView, 'foo'));
         $this->isInstanceOf('Symfony\Component\Form\FormView', $helper->getChildFormView($formView, 'test_elementId'));
