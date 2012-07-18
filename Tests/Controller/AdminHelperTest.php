@@ -94,7 +94,7 @@ class AdminHelperTest extends \PHPUnit_Framework_TestCase
     public function testgetShortObjectDescriptionActionObject()
     {
         $mockTemplate = 'AdminHelperTest:mock-short-object-description.html.twig';
-        
+
         $admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
         $admin->expects($this->once())->method('setUniqid');
         $admin->expects($this->once())->method('getTemplate')->will($this->returnValue($mockTemplate));
@@ -114,13 +114,13 @@ class AdminHelperTest extends \PHPUnit_Framework_TestCase
         $container->expects($this->any())->method('get')->will($this->returnValue($admin));
 
         $twig = $this->getMock('Twig_Environment');
-        
+
         $twig->expects($this->once())->method('render')
             ->with($mockTemplate)
             ->will($this->returnCallback(function($templateName, $templateParams) {
                 return sprintf('<a href="%s" target="new">%s</a>', $templateParams['url'], $templateParams['description']);
             }));
-            
+
         $request = new Request(array(
             'code'     => 'sonata.post.admin',
             'objectId' => 42,
@@ -187,18 +187,30 @@ class AdminHelperTest extends \PHPUnit_Framework_TestCase
         $modelManager = $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface');
         $modelManager->expects($this->once())->method('find')->will($this->returnValue($object));
 
+        $mockTheme = $this->getMockBuilder('Symfony\Component\Form\FormView')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
         $admin->expects($this->once())->method('getModelManager')->will($this->returnValue($modelManager));
         $admin->expects($this->once())->method('setRequest');
         $admin->expects($this->once())->method('setSubject');
+        $admin->expects($this->once())->method('getFormTheme')->will($this->returnValue($mockTheme));
 
         $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
         $container->expects($this->any())->method('get')->will($this->returnValue($admin));
 
+        $mockRenderer = $this->getMockBuilder('Symfony\Bridge\Twig\Form\TwigRendererInterface')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $formExtension = $this->getMock('Twig_ExtensionInterface', array('renderListElement', 'initRuntime', 'getTokenParsers', 'getNodeVisitors', 'getFilters', 'getTests', 'getFunctions', 'getOperators', 'getGlobals', 'getName', 'setTheme', 'renderWidget'));
+
+
         $formExtension->expects($this->once())->method('getName')->will($this->returnValue('form'));
         $formExtension->expects($this->once())->method('renderWidget')->will($this->returnValue(new Response));
-        $formExtension->expects($this->once())->method('setTheme');
+        $formExtension->expects($this->never())->method('setTheme');
+        $formExtension->renderer = $mockRenderer;
 
         $twig = new Twig;
         $twig->addExtension($formExtension);
@@ -212,15 +224,23 @@ class AdminHelperTest extends \PHPUnit_Framework_TestCase
 
         $pool = new Pool($container, 'title', 'logo');
 
-        $dispatcher = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
+        $mockView = $this->getMockBuilder('Symfony\Component\Form\FormView')
+            ->disableOriginalConstructor()
+            ->getMock();
 
-        $form = new Form('foo', $dispatcher);
+        $mockForm = $this->getMockBuilder('Symfony\Component\Form\Form')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $mockForm->expects($this->once())
+            ->method('createView')
+            ->will($this->returnValue($mockView));
 
-        $helper = $this->getMock('Sonata\AdminBundle\Admin\AdminHelper', array('appendFormFieldElement'), array($pool));
+        $helper = $this->getMock('Sonata\AdminBundle\Admin\AdminHelper', array('appendFormFieldElement', 'getChildFormView'), array($pool));
         $helper->expects($this->once())->method('appendFormFieldElement')->will($this->returnValue(array(
             $this->getMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface'),
-            $form
+            $mockForm
         )));
+        $helper->expects($this->once())->method('getChildFormView')->will($this->returnValue($mockView));
 
         $controller = new HelperController($twig, $pool, $helper);
         $response = $controller->appendFormFieldElementAction($request);
@@ -235,11 +255,21 @@ class AdminHelperTest extends \PHPUnit_Framework_TestCase
         $modelManager = $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface');
         $modelManager->expects($this->once())->method('find')->will($this->returnValue($object));
 
-        $formBuilder = new FormBuilder(
-            'foo',
-            $this->getMock('Symfony\Component\Form\FormFactoryInterface'),
-            $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface')
-        );
+        $mockView = $this->getMockBuilder('Symfony\Component\Form\FormView')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $mockForm = $this->getMockBuilder('Symfony\Component\Form\Form')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $mockForm->expects($this->once())
+            ->method('createView')
+            ->will($this->returnValue($mockView));
+
+        $formBuilder = $this->getMockBuilder('Symfony\Component\Form\FormBuilder')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $formBuilder->expects($this->once())->method('getForm')->will($this->returnValue($mockForm));
 
         $admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
         $admin->expects($this->once())->method('getModelManager')->will($this->returnValue($modelManager));
@@ -248,10 +278,15 @@ class AdminHelperTest extends \PHPUnit_Framework_TestCase
         $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
         $container->expects($this->any())->method('get')->will($this->returnValue($admin));
 
+        $mockRenderer = $this->getMockBuilder('Symfony\Bridge\Twig\Form\TwigRendererInterface')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $formExtension = $this->getMock('Twig_ExtensionInterface', array('renderListElement', 'initRuntime', 'getTokenParsers', 'getNodeVisitors', 'getFilters', 'getTests', 'getFunctions', 'getOperators', 'getGlobals', 'getName', 'setTheme', 'renderWidget'));
         $formExtension->expects($this->once())->method('getName')->will($this->returnValue('form'));
         $formExtension->expects($this->once())->method('renderWidget')->will($this->returnValue(new Response));
-        $formExtension->expects($this->once())->method('setTheme');
+        $formExtension->expects($this->never())->method('setTheme');
+        $formExtension->renderer = $mockRenderer;
 
         $twig = new Twig;
         $twig->addExtension($formExtension);
@@ -267,10 +302,8 @@ class AdminHelperTest extends \PHPUnit_Framework_TestCase
 
         $dispatcher = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
 
-        $formView = new FormView('test');
-
         $helper = $this->getMock('Sonata\AdminBundle\Admin\AdminHelper', array('getChildFormView'), array($pool));
-        $helper->expects($this->once())->method('getChildFormView')->will($this->returnValue($formView));
+        $helper->expects($this->once())->method('getChildFormView')->will($this->returnValue($mockView));
 
         $controller = new HelperController($twig, $pool, $helper);
         $response = $controller->retrieveFormFieldElementAction($request);
