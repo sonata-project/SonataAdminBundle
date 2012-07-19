@@ -46,8 +46,8 @@ file that was distributed with this source code.
 
                 {% for field_name in view_group.fields %}
                     <tr class="sonata-ba-view-container">
-                        {% if admin.show[field_name] is defined %}
-                            {{ admin.show[field_name]|render_view_element(object) }}
+                        {% if elements[field_name] is defined %}
+                            {{ elements[field_name]|render_view_element(object) }}
                         {% endif %}
                     </tr>
                 {% endfor %}
