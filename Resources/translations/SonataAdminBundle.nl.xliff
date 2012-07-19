@@ -334,6 +334,19 @@
                 <source>btn_preview_decline</source>
                 <target>Afkeuren</target>
             </trans-unit>
+
+            <trans-unit id="btn_preview">
+                <source>btn_preview</source>
+                <target>Voorvertoning</target>
+            </trans-unit>
+            <trans-unit id="btn_preview_approve">
+                <source>btn_preview_approve</source>
+                <target>Goedkeuren</target>
+            </trans-unit>
+            <trans-unit id="btn_preview_decline">
+                <source>btn_preview_decline</source>
+                <target>Afkeuren</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

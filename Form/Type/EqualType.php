@@ -46,4 +46,12 @@ class EqualType extends FormChoiceType
             )
         ));
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getName()
+    {
+        return 'sonata_type_equal';
+    }
 }
