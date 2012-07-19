@@ -89,9 +89,9 @@ class HelperController
 
         $extension = $this->twig->getExtension('form');
         $extension->initRuntime($this->twig);
-        $extension->setTheme($view, $admin->getFormTheme());
+        $extension->renderer->setTheme($view, $admin->getFormTheme());
 
-        return new Response($extension->renderWidget($view));
+        return new Response($extension->renderer->renderWidget($view));
     }
 
     /**
@@ -136,9 +136,13 @@ class HelperController
         // todo : fix this, the twig environment variable is not set inside the extension ...
         $extension = $this->twig->getExtension('form');
         $extension->initRuntime($this->twig);
-        $extension->setTheme($view, $admin->getFormTheme());
-
-        return new Response($extension->renderWidget($view));
+        $extension->renderer->setTheme($view, $admin->getFormTheme());
+        if($request->isXmlHttpRequest())
+        {
+        	return new Response(json_encode($extension->renderer->renderWidget($view)), 200, array('Content-type' => 'application/json; charset=utf-8'));
+        }
+        
+        return new Response($extension->renderer->renderWidget($view));
     }
 
     /**
