@@ -154,7 +154,7 @@ class CRUDController extends Controller
         $formView = $datagrid->getForm()->createView();
 
         // set the theme for the current Admin Form
-        $this->get('twig')->getExtension('form')->setTheme($formView, $this->admin->getFilterTheme());
+        $this->get('twig')->getExtension('form')->renderer->setTheme($formView, $this->admin->getFilterTheme());
 
         return $this->render($this->admin->getListTemplate(), array(
             'action'   => 'list',
@@ -278,7 +278,7 @@ class CRUDController extends Controller
         $view = $form->createView();
 
         // set the theme for the current Admin Form
-        $this->get('twig')->getExtension('form')->setTheme($view, $this->admin->getFormTheme());
+        $this->get('twig')->getExtension('form')->renderer->setTheme($view, $this->admin->getFormTheme());
 
         return $this->render($this->admin->getEditTemplate(), array(
             'action' => 'edit',
@@ -447,7 +447,7 @@ class CRUDController extends Controller
         $view = $form->createView();
 
         // set the theme for the current Admin Form
-        $this->get('twig')->getExtension('form')->setTheme($view, $this->admin->getFormTheme());
+        $this->get('twig')->getExtension('form')->renderer->setTheme($view, $this->admin->getFormTheme());
 
         return $this->render($this->admin->getEditTemplate(), array(
             'action' => 'create',
