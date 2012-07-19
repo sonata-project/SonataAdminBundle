@@ -139,7 +139,7 @@ class HelperController
         $extension->renderer->setTheme($view, $admin->getFormTheme());
         if($request->isXmlHttpRequest())
         {
-        	return new Response(json_encode($extension->renderer->renderWidget($view)), 200, array('Content-type' => 'application/json; charset=utf-8'));
+        	return new Response(json_encode($extension->renderer->renderWidget($view)), 200, array('Content-type' => 'application/json'));
         }
         
         return new Response($extension->renderer->renderWidget($view));
