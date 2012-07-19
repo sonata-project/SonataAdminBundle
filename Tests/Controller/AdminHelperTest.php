@@ -204,11 +204,14 @@ class AdminHelperTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $formExtension = $this->getMock('Twig_ExtensionInterface', array('renderListElement', 'initRuntime', 'getTokenParsers', 'getNodeVisitors', 'getFilters', 'getTests', 'getFunctions', 'getOperators', 'getGlobals', 'getName', 'setTheme', 'renderWidget'));
+        $mockRenderer->expects($this->once())
+            ->method('renderWidget')
+            ->will($this->returnValue(new Response));
 
+        $formExtension = $this->getMock('Twig_ExtensionInterface', array('renderListElement', 'initRuntime', 'getTokenParsers', 'getNodeVisitors', 'getFilters', 'getTests', 'getFunctions', 'getOperators', 'getGlobals', 'getName'));
 
         $formExtension->expects($this->once())->method('getName')->will($this->returnValue('form'));
-        $formExtension->expects($this->once())->method('renderWidget')->will($this->returnValue(new Response));
+        $formExtension->expects($this->never())->method('renderWidget');
         $formExtension->expects($this->never())->method('setTheme');
         $formExtension->renderer = $mockRenderer;
 
@@ -282,9 +285,13 @@ class AdminHelperTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $formExtension = $this->getMock('Twig_ExtensionInterface', array('renderListElement', 'initRuntime', 'getTokenParsers', 'getNodeVisitors', 'getFilters', 'getTests', 'getFunctions', 'getOperators', 'getGlobals', 'getName', 'setTheme', 'renderWidget'));
+        $mockRenderer->expects($this->once())
+            ->method('renderWidget')
+            ->will($this->returnValue(new Response));
+
+        $formExtension = $this->getMock('Twig_ExtensionInterface', array('renderListElement', 'initRuntime', 'getTokenParsers', 'getNodeVisitors', 'getFilters', 'getTests', 'getFunctions', 'getOperators', 'getGlobals', 'getName'));
         $formExtension->expects($this->once())->method('getName')->will($this->returnValue('form'));
-        $formExtension->expects($this->once())->method('renderWidget')->will($this->returnValue(new Response));
+        $formExtension->expects($this->never())->method('renderWidget');
         $formExtension->expects($this->never())->method('setTheme');
         $formExtension->renderer = $mockRenderer;
 
