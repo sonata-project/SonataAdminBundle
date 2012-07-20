@@ -138,7 +138,7 @@ class HelperController
         $extension = $this->twig->getExtension('form');
         $extension->initRuntime($this->twig);
         $extension->setTheme($view, $admin->getFormTheme());
-        if($request->isXmlHttpRequest()) {
+        if ($request->isXmlHttpRequest()) {
         	return new JsonResponse($extension->renderWidget($view), 200);
         }
         
