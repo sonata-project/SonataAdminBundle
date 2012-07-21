@@ -14,7 +14,7 @@ namespace Sonata\AdminBundle\Form\Extension\Field\Type;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\FormViewInterface;
+use Symfony\Component\Form\FormView;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
@@ -88,7 +88,7 @@ class FormTypeFieldExtension extends AbstractTypeExtension
      * @param FormInterface     $form
      * @param array             $options
      */
-    public function buildView(FormViewInterface $view, FormInterface $form, array $options)
+    public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $sonataAdmin = $form->getConfig()->getAttribute('sonata_admin');
 

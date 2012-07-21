@@ -15,7 +15,7 @@ namespace Sonata\AdminBundle\Form\Type;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\FormViewInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 use Sonata\AdminBundle\Form\DataTransformer\ModelToIdTransformer;
@@ -41,7 +41,7 @@ class ModelTypeList extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildView(FormViewInterface $view, FormInterface $form, array $options)
+    public function buildView(FormView $view, FormInterface $form, array $options)
     {
         if ($view->hasVar('sonata_admin')) {
             $parameters = $view->getVar('sonata_admin');
