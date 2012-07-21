@@ -39,6 +39,14 @@ class CollectionType extends AbstractType
     /**
      * {@inheritDoc}
      */
+    public function getParent()
+    {
+        return 'field';
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
