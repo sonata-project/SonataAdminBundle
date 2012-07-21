@@ -67,7 +67,7 @@ class TranslatableChoiceType extends ChoiceType
     /**
      * {@inheritDoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilder $builder, array $options)
     {
         // translate options before building form
         foreach ($options['choices'] as $name => $value) {
@@ -80,6 +80,14 @@ class TranslatableChoiceType extends ChoiceType
         }
 
         parent::buildForm($builder, $options);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getParent()
+    {
+        return 'choice';
     }
 
     /**
