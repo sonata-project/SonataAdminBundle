@@ -84,9 +84,9 @@ class FormTypeFieldExtension extends AbstractTypeExtension
     }
 
     /**
-     * @param FormViewInterface $view
-     * @param FormInterface     $form
-     * @param array             $options
+     * @param FormView      $view
+     * @param FormInterface $form
+     * @param array         $options
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
@@ -97,34 +97,34 @@ class FormTypeFieldExtension extends AbstractTypeExtension
             $sonataAdmin['value'] = $form->getData();
 
             // add a new block types, so the Admin Form element can be tweaked based on the admin code
-            $types    = $view->getVar('types');
+            $types    = $view->vars['types'];
             $baseName = str_replace('.', '_', $sonataAdmin['field_description']->getAdmin()->getCode());
             $baseType = $types[count($types) - 1];
 
             $types[] = sprintf('%s_%s', $baseName, $baseType);
             $types[] = sprintf('%s_%s_%s', $baseName, $sonataAdmin['field_description']->getName(), $baseType);
-            
+
             if ($sonataAdmin['block_name']) {
                 $types[] = $sonataAdmin['block_name'];
             }
 
-            $view->setVar('types', $types);
-            $view->setVar('sonata_admin_enabled', true);
-            $view->setVar('sonata_admin', $sonataAdmin);
+            $view->vars['types'] = $types;
+            $view->vars['sonata_admin_enabled'] = true;
+            $view->vars['sonata_admin'] = $sonataAdmin;
 
-            $attr = $view->getVar('attr', array());
+            $attr = $view->vars['attr'];
 
             if (!isset($attr['class'])) {
                 $attr['class'] = $sonataAdmin['class'];
             }
 
-            $view->setVar('attr', $attr);
+            $view->vars['attr'] = $attr;
 
         } else {
-            $view->setVar('sonata_admin_enabled', false);
+            $view->vars['sonata_admin_enabled'] = false;
         }
 
-        $view->setVar('sonata_admin', $sonataAdmin);
+        $view->vars['sonata_admin'] = $sonataAdmin;
     }
 
     /**
@@ -139,7 +139,7 @@ class FormTypeFieldExtension extends AbstractTypeExtension
 
     /**
      * Sets the default options
-     * 
+     *
      * @param OptionsResolverInterface $resolver Options Resolver
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)

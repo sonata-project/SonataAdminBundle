@@ -4,7 +4,7 @@ namespace Sonata\AdminBundle\Form\EventListener;
 
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormError;
-use Symfony\Component\Form\FormViewInterface;
+use Symfony\Component\Form\FormView;
 
 class FormProxy implements \IteratorAggregate, FormInterface
 {
@@ -173,7 +173,7 @@ class FormProxy implements \IteratorAggregate, FormInterface
         return $this->__call('isRoot', func_get_args());
     }
 
-    public function createView(FormViewInterface $parent = null)
+    public function createView(FormView $parent = null)
     {
         return $this->__call('createView', func_get_args());
     }
