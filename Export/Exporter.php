@@ -12,55 +12,50 @@
 namespace Sonata\AdminBundle\Export;
 
 use Exporter\Source\SourceIteratorInterface;
-use Exporter\Handler;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class Exporter
 {
     /**
      * @throws \RuntimeException
      *
-     * @param string                                   $format
-     * @param string                                   $filename
-     * @param \Exporter\Source\SourceIteratorInterface $source
+     * @param string                  $format
+     * @param string                  $filename
+     * @param SourceIteratorInterface $source
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return StreamedResponse
      */
     public function getResponse($format, $filename, SourceIteratorInterface $source)
     {
-        $privateFilename = sprintf('%s/%s', sys_get_temp_dir(), uniqid('sonata_export_', true));
-
         switch ($format) {
             case 'xls':
-                $writer      = new \Exporter\Writer\XlsWriter($privateFilename);
+                $writer      = new \Exporter\Writer\XlsWriter('php://output');
                 $contentType = 'application/vnd.ms-excel';
                 break;
             case 'xml':
-                $writer      = new \Exporter\Writer\XmlWriter($privateFilename);
+                $writer      = new \Exporter\Writer\XmlWriter('php://output');
                 $contentType = 'text/xml';
                 break;
             case 'json':
-                $writer      = new \Exporter\Writer\JsonWriter($privateFilename);
+                $writer      = new \Exporter\Writer\JsonWriter('php://output');
                 $contentType = 'application/json';
                 break;
             case 'csv':
-                $writer      = new \Exporter\Writer\CsvWriter($privateFilename, ',', '"', "", true);
+                $writer      = new \Exporter\Writer\CsvWriter('php://output', ',', '"', "", true);
                 $contentType = 'text/csv';
                 break;
             default:
                 throw new \RuntimeException('Invalid format');
         }
 
-        $handler = Handler::create($source, $writer);
-        $handler->export();
+        $callback = function() use ($source, $writer) {
+            $handler = \Exporter\Handler::create($source, $writer);
+            $handler->export();
+        };
 
-        $response = new Response(file_get_contents($privateFilename), 200, array(
+        return new StreamedResponse($callback, 200, array(
             'Content-Type'        => $contentType,
             'Content-Disposition' => sprintf('attachment; filename=%s', $filename)
         ));
-
-        unlink($privateFilename);
-
-        return $response;
     }
 }
