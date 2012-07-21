@@ -37,7 +37,7 @@ class FormViewIterator implements \RecursiveIterator
      */
     public function hasChildren()
     {
-        return $this->current()->hasChildren();
+        return count($this->current()->children) > 0;
     }
 
     /**
@@ -61,7 +61,7 @@ class FormViewIterator implements \RecursiveIterator
      */
     public function key()
     {
-        return $this->current()->getVar('id');
+        return $this->current()->vars['id'];
     }
 
     /**

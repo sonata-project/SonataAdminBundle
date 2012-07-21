@@ -43,15 +43,10 @@ class ModelTypeList extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        if ($view->hasVar('sonata_admin')) {
-            $parameters = $view->getVar('sonata_admin');
-
+        if (isset($view->vars['sonata_admin'])) {
             // set the correct edit mode
-            $parameters['edit'] = 'list';
-
-            $view->setVar('sonata_admin', $parameters);
+            $view->vars['sonata_admin']['edit'] = 'list';
         }
-
     }
 
     /**
