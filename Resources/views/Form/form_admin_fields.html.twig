@@ -78,7 +78,9 @@ file that was distributed with this source code.
 
 {% block field_row %}
     {% if sonata_admin is not defined or not sonata_admin_enabled or not sonata_admin.field_description %}
-        {{ form_row(form) }}
+        {{ form_label(form, label|default(null)) }}
+        {{ form_errors(form) }}
+        {{ form_widget(form) }}
     {% else %}
         <div class="clearfix{% if errors|length > 0%} error{%endif%}" id="sonata-ba-field-container-{{ id }}">
             {% block label %}
