@@ -67,7 +67,7 @@ class TranslatableChoiceType extends ChoiceType
     /**
      * {@inheritDoc}
      */
-    public function buildForm(FormBuilder $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         // translate options before building form
         foreach ($options['choices'] as $name => $value) {
