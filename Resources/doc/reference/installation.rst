@@ -19,6 +19,9 @@ everything you need in their installation chapter.
 .. note::
     If a dependency is already installed somewhere in your project or in
     another dependency, you won't need to install it again.
+    If you are using composer (see bellow in "Installation") the admin-bundle
+    package already has the dependencies configured, so you only need to add
+    these Bundles in the AppKernel file (see bellow also).
 
 Translations
 ~~~~~~~~~~~~
@@ -49,6 +52,10 @@ Next, be sure to enable this bundles in your AppKernel.php file:
     {
         return array(
             // ...
+            new Sonata\BlockBundle\SonataBlockBundle(),
+            new Sonata\CacheBundle\SonataCacheBundle(),
+            new Sonata\jQueryBundle\SonatajQueryBundle(),
+            // ...
             new Sonata\AdminBundle\SonataAdminBundle(),
             // ...
         );
@@ -73,6 +80,10 @@ You will also need to alter your ``app/config/config.yml`` file :
 Now, install the assets from the bundles:
 
     php app/console assets:install web
+
+If you have any problem try the verbose mode to find it:
+
+    php app/console assets:install web -v
 
 Usually when installing new bundles a good practice is to also delete your cache::
 
