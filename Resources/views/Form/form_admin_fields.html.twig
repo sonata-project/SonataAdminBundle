@@ -12,6 +12,9 @@ file that was distributed with this source code.
 {# Labels #}
 {% block form_label %}
 {% spaceless %}
+    {% if label is empty %}
+        {% set label = name|humanize %}
+    {% endif %}
     {% if not compound %}
         {% set attr = attr|merge({'for': id}) %}
     {% endif %}
