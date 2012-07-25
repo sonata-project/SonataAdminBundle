@@ -24,8 +24,8 @@
         "symfony/framework-bundle": "2.0.*",
         "symfony/security-bundle": "2.0.*",
         "knplabs/knp-menu-bundle": "1.1.*",
-        "sonata-project/jquery-bundle": "master-dev",
-        "sonata-project/exporter": "master-dev",
+        "sonata-project/jquery-bundle": "dev-master",
+        "sonata-project/exporter": "dev-master",
         "sonata-project/block-bundle": "2.0.*"
     },
     "require-dev": {
@@ -33,7 +33,7 @@
     },
     "suggest": {
         "sonata-project/doctrine-orm-admin-bundle": "2.0.*",
-        "sonata-project/intl-bundle": "master-dev"
+        "sonata-project/intl-bundle": "dev-master"
     },
     "autoload": {
         "psr-0": { "Sonata\\AdminBundle": "" }
