@@ -108,11 +108,11 @@ class SonataAdminExtension extends Extension
          * This is a work in progress, so for now it is hardcoded
          */
         $classes = array(
-            'email'    => 'sonata-medium',
-            'textarea' => 'sonata-medium',
-            'text'     => 'sonata-medium',
-            'choice'   => 'sonata-medium',
-            'integer'  => 'sonata-medium',
+            'email'    => 'span5',
+            'textarea' => 'span5',
+            'text'     => 'span5',
+            'choice'   => 'span5',
+            'integer'  => 'span5',
             'datetime' => 'sonata-medium-date',
             'date'     => 'sonata-medium-date'
         );

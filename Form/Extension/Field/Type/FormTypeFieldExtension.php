@@ -119,7 +119,6 @@ class FormTypeFieldExtension extends AbstractTypeExtension
             }
 
             $view->vars['attr'] = $attr;
-
         } else {
             $view->vars['sonata_admin_enabled'] = false;
         }
