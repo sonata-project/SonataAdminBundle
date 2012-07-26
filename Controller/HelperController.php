@@ -91,7 +91,7 @@ class HelperController
         $extension->initRuntime($this->twig);
         $extension->renderer->setTheme($view, $admin->getFormTheme());
 
-        return new Response($extension->renderer->renderWidget($view));
+        return new Response($extension->renderer->searchAndRenderBlock($view, 'widget'));
     }
 
     /**
@@ -138,7 +138,7 @@ class HelperController
         $extension->initRuntime($this->twig);
         $extension->renderer->setTheme($view, $admin->getFormTheme());
 
-        return new Response($extension->renderer->renderWidget($view));
+        return new Response($extension->renderer->searchAndRenderBlock($view, 'widget'));
     }
 
     /**
