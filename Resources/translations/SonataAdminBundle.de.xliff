@@ -222,6 +222,10 @@
               <source>label_type_equal</source>
               <target>=</target>
             </trans-unit>
+            <trans-unit id="label_date_type_equal">
+                <source>label_date_type_equal</source>
+                <target>=</target>
+            </trans-unit>
             <trans-unit id="label_type_greater_equal">
               <source>label_type_greater_equal</source>
               <target>&gt;=</target>
