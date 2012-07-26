@@ -49,6 +49,9 @@ Next, be sure to enable this bundles in your AppKernel.php file:
     {
         return array(
             // ...
+            new Sonata\BlockBundle\SonataBlockBundle(),
+            new Sonata\CacheBundle\SonataCacheBundle(),
+            new Sonata\jQueryBundle\SonatajQueryBundle(),
             new Sonata\AdminBundle\SonataAdminBundle(),
             // ...
         );
