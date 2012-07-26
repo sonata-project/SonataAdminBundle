@@ -205,13 +205,13 @@ class AdminHelperTest extends \PHPUnit_Framework_TestCase
             ->getMock();
 
         $mockRenderer->expects($this->once())
-            ->method('renderWidget')
+            ->method('searchAndRenderBlock')
             ->will($this->returnValue(new Response));
 
         $formExtension = $this->getMock('Twig_ExtensionInterface', array('renderListElement', 'initRuntime', 'getTokenParsers', 'getNodeVisitors', 'getFilters', 'getTests', 'getFunctions', 'getOperators', 'getGlobals', 'getName'));
 
         $formExtension->expects($this->once())->method('getName')->will($this->returnValue('form'));
-        $formExtension->expects($this->never())->method('renderWidget');
+        $formExtension->expects($this->never())->method('searchAndRenderBlock');
         $formExtension->expects($this->never())->method('setTheme');
         $formExtension->renderer = $mockRenderer;
 
@@ -286,12 +286,12 @@ class AdminHelperTest extends \PHPUnit_Framework_TestCase
             ->getMock();
 
         $mockRenderer->expects($this->once())
-            ->method('renderWidget')
+            ->method('searchAndRenderBlock')
             ->will($this->returnValue(new Response));
 
         $formExtension = $this->getMock('Twig_ExtensionInterface', array('renderListElement', 'initRuntime', 'getTokenParsers', 'getNodeVisitors', 'getFilters', 'getTests', 'getFunctions', 'getOperators', 'getGlobals', 'getName'));
         $formExtension->expects($this->once())->method('getName')->will($this->returnValue('form'));
-        $formExtension->expects($this->never())->method('renderWidget');
+        $formExtension->expects($this->never())->method('searchAndRenderBlock');
         $formExtension->expects($this->never())->method('setTheme');
         $formExtension->renderer = $mockRenderer;
 
