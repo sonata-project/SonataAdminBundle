@@ -97,18 +97,18 @@ class FormTypeFieldExtension extends AbstractTypeExtension
             $sonataAdmin['value'] = $form->getData();
 
             // add a new block types, so the Admin Form element can be tweaked based on the admin code
-            $types    = $view->vars['types'];
+            $block_prefixes    = $view->vars['block_prefixes'];
             $baseName = str_replace('.', '_', $sonataAdmin['field_description']->getAdmin()->getCode());
-            $baseType = $types[count($types) - 1];
+            $baseType = $block_prefixes[count($block_prefixes) - 1];
 
-            $types[] = sprintf('%s_%s', $baseName, $baseType);
-            $types[] = sprintf('%s_%s_%s', $baseName, $sonataAdmin['field_description']->getName(), $baseType);
+            $block_prefixes[] = sprintf('%s_%s', $baseName, $baseType);
+            $block_prefixes[] = sprintf('%s_%s_%s', $baseName, $sonataAdmin['field_description']->getName(), $baseType);
 
             if ($sonataAdmin['block_name']) {
-                $types[] = $sonataAdmin['block_name'];
+                $block_prefixes[] = $sonataAdmin['block_name'];
             }
 
-            $view->vars['types'] = $types;
+            $view->vars['block_prefixes'] = $block_prefixes;
             $view->vars['sonata_admin_enabled'] = true;
             $view->vars['sonata_admin'] = $sonataAdmin;
 
