@@ -11,6 +11,7 @@
 namespace Sonata\AdminBundle\Route;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 class DefaultRouteGenerator implements RouteGeneratorInterface
@@ -93,6 +94,10 @@ class DefaultRouteGenerator implements RouteGeneratorInterface
 
         if (!$route) {
             throw new \RuntimeException(sprintf('unable to find the route `%s`', $name));
+        }
+
+        if (isset($parameters['filter']['_sort_by']) && $parameters['filter']['_sort_by'] instanceof FieldDescriptionInterface) {
+            $parameters['filter']['_sort_by'] = $parameters['filter']['_sort_by']->getFieldName();
         }
 
         return $this->router->generate($route->getDefault('_sonata_name'), $parameters, $absolute);
