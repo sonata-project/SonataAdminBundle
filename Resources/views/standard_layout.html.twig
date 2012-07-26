@@ -173,6 +173,7 @@ file that was distributed with this source code.
                 {% endif %}
 
                 <div class="content {{ _side_menu is not empty ? ' span10' : 'span12' }}">
+                {% block sonata_admin_content %}
 
                     {% if _preview is not empty %}
                         <div class="sonata-ba-preview">{{ _preview|raw }}</div>
@@ -198,6 +199,8 @@ file that was distributed with this source code.
                             {{ _list_table|raw }}
                         </div>
                     {% endif %}
+
+                {% endblock %}
                 </div>
 
 
