@@ -96,11 +96,11 @@
             </trans-unit>
             <trans-unit id="link_first_pager">
                 <source>link_first_pager</source>
-                <target>link_first_pager</target>
+                <target>Первая</target>
             </trans-unit>
             <trans-unit id="link_last_pager">
                 <source>link_last_pager</source>
-                <target>link_last_pager</target>
+                <target>Последняя</target>
             </trans-unit>
             <trans-unit id="Admin">
                 <source>Admin</source>
@@ -192,7 +192,7 @@
             </trans-unit>
             <trans-unit id="message_batch_confirmation">
                 <source>message_batch_confirmation</source>
-                <target>Вы действительно хотите произвести выбранное действие для данных элементов?|Вы действительно хотите произвести выбранное действие для %count% выбранных элементов?</target>
+                <target>Вы действительно хотите произвести выбранное действие для данного элемента?|Вы действительно хотите произвести выбранное действие для данных элементов?|Вы действительно хотите произвести выбранное действие для %count% выбранных элементов?</target>
             </trans-unit>
             <trans-unit id="btn_execute_batch_action">
                 <source>btn_execute_batch_action</source>
