@@ -9,10 +9,10 @@ Sonata dependencies that need to be installed and configured beforehand :
     - `SonataCacheBundle <http://sonata-project.org/bundles/cache>`_
     - `SonataBlockBundle <http://sonata-project.org/bundles/block>`_
     - `SonatajQueryBundle <https://github.com/sonata-project/SonatajQueryBundle>`_
-    - `KnpMenuBundle <https://github.com/KnpLabs/KnpMenuBundle/blob/master/Resources/doc/index.md#installation>`_ (Version 1.1.*)
+    - `KnpMenuBundle <https://github.com/KnpLabs/KnpMenuBundle/blob/master/Resources/doc/index.md#installation>`_
     - `Exporter <https://github.com/sonata-project/exporter>`_
 
-You will need to install those in their 2.0 branches (or master if they don't
+You will need to install those in their 2.1 branches (or master if they don't
 have a similar branch). Follow also their configuration step ; you will find
 everything you need in their installation chapter.
 

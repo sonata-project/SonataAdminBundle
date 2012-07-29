@@ -21,7 +21,7 @@
         "symfony/symfony": "2.1.*",
         "symfony/framework-bundle": "2.1.*",
         "symfony/security-bundle": "2.1.*",
-        "knplabs/knp-menu-bundle": "1.1.*",
+        "knplabs/knp-menu-bundle": "dev-master",
         "sonata-project/jquery-bundle": "dev-master",
         "sonata-project/exporter": "dev-master",
         "sonata-project/block-bundle": "dev-master"

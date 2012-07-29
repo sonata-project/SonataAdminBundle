@@ -388,13 +388,13 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     protected $extensions = array();
 
     protected $labelTranslatorStrategy;
-    
+
     /**
      * Setting to true will enable preview mode for
      * the entity and show a preview button in the
      * edit/create forms
-     * 
-     * @var boolean	
+     *
+     * @var boolean
      */
     protected $supportsPreviewMode = false;
 
@@ -1315,9 +1315,10 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
         $this->loaded['side_menu'] = true;
 
-        $menu = $this->menuFactory->createItem('root');
-        $menu->setChildrenAttribute('class', 'nav nav-list');
-        $menu->setCurrentUri($this->getRequest()->getRequestUri());
+        $menu = $this->menuFactory->createItem('root')
+            ->setChildrenAttribute('class', 'nav nav-list')
+            ->setUri($this->getRequest()->getRequestUri())
+        ;
 
         $this->configureSideMenu($menu, $action, $childAdmin);
 
@@ -2515,17 +2516,16 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     {
         return $this->labelTranslatorStrategy;
     }
-    
-	/**
+
+    /**
      * Returning true will enable preview mode for
      * the target entity and show a preview button
      * when editing/creating an entity
-     * 
+     *
      * @return boolean
      */
     public function supportsPreviewMode()
     {
         return $this->supportsPreviewMode;
     }
-    
 }

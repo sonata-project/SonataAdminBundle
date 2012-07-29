@@ -3,6 +3,10 @@ UPGRADE FROM 2.0 to 2.1
 
 ** Work In Progress - Please do not use this code in production **
 
+### KnpMenu
+
+  * The KnpMenu dependency now used the master branch.
+
 ### Form
 
   * Due to some refactoring in the Form Component, some types definition have been changed
