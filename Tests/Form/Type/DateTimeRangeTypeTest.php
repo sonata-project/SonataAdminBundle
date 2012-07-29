@@ -13,6 +13,6 @@ class DateTimeRangeTypeTest extends TypeTestCase
 
         $formType = new DateTimeRangeType($stub);
 
-        $this->assertTrue(is_array($formType->getDefaultOptions()));
+        $this->assertTrue(is_array($formType->getDefaultOptions(array())));
     }
 }
