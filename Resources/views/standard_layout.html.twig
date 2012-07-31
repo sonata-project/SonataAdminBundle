@@ -120,11 +120,11 @@ file that was distributed with this source code.
                 <ul class="breadcrumb">
                     {% if _breadcrumb is empty %}
                         {% if action is defined %}
-                            {% for item in admin.breadcrumbs(action) %}
+                            {% for label, uri in admin.breadcrumbs(action) %}
                                 {% if not loop.last  %}
-                                    <li><a href="{{ item.uri }}">{{ item.label }}</a><span class="divider">/</span></li>
+                                    <li><a href="{{ uri }}">{{ label }}</a><span class="divider">/</span></li>
                                 {% else %}
-                                    <li class="active">{{ item.label }}</li>
+                                    <li class="active">{{ label }}</li>
                                 {% endif %}
                             {% endfor %}
                         {% endif %}
@@ -155,9 +155,9 @@ file that was distributed with this source code.
                         {% if _title is not empty %}
                             {{ _title|raw }}
                         {% elseif action is defined %}
-                            {% for item in admin.breadcrumbs(action) %}
+                            {% for label, uri in admin.breadcrumbs(action) %}
                                 {% if loop.last  %}
-                                    {{ item.label }}
+                                    {{ label }}
                                 {% endif %}
                             {% endfor %}
                         {% endif%}
