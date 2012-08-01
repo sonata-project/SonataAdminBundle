@@ -81,7 +81,8 @@ class DateType extends AbstractType
     {
         $resolver->setDefaults(array(
             'field_type'       => 'date',
-            'field_options'    => array('date_format' => 'yyyy-MM-dd')
+            'field_options'    => array('date_format' => 'yyyy-MM-dd'),
+            'input_type'       => 'datetime',
         ));
     }
 }
