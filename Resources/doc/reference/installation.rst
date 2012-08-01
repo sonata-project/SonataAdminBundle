@@ -37,8 +37,7 @@ Installation
 Download SonataAdminBundle and its dependencies to the ``vendor`` directory. You
 can use Composer for the automated procces.
 
-  php composer.phar require sonata-project/admin-bundle
-  php composer.phar install
+    php composer.phar require sonata-project/admin-bundle
 
 Next, be sure to enable this bundles in your AppKernel.php file:
 
