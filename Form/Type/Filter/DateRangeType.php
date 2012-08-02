@@ -65,7 +65,8 @@ class DateRangeType extends AbstractType
     {
         $resolver->setDefaults(array(
             'field_type'       => 'sonata_type_date_range',
-            'field_options'    => array('format' => 'yyyy-MM-dd')
+            'field_options'    => array('format' => 'yyyy-MM-dd'),
+            'input_type'       => 'datetime',
         ));
     }
 }
