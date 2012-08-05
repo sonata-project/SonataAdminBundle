@@ -104,7 +104,7 @@ interface AdminInterface
      * @param array  $parameters
      * @param bool   $absolute
      *
-     * @return void
+     * @return string
      */
     function generateUrl($name, array $parameters = array(), $absolute = false);
 
@@ -540,7 +540,7 @@ interface AdminInterface
      * @return void
      */
     function setParent(AdminInterface $admin);
-    
+
     /**
      * @param string $name
      *
