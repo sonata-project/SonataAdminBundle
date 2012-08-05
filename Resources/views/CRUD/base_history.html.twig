@@ -14,13 +14,13 @@ file that was distributed with this source code.
 {% block actions %}
     <div class="sonata-actions">
         {% if admin.hasroute('edit') and admin.id(object) and admin.isGranted('EDIT', object) and admin.show|length > 0 %}
-            <a class="btn sonata-action-element" href="{{ admin.generateObjectUrl('edit', object) }}">{% trans from 'SonataAdminBundle' %}link_action_edit{% endtrans %}</a>
+            <a class="btn sonata-action-element" href="{{ admin.generateObjectUrl('edit', object) }}">{{ 'link_action_edit'|trans({}, 'SonataAdminBundle') }}</a>
         {% endif %}
         {% if admin.hasroute('show') and admin.isGranted('VIEW', object)%}
-            <a class="btn sonata-action-element" href="{{ admin.generateObjectUrl('show', object) }}">{% trans from 'SonataAdminBundle' %}link_action_show{% endtrans %}</a>
+            <a class="btn sonata-action-element" href="{{ admin.generateObjectUrl('show', object) }}">{{ 'link_action_show'|trans({}, 'SonataAdminBundle') }}</a>
         {% endif %}
         {% if admin.hasroute('list') and admin.isGranted('LIST')%}
-            <a class="btn sonata-action-element" href="{{ admin.generateUrl('list') }}">{% trans from 'SonataAdminBundle' %}link_action_list{% endtrans %}</a>
+            <a class="btn sonata-action-element" href="{{ admin.generateUrl('list') }}">{{ 'link_action_list'|trans({}, 'SonataAdminBundle') }}</a>
         {% endif %}
     </div>
 {% endblock %}

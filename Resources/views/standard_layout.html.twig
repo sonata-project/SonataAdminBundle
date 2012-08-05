@@ -49,7 +49,7 @@ file that was distributed with this source code.
         {% endblock %}
 
         <title>
-            {% trans from 'SonataAdminBundle' %}Admin{% endtrans %}
+            {{ 'Admin'|trans({}, 'SonataAdminBundle') }}
 
             {% if _title is not empty %}
                 {{ _title|raw }}

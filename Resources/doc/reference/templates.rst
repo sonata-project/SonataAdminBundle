@@ -57,7 +57,7 @@ You can easily extend the provided templates in your own and customize only the 
          <div class="sonata-actions">
              <ul>
                  {% if admin.hasroute('list') and admin.isGranted('LIST')%}
-                     <li class="btn sonata-action-element"><a href="{{ admin.generateUrl('list') }}">{% trans from 'SonataAdminBundle' %}link_action_list{% endtrans %}</a></li>
+                     <li class="btn sonata-action-element"><a href="{{ admin.generateUrl('list') }}">{{ 'link_action_list'|trans({}, 'SonataAdminBundle') }}</a></li>
                  {% endif %}
              </ul>
          </div>

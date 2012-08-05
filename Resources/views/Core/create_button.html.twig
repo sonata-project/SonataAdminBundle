@@ -11,11 +11,11 @@ file that was distributed with this source code.
 
 {% if admin.hasRoute('create') and admin.isGranted('CREATE')%}
     {% if admin.subClasses is empty %}
-        <li class="btn sonata-action-element"><a href="{{ admin.generateUrl('create') }}">{% trans from 'SonataAdminBundle' %}link_action_create{% endtrans %}</a>
+        <li class="btn sonata-action-element"><a href="{{ admin.generateUrl('create') }}">{{ 'link_action_create'|trans({}, 'SonataAdminBundle') }}</a>
     {% else %}
         <span class="btn-group sonata-action-element">
             <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                {% trans from 'SonataAdminBundle' %}link_action_create{% endtrans %}
+                {{ 'link_action_create'|trans({}, 'SonataAdminBundle') }}
                 <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">

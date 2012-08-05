@@ -36,7 +36,7 @@ file that was distributed with this source code.
                                         <div class="btn-group">
                                             <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
                                                 <img src="{{ asset('bundles/sonataadmin/famfamfam/add.png') }}"  alt="{%- trans from 'SonataAdminBundle' %}link_add{% endtrans -%}" />
-                                                {% trans from 'SonataAdminBundle' %}link_add{% endtrans %}
+                                                {{ 'link_add'|trans({}, 'SonataAdminBundle') }}
                                                 <span class="caret"></span>
                                             </a>
                                             <ul class="dropdown-menu">

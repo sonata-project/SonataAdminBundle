@@ -18,8 +18,8 @@ file that was distributed with this source code.
 {% endblock %}
 
 {% block formactions %}
-    <input class="btn btn-success" type="submit" name="btn_preview_approve" value="{% trans from 'SonataAdminBundle' %}btn_preview_approve{% endtrans %}"/>
-    <input class="btn btn-danger" type="submit" name="btn_preview_decline" value="{% trans from 'SonataAdminBundle' %}btn_preview_decline{% endtrans %}"/>
+    <input class="btn btn-success" type="submit" name="btn_preview_approve" value="{{ 'btn_preview_approve'|trans({}, 'SonataAdminBundle') }}"/>
+    <input class="btn btn-danger" type="submit" name="btn_preview_decline" value="{{ 'btn_preview_decline'|trans({}, 'SonataAdminBundle') }}"/>
 {% endblock %}
 
 {% block preview %}
@@ -45,7 +45,7 @@ file that was distributed with this source code.
         {% endfor %}
     </div>
 {% endblock %}
-    
+
 {% block form %}
     <div class="sonata-preview-form-container">
         {{ parent() }}

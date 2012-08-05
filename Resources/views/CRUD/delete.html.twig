@@ -14,11 +14,11 @@ file that was distributed with this source code.
 {% block actions %}
     <div class="sonata-actions">
         {% if admin.hasRoute('edit') and admin.isGranted('EDIT', object)%}
-            <a class="btn sonata-action-element" href="{{ admin.generateObjectUrl('edit', object) }}">{% trans from 'SonataAdminBundle' %}link_action_edit{% endtrans %}</a>
+            <a class="btn sonata-action-element" href="{{ admin.generateObjectUrl('edit', object) }}">{{ 'link_action_edit'|trans({}, 'SonataAdminBundle') }}</a>
         {% endif %}
 
         {% if admin.hasRoute('create') and admin.isGranted('CREATE')%}
-            <a class="btn sonata-action-element" href="{{ admin.generateUrl('create') }}">{% trans from 'SonataAdminBundle' %}link_action_create{% endtrans %}</a>
+            <a class="btn sonata-action-element" href="{{ admin.generateUrl('create') }}">{{ 'link_action_create'|trans({}, 'SonataAdminBundle') }}</a>
         {% endif %}
     </div>
 {% endblock %}
@@ -28,20 +28,20 @@ file that was distributed with this source code.
 {% block content %}
     <div class="sonata-ba-delete">
 
-        <h1>{% trans from 'SonataAdminBundle' %}title_delete{% endtrans %}</h1>
+        <h1>{{ 'title_delete'|trans({}, 'SonataAdminBundle') }}</h1>
 
-        {% trans with {'%object%': object} from 'SonataAdminBundle' %}message_delete_confirmation{% endtrans %}
+        {{ 'message_delete_confirmation'|trans({'%object%': object}, 'SonataAdminBundle') }}
 
         <div class="well form-actions">
             <form method="POST" action="{{ admin.generateObjectUrl('delete', object) }}">
                 <input type="hidden" value="DELETE" name="_method" />
 
-                <input type="submit" class="btn btn-danger" value="{% trans from 'SonataAdminBundle' %}btn_delete{% endtrans %}" />
+                <input type="submit" class="btn btn-danger" value="{{ 'btn_delete'|trans({}, 'SonataAdminBundle') }}" />
 
                 {% if admin.hasRoute('edit') and admin.isGranted('EDIT', object) %}
-                    {% trans from 'SonataAdminBundle' %}delete_or{% endtrans %}
+                    {{ 'delete_or'|trans({}, 'SonataAdminBundle') }}
 
-                    <a class="btn btn-success" href="{{ admin.generateObjectUrl('edit', object) }}">{% trans from 'SonataAdminBundle' %}link_action_edit{% endtrans %}</a>
+                    <a class="btn btn-success" href="{{ admin.generateObjectUrl('edit', object) }}">{{ 'link_action_edit'|trans({}, 'SonataAdminBundle') }}</a>
                 {% endif %}
             </form>
         </div>

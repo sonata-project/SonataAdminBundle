@@ -14,11 +14,11 @@ file that was distributed with this source code.
 {% block actions %}
     <div class="sonata-actions">
         {% if admin.hasRoute('list') and admin.isGranted('LIST')%}
-            <a class="btn sonata-action-element" href="{{ admin.generateUrl('list') }}">{% trans from 'SonataAdminBundle' %}link_action_list{% endtrans %}</a>
+            <a class="btn sonata-action-element" href="{{ admin.generateUrl('list') }}">{{ 'link_action_list'|trans({}, 'SonataAdminBundle') }}</a>
         {% endif %}
 
         {% if admin.hasRoute('create') and admin.isGranted('CREATE')%}
-            <a class="btn sonata-action-element" href="{{ admin.generateUrl('create') }}">{% trans from 'SonataAdminBundle' %}link_action_create{% endtrans %}</a>
+            <a class="btn sonata-action-element" href="{{ admin.generateUrl('create') }}">{{ 'link_action_create'|trans({}, 'SonataAdminBundle') }}</a>
         {% endif %}
     </div>
 {% endblock %}
@@ -28,10 +28,10 @@ file that was distributed with this source code.
 {% block content %}
     <div class="sonata-ba-delete">
 
-        <h1>{% trans from 'SonataAdminBundle' %}title_batch_confirmation{% endtrans %}</h1>
+        <h1>{{ 'title_batch_confirmation'|trans({}, 'SonataAdminBundle') }}</h1>
 
         {% if data.all_elements %}
-            {% trans from 'SonataAdminBundle' %}message_batch_all_confirmation{% endtrans %}
+            {{ 'message_batch_all_confirmation'|trans({}, 'SonataAdminBundle') }}
         {% else %}
             {% transchoice data.idx|length with {'%count%': data.idx|length} from 'SonataAdminBundle' %}message_batch_confirmation{% endtranschoice %}
         {% endif %}
@@ -45,12 +45,12 @@ file that was distributed with this source code.
                     {{ form_rest(form) }}
                 </div>
 
-                <input type="submit" class="btn btn-danger" value="{% trans from 'SonataAdminBundle' %}btn_execute_batch_action{% endtrans %}" />
+                <input type="submit" class="btn btn-danger" value="{{ 'btn_execute_batch_action'|trans({}, 'SonataAdminBundle') }}" />
 
                 {% if admin.hasRoute('list') and admin.isGranted('LIST') %}
-                    {% trans from 'SonataAdminBundle' %}delete_or{% endtrans %}
+                    {{ 'delete_or'|trans({}, 'SonataAdminBundle') }}
 
-                    <a class="btn btn-success" href="{{ admin.generateUrl('list') }}">{% trans from 'SonataAdminBundle' %}link_action_list{% endtrans %}</a>
+                    <a class="btn btn-success" href="{{ admin.generateUrl('list') }}">{{ 'link_action_list'|trans({}, 'SonataAdminBundle') }}</a>
                 {% endif %}
             </form>
         </div>
