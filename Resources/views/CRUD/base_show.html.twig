@@ -15,7 +15,11 @@ file that was distributed with this source code.
     <div class="sonata-actions">
         <ul>
             {% if admin.hasRoute('edit') and admin.isGranted('EDIT', object)%}
-                <li class="btn sonata-action-element"><a href="{{ admin.generateObjectUrl('edit', object) }}">{% trans from 'SonataAdminBundle' %}link_action_edit{% endtrans %}</a></li>
+                <li class="btn sonata-action-element">
+                    <a href="{{ admin.generateObjectUrl('edit', object) }}">
+                    {% filter e %}{% trans with {'%name%': admin.toString(object)} from 'SonataAdminBundle' %}link_action_edit{% endtrans %}{% endfilter %}
+                    </a>
+                </li>
             {% endif %}
             {% if admin.hasroute('history') and admin.id(object) and admin.isGranted('EDIT', object) %}
                 <li class="btn sonata-action-element"><a href="{{ admin.generateObjectUrl('history', object) }}">{% trans from 'SonataAdminBundle' %}link_action_history{% endtrans %}</a></li>
