@@ -320,15 +320,15 @@
 
             <trans-unit id="btn_preview">
                 <source>btn_preview</source>
-                <target>btn_preview</target>
+                <target>Predogled</target>
             </trans-unit>
             <trans-unit id="btn_preview_approve">
                 <source>btn_preview_approve</source>
-                <target>btn_preview_approve</target>
+                <target>Odobritev</target>
             </trans-unit>
             <trans-unit id="btn_preview_decline">
                 <source>btn_preview_decline</source>
-                <target>btn_preview_decline</target>
+                <target>Zavrnitev</target>
             </trans-unit>
         </body>
     </file>
