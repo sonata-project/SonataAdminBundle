@@ -17,6 +17,7 @@ By default, an Admin class uses a set of templates, it is possible to tweak the 
             edit:    SonataAdminBundle:CRUD:edit.html.twig
             history: SonataAdminBundle:CRUD:history.html.twig
             preview: SonataAdminBundle:CRUD:preview.html.twig
+            delete:  SonataAdminBundle:CRUD:delete.html.twig
 
             # default values of helper templates
             short_object_description: SonataAdminBundle:Helper:short-object-description.html.twig
@@ -37,6 +38,7 @@ Usage of each template :
 * list_block : the template used for the list of admin blocks on the dashboard
 * preview : the template to use for previewing an edit / create action
 * short_object_description: used to represent the entity in one-to-one/many-to-one relations
+* delete: the template to use for the delete action
 
 The default values will be set only if the ``Admin::setTemplates`` is not called by the Container.
 

@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+### 2012-08-05
+
+* [BC BREAK] remove ``getListTemplate``, ``getEditTemplate``, ``getShowTemplate`` => just use ``getTemplate('edit')``
+* add a ``delete`` template configuration entry
+
 ### 2012-06-05
 
 * [BC BREAK] Fix bug introduces by 09334d81, now an admin must have the role ``ROLE_SONATA_ADMIN`` to see the top bar navigation

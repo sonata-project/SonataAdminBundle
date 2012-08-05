@@ -1083,36 +1083,6 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * Returns the list template
-     *
-     * @return string the list template
-     */
-    public function getListTemplate()
-    {
-        return $this->getTemplate('list');
-    }
-
-    /**
-     * Returns the edit template
-     *
-     * @return string the edit template
-     */
-    public function getEditTemplate()
-    {
-        return $this->getTemplate('edit');
-    }
-
-    /**
-     * Returns the view template
-     *
-     * @return string the view template
-     */
-    public function getShowTemplate()
-    {
-        return $this->getTemplate('show');
-    }
-
-    /**
      * @param array $templates
      *
      * @return void
