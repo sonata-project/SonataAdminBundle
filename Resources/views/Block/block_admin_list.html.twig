@@ -28,15 +28,15 @@ file that was distributed with this source code.
                             <td>
                                 {% if admin.hasroute('create') and admin.isGranted('CREATE') %}
                                     {% if admin.subClasses is empty %}
-                                        <a href="{{ admin.generateUrl('create')}}">
-                                            <img src="{{ asset('bundles/sonataadmin/famfamfam/add.png') }}"  alt="{%- trans from 'SonataAdminBundle' %}link_add{% endtrans -%}" />
-                                            {%- trans from 'SonataAdminBundle' %}link_add{% endtrans -%}
+                                        <a class="btn" href="{{ admin.generateUrl('create')}}">
+                                            <i class="icon-plus"></i>
+                                            {% trans from 'SonataAdminBundle' %}link_add{% endtrans %}
                                         </a>
                                     {% else %}
                                         <div class="btn-group">
                                             <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                                                <img src="{{ asset('bundles/sonataadmin/famfamfam/add.png') }}"  alt="{%- trans from 'SonataAdminBundle' %}link_add{% endtrans -%}" />
-                                                {{ 'link_add'|trans({}, 'SonataAdminBundle') }}
+                                                <i class="icon-plus"></i>
+                                                {% trans from 'SonataAdminBundle' %}link_add{% endtrans %}
                                                 <span class="caret"></span>
                                             </a>
                                             <ul class="dropdown-menu">
@@ -52,9 +52,9 @@ file that was distributed with this source code.
                             </td>
                             <td>
                                 {% if admin.hasroute('list') and admin.isGranted('LIST') %}
-                                    <a href="{{ admin.generateUrl('list')}}">
-                                        <img src="{{ asset('bundles/sonataadmin/famfamfam/application_view_list.png') }}" alt="{%- trans from 'SonataAdminBundle' %}link_list{% endtrans -%}" />
-                                        {%- trans from 'SonataAdminBundle' %}link_list{% endtrans -%}
+                                    <a class="btn" href="{{ admin.generateUrl('list')}}">
+                                        <i class="icon-list"></i>
+                                        {% trans from 'SonataAdminBundle' %}link_list{% endtrans -%}
                                     </a>
                                 {% endif %}
                             </td>
