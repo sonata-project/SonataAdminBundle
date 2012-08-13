@@ -11,12 +11,12 @@
 
 namespace Sonata\AdminBundle\Form\Type;
 
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType as FormChoiceType;
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Translation\TranslatorInterface;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class EqualType extends FormChoiceType
+class EqualType extends AbstractType
 {
     const TYPE_IS_EQUAL = 1;
 
