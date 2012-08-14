@@ -43,9 +43,9 @@ At this point you can already access the admin dashboard by visiting the url:
 Step 2: Setup the persistence service (ORM, ODM, ...)
 -----------------------------------------------------
 
-SonataAdminBundle does not impose persistance service (service for handling and
+SonataAdminBundle does not impose persistence service (service for handling and
 controlling your models), however most likely your application will use some
-persistance service (like ORM or ODM for database and document stores) therefore
+persistence service (like ORM or ODM for database and document stores) therefore
 you can use the following bundles officially supported by Sonata Project's admin
 bundle:
 
@@ -56,7 +56,7 @@ bundle:
 Propel users are warmly welcome to contribute and create a new bundle for Propel
 ORM that will be integrated in SonataAdminBundle.
 
-Install a persistance servise you need and configure it according to their
+Install the persistance service you need and configure it according to its
 related documentation.
 
 Step 3: Create Admin class
