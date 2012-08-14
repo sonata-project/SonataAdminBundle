@@ -132,7 +132,7 @@
             </trans-unit>
             <trans-unit id='flash_create_success'>
               <source>flash_create_success</source>
-              <target>L'élément a été crée avec succès.</target>
+              <target>L'élément a été créé avec succès.</target>
             </trans-unit>
             <trans-unit id='flash_create_error'>
               <source>flash_create_error</source>
@@ -172,7 +172,7 @@
             </trans-unit>
             <trans-unit id="message_delete_confirmation">
                 <source>message_delete_confirmation</source>
-                <target>Êtes-vous sûre de vouloir supprimer l'élément sélectionné?</target>
+                <target>Êtes-vous sûr de vouloir supprimer l'élément sélectionné?</target>
             </trans-unit>
             <trans-unit id="btn_delete">
                 <source>btn_delete</source>
