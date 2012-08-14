@@ -33,7 +33,6 @@
 
         <service id="sonata.admin.form.type.boolean" class="Sonata\AdminBundle\Form\Type\BooleanType">
             <tag name="form.type" alias="sonata_type_boolean" />
-            <argument type="service" id="translator" />
         </service>
 
         <service id="sonata.admin.form.type.translatable_choice" class="Sonata\AdminBundle\Form\Type\TranslatableChoiceType">

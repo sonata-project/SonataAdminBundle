@@ -13,7 +13,7 @@
 namespace Sonata\AdminBundle\Form\Type;
 
 use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -21,7 +21,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class TranslatableChoiceType extends ChoiceType
+class TranslatableChoiceType extends AbstractType
 {
     protected $translator;
 
@@ -34,52 +34,29 @@ class TranslatableChoiceType extends ChoiceType
     }
 
     /**
-     * {@inheritedDoc}
+     * {@inheritDoc}
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'multiple'          => false,
-            'expanded'          => false,
-            'choice_list'       => null,
-            'choices'           => array(),
-            'preferred_choices' => array(),
-            'catalogue'         => 'messages',
-
-            'empty_data'        => function (Options $options, $previousValue) {
-                $multiple = isset($options['multiple']) && $options['multiple'];
-                $expanded = isset($options['expanded']) && $options['expanded'];
-
-                return $multiple || $expanded ? array() : '';
-            },
-
-            'empty_value'       => function (Options $options, $previousValue) {
-                $multiple = isset($options['multiple']) && $options['multiple'];
-                $expanded = isset($options['expanded']) && $options['expanded'];
-
-                return $multiple || $expanded || !isset($options['empty_value']) ? null : '';
-            },
-
-            'error_bubbling'    => false,
+            'catalogue' => 'messages',
         ));
     }
 
     /**
      * {@inheritDoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildView(FormView $view, FormInterface $form, array $options)
     {
         // translate options before building form
-        foreach ($options['choices'] as $name => $value) {
-            $options['choices'][$name] = $this->translator->trans($value, array(), $options['catalogue']);
+        foreach ($view->vars['choices'] as $choiceView) {
+            $choiceView->label = $this->translator->trans($choiceView->label, array(), $options['catalogue']);
         }
 
         // translate empty value
-        if (!empty($options['empty_value'])) {
-            $options['empty_value'] = $this->translator->trans($options['empty_value'], array(), $options['catalogue']);
+        if (!empty($view->vars['empty_value'])) {
+            $view->vars['empty_value'] = $this->translator->trans($view->vars['empty_value'], array(), $options['catalogue']);
         }
-
-        parent::buildForm($builder, $options);
     }
 
     /**

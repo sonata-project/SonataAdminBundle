@@ -11,38 +11,27 @@
 
 namespace Sonata\AdminBundle\Form\Type;
 
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType as FormChoiceType;
 use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Form\AbstractType;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class BooleanType extends FormChoiceType
+class BooleanType extends AbstractType
 {
     const TYPE_YES = 1;
 
     const TYPE_NO = 2;
-
-    protected $translator;
-
-    /**
-     * @param \Symfony\Component\Translation\TranslatorInterface $translator
-     */
-    public function __construct(TranslatorInterface $translator)
-    {
-        $this->translator = $translator;
-    }
 
     /**
      * {@inheritDoc}
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        parent::setDefaultOptions($resolver);
-
         $resolver->setDefaults(array(
-            'choices' => array(
-                self::TYPE_YES  => $this->translator->trans('label_type_yes', array(), 'SonataAdminBundle'),
-                self::TYPE_NO   => $this->translator->trans('label_type_no', array(), 'SonataAdminBundle')
+            'catalogue' => 'SonataAdminBundle',
+            'choices'   => array(
+                self::TYPE_YES  => 'label_type_yes',
+                self::TYPE_NO   => 'label_type_no'
             )
         ));
     }
@@ -52,7 +41,7 @@ class BooleanType extends FormChoiceType
      */
     public function getParent()
     {
-        return 'choice';
+        return 'sonata_type_translatable_choice';
     }
 
     /**
