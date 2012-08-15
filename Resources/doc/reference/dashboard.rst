@@ -12,11 +12,11 @@ application's config file:
 
     # app/config/config.yml
     sonata_admin:
-        blocks:
-            # display a dashboard block
-            - { position: left, type: sonata.admin.block.admin_list }
+        dashboard:
+            blocks:
+                # display a dashboard block
+                - { position: left, type: sonata.admin.block.admin_list }
 
-        dashboard
             groups:
                 ... your config ...
 
@@ -65,7 +65,7 @@ Add a group with all the default items
 
     # app/config/config.yml
     sonata_admin:
-        dashboard
+        dashboard:
             blocks:
                 # display a dashboard block
                 - { position: left, type: sonata.admin.block.admin_list }
@@ -103,7 +103,7 @@ Display two blocks with different dashboard groups
 
     # app/config/config.yml
     sonata_admin:
-        dashboard
+        dashboard:
             blocks:
                 # display two dashboard blocks
                 - { position: left,  type: sonata.admin.block.admin_list, settings: { groups: [sonata_page1, sonata_page2] } }
