@@ -156,7 +156,7 @@ var Admin = {
 
             var container = jQuery(this).closest('[data-prototype]');
             var proto = container.attr('data-prototype');
-            proto = proto.replace(/\$\$name\$\$/g, container.children().length);
+            proto = proto.replace(/__name__/g, container.children().length);
             jQuery(proto).insertBefore(jQuery(this).parent());
             
             jQuery(this).trigger('sonata-collection-item-added');
