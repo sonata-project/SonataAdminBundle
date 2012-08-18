@@ -54,7 +54,10 @@
                     {% endif %}
                     {% if admin.id(object) %}
                         <input type="submit" class="btn primary" name="btn_update_and_edit" value="{% trans from 'SonataAdminBundle' %}btn_update_and_edit_again{% endtrans %}"/>
-                        <input type="submit" class="btn" name="btn_update_and_list" value="{% trans from 'SonataAdminBundle' %}btn_update_and_return_to_list{% endtrans %}"/>
+
+                        {% if admin.hasroute('list') and admin.isGranted('LIST') %}
+                            <input type="submit" class="btn" name="btn_update_and_list" value="{% trans from 'SonataAdminBundle' %}btn_update_and_return_to_list{% endtrans %}"/>
+                        {% endif %}
 
                         {% if admin.hasroute('delete') and admin.isGranted('DELETE', object) %}
                             {% trans from 'SonataAdminBundle' %}delete_or{% endtrans %}
@@ -69,5 +72,5 @@
             {% endblock formactions %}
         </form>
     {% endif%}
-    
-{% endblock %}    
+
+{% endblock %}
