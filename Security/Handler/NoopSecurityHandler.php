@@ -52,4 +52,12 @@ class NoopSecurityHandler implements SecurityHandlerInterface
     public function deleteObjectSecurity(AdminInterface $admin, $object)
     {
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getSecurityContext()
+    {
+        return $this->securityContext;
+    }
 }

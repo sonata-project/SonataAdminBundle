@@ -153,6 +153,14 @@ class AclSecurityHandler implements AclSecurityHandlerInterface
     /**
      * {@inheritDoc}
      */
+    public function getSecurityContext()
+    {
+        return $this->securityContext;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getObjectAcl(ObjectIdentityInterface $objectIdentity)
     {
         try {

@@ -59,4 +59,11 @@ interface SecurityHandlerInterface
      * @return void
      */
     function deleteObjectSecurity(AdminInterface $admin, $object);
+
+    /**
+     * Get security context
+     *
+     * @return \Symfony\Component\Security\Core\SecurityContextInterface
+     */
+    function getSecurityContext();
 }
