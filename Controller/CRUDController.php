@@ -319,7 +319,13 @@ class CRUDController extends Controller
         }
 
         if (!$url) {
-            $url = $this->admin->generateObjectUrl('edit', $object);
+            if ($this->admin->hasRoute('edit')) {
+                $url = $this->admin->generateObjectUrl('edit', $object);
+            } elseif ($this->admin->hasRoute('list')) {
+                $url = $this->admin->generateObjectUrl('list', $object);
+            } elseif ($this->admin->hasRoute('create')) {
+                $url = $this->admin->generateObjectUrl('create', $object);
+            }
         }
 
         return new RedirectResponse($url);
