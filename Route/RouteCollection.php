@@ -135,6 +135,42 @@ class RouteCollection
     }
 
     /**
+     * Remove all routes except routes in $routeList
+     *
+     * @param array $routeList
+     *
+     * @return \Sonata\AdminBundle\Route\RouteCollection
+     */
+    public function removeAllExcept(array $routeList)
+    {
+        $routeCodeList = array();
+        foreach ($routeList as $name) {
+            $routeCodeList[] = $this->getCode($name);
+        }
+
+        $elements = $this->elements;
+        foreach ($elements as $key => $element) {
+            if (!in_array($key, $routeCodeList)) {
+                unset($this->elements[$key]);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove all routes
+     *
+     * @return \Sonata\AdminBundle\Route\RouteCollection
+     */
+    public function removeAll()
+    {
+        $this->elements = array();
+
+        return $this;
+    }
+
+    /**
      * Convert a word in to the format for a symfony action action_name => actionName
      *
      * @param string $action Word to actionify
