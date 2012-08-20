@@ -70,6 +70,7 @@ Using roles:
                 CREATE: CREATE
                 VIEW: VIEW
                 DELETE: DELETE
+                EXPORT: EXPORT
                 OPERATOR: OPERATOR
                 MASTER: MASTER
 
@@ -85,11 +86,11 @@ Using ACL:
             information:
                 GUEST:    [VIEW, LIST]
                 STAFF:    [EDIT, LIST, CREATE]
-                EDITOR:   [OPERATOR]
+                EDITOR:   [OPERATOR, EXPORT]
                 ADMIN:    [MASTER]
             # permissions not related to an object instance and also to be available when objects do not exist
             # the DELETE admin permission means the user is allowed to batch delete objects
-            admin_permissions: [CREATE, LIST, DELETE, UNDELETE, OPERATOR, MASTER]
+            admin_permissions: [CREATE, LIST, DELETE, UNDELETE, EXPORT, OPERATOR, MASTER]
             # permission related to the objects
             object_permissions: [VIEW, EDIT, DELETE, UNDELETE, OPERATOR, MASTER, OWNER]
 
@@ -252,7 +253,7 @@ If you have Admin classes, you can install or update the related CRUD ACL rules 
         > install ACL for sonata.media.admin.media
         - add role: ROLE_SONATA_MEDIA_ADMIN_MEDIA_GUEST, permissions: ["VIEW","LIST"]
         - add role: ROLE_SONATA_MEDIA_ADMIN_MEDIA_STAFF, permissions: ["EDIT","LIST","CREATE"]
-        - add role: ROLE_SONATA_MEDIA_ADMIN_MEDIA_EDITOR, permissions: ["OPERATOR"]
+        - add role: ROLE_SONATA_MEDIA_ADMIN_MEDIA_EDITOR, permissions: ["OPERATOR","EXPORT"]
         - add role: ROLE_SONATA_MEDIA_ADMIN_MEDIA_ADMIN, permissions: ["MASTER"]
         ... skipped ...
 
@@ -289,7 +290,7 @@ property ``$securityInformation`` to change this:
     user  has the same permissions as guests and is additionally allowed to 
     ``EDIT`` and ``CREATE`` new objects;
  - ``ROLE_SONATA_..._EDITOR`` : an editor is granted all access and, compared to
-    the staff users, is allowed to ``DELETE``;
+    the staff users, is allowed to ``DELETE`` and ``EXPORT``;
  - ``ROLE_SONATA_..._ADMIN`` : an administrative user is granted all access and 
     on top of that, the user is allowed to grant other users access.
 

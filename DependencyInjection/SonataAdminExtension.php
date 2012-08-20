@@ -80,6 +80,7 @@ class SonataAdminExtension extends Extension
                         'CREATE'    => array('CREATE'),
                         'VIEW'      => array('VIEW'),
                         'DELETE'    => array('DELETE'),
+                        'EXPORT'    => array('EXPORT'),
                         'OPERATOR'  => array('OPERATOR'),
                         'MASTER'    => array('MASTER'),
                     );
@@ -90,7 +91,7 @@ class SonataAdminExtension extends Extension
                     $config['security']['information'] = array(
                         'GUEST'    => array('VIEW', 'LIST'),
                         'STAFF'    => array('EDIT', 'LIST', 'CREATE'),
-                        'EDITOR'   => array('OPERATOR'),
+                        'EDITOR'   => array('OPERATOR', 'EXPORT'),
                         'ADMIN'    => array('MASTER'),
                     );
                 }

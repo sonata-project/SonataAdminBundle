@@ -28,6 +28,7 @@ class AdminPermissionMap implements PermissionMapInterface
     const PERMISSION_DELETE      = 'DELETE';
     const PERMISSION_UNDELETE    = 'UNDELETE';
     const PERMISSION_LIST        = 'LIST';
+    const PERMISSION_EXPORT      = 'EXPORT';
     const PERMISSION_OPERATOR    = 'OPERATOR';
     const PERMISSION_MASTER      = 'MASTER';
     const PERMISSION_OWNER       = 'OWNER';
@@ -84,7 +85,14 @@ class AdminPermissionMap implements PermissionMapInterface
             MaskBuilder::MASK_OWNER
         ),
 
-       self::PERMISSION_OPERATOR => array(
+        self::PERMISSION_EXPORT => array(
+            MaskBuilder::MASK_EXPORT,
+            MaskBuilder::MASK_OPERATOR,
+            MaskBuilder::MASK_MASTER,
+            MaskBuilder::MASK_OWNER
+        ),
+
+        self::PERMISSION_OPERATOR => array(
             MaskBuilder::MASK_OPERATOR,
             MaskBuilder::MASK_MASTER,
             MaskBuilder::MASK_OWNER
