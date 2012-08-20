@@ -151,6 +151,16 @@ class AclSecurityHandler implements AclSecurityHandlerInterface
     }
 
     /**
+     * Get security context
+     *
+     * @return \Symfony\Component\Security\Core\SecurityContextInterface
+     */
+    public function getSecurityContext()
+    {
+        return $this->securityContext;
+    }
+
+    /**
      * {@inheritDoc}
      */
     public function getObjectAcl(ObjectIdentityInterface $objectIdentity)

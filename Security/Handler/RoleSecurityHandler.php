@@ -82,4 +82,14 @@ class RoleSecurityHandler implements SecurityHandlerInterface
     public function deleteObjectSecurity(AdminInterface $admin, $object)
     {
     }
+
+    /**
+     * Get security context
+     *
+     * @return \Symfony\Component\Security\Core\SecurityContextInterface
+     */
+    public function getSecurityContext()
+    {
+        return $this->securityContext;
+    }
 }
