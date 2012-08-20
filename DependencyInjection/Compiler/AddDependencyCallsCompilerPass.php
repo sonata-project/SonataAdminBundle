@@ -32,6 +32,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
+        $parameterBag = $container->getParameterBag();
         $groupDefaults = $admins = $classes = array();
 
         $pool = $container->getDefinition('sonata.admin.pool');
@@ -64,16 +65,17 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
                 }
 
                 $groupName = isset($attributes['group']) ? $attributes['group'] : 'default';
+                $resolvedGroupName = $parameterBag->resolveValue($groupName);
                 $labelCatalogue = isset($attributes['label_catalogue']) ? $attributes['label_catalogue'] : 'SonataAdminBundle';
 
-                if (!isset($groupDefaults[$groupName])) {
-                    $groupDefaults[$groupName] = array(
+                if (!isset($groupDefaults[$resolvedGroupName])) {
+                    $groupDefaults[$resolvedGroupName] = array(
                         'label'           => $groupName,
                         'label_catalogue' => $labelCatalogue
                     );
                 }
 
-                $groupDefaults[$groupName]['items'][] = $id;
+                $groupDefaults[$resolvedGroupName]['items'][] = $id;
             }
         }
 
