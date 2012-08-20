@@ -206,14 +206,6 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
     /**
      * {@inheritDoc}
      */
-    public function getSecurityContext()
-    {
-        return $this->securityContext;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function getBaseRole(AdminInterface $admin)
     {
     }

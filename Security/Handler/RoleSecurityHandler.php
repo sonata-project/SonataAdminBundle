@@ -84,7 +84,9 @@ class RoleSecurityHandler implements SecurityHandlerInterface
     }
 
     /**
-     * {@inheritDoc}
+     * Get security context
+     *
+     * @return \Symfony\Component\Security\Core\SecurityContextInterface
      */
     public function getSecurityContext()
     {
