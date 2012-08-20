@@ -639,6 +639,10 @@ class CRUDController extends Controller
      */
     public function exportAction(Request $request)
     {
+        if (false === $this->admin->isGranted('EXPORT')) {
+            throw new AccessDeniedException();
+        }
+
         $format = $request->get('format');
 
         $allowedExportFormats = (array) $this->admin->getExportFormats();

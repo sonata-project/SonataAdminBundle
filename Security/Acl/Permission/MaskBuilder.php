@@ -20,6 +20,8 @@ use Symfony\Component\Security\Acl\Permission\MaskBuilder as BaseMaskBuilder;
 class MaskBuilder extends BaseMaskBuilder
 {
     const MASK_LIST         = 4096;       // 1 << 12
+    const MASK_EXPORT       = 8192;       // 1 << 13
 
     const CODE_LIST         = 'L';
+    const CODE_EXPORT       = 'E';
 }
