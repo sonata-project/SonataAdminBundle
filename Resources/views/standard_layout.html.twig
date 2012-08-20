@@ -89,6 +89,16 @@ file that was distributed with this source code.
                                     {# There is no hasRole in a TokenInterface ... #}
                                     {% if app.security.token and is_granted('ROLE_SONATA_ADMIN') %}
                                         {% for group in admin_pool.dashboardgroups %}
+                                            {% set group_visible = false %}
+
+                                            {# check if at least one group item is available #}
+                                            {% for admin in group.items if not group_visible %}
+                                                {% if (admin.hasroute('create') and admin.isGranted('CREATE')) or (admin.hasroute('list') and admin.isGranted('LIST')) %}
+                                                    {% set group_visible = true %}
+                                                {% endif %}
+                                            {% endfor %}
+
+                                            {% if group_visible %}
                                             <li class="dropdown">
                                                 <a href="#" class="dropdown-toggle">{{ group.label|trans({}, group.label_catalogue) }}</a>
                                                 <ul class="dropdown-menu">
@@ -99,6 +109,7 @@ file that was distributed with this source code.
                                                     {% endfor %}
                                                 </ul>
                                             </li>
+                                            {% endif %}
                                         {% endfor %}
                                     {% endif %}
                                 {% endblock %}
