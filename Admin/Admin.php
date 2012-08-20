@@ -1844,10 +1844,12 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
             array('uri' => $this->routeGenerator->generate('sonata_admin_dashboard'))
         );
 
-        $child = $child->addChild(
-            $this->trans($this->getLabelTranslatorStrategy()->getLabel(sprintf('%s_list', $this->getClassnameLabel()), 'breadcrumb', 'link')),
-            array('uri' => $this->generateUrl('list'))
-        );
+        if ($this->hasRoute('list')) {
+            $child = $child->addChild(
+                $this->trans($this->getLabelTranslatorStrategy()->getLabel(sprintf('%s_list', $this->getClassnameLabel()), 'breadcrumb', 'link')),
+                array('uri' => $this->generateUrl('list'))
+            );
+        }
 
         $childAdmin = $this->getCurrentChildAdmin();
 
@@ -1862,7 +1864,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
             return $childAdmin->buildBreadcrumbs($action, $child);
 
         } elseif ($this->isChild()) {
-            if ($action != 'list') {
+            if ($action != 'list' && $this->hasRoute('list')) {
                 $menu = $menu->addChild(
                     $this->trans($this->getLabelTranslatorStrategy()->getLabel(sprintf('%s_list', $this->getClassnameLabel()), 'breadcrumb', 'link')),
                     array('uri' => $this->generateUrl('list'))
