@@ -26,6 +26,10 @@
                 <source>btn_filter</source>
                 <target>Filtra</target>
             </trans-unit>
+            <trans-unit id="btn_update">
+                <source>btn_update</source>
+                <target>Actualitza</target>
+            </trans-unit>
             <trans-unit id="btn_update_and_edit_again">
                 <source>btn_update_and_edit_again</source>
                 <target>Actualitza</target>
@@ -184,7 +188,7 @@
             </trans-unit>
             <trans-unit id="message_batch_confirmation">
                 <source>message_batch_confirmation</source>
-                <target>Esteu segur que voleu confirmar aquesta acció i executar-la per tots els elements seleccionats?</target>
+                <target>Esteu segur que voleu confirmar aquesta acció i executar-la per tots els elements seleccionats?|[1,+Inf[Esteu segur que voleu confirmar aquesta acció i executar-la per tots els %count% elements seleccionats?</target>
             </trans-unit>
             <trans-unit id="btn_execute_batch_action">
                 <source>btn_execute_batch_action</source>
