@@ -165,7 +165,6 @@ var Admin = {
             var nameRegexp = new RegExp(parts[parts.length-1]+'\\]\\[__name__','g');
             proto = proto.replace(nameRegexp, parts[parts.length-1]+']['+container.children().length);
             jQuery(proto).insertBefore(jQuery(this).parent());
-            jQuery(proto).insertBefore(jQuery(this).parent());
             
             jQuery(this).trigger('sonata-collection-item-added');
         });
