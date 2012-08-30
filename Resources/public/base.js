@@ -156,7 +156,15 @@ var Admin = {
 
             var container = jQuery(this).closest('[data-prototype]');
             var proto = container.attr('data-prototype');
-            proto = proto.replace(/__name__/g, container.children().length);
+            // Set field id
+            var idRegexp = new RegExp(container.attr('id')+'___name__','g');
+            proto = proto.replace(idRegexp, container.attr('id')+'_'+container.children().length);
+            
+            // Set field name
+            var parts = container.attr('id').split('_');
+            var nameRegexp = new RegExp(parts[parts.length-1]+'\\]\\[__name__','g');
+            proto = proto.replace(nameRegexp, parts[parts.length-1]+']['+container.children().length);
+            jQuery(proto).insertBefore(jQuery(this).parent());
             jQuery(proto).insertBefore(jQuery(this).parent());
             
             jQuery(this).trigger('sonata-collection-item-added');
