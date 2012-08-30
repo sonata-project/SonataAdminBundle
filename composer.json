@@ -16,7 +16,6 @@
             "homepage": "https://github.com/sonata-project/SonataAdminBundle/contributors"
         }
     ],
-    "minimum-stability": "dev",
     "require": {
         "knplabs/knp-menu-bundle": "1.1.*",
         "sonata-project/jquery-bundle": "dev-master",
@@ -33,5 +32,11 @@
     "autoload": {
         "psr-0": { "Sonata\\AdminBundle": "" }
     },
-    "target-dir": "Sonata/AdminBundle"
+    "target-dir": "Sonata/AdminBundle",
+    "minimum-stability": "dev",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.1-dev"
+        }
+    }
 }
