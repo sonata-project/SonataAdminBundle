@@ -48,7 +48,7 @@
             </trans-unit>
             <trans-unit id="link_action_edit">
                 <source>link_action_edit</source>
-                <target>Editer</target>
+                <target>Éditer</target>
             </trans-unit>
             <trans-unit id="link_action_list">
                 <source>link_action_list</source>
