@@ -35,7 +35,7 @@ Installation
 ------------
 
 Download SonataAdminBundle and its dependencies to the ``vendor`` directory. You
-can use Composer for the automated process:
+can use Composer for the automated process::
 
     php composer.phar require sonata-project/admin-bundle --no-update
     php composer.phar require sonata-project/doctrine-orm-admin-bundle --no-update  # optional
