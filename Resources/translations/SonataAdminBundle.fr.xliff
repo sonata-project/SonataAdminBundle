@@ -286,6 +286,10 @@
                 <source>link_action_history</source>
                 <target>Révisions</target>
             </trans-unit>
+            <trans-unit id="td_action">
+                <source>td_action</source>
+                <target>Action</target>
+            </trans-unit>
             <trans-unit id="td_revision">
                 <source>td_revision</source>
                 <target>Révisions</target>
