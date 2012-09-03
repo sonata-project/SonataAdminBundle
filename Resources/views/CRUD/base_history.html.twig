@@ -36,7 +36,7 @@ file that was distributed with this source code.
                 {% for revision in revisions %}
                     <tr>
                         <td>{{ revision.rev}}</td>
-                        <td>{{ revision.timestamp | date}}</td>
+                        <td>{% include admin.getTemplate('history_revision_timestamp') %}</td>
                         <td>{{ revision.username}}</td>
                         <td><a href="{{ admin.generateObjectUrl('history_view_revision', object, {'revision': revision.rev }) }}" class="revision-link" rel="{{ revision.rev }}">{{ "label_view_revision"|trans({}, 'SonataAdminBundle') }}</a></td>
                     </tr>
