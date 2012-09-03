@@ -32,6 +32,7 @@ Usage of each template :
 * show : the template to use for the show action
 * edit : the template to use for the edit and create action
 * history : the template to use for the history / audit action
+* history_revision_timestamp : the template to use when rendering the timestamp of a given revision
 * preview : the template to use for previewing an edit / create action
 * short_object_description: used to represent the entity in one-to-one/many-to-one relations
 
