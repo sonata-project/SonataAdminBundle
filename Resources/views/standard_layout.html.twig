@@ -78,7 +78,10 @@ file that was distributed with this source code.
                         <span class="icon-bar"></span>
                     </a>
 
-                    <p class="navbar-text pull-right">{% include admin_pool.getTemplate('user_block') %}</p>
+                    <p class="navbar-text pull-right">
+                    {% if admin_pool is defined %}
+                        {% include admin_pool.getTemplate('user_block') %}
+                    {% endif %}</p>
 
                     {% if admin_pool is defined %}
                         {% block logo %}
