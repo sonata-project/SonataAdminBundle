@@ -16,6 +16,10 @@ use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
 
+/**
+ * A model manager is a bridge between the model classes and the admin
+ * functionality.
+ */
 interface ModelManagerInterface
 {
     /**
@@ -99,33 +103,62 @@ interface ModelManagerInterface
     function createQuery($class, $alias = 'o');
 
     /**
-     * @param string $class
+     * Get the identifier for the model type of this class.
+     *
+     * @param string $class fully qualified class name
      *
      * @return string
      */
     function getModelIdentifier($class);
 
     /**
+     * Get the identifiers of this model class.
+     *
+     * This returns an array to handle cases like a primary key that is
+     * composed of multiple columns. If you need a string representation,
+     * use getNormalizedIdentifier resp. getUrlsafeIdentifier
      *
      * @param object $model
      *
-     * @return mixed
+     * @return array list of all identifiers of this model
      */
     function getIdentifierValues($model);
 
     /**
-     * @param string $class
+     * Get a list of the field names models of the specified class use to store
+     * the identifier.
+     *
+     * @param string $class fully qualified class name
      *
      * @return array
      */
     function getIdentifierFieldNames($class);
 
     /**
-     * @param mixed $entity
+     * Get the identifiers for this model class as a string.
+     *
+     * @param object $model
+     *
+     * @return string a string representation of the identifiers for this
+     *      instance
      */
-    function getNormalizedIdentifier($entity);
+    function getNormalizedIdentifier($model);
 
     /**
+     * Get the identifiers as a string that is save to use in an url.
+     *
+     * This is similar to getNormalizedIdentifier but guarantees an id that can
+     * be used in an URL.
+     *
+     * @param object $model
+     *
+     * @return string string representation of the id that is save to use in an url
+     */
+    function getUrlsafeIdentifier($model);
+
+    /**
+     * Create a new instance of the model of the specified class.
+     *
      * @param string $class
      *
      * @return mixed
