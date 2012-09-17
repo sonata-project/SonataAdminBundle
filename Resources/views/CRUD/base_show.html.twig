@@ -13,18 +13,16 @@ file that was distributed with this source code.
 
 {% block actions %}
     <div class="sonata-actions">
-        <ul>
-            {% if admin.hasRoute('edit') and admin.isGranted('EDIT', object)%}
-                <li class="btn sonata-action-element"><a href="{{ admin.generateObjectUrl('edit', object) }}">{{ 'link_action_edit'|trans({}, 'SonataAdminBundle') }}</a></li>
-            {% endif %}
-            {% if admin.hasroute('history') and admin.id(object) and admin.isGranted('EDIT', object) %}
-                <li class="btn sonata-action-element"><a href="{{ admin.generateObjectUrl('history', object) }}">{{ 'link_action_history'|trans({}, 'SonataAdminBundle') }}</a></li>
-            {% endif %}
-            {% include 'SonataAdminBundle:Core:create_button.html.twig' %}
-            {% if admin.hasroute('list') and admin.isGranted('LIST')%}
-                <li class="btn sonata-action-element"><a href="{{ admin.generateUrl('list') }}">{{ 'link_action_list'|trans({}, 'SonataAdminBundle') }}</a></li>
-            {% endif %}
-        </ul>
+        {% if admin.hasRoute('edit') and admin.isGranted('EDIT', object)%}
+            <a class="btn sonata-action-element" href="{{ admin.generateObjectUrl('edit', object) }}">{{ 'link_action_edit'|trans({}, 'SonataAdminBundle') }}</a>
+        {% endif %}
+        {% if admin.hasroute('history') and admin.id(object) and admin.isGranted('EDIT', object) %}
+            <a class="btn sonata-action-element" href="{{ admin.generateObjectUrl('history', object) }}">{{ 'link_action_history'|trans({}, 'SonataAdminBundle') }}</a>
+        {% endif %}
+        {% include 'SonataAdminBundle:Core:create_button.html.twig' %}
+        {% if admin.hasroute('list') and admin.isGranted('LIST')%}
+            <a class="btn sonata-action-element" href="{{ admin.generateUrl('list') }}">{{ 'link_action_list'|trans({}, 'SonataAdminBundle') }}</a>
+        {% endif %}
     </div>
 {% endblock %}
 
