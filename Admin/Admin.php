@@ -1069,7 +1069,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      */
     public function generateObjectUrl($name, $object, array $parameters = array(), $absolute = false)
     {
-        $parameters['id'] = $this->getNormalizedIdentifier($object);
+        $parameters['id'] = $this->getUrlsafeIdentifier($object);
 
         return $this->generateUrl($name, $parameters, $absolute);
     }
@@ -2334,6 +2334,14 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     public function isGranted($name, $object = null)
     {
         return $this->securityHandler->isGranted($this, $name, $object ?: $this);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUrlsafeIdentifier($entity)
+    {
+        return $this->getModelManager()->getUrlsafeIdentifier($entity);
     }
 
     /**

@@ -244,6 +244,11 @@ interface AdminInterface
     /**
      * @param mixed $entity
      */
+    function getUrlsafeIdentifier($entity);
+
+    /**
+     * @param mixed $entity
+     */
     function getNormalizedIdentifier($entity);
 
     /**
