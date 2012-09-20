@@ -161,3 +161,38 @@ file that was distributed with this source code.
     </div>
 {% endspaceless %}
 {% endblock collection_widget %}
+
+{% block sonata_type_immutable_array_widget %}
+    {% spaceless %}
+        <div class="controls">
+            <div {{ block('widget_container_attributes') }}>
+                {{ form_errors(form) }}
+
+                {% for key, child in form %}
+                    {{ block('sonata_type_immutable_array_widget_row') }}
+                {% endfor %}
+
+                {{ form_rest(form) }}
+            </div>
+        </div>
+    {% endspaceless %}
+{% endblock sonata_type_immutable_array_widget %}
+
+{% block sonata_type_immutable_array_widget_row %}
+    {% spaceless %}
+        <div class="control-group{% if errors|length > 0%} error{%endif%}" id="sonata-ba-field-container-{{ id }}-{{ key }}">
+
+            {{ form_label(child) }}
+
+            <div class="controls sonata-ba-field sonata-ba-field-{{ sonata_admin.edit }}-{{ sonata_admin.inline }} {% if errors|length > 0 %}sonata-ba-field-error{% endif %}">
+                {{ form_widget(child) }}
+            </div>
+
+            {% if errors|length > 0 %}
+                <div class="help-inline sonata-ba-field-error-messages">
+                    {{ form_errors(child) }}
+                </div>
+            {% endif %}
+        </div>
+    {% endspaceless %}
+{% endblock %}
