@@ -112,6 +112,8 @@ class ModelChoiceList extends SimpleChoiceList
      * is used as option values. Otherwise this method tries to convert
      * objects to strings using __toString().
      *
+     * @param $choices
+     *
      * @return array  An array of choices
      */
     protected function load($choices)
@@ -232,6 +234,7 @@ class ModelChoiceList extends SimpleChoiceList
      * @param  object $entity  The entity for which to get the identifier
      * @throws FormException   If the entity does not exist in Doctrine's
      *                         identity map
+     * @return array
      */
     public function getIdentifierValues($entity)
     {

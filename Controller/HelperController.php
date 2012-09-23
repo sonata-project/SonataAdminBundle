@@ -82,6 +82,7 @@ class HelperController
 
         list($fieldDescription, $form) = $this->helper->appendFormFieldElement($admin, $subject, $elementId);
 
+        /** @var $form \Symfony\Component\Form\Form */
         $view = $this->helper->getChildFormView($form->createView(), $elementId);
 
         // render the widget

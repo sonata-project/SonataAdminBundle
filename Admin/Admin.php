@@ -13,6 +13,7 @@ namespace Sonata\AdminBundle\Admin;
 
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\Form\Util\PropertyPath;
 use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -26,6 +27,7 @@ use Sonata\AdminBundle\Show\ShowMapper;
 
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Validator\ErrorElement;
+use Sonata\AdminBundle\Validator\Constraints\InlineConstraint;
 
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Sonata\AdminBundle\Builder\FormContractorInterface;
@@ -776,7 +778,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         if ($this->isChild() && $this->getParentAssociationMapping()) {
             $parent = $this->getParent()->getObject($this->request->get($this->getParent()->getIdParameter()));
 
-            $propertyPath = new \Symfony\Component\Form\Util\PropertyPath($this->getParentAssociationMapping());
+            $propertyPath = new PropertyPath($this->getParentAssociationMapping());
 
             $object = $this->getSubject();
 
@@ -1142,7 +1144,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
         // add the custom inline validation option
         $metadata = $this->validator->getMetadataFactory()->getClassMetadata($this->getClass());
-        $metadata->addConstraint(new \Sonata\AdminBundle\Validator\Constraints\InlineConstraint(array(
+        $metadata->addConstraint(new InlineConstraint(array(
             'service' => $this,
             'method'  => function(ErrorElement $errorElement, $object) use ($admin) {
                 /* @var \Sonata\AdminBundle\Admin\AdminInterface $admin */
@@ -1275,7 +1277,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      * @param string                                   $action
      * @param \Sonata\AdminBundle\Admin\AdminInterface $childAdmin
      *
-     * @return MenuItem|false
+     * @return MenuItem|boolean
      */
     public function buildSideMenu($action, AdminInterface $childAdmin = null)
     {
@@ -1302,7 +1304,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      * @param string                                   $action
      * @param \Sonata\AdminBundle\Admin\AdminInterface $childAdmin
      *
-     * @return \Knp\MenuBundle\Menu
+     * @return \Knp\Menu\MenuItem
      */
     public function getSideMenu($action, AdminInterface $childAdmin = null)
     {
@@ -2004,7 +2006,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      * translate a message id
      *
      * @param string  $id
-     * @param integet $count
+     * @param integer $count
      * @param array   $parameters
      * @param null    $domain
      * @param null    $locale

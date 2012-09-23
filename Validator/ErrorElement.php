@@ -176,7 +176,7 @@ class ErrorElement
     }
 
     /**
-     * @return null
+     * @return null|PropertyPath
      */
     protected function getCurrentPropertyPath()
     {

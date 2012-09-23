@@ -142,6 +142,8 @@ class CRUDController extends Controller
     /**
      * return the Response object associated to the list action
      *
+     * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
+     *
      * @return Response
      */
     public function listAction()
@@ -229,9 +231,11 @@ class CRUDController extends Controller
     /**
      * return the Response object associated to the edit action
      *
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      *
      * @param mixed $id
+     *
+     * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      *
      * @return Response
      */
@@ -254,6 +258,7 @@ class CRUDController extends Controller
 
         $this->admin->setSubject($object);
 
+        /** @var $form \Symfony\Component\Form\Form */
         $form = $this->admin->getForm();
         $form->setData($object);
 
@@ -421,6 +426,7 @@ class CRUDController extends Controller
     /**
      * return the Response object associated to the create action
      *
+     * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
      * @return Response
      */
     public function createAction()
@@ -436,6 +442,7 @@ class CRUDController extends Controller
 
         $this->admin->setSubject($object);
 
+        /** @var $form \Symfony\Component\Form\Form */
         $form = $this->admin->getForm();
         $form->setData($object);
 
@@ -530,6 +537,11 @@ class CRUDController extends Controller
     /**
      * return the Response object associated to the view action
      *
+     * @param null $id
+     *
+     * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     *
      * @return Response
      */
     public function showAction($id = null)
@@ -597,6 +609,9 @@ class CRUDController extends Controller
      * @param null    $id
      * @param string  $revision
      *
+     * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     *
      * @return Response
      */
     public function historyViewRevisionAction($id = null, $revision = null)
@@ -639,6 +654,9 @@ class CRUDController extends Controller
 
     /**
      * @param Request $request
+     *
+     * @throws \RuntimeException
+     * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
      *
      * @return Response
      */

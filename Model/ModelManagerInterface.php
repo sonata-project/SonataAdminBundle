@@ -231,8 +231,6 @@ interface ModelManagerInterface
     /**
      * @param string $class
      * @param array  $array
-     *
-     * @return void
      */
     function modelReverseTransform($class, array $array = array());
 
@@ -246,8 +244,6 @@ interface ModelManagerInterface
 
     /**
      * @param mixed $query
-     *
-     * @return void
      */
     function executeQuery($query);
 

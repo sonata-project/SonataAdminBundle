@@ -38,11 +38,14 @@ class DefaultRouteGenerator implements RouteGeneratorInterface
     }
 
     /**
+     *
+     * @param \Sonata\AdminBundle\Admin\AdminInterface  $admin
+     * @param string                                    $name
+     * @param array                                     $parameters
+     * @param bool                                      $absolute
+
      * @throws \RuntimeException
-     * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
-     * @param $name
-     * @param array $parameter
-     * @param bool $absolute
+
      * @return string
      */
     public function generateUrl(AdminInterface $admin, $name, array $parameters = array(), $absolute = false)
