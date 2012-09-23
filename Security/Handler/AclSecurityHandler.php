@@ -11,7 +11,6 @@
 
 namespace Sonata\AdminBundle\Security\Handler;
 
-
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 use Symfony\Component\Security\Acl\Model\MutableAclProviderInterface;

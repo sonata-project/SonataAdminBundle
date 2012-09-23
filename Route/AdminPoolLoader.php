@@ -23,7 +23,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class AdminPoolLoader extends FileLoader
 {
     /**
-     * @var Bundle\Sonata\AdminBundle\Admin\Pool
+     * @var \Sonata\AdminBundle\Admin\Pool
      */
     protected $pool;
 

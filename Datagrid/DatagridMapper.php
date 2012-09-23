@@ -15,7 +15,6 @@ use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
-use Sonata\AdminBundle\Filter\FilterProxy;
 
 /**
  * This class is use to simulate the Form API
@@ -86,7 +85,7 @@ class DatagridMapper
     /**
      * @param string $name
      *
-     * @return FilterInterface
+     * @return \Sonata\AdminBundle\Filter\FilterInterface
      */
     public function get($name)
     {

@@ -133,6 +133,8 @@ class SonataAdminExtension extends \Twig_Extension
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
      * @param array                                               $params
      *
+     * @throws \RuntimeException
+     *
      * @return mixed
      */
     public function getValueFromFieldDescription($object, FieldDescriptionInterface $fieldDescription, array $params = array())
