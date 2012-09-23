@@ -1277,7 +1277,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      * @param string                                   $action
      * @param \Sonata\AdminBundle\Admin\AdminInterface $childAdmin
      *
-     * @return MenuItem|boolean
+     * @return \Knp\Menu\ItemInterface|boolean
      */
     public function buildSideMenu($action, AdminInterface $childAdmin = null)
     {
@@ -1304,7 +1304,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      * @param string                                   $action
      * @param \Sonata\AdminBundle\Admin\AdminInterface $childAdmin
      *
-     * @return \Knp\Menu\MenuItem
+     * @return \Knp\Menu\ItemInterface
      */
     public function getSideMenu($action, AdminInterface $childAdmin = null)
     {
