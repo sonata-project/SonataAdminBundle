@@ -31,7 +31,7 @@ class CoreController extends Controller
     }
 
     /**
-     * @return \Symfony\Bundle\FrameworkBundle\Controller\Response
+     * @return Response
      */
     public function dashboardAction()
     {

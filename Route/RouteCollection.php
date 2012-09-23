@@ -111,6 +111,8 @@ class RouteCollection
     /**
      * @param string $name
      *
+     * @throws \InvalidArgumentException
+     *
      * @return Route
      */
     public function get($name)

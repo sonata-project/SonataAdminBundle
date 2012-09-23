@@ -14,6 +14,11 @@ namespace Sonata\AdminBundle\Export;
 use Exporter\Source\SourceIteratorInterface;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
+use Exporter\Writer\XlsWriter;
+use Exporter\Writer\XmlWriter;
+use Exporter\Writer\JsonWriter;
+use Exporter\Writer\CsvWriter;
+
 class Exporter
 {
     /**
@@ -29,19 +34,19 @@ class Exporter
     {
         switch ($format) {
             case 'xls':
-                $writer      = new \Exporter\Writer\XlsWriter('php://output');
+                $writer      = new XlsWriter('php://output');
                 $contentType = 'application/vnd.ms-excel';
                 break;
             case 'xml':
-                $writer      = new \Exporter\Writer\XmlWriter('php://output');
+                $writer      = new XmlWriter('php://output');
                 $contentType = 'text/xml';
                 break;
             case 'json':
-                $writer      = new \Exporter\Writer\JsonWriter('php://output');
+                $writer      = new JsonWriter('php://output');
                 $contentType = 'application/json';
                 break;
             case 'csv':
-                $writer      = new \Exporter\Writer\CsvWriter('php://output', ',', '"', "", true);
+                $writer      = new CsvWriter('php://output', ',', '"', "", true);
                 $contentType = 'text/csv';
                 break;
             default:

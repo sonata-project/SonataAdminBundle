@@ -154,7 +154,7 @@ class AdminHelper
      * @param object                                              $object
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
      *
-     * @return void
+     * @throws \RuntimeException
      */
     public function addNewInstance($object, FieldDescriptionInterface $fieldDescription)
     {

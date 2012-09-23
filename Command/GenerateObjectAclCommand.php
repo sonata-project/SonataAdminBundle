@@ -48,6 +48,7 @@ class GenerateObjectAclCommand extends ContainerAwareCommand
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
+        /** @var $dialog \Symfony\Component\Console\Helper\DialogHelper */
         $dialog = $this->getHelperSet()->get('dialog');
 
         $output->writeln('Welcome to the AdminBundle object ACL generator');
