@@ -439,11 +439,11 @@ $.fn.ajaxSubmit = function(options) {
                 // account for browsers injecting pre around json response
                 var matches = xhr.responseText.match(/^(<pre([^>]*)>|<body([^>]*)>)(.*)(<\/pre>|<\/body>)$/i);
 
-                if(matches && matches.length == 6){
+                if (matches && matches.length == 6) {
                     xhr.responseText = matches[4];
                 }
 
-                if(xhr.responseText[0] == '{') {
+                if (xhr.responseText.charAt(0) == '{') {
                     data = parseJSON(xhr.responseText);
                 }
                 // -- end custom hack
