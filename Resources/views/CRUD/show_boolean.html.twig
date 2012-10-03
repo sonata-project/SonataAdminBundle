@@ -14,9 +14,11 @@ file that was distributed with this source code.
 {% block field %}
 {% spaceless %}
     {% if value %}
-        <img src="{{ asset('bundles/sonataadmin/famfamfam/accept.png') }}" alt="{%- trans from 'SonataAdminBundle' %}label_type_yes{% endtrans -%}" />
+        <i class="icon-ok-circle"></i>
+        {%- trans from 'SonataAdminBundle' %}label_type_yes{% endtrans -%}
     {% else %}
-        <img src="{{ asset('bundles/sonataadmin/famfamfam/exclamation.png') }}" alt="{%- trans from 'SonataAdminBundle' %}label_type_no{% endtrans -%}" />
+        <i class="icon-ban-circle"></i>
+        {%- trans from 'SonataAdminBundle' %}label_type_no{% endtrans -%}
     {% endif %}
 {% endspaceless %}
 {% endblock %}
