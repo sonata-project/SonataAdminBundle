@@ -452,42 +452,42 @@ interface AdminInterface
     /**
      * @param mixed $object
      *
-     * @return mixed
+     * @return void
      */
     function preUpdate($object);
 
     /**
      * @param mixed $object
      *
-     * @return mixed
+     * @return void
      */
     function postUpdate($object);
 
     /**
      * @param mixed $object
      *
-     * @return mixed
+     * @return void
      */
     function prePersist($object);
 
     /**
      * @param mixed $object
      *
-     * @return mixed
+     * @return void
      */
     function postPersist($object);
 
     /**
      * @param mixed $object
      *
-     * @return mixed
+     * @return void
      */
     function preRemove($object);
 
     /**
      * @param mixed $object
      *
-     * @return mixed
+     * @return void
      */
     function postRemove($object);
 
