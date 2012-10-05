@@ -19,6 +19,7 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Acl\Model\DomainObjectInterface;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -291,6 +292,13 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      * @var \Symfony\Component\HttpFoundation\Request
      */
     protected $request;
+
+    /**
+     * The current security context object
+     *
+     * @var \Symfony\Component\Security\Core\SecurityContextInterface
+     */
+    protected $securityContext;
 
     /**
      * The translator component
@@ -2094,6 +2102,27 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     public function hasRequest()
     {
         return $this->request !== null;
+    }
+
+    /**
+     * @param \Symfony\Component\Security\Core\SecurityContextInterface $securityContext
+     * @return void
+     */
+    public function setSecurityContext(SecurityContextInterface $securityContext)
+    {
+        $this->securityContext = $securityContext;
+
+        foreach ($this->getChildren() as $children) {
+            $children->setSecurityContext($securityContext);
+        }
+    }
+
+    /**
+     * @return \Symfony\Component\Security\Core\SecurityContextInterface
+     */
+    public function getSecurityContext()
+    {
+        return $this->securityContext;
     }
 
     /**
