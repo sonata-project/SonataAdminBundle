@@ -14,6 +14,7 @@ namespace Sonata\AdminBundle\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -35,7 +36,7 @@ class CRUDController extends Controller
      * @param integer $status
      * @param array   $headers
      *
-     * @return Response with json encoded data
+     * @return Response Response with json encoded data
      */
     public function renderJson($data, $status = 200, $headers = array())
     {
@@ -74,10 +75,11 @@ class CRUDController extends Controller
     }
 
     /**
-     * Contextualize the admin class depends on the current request
+     * Contextualize the admin class depends on the current request.
      *
-     * @throws \RuntimeException
      * @return void
+     *
+     * @throws RuntimeException
      */
     public function configure()
     {
@@ -110,7 +112,7 @@ class CRUDController extends Controller
     }
 
     /**
-     * return the base template name
+     * Return the base template name.
      *
      * @return string the template name
      */
@@ -124,9 +126,9 @@ class CRUDController extends Controller
     }
 
     /**
-     * @param string                                          $view
-     * @param array                                           $parameters
-     * @param null|\Symfony\Component\HttpFoundation\Response $response
+     * @param string        $view
+     * @param array         $parameters
+     * @param null|Response $response
      *
      * @return Response
      */
@@ -140,9 +142,11 @@ class CRUDController extends Controller
     }
 
     /**
-     * return the Response object associated to the list action
+     * Return the Response object associated to the list action.
      *
      * @return Response
+     *
+     * @throws AccessDeniedException
      */
     public function listAction()
     {
@@ -164,13 +168,13 @@ class CRUDController extends Controller
     }
 
     /**
-     * execute a batch delete
-     *
-     * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
+     * Execute a batch delete.
      *
      * @param \Sonata\AdminBundle\Datagrid\ProxyQueryInterface $query
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     *
+     * @throws AccessDeniedException
      */
     public function batchActionDelete(ProxyQueryInterface $query)
     {
@@ -190,11 +194,14 @@ class CRUDController extends Controller
     }
 
     /**
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException|\Symfony\Component\Security\Core\Exception\AccessDeniedException
+     * Return the Response object associated to the delete action.
      *
      * @param mixed $id
      *
-     * @return Response|RedirectResponse
+     * @return Response|\Symfony\Component\HttpFoundation\RedirectResponse
+     *
+     * @throws NotFoundHttpException
+     * @throws AccessDeniedException
      */
     public function deleteAction($id)
     {
@@ -227,13 +234,14 @@ class CRUDController extends Controller
     }
 
     /**
-     * return the Response object associated to the edit action
-     *
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     * Return the Response object associated to the edit action.
      *
      * @param mixed $id
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
+     *
+     * @throws NotFoundHttpException
+     * @throws AccessDeniedException
      */
     public function editAction($id = null)
     {
@@ -300,11 +308,13 @@ class CRUDController extends Controller
     }
 
     /**
-     * redirect the user depend on this choice
+     * Redirect the user depend on this choice.
      *
      * @param object $object
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
+     *
+     * @throws RuntimeException
      */
     public function redirectTo($object)
     {
@@ -336,15 +346,17 @@ class CRUDController extends Controller
     }
 
     /**
-     * return the Response object associated to the batch action
+     * Return the Response object associated to the batch action.
      *
-     * @throws \RuntimeException
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
+     *
+     * @throws HttpException
+     * @throws RuntimeException
      */
     public function batchAction()
     {
         if ($this->get('request')->getMethod() != 'POST') {
-            throw new \RuntimeException('Invalid request type, POST expected');
+            throw new HttpException(405, 'Invalid request type, POST expected.');
         }
 
         $confirmation = $this->get('request')->get('confirmation', false);
@@ -366,7 +378,7 @@ class CRUDController extends Controller
 
         $batchActions = $this->admin->getBatchActions();
         if (!array_key_exists($action, $batchActions)) {
-            throw new \RuntimeException(sprintf('The `%s` batch action is not defined', $action));
+            throw new HttpException(406, sprintf('The `%s` batch action is not defined', $action));
         }
 
         $camelizedAction = \Sonata\AdminBundle\Admin\BaseFieldDescription::camelize($action);
@@ -425,9 +437,11 @@ class CRUDController extends Controller
     }
 
     /**
-     * return the Response object associated to the create action
+     * Return the Response object associated to the create action.
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
+     *
+     * @throws AccessDeniedException
      */
     public function createAction()
     {
@@ -488,7 +502,7 @@ class CRUDController extends Controller
     }
 
     /**
-     * Returns true if the preview is requested to be shown
+     * Returns true if the preview is requested to be shown.
      *
      * @return boolean
      */
@@ -498,7 +512,7 @@ class CRUDController extends Controller
     }
 
     /**
-     * Returns true if the preview has been approved
+     * Returns true if the preview has been approved.
      *
      * @return boolean
      */
@@ -508,7 +522,7 @@ class CRUDController extends Controller
     }
 
     /**
-     * Returns true if the request is in the preview workflow
+     * Returns true if the request is in the preview workflow.
      *
      * That means either a preview is requested or the preview has already been shown
      * and it got approved/declined.
@@ -524,7 +538,7 @@ class CRUDController extends Controller
     }
 
     /**
-     * Returns true if the preview has been declined
+     * Returns true if the preview has been declined.
      *
      * @return boolean
      */
@@ -534,9 +548,14 @@ class CRUDController extends Controller
     }
 
     /**
-     * return the Response object associated to the view action
+     * Return the Response object associated to the view action.
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @param mixed $id
+     *
+     * @return Response
+     *
+     * @throws NotFoundHttpException
+     * @throws AccessDeniedException
      */
     public function showAction($id = null)
     {
@@ -562,11 +581,14 @@ class CRUDController extends Controller
     }
 
     /**
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException|\Symfony\Component\Security\Core\Exception\AccessDeniedException
+     * Return the Response object associated to the history action.
      *
      * @param mixed $id
      *
      * @return Response
+     *
+     * @throws AccessDeniedException
+     * @throws NotFoundHttpException
      */
     public function historyAction($id = null)
     {
@@ -600,10 +622,13 @@ class CRUDController extends Controller
     }
 
     /**
-     * @param null    $id
+     * @param mixed   $id
      * @param string  $revision
      *
      * @return Response
+     *
+     * @throws AccessDeniedException
+     * @throws NotFoundHttpException
      */
     public function historyViewRevisionAction($id = null, $revision = null)
     {
@@ -644,8 +669,14 @@ class CRUDController extends Controller
     }
 
     /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
+     * Return the Response object associated to the export action.
+     *
+     * @param Request $request
+     *
+     * @return Response
+     *
+     * @throws AccessDeniedException
+     * @throws HttpException
      */
     public function exportAction(Request $request)
     {
@@ -658,7 +689,7 @@ class CRUDController extends Controller
         $allowedExportFormats = (array) $this->admin->getExportFormats();
 
         if(!in_array($format, $allowedExportFormats) ) {
-            throw new \RuntimeException(sprintf('Export in format `%s` is not allowed for class: `%s`. Allowed formats are: `%s`', $format, $this->admin->getClass(), implode(', ', $allowedExportFormats)));
+            throw new HttpException(406, sprintf('Export in format `%s` is not allowed for class: `%s`. Allowed formats are: `%s`', $format, $this->admin->getClass(), implode(', ', $allowedExportFormats)));
         }
 
         $filename = sprintf('export_%s_%s.%s',
