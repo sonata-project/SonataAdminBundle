@@ -239,7 +239,7 @@ class CRUDController extends Controller
     {
         // the key used to lookup the template
         $templateKey = 'edit';
-        
+
         $id = $this->get('request')->get($this->admin->getIdParameter());
 
         $object = $this->admin->getObject($id);
@@ -259,9 +259,9 @@ class CRUDController extends Controller
 
         if ($this->get('request')->getMethod() == 'POST') {
             $form->bindRequest($this->get('request'));
-            
-            $isFormValid = $form->isValid(); 
-            
+
+            $isFormValid = $form->isValid();
+
              // persist if the form was valid and if in preview mode the preview was approved
             if ($isFormValid && (!$this->isInPreviewMode() || $this->isPreviewApproved())) {
                 $this->admin->update($object);
@@ -277,7 +277,7 @@ class CRUDController extends Controller
                 // redirect to edit mode
                 return $this->redirectTo($object);
             }
-            
+
             // show an error message if the form failed validation
             if (!$isFormValid) {
                 $this->get('session')->setFlash('sonata_flash_error', 'flash_edit_error');
@@ -319,12 +319,16 @@ class CRUDController extends Controller
         }
 
         if (!$url) {
-            if ($this->admin->hasRoute('edit')) {
+            if ($this->admin->hasRoute('show')) {
+                $url = $this->admin->generateObjectUrl('show', $object);
+            } elseif ($this->admin->hasRoute('edit')) {
                 $url = $this->admin->generateObjectUrl('edit', $object);
             } elseif ($this->admin->hasRoute('list')) {
                 $url = $this->admin->generateObjectUrl('list', $object);
             } elseif ($this->admin->hasRoute('create')) {
                 $url = $this->admin->generateObjectUrl('create', $object);
+            } else {
+                throw new \RuntimeException('No route available for redirection.');
             }
         }
 
@@ -340,7 +344,7 @@ class CRUDController extends Controller
     public function batchAction()
     {
         if ($this->get('request')->getMethod() != 'POST') {
-            throw new \RuntimeException('invalid request type, POST expected');
+            throw new \RuntimeException('Invalid request type, POST expected');
         }
 
         $confirmation = $this->get('request')->get('confirmation', false);
@@ -429,7 +433,7 @@ class CRUDController extends Controller
     {
         // the key used to lookup the template
         $templateKey = 'edit';
-        
+
         if (false === $this->admin->isGranted('CREATE')) {
             throw new AccessDeniedException();
         }
@@ -443,9 +447,9 @@ class CRUDController extends Controller
 
         if ($this->get('request')->getMethod() == 'POST') {
             $form->bindRequest($this->get('request'));
-            
-            $isFormValid = $form->isValid(); 
-            
+
+            $isFormValid = $form->isValid();
+
             // persist if the form was valid and if in preview mode the preview was approved
             if ($isFormValid && (!$this->isInPreviewMode() || $this->isPreviewApproved())) {
                 $this->admin->create($object);
@@ -461,7 +465,7 @@ class CRUDController extends Controller
                 // redirect to edit mode
                 return $this->redirectTo($object);
             }
-            
+
             // show an error message if the form failed validation
             if (!$isFormValid) {
                 $this->get('session')->setFlash('sonata_flash_error', 'flash_create_error');
@@ -482,10 +486,10 @@ class CRUDController extends Controller
             'object' => $object,
         ));
     }
-    
+
     /**
      * Returns true if the preview is requested to be shown
-     * 
+     *
      * @return boolean
      */
     protected function isPreviewRequested()
@@ -495,20 +499,20 @@ class CRUDController extends Controller
 
     /**
      * Returns true if the preview has been approved
-     * 
+     *
      * @return boolean
      */
     protected function isPreviewApproved()
     {
         return ($this->get('request')->get('btn_preview_approve') !== null);
     }
-    
+
     /**
      * Returns true if the request is in the preview workflow
-     * 
+     *
      * That means either a preview is requested or the preview has already been shown
      * and it got approved/declined.
-     * 
+     *
      * @return boolean
      */
     protected function isInPreviewMode()
@@ -521,7 +525,7 @@ class CRUDController extends Controller
 
     /**
      * Returns true if the preview has been declined
-     * 
+     *
      * @return boolean
      */
     protected function isPreviewDeclined()
