@@ -81,6 +81,8 @@ class ShowMapper
             $fieldDescription->setOption('label', $this->admin->getLabelTranslatorStrategy()->getLabel($fieldDescription->getName(), 'show', 'label'));
         }
 
+        $fieldDescription->setOption('safe', $fieldDescription->getOption('safe', false));
+
         // add the field with the FormBuilder
         $this->showBuilder->addField($this->list, $type, $fieldDescription, $this->admin);
 

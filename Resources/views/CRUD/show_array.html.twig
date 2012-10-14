@@ -13,6 +13,10 @@ file that was distributed with this source code.
 
 {% block field%}
     {% for key, val in value %}
-        [{{ key }} => {{ val }}]
+        {% if field_description.options.safe %}
+            [{{ key }} => {{ val|raw }}]
+        {% else %}
+            [{{ key }} => {{ val }}]
+        {% endif %}
     {% endfor %}
 {% endblock %}
