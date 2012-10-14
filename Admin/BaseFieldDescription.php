@@ -322,11 +322,14 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         $getters[] = 'get' . $camelizedFieldName;
         $getters[] = 'is' . $camelizedFieldName;
 
-
         foreach ($getters as $getter) {
             if (method_exists($object, $getter)) {
                 return call_user_func(array($object, $getter));
             }
+        }
+
+        if (isset($object->{$fieldName})) {
+            return $object->{$fieldName};
         }
 
         throw new NoValueException(sprintf('Unable to retrieve the value of `%s`', $this->getName()));
