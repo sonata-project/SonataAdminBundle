@@ -1,7 +1,7 @@
 <?php
 
 // if the bundle is within a symfony project, try to reuse the project's autoload
-$autoload = __DIR__.'/../../../../../../app/autoload.php';
+$autoload = __DIR__.'/../../../../../../../app/autoload.php';
 
 // if the bundle is the project, try to use the composer's autoload for the tests
 $composerAutoload = __DIR__.'/../../vendor/autoload.php';
