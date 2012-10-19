@@ -138,3 +138,41 @@ file that was distributed with this source code.
     </div>
 {% endspaceless %}
 {% endblock collection_widget %}
+{% block repeated_row %}    
+    <div class="control-group{% if errors|length > 0%} error{%endif%}" id="sonata-ba-field-container-{{ id }}">        
+        {{ form_label(form.first, label|default(null), { 'attr' : {'class' : 'control-label'} }) }}                        
+
+        <div class="controls sonata-ba-field sonata-ba-field-{{ sonata_admin.edit }}-{{ sonata_admin.inline }} {% if errors|length > 0 %}sonata-ba-field-error{% endif %}">
+
+            {{ form_widget(form.first) }}
+
+            {% if errors|length > 0 %}
+                <div class="help-inline sonata-ba-field-error-messages">
+                    {{ form_errors(form.first) }}
+                </div>
+            {% endif %}
+
+            {% if sonata_admin.field_description.help %}
+                <span class="help-block sonata-ba-field-help">{{ sonata_admin.field_description.help }}</span>
+            {% endif %}
+        </div>
+    </div>
+    <div class="control-group{% if errors|length > 0%} error{%endif%}" id="sonata-ba-field-container-{{ id }}">        
+        {{ form_label(form.second, label.second|default(null), { 'attr' : {'class' : 'control-label'} }) }}                        
+
+        <div class="controls sonata-ba-field sonata-ba-field-{{ sonata_admin.edit }}-{{ sonata_admin.inline }} {% if errors|length > 0 %}sonata-ba-field-error{% endif %}">
+
+            {{ form_widget(form.second) }}
+
+            {% if errors|length > 0 %}
+                <div class="help-inline sonata-ba-field-error-messages">
+                    {{ form_errors(form.second) }}
+                </div>
+            {% endif %}
+
+            {% if sonata_admin.field_description.help %}
+                <span class="help-block sonata-ba-field-help">{{ sonata_admin.field_description.help }}</span>
+            {% endif %}
+        </div>
+    </div>
+{% endblock repeated_row %}
