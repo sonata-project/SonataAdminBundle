@@ -146,6 +146,7 @@ class SonataAdminExtension extends \Twig_Extension
         $value = null;
         try {
             $value = $fieldDescription->getValue($object);
+            $value = $value instanceof \DateTime ? $value->format('Y-m-d H:i:s') : $value;
         } catch (NoValueException $e) {
             if ($fieldDescription->getAssociationAdmin()) {
                 $value = $fieldDescription->getAssociationAdmin()->getNewInstance();
