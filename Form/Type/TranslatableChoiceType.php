@@ -53,6 +53,11 @@ class TranslatableChoiceType extends AbstractType
             $choiceView->label = $this->translator->trans($choiceView->label, array(), $options['catalogue']);
         }
 
+        // translate preferred options
+        foreach ($view->vars['preferred_choices'] as $choiceView) {
+            $choiceView->label = $this->translator->trans($choiceView->label, array(), $options['catalogue']);
+        }
+
         // translate empty value
         if (!empty($view->vars['empty_value'])) {
             $view->vars['empty_value'] = $this->translator->trans($view->vars['empty_value'], array(), $options['catalogue']);
