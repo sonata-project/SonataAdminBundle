@@ -25,7 +25,7 @@
         "symfony/config": ">=2.1,<2.3-dev",
         "symfony/console": ">=2.1,<2.3-dev",
         "twig/twig": ">=1.10,<2.0-dev",
-        "knplabs/knp-menu-bundle": "1.1.*",
+        "knplabs/knp-menu-bundle": ">=1.1.*,<2.0.x-dev ",
         "sonata-project/jquery-bundle": "dev-master",
         "sonata-project/exporter": "dev-master",
         "sonata-project/block-bundle": "dev-master"
