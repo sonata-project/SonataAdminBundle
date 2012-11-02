@@ -46,16 +46,36 @@ object. The object can be used to check assertion against the model :
 Using this validator
 --------------------
 
-Just add the ``InlineConstraint`` class constraint, like this:
+Add the ``InlineConstraint`` class constraint to your bundle's validation configuration, for example:
+
+* using XML:
 
 .. code-block:: xml
 
-    <class name="Application\Sonata\PageBundle\Entity\Block">
-        <constraint name="Sonata\AdminBundle\Validator\Constraints\InlineConstraint">
-            <option name="service">sonata.page.cms.page</option>
-            <option name="method">validateBlock</option>
-        </constraint>
-    </class>
+    <!-- src/Application/Sonata/PageBundle/Resources/config/validation.xml -->
+    <?xml version="1.0" ?>
+    <constraint-mapping xmlns="http://symfony.com/schema/dic/constraint-mapping"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://symfony.com/schema/dic/constraint-mapping http://symfony.com/schema/dic/constraint-mapping/constraint-mapping-1.0.xsd">
+    
+        <class name="Application\Sonata\PageBundle\Entity\Block">
+            <constraint name="Sonata\AdminBundle\Validator\Constraints\InlineConstraint">
+                <option name="service">sonata.page.cms.page</option>
+                <option name="method">validateBlock</option>
+            </constraint>
+        </class>
+    </constraint-mapping>
+
+* using YAML:
+
+.. code-block:: yaml
+
+    # src/Application/Sonata/PageBundle/Resources/config/validation.yml
+    Application\Sonata\PageBundle\Entity\Block:
+        constraints:
+            - Sonata\AdminBundle\Validator\Constraints\InlineConstraint:
+                service: sonata.page.cms.page
+                method: validateBlock
 
 There are two important options:
 
@@ -98,3 +118,48 @@ Example from the ``SonataPageBundle``
                 ->end();
         }
     }
+
+Using the Admin class
+---------------------
+
+The above examples show how to delegate validation to a service. For completeness, it's worth remembering that
+the ``Admin`` class itself contains an empty ``validate`` method. This is automatically called, so you can override it in your own admin class:
+
+.. code-block:: php
+
+    // add this to your existing use statements
+    use Sonata\AdminBundle\Validator\ErrorElement;
+
+    class MyAdmin extends Admin
+    {
+        // add this method
+        public function validate(ErrorElement $errorElement, $object)
+        {
+            $errorElement
+                ->with('name')
+                    ->assertMaxLength(array('limit' => 32))
+                ->end()
+            ;
+        }
+
+Troubleshooting
+---------------
+
+Make sure your validator method is being called. If in doubt, try throwing an exception:
+
+.. code-block:: php
+
+    public function validate(ErrorElement $errorElement, $object)
+    {
+        throw new \Exception(__METHOD__);
+    }
+
+There should not be any validation_groups defined for the form. If you have code like the example below in
+your ``Admin`` class, remove the 'validation_groups' entry, the whole $formOptions property or set validation_groups
+to an empty array:
+
+.. code-block:: php
+
+    protected $formOptions = array(
+        'validation_groups' => array()
+    );
