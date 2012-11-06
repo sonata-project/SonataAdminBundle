@@ -59,6 +59,7 @@ class FormTypeFieldExtension extends AbstractTypeExtension
             $sonataAdmin['name']              = $fieldDescription->getName();
             $sonataAdmin['edit']              = $fieldDescription->getOption('edit', 'standard');
             $sonataAdmin['inline']            = $fieldDescription->getOption('inline', 'natural');
+            $sonataAdmin['block_name']        = $fieldDescription->getOption('block_name', false);
             $sonataAdmin['class']             = $this->getClass($builder);
 
             $builder->setAttribute('sonata_admin_enabled', true);
