@@ -78,9 +78,9 @@ file that was distributed with this source code.
                         <span class="icon-bar"></span>
                     </a>
 
-                    <div class="navbar-text pull-right">{% include admin_pool.getTemplate('user_block') %}</div>
-
                     {% if admin_pool is defined %}
+                        <div class="navbar-text pull-right">{% include admin_pool.getTemplate('user_block') %}</div>
+
                         {% block logo %}
                             <a href="{{ url('sonata_admin_dashboard') }}" class="brand">
                                 <img src="{{ asset(admin_pool.titlelogo) }}"  alt="{{ admin_pool.title }}" />
