@@ -18,6 +18,7 @@ use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Security\Acl\Model\DomainObjectInterface;
 
 use Sonata\AdminBundle\Form\FormMapper;
@@ -205,6 +206,13 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     protected $label;
 
     /**
+     * Whether or not to persist the filters in the session
+     *
+     * @var boolean
+     */
+    protected $persist_filters = false;
+
+    /**
      * Array of routes related to this admin
      *
      * @var \Sonata\AdminBundle\Route\RouteCollection
@@ -291,6 +299,13 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      * @var \Symfony\Component\HttpFoundation\Request
      */
     protected $request;
+
+    /**
+     * The current session object
+     *
+     * @var \Symfony\Component\HttpFoundation\Session\Session
+     */
+    protected $session;
 
     /**
      * The translator component
@@ -683,10 +698,21 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
         // build the values array
         if ($this->hasRequest()) {
+            $filters = $this->request->query->get('filter', array());
+
+            // if persisting filters, save filters to session, or pull them out of session if no new filters set
+            if ($this->hasSession() && $this->persist_filters) {
+                if ($filters == array()) {
+                    $filters = $this->session->get($this->getCode().'.filter.parameters', array());
+                } else {
+                    $this->session->set($this->getCode().'.filter.parameters', $filters);
+                }
+            }
+
             $parameters = array_merge(
                 $this->getModelManager()->getDefaultSortValues($this->getClass()),
                 $this->datagridValues,
-                $this->request->query->get('filter', array())
+                $filters
             );
 
             // always force the parent value
@@ -1374,6 +1400,14 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     public function getLabel()
     {
         return $this->label;
+    }
+
+    /**
+     * @param boolean $persist
+     */
+    public function setPersistFilters($persist)
+    {
+        $this->persist_filters = $persist;
     }
 
     /**
@@ -2094,6 +2128,26 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     public function hasRequest()
     {
         return $this->request !== null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setSession(Session $session)
+    {
+        $this->session = $session;
+
+        foreach ($this->getChildren() as $children) {
+            $children->setSession($session);
+        }
+    }
+
+    /**
+     * @return boolean true if the session object is linked to the Admin
+     */
+    public function hasSession()
+    {
+        return $this->session !== null;
     }
 
     /**

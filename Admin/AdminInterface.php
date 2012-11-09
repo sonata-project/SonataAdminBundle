@@ -28,6 +28,7 @@ use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 interface AdminInterface
 {
@@ -65,6 +66,13 @@ interface AdminInterface
      * @return void
      */
     function setRequest(Request $request);
+
+    /**
+     * @param \Symfony\Component\HttpFoundation\Session\Session $session
+     *
+     * @return void
+     */
+    function setSession(Session $session);
 
     /**
      * @param Pool $pool

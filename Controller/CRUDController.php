@@ -107,6 +107,10 @@ class CRUDController extends Controller
         if ($request->get('uniqid')) {
             $this->admin->setUniqid($request->get('uniqid'));
         }
+
+        $session = $this->container->get('session');
+
+        $rootAdmin->setSession($session);
     }
 
     /**
