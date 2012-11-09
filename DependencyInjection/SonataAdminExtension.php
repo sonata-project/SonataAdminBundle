@@ -124,5 +124,8 @@ class SonataAdminExtension extends Extension
         if (!isset($bundles['JMSTranslationBundle'])) {
             $container->removeDefinition('sonata.admin.translator.extractor.jms_translator_bundle');
         }
+
+        // set filter persistence
+        $container->setParameter('sonata.admin.configuration.filters.persist', $config['persist_filters']);
     }
 }

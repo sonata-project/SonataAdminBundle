@@ -205,6 +205,14 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
         $definition->addMethodCall('setLabel', array($label));
 
+        if (isset($attributes['persist_filters'])) {
+            $persistFilters = (bool) $attributes['persist_filters'];
+        } else {
+            $persistFilters = (bool) $container->getParameter('sonata.admin.configuration.filters.persist');
+        }
+
+        $definition->addMethodCall('setPersistFilters', array($persistFilters));
+
         $this->fixTemplates($container, $definition);
 
         if ($container->hasParameter('sonata.admin.configuration.security.information') && !$definition->hasMethodCall('setSecurityInformation')) {

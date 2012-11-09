@@ -45,6 +45,9 @@ Full Configuration Options
                 - { position: right, type: sonata.block.service.text, settings: { content: "<h2>Welcome to the Sonata Admin</h2> <p>This is a <code>sonata.block.service.text</code> from the Block Bundle, you can create and add new block in these area by configuring the <code>sonata_admin</code> section.</p> <br /> For instance, here a RSS feed parser (<code>sonata.block.service.rss</code>):"} }
                 - { position: right, type: sonata.block.service.rss, settings: { title: Sonata Project's Feeds, url: http://sonata-project.org/blog/archive.rss }}
 
+        # set to true to persist filter settings per admin module in the user's session
+        persist_filters: false
+
     sonata_block:
         default_contexts: [cms]
         blocks:
