@@ -54,7 +54,7 @@ interface ModelManagerInterface
      * @param string $class
      * @param array  $criteria
      *
-     * @return object
+     * @return array
      */
     function findBy($class, array $criteria = array());
 
@@ -62,7 +62,7 @@ interface ModelManagerInterface
      * @param string $class
      * @param array  $criteria
      *
-     * @return void
+     * @return object|null
      */
     function findOneBy($class, array $criteria = array());
 
@@ -70,7 +70,7 @@ interface ModelManagerInterface
      * @param string $class
      * @param mixed  $id
      *
-     * @return void
+     * @return object|null
      */
     function find($class, $id);
 
