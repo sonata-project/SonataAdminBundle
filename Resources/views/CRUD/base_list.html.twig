@@ -191,7 +191,7 @@ file that was distributed with this source code.
 
                     <input type="submit" class="btn btn-primary" value="{{ 'btn_filter'|trans({}, 'SonataAdminBundle') }}" />
 
-                    <a class="btn" href="{{ admin.generateUrl('list') }}">{{ 'link_reset_filter'|trans({}, 'SonataAdminBundle') }}</a>
+                    <a class="btn" href="{{ admin.generateUrl('list', {filters: 'reset'}) }}">{{ 'link_reset_filter'|trans({}, 'SonataAdminBundle') }}</a>
 
                 </div>
             </fieldset>
