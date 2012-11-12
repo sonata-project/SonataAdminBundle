@@ -694,7 +694,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
             // if persisting filters, save filters to session, or pull them out of session if no new filters set
             if ($this->persistFilters) {
-                if ($filters == array()) {
+                if ($filters == array() && $this->request->query->get('filters') != 'reset') {
                     $filters = $this->request->getSession()->get($this->getCode().'.filter.parameters', array());
                 } else {
                     $this->request->getSession()->set($this->getCode().'.filter.parameters', $filters);
