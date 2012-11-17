@@ -125,7 +125,7 @@ file that was distributed with this source code.
                 {% endif %}
 
                 {% if sonata_admin.field_description.help %}
-                    <span class="help-block sonata-ba-field-help">{{ sonata_admin.field_description.help }}</span>
+                    <span class="help-block sonata-ba-field-help">{{ sonata_admin.field_description.help|raw }}</span>
                 {% endif %}
             </div>
         </div>
