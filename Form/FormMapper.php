@@ -55,8 +55,9 @@ class FormMapper
         }
 
         $formGroups[$name] = array_merge(array(
-            'collapsed' => false,
-            'fields'    => array()
+            'collapsed'   => false,
+            'fields'      => array(),
+            'description' => false
         ), $formGroups[$name], $options);
 
         $this->admin->setFormGroups($formGroups);

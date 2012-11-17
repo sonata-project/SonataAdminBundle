@@ -278,11 +278,19 @@ legend + .sonata-ba-collapsed-fields {
     -webkit-margin-top-collapse: separate;
 }
 
+legend.sonata-ba-fieldset-collapsed-description + .sonata-ba-collapsed-fields {
+    margin-top: 0;
+}
+
+.sonata-ba-collapsed-fields > p {
+    margin-bottom: 18px;
+}
+
 .bordered-table tbody.ui-sortable tr {
     cursor: move;
 }
 
-.sonata-ba-fielset-collapsed legend:before {
+.sonata-ba-fieldset-collapsed legend:before {
     content: '+ ';
 }
 
