@@ -23,7 +23,7 @@ file that was distributed with this source code.
         {% block field %}{{ form_widget(field_element) }}{% endblock %}
 
         {% if field_description.help %}
-            <span class="help-inline">{% block help %}{{ field_description.help }}{% endblock %}</span>
+            <span class="help-inline">{% block help %}{{ field_description.help|raw }}{% endblock %}</span>
         {% endif %}
 
         <div class="sonata-ba-field-error-messages">
