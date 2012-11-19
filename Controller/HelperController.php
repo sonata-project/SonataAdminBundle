@@ -129,7 +129,7 @@ class HelperController
         $formBuilder = $admin->getFormBuilder($subject);
 
         $form = $formBuilder->getForm();
-        $form->bindRequest($request);
+        $form->bind($request);
 
         $view = $this->helper->getChildFormView($form->createView(), $elementId);
 
