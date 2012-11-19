@@ -318,6 +318,9 @@ class CRUDController extends Controller
         if ($this->get('request')->get('btn_update_and_list')) {
             $url = $this->admin->generateUrl('list');
         }
+        if ($this->get('request')->get('btn_create_and_list')) {
+            $url = $this->admin->generateUrl('list');
+        }
 
         if ($this->get('request')->get('btn_create_and_create')) {
             $params = array();
