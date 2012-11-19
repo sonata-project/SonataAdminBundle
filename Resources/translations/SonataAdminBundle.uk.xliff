@@ -22,6 +22,10 @@
                 <source>btn_create_and_create_a_new_one</source>
                 <target>Створити й додати новий</target>
             </trans-unit>
+            <trans-unit id="btn_create_and_return_to_list">
+                <source>btn_create_and_return_to_list</source>
+                <target>Створити й повернутись до списку</target>
+            </trans-unit>
             <trans-unit id="btn_filter">
                 <source>btn_filter</source>
                 <target>Фільтрувати</target>
