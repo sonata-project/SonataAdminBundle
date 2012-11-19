@@ -8,7 +8,7 @@
             </trans-unit>
             <trans-unit id="btn_batch">
                 <source>btn_batch</source>
-                <target>Ok</target>
+                <target>OK</target>
             </trans-unit>
             <trans-unit id="btn_create">
                 <source>btn_create</source>
