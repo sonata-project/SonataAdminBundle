@@ -164,7 +164,11 @@ class AdminHelper
         $method = sprintf('add%s', $this->camelize($mapping['fieldName']));
 
         if (!method_exists($object, $method)) {
-            throw new \RuntimeException(sprintf('Please add a method %s in the %s class!', $method, get_class($object)));
+            $method = rtrim($method, 's');
+
+            if (!method_exists($object, $method)) {
+                throw new \RuntimeException(sprintf('Please add a method %s in the %s class!', $method, get_class($object)));
+            }
         }
 
         $object->$method($instance);
