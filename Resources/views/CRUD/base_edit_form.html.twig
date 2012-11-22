@@ -16,8 +16,8 @@
             {% block sonata_pre_fieldsets %}{% endblock %}
 
             {% for name, form_group in admin.formgroups %}
-                <fieldset {% if form_group.collapsed %}class="sonata-ba-fielset-collapsed"{% endif %}>
-                    <legend>
+                <fieldset {% if form_group.collapsed %}class="sonata-ba-fieldset-collapsed"{% endif %}>
+                    <legend{% if form_group.description != false %} class="sonata-ba-fieldset-collapsed-description"{% endif %}>
                         {% if form_group.collapsed %}
                             <a href="" class="sonata-ba-collapsed" title="{{ 'link_expand'|trans({}, 'SonataAdminBundle') }}">{{ name|trans({}, admin.translationdomain) }}</a>
                         {% else %}
@@ -26,6 +26,10 @@
                     </legend>
 
                     <div class="sonata-ba-collapsed-fields">
+                        {% if form_group.description != false %}
+                            <p>{{ form_group.description|raw }}</p>
+                        {% endif %}
+
                         {% for field_name in form_group.fields %}
                             {% if admin.formfielddescriptions[field_name] is defined %}
                                 {{ form_row(form[field_name])}}
@@ -61,6 +65,7 @@
                             {% endif %}
                         {% else %}
                             <input class="btn btn-primary" type="submit" name="btn_create_and_edit" value="{{ 'btn_create_and_edit_again'|trans({}, 'SonataAdminBundle') }}"/>
+                            <input type="submit" class="btn" name="btn_create_and_list" value="{{ 'btn_create_and_return_to_list'|trans({}, 'SonataAdminBundle') }}"/>
                             <input class="btn" type="submit" name="btn_create_and_create" value="{{ 'btn_create_and_create_a_new_one'|trans({}, 'SonataAdminBundle') }}"/>
                         {% endif %}
                     {% endif %}

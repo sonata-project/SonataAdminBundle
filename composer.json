@@ -17,7 +17,16 @@
         }
     ],
     "require": {
-        "knplabs/knp-menu-bundle": "1.1.*",
+        "symfony/http-foundation": ">=2.1,<2.3-dev",
+        "symfony/form": ">=2.1,<2.3-dev",
+        "symfony/validator": ">=2.1,<2.3-dev",
+        "symfony/security": ">=2.1,<2.3-dev",
+        "symfony/routing": ">=2.1,<2.3-dev",
+        "symfony/config": ">=2.1,<2.3-dev",
+        "symfony/console": ">=2.1,<2.3-dev",
+        "symfony/twig-bridge": ">=2.1,<2.3-dev",
+        "twig/twig": ">=1.10,<2.0-dev",
+        "knplabs/knp-menu-bundle": ">=1.1.0,<2.0.x-dev",
         "sonata-project/jquery-bundle": "dev-master",
         "sonata-project/exporter": "dev-master",
         "sonata-project/block-bundle": "dev-master"
@@ -33,10 +42,5 @@
         "psr-0": { "Sonata\\AdminBundle": "" }
     },
     "target-dir": "Sonata/AdminBundle",
-    "minimum-stability": "dev",
-    "extra": {
-        "branch-alias": {
-            "dev-master": "2.1-dev"
-        }
-    }
+    "minimum-stability": "dev"
 }

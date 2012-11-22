@@ -12,7 +12,6 @@ namespace Sonata\AdminBundle\Form;
 
 use Sonata\AdminBundle\Builder\FormContractorInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Symfony\Component\Form\FormBuilder;
 
 /**
@@ -55,8 +54,9 @@ class FormMapper
         }
 
         $formGroups[$name] = array_merge(array(
-            'collapsed' => false,
-            'fields'    => array()
+            'collapsed'   => false,
+            'fields'      => array(),
+            'description' => false
         ), $formGroups[$name], $options);
 
         $this->admin->setFormGroups($formGroups);

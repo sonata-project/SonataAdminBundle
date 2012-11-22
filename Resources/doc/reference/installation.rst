@@ -40,6 +40,7 @@ can use Composer for the automated process::
     php composer.phar require sonata-project/admin-bundle --no-update
     php composer.phar require sonata-project/doctrine-orm-admin-bundle --no-update  # optional
     php composer.phar require sonata-project/intl-bundle --no-update                # optional
+    php composer.phar require sonata-project/cache-bundle --no-update               # optional
     php composer.phar update
 
 Next, be sure to enable this bundles in your AppKernel.php file:

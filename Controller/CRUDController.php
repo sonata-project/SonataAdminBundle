@@ -263,7 +263,7 @@ class CRUDController extends Controller
         $form->setData($object);
 
         if ($this->get('request')->getMethod() == 'POST') {
-            $form->bindRequest($this->get('request'));
+            $form->bind($this->get('request'));
 
             $isFormValid = $form->isValid();
 
@@ -316,6 +316,9 @@ class CRUDController extends Controller
         $url = false;
 
         if ($this->get('request')->get('btn_update_and_list')) {
+            $url = $this->admin->generateUrl('list');
+        }
+        if ($this->get('request')->get('btn_create_and_list')) {
             $url = $this->admin->generateUrl('list');
         }
 
@@ -447,7 +450,7 @@ class CRUDController extends Controller
         $form->setData($object);
 
         if ($this->get('request')->getMethod() == 'POST') {
-            $form->bindRequest($this->get('request'));
+            $form->bind($this->get('request'));
 
             $isFormValid = $form->isValid();
 

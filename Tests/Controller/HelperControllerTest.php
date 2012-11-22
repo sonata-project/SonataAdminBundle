@@ -43,7 +43,7 @@ class AdminControllerHelper_Foo
     }
 }
 
-class AdminHelperTest extends \PHPUnit_Framework_TestCase
+class HelperControllerTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @expectedException Symfony\Component\HttpKernel\Exception\NotFoundHttpException
