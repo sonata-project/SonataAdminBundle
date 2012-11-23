@@ -52,7 +52,7 @@
             </trans-unit>
             <trans-unit id="link_action_list">
                 <source>link_action_list</source>
-                <target>Возврат к списку</target>
+                <target>Вернуться к списку</target>
             </trans-unit>
             <trans-unit id="link_action_show">
                 <source>link_action_show</source>
@@ -72,7 +72,7 @@
             </trans-unit>
             <trans-unit id="link_reset_filter">
                 <source>link_reset_filter</source>
-                <target>Сброс</target>
+                <target>Сбросить</target>
             </trans-unit>
             <trans-unit id="title_create">
                 <source>title_create</source>
