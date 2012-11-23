@@ -24,7 +24,7 @@ router_builder                sonata.admin.route.path_info
 label_translator_strategy     sonata.admin.label.strategy.form_component
 =========================     =============================================
 
-Note: %manager-type% is to be replaced by the manager type (orm, odm...)
+Note: %manager-type% is to be replaced by the manager type (orm, doctrine_mongodb...)
 
 You have 2 ways of defining the dependencies inside a ``services.xml``.
 
