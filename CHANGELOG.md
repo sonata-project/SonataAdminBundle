@@ -1,6 +1,13 @@
 CHANGELOG
 =========
 
+### 2012-11-25
+
+* [BC BREAK] change the configureSideMenu signature to use the AdminInterface
+
+    -    protected function configureSideMenu(MenuItemInterface $menu, $action, Admin $childAdmin = null)
+    +    protected function configureSideMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
+
 ### 2012-08-05
 
 * [BC BREAK] remove ``getListTemplate``, ``getEditTemplate``, ``getShowTemplate`` => just use ``getTemplate('edit')``

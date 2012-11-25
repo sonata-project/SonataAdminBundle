@@ -466,7 +466,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     /**
      * {@inheritdoc}
      */
-    protected function configureSideMenu(MenuItemInterface $menu, $action, Admin $childAdmin = null)
+    protected function configureSideMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
     {
 
     }
