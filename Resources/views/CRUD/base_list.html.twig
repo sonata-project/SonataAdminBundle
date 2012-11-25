@@ -80,7 +80,7 @@ file that was distributed with this source code.
                                 -
                                 {{ "label_export_download"|trans({}, "SonataAdminBundle") }}
                                 {% for format in admin.getExportFormats() %}
-                                    <a href="{{ admin.generateUrl('export', admin.modelmanager.paginationparameters(admin.datagrid, 0) + {'format' : format}) }}">{{ format }}</a>{% if not loop.last%},{% endif %}
+                                    <a href="{{ admin.generateUrl('export', admin.modelmanager.paginationparameters(admin.datagrid, 0) + {'format' : format}) }}">{{ admin.trans(format) }}</a>{% if not loop.last%},{% endif %}
                                 {% endfor %}
                             {% endif %}
                         </th>
