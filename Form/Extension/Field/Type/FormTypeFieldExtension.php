@@ -98,8 +98,10 @@ class FormTypeFieldExtension extends AbstractTypeExtension
             $baseName = str_replace('.', '_', $sonataAdmin['field_description']->getAdmin()->getCode());
             $baseType = $types[count($types) - 1];
 
+            $fieldName = str_replace('.', '_', $sonataAdmin['field_description']->getName());
+
             $types[] = sprintf('%s_%s', $baseName, $baseType);
-            $types[] = sprintf('%s_%s_%s', $baseName, $sonataAdmin['field_description']->getName(), $baseType);
+            $types[] = sprintf('%s_%s_%s', $baseName, $fieldName, $baseType);
             if ($sonataAdmin['block_name']) {
                 $types[] = $sonataAdmin['block_name'];
             }
