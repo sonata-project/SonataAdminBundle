@@ -1,4 +1,14 @@
-body.sonata-bc {
+html, body {
+    background-color: #ffffff;
+    margin:0;
+    padding:0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+
+.sonata-bc .sonata-ba-container {
     padding-top: 60px;
 }
 
