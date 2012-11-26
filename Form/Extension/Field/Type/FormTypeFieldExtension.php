@@ -107,7 +107,7 @@ class FormTypeFieldExtension extends AbstractTypeExtension
             $block_prefixes[] = sprintf('%s_%s_%s', $baseName, $sonataAdmin['name'], $baseType);
             $block_prefixes[] = sprintf('%s_%s_%s_%s', $baseName, $sonataAdmin['name'], $baseType, $blockSuffix);
 
-            if (isset($sonataAdmin['block_name'])) {
+            if (isset($sonataAdmin['block_name']) && $sonataAdmin['block_name'] !== false) {
                 $block_prefixes[] = $sonataAdmin['block_name'];
             }
 
