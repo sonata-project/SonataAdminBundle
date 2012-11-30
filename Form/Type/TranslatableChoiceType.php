@@ -62,6 +62,7 @@ class TranslatableChoiceType extends AbstractType
         if (!empty($view->vars['empty_value'])) {
             $view->vars['empty_value'] = $this->translator->trans($view->vars['empty_value'], array(), $options['catalogue']);
         }
+        $view->vars['translation_domain'] = $options['catalogue'];
     }
 
     /**
