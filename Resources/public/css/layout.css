@@ -217,7 +217,7 @@
 	margin-top: -3px;
 }
 
-.sonata-bc th.sonata-ba-list-field-header-order-desc.sonata-ba-list-field-order-active,
+.sonata-bc th.sonata-ba-list-field-header-order-desc.sonata-ba-list-field-order-active:before,
 .sonata-bc th.sonata-ba-list-field-header-order-asc.sonata-ba-list-field-order-active:hover:before {
 	content: "";
 	display: block;
