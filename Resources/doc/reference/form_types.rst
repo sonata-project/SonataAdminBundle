@@ -112,6 +112,8 @@ locked to 'yes' and 'no'.
 sonata_type_translatable_choice
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Deprecated: use ChoiceType with the translation_domain option instead.
+
 The translatable type is a specialized ``ChoiceType`` where the choices values 
 are translated with the Symfony Translator component.
 
