@@ -29,7 +29,7 @@ class FilterFactoryTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException RuntimeException
      */
-    public function testUnknowType()
+    public function testUnknownType()
     {
         $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
 

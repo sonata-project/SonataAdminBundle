@@ -15,9 +15,9 @@ Preview can be used to render how the object would look like in your front-end e
 However by default it uses a template similar to the one of the show action and works with
 the fields configured to be shown in the show view.
 
-Overridding the preview template (SonataAdminBundle:CRUD:preview.html.twig) can be done either
+Overriding the preview template (SonataAdminBundle:CRUD:preview.html.twig) can be done either
 globally through the template configuration for the key 'preview' or per admin entity by
-overridding the getTemplate($name) and returning the appropriate template when the key
+overriding the getTemplate($name) and returning the appropriate template when the key
 matches 'preview'.
 
 .. code-block:: php
@@ -44,7 +44,7 @@ The entity is passed to the view in a variable called object. If your original v
 a different object you can just set your own variables prior to calling parent().
 
 Keep in mind that the whole edit form will now appear in your view.
-Hidding the fieldset tags with css (display:none) will be enough to only show the buttons
+Hiding the fieldset tags with css (display:none) will be enough to only show the buttons
 (which still have to be styled according to your wishes) and create a nice preview-workflow.
 
 .. code-block:: jinja

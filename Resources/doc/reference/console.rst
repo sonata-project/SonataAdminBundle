@@ -55,7 +55,7 @@ sonata:admin:setup-acl
 ----------------------
 
 The ``sonata:admin:setup-acl`` command updates ACL definitions for all admin
-classes available in ``sonata.admin.pool``. For instance everytime you create a
+classes available in ``sonata.admin.pool``. For instance every time you create a
 new ``Admin`` class, you can create ACL by using the ``sonata:admin:setup-acl``
 command. The ACL database will be automatically updated with the latest masks
 and roles informations.

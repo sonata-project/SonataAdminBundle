@@ -347,7 +347,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     protected $datagrid;
 
     /**
-     * The router intance
+     * The router instance
      *
      * @var RouteGeneratorInterface
      */
