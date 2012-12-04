@@ -212,7 +212,7 @@ class ModelChoiceList extends SimpleChoiceList
      *
      * @param  string $property     The name of the property
      *
-     * @return \ReflectionProperty  The reflection instsance
+     * @return \ReflectionProperty  The reflection instance
      */
     private function getReflProperty($property)
     {

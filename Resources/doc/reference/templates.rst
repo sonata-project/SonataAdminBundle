@@ -47,7 +47,7 @@ You can easily extend the provided templates in your own and customize only the 
 .. code-block:: jinja
 
     {% extends 'SonataAdminBundle:CRUD:edit.html.twig' %}
-    {# Acme/MyBundle/Ressources/view/my-custom-edit.html.twig #}
+    {# Acme/MyBundle/Resources/view/my-custom-edit.html.twig #}
 
     {% block title %}
         {{ "My title"|trans }}

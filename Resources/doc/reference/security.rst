@@ -160,7 +160,7 @@ In your ``app/config/config.yml`` you then need to put the following:
 The following configuration for the SonataUserBundle defines:
 
     - the ``FriendsOfSymfony/FOSUserBundle`` as a security provider
-    - the login form for authentification
+    - the login form for authentication
     - the access control : resources with related required roles, the important
         part is the admin configuration
     - the ``acl`` option to enable the ACL.
@@ -443,7 +443,7 @@ because for example you want to restrict access using extra rules:
             </service>
         </services>
 
-- change the access decission strategy to ``unanimous``
+- change the access decision strategy to ``unanimous``
 
     .. code-block:: yaml
 
@@ -471,7 +471,7 @@ because for example you want to restrict access using extra rules:
 Usage
 ~~~~~
 
-Everytime you create a new ``Admin`` class, you should start with the command
+Every time you create a new ``Admin`` class, you should start with the command
 ``php app/console sonata:admin:setup-acl`` so the ACL database will be updated
 with the latest roles and permissions.
 

@@ -62,7 +62,7 @@ class PoolTest extends \PHPUnit_Framework_TestCase
                 'items' => array('itemKey' => 'sonata.user.admin.group1')
             ),
             'adminGroup2' => array(
-                'itmes' => array('itemKey' => 'sonata.user.admin.group1')
+                'items' => array('itemKey' => 'sonata.user.admin.group1')
             ),
             'adminGroup3' => array(
                 'items' => array('itemKey' => 'sonata.user.admin.group2')

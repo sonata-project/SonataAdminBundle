@@ -7,7 +7,7 @@ as it allows to declare validation on : class, field and getter. However these d
 can take a while to code for complex rules. Rules must be a set of a ``Constraint``
 and ``Validator`` instances.
 
-The inline validation tries to provide a nice solution by introducting an ``ErrorElement``
+The inline validation tries to provide a nice solution by introducing an ``ErrorElement``
 object. The object can be used to check assertion against the model :
 
 .. code-block:: php
