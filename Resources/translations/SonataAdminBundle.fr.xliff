@@ -180,7 +180,7 @@
             </trans-unit>
             <trans-unit id="message_delete_confirmation">
                 <source>message_delete_confirmation</source>
-                <target>Êtes-vous sûre de vouloir supprimer l'élément sélectionné?</target>
+                <target>Êtes-vous sûr de vouloir supprimer l'élément sélectionné?</target>
             </trans-unit>
             <trans-unit id="btn_delete">
                 <source>btn_delete</source>
