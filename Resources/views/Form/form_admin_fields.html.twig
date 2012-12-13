@@ -29,7 +29,7 @@ file that was distributed with this source code.
         <label{% for attrname,attrvalue in attr %} {{attrname}}="{{attrvalue}}"{% endfor %}>
             {{ widget|raw }}
             <span>
-                {% if not sonata_admin.admin%}
+                {% if not sonata_admin.admin %}
                     {{- label|trans({}, translation_domain) -}}
                 {% else %}
                     {{- label|trans({}, sonata_admin.admin.translationDomain) -}}
@@ -41,8 +41,8 @@ file that was distributed with this source code.
             {% if not sonata_admin.admin%}
                 {{- label|trans({}, translation_domain) -}}
             {% else %}
-                {{- label|trans({}, sonata_admin.admin.translationDomain) -}}
-            {% endif%}
+                {{ sonata_admin.admin.trans(label) }}
+            {% endif %}
             {{ required ? '*' : '' }}
         </label>
     {% endif %}
