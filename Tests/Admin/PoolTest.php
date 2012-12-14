@@ -49,10 +49,13 @@ class PoolTest extends \PHPUnit_Framework_TestCase
         $admin_group2 = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
         $admin_group2->expects($this->once())->method('showIn')->will($this->returnValue(false));
 
+        $admin_group3 = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $admin_group3->expects($this->once())->method('showIn')->will($this->returnValue(false));
+
         $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
 
         $container->expects($this->any())->method('get')->will($this->onConsecutiveCalls(
-            $admin_group1, $admin_group2
+            $admin_group1, $admin_group2, $admin_group3
         ));
 
         $pool = new Pool($container, 'Sonata Admin', '/path/to/pic.png');
@@ -62,10 +65,10 @@ class PoolTest extends \PHPUnit_Framework_TestCase
                 'items' => array('itemKey' => 'sonata.user.admin.group1')
             ),
             'adminGroup2' => array(
-                'items' => array('itemKey' => 'sonata.user.admin.group1')
+                'items' => array('itemKey' => 'sonata.user.admin.group2')
             ),
             'adminGroup3' => array(
-                'items' => array('itemKey' => 'sonata.user.admin.group2')
+                'items' => array('itemKey' => 'sonata.user.admin.group3')
             ),
         ));
 
@@ -130,8 +133,8 @@ class PoolTest extends \PHPUnit_Framework_TestCase
 
     public function testGetAdminServiceIds()
     {
-        $this->pool->setAdminServiceIds(array('sonata.user.admin.group1', 'sonata.user.admin.group2'));
-        $this->assertEquals(array('sonata.user.admin.group1', 'sonata.user.admin.group2'), $this->pool->getAdminServiceIds());
+        $this->pool->setAdminServiceIds(array('sonata.user.admin.group1', 'sonata.user.admin.group2', 'sonata.user.admin.group3'));
+        $this->assertEquals(array('sonata.user.admin.group1', 'sonata.user.admin.group2', 'sonata.user.admin.group3'), $this->pool->getAdminServiceIds());
     }
 
     public function testGetContainer()
