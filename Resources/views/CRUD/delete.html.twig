@@ -14,10 +14,14 @@ file that was distributed with this source code.
 {% block actions %}
     <div class="sonata-actions">
         {% if admin.hasRoute('edit') and admin.isGranted('EDIT', object)%}
-            <a class="btn sonata-action-element" href="{{ admin.generateObjectUrl('edit', object) }}">{{ 'link_action_edit'|trans({}, 'SonataAdminBundle') }}</a>
+            <a class="btn sonata-action-element" href="{{ admin.generateObjectUrl('edit', object) }}">
+                <i class="icon-edit"></i>
+                {{ 'link_action_edit'|trans({}, 'SonataAdminBundle') }}</a>
         {% endif %}
         {% if admin.hasRoute('create') and admin.isGranted('CREATE')%}
-            <a class="btn sonata-action-element" href="{{ admin.generateUrl('create') }}">{{ 'link_action_create'|trans({}, 'SonataAdminBundle') }}</a>
+            <a class="btn sonata-action-element" href="{{ admin.generateUrl('create') }}">
+                <i class="icon-plus"></i>
+                {{ 'link_action_create'|trans({}, 'SonataAdminBundle') }}</a>
         {% endif %}
     </div>
 {% endblock %}
@@ -40,7 +44,9 @@ file that was distributed with this source code.
                 {% if admin.hasRoute('edit') and admin.isGranted('EDIT', object) %}
                     {{ 'delete_or'|trans({}, 'SonataAdminBundle') }}
 
-                    <a class="btn btn-success" href="{{ admin.generateObjectUrl('edit', object) }}">{{ 'link_action_edit'|trans({}, 'SonataAdminBundle') }}</a>
+                    <a class="btn btn-success" href="{{ admin.generateObjectUrl('edit', object) }}">
+                        <i class="icon-edit"></i>
+                        {{ 'link_action_edit'|trans({}, 'SonataAdminBundle') }}</a>
                 {% endif %}
             </form>
         </div>
