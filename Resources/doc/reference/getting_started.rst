@@ -64,7 +64,7 @@ Step 3: Create Admin class
 
 Admin class represents mapping of your model and administration sections (forms,
 list, show). The easiest way to create an admin class for your model is to extend
-the Sonata\AdminBundle\Admin\Admin class. For filter, list and show views, you can
+the ``Sonata\AdminBundle\Admin\Admin`` class. For filter, list and show views, you can
 target a sub model property thanks to the dot-separated notation
 (eg: ``mySubModel.mySubSubModel.myProperty``).
 
