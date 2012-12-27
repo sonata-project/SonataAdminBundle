@@ -10,10 +10,10 @@ file that was distributed with this source code.
 #}
 {% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
 
-{% block field%}
+{% block field %}
     {%- if value is empty -%}
         &nbsp;
     {%- else -%}
-        {{ value|date('F j, Y') }}
+        {{ value|localizeddate('full', 'none') }}
     {%- endif -%}
 {% endblock %}

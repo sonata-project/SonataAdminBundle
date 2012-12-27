@@ -15,7 +15,7 @@ file that was distributed with this source code.
     {%- if value is empty -%}
         &nbsp;
     {%- else -%}
-        {{ value|date }}
+		{{ value | localizeddate('full', 'none') }}, {{ value | localizeddate('none, 'short') }}
     {%- endif -%}
 {% endblock %}
 
