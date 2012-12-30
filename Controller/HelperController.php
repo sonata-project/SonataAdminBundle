@@ -110,6 +110,7 @@ class HelperController
         $uniqid    = $request->get('uniqid');
 
         $admin = $this->pool->getInstance($code);
+        $admin->setRequest($request);
 
         if ($uniqid) {
             $admin->setUniqid($uniqid);
@@ -156,6 +157,7 @@ class HelperController
         $uniqid   = $request->get('uniqid');
 
         $admin = $this->pool->getInstance($code);
+        $admin->setRequest($request);
 
         if (!$admin) {
             throw new NotFoundHttpException();
@@ -205,6 +207,7 @@ class HelperController
         $context    = $request->get('context');
 
         $admin       = $this->pool->getInstance($code);
+        $admin->setRequest($request);
 
         // alter should be done by using a post method
         if ($request->getMethod() != 'POST') {
