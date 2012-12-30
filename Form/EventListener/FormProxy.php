@@ -63,7 +63,7 @@ class FormProxy implements \IteratorAggregate, FormInterface
         return $this->__call('hasParent', func_get_args());
     }
 
-    public function add($child, $type = null, array $options = array())
+    public function add(FormInterface $child)
     {
         return $this->__call('add', func_get_args());
     }
