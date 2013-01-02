@@ -131,7 +131,7 @@ class Datagrid implements DatagridInterface
             }
 
             if ($this->values['_sort_by']->isSortable()) {
-                $this->query->setSortBy($this->values['_sort_by']->getParentAssociationMappings(), $this->values['_sort_by']->getSortFieldMapping());
+                $this->query->setSortBy($this->values['_sort_by']->getSortParentAssociationMapping(), $this->values['_sort_by']->getSortFieldMapping());
                 $this->query->setSortOrder(isset($this->values['_sort_order']) ? $this->values['_sort_order'] : null);
             }
         }
