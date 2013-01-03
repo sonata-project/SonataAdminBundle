@@ -98,7 +98,7 @@ file that was distributed with this source code.
                                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ group.label|trans({}, group.label_catalogue) }} <span class="caret"></span></a>
                                                 <ul class="dropdown-menu">
                                                     {% for admin in group.items %}
-                                                        {% if admin.hasroute('create') and admin.isGranted('CREATE') or admin.hasroute('list') and admin.isGranted('LIST') %}
+                                                        {% if admin.hasroute('list') and admin.isGranted('LIST') %}
                                                             <li><a href="{{ admin.generateUrl('list')}}">{{ admin.label|trans({}, admin.translationdomain) }}</a></li>
                                                         {% endif %}
                                                     {% endfor %}
@@ -214,4 +214,3 @@ file that was distributed with this source code.
         </div>
     </body>
 </html>
-
