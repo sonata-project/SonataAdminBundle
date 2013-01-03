@@ -157,11 +157,12 @@ class HelperController
         $uniqid   = $request->get('uniqid');
 
         $admin = $this->pool->getInstance($code);
-        $admin->setRequest($request);
 
         if (!$admin) {
             throw new NotFoundHttpException();
         }
+
+        $admin->setRequest($request);
 
         if ($uniqid) {
             $admin->setUniqid($uniqid);
