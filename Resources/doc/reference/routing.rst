@@ -65,12 +65,63 @@ defined by its name.
         }
     }
 
+Removing a route
+--------------
+
+Any registered route can be easily removed.
+
+.. code-block:: php
+
+    <?php
+    use Sonata\AdminBundle\Route\RouteCollection;
+
+    class MediaAdmin extends Admin
+    {
+        protected function configureRoutes(RouteCollection $collection)
+        {
+            $collection->remove('delete');
+        }
+    }
+
+
+If you want to disable all default Sonata routes except few whitelisted ones, you can use ``clearExcept()`` method.
+This method accepts an array of routes you want to keep active.
+
+.. code-block:: php
+
+    <?php
+    use Sonata\AdminBundle\Route\RouteCollection;
+
+    class MediaAdmin extends Admin
+    {
+        protected function configureRoutes(RouteCollection $collection)
+        {
+            //Only `list` and `edit` route will be active
+            $collection->clearExcept(array('list', 'edit'));
+        }
+    }
+
+If you want to remove all default routes, you can use ``clear()`` method.
+
+.. code-block:: php
+
+    <?php
+    use Sonata\AdminBundle\Route\RouteCollection;
+
+    class MediaAdmin extends Admin
+    {
+        protected function configureRoutes(RouteCollection $collection)
+        {
+            //All routes are removed
+            $collection->clear();
+        }
+    }
 
 Persistent parameters
 ---------------------
 
-In some cases, the interface might be required to pass the same parameters 
-across the different ``Admin``'s actions. Instead of setting them in the 
+In some cases, the interface might be required to pass the same parameters
+across the different ``Admin``'s actions. Instead of setting them in the
 template or doing other weird hacks, you can define a ``getPersistentParameters``
 method. This method will be used when a link is being generated.
 

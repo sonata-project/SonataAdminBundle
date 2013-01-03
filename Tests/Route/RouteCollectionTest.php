@@ -63,6 +63,23 @@ class RouteCollectionTest extends \PHPUnit_Framework_TestCase
         $route = $routeCollection->get('create');
 
         $this->assertInstanceOf('Symfony\Component\Routing\Route', $route);
+
+        $routeCollection->add('view');
+        $routeCollection->add('edit');
+        $routeCollection->clear();
+        $this->assertFalse($routeCollection->has('create'));
+        $this->assertFalse($routeCollection->has('view'));
+        $this->assertFalse($routeCollection->has('edit'));
+
+        $routeCollection->add('create');
+        $routeCollection->add('view');
+        $routeCollection->add('edit');
+        $routeCollection->add('list');
+        $routeCollection->clearExcept(array('create','edit'));
+        $this->assertTrue($routeCollection->has('create'));
+        $this->assertTrue($routeCollection->has('edit'));
+        $this->assertFalse($routeCollection->has('view'));
+        $this->assertFalse($routeCollection->has('list'));
     }
 
     public function testChildCollection()
