@@ -84,7 +84,7 @@ Any registered route can be easily removed.
     }
 
 
-If you want to disable all default Sonata routes except few whitelisted ones, you can use ``removeAllExcept()`` method.
+If you want to disable all default Sonata routes except few whitelisted ones, you can use ``clearExcept()`` method.
 This method accepts an array of routes you want to keep active.
 
 .. code-block:: php
@@ -97,11 +97,11 @@ This method accepts an array of routes you want to keep active.
         protected function configureRoutes(RouteCollection $collection)
         {
             //Only `list` and `edit` route will be active
-            $collection->removeAllExcept(array('list', 'edit'));
+            $collection->clearExcept(array('list', 'edit'));
         }
     }
 
-If you want to remove all default routes, you can use ``removeAll()`` method.
+If you want to remove all default routes, you can use ``clear()`` method.
 
 .. code-block:: php
 
@@ -113,7 +113,7 @@ If you want to remove all default routes, you can use ``removeAll()`` method.
         protected function configureRoutes(RouteCollection $collection)
         {
             //All routes are removed
-            $collection->removeAll();
+            $collection->clear();
         }
     }
 

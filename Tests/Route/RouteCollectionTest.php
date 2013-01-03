@@ -66,7 +66,7 @@ class RouteCollectionTest extends \PHPUnit_Framework_TestCase
 
         $routeCollection->add('view');
         $routeCollection->add('edit');
-        $routeCollection->removeAll();
+        $routeCollection->clear();
         $this->assertFalse($routeCollection->has('create'));
         $this->assertFalse($routeCollection->has('view'));
         $this->assertFalse($routeCollection->has('edit'));
@@ -75,7 +75,7 @@ class RouteCollectionTest extends \PHPUnit_Framework_TestCase
         $routeCollection->add('view');
         $routeCollection->add('edit');
         $routeCollection->add('list');
-        $routeCollection->removeAllExcept(array('create','edit'));
+        $routeCollection->clearExcept(array('create','edit'));
         $this->assertTrue($routeCollection->has('create'));
         $this->assertTrue($routeCollection->has('edit'));
         $this->assertFalse($routeCollection->has('view'));
