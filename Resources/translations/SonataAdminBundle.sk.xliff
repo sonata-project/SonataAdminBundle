@@ -192,7 +192,7 @@
             </trans-unit>
             <trans-unit id="message_batch_confirmation">
                 <source>message_batch_confirmation</source>
-                <target>Ste si istý, že chcete potvrdiť túto akciu a spustiť ju na všetky vybrané prvky?|Ste si istý, že chcete potvrdiť túto akciu a spustiť ju na %count% prvkov?</target>
+                <target>Ste si istý, že chcete potvrdiť túto akciu a spustiť ju na všetky vybrané prvky?|Ste si istý, že chcete potvrdiť túto akciu a spustiť ju na %count% prvky?|Ste si istý, že chcete potvrdiť túto akciu a spustiť ju na %count% prvkov?</target>
             </trans-unit>
             <trans-unit id="message_batch_all_confirmation">
                 <source>message_batch_all_confirmation</source>
@@ -286,12 +286,10 @@
               <source>label_filters</source>
               <target>Filtre</target>
             </trans-unit>
-
             <trans-unit id="delete_or">
               <source>delete_or</source>
               <target>alebo</target>
             </trans-unit>
-
             <trans-unit id="link_action_history">
                 <source>link_action_history</source>
                 <target>Revízie</target>
@@ -316,7 +314,6 @@
                 <source>label_view_revision</source>
                 <target>Zobraziť revíziu</target>
             </trans-unit>
-
             <trans-unit id="list_results_count">
                 <source>list_results_count</source>
                 <target>1 záznam|%count% záznamy|%count% záznamov</target>
@@ -329,7 +326,6 @@
                 <source>loading_information</source>
                 <target>Načítavajú sa informácie…</target>
             </trans-unit>
-
             <trans-unit id="btn_preview">
                 <source>btn_preview</source>
                 <target>btn_preview</target>
