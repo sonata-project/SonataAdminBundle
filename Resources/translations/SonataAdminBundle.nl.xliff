@@ -130,21 +130,17 @@
                 <source>action_show</source>
                 <target>Tonen</target>
             </trans-unit>
+            <trans-unit id="all_elements">
+                <source>all_elements</source>
+                <target>all_elements</target>
+            </trans-unit>
             <trans-unit id='flash_batch_empty'>
                 <source>flash_batch_empty</source>
                 <target>Handeling gestopt. Geen items geselecteerd.</target>
             </trans-unit>
-            <trans-unit id='flash_batch_delete_success'>
-                <source>flash_batch_delete_success</source>
-                <target>De geselecteerde items zijn succesvol verwijderd.</target>
-            </trans-unit>
-            <trans-unit id='flash_delete_success'>
-                <source>flash_delete_success</source>
-                <target>Het item is succesvol verwijderd.</target>
-            </trans-unit>
-            <trans-unit id="all_elements">
-                <source>all_elements</source>
-                <target>Alle elementen</target>
+            <trans-unit id='flash_create_success'>
+                <source>flash_create_success</source>
+                <target>flash_create_success</target>
             </trans-unit>
             <trans-unit id='flash_create_error'>
                 <source>flash_create_error</source>
@@ -158,6 +154,10 @@
                 <source>flash_edit_error</source>
                 <target>Het item kon door een fout niet worden bijgewerkt.</target>
             </trans-unit>
+            <trans-unit id='flash_batch_delete_success'>
+                <source>flash_batch_delete_success</source>
+                <target>De geselecteerde items zijn succesvol verwijderd.</target>
+            </trans-unit>
             <trans-unit id='flash_batch_delete_error'>
                 <source>flash_batch_delete_error</source>
                 <target>De geselecteerde items konden door een fout niet worden verwijderd.</target>
@@ -165,6 +165,10 @@
             <trans-unit id='flash_delete_error'>
                 <source>flash_delete_error</source>
                 <target>Het item kon door een fout niet worden verwijderd.</target>
+            </trans-unit>
+            <trans-unit id='flash_delete_success'>
+                <source>flash_delete_success</source>
+                <target>Het item is succesvol verwijderd.</target>
             </trans-unit>
             <trans-unit id="link_breadcrumb_dashboard">
                 <source>breadcrumb.link_dashboard</source>
@@ -219,8 +223,8 @@
                 <target>is gelijk aan</target>
             </trans-unit>
             <trans-unit id="label_type_not_equals">
-              <source>label_type_not_equals</source>
-              <target>is niet gelijk aan</target>
+                <source>label_type_not_equals</source>
+                <target>is niet gelijk aan</target>
             </trans-unit>
             <trans-unit id="label_type_equal">
                 <source>label_type_equal</source>
@@ -282,12 +286,10 @@
                 <source>label_filters</source>
                 <target>Filters</target>
             </trans-unit>
-
             <trans-unit id="delete_or">
                 <source>delete_or</source>
                 <target>of</target>
             </trans-unit>
-
             <trans-unit id="link_action_history">
                 <source>link_action_history</source>
                 <target>Revisies</target>
@@ -312,7 +314,6 @@
                 <source>label_view_revision</source>
                 <target>Toon revisie</target>
             </trans-unit>
-
             <trans-unit id="list_results_count">
                 <source>list_results_count</source>
                 <target>1 resultaat|%count% resultaten</target>
@@ -325,7 +326,6 @@
                 <source>loading_information</source>
                 <target>Laden van informatie...</target>
             </trans-unit>
-
             <trans-unit id="btn_preview">
                 <source>btn_preview</source>
                 <target>Voorvertoning</target>

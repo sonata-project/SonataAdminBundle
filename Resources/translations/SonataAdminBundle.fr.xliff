@@ -50,6 +50,10 @@
                 <source>link_action_create</source>
                 <target>Ajouter</target>
             </trans-unit>
+            <trans-unit id="link_action_list">
+                <source>link_action_list</source>
+                <target>Retourner à la liste</target>
+            </trans-unit>
             <trans-unit id="link_action_show">
                 <source>link_action_show</source>
                 <target>Afficher</target>
@@ -57,10 +61,6 @@
             <trans-unit id="link_action_edit">
                 <source>link_action_edit</source>
                 <target>Editer</target>
-            </trans-unit>
-            <trans-unit id="link_action_list">
-                <source>link_action_list</source>
-                <target>Retourner à la liste</target>
             </trans-unit>
             <trans-unit id="link_add">
                 <source>link_add</source>
@@ -135,40 +135,40 @@
                 <target>Tous les éléments</target>
             </trans-unit>
             <trans-unit id='flash_batch_empty'>
-              <source>flash_batch_empty</source>
-              <target>Action interrompue. Aucun élément n'a été séléctionné.</target>
+                <source>flash_batch_empty</source>
+                <target>Action interrompue. Aucun élément n'a été séléctionné.</target>
             </trans-unit>
             <trans-unit id='flash_create_success'>
-              <source>flash_create_success</source>
-              <target>L'élément a été crée avec succès.</target>
+                <source>flash_create_success</source>
+                <target>L'élément a été crée avec succès.</target>
             </trans-unit>
             <trans-unit id='flash_create_error'>
-              <source>flash_create_error</source>
-              <target>Une erreur est intervenue lors de la création de l'élément.</target>
+                <source>flash_create_error</source>
+                <target>Une erreur est intervenue lors de la création de l'élément.</target>
             </trans-unit>
             <trans-unit id='flash_edit_success'>
-              <source>flash_edit_success</source>
-              <target>L'élément a été mis à jour avec succès.</target>
+                <source>flash_edit_success</source>
+                <target>L'élément a été mis à jour avec succès.</target>
             </trans-unit>
             <trans-unit id='flash_edit_error'>
-              <source>flash_edit_error</source>
-              <target>Une erreur est intervenue lors de la mise à jour de l'élément.</target>
+                <source>flash_edit_error</source>
+                <target>Une erreur est intervenue lors de la mise à jour de l'élément.</target>
             </trans-unit>
             <trans-unit id='flash_batch_delete_success'>
-              <source>flash_batch_delete_success</source>
-              <target>Les éléments séléctionnés ont été supprimés avec succès.</target>
+                <source>flash_batch_delete_success</source>
+                <target>Les éléments séléctionnés ont été supprimés avec succès.</target>
             </trans-unit>
             <trans-unit id='flash_batch_delete_error'>
-              <source>flash_batch_delete_error</source>
-              <target>Une erreur est intervenue lors de la suppression des éléments séléctionnés.</target>
+                <source>flash_batch_delete_error</source>
+                <target>Une erreur est intervenue lors de la suppression des éléments séléctionnés.</target>
             </trans-unit>
             <trans-unit id='flash_delete_error'>
-              <source>flash_delete_error</source>
-              <target>Une erreur est intervenue lors de la suppression de l'élément.</target>
+                <source>flash_delete_error</source>
+                <target>Une erreur est intervenue lors de la suppression de l'élément.</target>
             </trans-unit>
             <trans-unit id='flash_delete_success'>
-              <source>flash_delete_success</source>
-              <target>Les éléments ont été supprimés avec succès.</target>
+                <source>flash_delete_success</source>
+                <target>Les éléments ont été supprimés avec succès.</target>
             </trans-unit>
             <trans-unit id="link_breadcrumb_dashboard">
                 <source>breadcrumb.link_dashboard</source>
@@ -203,96 +203,100 @@
                 <target>Oui, exécuter</target>
             </trans-unit>
             <trans-unit id="label_type_yes">
-              <source>label_type_yes</source>
-              <target>oui</target>
+                <source>label_type_yes</source>
+                <target>oui</target>
             </trans-unit>
             <trans-unit id="label_type_no">
-              <source>label_type_no</source>
-              <target>non</target>
+                <source>label_type_no</source>
+                <target>non</target>
             </trans-unit>
             <trans-unit id="label_type_contains">
-              <source>label_type_contains</source>
-              <target>contient</target>
+                <source>label_type_contains</source>
+                <target>contient</target>
             </trans-unit>
             <trans-unit id="label_type_not_contains">
-              <source>label_type_not_contains</source>
-              <target>ne contient pas</target>
+                <source>label_type_not_contains</source>
+                <target>ne contient pas</target>
             </trans-unit>
             <trans-unit id="label_type_equals">
-              <source>label_type_equals</source>
-              <target>est égal à</target>
+                <source>label_type_equals</source>
+                <target>est égal à</target>
             </trans-unit>
             <trans-unit id="label_type_not_equals">
-              <source>label_type_not_equals</source>
-              <target>n'est pas égal à</target>
+                <source>label_type_not_equals</source>
+                <target>n'est pas égal à</target>
             </trans-unit>
             <trans-unit id="label_type_equal">
-              <source>label_type_equal</source>
-              <target>=</target>
+                <source>label_type_equal</source>
+                <target>=</target>
             </trans-unit>
             <trans-unit id="label_type_greater_equal">
-              <source>label_type_greater_equal</source>
-              <target>&gt;=</target>
+                <source>label_type_greater_equal</source>
+                <target>&gt;=</target>
             </trans-unit>
             <trans-unit id="label_type_greater_than">
-              <source>label_type_greater_than</source>
-              <target>&gt;</target>
+                <source>label_type_greater_than</source>
+                <target>&gt;</target>
             </trans-unit>
             <trans-unit id="label_type_less_equal">
-              <source>label_type_less_equal</source>
-              <target>&lt;=</target>
+                <source>label_type_less_equal</source>
+                <target>&lt;=</target>
             </trans-unit>
             <trans-unit id="label_type_less_than">
-              <source>label_type_less_than</source>
-              <target>&lt;</target>
+                <source>label_type_less_than</source>
+                <target>&lt;</target>
             </trans-unit>
             <trans-unit id="label_date_type_equal">
-              <source>label_date_type_equal</source>
-              <target>=</target>
+                <source>label_date_type_equal</source>
+                <target>=</target>
             </trans-unit>
             <trans-unit id="label_date_type_greater_equal">
-              <source>label_date_type_greater_equal</source>
-              <target>&gt;=</target>
+                <source>label_date_type_greater_equal</source>
+                <target>&gt;=</target>
             </trans-unit>
             <trans-unit id="label_date_type_greater_than">
-              <source>label_date_type_greater_than</source>
-              <target>&gt;</target>
+                <source>label_date_type_greater_than</source>
+                <target>&gt;</target>
             </trans-unit>
             <trans-unit id="label_date_type_less_equal">
-              <source>label_date_type_less_equal</source>
-              <target>&lt;=</target>
+                <source>label_date_type_less_equal</source>
+                <target>&lt;=</target>
             </trans-unit>
             <trans-unit id="label_date_type_less_than">
-              <source>label_date_type_less_than</source>
-              <target>&lt;</target>
+                <source>label_date_type_less_than</source>
+                <target>&lt;</target>
             </trans-unit>
             <trans-unit id="label_date_type_null">
-              <source>label_date_type_null</source>
-              <target>est vide</target>
+                <source>label_date_type_null</source>
+                <target>est vide</target>
             </trans-unit>
             <trans-unit id="label_date_type_not_null">
-              <source>label_date_type_not_null</source>
-              <target>n'est pas vide</target>
+                <source>label_date_type_not_null</source>
+                <target>n'est pas vide</target>
             </trans-unit>
             <trans-unit id="label_date_type_between">
-              <source>label_date_type_between</source>
-              <target>est entre</target>
+                <source>label_date_type_between</source>
+                <target>est entre</target>
             </trans-unit>
             <trans-unit id="label_date_not_between">
-              <source>label_date_type_not_between</source>
-              <target>n'est pas entre</target>
+                <source>label_date_type_not_between</source>
+                <target>n'est pas entre</target>
             </trans-unit>
             <trans-unit id="label_filters">
-              <source>label_filters</source>
-              <target>Filtres</target>
+                <source>label_filters</source>
+                <target>Filtres</target>
             </trans-unit>
             <trans-unit id="delete_or">
-              <source>delete_or</source>
-              <target>ou</target>
+                <source>delete_or</source>
+                <target>ou</target>
             </trans-unit>
             <trans-unit id="link_action_history">
                 <source>link_action_history</source>
                 <target>Révisions</target>
+            </trans-unit>
+            <trans-unit id="td_action">
+                <source>td_action</source>
+                <target>Action</target>
             </trans-unit>
             <trans-unit id="td_revision">
                 <source>td_revision</source>
@@ -310,7 +314,6 @@
                 <source>label_view_revision</source>
                 <target>Afficher la révision</target>
             </trans-unit>
-
             <trans-unit id="list_results_count">
                 <source>list_results_count</source>
                 <target>1 résultat|%count% résultats</target>
@@ -323,7 +326,6 @@
                 <source>loading_information</source>
                 <target>Chargement des informations…</target>
             </trans-unit>
-
             <trans-unit id="btn_preview">
                 <source>btn_preview</source>
                 <target>btn_preview</target>
