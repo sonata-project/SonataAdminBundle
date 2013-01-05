@@ -135,40 +135,40 @@
                 <target>All elements</target>
             </trans-unit>
             <trans-unit id='flash_batch_empty'>
-              <source>flash_batch_empty</source>
-              <target>Action aborted. No items where selected.</target>
+                <source>flash_batch_empty</source>
+                <target>Action aborted. No items where selected.</target>
             </trans-unit>
             <trans-unit id='flash_create_success'>
-              <source>flash_create_success</source>
-              <target>Item has been successfully created.</target>
+                <source>flash_create_success</source>
+                <target>Item has been successfully created.</target>
             </trans-unit>
             <trans-unit id='flash_create_error'>
-              <source>flash_create_error</source>
-              <target>An error has occurred during item creation.</target>
+                <source>flash_create_error</source>
+                <target>An error has occurred during item creation.</target>
             </trans-unit>
             <trans-unit id='flash_edit_success'>
-              <source>flash_edit_success</source>
-              <target>Item has been successfully updated.</target>
+                <source>flash_edit_success</source>
+                <target>Item has been successfully updated.</target>
             </trans-unit>
             <trans-unit id='flash_edit_error'>
-              <source>flash_edit_error</source>
-              <target>An error has occurred during item update.</target>
+                <source>flash_edit_error</source>
+                <target>An error has occurred during item update.</target>
             </trans-unit>
             <trans-unit id='flash_batch_delete_success'>
-              <source>flash_batch_delete_success</source>
-              <target>Selected items have been successfully deleted.</target>
+                <source>flash_batch_delete_success</source>
+                <target>Selected items have been successfully deleted.</target>
             </trans-unit>
             <trans-unit id='flash_batch_delete_error'>
-              <source>flash_batch_delete_error</source>
-              <target>An Error has occurred during selected items deletion.</target>
+                <source>flash_batch_delete_error</source>
+                <target>An Error has occurred during selected items deletion.</target>
             </trans-unit>
             <trans-unit id='flash_delete_error'>
-              <source>flash_delete_error</source>
-              <target>An Error has occurred during item deletion.</target>
+                <source>flash_delete_error</source>
+                <target>An Error has occurred during item deletion.</target>
             </trans-unit>
             <trans-unit id='flash_delete_success'>
-              <source>flash_delete_success</source>
-              <target>Item has been deleted successfully.</target>
+                <source>flash_delete_success</source>
+                <target>Item has been deleted successfully.</target>
             </trans-unit>
             <trans-unit id="link_breadcrumb_dashboard">
                 <source>breadcrumb.link_dashboard</source>
@@ -203,95 +203,93 @@
                 <target>Yes, execute</target>
             </trans-unit>
             <trans-unit id="label_type_yes">
-              <source>label_type_yes</source>
-              <target>yes</target>
+                <source>label_type_yes</source>
+                <target>yes</target>
             </trans-unit>
             <trans-unit id="label_type_no">
-              <source>label_type_no</source>
-              <target>no</target>
+                <source>label_type_no</source>
+                <target>no</target>
             </trans-unit>
             <trans-unit id="label_type_contains">
-              <source>label_type_contains</source>
-              <target>contains</target>
+                <source>label_type_contains</source>
+                <target>contains</target>
             </trans-unit>
             <trans-unit id="label_type_not_contains">
-              <source>label_type_not_contains</source>
-              <target>does not contain</target>
+                <source>label_type_not_contains</source>
+                <target>does not contain</target>
             </trans-unit>
             <trans-unit id="label_type_equals">
-              <source>label_type_equals</source>
-              <target>is equal to</target>
+                <source>label_type_equals</source>
+                <target>is equal to</target>
             </trans-unit>
             <trans-unit id="label_type_not_equals">
-              <source>label_type_not_equals</source>
-              <target>is not equal to</target>
+                <source>label_type_not_equals</source>
+                <target>is not equal to</target>
             </trans-unit>
             <trans-unit id="label_type_equal">
-              <source>label_type_equal</source>
-              <target>=</target>
+                <source>label_type_equal</source>
+                <target>=</target>
             </trans-unit>
             <trans-unit id="label_type_greater_equal">
-              <source>label_type_greater_equal</source>
-              <target>&gt;=</target>
+                <source>label_type_greater_equal</source>
+                <target>&gt;=</target>
             </trans-unit>
             <trans-unit id="label_type_greater_than">
-              <source>label_type_greater_than</source>
-              <target>&gt;</target>
+                <source>label_type_greater_than</source>
+                <target>&gt;</target>
             </trans-unit>
             <trans-unit id="label_type_less_equal">
-              <source>label_type_less_equal</source>
-              <target>&lt;=</target>
+                <source>label_type_less_equal</source>
+                <target>&lt;=</target>
             </trans-unit>
             <trans-unit id="label_type_less_than">
-              <source>label_type_less_than</source>
-              <target>&lt;</target>
+                <source>label_type_less_than</source>
+                <target>&lt;</target>
             </trans-unit>
             <trans-unit id="label_date_type_equal">
-              <source>label_date_type_equal</source>
-              <target>=</target>
+                <source>label_date_type_equal</source>
+                <target>=</target>
             </trans-unit>
             <trans-unit id="label_date_type_greater_equal">
-              <source>label_date_type_greater_equal</source>
-              <target>&gt;=</target>
+                <source>label_date_type_greater_equal</source>
+                <target>&gt;=</target>
             </trans-unit>
             <trans-unit id="label_date_type_greater_than">
-              <source>label_date_type_greater_than</source>
-              <target>&gt;</target>
+                <source>label_date_type_greater_than</source>
+                <target>&gt;</target>
             </trans-unit>
             <trans-unit id="label_date_type_less_equal">
-              <source>label_date_type_less_equal</source>
-              <target>&lt;=</target>
+                <source>label_date_type_less_equal</source>
+                <target>&lt;=</target>
             </trans-unit>
             <trans-unit id="label_date_type_less_than">
-              <source>label_date_type_less_than</source>
-              <target>&lt;</target>
+                <source>label_date_type_less_than</source>
+                <target>&lt;</target>
             </trans-unit>
             <trans-unit id="label_date_type_null">
-              <source>label_date_type_null</source>
-              <target>is empty</target>
+                <source>label_date_type_null</source>
+                <target>is empty</target>
             </trans-unit>
             <trans-unit id="label_date_type_not_null">
-              <source>label_date_type_not_null</source>
-              <target>is not empty</target>
+                <source>label_date_type_not_null</source>
+                <target>is not empty</target>
             </trans-unit>
             <trans-unit id="label_date_type_between">
-              <source>label_date_type_between</source>
-              <target>between</target>
+                <source>label_date_type_between</source>
+                <target>between</target>
             </trans-unit>
             <trans-unit id="label_date_not_between">
-              <source>label_date_type_not_between</source>
-              <target>not between</target>
+                <source>label_date_type_not_between</source>
+                <target>not between</target>
             </trans-unit>
             <trans-unit id="label_filters">
-              <source>label_filters</source>
-              <target>Filters</target>
+                <source>label_filters</source>
+                <target>Filters</target>
             </trans-unit>
-
             <trans-unit id="delete_or">
-              <source>delete_or</source>
-              <target>or</target>
+                <source>delete_or</source>
+                <target>or</target>
             </trans-unit>
-
             <trans-unit id="link_action_history">
                 <source>link_action_history</source>
                 <target>Revisions</target>
@@ -316,7 +314,6 @@
                 <source>label_view_revision</source>
                 <target>View Revision</target>
             </trans-unit>
-
             <trans-unit id="list_results_count">
                 <source>list_results_count</source>
                 <target>1 result|%count% results</target>
@@ -329,7 +326,6 @@
                 <source>loading_information</source>
                 <target>Loading information…</target>
             </trans-unit>
-
             <trans-unit id="btn_preview">
                 <source>btn_preview</source>
                 <target>Preview</target>

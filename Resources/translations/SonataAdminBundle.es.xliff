@@ -135,40 +135,40 @@
                 <target>Todos los elementos</target>
             </trans-unit>
             <trans-unit id='flash_batch_empty'>
-              <source>flash_batch_empty</source>
-              <target>Acción cancelada. Ningún item seleccionado.</target>
+                <source>flash_batch_empty</source>
+                <target>Acción cancelada. Ningún item seleccionado.</target>
             </trans-unit>
             <trans-unit id='flash_create_success'>
-              <source>flash_create_success</source>
-              <target>Elemento creado satisfactoriamente.</target>
+                <source>flash_create_success</source>
+                <target>Elemento creado satisfactoriamente.</target>
             </trans-unit>
             <trans-unit id='flash_create_error'>
-              <source>flash_create_error</source>
-              <target>Se ha producido un error durante la creación del elemento.</target>
+                <source>flash_create_error</source>
+                <target>Se ha producido un error durante la creación del elemento.</target>
             </trans-unit>
             <trans-unit id='flash_edit_success'>
-              <source>flash_edit_success</source>
-              <target>Elemento actualizado satisfactoriamente.</target>
+                <source>flash_edit_success</source>
+                <target>Elemento actualizado satisfactoriamente.</target>
             </trans-unit>
             <trans-unit id='flash_edit_error'>
-              <source>flash_edit_error</source>
-              <target>Se ha producido un error durante la actualización del elemento.</target>
+                <source>flash_edit_error</source>
+                <target>Se ha producido un error durante la actualización del elemento.</target>
             </trans-unit>
             <trans-unit id='flash_batch_delete_success'>
-              <source>flash_batch_delete_success</source>
-              <target>Los elementos seleccionados fueron eliminados satisfactoriamente.</target>
+                <source>flash_batch_delete_success</source>
+                <target>Los elementos seleccionados fueron eliminados satisfactoriamente.</target>
             </trans-unit>
             <trans-unit id='flash_batch_delete_error'>
-              <source>flash_batch_delete_error</source>
-              <target>Se ha producido un error durante la eliminación de los elementos selecciondaos.</target>
+                <source>flash_batch_delete_error</source>
+                <target>Se ha producido un error durante la eliminación de los elementos selecciondaos.</target>
             </trans-unit>
             <trans-unit id='flash_delete_error'>
-              <source>flash_delete_error</source>
-              <target>Se ha producido un error durante la eliminación del elemento.</target>
+                <source>flash_delete_error</source>
+                <target>Se ha producido un error durante la eliminación del elemento.</target>
             </trans-unit>
             <trans-unit id='flash_delete_success'>
-              <source>flash_delete_success</source>
-              <target>Elemento eliminado satisfactoriamente.</target>
+                <source>flash_delete_success</source>
+                <target>Elemento eliminado satisfactoriamente.</target>
             </trans-unit>
             <trans-unit id="link_breadcrumb_dashboard">
                 <source>breadcrumb.link_dashboard</source>
@@ -203,95 +203,93 @@
                 <target>Sí, ejecutar</target>
             </trans-unit>
             <trans-unit id="label_type_yes">
-              <source>label_type_yes</source>
-              <target>sí</target>
+                <source>label_type_yes</source>
+                <target>sí</target>
             </trans-unit>
             <trans-unit id="label_type_no">
-              <source>label_type_no</source>
-              <target>no</target>
+                <source>label_type_no</source>
+                <target>no</target>
             </trans-unit>
             <trans-unit id="label_type_contains">
-              <source>label_type_contains</source>
-              <target>contiene</target>
+                <source>label_type_contains</source>
+                <target>contiene</target>
             </trans-unit>
             <trans-unit id="label_type_not_contains">
-              <source>label_type_not_contains</source>
-              <target>no contiene</target>
+                <source>label_type_not_contains</source>
+                <target>no contiene</target>
             </trans-unit>
             <trans-unit id="label_type_equals">
-              <source>label_type_equals</source>
-              <target>es igual a</target>
+                <source>label_type_equals</source>
+                <target>es igual a</target>
             </trans-unit>
             <trans-unit id="label_type_not_equals">
-              <source>label_type_not_equals</source>
-              <target>no es igual a</target>
+                <source>label_type_not_equals</source>
+                <target>no es igual a</target>
             </trans-unit>
             <trans-unit id="label_type_equal">
-              <source>label_type_equal</source>
-              <target>=</target>
+                <source>label_type_equal</source>
+                <target>=</target>
             </trans-unit>
             <trans-unit id="label_type_greater_equal">
-              <source>label_type_greater_equal</source>
-              <target>&gt;=</target>
+                <source>label_type_greater_equal</source>
+                <target>&gt;=</target>
             </trans-unit>
             <trans-unit id="label_type_greater_than">
-              <source>label_type_greater_than</source>
-              <target>&gt;</target>
+                <source>label_type_greater_than</source>
+                <target>&gt;</target>
             </trans-unit>
             <trans-unit id="label_type_less_equal">
-              <source>label_type_less_equal</source>
-              <target>&lt;=</target>
+                <source>label_type_less_equal</source>
+                <target>&lt;=</target>
             </trans-unit>
             <trans-unit id="label_type_less_than">
-              <source>label_type_less_than</source>
-              <target>&lt;</target>
+                <source>label_type_less_than</source>
+                <target>&lt;</target>
             </trans-unit>
             <trans-unit id="label_date_type_equal">
-              <source>label_date_type_equal</source>
-              <target>=</target>
+                <source>label_date_type_equal</source>
+                <target>=</target>
             </trans-unit>
             <trans-unit id="label_date_type_greater_equal">
-              <source>label_date_type_greater_equal</source>
-              <target>&gt;=</target>
+                <source>label_date_type_greater_equal</source>
+                <target>&gt;=</target>
             </trans-unit>
             <trans-unit id="label_date_type_greater_than">
-              <source>label_date_type_greater_than</source>
-              <target>&gt;</target>
+                <source>label_date_type_greater_than</source>
+                <target>&gt;</target>
             </trans-unit>
             <trans-unit id="label_date_type_less_equal">
-              <source>label_date_type_less_equal</source>
-              <target>&lt;=</target>
+                <source>label_date_type_less_equal</source>
+                <target>&lt;=</target>
             </trans-unit>
             <trans-unit id="label_date_type_less_than">
-              <source>label_date_type_less_than</source>
-              <target>&lt;</target>
+                <source>label_date_type_less_than</source>
+                <target>&lt;</target>
             </trans-unit>
             <trans-unit id="label_date_type_null">
-              <source>label_date_type_null</source>
-              <target>está vacío</target>
+                <source>label_date_type_null</source>
+                <target>está vacío</target>
             </trans-unit>
             <trans-unit id="label_date_type_not_null">
-              <source>label_date_type_not_null</source>
-              <target>no está vacío</target>
+                <source>label_date_type_not_null</source>
+                <target>no está vacío</target>
             </trans-unit>
             <trans-unit id="label_date_type_between">
-              <source>label_date_type_between</source>
-              <target>entre</target>
+                <source>label_date_type_between</source>
+                <target>entre</target>
             </trans-unit>
             <trans-unit id="label_date_not_between">
-              <source>label_date_type_not_between</source>
-              <target>no entre</target>
+                <source>label_date_type_not_between</source>
+                <target>no entre</target>
             </trans-unit>
             <trans-unit id="label_filters">
-              <source>label_filters</source>
-              <target>Filtros</target>
+                <source>label_filters</source>
+                <target>Filtros</target>
             </trans-unit>
-
             <trans-unit id="delete_or">
-              <source>delete_or</source>
-              <target>o</target>
+                <source>delete_or</source>
+                <target>o</target>
             </trans-unit>
-
             <trans-unit id="link_action_history">
                 <source>link_action_history</source>
                 <target>Revisiones</target>
@@ -316,7 +314,6 @@
                 <source>label_view_revision</source>
                 <target>Ver Revisión</target>
             </trans-unit>
-
             <trans-unit id="list_results_count">
                 <source>list_results_count</source>
                 <target>1 resultado|%count% resultados</target>
@@ -329,7 +326,6 @@
                 <source>loading_information</source>
                 <target>Cargando información...</target>
             </trans-unit>
-
             <trans-unit id="btn_preview">
                 <source>btn_preview</source>
                 <target>Vista preliminar</target>

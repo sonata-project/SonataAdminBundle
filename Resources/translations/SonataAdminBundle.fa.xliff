@@ -22,6 +22,10 @@
                 <source>btn_create_and_create_a_new_one</source>
                 <target>ایحاد و اضافه کردن دیگری</target>
             </trans-unit>
+            <trans-unit id="btn_create_and_return_to_list">
+                <source>btn_create_and_return_to_list</source>
+                <target>btn_create_and_return_to_list</target>
+            </trans-unit>
             <trans-unit id="btn_filter">
                 <source>btn_filter</source>
                 <target>فیلتر</target>
@@ -131,40 +135,40 @@
                 <target>تمام عناصر</target>
             </trans-unit>
             <trans-unit id='flash_batch_empty'>
-              <source>flash_batch_empty</source>
-              <target>عمل متوقف شد. عنصری انتخاب نشده است.</target>
+                <source>flash_batch_empty</source>
+                <target>عمل متوقف شد. عنصری انتخاب نشده است.</target>
             </trans-unit>
             <trans-unit id='flash_create_success'>
-              <source>flash_create_success</source>
-              <target>عنصر با موفقیت ایجاد شد.</target>
+                <source>flash_create_success</source>
+                <target>عنصر با موفقیت ایجاد شد.</target>
             </trans-unit>
             <trans-unit id='flash_create_error'>
-              <source>flash_create_error</source>
-              <target>در هنگام ایجاد خطا به وقوع پیوست.</target>
+                <source>flash_create_error</source>
+                <target>در هنگام ایجاد خطا به وقوع پیوست.</target>
             </trans-unit>
             <trans-unit id='flash_edit_success'>
-              <source>flash_edit_success</source>
-              <target>عنصر با موفقیت به روزرسانی شد.</target>
+                <source>flash_edit_success</source>
+                <target>عنصر با موفقیت به روزرسانی شد.</target>
             </trans-unit>
             <trans-unit id='flash_edit_error'>
-              <source>flash_edit_error</source>
-              <target>در هنگام به روزرسانی خطا به وقوع پیوست.</target>
+                <source>flash_edit_error</source>
+                <target>در هنگام به روزرسانی خطا به وقوع پیوست.</target>
             </trans-unit>
             <trans-unit id='flash_batch_delete_success'>
-              <source>flash_batch_delete_success</source>
-              <target>عنصر با موفقیت به حذف شد.</target>
+                <source>flash_batch_delete_success</source>
+                <target>عنصر با موفقیت به حذف شد.</target>
             </trans-unit>
             <trans-unit id='flash_batch_delete_error'>
-              <source>flash_batch_delete_error</source>
-              <target>در هنگام حذف عناصر انتخابی خطا به وقوع پیوست.</target>
+                <source>flash_batch_delete_error</source>
+                <target>در هنگام حذف عناصر انتخابی خطا به وقوع پیوست.</target>
             </trans-unit>
             <trans-unit id='flash_delete_error'>
-              <source>flash_delete_error</source>
-              <target>در هنگام حذف عنصر خطا به وقوع پیوست.</target>
+                <source>flash_delete_error</source>
+                <target>در هنگام حذف عنصر خطا به وقوع پیوست.</target>
             </trans-unit>
             <trans-unit id='flash_delete_success'>
-              <source>flash_delete_success</source>
-              <target>عنصر با موفقیت حذف شد.</target>
+                <source>flash_delete_success</source>
+                <target>عنصر با موفقیت حذف شد.</target>
             </trans-unit>
             <trans-unit id="link_breadcrumb_dashboard">
                 <source>breadcrumb.link_dashboard</source>
@@ -199,92 +203,92 @@
                 <target>بله، اجرا شود</target>
             </trans-unit>
             <trans-unit id="label_type_yes">
-              <source>label_type_yes</source>
-              <target>بله</target>
+                <source>label_type_yes</source>
+                <target>بله</target>
             </trans-unit>
             <trans-unit id="label_type_no">
-              <source>label_type_no</source>
-              <target>خیر</target>
+                <source>label_type_no</source>
+                <target>خیر</target>
             </trans-unit>
             <trans-unit id="label_type_contains">
-              <source>label_type_contains</source>
-              <target>داراست</target>
+                <source>label_type_contains</source>
+                <target>داراست</target>
             </trans-unit>
             <trans-unit id="label_type_not_contains">
-              <source>label_type_not_contains</source>
-              <target>دارا نیست</target>
+                <source>label_type_not_contains</source>
+                <target>دارا نیست</target>
             </trans-unit>
             <trans-unit id="label_type_equals">
-              <source>label_type_equals</source>
-              <target>برابر است با</target>
+                <source>label_type_equals</source>
+                <target>برابر است با</target>
             </trans-unit>
             <trans-unit id="label_type_not_equals">
-              <source>label_type_not_equals</source>
-              <target>برابر نیست با</target>
+                <source>label_type_not_equals</source>
+                <target>برابر نیست با</target>
             </trans-unit>
             <trans-unit id="label_type_equal">
-              <source>label_type_equal</source>
-              <target>=</target>
+                <source>label_type_equal</source>
+                <target>=</target>
             </trans-unit>
             <trans-unit id="label_type_greater_equal">
-              <source>label_type_greater_equal</source>
-              <target>&gt;=</target>
+                <source>label_type_greater_equal</source>
+                <target>&gt;=</target>
             </trans-unit>
             <trans-unit id="label_type_greater_than">
-              <source>label_type_greater_than</source>
-              <target>&gt;</target>
+                <source>label_type_greater_than</source>
+                <target>&gt;</target>
             </trans-unit>
             <trans-unit id="label_type_less_equal">
-              <source>label_type_less_equal</source>
-              <target>&lt;=</target>
+                <source>label_type_less_equal</source>
+                <target>&lt;=</target>
             </trans-unit>
             <trans-unit id="label_type_less_than">
-              <source>label_type_less_than</source>
-              <target>&lt;</target>
+                <source>label_type_less_than</source>
+                <target>&lt;</target>
             </trans-unit>
             <trans-unit id="label_date_type_equal">
-              <source>label_date_type_equal</source>
-              <target>=</target>
+                <source>label_date_type_equal</source>
+                <target>=</target>
             </trans-unit>
             <trans-unit id="label_date_type_greater_equal">
-              <source>label_date_type_greater_equal</source>
-              <target>&gt;=</target>
+                <source>label_date_type_greater_equal</source>
+                <target>&gt;=</target>
             </trans-unit>
             <trans-unit id="label_date_type_greater_than">
-              <source>label_date_type_greater_than</source>
-              <target>&gt;</target>
+                <source>label_date_type_greater_than</source>
+                <target>&gt;</target>
             </trans-unit>
             <trans-unit id="label_date_type_less_equal">
-              <source>label_date_type_less_equal</source>
-              <target>&lt;=</target>
+                <source>label_date_type_less_equal</source>
+                <target>&lt;=</target>
             </trans-unit>
             <trans-unit id="label_date_type_less_than">
-              <source>label_date_type_less_than</source>
-              <target>&lt;</target>
+                <source>label_date_type_less_than</source>
+                <target>&lt;</target>
             </trans-unit>
             <trans-unit id="label_date_type_null">
-              <source>label_date_type_null</source>
-              <target>خالی است</target>
+                <source>label_date_type_null</source>
+                <target>خالی است</target>
             </trans-unit>
             <trans-unit id="label_date_type_not_null">
-              <source>label_date_type_not_null</source>
-              <target>خالی نیست</target>
+                <source>label_date_type_not_null</source>
+                <target>خالی نیست</target>
             </trans-unit>
             <trans-unit id="label_date_type_between">
-              <source>label_date_type_between</source>
-              <target>بین</target>
+                <source>label_date_type_between</source>
+                <target>بین</target>
             </trans-unit>
             <trans-unit id="label_date_not_between">
-              <source>label_date_type_not_between</source>
-              <target>نه بین</target>
+                <source>label_date_type_not_between</source>
+                <target>نه بین</target>
             </trans-unit>
             <trans-unit id="label_filters">
-              <source>label_filters</source>
-              <target>فیلترها</target>
+                <source>label_filters</source>
+                <target>فیلترها</target>
             </trans-unit>
             <trans-unit id="delete_or">
-              <source>delete_or</source>
-              <target>یا</target>
+                <source>delete_or</source>
+                <target>یا</target>
             </trans-unit>
             <trans-unit id="link_action_history">
                 <source>link_action_history</source>

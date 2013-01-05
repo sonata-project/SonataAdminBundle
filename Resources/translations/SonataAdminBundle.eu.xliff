@@ -135,40 +135,40 @@
                 <target>Guztiak</target>
             </trans-unit>
             <trans-unit id='flash_batch_empty'>
-              <source>flash_batch_empty</source>
-              <target>Ekintza deuseztatuta, ez dago ezer aukeratuta</target>
+                <source>flash_batch_empty</source>
+                <target>Ekintza deuseztatuta, ez dago ezer aukeratuta</target>
             </trans-unit>
             <trans-unit id='flash_create_success'>
-              <source>flash_create_success</source>
-              <target>Behar bezala sortu da</target>
+                <source>flash_create_success</source>
+                <target>Behar bezala sortu da</target>
             </trans-unit>
             <trans-unit id='flash_create_error'>
-              <source>flash_create_error</source>
-              <target>Errorea elementua sortzerakoan</target>
+                <source>flash_create_error</source>
+                <target>Errorea elementua sortzerakoan</target>
             </trans-unit>
             <trans-unit id='flash_edit_success'>
-              <source>flash_edit_success</source>
-              <target>Elementua behar bezala aldatu da</target>
+                <source>flash_edit_success</source>
+                <target>Elementua behar bezala aldatu da</target>
             </trans-unit>
             <trans-unit id='flash_edit_error'>
-              <source>flash_edit_error</source>
-              <target>Elementua ezin izan da behar bezala eguneratu</target>
+                <source>flash_edit_error</source>
+                <target>Elementua ezin izan da behar bezala eguneratu</target>
             </trans-unit>
             <trans-unit id='flash_batch_delete_success'>
-              <source>flash_batch_delete_success</source>
-              <target>Aukeratutakoa behar bezala ezabatu da</target>
+                <source>flash_batch_delete_success</source>
+                <target>Aukeratutakoa behar bezala ezabatu da</target>
             </trans-unit>
             <trans-unit id='flash_batch_delete_error'>
-              <source>flash_batch_delete_error</source>
-              <target>Ezin izan dira aukeratutako elementuak behar bezala ezabatu</target>
+                <source>flash_batch_delete_error</source>
+                <target>Ezin izan dira aukeratutako elementuak behar bezala ezabatu</target>
             </trans-unit>
             <trans-unit id='flash_delete_error'>
-              <source>flash_delete_error</source>
-              <target>Ezin izan da behar bezala ezabatu</target>
+                <source>flash_delete_error</source>
+                <target>Ezin izan da behar bezala ezabatu</target>
             </trans-unit>
             <trans-unit id='flash_delete_success'>
-              <source>flash_delete_success</source>
-              <target>Behar bezala ezabatu da</target>
+                <source>flash_delete_success</source>
+                <target>Behar bezala ezabatu da</target>
             </trans-unit>
             <trans-unit id="link_breadcrumb_dashboard">
                 <source>breadcrumb.link_dashboard</source>
@@ -203,95 +203,93 @@
                 <target>Bai, jarraitu</target>
             </trans-unit>
             <trans-unit id="label_type_yes">
-              <source>label_type_yes</source>
-              <target>Bai</target>
+                <source>label_type_yes</source>
+                <target>Bai</target>
             </trans-unit>
             <trans-unit id="label_type_no">
-              <source>label_type_no</source>
-              <target>Ez</target>
+                <source>label_type_no</source>
+                <target>Ez</target>
             </trans-unit>
             <trans-unit id="label_type_contains">
-              <source>label_type_contains</source>
-              <target>dauka</target>
+                <source>label_type_contains</source>
+                <target>dauka</target>
             </trans-unit>
             <trans-unit id="label_type_not_contains">
-              <source>label_type_not_contains</source>
-              <target>ez dauka</target>
+                <source>label_type_not_contains</source>
+                <target>ez dauka</target>
             </trans-unit>
             <trans-unit id="label_type_equals">
-              <source>label_type_equals</source>
-              <target>berdina da</target>
+                <source>label_type_equals</source>
+                <target>berdina da</target>
             </trans-unit>
             <trans-unit id="label_type_not_equals">
-              <source>label_type_not_equals</source>
-              <target>ez da berdina</target>
+                <source>label_type_not_equals</source>
+                <target>ez da berdina</target>
             </trans-unit>
             <trans-unit id="label_type_equal">
-              <source>label_type_equal</source>
-              <target>=</target>
+                <source>label_type_equal</source>
+                <target>=</target>
             </trans-unit>
             <trans-unit id="label_type_greater_equal">
-              <source>label_type_greater_equal</source>
-              <target>&gt;=</target>
+                <source>label_type_greater_equal</source>
+                <target>&gt;=</target>
             </trans-unit>
             <trans-unit id="label_type_greater_than">
-              <source>label_type_greater_than</source>
-              <target>&gt;</target>
+                <source>label_type_greater_than</source>
+                <target>&gt;</target>
             </trans-unit>
             <trans-unit id="label_type_less_equal">
-              <source>label_type_less_equal</source>
-              <target>&lt;=</target>
+                <source>label_type_less_equal</source>
+                <target>&lt;=</target>
             </trans-unit>
             <trans-unit id="label_type_less_than">
-              <source>label_type_less_than</source>
-              <target>&lt;</target>
+                <source>label_type_less_than</source>
+                <target>&lt;</target>
             </trans-unit>
             <trans-unit id="label_date_type_equal">
-              <source>label_date_type_equal</source>
-              <target>=</target>
+                <source>label_date_type_equal</source>
+                <target>=</target>
             </trans-unit>
             <trans-unit id="label_date_type_greater_equal">
-              <source>label_date_type_greater_equal</source>
-              <target>&gt;=</target>
+                <source>label_date_type_greater_equal</source>
+                <target>&gt;=</target>
             </trans-unit>
             <trans-unit id="label_date_type_greater_than">
-              <source>label_date_type_greater_than</source>
-              <target>&gt;</target>
+                <source>label_date_type_greater_than</source>
+                <target>&gt;</target>
             </trans-unit>
             <trans-unit id="label_date_type_less_equal">
-              <source>label_date_type_less_equal</source>
-              <target>&lt;=</target>
+                <source>label_date_type_less_equal</source>
+                <target>&lt;=</target>
             </trans-unit>
             <trans-unit id="label_date_type_less_than">
-              <source>label_date_type_less_than</source>
-              <target>&lt;</target>
+                <source>label_date_type_less_than</source>
+                <target>&lt;</target>
             </trans-unit>
             <trans-unit id="label_date_type_null">
-              <source>label_date_type_null</source>
-              <target>Utzik dago</target>
+                <source>label_date_type_null</source>
+                <target>Utzik dago</target>
             </trans-unit>
             <trans-unit id="label_date_type_not_null">
-              <source>label_date_type_not_null</source>
-              <target>Ez dago utzik</target>
+                <source>label_date_type_not_null</source>
+                <target>Ez dago utzik</target>
             </trans-unit>
             <trans-unit id="label_date_type_between">
-              <source>label_date_type_between</source>
-              <target>entre</target>
+                <source>label_date_type_between</source>
+                <target>entre</target>
             </trans-unit>
             <trans-unit id="label_date_not_between">
-              <source>label_date_type_not_between</source>
-              <target>no entre</target>
+                <source>label_date_type_not_between</source>
+                <target>no entre</target>
             </trans-unit>
             <trans-unit id="label_filters">
-              <source>label_filters</source>
-              <target>Filtroak</target>
+                <source>label_filters</source>
+                <target>Filtroak</target>
             </trans-unit>
-
             <trans-unit id="delete_or">
-              <source>delete_or</source>
-              <target>edo</target>
+                <source>delete_or</source>
+                <target>edo</target>
             </trans-unit>
-
             <trans-unit id="link_action_history">
                 <source>link_action_history</source>
                 <target>Berikusketak</target>
@@ -316,7 +314,6 @@
                 <source>label_view_revision</source>
                 <target>Berrikusketa erakutsi</target>
             </trans-unit>
-
             <trans-unit id="list_results_count">
                 <source>list_results_count</source>
                 <target>Emaitza bat|%count% emaitza</target>
@@ -329,7 +326,6 @@
                 <source>loading_information</source>
                 <target>Informazioa kargatzen</target>
             </trans-unit>
-
             <trans-unit id="btn_preview">
                 <source>btn_preview</source>
                 <target>Aurrikusi</target>
