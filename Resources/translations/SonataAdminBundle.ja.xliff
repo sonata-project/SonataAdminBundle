@@ -135,40 +135,40 @@
                 <target>すべての要素</target>
             </trans-unit>
             <trans-unit id='flash_batch_empty'>
-              <source>flash_batch_empty</source>
-              <target>アクションは中止されました。どの項目ここで選択されていません。</target>
+                <source>flash_batch_empty</source>
+                <target>アクションは中止されました。どの項目ここで選択されていません。</target>
             </trans-unit>
             <trans-unit id='flash_create_success'>
-              <source>flash_create_success</source>
-              <target>アイテムが正常に作成されました。</target>
+                <source>flash_create_success</source>
+                <target>アイテムが正常に作成されました。</target>
             </trans-unit>
             <trans-unit id='flash_create_error'>
-              <source>flash_create_error</source>
-              <target>エラーは、アイテムの作成中に発生しました。</target>
+                <source>flash_create_error</source>
+                <target>エラーは、アイテムの作成中に発生しました。</target>
             </trans-unit>
             <trans-unit id='flash_edit_success'>
-              <source>flash_edit_success</source>
-              <target>アイテムが正常に更新されました。</target>
+                <source>flash_edit_success</source>
+                <target>アイテムが正常に更新されました。</target>
             </trans-unit>
             <trans-unit id='flash_edit_error'>
-              <source>flash_edit_error</source>
-              <target>エラーは、アイテムの更新中に発生しました。</target>
+                <source>flash_edit_error</source>
+                <target>エラーは、アイテムの更新中に発生しました。</target>
             </trans-unit>
             <trans-unit id='flash_batch_delete_success'>
-              <source>flash_batch_delete_success</source>
-              <target>選択した項目が正常に削除されました。</target>
+                <source>flash_batch_delete_success</source>
+                <target>選択した項目が正常に削除されました。</target>
             </trans-unit>
             <trans-unit id='flash_batch_delete_error'>
-              <source>flash_batch_delete_error</source>
-              <target>エラーは、選択したアイテムの削除中に発生しました。</target>
+                <source>flash_batch_delete_error</source>
+                <target>エラーは、選択したアイテムの削除中に発生しました。</target>
             </trans-unit>
             <trans-unit id='flash_delete_error'>
-              <source>flash_delete_error</source>
-              <target>flash_delete_error</target>
+                <source>flash_delete_error</source>
+                <target>flash_delete_error</target>
             </trans-unit>
             <trans-unit id='flash_delete_success'>
-              <source>flash_delete_success</source>
-              <target>flash_delete_success</target>
+                <source>flash_delete_success</source>
+                <target>flash_delete_success</target>
             </trans-unit>
             <trans-unit id="link_breadcrumb_dashboard">
                 <source>breadcrumb.link_dashboard</source>
@@ -194,100 +194,102 @@
                 <source>message_batch_confirmation</source>
                 <target>message_batch_confirmation</target>
             </trans-unit>
+            <trans-unit id="message_batch_all_confirmation">
+                <source>message_batch_all_confirmation</source>
+                <target>message_batch_all_confirmation</target>
+            </trans-unit>
             <trans-unit id="btn_execute_batch_action">
                 <source>btn_execute_batch_action</source>
                 <target>はい、次のコマンドを実行</target>
             </trans-unit>
             <trans-unit id="label_type_yes">
-              <source>label_type_yes</source>
-              <target>はい</target>
+                <source>label_type_yes</source>
+                <target>はい</target>
             </trans-unit>
             <trans-unit id="label_type_no">
-              <source>label_type_no</source>
-              <target>いいえ</target>
+                <source>label_type_no</source>
+                <target>いいえ</target>
             </trans-unit>
             <trans-unit id="label_type_contains">
-              <source>label_type_contains</source>
-              <target>label_type_contains</target>
+                <source>label_type_contains</source>
+                <target>label_type_contains</target>
             </trans-unit>
             <trans-unit id="label_type_not_contains">
-              <source>label_type_not_contains</source>
-              <target>が含まれていません</target>
+                <source>label_type_not_contains</source>
+                <target>が含まれていません</target>
             </trans-unit>
             <trans-unit id="label_type_equals">
-              <source>label_type_equals</source>
-              <target>label_type_equals</target>
+                <source>label_type_equals</source>
+                <target>label_type_equals</target>
             </trans-unit>
             <trans-unit id="label_type_not_equals">
-              <source>label_type_not_equals</source>
-              <target>label_type_not_equals</target>
+                <source>label_type_not_equals</source>
+                <target>label_type_not_equals</target>
             </trans-unit>
             <trans-unit id="label_type_equal">
-              <source>label_type_equal</source>
-              <target>=</target>
+                <source>label_type_equal</source>
+                <target>=</target>
             </trans-unit>
             <trans-unit id="label_type_greater_equal">
-              <source>label_type_greater_equal</source>
-              <target>&gt;=</target>
+                <source>label_type_greater_equal</source>
+                <target>&gt;=</target>
             </trans-unit>
             <trans-unit id="label_type_greater_than">
-              <source>label_type_greater_than</source>
-              <target>&gt;</target>
+                <source>label_type_greater_than</source>
+                <target>&gt;</target>
             </trans-unit>
             <trans-unit id="label_type_less_equal">
-              <source>label_type_less_equal</source>
-              <target>&lt;=</target>
+                <source>label_type_less_equal</source>
+                <target>&lt;=</target>
             </trans-unit>
             <trans-unit id="label_type_less_than">
-              <source>label_type_less_than</source>
-              <target>&lt;</target>
+                <source>label_type_less_than</source>
+                <target>&lt;</target>
             </trans-unit>
             <trans-unit id="label_date_type_equal">
-              <source>label_date_type_equal</source>
-              <target>=</target>
+                <source>label_date_type_equal</source>
+                <target>=</target>
             </trans-unit>
             <trans-unit id="label_date_type_greater_equal">
-              <source>label_date_type_greater_equal</source>
-              <target>&gt;=</target>
+                <source>label_date_type_greater_equal</source>
+                <target>&gt;=</target>
             </trans-unit>
             <trans-unit id="label_date_type_greater_than">
-              <source>label_date_type_greater_than</source>
-              <target>&gt;</target>
+                <source>label_date_type_greater_than</source>
+                <target>&gt;</target>
             </trans-unit>
             <trans-unit id="label_date_type_less_equal">
-              <source>label_date_type_less_equal</source>
-              <target>&lt;=</target>
+                <source>label_date_type_less_equal</source>
+                <target>&lt;=</target>
             </trans-unit>
             <trans-unit id="label_date_type_less_than">
-              <source>label_date_type_less_than</source>
-              <target>&lt;</target>
+                <source>label_date_type_less_than</source>
+                <target>&lt;</target>
             </trans-unit>
             <trans-unit id="label_date_type_null">
-              <source>label_date_type_null</source>
-              <target>label_date_type_null</target>
+                <source>label_date_type_null</source>
+                <target>label_date_type_null</target>
             </trans-unit>
             <trans-unit id="label_date_type_not_null">
-              <source>label_date_type_not_null</source>
-              <target>label_date_type_not_null</target>
+                <source>label_date_type_not_null</source>
+                <target>label_date_type_not_null</target>
             </trans-unit>
             <trans-unit id="label_date_type_between">
-              <source>label_date_type_between</source>
-              <target>label_date_type_between</target>
+                <source>label_date_type_between</source>
+                <target>label_date_type_between</target>
             </trans-unit>
             <trans-unit id="label_date_not_between">
-              <source>label_date_type_not_between</source>
-              <target>label_date_type_not_between</target>
+                <source>label_date_type_not_between</source>
+                <target>label_date_type_not_between</target>
             </trans-unit>
             <trans-unit id="label_filters">
-              <source>label_filters</source>
-              <target>label_filters</target>
+                <source>label_filters</source>
+                <target>label_filters</target>
             </trans-unit>
-
             <trans-unit id="delete_or">
-              <source>delete_or</source>
-              <target>delete_or</target>
+                <source>delete_or</source>
+                <target>delete_or</target>
             </trans-unit>
-
             <trans-unit id="link_action_history">
                 <source>link_action_history</source>
                 <target>link_action_history</target>
@@ -312,7 +314,6 @@
                 <source>label_view_revision</source>
                 <target>label_view_revision</target>
             </trans-unit>
-
             <trans-unit id="list_results_count">
                 <source>list_results_count</source>
                 <target>list_results_count|list_results_count</target>
@@ -325,7 +326,6 @@
                 <source>loading_information</source>
                 <target>情報を読み込んでいます…</target>
             </trans-unit>
-
             <trans-unit id="btn_preview">
                 <source>btn_preview</source>
                 <target>btn_preview</target>
