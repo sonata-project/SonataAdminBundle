@@ -101,9 +101,17 @@ file that was distributed with this source code.
 
 {% block field_row %}
     {% if sonata_admin is not defined or not sonata_admin_enabled or not sonata_admin.field_description %}
-        {{ form_label(form, label|default(null)) }}
-        {{ form_errors(form) }}
-        {{ form_widget(form) }}
+        <div class="control-group {% if errors|length > 0%} error{% endif %}">
+            {{ form_label(form, label|default(null)) }}
+            <div class="controls">
+                {{ form_widget(form) }}
+                {% if errors|length > 0 %}
+                    <div class="help-inline sonata-ba-field-error-messages">
+                        {{ form_errors(form) }}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
     {% else %}
         <div class="control-group{% if errors|length > 0%} error{%endif%}" id="sonata-ba-field-container-{{ id }}">
             {% block label %}
