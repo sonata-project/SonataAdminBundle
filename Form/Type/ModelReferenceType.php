@@ -45,8 +45,17 @@ class ModelReferenceType extends AbstractType
         $resolver->setDefaults(array(
             'compound'      => false,
             'model_manager' => null,
-            'class'         => null
+            'class'         => null,
+            'parent'        => 'text'
         ));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getParent()
+    {
+        return 'text';
     }
 
     /**
