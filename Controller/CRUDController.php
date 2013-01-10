@@ -43,7 +43,7 @@ class CRUDController extends Controller
         // response is rendered through an iframe (used by the jquery.form.js plugin)
         //  => don't know yet if it is the best solution
         if ($this->get('request')->get('_xml_http_request')
-           && strpos($this->get('request')->headers->get('Content-Type'), 'multipart/form-data') === 0) {
+            && strpos($this->get('request')->headers->get('Content-Type'), 'multipart/form-data') === 0) {
             $headers['Content-Type'] = 'text/plain';
         } else {
             $headers['Content-Type'] = 'application/json';
@@ -267,7 +267,7 @@ class CRUDController extends Controller
 
             $isFormValid = $form->isValid();
 
-             // persist if the form was valid and if in preview mode the preview was approved
+            // persist if the form was valid and if in preview mode the preview was approved
             if ($isFormValid && (!$this->isInPreviewMode() || $this->isPreviewApproved())) {
                 $this->admin->update($object);
                 $this->get('session')->setFlash('sonata_flash_success', 'flash_edit_success');
@@ -285,7 +285,9 @@ class CRUDController extends Controller
 
             // show an error message if the form failed validation
             if (!$isFormValid) {
-                $this->get('session')->setFlash('sonata_flash_error', 'flash_edit_error');
+                if (!$this->isXmlHttpRequest()) {
+                    $this->get('session')->setFlash('sonata_flash_error', 'flash_edit_error');
+                }
             } elseif ($this->isPreviewRequested()) {
                 // enable the preview template if the form was valid and preview was requested
                 $templateKey = 'preview';
@@ -472,7 +474,9 @@ class CRUDController extends Controller
 
             // show an error message if the form failed validation
             if (!$isFormValid) {
-                $this->get('session')->setFlash('sonata_flash_error', 'flash_create_error');
+                if (!$this->isXmlHttpRequest()) {
+                    $this->get('session')->setFlash('sonata_flash_error', 'flash_create_error');
+                }
             } elseif ($this->isPreviewRequested()) {
                 // pick the preview template if the form was valid and preview was requested
                 $templateKey = 'preview';
