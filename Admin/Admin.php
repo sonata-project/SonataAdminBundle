@@ -1158,10 +1158,49 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      */
     public function getFormBuilder()
     {
+        $this->formOptions['data_class'] = $this->getActiveSubClass() ?: $this->getClass();
+
+        $formBuilder = $this->getFormContractor()->getFormBuilder(
+            $this->getUniqid(),
+            $this->formOptions
+        );
+
+        $this->defineFormBuilder($formBuilder);
+
+        return $formBuilder;
+    }
+
+    /**
+     * This method is being called by the main admin class and the child class,
+     * the getFormBuilder is only call by the main admin class
+     *
+     * @param \Symfony\Component\Form\FormBuilder $formBuilder
+     *
+     * @return void
+     */
+    public function defineFormBuilder(FormBuilder $formBuilder)
+    {
+        $mapper = new FormMapper($this->getFormContractor(), $formBuilder, $this);
+
+        $this->configureFormFields($mapper);
+
+        foreach ($this->getExtensions() as $extension) {
+            $extension->configureFormFields($mapper);
+        }
+
+        $this->attachInlineValidator();
+    }
+
+    /**
+     * Attach the inline validator to the model metadata, this must be done once per admin
+     */
+    protected function attachInlineValidator()
+    {
         $admin = $this;
 
         // add the custom inline validation option
         $metadata = $this->validator->getMetadataFactory()->getClassMetadata($this->getClass());
+
         $metadata->addConstraint(new InlineConstraint(array(
             'service' => $this,
             'method'  => function(ErrorElement $errorElement, $object) use ($admin) {
@@ -1180,33 +1219,6 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
                 }
             }
         )));
-
-        $this->formOptions['data_class'] = $this->getActiveSubClass() ?: $this->getClass();
-
-        $formBuilder = $this->getFormContractor()->getFormBuilder(
-            $this->getUniqid(),
-            $this->formOptions
-        );
-
-        $this->defineFormBuilder($formBuilder);
-
-        return $formBuilder;
-    }
-
-    /**
-     * @param \Symfony\Component\Form\FormBuilder $formBuilder
-     *
-     * @return void
-     */
-    public function defineFormBuilder(FormBuilder $formBuilder)
-    {
-        $mapper = new FormMapper($this->getFormContractor(), $formBuilder, $this);
-
-        $this->configureFormFields($mapper);
-
-        foreach ($this->getExtensions() as $extension) {
-            $extension->configureFormFields($mapper);
-        }
     }
 
     /**
