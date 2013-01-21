@@ -57,7 +57,7 @@ Add the ``InlineConstraint`` class constraint to your bundle's validation config
     <constraint-mapping xmlns="http://symfony.com/schema/dic/constraint-mapping"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://symfony.com/schema/dic/constraint-mapping http://symfony.com/schema/dic/constraint-mapping/constraint-mapping-1.0.xsd">
-    
+
         <class name="Application\Sonata\PageBundle\Entity\Block">
             <constraint name="Sonata\AdminBundle\Validator\Constraints\InlineConstraint">
                 <option name="service">sonata.page.cms.page</option>
@@ -121,6 +121,8 @@ Example from the ``SonataPageBundle``
 
 Using the Admin class
 ---------------------
+
+This feature is deprecated and will be removed on the 2.2 branch.
 
 The above examples show how to delegate validation to a service. For completeness, it's worth remembering that
 the ``Admin`` class itself contains an empty ``validate`` method. This is automatically called, so you can override it in your own admin class:

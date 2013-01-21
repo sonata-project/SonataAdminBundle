@@ -504,10 +504,14 @@ interface AdminInterface
     function hasSubject();
 
     /**
+     *
      * @param \Sonata\AdminBundle\Validator\ErrorElement $errorElement
      * @param mixed                                      $object
      *
      * @return void
+     *
+     * @deprecated this feature cannot be stable, use a custom validator,
+     *             the feature will be removed with Symfony 2.2
      */
     function validate(ErrorElement $errorElement, $object);
 
