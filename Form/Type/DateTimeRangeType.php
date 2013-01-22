@@ -35,10 +35,10 @@ class DateTimeRangeType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('start', 'datetime', array_merge(array('required' => false), $options['field_options']));
-        $builder->add('end', 'datetime', array_merge(array('required' => false), $options['field_options']));
+        $builder->add('start', $options['field_type'], array_merge(array('required' => false), $options['field_options']));
+        $builder->add('end', $options['field_type'], array_merge(array('required' => false), $options['field_options']));
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -53,6 +53,7 @@ class DateTimeRangeType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
+            'field_type' => 'datetime',
             'field_options'    => array()
         ));
     }

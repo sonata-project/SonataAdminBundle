@@ -35,8 +35,8 @@ class DateRangeType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('start', 'date', array_merge(array('required' => false), $options['field_options']));
-        $builder->add('end', 'date', array_merge(array('required' => false), $options['field_options']));
+        $builder->add('start', $options['field_type'], array_merge(array('required' => false), $options['field_options']));
+        $builder->add('end', $options['field_type'], array_merge(array('required' => false), $options['field_options']));
     }
 
     /**
@@ -53,6 +53,7 @@ class DateRangeType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
+            'field_type' => 'date',
             'field_options'    => array()
         ));
     }
