@@ -24,7 +24,7 @@
             </trans-unit>
             <trans-unit id="btn_create_and_return_to_list">
                 <source>btn_create_and_return_to_list</source>
-                <target>Create and return to list</target>
+                <target>Aanmaken en terug naar de lijst</target>
             </trans-unit>
             <trans-unit id="btn_filter">
                 <source>btn_filter</source>
@@ -132,7 +132,7 @@
             </trans-unit>
             <trans-unit id="all_elements">
                 <source>all_elements</source>
-                <target>all_elements</target>
+                <target>Op alle uitvoeren</target>
             </trans-unit>
             <trans-unit id='flash_batch_empty'>
                 <source>flash_batch_empty</source>
@@ -140,7 +140,7 @@
             </trans-unit>
             <trans-unit id='flash_create_success'>
                 <source>flash_create_success</source>
-                <target>flash_create_success</target>
+                <target>Het item is succesvol aangemaakt.</target>
             </trans-unit>
             <trans-unit id='flash_create_error'>
                 <source>flash_create_error</source>
