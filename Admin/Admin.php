@@ -440,6 +440,8 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
+     * @deprecated removed with Symfony 2.2
+     *
      * {@inheritdoc}
      */
     protected function configureShowField(ShowMapper $show)
@@ -1952,7 +1954,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
             $id = $this->request->get($this->getIdParameter());
 
             $child = $child->addChild(
-                (string) $this->getSubject(),
+                $this->toString($this->getSubject()),
                 array('uri' => $this->generateUrl('edit', array('id' => $id)))
             );
 
@@ -1967,7 +1969,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
             }
 
             if ($action != 'create' && $this->hasSubject()) {
-                $breadcrumbs = $menu->getBreadcrumbsArray((string) $this->getSubject());
+                $breadcrumbs = $menu->getBreadcrumbsArray($this->toString($this->getSubject()));
             } else {
                 $breadcrumbs = $menu->getBreadcrumbsArray(
                     $this->trans($this->getLabelTranslatorStrategy()->getLabel(sprintf('%s_%s', $this->getClassnameLabel(), $action), 'breadcrumb', 'link'))
@@ -2515,7 +2517,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
             return (string)$object;
         }
 
-        return '';
+        return sprintf("%s:%s", get_class($object), spl_object_hash($object));
     }
 
     /**
