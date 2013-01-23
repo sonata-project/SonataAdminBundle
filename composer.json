@@ -28,6 +28,7 @@
         "sonata-project/exporter": "dev-master",
         "sonata-project/block-bundle": "2.0.*"
     },
+    "minimum-stability": "dev",
     "require-dev": {
         "jms/translation-bundle": "*"
     },
