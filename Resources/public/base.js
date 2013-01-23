@@ -164,6 +164,7 @@ var Admin = {
             var parts = container.attr('id').split('_');
             var nameRegexp = new RegExp(parts[parts.length-1]+'\\]\\[__name__','g');
             proto = proto.replace(nameRegexp, parts[parts.length-1]+']['+(container.children().length - 1));
+            proto = proto.replace(/__name__label__/, (container.children().length - 1));
             jQuery(proto).insertBefore(jQuery(this).parent());
             
             jQuery(this).trigger('sonata-collection-item-added');
@@ -172,8 +173,20 @@ var Admin = {
         jQuery(subject).on('click', '.sonata-collection-delete', function(event) {
             Admin.stopEvent(event);
 
+            var container = jQuery(this).closest('[data-prototype]');
             jQuery(this).closest('.sonata-collection-row').remove();
             
+            // Adjust indexes after delete
+            container.find('.sonata-collection-row').each(
+                function (idx, ele) {
+                    var input = jQuery(ele).find('input');
+                    var label = jQuery(ele).find('label');
+                    label.html(label.html().replace(/\d+/,idx));
+                    label.attr('for', label.attr('for').replace(/_\d+$/,'_' + idx));
+                    input.attr('name', input.attr('name').replace(/\[\d+\]$/, '[' + idx + ']'));
+                    input.attr('id', label.attr('for'));
+            });
+
             jQuery(this).trigger('sonata-collection-item-deleted');
         });
     }
