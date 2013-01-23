@@ -71,7 +71,7 @@ file that was distributed with this source code.
                     <tr>
                         <th colspan="{{ admin.list.elements|length - (app.request.isXmlHttpRequest ? 2 : 1) }}">
                             {{ admin.datagrid.pager.page }} / {{ admin.datagrid.pager.lastpage }}
-                            {% if admin.isGranted("EXPORT") and admin.getExportFormats()|length %}
+                            {% if admin.hasRoute('export') and admin.isGranted("EXPORT") and admin.getExportFormats()|length %}
                                 -
                                 {{ "label_export_download"|trans({}, "SonataAdminBundle") }}
                                 {% for format in admin.getExportFormats() %}
