@@ -138,7 +138,7 @@ The method ``batchActionMyAction`` will be executed to achieve the core logic. T
         if( $target === null){
             $this->get('session')->setFlash('sonata_flash_info', 'flash_batch_merge_no_target');
 
-            return new RedirectResponse($this->admin->generateUrl('list',$this->admin->getFilterParameters()));
+            return new RedirectResponse($this->admin->generateUrl('list', array('filter' => $this->admin->getFilterParameters())));
         }
 
         $selectedModels = $selectedModelQuery->execute();
@@ -154,10 +154,10 @@ The method ``batchActionMyAction`` will be executed to achieve the core logic. T
         } catch (\Exception $e) {
             $this->get('session')->setFlash('sonata_flash_error', 'flash_batch_merge_error');
 
-            return new RedirectResponse($this->admin->generateUrl('list',$this->admin->getFilterParameters()));
+            return new RedirectResponse($this->admin->generateUrl('list', array('filter' => $this->admin->getFilterParameters())));
         }
 
         $this->get('session')->setFlash('sonata_flash_success', 'flash_batch_merge_success');
 
-        return new RedirectResponse($this->admin->generateUrl('list',$this->admin->getFilterParameters()));
+        return new RedirectResponse($this->admin->generateUrl('list', array('filter' => $this->admin->getFilterParameters())));
     }

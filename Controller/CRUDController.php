@@ -186,7 +186,7 @@ class CRUDController extends Controller
             $this->get('session')->setFlash('sonata_flash_error', 'flash_batch_delete_error');
         }
 
-        return new RedirectResponse($this->admin->generateUrl('list', $this->admin->getFilterParameters()));
+        return new RedirectResponse($this->admin->generateUrl('list', array('filter' => $this->admin->getFilterParameters())));
     }
 
     /**
@@ -375,7 +375,7 @@ class CRUDController extends Controller
         if (true !== $nonRelevantMessage) {
             $this->get('session')->setFlash('sonata_flash_info', $nonRelevantMessage);
 
-            return new RedirectResponse($this->admin->generateUrl('list', $this->admin->getFilterParameters()));
+            return new RedirectResponse($this->admin->generateUrl('list', array('filter' => $this->admin->getFilterParameters())));
         }
 
         $askConfirmation = isset($batchActions[$action]['ask_confirmation']) ? $batchActions[$action]['ask_confirmation'] : true;
