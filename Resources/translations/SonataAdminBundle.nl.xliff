@@ -2,10 +2,6 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
     <file source-language="en" datatype="plaintext" original="SonataAdminBundle.en.xliff" >
         <body>
-            <trans-unit id="sonata_user">
-                <source>sonata_user</source>
-                <target>Gebruikersbeheer</target>
-            </trans-unit>
             <trans-unit id="action_delete">
                 <source>action_delete</source>
                 <target>Verwijderen</target>
