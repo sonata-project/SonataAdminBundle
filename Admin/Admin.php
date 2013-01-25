@@ -1321,7 +1321,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
         $menu = $this->menuFactory->createItem('root');
         $menu->setChildrenAttribute('class', 'nav nav-list');
-        $menu->setCurrentUri($this->getRequest()->getRequestUri());
+        $menu->setCurrentUri($this->getRequest()->getPathInfo());
 
         $this->configureSideMenu($menu, $action, $childAdmin);
 
