@@ -338,6 +338,10 @@
                 <source>btn_preview_decline</source>
                 <target>رد کردن</target>
             </trans-unit>
+            <trans-unit id="label_per_page">
+              <source>label_per_page</source>
+              <target>label_per_page</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
