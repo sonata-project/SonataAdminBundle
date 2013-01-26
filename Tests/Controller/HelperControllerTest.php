@@ -177,7 +177,7 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
 
         $response = $controller->setObjectFieldValueAction($request);
 
-        $this->assertEquals('{"status":"OK","content":"<foo \/>"}', $response->getContent() );
+        $this->assertEquals('{"status":"OK","content":"\u003Cfoo \/\u003E"}', $response->getContent() );
     }
 
     public function testappendFormFieldElementAction()
