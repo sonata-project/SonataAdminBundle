@@ -26,7 +26,7 @@ file that was distributed with this source code.
 {% block list_table %}
     {% set batchactions = admin.batchactions %}
     {% if admin.datagrid.results|length > 0 %}
-        <form action="{{ admin.generateUrl('batch', admin.filterParameters) }}" method="POST" >
+        <form action="{{ admin.generateUrl('batch', {'filter':admin.filterParameters}) }}" method="POST" >
             <table class="zebra-striped bordered-table">
                 {% block table_header %}
                     <thead>
