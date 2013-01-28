@@ -762,6 +762,8 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         // initialize the datagrid
         $this->datagrid = $this->getDatagridBuilder()->getBaseDatagrid($this, $filterParameters);
 
+        $this->datagrid->getPager()->setMaxPageLinks($this->maxPageLinks);
+
         $mapper = new DatagridMapper($this->getDatagridBuilder(), $this->datagrid, $this);
 
         // build the datagrid filter
