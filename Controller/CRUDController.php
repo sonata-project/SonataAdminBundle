@@ -188,7 +188,7 @@ class CRUDController extends Controller
             $this->get('session')->setFlash('sonata_flash_error', 'flash_batch_delete_error');
         }
 
-        return new RedirectResponse($this->admin->generateUrl('list', $this->admin->getFilterParameters()));
+        return new RedirectResponse($this->admin->generateUrl('list', array('filter' => $this->admin->getFilterParameters())));
     }
 
     /**
@@ -386,16 +386,18 @@ class CRUDController extends Controller
             $nonRelevantMessage = 'flash_batch_empty';
         }
 
+        $datagrid = $this->admin->getDatagrid();
+        $datagrid->buildPager();
+
         if (true !== $nonRelevantMessage) {
             $this->get('session')->setFlash('sonata_flash_info', $nonRelevantMessage);
 
-            return new RedirectResponse($this->admin->generateUrl('list', $this->admin->getFilterParameters()));
+            return new RedirectResponse($this->admin->generateUrl('list', array('filter' => $this->admin->getFilterParameters())));
         }
 
         $askConfirmation = isset($batchActions[$action]['ask_confirmation']) ? $batchActions[$action]['ask_confirmation'] : true;
 
         if ($askConfirmation && $confirmation != 'ok') {
-            $datagrid = $this->admin->getDatagrid();
             $formView = $datagrid->getForm()->createView();
 
             return $this->render('SonataAdminBundle:CRUD:batch_confirmation.html.twig', array(
@@ -412,8 +414,6 @@ class CRUDController extends Controller
             throw new \RuntimeException(sprintf('A `%s::%s` method must be created', get_class($this), $final_action));
         }
 
-        $datagrid = $this->admin->getDatagrid();
-        $datagrid->buildPager();
         $query = $datagrid->getQuery();
 
         $query->setFirstResult(null);

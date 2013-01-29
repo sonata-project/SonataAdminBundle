@@ -20,8 +20,6 @@ use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
 interface ListBuilderInterface
 {
     /**
-     * @abstract
-     *
      * @param array $options
      *
      * @return \Sonata\AdminBundle\Admin\FieldDescriptionCollection
@@ -40,8 +38,6 @@ interface ListBuilderInterface
     /**
      * Modify a field description and add it to the displayed columns.
      *
-     * @abstract
-     *
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionCollection $list
      * @param null|mixed                                           $type
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface  $fieldDescription
@@ -50,7 +46,6 @@ interface ListBuilderInterface
     function addField(FieldDescriptionCollection $list, $type = null, FieldDescriptionInterface $fieldDescription, AdminInterface $admin);
 
     /**
-     * @abstract
      *
      * @param \Sonata\AdminBundle\Admin\AdminInterface            $admin
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription

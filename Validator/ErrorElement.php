@@ -106,26 +106,16 @@ class ErrorElement
 
     /**
      * @param \Symfony\Component\Validator\Constraint $constraint
-     * @param null                                    $messageTemplate
-     * @param array                                   $messageParameters
      *
      * @return void
      */
-    protected function validate(Constraint $constraint, $messageTemplate = null, $messageParameters = array())
+    protected function validate(Constraint $constraint)
     {
         $validator = $this->constraintValidatorFactory->getInstance($constraint);
         $value     = $this->getValue();
 
         $validator->initialize($this->context);
         $validator->validate($value, $constraint);
-
-        if (count($this->context->getViolations())) {
-            $this->context->addViolation(
-                $messageTemplate ?: $validator->getMessageTemplate(),
-                array_merge($validator->getMessageParameters(), $messageParameters),
-                $value
-            );
-        }
     }
 
     /**

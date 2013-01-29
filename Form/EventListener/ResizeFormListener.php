@@ -138,7 +138,7 @@ class ResizeFormListener implements EventSubscriberInterface
                     'property_path' => '[' . $name . ']',
                 ));
 
-                $form->add(new FormProxy($this->factory->createNamed($name, $this->type, null, $options), isset($value['_delete'])));
+                $form->add($this->factory->createNamed($name, $this->type, null, $options));
             }
 
             if (isset($value['_delete'])) {
