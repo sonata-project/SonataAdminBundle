@@ -45,13 +45,12 @@ var Admin = {
             var target;
 
             /* Hack to handle qTip on select */
-            if(jQuery(input).is("select")) {
-              jQuery(element).prepend("<span></span>");
-              target = jQuery('span', element);
-              jQuery(input).appendTo(target);
+            if(jQuery(input).is('select')) {
+                input.wrap('<span></span>');
+                target = input.parent();
             }
             else {
-              target = input;
+                target = input;
             }
 
             target.qtip({
