@@ -84,7 +84,7 @@ var Admin = {
     add_collapsed_toggle: function(subject) {
         jQuery('fieldset.sonata-ba-fieldset-collapsed').has('.error').addClass('sonata-ba-collapsed-fields-close');
         jQuery('fieldset.sonata-ba-fieldset-collapsed div.sonata-ba-collapsed-fields').not(':has(.error)').hide();
-        jQuery('fieldset legend a.sonata-ba-collapsed', subject).live('click', function(event) {
+        jQuery('fieldset legend a.sonata-ba-collapsed', subject).on('click', function(event) {
             event.preventDefault();
 
             var fieldset = jQuery(this).closest('fieldset');
