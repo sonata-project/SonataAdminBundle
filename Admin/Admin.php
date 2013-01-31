@@ -1247,7 +1247,12 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         $adminCode = $fieldDescription->getOption('admin_code');
 
         if ($adminCode !== null) {
-            $admin = $pool->getAdminByAdminCode($adminCode);
+            // if the admin code is a child of the current one, prefer that over any other.
+            if ($this->hasChild($adminCode)) {
+                $admin = $this->getChild($adminCode);
+            } else {
+                $admin = $pool->getAdminByAdminCode($adminCode);
+            }
         } else {
             $admin = $pool->getAdminByClass($fieldDescription->getTargetEntity());
         }
