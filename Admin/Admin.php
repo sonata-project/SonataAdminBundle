@@ -188,7 +188,15 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      */
     protected $datagridValues = array(
         '_page'       => 1,
+        '_per_page'   => 25,
     );
+
+    /**
+     * Predefined per page options
+     *
+     * @var array
+     */
+    protected $perPageOptions = array(15, 25, 50, 100, 150, 200);
 
     /**
      * The code related to the admin
@@ -440,6 +448,8 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
+     * @deprecated removed with Symfony 2.2
+     *
      * {@inheritdoc}
      */
     protected function configureShowField(ShowMapper $show)
@@ -518,6 +528,9 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         $this->code                 = $code;
         $this->class                = $class;
         $this->baseControllerName   = $baseControllerName;
+
+        $this->predefinePerPageOptions();
+        $this->datagridValues['_per_page'] = $this->maxPerPage;
     }
 
     /**
@@ -707,6 +720,10 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
                 $filters
             );
 
+            if (!$this->determinedPerPageValue($parameters['_per_page'])) {
+                $parameters['_per_page'] = $this->maxPerPage;
+            }
+
             // always force the parent value
             if ($this->isChild() && $this->getParentAssociationMapping()) {
                 $parameters[$this->getParentAssociationMapping()] = array('value' => $this->request->get($this->getParent()->getIdParameter()));
@@ -745,7 +762,6 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         // initialize the datagrid
         $this->datagrid = $this->getDatagridBuilder()->getBaseDatagrid($this, $filterParameters);
 
-        $this->datagrid->getPager()->setMaxPerPage($this->maxPerPage);
         $this->datagrid->getPager()->setMaxPageLinks($this->maxPageLinks);
 
         $mapper = new DatagridMapper($this->getDatagridBuilder(), $this->datagrid, $this);
@@ -1319,7 +1335,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
         $menu = $this->menuFactory->createItem('root');
         $menu->setChildrenAttribute('class', 'nav nav-list');
-        $menu->setCurrentUri($this->getRequest()->getRequestUri());
+        $menu->setCurrentUri($this->getRequest()->getBaseUrl().$this->getRequest()->getPathInfo());
 
         $this->configureSideMenu($menu, $action, $childAdmin);
 
@@ -1952,7 +1968,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
             $id = $this->request->get($this->getIdParameter());
 
             $child = $child->addChild(
-                (string) $this->getSubject(),
+                $this->toString($this->getSubject()),
                 array('uri' => $this->generateUrl('edit', array('id' => $id)))
             );
 
@@ -1967,7 +1983,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
             }
 
             if ($action != 'create' && $this->hasSubject()) {
-                $breadcrumbs = $menu->getBreadcrumbsArray((string) $this->getSubject());
+                $breadcrumbs = $menu->getBreadcrumbsArray($this->toString($this->getSubject()));
             } else {
                 $breadcrumbs = $menu->getBreadcrumbsArray(
                     $this->trans($this->getLabelTranslatorStrategy()->getLabel(sprintf('%s_%s', $this->getClassnameLabel(), $action), 'breadcrumb', 'link'))
@@ -2515,7 +2531,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
             return (string)$object;
         }
 
-        return '';
+        return sprintf("%s:%s", get_class($object), spl_object_hash($object));
     }
 
     /**
@@ -2544,5 +2560,46 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     public function supportsPreviewMode()
     {
         return $this->supportsPreviewMode;
+    }
+
+    /**
+     * Set custom per page options
+     *
+     * @param $options
+     */
+    public function setPerPageOptions($options)
+    {
+        $this->perPageOptions = $options;
+    }
+
+    /**
+     * Returns predefined per page options
+     *
+     * @return array
+     */
+    public function getPerPageOptions()
+    {
+        return $this->perPageOptions;
+    }
+
+    /**
+     * Returns true if the per page value is allowed, false otherwise
+     *
+     * @param $per_page
+     * @return bool
+     */
+    public function determinedPerPageValue($per_page)
+    {
+        return in_array($per_page, $this->perPageOptions);
+    }
+
+    /**
+     * Predefine per page options
+     */
+    protected function predefinePerPageOptions()
+    {
+        array_unshift($this->perPageOptions, $this->maxPerPage);
+        $this->perPageOptions = array_unique($this->perPageOptions);
+        sort($this->perPageOptions);
     }
 }

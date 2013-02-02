@@ -216,7 +216,7 @@ class BaseAdminTest extends \PHPUnit_Framework_TestCase
 
         $s = new \stdClass();
 
-        $this->assertEquals('', $admin->toString($s));
+        $this->assertNotEmpty($admin->toString($s));
 
         $s = new FooTest_Admin;
         $this->assertEquals('salut', $admin->toString($s));
