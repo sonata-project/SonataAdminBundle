@@ -65,7 +65,7 @@ Add a group with all the default items
 
     # app/config/config.yml
     sonata_admin:
-        dashboard
+        dashboard:
             blocks:
                 # display a dashboard block
                 - { position: left, type: sonata.admin.block.admin_list }
