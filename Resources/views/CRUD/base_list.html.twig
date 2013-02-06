@@ -32,6 +32,8 @@ file that was distributed with this source code.
                                     <th class="sonata-ba-list-field-header sonata-ba-list-field-header-batch">
                                       <input type="checkbox" id="list_batch_checkbox" />
                                     </th>
+                                {% elseif field_description.name == '_action' and app.request.isXmlHttpRequest %}
+                                    	{# Action buttons disabled in ajax view! #}
                                 {% else %}
                                     {% set sortable = false %}
                                     {% if field_description.options.sortable is defined and field_description.options.sortable%}
@@ -60,7 +62,11 @@ file that was distributed with this source code.
                         {% for object in admin.datagrid.results %}
                             <tr>
                                 {% for field_description in admin.list.elements %}
-                                    {{ object|render_list_element(field_description) }}
+                                    {% if field_description.name == '_action' and app.request.isXmlHttpRequest %}
+                                    	{# Action buttons disabled in ajax view! #}
+                                	{% else %}
+                                    	{{ object|render_list_element(field_description) }}
+                                   	{% endif %}
                                 {% endfor %}
                             </tr>
                         {% endfor %}
@@ -69,7 +75,7 @@ file that was distributed with this source code.
 
                 {% block table_footer %}
                     <tr>
-                        <th colspan="{{ admin.list.elements|length - (app.request.isXmlHttpRequest ? 1 : 0) }}">
+                        <th colspan="{{ admin.list.elements|length - (app.request.isXmlHttpRequest ? 2 : 0) }}">
                             <div class="form-inline">
                                 {% if not app.request.isXmlHttpRequest and batchactions|length > 0 %}
                                     {% block batch %}
