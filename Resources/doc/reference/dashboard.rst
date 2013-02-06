@@ -20,6 +20,13 @@ application's config file:
             groups:
                 ... your config ...
 
+.. figure:: ../images/dashboard.png
+   :align: center
+   :alt: The dashboard
+   :width: 400px
+
+   The dashboard
+
 
 Examples
 --------
@@ -93,8 +100,8 @@ Add some items to a group
 
 
 .. image:: ../images/dashboard.png
-           :alt: Dashboard
-           :width: 200
+   :alt: Dashboard
+   :width: 200
 
 Display two blocks with different dashboard groups
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
