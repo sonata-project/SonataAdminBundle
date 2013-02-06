@@ -122,7 +122,14 @@ file that was distributed with this source code.
                         {% if action is defined %}
                             {% for label, uri in admin.breadcrumbs(action) %}
                                 {% if not loop.last  %}
-                                    <li><a href="{{ uri }}">{{ label }}</a><span class="divider">/</span></li>
+                                    <li>
+                                        {% if uri is not empty %}
+                                            <a href="{{ uri }}">{{ label }}</a>
+                                        {% else %}
+                                            {{ label }}
+                                        {% endif %}
+                                        <span class="divider">/</span>
+                                    </li>
                                 {% else %}
                                     <li class="active">{{ label }}</li>
                                 {% endif %}

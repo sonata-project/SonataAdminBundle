@@ -1959,7 +1959,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
         $child = $child->addChild(
             $this->trans($this->getLabelTranslatorStrategy()->getLabel(sprintf('%s_list', $this->getClassnameLabel()), 'breadcrumb', 'link')),
-            array('uri' => $this->generateUrl('list'))
+            array('uri' => $this->hasRoute('list') && $this->isGranted('LIST') ? $this->generateUrl('list') : null)
         );
 
         $childAdmin = $this->getCurrentChildAdmin();
@@ -1969,7 +1969,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
             $child = $child->addChild(
                 $this->toString($this->getSubject()),
-                array('uri' => $this->generateUrl('edit', array('id' => $id)))
+                array('uri' => $this->hasRoute('edit') && $this->isGranted('EDIT') ? $this->generateUrl('edit', array('id' => $id)) : null)
             );
 
             return $childAdmin->buildBreadcrumbs($action, $child);
@@ -1978,7 +1978,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
             if ($action != 'list') {
                 $menu = $menu->addChild(
                     $this->trans($this->getLabelTranslatorStrategy()->getLabel(sprintf('%s_list', $this->getClassnameLabel()), 'breadcrumb', 'link')),
-                    array('uri' => $this->generateUrl('list'))
+                    array('uri' => $this->hasRoute('list') && $this->isGranted('LIST') ? $this->generateUrl('list') : null)
                 );
             }
 
