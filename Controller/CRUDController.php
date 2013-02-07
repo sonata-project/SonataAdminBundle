@@ -211,7 +211,7 @@ class CRUDController extends Controller
             throw new AccessDeniedException();
         }
 
-        if ($this->getRequest()->getMethod() == 'DELETE') {
+        if ($this->getRequest()->getMethod() == 'POST') {
             try {
                 $this->admin->delete($object);
                 $this->get('session')->setFlash('sonata_flash_success', 'flash_delete_success');
