@@ -39,30 +39,30 @@ Reference Guide
 Overview
 --------
 
-.. figure:: ../images/dashboard.png
+.. figure:: ./images/dashboard.png
    :align: center
    :alt: The dashboard
-   :width: 400px
+   :width: 700px
 
    The dashboard
 
-.. figure:: ../images/post_list.png
+.. figure:: ./images/post_list.png
    :align: center
    :alt: The model list
-   :width: 400px
+   :width: 700px
 
    The model list
 
-.. figure:: ../images/post_edit.png
+.. figure:: ./images/post_edit.png
    :align: center
    :alt: The model edition
-   :width: 400px
+   :width: 700px
 
    The model edition
 
-.. figure:: ../images/post_create_tag.png
+.. figure:: ./images/post_create_tag.png
    :align: center
    :alt: The modal model edition
-   :width: 400px
+   :width: 700px
 
    The modal model edition
