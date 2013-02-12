@@ -157,7 +157,7 @@ file that was distributed with this source code.
         {% set child = prototype %}
         {% set attr = attr|merge({'data-prototype': block('collection_widget_row') }) %}
     {% endif %}
-    <div {{ block('widget_container_attributes') }}>
+    <div class="controls" {{ block('widget_container_attributes') }}>
         {{ form_errors(form) }}
         {% for child in form %}
             {{ block('collection_widget_row') }}
