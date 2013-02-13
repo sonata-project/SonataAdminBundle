@@ -26,50 +26,50 @@ file that was distributed with this source code.
             <table class="table table-bordered table-striped">
                 {% block table_header %}
                     <thead>
-                        <tr class="sonata-ba-list-field-header">
-                            {% for field_description in admin.list.elements %}
-                                {% if field_description.getOption('code') == '_batch' and batchactions|length > 0%}
-                                    <th class="sonata-ba-list-field-header sonata-ba-list-field-header-batch">
-                                      <input type="checkbox" id="list_batch_checkbox" />
-                                    </th>
-                                {% elseif field_description.name == '_action' and app.request.isXmlHttpRequest %}
-                                    	{# Action buttons disabled in ajax view! #}
-                                {% else %}
-                                    {% set sortable = false %}
-                                    {% if field_description.options.sortable is defined and field_description.options.sortable%}
-                                        {% set sortable             = true %}
-                                        {% set current              = admin.datagrid.values._sort_by == field_description %}
-                                        {% set sort_parameters      = admin.modelmanager.sortparameters(field_description, admin.datagrid) %}
-                                        {% set sort_active_class    = current ? 'sonata-ba-list-field-order-active' : '' %}
-                                        {% set sort_by              = current ? admin.datagrid.values._sort_order : field_description.options._sort_order %}
-                                    {% endif %}
+                    <tr class="sonata-ba-list-field-header">
+                        {% for field_description in admin.list.elements %}
+                            {% if field_description.getOption('code') == '_batch' and batchactions|length > 0%}
+                                <th class="sonata-ba-list-field-header sonata-ba-list-field-header-batch">
+                                    <input type="checkbox" id="list_batch_checkbox" />
+                                </th>
+                            {% elseif field_description.name == '_action' and app.request.isXmlHttpRequest %}
+                                {# Action buttons disabled in ajax view! #}
+                            {% else %}
+                                {% set sortable = false %}
+                                {% if field_description.options.sortable is defined and field_description.options.sortable%}
+                                    {% set sortable             = true %}
+                                    {% set current              = admin.datagrid.values._sort_by == field_description %}
+                                    {% set sort_parameters      = admin.modelmanager.sortparameters(field_description, admin.datagrid) %}
+                                    {% set sort_active_class    = current ? 'sonata-ba-list-field-order-active' : '' %}
+                                    {% set sort_by              = current ? admin.datagrid.values._sort_order : field_description.options._sort_order %}
+                                {% endif %}
 
-                                    {% spaceless %}
-                                        <th class="sonata-ba-list-field-header-{{ field_description.type}} {% if sortable %} sonata-ba-list-field-header-order-{{ sort_by|lower }} {{ sort_active_class }}{% endif %}">
-                                            {% if sortable %}<a href="{{ admin.generateUrl('list', sort_parameters) }}">{% endif %}
+                                {% spaceless %}
+                                    <th class="sonata-ba-list-field-header-{{ field_description.type}} {% if sortable %} sonata-ba-list-field-header-order-{{ sort_by|lower }} {{ sort_active_class }}{% endif %}">
+                                        {% if sortable %}<a href="{{ admin.generateUrl('list', sort_parameters) }}">{% endif %}
                                             {{ admin.trans(field_description.label) }}
                                             {% if sortable %}</a>{% endif %}
-                                        </th>
-                                    {% endspaceless %}
-                                {% endif %}
-                            {% endfor %}
-                        </tr>
+                                    </th>
+                                {% endspaceless %}
+                            {% endif %}
+                        {% endfor %}
+                    </tr>
                     </thead>
                 {% endblock %}
 
                 {% block table_body %}
                     <tbody>
-                        {% for object in admin.datagrid.results %}
-                            <tr>
-                                {% for field_description in admin.list.elements %}
-                                    {% if field_description.name == '_action' and app.request.isXmlHttpRequest %}
-                                    	{# Action buttons disabled in ajax view! #}
-                                	{% else %}
-                                    	{{ object|render_list_element(field_description) }}
-                                   	{% endif %}
-                                {% endfor %}
-                            </tr>
-                        {% endfor %}
+                    {% for object in admin.datagrid.results %}
+                        <tr>
+                            {% for field_description in admin.list.elements %}
+                                {% if field_description.name == '_action' and app.request.isXmlHttpRequest %}
+                                    {# Action buttons disabled in ajax view! #}
+                                {% else %}
+                                    {{ object|render_list_element(field_description) }}
+                                {% endif %}
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
                     </tbody>
                 {% endblock %}
 
@@ -77,64 +77,64 @@ file that was distributed with this source code.
                     <tr>
                         <th colspan="{{ admin.list.elements|length - (app.request.isXmlHttpRequest ? 2 : 0) }}">
                             <div class="form-inline">
-                                {% if not app.request.isXmlHttpRequest and batchactions|length > 0 %}
+                                {% if not app.request.isXmlHttpRequest %}
                                     {% block batch %}
-                                        <script type="text/javascript">
-                                            {% block batch_javascript %}
-                                            jQuery(document).ready(function ($) {
-                                                $('#list_batch_checkbox').click(function () {
-                                                    $(this).closest('table').find("td input[type='checkbox']").attr('checked', $(this).is(':checked')).parent().parent().toggleClass('sonata-ba-list-row-selected', $(this).is(':checked'));
-                                                });
-                                                $("td.sonata-ba-list-field-batch input[type='checkbox']").change(function () {
-                                                    $(this).parent().parent().toggleClass('sonata-ba-list-row-selected', $(this).is(':checked'));
-                                                });
-                                            });
-                                            {% endblock %}
-                                        </script>
+                                        {% if batchactions|length > 0 %}
+                                            {% block batch_actions %}
+                                                <script type="text/javascript">
+                                                    {% block batch_javascript %}
+                                                    jQuery(document).ready(function ($) {
+                                                        $('#list_batch_checkbox').click(function () {
+                                                            $(this).closest('table').find("td input[type='checkbox']").attr('checked', $(this).is(':checked')).parent().parent().toggleClass('sonata-ba-list-row-selected', $(this).is(':checked'));
+                                                        });
+                                                        $("td.sonata-ba-list-field-batch input[type='checkbox']").change(function () {
+                                                            $(this).parent().parent().toggleClass('sonata-ba-list-row-selected', $(this).is(':checked'));
+                                                        });
+                                                    });
+                                                    {% endblock %}
+                                                </script>
 
-                                        {% block batch_actions %}
-                                            <label class="checkbox" for="{{ admin.uniqid }}_all_elements">
-                                                <input type="checkbox" name="all_elements" id="{{ admin.uniqid }}_all_elements"/>
-                                                {{ 'all_elements'|trans({}, 'SonataAdminBundle') }}
-                                            </label>
+                                                <label class="checkbox" for="{{ admin.uniqid }}_all_elements">
+                                                    <input type="checkbox" name="all_elements" id="{{ admin.uniqid }}_all_elements"/>
+                                                    {{ 'all_elements'|trans({}, 'SonataAdminBundle') }}
+                                                </label>
 
-                                            <select name="action" style="width: auto; height: auto">
-                                                {% for action, options in batchactions %}
-                                                    <option value="{{ action }}">{{ options.label }}</option>
-                                                {% endfor %}
-                                            </select>
-
-                                            <input type="submit" class="btn btn-small btn-primary" value="{{ 'btn_batch'|trans({}, 'SonataAdminBundle') }}"/>
-                                            <div class="pull-right">
-                                                {% if admin.hasRoute('export') and admin.isGranted("EXPORT") and admin.getExportFormats()|length %}
-                                                    {{ "label_export_download"|trans({}, "SonataAdminBundle") }}
-                                                    {% for format in admin.getExportFormats() %}
-                                                            <a
-                                                            href="{{ admin.generateUrl('export', admin.modelmanager.paginationparameters(admin.datagrid, 0) + {'format' : format}) }}">{{ format }}</a>{% if not loop.last %},{% endif %}
+                                                <select name="action" style="width: auto; height: auto">
+                                                    {% for action, options in batchactions %}
+                                                        <option value="{{ action }}">{{ options.label }}</option>
                                                     {% endfor %}
+                                                </select>
 
-                                                    &nbsp;-&nbsp;
-                                                {% endif %}
-
-                                                {{ admin.datagrid.pager.page }} / {{ admin.datagrid.pager.lastpage }}
+                                                <input type="submit" class="btn btn-small btn-primary" value="{{ 'btn_batch'|trans({}, 'SonataAdminBundle') }}"/>
+                                            {% endblock %}
+                                        {% endif %}
+                                        <div class="pull-right">
+                                            {% if admin.hasRoute('export') and admin.isGranted("EXPORT") and admin.getExportFormats()|length %}
+                                                {{ "label_export_download"|trans({}, "SonataAdminBundle") }}
+                                                {% for format in admin.getExportFormats() %}
+                                                        <a
+                                                        href="{{ admin.generateUrl('export', admin.modelmanager.paginationparameters(admin.datagrid, 0) + {'format' : format}) }}">{{ format }}</a>{% if not loop.last %},{% endif %}
+                                                {% endfor %}
 
                                                 &nbsp;-&nbsp;
+                                            {% endif %}
 
-                                                {% transchoice admin.datagrid.pager.nbresults with {'%count%': admin.datagrid.pager.nbresults} from 'SonataAdminBundle' %}list_results_count{% endtranschoice %}
+                                            {{ admin.datagrid.pager.page }} / {{ admin.datagrid.pager.lastpage }}
 
-                                                {% if not app.request.isXmlHttpRequest %}
-                                                    &nbsp;-&nbsp;
-                                                    <label class="control-label" for="{{ admin.uniqid }}_per_page">{% trans from 'SonataAdminBundle' %}label_per_page{% endtrans %}</label>
-                                                    <select class="per-page small" id="{{ admin.uniqid }}_per_page" style="width: auto; height: auto">
-                                                        {% for per_page in admin.getperpageoptions %}
-                                                            <option {% if per_page == admin.datagrid.pager.maxperpage %}selected="selected"{% endif %} value="{{ admin.generateUrl('list', {'filter': admin.datagrid.values | merge({'_per_page': per_page})}) }}">
-                                                                {{ per_page }}
-                                                            </option>
-                                                        {% endfor %}
-                                                    </select>
-                                                {% endif %}
-                                            </div>
-                                        {% endblock %}
+                                            &nbsp;-&nbsp;
+
+                                            {% transchoice admin.datagrid.pager.nbresults with {'%count%': admin.datagrid.pager.nbresults} from 'SonataAdminBundle' %}list_results_count{% endtranschoice %}
+
+                                            &nbsp;-&nbsp;
+                                            <label class="control-label" for="{{ admin.uniqid }}_per_page">{% trans from 'SonataAdminBundle' %}label_per_page{% endtrans %}</label>
+                                            <select class="per-page small" id="{{ admin.uniqid }}_per_page" style="width: auto; height: auto">
+                                                {% for per_page in admin.getperpageoptions %}
+                                                    <option {% if per_page == admin.datagrid.pager.maxperpage %}selected="selected"{% endif %} value="{{ admin.generateUrl('list', {'filter': admin.datagrid.values | merge({'_per_page': per_page})}) }}">
+                                                        {{ per_page }}
+                                                    </option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
                                     {% endblock %}
                                 {% endif %}
                             </div>
@@ -193,7 +193,7 @@ file that was distributed with this source code.
                 <div class="filter_container {{ admin.datagrid.hasActiveFilters ? 'active' : 'inactive' }}">
                     <table class="table table-bordered">
                         {% for filter in admin.datagrid.filters %}
-                        <tr id="filter_{{ filter.name }}_row" class="filter {{ filter.isActive ? 'active' : 'inactive' }}">
+                            <tr id="filter_{{ filter.name }}_row" class="filter {{ filter.isActive ? 'active' : 'inactive' }}">
                                 <td class="filter-title">{{ admin.trans(filter.label) }}</td>
                                 <td class="filter-type">{{ form_widget(form.children[filter.formName].children['type']) }}</td>
                                 <td class="filter-value">{{ form_widget(form.children[filter.formName].children['value']) }}</td>
