@@ -65,7 +65,7 @@ class FieldDescriptionCollectionTest extends \PHPUnit_Framework_TestCase
     public function testArrayAccessSetField()
     {
         $collection = new FieldDescriptionCollection();
-        
+
         $collection['foo'] = null;
     }
 }

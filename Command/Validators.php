@@ -21,7 +21,7 @@ class Validators
      * @return mixed
      * @throws \InvalidArgumentException
      */
-    static public function validateUsername($username)
+    public static function validateUsername($username)
     {
         if (is_null($username)) {
             throw new \InvalidArgumentException('The username must be set');
@@ -38,7 +38,7 @@ class Validators
      * @return array
      * @throws \InvalidArgumentException
      */
-    static public function validateEntityName($shortcut)
+    public static function validateEntityName($shortcut)
     {
         $entity = str_replace('/', '\\', $shortcut);
 

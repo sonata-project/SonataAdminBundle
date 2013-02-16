@@ -11,24 +11,20 @@
 
 namespace Sonata\AdminBundle\Model;
 
-use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
-use Sonata\AdminBundle\Datagrid\DatagridInterface;
-use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
-
 interface AuditManagerInterface
 {
     /**
      * @param string $serviceId
      * @param array  $classes
      */
-    function setReader($serviceId, array $classes);
+    public function setReader($serviceId, array $classes);
 
     /**
      * @param string $class
      *
      * @return bool
      */
-    function hasReader($class);
+    public function hasReader($class);
 
     /**
      * @param string $class
@@ -36,5 +32,5 @@ interface AuditManagerInterface
      * @return \Sonata\AdminBundle\Model\AuditReaderInterface
      * @throws \RuntimeException
      */
-    function getReader($class);
+    public function getReader($class);
 }

@@ -26,7 +26,7 @@ interface AdminAclManipulatorInterface
      *
      * @return void
      */
-    function configureAcls(OutputInterface $output, AdminInterface $admin);
+    public function configureAcls(OutputInterface $output, AdminInterface $admin);
 
     /**
      * Add the class ACE's to the admin ACL
@@ -38,5 +38,5 @@ interface AdminAclManipulatorInterface
      *
      * @return boolean TRUE if admin class ACEs are added, FALSE if not
      */
-    function addAdminClassAces(OutputInterface $output, AclInterface $acl, AclSecurityHandlerInterface $securityHandler, array $roleInformation = array());
+    public function addAdminClassAces(OutputInterface $output, AclInterface $acl, AclSecurityHandlerInterface $securityHandler, array $roleInformation = array());
 }

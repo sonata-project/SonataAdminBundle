@@ -12,9 +12,7 @@
 namespace Sonata\AdminBundle\Form\Type\Filter;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;

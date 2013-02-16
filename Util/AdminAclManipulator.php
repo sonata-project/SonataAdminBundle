@@ -39,6 +39,7 @@ class AdminAclManipulator implements AdminAclManipulatorInterface
         $securityHandler = $admin->getSecurityHandler();
         if (!$securityHandler instanceof AclSecurityHandlerInterface) {
             $output->writeln(sprintf('Admin `%s` is not configured to use ACL : <info>ignoring</info>', $admin->getCode()));
+
             return;
         }
 

@@ -13,9 +13,6 @@ namespace Sonata\AdminBundle\Twig\Extension;
 
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Exception\NoValueException;
-use Sonata\AdminBundle\Filter\FilterInterface;
-
-use Symfony\Component\Form\FormView;
 
 class SonataAdminExtension extends \Twig_Extension
 {
@@ -83,9 +80,9 @@ class SonataAdminExtension extends \Twig_Extension
     /**
      * render a list element from the FieldDescription
      *
-     * @param mixed                                                $object
-     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface  $fieldDescription
-     * @param array                                                $params
+     * @param mixed                                               $object
+     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
+     * @param array                                               $params
      *
      * @return string
      */

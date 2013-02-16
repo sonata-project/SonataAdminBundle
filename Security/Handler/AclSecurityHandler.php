@@ -33,10 +33,10 @@ class AclSecurityHandler implements AclSecurityHandlerInterface
     protected $maskBuilderClass;
 
     /**
-     * @param \Symfony\Component\Security\Core\SecurityContextInterface          $securityContext
-     * @param \Symfony\Component\Security\Acl\Model\MutableAclProviderInterface  $aclProvider
-     * @param string                                                             $maskBuilderClass
-     * @param array                                                              $superAdminRoles
+     * @param \Symfony\Component\Security\Core\SecurityContextInterface         $securityContext
+     * @param \Symfony\Component\Security\Acl\Model\MutableAclProviderInterface $aclProvider
+     * @param string                                                            $maskBuilderClass
+     * @param array                                                             $superAdminRoles
      */
     public function __construct(SecurityContextInterface $securityContext, MutableAclProviderInterface $aclProvider, $maskBuilderClass, array $superAdminRoles)
     {

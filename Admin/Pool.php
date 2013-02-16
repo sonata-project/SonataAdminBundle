@@ -126,7 +126,7 @@ class Pool
         foreach ($codes as $code) {
             if ($admin == false) {
                 $admin = $this->getInstance($code);
-            } else if ($admin->hasChild($code)) {
+            } elseif ($admin->hasChild($code)) {
                 $admin = $admin->getChild($code);
             }
         }

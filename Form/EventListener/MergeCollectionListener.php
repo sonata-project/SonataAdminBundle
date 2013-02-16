@@ -53,7 +53,7 @@ class MergeCollectionListener implements EventSubscriberInterface
 
         if (!$collection) {
             $collection = $data;
-        } else if (count($data) === 0) {
+        } elseif (count($data) === 0) {
             $this->modelManager->collectionClear($collection);
         } else {
             // merge $data into $collection

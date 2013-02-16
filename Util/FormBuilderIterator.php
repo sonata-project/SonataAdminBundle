@@ -14,7 +14,7 @@ use Symfony\Component\Form\FormBuilder;
 
 class FormBuilderIterator extends \RecursiveArrayIterator
 {
-    static protected $reflection;
+    protected static $reflection;
 
     protected $formBuilder;
 
