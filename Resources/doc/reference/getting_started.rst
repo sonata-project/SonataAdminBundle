@@ -139,7 +139,7 @@ Create a new ``admin.xml`` file inside the ``MyBundle/Ressources/config/`` folde
 
     # app/config/config.yml
     imports:
-        - { resource: @MyBundle/Ressources/config/admin.xml }
+        - { resource: @MyBundle/Resources/config/admin.xml }
 
 Or you can load the file inside with the Bundle's extension file:
 
