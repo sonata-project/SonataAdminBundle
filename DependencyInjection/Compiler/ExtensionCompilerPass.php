@@ -43,5 +43,68 @@ class ExtensionCompilerPass implements CompilerPassInterface
             $container->getDefinition($target)
                 ->addMethodCall('addExtension', array(new Reference($id)));
         }
+        
+        $extensionMap = $container->getParameter('sonata.admin.extension.map');
+        foreach ($container->findTaggedServiceIds('sonata.admin') as $id => $attributes) {
+            $admin = $container->getDefinition($id);
+            $extensions = $this->getExtensionsForAdmin($id, $container, $extensionMap);
+            foreach ($extensions as $extension) {
+                $admin->addMethodCall('addExtension', array(new Reference($extension)));
+            }
+        }
+    }
+
+    /**
+     * @param string $id
+     * @param ContainerBuilder $container
+     * @param array $extensionMap
+     * @return array
+     */
+    protected function getExtensionsForAdmin($id, ContainerBuilder $container, array $extensionMap)
+    {
+        $extensions = array();
+        $excludes = $extensionMap['excludes'];
+        unset($extensionMap['excludes']);
+        $admin = $container->getDefinition($id);
+        
+        foreach ($extensionMap as $type => $subjects) {
+            foreach ($subjects as $subject => $extensionList) {
+                
+                $class = $this->getManagedClass($admin, $container);
+                $classReflection = new \ReflectionClass($class);
+                $subjReflection = new \ReflectionClass($subject);
+                
+                if('extends' == $type && $subjReflection->isSubclassOf($class)){
+                    array_push($extensions, $extensionList);
+                }
+                if('implements' == $type && $classReflection->implementsInterface($subject)){
+                    array_push($extensions, $extensionList);
+                }
+                if('instanceof' == $type && $class instanceof $subject){
+                    array_push($extensions, $extensionList);
+                }
+                if('admins' == $type && $id == $subject){
+                    array_push($extensions, $extensionList);
+                }
+                
+            }
+        }
+        
+        if(isset($excludes[$id])){
+            $extensions = array_diff($extensions, $excludes);
+        }
+        return $extensions;
+    }
+
+    /**
+     * Resolves the class argument of the admin to an actual class (in case of %parameter%)
+     *
+     * @param Definition $admin
+     * @param ContainerBuilder $container
+     * @return string
+     */
+    protected function getManagedClass(Definition $admin, ContainerBuilder $container)
+    {
+        return $container->getParameterBag()->resolveValue($admin->getArgument(1));
     }
 }
