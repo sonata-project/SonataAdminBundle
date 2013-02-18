@@ -24,44 +24,44 @@ interface FilterInterface
      *
      * @return void
      */
-    function filter(ProxyQueryInterface $queryBuilder, $alias, $field, $value);
+    public function filter(ProxyQueryInterface $queryBuilder, $alias, $field, $value);
 
     /**
      * @param mixed $query
      * @param mixed $value
      */
-    function apply($query, $value);
+    public function apply($query, $value);
 
     /**
      * Returns the filter name
      *
      * @return string
      */
-    function getName();
+    public function getName();
 
     /**
      * Returns the filter form name
      *
      * @return string
      */
-    function getFormName();
+    public function getFormName();
 
     /**
      * Returns the label name
      *
      * @return string
      */
-    function getLabel();
+    public function getLabel();
 
     /**
      * @param string $label
      */
-    function setLabel($label);
+    public function setLabel($label);
 
     /**
      * @return array
      */
-    function getDefaultOptions();
+    public function getDefaultOptions();
 
     /**
      * @param string $name
@@ -69,13 +69,13 @@ interface FilterInterface
      *
      * @return mixed
      */
-    function getOption($name, $default = null);
+    public function getOption($name, $default = null);
 
     /**
      * @param string $name
-     * @param mixed $value
+     * @param mixed  $value
      */
-    function setOption($name, $value);
+    public function setOption($name, $value);
 
     /**
      * @param string $name
@@ -83,42 +83,42 @@ interface FilterInterface
      *
      * @return void
      */
-    function initialize($name, array $options = array());
+    public function initialize($name, array $options = array());
 
     /**
      * @return string
      */
-    function getFieldName();
+    public function getFieldName();
 
     /**
      * @return array of mappings
      */
-    function getParentAssociationMappings();
+    public function getParentAssociationMappings();
 
     /**
      * @return array field mapping
      */
-    function getFieldMapping();
+    public function getFieldMapping();
 
     /**
      * @return array association mapping
      */
-    function getAssociationMapping();
+    public function getAssociationMapping();
 
     /**
      * @return array
      */
-    function getFieldOptions();
+    public function getFieldOptions();
 
     /**
      * @return string
      */
-    function getFieldType();
+    public function getFieldType();
 
     /**
      * Returns the main widget used to render the filter
      *
      * @return array
      */
-    function getRenderSettings();
+    public function getRenderSettings();
 }

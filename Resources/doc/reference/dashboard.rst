@@ -20,6 +20,13 @@ application's config file:
             groups:
                 ... your config ...
 
+.. figure:: ../images/dashboard.png
+   :align: center
+   :alt: The dashboard
+   :width: 400px
+
+   The dashboard
+
 
 Examples
 --------
@@ -92,9 +99,10 @@ Add some items to a group
                         - sonata.page.admin.myitem2
 
 
-.. image:: ../images/dashboard.png
-           :alt: Dashboard
-           :width: 200
+.. figure:: ../images/dashboard.png
+   :align: center
+   :alt: Dashboard
+   :width: 500
 
 Display two blocks with different dashboard groups
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

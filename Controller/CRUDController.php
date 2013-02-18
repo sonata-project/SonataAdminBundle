@@ -421,7 +421,7 @@ class CRUDController extends Controller
 
         if (count($idx) > 0) {
             $this->admin->getModelManager()->addIdentifiersToQuery($this->admin->getClass(), $query, $idx);
-        } else if (!$all_elements) {
+        } elseif (!$all_elements) {
             $query = null;
         }
 
@@ -613,8 +613,8 @@ class CRUDController extends Controller
     }
 
     /**
-     * @param null    $id
-     * @param string  $revision
+     * @param null   $id
+     * @param string $revision
      *
      * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
@@ -677,7 +677,7 @@ class CRUDController extends Controller
 
         $allowedExportFormats = (array) $this->admin->getExportFormats();
 
-        if(!in_array($format, $allowedExportFormats) ) {
+        if (!in_array($format, $allowedExportFormats) ) {
             throw new \RuntimeException(sprintf('Export in format `%s` is not allowed for class: `%s`. Allowed formats are: `%s`', $format, $this->admin->getClass(), implode(', ', $allowedExportFormats)));
         }
 

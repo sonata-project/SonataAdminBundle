@@ -26,15 +26,15 @@ file that was distributed with this source code.
                         <tr>
                             <td class="sonata-ba-list-label">{{ admin.label|trans({}, admin.translationdomain) }}</td>
                             <td>
-                                {% if admin.hasroute('create') and admin.isGranted('CREATE') %}
-                                    {% if admin.subClasses is empty %}
-                                        <a class="btn" href="{{ admin.generateUrl('create')}}">
-                                            <i class="icon-plus"></i>
-                                            {% trans from 'SonataAdminBundle' %}link_add{% endtrans %}
-                                        </a>
-                                    {% else %}
-                                        <div class="btn-group">
-                                            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                                <div class="btn-group">
+                                    {% if admin.hasroute('create') and admin.isGranted('CREATE') %}
+                                        {% if admin.subClasses is empty %}
+                                            <a class="btn btn-small" href="{{ admin.generateUrl('create')}}">
+                                                <i class="icon-plus"></i>
+                                                {% trans from 'SonataAdminBundle' %}link_add{% endtrans %}
+                                            </a>
+                                        {% else %}
+                                            <a class="btn btn-small dropdown-toggle" data-toggle="dropdown" href="#">
                                                 <i class="icon-plus"></i>
                                                 {% trans from 'SonataAdminBundle' %}link_add{% endtrans %}
                                                 <span class="caret"></span>
@@ -46,17 +46,15 @@ file that was distributed with this source code.
                                                 </li>
                                                 {% endfor %}
                                             </ul>
-                                        </div>
+                                        {% endif %}
                                     {% endif %}
-                                {% endif %}
-                            </td>
-                            <td>
-                                {% if admin.hasroute('list') and admin.isGranted('LIST') %}
-                                    <a class="btn" href="{{ admin.generateUrl('list')}}">
-                                        <i class="icon-list"></i>
-                                        {% trans from 'SonataAdminBundle' %}link_list{% endtrans -%}
-                                    </a>
-                                {% endif %}
+                                    {% if admin.hasroute('list') and admin.isGranted('LIST') %}
+                                        <a class="btn btn-small" href="{{ admin.generateUrl('list')}}">
+                                            <i class="icon-list"></i>
+                                            {% trans from 'SonataAdminBundle' %}link_list{% endtrans -%}
+                                        </a>
+                                    {% endif %}
+                                </div>
                             </td>
                         </tr>
                     {% endif %}

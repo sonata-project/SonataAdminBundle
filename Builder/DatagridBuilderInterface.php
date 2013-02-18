@@ -12,7 +12,6 @@
 namespace Sonata\AdminBundle\Builder;
 
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
-use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 
@@ -25,7 +24,7 @@ interface DatagridBuilderInterface
      *
      * @return void
      */
-    function fixFieldDescription(AdminInterface $admin, FieldDescriptionInterface $fieldDescription);
+    public function fixFieldDescription(AdminInterface $admin, FieldDescriptionInterface $fieldDescription);
 
     /**
      * @abstract
@@ -37,7 +36,7 @@ interface DatagridBuilderInterface
      *
      * @return void
      */
-    function addFilter(DatagridInterface $datagrid, $type = null, FieldDescriptionInterface $fieldDescription, AdminInterface $admin);
+    public function addFilter(DatagridInterface $datagrid, $type = null, FieldDescriptionInterface $fieldDescription, AdminInterface $admin);
 
     /**
      * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
@@ -45,5 +44,5 @@ interface DatagridBuilderInterface
      *
      * @return \Sonata\AdminBundle\Datagrid\DatagridInterface
      */
-    function getBaseDatagrid(AdminInterface $admin, array $values = array());
+    public function getBaseDatagrid(AdminInterface $admin, array $values = array());
 }

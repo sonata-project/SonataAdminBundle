@@ -197,7 +197,7 @@ class HelperController
     }
 
     /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param  \Symfony\Component\HttpFoundation\Request  $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function setObjectFieldValueAction(Request $request)

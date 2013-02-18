@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-
 namespace Sonata\AdminBundle\Route;
 
 use Symfony\Component\Routing\RouteCollection as SymfonyRouteCollection;

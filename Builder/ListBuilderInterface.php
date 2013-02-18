@@ -12,10 +12,8 @@
 namespace Sonata\AdminBundle\Builder;
 
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
-use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
-
 
 interface ListBuilderInterface
 {
@@ -24,16 +22,16 @@ interface ListBuilderInterface
      *
      * @return \Sonata\AdminBundle\Admin\FieldDescriptionCollection
      */
-    function getBaseList(array $options = array());
+    public function getBaseList(array $options = array());
 
     /**
      * Modify a field description to display it in the list view.
      *
-     * @param null|mixed                                           $type
-     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface  $fieldDescription
-     * @param \Sonata\AdminBundle\Admin\AdminInterface             $admin
+     * @param null|mixed                                          $type
+     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
+     * @param \Sonata\AdminBundle\Admin\AdminInterface            $admin
      */
-    function buildField($type = null, FieldDescriptionInterface $fieldDescription, AdminInterface $admin);
+    public function buildField($type = null, FieldDescriptionInterface $fieldDescription, AdminInterface $admin);
 
     /**
      * Modify a field description and add it to the displayed columns.
@@ -43,12 +41,12 @@ interface ListBuilderInterface
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface  $fieldDescription
      * @param \Sonata\AdminBundle\Admin\AdminInterface             $admin
      */
-    function addField(FieldDescriptionCollection $list, $type = null, FieldDescriptionInterface $fieldDescription, AdminInterface $admin);
+    public function addField(FieldDescriptionCollection $list, $type = null, FieldDescriptionInterface $fieldDescription, AdminInterface $admin);
 
     /**
      *
      * @param \Sonata\AdminBundle\Admin\AdminInterface            $admin
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
      */
-    function fixFieldDescription(AdminInterface $admin, FieldDescriptionInterface $fieldDescription);
+    public function fixFieldDescription(AdminInterface $admin, FieldDescriptionInterface $fieldDescription);
 }

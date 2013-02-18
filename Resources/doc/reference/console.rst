@@ -35,6 +35,13 @@ Usage example:
 
     php app/console sonata:admin:explain sonata.news.admin.post
 
+.. figure:: ../images/console_admin_explain.png
+   :align: center
+   :alt: Explain command
+   :width: 700px
+
+   Explain command
+
 
 sonata:admin:list
 -----------------
@@ -50,6 +57,13 @@ Usage example:
 
     php app/console sonata:admin:list
 
+
+.. figure:: ../images/console_admin_list.png
+   :align: center
+   :alt: List command
+   :width: 700px
+
+   List command
 
 sonata:admin:setup-acl
 ----------------------

@@ -15,7 +15,6 @@ use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\Util\PropertyPath;
 use Symfony\Component\Validator\ValidatorInterface;
-use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Acl\Model\DomainObjectInterface;
@@ -43,7 +42,6 @@ use Sonata\AdminBundle\Model\ModelManagerInterface;
 
 use Knp\Menu\FactoryInterface as MenuFactoryInterface;
 use Knp\Menu\ItemInterface as MenuItemInterface;
-use Knp\Menu\MenuItem;
 
 abstract class Admin implements AdminInterface, DomainObjectInterface
 {
@@ -437,7 +435,6 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     {
 
     }
-
 
     /**
      * {@inheritdoc}
@@ -894,7 +891,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      * urlize the given word
      *
      * @param string $word
-     * @param string $sep the separator
+     * @param string $sep  the separator
      *
      * @return string
      */
@@ -934,7 +931,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     /**
      * Gets the subclass corresponding to the given name
      *
-     * @param  string $name The name of the sub class
+     * @param string $name The name of the sub class
      *
      * @return string the subclass
      */
@@ -950,7 +947,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     /**
      * Returns true if the admin has the sub classes
      *
-     * @param  string $name The name of the sub class
+     * @param string $name The name of the sub class
      *
      * @return bool
      */
@@ -1062,7 +1059,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
         $this->configureRoutes($this->routes);
 
-        foreach($this->getExtensions() as $extension) {
+        foreach ($this->getExtensions() as $extension) {
             $extension->configureRoutes($this, $this->routes);
         }
     }
@@ -1093,13 +1090,12 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         return $this->routes->has($name);
     }
 
-
     /**
      * Generates the object url with the given $name
      *
-     * @param string  $name
-     * @param mixed   $object
-     * @param array   $parameters
+     * @param string $name
+     * @param mixed  $object
+     * @param array  $parameters
      *
      * @return string return a complete url
      */
@@ -1383,7 +1379,6 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         $parentFieldDescription = $this->getParentFieldDescription();
 
         if (!$parentFieldDescription) {
-
             return $this;
         }
 
@@ -1959,7 +1954,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
         $child = $child->addChild(
             $this->trans($this->getLabelTranslatorStrategy()->getLabel(sprintf('%s_list', $this->getClassnameLabel()), 'breadcrumb', 'link')),
-            array('uri' => $this->generateUrl('list'))
+            array('uri' => $this->hasRoute('list') && $this->isGranted('LIST') ? $this->generateUrl('list') : null)
         );
 
         $childAdmin = $this->getCurrentChildAdmin();
@@ -1969,7 +1964,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
             $child = $child->addChild(
                 $this->toString($this->getSubject()),
-                array('uri' => $this->generateUrl('edit', array('id' => $id)))
+                array('uri' => $this->hasRoute('edit') && $this->isGranted('EDIT') ? $this->generateUrl('edit', array('id' => $id)) : null)
             );
 
             return $childAdmin->buildBreadcrumbs($action, $child);
@@ -1978,7 +1973,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
             if ($action != 'list') {
                 $menu = $menu->addChild(
                     $this->trans($this->getLabelTranslatorStrategy()->getLabel(sprintf('%s_list', $this->getClassnameLabel()), 'breadcrumb', 'link')),
-                    array('uri' => $this->generateUrl('list'))
+                    array('uri' => $this->hasRoute('list') && $this->isGranted('LIST') ? $this->generateUrl('list') : null)
                 );
             }
 
@@ -1990,7 +1985,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
                 );
             }
 
-        } else if ($action != 'list') {
+        } elseif ($action != 'list') {
             $breadcrumbs = $child->getBreadcrumbsArray(
                 $this->trans($this->getLabelTranslatorStrategy()->getLabel(sprintf('%s_%s', $this->getClassnameLabel(), $action), 'breadcrumb', 'link'))
             );
@@ -2077,7 +2072,6 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
         return $this->translator->transChoice($id, $count, $parameters, $domain, $locale);
     }
-
 
     /**
      * set the translation domain
@@ -2528,7 +2522,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     public function toString($object)
     {
         if (method_exists($object, '__toString')) {
-            return (string)$object;
+            return (string) $object;
         }
 
         return sprintf("%s:%s", get_class($object), spl_object_hash($object));

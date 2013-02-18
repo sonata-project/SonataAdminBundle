@@ -9,7 +9,6 @@
  * file that was distributed with this source code.
  */
 
-
 namespace Sonata\AdminBundle\Tests\Form\Extension\Field\Type;
 
 use Sonata\AdminBundle\Form\Extension\Field\Type\FormTypeFieldExtension;
@@ -94,9 +93,7 @@ class FormTypeFieldExtensionTest extends \PHPUnit_Framework_TestCase
 
         $form = new Form($config);
 
-
         $formView->vars['block_prefixes'] = array('form', 'field', 'text', '_s50b26aa76cb96_username');
-
 
         $extension = new FormTypeFieldExtension();
         $extension->buildView($formView, $form, array());

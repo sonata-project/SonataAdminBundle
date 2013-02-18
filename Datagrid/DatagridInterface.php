@@ -17,75 +17,75 @@ interface DatagridInterface
     /**
      * @return \Sonata\AdminBundle\Datagrid\PagerInterface
      */
-    function getPager();
+    public function getPager();
 
     /**
      * @return \Sonata\AdminBundle\Datagrid\ProxyQueryInterface
      */
-    function getQuery();
+    public function getQuery();
 
     /**
      * @return array
      */
-    function getResults();
+    public function getResults();
 
     /**
      * @return void
      */
-    function buildPager();
+    public function buildPager();
 
     /**
      * @param \Sonata\AdminBundle\Filter\FilterInterface $filter
      *
      * @return \Sonata\AdminBundle\Filter\FilterInterface
      */
-    function addFilter(FilterInterface $filter);
+    public function addFilter(FilterInterface $filter);
 
     /**
      * @return array
      */
-    function getFilters();
+    public function getFilters();
 
     /**
      * @return array
      */
-    function getValues();
+    public function getValues();
 
     /**
      * @return array
      */
-    function getColumns();
+    public function getColumns();
 
     /**
      * @param string $name
      * @param string $operator
      * @param mixed  $value
      */
-    function setValue($name, $operator, $value);
+    public function setValue($name, $operator, $value);
 
     /**
      * @return \Symfony\Component\Form\Form
      */
-    function getForm();
+    public function getForm();
 
     /**
      * @param string $name
      *
      * @return \Sonata\AdminBundle\Filter\FilterInterface
      */
-    function getFilter($name);
+    public function getFilter($name);
 
     /**
      * @param string $name
      *
      * @return bool
      */
-    function hasFilter($name);
+    public function hasFilter($name);
 
     /**
      * @param string $name
      */
-    function removeFilter($name);
+    public function removeFilter($name);
 
     /**
      * @return boolean

@@ -11,7 +11,6 @@
 
 namespace Sonata\AdminBundle\Form\Type;
 
-use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Form\AbstractType;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;

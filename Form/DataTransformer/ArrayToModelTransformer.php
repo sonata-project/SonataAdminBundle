@@ -11,11 +11,7 @@
 
 namespace Sonata\AdminBundle\Form\DataTransformer;
 
-use Symfony\Component\Form\Exception\InvalidPropertyException;
-use Symfony\Component\Form\Exception\PropertyAccessDeniedException;
 use Symfony\Component\Form\DataTransformerInterface;
-use Symfony\Component\Form\Exception\UnexpectedTypeException;
-use Symfony\Component\Form\Exception\TransformationFailedException;
 
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 

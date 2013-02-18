@@ -13,7 +13,6 @@ namespace Sonata\AdminBundle\Util;
 
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
-use Symfony\Component\Security\Acl\Exception\AclAlreadyExistsException;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface;
 
@@ -24,7 +23,7 @@ abstract class ObjectAclManipulator implements ObjectAclManipulatorInterface
      *
      * @param OutputInterface      $output
      * @param AdminInterface       $admin
-     * @param array                $oids an array of ObjectIdentityInterface implementations
+     * @param array                $oids             an array of ObjectIdentityInterface implementations
      * @param UserSecurityIdentity $securityIdentity
      *
      * @throws \Exception

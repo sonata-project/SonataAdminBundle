@@ -116,7 +116,6 @@ class BaseAdminTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($admin->getUniqid() == "");
         $this->assertEquals('Post', $admin->getClassnameLabel());
 
-
         $admin = new CommentAdmin('sonata.post.admin.comment', 'Application\Sonata\NewsBundle\Entity\Comment', 'SonataNewsBundle:CommentAdmin');
         $admin->setClassnameLabel('postcomment');
 
@@ -157,7 +156,6 @@ class BaseAdminTest extends \PHPUnit_Framework_TestCase
         $admin->getBaseRoutePattern();
     }
 
-
     public function testGetBaseRouteName()
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'Application\Sonata\NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
@@ -175,7 +173,6 @@ class BaseAdminTest extends \PHPUnit_Framework_TestCase
         $commentAdmin->initialize();
 
         $postAdmin->addChild($commentAdmin);
-
 
         $this->assertEquals('admin_sonata_news_post_comment', $commentAdmin->getBaseRouteName());
 

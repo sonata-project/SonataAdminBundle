@@ -23,5 +23,5 @@ interface RouteBuilderInterface
      * @param \Sonata\AdminBundle\Admin\AdminInterface  $admin
      * @param \Sonata\AdminBundle\Route\RouteCollection $collection
      */
-    function build(AdminInterface $admin, RouteCollection $collection);
+    public function build(AdminInterface $admin, RouteCollection $collection);
 }
