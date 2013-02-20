@@ -17,5 +17,5 @@ interface PagerInterface
      *
      * @return void
      */
-    function init();
+    public function init();
 }

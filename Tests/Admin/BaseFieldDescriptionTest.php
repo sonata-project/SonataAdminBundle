@@ -120,22 +120,22 @@ class BaseFieldDescriptionTest extends \PHPUnit_Framework_TestCase
 
 class FieldDescription extends BaseFieldDescription
 {
-    function setAssociationMapping($associationMapping)
+    public function setAssociationMapping($associationMapping)
     {
         // TODO: Implement setAssociationMapping() method.
     }
 
-    function getTargetEntity()
+    public function getTargetEntity()
     {
         // TODO: Implement getTargetEntity() method.
     }
 
-    function setFieldMapping($fieldMapping)
+    public function setFieldMapping($fieldMapping)
     {
         // TODO: Implement setFieldMapping() method.
     }
 
-    function isIdentifier()
+    public function isIdentifier()
     {
         // TODO: Implement isIdentifier() method.
     }
@@ -143,10 +143,10 @@ class FieldDescription extends BaseFieldDescription
     /**
      * set the parent association mappings information
      *
-     * @param array $parentAssociationMappings
+     * @param  array $parentAssociationMappings
      * @return void
      */
-    function setParentAssociationMappings(array $parentAssociationMappings)
+    public function setParentAssociationMappings(array $parentAssociationMappings)
     {
         // TODO: Implement setParentAssociationMappings() method.
     }
@@ -157,7 +157,7 @@ class FieldDescription extends BaseFieldDescription
      * @param  $object
      * @return bool|mixed
      */
-    function getValue($object)
+    public function getValue($object)
     {
         // TODO: Implement getValue() method.
     }

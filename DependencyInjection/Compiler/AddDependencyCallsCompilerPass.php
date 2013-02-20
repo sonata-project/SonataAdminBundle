@@ -17,8 +17,6 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
-
 /**
  * Add all dependencies to the Admin class, this avoid to write too many lines
  * in the configuration files.
@@ -58,7 +56,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
                 $admins[] = $id;
                 $classes[$arguments[1]] = $id;
 
-                $showInDashboard = (boolean)(isset($attributes['show_in_dashboard']) ? $attributes['show_in_dashboard'] : true);
+                $showInDashboard = (boolean) (isset($attributes['show_in_dashboard']) ? $attributes['show_in_dashboard'] : true);
                 if (!$showInDashboard) {
                     continue;
                 }
@@ -121,9 +119,10 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
      * This method read the attribute keys and configure admin class to use the related dependency
      *
      * @param \Symfony\Component\DependencyInjection\Definition $definition
-     * @param array $attributes
+     * @param array                                             $attributes
      */
-    public function applyConfigurationFromAttribute(Definition $definition, array $attributes) {
+    public function applyConfigurationFromAttribute(Definition $definition, array $attributes)
+    {
         $keys = array(
             'model_manager',
             'form_contractor',
@@ -153,9 +152,9 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
     /**
      * Apply the default values required by the AdminInterface to the Admin service definition
      *
-     * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
-     * @param string $serviceId
-     * @param array $attributes
+     * @param  \Symfony\Component\DependencyInjection\ContainerBuilder $container
+     * @param  string                                                  $serviceId
+     * @param  array                                                   $attributes
      * @return \Symfony\Component\DependencyInjection\Definition
      */
     public function applyDefaults(ContainerBuilder $container, $serviceId, array $attributes = array())
@@ -225,8 +224,8 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
     }
 
     /**
-     * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
-     * @param \Symfony\Component\DependencyInjection\Definition $definition
+     * @param  \Symfony\Component\DependencyInjection\ContainerBuilder $container
+     * @param  \Symfony\Component\DependencyInjection\Definition       $definition
      * @return void
      */
     public function fixTemplates(ContainerBuilder $container, Definition $definition)

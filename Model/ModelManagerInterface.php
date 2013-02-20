@@ -14,7 +14,6 @@ namespace Sonata\AdminBundle\Model;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
-use Sonata\AdminBundle\Admin\AdminInterface;
 
 /**
  * A model manager is a bridge between the model classes and the admin
@@ -31,28 +30,28 @@ interface ModelManagerInterface
      *
      * @return FieldDescriptionInterface
      */
-    function getNewFieldDescriptionInstance($class, $name, array $options = array());
+    public function getNewFieldDescriptionInstance($class, $name, array $options = array());
 
     /**
      * @param mixed $object
      *
      * @return void
      */
-    function create($object);
+    public function create($object);
 
     /**
      * @param mixed $object
      *
      * @return void
      */
-    function update($object);
+    public function update($object);
 
     /**
      * @param object $object
      *
      * @return void
      */
-    function delete($object);
+    public function delete($object);
 
     /**
      * @param string $class
@@ -60,7 +59,7 @@ interface ModelManagerInterface
      *
      * @return array all objects matching the criteria
      */
-    function findBy($class, array $criteria = array());
+    public function findBy($class, array $criteria = array());
 
     /**
      * @param string $class
@@ -68,7 +67,7 @@ interface ModelManagerInterface
      *
      * @return object an object matching the criteria or null if none match
      */
-    function findOneBy($class, array $criteria = array());
+    public function findOneBy($class, array $criteria = array());
 
     /**
      * @param string $class
@@ -76,15 +75,15 @@ interface ModelManagerInterface
      *
      * @return object the object with id or null if not found
      */
-    function find($class, $id);
+    public function find($class, $id);
 
     /**
-     * @param string                                           $class
+     * @param string              $class
      * @param ProxyQueryInterface $queryProxy
      *
      * @return void
      */
-    function batchDelete($class, ProxyQueryInterface $queryProxy);
+    public function batchDelete($class, ProxyQueryInterface $queryProxy);
 
     /**
      * @param array  $parentAssociationMapping
@@ -92,7 +91,7 @@ interface ModelManagerInterface
      *
      * @return void
      */
-    function getParentFieldDescription($parentAssociationMapping, $class);
+    public function getParentFieldDescription($parentAssociationMapping, $class);
 
     /**
      * @param string $class
@@ -100,7 +99,7 @@ interface ModelManagerInterface
      *
      * @return ProxyQueryInterface
      */
-    function createQuery($class, $alias = 'o');
+    public function createQuery($class, $alias = 'o');
 
     /**
      * Get the identifier for the model type of this class.
@@ -109,7 +108,7 @@ interface ModelManagerInterface
      *
      * @return string
      */
-    function getModelIdentifier($class);
+    public function getModelIdentifier($class);
 
     /**
      * Get the identifiers of this model class.
@@ -122,7 +121,7 @@ interface ModelManagerInterface
      *
      * @return array list of all identifiers of this model
      */
-    function getIdentifierValues($model);
+    public function getIdentifierValues($model);
 
     /**
      * Get a list of the field names models of the specified class use to store
@@ -132,7 +131,7 @@ interface ModelManagerInterface
      *
      * @return array
      */
-    function getIdentifierFieldNames($class);
+    public function getIdentifierFieldNames($class);
 
     /**
      * Get the identifiers for this model class as a string.
@@ -142,7 +141,7 @@ interface ModelManagerInterface
      * @return string a string representation of the identifiers for this
      *      instance
      */
-    function getNormalizedIdentifier($model);
+    public function getNormalizedIdentifier($model);
 
     /**
      * Get the identifiers as a string that is save to use in an url.
@@ -154,7 +153,7 @@ interface ModelManagerInterface
      *
      * @return string string representation of the id that is save to use in an url
      */
-    function getUrlsafeIdentifier($model);
+    public function getUrlsafeIdentifier($model);
 
     /**
      * Create a new instance of the model of the specified class.
@@ -163,14 +162,14 @@ interface ModelManagerInterface
      *
      * @return mixed
      */
-    function getModelInstance($class);
+    public function getModelInstance($class);
 
     /**
      * @param string $class
      *
      * @return array
      */
-    function getModelCollectionInstance($class);
+    public function getModelCollectionInstance($class);
 
     /**
      * Removes an element from the collection
@@ -180,7 +179,7 @@ interface ModelManagerInterface
      *
      * @return void
      */
-    function collectionRemoveElement(&$collection, &$element);
+    public function collectionRemoveElement(&$collection, &$element);
 
     /**
      * Add an element from the collection
@@ -190,7 +189,7 @@ interface ModelManagerInterface
      *
      * @return mixed
      */
-    function collectionAddElement(&$collection, &$element);
+    public function collectionAddElement(&$collection, &$element);
 
     /**
      * Check if the element exists in the collection
@@ -200,7 +199,7 @@ interface ModelManagerInterface
      *
      * @return boolean
      */
-    function collectionHasElement(&$collection, &$element);
+    public function collectionHasElement(&$collection, &$element);
 
     /**
      * Clear the collection
@@ -209,30 +208,30 @@ interface ModelManagerInterface
      *
      * @return mixed
      */
-    function collectionClear(&$collection);
+    public function collectionClear(&$collection);
 
     /**
      * Returns the parameters used in the columns header
      *
      * @param FieldDescriptionInterface $fieldDescription
-     * @param DatagridInterface      $datagrid
+     * @param DatagridInterface         $datagrid
      *
      * @return array
      */
-    function getSortParameters(FieldDescriptionInterface $fieldDescription, DatagridInterface $datagrid);
+    public function getSortParameters(FieldDescriptionInterface $fieldDescription, DatagridInterface $datagrid);
 
     /**
      * @param string $class
      *
      * @return array
      */
-    function getDefaultSortValues($class);
+    public function getDefaultSortValues($class);
 
     /**
      * @param string $class
      * @param array  $array
      */
-    function modelReverseTransform($class, array $array = array());
+    public function modelReverseTransform($class, array $array = array());
 
     /**
      * @param string $class
@@ -240,44 +239,44 @@ interface ModelManagerInterface
      *
      * @return void
      */
-    function modelTransform($class, $instance);
+    public function modelTransform($class, $instance);
 
     /**
      * @param mixed $query
      */
-    function executeQuery($query);
+    public function executeQuery($query);
 
     /**
      * @param DatagridInterface $datagrid
-     * @param array                                          $fields
-     * @param null                                           $firstResult
-     * @param null                                           $maxResult
+     * @param array             $fields
+     * @param null              $firstResult
+     * @param null              $maxResult
      *
      * @return \Exporter\Source\SourceIteratorInterface
      */
-    function getDataSourceIterator(DatagridInterface $datagrid, array $fields, $firstResult = null, $maxResult = null);
+    public function getDataSourceIterator(DatagridInterface $datagrid, array $fields, $firstResult = null, $maxResult = null);
 
     /**
      * @param string $class
      *
      * @return array
      */
-    function getExportFields($class);
+    public function getExportFields($class);
 
     /**
      * @param DatagridInterface $datagrid
-     * @param int                                            $page
+     * @param int               $page
      *
      * @return mixed
      */
-    function getPaginationParameters(DatagridInterface $datagrid, $page);
+    public function getPaginationParameters(DatagridInterface $datagrid, $page);
 
     /**
-     * @param string                                           $class
+     * @param string              $class
      * @param ProxyQueryInterface $query
-     * @param array                                            $idx
+     * @param array               $idx
      *
      * @return void
      */
-    function addIdentifiersToQuery($class, ProxyQueryInterface $query, array $idx);
+    public function addIdentifiersToQuery($class, ProxyQueryInterface $query, array $idx);
 }

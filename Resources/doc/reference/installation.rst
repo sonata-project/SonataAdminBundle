@@ -53,7 +53,6 @@ Next, be sure to enable this bundles in your AppKernel.php file:
         return array(
             // ...
             new Sonata\BlockBundle\SonataBlockBundle(),
-            new Sonata\CacheBundle\SonataCacheBundle(),
             new Sonata\jQueryBundle\SonatajQueryBundle(),
             new Sonata\AdminBundle\SonataAdminBundle(),
             // ...
@@ -72,7 +71,6 @@ You will also need to alter your ``app/config/config.yml`` file :
                 contexts:   [admin]
 
             sonata.block.service.text:
-            sonata.block.service.action:
             sonata.block.service.rss:
 
 

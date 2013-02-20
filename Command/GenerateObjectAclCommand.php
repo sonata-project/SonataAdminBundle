@@ -13,13 +13,11 @@ namespace Sonata\AdminBundle\Command;
 
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Output\Output;
 
-use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Util\ObjectAclManipulatorInterface;
 
 class GenerateObjectAclCommand extends ContainerAwareCommand
@@ -66,6 +64,7 @@ class GenerateObjectAclCommand extends ContainerAwareCommand
                 $this->getUserEntityClass($input, $output);
             } catch (\Exception $e) {
                 $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
+
                 return;
             }
         }

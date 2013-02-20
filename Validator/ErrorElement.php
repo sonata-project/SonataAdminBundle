@@ -11,7 +11,6 @@
 namespace Sonata\AdminBundle\Validator;
 
 use Symfony\Bundle\FrameworkBundle\Validator\ConstraintValidatorFactory;
-use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\ExecutionContext;
 use Symfony\Component\Form\Util\PropertyPath;
 use Symfony\Component\Validator\Constraint;
@@ -106,26 +105,16 @@ class ErrorElement
 
     /**
      * @param \Symfony\Component\Validator\Constraint $constraint
-     * @param null                                    $messageTemplate
-     * @param array                                   $messageParameters
      *
      * @return void
      */
-    protected function validate(Constraint $constraint, $messageTemplate = null, $messageParameters = array())
+    protected function validate(Constraint $constraint)
     {
         $validator = $this->constraintValidatorFactory->getInstance($constraint);
         $value     = $this->getValue();
 
         $validator->initialize($this->context);
         $validator->validate($value, $constraint);
-
-        if (count($this->context->getViolations())) {
-            $this->context->addViolation(
-                $messageTemplate ?: $validator->getMessageTemplate(),
-                array_merge($validator->getMessageParameters(), $messageParameters),
-                $value
-            );
-        }
     }
 
     /**
@@ -167,7 +156,7 @@ class ErrorElement
     protected function newConstraint($name, array $options = array())
     {
         if (strpos($name, '\\') !== false && class_exists($name)) {
-            $className = (string)$name;
+            $className = (string) $name;
         } else {
             $className = 'Symfony\\Component\\Validator\\Constraints\\' . $name;
         }
@@ -198,7 +187,7 @@ class ErrorElement
     {
         if (is_array($message)) {
             $value      = isset($message[2]) ? $message[2] : $value;
-            $parameters = isset($message[1]) ? (array)$message[1] : array();
+            $parameters = isset($message[1]) ? (array) $message[1] : array();
             $message    = isset($message[0]) ? $message[0] : 'error';
         }
 

@@ -63,7 +63,7 @@ class Datagrid implements DatagridInterface
     }
 
     /**
-     * @return \Sonata\AdminBundle\Datagrid\PagerInterface
+     * {@inheritdoc}
      */
     public function getPager()
     {
@@ -71,7 +71,7 @@ class Datagrid implements DatagridInterface
     }
 
     /**
-     * @return array
+     * {@inheritdoc}
      */
     public function getResults()
     {
@@ -85,7 +85,7 @@ class Datagrid implements DatagridInterface
     }
 
     /**
-     * @return void
+     * {@inheritdoc}
      */
     public function buildPager()
     {
@@ -100,20 +100,14 @@ class Datagrid implements DatagridInterface
         }
 
         $this->formBuilder->add('_sort_by', 'hidden');
-        $this->formBuilder->get('_sort_by')->appendClientTransformer(new CallbackTransformer(
-            function($value) {
-                return $value;
-            },
-            function($value) {
-                if ($value instanceof FieldDescriptionInterface) {
-                    return $value->getName();
-                } else {
-                    return $value;
-                }
-            }
+        $this->formBuilder->get('_sort_by')->addViewTransformer(new CallbackTransformer(
+            function($value) { return $value; },
+            function($value) { return $value instanceof FieldDescriptionInterface ? $value->getName() : $value; }
         ));
+
         $this->formBuilder->add('_sort_order', 'hidden');
         $this->formBuilder->add('_page', 'hidden');
+        $this->formBuilder->add('_per_page', 'hidden');
 
         $this->form = $this->formBuilder->getForm();
         $this->form->bind($this->values);
@@ -131,11 +125,12 @@ class Datagrid implements DatagridInterface
             }
 
             if ($this->values['_sort_by']->isSortable()) {
-                $this->query->setSortBy($this->values['_sort_by']->getParentAssociationMappings(), $this->values['_sort_by']->getSortFieldMapping());
+                $this->query->setSortBy($this->values['_sort_by']->getSortParentAssociationMapping(), $this->values['_sort_by']->getSortFieldMapping());
                 $this->query->setSortOrder(isset($this->values['_sort_order']) ? $this->values['_sort_order'] : null);
             }
         }
 
+        $this->pager->setMaxPerPage(isset($this->values['_per_page']) ? $this->values['_per_page'] : 25);
         $this->pager->setPage(isset($this->values['_page']) ? $this->values['_page'] : 1);
         $this->pager->setQuery($this->query);
         $this->pager->init();
@@ -144,9 +139,7 @@ class Datagrid implements DatagridInterface
     }
 
     /**
-     * @param \Sonata\AdminBundle\Filter\FilterInterface $filter
-     *
-     * @return void
+     * {@inheritdoc}
      */
     public function addFilter(FilterInterface $filter)
     {
@@ -154,9 +147,7 @@ class Datagrid implements DatagridInterface
     }
 
     /**
-     * @param string $name
-     *
-     * @return bool
+     * {@inheritdoc}
      */
     public function hasFilter($name)
     {
@@ -164,7 +155,7 @@ class Datagrid implements DatagridInterface
     }
 
     /**
-     * @param string $name
+     * {@inheritdoc}
      */
     public function removeFilter($name)
     {
@@ -172,9 +163,7 @@ class Datagrid implements DatagridInterface
     }
 
     /**
-     * @param string $name
-     *
-     * @return null
+     * {@inheritdoc}
      */
     public function getFilter($name)
     {
@@ -182,7 +171,7 @@ class Datagrid implements DatagridInterface
     }
 
     /**
-     * @return FilterInterface[]
+     * {@inheritdoc}
      */
     public function getFilters()
     {
@@ -195,7 +184,7 @@ class Datagrid implements DatagridInterface
     }
 
     /**
-     * @return array
+     * {@inheritdoc}
      */
     public function getValues()
     {
@@ -203,9 +192,7 @@ class Datagrid implements DatagridInterface
     }
 
     /**
-     * @param string $name
-     * @param string $operator
-     * @param mixed  $value
+     * {@inheritdoc}
      */
     public function setValue($name, $operator, $value)
     {
@@ -216,7 +203,7 @@ class Datagrid implements DatagridInterface
     }
 
     /**
-     * @return boolean
+     * {@inheritdoc}
      */
     public function hasActiveFilters()
     {
@@ -230,7 +217,7 @@ class Datagrid implements DatagridInterface
     }
 
     /**
-     * @return \Sonata\AdminBundle\Admin\FieldDescriptionCollection
+     * {@inheritdoc}
      */
     public function getColumns()
     {
@@ -238,7 +225,7 @@ class Datagrid implements DatagridInterface
     }
 
     /**
-     * @return ProxyQueryInterface
+     * {@inheritdoc}
      */
     public function getQuery()
     {
@@ -246,7 +233,7 @@ class Datagrid implements DatagridInterface
     }
 
     /**
-     * @return \Symfony\Component\Form\Form
+     * {@inheritdoc}
      */
     public function getForm()
     {

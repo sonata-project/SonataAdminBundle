@@ -20,15 +20,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
-use Sonata\AdminBundle\Twig\Extension\SonataAdminExtension;
 use Symfony\Component\Form\Form;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\FormBuilder;
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormView;
-
-
 
 class AdminControllerHelper_Foo
 {
@@ -151,7 +147,6 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
         $admin->expects($this->once())->method('isGranted')->will($this->returnValue(true));
         $admin->expects($this->once())->method('getListFieldDescription')->will($this->returnValue($fieldDescription));
 
-
         $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
         $container->expects($this->any())->method('get')->will($this->returnValue($admin));
 
@@ -177,7 +172,7 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
 
         $response = $controller->setObjectFieldValueAction($request);
 
-        $this->assertEquals('{"status":"OK","content":"<foo \/>"}', $response->getContent() );
+        $this->assertEquals('{"status":"OK","content":"\u003Cfoo \/\u003E"}', $response->getContent() );
     }
 
     public function testappendFormFieldElementAction()

@@ -11,11 +11,10 @@
 
 namespace Sonata\AdminBundle\Twig\Extension;
 
+use Doctrine\Common\Util\ClassUtils;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Exception\NoValueException;
-use Sonata\AdminBundle\Filter\FilterInterface;
-
-use Symfony\Component\Form\FormView;
+use Sonata\AdminBundle\Admin\Pool;
 
 class SonataAdminExtension extends \Twig_Extension
 {
@@ -23,6 +22,19 @@ class SonataAdminExtension extends \Twig_Extension
      * @var \Twig_Environment
      */
     protected $environment;
+
+    /**
+     * @var Pool
+     */
+    protected $pool;
+
+    /**
+     * @param Pool $pool
+     */
+    public function __construct(Pool $pool)
+    {
+        $this->pool = $pool;
+    }
 
     /**
      * {@inheritdoc}
@@ -41,6 +53,7 @@ class SonataAdminExtension extends \Twig_Extension
             'render_list_element'     => new \Twig_Filter_Method($this, 'renderListElement', array('is_safe' => array('html'))),
             'render_view_element'     => new \Twig_Filter_Method($this, 'renderViewElement', array('is_safe' => array('html'))),
             'render_relation_element' => new \Twig_Filter_Method($this, 'renderRelationElement', array('is_safe' => array('html'))),
+            'sonata_urlsafeid'        => new \Twig_Filter_Method($this, 'getUrlsafeIdentifier'),
         );
     }
 
@@ -83,9 +96,9 @@ class SonataAdminExtension extends \Twig_Extension
     /**
      * render a list element from the FieldDescription
      *
-     * @param mixed                                                $object
-     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface  $fieldDescription
-     * @param array                                                $params
+     * @param mixed                                               $object
+     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
+     * @param array                                               $params
      *
      * @return string
      */
@@ -202,5 +215,21 @@ class SonataAdminExtension extends \Twig_Extension
         }
 
         return call_user_func(array($element, $method));
+    }
+
+    /**
+     * Get the identifiers as a string that is save to use in an url.
+     *
+     * @param object $model
+     *
+     * @return string string representation of the id that is save to use in an url
+     */
+    public function getUrlsafeIdentifier($model)
+    {
+        $admin = $this->pool->getAdminByClass(
+            ClassUtils::getClass($model)
+        );
+
+        return $admin->getUrlsafeIdentifier($model);
     }
 }
