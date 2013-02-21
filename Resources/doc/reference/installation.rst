@@ -43,7 +43,7 @@ can use Composer for the automated process::
     php composer.phar require sonata-project/cache-bundle --no-update               # optional
     php composer.phar update
 
-Next, be sure to enable this bundle in your AppKernel.php file:
+Next, be sure to enable these bundles in your AppKernel.php file:
 
 .. code-block:: php
 
