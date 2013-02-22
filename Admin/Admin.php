@@ -1087,7 +1087,12 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     {
         $this->buildRoutes();
 
-        if (! $this->isChild() && strpos($name, '.') !== false) {
+        if (
+            ! $this->isChild()
+            && strpos($name, '.') !== false
+            && strpos($name, $this->getBaseCodeRoute() . '|') !== 0
+            && strpos($name, $this->getBaseCodeRoute() . '.') !== 0
+        ) {
             $name = $this->getCode() . '|' . $name;
         }
 
