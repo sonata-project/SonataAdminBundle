@@ -56,7 +56,7 @@ bundle:
 Propel users are warmly welcome to contribute and create a new bundle for Propel
 ORM that will be integrated in SonataAdminBundle.
 
-Install a persistency servise you need and configure it according to their
+Install a persistency service you need and configure it according to their
 related documentation.
 
 Step 3: Create Admin class
