@@ -114,7 +114,7 @@ Step 4: Create admin service
 To notify your administration of your new admin class you need to create an
 admin service and link it into the framework by setting the sonata.admin tag.
 
-Create a new ``admin.xml`` file inside the ``MyBundle/Ressources/config/`` folder:
+Create a new ``admin.xml`` file inside the ``MyBundle/Resources/config/`` folder:
 
 .. code-block:: xml
 
