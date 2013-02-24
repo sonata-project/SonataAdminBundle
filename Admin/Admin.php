@@ -1331,7 +1331,6 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
         $menu = $this->menuFactory->createItem('root');
         $menu->setChildrenAttribute('class', 'nav nav-list');
-        $menu->setCurrentUri($this->getRequest()->getBaseUrl().$this->getRequest()->getPathInfo());
 
         $this->configureSideMenu($menu, $action, $childAdmin);
 
@@ -1996,7 +1995,15 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         // the generated $breadcrumbs contains an empty element
         array_shift($breadcrumbs);
 
-        return $this->breadcrumbs[$action] = $breadcrumbs;
+        // function for converting breadcrumbs from new knp-menu style to old
+        $format_converter = function (array $breadcrumbs, array $item)
+        {
+            $breadcrumbs[$item['label']] = $item['uri'];
+
+            return $breadcrumbs;
+        };
+
+        return $this->breadcrumbs[$action] = array_reduce($breadcrumbs, $format_converter, array());
     }
 
     /**
