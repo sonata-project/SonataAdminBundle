@@ -44,7 +44,9 @@ class ExtensionCompilerPass implements CompilerPassInterface
                 ->addMethodCall('addExtension', array(new Reference($id)));
         }
         
-        $extensionMap = $container->getParameter('sonata.admin.extension.map');
+        $extensionConfig = $container->getParameter('sonata.admin.extension.map');
+        $extensionMap = $this->flattenExtensionConfiguration($extensionConfig);
+        
         foreach ($container->findTaggedServiceIds('sonata.admin') as $id => $attributes) {
             $admin = $container->getDefinition($id);
             $extensions = $this->getExtensionsForAdmin($id, $container, $extensionMap);
@@ -106,5 +108,25 @@ class ExtensionCompilerPass implements CompilerPassInterface
     protected function getManagedClass(Definition $admin, ContainerBuilder $container)
     {
         return $container->getParameterBag()->resolveValue($admin->getArgument(1));
+    }
+
+    /**
+     * @param array $config
+     * @return array
+     */
+    protected function flattenExtensionConfiguration(array $config)
+    {
+        $extensionMap = array();
+        foreach ($config as $extension => $options) {
+            foreach ($options as $key => $value) {
+                foreach ($value as $source) {
+                    if(!isset($extensionMap[$key][$source])){
+                        $extensionMap[$key][$source] = array();
+                    }
+                    array_push($extensionMap[$key][$source], $extension);
+                }
+            }
+        }
+        return $extensionMap;
     }
 }

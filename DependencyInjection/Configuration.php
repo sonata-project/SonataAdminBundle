@@ -143,9 +143,8 @@ class Configuration implements ConfigurationInterface
                 ->end()
         
                 ->arrayNode('extensions')
-                    ->isRequired()
-                    ->requiresAtLeastOneElement()
-                    ->useAttributeAsKey('id')
+                ->useAttributeAsKey('id')
+                ->defaultValue(array('admins' => array(), 'excludes' => array(), 'implements' => array(), 'extends' => array(), 'instanceof' => array()))
                     ->prototype('array')
                         ->children()
                             ->arrayNode('admins')

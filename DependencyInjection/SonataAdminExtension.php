@@ -37,7 +37,6 @@ class SonataAdminExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-//        die('extension');
         $bundles = $container->getParameter('kernel.bundles');
         if (isset($bundles['SonataUserBundle'])) {
             // integrate the SonataUserBundle / FOSUserBundle if the bundle exists
@@ -105,8 +104,7 @@ class SonataAdminExtension extends Extension
 
         $loader->load('security.xml');
         
-        $extensionMap = $this->buildExtensionMap($config['extensions']);
-        $container->setParameter('sonata.admin.extension.map', $extensionMap);
+        $container->setParameter('sonata.admin.extension.map', $config['extensions']);
 
         /**
          * This is a work in progress, so for now it is hardcoded
@@ -131,22 +129,5 @@ class SonataAdminExtension extends Extension
 
         // set filter persistence
         $container->setParameter('sonata.admin.configuration.filters.persist', $config['persist_filters']);
-        
-    }
-
-    protected function buildExtensionMap($config)
-    {
-        $extensionMap = array();
-        foreach ($config as $extension => $options) {
-            foreach ($options as $key => $value) {
-                foreach ($value as $source) {
-                    if(!isset($extensionMap[$key][$source])){
-                        $extensionMap[$key][$source] = array();
-                    }
-                    array_push($extensionMap[$key][$source], $extension);
-                }
-            }
-        }
-        return $extensionMap;
     }
 }
