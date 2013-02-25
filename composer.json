@@ -43,5 +43,11 @@
         "psr-0": { "Sonata\\AdminBundle": "" }
     },
     "target-dir": "Sonata/AdminBundle",
-    "minimum-stability": "dev"
+    "minimum-stability": "dev",
+    "extra": {
+        "branch-alias": {
+            "dev-2.0": "2.0.x-dev",
+            "dev-master": "2.1.x-dev"
+        }
+    }
 }
