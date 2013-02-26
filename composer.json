@@ -29,7 +29,7 @@
         "knplabs/knp-menu-bundle": ">=1.1.0,<2.0.x-dev",
         "sonata-project/jquery-bundle": "1.8.*",
         "sonata-project/exporter": "1.*",
-        "sonata-project/block-bundle": "2.1.x-dev",
+        "sonata-project/block-bundle": "2.1.*",
         "doctrine/common": ">=2.2,<3.0"
     },
     "require-dev": {
@@ -37,14 +37,13 @@
         "sonata-project/intl-bundle": "2.1.*"
     },
     "suggest": {
-        "sonata-project/doctrine-orm-admin-bundle": "2.1.x-dev",
+        "sonata-project/doctrine-orm-admin-bundle": "2.1.*@dev",
         "sonata-project/intl-bundle": "2.1.*"
     },
     "autoload": {
         "psr-0": { "Sonata\\AdminBundle": "" }
     },
     "target-dir": "Sonata/AdminBundle",
-    "minimum-stability": "dev",
     "extra": {
         "branch-alias": {
             "dev-2.0": "2.0.x-dev",
