@@ -56,7 +56,7 @@ bundle:
 Propel users are warmly welcome to contribute and create a new bundle for Propel
 ORM that will be integrated in SonataAdminBundle.
 
-Install a persistency servise you need and configure it according to their
+Install a persistency service you need and configure it according to their
 related documentation.
 
 Step 3: Create Admin class
@@ -114,10 +114,11 @@ Step 4: Create admin service
 To notify your administration of your new admin class you need to create an
 admin service and link it into the framework by setting the sonata.admin tag.
 
-Create a new ``admin.xml`` file inside the ``MyBundle/Ressources/config/`` folder:
+Create either a new ``admin.xml`` or ``admin.yml`` file inside the ``MyBundle/Resources/config/`` folder:
 
 .. code-block:: xml
 
+   <!-- MyBundle/Resources/config/admin.xml -->
    <container xmlns="http://symfony.com/schema/dic/services"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://symfony.com/schema/dic/services/services-1.0.xsd">
@@ -137,16 +138,56 @@ Create a new ``admin.xml`` file inside the ``MyBundle/Ressources/config/`` folde
 
 .. code-block:: yaml
 
+   # MyBundle/Resources/config/admin.yml
+   services:
+       sonata.admin.tag:
+           class: YourNS\AdminBundle\Admin\BlogAdmin
+           tags:
+               - { name: sonata.admin, manager_type: orm, group: posts, label: "Blog" }
+           arguments:
+               - ~
+               - YourNS\AdminBundle\Entity\Course
+               - 'SonataAdminBundle:CRUD'
+           calls:
+               - [ setTranslationDomain, [YourNSAdminBundle]]
+
+Now include your new configuration file in the framework (make sure that your ``resource`` value has the
+correct file extension depending on the code block that you used above):
+
+.. code-block:: yaml
+
     # app/config/config.yml
     imports:
         - { resource: @MyBundle/Resources/config/admin.xml }
 
-Or you can load the file inside with the Bundle's extension file:
+Or you can load the file inside with the Bundle's extension file using the ``load()`` method as described
+in the `symfony cookbook`_.
 
 .. code-block:: php
+    
+    # YourNS/AdminBundle/DependencyInjection/YourNSAdminBundleExtension.php for XML configurations
 
-    $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-    $loader->load('admin.xml');
+    use Symfony\Component\DependencyInjection\Loader;
+    use Symfony\Component\Config\FileLocator;
+
+    public function load(array $configs, ContainerBuilder $container) {
+        // ... 
+        $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('admin.xml');
+    }
+
+.. code-block:: php
+    
+    # YourNS/AdminBundle/DependencyInjection/YourNSAdminBundleExtension.php for YAML configurations
+
+    use Symfony\Component\DependencyInjection\Loader;
+    use Symfony\Component\Config\FileLocator;
+
+    public function load(array $configs, ContainerBuilder $container) {
+        // ... 
+        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('admin.yml');
+    }
 
 Step 5: Configuration
 ---------------------
@@ -216,3 +257,5 @@ refer to the security section of this documentation for more information.
 
 That should be it! Read next sections fore more verbose documentation of the
 SonataAdminBundle and how to tweak it for your requirements.
+
+.. _`symfony cookbook`: http://symfony.com/doc/master/cookbook/bundles/extension.html#using-the-load-method
