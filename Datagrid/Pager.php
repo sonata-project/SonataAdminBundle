@@ -10,8 +10,6 @@
 
 namespace Sonata\AdminBundle\Datagrid;
 
-use Sonata\AdminBundle\Model\ModelManagerInterface;
-
 /**
  * Pager class.
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
@@ -86,7 +84,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * Returns an array of page numbers to use in pagination links.
      *
-     * @param  integer $nb_links The maximum number of page numbers to return
+     * @param integer $nb_links The maximum number of page numbers to return
      *
      * @return array
      */
@@ -101,7 +99,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
         $limit = $check > 0 ? $check : 1;
         $begin = $tmp > 0 ? ($tmp > $limit ? $limit : $tmp) : 1;
 
-        $i = (int)$begin;
+        $i = (int) $begin;
         while ($i < $begin + $nb_links && $i <= $this->lastPage) {
             $links[] = $i++;
         }
@@ -152,7 +150,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * Returns an object by cursor position.
      *
-     * @param  integer $pos
+     * @param integer $pos
      *
      * @return mixed
      */
@@ -420,8 +418,8 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * Returns a parameter.
      *
-     * @param  string $name
-     * @param  mixed  $default
+     * @param string $name
+     * @param mixed  $default
      *
      * @return mixed
      */
@@ -433,7 +431,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * Checks whether a parameter has been set.
      *
-     * @param  string $name
+     * @param string $name
      *
      * @return boolean
      */
@@ -445,8 +443,8 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * Sets a parameter.
      *
-     * @param  string $name
-     * @param  mixed  $value
+     * @param string $name
+     * @param mixed  $value
      */
     public function setParameter($name, $value)
     {
@@ -560,6 +558,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     {
         $vars = get_object_vars($this);
         unset($vars['query']);
+
         return serialize($vars);
     }
 

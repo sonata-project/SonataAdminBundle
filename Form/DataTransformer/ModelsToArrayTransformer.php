@@ -15,7 +15,6 @@ use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Form\DataTransformerInterface;
 
-use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Form\ChoiceList\ModelChoiceList;
 
 class ModelsToArrayTransformer implements DataTransformerInterface

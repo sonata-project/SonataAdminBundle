@@ -14,7 +14,6 @@ use JMS\TranslationBundle\Translation\ExtractorInterface;
 use JMS\TranslationBundle\Model\MessageCatalogue;
 use JMS\TranslationBundle\Model\Message;
 use JMS\TranslationBundle\Model\FileSource;
-use JMS\TranslationBundle\Logger\LoggerAwareExtractorInterface;
 
 class AdminExtractor implements ExtractorInterface, TranslatorInterface, SecurityHandlerInterface, LabelTranslatorStrategyInterface
 {
@@ -71,7 +70,6 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
             $admin->setTranslator($this);
             $admin->setSecurityHandler($this);
             $admin->setLabelTranslatorStrategy($this);
-
 
 //            foreach ($admin->getChildren() as $child) {
 //                $child->setTranslator($this);

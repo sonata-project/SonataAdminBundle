@@ -38,7 +38,7 @@ Usage example:
 .. figure:: ../images/console_admin_explain.png
    :align: center
    :alt: Explain command
-   :width: 400px
+   :width: 700px
 
    Explain command
 
@@ -61,7 +61,7 @@ Usage example:
 .. figure:: ../images/console_admin_list.png
    :align: center
    :alt: List command
-   :width: 400px
+   :width: 700px
 
    List command
 

@@ -23,14 +23,14 @@ interface FieldDescriptionInterface
      *
      * @return void
      */
-    function setFieldName($fieldName);
+    public function setFieldName($fieldName);
 
     /**
      * return the field name
      *
      * @return string the field name
      */
-    function getFieldName();
+    public function getFieldName();
 
     /**
      * Set the name
@@ -39,14 +39,14 @@ interface FieldDescriptionInterface
      *
      * @return void
      */
-    function setName($name);
+    public function setName($name);
 
     /**
      * Return the name, the name can be used as a form label or table header
      *
      * @return string the name
      */
-    function getName();
+    public function getName();
 
     /**
      * Return the value represented by the provided name
@@ -56,7 +56,7 @@ interface FieldDescriptionInterface
      *
      * @return array|null the value represented by the provided name
      */
-    function getOption($name, $default = null);
+    public function getOption($name, $default = null);
 
     /**
      * Define an option, an option is has a name and a value
@@ -66,7 +66,7 @@ interface FieldDescriptionInterface
      *
      * @return void set the option value
      */
-    function setOption($name, $value);
+    public function setOption($name, $value);
 
     /**
      * Define the options value, if the options array contains the reserved keywords
@@ -79,14 +79,14 @@ interface FieldDescriptionInterface
      *
      * @return void
      */
-    function setOptions(array $options);
+    public function setOptions(array $options);
 
     /**
      * return options
      *
      * @return array options
      */
-    function getOptions();
+    public function getOptions();
 
     /**
      * return the template used to render the field
@@ -95,14 +95,14 @@ interface FieldDescriptionInterface
      *
      * @return void
      */
-    function setTemplate($template);
+    public function setTemplate($template);
 
     /**
      * return the template name
      *
      * @return string the template name
      */
-    function getTemplate();
+    public function getTemplate();
 
     /**
      * return the field type, the type is a mandatory field as it used to select the correct template
@@ -112,14 +112,14 @@ interface FieldDescriptionInterface
      *
      * @return void the field type
      */
-    function setType($type);
+    public function setType($type);
 
     /**
      * return the type
      *
      * @return int|string
      */
-    function getType();
+    public function getType();
 
     /**
      * set the parent Admin (only used in nested admin)
@@ -128,14 +128,14 @@ interface FieldDescriptionInterface
      *
      * @return void
      */
-    function setParent(AdminInterface $parent);
+    public function setParent(AdminInterface $parent);
 
     /**
      * return the parent Admin (only used in nested admin)
      *
      * @return \Sonata\AdminBundle\Admin\AdminInterface
      */
-    function getParent();
+    public function getParent();
 
     /**
      * Define the association mapping definition
@@ -144,21 +144,21 @@ interface FieldDescriptionInterface
      *
      * @return void
      */
-    function setAssociationMapping($associationMapping);
+    public function setAssociationMapping($associationMapping);
 
     /**
      * return the association mapping definition
      *
      * @return array
      */
-    function getAssociationMapping();
+    public function getAssociationMapping();
 
     /**
      * return the related Target Entity
      *
      * @return string|null
      */
-    function getTargetEntity();
+    public function getTargetEntity();
 
     /**
      * set the field mapping information
@@ -167,14 +167,14 @@ interface FieldDescriptionInterface
      *
      * @return void
      */
-    function setFieldMapping($fieldMapping);
+    public function setFieldMapping($fieldMapping);
 
     /**
      * return the field mapping definition
      *
      * @return array the field mapping definition
      */
-    function getFieldMapping();
+    public function getFieldMapping();
 
     /**
      * set the parent association mappings information
@@ -183,34 +183,34 @@ interface FieldDescriptionInterface
      *
      * @return void
      */
-    function setParentAssociationMappings(array $parentAssociationMappings);
+    public function setParentAssociationMappings(array $parentAssociationMappings);
 
     /**
      * return the parent association mapping definitions
      *
      * @return array the parent association mapping definitions
      */
-    function getParentAssociationMappings();
+    public function getParentAssociationMappings();
 
     /**
      * set the association admin instance (only used if the field is linked to an Admin)
      *
      * @param \Sonata\AdminBundle\Admin\AdminInterface $associationAdmin the associated admin
      */
-    function setAssociationAdmin(AdminInterface $associationAdmin);
+    public function setAssociationAdmin(AdminInterface $associationAdmin);
 
     /**
      * return the associated Admin instance (only used if the field is linked to an Admin)
      * @return \Sonata\AdminBundle\Admin\AdminInterface
      */
-    function getAssociationAdmin();
+    public function getAssociationAdmin();
 
     /**
      * return true if the FieldDescription is linked to an identifier field
      *
      * @return bool
      */
-    function isIdentifier();
+    public function isIdentifier();
 
     /**
      * return the value linked to the description
@@ -219,7 +219,7 @@ interface FieldDescriptionInterface
      *
      * @return bool|mixed
      */
-    function getValue($object);
+    public function getValue($object);
 
     /**
      * set the admin class linked to this FieldDescription
@@ -228,12 +228,12 @@ interface FieldDescriptionInterface
      *
      * @return void
      */
-    function setAdmin(AdminInterface $admin);
+    public function setAdmin(AdminInterface $admin);
 
     /**
      * @return \Sonata\AdminBundle\Admin\AdminInterface the admin class linked to this FieldDescription
      */
-    function getAdmin();
+    public function getAdmin();
 
     /**
      * merge option values related to the provided option name
@@ -245,7 +245,7 @@ interface FieldDescriptionInterface
      *
      * @return void
      */
-    function mergeOption($name, array $options = array());
+    public function mergeOption($name, array $options = array());
 
     /**
      * merge options values
@@ -254,7 +254,7 @@ interface FieldDescriptionInterface
      *
      * @return void
      */
-    function mergeOptions(array $options = array());
+    public function mergeOptions(array $options = array());
 
     /**
      * set the original mapping type (only used if the field is linked to an entity)
@@ -263,40 +263,40 @@ interface FieldDescriptionInterface
      *
      * @return void
      */
-    function setMappingType($mappingType);
+    public function setMappingType($mappingType);
 
     /**
      * return the mapping type
      *
      * @return int|string
      */
-    function getMappingType();
+    public function getMappingType();
 
     /**
      * return the label to use for the current field
      *
      * @return string
      */
-    function getLabel();
+    public function getLabel();
 
     /*
      * @return boolean
      */
-    function isSortable();
+    public function isSortable();
 
     /**
      * return the field mapping definition used when sorting
      *
      * @return array the field mapping definition
      */
-    function getSortFieldMapping();
+    public function getSortFieldMapping();
 
     /**
      * return the parent association mapping definitions used when sorting
      *
      * @return array the parent association mapping definitions
      */
-    function getSortParentAssociationMapping();
+    public function getSortParentAssociationMapping();
 
     /**
      *
@@ -305,5 +305,5 @@ interface FieldDescriptionInterface
      *
      * @return mixed
      */
-    function getFieldValue($object, $fieldName);
+    public function getFieldValue($object, $fieldName);
 }

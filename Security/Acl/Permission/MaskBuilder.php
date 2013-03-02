@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-
 namespace Sonata\AdminBundle\Security\Acl\Permission;
 
 use Symfony\Component\Security\Acl\Permission\MaskBuilder as BaseMaskBuilder;

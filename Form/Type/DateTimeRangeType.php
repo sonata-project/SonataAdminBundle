@@ -12,7 +12,6 @@
 namespace Sonata\AdminBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 
 use Symfony\Component\Translation\TranslatorInterface;
@@ -38,7 +37,7 @@ class DateTimeRangeType extends AbstractType
         $builder->add('start', 'datetime', array_merge(array('required' => false), $options['field_options']));
         $builder->add('end', 'datetime', array_merge(array('required' => false), $options['field_options']));
     }
-    
+
     /**
      * {@inheritDoc}
      */

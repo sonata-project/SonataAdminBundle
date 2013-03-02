@@ -22,7 +22,7 @@ interface ProxyQueryInterface
      *
      * @return mixed
      */
-    function execute(array $params = array(), $hydrationMode = null);
+    public function execute(array $params = array(), $hydrationMode = null);
 
     /**
      * @param string $name
@@ -30,7 +30,7 @@ interface ProxyQueryInterface
      *
      * @return mixed
      */
-    function __call($name, $args);
+    public function __call($name, $args);
 
     /**
      * @param array $parentAssociationMappings
@@ -38,63 +38,63 @@ interface ProxyQueryInterface
      *
      * @return mixed
      */
-    function setSortBy($parentAssociationMappings, $fieldMapping);
+    public function setSortBy($parentAssociationMappings, $fieldMapping);
 
     /**
      * @return mixed
      */
-    function getSortBy();
+    public function getSortBy();
 
     /**
      * @param mixed $sortOrder
      *
      * @return void
      */
-    function setSortOrder($sortOrder);
+    public function setSortOrder($sortOrder);
 
     /**
      * @return mixed
      */
-    function getSortOrder();
+    public function getSortOrder();
 
     /**
      * @return mixed
      */
-    function getSingleScalarResult();
+    public function getSingleScalarResult();
 
     /**
      * @param int $firstResult
      *
      * @return mixed
      */
-    function setFirstResult($firstResult);
+    public function setFirstResult($firstResult);
 
     /**
      * @return mixed
      */
-    function getFirstResult();
+    public function getFirstResult();
 
     /**
      * @param int $maxResults
      *
      * @return mixed
      */
-    function setMaxResults($maxResults);
+    public function setMaxResults($maxResults);
 
     /**
      * @return mixed
      */
-    function getMaxResults();
+    public function getMaxResults();
 
     /**
      * @return mixed
      */
-    function getUniqueParameterId();
+    public function getUniqueParameterId();
 
     /**
      * @param array $associationMappings
      *
      * @return mixed
      */
-    function entityJoin(array $associationMappings);
+    public function entityJoin(array $associationMappings);
 }

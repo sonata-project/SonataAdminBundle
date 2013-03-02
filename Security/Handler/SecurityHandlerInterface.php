@@ -22,7 +22,7 @@ interface SecurityHandlerInterface
      *
      * @return boolean
      */
-    function isGranted(AdminInterface $admin, $attributes, $object = null);
+    public function isGranted(AdminInterface $admin, $attributes, $object = null);
 
     /**
      * Get a sprintf template to get the role
@@ -31,12 +31,12 @@ interface SecurityHandlerInterface
      *
      * @return string
      */
-    function getBaseRole(AdminInterface $admin);
+    public function getBaseRole(AdminInterface $admin);
 
     /**
      * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
      */
-    function buildSecurityInformation(AdminInterface $admin);
+    public function buildSecurityInformation(AdminInterface $admin);
 
     /**
      * Create object security, fe. make the current user owner of the object
@@ -46,7 +46,7 @@ interface SecurityHandlerInterface
      *
      * @return void
      */
-    function createObjectSecurity(AdminInterface $admin, $object);
+    public function createObjectSecurity(AdminInterface $admin, $object);
 
     /**
      * Remove object security
@@ -56,5 +56,5 @@ interface SecurityHandlerInterface
      *
      * @return void
      */
-    function deleteObjectSecurity(AdminInterface $admin, $object);
+    public function deleteObjectSecurity(AdminInterface $admin, $object);
 }

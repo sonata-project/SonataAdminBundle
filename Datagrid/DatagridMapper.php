@@ -12,7 +12,6 @@ namespace Sonata\AdminBundle\Datagrid;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
-use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
 
@@ -43,11 +42,11 @@ class DatagridMapper
     /**
      * @throws \RuntimeException
      *
-     * @param string  $name
-     * @param string  $type
-     * @param array   $filterOptions
-     * @param string  $fieldType
-     * @param array   $fieldOptions
+     * @param string $name
+     * @param string $type
+     * @param array  $filterOptions
+     * @param string $fieldType
+     * @param array  $fieldOptions
      *
      * @return DatagridMapper
      */
@@ -66,7 +65,7 @@ class DatagridMapper
         if ($name instanceof FieldDescriptionInterface) {
             $fieldDescription = $name;
             $fieldDescription->mergeOptions($filterOptions);
-        } else if (is_string($name) && !$this->admin->hasFilterFieldDescription($name)) {
+        } elseif (is_string($name) && !$this->admin->hasFilterFieldDescription($name)) {
             $fieldDescription = $this->admin->getModelManager()->getNewFieldDescriptionInstance(
                 $this->admin->getClass(),
                 $name,

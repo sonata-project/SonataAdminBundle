@@ -12,39 +12,41 @@ file that was distributed with this source code.
 {# Labels #}
 {% block form_label %}
 {% spaceless %}
-    {% set label_attr = label_attr|merge({'class': label_attr.class|default('') ~ " control-label" }) %}
+    {% if label is not sameas(false) %}
+        {% set label_attr = label_attr|merge({'class': label_attr.class|default('') ~ " control-label" }) %}
 
-    {% if not compound %}
-        {% set label_attr = label_attr|merge({'for': id}) %}
-    {% endif %}
-    {% if required %}
-        {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' required')|trim}) %}
-    {% endif %}
+        {% if not compound %}
+            {% set label_attr = label_attr|merge({'for': id}) %}
+        {% endif %}
+        {% if required %}
+            {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' required')|trim}) %}
+        {% endif %}
 
-    {% if label is empty %}
-        {% set label = name|humanize %}
-    {% endif %}
+        {% if label is empty %}
+            {% set label = name|humanize %}
+        {% endif %}
 
-    {% if in_list_checkbox is defined and in_list_checkbox and widget is defined %}
-        <label{% for attrname,attrvalue in attr %} {{attrname}}="{{attrvalue}}"{% endfor %}>
-            {{ widget|raw }}
-            <span>
-                {% if not sonata_admin.admin %}
+        {% if in_list_checkbox is defined and in_list_checkbox and widget is defined %}
+            <label{% for attrname,attrvalue in attr %} {{attrname}}="{{attrvalue}}"{% endfor %}>
+                {{ widget|raw }}
+                <span>
+                    {% if not sonata_admin.admin %}
+                        {{- label|trans({}, translation_domain) -}}
+                    {% else %}
+                        {{- label|trans({}, sonata_admin.admin.translationDomain) -}}
+                    {% endif%}
+                </span>
+            </label>
+        {% else %}
+            <label{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>
+                {% if not sonata_admin.admin%}
                     {{- label|trans({}, translation_domain) -}}
                 {% else %}
-                    {{- label|trans({}, sonata_admin.admin.translationDomain) -}}
-                {% endif%}
-            </span>
-        </label>
-    {% else %}
-        <label{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>
-            {% if not sonata_admin.admin%}
-                {{- label|trans({}, translation_domain) -}}
-            {% else %}
-                {{ sonata_admin.admin.trans(label) }}
-            {% endif %}
-            {{ required ? '*' : '' }}
-        </label>
+                    {{ sonata_admin.admin.trans(label) }}
+                {% endif %}
+                {{ required ? '*' : '' }}
+            </label>
+        {% endif %}
     {% endif %}
 {% endspaceless %}
 {% endblock form_label %}
@@ -133,7 +135,7 @@ file that was distributed with this source code.
                 {% endif %}
 
                 {% if sonata_admin.field_description.help %}
-                    <span class="help-block sonata-ba-field-help">{{ sonata_admin.field_description.help|raw }}</span>
+                    <span class="help-block sonata-ba-field-help">{{ sonata_admin.admin.trans(sonata_admin.field_description.help)|raw }}</span>
                 {% endif %}
             </div>
         </div>
@@ -155,7 +157,7 @@ file that was distributed with this source code.
 {% spaceless %}
     {% if prototype is defined %}
         {% set child = prototype %}
-        {% set attr = attr|merge({'data-prototype': block('collection_widget_row') }) %}
+        {% set attr = attr|merge({'data-prototype': block('collection_widget_row'), 'class': attr.class|default('') ~ ' controls' }) %}
     {% endif %}
     <div {{ block('widget_container_attributes') }}>
         {{ form_errors(form) }}

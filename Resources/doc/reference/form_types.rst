@@ -147,3 +147,16 @@ The type has one extra parameter :
         'choices' => Delivery::getStatusList(),
         'catalogue' => 'SonataOrderBundle'
     ))
+
+Types options
+-------------
+
+General
+^^^^^^^
+
+- ``label``: You can set the ``label`` option to ``false`` if you don't want to show it.
+
+.. code-block:: php
+
+        <?php
+        $form->add('status', null, array('label' => false);

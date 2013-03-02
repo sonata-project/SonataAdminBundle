@@ -22,7 +22,7 @@ interface RouteGeneratorInterface
      *
      * @return string
      */
-    function generateUrl(AdminInterface $admin, $name, array $parameters = array(), $absolute = false);
+    public function generateUrl(AdminInterface $admin, $name, array $parameters = array(), $absolute = false);
 
     /**
      * @param string $name
@@ -31,5 +31,5 @@ interface RouteGeneratorInterface
      *
      * @return string
      */
-    function generate($name, array $parameters = array(), $absolute = false);
+    public function generate($name, array $parameters = array(), $absolute = false);
 }

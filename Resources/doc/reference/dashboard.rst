@@ -99,9 +99,10 @@ Add some items to a group
                         - sonata.page.admin.myitem2
 
 
-.. image:: ../images/dashboard.png
+.. figure:: ../images/dashboard.png
+   :align: center
    :alt: Dashboard
-   :width: 200
+   :width: 500
 
 Display two blocks with different dashboard groups
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

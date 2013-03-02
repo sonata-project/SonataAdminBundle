@@ -340,7 +340,7 @@
             </trans-unit>
             <trans-unit id="label_per_page">
               <source>label_per_page</source>
-              <target>label_per_page</target>
+              <target>Per pàgina</target>
             </trans-unit>
         </body>
     </file>

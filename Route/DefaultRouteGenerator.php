@@ -39,10 +39,10 @@ class DefaultRouteGenerator implements RouteGeneratorInterface
 
     /**
      *
-     * @param \Sonata\AdminBundle\Admin\AdminInterface  $admin
-     * @param string                                    $name
-     * @param array                                     $parameters
-     * @param bool                                      $absolute
+     * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
+     * @param string                                   $name
+     * @param array                                    $parameters
+     * @param bool                                     $absolute
 
      * @throws \RuntimeException
 

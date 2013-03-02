@@ -16,8 +16,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-use Sonata\AdminBundle\Form\EventListener\ResizeFormListener;
-
 class ImmutableArrayType extends AbstractType
 {
     /**
