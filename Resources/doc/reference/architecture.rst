@@ -154,7 +154,8 @@ Or if you're using a YML configuration file,
 You can extend ``Sonata\AdminBundle\Admin\Admin`` class to minimize the amount of
 code to write. This base admin class uses the routing services to build routes.
 Note that you can use both the Bundle:Controller format or a `service name`_ to
-specify what controller to load.
+specify what controller to load. If you provide null instead of SonataNewsBundle:PostAdmin,
+you will not need to create a controller class and the system will use the default.
 
 
 
