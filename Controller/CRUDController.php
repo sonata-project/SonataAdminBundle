@@ -62,6 +62,21 @@ class CRUDController extends Controller
     }
 
     /**
+     * Returns the correct RESTful verb, given either by the request itself or
+     * via the "_method" parameter.
+     * 
+     * @return string HTTP method, either 
+     */
+    protected function getRestMethod()
+    {
+        $request = $this->getRequest();
+        if(Request::getHttpMethodParameterOverride() || !$request->request->has('_method')) {
+            return $request->getMethod(); 
+        }
+        return $request->request->get('_method');
+    }
+
+    /**
      * Sets the Container associated with this Controller.
      *
      * @param ContainerInterface $container A ContainerInterface instance
@@ -211,7 +226,7 @@ class CRUDController extends Controller
             throw new AccessDeniedException();
         }
 
-        if ($this->getRequest()->getMethod() == 'DELETE') {
+        if ($this->getRestMethod() == 'DELETE') {
             try {
                 $this->admin->delete($object);
                 $this->get('session')->setFlash('sonata_flash_success', 'flash_delete_success');
