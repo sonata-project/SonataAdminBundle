@@ -13,7 +13,8 @@ namespace Sonata\AdminBundle\Admin;
 
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilder;
-use Symfony\Component\Form\Util\PropertyPath;
+use Symfony\Component\PropertyAccess\PropertyPath;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -809,11 +810,12 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         if ($this->isChild() && $this->getParentAssociationMapping()) {
             $parent = $this->getParent()->getObject($this->request->get($this->getParent()->getIdParameter()));
 
+            $propertyAccessor = PropertyAccess::getPropertyAccessor();
             $propertyPath = new PropertyPath($this->getParentAssociationMapping());
 
             $object = $this->getSubject();
 
-            $propertyPath->setValue($object, $parent);
+            $propertyAccessor->setValue($object, $propertyPath, $parent);
         }
 
         $this->form = $this->getFormBuilder()->getForm();

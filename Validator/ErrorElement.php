@@ -12,7 +12,8 @@ namespace Sonata\AdminBundle\Validator;
 
 use Symfony\Bundle\FrameworkBundle\Validator\ConstraintValidatorFactory;
 use Symfony\Component\Validator\ExecutionContext;
-use Symfony\Component\Form\Util\PropertyPath;
+use Symfony\Commponent\PropertyAccess\PropertyAccess;
+use Symfony\Commponent\PropertyAccess\PropertyPath;
 use Symfony\Component\Validator\Constraint;
 
 class ErrorElement
@@ -146,7 +147,8 @@ class ErrorElement
      */
     protected function getValue()
     {
-        return $this->getCurrentPropertyPath()->getValue($this->subject);
+        $propertyAccessor = PropertyAccess::getPropertyAccessor();
+        return $propertyAccessor->getValue($this->subject, $this->getCurrentPropertyPath());
     }
 
     /**
