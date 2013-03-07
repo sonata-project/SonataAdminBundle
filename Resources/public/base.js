@@ -152,6 +152,7 @@ var Admin = {
 
     setup_collection_buttons: function(subject) {
 
+        var index = 0;
         jQuery(subject).on('click', '.sonata-collection-add', function(event) {
             Admin.stopEvent(event);
 
@@ -159,15 +160,16 @@ var Admin = {
             var proto = container.attr('data-prototype');
             // Set field id
             var idRegexp = new RegExp(container.attr('id')+'___name__','g');
-            proto = proto.replace(idRegexp, container.attr('id')+'_'+(container.children().length - 1));
+            proto = proto.replace(idRegexp, container.attr('id')+'_'+(index));
 
             // Set field name
             var parts = container.attr('id').split('_');
             var nameRegexp = new RegExp(parts[parts.length-1]+'\\]\\[__name__','g');
-            proto = proto.replace(nameRegexp, parts[parts.length-1]+']['+(container.children().length - 1));
+            proto = proto.replace(nameRegexp, parts[parts.length-1]+']['+(index));
             jQuery(proto).insertBefore(jQuery(this).parent());
 
             jQuery(this).trigger('sonata-collection-item-added');
+            index++;
         });
 
         jQuery(subject).on('click', '.sonata-collection-delete', function(event) {
