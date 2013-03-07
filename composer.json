@@ -25,6 +25,7 @@
         "symfony/config": ">=2.2,<2.3-dev",
         "symfony/console": ">=2.2,<2.3-dev",
         "symfony/twig-bridge": ">=2.2,<2.3-dev",
+        "symfony/property-access": ">=2.2-dev",
         "twig/twig": ">=1.12,<2.0-dev",
         "knplabs/knp-menu-bundle": "1.1.x-dev",
         "sonata-project/jquery-bundle": "1.8.*",
