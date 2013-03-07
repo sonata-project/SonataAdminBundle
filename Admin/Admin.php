@@ -1220,7 +1220,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         $admin = $this;
 
         // add the custom inline validation option
-        $metadata = $this->validator->getMetadataFactory()->getClassMetadata($this->getClass());
+        $metadata = $this->validator->getMetadataFactory()->getMetadataFor($this->getClass());
 
         $metadata->addConstraint(new InlineConstraint(array(
             'service' => $this,
