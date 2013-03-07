@@ -156,6 +156,11 @@
     margin: 2px;
 }
 
+.sonata-bc div.sonata-actions {
+    /*margin-top: 18px;*/
+    float: right
+}
+
 .sonata-bc div.sonata-ba-modal-edit-one-to-one td.sonata-ba-list-field-batch,
 .sonata-bc div.sonata-ba-modal-edit-one-to-one div.sonata-ba-list-actions,
 .sonata-bc div.sonata-ba-modal-edit-one-to-one th.sonata-ba-list-field-header-batch {
