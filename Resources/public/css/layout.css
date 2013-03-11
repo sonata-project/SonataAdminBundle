@@ -1,6 +1,10 @@
-@media (min-width: 979px) {
+body.sonata-bc {
+    padding-top: 60px;
+}
+
+@media (max-width: 978px) {
     body.sonata-bc {
-        padding-top: 60px;
+        padding-top: 0;
     }
 }
 
