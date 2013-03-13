@@ -214,8 +214,19 @@ class CRUDController extends Controller
         if ($this->getRequest()->getMethod() == 'DELETE') {
             try {
                 $this->admin->delete($object);
+
+                if ($this->isXmlHttpRequest()) {
+                    return $this->renderJson(array('result' => 'ok'));
+                }
+
                 $this->get('session')->setFlash('sonata_flash_success', 'flash_delete_success');
+
             } catch (ModelManagerException $e) {
+
+                if ($this->isXmlHttpRequest()) {
+                    return $this->renderJson(array('result' => 'error'));
+                }
+
                 $this->get('session')->setFlash('sonata_flash_error', 'flash_delete_error');
             }
 
