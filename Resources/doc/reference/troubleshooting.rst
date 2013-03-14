@@ -27,4 +27,4 @@ So in order to avoid any fatal error, you must return an empty string (or anythi
     }
 
 
-+.. _`__toString`: http://www.php.net/manual/en/language.oop5.magic.php#object.tostring
+.. _`__toString`: http://www.php.net/manual/en/language.oop5.magic.php#object.tostring
