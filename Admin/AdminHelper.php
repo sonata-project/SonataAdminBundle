@@ -80,17 +80,13 @@ class AdminHelper
     }
 
     /**
-     * Note:
-     *   This code is ugly, but there is no better way of doing it.
-     *   For now the append form element action used to add a new row works
-     *   only for direct FieldDescription (not nested one)
-     *
      * @throws \RuntimeException
      *
      * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
      * @param object                                   $subject
      * @param string                                   $elementId
      *
+     * @todo This code is ugly, review it
      * @return array
      */
     public function appendFormFieldElement(AdminInterface $admin, $subject, $elementId)
@@ -103,10 +99,23 @@ class AdminHelper
         $form->submit($admin->getRequest());
 
         // get the field element
-        $childFormBuilder = $this->getChildFormBuilder($formBuilder, $elementId);
+        $elements = explode('_', $elementId);
+        $childFormBuilder = $formBuilder;
+        $i = 0;
+        while ($i < count($elements) - 1) {
+            $childFormBuilder = $this->getChildFormBuilder($childFormBuilder, $elements[$i] . '_' . $elements[$i+1]);
+            $i++;
+        }
 
-        // retrieve the FieldDescription
-        $fieldDescription = $admin->getFormFieldDescription($childFormBuilder->getName());
+        // Get the field description
+        $fieldAdmin = $admin;
+        $i = 1;
+        while ($i < count($elements) - 1) {
+            $fieldAdmin = $admin->getFormFieldDescription($elements[$i])->getAssociationAdmin();
+            $i++;
+        }
+
+        $fieldDescription = $fieldAdmin->getFormFieldDescription($elements[$i]);
 
         try {
             $value = $fieldDescription->getValue($form->getData());
@@ -139,7 +148,14 @@ class AdminHelper
             $objectCount++;
         }
 
-        $this->addNewInstance($form->getData(), $fieldDescription);
+        $fieldForm = $form;
+        $i = 1;
+        while ($i < count($elements) - 1) {
+            $fieldForm = $form->get($elements[$i]);
+            $i++;
+        }
+
+        $this->addNewInstance($fieldForm->getData(), $fieldDescription);
         $data[$childFormBuilder->getName()][] = $value;
 
         $finalForm = $admin->getFormBuilder()->getForm();
