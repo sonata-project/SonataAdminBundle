@@ -70,8 +70,8 @@ You will also need to alter your ``app/config/config.yml`` file :
             sonata.admin.block.admin_list:
                 contexts:   [admin]
 
-            sonata.block.service.text:
-            sonata.block.service.rss:
+            sonata.block.service.text: ~
+            sonata.block.service.rss: ~
 
 
 Now, install the assets from the bundles:
