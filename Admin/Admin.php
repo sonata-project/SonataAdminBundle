@@ -2531,6 +2531,10 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      */
     public function toString($object)
     {
+        if (!is_object($object)) {
+            return '';
+        }
+
         if (method_exists($object, '__toString')) {
             return (string) $object;
         }
