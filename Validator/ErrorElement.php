@@ -72,6 +72,18 @@ class ErrorElement
     }
 
     /**
+     * @param Constraint $constraint
+     *
+     * @return ErrorElement
+     */
+    public function addConstraint(Constraint $constraint)
+    {
+        $this->validate($constraint);
+
+        return $this;
+    }
+
+    /**
      * @param string $name
      * @param bool   $key
      *
