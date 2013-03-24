@@ -12,7 +12,7 @@ file that was distributed with this source code.
 {% extends base_template %}
 
 {% block actions %}
-    <div class="sonata-actions">
+    <div class="sonata-actions btn-group">
         {% include 'SonataAdminBundle:Core:create_button.html.twig' %}
     </div>
 {% endblock %}
@@ -33,7 +33,7 @@ file that was distributed with this source code.
                                       <input type="checkbox" id="list_batch_checkbox" />
                                     </th>
                                 {% elseif field_description.name == '_action' and app.request.isXmlHttpRequest %}
-                                    	{# Action buttons disabled in ajax view! #}
+                                        {# Action buttons disabled in ajax view! #}
                                 {% else %}
                                     {% set sortable = false %}
                                     {% if field_description.options.sortable is defined and field_description.options.sortable%}
@@ -63,9 +63,9 @@ file that was distributed with this source code.
                             <tr>
                                 {% for field_description in admin.list.elements %}
                                     {% if field_description.name == '_action' and app.request.isXmlHttpRequest %}
-                                    	{# Action buttons disabled in ajax view! #}
-                                	{% else %}
-                                    	{{ object|render_list_element(field_description) }}
+                                        {# Action buttons disabled in ajax view! #}
+                                    {% else %}
+                                        {{ object|render_list_element(field_description) }}
                                    	{% endif %}
                                 {% endfor %}
                             </tr>
@@ -109,8 +109,7 @@ file that was distributed with this source code.
                                                 {% if admin.hasRoute('export') and admin.isGranted("EXPORT") and admin.getExportFormats()|length %}
                                                     {{ "label_export_download"|trans({}, "SonataAdminBundle") }}
                                                     {% for format in admin.getExportFormats() %}
-                                                            <a
-                                                            href="{{ admin.generateUrl('export', admin.modelmanager.paginationparameters(admin.datagrid, 0) + {'format' : format}) }}">{{ format }}</a>{% if not loop.last %},{% endif %}
+                                                        <a href="{{ admin.generateUrl('export', admin.modelmanager.paginationparameters(admin.datagrid, 0) + {'format' : format}) }}">{{ format }}</a>{% if not loop.last %},{% endif %}
                                                     {% endfor %}
 
                                                     &nbsp;-&nbsp;
@@ -191,15 +190,15 @@ file that was distributed with this source code.
                 <legend class="filter_legend {{ admin.datagrid.hasActiveFilters ? 'active' : 'inactive' }}">{{ 'label_filters'|trans({}, 'SonataAdminBundle') }}</legend>
 
                 <div class="filter_container {{ admin.datagrid.hasActiveFilters ? 'active' : 'inactive' }}">
-                    <table class="table table-bordered">
+                    <div>
                         {% for filter in admin.datagrid.filters %}
-                        <tr id="filter_{{ filter.name }}_row" class="filter {{ filter.isActive ? 'active' : 'inactive' }}">
-                                <td class="filter-title">{{ admin.trans(filter.label) }}</td>
-                                <td class="filter-type">{{ form_widget(form.children[filter.formName].children['type']) }}</td>
-                                <td class="filter-value">{{ form_widget(form.children[filter.formName].children['value']) }}</td>
-                            </tr>
+                            <div class="clearfix">
+                                <label for="{{ form.children[filter.formName].children['value'].get('id') }}">{{ admin.trans(filter.label) }}</label>
+                                {{ form_widget(form.children[filter.formName].children['type'], {'attr': {'class': 'span8 sonata-filter-option'}}) }}
+                                {{ form_widget(form.children[filter.formName].children['value'], {'attr': {'class': 'span8'}}) }}
+                            </div>
                         {% endfor %}
-                    </table>
+                    </div>
 
                     <input type="hidden" name="filter[_page]" id="filter__page" value="1" />
 

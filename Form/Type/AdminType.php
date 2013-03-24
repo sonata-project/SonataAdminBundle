@@ -37,7 +37,7 @@ class AdminType extends AbstractType
 
         $admin->defineFormBuilder($builder);
 
-        $builder->prependClientTransformer(new ArrayToModelTransformer($admin->getModelManager(), $admin->getClass()));
+        $builder->addModelTransformer(new ArrayToModelTransformer($admin->getModelManager(), $admin->getClass()));
     }
 
     /**

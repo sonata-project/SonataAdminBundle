@@ -1,6 +1,10 @@
-@media (min-width: 979px) {
+body.sonata-bc {
+    padding-top: 60px;
+}
+
+@media (max-width: 978px) {
     body.sonata-bc {
-        padding-top: 60px;
+        padding-top: 0;
     }
 }
 
@@ -154,6 +158,11 @@
     line-height: 25px;
     padding: 1px 8px 1px 8px;
     margin: 2px;
+}
+
+.sonata-bc div.sonata-actions {
+    /*margin-top: 18px;*/
+    float: right
 }
 
 .sonata-bc div.sonata-ba-modal-edit-one-to-one td.sonata-ba-list-field-batch,

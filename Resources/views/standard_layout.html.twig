@@ -37,7 +37,7 @@ file that was distributed with this source code.
         {% endblock %}
 
         {% block javascripts %}
-            <script src="{{ asset('bundles/sonatajquery/jquery-1.8.0.js') }}" type="text/javascript"></script>
+            <script src="{{ asset('bundles/sonatajquery/jquery-1.8.3.js') }}" type="text/javascript"></script>
             <script src="{{ asset('bundles/sonatajquery/jquery-ui-1.8.23.js') }}" type="text/javascript"></script>
             <script src="{{ asset('bundles/sonatajquery/jquery-ui-i18n.js') }}" type="text/javascript"></script>
 
@@ -116,31 +116,6 @@ file that was distributed with this source code.
         </div>
 
         <div class="container-fluid">
-            {% if _breadcrumb is not empty or action is defined %}
-                <ul class="breadcrumb">
-                    {% if _breadcrumb is empty %}
-                        {% if action is defined %}
-                            {% for label, uri in admin.breadcrumbs(action) %}
-                                {% if not loop.last  %}
-                                    <li>
-                                        {% if uri is not empty %}
-                                            <a href="{{ uri }}">{{ label }}</a>
-                                        {% else %}
-                                            {{ label }}
-                                        {% endif %}
-                                        <span class="divider">/</span>
-                                    </li>
-                                {% else %}
-                                    <li class="active">{{ label }}</li>
-                                {% endif %}
-                            {% endfor %}
-                        {% endif %}
-                    {% else %}
-                        {{ _breadcrumb|raw }}
-                    {% endif %}
-                </ul>
-            {% endif %}
-
             {% block notice %}
                 {% for notice_level in ['success','error','info', 'warning'] %}
                     {% set session_var = 'sonata_flash_' ~ notice_level %}
@@ -152,25 +127,38 @@ file that was distributed with this source code.
                 {% endfor %}
             {% endblock %}
 
-            <div style="float: right">
-                {%block actions %}{% endblock %}
-            </div>
-
-            {% if _title is not empty or action is defined %}
-                <div class="page-header">
-                    <h1>
-                        {% if _title is not empty %}
-                            {{ _title|raw }}
-                        {% elseif action is defined %}
-                            {% for label, uri in admin.breadcrumbs(action) %}
-                                {% if loop.last  %}
-                                    {{ label }}
+            <div class="row-fluid">
+                <div class="span6">
+                    {% if _breadcrumb is not empty or action is defined %}
+                        <ul class="breadcrumb">
+                            {% if _breadcrumb is empty %}
+                                {% if action is defined %}
+                                    {% for label, uri in admin.breadcrumbs(action) %}
+                                        {% if not loop.last  %}
+                                            <li>
+                                                {% if uri is not empty %}
+                                                    <a href="{{ uri }}">{{ label }}</a>
+                                                {% else %}
+                                                    {{ label }}
+                                                {% endif %}
+                                                <span class="divider">/</span>
+                                            </li>
+                                        {% else %}
+                                            <li class="active">{{ label }}</li>
+                                        {% endif %}
+                                    {% endfor %}
                                 {% endif %}
-                            {% endfor %}
-                        {% endif%}
-                    </h1>
+                            {% else %}
+                                {{ _breadcrumb|raw }}
+                            {% endif %}
+                        </ul>
+                    {% endif %}
                 </div>
-            {% endif%}
+
+                <div class="span4 offset2">
+                    {%block actions %}{% endblock %}
+                </div>
+            </div>
 
             <div class="row-fluid">
                 {% if _side_menu is not empty %}
@@ -180,42 +168,44 @@ file that was distributed with this source code.
                 {% endif %}
 
                 <div class="content {{ _side_menu is not empty ? ' span10' : 'span12' }}">
-                {% block sonata_admin_content %}
+                    {% block sonata_admin_content %}
 
-                    {% if _preview is not empty %}
-                        <div class="sonata-ba-preview">{{ _preview|raw }}</div>
-                    {% endif %}
+                        {% if _preview is not empty %}
+                            <div class="sonata-ba-preview">{{ _preview|raw }}</div>
+                        {% endif %}
 
-                    {% if _content is not empty %}
-                        <div class="sonata-ba-content">{{ _content|raw }}</div>
-                    {% endif %}
+                        {% if _content is not empty %}
+                            <div class="sonata-ba-content">{{ _content|raw }}</div>
+                        {% endif %}
 
-                    {% if _show is not empty %}
-                        <div class="sonata-ba-show">{{ _show|raw }}</div>
-                    {% endif %}
+                        {% if _show is not empty %}
+                            <div class="sonata-ba-show">{{ _show|raw }}</div>
+                        {% endif %}
 
-                    {% if _form is not empty %}
-                        <div class="sonata-ba-form">{{ _form|raw }}</div>
-                    {% endif %}
+                        {% if _form is not empty %}
+                            <div class="sonata-ba-form">{{ _form|raw }}</div>
+                        {% endif %}
 
-                    {% if _list_table is not empty or _list_filters is not empty %}
-                        <div class="sonata-ba-filter">
-                            {{ _list_filters|raw }}
-                        </div>
-                        <div class="sonata-ba-list">
-                            {{ _list_table|raw }}
-                        </div>
-                    {% endif %}
+                        {% if _list_table is not empty or _list_filters is not empty %}
+                            <div class="row-fluid">
+                                <div class="sonata-ba-list span10">
+                                    {{ _list_table|raw }}
+                                </div>
+                                <div class="sonata-ba-filter span2">
+                                    {{ _list_filters|raw }}
+                                </div>
+                            </div>
+                        {% endif %}
 
-                {% endblock %}
+                    {% endblock %}
                 </div>
-
-
             </div>
 
             {% block footer %}
-                <div class="pull-right clearfix">
-                    <span class="label"><a href="http://sonata-project.org" rel="noreferrer" style="text-decoration: none; color: black">Sonata Project</a></span>
+                <div class="row-fluid">
+                    <div class="span2 offset10 pull-right">
+                        <span class="label"><a href="http://sonata-project.org" rel="noreferrer" style="text-decoration: none; color: black">Sonata Project</a></span>
+                    </div>
                 </div>
             {% endblock %}
         </div>

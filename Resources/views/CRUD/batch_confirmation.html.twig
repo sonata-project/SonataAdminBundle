@@ -12,7 +12,7 @@ file that was distributed with this source code.
 {% extends base_template %}
 
 {% block actions %}
-    <div class="sonata-actions">
+    <div class="sonata-actions btn-group">
         {% if admin.hasRoute('list') and admin.isGranted('LIST')%}
             <a class="btn sonata-action-element" href="{{ admin.generateUrl('list') }}">
                 <i class="icon-list"></i> {{ 'link_action_list'|trans({}, 'SonataAdminBundle') }}
