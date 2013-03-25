@@ -203,6 +203,8 @@ class CRUDController extends Controller
         $id     = $this->get('request')->get($this->admin->getIdParameter());
         $object = $this->admin->getObject($id);
 
+        $request = $this->get('request');
+
         if (!$object) {
             throw new NotFoundHttpException(sprintf('unable to find the object with id : %s', $id));
         }
@@ -213,7 +215,7 @@ class CRUDController extends Controller
 
         $this->admin->setSubject($object);
 
-        if ($this->getRequest()->getMethod() == 'DELETE') {
+        if ($this->getRequest()->getMethod() == 'POST') {
             try {
                 $this->admin->delete($object);
                 $this->get('session')->setFlash('sonata_flash_success', 'flash_delete_success');
