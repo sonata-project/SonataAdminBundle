@@ -192,7 +192,7 @@ file that was distributed with this source code.
                 <div class="filter_container {{ admin.datagrid.hasActiveFilters ? 'active' : 'inactive' }}">
                     {% for filter in admin.datagrid.filters %}
                         <div class="control-group">
-                            <label class="control-label" for="{{ form.children[filter.formName].children['value'].get('id') }}">{{ admin.trans(filter.label) }}</label>
+                            <label class="control-label" for="{{ form.children[filter.formName].children['value'].vars.id }}">{{ admin.trans(filter.label) }}</label>
 
                             <div class="controls">
                                 {{ form_widget(form.children[filter.formName].children['type']) }}
