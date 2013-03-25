@@ -597,6 +597,8 @@ class CRUDController extends Controller
             throw new NotFoundHttpException(sprintf('unable to find the object with id : %s', $id));
         }
 
+        $this->admin->setSubject($object);
+
         $manager = $this->get('sonata.admin.audit.manager');
 
         if (!$manager->hasReader($this->admin->getClass())) {
@@ -636,6 +638,8 @@ class CRUDController extends Controller
         if (!$object) {
             throw new NotFoundHttpException(sprintf('unable to find the object with id : %s', $id));
         }
+
+        $this->admin->setSubject($object);
 
         $manager = $this->get('sonata.admin.audit.manager');
 
