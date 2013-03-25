@@ -211,6 +211,8 @@ class CRUDController extends Controller
             throw new AccessDeniedException();
         }
 
+        $this->admin->setSubject($object);
+
         if ($this->getRequest()->getMethod() == 'DELETE') {
             try {
                 $this->admin->delete($object);
