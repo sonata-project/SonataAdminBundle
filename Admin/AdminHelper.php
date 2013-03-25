@@ -103,7 +103,11 @@ class AdminHelper
         $childFormBuilder = $formBuilder;
         $i = 0;
         while ($i < count($elements) - 1) {
-            $childFormBuilder = $this->getChildFormBuilder($childFormBuilder, $elements[$i] . '_' . $elements[$i+1]);
+            $tmpChildFormBuilder = $this->getChildFormBuilder($childFormBuilder, $elements[$i] . '_' . $elements[$i+1]);
+
+            if ($tmpChildFormBuilder !== null) {
+                $childFormBuilder = $tmpChildFormBuilder;
+            }
             $i++;
         }
 
@@ -111,7 +115,12 @@ class AdminHelper
         $fieldAdmin = $admin;
         $i = 1;
         while ($i < count($elements) - 1) {
-            $fieldAdmin = $admin->getFormFieldDescription($elements[$i])->getAssociationAdmin();
+            $tmpFormFieldDescription = $fieldAdmin->getFormFieldDescription($elements[$i]);
+
+            if ($tmpFormFieldDescription !== null) {
+                $fieldAdmin = $tmpFormFieldDescription->getAssociationAdmin();
+            }
+
             $i++;
         }
 
@@ -151,7 +160,10 @@ class AdminHelper
         $fieldForm = $form;
         $i = 1;
         while ($i < count($elements) - 1) {
-            $fieldForm = $form->get($elements[$i]);
+            if ($fieldForm->has($elements[$i])) {
+                $fieldForm = $fieldForm->get($elements[$i]);
+            }
+
             $i++;
         }
 
