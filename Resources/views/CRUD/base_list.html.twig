@@ -195,10 +195,8 @@ file that was distributed with this source code.
                             <label class="control-label" for="{{ form.children[filter.formName].children['value'].get('id') }}">{{ admin.trans(filter.label) }}</label>
 
                             <div class="controls">
-                                <div class="span2">
-                                    {{ form_widget(form.children[filter.formName].children['type'], {'attr': {'class': 'sonata-filter-option'}}) }}
-                                </div>
-                                {{ form_widget(form.children[filter.formName].children['value'], {'attr': {'class': 'span3'}}) }}
+                                {{ form_widget(form.children[filter.formName].children['type']) }}
+                                {{ form_widget(form.children[filter.formName].children['value']) }}
                             </div>
                         </div>
                     {% endfor %}
