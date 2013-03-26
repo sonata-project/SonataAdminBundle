@@ -22,7 +22,9 @@ There are many field types that can be used in the list action or show action :
 
     If the ``SonataIntlBundle`` is installed in the project some template types
     will be changed to use localized information.
-
+    
+    Option for currency type must be an official ISO code, example : EUR for "euros".
+    List of iso code : http://en.wikipedia.org/wiki/List_of_circulating_currencies
 
 More types might be provided based on the persistency layer defined. Please refer to their
 related documentations.
