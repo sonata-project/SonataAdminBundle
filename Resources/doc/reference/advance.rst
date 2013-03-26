@@ -65,7 +65,7 @@ You have 2 ways of defining the dependencies inside a ``services.xml``.
                 <argument type="service" id="sonata.admin.label.strategy.native" />
             </call>
 
-            <call method="setRouteks lBuilder">
+            <call method="setRouteBuilder">
                 <argument type="service" id="sonata.admin.route.path_info" />
             </call>
         </service>
