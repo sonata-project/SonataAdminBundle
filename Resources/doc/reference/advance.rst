@@ -80,10 +80,9 @@ If you want to create your own RouteBuilder, you can do it using code like
             <argument type="service" id="sonata.admin.audit.manager" />
         </service>
 
+* php Route Generator
 
 .. code-block:: php
-
-* php Route Generator
 
 <?php
 namespace Acme\AdminBundle\Route;
