@@ -72,13 +72,19 @@ You have 2 ways of defining the dependencies inside a ``services.xml``.
 
 If you want to create your own RouteBuilder, you can do it using code like
 
-```xml
+* xml service registration
+
+.. code-block:: xml
+
         <service id="acme.admin.route.entity" class="Acme\AdminBundle\Route\EntityRouterBuilder">
             <argument type="service" id="sonata.admin.audit.manager" />
         </service>
-```
 
-```php
+
+.. code-block:: php
+
+* php Route Generator
+
 <?php
 namespace Acme\AdminBundle\Route;
 
