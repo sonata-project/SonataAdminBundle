@@ -70,6 +70,38 @@ You have 2 ways of defining the dependencies inside a ``services.xml``.
             </call>
         </service>
 
+If you want to create your own RouteBuilder, you can do it using code like
+
+```xml
+        <service id="acme.admin.route.entity" class="Acme\AdminBundle\Route\EntityRouterBuilder">
+            <argument type="service" id="sonata.admin.audit.manager" />
+        </service>
+```
+
+```php
+<?php
+namespace Acme\AdminBundle\Route;
+
+use Sonata\AdminBundle\Builder\RouteBuilderInterface;
+use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\Model\AuditManagerInterface;
+use Sonata\AdminBundle\Route\PathInfoBuilder;
+use Sonata\AdminBundle\Route\RouteCollection;
+
+class EntityRouterBuilder extends PathInfoBuilder implements RouteBuilderInterface
+{
+    /**
+     * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
+     * @param \Sonata\AdminBundle\Route\RouteCollection $collection
+     */
+    public function build(AdminInterface $admin, RouteCollection $collection)
+    {
+        parent::build($admin,$collection);
+        $collection->add('yourSubAction');
+    }
+}
+```
+
 
 If you want to modify the service that is going to be injected, add the following code to your
 application's config file:
