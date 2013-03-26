@@ -27,23 +27,28 @@ class ExtensionCompilerPass implements CompilerPassInterface
     public function process(ContainerBuilder $container)
     {
         $universalExtensions = array();
-        foreach ($container->findTaggedServiceIds('sonata.admin.extension') as $id => $attributes) {
 
-            $target = false;
-            if (isset($attributes[0]['target'])) {
-                $target = $attributes[0]['target'];
+        foreach ($container->findTaggedServiceIds('sonata.admin.extension') as $id => $tags) {
+            foreach ($tags as $attributes) {
+                $target = false;
+
+                if (isset($attributes['target'])) {
+                    $target = $attributes['target'];
+                }
+
+                if (isset($attributes['global']) && $attributes['global']) {
+                    $universalExtensions[] = $id;
+                }
+
+                if (!$target || !$container->hasDefinition($target)) {
+                    continue;
+                }
+
+                $container
+                    ->getDefinition($target)
+                    ->addMethodCall('addExtension', array(new Reference($id)))
+                ;
             }
-
-            if (isset($attributes[0]['global']) && $attributes[0]['global']) {
-                $universalExtensions[] = $id;
-            }
-
-            if (!$target || !$container->hasDefinition($target)) {
-                continue;
-            }
-
-            $container->getDefinition($target)
-                ->addMethodCall('addExtension', array(new Reference($id)));
         }
 
         $extensionConfig = $container->getParameter('sonata.admin.extension.map');

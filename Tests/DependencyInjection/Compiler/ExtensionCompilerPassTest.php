@@ -236,10 +236,11 @@ class ExtensionCompilerPassTest extends \PHPUnit_Framework_TestCase
 
         $def = $container->get('sonata_article_admin');
         $extensions = $def->getExtensions();
-        $this->assertCount(3, $extensions);
+        $this->assertCount(4, $extensions);
         $this->assertInstanceOf(get_class($this->securityExtension), $extensions[0]);
         $this->assertInstanceOf(get_class($this->publishExtension), $extensions[1]);
         $this->assertInstanceOf(get_class($this->orderExtension), $extensions[2]);
+        $this->assertInstanceOf(get_class($this->filterExtension), $extensions[3]);
 
         $def = $container->get('sonata_news_admin');
         $extensions = $def->getExtensions();
@@ -343,7 +344,8 @@ class ExtensionCompilerPassTest extends \PHPUnit_Framework_TestCase
         $container
             ->register('sonata_extension_filter')
             ->setClass(get_class($this->filterExtension))
-            ->addTag('sonata.admin.extension', array('target' => 'sonata_news_admin'));
+            ->addTag('sonata.admin.extension', array('target' => 'sonata_news_admin'))
+            ->addTag('sonata.admin.extension', array('target' => 'sonata_article_admin'));
 
         return $container;
     }
