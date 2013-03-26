@@ -20,7 +20,7 @@ router                        router
 validator                     validator
 security_handler              sonata.admin.security.handler
 menu_factory                  knp_menu.factory
-router_builder                sonata.admin.route.path_info
+route_builder                sonata.admin.route.path_info
 label_translator_strategy     sonata.admin.label.strategy.form_component
 =========================     =============================================
 
@@ -39,7 +39,7 @@ You have 2 ways of defining the dependencies inside a ``services.xml``.
                 group="Project"
                 label="Project"
                 label_translator_strategy="sonata.admin.label.strategy.native"
-                router_builder="sonata.admin.route.path_info"
+                route_builder="sonata.admin.route.path_info"
                 />
             <argument />
             <argument>AcmeBundle\ProjectBundle\Entity\Project</argument>
@@ -65,7 +65,7 @@ You have 2 ways of defining the dependencies inside a ``services.xml``.
                 <argument type="service" id="sonata.admin.label.strategy.native" />
             </call>
 
-            <call method="setRouterBuilder">
+            <call method="setRouteks lBuilder">
                 <argument type="service" id="sonata.admin.route.path_info" />
             </call>
         </service>
