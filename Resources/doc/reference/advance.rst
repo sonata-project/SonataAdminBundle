@@ -106,7 +106,6 @@ class EntityRouterBuilder extends PathInfoBuilder implements RouteBuilderInterfa
         $collection->add('yourSubAction');
     }
 }
-```
 
 
 If you want to modify the service that is going to be injected, add the following code to your
