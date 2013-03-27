@@ -36,7 +36,7 @@ interface ProxyQueryInterface
      * @param array $parentAssociationMappings
      * @param array $fieldMapping
      *
-     * @return mixed
+     * @return ProxyQueryInterface
      */
     public function setSortBy($parentAssociationMappings, $fieldMapping);
 
@@ -48,7 +48,7 @@ interface ProxyQueryInterface
     /**
      * @param mixed $sortOrder
      *
-     * @return void
+     * @return ProxyQueryInterface
      */
     public function setSortOrder($sortOrder);
 
@@ -65,7 +65,7 @@ interface ProxyQueryInterface
     /**
      * @param int $firstResult
      *
-     * @return mixed
+     * @return ProxyQueryInterface
      */
     public function setFirstResult($firstResult);
 
@@ -77,7 +77,7 @@ interface ProxyQueryInterface
     /**
      * @param int $maxResults
      *
-     * @return mixed
+     * @return ProxyQueryInterface
      */
     public function setMaxResults($maxResults);
 
