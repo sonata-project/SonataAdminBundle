@@ -1,7 +1,6 @@
 jQuery(document).ready(function() {
     jQuery('html').removeClass('no-js');
     Admin.add_pretty_errors(document);
-    Admin.add_collapsed_toggle(document);
     Admin.add_filters(document);
     Admin.set_object_field_value(document);
     Admin.setup_collection_buttons(document);
@@ -72,24 +71,6 @@ var Admin = {
                 }
             });
 
-        });
-    },
-
-    /**
-     * Add the collapsed toggle option to the admin
-     *
-     * @param subject
-     */
-    add_collapsed_toggle: function(subject) {
-        jQuery('fieldset.sonata-ba-fieldset-collapsed').has('.error').addClass('sonata-ba-collapsed-fields-close');
-        jQuery('fieldset.sonata-ba-fieldset-collapsed div.sonata-ba-collapsed-fields').not(':has(.error)').hide();
-        jQuery(subject).on('click', 'fieldset legend a.sonata-ba-collapsed', function(event) {
-            event.preventDefault();
-
-            var fieldset = jQuery(this).closest('fieldset');
-
-            jQuery('div.sonata-ba-collapsed-fields', fieldset).slideToggle();
-            fieldset.toggleClass('sonata-ba-collapsed-fields-close');
         });
     },
 
