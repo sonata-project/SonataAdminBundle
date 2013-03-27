@@ -157,6 +157,5 @@ Note that you can use both the Bundle:Controller format or a `service name`_ to
 specify what controller to load.
 
 
-
 .. _`Django Project Website`: http://www.djangoproject.com/
 .. _`service name`: http://symfony.com/doc/2.0/cookbook/controller/service.html
