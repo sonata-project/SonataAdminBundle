@@ -77,65 +77,65 @@ file that was distributed with this source code.
                     <tr>
                         <th colspan="{{ admin.list.elements|length - (app.request.isXmlHttpRequest ? 2 : 0) }}">
                             <div class="form-inline">
-                                {% if not app.request.isXmlHttpRequest and batchactions|length > 0 %}
-                                    {% block batch %}
-                                        <script type="text/javascript">
-                                            {% block batch_javascript %}
-                                            jQuery(document).ready(function ($) {
-                                                $('#list_batch_checkbox').click(function () {
-                                                    $(this).closest('table').find("td input[type='checkbox']").attr('checked', $(this).is(':checked')).parent().parent().toggleClass('sonata-ba-list-row-selected', $(this).is(':checked'));
-                                                });
-                                                $("td.sonata-ba-list-field-batch input[type='checkbox']").change(function () {
-                                                    $(this).parent().parent().toggleClass('sonata-ba-list-row-selected', $(this).is(':checked'));
-                                                });
-                                            });
-                                            {% endblock %}
-                                        </script>
+                                {% if not app.request.isXmlHttpRequest %}
+                                    {% if batchactions|length > 0  %}
+                                        {% block batch %}
+                                            <script type="text/javascript">
+                                                {% block batch_javascript %}
+                                                    jQuery(document).ready(function ($) {
+                                                        $('#list_batch_checkbox').click(function () {
+                                                            $(this).closest('table').find("td input[type='checkbox']").attr('checked', $(this).is(':checked')).parent().parent().toggleClass('sonata-ba-list-row-selected', $(this).is(':checked'));
+                                                        });
+                                                        $("td.sonata-ba-list-field-batch input[type='checkbox']").change(function () {
+                                                            $(this).parent().parent().toggleClass('sonata-ba-list-row-selected', $(this).is(':checked'));
+                                                        });
+                                                    });
+                                                {% endblock %}
+                                            </script>
 
-                                        {% block batch_actions %}
-                                            <label class="checkbox" for="{{ admin.uniqid }}_all_elements">
-                                                <input type="checkbox" name="all_elements" id="{{ admin.uniqid }}_all_elements"/>
-                                                {{ 'all_elements'|trans({}, 'SonataAdminBundle') }}
-                                            </label>
+                                            {% block batch_actions %}
+                                                <label class="checkbox" for="{{ admin.uniqid }}_all_elements">
+                                                    <input type="checkbox" name="all_elements" id="{{ admin.uniqid }}_all_elements"/>
+                                                    {{ 'all_elements'|trans({}, 'SonataAdminBundle') }}
+                                                </label>
 
-                                            <select name="action" style="width: auto; height: auto">
-                                                {% for action, options in batchactions %}
-                                                    <option value="{{ action }}">{{ options.label }}</option>
-                                                {% endfor %}
-                                            </select>
-
-                                            <input type="submit" class="btn btn-small btn-primary" value="{{ 'btn_batch'|trans({}, 'SonataAdminBundle') }}"/>
-                                            <div class="pull-right">
-                                                {% if admin.hasRoute('export') and admin.isGranted("EXPORT") and admin.getExportFormats()|length %}
-                                                    {{ "label_export_download"|trans({}, "SonataAdminBundle") }}
-                                                    {% for format in admin.getExportFormats() %}
-                                                            <a
-                                                            href="{{ admin.generateUrl('export', admin.modelmanager.paginationparameters(admin.datagrid, 0) + {'format' : format}) }}">{{ format }}</a>{% if not loop.last %},{% endif %}
+                                                <select name="action" style="width: auto; height: auto">
+                                                    {% for action, options in batchactions %}
+                                                        <option value="{{ action }}">{{ options.label }}</option>
                                                     {% endfor %}
-
-                                                    &nbsp;-&nbsp;
-                                                {% endif %}
-
-                                                {{ admin.datagrid.pager.page }} / {{ admin.datagrid.pager.lastpage }}
-
-                                                &nbsp;-&nbsp;
-
-                                                {% transchoice admin.datagrid.pager.nbresults with {'%count%': admin.datagrid.pager.nbresults} from 'SonataAdminBundle' %}list_results_count{% endtranschoice %}
-
-                                                {% if not app.request.isXmlHttpRequest %}
-                                                    &nbsp;-&nbsp;
-                                                    <label class="control-label" for="{{ admin.uniqid }}_per_page">{% trans from 'SonataAdminBundle' %}label_per_page{% endtrans %}</label>
-                                                    <select class="per-page small" id="{{ admin.uniqid }}_per_page" style="width: auto; height: auto">
-                                                        {% for per_page in admin.getperpageoptions %}
-                                                            <option {% if per_page == admin.datagrid.pager.maxperpage %}selected="selected"{% endif %} value="{{ admin.generateUrl('list', {'filter': admin.datagrid.values | merge({'_per_page': per_page})}) }}">
-                                                                {{ per_page }}
-                                                            </option>
-                                                        {% endfor %}
-                                                    </select>
-                                                {% endif %}
-                                            </div>
+                                                </select>
+                                            {% endblock %}
                                         {% endblock %}
-                                    {% endblock %}
+
+                                        <input type="submit" class="btn btn-small btn-primary" value="{{ 'btn_batch'|trans({}, 'SonataAdminBundle') }}"/>
+                                    {% endif %}
+
+                                    <div class="pull-right">
+                                        {% if admin.hasRoute('export') and admin.isGranted("EXPORT") and admin.getExportFormats()|length %}
+                                            {{ "label_export_download"|trans({}, "SonataAdminBundle") }}
+                                            {% for format in admin.getExportFormats() %}
+                                                <a href="{{ admin.generateUrl('export', admin.modelmanager.paginationparameters(admin.datagrid, 0) + {'format' : format}) }}">{{ format }}</a>{% if not loop.last %},{% endif %}
+                                            {% endfor %}
+
+                                            &nbsp;-&nbsp;
+                                        {% endif %}
+
+                                        {{ admin.datagrid.pager.page }} / {{ admin.datagrid.pager.lastpage }}
+
+                                        &nbsp;-&nbsp;
+
+                                        {% transchoice admin.datagrid.pager.nbresults with {'%count%': admin.datagrid.pager.nbresults} from 'SonataAdminBundle' %}list_results_count{% endtranschoice %}
+
+                                        &nbsp;-&nbsp;
+                                        <label class="control-label" for="{{ admin.uniqid }}_per_page">{% trans from 'SonataAdminBundle' %}label_per_page{% endtrans %}</label>
+                                        <select class="per-page small" id="{{ admin.uniqid }}_per_page" style="width: auto; height: auto">
+                                            {% for per_page in admin.getperpageoptions %}
+                                                <option {% if per_page == admin.datagrid.pager.maxperpage %}selected="selected"{% endif %} value="{{ admin.generateUrl('list', {'filter': admin.datagrid.values | merge({'_per_page': per_page})}) }}">
+                                                    {{ per_page }}
+                                                </option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
                                 {% endif %}
                             </div>
                         </th>
