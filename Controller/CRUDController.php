@@ -64,15 +64,16 @@ class CRUDController extends Controller
     /**
      * Returns the correct RESTful verb, given either by the request itself or
      * via the "_method" parameter.
-     * 
-     * @return string HTTP method, either 
+     *
+     * @return string HTTP method, either
      */
     protected function getRestMethod()
     {
         $request = $this->getRequest();
-        if(Request::getHttpMethodParameterOverride() || !$request->request->has('_method')) {
-            return $request->getMethod(); 
+        if (Request::getHttpMethodParameterOverride() || !$request->request->has('_method')) {
+            return $request->getMethod();
         }
+
         return $request->request->get('_method');
     }
 
@@ -288,7 +289,7 @@ class CRUDController extends Controller
         $form = $this->admin->getForm();
         $form->setData($object);
 
-        if ($this->get('request')->getMethod() == 'POST') {
+        if ($this->getRestMethod() == 'POST') {
             $form->bind($this->get('request'));
 
             $isFormValid = $form->isValid();
@@ -373,7 +374,7 @@ class CRUDController extends Controller
      */
     public function batchAction()
     {
-        if ($this->get('request')->getMethod() != 'POST') {
+        if ($this->getRestMethod() != 'POST') {
             throw new \RuntimeException('invalid request type, POST expected');
         }
 
@@ -477,7 +478,7 @@ class CRUDController extends Controller
         $form = $this->admin->getForm();
         $form->setData($object);
 
-        if ($this->get('request')->getMethod() == 'POST') {
+        if ($this->getRestMethod()== 'POST') {
             $form->bind($this->get('request'));
 
             $isFormValid = $form->isValid();
