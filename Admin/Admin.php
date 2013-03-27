@@ -1993,7 +1993,10 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
                     $this->trans($this->getLabelTranslatorStrategy()->getLabel(sprintf('%s_%s', $this->getClassnameLabel(), $action), 'breadcrumb', 'link'))
                 );
             }
-
+        } elseif ($action != 'list' && $this->hasSubject()) {
+            $breadcrumbs = $child->getBreadcrumbsArray(
+                $this->toString($this->getSubject())
+            );
         } elseif ($action != 'list') {
             $breadcrumbs = $child->getBreadcrumbsArray(
 //                $this->trans($this->getLabelTranslatorStrategy()->getLabel(sprintf('%s_%s', $this->getClassnameLabel(), $action), 'breadcrumb', 'link'))
@@ -2531,6 +2534,10 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      */
     public function toString($object)
     {
+        if (!is_object($object)) {
+            return '';
+        }
+
         if (method_exists($object, '__toString')) {
             return (string) $object;
         }

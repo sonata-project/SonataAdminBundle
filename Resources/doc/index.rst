@@ -35,6 +35,7 @@ Reference Guide
    reference/advance
    reference/console
    reference/preview_mode
+   reference/troubleshooting
 
 Overview
 --------
