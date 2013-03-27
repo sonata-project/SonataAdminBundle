@@ -20,7 +20,7 @@ router                        router
 validator                     validator
 security_handler              sonata.admin.security.handler
 menu_factory                  knp_menu.factory
-router_builder                sonata.admin.route.path_info
+route_builder                sonata.admin.route.path_info
 label_translator_strategy     sonata.admin.label.strategy.form_component
 =========================     =============================================
 
@@ -39,7 +39,7 @@ You have 2 ways of defining the dependencies inside a ``services.xml``.
                 group="Project"
                 label="Project"
                 label_translator_strategy="sonata.admin.label.strategy.native"
-                router_builder="sonata.admin.route.path_info"
+                route_builder="sonata.admin.route.path_info"
                 />
             <argument />
             <argument>AcmeBundle\ProjectBundle\Entity\Project</argument>
@@ -65,10 +65,46 @@ You have 2 ways of defining the dependencies inside a ``services.xml``.
                 <argument type="service" id="sonata.admin.label.strategy.native" />
             </call>
 
-            <call method="setRouterBuilder">
+            <call method="setRouteBuilder">
                 <argument type="service" id="sonata.admin.route.path_info" />
             </call>
         </service>
+
+If you want to create your own RouteBuilder, you can do it using code like
+
+* xml service registration
+
+.. code-block:: xml
+
+        <service id="acme.admin.route.entity" class="Acme\AdminBundle\Route\EntityRouterBuilder">
+            <argument type="service" id="sonata.admin.audit.manager" />
+        </service>
+
+* php Route Generator
+
+.. code-block:: php
+
+        <?php
+        namespace Acme\AdminBundle\Route;
+        
+        use Sonata\AdminBundle\Builder\RouteBuilderInterface;
+        use Sonata\AdminBundle\Admin\AdminInterface;
+        use Sonata\AdminBundle\Model\AuditManagerInterface;
+        use Sonata\AdminBundle\Route\PathInfoBuilder;
+        use Sonata\AdminBundle\Route\RouteCollection;
+        
+        class EntityRouterBuilder extends PathInfoBuilder implements RouteBuilderInterface
+        {
+            /**
+             * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
+             * @param \Sonata\AdminBundle\Route\RouteCollection $collection
+             */
+            public function build(AdminInterface $admin, RouteCollection $collection)
+            {
+                parent::build($admin,$collection);
+                $collection->add('yourSubAction');
+            }
+        }
 
 
 If you want to modify the service that is going to be injected, add the following code to your
