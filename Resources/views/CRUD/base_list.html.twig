@@ -193,7 +193,7 @@ file that was distributed with this source code.
                     <div>
                         {% for filter in admin.datagrid.filters %}
                             <div class="clearfix">
-                                <label for="{{ form.children[filter.formName].children['value'].get('id') }}">{{ admin.trans(filter.label) }}</label>
+                                <label for="{{ form.children[filter.formName].children['value'].vars.id }}">{{ admin.trans(filter.label) }}</label>
                                 {{ form_widget(form.children[filter.formName].children['type'], {'attr': {'class': 'span8 sonata-filter-option'}}) }}
                                 {{ form_widget(form.children[filter.formName].children['value'], {'attr': {'class': 'span8'}}) }}
                             </div>
