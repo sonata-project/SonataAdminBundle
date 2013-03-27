@@ -52,7 +52,7 @@ class SonataAdminExtension extends \Twig_Extension
         return array(
             'render_list_element'     => new \Twig_Filter_Method($this, 'renderListElement', array('is_safe' => array('html'))),
             'render_view_element'     => new \Twig_Filter_Method($this, 'renderViewElement', array('is_safe' => array('html'))),
-            'render_relation_element' => new \Twig_Filter_Method($this, 'renderRelationElement', array('is_safe' => array('html'))),
+            'render_relation_element' => new \Twig_Filter_Method($this, 'renderRelationElement'),
             'sonata_urlsafeid'        => new \Twig_Filter_Method($this, 'getUrlsafeIdentifier'),
         );
     }
