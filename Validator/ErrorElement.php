@@ -12,8 +12,8 @@ namespace Sonata\AdminBundle\Validator;
 
 use Symfony\Bundle\FrameworkBundle\Validator\ConstraintValidatorFactory;
 use Symfony\Component\Validator\ExecutionContext;
-use Symfony\Commponent\PropertyAccess\PropertyAccess;
-use Symfony\Commponent\PropertyAccess\PropertyPath;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\Validator\Constraint;
 
 class ErrorElement
