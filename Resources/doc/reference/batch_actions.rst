@@ -150,7 +150,7 @@ passed query is ``null``.
         $target = $modelManager->find($this->admin->getClass(), $request->get('targetId'));
 
         if( $target === null){
-            $this->get('session')->setFlash('sonata_flash_info', 'flash_batch_merge_no_target');
+            $this->addFlash('sonata_flash_info', 'flash_batch_merge_no_target');
 
             return new RedirectResponse($this->admin->generateUrl('list',$this->admin->getFilterParameters()));
         }
@@ -166,12 +166,12 @@ passed query is ``null``.
 
             $modelManager->update($selectedModel);
         } catch (\Exception $e) {
-            $this->get('session')->setFlash('sonata_flash_error', 'flash_batch_merge_error');
+            $this->addFlash('sonata_flash_error', 'flash_batch_merge_error');
 
             return new RedirectResponse($this->admin->generateUrl('list',$this->admin->getFilterParameters()));
         }
 
-        $this->get('session')->setFlash('sonata_flash_success', 'flash_batch_merge_success');
+        $this->addFlash('sonata_flash_success', 'flash_batch_merge_success');
 
         return new RedirectResponse($this->admin->generateUrl('list',$this->admin->getFilterParameters()));
     }
