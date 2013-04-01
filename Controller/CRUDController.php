@@ -411,7 +411,7 @@ class CRUDController extends Controller
         if ($askConfirmation && $confirmation != 'ok') {
             $formView = $datagrid->getForm()->createView();
 
-            return $this->render('SonataAdminBundle:CRUD:batch_confirmation.html.twig', array(
+            return $this->render($this->admin->getTemplate('batch_confirmation'), array(
                 'action'   => 'list',
                 'datagrid' => $datagrid,
                 'form'     => $formView,
