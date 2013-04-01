@@ -18,6 +18,7 @@ By default, an Admin class uses a set of templates, it is possible to tweak the 
             history: SonataAdminBundle:CRUD:history.html.twig
             preview: SonataAdminBundle:CRUD:preview.html.twig
             delete:  SonataAdminBundle:CRUD:delete.html.twig
+            batch:   SonataAdminBundle:CRUD:list__batch.html.twig
 
             # default values of helper templates
             short_object_description: SonataAdminBundle:Helper:short-object-description.html.twig
