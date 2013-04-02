@@ -1995,6 +1995,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
             }
         } elseif ($action != 'list' && $this->hasSubject()) {
             $breadcrumbs = $child->getBreadcrumbsArray(
+                $this->trans($this->getLabelTranslatorStrategy()->getLabel(sprintf('%s_%s', $this->getClassnameLabel(), $action), 'breadcrumb', 'link'))
                 $this->toString($this->getSubject())
             );
         } elseif ($action != 'list') {
