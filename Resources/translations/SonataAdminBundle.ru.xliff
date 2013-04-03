@@ -60,7 +60,7 @@
             </trans-unit>
             <trans-unit id="link_action_edit">
                 <source>link_action_edit</source>
-                <target>Редактировать "%name%"</target>
+                <target>Редактировать</target>
             </trans-unit>
             <trans-unit id="link_add">
                 <source>link_add</source>
@@ -84,7 +84,7 @@
             </trans-unit>
             <trans-unit id="title_edit">
                 <source>title_edit</source>
-                <target>Редактировать</target>
+                <target>Редактировать "%name%"</target>
             </trans-unit>
             <trans-unit id="title_list">
                 <source>title_list</source>
