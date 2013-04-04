@@ -679,7 +679,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
             ));
 
             $fieldDescription->setAdmin($this);
-            $fieldDescription->setTemplate('SonataAdminBundle:CRUD:list__batch.html.twig');
+            $fieldDescription->setTemplate($this->getTemplate('batch'));
 
             $mapper->add($fieldDescription, 'batch');
         }
