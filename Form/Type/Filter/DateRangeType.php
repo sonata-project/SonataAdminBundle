@@ -52,7 +52,10 @@ class DateRangeType extends AbstractType
 
         $builder
             ->add('type', 'choice', array('choices' => $choices, 'required' => false))
-            ->add('value', 'sonata_type_date_range', array('field_options' => $options['field_options']))
+            ->add('value', 'sonata_type_date_range', array(
+                'field_type' => $options['field_type'],
+                'field_options' => $options['field_options']
+            ))
         ;
     }
 
@@ -62,7 +65,7 @@ class DateRangeType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'field_type'       => 'sonata_type_date_range',
+            'field_type'       => 'date',
             'field_options'    => array('format' => 'yyyy-MM-dd')
         ));
     }
