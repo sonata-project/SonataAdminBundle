@@ -75,7 +75,7 @@ file that was distributed with this source code.
 
                 {% block table_footer %}
                     <tr>
-                        <th colspan="{{ admin.list.elements|length - (app.request.isXmlHttpRequest ? 2 : 0) }}">
+                        <th colspan="{{ admin.list.elements|length - (app.request.isXmlHttpRequest ? 1 : 0) }}">
                             <div class="form-inline">
                                 {% if not app.request.isXmlHttpRequest %}
                                     {% if batchactions|length > 0  %}
