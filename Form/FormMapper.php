@@ -75,6 +75,51 @@ class FormMapper
 
         return $this;
     }
+    
+    /**
+     * @param string $key field name
+     * @param string $position first, last, before, after
+     * @param string $target field name
+     *
+     * @return \Sonata\AdminBundle\Form\FormMapper
+     */
+    public function move($key, $position, $target = null)
+    {
+        $fields = array_diff(
+            array_keys($this->admin->getFormGroups()[$this->currentGroup]['fields']),
+            array($key)
+        );
+
+        switch ($position) {
+            case 'first':
+                $offset = 0;
+
+                break;
+
+            case 'before':
+                if ($target) {
+                    $offset = array_search($target, $fields);
+                }
+
+                break;
+
+            case 'after':
+                if ($target) {
+                    $offset = array_search($target, $fields) + 1;
+                }
+
+                break;
+
+            case 'last':
+                $offset = count($fields);
+        }
+
+        if (isset($offset)) {
+            array_splice($fields, $offset, 0, $key);
+        }
+
+        return $this->reorder($fields);
+    }
 
     /**
      * @param array $keys field names
