@@ -139,15 +139,25 @@ var Admin = {
             var proto = container.attr('data-prototype');
             // Set field id
             var idRegexp = new RegExp(container.attr('id')+'___name__','g');
-            proto = proto.replace(idRegexp, container.attr('id')+'_'+(container.children().length - 1));
-
+            // force index to 0
+            var index = 0;
+            // if nb child > 0 get dynamically the last id
+            if(container.children().length - 1 > 0)
+            {
+                var last_div = container.find('.sonata-collection-row:last >:first-child');
+                var id_parts = last_div.attr('id').split('_');
+                index = parseInt(id_parts[id_parts.length-1])+1;
+            }
+            proto = proto.replace(idRegexp, container.attr('id')+'_'+(index));
             // Set field name
             var parts = container.attr('id').split('_');
             var nameRegexp = new RegExp(parts[parts.length-1]+'\\]\\[__name__','g');
-            proto = proto.replace(nameRegexp, parts[parts.length-1]+']['+(container.children().length - 1));
+
+            proto = proto.replace(nameRegexp, parts[parts.length-1]+']['+(index));
             jQuery(proto).insertBefore(jQuery(this).parent());
 
             jQuery(this).trigger('sonata-collection-item-added');
+            index++;
         });
 
         jQuery(subject).on('click', '.sonata-collection-delete', function(event) {
