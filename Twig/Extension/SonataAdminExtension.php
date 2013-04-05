@@ -15,6 +15,7 @@ use Doctrine\Common\Util\ClassUtils;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Exception\NoValueException;
 use Sonata\AdminBundle\Admin\Pool;
+use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 class SonataAdminExtension extends \Twig_Extension
 {
@@ -204,17 +205,19 @@ class SonataAdminExtension extends \Twig_Extension
      */
     public function renderRelationElement($element, FieldDescriptionInterface $fieldDescription)
     {
-        $method = $fieldDescription->getOption('associated_tostring', '__toString');
+        $propertyPath = $fieldDescription->getOption('associated_property');
 
         if (!is_object($element)) {
             return $element;
         }
 
-        if (!method_exists($element, $method)) {
-            throw new \RunTimeException(sprintf('You must define an `associated_tostring` option or create a `%s::__toString` method to the field option %s from service %s is ', get_class($element), $fieldDescription->getName(), $fieldDescription->getAdmin()->getCode()));
+        if (null === $propertyPath) {
+            return call_user_func(array($element, $propertyPath));
         }
 
-        return call_user_func(array($element, $method));
+        $propertyAccessor = new PropertyAccessor();
+
+        return $propertyAccessor->getValue($element, $propertyPath);
     }
 
     /**
