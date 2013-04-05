@@ -55,6 +55,7 @@ class SonataAdminExtension extends \Twig_Extension
             'render_view_element'     => new \Twig_Filter_Method($this, 'renderViewElement', array('is_safe' => array('html'))),
             'render_relation_element' => new \Twig_Filter_Method($this, 'renderRelationElement'),
             'sonata_urlsafeid'        => new \Twig_Filter_Method($this, 'getUrlsafeIdentifier'),
+            'sonata_slugify'          => new \Twig_Filter_Method($this, 'slugify'),
         );
     }
 
@@ -234,5 +235,34 @@ class SonataAdminExtension extends \Twig_Extension
         );
 
         return $admin->getUrlsafeIdentifier($model);
+    }
+
+    /**
+     * Slugify a text
+     *
+     * @param $text
+     *
+     * @return text
+     */
+    public function slugify($text)
+    {
+        // replace non letter or digits by -
+        $text = preg_replace('~[^\\pL\d]+~u', '-', $text);
+
+        // trim
+        $text = trim($text, '-');
+
+        // transliterate
+        if (function_exists('iconv')) {
+            $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
+        }
+
+        // lowercase
+        $text = strtolower($text);
+
+        // remove unwanted characters
+        $text = preg_replace('~[^-\w]+~', '', $text);
+
+        return $text;
     }
 }
