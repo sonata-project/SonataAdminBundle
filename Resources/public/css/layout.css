@@ -363,3 +363,19 @@ legend.sonata-ba-fieldset-collapsed-description + .sonata-ba-collapsed-fields {
 .sonata-bc .pagination {
     margin: 0px;
 }
+
+.sonata-bc .field-short-description {
+    min-width: 250px;
+    display: block;
+    float: left;
+    background: #fefefe;
+    border: 1px solid #e9e9e9;
+    border-radius: 4px 4px 4px 4px;
+    list-style: none outside none;
+    margin: 0 15px 0 0;
+    padding: 5px 15px;
+}
+
+.sonata-bc .inner-field-short-description {
+
+}
