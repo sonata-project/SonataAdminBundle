@@ -17,14 +17,14 @@
                 <div class="tabbable">
                     <ul class="nav nav-tabs">
                         {% for name, form_group in admin.formgroups %}
-                            <li class="{% if loop.first %}active{% endif %}"><a href="#{{ name|sonata_slugify }}" data-toggle="tab">{{ admin.trans(name) }}</a></li>
+                            <li class="{% if loop.first %}active{% endif %}"><a href="#{{ admin.uniqid }}_{{ name|sonata_slugify }}" data-toggle="tab">{{ admin.trans(name) }}</a></li>
                         {% endfor %}
                     </ul>
             {% endblock %}
 
                 <div class="tab-content">
                     {% for name, form_group in admin.formgroups %}
-                        <div class="tab-pane {% if loop.first %} active{% endif %}" id="{{ name|sonata_slugify }}">
+                        <div class="tab-pane {% if loop.first %} active{% endif %}" id="{{ admin.uniqid }}_{{ name|sonata_slugify }}">
                             <fieldset>
                                 <div class="sonata-ba-collapsed-fields">
                                     {% if form_group.description != false %}
