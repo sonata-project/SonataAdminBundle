@@ -56,11 +56,11 @@ file that was distributed with this source code.
             {% else %}
                 {% if action is defined %}
                     -
-                    {% for label, uri in admin.breadcrumbs(action) %}
+                    {% for menu in admin.breadcrumbs(action) %}
                         {% if not loop.first  %}
                             &gt;
                         {% endif %}
-                        {{ label }}
+                        {{ menu.label }}
                     {% endfor %}
                 {% endif %}
             {% endif%}
@@ -133,18 +133,18 @@ file that was distributed with this source code.
                         <ul class="breadcrumb">
                             {% if _breadcrumb is empty %}
                                 {% if action is defined %}
-                                    {% for label, uri in admin.breadcrumbs(action) %}
+                                    {% for menu in admin.breadcrumbs(action) %}
                                         {% if not loop.last  %}
                                             <li>
-                                                {% if uri is not empty %}
-                                                    <a href="{{ uri }}">{{ label }}</a>
+                                                {% if menu.uri is not empty %}
+                                                    <a href="{{ menu.uri }}">{{ menu.label }}</a>
                                                 {% else %}
-                                                    {{ label }}
+                                                    {{ menu.label }}
                                                 {% endif %}
                                                 <span class="divider">/</span>
                                             </li>
                                         {% else %}
-                                            <li class="active">{{ label }}</li>
+                                            <li class="active">{{ menu.label }}</li>
                                         {% endif %}
                                     {% endfor %}
                                 {% endif %}
