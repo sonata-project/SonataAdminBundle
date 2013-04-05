@@ -13,6 +13,7 @@ namespace Sonata\AdminBundle\Form;
 use Sonata\AdminBundle\Builder\FormContractorInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\Form\AbstractType;
 
 /**
  * This class is use to simulate the Form API
@@ -112,7 +113,7 @@ class FormMapper
         $formGroups[$this->currentGroup]['fields'][$label] = $label;
         $this->admin->setFormGroups($formGroups);
 
-        if (!isset($fieldDescriptionOptions['type']) && is_string($type)) {
+        if (!isset($fieldDescriptionOptions['type']) && (is_string($type) || $type instanceof AbstractType)) {
             $fieldDescriptionOptions['type'] = $type;
         }
 
