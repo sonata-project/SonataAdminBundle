@@ -5,6 +5,7 @@ jQuery(document).ready(function() {
     Admin.set_object_field_value(document);
     Admin.setup_collection_buttons(document);
     Admin.setup_per_page_switcher(document);
+    Admin.setup_form_tabs_for_errors(document);
 });
 
 var Admin = {
@@ -164,6 +165,48 @@ var Admin = {
             jQuery('input[type=submit]').hide();
 
             window.top.location.href=this.options[this.selectedIndex].value;
+        });
+    },
+
+    setup_form_tabs_for_errors: function(subject) {
+        // Switch to first tab with server side validation errors on page load
+        jQuery('form', subject).each(function() {
+            Admin.show_form_first_tab_with_errors(jQuery(this), '.sonata-ba-field-error');
+        });
+
+        // Switch to first tab with HTML5 errors on form submit
+        jQuery(subject)
+            .on('click', 'form [type="submit"]', function() {
+                Admin.show_form_first_tab_with_errors(jQuery(this).closest('form'), ':invalid');
+            })
+            .on('keypress', 'form [type="text"]', function(e) {
+                if (13 === e.which) {
+                    Admin.show_form_first_tab_with_errors(jQuery(this), ':invalid');
+                }
+            })
+        ;
+    },
+
+    show_form_first_tab_with_errors: function(form, errorSelector) {
+        var tabs = form.find('.nav-tabs a'),
+            firstTabWithErrors;
+
+        tabs.each(function() {
+            var id = jQuery(this).attr('href'),
+                tab = jQuery(this),
+                icon = tab.find('.has-errors');
+
+            if (jQuery(id).find(errorSelector).length > 0) {
+                // Only show first tab with errors
+                if (!firstTabWithErrors) {
+                    tab.tab('show');
+                    firstTabWithErrors = tab;
+                }
+
+                icon.removeClass('hide');
+            } else {
+                icon.addClass('hide');
+            }
         });
     }
 }
