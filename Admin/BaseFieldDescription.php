@@ -32,7 +32,10 @@ use Sonata\AdminBundle\Exception\NoValueException;
  *   - link_parameters (o) : add link parameter to the related Admin class when
  *                           the Admin.generateUrl is called
  *   - code : the method name to retrieve the related value
- *   - associated_tostring : the method to retrieve the "string" representation
+ *   - associated_tostring : (deprecated, use associated_property option)
+ *                           the method to retrieve the "string" representation
+ *                           of the collection element.
+ *   - associated_property : property path to retrieve the "string" representation
  *                           of the collection element.
  *
  * Form Field options :
