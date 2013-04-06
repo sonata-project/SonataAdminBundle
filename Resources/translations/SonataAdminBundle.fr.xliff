@@ -140,7 +140,7 @@
             </trans-unit>
             <trans-unit id='flash_create_success'>
                 <source>flash_create_success</source>
-                <target>L'élément a été crée avec succès.</target>
+                <target>L'élément a été créé avec succès.</target>
             </trans-unit>
             <trans-unit id='flash_create_error'>
                 <source>flash_create_error</source>
