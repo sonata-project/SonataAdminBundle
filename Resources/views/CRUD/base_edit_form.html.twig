@@ -17,7 +17,12 @@
                 <div class="tabbable">
                     <ul class="nav nav-tabs">
                         {% for name, form_group in admin.formgroups %}
-                            <li class="{% if loop.first %}active{% endif %}"><a href="#{{ admin.uniqid }}_{{ name|sonata_slugify }}" data-toggle="tab">{{ admin.trans(name) }}</a></li>
+                            <li class="{% if loop.first %}active{% endif %}">
+                                <a href="#{{ admin.uniqid }}_{{ name|sonata_slugify }}" data-toggle="tab">
+                                    <i class="icon-exclamation-sign has-errors hide"></i>
+                                    {{ admin.trans(name) }}
+                                </a>
+                            </li>
                         {% endfor %}
                     </ul>
             {% endblock %}
