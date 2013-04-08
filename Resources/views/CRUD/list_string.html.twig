@@ -10,11 +10,3 @@ file that was distributed with this source code.
 #}
 
 {% extends admin.getTemplate('base_list_field') %}
-
-{% block field%}
-    {% if field_description.options.catalogue is not defined %}
-        {{value|trans}}
-    {% else %}
-        {{value|trans({}, field_description.options.catalogue)}}
-    {% endif %}
-{% endblock %}

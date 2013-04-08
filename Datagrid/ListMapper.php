@@ -68,7 +68,7 @@ class ListMapper
      * @param mixed $type
      * @param array $fieldDescriptionOptions
      *
-     * @return \Sonata\AdminBundle\Datagrid\ListMapper
+     * @return ListMapper
      */
     public function add($name, $type = null, array $fieldDescriptionOptions = array())
     {
@@ -98,7 +98,7 @@ class ListMapper
     /**
      * @param string $name
      *
-     * @return \Sonata\AdminBundle\Admin\FieldDescriptionInterface
+     * @return FieldDescriptionInterface
      */
     public function get($name)
     {

@@ -75,14 +75,14 @@ class SonataAdminExtension extends \Twig_Extension
     }
 
     /**
-     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
-     * @param string                                              $default
+     * @param FieldDescriptionInterface $fieldDescription
      *
      * @return \Twig_TemplateInterface
      */
-    protected function getTemplate(FieldDescriptionInterface $fieldDescription, $default)
+    protected function getTemplate(FieldDescriptionInterface $fieldDescription)
     {
-        // todo: find a better solution
+        $default = $fieldDescription->getAdmin()->getTemplate('base_list_field');
+
         $templateName = $fieldDescription->getTemplate() ? : $default;
 
         try {
