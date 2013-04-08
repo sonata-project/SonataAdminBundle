@@ -97,15 +97,15 @@ class SonataAdminExtension extends \Twig_Extension
     /**
      * render a list element from the FieldDescription
      *
-     * @param mixed                                               $object
-     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
-     * @param array                                               $params
+     * @param mixed                     $object
+     * @param FieldDescriptionInterface $fieldDescription
+     * @param array                     $params
      *
      * @return string
      */
     public function renderListElement($object, FieldDescriptionInterface $fieldDescription, $params = array())
     {
-        $template = $this->getTemplate($fieldDescription, 'SonataAdminBundle:CRUD:base_list_field.html.twig');
+        $template = $this->getTemplate($fieldDescription);
 
         return $this->output($fieldDescription, $template, array_merge($params, array(
             'admin'             => $fieldDescription->getAdmin(),
@@ -116,9 +116,9 @@ class SonataAdminExtension extends \Twig_Extension
     }
 
     /**
-     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
-     * @param \Twig_TemplateInterface                             $template
-     * @param array                                               $parameters
+     * @param FieldDescriptionInterface $fieldDescription
+     * @param \Twig_TemplateInterface   $template
+     * @param array                     $parameters
      *
      * @return string
      */
@@ -143,9 +143,9 @@ class SonataAdminExtension extends \Twig_Extension
      * return the value related to FieldDescription, if the associated object does no
      * exists => a temporary one is created
      *
-     * @param object                                              $object
-     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
-     * @param array                                               $params
+     * @param object                    $object
+     * @param FieldDescriptionInterface $fieldDescription
+     * @param array                     $params
      *
      * @throws \RuntimeException
      *
@@ -172,8 +172,8 @@ class SonataAdminExtension extends \Twig_Extension
     /**
      * render a view element
      *
-     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
-     * @param mixed                                               $object
+     * @param FieldDescriptionInterface $fieldDescription
+     * @param mixed                     $object
      *
      * @return string
      */
@@ -198,8 +198,8 @@ class SonataAdminExtension extends \Twig_Extension
     /**
      * @throws \RunTimeException
      *
-     * @param mixed                                               $element
-     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
+     * @param mixed                     $element
+     * @param FieldDescriptionInterface $fieldDescription
      *
      * @return mixed
      */
@@ -239,7 +239,7 @@ class SonataAdminExtension extends \Twig_Extension
      *
      * @param $text
      *
-     * @return text
+     * @return string
      */
     public function slugify($text)
     {
