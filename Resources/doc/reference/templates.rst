@@ -95,7 +95,7 @@ From 2.2, it is possible to define a template per row for the list action, the d
 depends on the data the table layout might not be suitable. So by defining a custom template for the row, it will be
 possible to tweak the layout as:
 
-.. figure:: ./images/sonata_inline_row.png
+.. figure:: ./../images/sonata_inline_row.png
    :align: center
    :alt: Inline Row from the SonataNewsBundle
    :width: 700px
