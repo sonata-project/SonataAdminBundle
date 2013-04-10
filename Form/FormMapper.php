@@ -26,7 +26,16 @@ class FormMapper
 
     protected $admin;
 
+    protected $currentField;
+
+    protected $currentFieldPosition;
+
     protected $currentGroup;
+
+    const FIRST = 'first';
+    const BEFORE = 'before';
+    const AFTER = 'after';
+    const LAST = 'last';
 
     /**
      * @param \Sonata\AdminBundle\Builder\FormContractorInterface $formContractor
@@ -61,7 +70,7 @@ class FormMapper
 
         $this->admin->setFormGroups($formGroups);
 
-        $this->currentGroup = $name;
+        $this->setCurrentGroup($name);
 
         return $this;
     }
@@ -71,9 +80,89 @@ class FormMapper
      */
     public function end()
     {
-        $this->currentGroup = null;
+        if ($this->getCurrentField()) {
+            $this
+                ->setCurrentField(null)
+                ->setCurrentFieldPosition(null)
+            ;
+        } else {
+            $this->setCurrentGroup(null);
+        }
 
         return $this;
+    }
+
+    public function first()
+    {
+        return $this->setCurrentFieldPosition($this::FIRST);
+    }
+
+    public function before($field = null)
+    {
+        return $this
+            ->setCurrentField($field)
+            ->setCurrentFieldPosition($this::BEFORE)
+        ;
+    }
+
+    public function after($field = null)
+    {
+        return $this
+            ->setCurrentField($field)
+            ->setCurrentFieldPosition($this::AFTER)
+        ;
+    }
+
+    public function last()
+    {
+        return $this->setCurrentFieldPosition($this::LAST);
+    }
+
+    /**
+     * @param string $field field name
+     * @param string $position first, last, before, after
+     * @param string $target field name
+     *
+     * @return \Sonata\AdminBundle\Form\FormMapper
+     */
+    public function move($field, $position, $target = null)
+    {
+        $groups = $this->admin->getFormGroups();
+
+        $fields = array_diff(
+            array_keys($groups[$this->currentGroup]['fields']),
+            array($field)
+        );
+
+        switch ($position) {
+            case $this::FIRST:
+                $offset = 0;
+
+                break;
+
+            case $this::BEFORE:
+                if ($target) {
+                    $offset = array_search($target, $fields);
+                }
+
+                break;
+
+            case $this::AFTER:
+                if ($target) {
+                    $offset = array_search($target, $fields) + 1;
+                }
+
+                break;
+
+            case $this::LAST:
+                $offset = count($fields);
+        }
+
+        if (isset($offset)) {
+            array_splice($fields, $offset, 0, $field);
+        }
+
+        return $this->reorder($fields);
     }
 
     /**
@@ -146,6 +235,15 @@ class FormMapper
             if (null !== $help) {
                 $this->admin->getFormFieldDescription($name)->setHelp($help);
             }
+        }
+
+        if ($this->getCurrentFieldPosition()) {
+            $this->move($name, $this->getCurrentFieldPosition(), $this->getCurrentField());
+
+            $this
+                ->setCurrentField($name)
+                ->setCurrentFieldPosition($this::AFTER)
+            ;
         }
 
         return $this;
@@ -224,6 +322,42 @@ class FormMapper
                 $this->admin->getFormFieldDescription($name)->setHelp($help);
             }
         }
+
+        return $this;
+    }
+
+    protected function getCurrentField()
+    {
+        return $this->currentField;
+    }
+
+    protected function setCurrentField($field)
+    {
+        $this->currentField = $field;
+
+        return $this;
+    }
+
+    protected function getCurrentFieldPosition()
+    {
+        return $this->currentFieldPosition;
+    }
+
+    protected function setCurrentFieldPosition($position)
+    {
+        $this->currentFieldPosition = $position;
+
+        return $this;
+    }
+
+    protected function getCurrentGroup()
+    {
+        return $this->currentGroup;
+    }
+
+    protected function setCurrentGroup($group)
+    {
+        $this->currentGroup = $group;
 
         return $this;
     }
