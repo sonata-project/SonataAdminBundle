@@ -157,5 +157,48 @@ Note that you can use both the Bundle:Controller format or a `service name`_ to
 specify what controller to load. If you provide null instead of SonataNewsBundle:PostAdmin,
 you will not need to create a controller class and the system will use the default.
 
+Create child admins
+---------------------------
+
+Let's say you have a PostAdmin and a CommentAdmin. You can optionally declare the CommentAdmin
+to be a child of the PostAdmin. This will create new routes like, for example, ``/post/{id}/comment/list``,
+where the comments will automatically be filtered by post.
+
+To do this, you first need to call the ``addChild`` method in your PostAdmin service configuration :
+
+.. code-block:: xml
+
+    <!-- app/config/config.xml -->
+    <service id="sonata.news.admin.post" class="Sonata\NewsBundle\Admin\CommentAdmin">
+        ...
+
+        <call method="addChild">
+            <argument type="service" id="sonata.news.admin.comment" />
+        </call>
+    </service>
+
+Then, you have to set the CommentAdmin ``parentAssociationMapping`` attribute to ``post`` :
+
+.. code-block:: php
+
+    <?php
+    namespace Sonata\NewsBundle\Admin;
+
+    ...
+
+    class CommentAdmin extends Admin
+    {
+        protected $parentAssociationMapping = 'post';
+
+        // OR
+
+        public function getParentAssociationMapping()
+        {
+            return 'post';
+        }
+    }
+
+It also possible to set a dot-separated value, like ``post.author``, if your parent and child admins are not directly related.
+
 .. _`Django Project Website`: http://www.djangoproject.com/
 .. _`service name`: http://symfony.com/doc/2.1/cookbook/controller/service.html
