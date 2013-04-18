@@ -33,7 +33,7 @@
         "doctrine/common": ">=2.2,<3.0"
     },
     "require-dev": {
-        "jms/translation-bundle": "*",
+        "jms/translation-bundle": "*@dev",
         "sonata-project/intl-bundle": "2.1.*"
     },
     "suggest": {
