@@ -148,6 +148,10 @@ class ErrorElement
      */
     protected function getValue()
     {
+        if ($this->current == '') {
+            return $this->subject;
+        }
+
         return $this->getCurrentPropertyPath()->getValue($this->subject);
     }
 
