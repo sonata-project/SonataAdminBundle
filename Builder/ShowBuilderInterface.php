@@ -15,7 +15,7 @@ use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
 
-interface ShowBuilderInterface
+interface ShowBuilderInterface extends BuilderInterfaces
 {
     /**
      * @abstract
@@ -38,13 +38,4 @@ interface ShowBuilderInterface
      */
     public function addField(FieldDescriptionCollection $list, $type = null, FieldDescriptionInterface $fieldDescription, AdminInterface $admin);
 
-    /**
-     * @abstract
-     *
-     * @param \Sonata\AdminBundle\Admin\AdminInterface            $admin
-     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
-     *
-     * @return void
-     */
-    public function fixFieldDescription(AdminInterface $admin, FieldDescriptionInterface $fieldDescription);
 }

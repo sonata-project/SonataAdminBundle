@@ -15,16 +15,8 @@ use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 
-interface DatagridBuilderInterface
+interface DatagridBuilderInterface extends BuilderInterface
 {
-    /**
-     *
-     * @param \Sonata\AdminBundle\Admin\AdminInterface            $admin
-     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
-     *
-     * @return void
-     */
-    public function fixFieldDescription(AdminInterface $admin, FieldDescriptionInterface $fieldDescription);
 
     /**
      * @abstract
