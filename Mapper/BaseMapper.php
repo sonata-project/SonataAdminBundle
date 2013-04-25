@@ -17,7 +17,7 @@ use Sonata\AdminBundle\Builder\BuilderInterface;
  * This class is used to simulate the Form API
  *
  */
-class BaseMapper
+abstract class BaseMapper
 {
 
     protected $admin;
@@ -41,5 +41,33 @@ class BaseMapper
     {
         return $this->admin;
     }
+    
+    /**
+     * @param string $name
+     *
+     * @return mixed
+     */
+    public abstract function get($key);
+
+    /**
+     * @param string $key
+     *
+     * @return boolean
+     */
+    public abstract function has($key);
+
+    /**
+     * @param string $key
+     *
+     * @return \Sonata\AdminBundle\Mapper\BaseMapper
+     */
+    public abstract function remove($key);
+    
+    /**
+     * @param array $keys field names
+     *
+     * @return \Sonata\AdminBundle\Mapper\BaseMapper
+     */
+    public abstract function reorder(array $keys);
     
 }

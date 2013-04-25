@@ -13,17 +13,15 @@ namespace Sonata\AdminBundle\Form;
 use Sonata\AdminBundle\Builder\FormContractorInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Symfony\Component\Form\FormBuilder;
-use Sonata\AdminBundle\Mapper\BaseMapper;
+use Sonata\AdminBundle\Mapper\BaseGroupedMapper;
 
 /**
  * This class is use to simulate the Form API
  *
  */
-class FormMapper extends BaseMapper
+class FormMapper extends BaseGroupedMapper
 {
     protected $formBuilder;
-
-    protected $currentGroup;
 
     /**
      * @param \Sonata\AdminBundle\Builder\FormContractorInterface $formContractor
@@ -37,53 +35,13 @@ class FormMapper extends BaseMapper
     }
 
     /**
-     * @param string $name
-     * @param array  $options
-     *
-     * @return \Sonata\AdminBundle\Form\FormMapper
-     */
-    public function with($name, array $options = array())
-    {
-        $formGroups = $this->admin->getFormGroups();
-        if (!isset($formGroups[$name])) {
-            $formGroups[$name] = array();
-        }
-
-        $formGroups[$name] = array_merge(array(
-            'collapsed'   => false,
-            'fields'      => array(),
-            'description' => false
-        ), $formGroups[$name], $options);
-
-        $this->admin->setFormGroups($formGroups);
-
-        $this->currentGroup = $name;
-
-        return $this;
-    }
-
-    /**
-     * @return \Sonata\AdminBundle\Form\FormMapper
-     */
-    public function end()
-    {
-        $this->currentGroup = null;
-
-        return $this;
-    }
-
-    /**
      * @param array $keys field names
      *
      * @return \Sonata\AdminBundle\Form\FormMapper
      */
     public function reorder(array $keys)
     {
-        if (!$this->currentGroup) {
-            $this->with($this->admin->getLabel());
-        }
-
-        $this->admin->reorderFormGroup($this->currentGroup, $keys);
+        $this->admin->reorderFormGroup($this->getCurrentGroupName(), $keys);
 
         return $this;
     }
@@ -98,15 +56,9 @@ class FormMapper extends BaseMapper
      */
     public function add($name, $type = null, array $options = array(), array $fieldDescriptionOptions = array())
     {
-        if (!$this->currentGroup) {
-            $this->with($this->admin->getLabel());
-        }
-
         $label = $name instanceof FormBuilder ? $name->getName() : $name;
 
-        $formGroups                                        = $this->admin->getFormGroups();
-        $formGroups[$this->currentGroup]['fields'][$label] = $label;
-        $this->admin->setFormGroups($formGroups);
+        $this->addFieldToCurrentGroup($label);
 
         if (!isset($fieldDescriptionOptions['type']) && is_string($type)) {
             $fieldDescriptionOptions['type'] = $type;
@@ -217,4 +169,21 @@ class FormMapper extends BaseMapper
 
         return $this;
     }
+    
+    /**
+     * {@inheritdoc}
+     */
+    protected function getGroups() 
+    {
+        return $this->admin->getFormGroups();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function setGroups(array $groups) 
+    {
+        $this->admin->setFormGroups($groups);
+    }
+    
 }
