@@ -13,18 +13,15 @@ namespace Sonata\AdminBundle\Form;
 use Sonata\AdminBundle\Builder\FormContractorInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Symfony\Component\Form\FormBuilder;
+use Sonata\AdminBundle\Mapper\BaseMapper;
 
 /**
  * This class is use to simulate the Form API
  *
  */
-class FormMapper
+class FormMapper extends BaseMapper
 {
     protected $formBuilder;
-
-    protected $formContractor;
-
-    protected $admin;
 
     protected $currentGroup;
 
@@ -35,9 +32,8 @@ class FormMapper
      */
     public function __construct(FormContractorInterface $formContractor, FormBuilder $formBuilder, AdminInterface $admin)
     {
+        parent::__construct($formContractor, $admin);
         $this->formBuilder    = $formBuilder;
-        $this->formContractor = $formContractor;
-        $this->admin          = $admin;
     }
 
     /**
@@ -122,14 +118,16 @@ class FormMapper
             $fieldDescriptionOptions
         );
 
-        $this->formContractor->fixFieldDescription($this->admin, $fieldDescription, $fieldDescriptionOptions);
+        //Note that the builder var is actually the formContractor:
+        $this->builder->fixFieldDescription($this->admin, $fieldDescription, $fieldDescriptionOptions);
 
         $this->admin->addFormFieldDescription($name instanceof FormBuilder ? $name->getName() : $name, $fieldDescription);
 
         if ($name instanceof FormBuilder) {
             $this->formBuilder->add($name);
         } else {
-            $options = array_replace_recursive($this->formContractor->getDefaultOptions($type, $fieldDescription), $options);
+            //Note that the builder var is actually the formContractor:
+            $options = array_replace_recursive($this->builder->getDefaultOptions($type, $fieldDescription), $options);
 
             if (!isset($options['label'])) {
                 $options['label'] = $this->admin->getLabelTranslatorStrategy()->getLabel($fieldDescription->getName(), 'form', 'label');
@@ -190,14 +188,6 @@ class FormMapper
     public function getFormBuilder()
     {
         return $this->formBuilder;
-    }
-
-    /**
-     * @return \Sonata\AdminBundle\Admin\AdminInterface
-     */
-    public function getAdmin()
-    {
-        return $this->admin;
     }
 
     /**

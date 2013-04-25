@@ -14,18 +14,15 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
 use Sonata\AdminBundle\Builder\ShowBuilderInterface;
+use Sonata\AdminBundle\Mapper\BaseMapper;
 
 /**
  * This class is used to simulate the Form API
  *
  */
-class ShowMapper
+class ShowMapper extends BaseMapper
 {
-    protected $showBuilder;
-
     protected $list;
-
-    protected $admin;
 
     protected $currentGroup;
 
@@ -36,9 +33,8 @@ class ShowMapper
      */
     public function __construct(ShowBuilderInterface $showBuilder, FieldDescriptionCollection $list, AdminInterface $admin)
     {
-        $this->showBuilder = $showBuilder;
+        parent::__construct($showBuilder, $admin);
         $this->list        = $list;
-        $this->admin       = $admin;
     }
 
     /**
@@ -82,7 +78,7 @@ class ShowMapper
         $fieldDescription->setOption('safe', $fieldDescription->getOption('safe', false));
 
         // add the field with the FormBuilder
-        $this->showBuilder->addField($this->list, $type, $fieldDescription, $this->admin);
+        $this->builder->addField($this->list, $type, $fieldDescription, $this->admin);
 
         return $this;
     }
