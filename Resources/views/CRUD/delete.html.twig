@@ -13,16 +13,8 @@ file that was distributed with this source code.
 
 {% block actions %}
     <div class="sonata-actions btn-group">
-        {% if admin.hasRoute('edit') and admin.isGranted('EDIT', object)%}
-            <a class="btn sonata-action-element" href="{{ admin.generateObjectUrl('edit', object) }}">
-                <i class="icon-edit"></i>
-                {{ 'link_action_edit'|trans({}, 'SonataAdminBundle') }}</a>
-        {% endif %}
-        {% if admin.hasRoute('create') and admin.isGranted('CREATE')%}
-            <a class="btn sonata-action-element" href="{{ admin.generateUrl('create') }}">
-                <i class="icon-plus"></i>
-                {{ 'link_action_create'|trans({}, 'SonataAdminBundle') }}</a>
-        {% endif %}
+        {% include 'SonataAdminBundle:Button:edit_button.html.twig' %}
+        {% include 'SonataAdminBundle:Button:create_button.html.twig' %}
     </div>
 {% endblock %}
 

@@ -21,22 +21,10 @@ file that was distributed with this source code.
 
 {% block actions %}
     <div class="sonata-actions btn-group">
-        {% if admin.hasroute('show') and admin.id(object) and admin.isGranted('VIEW', object) and admin.show|length > 0 %}
-            <a class="btn sonata-action-element" href="{{ admin.generateObjectUrl('show', object) }}">
-                <i class="icon-zoom-in"></i>
-                {{ 'link_action_show'|trans({}, 'SonataAdminBundle') }}</a>
-        {% endif %}
-        {% if admin.hasroute('history') and admin.id(object) and admin.isGranted('EDIT', object) %}
-            <a class="btn sonata-action-element" href="{{ admin.generateObjectUrl('history', object) }}">
-                <i class="icon-book"></i>
-                {{ 'link_action_history'|trans({}, 'SonataAdminBundle') }}</a>
-        {% endif %}
-        {% include 'SonataAdminBundle:Core:create_button.html.twig' %}
-        {% if admin.hasroute('list') and admin.isGranted('LIST')%}
-            <a class="btn sonata-action-element" href="{{ admin.generateUrl('list') }}">
-                <i class="icon-list"></i>
-                {{ 'link_action_list'|trans({}, 'SonataAdminBundle') }}</a>
-        {% endif %}
+        {% include 'SonataAdminBundle:Button:show_button.html.twig' %}
+        {% include 'SonataAdminBundle:Button:history_button.html.twig' %}
+        {% include 'SonataAdminBundle:Button:create_button.html.twig' %}
+        {% include 'SonataAdminBundle:Button:list_button.html.twig' %}
     </div>
 {% endblock %}
 
