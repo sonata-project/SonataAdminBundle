@@ -78,7 +78,8 @@ abstract class BaseGroupedMapper extends BaseMapper
      * 
      * @return string
      */
-    protected function getCurrentGroupName() {
+    protected function getCurrentGroupName() 
+    {
         if (!$this->currentGroup) {
             $this->with($this->admin->getLabel());
         }
