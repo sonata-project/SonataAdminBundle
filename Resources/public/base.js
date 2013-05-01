@@ -123,8 +123,10 @@ var Admin = {
                         elm.html(jQuery(json.content.replace(/<!--[\s\S]*?-->/g, "")).html());
                         elm.effect("highlight", {'color' : '#57A957'}, 2000);
                         Admin.set_object_field_value(elm);
+                        jQuery(document).trigger('sonata-item-edited-inline-success', subject);
                     } else {
                         jQuery(subject).parent().effect("highlight", {'color' : '#C43C35'}, 2000);
+                        jQuery(document).trigger('sonata-item-edited-inline-failure', subject);
                     }
                 }
             });
