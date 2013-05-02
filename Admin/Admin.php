@@ -586,6 +586,21 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         $this->postRemove($object);
     }
 
+
+    /**
+     * {@inheritdoc}
+     */
+    public function batchDelete($idx)
+    {
+        if(method_exists($this, 'preBatchRemove')){
+            $this->preBatchRemove($idx);
+        }else{
+            foreach((array)$idx as $id){
+                $this->preRemove($this->getObject((int)$id));
+            }
+        }
+    }
+
     /**
      * {@inheritdoc}
      */

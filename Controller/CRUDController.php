@@ -171,6 +171,7 @@ class CRUDController extends Controller
      * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
      *
      * @param \Sonata\AdminBundle\Datagrid\ProxyQueryInterface $query
+     * @param array $idx
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
@@ -182,6 +183,12 @@ class CRUDController extends Controller
 
         $modelManager = $this->admin->getModelManager();
         try {
+            // get idx
+            $args = func_get_args();
+            if(isset($args[1])){
+                $this->admin->batchDelete($args[1]);
+            }
+
             $modelManager->batchDelete($this->admin->getClass(), $query);
             $this->get('session')->setFlash('sonata_flash_success', 'flash_batch_delete_success');
         } catch ( ModelManagerException $e ) {
@@ -436,7 +443,7 @@ class CRUDController extends Controller
             $query = null;
         }
 
-        return call_user_func(array($this, $final_action), $query);
+        return call_user_func(array($this, $final_action), $query, $idx);
     }
 
     /**
