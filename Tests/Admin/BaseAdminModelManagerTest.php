@@ -12,9 +12,7 @@
 namespace Sonata\AdminBundle\Tests\Admin;
 
 use Sonata\AdminBundle\Admin\Admin;
-use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
-use Sonata\AdminBundle\Security\Handler\NoopSecurityHandler;
 
 class BaseAdminModelManager_Admin extends Admin
 {

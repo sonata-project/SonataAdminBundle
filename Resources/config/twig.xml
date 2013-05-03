@@ -7,6 +7,8 @@
     <services>
         <service id="sonata.admin.twig.extension" class="Sonata\AdminBundle\Twig\Extension\SonataAdminExtension">
             <tag name="twig.extension"/>
+
+            <argument type="service" id="sonata.admin.pool" />
         </service>
     </services>
 

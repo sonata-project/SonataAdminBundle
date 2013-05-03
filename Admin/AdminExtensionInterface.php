@@ -34,46 +34,46 @@ interface AdminExtensionInterface
      *
      * @return void
      */
-    function configureFormFields(FormMapper $form);
+    public function configureFormFields(FormMapper $form);
 
     /**
      * @param \Sonata\AdminBundle\Datagrid\ListMapper $list
      *
      * @return void
      */
-    function configureListFields(ListMapper $list);
+    public function configureListFields(ListMapper $list);
 
     /**
      * @param \Sonata\AdminBundle\Datagrid\DatagridMapper $filter
      *
      * @return void
      */
-    function configureDatagridFilters(DatagridMapper $filter);
+    public function configureDatagridFilters(DatagridMapper $filter);
 
     /**
      * @param \Sonata\AdminBundle\Show\ShowMapper $filter
      *
      * @return void
      */
-    function configureShowFields(ShowMapper $filter);
+    public function configureShowFields(ShowMapper $filter);
 
     /**
-     * @param AdminInterface                                $admin
-     * @param \Sonata\AdminBundle\Route\RouteCollection     $collection
+     * @param AdminInterface                            $admin
+     * @param \Sonata\AdminBundle\Route\RouteCollection $collection
      *
      * @return void
      */
-    function configureRoutes(AdminInterface $admin, RouteCollection $collection);
+    public function configureRoutes(AdminInterface $admin, RouteCollection $collection);
 
     /**
-     * @param AdminInterface           $admin
-     * @param \Knp\Menu\ItemInterface  $menu
-     * @param string                   $action
-     * @param null|AdminInterface      $childAdmin
+     * @param AdminInterface          $admin
+     * @param \Knp\Menu\ItemInterface $menu
+     * @param string                  $action
+     * @param null|AdminInterface     $childAdmin
      *
      * @return mixed
      */
-    function configureSideMenu(AdminInterface $admin, MenuItemInterface $menu, $action, AdminInterface $childAdmin = null);
+    public function configureSideMenu(AdminInterface $admin, MenuItemInterface $menu, $action, AdminInterface $childAdmin = null);
 
     /**
      * @param AdminInterface                             $admin
@@ -82,7 +82,7 @@ interface AdminExtensionInterface
      *
      * @return void
      */
-    function validate(AdminInterface $admin, ErrorElement $errorElement, $object);
+    public function validate(AdminInterface $admin, ErrorElement $errorElement, $object);
 
     /**
      * @param \Sonata\AdminBundle\Datagrid\ProxyQueryInterface $query
@@ -90,5 +90,5 @@ interface AdminExtensionInterface
      *
      * @return void
      */
-    function configureQuery(AdminInterface $admin, ProxyQueryInterface $query, $context = 'list');
+    public function configureQuery(AdminInterface $admin, ProxyQueryInterface $query, $context = 'list');
 }

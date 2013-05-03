@@ -1,5 +1,18 @@
-<td class="sonata-ba-list-field sonata-ba-list-field-action">
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{% extends admin.getTemplate('base_list_field') %}
+
+{% block field %}
     {% for actions in field_description.options.actions %}
         {% include actions.template %}
     {% endfor %}
-</td>
+{% endblock %}

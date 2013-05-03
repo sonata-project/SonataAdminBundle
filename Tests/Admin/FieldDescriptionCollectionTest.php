@@ -65,7 +65,50 @@ class FieldDescriptionCollectionTest extends \PHPUnit_Framework_TestCase
     public function testArrayAccessSetField()
     {
         $collection = new FieldDescriptionCollection();
-        
+
         $collection['foo'] = null;
+    }
+
+    public function testReorderListWithoutBatchField()
+    {
+        $collection = new FieldDescriptionCollection();
+
+        $fieldDescription = $this->getMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+        $fieldDescription->expects($this->once())->method('getName')->will($this->returnValue('title'));
+        $collection->add($fieldDescription);
+
+        $fieldDescription = $this->getMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+        $fieldDescription->expects($this->once())->method('getName')->will($this->returnValue('position'));
+        $collection->add($fieldDescription);
+
+        $newOrder = array('position', 'title');
+        $collection->reorder($newOrder);
+
+        $actualElements = array_keys($collection->getElements());
+        $this->assertSame($newOrder, $actualElements, 'the order is wrong');
+    }
+
+    public function testReorderListWithBatchField()
+    {
+        $collection = new FieldDescriptionCollection();
+
+        $fieldDescription = $this->getMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+        $fieldDescription->expects($this->once())->method('getName')->will($this->returnValue('title'));
+        $collection->add($fieldDescription);
+
+        $fieldDescription = $this->getMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+        $fieldDescription->expects($this->once())->method('getName')->will($this->returnValue('position'));
+        $collection->add($fieldDescription);
+
+        $fieldDescription = $this->getMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+        $fieldDescription->expects($this->once())->method('getName')->will($this->returnValue('batch'));
+        $collection->add($fieldDescription);
+
+        $newOrder = array('position', 'title');
+        $collection->reorder($newOrder);
+        array_unshift($newOrder, 'batch');
+
+        $actualElements = array_keys($collection->getElements());
+        $this->assertSame($newOrder, $actualElements, 'the order is wrong');
     }
 }

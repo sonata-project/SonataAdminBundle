@@ -20,7 +20,7 @@ file that was distributed with this source code.
 {% endblock%}
 
 {% block actions %}
-    <div class="sonata-actions">
+    <div class="sonata-actions btn-group">
         {% if admin.hasroute('show') and admin.id(object) and admin.isGranted('VIEW', object) and admin.show|length > 0 %}
             <a class="btn sonata-action-element" href="{{ admin.generateObjectUrl('show', object) }}">
                 <i class="icon-zoom-in"></i>

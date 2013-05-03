@@ -11,9 +11,9 @@
 
 namespace Sonata\AdminBundle\Form\ChoiceList;
 
-use Symfony\Component\Form\Util\PropertyPath;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\Form\Exception\FormException;
-use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Form\Extension\Core\ChoiceList\SimpleChoiceList;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 
@@ -114,13 +114,13 @@ class ModelChoiceList extends SimpleChoiceList
      *
      * @param $choices
      *
-     * @return array  An array of choices
+     * @return array An array of choices
      */
     protected function load($choices)
     {
         if (is_array($choices)) {
             $entities = $choices;
-        } else if ($this->query) {
+        } elseif ($this->query) {
             $entities = $this->modelManager->executeQuery($this->query);
         } else {
             $entities = $this->modelManager->findBy($this->class);
@@ -132,10 +132,11 @@ class ModelChoiceList extends SimpleChoiceList
         foreach ($entities as $key => $entity) {
             if ($this->propertyPath) {
                 // If the property option was given, use it
-                $value = $this->propertyPath->getValue($entity);
+                $propertyAccessor = PropertyAccess::getPropertyAccessor();
+                $value = $propertyAccessor->getValue($entity, $this->propertyPath);
             } else {
                 // Otherwise expect a __toString() method in the entity
-                $value = (string)$entity;
+                $value = (string) $entity;
             }
 
             if (count($this->identifier) > 1) {
@@ -170,7 +171,7 @@ class ModelChoiceList extends SimpleChoiceList
      * is an expensive operation, except if the entities were passed in the
      * "choices" option.
      *
-     * @return array  An array of entities
+     * @return array An array of entities
      */
     public function getEntities()
     {
@@ -187,10 +188,10 @@ class ModelChoiceList extends SimpleChoiceList
      * If they have single identifiers, they are either fetched from the
      * internal entity cache (if filled) or loaded from the database.
      *
-     * @param  string $key  The choice key (for entities with composite
+     * @param string $key The choice key (for entities with composite
      *                      identifiers) or entity ID (for entities with single
      *                      identifiers)
-     * @return object       The matching entity
+     * @return object The matching entity
      */
     public function getEntity($key)
     {
@@ -198,8 +199,9 @@ class ModelChoiceList extends SimpleChoiceList
         if (count($this->identifier) > 1) {
             // $key is a collection index
             $entities = $this->getEntities();
+
             return isset($entities[$key]) ? $entities[$key] : null;
-        } else if ($this->entities) {
+        } elseif ($this->entities) {
             return isset($this->entities[$key]) ? $this->entities[$key] : null;
         }
 
@@ -210,9 +212,9 @@ class ModelChoiceList extends SimpleChoiceList
      * Returns the \ReflectionProperty instance for a property of the
      * underlying class
      *
-     * @param  string $property     The name of the property
+     * @param string $property The name of the property
      *
-     * @return \ReflectionProperty  The reflection instance
+     * @return \ReflectionProperty The reflection instance
      */
     private function getReflProperty($property)
     {
@@ -231,8 +233,8 @@ class ModelChoiceList extends SimpleChoiceList
      * be persisted or added to the identity map before. Otherwise an
      * exception is thrown.
      *
-     * @param  object $entity  The entity for which to get the identifier
-     * @throws FormException   If the entity does not exist in Doctrine's
+     * @param  object        $entity The entity for which to get the identifier
+     * @throws FormException If the entity does not exist in Doctrine's
      *                         identity map
      * @return array
      */

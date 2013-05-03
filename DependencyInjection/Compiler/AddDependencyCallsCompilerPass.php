@@ -17,8 +17,6 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
-
 /**
  * Add all dependencies to the Admin class, this avoid to write too many lines
  * in the configuration files.
@@ -58,7 +56,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
                 $admins[] = $id;
                 $classes[$arguments[1]] = $id;
 
-                $showInDashboard = (boolean)(isset($attributes['show_in_dashboard']) ? $attributes['show_in_dashboard'] : true);
+                $showInDashboard = (boolean) (isset($attributes['show_in_dashboard']) ? $attributes['show_in_dashboard'] : true);
                 if (!$showInDashboard) {
                     continue;
                 }
@@ -121,9 +119,10 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
      * This method read the attribute keys and configure admin class to use the related dependency
      *
      * @param \Symfony\Component\DependencyInjection\Definition $definition
-     * @param array $attributes
+     * @param array                                             $attributes
      */
-    public function applyConfigurationFromAttribute(Definition $definition, array $attributes) {
+    public function applyConfigurationFromAttribute(Definition $definition, array $attributes)
+    {
         $keys = array(
             'model_manager',
             'form_contractor',
@@ -153,9 +152,10 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
     /**
      * Apply the default values required by the AdminInterface to the Admin service definition
      *
-     * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
-     * @param string $serviceId
-     * @param array $attributes
+     * @param  \Symfony\Component\DependencyInjection\ContainerBuilder $container
+     * @param  string                                                  $serviceId
+     * @param  array                                                   $attributes
+     *
      * @return \Symfony\Component\DependencyInjection\Definition
      */
     public function applyDefaults(ContainerBuilder $container, $serviceId, array $attributes = array())
@@ -225,8 +225,9 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
     }
 
     /**
-     * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
-     * @param \Symfony\Component\DependencyInjection\Definition $definition
+     * @param  \Symfony\Component\DependencyInjection\ContainerBuilder $container
+     * @param  \Symfony\Component\DependencyInjection\Definition       $definition
+     *
      * @return void
      */
     public function fixTemplates(ContainerBuilder $container, Definition $definition)
@@ -265,6 +266,13 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
             'history_revision'         => 'SonataAdminBundle:CRUD:history_revision.html.twig',
             'action'                   => 'SonataAdminBundle:CRUD:action.html.twig',
             'short_object_description' => 'SonataAdminBundle:Helper:short-object-description.html.twig',
+            'preview'                  => 'SonataAdminBundle:CRUD:preview.html.twig',
+            'list_block'               => 'SonataAdminBundle:Block:block_admin_list.html.twig',
+            'delete'                   => 'SonataAdminBundle:CRUD:delete.html.twig',
+            'batch'                    => 'SonataAdminBundle:CRUD:list__batch.html.twig',
+            'batch_confirmation'       => 'SonataAdminBundle:CRUD:batch_confirmation.html.twig',
+            'inner_list_row'           => 'SonataAdminBundle:CRUD:list_inner_row.html.twig',
+            'base_list_field'          => 'SonataAdminBundle:CRUD:base_list_field.html.twig',
         ), $definedTemplates);
 
         $definition->addMethodCall('setTemplates', array($definedTemplates));
@@ -274,6 +282,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
      * method taken from PropertyPath
      *
      * @param  $property
+     *
      * @return mixed
      */
     protected function camelize($property)

@@ -14,7 +14,6 @@ use JMS\TranslationBundle\Translation\ExtractorInterface;
 use JMS\TranslationBundle\Model\MessageCatalogue;
 use JMS\TranslationBundle\Model\Message;
 use JMS\TranslationBundle\Model\FileSource;
-use JMS\TranslationBundle\Logger\LoggerAwareExtractorInterface;
 
 class AdminExtractor implements ExtractorInterface, TranslatorInterface, SecurityHandlerInterface, LabelTranslatorStrategyInterface
 {
@@ -26,10 +25,10 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
     private $domain;
 
     /**
-     * @param \Symfony\Component\HttpKernel\Log\LoggerInterface $logger
      * @param \Sonata\AdminBundle\Admin\Pool                    $adminPool
+     * @param \Symfony\Component\HttpKernel\Log\LoggerInterface $logger
      */
-    public function __construct(LoggerInterface $logger, Pool $adminPool)
+    public function __construct(Pool $adminPool, LoggerInterface $logger = null)
     {
         $this->logger    = $logger;
         $this->adminPool = $adminPool;
@@ -72,7 +71,6 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
             $admin->setSecurityHandler($this);
             $admin->setLabelTranslatorStrategy($this);
 
-
 //            foreach ($admin->getChildren() as $child) {
 //                $child->setTranslator($this);
 //            }
@@ -93,14 +91,18 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
                 )
             );
 
-            $this->logger->info(sprintf('Retrieving message from admin:%s - class: %s', $admin->getCode(), get_class($admin)));
+            if ($this->logger) {
+                $this->logger->info(sprintf('Retrieving message from admin:%s - class: %s', $admin->getCode(), get_class($admin)));
+            }
 
             foreach ($methods as $method => $calls) {
                 foreach ($calls as $args) {
                     try {
                         call_user_func_array(array($admin, $method), $args);
                     } catch (\Exception $e) {
-                        $this->logger->err(sprintf('ERROR : admin:%s - Raise an exception : %s', $admin->getCode(), $e->getMessage()));
+                        if ($this->logger) {
+                            $this->logger->err(sprintf('ERROR : admin:%s - Raise an exception : %s', $admin->getCode(), $e->getMessage()));
+                        }
 
                         throw $e;
                     }

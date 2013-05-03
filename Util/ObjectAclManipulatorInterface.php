@@ -29,5 +29,5 @@ interface ObjectAclManipulatorInterface
      * @throws \Sonata\AdminBundle\Exception\ModelManagerException
      * @return void
      */
-    function batchConfigureAcls(OutputInterface $output, AdminInterface $admin, UserSecurityIdentity $securityIdentity = null);
+    public function batchConfigureAcls(OutputInterface $output, AdminInterface $admin, UserSecurityIdentity $securityIdentity = null);
 }

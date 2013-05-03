@@ -15,7 +15,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Form\Util\PropertyPath;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\HttpFoundation\Request;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Admin\AdminHelper;
@@ -197,7 +198,7 @@ class HelperController
     }
 
     /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param  \Symfony\Component\HttpFoundation\Request  $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function setObjectFieldValueAction(Request $request)
@@ -242,8 +243,9 @@ class HelperController
         }
 
         // TODO : call the validator component ...
+        $propertyAccessor = PropertyAccess::getPropertyAccessor();
         $propertyPath = new PropertyPath($field);
-        $propertyPath->setValue($object, $value);
+        $propertyAccessor->setValue($object, $propertyPath, $value);
 
         $admin->update($object);
 

@@ -13,7 +13,7 @@ Sonata dependencies that need to be installed and configured beforehand :
     - `Exporter <https://github.com/sonata-project/exporter>`_
 
 You will need to install those in their 2.1 branches (or master if they don't
-have a similar branch). Follow also their configuration step ; you will find
+have a similar branch). Also follow their configuration steps ; you will find
 everything you need in their installation chapter.
 
 .. note::
@@ -43,7 +43,7 @@ can use Composer for the automated process::
     php composer.phar require sonata-project/cache-bundle --no-update               # optional
     php composer.phar update
 
-Next, be sure to enable this bundles in your AppKernel.php file:
+Next, be sure to enable these bundles in your AppKernel.php file:
 
 .. code-block:: php
 
@@ -78,10 +78,10 @@ Now, install the assets from the bundles:
 
     php app/console assets:install web
 
-Usually when installing new bundles a good practice is to also delete your cache::
+Usually when installing new bundles it's good practice to also delete your cache::
 
     php app/console cache:clear
 
-After you have successfully installed above bundles you need to configure
+After you have successfully installed the above bundles you need to configure
 SonataAdminBundle for administering your models. All that is needed to quickly
 set up SonataAdminBundle is described in the next chapter : :doc:`getting_started`.

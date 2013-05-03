@@ -12,7 +12,6 @@ namespace Sonata\AdminBundle\Datagrid;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
-use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
 use Sonata\AdminBundle\Builder\ListBuilderInterface;
 
@@ -29,9 +28,9 @@ class ListMapper
     protected $admin;
 
     /**
-     * @param \Sonata\AdminBundle\Builder\ListBuilderInterface     $listBuilder
-     * @param \Sonata\AdminBundle\Admin\FieldDescriptionCollection $list
-     * @param \Sonata\AdminBundle\Admin\AdminInterface             $admin
+     * @param ListBuilderInterface       $listBuilder
+     * @param FieldDescriptionCollection $list
+     * @param AdminInterface             $admin
      */
     public function __construct(ListBuilderInterface $listBuilder, FieldDescriptionCollection $list, AdminInterface $admin)
     {
@@ -69,14 +68,14 @@ class ListMapper
      * @param mixed $type
      * @param array $fieldDescriptionOptions
      *
-     * @return \Sonata\AdminBundle\Datagrid\ListMapper
+     * @return ListMapper
      */
     public function add($name, $type = null, array $fieldDescriptionOptions = array())
     {
         if ($name instanceof FieldDescriptionInterface) {
             $fieldDescription = $name;
             $fieldDescription->mergeOptions($fieldDescriptionOptions);
-        } else if (is_string($name) && !$this->admin->hasListFieldDescription($name)) {
+        } elseif (is_string($name) && !$this->admin->hasListFieldDescription($name)) {
             $fieldDescription = $this->admin->getModelManager()->getNewFieldDescriptionInstance(
                 $this->admin->getClass(),
                 $name,
@@ -99,7 +98,7 @@ class ListMapper
     /**
      * @param string $name
      *
-     * @return \Sonata\AdminBundle\Admin\FieldDescriptionInterface
+     * @return FieldDescriptionInterface
      */
     public function get($name)
     {
@@ -117,9 +116,9 @@ class ListMapper
     }
 
     /**
-     * @param  string $key
+     * @param string $key
      *
-     * @return \Sonata\AdminBundle\Datagrid\ListMapper
+     * @return ListMapper
      */
     public function remove($key)
     {
@@ -132,7 +131,7 @@ class ListMapper
     /**
      * @param array $keys field names
      *
-     * @return \Sonata\AdminBundle\Datagrid\ListMapper
+     * @return ListMapper
      */
     public function reorder(array $keys)
     {

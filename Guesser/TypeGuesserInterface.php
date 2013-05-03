@@ -23,5 +23,5 @@ interface TypeGuesserInterface
      *
      * @return mixed
      */
-    function guessType($class, $property, ModelManagerInterface $modelManager);
+    public function guessType($class, $property, ModelManagerInterface $modelManager);
 }

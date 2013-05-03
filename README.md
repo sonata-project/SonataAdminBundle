@@ -31,6 +31,7 @@ Quick example
 -------------
 
 Defining an ``Admin`` class is pretty easy: simply define ``configure[Show|Form|List|Datagrid]Fields`` methods
+(Fields in add function must be fields of your entity)
 
 ``` php
 <?php

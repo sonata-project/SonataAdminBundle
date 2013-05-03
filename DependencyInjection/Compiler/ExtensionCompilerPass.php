@@ -15,9 +15,6 @@ use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Reference;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-
-use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>

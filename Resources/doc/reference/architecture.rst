@@ -106,7 +106,7 @@ Obtaining an ``Admin`` Service
 ------------------------------
 
 ``Admin`` definitions are accessible through the ``sonata.admin.pool`` service or
-directly from the DIC (dependency injection container). The ``Admin`` definitions 
+directly from the DIC (dependency injection container). The ``Admin`` definitions
 are lazy-loaded from the DIC to reduce overhead.
 
 Declaring a new Admin class
@@ -154,9 +154,8 @@ Or if you're using a YML configuration file,
 You can extend ``Sonata\AdminBundle\Admin\Admin`` class to minimize the amount of
 code to write. This base admin class uses the routing services to build routes.
 Note that you can use both the Bundle:Controller format or a `service name`_ to
-specify what controller to load.
-
-
+specify what controller to load. If you provide null instead of SonataNewsBundle:PostAdmin,
+you will not need to create a controller class and the system will use the default.
 
 .. _`Django Project Website`: http://www.djangoproject.com/
-.. _`service name`: http://symfony.com/doc/2.0/cookbook/controller/service.html
+.. _`service name`: http://symfony.com/doc/2.1/cookbook/controller/service.html

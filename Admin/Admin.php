@@ -13,9 +13,9 @@ namespace Sonata\AdminBundle\Admin;
 
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilder;
-use Symfony\Component\Form\Util\PropertyPath;
+use Symfony\Component\PropertyAccess\PropertyPath;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Validator\ValidatorInterface;
-use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Acl\Model\DomainObjectInterface;
@@ -43,7 +43,6 @@ use Sonata\AdminBundle\Model\ModelManagerInterface;
 
 use Knp\Menu\FactoryInterface as MenuFactoryInterface;
 use Knp\Menu\ItemInterface as MenuItemInterface;
-use Knp\Menu\MenuItem;
 
 abstract class Admin implements AdminInterface, DomainObjectInterface
 {
@@ -438,7 +437,6 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
     }
 
-
     /**
      * {@inheritdoc}
      */
@@ -682,7 +680,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
             ));
 
             $fieldDescription->setAdmin($this);
-            $fieldDescription->setTemplate('SonataAdminBundle:CRUD:list__batch.html.twig');
+            $fieldDescription->setTemplate($this->getTemplate('batch'));
 
             $mapper->add($fieldDescription, 'batch');
         }
@@ -812,11 +810,12 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         if ($this->isChild() && $this->getParentAssociationMapping()) {
             $parent = $this->getParent()->getObject($this->request->get($this->getParent()->getIdParameter()));
 
+            $propertyAccessor = PropertyAccess::getPropertyAccessor();
             $propertyPath = new PropertyPath($this->getParentAssociationMapping());
 
             $object = $this->getSubject();
 
-            $propertyPath->setValue($object, $parent);
+            $propertyAccessor->setValue($object, $propertyPath, $parent);
         }
 
         $this->form = $this->getFormBuilder()->getForm();
@@ -832,7 +831,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     public function getBaseRoutePattern()
     {
         if (!$this->baseRoutePattern) {
-            preg_match('@([A-Za-z0-9]*)\\\([A-Za-z0-9]*)Bundle\\\(Entity|Document|Model)\\\(.*)@', $this->getClass(), $matches);
+            preg_match('@([A-Za-z0-9]*)\\\([A-Za-z0-9]*)Bundle\\\(Entity|Document|Model|PHPCR)\\\(.*)@', $this->getClass(), $matches);
 
             if (!$matches) {
                 throw new \RuntimeException(sprintf('Please define a default `baseRoutePattern` value for the admin class `%s`', get_class($this)));
@@ -866,7 +865,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     public function getBaseRouteName()
     {
         if (!$this->baseRouteName) {
-            preg_match('@([A-Za-z0-9]*)\\\([A-Za-z0-9]*)Bundle\\\(Entity|Document|Model)\\\(.*)@', $this->getClass(), $matches);
+            preg_match('@([A-Za-z0-9]*)\\\([A-Za-z0-9]*)Bundle\\\(Entity|Document|Model|PHPCR)\\\(.*)@', $this->getClass(), $matches);
 
             if (!$matches) {
                 throw new \RuntimeException(sprintf('Please define a default `baseRouteName` value for the admin class `%s`', get_class($this)));
@@ -894,7 +893,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      * urlize the given word
      *
      * @param string $word
-     * @param string $sep the separator
+     * @param string $sep  the separator
      *
      * @return string
      */
@@ -934,7 +933,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     /**
      * Gets the subclass corresponding to the given name
      *
-     * @param  string $name The name of the sub class
+     * @param string $name The name of the sub class
      *
      * @return string the subclass
      */
@@ -950,7 +949,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     /**
      * Returns true if the admin has the sub classes
      *
-     * @param  string $name The name of the sub class
+     * @param string $name The name of the sub class
      *
      * @return bool
      */
@@ -1062,7 +1061,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
         $this->configureRoutes($this->routes);
 
-        foreach($this->getExtensions() as $extension) {
+        foreach ($this->getExtensions() as $extension) {
             $extension->configureRoutes($this, $this->routes);
         }
     }
@@ -1090,16 +1089,24 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     {
         $this->buildRoutes();
 
+        if (
+            ! $this->isChild()
+            && strpos($name, '.') !== false
+            && strpos($name, $this->getBaseCodeRoute() . '|') !== 0
+            && strpos($name, $this->getBaseCodeRoute() . '.') !== 0
+        ) {
+            $name = $this->getCode() . '|' . $name;
+        }
+
         return $this->routes->has($name);
     }
-
 
     /**
      * Generates the object url with the given $name
      *
-     * @param string  $name
-     * @param mixed   $object
-     * @param array   $parameters
+     * @param string $name
+     * @param mixed  $object
+     * @param array  $parameters
      *
      * @return string return a complete url
      */
@@ -1215,7 +1222,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         $admin = $this;
 
         // add the custom inline validation option
-        $metadata = $this->validator->getMetadataFactory()->getClassMetadata($this->getClass());
+        $metadata = $this->validator->getMetadataFactory()->getMetadataFor($this->getClass());
 
         $metadata->addConstraint(new InlineConstraint(array(
             'service' => $this,
@@ -1383,7 +1390,6 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         $parentFieldDescription = $this->getParentFieldDescription();
 
         if (!$parentFieldDescription) {
-
             return $this;
         }
 
@@ -1931,11 +1937,21 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
             return $this->getParent()->getBreadcrumbs($action);
         }
 
-        return $this->buildBreadcrumbs($action);
+        $menu = $this->buildBreadcrumbs($action);
+
+        do {
+            $breadcrumbs[] = $menu;
+        } while ($menu = $menu->getParent());
+
+        $breadcrumbs = array_reverse($breadcrumbs);
+        array_shift($breadcrumbs);
+        return $breadcrumbs;
     }
 
     /**
      * Generates the breadcrumbs array
+     *
+     * Note: the method will be called by the top admin instance (parent => child)
      *
      * @param string                       $action
      * @param \Knp\Menu\ItemInterface|null $menu
@@ -1950,14 +1966,14 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
         if (!$menu) {
             $menu = $this->menuFactory->createItem('root');
+
+            $menu = $menu->addChild(
+                $this->trans($this->getLabelTranslatorStrategy()->getLabel('dashboard', 'breadcrumb', 'link'), array(), 'SonataAdminBundle'),
+                array('uri' => $this->routeGenerator->generate('sonata_admin_dashboard'))
+            );
         }
 
-        $child = $menu->addChild(
-            $this->trans($this->getLabelTranslatorStrategy()->getLabel('dashboard', 'breadcrumb', 'link'), array(), 'SonataAdminBundle'),
-            array('uri' => $this->routeGenerator->generate('sonata_admin_dashboard'))
-        );
-
-        $child = $child->addChild(
+        $menu = $menu->addChild(
             $this->trans($this->getLabelTranslatorStrategy()->getLabel(sprintf('%s_list', $this->getClassnameLabel()), 'breadcrumb', 'link')),
             array('uri' => $this->hasRoute('list') && $this->isGranted('LIST') ? $this->generateUrl('list') : null)
         );
@@ -1967,41 +1983,37 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         if ($childAdmin) {
             $id = $this->request->get($this->getIdParameter());
 
-            $child = $child->addChild(
+            $menu = $menu->addChild(
                 $this->toString($this->getSubject()),
                 array('uri' => $this->hasRoute('edit') && $this->isGranted('EDIT') ? $this->generateUrl('edit', array('id' => $id)) : null)
             );
 
-            return $childAdmin->buildBreadcrumbs($action, $child);
+            return $childAdmin->buildBreadcrumbs($action, $menu);
 
         } elseif ($this->isChild()) {
-            if ($action != 'list') {
-                $menu = $menu->addChild(
-                    $this->trans($this->getLabelTranslatorStrategy()->getLabel(sprintf('%s_list', $this->getClassnameLabel()), 'breadcrumb', 'link')),
-                    array('uri' => $this->hasRoute('list') && $this->isGranted('LIST') ? $this->generateUrl('list') : null)
-                );
-            }
 
-            if ($action != 'create' && $this->hasSubject()) {
-                $breadcrumbs = $menu->getBreadcrumbsArray($this->toString($this->getSubject()));
+            if ($action == 'list') {
+                $menu->setUri(false);
+            } elseif ($action != 'create' && $this->hasSubject()) {
+                $menu = $menu->addChild($this->toString($this->getSubject()));
             } else {
-                $breadcrumbs = $menu->getBreadcrumbsArray(
+                $menu = $menu->addChild(
                     $this->trans($this->getLabelTranslatorStrategy()->getLabel(sprintf('%s_%s', $this->getClassnameLabel(), $action), 'breadcrumb', 'link'))
                 );
             }
 
-        } else if ($action != 'list') {
-            $breadcrumbs = $child->getBreadcrumbsArray(
-                $this->trans($this->getLabelTranslatorStrategy()->getLabel(sprintf('%s_%s', $this->getClassnameLabel(), $action), 'breadcrumb', 'link'))
+        } elseif ($action != 'list' && $this->hasSubject()) {
+            $menu = $menu->addChild($this->toString($this->getSubject()));
+        } elseif ($action != 'list') {
+            $menu = $menu->addChild(
+//                $this->trans($this->getLabelTranslatorStrategy()->getLabel(sprintf('%s_%s', $this->getClassnameLabel(), $action), 'breadcrumb', 'link'))
+                  $this->toString($this->getSubject())
             );
         } else {
-            $breadcrumbs = $child->getBreadcrumbsArray();
+            $menu->getBreadcrumbsArray();
         }
 
-        // the generated $breadcrumbs contains an empty element
-        array_shift($breadcrumbs);
-
-        return $this->breadcrumbs[$action] = $breadcrumbs;
+        return $this->breadcrumbs[$action] = $menu;
     }
 
     /**
@@ -2077,7 +2089,6 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
         return $this->translator->transChoice($id, $count, $parameters, $domain, $locale);
     }
-
 
     /**
      * set the translation domain
@@ -2527,8 +2538,12 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      */
     public function toString($object)
     {
+        if (!is_object($object)) {
+            return '';
+        }
+
         if (method_exists($object, '__toString')) {
-            return (string)$object;
+            return (string) $object;
         }
 
         return sprintf("%s:%s", get_class($object), spl_object_hash($object));

@@ -60,7 +60,7 @@
             </trans-unit>
             <trans-unit id="link_action_edit">
                 <source>link_action_edit</source>
-                <target>Редактировать "%name%"</target>
+                <target>Редактировать</target>
             </trans-unit>
             <trans-unit id="link_add">
                 <source>link_add</source>
@@ -84,7 +84,7 @@
             </trans-unit>
             <trans-unit id="title_edit">
                 <source>title_edit</source>
-                <target>Редактировать</target>
+                <target>Редактировать "%name%"</target>
             </trans-unit>
             <trans-unit id="title_list">
                 <source>title_list</source>
@@ -296,7 +296,7 @@
             </trans-unit>
             <trans-unit id="td_action">
                 <source>td_action</source>
-                <target>td_action</target>
+                <target>Действие</target>
             </trans-unit>
             <trans-unit id="td_revision">
                 <source>td_revision</source>
@@ -328,19 +328,19 @@
             </trans-unit>
             <trans-unit id="btn_preview">
                 <source>btn_preview</source>
-                <target>btn_preview</target>
+                <target>Предпросмотр</target>
             </trans-unit>
             <trans-unit id="btn_preview_approve">
                 <source>btn_preview_approve</source>
-                <target>btn_preview_approve</target>
+                <target>Одобрить</target>
             </trans-unit>
             <trans-unit id="btn_preview_decline">
                 <source>btn_preview_decline</source>
-                <target>btn_preview_decline</target>
+                <target>Отклонить</target>
             </trans-unit>
             <trans-unit id="label_per_page">
               <source>label_per_page</source>
-              <target>label_per_page</target>
+              <target>Записей на страницу</target>
             </trans-unit>
         </body>
     </file>
