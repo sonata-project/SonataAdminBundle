@@ -75,13 +75,29 @@ class FormTypeFieldExtension extends AbstractTypeExtension
      */
     protected function getClass(FormBuilderInterface $formBuilder)
     {
-        foreach ($formBuilder->getTypes() as $type) {
+        foreach ($this->getTypes($formBuilder) as $type) {
             if (isset($this->defaultClasses[$type->getName()])) {
                 return $this->defaultClasses[$type->getName()];
             }
         }
 
         return '';
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $formBuilder
+     *
+     * @return array
+     */
+    protected function getTypes(FormBuilderInterface $formBuilder)
+    {
+        $types = array();
+
+        for ($type = $formBuilder->getType(); null !== $type; $type = $type->getParent()) {
+            array_unshift($types, $type->getInnerType());
+        }
+
+        return $types;
     }
 
     /**

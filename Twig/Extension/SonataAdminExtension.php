@@ -54,6 +54,7 @@ class SonataAdminExtension extends \Twig_Extension
             'render_view_element'     => new \Twig_Filter_Method($this, 'renderViewElement', array('is_safe' => array('html'))),
             'render_relation_element' => new \Twig_Filter_Method($this, 'renderRelationElement'),
             'sonata_urlsafeid'        => new \Twig_Filter_Method($this, 'getUrlsafeIdentifier'),
+            'sonata_slugify'          => new \Twig_Filter_Method($this, 'slugify'),
         );
     }
 
@@ -74,14 +75,14 @@ class SonataAdminExtension extends \Twig_Extension
     }
 
     /**
-     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
-     * @param string                                              $default
+     * @param FieldDescriptionInterface $fieldDescription
      *
      * @return \Twig_TemplateInterface
      */
-    protected function getTemplate(FieldDescriptionInterface $fieldDescription, $default)
+    protected function getTemplate(FieldDescriptionInterface $fieldDescription)
     {
-        // todo: find a better solution
+        $default = $fieldDescription->getAdmin()->getTemplate('base_list_field');
+
         $templateName = $fieldDescription->getTemplate() ? : $default;
 
         try {
@@ -96,15 +97,15 @@ class SonataAdminExtension extends \Twig_Extension
     /**
      * render a list element from the FieldDescription
      *
-     * @param mixed                                               $object
-     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
-     * @param array                                               $params
+     * @param mixed                     $object
+     * @param FieldDescriptionInterface $fieldDescription
+     * @param array                     $params
      *
      * @return string
      */
     public function renderListElement($object, FieldDescriptionInterface $fieldDescription, $params = array())
     {
-        $template = $this->getTemplate($fieldDescription, 'SonataAdminBundle:CRUD:base_list_field.html.twig');
+        $template = $this->getTemplate($fieldDescription);
 
         return $this->output($fieldDescription, $template, array_merge($params, array(
             'admin'             => $fieldDescription->getAdmin(),
@@ -115,9 +116,9 @@ class SonataAdminExtension extends \Twig_Extension
     }
 
     /**
-     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
-     * @param \Twig_TemplateInterface                             $template
-     * @param array                                               $parameters
+     * @param FieldDescriptionInterface $fieldDescription
+     * @param \Twig_TemplateInterface   $template
+     * @param array                     $parameters
      *
      * @return string
      */
@@ -142,9 +143,9 @@ class SonataAdminExtension extends \Twig_Extension
      * return the value related to FieldDescription, if the associated object does no
      * exists => a temporary one is created
      *
-     * @param object                                              $object
-     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
-     * @param array                                               $params
+     * @param object                    $object
+     * @param FieldDescriptionInterface $fieldDescription
+     * @param array                     $params
      *
      * @throws \RuntimeException
      *
@@ -171,8 +172,8 @@ class SonataAdminExtension extends \Twig_Extension
     /**
      * render a view element
      *
-     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
-     * @param mixed                                               $object
+     * @param FieldDescriptionInterface $fieldDescription
+     * @param mixed                     $object
      *
      * @return string
      */
@@ -197,8 +198,8 @@ class SonataAdminExtension extends \Twig_Extension
     /**
      * @throws \RunTimeException
      *
-     * @param mixed                                               $element
-     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
+     * @param mixed                     $element
+     * @param FieldDescriptionInterface $fieldDescription
      *
      * @return mixed
      */
@@ -231,5 +232,34 @@ class SonataAdminExtension extends \Twig_Extension
         );
 
         return $admin->getUrlsafeIdentifier($model);
+    }
+
+    /**
+     * Slugify a text
+     *
+     * @param $text
+     *
+     * @return string
+     */
+    public function slugify($text)
+    {
+        // replace non letter or digits by -
+        $text = preg_replace('~[^\\pL\d]+~u', '-', $text);
+
+        // trim
+        $text = trim($text, '-');
+
+        // transliterate
+        if (function_exists('iconv')) {
+            $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
+        }
+
+        // lowercase
+        $text = strtolower($text);
+
+        // remove unwanted characters
+        $text = preg_replace('~[^-\w]+~', '', $text);
+
+        return $text;
     }
 }

@@ -1,0 +1,26 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{% if admin.list.has('batch') and not app.request.isXmlHttpRequest %}
+    <td class="sonata-ba-list-field sonata-ba-list-field-batch">
+        {{ object|render_list_element(admin.list['batch']) }}
+    </td>
+{% endif %}
+
+<td class="sonata-ba-list-field sonata-ba-list-field-inline-fields" colspan="{{ admin.list.elements|length - (admin.list.has('_action') + admin.list.has('batch')) }}">
+    {% block row %}{% endblock %}
+</td>
+
+{% if admin.list.has('_action') and not app.request.isXmlHttpRequest %}
+    <td class="sonata-ba-list-field sonata-ba-list-field-_action">
+        {{ object|render_list_element(admin.list['_action']) }}
+    </td>
+{% endif %}

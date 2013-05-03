@@ -9,12 +9,4 @@ file that was distributed with this source code.
 
 #}
 
-{% extends admin.getTemplate('base_list_field') %}
-
-{% block field %}
-    {%- if value is empty -%}
-        &nbsp;
-    {%- else -%}
-        {{ value|date }}
-    {%- endif -%}
-{% endblock %}
+{% extends 'SonataAdminBundle:CRUD:base_list_inner_row.html.twig' %}

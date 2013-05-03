@@ -9,12 +9,10 @@ file that was distributed with this source code.
 
 #}
 
-{% extends admin.getTemplate('base_list_field') %}
-
-{% block field%}
-    {% if field_description.options.catalogue is not defined %}
-        {{value|trans}}
+{% for field_description in admin.list.elements %}
+    {% if field_description.name == '_action' and app.request.isXmlHttpRequest %}
+        {# Action buttons disabled in ajax view! #}
     {% else %}
-        {{value|trans({}, field_description.options.catalogue)}}
+        {{ object|render_list_element(field_description) }}
     {% endif %}
-{% endblock %}
+{% endfor %}

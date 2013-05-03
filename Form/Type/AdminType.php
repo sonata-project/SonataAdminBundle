@@ -28,7 +28,7 @@ class AdminType extends AbstractType
         $admin = $this->getAdmin($options);
 
         if ($options['delete'] && $admin->isGranted('DELETE') ) {
-            $builder->add('_delete', 'checkbox', array('required' => false, 'property_path' => false));
+            $builder->add('_delete', 'checkbox', array('required' => false, 'mapped' => false));
         }
 
         if (!$admin->hasSubject()) {
@@ -37,7 +37,7 @@ class AdminType extends AbstractType
 
         $admin->defineFormBuilder($builder);
 
-        $builder->prependClientTransformer(new ArrayToModelTransformer($admin->getModelManager(), $admin->getClass()));
+        $builder->addModelTransformer(new ArrayToModelTransformer($admin->getModelManager(), $admin->getClass()));
     }
 
     /**

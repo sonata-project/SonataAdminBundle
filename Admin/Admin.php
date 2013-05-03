@@ -13,7 +13,8 @@ namespace Sonata\AdminBundle\Admin;
 
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilder;
-use Symfony\Component\Form\Util\PropertyPath;
+use Symfony\Component\PropertyAccess\PropertyPath;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -809,11 +810,12 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         if ($this->isChild() && $this->getParentAssociationMapping()) {
             $parent = $this->getParent()->getObject($this->request->get($this->getParent()->getIdParameter()));
 
+            $propertyAccessor = PropertyAccess::getPropertyAccessor();
             $propertyPath = new PropertyPath($this->getParentAssociationMapping());
 
             $object = $this->getSubject();
 
-            $propertyPath->setValue($object, $parent);
+            $propertyAccessor->setValue($object, $propertyPath, $parent);
         }
 
         $this->form = $this->getFormBuilder()->getForm();
@@ -1220,7 +1222,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         $admin = $this;
 
         // add the custom inline validation option
-        $metadata = $this->validator->getMetadataFactory()->getClassMetadata($this->getClass());
+        $metadata = $this->validator->getMetadataFactory()->getMetadataFor($this->getClass());
 
         $metadata->addConstraint(new InlineConstraint(array(
             'service' => $this,
@@ -1935,11 +1937,21 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
             return $this->getParent()->getBreadcrumbs($action);
         }
 
-        return $this->buildBreadcrumbs($action);
+        $menu = $this->buildBreadcrumbs($action);
+
+        do {
+            $breadcrumbs[] = $menu;
+        } while ($menu = $menu->getParent());
+
+        $breadcrumbs = array_reverse($breadcrumbs);
+        array_shift($breadcrumbs);
+        return $breadcrumbs;
     }
 
     /**
      * Generates the breadcrumbs array
+     *
+     * Note: the method will be called by the top admin instance (parent => child)
      *
      * @param string                       $action
      * @param \Knp\Menu\ItemInterface|null $menu
@@ -1954,14 +1966,14 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
         if (!$menu) {
             $menu = $this->menuFactory->createItem('root');
+
+            $menu = $menu->addChild(
+                $this->trans($this->getLabelTranslatorStrategy()->getLabel('dashboard', 'breadcrumb', 'link'), array(), 'SonataAdminBundle'),
+                array('uri' => $this->routeGenerator->generate('sonata_admin_dashboard'))
+            );
         }
 
-        $child = $menu->addChild(
-            $this->trans($this->getLabelTranslatorStrategy()->getLabel('dashboard', 'breadcrumb', 'link'), array(), 'SonataAdminBundle'),
-            array('uri' => $this->routeGenerator->generate('sonata_admin_dashboard'))
-        );
-
-        $child = $child->addChild(
+        $menu = $menu->addChild(
             $this->trans($this->getLabelTranslatorStrategy()->getLabel(sprintf('%s_list', $this->getClassnameLabel()), 'breadcrumb', 'link')),
             array('uri' => $this->hasRoute('list') && $this->isGranted('LIST') ? $this->generateUrl('list') : null)
         );
@@ -1971,44 +1983,37 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         if ($childAdmin) {
             $id = $this->request->get($this->getIdParameter());
 
-            $child = $child->addChild(
+            $menu = $menu->addChild(
                 $this->toString($this->getSubject()),
                 array('uri' => $this->hasRoute('edit') && $this->isGranted('EDIT') ? $this->generateUrl('edit', array('id' => $id)) : null)
             );
 
-            return $childAdmin->buildBreadcrumbs($action, $child);
+            return $childAdmin->buildBreadcrumbs($action, $menu);
 
         } elseif ($this->isChild()) {
-            if ($action != 'list') {
-                $menu = $menu->addChild(
-                    $this->trans($this->getLabelTranslatorStrategy()->getLabel(sprintf('%s_list', $this->getClassnameLabel()), 'breadcrumb', 'link')),
-                    array('uri' => $this->hasRoute('list') && $this->isGranted('LIST') ? $this->generateUrl('list') : null)
-                );
-            }
 
-            if ($action != 'create' && $this->hasSubject()) {
-                $breadcrumbs = $menu->getBreadcrumbsArray($this->toString($this->getSubject()));
+            if ($action == 'list') {
+                $menu->setUri(false);
+            } elseif ($action != 'create' && $this->hasSubject()) {
+                $menu = $menu->addChild($this->toString($this->getSubject()));
             } else {
-                $breadcrumbs = $menu->getBreadcrumbsArray(
+                $menu = $menu->addChild(
                     $this->trans($this->getLabelTranslatorStrategy()->getLabel(sprintf('%s_%s', $this->getClassnameLabel(), $action), 'breadcrumb', 'link'))
                 );
             }
+
         } elseif ($action != 'list' && $this->hasSubject()) {
-            $breadcrumbs = $child->getBreadcrumbsArray(
-                $this->toString($this->getSubject())
-            );
+            $menu = $menu->addChild($this->toString($this->getSubject()));
         } elseif ($action != 'list') {
-            $breadcrumbs = $child->getBreadcrumbsArray(
-                $this->trans($this->getLabelTranslatorStrategy()->getLabel(sprintf('%s_%s', $this->getClassnameLabel(), $action), 'breadcrumb', 'link'))
+            $menu = $menu->addChild(
+//                $this->trans($this->getLabelTranslatorStrategy()->getLabel(sprintf('%s_%s', $this->getClassnameLabel(), $action), 'breadcrumb', 'link'))
+                  $this->toString($this->getSubject())
             );
         } else {
-            $breadcrumbs = $child->getBreadcrumbsArray();
+            $menu->getBreadcrumbsArray();
         }
 
-        // the generated $breadcrumbs contains an empty element
-        array_shift($breadcrumbs);
-
-        return $this->breadcrumbs[$action] = $breadcrumbs;
+        return $this->breadcrumbs[$action] = $menu;
     }
 
     /**

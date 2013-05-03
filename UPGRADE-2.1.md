@@ -1,8 +1,6 @@
 UPGRADE FROM 2.0 to 2.1
 =======================
 
-** Work In Progress - Please do not use this code in production **
-
 ### Form
 
   * Due to some refactoring in the Form Component, some types definition have been changed

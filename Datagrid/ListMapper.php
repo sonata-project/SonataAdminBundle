@@ -28,9 +28,9 @@ class ListMapper
     protected $admin;
 
     /**
-     * @param \Sonata\AdminBundle\Builder\ListBuilderInterface     $listBuilder
-     * @param \Sonata\AdminBundle\Admin\FieldDescriptionCollection $list
-     * @param \Sonata\AdminBundle\Admin\AdminInterface             $admin
+     * @param ListBuilderInterface       $listBuilder
+     * @param FieldDescriptionCollection $list
+     * @param AdminInterface             $admin
      */
     public function __construct(ListBuilderInterface $listBuilder, FieldDescriptionCollection $list, AdminInterface $admin)
     {
@@ -68,7 +68,7 @@ class ListMapper
      * @param mixed $type
      * @param array $fieldDescriptionOptions
      *
-     * @return \Sonata\AdminBundle\Datagrid\ListMapper
+     * @return ListMapper
      */
     public function add($name, $type = null, array $fieldDescriptionOptions = array())
     {
@@ -98,7 +98,7 @@ class ListMapper
     /**
      * @param string $name
      *
-     * @return \Sonata\AdminBundle\Admin\FieldDescriptionInterface
+     * @return FieldDescriptionInterface
      */
     public function get($name)
     {
@@ -118,7 +118,7 @@ class ListMapper
     /**
      * @param string $key
      *
-     * @return \Sonata\AdminBundle\Datagrid\ListMapper
+     * @return ListMapper
      */
     public function remove($key)
     {
@@ -131,7 +131,7 @@ class ListMapper
     /**
      * @param array $keys field names
      *
-     * @return \Sonata\AdminBundle\Datagrid\ListMapper
+     * @return ListMapper
      */
     public function reorder(array $keys)
     {

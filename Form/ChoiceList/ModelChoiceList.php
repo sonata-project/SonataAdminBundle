@@ -11,7 +11,8 @@
 
 namespace Sonata\AdminBundle\Form\ChoiceList;
 
-use Symfony\Component\Form\Util\PropertyPath;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\Form\Exception\FormException;
 use Symfony\Component\Form\Extension\Core\ChoiceList\SimpleChoiceList;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
@@ -131,7 +132,8 @@ class ModelChoiceList extends SimpleChoiceList
         foreach ($entities as $key => $entity) {
             if ($this->propertyPath) {
                 // If the property option was given, use it
-                $value = $this->propertyPath->getValue($entity);
+                $propertyAccessor = PropertyAccess::getPropertyAccessor();
+                $value = $propertyAccessor->getValue($entity, $this->propertyPath);
             } else {
                 // Otherwise expect a __toString() method in the entity
                 $value = (string) $entity;
