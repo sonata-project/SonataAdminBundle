@@ -44,7 +44,7 @@
             </trans-unit>
             <trans-unit id="link_delete">
                 <source>link_delete</source>
-                <target>Видаляти</target>
+                <target>Видалити</target>
             </trans-unit>
             <trans-unit id="link_action_create">
                 <source>link_action_create</source>
@@ -56,11 +56,11 @@
             </trans-unit>
             <trans-unit id="link_action_show">
                 <source>link_action_show</source>
-                <target>Показувати</target>
+                <target>Показати</target>
             </trans-unit>
             <trans-unit id="link_action_edit">
                 <source>link_action_edit</source>
-                <target>link_action_edit</target>
+                <target>Редагувати</target>
             </trans-unit>
             <trans-unit id="link_add">
                 <source>link_add</source>
@@ -100,11 +100,11 @@
             </trans-unit>
             <trans-unit id="link_first_pager">
                 <source>link_first_pager</source>
-                <target>First</target>
+                <target>Перша сторінка</target>
             </trans-unit>
             <trans-unit id="link_last_pager">
                 <source>link_last_pager</source>
-                <target>Last</target>
+                <target>Остання сторінка</target>
             </trans-unit>
             <trans-unit id="Admin">
                 <source>Admin</source>
@@ -112,11 +112,11 @@
             </trans-unit>
             <trans-unit id="link_expand">
                 <source>link_expand</source>
-                <target>розвернути/звернути</target>
+                <target>розгорнути/згорнути</target>
             </trans-unit>
             <trans-unit id="no_result">
                 <source>no_result</source>
-                <target>no_result</target>
+                <target>Безрезультатно</target>
             </trans-unit>
             <trans-unit id="confirm_msg">
                 <source>confirm_msg</source>
@@ -124,7 +124,7 @@
             </trans-unit>
             <trans-unit id="action_edit">
                 <source>action_edit</source>
-                <target>action_edit</target>
+                <target>Редагувати</target>
             </trans-unit>
             <trans-unit id="action_show">
                 <source>action_show</source>
@@ -132,43 +132,43 @@
             </trans-unit>
             <trans-unit id="all_elements">
                 <source>all_elements</source>
-                <target>all_elements</target>
+                <target>Застосувати до усіх</target>
             </trans-unit>
             <trans-unit id='flash_batch_empty'>
                 <source>flash_batch_empty</source>
-                <target>flash_batch_empty</target>
+                <target>Невибрано жодного об’єкту.</target>
             </trans-unit>
             <trans-unit id='flash_create_success'>
                 <source>flash_create_success</source>
-                <target>flash_create_success</target>
+                <target>Успіх! Елемент створено.</target>
             </trans-unit>
             <trans-unit id='flash_create_error'>
                 <source>flash_create_error</source>
-                <target>flash_create_error</target>
+                <target>При створенні об’єкту виникла помилка.</target>
             </trans-unit>
             <trans-unit id='flash_edit_success'>
                 <source>flash_edit_success</source>
-                <target>flash_edit_success</target>
+                <target>Успіх! Елемент зредаговано.</target>
             </trans-unit>
             <trans-unit id='flash_edit_error'>
                 <source>flash_edit_error</source>
-                <target>flash_edit_error</target>
+                <target>При редагуванні об’єкту виникла помилка</target>
             </trans-unit>
             <trans-unit id='flash_batch_delete_success'>
                 <source>flash_batch_delete_success</source>
-                <target>flash_batch_delete_success</target>
+                <target>Вибрані елементи виделені.</target>
             </trans-unit>
             <trans-unit id='flash_batch_delete_error'>
                 <source>flash_batch_delete_error</source>
-                <target>flash_batch_delete_error</target>
+                <target>Під час видалення вибраних елементів виникла помилка.</target>
             </trans-unit>
             <trans-unit id='flash_delete_error'>
                 <source>flash_delete_error</source>
-                <target>flash_delete_error</target>
+                <target>Під час видалення елемента виникла помилка.</target>
             </trans-unit>
             <trans-unit id='flash_delete_success'>
                 <source>flash_delete_success</source>
-                <target>flash_delete_success</target>
+                <target>Об’єкт видалено.</target>
             </trans-unit>
             <trans-unit id="link_breadcrumb_dashboard">
                 <source>breadcrumb.link_dashboard</source>
@@ -176,35 +176,35 @@
             </trans-unit>
             <trans-unit id="title_delete">
                 <source>title_delete</source>
-                <target>title_delete</target>
+                <target>Підтвердження видалення</target>
             </trans-unit>
             <trans-unit id="message_delete_confirmation">
                 <source>message_delete_confirmation</source>
-                <target>message_delete_confirmation</target>
+                <target>Ви справді хочете видалити вибраний об’єкт?</target>
             </trans-unit>
             <trans-unit id="btn_delete">
                 <source>btn_delete</source>
-                <target>btn_delete</target>
+                <target>Так, видалити</target>
             </trans-unit>
             <trans-unit id="title_batch_confirmation">
                 <source>title_batch_confirmation</source>
-                <target>title_batch_confirmation</target>
+                <target>Підтвердження гуртової дії</target>
             </trans-unit>
             <trans-unit id="message_batch_confirmation">
                 <source>message_batch_confirmation</source>
-                <target>message_batch_confirmation</target>
+                <target>Ви дійсно хочете провести обрану дію для цього елемента?|Ви дійсно прагнете провести обрану дію для даних елементів?|Ви дійсно прагнете провести обрану дію для %count% елементів?</target>
             </trans-unit>
             <trans-unit id="message_batch_all_confirmation">
                 <source>message_batch_all_confirmation</source>
-                <target>message_batch_all_confirmation</target>
+                <target>Ви дійсно хочете провести обрану дію всіх елементів?</target>
             </trans-unit>
             <trans-unit id="btn_execute_batch_action">
                 <source>btn_execute_batch_action</source>
-                <target>btn_execute_batch_action</target>
+                <target>Так, виконати</target>
             </trans-unit>
             <trans-unit id="label_type_yes">
                 <source>label_type_yes</source>
-                <target>да</target>
+                <target>так</target>
             </trans-unit>
             <trans-unit id="label_type_no">
                 <source>label_type_no</source>
@@ -212,7 +212,7 @@
             </trans-unit>
             <trans-unit id="label_type_contains">
                 <source>label_type_contains</source>
-                <target>містити</target>
+                <target>містить</target>
             </trans-unit>
             <trans-unit id="label_type_not_contains">
                 <source>label_type_not_contains</source>
@@ -316,7 +316,7 @@
             </trans-unit>
             <trans-unit id="list_results_count">
                 <source>list_results_count</source>
-                <target>list_results_count|list_results_count</target>
+                <target>{0} Данні відсутні |{1} Всього %count% запис |{2,3,4} Всього %count% записи |[5,Inf] Всього %count% записів</target>
             </trans-unit>
             <trans-unit id="label_export_download">
                 <source>label_export_download</source>
@@ -328,19 +328,19 @@
             </trans-unit>
             <trans-unit id="btn_preview">
                 <source>btn_preview</source>
-                <target>btn_preview</target>
+                <target>Попередній перегляд</target>
             </trans-unit>
             <trans-unit id="btn_preview_approve">
                 <source>btn_preview_approve</source>
-                <target>btn_preview_approve</target>
+                <target>Схвалити</target>
             </trans-unit>
             <trans-unit id="btn_preview_decline">
                 <source>btn_preview_decline</source>
-                <target>btn_preview_decline</target>
+                <target>Відмінити</target>
             </trans-unit>
             <trans-unit id="label_per_page">
               <source>label_per_page</source>
-              <target>label_per_page</target>
+              <target>Записів на сторінку</target>
             </trans-unit>
         </body>
     </file>
