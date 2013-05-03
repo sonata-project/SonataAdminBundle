@@ -43,6 +43,8 @@ use Sonata\AdminBundle\Model\ModelManagerInterface;
 
 use Knp\Menu\FactoryInterface as MenuFactoryInterface;
 use Knp\Menu\ItemInterface as MenuItemInterface;
+use Knp\Menu\Matcher\MatcherInterface;
+use Knp\Menu\Matcher\Voter\UriVoter;
 
 abstract class Admin implements AdminInterface, DomainObjectInterface
 {
@@ -1350,7 +1352,10 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
             $extension->configureSideMenu($this, $menu, $action, $childAdmin);
         }
 
+        $this->menuMatcher->addVoter(new UriVoter($this->getRequest()->getBaseUrl().$this->getRequest()->getPathInfo()));
+
         $this->menu = $menu;
+        //$this->menu = $renderer->render($menu);
     }
 
     /**
@@ -2515,6 +2520,22 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     public function getMenuFactory()
     {
         return $this->menuFactory;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setMenuMatcher(MatcherInterface $menuMatcher)
+    {
+        $this->menuMatcher = $menuMatcher;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getMenuMatcher()
+    {
+        return $this->menuMatcher;
     }
 
     /**
