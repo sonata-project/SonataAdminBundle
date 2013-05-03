@@ -150,6 +150,7 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
     public function trans($id, array $parameters = array(), $domain = null, $locale = null)
     {
         $this->addMessage($id, $domain);
+        return $id;
     }
 
     /**
@@ -158,6 +159,7 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
     public function transChoice($id, $number, array $parameters = array(), $domain = null, $locale = null)
     {
         $this->addMessage($id, $domain);
+        return $id;
     }
 
     /**
