@@ -40,14 +40,19 @@ class ExtensionCompilerPass implements CompilerPassInterface
             $container->getDefinition($target)
                 ->addMethodCall('addExtension', array(new Reference($id)));
         }
-        
+
         $extensionConfig = $container->getParameter('sonata.admin.extension.map');
         $extensionMap = $this->flattenExtensionConfiguration($extensionConfig);
-        
+
         foreach ($container->findTaggedServiceIds('sonata.admin') as $id => $attributes) {
             $admin = $container->getDefinition($id);
             $extensions = $this->getExtensionsForAdmin($id, $container, $extensionMap);
+
             foreach ($extensions as $extension) {
+
+                echo "adding extension to admin\n";
+                echo "admin: $id - extension $extension\n\n";
+
                 $admin->addMethodCall('addExtension', array(new Reference($extension)));
             }
         }
@@ -65,30 +70,34 @@ class ExtensionCompilerPass implements CompilerPassInterface
         $excludes = $extensionMap['excludes'];
         unset($extensionMap['excludes']);
         $admin = $container->getDefinition($id);
-        
+
         foreach ($extensionMap as $type => $subjects) {
             foreach ($subjects as $subject => $extensionList) {
-                
-                $class = $this->getManagedClass($admin, $container);
-                $classReflection = new \ReflectionClass($class);
-                $subjReflection = new \ReflectionClass($subject);
-                
-                if('extends' == $type && $subjReflection->isSubclassOf($class)){
-                    array_push($extensions, $extensionList);
-                }
-                if('implements' == $type && $classReflection->implementsInterface($subject)){
-                    array_push($extensions, $extensionList);
-                }
-                if('instanceof' == $type && $class instanceof $subject){
-                    array_push($extensions, $extensionList);
-                }
                 if('admins' == $type && $id == $subject){
-                    array_push($extensions, $extensionList);
+                    $extensions = array_merge($extensions, $extensionList);
                 }
-                
+
+                $class = $this->getManagedClass($admin, $container);
+                if('instanceof' == $type && $class instanceof $subject){
+                    $extensions = array_merge($extensions, $extensionList);
+                }
+
+                if('implements' == $type){
+                    $classReflection = new \ReflectionClass($class);
+                    if($classReflection->implementsInterface($subject)){
+                        $extensions = array_merge($extensions, $extensionList);
+                    }
+                }
+
+                if('extends' == $type){
+                    $subjReflection = new \ReflectionClass($subject);
+                    if($subjReflection->isSubclassOf($class)){
+                        $extensions = array_merge($extensions, $extensionList);
+                    }
+                }
             }
         }
-        
+
         if(isset($excludes[$id])){
             $extensions = array_diff($extensions, $excludes);
         }
