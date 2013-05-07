@@ -123,27 +123,16 @@ class ExtensionCompilerPassTest extends \PHPUnit_Framework_TestCase
 
         $def = $container->get('sonata_admin_1');
         $extensions = $def->getExtensions();
-        foreach ($extensions as $extension) {
-            $this->assertTrue($extension instanceof \Sonata\AdminBundle\Tests\DependencyInjection\MockExtension1);
-        }
-
-        echo "sonata_admin_1 - extensions\n";
-        var_dump($extensions);
-        echo "\n\n";
+        $this->assertTrue($extensions[0] instanceof \Sonata\AdminBundle\Tests\DependencyInjection\MockExtension1);
 
         $def = $container->get('sonata_admin_2');
         $extensions = $def->getExtensions();
-        echo "sonata_admin_2 - extensions\n";
-        var_dump($extensions);
-        echo "\n\n";
+        $this->assertTrue(empty($extensions));
 
         $def = $container->get('sonata_admin_3');
-        echo "sonata_admin_3 - extensions\n";
         $extensions = $def->getExtensions();
-        var_dump($extensions);
-        echo "\n\n";
-
-
+        $this->assertTrue($extensions[0] instanceof \Sonata\AdminBundle\Tests\DependencyInjection\MockExtension1);
+        $this->assertTrue($extensions[1] instanceof \Sonata\AdminBundle\Tests\DependencyInjection\MockExtension3);
     }
 
     /**

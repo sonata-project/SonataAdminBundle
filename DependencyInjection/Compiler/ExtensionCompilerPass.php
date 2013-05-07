@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the Sonata project.
  *
@@ -49,10 +48,6 @@ class ExtensionCompilerPass implements CompilerPassInterface
             $extensions = $this->getExtensionsForAdmin($id, $container, $extensionMap);
 
             foreach ($extensions as $extension) {
-
-                echo "adding extension to admin\n";
-                echo "admin: $id - extension $extension\n\n";
-
                 $admin->addMethodCall('addExtension', array(new Reference($extension)));
             }
         }
