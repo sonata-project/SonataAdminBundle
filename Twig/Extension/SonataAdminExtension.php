@@ -250,7 +250,11 @@ class SonataAdminExtension extends \Twig_Extension
         $text = trim($text, '-');
 
         // lowercase
-        $text = strtolower($text);
+        if (function_exists('mb_detect_encoding') && false !== $encoding = mb_detect_encoding($text)) {
+            $text = mb_strtolower($text, $encoding);
+        } else {
+            $text = strtolower($text);
+        }
 
         // remove unwanted characters
         $text = preg_replace('~[^-\w]+~u', '', $text);
