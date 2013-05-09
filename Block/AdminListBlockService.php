@@ -102,7 +102,7 @@ class AdminListBlockService extends BaseBlockService
         ));
 
         $resolver->setAllowedTypes(array(
-            'groups' => array('bool')
+            'groups' => array('bool', 'array')
         ));
     }
 }
