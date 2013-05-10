@@ -179,7 +179,9 @@ class HelperController
             $admin->setUniqid($uniqid);
         }
         
-        if(!$objectId){$objectId = NULL;}
+        if(!$objectId){
+            $objectId = null;
+        }
 
         $object = $admin->getObject($objectId);
 
