@@ -119,6 +119,7 @@ class ExtensionCompilerPass implements CompilerPassInterface
     {
         $extensionMap = array();
         foreach ($config as $extension => $options) {
+            $extensionMap[$extension] = array();
             foreach ($options as $key => $value) {
                 foreach ($value as $source) {
                     if(!isset($extensionMap[$key][$source])){
