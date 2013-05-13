@@ -45,9 +45,12 @@ class ExtensionCompilerPass implements CompilerPassInterface
 
         foreach ($container->findTaggedServiceIds('sonata.admin') as $id => $attributes) {
             $admin = $container->getDefinition($id);
-            $extensions = $this->getExtensionsForAdmin($id, $container, $extensionMap);
+            $extensions = $this->getExtensionsForAdmin($id, $admin, $container, $extensionMap);
 
             foreach ($extensions as $extension) {
+                if(!$container->hasDefinition($extension)){
+                    throw new \InvalidArgumentException(sprintf('Unable to find extension service for id %s', $extension));
+                }
                 $admin->addMethodCall('addExtension', array(new Reference($extension)));
             }
         }
@@ -55,38 +58,46 @@ class ExtensionCompilerPass implements CompilerPassInterface
 
     /**
      * @param string $id
+     * @param Definition $admin
      * @param ContainerBuilder $container
      * @param array $extensionMap
      * @return array
      */
-    protected function getExtensionsForAdmin($id, ContainerBuilder $container, array $extensionMap)
+    protected function getExtensionsForAdmin($id, Definition $admin, ContainerBuilder $container, array $extensionMap)
     {
         $extensions = array();
+        $class = $classReflection = $subjectReflection = null;
+
         $excludes = $extensionMap['excludes'];
         unset($extensionMap['excludes']);
-        $admin = $container->getDefinition($id);
 
         foreach ($extensionMap as $type => $subjects) {
             foreach ($subjects as $subject => $extensionList) {
-                if('admins' == $type && $id == $subject){
-                    $extensions = array_merge($extensions, $extensionList);
+
+                if('admins' == $type){
+                    if($id == $subject){
+                        $extensions = array_merge($extensions, $extensionList);
+                    }
+                } else {
+                    $class = $this->getManagedClass($admin, $container);
+                    $classReflection = new \ReflectionClass($class);
+                    $subjectReflection = new \ReflectionClass($subject);
                 }
 
-                $class = $this->getManagedClass($admin, $container);
-                if('instanceof' == $type && $class instanceof $subject){
-                    $extensions = array_merge($extensions, $extensionList);
+                if('instanceof' == $type){
+                    if($subjectReflection->getName() == $classReflection->getName() || $classReflection->isSubclassOf($subject)){
+                        $extensions = array_merge($extensions, $extensionList);
+                    }
                 }
 
                 if('implements' == $type){
-                    $classReflection = new \ReflectionClass($class);
                     if($classReflection->implementsInterface($subject)){
                         $extensions = array_merge($extensions, $extensionList);
                     }
                 }
 
                 if('extends' == $type){
-                    $subjReflection = new \ReflectionClass($subject);
-                    if($subjReflection->isSubclassOf($class)){
+                    if($classReflection->isSubclassOf($subject)){
                         $extensions = array_merge($extensions, $extensionList);
                     }
                 }
@@ -117,9 +128,15 @@ class ExtensionCompilerPass implements CompilerPassInterface
      */
     protected function flattenExtensionConfiguration(array $config)
     {
-        $extensionMap = array();
+        $extensionMap = array(
+            'excludes'      => array(),
+            'admins'        => array(),
+            'implements'    => array(),
+            'extends'       => array(),
+            'instanceof'    => array(),
+        );
+
         foreach ($config as $extension => $options) {
-            $extensionMap[$extension] = array();
             foreach ($options as $key => $value) {
                 foreach ($value as $source) {
                     if(!isset($extensionMap[$key][$source])){
@@ -129,6 +146,9 @@ class ExtensionCompilerPass implements CompilerPassInterface
                 }
             }
         }
+//        echo "map\n";
+//        var_dump($extensionMap);
+//        echo "\n";
         return $extensionMap;
     }
 }
