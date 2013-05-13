@@ -1,5 +1,5 @@
 Extensions
-=======
+==========
 
 You can dynamically manage Admin Extensions using the SonataAdminBundle's configuration. Each child of the 'extensions' node should be the service id of an AdminExtension.
 For each extension you have the following wiring options:
