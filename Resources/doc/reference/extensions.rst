@@ -4,19 +4,19 @@ Extensions
 You can dynamically manage Admin Extensions using the SonataAdminBundle's configuration. Each child of the 'extensions' node should be the service id of an AdminExtension.
 For each extension you have the following wiring options:
 
-## admins
+### admins
 specify one or more Admin service id's to which the Extension should be added
 
-## excludes
+### excludes
 specify one or more Admin service id's to which the Extension should not be added
 
-## implements
+### implements
 specify one or more interfaces. If the managed class of an admin implements one of the specified interfaces the extension will be added to that admin.
 
-## extends
+### extends
 specify one or more classes. If the managed class of an admin extends one of the specified classes the extension will be added to that admin.
 
-## instanceof
+### instanceof
 specify one or more classes. If the managed class of an admin extends one of the specified classes or is an instance of that class the extension will be added to that admin.
 
 
