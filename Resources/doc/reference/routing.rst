@@ -20,7 +20,7 @@ represents the route prefix.
     <?php
     class PostAdmin extends Admin
     {
-        protected $baseRouteName = 'news_post_admin';
+        protected $baseRoutePattern = 'news_post_admin';
     }
 
 If no ``baseRouteName`` is defined then the Admin will pick one for you, built
