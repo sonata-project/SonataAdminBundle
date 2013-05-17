@@ -14,18 +14,15 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
+use Sonata\AdminBundle\Mapper\BaseMapper;
 
 /**
  * This class is use to simulate the Form API
  *
  */
-class DatagridMapper
+class DatagridMapper extends BaseMapper
 {
-    protected $datagridBuilder;
-
     protected $datagrid;
-
-    protected $admin;
 
     /**
      * @param \Sonata\AdminBundle\Builder\DatagridBuilderInterface $datagridBuilder
@@ -34,9 +31,8 @@ class DatagridMapper
      */
     public function __construct(DatagridBuilderInterface $datagridBuilder, DatagridInterface $datagrid, AdminInterface $admin)
     {
-        $this->datagridBuilder = $datagridBuilder;
+        parent::__construct($datagridBuilder, $admin);
         $this->datagrid        = $datagrid;
-        $this->admin           = $admin;
     }
 
     /**
@@ -76,7 +72,7 @@ class DatagridMapper
         }
 
         // add the field with the DatagridBuilder
-        $this->datagridBuilder->addFilter($this->datagrid, $type, $fieldDescription, $this->admin);
+        $this->builder->addFilter($this->datagrid, $type, $fieldDescription, $this->admin);
 
         return $this;
     }

@@ -14,20 +14,15 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
 use Sonata\AdminBundle\Builder\ShowBuilderInterface;
+use Sonata\AdminBundle\Mapper\BaseGroupedMapper;
 
 /**
  * This class is used to simulate the Form API
  *
  */
-class ShowMapper
+class ShowMapper extends BaseGroupedMapper
 {
-    protected $showBuilder;
-
     protected $list;
-
-    protected $admin;
-
-    protected $currentGroup;
 
     /**
      * @param \Sonata\AdminBundle\Builder\ShowBuilderInterface     $showBuilder
@@ -36,9 +31,8 @@ class ShowMapper
      */
     public function __construct(ShowBuilderInterface $showBuilder, FieldDescriptionCollection $list, AdminInterface $admin)
     {
-        $this->showBuilder = $showBuilder;
+        parent::__construct($showBuilder, $admin);
         $this->list        = $list;
-        $this->admin       = $admin;
     }
 
     /**
@@ -52,15 +46,9 @@ class ShowMapper
      */
     public function add($name, $type = null, array $fieldDescriptionOptions = array())
     {
-        if (!$this->currentGroup) {
-            $this->with($this->admin->getLabel());
-        }
-
         $fieldKey = ($name instanceof FieldDescriptionInterface) ? $name->getName() : $name;
 
-        $formGroups = $this->admin->getShowGroups();
-        $formGroups[$this->currentGroup]['fields'][$fieldKey] = $fieldKey;
-        $this->admin->setShowGroups($formGroups);
+        $this->addFieldToCurrentGroup($fieldKey);
 
         if ($name instanceof FieldDescriptionInterface) {
             $fieldDescription = $name;
@@ -82,7 +70,7 @@ class ShowMapper
         $fieldDescription->setOption('safe', $fieldDescription->getOption('safe', false));
 
         // add the field with the FormBuilder
-        $this->showBuilder->addField($this->list, $type, $fieldDescription, $this->admin);
+        $this->builder->addField($this->list, $type, $fieldDescription, $this->admin);
 
         return $this;
     }
@@ -127,45 +115,25 @@ class ShowMapper
      */
     public function reorder(array $keys)
     {
-        if (!$this->currentGroup) {
-            $this->with($this->admin->getLabel());
-        }
-
-        $this->admin->reorderShowGroup($this->currentGroup, $keys);
+        $this->admin->reorderShowGroup($this->getCurrentGroupName(), $keys);
 
         return $this;
     }
 
     /**
-     * @param string $name
-     * @param array  $options
-     *
-     * @return \Sonata\AdminBundle\Show\ShowMapper
+     * {@inheritdoc}
      */
-    public function with($name, array $options = array())
+    protected function getGroups() 
     {
-        $showGroups = $this->admin->getShowGroups();
-        if (!isset($showGroups[$name])) {
-            $showGroups[$name] = array_merge(array(
-                'collapsed' => false,
-                'fields'    => array()
-            ), $options);
-        }
-
-        $this->admin->setShowGroups($showGroups);
-
-        $this->currentGroup = $name;
-
-        return $this;
+        return $this->admin->getShowGroups();
     }
 
     /**
-     * @return \Sonata\AdminBundle\Show\ShowMapper
+     * {@inheritdoc}
      */
-    public function end()
+    protected function setGroups(array $groups)
     {
-        $this->currentGroup = null;
-
-        return $this;
+        $this->admin->setShowGroups($groups);
     }
+
 }
