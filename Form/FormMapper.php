@@ -13,20 +13,15 @@ namespace Sonata\AdminBundle\Form;
 use Sonata\AdminBundle\Builder\FormContractorInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Symfony\Component\Form\FormBuilder;
+use Sonata\AdminBundle\Mapper\BaseGroupedMapper;
 
 /**
  * This class is use to simulate the Form API
  *
  */
-class FormMapper
+class FormMapper extends BaseGroupedMapper
 {
     protected $formBuilder;
-
-    protected $formContractor;
-
-    protected $admin;
-
-    protected $currentGroup;
 
     /**
      * @param \Sonata\AdminBundle\Builder\FormContractorInterface $formContractor
@@ -35,45 +30,8 @@ class FormMapper
      */
     public function __construct(FormContractorInterface $formContractor, FormBuilder $formBuilder, AdminInterface $admin)
     {
+        parent::__construct($formContractor, $admin);
         $this->formBuilder    = $formBuilder;
-        $this->formContractor = $formContractor;
-        $this->admin          = $admin;
-    }
-
-    /**
-     * @param string $name
-     * @param array  $options
-     *
-     * @return \Sonata\AdminBundle\Form\FormMapper
-     */
-    public function with($name, array $options = array())
-    {
-        $formGroups = $this->admin->getFormGroups();
-        if (!isset($formGroups[$name])) {
-            $formGroups[$name] = array();
-        }
-
-        $formGroups[$name] = array_merge(array(
-            'collapsed'   => false,
-            'fields'      => array(),
-            'description' => false
-        ), $formGroups[$name], $options);
-
-        $this->admin->setFormGroups($formGroups);
-
-        $this->currentGroup = $name;
-
-        return $this;
-    }
-
-    /**
-     * @return \Sonata\AdminBundle\Form\FormMapper
-     */
-    public function end()
-    {
-        $this->currentGroup = null;
-
-        return $this;
     }
 
     /**
@@ -83,11 +41,7 @@ class FormMapper
      */
     public function reorder(array $keys)
     {
-        if (!$this->currentGroup) {
-            $this->with($this->admin->getLabel());
-        }
-
-        $this->admin->reorderFormGroup($this->currentGroup, $keys);
+        $this->admin->reorderFormGroup($this->getCurrentGroupName(), $keys);
 
         return $this;
     }
@@ -102,15 +56,9 @@ class FormMapper
      */
     public function add($name, $type = null, array $options = array(), array $fieldDescriptionOptions = array())
     {
-        if (!$this->currentGroup) {
-            $this->with($this->admin->getLabel());
-        }
-
         $label = $name instanceof FormBuilder ? $name->getName() : $name;
 
-        $formGroups                                        = $this->admin->getFormGroups();
-        $formGroups[$this->currentGroup]['fields'][$label] = $label;
-        $this->admin->setFormGroups($formGroups);
+        $this->addFieldToCurrentGroup($label);
 
         if (!isset($fieldDescriptionOptions['type']) && is_string($type)) {
             $fieldDescriptionOptions['type'] = $type;
@@ -122,14 +70,16 @@ class FormMapper
             $fieldDescriptionOptions
         );
 
-        $this->formContractor->fixFieldDescription($this->admin, $fieldDescription, $fieldDescriptionOptions);
+        //Note that the builder var is actually the formContractor:
+        $this->builder->fixFieldDescription($this->admin, $fieldDescription, $fieldDescriptionOptions);
 
         $this->admin->addFormFieldDescription($name instanceof FormBuilder ? $name->getName() : $name, $fieldDescription);
 
         if ($name instanceof FormBuilder) {
             $this->formBuilder->add($name);
         } else {
-            $options = array_replace_recursive($this->formContractor->getDefaultOptions($type, $fieldDescription), $options);
+            //Note that the builder var is actually the formContractor:
+            $options = array_replace_recursive($this->builder->getDefaultOptions($type, $fieldDescription), $options);
 
             if (!isset($options['label'])) {
                 $options['label'] = $this->admin->getLabelTranslatorStrategy()->getLabel($fieldDescription->getName(), 'form', 'label');
@@ -193,14 +143,6 @@ class FormMapper
     }
 
     /**
-     * @return \Sonata\AdminBundle\Admin\AdminInterface
-     */
-    public function getAdmin()
-    {
-        return $this->admin;
-    }
-
-    /**
      * @param string $name
      * @param mixed  $type
      * @param array  $options
@@ -227,4 +169,21 @@ class FormMapper
 
         return $this;
     }
+    
+    /**
+     * {@inheritdoc}
+     */
+    protected function getGroups() 
+    {
+        return $this->admin->getFormGroups();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function setGroups(array $groups) 
+    {
+        $this->admin->setFormGroups($groups);
+    }
+    
 }
