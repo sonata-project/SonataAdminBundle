@@ -16,7 +16,7 @@
             </trans-unit>
             <trans-unit id="btn_create_and_edit_again">
                 <source>btn_create_and_edit_again</source>
-                <target>ایجاد</target>
+                <target>ایجاد و ویرایش مجدد</target>
             </trans-unit>
             <trans-unit id="btn_create_and_create_a_new_one">
                 <source>btn_create_and_create_a_new_one</source>
@@ -24,7 +24,7 @@
             </trans-unit>
             <trans-unit id="btn_create_and_return_to_list">
                 <source>btn_create_and_return_to_list</source>
-                <target>btn_create_and_return_to_list</target>
+                <target>ایجاد و بازگشت به لیست</target>
             </trans-unit>
             <trans-unit id="btn_filter">
                 <source>btn_filter</source>
@@ -36,7 +36,7 @@
             </trans-unit>
             <trans-unit id="btn_update_and_edit_again">
                 <source>btn_update_and_edit_again</source>
-                <target>به روز رسانی وویرایش مجدد</target>
+                <target>به روز رسانی و ویرایش مجدد</target>
             </trans-unit>
             <trans-unit id="btn_update_and_return_to_list">
                 <source>btn_update_and_return_to_list</source>
@@ -340,7 +340,7 @@
             </trans-unit>
             <trans-unit id="label_per_page">
               <source>label_per_page</source>
-              <target>label_per_page</target>
+              <target>در هر صفحه</target>
             </trans-unit>
         </body>
     </file>
