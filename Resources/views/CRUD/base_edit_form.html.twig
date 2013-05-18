@@ -32,7 +32,7 @@
                         <div class="tab-pane {% if loop.first %} active{% endif %}" id="{{ admin.uniqid }}_{{ name|sonata_slugify }}">
                             <fieldset>
                                 <div class="sonata-ba-collapsed-fields">
-                                    {% if form_group.description != false %}
+                                    {% if form_group.description is defined and form_group.description != false %}
                                         <p>{{ form_group.description|raw }}</p>
                                     {% endif %}
 
