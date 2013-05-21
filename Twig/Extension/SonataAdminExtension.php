@@ -249,16 +249,15 @@ class SonataAdminExtension extends \Twig_Extension
         // trim
         $text = trim($text, '-');
 
-        // transliterate
-        if (function_exists('iconv')) {
-            $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
+        // lowercase
+        if (function_exists('mb_detect_encoding') && false !== $encoding = mb_detect_encoding($text)) {
+            $text = mb_strtolower($text, $encoding);
+        } else {
+            $text = strtolower($text);
         }
 
-        // lowercase
-        $text = strtolower($text);
-
         // remove unwanted characters
-        $text = preg_replace('~[^-\w]+~', '', $text);
+        $text = preg_replace('~[^-\w]+~u', '', $text);
 
         return $text;
     }

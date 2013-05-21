@@ -27,7 +27,7 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($s->slugify('S§!@@#$#$alut'), 's-alut');
         $this->assertEquals($s->slugify('Symfony2'), 'symfony2');
         $this->assertEquals($s->slugify('test'), 'test');
-        $this->assertEquals($s->slugify('c\'est bientôt l\'été'), 'c-est-bientot-l-ete');
-        $this->assertEquals($s->slugify(urldecode('%2Fc\'est+bientôt+l\'été')), 'c-est-bientot-l-ete');
+        $this->assertEquals($s->slugify('c\'est bientôt l\'été'), 'c-est-bientôt-l-été');
+        $this->assertEquals($s->slugify(urldecode('%2Fc\'est+bientôt+l\'été')), 'c-est-bientôt-l-été');
     }
 }
