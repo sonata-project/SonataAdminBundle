@@ -146,9 +146,6 @@ class ExtensionCompilerPass implements CompilerPassInterface
                 }
             }
         }
-//        echo "map\n";
-//        var_dump($extensionMap);
-//        echo "\n";
         return $extensionMap;
     }
 }

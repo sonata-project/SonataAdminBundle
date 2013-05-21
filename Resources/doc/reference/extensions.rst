@@ -2,7 +2,7 @@ Extensions
 ==========
 
 Admin extensions allow you to add or change features of one or more Admin instances. To create an extension your class
-must implement the interface `Sonata\\AdminBundle\\Admin\\AdminExtensionInterface` and be registered as a service. The
+must implement the interface ``Sonata\AdminBundle\Admin\AdminExtensionInterface`` and be registered as a service. The
 interface defines a number of functions which you can use to customize the edit form, list view, form validation and
 other admin features.
 

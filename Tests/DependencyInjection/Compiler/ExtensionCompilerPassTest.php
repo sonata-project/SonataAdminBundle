@@ -25,6 +25,11 @@ class ExtensionCompilerPassTest extends \PHPUnit_Framework_TestCase
     /** @var array $config */
     private $config;
 
+    private $publishExtension;
+    private $historyExtension;
+    private $orderExtension;
+
+
     /**
      * Root name of the configuration
      *
@@ -39,6 +44,10 @@ class ExtensionCompilerPassTest extends \PHPUnit_Framework_TestCase
         $this->extension = new SonataAdminExtension();
         $this->config    = $this->getConfig();
         $this->root      = "sonata.admin";
+
+        $this->publishExtension = $this->getMock('Sonata\AdminBundle\Admin\AdminExtensionInterface');
+        $this->historyExtension = $this->getMock('Sonata\AdminBundle\Admin\AdminExtensionInterface');
+        $this->orderExtension = $this->getMock('Sonata\AdminBundle\Admin\AdminExtensionInterface');
     }
 
     /**
@@ -217,20 +226,21 @@ class ExtensionCompilerPassTest extends \PHPUnit_Framework_TestCase
         $def = $container->get('sonata_post_admin');
         $extensions = $def->getExtensions();
         $this->assertCount(2, $extensions);
-        $this->assertInstanceOf('\Sonata\AdminBundle\Tests\DependencyInjection\PublishExtension', $extensions[0]);
-        $this->assertInstanceOf('\Sonata\AdminBundle\Tests\DependencyInjection\HistoryExtension', $extensions[1]);
+
+        $this->assertInstanceOf(get_class($this->publishExtension), $extensions[0]);
+        $this->assertInstanceOf(get_class($this->historyExtension), $extensions[1]);
 
         $def = $container->get('sonata_article_admin');
         $extensions = $def->getExtensions();
         $this->assertCount(2, $extensions);
-        $this->assertInstanceOf('\Sonata\AdminBundle\Tests\DependencyInjection\PublishExtension', $extensions[0]);
-        $this->assertInstanceOf('\Sonata\AdminBundle\Tests\DependencyInjection\OrderExtension', $extensions[1]);
+        $this->assertInstanceOf(get_class($this->publishExtension), $extensions[0]);
+        $this->assertInstanceOf(get_class($this->orderExtension), $extensions[1]);
 
         $def = $container->get('sonata_news_admin');
         $extensions = $def->getExtensions();
         $this->assertCount(2, $extensions);
-        $this->assertInstanceOf('\Sonata\AdminBundle\Tests\DependencyInjection\OrderExtension', $extensions[0]);
-        $this->assertInstanceOf('\Sonata\AdminBundle\Tests\DependencyInjection\HistoryExtension', $extensions[1]);
+        $this->assertInstanceOf(get_class($this->orderExtension), $extensions[0]);
+        $this->assertInstanceOf(get_class($this->historyExtension), $extensions[1]);
     }
 
     /**
@@ -300,21 +310,18 @@ class ExtensionCompilerPassTest extends \PHPUnit_Framework_TestCase
         // Add admin extension definition's
         $container
             ->register('sonata_extension_publish')
-            ->setClass('Sonata\AdminBundle\Tests\DependencyInjection\PublishExtension');
+            ->setClass(get_class($this->publishExtension));
         $container
             ->register('sonata_extension_history')
-            ->setClass('Sonata\AdminBundle\Tests\DependencyInjection\HistoryExtension');
+            ->setClass(get_class($this->historyExtension));
         $container
             ->register('sonata_extension_order')
-            ->setClass('Sonata\AdminBundle\Tests\DependencyInjection\OrderExtension');
+            ->setClass(get_class($this->orderExtension));
 
         return $container;
     }
 }
 
-class PublishExtension extends MockExtension {}
-class HistoryExtension extends MockExtension {}
-class OrderExtension extends MockExtension {}
 class MockAdmin extends Admin {}
 
 class Post {}
