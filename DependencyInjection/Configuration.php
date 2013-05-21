@@ -77,6 +77,7 @@ class Configuration implements ConfigurationInterface
                                 ->fixXmlConfig('item_add')
                                 ->children()
                                     ->scalarNode('label')->end()
+                                    ->scalarNode('label_catalogue')->end()
                                     ->arrayNode('items')
                                         ->prototype('scalar')->end()
                                     ->end()
