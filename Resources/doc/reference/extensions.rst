@@ -11,8 +11,8 @@ other admin features.
     use Sonata\AdminBundle\Admin\AdminExtension;
     use Sonata\AdminBundle\Form\FormMapper;
 
-    class PublishStatusAdminExtension extends AdminExtension {
-
+    class PublishStatusAdminExtension extends AdminExtension
+    {
         public function configureFormFields(FormMapper $formMapper)
         {
             $formMapper->add('status', 'choice', array(
