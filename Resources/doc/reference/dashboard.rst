@@ -111,7 +111,7 @@ Display two blocks with different dashboard groups
 
     # app/config/config.yml
     sonata_admin:
-        dashboard
+        dashboard:
             blocks:
                 # display two dashboard blocks
                 - { position: left,  type: sonata.admin.block.admin_list, settings: { groups: [sonata_page1, sonata_page2] } }
