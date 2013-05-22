@@ -101,6 +101,8 @@ class SonataAdminExtension extends Extension
 
         $loader->load('security.xml');
 
+        $container->setParameter('sonata.admin.extension.map', $config['extensions']);
+
         /**
          * This is a work in progress, so for now it is hardcoded
          */
