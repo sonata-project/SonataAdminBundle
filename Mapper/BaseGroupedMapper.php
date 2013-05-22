@@ -67,8 +67,9 @@ abstract class BaseGroupedMapper extends BaseMapper
      */
     protected function addFieldToCurrentGroup($fieldName) 
     {
+        $currentGroup = $this->getCurrentGroupName();
         $groups = $this->getGroups();
-        $groups[$this->getCurrentGroupName()]['fields'][$fieldName] = $fieldName;
+        $groups[$currentGroup]['fields'][$fieldName] = $fieldName;
         $this->setGroups($groups);
     }
     
