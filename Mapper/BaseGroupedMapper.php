@@ -67,14 +67,20 @@ abstract class BaseGroupedMapper extends BaseMapper
      */
     protected function addFieldToCurrentGroup($fieldName) 
     {
+        //Note this line must happen before the next line. 
+        //See https://github.com/sonata-project/SonataAdminBundle/pull/1351
+        $currentGroup = $this->getCurrentGroupName();
         $groups = $this->getGroups();
-        $groups[$this->getCurrentGroupName()]['fields'][$fieldName] = $fieldName;
+        $groups[$currentGroup]['fields'][$fieldName] = $fieldName;
         $this->setGroups($groups);
     }
     
     /**
      * Return the name of the currently selected group. The method also makes 
      * sure a valid group name is currently selected
+     * 
+     * Note that this can have the side effect to change the "group" value
+     * returned by the getGroup function
      * 
      * @return string
      */
