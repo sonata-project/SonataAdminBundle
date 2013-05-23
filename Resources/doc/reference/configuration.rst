@@ -9,7 +9,7 @@ Configuration options
         * ``sonata.admin.security.handler.acl`` : Use this service if you want ACL
 
 * ``title`` : The admin's title, can be the client name for instance (default: Sonata Admin)
-* ``title_logo`` : logo to use, must be an image with a height of 28px (default : /bundles/sonataadmin/logo_title.png)
+* ``title_logo`` : logo to use, must be an image with a height of 28px (default : bundles/sonataadmin/logo_title.png)
 
 Please see :doc:`templates` for more information on how to configure default templates.
 
@@ -24,7 +24,7 @@ Full Configuration Options
             handler: sonata.admin.security.handler.role
 
         title:      Sonata Project
-        title_logo: /bundles/sonataadmin/logo_title.png
+        title_logo: bundles/sonataadmin/logo_title.png
         templates:
             # default global templates
             layout:  SonataAdminBundle::standard_layout.html.twig
