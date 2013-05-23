@@ -32,6 +32,7 @@ Reference Guide
    reference/batch_actions
    reference/translation
    reference/security
+   reference/extensions
    reference/advance
    reference/console
    reference/preview_mode
