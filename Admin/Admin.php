@@ -1484,25 +1484,6 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * @param array $formGroups
-     * 
-     * @deprecated
-     */
-    public function setFormGroups(array $formGroups)
-    {
-    }
-
-    /**
-     * @param array $group
-     * @param array $keys
-     * 
-     * @deprecated
-     */
-    public function reorderFormGroup($group, array $keys)
-    {
-    }
-
-    /**
      * @return array
      */
     public function getShowGroups()
@@ -1511,25 +1492,6 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         $this->buildShow();
         
         return $this->showGroups;
-    }
-
-    /**
-     * @param array $showGroups
-     * 
-     * @deprecated
-     */
-    public function setShowGroups(array $showGroups)
-    {
-    }
-
-    /**
-     * @param string $group
-     * @param array  $keys
-     * 
-     * @deprecated
-     */
-    public function reorderShowGroup($group, array $keys)
-    {
     }
 
     /**
