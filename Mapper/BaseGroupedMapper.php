@@ -93,14 +93,15 @@ abstract class BaseGroupedMapper extends BaseMapper
     /**
      * @return array
      */
-    public function getGroups() {
+    public function getGroups() 
+    {
         return $this->groups;
     }
     
     /**
      * @param array $keys field names
      *
-     * @return \Sonata\AdminBundle\Form\FormMapper
+     * @return \Sonata\AdminBundle\Mapper\BaseGroupedMapper
      */
     public function reorder(array $keys)
     {
