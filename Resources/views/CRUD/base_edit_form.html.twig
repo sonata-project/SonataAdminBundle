@@ -18,7 +18,7 @@
                     <ul class="nav nav-tabs">
                         {% for name, form_group in admin.formgroups %}
                             <li class="{% if loop.first %}active{% endif %}">
-                                <a href="#{{ admin.uniqid }}_{{ name|sonata_slugify }}" data-toggle="tab">
+                                <a href="#{{ admin.uniqid }}_{{ loop.index }}" data-toggle="tab">
                                     <i class="icon-exclamation-sign has-errors hide"></i>
                                     {{ admin.trans(name) }}
                                 </a>
@@ -29,7 +29,7 @@
 
                 <div class="tab-content">
                     {% for name, form_group in admin.formgroups %}
-                        <div class="tab-pane {% if loop.first %} active{% endif %}" id="{{ admin.uniqid }}_{{ name|sonata_slugify }}">
+                        <div class="tab-pane {% if loop.first %} active{% endif %}" id="{{ admin.uniqid }}_{{ loop.index }}">
                             <fieldset>
                                 <div class="sonata-ba-collapsed-fields">
                                     {% if form_group.description != false %}
