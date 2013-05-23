@@ -17,11 +17,17 @@ namespace Sonata\AdminBundle\Mapper;
 abstract class BaseGroupedMapper extends BaseMapper
 {
 
-    protected $currentGroup;
+    /**
+     * The name of the current group
+     *
+     * @var string
+     */
+    protected $currentGroup = false;
     
-    protected abstract function getGroups();
-    
-    protected abstract function setGroups(array $groups);
+    /**
+     * @var array
+     */
+    private $groups = array();
     
     /**
      * @param string $name
@@ -31,19 +37,15 @@ abstract class BaseGroupedMapper extends BaseMapper
      */
     public function with($name, array $options = array())
     {
-        $groups = $this->getGroups();
-        
-        if (!isset($groups[$name])) {
-            $groups[$name] = array();
+        if (!isset($this->groups[$name])) {
+            $this->groups[$name] = array(
+                'collapsed'   => false,
+                'fields'      => array(),
+                'description' => false
+            );
         }
 
-        $groups[$name] = array_merge(array(
-            'collapsed'   => false,
-            'fields'      => array(),
-            'description' => false
-        ), $groups[$name], $options);
-        
-        $this->setGroups($groups);
+        $this->groups[$name] = array_merge($this->groups[$name], $options);
 
         $this->currentGroup = $name;
 
@@ -67,12 +69,8 @@ abstract class BaseGroupedMapper extends BaseMapper
      */
     protected function addFieldToCurrentGroup($fieldName) 
     {
-        //Note this line must happen before the next line. 
-        //See https://github.com/sonata-project/SonataAdminBundle/pull/1351
         $currentGroup = $this->getCurrentGroupName();
-        $groups = $this->getGroups();
-        $groups[$currentGroup]['fields'][$fieldName] = $fieldName;
-        $this->setGroups($groups);
+        $this->groups[$currentGroup]['fields'][$fieldName] = $fieldName;
     }
     
     /**
@@ -86,10 +84,31 @@ abstract class BaseGroupedMapper extends BaseMapper
      */
     protected function getCurrentGroupName() 
     {
-        if (!$this->currentGroup) {
+        if ( ! $this->currentGroup) {
             $this->with($this->admin->getLabel());
         }
         return $this->currentGroup;
+    }
+    
+    /**
+     * @return array
+     */
+    public function getGroups() 
+    {
+        return $this->groups;
+    }
+    
+    /**
+     * @param array $keys field names
+     *
+     * @return \Sonata\AdminBundle\Mapper\BaseGroupedMapper
+     */
+    public function reorder(array $keys)
+    {
+        $currentGroup = $this->getCurrentGroupName();
+        $this->groups[$currentGroup]['fields'] = array_merge(array_flip($keys), $this->groups[$currentGroup]['fields']);
+        
+        return $this;
     }
     
 }
