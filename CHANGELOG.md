@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+### 2013-05-23
+
+* [BC BREAK] Removed "setFormGroups", "reorderFormGroup", "setShowGroups" and "reorderShowGroup" methods in the Admin class. The data being manipulated by these methods is now built in the BaseGroupMapper class. Manipulate with the group value via the Show|FormMapper class
+
 ### 2012-11-25
 
 * [BC BREAK] change the configureSideMenu signature to use the AdminInterface
