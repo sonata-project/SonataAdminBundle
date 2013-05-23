@@ -135,6 +135,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
             'validator',
             'security_handler',
             'menu_factory',
+            'menu_matcher',
             'route_builder',
             'label_translator_strategy',
         );
@@ -181,6 +182,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
             'validator'                 => 'validator',
             'security_handler'          => 'sonata.admin.security.handler',
             'menu_factory'              => 'knp_menu.factory',
+            'menu_matcher'              => 'knp_menu.matcher',
             'route_builder'             => 'sonata.admin.route.path_info',
             'label_translator_strategy' => 'sonata.admin.label.strategy.native'
         );
