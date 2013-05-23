@@ -655,6 +655,8 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         foreach ($this->getExtensions() as $extension) {
             $extension->configureShowFields($mapper);
         }
+        
+        $this->showGroups = $mapper->getGroups();
     }
 
     /**
@@ -1210,6 +1212,8 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         foreach ($this->getExtensions() as $extension) {
             $extension->configureFormFields($mapper);
         }
+        
+        $this->formGroups = $mapper->getGroups();
 
         $this->attachInlineValidator();
     }
@@ -1473,26 +1477,29 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      */
     public function getFormGroups()
     {
+        //The formGroups is set in the buildForm methods, so make sure its been called:
+        $this->buildForm();
+        
         return $this->formGroups;
     }
 
     /**
      * @param array $formGroups
+     * 
+     * @deprecated
      */
     public function setFormGroups(array $formGroups)
     {
-        $this->formGroups = $formGroups;
     }
 
     /**
      * @param array $group
      * @param array $keys
+     * 
+     * @deprecated
      */
     public function reorderFormGroup($group, array $keys)
     {
-        $formGroups = $this->getFormGroups();
-        $formGroups[$group]['fields'] = array_merge(array_flip($keys), $formGroups[$group]['fields']);
-        $this->setFormGroups($formGroups);
     }
 
     /**
@@ -1500,26 +1507,29 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      */
     public function getShowGroups()
     {
+        //The showGroups value is set in the buildShow method. Make sure its been called:
+        $this->buildShow();
+        
         return $this->showGroups;
     }
 
     /**
      * @param array $showGroups
+     * 
+     * @deprecated
      */
     public function setShowGroups(array $showGroups)
     {
-        $this->showGroups = $showGroups;
     }
 
     /**
      * @param string $group
      * @param array  $keys
+     * 
+     * @deprecated
      */
     public function reorderShowGroup($group, array $keys)
     {
-        $showGroups                   = $this->getShowGroups();
-        $showGroups[$group]['fields'] = array_merge(array_flip($keys), $showGroups[$group]['fields']);
-        $this->setShowGroups($showGroups);
     }
 
     /**

@@ -35,18 +35,6 @@ class FormMapper extends BaseGroupedMapper
     }
 
     /**
-     * @param array $keys field names
-     *
-     * @return \Sonata\AdminBundle\Form\FormMapper
-     */
-    public function reorder(array $keys)
-    {
-        $this->admin->reorderFormGroup($this->getCurrentGroupName(), $keys);
-
-        return $this;
-    }
-
-    /**
      * @param string $name
      * @param string $type
      * @param array  $options
@@ -168,22 +156,6 @@ class FormMapper extends BaseGroupedMapper
         }
 
         return $this;
-    }
-    
-    /**
-     * {@inheritdoc}
-     */
-    protected function getGroups() 
-    {
-        return $this->admin->getFormGroups();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function setGroups(array $groups) 
-    {
-        $this->admin->setFormGroups($groups);
     }
     
 }

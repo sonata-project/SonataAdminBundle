@@ -108,32 +108,4 @@ class ShowMapper extends BaseGroupedMapper
         return $this;
     }
 
-    /**
-     * @param array $keys field names
-     *
-     * @return \Sonata\AdminBundle\Show\ShowMapper
-     */
-    public function reorder(array $keys)
-    {
-        $this->admin->reorderShowGroup($this->getCurrentGroupName(), $keys);
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getGroups() 
-    {
-        return $this->admin->getShowGroups();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function setGroups(array $groups)
-    {
-        $this->admin->setShowGroups($groups);
-    }
-
 }
