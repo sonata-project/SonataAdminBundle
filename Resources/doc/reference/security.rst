@@ -133,6 +133,15 @@ So our ``security.yml`` file may look to something like this:
             ROLE_ADMIN:             [ROLE_STAFF, ROLE_SONATA_FOO_EDITOR, ROLE_SONATA_FOO_ADMIN]
             ROLE_SUPER_ADMIN:       [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
             
+        # set access_strategy to unanimous, else you may have unexpected behaviors
+        access_decision_manager:
+            strategy: unanimous
+
+Note that we also set ``access_strategy`` to unanimous.
+It means that if one voter (for example Sonata) refuses access, access will be denied.
+For more information on this subject, please see `here
+<http://symfony.com/doc/2.2/cookbook/security/voters.html#changing-the-access-decision-strategy>`_
+
 Usage
 ~~~~~
             
