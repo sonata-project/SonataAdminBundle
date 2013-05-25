@@ -250,9 +250,11 @@ class SonataAdminExtension extends \Twig_Extension
         $text = trim($text, '-');
 
         // transliterate
-        try {
-            $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
-        } catch (\Exception $e) {}
+        if (function_exists('iconv')) {
+            try {
+                $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
+            } catch (\Exception $e) {}
+        }
 
         // lowercase
         $text = strtolower($text);
