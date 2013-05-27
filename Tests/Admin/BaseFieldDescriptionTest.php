@@ -47,7 +47,6 @@ class BaseFieldDescriptionTest extends \PHPUnit_Framework_TestCase
 
         $description->setOption('label', 'trucmuche');
         $this->assertEquals('trucmuche', $description->getLabel());
-
         $this->assertNull($description->getTemplate());
         $description->setOptions(array('type' => 'integer', 'template' => 'foo.twig.html', 'help' => 'fooHelp'));
 
@@ -115,6 +114,27 @@ class BaseFieldDescriptionTest extends \PHPUnit_Framework_TestCase
         $description = new FieldDescription();
         $description->setOption('bar', 'hello');
         $description->mergeOption('bar', array('exception'));
+    }
+
+    public function testGetTranslationDomain()
+    {
+        $description = new FieldDescription();
+
+        $admin = $this->getMockBuilder('Sonata\AdminBundle\Admin\Admin')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $description->setAdmin($admin);
+
+        $admin->expects($this->once())
+            ->method('getTranslationDomain')
+            ->will($this->returnValue('AdminDomain'));
+
+        $this->assertEquals('AdminDomain', $description->getTranslationDomain());
+
+        $admin->expects($this->never())
+            ->method('getTranslationDomain');
+        $description->setOption('translation_domain', 'ExtensionDomain');
+        $this->assertEquals('ExtensionDomain', $description->getTranslationDomain());
     }
 }
 
