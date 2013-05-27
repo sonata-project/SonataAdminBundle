@@ -24,7 +24,7 @@
             </trans-unit>
             <trans-unit id="btn_create_and_return_to_list">
                 <source>btn_create_and_return_to_list</source>
-                <target>Create and return to list</target>
+                <target>Vytvoriť a vrátiť sa do zoznamu</target>
             </trans-unit>
             <trans-unit id="btn_filter">
                 <source>btn_filter</source>
