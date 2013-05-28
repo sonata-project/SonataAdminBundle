@@ -120,9 +120,7 @@ class BaseFieldDescriptionTest extends \PHPUnit_Framework_TestCase
     {
         $description = new FieldDescription();
 
-        $admin = $this->getMockBuilder('Sonata\AdminBundle\Admin\Admin')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
         $description->setAdmin($admin);
 
         $admin->expects($this->once())
