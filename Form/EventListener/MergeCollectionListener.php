@@ -12,8 +12,8 @@
 
 namespace Sonata\AdminBundle\Form\EventListener;
 
+use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Form\Event\FilterDataEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 use Sonata\AdminBundle\Model\ModelManagerInterface;
@@ -41,9 +41,9 @@ class MergeCollectionListener implements EventSubscriberInterface
     }
 
     /**
-     * @param \Symfony\Component\Form\Event\FilterDataEvent $event
+     * @param \Symfony\Component\Form\FormEvent $event
      */
-    public function onBind(FilterDataEvent $event)
+    public function onBind(FormEvent $event)
     {
         $collection = $event->getForm()->getData();
         $data       = $event->getData();
