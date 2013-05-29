@@ -64,8 +64,8 @@ class ResizeFormListener implements EventSubscriberInterface
     {
         return array(
             FormEvents::PRE_SET_DATA    => 'preSetData',
-            FormEvents::PRE_SUBMIT      => 'preBind',
-            FormEvents::SUBMIT          => 'onBind',
+            FormEvents::PRE_BIND        => 'preBind',
+            FormEvents::BIND            => 'onBind',
         );
     }
 
