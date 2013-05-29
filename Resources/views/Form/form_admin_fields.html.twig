@@ -101,7 +101,7 @@ file that was distributed with this source code.
 {% endspaceless %}
 {% endblock choice_widget %}
 
-{% block field_row %}
+{% block form_row %}
     {% if sonata_admin is not defined or not sonata_admin_enabled or not sonata_admin.field_description %}
         <div class="control-group {% if errors|length > 0%} error{% endif %}">
             {{ form_label(form, label|default(null)) }}
@@ -140,7 +140,7 @@ file that was distributed with this source code.
             </div>
         </div>
     {% endif %}
-{% endblock field_row %}
+{% endblock form_row %}
 
 {% block collection_widget_row %}
 {% spaceless %}
