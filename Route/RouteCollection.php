@@ -45,7 +45,7 @@ class RouteCollection
      * @param array  $requirements
      * @param array  $options
      *
-     * @return void
+     * @return \Sonata\AdminBundle\Route\RouteCollection
      */
     public function add($name, $pattern = null, array $defaults = array(), array $requirements = array(), array $options = array())
     {
@@ -64,6 +64,8 @@ class RouteCollection
         $defaults['_sonata_name'] = $routeName;
 
         $this->elements[$this->getCode($name)] = new Route($pattern, $defaults, $requirements, $options);
+
+        return $this;
     }
 
     /**
@@ -82,12 +84,16 @@ class RouteCollection
 
     /**
      * @param RouteCollection $collection
+     *
+     * @return \Sonata\AdminBundle\Route\RouteCollection
      */
     public function addCollection(RouteCollection $collection)
     {
         foreach ($collection->getElements() as $code => $route) {
             $this->elements[$code] = $route;
         }
+
+        return $this;
     }
 
     /**
