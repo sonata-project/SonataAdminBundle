@@ -40,19 +40,34 @@ class RoleSecurityHandler implements SecurityHandlerInterface
             $attributes = array($attributes);
         }
 
-        foreach ($attributes as $pos => $attribute) {
-            $attributes[$pos] = sprintf($this->getBaseRole($admin), $attribute);
-        }
+        $roles = $this->getAttributeRoles($admin, $attributes);
 
         try {
-            return $this->securityContext->isGranted($this->superAdminRoles) || $this->securityContext->isGranted($attributes);
+            return $this->securityContext->isGranted($this->superAdminRoles) || $this->securityContext->isGranted($roles);
         } catch (AuthenticationCredentialsNotFoundException $e) {
             return false;
         } catch (\Exception $e) {
             throw $e;
         }
     }
+    
+    /**
+     * Get roles for attributes from admin security infomation
+     */
+    private function getAttributeRoles(AdminInterface $admin, array $attributes)
+    {
+        $baseRole = $this->getBaseRole($admin);
 
+        $results = array();
+        foreach ($admin->getSecurityInformation() as $role => $permissions) {
+            if (count(array_intersect($attributes, $permissions)) > 0) {
+                $results[] = sprintf($baseRole, $role);
+            }
+        }
+
+        return $results;
+    }
+    
     /**
      * {@inheritDoc}
      */
