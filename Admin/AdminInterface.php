@@ -555,4 +555,20 @@ interface AdminInterface
      * @return null|string
      */
     public function getTemplate($name);
+
+    /**
+     * Set the translation domain
+     *
+     * @param string $translationDomain the translation domain
+     *
+     * @return void
+     */
+    public function setTranslationDomain($translationDomain);
+
+    /**
+     * Returns the translation domain
+     *
+     * @return string the translation domain
+     */
+    public function getTranslationDomain();
 }

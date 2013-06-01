@@ -2091,11 +2091,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * set the translation domain
-     *
-     * @param string $translationDomain the translation domain
-     *
-     * @return void
+     * {@inheritdoc}
      */
     public function setTranslationDomain($translationDomain)
     {
@@ -2103,9 +2099,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * Returns the translation domain
-     *
-     * @return string the translation domain
+     * {@inheritdoc}
      */
     public function getTranslationDomain()
     {
