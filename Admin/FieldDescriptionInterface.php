@@ -279,6 +279,13 @@ interface FieldDescriptionInterface
      */
     public function getLabel();
 
+    /**
+     * Return the translation domain to use for the current field.
+     *
+     * @return string
+     */
+    public function getTranslationDomain();
+
     /*
      * @return boolean
      */
