@@ -17,24 +17,24 @@
         {% endif %}
         {% if preferred_choices|length > 0 %}
             {% set options = preferred_choices %}
-            {{ block('widget_choice_options') }}
+            {{ block('choice_widget_options') }}
             {% if choices|length > 0 and separator is not none %}
                 <option disabled="disabled">{{ separator }}</option>
             {% endif %}
         {% endif %}
         {% set options = choices %}
-        {{ block('widget_choice_options') }}
+        {{ block('choice_widget_options') }}
     </select>
     {% endif %}
 {% endspaceless %}
 {% endblock choice_widget %}
 
-{% block field_widget %}
+{% block form_widget_simple %}
 {% spaceless %}
     {% set type = type|default('text') %}
     <input type="{{ type }}" {{ block('widget_attributes') }} value="{{ value }}" />
 {% endspaceless %}
-{% endblock field_widget %}
+{% endblock form_widget_simple %}
 
 {# Labels #}
 
@@ -61,7 +61,7 @@
 
 {# Rows #}
 
-{% block field_row %}
+{% block form_row %}
 {% spaceless %}
     <div class="control-group {{ (0 < form_errors(form)|length)? 'error':'' }} ">
         {{ form_label(form, label|default(null)) }}
@@ -71,11 +71,11 @@
         </div>
     </div>
 {% endspaceless %}
-{% endblock field_row %}
+{% endblock form_row %}
 
 {# Misc #}
 
-{% block field_errors %}
+{% block form_errors %}
 {% spaceless %}
     {% if errors|length > 0 %}
         {% if not form.hasParent  or 'repeated' in form.get('types') %}
@@ -93,4 +93,4 @@
         {% endif %}
     {% endif %}
 {% endspaceless %}
-{% endblock field_errors %}
+{% endblock form_errors %}
