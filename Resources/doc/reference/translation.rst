@@ -73,11 +73,11 @@ can be overridden when defining new form fields:
 .. code-block:: php
 
         $formMapper->with('form.my_group')
-            ->add('publishable', 'checkbox', array(
+            ->add('publishable', 'checkbox', array(), array(
                 // ...
                 'translation_domain' => 'MyTranslationDomain',
             ))
-            ->add('start_date', 'date', array(
+            ->add('start_date', 'date', array(), array(
                 // ...
                 'translation_domain' => 'MyTranslationDomain',
             ));
