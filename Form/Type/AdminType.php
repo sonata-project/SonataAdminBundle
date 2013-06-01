@@ -45,16 +45,20 @@ class AdminType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array('delete' => true));
+        $resolver->setDefaults(array(
+            'delete' => true,
+            'auto_initialize' => false
+        ));
     }
 
     /**
      * @param array $options
      *
      * @return \Sonata\AdminBundle\Admin\FieldDescriptionInterface
+     *
      * @throws \RuntimeException
      */
-    public function getFieldDescription(array $options)
+    protected function getFieldDescription(array $options)
     {
         if (!isset($options['sonata_field_description'])) {
             throw new \RuntimeException('Please provide a valid `sonata_field_description` option');
@@ -68,7 +72,7 @@ class AdminType extends AbstractType
      *
      * @return \Sonata\AdminBundle\Admin\AdminInterface
      */
-    public function getAdmin(array $options)
+    protected function getAdmin(array $options)
     {
         return $this->getFieldDescription($options)->getAssociationAdmin();
     }
