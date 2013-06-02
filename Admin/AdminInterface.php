@@ -571,4 +571,18 @@ interface AdminInterface
      * @return string the translation domain
      */
     public function getTranslationDomain();
+
+    /**
+     * Return the form groups
+     *
+     * @return array
+     */
+    public function getFormGroups();
+
+    /**
+     * Set the form groups
+     *
+     * @param array $formGroups
+     */
+    public function setFormGroups(array $formGroups);
 }

@@ -40,7 +40,8 @@ abstract class BaseGroupedMapper extends BaseMapper
         $groups[$name] = array_merge(array(
             'collapsed'   => false,
             'fields'      => array(),
-            'description' => false
+            'description' => false,
+            'translation_domain' => null,
         ), $groups[$name], $options);
         
         $this->setGroups($groups);

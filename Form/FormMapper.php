@@ -185,5 +185,4 @@ class FormMapper extends BaseGroupedMapper
     {
         $this->admin->setFormGroups($groups);
     }
-    
 }
