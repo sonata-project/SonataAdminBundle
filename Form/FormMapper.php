@@ -58,10 +58,14 @@ class FormMapper extends BaseGroupedMapper
     {
         $label = $name instanceof FormBuilder ? $name->getName() : $name;
 
-        $this->addFieldToCurrentGroup($label);
+        $group = $this->addFieldToCurrentGroup($label);
 
         if (!isset($fieldDescriptionOptions['type']) && is_string($type)) {
             $fieldDescriptionOptions['type'] = $type;
+        }
+
+        if ($group['translation_domain'] && !isset($fieldDescriptionOptions['translation_domain'])) {
+            $fieldDescriptionOptions['translation_domain'] = $group['translation_domain'];
         }
 
         $fieldDescription = $this->admin->getModelManager()->getNewFieldDescriptionInstance(
@@ -185,5 +189,4 @@ class FormMapper extends BaseGroupedMapper
     {
         $this->admin->setFormGroups($groups);
     }
-    
 }

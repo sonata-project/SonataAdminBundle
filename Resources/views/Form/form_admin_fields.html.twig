@@ -42,7 +42,7 @@ file that was distributed with this source code.
                 {% if not sonata_admin.admin%}
                     {{- label|trans({}, translation_domain) -}}
                 {% else %}
-                {{ sonata_admin.admin.trans(label, {}, sonata_admin.field_description.translationDomain) }}
+                    {{ sonata_admin.admin.trans(label, {}, sonata_admin.field_description.translationDomain) }}
                 {% endif %}
                 {{ required ? '*' : '' }}
             </label>
@@ -135,7 +135,7 @@ file that was distributed with this source code.
                 {% endif %}
 
                 {% if sonata_admin.field_description.help %}
-                    <span class="help-block sonata-ba-field-help">{{ sonata_admin.admin.trans(sonata_admin.field_description.help)|raw }}</span>
+                    <span class="help-block sonata-ba-field-help">{{ sonata_admin.admin.trans(sonata_admin.field_description.help, {}, sonata_admin.field_description.translationDomain)|raw }}</span>
                 {% endif %}
             </div>
         </div>

@@ -1469,7 +1469,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * @return array
+     * {@inheritdoc}
      */
     public function getFormGroups()
     {
@@ -1477,7 +1477,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * @param array $formGroups
+     * {@inheritdoc}
      */
     public function setFormGroups(array $formGroups)
     {
@@ -1615,12 +1615,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * add a FieldDescription
-     *
-     * @param string                                              $name
-     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
-     *
-     * @return void
+     * {@inheritdoc}
      */
     public function addFormFieldDescription($name, FieldDescriptionInterface $fieldDescription)
     {
@@ -1841,7 +1836,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setParent(AdminInterface $parent)
     {
@@ -1849,7 +1844,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getParent()
     {
