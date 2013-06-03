@@ -2606,4 +2606,12 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         $this->perPageOptions = array_unique($this->perPageOptions);
         sort($this->perPageOptions);
     }
+    
+    /**
+     * Add ability to assign custom style to <li> in top menu
+     */
+    public function getCustomAdminMenuStyle()
+    {
+        return false;
+    }    
 }
