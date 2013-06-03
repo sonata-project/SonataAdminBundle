@@ -63,16 +63,6 @@ Using roles:
     sonata_admin:
         security:
             handler: sonata.admin.security.handler.role
-            # role security information
-            information:
-                EDIT: EDIT
-                LIST: LIST
-                CREATE: CREATE
-                VIEW: VIEW
-                DELETE: DELETE
-                EXPORT: EXPORT
-                OPERATOR: OPERATOR
-                MASTER: MASTER
 
 Using ACL:
 
@@ -94,8 +84,133 @@ Using ACL:
             # permission related to the objects
             object_permissions: [VIEW, EDIT, DELETE, UNDELETE, OPERATOR, MASTER, OWNER]
 
-The following section explains how to set up ACL with the
+Later, we will explain how to set up ACL with the
 ``FriendsOfSymfony/UserBundle``.
+
+Role handler
+-----------------
+
+The ``sonata.admin.security.handler.role`` allows you to operate finely on the actions that can be done (den peding on the entity class), without requiring to set up ACL. 
+
+Configuration
+~~~~~~~~~~~~~
+
+First, activate the role security handler as described above.
+
+Each time an user tries to do an action in the admin, Sonata checks if he is either a super admin (``ROLE_SUPER_ADMIN``) **or** has the permission.
+
+The permissions are:
+
+ * LIST: view the list of objects
+ * VIEW: view the detail of one object
+ * CREATE
+ * EDIT
+ * DELETE
+ * EXPORT (for the native Sonata export links)
+ 
+Each permission is relative to an admin: if you try to get a list in FooAdmin (declared as ``sonata.admin.demo.foo`` 
+service), Sonata will check if the user has the ``ROLE_SONATA_ADMIN_DEMO_FOO_EDIT`` role.
+
+So our ``security.yml`` file may look to something like this:
+
+.. code-block:: yaml
+
+    security:
+        ...
+        role_hierarchy:
+            # for convenience, I decided to gather Sonata roles here
+            ROLE_SONATA_FOO_READER:
+                - ROLE_SONATA_ADMIN_DEMO_FOO_LIST
+                - ROLE_SONATA_ADMIN_DEMO_FOO_VIEW
+            ROLE_SONATA_FOO_EDITOR:
+                - ROLE_SONATA_ADMIN_DEMO_FOO_CREATE
+                - ROLE_SONATA_ADMIN_DEMO_FOO_EDIT
+            ROLE_SONATA_FOO_ADMIN:
+                - ROLE_SONATA_ADMIN_DEMO_FOO_DELETE
+                - ROLE_SONATA_ADMIN_DEMO_FOO_EXPORT
+            # those are the roles I will use (less verbose)
+            ROLE_STAFF:             [ROLE_USER, ROLE_SONATA_FOO_READER]
+            ROLE_ADMIN:             [ROLE_STAFF, ROLE_SONATA_FOO_EDITOR, ROLE_SONATA_FOO_ADMIN]
+            ROLE_SUPER_ADMIN:       [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+            
+        # set access_strategy to unanimous, else you may have unexpected behaviors
+        access_decision_manager:
+            strategy: unanimous
+
+Note that we also set ``access_strategy`` to unanimous.
+It means that if one voter (for example Sonata) refuses access, access will be denied.
+For more information on this subject, please see `here
+<http://symfony.com/doc/2.2/cookbook/security/voters.html#changing-the-access-decision-strategy>`_
+
+Usage
+~~~~~
+            
+You can now test if an user is authorized from an Admin class:
+
+.. code-block:: php
+
+        if ($this->isGranted('LIST')) {
+            ...
+        }
+        
+From a controller extending ``Sonata\AdminBundle\Controller\CRUDController``:
+
+.. code-block:: php
+
+        if ($this->admin->isGranted('LIST')) {
+            ...
+        }
+
+Or from a Twig template:
+
+.. code-block:: jinja
+
+        {% if is_granted('VIEW') %}
+            <p>Hello there!</p>
+        {% endif %}
+
+Note that you don't have to re-specify the prefix.
+
+Sonata check those permissions for the action it handles internally. Of course you will have to recheck them in your own code.
+
+Yon can also create your own permissions, for example ``EMAIL`` (which will turn into role ``ROLE_SONATA_ADMIN_DEMO_FOO_EMAIL``).
+
+Going further
+~~~~~~~~~~~~~
+
+Because Sonata role handler supplements Symfony2 security, but does not override it, you are free to do more advanced operations.
+For example, you can create your `own voter
+<http://symfony.com/doc/2.2/cookbook/security/voters.html>`_
+
+Customizing the handler behavior
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If you want to change the handler behavior (for example, to pass the current object to voters), extend
+``Sonata\AdminBundle\Security\Handler\RoleSecurityHandler``, and override the ``isGranted`` method.
+
+Then declare your handler as a service:
+
+.. code-block:: xml
+
+    <parameters>
+        <parameter key="acme.demo.security.handler.role.class" >Acme\DemoBundle\Security\Handler\RoleSecurityHandler</parameter>
+    </parameters>
+    <services>
+        <service id="acme.demo.security.handler.role" class="%acme.demo.security.handler.role.class%" public="false">
+            <argument type="service" id="security.context" on-invalid="null" />
+            <argument type="collection">
+                <argument>ROLE_SUPER_ADMIN</argument>
+            </argument>
+        </service>
+    ...
+    
+And specify it as Sonata security handler on your configuration (``config.yml``):
+
+.. code-block: yaml
+
+    sonata_admin:
+        security:
+            handler: acme.demo.security.handler.role
 
 ACL and FriendsOfSymfony/UserBundle
 -----------------------------------
