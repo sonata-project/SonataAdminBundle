@@ -64,11 +64,34 @@ The Admin bundle comes with a customized form field template. The most notable
 change from the original one is the use of the translation domain provided by
 either the Admin instance or the field description to translate labels.
 
-Setting the translation domain
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Overriding the translation domain
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The translation domain of the Admin instance is used by default, however this
-can be overridden when defining new form fields:
+The translation domain (message catalog) can be overridden at either the form
+group or individual field level.
+
+If a translation domain is set at the group level it will cascade down to all
+fields within the group.
+
+Overriding the translation domain is of particular use when using
+:doc:`extensions <extensions>`, where the extension and the translations would
+be defined in one bundle, but implemented in many different admin instances.
+
+The following example sets the translation domain on a form group:
+
+.. code-block:: php
+
+        $formMapper->with('form.my_group', array(
+            'translation_domain' => 'MyTranslationDomain'
+            ))
+            ->add('publishable', 'checkbox', array(), array(
+                // ...
+                'translation_domain' => 'MyTranslationDomain',
+            ))
+            ->add('start_date', 'date', array(), array(
+            ));
+
+Setting the translation domain on an individual field:
 
 .. code-block:: php
 
@@ -76,15 +99,7 @@ can be overridden when defining new form fields:
             ->add('publishable', 'checkbox', array(), array(
                 // ...
                 'translation_domain' => 'MyTranslationDomain',
-            ))
-            ->add('start_date', 'date', array(), array(
-                // ...
-                'translation_domain' => 'MyTranslationDomain',
             ));
-
-This is of particular use when using admin :doc:`extensions <extensions>`,
-where the extension and the translations would be defined in one bundle, but
-implemented in many different admin instances.
 
 Setting the label name
 ^^^^^^^^^^^^^^^^^^^^^^

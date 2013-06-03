@@ -38,9 +38,10 @@ abstract class BaseGroupedMapper extends BaseMapper
         }
 
         $groups[$name] = array_merge(array(
-            'collapsed'   => false,
-            'fields'      => array(),
-            'description' => false
+            'collapsed'          => false,
+            'fields'             => array(),
+            'description'        => false,
+            'translation_domain' => null,
         ), $groups[$name], $options);
         
         $this->setGroups($groups);
@@ -59,7 +60,7 @@ abstract class BaseGroupedMapper extends BaseMapper
 
         return $this;
     }
-    
+
     /**
      * Add the fieldname to the current group
      * 
@@ -73,8 +74,10 @@ abstract class BaseGroupedMapper extends BaseMapper
         $groups = $this->getGroups();
         $groups[$currentGroup]['fields'][$fieldName] = $fieldName;
         $this->setGroups($groups);
+
+        return $groups[$currentGroup];
     }
-    
+
     /**
      * Return the name of the currently selected group. The method also makes 
      * sure a valid group name is currently selected
