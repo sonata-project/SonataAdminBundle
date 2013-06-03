@@ -105,7 +105,7 @@ If you want to create your own RouteBuilder, you can do it using code like
                 $collection->add('yourSubAction');
             }
         }
-
+        
 
 If you want to modify the service that is going to be injected, add the following code to your
 application's config file:
@@ -153,6 +153,34 @@ the ``datagridValues`` array property. All three keys ``_page``, ``_sort_order``
 
         // ...
     }
+
+Adding new routes and removing standart routes
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+You can add your own RouteBuilder (check Service Configuration section).
+Another way to change routes for the admin class - override function configureRoutes. You can even disable standart routes.
+
+.. code-block:: php
+
+    protected function configureRoutes(RouteCollection $collection)
+    {
+    // Create button will dissappear, delete functionality will be disabled as well
+        $collection->remove('create');
+        $collection->remove('delete');
+        // new action, you can use it in configureSideMenu for example
+        $collection->add('myAction');
+    }
+    
+Using custom styles for the dropdown menu items
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+In order to set some style to the <li in dropdown menu - override function getCustomAdminMenuStyle in your admin class
+
+.. code-block:: php
+
+    public function getCustomAdminMenuStyle()
+    {
+        return "menu-separated";
+    }
+
 
 Inherited classes
 -----------------
