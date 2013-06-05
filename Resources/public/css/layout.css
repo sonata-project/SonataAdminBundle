@@ -356,7 +356,7 @@ legend.sonata-ba-fieldset-collapsed-description + .sonata-ba-collapsed-fields {
     padding-left: 5px;
 }
 
-.sonata-preview-form-container fieldset {
+.sonata-preview-form-container fieldset, .sonata-preview-form-container .tabbable {
     display: none;
 }
 
