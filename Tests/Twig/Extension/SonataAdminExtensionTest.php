@@ -24,6 +24,8 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
+        date_default_timezone_set('Europe/London');
+
         $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
         $pool = new Pool($container, '', '');
         $this->twigExtension = new SonataAdminExtension($pool);
@@ -123,9 +125,9 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
             array('<td class="sonata-ba-list-field sonata-ba-list-field-string" objectId="12345"> Example </td>', 'string', 'Example'),
             array('<td class="sonata-ba-list-field sonata-ba-list-field-text" objectId="12345"> Example </td>', 'text', 'Example'),
             array('<td class="sonata-ba-list-field sonata-ba-list-field-textarea" objectId="12345"> Example </td>', 'textarea', 'Example'),
-            array('<td class="sonata-ba-list-field sonata-ba-list-field-datetime" objectId="12345"> December 24, 2013 11:11 </td>', 'datetime', new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('Europe/London'))),
+            array('<td class="sonata-ba-list-field sonata-ba-list-field-datetime" objectId="12345"> December 24, 2013 10:11 </td>', 'datetime', new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('Europe/London'))),
             array('<td class="sonata-ba-list-field sonata-ba-list-field-date" objectId="12345"> December 24, 2013 </td>', 'date', new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('Europe/London'))),
-            array('<td class="sonata-ba-list-field sonata-ba-list-field-time" objectId="12345"> 11:11:12 </td>', 'time', new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('Europe/London'))),
+            array('<td class="sonata-ba-list-field sonata-ba-list-field-time" objectId="12345"> 10:11:12 </td>', 'time', new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('Europe/London'))),
             array('<td class="sonata-ba-list-field sonata-ba-list-field-number" objectId="12345"> 10.746135 </td>', 'number', 10.746135),
             array('<td class="sonata-ba-list-field sonata-ba-list-field-integer" objectId="12345"> 5678 </td>', 'integer', 5678),
             array('<td class="sonata-ba-list-field sonata-ba-list-field-percent" objectId="12345"> 1074.6135 % </td>', 'percent', 10.746135),
@@ -217,9 +219,9 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
             array('<th>Data</th> <td>Example</td>', 'string', 'Example'),
             array('<th>Data</th> <td>Example</td>', 'text', 'Example'),
             array('<th>Data</th> <td>Example</td>', 'textarea', 'Example'),
-            array('<th>Data</th> <td>December 24, 2013 11:11</td>', 'datetime', new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('Europe/London'))),
+            array('<th>Data</th> <td>December 24, 2013 10:11</td>', 'datetime', new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('Europe/London'))),
             array('<th>Data</th> <td>December 24, 2013</td>', 'date', new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('Europe/London'))),
-            array('<th>Data</th> <td>11:11:12</td>', 'time', new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('Europe/London'))),
+            array('<th>Data</th> <td>10:11:12</td>', 'time', new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('Europe/London'))),
             array('<th>Data</th> <td>10.746135</td>', 'number', 10.746135),
             array('<th>Data</th> <td>5678</td>', 'integer', 5678),
             array('<th>Data</th> <td> 1074.6135 % </td>', 'percent', 10.746135),
