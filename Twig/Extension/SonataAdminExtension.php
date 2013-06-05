@@ -76,19 +76,18 @@ class SonataAdminExtension extends \Twig_Extension
 
     /**
      * @param FieldDescriptionInterface $fieldDescription
+     * @param string                    $defaultTemplate
      *
      * @return \Twig_TemplateInterface
      */
-    protected function getTemplate(FieldDescriptionInterface $fieldDescription)
+    protected function getTemplate(FieldDescriptionInterface $fieldDescription, $defaultTemplate)
     {
-        $default = $fieldDescription->getAdmin()->getTemplate('base_list_field');
-
-        $templateName = $fieldDescription->getTemplate() ? : $default;
+        $templateName = $fieldDescription->getTemplate() ? : $defaultTemplate;
 
         try {
             $template = $this->environment->loadTemplate($templateName);
         } catch (\Twig_Error_Loader $e) {
-            $template = $this->environment->loadTemplate($default);
+            $template = $this->environment->loadTemplate($defaultTemplate);
         }
 
         return $template;
@@ -105,7 +104,7 @@ class SonataAdminExtension extends \Twig_Extension
      */
     public function renderListElement($object, FieldDescriptionInterface $fieldDescription, $params = array())
     {
-        $template = $this->getTemplate($fieldDescription);
+        $template = $this->getTemplate($fieldDescription, $fieldDescription->getAdmin()->getTemplate('base_list_field'));
 
         return $this->output($fieldDescription, $template, array_merge($params, array(
             'admin'             => $fieldDescription->getAdmin(),
