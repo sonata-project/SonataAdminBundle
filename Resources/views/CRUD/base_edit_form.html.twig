@@ -63,7 +63,10 @@
                         {% endif %}
                     {% else %}
                         {% if admin.supportsPreviewMode %}
-                            <input class="btn btn-info persist-preview" name="btn_preview" type="submit" value="{{ 'btn_preview'|trans({}, 'SonataAdminBundle') }}"/>
+                            <button class="btn btn-info persist-preview" name="btn_preview" type="submit">
+                                <i class="icon-eye-open"></i>
+                                {{ 'btn_preview'|trans({}, 'SonataAdminBundle') }}
+                            </button>
                         {% endif %}
                         {% if admin.id(object) %}
                             <input type="submit" class="btn btn-primary" name="btn_update_and_edit" value="{{ 'btn_update_and_edit_again'|trans({}, 'SonataAdminBundle') }}"/>
