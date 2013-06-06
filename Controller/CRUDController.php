@@ -318,6 +318,7 @@ class CRUDController extends Controller
             } elseif ($this->isPreviewRequested()) {
                 // enable the preview template if the form was valid and preview was requested
                 $templateKey = 'preview';
+                $this->admin->getShow();
             }
         }
 
@@ -507,6 +508,7 @@ class CRUDController extends Controller
             } elseif ($this->isPreviewRequested()) {
                 // pick the preview template if the form was valid and preview was requested
                 $templateKey = 'preview';
+                $this->admin->getShow();
             }
         }
 
