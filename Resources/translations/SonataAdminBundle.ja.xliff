@@ -20,11 +20,11 @@
             </trans-unit>
             <trans-unit id="btn_create_and_create_a_new_one">
                 <source>btn_create_and_create_a_new_one</source>
-                <target>作成して次へ</target>
+                <target>作成してもう一つ追加</target>
             </trans-unit>
             <trans-unit id="btn_create_and_return_to_list">
                 <source>btn_create_and_return_to_list</source>
-                <target>Create and return to list</target>
+                <target>作成して一覧に戻る</target>
             </trans-unit>
             <trans-unit id="btn_filter">
                 <source>btn_filter</source>
@@ -100,15 +100,15 @@
             </trans-unit>
             <trans-unit id="link_first_pager">
                 <source>link_first_pager</source>
-                <target>link_first_pager</target>
+                <target>最初</target>
             </trans-unit>
             <trans-unit id="link_last_pager">
                 <source>link_last_pager</source>
-                <target>link_last_pager</target>
+                <target>最後</target>
             </trans-unit>
             <trans-unit id="Admin">
                 <source>Admin</source>
-                <target>Admin</target>
+                <target>管理</target>
             </trans-unit>
             <trans-unit id="link_expand">
                 <source>link_expand</source>
@@ -132,43 +132,43 @@
             </trans-unit>
             <trans-unit id="all_elements">
                 <source>all_elements</source>
-                <target>すべての要素</target>
+                <target>すべて</target>
             </trans-unit>
             <trans-unit id='flash_batch_empty'>
                 <source>flash_batch_empty</source>
-                <target>アクションは中止されました。どの項目ここで選択されていません。</target>
+                <target>アクションは中止されました。アイテムが選択されていません。</target>
             </trans-unit>
             <trans-unit id='flash_create_success'>
                 <source>flash_create_success</source>
-                <target>アイテムが正常に作成されました。</target>
+                <target>正常に作成されました。</target>
             </trans-unit>
             <trans-unit id='flash_create_error'>
                 <source>flash_create_error</source>
-                <target>エラーは、アイテムの作成中に発生しました。</target>
+                <target>作成に失敗しました。</target>
             </trans-unit>
             <trans-unit id='flash_edit_success'>
                 <source>flash_edit_success</source>
-                <target>アイテムが正常に更新されました。</target>
+                <target>正常に更新されました。</target>
             </trans-unit>
             <trans-unit id='flash_edit_error'>
                 <source>flash_edit_error</source>
-                <target>エラーは、アイテムの更新中に発生しました。</target>
+                <target>更新中に失敗しました。</target>
             </trans-unit>
             <trans-unit id='flash_batch_delete_success'>
                 <source>flash_batch_delete_success</source>
-                <target>選択した項目が正常に削除されました。</target>
+                <target>選択したアイテムは正常に削除されました。</target>
             </trans-unit>
             <trans-unit id='flash_batch_delete_error'>
                 <source>flash_batch_delete_error</source>
-                <target>エラーは、選択したアイテムの削除中に発生しました。</target>
+                <target>選択したアイテムの削除に失敗しました。</target>
             </trans-unit>
             <trans-unit id='flash_delete_error'>
                 <source>flash_delete_error</source>
-                <target>flash_delete_error</target>
+                <target>削除に失敗しました。</target>
             </trans-unit>
             <trans-unit id='flash_delete_success'>
                 <source>flash_delete_success</source>
-                <target>flash_delete_success</target>
+                <target>正常に削除されました。</target>
             </trans-unit>
             <trans-unit id="link_breadcrumb_dashboard">
                 <source>breadcrumb.link_dashboard</source>
@@ -176,31 +176,31 @@
             </trans-unit>
             <trans-unit id="title_delete">
                 <source>title_delete</source>
-                <target>title_delete</target>
+                <target>削除の確認</target>
             </trans-unit>
             <trans-unit id="message_delete_confirmation">
                 <source>message_delete_confirmation</source>
-                <target>message_delete_confirmation</target>
+                <target>削除してもよろしいですか？</target>
             </trans-unit>
             <trans-unit id="btn_delete">
                 <source>btn_delete</source>
-                <target>はい、削除する</target>
+                <target>削除する</target>
             </trans-unit>
             <trans-unit id="title_batch_confirmation">
                 <source>title_batch_confirmation</source>
-                <target>title_batch_confirmation</target>
+                <target>一括削除の確認</target>
             </trans-unit>
             <trans-unit id="message_batch_confirmation">
                 <source>message_batch_confirmation</source>
-                <target>message_batch_confirmation</target>
+                <target>選択されたアイテムを削除してよろしいですか？</target>
             </trans-unit>
             <trans-unit id="message_batch_all_confirmation">
                 <source>message_batch_all_confirmation</source>
-                <target>message_batch_all_confirmation</target>
+                <target>全て削除してよろしいですか？</target>
             </trans-unit>
             <trans-unit id="btn_execute_batch_action">
                 <source>btn_execute_batch_action</source>
-                <target>はい、次のコマンドを実行</target>
+                <target>一括処理を実行</target>
             </trans-unit>
             <trans-unit id="label_type_yes">
                 <source>label_type_yes</source>
@@ -212,19 +212,19 @@
             </trans-unit>
             <trans-unit id="label_type_contains">
                 <source>label_type_contains</source>
-                <target>label_type_contains</target>
+                <target>含む</target>
             </trans-unit>
             <trans-unit id="label_type_not_contains">
                 <source>label_type_not_contains</source>
-                <target>が含まれていません</target>
+                <target>含まない</target>
             </trans-unit>
             <trans-unit id="label_type_equals">
                 <source>label_type_equals</source>
-                <target>label_type_equals</target>
+                <target>=</target>
             </trans-unit>
             <trans-unit id="label_type_not_equals">
                 <source>label_type_not_equals</source>
-                <target>label_type_not_equals</target>
+                <target>等しくない</target>
             </trans-unit>
             <trans-unit id="label_type_equal">
                 <source>label_type_equal</source>
@@ -268,31 +268,31 @@
             </trans-unit>
             <trans-unit id="label_date_type_null">
                 <source>label_date_type_null</source>
-                <target>label_date_type_null</target>
+                <target>未指定</target>
             </trans-unit>
             <trans-unit id="label_date_type_not_null">
                 <source>label_date_type_not_null</source>
-                <target>label_date_type_not_null</target>
+                <target>未指定以外</target>
             </trans-unit>
             <trans-unit id="label_date_type_between">
                 <source>label_date_type_between</source>
-                <target>label_date_type_between</target>
+                <target>範囲内</target>
             </trans-unit>
             <trans-unit id="label_date_not_between">
                 <source>label_date_type_not_between</source>
-                <target>label_date_type_not_between</target>
+                <target>範囲外</target>
             </trans-unit>
             <trans-unit id="label_filters">
                 <source>label_filters</source>
-                <target>label_filters</target>
+                <target>絞り込む</target>
             </trans-unit>
             <trans-unit id="delete_or">
                 <source>delete_or</source>
-                <target>delete_or</target>
+                <target>又は</target>
             </trans-unit>
             <trans-unit id="link_action_history">
                 <source>link_action_history</source>
-                <target>link_action_history</target>
+                <target>履歴</target>
             </trans-unit>
             <trans-unit id="td_action">
                 <source>td_action</source>
@@ -312,15 +312,15 @@
             </trans-unit>
             <trans-unit id="label_view_revision">
                 <source>label_view_revision</source>
-                <target>label_view_revision</target>
+                <target>リビジョンを見る</target>
             </trans-unit>
             <trans-unit id="list_results_count">
                 <source>list_results_count</source>
-                <target>list_results_count|list_results_count</target>
+                <target>%count%件</target>
             </trans-unit>
             <trans-unit id="label_export_download">
                 <source>label_export_download</source>
-                <target>label_export_download</target>
+                <target>エクスポート</target>
             </trans-unit>
             <trans-unit id="loading_information">
                 <source>loading_information</source>
@@ -328,19 +328,19 @@
             </trans-unit>
             <trans-unit id="btn_preview">
                 <source>btn_preview</source>
-                <target>btn_preview</target>
+                <target>プレビュー</target>
             </trans-unit>
             <trans-unit id="btn_preview_approve">
                 <source>btn_preview_approve</source>
-                <target>btn_preview_approve</target>
+                <target>OK</target>
             </trans-unit>
             <trans-unit id="btn_preview_decline">
                 <source>btn_preview_decline</source>
-                <target>btn_preview_decline</target>
+                <target>キャンセル</target>
             </trans-unit>
             <trans-unit id="label_per_page">
               <source>label_per_page</source>
-              <target>label_per_page</target>
+              <target>1ページの件数</target>
             </trans-unit>
         </body>
     </file>
