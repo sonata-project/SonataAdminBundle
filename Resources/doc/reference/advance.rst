@@ -163,7 +163,7 @@ Another way to change routes for the admin class - override function configureRo
 
     protected function configureRoutes(RouteCollection $collection)
     {
-    // Create button will dissappear, delete functionality will be disabled as well
+        // Create button will dissappear, delete functionality will be disabled as well
         $collection->remove('create');
         $collection->remove('delete');
         // new action, you can use it in configureSideMenu for example
