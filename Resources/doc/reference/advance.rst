@@ -20,7 +20,7 @@ router                        router
 validator                     validator
 security_handler              sonata.admin.security.handler
 menu_factory                  knp_menu.factory
-route_builder                sonata.admin.route.path_info
+route_builder                 sonata.admin.route.path_info
 label_translator_strategy     sonata.admin.label.strategy.form_component
 =========================     =============================================
 
