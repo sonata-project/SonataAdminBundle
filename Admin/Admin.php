@@ -64,6 +64,12 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     private $subClasses = array();
 
     /**
+     * @var boolean
+     */
+    private $delegateSubclassEditAction = false;
+
+
+    /**
      * The list collection
      *
      * @var array
@@ -931,6 +937,22 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
+     * @param boolean $delegateSubclassEditAction
+     */
+    public function setDelegateSubclassEditAction($delegateSubclassEditAction)
+    {
+        $this->delegateSubclassEditAction = $delegateSubclassEditAction;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getDelegateSubclassEditAction()
+    {
+        return $this->delegateSubclassEditAction;
+    }
+
+    /**
      * Gets the subclass corresponding to the given name
      *
      * @param string $name The name of the sub class
@@ -940,7 +962,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     protected function getSubClass($name)
     {
         if ($this->hasSubClass($name)) {
-            return $this->subClasses[$name];
+            return $this->delegateSubclassEditAction ? $name : $this->subClasses[$name];
         }
 
         return null;

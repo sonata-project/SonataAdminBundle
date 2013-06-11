@@ -71,6 +71,10 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
                     );
                 }
 
+                if (isset($attributes['group_list_manager'])) {
+                    $groupDefaults[$groupName]['group_list_manager'] = $attributes['group_list_manager'];
+                }
+
                 $groupDefaults[$groupName]['items'][] = $id;
             }
         }
@@ -102,10 +106,17 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
                 if (!empty($group['item_adds'])) {
                     $group['items'] = array_merge($groupDefaults[$groupName]['items'], $group['item_adds']);
                 }
+
+                if (empty($group['group_list_manager']) && isset($groupDefaults[$groupName]['group_list_manager'])) {
+                    $group['group_list_manager'] = $groupDefaults[$groupName]['group_list_manager'];
+                    $group['items'][] = $group['group_list_manager'];
+                }
             }
         } else {
             $groups = $groupDefaults;
         }
+
+        $groups = $this->fixGroupListAdmins($groups, $container);
 
         $pool->addMethodCall('setAdminServiceIds', array($admins));
         $pool->addMethodCall('setAdminGroups', array($groups));
@@ -289,4 +300,58 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
     {
         return preg_replace(array('/(^|_)+(.)/e', '/\.(.)/e'), array("strtoupper('\\2')", "'_'.strtoupper('\\1')"), $property);
     }
+
+    /**
+     * @param array $groups
+     * @param ContainerBuilder $container
+     * @return array
+     */
+    protected function fixGroupListAdmins(array $groups, ContainerBuilder $container)
+    {
+        $extension = $container->getDefinition('sonata.admin.route.group_list_manager.extension');
+
+        $groupMap = array();
+        foreach ($groups as $key => $group) {
+
+            if (!isset($group['group_list_manager'])) {
+                continue;
+            }
+
+            if (!$container->hasDefinition($group['group_list_manager'])) {
+                continue; // throw exception.
+            }
+
+            $groupListManager = $container->getDefinition($group['group_list_manager']);
+
+            $subs = array();
+            foreach ($group['items'] as $adminId) {
+
+                if ($adminId === $group['group_list_manager']) {
+                    continue;
+                }
+
+                $admin = $container->getDefinition($adminId);
+                $class = $container->getParameterBag()->resolveValue($admin->getArgument(1));
+                $subs[$class] = $adminId;
+                $groupMap[$class] = $groupListManager;
+                $admin->addMethodCall('addExtension', array($extension));
+            }
+
+            $groupListManager->addMethodCall('setSubClasses', array($subs));
+
+            /*
+             * remove the original admins in the group and replace them with the list manager.
+             * this means only the list manager is shown on the dashboard block.
+             */
+            $groups[$key]['items'] = array($group['group_list_manager']);
+        }
+
+        if (!empty($groupMap)) {
+            $extension->addMethodCall('setGroups', array($groupMap));
+        }
+
+        return $groups;
+    }
+
+
 }
