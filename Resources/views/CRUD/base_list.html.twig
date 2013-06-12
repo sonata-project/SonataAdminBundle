@@ -32,6 +32,8 @@ file that was distributed with this source code.
                                     <th class="sonata-ba-list-field-header sonata-ba-list-field-header-batch">
                                       <input type="checkbox" id="list_batch_checkbox" />
                                     </th>
+                                {% elseif field_description.getOption('code') == '_select' %}
+                                    <th class="sonata-ba-list-field-header sonata-ba-list-field-header-select"></th>
                                 {% elseif field_description.name == '_action' and app.request.isXmlHttpRequest %}
                                         {# Action buttons disabled in ajax view! #}
                                 {% else %}

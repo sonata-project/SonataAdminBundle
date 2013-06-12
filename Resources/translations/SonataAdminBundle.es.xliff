@@ -342,6 +342,10 @@
               <source>label_per_page</source>
               <target>Por página</target>
             </trans-unit>
+            <trans-unit id="list_select">
+              <source>list_select</source>
+              <target>list_select</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
