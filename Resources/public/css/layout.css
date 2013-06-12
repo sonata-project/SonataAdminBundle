@@ -366,6 +366,7 @@ legend.sonata-ba-fieldset-collapsed-description + .sonata-ba-collapsed-fields {
 
 .sonata-bc .field-short-description {
     min-width: 250px;
+    min-height: 18px;
     display: block;
     float: left;
     background: #fefefe;
