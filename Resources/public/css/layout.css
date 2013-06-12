@@ -165,6 +165,17 @@ body.sonata-bc {
     float: right
 }
 
+.sonata-bc .sonata-ba-list tr:hover td.sonata-ba-list-field.sonata-ba-list-field-select a {
+    visibility: visible;
+}
+
+.sonata-bc td.sonata-ba-list-field.sonata-ba-list-field-select {
+    text-align: center;
+}
+.sonata-bc td.sonata-ba-list-field.sonata-ba-list-field-select a {
+    visibility: hidden;
+}
+
 .sonata-bc div.sonata-ba-modal-edit-one-to-one td.sonata-ba-list-field-batch,
 .sonata-bc div.sonata-ba-modal-edit-one-to-one div.sonata-ba-list-actions,
 .sonata-bc div.sonata-ba-modal-edit-one-to-one th.sonata-ba-list-field-header-batch {
