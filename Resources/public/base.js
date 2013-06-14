@@ -6,6 +6,7 @@ jQuery(document).ready(function() {
     Admin.setup_collection_buttons(document);
     Admin.setup_per_page_switcher(document);
     Admin.setup_form_tabs_for_errors(document);
+    Admin.setup_inline_form_errors(document);
 });
 
 var Admin = {
@@ -208,5 +209,43 @@ var Admin = {
                 icon.addClass('hide');
             }
         });
+    },
+
+    setup_inline_form_errors: function(subject) {
+        var deleteCheckboxSelector = '.sonata-ba-field-inline-table [id$="_delete"][type="checkbox"]';
+
+        jQuery(deleteCheckboxSelector, subject).each(function() {
+            Admin.switch_inline_form_errors(jQuery(this));
+        });
+
+        $(subject).on('change', deleteCheckboxSelector, function() {
+            Admin.switch_inline_form_errors(jQuery(this));
+        });
+    },
+
+    /**
+     * Disable inline form errors when the row is marked for deletion
+     */
+    switch_inline_form_errors: function(deleteCheckbox) {
+        var row = deleteCheckbox.closest('.sonata-ba-field-inline-table'),
+            errors = row.find('.sonata-ba-field-error-messages')
+        ;
+
+        if (deleteCheckbox.is(':checked')) {
+            row
+                .find('[required]')
+                .removeAttr('required')
+                .attr('data-required', 'required')
+            ;
+
+            errors.hide();
+        } else {
+            row
+                .find('[data-required]')
+                .attr('required', 'required')
+            ;
+
+            errors.show();
+        }
     }
 }
