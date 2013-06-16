@@ -14,7 +14,21 @@ namespace Sonata\AdminBundle\Tests\Twig\Extension;
 use Sonata\AdminBundle\Twig\Extension\SonataAdminExtension;
 use Sonata\AdminBundle\Admin\Pool;
 use Symfony\Bridge\Twig\Tests\Extension\Fixtures\StubFilesystemLoader;
+use Symfony\Bridge\Twig\Extension\TranslationExtension;
+use Symfony\Component\Translation\Translator;
+use Symfony\Component\Translation\MessageSelector;
+use Symfony\Component\Translation\Loader\XliffFileLoader;
+use Symfony\Component\Routing\Generator\UrlGenerator;
+use Symfony\Component\Routing\Loader\XmlFileLoader;
+use Symfony\Component\Config\FileLocator;
+use Symfony\Bridge\Twig\Extension\RoutingExtension;
+use Symfony\Component\Routing\RequestContext;
 
+/**
+ * Test for SonataAdminExtension
+ *
+ * @author Andrej Hudec <pulzarraider@gmail.com>
+ */
 class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
 {
     /**
@@ -34,8 +48,21 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
             __DIR__.'/../../../Resources/views/CRUD',
         ));
 
-        $environment = new \Twig_Environment($loader, array('strict_variables' => true));
+        $environment = new \Twig_Environment($loader, array('strict_variables' => true, 'cache' => false, 'autoescape' => true, 'optimizations' => 0));
         $environment->addExtension($this->twigExtension);
+
+        //translation extension
+        $translator = new Translator('en', new MessageSelector());
+        $translator->addLoader('xlf', new XliffFileLoader());
+        $translator->addResource('xlf', __DIR__.'/../../../Resources/translations/SonataAdminBundle.en.xliff', 'en', 'SonataAdminBundle');
+        $environment->addExtension(new TranslationExtension($translator));
+
+        //routing extension
+        $xmlFileLoader = new XmlFileLoader(new FileLocator(array(__DIR__.'/../../../Resources/config/routing')));
+        $routeCollection = $xmlFileLoader->load('sonata_admin.xml');
+        $requestContext = new RequestContext();
+        $urlGenerator = new UrlGenerator($routeCollection, $requestContext);
+        $environment->addExtension(new RoutingExtension($urlGenerator));
 
         $this->twigExtension->initRuntime($environment);
     }
@@ -53,7 +80,7 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider getRenderListElementTests
      */
-    public function testRenderListElement($expectedOutput, $type, $value)
+    public function testRenderListElement($expected, $type, $value, array $options)
     {
         $object = new \stdClass();
 
@@ -64,11 +91,24 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
                 ->will($this->returnValue('SonataAdminBundle:CRUD:base_list_field.html.twig'));
 
         $admin->expects($this->any())
+                ->method('isGranted')
+                ->will($this->returnValue(true));
+
+        $admin->expects($this->any())
+                ->method('getCode')
+                ->with($this->equalTo($object))
+                ->will($this->returnValue('xyz'));
+
+        $admin->expects($this->any())
                 ->method('id')
                 ->with($this->equalTo($object))
                 ->will($this->returnValue(12345));
 
         $fieldDescription = $this->getMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+
+        $fieldDescription->expects($this->any())
+                ->method('getName')
+                ->will($this->returnValue('fd_name'));
 
         $fieldDescription->expects($this->any())
                 ->method('getAdmin')
@@ -84,7 +124,7 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
 
         $fieldDescription->expects($this->any())
                 ->method('getOptions')
-                ->will($this->returnValue(array('currency' => 'EUR')));
+                ->will($this->returnValue($options));
 
         $fieldDescription->expects($this->any())
                 ->method('getTemplate')
@@ -107,39 +147,46 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
                                 return 'SonataAdminBundle:CRUD:list_percent.html.twig';
                             case 'array':
                                 return 'SonataAdminBundle:CRUD:list_array.html.twig';
+                            case 'trans':
+                                return 'SonataAdminBundle:CRUD:list_trans.html.twig';
                             default:
                                 return false;
                         }
                     }
         ));
 
-
-                $this->assertEquals($expectedOutput, trim(preg_replace('/\s+/', ' ', $this->twigExtension->renderListElement($object, $fieldDescription))));
+                $this->assertEquals($expected, trim(preg_replace('/\s+/', ' ', $this->twigExtension->renderListElement($object, $fieldDescription))));
     }
 
     public function getRenderListElementTests()
     {
-        //@todo Add tests for "boolean" and "trans" type
-
         return array(
-            array('<td class="sonata-ba-list-field sonata-ba-list-field-string" objectId="12345"> Example </td>', 'string', 'Example'),
-            array('<td class="sonata-ba-list-field sonata-ba-list-field-text" objectId="12345"> Example </td>', 'text', 'Example'),
-            array('<td class="sonata-ba-list-field sonata-ba-list-field-textarea" objectId="12345"> Example </td>', 'textarea', 'Example'),
-            array('<td class="sonata-ba-list-field sonata-ba-list-field-datetime" objectId="12345"> December 24, 2013 10:11 </td>', 'datetime', new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('Europe/London'))),
-            array('<td class="sonata-ba-list-field sonata-ba-list-field-date" objectId="12345"> December 24, 2013 </td>', 'date', new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('Europe/London'))),
-            array('<td class="sonata-ba-list-field sonata-ba-list-field-time" objectId="12345"> 10:11:12 </td>', 'time', new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('Europe/London'))),
-            array('<td class="sonata-ba-list-field sonata-ba-list-field-number" objectId="12345"> 10.746135 </td>', 'number', 10.746135),
-            array('<td class="sonata-ba-list-field sonata-ba-list-field-integer" objectId="12345"> 5678 </td>', 'integer', 5678),
-            array('<td class="sonata-ba-list-field sonata-ba-list-field-percent" objectId="12345"> 1074.6135 % </td>', 'percent', 10.746135),
-            array('<td class="sonata-ba-list-field sonata-ba-list-field-currency" objectId="12345"> EUR 10.746135 </td>', 'currency', 10.746135),
-            array('<td class="sonata-ba-list-field sonata-ba-list-field-array" objectId="12345"> [1 => First] [2 => Second] </td>', 'array', array(1 => 'First', 2 => 'Second')),
+            array('<td class="sonata-ba-list-field sonata-ba-list-field-string" objectId="12345"> Example </td>', 'string', 'Example', array()),
+            array('<td class="sonata-ba-list-field sonata-ba-list-field-text" objectId="12345"> Example </td>', 'text', 'Example', array()),
+            array('<td class="sonata-ba-list-field sonata-ba-list-field-textarea" objectId="12345"> Example </td>', 'textarea', 'Example', array()),
+            array('<td class="sonata-ba-list-field sonata-ba-list-field-datetime" objectId="12345"> December 24, 2013 10:11 </td>', 'datetime', new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('Europe/London')), array()),
+            array('<td class="sonata-ba-list-field sonata-ba-list-field-datetime" objectId="12345"> 24.12.2013 10:11:12 </td>', 'datetime', new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('Europe/London')), array('format'=>'d.m.Y H:i:s')),
+            array('<td class="sonata-ba-list-field sonata-ba-list-field-date" objectId="12345"> December 24, 2013 </td>', 'date', new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('Europe/London')), array()),
+            array('<td class="sonata-ba-list-field sonata-ba-list-field-date" objectId="12345"> 24.12.2013 </td>', 'date', new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('Europe/London')), array('format'=>'d.m.Y')),
+            array('<td class="sonata-ba-list-field sonata-ba-list-field-time" objectId="12345"> 10:11:12 </td>', 'time', new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('Europe/London')), array()),
+            array('<td class="sonata-ba-list-field sonata-ba-list-field-number" objectId="12345"> 10.746135 </td>', 'number', 10.746135, array()),
+            array('<td class="sonata-ba-list-field sonata-ba-list-field-integer" objectId="12345"> 5678 </td>', 'integer', 5678, array()),
+            array('<td class="sonata-ba-list-field sonata-ba-list-field-percent" objectId="12345"> 1074.6135 % </td>', 'percent', 10.746135, array()),
+            array('<td class="sonata-ba-list-field sonata-ba-list-field-currency" objectId="12345"> EUR 10.746135 </td>', 'currency', 10.746135, array('currency' => 'EUR')),
+            array('<td class="sonata-ba-list-field sonata-ba-list-field-currency" objectId="12345"> GBP 51.23456 </td>', 'currency', 51.23456, array('currency' => 'GBP')),
+            array('<td class="sonata-ba-list-field sonata-ba-list-field-array" objectId="12345"> [1 => First] [2 => Second] </td>', 'array', array(1 => 'First', 2 => 'Second'), array('safe' => false)),
+            array('<td class="sonata-ba-list-field sonata-ba-list-field-boolean" objectId="12345"> <i class="icon-ok-circle"></i>&nbsp;yes </td>', 'boolean', true, array('editable'=>false)),
+            array('<td class="sonata-ba-list-field sonata-ba-list-field-boolean" objectId="12345"> <i class="icon-ban-circle"></i>&nbsp;no </td>', 'boolean', false, array('editable'=>false)),
+            array('<td class="sonata-ba-list-field sonata-ba-list-field-boolean" objectId="12345"> <a href="http://localhost/core/set-object-field-value?context=list&amp;field=fd_name&amp;objectId=12345&amp;value=0&amp;code=xyz" class="sonata-ba-action sonata-ba-edit-inline"><i class="icon-ok-circle"></i>&nbsp;yes</a> </td>', 'boolean', true, array('editable'=>true)),
+            array('<td class="sonata-ba-list-field sonata-ba-list-field-boolean" objectId="12345"> <a href="http://localhost/core/set-object-field-value?context=list&amp;field=fd_name&amp;objectId=12345&amp;value=1&amp;code=xyz" class="sonata-ba-action sonata-ba-edit-inline"><i class="icon-ban-circle"></i>&nbsp;no</a> </td>', 'boolean', false, array('editable'=>true)),
+            array('<td class="sonata-ba-list-field sonata-ba-list-field-trans" objectId="12345"> Delete </td>', 'trans', 'action_delete', array('safe'=>false, 'catalogue'=>'SonataAdminBundle')),
         );
     }
 
     /**
      * @dataProvider getRenderViewElementTests
      */
-    public function testRenderViewElement($expectedOutput, $type, $value)
+    public function testRenderViewElement($expected, $type, $value, array $options)
     {
         $object = new \stdClass();
 
@@ -180,7 +227,7 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
 
         $fieldDescription->expects($this->any())
                 ->method('getOptions')
-                ->will($this->returnValue(array('currency' => 'EUR', 'safe'     => false)));
+                ->will($this->returnValue($options));
 
         $fieldDescription->expects($this->any())
                 ->method('getTemplate')
@@ -201,32 +248,37 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
                                 return 'SonataAdminBundle:CRUD:show_percent.html.twig';
                             case 'array':
                                 return 'SonataAdminBundle:CRUD:show_array.html.twig';
+                            case 'trans':
+                                return 'SonataAdminBundle:CRUD:show_trans.html.twig';
                             default:
                                 return false;
                         }
                     }
         ));
 
-
-        $this->assertEquals($expectedOutput, trim(preg_replace('/\s+/', ' ', $this->twigExtension->renderListElement($object, $fieldDescription))));
+        $this->assertEquals($expected, trim(preg_replace('/\s+/', ' ', $this->twigExtension->renderListElement($object, $fieldDescription))));
     }
 
     public function getRenderViewElementTests()
     {
-        //@todo Add tests for "boolean" and "trans" type
-
         return array(
-            array('<th>Data</th> <td>Example</td>', 'string', 'Example'),
-            array('<th>Data</th> <td>Example</td>', 'text', 'Example'),
-            array('<th>Data</th> <td>Example</td>', 'textarea', 'Example'),
-            array('<th>Data</th> <td>December 24, 2013 10:11</td>', 'datetime', new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('Europe/London'))),
-            array('<th>Data</th> <td>December 24, 2013</td>', 'date', new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('Europe/London'))),
-            array('<th>Data</th> <td>10:11:12</td>', 'time', new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('Europe/London'))),
-            array('<th>Data</th> <td>10.746135</td>', 'number', 10.746135),
-            array('<th>Data</th> <td>5678</td>', 'integer', 5678),
-            array('<th>Data</th> <td> 1074.6135 % </td>', 'percent', 10.746135),
-            array('<th>Data</th> <td> EUR 10.746135 </td>', 'currency', 10.746135),
-            array('<th>Data</th> <td> [1 => First] [2 => Second] </td>', 'array', array(1 => 'First', 2 => 'Second')),
+            array('<th>Data</th> <td>Example</td>', 'string', 'Example', array('safe' => false)),
+            array('<th>Data</th> <td>Example</td>', 'text', 'Example', array('safe' => false)),
+            array('<th>Data</th> <td>Example</td>', 'textarea', 'Example', array('safe' => false)),
+            array('<th>Data</th> <td>December 24, 2013 10:11</td>', 'datetime', new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('Europe/London')), array()),
+            array('<th>Data</th> <td>24.12.2013 10:11:12</td>', 'datetime', new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('Europe/London')), array('format'=>'d.m.Y H:i:s')),
+            array('<th>Data</th> <td>December 24, 2013</td>', 'date', new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('Europe/London')), array()),
+            array('<th>Data</th> <td>24.12.2013</td>', 'date', new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('Europe/London')), array('format'=>'d.m.Y')),
+            array('<th>Data</th> <td>10:11:12</td>', 'time', new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('Europe/London')), array()),
+            array('<th>Data</th> <td>10.746135</td>', 'number', 10.746135, array('safe' => false)),
+            array('<th>Data</th> <td>5678</td>', 'integer', 5678, array('safe' => false)),
+            array('<th>Data</th> <td> 1074.6135 % </td>', 'percent', 10.746135, array()),
+            array('<th>Data</th> <td> EUR 10.746135 </td>', 'currency', 10.746135, array('currency' => 'EUR')),
+            array('<th>Data</th> <td> GBP 51.23456 </td>', 'currency', 51.23456, array('currency' => 'GBP')),
+            array('<th>Data</th> <td> [1 => First] [2 => Second] </td>', 'array', array(1 => 'First', 2 => 'Second'), array('safe' => false)),
+            array('<th>Data</th> <td><i class="icon-ok-circle"></i>yes</td>', 'boolean', true, array()),
+            array('<th>Data</th> <td><i class="icon-ban-circle"></i>no</td>', 'boolean', false, array()),
+            array('<th>Data</th> <td> Delete </td>', 'trans', 'action_delete', array('safe'=>false, 'catalogue'=>'SonataAdminBundle')),
         );
     }
 }
