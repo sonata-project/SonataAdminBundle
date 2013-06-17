@@ -186,71 +186,40 @@ body.sonata-bc {
     display: none;
 }
 
-.sonata-bc th.sonata-ba-list-field-header-order-desc:hover:before {
-	content: "";
-	display: block;
-	width: 0;
-	height: 0;
-	border-top: 4px solid black;
-	border-right: 4px solid transparent;
-	border-left: 4px solid transparent;
-	position: absolute;
-	top: 50%;
-	left: 2px;
-	margin-top: -3px;
-}
-
-.sonata-bc th.sonata-ba-list-field-header-order-asc:hover:before {
-	content: "";
-	display: block;
-	width: 0;
-	height: 0;
-	border-bottom: 4px solid black;
-	border-right: 4px solid transparent;
-	border-left: 4px solid transparent;
-	border-top: 4px solid transparent;
-	position: absolute;
-	top: 50%;
-	left: 2px;
-	margin-top: -5px;
-}
-
-.sonata-bc th.sonata-ba-list-field-header-order-desc,
-.sonata-bc th.sonata-ba-list-field-header-order-asc {
-    padding-left: 15px;
+.sonata-bc th.sonata-ba-list-field-header-order-desc a,
+.sonata-bc th.sonata-ba-list-field-header-order-asc a {
     position: relative;
+    margin-right: 10px;
 }
 
-.sonata-bc th.sonata-ba-list-field-header-order-asc.sonata-ba-list-field-order-active:before,
-.sonata-bc th.sonata-ba-list-field-header-order-desc.sonata-ba-list-field-order-active:hover:before {
-	content: "";
-	display: block;
-	width: 0;
-	height: 0;
-	border-top: 4px solid black;
-	border-right: 4px solid transparent;
-	border-left: 4px solid transparent;
-	border-bottom: 4px solid transparent;
-	position: absolute;
-	top: 50%;
-	left: 2px;
-	margin-top: -3px;
+.sonata-bc th.sonata-ba-list-field-header-order-asc a:hover:before,
+.sonata-bc th.sonata-ba-list-field-header-order-asc.sonata-ba-list-field-order-active a:before,
+.sonata-bc th.sonata-ba-list-field-header-order-desc.sonata-ba-list-field-order-active a:hover:before {
+    content: "";
+    display: block;
+    border-top: 4px solid black;
+    border-right: 4px solid transparent;
+    border-left: 4px solid transparent;
+    border-bottom: 4px solid transparent;
+    position: absolute;
+    top: 50%;
+    right: -10px;
+    margin-top: -1px;
 }
 
-.sonata-bc th.sonata-ba-list-field-header-order-desc.sonata-ba-list-field-order-active:before,
-.sonata-bc th.sonata-ba-list-field-header-order-asc.sonata-ba-list-field-order-active:hover:before {
-	content: "";
-	display: block;
-	width: 0;
-	height: 0;
-	border-bottom: 4px solid black;
-	border-right: 4px solid transparent;
-	border-left: 4px solid transparent;
-	border-top: 4px solid transparent;
-	position: absolute;
-	top: 50%;
-	left: 2px;
-	margin-top: -5px;
+.sonata-bc th.sonata-ba-list-field-header-order-desc a:hover:before,
+.sonata-bc th.sonata-ba-list-field-header-order-desc.sonata-ba-list-field-order-active a:before,
+.sonata-bc th.sonata-ba-list-field-header-order-asc.sonata-ba-list-field-order-active a:hover:before {
+    content: "";
+    display: block;
+    border-bottom: 4px solid black;
+    border-right: 4px solid transparent;
+    border-left: 4px solid transparent;
+    border-top: 4px solid transparent;
+    position: absolute;
+    top: 50%;
+    right: -10px;
+    margin-top: -5px;
 }
 
 .sonata-bc em.sonata-ba-field-help {
