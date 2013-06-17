@@ -737,7 +737,8 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
             // always force the parent value
             if ($this->isChild() && $this->getParentAssociationMapping()) {
-                $parameters[$this->getParentAssociationMapping()] = array('value' => $this->request->get($this->getParent()->getIdParameter()));
+                $name = str_replace('.', '__', $this->getParentAssociationMapping());
+                $parameters[$name] = array('value' => $this->request->get($this->getParent()->getIdParameter()));
             }
         }
 

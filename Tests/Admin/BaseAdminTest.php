@@ -48,6 +48,11 @@ class PostAdmin extends Admin
 
 class CommentAdmin extends Admin
 {
+    public function setParentAssociationMapping($associationMapping)
+    {
+        $this->parentAssociationMapping = $associationMapping;
+    }
+
     public function setClassnameLabel($label)
     {
         $this->classnameLabel = $label;
@@ -220,5 +225,35 @@ class BaseAdminTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('salut', $admin->toString($s));
 
         $this->assertEquals("", $admin->toString(false));
+    }
+
+    public function testGetFilterParameters()
+    {
+        $authorId = uniqid();
+
+        $postAdmin = new PostAdmin('sonata.post.admin.post', 'Application\Sonata\NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
+
+        $commentAdmin = new CommentAdmin('sonata.post.admin.comment', 'Application\Sonata\NewsBundle\Entity\Comment', 'SonataNewsBundle:CommentAdmin');
+        $commentAdmin->setParentAssociationMapping('post.author');
+        $commentAdmin->setParent($postAdmin);
+
+        $request = $this->getMock('Symfony\Component\HttpFoundation\Request', array('get'));
+        $request->expects($this->any())
+            ->method('get')
+            ->will($this->returnValue($authorId));
+
+        $commentAdmin->setRequest($request);
+
+        $modelManager = $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface');
+        $modelManager->expects($this->any())
+            ->method('getDefaultSortValues')
+            ->will($this->returnValue(array()));
+
+        $commentAdmin->setModelManager($modelManager);
+
+        $parameters = $commentAdmin->getFilterParameters();
+
+        $this->assertTrue(isset($parameters['post__author']));
+        $this->assertEquals(array('value' => $authorId), $parameters['post__author']);
     }
 }
