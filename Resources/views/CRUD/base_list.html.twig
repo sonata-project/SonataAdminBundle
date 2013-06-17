@@ -22,13 +22,15 @@ file that was distributed with this source code.
 {% block list_table %}
     {% set batchactions = admin.batchactions %}
     {% if admin.datagrid.results|length > 0 %}
+        {% if admin.hasRoute('batch') %}
         <form action="{{ admin.generateUrl('batch', {'filter': admin.filterParameters}) }}" method="POST" >
+        {% endif %}
             <table class="table table-bordered table-striped">
                 {% block table_header %}
                     <thead>
                         <tr class="sonata-ba-list-field-header">
                             {% for field_description in admin.list.elements %}
-                                {% if field_description.getOption('code') == '_batch' and batchactions|length > 0%}
+                                {% if admin.hasRoute('batch') and field_description.getOption('code') == '_batch' and batchactions|length > 0 %}
                                     <th class="sonata-ba-list-field-header sonata-ba-list-field-header-batch">
                                       <input type="checkbox" id="list_batch_checkbox" />
                                     </th>
@@ -74,7 +76,7 @@ file that was distributed with this source code.
                         <th colspan="{{ admin.list.elements|length - (app.request.isXmlHttpRequest ? (admin.list.has('_action') + admin.list.has('batch')) : 0) }}">
                             <div class="form-inline">
                                 {% if not app.request.isXmlHttpRequest %}
-                                    {% if batchactions|length > 0  %}
+                                    {% if admin.hasRoute('batch') and batchactions|length > 0  %}
                                         {% block batch %}
                                             <script type="text/javascript">
                                                 {% block batch_javascript %}
@@ -172,7 +174,9 @@ file that was distributed with this source code.
                     {% endif %}
                 {% endblock %}
             </table>
+        {% if admin.hasRoute('batch') %}
         </form>
+        {% endif %}
     {% else %}
         <p class="notice">
             {{ 'no_result'|trans({}, 'SonataAdminBundle') }}
