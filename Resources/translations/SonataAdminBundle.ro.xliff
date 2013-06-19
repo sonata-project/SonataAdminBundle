@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-    <file source-language="en" datatype="plaintext" original="" >
+    <file source-language="en" datatype="plaintext" original="SonataAdminBundle.en.xliff" >
         <body>
             <trans-unit id="action_delete">
                 <source>action_delete</source>
-                <target>Delete</target>
+                <target>Ștergeți</target>
             </trans-unit>
             <trans-unit id="btn_batch">
                 <source>btn_batch</source>
@@ -12,99 +12,99 @@
             </trans-unit>
             <trans-unit id="btn_create">
                 <source>btn_create</source>
-                <target>Create</target>
+                <target>Creați</target>
             </trans-unit>
             <trans-unit id="btn_create_and_edit_again">
                 <source>btn_create_and_edit_again</source>
-                <target>Create</target>
+                <target>Aplicați</target>
             </trans-unit>
             <trans-unit id="btn_create_and_create_a_new_one">
                 <source>btn_create_and_create_a_new_one</source>
-                <target>Create and add another</target>
+                <target>Creați și adăugați unul nou</target>
             </trans-unit>
             <trans-unit id="btn_create_and_return_to_list">
                 <source>btn_create_and_return_to_list</source>
-                <target>Create and return to list</target>
+                <target>Creați și reveniți la listă</target>
             </trans-unit>
             <trans-unit id="btn_filter">
                 <source>btn_filter</source>
-                <target>Filter</target>
+                <target>Filtru</target>
             </trans-unit>
             <trans-unit id="btn_update">
                 <source>btn_update</source>
-                <target>Update</target>
+                <target>Actualizați</target>
             </trans-unit>
             <trans-unit id="btn_update_and_edit_again">
                 <source>btn_update_and_edit_again</source>
-                <target>Update</target>
+                <target>Actualizați și editați</target>
             </trans-unit>
             <trans-unit id="btn_update_and_return_to_list">
                 <source>btn_update_and_return_to_list</source>
-                <target>Update and close</target>
+                <target>Actualizați și închideți</target>
             </trans-unit>
             <trans-unit id="link_delete">
                 <source>link_delete</source>
-                <target>Delete</target>
+                <target>Ștergeți</target>
             </trans-unit>
             <trans-unit id="link_action_create">
                 <source>link_action_create</source>
-                <target>Add new</target>
+                <target>Adăugați</target>
             </trans-unit>
             <trans-unit id="link_action_list">
                 <source>link_action_list</source>
-                <target>Return to list</target>
+                <target>Reveniți la listă</target>
             </trans-unit>
             <trans-unit id="link_action_show">
                 <source>link_action_show</source>
-                <target>Show</target>
+                <target>Vizualizare</target>
             </trans-unit>
             <trans-unit id="link_action_edit">
                 <source>link_action_edit</source>
-                <target>Edit</target>
+                <target>Editați</target>
             </trans-unit>
             <trans-unit id="link_add">
                 <source>link_add</source>
-                <target>Add new</target>
+                <target>Adăugați</target>
             </trans-unit>
             <trans-unit id="link_list">
                 <source>link_list</source>
-                <target>List</target>
+                <target>Lista</target>
             </trans-unit>
             <trans-unit id="link_reset_filter">
                 <source>link_reset_filter</source>
-                <target>Reset</target>
+                <target>Resetați</target>
             </trans-unit>
             <trans-unit id="title_create">
                 <source>title_create</source>
-                <target>Create</target>
+                <target>Creați</target>
             </trans-unit>
             <trans-unit id="title_dashboard">
                 <source>title_dashboard</source>
-                <target>Dashboard</target>
+                <target>Panoul principal</target>
             </trans-unit>
             <trans-unit id="title_edit">
                 <source>title_edit</source>
-                <target>Edit "%name%"</target>
+                <target>Editați "%name%"</target>
             </trans-unit>
             <trans-unit id="title_list">
                 <source>title_list</source>
-                <target>List</target>
+                <target>Lista</target>
             </trans-unit>
             <trans-unit id="link_next_pager">
                 <source>link_next_pager</source>
-                <target>Next</target>
+                <target>Următoarea</target>
             </trans-unit>
             <trans-unit id="link_previous_pager">
                 <source>link_previous_pager</source>
-                <target>Previous</target>
+                <target>Precedenta</target>
             </trans-unit>
             <trans-unit id="link_first_pager">
                 <source>link_first_pager</source>
-                <target>First</target>
+                <target>Prima</target>
             </trans-unit>
             <trans-unit id="link_last_pager">
                 <source>link_last_pager</source>
-                <target>Last</target>
+                <target>Ultima</target>
             </trans-unit>
             <trans-unit id="Admin">
                 <source>Admin</source>
@@ -112,63 +112,63 @@
             </trans-unit>
             <trans-unit id="link_expand">
                 <source>link_expand</source>
-                <target>expand/collapse</target>
+                <target>extindeți/restrângeți</target>
             </trans-unit>
             <trans-unit id="no_result">
                 <source>no_result</source>
-                <target>No result</target>
+                <target>Nici un rezultat</target>
             </trans-unit>
             <trans-unit id="confirm_msg">
                 <source>confirm_msg</source>
-                <target>Are you sure ?</target>
+                <target>Sunteți sigur?</target>
             </trans-unit>
             <trans-unit id="action_edit">
                 <source>action_edit</source>
-                <target>Edit</target>
+                <target>Editați</target>
             </trans-unit>
             <trans-unit id="action_show">
                 <source>action_show</source>
-                <target>Show</target>
+                <target>Vizualizați</target>
             </trans-unit>
             <trans-unit id="all_elements">
                 <source>all_elements</source>
-                <target>All elements</target>
+                <target>Toți itemii</target>
             </trans-unit>
             <trans-unit id='flash_batch_empty'>
                 <source>flash_batch_empty</source>
-                <target>Action aborted. No items were selected.</target>
+                <target>Acțiune anulată. Nici un item nu fost selectat.</target>
             </trans-unit>
             <trans-unit id='flash_create_success'>
                 <source>flash_create_success</source>
-                <target>Item has been successfully created.</target>
+                <target>Itemul a fost creat cu succes.</target>
             </trans-unit>
             <trans-unit id='flash_create_error'>
                 <source>flash_create_error</source>
-                <target>An error has occurred during item creation.</target>
+                <target>O eroare a apărut în timpul creării itemului.</target>
             </trans-unit>
             <trans-unit id='flash_edit_success'>
                 <source>flash_edit_success</source>
-                <target>Item has been successfully updated.</target>
+                <target>Itemul a fost actualizat cu succes.</target>
             </trans-unit>
             <trans-unit id='flash_edit_error'>
                 <source>flash_edit_error</source>
-                <target>An error has occurred during item update.</target>
+                <target>O eroare a apărut în timpul actualizării itemului.</target>
             </trans-unit>
             <trans-unit id='flash_batch_delete_success'>
                 <source>flash_batch_delete_success</source>
-                <target>Selected items have been successfully deleted.</target>
+                <target>Itemii selectați au fost șterși cu succes.</target>
             </trans-unit>
             <trans-unit id='flash_batch_delete_error'>
                 <source>flash_batch_delete_error</source>
-                <target>An Error has occurred during selected items deletion.</target>
+                <target>O eroare a apărut în timpul ștergerii itemilor selectați.</target>
             </trans-unit>
             <trans-unit id='flash_delete_error'>
                 <source>flash_delete_error</source>
-                <target>An Error has occurred during item deletion.</target>
+                <target>O eroare a apărut în timpul ștergerii itemului.</target>
             </trans-unit>
             <trans-unit id='flash_delete_success'>
                 <source>flash_delete_success</source>
-                <target>Item has been deleted successfully.</target>
+                <target>Itemul a fost șters cu succes.</target>
             </trans-unit>
             <trans-unit id="link_breadcrumb_dashboard">
                 <source>breadcrumb.link_dashboard</source>
@@ -176,55 +176,55 @@
             </trans-unit>
             <trans-unit id="title_delete">
                 <source>title_delete</source>
-                <target>Confirm deletion</target>
+                <target>Confirmați ștergerea</target>
             </trans-unit>
             <trans-unit id="message_delete_confirmation">
                 <source>message_delete_confirmation</source>
-                <target>Are you sure you want to delete the selected element?</target>
+                <target>Sunteți sigur că doriți să ștergeți itemul selectat?</target>
             </trans-unit>
             <trans-unit id="btn_delete">
                 <source>btn_delete</source>
-                <target>Yes, delete</target>
+                <target>Da, ștergeți</target>
             </trans-unit>
             <trans-unit id="title_batch_confirmation">
                 <source>title_batch_confirmation</source>
-                <target>Confirm batch action</target>
+                <target>Confirmați acțiunea în serie</target>
             </trans-unit>
             <trans-unit id="message_batch_confirmation">
                 <source>message_batch_confirmation</source>
-                <target>Are you sure you want to confirm this action and execute it for the selected element?|Are you sure you want to confirm this action and execute it for the %count% selected elements?</target>
+                <target>Sunteți sigur că doriți să confirmați și să executați această acțiune pentru itemul selectat? | Sunteți sigur că doriți să confirmați și să executați această acțiune pentru %count% itemi selectați?| Sunteți sigur că doriți să confirmați și să executați această acțiune pentru %count% itemi selectați?</target>
             </trans-unit>
             <trans-unit id="message_batch_all_confirmation">
                 <source>message_batch_all_confirmation</source>
-                <target>Are you sure you want to confirm this action and execute it for all the elements?</target>
+                <target>Sunteți sigur că doriți să confirmați și să executați această acțiune pentru toți itemii?</target>
             </trans-unit>
             <trans-unit id="btn_execute_batch_action">
                 <source>btn_execute_batch_action</source>
-                <target>Yes, execute</target>
+                <target>Da, executați</target>
             </trans-unit>
             <trans-unit id="label_type_yes">
                 <source>label_type_yes</source>
-                <target>yes</target>
+                <target>da</target>
             </trans-unit>
             <trans-unit id="label_type_no">
                 <source>label_type_no</source>
-                <target>no</target>
+                <target>nu</target>
             </trans-unit>
             <trans-unit id="label_type_contains">
                 <source>label_type_contains</source>
-                <target>contains</target>
+                <target>conține</target>
             </trans-unit>
             <trans-unit id="label_type_not_contains">
                 <source>label_type_not_contains</source>
-                <target>does not contain</target>
+                <target>nu conține</target>
             </trans-unit>
             <trans-unit id="label_type_equals">
                 <source>label_type_equals</source>
-                <target>is equal to</target>
+                <target>este egal cu</target>
             </trans-unit>
             <trans-unit id="label_type_not_equals">
                 <source>label_type_not_equals</source>
-                <target>is not equal to</target>
+                <target>nu este egal cu</target>
             </trans-unit>
             <trans-unit id="label_type_equal">
                 <source>label_type_equal</source>
@@ -268,83 +268,83 @@
             </trans-unit>
             <trans-unit id="label_date_type_null">
                 <source>label_date_type_null</source>
-                <target>is empty</target>
+                <target>este gol</target>
             </trans-unit>
             <trans-unit id="label_date_type_not_null">
                 <source>label_date_type_not_null</source>
-                <target>is not empty</target>
+                <target>nu este gol</target>
             </trans-unit>
             <trans-unit id="label_date_type_between">
                 <source>label_date_type_between</source>
-                <target>between</target>
+                <target>între</target>
             </trans-unit>
             <trans-unit id="label_date_not_between">
                 <source>label_date_type_not_between</source>
-                <target>not between</target>
+                <target>nu este între</target>
             </trans-unit>
             <trans-unit id="label_filters">
                 <source>label_filters</source>
-                <target>Filters</target>
+                <target>Filtre</target>
             </trans-unit>
             <trans-unit id="delete_or">
                 <source>delete_or</source>
-                <target>or</target>
+                <target>sau</target>
             </trans-unit>
             <trans-unit id="link_action_history">
                 <source>link_action_history</source>
-                <target>Revisions</target>
+                <target>Modificări</target>
             </trans-unit>
             <trans-unit id="td_action">
                 <source>td_action</source>
-                <target>Action</target>
+                <target>Acțiune</target>
             </trans-unit>
             <trans-unit id="td_revision">
                 <source>td_revision</source>
-                <target>Revisions</target>
+                <target>Modificări</target>
             </trans-unit>
             <trans-unit id="td_timestamp">
                 <source>td_timestamp</source>
-                <target>Date</target>
+                <target>Data</target>
             </trans-unit>
             <trans-unit id="td_username">
                 <source>td_username</source>
-                <target>Author</target>
+                <target>Autor</target>
             </trans-unit>
             <trans-unit id="label_view_revision">
                 <source>label_view_revision</source>
-                <target>View Revision</target>
+                <target>Vezi Modificările</target>
             </trans-unit>
             <trans-unit id="list_results_count">
                 <source>list_results_count</source>
-                <target>1 result|%count% results</target>
+                <target>1 rezultat|%count% rezultate|%count% rezultate</target>
             </trans-unit>
             <trans-unit id="label_export_download">
                 <source>label_export_download</source>
-                <target>Download : </target>
+                <target>Descarcă : </target>
             </trans-unit>
             <trans-unit id="loading_information">
                 <source>loading_information</source>
-                <target>Loading information…</target>
+                <target>Se încarcă informația ...</target>
             </trans-unit>
             <trans-unit id="btn_preview">
                 <source>btn_preview</source>
-                <target>Preview</target>
+                <target>Previzualizare</target>
             </trans-unit>
             <trans-unit id="btn_preview_approve">
                 <source>btn_preview_approve</source>
-                <target>Approve</target>
+                <target>Aprobă</target>
             </trans-unit>
             <trans-unit id="btn_preview_decline">
                 <source>btn_preview_decline</source>
-                <target>Decline</target>
+                <target>Declină</target>
             </trans-unit>
             <trans-unit id="label_per_page">
               <source>label_per_page</source>
-              <target>Per page</target>
+              <target>Per pagină</target>
             </trans-unit>
             <trans-unit id="list_select">
               <source>list_select</source>
-              <target>Select</target>
+              <target>Selectați</target>
             </trans-unit>
         </body>
     </file>
