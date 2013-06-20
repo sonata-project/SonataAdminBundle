@@ -90,7 +90,7 @@ class BaseFieldDescriptionTest extends \PHPUnit_Framework_TestCase
         $description->setOption('code', 'getFoo');
 
         $mock = $this->getMock('stdClass', array('getFoo'));
-        $mock->expects($this->any())->method('getFoo')->will($this->returnValue(42));
+        $mock->expects($this->once())->method('getFoo')->will($this->returnValue(42));
 
         $this->assertEquals(42, $description->getFieldValue($mock, 'fake'));
         
