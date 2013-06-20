@@ -1706,6 +1706,9 @@
 .sonata-bc .table tbody tr.info td {
   background-color: #d9edf7;
 }
+.sonata-bc .table tbody tr.warning > td {
+  background-color: #FCF8E3;
+}
 .sonata-bc [class^="icon-"],
 .sonata-bc [class*=" icon-"] {
   display: inline-block;
