@@ -54,23 +54,11 @@ var Admin = {
                 target = input;
             }
 
-            target.qtip({
+            target.popover({
                 content: message,
-                show: 'focusin',
-                hide: 'focusout',
-                position: {
-                    corner: {
-                        target: 'rightMiddle',
-                        tooltip: 'leftMiddle'
-                    }
-                },
-                style: {
-                    name: 'red',
-                    border: {
-                        radius: 2
-                    },
-                    tip: 'leftMiddle'
-                }
+                trigger:'focus',
+                placement: 'right',
+                template: '<div class="popover"><div class="arrow"></div><div class="popover-inner"><div class="popover-content alert-error"><p></p></div></div></div>'
             });
 
         });
