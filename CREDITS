@@ -1,4 +1,3 @@
-
 * Django Project (http://www.djangoproject.com/)
 
   The Admin class architecture is inspired by the Django Admin.
@@ -15,8 +14,3 @@
 * jQuery (http://jquery.com/)
 
   The javascript library used to integrate Ajax and GUI interactions.
-
-* qTip (http://craigsworks.com/projects/qtip/)
-
-  The javascript library used to display notification and errors messages.
-  
