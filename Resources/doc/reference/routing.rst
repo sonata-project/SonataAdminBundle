@@ -145,3 +145,21 @@ method. This method will be used when a link is being generated.
 
     // the result :
     //   $admin->generateUrl('create') => /admin/module/create?context=default
+
+Default route in List Action
+----------------------------
+
+Sometimes you need show entity without edit. You can choose route in addIdentifier method
+of ListMapper
+
+.. code-block:: php
+
+    <?php
+    class PostAdmin extends Admin
+    {
+        public function configureListFields(ListMapper $listMapper)
+        {
+            $listMapper
+                ->addIdentifier('name', null, array('label' => 'name', 'route' => array('name' => 'show')));
+        }
+    }
