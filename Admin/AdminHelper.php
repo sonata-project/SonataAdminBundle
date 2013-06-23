@@ -15,6 +15,7 @@ use Symfony\Component\Form\FormView;
 use Sonata\AdminBundle\Exception\NoValueException;
 use Sonata\AdminBundle\Util\FormViewIterator;
 use Sonata\AdminBundle\Util\FormBuilderIterator;
+use Sonata\AdminBundle\Admin\BaseFieldDescription;
 
 class AdminHelper
 {
@@ -185,6 +186,6 @@ class AdminHelper
      */
     public function camelize($property)
     {
-        return preg_replace(array('/(^|_| )+(.)/e', '/\.(.)/e'), array("strtoupper('\\2')", "'_'.strtoupper('\\1')"), $property);
+        return BaseFieldDescription::camelize($property);
     }
 }
