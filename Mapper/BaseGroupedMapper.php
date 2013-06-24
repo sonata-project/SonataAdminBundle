@@ -42,6 +42,7 @@ abstract class BaseGroupedMapper extends BaseMapper
             'fields'             => array(),
             'description'        => false,
             'translation_domain' => null,
+            'template' => 'SonataAdminBundle:CRUD:base_edit_form_group.html.twig',
         ), $groups[$name], $options);
         
         $this->setGroups($groups);
