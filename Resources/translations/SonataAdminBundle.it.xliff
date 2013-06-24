@@ -332,11 +332,11 @@
             </trans-unit>
             <trans-unit id="btn_preview_approve">
                 <source>btn_preview_approve</source>
-                <target>btn_preview_approve</target>
+                <target>Approva</target>
             </trans-unit>
             <trans-unit id="btn_preview_decline">
                 <source>btn_preview_decline</source>
-                <target>btn_preview_decline</target>
+                <target>Rifiuta</target>
             </trans-unit>
             <trans-unit id="label_per_page">
               <source>label_per_page</source>
@@ -344,7 +344,7 @@
             </trans-unit>
             <trans-unit id="list_select">
               <source>list_select</source>
-              <target>list_select</target>
+              <target>Seleziona</target>
             </trans-unit>
         </body>
     </file>
