@@ -24,15 +24,29 @@ sonata_type_collection
 
 The ``Collection Type`` is meant to handle creation and edition of model 
 collections. Rows can be added and deleted, and your model abstraction layer may
-allow you to edit fields inline.
+allow you to edit fields inline. You can use ``type_options`` to pass values
+to the underlying forms.
+
+.. code-block:: php
+
+    class AcmeProductAdmin extends Admin
+    {
+        protected function configureFormFields(FormMapper $formMapper)
+        {
+            $formMapper
+                ->add('sales', 'sonata_type_collection', array(
+                    //Prevents the "Delete" option from being displayed
+                    'type_options' => array('delete' => false)
+                ), array(
+                    'edit' => 'inline',
+                    'inline' => 'table',
+                    'sortable' => 'position',
+                ))
+            ;
+        }
+    }
 
 **TIP**: A jQuery event is fired after a row has been added(*sonata-collection-item-added*) or deleted(*sonata-collection-item-deleted*). You can bind to them to trigger some custom javascript imported into your templates(eg: add a calendar widget to a just added date field)
-
-Type configuration
-^^^^^^^^^^^^^^^^^^
-
-todo
-
 
 Field configuration
 ^^^^^^^^^^^^^^^^^^^
