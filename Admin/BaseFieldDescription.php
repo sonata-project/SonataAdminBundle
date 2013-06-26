@@ -197,6 +197,11 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
             unset($options['help']);
         }
 
+        // set default placeholder
+        if (!isset($options['placeholder'])) {
+            $options['placeholder'] = 'short_object_description_placeholder';
+        }
+
         $this->options = $options;
     }
 
