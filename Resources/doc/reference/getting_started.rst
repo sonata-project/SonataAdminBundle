@@ -62,6 +62,7 @@ related documentation.
 Step 3: Create Admin class
 --------------------------
 
+Generate YourNSNewsBundle with "php app/console generate:bundle".
 Admin class represents mapping of your model and administration sections (forms,
 list, show). The easiest way to create an admin class for your model is to extend
 the ``Sonata\AdminBundle\Admin\Admin`` class. For filter, list and show views, you can
@@ -72,7 +73,7 @@ Here is a simple example from the SonataNewsBundle:
 
 .. code-block:: php
 
-   namespace Sonata\NewsBundle\Admin;
+   namespace YourNS\NewsBundle\Admin;
 
    use Sonata\AdminBundle\Admin\Admin;
    use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -123,7 +124,7 @@ Create either a new ``admin.xml`` or ``admin.yml`` file inside the ``MyBundle/Re
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://symfony.com/schema/dic/services/services-1.0.xsd">
        <services>
-          <service id="sonata.admin.tag" class="YourNS\AdminBundle\Admin\BlogAdmin">
+          <service id="sonata.admin.tag" class="YourNS\NewsBundle\Admin\TagAdmin">
              <tag name="sonata.admin" manager_type="orm" group="Posts" label="Blog"/>
              <argument />
              <argument>YourNS\AdminBundle\Entity\Course</argument>
@@ -141,7 +142,7 @@ Create either a new ``admin.xml`` or ``admin.yml`` file inside the ``MyBundle/Re
    # MyBundle/Resources/config/admin.yml
    services:
        sonata.admin.tag:
-           class: YourNS\AdminBundle\Admin\BlogAdmin
+           class: YourNS\NewsBundle\Admin\TagAdmin
            tags:
                - { name: sonata.admin, manager_type: orm, group: posts, label: "Blog" }
            arguments:
