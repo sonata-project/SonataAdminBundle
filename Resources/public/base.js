@@ -139,13 +139,14 @@ var Admin = {
 
             var container = jQuery(this).closest('[data-prototype]');
             var proto = container.attr('data-prototype');
+            var protoName = container.attr('data-prototype-name') || '__name__';
             // Set field id
-            var idRegexp = new RegExp(container.attr('id')+'___name__','g');
+            var idRegexp = new RegExp(container.attr('id')+'_'+protoName,'g');
             proto = proto.replace(idRegexp, container.attr('id')+'_'+(container.children().length - 1));
 
             // Set field name
             var parts = container.attr('id').split('_');
-            var nameRegexp = new RegExp(parts[parts.length-1]+'\\]\\[__name__','g');
+            var nameRegexp = new RegExp(parts[parts.length-1]+'\\]\\['+protoName,'g');
             proto = proto.replace(nameRegexp, parts[parts.length-1]+']['+(container.children().length - 1));
             jQuery(proto).insertBefore(jQuery(this).parent());
 
