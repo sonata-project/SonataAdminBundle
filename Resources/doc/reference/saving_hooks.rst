@@ -14,7 +14,7 @@ Example used with the FOS/UserBundle
 
 The ``FOSUserBundle`` provides authentication features for your Symfony2 Project,
 and is compatible with Doctrine ORM & ODM. See 
-https://github.com/FriendsOfSymfony/UserBundle for more information.
+https://github.com/FriendsOfSymfony/FOSUserBundle/ for more information.
 
 The user management system requires to perform specific call when the user 
 password or username are updated. This is how the Admin bundle can be used to 
