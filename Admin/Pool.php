@@ -29,16 +29,19 @@ class Pool
 
     protected $titleLogo;
 
+    protected $options;
+
     /**
      * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
      * @param string                                                    $title
      * @param string                                                    $logoTitle
      */
-    public function __construct(ContainerInterface $container, $title, $logoTitle)
+    public function __construct(ContainerInterface $container, $title, $logoTitle, $options = array())
     {
         $this->container = $container;
         $this->title     = $title;
         $this->titleLogo = $logoTitle;
+        $this->options   = $options;
     }
 
     /**
@@ -254,5 +257,19 @@ class Pool
     public function getTitle()
     {
         return $this->title;
+    }
+
+    /**
+     * @param $name
+     *
+     * @return mixed
+     */
+    public function getOption($name)
+    {
+        if (isset($this->options[$name])) {
+            return $this->options[$name];
+        }
+
+        return null;
     }
 }

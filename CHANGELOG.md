@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+### 2013-07-05
+
+*  Remove qTip
+
 ### 2012-11-25
 
 * [BC BREAK] change the configureSideMenu signature to use the AdminInterface
