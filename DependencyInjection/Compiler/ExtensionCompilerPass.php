@@ -106,7 +106,7 @@ class ExtensionCompilerPass implements CompilerPassInterface
         }
 
         if(isset($excludes[$id])){
-            $extensions = array_diff($extensions, $excludes);
+            $extensions = array_diff($extensions, $excludes[$id]);
         }
         return $extensions;
     }
