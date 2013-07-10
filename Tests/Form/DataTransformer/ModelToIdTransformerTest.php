@@ -14,6 +14,8 @@ use Sonata\AdminBundle\Form\DataTransformer\ModelToIdTransformer;
 
 class ModelToIdTransformerTest extends \PHPUnit_Framework_TestCase
 {
+    private $modelManager = null;
+
     public function setUp()
     {
         $this->modelManager = $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface');
@@ -42,8 +44,4 @@ class ModelToIdTransformerTest extends \PHPUnit_Framework_TestCase
         //we pass false, must return null
         $this->assertNull($transformer->reverseTransform(false));
     }
-}
-
-class TEST {
-
 }
