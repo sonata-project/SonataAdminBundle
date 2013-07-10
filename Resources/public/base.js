@@ -57,6 +57,7 @@ var Admin = {
             target.popover({
                 content: message,
                 trigger:'focus',
+                html: true,
                 placement: 'right',
                 template: '<div class="popover"><div class="arrow"></div><div class="popover-inner"><div class="popover-content alert-error"><p></p></div></div></div>'
             });
