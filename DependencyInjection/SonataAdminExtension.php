@@ -227,4 +227,12 @@ class SonataAdminExtension extends Extension
             "Sonata\\AdminBundle\\Validator\\InlineValidator",
         ));
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getNamespace()
+    {
+        return 'http://sonata-project.org/schema/dic/admin';
+    }
 }
