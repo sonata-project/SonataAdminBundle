@@ -61,6 +61,17 @@ class Pool
     }
 
     /**
+     * Returns whether an admin group exists or not.
+     *
+     * @param string $group
+     * @return bool
+     */
+    public function hasGroup($group)
+    {
+        return isset($this->adminGroups[$group]);
+    }
+
+    /**
      * @return array
      */
     public function getDashboardGroups()
@@ -86,6 +97,32 @@ class Pool
         }
 
         return $groups;
+    }
+
+    /**
+     * Returns all admins related to the given $group
+     *
+     * @param string $group
+     * @return array
+     * @throws \InvalidArgumentException
+     */
+    public function getAdminsByGroup($group)
+    {
+        if (!isset($this->adminGroups[$group])) {
+            throw new \InvalidArgumentException(sprintf('Group "%s" not found in admin pool.', $group));
+        }
+
+        $admins = array();
+
+        if (!isset($this->adminGroups[$group]['items'])) {
+            return $admins;
+        }
+
+        foreach ($this->adminGroups[$group]['items'] as $id) {
+            $admins[] = $this->getInstance($id);
+        }
+
+        return $admins;
     }
 
     /**
