@@ -21,7 +21,7 @@ object. The object can be used to check assertions against the model :
         ->with('settings.title')
             ->assertNotNull(array())
             ->assertNotBlank()
-            ->assertMinLength(array('limit' => 50))
+            ->assertLength(array('min' => 50))
             ->addViolation('ho yeah!')
         ->end();
 
@@ -118,7 +118,7 @@ Example from the ``SonataPageBundle``
                 ->with('settings.title')
                     ->assertNotNull(array())
                     ->assertNotBlank()
-                    ->assertMinLength(array('limit' => 50))
+                    ->assertLength(array('min' => 50))
                     ->addViolation('ho yeah!')
                 ->end();
         }
@@ -144,7 +144,7 @@ the ``Admin`` class itself contains an empty ``validate`` method. This is automa
         {
             $errorElement
                 ->with('name')
-                    ->assertMaxLength(array('limit' => 32))
+                    ->assertLength(array('max' => 32))
                 ->end()
             ;
         }
