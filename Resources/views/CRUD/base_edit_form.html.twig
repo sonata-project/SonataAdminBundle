@@ -1,5 +1,5 @@
 {% block form %}
-    {% set url = admin.id(object) ? 'edit' : 'create' %}
+    {% set url = admin.id(object) is not null ? 'edit' : 'create' %}
 
     {% if not admin.hasRoute(url)%}
         <div>
@@ -60,7 +60,7 @@
             {% block formactions %}
                 <div class="well form-actions">
                     {% if app.request.isxmlhttprequest %}
-                        {% if admin.id(object) %}
+                        {% if admin.id(object) is not null %}
                             <input type="submit" class="btn btn-primary" name="btn_update" value="{{ 'btn_update'|trans({}, 'SonataAdminBundle') }}"/>
                         {% else %}
                             <input type="submit" class="btn" name="btn_create" value="{{ 'btn_create'|trans({}, 'SonataAdminBundle') }}"/>
@@ -72,7 +72,7 @@
                                 {{ 'btn_preview'|trans({}, 'SonataAdminBundle') }}
                             </button>
                         {% endif %}
-                        {% if admin.id(object) %}
+                        {% if admin.id(object) is not null %}
                             <input type="submit" class="btn btn-primary" name="btn_update_and_edit" value="{{ 'btn_update_and_edit_again'|trans({}, 'SonataAdminBundle') }}"/>
 
                             {% if admin.hasroute('list') %}

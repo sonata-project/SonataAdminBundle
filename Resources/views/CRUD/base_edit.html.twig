@@ -12,7 +12,7 @@ file that was distributed with this source code.
 {% extends base_template %}
 
 {% block title %}
-    {% if admin.id(object) %}
+    {% if admin.id(object) is not null %}
         {{ "title_edit"|trans({'%name%': admin.toString(object) }, 'SonataAdminBundle') }}
     {% else %}
         {{ "title_create"|trans({}, 'SonataAdminBundle') }}
