@@ -184,13 +184,11 @@ class HelperController
             }
         }
 
-        $url = $admin->generateUrl('edit', array('id' => $objectId));
-
         $htmlOutput = $this->twig->render($admin->getTemplate('short_object_description'),
             array(
+                'admin' => $admin,
                 'description' => $description,
                 'object' => $object,
-                'url' => $url
             )
         );
 
