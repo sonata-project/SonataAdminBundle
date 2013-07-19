@@ -238,4 +238,4 @@ var Admin = {
             errors.show();
         }
     }
-}
+};
