@@ -16,6 +16,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Sonata\AdminBundle\Admin\BaseFieldDescription;
 
 /**
  * Add all dependencies to the Admin class, this avoid to write too many lines
@@ -140,7 +141,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
         );
 
         foreach ($keys as $key) {
-            $method = 'set'.$this->camelize($key);
+            $method = 'set' . BaseFieldDescription::camelize($key);
             if (!isset($attributes[$key]) || $definition->hasMethodCall($method)) {
                 continue;
             }
@@ -187,7 +188,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
         $definition->addMethodCall('setManagerType', array($manager_type));
 
         foreach ($defaultAddServices as $attr => $addServiceId) {
-            $method = 'set'.$this->camelize($attr);
+            $method = 'set' . BaseFieldDescription::camelize($attr);
 
             if (isset($addServices[$attr]) || !$definition->hasMethodCall($method)) {
                 $definition->addMethodCall($method, array(new Reference(isset($addServices[$attr]) ? $addServices[$attr] : $addServiceId)));
@@ -267,16 +268,5 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
         ), $definedTemplates);
 
         $definition->addMethodCall('setTemplates', array($definedTemplates));
-    }
-
-    /**
-     * method taken from PropertyPath
-     *
-     * @param  $property
-     * @return mixed
-     */
-    protected function camelize($property)
-    {
-        return preg_replace(array('/(^|_)+(.)/e', '/\.(.)/e'), array("strtoupper('\\2')", "'_'.strtoupper('\\1')"), $property);
     }
 }

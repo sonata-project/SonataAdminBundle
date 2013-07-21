@@ -13,6 +13,7 @@ namespace Sonata\AdminBundle\Admin;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Exception\NoValueException;
+use Symfony\Component\DependencyInjection\Container;
 
 /**
  * A FieldDescription hold the information about a field. A typical
@@ -402,7 +403,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
      */
     public static function camelize($property)
     {
-        return preg_replace(array('/(^|_| )+(.)/e', '/\.(.)/e'), array("strtoupper('\\2')", "'_'.strtoupper('\\1')"), $property);
+        return Container::camelize($property);
     }
 
     /**
