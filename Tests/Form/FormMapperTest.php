@@ -31,6 +31,14 @@ class FormMapperTest extends \PHPUnit_Framework_TestCase
             $this->builder,
             $this->admin
         );
+
+        $this->defaultOptions = array(
+            'collapsed' => false,
+            'fields' => array(),
+            'description' => false,
+            'translation_domain' => null,
+            'template' => 'SonataAdminBundle:CRUD:base_edit_form_group.html.twig',
+        );
     }
 
     public function testWithNoOptions()
@@ -38,12 +46,8 @@ class FormMapperTest extends \PHPUnit_Framework_TestCase
         $this->admin->expects($this->once())
             ->method('setFormGroups')
             ->with(array(
-                'foobar' => array(
-                    'collapsed' => false,
-                    'fields' => array(),
-                    'description' => false,
-                    'translation_domain' => null,
-                )));
+                'foobar' => $this->defaultOptions
+            ));
 
         $this->formMapper->with('foobar');
     }
@@ -53,12 +57,10 @@ class FormMapperTest extends \PHPUnit_Framework_TestCase
         $this->admin->expects($this->once())
             ->method('setFormGroups')
             ->with(array(
-                'foobar' => array(
-                    'collapsed' => false,
-                    'fields' => array(),
-                    'description' => false,
+                'foobar' => array_merge($this->defaultOptions, array(
                     'translation_domain' => 'Foobar',
-                )));
+                ))
+            ));
 
         $this->formMapper->with('foobar', array(
             'translation_domain' => 'Foobar',
@@ -68,12 +70,9 @@ class FormMapperTest extends \PHPUnit_Framework_TestCase
     public function testWithFieldsCascadeTranslationDomain()
     {
         $formGroups = array(
-            'foobar' => array(
-                'collapsed' => false,
-                'fields' => array(),
-                'description' => false,
+            'foobar' => array_merge($this->defaultOptions, array(
                 'translation_domain' => 'Foobar',
-            )
+            ))
         );
 
         $this->admin->expects($this->exactly(2))
