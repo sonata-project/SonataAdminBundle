@@ -13,11 +13,11 @@ Example used with the FOS/UserBundle
 ------------------------------------
 
 The ``FOSUserBundle`` provides authentication features for your Symfony2 Project,
-and is compatible with Doctrine ORM & ODM. See 
+and is compatible with Doctrine ORM, Doctrine ODM and Propel. See
 https://github.com/FriendsOfSymfony/FOSUserBundle/ for more information.
 
-The user management system requires to perform specific call when the user 
-password or username are updated. This is how the Admin bundle can be used to 
+The user management system requires to perform specific call when the user
+password or username are updated. This is how the Admin bundle can be used to
 solve the issue by using the ``prePersist`` saving hook.
 
 .. code-block:: php
