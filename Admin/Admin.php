@@ -38,6 +38,7 @@ use Sonata\AdminBundle\Builder\RouteBuilderInterface;
 use Sonata\AdminBundle\Route\RouteGeneratorInterface;
 
 use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
+use Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 
@@ -2617,5 +2618,15 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         array_unshift($this->perPageOptions, $this->maxPerPage);
         $this->perPageOptions = array_unique($this->perPageOptions);
         sort($this->perPageOptions);
+    }
+
+    /**
+     * Returns true if this admin uses ACL
+     *
+     * @return boolean
+     */
+    public function isAclEnabled()
+    {
+        return $this->getSecurityHandler() instanceof AclSecurityHandlerInterface;
     }
 }

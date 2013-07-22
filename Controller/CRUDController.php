@@ -17,10 +17,14 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
+use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
+use Symfony\Component\Security\Acl\Exception\NoAceFoundException;
 use Sonata\AdminBundle\Exception\ModelManagerException;
 use Symfony\Component\HttpFoundation\Request;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Admin\BaseFieldDescription;
+use Sonata\AdminBundle\Security\Acl\Permission\MaskBuilder;
 
 class CRUDController extends Controller
 {
@@ -718,6 +722,148 @@ class CRUDController extends Controller
         );
 
         return $this->get('sonata.admin.exporter')->getResponse($format, $filename, $this->admin->getDataSourceIterator());
+    }
+
+    /**
+     * return the Response object associated to the acl action
+     *
+     * @param null $id
+     *
+     * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     *
+     * @return Response
+     */
+    public function aclAction($id = null)
+    {
+        if (!$this->admin->isAclEnabled()) {
+            throw new NotFoundHttpException('ACL are not enabled for this admin');
+        }
+
+        $object = $this->admin->getObject($id);
+
+        if (!$object) {
+            throw new NotFoundHttpException(sprintf('unable to find the object with id : %s', $id));
+        }
+
+        if (false === $this->admin->isGranted('MASTER', $object)) {
+            throw new AccessDeniedException();
+        }
+
+        $this->admin->setSubject($object);
+
+        $securityHandler = $this->admin->getSecurityHandler();
+
+        $permissions = $securityHandler->getObjectPermissions();
+
+        // Cache masks
+        $reflectionClass = new \ReflectionClass(new MaskBuilder());
+        $masks = array();
+        foreach ($permissions as $permission) {
+            $masks[$permission] = $reflectionClass->getConstant('MASK_' . $permission);
+        }
+
+        $ownerPermissions = array('MASTER', 'OWNER');
+
+        // Only a owner can set MASTER and OWNER ACL
+        $isOwner = $this->admin->isGranted('OWNER', $object);
+        if (!$isOwner) {
+            foreach ($ownerPermissions as $permission) {
+                $key = array_search($permission, $permissions);
+                if ($key !== false) {
+                    unset($permissions[$key]);
+                }
+            }
+        }
+
+        // Retrieve object identity
+        $objectIdentity = ObjectIdentity::fromDomainObject($object);
+        $acl = $securityHandler->getObjectAcl($objectIdentity);
+        if (!$acl) {
+            $acl = $securityHandler->createAcl($objectIdentity);
+        }
+
+        // Find all users
+        $userManager = $userManager = $this->get('fos_user.user_manager');
+        // TODO: ability fo filter users
+        $users = $userManager->findUsers();
+
+        // Create a form to set ACL
+        $formBuilder = $this->createFormBuilder();
+        foreach ($users as $user) {
+            $securityIdentity = UserSecurityIdentity::fromAccount($user);
+
+            foreach ($permissions as $permission) {
+                try {
+                    $checked = $acl->isGranted(array($masks[$permission]), array($securityIdentity));
+                } catch (NoAceFoundException $e) {
+                    $checked = false;
+                }
+
+                $formBuilder->add($user->getId() . $permission, 'checkbox', array('required' => false, 'data' => $checked));
+            }
+        }
+
+        $form = $formBuilder->getForm();
+
+        $request = $this->getRequest();
+        if ($request->getMethod() === 'POST') {
+            $form->bind($request);
+
+            if ($form->isValid()) {
+                foreach ($users as $user) {
+                    $securityIdentity = UserSecurityIdentity::fromAccount($user);
+
+                    $maskBuilder = new MaskBuilder();
+                    foreach ($permissions as $permission) {
+                        if ($form->get($user->getId() . $permission)->getData()) {
+                            $maskBuilder->add($permission);
+                        }
+                    }
+
+                    // Restore OWNER and MASTER permissions
+                    if (!$isOwner) {
+                        foreach ($ownerPermissions as $permission) {
+                            if ($acl->isGranted(array($masks[$permission]), array($securityIdentity))) {
+                                $maskBuilder->add($permission);
+                            }
+                        }
+                    }
+
+                    $mask = $maskBuilder->get();
+
+                    $index = null;
+                    $ace = null;
+                    foreach ($acl->getObjectAces() as $currentIndex => $currentAce) {
+                        if ($currentAce->getSecurityIdentity()->equals($securityIdentity)) {
+                            $index = $currentIndex;
+                            $ace = $currentAce;
+                            break;
+                        }
+                    }
+
+                    if ($ace) {
+                        $acl->updateObjectAce($index, $mask);
+                    } else {
+                        $acl->insertObjectAce($securityIdentity, $mask);
+                    }
+                }
+
+                $securityHandler->updateAcl($acl);
+
+                $this->addFlash('sonata_flash_success', 'flash_acl_edit_success');
+
+                return new RedirectResponse($this->admin->generateObjectUrl('acl', $object));
+            }
+        }
+
+        return $this->render($this->admin->getTemplate('acl'), array(
+                    'action' => 'acl',
+                    'permissions' => $permissions,
+                    'object' => $object,
+                    'users' => $users,
+                    'form' => $form->createView()
+        ));
     }
 
     /**
