@@ -22,6 +22,7 @@ Full Configuration Options
     sonata_admin:
         security:
             handler: sonata.admin.security.handler.role
+            acl_user_manager: fos_user.user_manager # Name of the user manager service used to retrieve ACL users 
 
         title:      Sonata Project
         title_logo: bundles/sonataadmin/logo_title.png

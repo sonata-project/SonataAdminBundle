@@ -265,6 +265,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
             'edit'                     => 'SonataAdminBundle:CRUD:edit.html.twig',
             'history'                  => 'SonataAdminBundle:CRUD:history.html.twig',
             'history_revision'         => 'SonataAdminBundle:CRUD:history_revision.html.twig',
+            'acl'                      => 'SonataAdminBundle:CRUD:acl.html.twig',
             'action'                   => 'SonataAdminBundle:CRUD:action.html.twig',
             'short_object_description' => 'SonataAdminBundle:Helper:short-object-description.html.twig',
             'preview'                  => 'SonataAdminBundle:CRUD:preview.html.twig',

@@ -67,6 +67,12 @@ class SonataAdminExtension extends Extension
         $container->setParameter('sonata.admin.configuration.dashboard_groups', $config['dashboard']['groups']);
         $container->setParameter('sonata.admin.configuration.dashboard_blocks', $config['dashboard']['blocks']);
 
+        if (null === $config['security']['acl_user_manager'] && isset($bundles['FOSUserBundle'])) {
+            $container->setParameter('sonata.admin.security.acl_user_manager', 'fos_user.user_manager');
+        } else {
+            $container->setParameter('sonata.admin.security.acl_user_manager', $config['security']['acl_user_manager']);
+        }
+
         $container->setAlias('sonata.admin.security.handler', $config['security']['handler']);
 
         switch ($config['security']['handler']) {
