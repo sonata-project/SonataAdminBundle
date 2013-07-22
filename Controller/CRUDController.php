@@ -725,6 +725,18 @@ class CRUDController extends Controller
     }
 
     /**
+     * Gets ACL users
+     * 
+     * @return array
+     */
+    protected function getAclUsers() {
+        $userManager = $this->get('fos_user.user_manager');
+        $users = $userManager->findUsers();
+        
+        return $users;
+    }
+
+    /**
      * return the Response object associated to the acl action
      *
      * @param null $id
@@ -783,11 +795,8 @@ class CRUDController extends Controller
             $acl = $securityHandler->createAcl($objectIdentity);
         }
 
-        // Find all users
-        $userManager = $userManager = $this->get('fos_user.user_manager');
-        // TODO: ability fo filter users
-        $users = $userManager->findUsers();
-
+        $users = $this->getAclUsers();
+        
         // Create a form to set ACL
         $formBuilder = $this->createFormBuilder();
         foreach ($users as $user) {
