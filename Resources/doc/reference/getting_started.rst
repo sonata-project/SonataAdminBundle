@@ -52,9 +52,7 @@ bundle:
 * SonataDoctrineORMAdminBundle
 * SonataDoctrineMongoDBAdminBundle
 * SonataDoctrinePhpcrAdminBundle
-
-Propel users are warmly welcome to contribute and create a new bundle for Propel
-ORM that will be integrated in SonataAdminBundle.
+* SonataPropelAdminBundle
 
 Install a persistency service you need and configure it according to their
 related documentation.
