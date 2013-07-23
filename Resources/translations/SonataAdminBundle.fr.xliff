@@ -346,6 +346,10 @@
               <source>list_select</source>
               <target>Sélectionner</target>
             </trans-unit>
+            <trans-unit id="confirm_exit">
+                <source>confirm_exit</source>
+                <target>Vous avez effectué des modifications non sauvegardées.</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

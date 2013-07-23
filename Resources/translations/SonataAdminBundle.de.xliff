@@ -346,6 +346,10 @@
               <source>list_select</source>
               <target>list_select</target>
             </trans-unit>
+            <trans-unit id="confirm_exit">
+                <source>confirm_exit</source>
+                <target>You have unsaved changes.</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
