@@ -21,6 +21,7 @@ use Sonata\AdminBundle\Exception\ModelManagerException;
 use Symfony\Component\HttpFoundation\Request;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Admin\BaseFieldDescription;
+use Sonata\AdminBundle\Util\AdminObjectAclData;
 
 class CRUDController extends Controller
 {
@@ -767,20 +768,21 @@ class CRUDController extends Controller
         $aclUsers = $this->getAclUsers();
         
         $adminObjectAclManipulator = $this->get('sonata.admin.object.manipulator.acl.admin');
-        $adminObjectAclManipulator
-            ->setAdmin($this->admin)
-            ->setObject($object)
-            ->setAclUsers($aclUsers)
-        ;
+        $adminObjectAclData = new AdminObjectAclData(
+            $this->admin,
+            $object,
+            $aclUsers,
+            $adminObjectAclManipulator->getMaskBuilderClass()
+        );
         
-        $form = $adminObjectAclManipulator->createForm();
+        $form = $adminObjectAclManipulator->createForm($adminObjectAclData);
 
         $request = $this->getRequest();
         if ($request->getMethod() === 'POST') {
             $form->bind($request);
 
             if ($form->isValid()) {
-                $adminObjectAclManipulator->updateAcl();
+                $adminObjectAclManipulator->updateAcl($adminObjectAclData);
 
                 $this->addFlash('sonata_flash_success', 'flash_acl_edit_success');
 
@@ -790,7 +792,7 @@ class CRUDController extends Controller
 
         return $this->render($this->admin->getTemplate('acl'), array(
             'action' => 'acl',
-            'permissions' => $adminObjectAclManipulator->getUserPermissions(),
+            'permissions' => $adminObjectAclData->getUserPermissions(),
             'object' => $object,
             'users' => $aclUsers,
             'form' => $form->createView()
