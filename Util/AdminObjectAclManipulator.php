@@ -165,6 +165,9 @@ class AdminObjectAclManipulator
         return $this->form;
     }
 
+    /**
+     * Updates ACL
+     */
     public function updateAcl()
     {
         foreach ($this->aclUsers as $aclUser) {
