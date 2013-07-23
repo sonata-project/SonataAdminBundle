@@ -60,6 +60,7 @@ file that was distributed with this source code.
 
                 jQuery.ajax({
                     url: jQuery(this).attr('href'),
+                    dataType: 'html',
                     success: function(data) {
                         jQuery('#revision-detail').html(data);
                     }
