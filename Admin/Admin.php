@@ -2621,9 +2621,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * Returns true if this admin uses ACL
-     *
-     * @return boolean
+     * {@inheritdoc}
      */
     public function isAclEnabled()
     {
