@@ -3,7 +3,7 @@
 /*
  * This file is part of the Sonata project.
  *
- * (c) Kévin Dunglas / La Coopérative des Tilleuls <kevin@les-tilleuls.coop>
+ * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -171,44 +171,44 @@ class AdminObjectAclManipulator
     public function updateAcl()
     {
         foreach ($this->aclUsers as $aclUser) {
-                    $securityIdentity = UserSecurityIdentity::fromAccount($aclUser);
+            $securityIdentity = UserSecurityIdentity::fromAccount($aclUser);
 
-                    $maskBuilder = new $this->maskBuilderClass();
-                    foreach ($this->getUserPermissions() as $permission) {
-                        if ($this->form->get($aclUser->getId() . $permission)->getData()) {
-                            $maskBuilder->add($permission);
-                        }
-                    }
+            $maskBuilder = new $this->maskBuilderClass();
+            foreach ($this->getUserPermissions() as $permission) {
+                if ($this->form->get($aclUser->getId() . $permission)->getData()) {
+                    $maskBuilder->add($permission);
+                }
+            }
 
-                    // Restore OWNER and MASTER permissions
-                    if (!$this->isOwner()) {
-                        foreach ($this->ownerPermissions as $permission) {
-                            if ($this->acl->isGranted(array($this->masks[$permission]), array($securityIdentity))) {
-                                $maskBuilder->add($permission);
-                            }
-                        }
-                    }
-
-                    $mask = $maskBuilder->get();
-
-                    $index = null;
-                    $ace = null;
-                    foreach ($this->acl->getObjectAces() as $currentIndex => $currentAce) {
-                        if ($currentAce->getSecurityIdentity()->equals($securityIdentity)) {
-                            $index = $currentIndex;
-                            $ace = $currentAce;
-                            break;
-                        }
-                    }
-
-                    if ($ace) {
-                        $this->acl->updateObjectAce($index, $mask);
-                    } else {
-                        $this->acl->insertObjectAce($securityIdentity, $mask);
+            // Restore OWNER and MASTER permissions
+            if (!$this->isOwner()) {
+                foreach ($this->ownerPermissions as $permission) {
+                    if ($this->acl->isGranted(array($this->masks[$permission]), array($securityIdentity))) {
+                        $maskBuilder->add($permission);
                     }
                 }
+            }
 
-                $this->getSecurityHandler()->updateAcl($this->acl);
+            $mask = $maskBuilder->get();
+
+            $index = null;
+            $ace = null;
+            foreach ($this->acl->getObjectAces() as $currentIndex => $currentAce) {
+                if ($currentAce->getSecurityIdentity()->equals($securityIdentity)) {
+                    $index = $currentIndex;
+                    $ace = $currentAce;
+                    break;
+                }
+            }
+
+            if ($ace) {
+                $this->acl->updateObjectAce($index, $mask);
+            } else {
+                $this->acl->insertObjectAce($securityIdentity, $mask);
+            }
+        }
+
+        $this->getSecurityHandler()->updateAcl($this->acl);
     }
 
     /**

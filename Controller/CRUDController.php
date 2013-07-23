@@ -768,9 +768,9 @@ class CRUDController extends Controller
         
         $adminObjectAclManipulator = $this->get('sonata.admin.object.manipulator.acl.admin');
         $adminObjectAclManipulator
-                ->setAdmin($this->admin)
-                ->setObject($object)
-                ->setAclUsers($aclUsers)
+            ->setAdmin($this->admin)
+            ->setObject($object)
+            ->setAclUsers($aclUsers)
         ;
         
         $form = $adminObjectAclManipulator->createForm();
@@ -789,11 +789,11 @@ class CRUDController extends Controller
         }
 
         return $this->render($this->admin->getTemplate('acl'), array(
-                    'action' => 'acl',
-                    'permissions' => $adminObjectAclManipulator->getUserPermissions(),
-                    'object' => $object,
-                    'users' => $aclUsers,
-                    'form' => $form->createView()
+            'action' => 'acl',
+            'permissions' => $adminObjectAclManipulator->getUserPermissions(),
+            'object' => $object,
+            'users' => $aclUsers,
+            'form' => $form->createView()
         ));
     }
 
