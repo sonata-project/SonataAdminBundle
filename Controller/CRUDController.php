@@ -729,11 +729,16 @@ class CRUDController extends Controller
      * 
      * @return array
      */
-    protected function getAclUsers() {
-        $userManager = $this->get('fos_user.user_manager');
-        $users = $userManager->findUsers();
-        
-        return $users;
+    protected function getAclUsers()
+    {
+        if ($this->has('fos_user.user_manager')) {
+            $userManager = $this->get('fos_user.user_manager');
+            $users = $userManager->findUsers();
+
+            return $users;
+        } else {
+            return array();
+        }
     }
 
     /**
