@@ -27,6 +27,7 @@ Full Configuration Options
         title_logo: bundles/sonataadmin/logo_title.png
         options:
             html5_validate: false # does not use html5 validation
+            confirm_exit:   false # disable confirmation when quitting with unsaved changes
             
         templates:
             # default global templates

@@ -74,6 +74,7 @@ class Configuration implements ConfigurationInterface
                     ->addDefaultsIfNotSet()
                     ->children()
                         ->scalarNode('html5_validate')->defaultValue(true)->end()
+                        ->scalarNode('confirm_exit')->defaultValue(true)->end()
                     ->end()
                 ->end()
                 ->arrayNode('dashboard')

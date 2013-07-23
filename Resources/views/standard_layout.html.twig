@@ -38,7 +38,10 @@ file that was distributed with this source code.
 
         {% block javascripts %}
             <script type="text/javascript">
-                window.TRANSLATIONS = {
+                window.SONATA_CONFIG = {
+                    CONFIRM_EXIT: {% if admin_pool.getOption('confirm_exit') %}true{% else %}false{% endif %}
+                };
+                window.SONATA_TRANSLATIONS = {
                     CONFIRM_EXIT:  '{{ 'confirm_exit'|trans({}, 'SonataAdminBundle')|escape('js') }}'
                };
             </script>
@@ -49,7 +52,7 @@ file that was distributed with this source code.
             <script src="{{ asset('bundles/sonataadmin/bootstrap/js/bootstrap.min.js') }}" type="text/javascript"></script>
 
             <script src="{{ asset('bundles/sonataadmin/jquery/jquery.form.js') }}" type="text/javascript"></script>
-            <script src="{{ asset('bundles/sonataadmin/jquery/jquery.confirmExit.js') }}" type="text/javascript"></script>
+            {% if admin_pool.getOption('confirm_exit') %}<script src="{{ asset('bundles/sonataadmin/jquery/jquery.confirmExit.js') }}" type="text/javascript"></script>{% endif %}
             <script src="{{ asset('bundles/sonataadmin/base.js') }}" type="text/javascript"></script>
         {% endblock %}
 

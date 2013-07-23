@@ -1,6 +1,8 @@
 jQuery(document).ready(function() {
     jQuery('html').removeClass('no-js');
-    jQuery('.sonata-ba-form form').confirmExit(window.TRANSLATIONS.CONFIRM_EXIT);
+    if (window.SONATA_CONFIG.CONFIRM_EXIT) {
+        jQuery('.sonata-ba-form form').confirmExit(window.SONATA_TRANSLATIONS.CONFIRM_EXIT);
+    }
     Admin.add_pretty_errors(document);
     Admin.add_filters(document);
     Admin.set_object_field_value(document);
