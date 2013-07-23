@@ -346,6 +346,10 @@
               <source>list_select</source>
               <target>Seleziona</target>
             </trans-unit>
+            <trans-unit id="confirm_exit">
+                <source>confirm_exit</source>
+                <target>confirm_exit</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
