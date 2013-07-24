@@ -43,8 +43,6 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     public function __construct($maxPerPage = 10)
     {
         $this->setMaxPerPage($maxPerPage);
-        $this->setTemplate('results', 'SonataAdminBundle:Pager:results.html.twig');
-        $this->setTemplate('pages', 'SonataAdminBundle:Pager:pages.html.twig');
     }
 
     /**

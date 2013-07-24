@@ -125,9 +125,9 @@ file that was distributed with this source code.
                         </th>
                     </tr>
 
-                    {% block pager_pages %}
+                    {% block pager_links %}
                         {% if admin.datagrid.pager.haveToPaginate() %}
-                            {% include admin.datagrid.pager.getTemplate('pages') %}
+                            {% include admin.datagrid.pager.getTemplate('links') %}
                         {% endif %}
                     {% endblock %}
 
