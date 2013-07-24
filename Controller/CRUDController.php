@@ -21,6 +21,7 @@ use Sonata\AdminBundle\Exception\ModelManagerException;
 use Symfony\Component\HttpFoundation\Request;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Admin\BaseFieldDescription;
+use Sonata\AdminBundle\Util\AdminObjectAclData;
 
 class CRUDController extends Controller
 {
@@ -718,6 +719,84 @@ class CRUDController extends Controller
         );
 
         return $this->get('sonata.admin.exporter')->getResponse($format, $filename, $this->admin->getDataSourceIterator());
+    }
+
+    /**
+     * Gets ACL users
+     * 
+     * @return array
+     */
+    protected function getAclUsers()
+    {
+        if ($this->has('fos_user.user_manager')) {
+            $userManager = $this->get('fos_user.user_manager');
+            $users = $userManager->findUsers();
+
+            return $users;
+        } else {
+            return array();
+        }
+    }
+
+    /**
+     * return the Response object associated to the acl action
+     *
+     * @param null $id
+     *
+     * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     *
+     * @return Response
+     */
+    public function aclAction($id = null)
+    {
+        if (!$this->admin->isAclEnabled()) {
+            throw new NotFoundHttpException('ACL are not enabled for this admin');
+        }
+
+        $object = $this->admin->getObject($id);
+
+        if (!$object) {
+            throw new NotFoundHttpException(sprintf('unable to find the object with id : %s', $id));
+        }
+
+        if (false === $this->admin->isGranted('MASTER', $object)) {
+            throw new AccessDeniedException();
+        }
+
+        $this->admin->setSubject($object);
+        $aclUsers = $this->getAclUsers();
+        
+        $adminObjectAclManipulator = $this->get('sonata.admin.object.manipulator.acl.admin');
+        $adminObjectAclData = new AdminObjectAclData(
+            $this->admin,
+            $object,
+            $aclUsers,
+            $adminObjectAclManipulator->getMaskBuilderClass()
+        );
+        
+        $form = $adminObjectAclManipulator->createForm($adminObjectAclData);
+
+        $request = $this->getRequest();
+        if ($request->getMethod() === 'POST') {
+            $form->bind($request);
+
+            if ($form->isValid()) {
+                $adminObjectAclManipulator->updateAcl($adminObjectAclData);
+
+                $this->addFlash('sonata_flash_success', 'flash_acl_edit_success');
+
+                return new RedirectResponse($this->admin->generateObjectUrl('acl', $object));
+            }
+        }
+
+        return $this->render($this->admin->getTemplate('acl'), array(
+            'action' => 'acl',
+            'permissions' => $adminObjectAclData->getUserPermissions(),
+            'object' => $object,
+            'users' => $aclUsers,
+            'form' => $form->createView()
+        ));
     }
 
     /**
