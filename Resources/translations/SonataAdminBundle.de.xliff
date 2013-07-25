@@ -344,11 +344,11 @@
             </trans-unit>
             <trans-unit id="list_select">
               <source>list_select</source>
-              <target>list_select</target>
+              <target>Auswählen</target>
             </trans-unit>
             <trans-unit id="confirm_exit">
                 <source>confirm_exit</source>
-                <target>You have unsaved changes.</target>
+                <target>Es gibt ungespeicherte Änderungen.</target>
             </trans-unit>
         </body>
     </file>
