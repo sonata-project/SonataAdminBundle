@@ -612,3 +612,63 @@ In the templates, or in your code, you can use the Admin method ``isGranted()`` 
 
         {# or use the default is_granted symfony helper, the following will give the same result #}
         {% if is_granted('ROLE_SUPER_ADMIN') or is_granted('DELETE', object) %} {# ... #} {% endif %}
+
+ACL editor
+----------
+
+SonataAdminBundle provides a user-friendly ACL editor
+interface.
+It will be automatically available if the ``sonata.admin.security.handler.acl``
+security handler is used and properly configured.
+
+The ACL editor is only available for users with `OWNER` or `MASTER` permissions
+on the object instance.
+The `OWNER` and `MASTER` permissions can only be edited by an user with the
+`OWNER` permission on the object instance.
+
+.. figure:: ./images/acl_editor.png
+   :align: center
+   :alt: The ACL editor
+   :width: 700px
+
+User list customization
+~~~~~~~~~~~~~~~~~~~~~~~
+
+By default, the ACL editor allows to set permissions for all users managed by
+``FOSUserBundle``.
+
+To cutomize displayed user override
+`Sonata\AdminBundle\Controller\CRUDController::getAclUsers()`. This method must
+return an iterable collection of users.
+
+    .. code-block:: php
+
+        /**
+         * {@InheritDoc}
+         */
+        protected function getAclUsers()
+        {
+            $userManager = $container->get('fos_user.user_manager');
+
+            // Display only kevin and anne
+            $kevin = $userManager->findUserByUsername('kevin');
+            $anne = $userManager->findUserByUsername('anne');
+
+            return array($kevin, $anne);
+        }
+
+Custom user manager
+~~~~~~~~~~~~~~~~~~~
+
+If your project does not use `FOSUserBundle`, you can globally configure another
+service to use when retrieving your users.
+
+- Create a service with a method called `findUsers()` returning an iterable
+    collection of users
+- Update your admin configuration to reference your service name
+
+.. code-block:: yaml
+
+    sonata_admin:
+        security:
+            acl_user_manager: my_user_manager # The name of your service

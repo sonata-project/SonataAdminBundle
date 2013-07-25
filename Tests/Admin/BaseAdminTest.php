@@ -221,4 +221,15 @@ class BaseAdminTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals("", $admin->toString(false));
     }
+    
+    public function testIsAclEnabled()
+    {
+        $postAdmin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
+
+        $this->assertFalse($postAdmin->isAclEnabled());
+
+        $commentAdmin = new CommentAdmin('sonata.post.admin.comment', 'Application\Sonata\NewsBundle\Entity\Comment', 'SonataNewsBundle:CommentAdmin');
+        $commentAdmin->setSecurityHandler($this->getMock('Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface'));
+        $this->assertTrue($commentAdmin->isAclEnabled());
+    }
 }

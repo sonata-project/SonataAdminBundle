@@ -595,4 +595,11 @@ interface AdminInterface
      * @return void
      */
     public function addFormFieldDescription($name, FieldDescriptionInterface $fieldDescription);
+    
+    /**
+     * Returns true if this admin uses ACL
+     *
+     * @return boolean
+     */
+    public function isAclEnabled();
 }
