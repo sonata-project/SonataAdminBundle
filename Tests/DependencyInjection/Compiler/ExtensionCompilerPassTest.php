@@ -287,6 +287,9 @@ class ExtensionCompilerPassTest extends \PHPUnit_Framework_TestCase
         $container
             ->register('router')
             ->setClass('Symfony\Component\Routing\RouterInterface');
+        $container
+            ->register('form.factory')
+            ->setClass('Symfony\Component\Form\FormFactoryInterface');
 
         // Add admin definition's
         $container

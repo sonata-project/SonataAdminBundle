@@ -45,6 +45,10 @@ class QueryStringBuilder implements RouteBuilderInterface
             $collection->add('history_view_revision', '/audit-history-view');
         }
 
+        if ($admin->isAclEnabled()) {
+            $collection->add('acl', $admin->getRouterIdParameter().'/acl');
+        }
+
         // an admin can have only one level of nested child
         if ($admin->getParent()) {
             return;

@@ -69,3 +69,8 @@ Overview
    :width: 700px
 
    The modal model edition
+
+.. figure:: ./images/acl_editor.png
+   :align: center
+   :alt: The ACL editor
+   :width: 700px
