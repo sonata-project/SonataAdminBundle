@@ -626,7 +626,7 @@ on the object instance.
 The `OWNER` and `MASTER` permissions can only be edited by an user with the
 `OWNER` permission on the object instance.
 
-.. figure:: ./images/acl_editor.png
+.. figure:: ../images/acl_editor.png
    :align: center
    :alt: The ACL editor
    :width: 700px
