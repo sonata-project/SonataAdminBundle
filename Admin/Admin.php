@@ -2160,8 +2160,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     *
-     * @return boolean true if the request object is linked to the Admin
+     * {@inheritdoc}
      */
     public function hasRequest()
     {
