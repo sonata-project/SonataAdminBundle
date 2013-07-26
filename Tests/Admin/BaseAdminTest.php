@@ -22,6 +22,15 @@ class FooTest_Admin
     }
 }
 
+class FooTestNullToString_Admin
+{
+    // In case __toString returns an attribute not yet set
+    public function __toString()
+    {
+        return null;
+    }
+}
+
 class PostAdmin extends Admin
 {
     protected $metadataClass = null;
@@ -218,6 +227,10 @@ class BaseAdminTest extends \PHPUnit_Framework_TestCase
 
         $s = new FooTest_Admin;
         $this->assertEquals('salut', $admin->toString($s));
+        
+        // To string method is implemented, but returns null
+        $s = new FooTestNullToString_Admin;
+        $this->assertNotEmpty($admin->toString($s));
 
         $this->assertEquals("", $admin->toString(false));
     }
