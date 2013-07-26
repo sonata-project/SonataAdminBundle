@@ -70,4 +70,10 @@ abstract class AdminExtension implements AdminExtensionInterface
      */
     public function configureQuery(AdminInterface $admin, ProxyQueryInterface $query, $context = 'list')
     {}
+
+    /**
+     * {@inheritdoc}
+     */
+    public function alterNewInstance(AdminInterface $admin, $object)
+    {}
 }
