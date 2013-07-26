@@ -2543,7 +2543,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
             return '';
         }
 
-        if (method_exists($object, '__toString')) {
+        if (method_exists($object, '__toString') && null !== $object->__toString()) {
             return (string) $object;
         }
 
