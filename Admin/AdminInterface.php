@@ -138,8 +138,16 @@ interface AdminInterface
 
     /**
      * @return \Symfony\Component\HttpFoundation\Request
+     *
+     * @throws \RuntimeException if no request is set.
      */
     public function getRequest();
+
+    /**
+     * @return boolean true if a request object is linked to this Admin, false
+     *      otherwise.
+     */
+    public function hasRequest();
 
     /**
      *
