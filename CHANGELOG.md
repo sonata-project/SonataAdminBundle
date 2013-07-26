@@ -1,6 +1,15 @@
 CHANGELOG
 =========
 
+### 2013-07-26
+
+* [BC BREAK] added alterNewInstance to AdminExtensionInterface
+  If you do not extend the AdminExtension, you need to add an empty method to
+  your extension classes:
+
+      public function alterNewInstance(AdminInterface $admin, $object)
+      {}
+
 ### 2013-07-05
 
 *  Remove qTip
