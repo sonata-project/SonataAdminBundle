@@ -1187,7 +1187,12 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      */
     public function getNewInstance()
     {
-        return $this->getModelManager()->getModelInstance($this->getActiveSubClass() ?: $this->getClass());
+        $object = $this->getModelManager()->getModelInstance($this->getActiveSubClass() ?: $this->getClass());
+        foreach($this->getExtensions() as $extension) {
+            $extension->alterNewInstance($this, $object);
+        }
+
+        return $object;
     }
 
     /**

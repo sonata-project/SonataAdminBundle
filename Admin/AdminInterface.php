@@ -310,7 +310,7 @@ interface AdminInterface
     /**
      * Returns an array of extension related to the current Admin
      *
-     * @return void
+     * @return AdminExtensionInterface[]
      */
     public function getExtensions();
 
@@ -595,7 +595,7 @@ interface AdminInterface
      * @return void
      */
     public function addFormFieldDescription($name, FieldDescriptionInterface $fieldDescription);
-    
+
     /**
      * Returns true if this admin uses ACL
      *
