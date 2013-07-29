@@ -32,6 +32,10 @@ By default, an Admin class uses a set of templates, it is possible to tweak the 
             # default values of block templates, they should extend the base_block template
             list_block: SonataAdminBundle:Block:block_admin_list.html.twig
 
+            # default values of pager templates
+            pager_links: SonataAdminBundle:Pager:links.html.twig
+            pager_results: SonataAdminBundle:Pager:results.html.twig
+
 
 Usage of each template :
 
@@ -47,10 +51,12 @@ Usage of each template :
 * short_object_description: used to represent the entity in one-to-one/many-to-one relations
 * delete: the template to use for the delete action
 * inner_list_row: the template to render a list row
+* pager_links: the template to render the first, previous, next and last page links
+* pager_results: the template to render the amount of pages, number of results and items per page
 
 The default values will be set only if the ``Admin::setTemplates`` is not called by the Container.
 
-You can easily extend the provided templates in your own and customize only the blocks you need to change:
+You can easily extend the provided templates in your own template and customize only the blocks you need to change:
 
 .. code-block:: jinja
 
