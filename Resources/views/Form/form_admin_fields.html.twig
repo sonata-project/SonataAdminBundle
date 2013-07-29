@@ -74,7 +74,7 @@ file that was distributed with this source code.
 
 {% block choice_widget %}
 {% spaceless %}
-    {% if expanded %}
+    {% if compound %}
         <ul {{ block('widget_container_attributes_choice_widget') }}>
         {% for child in form %}
             <li>
