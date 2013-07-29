@@ -28,6 +28,11 @@ class ImmutableArrayType extends AbstractType
                 $builder->add($infos);
             } else {
                 list($name, $type, $options) = $infos;
+
+                if (is_callable($options)) {
+                    $options = $options($builder, $options);
+                }
+
                 $builder->add($name, $type, $options);
             }
         }
