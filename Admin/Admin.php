@@ -774,8 +774,6 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         $this->datagrid = $this->getDatagridBuilder()->getBaseDatagrid($this, $filterParameters);
 
         $this->datagrid->getPager()->setMaxPageLinks($this->maxPageLinks);
-        $this->datagrid->getPager()->setTemplate('links', $this->getTemplate('pager_links'));
-        $this->datagrid->getPager()->setTemplate('results', $this->getTemplate('pager_results'));
 
         $mapper = new DatagridMapper($this->getDatagridBuilder(), $this->datagrid, $this);
 
@@ -2016,8 +2014,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
             $menu = $menu->addChild($this->toString($this->getSubject()));
         } elseif ($action != 'list') {
             $menu = $menu->addChild(
-//                $this->trans($this->getLabelTranslatorStrategy()->getLabel(sprintf('%s_%s', $this->getClassnameLabel(), $action), 'breadcrumb', 'link'))
-                  $this->toString($this->getSubject())
+                $this->trans($this->getLabelTranslatorStrategy()->getLabel(sprintf('%s_%s', $this->getClassnameLabel(), $action), 'breadcrumb', 'link'))
             );
         } else {
             $menu->getBreadcrumbsArray();

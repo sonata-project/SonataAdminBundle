@@ -117,7 +117,7 @@ file that was distributed with this source code.
                                         {% endif %}
 
                                         {% block pager_results %}
-                                            {% include admin.datagrid.pager.getTemplate('results') %}
+                                            {% include admin.getTemplate('pager_results') %}
                                         {% endblock %}
                                     </div>
                                 {% endif %}
@@ -127,7 +127,7 @@ file that was distributed with this source code.
 
                     {% block pager_links %}
                         {% if admin.datagrid.pager.haveToPaginate() %}
-                            {% include admin.datagrid.pager.getTemplate('links') %}
+                            {% include admin.getTemplate('pager_links') %}
                         {% endif %}
                     {% endblock %}
 
