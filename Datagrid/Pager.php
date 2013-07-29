@@ -27,7 +27,6 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     protected $currentMaxLink = 1;
     protected $maxRecordLimit = false;
     protected $maxPageLinks = 0;
-    protected $templates = array();
 
     // used by iterator interface
     protected $results = null;
@@ -384,49 +383,6 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     public function setMaxPageLinks($maxPageLinks)
     {
         $this->maxPageLinks = $maxPageLinks;
-    }
-
-    /**
-     * @param array $templates
-     *
-     * @return void
-     */
-    public function setTemplates(array $templates)
-    {
-        $this->templates = $templates;
-    }
-
-    /**
-     * @param string $name
-     * @param string $template
-     *
-     * @return void
-     */
-    public function setTemplate($name, $template)
-    {
-        $this->templates[$name] = $template;
-    }
-
-    /**
-     * @return array
-     */
-    public function getTemplates()
-    {
-        return $this->templates;
-    }
-
-    /**
-     * @param string $name
-     *
-     * @return null|string
-     */
-    public function getTemplate($name)
-    {
-        if (isset($this->templates[$name])) {
-            return $this->templates[$name];
-        }
-
-        return null;
     }
 
     /**
