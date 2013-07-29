@@ -1116,13 +1116,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * Generates the object url with the given $name
-     *
-     * @param string $name
-     * @param mixed  $object
-     * @param array  $parameters
-     *
-     * @return string return a complete url
+     * {@inheritdoc}
      */
     public function generateObjectUrl($name, $object, array $parameters = array(), $absolute = false)
     {

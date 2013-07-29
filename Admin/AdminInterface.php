@@ -99,11 +99,25 @@ interface AdminInterface
     public function getDatagrid();
 
     /**
+     * Generates the object url with the given $name
+     *
+     * @param string  $name
+     * @param mixed   $object
+     * @param array   $parameters
+     * @param boolean $absolute
+     *
+     * @return string return a complete url
+     */
+    public function generateObjectUrl($name, $object, array $parameters = array(), $absolute = false);
+
+    /**
+     * Generates an url for the given parameters
+     *
      * @param string $name
      * @param array  $parameters
      * @param bool   $absolute
      *
-     * @return string
+     * @return string return a complete url
      */
     public function generateUrl($name, array $parameters = array(), $absolute = false);
 
