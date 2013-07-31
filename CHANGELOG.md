@@ -20,6 +20,14 @@ CHANGELOG
           return null !== $this->request;
       }
 
+### 2013-07-23
+
+* [BC BREAK] changed route name/pattern guesser to be more acurate and
+  persistance layer agnostic, this might affect you if you use a namespace scheme
+  similar to the examples below:
+    * **Before** - admin for `Symfony\Cmf\Bundle\FoobarBundle\Document\Bar` generated base route name  `admin_bundle_foobar_bar` and base pattern `/cmf/bundle/bar`
+    * **After** - admin for `Symfony\Cmf\Bundle\FoobarBundle\Document\Bar` generates `admin_cmf_foobar_bar` and `/cmf/foobar/bar`
+
 ### 2013-07-05
 
 *  Remove qTip
