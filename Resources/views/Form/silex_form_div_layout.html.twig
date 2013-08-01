@@ -6,7 +6,10 @@
         <ul {{ block('widget_container_attributes') }} class="inputs-list">
         {% for child in form %}
             <li>
-                {{ form_label(child, null, { 'in_list_checkbox' : true, 'widget' : form_widget(child) } ) }}
+                {% set form_widget_content %}
+                    form_widget(child)
+                {% endset %}
+                {{ form_label(child, null, { 'in_list_checkbox' : true, 'widget' : form_widget_content } ) }}
             </li>
         {% endfor %}
         </ul>
