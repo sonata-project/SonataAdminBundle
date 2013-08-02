@@ -103,6 +103,10 @@ If you want to create your own RouteBuilder, you can do it using code like
             {
                 parent::build($admin,$collection);
                 $collection->add('yourSubAction');
+                // Create button will dissappear, delete functionality will be disabled as well
+                // No more changes needed!
+                $collection->remove('create');
+                $collection->remove('delete');
             }
         }
 
