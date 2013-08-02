@@ -79,7 +79,7 @@ file that was distributed with this source code.
         {% for child in form %}
             <li>
                 {% set form_widget_content %}
-                    form_widget(child)
+                    {{ form_widget(child) }}
                 {% endset %}
                 {{ form_label(child, child.vars.label|default(null), { 'in_list_checkbox' : true, 'widget' : form_widget_content } ) }}
             </li>
