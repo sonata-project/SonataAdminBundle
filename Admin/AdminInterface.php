@@ -116,10 +116,11 @@ interface AdminInterface
      * @param string $name
      * @param array  $parameters
      * @param bool   $absolute
+     * @param mixed  $admin
      *
      * @return string return a complete url
      */
-    public function generateUrl($name, array $parameters = array(), $absolute = false);
+    public function generateUrl($name, array $parameters = array(), $absolute = false, $admin = false);
 
     /**
      * @return \Sonata\AdminBundle\Model\ModelManagerInterface;

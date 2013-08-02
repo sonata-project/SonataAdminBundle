@@ -1124,15 +1124,22 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     {
         $parameters['id'] = $this->getUrlsafeIdentifier($object);
 
-        return $this->generateUrl($name, $parameters, $absolute);
+        $pool = $this->getConfigurationPool();
+        $admin = $pool->getAdminByClass(get_class($object));
+
+        return $this->generateUrl($name, $parameters, $absolute, $admin);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function generateUrl($name, array $parameters = array(), $absolute = false)
+    public function generateUrl($name, array $parameters = array(), $absolute = false, $admin = false)
     {
-        return $this->routeGenerator->generateUrl($this, $name, $parameters, $absolute);
+        if (!$admin) {
+            $admin = $this;
+        }
+
+        return $this->routeGenerator->generateUrl($admin, $name, $parameters, $absolute);
     }
 
     /**
