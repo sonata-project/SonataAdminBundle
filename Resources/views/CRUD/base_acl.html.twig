@@ -13,7 +13,6 @@ file that was distributed with this source code.
 
 {% block actions %}
     <div class="sonata-actions btn-group">
-        <div class="sonata-actions btn-group">
         {% include 'SonataAdminBundle:Button:edit_button.html.twig' %}
         {% include 'SonataAdminBundle:Button:history_button.html.twig' %}
         {% include 'SonataAdminBundle:Button:show_button.html.twig' %}
@@ -32,7 +31,7 @@ file that was distributed with this source code.
                 {{ form_errors(form) }}
             </div>
         {% endif %}
-        
+
         <table class="table">
             <thead>
                 <tr>
@@ -53,7 +52,7 @@ file that was distributed with this source code.
             {% endfor %}
             </tbody>
         </table>
-        
+
         {{ form_rest(form) }}
 
         {% block formactions %}
