@@ -191,7 +191,7 @@ class Configuration implements ConfigurationInterface
                     ->end()
                 ->end()
 
-                ->scalarNode('persist_filters')->defaultValue(false)->cannotBeEmpty()->end()
+                ->scalarNode('persist_filters')->defaultValue(false)->end()
 
             ->end()
         ->end();
