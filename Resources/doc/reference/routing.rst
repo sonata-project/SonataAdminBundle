@@ -28,7 +28,22 @@ in the following format: 'admin_vendor_bundlename_entityname_action'. If the
 Admin fails to find the best baseRouteName then a ``RuntimeException`` will
 be thrown.
 
-The same goes for the ``baseRoutePattern``.
+You can also use ``baseRoutePattern`` to set a custom URL for a given ``Admin`` class.
+
+For example, to use ``http://yourdomain.com/admin/foo`` as the base URL for 
+the ``FooAdmin`` class (instead of the default of ``http://yourdomain.com/admin/vendor/bundle/foo``)
+use the following code:
+
+.. code-block:: php
+
+    <?php
+    class FooAdmin extends Admin
+    {
+        protected $baseRouteName = 'foo';
+    }
+
+You will then have route URLs like ``http://yourdomain.com/admin/foo/list`` and 
+``http://yourdomain.com/admin/foo/1/edit``
 
 Routing usage
 -------------
@@ -116,6 +131,26 @@ If you want to remove all default routes, you can use ``clear()`` method.
             $collection->clear();
         }
     }
+
+To prevent some routes from being available when one Admin is embedded inside another one
+(e.g. to remove the "add new" option when you embed ``TagAdmin`` within ``PostAdmin``) you 
+can use ``hasParentFieldDescription()`` to detect this case and remove the routes.
+
+.. code-block:: php
+
+    <?php
+    use Sonata\AdminBundle\Route\RouteCollection;
+
+    class TagAdmin extends Admin
+    {
+        protected function configureRoutes(RouteCollection $collection)
+        {
+            if($this->hasParentFieldDescription()) { // prevent display of "Add new" when embedding this form
+                $collection->remove('create');
+            }
+        }
+    }
+
 
 Persistent parameters
 ---------------------
