@@ -34,32 +34,30 @@ var Admin = {
      */
     add_pretty_errors: function(subject) {
         jQuery('div.sonata-ba-field-error', subject).each(function(index, element) {
-            var input = jQuery('input, textarea, select', element);
+            var input = jQuery(':input', element);
 
-            var message = jQuery('div.sonata-ba-field-error-messages', element).html();
-            jQuery('div.sonata-ba-field-error-messages', element).html('');
-            if (!message) {
-                message = '';
-            }
-
-            if (message.length == 0) {
+            if (!input.length) {
                 return;
             }
 
-            var target;
+            var message = jQuery('div.sonata-ba-field-error-messages', element).html();
+            jQuery('div.sonata-ba-field-error-messages', element).html('');
 
-            /* Hack to handle qTip on select */
-            if(jQuery(input).is('select')) {
-                input.wrap('<span></span>');
-                target = input.parent();
+            if (!message || message.length == 0) {
+                return;
             }
-            else {
-                target = input;
+
+            var target = input,
+                fieldShortDescription = input.closest('.field-container').find('.field-short-description')
+            ;
+
+            if (fieldShortDescription.length) {
+                target = fieldShortDescription;
             }
 
             target.popover({
                 content: message,
-                trigger:'focus',
+                trigger: 'hover',
                 html: true,
                 placement: 'right',
                 template: '<div class="popover"><div class="arrow"></div><div class="popover-inner"><div class="popover-content alert-error"><p></p></div></div></div>'
