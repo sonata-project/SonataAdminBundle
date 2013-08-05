@@ -48,4 +48,60 @@ class Validators
 
         return array(substr($entity, 0, $pos), substr($entity, $pos + 1));
     }
+
+    /**
+     * @static
+     *
+     * @param string $controllerClassName
+     *
+     * @return string
+     * @throws \InvalidArgumentException
+     */
+    public static function validateControllerClassName($controllerClassName)
+    {
+        $controllerClassName = str_replace('/', '\\', $controllerClassName);
+
+        if (false !== strpos($controllerClassName, ':')) {
+            throw new \InvalidArgumentException(sprintf('The controller class name must not contain a : ("%s" given, expecting something like PostAdminController")', $controllerClassName));
+        }
+
+        if (substr($controllerClassName, -10) != 'Controller') {
+            throw new \InvalidArgumentException('The controller class name must end with Controller.');
+        }
+
+        return $controllerClassName;
+    }
+
+    /**
+     * @static
+     *
+     * @param string $servicesFile
+     *
+     * @return string
+     */
+    public static function validateServicesFile($servicesFile)
+    {
+        return trim($servicesFile, '/');
+    }
+
+    /**
+     * @static
+     *
+     * @param string $serviceId
+     *
+     * @return string
+     * @throws \InvalidArgumentException
+     */
+    public static function validateServiceId($serviceId)
+    {
+        if (preg_match('/[^A-z\._0-9]/', $serviceId, $matches)) {
+            throw new \InvalidArgumentException(sprintf(
+                'Service ID "%s" contains invalid character "%s".',
+                $serviceId,
+                $matches[0]
+            ));
+        }
+
+        return $serviceId;
+    }
 }
