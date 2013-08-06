@@ -7,7 +7,7 @@
         {% for child in form %}
             <li>
                 {% set form_widget_content %}
-                    form_widget(child)
+                    {{ form_widget(child) }}
                 {% endset %}
                 {{ form_label(child, null, { 'in_list_checkbox' : true, 'widget' : form_widget_content } ) }}
             </li>
