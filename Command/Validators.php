@@ -48,4 +48,98 @@ class Validators
 
         return array(substr($entity, 0, $pos), substr($entity, $pos + 1));
     }
+
+    /**
+     * @static
+     *
+     * @param string $class
+     *
+     * @return string
+     * @throws \InvalidArgumentException
+     */
+    public static function validateClass($class)
+    {
+        $class = str_replace('/', '\\', $class);
+
+        if (!class_exists($class)) {
+            throw new \InvalidArgumentException(sprintf('The class "%s" does not exist.', $class));
+        }
+
+        return $class;
+    }
+
+    /**
+     * @static
+     *
+     * @param string $adminClassBasename
+     *
+     * @return string
+     * @throws \InvalidArgumentException
+     */
+    public static function validateAdminClassBasename($adminClassBasename)
+    {
+        $adminClassBasename = str_replace('/', '\\', $adminClassBasename);
+
+        if (false !== strpos($adminClassBasename, ':')) {
+            throw new \InvalidArgumentException(sprintf('The admin class name must not contain a : ("%s" given, expecting something like PostAdmin")', $adminClassBasename));
+        }
+
+        return $adminClassBasename;
+    }
+
+    /**
+     * @static
+     *
+     * @param string $controllerClassBasename
+     *
+     * @return string
+     * @throws \InvalidArgumentException
+     */
+    public static function validateControllerClassBasename($controllerClassBasename)
+    {
+        $controllerClassBasename = str_replace('/', '\\', $controllerClassBasename);
+
+        if (false !== strpos($controllerClassBasename, ':')) {
+            throw new \InvalidArgumentException(sprintf('The controller class name must not contain a : ("%s" given, expecting something like PostAdminController")', $controllerClassBasename));
+        }
+
+        if (substr($controllerClassBasename, -10) != 'Controller') {
+            throw new \InvalidArgumentException('The controller class name must end with Controller.');
+        }
+
+        return $controllerClassBasename;
+    }
+
+    /**
+     * @static
+     *
+     * @param string $servicesFile
+     *
+     * @return string
+     */
+    public static function validateServicesFile($servicesFile)
+    {
+        return trim($servicesFile, '/');
+    }
+
+    /**
+     * @static
+     *
+     * @param string $serviceId
+     *
+     * @return string
+     * @throws \InvalidArgumentException
+     */
+    public static function validateServiceId($serviceId)
+    {
+        if (preg_match('/[^A-z\._0-9]/', $serviceId, $matches)) {
+            throw new \InvalidArgumentException(sprintf(
+                'Service ID "%s" contains invalid character "%s".',
+                $serviceId,
+                $matches[0]
+            ));
+        }
+
+        return $serviceId;
+    }
 }
