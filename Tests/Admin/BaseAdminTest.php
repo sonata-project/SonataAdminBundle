@@ -22,6 +22,15 @@ class FooTest_Admin
     }
 }
 
+class FooTestNullToString_Admin
+{
+    // In case __toString returns an attribute not yet set
+    public function __toString()
+    {
+        return null;
+    }
+}
+
 class PostAdmin extends Admin
 {
     protected $metadataClass = null;
@@ -132,10 +141,43 @@ class BaseAdminTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('Category', $admin->getParentAssociationMapping());
     }
 
-    public function testGetBaseRoutePattern()
+    public function provideGetBaseRoutePattern()
     {
-        $admin = new PostAdmin('sonata.post.admin.post', 'Application\Sonata\NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
-        $this->assertEquals('/sonata/news/post', $admin->getBaseRoutePattern());
+        return array(
+            array(
+                'Application\Sonata\NewsBundle\Entity\Post', 
+                '/sonata/news/post'
+            ),
+            array(
+                'Application\Sonata\NewsBundle\Document\Post', 
+                '/sonata/news/post'
+            ),
+            array(
+                'MyApplication\MyBundle\Entity\Post', 
+                '/myapplication/my/post'
+            ),
+            array(
+                'Symfony\Cmf\Bundle\FooBundle\Document\Menu', 
+                '/cmf/foo/menu'
+            ),
+            array(
+                'Symfony\Cmf\Bundle\FooBundle\Doctrine\Phpcr\Menu', 
+                '/cmf/foo/menu'
+            ),
+            array(
+                'Symfony\Bundle\BarBarBundle\Doctrine\Phpcr\Menu', 
+                '/symfony/barbar/menu'
+            ),
+        );
+    }
+
+    /**
+     * @dataProvider provideGetBaseRoutePattern
+     */
+    public function testGetBaseRoutePattern($objFqn, $expected)
+    {
+        $admin = new PostAdmin('sonata.post.admin.post', $objFqn, 'SonataNewsBundle:PostAdmin');
+        $this->assertEquals($expected, $admin->getBaseRoutePattern());
     }
 
     public function testGetBaseRoutePatternWithChildAdmin()
@@ -156,10 +198,44 @@ class BaseAdminTest extends \PHPUnit_Framework_TestCase
         $admin->getBaseRoutePattern();
     }
 
-    public function testGetBaseRouteName()
+    public function provideGetBaseRouteName()
     {
-        $admin = new PostAdmin('sonata.post.admin.post', 'Application\Sonata\NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
-        $this->assertEquals('admin_sonata_news_post', $admin->getBaseRouteName());
+        return array(
+            array(
+                'Application\Sonata\NewsBundle\Entity\Post', 
+                'admin_sonata_news_post'
+            ),
+            array(
+                'Application\Sonata\NewsBundle\Document\Post', 
+                'admin_sonata_news_post'
+            ),
+            array(
+                'MyApplication\MyBundle\Entity\Post', 
+                'admin_myapplication_my_post'
+            ),
+            array(
+                'Symfony\Cmf\Bundle\FooBundle\Document\Menu', 
+                'admin_cmf_foo_menu'
+            ),
+            array(
+                'Symfony\Cmf\Bundle\FooBundle\Doctrine\Phpcr\Menu', 
+                'admin_cmf_foo_menu'
+            ),
+            array(
+                'Symfony\Bundle\BarBarBundle\Doctrine\Phpcr\Menu', 
+                'admin_symfony_barbar_menu'
+            ),
+        );
+    }
+
+    /**
+     * @dataProvider provideGetBaseRouteName
+     */
+    public function testGetBaseRouteName($objFqn, $expected)
+    {
+        $admin = new PostAdmin('sonata.post.admin.post', $objFqn, 'SonataNewsBundle:PostAdmin');
+
+        $this->assertEquals($expected, $admin->getBaseRouteName());
     }
 
     public function testGetBaseRouteNameWithChildAdmin()
@@ -218,7 +294,22 @@ class BaseAdminTest extends \PHPUnit_Framework_TestCase
 
         $s = new FooTest_Admin;
         $this->assertEquals('salut', $admin->toString($s));
+        
+        // To string method is implemented, but returns null
+        $s = new FooTestNullToString_Admin;
+        $this->assertNotEmpty($admin->toString($s));
 
         $this->assertEquals("", $admin->toString(false));
+    }
+    
+    public function testIsAclEnabled()
+    {
+        $postAdmin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
+
+        $this->assertFalse($postAdmin->isAclEnabled());
+
+        $commentAdmin = new CommentAdmin('sonata.post.admin.comment', 'Application\Sonata\NewsBundle\Entity\Comment', 'SonataNewsBundle:CommentAdmin');
+        $commentAdmin->setSecurityHandler($this->getMock('Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface'));
+        $this->assertTrue($commentAdmin->isAclEnabled());
     }
 }

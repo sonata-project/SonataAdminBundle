@@ -65,6 +65,7 @@ class Configuration implements ConfigurationInterface
                             ->defaultValue(array('VIEW', 'EDIT', 'DELETE', 'UNDELETE', 'OPERATOR', 'MASTER', 'OWNER'))
                             ->prototype('scalar')->end()
                         ->end()
+                        ->scalarNode('acl_user_manager')->defaultValue(null)->end()
                     ->end()
                 ->end()
 
@@ -157,6 +158,8 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('batch_confirmation')->defaultValue('SonataAdminBundle:CRUD:batch_confirmation.html.twig')->cannotBeEmpty()->end()
                         ->scalarNode('inner_list_row')->defaultValue('SonataAdminBundle:CRUD:list_inner_row.html.twig')->cannotBeEmpty()->end()
                         ->scalarNode('base_list_field')->defaultValue('SonataAdminBundle:CRUD:base_list_field.html.twig')->cannotBeEmpty()->end()
+                        ->scalarNode('pager_links')->defaultValue('SonataAdminBundle:Pager:links.html.twig')->cannotBeEmpty()->end()
+                        ->scalarNode('pager_results')->defaultValue('SonataAdminBundle:Pager:results.html.twig')->cannotBeEmpty()->end()
                     ->end()
                 ->end()
 
@@ -188,7 +191,7 @@ class Configuration implements ConfigurationInterface
                     ->end()
                 ->end()
 
-                ->scalarNode('persist_filters')->defaultValue(false)->cannotBeEmpty()->end()
+                ->scalarNode('persist_filters')->defaultValue(false)->end()
 
             ->end()
         ->end();

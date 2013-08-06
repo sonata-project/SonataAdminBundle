@@ -91,4 +91,12 @@ interface AdminExtensionInterface
      * @return void
      */
     public function configureQuery(AdminInterface $admin, ProxyQueryInterface $query, $context = 'list');
+
+    /**
+     * Get a chance to modify a newly created instance.
+     *
+     * @param AdminInterface $admin
+     * @param mixed          $object
+     */
+    public function alterNewInstance(AdminInterface $admin, $object);
 }

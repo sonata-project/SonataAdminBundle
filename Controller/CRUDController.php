@@ -728,14 +728,16 @@ class CRUDController extends Controller
      */
     protected function getAclUsers()
     {
-        if ($this->has('fos_user.user_manager')) {
-            $userManager = $this->get('fos_user.user_manager');
-            $users = $userManager->findUsers();
+        $userManagerServiceName = $this->container->getParameter('sonata.admin.security.acl_user_manager');
+        if ($userManagerServiceName !== null && $this->has($userManagerServiceName)) {
+            $userManager = $this->get($userManagerServiceName);
 
-            return $users;
-        } else {
-            return array();
+            if (method_exists($userManager, 'findUsers')) {
+                return $userManager->findUsers();
+            }
         }
+        
+        return array();
     }
 
     /**

@@ -24,10 +24,13 @@ use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 class AdminObjectAclManipulator
 {
     /**
+<<<<<<< HEAD
      * @var array Permissions managed only by a OWNER
      */
     protected static $ownerPermissions = array('MASTER', 'OWNER');
     /**
+=======
+>>>>>>> upstream/master
      * @var \Symfony\Component\Form\FormFactoryInterface
      */
     protected $formFactory;

@@ -344,11 +344,27 @@
             </trans-unit>
             <trans-unit id="list_select">
               <source>list_select</source>
-              <target>list_select</target>
+              <target>Auswählen</target>
             </trans-unit>
             <trans-unit id="confirm_exit">
                 <source>confirm_exit</source>
-                <target>You have unsaved changes.</target>
+                <target>Es gibt ungespeicherte Änderungen.</target>
+            </trans-unit>
+            <trans-unit id="link_edit_acl">
+              <source>link_edit_acl</source>
+              <target>link_edit_acl</target>
+            </trans-unit>
+            <trans-unit id="btn_update_acl">
+              <source>btn_update_acl</source>
+              <target>btn_update_acl</target>
+            </trans-unit>
+            <trans-unit id="flash_acl_update_success">
+                <source>flash_acl_edit_success</source>
+                <target>flash_acl_update_success</target>
+            </trans-unit>
+            <trans-unit id="link_action_acl">
+                <source>link_action_acl</source>
+                <target>link_action_acl</target>
             </trans-unit>
         </body>
     </file>

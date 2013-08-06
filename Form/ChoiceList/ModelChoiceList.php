@@ -13,7 +13,7 @@ namespace Sonata\AdminBundle\Form\ChoiceList;
 
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyPath;
-use Symfony\Component\Form\Exception\FormException;
+use Symfony\Component\Form\Exception\InvalidArgumentException;
 use Symfony\Component\Form\Extension\Core\ChoiceList\SimpleChoiceList;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 
@@ -233,14 +233,18 @@ class ModelChoiceList extends SimpleChoiceList
      * be persisted or added to the identity map before. Otherwise an
      * exception is thrown.
      *
-     * @param  object        $entity The entity for which to get the identifier
-     * @throws FormException If the entity does not exist in Doctrine's
-     *                         identity map
+     * @param  object                   $entity The entity for which to get the identifier
+     * @throws InvalidArgumentException If the entity does not exist in Doctrine's
+     *                                  identity map
      * @return array
      */
     public function getIdentifierValues($entity)
     {
-        return $this->modelManager->getIdentifierValues($entity);
+        try {
+            return $this->modelManager->getIdentifierValues($entity);
+        } catch (\Exception $e) {
+            throw new InvalidArgumentException(sprintf("Unable to retrieve the identifier values for entity %s", get_class($entity)), 0, $e);
+        }
     }
 
     /**

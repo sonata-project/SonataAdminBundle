@@ -48,3 +48,7 @@ div.sonata-ba-field-error textarea{
 div.sonata-ba-field-error select{
     border: 1px solid #f79992;
 }
+
+div.sonata-ba-field-error .field-short-description {
+    border: 1px solid #B94A48;
+}

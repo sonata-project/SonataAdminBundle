@@ -74,11 +74,14 @@ file that was distributed with this source code.
 
 {% block choice_widget %}
 {% spaceless %}
-    {% if expanded %}
+    {% if compound %}
         <ul {{ block('widget_container_attributes_choice_widget') }}>
         {% for child in form %}
             <li>
-                {{ form_label(child, child.vars.label|default(null), { 'in_list_checkbox' : true, 'widget' : form_widget(child) } ) }}
+                {% set form_widget_content %}
+                    {{ form_widget(child) }}
+                {% endset %}
+                {{ form_label(child, child.vars.label|default(null), { 'in_list_checkbox' : true, 'widget' : form_widget_content } ) }}
             </li>
         {% endfor %}
         </ul>
@@ -174,16 +177,14 @@ file that was distributed with this source code.
 
 {% block sonata_type_immutable_array_widget %}
     {% spaceless %}
-        <div class="controls">
-            <div {{ block('widget_container_attributes') }}>
-                {{ form_errors(form) }}
+        <div {{ block('widget_container_attributes') }}>
+            {{ form_errors(form) }}
 
-                {% for key, child in form %}
-                    {{ block('sonata_type_immutable_array_widget_row') }}
-                {% endfor %}
+            {% for key, child in form %}
+                {{ block('sonata_type_immutable_array_widget_row') }}
+            {% endfor %}
 
-                {{ form_rest(form) }}
-            </div>
+            {{ form_rest(form) }}
         </div>
     {% endspaceless %}
 {% endblock sonata_type_immutable_array_widget %}

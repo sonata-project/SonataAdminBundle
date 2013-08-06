@@ -24,6 +24,10 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 class AdminObjectAclData
 {
     /**
+     * @var array Permissions managed only by a OWNER
+     */
+    protected static $ownerPermissions = array('MASTER', 'OWNER');
+    /**
      * @var \Sonata\AdminBundle\Admin\AdminInterface
      */
     protected $admin;
@@ -188,7 +192,7 @@ class AdminObjectAclData
         $permissions = $this->getPermissions();
 
         if (!$this->isOwner()) {
-            foreach ($this->ownerPermissions as $permission) {
+            foreach (self::$ownerPermissions as $permission) {
                 $key = array_search($permission, $permissions);
                 if ($key !== false) {
                     unset($permissions[$key]);

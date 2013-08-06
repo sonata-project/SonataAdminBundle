@@ -39,7 +39,6 @@ class ModelReferenceType extends AbstractType
             'compound'      => false,
             'model_manager' => null,
             'class'         => null,
-            'parent'        => 'text'
         ));
     }
 

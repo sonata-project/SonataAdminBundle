@@ -99,11 +99,25 @@ interface AdminInterface
     public function getDatagrid();
 
     /**
+     * Generates the object url with the given $name
+     *
+     * @param string  $name
+     * @param mixed   $object
+     * @param array   $parameters
+     * @param boolean $absolute
+     *
+     * @return string return a complete url
+     */
+    public function generateObjectUrl($name, $object, array $parameters = array(), $absolute = false);
+
+    /**
+     * Generates an url for the given parameters
+     *
      * @param string $name
      * @param array  $parameters
      * @param bool   $absolute
      *
-     * @return string
+     * @return string return a complete url
      */
     public function generateUrl($name, array $parameters = array(), $absolute = false);
 
@@ -138,8 +152,16 @@ interface AdminInterface
 
     /**
      * @return \Symfony\Component\HttpFoundation\Request
+     *
+     * @throws \RuntimeException if no request is set.
      */
     public function getRequest();
+
+    /**
+     * @return boolean true if a request object is linked to this Admin, false
+     *      otherwise.
+     */
+    public function hasRequest();
 
     /**
      *
@@ -310,7 +332,7 @@ interface AdminInterface
     /**
      * Returns an array of extension related to the current Admin
      *
-     * @return void
+     * @return AdminExtensionInterface[]
      */
     public function getExtensions();
 
@@ -595,7 +617,7 @@ interface AdminInterface
      * @return void
      */
     public function addFormFieldDescription($name, FieldDescriptionInterface $fieldDescription);
-    
+
     /**
      * Returns true if this admin uses ACL
      *
