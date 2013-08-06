@@ -41,7 +41,7 @@ var Admin = {
             }
 
             var message = jQuery('div.sonata-ba-field-error-messages', element).html();
-            jQuery('div.sonata-ba-field-error-messages', element).html('');
+            jQuery('div.sonata-ba-field-error-messages', element).remove();
 
             if (!message || message.length == 0) {
                 return;
