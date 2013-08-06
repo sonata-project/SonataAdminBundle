@@ -28,7 +28,7 @@ class ControllerGenerator extends Generator
     private $file;
 
     /**
-     * @param string $skeletonDirectory
+     * @param array|string $skeletonDirectories
      */
     public function __construct($skeletonDirectory)
     {
@@ -37,13 +37,17 @@ class ControllerGenerator extends Generator
 
     /**
      * @param BundleInterface $bundle
-     * @param string $controllerClassName
+     * @param string $controllerClassBasename
      * @throws \RuntimeException
      */
-    public function generate(BundleInterface $bundle, $controllerClassName)
+    public function generate(BundleInterface $bundle, $controllerClassBasename)
     {
-        $this->class = sprintf('%s\Controller\%s', $bundle->getNamespace(), $controllerClassName);
-        $this->file = sprintf('%s/Controller/%s.php', $bundle->getPath(), str_replace('\\', '/', $controllerClassName));
+        $this->class = sprintf('%s\Controller\%s', $bundle->getNamespace(), $controllerClassBasename);
+        $this->file = sprintf(
+            '%s/Controller/%s.php',
+            $bundle->getPath(),
+            str_replace('\\', '/', $controllerClassBasename)
+        );
         $parts = explode('\\', $this->class);
 
         if (file_exists($this->file)) {
@@ -55,7 +59,7 @@ class ControllerGenerator extends Generator
         }
 
         $this->renderFile('AdminController.php.twig', $this->file, [
-            'className' => array_pop($parts),
+            'classBasename' => array_pop($parts),
             'namespace' => implode('\\', $parts)
         ]);
     }

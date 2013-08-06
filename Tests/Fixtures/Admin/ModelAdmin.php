@@ -1,12 +1,6 @@
 <?php
-{% set code %}
-    {%- for field in fields %}
 
-            ->add('{{ field }}')
-    {%- endfor %}
-{% endset %}
-
-namespace {{ namespace }};
+namespace Sonata\AdminBundle\Tests\Fixtures\Admin;
 
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -14,7 +8,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 
-class {{ classBasename }}
+class ModelAdmin
 {
     /**
      * @param DatagridMapper $datagridMapper
@@ -22,7 +16,9 @@ class {{ classBasename }}
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            {{- code }}
+            ->add('foo')
+            ->add('bar')
+            ->add('baz')
         ;
     }
 
@@ -32,7 +28,9 @@ class {{ classBasename }}
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            {{- code }}
+            ->add('foo')
+            ->add('bar')
+            ->add('baz')
             ->add('_action', 'actions', array(
                 'actions' => array(
                     'view' => array(),
@@ -49,7 +47,9 @@ class {{ classBasename }}
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            {{- code }}
+            ->add('foo')
+            ->add('bar')
+            ->add('baz')
         ;
     }
 
@@ -59,7 +59,9 @@ class {{ classBasename }}
     protected function configureShowFields(ShowMapper $showMapper)
     {
         $showMapper
-            {{- code }}
+            ->add('foo')
+            ->add('bar')
+            ->add('baz')
         ;
     }
 }

@@ -4,6 +4,7 @@ Console/Command-Line Commands
 SonataAdminBundle provides the following console commands:
 
 * ``cache:create-cache-class``
+* ``sonata:admin:generate``
 * ``sonata:admin:explain``
 * ``sonata:admin:list``
 * ``sonata:admin:setup-acl``
@@ -21,6 +22,29 @@ Usage example:
 
     php app/console cache:create-cache-class
 
+
+sonata:admin:generate
+--------------------
+
+The ``sonata:admin:generate`` command generates a new admin class based on the given model class,
+registers it as a service and potentially creates a new controller.
+As an argument you need to specify the fully qualified model class.
+All passed arguments and options are used as default values in interactive mode.
+You can disable the interactive mode with ``--no-interaction`` option.
+
+Options are:
+ * ``bundle`` : the bundle name (the default value is determined by the given model class)
+ * ``admin`` : the admin class basename (the default value is a concatenation of model class basename and "Admin")
+ * ``controller`` : the controller class basename (the default value is a concatenation of model class basename and "AdminController")
+ * ``manager`` : the model manager type (the default value is the first registered model manager type, mostly "orm")
+ * ``services`` : the services YAML file (the default value is "services.yml" or "admin.yml" if it already exist)
+ * ``id`` : the admin service ID (the default value is combination of the bundle name and admin class basename like "app_foo.admin.user")
+
+Usage example:
+
+.. code-block:: bash
+
+    php app/console sonata:admin:generate App\Bundle\FooBundle\Entity\User
 
 sonata:admin:explain
 --------------------

@@ -52,24 +52,62 @@ class Validators
     /**
      * @static
      *
-     * @param string $controllerClassName
+     * @param string $class
      *
      * @return string
      * @throws \InvalidArgumentException
      */
-    public static function validateControllerClassName($controllerClassName)
+    public static function validateClass($class)
     {
-        $controllerClassName = str_replace('/', '\\', $controllerClassName);
+        $class = str_replace('/', '\\', $class);
 
-        if (false !== strpos($controllerClassName, ':')) {
-            throw new \InvalidArgumentException(sprintf('The controller class name must not contain a : ("%s" given, expecting something like PostAdminController")', $controllerClassName));
+        if (!class_exists($class)) {
+            throw new \InvalidArgumentException(sprintf('The class "%s" does not exist.', $class));
         }
 
-        if (substr($controllerClassName, -10) != 'Controller') {
+        return $class;
+    }
+
+    /**
+     * @static
+     *
+     * @param string $adminClassBasename
+     *
+     * @return string
+     * @throws \InvalidArgumentException
+     */
+    public static function validateAdminClassBasename($adminClassBasename)
+    {
+        $adminClassBasename = str_replace('/', '\\', $adminClassBasename);
+
+        if (false !== strpos($adminClassBasename, ':')) {
+            throw new \InvalidArgumentException(sprintf('The admin class name must not contain a : ("%s" given, expecting something like PostAdmin")', $adminClassBasename));
+        }
+
+        return $adminClassBasename;
+    }
+
+    /**
+     * @static
+     *
+     * @param string $controllerClassBasename
+     *
+     * @return string
+     * @throws \InvalidArgumentException
+     */
+    public static function validateControllerClassBasename($controllerClassBasename)
+    {
+        $controllerClassBasename = str_replace('/', '\\', $controllerClassBasename);
+
+        if (false !== strpos($controllerClassBasename, ':')) {
+            throw new \InvalidArgumentException(sprintf('The controller class name must not contain a : ("%s" given, expecting something like PostAdminController")', $controllerClassBasename));
+        }
+
+        if (substr($controllerClassBasename, -10) != 'Controller') {
             throw new \InvalidArgumentException('The controller class name must end with Controller.');
         }
 
-        return $controllerClassName;
+        return $controllerClassBasename;
     }
 
     /**

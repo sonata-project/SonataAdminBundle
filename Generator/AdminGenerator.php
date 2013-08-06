@@ -33,24 +33,24 @@ class AdminGenerator extends Generator
 
     /**
      * @param ModelManagerInterface $modelManager
-     * @param string $skeletonDirectory
+     * @param array|string $skeletonDirectories
      */
-    public function __construct(ModelManagerInterface $modelManager, $skeletonDirectory)
+    public function __construct(ModelManagerInterface $modelManager, $skeletonDirectories)
     {
         $this->modelManager = $modelManager;
-        $this->setSkeletonDirs($skeletonDirectory);
+        $this->setSkeletonDirs($skeletonDirectories);
     }
 
     /**
      * @param BundleInterface $bundle
-     * @param string $adminClassName
-     * @param string $entityClass
+     * @param string $adminClassBasename
+     * @param string $modelClass
      * @throws \RuntimeException
      */
-    public function generate(BundleInterface $bundle, $adminClassName, $entityClass)
+    public function generate(BundleInterface $bundle, $adminClassBasename, $modelClass)
     {
-        $this->class = sprintf('%s\Admin\%s', $bundle->getNamespace(), $adminClassName);
-        $this->file = sprintf('%s/Admin/%s.php', $bundle->getPath(), str_replace('\\', '/', $adminClassName));
+        $this->class = sprintf('%s\Admin\%s', $bundle->getNamespace(), $adminClassBasename);
+        $this->file = sprintf('%s/Admin/%s.php', $bundle->getPath(), str_replace('\\', '/', $adminClassBasename));
         $parts = explode('\\', $this->class);
 
         if (file_exists($this->file)) {
@@ -62,9 +62,9 @@ class AdminGenerator extends Generator
         }
 
         $this->renderFile('Admin.php.twig', $this->file, [
-            'className' => array_pop($parts),
+            'classBasename' => array_pop($parts),
             'namespace' => implode('\\', $parts),
-            'fields' => $this->modelManager->getExportFields($entityClass)
+            'fields' => $this->modelManager->getExportFields($modelClass)
         ]);
     }
 

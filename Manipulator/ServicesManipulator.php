@@ -26,11 +26,11 @@ class ServicesManipulator
     private $file;
 
     /** @var string */
-    private $template = '   %s:
+    private $template = '    %s:
         class: %s
         arguments: [~, %s, %s]
         tags:
-            - {name: sonata.admin, manager_type: orm, group: admin, label: %s}
+            - {name: sonata.admin, manager_type: %s, group: admin, label: %s}
 ';
 
     /**
@@ -43,12 +43,13 @@ class ServicesManipulator
 
     /**
      * @param string $serviceId
-     * @param string $entityClass
+     * @param string $modelClass
      * @param string $adminClass
      * @param string $controllerName
+     * @param string $managerType
      * @throws \RuntimeException
      */
-    public function addResource($serviceId, $entityClass, $adminClass, $controllerName)
+    public function addResource($serviceId, $modelClass, $adminClass, $controllerName, $managerType)
     {
         $code = "services:\n";
 
@@ -81,9 +82,10 @@ class ServicesManipulator
             $this->template,
             $serviceId,
             $adminClass,
-            $entityClass,
+            $modelClass,
             $controllerName,
-            current(array_slice(explode('\\', $entityClass), -1))
+            $managerType,
+            current(array_slice(explode('\\', $modelClass), -1))
         );
         @mkdir(dirname($this->file), 0777, true);
 
