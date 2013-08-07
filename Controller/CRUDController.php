@@ -755,7 +755,9 @@ class CRUDController extends Controller
         if (!$this->admin->isAclEnabled()) {
             throw new NotFoundHttpException('ACL are not enabled for this admin');
         }
-
+        
+        $id = $this->get('request')->get($this->admin->getIdParameter());
+        
         $object = $this->admin->getObject($id);
 
         if (!$object) {
