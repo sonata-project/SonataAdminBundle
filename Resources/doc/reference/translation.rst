@@ -4,14 +4,14 @@ Translation
 There are two main catalogue names in an Admin class:
 
 * ``SonataAdminBundle``: this catalogue is used to translate shared messages
-  accross different admins
+  across different Admins
 * ``messages``: this catalogue is used to translate the messages for the current
-  admin
+  Admin
 
 Ideally the ``messages`` catalogue should be changed to avoid any issues with
 other Admin classes.
 
-You have two options to configure the catalogue for the admin class:
+You have two options to configure the catalogue for the Admin class:
 
 * by over-riding the ``$translationDomain`` property
 
@@ -75,7 +75,7 @@ fields within the group.
 
 Overriding the translation domain is of particular use when using
 :doc:`extensions <extensions>`, where the extension and the translations would
-be defined in one bundle, but implemented in many different admin instances.
+be defined in one bundle, but implemented in many different Admin instances.
 
 Setting the translation domain on an individual field:
 
