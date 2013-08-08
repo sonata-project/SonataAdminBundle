@@ -296,12 +296,14 @@ class GenerateAdminCommand extends ContainerAwareCommand
      */
     private function getAdminServiceId($bundleName, $adminClassBasename)
     {
-        $name = substr($adminClassBasename, -5) == 'Admin' ? substr($adminClassBasename, 0, -5) : $adminClassBasename;
+        $prefix = substr($bundleName, -6) == 'Bundle' ? substr($bundleName, 0, -6) : $bundleName;
+        $suffix = substr($adminClassBasename, -5) == 'Admin' ? substr($adminClassBasename, 0, -5) : $adminClassBasename;
+        $suffix = str_replace('\\', '.', $suffix);
 
         return Container::underscore(sprintf(
             '%s.admin.%s',
-            substr($bundleName, 0, -6),
-            str_replace('\\', '.', $name)
+            $prefix,
+            $suffix
         ));
     }
 
