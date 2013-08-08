@@ -37,7 +37,7 @@ class GenerateObjectAclCommand extends ContainerAwareCommand
             ->setDescription('Install ACL for the objects of the Admin Classes.')
             ->addOption('object_owner', null, InputOption::VALUE_OPTIONAL, 'If set, the task will set the object owner for each admin.')
             ->addOption('user_entity', null, InputOption::VALUE_OPTIONAL, 'Shortcut notation like <comment>AcmeDemoBundle:User</comment>. If not set, it will be asked the first time an object owner is set.')
-            ->addOption('step', null, InputOption::VALUE_NONE, 'If set, the task will ask for each admin if the ACLs need to be generated and if and what object owner to set.')
+            ->addOption('step', null, InputOption::VALUE_NONE, 'If set, the task will ask for each admin if the ACLs need to be generated and what object owner to set, if any.')
         ;
     }
 
@@ -52,9 +52,9 @@ class GenerateObjectAclCommand extends ContainerAwareCommand
         $output->writeln('Welcome to the AdminBundle object ACL generator');
         $output->writeln(array(
                 '',
-                'This command helps you generate ACL entities for the objects handled by the AdminBundle.',
+                'This command helps you to generate ACL entities for the objects handled by the AdminBundle.',
                 '',
-                'If the step option is used, you will be asked for each Admin to generate the object ACL entities.',
+                'If the step option is used, you will be asked if you want to generate the object ACL entities for each Admin.',
                 'You must use the shortcut notation like <comment>AcmeDemoBundle:User</comment> if you want to set an object owner.',
                 ''
         ));

@@ -5,9 +5,10 @@ SonataAdminBundle provides the following console commands:
 
 * ``cache:create-cache-class``
 * ``sonata:admin:generate``
-* ``sonata:admin:explain``
 * ``sonata:admin:list``
+* ``sonata:admin:explain``
 * ``sonata:admin:setup-acl``
+* ``sonata:admin:generate-object-acl``
 
 
 cache:create-cache-class
@@ -104,3 +105,12 @@ Usage example:
 .. code-block:: bash
 
     php app/console sonata:admin:setup-acl
+
+
+sonata:admin:generate-object-acl
+--------------------------------
+
+The ``sonata:admin:generate-object-acl`` is an interactive command which helps
+you to generate ACL entities for the objects handled by your Admins. See the help 
+of the command for more information.
+
