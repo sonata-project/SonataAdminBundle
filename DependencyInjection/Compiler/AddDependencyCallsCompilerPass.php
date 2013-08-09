@@ -12,6 +12,7 @@
 namespace Sonata\AdminBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Reference;
@@ -140,7 +141,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
         );
 
         foreach ($keys as $key) {
-            $method = 'set'.$this->camelize($key);
+            $method = 'set'.self::camelize($key);
             if (!isset($attributes[$key]) || $definition->hasMethodCall($method)) {
                 continue;
             }
@@ -187,7 +188,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
         $definition->addMethodCall('setManagerType', array($manager_type));
 
         foreach ($defaultAddServices as $attr => $addServiceId) {
-            $method = 'set'.$this->camelize($attr);
+            $method = 'set'.self::camelize($attr);
 
             if (isset($addServices[$attr]) || !$definition->hasMethodCall($method)) {
                 $definition->addMethodCall($method, array(new Reference(isset($addServices[$attr]) ? $addServices[$attr] : $addServiceId)));
@@ -270,13 +271,16 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
     }
 
     /**
-     * method taken from PropertyPath
+     * Camelize a string
      *
-     * @param  $property
-     * @return mixed
+     * @static
+     *
+     * @param string $property
+     *
+     * @return string
      */
-    protected function camelize($property)
+    public static function camelize($property)
     {
-        return preg_replace(array('/(^|_)+(.)/e', '/\.(.)/e'), array("strtoupper('\\2')", "'_'.strtoupper('\\1')"), $property);
+        return Container::camelize($property);
     }
 }
