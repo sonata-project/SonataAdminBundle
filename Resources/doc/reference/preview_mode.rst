@@ -4,6 +4,19 @@ Preview Mode
 A preview step can be enabled for an admin entity by overriding the public property
 $supportsPreviewMode and setting it to true.
 
+Examples based on `Sonata Sandbox <https://github.com/sonata-project/sandbox>`_  `CarAdmin <https://github.com/sonata-project/sandbox/blob/2.3/src/Sonata/Bundle/DemoBundle/Admin/CarAdmin.php>`_
+
+.. code-block:: php
+
+    <?php // CarAdmin.php
+    
+    class CarAdmin extends Admin
+    {
+        public $supportsPreviewMode = true;
+    
+        /* ... */
+    }
+
 This will show a new button during create/edit mode named preview.
 
 While in preview mode two buttons will be shown to approve or decline persistance of the
