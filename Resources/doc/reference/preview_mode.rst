@@ -1,9 +1,10 @@
 Preview Mode
 ============
 
-A preview step can be enabled for an admin entity by overriding the public property
-$supportsPreviewMode and setting it to true.
+Preview Mode is an optional view of an object before it is persisted or updated.
 
+The preview step can be enabled for an admin entity by overriding the public property
+$supportsPreviewMode and setting it to true.
 
 .. code-block:: php
 
@@ -32,8 +33,10 @@ Accepting the preview will store the entity as if the preview step was never the
    :alt: Preview Button
 
 
+Simulating front-end rendring
+----------------------------
+
 Preview can be used to render how the object would look like in your front-end environment.
-~~~~~~~~~~
 
 However by default it uses a template similar to the one of the show action and works with
 the fields configured to be shown in the show view.
@@ -85,7 +88,7 @@ a different object you can just set your own variables prior to calling parent()
 
     {% use 'SonataAdminBundle:CRUD:base_edit_form.html.twig' with form as parentForm %}
 
-    {% block templateContent %}     {# a block in 'AcmeDemoBundle::layout.html.twig' #} 
+    {% block templateContent %}     {# a block in 'AcmeDemoBundle::layout.html.twig' expecting article #} 
         {% set article = object %}  
 
         {{ parent() }}
