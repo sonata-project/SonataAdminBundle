@@ -19,10 +19,19 @@ Examples based on `Sonata Sandbox <https://github.com/sonata-project/sandbox>`_ 
 
 This will show a new button during create/edit mode named preview.
 
+.. figure:: ../images/preview_mode_button.png
+   :align: center
+   :alt: Preview Button
+
 While in preview mode two buttons will be shown to approve or decline persistance of the
 entity. Decline will send you back to the edit mode with all your changes unpersisted but
 still in the form so no data is lost and the entity can be further adjusted.
 Accepting the preview will store the entity as if the preview step was never there.
+
+.. figure:: ../images/preview_show.png
+   :align: center
+   :alt: Preview Button
+
 
 Preview can be used to render how the object would look like in your front-end environment.
 However by default it uses a template similar to the one of the show action and works with
