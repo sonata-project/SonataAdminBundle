@@ -134,6 +134,13 @@ class BaseFieldDescriptionTest extends \PHPUnit_Framework_TestCase
         $description->setOption('translation_domain', 'ExtensionDomain');
         $this->assertEquals('ExtensionDomain', $description->getTranslationDomain());
     }
+
+    public function testCamelize()
+    {
+        $this->assertEquals('FooBar', BaseFieldDescription::camelize('foo_bar'));
+        $this->assertEquals('FooBar', BaseFieldDescription::camelize('foo bar'));
+        $this->assertEquals('FOoBar', BaseFieldDescription::camelize('fOo bar'));
+    }
 }
 
 class FieldDescription extends BaseFieldDescription
