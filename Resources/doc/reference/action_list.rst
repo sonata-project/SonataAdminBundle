@@ -4,9 +4,8 @@ The List View
 .. note::
 
     This document is a stub representing a new work in progress. If you're reading 
-    this you can help contribute, no matter what your experience level with Sonata 
-    is. Check out the `issues on Github<https://github.com/sonata-project/SonataAdminBundle/issues/1519>`_ 
-    for more information about how to get involved.
+    this you can help contribute, **no matter what your experience level with Sonata 
+    is**. Check out the `issues on Github`_ for more information about how to get involved.
 
 This document will cover the List view which you use to browse the objects in your
 system. It will cover configuration of the list itself and the filters you can use
@@ -50,3 +49,5 @@ To do:
 - basic filter configuration and options
 - how to set default filter values
 - advanced filter options
+
+.. _`issues on Github`: https://github.com/sonata-project/SonataAdminBundle/issues/1519

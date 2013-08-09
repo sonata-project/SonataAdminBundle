@@ -4,9 +4,8 @@ The Show action
 .. note::
 
     This document is a stub representing a new work in progress. If you're reading 
-    this you can help contribute, no matter what your experience level with Sonata 
-    is. Check out the `issues on Github<https://github.com/sonata-project/SonataAdminBundle/issues/1519>`_ 
-    for more information about how to get involved.
+    this you can help contribute, **no matter what your experience level with Sonata 
+    is**. Check out the `issues on Github`_ for more information about how to get involved.
 
 This document will cover the Show action and related configuration options.
 
@@ -30,3 +29,5 @@ Customising the query used to show the object
 To do:
 
 - how to customize/optimize the show query
+
+.. _`issues on Github`: https://github.com/sonata-project/SonataAdminBundle/issues/1519
