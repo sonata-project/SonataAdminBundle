@@ -53,7 +53,7 @@ use the following code:
     <?php
     class FooAdmin extends Admin
     {
-        protected $baseRouteName = 'foo';
+        protected $baseRoutePattern = 'foo';
     }
 
 You will then have route URLs like ``http://yourdomain.com/admin/foo/list`` and 
