@@ -46,16 +46,18 @@ to the underlying forms.
         }
     }
 
-**TIP**: A jQuery event is fired after a row has been added(*sonata-collection-item-added*) or deleted(*sonata-collection-item-deleted*). You can bind to them to trigger some custom javascript imported into your templates(eg: add a calendar widget to a just added date field)
+**TIP**: A jQuery event is fired after a row has been added (``sonata-collection-item-added``) 
+or deleted (``sonata-collection-item-deleted``). You can bind to these events to trigger custom 
+javascript imported into your templates (eg: add a calendar widget to a newly added date field)
 
 Field configuration
 ^^^^^^^^^^^^^^^^^^^
 
 - ``admin_code``: Force for any field involving a model the admin class used to 
-    handle it (useful for inline editing with ``sonata_type_admin``). The 
-    expected value here is the admin service name, not the class name. If not 
-    defined, the default admin class for the model type will be used (even if 
-    you didn't define any admin for the model type).
+  handle it (useful for inline editing with ``sonata_type_admin``). The 
+  expected value here is the admin service name, not the class name. If not 
+  defined, the default admin class for the model type will be used (even if 
+  you didn't define any admin for the model type).
 
 Other specific field configuration options are detailed in the related 
 abstraction layer documentation.
