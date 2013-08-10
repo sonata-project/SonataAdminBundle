@@ -21,6 +21,7 @@ To do:
 - using configureListFields() to set which fields to display
 - setting the identifier, and the available options
 - options available when adding general fields, inc custom templates
+- targeting submodel fields using dot-separated notation
 - adding custom columns
 
 
@@ -48,6 +49,7 @@ To do:
 
 - basic filter configuration and options
 - how to set default filter values
+- targeting submodel fields using dot-separated notation
 - advanced filter options
 
 .. _`issues on Github`: https://github.com/sonata-project/SonataAdminBundle/issues/1519

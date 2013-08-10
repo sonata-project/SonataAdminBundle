@@ -20,6 +20,7 @@ To do:
 - configuring the Show action from within your Admin class
 - a note about lifecycle events triggered by delete?
 - options available when adding general fields, inc custom templates
+- targeting submodel fields using dot-separated notation
 - (Note, if this is very similar to the list documentation it can be combined)
 
 
