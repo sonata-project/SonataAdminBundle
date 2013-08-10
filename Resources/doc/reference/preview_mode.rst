@@ -33,7 +33,7 @@ Accepting the preview will store the entity as if the preview step was never the
    :alt: Preview Button
 
 
-Simulating front-end rendring
+Simulating front-end rendering
 ----------------------------
 
 Preview can be used to render how the object would look like in your front-end environment.
