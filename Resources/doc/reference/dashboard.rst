@@ -3,7 +3,7 @@ Dashboard
 
 The dashboard is the main landing page. By default the dashboard lists the different admin areas available.
 The admin list is a block defined by the ``sonata.admin.block.admin_list`` service. More block can be added, just
-follow the instruction in the `BlockBundle documentation <http://sonata-project.org/bundles/block/master/doc/index.html>`_.
+follow the instruction in the `BlockBundle documentation`_.
 
 If you want to customize the dashboard, add the following code to your
 application's config file:
@@ -128,3 +128,5 @@ Display two blocks with different dashboard groups
                 sonata_page3:
                     items:
                         - sonata.page.admin.myitem4
+
+.. _`BlockBundle documentation`:  http://sonata-project.org/bundles/block/master/doc/index.html

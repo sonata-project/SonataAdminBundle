@@ -74,7 +74,7 @@ If a translation domain is set at the group level it will cascade down to all
 fields within the group.
 
 Overriding the translation domain is of particular use when using
-:doc:`extensions <extensions>`, where the extension and the translations would
+:doc:`extensions`, where the extension and the translations would
 be defined in one bundle, but implemented in many different Admin instances.
 
 Setting the translation domain on an individual field:
