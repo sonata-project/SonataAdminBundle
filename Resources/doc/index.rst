@@ -24,6 +24,11 @@ Reference Guide
    reference/architecture
    reference/dashboard
    reference/routing
+   reference/action_list
+   reference/action_create_edit
+   reference/action_show
+   reference/action_delete
+   reference/action_export
    reference/saving_hooks
    reference/form_types
    reference/form_help_message
