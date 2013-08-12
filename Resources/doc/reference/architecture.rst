@@ -5,55 +5,73 @@ The architecture of the SonataAdminBundle is primarily inspired by the Django Ad
 Project, which is truly a great project. More information can be found at the
 `Django Project Website`_.
 
+If you followed the instructions on the :doc:`getting_started` page, you should by
+now have an Admin class and an Admin service. In this chapter, we'll discuss more in
+depth how it works.
+
 The Admin Class
 ---------------
 
-The ``Admin`` class represents the CRUD definition for a specific model. It
-contains all the configuration necessary to display a rich CRUD interface for
-the entity.
-
-Within the admin class, the following information can be defined:
+The ``Admin`` class maps a specific model to the rich CRUD interface provided by
+SonataAdminBundle. In other words, using your Admin classes, you can configure
+what is shown by SonataAdminBundle in each CRUD action for the associated model.
+By now you've seen 3 of those actions in the ``getting started`` page: list, 
+filter and form (for creation/edition). However, a fully configured Admin class
+can define more actions:
 
 * ``list``: The fields displayed in the list table;
 * ``filter``: The fields available for filtering the list;
-* ``form``: The fields used to edit the entity;
+* ``form``: The fields used to create/edit the entity;
 * ``show``: The fields used to show the entity;
 * Batch actions: Actions that can be performed on a group of entities
   (e.g. bulk delete)
 
-If a field is associated with another entity (and that entity also has an
-``Admin`` class), then the related ``Admin`` class will be accessible from
-within the first class.
+The ``Sonata\AdminBundle\Admin\Admin`` class is provided as an easy way to
+map your models, by extending it. However, any implementation of the 
+``Sonata\AdminBundle\Admin\AdminInterface`` can be used to define an Admin
+service. For each Admin service, the following required dependencies are 
+automatically injected by the bundle:
 
-The admin class is a service implementing the ``AdminInterface`` interface,
-meaning that the following required dependencies are automatically injected:
-
+* ``ModelManager``: service which handles specific ORM code
+* ``FormContractor``: builds the edit/create views form using the Symfony ``FormBuilder``
+* ``ShowBuilder``: builds the 'show' view
 * ``ListBuilder``: builds the list fields
-* ``FormContractor``: builds the form using the Symfony ``FormBuilder``
 * ``DatagridBuilder``: builds the filter fields
-* ``Router``: generates the different urls
-* ``Request``
-* ``ModelManager``: Service which handles specific ORM code
-* ``Translator``
+* ``Translator``: generates translations
+* ``ConfigurationPool``: configuration pool where all Admin class instances are stored
+* ``RouterGenerator``: generates the different urls
+* ``Validator``: handles model validation
+* ``SecurityHandler``: handles permissions for model instances and actions
+* ``MenuFactory``: generates the side menu, depending on the current action
+* ``RouteBuilder``: allows you to easily add routes for new actions
+* ``Request`` : http request received
+* ``LabelTranslatorStrategy``: a strategy to use when generating labels 
 
-Therefore, you can gain access to any service you want by injecting them into
-the admin class, like so:
+.. note::
+
+    Each of these dependencies is used for a specific task, briefly described above.
+    If you wish to learn more about how they are used, check the respective documentation
+    chapter. In most cases, you won't need to worry about their underlying implementation.
+
+
+All these dependencies have default values that you can override by a using 
+``call`` to the matching ``setter`` when declaring the Admin service, like so:
 
 .. code-block:: xml
 
-    <service id="sonata.news.admin.post" class="%sonata.news.admin.post.class%">
-        <tag name="sonata.admin" manager_type="orm" group="sonata_blog" label="post"/>
-        <argument />
-        <argument>%sonata.news.admin.post.entity%</argument>
-        <argument>%sonata.news.admin.post.controller%</argument>
+    <service id="sonata.admin.tag" class="Acme\DemoBundle\Admin\PostAdmin">
+          <tag name="sonata.admin" manager_type="orm" group="Content" label="Post"/>
+          <argument />
+          <argument>Acme\DemoBundle\Entity\Post</argument>
+          <argument />
+          <call method="setLabelTranslatorStrategy">
+              <argument>sonata.admin.label.strategy.underscore</argument>
+          </call>
+      </service>
 
-        <call method="setUserManager">
-            <argument type="service" id="fos_user.user_manager" />
-        </call>
-
-    </service>
-
-Here, the FOS' User Manager is injected into the Post service.
+Here, we declare the same Admin service as before, but using a different label translator strategy, replacing the default one. Notice that ``sonata.admin.label.strategy.underscore`` is a 
+service provided by SonataAdminBundle, but you could just as easily use a service of your
+own.
 
 Field Definition
 ----------------
