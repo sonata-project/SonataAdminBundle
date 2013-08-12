@@ -43,6 +43,8 @@ Reference Guide
    reference/console
    reference/preview_mode
    reference/troubleshooting
+   reference/recipe_file_uploads
+   reference/recipe_image_previews
 
 Overview
 --------

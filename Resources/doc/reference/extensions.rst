@@ -55,23 +55,24 @@ Using the config.yml file has some advantages, it allows you to keep your config
 extra options you can use to wire your extensions in a more dynamic way. This means you can change the behaviour of all
 admins that manage a class of a specific type.
 
-| **admins**
-| specify one or more admin service id's to which the Extension should be added
+admins:
+    specify one or more admin service id's to which the Extension should be added
 
-| **excludes**
-| specify one or more admin service id's to which the Extension should not be added
+excludes:
+    specify one or more admin service id's to which the Extension should not be added (this will prevent it matching 
+    any of the other settings)
 
-| **implements**
-| specify one or more interfaces. If the managed class of an admin implements one of the specified interfaces the
-| extension will be added to that admin.
+extends:
+    specify one or more classes. If the managed class of an admin extends one of the specified classes the extension
+    will be added to that admin.
 
-| **extends**
-| specify one or more classes. If the managed class of an admin extends one of the specified classes the extension
-| will be added to that admin.
+implements:
+    specify one or more interfaces. If the managed class of an admin implements one of the specified interfaces the
+    extension will be added to that admin.
 
-| **instanceof**
-| specify one or more classes. If the managed class of an admin extends one of the specified classes or is an instance
-| of that class the extension will be added to that admin.
+instanceof:
+    specify one or more classes. If the managed class of an admin extends one of the specified classes or is an instance
+    of that class the extension will be added to that admin.
 
 .. code-block:: yaml
 
