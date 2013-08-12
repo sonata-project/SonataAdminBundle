@@ -303,4 +303,4 @@ as SonataAdmin.
 To learn how to add an image preview to your ImageAdmin take a look at the related cookbook entry.
 
 
-_`uploading files with Doctrine and Symfony`: http://symfony.com/doc/current/cookbook/doctrine/file_uploads.html
+.. _`uploading files with Doctrine and Symfony`: http://symfony.com/doc/current/cookbook/doctrine/file_uploads.html
