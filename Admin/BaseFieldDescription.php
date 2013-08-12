@@ -403,7 +403,9 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
      */
     public static function camelize($property)
     {
-        return Container::camelize($property);
+        return preg_replace_callback('/(^|[_. ])+(.)/', function ($match) {
+            return ('.' === $match[1] ? '_' : '') . strtoupper($match[2]);
+        }, $property);
     }
 
     /**
