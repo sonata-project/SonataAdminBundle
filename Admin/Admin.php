@@ -847,7 +847,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     public function getBaseRoutePattern()
     {
         if (!$this->baseRoutePattern) {
-            preg_match(self::CLASS_REGEX, $this->getClass(), $matches);
+            preg_match(self::CLASS_REGEX, $this->class, $matches);
 
             if (!$matches) {
                 throw new \RuntimeException(sprintf('Please define a default `baseRoutePattern` value for the admin class `%s`', get_class($this)));
@@ -881,7 +881,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     public function getBaseRouteName()
     {
         if (!$this->baseRouteName) {
-            preg_match(self::CLASS_REGEX, $this->getClass(), $matches);
+            preg_match(self::CLASS_REGEX, $this->class , $matches);
 
             if (!$matches) {
                 throw new \RuntimeException(sprintf('Cannot automatically determine base route name, please define a default `baseRouteName` value for the admin class `%s`', get_class($this)));
@@ -923,13 +923,23 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      */
     public function getClass()
     {
-        return $this->class;
+        if (!$this->hasActiveSubClass()) {
+            $subject = $this->getSubject();
+
+            if ($subject) {
+                return get_class($subject);
+            }
+
+            return $this->class;
+        }
+
+        $subClass = $this->getRequest()->query->get('subclass');
+
+        return $this->getSubClass($subClass);
     }
 
     /**
-     * Returns the list of supported sub classes
-     *
-     * @return array the list of sub classes
+     * {@inheritdoc}
      */
     public function getSubClasses()
     {
@@ -937,9 +947,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * Sets the list of supported sub classes
-     *
-     * @param array $subClasses the list of sub classes
+     * {@inheritdoc}
      */
     public function setSubClasses(array $subClasses)
     {
@@ -963,11 +971,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * Returns true if the admin has the sub classes
-     *
-     * @param string $name The name of the sub class
-     *
-     * @return bool
+     * {@inheritdoc}
      */
     public function hasSubClass($name)
     {
@@ -975,35 +979,47 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * Returns true if a subclass is currently active
-     *
-     * @return bool
+     * {@inheritdoc}
      */
     public function hasActiveSubClass()
     {
         if ($this->request) {
-            return null !== $this->getRequest()->get('subclass');
+            return null !== $this->getRequest()->query->get('subclass');
         }
 
         return false;
     }
 
     /**
-     * Returns the currently active sub class
-     *
-     * @return string the active sub class
+     * {@inheritdoc}
      */
     public function getActiveSubClass()
     {
         if (!$this->hasActiveSubClass()) {
             return null;
         }
-
-        $subClass = $this->getRequest()->get('subclass');
-
-        return $this->getSubClass($subClass);
+        
+        return $this->getClass();
     }
-
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function getActiveSubclassCode()
+    {
+        if (!$this->hasActiveSubClass()) {
+            return null;
+        }
+        
+        $subClass = $this->getRequest()->query->get('subclass');
+        
+        if(! $this->hasSubClass($subClass)){
+            return null;
+        }
+        
+        return $subClass;
+    }
+    
     /**
      * Returns the list of batchs actions
      *
@@ -1183,7 +1199,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      */
     public function getNewInstance()
     {
-        $object = $this->getModelManager()->getModelInstance($this->getActiveSubClass() ?: $this->getClass());
+        $object = $this->getModelManager()->getModelInstance($this->getClass());
         foreach($this->getExtensions() as $extension) {
             $extension->alterNewInstance($this, $object);
         }
@@ -1196,7 +1212,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      */
     public function getFormBuilder()
     {
-        $this->formOptions['data_class'] = $this->getActiveSubClass() ?: $this->getClass();
+        $this->formOptions['data_class'] = $this->getClass();
 
         $formBuilder = $this->getFormContractor()->getFormBuilder(
             $this->getUniqid(),
@@ -1582,7 +1598,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
             if (!preg_match('#^[0-9A-Fa-f]+$#', $id)) {
                 $this->subject = false;
             } else {
-                $this->subject = $this->getModelManager()->find($this->getClass(), $id);
+                $this->subject = $this->getModelManager()->find($this->class, $id);
             }
         }
 

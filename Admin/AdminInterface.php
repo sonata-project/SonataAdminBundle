@@ -80,7 +80,10 @@ interface AdminInterface
     public function setRouteGenerator(RouteGeneratorInterface $routeGenerator);
 
     /**
-     * Returns the class name managed
+     * Returns subjectClass/class/subclass name managed
+     * - subclass name if subclass parameter is defined
+     * - subject class name if subject is defined
+     * - class name if not
      *
      * @return string
      */
@@ -624,4 +627,42 @@ interface AdminInterface
      * @return boolean
      */
     public function isAclEnabled();
+
+    /**
+     * Sets the list of supported sub classes
+     *
+     * @param array $subClasses the list of sub classes
+     */
+    public function setSubClasses(array $subClasses);
+
+    /**
+     * Returns true if the admin has the sub classes
+     *
+     * @param string $name The name of the sub class
+     *
+     * @return bool
+     */
+    public function hasSubClass($name);
+
+    /**
+     * Returns true if a subclass is currently active
+     *
+     * @return bool
+     */
+    public function hasActiveSubClass();
+
+    /**
+     * Returns the currently active sub class
+     *
+     * @return string the active sub class
+     */
+    public function getActiveSubClass();
+    
+    /**
+     * Returns the currently active sub class code
+     * 
+     * @return string the code for active sub class
+     */
+    public function getActiveSubclassCode();
+
 }
