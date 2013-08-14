@@ -4,13 +4,78 @@ Form Types
 Admin related form types
 ------------------------
 
-The bundle come with different form types to handle model values:
+When defining fields in your Admin classes you can use any of the standard
+`Symfony field types`_ and configure them as you would normally. In addition
+there are some special Sonata field types which allow you to work with 
+relationships between one entity class and another.
 
 sonata_type_model
 ^^^^^^^^^^^^^^^^^
 
-The ``Model Type`` allows you to choose an existing model or create new ones. 
-This type doesn't allow to directly edit the selected model.
+Setting a field type of ``sonata_type_model`` will use an instance of 
+``ModelType`` to render that field. This Type allows you to choose an existing 
+entity from the linked model class. In effect it shows a list of options from 
+which you can choose a value (or values).
+
+For example, we have an entity class called ``Page`` which has a field called 
+``image1`` which maps a relationship to another entity class called ``Image``.
+All we need to do now is add a reference for this field in our ``PageAdmin`` class:
+
+.. code-block:: php
+
+    class PageAdmin extends Admin
+    {
+        protected function configureFormFields(FormMapper $formMapper)
+        {
+            $barFieldOptions = array(); // see available options below
+            $formMapper
+                ->add('image1', 'sonata_type_model', $barFieldOptions)
+            ;
+        }
+    }
+
+Since the ``image1`` field refers to a related entity we do not need to specify 
+any options. Sonata will calculate that the linked class is of type ``Image`` and, 
+by default, retrieve a list of all existing Images to display as choices in the 
+selector.
+
+The available options are:
+
+property
+  defaults to null. You can set this to a `Symfony PropertyPath`_ compatible
+  string to designate which field to use for the choice values.
+
+query
+  defaults to null. You can set this to a QueryBuilder instance in order to
+  define a custom query for retrieving the available options.
+
+template
+  defaults to 'choice' (not currently used?)
+
+multiple
+  defaults to false - see the `Symfony choice Field Type docs`_ for more info
+  
+expanded
+  defaults to false - see the `Symfony choice Field Type docs`_ for more info
+
+choices
+  defaults to null - see the `Symfony choice Field Type docs`_ for more info
+
+preferred_choices
+  defaults to array() - see the `Symfony choice Field Type docs`_ for more info
+
+choice_list
+  defaults to a ``ModelChoiceList`` built from the other options
+
+model_manager
+  defaults to null, but is actually calculated from the linked Admin class.
+  You usually should not need to set this manually.
+
+class
+  The entity class managed by this field. Defaults to null, but is actually 
+  calculated from the linked Admin class. You usually should not need to set 
+  this manually.
+
 
 sonata_type_admin
 ^^^^^^^^^^^^^^^^^
@@ -176,3 +241,7 @@ General
 
         <?php
         $form->add('status', null, array('label' => false);
+
+.. _`Symfony field types`: http://symfony.com/doc/current/book/forms.html#built-in-field-types
+.. _`Symfony choice Field Type docs`: http://symfony.com/doc/current/reference/forms/types/choice.html
+.. _`Symfony PropertyPath`: http://api.symfony.com/2.0/Symfony/Component/Form/Util/PropertyPath.html
