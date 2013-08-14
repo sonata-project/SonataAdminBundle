@@ -35,7 +35,7 @@ https://github.com/FriendsOfSymfony/FOSUserBundle/ for more information.
 
 The user management system requires to perform specific call when the user
 password or username are updated. This is how the Admin bundle can be used to
-solve the issue by using the ``prePersist`` saving hook.
+solve the issue by using the ``preUpdate`` saving hook.
 
 .. code-block:: php
 
