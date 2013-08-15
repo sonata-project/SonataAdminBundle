@@ -14,12 +14,13 @@ namespace Sonata\AdminBundle\Generator;
 
 use Sensio\Bundle\GeneratorBundle\Generator\Generator;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
+use Sonata\AdminBundle\Generator\AbstractBcGenerator;
 
 /**
  * @author Marek Stipek <mario.dweller@seznam.cz>
  * @author Simon Cosandey <simon.cosandey@simseo.ch>
  */
-class ControllerGenerator extends Generator
+class ControllerGenerator extends AbstractBcGenerator
 {
     /** @var string|null */
     private $class;
@@ -58,7 +59,7 @@ class ControllerGenerator extends Generator
             ));
         }
 
-        $this->renderFile('AdminController.php.twig', $this->file, array(
+        $this->renderFileBc('AdminController.php.twig', $this->file, array(
             'classBasename' => array_pop($parts),
             'namespace' => implode('\\', $parts)
         ));
