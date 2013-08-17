@@ -89,9 +89,9 @@ and use the embedded Admin's configuration when editing this field.
 ``sonata_type_admin`` fields should only be used when editing a field which 
 represents a relationship between two model classes.
 
-This Type allows you to embed a complete 'form' for the related element, which
-you can configure to allow the creation, editing and/or deletion of related
-objects.
+This Type allows you to embed a complete form for the related element, which
+you can configure to allow the creation, editing and (optionally) deletion of 
+related objects.
 
 For example, lets use a similar example to the one for ``sonata_type_model`` above.
 This time, when editing a ``Page`` using ``PageAdmin`` we want to enable the inline
@@ -103,6 +103,8 @@ for managing ``Image`` objects. In our admin.yml we have an entry for ``ImageAdm
 that looks like this:
 
 .. code-block:: yaml
+
+    # Acme/DemoBundle/Resources/config/admin.yml
 
     sonata.admin.image:
         class: Acme\DemoBundle\Admin\ImageAdmin
@@ -125,9 +127,8 @@ for the ``image1`` field to ``sonata_type_admin`` in our ``PageAdmin`` class:
     {
         protected function configureFormFields(FormMapper $formMapper)
         {
-            $imageFieldOptions = array(); // see available options below
             $formMapper
-                ->add('image1', 'sonata_type_admin', $imageFieldOptions)
+                ->add('image1', 'sonata_type_admin')
             ;
         }
     }
@@ -136,7 +137,7 @@ We do not need to define any options since Sonata calculates that the linked cla
 is of type ``Image`` and the service definition (in admin.yml) defines that ``Image`` 
 objects are managed by the ``ImageAdmin`` class.
 
-The available options are:
+The available options (which can be passed as a third parameter to ``FormMapper::add()``) are:
 
 delete
   defaults to true and indicates that a 'delete' checkbox should be shown allowing 
@@ -146,7 +147,7 @@ delete
 sonata_type_collection
 ^^^^^^^^^^^^^^^^^^^^^^
 
-The ``Collection Type`` is meant to handle creation and edition of model 
+The ``Collection Type`` is meant to handle creation and editing of model 
 collections. Rows can be added and deleted, and your model abstraction layer may
 allow you to edit fields inline. You can use ``type_options`` to pass values
 to the underlying forms.
@@ -174,14 +175,38 @@ to the underlying forms.
 or deleted (``sonata-collection-item-deleted``). You can bind to these events to trigger custom 
 javascript imported into your templates (eg: add a calendar widget to a newly added date field)
 
-Field configuration
-^^^^^^^^^^^^^^^^^^^
+FieldDescription options
+^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``admin_code``: Force for any field involving a model the admin class used to 
-  handle it (useful for inline editing with ``sonata_type_admin``). The 
-  expected value here is the admin service name, not the class name. If not 
-  defined, the default admin class for the model type will be used (even if 
-  you didn't define any admin for the model type).
+The fourth parameter to FormMapper::add() allows you to pass in ``FieldDescription`` 
+options as an array. The most useful of these is ``admin_code``, which allows you to 
+specify which Admin to use for managing this relationship. It is most useful for inline 
+editing in conjunction with the ``sonata_type_admin`` form type.
+
+The value used should be the admin *service* name, not the class name. If you do
+not specify an ``admin_code`` in this way, the default admin class for the field's 
+model type will  be used.
+
+For example, to specify the use of the Admin class which is registered as 
+``sonata.admin.imageSpecial`` for managing the ``image1`` field from our ``PageAdmin``
+example above: 
+
+.. code-block:: php
+
+    class PageAdmin extends Admin
+    {
+        protected function configureFormFields(FormMapper $formMapper)
+        {
+            $formMapper
+                ->add(
+                  'image1', 
+                  'sonata_type_admin', 
+                  array(), 
+                  array('admin_code' => 'sonata.admin.imageSpecial')
+                )
+            ;
+        }
+    }
 
 Other specific field configuration options are detailed in the related 
 abstraction layer documentation.
