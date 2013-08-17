@@ -27,9 +27,9 @@ All we need to do now is add a reference for this field in our ``PageAdmin`` cla
     {
         protected function configureFormFields(FormMapper $formMapper)
         {
-            $barFieldOptions = array(); // see available options below
+            $imageFieldOptions = array(); // see available options below
             $formMapper
-                ->add('image1', 'sonata_type_model', $barFieldOptions)
+                ->add('image1', 'sonata_type_model', $imageFieldOptions)
             ;
         }
     }
@@ -38,6 +38,10 @@ Since the ``image1`` field refers to a related entity we do not need to specify
 any options. Sonata will calculate that the linked class is of type ``Image`` and, 
 by default, retrieve a list of all existing Images to display as choices in the 
 selector.
+
+Note that the third parameter to ``FormMapper::add()`` is optional so
+there is no need to pass in an empty array, it is shown here just to demonstrate
+where the options go when you want to use them.
 
 The available options are:
 
@@ -80,9 +84,64 @@ class
 sonata_type_admin
 ^^^^^^^^^^^^^^^^^
 
-The ``Admin Type`` will delegate the form construction for this model to its 
-related admin class. This type is useful to cascade edition or creation of 
-linked models.
+Setting a field type of ``sonata_type_admin`` will embed another Admin class
+and use the embedded Admin's configuration when editing this field. 
+``sonata_type_admin`` fields should only be used when editing a field which 
+represents a relationship between two model classes.
+
+This Type allows you to embed a complete 'form' for the related element, which
+you can configure to allow the creation, editing and/or deletion of related
+objects.
+
+For example, lets use a similar example to the one for ``sonata_type_model`` above.
+This time, when editing a ``Page`` using ``PageAdmin`` we want to enable the inline
+creation (and editing) of new Images instead of just selecting an existing Image 
+from a list.
+
+First we need to create an ``ImageAdmin`` class and register it as an Admin class 
+for managing ``Image`` objects. In our admin.yml we have an entry for ``ImageAdmin`` 
+that looks like this:
+
+.. code-block:: yaml
+
+    sonata.admin.image:
+        class: Acme\DemoBundle\Admin\ImageAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: "Image" }
+        arguments:
+            - ~
+            - Acme\DemoBundle\Entity\Image
+            - 'SonataAdminBundle:CRUD'
+        calls:
+            - [ setTranslationDomain, [Acme\DemoBundle]]
+
+
+To embed ``ImageAdmin`` within ``PageAdmin`` we just need to change the reference 
+for the ``image1`` field to ``sonata_type_admin`` in our ``PageAdmin`` class:
+
+.. code-block:: php
+
+    class PageAdmin extends Admin
+    {
+        protected function configureFormFields(FormMapper $formMapper)
+        {
+            $imageFieldOptions = array(); // see available options below
+            $formMapper
+                ->add('image1', 'sonata_type_admin', $imageFieldOptions)
+            ;
+        }
+    }
+
+We do not need to define any options since Sonata calculates that the linked class 
+is of type ``Image`` and the service definition (in admin.yml) defines that ``Image`` 
+objects are managed by the ``ImageAdmin`` class.
+
+The available options are:
+
+delete
+  defaults to true and indicates that a 'delete' checkbox should be shown allowing 
+  the user to delete the linked object.
+
 
 sonata_type_collection
 ^^^^^^^^^^^^^^^^^^^^^^
