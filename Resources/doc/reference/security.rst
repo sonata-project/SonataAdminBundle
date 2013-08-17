@@ -25,9 +25,8 @@ There is a little magic in the ``SonataAdminBundle``: if the bundle detects the
 ``SonataUserBundle`` class, then the default ``user_block`` template will be
 changed to use the one provided by the ``SonataUserBundle``.
 
-The install process is available on the dedicated `SonataUserBundle's
-documentation area
-<http://sonata-project.org/bundles/user/master/doc/reference/installation.html>`_
+The install process is available on the dedicated 
+`SonataUserBundle's documentation area`_.
 
 
 Security handlers
@@ -138,8 +137,8 @@ So our ``security.yml`` file may look to something like this:
 
 Note that we also set ``access_strategy`` to unanimous.
 It means that if one voter (for example Sonata) refuses access, access will be denied.
-For more information on this subject, please see `here
-<http://symfony.com/doc/2.2/cookbook/security/voters.html#changing-the-access-decision-strategy>`_
+For more information on this subject, please see `changing the access decision strategy`_ 
+in the Symfony documentation.
 
 Usage
 ~~~~~
@@ -178,8 +177,7 @@ Going further
 ~~~~~~~~~~~~~
 
 Because Sonata role handler supplements Symfony2 security, but does not override it, you are free to do more advanced operations.
-For example, you can `create your own voter
-<http://symfony.com/doc/2.2/cookbook/security/voters.html>`_
+For example, you can `create your own voter`_
 
 Customizing the handler behavior
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -673,3 +671,7 @@ service to use when retrieving your users.
     sonata_admin:
         security:
             acl_user_manager: my_user_manager # The name of your service
+
+.. _`SonataUserBundle's documentation area`: http://sonata-project.org/bundles/user/master/doc/reference/installation.html
+.. _`changing the access decision strategy`: http://symfony.com/doc/2.2/cookbook/security/voters.html#changing-the-access-decision-strategy
+.. _`create your own voter`: http://symfony.com/doc/2.2/cookbook/security/voters.html

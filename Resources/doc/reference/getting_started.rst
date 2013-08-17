@@ -1,22 +1,21 @@
 Getting started with SonataAdminBundle
 ======================================
 
-After installation of SonataAdminBundle you need to configure it for your models.
-Here is a quick checklist of what is needed to quickly setup SonataAdminBundle
-and create your first admin interface for the models of your application:
+If you followed the installation instructions, SonataAdminBundle should be installed
+but inaccessible. You first need to configure it for your models before you can
+start using it. Here is a quick checklist of what is needed to quickly setup
+SonataAdminBundle and create your first admin interface for the models of your application:
 
 * Step 1: Define SonataAdminBundle routes
-* Step 2: Setup the persistency service (ORM, ODM, ...)
-* Step 3: Create admin class
-* Step 4: Create admin service
-* Step 5: Configuration
-* Step 6: Security
+* Step 2: Create an Admin class
+* Step 3: Create an Admin service
+* Step 4: Configuration
 
 Step 1: Define SonataAdminBundle routes
 ---------------------------------------
 
-SonataAdminBundle contains several routes. Import them by adding the following
-code to your application's routing file:
+To be able to access SonataAdminBundle's pages, you need to add its routes
+to your application's routing file:
 
 .. code-block:: yaml
 
@@ -36,98 +35,95 @@ code to your application's routing file:
     the above routing configuration must be placed in routing.xml or
     routing.php according to your format (i.e. XML or PHP).
 
-At this point you can already access the admin dashboard by visiting the url:
+At this point you can already access the (empty) admin dashboard by visiting the url:
 ``http://yoursite.local/admin/dashboard``.
 
 
-Step 2: Setup the persistence service (ORM, ODM, ...)
------------------------------------------------------
+Step 2: Create an Admin class
+-----------------------------
 
-SonataAdminBundle does not impose any persistency services (service for handling and
-controlling your models), however most likely your application will use some
-persistency services (like ORM or ODM for database and document stores) therefore
-you can use the following bundles officially supported by Sonata Project's admin
-bundle:
+SonataAdminBundle helps you manage your data using a graphic interface that
+will let you create, update or search your model's instances. Those actions need to
+be configured, which is done using an Admin class.
 
-* SonataDoctrineORMAdminBundle
-* SonataDoctrineMongoDBAdminBundle
-* SonataDoctrinePhpcrAdminBundle
-* SonataPropelAdminBundle
+An Admin class represents the mapping of your model to each administration action.
+In it, you decide which fields to show on a listing, which to use as filters or what
+to show on an creation/edition form.
 
-Install a persistency service you need and configure it according to their
-related documentation.
+The easiest way to create an Admin class for your model is to extend
+the ``Sonata\AdminBundle\Admin\Admin`` class.
 
-Step 3: Create Admin class
---------------------------
-
-Admin class represents mapping of your model and administration sections (forms,
-list, show). The easiest way to create an admin class for your model is to extend
-the ``Sonata\AdminBundle\Admin\Admin`` class. For filter, list and show views, you can
-target a sub model property thanks to the dot-separated notation
-(eg: ``mySubModel.mySubSubModel.myProperty``).
-
-Here is a simple example from the SonataNewsBundle:
+Suppose your AcmeDemoBundle has a Post entity. This is how a basic Admin class
+for it could look like:
 
 .. code-block:: php
 
-   namespace Sonata\NewsBundle\Admin;
+   namespace Acme\DemoBundle\Admin;
 
    use Sonata\AdminBundle\Admin\Admin;
    use Sonata\AdminBundle\Datagrid\ListMapper;
    use Sonata\AdminBundle\Datagrid\DatagridMapper;
    use Sonata\AdminBundle\Form\FormMapper;
 
-   class TagAdmin extends Admin
+   class PostAdmin extends Admin
    {
+       //Fields to be shown on create/edit forms
        protected function configureFormFields(FormMapper $formMapper)
        {
            $formMapper
-               ->add('name')
-               ->add('enabled', null, array('required' => false))
+               ->add('title', 'text', array('label' => 'Post Title'))
+               ->add('author', 'entity', array('class' => 'Acme\DemoBundle\Entity\User'))
+               ->add('body') //if no type is specified, SonataAdminBundle tries to guess it
            ;
        }
 
+       //Fields to be shown on filter forms
        protected function configureDatagridFilters(DatagridMapper $datagridMapper)
        {
            $datagridMapper
-               ->add('name')
-               ->add('posts')
+               ->add('title')
+               ->add('author')
            ;
        }
 
+       //Fields to be shown on lists
        protected function configureListFields(ListMapper $listMapper)
        {
            $listMapper
-               ->addIdentifier('name')
+               ->addIdentifier('title')
                ->add('slug')
-               ->add('enabled')
+               ->add('author')
            ;
        }
    }
 
+Implementing these three functions is the first step to creating an Admin class.
+Other options are available, that will let you further customize the way your model
+is shown and handled. Those will be covered in more advanced chapters of this manual.
 
-Step 4: Create admin service
-----------------------------
+Step 3: Create an Admin service
+-------------------------------
 
-To notify your administration of your new admin class you need to create an
-admin service and link it into the framework by setting the sonata.admin tag.
+Now that you have created your Admin class, you need to create a service for it. This
+service needs to have the ``sonata.admin`` tag, which is your way of letting 
+SonataAdminBundle know that this particular service represents an Admin class: 
 
-Create either a new ``admin.xml`` or ``admin.yml`` file inside the ``MyBundle/Resources/config/`` folder:
+Create either a new ``admin.xml`` or ``admin.yml`` file inside the ``Acme/DemoBundle/Resources/config/`` folder:
 
 .. code-block:: xml
 
-   <!-- MyBundle/Resources/config/admin.xml -->
+   <!-- Acme/DemoBundle/Resources/config/admin.xml -->
    <container xmlns="http://symfony.com/schema/dic/services"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://symfony.com/schema/dic/services/services-1.0.xsd">
        <services>
-          <service id="sonata.admin.tag" class="YourNS\AdminBundle\Admin\BlogAdmin">
-             <tag name="sonata.admin" manager_type="orm" group="Posts" label="Blog"/>
+          <service id="sonata.admin.tag" class="Acme\DemoBundle\Admin\PostAdmin">
+             <tag name="sonata.admin" manager_type="orm" group="Content" label="Post"/>
              <argument />
-             <argument>YourNS\AdminBundle\Entity\Course</argument>
-             <argument>SonataAdminBundle:CRUD</argument>
+             <argument>Acme\DemoBundle\Entity\Post</argument>
+             <argument />
              <call method="setTranslationDomain">
-                 <argument>YourNSAdminBundle</argument>
+                 <argument>AcmeDemoBundle</argument>
              </call>
          </service>
       </services>
@@ -136,34 +132,56 @@ Create either a new ``admin.xml`` or ``admin.yml`` file inside the ``MyBundle/Re
 
 .. code-block:: yaml
 
-   # MyBundle/Resources/config/admin.yml
+   # Acme/DemoBundle/Resources/config/admin.yml
    services:
        sonata.admin.tag:
-           class: YourNS\AdminBundle\Admin\BlogAdmin
+           class: Acme\DemoBundle\Admin\PostAdmin
            tags:
-               - { name: sonata.admin, manager_type: orm, group: posts, label: "Blog" }
+               - { name: sonata.admin, manager_type: orm, group: "Content", label: "Post" }
            arguments:
                - ~
-               - YourNS\AdminBundle\Entity\Course
-               - 'SonataAdminBundle:CRUD'
+               - Acme\DemoBundle\Entity\Post
+               - ~
            calls:
-               - [ setTranslationDomain, [YourNSAdminBundle]]
+               - [ setTranslationDomain, [AcmeDemoBundle]]
 
-Now include your new configuration file in the framework (make sure that your ``resource`` value has the
-correct file extension depending on the code block that you used above):
+The basic configuration of an Admin service is quite simple. It creates a service
+instance based on the class you specified before, and accepts three arguments:
+
+    1. The Admin service's code (defaults to the service's name)
+    2. The model which this Admin class maps (required)
+    3. The controller that will handle the administration actions (defaults to SoantaAdminBundle:CRUDController)
+    
+Usually you just need to specify the second argument, as the first and third's default
+values will work for most scenarios.
+
+The ``setTranslationDomain`` call lets you choose which translation domain to use when
+translating labels on the admin pages. More info on the `symfony translations page`_.
+
+Now that you have a configuration file with you admin service, you just need to tell
+Symfony2 to load it. There are two ways to do so:
+
+1 - Importing it in the main config.yml
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Include your new configuration file in the main config.yml (make sure that you 
+use the correct file extension):
 
 .. code-block:: yaml
 
     # app/config/config.yml
     imports:
-        - { resource: @MyBundle/Resources/config/admin.xml }
+        - { resource: @AcmeDemoBundle/Resources/config/admin.xml }
 
-Or you can load the file inside with the Bundle's extension file using the ``load()`` method as described
-in the `symfony cookbook`_.
+2 - Have your bundle load it
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+You can also have your bundle load the admin configuration file. Inside your bundle's extension
+file, using the ``load()`` method as described in the `symfony cookbook`_.
 
 .. code-block:: php
     
-    # YourNS/AdminBundle/DependencyInjection/YourNSAdminBundleExtension.php for XML configurations
+    # Acme/DemoBundle/DependencyInjection/AcmeDemoBundleExtension.php for XML configurations
 
     use Symfony\Component\DependencyInjection\Loader;
     use Symfony\Component\Config\FileLocator;
@@ -176,7 +194,7 @@ in the `symfony cookbook`_.
 
 .. code-block:: php
     
-    # YourNS/AdminBundle/DependencyInjection/YourNSAdminBundleExtension.php for YAML configurations
+    # Acme/DemoBundle/DependencyInjection/AcmeDemoBundleExtension.php for YAML configurations
 
     use Symfony\Component\DependencyInjection\Loader;
     use Symfony\Component\Config\FileLocator;
@@ -187,73 +205,38 @@ in the `symfony cookbook`_.
         $loader->load('admin.yml');
     }
 
-Step 5: Configuration
+Step 4: Configuration
 ---------------------
 
-At this point you have basic administration for your model. If you wish to
-quickly customize your administration you can create some configuration options
-and change them according to your requirements:
+At this point you have basic administration actions for your model. If you visit ``http://yoursite.local/admin/dashboard`` again, you should now see a panel with
+your model mapped. You can start creating, listing, editing and deleting instances.
+
+You probably want to put your own project's name and logo on the top bar.
+You can do so on your project's main config.yml file:
 
 .. code-block:: yaml
 
     # app/config/config.yml
     sonata_admin:
-        title:      Sonata Project
-        title_logo: /bundles/sonataadmin/logo_title.png
-        templates:
-            # default global templates
-            layout:  SonataAdminBundle::standard_layout.html.twig
-            ajax:    SonataAdminBundle::ajax_layout.html.twig
-
-            # default actions templates, should extend a global templates
-            list:    SonataAdminBundle:CRUD:list.html.twig
-            show:    SonataAdminBundle:CRUD:show.html.twig
-            edit:    SonataAdminBundle:CRUD:edit.html.twig
-
-        dashboard:
-            blocks:
-                # display a dashboard block
-                - { position: left, type: sonata.admin.block.admin_list }
-
-Linking the admin class to the dashboard is done automatically because of the
-default option you defined above:
-
-.. code-block:: yaml
-
-    dashboard
-        blocks:
-            # display a dashboard block
-            - { position: left, type: sonata.admin.block.admin_list }
+        title:      Acme Demo Bundle
+        title_logo: /bundles/acmedemo/fancy_acme_logo.png
+        
 
 
-However you can define only admin groups you want to show in the dashboard by:
+Next steps - Security
+---------------------
 
-.. code-block:: yaml
+As you probably noticed, you were able to access your dashboard and data by just
+typing in the URL. By default, the SonataAdminBundle does not come with any user 
+management for ultimate flexibility. However, it is most likely that your application
+requires such feature. The Sonata Project includes a ``SonataUserBundle`` which
+integrates the very popular ``FOSUserBundle``. Please refer to the :doc:`security` section of
+this documentation for more information.
 
-    dashboard
-        blocks:
-            # display a dashboard block
-            - { position: left, type: sonata.admin.block.admin_list }
-
-        groups:
-            sonata_page:
-                label: Page
-                items: ~
-
-More information can be found in the configuration chapter of this documentation.
-
-
-Step 6: Security
-----------------
-
-The last important step is security. By default, the SonataAdminBundle does not
-come with any user management for ultimate flexibility, however it is most
-likely your application requires such feature. The Sonata Project includes a
-``SonataUserBundle`` which integrates the very popular ``FOSUserBundle``. Please
-refer to the security section of this documentation for more information.
-
-
-That should be it! Read next sections fore more verbose documentation of the
-SonataAdminBundle and how to tweak it for your requirements.
+Congratulations! You are ready to start using SonataAdminBundle. You can now map
+additional models or explore advanced functionalities. The following sections will
+each address a specific section or functionality of the bundle, giving deeper
+details on what can be configured and achieved with SonataAdminBundle.
 
 .. _`symfony cookbook`: http://symfony.com/doc/master/cookbook/bundles/extension.html#using-the-load-method
+.. _`symfony translations page`: http://symfony.com/doc/current/book/translation.html#using-message-domains

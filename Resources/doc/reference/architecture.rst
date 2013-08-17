@@ -68,112 +68,181 @@ All these dependencies have default values that you can override by a using
               <argument>sonata.admin.label.strategy.underscore</argument>
           </call>
       </service>
+      
+.. code-block:: yaml
 
-Here, we declare the same Admin service as before, but using a different label translator strategy, replacing the default one. Notice that ``sonata.admin.label.strategy.underscore`` is a 
+    services:
+        sonata.admin.tag:
+            class: Acme\DemoBundle\Admin\PostAdmin
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Content", label: "Post" }
+            arguments:
+                - ~
+                - Acme\DemoBundle\Entity\Post
+                - ~
+            calls:
+                - [ setLabelTranslatorStrategy, [sonata.admin.label.strategy.underscore]]
+
+Here, we declare the same Admin service as before, but using a different label translator strategy, 
+replacing the default one. Notice that ``sonata.admin.label.strategy.underscore`` is a 
 service provided by SonataAdminBundle, but you could just as easily use a service of your
 own.
-
-Field Definition
-----------------
-
-A field definition is a ``FieldDescription`` object. There is one definition per list
-field.
-
-The definition contains:
-
-* ``name``: The name of the field definition;
-* ``type``: The field type;
-* ``template``: The template used for displaying the field;
-* ``targetEntity``: The class name of the target entity for relations;
-* ``options``: Certain field types have additional options;
-
-Template Configuration
-----------------------
-
-The current implementation uses Twig as the template engine. All templates
-are located in the ``Resources/views/CRUD`` directory of the bundle. The base
-template extends two layouts:
-
-* ``AdminBundle::standard_layout.html.twig``
-* ``AdminBundle::ajax_layout.html.twig``
-
-The base templates can be configured in the Service Container. So you can easily tweak
-the layout to suit your requirements.
-
-Each field is rendered in three different ways and each has its own Twig
-template. For example, for a field with a ``text`` type, the following three
-templates will be used:
-
-* ``filter_text.twig``: template used in the filter box
-* ``list_text.twig``: template used in the list table
 
 CRUDController
 --------------
 
-The controller contains the basic CRUD actions. It is related to one
-``Admin`` class by mapping the controller name to the correct ``Admin``
-instance.
+The ``CRUDController`` contains the actions you have available to manipulate
+your model instances, like list, create or delete. It uses the ``Admin`` class
+to determine its behavior, like which fields to display in the edition form, or
+how to build the list view. Inside the ``CRUDController``, you can find the
+``Admin`` class instance in the ``$admin``.
 
-Any or all actions can be overwritten to suit the project's requirements.
+The ``CRUDController`` is no different than any other Symfony2 controller,
+meaning you have all the usual options available to you, like getting services
+from the Dependency Injection Container (DIC).
 
-The controller uses the ``Admin`` class to construct the different actions.
-Inside the controller, the ``Admin`` object is accessible through the
-``configuration`` property.
-
-Obtaining an ``Admin`` Service
-------------------------------
-
-``Admin`` definitions are accessible through the ``sonata.admin.pool`` service or
-directly from the DIC (dependency injection container). The ``Admin`` definitions
-are lazy-loaded from the DIC to reduce overhead.
-
-Declaring a new Admin class
----------------------------
-
-Once you have created an admin class, you need to make the framework aware of
-it. To do that, you need to add a tag with the name ``sonata.admin`` to the
-service. Parameters for that tag are:
-
-* ``manager_type``: Label of the database manager to use;
-* ``group``: A label to allow grouping on the dashboard;
-* ``label``: Label to use for the name of the entity this manager handles;
-
-Examples:
+This is particulary useful if you decide to extend the ``CRUDController``, to
+add new actions or change the behavior of existing ones. You can specify which controller
+to use when declaring the Admin service, by passing it as the 3rd argument:
 
 .. code-block:: xml
 
-    <!-- app/config/config.xml -->
-    <service id="sonata.news.admin.post" class="Sonata\NewsBundle\Admin\PostAdmin">
-
-        <tag name="sonata.admin" manager_type="orm" group="sonata_blog" label="post"/>
-
-        <argument />
-        <argument>Sonata\NewsBundle\Entity\Post</argument>
-        <argument>SonataAdminBundle:CRUD</argument>
-    </service>
-
-If you want to define your own controller for handling CRUD operations, change the last argument
-in the service definition to::
-
-  <argument>SonataNewsBundle:PostAdmin</argument>
-
-Or if you're using a YML configuration file,
-
+    <services>
+       <service id="sonata.admin.tag" class="Acme\DemoBundle\Admin\PostAdmin">
+          <tag name="sonata.admin" manager_type="orm" group="Content" label="Post"/>
+          <argument />
+          <argument>Acme\DemoBundle\Entity\Post</argument>
+          <argument>AcmeDemoBundle:PostAdmin</argument>
+          <call method="setTranslationDomain">
+              <argument>AcmeDemoBundle</argument>
+          </call>
+      </service>
+   </services>
+    
 .. code-block:: yaml
 
     services:
-       sonata.news.admin.post:
-          class: Sonata\NewsBundle\Admin\PostAdmin
-          tags:
-            - { name: sonata.admin, manager_type: orm, group: sonata_blog, label: post }
-          arguments: [null, Sonata\NewsBundle\Entity\Post, SonataNewsBundle:PostAdmin]
+        sonata.admin.tag:
+            class: Acme\DemoBundle\Admin\PostAdmin
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Content", label: "Post" }
+            arguments:
+                - ~
+                - Acme\DemoBundle\Entity\Post
+                - AcmeDemoBundle:PostAdmin
+            calls:
+                - [ setTranslationDomain, [AcmeDemoBundle]]
+
+When extending a ``CRUDController``, remember that the ``Admin`` class already has
+a set of automatically injected dependencies that are useful when implementing several
+scenarios. Refer to the existing ``CRUDController`` actions for examples on how to get
+the best out of them. 
+
+Fields Definition
+-----------------
+
+Your ``Admin`` class will map your model's fields to a field in every action defined in you ``CRUDController``. So, for each action, a list of field mappings is generated. These lists 
+are implemented using the ``FieldDescriptionCollection`` class which, stores instances of
+``FieldDescriptionInterface``. Picking up on our previous ``Admin`` class example:
+
+.. code-block:: php
+
+   namespace Acme\DemoBundle\Admin;
+
+   use Sonata\AdminBundle\Admin\Admin;
+   use Sonata\AdminBundle\Datagrid\ListMapper;
+   use Sonata\AdminBundle\Datagrid\DatagridMapper;
+   use Sonata\AdminBundle\Form\FormMapper;
+
+   class PostAdmin extends Admin
+   {
+       //Fields to be shown on create/edit forms
+       protected function configureFormFields(FormMapper $formMapper)
+       {
+           $formMapper
+               ->add('title', 'text', array('label' => 'Post Title'))
+               ->add('author', 'entity', array('class' => 'Acme\DemoBundle\Entity\User'))
+               ->add('body') //if no type is specified, SonataAdminBundle tries to guess it
+           ;
+       }
+
+       //Fields to be shown on filter forms
+       protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+       {
+           $datagridMapper
+               ->add('title')
+               ->add('author')
+           ;
+       }
+
+       //Fields to be shown on lists
+       protected function configureListFields(ListMapper $listMapper)
+       {
+           $listMapper
+               ->addIdentifier('title')
+               ->add('slug')
+               ->add('author')
+           ;
+       }
+   }
+
+Internally, the provided ``Admin`` class will use these three functions to create three 
+``FieldDescriptionCollection`` instances: 
+
+* ``$formFieldDescriptions``, containing three ``FieldDescriptionInterface`` instances
+* ``$filterFieldDescriptions``, containing two ``FieldDescriptionInterface`` instances
+* ``$listFieldDescriptions``, containing three ``FieldDescriptionInterface`` instances
+
+The actual ``FieldDescription`` implementation is provided by the storage
+abstraction bundle that you choose during the installation process, based on the
+``BaseFieldDescription`` abstract class provided by ``SonataAdminBundle``.
+
+Each ``FieldDescription`` contains various details about a field mapping. Some of
+them are independent of the action in which they are used, like ``name`` or ``type``,
+while other are used only in specific actions. More information can be found on the
+``BaseFieldDescription`` class file.
+
+In most scenarios, you won't actually need to handle ``FieldDescription`` yourself.
+However, it is important that you know it exists and how it's used, as it sits at the
+core of ``SonataAdminBundle``.
+
+Templates
+---------
+
+Like all actions, ``CRUDController`` actions needs templates in which to be rendered.
+``SonataAdminBundle`` provides ready to use views as well as ways to easily customize them.
+
+The current implementation uses Twig as the template engine. All templates
+are located in the ``Resources/views`` directory of the bundle.
+
+There are two base templates, one of which is ultimately used in every action:
+
+* ``SonataAdminBundle::standard_layout.html.twig``
+* ``SonataAdminBundle::ajax_layout.html.twig``
+
+Like the names say, one if for standard calls, the other one for AJAX.
+
+The subfolders include Twig files for specific sections of ``SonataAdminBundle``:
+
+* Block: ``SonataBlockBundle`` block views. Right now it only has one, that displays all the mapped classes on the dashboard
+* Button: Buttons such as ``Add new`` or ``Delete`` that you can see across several CRUD actions
+* CRUD: Base views for every CRUD action, plus several field views for each field type
+* Core: Dashboard view, together with deprecated and stub twig files.
+* Form: Views related to form rendering
+* Helper: a view providing a short object description, as part of a specific form field type provided by ``SonataAdminBundle``
+* Pager: Pagination related view files
+
+These will be discussed in greater detail in the specific :doc:`templates` section, where 
+you will also find instructions on how to configure ``SonataAdminBundle`` to use your templates
+instead of the default ones.
+
+Managing ``Admin`` Service
+------------------------------
+
+You ``Admin`` service definitions are parsed when Symfony2 is loaded, and handled by
+the ``Pool`` class. This class, available as the ``sonata.admin.pool`` service from the
+DIC (dependency injection container), handles the ``Admin`` classes lazy-loading from the DIC to reduce overhead.
 
 
-You can extend ``Sonata\AdminBundle\Admin\Admin`` class to minimize the amount of
-code to write. This base admin class uses the routing services to build routes.
-Note that you can use both the Bundle:Controller format or a `service name`_ to
-specify what controller to load. If you provide null instead of SonataNewsBundle:PostAdmin,
-you will not need to create a controller class and the system will use the default.
 
 .. _`Django Project Website`: http://www.djangoproject.com/
-.. _`service name`: http://symfony.com/doc/2.1/cookbook/controller/service.html
