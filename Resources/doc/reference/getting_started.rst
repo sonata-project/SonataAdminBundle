@@ -35,6 +35,13 @@ to your application's routing file:
     the above routing configuration must be placed in routing.xml or
     routing.php according to your format (i.e. XML or PHP).
 
+.. note::
+
+    For those curious about the ``resource: .`` setting: it is unusual syntax but used 
+    because Symfony requires a resource to be defined (which points to a real file). 
+    Once this validation passes Sonata's ``AdminPoolLoader`` is in charge of processing 
+    this route and it simply ignores the resource setting.
+
 At this point you can already access the (empty) admin dashboard by visiting the url:
 ``http://yoursite.local/admin/dashboard``.
 
