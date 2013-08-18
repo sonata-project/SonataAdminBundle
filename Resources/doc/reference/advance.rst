@@ -127,41 +127,6 @@ To create your own RouteBuilder create the PHP class and register it as a servic
     </service>
 
 
-Configure the default page and ordering in the list view
---------------------------------------------------------
-
-Configuring the default page and ordering column can simply be achieved by overriding
-the ``datagridValues`` array property. All three keys ``_page``, ``_sort_order`` and
-``_sort_by`` can be omitted.
-
-.. code-block:: php
-
-    <?php
-
-    use Sonata\AdminBundle\Admin\Admin;
-
-    class PageAdmin extends Admin
-    {
-        // ...
-
-        /**
-         * Default Datagrid values
-         *
-         * @var array
-         */
-        protected $datagridValues = array(
-            '_page' => 1,            // display the first page (default = 1)
-            '_sort_order' => 'DESC', // reverse order (default = 'ASC')
-            '_sort_by' => 'updated'  // name of the ordered field 
-                                     // (default = the model's id field, if any)
-    
-            // the '_sort_by' key can be of the form 'mySubModel.mySubSubModel.myField'.
-        );
-
-        // ...
-    }
-
-
 Inherited classes
 -----------------
 
