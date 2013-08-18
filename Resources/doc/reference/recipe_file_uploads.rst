@@ -240,6 +240,7 @@ class to determine which fields to show.
 In PageAdmin we then have the following code to manage the relationships' lifecycles:
 
 .. code-block:: php
+
     class PageAdmin extends Admin
     {
         // ...

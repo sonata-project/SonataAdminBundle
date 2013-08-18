@@ -104,9 +104,9 @@ class ModelChoiceList extends SimpleChoiceList
      *
      * If the entities were passed in the "choices" option, this method
      * does not have any significant overhead. Otherwise, if a query builder
-     * was passed in the "query_builder" option, this builder is now used
-     * to construct a query which is executed. In the last case, all entities
-     * for the underlying class are fetched from the repository.
+     * was passed in the "query" option, this builder is now used to construct 
+     * a query which is executed. In the last case, all entities for the 
+     * underlying class are fetched from the repository.
      *
      * If the option "property" was passed, the property path in that option
      * is used as option values. Otherwise this method tries to convert
