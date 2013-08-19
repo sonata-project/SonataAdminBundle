@@ -114,6 +114,35 @@ class AddDependencyCallsCompilerPassTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Sonata\AdminBundle\DependencyInjection\Compiler\AddDependencyCallsCompilerPass::process
+     */
+    public function testProcessGroupNameAsParameter()
+    {
+        $config = array(
+            'dashboard' => array(
+                'groups' => array(
+                    '%sonata.admin.parameter.groupname%' => array(
+                    ),
+                )
+            )
+        );
+        
+        $container = $this->getContainer();
+        $container->setParameter('sonata.admin.parameter.groupname', 'resolved_group_name');
+        
+        $this->extension->load(array($config), $container);
+
+        $compilerPass = new AddDependencyCallsCompilerPass();
+        $compilerPass->process($container);
+        $container->compile();
+        
+        $adminGroups = $container->get('sonata.admin.pool')->getAdminGroups();
+
+        $this->assertArrayHasKey('resolved_group_name', $adminGroups);
+        $this->assertFalse(array_key_exists('%sonata.admin.parameter.groupname%', $adminGroups));
+    }
+
+    /**
      * @return array
      */
     protected function getConfig()
