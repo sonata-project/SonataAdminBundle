@@ -11,6 +11,7 @@
 
 namespace Sonata\AdminBundle\Tests\Generator;
 
+use Sonata\AdminBundle\Generator\AbstractBcGenerator;
 use Sonata\AdminBundle\Tests\Fixtures\Generator\GeneratorBc22;
 use Sonata\AdminBundle\Tests\Fixtures\Generator\GeneratorBc23;
 
@@ -34,8 +35,12 @@ class AbstractBcGeneratorTest extends \PHPUnit_Framework_TestCase
         error_reporting(self::$errorReportingBackup);
     }
 
-    public function testRenderBc()
+    public function testRenderBc22()
     {
+        if (AbstractBcGenerator::getGeneratorVersion() != '2.2') {
+            $this->markTestSkipped('Wrong Sensio Generator version, expected 2.2');
+        }
+
         $skeletonDir = 'path/to/templates';
         $template = 'test.html.twig';
         $parameters = array('foo' => 'bar');
@@ -44,15 +49,14 @@ class AbstractBcGeneratorTest extends \PHPUnit_Framework_TestCase
         $generator22->setSkeletonDirs($skeletonDir);
         $generator22->setBc(true);
         $this->assertEquals('Result OK', $this->callMethod($generator22, 'renderBc', array($template, $parameters)));
-
-        $generator23 = new GeneratorBc23();
-        $generator23->setSkeletonDirs($skeletonDir);
-        $generator23->setBc(false);
-        $this->assertEquals('Result OK', $this->callMethod($generator23, 'renderBc', array($template, $parameters)));
     }
 
-    public function testRenderFileBc()
+    public function testRenderFileBc22()
     {
+        if (AbstractBcGenerator::getGeneratorVersion() != '2.2') {
+            $this->markTestSkipped('Wrong Sensio Generator version, expected 2.2');
+        }
+
         $skeletonDir = 'path/to/templates';
         $template = 'test.html.twig';
         $parameters = array('foo' => 'bar');
@@ -62,12 +66,41 @@ class AbstractBcGeneratorTest extends \PHPUnit_Framework_TestCase
         $generator22->setSkeletonDirs($skeletonDir);
         $generator22->setBc(true);
         $this->assertTrue($this->callMethod($generator22, 'renderFileBc', array($template, $target, $parameters)));
+    }
+
+    public function testRenderBc23()
+    {
+        if (AbstractBcGenerator::getGeneratorVersion() != '2.3') {
+            $this->markTestSkipped('Wrong Sensio Generator version, expected 2.3');
+        }
+
+        $skeletonDir = 'path/to/templates';
+        $template = 'test.html.twig';
+        $parameters = array('foo' => 'bar');
+
+        $generator23 = new GeneratorBc23();
+        $generator23->setSkeletonDirs($skeletonDir);
+        $generator23->setBc(false);
+        $this->assertEquals('Result OK', $this->callMethod($generator23, 'renderBc', array($template, $parameters)));
+    }
+
+    public function testRenderFileBc23()
+    {
+        if (AbstractBcGenerator::getGeneratorVersion() != '2.3') {
+            $this->markTestSkipped('Wrong Sensio Generator version, expected 2.3');
+        }
+
+        $skeletonDir = 'path/to/templates';
+        $template = 'test.html.twig';
+        $parameters = array('foo' => 'bar');
+        $target = 'target_file';
 
         $generator23 = new GeneratorBc23();
         $generator23->setSkeletonDirs($skeletonDir);
         $generator23->setBc(false);
         $this->assertTrue($this->callMethod($generator23, 'renderFileBc', array($template, $target, $parameters)));
     }
+
 
     protected function callMethod($obj, $name, array $args)
     {

@@ -33,6 +33,18 @@ abstract class AbstractBcGenerator extends Generator
     private $bcEnabled = false;
 
     /**
+     * Returns the Generator Version
+     *
+     * @return string
+     */
+    public static function getGeneratorVersion()
+    {
+        $r = new \ReflectionClass('Sensio\Bundle\GeneratorBundle\Generator\Generator');
+
+        return $r->hasMethod('setSkeletonDirs') === true ? '2.3' : '2.2';
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function setSkeletonDirs($skeletonDirs)
@@ -41,12 +53,12 @@ abstract class AbstractBcGenerator extends Generator
 
         $this->bcEnabled = false;
 
-        if (method_exists(get_parent_class(get_parent_class($this)), 'setSkeletonDirs')) {
-            //Sensio Generator >=2.3
-            parent::setSkeletonDirs($skeletonDirs);
-        } else {
-            //Sensio Generator 2.2
+        if (self::getGeneratorVersion() === '2.2') {
             $this->bcEnabled = true;
+        }
+
+        if (self::getGeneratorVersion() === '2.3') {
+            parent::setSkeletonDirs($this->skeletonDirs);
         }
     }
 
@@ -60,25 +72,38 @@ abstract class AbstractBcGenerator extends Generator
         $this->bcEnabled = $bcEnabled;
     }
 
+    /**
+     * @param string $template
+     * @param array $parameters
+     *
+     * @return string
+     */
     protected function renderBc($template, $parameters)
     {
         if ($this->bcEnabled) {
             //Sensio Generator 2.2
             return $this->render($this->skeletonDirs, $template, $parameters);
-        } else {
-            //Sensio Generator >=2.3
-            return $this->render($template, $parameters);
         }
+
+        //Sensio Generator >=2.3
+        return $this->render($template, $parameters);
     }
 
+    /**
+     * @param string $template
+     * @param string $target
+     * @param array  $parameters
+     *
+     * @return int
+     */
     protected function renderFileBc($template, $target, $parameters)
     {
         if ($this->bcEnabled) {
             //Sensio Generator 2.2
             return $this->renderFile($this->skeletonDirs, $template, $target, $parameters);
-        } else {
-            //Sensio Generator >=2.3
-            return $this->renderFile($template, $target, $parameters);
         }
+
+        //Sensio Generator >=2.3
+        return $this->renderFile($template, $target, $parameters);
     }
 }
