@@ -124,7 +124,7 @@ Create either a new ``admin.xml`` or ``admin.yml`` file inside the ``Acme/DemoBu
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://symfony.com/schema/dic/services/services-1.0.xsd">
        <services>
-          <service id="sonata.admin.tag" class="Acme\DemoBundle\Admin\PostAdmin">
+          <service id="sonata.admin.post" class="Acme\DemoBundle\Admin\PostAdmin">
              <tag name="sonata.admin" manager_type="orm" group="Content" label="Post"/>
              <argument />
              <argument>Acme\DemoBundle\Entity\Post</argument>
@@ -141,7 +141,7 @@ Create either a new ``admin.xml`` or ``admin.yml`` file inside the ``Acme/DemoBu
 
    # Acme/DemoBundle/Resources/config/admin.yml
    services:
-       sonata.admin.tag:
+       sonata.admin.post:
            class: Acme\DemoBundle\Admin\PostAdmin
            tags:
                - { name: sonata.admin, manager_type: orm, group: "Content", label: "Post" }
