@@ -16,13 +16,13 @@ The ``Admin`` class maps a specific model to the rich CRUD interface provided by
 ``SonataAdminBundle``. In other words, using your ``Admin`` classes, you can configure
 what is shown by ``SonataAdminBundle`` in each CRUD action for the associated model.
 By now you've seen 3 of those actions in the ``getting started`` page: list, 
-filter and form (for creation/edition). However, a fully configured ``Admin`` class
+filter and form (for creation/editing). However, a fully configured ``Admin`` class
 can define more actions:
 
-* ``list``: The fields displayed in the list table;
-* ``filter``: The fields available for filtering the list;
-* ``form``: The fields used to create/edit the entity;
-* ``show``: The fields used to show the entity;
+* ``list``: The fields displayed in the list table
+* ``filter``: The fields available for filtering the list
+* ``form``: The fields used to create/edit the entity
+* ``show``: The fields used to show the entity
 * Batch actions: Actions that can be performed on a group of entities
   (e.g. bulk delete)
 
@@ -32,20 +32,20 @@ map your models, by extending it. However, any implementation of the
 service. For each ``Admin`` service, the following required dependencies are 
 automatically injected by the bundle:
 
-* ``ModelManager``: service which handles specific ORM code
-* ``FormContractor``: builds the edit/create views form using the Symfony ``FormBuilder``
-* ``ShowBuilder``: builds the 'show' view
+* ``ConfigurationPool``: configuration pool where all Admin class instances are stored
+* ``ModelManager``: service which handles specific code relating to your persistence layer (e.g. Doctrine ORM)
+* ``FormContractor``: builds the forms for the edit/create views using the Symfony ``FormBuilder``
+* ``ShowBuilder``: builds the show fields
 * ``ListBuilder``: builds the list fields
 * ``DatagridBuilder``: builds the filter fields
-* ``Translator``: generates translations
-* ``ConfigurationPool``: configuration pool where all Admin class instances are stored
+* ``Request``: the http request received
+* ``RouteBuilder``: allows you to add routes for new actions and remove routes for default actions
 * ``RouterGenerator``: generates the different urls
-* ``Validator``: handles model validation
 * ``SecurityHandler``: handles permissions for model instances and actions
-* ``MenuFactory``: generates the side menu, depending on the current action
-* ``RouteBuilder``: allows you to easily add routes for new actions
-* ``Request`` : http request received
+* ``Validator``: handles model validation
+* ``Translator``: generates translations
 * ``LabelTranslatorStrategy``: a strategy to use when generating labels 
+* ``MenuFactory``: generates the side menu, depending on the current action
 
 .. note::
 
@@ -54,8 +54,8 @@ automatically injected by the bundle:
     chapter. In most cases, you won't need to worry about their underlying implementation.
 
 
-All these dependencies have default values that you can override by a using 
-``call`` to the matching ``setter`` when declaring the ``Admin`` service, like so:
+All of these dependencies have default values that you can override when declaring any of
+your ``Admin`` services. This is done using a ``call`` to the matching "setter":
 
 .. code-block:: xml
 
@@ -92,18 +92,23 @@ CRUDController
 --------------
 
 The ``CRUDController`` contains the actions you have available to manipulate
-your model instances, like list, create or delete. It uses the ``Admin`` class
-to determine its behavior, like which fields to display in the edit form, or
-how to build the list view. Inside the ``CRUDController``, you can find the
-``Admin`` class instance in the ``$admin`` variable.
+your model instances, like create, list, edit or delete. It uses the ``Admin`` 
+class to determine its behavior, like which fields to display in the edit form, 
+or how to build the list view. Inside the ``CRUDController``, you can access the
+``Admin`` class instance via the ``$admin`` variable.
 
-The ``CRUDController`` is no different than any other Symfony2 controller,
-meaning you have all the usual options available to you, like getting services
-from the Dependency Injection Container (DIC).
+.. note::
 
-This is particulary useful if you decide to extend the ``CRUDController``, to
+    `CRUD is an acronym`_ for "Create, Read, Update and Delete"
+
+The ``CRUDController`` is no different to any other Symfony2 controller, meaning 
+that you have all the usual options available to you, like getting services from 
+the Dependency Injection Container (DIC).
+
+This is particulary useful if you decide to extend the ``CRUDController`` to
 add new actions or change the behavior of existing ones. You can specify which controller
-to use when declaring the ``Admin`` service, by passing it as the 3rd argument:
+to use when declaring the ``Admin`` service by passing it as the 3rd argument. For example
+to set the controller to ``AcmeDemoBundle:PostAdmin``:
 
 .. code-block:: xml
 
@@ -133,18 +138,19 @@ to use when declaring the ``Admin`` service, by passing it as the 3rd argument:
             calls:
                 - [ setTranslationDomain, [AcmeDemoBundle]]
 
-When extending a ``CRUDController``, remember that the ``Admin`` class already has
+When extending ``CRUDController``, remember that the ``Admin`` class already has
 a set of automatically injected dependencies that are useful when implementing several
-scenarios. Refer to the existing ``CRUDController`` actions for examples on how to get
+scenarios. Refer to the existing ``CRUDController`` actions for examples of how to get
 the best out of them. 
 
 Fields Definition
 -----------------
 
-Your ``Admin`` class will map your model's fields to a field in every action defined in you 
-``CRUDController``. So, for each action, a list of field mappings is generated. These lists 
-are implemented using the ``FieldDescriptionCollection`` class which stores instances of
-``FieldDescriptionInterface``. Picking up on our previous ``Admin`` class example:
+Your ``Admin`` class defines which of your model's fields will be available in each 
+action defined in your ``CRUDController``. So, for each action, a list of field mappings 
+is generated. These lists are implemented using the ``FieldDescriptionCollection`` class 
+which stores instances of ``FieldDescriptionInterface``. Picking up on our previous 
+``PostAdmin`` class example:
 
 .. code-block:: php
 
@@ -191,19 +197,22 @@ Internally, the provided ``Admin`` class will use these three functions to creat
 ``FieldDescriptionCollection`` instances: 
 
 * ``$formFieldDescriptions``, containing three ``FieldDescriptionInterface`` instances
+  for title, author and body
 * ``$filterFieldDescriptions``, containing two ``FieldDescriptionInterface`` instances
+  for title and author
 * ``$listFieldDescriptions``, containing three ``FieldDescriptionInterface`` instances
+  for title, slug and author
 
-The actual ``FieldDescription`` implementation is provided by the storage
-abstraction bundle that you choose during the installation process, based on the
+The actual ``FieldDescription`` implementation is provided by the storage abstraction 
+bundle that you choose during the installation process, based on the
 ``BaseFieldDescription`` abstract class provided by ``SonataAdminBundle``.
 
 Each ``FieldDescription`` contains various details about a field mapping. Some of
 them are independent of the action in which they are used, like ``name`` or ``type``,
-while other are used only in specific actions. More information can be found on the
+while other are used only in specific actions. More information can be found in the
 ``BaseFieldDescription`` class file.
 
-In most scenarios, you won't actually need to handle ``FieldDescription`` yourself.
+In most scenarios, you won't actually need to handle the ``FieldDescription`` yourself.
 However, it is important that you know it exists and how it's used, as it sits at the
 core of ``SonataAdminBundle``.
 
@@ -216,7 +225,7 @@ Like most actions, ``CRUDController`` actions use view files to render their out
 The current implementation uses ``Twig`` as the template engine. All templates
 are located in the ``Resources/views`` directory of the bundle.
 
-There are two base templates, one of which is ultimately used in every action:
+There are two base templates, one of these is ultimately used in every action:
 
 * ``SonataAdminBundle::standard_layout.html.twig``
 * ``SonataAdminBundle::ajax_layout.html.twig``
@@ -225,13 +234,23 @@ Like the names say, one if for standard calls, the other one for AJAX.
 
 The subfolders include Twig files for specific sections of ``SonataAdminBundle``:
 
-* Block: ``SonataBlockBundle`` block views. Right now it only has one, that displays all the mapped classes on the dashboard
-* Button: Buttons such as ``Add new`` or ``Delete`` that you can see across several CRUD actions
-* CRUD: Base views for every CRUD action, plus several field views for each field type
-* Core: Dashboard view, together with deprecated and stub twig files.
-* Form: Views related to form rendering
-* Helper: a view providing a short object description, as part of a specific form field type provided by ``SonataAdminBundle``
-* Pager: Pagination related view files
+Block:
+  ``SonataBlockBundle`` block views. By default there is only has one, which 
+  displays all the mapped classes on the dashboard
+Button:
+  Buttons such as ``Add new`` or ``Delete`` that you can see across several 
+  CRUD actions
+CRUD:
+  Base views for every CRUD action, plus several field views for each field type
+Core:
+  Dashboard view, together with deprecated and stub twig files.
+Form:
+  Views related to form rendering
+Helper:
+  A view providing a short object description, as part of a specific form field 
+  type provided by ``SonataAdminBundle``
+Pager:
+  Pagination related view files
 
 These will be discussed in greater detail in the specific :doc:`templates` section, where 
 you will also find instructions on how to configure ``SonataAdminBundle`` to use your templates
@@ -242,10 +261,11 @@ Managing ``Admin`` Service
 
 Your ``Admin`` service definitions are parsed when Symfony2 is loaded, and handled by
 the ``Pool`` class. This class, available as the ``sonata.admin.pool`` service from the
-DIC, handles the ``Admin`` classes, lazy-loading them on demand
-(to reduce overhead) and matching each of them to a group. It's also responsible for handling the
-top level template files, administration panel title and logo.
+DIC, handles the ``Admin`` classes, lazy-loading them on demand (to reduce overhead) 
+and matching each of them to a group. It's also responsible for handling the top level 
+template files, administration panel title and logo.
 
 
 
 .. _`Django Project Website`: http://www.djangoproject.com/
+.. _`CRUD is an acronym`: http://en.wikipedia.org/wiki/CRUD
