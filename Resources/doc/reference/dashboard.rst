@@ -128,6 +128,7 @@ configuration method overrides the configuration defined as part of the
                     items: ~
                     item_adds:
                         - sonata.admin.page
+                    roles: [ ROLE_ONE, ROLE_TWO ]
                 acme.admin.group.misc: ~
 
 .. note::
@@ -147,6 +148,10 @@ declared as belonging to this group will not be displayed here.
 Secondly, we declare a ``acme.admin.group.blog`` as having all its default items 
 (by default we mean the ones specified in the ``Admin`` services declaration), plus
 an additional ``sonata.admin.page`` mapping, that was not initially part of this group.
+We also use the ``roles`` option here, used to specify that , instead of being visible
+to everyone, only users with ``ROLE_ONE`` or ``ROLE_TWO`` will be able to see this group. 
+Users with ``ROLE_SUPER_ADMIN`` are always able to see groups that would otherwise be
+hidden by this configuration option. 
 
 The third group keeps all the default values, as declared on the ``Admin`` service
 declaration.

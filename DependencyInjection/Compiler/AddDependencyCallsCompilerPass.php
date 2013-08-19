@@ -68,7 +68,8 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
                 if (!isset($groupDefaults[$groupName])) {
                     $groupDefaults[$groupName] = array(
                         'label'           => $groupName,
-                        'label_catalogue' => $labelCatalogue
+                        'label_catalogue' => $labelCatalogue,
+                        'roles' => array()
                     );
                 }
 
@@ -84,7 +85,8 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
                 if (!isset($groupDefaults[$groupName])) {
                     $groupDefaults[$groupName] = array(
                         'items' => array(),
-                        'label' => $groupName
+                        'label' => $groupName,
+                        'roles' => array()
                     );
                 }
 
@@ -102,6 +104,10 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
                 if (!empty($group['item_adds'])) {
                     $groups[$groupName]['items'] = array_merge($groups[$groupName]['items'], $group['item_adds']);
+                }
+
+                if (empty($group['roles'])) {
+                    $groups[$groupName]['roles'] = $groupDefaults[$groupName]['roles'];
                 }
             }
         } else {
