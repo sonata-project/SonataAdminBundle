@@ -106,6 +106,9 @@ The provided labels are actually translated by ``SonataAdminBundle``, using the 
 ``label_catalogue``. So, you can use the above examples to support multilanguage
 in your project.
 
+.. note::
+    You can use ``parameters`` as group names in both scenarios.
+
 Using the ``config.yml``
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
