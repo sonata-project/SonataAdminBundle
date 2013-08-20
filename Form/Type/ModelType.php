@@ -15,6 +15,8 @@ namespace Sonata\AdminBundle\Form\Type;
 use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceListInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
@@ -46,6 +48,16 @@ class ModelType extends AbstractType
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function buildView(FormView $view, FormInterface $form, array $options)
+    {
+        $view->vars['btn_add'] = $options['btn_add'];
+        $view->vars['btn_list'] = $options['btn_list'];
+        $view->vars['btn_delete'] = $options['btn_delete'];
+    }
+
+    /**
      * {@inheritDoc}
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
@@ -64,6 +76,9 @@ class ModelType extends AbstractType
             'query'             => null,
             'choices'           => null,
             'preferred_choices' => array(),
+            'btn_add'           => 'link_add',
+            'btn_list'          => 'link_list',
+            'btn_delete'        => 'link_delete',
             'choice_list'       => function (Options $options, $previousValue) {
                 if ($previousValue instanceof ChoiceListInterface && count($choices = $previousValue->getChoices())) {
                     return $choices;
