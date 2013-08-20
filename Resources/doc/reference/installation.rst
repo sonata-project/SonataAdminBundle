@@ -4,8 +4,8 @@ Installation
 SonataAdminBundle can be installed at any moment during a project's lifecycle,
 whether it's a clean Symfony2 installation or an existing project.
 
-1 - Downloading the code
-------------------------
+Downloading the code
+--------------------
 
 Use composer to manage your dependencies and download SonataAdminBundle:
 
@@ -21,8 +21,8 @@ for older versions:
 
     Please provide a version constraint for the sonata-project/jquery-bundle requirement: dev-master
 
-2 - Selecting and downloading a storage bundle
-----------------------------------------------
+Selecting and downloading a storage bundle
+------------------------------------------
 
 SonataAdminBundle is storage agnostic, meaning it can work with several storage
 mechanism. Depending on which you are using on your project, you'll need to install
@@ -37,14 +37,13 @@ instructions for each of them:
 .. note::
     Don't know which to choose? Most new users prefer SonataDoctrineORMAdmin, to interact with traditional relational databases (MySQL, PostrgreSQL, etc)
 
-3 - Enabling SonataAdminBundle and its dependencies
----------------------------------------------------
+Enabling SonataAdminBundle and its dependencies
+-----------------------------------------------
 
 SonataAdminBundle relies on other bundles to implement some features.
 Besides the storage layer mentioned on step 2, there are other bundles needed
 for SonataAdminBundle to work:
 
-    - `SonataCacheBundle <http://sonata-project.org/bundles/cache/master/doc/reference/installation.html>`_
     - `SonataBlockBundle <http://sonata-project.org/bundles/block/master/doc/reference/installation.html>`_
     - `SonatajQueryBundle <https://github.com/sonata-project/SonatajQueryBundle/blob/documentation/Resources/doc/reference/installation.rst>`_
     - `KnpMenuBundle <https://github.com/KnpLabs/KnpMenuBundle/blob/master/Resources/doc/index.md#installation>`_ (Version 1.1.*)
@@ -62,7 +61,6 @@ forget to enable SonataAdminBundle too:
             // ...
 
             //Add you dependencies
-            new Sonata\CacheBundle\SonataCacheBundle(),
             new Sonata\BlockBundle\SonataBlockBundle(),
             new Sonata\jQueryBundle\SonatajQueryBundle(),
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
@@ -84,8 +82,8 @@ forget to enable SonataAdminBundle too:
     you don't need to enable it again.
 
 
-4 - Configuring SonataAdminBundle dependencies
-----------------------------------------------
+Configuring SonataAdminBundle dependencies
+------------------------------------------
 
 You will need to configure SonataAdminBundle's dependecies. For each of the above
 mentioned bundles, check their respective installation/configuration instructions
@@ -112,8 +110,8 @@ dashboard. To be able to use it, make sure it's enabled on SonataBlockBundle's c
     what a block is. SonataBlockBundle is a useful tool, but it's not vital
     that you understand right now.
 
-5 - Cleaning up
----------------
+Cleaning up
+-----------
 
 Now, install the assets from the bundles:
 
