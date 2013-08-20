@@ -51,6 +51,7 @@ class AdminType extends AbstractType
         $view->vars['btn_add'] = $options['btn_add'];
         $view->vars['btn_list'] = $options['btn_list'];
         $view->vars['btn_delete'] = $options['btn_delete'];
+        $view->vars['btn_catalogue'] = $options['btn_catalogue'];
     }
 
     /**
@@ -65,7 +66,8 @@ class AdminType extends AbstractType
             'auto_initialize' => false,
             'btn_add'         => 'link_add',
             'btn_list'        => 'link_list',
-            'btn_delete'      => 'link_delete'
+            'btn_delete'      => 'link_delete',
+            'btn_catalogue'   => 'SonataAdminBundle'
         ));
     }
 
