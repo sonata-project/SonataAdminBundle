@@ -1,9 +1,9 @@
 Row templates
 =============
 
-From Sonata-2.2 it is possible to define a template per row for the list action. 
+From Sonata-2.2 it is possible to define a template per row for the list action.
 The default template is a standard table but there are circumstances where this
-type of layout might not be suitable. By defining a custom template for the row, 
+type of layout might not be suitable. By defining a custom template for the row,
 you can tweak the layout into something like this:
 
 .. figure:: ./../images/sonata_inline_row.png
@@ -18,36 +18,38 @@ The recipe
 Configure your Admin service
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The configuration takes place in the DIC by calling the ``setTemplates`` method. 
+The configuration takes place in the DIC by calling the ``setTemplates`` method.
 Two template keys need to be set:
 
 - ``inner_list_row``: The template for the row, which you will customize. Often
   you will want this to extend ``SonataAdminBundle:CRUD:base_list_flat_inner_row.html.twig``
 - ``base_list_field``: The base template for the cell, the default of
-  ``SonataAdminBundle:CRUD:base_list_flat_field.html.twig`` is suitable for most 
+  ``SonataAdminBundle:CRUD:base_list_flat_field.html.twig`` is suitable for most
   cases but it can be customized if required.
 
-.. code-block:: xml
+.. configuration-block::
 
-    <service id="sonata.admin.comment" class="%sonata.admin.comment.class%">
-        <tag name="sonata.admin" manager_type="orm" group="sonata_blog" label="comments" 
-            label_catalogue="%sonata.admin.comment.translation_domain%" 
-            label_translator_strategy="sonata.admin.label.strategy.underscore" />
-        <argument />
-        <argument>%sonata.admin.comment.entity%</argument>
-        <argument>%sonata.admin.comment.controller%</argument>
+    .. code-block:: xml
 
-        <call method="setTemplates">
-            <argument type="collection">
-                <argument key="inner_list_row">
-                    YourNSYourBundle:Admin:inner_row_comment.html.twig
+        <service id="sonata.admin.comment" class="%sonata.admin.comment.class%">
+            <tag name="sonata.admin" manager_type="orm" group="sonata_blog" label="comments"
+                label_catalogue="%sonata.admin.comment.translation_domain%"
+                label_translator_strategy="sonata.admin.label.strategy.underscore" />
+            <argument />
+            <argument>%sonata.admin.comment.entity%</argument>
+            <argument>%sonata.admin.comment.controller%</argument>
+
+            <call method="setTemplates">
+                <argument type="collection">
+                    <argument key="inner_list_row">
+                        YourNSYourBundle:Admin:inner_row_comment.html.twig
+                    </argument>
+                    <argument key="base_list_field">
+                        SonataAdminBundle:CRUD:base_list_flat_field.html.twig
+                    </argument>
                 </argument>
-                <argument key="base_list_field">
-                    SonataAdminBundle:CRUD:base_list_flat_field.html.twig
-                </argument>
-            </argument>
-        </call>
-    </service>
+            </call>
+        </service>
 
 
 Create your customized template
@@ -77,7 +79,7 @@ Once the templates are defined, create the template to render the row:
 
     {% endblock %}
 
-While this feature is nice to generate a rich list, it is also very easy to 
+While this feature is nice to generate a rich list, it is also very easy to
 break the layout and admin features such as batch and object actions. It is
 best to familiarise yourself with the default templates and extend them where
 possible, only changing what you need to customize.

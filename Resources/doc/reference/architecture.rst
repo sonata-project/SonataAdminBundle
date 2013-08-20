@@ -15,7 +15,7 @@ The Admin Class
 The ``Admin`` class maps a specific model to the rich CRUD interface provided by
 ``SonataAdminBundle``. In other words, using your ``Admin`` classes, you can configure
 what is shown by ``SonataAdminBundle`` in each CRUD action for the associated model.
-By now you've seen 3 of those actions in the ``getting started`` page: list, 
+By now you've seen 3 of those actions in the ``getting started`` page: list,
 filter and form (for creation/editing). However, a fully configured ``Admin`` class
 can define more actions:
 
@@ -27,9 +27,9 @@ can define more actions:
   (e.g. bulk delete)
 
 The ``Sonata\AdminBundle\Admin\Admin`` class is provided as an easy way to
-map your models, by extending it. However, any implementation of the 
+map your models, by extending it. However, any implementation of the
 ``Sonata\AdminBundle\Admin\AdminInterface`` can be used to define an ``Admin``
-service. For each ``Admin`` service, the following required dependencies are 
+service. For each ``Admin`` service, the following required dependencies are
 automatically injected by the bundle:
 
 * ``ConfigurationPool``: configuration pool where all Admin class instances are stored
@@ -44,7 +44,7 @@ automatically injected by the bundle:
 * ``SecurityHandler``: handles permissions for model instances and actions
 * ``Validator``: handles model validation
 * ``Translator``: generates translations
-* ``LabelTranslatorStrategy``: a strategy to use when generating labels 
+* ``LabelTranslatorStrategy``: a strategy to use when generating labels
 * ``MenuFactory``: generates the side menu, depending on the current action
 
 .. note::
@@ -57,43 +57,45 @@ automatically injected by the bundle:
 All of these dependencies have default values that you can override when declaring any of
 your ``Admin`` services. This is done using a ``call`` to the matching "setter":
 
-.. code-block:: xml
+.. configuration-block::
 
-    <service id="sonata.admin.post" class="Acme\DemoBundle\Admin\PostAdmin">
-          <tag name="sonata.admin" manager_type="orm" group="Content" label="Post"/>
-          <argument />
-          <argument>Acme\DemoBundle\Entity\Post</argument>
-          <argument />
-          <call method="setLabelTranslatorStrategy">
-              <argument>sonata.admin.label.strategy.underscore</argument>
-          </call>
-      </service>
-      
-.. code-block:: yaml
+    .. code-block:: xml
 
-    services:
-        sonata.admin.post:
-            class: Acme\DemoBundle\Admin\PostAdmin
-            tags:
-                - { name: sonata.admin, manager_type: orm, group: "Content", label: "Post" }
-            arguments:
-                - ~
-                - Acme\DemoBundle\Entity\Post
-                - ~
-            calls:
-                - [ setLabelTranslatorStrategy, [sonata.admin.label.strategy.underscore]]
+        <service id="sonata.admin.post" class="Acme\DemoBundle\Admin\PostAdmin">
+              <tag name="sonata.admin" manager_type="orm" group="Content" label="Post"/>
+              <argument />
+              <argument>Acme\DemoBundle\Entity\Post</argument>
+              <argument />
+              <call method="setLabelTranslatorStrategy">
+                  <argument>sonata.admin.label.strategy.underscore</argument>
+              </call>
+          </service>
+
+    .. code-block:: yaml
+
+        services:
+            sonata.admin.post:
+                class: Acme\DemoBundle\Admin\PostAdmin
+                tags:
+                    - { name: sonata.admin, manager_type: orm, group: "Content", label: "Post" }
+                arguments:
+                    - ~
+                    - Acme\DemoBundle\Entity\Post
+                    - ~
+                calls:
+                    - [ setLabelTranslatorStrategy, [sonata.admin.label.strategy.underscore]]
 
 Here, we declare the same ``Admin`` service as in the :doc:`getting_started` chapter, but using a
 different label translator strategy, replacing the default one. Notice that
-``sonata.admin.label.strategy.underscore`` is a service provided by ``SonataAdminBundle``, 
+``sonata.admin.label.strategy.underscore`` is a service provided by ``SonataAdminBundle``,
 but you could just as easily use a service of your own.
 
 CRUDController
 --------------
 
 The ``CRUDController`` contains the actions you have available to manipulate
-your model instances, like create, list, edit or delete. It uses the ``Admin`` 
-class to determine its behavior, like which fields to display in the edit form, 
+your model instances, like create, list, edit or delete. It uses the ``Admin``
+class to determine its behavior, like which fields to display in the edit form,
 or how to build the list view. Inside the ``CRUDController``, you can access the
 ``Admin`` class instance via the ``$admin`` variable.
 
@@ -101,8 +103,8 @@ or how to build the list view. Inside the ``CRUDController``, you can access the
 
     `CRUD is an acronym`_ for "Create, Read, Update and Delete"
 
-The ``CRUDController`` is no different to any other Symfony2 controller, meaning 
-that you have all the usual options available to you, like getting services from 
+The ``CRUDController`` is no different to any other Symfony2 controller, meaning
+that you have all the usual options available to you, like getting services from
 the Dependency Injection Container (DIC).
 
 This is particulary useful if you decide to extend the ``CRUDController`` to
@@ -110,46 +112,48 @@ add new actions or change the behavior of existing ones. You can specify which c
 to use when declaring the ``Admin`` service by passing it as the 3rd argument. For example
 to set the controller to ``AcmeDemoBundle:PostAdmin``:
 
-.. code-block:: xml
+.. configuration-block::
 
-    <services>
-       <service id="sonata.admin.post" class="Acme\DemoBundle\Admin\PostAdmin">
-          <tag name="sonata.admin" manager_type="orm" group="Content" label="Post"/>
-          <argument />
-          <argument>Acme\DemoBundle\Entity\Post</argument>
-          <argument>AcmeDemoBundle:PostAdmin</argument>
-          <call method="setTranslationDomain">
-              <argument>AcmeDemoBundle</argument>
-          </call>
-      </service>
-   </services>
-    
-.. code-block:: yaml
+    .. code-block:: xml
 
-    services:
-        sonata.admin.post:
-            class: Acme\DemoBundle\Admin\PostAdmin
-            tags:
-                - { name: sonata.admin, manager_type: orm, group: "Content", label: "Post" }
-            arguments:
-                - ~
-                - Acme\DemoBundle\Entity\Post
-                - AcmeDemoBundle:PostAdmin
-            calls:
-                - [ setTranslationDomain, [AcmeDemoBundle]]
+        <services>
+           <service id="sonata.admin.post" class="Acme\DemoBundle\Admin\PostAdmin">
+              <tag name="sonata.admin" manager_type="orm" group="Content" label="Post"/>
+              <argument />
+              <argument>Acme\DemoBundle\Entity\Post</argument>
+              <argument>AcmeDemoBundle:PostAdmin</argument>
+              <call method="setTranslationDomain">
+                  <argument>AcmeDemoBundle</argument>
+              </call>
+          </service>
+       </services>
+
+    .. code-block:: yaml
+
+        services:
+            sonata.admin.post:
+                class: Acme\DemoBundle\Admin\PostAdmin
+                tags:
+                    - { name: sonata.admin, manager_type: orm, group: "Content", label: "Post" }
+                arguments:
+                    - ~
+                    - Acme\DemoBundle\Entity\Post
+                    - AcmeDemoBundle:PostAdmin
+                calls:
+                    - [ setTranslationDomain, [AcmeDemoBundle]]
 
 When extending ``CRUDController``, remember that the ``Admin`` class already has
 a set of automatically injected dependencies that are useful when implementing several
 scenarios. Refer to the existing ``CRUDController`` actions for examples of how to get
-the best out of them. 
+the best out of them.
 
 Fields Definition
 -----------------
 
-Your ``Admin`` class defines which of your model's fields will be available in each 
-action defined in your ``CRUDController``. So, for each action, a list of field mappings 
-is generated. These lists are implemented using the ``FieldDescriptionCollection`` class 
-which stores instances of ``FieldDescriptionInterface``. Picking up on our previous 
+Your ``Admin`` class defines which of your model's fields will be available in each
+action defined in your ``CRUDController``. So, for each action, a list of field mappings
+is generated. These lists are implemented using the ``FieldDescriptionCollection`` class
+which stores instances of ``FieldDescriptionInterface``. Picking up on our previous
 ``PostAdmin`` class example:
 
 .. code-block:: php
@@ -193,8 +197,8 @@ which stores instances of ``FieldDescriptionInterface``. Picking up on our previ
        }
    }
 
-Internally, the provided ``Admin`` class will use these three functions to create three 
-``FieldDescriptionCollection`` instances: 
+Internally, the provided ``Admin`` class will use these three functions to create three
+``FieldDescriptionCollection`` instances:
 
 * ``$formFieldDescriptions``, containing three ``FieldDescriptionInterface`` instances
   for title, author and body
@@ -203,7 +207,7 @@ Internally, the provided ``Admin`` class will use these three functions to creat
 * ``$listFieldDescriptions``, containing three ``FieldDescriptionInterface`` instances
   for title, slug and author
 
-The actual ``FieldDescription`` implementation is provided by the storage abstraction 
+The actual ``FieldDescription`` implementation is provided by the storage abstraction
 bundle that you choose during the installation process, based on the
 ``BaseFieldDescription`` abstract class provided by ``SonataAdminBundle``.
 
@@ -235,10 +239,10 @@ Like the names say, one if for standard calls, the other one for AJAX.
 The subfolders include Twig files for specific sections of ``SonataAdminBundle``:
 
 Block:
-  ``SonataBlockBundle`` block views. By default there is only has one, which 
+  ``SonataBlockBundle`` block views. By default there is only has one, which
   displays all the mapped classes on the dashboard
 Button:
-  Buttons such as ``Add new`` or ``Delete`` that you can see across several 
+  Buttons such as ``Add new`` or ``Delete`` that you can see across several
   CRUD actions
 CRUD:
   Base views for every CRUD action, plus several field views for each field type
@@ -247,12 +251,12 @@ Core:
 Form:
   Views related to form rendering
 Helper:
-  A view providing a short object description, as part of a specific form field 
+  A view providing a short object description, as part of a specific form field
   type provided by ``SonataAdminBundle``
 Pager:
   Pagination related view files
 
-These will be discussed in greater detail in the specific :doc:`templates` section, where 
+These will be discussed in greater detail in the specific :doc:`templates` section, where
 you will also find instructions on how to configure ``SonataAdminBundle`` to use your templates
 instead of the default ones.
 
@@ -261,8 +265,8 @@ Managing ``Admin`` Service
 
 Your ``Admin`` service definitions are parsed when Symfony2 is loaded, and handled by
 the ``Pool`` class. This class, available as the ``sonata.admin.pool`` service from the
-DIC, handles the ``Admin`` classes, lazy-loading them on demand (to reduce overhead) 
-and matching each of them to a group. It's also responsible for handling the top level 
+DIC, handles the ``Admin`` classes, lazy-loading them on demand (to reduce overhead)
+and matching each of them to a group. It's also responsible for handling the top level
 template files, administration panel title and logo.
 
 

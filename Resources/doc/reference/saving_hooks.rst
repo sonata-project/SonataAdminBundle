@@ -1,8 +1,8 @@
 Saving hooks
 ============
 
-When a SonataAdmin is submitted for processing, two events are always called. One 
-is before any persistence layer interaction and the other is afterwards, the 
+When a SonataAdmin is submitted for processing, two events are always called. One
+is before any persistence layer interaction and the other is afterwards, the
 events are named as follows:
 
 - new object : ``prePersist($object)`` / ``postPersist($object)``
@@ -10,14 +10,14 @@ events are named as follows:
 - deleted object : ``preRemove($object)`` / ``postRemove($object)``
 
 It is worth noting that the update events are called whenever the Admin is successfully
-submitted, regardless of whether there are any actual persistence layer events. This 
+submitted, regardless of whether there are any actual persistence layer events. This
 differs from the use of preUpdate and postUpdate events in DoctrineORM and perhaps some
 other persistence layers.
 
 For example: if you submit an edit form without changing any of the values on the form
 then there is nothing to change in the database and DoctrineORM would not fire the **Entity**
-class's own ``preUpdate`` and ``postUpdate`` events. However, your **Admin** class's 
-``preUpdate``  and  ``postUpdate`` methods *are* called and this can be used to your 
+class's own ``preUpdate`` and ``postUpdate`` events. However, your **Admin** class's
+``preUpdate``  and  ``postUpdate`` methods *are* called and this can be used to your
 advantage.
 
 .. note::
@@ -67,7 +67,7 @@ solve the issue by using the ``preUpdate`` saving hook.
                 ->end()
             ;
         }
-        
+
         public function preUpdate($user)
         {
             $this->getUserManager()->updateCanonicalFields($user);
@@ -91,15 +91,17 @@ solve the issue by using the ``preUpdate`` saving hook.
 
 The service declaration where the ``UserManager`` is injected into the Admin class.
 
-.. code-block:: xml
+.. configuration-block::
 
-    <service id="fos.user.admin.user" class="%fos.user.admin.user.class%">
-        <tag name="sonata.admin" manager_type="orm" group="fos_user" />
-        <argument />
-        <argument>%fos.user.admin.user.entity%</argument>
-        <argument />
+    .. code-block:: xml
 
-        <call method="setUserManager">
-            <argument type='service' id='fos_user.user_manager' />
-        </call>
-    </service>
+        <service id="fos.user.admin.user" class="%fos.user.admin.user.class%">
+            <tag name="sonata.admin" manager_type="orm" group="fos_user" />
+            <argument />
+            <argument>%fos.user.admin.user.entity%</argument>
+            <argument />
+
+            <call method="setUserManager">
+                <argument type='service' id='fos_user.user_manager' />
+            </call>
+        </service>

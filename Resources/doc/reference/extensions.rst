@@ -32,24 +32,28 @@ There are two ways to configure your extensions and connect them to an admin.
 You can include this information in the service definition of your extension.
 Add the tag *sonata.admin.extension* and use the *target* attribute to point to the admin you want to modify.
 
-.. code-block:: yaml
+.. configuration-block::
 
-    services:
-        acme.demo.publish.extension:
-            class: Acme\Demo\BlogBundle\Admin\Extension\PublishStatusAdminExtension
-            tags:
-                - { name: sonata.admin.extension, target: acme.demo.admin.article }
+    .. code-block:: yaml
+
+        services:
+            acme.demo.publish.extension:
+                class: Acme\Demo\BlogBundle\Admin\Extension\PublishStatusAdminExtension
+                tags:
+                    - { name: sonata.admin.extension, target: acme.demo.admin.article }
 
 The second option is to add it to your config.yml file.
 
-.. code-block:: yaml
+.. configuration-block::
 
-    # app/config/config.yml
-        sonata_admin:
-            extensions:
-                acme.demo.publish.extension:
-                    admins:
-                        - acme.demo.admin.article
+    .. code-block:: yaml
+
+        # app/config/config.yml
+            sonata_admin:
+                extensions:
+                    acme.demo.publish.extension:
+                        admins:
+                            - acme.demo.admin.article
 
 Using the config.yml file has some advantages, it allows you to keep your configuration centralized and it provides some
 extra options you can use to wire your extensions in a more dynamic way. This means you can change the behaviour of all
@@ -59,7 +63,7 @@ admins:
     specify one or more admin service id's to which the Extension should be added
 
 excludes:
-    specify one or more admin service id's to which the Extension should not be added (this will prevent it matching 
+    specify one or more admin service id's to which the Extension should not be added (this will prevent it matching
     any of the other settings)
 
 extends:
@@ -74,21 +78,23 @@ instanceof:
     specify one or more classes. If the managed class of an admin extends one of the specified classes or is an instance
     of that class the extension will be added to that admin.
 
-.. code-block:: yaml
 
-    # app/config/config.yml
-        sonata_admin:
-            extensions:
-                acme.demo.publish.extension:
-                    admins:
-                        - acme.demo.admin.article
-                    implements:
-                        - Acme\Demo\Publish\PublishStatusInterface
-                    excludes:
-                        - acme.demo.admin.blog
-                        - acme.demo.admin.news
-                    extends:
-                        - Acme\Demo\Document\Blog
-                    instanceof:
-                        -  Acme\Demo\Document\Page
+.. configuration-block::
 
+    .. code-block:: yaml
+
+        # app/config/config.yml
+            sonata_admin:
+                extensions:
+                    acme.demo.publish.extension:
+                        admins:
+                            - acme.demo.admin.article
+                        implements:
+                            - Acme\Demo\Publish\PublishStatusInterface
+                        excludes:
+                            - acme.demo.admin.blog
+                            - acme.demo.admin.news
+                        extends:
+                            - Acme\Demo\Document\Blog
+                        instanceof:
+                            -  Acme\Demo\Document\Page

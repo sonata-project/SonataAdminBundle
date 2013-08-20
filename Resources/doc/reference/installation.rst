@@ -24,7 +24,7 @@ for older versions:
 2 - Selecting and downloading a storage bundle
 ----------------------------------------------
 
-SonataAdminBundle is storage agnostic, meaning it can work with several storage 
+SonataAdminBundle is storage agnostic, meaning it can work with several storage
 mechanism. Depending on which you are using on your project, you'll need to install
 one of the following bundles. In the respective links you'll find simple installation
 instructions for each of them:
@@ -32,16 +32,16 @@ instructions for each of them:
     - `SonataDoctrineORMAdminBundle <http://sonata-project.org/bundles/doctrine-orm-admin/master/doc/reference/installation.html>`_
     - `SonataDoctrineMongoDBAdminBundle <https://github.com/sonata-project/SonataDoctrineMongoDBAdminBundle/blob/master/Resources/doc/reference/installation.rst>`_
     - `SonataPropelAdminBundle <http://sonata-project.org/bundles/propel-admin/master/doc/reference/installation.html>_
-    - `SonataDoctrinePhpcrAdminBundle <https://github.com/sonata-project/SonataDoctrinePhpcrAdminBundle/blob/master/Resources/doc/reference/installation.rst>`_ 
+    - `SonataDoctrinePhpcrAdminBundle <https://github.com/sonata-project/SonataDoctrinePhpcrAdminBundle/blob/master/Resources/doc/reference/installation.rst>`_
 
 .. note::
     Don't know which to choose? Most new users prefer SonataDoctrineORMAdmin, to interact with traditional relational databases (MySQL, PostrgreSQL, etc)
-    
+
 3 - Enabling SonataAdminBundle and its dependencies
 ---------------------------------------------------
 
 SonataAdminBundle relies on other bundles to implement some features.
-Besides the storage layer mentioned on step 2, there are other bundles needed 
+Besides the storage layer mentioned on step 2, there are other bundles needed
 for SonataAdminBundle to work:
 
     - `SonataCacheBundle <http://sonata-project.org/bundles/cache/master/doc/reference/installation.html>`_
@@ -60,19 +60,19 @@ forget to enable SonataAdminBundle too:
     {
         return array(
             // ...
-            
+
             //Add you dependencies
             new Sonata\CacheBundle\SonataCacheBundle(),
             new Sonata\BlockBundle\SonataBlockBundle(),
             new Sonata\jQueryBundle\SonatajQueryBundle(),
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
             //...
-            
+
             //If you haven't already, add the storage bundle
             //This example uses SonataDoctrineORMAdmin but
             //it works the same with the alternatives
             new Sonata\DoctrineORMAdmin\SonataDoctrineORMAdmin(),
-            
+
             //Then add SonataAdminBundle
             new Sonata\AdminBundle\SonataAdminBundle(),
             // ...
@@ -94,22 +94,24 @@ files to see what changes you have to make to your Symfony2 configuration.
 SonataAdminBundle provides a SonataBlockBundle block that's used on the administration
 dashboard. To be able to use it, make sure it's enabled on SonataBlockBundle's configuration:
 
-.. code-block:: yaml
+.. configuration-block::
 
-    # app/config/config.yml
-    sonata_block:
-        default_contexts: [cms]
-        blocks:
-            # Enable the SonataAdminBundle block
-            sonata.admin.block.admin_list:
-                contexts:   [admin]
-            # Your other blocks
+    .. code-block:: yaml
+
+        # app/config/config.yml
+        sonata_block:
+            default_contexts: [cms]
+            blocks:
+                # Enable the SonataAdminBundle block
+                sonata.admin.block.admin_list:
+                    contexts:   [admin]
+                # Your other blocks
 
 .. note::
     Don't worry too much if, at this point, you don't yet understand fully
     what a block is. SonataBlockBundle is a useful tool, but it's not vital
     that you understand right now.
-    
+
 5 - Cleaning up
 ---------------
 

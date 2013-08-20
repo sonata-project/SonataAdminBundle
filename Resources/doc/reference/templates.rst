@@ -3,38 +3,40 @@ Templates
 
 By default, an Admin class uses a set of templates, it is possible to tweak the default values by editing the configuration
 
-.. code-block:: yaml
+.. configuration-block::
 
-    sonata_admin:
-        templates:
-            # default global templates
-            layout:  SonataAdminBundle::standard_layout.html.twig
-            ajax:    SonataAdminBundle::ajax_layout.html.twig
-            dashboard: SonataAdminBundle:Core:dashboard.html.twig
+    .. code-block:: yaml
 
-            # default values of actions templates, they should extend global templates
-            list:    SonataAdminBundle:CRUD:list.html.twig
-            show:    SonataAdminBundle:CRUD:show.html.twig
-            edit:    SonataAdminBundle:CRUD:edit.html.twig
-            history: SonataAdminBundle:CRUD:history.html.twig
-            preview: SonataAdminBundle:CRUD:preview.html.twig
-            delete:  SonataAdminBundle:CRUD:delete.html.twig
-            batch:   SonataAdminBundle:CRUD:list__batch.html.twig
-            batch_confirmation: SonataAdminBundle:CRUD:batch_confirmation.html.twig
+        sonata_admin:
+            templates:
+                # default global templates
+                layout:  SonataAdminBundle::standard_layout.html.twig
+                ajax:    SonataAdminBundle::ajax_layout.html.twig
+                dashboard: SonataAdminBundle:Core:dashboard.html.twig
 
-            # list related templates
-            inner_list_row: SonataAdminBundle:CRUD:list_inner_row.html.twig
-            base_list_field: SonataAdminBundle:CRUD:base_list_field.html.twig
+                # default values of actions templates, they should extend global templates
+                list:    SonataAdminBundle:CRUD:list.html.twig
+                show:    SonataAdminBundle:CRUD:show.html.twig
+                edit:    SonataAdminBundle:CRUD:edit.html.twig
+                history: SonataAdminBundle:CRUD:history.html.twig
+                preview: SonataAdminBundle:CRUD:preview.html.twig
+                delete:  SonataAdminBundle:CRUD:delete.html.twig
+                batch:   SonataAdminBundle:CRUD:list__batch.html.twig
+                batch_confirmation: SonataAdminBundle:CRUD:batch_confirmation.html.twig
 
-            # default values of helper templates
-            short_object_description: SonataAdminBundle:Helper:short-object-description.html.twig
+                # list related templates
+                inner_list_row: SonataAdminBundle:CRUD:list_inner_row.html.twig
+                base_list_field: SonataAdminBundle:CRUD:base_list_field.html.twig
 
-            # default values of block templates, they should extend the base_block template
-            list_block: SonataAdminBundle:Block:block_admin_list.html.twig
+                # default values of helper templates
+                short_object_description: SonataAdminBundle:Helper:short-object-description.html.twig
 
-            # default values of pager templates
-            pager_links: SonataAdminBundle:Pager:links.html.twig
-            pager_results: SonataAdminBundle:Pager:results.html.twig
+                # default values of block templates, they should extend the base_block template
+                list_block: SonataAdminBundle:Block:block_admin_list.html.twig
+
+                # default values of pager templates
+                pager_links: SonataAdminBundle:Pager:links.html.twig
+                pager_results: SonataAdminBundle:Pager:results.html.twig
 
 
 Usage of each template :
@@ -98,6 +100,6 @@ You can easily extend the provided templates in your own template and customize 
 Row Template
 ------------
 
-It is possible to completely change how each row of results is rendered in the 
-list view. For more information about this, see the :doc:`recipe_row_templates` 
+It is possible to completely change how each row of results is rendered in the
+list view. For more information about this, see the :doc:`recipe_row_templates`
 cookbook entry.

@@ -6,18 +6,18 @@ Admin related form types
 
 When defining fields in your Admin classes you can use any of the standard
 `Symfony field types`_ and configure them as you would normally. In addition
-there are some special Sonata field types which allow you to work with 
+there are some special Sonata field types which allow you to work with
 relationships between one entity class and another.
 
 sonata_type_model
 ^^^^^^^^^^^^^^^^^
 
-Setting a field type of ``sonata_type_model`` will use an instance of 
-``ModelType`` to render that field. This Type allows you to choose an existing 
-entity from the linked model class. In effect it shows a list of options from 
+Setting a field type of ``sonata_type_model`` will use an instance of
+``ModelType`` to render that field. This Type allows you to choose an existing
+entity from the linked model class. In effect it shows a list of options from
 which you can choose a value (or values).
 
-For example, we have an entity class called ``Page`` which has a field called 
+For example, we have an entity class called ``Page`` which has a field called
 ``image1`` which maps a relationship to another entity class called ``Image``.
 All we need to do now is add a reference for this field in our ``PageAdmin`` class:
 
@@ -34,9 +34,9 @@ All we need to do now is add a reference for this field in our ``PageAdmin`` cla
         }
     }
 
-Since the ``image1`` field refers to a related entity we do not need to specify 
-any options. Sonata will calculate that the linked class is of type ``Image`` and, 
-by default, retrieve a list of all existing Images to display as choices in the 
+Since the ``image1`` field refers to a related entity we do not need to specify
+any options. Sonata will calculate that the linked class is of type ``Image`` and,
+by default, retrieve a list of all existing Images to display as choices in the
 selector.
 
 Note that the third parameter to ``FormMapper::add()`` is optional so
@@ -58,7 +58,7 @@ template
 
 multiple
   defaults to false - see the `Symfony choice Field Type docs`_ for more info
-  
+
 expanded
   defaults to false - see the `Symfony choice Field Type docs`_ for more info
 
@@ -76,8 +76,8 @@ model_manager
   You usually should not need to set this manually.
 
 class
-  The entity class managed by this field. Defaults to null, but is actually 
-  calculated from the linked Admin class. You usually should not need to set 
+  The entity class managed by this field. Defaults to null, but is actually
+  calculated from the linked Admin class. You usually should not need to set
   this manually.
 
 
@@ -85,40 +85,42 @@ sonata_type_admin
 ^^^^^^^^^^^^^^^^^
 
 Setting a field type of ``sonata_type_admin`` will embed another Admin class
-and use the embedded Admin's configuration when editing this field. 
-``sonata_type_admin`` fields should only be used when editing a field which 
+and use the embedded Admin's configuration when editing this field.
+``sonata_type_admin`` fields should only be used when editing a field which
 represents a relationship between two model classes.
 
 This Type allows you to embed a complete form for the related element, which
-you can configure to allow the creation, editing and (optionally) deletion of 
+you can configure to allow the creation, editing and (optionally) deletion of
 related objects.
 
 For example, lets use a similar example to the one for ``sonata_type_model`` above.
 This time, when editing a ``Page`` using ``PageAdmin`` we want to enable the inline
-creation (and editing) of new Images instead of just selecting an existing Image 
+creation (and editing) of new Images instead of just selecting an existing Image
 from a list.
 
-First we need to create an ``ImageAdmin`` class and register it as an Admin class 
-for managing ``Image`` objects. In our admin.yml we have an entry for ``ImageAdmin`` 
+First we need to create an ``ImageAdmin`` class and register it as an Admin class
+for managing ``Image`` objects. In our admin.yml we have an entry for ``ImageAdmin``
 that looks like this:
 
-.. code-block:: yaml
+.. configuration-block::
 
-    # Acme/DemoBundle/Resources/config/admin.yml
+    .. code-block:: yaml
 
-    sonata.admin.image:
-        class: Acme\DemoBundle\Admin\ImageAdmin
-        tags:
-            - { name: sonata.admin, manager_type: orm, label: "Image" }
-        arguments:
-            - ~
-            - Acme\DemoBundle\Entity\Image
-            - 'SonataAdminBundle:CRUD'
-        calls:
-            - [ setTranslationDomain, [Acme\DemoBundle]]
+        # Acme/DemoBundle/Resources/config/admin.yml
+
+        sonata.admin.image:
+            class: Acme\DemoBundle\Admin\ImageAdmin
+            tags:
+                - { name: sonata.admin, manager_type: orm, label: "Image" }
+            arguments:
+                - ~
+                - Acme\DemoBundle\Entity\Image
+                - 'SonataAdminBundle:CRUD'
+            calls:
+                - [ setTranslationDomain, [Acme\DemoBundle]]
 
 
-To embed ``ImageAdmin`` within ``PageAdmin`` we just need to change the reference 
+To embed ``ImageAdmin`` within ``PageAdmin`` we just need to change the reference
 for the ``image1`` field to ``sonata_type_admin`` in our ``PageAdmin`` class:
 
 .. code-block:: php
@@ -133,21 +135,21 @@ for the ``image1`` field to ``sonata_type_admin`` in our ``PageAdmin`` class:
         }
     }
 
-We do not need to define any options since Sonata calculates that the linked class 
-is of type ``Image`` and the service definition (in admin.yml) defines that ``Image`` 
+We do not need to define any options since Sonata calculates that the linked class
+is of type ``Image`` and the service definition (in admin.yml) defines that ``Image``
 objects are managed by the ``ImageAdmin`` class.
 
 The available options (which can be passed as a third parameter to ``FormMapper::add()``) are:
 
 delete
-  defaults to true and indicates that a 'delete' checkbox should be shown allowing 
+  defaults to true and indicates that a 'delete' checkbox should be shown allowing
   the user to delete the linked object.
 
 
 sonata_type_collection
 ^^^^^^^^^^^^^^^^^^^^^^
 
-The ``Collection Type`` is meant to handle creation and editing of model 
+The ``Collection Type`` is meant to handle creation and editing of model
 collections. Rows can be added and deleted, and your model abstraction layer may
 allow you to edit fields inline. You can use ``type_options`` to pass values
 to the underlying forms.
@@ -171,25 +173,25 @@ to the underlying forms.
         }
     }
 
-**TIP**: A jQuery event is fired after a row has been added (``sonata-collection-item-added``) 
-or deleted (``sonata-collection-item-deleted``). You can bind to these events to trigger custom 
+**TIP**: A jQuery event is fired after a row has been added (``sonata-collection-item-added``)
+or deleted (``sonata-collection-item-deleted``). You can bind to these events to trigger custom
 javascript imported into your templates (eg: add a calendar widget to a newly added date field)
 
 FieldDescription options
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-The fourth parameter to FormMapper::add() allows you to pass in ``FieldDescription`` 
-options as an array. The most useful of these is ``admin_code``, which allows you to 
-specify which Admin to use for managing this relationship. It is most useful for inline 
+The fourth parameter to FormMapper::add() allows you to pass in ``FieldDescription``
+options as an array. The most useful of these is ``admin_code``, which allows you to
+specify which Admin to use for managing this relationship. It is most useful for inline
 editing in conjunction with the ``sonata_type_admin`` form type.
 
 The value used should be the admin *service* name, not the class name. If you do
-not specify an ``admin_code`` in this way, the default admin class for the field's 
+not specify an ``admin_code`` in this way, the default admin class for the field's
 model type will  be used.
 
-For example, to specify the use of the Admin class which is registered as 
+For example, to specify the use of the Admin class which is registered as
 ``sonata.admin.imageSpecial`` for managing the ``image1`` field from our ``PageAdmin``
-example above: 
+example above:
 
 .. code-block:: php
 
@@ -199,16 +201,16 @@ example above:
         {
             $formMapper
                 ->add(
-                  'image1', 
-                  'sonata_type_admin', 
-                  array(), 
+                  'image1',
+                  'sonata_type_admin',
+                  array(),
                   array('admin_code' => 'sonata.admin.imageSpecial')
                 )
             ;
         }
     }
 
-Other specific field configuration options are detailed in the related 
+Other specific field configuration options are detailed in the related
 abstraction layer documentation.
 
 Other form types
@@ -220,10 +222,10 @@ scope of the ``SonataAdminBundle``:
 sonata_type_immutable_array
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The ``Immutable Array`` allows you to edit an array property by defining a type 
+The ``Immutable Array`` allows you to edit an array property by defining a type
 per key.
 
-The type has a ``keys`` parameter which contains the definition for each key. 
+The type has a ``keys`` parameter which contains the definition for each key.
 A definition is an array with 3 options :
 
 * key name
@@ -270,7 +272,7 @@ Now, the property can be edited by setting a type for each type
 sonata_type_boolean
 ^^^^^^^^^^^^^^^^^^^
 
-The ``boolean`` type is a specialized ``ChoiceType`` where the choices list is 
+The ``boolean`` type is a specialized ``ChoiceType`` where the choices list is
 locked to 'yes' and 'no'.
 
 
@@ -279,7 +281,7 @@ sonata_type_translatable_choice
 
 Deprecated: use ChoiceType with the translation_domain option instead.
 
-The translatable type is a specialized ``ChoiceType`` where the choices values 
+The translatable type is a specialized ``ChoiceType`` where the choices values
 are translated with the Symfony Translator component.
 
 The type has one extra parameter :

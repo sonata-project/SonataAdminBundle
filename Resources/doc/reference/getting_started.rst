@@ -17,17 +17,19 @@ Step 1: Define SonataAdminBundle routes
 To be able to access SonataAdminBundle's pages, you need to add its routes
 to your application's routing file:
 
-.. code-block:: yaml
+.. configuration-block::
 
-    # app/config/routing.yml
-    admin:
-        resource: '@SonataAdminBundle/Resources/config/routing/sonata_admin.xml'
-        prefix: /admin
+    .. code-block:: yaml
 
-    _sonata_admin:
-        resource: .
-        type: sonata_admin
-        prefix: /admin
+        # app/config/routing.yml
+        admin:
+            resource: '@SonataAdminBundle/Resources/config/routing/sonata_admin.xml'
+            prefix: /admin
+
+        _sonata_admin:
+            resource: .
+            type: sonata_admin
+            prefix: /admin
 
 .. note::
 
@@ -37,9 +39,9 @@ to your application's routing file:
 
 .. note::
 
-    For those curious about the ``resource: .`` setting: it is unusual syntax but used 
-    because Symfony requires a resource to be defined (which points to a real file). 
-    Once this validation passes Sonata's ``AdminPoolLoader`` is in charge of processing 
+    For those curious about the ``resource: .`` setting: it is unusual syntax but used
+    because Symfony requires a resource to be defined (which points to a real file).
+    Once this validation passes Sonata's ``AdminPoolLoader`` is in charge of processing
     this route and it simply ignores the resource setting.
 
 At this point you can already access the (empty) admin dashboard by visiting the url:
@@ -112,45 +114,47 @@ Step 3: Create an Admin service
 -------------------------------
 
 Now that you have created your Admin class, you need to create a service for it. This
-service needs to have the ``sonata.admin`` tag, which is your way of letting 
-SonataAdminBundle know that this particular service represents an Admin class: 
+service needs to have the ``sonata.admin`` tag, which is your way of letting
+SonataAdminBundle know that this particular service represents an Admin class:
 
 Create either a new ``admin.xml`` or ``admin.yml`` file inside the ``Acme/DemoBundle/Resources/config/`` folder:
 
-.. code-block:: xml
+.. configuration-block::
 
-   <!-- Acme/DemoBundle/Resources/config/admin.xml -->
-   <container xmlns="http://symfony.com/schema/dic/services"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://symfony.com/schema/dic/services/services-1.0.xsd">
-       <services>
-          <service id="sonata.admin.post" class="Acme\DemoBundle\Admin\PostAdmin">
-             <tag name="sonata.admin" manager_type="orm" group="Content" label="Post"/>
-             <argument />
-             <argument>Acme\DemoBundle\Entity\Post</argument>
-             <argument />
-             <call method="setTranslationDomain">
-                 <argument>AcmeDemoBundle</argument>
-             </call>
-         </service>
-      </services>
-   </container>
+    .. code-block:: xml
+
+       <!-- Acme/DemoBundle/Resources/config/admin.xml -->
+       <container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services/services-1.0.xsd">
+           <services>
+              <service id="sonata.admin.post" class="Acme\DemoBundle\Admin\PostAdmin">
+                 <tag name="sonata.admin" manager_type="orm" group="Content" label="Post"/>
+                 <argument />
+                 <argument>Acme\DemoBundle\Entity\Post</argument>
+                 <argument />
+                 <call method="setTranslationDomain">
+                     <argument>AcmeDemoBundle</argument>
+                 </call>
+             </service>
+          </services>
+       </container>
 
 
-.. code-block:: yaml
+    .. code-block:: yaml
 
-   # Acme/DemoBundle/Resources/config/admin.yml
-   services:
-       sonata.admin.post:
-           class: Acme\DemoBundle\Admin\PostAdmin
-           tags:
-               - { name: sonata.admin, manager_type: orm, group: "Content", label: "Post" }
-           arguments:
-               - ~
-               - Acme\DemoBundle\Entity\Post
-               - ~
-           calls:
-               - [ setTranslationDomain, [AcmeDemoBundle]]
+       # Acme/DemoBundle/Resources/config/admin.yml
+       services:
+           sonata.admin.post:
+               class: Acme\DemoBundle\Admin\PostAdmin
+               tags:
+                   - { name: sonata.admin, manager_type: orm, group: "Content", label: "Post" }
+               arguments:
+                   - ~
+                   - Acme\DemoBundle\Entity\Post
+                   - ~
+               calls:
+                   - [ setTranslationDomain, [AcmeDemoBundle]]
 
 The basic configuration of an Admin service is quite simple. It creates a service
 instance based on the class you specified before, and accepts three arguments:
@@ -158,7 +162,7 @@ instance based on the class you specified before, and accepts three arguments:
     1. The Admin service's code (defaults to the service's name)
     2. The model which this Admin class maps (required)
     3. The controller that will handle the administration actions (defaults to SoantaAdminBundle:CRUDController)
-    
+
 Usually you just need to specify the second argument, as the first and third's default
 values will work for most scenarios.
 
@@ -171,14 +175,16 @@ Symfony2 to load it. There are two ways to do so:
 1 - Importing it in the main config.yml
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Include your new configuration file in the main config.yml (make sure that you 
+Include your new configuration file in the main config.yml (make sure that you
 use the correct file extension):
 
-.. code-block:: yaml
+.. configuration-block::
 
-    # app/config/config.yml
-    imports:
-        - { resource: @AcmeDemoBundle/Resources/config/admin.xml }
+    .. code-block:: yaml
+
+        # app/config/config.yml
+        imports:
+            - { resource: @AcmeDemoBundle/Resources/config/admin.xml }
 
 2 - Have your bundle load it
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -186,31 +192,33 @@ use the correct file extension):
 You can also have your bundle load the admin configuration file. Inside your bundle's extension
 file, using the ``load()`` method as described in the `symfony cookbook`_.
 
-.. code-block:: php
-    
-    # Acme/DemoBundle/DependencyInjection/AcmeDemoBundleExtension.php for XML configurations
+.. configuration-block::
 
-    use Symfony\Component\DependencyInjection\Loader;
-    use Symfony\Component\Config\FileLocator;
+    .. code-block:: php
 
-    public function load(array $configs, ContainerBuilder $container) {
-        // ... 
-        $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('admin.xml');
-    }
+        # Acme/DemoBundle/DependencyInjection/AcmeDemoBundleExtension.php for XML configurations
 
-.. code-block:: php
-    
-    # Acme/DemoBundle/DependencyInjection/AcmeDemoBundleExtension.php for YAML configurations
+        use Symfony\Component\DependencyInjection\Loader;
+        use Symfony\Component\Config\FileLocator;
 
-    use Symfony\Component\DependencyInjection\Loader;
-    use Symfony\Component\Config\FileLocator;
+        public function load(array $configs, ContainerBuilder $container) {
+            // ...
+            $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+            $loader->load('admin.xml');
+        }
 
-    public function load(array $configs, ContainerBuilder $container) {
-        // ... 
-        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('admin.yml');
-    }
+    .. code-block:: php
+
+        # Acme/DemoBundle/DependencyInjection/AcmeDemoBundleExtension.php for YAML configurations
+
+        use Symfony\Component\DependencyInjection\Loader;
+        use Symfony\Component\Config\FileLocator;
+
+        public function load(array $configs, ContainerBuilder $container) {
+            // ...
+            $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+            $loader->load('admin.yml');
+        }
 
 Step 4: Configuration
 ---------------------
@@ -221,20 +229,22 @@ your model mapped. You can start creating, listing, editing and deleting instanc
 You probably want to put your own project's name and logo on the top bar.
 You can do so on your project's main config.yml file:
 
-.. code-block:: yaml
+.. configuration-block::
 
-    # app/config/config.yml
-    sonata_admin:
-        title:      Acme Demo Bundle
-        title_logo: /bundles/acmedemo/fancy_acme_logo.png
-        
+    .. code-block:: yaml
+
+        # app/config/config.yml
+        sonata_admin:
+            title:      Acme Demo Bundle
+            title_logo: /bundles/acmedemo/fancy_acme_logo.png
+
 
 
 Next steps - Security
 ---------------------
 
 As you probably noticed, you were able to access your dashboard and data by just
-typing in the URL. By default, the SonataAdminBundle does not come with any user 
+typing in the URL. By default, the SonataAdminBundle does not come with any user
 management for ultimate flexibility. However, it is most likely that your application
 requires such feature. The Sonata Project includes a ``SonataUserBundle`` which
 integrates the very popular ``FOSUserBundle``. Please refer to the :doc:`security` section of
