@@ -31,5 +31,6 @@ class CollectionTypeTest extends TypeTestCase
         $this->assertEquals('text', $options['type']);
         $this->assertEquals(0, count($options['type_options']));
         $this->assertEquals('link_add', $options['btn_add']);
+        $this->assertEquals('SonataAdminBundle', $options['btn_catalogue']);
     }
 }

@@ -44,6 +44,7 @@ class CollectionType extends AbstractType
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $view->vars['btn_add'] = $options['btn_add'];
+        $view->vars['btn_catalogue'] = $options['btn_catalogue'];
     }
 
     /**
@@ -56,6 +57,7 @@ class CollectionType extends AbstractType
             'type'          => 'text',
             'type_options'  => array(),
             'btn_add'       => 'link_add',
+            'btn_catalogue' => 'SonataAdminBundle'
         ));
     }
 

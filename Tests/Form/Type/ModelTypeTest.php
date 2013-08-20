@@ -41,6 +41,7 @@ class ModelTypeTest extends TypeTestCase
         $this->assertEquals('link_add', $options['btn_add']);
         $this->assertEquals('link_list', $options['btn_list']);
         $this->assertEquals('link_delete', $options['btn_delete']);
+        $this->assertEquals('SonataAdminBundle', $options['btn_catalogue']);
         $this->assertInstanceOf('Sonata\AdminBundle\Form\ChoiceList\ModelChoiceList', $options['choice_list']);
     }
 }

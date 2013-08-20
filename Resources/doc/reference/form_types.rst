@@ -80,10 +80,11 @@ class
   calculated from the linked Admin class. You usually should not need to set
   this manually.
 
-btn_add, btn_list and btn_delete:
+btn_add, btn_list, btn_delete and btn_catalogue:
   The labels on the ``add``, ``list`` and ``delete`` buttons can be customized
   with these parameters. Setting any of them to ``false`` will hide the 
-  corresponding button.
+  corresponding button. You can also specify a custom translation catalogue
+  for these labels, which defaults to ``SonataAdminBundle``.
 
 sonata_type_admin
 ^^^^^^^^^^^^^^^^^
@@ -149,10 +150,11 @@ delete
   defaults to true and indicates that a 'delete' checkbox should be shown allowing
   the user to delete the linked object.
 
-btn_add, btn_list and btn_delete:
+btn_add, btn_list, btn_delete and btn_catalogue:
   The labels on the ``add``, ``list`` and ``delete`` buttons can be customized
   with these parameters. Setting any of them to ``false`` will hide the 
-  corresponding button.
+  corresponding button. You can also specify a custom translation catalogue
+  for these labels, which defaults to ``SonataAdminBundle``.
 
 
 sonata_type_collection
@@ -184,10 +186,11 @@ to the underlying forms.
     
 The available options (which can be passed as a third parameter to ``FormMapper::add()``) are:
 
-btn_add:
+btn_add and btn_catalogue:
   The label on the ``add`` button can be customized
   with this parameters. Setting it to ``false`` will hide the 
-  corresponding button.
+  corresponding button. You can also specify a custom translation catalogue
+  for this label, which defaults to ``SonataAdminBundle``.
 
 **TIP**: A jQuery event is fired after a row has been added (``sonata-collection-item-added``)
 or deleted (``sonata-collection-item-deleted``). You can bind to these events to trigger custom

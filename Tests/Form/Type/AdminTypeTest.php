@@ -32,5 +32,6 @@ class AdminTypeTest extends TypeTestCase
         $this->assertEquals('link_add', $options['btn_add']);
         $this->assertEquals('link_list', $options['btn_list']);
         $this->assertEquals('link_delete', $options['btn_delete']);
+        $this->assertEquals('SonataAdminBundle', $options['btn_catalogue']);
     }
 }

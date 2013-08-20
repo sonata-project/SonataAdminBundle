@@ -55,6 +55,7 @@ class ModelType extends AbstractType
         $view->vars['btn_add'] = $options['btn_add'];
         $view->vars['btn_list'] = $options['btn_list'];
         $view->vars['btn_delete'] = $options['btn_delete'];
+        $view->vars['btn_catalogue'] = $options['btn_catalogue'];
     }
 
     /**
@@ -79,6 +80,7 @@ class ModelType extends AbstractType
             'btn_add'           => 'link_add',
             'btn_list'          => 'link_list',
             'btn_delete'        => 'link_delete',
+            'btn_catalogue'     => 'SonataAdminBundle',
             'choice_list'       => function (Options $options, $previousValue) {
                 if ($previousValue instanceof ChoiceListInterface && count($choices = $previousValue->getChoices())) {
                     return $choices;
