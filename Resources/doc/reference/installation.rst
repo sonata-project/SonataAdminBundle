@@ -31,7 +31,7 @@ instructions for each of them:
 
     - `SonataDoctrineORMAdminBundle <http://sonata-project.org/bundles/doctrine-orm-admin/master/doc/reference/installation.html>`_
     - `SonataDoctrineMongoDBAdminBundle <https://github.com/sonata-project/SonataDoctrineMongoDBAdminBundle/blob/master/Resources/doc/reference/installation.rst>`_
-    - `SonataPropelAdminBundle <http://sonata-project.org/bundles/propel-admin/master/doc/reference/installation.html>_
+    - `SonataPropelAdminBundle <http://sonata-project.org/bundles/propel-admin/master/doc/reference/installation.html>`_
     - `SonataDoctrinePhpcrAdminBundle <https://github.com/sonata-project/SonataDoctrinePhpcrAdminBundle/blob/master/Resources/doc/reference/installation.rst>`_
 
 .. note::
@@ -71,7 +71,7 @@ forget to enable SonataAdminBundle too:
             //If you haven't already, add the storage bundle
             //This example uses SonataDoctrineORMAdmin but
             //it works the same with the alternatives
-            new Sonata\DoctrineORMAdmin\SonataDoctrineORMAdmin(),
+            new Sonata\DoctrineORMAdminBundle\SonataDoctrineORMAdminBundle(),
 
             //Then add SonataAdminBundle
             new Sonata\AdminBundle\SonataAdminBundle(),
