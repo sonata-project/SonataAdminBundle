@@ -250,7 +250,9 @@ class SonataAdminExtension extends \Twig_Extension
 
         // transliterate
         if (function_exists('iconv')) {
-            $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
+            try {
+                $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
+            } catch (\Exception $e) {}
         }
 
         // lowercase
