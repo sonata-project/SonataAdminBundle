@@ -47,6 +47,15 @@ class SonataAdminExtension extends Extension
             ));
         }
 
+        if (isset($bundles['SonataIntlBundle'])) {
+            // integrate the SonataUserBundle if the bundle exists
+            array_unshift($configs, array(
+                'templates' => array(
+                    'history_revision_timestamp' => 'SonataIntlBundle:CRUD:history_revision_timestamp.html.twig'
+                )
+            ));
+        }
+
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('templates.xml');
         $loader->load('twig.xml');
