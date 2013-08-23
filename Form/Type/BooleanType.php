@@ -13,7 +13,7 @@ namespace Sonata\AdminBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Sonata\AdminBundle\Form\DataTransformer\BooleanToSonataBooleanTransformer;
+use Sonata\AdminBundle\Form\DataTransformer\BooleanTypeToBooleanTransformer;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
@@ -23,11 +23,16 @@ class BooleanType extends AbstractType
 
     const TYPE_NO = 2;
 
+    /**
+     * {@inheritDoc}
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->addModelTransformer(new BooleanToSonataBooleanTransformer());
+        if ($options['transform']) {
+            $builder->addModelTransformer(new BooleanTypeToBooleanTransformer());
+        }
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -38,7 +43,8 @@ class BooleanType extends AbstractType
             'choices'   => array(
                 self::TYPE_YES  => 'label_type_yes',
                 self::TYPE_NO   => 'label_type_no'
-            )
+            ),
+            'transform' => false
         ));
     }
 
