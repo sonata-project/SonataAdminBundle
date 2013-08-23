@@ -88,7 +88,13 @@ file that was distributed with this source code.
     {% else %}
     <select {{ block('widget_attributes') }}{% if multiple %} multiple="multiple"{% endif %}>
         {% if empty_value is not none %}
-            <option value="">{{ empty_value|trans }}</option>
+            <option value="">
+                {% if not sonata_admin.admin %}
+                    {{- empty_value|trans({}, translation_domain) -}}
+                {% else %}
+                    {{- empty_value|trans({}, sonata_admin.field_description.translationDomain) -}}
+                {% endif%}
+            </option>
         {% endif %}
         {% if preferred_choices|length > 0 %}
             {% set options = preferred_choices %}
