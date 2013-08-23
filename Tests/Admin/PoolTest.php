@@ -40,6 +40,16 @@ class PoolTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedOutput, $this->pool->getGroups());
     }
 
+    public function testHasGroup()
+    {
+        $this->pool->setAdminGroups(array(
+                'adminGroup1' => array()
+            ));
+
+        $this->assertTrue($this->pool->hasGroup('adminGroup1'));
+        $this->assertFalse($this->pool->hasGroup('adminGroup2'));
+    }
+
     public function testGetDashboardGroups()
     {
 
@@ -75,6 +85,38 @@ class PoolTest extends \PHPUnit_Framework_TestCase
         $groups = $pool->getDashboardGroups();
 
         $this->assertCount(1, $groups);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testGetAdminsByGroupWhenGroupNotSet()
+    {
+        $this->pool->setAdminGroups(array(
+                'adminGroup1' => array()
+            ));
+
+        $this->pool->getAdminsByGroup('adminGroup2');
+    }
+
+    public function testGetAdminsByGroupWhenGroupIsEmpty()
+    {
+        $this->pool->setAdminGroups(array(
+                'adminGroup1' => array()
+            ));
+
+        $this->assertEquals(array(), $this->pool->getAdminsByGroup('adminGroup1'));
+    }
+
+    public function testGetAdminsByGroup()
+    {
+        $this->pool->setAdminGroups(array(
+            'adminGroup1' => array('items' => array('sonata.admin1', 'sonata.admin2')),
+            'adminGroup2' => array('items' => array('sonata.admin3'))
+        ));
+
+        $this->assertCount(2, $this->pool->getAdminsByGroup('adminGroup1'));
+        $this->assertCount(1, $this->pool->getAdminsByGroup('adminGroup2'));
     }
 
     public function testGetAdminForClassWhenAdminClassIsNotSet()
