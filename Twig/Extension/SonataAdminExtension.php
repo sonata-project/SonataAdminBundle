@@ -204,14 +204,14 @@ class SonataAdminExtension extends \Twig_Extension
      */
     public function renderRelationElement($element, FieldDescriptionInterface $fieldDescription)
     {
-        $method = $fieldDescription->getOption('associated_tostring', '__toString');
-
         if (!is_object($element)) {
             return $element;
         }
 
+        $method = $fieldDescription->getOption('associated_tostring', '__toString');
+
         if (!method_exists($element, $method)) {
-            throw new \RunTimeException(sprintf('You must define an `associated_tostring` option or create a `%s::__toString` method to the field option %s from service %s is ', get_class($element), $fieldDescription->getName(), $fieldDescription->getAdmin()->getCode()));
+            throw new \RunTimeException(sprintf('You must define an `associated_tostring` option or create a `%s::__toString` method to the field option "%s" from service "%s".', get_class($element), $fieldDescription->getName(), $fieldDescription->getAdmin()->getCode()));
         }
 
         return call_user_func(array($element, $method));
