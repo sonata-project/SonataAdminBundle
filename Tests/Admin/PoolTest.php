@@ -22,7 +22,7 @@ class PoolTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->pool = new Pool($this->getContainer(), 'Sonata Admin', '/path/to/pic.png');
+        $this->pool = new Pool($this->getContainer(), 'Sonata Admin', '/path/to/pic.png', array('foo'=>'bar'));
     }
 
     public function testGetGroups()
@@ -192,6 +192,23 @@ class PoolTest extends \PHPUnit_Framework_TestCase
 
         $this->assertNull($this->pool->getTemplate('bar'));
         $this->assertEquals('Foo.html.twig', $this->pool->getTemplate('ajax'));
+    }
+
+    public function testGetTitleLogo()
+    {
+        $this->assertEquals('/path/to/pic.png', $this->pool->getTitleLogo());
+    }
+
+    public function testGetTitle()
+    {
+        $this->assertEquals('Sonata Admin', $this->pool->getTitle());
+    }
+
+    public function testGetOption()
+    {
+        $this->assertEquals('bar', $this->pool->getOption('foo'));
+
+        $this->assertEquals(null, $this->pool->getOption('non_existent_option'));
     }
 
     /**
