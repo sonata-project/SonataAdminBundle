@@ -147,6 +147,10 @@ class ErrorElement
      */
     protected function getValue()
     {
+        if ($this->current == '') {
+            return $this->subject;
+        }
+
         $propertyAccessor = PropertyAccess::getPropertyAccessor();
         return $propertyAccessor->getValue($this->subject, $this->getCurrentPropertyPath());
     }

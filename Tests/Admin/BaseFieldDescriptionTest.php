@@ -54,13 +54,17 @@ class BaseFieldDescriptionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('foo.twig.html', $description->getTemplate());
         $this->assertEquals('fooHelp', $description->getHelp());
 
-        $this->assertCount(0, $description->getOptions());
+        $this->assertCount(1, $description->getOptions());
 
         $description->setHelp('Please enter an integer');
         $this->assertEquals('Please enter an integer', $description->getHelp());
 
         $description->setMappingType('int');
         $this->assertEquals('int', $description->getMappingType());
+        
+        $this->assertEquals('short_object_description_placeholder', $description->getOption('placeholder'));
+        $description->setOptions(array('placeholder' => false));
+        $this->assertFalse($description->getOption('placeholder'));
     }
 
     public function testAdmin()
@@ -133,6 +137,13 @@ class BaseFieldDescriptionTest extends \PHPUnit_Framework_TestCase
             ->method('getTranslationDomain');
         $description->setOption('translation_domain', 'ExtensionDomain');
         $this->assertEquals('ExtensionDomain', $description->getTranslationDomain());
+    }
+
+    public function testCamelize()
+    {
+        $this->assertEquals('FooBar', BaseFieldDescription::camelize('foo_bar'));
+        $this->assertEquals('FooBar', BaseFieldDescription::camelize('foo bar'));
+        $this->assertEquals('FOoBar', BaseFieldDescription::camelize('fOo bar'));
     }
 }
 

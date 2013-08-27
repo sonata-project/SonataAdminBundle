@@ -9,11 +9,11 @@ $supportsPreviewMode and setting it to true.
 .. code-block:: php
 
     <?php // MyAdmin.php
-    
+
     class MyAdmin extends Admin
     {
         public $supportsPreviewMode = true;
-    
+
         /* ... */
     }
 
@@ -33,7 +33,7 @@ Accepting the preview will store the entity as if the preview step was never the
    :alt: Preview Button
 
 
-Simulating front-end rendring
+Simulating front-end rendering
 ----------------------------
 
 Preview can be used to render how the object would look like in your front-end environment.
@@ -44,15 +44,17 @@ the fields configured to be shown in the show view.
 Overriding the preview template (SonataAdminBundle:CRUD:preview.html.twig) can be done either
 globally through the template configuration for the key 'preview':
 
-.. code-block:: yaml
+.. configuration-block::
 
-    # app/config/config.yml
-    
-        sonata_admin:
-            templates:
-                preview:  AcmeDemoBundle:CRUD:preview.html.twig
-                
-                
+    .. code-block:: yaml
+
+        # app/config/config.yml
+
+            sonata_admin:
+                templates:
+                    preview:  AcmeDemoBundle:CRUD:preview.html.twig
+
+
 Or per admin entity by overriding the getTemplate($name) and returning the appropriate template when the key
 matches 'preview':
 
@@ -88,15 +90,15 @@ a different object you can just set your own variables prior to calling parent()
 
     {% use 'SonataAdminBundle:CRUD:base_edit_form.html.twig' with form as parentForm %}
 
-    {% block templateContent %}     {# a block in 'AcmeDemoBundle::layout.html.twig' expecting article #} 
-        {% set article = object %}  
+    {% block templateContent %}     {# a block in 'AcmeDemoBundle::layout.html.twig' expecting article #}
+        {% set article = object %}
 
         {{ parent() }}
 
-        <div class="sonata-preview-form"> 
+        <div class="sonata-preview-form">
             {{ block('parentForm') }}
         </div>
-        
+
     {% endblock %}
 
     {% block formactions %}
@@ -123,5 +125,5 @@ Or if you prefer less:
         display: none;
       };
     }
-    
-    
+
+

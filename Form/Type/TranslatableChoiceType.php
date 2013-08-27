@@ -8,6 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
+ * @deprecated - use ChoiceType with the translation_domain option instead
  */
 
 namespace Sonata\AdminBundle\Form\Type;

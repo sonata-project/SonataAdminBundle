@@ -20,19 +20,21 @@ router                        router
 validator                     validator
 security_handler              sonata.admin.security.handler
 menu_factory                  knp_menu.factory
-route_builder                sonata.admin.route.path_info
+route_builder                 sonata.admin.route.path_info
 label_translator_strategy     sonata.admin.label.strategy.form_component
 =========================     =============================================
 
 Note: %manager-type% is to be replaced by the manager type (orm, doctrine_mongodb...)
 
-You have 2 ways of defining the dependencies inside a ``services.xml``.
+You have 2 ways of defining the dependencies inside ``services.xml``:
 
-* With a tag attribute, less verbose :
+* With a tag attribute, less verbose:
 
-.. code-block:: xml
+.. configuration-block::
 
-        <service id="acme.project.admin.security_feed" class="AcmeBundle\ProjectBundle\Admin\ProjectAdmin">
+    .. code-block:: xml
+
+        <service id="acme.project.admin.project" class="Acme\ProjectBundle\Admin\ProjectAdmin">
             <tag
                 name="sonata.admin"
                 manager_type="orm"
@@ -42,15 +44,17 @@ You have 2 ways of defining the dependencies inside a ``services.xml``.
                 route_builder="sonata.admin.route.path_info"
                 />
             <argument />
-            <argument>AcmeBundle\ProjectBundle\Entity\Project</argument>
+            <argument>Acme\ProjectBundle\Entity\Project</argument>
             <argument />
         </service>
 
 * With a method call, more verbose
 
-.. code-block:: xml
+.. configuration-block::
 
-        <service id="acme.project.admin.project" class="AcmeBundle\ProjectBundle\Admin\ProjectAdmin">
+    .. code-block:: xml
+
+        <service id="acme.project.admin.project" class="Acme\ProjectBundle\Admin\ProjectAdmin">
             <tag
                 name="sonata.admin"
                 manager_type="orm"
@@ -58,7 +62,7 @@ You have 2 ways of defining the dependencies inside a ``services.xml``.
                 label="Project"
                 />
             <argument />
-            <argument>AcmeBundle\ProjectBundle\Entity\Project</argument>
+            <argument>Acme\ProjectBundle\Entity\Project</argument>
             <argument />
 
             <call method="setLabelTranslatorStrategy">
@@ -70,123 +74,99 @@ You have 2 ways of defining the dependencies inside a ``services.xml``.
             </call>
         </service>
 
-If you want to create your own RouteBuilder, you can do it using code like
+If you want to modify the service that is going to be injected, add the following code to your
+application's config file:
 
-* xml service registration
+.. configuration-block::
 
-.. code-block:: xml
+    .. code-block:: yaml
 
-        <service id="acme.admin.route.entity" class="Acme\AdminBundle\Route\EntityRouterBuilder">
-            <argument type="service" id="sonata.admin.audit.manager" />
-        </service>
+        # app/config/config.yml
+        admins:
+            sonata_admin:
+                sonata.order.admin.order:   # id of the admin service this setting is for
+                    model_manager:          # dependency name, from the table above
+                        sonata.order.admin.order.manager  # customised service id
+
+
+Creating a custom RouteBuilder
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+To create your own RouteBuilder create the PHP class and register it as a service:
 
 * php Route Generator
 
 .. code-block:: php
 
-        <?php
-        namespace Acme\AdminBundle\Route;
-        
-        use Sonata\AdminBundle\Builder\RouteBuilderInterface;
-        use Sonata\AdminBundle\Admin\AdminInterface;
-        use Sonata\AdminBundle\Model\AuditManagerInterface;
-        use Sonata\AdminBundle\Route\PathInfoBuilder;
-        use Sonata\AdminBundle\Route\RouteCollection;
-        
-        class EntityRouterBuilder extends PathInfoBuilder implements RouteBuilderInterface
-        {
-            /**
-             * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
-             * @param \Sonata\AdminBundle\Route\RouteCollection $collection
-             */
-            public function build(AdminInterface $admin, RouteCollection $collection)
-            {
-                parent::build($admin,$collection);
-                $collection->add('yourSubAction');
-                // Create button will dissappear, delete functionality will be disabled as well
-                // No more changes needed!
-                $collection->remove('create');
-                $collection->remove('delete');
-            }
-        }
-
-
-If you want to modify the service that is going to be injected, add the following code to your
-application's config file:
-
-.. code-block:: yaml
-
-    # app/config/config.yml
-    admins:
-        sonata_admin:                                           #method name, you can find the list in the table above
-            sonata.order.admin.order:                           #id of the admin service's
-                model_manager: sonata.order.admin.order.manager #id of the your service
-
-
-Admin Extension
----------------
-
-Configure the default page and ordering in the list view
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Configuring the default page and ordering column can simply be achieved by overriding
-the ``datagridValues`` array property. All three keys ``_page``, ``_sort_order`` and
-``_sort_by`` can be omitted.
-
-.. code-block:: php
-
     <?php
+    namespace Acme\AdminBundle\Route;
 
-    use Sonata\AdminBundle\Admin\Admin;
+    use Sonata\AdminBundle\Builder\RouteBuilderInterface;
+    use Sonata\AdminBundle\Admin\AdminInterface;
+    use Sonata\AdminBundle\Model\AuditManagerInterface;
+    use Sonata\AdminBundle\Route\PathInfoBuilder;
+    use Sonata\AdminBundle\Route\RouteCollection;
 
-    class PageAdmin extends Admin
+    class EntityRouterBuilder extends PathInfoBuilder implements RouteBuilderInterface
     {
-        // ...
-
         /**
-         * Default Datagrid values
-         *
-         * @var array
+         * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
+         * @param \Sonata\AdminBundle\Route\RouteCollection $collection
          */
-        protected $datagridValues = array(
-            '_page' => 1, // Display the first page (default = 1)
-            '_sort_order' => 'DESC', // Descendant ordering (default = 'ASC')
-            '_sort_by' => 'updated' // name of the ordered field (default = the model id field, if any)
-            // the '_sort_by' key can be of the form 'mySubModel.mySubSubModel.myField'.
-        );
-
-        // ...
+        public function build(AdminInterface $admin, RouteCollection $collection)
+        {
+            parent::build($admin,$collection);
+            $collection->add('yourSubAction');
+            // Create button will dissappear, delete functionality will be disabled as well
+            // No more changes needed!
+            $collection->remove('create');
+            $collection->remove('delete');
+        }
     }
+
+* xml service registration
+
+.. configuration-block::
+
+    .. code-block:: xml
+
+        <service id="acme.admin.route.entity" class="Acme\AdminBundle\Route\EntityRouterBuilder">
+            <argument type="service" id="sonata.admin.audit.manager" />
+        </service>
+
 
 Inherited classes
 -----------------
 
-You can manage inherited classes by injected subclasses using the service configuration.
+You can manage inherited classes by injecting subclasses using the service configuration.
 
 Lets consider a base class named `Person` and its subclasses `Student` and `Teacher`:
 
-.. code-block:: xml
+.. configuration-block::
 
-    <services>
-        <service id="sonata.admin.person" class="YourNS\AdminBundle\Admin\PersonAdmin">
-            <tag name="sonata.admin" manager_type="orm" group="admin" label="Person"/>
-            <argument/>
-            <argument>YourNS\AdminBundle\Entity\Person</argument>
-            <argument></argument>
-            <call method="setSubClasses">
-                <argument type="collection">
-                    <argument key="student">YourNS\AdminBundle\Entity\Student</argument>
-                    <argument key="teacher">YourNS\AdminBundle\Entity\Teacher</argument>
-                </argument>
-            </call>
-        </service>
-    </services>
+    .. code-block:: xml
+
+        <services>
+            <service id="sonata.admin.person" class="YourNS\AdminBundle\Admin\PersonAdmin">
+                <tag name="sonata.admin" manager_type="orm" group="admin" label="Person"/>
+                <argument/>
+                <argument>YourNS\AdminBundle\Entity\Person</argument>
+                <argument></argument>
+                <call method="setSubClasses">
+                    <argument type="collection">
+                        <argument key="student">YourNS\AdminBundle\Entity\Student</argument>
+                        <argument key="teacher">YourNS\AdminBundle\Entity\Teacher</argument>
+                    </argument>
+                </call>
+            </service>
+        </services>
 
 You will just need to change the way forms are configured in order to take into account this new subclasses:
 
 .. code-block:: php
 
     <?php
+    // YourNS\AdminBundle\Admin\PersonAdmin.php
 
     protected function configureFormFields(FormMapper $form)
     {

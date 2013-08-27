@@ -366,6 +366,10 @@
                 <source>link_action_acl</source>
                 <target>ACL</target>
             </trans-unit>
+            <trans-unit id="short_object_description_placeholder">
+              <source>short_object_description_placeholder</source>
+              <target>short_object_description_placeholder</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

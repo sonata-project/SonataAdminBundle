@@ -64,7 +64,7 @@ class AdminObjectAclManipulator
         $objectIdentity = ObjectIdentity::fromDomainObject($data->getObject());
         $acl = $data->getSecurityHandler()->getObjectAcl($objectIdentity);
         if (!$acl) {
-            $acl = $this->getSecurityHandler()->createAcl($objectIdentity);
+            $acl = $data->getSecurityHandler()->createAcl($objectIdentity);
         }
 
         $data->setAcl($acl);

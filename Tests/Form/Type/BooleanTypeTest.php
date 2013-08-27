@@ -31,4 +31,34 @@ class BooleanTypeTest extends TypeTestCase
 
         $this->assertEquals(2, count($options['choices']));
     }
+
+    public function testAddTransformerCall()
+    {
+        $type = new BooleanType();
+
+        $type->setDefaultOptions($optionResolver = new OptionsResolver());
+
+        $builder = $this->getMock('Symfony\Component\Form\Test\FormBuilderInterface');
+        $builder->expects($this->once())->method('addModelTransformer');
+
+        $type->buildForm($builder, $optionResolver->resolve(array(
+            'transform' => true,
+        )));
+    }
+
+    /**
+     * The default behavior is not to transform to real boolean value .... don't ask
+     *
+     */
+    public function testDefaultBehavior()
+    {
+        $type = new BooleanType();
+
+        $type->setDefaultOptions($optionResolver = new OptionsResolver());
+
+        $builder = $this->getMock('Symfony\Component\Form\Test\FormBuilderInterface');
+        $builder->expects($this->never())->method('addModelTransformer');
+
+        $type->buildForm($builder, $optionResolver->resolve(array()));
+    }
 }
