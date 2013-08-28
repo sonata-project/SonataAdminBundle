@@ -632,6 +632,12 @@ In the templates, or in your code, you can use the Admin method ``isGranted()``:
       {# or use the default is_granted symfony helper, the following will give the same result #}
       {% if is_granted('ROLE_SUPER_ADMIN') or is_granted('DELETE', object) %} {# ... #} {% endif %}
 
+List filtering
+~~~~~~~~~~~~~~
+
+List filtering using ACL is available as a third party bundle: `CoopTilleulsAclSonataAdminExtensionBundle <https://github.com/coopTilleuls/CoopTilleulsAclSonataAdminExtensionBundle>`_.  
+When enabled, the logged in user will only see the objects for which it has the `VIEW` right (or superior).
+
 ACL editor
 ----------
 
