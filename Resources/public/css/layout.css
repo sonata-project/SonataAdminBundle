@@ -313,6 +313,10 @@ body.sonata-bc {
     display: none;
 }
 
+.sonata-bc .form-horizontal .sonata-collection-row-without-label {
+    margin-left: 0;
+}
+
 ul.inputs-list {
     padding-left: 150px;
 }
