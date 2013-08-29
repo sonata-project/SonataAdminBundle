@@ -1,6 +1,12 @@
 CHANGELOG
 =========
 
+### 2013-08-30
+* [BC BREAK] added ``getLabel``, ``removeShowFieldDescription``, ``getShowGroups``,
+  ``setShowGroups``, ``reorderShowGroup`` to the AdminInterface
+  If you do not extend the Admin class, you need to add these methods to
+  your admin.
+
 ### 2013-07-26
 
 * [BC BREAK] added alterNewInstance to AdminExtensionInterface
@@ -117,14 +123,14 @@ CHANGELOG
 * add country field type
 * refactor the form creation
 
-### 18/01/2011
+### 2011-01-18
 
 * respect symfony conventions
 * add new base edit template (standard and inline)
 * admin instances are not singletons anymore
 * add inline edition
 
-### 15/01/2011
+### 2011-01-15
 
 * respect symfony conventions
 * add a FieldDescription
