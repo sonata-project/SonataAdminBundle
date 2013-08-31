@@ -132,7 +132,7 @@ class Validators
      */
     public static function validateServiceId($serviceId)
     {
-        if (preg_match('/[^A-z\._0-9]/', $serviceId, $matches)) {
+        if (preg_match('/[^A-Za-z\._0-9]/', $serviceId, $matches)) {
             throw new \InvalidArgumentException(sprintf(
                 'Service ID "%s" contains invalid character "%s".',
                 $serviceId,
