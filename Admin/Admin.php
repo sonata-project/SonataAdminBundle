@@ -45,6 +45,8 @@ use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Knp\Menu\FactoryInterface as MenuFactoryInterface;
 use Knp\Menu\ItemInterface as MenuItemInterface;
 
+use Doctrine\Common\Util\ClassUtils;
+
 abstract class Admin implements AdminInterface, DomainObjectInterface
 {
     const CONTEXT_MENU       = 'menu';
@@ -2564,7 +2566,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
             return (string) $object;
         }
 
-        return sprintf("%s:%s", get_class($object), spl_object_hash($object));
+        return sprintf("%s:%s", ClassUtils::getClass($object), spl_object_hash($object));
     }
 
     /**
