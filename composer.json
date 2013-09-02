@@ -25,6 +25,7 @@
         "symfony/config": "~2.2",
         "symfony/console": "~2.2",
         "symfony/twig-bridge": "~2.2",
+        "symfony/class-loader":"~2.2",
         "sensio/generator-bundle": "~2.2",
         "twig/twig": "~1.12",
         "knplabs/knp-menu-bundle": "~1.1",
