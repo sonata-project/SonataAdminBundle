@@ -154,7 +154,7 @@ class CRUDController extends Controller
         $parameters['base_template'] = isset($parameters['base_template']) ? $parameters['base_template'] : $this->getBaseTemplate();
         $parameters['admin_pool']    = $this->get('sonata.admin.pool');
 
-        return parent::render($view, $parameters);
+        return parent::render($view, $parameters, $response);
     }
 
     /**
