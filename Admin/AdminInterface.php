@@ -219,6 +219,13 @@ interface AdminInterface
     public function addShowFieldDescription($name, FieldDescriptionInterface $fieldDescription);
 
     /**
+     * Remove a ShowFieldDescription
+     *
+     * @param string $name
+     */
+    public function removeShowFieldDescription($name);
+
+    /**
      * add a list FieldDescription
      *
      * @param string                                              $name
@@ -612,6 +619,28 @@ interface AdminInterface
     public function setFormGroups(array $formGroups);
 
     /**
+     * Returns the show groups
+     *
+     * @return array
+     */
+    public function getShowGroups();
+
+    /**
+     * Set the show groups
+     *
+     * @param array $showGroups
+     */
+    public function setShowGroups(array $showGroups);
+
+    /**
+     * Reorder items in showGroup
+     *
+     * @param string $group
+     * @param array  $keys
+     */
+    public function reorderShowGroup($group, array $keys);
+
+    /**
      * add a FieldDescription
      *
      * @param string                                              $name
@@ -657,12 +686,18 @@ interface AdminInterface
      * @return string the active sub class
      */
     public function getActiveSubClass();
-    
+
     /**
      * Returns the currently active sub class code
-     * 
+     *
      * @return string the code for active sub class
      */
     public function getActiveSubclassCode();
 
+    /**
+     * Returns Admin`s label
+     *
+     * @return string
+     */
+    public function getLabel();
 }
