@@ -80,7 +80,8 @@ class GenerateAdminCommand extends ContainerAwareCommand
             $this->writeError($output, $e->getMessage());
         }
 
-        if ($controllerClassBasename = Validators::validateControllerClassBasename($input->getOption('controller'))) {
+        if ($controllerClassBasename = $input->getOption('controller')) {
+            $controllerClassBasename = Validators::validateControllerClassBasename($controllerClassBasename);
             $controllerGenerator = new ControllerGenerator($skeletonDirectory);
 
             try {
