@@ -444,7 +444,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
      */
     public function isSortable()
     {
-        return $this->getOption('sortable', false);
+        return false !== $this->getOption('sortable', false);
     }
 
     /**

@@ -286,7 +286,9 @@ interface FieldDescriptionInterface
      */
     public function getTranslationDomain();
 
-    /*
+    /**
+     * Return true if field is sortable.
+     *
      * @return boolean
      */
     public function isSortable();
