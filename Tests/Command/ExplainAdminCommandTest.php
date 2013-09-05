@@ -117,15 +117,16 @@ class ExplainAdminCommandTest extends \PHPUnit_Framework_TestCase
             ->method('isChild')
             ->will($this->returnValue(true));
 
+        //php 5.3 BC
+        $adminParent = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $adminParent->expects($this->any())
+            ->method('getCode')
+            ->will($this->returnValue('foo_child'));
+
         $this->admin->expects($this->any())
             ->method('getParent')
-            ->will($this->returnCallback(function() {
-                $admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
-                $admin->expects($this->any())
-                    ->method('getCode')
-                    ->will($this->returnValue('foo_child'));
-
-                return $admin;
+            ->will($this->returnCallback(function() use ($adminParent) {
+                return $adminParent;
             }));
 
         $this->validatorFactory = $this->getMock('Symfony\Component\Validator\MetadataFactoryInterface');
@@ -209,11 +210,21 @@ class ExplainAdminCommandTest extends \PHPUnit_Framework_TestCase
         $commandTester = new CommandTester($command);
         $commandTester->execute(array('command' => $command->getName(), 'admin'=>'acme.admin.foo'));
 
-        $this->assertEquals(sprintf(file_get_contents(__DIR__.'/../Fixtures/Command/explain_admin.txt'), get_class($this->admin), get_class($modelManager), get_class($datagridBuilder), get_class($listBuilder)), $commandTester->getDisplay());
+        $this->assertEquals(sprintf(str_replace("\n", PHP_EOL, file_get_contents(__DIR__.'/../Fixtures/Command/explain_admin.txt')), get_class($this->admin), get_class($modelManager), get_class($datagridBuilder), get_class($listBuilder)), $commandTester->getDisplay());
     }
 
     public function testExecuteEmptyValidator()
     {
+        $metadata = $this->getMock('Symfony\Component\Validator\MetadataInterface');
+
+        $this->validatorFactory->expects($this->once())
+            ->method('getMetadataFor')
+            ->with($this->equalTo('Acme\Entity\Foo'))
+            ->will($this->returnValue($metadata));
+
+        $metadata->properties = array();
+        $metadata->getters = array();
+
         $modelManager = $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface');
 
         $this->admin->expects($this->any())
@@ -244,7 +255,7 @@ class ExplainAdminCommandTest extends \PHPUnit_Framework_TestCase
         $commandTester = new CommandTester($command);
         $commandTester->execute(array('command' => $command->getName(), 'admin'=>'acme.admin.foo'));
 
-        $this->assertEquals(sprintf(file_get_contents(__DIR__.'/../Fixtures/Command/explain_admin_empty_validator.txt'), get_class($this->admin), get_class($modelManager), get_class($datagridBuilder), get_class($listBuilder)), $commandTester->getDisplay());
+        $this->assertEquals(sprintf(str_replace("\n", PHP_EOL, file_get_contents(__DIR__.'/../Fixtures/Command/explain_admin_empty_validator.txt')), get_class($this->admin), get_class($modelManager), get_class($datagridBuilder), get_class($listBuilder)), $commandTester->getDisplay());
     }
 
     public function testExecuteNonAdminService()
