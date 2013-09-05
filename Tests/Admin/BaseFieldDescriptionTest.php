@@ -61,10 +61,16 @@ class BaseFieldDescriptionTest extends \PHPUnit_Framework_TestCase
 
         $description->setMappingType('int');
         $this->assertEquals('int', $description->getMappingType());
-        
+
         $this->assertEquals('short_object_description_placeholder', $description->getOption('placeholder'));
         $description->setOptions(array('placeholder' => false));
         $this->assertFalse($description->getOption('placeholder'));
+
+        $description->setOption('sortable', false);
+        $this->assertFalse($description->isSortable());
+
+        $description->setOption('sortable', 'field_name');
+        $this->assertTrue($description->isSortable());
     }
 
     public function testAdmin()
