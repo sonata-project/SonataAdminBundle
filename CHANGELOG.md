@@ -1,6 +1,13 @@
 CHANGELOG
 =========
 
+### 2013-09-5
+* [BC BREAK] added ``getListBuilder``, ``getDatagridBuilder``, ``setBaseControllerName``,
+  ``getBaseControllerName``, ``getFormFieldDescriptions``, ``getRoutes``, ``getFilterFieldDescriptions``,
+  ``getListFieldDescriptions``, ``isChild`` to the AdminInterface
+  If you do not extend the Admin class, you need to add these methods to
+  your admin.
+
 ### 2013-08-30
 * [BC BREAK] added ``getLabel``, ``removeShowFieldDescription``, ``getShowGroups``,
   ``setShowGroups``, ``reorderShowGroup`` to the AdminInterface
