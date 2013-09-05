@@ -24,6 +24,8 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Bridge\Twig\Extension\RoutingExtension;
 use Symfony\Component\Routing\RequestContext;
 use Sonata\AdminBundle\Exception\NoValueException;
+use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
+use Sonata\AdminBundle\Admin\AdminInterface;
 
 /**
  * Test for SonataAdminExtension
@@ -37,35 +39,114 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
      */
     private $twigExtension;
 
+    /**
+     * @var Twig_Environment
+     */
+    private $environment;
+
+    /**
+     * @var AdminInterface
+     */
+    private $admin;
+
+    /**
+     * @var FieldDescriptionInterface
+     */
+    private $fieldDescription;
+
+    /**
+     * @var \stdClass
+     */
+    private $object;
+
+    /**
+     * @var Pool
+     */
+    private $pool;
+
     public function setUp()
     {
         date_default_timezone_set('Europe/London');
 
         $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
-        $pool = new Pool($container, '', '');
-        $this->twigExtension = new SonataAdminExtension($pool);
+
+        $this->pool = new Pool($container, '', '');
+        $this->twigExtension = new SonataAdminExtension($this->pool);
 
         $loader = new StubFilesystemLoader(array(
             __DIR__.'/../../../Resources/views/CRUD',
         ));
 
-        $environment = new \Twig_Environment($loader, array('strict_variables' => true, 'cache' => false, 'autoescape' => true, 'optimizations' => 0));
-        $environment->addExtension($this->twigExtension);
+        $this->environment = new \Twig_Environment($loader, array('strict_variables' => true, 'cache' => false, 'autoescape' => true, 'optimizations' => 0));
+        $this->environment->addExtension($this->twigExtension);
 
         //translation extension
         $translator = new Translator('en', new MessageSelector());
         $translator->addLoader('xlf', new XliffFileLoader());
         $translator->addResource('xlf', __DIR__.'/../../../Resources/translations/SonataAdminBundle.en.xliff', 'en', 'SonataAdminBundle');
-        $environment->addExtension(new TranslationExtension($translator));
+        $this->environment->addExtension(new TranslationExtension($translator));
 
         //routing extension
         $xmlFileLoader = new XmlFileLoader(new FileLocator(array(__DIR__.'/../../../Resources/config/routing')));
         $routeCollection = $xmlFileLoader->load('sonata_admin.xml');
         $requestContext = new RequestContext();
         $urlGenerator = new UrlGenerator($routeCollection, $requestContext);
-        $environment->addExtension(new RoutingExtension($urlGenerator));
+        $this->environment->addExtension(new RoutingExtension($urlGenerator));
 
-        $this->twigExtension->initRuntime($environment);
+        $this->twigExtension->initRuntime($this->environment);
+
+        //initialize object
+        $this->object = new \stdClass();
+
+        //initialize admin
+        $this->admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
+
+        $this->admin->expects($this->any())
+            ->method('isGranted')
+            ->will($this->returnValue(true));
+
+        $this->admin->expects($this->any())
+            ->method('getCode')
+            ->will($this->returnValue('xyz'));
+
+        $this->admin->expects($this->any())
+            ->method('id')
+            ->with($this->equalTo($this->object))
+            ->will($this->returnValue(12345));
+
+        $this->admin->expects($this->any())
+            ->method('trans')
+            ->will($this->returnCallback(function($id) {
+                return $id;
+            }));
+
+        //for php5.3 BC
+        $admin = $this->admin;
+
+        $container->expects($this->any())
+            ->method('get')
+            ->will($this->returnCallback(function($id) use ($admin) {
+                if ($id == 'sonata_admin_foo_service') {
+                    return $admin;
+                }
+
+                return null;
+            }));
+
+        //initialize field description
+        $this->fieldDescription = $this->getMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+
+        $this->fieldDescription->expects($this->any())
+            ->method('getName')
+            ->will($this->returnValue('fd_name'));
+
+        $this->fieldDescription->expects($this->any())
+            ->method('getAdmin')
+            ->will($this->returnValue($this->admin));
+
+        $this->fieldDescription->expects($this->any())
+            ->method('getLabel')
+            ->will($this->returnValue('Data'));
     }
 
     public function testSlugify()
@@ -83,51 +164,23 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
      */
     public function testRenderListElement($expected, $type, $value, array $options)
     {
-        $object = new \stdClass();
-
-        $admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
-
-        $admin->expects($this->any())
+        $this->admin->expects($this->any())
             ->method('getTemplate')
             ->will($this->returnValue('SonataAdminBundle:CRUD:base_list_field.html.twig'));
 
-        $admin->expects($this->any())
-            ->method('isGranted')
-            ->will($this->returnValue(true));
-
-        $admin->expects($this->any())
-            ->method('getCode')
-            ->with($this->equalTo($object))
-            ->will($this->returnValue('xyz'));
-
-        $admin->expects($this->any())
-            ->method('id')
-            ->with($this->equalTo($object))
-            ->will($this->returnValue(12345));
-
-        $fieldDescription = $this->getMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
-
-        $fieldDescription->expects($this->any())
-            ->method('getName')
-            ->will($this->returnValue('fd_name'));
-
-        $fieldDescription->expects($this->any())
-            ->method('getAdmin')
-            ->will($this->returnValue($admin));
-
-        $fieldDescription->expects($this->any())
+        $this->fieldDescription->expects($this->any())
             ->method('getValue')
             ->will($this->returnValue($value));
 
-        $fieldDescription->expects($this->any())
+        $this->fieldDescription->expects($this->any())
             ->method('getType')
             ->will($this->returnValue($type));
 
-        $fieldDescription->expects($this->any())
+        $this->fieldDescription->expects($this->any())
             ->method('getOptions')
             ->will($this->returnValue($options));
 
-        $fieldDescription->expects($this->any())
+        $this->fieldDescription->expects($this->any())
             ->method('getTemplate')
             ->will($this->returnCallback(function() use ($type) {
                 switch ($type) {
@@ -149,12 +202,15 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
                         return 'SonataAdminBundle:CRUD:list_array.html.twig';
                     case 'trans':
                         return 'SonataAdminBundle:CRUD:list_trans.html.twig';
+                    case 'nonexistent':
+                        //template doesn`t exist
+                        return 'SonataAdminBundle:CRUD:list_nonexistent_template.html.twig';
                     default:
                         return false;
                 }
             }));
 
-        $this->assertEquals($expected, trim(preg_replace('/\s+/', ' ', $this->twigExtension->renderListElement($object, $fieldDescription))));
+        $this->assertEquals($expected, trim(preg_replace('/\s+/', ' ', $this->twigExtension->renderListElement($this->object, $this->fieldDescription))));
     }
 
     public function getRenderListElementTests()
@@ -162,6 +218,8 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
         return array(
             array('<td class="sonata-ba-list-field sonata-ba-list-field-string" objectId="12345"> Example </td>', 'string', 'Example', array()),
             array('<td class="sonata-ba-list-field sonata-ba-list-field-string" objectId="12345"> </td>', 'string', null, array()),
+            array('<td class="sonata-ba-list-field sonata-ba-list-field-nonexistent" objectId="12345"> Example </td>', 'nonexistent', 'Example', array()),
+            array('<td class="sonata-ba-list-field sonata-ba-list-field-nonexistent" objectId="12345"> </td>', 'nonexistent', null, array()),
             array('<td class="sonata-ba-list-field sonata-ba-list-field-text" objectId="12345"> Example </td>', 'text', 'Example', array()),
             array('<td class="sonata-ba-list-field sonata-ba-list-field-text" objectId="12345"> </td>', 'text', null, array()),
             array('<td class="sonata-ba-list-field sonata-ba-list-field-textarea" objectId="12345"> Example </td>', 'textarea', 'Example', array()),
@@ -204,32 +262,11 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
      */
     public function testRenderViewElement($expected, $type, $value, array $options)
     {
-        $object = new \stdClass();
-
-        $admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
-
-        $admin->expects($this->any())
+        $this->admin->expects($this->any())
             ->method('getTemplate')
             ->will($this->returnValue('SonataAdminBundle:CRUD:base_show_field.html.twig'));
 
-        $admin->expects($this->any())
-            ->method('id')
-            ->with($this->equalTo($object))
-            ->will($this->returnValue(12345));
-
-        $admin->expects($this->any())
-            ->method('trans')
-            ->will($this->returnCallback(function($id) {
-                return $id;
-            }));
-
-        $fieldDescription = $this->getMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
-
-        $fieldDescription->expects($this->any())
-            ->method('getAdmin')
-            ->will($this->returnValue($admin));
-
-        $fieldDescription->expects($this->any())
+        $this->fieldDescription->expects($this->any())
             ->method('getValue')
             ->will($this->returnCallback(function() use ($value) {
                 if ($value instanceof NoValueException) {
@@ -239,19 +276,15 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
                 return $value;
             }));
 
-        $fieldDescription->expects($this->any())
-            ->method('getLabel')
-            ->will($this->returnValue('Data'));
-
-        $fieldDescription->expects($this->any())
+        $this->fieldDescription->expects($this->any())
             ->method('getType')
             ->will($this->returnValue($type));
 
-        $fieldDescription->expects($this->any())
+        $this->fieldDescription->expects($this->any())
             ->method('getOptions')
             ->will($this->returnValue($options));
 
-        $fieldDescription->expects($this->any())
+        $this->fieldDescription->expects($this->any())
             ->method('getTemplate')
             ->will($this->returnCallback(function() use ($type) {
                 switch ($type) {
@@ -276,7 +309,7 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
                 }
             }));
 
-        $this->assertEquals($expected, trim(preg_replace('/\s+/', ' ', $this->twigExtension->renderViewElement($fieldDescription, $object))));
+        $this->assertEquals($expected, trim(preg_replace('/\s+/', ' ', $this->twigExtension->renderViewElement($this->fieldDescription, $this->object))));
     }
 
     public function getRenderViewElementTests()
@@ -332,6 +365,22 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('test123', $this->twigExtension->getValueFromFieldDescription($object, $fieldDescription));
     }
 
+    public function testGetValueFromFieldDescriptionWithRemoveLoopException()
+    {
+        $object =  $this->getMock('\ArrayAccess');
+        $fieldDescription = $this->getMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+
+        try {
+            $this->assertEquals('anything', $this->twigExtension->getValueFromFieldDescription($object, $fieldDescription, array('loop'=>true)));
+        } catch (\RuntimeException $e) {
+            $this->assertContains('remove the loop requirement', $e->getMessage());
+
+            return;
+        }
+
+        $this->fail('Failed asserting that exception of type "\RuntimeException" is thrown.');
+    }
+
     public function testGetValueFromFieldDescriptionWithNoValueException()
     {
         $object = new \stdClass();
@@ -348,5 +397,126 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(null));
 
         $this->assertEquals(null, $this->twigExtension->getValueFromFieldDescription($object, $fieldDescription));
+    }
+
+    public function testGetValueFromFieldDescriptionWithNoValueExceptionNewAdminInstance()
+    {
+        $object = new \stdClass();
+        $fieldDescription = $this->getMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+
+        $fieldDescription->expects($this->any())
+            ->method('getValue')
+            ->will($this->returnCallback(function() {
+                throw new NoValueException();
+            }));
+
+        $fieldDescription->expects($this->any())
+            ->method('getAssociationAdmin')
+            ->will($this->returnValue($this->admin));
+
+        $this->admin->expects($this->once())
+            ->method('getNewInstance')
+            ->will($this->returnValue('foo'));
+
+        $this->assertEquals('foo', $this->twigExtension->getValueFromFieldDescription($object, $fieldDescription));
+    }
+
+    public function testOutput()
+    {
+        $this->fieldDescription->expects($this->any())
+            ->method('getTemplate')
+            ->will($this->returnValue('SonataAdminBundle:CRUD:base_list_field.html.twig'));
+
+        $this->fieldDescription->expects($this->any())
+            ->method('getFieldName')
+            ->will($this->returnValue('fd_name'));
+
+        $this->environment->disableDebug();
+
+        $parameters = array(
+            'admin'             => $this->admin,
+            'value'             => 'foo',
+            'field_description' => $this->fieldDescription,
+            'object'            => $this->object,
+        );
+
+        $template = $this->environment->loadTemplate('SonataAdminBundle:CRUD:base_list_field.html.twig');
+
+        $this->assertEquals('<td class="sonata-ba-list-field sonata-ba-list-field-" objectId="12345"> foo </td>',
+                trim(preg_replace('/\s+/', ' ', $this->twigExtension->output($this->fieldDescription, $template, $parameters))));
+
+        $this->environment->enableDebug();
+        $this->assertEquals('<!-- START fieldName: fd_name template: SonataAdminBundle:CRUD:base_list_field.html.twig compiled template: SonataAdminBundle:CRUD:base_list_field.html.twig --> <td class="sonata-ba-list-field sonata-ba-list-field-" objectId="12345"> foo </td> <!-- END - fieldName: fd_name -->',
+                trim(preg_replace('/\s+/', ' ', $this->twigExtension->output($this->fieldDescription, $template, $parameters))));
+    }
+
+    public function testRenderRelationElementNoObject()
+    {
+        $this->assertEquals('foo', $this->twigExtension->renderRelationElement('foo', $this->fieldDescription));
+    }
+
+    public function testRenderRelationElementToString()
+    {
+        $this->fieldDescription->expects($this->once())
+            ->method('getOption')
+            ->with($this->identicalTo('associated_tostring'))
+            ->will($this->returnValue('__toString'));
+
+       $element = $this->getMock('stdClass', array('__toString'));
+       $element->expects($this->any())
+            ->method('__toString')
+            ->will($this->returnValue('bar'));
+
+       $this->assertEquals('bar', $this->twigExtension->renderRelationElement($element, $this->fieldDescription));
+    }
+
+    public function testRenderRelationElementCustomToString()
+    {
+        $this->fieldDescription->expects($this->any())
+            ->method('getOption')
+            ->with($this->identicalTo('associated_tostring'))
+            ->will($this->returnValue('customToString'));
+
+       $element = $this->getMock('stdClass', array('customToString'));
+       $element->expects($this->any())
+            ->method('customToString')
+            ->will($this->returnValue('fooBar'));
+
+       $this->assertEquals('fooBar', $this->twigExtension->renderRelationElement($element, $this->fieldDescription));
+    }
+
+    public function testRenderRelationElementMethodNotExist()
+    {
+        $this->fieldDescription->expects($this->any())
+            ->method('getOption')
+            ->with($this->identicalTo('associated_tostring'))
+            ->will($this->returnValue('nonExistedMethod'));
+
+        $element = new \stdClass();
+
+        try {
+            $this->twigExtension->renderRelationElement($element, $this->fieldDescription);
+        } catch (\RuntimeException $e) {
+            $this->assertContains('You must define an `associated_tostring` option or create a `stdClass::__toString` method to the field option "fd_name" from service "xyz".', $e->getMessage());
+
+            return;
+        }
+
+        $this->fail('Failed asserting that exception of type "\RuntimeException" is thrown.');
+    }
+
+    public function testGetUrlsafeIdentifier()
+    {
+        $enitity = new \stdClass();
+
+        //set admin to pool
+        $this->pool->setAdminClasses(array('stdClass'=>'sonata_admin_foo_service'));
+
+        $this->admin->expects($this->once())
+            ->method('getUrlsafeIdentifier')
+            ->with($this->equalTo($enitity))
+            ->will($this->returnValue(1234567));
+
+        $this->assertEquals(1234567, $this->twigExtension->getUrlsafeIdentifier($enitity));
     }
 }
