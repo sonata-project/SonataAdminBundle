@@ -1042,9 +1042,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * Returns the list of available urls
-     *
-     * @return \Sonata\AdminBundle\Route\RouteCollection the list of available urls
+     * {@inheritdoc}
      */
     public function getRoutes()
     {
@@ -1183,9 +1181,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * @param string $name
-     *
-     * @return null|string
+     * {@inheritdoc}
      */
     public function getTemplate($name)
     {
@@ -1430,7 +1426,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * @param string $baseControllerName
+     * {@inheritdoc}
      */
     public function setBaseControllerName($baseControllerName)
     {
@@ -1438,7 +1434,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getBaseControllerName()
     {
@@ -1615,9 +1611,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * build and return the collection of form FieldDescription
-     *
-     * @return array collection of form FieldDescription
+     * {@inheritdoc}
      */
     public function getFormFieldDescriptions()
     {
@@ -1721,9 +1715,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * Returns the collection of list FieldDescriptions
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function getListFieldDescriptions()
     {
@@ -1817,9 +1809,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * Returns the filter FieldDescription collection
-     *
-     * @return FieldDescriptionInterface[]
+     * {@inheritdoc}
      */
     public function getFilterFieldDescriptions()
     {
@@ -1880,9 +1870,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * Returns true if the Admin class has an Parent Admin defined
-     *
-     * @return boolean
+     * {@inheritdoc}
      */
     public function isChild()
     {
@@ -2201,7 +2189,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * @return \Sonata\AdminBundle\Builder\DatagridBuilderInterface
+     * {@inheritdoc}
      */
     public function getDatagridBuilder()
     {
@@ -2217,7 +2205,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * @return \Sonata\AdminBundle\Builder\ListBuilderInterface
+     * {@inheritdoc}
      */
     public function getListBuilder()
     {

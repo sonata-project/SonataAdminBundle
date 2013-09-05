@@ -38,6 +38,8 @@ interface AdminInterface
     public function setFormContractor(FormContractorInterface $formContractor);
 
     /**
+     * Set ListBuilder
+     *
      * @param ListBuilderInterface $listBuilder
      *
      * @return void
@@ -45,11 +47,27 @@ interface AdminInterface
     public function setListBuilder(ListBuilderInterface $listBuilder);
 
     /**
+     * Get ListBuilder
+     *
+     * @return \Sonata\AdminBundle\Builder\ListBuilderInterface
+     */
+    public function getListBuilder();
+
+    /**
+     * Set DatagridBuilder
+     *
      * @param \Sonata\AdminBundle\Builder\DatagridBuilderInterface $datagridBuilder
      *
      * @return void
      */
     public function setDatagridBuilder(DatagridBuilderInterface $datagridBuilder);
+
+    /**
+     * Get DatagridBuilder
+     *
+     * @return \Sonata\AdminBundle\Builder\DatagridBuilderInterface
+     */
+    public function getDatagridBuilder();
 
     /**
      * @param \Symfony\Component\Translation\TranslatorInterface $translator
@@ -102,6 +120,20 @@ interface AdminInterface
     public function getDatagrid();
 
     /**
+     * Set base controller name
+     *
+     * @param string $baseControllerName
+     */
+    public function setBaseControllerName($baseControllerName);
+
+    /**
+     * Get base controller name
+     *
+     * @return string
+     */
+    public function getBaseControllerName();
+
+    /**
      * Generates the object url with the given $name
      *
      * @param string  $name
@@ -147,11 +179,20 @@ interface AdminInterface
     public function getFormBuilder();
 
     /**
+     * Return FormFieldDescription
+     *
      * @param string $name
      *
      * @return \Sonata\AdminBundle\Admin\FieldDescriptionInterface
      */
     public function getFormFieldDescription($name);
+
+    /**
+     * Build and return the collection of form FieldDescription
+     *
+     * @return array collection of form FieldDescription
+     */
+    public function getFormFieldDescriptions();
 
     /**
      * @return \Symfony\Component\HttpFoundation\Request
@@ -202,6 +243,13 @@ interface AdminInterface
     public function trans($id, array $parameters = array(), $domain = null, $locale = null);
 
     /**
+     * Returns the list of available urls
+     *
+     * @return \Sonata\AdminBundle\Route\RouteCollection the list of available urls
+     */
+    public function getRoutes();
+
+    /**
      * Return the parameter name used to represente the id in the url
      *
      * @return string
@@ -244,6 +292,13 @@ interface AdminInterface
      * @return void
      */
     public function addFilterFieldDescription($name, FieldDescriptionInterface $fieldDescription);
+
+    /**
+     * Returns the filter FieldDescription collection
+     *
+     * @return FieldDescriptionInterface[]
+     */
+    public function getFilterFieldDescriptions();
 
     /**
      * Returns a list depend on the given $object
@@ -460,6 +515,13 @@ interface AdminInterface
     public function getListFieldDescription($name);
 
     /**
+     * Returns the collection of list FieldDescriptions
+     *
+     * @return array
+     */
+    public function getListFieldDescriptions();
+
+    /**
      * @return void
      */
     public function configure();
@@ -582,6 +644,15 @@ interface AdminInterface
     public function setParent(AdminInterface $admin);
 
     /**
+     * Returns true if the Admin class has an Parent Admin defined
+     *
+     * @return boolean
+     */
+    public function isChild();
+
+    /**
+     * Returns template
+     *
      * @param string $name
      *
      * @return null|string
