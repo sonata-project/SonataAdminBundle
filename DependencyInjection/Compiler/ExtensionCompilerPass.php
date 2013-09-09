@@ -26,11 +26,16 @@ class ExtensionCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
+        $universalExtensions = array();
         foreach ($container->findTaggedServiceIds('sonata.admin.extension') as $id => $attributes) {
 
             $target = false;
             if (isset($attributes[0]['target'])) {
                 $target = $attributes[0]['target'];
+            }
+
+            if (isset($attributes[0]['global']) && $attributes[0]['global']) {
+                $universalExtensions[] = $id;
             }
 
             if (!$target || !$container->hasDefinition($target)) {
@@ -46,8 +51,12 @@ class ExtensionCompilerPass implements CompilerPassInterface
 
         foreach ($container->findTaggedServiceIds('sonata.admin') as $id => $attributes) {
             $admin = $container->getDefinition($id);
-            $extensions = $this->getExtensionsForAdmin($id, $admin, $container, $extensionMap);
 
+            foreach ($universalExtensions as $extension) {
+                $admin->addMethodCall('addExtension', array(new Reference($extension)));
+            }
+
+            $extensions = $this->getExtensionsForAdmin($id, $admin, $container, $extensionMap);
             foreach ($extensions as $extension) {
                 if(!$container->hasDefinition($extension)){
                     throw new \InvalidArgumentException(sprintf('Unable to find extension service for id %s', $extension));
