@@ -84,23 +84,23 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * Returns an array of page numbers to use in pagination links.
      *
-     * @param integer $nb_links The maximum number of page numbers to return
+     * @param integer $nbLinks The maximum number of page numbers to return
      *
      * @return array
      */
-    public function getLinks($nb_links = null)
+    public function getLinks($nbLinks = null)
     {
-        if ($nb_links == null) {
-            $nb_links = $this->getMaxPageLinks();
+        if ($nbLinks == null) {
+            $nbLinks = $this->getMaxPageLinks();
         }
         $links = array();
-        $tmp   = $this->page - floor($nb_links / 2);
-        $check = $this->lastPage - $nb_links + 1;
+        $tmp   = $this->page - floor($nbLinks / 2);
+        $check = $this->lastPage - $nbLinks + 1;
         $limit = $check > 0 ? $check : 1;
         $begin = $tmp > 0 ? ($tmp > $limit ? $limit : $tmp) : 1;
 
         $i = (int) $begin;
-        while ($i < $begin + $nb_links && $i <= $this->lastPage) {
+        while ($i < $begin + $nbLinks && $i <= $this->lastPage) {
             $links[] = $i++;
         }
 
