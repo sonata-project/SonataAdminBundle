@@ -73,10 +73,10 @@ class AdminObjectAclData
     /**
      * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
      * @param mixed                                    $object
-     * @param \Iterator                                $aclUsers
+     * @param \Traversable                             $aclUsers
      * @param string                                   $maskBuilderClass
      */
-    public function __construct(AdminInterface $admin, $object, \Iterator $aclUsers, $maskBuilderClass)
+    public function __construct(AdminInterface $admin, $object, \Traversable $aclUsers, $maskBuilderClass)
     {
         $this->admin = $admin;
         $this->object = $object;
