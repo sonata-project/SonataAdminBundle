@@ -21,7 +21,7 @@ class AdminObjectAclDataTest extends \PHPUnit_Framework_TestCase
 
     protected static function createAclUsers()
     {
-        return array();
+        return new \ArrayIterator;
     }
 
     protected function createAdminObjectAclData($isOwner = true)
@@ -67,7 +67,7 @@ class AdminObjectAclDataTest extends \PHPUnit_Framework_TestCase
     public function testGetAclUsers()
     {
         $adminObjectAclData = $this->createAdminObjectAclData();
-        $this->assertInternalType('array', $adminObjectAclData->getAclUsers());
+        $this->assertInstanceOf('ArrayIterator', $adminObjectAclData->getAclUsers());
     }
 
     public function testSetAcl()
