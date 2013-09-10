@@ -770,7 +770,7 @@ class CRUDController extends Controller
 
         $this->admin->setSubject($object);
         $aclUsers = $this->getAclUsers();
-        
+
         $adminObjectAclManipulator = $this->get('sonata.admin.object.manipulator.acl.admin');
         $adminObjectAclData = new AdminObjectAclData(
             $this->admin,
