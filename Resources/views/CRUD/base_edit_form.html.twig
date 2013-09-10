@@ -31,25 +31,27 @@
                     </ul>
             {% endblock %}
 
-                <div class="tab-content">
-                    {% for name, form_group in admin.formgroups %}
-                        <div class="tab-pane {% if loop.first %} active{% endif %}" id="{{ admin.uniqid }}_{{ loop.index }}">
-                            <fieldset>
-                                <div class="sonata-ba-collapsed-fields">
-                                    {% if form_group.description != false %}
-                                        <p>{{ form_group.description|raw }}</p>
-                                    {% endif %}
-
-                                    {% for field_name in form_group.fields %}
-                                        {% if admin.formfielddescriptions[field_name] is defined %}
-                                            {{ form_row(form[field_name])}}
+                {% block sonata_tab_content %}
+                    <div class="tab-content">
+                        {% for name, form_group in admin.formgroups %}
+                            <div class="tab-pane {% if loop.first %} active{% endif %}" id="{{ admin.uniqid }}_{{ loop.index }}">
+                                <fieldset>
+                                    <div class="sonata-ba-collapsed-fields">
+                                        {% if form_group.description != false %}
+                                            <p>{{ form_group.description|raw }}</p>
                                         {% endif %}
-                                    {% endfor %}
-                                </div>
-                            </fieldset>
-                        </div>
-                    {% endfor %}
-                </div>
+
+                                        {% for field_name in form_group.fields %}
+                                            {% if admin.formfielddescriptions[field_name] is defined %}
+                                                {{ form_row(form[field_name])}}
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                </fieldset>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% block sonata_tab_content %}
 
             {% block sonata_post_fieldsets %}
                 </div>
