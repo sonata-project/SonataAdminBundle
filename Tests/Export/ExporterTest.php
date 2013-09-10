@@ -29,15 +29,30 @@ class ExporterTest extends \PHPUnit_Framework_TestCase
         $exporter->getResponse('foo', 'foo', $source);
     }
 
-    public function testJsonFormat()
+    /**
+     * @dataProvider getGetResponseTests
+     */
+    public function testGetResponse($format, $filename, $contentType)
     {
         $source = new ArraySourceIterator(array(
             array('foo' => 'bar')
         ));
 
         $exporter = new Exporter();
-        $response = $exporter->getResponse('json', 'foo.json', $source);
+        $response = $exporter->getResponse($format, $filename, $source);
 
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $response);
+        $this->assertEquals($contentType, $response->headers->get('Content-Type'));
+        $this->assertEquals('attachment; filename='.$filename, $response->headers->get('Content-Disposition'));
+    }
+
+    public function getGetResponseTests()
+    {
+        return array(
+            array('json', 'foo.json', 'application/json'),
+            array('xml', 'foo.xml', 'text/xml'),
+            array('xls', 'foo.xls', 'application/vnd.ms-excel'),
+            array('csv', 'foo.csv', 'text/csv'),
+        );
     }
 }
