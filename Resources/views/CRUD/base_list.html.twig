@@ -20,10 +20,14 @@ file that was distributed with this source code.
 {% block side_menu %}{{ knp_menu_render(admin.sidemenu(action), {'currentClass' : 'active'}, 'list') }}{% endblock %}
 
 {% block list_table %}
+    {% block list_main_header %}
+    {% endblock %}
     {% set batchactions = admin.batchactions %}
     {% if admin.datagrid.results|length > 0 %}
         {% if admin.hasRoute('batch') %}
+        {% block batch_form_action %}
         <form action="{{ admin.generateUrl('batch', {'filter': admin.filterParameters}) }}" method="POST" >
+        {% endblock %}
         {% endif %}
             <table class="table table-bordered table-striped">
                 {% block table_header %}
