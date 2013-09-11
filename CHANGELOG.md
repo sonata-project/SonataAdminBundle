@@ -1,7 +1,20 @@
 CHANGELOG
 =========
 
-### 2013-09-5
+### 2013-09-11
+
+* [BC BREAK] added ``hasShowFieldDescription``, ``hasListFieldDescription``,
+  ``removeListFieldDescription``, ``removeFilterFieldDescription``,
+  ``hasFilterFieldDescription`` to the AdminInterface
+  If you do not extend the Admin class, you need to add these methods to
+  your admin.
+
+* [BC BREAK] added ``reorderFilters`` to the DatagridInterface
+  If you do not extend the Datagrid class, you need to add this method to
+  your Datagrid.
+
+### 2013-09-05
+
 * [BC BREAK] added ``getListBuilder``, ``getDatagridBuilder``, ``setBaseControllerName``,
   ``getBaseControllerName``, ``getFormFieldDescriptions``, ``getRoutes``, ``getFilterFieldDescriptions``,
   ``getListFieldDescriptions``, ``isChild`` to the AdminInterface
