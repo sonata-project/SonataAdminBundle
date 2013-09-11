@@ -257,6 +257,15 @@ interface AdminInterface
     public function getRouterIdParameter();
 
     /**
+     * Returns true if the admin has a FieldDescription with the given $name
+     *
+     * @param string $name
+     *
+     * @return bool
+     */
+    public function hasShowFieldDescription($name);
+
+    /**
      * add a FieldDescription
      *
      * @param string                                              $name
@@ -284,6 +293,24 @@ interface AdminInterface
     public function addListFieldDescription($name, FieldDescriptionInterface $fieldDescription);
 
     /**
+     * Remove a list FieldDescription
+     *
+     * @param string $name
+     *
+     * @return void
+     */
+    public function removeListFieldDescription($name);
+
+    /**
+     * Returns true if the filter FieldDescription exists
+     *
+     * @param string $name
+     *
+     * @return bool
+     */
+    public function hasFilterFieldDescription($name);
+
+    /**
      * add a filter FieldDescription
      *
      * @param string                                              $name
@@ -292,6 +319,13 @@ interface AdminInterface
      * @return void
      */
     public function addFilterFieldDescription($name, FieldDescriptionInterface $fieldDescription);
+
+    /**
+     * Remove a filter FieldDescription
+     *
+     * @param string $name
+     */
+    public function removeFilterFieldDescription($name);
 
     /**
      * Returns the filter FieldDescription collection
@@ -513,6 +547,15 @@ interface AdminInterface
      * @return \Sonata\AdminBundle\Admin\FieldDescriptionInterface
      */
     public function getListFieldDescription($name);
+
+    /**
+     * Returns true if the list FieldDescription exists
+     *
+     * @param string $name
+     *
+     * @return bool
+     */
+    public function hasListFieldDescription($name);
 
     /**
      * Returns the collection of list FieldDescriptions
