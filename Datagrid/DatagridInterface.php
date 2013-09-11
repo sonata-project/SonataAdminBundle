@@ -47,6 +47,11 @@ interface DatagridInterface
     public function getFilters();
 
     /**
+     * Reorder filters
+     */
+    public function reorderFilters(array $keys);
+
+    /**
      * @return array
      */
     public function getValues();

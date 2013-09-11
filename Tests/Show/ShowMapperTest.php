@@ -16,6 +16,7 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
 use Sonata\AdminBundle\Builder\ShowBuilderInterface;
+use Sonata\AdminBundle\Translator\NoopLabelTranslatorStrategy;
 
 /**
  * Test for ShowMapper
@@ -27,27 +28,27 @@ class ShowMapperTest extends \PHPUnit_Framework_TestCase
     /**
      * @var ShowMapper
      */
-    protected $showMapper;
+    private $showMapper;
 
     /**
      * @var AdminInterface
      */
-    protected $admin;
+    private $admin;
 
     /**
      * @var Sonata\AdminBundle\Builder\ShowBuilderInterface
      */
-    protected $showBuilder;
+    private $showBuilder;
 
     /**
      * @var FieldDescriptionCollection
      */
-    protected $fieldDescriptionCollection;
+    private $fieldDescriptionCollection;
 
     /**
      * @var array
      */
-    protected $groups;
+    private $groups;
 
     public function setUp()
     {
@@ -76,13 +77,38 @@ class ShowMapperTest extends \PHPUnit_Framework_TestCase
                 $groups = $showGroups;
             }));
 
-      $this->admin->expects($this->any())
+        $this->admin->expects($this->any())
             ->method('reorderShowGroup')
             ->will($this->returnCallback(function($group, $keys) use (&$groups) {
                 $showGroups = $groups;
                 $showGroups[$group]['fields'] = array_merge(array_flip($keys), $showGroups[$group]['fields']);
                 $groups = $showGroups;
             }));
+
+        $modelManager = $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface');
+
+        //php 5.3 BC
+        $fieldDescription = $this->getFieldDescriptionMock();
+
+        $modelManager->expects($this->any())
+            ->method('getNewFieldDescriptionInstance')
+            ->will($this->returnCallback(function($class, $name, array $options = array()) use ($fieldDescription) {
+                $fieldDescriptionClone = clone $fieldDescription;
+                $fieldDescriptionClone->setName($name);
+                $fieldDescriptionClone->setOptions($options);
+
+                return $fieldDescriptionClone;
+            }));
+
+        $this->admin->expects($this->any())
+            ->method('getModelManager')
+            ->will($this->returnValue($modelManager));
+
+        $labelTranslatorStrategy = new NoopLabelTranslatorStrategy;
+
+        $this->admin->expects($this->any())
+            ->method('getLabelTranslatorStrategy')
+            ->will($this->returnValue($labelTranslatorStrategy));
 
         $this->showBuilder->expects($this->any())
             ->method('addField')
@@ -110,6 +136,19 @@ class ShowMapperTest extends \PHPUnit_Framework_TestCase
 
         $this->showMapper->add($fieldDescription);
         $this->assertEquals($fieldDescription, $this->showMapper->get('fooName'));
+    }
+
+    public function testAdd()
+    {
+        $this->showMapper->add('fooName');
+
+        $this->assertTrue($this->showMapper->has('fooName'));
+
+        $fieldDescription = $this->showMapper->get('fooName');
+
+        $this->assertInstanceOf('Sonata\AdminBundle\Admin\FieldDescriptionInterface', $fieldDescription);
+        $this->assertEquals('fooName', $fieldDescription->getName());
+        $this->assertEquals('fooName', $fieldDescription->getOption('label'));
     }
 
     public function testAddRemove()
@@ -173,17 +212,17 @@ class ShowMapperTest extends \PHPUnit_Framework_TestCase
        )), true), print_r($this->admin->getShowGroups(), true));
     }
 
-    protected function getFieldDescriptionMock($name, $label)
+    private function getFieldDescriptionMock($name=null, $label=null)
     {
-        $fieldDescription = $this->getMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+        $fieldDescription = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\BaseFieldDescription');
 
-        $fieldDescription->expects($this->any())
-            ->method('getName')
-            ->will($this->returnValue($name));
+        if ($name !== null) {
+            $fieldDescription->setName($name);
+        }
 
-        $fieldDescription->expects($this->any())
-            ->method('getLabel')
-            ->will($this->returnValue($label));
+        if ($label !== null) {
+            $fieldDescription->setOption('label', $label);
+        }
 
         return $fieldDescription;
     }
