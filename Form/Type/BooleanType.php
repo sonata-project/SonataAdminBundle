@@ -21,7 +21,7 @@ class BooleanType extends AbstractType
 {
     const TYPE_YES = 1;
 
-    const TYPE_NO = 2;
+    const TYPE_NO = 0;
 
     /**
      * {@inheritDoc}
