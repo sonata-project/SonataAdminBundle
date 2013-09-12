@@ -1,5 +1,12 @@
+Warning: this doc page is not up to date and will be removed soon.
+==================================================================
+
+This page will be removed soon, as it's content is being improved and moved to 
+other pages of the documentation. Please refer to each section's documentation for up-to-date
+information on SonataAdminBundle configuration options.
+
 Configuration
-=============
+-------------
 
 Configuration options
 
