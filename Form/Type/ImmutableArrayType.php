@@ -28,9 +28,10 @@ class ImmutableArrayType extends AbstractType
                 $builder->add($infos);
             } else {
                 list($name, $type, $options) = $infos;
+                $extra = array_slice($infos, 3);
 
                 if (is_callable($options)) {
-                    $options = $options($builder, $options);
+                    $options = $options($builder, $name, $type, $extra);
                 }
 
                 $builder->add($name, $type, $options);
