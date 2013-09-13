@@ -724,20 +724,22 @@ class CRUDController extends Controller
     /**
      * Gets ACL users
      * 
-     * @return array
+     * @return \Traversable
      */
     protected function getAclUsers()
     {
+        $aclUsers = array();
+
         $userManagerServiceName = $this->container->getParameter('sonata.admin.security.acl_user_manager');
         if ($userManagerServiceName !== null && $this->has($userManagerServiceName)) {
             $userManager = $this->get($userManagerServiceName);
 
             if (method_exists($userManager, 'findUsers')) {
-                return $userManager->findUsers();
+                $aclUsers = $userManager->findUsers();
             }
         }
         
-        return array();
+        return is_array($aclUsers) ? new \ArrayIterator($aclUsers) : $aclUsers;
     }
 
     /**
