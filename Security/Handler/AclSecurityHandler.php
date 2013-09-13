@@ -166,10 +166,10 @@ class AclSecurityHandler implements AclSecurityHandlerInterface
     /**
      * {@inheritDoc}
      */
-    public function findObjectAcls(array $oids, array $sids = array())
+    public function findObjectAcls(\Traversable $oids, array $sids = array())
     {
         try {
-            $acls = $this->aclProvider->findAcls($oids, $sids);
+            $acls = $this->aclProvider->findAcls(iterator_to_array($oids), $sids);
         } catch (\Exception $e) {
             if ($e instanceof NotAllAclsFoundException) {
                 $acls = $e->getPartialResult();
