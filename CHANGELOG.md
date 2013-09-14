@@ -1,6 +1,17 @@
 CHANGELOG
 =========
 
+### 2013-09-13
+
+* [BC BREAK] added ``getMaxPerPage``, ``setMaxPerPage``, ``setPage``,
+  ``setQuery ``, ``getResults`` to the PagerInterface
+  If you do not extend the Pager class, you need to add these methods to
+  your pager.
+
+* [BC BREAK] added ``isActive`` to the FilterInterface
+  If you do not extend the Filter class, you need to add this method to
+  your filter.
+
 ### 2013-09-11
 
 * [BC BREAK] added ``hasShowFieldDescription``, ``hasListFieldDescription``,
