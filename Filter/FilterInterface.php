@@ -121,4 +121,11 @@ interface FilterInterface
      * @return array
      */
     public function getRenderSettings();
+
+    /**
+     * Returns true if filter is active
+     *
+     * @return boolean
+     */
+    public function isActive();
 }

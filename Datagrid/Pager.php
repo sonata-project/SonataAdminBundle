@@ -45,9 +45,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     }
 
     /**
-     * Returns an array of results on the given page.
-     *
-     * @return array
+     * {@inheritdoc}
      */
     abstract public function getResults();
 
@@ -316,9 +314,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     }
 
     /**
-     * Sets the current page.
-     *
-     * @param integer $page
+     * {@inheritdoc}
      */
     public function setPage($page)
     {
@@ -331,9 +327,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     }
 
     /**
-     * Returns the maximum number of results per page.
-     *
-     * @return integer
+     * {@inheritdoc}
      */
     public function getMaxPerPage()
     {
@@ -341,9 +335,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     }
 
     /**
-     * Sets the maximum number of results per page.
-     *
-     * @param integer $max
+     * {@inheritdoc}
      */
     public function setMaxPerPage($max)
     {
@@ -612,7 +604,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     }
 
     /**
-     * @param mixed $query
+     * {@inheritdoc}
      */
     public function setQuery($query)
     {

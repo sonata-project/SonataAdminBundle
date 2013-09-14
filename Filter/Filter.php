@@ -197,7 +197,7 @@ abstract class Filter implements FilterInterface
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function isActive()
     {
