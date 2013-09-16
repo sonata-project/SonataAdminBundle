@@ -24,9 +24,6 @@ use Knp\Menu\ItemInterface as MenuItemInterface;
 /**
  *
  */
-/** @noinspection PhpDocSignatureInspection */
-/** @noinspection PhpDocSignatureInspection */
-/** @noinspection PhpDocSignatureInspection */
 interface AdminExtensionInterface
 {
     /**
