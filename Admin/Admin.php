@@ -566,8 +566,16 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     public function update($object)
     {
         $this->preUpdate($object);
+        foreach ($this->extensions as $extension) {
+            $extension->preUpdate($this, $object);
+        }
+
         $this->getModelManager()->update($object);
+
         $this->postUpdate($object);
+        foreach ($this->extensions as $extension) {
+            $extension->postUpdate($this, $object);
+        }
     }
 
     /**
@@ -576,8 +584,17 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     public function create($object)
     {
         $this->prePersist($object);
+        foreach ($this->extensions as $extension) {
+            $extension->prePersist($this, $object);
+        }
+
         $this->getModelManager()->create($object);
+
         $this->postPersist($object);
+        foreach ($this->extensions as $extension) {
+            $extension->postPersist($this, $object);
+        }
+
         $this->createObjectSecurity($object);
     }
 
@@ -587,58 +604,54 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     public function delete($object)
     {
         $this->preRemove($object);
+        foreach ($this->extensions as $extension) {
+            $extension->preRemove($this, $object);
+        }
+
         $this->getSecurityHandler()->deleteObjectSecurity($this, $object);
         $this->getModelManager()->delete($object);
+
         $this->postRemove($object);
+        foreach ($this->extensions as $extension) {
+            $extension->postRemove($this, $object);
+        }
     }
 
     /**
      * {@inheritdoc}
      */
     public function preUpdate($object)
-    {
-
-    }
+    {}
 
     /**
      * {@inheritdoc}
      */
     public function postUpdate($object)
-    {
-
-    }
+    {}
 
     /**
      * {@inheritdoc}
      */
     public function prePersist($object)
-    {
-
-    }
+    {}
 
     /**
      * {@inheritdoc}
      */
     public function postPersist($object)
-    {
-
-    }
+    {}
 
     /**
      * {@inheritdoc}
      */
     public function preRemove($object)
-    {
-
-    }
+    {}
 
     /**
      * {@inheritdoc}
      */
     public function postRemove($object)
-    {
-
-    }
+    {}
 
     /**
      * build the view FieldDescription array

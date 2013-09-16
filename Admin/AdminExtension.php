@@ -76,4 +76,41 @@ abstract class AdminExtension implements AdminExtensionInterface
      */
     public function alterNewInstance(AdminInterface $admin, $object)
     {}
+
+    /**
+     * {@inheritdoc}
+     */
+    public function preUpdate(AdminInterface $admin, $object)
+    {}
+
+    /**
+     * {@inheritdoc}
+     */
+    public function postUpdate(AdminInterface $admin, $object)
+    {}
+
+    /**
+     * {@inheritdoc}
+     */
+    public function prePersist(AdminInterface $admin, $object)
+    {}
+
+    /**
+     * {@inheritdoc}
+     */
+    public function postPersist(AdminInterface $admin, $object)
+    {}
+
+    /**
+     * {@inheritdoc}
+     */
+    public function preRemove(AdminInterface $admin, $object)
+    {}
+
+    /**
+     * {@inheritdoc}
+     */
+    public function postRemove(AdminInterface $admin, $object)
+    {}
 }
+

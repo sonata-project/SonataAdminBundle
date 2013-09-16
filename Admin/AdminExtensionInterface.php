@@ -99,4 +99,40 @@ interface AdminExtensionInterface
      * @param mixed          $object
      */
     public function alterNewInstance(AdminInterface $admin, $object);
+
+    /**
+     * @param AdminInterface $admin
+     * @param mixed          $object
+     */
+    public function preUpdate(AdminInterface $admin, $object);
+
+    /**
+     * @param AdminInterface $admin
+     * @param mixed          $object
+     */
+    public function postUpdate(AdminInterface $admin, $object);
+
+    /**
+     * @param AdminInterface $admin
+     * @param mixed          $object
+     */
+    public function prePersist(AdminInterface $admin, $object);
+
+    /**
+     * @param AdminInterface $admin
+     * @param mixed          $object
+     */
+    public function postPersist(AdminInterface $admin, $object);
+
+    /**
+     * @param AdminInterface $admin
+     * @param mixed          $object
+     */
+    public function preRemove(AdminInterface $admin, $object);
+
+    /**
+     * @param AdminInterface $admin
+     * @param mixed          $object
+     */
+    public function postRemove(AdminInterface $admin, $object);
 }
