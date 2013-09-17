@@ -27,46 +27,6 @@ and some content might be broken or hidden, make sure to read raw files.
 * [Sonata Users](https://groups.google.com/group/sonata-users): Only for user questions
 * [Sonata Devs](https://groups.google.com/group/sonata-devs): Only for devs
 
-Features
---------
-
-  - Dashboard
-
-  - List
-
-    - Automatic sort
-    - Link to associated admin (Post => User)
-    - Custom templates
-    - Row Action : edit, view, ...
-    - Batch Action
-    - Clever row visualisation : boolean values are represented with 'check picture'
-    - Filter
-    - Pagination
-
-  - Edit/Create
-
-    - Inline edition
-    - Association management (create related model with + icon)
-    - Group fields
-    - Sortable option
-    - Modal window to select model (when the list can be important)
-    - Dynamic form on [one|many]-to-many association (add new element)
-
-  - Templating
-
-    - base templates (field, list, filter) can be overwritten
-    - layout templates can be defined into the Service Container
-
-  - Others
-
-    - Nested Admin, ie /news/post/5/comment/list : filter and create comments only for the post with id=5
-    - Contextual Breadcrumb
-    - persistent parameters across an Admin
-    - side menu option
-    - Translated into 24 languages : BG, CA, CS, DE, EN, ES, EU, FA, FR, HR, HU, IT, JA, LB, NL, PL, PT, PT_BR, RO, RU, SK, SL, UK and zh_CN.
-    - Built to be extended
-    - Explain command line utility
-
 
 Usage examples
 --------------
@@ -75,9 +35,3 @@ Usage examples
  - [SonataNewsBundle](https://github.com/sonata-project/SonataNewsBundle) : a news/blog bundle
  - [SonataPageBundle](https://github.com/sonata-project/SonataPageBundle) : a page (CMS like) bundle
  - [SonataUserBundle](https://github.com/sonata-project/SonataUserBundle) : integration of FOSUserBundle and SonataAdminBundle
-
-TODO
-----
-
-  - create the ODM version
-  - save filter criteria
