@@ -121,8 +121,15 @@ body.sonata-bc {
     color: #000;
 }
 
-.sonata-bc table.sonata-ba-list td {
-    width: 75px;
+.sonata-bc table.sonata-ba-list {
+    font-size: 14px;
+}
+
+.sonata-bc td.sonata-ba-list-label {
+    vertical-align: middle;
+    font-weight: bold;
+    text-align: right;
+    color: #565656;
 }
 
 .sonata-bc .zebra-striped tbody tr.sonata-ba-list-row-selected td, .sonata-bc .zebra-striped tbody tr.sonata-ba-list-row-selected th {
