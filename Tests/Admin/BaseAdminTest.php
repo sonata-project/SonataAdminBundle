@@ -354,9 +354,23 @@ class BaseAdminTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('NewsBundle\Entity\PostExtended1', $admin->getActiveSubClass());
         $this->assertEquals('extended1', $admin->getActiveSubclassCode());
         $this->assertEquals('NewsBundle\Entity\PostExtended1', $admin->getClass());
-        
+
         $request->query->set('subclass', 'inject');
-        $this->assertNull($admin->getActiveSubClass());
         $this->assertNull($admin->getActiveSubclassCode());
+    }
+
+    /**
+     * @expectedException RuntimeException
+     */
+    public function testNonExistantSubclass()
+    {
+        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
+        $admin->setRequest(new \Symfony\Component\HttpFoundation\Request(array('subclass' => 'inject')));
+
+        $admin->setSubClasses(array('extended1' => 'NewsBundle\Entity\PostExtended1', 'extended2' => 'NewsBundle\Entity\PostExtended2'));
+
+        $this->assertTrue($admin->hasActiveSubClass());
+
+        $admin->getActiveSubClass();
     }
 }

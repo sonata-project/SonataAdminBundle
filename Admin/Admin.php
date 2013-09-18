@@ -948,6 +948,10 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
             return $this->class;
         }
 
+        if ($this->getParentFieldDescription() && $this->hasActiveSubClass()) {
+            throw new \RuntimeException('Feature not implemented: an embedded admin cannot have subclass');
+        }
+
         $subClass = $this->getRequest()->query->get('subclass');
 
         return $this->getSubClass($subClass);
@@ -982,7 +986,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
             return $this->subClasses[$name];
         }
 
-        return null;
+        throw new \RuntimeException(sprintf('Unable to find the subclass `%s` for admin `%s`', $name, get_class($this)));
     }
 
     /**
@@ -998,7 +1002,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      */
     public function hasActiveSubClass()
     {
-        if ($this->request) {
+        if (count($this->subClasses) > 1 && $this->request) {
             return null !== $this->getRequest()->query->get('subclass');
         }
 
@@ -1028,7 +1032,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
         $subClass = $this->getRequest()->query->get('subclass');
 
-        if(! $this->hasSubClass($subClass)){
+        if (!$this->hasSubClass($subClass)) {
             return null;
         }
 
