@@ -198,6 +198,8 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
                         return 'SonataAdminBundle:CRUD:list_currency.html.twig';
                     case 'percent':
                         return 'SonataAdminBundle:CRUD:list_percent.html.twig';
+                    case 'choice':
+                        return 'SonataAdminBundle:CRUD:list_choice.html.twig';
                     case 'array':
                         return 'SonataAdminBundle:CRUD:list_array.html.twig';
                     case 'trans':
@@ -300,6 +302,8 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
                         return 'SonataAdminBundle:CRUD:show_currency.html.twig';
                     case 'percent':
                         return 'SonataAdminBundle:CRUD:show_percent.html.twig';
+                    case 'choice':
+                        return 'SonataAdminBundle:CRUD:show_choice.html.twig';
                     case 'array':
                         return 'SonataAdminBundle:CRUD:show_array.html.twig';
                     case 'trans':

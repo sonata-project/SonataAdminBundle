@@ -1,0 +1,27 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+{% extends 'SonataAdminBundle:CRUD:base_show_field.html.twig' %}
+
+{% block field%}
+    {% if field_description.options.choices and value in field_description.options.choices|keys %}
+        {% if field_description.options.catalogue is not defined %}
+            {% set value = field_description.options.choices[value] %}
+        {% else %}
+            {% set value = field_description.options.choices[value]|trans({}, field_description.options.catalogue) %}
+        {% endif %}
+    {% endif %}
+
+    {% if field_description.options.safe %}
+        {{ value|raw }}
+    {% else %}
+        {{ value }}
+    {% endif %}
+{% endblock %}
