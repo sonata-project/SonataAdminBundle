@@ -70,11 +70,20 @@ interface AdminInterface
     public function getDatagridBuilder();
 
     /**
+     * Set translator
+     *
      * @param \Symfony\Component\Translation\TranslatorInterface $translator
      *
      * @return void
      */
     public function setTranslator(TranslatorInterface $translator);
+
+    /**
+     * Get translator
+     *
+     * @return \Symfony\Component\Translation\TranslatorInterface
+     */
+    public function getTranslator();
 
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
@@ -193,6 +202,13 @@ interface AdminInterface
      * @return array collection of form FieldDescription
      */
     public function getFormFieldDescriptions();
+
+    /**
+     * Returns a form depend on the given $object
+     *
+     * @return \Symfony\Component\Form\Form
+     */
+    public function getForm();
 
     /**
      * @return \Symfony\Component\HttpFoundation\Request
@@ -814,4 +830,13 @@ interface AdminInterface
      * @return string
      */
     public function getLabel();
+
+    /**
+     * Get breadcrumbs for $action
+     *
+     * @param string $action
+     *
+     * @return array
+     */
+    public function getBreadcrumbs($action);
 }
