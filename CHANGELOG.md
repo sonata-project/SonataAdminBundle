@@ -1,6 +1,13 @@
 CHANGELOG
 =========
 
+### 2013-09-20
+
+* [BC BREAK] added ``getTranslator``, ``getForm``, ``getBreadcrumbs``
+  to the AdminInterface
+  If you do not extend the Admin class, you need to add these methods to
+  your admin.
+
 ### 2013-09-13
 
 * [BC BREAK] added ``getMaxPerPage``, ``setMaxPerPage``, ``setPage``,

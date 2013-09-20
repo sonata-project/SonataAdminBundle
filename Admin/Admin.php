@@ -1321,9 +1321,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * Returns a form depend on the given $object
-     *
-     * @return \Symfony\Component\Form\Form
+     * {@inheritdoc}
      */
     public function getForm()
     {
@@ -1933,9 +1931,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * @param string $action
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function getBreadcrumbs($action)
     {
@@ -2120,7 +2116,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * @return \Symfony\Component\Translation\TranslatorInterface
+     * {@inheritdoc}
      */
     public function getTranslator()
     {
