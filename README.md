@@ -35,3 +35,8 @@ Usage examples
  - [SonataNewsBundle](https://github.com/sonata-project/SonataNewsBundle) : a news/blog bundle
  - [SonataPageBundle](https://github.com/sonata-project/SonataPageBundle) : a page (CMS like) bundle
  - [SonataUserBundle](https://github.com/sonata-project/SonataUserBundle) : integration of FOSUserBundle and SonataAdminBundle
+
+License
+-------
+
+This bundle is available under the [MIT license](Resources/meta/LICENSE).
