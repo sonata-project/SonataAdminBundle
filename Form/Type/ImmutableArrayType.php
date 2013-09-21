@@ -27,13 +27,13 @@ class ImmutableArrayType extends AbstractType
             if ($infos instanceof FormBuilderInterface) {
                 $builder->add($infos);
             } else {
-                list($name, $type, $options) = $infos;
+                list($name, $type, $options) = array_pad($infos, 3, null);
 
                 if (is_callable($options)) {
                     $options = $options($builder, $options);
                 }
 
-                $builder->add($name, $type, $options);
+                $builder->add($name, $type, $options ?: array());
             }
         }
     }
