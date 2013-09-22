@@ -82,6 +82,14 @@ class RouteCollectionTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($routeCollection->has('list'));
     }
 
+    public function testGetWithException()
+    {
+        $this->setExpectedException('\InvalidArgumentException', 'Element "foo" does not exist.');
+
+        $routeCollection = new RouteCollection('base.Code.Route', 'baseRouteName', 'baseRoutePattern', 'baseControllerName');
+        $routeCollection->get('foo');
+    }
+
     public function testChildCollection()
     {
         $childCollection = new RouteCollection('baseCodeRouteChild', 'baseRouteNameChild', 'baseRoutePatternChild', 'baseControllerNameChild');
