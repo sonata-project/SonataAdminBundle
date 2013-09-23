@@ -13,6 +13,7 @@ namespace Sonata\AdminBundle\Controller;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -22,7 +23,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Admin\BaseFieldDescription;
 use Sonata\AdminBundle\Util\AdminObjectAclData;
-use Symfony\Component\Security\Core\Exception\InvalidCsrfTokenException;
 
 class CRUDController extends Controller
 {
@@ -403,9 +403,8 @@ class CRUDController extends Controller
             $all_elements = $this->get('request')->get('all_elements');
             $data         = $this->get('request')->request->all();
 
-            unset($data['_csrf_token']);
+            unset($data['_sonata_csrf_token']);
         }
-
 
         $batchActions = $this->admin->getBatchActions();
         if (!array_key_exists($action, $batchActions)) {
@@ -844,13 +843,15 @@ class CRUDController extends Controller
             return;
         }
 
-        if (!$this->container->get('form.csrf_provider')->isCsrfTokenValid($intention, $this->get('request')->request->get('_sonata_csrf_token', false))) {
-            throw new \RuntimeException("The csrf token is not valid, CSRF attack ?");
+        if (!$this->container->get('form.csrf_provider')->isCsrfTokenValid($intention, $this->get('request')->request->get('_sonata_csrf_toke', false))) {
+            throw new HttpException(400, "The csrf token is not valid, CSRF attack ?");
         }
     }
 
     /**
      * @param $intention
+     *
+     * @return string
      */
     public function getCsrfToken($intention)
     {
