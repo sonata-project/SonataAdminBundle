@@ -387,6 +387,9 @@ class CRUDController extends Controller
             throw new \RuntimeException('invalid request type, POST expected');
         }
 
+        // check the csrf token
+        $this->validateCsrfToken('sonata.batch');
+
         $confirmation = $this->get('request')->get('confirmation', false);
 
         if ($data = json_decode($this->get('request')->get('data'), true)) {
@@ -410,9 +413,6 @@ class CRUDController extends Controller
         if (!array_key_exists($action, $batchActions)) {
             throw new \RuntimeException(sprintf('The `%s` batch action is not defined', $action));
         }
-
-        // check the csrf token
-        $this->validateCsrfToken('sonata.batch');
 
         $camelizedAction = BaseFieldDescription::camelize($action);
         $isRelevantAction = sprintf('batchAction%sIsRelevant', ucfirst($camelizedAction));
