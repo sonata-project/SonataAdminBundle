@@ -843,7 +843,7 @@ class CRUDController extends Controller
             return;
         }
 
-        if (!$this->container->get('form.csrf_provider')->isCsrfTokenValid($intention, $this->get('request')->request->get('_sonata_csrf_toke', false))) {
+        if (!$this->container->get('form.csrf_provider')->isCsrfTokenValid($intention, $this->get('request')->request->get('_sonata_csrf_token', false))) {
             throw new HttpException(400, "The csrf token is not valid, CSRF attack ?");
         }
     }
