@@ -24,6 +24,7 @@ file that was distributed with this source code.
     {% if admin.datagrid.results|length > 0 %}
         {% if admin.hasRoute('batch') %}
         <form action="{{ admin.generateUrl('batch', {'filter': admin.filterParameters}) }}" method="POST" >
+            <input type="hidden" name="_sonata_csrf_token" value="{{ csrf_token }}" />
         {% endif %}
             <table class="table table-bordered table-striped">
                 {% block table_header %}
