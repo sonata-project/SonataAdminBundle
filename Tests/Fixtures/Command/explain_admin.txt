@@ -10,8 +10,8 @@ List Builder         : %4$s
 Parent          : foo_child
 
 Routes
-  - fooBar_list
-  - fooBar_edit
+  - fooBar_list               /foo-bar/list
+  - fooBar_edit               /foo-bar/edit
 
 Datagrid Columns
   - fooTextField               text            SonataAdminBundle:CRUD:foo_text.html.twig
