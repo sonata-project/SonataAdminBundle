@@ -172,9 +172,9 @@ file that was distributed with this source code.
                     <a class="btn" href="{{ admin.generateUrl('list', {filters: 'reset'}) }}">{{ 'link_reset_filter'|trans({}, 'SonataAdminBundle') }}</a>
                 </div>
 
-                {% for paramKey, paramValue in admin.persistentParameters %}
-                    <input type="hidden" name="{{ paramKey }}" value="{{ paramValue }}" />
-                {% endfor %}
+                {#{% for paramKey, paramValue in admin.persistentParameters %}#}
+                    {#<input type="hidden" name="{{ paramKey }}" value="{{ paramValue }}" />#}
+                {#{% endfor %}#}
             </fieldset>
         </form>
     {% endif %}

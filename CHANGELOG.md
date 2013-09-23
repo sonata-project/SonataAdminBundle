@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+### 2013-09-23
+
+* change list's action buttons to use ``btn-small`` from twitter bootstrap
+
 ### 2013-09-20
 
 * [BC BREAK] added ``getTranslator``, ``getForm``, ``getBreadcrumbs``
