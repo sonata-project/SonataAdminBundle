@@ -38,6 +38,10 @@ class AdminExtractorTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
+        if (!interface_exists('JMS\TranslationBundle\Translation\ExtractorInterface')) {
+            $this->markTestSkipped('JMS Translator Bundle does not exist');
+        }
+        
         $this->fooAdmin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
         $this->barAdmin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
 
