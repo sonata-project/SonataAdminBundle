@@ -117,7 +117,7 @@ class ExplainAdminCommandTest extends \PHPUnit_Framework_TestCase
             ->method('isChild')
             ->will($this->returnValue(true));
 
-        //php 5.3 BC
+        // php 5.3 BC
         $adminParent = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
         $adminParent->expects($this->any())
             ->method('getCode')
@@ -131,7 +131,7 @@ class ExplainAdminCommandTest extends \PHPUnit_Framework_TestCase
 
         $this->validatorFactory = $this->getMock('Symfony\Component\Validator\MetadataFactoryInterface');
 
-        //php 5.3 BC
+        // php 5.3 BC
         $admin = $this->admin;
         $validatorMetadata = $this->validatorFactory;
 
@@ -186,13 +186,13 @@ class ExplainAdminCommandTest extends \PHPUnit_Framework_TestCase
             ->method('getModelManager')
             ->will($this->returnValue($modelManager));
 
-//@todo Mock of \Traversable is available since Phpunit 3.8. This should be completed after stable release of Phpunit 3.8.
-//@see https://github.com/sebastianbergmann/phpunit-mock-objects/issues/103
-//        $formBuilder = $this->getMock('Symfony\Component\Form\FormBuilderInterface');
-//
-//        $this->admin->expects($this->any())
-//            ->method('getFormBuilder')
-//            ->will($this->returnValue($formBuilder));
+        // @todo Mock of \Traversable is available since Phpunit 3.8. This should be completed after stable release of Phpunit 3.8.
+        // @see https://github.com/sebastianbergmann/phpunit-mock-objects/issues/103
+        // $formBuilder = $this->getMock('Symfony\Component\Form\FormBuilderInterface');
+        //
+        // $this->admin->expects($this->any())
+        //     ->method('getFormBuilder')
+        //     ->will($this->returnValue($formBuilder));
 
         $datagridBuilder = $this->getMock('\Sonata\AdminBundle\Builder\DatagridBuilderInterface');
 
@@ -231,13 +231,13 @@ class ExplainAdminCommandTest extends \PHPUnit_Framework_TestCase
             ->method('getModelManager')
             ->will($this->returnValue($modelManager));
 
-//@todo Mock of \Traversable is available since Phpunit 3.8. This should be completed after stable release of Phpunit 3.8.
-//@see https://github.com/sebastianbergmann/phpunit-mock-objects/issues/103
-//        $formBuilder = $this->getMock('Symfony\Component\Form\FormBuilderInterface');
-//
-//        $this->admin->expects($this->any())
-//            ->method('getFormBuilder')
-//            ->will($this->returnValue($formBuilder));
+        // @todo Mock of \Traversable is available since Phpunit 3.8. This should be completed after stable release of Phpunit 3.8.
+        // @see https://github.com/sebastianbergmann/phpunit-mock-objects/issues/103
+        // $formBuilder = $this->getMock('Symfony\Component\Form\FormBuilderInterface');
+        //
+        // $this->admin->expects($this->any())
+        //     ->method('getFormBuilder')
+        //     ->will($this->returnValue($formBuilder));
 
         $datagridBuilder = $this->getMock('\Sonata\AdminBundle\Builder\DatagridBuilderInterface');
 

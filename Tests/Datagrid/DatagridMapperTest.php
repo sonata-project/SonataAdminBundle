@@ -53,7 +53,7 @@ class DatagridMapperTest extends \PHPUnit_Framework_TestCase
 
         $admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
 
-        //php 5.3 BC
+        // php 5.3 BC
         $filter = $this->getMockForAbstractClass('Sonata\AdminBundle\Filter\Filter');
 
         $filter->expects($this->any())
@@ -72,7 +72,7 @@ class DatagridMapperTest extends \PHPUnit_Framework_TestCase
 
         $modelManager = $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface');
 
-        //php 5.3 BC
+        // php 5.3 BC
         $fieldDescription = $this->getFieldDescriptionMock();
 
         $modelManager->expects($this->any())

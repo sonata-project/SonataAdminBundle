@@ -62,7 +62,7 @@ class ShowMapperTest extends \PHPUnit_Framework_TestCase
 
         $this->groups = array();
 
-        //php 5.3 BC
+        // php 5.3 BC
         $groups = & $this->groups;
 
         $this->admin->expects($this->any())
@@ -87,7 +87,7 @@ class ShowMapperTest extends \PHPUnit_Framework_TestCase
 
         $modelManager = $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface');
 
-        //php 5.3 BC
+        // php 5.3 BC
         $fieldDescription = $this->getFieldDescriptionMock();
 
         $modelManager->expects($this->any())
@@ -202,7 +202,7 @@ class ShowMapperTest extends \PHPUnit_Framework_TestCase
 
         $this->showMapper->reorder(array('fooName3', 'fooName2', 'fooName1', 'fooName4'));
 
-        //print_r is used to compare order of items in associative arrays
+        // print_r is used to compare order of items in associative arrays
         $this->assertEquals(print_r(array(
             'Group1' =>array(
                 'collapsed' => false,

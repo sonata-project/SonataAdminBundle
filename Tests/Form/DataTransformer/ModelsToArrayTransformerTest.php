@@ -36,7 +36,7 @@ class ModelsToArrayTransformerTest extends \PHPUnit_Framework_TestCase
 
         $this->modelManager = $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface');
 
-        //php 5.3 BC
+        // php 5.3 BC
         $modelManager = $this->modelManager;
 
         $this->modelChoiceList->expects($this->any())

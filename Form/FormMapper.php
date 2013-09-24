@@ -74,7 +74,7 @@ class FormMapper extends BaseGroupedMapper
             $fieldDescriptionOptions
         );
 
-        //Note that the builder var is actually the formContractor:
+        // Note that the builder var is actually the formContractor:
         $this->builder->fixFieldDescription($this->admin, $fieldDescription, $fieldDescriptionOptions);
 
         $this->admin->addFormFieldDescription($name instanceof FormBuilder ? $name->getName() : $name, $fieldDescription);
@@ -82,7 +82,7 @@ class FormMapper extends BaseGroupedMapper
         if ($name instanceof FormBuilder) {
             $this->formBuilder->add($name);
         } else {
-            //Note that the builder var is actually the formContractor:
+            // Note that the builder var is actually the formContractor:
             $options = array_replace_recursive($this->builder->getDefaultOptions($type, $fieldDescription), $options);
 
             if (!isset($options['label'])) {
