@@ -81,11 +81,11 @@ abstract class AbstractBcGenerator extends Generator
     protected function renderBc($template, $parameters)
     {
         if ($this->bcEnabled) {
-            //Sensio Generator 2.2
+            // Sensio Generator 2.2
             return $this->render($this->skeletonDirs, $template, $parameters);
         }
 
-        //Sensio Generator >=2.3
+        // Sensio Generator >=2.3
         return $this->render($template, $parameters);
     }
 
@@ -99,11 +99,11 @@ abstract class AbstractBcGenerator extends Generator
     protected function renderFileBc($template, $target, $parameters)
     {
         if ($this->bcEnabled) {
-            //Sensio Generator 2.2
+            // Sensio Generator 2.2
             return $this->renderFile($this->skeletonDirs, $template, $target, $parameters);
         }
 
-        //Sensio Generator >=2.3
+        // Sensio Generator >=2.3
         return $this->renderFile($template, $target, $parameters);
     }
 }

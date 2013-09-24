@@ -48,7 +48,7 @@ class GenerateAdminCommandTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        //create temp dir
+        // create temp dir
         $tempfile=tempnam(sys_get_temp_dir(),'sonata_admin');
         if (file_exists($tempfile)) {
             unlink($tempfile);
