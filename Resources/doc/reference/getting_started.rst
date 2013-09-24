@@ -161,7 +161,7 @@ instance based on the class you specified before, and accepts three arguments:
 
     1. The Admin service's code (defaults to the service's name)
     2. The model which this Admin class maps (required)
-    3. The controller that will handle the administration actions (defaults to SoantaAdminBundle:CRUDController)
+    3. The controller that will handle the administration actions (defaults to SonataAdminBundle:CRUDController)
 
 Usually you just need to specify the second argument, as the first and third's default
 values will work for most scenarios.
