@@ -48,7 +48,7 @@ class ListMapperTest extends \PHPUnit_Framework_TestCase
 
         $modelManager = $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface');
 
-        //php 5.3 BC
+        // php 5.3 BC
         $fieldDescription = $this->getFieldDescriptionMock();
 
         $modelManager->expects($this->any())
@@ -163,7 +163,7 @@ class ListMapperTest extends \PHPUnit_Framework_TestCase
 
         $this->listMapper->reorder(array('fooName3', 'fooName2', 'fooName1', 'fooName4'));
 
-        //print_r is used to compare order of items in associative arrays
+        // print_r is used to compare order of items in associative arrays
         $this->assertEquals(print_r(array(
             'fooName3'=>$fieldDescription3,
             'fooName2'=>$fieldDescription2,

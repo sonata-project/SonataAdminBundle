@@ -57,7 +57,7 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
 
         $this->formTypes = array();
 
-        //php 5.3 BC
+        // php 5.3 BC
         $formTypes = &$this->formTypes;
 
         $this->formBuilder = $this->getMockBuilder('Symfony\Component\Form\FormBuilder')
@@ -74,7 +74,7 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
                 return null;
             }));
 
-        //php 5.3 BC
+        // php 5.3 BC
         $eventDispatcher = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
         $formFactory = $this->getMock('Symfony\Component\Form\FormFactoryInterface');
 
@@ -86,7 +86,7 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
                 return null;
             }));
 
-        //php 5.3 BC
+        // php 5.3 BC
         $form = $this->getMockBuilder('Symfony\Component\Form\Form')
             ->disableOriginalConstructor()
             ->getMock();

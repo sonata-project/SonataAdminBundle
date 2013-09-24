@@ -68,7 +68,7 @@ class ListMapper extends BaseMapper
      */
     public function add($name, $type = null, array $fieldDescriptionOptions = array())
     {
-        //Change deprecated inline action "view" to "show"
+        // Change deprecated inline action "view" to "show"
         if ($name == '_action' && $type == 'actions') {
             if (isset($fieldDescriptionOptions['actions']['view'])) {
                 trigger_error('Inline action "view" is deprecated since version 2.2.4. Use inline action "show" instead.', E_USER_DEPRECATED);

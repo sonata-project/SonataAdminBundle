@@ -30,18 +30,18 @@ class ModelToIdTransformerTest extends \PHPUnit_Framework_TestCase
                 ->expects($this->exactly(2))
                 ->method('find');
 
-        //we pass 0 as integer
+        // we pass 0 as integer
         // this must call the model manager find method... i not care what is returned, but must be called
         $transformer->reverseTransform(0);
 
-        //we pass 0 as string
-        //this must call the model manager find method... i not care what is returned, but must be called
+        // we pass 0 as string
+        // this must call the model manager find method... i not care what is returned, but must be called
         $transformer->reverseTransform('0');
 
-        //we pass null must return null
+        // we pass null must return null
         $this->assertNull($transformer->reverseTransform(null));
 
-        //we pass false, must return null
+        // we pass false, must return null
         $this->assertNull($transformer->reverseTransform(false));
     }
 

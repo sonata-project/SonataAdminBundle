@@ -80,13 +80,13 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
         $this->environment = new \Twig_Environment($loader, array('strict_variables' => true, 'cache' => false, 'autoescape' => true, 'optimizations' => 0));
         $this->environment->addExtension($this->twigExtension);
 
-        //translation extension
+        // translation extension
         $translator = new Translator('en', new MessageSelector());
         $translator->addLoader('xlf', new XliffFileLoader());
         $translator->addResource('xlf', __DIR__.'/../../../Resources/translations/SonataAdminBundle.en.xliff', 'en', 'SonataAdminBundle');
         $this->environment->addExtension(new TranslationExtension($translator));
 
-        //routing extension
+        // routing extension
         $xmlFileLoader = new XmlFileLoader(new FileLocator(array(__DIR__.'/../../../Resources/config/routing')));
         $routeCollection = $xmlFileLoader->load('sonata_admin.xml');
         $requestContext = new RequestContext();
@@ -95,10 +95,10 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
 
         $this->twigExtension->initRuntime($this->environment);
 
-        //initialize object
+        // initialize object
         $this->object = new \stdClass();
 
-        //initialize admin
+        // initialize admin
         $this->admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
 
         $this->admin->expects($this->any())
@@ -120,7 +120,7 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
                 return $id;
             }));
 
-        //for php5.3 BC
+        // for php5.3 BC
         $admin = $this->admin;
 
         $container->expects($this->any())
@@ -133,7 +133,7 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
                 return null;
             }));
 
-        //initialize field description
+        // initialize field description
         $this->fieldDescription = $this->getMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
 
         $this->fieldDescription->expects($this->any())
@@ -203,7 +203,7 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
                     case 'trans':
                         return 'SonataAdminBundle:CRUD:list_trans.html.twig';
                     case 'nonexistent':
-                        //template doesn`t exist
+                        // template doesn`t exist
                         return 'SonataAdminBundle:CRUD:list_nonexistent_template.html.twig';
                     default:
                         return false;
@@ -333,7 +333,7 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
             array('<th>Data</th> <td><i class="icon-ban-circle"></i>no</td>', 'boolean', false, array()),
             array('<th>Data</th> <td> Delete </td>', 'trans', 'action_delete', array('safe'=>false, 'catalogue'=>'SonataAdminBundle')),
 
-            //NoValueException
+            // NoValueException
             array('<th>Data</th> <td></td>', 'string', new NoValueException(), array('safe' => false)),
             array('<th>Data</th> <td></td>', 'text', new NoValueException(), array('safe' => false)),
             array('<th>Data</th> <td></td>', 'textarea', new NoValueException(), array('safe' => false)),
@@ -509,7 +509,7 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $enitity = new \stdClass();
 
-        //set admin to pool
+        // set admin to pool
         $this->pool->setAdminClasses(array('stdClass'=>'sonata_admin_foo_service'));
 
         $this->admin->expects($this->once())
