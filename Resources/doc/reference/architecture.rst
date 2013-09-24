@@ -107,7 +107,7 @@ The ``CRUDController`` is no different to any other Symfony2 controller, meaning
 that you have all the usual options available to you, like getting services from
 the Dependency Injection Container (DIC).
 
-This is particulary useful if you decide to extend the ``CRUDController`` to
+This is particularly useful if you decide to extend the ``CRUDController`` to
 add new actions or change the behavior of existing ones. You can specify which controller
 to use when declaring the ``Admin`` service by passing it as the 3rd argument. For example
 to set the controller to ``AcmeDemoBundle:PostAdmin``:
@@ -167,7 +167,7 @@ which stores instances of ``FieldDescriptionInterface``. Picking up on our previ
 
    class PostAdmin extends Admin
    {
-       //Fields to be shown on create/edit forms
+       // Fields to be shown on create/edit forms
        protected function configureFormFields(FormMapper $formMapper)
        {
            $formMapper
@@ -177,7 +177,7 @@ which stores instances of ``FieldDescriptionInterface``. Picking up on our previ
            ;
        }
 
-       //Fields to be shown on filter forms
+       // Fields to be shown on filter forms
        protected function configureDatagridFilters(DatagridMapper $datagridMapper)
        {
            $datagridMapper
@@ -186,7 +186,7 @@ which stores instances of ``FieldDescriptionInterface``. Picking up on our previ
            ;
        }
 
-       //Fields to be shown on lists
+       // Fields to be shown on lists
        protected function configureListFields(ListMapper $listMapper)
        {
            $listMapper

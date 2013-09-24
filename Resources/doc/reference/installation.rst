@@ -60,18 +60,18 @@ forget to enable SonataAdminBundle too:
         return array(
             // ...
 
-            //Add you dependencies
+            // Add you dependencies
             new Sonata\BlockBundle\SonataBlockBundle(),
             new Sonata\jQueryBundle\SonatajQueryBundle(),
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
             //...
 
-            //If you haven't already, add the storage bundle
-            //This example uses SonataDoctrineORMAdmin but
-            //it works the same with the alternatives
+            // If you haven't already, add the storage bundle
+            // This example uses SonataDoctrineORMAdmin but
+            // it works the same with the alternatives
             new Sonata\DoctrineORMAdminBundle\SonataDoctrineORMAdminBundle(),
 
-            //Then add SonataAdminBundle
+            // Then add SonataAdminBundle
             new Sonata\AdminBundle\SonataAdminBundle(),
             // ...
         );
