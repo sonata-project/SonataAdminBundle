@@ -106,7 +106,7 @@ class AdminExtractorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('foo_admin_domain', $message->getDomain());
     }
 
-    public function testExtractWithExcewption()
+    public function testExtractWithException()
     {
         $this->setExpectedException('RuntimeException', 'Foo throws exception');
 
