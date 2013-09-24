@@ -173,7 +173,7 @@ to the underlying forms.
         {
             $formMapper
                 ->add('sales', 'sonata_type_collection', array(
-                    //Prevents the "Delete" option from being displayed
+                    // Prevents the "Delete" option from being displayed
                     'type_options' => array('delete' => false)
                 ), array(
                     'edit' => 'inline',

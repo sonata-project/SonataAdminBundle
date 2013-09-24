@@ -76,7 +76,7 @@ for it could look like:
 
    class PostAdmin extends Admin
    {
-       //Fields to be shown on create/edit forms
+       // Fields to be shown on create/edit forms
        protected function configureFormFields(FormMapper $formMapper)
        {
            $formMapper
@@ -86,7 +86,7 @@ for it could look like:
            ;
        }
 
-       //Fields to be shown on filter forms
+       // Fields to be shown on filter forms
        protected function configureDatagridFilters(DatagridMapper $datagridMapper)
        {
            $datagridMapper
@@ -95,7 +95,7 @@ for it could look like:
            ;
        }
 
-       //Fields to be shown on lists
+       // Fields to be shown on lists
        protected function configureListFields(ListMapper $listMapper)
        {
            $listMapper

@@ -662,7 +662,7 @@ User list customization
 By default, the ACL editor allows to set permissions for all users managed by
 ``FOSUserBundle``.
 
-To cutomize displayed user override
+To customize displayed user override
 `Sonata\AdminBundle\Controller\CRUDController::getAclUsers()`. This method must
 return an iterable collection of users.
 
