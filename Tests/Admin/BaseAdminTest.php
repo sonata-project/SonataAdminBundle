@@ -157,6 +157,18 @@ class BaseAdminTest extends \PHPUnit_Framework_TestCase
                 '/myapplication/my/post'
             ),
             array(
+                'MyApplication\MyBundle\Entity\Post\Category',
+                '/myapplication/my/post-category'
+            ),
+            array(
+                'MyApplication\MyBundle\Entity\Product\Category',
+                '/myapplication/my/product-category'
+            ),
+            array(
+                'MyApplication\MyBundle\Entity\Other\Product\Category',
+                '/myapplication/my/other-product-category'
+            ),
+            array(
                 'Symfony\Cmf\Bundle\FooBundle\Document\Menu', 
                 '/cmf/foo/menu'
             ),
@@ -167,6 +179,10 @@ class BaseAdminTest extends \PHPUnit_Framework_TestCase
             array(
                 'Symfony\Bundle\BarBarBundle\Doctrine\Phpcr\Menu', 
                 '/symfony/barbar/menu'
+            ),
+            array(
+                'Symfony\Bundle\BarBarBundle\Doctrine\Phpcr\Menu\Item',
+                '/symfony/barbar/menu-item'
             ),
         );
     }
@@ -214,6 +230,18 @@ class BaseAdminTest extends \PHPUnit_Framework_TestCase
                 'admin_myapplication_my_post'
             ),
             array(
+                'MyApplication\MyBundle\Entity\Post\Category',
+                'admin_myapplication_my_post_category'
+            ),
+            array(
+                'MyApplication\MyBundle\Entity\Product\Category',
+                'admin_myapplication_my_product_category'
+            ),
+            array(
+                'MyApplication\MyBundle\Entity\Other\Product\Category',
+                'admin_myapplication_my_other_product_category'
+            ),
+            array(
                 'Symfony\Cmf\Bundle\FooBundle\Document\Menu', 
                 'admin_cmf_foo_menu'
             ),
@@ -224,6 +252,10 @@ class BaseAdminTest extends \PHPUnit_Framework_TestCase
             array(
                 'Symfony\Bundle\BarBarBundle\Doctrine\Phpcr\Menu', 
                 'admin_symfony_barbar_menu'
+            ),
+            array(
+                'Symfony\Bundle\BarBarBundle\Doctrine\Phpcr\Menu\Item',
+                'admin_symfony_barbar_menu_item'
             ),
         );
     }
