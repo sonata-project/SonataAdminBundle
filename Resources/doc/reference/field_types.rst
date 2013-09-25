@@ -17,6 +17,7 @@ There are many field types that can be used in the list action or show action :
 * decimal: display a number
 * currency: display a number with a provided ``currency`` option
 * percent: display a percentage
+* choice: uses the given value as index for the ``choices`` array and displays (and optionally translates) the matching value
 
 .. note::
 
