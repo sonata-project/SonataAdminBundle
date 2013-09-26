@@ -56,7 +56,7 @@ class StatusType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'choice' => call_user_func(array($this->class, $this->getter))
+            'choices' => call_user_func(array($this->class, $this->getter))
         ));
     }
 }

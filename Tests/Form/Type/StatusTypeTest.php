@@ -41,7 +41,7 @@ class StatusTypeTest extends TypeTestCase
 
         $options = $optionResolver->resolve(array());
 
-        $this->assertArrayHasKey('choice', $options);
-        $this->assertEquals($options['choice'], array(1 => 'salut'));
+        $this->assertArrayHasKey('choices', $options);
+        $this->assertEquals($options['choices'], array(1 => 'salut'));
     }
 }
