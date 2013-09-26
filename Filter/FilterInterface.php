@@ -144,4 +144,9 @@ interface FilterInterface
      * @return string
      */
     public function getCondition();
+
+    /**
+     * @return string
+     */
+    public function getTranslationDomain();
 }

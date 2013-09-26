@@ -219,4 +219,12 @@ abstract class Filter implements FilterInterface
     {
         return $this->condition;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getTranslationDomain()
+    {
+        return $this->getOption('translation_domain');
+    }
 }
