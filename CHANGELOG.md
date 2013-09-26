@@ -1,6 +1,13 @@
 CHANGELOG
 =========
 
+### 2013-09-27
+
+* [BC BREAK] added ``hasParentFieldDescription``, ``getPersistentParameters``,
+  ``getParentFieldDescription``, ``getUniqid``, ``getBaseCodeRoute``,
+  ``getIdParameter`` to the AdminInterface
+  If you do not extend the Admin class, you need to add these methods to
+
 ### 2013-09-23
 
 * change list's action buttons to use ``btn-small`` from twitter bootstrap
