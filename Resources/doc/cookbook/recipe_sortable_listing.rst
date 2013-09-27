@@ -129,11 +129,9 @@ Moving up the position is not a problem since we now the top position will be 0.
 	    }
 	}
 
-We then need to declare thisservice
+We then need to declare this service
 
-.. configuration-block::
-
-    .. code-block:: yaml
+.. code-block:: yaml
 
 	services:
 	    acme_demo.client.position:
@@ -182,9 +180,7 @@ We can now create our controller to implement the action defined in our Admin cl
 
 We now need to creat a handler for the new controller in ``admin.yml``
 
-.. configuration-block::
-
-    .. code-block:: yaml
+.. code-block:: yaml
 
 	services:
 	    acme.admin.client:
@@ -239,9 +235,7 @@ Last tricky part, in order to get the last position available in our twig templa
 
 And in  the admin.yml add the following call
 
-.. configuration-block::
-
-    .. code-block:: yaml
+.. code-block:: yaml
     
 	- [ setContainer, [ @service_container ] ]
 
