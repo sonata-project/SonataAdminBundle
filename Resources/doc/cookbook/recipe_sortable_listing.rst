@@ -273,6 +273,7 @@ Resources
 ---------
 
 Adding a new action is explained in the Sonata documentation (http://sonata-project.org/bundles/admin/master/doc/reference/routing.html#create-a-route)
+
 Controller code has been inspired from http://www.symfony.it/articoli/690/sonata-e-sortable/
 
 
