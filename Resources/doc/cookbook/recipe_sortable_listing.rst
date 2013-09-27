@@ -237,6 +237,13 @@ Last tricky part, in order to get the last position available in our twig templa
             ));
     }
 
+And in  the admin.yml add the following call
+
+.. configuration-block::
+
+    .. code-block:: yaml
+    
+	- [ setContainer, [ @service_container ] ]
 
 Finally the twig files to display our up and down arrows in the listing
 
