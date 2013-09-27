@@ -256,6 +256,10 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
             array('<td class="sonata-ba-list-field sonata-ba-list-field-boolean" objectId="12345"> <a href="http://localhost/core/set-object-field-value?context=list&amp;field=fd_name&amp;objectId=12345&amp;value=1&amp;code=xyz" class="sonata-ba-action sonata-ba-edit-inline"><i class="icon-ban-circle"></i>&nbsp;no</a> </td>', 'boolean', null, array('editable'=>true)),
             array('<td class="sonata-ba-list-field sonata-ba-list-field-trans" objectId="12345"> Delete </td>', 'trans', 'action_delete', array('safe'=>false, 'catalogue'=>'SonataAdminBundle')),
             array('<td class="sonata-ba-list-field sonata-ba-list-field-trans" objectId="12345"> </td>', 'trans', null, array('safe'=>false, 'catalogue'=>'SonataAdminBundle')),
+            array('<td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345"> Description of status1 </td>', 'choice', 'Status1', array('safe'=>false, 'choices'=>array('Status1'=>'Description of status1', 'Status2'=>'Description of status2'))),
+            array('<td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345"> </td>', 'choice', null, array('safe'=>false, 'choices'=>array('Status1'=>'Description of status1', 'Status2'=>'Description of status2'))),
+            array('<td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345"> NoValidKeyInChoices </td>', 'choice', 'NoValidKeyInChoices', array('safe'=>false, 'choices'=>array('Status1'=>'Description of status1', 'Status2'=>'Description of status2'))),
+            array('<td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345"> Delete </td>', 'choice', 'Foo', array('safe'=>false, 'catalogue'=>'SonataAdminBundle', 'choices'=>array('Foo'=>'action_delete', 'Status2'=>'Description of status2'))),
         );
     }
 
@@ -336,6 +340,9 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
             array('<th>Data</th> <td><i class="icon-ok-circle"></i>yes</td>', 'boolean', true, array()),
             array('<th>Data</th> <td><i class="icon-ban-circle"></i>no</td>', 'boolean', false, array()),
             array('<th>Data</th> <td> Delete </td>', 'trans', 'action_delete', array('safe'=>false, 'catalogue'=>'SonataAdminBundle')),
+            array('<th>Data</th> <td> Description of status1 </td>', 'choice', 'Status1', array('safe'=>false, 'choices'=>array('Status1'=>'Description of status1', 'Status2'=>'Description of status2'))),
+            array('<th>Data</th> <td> NoValidKeyInChoices </td>', 'choice', 'NoValidKeyInChoices', array('safe'=>false, 'choices'=>array('Status1'=>'Description of status1', 'Status2'=>'Description of status2'))),
+            array('<th>Data</th> <td> Delete </td>', 'choice', 'Foo', array('safe'=>false, 'catalogue'=>'SonataAdminBundle', 'choices'=>array('Foo'=>'action_delete', 'Status2'=>'Description of status2'))),
 
             // NoValueException
             array('<th>Data</th> <td></td>', 'string', new NoValueException(), array('safe' => false)),
@@ -354,6 +361,7 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
             array('<th>Data</th> <td> </td>', 'array', new NoValueException(), array('safe' => false)),
             array('<th>Data</th> <td><i class="icon-ban-circle"></i>no</td>', 'boolean', new NoValueException(), array()),
             array('<th>Data</th> <td> </td>', 'trans', new NoValueException(), array('safe'=>false, 'catalogue'=>'SonataAdminBundle')),
+            array('<th>Data</th> <td> </td>', 'choice', new NoValueException(), array('safe'=>false, 'choices'=>array())),
         );
     }
 
