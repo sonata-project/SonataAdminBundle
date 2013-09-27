@@ -18,7 +18,7 @@ file that was distributed with this source code.
     {% block list %}{% endblock %}
     {% block show %}{% endblock %}
 
-    {% if _list_table|length > 0 and _list_filters|length > 0 %}
+    {% if _list_table|length > 0 or _list_filters|length > 0 %}
         <div class="row-fluid">
             <div class="sonata-ba-list span10">
                 {{ _list_table|raw }}
