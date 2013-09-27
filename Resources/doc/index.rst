@@ -51,6 +51,6 @@ Cookbook
    :maxdepth: 1
    :numbered:
 
-   reference/recipe_file_uploads
-   reference/recipe_image_previews
-   reference/recipe_row_templates
+   cookbook/recipe_file_uploads
+   cookbook/recipe_image_previews
+   cookbook/recipe_row_templates
