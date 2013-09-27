@@ -3,6 +3,8 @@ jQuery(document).ready(function() {
     if (window.SONATA_CONFIG.CONFIRM_EXIT) {
         jQuery('.sonata-ba-form form').confirmExit();
     }
+
+    Admin.setup_select2(document);
     Admin.add_pretty_errors(document);
     Admin.add_filters(document);
     Admin.set_object_field_value(document);
@@ -13,6 +15,14 @@ jQuery(document).ready(function() {
 });
 
 var Admin = {
+
+    setup_select2: function(subject) {
+        if (window.SONATA_CONFIG && window.SONATA_CONFIG.USE_SELECT2 && window.Select2) {
+            jQuery("select", subject).select2({
+                width: 'resolve'
+            });
+        }
+    },
 
     /**
      * render log message
@@ -33,6 +43,9 @@ var Admin = {
      * @param subject
      */
     add_pretty_errors: function(subject) {
+
+        Admin.setup_select2(subject);
+
         jQuery('div.sonata-ba-field-error', subject).each(function(index, element) {
             var input = jQuery(':input', element);
 

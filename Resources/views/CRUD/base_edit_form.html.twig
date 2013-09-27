@@ -58,7 +58,7 @@
             {{ form_rest(form) }}
 
             {% block formactions %}
-                <div class="well form-actions">
+                <div class="well well-small form-actions">
                     {% if app.request.isxmlhttprequest %}
                         {% if admin.id(object) is not null %}
                             <input type="submit" class="btn btn-primary" name="btn_update" value="{{ 'btn_update'|trans({}, 'SonataAdminBundle') }}"/>

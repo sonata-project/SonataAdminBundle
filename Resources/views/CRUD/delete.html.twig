@@ -27,7 +27,7 @@ file that was distributed with this source code.
 
         {{ 'message_delete_confirmation'|trans({'%object%': admin.toString(object)}, 'SonataAdminBundle') }}
 
-        <div class="well form-actions">
+        <div class="well well-small form-actions">
             <form method="POST" action="{{ admin.generateObjectUrl('delete', object) }}">
                 <input type="hidden" name="_method" value="DELETE" />
                 <input type="hidden" name="_sonata_csrf_token" value="{{ csrf_token }}" />

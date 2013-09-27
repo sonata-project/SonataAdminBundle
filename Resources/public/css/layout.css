@@ -367,3 +367,11 @@ legend.sonata-ba-fieldset-collapsed-description + .sonata-ba-collapsed-fields {
 .sonata-bc .inner-field-short-description {
 
 }
+
+.sonata-bc .form-horizontal .control-group {
+    margin-bottom: 10px;
+}
+
+span.field-actions {
+    margin-left: 10px;
+}

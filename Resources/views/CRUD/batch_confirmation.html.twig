@@ -30,7 +30,7 @@ file that was distributed with this source code.
             {% transchoice data.idx|length with {'%count%': data.idx|length} from 'SonataAdminBundle' %}message_batch_confirmation{% endtranschoice %}
         {% endif %}
 
-        <div class="well form-actions">
+        <div class="well well-small form-actions">
             <form action="{{ admin.generateUrl('batch', {'filter': admin.filterParameters}) }}" method="POST" >
                 <input type="hidden" name="confirmation" value="ok" />
                 <input type="hidden" name="data" value="{{ data|json_encode }}" />
