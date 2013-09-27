@@ -1077,9 +1077,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * Returns the parameter representing request id, ie: id or childId
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getIdParameter()
     {
@@ -1574,8 +1572,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     *
-     * @return \Sonata\AdminBundle\Admin\FieldDescriptionInterface the parent field description
+     * {@inheritdoc}
      */
     public function getParentFieldDescription()
     {
@@ -1583,9 +1580,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * Returns true if the Admin is linked to a parent FieldDescription
-     *
-     * @return bool
+     * {@inheritdoc}
      */
     public function hasParentFieldDescription()
     {
@@ -1893,9 +1888,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * Returns the uniqid
-     *
-     * @return integer
+     * {@inheritdoc}
      */
     public function getUniqid()
     {
@@ -1913,9 +1906,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * Returns an array of persistent parameters
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function getPersistentParameters()
     {
@@ -2274,7 +2265,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getBaseCodeRoute()
     {

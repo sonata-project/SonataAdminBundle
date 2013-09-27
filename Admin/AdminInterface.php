@@ -230,6 +230,12 @@ interface AdminInterface
     public function getCode();
 
     /**
+     *
+     * @return string
+     */
+    public function getBaseCodeRoute();
+
+    /**
      * Return the roles and permissions per role
      * - different permissions per role for the acl handler
      * - one permission that has the same name as the role for the role handler
@@ -245,6 +251,20 @@ interface AdminInterface
      * @return void
      */
     public function setParentFieldDescription(FieldDescriptionInterface $parentFieldDescription);
+
+    /**
+     * Get parent field description
+     *
+     * @return \Sonata\AdminBundle\Admin\FieldDescriptionInterface The parent field description
+     */
+    public function getParentFieldDescription();
+
+    /**
+     * Returns true if the Admin is linked to a parent FieldDescription
+     *
+     * @return bool
+     */
+    public function hasParentFieldDescription();
 
     /**
      * translate a message id
@@ -271,6 +291,13 @@ interface AdminInterface
      * @return string
      */
     public function getRouterIdParameter();
+
+    /**
+     * Returns the parameter representing request id, ie: id or childId
+     *
+     * @return string
+     */
+    public function getIdParameter();
 
     /**
      * Returns true if the admin has a FieldDescription with the given $name
@@ -535,6 +562,13 @@ interface AdminInterface
      * @return mixed
      */
     public function setUniqid($uniqId);
+
+    /**
+     * Returns the uniqid
+     *
+     * @return integer
+     */
+    public function getUniqid();
 
     /**
      * @param mixed $id
@@ -830,6 +864,13 @@ interface AdminInterface
      * @return string
      */
     public function getLabel();
+
+    /**
+     * Returns an array of persistent parameters
+     *
+     * @return array
+     */
+    public function getPersistentParameters();
 
     /**
      * Get breadcrumbs for $action
