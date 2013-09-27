@@ -52,10 +52,10 @@ In order to add new routes for these actions we are also adding the following me
 
 .. code-block:: php
 
-    protected function configureRoutes(RouteCollection $collection)
-    {
-	$collection->add('move', $this->getRouterIdParameter() . '/move/{position}');
-    }
+	protected function configureRoutes(RouteCollection $collection)
+	{
+	collection->add('move', $this->getRouterIdParameter() . '/move/{position}');
+	}
 
 
 Moving up the position is not a problem since we now the top position will be 0. However moving down requires a bit more of logic since we need to know what is the last position. In order to get this done we are going to implement a service with a method returning the last position and another returning the position to move our object to.
@@ -63,71 +63,71 @@ Moving up the position is not a problem since we now the top position will be 0.
 
 .. code-block:: php
 
-<?php
+	<?php
+	
+	namespace Acme\DemoBundle\Services;
+	
+	use Doctrine\ORM\EntityManager;
+	
+	class PositionHandler
+	{
+	
+	    /**
+	     *
+	     * @var EntityManager
+	     */
+	    protected $em;
+	
+	    public function __construct(EntityManager $entityManager)
+	    {
+	        $this->em = $entityManager;
+	    }
 
-namespace Acme\DemoBundle\Services;
-
-use Doctrine\ORM\EntityManager;
-
-class PositionHandler
-{
-
-    /**
-     *
-     * @var EntityManager
-     */
-    protected $em;
-
-    public function __construct(EntityManager $entityManager)
-    {
-        $this->em = $entityManager;
-    }
-
-    public function getPosition($object, $position, $last_position)
-    {
-        switch ($position) {
-            case 'up' :
-                if ($object->getPosition() > 0) {
-                    $position = $object->getPosition() - 1;
-                }
-                break;
-
-            case 'down':
-                if ($object->getPosition() < $last_position) {
-                    $position = $object->getPosition() + 1;
-                }
-                break;
-
-            case 'top':
-                if ($object->getPosition() < $last_position) {
-                    $position = 0;
-                }
-                break;
-
-            case 'bottom':
-                if ($object->getPosition() < $last_position) {
-                    $position = $last_position;
-                }
-                break;
-        }
+	    public function getPosition($object, $position, $last_position)
+	    {
+	        switch ($position) {
+	            case 'up' :
+	                if ($object->getPosition() > 0) {
+	                    $position = $object->getPosition() - 1;
+	                }
+	                break;
+	
+	            case 'down':
+	                if ($object->getPosition() < $last_position) {
+	                    $position = $object->getPosition() + 1;
+	                }
+	                break;
+	
+	            case 'top':
+	                if ($object->getPosition() < $last_position) {
+	                    $position = 0;
+	                }
+	                break;
+	
+	            case 'bottom':
+	                if ($object->getPosition() < $last_position) {
+	                    $position = $last_position;
+	                }
+	                break;
+	        }
+	
+	
+	        return $position;
 
 
-        return $position;
-
-
-    public function getLastPosition()
-    {
-
-        $query = $this->em->createQuery('SELECT MAX(c.position) FROM AcmeDemoBundle:Client c');
-        $result = $query->getResult();
-        
-        if (array_key_exists(0, $result)) {
-            return $result[0][1];
-        }
-
-        return 0;
-    }
-}
+	    public function getLastPosition()
+	    {
+	
+	        $query = $this->em->createQuery('SELECT MAX(c.position) FROM AcmeDemoBundle:Client c');
+	        $result = $query->getResult();
+	        
+	        if (array_key_exists(0, $result)) {
+	            return $result[0][1];
+	        }
+	
+	        return 0;
+	    }
+	}
 
 We then need to declare thisservice
 
@@ -135,11 +135,11 @@ We then need to declare thisservice
 
     .. code-block:: yaml
 
-services:
-    acme_demo.client.position:
-        class: Acme\DemoBundle\Services\PositionHandler
-        arguments:
-            entityManager: "@doctrine.orm.entity_manager"
+	services:
+	    acme_demo.client.position:
+	        class: Acme\DemoBundle\Services\PositionHandler
+	        arguments:
+	            entityManager: "@doctrine.orm.entity_manager"
 
 
 
@@ -147,37 +147,37 @@ We can now create our controller to implement the action defined in our Admin cl
 
 .. code-block:: php
 
-<?php
-
-namespace Acme\DemoBundle\Controller;
-
-use Sonata\AdminBundle\Controller\CRUDController;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-
-class ClientAdminController extends CRUDController
-{
-   /**
-     * Move element
-     *
-     * @param integer $id
-     * @param string $position
-     */
-    public function moveAction($id, $position)
-    {
-        $object = $this->admin->getObject($id);
-
-        $position_service = $this->get('acme_demo.client.position');
-        $last_position = $position_service->getLastPosition();
-        $position = $position_service->getPosition($object, $position, $last_position);
-
-        $object->setPosition($position);
-        $this->admin->update($object);
-
-        $this->get('session')->setFlash('sonata_flash_info', 'Position updated');
-
-        return new RedirectResponse($this->admin->generateUrl('list', $this->admin->getFilterParameters()));
-    }
-}
+	<?php
+	
+	namespace Acme\DemoBundle\Controller;
+	
+	use Sonata\AdminBundle\Controller\CRUDController;
+	use Symfony\Component\HttpFoundation\RedirectResponse;
+	
+	class ClientAdminController extends CRUDController
+	{
+	   /**
+	     * Move element
+	     *
+	     * @param integer $id
+	     * @param string $position
+	     */
+	    public function moveAction($id, $position)
+	    {
+	        $object = $this->admin->getObject($id);
+	
+	        $position_service = $this->get('acme_demo.client.position');
+	        $last_position = $position_service->getLastPosition();
+	        $position = $position_service->getPosition($object, $position, $last_position);
+	
+	        $object->setPosition($position);
+	        $this->admin->update($object);
+	
+	        $this->get('session')->setFlash('sonata_flash_info', 'Position updated');
+	
+	        return new RedirectResponse($this->admin->generateUrl('list', $this->admin->getFilterParameters()));
+	    }
+	}
 
 
 We now need to creat a handler for the new controller in ``admin.yml``
@@ -186,17 +186,17 @@ We now need to creat a handler for the new controller in ``admin.yml``
 
     .. code-block:: yaml
 
-services:
-    acme.admin.client:
-        class: Acme\DemoBundle\Admin\ClientAdmin
-        tags:
-            - { name: sonata.admin, manager_type: orm, label: "Clients" }
-        arguments:
-            - ~
-            - Acme\DemoBundle\Entity\Client
-            - 'AcmeDemoBundle:ClientAdmin' # define the new controller via the third argument
-        calls:
-            - [ setTranslationDomain, [AcmeDemoBundle]]
+	services:
+	    acme.admin.client:
+	        class: Acme\DemoBundle\Admin\ClientAdmin
+	        tags:
+	            - { name: sonata.admin, manager_type: orm, label: "Clients" }
+	        arguments:
+	            - ~
+	            - Acme\DemoBundle\Entity\Client
+	            - 'AcmeDemoBundle:ClientAdmin' # define the new controller via the third argument
+	        calls:
+	            - [ setTranslationDomain, [AcmeDemoBundle]]
 
 
 Last tricky part, in order to get the last position available in our twig template we inject the service container in our admin class, define a public variable ``$last_position`` and retrieve the value from our service in the ``configureListFields`` method. We also define the sort by field to be position 
@@ -242,22 +242,22 @@ Finally the twig files to display our up and down arrows in the listing
 
 .. code-block:: jinja
 
-{# Acme/DemoBundle/Resources/views/Admin/_sort.html.twig #}
-{% if object.position < admin.last_position %}
-    <a class="movebottom_link" href="{{ admin.generateObjectUrl('move', object, {'position': 'bottom'}) }}" title="Move bottom">⇊</a>
-{% endif %}
-
-{% if object.position < admin.last_position %}
-    <a class="movedown_link" href="{{ admin.generateObjectUrl('move', object, {'position': 'down'}) }}" title="Move down">↓</a>
-{% endif %}
-
-{% if object.position > 0 %}
-    <a class="moveup_link" href="{{ admin.generateObjectUrl('move', object, {'position': 'up'}) }}" title="Move up">↑</a>
-{% endif %}
-
-{% if object.position > 0 %}
-    <a class="movetop_link" href="{{ admin.generateObjectUrl('move', object, {'position': 'top'}) }}" title="Move top">⇈</a>
-{% endif %}
+	{# Acme/DemoBundle/Resources/views/Admin/_sort.html.twig #}
+	{% if object.position < admin.last_position %}
+	    <a class="movebottom_link" href="{{ admin.generateObjectUrl('move', object, {'position': 'bottom'}) }}" title="Move bottom">⇊</a>
+	{% endif %}
+	
+	{% if object.position < admin.last_position %}
+	    <a class="movedown_link" href="{{ admin.generateObjectUrl('move', object, {'position': 'down'}) }}" title="Move down">↓</a>
+	{% endif %}
+	
+	{% if object.position > 0 %}
+	    <a class="moveup_link" href="{{ admin.generateObjectUrl('move', object, {'position': 'up'}) }}" title="Move up">↑</a>
+	{% endif %}
+	
+	{% if object.position > 0 %}
+	    <a class="movetop_link" href="{{ admin.generateObjectUrl('move', object, {'position': 'top'}) }}" title="Move top">⇈</a>
+	{% endif %}
 
 
 Further work
