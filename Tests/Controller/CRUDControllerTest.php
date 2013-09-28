@@ -1,0 +1,362 @@
+<?php
+
+/*
+ * This file is part of the Sonata package.
+ *
+ * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Sonata\AdminBundle\Tests\Controller;
+
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
+use Sonata\AdminBundle\Controller\CRUDController;
+use Sonata\AdminBundle\Admin\Pool;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Bridge\Twig\Extension\FormExtension;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
+
+/**
+ * Test for CRUDController
+ *
+ * @author Andrej Hudec <pulzarraider@gmail.com>
+ */
+class CRUDControllerTest extends \PHPUnit_Framework_TestCase
+{
+    /**
+     * @var CRUDController
+     */
+    private $controller;
+
+    /**
+     * @var Request
+     */
+    private $request;
+
+    /**
+     * @var Sonata\AdminBundle\Admin\AdminInterface
+     */
+    private $admin;
+
+    /**
+     * @var Pool
+     */
+    private $pool;
+
+    /**
+     * @var array
+     */
+    private $parameters;
+
+    /**
+     *
+     * @var Session
+     */
+    private $session;
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function setUp()
+    {
+        $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
+
+        $this->request = new Request();
+        $this->pool = new Pool($container, 'title', 'logo.png');
+        $this->request->attributes->set('_sonata_admin', 'foo.admin');
+        $this->admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $this->parameters = array();
+
+        // php 5.3 BC
+        $params = &$this->parameters;
+
+        $templating = $this->getMock('Symfony\Bundle\FrameworkBundle\Templating\DelegatingEngine', array(), array($container, array()));
+
+        $templating->expects($this->any())
+            ->method('renderResponse')
+            ->will($this->returnCallback(function($view, array $parameters = array(), Response $response = null) use (&$params) {
+                    if (null === $response) {
+                        $response = new Response();
+                    }
+
+                    $params = $parameters;
+
+                    return $response;
+                }));
+
+        $this->session = new Session(new MockArraySessionStorage());
+
+        // php 5.3 BC
+        $pool = $this->pool;
+        $request = $this->request;
+        $admin = $this->admin;
+        $session = $this->session;
+
+        $twig = $this->getMockBuilder('Twig_Environment')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $twigRenderer = $this->getMock('Symfony\Bridge\Twig\Form\TwigRendererInterface');
+
+        $formExtension = new FormExtension($twigRenderer);
+
+        $twig->expects($this->any())
+            ->method('getExtension')
+            ->will($this->returnCallback(function($name) use ($formExtension) {
+                    switch ($name) {
+                        case 'form':
+                            return $formExtension;
+                    }
+
+                    return null;
+                }));
+
+        $container->expects($this->any())
+            ->method('get')
+            ->will($this->returnCallback(function($id) use ($pool, $request, $admin, $templating, $twig, $session) {
+                    switch ($id) {
+                        case 'sonata.admin.pool':
+                            return $pool;
+                        case 'request':
+                            return $request;
+                        case 'foo.admin':
+                            return $admin;
+                        case 'templating':
+                            return $templating;
+                        case 'twig':
+                            return $twig;
+                        case 'session':
+                            return $session;
+                    }
+
+                    return null;
+                }));
+
+        $this->admin->expects($this->any())
+            ->method('getTemplate')
+            ->will($this->returnCallback(function($name) {
+                    switch ($name) {
+                        case 'ajax':
+                            return 'SonataAdminBundle::ajax_layout.html.twig';
+                        case 'layout':
+                            return 'SonataAdminBundle::standard_layout.html.twig';
+                    }
+
+                    return null;
+                }));
+
+        $this->controller = new CRUDController();
+        $this->controller->setContainer($container);
+    }
+
+    public function testRenderJson1()
+    {
+        $data = array('example'=>'123', 'foo'=>'bar');
+
+        $this->request->headers->set('Content-Type', 'application/x-www-form-urlencoded');
+        $response = $this->controller->renderJson($data);
+
+        $this->assertEquals($response->headers->get('Content-Type'), 'application/json');
+        $this->assertEquals(json_encode($data), $response->getContent());
+    }
+
+    public function testRenderJson2()
+    {
+        $data = array('example'=>'123', 'foo'=>'bar');
+
+        $this->request->headers->set('Content-Type', 'multipart/form-data');
+        $response = $this->controller->renderJson($data);
+
+        $this->assertEquals($response->headers->get('Content-Type'), 'application/json');
+        $this->assertEquals(json_encode($data), $response->getContent());
+    }
+
+    public function testRenderJsonAjax()
+    {
+        $data = array('example'=>'123', 'foo'=>'bar');
+
+        $this->request->attributes->set('_xml_http_request', true);
+        $this->request->headers->set('Content-Type', 'multipart/form-data');
+        $response = $this->controller->renderJson($data);
+
+        $this->assertEquals($response->headers->get('Content-Type'), 'text/plain');
+        $this->assertEquals(json_encode($data), $response->getContent());
+    }
+
+    public function testIsXmlHttpRequest()
+    {
+        $this->assertFalse($this->controller->isXmlHttpRequest());
+
+        $this->request->headers->set('X-Requested-With', 'XMLHttpRequest');
+        $this->assertTrue($this->controller->isXmlHttpRequest());
+
+        $this->request->headers->remove('X-Requested-With');
+        $this->assertFalse($this->controller->isXmlHttpRequest());
+
+        $this->request->attributes->set('_xml_http_request', true);
+        $this->assertTrue($this->controller->isXmlHttpRequest());
+    }
+
+    public function testConfigureWithException()
+    {
+        $this->setExpectedException('RuntimeException', 'There is no `_sonata_admin` defined for the controller `Sonata\AdminBundle\Controller\CRUDController`');
+
+        $this->request->attributes->remove('_sonata_admin');
+        $this->controller->configure();
+    }
+
+    public function testConfigureWithException2()
+    {
+        $this->setExpectedException('RuntimeException', 'Unable to find the admin class related to the current controller (Sonata\AdminBundle\Controller\CRUDController)');
+
+        $this->request->attributes->set('_sonata_admin', 'nonexistent.admin');
+        $this->controller->configure();
+    }
+
+    public function testGetBaseTemplate()
+    {
+        $this->assertEquals('SonataAdminBundle::standard_layout.html.twig', $this->controller->getBaseTemplate());
+
+        $this->request->headers->set('X-Requested-With', 'XMLHttpRequest');
+        $this->assertEquals('SonataAdminBundle::ajax_layout.html.twig', $this->controller->getBaseTemplate());
+
+        $this->request->headers->remove('X-Requested-With');
+        $this->assertEquals('SonataAdminBundle::standard_layout.html.twig', $this->controller->getBaseTemplate());
+
+        $this->request->attributes->set('_xml_http_request', true);
+        $this->assertEquals('SonataAdminBundle::ajax_layout.html.twig', $this->controller->getBaseTemplate());
+    }
+
+    public function testRender()
+    {
+        $this->parameters = array();
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $this->controller->render('FooAdminBundle::foo.html.twig', array()));
+        $this->assertEquals($this->admin, $this->parameters['admin']);
+        $this->assertEquals('SonataAdminBundle::standard_layout.html.twig', $this->parameters['base_template']);
+        $this->assertEquals($this->pool, $this->parameters['admin_pool']);
+    }
+
+    public function testRenderCustomParams()
+    {
+        $this->parameters = array();
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $this->controller->render('FooAdminBundle::foo.html.twig', array('foo'=>'bar')));
+        $this->assertEquals($this->admin, $this->parameters['admin']);
+        $this->assertEquals('SonataAdminBundle::standard_layout.html.twig', $this->parameters['base_template']);
+        $this->assertEquals($this->pool, $this->parameters['admin_pool']);
+        $this->assertEquals('bar', $this->parameters['foo']);
+    }
+
+    public function testRenderAjax()
+    {
+        $this->parameters = array();
+        $this->request->headers->set('X-Requested-With', 'XMLHttpRequest');
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $this->controller->render('FooAdminBundle::foo.html.twig', array('foo'=>'bar')));
+        $this->assertEquals($this->admin, $this->parameters['admin']);
+        $this->assertEquals('SonataAdminBundle::ajax_layout.html.twig', $this->parameters['base_template']);
+        $this->assertEquals($this->pool, $this->parameters['admin_pool']);
+        $this->assertEquals('bar', $this->parameters['foo']);
+    }
+
+    public function testListActionAccessDenied()
+    {
+        $this->setExpectedException('Symfony\Component\Security\Core\Exception\AccessDeniedException');
+
+        $this->admin->expects($this->once())
+            ->method('isGranted')
+            ->will($this->returnValue(false));
+
+        $this->controller->listAction();
+    }
+
+    public function testListAction()
+    {
+        $datagrid = $this->getMock('Sonata\AdminBundle\Datagrid\DatagridInterface');
+
+        $form = $this->getMockBuilder('Symfony\Component\Form\Form')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+         $form->expects($this->once())
+            ->method('createView')
+            ->will($this->returnValue($this->getMock('Symfony\Component\Form\FormView')));
+
+        $this->admin->expects($this->once())
+            ->method('getDatagrid')
+            ->will($this->returnValue($datagrid));
+
+        $datagrid->expects($this->once())
+            ->method('getForm')
+            ->will($this->returnValue($form));
+
+        $this->parameters = array();
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $this->controller->listAction());
+
+        $this->assertEquals($this->admin, $this->parameters['admin']);
+        $this->assertEquals('SonataAdminBundle::standard_layout.html.twig', $this->parameters['base_template']);
+        $this->assertEquals($this->pool, $this->parameters['admin_pool']);
+
+        $this->assertEquals('list', $this->parameters['action']);
+        $this->assertInstanceOf('Symfony\Component\Form\FormView', $this->parameters['form']);
+        $this->assertInstanceOf('Sonata\AdminBundle\Datagrid\DatagridInterface', $this->parameters['datagrid']);
+        $this->assertEquals('', $this->parameters['csrf_token']);
+    }
+
+    /**
+     * @dataProvider getRedirectToTests
+     */
+    public function testRedirectTo($expected, $queryParams, $hasActiveSubclass)
+    {
+        $this->admin->expects($this->any())
+            ->method('generateUrl')
+            ->will($this->returnCallback(function($name, array $parameters = array(), $absolute = false) {
+                    $result = $name;
+                    if (!empty($parameters)) {
+                        $result .= '_'.implode('-', $parameters);
+                    }
+
+                    return $result;
+                }));
+
+        $this->admin->expects($this->any())
+            ->method('generateObjectUrl')
+            ->will($this->returnCallback(function($name, $object, array $parameters = array(), $absolute = false) {
+                    return get_class($object).'_'.$name;
+                }));
+
+        $this->admin->expects($this->any())
+            ->method('hasActiveSubclass')
+            ->will($this->returnValue($hasActiveSubclass));
+
+        $object = new \stdClass();
+
+        foreach ($queryParams as $key => $value) {
+            $this->request->query->set($key, $value);
+        }
+
+        $response = $this->controller->redirectTo($object);
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse', $response);
+        $this->assertEquals($expected, $response->getTargetUrl());
+    }
+
+    public function getRedirectToTests()
+    {
+        return array(
+            array('stdClass_edit', array(), false),
+            array('list', array('btn_update_and_list'=>true), false),
+            array('list', array('btn_create_and_list'=>true), false),
+            array('create', array('btn_create_and_create'=>true), false),
+            array('create_foo', array('btn_create_and_create'=>true, 'subclass'=>'foo'), true),
+        );
+    }
+
+    public function testAddFlash()
+    {
+        $this->controller->addFlash('foo', 'bar');
+        $this->assertSame(array('bar'), $this->session->getFlashBag()->get('foo'));
+    }
+}
