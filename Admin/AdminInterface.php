@@ -683,6 +683,13 @@ interface AdminInterface
     public function postRemove($object);
 
     /**
+     * Return array of filter parameters.
+     *
+     * @return array
+     */
+    public function getFilterParameters();
+
+    /**
      * Return true if the Admin is related to a subject
      *
      * @return boolean
