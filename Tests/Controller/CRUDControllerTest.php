@@ -20,6 +20,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bridge\Twig\Extension\FormExtension;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
+use Sonata\AdminBundle\Exception\ModelManagerException;
 
 /**
  * Test for CRUDController
@@ -145,9 +146,26 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
                             return 'SonataAdminBundle::ajax_layout.html.twig';
                         case 'layout':
                             return 'SonataAdminBundle::standard_layout.html.twig';
+                        case 'show':
+                            return 'SonataAdminBundle:CRUD:show.html.twig';
                     }
 
                     return null;
+                }));
+
+        $this->admin->expects($this->any())
+            ->method('getIdParameter')
+            ->will($this->returnValue('id'));
+
+        $this->admin->expects($this->any())
+            ->method('generateUrl')
+            ->will($this->returnCallback(function($name, array $parameters = array(), $absolute = false) {
+                    $result = $name;
+                    if (!empty($parameters)) {
+                        $result .= '?'.http_build_query($parameters);
+                    }
+
+                    return $result;
                 }));
 
         $this->controller = new CRUDController();
@@ -306,22 +324,121 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('', $this->parameters['csrf_token']);
     }
 
+    public function testBatchActionDeleteAccessDenied()
+    {
+        $this->setExpectedException('Symfony\Component\Security\Core\Exception\AccessDeniedException');
+
+        $this->admin->expects($this->once())
+            ->method('isGranted')
+            ->will($this->returnValue(false));
+
+        $this->controller->batchActionDelete($this->getMock('Sonata\AdminBundle\Datagrid\ProxyQueryInterface'));
+    }
+
+    public function testBatchActionDelete()
+    {
+        $modelManager = $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface');
+
+        $this->admin->expects($this->once())
+            ->method('getModelManager')
+            ->will($this->returnValue($modelManager));
+
+        $this->admin->expects($this->once())
+            ->method('getFilterParameters')
+            ->will($this->returnValue(array('foo'=>'bar')));
+
+        $result = $this->controller->batchActionDelete($this->getMock('Sonata\AdminBundle\Datagrid\ProxyQueryInterface'));
+
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse', $result);
+        $this->assertSame(array('flash_batch_delete_success'), $this->session->getFlashBag()->get('sonata_flash_success'));
+        $this->assertEquals('list?filter%5Bfoo%5D=bar', $result->getTargetUrl());
+    }
+
+    public function testBatchActionDeleteWithModelManagerException()
+    {
+        $modelManager = $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface');
+
+        $modelManager->expects($this->once())
+            ->method('batchDelete')
+            ->will($this->returnCallback(function() {
+                    throw new ModelManagerException();
+                }));
+
+        $this->admin->expects($this->once())
+            ->method('getModelManager')
+            ->will($this->returnValue($modelManager));
+
+        $this->admin->expects($this->once())
+            ->method('getFilterParameters')
+            ->will($this->returnValue(array('foo'=>'bar')));
+
+        $result = $this->controller->batchActionDelete($this->getMock('Sonata\AdminBundle\Datagrid\ProxyQueryInterface'));
+
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse', $result);
+        $this->assertSame(array('flash_batch_delete_error'), $this->session->getFlashBag()->get('sonata_flash_error'));
+        $this->assertEquals('list?filter%5Bfoo%5D=bar', $result->getTargetUrl());
+    }
+
+    public function testShowActionNotFoundException()
+    {
+        $this->setExpectedException('Symfony\Component\HttpKernel\Exception\NotFoundHttpException');
+
+        $this->admin->expects($this->once())
+            ->method('getObject')
+            ->will($this->returnValue(false));
+
+        $this->controller->showAction();
+    }
+
+    public function testShowActionAccessDenied()
+    {
+        $this->setExpectedException('Symfony\Component\Security\Core\Exception\AccessDeniedException');
+
+        $this->admin->expects($this->once())
+            ->method('getObject')
+            ->will($this->returnValue(new \stdClass()));
+
+        $this->admin->expects($this->once())
+            ->method('isGranted')
+            ->will($this->returnValue(false));
+
+        $this->controller->showAction();
+    }
+
+    public function testShowAction()
+    {
+        $object = new \stdClass();
+
+        $this->admin->expects($this->once())
+            ->method('getObject')
+            ->will($this->returnValue($object));
+
+        $this->admin->expects($this->once())
+            ->method('isGranted')
+            ->will($this->returnValue(true));
+
+        $show = $this->getMock('Sonata\AdminBundle\Admin\FieldDescriptionCollection');
+
+        $this->admin->expects($this->once())
+            ->method('getShow')
+            ->will($this->returnValue($show));
+
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $this->controller->showAction());
+
+        $this->assertEquals($this->admin, $this->parameters['admin']);
+        $this->assertEquals('SonataAdminBundle::standard_layout.html.twig', $this->parameters['base_template']);
+        $this->assertEquals($this->pool, $this->parameters['admin_pool']);
+
+        $this->assertEquals('show', $this->parameters['action']);
+        $this->assertInstanceOf('Sonata\AdminBundle\Admin\FieldDescriptionCollection', $this->parameters['elements']);
+        $this->assertEquals($object, $this->parameters['object']);
+    }
+
     /**
      * @dataProvider getRedirectToTests
      */
     public function testRedirectTo($expected, $queryParams, $hasActiveSubclass)
     {
-        $this->admin->expects($this->any())
-            ->method('generateUrl')
-            ->will($this->returnCallback(function($name, array $parameters = array(), $absolute = false) {
-                    $result = $name;
-                    if (!empty($parameters)) {
-                        $result .= '_'.implode('-', $parameters);
-                    }
-
-                    return $result;
-                }));
-
         $this->admin->expects($this->any())
             ->method('generateObjectUrl')
             ->will($this->returnCallback(function($name, $object, array $parameters = array(), $absolute = false) {
@@ -350,7 +467,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             array('list', array('btn_update_and_list'=>true), false),
             array('list', array('btn_create_and_list'=>true), false),
             array('create', array('btn_create_and_create'=>true), false),
-            array('create_foo', array('btn_create_and_create'=>true, 'subclass'=>'foo'), true),
+            array('create?subclass=foo', array('btn_create_and_create'=>true, 'subclass'=>'foo'), true),
         );
     }
 

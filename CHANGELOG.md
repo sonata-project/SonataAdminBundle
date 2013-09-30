@@ -1,12 +1,19 @@
 CHANGELOG
 =========
 
+### 2013-09-30
+
+* [BC BREAK] added ``getFilterParameters`` to the AdminInterface
+  If you do not extend the Admin class, you need to add this method to
+  your admin.
+
 ### 2013-09-27
 
 * [BC BREAK] added ``hasParentFieldDescription``, ``getPersistentParameters``,
   ``getParentFieldDescription``, ``getUniqid``, ``getBaseCodeRoute``,
   ``getIdParameter`` to the AdminInterface
   If you do not extend the Admin class, you need to add these methods to
+  your admin.
 
 ### 2013-09-23
 
