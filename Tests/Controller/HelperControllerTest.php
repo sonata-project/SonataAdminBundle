@@ -60,6 +60,9 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
         $controller->getShortObjectDescriptionAction($request);
     }
 
+    /**
+     * @expectedException Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     */
     public function testgetShortObjectDescriptionActionObjectDoesNotExist()
     {
         $admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
@@ -82,9 +85,7 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
 
         $controller = new HelperController($twig, $pool, $helper);
 
-        $response = $controller->getShortObjectDescriptionAction($request);
-
-        $this->assertEmpty($response->getContent());
+        $controller->getShortObjectDescriptionAction($request);
     }
 
     public function testgetShortObjectDescriptionActionObject()
@@ -95,6 +96,7 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
         $admin->expects($this->once())->method('setUniqid');
         $admin->expects($this->once())->method('getTemplate')->will($this->returnValue($mockTemplate));
         $admin->expects($this->once())->method('getObject')->will($this->returnValue(new AdminControllerHelper_Foo));
+        $admin->expects($this->once())->method('toString')->will($this->returnValue('bar'));
         $admin->expects($this->once())->method('generateObjectUrl')->will($this->returnCallback(function($type, $object, $parameters = array()) {
             if ($type != 'edit') {
                 return 'invalid name';
@@ -117,7 +119,8 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
         $request = new Request(array(
             'code'     => 'sonata.post.admin',
             'objectId' => 42,
-            'uniqid'   => 'asdasd123'
+            'uniqid'   => 'asdasd123',
+            '_format'  => 'html'
         ));
 
         $pool = new Pool($container, 'title', 'logo');
