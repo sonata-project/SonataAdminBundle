@@ -47,11 +47,11 @@ class Datagrid implements DatagridInterface
     protected $results;
 
     /**
-     * @param ProxyQueryInterface                                  $query
-     * @param \Sonata\AdminBundle\Admin\FieldDescriptionCollection $columns
-     * @param PagerInterface                                       $pager
-     * @param \Symfony\Component\Form\FormBuilder                  $formBuilder
-     * @param array                                                $values
+     * @param ProxyQueryInterface        $query
+     * @param FieldDescriptionCollection $columns
+     * @param PagerInterface             $pager
+     * @param FormBuilder                $formBuilder
+     * @param array                      $values
      */
     public function __construct(ProxyQueryInterface $query, FieldDescriptionCollection $columns, PagerInterface $pager, FormBuilder $formBuilder, array $values = array())
     {

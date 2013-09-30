@@ -83,6 +83,6 @@ To do:
 - basic filter configuration and options
 - how to set default filter values
 - targeting submodel fields using dot-separated notation
-- advanced filter options
+- advanced filter options (global_search)
 
 .. _`issues on Github`: https://github.com/sonata-project/SonataAdminBundle/issues/1519

@@ -23,10 +23,6 @@ abstract class Filter implements FilterInterface
 
     protected $condition;
 
-    const CONDITION_OR = 'OR';
-
-    const CONDITION_AND = 'AND';
-
     /**
      * {@inheritdoc}
      */
