@@ -23,6 +23,7 @@ Reference Guide
    reference/configuration
    reference/architecture
    reference/dashboard
+   reference/search
    reference/routing
    reference/action_list
    reference/action_create_edit

@@ -9,7 +9,7 @@ file that was distributed with this source code.
 
 #}
 
-{% extends 'SonataBlockBundle:Block:block_base.html.twig' %}
+{% extends sonata_block.templates.block_base %}
 
 {% block block %}
 
@@ -48,9 +48,9 @@ file that was distributed with this source code.
                                             </a>
                                             <ul class="dropdown-menu">
                                                 {% for subclass in admin.subclasses|keys %}
-                                                <li>
-                                                    <a href="{{ admin.generateUrl('create', {'subclass': subclass}) }}">{{ subclass }}</a>
-                                                </li>
+                                                    <li>
+                                                        <a href="{{ admin.generateUrl('create', {'subclass': subclass}) }}">{{ subclass }}</a>
+                                                    </li>
                                                 {% endfor %}
                                             </ul>
                                         {% endif %}

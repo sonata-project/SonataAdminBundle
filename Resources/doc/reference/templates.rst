@@ -1,7 +1,7 @@
 Templates
 =========
 
-``SoantaAdminBundle`` comes with a significant amount of ``twig`` files used to display the 
+``SoantaAdminBundle`` comes with a significant amount of ``twig`` files used to display the
 different parts of each ``Admin`` action's page. If you read the ``Templates`` part of the :doc:`architecture` section of this guide, you should know by now how these are organized in
 the ``views`` folder. If you haven't, now would be a good time to do it.
 
@@ -14,7 +14,7 @@ Global Templates
 ----------------
 
 ``SonataAdminBundle`` views are implemented using ``twig`` files, and take full advantage of its
-inheritance capabilities. As such, even the most simple page is actually be rendered using many 
+inheritance capabilities. As such, even the most simple page is actually be rendered using many
 different ``twig`` files. At the end of that ``twig`` inheritance hierarchy is always one of two files:
 
 * layout: SonataAdminBundle::standard_layout.html.twig
@@ -110,6 +110,7 @@ You can specify your templates in the config.yml file, like so:
                 action:  SonataAdminBundle:CRUD:action.html.twig
                 select:  SonataAdminBundle:CRUD:list__select.html.twig
                 dashboard:           SonataAdminBundle:Core:dashboard.html.twig
+                search:              SonataAdminBundle:Core:search.html.twig
                 batch_confirmation:  SonataAdminBundle:CRUD:batch_confirmation.html.twig
                 inner_list_row:      SonataAdminBundle:CRUD:list_inner_row.html.twig
                 base_list_field:     SonataAdminBundle:CRUD:base_list_field.html.twig
@@ -121,8 +122,9 @@ You can specify your templates in the config.yml file, like so:
                 pager_results:       SonataAdminBundle:Pager:results.html.twig
                 history_revision_timestamp:  SonataAdminBundle:CRUD:history_revision_timestamp.html.twig
                 short_object_description:    SonataAdminBundle:Helper:short-object-description.html.twig
+                search_result_block: SonataAdminBundle:Block:block_search_result.html.twig
 
-Notice that this is a global change, meaning it will affect all model mappings automatically, 
+Notice that this is a global change, meaning it will affect all model mappings automatically,
 both for ``Admin`` mappings defined by you and by other bundles.
 
 If you wish, you can specify custom templates on a per ``Admin`` mapping basis. Internally,
@@ -164,10 +166,10 @@ specify the templates to use in the ``Admin`` service definition:
     A ``setTemplates(array $templates)`` (notice the plural) function also exists, that allows
     you to set multiple templates at once. Notice that, if used outside the service definition
     context, ``setTemplates(array $templates)`` will replace the whole template list for that
-    ``Admin`` class, meaning you have to explicitly pass the full template list in the 
+    ``Admin`` class, meaning you have to explicitly pass the full template list in the
     ``$templates`` argument.
 
 
 Changes made using the ``setTemplate()`` and ``setTemplates()`` functions override the customizations
-made in the configuration file, so you can specify a global custom template and then override that 
+made in the configuration file, so you can specify a global custom template and then override that
 customization on a specific ``Admin`` class.
