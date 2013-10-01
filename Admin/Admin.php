@@ -2555,11 +2555,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * Returning true will enable preview mode for
-     * the target entity and show a preview button
-     * when editing/creating an entity
-     *
-     * @return boolean
+     * {@inheritdoc}
      */
     public function supportsPreviewMode()
     {

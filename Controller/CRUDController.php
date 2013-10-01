@@ -305,7 +305,6 @@ class CRUDController extends Controller
             // persist if the form was valid and if in preview mode the preview was approved
             if ($isFormValid && (!$this->isInPreviewMode() || $this->isPreviewApproved())) {
                 $this->admin->update($object);
-                $this->addFlash('sonata_flash_success', 'flash_edit_success');
 
                 if ($this->isXmlHttpRequest()) {
                     return $this->renderJson(array(
@@ -313,6 +312,8 @@ class CRUDController extends Controller
                         'objectId'  => $this->admin->getNormalizedIdentifier($object)
                     ));
                 }
+
+                $this->addFlash('sonata_flash_success', 'flash_edit_success');
 
                 // redirect to edit mode
                 return $this->redirectTo($object);
