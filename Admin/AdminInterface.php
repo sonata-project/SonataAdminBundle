@@ -518,6 +518,15 @@ interface AdminInterface
     public function getLabelTranslatorStrategy();
 
     /**
+     * Returning true will enable preview mode for
+     * the target entity and show a preview button
+     * when editing/creating an entity
+     *
+     * @return boolean
+     */
+    public function supportsPreviewMode();
+
+    /**
      * add an Admin child to the current one
      *
      * @param \Sonata\AdminBundle\Admin\AdminInterface $child
