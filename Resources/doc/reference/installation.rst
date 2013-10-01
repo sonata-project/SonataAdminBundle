@@ -19,7 +19,7 @@ for older versions:
 
 .. code-block:: bash
 
-    Please provide a version constraint for the sonata-project/jquery-bundle requirement: dev-master
+    Please provide a version constraint for the sonata-project/admin-bundle requirement: dev-master
 
 Selecting and downloading a storage bundle
 ------------------------------------------
