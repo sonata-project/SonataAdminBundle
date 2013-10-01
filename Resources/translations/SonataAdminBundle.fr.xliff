@@ -378,8 +378,8 @@
                 <source>search_placeholder</source>
                 <target>Rechercher</target>
             </trans-unit>
-            <trans-unit id="no_result_found">
-                <source>no_result_found</source>
+            <trans-unit id="no_results_found">
+                <source>no_results_found</source>
                 <target>pas de résultats</target>
             </trans-unit>
             <trans-unit id="add_new_entry">
