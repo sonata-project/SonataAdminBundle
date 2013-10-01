@@ -1,6 +1,12 @@
 CHANGELOG
 =========
 
+### 2013-10-01
+
+* [BC BREAK] added ``supportsPreviewMode`` to the AdminInterface
+  If you do not extend the Admin class, you need to add this method to
+  your admin.
+
 ### 2013-09-30
 
 * [BC BREAK] added ``getFilterParameters`` to the AdminInterface

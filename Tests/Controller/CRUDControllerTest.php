@@ -148,6 +148,8 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
                             return 'SonataAdminBundle::standard_layout.html.twig';
                         case 'show':
                             return 'SonataAdminBundle:CRUD:show.html.twig';
+                        case 'edit':
+                            return 'SonataAdminBundle:CRUD:edit.html.twig';
                     }
 
                     return null;
@@ -161,6 +163,17 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->method('generateUrl')
             ->will($this->returnCallback(function($name, array $parameters = array(), $absolute = false) {
                     $result = $name;
+                    if (!empty($parameters)) {
+                        $result .= '?'.http_build_query($parameters);
+                    }
+
+                    return $result;
+                }));
+
+        $this->admin->expects($this->any())
+            ->method('generateObjectUrl')
+            ->will($this->returnCallback(function($name, $object, array $parameters = array(), $absolute = false) {
+                    $result = get_class($object).'_'.$name;
                     if (!empty($parameters)) {
                         $result .= '?'.http_build_query($parameters);
                     }
@@ -454,12 +467,6 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
     public function testRedirectTo($expected, $queryParams, $hasActiveSubclass)
     {
         $this->admin->expects($this->any())
-            ->method('generateObjectUrl')
-            ->will($this->returnCallback(function($name, $object, array $parameters = array(), $absolute = false) {
-                    return get_class($object).'_'.$name;
-                }));
-
-        $this->admin->expects($this->any())
             ->method('hasActiveSubclass')
             ->will($this->returnValue($hasActiveSubclass));
 
@@ -563,6 +570,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $response);
         $this->assertEquals(json_encode(array('result'=>'ok')), $response->getContent());
+        $this->assertEquals(array(), $this->session->getFlashBag()->all());
     }
 
     public function testDeleteActionAjaxError()
@@ -592,6 +600,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $response);
         $this->assertEquals(json_encode(array('result'=>'error')), $response->getContent());
+        $this->assertEquals(array(), $this->session->getFlashBag()->all());
     }
 
     public function testDeleteActionSuccess()
@@ -643,4 +652,235 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(array('flash_delete_error'), $this->session->getFlashBag()->get('sonata_flash_error'));
         $this->assertEquals('list', $response->getTargetUrl());
     }
+
+    public function testEditActionNotFoundException()
+    {
+        $this->setExpectedException('Symfony\Component\HttpKernel\Exception\NotFoundHttpException');
+
+        $this->admin->expects($this->once())
+            ->method('getObject')
+            ->will($this->returnValue(false));
+
+        $this->controller->editAction();
+    }
+
+    public function testEditActionAccessDenied()
+    {
+        $this->setExpectedException('Symfony\Component\Security\Core\Exception\AccessDeniedException');
+
+        $this->admin->expects($this->once())
+            ->method('getObject')
+            ->will($this->returnValue(new \stdClass()));
+
+        $this->admin->expects($this->once())
+            ->method('isGranted')
+            ->with($this->equalTo('EDIT'))
+            ->will($this->returnValue(false));
+
+        $this->controller->editAction();
+    }
+
+    public function testEditAction()
+    {
+        $object = new \stdClass();
+
+        $this->admin->expects($this->once())
+            ->method('getObject')
+            ->will($this->returnValue($object));
+
+        $this->admin->expects($this->once())
+            ->method('isGranted')
+            ->with($this->equalTo('EDIT'))
+            ->will($this->returnValue(true));
+
+        $form = $this->getMockBuilder('Symfony\Component\Form\Form')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->admin->expects($this->once())
+            ->method('getForm')
+            ->will($this->returnValue($form));
+
+        $formView = $this->getMock('Symfony\Component\Form\FormView');
+
+        $form->expects($this->any())
+            ->method('createView')
+            ->will($this->returnValue($formView));
+
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $this->controller->editAction());
+
+        $this->assertEquals($this->admin, $this->parameters['admin']);
+        $this->assertEquals('SonataAdminBundle::standard_layout.html.twig', $this->parameters['base_template']);
+        $this->assertEquals($this->pool, $this->parameters['admin_pool']);
+
+        $this->assertEquals('edit', $this->parameters['action']);
+        $this->assertInstanceOf('Symfony\Component\Form\FormView', $this->parameters['form']);
+        $this->assertEquals($object, $this->parameters['object']);
+    }
+
+    public function testEditActionSuccess()
+    {
+        $object = new \stdClass();
+
+        $this->admin->expects($this->once())
+            ->method('getObject')
+            ->will($this->returnValue($object));
+
+        $this->admin->expects($this->once())
+            ->method('isGranted')
+            ->with($this->equalTo('EDIT'))
+            ->will($this->returnValue(true));
+
+        $form = $this->getMockBuilder('Symfony\Component\Form\Form')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->admin->expects($this->once())
+            ->method('getForm')
+            ->will($this->returnValue($form));
+
+        $form->expects($this->once())
+            ->method('isValid')
+            ->will($this->returnValue(true));
+
+        $this->request->setMethod('POST');
+
+        $response = $this->controller->editAction();
+
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse', $response);
+        $this->assertSame(array('flash_edit_success'), $this->session->getFlashBag()->get('sonata_flash_success'));
+        $this->assertEquals('stdClass_edit', $response->getTargetUrl());
+    }
+
+    public function testEditActionError()
+    {
+        $object = new \stdClass();
+
+        $this->admin->expects($this->once())
+            ->method('getObject')
+            ->will($this->returnValue($object));
+
+        $this->admin->expects($this->once())
+            ->method('isGranted')
+            ->with($this->equalTo('EDIT'))
+            ->will($this->returnValue(true));
+
+        $form = $this->getMockBuilder('Symfony\Component\Form\Form')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->admin->expects($this->once())
+            ->method('getForm')
+            ->will($this->returnValue($form));
+
+        $form->expects($this->once())
+            ->method('isValid')
+            ->will($this->returnValue(false));
+
+        $this->request->setMethod('POST');
+
+        $formView = $this->getMock('Symfony\Component\Form\FormView');
+
+        $form->expects($this->any())
+            ->method('createView')
+            ->will($this->returnValue($formView));
+
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $this->controller->editAction());
+
+        $this->assertEquals($this->admin, $this->parameters['admin']);
+        $this->assertEquals('SonataAdminBundle::standard_layout.html.twig', $this->parameters['base_template']);
+        $this->assertEquals($this->pool, $this->parameters['admin_pool']);
+
+        $this->assertEquals('edit', $this->parameters['action']);
+        $this->assertInstanceOf('Symfony\Component\Form\FormView', $this->parameters['form']);
+        $this->assertEquals($object, $this->parameters['object']);
+    }
+
+    public function testEditActionAjaxSuccess()
+    {
+        $object = new \stdClass();
+
+        $this->admin->expects($this->once())
+            ->method('getObject')
+            ->will($this->returnValue($object));
+
+        $this->admin->expects($this->once())
+            ->method('isGranted')
+            ->with($this->equalTo('EDIT'))
+            ->will($this->returnValue(true));
+
+        $form = $this->getMockBuilder('Symfony\Component\Form\Form')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->admin->expects($this->once())
+            ->method('getForm')
+            ->will($this->returnValue($form));
+
+        $form->expects($this->once())
+            ->method('isValid')
+            ->will($this->returnValue(true));
+
+        $this->admin->expects($this->once())
+            ->method('getNormalizedIdentifier')
+            ->with($this->equalTo($object))
+            ->will($this->returnValue('foo_normalized'));
+
+        $this->request->setMethod('POST');
+        $this->request->headers->set('X-Requested-With', 'XMLHttpRequest');
+
+        $response = $this->controller->editAction();
+
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $response);
+        $this->assertEquals(json_encode(array('result'=>'ok', 'objectId'  => 'foo_normalized')), $response->getContent());
+        $this->assertEquals(array(), $this->session->getFlashBag()->all());
+    }
+
+    public function testEditActionAjaxError()
+    {
+        $object = new \stdClass();
+
+        $this->admin->expects($this->once())
+            ->method('getObject')
+            ->will($this->returnValue($object));
+
+        $this->admin->expects($this->once())
+            ->method('isGranted')
+            ->with($this->equalTo('EDIT'))
+            ->will($this->returnValue(true));
+
+        $form = $this->getMockBuilder('Symfony\Component\Form\Form')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->admin->expects($this->once())
+            ->method('getForm')
+            ->will($this->returnValue($form));
+
+        $form->expects($this->once())
+            ->method('isValid')
+            ->will($this->returnValue(false));
+
+        $this->request->setMethod('POST');
+        $this->request->headers->set('X-Requested-With', 'XMLHttpRequest');
+
+        $formView = $this->getMock('Symfony\Component\Form\FormView');
+
+        $form->expects($this->any())
+            ->method('createView')
+            ->will($this->returnValue($formView));
+
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $this->controller->editAction());
+
+        $this->assertEquals($this->admin, $this->parameters['admin']);
+        $this->assertEquals('SonataAdminBundle::ajax_layout.html.twig', $this->parameters['base_template']);
+        $this->assertEquals($this->pool, $this->parameters['admin_pool']);
+
+        $this->assertEquals('edit', $this->parameters['action']);
+        $this->assertInstanceOf('Symfony\Component\Form\FormView', $this->parameters['form']);
+        $this->assertEquals($object, $this->parameters['object']);
+
+        $this->assertEquals(array(), $this->session->getFlashBag()->all());
+    }
+
 }
