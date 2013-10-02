@@ -67,6 +67,9 @@ for it could look like:
 
 .. code-block:: php
 
+   <?php
+   // src/Acme/DemoBundle/Admin/PostAdmin.php
+
    namespace Acme\DemoBundle\Admin;
 
    use Sonata\AdminBundle\Admin\Admin;
