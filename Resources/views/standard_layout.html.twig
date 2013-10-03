@@ -126,10 +126,20 @@ file that was distributed with this source code.
                                             {% for group in admin_pool.dashboardgroups %}
                                                 {% set display = (group.roles is empty or is_granted('ROLE_SUPER_ADMIN') ) %}
                                                 {% for role in group.roles if not display %}
-                                                    {% set display = is_granted(role)%}
+                                                    {% set display = is_granted(role) %}
                                                 {% endfor %}
 
+                                                {# Do not display the group label if no item in group is available #}
+                                                {% set item_count = 0 %}
                                                 {% if display %}
+                                                    {% for admin in group.items if item_count == 0 %}
+                                                        {% if admin.hasroute('list') and admin.isGranted('LIST') %}
+                                                            {% set item_count = item_count+1 %}
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                {% endif %}
+
+                                                {% if display and (item_count > 0) %}
                                                 <li class="dropdown">
                                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ group.label|trans({}, group.label_catalogue) }} <span class="caret"></span></a>
                                                     <ul class="dropdown-menu">
