@@ -372,19 +372,19 @@
             </trans-unit>
             <trans-unit id="title_search_results">
                 <source>title_search_results</source>
-                <target>title_search_results</target>
+                <target>Výsledky vyhľadávania: %query%</target>
             </trans-unit>
             <trans-unit id="search_placeholder">
                 <source>search_placeholder</source>
-                <target>search_placeholder</target>
+                <target>Hľadať</target>
             </trans-unit>
             <trans-unit id="no_results_found">
                 <source>no_results_found</source>
-                <target>no_results_found</target>
+                <target>Žiadny výsledok</target>
             </trans-unit>
             <trans-unit id="add_new_entry">
                 <source>add_new_entry</source>
-                <target>add_new_entry</target>
+                <target>Pridať nový záznam</target>
             </trans-unit>
         </body>
     </file>
