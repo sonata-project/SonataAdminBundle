@@ -19,7 +19,8 @@ var Admin = {
     setup_select2: function(subject) {
         if (window.SONATA_CONFIG && window.SONATA_CONFIG.USE_SELECT2 && window.Select2) {
             jQuery("select", subject).select2({
-                width: 'resolve'
+                width: 'resolve',
+                minimumResultsForSearch: 10
             });
         }
     },
