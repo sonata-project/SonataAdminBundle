@@ -18,9 +18,23 @@ var Admin = {
 
     setup_select2: function(subject) {
         if (window.SONATA_CONFIG && window.SONATA_CONFIG.USE_SELECT2 && window.Select2) {
-            jQuery("select", subject).select2({
-                width: 'resolve',
-                minimumResultsForSearch: 10
+            jQuery('select', subject).each(function() {
+                var select = $(this);
+
+                select.select2({
+                    width: 'resolve',
+                    minimumResultsForSearch: 10,
+                    allowClear: select.find('option[value=""]').length ? true : false
+                });
+
+                var popover = select.data('popover');
+
+                if (undefined !== popover) {
+                    select
+                        .select2('container')
+                        .popover(popover.options)
+                    ;
+                }
             });
         }
     },
