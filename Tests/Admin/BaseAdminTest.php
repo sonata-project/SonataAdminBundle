@@ -184,6 +184,18 @@ class BaseAdminTest extends \PHPUnit_Framework_TestCase
                 'Symfony\Bundle\BarBarBundle\Doctrine\Phpcr\Menu\Item',
                 '/symfony/barbar/menu-item'
             ),
+            array(
+                'Symfony\Cmf\Bundle\FooBundle\Doctrine\Orm\Menu', 
+                '/cmf/foo/menu'
+            ),
+            array(
+                'Symfony\Cmf\Bundle\FooBundle\Doctrine\MongoDB\Menu', 
+                '/cmf/foo/menu'
+            ),
+            array(
+                'Symfony\Cmf\Bundle\FooBundle\Doctrine\CouchDB\Menu', 
+                '/cmf/foo/menu'
+            ),
         );
     }
 
@@ -256,6 +268,18 @@ class BaseAdminTest extends \PHPUnit_Framework_TestCase
             array(
                 'Symfony\Bundle\BarBarBundle\Doctrine\Phpcr\Menu\Item',
                 'admin_symfony_barbar_menu_item'
+            ),
+	    array(
+                'Symfony\Cmf\Bundle\FooBundle\Doctrine\Orm\Menu', 
+                'admin_cmf_foo_menu'
+            ),
+            array(
+                'Symfony\Cmf\Bundle\FooBundle\Doctrine\MongoDB\Menu', 
+                'admin_cmf_foo_menu'
+            ),
+            array(
+                'Symfony\Cmf\Bundle\FooBundle\Doctrine\CouchDB\Menu', 
+                'admin_cmf_foo_menu'
             ),
         );
     }
