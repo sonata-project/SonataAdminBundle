@@ -938,11 +938,17 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      */
     public function getClass()
     {
-        if (!$this->hasActiveSubClass()) {
-            $subject = $this->getSubject();
+        if ($this->hasSubject()) {
+            return get_class($this->getSubject());
+        }
 
-            if ($subject) {
-                return get_class($subject);
+        if (!$this->hasActiveSubClass()) {
+            if (count($this->getSubClasses()) > 0) {
+                $subject = $this->getSubject();
+
+                if ($subject) {
+                    return get_class($subject);
+                }
             }
 
             return $this->class;

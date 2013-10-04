@@ -388,10 +388,12 @@ class BaseAdminTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($admin->getActiveSubClass());
         $this->assertNull($admin->getActiveSubclassCode());
         $this->assertEquals('NewsBundle\Entity\Post', $admin->getClass());
-        
-        $admin->setSubject(new \stdClass());
-        $this->assertEquals('stdClass', $admin->getClass());
-        
+
+        // Just for the record, if there is no inheritance set, the getSubject is not used
+        // the getSubject can also lead to some issue
+         $admin->setSubject(new \stdClass());
+         $this->assertEquals('stdClass', $admin->getClass());
+
         $admin->setSubClasses(array('extended1' => 'NewsBundle\Entity\PostExtended1', 'extended2' => 'NewsBundle\Entity\PostExtended2'));
         $this->assertFalse($admin->hasSubClass('test'));
         $this->assertTrue($admin->hasSubClass('extended1'));
@@ -400,16 +402,16 @@ class BaseAdminTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($admin->getActiveSubClass());
         $this->assertNull($admin->getActiveSubclassCode());
         $this->assertEquals('stdClass', $admin->getClass());
-        
+
         $request = new \Symfony\Component\HttpFoundation\Request(array('subclass' => 'extended1'));
         $admin->setRequest($request);
         $this->assertFalse($admin->hasSubClass('test'));
         $this->assertTrue($admin->hasSubClass('extended1'));
         $this->assertTrue($admin->hasActiveSubClass());
         $this->assertCount(2, $admin->getSubClasses());
-        $this->assertEquals('NewsBundle\Entity\PostExtended1', $admin->getActiveSubClass());
+        $this->assertEquals('stdClass', $admin->getActiveSubClass());
         $this->assertEquals('extended1', $admin->getActiveSubclassCode());
-        $this->assertEquals('NewsBundle\Entity\PostExtended1', $admin->getClass());
+        $this->assertEquals('stdClass', $admin->getClass());
 
         $request->query->set('subclass', 'inject');
         $this->assertNull($admin->getActiveSubclassCode());
