@@ -35,7 +35,7 @@ instructions for each of them:
     - `SonataDoctrinePhpcrAdminBundle <https://github.com/sonata-project/SonataDoctrinePhpcrAdminBundle/blob/master/Resources/doc/reference/installation.rst>`_
 
 .. note::
-    Don't know which to choose? Most new users prefer SonataDoctrineORMAdmin, to interact with traditional relational databases (MySQL, PostrgreSQL, etc)
+    Don't know which to choose? Most new users prefer SonataDoctrineORMAdmin, to interact with traditional relational databases (MySQL, PostgreSQL, etc)
 
 Enabling SonataAdminBundle and its dependencies
 -----------------------------------------------
