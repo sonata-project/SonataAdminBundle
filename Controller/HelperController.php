@@ -170,21 +170,33 @@ class HelperController
             $admin->setUniqid($uniqid);
         }
 
-        $object = $admin->getObject($objectId);
-
-        if (!$object) {
-            throw new NotFoundHttpException();
+        // only get/test object, if a id is given.
+        $object = null;
+        if ($objectId) {
+            $object = $admin->getObject($objectId);
+            if (!$object) {
+                // id given, but object not found - 404!
+                throw new NotFoundHttpException();
+            }
         }
 
         if ('json' == $request->get('_format')) {
+            if ($object) {
+                $id = $admin->id($object);
+                $label = $admin->toString($object);
+            }
+            else {
+                // output the "No selection" placeholder
+                $id = null;
+                $label = $admin->getTranslator()->trans('short_object_description_placeholder', array(), 'SonataAdminBundle');
+            }
             return new JsonResponse(array('result' => array(
-                'id'    => $admin->id($object),
-                'label' => $admin->toString($object)
+                'id'    => $id,
+                'label' => $label
             )));
         } elseif ('html' == $request->get('_format')) {
             return new Response($this->twig->render($admin->getTemplate('short_object_description'), array(
                 'admin'       => $admin,
-                'description' => $admin->toString($object),
                 'object'      => $object,
             )));
         } else {
