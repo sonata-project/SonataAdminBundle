@@ -40,7 +40,7 @@ You can customize the list query thanks to the ``createQuery`` method.
         $query->andWhere(
             $query->expr()->eq($query->getRootAlias() . '.my_field', ':my_param')
         );
-        $query->setParameter('my_field', 'my_value');
+        $query->setParameter('my_param', 'my_value');
         return $query;
     }
 
