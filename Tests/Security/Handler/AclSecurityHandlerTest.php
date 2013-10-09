@@ -8,7 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Sonata\AdminBundle\Tests\Admin\Security\Acl\Permission;
+namespace Sonata\AdminBundle\Tests\Security\Handler;
 
 use Sonata\AdminBundle\Security\Handler\AclSecurityHandler;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
