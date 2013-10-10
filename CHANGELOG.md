@@ -1,6 +1,12 @@
 CHANGELOG
 =========
 
+### 2013-10-05
+
+* [BC BREAK] added ``getExportFormats``, ``getDataSourceIterator`` to the AdminInterface
+  If you do not extend the Admin class, you need to add these methods to
+  your admin.
+
 ### 2013-10-01
 
 * [BC BREAK] added ``supportsPreviewMode`` to the AdminInterface

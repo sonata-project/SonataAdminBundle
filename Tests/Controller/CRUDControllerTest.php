@@ -21,6 +21,7 @@ use Symfony\Bridge\Twig\Extension\FormExtension;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Sonata\AdminBundle\Exception\ModelManagerException;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 /**
  * Test for CRUDController
@@ -117,9 +118,15 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
                     return null;
                 }));
 
+        $exporter = $this->getMock('Sonata\AdminBundle\Export\Exporter');
+
+        $exporter->expects($this->any())
+            ->method('getResponse')
+            ->will($this->returnValue(new StreamedResponse()));
+
         $container->expects($this->any())
             ->method('get')
-            ->will($this->returnCallback(function($id) use ($pool, $request, $admin, $templating, $twig, $session) {
+            ->will($this->returnCallback(function($id) use ($pool, $request, $admin, $templating, $twig, $session, $exporter) {
                     switch ($id) {
                         case 'sonata.admin.pool':
                             return $pool;
@@ -133,6 +140,8 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
                             return $twig;
                         case 'session':
                             return $session;
+                        case 'sonata.admin.exporter':
+                            return $exporter;
                     }
 
                     return null;
@@ -883,4 +892,61 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(array(), $this->session->getFlashBag()->all());
     }
 
+    public function testExportActionAccessDenied()
+    {
+        $this->setExpectedException('Symfony\Component\Security\Core\Exception\AccessDeniedException');
+
+        $this->admin->expects($this->once())
+            ->method('isGranted')
+            ->with($this->equalTo('EXPORT'))
+            ->will($this->returnValue(false));
+
+        $this->controller->exportAction($this->request);
+    }
+
+    public function testExportActionWrongFormat()
+    {
+        $this->setExpectedException('RuntimeException', 'Export in format `csv` is not allowed for class: `Foo`. Allowed formats are: `json`');
+
+        $this->admin->expects($this->once())
+            ->method('isGranted')
+            ->with($this->equalTo('EXPORT'))
+            ->will($this->returnValue(true));
+
+        $this->admin->expects($this->once())
+            ->method('getExportFormats')
+            ->will($this->returnValue(array('json')));
+
+        $this->admin->expects($this->once())
+            ->method('getClass')
+            ->will($this->returnValue('Foo'));
+
+        $this->request->query->set('format', 'csv');
+
+        $this->controller->exportAction($this->request);
+    }
+
+    public function testExportAction()
+    {
+        $this->admin->expects($this->once())
+            ->method('isGranted')
+            ->with($this->equalTo('EXPORT'))
+            ->will($this->returnValue(true));
+
+        $this->admin->expects($this->once())
+            ->method('getExportFormats')
+            ->will($this->returnValue(array('json')));
+
+        $dataSourceIterator = $this->getMock('Exporter\Source\SourceIteratorInterface');
+
+        $this->admin->expects($this->once())
+            ->method('getDataSourceIterator')
+            ->will($this->returnValue($dataSourceIterator));
+
+        $this->request->query->set('format', 'json');
+
+        $response = $this->controller->exportAction($this->request);
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\StreamedResponse', $response);
+        $this->assertEquals(200, $response->getStatusCode());
+    }
 }
