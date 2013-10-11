@@ -14,6 +14,7 @@ namespace Sonata\AdminBundle\Tests\Security\Handler;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Security\Handler\RoleSecurityHandler;
+use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 
 /**
  * Test for RoleSecurityHandler
@@ -68,7 +69,7 @@ class RoleSecurityHandlerTest extends \PHPUnit_Framework_TestCase
      */
     public function testIsGranted($expected, array $superAdminRoles, $adminCode, $operation, $object = null)
     {
-        $handler = new RoleSecurityHandler($this->securityContext, $superAdminRoles);
+        $handler = $this->getRoleSecurityHandler($superAdminRoles);
 
         $this->admin->expects($this->any())
             ->method('getCode')
@@ -84,6 +85,10 @@ class RoleSecurityHandlerTest extends \PHPUnit_Framework_TestCase
 
                 if (in_array('ROLE_IRONMAN', $attributes)) {
                     return true;
+                }
+
+                if (in_array('ROLE_AUTH_EXCEPTION', $attributes)) {
+                    throw new AuthenticationCredentialsNotFoundException();
                 }
 
                 if (in_array('ROLE_FOO_BAR_ABC', $attributes)) {
@@ -162,6 +167,59 @@ class RoleSecurityHandlerTest extends \PHPUnit_Framework_TestCase
             array(false, array(), 'foo.bar', 'BAZ', new \stdClass()),
             array(false, array(), 'foo.bar.baz.xyz', 'BAZ', new \stdClass()),
             array(false, array(), 'foo.bar.baz.xyz', array('BAZ'), new \stdClass()),
+            array(false, array('ROLE_AUTH_EXCEPTION'), 'foo.bar.baz.xyz', array('BAZ'), new \stdClass()),
         );
+    }
+
+    public function testIsGrantedWithException()
+    {
+        $this->setExpectedException('RuntimeException', 'Something is wrong');
+
+        $this->admin->expects($this->any())
+            ->method('getCode')
+            ->will($this->returnValue('foo.bar'));
+
+        $this->securityContext->expects($this->any())
+            ->method('isGranted')
+            ->will($this->returnCallback(function(array $attributes, $object) {
+                throw new \RuntimeException('Something is wrong');
+            }));
+
+        $handler = $this->getRoleSecurityHandler(array('ROLE_BATMAN'));
+        $handler->isGranted($this->admin, 'BAZ');
+    }
+
+    public function testCreateObjectSecurity()
+    {
+        $handler = $this->getRoleSecurityHandler(array('ROLE_FOO'));
+        $this->assertNull($handler->createObjectSecurity($this->getSonataAdminObject(), new \stdClass()));
+    }
+
+    public function testDeleteObjectSecurity()
+    {
+        $handler = $this->getRoleSecurityHandler(array('ROLE_FOO'));
+        $this->assertNull($handler->deleteObjectSecurity($this->getSonataAdminObject(), new \stdClass()));
+    }
+
+    public function testBuildSecurityInformation()
+    {
+        $handler = $this->getRoleSecurityHandler(array('ROLE_FOO'));
+        $this->assertEquals(array(), $handler->buildSecurityInformation($this->getSonataAdminObject()));
+    }
+
+    /**
+     * @return RoleSecurityHandler
+     */
+    private function getRoleSecurityHandler(array $superAdminRoles)
+    {
+        return new RoleSecurityHandler($this->securityContext, $superAdminRoles);
+    }
+
+    /**
+     * @return AdminInterface
+     */
+    private function getSonataAdminObject()
+    {
+        return $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
     }
 }
