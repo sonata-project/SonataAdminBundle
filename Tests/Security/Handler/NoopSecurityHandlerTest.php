@@ -8,14 +8,15 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Sonata\AdminBundle\Tests\Admin\Security\Acl\Permission;
+namespace Sonata\AdminBundle\Tests\Security\Handler;
 
 use Sonata\AdminBundle\Security\Handler\NoopSecurityHandler;
+use Sonata\AdminBundle\Admin\AdminInterface;
 
 class NoopSecurityHandlerTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var Sonata\AdminBundle\Security\Handler\NoopSecurityHandler
+     * @var NoopSecurityHandler
      */
     private $handler = null;
 
@@ -35,8 +36,23 @@ class NoopSecurityHandlerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(array(), $this->handler->buildSecurityInformation($this->getSonataAdminObject()));
     }
 
+    public function testCreateObjectSecurity()
+    {
+        $this->assertNull($this->handler->createObjectSecurity($this->getSonataAdminObject(), new \stdClass()));
+    }
+
+    public function testDeleteObjectSecurity()
+    {
+        $this->assertNull($this->handler->deleteObjectSecurity($this->getSonataAdminObject(), new \stdClass()));
+    }
+
+    public function testGetBaseRole()
+    {
+        $this->assertEquals('', $this->handler->getBaseRole($this->getSonataAdminObject()));
+    }
+
     /**
-     * @return Sonata\AdminBundle\Admin\AdminInterface
+     * @return AdminInterface
      */
     private function getSonataAdminObject()
     {

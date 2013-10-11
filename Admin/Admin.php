@@ -503,7 +503,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * @return
+     * {@inheritdoc}
      */
     public function getDataSourceIterator()
     {

@@ -624,6 +624,20 @@ interface AdminInterface
     public function getListFieldDescriptions();
 
     /**
+     * Returns the array of allowed export formats
+     *
+     * @return array
+     */
+    public function getExportFormats();
+
+    /**
+     * Returns SourceIterator
+     *
+     * @return \Exporter\Source\SourceIteratorInterface
+     */
+    public function getDataSourceIterator();
+
+    /**
      * @return void
      */
     public function configure();
