@@ -393,7 +393,7 @@ class CRUDController extends Controller
 
         $confirmation = $this->get('request')->get('confirmation', false);
 
-        if ($data = json_decode($this->get('request')->get('data'), true)) {
+        if ($data = json_decode(stripslashes($this->get('request')->get('data')), true)) {
             $action       = $data['action'];
             $idx          = $data['idx'];
             $all_elements = $data['all_elements'];
