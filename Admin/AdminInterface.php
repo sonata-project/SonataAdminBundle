@@ -286,7 +286,7 @@ interface AdminInterface
     public function getRoutes();
 
     /**
-     * Return the parameter name used to represente the id in the url
+     * Return the parameter name used to represent the id in the url
      *
      * @return string
      */

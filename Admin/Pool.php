@@ -35,6 +35,7 @@ class Pool
      * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
      * @param string                                                    $title
      * @param string                                                    $logoTitle
+     * @param array                                                     $options
      */
     public function __construct(ContainerInterface $container, $title, $logoTitle, $options = array())
     {

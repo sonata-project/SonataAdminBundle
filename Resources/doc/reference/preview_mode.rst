@@ -23,7 +23,7 @@ This will show a new button during create/edit mode named preview.
    :align: center
    :alt: Preview Button
 
-While in preview mode two buttons will be shown to approve or decline persistance of the
+While in preview mode two buttons will be shown to approve or decline persistence of the
 entity. Decline will send you back to the edit mode with all your changes unpersisted but
 still in the form so no data is lost and the entity can be further adjusted.
 Accepting the preview will store the entity as if the preview step was never there.
