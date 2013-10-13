@@ -910,4 +910,18 @@ interface AdminInterface
      * @return array
      */
     public function getBreadcrumbs($action);
+
+    /**
+     * Set the current child status
+     *
+     * @param boolean $currentChild
+     */
+    public function setCurrentChild($currentChild);
+
+    /**
+     * Returns the current child status
+     *
+     * @return bool
+     */
+    public function getCurrentChild();
 }
