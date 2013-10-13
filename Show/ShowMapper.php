@@ -123,7 +123,7 @@ class ShowMapper extends BaseGroupedMapper
     /**
      * {@inheritdoc}
      */
-    protected function getGroups() 
+    protected function getGroups()
     {
         return $this->admin->getShowGroups();
     }
@@ -135,5 +135,4 @@ class ShowMapper extends BaseGroupedMapper
     {
         $this->admin->setShowGroups($groups);
     }
-
 }

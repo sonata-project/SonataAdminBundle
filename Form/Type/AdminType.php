@@ -30,7 +30,7 @@ class AdminType extends AbstractType
     {
         $admin = $this->getAdmin($options);
 
-        if ($options['delete'] && $admin->isGranted('DELETE') ) {
+        if ($options['delete'] && $admin->isGranted('DELETE')) {
             $builder->add('_delete', 'checkbox', array('required' => false, 'mapped' => false));
         }
 

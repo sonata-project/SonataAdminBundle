@@ -182,7 +182,7 @@ class ModelChoiceList extends SimpleChoiceList
      * Returns the entity for the given key
      *
      * If the underlying entities have composite identifiers, the choices
-     * are intialized. The key is expected to be the index in the choices
+     * are initialized. The key is expected to be the index in the choices
      * array in this case.
      *
      * If they have single identifiers, they are either fetched from the
