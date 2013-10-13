@@ -113,4 +113,3 @@ abstract class AdminExtension implements AdminExtensionInterface
     public function postRemove(AdminInterface $admin, $object)
     {}
 }
-

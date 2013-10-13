@@ -177,7 +177,7 @@ class FormMapper extends BaseGroupedMapper
     /**
      * {@inheritdoc}
      */
-    protected function getGroups() 
+    protected function getGroups()
     {
         return $this->admin->getFormGroups();
     }
@@ -185,7 +185,7 @@ class FormMapper extends BaseGroupedMapper
     /**
      * {@inheritdoc}
      */
-    protected function setGroups(array $groups) 
+    protected function setGroups(array $groups)
     {
         $this->admin->setFormGroups($groups);
     }

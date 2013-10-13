@@ -222,7 +222,7 @@ class GenerateAdminCommandTest extends \PHPUnit_Framework_TestCase
 
                 switch ($questionClean) {
                     case 'The fully qualified model class':
-                        return $modelEntity;;
+                        return $modelEntity;
                         break;
 
                     case 'The bundle name':

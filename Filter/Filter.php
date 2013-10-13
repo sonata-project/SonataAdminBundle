@@ -213,7 +213,7 @@ abstract class Filter implements FilterInterface
     }
 
     /**
-     * @return
+     * @return string
      */
     public function getCondition()
     {
