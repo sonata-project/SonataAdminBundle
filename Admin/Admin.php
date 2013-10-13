@@ -2019,11 +2019,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * set the current child status
-     *
-     * @param boolean $currentChild
-     *
-     * @return void
+     * {@inheritdoc}
      */
     public function setCurrentChild($currentChild)
     {
@@ -2031,9 +2027,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * Returns the current child status
-     *
-     * @return bool
+     * {@inheritdoc}
      */
     public function getCurrentChild()
     {
