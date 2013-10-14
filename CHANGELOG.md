@@ -32,6 +32,8 @@ CHANGELOG
   If you do not extend the Admin class, you need to add these methods to
   your admin.
 
+* added support for select2 (jQuery based replacement for select boxes)
+
 ### 2013-09-23
 
 * change list's action buttons to use ``btn-small`` from twitter bootstrap
