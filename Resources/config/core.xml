@@ -63,5 +63,10 @@
         <service id="sonata.admin.search.handler" class="Sonata\AdminBundle\Search\SearchHandler">
             <argument type="service" id="sonata.admin.pool" />
         </service>
+
+        <!-- event -->
+        <service id="sonata.admin.event.extension" class="Sonata\AdminBundle\Event\AdminEventExtension">
+            <argument type="service" id="event_dispatcher" />
+        </service>
     </services>
 </container>

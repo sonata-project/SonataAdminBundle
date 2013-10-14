@@ -40,6 +40,7 @@ Reference Guide
    reference/translation
    reference/security
    reference/extensions
+   reference/events
    reference/advance
    reference/console
    reference/preview_mode

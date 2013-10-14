@@ -316,6 +316,9 @@ class ExtensionCompilerPassTest extends \PHPUnit_Framework_TestCase
             ->setClass('Sonata\AdminBundle\Tests\DependencyInjection\MockAdmin')
             ->setArguments(array('', 'Sonata\AdminBundle\Tests\DependencyInjection\Article', 'SonataAdminBundle:CRUD'))
             ->addTag('sonata.admin');
+        $container
+            ->register('event_dispatcher')
+            ->setClass('Symfony\Component\EventDispatcher\EventDispatcherInterface');
 
         // Add admin extension definition's
         $container

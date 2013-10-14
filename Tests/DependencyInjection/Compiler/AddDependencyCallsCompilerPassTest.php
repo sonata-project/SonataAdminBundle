@@ -22,7 +22,7 @@ class AddDependencyCallsCompilerPassTest extends \PHPUnit_Framework_TestCase
 {
     /** @var SonataAdminExtension $extension */
     private $extension;
-    
+
     /** @var array $config */
     private $config;
 
@@ -45,9 +45,9 @@ class AddDependencyCallsCompilerPassTest extends \PHPUnit_Framework_TestCase
         $compilerPass = new AddDependencyCallsCompilerPass();
         $compilerPass->process($container);
         $container->compile();
-        
+
         $this->assertTrue($container->hasParameter('sonata.admin.configuration.dashboard_groups'));
-        
+
         $dashboardGroupsSettings = $container->getParameter('sonata.admin.configuration.dashboard_groups');
 
         $this->assertArrayHasKey('sonata_group_one', $dashboardGroupsSettings);
@@ -76,12 +76,12 @@ class AddDependencyCallsCompilerPassTest extends \PHPUnit_Framework_TestCase
         $compilerPass = new AddDependencyCallsCompilerPass();
         $compilerPass->process($container);
         $container->compile();
-        
+
         $this->assertTrue($container->hasDefinition('sonata.admin.pool'));
         $this->assertTrue($container->hasDefinition('sonata_post_admin'));
         $this->assertTrue($container->hasDefinition('sonata_article_admin'));
         $this->assertTrue($container->hasDefinition('sonata_news_admin'));
-        
+
         $pool = $container->get('sonata.admin.pool');
         $adminServiceIds = $pool->getAdminServiceIds();
         $adminGroups = $pool->getAdminGroups();
@@ -90,7 +90,7 @@ class AddDependencyCallsCompilerPassTest extends \PHPUnit_Framework_TestCase
         $this->assertContains('sonata_post_admin', $adminServiceIds);
         $this->assertContains('sonata_article_admin', $adminServiceIds);
         $this->assertContains('sonata_news_admin', $adminServiceIds);
-        
+
         $this->assertArrayHasKey('sonata_group_one', $adminGroups);
         $this->assertArrayHasKey('label', $adminGroups['sonata_group_one']);
         $this->assertArrayHasKey('label_catalogue', $adminGroups['sonata_group_one']);
@@ -126,16 +126,16 @@ class AddDependencyCallsCompilerPassTest extends \PHPUnit_Framework_TestCase
                 )
             )
         );
-        
+
         $container = $this->getContainer();
         $container->setParameter('sonata.admin.parameter.groupname', 'resolved_group_name');
-        
+
         $this->extension->load(array($config), $container);
 
         $compilerPass = new AddDependencyCallsCompilerPass();
         $compilerPass->process($container);
         $container->compile();
-        
+
         $adminGroups = $container->get('sonata.admin.pool')->getAdminGroups();
 
         $this->assertArrayHasKey('resolved_group_name', $adminGroups);
@@ -166,7 +166,7 @@ class AddDependencyCallsCompilerPassTest extends \PHPUnit_Framework_TestCase
         );
         return $config;
     }
-    
+
     private function getContainer()
     {
         $container = new ContainerBuilder();
@@ -212,6 +212,9 @@ class AddDependencyCallsCompilerPassTest extends \PHPUnit_Framework_TestCase
         $container
             ->register('knp_menu.factory')
             ->setClass('Knp\Menu\Silex\RouterAwareFactory');
+        $container
+            ->register('event_dispatcher')
+            ->setClass('Symfony\Component\EventDispatcher\EventDispatcherInterface');
 
         // Add admin definition's
         $container

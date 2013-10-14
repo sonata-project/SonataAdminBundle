@@ -30,65 +30,51 @@ use Knp\Menu\ItemInterface as MenuItemInterface;
 interface AdminExtensionInterface
 {
     /**
-     * @param \Sonata\AdminBundle\Form\FormMapper $form
-     *
-     * @return void
+     * @param FormMapper $form
      */
     public function configureFormFields(FormMapper $form);
 
     /**
-     * @param \Sonata\AdminBundle\Datagrid\ListMapper $list
-     *
-     * @return void
+     * @param ListMapper $list
      */
     public function configureListFields(ListMapper $list);
 
     /**
-     * @param \Sonata\AdminBundle\Datagrid\DatagridMapper $filter
-     *
-     * @return void
+     * @param DatagridMapper $filter
      */
     public function configureDatagridFilters(DatagridMapper $filter);
 
     /**
-     * @param \Sonata\AdminBundle\Show\ShowMapper $filter
-     *
-     * @return void
+     * @param ShowMapper $filter
      */
     public function configureShowFields(ShowMapper $filter);
 
     /**
-     * @param AdminInterface                            $admin
-     * @param \Sonata\AdminBundle\Route\RouteCollection $collection
-     *
-     * @return void
+     * @param AdminInterface  $admin
+     * @param RouteCollection $collection
      */
     public function configureRoutes(AdminInterface $admin, RouteCollection $collection);
 
     /**
-     * @param AdminInterface          $admin
-     * @param \Knp\Menu\ItemInterface $menu
-     * @param string                  $action
-     * @param null|AdminInterface     $childAdmin
+     * @param AdminInterface    $admin
+     * @param MenuItemInterface $menu
+     * @param string            $action
+     * @param AdminInterface    $childAdmin
      *
      * @return mixed
      */
     public function configureSideMenu(AdminInterface $admin, MenuItemInterface $menu, $action, AdminInterface $childAdmin = null);
 
     /**
-     * @param AdminInterface                             $admin
-     * @param \Sonata\AdminBundle\Validator\ErrorElement $errorElement
-     * @param mixed                                      $object
-     *
-     * @return void
+     * @param AdminInterface $admin
+     * @param ErrorElement   $errorElement
+     * @param mixed          $object
      */
     public function validate(AdminInterface $admin, ErrorElement $errorElement, $object);
 
     /**
-     * @param \Sonata\AdminBundle\Datagrid\ProxyQueryInterface $query
-     * @param string                                           $context
-     *
-     * @return void
+     * @param ProxyQueryInterface $query
+     * @param string              $context
      */
     public function configureQuery(AdminInterface $admin, ProxyQueryInterface $query, $context = 'list');
 
