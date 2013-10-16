@@ -14,29 +14,25 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
 use Sonata\AdminBundle\Builder\ListBuilderInterface;
+use Sonata\AdminBundle\Mapper\BaseMapper;
 
 /**
  * This class is used to simulate the Form API
  *
  */
-class ListMapper
+class ListMapper extends BaseMapper
 {
-    protected $listBuilder;
-
     protected $list;
 
-    protected $admin;
-
     /**
-     * @param \Sonata\AdminBundle\Builder\ListBuilderInterface     $listBuilder
-     * @param \Sonata\AdminBundle\Admin\FieldDescriptionCollection $list
-     * @param \Sonata\AdminBundle\Admin\AdminInterface             $admin
+     * @param ListBuilderInterface       $listBuilder
+     * @param FieldDescriptionCollection $list
+     * @param AdminInterface             $admin
      */
     public function __construct(ListBuilderInterface $listBuilder, FieldDescriptionCollection $list, AdminInterface $admin)
     {
-        $this->listBuilder = $listBuilder;
+        parent::__construct($listBuilder, $admin);
         $this->list        = $list;
-        $this->admin       = $admin;
     }
 
     /**
@@ -68,10 +64,21 @@ class ListMapper
      * @param mixed $type
      * @param array $fieldDescriptionOptions
      *
-     * @return \Sonata\AdminBundle\Datagrid\ListMapper
+     * @return ListMapper
      */
     public function add($name, $type = null, array $fieldDescriptionOptions = array())
     {
+        // Change deprecated inline action "view" to "show"
+        if ($name == '_action' && $type == 'actions') {
+            if (isset($fieldDescriptionOptions['actions']['view'])) {
+                trigger_error('Inline action "view" is deprecated since version 2.2.4. Use inline action "show" instead.', E_USER_DEPRECATED);
+
+                $fieldDescriptionOptions['actions']['show'] = $fieldDescriptionOptions['actions']['view'];
+
+                unset($fieldDescriptionOptions['actions']['view']);
+            }
+        }
+
         if ($name instanceof FieldDescriptionInterface) {
             $fieldDescription = $name;
             $fieldDescription->mergeOptions($fieldDescriptionOptions);
@@ -90,7 +97,7 @@ class ListMapper
         }
 
         // add the field with the FormBuilder
-        $this->listBuilder->addField($this->list, $type, $fieldDescription, $this->admin);
+        $this->builder->addField($this->list, $type, $fieldDescription, $this->admin);
 
         return $this;
     }
@@ -98,7 +105,7 @@ class ListMapper
     /**
      * @param string $name
      *
-     * @return \Sonata\AdminBundle\Admin\FieldDescriptionInterface
+     * @return FieldDescriptionInterface
      */
     public function get($name)
     {
@@ -118,7 +125,7 @@ class ListMapper
     /**
      * @param string $key
      *
-     * @return \Sonata\AdminBundle\Datagrid\ListMapper
+     * @return ListMapper
      */
     public function remove($key)
     {
@@ -131,7 +138,7 @@ class ListMapper
     /**
      * @param array $keys field names
      *
-     * @return \Sonata\AdminBundle\Datagrid\ListMapper
+     * @return ListMapper
      */
     public function reorder(array $keys)
     {

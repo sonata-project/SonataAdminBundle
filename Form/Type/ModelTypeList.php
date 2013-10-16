@@ -47,6 +47,10 @@ class ModelTypeList extends AbstractType
             // set the correct edit mode
             $view->vars['sonata_admin']['edit'] = 'list';
         }
+        $view->vars['btn_add'] = $options['btn_add'];
+        $view->vars['btn_list'] = $options['btn_list'];
+        $view->vars['btn_delete'] = $options['btn_delete'];
+        $view->vars['btn_catalogue'] = $options['btn_catalogue'];
     }
 
     /**
@@ -58,6 +62,10 @@ class ModelTypeList extends AbstractType
             'model_manager'     => null,
             'class'             => null,
             'parent'            => 'text',
+            'btn_add'           => 'link_add',
+            'btn_list'          => 'link_list',
+            'btn_delete'        => 'link_delete',
+            'btn_catalogue'     => 'SonataAdminBundle'
         ));
     }
 

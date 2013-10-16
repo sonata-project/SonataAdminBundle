@@ -1,1 +1,7 @@
-<a href="{{ url }}" target="new">{{ description }}</a>
+<span class="inner-field-short-description">
+    {% if admin.hasRoute('edit') and admin.isGranted('EDIT') %}
+        <a href="{{ admin.generateObjectUrl('edit', object) }}" target="new">{{ description }}</a>
+    {% else %}
+        {{ description }}
+    {% endif %}
+</span>

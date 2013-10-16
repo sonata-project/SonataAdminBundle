@@ -9,9 +9,9 @@ file that was distributed with this source code.
 
 #}
 
-{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+{% extends admin.getTemplate('base_list_field') %}
 
-{% block field%}
+{% block field %}
     {% for key, val in value %}
         [{{ key }} => {{ val }}]
     {% endfor %}

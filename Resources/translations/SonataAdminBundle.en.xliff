@@ -136,7 +136,7 @@
             </trans-unit>
             <trans-unit id='flash_batch_empty'>
                 <source>flash_batch_empty</source>
-                <target>Action aborted. No items where selected.</target>
+                <target>Action aborted. No items were selected.</target>
             </trans-unit>
             <trans-unit id='flash_create_success'>
                 <source>flash_create_success</source>
@@ -341,6 +341,50 @@
             <trans-unit id="label_per_page">
               <source>label_per_page</source>
               <target>Per page</target>
+            </trans-unit>
+            <trans-unit id="list_select">
+              <source>list_select</source>
+              <target>Select</target>
+            </trans-unit>
+            <trans-unit id="confirm_exit">
+                <source>confirm_exit</source>
+                <target>You have unsaved changes.</target>
+            </trans-unit>
+            <trans-unit id="link_edit_acl">
+              <source>link_edit_acl</source>
+              <target>Edit ACL</target>
+            </trans-unit>
+            <trans-unit id="btn_update_acl">
+              <source>btn_update_acl</source>
+              <target>Update ACL</target>
+            </trans-unit>
+            <trans-unit id="flash_acl_update_success">
+                <source>flash_acl_edit_success</source>
+                <target>ACL has been successfuly updated.</target>
+            </trans-unit>
+            <trans-unit id="link_action_acl">
+                <source>link_action_acl</source>
+                <target>ACL</target>
+            </trans-unit>
+            <trans-unit id="short_object_description_placeholder">
+              <source>short_object_description_placeholder</source>
+              <target>No selection</target>
+            </trans-unit>
+            <trans-unit id="title_search_results">
+                <source>title_search_results</source>
+                <target>Search results: %query%</target>
+            </trans-unit>
+            <trans-unit id="search_placeholder">
+                <source>search_placeholder</source>
+                <target>Search</target>
+            </trans-unit>
+            <trans-unit id="no_results_found">
+                <source>no_results_found</source>
+                <target>no result found</target>
+            </trans-unit>
+            <trans-unit id="add_new_entry">
+                <source>add_new_entry</source>
+                <target>add new entry</target>
             </trans-unit>
         </body>
     </file>

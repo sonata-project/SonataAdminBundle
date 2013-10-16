@@ -11,4 +11,10 @@ file that was distributed with this source code.
 
 {% extends 'SonataAdminBundle:CRUD:base_show_field.html.twig' %}
 
-{% block field %}{{ value|date('H:i:s') }}{% endblock %}
+{% block field %}
+    {%- if value is empty -%}
+        &nbsp;
+    {%- else -%}
+        {{ value|date('H:i:s') }}
+    {%- endif -%}
+{% endblock %}

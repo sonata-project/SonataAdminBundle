@@ -3,12 +3,12 @@ Inline Validation
 
 The inline validation is about delegating model validation to a dedicated service.
 The current validation implementation built in the Symfony2 framework is very powerful
-as it allows to declare validation on : class, field and getter. However these declarations
-can take a while to code for complex rules. Rules must be a set of a ``Constraint``
+as it allows to declare validation on a : class, field and getter. However these declarations
+can take a while to code for complex rules. As rules must be a set of a ``Constraint``
 and ``Validator`` instances.
 
 The inline validation tries to provide a nice solution by introducing an ``ErrorElement``
-object. The object can be used to check assertion against the model :
+object. The object can be used to check assertions against the model :
 
 .. code-block:: php
 
@@ -43,39 +43,43 @@ object. The object can be used to check assertion against the model :
     This solution relies on the validator component so validation defined through
     the validator component will be used.
 
+.. tip::
+
+    You can also use ``$errorElement->addConstraint(new \Symfony\Component\Validator\Constraints\NotBlank())``
+    instead of calling assertNotBlank().
+
 Using this validator
 --------------------
 
 Add the ``InlineConstraint`` class constraint to your bundle's validation configuration, for example:
 
-* using XML:
 
-.. code-block:: xml
+.. configuration-block::
 
-    <!-- src/Application/Sonata/PageBundle/Resources/config/validation.xml -->
-    <?xml version="1.0" ?>
-    <constraint-mapping xmlns="http://symfony.com/schema/dic/constraint-mapping"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://symfony.com/schema/dic/constraint-mapping http://symfony.com/schema/dic/constraint-mapping/constraint-mapping-1.0.xsd">
+    .. code-block:: xml
 
-        <class name="Application\Sonata\PageBundle\Entity\Block">
-            <constraint name="Sonata\AdminBundle\Validator\Constraints\InlineConstraint">
-                <option name="service">sonata.page.cms.page</option>
-                <option name="method">validateBlock</option>
-            </constraint>
-        </class>
-    </constraint-mapping>
+        <!-- src/Application/Sonata/PageBundle/Resources/config/validation.xml -->
+        <?xml version="1.0" ?>
+        <constraint-mapping xmlns="http://symfony.com/schema/dic/constraint-mapping"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="http://symfony.com/schema/dic/constraint-mapping http://symfony.com/schema/dic/constraint-mapping/constraint-mapping-1.0.xsd">
 
-* using YAML:
+            <class name="Application\Sonata\PageBundle\Entity\Block">
+                <constraint name="Sonata\AdminBundle\Validator\Constraints\InlineConstraint">
+                    <option name="service">sonata.page.cms.page</option>
+                    <option name="method">validateBlock</option>
+                </constraint>
+            </class>
+        </constraint-mapping>
 
-.. code-block:: yaml
+    .. code-block:: yaml
 
-    # src/Application/Sonata/PageBundle/Resources/config/validation.yml
-    Application\Sonata\PageBundle\Entity\Block:
-        constraints:
-            - Sonata\AdminBundle\Validator\Constraints\InlineConstraint:
-                service: sonata.page.cms.page
-                method: validateBlock
+        # src/Application/Sonata/PageBundle/Resources/config/validation.yml
+        Application\Sonata\PageBundle\Entity\Block:
+            constraints:
+                - Sonata\AdminBundle\Validator\Constraints\InlineConstraint:
+                    service: sonata.page.cms.page
+                    method: validateBlock
 
 There are two important options:
 

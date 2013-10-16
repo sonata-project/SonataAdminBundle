@@ -1,6 +1,10 @@
-@media (min-width: 979px) {
+body.sonata-bc {
+    padding-top: 60px;
+}
+
+@media (max-width: 978px) {
     body.sonata-bc {
-        padding-top: 60px;
+        padding-top: 0;
     }
 }
 
@@ -117,8 +121,15 @@
     color: #000;
 }
 
-.sonata-bc table.sonata-ba-list td {
-    width: 75px;
+.sonata-bc table.sonata-ba-list {
+    font-size: 14px;
+}
+
+.sonata-bc td.sonata-ba-list-label {
+    vertical-align: middle;
+    font-weight: bold;
+    text-align: right;
+    color: #565656;
 }
 
 .sonata-bc .zebra-striped tbody tr.sonata-ba-list-row-selected td, .sonata-bc .zebra-striped tbody tr.sonata-ba-list-row-selected th {
@@ -156,6 +167,22 @@
     margin: 2px;
 }
 
+.sonata-bc div.sonata-actions {
+    /*margin-top: 18px;*/
+    float: right
+}
+
+.sonata-bc .sonata-ba-list tr:hover td.sonata-ba-list-field.sonata-ba-list-field-select a {
+    visibility: visible;
+}
+
+.sonata-bc td.sonata-ba-list-field.sonata-ba-list-field-select {
+    text-align: center;
+}
+.sonata-bc td.sonata-ba-list-field.sonata-ba-list-field-select a {
+    visibility: hidden;
+}
+
 .sonata-bc div.sonata-ba-modal-edit-one-to-one td.sonata-ba-list-field-batch,
 .sonata-bc div.sonata-ba-modal-edit-one-to-one div.sonata-ba-list-actions,
 .sonata-bc div.sonata-ba-modal-edit-one-to-one th.sonata-ba-list-field-header-batch {
@@ -166,71 +193,40 @@
     display: none;
 }
 
-.sonata-bc th.sonata-ba-list-field-header-order-desc:hover:before {
-	content: "";
-	display: block;
-	width: 0;
-	height: 0;
-	border-top: 4px solid black;
-	border-right: 4px solid transparent;
-	border-left: 4px solid transparent;
-	position: absolute;
-	top: 50%;
-	left: 2px;
-	margin-top: -3px;
-}
-
-.sonata-bc th.sonata-ba-list-field-header-order-asc:hover:before {
-	content: "";
-	display: block;
-	width: 0;
-	height: 0;
-	border-bottom: 4px solid black;
-	border-right: 4px solid transparent;
-	border-left: 4px solid transparent;
-	border-top: 4px solid transparent;
-	position: absolute;
-	top: 50%;
-	left: 2px;
-	margin-top: -5px;
-}
-
-.sonata-bc th.sonata-ba-list-field-header-order-desc,
-.sonata-bc th.sonata-ba-list-field-header-order-asc {
-    padding-left: 15px;
+.sonata-bc th.sonata-ba-list-field-header-order-desc a,
+.sonata-bc th.sonata-ba-list-field-header-order-asc a {
     position: relative;
+    margin-right: 10px;
 }
 
-.sonata-bc th.sonata-ba-list-field-header-order-asc.sonata-ba-list-field-order-active:before,
-.sonata-bc th.sonata-ba-list-field-header-order-desc.sonata-ba-list-field-order-active:hover:before {
-	content: "";
-	display: block;
-	width: 0;
-	height: 0;
-	border-top: 4px solid black;
-	border-right: 4px solid transparent;
-	border-left: 4px solid transparent;
-	border-bottom: 4px solid transparent;
-	position: absolute;
-	top: 50%;
-	left: 2px;
-	margin-top: -3px;
+.sonata-bc th.sonata-ba-list-field-header-order-asc a:hover:before,
+.sonata-bc th.sonata-ba-list-field-header-order-asc.sonata-ba-list-field-order-active a:before,
+.sonata-bc th.sonata-ba-list-field-header-order-desc.sonata-ba-list-field-order-active a:hover:before {
+    content: "";
+    display: block;
+    border-top: 4px solid black;
+    border-right: 4px solid transparent;
+    border-left: 4px solid transparent;
+    border-bottom: 4px solid transparent;
+    position: absolute;
+    top: 50%;
+    right: -10px;
+    margin-top: -1px;
 }
 
-.sonata-bc th.sonata-ba-list-field-header-order-desc.sonata-ba-list-field-order-active:before,
-.sonata-bc th.sonata-ba-list-field-header-order-asc.sonata-ba-list-field-order-active:hover:before {
-	content: "";
-	display: block;
-	width: 0;
-	height: 0;
-	border-bottom: 4px solid black;
-	border-right: 4px solid transparent;
-	border-left: 4px solid transparent;
-	border-top: 4px solid transparent;
-	position: absolute;
-	top: 50%;
-	left: 2px;
-	margin-top: -5px;
+.sonata-bc th.sonata-ba-list-field-header-order-desc a:hover:before,
+.sonata-bc th.sonata-ba-list-field-header-order-desc.sonata-ba-list-field-order-active a:before,
+.sonata-bc th.sonata-ba-list-field-header-order-asc.sonata-ba-list-field-order-active a:hover:before {
+    content: "";
+    display: block;
+    border-bottom: 4px solid black;
+    border-right: 4px solid transparent;
+    border-left: 4px solid transparent;
+    border-top: 4px solid transparent;
+    position: absolute;
+    top: 50%;
+    right: -10px;
+    margin-top: -5px;
 }
 
 .sonata-bc em.sonata-ba-field-help {
@@ -347,10 +343,35 @@ legend.sonata-ba-fieldset-collapsed-description + .sonata-ba-collapsed-fields {
     padding-left: 5px;
 }
 
-.sonata-preview-form-container fieldset {
+.sonata-preview-form-container fieldset, .sonata-preview-form-container .tabbable {
     display: none;
 }
 
 .sonata-bc .pagination {
     margin: 0px;
+}
+
+.sonata-bc .field-short-description {
+    min-width: 250px;
+    min-height: 18px;
+    display: block;
+    float: left;
+    background: #fefefe;
+    border: 1px solid #e9e9e9;
+    border-radius: 4px 4px 4px 4px;
+    list-style: none outside none;
+    margin: 0 15px 0 0;
+    padding: 5px 15px;
+}
+
+.sonata-bc .inner-field-short-description {
+
+}
+
+.sonata-bc .form-horizontal .control-group {
+    margin-bottom: 10px;
+}
+
+span.field-actions {
+    margin-left: 10px;
 }

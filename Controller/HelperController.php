@@ -15,7 +15,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Form\Util\PropertyPath;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\HttpFoundation\Request;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Admin\AdminHelper;
@@ -145,7 +146,7 @@ class HelperController
     }
 
     /**
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException|\RuntimeException
      *
      * @param \Symfony\Component\HttpFoundation\Request $request
      *
@@ -172,28 +173,23 @@ class HelperController
         $object = $admin->getObject($objectId);
 
         if (!$object) {
-            return new Response();
+            throw new NotFoundHttpException();
         }
 
-        $description = 'no description available';
-        foreach (array('getAdminTitle', 'getTitle', 'getName', '__toString') as $method) {
-            if (method_exists($object, $method)) {
-                $description = call_user_func(array($object, $method));
-                break;
-            }
+        if ('json' == $request->get('_format')) {
+            return new JsonResponse(array('result' => array(
+                'id'    => $admin->id($object),
+                'label' => $admin->toString($object)
+            )));
+        } elseif ('html' == $request->get('_format')) {
+            return new Response($this->twig->render($admin->getTemplate('short_object_description'), array(
+                'admin'       => $admin,
+                'description' => $admin->toString($object),
+                'object'      => $object,
+            )));
+        } else {
+            throw new \RuntimeException('Invalid format');
         }
-
-        $url = $admin->generateUrl('edit', array('id' => $objectId));
-
-        $htmlOutput = $this->twig->render($admin->getTemplate('short_object_description'),
-            array(
-                'description' => $description,
-                'object' => $object,
-                'url' => $url
-            )
-        );
-
-        return new Response($htmlOutput);
     }
 
     /**
@@ -242,8 +238,9 @@ class HelperController
         }
 
         // TODO : call the validator component ...
+        $propertyAccessor = PropertyAccess::getPropertyAccessor();
         $propertyPath = new PropertyPath($field);
-        $propertyPath->setValue($object, $value);
+        $propertyAccessor->setValue($object, $propertyPath, $value);
 
         $admin->update($object);
 

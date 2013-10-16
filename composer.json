@@ -17,31 +17,40 @@
         }
     ],
     "require": {
-        "symfony/http-foundation": ">=2.1,<2.3-dev",
-        "symfony/form": ">=2.1,<2.3-dev",
-        "symfony/validator": ">=2.1,<2.3-dev",
-        "symfony/security-bundle": ">=2.1,<2.3-dev",
-        "symfony/routing": ">=2.1,<2.3-dev",
-        "symfony/config": ">=2.1,<2.3-dev",
-        "symfony/console": ">=2.1,<2.3-dev",
-        "symfony/twig-bridge": ">=2.1,<2.3-dev",
-        "twig/twig": ">=1.10,<2.0-dev",
-        "knplabs/knp-menu-bundle": ">=1.1.0,<2.0.x-dev",
-        "sonata-project/jquery-bundle": "dev-master",
-        "sonata-project/exporter": "1.1.*",
-        "sonata-project/block-bundle": "dev-master",
-        "doctrine/common": ">=2.2,<3.0"
+        "symfony/http-foundation": "~2.2",
+        "symfony/form": "~2.2",
+        "symfony/validator": "~2.2",
+        "symfony/security-bundle": "~2.2",
+        "symfony/routing": "~2.2",
+        "symfony/config": "~2.2",
+        "symfony/console": "~2.2",
+        "symfony/twig-bridge": "~2.2",
+        "symfony/class-loader":"~2.2",
+        "sensio/generator-bundle": "~2.2",
+        "twig/twig": "~1.12",
+        "twig/extensions": "~1.0",
+        "knplabs/knp-menu-bundle": "~1.1",
+        "sonata-project/jquery-bundle": "1.8.*",
+        "sonata-project/exporter": "1.*",
+        "sonata-project/block-bundle": "~2.2,>=2.2.1",
+        "doctrine/common": "~2.2"
     },
     "require-dev": {
-        "jms/translation-bundle": "*"
+        "jms/translation-bundle": "*@dev",
+        "symfony/yaml": "~2.2",
+        "sonata-project/intl-bundle": "~2.1"
     },
     "suggest": {
-        "sonata-project/doctrine-orm-admin-bundle": "dev-master",
-        "sonata-project/intl-bundle": "dev-master"
+        "sonata-project/doctrine-orm-admin-bundle": "2.2.*@dev",
+        "sonata-project/intl-bundle": "2.1.*"
     },
     "autoload": {
         "psr-0": { "Sonata\\AdminBundle": "" }
     },
     "target-dir": "Sonata/AdminBundle",
-    "minimum-stability": "dev"
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.2.x-dev"
+        }
+    }
 }

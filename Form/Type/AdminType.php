@@ -13,7 +13,10 @@ namespace Sonata\AdminBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 
+use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 use Sonata\AdminBundle\Form\DataTransformer\ArrayToModelTransformer;
@@ -27,8 +30,8 @@ class AdminType extends AbstractType
     {
         $admin = $this->getAdmin($options);
 
-        if ($options['delete'] && $admin->isGranted('DELETE') ) {
-            $builder->add('_delete', 'checkbox', array('required' => false, 'property_path' => false));
+        if ($options['delete'] && $admin->isGranted('DELETE')) {
+            $builder->add('_delete', 'checkbox', array('required' => false, 'mapped' => false));
         }
 
         if (!$admin->hasSubject()) {
@@ -37,7 +40,18 @@ class AdminType extends AbstractType
 
         $admin->defineFormBuilder($builder);
 
-        $builder->prependClientTransformer(new ArrayToModelTransformer($admin->getModelManager(), $admin->getClass()));
+        $builder->addModelTransformer(new ArrayToModelTransformer($admin->getModelManager(), $admin->getClass()));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function buildView(FormView $view, FormInterface $form, array $options)
+    {
+        $view->vars['btn_add'] = $options['btn_add'];
+        $view->vars['btn_list'] = $options['btn_list'];
+        $view->vars['btn_delete'] = $options['btn_delete'];
+        $view->vars['btn_catalogue'] = $options['btn_catalogue'];
     }
 
     /**
@@ -45,16 +59,26 @@ class AdminType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array('delete' => true));
+        $resolver->setDefaults(array(
+            'delete'          => function (Options $options) {
+                return ($options['btn_delete'] !== false);
+            },
+            'auto_initialize' => false,
+            'btn_add'         => 'link_add',
+            'btn_list'        => 'link_list',
+            'btn_delete'      => 'link_delete',
+            'btn_catalogue'   => 'SonataAdminBundle'
+        ));
     }
 
     /**
      * @param array $options
      *
      * @return \Sonata\AdminBundle\Admin\FieldDescriptionInterface
+     *
      * @throws \RuntimeException
      */
-    public function getFieldDescription(array $options)
+    protected function getFieldDescription(array $options)
     {
         if (!isset($options['sonata_field_description'])) {
             throw new \RuntimeException('Please provide a valid `sonata_field_description` option');
@@ -68,7 +92,7 @@ class AdminType extends AbstractType
      *
      * @return \Sonata\AdminBundle\Admin\AdminInterface
      */
-    public function getAdmin(array $options)
+    protected function getAdmin(array $options)
     {
         return $this->getFieldDescription($options)->getAssociationAdmin();
     }

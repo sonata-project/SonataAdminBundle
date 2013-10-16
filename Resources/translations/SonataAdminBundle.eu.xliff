@@ -20,7 +20,7 @@
             </trans-unit>
             <trans-unit id="btn_create_and_create_a_new_one">
                 <source>btn_create_and_create_a_new_one</source>
-                <target>Sortu eta beste bat gehitu</target>
+                <target>Sortu eta berria gehitu</target>
             </trans-unit>
             <trans-unit id="btn_create_and_return_to_list">
                 <source>btn_create_and_return_to_list</source>
@@ -32,15 +32,15 @@
             </trans-unit>
             <trans-unit id="btn_update">
                 <source>btn_update</source>
-                <target>Aldatu</target>
+                <target>Eguneratu</target>
             </trans-unit>
             <trans-unit id="btn_update_and_edit_again">
                 <source>btn_update_and_edit_again</source>
-                <target>Aldatu eta berriz editatu</target>
+                <target>Eguneratu eta berriz editatu</target>
             </trans-unit>
             <trans-unit id="btn_update_and_return_to_list">
                 <source>btn_update_and_return_to_list</source>
-                <target>Eguneratu eta itxi</target>
+                <target>Eguneratu eta zerrendara itzuli</target>
             </trans-unit>
             <trans-unit id="link_delete">
                 <source>link_delete</source>
@@ -48,7 +48,7 @@
             </trans-unit>
             <trans-unit id="link_action_create">
                 <source>link_action_create</source>
-                <target>Berria gehitu</target>
+                <target>Sortu</target>
             </trans-unit>
             <trans-unit id="link_action_list">
                 <source>link_action_list</source>
@@ -56,11 +56,11 @@
             </trans-unit>
             <trans-unit id="link_action_show">
                 <source>link_action_show</source>
-                <target>Erakutsi</target>
+                <target>Ikusi</target>
             </trans-unit>
             <trans-unit id="link_action_edit">
                 <source>link_action_edit</source>
-                <target>Aldatu</target>
+                <target>Editatu</target>
             </trans-unit>
             <trans-unit id="link_add">
                 <source>link_add</source>
@@ -68,11 +68,11 @@
             </trans-unit>
             <trans-unit id="link_list">
                 <source>link_list</source>
-                <target>Zerrenda erakutsi</target>
+                <target>Zerrenda ikusi</target>
             </trans-unit>
             <trans-unit id="link_reset_filter">
                 <source>link_reset_filter</source>
-                <target>Filtroa ezabatu</target>
+                <target>Filtroa kendu</target>
             </trans-unit>
             <trans-unit id="title_create">
                 <source>title_create</source>
@@ -84,11 +84,11 @@
             </trans-unit>
             <trans-unit id="title_edit">
                 <source>title_edit</source>
-                <target>Aldatu "%name%"</target>
+                <target>"%name%" editatu</target>
             </trans-unit>
             <trans-unit id="title_list">
                 <source>title_list</source>
-                <target>Zerrendan erakutsi</target>
+                <target>Zerrenda</target>
             </trans-unit>
             <trans-unit id="link_next_pager">
                 <source>link_next_pager</source>
@@ -124,7 +124,7 @@
             </trans-unit>
             <trans-unit id="action_edit">
                 <source>action_edit</source>
-                <target>Aldatu</target>
+                <target>Editatu</target>
             </trans-unit>
             <trans-unit id="action_show">
                 <source>action_show</source>
@@ -136,7 +136,7 @@
             </trans-unit>
             <trans-unit id='flash_batch_empty'>
                 <source>flash_batch_empty</source>
-                <target>Ekintza deuseztatuta, ez dago ezer aukeratuta</target>
+                <target>Ekintza ezeztatua, ez dago ezer aukeratuta</target>
             </trans-unit>
             <trans-unit id='flash_create_success'>
                 <source>flash_create_success</source>
@@ -144,11 +144,11 @@
             </trans-unit>
             <trans-unit id='flash_create_error'>
                 <source>flash_create_error</source>
-                <target>Errorea elementua sortzerakoan</target>
+                <target>Arazoren bat izan da elementua sortzerakoan</target>
             </trans-unit>
             <trans-unit id='flash_edit_success'>
                 <source>flash_edit_success</source>
-                <target>Elementua behar bezala aldatu da</target>
+                <target>Elementua behar bezala eguneratu da</target>
             </trans-unit>
             <trans-unit id='flash_edit_error'>
                 <source>flash_edit_error</source>
@@ -156,7 +156,7 @@
             </trans-unit>
             <trans-unit id='flash_batch_delete_success'>
                 <source>flash_batch_delete_success</source>
-                <target>Aukeratutakoa behar bezala ezabatu da</target>
+                <target>Aukeratutako elementuak behar bezala ezabatu dira</target>
             </trans-unit>
             <trans-unit id='flash_batch_delete_error'>
                 <source>flash_batch_delete_error</source>
@@ -176,11 +176,11 @@
             </trans-unit>
             <trans-unit id="title_delete">
                 <source>title_delete</source>
-                <target>Ezabatzea zihurtatu</target>
+                <target>Ezabatzea ziurtatu</target>
             </trans-unit>
             <trans-unit id="message_delete_confirmation">
                 <source>message_delete_confirmation</source>
-                <target>Zihur zaude ezabatu nahi duzula</target>
+                <target>Ziur zaude ezabatu nahi duzula?</target>
             </trans-unit>
             <trans-unit id="btn_delete">
                 <source>btn_delete</source>
@@ -188,19 +188,19 @@
             </trans-unit>
             <trans-unit id="title_batch_confirmation">
                 <source>title_batch_confirmation</source>
-                <target>Zihurtatu eragiketa</target>
+                <target>Eragiketa ziurtatu</target>
             </trans-unit>
             <trans-unit id="message_batch_confirmation">
                 <source>message_batch_confirmation</source>
-                <target>{0}Zihur zaude aukeratutako elementu guztientzako ekintza hau burutu nahi duzula?|[1,+Inf[Zihur zaude aukeratutako %count% elementuentzat ekintza hau burutu nahi duzula?</target>
+                <target>{0}Ziur zaude aukeratutako elementu guztientzako ekintza hau burutu nahi duzula?|[1,+Inf[Ziur zaude aukeratutako %count% elementuentzat ekintza hau burutu nahi duzula?</target>
             </trans-unit>
             <trans-unit id="message_batch_all_confirmation">
                 <source>message_batch_all_confirmation</source>
-                <target>Zihur zaude ekintza hau elementu guztientzako burutu nahi duzula?</target>
+                <target>Ziur zaude ekintza hau elementu guztientzako burutu nahi duzula?</target>
             </trans-unit>
             <trans-unit id="btn_execute_batch_action">
                 <source>btn_execute_batch_action</source>
-                <target>Bai, jarraitu</target>
+                <target>Bai, aurrera</target>
             </trans-unit>
             <trans-unit id="label_type_yes">
                 <source>label_type_yes</source>
@@ -268,19 +268,19 @@
             </trans-unit>
             <trans-unit id="label_date_type_null">
                 <source>label_date_type_null</source>
-                <target>Utzik dago</target>
+                <target>Utsik dago</target>
             </trans-unit>
             <trans-unit id="label_date_type_not_null">
                 <source>label_date_type_not_null</source>
-                <target>Ez dago utzik</target>
+                <target>Ez dago utsik</target>
             </trans-unit>
             <trans-unit id="label_date_type_between">
                 <source>label_date_type_between</source>
-                <target>entre</target>
+                <target>artean</target>
             </trans-unit>
             <trans-unit id="label_date_not_between">
                 <source>label_date_type_not_between</source>
-                <target>no entre</target>
+                <target>artean ez</target>
             </trans-unit>
             <trans-unit id="label_filters">
                 <source>label_filters</source>
@@ -292,7 +292,7 @@
             </trans-unit>
             <trans-unit id="link_action_history">
                 <source>link_action_history</source>
-                <target>Berikusketak</target>
+                <target>Historikoa</target>
             </trans-unit>
             <trans-unit id="td_action">
                 <source>td_action</source>
@@ -300,7 +300,7 @@
             </trans-unit>
             <trans-unit id="td_revision">
                 <source>td_revision</source>
-                <target>Berrikusketak</target>
+                <target>Rebisioak</target>
             </trans-unit>
             <trans-unit id="td_timestamp">
                 <source>td_timestamp</source>
@@ -308,11 +308,11 @@
             </trans-unit>
             <trans-unit id="td_username">
                 <source>td_username</source>
-                <target>Egilea</target>
+                <target>Erabiltzailea</target>
             </trans-unit>
             <trans-unit id="label_view_revision">
                 <source>label_view_revision</source>
-                <target>Berrikusketa erakutsi</target>
+                <target>Rebisioa erakutsi</target>
             </trans-unit>
             <trans-unit id="list_results_count">
                 <source>list_results_count</source>
@@ -320,7 +320,7 @@
             </trans-unit>
             <trans-unit id="label_export_download">
                 <source>label_export_download</source>
-                <target>Exportatu: </target>
+                <target>Esportatu: </target>
             </trans-unit>
             <trans-unit id="loading_information">
                 <source>loading_information</source>
@@ -328,7 +328,7 @@
             </trans-unit>
             <trans-unit id="btn_preview">
                 <source>btn_preview</source>
-                <target>Aurrikusi</target>
+                <target>Aurreikusi</target>
             </trans-unit>
             <trans-unit id="btn_preview_approve">
                 <source>btn_preview_approve</source>
@@ -336,11 +336,55 @@
             </trans-unit>
             <trans-unit id="btn_preview_decline">
                 <source>btn_preview_decline</source>
-                <target>Deuseztatu</target>
+                <target>Ezeztatu</target>
             </trans-unit>
             <trans-unit id="label_per_page">
-              <source>label_per_page</source>
-              <target>label_per_page</target>
+                <source>label_per_page</source>
+                <target>Orrialdeko</target>
+            </trans-unit>
+            <trans-unit id="list_select">
+                <source>list_select</source>
+                <target>Aukeratu</target>
+            </trans-unit>
+            <trans-unit id="confirm_exit">
+                <source>confirm_exit</source>
+                <target>Aldaketak dituzu gordetzeko.</target>
+            </trans-unit>
+            <trans-unit id="link_edit_acl">
+                <source>link_edit_acl</source>
+                <target>ACLa editatu</target>
+            </trans-unit>
+            <trans-unit id="btn_update_acl">
+                <source>btn_update_acl</source>
+                <target>ACLa eguneratu</target>
+            </trans-unit>
+            <trans-unit id="flash_acl_update_success">
+                <source>flash_acl_edit_success</source>
+                <target>ACLa behar bezala eguneratu da.</target>
+            </trans-unit>
+            <trans-unit id="link_action_acl">
+                <source>link_action_acl</source>
+                <target>ACL</target>
+            </trans-unit>
+            <trans-unit id="short_object_description_placeholder">
+              <source>short_object_description_placeholder</source>
+              <target>short_object_description_placeholder</target>
+            </trans-unit>
+            <trans-unit id="title_search_results">
+                <source>title_search_results</source>
+                <target>title_search_results</target>
+            </trans-unit>
+            <trans-unit id="search_placeholder">
+                <source>search_placeholder</source>
+                <target>search_placeholder</target>
+            </trans-unit>
+            <trans-unit id="no_results_found">
+                <source>no_results_found</source>
+                <target>no_results_found</target>
+            </trans-unit>
+            <trans-unit id="add_new_entry">
+                <source>add_new_entry</source>
+                <target>add_new_entry</target>
             </trans-unit>
         </body>
     </file>

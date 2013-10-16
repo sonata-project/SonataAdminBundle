@@ -140,7 +140,7 @@
             </trans-unit>
             <trans-unit id='flash_create_success'>
                 <source>flash_create_success</source>
-                <target>L'élément a été crée avec succès.</target>
+                <target>L'élément a été créé avec succès.</target>
             </trans-unit>
             <trans-unit id='flash_create_error'>
                 <source>flash_create_error</source>
@@ -328,19 +328,63 @@
             </trans-unit>
             <trans-unit id="btn_preview">
                 <source>btn_preview</source>
-                <target>btn_preview</target>
+                <target>Prévisualiser</target>
             </trans-unit>
             <trans-unit id="btn_preview_approve">
                 <source>btn_preview_approve</source>
-                <target>btn_preview_approve</target>
+                <target>Accepter</target>
             </trans-unit>
             <trans-unit id="btn_preview_decline">
                 <source>btn_preview_decline</source>
-                <target>btn_preview_decline</target>
+                <target>Refuser</target>
             </trans-unit>
             <trans-unit id="label_per_page">
               <source>label_per_page</source>
               <target>Par page</target>
+            </trans-unit>
+            <trans-unit id="list_select">
+              <source>list_select</source>
+              <target>Sélectionner</target>
+            </trans-unit>
+            <trans-unit id="confirm_exit">
+                <source>confirm_exit</source>
+                <target>Vous avez effectué des modifications non sauvegardées.</target>
+            </trans-unit>
+            <trans-unit id="link_edit_acl">
+              <source>link_edit_acl</source>
+              <target>Editer les permissions</target>
+            </trans-unit>
+            <trans-unit id="btn_update_acl">
+              <source>btn_update_acl</source>
+              <target>Mettre à jour les permissions</target>
+            </trans-unit>
+            <trans-unit id="flash_acl_update_success">
+                <source>flash_acl_edit_success</source>
+                <target>Les permissions ont été mises à jour avec succès.</target>
+            </trans-unit>
+            <trans-unit id="link_action_acl">
+                <source>link_action_acl</source>
+                <target>Permissions</target>
+            </trans-unit>
+            <trans-unit id="short_object_description_placeholder">
+              <source>short_object_description_placeholder</source>
+              <target>Aucune sélection</target>
+            </trans-unit>
+            <trans-unit id="title_search_results">
+                <source>title_search_results</source>
+                <target>Résultats de recherche: %query%</target>
+            </trans-unit>
+            <trans-unit id="search_placeholder">
+                <source>search_placeholder</source>
+                <target>Rechercher</target>
+            </trans-unit>
+            <trans-unit id="no_results_found">
+                <source>no_results_found</source>
+                <target>pas de résultats</target>
+            </trans-unit>
+            <trans-unit id="add_new_entry">
+                <source>add_new_entry</source>
+                <target>rajouter un élément</target>
             </trans-unit>
         </body>
     </file>

@@ -11,6 +11,7 @@
 
 namespace Sonata\AdminBundle\Block;
 
+use Sonata\BlockBundle\Block\BlockContextInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 
@@ -20,6 +21,8 @@ use Sonata\AdminBundle\Admin\Pool;
 
 use Sonata\BlockBundle\Model\BlockInterface;
 use Sonata\BlockBundle\Block\BaseBlockService;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  *
@@ -44,11 +47,11 @@ class AdminListBlockService extends BaseBlockService
     /**
      * {@inheritdoc}
      */
-    public function execute(BlockInterface $block, Response $response = null)
+    public function execute(BlockContextInterface $blockContext, Response $response = null)
     {
-        $settings = array_merge($this->getDefaultSettings(), $block->getSettings());
-
         $dashboardGroups = $this->pool->getDashboardGroups();
+
+        $settings = $blockContext->getSettings();
 
         $visibleGroups = array();
         foreach ($dashboardGroups as $name => $dashboardGroup) {
@@ -58,7 +61,7 @@ class AdminListBlockService extends BaseBlockService
         }
 
         return $this->renderResponse($this->pool->getTemplate('list_block'), array(
-            'block'         => $block,
+            'block'         => $blockContext->getBlock(),
             'settings'      => $settings,
             'admin_pool'    => $this->pool,
             'groups'        => $visibleGroups
@@ -92,10 +95,14 @@ class AdminListBlockService extends BaseBlockService
     /**
      * {@inheritdoc}
      */
-    public function getDefaultSettings()
+    public function setDefaultSettings(OptionsResolverInterface $resolver)
     {
-        return array(
+        $resolver->setDefaults(array(
             'groups' => false
-        );
+        ));
+
+        $resolver->setAllowedTypes(array(
+            'groups' => array('bool', 'array')
+        ));
     }
 }

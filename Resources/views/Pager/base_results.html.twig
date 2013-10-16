@@ -1,0 +1,31 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{% block num_pages %}
+    {{ admin.datagrid.pager.page }} / {{ admin.datagrid.pager.lastpage }}
+    &nbsp;-&nbsp;
+{% endblock %}
+
+{% block num_results %}
+    {% transchoice admin.datagrid.pager.nbresults with {'%count%': admin.datagrid.pager.nbresults} from 'SonataAdminBundle' %}list_results_count{% endtranschoice %}
+    &nbsp;-&nbsp;
+{% endblock %}
+
+{% block max_per_page %}
+    <label class="control-label" for="{{ admin.uniqid }}_per_page">{% trans from 'SonataAdminBundle' %}label_per_page{% endtrans %}</label>
+    <select class="per-page small" id="{{ admin.uniqid }}_per_page" style="width: auto; height: auto">
+        {% for per_page in admin.getperpageoptions %}
+            <option {% if per_page == admin.datagrid.pager.maxperpage %}selected="selected"{% endif %} value="{{ admin.generateUrl('list', {'filter': admin.datagrid.values | merge({'_page': 1, '_per_page': per_page})}) }}">
+                {{ per_page }}
+            </option>
+        {% endfor %}
+    </select>
+{% endblock %}

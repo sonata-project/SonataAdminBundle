@@ -117,7 +117,10 @@ class FieldDescriptionCollection implements \ArrayAccess, \Countable
      */
     public function reorder(array $keys)
     {
-        array_unshift($keys, 'batch');
+        if ($this->has('batch')) {
+            array_unshift($keys, 'batch');
+        }
+
         $this->elements = array_merge(array_flip($keys), $this->elements);
     }
 }

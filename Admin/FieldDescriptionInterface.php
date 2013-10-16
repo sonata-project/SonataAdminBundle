@@ -279,7 +279,16 @@ interface FieldDescriptionInterface
      */
     public function getLabel();
 
-    /*
+    /**
+     * Return the translation domain to use for the current field.
+     *
+     * @return string
+     */
+    public function getTranslationDomain();
+
+    /**
+     * Return true if field is sortable.
+     *
      * @return boolean
      */
     public function isSortable();

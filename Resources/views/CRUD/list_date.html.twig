@@ -8,11 +8,14 @@ For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 
 #}
-{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% extends admin.getTemplate('base_list_field') %}
 
 {% block field%}
     {%- if value is empty -%}
         &nbsp;
+    {%- elseif field_description.options.format is defined -%}
+        {{ value|date(field_description.options.format) }}
     {%- else -%}
         {{ value|date('F j, Y') }}
     {%- endif -%}

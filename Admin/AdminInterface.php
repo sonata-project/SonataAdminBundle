@@ -38,6 +38,8 @@ interface AdminInterface
     public function setFormContractor(FormContractorInterface $formContractor);
 
     /**
+     * Set ListBuilder
+     *
      * @param ListBuilderInterface $listBuilder
      *
      * @return void
@@ -45,6 +47,15 @@ interface AdminInterface
     public function setListBuilder(ListBuilderInterface $listBuilder);
 
     /**
+     * Get ListBuilder
+     *
+     * @return \Sonata\AdminBundle\Builder\ListBuilderInterface
+     */
+    public function getListBuilder();
+
+    /**
+     * Set DatagridBuilder
+     *
      * @param \Sonata\AdminBundle\Builder\DatagridBuilderInterface $datagridBuilder
      *
      * @return void
@@ -52,11 +63,27 @@ interface AdminInterface
     public function setDatagridBuilder(DatagridBuilderInterface $datagridBuilder);
 
     /**
+     * Get DatagridBuilder
+     *
+     * @return \Sonata\AdminBundle\Builder\DatagridBuilderInterface
+     */
+    public function getDatagridBuilder();
+
+    /**
+     * Set translator
+     *
      * @param \Symfony\Component\Translation\TranslatorInterface $translator
      *
      * @return void
      */
     public function setTranslator(TranslatorInterface $translator);
+
+    /**
+     * Get translator
+     *
+     * @return \Symfony\Component\Translation\TranslatorInterface
+     */
+    public function getTranslator();
 
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
@@ -80,7 +107,10 @@ interface AdminInterface
     public function setRouteGenerator(RouteGeneratorInterface $routeGenerator);
 
     /**
-     * Returns the class name managed
+     * Returns subjectClass/class/subclass name managed
+     * - subclass name if subclass parameter is defined
+     * - subject class name if subject is defined
+     * - class name if not
      *
      * @return string
      */
@@ -99,11 +129,39 @@ interface AdminInterface
     public function getDatagrid();
 
     /**
+     * Set base controller name
+     *
+     * @param string $baseControllerName
+     */
+    public function setBaseControllerName($baseControllerName);
+
+    /**
+     * Get base controller name
+     *
+     * @return string
+     */
+    public function getBaseControllerName();
+
+    /**
+     * Generates the object url with the given $name
+     *
+     * @param string  $name
+     * @param mixed   $object
+     * @param array   $parameters
+     * @param boolean $absolute
+     *
+     * @return string return a complete url
+     */
+    public function generateObjectUrl($name, $object, array $parameters = array(), $absolute = false);
+
+    /**
+     * Generates an url for the given parameters
+     *
      * @param string $name
      * @param array  $parameters
      * @param bool   $absolute
      *
-     * @return string
+     * @return string return a complete url
      */
     public function generateUrl($name, array $parameters = array(), $absolute = false);
 
@@ -130,6 +188,8 @@ interface AdminInterface
     public function getFormBuilder();
 
     /**
+     * Return FormFieldDescription
+     *
      * @param string $name
      *
      * @return \Sonata\AdminBundle\Admin\FieldDescriptionInterface
@@ -137,15 +197,43 @@ interface AdminInterface
     public function getFormFieldDescription($name);
 
     /**
+     * Build and return the collection of form FieldDescription
+     *
+     * @return array collection of form FieldDescription
+     */
+    public function getFormFieldDescriptions();
+
+    /**
+     * Returns a form depend on the given $object
+     *
+     * @return \Symfony\Component\Form\Form
+     */
+    public function getForm();
+
+    /**
      * @return \Symfony\Component\HttpFoundation\Request
+     *
+     * @throws \RuntimeException if no request is set.
      */
     public function getRequest();
+
+    /**
+     * @return boolean true if a request object is linked to this Admin, false
+     *      otherwise.
+     */
+    public function hasRequest();
 
     /**
      *
      * @return string
      */
     public function getCode();
+
+    /**
+     *
+     * @return string
+     */
+    public function getBaseCodeRoute();
 
     /**
      * Return the roles and permissions per role
@@ -165,6 +253,20 @@ interface AdminInterface
     public function setParentFieldDescription(FieldDescriptionInterface $parentFieldDescription);
 
     /**
+     * Get parent field description
+     *
+     * @return \Sonata\AdminBundle\Admin\FieldDescriptionInterface The parent field description
+     */
+    public function getParentFieldDescription();
+
+    /**
+     * Returns true if the Admin is linked to a parent FieldDescription
+     *
+     * @return bool
+     */
+    public function hasParentFieldDescription();
+
+    /**
      * translate a message id
      *
      * @param string $id
@@ -177,11 +279,34 @@ interface AdminInterface
     public function trans($id, array $parameters = array(), $domain = null, $locale = null);
 
     /**
-     * Return the parameter name used to represente the id in the url
+     * Returns the list of available urls
+     *
+     * @return \Sonata\AdminBundle\Route\RouteCollection the list of available urls
+     */
+    public function getRoutes();
+
+    /**
+     * Return the parameter name used to represent the id in the url
      *
      * @return string
      */
     public function getRouterIdParameter();
+
+    /**
+     * Returns the parameter representing request id, ie: id or childId
+     *
+     * @return string
+     */
+    public function getIdParameter();
+
+    /**
+     * Returns true if the admin has a FieldDescription with the given $name
+     *
+     * @param string $name
+     *
+     * @return bool
+     */
+    public function hasShowFieldDescription($name);
 
     /**
      * add a FieldDescription
@@ -194,6 +319,13 @@ interface AdminInterface
     public function addShowFieldDescription($name, FieldDescriptionInterface $fieldDescription);
 
     /**
+     * Remove a ShowFieldDescription
+     *
+     * @param string $name
+     */
+    public function removeShowFieldDescription($name);
+
+    /**
      * add a list FieldDescription
      *
      * @param string                                              $name
@@ -204,6 +336,24 @@ interface AdminInterface
     public function addListFieldDescription($name, FieldDescriptionInterface $fieldDescription);
 
     /**
+     * Remove a list FieldDescription
+     *
+     * @param string $name
+     *
+     * @return void
+     */
+    public function removeListFieldDescription($name);
+
+    /**
+     * Returns true if the filter FieldDescription exists
+     *
+     * @param string $name
+     *
+     * @return bool
+     */
+    public function hasFilterFieldDescription($name);
+
+    /**
      * add a filter FieldDescription
      *
      * @param string                                              $name
@@ -212,6 +362,20 @@ interface AdminInterface
      * @return void
      */
     public function addFilterFieldDescription($name, FieldDescriptionInterface $fieldDescription);
+
+    /**
+     * Remove a filter FieldDescription
+     *
+     * @param string $name
+     */
+    public function removeFilterFieldDescription($name);
+
+    /**
+     * Returns the filter FieldDescription collection
+     *
+     * @return FieldDescriptionInterface[]
+     */
+    public function getFilterFieldDescriptions();
 
     /**
      * Returns a list depend on the given $object
@@ -310,7 +474,7 @@ interface AdminInterface
     /**
      * Returns an array of extension related to the current Admin
      *
-     * @return void
+     * @return AdminExtensionInterface[]
      */
     public function getExtensions();
 
@@ -352,6 +516,15 @@ interface AdminInterface
      * @return \Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface
      */
     public function getLabelTranslatorStrategy();
+
+    /**
+     * Returning true will enable preview mode for
+     * the target entity and show a preview button
+     * when editing/creating an entity
+     *
+     * @return boolean
+     */
+    public function supportsPreviewMode();
 
     /**
      * add an Admin child to the current one
@@ -400,6 +573,13 @@ interface AdminInterface
     public function setUniqid($uniqId);
 
     /**
+     * Returns the uniqid
+     *
+     * @return integer
+     */
+    public function getUniqid();
+
+    /**
      * @param mixed $id
      *
      * @return mixed
@@ -426,6 +606,36 @@ interface AdminInterface
      * @return \Sonata\AdminBundle\Admin\FieldDescriptionInterface
      */
     public function getListFieldDescription($name);
+
+    /**
+     * Returns true if the list FieldDescription exists
+     *
+     * @param string $name
+     *
+     * @return bool
+     */
+    public function hasListFieldDescription($name);
+
+    /**
+     * Returns the collection of list FieldDescriptions
+     *
+     * @return array
+     */
+    public function getListFieldDescriptions();
+
+    /**
+     * Returns the array of allowed export formats
+     *
+     * @return array
+     */
+    public function getExportFormats();
+
+    /**
+     * Returns SourceIterator
+     *
+     * @return \Exporter\Source\SourceIteratorInterface
+     */
+    public function getDataSourceIterator();
 
     /**
      * @return void
@@ -496,6 +706,13 @@ interface AdminInterface
     public function postRemove($object);
 
     /**
+     * Return array of filter parameters.
+     *
+     * @return array
+     */
+    public function getFilterParameters();
+
+    /**
      * Return true if the Admin is related to a subject
      *
      * @return boolean
@@ -550,9 +767,161 @@ interface AdminInterface
     public function setParent(AdminInterface $admin);
 
     /**
+     * Returns true if the Admin class has an Parent Admin defined
+     *
+     * @return boolean
+     */
+    public function isChild();
+
+    /**
+     * Returns template
+     *
      * @param string $name
      *
      * @return null|string
      */
     public function getTemplate($name);
+
+    /**
+     * Set the translation domain
+     *
+     * @param string $translationDomain the translation domain
+     *
+     * @return void
+     */
+    public function setTranslationDomain($translationDomain);
+
+    /**
+     * Returns the translation domain
+     *
+     * @return string the translation domain
+     */
+    public function getTranslationDomain();
+
+    /**
+     * Return the form groups
+     *
+     * @return array
+     */
+    public function getFormGroups();
+
+    /**
+     * Set the form groups
+     *
+     * @param array $formGroups
+     */
+    public function setFormGroups(array $formGroups);
+
+    /**
+     * Returns the show groups
+     *
+     * @return array
+     */
+    public function getShowGroups();
+
+    /**
+     * Set the show groups
+     *
+     * @param array $showGroups
+     */
+    public function setShowGroups(array $showGroups);
+
+    /**
+     * Reorder items in showGroup
+     *
+     * @param string $group
+     * @param array  $keys
+     */
+    public function reorderShowGroup($group, array $keys);
+
+    /**
+     * add a FieldDescription
+     *
+     * @param string                                              $name
+     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
+     *
+     * @return void
+     */
+    public function addFormFieldDescription($name, FieldDescriptionInterface $fieldDescription);
+
+    /**
+     * Returns true if this admin uses ACL
+     *
+     * @return boolean
+     */
+    public function isAclEnabled();
+
+    /**
+     * Sets the list of supported sub classes
+     *
+     * @param array $subClasses the list of sub classes
+     */
+    public function setSubClasses(array $subClasses);
+
+    /**
+     * Returns true if the admin has the sub classes
+     *
+     * @param string $name The name of the sub class
+     *
+     * @return bool
+     */
+    public function hasSubClass($name);
+
+    /**
+     * Returns true if a subclass is currently active
+     *
+     * @return bool
+     */
+    public function hasActiveSubClass();
+
+    /**
+     * Returns the currently active sub class
+     *
+     * @return string the active sub class
+     */
+    public function getActiveSubClass();
+
+    /**
+     * Returns the currently active sub class code
+     *
+     * @return string the code for active sub class
+     */
+    public function getActiveSubclassCode();
+
+    /**
+     * Returns Admin`s label
+     *
+     * @return string
+     */
+    public function getLabel();
+
+    /**
+     * Returns an array of persistent parameters
+     *
+     * @return array
+     */
+    public function getPersistentParameters();
+
+    /**
+     * Get breadcrumbs for $action
+     *
+     * @param string $action
+     *
+     * @return array
+     */
+    public function getBreadcrumbs($action);
+
+    /**
+     * Set the current child status
+     *
+     * @param boolean $currentChild
+     */
+    public function setCurrentChild($currentChild);
+
+    /**
+     * Returns the current child status
+     *
+     * @return bool
+     */
+    public function getCurrentChild();
 }

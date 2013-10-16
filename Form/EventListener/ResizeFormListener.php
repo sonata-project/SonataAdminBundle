@@ -11,9 +11,8 @@
 
 namespace Sonata\AdminBundle\Form\EventListener;
 
+use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Form\Event\DataEvent;
-use Symfony\Component\Form\Event\FilterDataEvent;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -71,11 +70,11 @@ class ResizeFormListener implements EventSubscriberInterface
     }
 
     /**
-     * @param \Symfony\Component\Form\Event\DataEvent $event
+     * @param \Symfony\Component\Form\FormEvent $event
      *
      * @throws \Symfony\Component\Form\Exception\UnexpectedTypeException
      */
-    public function preSetData(DataEvent $event)
+    public function preSetData(FormEvent $event)
     {
         $form = $event->getForm();
         $data = $event->getData();
@@ -104,12 +103,12 @@ class ResizeFormListener implements EventSubscriberInterface
     }
 
     /**
-     * @param \Symfony\Component\Form\Event\DataEvent $event
+     * @param \Symfony\Component\Form\FormEvent $event
      *
      * @return mixed
      * @throws \Symfony\Component\Form\Exception\UnexpectedTypeException
      */
-    public function preBind(DataEvent $event)
+    public function preBind(FormEvent $event)
     {
         if (!$this->resizeOnBind) {
             return;
@@ -148,12 +147,12 @@ class ResizeFormListener implements EventSubscriberInterface
     }
 
     /**
-     * @param \Symfony\Component\Form\Event\FilterDataEvent $event
+     * @param \Symfony\Component\Form\FormEvent $event
      *
      * @return mixed
      * @throws \Symfony\Component\Form\Exception\UnexpectedTypeException
      */
-    public function onBind(FilterDataEvent $event)
+    public function onBind(FormEvent $event)
     {
         if (!$this->resizeOnBind) {
             return;

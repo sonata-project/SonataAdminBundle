@@ -12,7 +12,8 @@ namespace Sonata\AdminBundle\Validator;
 
 use Symfony\Bundle\FrameworkBundle\Validator\ConstraintValidatorFactory;
 use Symfony\Component\Validator\ExecutionContext;
-use Symfony\Component\Form\Util\PropertyPath;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\Validator\Constraint;
 
 class ErrorElement
@@ -72,6 +73,18 @@ class ErrorElement
     }
 
     /**
+     * @param Constraint $constraint
+     *
+     * @return ErrorElement
+     */
+    public function addConstraint(Constraint $constraint)
+    {
+        $this->validate($constraint);
+
+        return $this;
+    }
+
+    /**
      * @param string $name
      * @param bool   $key
      *
@@ -110,11 +123,9 @@ class ErrorElement
      */
     protected function validate(Constraint $constraint)
     {
-        $validator = $this->constraintValidatorFactory->getInstance($constraint);
-        $value     = $this->getValue();
+        $subPath = (string) $this->getCurrentPropertyPath();
 
-        $validator->initialize($this->context);
-        $validator->validate($value, $constraint);
+        $this->context->validateValue($this->getValue(), $constraint, $subPath, $this->group);
     }
 
     /**
@@ -136,7 +147,12 @@ class ErrorElement
      */
     protected function getValue()
     {
-        return $this->getCurrentPropertyPath()->getValue($this->subject);
+        if ($this->current == '') {
+            return $this->subject;
+        }
+
+        $propertyAccessor = PropertyAccess::getPropertyAccessor();
+        return $propertyAccessor->getValue($this->subject, $this->getCurrentPropertyPath());
     }
 
     /**
@@ -191,7 +207,9 @@ class ErrorElement
             $message    = isset($message[0]) ? $message[0] : 'error';
         }
 
-        $this->context->addViolationAtPath($this->getFullPropertyPath(), $message, $parameters, $value);
+        $subPath = (string) $this->getCurrentPropertyPath();
+
+        $this->context->addViolationAt($subPath, $message, $parameters, $value);
 
         $this->errors[] = array($message, $parameters, $value);
 

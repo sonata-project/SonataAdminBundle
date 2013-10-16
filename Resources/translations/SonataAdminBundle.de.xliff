@@ -180,7 +180,7 @@
             </trans-unit>
             <trans-unit id="message_delete_confirmation">
                 <source>message_delete_confirmation</source>
-                <target>Sind Sie sicher dass Sie das ausgewählte Element löschen wollen?</target>
+                <target>Sind Sie sicher, dass Sie das ausgewählte Element löschen wollen?</target>
             </trans-unit>
             <trans-unit id="btn_delete">
                 <source>btn_delete</source>
@@ -341,6 +341,50 @@
             <trans-unit id="label_per_page">
               <source>label_per_page</source>
               <target>Einträge pro Seite</target>
+            </trans-unit>
+            <trans-unit id="list_select">
+              <source>list_select</source>
+              <target>Auswählen</target>
+            </trans-unit>
+            <trans-unit id="confirm_exit">
+                <source>confirm_exit</source>
+                <target>Es gibt ungespeicherte Änderungen.</target>
+            </trans-unit>
+            <trans-unit id="link_edit_acl">
+              <source>link_edit_acl</source>
+              <target>Bearbeiten</target>
+            </trans-unit>
+            <trans-unit id="btn_update_acl">
+              <source>btn_update_acl</source>
+              <target>Speichern</target>
+            </trans-unit>
+            <trans-unit id="flash_acl_update_success">
+                <source>flash_acl_edit_success</source>
+                <target>ACL Eintrag wurde erfolgreich gespeichert.</target>
+            </trans-unit>
+            <trans-unit id="link_action_acl">
+                <source>link_action_acl</source>
+                <target>ACL Manager</target>
+            </trans-unit>
+            <trans-unit id="short_object_description_placeholder">
+              <source>short_object_description_placeholder</source>
+              <target></target>
+            </trans-unit>
+            <trans-unit id="title_search_results">
+                <source>title_search_results</source>
+                <target>title_search_results</target>
+            </trans-unit>
+            <trans-unit id="search_placeholder">
+                <source>search_placeholder</source>
+                <target>search_placeholder</target>
+            </trans-unit>
+            <trans-unit id="no_results_found">
+                <source>no_results_found</source>
+                <target>no_results_found</target>
+            </trans-unit>
+            <trans-unit id="add_new_entry">
+                <source>add_new_entry</source>
+                <target>add_new_entry</target>
             </trans-unit>
         </body>
     </file>

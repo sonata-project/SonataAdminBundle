@@ -29,16 +29,20 @@ class Pool
 
     protected $titleLogo;
 
+    protected $options;
+
     /**
      * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
      * @param string                                                    $title
      * @param string                                                    $logoTitle
+     * @param array                                                     $options
      */
-    public function __construct(ContainerInterface $container, $title, $logoTitle)
+    public function __construct(ContainerInterface $container, $title, $logoTitle, $options = array())
     {
         $this->container = $container;
         $this->title     = $title;
         $this->titleLogo = $logoTitle;
+        $this->options   = $options;
     }
 
     /**
@@ -55,6 +59,17 @@ class Pool
         }
 
         return $groups;
+    }
+
+    /**
+     * Returns whether an admin group exists or not.
+     *
+     * @param string $group
+     * @return bool
+     */
+    public function hasGroup($group)
+    {
+        return isset($this->adminGroups[$group]);
     }
 
     /**
@@ -83,6 +98,32 @@ class Pool
         }
 
         return $groups;
+    }
+
+    /**
+     * Returns all admins related to the given $group
+     *
+     * @param string $group
+     * @return array
+     * @throws \InvalidArgumentException
+     */
+    public function getAdminsByGroup($group)
+    {
+        if (!isset($this->adminGroups[$group])) {
+            throw new \InvalidArgumentException(sprintf('Group "%s" not found in admin pool.', $group));
+        }
+
+        $admins = array();
+
+        if (!isset($this->adminGroups[$group]['items'])) {
+            return $admins;
+        }
+
+        foreach ($this->adminGroups[$group]['items'] as $id) {
+            $admins[] = $this->getInstance($id);
+        }
+
+        return $admins;
     }
 
     /**
@@ -254,5 +295,19 @@ class Pool
     public function getTitle()
     {
         return $this->title;
+    }
+
+    /**
+     * @param $name
+     *
+     * @return mixed
+     */
+    public function getOption($name)
+    {
+        if (isset($this->options[$name])) {
+            return $this->options[$name];
+        }
+
+        return null;
     }
 }

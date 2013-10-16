@@ -1,14 +1,43 @@
 jQuery(document).ready(function() {
     jQuery('html').removeClass('no-js');
+    if (window.SONATA_CONFIG.CONFIRM_EXIT) {
+        jQuery('.sonata-ba-form form').confirmExit();
+    }
+
+    Admin.setup_select2(document);
     Admin.add_pretty_errors(document);
-    Admin.add_collapsed_toggle();
     Admin.add_filters(document);
     Admin.set_object_field_value(document);
     Admin.setup_collection_buttons(document);
     Admin.setup_per_page_switcher(document);
+    Admin.setup_form_tabs_for_errors(document);
+    Admin.setup_inline_form_errors(document);
 });
 
 var Admin = {
+
+    setup_select2: function(subject) {
+        if (window.SONATA_CONFIG && window.SONATA_CONFIG.USE_SELECT2 && window.Select2) {
+            jQuery('select', subject).each(function() {
+                var select = $(this);
+
+                select.select2({
+                    width: 'resolve',
+                    minimumResultsForSearch: 10,
+                    allowClear: select.find('option[value=""]').length ? true : false
+                });
+
+                var popover = select.data('popover');
+
+                if (undefined !== popover) {
+                    select
+                        .select2('container')
+                        .popover(popover.options)
+                    ;
+                }
+            });
+        }
+    },
 
     /**
      * render log message
@@ -29,68 +58,39 @@ var Admin = {
      * @param subject
      */
     add_pretty_errors: function(subject) {
+
+        Admin.setup_select2(subject);
+
         jQuery('div.sonata-ba-field-error', subject).each(function(index, element) {
-            var input = jQuery('input, textarea, select', element);
+            var input = jQuery(':input', element);
 
-            var message = jQuery('div.sonata-ba-field-error-messages', element).html();
-            jQuery('div.sonata-ba-field-error-messages', element).html('');
-            if (!message) {
-                message = '';
-            }
-
-            if (message.length == 0) {
+            if (!input.length) {
                 return;
             }
 
-            var target;
+            var message = jQuery('div.sonata-ba-field-error-messages', element).html();
+            jQuery('div.sonata-ba-field-error-messages', element).remove();
 
-            /* Hack to handle qTip on select */
-            if(jQuery(input).is("select")) {
-              jQuery(element).prepend("<span></span>");
-              target = jQuery('span', element);
-              jQuery(input).appendTo(target);
-            }
-            else {
-              target = input;
+            if (!message || message.length == 0) {
+                return;
             }
 
-            target.qtip({
+            var target = input,
+                fieldShortDescription = input.closest('.field-container').find('.field-short-description')
+            ;
+
+            if (fieldShortDescription.length) {
+                target = fieldShortDescription;
+            }
+
+            target.popover({
                 content: message,
-                show: 'focusin',
-                hide: 'focusout',
-                position: {
-                    corner: {
-                        target: 'rightMiddle',
-                        tooltip: 'leftMiddle'
-                    }
-                },
-                style: {
-                    name: 'red',
-                    border: {
-                        radius: 2
-                    },
-                    tip: 'leftMiddle'
-                }
+                trigger: 'hover',
+                html: true,
+                placement: 'right',
+                template: '<div class="popover"><div class="arrow"></div><div class="popover-inner"><div class="popover-content alert-error"><p></p></div></div></div>'
             });
 
-        });
-    },
-
-    /**
-     * Add the collapsed toggle option to the admin
-     *
-     * @param subject
-     */
-    add_collapsed_toggle: function(subject) {
-        jQuery('fieldset.sonata-ba-fieldset-collapsed').has('.error').addClass('sonata-ba-collapsed-fields-close');
-        jQuery('fieldset.sonata-ba-fieldset-collapsed div.sonata-ba-collapsed-fields').not(':has(.error)').hide();
-        jQuery('fieldset legend a.sonata-ba-collapsed', subject).live('click', function(event) {
-            event.preventDefault();
-
-            var fieldset = jQuery(this).closest('fieldset');
-
-            jQuery('div.sonata-ba-collapsed-fields', fieldset).slideToggle();
-            fieldset.toggleClass('sonata-ba-collapsed-fields-close');
         });
     },
 
@@ -114,9 +114,9 @@ var Admin = {
     },
 
     add_filters: function(subject) {
-        jQuery('div.filter_container.inactive', subject).hide();
+        jQuery('div.filter_container .sonata-filter-option', subject).hide();
         jQuery('fieldset.filter_legend', subject).click(function(event) {
-           jQuery('div.filter_container', jQuery(event.target).parent()).toggle();
+           jQuery('div.filter_container .sonata-filter-option', jQuery(event.target).parent()).toggle();
         });
     },
 
@@ -157,13 +157,14 @@ var Admin = {
 
             var container = jQuery(this).closest('[data-prototype]');
             var proto = container.attr('data-prototype');
+            var protoName = container.attr('data-prototype-name') || '__name__';
             // Set field id
-            var idRegexp = new RegExp(container.attr('id')+'___name__','g');
+            var idRegexp = new RegExp(container.attr('id')+'_'+protoName,'g');
             proto = proto.replace(idRegexp, container.attr('id')+'_'+(container.children().length - 1));
 
             // Set field name
             var parts = container.attr('id').split('_');
-            var nameRegexp = new RegExp(parts[parts.length-1]+'\\]\\[__name__','g');
+            var nameRegexp = new RegExp(parts[parts.length-1]+'\\]\\['+protoName,'g');
             proto = proto.replace(nameRegexp, parts[parts.length-1]+']['+(container.children().length - 1));
             jQuery(proto).insertBefore(jQuery(this).parent());
 
@@ -185,5 +186,85 @@ var Admin = {
 
             window.top.location.href=this.options[this.selectedIndex].value;
         });
+    },
+
+    setup_form_tabs_for_errors: function(subject) {
+        // Switch to first tab with server side validation errors on page load
+        jQuery('form', subject).each(function() {
+            Admin.show_form_first_tab_with_errors(jQuery(this), '.sonata-ba-field-error');
+        });
+
+        // Switch to first tab with HTML5 errors on form submit
+        jQuery(subject)
+            .on('click', 'form [type="submit"]', function() {
+                Admin.show_form_first_tab_with_errors(jQuery(this).closest('form'), ':invalid');
+            })
+            .on('keypress', 'form [type="text"]', function(e) {
+                if (13 === e.which) {
+                    Admin.show_form_first_tab_with_errors(jQuery(this), ':invalid');
+                }
+            })
+        ;
+    },
+
+    show_form_first_tab_with_errors: function(form, errorSelector) {
+        var tabs = form.find('.nav-tabs a'),
+            firstTabWithErrors;
+
+        tabs.each(function() {
+            var id = jQuery(this).attr('href'),
+                tab = jQuery(this),
+                icon = tab.find('.has-errors');
+
+            if (jQuery(id).find(errorSelector).length > 0) {
+                // Only show first tab with errors
+                if (!firstTabWithErrors) {
+                    tab.tab('show');
+                    firstTabWithErrors = tab;
+                }
+
+                icon.removeClass('hide');
+            } else {
+                icon.addClass('hide');
+            }
+        });
+    },
+
+    setup_inline_form_errors: function(subject) {
+        var deleteCheckboxSelector = '.sonata-ba-field-inline-table [id$="_delete"][type="checkbox"]';
+
+        jQuery(deleteCheckboxSelector, subject).each(function() {
+            Admin.switch_inline_form_errors(jQuery(this));
+        });
+
+        $(subject).on('change', deleteCheckboxSelector, function() {
+            Admin.switch_inline_form_errors(jQuery(this));
+        });
+    },
+
+    /**
+     * Disable inline form errors when the row is marked for deletion
+     */
+    switch_inline_form_errors: function(deleteCheckbox) {
+        var row = deleteCheckbox.closest('.sonata-ba-field-inline-table'),
+            errors = row.find('.sonata-ba-field-error-messages')
+        ;
+
+        if (deleteCheckbox.is(':checked')) {
+            row
+                .find('[required]')
+                .removeAttr('required')
+                .attr('data-required', 'required')
+            ;
+
+            errors.hide();
+        } else {
+            row
+                .find('[data-required]')
+                .attr('required', 'required')
+            ;
+
+            errors.show();
+        }
     }
-}
+};

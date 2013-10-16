@@ -33,7 +33,7 @@ file that was distributed with this source code.
                     {% if not sonata_admin.admin %}
                         {{- label|trans({}, translation_domain) -}}
                     {% else %}
-                        {{- label|trans({}, sonata_admin.admin.translationDomain) -}}
+                        {{- label|trans({}, sonata_admin.field_description.translationDomain) -}}
                     {% endif%}
                 </span>
             </label>
@@ -42,7 +42,7 @@ file that was distributed with this source code.
                 {% if not sonata_admin.admin%}
                     {{- label|trans({}, translation_domain) -}}
                 {% else %}
-                    {{ sonata_admin.admin.trans(label) }}
+                    {{ sonata_admin.admin.trans(label, {}, sonata_admin.field_description.translationDomain) }}
                 {% endif %}
                 {{ required ? '*' : '' }}
             </label>
@@ -74,34 +74,43 @@ file that was distributed with this source code.
 
 {% block choice_widget %}
 {% spaceless %}
-    {% if expanded %}
+    {% if compound %}
         <ul {{ block('widget_container_attributes_choice_widget') }}>
         {% for child in form %}
             <li>
-                {{ form_label(child, child.vars.label|default(null), { 'in_list_checkbox' : true, 'widget' : form_widget(child) } ) }}
+                {% set form_widget_content %}
+                    {{ form_widget(child) }}
+                {% endset %}
+                {{ form_label(child, child.vars.label|default(null), { 'in_list_checkbox' : true, 'widget' : form_widget_content } ) }}
             </li>
         {% endfor %}
         </ul>
     {% else %}
     <select {{ block('widget_attributes') }}{% if multiple %} multiple="multiple"{% endif %}>
         {% if empty_value is not none %}
-            <option value="">{{ empty_value|trans }}</option>
+            <option value="">
+                {% if not sonata_admin.admin %}
+                    {{- empty_value|trans({}, translation_domain) -}}
+                {% else %}
+                    {{- empty_value|trans({}, sonata_admin.field_description.translationDomain) -}}
+                {% endif%}
+            </option>
         {% endif %}
         {% if preferred_choices|length > 0 %}
             {% set options = preferred_choices %}
-            {{ block('widget_choice_options') }}
+            {{ block('choice_widget_options') }}
             {% if choices|length > 0 %}
                 <option disabled="disabled">{{ separator }}</option>
             {% endif %}
         {% endif %}
         {% set options = choices %}
-        {{ block('widget_choice_options') }}
+        {{ block('choice_widget_options') }}
     </select>
     {% endif %}
 {% endspaceless %}
 {% endblock choice_widget %}
 
-{% block field_row %}
+{% block form_row %}
     {% if sonata_admin is not defined or not sonata_admin_enabled or not sonata_admin.field_description %}
         <div class="control-group {% if errors|length > 0%} error{% endif %}">
             {{ form_label(form, label|default(null)) }}
@@ -135,12 +144,12 @@ file that was distributed with this source code.
                 {% endif %}
 
                 {% if sonata_admin.field_description.help %}
-                    <span class="help-block sonata-ba-field-help">{{ sonata_admin.admin.trans(sonata_admin.field_description.help)|raw }}</span>
+                    <span class="help-block sonata-ba-field-help">{{ sonata_admin.admin.trans(sonata_admin.field_description.help, {}, sonata_admin.field_description.translationDomain)|raw }}</span>
                 {% endif %}
             </div>
         </div>
     {% endif %}
-{% endblock field_row %}
+{% endblock form_row %}
 
 {% block collection_widget_row %}
 {% spaceless %}
@@ -157,7 +166,7 @@ file that was distributed with this source code.
 {% spaceless %}
     {% if prototype is defined %}
         {% set child = prototype %}
-        {% set attr = attr|merge({'data-prototype': block('collection_widget_row'), 'class': attr.class|default('') ~ ' controls' }) %}
+        {% set attr = attr|merge({'data-prototype': block('collection_widget_row'), 'data-prototype-name': prototype.vars.name, 'class': attr.class|default('') ~ ' controls' }) %}
     {% endif %}
     <div {{ block('widget_container_attributes') }}>
         {{ form_errors(form) }}
@@ -174,16 +183,14 @@ file that was distributed with this source code.
 
 {% block sonata_type_immutable_array_widget %}
     {% spaceless %}
-        <div class="controls">
-            <div {{ block('widget_container_attributes') }}>
-                {{ form_errors(form) }}
+        <div {{ block('widget_container_attributes') }}>
+            {{ form_errors(form) }}
 
-                {% for key, child in form %}
-                    {{ block('sonata_type_immutable_array_widget_row') }}
-                {% endfor %}
+            {% for key, child in form %}
+                {{ block('sonata_type_immutable_array_widget_row') }}
+            {% endfor %}
 
-                {{ form_rest(form) }}
-            </div>
+            {{ form_rest(form) }}
         </div>
     {% endspaceless %}
 {% endblock sonata_type_immutable_array_widget %}

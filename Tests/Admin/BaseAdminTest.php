@@ -22,6 +22,15 @@ class FooTest_Admin
     }
 }
 
+class FooTestNullToString_Admin
+{
+    // In case __toString returns an attribute not yet set
+    public function __toString()
+    {
+        return null;
+    }
+}
+
 class PostAdmin extends Admin
 {
     protected $metadataClass = null;
@@ -132,10 +141,71 @@ class BaseAdminTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('Category', $admin->getParentAssociationMapping());
     }
 
-    public function testGetBaseRoutePattern()
+    public function provideGetBaseRoutePattern()
     {
-        $admin = new PostAdmin('sonata.post.admin.post', 'Application\Sonata\NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
-        $this->assertEquals('/sonata/news/post', $admin->getBaseRoutePattern());
+        return array(
+            array(
+                'Application\Sonata\NewsBundle\Entity\Post', 
+                '/sonata/news/post'
+            ),
+            array(
+                'Application\Sonata\NewsBundle\Document\Post', 
+                '/sonata/news/post'
+            ),
+            array(
+                'MyApplication\MyBundle\Entity\Post', 
+                '/myapplication/my/post'
+            ),
+            array(
+                'MyApplication\MyBundle\Entity\Post\Category',
+                '/myapplication/my/post-category'
+            ),
+            array(
+                'MyApplication\MyBundle\Entity\Product\Category',
+                '/myapplication/my/product-category'
+            ),
+            array(
+                'MyApplication\MyBundle\Entity\Other\Product\Category',
+                '/myapplication/my/other-product-category'
+            ),
+            array(
+                'Symfony\Cmf\Bundle\FooBundle\Document\Menu', 
+                '/cmf/foo/menu'
+            ),
+            array(
+                'Symfony\Cmf\Bundle\FooBundle\Doctrine\Phpcr\Menu', 
+                '/cmf/foo/menu'
+            ),
+            array(
+                'Symfony\Bundle\BarBarBundle\Doctrine\Phpcr\Menu', 
+                '/symfony/barbar/menu'
+            ),
+            array(
+                'Symfony\Bundle\BarBarBundle\Doctrine\Phpcr\Menu\Item',
+                '/symfony/barbar/menu-item'
+            ),
+            array(
+                'Symfony\Cmf\Bundle\FooBundle\Doctrine\Orm\Menu', 
+                '/cmf/foo/menu'
+            ),
+            array(
+                'Symfony\Cmf\Bundle\FooBundle\Doctrine\MongoDB\Menu', 
+                '/cmf/foo/menu'
+            ),
+            array(
+                'Symfony\Cmf\Bundle\FooBundle\Doctrine\CouchDB\Menu', 
+                '/cmf/foo/menu'
+            ),
+        );
+    }
+
+    /**
+     * @dataProvider provideGetBaseRoutePattern
+     */
+    public function testGetBaseRoutePattern($objFqn, $expected)
+    {
+        $admin = new PostAdmin('sonata.post.admin.post', $objFqn, 'SonataNewsBundle:PostAdmin');
+        $this->assertEquals($expected, $admin->getBaseRoutePattern());
     }
 
     public function testGetBaseRoutePatternWithChildAdmin()
@@ -156,10 +226,72 @@ class BaseAdminTest extends \PHPUnit_Framework_TestCase
         $admin->getBaseRoutePattern();
     }
 
-    public function testGetBaseRouteName()
+    public function provideGetBaseRouteName()
     {
-        $admin = new PostAdmin('sonata.post.admin.post', 'Application\Sonata\NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
-        $this->assertEquals('admin_sonata_news_post', $admin->getBaseRouteName());
+        return array(
+            array(
+                'Application\Sonata\NewsBundle\Entity\Post', 
+                'admin_sonata_news_post'
+            ),
+            array(
+                'Application\Sonata\NewsBundle\Document\Post', 
+                'admin_sonata_news_post'
+            ),
+            array(
+                'MyApplication\MyBundle\Entity\Post', 
+                'admin_myapplication_my_post'
+            ),
+            array(
+                'MyApplication\MyBundle\Entity\Post\Category',
+                'admin_myapplication_my_post_category'
+            ),
+            array(
+                'MyApplication\MyBundle\Entity\Product\Category',
+                'admin_myapplication_my_product_category'
+            ),
+            array(
+                'MyApplication\MyBundle\Entity\Other\Product\Category',
+                'admin_myapplication_my_other_product_category'
+            ),
+            array(
+                'Symfony\Cmf\Bundle\FooBundle\Document\Menu', 
+                'admin_cmf_foo_menu'
+            ),
+            array(
+                'Symfony\Cmf\Bundle\FooBundle\Doctrine\Phpcr\Menu', 
+                'admin_cmf_foo_menu'
+            ),
+            array(
+                'Symfony\Bundle\BarBarBundle\Doctrine\Phpcr\Menu', 
+                'admin_symfony_barbar_menu'
+            ),
+            array(
+                'Symfony\Bundle\BarBarBundle\Doctrine\Phpcr\Menu\Item',
+                'admin_symfony_barbar_menu_item'
+            ),
+	    array(
+                'Symfony\Cmf\Bundle\FooBundle\Doctrine\Orm\Menu', 
+                'admin_cmf_foo_menu'
+            ),
+            array(
+                'Symfony\Cmf\Bundle\FooBundle\Doctrine\MongoDB\Menu', 
+                'admin_cmf_foo_menu'
+            ),
+            array(
+                'Symfony\Cmf\Bundle\FooBundle\Doctrine\CouchDB\Menu', 
+                'admin_cmf_foo_menu'
+            ),
+        );
+    }
+
+    /**
+     * @dataProvider provideGetBaseRouteName
+     */
+    public function testGetBaseRouteName($objFqn, $expected)
+    {
+        $admin = new PostAdmin('sonata.post.admin.post', $objFqn, 'SonataNewsBundle:PostAdmin');
+
+        $this->assertEquals($expected, $admin->getBaseRouteName());
     }
 
     public function testGetBaseRouteNameWithChildAdmin()
@@ -179,6 +311,7 @@ class BaseAdminTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($postAdmin->hasRoute('show'));
         $this->assertTrue($postAdmin->hasRoute('sonata.post.admin.post.show'));
         $this->assertTrue($postAdmin->hasRoute('sonata.post.admin.post|sonata.post.admin.comment.show'));
+        $this->assertTrue($postAdmin->hasRoute('sonata.post.admin.comment.list'));
 
         $this->assertFalse($postAdmin->hasRoute('sonata.post.admin.post|sonata.post.admin.comment.edit'));
         $this->assertFalse($commentAdmin->hasRoute('edit'));
@@ -217,5 +350,85 @@ class BaseAdminTest extends \PHPUnit_Framework_TestCase
 
         $s = new FooTest_Admin;
         $this->assertEquals('salut', $admin->toString($s));
+        
+        // To string method is implemented, but returns null
+        $s = new FooTestNullToString_Admin;
+        $this->assertNotEmpty($admin->toString($s));
+
+        $this->assertEquals("", $admin->toString(false));
+    }
+    
+    public function testIsAclEnabled()
+    {
+        $postAdmin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
+
+        $this->assertFalse($postAdmin->isAclEnabled());
+
+        $commentAdmin = new CommentAdmin('sonata.post.admin.comment', 'Application\Sonata\NewsBundle\Entity\Comment', 'SonataNewsBundle:CommentAdmin');
+        $commentAdmin->setSecurityHandler($this->getMock('Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface'));
+        $this->assertTrue($commentAdmin->isAclEnabled());
+    }
+    
+    /**
+     * @covers Sonata\AdminBundle\Admin\Admin::getSubClasses
+     * @covers Sonata\AdminBundle\Admin\Admin::getSubClass
+     * @covers Sonata\AdminBundle\Admin\Admin::setSubClasses
+     * @covers Sonata\AdminBundle\Admin\Admin::hasSubClass
+     * @covers Sonata\AdminBundle\Admin\Admin::hasActiveSubClass
+     * @covers Sonata\AdminBundle\Admin\Admin::getActiveSubClass
+     * @covers Sonata\AdminBundle\Admin\Admin::getActiveSubclassCode
+     * @covers Sonata\AdminBundle\Admin\Admin::getClass
+     */
+    public function testSubClass()
+    {
+        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
+        $this->assertFalse($admin->hasSubClass('test'));
+        $this->assertFalse($admin->hasActiveSubClass());
+        $this->assertCount(0, $admin->getSubClasses());
+        $this->assertNull($admin->getActiveSubClass());
+        $this->assertNull($admin->getActiveSubclassCode());
+        $this->assertEquals('NewsBundle\Entity\Post', $admin->getClass());
+
+        // Just for the record, if there is no inheritance set, the getSubject is not used
+        // the getSubject can also lead to some issue
+         $admin->setSubject(new \stdClass());
+         $this->assertEquals('stdClass', $admin->getClass());
+
+        $admin->setSubClasses(array('extended1' => 'NewsBundle\Entity\PostExtended1', 'extended2' => 'NewsBundle\Entity\PostExtended2'));
+        $this->assertFalse($admin->hasSubClass('test'));
+        $this->assertTrue($admin->hasSubClass('extended1'));
+        $this->assertFalse($admin->hasActiveSubClass());
+        $this->assertCount(2, $admin->getSubClasses());
+        $this->assertNull($admin->getActiveSubClass());
+        $this->assertNull($admin->getActiveSubclassCode());
+        $this->assertEquals('stdClass', $admin->getClass());
+
+        $request = new \Symfony\Component\HttpFoundation\Request(array('subclass' => 'extended1'));
+        $admin->setRequest($request);
+        $this->assertFalse($admin->hasSubClass('test'));
+        $this->assertTrue($admin->hasSubClass('extended1'));
+        $this->assertTrue($admin->hasActiveSubClass());
+        $this->assertCount(2, $admin->getSubClasses());
+        $this->assertEquals('stdClass', $admin->getActiveSubClass());
+        $this->assertEquals('extended1', $admin->getActiveSubclassCode());
+        $this->assertEquals('stdClass', $admin->getClass());
+
+        $request->query->set('subclass', 'inject');
+        $this->assertNull($admin->getActiveSubclassCode());
+    }
+
+    /**
+     * @expectedException RuntimeException
+     */
+    public function testNonExistantSubclass()
+    {
+        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
+        $admin->setRequest(new \Symfony\Component\HttpFoundation\Request(array('subclass' => 'inject')));
+
+        $admin->setSubClasses(array('extended1' => 'NewsBundle\Entity\PostExtended1', 'extended2' => 'NewsBundle\Entity\PostExtended2'));
+
+        $this->assertTrue($admin->hasActiveSubClass());
+
+        $admin->getActiveSubClass();
     }
 }

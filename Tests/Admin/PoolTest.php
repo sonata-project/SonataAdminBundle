@@ -22,7 +22,7 @@ class PoolTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->pool = new Pool($this->getContainer(), 'Sonata Admin', '/path/to/pic.png');
+        $this->pool = new Pool($this->getContainer(), 'Sonata Admin', '/path/to/pic.png', array('foo'=>'bar'));
     }
 
     public function testGetGroups()
@@ -38,6 +38,16 @@ class PoolTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->assertEquals($expectedOutput, $this->pool->getGroups());
+    }
+
+    public function testHasGroup()
+    {
+        $this->pool->setAdminGroups(array(
+                'adminGroup1' => array()
+            ));
+
+        $this->assertTrue($this->pool->hasGroup('adminGroup1'));
+        $this->assertFalse($this->pool->hasGroup('adminGroup2'));
     }
 
     public function testGetDashboardGroups()
@@ -75,6 +85,38 @@ class PoolTest extends \PHPUnit_Framework_TestCase
         $groups = $pool->getDashboardGroups();
 
         $this->assertCount(1, $groups);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testGetAdminsByGroupWhenGroupNotSet()
+    {
+        $this->pool->setAdminGroups(array(
+                'adminGroup1' => array()
+            ));
+
+        $this->pool->getAdminsByGroup('adminGroup2');
+    }
+
+    public function testGetAdminsByGroupWhenGroupIsEmpty()
+    {
+        $this->pool->setAdminGroups(array(
+                'adminGroup1' => array()
+            ));
+
+        $this->assertEquals(array(), $this->pool->getAdminsByGroup('adminGroup1'));
+    }
+
+    public function testGetAdminsByGroup()
+    {
+        $this->pool->setAdminGroups(array(
+            'adminGroup1' => array('items' => array('sonata.admin1', 'sonata.admin2')),
+            'adminGroup2' => array('items' => array('sonata.admin3'))
+        ));
+
+        $this->assertCount(2, $this->pool->getAdminsByGroup('adminGroup1'));
+        $this->assertCount(1, $this->pool->getAdminsByGroup('adminGroup2'));
     }
 
     public function testGetAdminForClassWhenAdminClassIsNotSet()
@@ -150,6 +192,23 @@ class PoolTest extends \PHPUnit_Framework_TestCase
 
         $this->assertNull($this->pool->getTemplate('bar'));
         $this->assertEquals('Foo.html.twig', $this->pool->getTemplate('ajax'));
+    }
+
+    public function testGetTitleLogo()
+    {
+        $this->assertEquals('/path/to/pic.png', $this->pool->getTitleLogo());
+    }
+
+    public function testGetTitle()
+    {
+        $this->assertEquals('Sonata Admin', $this->pool->getTitle());
+    }
+
+    public function testGetOption()
+    {
+        $this->assertEquals('bar', $this->pool->getOption('foo'));
+
+        $this->assertEquals(null, $this->pool->getOption('non_existent_option'));
     }
 
     /**

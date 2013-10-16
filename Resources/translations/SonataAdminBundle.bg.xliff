@@ -1,94 +1,94 @@
 <?xml version="1.0"?>
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-    <file source-language="en" datatype="plaintext" original="" >
+    <file source-language="en" target-language="bg" datatype="plaintext" original="SonataAdminBundle.en.xliff" >
         <body>
             <trans-unit id="action_delete">
                 <source>action_delete</source>
-                <target>Изтрий</target>
+                <target>Изтриване</target>
             </trans-unit>
             <trans-unit id="btn_batch">
                 <source>btn_batch</source>
-                <target>OK</target>
+                <target>Изпълнение</target>
             </trans-unit>
             <trans-unit id="btn_create">
                 <source>btn_create</source>
-                <target>Създай</target>
+                <target>Създаване</target>
             </trans-unit>
             <trans-unit id="btn_create_and_edit_again">
                 <source>btn_create_and_edit_again</source>
-                <target>Създай</target>
+                <target>Създаване</target>
             </trans-unit>
             <trans-unit id="btn_create_and_create_a_new_one">
                 <source>btn_create_and_create_a_new_one</source>
-                <target>Създай и добави нов</target>
+                <target>Създаване и добавяне на нов елемент</target>
             </trans-unit>
             <trans-unit id="btn_create_and_return_to_list">
                 <source>btn_create_and_return_to_list</source>
-                <target>Create and return to list</target>
+                <target>Създаване и обратно към списъка</target>
             </trans-unit>
             <trans-unit id="btn_filter">
                 <source>btn_filter</source>
-                <target>Филтър</target>
+                <target>Филтриране</target>
             </trans-unit>
             <trans-unit id="btn_update">
                 <source>btn_update</source>
-                <target>Актуализация</target>
+                <target>Запис</target>
             </trans-unit>
             <trans-unit id="btn_update_and_edit_again">
                 <source>btn_update_and_edit_again</source>
-                <target>Запази</target>
+                <target>Запис</target>
             </trans-unit>
             <trans-unit id="btn_update_and_return_to_list">
                 <source>btn_update_and_return_to_list</source>
-                <target>Запази и затвори</target>
+                <target>Запис и затваряне</target>
             </trans-unit>
             <trans-unit id="link_delete">
                 <source>link_delete</source>
-                <target>Изтрий</target>
+                <target>Изтриване</target>
             </trans-unit>
             <trans-unit id="link_action_create">
                 <source>link_action_create</source>
-                <target>Добави</target>
+                <target>Нов елемент</target>
             </trans-unit>
             <trans-unit id="link_action_list">
                 <source>link_action_list</source>
-                <target>Обратно към списъка</target>
+                <target>Към списъка</target>
             </trans-unit>
             <trans-unit id="link_action_show">
                 <source>link_action_show</source>
-                <target>Покажи</target>
+                <target>Преглед</target>
             </trans-unit>
             <trans-unit id="link_action_edit">
                 <source>link_action_edit</source>
-                <target>Редактирай</target>
+                <target>Редактиране</target>
             </trans-unit>
             <trans-unit id="link_add">
                 <source>link_add</source>
-                <target>Добави</target>
+                <target>Добавяне</target>
             </trans-unit>
             <trans-unit id="link_list">
                 <source>link_list</source>
-                <target>Отвори</target>
+                <target>Преглед</target>
             </trans-unit>
             <trans-unit id="link_reset_filter">
                 <source>link_reset_filter</source>
-                <target>Изчисти</target>
+                <target>Отмяна</target>
             </trans-unit>
             <trans-unit id="title_create">
                 <source>title_create</source>
-                <target>Създай</target>
+                <target>Добавяне на елемент</target>
             </trans-unit>
             <trans-unit id="title_dashboard">
                 <source>title_dashboard</source>
-                <target>Начало</target>
+                <target>Начална страница</target>
             </trans-unit>
             <trans-unit id="title_edit">
                 <source>title_edit</source>
-                <target>Редактирай "%name%"</target>
+                <target>Редактиране на „%name%“</target>
             </trans-unit>
             <trans-unit id="title_list">
                 <source>title_list</source>
-                <target>Отвори</target>
+                <target>Списък</target>
             </trans-unit>
             <trans-unit id="link_next_pager">
                 <source>link_next_pager</source>
@@ -108,11 +108,11 @@
             </trans-unit>
             <trans-unit id="Admin">
                 <source>Admin</source>
-                <target>Admin</target>
+                <target>Администрация</target>
             </trans-unit>
             <trans-unit id="link_expand">
                 <source>link_expand</source>
-                <target>покажи/скрий</target>
+                <target>+/–</target>
             </trans-unit>
             <trans-unit id="no_result">
                 <source>no_result</source>
@@ -120,15 +120,15 @@
             </trans-unit>
             <trans-unit id="confirm_msg">
                 <source>confirm_msg</source>
-                <target>Сигурни ли сте?</target>
+                <target>Наистина ли?</target>
             </trans-unit>
             <trans-unit id="action_edit">
                 <source>action_edit</source>
-                <target>Редактирай</target>
+                <target>Редактиране</target>
             </trans-unit>
             <trans-unit id="action_show">
                 <source>action_show</source>
-                <target>Покажи</target>
+                <target>Преглед</target>
             </trans-unit>
             <trans-unit id="all_elements">
                 <source>all_elements</source>
@@ -136,71 +136,71 @@
             </trans-unit>
             <trans-unit id='flash_batch_empty'>
                 <source>flash_batch_empty</source>
-                <target>Действието е преустановено. Нищо не бе селектирано.</target>
+                <target>Действието беше прекъснато. Няма избрани елементи.</target>
             </trans-unit>
             <trans-unit id='flash_create_success'>
                 <source>flash_create_success</source>
-                <target>Елемента беше успешно създаден.</target>
+                <target>Елементът беше създаден.</target>
             </trans-unit>
             <trans-unit id='flash_create_error'>
                 <source>flash_create_error</source>
-                <target>Елемента не може да бъде създаден.</target>
+                <target>Възникна грешка по време на създаването.</target>
             </trans-unit>
             <trans-unit id='flash_edit_success'>
                 <source>flash_edit_success</source>
-                <target>Елемента беше успешно обновен.</target>
+                <target>Елементът беше обновен.</target>
             </trans-unit>
             <trans-unit id='flash_edit_error'>
                 <source>flash_edit_error</source>
-                <target>Елемента не може да бъде обновен.</target>
+                <target>Възникна грешка по време на обновяването.</target>
             </trans-unit>
             <trans-unit id='flash_batch_delete_success'>
                 <source>flash_batch_delete_success</source>
-                <target>Избраните елементи бяха успешно изтрити.</target>
+                <target>Избраните елементи бяха изтрити.</target>
             </trans-unit>
             <trans-unit id='flash_batch_delete_error'>
                 <source>flash_batch_delete_error</source>
-                <target>Избраните елементи не може да бъдат изтрити.</target>
+                <target>Възникна грешка по време на изтриването на избраните елементи.</target>
             </trans-unit>
             <trans-unit id='flash_delete_error'>
                 <source>flash_delete_error</source>
-                <target>Елемента не може да бъде изтрит.</target>
+                <target>Възникна грешка по време на изтриването.</target>
             </trans-unit>
             <trans-unit id='flash_delete_success'>
                 <source>flash_delete_success</source>
-                <target>Елемента беше изтрит успешно.</target>
+                <target>Елементът беше изтрит.</target>
             </trans-unit>
             <trans-unit id="link_breadcrumb_dashboard">
                 <source>breadcrumb.link_dashboard</source>
-                <target>&#8962;</target>
+                <target>Начална страница</target>
             </trans-unit>
             <trans-unit id="title_delete">
                 <source>title_delete</source>
-                <target>Потвърждение за изриване</target>
+                <target>Потвърдете изтриването</target>
             </trans-unit>
             <trans-unit id="message_delete_confirmation">
                 <source>message_delete_confirmation</source>
-                <target>Сигурни ли сте, че искате да изтриете избрания елемент?</target>
+                <target>Наистина ли искате да изтриете избрания елемент?</target>
             </trans-unit>
             <trans-unit id="btn_delete">
                 <source>btn_delete</source>
-                <target>Да, трий</target>
+                <target>Изтриване</target>
             </trans-unit>
             <trans-unit id="title_batch_confirmation">
                 <source>title_batch_confirmation</source>
-                <target>Потвърдете действието</target>
+                <target>Потвърждение на действието</target>
             </trans-unit>
             <trans-unit id="message_batch_confirmation">
                 <source>message_batch_confirmation</source>
-                <target>Сигурни ли сте, че искате да потвърдите действието и да го приложите за всички избрани елементи?</target>
+                <target>Наистина ли искате да изпълните действието върху избрания елемент?|Наистина ли искате да изпълните действието върху избраните %count% елемента?</target>
             </trans-unit>
             <trans-unit id="message_batch_all_confirmation">
                 <source>message_batch_all_confirmation</source>
-                <target>message_batch_all_confirmation</target>
+                <target>Наистина ли искате да изпълните действието върху всички елементи?</target>
             </trans-unit>
             <trans-unit id="btn_execute_batch_action">
                 <source>btn_execute_batch_action</source>
-                <target>Да, изпълни</target>
+                <target>Да</target>
             </trans-unit>
             <trans-unit id="label_type_yes">
                 <source>label_type_yes</source>
@@ -220,11 +220,11 @@
             </trans-unit>
             <trans-unit id="label_type_equals">
                 <source>label_type_equals</source>
-                <target>е равно на</target>
+                <target>съвпада със</target>
             </trans-unit>
             <trans-unit id="label_type_not_equals">
                 <source>label_type_not_equals</source>
-                <target>label_type_not_equals</target>
+                <target>не съвпада със</target>
             </trans-unit>
             <trans-unit id="label_type_equal">
                 <source>label_type_equal</source>
@@ -280,7 +280,7 @@
             </trans-unit>
             <trans-unit id="label_date_not_between">
                 <source>label_date_type_not_between</source>
-                <target>not between</target>
+                <target>не е между</target>
             </trans-unit>
             <trans-unit id="label_filters">
                 <source>label_filters</source>
@@ -292,7 +292,7 @@
             </trans-unit>
             <trans-unit id="link_action_history">
                 <source>link_action_history</source>
-                <target>Ревизии</target>
+                <target>Версии</target>
             </trans-unit>
             <trans-unit id="td_action">
                 <source>td_action</source>
@@ -300,7 +300,7 @@
             </trans-unit>
             <trans-unit id="td_revision">
                 <source>td_revision</source>
-                <target>Ревизии</target>
+                <target>Версии</target>
             </trans-unit>
             <trans-unit id="td_timestamp">
                 <source>td_timestamp</source>
@@ -312,11 +312,11 @@
             </trans-unit>
             <trans-unit id="label_view_revision">
                 <source>label_view_revision</source>
-                <target>Виж ревизия</target>
+                <target>Преглед на версията</target>
             </trans-unit>
             <trans-unit id="list_results_count">
                 <source>list_results_count</source>
-                <target>1 резултат|%count% резултата</target>
+                <target>Един резултат|%count% резултата</target>
             </trans-unit>
             <trans-unit id="label_export_download">
                 <source>label_export_download</source>
@@ -324,7 +324,7 @@
             </trans-unit>
             <trans-unit id="loading_information">
                 <source>loading_information</source>
-                <target>Зареждане на информация…</target>
+                <target>Зареждане на информацията…</target>
             </trans-unit>
             <trans-unit id="btn_preview">
                 <source>btn_preview</source>
@@ -332,15 +332,59 @@
             </trans-unit>
             <trans-unit id="btn_preview_approve">
                 <source>btn_preview_approve</source>
-                <target>Одобрявам</target>
+                <target>Одобряване</target>
             </trans-unit>
             <trans-unit id="btn_preview_decline">
                 <source>btn_preview_decline</source>
-                <target>Откажете</target>
+                <target>Отказване</target>
             </trans-unit>
             <trans-unit id="label_per_page">
-              <source>label_per_page</source>
-              <target>label_per_page</target>
+                <source>label_per_page</source>
+                <target>На страница</target>
+            </trans-unit>
+            <trans-unit id="list_select">
+              <source>list_select</source>
+              <target>Избор</target>
+            </trans-unit>
+            <trans-unit id="confirm_exit">
+                <source>confirm_exit</source>
+                <target>Имате незаписани промени.</target>
+            </trans-unit>
+            <trans-unit id="link_edit_acl">
+              <source>link_edit_acl</source>
+              <target>Редактиране на ACL</target>
+            </trans-unit>
+            <trans-unit id="btn_update_acl">
+              <source>btn_update_acl</source>
+              <target>Запис на ACL</target>
+            </trans-unit>
+            <trans-unit id="flash_acl_update_success">
+                <source>flash_acl_edit_success</source>
+                <target>Списъкът за контрол на достъпа (ACL) беше обновен.</target>
+            </trans-unit>
+            <trans-unit id="link_action_acl">
+                <source>link_action_acl</source>
+                <target>ACL (списък за контрол на достъпа)</target>
+            </trans-unit>
+            <trans-unit id="short_object_description_placeholder">
+              <source>short_object_description_placeholder</source>
+              <target>Нищо не е избрано</target>
+            </trans-unit>
+            <trans-unit id="title_search_results">
+                <source>title_search_results</source>
+                <target>title_search_results</target>
+            </trans-unit>
+            <trans-unit id="search_placeholder">
+                <source>search_placeholder</source>
+                <target>search_placeholder</target>
+            </trans-unit>
+            <trans-unit id="no_results_found">
+                <source>no_results_found</source>
+                <target>no_results_found</target>
+            </trans-unit>
+            <trans-unit id="add_new_entry">
+                <source>add_new_entry</source>
+                <target>add_new_entry</target>
             </trans-unit>
         </body>
     </file>

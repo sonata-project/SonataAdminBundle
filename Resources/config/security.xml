@@ -10,6 +10,7 @@
         <parameter key="sonata.admin.security.handler.acl.class" >Sonata\AdminBundle\Security\Handler\AclSecurityHandler</parameter>
         <parameter key="sonata.admin.security.mask.builder.class" >Sonata\AdminBundle\Security\Acl\Permission\MaskBuilder</parameter>
         <parameter key="sonata.admin.manipulator.acl.admin.class">Sonata\AdminBundle\Util\AdminAclManipulator</parameter>
+        <parameter key="sonata.admin.object.manipulator.acl.admin.class">Sonata\AdminBundle\Util\AdminObjectAclManipulator</parameter>
     </parameters>
 
     <services>
@@ -35,6 +36,10 @@
             </call>
         </service>
         <service id="sonata.admin.manipulator.acl.admin" class="%sonata.admin.manipulator.acl.admin.class%" >
+            <argument>%sonata.admin.security.mask.builder.class%</argument>
+        </service>
+        <service id="sonata.admin.object.manipulator.acl.admin" class="%sonata.admin.object.manipulator.acl.admin.class%">
+            <argument type="service" id="form.factory"/>
             <argument>%sonata.admin.security.mask.builder.class%</argument>
         </service>
     </services>

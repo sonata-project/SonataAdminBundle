@@ -12,52 +12,40 @@ file that was distributed with this source code.
 {% extends base_template %}
 
 {% block actions %}
-    <div class="sonata-actions">
-        {% if admin.hasroute('edit') and admin.id(object) and admin.isGranted('EDIT', object) and admin.show|length > 0 %}
-            <a class="btn sonata-action-element" href="{{ admin.generateObjectUrl('edit', object) }}">
-                <i class="icon-edit"></i>
-                {{ 'link_action_edit'|trans({}, 'SonataAdminBundle') }}</a>
-        {% endif %}
-        {% if admin.hasroute('show') and admin.isGranted('VIEW', object)%}
-            <a class="btn sonata-action-element" href="{{ admin.generateObjectUrl('show', object) }}">
-                <i class="icon-zoom-in"></i>
-                {{ 'link_action_show'|trans({}, 'SonataAdminBundle') }}</a>
-        {% endif %}
-        {% if admin.hasroute('list') and admin.isGranted('LIST')%}
-            <a class="btn sonata-action-element" href="{{ admin.generateUrl('list') }}">
-                <i class="icon-list"></i>
-                {{ 'link_action_list'|trans({}, 'SonataAdminBundle') }}</a>
-        {% endif %}
+    <div class="sonata-actions btn-group">
+        {% include 'SonataAdminBundle:Button:edit_button.html.twig' %}
+        {% include 'SonataAdminBundle:Button:acl_button.html.twig' %}
+        {% include 'SonataAdminBundle:Button:show_button.html.twig' %}
+        {% include 'SonataAdminBundle:Button:list_button.html.twig' %}
     </div>
 {% endblock %}
 
 {% block content %}
-    <div class="row">
-        <div class="span5">
-            <table class="table" id="revisions">
-                <thead>
-                    <tr>
-                        <th>{{ "td_revision"|trans({}, 'SonataAdminBundle') }}</th>
-                        <th>{{ "td_timestamp"|trans({}, 'SonataAdminBundle') }}</th>
-                        <th>{{ "td_username"|trans({}, 'SonataAdminBundle') }}</th>
-                        <th>{{ "td_action"|trans({}, 'SonataAdminBundle') }}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for revision in revisions %}
-                        <tr>
-                            <td>{{ revision.rev}}</td>
-                            <td>{{ revision.timestamp | date}}</td>
-                            <td>{{ revision.username}}</td>
-                            <td><a href="{{ admin.generateObjectUrl('history_view_revision', object, {'revision': revision.rev }) }}" class="revision-link" rel="{{ revision.rev }}">{{ "label_view_revision"|trans({}, 'SonataAdminBundle') }}</a></td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-        <div id="revision-detail" class="span7 revision-detail">
 
-        </div>
+    <div class="span5">
+        <table class="table" id="revisions">
+            <thead>
+                <tr>
+                    <th>{{ "td_revision"|trans({}, 'SonataAdminBundle') }}</th>
+                    <th>{{ "td_timestamp"|trans({}, 'SonataAdminBundle') }}</th>
+                    <th>{{ "td_username"|trans({}, 'SonataAdminBundle') }}</th>
+                    <th>{{ "td_action"|trans({}, 'SonataAdminBundle') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for revision in revisions %}
+                    <tr>
+                        <td>{{ revision.rev}}</td>
+                        <td>{% include admin.getTemplate('history_revision_timestamp') %}</td>
+                        <td>{{ revision.username}}</td>
+                        <td><a href="{{ admin.generateObjectUrl('history_view_revision', object, {'revision': revision.rev }) }}" class="revision-link" rel="{{ revision.rev }}">{{ "label_view_revision"|trans({}, 'SonataAdminBundle') }}</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div id="revision-detail" class="span7 revision-detail">
+
     </div>
 
     <script type="text/javascript">
@@ -73,6 +61,7 @@ file that was distributed with this source code.
 
                 jQuery.ajax({
                     url: jQuery(this).attr('href'),
+                    dataType: 'html',
                     success: function(data) {
                         jQuery('#revision-detail').html(data);
                     }

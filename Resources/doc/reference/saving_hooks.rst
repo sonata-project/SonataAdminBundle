@@ -1,24 +1,41 @@
 Saving hooks
 ============
 
-When the model is persisted upon on the stated object two Admin methods are
-always called. You can extend this method to add custom business logic.
+When a SonataAdmin is submitted for processing, two events are always called. One
+is before any persistence layer interaction and the other is afterwards, the
+events are named as follows:
 
-    - new object : ``prePersist($object)`` / ``postPersist($object)``
-    - edited object : ``preUpdate($object)`` / ``postUpdate($object)``
-    - deleted object : ``preRemove($object)`` / ``postRemove($object)``
+- new object : ``prePersist($object)`` / ``postPersist($object)``
+- edited object : ``preUpdate($object)`` / ``postUpdate($object)``
+- deleted object : ``preRemove($object)`` / ``postRemove($object)``
+
+It is worth noting that the update events are called whenever the Admin is successfully
+submitted, regardless of whether there are any actual persistence layer events. This
+differs from the use of preUpdate and postUpdate events in DoctrineORM and perhaps some
+other persistence layers.
+
+For example: if you submit an edit form without changing any of the values on the form
+then there is nothing to change in the database and DoctrineORM would not fire the **Entity**
+class's own ``preUpdate`` and ``postUpdate`` events. However, your **Admin** class's
+``preUpdate``  and  ``postUpdate`` methods *are* called and this can be used to your
+advantage.
+
+.. note::
+
+    When embedding one Admin within another, for example using the ``sonata_type_admin``
+    field type, the child Admin's hooks are **not** fired.
 
 
 Example used with the FOS/UserBundle
 ------------------------------------
 
 The ``FOSUserBundle`` provides authentication features for your Symfony2 Project,
-and is compatible with Doctrine ORM & ODM. See 
-https://github.com/FriendsOfSymfony/UserBundle for more information.
+and is compatible with Doctrine ORM, Doctrine ODM and Propel. See
+https://github.com/FriendsOfSymfony/FOSUserBundle/ for more information.
 
-The user management system requires to perform specific call when the user 
-password or username are updated. This is how the Admin bundle can be used to 
-solve the issue by using the ``prePersist`` saving hook.
+The user management system requires to perform specific call when the user
+password or username are updated. This is how the Admin bundle can be used to
+solve the issue by using the ``preUpdate`` saving hook.
 
 .. code-block:: php
 
@@ -50,7 +67,7 @@ solve the issue by using the ``prePersist`` saving hook.
                 ->end()
             ;
         }
-        
+
         public function preUpdate($user)
         {
             $this->getUserManager()->updateCanonicalFields($user);
@@ -74,15 +91,17 @@ solve the issue by using the ``prePersist`` saving hook.
 
 The service declaration where the ``UserManager`` is injected into the Admin class.
 
-.. code-block:: xml
+.. configuration-block::
 
-    <service id="fos.user.admin.user" class="%fos.user.admin.user.class%">
-        <tag name="sonata.admin" manager_type="orm" group="fos_user" />
-        <argument />
-        <argument>%fos.user.admin.user.entity%</argument>
-        <argument />
+    .. code-block:: xml
 
-        <call method="setUserManager">
-            <argument type='service' id='fos_user.user_manager' />
-        </call>
-    </service>
+        <service id="fos.user.admin.user" class="%fos.user.admin.user.class%">
+            <tag name="sonata.admin" manager_type="orm" group="fos_user" />
+            <argument />
+            <argument>%fos.user.admin.user.entity%</argument>
+            <argument />
+
+            <call method="setUserManager">
+                <argument type='service' id='fos_user.user_manager' />
+            </call>
+        </service>

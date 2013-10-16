@@ -8,19 +8,36 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Sonata\AdminBundle\Tests\Translator;
 
 use Sonata\AdminBundle\Translator\NativeLabelTranslatorStrategy;
 
 class NativeTranslatorStrategyTest extends \PHPUnit_Framework_TestCase
 {
-    public function testLabel()
+
+    /**
+     * @dataProvider getLabelTests
+     */
+    public function testLabel($expectedLabel, $label)
     {
         $strategy = new NativeLabelTranslatorStrategy;
 
-        $this->assertEquals('Is Valid', $strategy->getLabel('isValid', 'form', 'label'));
-        $this->assertEquals('Is Valid', $strategy->getLabel('is_Valid', 'form', 'label'));
-        $this->assertEquals('Is0 Valid', $strategy->getLabel('is0Valid', 'form', 'label'));
-        $this->assertEquals('Is Valid Super Cool', $strategy->getLabel('isValid_SuperCool', 'form', 'label'));
+        $this->assertEquals($expectedLabel, $strategy->getLabel($label, 'form', 'label'));
+    }
+
+    public function getLabelTests()
+    {
+        return array(
+            array('Is Valid', 'isValid'),
+            array('Is Valid', 'is_Valid'),
+            array('Is0 Valid', 'is0Valid'),
+            array('Is Valid', '_isValid'),
+            array('Is Valid', '__isValid'),
+            array('Is Valid', 'isValid_'),
+            array('Is Valid', 'isValid__'),
+            array('Is Valid', '__isValid__'),
+            array('Is Valid Super Cool', 'isValid_SuperCool'),
+        );
     }
 }

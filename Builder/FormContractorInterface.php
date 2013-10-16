@@ -17,7 +17,7 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormFactoryInterface;
 
-interface FormContractorInterface
+interface FormContractorInterface extends BuilderInterface
 {
 
     /**
@@ -26,16 +26,6 @@ interface FormContractorInterface
      * @param \Symfony\Component\Form\FormFactoryInterface $formFactory
      */
     public function __construct(FormFactoryInterface $formFactory);
-
-    /**
-     * @abstract
-     *
-     * @param \Sonata\AdminBundle\Admin\AdminInterface            $admin
-     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
-     *
-     * @return void
-     */
-    public function fixFieldDescription(AdminInterface $admin, FieldDescriptionInterface $fieldDescription);
 
     /**
      * @abstract

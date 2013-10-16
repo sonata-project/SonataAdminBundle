@@ -4,6 +4,7 @@ namespace Sonata\AdminBundle\Tests\Form\Type;
 
 use Sonata\AdminBundle\Form\Type\Filter\DateTimeRangeType;
 use Symfony\Component\Form\Tests\Extension\Core\Type\TypeTestCase;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class DateTimeRangeTypeTest extends TypeTestCase
 {
@@ -13,6 +14,16 @@ class DateTimeRangeTypeTest extends TypeTestCase
 
         $formType = new DateTimeRangeType($stub);
 
-        $this->assertTrue(is_array($formType->getDefaultOptions(array())));
+        $resolver = new OptionsResolver();
+
+        $formType->setDefaultOptions($resolver);
+
+        $options = $resolver->resolve();
+
+        $expected = array(
+            'field_type'       => 'sonata_type_datetime_range',
+            'field_options'    => array('date_format' => 'yyyy-MM-dd')
+        );
+        $this->assertEquals($expected, $options);
     }
 }

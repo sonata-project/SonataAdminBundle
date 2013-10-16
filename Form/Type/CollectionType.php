@@ -14,6 +14,8 @@ namespace Sonata\AdminBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
@@ -37,11 +39,12 @@ class CollectionType extends AbstractType
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
-    public function getParent()
+    public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        return 'field';
+        $view->vars['btn_add'] = $options['btn_add'];
+        $view->vars['btn_catalogue'] = $options['btn_catalogue'];
     }
 
     /**
@@ -52,7 +55,9 @@ class CollectionType extends AbstractType
         $resolver->setDefaults(array(
             'modifiable'    => false,
             'type'          => 'text',
-            'type_options'  => array()
+            'type_options'  => array(),
+            'btn_add'       => 'link_add',
+            'btn_catalogue' => 'SonataAdminBundle'
         ));
     }
 

@@ -6,35 +6,38 @@
         <ul {{ block('widget_container_attributes') }} class="inputs-list">
         {% for child in form %}
             <li>
-                {{ form_label(child, null, { 'in_list_checkbox' : true, 'widget' : form_widget(child) } ) }}
+                {% set form_widget_content %}
+                    {{ form_widget(child) }}
+                {% endset %}
+                {{ form_label(child, null, { 'in_list_checkbox' : true, 'widget' : form_widget_content } ) }}
             </li>
         {% endfor %}
         </ul>
     {% else %}
     <select {{ block('widget_attributes') }}{% if multiple %} multiple="multiple"{% endif %}>
         {% if empty_value is not none %}
-            <option value="">{{ empty_value|trans }}</option>
+            <option value="">{{ empty_value|trans({}, translation_domain) }}</option>
         {% endif %}
         {% if preferred_choices|length > 0 %}
             {% set options = preferred_choices %}
-            {{ block('widget_choice_options') }}
+            {{ block('choice_widget_options') }}
             {% if choices|length > 0 and separator is not none %}
                 <option disabled="disabled">{{ separator }}</option>
             {% endif %}
         {% endif %}
         {% set options = choices %}
-        {{ block('widget_choice_options') }}
+        {{ block('choice_widget_options') }}
     </select>
     {% endif %}
 {% endspaceless %}
 {% endblock choice_widget %}
 
-{% block field_widget %}
+{% block form_widget_simple %}
 {% spaceless %}
     {% set type = type|default('text') %}
     <input type="{{ type }}" {{ block('widget_attributes') }} value="{{ value }}" />
 {% endspaceless %}
-{% endblock field_widget %}
+{% endblock form_widget_simple %}
 
 {# Labels #}
 
@@ -50,18 +53,18 @@
         <label{% for attrname,attrvalue in attr %} {{attrname}}="{{attrvalue}}"{% endfor %}>
             {{ widget|raw }}
             <span>
-                {{ label|trans }}
+                {{ label|trans({}, translation_domain) }}
             </span>
         </label>
     {% else %}
-        <label{% for attrname,attrvalue in attr %} {{attrname}}="{{attrvalue}}"{% endfor %}>{{ label|trans }}</label>
+        <label{% for attrname,attrvalue in attr %} {{attrname}}="{{attrvalue}}"{% endfor %}>{{ label|trans({}, translation_domain) }}</label>
     {% endif %}
 {% endspaceless %}
 {% endblock %}
 
 {# Rows #}
 
-{% block field_row %}
+{% block form_row %}
 {% spaceless %}
     <div class="control-group {{ (0 < form_errors(form)|length)? 'error':'' }} ">
         {{ form_label(form, label|default(null)) }}
@@ -71,14 +74,14 @@
         </div>
     </div>
 {% endspaceless %}
-{% endblock field_row %}
+{% endblock form_row %}
 
 {# Misc #}
 
-{% block field_errors %}
+{% block form_errors %}
 {% spaceless %}
     {% if errors|length > 0 %}
-        {% if not form.hasParent  or 'repeated' in form.get('types') %}
+        {% if not form.parent  or 'repeated' in form.vars['block_prefixes'] %}
             <div class="control-group error">
         {% endif %}
         <span class="help-inline">
@@ -88,9 +91,9 @@
                 {% endif %}
             {% endfor %}
         </span>
-        {% if not form.hasParent  or 'repeated' in form.get('types') %}
+        {% if not form.parent  or 'repeated' in form.vars['block_prefixes'] %}
             </div>
         {% endif %}
     {% endif %}
 {% endspaceless %}
-{% endblock field_errors %}
+{% endblock form_errors %}
