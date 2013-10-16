@@ -386,6 +386,14 @@
                 <source>add_new_entry</source>
                 <target>rajouter un élément</target>
             </trans-unit>
+            <trans-unit id="sonata_notification">
+                <source>sonata_notification</source>
+                <target>Notifications</target>
+            </trans-unit>
+            <trans-unit id="sonata_ecommerce">
+                <source>sonata_ecommerce</source>
+                <target>e-Commerce</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
