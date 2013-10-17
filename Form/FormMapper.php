@@ -56,7 +56,21 @@ class FormMapper extends BaseGroupedMapper
      */
     public function add($name, $type = null, array $options = array(), array $fieldDescriptionOptions = array())
     {
-        $label = $name instanceof FormBuilder ? $name->getName() : $name;
+        if ($name instanceof FormBuilder) {
+            $fieldName = $name->getName();
+        } else {
+            $fieldName = $name;
+        }
+
+        // "Dot" notation is not allowed as form name, but can be used as property path to access nested data.
+        if (!$name instanceof FormBuilder && strpos($fieldName, '.')!==false && !isset($options['property_path'])) {
+             $options['property_path'] = $fieldName;
+
+             // fix the form name
+             $fieldName = str_replace('.', '__', $fieldName);
+        }
+
+        $label = $fieldName;
 
         $group = $this->addFieldToCurrentGroup($label);
 
@@ -77,7 +91,11 @@ class FormMapper extends BaseGroupedMapper
         // Note that the builder var is actually the formContractor:
         $this->builder->fixFieldDescription($this->admin, $fieldDescription, $fieldDescriptionOptions);
 
-        $this->admin->addFormFieldDescription($name instanceof FormBuilder ? $name->getName() : $name, $fieldDescription);
+        if ($fieldName != $name) {
+            $fieldDescription->setName($fieldName);
+        }
+
+        $this->admin->addFormFieldDescription($fieldName, $fieldDescription);
 
         if ($name instanceof FormBuilder) {
             $this->formBuilder->add($name);
@@ -95,10 +113,10 @@ class FormMapper extends BaseGroupedMapper
                 unset($options['help']);
             }
 
-            $this->formBuilder->add($name, $type, $options);
+            $this->formBuilder->add($fieldDescription->getName(), $type, $options);
 
             if (null !== $help) {
-                $this->admin->getFormFieldDescription($name)->setHelp($help);
+                $this->admin->getFormFieldDescription($fieldDescription->getName())->setHelp($help);
             }
         }
 
@@ -173,7 +191,7 @@ class FormMapper extends BaseGroupedMapper
 
         return $this;
     }
-    
+
     /**
      * {@inheritdoc}
      */
