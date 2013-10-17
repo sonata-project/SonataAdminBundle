@@ -208,6 +208,10 @@ class HelperController
         $admin->setRequest($request);
 
         // alter should be done by using a post method
+        if (!$request->isXmlHttpRequest()) {
+            return new JsonResponse(array('status' => 'KO', 'message' => 'Expected a XmlHttpRequest request header'));
+        }
+
         if ($request->getMethod() != 'POST') {
             return new JsonResponse(array('status' => 'KO', 'message' => 'Expected a POST Request'));
         }

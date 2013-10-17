@@ -162,7 +162,7 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
             'field'   => 'enabled',
             'value'   => 1,
             'context' => 'list',
-        ), array(), array(), array(), array(), array('REQUEST_METHOD' => 'POST'));
+        ), array(), array(), array(), array(), array('REQUEST_METHOD' => 'POST', 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'));
 
         $pool = new Pool($container, 'title', 'logo');
 
