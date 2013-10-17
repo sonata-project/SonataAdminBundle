@@ -1,7 +1,11 @@
 <span class="inner-field-short-description">
-    {% if admin.hasRoute('edit') and admin.isGranted('EDIT') %}
-        <a href="{{ admin.generateObjectUrl('edit', object) }}" target="new">{{ description }}</a>
+    {% if object %}
+        {% if admin.hasRoute('edit') and admin.isGranted('EDIT') %}
+            <a href="{{ admin.generateObjectUrl('edit', object) }}" target="new">{{ object }}</a>
+        {% else %}
+            {{ object }}
+        {% endif %}
     {% else %}
-        {{ description }}
+        {{ 'short_object_description_placeholder'|trans({}, 'SonataAdminBundle') }}
     {% endif %}
 </span>
