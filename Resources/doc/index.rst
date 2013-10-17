@@ -56,3 +56,4 @@ Cookbook
    cookbook/recipe_file_uploads
    cookbook/recipe_image_previews
    cookbook/recipe_row_templates
+   cookbook/recipe_sortable_listing
