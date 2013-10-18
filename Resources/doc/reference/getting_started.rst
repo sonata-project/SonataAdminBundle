@@ -230,7 +230,16 @@ At this point you have basic administration actions for your model. If you visit
 your model mapped. You can start creating, listing, editing and deleting instances.
 
 You probably want to put your own project's name and logo on the top bar.
-You can do so on your project's main config.yml file:
+
+Put your logo file here ``src/Acme/DemoBundle/Resources/public/img/fancy_acme_logo.png``
+    
+Install your assets:
+
+.. code-block:: sh
+
+    $ php app/console assets:install
+
+Now you can change your project's main config.yml file:
 
 .. configuration-block::
 
@@ -239,7 +248,7 @@ You can do so on your project's main config.yml file:
         # app/config/config.yml
         sonata_admin:
             title:      Acme Demo Bundle
-            title_logo: /bundles/acmedemo/fancy_acme_logo.png
+            title_logo: bundles/acmedemo/img/fancy_acme_logo.png
 
 
 
