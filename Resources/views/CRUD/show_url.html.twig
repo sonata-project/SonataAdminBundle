@@ -1,0 +1,54 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{% extends 'SonataAdminBundle:CRUD:base_show_field.html.twig' %}
+
+{% block field %}
+{% spaceless %}
+    {% if value is empty %}
+        &nbsp;
+    {% else %}
+        {% if field_description.options.url is defined %}
+            {# target url is string #}
+            {% set url_address = field_description.options.url %}
+        {% elseif field_description.options.route is defined and field_description.options.route.name not in ['edit', 'show'] %}
+            {# target url is Symfony route #}
+            {% set parameters = field_description.options.route.parameters|default([]) %}
+
+            {# route with paramter related to object ID #}
+            {% if field_description.options.route.identifier_parameter_name is defined %}
+                {% set parameters = parameters|merge({(field_description.options.route.identifier_parameter_name):(admin.normalizedidentifier(object))}) %}
+            {% endif %}
+
+            {% if field_description.options.route.absolute|default(false) %}
+                {% set url_address = url(field_description.options.route.name, parameters) %}
+            {% else %}
+                {% set url_address = path(field_description.options.route.name, parameters) %}
+            {% endif %}
+        {% else %}
+            {# value is url #}
+            {% set url_address = value %}
+        {% endif %}
+
+        {% if field_description.options.hide_protocol|default(false) %}
+            {% set value = value|replace({'http://': '', 'https://': ''}) %}
+        {% endif %}
+
+        <a href="{{ url_address }}">
+            {%- if field_description.options.safe -%}
+                {{- value|raw -}}
+            {%- else -%}
+                {{- value -}}
+            {%- endif -%}
+        </a>
+    {% endif %}
+{% endspaceless %}
+{% endblock %}
