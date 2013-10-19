@@ -56,10 +56,14 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
     private $parameters;
 
     /**
-     *
      * @var Session
      */
     private $session;
+
+    /**
+     * @var Sonata\AdminBundle\Model\AuditManager
+     */
+    private $auditManager;
 
     /**
      * {@inheritDoc}
@@ -124,9 +128,16 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->method('getResponse')
             ->will($this->returnValue(new StreamedResponse()));
 
+        $this->auditManager = $this->getMockBuilder('Sonata\AdminBundle\Model\AuditManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        // php 5.3 BC
+        $auditManager = $this->auditManager;
+
         $container->expects($this->any())
             ->method('get')
-            ->will($this->returnCallback(function($id) use ($pool, $request, $admin, $templating, $twig, $session, $exporter) {
+            ->will($this->returnCallback(function($id) use ($pool, $request, $admin, $templating, $twig, $session, $exporter, $auditManager) {
                     switch ($id) {
                         case 'sonata.admin.pool':
                             return $pool;
@@ -142,6 +153,8 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
                             return $session;
                         case 'sonata.admin.exporter':
                             return $exporter;
+                        case 'sonata.admin.audit.manager':
+                            return $auditManager;
                     }
 
                     return null;
@@ -1305,5 +1318,109 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\StreamedResponse', $response);
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertEquals(array(), $this->session->getFlashBag()->all());
+    }
+
+    public function testHistoryActionAccessDenied()
+    {
+        $this->setExpectedException('Symfony\Component\Security\Core\Exception\AccessDeniedException');
+
+        $this->admin->expects($this->once())
+            ->method('isGranted')
+            ->with($this->equalTo('EDIT'))
+            ->will($this->returnValue(false));
+
+        $this->controller->historyAction();
+    }
+
+    public function testHistoryActionNotFoundException()
+    {
+        $this->setExpectedException('Symfony\Component\HttpKernel\Exception\NotFoundHttpException');
+
+        $this->admin->expects($this->once())
+            ->method('isGranted')
+            ->with($this->equalTo('EDIT'))
+            ->will($this->returnValue(true));
+
+        $this->admin->expects($this->once())
+            ->method('getObject')
+            ->will($this->returnValue(false));
+
+        $this->controller->historyAction();
+    }
+
+    public function testHistoryActionNoReader()
+    {
+        $this->setExpectedException('Symfony\Component\HttpKernel\Exception\NotFoundHttpException', 'unable to find the audit reader for class : Foo');
+
+        $this->request->query->set('id', 123);
+
+        $this->admin->expects($this->once())
+            ->method('isGranted')
+            ->with($this->equalTo('EDIT'))
+            ->will($this->returnValue(true));
+
+        $object = new \stdClass();
+
+        $this->admin->expects($this->once())
+            ->method('getObject')
+            ->will($this->returnValue($object));
+
+        $this->admin->expects($this->any())
+            ->method('getClass')
+            ->will($this->returnValue('Foo'));
+
+        $this->auditManager->expects($this->once())
+            ->method('hasReader')
+            ->with($this->equalTo('Foo'))
+            ->will($this->returnValue(false));
+
+        $this->controller->historyAction();
+    }
+
+    public function testHistoryAction()
+    {
+        $this->request->query->set('id', 123);
+
+        $this->admin->expects($this->once())
+            ->method('isGranted')
+            ->with($this->equalTo('EDIT'))
+            ->will($this->returnValue(true));
+
+        $object = new \stdClass();
+
+        $this->admin->expects($this->once())
+            ->method('getObject')
+            ->will($this->returnValue($object));
+
+        $this->admin->expects($this->any())
+            ->method('getClass')
+            ->will($this->returnValue('Foo'));
+
+        $this->auditManager->expects($this->once())
+            ->method('hasReader')
+            ->with($this->equalTo('Foo'))
+            ->will($this->returnValue(true));
+
+        $reader = $this->getMock('Sonata\AdminBundle\Model\AuditReaderInterface');
+
+        $this->auditManager->expects($this->once())
+            ->method('getReader')
+            ->with($this->equalTo('Foo'))
+            ->will($this->returnValue($reader));
+
+        $reader->expects($this->once())
+            ->method('findRevisions')
+            ->with($this->equalTo('Foo'), $this->equalTo(123))
+            ->will($this->returnValue(array()));
+
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $this->controller->historyAction());
+
+        $this->assertEquals($this->admin, $this->parameters['admin']);
+        $this->assertEquals('SonataAdminBundle::standard_layout.html.twig', $this->parameters['base_template']);
+        $this->assertEquals($this->pool, $this->parameters['admin_pool']);
+
+        $this->assertEquals('history', $this->parameters['action']);
+        $this->assertEquals(array(), $this->parameters['revisions']);
+        $this->assertEquals($object, $this->parameters['object']);
     }
 }
