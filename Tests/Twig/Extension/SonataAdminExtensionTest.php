@@ -89,6 +89,11 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
         // routing extension
         $xmlFileLoader = new XmlFileLoader(new FileLocator(array(__DIR__.'/../../../Resources/config/routing')));
         $routeCollection = $xmlFileLoader->load('sonata_admin.xml');
+
+        $xmlFileLoader = new XmlFileLoader(new FileLocator(array(__DIR__.'/../../Fixtures/Resources/config/routing')));
+        $testRouteCollection = $xmlFileLoader->load('routing.xml');
+
+        $routeCollection->addCollection($testRouteCollection);
         $requestContext = new RequestContext();
         $urlGenerator = new UrlGenerator($routeCollection, $requestContext);
         $this->environment->addExtension(new RoutingExtension($urlGenerator));
@@ -111,6 +116,11 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
 
         $this->admin->expects($this->any())
             ->method('id')
+            ->with($this->equalTo($this->object))
+            ->will($this->returnValue(12345));
+
+        $this->admin->expects($this->any())
+            ->method('getNormalizedIdentifier')
             ->with($this->equalTo($this->object))
             ->will($this->returnValue(12345));
 
@@ -204,6 +214,8 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
                         return 'SonataAdminBundle:CRUD:list_array.html.twig';
                     case 'trans':
                         return 'SonataAdminBundle:CRUD:list_trans.html.twig';
+                    case 'url':
+                        return 'SonataAdminBundle:CRUD:list_url.html.twig';
                     case 'nonexistent':
                         // template doesn`t exist
                         return 'SonataAdminBundle:CRUD:list_nonexistent_template.html.twig';
@@ -257,6 +269,7 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
             array('<td class="sonata-ba-list-field sonata-ba-list-field-trans" objectId="12345"> Delete </td>', 'trans', 'action_delete', array('catalogue'=>'SonataAdminBundle')),
             array('<td class="sonata-ba-list-field sonata-ba-list-field-trans" objectId="12345"> </td>', 'trans', null, array('catalogue'=>'SonataAdminBundle')),
             array('<td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345"> Status1 </td>', 'choice', 'Status1', array()),
+            array('<td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345"> Status1 </td>', 'choice', array('Status1'), array('choices'=>array(), 'multiple'=>true)),
             array('<td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345"> Alias1 </td>', 'choice', 'Status1', array('choices'=>array('Status1'=>'Alias1', 'Status2'=>'Alias2', 'Status3'=>'Alias3'))),
             array('<td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345"> </td>', 'choice', null, array('choices'=>array('Status1'=>'Alias1', 'Status2'=>'Alias2', 'Status3'=>'Alias3'))),
             array('<td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345"> NoValidKeyInChoices </td>', 'choice', 'NoValidKeyInChoices', array('choices'=>array('Status1'=>'Alias1', 'Status2'=>'Alias2', 'Status3'=>'Alias3'))),
@@ -268,6 +281,25 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
             array('<td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345"> NoValidKeyInChoices, Alias2 </td>', 'choice', array('NoValidKeyInChoices', 'Status2'), array('choices'=>array('Status1'=>'Alias1', 'Status2'=>'Alias2', 'Status3'=>'Alias3'), 'multiple'=>true)),
             array('<td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345"> Delete, Alias3 </td>', 'choice', array('Foo', 'Status3'), array('catalogue'=>'SonataAdminBundle', 'choices'=>array('Foo'=>'action_delete', 'Status2'=>'Alias2', 'Status3'=>'Alias3'), 'multiple'=>true)),
             array('<td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345"> &lt;b&gt;Alias1&lt;/b&gt;, &lt;b&gt;Alias3&lt;/b&gt; </td>', 'choice', array('Status1', 'Status3'), array('choices'=>array('Status1'=>'<b>Alias1</b>', 'Status2'=>'<b>Alias2</b>', 'Status3'=>'<b>Alias3</b>'), 'multiple'=>true)),
+            array('<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345"> &nbsp; </td>', 'url', null, array()),
+            array('<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345"> &nbsp; </td>', 'url', null, array('url'=>'http://example.com')),
+            array('<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345"> &nbsp; </td>', 'url', null, array('route'=>array('name'=>'sonata_admin_foo'))),
+            array('<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345"> <a href="http://example.com">http://example.com</a> </td>', 'url', 'http://example.com', array()),
+            array('<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345"> <a href="https://example.com">https://example.com</a> </td>', 'url', 'https://example.com', array()),
+            array('<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345"> <a href="http://example.com">example.com</a> </td>', 'url', 'http://example.com', array('hide_protocol'=>true)),
+            array('<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345"> <a href="https://example.com">example.com</a> </td>', 'url', 'https://example.com', array('hide_protocol'=>true)),
+            array('<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345"> <a href="http://example.com">http://example.com</a> </td>', 'url', 'http://example.com', array('hide_protocol'=>false)),
+            array('<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345"> <a href="https://example.com">https://example.com</a> </td>', 'url', 'https://example.com', array('hide_protocol'=>false)),
+            array('<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345"> <a href="http://example.com">Foo</a> </td>', 'url', 'Foo', array('url'=>'http://example.com')),
+            array('<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345"> <a href="http://example.com">&lt;b&gt;Foo&lt;/b&gt;</a> </td>', 'url', '<b>Foo</b>', array('url'=>'http://example.com')),
+            array('<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345"> <a href="/foo">Foo</a> </td>', 'url', 'Foo', array('route'=>array('name'=>'sonata_admin_foo'))),
+            array('<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345"> <a href="http://localhost/foo">Foo</a> </td>', 'url', 'Foo', array('route'=>array('name'=>'sonata_admin_foo', 'absolute'=>true))),
+            array('<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345"> <a href="/foo">foo/bar?a=b&amp;c=123456789</a> </td>', 'url', 'http://foo/bar?a=b&c=123456789', array('route'=>array('name'=>'sonata_admin_foo'), 'hide_protocol'=>true)),
+            array('<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345"> <a href="http://localhost/foo">foo/bar?a=b&amp;c=123456789</a> </td>', 'url', 'http://foo/bar?a=b&c=123456789', array('route'=>array('name'=>'sonata_admin_foo', 'absolute'=>true), 'hide_protocol'=>true)),
+            array('<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345"> <a href="/foo/abcd/efgh?param3=ijkl">Foo</a> </td>', 'url', 'Foo', array('route'=>array('name'=>'sonata_admin_foo_param', 'parameters'=>array('param1'=>'abcd', 'param2'=>'efgh', 'param3'=>'ijkl')))),
+            array('<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345"> <a href="http://localhost/foo/abcd/efgh?param3=ijkl">Foo</a> </td>', 'url', 'Foo', array('route'=>array('name'=>'sonata_admin_foo_param', 'absolute'=>true, 'parameters'=>array('param1'=>'abcd', 'param2'=>'efgh', 'param3'=>'ijkl')))),
+            array('<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345"> <a href="/foo/obj/abcd/12345/efgh?param3=ijkl">Foo</a> </td>', 'url', 'Foo', array('route'=>array('name'=>'sonata_admin_foo_object', 'parameters'=>array('param1'=>'abcd', 'param2'=>'efgh', 'param3'=>'ijkl'), 'identifier_parameter_name'=>'barId'))),
+            array('<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345"> <a href="http://localhost/foo/obj/abcd/12345/efgh?param3=ijkl">Foo</a> </td>', 'url', 'Foo', array('route'=>array('name'=>'sonata_admin_foo_object', 'absolute'=>true, 'parameters'=>array('param1'=>'abcd', 'param2'=>'efgh', 'param3'=>'ijkl'), 'identifier_parameter_name'=>'barId'))),
         );
     }
 
@@ -320,6 +352,8 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
                         return 'SonataAdminBundle:CRUD:show_array.html.twig';
                     case 'trans':
                         return 'SonataAdminBundle:CRUD:show_trans.html.twig';
+                    case 'url':
+                        return 'SonataAdminBundle:CRUD:show_url.html.twig';
                     default:
                         return false;
                 }
@@ -359,6 +393,23 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
             array('<th>Data</th> <td>Delete, Alias3</td>', 'choice', array('Foo', 'Status3'), array('safe'=>false, 'catalogue'=>'SonataAdminBundle', 'choices'=>array('Foo'=>'action_delete', 'Status2'=>'Alias2', 'Status3'=>'Alias3'), 'multiple'=>true,)),
             array('<th>Data</th> <td><b>Alias1</b>, <b>Alias3</b></td>', 'choice', array('Status1', 'Status3'), array('safe'=>true, 'choices'=>array('Status1'=>'<b>Alias1</b>', 'Status2'=>'<b>Alias2</b>', 'Status3'=>'<b>Alias3</b>'), 'multiple'=>true,)),
             array('<th>Data</th> <td>&lt;b&gt;Alias1&lt;/b&gt;, &lt;b&gt;Alias3&lt;/b&gt;</td>', 'choice', array('Status1', 'Status3'), array('safe'=>false, 'choices'=>array('Status1'=>'<b>Alias1</b>', 'Status2'=>'<b>Alias2</b>', 'Status3'=>'<b>Alias3</b>'), 'multiple'=>true,)),
+            array('<th>Data</th> <td><a href="http://example.com">http://example.com</a></td>', 'url', 'http://example.com', array('safe'=>false)),
+            array('<th>Data</th> <td><a href="https://example.com">https://example.com</a></td>', 'url', 'https://example.com', array('safe'=>false)),
+            array('<th>Data</th> <td><a href="http://example.com">example.com</a></td>', 'url', 'http://example.com', array('safe'=>false, 'hide_protocol'=>true)),
+            array('<th>Data</th> <td><a href="https://example.com">example.com</a></td>', 'url', 'https://example.com', array('safe'=>false, 'hide_protocol'=>true)),
+            array('<th>Data</th> <td><a href="http://example.com">http://example.com</a></td>', 'url', 'http://example.com', array('safe'=>false, 'hide_protocol'=>false)),
+            array('<th>Data</th> <td><a href="https://example.com">https://example.com</a></td>', 'url', 'https://example.com', array('safe'=>false, 'hide_protocol'=>false)),
+            array('<th>Data</th> <td><a href="http://example.com">Foo</a></td>', 'url', 'Foo', array('safe'=>false, 'url'=>'http://example.com')),
+            array('<th>Data</th> <td><a href="http://example.com">&lt;b&gt;Foo&lt;/b&gt;</a></td>', 'url', '<b>Foo</b>', array('safe'=>false, 'url'=>'http://example.com')),
+            array('<th>Data</th> <td><a href="http://example.com"><b>Foo</b></a></td>', 'url', '<b>Foo</b>', array('safe'=>true, 'url'=>'http://example.com')),
+            array('<th>Data</th> <td><a href="/foo">Foo</a></td>', 'url', 'Foo', array('safe'=>false, 'route'=>array('name'=>'sonata_admin_foo'))),
+            array('<th>Data</th> <td><a href="http://localhost/foo">Foo</a></td>', 'url', 'Foo', array('safe'=>false, 'route'=>array('name'=>'sonata_admin_foo', 'absolute'=>true))),
+            array('<th>Data</th> <td><a href="/foo">foo/bar?a=b&amp;c=123456789</a></td>', 'url', 'http://foo/bar?a=b&c=123456789', array('safe'=>false, 'route'=>array('name'=>'sonata_admin_foo'), 'hide_protocol'=>true)),
+            array('<th>Data</th> <td><a href="http://localhost/foo">foo/bar?a=b&amp;c=123456789</a></td>', 'url', 'http://foo/bar?a=b&c=123456789', array('safe'=>false, 'route'=>array('name'=>'sonata_admin_foo', 'absolute'=>true), 'hide_protocol'=>true)),
+            array('<th>Data</th> <td><a href="/foo/abcd/efgh?param3=ijkl">Foo</a></td>', 'url', 'Foo', array('safe'=>false, 'route'=>array('name'=>'sonata_admin_foo_param', 'parameters'=>array('param1'=>'abcd', 'param2'=>'efgh', 'param3'=>'ijkl')))),
+            array('<th>Data</th> <td><a href="http://localhost/foo/abcd/efgh?param3=ijkl">Foo</a></td>', 'url', 'Foo', array('safe'=>false, 'route'=>array('name'=>'sonata_admin_foo_param', 'absolute'=>true, 'parameters'=>array('param1'=>'abcd', 'param2'=>'efgh', 'param3'=>'ijkl')))),
+            array('<th>Data</th> <td><a href="/foo/obj/abcd/12345/efgh?param3=ijkl">Foo</a></td>', 'url', 'Foo', array('safe'=>false, 'route'=>array('name'=>'sonata_admin_foo_object', 'parameters'=>array('param1'=>'abcd', 'param2'=>'efgh', 'param3'=>'ijkl'), 'identifier_parameter_name'=>'barId'))),
+            array('<th>Data</th> <td><a href="http://localhost/foo/obj/abcd/12345/efgh?param3=ijkl">Foo</a></td>', 'url', 'Foo', array('safe'=>false, 'route'=>array('name'=>'sonata_admin_foo_object', 'absolute'=>true, 'parameters'=>array('param1'=>'abcd', 'param2'=>'efgh', 'param3'=>'ijkl'), 'identifier_parameter_name'=>'barId'))),
 
             // NoValueException
             array('<th>Data</th> <td></td>', 'string', new NoValueException(), array('safe' => false)),
@@ -379,6 +430,9 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
             array('<th>Data</th> <td> </td>', 'trans', new NoValueException(), array('safe'=>false, 'catalogue'=>'SonataAdminBundle')),
             array('<th>Data</th> <td></td>', 'choice', new NoValueException(), array('safe'=>false, 'choices'=>array())),
             array('<th>Data</th> <td></td>', 'choice', new NoValueException(), array('safe'=>false, 'choices'=>array(), 'multiple'=>true)),
+            array('<th>Data</th> <td>&nbsp;</td>', 'url', new NoValueException(), array()),
+            array('<th>Data</th> <td>&nbsp;</td>', 'url', new NoValueException(), array('url'=>'http://example.com')),
+            array('<th>Data</th> <td>&nbsp;</td>', 'url', new NoValueException(), array('route'=>array('name'=>'sonata_admin_foo'))),
         );
     }
 
