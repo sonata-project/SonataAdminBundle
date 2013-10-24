@@ -2532,7 +2532,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         }
 
         if (method_exists($object, '__toString') && null !== $object->__toString()) {
-            return (string) $object;
+            return $this->trans((string) $object);
         }
 
         return sprintf("%s:%s", ClassUtils::getClass($object), spl_object_hash($object));
