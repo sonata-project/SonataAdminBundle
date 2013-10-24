@@ -78,7 +78,7 @@ class AdminSearchBlockService extends BaseBlockService
             $blockContext->getSetting('per_page')
         );
 
-        return $this->renderResponse($admin->getTemplate('search_result_block'), array(
+        return $this->renderPrivateResponse($admin->getTemplate('search_result_block'), array(
             'block'         => $blockContext->getBlock(),
             'settings'      => $blockContext->getSettings(),
             'admin_pool'    => $this->pool,

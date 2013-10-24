@@ -60,7 +60,7 @@ class AdminListBlockService extends BaseBlockService
             }
         }
 
-        return $this->renderResponse($this->pool->getTemplate('list_block'), array(
+        return $this->renderPrivateResponse($this->pool->getTemplate('list_block'), array(
             'block'         => $blockContext->getBlock(),
             'settings'      => $settings,
             'admin_pool'    => $this->pool,
