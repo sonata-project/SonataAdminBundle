@@ -82,9 +82,39 @@ class
 
 btn_add, btn_list, btn_delete and btn_catalogue:
   The labels on the ``add``, ``list`` and ``delete`` buttons can be customized
-  with these parameters. Setting any of them to ``false`` will hide the 
+  with these parameters. Setting any of them to ``false`` will hide the
   corresponding button. You can also specify a custom translation catalogue
   for these labels, which defaults to ``SonataAdminBundle``.
+
+sonata_type_model_hidden
+^^^^^^^^^^^^^^^^^^^^^^^^
+Setting a field type of ``sonata_type_model_hidden`` will use an instance of
+``ModelHiddenType`` to render hidden field. The value of hidden field is
+identifier of related entity.
+
+.. code-block:: php
+
+    class PageAdmin extends Admin
+    {
+        protected function configureFormFields(FormMapper $formMapper)
+        {
+            // generate hidden form field with id of related Category entity
+            $formMapper
+                ->add('categoryId', 'sonata_type_model_hidden')
+            ;
+        }
+    }
+
+The available options are:
+
+model_manager
+  defaults to null, but is actually calculated from the linked Admin class.
+  You usually should not need to set this manually.
+
+class
+  The entity class managed by this field. Defaults to null, but is actually
+  calculated from the linked Admin class. You usually should not need to set
+  this manually.
 
 sonata_type_admin
 ^^^^^^^^^^^^^^^^^
@@ -152,7 +182,7 @@ delete
 
 btn_add, btn_list, btn_delete and btn_catalogue:
   The labels on the ``add``, ``list`` and ``delete`` buttons can be customized
-  with these parameters. Setting any of them to ``false`` will hide the 
+  with these parameters. Setting any of them to ``false`` will hide the
   corresponding button. You can also specify a custom translation catalogue
   for these labels, which defaults to ``SonataAdminBundle``.
 
@@ -183,12 +213,12 @@ to the underlying forms.
             ;
         }
     }
-    
+
 The available options (which can be passed as a third parameter to ``FormMapper::add()``) are:
 
 btn_add and btn_catalogue:
   The label on the ``add`` button can be customized
-  with this parameters. Setting it to ``false`` will hide the 
+  with this parameters. Setting it to ``false`` will hide the
   corresponding button. You can also specify a custom translation catalogue
   for this label, which defaults to ``SonataAdminBundle``.
 
