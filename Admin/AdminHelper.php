@@ -10,6 +10,7 @@
 
 namespace Sonata\AdminBundle\Admin;
 
+use Doctrine\Common\Util\ClassUtils;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormView;
 use Sonata\AdminBundle\Exception\NoValueException;
@@ -168,7 +169,7 @@ class AdminHelper
             $method = rtrim($method, 's');
 
             if (!method_exists($object, $method)) {
-                throw new \RuntimeException(sprintf('Please add a method %s in the %s class!', $method, get_class($object)));
+                throw new \RuntimeException(sprintf('Please add a method %s in the %s class!', $method, ClassUtils::getClass($object)));
             }
         }
 
