@@ -27,6 +27,14 @@
             <tag name="form.type" alias="sonata_type_model_hidden" />
         </service>
 
+        <service id="sonata.admin.form.type.model_autocomplete" class="Sonata\AdminBundle\Form\Type\ModelAutocompleteType">
+            <tag name="form.type" alias="sonata_type_model_autocomplete" />
+        </service>
+
+        <service id="sonata.admin.form.type.collection" class="Sonata\AdminBundle\Form\Type\CollectionType">
+            <tag name="form.type" alias="sonata_type_native_collection" />
+        </service>
+
         <!-- Form Extension -->
         <service id="sonata.admin.form.extension.field" class="Sonata\AdminBundle\Form\Extension\Field\Type\FormTypeFieldExtension">
             <tag name="form.type_extension" alias="form" />

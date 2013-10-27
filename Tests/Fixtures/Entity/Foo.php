@@ -27,4 +27,9 @@ class Foo
     {
         $this->baz = $baz;
     }
+
+    public function __toString()
+    {
+        return (string) $this->bar;
+    }
 }
