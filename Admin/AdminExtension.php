@@ -80,6 +80,12 @@ abstract class AdminExtension implements AdminExtensionInterface
     /**
      * {@inheritdoc}
      */
+    public function alterObject(AdminInterface $admin, $object)
+    {}
+
+    /**
+     * {@inheritdoc}
+     */
     public function preUpdate(AdminInterface $admin, $object)
     {}
 
