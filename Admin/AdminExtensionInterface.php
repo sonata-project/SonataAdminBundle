@@ -84,6 +84,14 @@ interface AdminExtensionInterface
     public function alterNewInstance(AdminInterface $admin, $object);
 
     /**
+     * Get a chance to modify an object.
+     *
+     * @param AdminInterface $admin
+     * @param mixed          $object
+     */
+    public function alterObject(AdminInterface $admin, $object);
+
+    /**
      * @param AdminInterface $admin
      * @param mixed          $object
      */
