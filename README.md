@@ -12,7 +12,7 @@ For contribution to the documentation you can find it on [Resources/doc](https:/
 **Warning**: documentation files are not rendering correctly in Github (reStructuredText format)
 and some content might be broken or hidden, make sure to read raw files.
 
-**Warning**: The bundle has been split into 4 bundles :
+**Warning**: The bundle has been split into 5 bundles :
 
 * SonataAdminBundle : the current one, contains core libraries and services
 * [SonataDoctrineORMAdminBundle](https://github.com/sonata-project/SonataDoctrineORMAdminBundle) 
@@ -21,6 +21,8 @@ and some content might be broken or hidden, make sure to read raw files.
 : Integrates the admin bundle into with MongoDB (early stage)
 * [SonataDoctrinePhpcrAdminBundle](https://github.com/sonata-project/SonataDoctrinePhpcrAdminBundle) 
 : Integrates the admin bundle into with PHPCR (early stage)
+* [SonataPropelAdminBundle](https://github.com/sonata-project/SonataPropelAdminBundle) 
+: Integrates the admin bundle into with Propel (early stage)
 
 **Google Groups**: For questions and proposals you can post on this google groups
 
