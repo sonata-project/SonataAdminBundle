@@ -1,5 +1,5 @@
-Extensions
-==========
+Events
+======
 
 An event mechanism is available to add an extra entry point to extend Admin instance.
 
