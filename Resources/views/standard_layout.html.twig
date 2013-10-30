@@ -55,7 +55,8 @@ file that was distributed with this source code.
             <script type="text/javascript">
                 window.SONATA_CONFIG = {
                     CONFIRM_EXIT: {% if admin_pool is defined and admin_pool.getOption('confirm_exit') %}true{% else %}false{% endif %},
-                    USE_SELECT2: {% if admin_pool is defined and admin_pool.getOption('use_select2') %}true{% else %}false{% endif %}
+                    USE_SELECT2: {% if admin_pool is defined and admin_pool.getOption('use_select2') %}true{% else %}false{% endif %},
+                    SELECT2_MINIMUM_INPUT_LENGTH: {% if admin_pool is defined and admin_pool.getOption('select2_minimum_input_length') %}{{ admin_pool.getOption('select2_minimum_input_length') }}{% else %}0{% endif %}
                 };
                 window.SONATA_TRANSLATIONS = {
                     CONFIRM_EXIT:  '{{ 'confirm_exit'|trans({}, 'SonataAdminBundle')|escape('js') }}'

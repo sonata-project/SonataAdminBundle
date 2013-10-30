@@ -77,6 +77,7 @@ class Configuration implements ConfigurationInterface
                         ->booleanNode('html5_validate')->defaultValue(true)->end()
                         ->booleanNode('confirm_exit')->defaultValue(true)->end()
                         ->booleanNode('use_select2')->defaultValue(true)->end()
+                        ->scalarNode('select2_minimum_input_length')->defaultValue(0)->end()
                     ->end()
                 ->end()
                 ->arrayNode('dashboard')
