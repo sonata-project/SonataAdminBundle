@@ -24,6 +24,7 @@ var Admin = {
                 select.select2({
                     width: 'resolve',
                     minimumResultsForSearch: 10,
+                    minimumInputLength: window.SONATA_CONFIG.SELECT2_MINIMUM_INPUT_LENGTH,
                     allowClear: select.find('option[value=""]').length ? true : false
                 });
 

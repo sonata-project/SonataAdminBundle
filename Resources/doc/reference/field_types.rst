@@ -84,3 +84,32 @@ Parameters:
 
 More types might be provided based on the persistency layer defined. Please refer to their
 related documentations.
+
+Select2 integration
+^^^^^^^^^^^^^^^^^^^
+
+Sonata enables select2 integration by default.
+You can disable it in config.yml
+
+.. configuration-block::
+
+    .. code-block:: yaml
+
+        # app/config/config.yml
+
+        sonata_admin:
+            options:
+                use_select2: false
+
+You can also define the minimum input length parameter for select2.
+** NB: ** The minimum input length parameter is applied globaly.
+
+.. configuration-block::
+
+    .. code-block:: yaml
+
+        # app/config/config.yml
+
+        sonata_admin:
+            options:
+                select2_minimum_input_length: 3
