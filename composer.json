@@ -50,8 +50,7 @@
     "target-dir": "Sonata/AdminBundle",
     "extra": {
         "branch-alias": {
-            "dev-master": "2.2.x-dev",
-            "dev-minimum_input_length": "2.2.x-dev"
+            "dev-master": "2.2.x-dev"
         }
     }
 }
