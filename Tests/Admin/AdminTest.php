@@ -17,6 +17,7 @@ use Sonata\AdminBundle\Tests\Fixtures\Entity\FooToStringNull;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\PostAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\CommentAdmin;
 use Symfony\Component\HttpFoundation\Request;
+use Sonata\AdminBundle\Admin\AdminInterface;
 
 class AdminTest extends \PHPUnit_Framework_TestCase
 {
@@ -778,5 +779,191 @@ class AdminTest extends \PHPUnit_Framework_TestCase
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
 
         $this->assertEquals(array('json', 'xml', 'csv', 'xls'), $admin->getExportFormats());
+    }
+
+    public function testGetUrlsafeIdentifier()
+    {
+        $admin = new PostAdmin('sonata.post.admin.post', 'Acme\NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
+
+        $entity = new \stdClass();
+
+        $modelManager = $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface');
+        $modelManager->expects($this->once())
+            ->method('getUrlsafeIdentifier')
+            ->with($this->equalTo($entity))
+            ->will($this->returnValue('foo'));
+        $admin->setModelManager($modelManager);
+
+        $this->assertEquals('foo', $admin->getUrlsafeIdentifier($entity));
+    }
+
+    public function testDeterminedPerPageValue()
+    {
+        $admin = new PostAdmin('sonata.post.admin.post', 'Acme\NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
+
+        $this->assertFalse($admin->determinedPerPageValue('foo'));
+        $this->assertFalse($admin->determinedPerPageValue(123));
+        $this->assertTrue($admin->determinedPerPageValue(15));
+        $this->assertTrue($admin->determinedPerPageValue(25));
+        $this->assertTrue($admin->determinedPerPageValue(50));
+        $this->assertTrue($admin->determinedPerPageValue(100));
+        $this->assertTrue($admin->determinedPerPageValue(150));
+        $this->assertTrue($admin->determinedPerPageValue(200));
+
+        $admin->setPerPageOptions(array(101, 102, 103));
+        $this->assertFalse($admin->determinedPerPageValue(15));
+        $this->assertFalse($admin->determinedPerPageValue(25));
+        $this->assertFalse($admin->determinedPerPageValue(200));
+        $this->assertTrue($admin->determinedPerPageValue(101));
+        $this->assertTrue($admin->determinedPerPageValue(102));
+        $this->assertTrue($admin->determinedPerPageValue(103));
+    }
+
+    public function testIsGranted()
+    {
+        $admin = new PostAdmin('sonata.post.admin.post', 'Acme\NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
+
+        $entity = new \stdClass();
+
+        $securityHandler=$this->getMock('Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface');
+        $securityHandler->expects($this->any())
+            ->method('isGranted')
+            ->will($this->returnCallback(function (AdminInterface $adminIn, $attributes, $object = nul) use ($admin, $entity) {
+                if ($admin == $adminIn && $attributes == 'FOO') {
+                    if (($object == $admin) || ($object == $entity)) {
+                        return true;
+                    }
+                }
+
+                return false;
+            }));
+
+        $admin->setSecurityHandler($securityHandler);
+
+        $this->assertTrue($admin->isGranted('FOO'));
+        $this->assertTrue($admin->isGranted('FOO', $entity));
+        $this->assertFalse($admin->isGranted('BAR'));
+        $this->assertFalse($admin->isGranted('BAR', $entity));
+    }
+
+    public function testSupportsPreviewMode()
+    {
+        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
+
+        $this->assertFalse($admin->supportsPreviewMode());
+    }
+
+    public function testGetPermissionsShow()
+    {
+        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
+
+        $this->assertEquals(array('LIST'), $admin->getPermissionsShow(Admin::CONTEXT_DASHBOARD));
+        $this->assertEquals(array('LIST'), $admin->getPermissionsShow(Admin::CONTEXT_MENU));
+        $this->assertEquals(array('LIST'), $admin->getPermissionsShow('foo'));
+    }
+
+    public function testShowIn()
+    {
+        $admin = new PostAdmin('sonata.post.admin.post', 'Acme\NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
+
+        $securityHandler=$this->getMock('Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface');
+        $securityHandler->expects($this->any())
+            ->method('isGranted')
+            ->will($this->returnCallback(function (AdminInterface $adminIn, $attributes, $object = nul) use ($admin) {
+                if ($admin == $adminIn && $attributes == array('LIST')) {
+                    return true;
+                }
+
+                return false;
+            }));
+
+        $admin->setSecurityHandler($securityHandler);
+
+        $this->assertTrue($admin->showIn(Admin::CONTEXT_DASHBOARD));
+        $this->assertTrue($admin->showIn(Admin::CONTEXT_MENU));
+        $this->assertTrue($admin->showIn('foo'));
+    }
+
+    public function testGetObjectIdentifier()
+    {
+        $admin = new PostAdmin('sonata.post.admin.post', 'Acme\NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
+
+        $this->assertEquals('sonata.post.admin.post', $admin->getObjectIdentifier());
+    }
+
+    public function testTransWithNoTranslator()
+    {
+        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
+
+        $this->assertEquals('foo', $admin->trans('foo'));
+    }
+
+    public function testTrans()
+    {
+        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
+        $admin->setTranslationDomain('fooMessageDomain');
+
+        $translator = $this->getMock('Symfony\Component\Translation\TranslatorInterface');
+        $admin->setTranslator($translator);
+
+        $translator->expects($this->once())
+            ->method('trans')
+            ->with($this->equalTo('foo'), $this->equalTo(array()), $this->equalTo('fooMessageDomain'))
+            ->will($this->returnValue('fooTranslated'));
+
+        $this->assertEquals('fooTranslated', $admin->trans('foo'));
+    }
+
+    public function testTransWithMessageDomain()
+    {
+        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
+
+        $translator = $this->getMock('Symfony\Component\Translation\TranslatorInterface');
+        $admin->setTranslator($translator);
+
+        $translator->expects($this->once())
+            ->method('trans')
+            ->with($this->equalTo('foo'), $this->equalTo(array('name'=>'Andrej')), $this->equalTo('fooMessageDomain'))
+            ->will($this->returnValue('fooTranslated'));
+
+        $this->assertEquals('fooTranslated', $admin->trans('foo', array('name'=>'Andrej'), 'fooMessageDomain'));
+    }
+
+    public function testTransChoiceWithNoTranslator()
+    {
+        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
+
+        $this->assertEquals('foo', $admin->transChoice('foo', 2));
+    }
+
+    public function testTransChoice()
+    {
+        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
+        $admin->setTranslationDomain('fooMessageDomain');
+
+        $translator = $this->getMock('Symfony\Component\Translation\TranslatorInterface');
+        $admin->setTranslator($translator);
+
+        $translator->expects($this->once())
+            ->method('transChoice')
+            ->with($this->equalTo('foo'), $this->equalTo(2), $this->equalTo(array()), $this->equalTo('fooMessageDomain'))
+            ->will($this->returnValue('fooTranslated'));
+
+        $this->assertEquals('fooTranslated', $admin->transChoice('foo', 2));
+    }
+
+    public function testTransChoiceWithMessageDomain()
+    {
+        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
+
+        $translator = $this->getMock('Symfony\Component\Translation\TranslatorInterface');
+        $admin->setTranslator($translator);
+
+        $translator->expects($this->once())
+            ->method('transChoice')
+            ->with($this->equalTo('foo'), $this->equalTo(2), $this->equalTo(array('name'=>'Andrej')), $this->equalTo('fooMessageDomain'))
+            ->will($this->returnValue('fooTranslated'));
+
+        $this->assertEquals('fooTranslated', $admin->transChoice('foo', 2, array('name'=>'Andrej'), 'fooMessageDomain'));
     }
 }
