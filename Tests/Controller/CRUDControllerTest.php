@@ -22,6 +22,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Sonata\AdminBundle\Exception\ModelManagerException;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use Sonata\AdminBundle\Util\AdminObjectAclManipulator;
 
 /**
  * Test for CRUDController
@@ -64,6 +65,12 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
      * @var Sonata\AdminBundle\Model\AuditManager
      */
     private $auditManager;
+
+    /**
+     *
+     * @var AdminObjectAclManipulator
+     */
+    private $adminObjectAclManipulator;
 
     /**
      * {@inheritDoc}
@@ -132,12 +139,18 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
+        $this->adminObjectAclManipulator = $this->getMockBuilder('Sonata\AdminBundle\Util\AdminObjectAclManipulator')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         // php 5.3 BC
         $auditManager = $this->auditManager;
+        $adminObjectAclManipulator = $this->adminObjectAclManipulator;
+
 
         $container->expects($this->any())
             ->method('get')
-            ->will($this->returnCallback(function($id) use ($pool, $request, $admin, $templating, $twig, $session, $exporter, $auditManager) {
+            ->will($this->returnCallback(function($id) use ($pool, $request, $admin, $templating, $twig, $session, $exporter, $auditManager, $adminObjectAclManipulator) {
                     switch ($id) {
                         case 'sonata.admin.pool':
                             return $pool;
@@ -155,6 +168,8 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
                             return $exporter;
                         case 'sonata.admin.audit.manager':
                             return $auditManager;
+                        case 'sonata.admin.object.manipulator.acl.admin':
+                            return $adminObjectAclManipulator;
                     }
 
                     return null;
@@ -1422,5 +1437,240 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('history', $this->parameters['action']);
         $this->assertEquals(array(), $this->parameters['revisions']);
         $this->assertEquals($object, $this->parameters['object']);
+    }
+
+    public function testAclActionAclNotEnabled()
+    {
+        $this->setExpectedException('Symfony\Component\HttpKernel\Exception\NotFoundHttpException', 'ACL are not enabled for this admin');
+
+        $this->controller->aclAction();
+    }
+
+    public function testAclActionNotFoundException()
+    {
+        $this->setExpectedException('Symfony\Component\HttpKernel\Exception\NotFoundHttpException');
+
+        $this->admin->expects($this->once())
+            ->method('isAclEnabled')
+            ->will($this->returnValue(true));
+
+        $this->admin->expects($this->once())
+            ->method('getObject')
+            ->will($this->returnValue(false));
+
+        $this->controller->aclAction();
+    }
+
+    public function testAclActionAccessDenied()
+    {
+        $this->setExpectedException('Symfony\Component\Security\Core\Exception\AccessDeniedException');
+
+        $this->admin->expects($this->once())
+            ->method('isAclEnabled')
+            ->will($this->returnValue(true));
+
+        $object = new \stdClass();
+
+        $this->admin->expects($this->once())
+            ->method('getObject')
+            ->will($this->returnValue($object));
+
+        $this->admin->expects($this->once())
+            ->method('isGranted')
+            ->with($this->equalTo('MASTER'), $this->equalTo($object))
+            ->will($this->returnValue(false));
+
+        $this->controller->aclAction();
+    }
+
+    public function testAclAction()
+    {
+        $this->request->query->set('id', 123);
+
+        $this->admin->expects($this->once())
+            ->method('isAclEnabled')
+            ->will($this->returnValue(true));
+
+        $object = new \stdClass();
+
+        $this->admin->expects($this->once())
+            ->method('getObject')
+            ->will($this->returnValue($object));
+
+        $this->admin->expects($this->any())
+            ->method('isGranted')
+            ->will($this->returnValue(true));
+
+        $this->adminObjectAclManipulator->expects($this->once())
+            ->method('getMaskBuilderClass')
+            ->will($this->returnValue('\Sonata\AdminBundle\Security\Acl\Permission\AdminPermissionMap'));
+
+        $form = $this->getMockBuilder('Symfony\Component\Form\Form')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+         $form->expects($this->once())
+            ->method('createView')
+            ->will($this->returnValue($this->getMock('Symfony\Component\Form\FormView')));
+
+        $this->adminObjectAclManipulator->expects($this->once())
+            ->method('createForm')
+            ->with($this->isInstanceOf('Sonata\AdminBundle\Util\AdminObjectAclData'))
+            ->will($this->returnValue($form));
+
+        $aclSecurityHandler = $this->getMockBuilder('Sonata\AdminBundle\Security\Handler\AclSecurityHandler')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $aclSecurityHandler->expects($this->any())
+            ->method('getObjectPermissions')
+            ->will($this->returnValue(array()));
+
+        $this->admin->expects($this->any())
+            ->method('getSecurityHandler')
+            ->will($this->returnValue($aclSecurityHandler));
+
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $this->controller->aclAction());
+
+        $this->assertEquals($this->admin, $this->parameters['admin']);
+        $this->assertEquals('SonataAdminBundle::standard_layout.html.twig', $this->parameters['base_template']);
+        $this->assertEquals($this->pool, $this->parameters['admin_pool']);
+
+        $this->assertEquals('acl', $this->parameters['action']);
+        $this->assertEquals(array(), $this->parameters['permissions']);
+        $this->assertEquals($object, $this->parameters['object']);
+        $this->assertInstanceOf('\ArrayIterator', $this->parameters['users']);
+        $this->assertInstanceOf('Symfony\Component\Form\FormView', $this->parameters['form']);
+
+        $this->assertEquals(array(), $this->session->getFlashBag()->all());
+    }
+
+    public function testAclActionInvalidUpdate()
+    {
+        $this->request->query->set('id', 123);
+
+        $this->admin->expects($this->once())
+            ->method('isAclEnabled')
+            ->will($this->returnValue(true));
+
+        $object = new \stdClass();
+
+        $this->admin->expects($this->once())
+            ->method('getObject')
+            ->will($this->returnValue($object));
+
+        $this->admin->expects($this->any())
+            ->method('isGranted')
+            ->will($this->returnValue(true));
+
+        $this->adminObjectAclManipulator->expects($this->once())
+            ->method('getMaskBuilderClass')
+            ->will($this->returnValue('\Sonata\AdminBundle\Security\Acl\Permission\AdminPermissionMap'));
+
+        $form = $this->getMockBuilder('Symfony\Component\Form\Form')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+         $form->expects($this->once())
+            ->method('isValid')
+            ->will($this->returnValue(false));
+
+         $form->expects($this->once())
+            ->method('createView')
+            ->will($this->returnValue($this->getMock('Symfony\Component\Form\FormView')));
+
+        $this->adminObjectAclManipulator->expects($this->once())
+            ->method('createForm')
+            ->with($this->isInstanceOf('Sonata\AdminBundle\Util\AdminObjectAclData'))
+            ->will($this->returnValue($form));
+
+        $aclSecurityHandler = $this->getMockBuilder('Sonata\AdminBundle\Security\Handler\AclSecurityHandler')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $aclSecurityHandler->expects($this->any())
+            ->method('getObjectPermissions')
+            ->will($this->returnValue(array()));
+
+        $this->admin->expects($this->any())
+            ->method('getSecurityHandler')
+            ->will($this->returnValue($aclSecurityHandler));
+
+        $this->request->setMethod('POST');
+
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $this->controller->aclAction());
+
+        $this->assertEquals($this->admin, $this->parameters['admin']);
+        $this->assertEquals('SonataAdminBundle::standard_layout.html.twig', $this->parameters['base_template']);
+        $this->assertEquals($this->pool, $this->parameters['admin_pool']);
+
+        $this->assertEquals('acl', $this->parameters['action']);
+        $this->assertEquals(array(), $this->parameters['permissions']);
+        $this->assertEquals($object, $this->parameters['object']);
+        $this->assertInstanceOf('\ArrayIterator', $this->parameters['users']);
+        $this->assertInstanceOf('Symfony\Component\Form\FormView', $this->parameters['form']);
+
+        $this->assertEquals(array(), $this->session->getFlashBag()->all());
+    }
+
+    public function testAclActionSuccessfulUpdate()
+    {
+        $this->request->query->set('id', 123);
+
+        $this->admin->expects($this->once())
+            ->method('isAclEnabled')
+            ->will($this->returnValue(true));
+
+        $object = new \stdClass();
+
+        $this->admin->expects($this->once())
+            ->method('getObject')
+            ->will($this->returnValue($object));
+
+        $this->admin->expects($this->any())
+            ->method('isGranted')
+            ->will($this->returnValue(true));
+
+        $this->adminObjectAclManipulator->expects($this->once())
+            ->method('getMaskBuilderClass')
+            ->will($this->returnValue('\Sonata\AdminBundle\Security\Acl\Permission\AdminPermissionMap'));
+
+        $form = $this->getMockBuilder('Symfony\Component\Form\Form')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+         $form->expects($this->any())
+            ->method('createView')
+            ->will($this->returnValue($this->getMock('Symfony\Component\Form\FormView')));
+
+         $form->expects($this->once())
+            ->method('isValid')
+            ->will($this->returnValue(true));
+
+        $this->adminObjectAclManipulator->expects($this->once())
+            ->method('createForm')
+            ->with($this->isInstanceOf('Sonata\AdminBundle\Util\AdminObjectAclData'))
+            ->will($this->returnValue($form));
+
+        $aclSecurityHandler = $this->getMockBuilder('Sonata\AdminBundle\Security\Handler\AclSecurityHandler')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $aclSecurityHandler->expects($this->any())
+            ->method('getObjectPermissions')
+            ->will($this->returnValue(array()));
+
+        $this->admin->expects($this->any())
+            ->method('getSecurityHandler')
+            ->will($this->returnValue($aclSecurityHandler));
+
+        $this->request->setMethod('POST');
+
+        $response = $this->controller->aclAction();
+
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse', $response);
+
+        $this->assertSame(array('flash_acl_edit_success'), $this->session->getFlashBag()->get('sonata_flash_success'));
+        $this->assertEquals('stdClass_acl', $response->getTargetUrl());
     }
 }
