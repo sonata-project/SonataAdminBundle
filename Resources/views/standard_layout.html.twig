@@ -116,6 +116,8 @@ file that was distributed with this source code.
                             </a>
                         {% endblock %}
 
+                        {% block sonata_nav_menu_before %}{% endblock %}
+
                         {% block sonata_nav_menu %}
                             <div class="nav-collapse">
                                 <ul class="nav">
@@ -168,6 +170,9 @@ file that was distributed with this source code.
 
                             </div>
                         {% endblock %}
+                        
+                        {% block sonata_nav_menu_after %}{% endblock %}
+                        
                     {% endif %}
                 </div>
             </div>
