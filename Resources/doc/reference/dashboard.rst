@@ -130,7 +130,7 @@ Using the ``config.yml``
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
 You can also configure the ``Admin`` list in your ``config.yml`` file. This
-configuration method overrides the any settings defined in the Admin service
+configuration method overrides any settings defined in the Admin service
 declarations.
 
 .. configuration-block::
