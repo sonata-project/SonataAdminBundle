@@ -14,7 +14,7 @@ Global Templates
 ----------------
 
 ``SonataAdminBundle`` views are implemented using ``twig`` files, and take full advantage of its
-inheritance capabilities. As such, even the most simple page is actually be rendered using many
+inheritance capabilities. As such, even the most simple page is actually rendered using many
 different ``twig`` files. At the end of that ``twig`` inheritance hierarchy is always one of two files:
 
 * layout: SonataAdminBundle::standard_layout.html.twig
@@ -164,7 +164,7 @@ specify the templates to use in the ``Admin`` service definition:
 .. note::
 
     A ``setTemplates(array $templates)`` (notice the plural) function also exists, that allows
-    you to set multiple templates at once. Notice that, if used outside the service definition
+    you to set multiple templates at once. Notice that, if used outside of the service definition
     context, ``setTemplates(array $templates)`` will replace the whole template list for that
     ``Admin`` class, meaning you have to explicitly pass the full template list in the
     ``$templates`` argument.
