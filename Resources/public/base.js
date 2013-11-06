@@ -14,6 +14,10 @@ jQuery(document).ready(function() {
     Admin.setup_inline_form_errors(document);
 });
 
+jQuery(document).on('sonata-admin-append-form-element', function(e) {
+    Admin.setup_select2(e.target);
+});
+
 var Admin = {
 
     setup_select2: function(subject) {
