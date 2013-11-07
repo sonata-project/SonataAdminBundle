@@ -2565,9 +2565,9 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     /**
      * Set custom per page options
      *
-     * @param $options
+     * @param array $options
      */
-    public function setPerPageOptions($options)
+    public function setPerPageOptions(array $options)
     {
         $this->perPageOptions = $options;
     }
@@ -2585,12 +2585,13 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     /**
      * Returns true if the per page value is allowed, false otherwise
      *
-     * @param $per_page
+     * @param int $perPage
+     *
      * @return bool
      */
-    public function determinedPerPageValue($per_page)
+    public function determinedPerPageValue($perPage)
     {
-        return in_array($per_page, $this->perPageOptions);
+        return in_array($perPage, $this->perPageOptions);
     }
 
     /**
