@@ -9,5 +9,5 @@ file that was distributed with this source code.
 
 #}
 
-<th>{% block name %}{{ admin.trans(field_description.label) }}{% endblock %}</th>
+<th>{% block name %}{{ admin.trans(field_description.label, {}, field_description.translationDomain) }}{% endblock %}</th>
 <td>{% block field %}{% if field_description.options.safe %}{{ value|raw }}{% else %}{{ value|nl2br }}{% endif %}{% endblock %}</td>
