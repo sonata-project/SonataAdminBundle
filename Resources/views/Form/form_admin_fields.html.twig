@@ -114,7 +114,7 @@ file that was distributed with this source code.
     {% if sonata_admin is not defined or not sonata_admin_enabled or not sonata_admin.field_description %}
         <div class="control-group {% if errors|length > 0%} error{% endif %}">
             {{ form_label(form, label|default(null)) }}
-            <div class="controls {% if label is not sameas(false) %}sonata-collection-row-without-label{% endif %}">
+            <div class="controls {% if label is sameas(false) %}sonata-collection-row-without-label{% endif %}">
                 {{ form_widget(form) }}
                 {% if errors|length > 0 %}
                     <div class="help-inline sonata-ba-field-error-messages">
