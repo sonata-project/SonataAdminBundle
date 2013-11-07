@@ -94,7 +94,7 @@ file that was distributed with this source code.
             {% endif%}
         </title>
     </head>
-    <body class="sonata-bc {% if _side_menu is empty %}sonata-ba-no-side-menu{% endif %}">
+    <body {% block body_attributes %}class="sonata-bc {% if _side_menu is empty %}sonata-ba-no-side-menu{% endif %}"{% endblock %}>
         {# initialize block value #}
 
         <div class="navbar navbar-fixed-top">
