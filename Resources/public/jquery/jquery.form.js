@@ -769,6 +769,20 @@ $.fn.ajaxSubmit = function(options) {
                 data = s.dataFilter(data, type);
             }
             if (typeof data === 'string') {
+            	// -- custom hack to make the ajax request works with non typed dataType
+                // author : Thomas Rabaix <thomas.rabaix@sonata-project.org>
+                // account for browsers injecting pre around json response
+                var matches = xhr.responseText.match(/^(<pre([^>]*)>|<body([^>]*)>)(.*)(<\/pre>|<\/body>)$/);
+
+                if(matches && matches.length == 6){
+                    xhr.responseText = matches[4];
+                }
+
+                if(xhr.responseText[0] == '{') {
+                    data = parseJSON(xhr.responseText);
+                }
+                // -- end custom hack
+
                 if (type === 'json' || !type && ct.indexOf('json') >= 0) {
                     data = parseJSON(data);
                 } else if (type === "script" || !type && ct.indexOf("javascript") >= 0) {
