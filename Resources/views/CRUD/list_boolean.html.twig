@@ -16,22 +16,18 @@ file that was distributed with this source code.
 {% if field_description.options.editable is defined and field_description.options.editable and admin.isGranted('EDIT', object) %}
     {% if value %}
         <a href="{{ url('sonata_admin_set_object_field_value', { 'context': 'list', 'field': field_description.name, 'objectId': admin.id(object), 'value': 0, 'code': admin.code(object) }) }}" class="sonata-ba-action sonata-ba-edit-inline">
-            <i class="icon-ok-circle"></i>&nbsp;
-            {%- trans from 'SonataAdminBundle' %}label_type_yes{% endtrans -%}
+            <span class="label label-success">{%- trans from 'SonataAdminBundle' %}label_type_yes{% endtrans -%}</span>
         </a>
     {% else %}
         <a href="{{ url('sonata_admin_set_object_field_value', { 'context': 'list', 'field': field_description.name, 'objectId': admin.id(object), 'value': 1, 'code': admin.code(object) }) }}" class="sonata-ba-action sonata-ba-edit-inline">
-            <i class="icon-ban-circle"></i>&nbsp;
-            {%- trans from 'SonataAdminBundle' %}label_type_no{% endtrans -%}
+            <span class="label label-important">{%- trans from 'SonataAdminBundle' %}label_type_no{% endtrans -%}</span>
         </a>
     {% endif %}
 {% else %}
     {% if value %}
-        <i class="icon-ok-circle"></i>&nbsp;
-        {%- trans from 'SonataAdminBundle' %}label_type_yes{% endtrans -%}
+        <span class="label label-success">{%- trans from 'SonataAdminBundle' %}label_type_yes{% endtrans -%}</span>
     {% else %}
-        <i class="icon-ban-circle"></i>&nbsp;
-        {%- trans from 'SonataAdminBundle' %}label_type_no{% endtrans -%}
+        <span class="label label-important">{%- trans from 'SonataAdminBundle' %}label_type_no{% endtrans -%}</span>
     {% endif %}
 {% endif %}
 {% endspaceless %}
