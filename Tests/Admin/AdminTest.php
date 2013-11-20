@@ -966,4 +966,63 @@ class AdminTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals('fooTranslated', $admin->transChoice('foo', 2, array('name'=>'Andrej'), 'fooMessageDomain'));
     }
+
+    public function testSetPersistFilters()
+    {
+        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
+
+        $this->assertAttributeEquals(false, 'persistFilters', $admin);
+        $admin->setPersistFilters(true);
+        $this->assertAttributeEquals(true, 'persistFilters', $admin);
+    }
+
+    public function testGetRootCode()
+    {
+        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
+
+        $this->assertEquals('sonata.post.admin.post', $admin->getRootCode());
+
+        $parentAdmin = new PostAdmin('sonata.post.admin.post.parent', 'NewsBundle\Entity\PostParent', 'SonataNewsBundle:PostParentAdmin');
+        $parentFieldDescription = $this->getMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+        $parentFieldDescription->expects($this->once())
+            ->method('getAdmin')
+            ->will($this->returnValue($parentAdmin));
+
+        $this->assertNull($admin->getParentFieldDescription());
+        $admin->setParentFieldDescription($parentFieldDescription);
+        $this->assertEquals($parentFieldDescription, $admin->getParentFieldDescription());
+        $this->assertEquals('sonata.post.admin.post.parent', $admin->getRootCode());
+    }
+
+    public function testGetRoot()
+    {
+        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
+
+        $this->assertEquals($admin, $admin->getRoot());
+
+        $parentAdmin = new PostAdmin('sonata.post.admin.post.parent', 'NewsBundle\Entity\PostParent', 'SonataNewsBundle:PostParentAdmin');
+        $parentFieldDescription = $this->getMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+        $parentFieldDescription->expects($this->once())
+            ->method('getAdmin')
+            ->will($this->returnValue($parentAdmin));
+
+        $this->assertNull($admin->getParentFieldDescription());
+        $admin->setParentFieldDescription($parentFieldDescription);
+        $this->assertEquals($parentFieldDescription, $admin->getParentFieldDescription());
+        $this->assertEquals($parentAdmin, $admin->getRoot());
+    }
+
+    public function testGetExportFields()
+    {
+        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
+
+        $modelManager = $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface');
+        $modelManager->expects($this->once())
+            ->method('getExportFields')
+            ->with($this->equalTo('NewsBundle\Entity\Post'))
+            ->will($this->returnValue(array('foo', 'bar')));
+
+        $admin->setModelManager($modelManager);
+        $this->assertSame(array('foo', 'bar'), $admin->getExportFields());
+    }
 }
