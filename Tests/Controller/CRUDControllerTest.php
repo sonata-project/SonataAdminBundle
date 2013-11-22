@@ -23,6 +23,7 @@ use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Sonata\AdminBundle\Exception\ModelManagerException;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Sonata\AdminBundle\Util\AdminObjectAclManipulator;
+use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
 
 /**
  * Test for CRUDController
@@ -1672,5 +1673,165 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame(array('flash_acl_edit_success'), $this->session->getFlashBag()->get('sonata_flash_success'));
         $this->assertEquals('stdClass_acl', $response->getTargetUrl());
+    }
+
+    public function testHistoryViewRevisionActionAccessDenied()
+    {
+        $this->setExpectedException('Symfony\Component\Security\Core\Exception\AccessDeniedException');
+
+        $this->admin->expects($this->once())
+            ->method('isGranted')
+            ->with($this->equalTo('EDIT'))
+            ->will($this->returnValue(false));
+
+        $this->controller->historyViewRevisionAction();
+    }
+
+    public function testHistoryViewRevisionActionNotFoundException()
+    {
+        $this->setExpectedException('Symfony\Component\HttpKernel\Exception\NotFoundHttpException', 'unable to find the object with id : 123');
+
+        $this->request->query->set('id', 123);
+
+        $this->admin->expects($this->once())
+            ->method('isGranted')
+            ->with($this->equalTo('EDIT'))
+            ->will($this->returnValue(true));
+
+        $this->admin->expects($this->once())
+            ->method('getObject')
+            ->will($this->returnValue(false));
+
+        $this->controller->historyViewRevisionAction();
+    }
+
+    public function testHistoryViewRevisionActionNoReader()
+    {
+        $this->setExpectedException('Symfony\Component\HttpKernel\Exception\NotFoundHttpException', 'unable to find the audit reader for class : Foo');
+
+        $this->request->query->set('id', 123);
+
+        $this->admin->expects($this->once())
+            ->method('isGranted')
+            ->with($this->equalTo('EDIT'))
+            ->will($this->returnValue(true));
+
+        $object = new \stdClass();
+
+        $this->admin->expects($this->once())
+            ->method('getObject')
+            ->will($this->returnValue($object));
+
+        $this->admin->expects($this->any())
+            ->method('getClass')
+            ->will($this->returnValue('Foo'));
+
+        $this->auditManager->expects($this->once())
+            ->method('hasReader')
+            ->with($this->equalTo('Foo'))
+            ->will($this->returnValue(false));
+
+        $this->controller->historyViewRevisionAction();
+    }
+
+    public function testHistoryViewRevisionActionNotFoundRevision()
+    {
+        $this->setExpectedException('Symfony\Component\HttpKernel\Exception\NotFoundHttpException', 'unable to find the targeted object `123` from the revision `456` with classname : `Foo`');
+
+        $this->request->query->set('id', 123);
+
+        $this->admin->expects($this->once())
+            ->method('isGranted')
+            ->with($this->equalTo('EDIT'))
+            ->will($this->returnValue(true));
+
+        $object = new \stdClass();
+
+        $this->admin->expects($this->once())
+            ->method('getObject')
+            ->will($this->returnValue($object));
+
+        $this->admin->expects($this->any())
+            ->method('getClass')
+            ->will($this->returnValue('Foo'));
+
+        $this->auditManager->expects($this->once())
+            ->method('hasReader')
+            ->with($this->equalTo('Foo'))
+            ->will($this->returnValue(true));
+
+        $reader = $this->getMock('Sonata\AdminBundle\Model\AuditReaderInterface');
+
+        $this->auditManager->expects($this->once())
+            ->method('getReader')
+            ->with($this->equalTo('Foo'))
+            ->will($this->returnValue($reader));
+
+        $reader->expects($this->once())
+            ->method('find')
+            ->with($this->equalTo('Foo'), $this->equalTo(123), $this->equalTo(456))
+            ->will($this->returnValue(null));
+
+        $this->controller->historyViewRevisionAction(123, 456);
+    }
+
+    public function testHistoryViewRevisionAction()
+    {
+        $this->request->query->set('id', 123);
+
+        $this->admin->expects($this->once())
+            ->method('isGranted')
+            ->with($this->equalTo('EDIT'))
+            ->will($this->returnValue(true));
+
+        $object = new \stdClass();
+
+        $this->admin->expects($this->once())
+            ->method('getObject')
+            ->will($this->returnValue($object));
+
+        $this->admin->expects($this->any())
+            ->method('getClass')
+            ->will($this->returnValue('Foo'));
+
+        $this->auditManager->expects($this->once())
+            ->method('hasReader')
+            ->with($this->equalTo('Foo'))
+            ->will($this->returnValue(true));
+
+        $reader = $this->getMock('Sonata\AdminBundle\Model\AuditReaderInterface');
+
+        $this->auditManager->expects($this->once())
+            ->method('getReader')
+            ->with($this->equalTo('Foo'))
+            ->will($this->returnValue($reader));
+
+        $objectRevision = new \stdClass();
+        $objectRevision->revision = 456;
+
+        $reader->expects($this->once())
+            ->method('find')
+            ->with($this->equalTo('Foo'), $this->equalTo(123), $this->equalTo(456))
+            ->will($this->returnValue($objectRevision));
+
+        $this->admin->expects($this->once())
+            ->method('setSubject')
+            ->with($this->equalTo($objectRevision))
+            ->will($this->returnValue(null));
+
+        $fieldDescriptionCollection = new FieldDescriptionCollection();
+        $this->admin->expects($this->once())
+            ->method('getShow')
+            ->will($this->returnValue($fieldDescriptionCollection));
+
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $this->controller->historyViewRevisionAction(123, 456));
+
+        $this->assertEquals($this->admin, $this->parameters['admin']);
+        $this->assertEquals('SonataAdminBundle::standard_layout.html.twig', $this->parameters['base_template']);
+        $this->assertEquals($this->pool, $this->parameters['admin_pool']);
+
+        $this->assertEquals('show', $this->parameters['action']);
+        $this->assertEquals($objectRevision, $this->parameters['object']);
+        $this->assertEquals($fieldDescriptionCollection, $this->parameters['elements']);
     }
 }
