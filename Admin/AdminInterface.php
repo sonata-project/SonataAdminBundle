@@ -889,6 +889,13 @@ interface AdminInterface
     public function getActiveSubclassCode();
 
     /**
+     * Returns the list of batchs actions
+     *
+     * @return array the list of batchs actions
+     */
+    public function getBatchActions();
+
+    /**
      * Returns Admin`s label
      *
      * @return string
