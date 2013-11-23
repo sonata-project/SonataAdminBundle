@@ -1046,9 +1046,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * Returns the list of batchs actions
-     *
-     * @return array the list of batchs actions
+     * {@inheritdoc}
      */
     public function getBatchActions()
     {

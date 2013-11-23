@@ -24,6 +24,7 @@ use Sonata\AdminBundle\Exception\ModelManagerException;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Sonata\AdminBundle\Util\AdminObjectAclManipulator;
 use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
+use Sonata\AdminBundle\Tests\Fixtures\Controller\BatchAdminController;
 
 /**
  * Test for CRUDController
@@ -68,6 +69,11 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
     private $auditManager;
 
     /**
+     * @var ContainerInterface
+     */
+    private $container;
+
+    /**
      *
      * @var AdminObjectAclManipulator
      */
@@ -78,10 +84,10 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
+        $this->container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
 
         $this->request = new Request();
-        $this->pool = new Pool($container, 'title', 'logo.png');
+        $this->pool = new Pool($this->container, 'title', 'logo.png');
         $this->request->attributes->set('_sonata_admin', 'foo.admin');
         $this->admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
         $this->parameters = array();
@@ -89,7 +95,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         // php 5.3 BC
         $params = &$this->parameters;
 
-        $templating = $this->getMock('Symfony\Bundle\FrameworkBundle\Templating\DelegatingEngine', array(), array($container, array()));
+        $templating = $this->getMock('Symfony\Bundle\FrameworkBundle\Templating\DelegatingEngine', array(), array($this->container, array()));
 
         $templating->expects($this->any())
             ->method('renderResponse')
@@ -148,8 +154,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $auditManager = $this->auditManager;
         $adminObjectAclManipulator = $this->adminObjectAclManipulator;
 
-
-        $container->expects($this->any())
+        $this->container->expects($this->any())
             ->method('get')
             ->will($this->returnCallback(function($id) use ($pool, $request, $admin, $templating, $twig, $session, $exporter, $auditManager, $adminObjectAclManipulator) {
                     switch ($id) {
@@ -220,7 +225,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
                 }));
 
         $this->controller = new CRUDController();
-        $this->controller->setContainer($container);
+        $this->controller->setContainer($this->container);
     }
 
     public function testRenderJson1()
@@ -1833,5 +1838,315 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('show', $this->parameters['action']);
         $this->assertEquals($objectRevision, $this->parameters['object']);
         $this->assertEquals($fieldDescriptionCollection, $this->parameters['elements']);
+    }
+
+    public function testBatchActionWrongMethod()
+    {
+        $this->setExpectedException('RuntimeException', 'invalid request type, POST expected');
+
+        $this->controller->batchAction();
+    }
+
+    public function testBatchActionActionNotDefined()
+    {
+        $this->setExpectedException('RuntimeException', 'The `foo` batch action is not defined');
+
+        $batchActions = array();
+
+        $this->admin->expects($this->once())
+            ->method('getBatchActions')
+            ->will($this->returnValue($batchActions));
+
+        $this->request->setMethod('POST');
+        $this->request->request->set('data', json_encode(array('action'=>'foo', 'idx'=>array('123', '456'), 'all_elements'=>false)));
+
+        $this->controller->batchAction();
+    }
+
+    public function testBatchActionMethodNotExist()
+    {
+        $this->setExpectedException('RuntimeException', 'A `Sonata\AdminBundle\Controller\CRUDController::batchActionFoo` method must be created');
+
+        $batchActions = array('foo'=>array('label'=>'Foo Bar', 'ask_confirmation' => false));
+
+        $this->admin->expects($this->once())
+            ->method('getBatchActions')
+            ->will($this->returnValue($batchActions));
+
+        $datagrid = $this->getMock('\Sonata\AdminBundle\Datagrid\DatagridInterface');
+        $this->admin->expects($this->once())
+            ->method('getDatagrid')
+            ->will($this->returnValue($datagrid));
+
+        $this->request->setMethod('POST');
+        $this->request->request->set('data', json_encode(array('action'=>'foo', 'idx'=>array('123', '456'), 'all_elements'=>false)));
+
+        $this->controller->batchAction();
+    }
+
+    public function testBatchActionWithoutConfirmation()
+    {
+        $batchActions = array('delete'=>array('label'=>'Foo Bar', 'ask_confirmation' => false));
+
+        $this->admin->expects($this->once())
+            ->method('getBatchActions')
+            ->will($this->returnValue($batchActions));
+
+        $datagrid = $this->getMock('\Sonata\AdminBundle\Datagrid\DatagridInterface');
+
+        $query = $this->getMock('\Sonata\AdminBundle\Datagrid\ProxyQueryInterface');
+        $datagrid->expects($this->once())
+            ->method('getQuery')
+            ->will($this->returnValue($query));
+
+        $this->admin->expects($this->once())
+            ->method('getDatagrid')
+            ->will($this->returnValue($datagrid));
+
+        $modelManager = $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface');
+
+        $this->admin->expects($this->once())
+            ->method('isGranted')
+            ->with($this->equalTo('DELETE'))
+            ->will($this->returnValue(true));
+
+        $this->admin->expects($this->any())
+            ->method('getModelManager')
+            ->will($this->returnValue($modelManager));
+
+        $this->admin->expects($this->any())
+            ->method('getClass')
+            ->will($this->returnValue('Foo'));
+
+        $modelManager->expects($this->once())
+            ->method('addIdentifiersToQuery')
+            ->with($this->equalTo('Foo'), $this->equalTo($query), $this->equalTo(array('123', '456')))
+            ->will($this->returnValue(true));
+
+        $this->request->setMethod('POST');
+        $this->request->request->set('data', json_encode(array('action'=>'delete', 'idx'=>array('123', '456'), 'all_elements'=>false)));
+
+        $result = $this->controller->batchAction();
+
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse', $result);
+        $this->assertSame(array('flash_batch_delete_success'), $this->session->getFlashBag()->get('sonata_flash_success'));
+        $this->assertEquals('list?', $result->getTargetUrl());
+    }
+
+    public function testBatchActionWithoutConfirmation2()
+    {
+        $batchActions = array('delete'=>array('label'=>'Foo Bar', 'ask_confirmation' => false));
+
+        $this->admin->expects($this->once())
+            ->method('getBatchActions')
+            ->will($this->returnValue($batchActions));
+
+        $datagrid = $this->getMock('\Sonata\AdminBundle\Datagrid\DatagridInterface');
+
+        $query = $this->getMock('\Sonata\AdminBundle\Datagrid\ProxyQueryInterface');
+        $datagrid->expects($this->once())
+            ->method('getQuery')
+            ->will($this->returnValue($query));
+
+        $this->admin->expects($this->once())
+            ->method('getDatagrid')
+            ->will($this->returnValue($datagrid));
+
+        $modelManager = $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface');
+
+        $this->admin->expects($this->once())
+            ->method('isGranted')
+            ->with($this->equalTo('DELETE'))
+            ->will($this->returnValue(true));
+
+        $this->admin->expects($this->any())
+            ->method('getModelManager')
+            ->will($this->returnValue($modelManager));
+
+        $this->admin->expects($this->any())
+            ->method('getClass')
+            ->will($this->returnValue('Foo'));
+
+        $modelManager->expects($this->once())
+            ->method('addIdentifiersToQuery')
+            ->with($this->equalTo('Foo'), $this->equalTo($query), $this->equalTo(array('123', '456')))
+            ->will($this->returnValue(true));
+
+        $this->request->setMethod('POST');
+        $this->request->request->set('action', 'delete');
+        $this->request->request->set('idx', array('123', '456'));
+
+        $result = $this->controller->batchAction();
+
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse', $result);
+        $this->assertSame(array('flash_batch_delete_success'), $this->session->getFlashBag()->get('sonata_flash_success'));
+        $this->assertEquals('list?', $result->getTargetUrl());
+    }
+
+    public function testBatchActionWithConfirmation()
+    {
+        $batchActions = array('delete'=>array('label'=>'Foo Bar', 'ask_confirmation' => true));
+
+        $this->admin->expects($this->once())
+            ->method('getBatchActions')
+            ->will($this->returnValue($batchActions));
+
+        $data = array('action'=>'delete', 'idx'=>array('123', '456'), 'all_elements'=>false);
+
+        $this->request->setMethod('POST');
+        $this->request->request->set('data', json_encode($data));
+
+        $datagrid = $this->getMock('\Sonata\AdminBundle\Datagrid\DatagridInterface');
+
+        $this->admin->expects($this->once())
+            ->method('getDatagrid')
+            ->will($this->returnValue($datagrid));
+
+        $form = $this->getMockBuilder('Symfony\Component\Form\Form')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+         $form->expects($this->once())
+            ->method('createView')
+            ->will($this->returnValue($this->getMock('Symfony\Component\Form\FormView')));
+
+        $datagrid->expects($this->once())
+            ->method('getForm')
+            ->will($this->returnValue($form));
+
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $this->controller->batchAction());
+
+        $this->assertEquals($this->admin, $this->parameters['admin']);
+        $this->assertEquals('SonataAdminBundle::standard_layout.html.twig', $this->parameters['base_template']);
+        $this->assertEquals($this->pool, $this->parameters['admin_pool']);
+
+        $this->assertEquals('list', $this->parameters['action']);
+        $this->assertEquals($datagrid, $this->parameters['datagrid']);
+        $this->assertInstanceOf('Symfony\Component\Form\FormView', $this->parameters['form']);
+        $this->assertEquals($data, $this->parameters['data']);
+        $this->assertEquals('', $this->parameters['csrf_token']);
+    }
+
+    public function testBatchActionNonRelevantAction()
+    {
+        $controller = new BatchAdminController();
+        $controller->setContainer($this->container);
+
+        $batchActions = array('foo'=>array('label'=>'Foo Bar', 'ask_confirmation' => false));
+
+        $this->admin->expects($this->once())
+            ->method('getBatchActions')
+            ->will($this->returnValue($batchActions));
+
+        $datagrid = $this->getMock('\Sonata\AdminBundle\Datagrid\DatagridInterface');
+
+        $this->admin->expects($this->once())
+            ->method('getDatagrid')
+            ->will($this->returnValue($datagrid));
+
+        $this->request->setMethod('POST');
+        $this->request->request->set('action', 'foo');
+        $this->request->request->set('idx', array('789'));
+
+        $result = $controller->batchAction();
+
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse', $result);
+        $this->assertSame(array('flash_batch_empty'), $this->session->getFlashBag()->get('sonata_flash_info'));
+        $this->assertEquals('list?', $result->getTargetUrl());
+    }
+
+    public function testBatchActionNonRelevantAction2()
+    {
+        $controller = new BatchAdminController();
+        $controller->setContainer($this->container);
+
+        $batchActions = array('foo'=>array('label'=>'Foo Bar', 'ask_confirmation' => false));
+
+        $this->admin->expects($this->once())
+            ->method('getBatchActions')
+            ->will($this->returnValue($batchActions));
+
+        $datagrid = $this->getMock('\Sonata\AdminBundle\Datagrid\DatagridInterface');
+
+        $this->admin->expects($this->once())
+            ->method('getDatagrid')
+            ->will($this->returnValue($datagrid));
+
+        $this->request->setMethod('POST');
+        $this->request->request->set('action', 'foo');
+        $this->request->request->set('idx', array('999'));
+
+        $result = $controller->batchAction();
+
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse', $result);
+        $this->assertSame(array('flash_foo_error'), $this->session->getFlashBag()->get('sonata_flash_info'));
+        $this->assertEquals('list?', $result->getTargetUrl());
+    }
+
+    public function testBatchActionNoItems()
+    {
+        $batchActions = array('delete'=>array('label'=>'Foo Bar', 'ask_confirmation' => true));
+
+        $this->admin->expects($this->once())
+            ->method('getBatchActions')
+            ->will($this->returnValue($batchActions));
+
+        $datagrid = $this->getMock('\Sonata\AdminBundle\Datagrid\DatagridInterface');
+
+        $this->admin->expects($this->once())
+            ->method('getDatagrid')
+            ->will($this->returnValue($datagrid));
+
+        $this->request->setMethod('POST');
+        $this->request->request->set('action', 'delete');
+        $this->request->request->set('idx', array());
+
+        $result = $this->controller->batchAction();
+
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse', $result);
+        $this->assertSame(array('flash_batch_empty'), $this->session->getFlashBag()->get('sonata_flash_info'));
+        $this->assertEquals('list?', $result->getTargetUrl());
+    }
+
+    public function testBatchActionNoItemsEmptyQuery()
+    {
+        $controller = new BatchAdminController();
+        $controller->setContainer($this->container);
+
+        $batchActions = array('bar'=>array('label'=>'Foo Bar', 'ask_confirmation' => false));
+
+        $this->admin->expects($this->once())
+            ->method('getBatchActions')
+            ->will($this->returnValue($batchActions));
+
+        $datagrid = $this->getMock('\Sonata\AdminBundle\Datagrid\DatagridInterface');
+
+        $query = $this->getMock('\Sonata\AdminBundle\Datagrid\ProxyQueryInterface');
+        $datagrid->expects($this->once())
+            ->method('getQuery')
+            ->will($this->returnValue($query));
+
+        $this->admin->expects($this->once())
+            ->method('getDatagrid')
+            ->will($this->returnValue($datagrid));
+
+        $modelManager = $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface');
+
+        $this->admin->expects($this->any())
+            ->method('getModelManager')
+            ->will($this->returnValue($modelManager));
+
+        $this->admin->expects($this->any())
+            ->method('getClass')
+            ->will($this->returnValue('Foo'));
+
+        $this->request->setMethod('POST');
+        $this->request->request->set('action', 'bar');
+        $this->request->request->set('idx', array());
+
+        $result = $controller->batchAction();
+
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $result);
+        $this->assertEquals('batchActionBar executed', $result->getContent());
     }
 }

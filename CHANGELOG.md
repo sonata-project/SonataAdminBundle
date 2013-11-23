@@ -1,7 +1,13 @@
 CHANGELOG
 =========
 
+### 2013-11-23
+* [BC BREAK] added ``getBatchActions`` to the AdminInterface
+  If you do not extend the Admin class, you need to add this method to
+  your admin.
+
 ### 2013-10-13
+
 * [BC BREAK] added ``setCurrentChild``, ``getCurrentChild`` to the AdminInterface
   If you do not extend the Admin class, you need to add these methods to
   your admin.
