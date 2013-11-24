@@ -396,7 +396,7 @@ class CRUDController extends Controller
         if ($data = json_decode($this->get('request')->get('data'), true)) {
             $action       = $data['action'];
             $idx          = $data['idx'];
-            $all_elements = $data['all_elements'];
+            $allElements  = $data['all_elements'];
             $this->get('request')->request->replace($data);
         } else {
             $this->get('request')->request->set('idx', $this->get('request')->get('idx', array()));
@@ -404,7 +404,7 @@ class CRUDController extends Controller
 
             $action       = $this->get('request')->get('action');
             $idx          = $this->get('request')->get('idx');
-            $all_elements = $this->get('request')->get('all_elements');
+            $allElements  = $this->get('request')->get('all_elements');
             $data         = $this->get('request')->request->all();
 
             unset($data['_sonata_csrf_token']);
@@ -419,9 +419,9 @@ class CRUDController extends Controller
         $isRelevantAction = sprintf('batchAction%sIsRelevant', ucfirst($camelizedAction));
 
         if (method_exists($this, $isRelevantAction)) {
-            $nonRelevantMessage = call_user_func(array($this, $isRelevantAction), $idx, $all_elements);
+            $nonRelevantMessage = call_user_func(array($this, $isRelevantAction), $idx, $allElements);
         } else {
-            $nonRelevantMessage = count($idx) != 0 || $all_elements; // at least one item is selected
+            $nonRelevantMessage = count($idx) != 0 || $allElements; // at least one item is selected
         }
 
         if (!$nonRelevantMessage) { // default non relevant message (if false of null)
@@ -452,9 +452,9 @@ class CRUDController extends Controller
         }
 
         // execute the action, batchActionXxxxx
-        $final_action = sprintf('batchAction%s', ucfirst($camelizedAction));
-        if (!method_exists($this, $final_action)) {
-            throw new \RuntimeException(sprintf('A `%s::%s` method must be created', get_class($this), $final_action));
+        $finalAction = sprintf('batchAction%s', ucfirst($camelizedAction));
+        if (!method_exists($this, $finalAction)) {
+            throw new \RuntimeException(sprintf('A `%s::%s` method must be created', get_class($this), $finalAction));
         }
 
         $query = $datagrid->getQuery();
@@ -464,11 +464,11 @@ class CRUDController extends Controller
 
         if (count($idx) > 0) {
             $this->admin->getModelManager()->addIdentifiersToQuery($this->admin->getClass(), $query, $idx);
-        } elseif (!$all_elements) {
+        } elseif (!$allElements) {
             $query = null;
         }
 
-        return call_user_func(array($this, $final_action), $query);
+        return call_user_func(array($this, $finalAction), $query);
     }
 
     /**
