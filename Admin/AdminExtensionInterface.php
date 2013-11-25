@@ -84,6 +84,23 @@ interface AdminExtensionInterface
     public function alterNewInstance(AdminInterface $admin, $object);
 
     /**
+     * Get a chance to modify object instance
+     *
+     * @param  AdminInterface $admin
+     * @param  $object
+     * @return mixed
+     */
+    public function alterObject(AdminInterface $admin, $object);
+
+    /**
+     * Get a chance to add persistent parameters
+     *
+     * @param  AdminInterface $admin
+     * @return array
+     */
+    public function getPersistentParameters(AdminInterface $admin);
+
+    /**
      * @param AdminInterface $admin
      * @param mixed          $object
      */
