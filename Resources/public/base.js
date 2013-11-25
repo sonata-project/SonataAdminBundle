@@ -27,7 +27,7 @@ var Admin = {
 
                 select.select2({
                     width: 'resolve',
-                    minimumResultsForSearch: 10,
+                    minimumResultsForSearch: 0,
                     allowClear: select.find('option[value=""]').length ? true : false
                 });
 
