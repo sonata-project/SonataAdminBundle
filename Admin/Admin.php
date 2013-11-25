@@ -1321,7 +1321,12 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      */
     public function getObject($id)
     {
-        return $this->getModelManager()->find($this->getClass(), $id);
+        $object = $this->getModelManager()->find($this->getClass(), $id);
+        foreach ($this->getExtensions() as $extension) {
+            $extension->alterObject($this, $object);
+        }
+
+        return $object;
     }
 
     /**
@@ -1916,7 +1921,12 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      */
     public function getPersistentParameters()
     {
-        return array();
+        $parameters = array();
+        foreach ($this->getExtensions() as $extension) {
+            $parameters = array_merge($parameters, $extension->getPersistentParameters($this));
+        }
+
+        return $parameters;
     }
 
     /**
