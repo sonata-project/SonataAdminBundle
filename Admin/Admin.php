@@ -541,8 +541,6 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      */
     public function initialize()
     {
-        $this->uniqid = "s".uniqid();
-
         if (!$this->classnameLabel) {
             $this->classnameLabel = substr($this->getClass(), strrpos($this->getClass(), '\\') + 1);
         }
@@ -1896,6 +1894,10 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      */
     public function getUniqid()
     {
+        if (!$this->uniqid) {
+            $this->uniqid = "s".uniqid();
+        }
+
         return $this->uniqid;
     }
 

@@ -70,10 +70,10 @@ class AdminTest extends \PHPUnit_Framework_TestCase
     public function testConfigure()
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'Application\Sonata\NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
-        $this->assertTrue($admin->getUniqid() == "");
+        $this->assertNotNull($admin->getUniqid());
 
         $admin->initialize();
-        $this->assertFalse($admin->getUniqid() == "");
+        $this->assertNotNull($admin->getUniqid());
         $this->assertEquals('Post', $admin->getClassnameLabel());
 
         $admin = new CommentAdmin('sonata.post.admin.comment', 'Application\Sonata\NewsBundle\Entity\Comment', 'SonataNewsBundle:CommentAdmin');
