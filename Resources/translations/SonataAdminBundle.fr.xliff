@@ -386,6 +386,10 @@
                 <source>add_new_entry</source>
                 <target>rajouter un élément</target>
             </trans-unit>
+            <trans-unit id="locale_switcher.tooltip">
+                <source>locale_switcher.tooltip</source>
+                <target>changer de langue</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

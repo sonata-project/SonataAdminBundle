@@ -1,0 +1,20 @@
+{% if (object.locale is defined) %}
+    <div class="locale_switcher pull-right">
+        {% spaceless %}
+            {% if (locale_switcher_route is not defined) %}
+                {% if (object.id) %}
+                    {% set locale_switcher_route = 'edit' %}
+                {% else %}
+                    {% set locale_switcher_route = 'create' %}
+                {% endif %}
+            {% endif %}
+            {% for locale in locales %}
+                <a href="{{ admin.generateUrl(locale_switcher_route, {'id': admin.id(object), 'tl': locale}) }}"
+                   class="{{ locale }} {% if (object.locale == locale) %} active {% endif %}"
+                   title="{{ 'locale_switcher.tooltip' |trans([], 'SonataAdminBundle') }}">
+                    {{ locale }}
+                </a>
+            {% endfor %}
+        {% endspaceless %}
+    </div>
+{% endif %}

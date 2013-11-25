@@ -386,6 +386,10 @@
                 <source>add_new_entry</source>
                 <target>add new entry</target>
             </trans-unit>
+            <trans-unit id="locale_switcher.tooltip">
+                <source>locale_switcher.tooltip</source>
+                <target>change locale</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
