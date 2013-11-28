@@ -34,5 +34,8 @@ file that was distributed with this source code.
 {% use 'SonataAdminBundle:CRUD:base_edit_form.html.twig' with form as parentForm %}
 
 {% block form %}
+    {{ include(
+        'SonataAdminBundle:Helper:locale_switcher.html.twig'
+    ) }}
     {{ block('parentForm') }}
 {% endblock %}

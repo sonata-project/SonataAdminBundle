@@ -24,6 +24,9 @@ file that was distributed with this source code.
 
 {% block show %}
     <div class="sonata-ba-view">
+        {{ include(
+            'SonataAdminBundle:Helper:locale_switcher.html.twig', {'locale_switcher_route': 'show'}
+        ) }}
         {% for name, view_group in admin.showgroups %}
             <table class="table table-bordered">
                 {% if name %}
