@@ -9,11 +9,12 @@ alter newly created objects and other admin features.
 .. code-block:: php
 
     use Sonata\AdminBundle\Admin\AdminExtension;
+    use Sonata\AdminBundle\Admin\AdminInterface;
     use Sonata\AdminBundle\Form\FormMapper;
 
     class PublishStatusAdminExtension extends AdminExtension
     {
-        public function configureFormFields(FormMapper $formMapper)
+        public function configureFormFields(AdminInterface $admin, FormMapper $formMapper)
         {
             $formMapper->add('status', 'choice', array(
                 'choices' => array(

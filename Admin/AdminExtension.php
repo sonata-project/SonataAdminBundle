@@ -26,25 +26,25 @@ abstract class AdminExtension implements AdminExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function configureFormFields(FormMapper $form)
+    public function configureFormFields(AdminInterface $admin, FormMapper $form)
     {}
 
     /**
      * {@inheritdoc}
      */
-    public function configureListFields(ListMapper $list)
+    public function configureListFields(AdminInterface $admin, ListMapper $list)
     {}
 
     /**
      * {@inheritdoc}
      */
-    public function configureDatagridFilters(DatagridMapper $filter)
+    public function configureDatagridFilters(AdminInterface $admin, DatagridMapper $filter)
     {}
 
     /**
      * {@inheritdoc}
      */
-    public function configureShowFields(ShowMapper $filter)
+    public function configureShowFields(AdminInterface $admin, ShowMapper $filter)
     {}
 
     /**

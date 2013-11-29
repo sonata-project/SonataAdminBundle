@@ -27,24 +27,28 @@ use Knp\Menu\ItemInterface as MenuItemInterface;
 interface AdminExtensionInterface
 {
     /**
-     * @param FormMapper $form
+     * @param AdminInterface $admin
+     * @param FormMapper     $form
      */
-    public function configureFormFields(FormMapper $form);
+    public function configureFormFields(AdminInterface $admin, FormMapper $form);
 
     /**
-     * @param ListMapper $list
+     * @param AdminInterface $admin
+     * @param ListMapper     $list
      */
-    public function configureListFields(ListMapper $list);
+    public function configureListFields(AdminInterface $admin, ListMapper $list);
 
     /**
+     * @param AdminInterface $admin
      * @param DatagridMapper $filter
      */
-    public function configureDatagridFilters(DatagridMapper $filter);
+    public function configureDatagridFilters(AdminInterface $admin, DatagridMapper $filter);
 
     /**
-     * @param ShowMapper $filter
+     * @param AdminInterface  $admin
+     * @param ShowMapper      $filter
      */
-    public function configureShowFields(ShowMapper $filter);
+    public function configureShowFields(AdminInterface $admin, ShowMapper $filter);
 
     /**
      * @param AdminInterface  $admin

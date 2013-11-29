@@ -35,7 +35,7 @@ class AdminEventExtension extends AdminExtension
     /**
      * {@inheritdoc}
      */
-    public function configureFormFields(FormMapper $form)
+    public function configureFormFields(AdminInterface $admin, FormMapper $form)
     {
         $this->eventDispatcher->dispatch('sonata.admin.event.configure.form', new ConfigureEvent($form->getAdmin(), $form, ConfigureEvent::TYPE_FORM));
     }
@@ -43,7 +43,7 @@ class AdminEventExtension extends AdminExtension
     /**
      * {@inheritdoc}
      */
-    public function configureListFields(ListMapper $list)
+    public function configureListFields(AdminInterface $admin, ListMapper $list)
     {
         $this->eventDispatcher->dispatch('sonata.admin.event.configure.list', new ConfigureEvent($list->getAdmin(), $list, ConfigureEvent::TYPE_LIST));
     }
@@ -51,7 +51,7 @@ class AdminEventExtension extends AdminExtension
     /**
      * {@inheritdoc}
      */
-    public function configureDatagridFilters(DatagridMapper $filter)
+    public function configureDatagridFilters(AdminInterface $admin, DatagridMapper $filter)
     {
         $this->eventDispatcher->dispatch('sonata.admin.event.configure.datagrid', new ConfigureEvent($filter->getAdmin(), $filter, ConfigureEvent::TYPE_DATAGRID));
     }
@@ -59,7 +59,7 @@ class AdminEventExtension extends AdminExtension
     /**
      * {@inheritdoc}
      */
-    public function configureShowFields(ShowMapper $show)
+    public function configureShowFields(AdminInterface $admin, ShowMapper $show)
     {
         $this->eventDispatcher->dispatch('sonata.admin.event.configure.show', new ConfigureEvent($show->getAdmin(), $show, ConfigureEvent::TYPE_SHOW));
     }
