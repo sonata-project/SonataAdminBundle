@@ -82,7 +82,10 @@ class AdminEventExtensionTest extends \PHPUnit_Framework_TestCase
                 $this->equalTo('sonata.admin.event.configure.form'),
                 $this->callback($this->getConfigureEventClosure(ConfigureEvent::TYPE_FORM))
             ))
-            ->configureFormFields($this->getMapper('Sonata\AdminBundle\Form\FormMapper'));
+            ->configureFormFields(
+                $this->getMock('Sonata\AdminBundle\Admin\AdminInterface'),
+                $this->getMapper('Sonata\AdminBundle\Form\FormMapper')
+            );
     }
 
     public function testConfigureListFields()
@@ -92,7 +95,10 @@ class AdminEventExtensionTest extends \PHPUnit_Framework_TestCase
                 $this->equalTo('sonata.admin.event.configure.list'),
                 $this->callback($this->getConfigureEventClosure(ConfigureEvent::TYPE_LIST))
             ))
-            ->configureListFields($this->getMapper('Sonata\AdminBundle\Datagrid\ListMapper'));
+            ->configureListFields(
+                $this->getMock('Sonata\AdminBundle\Admin\AdminInterface'),
+                $this->getMapper('Sonata\AdminBundle\Datagrid\ListMapper')
+            );
     }
 
     public function testConfigureDatagridFields()
@@ -102,7 +108,10 @@ class AdminEventExtensionTest extends \PHPUnit_Framework_TestCase
                 $this->equalTo('sonata.admin.event.configure.datagrid'),
                 $this->callback($this->getConfigureEventClosure(ConfigureEvent::TYPE_DATAGRID))
             ))
-            ->configureDatagridFilters($this->getMapper('Sonata\AdminBundle\Datagrid\DatagridMapper'));
+            ->configureDatagridFilters(
+                $this->getMock('Sonata\AdminBundle\Admin\AdminInterface'),
+                $this->getMapper('Sonata\AdminBundle\Datagrid\DatagridMapper')
+            );
     }
 
     public function testConfigureShowFields()
@@ -112,7 +121,10 @@ class AdminEventExtensionTest extends \PHPUnit_Framework_TestCase
                 $this->equalTo('sonata.admin.event.configure.show'),
                 $this->callback($this->getConfigureEventClosure(ConfigureEvent::TYPE_SHOW))
             ))
-            ->configureShowFields($this->getMapper('Sonata\AdminBundle\Show\ShowMapper'));
+            ->configureShowFields(
+                $this->getMock('Sonata\AdminBundle\Admin\AdminInterface'), 
+                $this->getMapper('Sonata\AdminBundle\Show\ShowMapper')
+            );
     }
 
     public function testPreUpdate()

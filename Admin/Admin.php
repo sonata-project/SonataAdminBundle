@@ -669,7 +669,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         $this->configureShowFields($mapper);
 
         foreach ($this->getExtensions() as $extension) {
-            $extension->configureShowFields($mapper);
+            $extension->configureShowFields($this, $mapper);
         }
     }
 
@@ -704,7 +704,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         $this->configureListFields($mapper);
 
         foreach ($this->getExtensions() as $extension) {
-            $extension->configureListFields($mapper);
+            $extension->configureListFields($this, $mapper);
         }
 
         if ($this->hasRequest() && $this->getRequest()->isXmlHttpRequest()) {
@@ -808,7 +808,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         }
 
         foreach ($this->getExtensions() as $extension) {
-            $extension->configureDatagridFilters($mapper);
+            $extension->configureDatagridFilters($this, $mapper);
         }
     }
 
@@ -1254,7 +1254,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         $this->configureFormFields($mapper);
 
         foreach ($this->getExtensions() as $extension) {
-            $extension->configureFormFields($mapper);
+            $extension->configureFormFields($this, $mapper);
         }
 
         $this->attachInlineValidator();
