@@ -1025,4 +1025,42 @@ class AdminTest extends \PHPUnit_Framework_TestCase
         $admin->setModelManager($modelManager);
         $this->assertSame(array('foo', 'bar'), $admin->getExportFields());
     }
+
+    public function testGetPersistentParametersWithNoExtension()
+    {
+        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
+
+        $this->assertEmpty($admin->getPersistentParameters());
+    }
+
+    /**
+     * @expectedException \RuntimeException
+     */
+    public function testGetPersistentParametersWithInvalidExtension()
+    {
+        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
+
+        $extension = $this->getMock('Sonata\AdminBundle\Admin\AdminExtensionInterface');
+        $extension->expects($this->once())->method('getPersistentParameters')->will($this->returnValue(null));
+
+        $admin->addExtension($extension);
+
+        $admin->getPersistentParameters();
+    }
+
+    public function testGetPersistentParametersWithValidExtension()
+    {
+        $expected = array(
+            'context' => 'foobar'
+        );
+
+        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
+
+        $extension = $this->getMock('Sonata\AdminBundle\Admin\AdminExtensionInterface');
+        $extension->expects($this->once())->method('getPersistentParameters')->will($this->returnValue($expected));
+
+        $admin->addExtension($extension);
+
+        $this->assertEquals($expected, $admin->getPersistentParameters());
+    }
 }

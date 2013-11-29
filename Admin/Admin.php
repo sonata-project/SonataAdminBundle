@@ -1923,7 +1923,13 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     {
         $parameters = array();
         foreach ($this->getExtensions() as $extension) {
-            $parameters = array_merge($parameters, $extension->getPersistentParameters($this));
+            $params = $extension->getPersistentParameters($this);
+
+            if (!is_array($params)) {
+                throw new \RuntimeException(sprintf('The %s::getPersistentParameters must return an array', get_class($extension)));
+            }
+
+            $parameters = array_merge($parameters, $params);
         }
 
         return $parameters;

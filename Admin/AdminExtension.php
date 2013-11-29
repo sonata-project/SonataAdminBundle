@@ -87,7 +87,9 @@ abstract class AdminExtension implements AdminExtensionInterface
      * {@inheritdoc}
      */
     public function getPersistentParameters(AdminInterface $admin)
-    {}
+    {
+        return array();
+    }
 
     /**
      * {@inheritdoc}
