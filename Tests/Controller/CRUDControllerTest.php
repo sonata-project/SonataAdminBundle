@@ -74,10 +74,14 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
     private $container;
 
     /**
-     *
      * @var AdminObjectAclManipulator
      */
     private $adminObjectAclManipulator;
+
+    /**
+     * @var string
+     */
+    private $template;
 
     /**
      * {@inheritDoc}
@@ -91,15 +95,19 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->request->attributes->set('_sonata_admin', 'foo.admin');
         $this->admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
         $this->parameters = array();
+        $this->template = '';
 
         // php 5.3 BC
         $params = &$this->parameters;
+        $template = &$this->template;
 
         $templating = $this->getMock('Symfony\Bundle\FrameworkBundle\Templating\DelegatingEngine', array(), array($this->container, array()));
 
         $templating->expects($this->any())
             ->method('renderResponse')
-            ->will($this->returnCallback(function($view, array $parameters = array(), Response $response = null) use (&$params) {
+            ->will($this->returnCallback(function($view, array $parameters = array(), Response $response = null) use (&$params, &$template) {
+                    $template = $view;
+
                     if (null === $response) {
                         $response = new Response();
                     }
@@ -193,6 +201,24 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
                             return 'SonataAdminBundle:CRUD:show.html.twig';
                         case 'edit':
                             return 'SonataAdminBundle:CRUD:edit.html.twig';
+                        case 'dashboard':
+                            return 'SonataAdminBundle:Core:dashboard.html.twig';
+                        case 'search':
+                            return 'SonataAdminBundle:Core:search.html.twig';
+                        case 'list':
+                            return 'SonataAdminBundle:CRUD:list.html.twig';
+                        case 'preview':
+                            return 'SonataAdminBundle:CRUD:preview.html.twig';
+                        case 'history':
+                            return 'SonataAdminBundle:CRUD:history.html.twig';
+                        case 'acl':
+                            return 'SonataAdminBundle:CRUD:acl.html.twig';
+                        case 'delete':
+                            return 'SonataAdminBundle:CRUD:delete.html.twig';
+                        case 'batch':
+                            return 'SonataAdminBundle:CRUD:list__batch.html.twig';
+                        case 'batch_confirmation':
+                            return 'SonataAdminBundle:CRUD:batch_confirmation.html.twig';
                     }
 
                     return null;
@@ -356,6 +382,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($this->admin, $this->parameters['admin']);
         $this->assertEquals('SonataAdminBundle::standard_layout.html.twig', $this->parameters['base_template']);
         $this->assertEquals($this->pool, $this->parameters['admin_pool']);
+        $this->assertEquals('FooAdminBundle::foo.html.twig', $this->template);
     }
 
     public function testRenderWithResponse()
@@ -370,6 +397,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($this->admin, $this->parameters['admin']);
         $this->assertEquals('SonataAdminBundle::standard_layout.html.twig', $this->parameters['base_template']);
         $this->assertEquals($this->pool, $this->parameters['admin_pool']);
+        $this->assertEquals('FooAdminBundle::foo.html.twig', $this->template);
     }
 
     public function testRenderCustomParams()
@@ -380,6 +408,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('SonataAdminBundle::standard_layout.html.twig', $this->parameters['base_template']);
         $this->assertEquals($this->pool, $this->parameters['admin_pool']);
         $this->assertEquals('bar', $this->parameters['foo']);
+        $this->assertEquals('FooAdminBundle::foo.html.twig', $this->template);
     }
 
     public function testRenderAjax()
@@ -391,6 +420,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('SonataAdminBundle::ajax_layout.html.twig', $this->parameters['base_template']);
         $this->assertEquals($this->pool, $this->parameters['admin_pool']);
         $this->assertEquals('bar', $this->parameters['foo']);
+        $this->assertEquals('FooAdminBundle::foo.html.twig', $this->template);
     }
 
     public function testListActionAccessDenied()
@@ -442,6 +472,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Sonata\AdminBundle\Datagrid\DatagridInterface', $this->parameters['datagrid']);
         $this->assertEquals('', $this->parameters['csrf_token']);
         $this->assertEquals(array(), $this->session->getFlashBag()->all());
+        $this->assertEquals('SonataAdminBundle:CRUD:list.html.twig', $this->template);
     }
 
     public function testBatchActionDeleteAccessDenied()
@@ -562,6 +593,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($object, $this->parameters['object']);
 
         $this->assertEquals(array(), $this->session->getFlashBag()->all());
+        $this->assertEquals('SonataAdminBundle:CRUD:show.html.twig', $this->template);
     }
 
     /**
@@ -652,6 +684,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('', $this->parameters['csrf_token']);
 
         $this->assertEquals(array(), $this->session->getFlashBag()->all());
+        $this->assertEquals('SonataAdminBundle:CRUD:delete.html.twig', $this->template);
     }
 
     public function testDeleteActionAjaxSuccess1()
@@ -805,6 +838,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('', $this->parameters['csrf_token']);
 
         $this->assertEquals(array(), $this->session->getFlashBag()->all());
+        $this->assertEquals('SonataAdminBundle:CRUD:delete.html.twig', $this->template);
     }
 
     public function testDeleteActionError()
@@ -898,6 +932,8 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('edit', $this->parameters['action']);
         $this->assertInstanceOf('Symfony\Component\Form\FormView', $this->parameters['form']);
         $this->assertEquals($object, $this->parameters['object']);
+        $this->assertEquals(array(), $this->session->getFlashBag()->all());
+        $this->assertEquals('SonataAdminBundle:CRUD:edit.html.twig', $this->template);
     }
 
     public function testEditActionSuccess()
@@ -976,6 +1012,9 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('edit', $this->parameters['action']);
         $this->assertInstanceOf('Symfony\Component\Form\FormView', $this->parameters['form']);
         $this->assertEquals($object, $this->parameters['object']);
+
+        $this->assertEquals(array('sonata_flash_error'=>array('flash_edit_error')), $this->session->getFlashBag()->all());
+        $this->assertEquals('SonataAdminBundle:CRUD:edit.html.twig', $this->template);
     }
 
     public function testEditActionAjaxSuccess()
@@ -1063,6 +1102,59 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($object, $this->parameters['object']);
 
         $this->assertEquals(array(), $this->session->getFlashBag()->all());
+        $this->assertEquals('SonataAdminBundle:CRUD:edit.html.twig', $this->template);
+    }
+
+    public function testEditActionWithPreview()
+    {
+        $object = new \stdClass();
+
+        $this->admin->expects($this->once())
+            ->method('getObject')
+            ->will($this->returnValue($object));
+
+        $this->admin->expects($this->once())
+            ->method('isGranted')
+            ->with($this->equalTo('EDIT'))
+            ->will($this->returnValue(true));
+
+        $form = $this->getMockBuilder('Symfony\Component\Form\Form')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->admin->expects($this->once())
+            ->method('getForm')
+            ->will($this->returnValue($form));
+
+        $this->admin->expects($this->once())
+            ->method('supportsPreviewMode')
+            ->will($this->returnValue(true));
+
+        $formView = $this->getMock('Symfony\Component\Form\FormView');
+
+        $form->expects($this->any())
+            ->method('createView')
+            ->will($this->returnValue($formView));
+
+        $form->expects($this->once())
+            ->method('isValid')
+            ->will($this->returnValue(true));
+
+        $this->request->setMethod('POST');
+        $this->request->request->set('btn_preview', 'Preview');
+
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $this->controller->editAction());
+
+        $this->assertEquals($this->admin, $this->parameters['admin']);
+        $this->assertEquals('SonataAdminBundle::standard_layout.html.twig', $this->parameters['base_template']);
+        $this->assertEquals($this->pool, $this->parameters['admin_pool']);
+
+        $this->assertEquals('edit', $this->parameters['action']);
+        $this->assertInstanceOf('Symfony\Component\Form\FormView', $this->parameters['form']);
+        $this->assertEquals($object, $this->parameters['object']);
+
+        $this->assertEquals(array(), $this->session->getFlashBag()->all());
+        $this->assertEquals('SonataAdminBundle:CRUD:preview.html.twig', $this->template);
     }
 
     public function testCreateActionAccessDenied()
@@ -1115,6 +1207,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($object, $this->parameters['object']);
 
         $this->assertEquals(array(), $this->session->getFlashBag()->all());
+        $this->assertEquals('SonataAdminBundle:CRUD:edit.html.twig', $this->template);
     }
 
     public function testCreateActionSuccess()
@@ -1193,6 +1286,9 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('create', $this->parameters['action']);
         $this->assertInstanceOf('Symfony\Component\Form\FormView', $this->parameters['form']);
         $this->assertEquals($object, $this->parameters['object']);
+
+        $this->assertEquals(array('sonata_flash_error'=>array('flash_create_error')), $this->session->getFlashBag()->all());
+        $this->assertEquals('SonataAdminBundle:CRUD:edit.html.twig', $this->template);
     }
 
     public function testCreateActionAjaxSuccess()
@@ -1280,6 +1376,59 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($object, $this->parameters['object']);
 
         $this->assertEquals(array(), $this->session->getFlashBag()->all());
+        $this->assertEquals('SonataAdminBundle:CRUD:edit.html.twig', $this->template);
+    }
+
+    public function testCreateActionWithPreview()
+    {
+        $this->admin->expects($this->once())
+            ->method('isGranted')
+            ->with($this->equalTo('CREATE'))
+            ->will($this->returnValue(true));
+
+        $object = new \stdClass();
+
+        $this->admin->expects($this->once())
+            ->method('getNewInstance')
+            ->will($this->returnValue($object));
+
+        $form = $this->getMockBuilder('Symfony\Component\Form\Form')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->admin->expects($this->once())
+            ->method('getForm')
+            ->will($this->returnValue($form));
+
+        $this->admin->expects($this->once())
+            ->method('supportsPreviewMode')
+            ->will($this->returnValue(true));
+
+        $formView = $this->getMock('Symfony\Component\Form\FormView');
+
+        $form->expects($this->any())
+            ->method('createView')
+            ->will($this->returnValue($formView));
+
+        $form->expects($this->once())
+            ->method('isValid')
+            ->will($this->returnValue(true));
+
+        $this->request->setMethod('POST');
+        $this->request->request->set('btn_preview', 'Preview');
+
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $this->controller->createAction());
+
+        $this->assertEquals($this->admin, $this->parameters['admin']);
+        $this->assertEquals('SonataAdminBundle::standard_layout.html.twig', $this->parameters['base_template']);
+        $this->assertEquals($this->pool, $this->parameters['admin_pool']);
+
+        $this->assertEquals('create', $this->parameters['action']);
+        $this->assertInstanceOf('Symfony\Component\Form\FormView', $this->parameters['form']);
+        $this->assertEquals($object, $this->parameters['object']);
+
+        $this->assertEquals(array(), $this->session->getFlashBag()->all());
+        $this->assertEquals('SonataAdminBundle:CRUD:preview.html.twig', $this->template);
     }
 
     public function testExportActionAccessDenied()
@@ -1443,6 +1592,9 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('history', $this->parameters['action']);
         $this->assertEquals(array(), $this->parameters['revisions']);
         $this->assertEquals($object, $this->parameters['object']);
+
+        $this->assertEquals(array(), $this->session->getFlashBag()->all());
+        $this->assertEquals('SonataAdminBundle:CRUD:history.html.twig', $this->template);
     }
 
     public function testAclActionAclNotEnabled()
@@ -1549,6 +1701,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Symfony\Component\Form\FormView', $this->parameters['form']);
 
         $this->assertEquals(array(), $this->session->getFlashBag()->all());
+        $this->assertEquals('SonataAdminBundle:CRUD:acl.html.twig', $this->template);
     }
 
     public function testAclActionInvalidUpdate()
@@ -1617,6 +1770,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Symfony\Component\Form\FormView', $this->parameters['form']);
 
         $this->assertEquals(array(), $this->session->getFlashBag()->all());
+        $this->assertEquals('SonataAdminBundle:CRUD:acl.html.twig', $this->template);
     }
 
     public function testAclActionSuccessfulUpdate()
@@ -1838,6 +1992,9 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('show', $this->parameters['action']);
         $this->assertEquals($objectRevision, $this->parameters['object']);
         $this->assertEquals($fieldDescriptionCollection, $this->parameters['elements']);
+
+        $this->assertEquals(array(), $this->session->getFlashBag()->all());
+        $this->assertEquals('SonataAdminBundle:CRUD:show.html.twig', $this->template);
     }
 
     public function testBatchActionWrongMethod()
@@ -2025,6 +2182,9 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Symfony\Component\Form\FormView', $this->parameters['form']);
         $this->assertEquals($data, $this->parameters['data']);
         $this->assertEquals('', $this->parameters['csrf_token']);
+
+        $this->assertEquals(array(), $this->session->getFlashBag()->all());
+        $this->assertEquals('SonataAdminBundle:CRUD:batch_confirmation.html.twig', $this->template);
     }
 
     public function testBatchActionNonRelevantAction()
