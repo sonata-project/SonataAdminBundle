@@ -9,7 +9,7 @@ ConfigureEvent
 This event is generated when a form, list, show, datagrid is configured. The event names are:
 
  - sonata.admin.event.configure.form
- - sonata.admin.event.configure.lis
+ - sonata.admin.event.configure.list
  - sonata.admin.event.configure.datagrid
  - sonata.admin.event.configure.show
 
