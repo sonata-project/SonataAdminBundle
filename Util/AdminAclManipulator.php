@@ -100,7 +100,7 @@ class AdminAclManipulator implements AdminAclManipulatorInterface
                     $acl->deleteClassAce($aceIndex);
 
                     if (!is_null($output)) {
-                        $output->writeln(sprintf('   - remove role: %s', $action, $role));
+                        $output->writeln(sprintf('   - remove role: %s', $role));
                     }
                 }
             }
