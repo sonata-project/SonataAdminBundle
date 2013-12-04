@@ -31,6 +31,7 @@ Full Configuration Options
             options:
                 html5_validate: false # does not use html5 validation
                 confirm_exit:   false # disable confirmation when quitting with unsaved changes
+                pager_links:    5     # pager max links to display
 
             # set to true to persist filter settings per admin module in the user's session
             persist_filters: false
