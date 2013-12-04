@@ -5,6 +5,7 @@ jQuery(document).ready(function() {
     }
 
     Admin.setup_select2(document);
+    jQuery(this).on('sonata.add_element', function() { Admin.setup_select2(document); });
     Admin.add_pretty_errors(document);
     Admin.add_filters(document);
     Admin.set_object_field_value(document);
