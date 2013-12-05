@@ -1,7 +1,12 @@
 CHANGELOG
 =========
 
+### 2013-12-05
+
+* [BC BREAK] Move some classes to SonataCoreBundle, you need to add a new dependency
+
 ### 2013-11-23
+
 * [BC BREAK] added ``getBatchActions`` to the AdminInterface
   If you do not extend the Admin class, you need to add this method to
   your admin.
