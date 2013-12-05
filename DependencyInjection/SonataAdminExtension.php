@@ -192,7 +192,6 @@ BOOM
             "Sonata\\AdminBundle\\Form\\DataTransformer\\ModelsToArrayTransformer",
             "Sonata\\AdminBundle\\Form\\DataTransformer\\ModelToIdTransformer",
             "Sonata\\AdminBundle\\Form\\EventListener\\MergeCollectionListener",
-            "Sonata\\AdminBundle\\Form\\EventListener\\ResizeFormListener",
             "Sonata\\AdminBundle\\Form\\Extension\\Field\\Type\\FormTypeFieldExtension",
             "Sonata\\AdminBundle\\Form\\FormMapper",
             "Sonata\\AdminBundle\\Form\\Type\\AdminType",
