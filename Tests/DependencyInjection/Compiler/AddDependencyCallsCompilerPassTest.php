@@ -170,7 +170,9 @@ class AddDependencyCallsCompilerPassTest extends \PHPUnit_Framework_TestCase
     private function getContainer()
     {
         $container = new ContainerBuilder();
-        $container->setParameter('kernel.bundles', array());
+        $container->setParameter('kernel.bundles', array(
+            'SonataCoreBundle' => true
+        ));
 
         // Add dependencies for SonataAdminBundle (these services will never get called so dummy classes will do)
         $container
