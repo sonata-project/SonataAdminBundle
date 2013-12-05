@@ -6,7 +6,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class DemoAdminBundle  extends Bundle
 {
-    private $path = null;
+    protected $path = null;
 
     public function setPath($path)
     {
