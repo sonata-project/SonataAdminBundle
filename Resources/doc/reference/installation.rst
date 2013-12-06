@@ -61,6 +61,7 @@ forget to enable SonataAdminBundle too:
             // ...
 
             // Add your dependencies
+            new Sonata\CoreBundle\SonataCoreBundle(),
             new Sonata\BlockBundle\SonataBlockBundle(),
             new Sonata\jQueryBundle\SonatajQueryBundle(),
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
