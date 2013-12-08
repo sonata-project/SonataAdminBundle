@@ -61,7 +61,7 @@ we are manipulating form fields we do this from within ``ImageAdmin::configureFo
                 $fullPath = $container->get('request')->getBasePath().'/'.$webPath;
             
                 // add a 'help' option containing the preview's img tag
-                $fileFieldOptions['help'] = '<img src="'.$webPath.'" class="admin-preview" />';
+                $fileFieldOptions['help'] = '<img src="'.$fullPath.'" class="admin-preview" />';
             }
             
             $formMapper
