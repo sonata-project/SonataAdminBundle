@@ -25,6 +25,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 use Sonata\AdminBundle\Util\AdminObjectAclManipulator;
 use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
 use Sonata\AdminBundle\Tests\Fixtures\Controller\BatchAdminController;
+use Symfony\Component\HttpKernel\Kernel;
 
 /**
  * Test for CRUDController
@@ -162,12 +163,20 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $auditManager = $this->auditManager;
         $adminObjectAclManipulator = $this->adminObjectAclManipulator;
 
+        $requestStack = null;
+        if (Kernel::MINOR_VERSION > 3) {
+            $requestStack = new \Symfony\Component\HttpFoundation\RequestStack();
+            $requestStack->push($request);
+        }
+
         $this->container->expects($this->any())
             ->method('get')
-            ->will($this->returnCallback(function($id) use ($pool, $request, $admin, $templating, $twig, $session, $exporter, $auditManager, $adminObjectAclManipulator) {
+            ->will($this->returnCallback(function($id) use ($pool, $request, $admin, $templating, $twig, $session, $exporter, $auditManager, $adminObjectAclManipulator, $requestStack) {
                     switch ($id) {
                         case 'sonata.admin.pool':
                             return $pool;
+                        case 'request_stack':
+                            return $requestStack;
                         case 'request':
                             return $request;
                         case 'foo.admin':
