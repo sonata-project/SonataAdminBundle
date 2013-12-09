@@ -301,10 +301,12 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Symfony\Component\Form\FormBuilder', $this->formBuilder->get('_per_page'));
     }
 
+    /**
+     * @expectedException        \Symfony\Component\Form\Exception\UnexpectedTypeException
+     * @expectedExceptionMessage Expected argument of type "FieldDescriptionInterface", "array" given
+     */
     public function testBuildPagerWithException()
     {
-        $this->setExpectedException('InvalidArgumentException', 'Expected argument of type "FieldDescriptionInterface", "array" given');
-
         $filter = $this->getMock('Sonata\AdminBundle\Filter\FilterInterface');
         $filter->expects($this->once())
             ->method('getName')
