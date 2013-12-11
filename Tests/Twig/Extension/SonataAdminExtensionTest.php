@@ -159,16 +159,6 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue('Data'));
     }
 
-    public function testSlugify()
-    {
-        $this->assertEquals($this->twigExtension->slugify('test'), 'test');
-        $this->assertEquals($this->twigExtension->slugify('S§!@@#$#$alut'), 's-alut');
-        $this->assertEquals($this->twigExtension->slugify('Symfony2'), 'symfony2');
-        $this->assertEquals($this->twigExtension->slugify('test'), 'test');
-        $this->assertEquals($this->twigExtension->slugify('c\'est bientôt l\'été'), 'c-est-bientot-l-ete');
-        $this->assertEquals($this->twigExtension->slugify(urldecode('%2Fc\'est+bientôt+l\'été')), 'c-est-bientot-l-ete');
-    }
-
     /**
      * @dataProvider getRenderListElementTests
      */
