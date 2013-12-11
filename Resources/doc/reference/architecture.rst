@@ -83,7 +83,7 @@ your ``Admin`` services. This is done using a ``call`` to the matching "setter":
                     - Acme\DemoBundle\Entity\Post
                     - ~
                 calls:
-                    - [ setLabelTranslatorStrategy, [sonata.admin.label.strategy.underscore]]
+                    - [ setLabelTranslatorStrategy, ["@sonata.admin.label.strategy.underscore"]]
 
 Here, we declare the same ``Admin`` service as in the :doc:`getting_started` chapter, but using a
 different label translator strategy, replacing the default one. Notice that
