@@ -39,7 +39,7 @@ class SonataAdminExtension extends Extension
         if (!isset($bundles['SonataCoreBundle'])) {
             throw new \RuntimeException(<<<BOOM
 Boom! you are living on the edge ;) The AdminBundle requires the CoreBundle!
-Please add ``"sonata-project/core-bundle": "~2.2@dev`` into your composer.json file and add the SonataCoreBundle into the AppKernel');
+Please add ``"sonata-project/core-bundle": "~2.2@dev"`` into your composer.json file and add the SonataCoreBundle into the AppKernel');
 BOOM
             );
         }
