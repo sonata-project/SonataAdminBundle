@@ -22,7 +22,6 @@ To do:
 - (Note, if this is very similar to the form documentation it can be combined)
 
 
-
 Customising the query used to show the object from within your Admin class
 --------------------------------------------------------------------------
 
