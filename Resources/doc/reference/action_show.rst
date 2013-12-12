@@ -33,7 +33,9 @@ It is actually a but easier, because we are only concerned with displaying infor
 Smile, the hard part is already done.
 
 The following is a working example of a ShowAction
+
 .. code-block:: php
+
     <?php
     // src/Acme/DemoBundle/Admin/PostAdmin.php
 
