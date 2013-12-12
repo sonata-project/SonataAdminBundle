@@ -73,11 +73,13 @@ Setting up a custom show template (very useful)
 
 The first thing you need to do is define it in app/config/config/yml:
 
-sonata_admin:
-    title:      Acme Admin Area
-    title_logo: img/logo_small.png
-    templates:
-        show:       AcmeDemoBundle:Admin:Display_Client.html.twig
+.. code-block:: yml
+
+    sonata_admin:
+        title:      Acme Admin Area
+        title_logo: img/logo_small.png
+        templates:
+            show:       AcmeDemoBundle:Admin:Display_Client.html.twig
 
 
 Once you have defined this, Sonata Admin looks for it in the following location:
