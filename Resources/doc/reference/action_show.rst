@@ -99,3 +99,4 @@ The original template can be found in the following location:
 Now that you have a copy of the default template, check to make sure it works.
 
 That's it, now go code.
+
