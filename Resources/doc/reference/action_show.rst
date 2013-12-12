@@ -43,6 +43,7 @@ class ClientAdmin extends Admin
 {
 
     protected function configureShowFields(ShowMapper $showMapper)
+<<<<<<< HEAD
 
     {
 
@@ -54,14 +55,34 @@ class ClientAdmin extends Admin
 
             ->add('Name')
 
+=======
+    
+    {
+    
+        // Here we set the fields of the ShowMapper variable, $showMapper (but this can be called anything)
+        
+        $showMapper
+
+            //The default option is to just display the value as text (for boolean this will be 1 or 0)
+            
+            ->add('Name')
+            
+>>>>>>> 4a9657f18d8dbf3f3e986e5f8506d73505643972
             ->add('Phone')
 
             ->add('Email')
 
+<<<<<<< HEAD
             // The boolean option is actually very cool
             // - True  shows a check mark and says 'yes'
             // - False shows an 'X' and says 'no'
 
+=======
+            //
+            // The boolean option is actually very cool
+            // - True  shows a check mark and says 'yes'
+            // - False shows an 'X' and says 'no'
+>>>>>>> 4a9657f18d8dbf3f3e986e5f8506d73505643972
             ->add('DateCafe','boolean')
 
             ->add('DatePub','boolean')
