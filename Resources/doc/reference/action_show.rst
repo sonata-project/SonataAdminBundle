@@ -5,7 +5,7 @@ The Show action
 
     This document is a stub representing a new work in progress. If you're reading 
     this you can help contribute, **no matter what your experience level with Sonata 
-    is**. Check out the `issues on Github` _ for more information about how to get involved.
+    is**. Check out the ``issues on Github`` _ for more information about how to get involved.
 
 This document will cover the Show action and related configuration options.
 
@@ -83,7 +83,8 @@ The first thing you need to do is define it in app/config/config/yml:
 
 
 Once you have defined this, Sonata Admin looks for it in the following location:
-`src/Acme/DemoBundle/Resources/views/Admin/Display_Client.html.twig`
+
+``src/Acme/DemoBundle/Resources/views/Admin/Display_Client.html.twig``
 
 Now that you have told Sonata Admin where to find the template, it's time to put one in there.
 
@@ -92,7 +93,8 @@ The recommended way to start is to copy the default template, and paste it into 
 This ensures that you can update Sonata Admin and keep all of your hard work.
 
 The original template can be found in the following location:
-`vendor/sonata-project/admin-bundle/Sonata/AdminBundle/Resources/views/CRUD/base_show.html.twig`
+
+``vendor/sonata-project/admin-bundle/Sonata/AdminBundle/Resources/views/CRUD/base_show.html.twig``
 
 Now that you have a copy of the default template, check to make sure it works.
 
