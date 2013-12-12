@@ -38,13 +38,19 @@ The following is a working example of a ShowAction
 // src/Acme/DemoBundle/Admin/PostAdmin.php
 
 class ClientAdmin extends Admin
+
 {
+
     protected function configureShowFields(ShowMapper $showMapper)
+    
     {
+    
         // Here we set the fields of the ShowMapper variable, $showMapper (but this can be called anything)
+        
         $showMapper
 
             //The default option is to just display the value as text (for boolean this will be 1 or 0)
+            
             ->add('Name')
             ->add('Phone')
             ->add('Email')
