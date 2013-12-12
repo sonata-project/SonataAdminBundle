@@ -52,6 +52,7 @@ class ClientAdmin extends Admin
             //The default option is to just display the value as text (for boolean this will be 1 or 0)
             
             ->add('Name')
+            
             ->add('Phone')
             ->add('Email')
 
