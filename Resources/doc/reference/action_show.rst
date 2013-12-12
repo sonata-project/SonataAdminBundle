@@ -44,18 +44,15 @@ class ClientAdmin extends Admin
         // Here we set the fields of the ShowMapper variable, $showMapper (but this can be called anything)
         $showMapper
 
-            /*
-             * The default option is to just display the value as text (for boolean this will be 1 or 0)
-             */
+            //The default option is to just display the value as text (for boolean this will be 1 or 0)
             ->add('Name')
             ->add('Phone')
             ->add('Email')
 
-            /*
-             * The boolean option is actually very cool
-             * - True  shows a check mark and says 'yes'
-             * - False shows an 'X' and says 'no'
-             */
+            //
+            // The boolean option is actually very cool
+            // - True  shows a check mark and says 'yes'
+            // - False shows an 'X' and says 'no'
             ->add('DateCafe','boolean')
             ->add('DatePub','boolean')
             ->add('DateClub','boolean')
