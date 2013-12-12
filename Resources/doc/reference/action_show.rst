@@ -33,36 +33,36 @@ It is actually a but easier, because we are only concerned with displaying infor
 Smile, the hard part is already done.
 
 The following is a working example of a ShowAction
+.. code-block:: php
+    <?php
+    // src/Acme/DemoBundle/Admin/PostAdmin.php
 
-<?php
-// src/Acme/DemoBundle/Admin/PostAdmin.php
-
-class ClientAdmin extends Admin
-{
-    protected function configureShowFields(ShowMapper $showMapper)
+    class ClientAdmin extends Admin
     {
-        // Here we set the fields of the ShowMapper variable, $showMapper (but this can be called anything)
-        $showMapper
+        protected function configureShowFields(ShowMapper $showMapper)
+        {
+            // Here we set the fields of the ShowMapper variable, $showMapper (but this can be called anything)
+            $showMapper
 
-            /*
-             * The default option is to just display the value as text (for boolean this will be 1 or 0)
-             */
-            ->add('Name')
-            ->add('Phone')
-            ->add('Email')
+                /*
+                 * The default option is to just display the value as text (for boolean this will be 1 or 0)
+                 */
+                ->add('Name')
+                ->add('Phone')
+                ->add('Email')
 
-            /*
-             * The boolean option is actually very cool
-             * - True  shows a check mark and says 'yes'
-             * - False shows an 'X' and says 'no'
-             */
-            ->add('DateCafe','boolean')
-            ->add('DatePub','boolean')
-            ->add('DateClub','boolean')
-        ;
+                /*
+                 * The boolean option is actually very cool
+                 * - True  shows a check mark and says 'yes'
+                 * - False shows an 'X' and says 'no'
+                 */
+                ->add('DateCafe','boolean')
+                ->add('DatePub','boolean')
+                ->add('DateClub','boolean')
+            ;
 
+        }
     }
-}
 
 
 Setting up a custom show template (very useful)
