@@ -22,6 +22,7 @@ To do:
 - (Note, if this is very similar to the form documentation it can be combined)
 
 
+
 Customising the query used to show the object from within your Admin class
 --------------------------------------------------------------------------
 
@@ -34,64 +35,33 @@ Smile, the hard part is already done.
 The following is a working example of a ShowAction
 
 <?php
-
 // src/Acme/DemoBundle/Admin/PostAdmin.php
 
 class ClientAdmin extends Admin
-
 {
-
     protected function configureShowFields(ShowMapper $showMapper)
-<<<<<<< HEAD
-
     {
-
         // Here we set the fields of the ShowMapper variable, $showMapper (but this can be called anything)
-
         $showMapper
 
-            // The default option is to just display the value as text (for boolean this will be 1 or 0)
-
+            /*
+             * The default option is to just display the value as text (for boolean this will be 1 or 0)
+             */
             ->add('Name')
-
-=======
-    
-    {
-    
-        // Here we set the fields of the ShowMapper variable, $showMapper (but this can be called anything)
-        
-        $showMapper
-
-            //The default option is to just display the value as text (for boolean this will be 1 or 0)
-            
-            ->add('Name')
-            
->>>>>>> 4a9657f18d8dbf3f3e986e5f8506d73505643972
             ->add('Phone')
-
             ->add('Email')
 
-<<<<<<< HEAD
-            // The boolean option is actually very cool
-            // - True  shows a check mark and says 'yes'
-            // - False shows an 'X' and says 'no'
-
-=======
-            //
-            // The boolean option is actually very cool
-            // - True  shows a check mark and says 'yes'
-            // - False shows an 'X' and says 'no'
->>>>>>> 4a9657f18d8dbf3f3e986e5f8506d73505643972
+            /*
+             * The boolean option is actually very cool
+             * - True  shows a check mark and says 'yes'
+             * - False shows an 'X' and says 'no'
+             */
             ->add('DateCafe','boolean')
-
             ->add('DatePub','boolean')
-
             ->add('DateClub','boolean')
-
         ;
 
     }
-    
 }
 
 
@@ -102,18 +72,13 @@ Setting up a custom show template (very useful)
 The first thing you need to do is define it in app/config/config/yml:
 
 sonata_admin:
-
     title:      Acme Admin Area
-
     title_logo: img/logo_small.png
-
     templates:
-
         show:       AcmeDemoBundle:Admin:Display_Client.html.twig
 
 
 Once you have defined this, Sonata Admin looks for it in the following location:
-
 `src/Acme/DemoBundle/Resources/views/Admin/Display_Client.html.twig`
 
 Now that you have told Sonata Admin where to find the template, it's time to put one in there.
@@ -123,7 +88,6 @@ The recommended way to start is to copy the default template, and paste it into 
 This ensures that you can update Sonata Admin and keep all of your hard work.
 
 The original template can be found in the following location:
-
 `vendor/sonata-project/admin-bundle/Sonata/AdminBundle/Resources/views/CRUD/base_show.html.twig`
 
 Now that you have a copy of the default template, check to make sure it works.
