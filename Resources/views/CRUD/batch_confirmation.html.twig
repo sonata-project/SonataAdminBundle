@@ -22,7 +22,7 @@ file that was distributed with this source code.
 
 {% block content %}
     <div class="sonata-ba-delete">
-        <h1>{{ 'title_batch_confirmation'|trans({}, 'SonataAdminBundle') }}</h1>
+        <h1>{% trans with {'%action%': action_label} from 'SonataAdminBundle' %}title_batch_confirmation{% endtrans %}</h1>
 
         {% if data.all_elements %}
             {{ 'message_batch_all_confirmation'|trans({}, 'SonataAdminBundle') }}

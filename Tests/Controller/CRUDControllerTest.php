@@ -2157,6 +2157,11 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->method('getBatchActions')
             ->will($this->returnValue($batchActions));
 
+        $this->admin->expects($this->once())
+            ->method('getTranslationLabel')
+            ->with($this->equalTo('delete'), $this->equalTo('action'))
+            ->will($this->returnValue('delete_action'));
+
         $data = array('action'=>'delete', 'idx'=>array('123', '456'), 'all_elements'=>false);
 
         $this->request->setMethod('POST');

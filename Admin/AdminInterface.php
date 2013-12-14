@@ -931,4 +931,15 @@ interface AdminInterface
      * @return bool
      */
     public function getCurrentChild();
+
+    /**
+     * Get translation label using the current TranslationStrategy.
+     *
+     * @param string $label
+     * @param string $context
+     * @param string $type
+     *
+     * @return string
+     */
+    public function getTranslationLabel($label, $context = '', $type = '');
 }
