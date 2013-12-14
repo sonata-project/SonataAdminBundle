@@ -370,6 +370,22 @@
               <source>short_object_description_placeholder</source>
               <target>Nenhuma selecção</target>
             </trans-unit>
+            <trans-unit id="title_search_results">
+                <source>title_search_results</source>
+                <target>title_search_results</target>
+            </trans-unit>
+            <trans-unit id="search_placeholder">
+                <source>search_placeholder</source>
+                <target>search_placeholder</target>
+            </trans-unit>
+            <trans-unit id="no_results_found">
+                <source>no_results_found</source>
+                <target>no_results_found</target>
+            </trans-unit>
+            <trans-unit id="add_new_entry">
+                <source>add_new_entry</source>
+                <target>add_new_entry</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

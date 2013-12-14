@@ -339,36 +339,52 @@
                 <target>Rifiuta</target>
             </trans-unit>
             <trans-unit id="label_per_page">
-              <source>label_per_page</source>
-              <target>Risultati per pagina</target>
+                <source>label_per_page</source>
+                <target>Risultati per pagina</target>
             </trans-unit>
             <trans-unit id="list_select">
-              <source>list_select</source>
-              <target>Seleziona</target>
+                <source>list_select</source>
+                <target>Seleziona</target>
             </trans-unit>
             <trans-unit id="confirm_exit">
                 <source>confirm_exit</source>
-                <target>confirm_exit</target>
+                <target>Le modifiche non salvate verranno perse.</target>
             </trans-unit>
             <trans-unit id="link_edit_acl">
-              <source>link_edit_acl</source>
-              <target>link_edit_acl</target>
+                <source>link_edit_acl</source>
+                <target>Modifica ACL</target>
             </trans-unit>
             <trans-unit id="btn_update_acl">
-              <source>btn_update_acl</source>
-              <target>btn_update_acl</target>
+                <source>btn_update_acl</source>
+                <target>Aggiorna ACL</target>
             </trans-unit>
             <trans-unit id="flash_acl_update_success">
                 <source>flash_acl_edit_success</source>
-                <target>flash_acl_update_success</target>
+                <target>ACL aggiornata con successo.</target>
             </trans-unit>
             <trans-unit id="link_action_acl">
                 <source>link_action_acl</source>
-                <target>link_action_acl</target>
+                <target>ACL</target>
             </trans-unit>
             <trans-unit id="short_object_description_placeholder">
-              <source>short_object_description_placeholder</source>
-              <target>short_object_description_placeholder</target>
+                <source>short_object_description_placeholder</source>
+                <target>Nessuna selezione</target>
+            </trans-unit>
+            <trans-unit id="title_search_results">
+                <source>title_search_results</source>
+                <target>Risultati della ricerca: %query%</target>
+            </trans-unit>
+            <trans-unit id="search_placeholder">
+                <source>search_placeholder</source>
+                <target>Cerca</target>
+            </trans-unit>
+            <trans-unit id="no_results_found">
+                <source>no_results_found</source>
+                <target>nessun risultato</target>
+            </trans-unit>
+            <trans-unit id="add_new_entry">
+                <source>add_new_entry</source>
+                <target>aggiungi</target>
             </trans-unit>
         </body>
     </file>

@@ -49,7 +49,10 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
     }
 
     /**
-     * @return bool
+     * Extract messages to MessageCatalogue
+     *
+     * @return MessageCatalogue
+     *
      * @throws \Exception|\RuntimeException
      */
     public function extract()

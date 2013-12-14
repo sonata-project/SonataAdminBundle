@@ -370,6 +370,22 @@
               <source>short_object_description_placeholder</source>
               <target>Aucune sélection</target>
             </trans-unit>
+            <trans-unit id="title_search_results">
+                <source>title_search_results</source>
+                <target>Résultats de recherche: %query%</target>
+            </trans-unit>
+            <trans-unit id="search_placeholder">
+                <source>search_placeholder</source>
+                <target>Rechercher</target>
+            </trans-unit>
+            <trans-unit id="no_results_found">
+                <source>no_results_found</source>
+                <target>pas de résultats</target>
+            </trans-unit>
+            <trans-unit id="add_new_entry">
+                <source>add_new_entry</source>
+                <target>rajouter un élément</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

@@ -9,64 +9,65 @@ file that was distributed with this source code.
 
 #}
 
-{% extends 'SonataBlockBundle:Block:block_base.html.twig' %}
+{% extends sonata_block.templates.block_base %}
 
 {% block block %}
-    {% for group in groups %}
-        {% set display = (group.roles is empty or is_granted('ROLE_SUPER_ADMIN') ) %}
-        {% for role in group.roles if not display %}
-            {% set display = is_granted(role)%}
-        {% endfor %}
 
-        {% if display %}
-            <table class="table table-bordered table-striped sonata-ba-list">
-                <thead>
-                    <tr>
-                        <th colspan="3">{{ group.label|trans({}, group.label_catalogue) }}</th>
-                    </tr>
-                </thead>
+    <table class="table table-condensed sonata-ba-list">
 
-                <tbody>
-                    {% for admin in group.items %}
-                        {% if admin.hasroute('create') and admin.isGranted('CREATE') or admin.hasroute('list') and admin.isGranted('LIST') %}
-                            <tr>
-                                <td class="sonata-ba-list-label">{{ admin.label|trans({}, admin.translationdomain) }}</td>
-                                <td>
-                                    <div class="btn-group">
-                                        {% if admin.hasroute('create') and admin.isGranted('CREATE') %}
-                                            {% if admin.subClasses is empty %}
-                                                <a class="btn btn-small" href="{{ admin.generateUrl('create')}}">
-                                                    <i class="icon-plus"></i>
-                                                    {% trans from 'SonataAdminBundle' %}link_add{% endtrans %}
-                                                </a>
-                                            {% else %}
-                                                <a class="btn btn-small dropdown-toggle" data-toggle="dropdown" href="#">
-                                                    <i class="icon-plus"></i>
-                                                    {% trans from 'SonataAdminBundle' %}link_add{% endtrans %}
-                                                    <span class="caret"></span>
-                                                </a>
-                                                <ul class="dropdown-menu">
-                                                    {% for subclass in admin.subclasses|keys %}
+        {% for group in groups %}
+            {% set display = (group.roles is empty or is_granted('ROLE_SUPER_ADMIN') ) %}
+            {% for role in group.roles if not display %}
+                {% set display = is_granted(role)%}
+            {% endfor %}
+
+            {% if display %}
+                <tr>
+                    <td colspan="3" style="background: none repeat scroll 0 0 #F7F7F7;"><strong>{{ group.label|trans({}, group.label_catalogue) }}</strong></td>
+                </tr>
+
+                {% for admin in group.items %}
+                    {% if admin.hasroute('create') and admin.isGranted('CREATE') or admin.hasroute('list') and admin.isGranted('LIST') %}
+                        <tr>
+                            <td class="sonata-ba-list-label">
+                                {{ admin.label|trans({}, admin.translationdomain) }}
+                            </td>
+                            <td>
+                                <div class="btn-group">
+                                    {% if admin.hasroute('create') and admin.isGranted('CREATE') %}
+                                        {% if admin.subClasses is empty %}
+                                            <a class="btn btn-link" href="{{ admin.generateUrl('create')}}">
+                                                <i class="icon-plus"></i>
+                                                {% trans from 'SonataAdminBundle' %}link_add{% endtrans %}
+                                            </a>
+                                        {% else %}
+                                            <a class="btn btn-link dropdown-toggle" data-toggle="dropdown" href="#">
+                                                <i class="icon-plus"></i>
+                                                {% trans from 'SonataAdminBundle' %}link_add{% endtrans %}
+                                                <span class="caret"></span>
+                                            </a>
+                                            <ul class="dropdown-menu">
+                                                {% for subclass in admin.subclasses|keys %}
                                                     <li>
                                                         <a href="{{ admin.generateUrl('create', {'subclass': subclass}) }}">{{ subclass }}</a>
                                                     </li>
-                                                    {% endfor %}
-                                                </ul>
-                                            {% endif %}
+                                                {% endfor %}
+                                            </ul>
                                         {% endif %}
-                                        {% if admin.hasroute('list') and admin.isGranted('LIST') %}
-                                            <a class="btn btn-small" href="{{ admin.generateUrl('list')}}">
-                                                <i class="icon-list"></i>
-                                                {% trans from 'SonataAdminBundle' %}link_list{% endtrans -%}
-                                            </a>
-                                        {% endif %}
-                                    </div>
-                                </td>
-                            </tr>
-                        {% endif %}
-                    {% endfor %}
-                </tbody>
-            </table>
-        {% endif %}
-    {% endfor %}
+                                    {% endif %}
+                                    {% if admin.hasroute('list') and admin.isGranted('LIST') %}
+                                        <a class="btn btn-link" href="{{ admin.generateUrl('list')}}">
+                                            <i class="icon-list"></i>
+                                            {% trans from 'SonataAdminBundle' %}link_list{% endtrans -%}
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            </td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+
+            {% endif %}
+        {% endfor %}
+    </table>
 {% endblock %}

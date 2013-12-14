@@ -121,8 +121,15 @@ body.sonata-bc {
     color: #000;
 }
 
-.sonata-bc table.sonata-ba-list td {
-    width: 75px;
+.sonata-bc table.sonata-ba-list {
+    font-size: 14px;
+}
+
+.sonata-bc td.sonata-ba-list-label {
+    vertical-align: middle;
+    font-weight: bold;
+    text-align: right;
+    color: #565656;
 }
 
 .sonata-bc .zebra-striped tbody tr.sonata-ba-list-row-selected td, .sonata-bc .zebra-striped tbody tr.sonata-ba-list-row-selected th {
@@ -167,6 +174,19 @@ body.sonata-bc {
 
 .sonata-bc .sonata-ba-list tr:hover td.sonata-ba-list-field.sonata-ba-list-field-select a {
     visibility: visible;
+}
+
+.sonata-bc td.sonata-ba-list-field.sonata-ba-list-field-boolean i {
+    margin-right: 1ex;
+}
+.sonata-bc td.sonata-ba-list-field.sonata-ba-list-field-boolean a:hover {
+    text-decoration: none;
+}
+
+.sonata-bc td.sonata-ba-list-field.sonata-ba-list-field-currency,
+.sonata-bc td.sonata-ba-list-field.sonata-ba-list-field-percent,
+.sonata-bc td.sonata-ba-list-field.sonata-ba-list-field-integer {
+    text-align: right;
 }
 
 .sonata-bc td.sonata-ba-list-field.sonata-ba-list-field-select {
@@ -306,6 +326,10 @@ body.sonata-bc {
     display: none;
 }
 
+.sonata-bc .form-horizontal .sonata-collection-row-without-label {
+    margin-left: 0;
+}
+
 ul.inputs-list {
     padding-left: 150px;
 }
@@ -359,4 +383,12 @@ legend.sonata-ba-fieldset-collapsed-description + .sonata-ba-collapsed-fields {
 
 .sonata-bc .inner-field-short-description {
 
+}
+
+.sonata-bc .form-horizontal .control-group {
+    margin-bottom: 10px;
+}
+
+span.field-actions {
+    margin-left: 10px;
 }

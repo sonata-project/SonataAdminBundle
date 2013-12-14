@@ -10,18 +10,24 @@ file that was distributed with this source code.
 #}
 
 {% block content %}
+    {% set _list_table   = block('list_table') %}
+    {% set _list_filters = block('list_filters') %}
+
     {% block preview %}{% endblock %}
     {% block form %}{% endblock %}
     {% block list %}{% endblock %}
     {% block show %}{% endblock %}
 
-    <div class="row-fluid">
-        <div class="sonata-ba-list span10">
-            {% block list_table %}{% endblock %}
-        </div>
+    {% if _list_table|length > 0 or _list_filters|length > 0 %}
+        <div class="row-fluid">
+            <div class="sonata-ba-list span10">
+                {{ _list_table|raw }}
+            </div>
 
-        <div class="sonata-ba-filter span2">
-            {% block list_filters %}{% endblock %}
+            <div class="sonata-ba-filter span2">
+                {{ _list_filters|raw }}
+            </div>
         </div>
-    </div>
+    {% endif %}
+
 {% endblock %}

@@ -24,6 +24,7 @@ file that was distributed with this source code.
     {% if admin.datagrid.results|length > 0 %}
         {% if admin.hasRoute('batch') %}
         <form action="{{ admin.generateUrl('batch', {'filter': admin.filterParameters}) }}" method="POST" >
+            <input type="hidden" name="_sonata_csrf_token" value="{{ csrf_token }}" />
         {% endif %}
             <table class="table table-bordered table-striped">
                 {% block table_header %}
@@ -40,10 +41,10 @@ file that was distributed with this source code.
                                         {# Action buttons disabled in ajax view! #}
                                 {% else %}
                                     {% set sortable = false %}
-                                    {% if field_description.options.sortable is defined and field_description.options.sortable%}
+                                    {% if field_description.options.sortable is defined and field_description.options.sortable %}
                                         {% set sortable             = true %}
-                                        {% set current              = admin.datagrid.values._sort_by == field_description %}
                                         {% set sort_parameters      = admin.modelmanager.sortparameters(field_description, admin.datagrid) %}
+                                        {% set current              = admin.datagrid.values._sort_by == field_description or admin.datagrid.values._sort_by.fieldName == sort_parameters.filter._sort_by %}
                                         {% set sort_active_class    = current ? 'sonata-ba-list-field-order-active' : '' %}
                                         {% set sort_by              = current ? admin.datagrid.values._sort_order : field_description.options._sort_order %}
                                     {% endif %}
@@ -51,7 +52,7 @@ file that was distributed with this source code.
                                     {% spaceless %}
                                         <th class="sonata-ba-list-field-header-{{ field_description.type}} {% if sortable %} sonata-ba-list-field-header-order-{{ sort_by|lower }} {{ sort_active_class }}{% endif %}">
                                             {% if sortable %}<a href="{{ admin.generateUrl('list', sort_parameters) }}">{% endif %}
-                                            {{ admin.trans(field_description.label) }}
+                                            {{ admin.trans(field_description.label, {}, field_description.translationDomain) }}
                                             {% if sortable %}</a>{% endif %}
                                         </th>
                                     {% endspaceless %}
@@ -148,6 +149,7 @@ file that was distributed with this source code.
 {% block list_filters %}
     {% if admin.datagrid.filters %}
         <form class="sonata-filter-form {{ admin.isChild and 1 == admin.datagrid.filters|length ? 'hide' : '' }}" action="{{ admin.generateUrl('list') }}" method="GET">
+            {{ form_errors(form) }}
             <fieldset class="filter_legend">
                 <legend class="filter_legend {{ admin.datagrid.hasActiveFilters ? 'active' : 'inactive' }}">{{ 'label_filters'|trans({}, 'SonataAdminBundle') }}</legend>
 
@@ -155,7 +157,7 @@ file that was distributed with this source code.
                     <div>
                         {% for filter in admin.datagrid.filters %}
                             <div class="clearfix">
-                                <label for="{{ form.children[filter.formName].children['value'].vars.id }}">{{ admin.trans(filter.label) }}</label>
+                                <label for="{{ form.children[filter.formName].children['value'].vars.id }}">{{ admin.trans(filter.label, {}, filter.translationDomain) }}</label>
                                 {{ form_widget(form.children[filter.formName].children['type'], {'attr': {'class': 'span8 sonata-filter-option'}}) }}
                                 {{ form_widget(form.children[filter.formName].children['value'], {'attr': {'class': 'span8'}}) }}
                             </div>

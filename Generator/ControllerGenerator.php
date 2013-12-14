@@ -29,7 +29,7 @@ class ControllerGenerator extends AbstractBcGenerator
     private $file;
 
     /**
-     * @param array|string $skeletonDirectories
+     * @param array|string $skeletonDirectory
      */
     public function __construct($skeletonDirectory)
     {

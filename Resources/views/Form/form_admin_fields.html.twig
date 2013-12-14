@@ -114,7 +114,7 @@ file that was distributed with this source code.
     {% if sonata_admin is not defined or not sonata_admin_enabled or not sonata_admin.field_description %}
         <div class="control-group {% if errors|length > 0%} error{% endif %}">
             {{ form_label(form, label|default(null)) }}
-            <div class="controls">
+            <div class="controls {% if label is sameas(false) %}sonata-collection-row-without-label{% endif %}">
                 {{ form_widget(form) }}
                 {% if errors|length > 0 %}
                     <div class="help-inline sonata-ba-field-error-messages">
@@ -133,7 +133,8 @@ file that was distributed with this source code.
                 {% endif %}
             {% endblock %}
 
-            <div class="controls sonata-ba-field sonata-ba-field-{{ sonata_admin.edit }}-{{ sonata_admin.inline }} {% if errors|length > 0 %}sonata-ba-field-error{% endif %}">
+            {% set has_label = sonata_admin.field_description.options.name is defined or label is not sameas(false) %}
+            <div class="controls sonata-ba-field sonata-ba-field-{{ sonata_admin.edit }}-{{ sonata_admin.inline }} {% if errors|length > 0 %}sonata-ba-field-error{% endif %} {% if not has_label %}sonata-collection-row-without-label{% endif %}">
 
                 {{ form_widget(form) }}
 
@@ -166,7 +167,7 @@ file that was distributed with this source code.
 {% spaceless %}
     {% if prototype is defined %}
         {% set child = prototype %}
-        {% set attr = attr|merge({'data-prototype': block('collection_widget_row'), 'data-prototype-name': prototype.vars.name, 'class': attr.class|default('') ~ ' controls' }) %}
+        {% set attr = attr|merge({'data-prototype': block('collection_widget_row'), 'data-prototype-name': prototype.vars.name, 'class': attr.class|default('') }) %}
     {% endif %}
     <div {{ block('widget_container_attributes') }}>
         {{ form_errors(form) }}

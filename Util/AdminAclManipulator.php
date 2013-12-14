@@ -67,7 +67,7 @@ class AdminAclManipulator implements AdminAclManipulatorInterface
      */
     public function addAdminClassAces(OutputInterface $output, AclInterface $acl, AclSecurityHandlerInterface $securityHandler, array $roleInformation = array())
     {
-        if (count($securityHandler->getAdminPermissions()) > 0 ) {
+        if (count($securityHandler->getAdminPermissions()) > 0) {
             $builder = new $this->maskBuilderClass();
 
             foreach ($roleInformation as $role => $permissions) {
@@ -100,7 +100,7 @@ class AdminAclManipulator implements AdminAclManipulatorInterface
                     $acl->deleteClassAce($aceIndex);
 
                     if (!is_null($output)) {
-                        $output->writeln(sprintf('   - remove role: %s', $action, $role));
+                        $output->writeln(sprintf('   - remove role: %s', $role));
                     }
                 }
             }

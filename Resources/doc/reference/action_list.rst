@@ -28,9 +28,21 @@ To do:
 Customising the query used to generate the list
 -----------------------------------------------
 
-To do:
+You can customize the list query thanks to the ``createQuery`` method.
 
-- how to customize/optimize the list query
+.. code-block:: php
+
+    <?php
+
+    public function createQuery($context = 'list')
+    {
+        $query = parent::createQuery($context);
+        $query->andWhere(
+            $query->expr()->eq($query->getRootAlias() . '.my_field', ':my_param')
+        );
+        $query->setParameter('my_param', 'my_value');
+        return $query;
+    }
 
 
 Customising the sort order
@@ -83,6 +95,6 @@ To do:
 - basic filter configuration and options
 - how to set default filter values
 - targeting submodel fields using dot-separated notation
-- advanced filter options
+- advanced filter options (global_search)
 
 .. _`issues on Github`: https://github.com/sonata-project/SonataAdminBundle/issues/1519

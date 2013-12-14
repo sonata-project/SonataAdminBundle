@@ -10,6 +10,9 @@
 
             <argument type="service" id="sonata.admin.pool" />
         </service>
-    </services>
 
+        <service id="sonata.admin.twig.extension.text" class="Twig_Extensions_Extension_Text">
+            <tag name="twig.extension"/>
+        </service>
+    </services>
 </container>

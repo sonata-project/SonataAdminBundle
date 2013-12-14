@@ -26,6 +26,7 @@
                 <directory>./Resources/</directory>
                 <directory>./DependencyInjection/</directory>
                 <directory>./vendor/</directory>
+                <directory>./coverage/</directory>
             </exclude>
         </whitelist>
     </filter>

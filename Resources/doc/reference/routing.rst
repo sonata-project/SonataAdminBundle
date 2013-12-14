@@ -69,7 +69,7 @@ the admin variable's ``generateUrl()`` command:
 
     <a href="{{ admin.generateUrl('list') }}">List</a>
 
-    <a href="{{ admin.generateUrl('list', params|merge('page': 1) }}">List</a>
+    <a href="{{ admin.generateUrl('list', params|merge('page': 1)) }}">List</a>
 
 Note that you do not need to provide the Admin's route prefix (baseRouteName) to
 generate a URL for the current Admin, just the action name.
@@ -211,7 +211,7 @@ the ``clearExcept()`` method. This method accepts an array of routes you want to
     {
         protected function configureRoutes(RouteCollection $collection)
         {
-            //Only `list` and `edit` route will be active
+            // Only `list` and `edit` route will be active
             $collection->clearExcept(array('list', 'edit'));
         }
     }
@@ -230,7 +230,7 @@ If you want to remove all default routes, you can use ``clear()`` method.
     {
         protected function configureRoutes(RouteCollection $collection)
         {
-            //All routes are removed
+            // All routes are removed
             $collection->clear();
         }
     }

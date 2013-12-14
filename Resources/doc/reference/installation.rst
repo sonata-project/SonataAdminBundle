@@ -19,7 +19,7 @@ for older versions:
 
 .. code-block:: bash
 
-    Please provide a version constraint for the sonata-project/jquery-bundle requirement: dev-master
+    Please provide a version constraint for the sonata-project/admin-bundle requirement: dev-master
 
 Selecting and downloading a storage bundle
 ------------------------------------------
@@ -35,7 +35,7 @@ instructions for each of them:
     - `SonataDoctrinePhpcrAdminBundle <https://github.com/sonata-project/SonataDoctrinePhpcrAdminBundle/blob/master/Resources/doc/reference/installation.rst>`_
 
 .. note::
-    Don't know which to choose? Most new users prefer SonataDoctrineORMAdmin, to interact with traditional relational databases (MySQL, PostrgreSQL, etc)
+    Don't know which to choose? Most new users prefer SonataDoctrineORMAdmin, to interact with traditional relational databases (MySQL, PostgreSQL, etc)
 
 Enabling SonataAdminBundle and its dependencies
 -----------------------------------------------
@@ -60,18 +60,19 @@ forget to enable SonataAdminBundle too:
         return array(
             // ...
 
-            //Add you dependencies
+            // Add your dependencies
+            new Sonata\CoreBundle\SonataCoreBundle(),
             new Sonata\BlockBundle\SonataBlockBundle(),
             new Sonata\jQueryBundle\SonatajQueryBundle(),
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
             //...
 
-            //If you haven't already, add the storage bundle
-            //This example uses SonataDoctrineORMAdmin but
-            //it works the same with the alternatives
+            // If you haven't already, add the storage bundle
+            // This example uses SonataDoctrineORMAdmin but
+            // it works the same with the alternatives
             new Sonata\DoctrineORMAdminBundle\SonataDoctrineORMAdminBundle(),
 
-            //Then add SonataAdminBundle
+            // Then add SonataAdminBundle
             new Sonata\AdminBundle\SonataAdminBundle(),
             // ...
         );
@@ -85,7 +86,7 @@ forget to enable SonataAdminBundle too:
 Configuring SonataAdminBundle dependencies
 ------------------------------------------
 
-You will need to configure SonataAdminBundle's dependecies. For each of the above
+You will need to configure SonataAdminBundle's dependencies. For each of the above
 mentioned bundles, check their respective installation/configuration instructions
 files to see what changes you have to make to your Symfony2 configuration.
 
@@ -135,7 +136,7 @@ If, at this point or during the installation, you come across any errors, don't 
     -  Read the error message carefully. Try to find out exactly which bundle is causing the error. Is it SonataAdminBundle or one of the dependencies?
     - Make sure you followed all the instructions correctly, for both SonataAdminBundle and it's dependencies
     - Odds are that someone already had the same problem, and it's documented somewhere. Check `Google <http://www.google.com>`_, `Sonata Users Group <https://groups.google.com/group/sonata-users>`_, `Symfony2 Users Group <https://groups.google.com/group/symfony2>`_ and `Symfony Forum <forum.symfony-project.org>`_ to see if you can find a solution.
-    - Still no luck? Try checking the project's open issues on Github.
+    - Still no luck? Try checking the project's open issues on GitHub.
 
 After you have successfully installed the above bundles you need to configure
 SonataAdminBundle for administering your models. All that is needed to quickly

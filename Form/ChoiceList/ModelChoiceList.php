@@ -11,6 +11,7 @@
 
 namespace Sonata\AdminBundle\Form\ChoiceList;
 
+use Doctrine\Common\Util\ClassUtils;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\Form\Exception\InvalidArgumentException;
@@ -104,8 +105,8 @@ class ModelChoiceList extends SimpleChoiceList
      *
      * If the entities were passed in the "choices" option, this method
      * does not have any significant overhead. Otherwise, if a query builder
-     * was passed in the "query" option, this builder is now used to construct 
-     * a query which is executed. In the last case, all entities for the 
+     * was passed in the "query" option, this builder is now used to construct
+     * a query which is executed. In the last case, all entities for the
      * underlying class are fetched from the repository.
      *
      * If the option "property" was passed, the property path in that option
@@ -182,7 +183,7 @@ class ModelChoiceList extends SimpleChoiceList
      * Returns the entity for the given key
      *
      * If the underlying entities have composite identifiers, the choices
-     * are intialized. The key is expected to be the index in the choices
+     * are initialized. The key is expected to be the index in the choices
      * array in this case.
      *
      * If they have single identifiers, they are either fetched from the
@@ -243,7 +244,7 @@ class ModelChoiceList extends SimpleChoiceList
         try {
             return $this->modelManager->getIdentifierValues($entity);
         } catch (\Exception $e) {
-            throw new InvalidArgumentException(sprintf("Unable to retrieve the identifier values for entity %s", get_class($entity)), 0, $e);
+            throw new InvalidArgumentException(sprintf("Unable to retrieve the identifier values for entity %s", ClassUtils::getClass($entity)), 0, $e);
         }
     }
 

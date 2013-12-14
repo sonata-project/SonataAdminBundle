@@ -58,7 +58,7 @@
             {{ form_rest(form) }}
 
             {% block formactions %}
-                <div class="well form-actions">
+                <div class="well well-small form-actions">
                     {% if app.request.isxmlhttprequest %}
                         {% if admin.id(object) is not null %}
                             <input type="submit" class="btn btn-primary" name="btn_update" value="{{ 'btn_update'|trans({}, 'SonataAdminBundle') }}"/>
@@ -88,8 +88,12 @@
                                 <a class="btn" href="{{ admin.generateObjectUrl('acl', object) }}">{{ 'link_edit_acl'|trans({}, 'SonataAdminBundle') }}</a>
                             {% endif %}
                         {% else %}
-                            <input class="btn btn-primary" type="submit" name="btn_create_and_edit" value="{{ 'btn_create_and_edit_again'|trans({}, 'SonataAdminBundle') }}"/>
-                            <input type="submit" class="btn" name="btn_create_and_list" value="{{ 'btn_create_and_return_to_list'|trans({}, 'SonataAdminBundle') }}"/>
+                            {% if admin.hasroute('edit') %}
+                                <input class="btn btn-primary" type="submit" name="btn_create_and_edit" value="{{ 'btn_create_and_edit_again'|trans({}, 'SonataAdminBundle') }}"/>
+                            {% endif %}
+                            {% if admin.hasroute('list') %}
+                                <input type="submit" class="btn" name="btn_create_and_list" value="{{ 'btn_create_and_return_to_list'|trans({}, 'SonataAdminBundle') }}"/>
+                            {% endif %}
                             <input class="btn" type="submit" name="btn_create_and_create" value="{{ 'btn_create_and_create_a_new_one'|trans({}, 'SonataAdminBundle') }}"/>
                         {% endif %}
                     {% endif %}

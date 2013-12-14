@@ -30,8 +30,7 @@ class AuditManager implements AuditManagerInterface
     }
 
     /**
-     * @param string $serviceId
-     * @param array  $classes
+     * {@inheritdoc}
      */
     public function setReader($serviceId, array $classes)
     {
@@ -39,9 +38,7 @@ class AuditManager implements AuditManagerInterface
     }
 
     /**
-     * @param string $class
-     *
-     * @return bool
+     * {@inheritdoc}
      */
     public function hasReader($class)
     {
@@ -55,10 +52,7 @@ class AuditManager implements AuditManagerInterface
     }
 
     /**
-     * @param string $class
-     *
-     * @return \Sonata\AdminBundle\Model\AuditReaderInterface
-     * @throws \RuntimeException
+     * {@inheritdoc}
      */
     public function getReader($class)
     {
@@ -68,6 +62,6 @@ class AuditManager implements AuditManagerInterface
             }
         }
 
-        throw new \RuntimeException(sprintf('The class %s does not have any reader manager', $class));
+        throw new \RuntimeException(sprintf('The class "%s" does not have any reader manager', $class));
     }
 }

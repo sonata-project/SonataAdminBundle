@@ -12,6 +12,14 @@
             <argument type="service" id="templating" />
             <argument type="service" id="sonata.admin.pool" />
         </service>
+        <service id="sonata.admin.block.search_result" class="Sonata\AdminBundle\Block\AdminSearchBlockService">
+            <tag name="sonata.block"/>
+
+            <argument>sonata.admin.block.search_result</argument>
+            <argument type="service" id="templating" />
+            <argument type="service" id="sonata.admin.pool" />
+            <argument type="service" id="sonata.admin.search.handler" />
+        </service>
     </services>
 
 </container>

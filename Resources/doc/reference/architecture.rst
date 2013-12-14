@@ -83,7 +83,7 @@ your ``Admin`` services. This is done using a ``call`` to the matching "setter":
                     - Acme\DemoBundle\Entity\Post
                     - ~
                 calls:
-                    - [ setLabelTranslatorStrategy, [sonata.admin.label.strategy.underscore]]
+                    - [ setLabelTranslatorStrategy, ["@sonata.admin.label.strategy.underscore"]]
 
 Here, we declare the same ``Admin`` service as in the :doc:`getting_started` chapter, but using a
 different label translator strategy, replacing the default one. Notice that
@@ -103,11 +103,11 @@ or how to build the list view. Inside the ``CRUDController``, you can access the
 
     `CRUD is an acronym`_ for "Create, Read, Update and Delete"
 
-The ``CRUDController`` is no different to any other Symfony2 controller, meaning
+The ``CRUDController`` is no different from any other Symfony2 controller, meaning
 that you have all the usual options available to you, like getting services from
 the Dependency Injection Container (DIC).
 
-This is particulary useful if you decide to extend the ``CRUDController`` to
+This is particularly useful if you decide to extend the ``CRUDController`` to
 add new actions or change the behavior of existing ones. You can specify which controller
 to use when declaring the ``Admin`` service by passing it as the 3rd argument. For example
 to set the controller to ``AcmeDemoBundle:PostAdmin``:
@@ -167,7 +167,7 @@ which stores instances of ``FieldDescriptionInterface``. Picking up on our previ
 
    class PostAdmin extends Admin
    {
-       //Fields to be shown on create/edit forms
+       // Fields to be shown on create/edit forms
        protected function configureFormFields(FormMapper $formMapper)
        {
            $formMapper
@@ -177,7 +177,7 @@ which stores instances of ``FieldDescriptionInterface``. Picking up on our previ
            ;
        }
 
-       //Fields to be shown on filter forms
+       // Fields to be shown on filter forms
        protected function configureDatagridFilters(DatagridMapper $datagridMapper)
        {
            $datagridMapper
@@ -186,7 +186,7 @@ which stores instances of ``FieldDescriptionInterface``. Picking up on our previ
            ;
        }
 
-       //Fields to be shown on lists
+       // Fields to be shown on lists
        protected function configureListFields(ListMapper $listMapper)
        {
            $listMapper
@@ -213,11 +213,11 @@ bundle that you choose during the installation process, based on the
 
 Each ``FieldDescription`` contains various details about a field mapping. Some of
 them are independent of the action in which they are used, like ``name`` or ``type``,
-while other are used only in specific actions. More information can be found in the
+while others are used only in specific actions. More information can be found in the
 ``BaseFieldDescription`` class file.
 
 In most scenarios, you won't actually need to handle the ``FieldDescription`` yourself.
-However, it is important that you know it exists and how it's used, as it sits at the
+However, it is important that you know it exists and how it's used, as it seats at the
 core of ``SonataAdminBundle``.
 
 Templates
@@ -239,7 +239,7 @@ Like the names say, one if for standard calls, the other one for AJAX.
 The subfolders include Twig files for specific sections of ``SonataAdminBundle``:
 
 Block:
-  ``SonataBlockBundle`` block views. By default there is only has one, which
+  ``SonataBlockBundle`` block views. By default there is only one, which
   displays all the mapped classes on the dashboard
 Button:
   Buttons such as ``Add new`` or ``Delete`` that you can see across several

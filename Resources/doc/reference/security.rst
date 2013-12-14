@@ -632,6 +632,12 @@ In the templates, or in your code, you can use the Admin method ``isGranted()``:
       {# or use the default is_granted symfony helper, the following will give the same result #}
       {% if is_granted('ROLE_SUPER_ADMIN') or is_granted('DELETE', object) %} {# ... #} {% endif %}
 
+List filtering
+~~~~~~~~~~~~~~
+
+List filtering using ACL is available as a third party bundle: `CoopTilleulsAclSonataAdminExtensionBundle <https://github.com/coopTilleuls/CoopTilleulsAclSonataAdminExtensionBundle>`_.  
+When enabled, the logged in user will only see the objects for which it has the `VIEW` right (or superior).
+
 ACL editor
 ----------
 
@@ -656,7 +662,7 @@ User list customization
 By default, the ACL editor allows to set permissions for all users managed by
 ``FOSUserBundle``.
 
-To cutomize displayed user override
+To customize displayed user override
 `Sonata\AdminBundle\Controller\CRUDController::getAclUsers()`. This method must
 return an iterable collection of users.
 

@@ -1,0 +1,17 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{% if admin.hasRoute('show') %}
+    <a href="{{ admin.generateObjectUrl('show', object) }}" class="btn view_link btn-small" title="{{ 'action_show'|trans({}, 'SonataAdminBundle') }}">
+        <i class="icon-zoom-in"></i>
+        {{ 'action_show'|trans({}, 'SonataAdminBundle') }}
+    </a>
+{% endif %}

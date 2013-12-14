@@ -72,7 +72,7 @@ class GenerateAdminCommand extends ContainerAwareCommand
             $adminGenerator->generate($bundle, $adminClassBasename, $modelClass);
             $output->writeln(sprintf(
                 '%sThe admin class "<info>%s</info>" has been generated under the file "<info>%s</info>".',
-                "\n",
+                PHP_EOL,
                 $adminGenerator->getClass(),
                 realpath($adminGenerator->getFile())
             ));
@@ -80,14 +80,15 @@ class GenerateAdminCommand extends ContainerAwareCommand
             $this->writeError($output, $e->getMessage());
         }
 
-        if ($controllerClassBasename = Validators::validateControllerClassBasename($input->getOption('controller'))) {
+        if ($controllerClassBasename = $input->getOption('controller')) {
+            $controllerClassBasename = Validators::validateControllerClassBasename($controllerClassBasename);
             $controllerGenerator = new ControllerGenerator($skeletonDirectory);
 
             try {
                 $controllerGenerator->generate($bundle, $controllerClassBasename);
                 $output->writeln(sprintf(
                     '%sThe controller class "<info>%s</info>" has been generated under the file "<info>%s</info>".',
-                    "\n",
+                    PHP_EOL,
                     $controllerGenerator->getClass(),
                     realpath($controllerGenerator->getFile())
                 ));
@@ -110,7 +111,7 @@ class GenerateAdminCommand extends ContainerAwareCommand
                 $servicesManipulator->addResource($id, $modelClass, $adminClass, $controllerName, $managerType);
                 $output->writeln(sprintf(
                     '%sThe service "<info>%s</info>" has been appended to the file <info>"%s</info>".',
-                    "\n",
+                    PHP_EOL,
                     $id,
                     realpath($file)
                 ));
@@ -153,10 +154,10 @@ class GenerateAdminCommand extends ContainerAwareCommand
             $managerType = $this->askAndValidate(
                 $output,
                 'The manager type',
-                $input->getOption('type') ?: $this->getDefaultManagerType(),
+                $input->getOption('manager') ?: $this->getDefaultManagerType(),
                 array($this, 'validateManagerType')
             );
-            $input->setOption('type', $managerType);
+            $input->setOption('manager', $managerType);
         }
 
         $question = $dialog->getQuestion('Do you want to generate a controller', 'no', '?');

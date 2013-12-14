@@ -344,31 +344,47 @@
             </trans-unit>
             <trans-unit id="list_select">
               <source>list_select</source>
-              <target>list_select</target>
+              <target>Выбрать</target>
             </trans-unit>
             <trans-unit id="confirm_exit">
                 <source>confirm_exit</source>
-                <target>confirm_exit</target>
+                <target>У вас есть несохраненные данные</target>
             </trans-unit>
             <trans-unit id="link_edit_acl">
               <source>link_edit_acl</source>
-              <target>link_edit_acl</target>
+              <target>Редактировать ACL</target>
             </trans-unit>
             <trans-unit id="btn_update_acl">
               <source>btn_update_acl</source>
-              <target>btn_update_acl</target>
+              <target>Обновить ACL</target>
             </trans-unit>
             <trans-unit id="flash_acl_update_success">
                 <source>flash_acl_edit_success</source>
-                <target>flash_acl_update_success</target>
+                <target>ACL успешно отредактирован</target>
             </trans-unit>
             <trans-unit id="link_action_acl">
                 <source>link_action_acl</source>
-                <target>link_action_acl</target>
+                <target>ACL</target>
             </trans-unit>
             <trans-unit id="short_object_description_placeholder">
               <source>short_object_description_placeholder</source>
-              <target>short_object_description_placeholder</target>
+              <target>Ничего не выбрано</target>
+            </trans-unit>
+            <trans-unit id="title_search_results">
+                <source>title_search_results</source>
+                <target>Результат поиска: %query%</target>
+            </trans-unit>
+            <trans-unit id="search_placeholder">
+                <source>search_placeholder</source>
+                <target>Поиск</target>
+            </trans-unit>
+            <trans-unit id="no_results_found">
+                <source>no_results_found</source>
+                <target>Ничего не найдено</target>
+            </trans-unit>
+            <trans-unit id="add_new_entry">
+                <source>add_new_entry</source>
+                <target>Добавить новую запись</target>
             </trans-unit>
         </body>
     </file>

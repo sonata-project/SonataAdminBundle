@@ -1,0 +1,63 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{% extends base_template %}
+
+{% block title %}{{ 'title_search_results'|trans({'%query%': query}, 'SonataAdminBundle') }}{% endblock%}
+{% block breadcrumb %}{% endblock %}
+{% block content %}
+    <!--
+    <div class="row-fluid">
+        <form action="{{ url('sonata_admin_search') }}" method="GET"  class="form-search">
+            <div class="input-append">
+                <input type="text" name="q" value="{{ query }}" class="input-large search-query"/>
+                <button type="submit" class="btn">Search</button>
+            </div>
+        </form>
+    </div>
+    -->
+
+    <h1>{{ 'title_search_results'|trans({'%query%': query}, 'SonataAdminBundle') }}</h1>
+
+    {% if query %}
+        {% set count = 0 %}
+        <div class="row-fluid">
+
+            {% for group in groups %}
+                {% set display = (group.roles is empty or is_granted('ROLE_SUPER_ADMIN') ) %}
+                {% for role in group.roles if not display %}
+                    {% set display = is_granted(role)%}
+                {% endfor %}
+
+                {% if display %}
+                    {% for admin in group.items %}
+                        {% if count % 3 == 0 %}
+                            </div><div class="row-fluid">
+                        {% endif %}
+
+                        {% set count = count + 1 %}
+                        {% if admin.hasroute('create') and admin.isGranted('CREATE') or admin.hasroute('list') and admin.isGranted('LIST') %}
+                            {{ sonata_block_render({
+                                'type': 'sonata.admin.block.search_result'
+                            }, {
+                                'query': query,
+                                'admin_code': admin.code,
+                                'page': 0,
+                                'per_page': 10
+                            }) }}
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+
+{% endblock %}

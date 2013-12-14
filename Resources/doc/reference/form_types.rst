@@ -82,9 +82,39 @@ class
 
 btn_add, btn_list, btn_delete and btn_catalogue:
   The labels on the ``add``, ``list`` and ``delete`` buttons can be customized
-  with these parameters. Setting any of them to ``false`` will hide the 
+  with these parameters. Setting any of them to ``false`` will hide the
   corresponding button. You can also specify a custom translation catalogue
   for these labels, which defaults to ``SonataAdminBundle``.
+
+sonata_type_model_hidden
+^^^^^^^^^^^^^^^^^^^^^^^^
+Setting a field type of ``sonata_type_model_hidden`` will use an instance of
+``ModelHiddenType`` to render hidden field. The value of hidden field is
+identifier of related entity.
+
+.. code-block:: php
+
+    class PageAdmin extends Admin
+    {
+        protected function configureFormFields(FormMapper $formMapper)
+        {
+            // generate hidden form field with id of related Category entity
+            $formMapper
+                ->add('categoryId', 'sonata_type_model_hidden')
+            ;
+        }
+    }
+
+The available options are:
+
+model_manager
+  defaults to null, but is actually calculated from the linked Admin class.
+  You usually should not need to set this manually.
+
+class
+  The entity class managed by this field. Defaults to null, but is actually
+  calculated from the linked Admin class. You usually should not need to set
+  this manually.
 
 sonata_type_admin
 ^^^^^^^^^^^^^^^^^
@@ -152,7 +182,7 @@ delete
 
 btn_add, btn_list, btn_delete and btn_catalogue:
   The labels on the ``add``, ``list`` and ``delete`` buttons can be customized
-  with these parameters. Setting any of them to ``false`` will hide the 
+  with these parameters. Setting any of them to ``false`` will hide the
   corresponding button. You can also specify a custom translation catalogue
   for these labels, which defaults to ``SonataAdminBundle``.
 
@@ -173,7 +203,7 @@ to the underlying forms.
         {
             $formMapper
                 ->add('sales', 'sonata_type_collection', array(
-                    //Prevents the "Delete" option from being displayed
+                    // Prevents the "Delete" option from being displayed
                     'type_options' => array('delete' => false)
                 ), array(
                     'edit' => 'inline',
@@ -183,12 +213,12 @@ to the underlying forms.
             ;
         }
     }
-    
+
 The available options (which can be passed as a third parameter to ``FormMapper::add()``) are:
 
 btn_add and btn_catalogue:
   The label on the ``add`` button can be customized
-  with this parameters. Setting it to ``false`` will hide the 
+  with this parameters. Setting it to ``false`` will hide the
   corresponding button. You can also specify a custom translation catalogue
   for this label, which defaults to ``SonataAdminBundle``.
 
@@ -231,108 +261,6 @@ example above:
 
 Other specific field configuration options are detailed in the related
 abstraction layer documentation.
-
-Other form types
-----------------
-
-The bundle comes with some handy form types which are available from outside the
-scope of the ``SonataAdminBundle``:
-
-sonata_type_immutable_array
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-The ``Immutable Array`` allows you to edit an array property by defining a type
-per key.
-
-The type has a ``keys`` parameter which contains the definition for each key.
-A definition is an array with 3 options :
-
-* key name
-* type : a type name or a ``FormType`` instance
-* related type parameters : please refer to the related form documentation.
-
-Let's say a ``Page`` have options property with some fixed key-pair values, each
-value has a different type : integer, url, or string for instance.
-
-.. code-block:: php
-
-    <?php
-    class Page
-    {
-        protected $options = array(
-            'ttl'       => 1,
-            'redirect'  => ''
-        );
-
-        public function setOptions(array $options)
-        {
-            $this->options = $options;
-        }
-
-        public function getOptions()
-        {
-            return $this->options;
-        }
-    }
-
-Now, the property can be edited by setting a type for each type
-
-.. code-block:: php
-
-        <?php
-        $form->add('options', 'sonata_type_immutable_array', array(
-            'keys' => array(
-                array('ttl',        'text', array('required' => false)),
-                array('redirect',   'url',  array('required' => true)),
-            )
-        ));
-
-
-sonata_type_boolean
-^^^^^^^^^^^^^^^^^^^
-
-The ``boolean`` type is a specialized ``ChoiceType`` where the choices list is
-locked to 'yes' and 'no'.
-
-
-sonata_type_translatable_choice
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Deprecated: use ChoiceType with the translation_domain option instead.
-
-The translatable type is a specialized ``ChoiceType`` where the choices values
-are translated with the Symfony Translator component.
-
-The type has one extra parameter :
-
- * ``catalogue`` : the catalogue name to translate the value
-
-
-.. code-block:: php
-
-    <?php
-
-    // The delivery list
-    class Delivery
-    {
-        public static function getStatusList()
-        {
-            return array(
-                self::STATUS_OPEN      => 'status_open',
-                self::STATUS_PENDING   => 'status_pending',
-                self::STATUS_VALIDATED => 'status_validated',
-                self::STATUS_CANCELLED => 'status_cancelled',
-                self::STATUS_ERROR     => 'status_error',
-                self::STATUS_STOPPED   => 'status_stopped',
-            );
-        }
-    }
-
-    // form usage
-    $form->add('deliveryStatus', 'sonata_type_translatable_choice', array(
-        'choices' => Delivery::getStatusList(),
-        'catalogue' => 'SonataOrderBundle'
-    ))
 
 Types options
 -------------

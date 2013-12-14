@@ -24,5 +24,4 @@ interface BuilderInterface
      * @return void
      */
     public function fixFieldDescription(AdminInterface $admin, FieldDescriptionInterface $fieldDescription);
-
 }

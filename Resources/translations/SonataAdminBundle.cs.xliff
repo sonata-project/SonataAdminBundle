@@ -192,7 +192,7 @@
             </trans-unit>
             <trans-unit id="message_batch_confirmation">
                 <source>message_batch_confirmation</source>
-                <target>Jste si jisti, že chcete potvrdit tuto akci a spustit ji pro všechny zvolené prvky?|Jste si jisti, že chcete potvrdit tuto akci a spustit ji na %count% prvky?|Jste si jisti, že chcete potvrdit tuto akci a spustit ji na %count% prvků?</target>
+                <target>Jste si jistý, že chcete potvrdit tuto akci a spustit ji na vybranou položku?|Jste si jisti, že chcete potvrdit tuto akci a spustit ji na %count% prvky?|Jste si jisti, že chcete potvrdit tuto akci a spustit ji na %count% prvků?</target>
             </trans-unit>
             <trans-unit id="message_batch_all_confirmation">
                 <source>message_batch_all_confirmation</source>
@@ -344,31 +344,47 @@
             </trans-unit>
             <trans-unit id="list_select">
               <source>list_select</source>
-              <target>list_select</target>
+              <target>Vybrat</target>
             </trans-unit>
             <trans-unit id="confirm_exit">
                 <source>confirm_exit</source>
-                <target>confirm_exit</target>
+                <target>Máte neuložené změny.</target>
             </trans-unit>
             <trans-unit id="link_edit_acl">
               <source>link_edit_acl</source>
-              <target>link_edit_acl</target>
+              <target>Upravit</target>
             </trans-unit>
             <trans-unit id="btn_update_acl">
               <source>btn_update_acl</source>
-              <target>btn_update_acl</target>
+              <target>Aktualizovat</target>
             </trans-unit>
             <trans-unit id="flash_acl_update_success">
                 <source>flash_acl_edit_success</source>
-                <target>flash_acl_update_success</target>
+                <target>Oprávnění byly úspěšně aktualizovány.</target>
             </trans-unit>
             <trans-unit id="link_action_acl">
                 <source>link_action_acl</source>
-                <target>link_action_acl</target>
+                <target>Oprávnění</target>
             </trans-unit>
             <trans-unit id="short_object_description_placeholder">
               <source>short_object_description_placeholder</source>
-              <target>short_object_description_placeholder</target>
+              <target></target>
+            </trans-unit>
+            <trans-unit id="title_search_results">
+                <source>title_search_results</source>
+                <target>Výsledky vyhledávání: %query%</target>
+            </trans-unit>
+            <trans-unit id="search_placeholder">
+                <source>search_placeholder</source>
+                <target>Hledat</target>
+            </trans-unit>
+            <trans-unit id="no_results_found">
+                <source>no_results_found</source>
+                <target>Žádný výsledek</target>
+            </trans-unit>
+            <trans-unit id="add_new_entry">
+                <source>add_new_entry</source>
+                <target>Přidat nový záznam</target>
             </trans-unit>
         </body>
     </file>

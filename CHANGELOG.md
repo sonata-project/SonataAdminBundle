@@ -1,6 +1,98 @@
 CHANGELOG
 =========
 
+### 2013-12-05
+
+* [BC BREAK] Move some classes to SonataCoreBundle, you need to add a new dependency
+
+### 2013-11-23
+
+* [BC BREAK] added ``getBatchActions`` to the AdminInterface
+  If you do not extend the Admin class, you need to add this method to
+  your admin.
+
+### 2013-10-13
+
+* [BC BREAK] added ``setCurrentChild``, ``getCurrentChild`` to the AdminInterface
+  If you do not extend the Admin class, you need to add these methods to
+  your admin.
+
+### 2013-10-05
+
+* [BC BREAK] added ``getExportFormats``, ``getDataSourceIterator`` to the AdminInterface
+  If you do not extend the Admin class, you need to add these methods to
+  your admin.
+
+### 2013-10-01
+
+* [BC BREAK] added ``supportsPreviewMode`` to the AdminInterface
+  If you do not extend the Admin class, you need to add this method to
+  your admin.
+
+### 2013-09-30
+
+* [BC BREAK] added ``getFilterParameters`` to the AdminInterface
+  If you do not extend the Admin class, you need to add this method to
+  your admin.
+
+### 2013-09-27
+
+* [BC BREAK] added ``hasParentFieldDescription``, ``getPersistentParameters``,
+  ``getParentFieldDescription``, ``getUniqid``, ``getBaseCodeRoute``,
+  ``getIdParameter`` to the AdminInterface
+  If you do not extend the Admin class, you need to add these methods to
+  your admin.
+
+* added support for select2 (jQuery based replacement for select boxes)
+
+### 2013-09-23
+
+* change list's action buttons to use ``btn-small`` from twitter bootstrap
+
+### 2013-09-20
+
+* [BC BREAK] added ``getTranslator``, ``getForm``, ``getBreadcrumbs``
+  to the AdminInterface
+  If you do not extend the Admin class, you need to add these methods to
+  your admin.
+
+### 2013-09-13
+
+* [BC BREAK] added ``getMaxPerPage``, ``setMaxPerPage``, ``setPage``,
+  ``setQuery ``, ``getResults`` to the PagerInterface
+  If you do not extend the Pager class, you need to add these methods to
+  your pager.
+
+* [BC BREAK] added ``isActive`` to the FilterInterface
+  If you do not extend the Filter class, you need to add this method to
+  your filter.
+
+### 2013-09-11
+
+* [BC BREAK] added ``hasShowFieldDescription``, ``hasListFieldDescription``,
+  ``removeListFieldDescription``, ``removeFilterFieldDescription``,
+  ``hasFilterFieldDescription`` to the AdminInterface
+  If you do not extend the Admin class, you need to add these methods to
+  your admin.
+
+* [BC BREAK] added ``reorderFilters`` to the DatagridInterface
+  If you do not extend the Datagrid class, you need to add this method to
+  your Datagrid.
+
+### 2013-09-05
+
+* [BC BREAK] added ``getListBuilder``, ``getDatagridBuilder``, ``setBaseControllerName``,
+  ``getBaseControllerName``, ``getFormFieldDescriptions``, ``getRoutes``, ``getFilterFieldDescriptions``,
+  ``getListFieldDescriptions``, ``isChild`` to the AdminInterface
+  If you do not extend the Admin class, you need to add these methods to
+  your admin.
+
+### 2013-08-30
+* [BC BREAK] added ``getLabel``, ``removeShowFieldDescription``, ``getShowGroups``,
+  ``setShowGroups``, ``reorderShowGroup`` to the AdminInterface
+  If you do not extend the Admin class, you need to add these methods to
+  your admin.
+
 ### 2013-07-26
 
 * [BC BREAK] added alterNewInstance to AdminExtensionInterface
@@ -117,14 +209,14 @@ CHANGELOG
 * add country field type
 * refactor the form creation
 
-### 18/01/2011
+### 2011-01-18
 
 * respect symfony conventions
 * add new base edit template (standard and inline)
 * admin instances are not singletons anymore
 * add inline edition
 
-### 15/01/2011
+### 2011-01-15
 
 * respect symfony conventions
 * add a FieldDescription

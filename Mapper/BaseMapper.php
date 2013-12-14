@@ -43,7 +43,7 @@ abstract class BaseMapper
     }
     
     /**
-     * @param string $name
+     * @param string $key
      *
      * @return mixed
      */

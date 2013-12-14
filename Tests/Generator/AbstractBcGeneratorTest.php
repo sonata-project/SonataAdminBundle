@@ -24,14 +24,14 @@ class AbstractBcGeneratorTest extends \PHPUnit_Framework_TestCase
 
     public static function setUpBeforeClass()
     {
-        //Disable E_STRICT errors for this test only
+        // Disable E_STRICT errors for this test only
         self::$errorReportingBackup = error_reporting();
         error_reporting(self::$errorReportingBackup ^ E_STRICT);
     }
 
     public static function tearDownAfterClass()
     {
-        //Restore error reporting
+        // Restore error reporting
         error_reporting(self::$errorReportingBackup);
     }
 

@@ -8,7 +8,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 
-class ModelAdmin
+class ModelAdmin extends Admin
 {
     /**
      * @param DatagridMapper $datagridMapper
@@ -33,7 +33,7 @@ class ModelAdmin
             ->add('baz')
             ->add('_action', 'actions', array(
                 'actions' => array(
-                    'view' => array(),
+                    'show' => array(),
                     'edit' => array(),
                     'delete' => array(),
                 )

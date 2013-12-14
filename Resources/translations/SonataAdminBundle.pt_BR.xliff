@@ -4,7 +4,7 @@
         <body>
             <trans-unit id="action_delete">
                 <source>action_delete</source>
-                <target>Apagar</target>
+                <target>Deletar</target>
             </trans-unit>
             <trans-unit id="btn_batch">
                 <source>btn_batch</source>
@@ -16,15 +16,15 @@
             </trans-unit>
             <trans-unit id="btn_create_and_edit_again">
                 <source>btn_create_and_edit_again</source>
-                <target>Criar e editar de novo</target>
+                <target>Criar</target>
             </trans-unit>
             <trans-unit id="btn_create_and_create_a_new_one">
                 <source>btn_create_and_create_a_new_one</source>
-                <target>Criar e adicionar novo</target>
+                <target>Criar e adicionar outro</target>
             </trans-unit>
             <trans-unit id="btn_create_and_return_to_list">
                 <source>btn_create_and_return_to_list</source>
-                <target>Create and return to list</target>
+                <target>Criar e retornar para a lista</target>
             </trans-unit>
             <trans-unit id="btn_filter">
                 <source>btn_filter</source>
@@ -40,11 +40,11 @@
             </trans-unit>
             <trans-unit id="btn_update_and_return_to_list">
                 <source>btn_update_and_return_to_list</source>
-                <target>Atualizar e fechar</target>
+                <target>Atualizar e sair</target>
             </trans-unit>
             <trans-unit id="link_delete">
                 <source>link_delete</source>
-                <target>Apagar</target>
+                <target>Deletar</target>
             </trans-unit>
             <trans-unit id="link_action_create">
                 <source>link_action_create</source>
@@ -52,11 +52,11 @@
             </trans-unit>
             <trans-unit id="link_action_list">
                 <source>link_action_list</source>
-                <target>Retornar a lista</target>
+                <target>Retornar para a listagem</target>
             </trans-unit>
             <trans-unit id="link_action_show">
                 <source>link_action_show</source>
-                <target>Visualizar</target>
+                <target>Exibir</target>
             </trans-unit>
             <trans-unit id="link_action_edit">
                 <source>link_action_edit</source>
@@ -68,11 +68,11 @@
             </trans-unit>
             <trans-unit id="link_list">
                 <source>link_list</source>
-                <target>Lista</target>
+                <target>Listar</target>
             </trans-unit>
             <trans-unit id="link_reset_filter">
                 <source>link_reset_filter</source>
-                <target>Limpar</target>
+                <target>Resetar</target>
             </trans-unit>
             <trans-unit id="title_create">
                 <source>title_create</source>
@@ -88,7 +88,7 @@
             </trans-unit>
             <trans-unit id="title_list">
                 <source>title_list</source>
-                <target>Lista</target>
+                <target>Listar</target>
             </trans-unit>
             <trans-unit id="link_next_pager">
                 <source>link_next_pager</source>
@@ -100,11 +100,11 @@
             </trans-unit>
             <trans-unit id="link_first_pager">
                 <source>link_first_pager</source>
-                <target>link_first_pager</target>
+                <target>Primeiro</target>
             </trans-unit>
             <trans-unit id="link_last_pager">
                 <source>link_last_pager</source>
-                <target>link_last_pager</target>
+                <target>Último</target>
             </trans-unit>
             <trans-unit id="Admin">
                 <source>Admin</source>
@@ -112,7 +112,7 @@
             </trans-unit>
             <trans-unit id="link_expand">
                 <source>link_expand</source>
-                <target>expandir/encolher</target>
+                <target>Expandir/Contrair</target>
             </trans-unit>
             <trans-unit id="no_result">
                 <source>no_result</source>
@@ -120,7 +120,7 @@
             </trans-unit>
             <trans-unit id="confirm_msg">
                 <source>confirm_msg</source>
-                <target>Você tem certeza?</target>
+                <target>Você tem certeza ?</target>
             </trans-unit>
             <trans-unit id="action_edit">
                 <source>action_edit</source>
@@ -128,15 +128,15 @@
             </trans-unit>
             <trans-unit id="action_show">
                 <source>action_show</source>
-                <target>Visualizar</target>
+                <target>Exibir</target>
             </trans-unit>
             <trans-unit id="all_elements">
                 <source>all_elements</source>
-                <target>Todos os resultados</target>
+                <target>Todos os elementos</target>
             </trans-unit>
             <trans-unit id='flash_batch_empty'>
                 <source>flash_batch_empty</source>
-                <target>Ação abortada. Nenhum item selecionado.</target>
+                <target>Ação abortada. Nenhum item foi selecionado.</target>
             </trans-unit>
             <trans-unit id='flash_create_success'>
                 <source>flash_create_success</source>
@@ -144,7 +144,7 @@
             </trans-unit>
             <trans-unit id='flash_create_error'>
                 <source>flash_create_error</source>
-                <target>Ocorreu um erro durante a criação do item.</target>
+                <target>Um erro ocorreu durante a criação do item.</target>
             </trans-unit>
             <trans-unit id='flash_edit_success'>
                 <source>flash_edit_success</source>
@@ -152,23 +152,23 @@
             </trans-unit>
             <trans-unit id='flash_edit_error'>
                 <source>flash_edit_error</source>
-                <target>Ocorreu um erro durante a atualização do item.</target>
+                <target>Um erro ocorreu durante a atualização do item.</target>
             </trans-unit>
             <trans-unit id='flash_batch_delete_success'>
                 <source>flash_batch_delete_success</source>
-                <target>Os itens selecionados foram apagados com sucesso.</target>
+                <target>Itens solucionados foram deletados com sucesso.</target>
             </trans-unit>
             <trans-unit id='flash_batch_delete_error'>
                 <source>flash_batch_delete_error</source>
-                <target>Ocorreu um erro enquanto os itens selecionados eram apagados.</target>
+                <target>Um erro ocorreu durante a remoção dos itens selecionados.</target>
             </trans-unit>
             <trans-unit id='flash_delete_error'>
                 <source>flash_delete_error</source>
-                <target>Ocorreu um erro enquanto o item era apagado.</target>
+                <target>Um erro ocorreu durante a remoção do item.</target>
             </trans-unit>
             <trans-unit id='flash_delete_success'>
                 <source>flash_delete_success</source>
-                <target>O item foi apagado com sucesso.</target>
+                <target>O item foi removido com sucesso.</target>
             </trans-unit>
             <trans-unit id="link_breadcrumb_dashboard">
                 <source>breadcrumb.link_dashboard</source>
@@ -176,27 +176,27 @@
             </trans-unit>
             <trans-unit id="title_delete">
                 <source>title_delete</source>
-                <target>Confirmar eliminação</target>
+                <target>Confirmar a remoção</target>
             </trans-unit>
             <trans-unit id="message_delete_confirmation">
                 <source>message_delete_confirmation</source>
-                <target>Tem a certeza de que deseja eliminar o item selecionado?</target>
+                <target>Você tem certeza que deseja remover o item selecionado?</target>
             </trans-unit>
             <trans-unit id="btn_delete">
                 <source>btn_delete</source>
-                <target>Sim, eliminar</target>
+                <target>Sim, remover</target>
             </trans-unit>
             <trans-unit id="title_batch_confirmation">
                 <source>title_batch_confirmation</source>
-                <target>Confirmar ação</target>
+                <target>Confirmar ação em massa</target>
             </trans-unit>
             <trans-unit id="message_batch_confirmation">
                 <source>message_batch_confirmation</source>
-                <target>Tem a certeza de que deseja confirmar esta ação e executá-la para todos os elementos selecionados?</target>
+                <target>Você tem certeza que deseja executar isso para o elemento selecionado?|Você tem certeza que deseja executar a ação para os %count% elementos selecionados?</target>
             </trans-unit>
             <trans-unit id="message_batch_all_confirmation">
                 <source>message_batch_all_confirmation</source>
-                <target>message_batch_all_confirmation</target>
+                <target>Você tem certeza que deseja executar essa ação para todos os elementos?</target>
             </trans-unit>
             <trans-unit id="btn_execute_batch_action">
                 <source>btn_execute_batch_action</source>
@@ -212,11 +212,11 @@
             </trans-unit>
             <trans-unit id="label_type_contains">
                 <source>label_type_contains</source>
-                <target>contem</target>
+                <target>contém</target>
             </trans-unit>
             <trans-unit id="label_type_not_contains">
                 <source>label_type_not_contains</source>
-                <target>não contem</target>
+                <target>não contém</target>
             </trans-unit>
             <trans-unit id="label_type_equals">
                 <source>label_type_equals</source>
@@ -268,55 +268,55 @@
             </trans-unit>
             <trans-unit id="label_date_type_null">
                 <source>label_date_type_null</source>
-                <target>label_date_type_null</target>
+                <target>é vazio</target>
             </trans-unit>
             <trans-unit id="label_date_type_not_null">
                 <source>label_date_type_not_null</source>
-                <target>label_date_type_not_null</target>
+                <target>não é vazio</target>
             </trans-unit>
             <trans-unit id="label_date_type_between">
                 <source>label_date_type_between</source>
-                <target>label_date_type_between</target>
+                <target>entre</target>
             </trans-unit>
             <trans-unit id="label_date_not_between">
                 <source>label_date_type_not_between</source>
-                <target>label_date_type_not_between</target>
+                <target>não está entre</target>
             </trans-unit>
             <trans-unit id="label_filters">
                 <source>label_filters</source>
-                <target>label_filters</target>
+                <target>Filtro</target>
             </trans-unit>
             <trans-unit id="delete_or">
                 <source>delete_or</source>
-                <target>delete_or</target>
+                <target>ou</target>
             </trans-unit>
             <trans-unit id="link_action_history">
                 <source>link_action_history</source>
-                <target>link_action_history</target>
+                <target>Revisões</target>
             </trans-unit>
             <trans-unit id="td_action">
                 <source>td_action</source>
-                <target>td_action</target>
+                <target>Ação</target>
             </trans-unit>
             <trans-unit id="td_revision">
                 <source>td_revision</source>
-                <target>td_revision</target>
+                <target>Revisão</target>
             </trans-unit>
             <trans-unit id="td_timestamp">
                 <source>td_timestamp</source>
-                <target>td_timestamp</target>
+                <target>Data</target>
             </trans-unit>
             <trans-unit id="td_username">
                 <source>td_username</source>
-                <target>td_username</target>
+                <target>Autor</target>
             </trans-unit>
             <trans-unit id="label_view_revision">
                 <source>label_view_revision</source>
-                <target>label_view_revision</target>
+                <target>Ver revisão</target>
             </trans-unit>
             <trans-unit id="list_results_count">
                 <source>list_results_count</source>
-                <target>1 item listado|%count% itens listados</target>
+                <target>1 resultado|%count% resultados</target>
             </trans-unit>
             <trans-unit id="label_export_download">
                 <source>label_export_download</source>
@@ -324,51 +324,67 @@
             </trans-unit>
             <trans-unit id="loading_information">
                 <source>loading_information</source>
-                <target>Carregando informações…</target>
+                <target>Carregando…</target>
             </trans-unit>
             <trans-unit id="btn_preview">
                 <source>btn_preview</source>
-                <target>btn_preview</target>
+                <target>Previsualização</target>
             </trans-unit>
             <trans-unit id="btn_preview_approve">
                 <source>btn_preview_approve</source>
-                <target>btn_preview_approve</target>
+                <target>Aprovar</target>
             </trans-unit>
             <trans-unit id="btn_preview_decline">
                 <source>btn_preview_decline</source>
-                <target>btn_preview_decline</target>
+                <target>Declínio</target>
             </trans-unit>
             <trans-unit id="label_per_page">
               <source>label_per_page</source>
-              <target>label_per_page</target>
+              <target>Por página</target>
             </trans-unit>
             <trans-unit id="list_select">
               <source>list_select</source>
-              <target>list_select</target>
+              <target>Selecionar</target>
             </trans-unit>
             <trans-unit id="confirm_exit">
                 <source>confirm_exit</source>
-                <target>confirm_exit</target>
+                <target>Você tem mudanças sem salvar.</target>
             </trans-unit>
             <trans-unit id="link_edit_acl">
               <source>link_edit_acl</source>
-              <target>link_edit_acl</target>
+              <target>Editar ACL</target>
             </trans-unit>
             <trans-unit id="btn_update_acl">
               <source>btn_update_acl</source>
-              <target>btn_update_acl</target>
+              <target>Atualizar ACL</target>
             </trans-unit>
             <trans-unit id="flash_acl_update_success">
                 <source>flash_acl_edit_success</source>
-                <target>flash_acl_update_success</target>
+                <target>ACL foi atualizada com sucesso.</target>
             </trans-unit>
             <trans-unit id="link_action_acl">
                 <source>link_action_acl</source>
-                <target>link_action_acl</target>
+                <target>ACL</target>
             </trans-unit>
             <trans-unit id="short_object_description_placeholder">
               <source>short_object_description_placeholder</source>
               <target>Nenhuma seleção</target>
+            </trans-unit>
+            <trans-unit id="title_search_results">
+                <source>title_search_results</source>
+                <target>Resultados da busca: %query%</target>
+            </trans-unit>
+            <trans-unit id="search_placeholder">
+                <source>search_placeholder</source>
+                <target>Busca</target>
+            </trans-unit>
+            <trans-unit id="no_results_found">
+                <source>no_results_found</source>
+                <target>nenhum resultado encontrado</target>
+            </trans-unit>
+            <trans-unit id="add_new_entry">
+                <source>add_new_entry</source>
+                <target>Adicionar novo item</target>
             </trans-unit>
         </body>
     </file>

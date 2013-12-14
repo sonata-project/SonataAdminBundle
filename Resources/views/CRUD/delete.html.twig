@@ -15,6 +15,7 @@ file that was distributed with this source code.
     <div class="sonata-actions btn-group">
         {% include 'SonataAdminBundle:Button:edit_button.html.twig' %}
         {% include 'SonataAdminBundle:Button:create_button.html.twig' %}
+        {% include 'SonataAdminBundle:Button:list_button.html.twig' %}
     </div>
 {% endblock %}
 
@@ -27,17 +28,17 @@ file that was distributed with this source code.
 
         {{ 'message_delete_confirmation'|trans({'%object%': admin.toString(object)}, 'SonataAdminBundle') }}
 
-        <div class="well form-actions">
+        <div class="well well-small form-actions">
             <form method="POST" action="{{ admin.generateObjectUrl('delete', object) }}">
-                <input type="hidden" value="DELETE" name="_method" />
+                <input type="hidden" name="_method" value="DELETE" />
+                <input type="hidden" name="_sonata_csrf_token" value="{{ csrf_token }}" />
 
-                <input type="submit" class="btn btn-danger" value="{{ 'btn_delete'|trans({}, 'SonataAdminBundle') }}" />
-
+                <button type="submit" class="btn btn-danger"><i class="icon-trash icon-white"></i> {{ 'btn_delete'|trans({}, 'SonataAdminBundle') }}</button>
                 {% if admin.hasRoute('edit') and admin.isGranted('EDIT', object) %}
                     {{ 'delete_or'|trans({}, 'SonataAdminBundle') }}
 
                     <a class="btn btn-success" href="{{ admin.generateObjectUrl('edit', object) }}">
-                        <i class="icon-edit"></i>
+                        <i class="icon-white icon-edit"></i>
                         {{ 'link_action_edit'|trans({}, 'SonataAdminBundle') }}</a>
                 {% endif %}
             </form>

@@ -39,7 +39,7 @@ class ExplainAdminCommand extends ContainerAwareCommand
         $admin = $this->getContainer()->get($input->getArgument('admin'));
 
         if (!$admin instanceof \Sonata\AdminBundle\Admin\AdminInterface) {
-            throw new \RunTimeException(sprintf('service %s is not an admin class', $input->getArgument('admin')));
+            throw new \RunTimeException(sprintf('Service "%s" is not an admin class', $input->getArgument('admin')));
         }
 
         $output->writeln('<comment>AdminBundle Information</comment>');
@@ -59,7 +59,7 @@ class ExplainAdminCommand extends ContainerAwareCommand
         $output->writeln('');
         $output->writeln('<info>Routes</info>');
         foreach ($admin->getRoutes()->getElements() as $route) {
-            $output->writeln(sprintf('  - %s', $route->getDefault('_sonata_name'), $route->getPattern()));
+            $output->writeln(sprintf('  - % -25s %s', $route->getDefault('_sonata_name'), $route->getPattern()));
         }
 
         $output->writeln('');

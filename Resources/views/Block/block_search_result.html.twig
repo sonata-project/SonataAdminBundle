@@ -1,0 +1,50 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{% extends sonata_block.templates.block_base %}
+
+{% block block %}
+    <div class="span3">
+        <div>
+            <h4>
+                {% if admin.hasRoute('list') %}
+                    <a href="{{ admin.generateUrl('list') }}">{{ admin.label|trans({}, admin.translationdomain) }}</a>
+                {% else %}
+                    {{ admin.label|trans({}, admin.translationdomain) }}
+                {% endif %}
+
+                {% if pager and pager.getNbResults() > 0 %}
+                    <span class="label label-info">{{ pager.getNbResults() }}</span>
+                {% endif %}
+            </h4>
+        </div>
+
+        <ul>
+            {% if pager %}
+                {% for result in pager.getResults() %}
+                    <li><a href="{{ admin.generateObjectUrl('edit', result) }}">{{ admin.toString(result) }}</a></li>
+                {% else %}
+                    {% if admin.hasRoute('create') %}
+                        <li><i>{{ 'no_results_found'|trans({}, 'SonataAdminBundle') }} ~ <a href="{{ admin.generateUrl('create') }}">{{ 'add_new_entry'|trans({}, 'SonataAdminBundle') }}</a></i></li>
+                    {% else %}
+                        <li><i>{{ 'no_results_found'|trans({}, 'SonataAdminBundle') }}</i></li>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                {% if admin.hasRoute('create') %}
+                    <li><i>{{ 'no_results_found'|trans({}, 'SonataAdminBundle') }} ~ <a href="{{ admin.generateUrl('create') }}">{{ 'add_new_entry'|trans({}, 'SonataAdminBundle') }}</a></i></li>
+                {% else %}
+                    <li><i>{{ 'no_results_found'|trans({}, 'SonataAdminBundle') }}</i></li>
+                {% endif %}
+            {% endif %}
+        </ul>
+    </div>
+{% endblock %}

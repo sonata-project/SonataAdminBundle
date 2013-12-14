@@ -1,0 +1,32 @@
+Events
+======
+
+An event mechanism is available to add an extra entry point to extend Admin instance.
+
+ConfigureEvent
+~~~~~~~~~~~~~~
+
+This event is generated when a form, list, show, datagrid is configured. The event names are:
+
+ - sonata.admin.event.configure.form
+ - sonata.admin.event.configure.list
+ - sonata.admin.event.configure.datagrid
+ - sonata.admin.event.configure.show
+
+PersistenceEvent
+~~~~~~~~~~~~~~~~
+
+This event is generated when a persistency layer update, save or delete an object. The event names are:
+
+ - sonata.admin.event.persistence.pre_update
+ - sonata.admin.event.persistence.post_update
+ - sonata.admin.event.persistence.pre_persist
+ - sonata.admin.event.persistence.post_persist
+ - sonata.admin.event.persistence.pre_remove
+ - sonata.admin.event.persistence.post_remove
+
+
+ConfigureQueryEvent
+~~~~~~~~~~~~~~~~~~~
+
+This event is generated when a list query is defined. The event name is: ``sonata.admin.event.configure.query``
