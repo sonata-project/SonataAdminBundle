@@ -81,7 +81,7 @@ Or by overwriting the configuration in your ``config.yml``:
 For more information about service configuration please refer to Step 3 of :doc:`getting_started`
 
 Create the custom action in your Controller
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Now it's time to actually create your custom action here, for this example I chose
 to implement a ``clone`` action.
@@ -125,7 +125,7 @@ as new object. Finally we set a flash message indicating success and redirect to
 Create a template for the new action
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-You need to tell SonataAdmin how to render your new action you do that by creating a ``list__action_clone.html.twig`` in the
+You need to tell SonataAdmin how to render your new action. You do that by creating a ``list__action_clone.html.twig`` in the
 namespace of your custom Admin Controller.
 
 .. code-block:: twig
@@ -138,7 +138,7 @@ Right now ``clone`` is not a known route, we define it in the next step.
 
 
 Bringing it all together
-^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^
 
 What's left now is actually adding your custom action to the admin class.
 
@@ -170,7 +170,8 @@ Next we have to add the action in ``configureListFields`` specifying the templat
                         'template' => 'AcmeDemoBundle:CRUD:list__action_clone.html.twig'
                     )
                 )
-            ));
+            ))
+        ;
     }
 
 
