@@ -53,7 +53,7 @@ Either by using XML:
 
             <argument />
             <argument>Acme\DemoBundle\Entity\Car</argument>
-            <argument>AcmeDemoBundle:CRUD</argument
+            <argument>AcmeDemoBundle:CRUD</argument>
 
             ...
 
