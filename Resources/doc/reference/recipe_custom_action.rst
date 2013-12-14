@@ -2,8 +2,8 @@ Creating a Custom Admin Action
 ==============================
 
 This is a full working example of creating a custom list action for SonataAdmin.
-The Example is based on an existing ``CarAdmin`` in an ``AcmeDemoBundle``. It is
-assumed you already have and admin service up and running.
+The example is based on an existing ``CarAdmin`` class in an ``AcmeDemoBundle``. It is
+assumed you already have an admin service up and running.
 
 The recipe
 ----------
@@ -12,20 +12,21 @@ SonataAdmin provides a very straight-forward way of adding your own custom actio
 
 To do this we need to:
 
-- extend the  ``SonataAdmin:CRUD`` Controller and tell our admin class to use it
-- create the custom action in our Controller
-- create a template to show the action in list view
+- extend the ``SonataAdmin:CRUD`` Controller and tell our admin class to use it
+- create the custom action in your Controller
+- create a template to show the action in the list view
 - add the route and the new action in the Admin class
 
 Extending the Admin Controller
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-First we need to create or own Controller extending the one from SonataAdmin
+First you need to create your own Controller extending the one from SonataAdmin
 
 
 .. code-block:: php
 
-    <?php  // src/Acme/DemoBundle/Controller/CRUDController.php
+    <?php
+    // src/Acme/DemoBundle/Controller/CRUDController.php
 
     namespace Acme\DemoBundle\Controller;
 
@@ -33,12 +34,11 @@ First we need to create or own Controller extending the one from SonataAdmin
 
     class CRUDController extends Controller
     {
-
         // ...
     }
 
-Admin classes by default use ``SonataAdmin:CRUD`` controller , this is the third parameter
-of an admin service defintion, we need to change it to our own.
+Admin classes by default use the ``SonataAdmin:CRUD`` controller, this is the third parameter
+of an admin service definition, you need to change it to your own.
 
 Either by using XML:
 
@@ -61,8 +61,7 @@ Either by using XML:
 
         ...
 
-Or by overwriting the configuration in your ``config.yml``
-
+Or by overwriting the configuration in your ``config.yml``:
 
 .. code-block:: yaml
 
@@ -79,15 +78,12 @@ Or by overwriting the configuration in your ``config.yml``
                 - AcmeDemoBundle:CRUD
 
 
-For more information about service configuration please refer to
+For more information about service configuration please refer to Step 3 of :doc:`getting_started`
 
-TODO: link
-
-
-Create the custom action in our Controller
+Create the custom action in your Controller
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Now it's time to actually create your custom action here, for this example i chose
+Now it's time to actually create your custom action here, for this example I chose
 to implement a ``clone`` action.
 
 .. code-block:: php
@@ -102,7 +98,6 @@ to implement a ``clone`` action.
 
     class CRUDController extends Controller
     {
-
         public function cloneAction()
         {
             $id = $this->get('request')->get($this->admin->getIdParameter());
@@ -122,21 +117,16 @@ to implement a ``clone`` action.
 
             return new RedirectResponse($this->admin->generateUrl('list'));
         }
-
     }
 
 Here we first get the id of the object, see if it exists then clone it and insert the clone
 as new object. Finally we set a flash message indicating success and redirect to the list view.
 
-TODO: talk about other options or just refer to https://github.com/sonata-project/SonataAdminBundle/blob/master/Controller/CRUDController.php for reference?
-
 Create a template for the new action
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-
-We need to tell SonataAdmin how to render our new action we do that by creating a ``list__action_clone.html.twig`` in the
-namespace of our custom Admin Controller.
-
+You need to tell SonataAdmin how to render your new action you do that by creating a ``list__action_clone.html.twig`` in the
+namespace of your custom Admin Controller.
 
 .. code-block:: twig
 
@@ -150,10 +140,9 @@ Right now ``clone`` is not a known route, we define it in the next step.
 Bringing it all together
 ^^^^^^^^^^^^^^^^^^^^^^^
 
+What's left now is actually adding your custom action to the admin class.
 
-What's left now is actually adding our custom action to the admin class
-
-We have to add the new route in ``configureRoutes``
+You have to add the new route in ``configureRoutes``:
 
 .. code-block:: php
 
@@ -162,11 +151,10 @@ We have to add the new route in ``configureRoutes``
         $collection->add('clone', $this->getRouterIdParameter().'/clone');
     }
 
-Which gives us a route like ``../admin/sonata/demo/car/1/clone``.
+This gives us a route like ``../admin/sonata/demo/car/1/clone``.
 You could also just do ``$collection->add('clone');`` to get a route like ``../admin/sonata/demo/car/clone?id=1``
 
 Next we have to add the action in ``configureListFields`` specifying the template we created.
-
 
 .. code-block:: php
 
@@ -176,10 +164,13 @@ Next we have to add the action in ``configureListFields`` specifying the templat
 
              // other fields...
 
-            ->add('_action', 'actions', array( 'actions' => array(
-                'Clone' => array('template' =>
-                'AcmeDemoBundle:CRUD:list__action_clone.html.twig'))))
-        ;
+            ->add('_action', 'actions', array(
+                'actions' => array(
+                    'Clone' => array(
+                        'template' => 'AcmeDemoBundle:CRUD:list__action_clone.html.twig'
+                    )
+                )
+            ));
     }
 
 
@@ -187,7 +178,8 @@ The full example ``CarAdmin.php`` looks like this:
 
 .. code-block:: php
 
-    <?php  // src/Acme/DemoBundle/Admin/CarAdmin.php
+    <?php
+    // src/Acme/DemoBundle/Admin/CarAdmin.php
 
     namespace Acme\DemoBundle\Admin;
 
@@ -206,10 +198,13 @@ The full example ``CarAdmin.php`` looks like this:
                 ->add('engine')
                 ->add('rescueEngine')
                 ->add('createdAt')
-                ->add('_action', 'actions', array( 'actions' => array(
-                    'Clone' => array('template' =>
-                    'AcmeDemoBundle:CRUD:list__action_clone.html.twig'))))
-            ;
+                ->add('_action', 'actions', array(
+                    'actions' => array(
+                        'Clone' => array(
+                            'template' => 'AcmeDemoBundle:CRUD:list__action_clone.html.twig'
+                        )
+                    )
+                ));
         }
 
         protected function configureRoutes(RouteCollection $collection)
@@ -217,10 +212,3 @@ The full example ``CarAdmin.php`` looks like this:
             $collection->add('clone', $this->getRouterIdParameter().'/clone');
         }
     }
-
-Final result looks like this:
-
-TODO: screenshot
-
-An example of this for ``CarAdmin`` in the AcmeDemoBundle of sonata-sandbox can be found here:
-https://github.com/koyaan/sandbox/commit/5bdbc3528ec095f697a9deec32a4bc8ca8d13321
