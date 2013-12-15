@@ -242,7 +242,11 @@ class CRUDController extends Controller
                     return $this->renderJson(array('result' => 'ok'));
                 }
 
-                $this->addFlash('sonata_flash_success', 'flash_delete_success');
+                $this->addFlash(
+                    'sonata_flash_success',
+                    $this->admin->trans('flash_delete_success', array('%name%' => $this->admin->toString($object)),
+                    'SonataAdminBundle')
+                );
 
             } catch (ModelManagerException $e) {
 
@@ -250,7 +254,11 @@ class CRUDController extends Controller
                     return $this->renderJson(array('result' => 'error'));
                 }
 
-                $this->addFlash('sonata_flash_error', 'flash_delete_error');
+                $this->addFlash(
+                    'sonata_flash_error',
+                    $this->admin->trans('flash_delete_error', array('%name%' => $this->admin->toString($object)),
+                    'SonataAdminBundle')
+                );
             }
 
             return new RedirectResponse($this->admin->generateUrl('list'));
@@ -280,7 +288,6 @@ class CRUDController extends Controller
         $templateKey = 'edit';
 
         $id = $this->get('request')->get($this->admin->getIdParameter());
-
         $object = $this->admin->getObject($id);
 
         if (!$object) {
@@ -313,7 +320,7 @@ class CRUDController extends Controller
                     ));
                 }
 
-                $this->addFlash('sonata_flash_success', 'flash_edit_success');
+                $this->addFlash('sonata_flash_success', $this->admin->trans('flash_edit_success', array('%name%' => $this->admin->toString($object)), 'SonataAdminBundle'));
 
                 // redirect to edit mode
                 return $this->redirectTo($object);
@@ -322,7 +329,7 @@ class CRUDController extends Controller
             // show an error message if the form failed validation
             if (!$isFormValid) {
                 if (!$this->isXmlHttpRequest()) {
-                    $this->addFlash('sonata_flash_error', 'flash_edit_error');
+                    $this->addFlash('sonata_flash_error', $this->admin->trans('flash_edit_error', array('%name%' => $this->admin->toString($object)), 'SonataAdminBundle'));
                 }
             } elseif ($this->isPreviewRequested()) {
                 // enable the preview template if the form was valid and preview was requested
@@ -510,7 +517,8 @@ class CRUDController extends Controller
                     ));
                 }
 
-                $this->addFlash('sonata_flash_success','flash_create_success');
+                $this->addFlash('sonata_flash_success', $this->admin->trans('flash_create_success', array('%name%' => $this->admin->toString($object)), 'SonataAdminBundle'));
+
                 // redirect to edit mode
                 return $this->redirectTo($object);
             }
