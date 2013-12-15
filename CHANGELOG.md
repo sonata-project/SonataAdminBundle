@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+### 2013-12-14
+
+* [BC BREAK] Added the ``getTranslationLabel`` method to AdminInterface
+
 ### 2013-12-05
 
 * [BC BREAK] Move some classes to SonataCoreBundle, you need to add a new dependency
