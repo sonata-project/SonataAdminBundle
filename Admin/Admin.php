@@ -372,10 +372,13 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      */
     protected $breadcrumbs = array();
 
+    /**
+     * @var SecurityHandlerInterface
+     */
     protected $securityHandler = null;
 
     /**
-     * @var \Symfony\Component\Validator\ValidatorInterface $validator
+     * @var ValidatorInterface $validator
      */
     protected $validator = null;
 
@@ -386,13 +389,19 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      */
     protected $configurationPool;
 
+    /**
+     * @var MenuItemInterface
+     */
     protected $menu;
 
     /**
-     * @var \Knp\Menu\FactoryInterface
+     * @var MenuFactoryInterface
      */
     protected $menuFactory;
 
+    /**
+     * @var array
+     */
     protected $loaded = array(
         'view_fields'   => false,
         'view_groups'   => false,
@@ -400,14 +409,29 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         'side_menu'     => false,
     );
 
+    /**
+     * @var array
+     */
     protected $formTheme = array();
 
+    /**
+     * @var array
+     */
     protected $filterTheme = array();
 
+    /**
+     * @var array
+     */
     protected $templates  = array();
 
+    /**
+     * @var AdminExtensionInterface[]
+     */
     protected $extensions = array();
 
+    /**
+     * @var LabelTranslatorStrategyInterface
+     */
     protected $labelTranslatorStrategy;
 
     /**
