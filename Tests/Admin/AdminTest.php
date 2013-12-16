@@ -12,6 +12,8 @@
 namespace Sonata\AdminBundle\Tests\Admin;
 
 use Sonata\AdminBundle\Admin\Admin;
+use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Post;
+use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Tag;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooToString;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooToStringNull;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\PostAdmin;
@@ -1062,5 +1064,79 @@ class AdminTest extends \PHPUnit_Framework_TestCase
         $admin->addExtension($extension);
 
         $this->assertEquals($expected, $admin->getPersistentParameters());
+    }
+
+    public function testGetFormWithNonCollectionParentValue()
+    {
+        $post = new Post();
+        $tagAdmin = $this->createTagAdmin($post);
+        $tag = $tagAdmin->getSubject();
+
+        $tag->setPosts(null);
+        $tagAdmin->getForm();
+        $this->assertSame($post, $tag->getPosts());
+    }
+
+    public function testGetFormWithCollectionParentValue()
+    {
+        $post = new Post();
+        $tagAdmin = $this->createTagAdmin($post);
+        $tag = $tagAdmin->getSubject();
+
+        // Case of a doctrine collection
+        $this->assertInstanceOf('Doctrine\Common\Collections\Collection', $tag->getPosts());
+        $this->assertCount(0, $tag->getPosts());
+
+        $tag->addPost(new Post());
+
+        $this->assertCount(1, $tag->getPosts());
+
+        $tagAdmin->getForm();
+
+        $this->assertInstanceOf('Doctrine\Common\Collections\Collection', $tag->getPosts());
+        $this->assertCount(2, $tag->getPosts());
+        $this->assertContains($post, $tag->getPosts());
+
+        // Case of an array
+        $tag->setPosts(array());
+        $this->assertCount(0, $tag->getPosts());
+
+        $tag->addPost(new Post());
+
+        $this->assertCount(1, $tag->getPosts());
+
+        $tagAdmin->getForm();
+
+        $this->assertInternalType('array', $tag->getPosts());
+        $this->assertCount(2, $tag->getPosts());
+        $this->assertContains($post, $tag->getPosts());
+    }
+
+    private function createTagAdmin(Post $post)
+    {
+        $postAdmin = $this->getMockBuilder('Sonata\AdminBundle\Tests\Fixtures\Admin\PostAdmin')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $postAdmin->expects($this->any())->method('getObject')->will($this->returnValue($post));
+
+        $formBuilder = $this->getMockForAbstractClass('Sonata\AdminBundle\Tests\Form\Builder\FormBuilder');
+        $formBuilder->expects($this->any())->method('getForm')->will($this->returnValue(null));
+
+        $tagAdmin = $this->getMockBuilder('Sonata\AdminBundle\Tests\Fixtures\Admin\TagAdmin')
+            ->disableOriginalConstructor()
+            ->setMethods(array('getFormBuilder'))
+            ->getMock();
+
+        $tagAdmin->expects($this->any())->method('getFormBuilder')->will($this->returnValue($formBuilder));
+        $tagAdmin->setParent($postAdmin);
+
+        $tag = new Tag();
+        $tagAdmin->setSubject($tag);
+
+        $request = $this->getMock('Symfony\Component\HttpFoundation\Request');
+        $tagAdmin->setRequest($request);
+
+        return $tagAdmin;
     }
 }
