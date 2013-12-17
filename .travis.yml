@@ -4,6 +4,7 @@ php:
   - 5.3
   - 5.4
   - 5.5
+  - hhvm
 
 env:
   - SYMFONY_VERSION=2.2.*
@@ -19,3 +20,7 @@ script: phpunit
 
 notifications:
     webhooks: http://sonata-project.org/bundles/admin/master/travis
+
+matrix:
+  allow_failures:
+    - php: hhvm
