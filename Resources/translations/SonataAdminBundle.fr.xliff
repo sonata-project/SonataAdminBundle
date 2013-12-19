@@ -140,19 +140,19 @@
             </trans-unit>
             <trans-unit id='flash_create_success'>
                 <source>flash_create_success</source>
-                <target>L'élément a été créé avec succès.</target>
+                <target>L'élément "%name%" a été crée avec succès.</target>
             </trans-unit>
             <trans-unit id='flash_create_error'>
                 <source>flash_create_error</source>
-                <target>Une erreur est intervenue lors de la création de l'élément.</target>
+                <target>Une erreur est intervenue lors de la création de l'élément "%name%".</target>
             </trans-unit>
             <trans-unit id='flash_edit_success'>
                 <source>flash_edit_success</source>
-                <target>L'élément a été mis à jour avec succès.</target>
+                <target>L'élément "%name%" a été mis à jour avec succès.</target>
             </trans-unit>
             <trans-unit id='flash_edit_error'>
                 <source>flash_edit_error</source>
-                <target>Une erreur est intervenue lors de la mise à jour de l'élément.</target>
+                <target>Une erreur est intervenue lors de la mise à jour de l'élément "%name%".</target>
             </trans-unit>
             <trans-unit id='flash_batch_delete_success'>
                 <source>flash_batch_delete_success</source>
@@ -164,11 +164,11 @@
             </trans-unit>
             <trans-unit id='flash_delete_error'>
                 <source>flash_delete_error</source>
-                <target>Une erreur est intervenue lors de la suppression de l'élément.</target>
+                <target>Une erreur est intervenue lors de la suppression de l'élément "%name%".</target>
             </trans-unit>
             <trans-unit id='flash_delete_success'>
                 <source>flash_delete_success</source>
-                <target>Les éléments ont été supprimés avec succès.</target>
+                <target>L'élément "%name%" a été supprimé avec succès.</target>
             </trans-unit>
             <trans-unit id="link_breadcrumb_dashboard">
                 <source>breadcrumb.link_dashboard</source>

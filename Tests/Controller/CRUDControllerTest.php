@@ -784,6 +784,13 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($object));
 
         $this->admin->expects($this->once())
+            ->method('toString')
+            ->with($this->equalTo($object))
+            ->will($this->returnValue('test'));
+
+        $this->expectTranslate('flash_delete_success', array('%name%' => 'test'));
+
+        $this->admin->expects($this->once())
             ->method('isGranted')
             ->with($this->equalTo('DELETE'))
             ->will($this->returnValue(true));
@@ -809,6 +816,8 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->method('isGranted')
             ->with($this->equalTo('DELETE'))
             ->will($this->returnValue(true));
+
+        $this->expectTranslate('flash_delete_success');
 
         $this->request->setMethod('POST');
         $this->request->request->set('_method', 'DELETE');
@@ -863,11 +872,13 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo('DELETE'))
             ->will($this->returnValue(true));
 
+        $this->expectTranslate('flash_delete_error');
+
         $this->admin->expects($this->once())
             ->method('delete')
             ->will($this->returnCallback(function() {
-                    throw new ModelManagerException();
-                }));
+                throw new ModelManagerException();
+            }));
 
         $this->request->setMethod('DELETE');
 
@@ -970,6 +981,8 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->method('isValid')
             ->will($this->returnValue(true));
 
+        $this->expectTranslate('flash_edit_success');
+
         $this->request->setMethod('POST');
 
         $response = $this->controller->editAction();
@@ -1003,6 +1016,8 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $form->expects($this->once())
             ->method('isValid')
             ->will($this->returnValue(false));
+
+        $this->expectTranslate('flash_edit_error');
 
         $this->request->setMethod('POST');
 
@@ -1243,6 +1258,8 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $form->expects($this->once())
             ->method('isValid')
             ->will($this->returnValue(true));
+
+        $this->expectTranslate('flash_create_success');
 
         $this->request->setMethod('POST');
 
@@ -2322,5 +2339,21 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $result);
         $this->assertEquals('batchActionBar executed', $result->getContent());
+    }
+
+    private function expectTranslate()
+    {
+        $args = func_get_args();
+
+        // creates equalTo of all arguments passed to this function
+        $phpunit = $this; // PHP 5.3 compatiblity
+        $argsCheck = array_map(function($item) use ($phpunit) {
+            return $phpunit->equalTo($item);
+        }, func_get_args());
+
+        $mock = $this->admin->expects($this->once())->method('trans');
+        // passes all arguments to the 'with' of the $admin->trans method
+        $mock = call_user_func_array(array($mock, 'with'), $argsCheck);
+        $mock->will($this->returnValue($args[0]));
     }
 }
