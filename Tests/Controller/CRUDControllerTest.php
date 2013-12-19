@@ -2341,8 +2341,9 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $args = func_get_args();
 
         // creates equalTo of all arguments passed to this function
-        $argsCheck = array_map(function($item) {
-            return $this->equalTo($item);
+        $phpunit = $this; // PHP 5.3 compatiblity
+        $argsCheck = array_map(function($item) use ($phpunit) {
+            return $phpunit->equalTo($item);
         }, func_get_args());
 
         $mock = $this->admin->expects($this->once())->method('trans');
