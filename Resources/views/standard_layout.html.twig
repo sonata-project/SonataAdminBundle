@@ -170,9 +170,9 @@ file that was distributed with this source code.
 
                             </div>
                         {% endblock %}
-                        
+
                         {% block sonata_nav_menu_after %}{% endblock %}
-                        
+
                     {% endif %}
                 </div>
             </div>
@@ -181,14 +181,7 @@ file that was distributed with this source code.
         <div class="container-fluid">
             {% block sonata_page_content %}
                 {% block notice %}
-                    {% for notice_level in ['success','error','info', 'warning'] %}
-                        {% set session_var = 'sonata_flash_' ~ notice_level %}
-                        {% for flash in app.session.flashbag.get(session_var) %}
-                            <div class="alert {{ 'alert-' ~ notice_level }}">
-                                {{ flash|trans([], 'SonataAdminBundle')|raw }}
-                            </div>
-                        {% endfor %}
-                    {% endfor %}
+                    {% include 'SonataCoreBundle:FlashMessage:render.html.twig' %}
                 {% endblock %}
 
                 <div class="row-fluid">
