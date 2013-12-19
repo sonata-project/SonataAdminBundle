@@ -32,6 +32,8 @@ file that was distributed with this source code.
             <link rel="stylesheet" href="{{ asset('bundles/sonataadmin/bootstrap/css/bootstrap.min.css') }}" type="text/css" media="all"  />
             <link rel="stylesheet" href="{{ asset('bundles/sonataadmin/bootstrap/css/bootstrap-responsive.min.css') }}" type="text/css" media="all" />
 
+            <link rel="stylesheet" href="{{ asset('bundles/sonataadmin/x-editable/css/bootstrap-editable.css') }}" type="text/css" media="all" />
+
             {% if admin_pool is defined and admin_pool.getOption('use_select2') %}
                 <link rel="stylesheet" href="{{ asset('bundles/sonataadmin/select2/select2.css') }}" type="text/css" media="all" />
                 <style>
@@ -66,6 +68,8 @@ file that was distributed with this source code.
             <script src="{{ asset('bundles/sonatajquery/jquery-ui-i18n.js') }}" type="text/javascript"></script>
 
             <script src="{{ asset('bundles/sonataadmin/bootstrap/js/bootstrap.min.js') }}" type="text/javascript"></script>
+
+            <script src="{{ asset('bundles/sonataadmin/x-editable/js/bootstrap-editable.min.js') }}"></script>
 
             {% if admin_pool is defined and admin_pool.getOption('use_select2') %}
                 <script src="{{ asset('bundles/sonataadmin/select2/select2.min.js') }}" type="text/javascript"></script>

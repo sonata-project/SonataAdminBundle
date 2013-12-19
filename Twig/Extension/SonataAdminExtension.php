@@ -54,6 +54,7 @@ class SonataAdminExtension extends \Twig_Extension
             'render_view_element'     => new \Twig_Filter_Method($this, 'renderViewElement', array('is_safe' => array('html'))),
             'render_relation_element' => new \Twig_Filter_Method($this, 'renderRelationElement'),
             'sonata_urlsafeid'        => new \Twig_Filter_Method($this, 'getUrlsafeIdentifier'),
+            'sonata_xeditable_type'   => new \Twig_Filter_Method($this, 'getXEditableType'),
         );
     }
 
@@ -230,5 +231,29 @@ class SonataAdminExtension extends \Twig_Extension
         );
 
         return $admin->getUrlsafeIdentifier($model);
+    }
+
+    /**
+     * @param $type
+     *
+     * @return string|bool
+     */
+    public function getXEditableType($type)
+    {
+        $mapping = array(
+            'text'       => 'text',
+            'textarea'   => 'textarea',
+            'email'      => 'email',
+            'string'     => 'text',
+            'smallint'   => 'text',
+            'bigint'     => 'text',
+            'integer'    => 'number',
+            'decimal'    => 'number',
+            'currency'   => 'number',
+            'percent'    => 'number',
+            'url'        => 'url',
+        );
+
+        return isset($mapping[$type]) ? $mapping[$type] : false;
     }
 }

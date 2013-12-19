@@ -301,6 +301,9 @@ class ExtensionCompilerPassTest extends \PHPUnit_Framework_TestCase
         $container
             ->register('form.factory')
             ->setClass('Symfony\Component\Form\FormFactoryInterface');
+        $container
+            ->register('validator')
+            ->setClass('Symfony\Component\Validator\ValidatorInterface');
 
         // Add admin definition's
         $container

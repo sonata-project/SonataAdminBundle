@@ -20,6 +20,16 @@ file that was distributed with this source code.
             {%- block field %}{{ value }}{% endblock -%}
         </a>
     {% else %}
-        {{ block('field') }}
+        {% set isEditable = field_description.options.editable is defined and field_description.options.editable and admin.isGranted('EDIT', object) %}
+        {% set xEditableType = field_description.type|sonata_xeditable_type %}
+
+        {% if isEditable and xEditableType %}
+            {% set url = path('sonata_admin_set_object_field_value', { 'context': 'list', 'field': field_description.name, 'objectId': admin.id(object), 'code': admin.code(object) })  %}
+            <span class="editable" data-type="{{ xEditableType }}" data-value="{{ value }}" data-title="{{ field_description.label|trans({}, field_description.translationDomain) }}" data-pk="{{ admin.id(object) }}" data-url="{{ url }}">
+                {{ block('field') }}
+            </span>
+        {% else %}
+            {{ block('field') }}
+        {% endif %}
     {% endif %}
 </td>
