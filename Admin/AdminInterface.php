@@ -824,6 +824,15 @@ interface AdminInterface
     public function setFormGroups(array $formGroups);
 
     /**
+     * Remove a form group field
+     *
+     * @param $key
+     *
+     * @return void
+     */
+    public function removeFieldFromFormGroup($key);
+
+    /**
      * Returns the show groups
      *
      * @return array
@@ -854,6 +863,15 @@ interface AdminInterface
      * @return void
      */
     public function addFormFieldDescription($name, FieldDescriptionInterface $fieldDescription);
+
+    /**
+     * Remove a FieldDescription
+     *
+     * @param string $name
+     *
+     * @return void
+     */
+    public function removeFormFieldDescription($name);
 
     /**
      * Returns true if this admin uses ACL
