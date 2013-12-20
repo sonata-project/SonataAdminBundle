@@ -403,7 +403,7 @@ span.field-actions {
 .sonata-bc td.sonata-ba-list-field .editable-empty:not(.editable-open) {
     display: none;
 }
-.sonata-bc td.sonata-ba-list-field:hover .editable-empty {
+.sonata-bc .sonata-ba-list tr:hover .editable-empty {
     display: inline-block;
 }
 .editable-pre-wrapped {
