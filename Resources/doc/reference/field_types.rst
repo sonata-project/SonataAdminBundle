@@ -7,8 +7,7 @@ List and Show Actions
 There are many field types that can be used in the list action or show action :
 
 * **array**: display value from an array
-* **boolean**: display a green or red picture dependant on the boolean value, this type accepts an ``editable``
-  parameter to edit the value from within the list or the show actions
+* **boolean**: display a green or red picture dependant on the boolean value
 * **date**: display a formatted date. Accepts an optional ``format`` parameter
 * **datetime**: display a formatted date and time. Accepts an optional ``format`` parameter
 * **text**: display a text
@@ -19,6 +18,9 @@ There are many field types that can be used in the list action or show action :
 * **percent**: display a percentage
 * **choice**: uses the given value as index for the ``choices`` array and displays (and optionally translates) the matching value
 * **url**: display a link
+
+Theses types accept an ``editable`` parameter to edit the value from within the list action.
+This is currently limited to scalar types (text, integer, url...).
 
 Choice
 ^^^^^^

@@ -5,6 +5,7 @@ jQuery(document).ready(function() {
     }
 
     Admin.setup_select2(document);
+    Admin.setup_xeditable(document);
     Admin.add_pretty_errors(document);
     Admin.add_filters(document);
     Admin.set_object_field_value(document);
@@ -41,6 +42,26 @@ var Admin = {
                 }
             });
         }
+    },
+
+    setup_xeditable: function(subject) {
+        jQuery('.editable', subject).editable({
+            emptyclass: 'editable-empty btn btn-small',
+            emptytext: '<i class="icon-edit"></i>',
+            success: function(response) {
+                if('KO' === response.status) {
+                    return response.message;
+                }
+
+                var html = jQuery(response.content);
+                Admin.setup_xeditable(html);
+
+                jQuery(this)
+                    .closest('td')
+                    .replaceWith(html)
+                ;
+            }
+        });
     },
 
     /**

@@ -392,3 +392,20 @@ legend.sonata-ba-fieldset-collapsed-description + .sonata-ba-collapsed-fields {
 span.field-actions {
     margin-left: 10px;
 }
+
+/* X-editable */
+.sonata-bc td.sonata-ba-list-field .editable {
+    cursor: pointer;
+}
+.sonata-bc td.sonata-ba-list-field .btn.editable {
+    border-bottom: solid 1px #BBB;
+}
+.sonata-bc td.sonata-ba-list-field .editable-empty:not(.editable-open) {
+    display: none;
+}
+.sonata-bc td.sonata-ba-list-field:hover .editable-empty {
+    display: inline-block;
+}
+.editable-pre-wrapped {
+    white-space: normal;
+}
