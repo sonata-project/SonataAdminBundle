@@ -45,7 +45,7 @@ var Admin = {
     },
 
     setup_xeditable: function(subject) {
-        jQuery('.editable', subject).editable({
+        jQuery('.x-editable', subject).editable({
             emptyclass: 'editable-empty btn btn-small',
             emptytext: '<i class="icon-edit"></i>',
             success: function(response) {
