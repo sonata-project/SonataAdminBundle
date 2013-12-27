@@ -141,7 +141,7 @@ var Admin = {
     add_filters: function(subject) {
         jQuery('div.filter_container .sonata-filter-option', subject).hide();
         jQuery('fieldset.filter_legend', subject).click(function(event) {
-           jQuery('div.filter_container .sonata-filter-option', jQuery(event.target).parent()).toggle();
+            jQuery('div.filter_container .sonata-filter-option', jQuery(event.target).parent()).toggle();
         });
     },
 
