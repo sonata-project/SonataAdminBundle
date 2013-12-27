@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+### 2013-12-27
+
+* [BC BREAK] Added KnpMenuBundle v2.x compatibility, ``buildSideMenu`` must now use the ``Admin::generateMenuUrl`` method to generate the route arguments for the KnpMenu options.
+
 ### 2013-12-14
 
 * [BC BREAK] Added the ``getTranslationLabel`` method to AdminInterface

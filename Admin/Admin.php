@@ -1200,6 +1200,14 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function generateMenuUrl($name, array $parameters = array(), $absolute = false)
+    {
+        return $this->routeGenerator->generateMenuUrl($this, $name,$parameters, $absolute);
+    }
+
+    /**
      * @param array $templates
      *
      * @return void
@@ -1422,7 +1430,6 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
         $menu = $this->menuFactory->createItem('root');
         $menu->setChildrenAttribute('class', 'nav nav-list');
-        $menu->setCurrentUri($this->getRequest()->getBaseUrl().$this->getRequest()->getPathInfo());
 
         $this->configureSideMenu($menu, $action, $childAdmin);
 
@@ -2058,8 +2065,6 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
             $menu = $menu->addChild(
                 $this->trans($this->getLabelTranslatorStrategy()->getLabel(sprintf('%s_%s', $this->getClassnameLabel(), $action), 'breadcrumb', 'link'))
             );
-        } else {
-            $menu->getBreadcrumbsArray();
         }
 
         return $this->breadcrumbs[$action] = $menu;

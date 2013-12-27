@@ -50,6 +50,24 @@ class DefaultRouteGenerator implements RouteGeneratorInterface
      */
     public function generateUrl(AdminInterface $admin, $name, array $parameters = array(), $absolute = false)
     {
+        $arrayRoute = $this->generateMenuUrl($admin, $name, $parameters, $absolute);
+
+        return $this->router->generate($arrayRoute['route'], $arrayRoute['routeParameters'], $arrayRoute['routeAbsolute']);
+    }
+
+    /**
+     * Generates KNPMenu array parameters for menu route
+     *
+     * @param AdminInterface $admin
+     * @param string         $name
+     * @param array          $parameters
+     * @param bool           $absolute
+     *
+     * @return array
+     * @throws \RuntimeException
+     */
+    public function generateMenuUrl(AdminInterface $admin, $name, array $parameters = array(), $absolute = false)
+    {
         if (!$admin->isChild()) {
             if (strpos($name, '.')) {
                 $name = $admin->getCode().'|'.$name;
@@ -98,6 +116,10 @@ class DefaultRouteGenerator implements RouteGeneratorInterface
             throw new \RuntimeException(sprintf('unable to find the route `%s`', $name));
         }
 
-        return $this->router->generate($route->getDefault('_sonata_name'), $parameters, $absolute);
+        return array(
+            'route'           => $route->getDefault('_sonata_name'),
+            'routeParameters' => $parameters,
+            'routeAbsolute'   => $absolute
+        );
     }
 }
