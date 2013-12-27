@@ -67,6 +67,8 @@ class DatagridMapper extends BaseMapper
                 $name,
                 $filterOptions
             );
+        } elseif (is_string($name) && $this->admin->hasFilterFieldDescription($name)) {
+            throw new \RuntimeException(sprintf('The field "%s" is already defined', $name));
         } else {
             throw new \RuntimeException('invalid state');
         }

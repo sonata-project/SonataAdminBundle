@@ -188,6 +188,24 @@ class DatagridMapperTest extends \PHPUnit_Framework_TestCase
         $this->fail('Failed asserting that exception of type "\RuntimeException" is thrown.');
     }
 
+    public function testAddException2()
+    {
+        try {
+            $this->datagridMapper->getAdmin()
+                ->expects($this->any())
+                ->method('hasFilterFieldDescription')
+                ->will($this->returnValue(true))
+            ;
+            $this->datagridMapper->add('field');
+        } catch (\RuntimeException $e) {
+            $this->assertContains('The field "field" is already defined', $e->getMessage());
+
+            return;
+        }
+
+        $this->fail('Failed asserting that exception of type "\RuntimeException" is thrown.');
+    }
+
     public function testReorder()
     {
         $fieldDescription1 = $this->getFieldDescriptionMock('fooName1', 'fooLabel1');
