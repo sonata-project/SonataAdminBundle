@@ -136,8 +136,12 @@ class ModelChoiceList extends SimpleChoiceList
                 $propertyAccessor = PropertyAccess::getPropertyAccessor();
                 $value = $propertyAccessor->getValue($entity, $this->propertyPath);
             } else {
-                // Otherwise expect a __toString() method in the entity
-                $value = (string) $entity;
+                 // Otherwise expect a __toString() method in the entity
+                try {
+                    $value = (string) $entity;
+                } catch (\Exception $e) {
+                    throw new StringCastException(sprintf("Unable to convert the entity %s to String, entity must have a '__toString()' method defined", ClassUtils::getClass($entity)));
+                }
             }
 
             if (count($this->identifier) > 1) {
