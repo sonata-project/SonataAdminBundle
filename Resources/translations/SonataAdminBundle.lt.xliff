@@ -192,7 +192,7 @@
             </trans-unit>
             <trans-unit id="message_batch_confirmation">
                 <source>message_batch_confirmation</source>
-                <target>Ar tikrai norite atlikti šį veiksmą su pažymėtais įrašais?|Ar tikrai norite patvirtinti šį veiksmą ir įvykdyti %count% pažimėtiems elementams?</target>
+                <target>Ar tikrai norite atlikti šį veiksmą su pažymėtam įrašui?|Ar tikrai norite patvirtinti šį veiksmą ir įvykdyti %count% pažymėtiems elementams?|Ar tikrai norite patvirtinti šį veiksmą ir įvykdyti %count% pažymėtų elementų?</target>
             </trans-unit>
             <trans-unit id="message_batch_all_confirmation">
                 <source>message_batch_all_confirmation</source>
@@ -316,7 +316,7 @@
             </trans-unit>
             <trans-unit id="list_results_count">
                 <source>list_results_count</source>
-                <target>1 rezultatas|%count% resultai(-ų)</target>
+                <target>1 rezultatas|%count% resultatai|%count% resultatų</target>
             </trans-unit>
             <trans-unit id="label_export_download">
                 <source>label_export_download</source>
