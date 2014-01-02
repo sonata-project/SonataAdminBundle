@@ -15,6 +15,7 @@ use Doctrine\Common\Util\ClassUtils;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\Form\Exception\InvalidArgumentException;
+use Symfony\Component\Form\Exception\RuntimeException;
 use Symfony\Component\Form\Extension\Core\ChoiceList\SimpleChoiceList;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 
@@ -136,8 +137,12 @@ class ModelChoiceList extends SimpleChoiceList
                 $propertyAccessor = PropertyAccess::getPropertyAccessor();
                 $value = $propertyAccessor->getValue($entity, $this->propertyPath);
             } else {
-                // Otherwise expect a __toString() method in the entity
-                $value = (string) $entity;
+                 // Otherwise expect a __toString() method in the entity
+                try {
+                    $value = (string) $entity;
+                } catch (\Exception $e) {
+                    throw new RuntimeException(sprintf("Unable to convert the entity %s to String, entity must have a '__toString()' method defined", ClassUtils::getClass($entity)), 0, $e);
+                }
             }
 
             if (count($this->identifier) > 1) {
