@@ -47,13 +47,13 @@ BOOM
         if (!isset($bundles['KnpMenuBundle'])) {
             throw new \RuntimeException(<<<BOOM
 The AdminBundle requires the KnpMenuBundle, but you need to choose your version (and choose wisely, fellow padawan!).
-Please add either:
+Please fill in your composer.json file by adding either:
 ``"knplabs/knp-menu-bundle": "~1.1"``
 if you want the stable version or:
 ``"knplabs/knp-menu-bundle": "~2.0@dev",
 "knplabs/knp-menu": "~2.0@dev"``
-into your composer.json file if you want the MopaBootstrapBundle-compatible version and add the KnpMenuBundle into the AppKernel.
-Follow the KnpMenuBundle install documentation ,to be sure you're not forgetting anything!');
+if you want the MopaBootstrapBundle-compatible version. You'll need to add the KnpMenuBundle into the AppKernel as well.
+Follow the KnpMenuBundle install documentation, to be sure you're not forgetting anything!');
 BOOM
             );
         }
