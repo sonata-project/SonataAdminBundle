@@ -50,7 +50,7 @@ The AdminBundle requires the KnpMenuBundle, but you need to choose your version 
 Please add either:
 ``"knplabs/knp-menu-bundle": "~1.1"``
 if you want the stable version or:
- `"knplabs/knp-menu-bundle": "~2.0@dev",
+``"knplabs/knp-menu-bundle": "~2.0@dev",
 "knplabs/knp-menu": "~2.0@dev"``
 into your composer.json file if you want the MopaBootstrapBundle-compatible version and add the KnpMenuBundle into the AppKernel.
 Follow the KnpMenuBundle install documentation ,to be sure you're not forgetting anything!');
