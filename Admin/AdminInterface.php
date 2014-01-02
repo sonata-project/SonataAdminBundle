@@ -166,6 +166,17 @@ interface AdminInterface
     public function generateUrl($name, array $parameters = array(), $absolute = false);
 
     /**
+     * Generates an url for the given parameters
+     *
+     * @param string $name
+     * @param array  $parameters
+     * @param bool   $absolute
+     *
+     * @return string return a complete url
+     */
+    public function generateMenuUrl($name, array $parameters = array(), $absolute = false);
+
+    /**
      * @return \Sonata\AdminBundle\Model\ModelManagerInterface;
      */
     public function getModelManager();

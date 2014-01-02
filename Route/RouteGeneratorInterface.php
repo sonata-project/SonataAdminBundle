@@ -25,6 +25,16 @@ interface RouteGeneratorInterface
     public function generateUrl(AdminInterface $admin, $name, array $parameters = array(), $absolute = false);
 
     /**
+     * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
+     * @param string                                   $name
+     * @param array                                    $parameters
+     * @param bool                                     $absolute
+     *
+     * @return string
+     */
+    public function generateMenuUrl(AdminInterface $admin, $name, array $parameters = array(), $absolute = false);
+
+    /**
      * @param string $name
      * @param array  $parameters
      * @param bool   $absolute
