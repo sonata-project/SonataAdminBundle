@@ -1431,6 +1431,11 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         $menu = $this->menuFactory->createItem('root');
         $menu->setChildrenAttribute('class', 'nav nav-list');
 
+        // Prevents BC break with KnpMenuBundle v1.x
+        if (method_exists($menu, "setCurrentUri")) {
+            $menu->setCurrentUri($this->getRequest()->getBaseUrl().$this->getRequest()->getPathInfo());
+        }
+
         $this->configureSideMenu($menu, $action, $childAdmin);
 
         foreach ($this->getExtensions() as $extension) {

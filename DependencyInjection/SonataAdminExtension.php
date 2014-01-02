@@ -44,6 +44,14 @@ BOOM
             );
         }
 
+        if (!isset($bundles['KnpMenuBundle'])) {
+            throw new \RuntimeException(<<<BOOM
+Boom! you are living on the edge ;) The AdminBundle requires the KnpMenuBundle!
+Please add either ``"knplabs/knp-menu-bundle": "~1.1",`` if you want the stable version or ``"knplabs/knp-menu-bundle": "~2.0@dev"`` and ``"knplabs/knp-menu": "~2.0@dev",`` into your composer.json file if you want the MopaBootstrapBundle-compatible version and add the KnpMenuBundle into the AppKernel');
+BOOM
+            );
+        }
+
         if (isset($bundles['SonataUserBundle'])) {
             // integrate the SonataUserBundle / FOSUserBundle if the bundle exists
             array_unshift($configs, array(
