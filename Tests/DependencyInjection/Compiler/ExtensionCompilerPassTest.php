@@ -279,7 +279,8 @@ class ExtensionCompilerPassTest extends \PHPUnit_Framework_TestCase
     {
         $container = new ContainerBuilder();
         $container->setParameter('kernel.bundles', array(
-            'SonataCoreBundle' => true
+            'SonataCoreBundle' => true,
+            'KnpMenuBundle' => true
         ));
 
         // Add dependencies for SonataAdminBundle (these services will never get called so dummy classes will do)
