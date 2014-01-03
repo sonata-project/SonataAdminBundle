@@ -56,7 +56,12 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
                 $arguments = $definition->getArguments();
 
                 $admins[] = $id;
-                $classes[$arguments[1]] = $id;
+
+                if (!isset($classes[$arguments[1]])) {
+                    $classes[$arguments[1]] = array();
+                }
+
+                $classes[$arguments[1]][] = $id;
 
                 $showInDashboard = (boolean) (isset($attributes['show_in_dashboard']) ? $attributes['show_in_dashboard'] : true);
                 if (!$showInDashboard) {

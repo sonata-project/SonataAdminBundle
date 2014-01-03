@@ -583,7 +583,7 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
         $enitity = new \stdClass();
 
         // set admin to pool
-        $this->pool->setAdminClasses(array('stdClass'=>'sonata_admin_foo_service'));
+        $this->pool->setAdminClasses(array('stdClass'=> array('sonata_admin_foo_service')));
 
         $this->admin->expects($this->once())
             ->method('getUrlsafeIdentifier')
