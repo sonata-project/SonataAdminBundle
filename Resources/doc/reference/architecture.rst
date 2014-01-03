@@ -83,7 +83,7 @@ The base templates can be configured in the Service Container. So you can easily
 the layout to suit your requirements.
 
 Each field is rendered in three different ways and each has its own Twig
-template. For example, for a field with a ``text`` type, the following three
+template. For example, for a field with a ``text`` type, the following two
 templates will be used:
 
 * ``filter_text.twig``: template used in the filter box
