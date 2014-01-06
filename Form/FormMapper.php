@@ -103,6 +103,12 @@ class FormMapper extends BaseGroupedMapper
             // Note that the builder var is actually the formContractor:
             $options = array_replace_recursive($this->builder->getDefaultOptions($type, $fieldDescription), $options);
 
+            // be compatible with mopa if not installed, avoid generating an exception for invalid option
+            // force the default to false ...
+            if (!isset($options['label_render'])) {
+                $options['label_render'] = false;
+            }
+
             if (!isset($options['label'])) {
                 $options['label'] = $this->admin->getLabelTranslatorStrategy()->getLabel($fieldDescription->getName(), 'form', 'label');
             }
