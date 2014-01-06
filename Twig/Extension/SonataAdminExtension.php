@@ -241,6 +241,7 @@ class SonataAdminExtension extends \Twig_Extension
     public function getXEditableType($type)
     {
         $mapping = array(
+            'boolean'    => 'select',
             'text'       => 'text',
             'textarea'   => 'textarea',
             'email'      => 'email',
