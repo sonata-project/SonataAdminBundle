@@ -162,9 +162,10 @@ class HelperController
      */
     public function getShortObjectDescriptionAction(Request $request)
     {
-        $code     = $request->get('code');
-        $objectId = $request->get('objectId');
-        $uniqid   = $request->get('uniqid');
+        $code           = $request->get('code');
+        $objectId       = $request->get('objectId');
+        $uniqid         = $request->get('uniqid');
+        $linkParameters = $request->get('linkParameters', array());
 
         $admin = $this->pool->getInstance($code);
 
@@ -191,9 +192,10 @@ class HelperController
             )));
         } elseif ('html' == $request->get('_format')) {
             return new Response($this->twig->render($admin->getTemplate('short_object_description'), array(
-                'admin'       => $admin,
-                'description' => $admin->toString($object),
-                'object'      => $object,
+                'admin'           => $admin,
+                'description'     => $admin->toString($object),
+                'object'          => $object,
+                'link_parameters' => $linkParameters
             )));
         } else {
             throw new \RuntimeException('Invalid format');
@@ -201,18 +203,19 @@ class HelperController
     }
 
     /**
-     * @param  \Symfony\Component\HttpFoundation\Request  $request
+     * @param  \Symfony\Component\HttpFoundation\Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function setObjectFieldValueAction(Request $request)
     {
-        $field      = $request->get('field');
-        $code       = $request->get('code');
-        $objectId   = $request->get('objectId');
-        $value      = $request->get('value');
-        $context    = $request->get('context');
+        $field    = $request->get('field');
+        $code     = $request->get('code');
+        $objectId = $request->get('objectId');
+        $value    = $request->get('value');
+        $context  = $request->get('context');
 
-        $admin       = $this->pool->getInstance($code);
+        $admin = $this->pool->getInstance($code);
         $admin->setRequest($request);
 
         // alter should be done by using a post method
@@ -250,14 +253,14 @@ class HelperController
         }
 
         $propertyAccessor = PropertyAccess::getPropertyAccessor();
-        $propertyPath = new PropertyPath($field);
+        $propertyPath     = new PropertyPath($field);
 
         // If property path has more than 1 element, take the last object in order to validate it
         if ($propertyPath->getLength() > 1) {
             $object = $propertyAccessor->getValue($object, $propertyPath->getParent());
 
-            $elements = $propertyPath->getElements();
-            $field = end($elements);
+            $elements     = $propertyPath->getElements();
+            $field        = end($elements);
             $propertyPath = new PropertyPath($field);
         }
 
