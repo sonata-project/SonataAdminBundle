@@ -180,8 +180,8 @@ class HelperController
 
         $object = $admin->getObject($objectId);
 
-        if (!$object) {
-            throw new NotFoundHttpException();
+        if (!$object && 'html' == $request->get('_format')) {
+            return new Response();
         }
 
         if ('json' == $request->get('_format')) {
