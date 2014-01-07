@@ -54,7 +54,7 @@ class BaseFieldDescriptionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('foo.twig.html', $description->getTemplate());
         $this->assertEquals('fooHelp', $description->getHelp());
 
-        $this->assertCount(1, $description->getOptions());
+        $this->assertCount(2, $description->getOptions());
 
         $description->setHelp('Please enter an integer');
         $this->assertEquals('Please enter an integer', $description->getHelp());

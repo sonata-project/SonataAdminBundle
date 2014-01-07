@@ -202,6 +202,10 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
             $options['placeholder'] = 'short_object_description_placeholder';
         }
 
+        if (!isset($options['link_parameters'])) {
+            $options['link_parameters'] = array();
+        }
+
         $this->options = $options;
     }
 

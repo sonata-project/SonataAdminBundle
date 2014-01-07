@@ -92,7 +92,8 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     * @expectedException \RuntimeException
+     * @expectionMessage Invalid format
      */
     public function testgetShortObjectDescriptionActionObjectDoesNotExist()
     {
