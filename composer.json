@@ -33,7 +33,9 @@
         "sonata-project/exporter": "1.*",
         "sonata-project/block-bundle": "~2.2,>=2.2.7",
         "sonata-project/core-bundle": "~2.2@dev",
-        "doctrine/common": "~2.2"
+        "doctrine/common": "~2.2",
+        "knplabs/knp-menu-bundle": ">=1.1.0,<3.0.0",
+        "knplabs/knp-menu": ">=1.1.0,<3.0.0"
     },
     "require-dev": {
         "jms/translation-bundle": "*@dev",
