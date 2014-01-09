@@ -1139,4 +1139,31 @@ class AdminTest extends \PHPUnit_Framework_TestCase
 
         return $tagAdmin;
     }
+
+    public function testRemoveFieldFromFormGroup()
+    {
+        $formGroups = array(
+            'foobar' => array(
+                'fields' => array(
+                    'foo' => 'foo',
+                    'bar' => 'bar',
+                ),
+            )
+        );
+
+        $admin = new PostAdmin('sonata.post.admin.post', 'Application\Sonata\NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
+        $admin->setFormGroups($formGroups);
+
+        $admin->removeFieldFromFormGroup('foo');
+        $this->assertEquals($admin->getFormGroups(), array(
+            'foobar' => array(
+                'fields' => array(
+                    'bar' => 'bar',
+                ),
+            )
+        ));
+
+        $admin->removeFieldFromFormGroup('bar');
+        $this->assertEquals($admin->getFormGroups(), array());
+    }
 }

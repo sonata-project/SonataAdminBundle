@@ -113,4 +113,14 @@ class FormMapperTest extends \PHPUnit_Framework_TestCase
         ->add('foo', 'bar')
         ->end();
     }
+
+    public function testRemoveCascadeRemoveFieldFromFormGroup()
+    {
+        $this->admin->expects($this->once())
+            ->method('removeFieldFromFormGroup')
+            ->with('foo')
+        ;
+
+        $this->formMapper->remove('foo');
+    }
 }
