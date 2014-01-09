@@ -20,6 +20,8 @@ file that was distributed with this source code.
 {% block side_menu %}{{ knp_menu_render(admin.sidemenu(action), {'currentClass' : 'active'}, 'list') }}{% endblock %}
 
 {% block list_table %}
+    {% block list_header %}{% endblock %}
+
     {% set batchactions = admin.batchactions %}
     {% if admin.datagrid.results|length > 0 %}
         {% if admin.hasRoute('batch') %}
@@ -144,6 +146,8 @@ file that was distributed with this source code.
             {{ 'no_result'|trans({}, 'SonataAdminBundle') }}
         </p>
     {% endif %}
+
+    {% block list_footer %}{% endblock %}
 {% endblock %}
 
 {% block list_filters %}
