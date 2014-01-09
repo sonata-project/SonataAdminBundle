@@ -23,7 +23,7 @@ class CoreController extends Controller
     /**
      * @return \Sonata\AdminBundle\Admin\Pool
      */
-    public function getAdminPool()
+    protected function getAdminPool()
     {
         return $this->container->get('sonata.admin.pool');
     }
@@ -31,7 +31,7 @@ class CoreController extends Controller
     /**
      * @return \Sonata\AdminBundle\Search\SearchHandler
      */
-    public function getSearchHandler()
+    protected function getSearchHandler()
     {
         return $this->get('sonata.admin.search.handler');
     }
@@ -39,7 +39,7 @@ class CoreController extends Controller
     /**
      * @return string
      */
-    public function getBaseTemplate()
+    protected function getBaseTemplate()
     {
         if ($this->getRequest()->isXmlHttpRequest()) {
             return $this->getAdminPool()->getTemplate('ajax');

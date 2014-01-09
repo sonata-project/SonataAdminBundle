@@ -40,7 +40,7 @@ class CRUDController extends Controller
      *
      * @return Response with json encoded data
      */
-    public function renderJson($data, $status = 200, $headers = array())
+    protected function renderJson($data, $status = 200, $headers = array())
     {
         // fake content-type so browser does not show the download popup when this
         // response is rendered through an iframe (used by the jquery.form.js plugin)
@@ -59,7 +59,7 @@ class CRUDController extends Controller
      *
      * @return boolean true if the request is done by an ajax like query
      */
-    public function isXmlHttpRequest()
+    protected function isXmlHttpRequest()
     {
         return $this->get('request')->isXmlHttpRequest() || $this->get('request')->get('_xml_http_request');
     }
@@ -98,7 +98,7 @@ class CRUDController extends Controller
      * @throws \RuntimeException
      * @return void
      */
-    public function configure()
+    protected function configure()
     {
         $adminCode = $this->container->get('request')->get('_sonata_admin');
 
@@ -133,7 +133,7 @@ class CRUDController extends Controller
      *
      * @return string the template name
      */
-    public function getBaseTemplate()
+    protected function getBaseTemplate()
     {
         if ($this->isXmlHttpRequest()) {
             return $this->admin->getTemplate('ajax');
@@ -357,7 +357,7 @@ class CRUDController extends Controller
      *
      * @return Response
      */
-    public function redirectTo($object)
+    protected function redirectTo($object)
     {
         $url = false;
 
@@ -835,7 +835,7 @@ class CRUDController extends Controller
      * @param string $type
      * @param string $message
      */
-    public function addFlash($type, $message)
+    protected function addFlash($type, $message)
     {
         $this->get('session')
              ->getFlashBag()
@@ -849,7 +849,7 @@ class CRUDController extends Controller
      *
      * @throws \RuntimeException
      */
-    public function validateCsrfToken($intention)
+    protected function validateCsrfToken($intention)
     {
         if (!$this->container->has('form.csrf_provider')) {
             return;
@@ -865,7 +865,7 @@ class CRUDController extends Controller
      *
      * @return string
      */
-    public function getCsrfToken($intention)
+    protected function getCsrfToken($intention)
     {
         if (!$this->container->has('form.csrf_provider')) {
             return false;

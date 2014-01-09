@@ -85,6 +85,11 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
     private $template;
 
     /**
+     * @var array
+     */
+    private $protectedTestedMethods;
+
+    /**
      * {@inheritDoc}
      */
     protected function setUp()
@@ -261,6 +266,14 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
         $this->controller = new CRUDController();
         $this->controller->setContainer($this->container);
+
+        // Make some methods public to test them
+        $testedMethods = array('renderJson', 'isXmlHttpRequest', 'configure', 'getBaseTemplate', 'redirectTo', 'addFlash');
+        foreach ($testedMethods as $testedMethod) {
+            $method = new \ReflectionMethod('Sonata\\AdminBundle\\Controller\\CRUDController', $testedMethod);
+            $method->setAccessible(true);
+            $this->protectedTestedMethods[$testedMethod] = $method;
+        }
     }
 
     public function testRenderJson1()
@@ -268,7 +281,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $data = array('example'=>'123', 'foo'=>'bar');
 
         $this->request->headers->set('Content-Type', 'application/x-www-form-urlencoded');
-        $response = $this->controller->renderJson($data);
+        $response = $this->protectedTestedMethods['renderJson']->invoke($this->controller, $data);
 
         $this->assertEquals($response->headers->get('Content-Type'), 'application/json');
         $this->assertEquals(json_encode($data), $response->getContent());
@@ -279,7 +292,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $data = array('example'=>'123', 'foo'=>'bar');
 
         $this->request->headers->set('Content-Type', 'multipart/form-data');
-        $response = $this->controller->renderJson($data);
+        $response = $this->protectedTestedMethods['renderJson']->invoke($this->controller, $data);
 
         $this->assertEquals($response->headers->get('Content-Type'), 'application/json');
         $this->assertEquals(json_encode($data), $response->getContent());
@@ -291,7 +304,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
         $this->request->attributes->set('_xml_http_request', true);
         $this->request->headers->set('Content-Type', 'multipart/form-data');
-        $response = $this->controller->renderJson($data);
+        $response = $this->protectedTestedMethods['renderJson']->invoke($this->controller, $data);
 
         $this->assertEquals($response->headers->get('Content-Type'), 'text/plain');
         $this->assertEquals(json_encode($data), $response->getContent());
@@ -299,16 +312,17 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
     public function testIsXmlHttpRequest()
     {
-        $this->assertFalse($this->controller->isXmlHttpRequest());
+        $this->assertFalse($this->protectedTestedMethods['isXmlHttpRequest']->invoke($this->controller));
 
         $this->request->headers->set('X-Requested-With', 'XMLHttpRequest');
-        $this->assertTrue($this->controller->isXmlHttpRequest());
+
+        $this->assertTrue($this->protectedTestedMethods['isXmlHttpRequest']->invoke($this->controller));
 
         $this->request->headers->remove('X-Requested-With');
-        $this->assertFalse($this->controller->isXmlHttpRequest());
+        $this->assertFalse($this->protectedTestedMethods['isXmlHttpRequest']->invoke($this->controller));
 
         $this->request->attributes->set('_xml_http_request', true);
-        $this->assertTrue($this->controller->isXmlHttpRequest());
+        $this->assertTrue($this->protectedTestedMethods['isXmlHttpRequest']->invoke($this->controller));
     }
 
     public function testConfigure()
@@ -322,7 +336,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
                 }));
 
         $this->request->query->set('uniqid', 123456);
-        $this->controller->configure();
+        $this->protectedTestedMethods['configure']->invoke($this->controller);
 
         $this->assertEquals(123456, $uniqueId);
         $this->assertAttributeEquals($this->admin, 'admin', $this->controller);
@@ -348,7 +362,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($adminParent));
 
         $this->request->query->set('uniqid', 123456);
-        $this->controller->configure();
+        $this->protectedTestedMethods['configure']->invoke($this->controller);
 
         $this->assertEquals(123456, $uniqueId);
         $this->assertAttributeEquals($adminParent, 'admin', $this->controller);
@@ -359,7 +373,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException('RuntimeException', 'There is no `_sonata_admin` defined for the controller `Sonata\AdminBundle\Controller\CRUDController`');
 
         $this->request->attributes->remove('_sonata_admin');
-        $this->controller->configure();
+        $this->protectedTestedMethods['configure']->invoke($this->controller);
     }
 
     public function testConfigureWithException2()
@@ -367,21 +381,21 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException('RuntimeException', 'Unable to find the admin class related to the current controller (Sonata\AdminBundle\Controller\CRUDController)');
 
         $this->request->attributes->set('_sonata_admin', 'nonexistent.admin');
-        $this->controller->configure();
+        $this->protectedTestedMethods['configure']->invoke($this->controller);
     }
 
     public function testGetBaseTemplate()
     {
-        $this->assertEquals('SonataAdminBundle::standard_layout.html.twig', $this->controller->getBaseTemplate());
+        $this->assertEquals('SonataAdminBundle::standard_layout.html.twig', $this->protectedTestedMethods['getBaseTemplate']->invoke($this->controller));
 
         $this->request->headers->set('X-Requested-With', 'XMLHttpRequest');
-        $this->assertEquals('SonataAdminBundle::ajax_layout.html.twig', $this->controller->getBaseTemplate());
+        $this->assertEquals('SonataAdminBundle::ajax_layout.html.twig', $this->protectedTestedMethods['getBaseTemplate']->invoke($this->controller));
 
         $this->request->headers->remove('X-Requested-With');
-        $this->assertEquals('SonataAdminBundle::standard_layout.html.twig', $this->controller->getBaseTemplate());
+        $this->assertEquals('SonataAdminBundle::standard_layout.html.twig', $this->protectedTestedMethods['getBaseTemplate']->invoke($this->controller));
 
         $this->request->attributes->set('_xml_http_request', true);
-        $this->assertEquals('SonataAdminBundle::ajax_layout.html.twig', $this->controller->getBaseTemplate());
+        $this->assertEquals('SonataAdminBundle::ajax_layout.html.twig', $this->protectedTestedMethods['getBaseTemplate']->invoke($this->controller));
     }
 
     public function testRender()
@@ -620,7 +634,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             $this->request->query->set($key, $value);
         }
 
-        $response = $this->controller->redirectTo($object);
+        $response = $this->protectedTestedMethods['redirectTo']->invoke($this->controller, $object);
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse', $response);
         $this->assertEquals($expected, $response->getTargetUrl());
     }
@@ -638,7 +652,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
     public function testAddFlash()
     {
-        $this->controller->addFlash('foo', 'bar');
+        $this->protectedTestedMethods['addFlash']->invoke($this->controller, 'foo', 'bar');
         $this->assertSame(array('bar'), $this->session->getFlashBag()->get('foo'));
     }
 
