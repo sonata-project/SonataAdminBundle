@@ -44,4 +44,44 @@ class ModelTypeTest extends TypeTestCase
         $this->assertEquals('SonataAdminBundle', $options['btn_catalogue']);
         $this->assertInstanceOf('Sonata\AdminBundle\Form\ChoiceList\ModelChoiceList', $options['choice_list']);
     }
+
+    /**
+     * @dataProvider getCompundOptionTests
+     */
+    public function testCompundOption($expectedCompound, $multiple, $expanded)
+    {
+        $type = new ModelType();
+        $modelManager = $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface');
+        $optionResolver = new OptionsResolver();
+
+        $type->setDefaultOptions($optionResolver);
+
+        $options = $optionResolver->resolve(array('model_manager' => $modelManager, 'choices' => array(), 'multiple'=>$multiple, 'expanded'=>$expanded));
+
+        $this->assertEquals($expectedCompound, $options['compound']);
+        $this->assertEquals('choice', $options['template']);
+        $this->assertEquals($multiple, $options['multiple']);
+        $this->assertEquals($expanded, $options['expanded']);
+        $this->assertInstanceOf('Sonata\AdminBundle\Model\ModelManagerInterface', $options['model_manager']);
+        $this->assertNull($options['class']);
+        $this->assertNull($options['property']);
+        $this->assertNull($options['query']);
+        $this->assertEquals(0, count($options['choices']));
+        $this->assertEquals(0, count($options['preferred_choices']));
+        $this->assertEquals('link_add', $options['btn_add']);
+        $this->assertEquals('link_list', $options['btn_list']);
+        $this->assertEquals('link_delete', $options['btn_delete']);
+        $this->assertEquals('SonataAdminBundle', $options['btn_catalogue']);
+        $this->assertInstanceOf('Sonata\AdminBundle\Form\ChoiceList\ModelChoiceList', $options['choice_list']);
+    }
+
+    public function getCompundOptionTests()
+    {
+        return array(
+            array(true, true, true), //checkboxes
+            array(false, true, false), //select tag (with multiple attribute)
+            array(true, false, true), //radio buttons
+            array(false, false, false), //select tag
+        );
+    }
 }
