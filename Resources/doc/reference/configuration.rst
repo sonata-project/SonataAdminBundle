@@ -1,7 +1,7 @@
 Warning: this doc page is not up to date and will be removed soon.
 ==================================================================
 
-This page will be removed soon, as it's content is being improved and moved to 
+This page will be removed soon, as it's content is being improved and moved to
 other pages of the documentation. Please refer to each section's documentation for up-to-date
 information on SonataAdminBundle configuration options.
 
@@ -31,6 +31,7 @@ Full Configuration Options
             options:
                 html5_validate: false # does not use html5 validation
                 confirm_exit:   false # disable confirmation when quitting with unsaved changes
+                use_select2:    false # disable select2
                 pager_links:    5     # pager max links to display
 
             # set to true to persist filter settings per admin module in the user's session

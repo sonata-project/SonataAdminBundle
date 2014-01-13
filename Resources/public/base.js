@@ -23,13 +23,25 @@ var Admin = {
 
     setup_select2: function(subject) {
         if (window.SONATA_CONFIG && window.SONATA_CONFIG.USE_SELECT2 && window.Select2) {
-            jQuery('select', subject).each(function() {
+            jQuery('select:not([data-sonata-select2="false"])', subject).each(function() {
                 var select = $(this);
+
+                var allowClearEnabled = false;
+
+                if (select.find('option[value=""]').length) {
+                    allowClearEnabled = true;
+                }
+
+                if (select.attr('data-sonata-select2-allow-clear')==='true') {
+                    allowClearEnabled = true;
+                } else if (select.attr('data-sonata-select2-allow-clear')==='false') {
+                    allowClearEnabled = false;
+                }
 
                 select.select2({
                     width: 'resolve',
                     minimumResultsForSearch: 10,
-                    allowClear: select.find('option[value=""]').length ? true : false
+                    allowClear: allowClearEnabled
                 });
 
                 var popover = select.data('popover');
