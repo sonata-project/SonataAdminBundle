@@ -24,25 +24,48 @@ class ModelToIdTransformerTest extends \PHPUnit_Framework_TestCase
 
     public function testReverseTransformWhenPassing0AsId()
     {
-        $transformer = new ModelToIdTransformer($this->modelManager,'TEST');
+        $transformer = new ModelToIdTransformer($this->modelManager, 'TEST');
 
         $this->modelManager
                 ->expects($this->exactly(2))
-                ->method('find');
+                ->method('find')
+                ->will($this->returnValue(true));
+
+        $this->assertFalse(in_array(false, array("0", 0), true));
 
         // we pass 0 as integer
-        // this must call the model manager find method... i not care what is returned, but must be called
-        $transformer->reverseTransform(0);
+        $this->assertTrue($transformer->reverseTransform(0));
 
         // we pass 0 as string
-        // this must call the model manager find method... i not care what is returned, but must be called
-        $transformer->reverseTransform('0');
+        $this->assertTrue($transformer->reverseTransform('0'));
 
         // we pass null must return null
         $this->assertNull($transformer->reverseTransform(null));
 
         // we pass false, must return null
         $this->assertNull($transformer->reverseTransform(false));
+    }
+
+    /**
+     * @dataProvider getReverseTransformValues
+     */
+    public function testReverseTransform($value, $expected)
+    {
+        $transformer = new ModelToIdTransformer($this->modelManager,'TEST2');
+
+        $this->modelManager->expects($this->any())->method('find');
+
+        $this->assertEquals($expected, $transformer->reverseTransform($value));
+    }
+
+    public function getReverseTransformValues()
+    {
+        return array(
+            array(null, null),
+            array(false, false),
+            array(array(), null),
+            array("", null)
+        );
     }
 
     public function testTransform()

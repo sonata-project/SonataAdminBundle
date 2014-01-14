@@ -40,7 +40,7 @@ class ModelToIdTransformer implements DataTransformerInterface
      */
     public function reverseTransform($newId)
     {
-        if (!isset($newId) || strlen($newId) === 0) {
+        if (empty($newId) && !in_array($newId, array("0", 0), true)) {
             return null;
         }
 
