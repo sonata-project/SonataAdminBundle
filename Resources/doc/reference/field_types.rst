@@ -22,19 +22,33 @@ There are many field types that can be used in the list action or show action :
 Theses types accept an ``editable`` parameter to edit the value from within the list action.
 This is currently limited to scalar types (text, integer, url...).
 
+.. note::
+
+    If the ``SonataIntlBundle`` is installed in the project some template types
+    will be changed to use localized information.
+
+    Option for currency type must be an official ISO code, example : EUR for "euros".
+    List of iso code : http://en.wikipedia.org/wiki/List_of_circulating_currencies
+
+    In ``date`` and ``datetime`` field types, ``format`` pattern must match twig's
+    ``date`` filter specification, available at: http://twig.sensiolabs.org/doc/filters/date.html
+    
+More types might be provided based on the persistency layer defined. Please refer to their
+related documentations.
+
 Choice
 ^^^^^^
 
 .. code-block:: php
 
-    // For value ``prog`` is displayed text ``In progress``. The ``AcmeDemoBundle`` catalogue will be used to translate ``In progress`` message.
+    // For value `prog` is displayed text `In progress`. The `AcmeDemoBundle` catalogue will be used to translate `In progress` message.
     $listMapper->add('status', 'choice', array('choices'=>array('prep'=>'Prepared', 'prog'=>'In progress', 'done'=>'Done'), 'catalogue' => 'AcmeDemoBundle'));
 
-``choice`` filed type also supports multiple values that can be separated by ``delimiter`` (default delimiter is a comma ``, ``).
+``choice`` filed type also supports multiple values that can be separated by ``delimiter`` (default delimiter is a comma ",").
 
 .. code-block:: php
 
-    // For value ``array('r', 'b')`` is displayed `text ``red | blue``.
+    // For value `array('r', 'b')` is displayed `text `red | blue`.
     $listMapper->add('colors', 'choice', array('multiple'=>true, 'delimiter'=>' | ', 'choices'=>array('r'=>'red', 'g'=>'green', 'b'=>'blue')));
 
 Url
@@ -54,35 +68,21 @@ Parameters:
 
 .. code-block:: php
 
-    // Output for value ``http://example.com``: ``<a href="http://example.com">http://example.com</a>``
+    // Output for value `http://example.com`: `<a href="http://example.com">http://example.com</a>`
     $listMapper->add('targetUrl', 'url');
 
-    // Output for value ``http://example.com``: ``<a href="http://example.com">example.com</a>``
+    // Output for value `http://example.com`: `<a href="http://example.com">example.com</a>`
     $listMapper->add('targetUrl', 'url', array('hide_protocol' => true));
 
-    // Output for value ``Homepage of example.com`` : ``<a href="http://example.com">Homepage of example.com</a>``
+    // Output for value `Homepage of example.com` : `<a href="http://example.com">Homepage of example.com</a>`
     $listMapper->add('title', 'url', array('url' => 'http://example.com'));
 
-    // Output for value ``Acme Blog Homepage``: ``<a href="http://blog.example.com">Acme Blog Homepage</a>``
+    // Output for value `Acme Blog Homepage`: `<a href="http://blog.example.com">Acme Blog Homepage</a>`
     $listMapper->add('title', 'url', array('route' => array('name'=>'acme_blog_homepage', 'absolute'=>true)));
 
-    // Output for value ``Sonata is great!`` (related object has identifier ``123``): ``<a href="http://blog.example.com/xml/123">Sonata is great!</a>``
+    // Output for value `Sonata is great!` (related object has identifier `123`): `<a href="http://blog.example.com/xml/123">Sonata is great!</a>`
     $listMapper->add('title', 'url', array('route' => array('name'=>'acme_blog_article', 'absolute'=>true, 'parameters'=>array('format'=>'xml'), 'identifier_parameter_name'=>'id')));
 
 .. note::
 
     Do not use ``url`` type with ``addIdentifier`` method, because it will create invalid nested urls.
-
-.. note::
-
-    If the ``SonataIntlBundle`` is installed in the project some template types
-    will be changed to use localized information.
-
-    Option for currency type must be an official ISO code, example : EUR for "euros".
-    List of iso code : http://en.wikipedia.org/wiki/List_of_circulating_currencies
-
-    In ``date`` and ``datetime`` field types, ``format`` pattern must match twig's
-    ``date`` filter specification, available at: http://twig.sensiolabs.org/doc/filters/date.html
-
-More types might be provided based on the persistency layer defined. Please refer to their
-related documentations.
