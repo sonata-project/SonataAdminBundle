@@ -24,6 +24,7 @@ Reference Guide
    reference/architecture
    reference/dashboard
    reference/search
+   reference/select2
    reference/routing
    reference/action_list
    reference/action_create_edit
