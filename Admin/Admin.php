@@ -771,7 +771,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
                 $filters
             );
 
-            if (!$this->determinedPerPageValue($parameters['_per_page'])) {
+            if (isset($parameters['_per_page']) and !$this->determinedPerPageValue($parameters['_per_page'])) {
                 $parameters['_per_page'] = $this->maxPerPage;
             }
 
