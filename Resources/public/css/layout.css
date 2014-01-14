@@ -384,6 +384,10 @@ legend.sonata-ba-fieldset-collapsed-description + .sonata-ba-collapsed-fields {
 
 }
 
+.sonata-bc .required:after {
+    content: '*';
+}
+
 .sonata-bc .form-horizontal .control-group {
     margin-bottom: 10px;
 }
