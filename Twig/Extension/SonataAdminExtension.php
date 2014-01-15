@@ -227,7 +227,7 @@ class SonataAdminExtension extends \Twig_Extension
             return call_user_func(array($element, $method));
         }
 
-        return PropertyAccess::createPropertyAccessor()->getValue($element, $propertyPath);
+        return PropertyAccess::getPropertyAccessor()->getValue($element, $propertyPath);
     }
 
     /**
