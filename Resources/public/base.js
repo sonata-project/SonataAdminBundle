@@ -1,3 +1,8 @@
+//add some ajax default datatype
+jQuery.ajaxSetup({
+    dataType: 'html'
+});
+
 jQuery(document).ready(function() {
     jQuery('html').removeClass('no-js');
     if (window.SONATA_CONFIG && window.SONATA_CONFIG.CONFIRM_EXIT) {
