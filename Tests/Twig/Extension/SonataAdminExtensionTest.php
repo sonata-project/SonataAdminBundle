@@ -530,10 +530,17 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
 
     public function testRenderRelationElementToString()
     {
-        $this->fieldDescription->expects($this->once())
+        $this->fieldDescription->expects($this->exactly(2))
             ->method('getOption')
-            ->with($this->identicalTo('associated_tostring'))
-            ->will($this->returnValue('__toString'));
+            ->will($this->returnCallback(function($value, $default = null) {
+                if ($value == 'associated_property') {
+                    return $default;
+                }
+
+                if ($value == 'associated_tostring') {
+                    return '__toString';
+                }
+            }));
 
        $element = $this->getMock('stdClass', array('__toString'));
        $element->expects($this->any())
@@ -545,10 +552,18 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
 
     public function testRenderRelationElementCustomToString()
     {
-        $this->fieldDescription->expects($this->any())
+        $this->fieldDescription->expects($this->exactly(2))
             ->method('getOption')
-            ->with($this->identicalTo('associated_tostring'))
-            ->will($this->returnValue('customToString'));
+            ->will($this->returnCallback(function($value, $default = null) {
+                if ($value == 'associated_property') {
+                    return $default;
+                }
+
+                if ($value == 'associated_tostring') {
+                    return 'customToString';
+                }
+            }));
+
 
        $element = $this->getMock('stdClass', array('customToString'));
        $element->expects($this->any())
@@ -560,22 +575,44 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
 
     public function testRenderRelationElementMethodNotExist()
     {
-        $this->fieldDescription->expects($this->any())
+        $this->fieldDescription->expects($this->exactly(2))
             ->method('getOption')
-            ->with($this->identicalTo('associated_tostring'))
-            ->will($this->returnValue('nonExistedMethod'));
+
+            ->will($this->returnCallback(function($value, $default = null) {
+                if ($value == 'associated_tostring') {
+                    return 'nonExistedMethod';
+                }
+            }));
 
         $element = new \stdClass();
 
         try {
             $this->twigExtension->renderRelationElement($element, $this->fieldDescription);
         } catch (\RuntimeException $e) {
-            $this->assertContains('You must define an `associated_tostring` option or create a `stdClass::__toString` method to the field option "fd_name" from service "xyz".', $e->getMessage());
+            $this->assertContains('You must define an `associated_property` option or create a `stdClass::__toString', $e->getMessage());
 
             return;
         }
 
         $this->fail('Failed asserting that exception of type "\RuntimeException" is thrown.');
+    }
+
+    public function testRenderRelationElementWithPropertyPath()
+    {
+        $this->fieldDescription->expects($this->exactly(1))
+            ->method('getOption')
+
+            ->will($this->returnCallback(function($value, $default = null) {
+                if ($value == 'associated_property') {
+                    return 'foo';
+                }
+            }));
+
+        $element = new \stdClass();
+        $element->foo = "bar";
+
+        $this->assertEquals('bar', $this->twigExtension->renderRelationElement($element, $this->fieldDescription));
+
     }
 
     public function testGetUrlsafeIdentifier()
