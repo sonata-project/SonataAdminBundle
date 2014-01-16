@@ -132,7 +132,7 @@ namespace of your custom Admin Controller.
 
     {# src/Acme/DemoBundle/Resources/views/CRUD/list__action_clone.html.twig #}
 
-    <a href="{{ admin.generateObjectUrl('clone', object) }}">clone</a>
+    <a class="btn btn-small" href="{{ admin.generateObjectUrl('clone', object) }}">clone</a>
 
 Right now ``clone`` is not a known route, we define it in the next step.
 
