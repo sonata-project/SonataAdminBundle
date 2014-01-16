@@ -32,9 +32,9 @@ file that was distributed with this source code.
 
         <div class="well well-small form-actions">
             <form action="{{ admin.generateUrl('batch', {'filter': admin.filterParameters}) }}" method="POST" >
-                <input type="hidden" name="confirmation" value="ok" />
-                <input type="hidden" name="data" value="{{ data|json_encode }}" />
-                <input type="hidden" name="_sonata_csrf_token" value="{{ csrf_token }}" />
+                <input type="hidden" name="confirmation" value="ok">
+                <input type="hidden" name="data" value="{{ data|json_encode }}">
+                <input type="hidden" name="_sonata_csrf_token" value="{{ csrf_token }}">
 
                 <div style="display: none">
                     {{ form_rest(form) }}
