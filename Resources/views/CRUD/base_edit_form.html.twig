@@ -1,4 +1,6 @@
 {% block form %}
+    {{ sonata_block_render_event('sonata.admin.edit.form.top', { 'object': object }) }}
+
     {% set url = admin.id(object) is not null ? 'edit' : 'create' %}
 
     {% if not admin.hasRoute(url)%}
@@ -103,5 +105,7 @@
             {% endblock formactions %}
         </form>
     {% endif%}
+
+    {{ sonata_block_render_event('sonata.admin.edit.form.bottom', { 'object': object }) }}
 
 {% endblock %}

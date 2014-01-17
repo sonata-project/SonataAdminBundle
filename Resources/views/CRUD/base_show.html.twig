@@ -24,6 +24,9 @@ file that was distributed with this source code.
 
 {% block show %}
     <div class="sonata-ba-view">
+
+        {{ sonata_block_render_event('sonata.admin.show.top', { 'object': object }) }}
+
         {% for name, view_group in admin.showgroups %}
             <table class="table table-bordered">
                 {% if name %}
@@ -43,5 +46,8 @@ file that was distributed with this source code.
                 {% endfor %}
             </table>
         {% endfor %}
+
+        {{ sonata_block_render_event('sonata.admin.show.bottom', { 'object': object }) }}
+
     </div>
 {% endblock %}
