@@ -21,7 +21,7 @@ file that was distributed with this source code.
 
 {% block list_table %}
 
-    {{ sonata_block_render_event('sonata.admin.list.table.top') }}
+    {{ sonata_block_render_event('sonata.admin.list.table.top', { 'admin': admin }) }}
 
     {% block list_header %}{% endblock %}
 
@@ -152,7 +152,7 @@ file that was distributed with this source code.
 
     {% block list_footer %}{% endblock %}
 
-    {{ sonata_block_render_event('sonata.admin.list.table.bottom') }}
+    {{ sonata_block_render_event('sonata.admin.list.table.bottom', { 'admin': admin }) }}
 
 {% endblock %}
 

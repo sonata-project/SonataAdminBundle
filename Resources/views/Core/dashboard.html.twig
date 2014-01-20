@@ -15,7 +15,7 @@ file that was distributed with this source code.
 {% block breadcrumb %}{% endblock %}
 {% block content %}
 
-    {{ sonata_block_render_event('sonata.admin.dashboard.top') }}
+    {{ sonata_block_render_event('sonata.admin.dashboard.top', { 'admin': admin_pool }) }}
 
     <div class="row-fluid">
         {% set has_center = false %}
@@ -52,6 +52,6 @@ file that was distributed with this source code.
         </div>
     </div>
 
-    {{ sonata_block_render_event('sonata.admin.dashboard.bottom') }}
+    {{ sonata_block_render_event('sonata.admin.dashboard.bottom', { 'admin': admin_pool }) }}
 
 {% endblock %}
