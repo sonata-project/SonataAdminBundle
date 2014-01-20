@@ -1,5 +1,5 @@
 {% block form %}
-    {{ sonata_block_render_event('sonata.admin.edit.form.top', { 'object': object }) }}
+    {{ sonata_block_render_event('sonata.admin.edit.form.top', { 'admin': admin, 'object': object }) }}
 
     {% set url = admin.id(object) is not null ? 'edit' : 'create' %}
 
@@ -106,6 +106,6 @@
         </form>
     {% endif%}
 
-    {{ sonata_block_render_event('sonata.admin.edit.form.bottom', { 'object': object }) }}
+    {{ sonata_block_render_event('sonata.admin.edit.form.bottom', { 'admin': admin, 'object': object }) }}
 
 {% endblock %}
