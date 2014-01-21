@@ -14,6 +14,9 @@ file that was distributed with this source code.
 {% block title %}{{ 'title_dashboard'|trans({}, 'SonataAdminBundle') }}{% endblock%}
 {% block breadcrumb %}{% endblock %}
 {% block content %}
+
+    {{ sonata_block_render_event('sonata.admin.dashboard.top', { 'admin_pool': admin_pool }) }}
+
     <div class="row-fluid">
         {% set has_center = false %}
         {% for block in blocks %}
@@ -48,4 +51,7 @@ file that was distributed with this source code.
             {% endfor %}
         </div>
     </div>
+
+    {{ sonata_block_render_event('sonata.admin.dashboard.bottom', { 'admin_pool': admin_pool }) }}
+
 {% endblock %}
