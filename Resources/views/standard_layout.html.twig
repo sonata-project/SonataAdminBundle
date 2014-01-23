@@ -251,12 +251,14 @@ file that was distributed with this source code.
 
                             {% if _list_table is not empty or _list_filters is not empty %}
                                 <div class="row-fluid">
-                                    <div class="sonata-ba-list span10">
+                                    <div class="sonata-ba-list {% if _list_filters|trim %}span10{% else %}span12{% endif %}">
                                         {{ _list_table|raw }}
                                     </div>
-                                    <div class="sonata-ba-filter span2">
-                                        {{ _list_filters|raw }}
-                                    </div>
+                                    {% if _list_filters|trim %}
+                                        <div class="sonata-ba-filter span2">
+                                            {{ _list_filters|raw }}
+                                        </div>
+                                    {% endif %}
                                 </div>
                             {% endif %}
 
