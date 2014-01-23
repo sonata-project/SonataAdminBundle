@@ -1309,6 +1309,8 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->method('isValid')
             ->will($this->returnValue(false));
 
+        $this->expectTranslate('flash_create_error');
+
         $this->request->setMethod('POST');
 
         $formView = $this->getMock('Symfony\Component\Form\FormView');
