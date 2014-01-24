@@ -172,6 +172,10 @@ body.sonata-bc {
     float: right
 }
 
+.sonata-bc .sonata-ba-list td.sonata-ba-list-field a.sonata-link-identifier {
+    font-weight: bold;
+}
+
 .sonata-bc .sonata-ba-list tr:hover td.sonata-ba-list-field.sonata-ba-list-field-select a {
     visibility: visible;
 }
