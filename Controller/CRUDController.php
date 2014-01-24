@@ -391,8 +391,10 @@ class CRUDController extends Controller
      */
     public function batchAction()
     {
-        if ($this->getRestMethod() != 'POST') {
-            throw new \RuntimeException('invalid request type, POST expected');
+        $restMethod = $this->getRestMethod();
+
+        if ('POST' !== $restMethod) {
+            throw $this->createNotFoundException(sprintf('Invalid request type "%s", POST expected', $restMethod));
         }
 
         // check the csrf token
