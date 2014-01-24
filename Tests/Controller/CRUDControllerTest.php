@@ -2041,7 +2041,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
     public function testBatchActionWrongMethod()
     {
-        $this->setExpectedException('RuntimeException', 'Invalid request type');
+        $this->setExpectedException('Symfony\Component\HttpKernel\Exception\NotFoundHttpException', 'Invalid request type "GET", POST expected');
 
         $this->controller->batchAction();
     }
