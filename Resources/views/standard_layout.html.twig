@@ -101,86 +101,88 @@ file that was distributed with this source code.
     <body {% block body_attributes %}class="sonata-bc {% if _side_menu is empty %}sonata-ba-no-side-menu{% endif %}"{% endblock %}>
         {# initialize block value #}
 
-        <div class="navbar navbar-fixed-top">
-            <div class="navbar-inner">
-                <div class="container-fluid">
-                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </a>
+        {% block sonata_nav %}
+            <div class="navbar navbar-fixed-top">
+                <div class="navbar-inner">
+                    <div class="container-fluid">
+                        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </a>
 
-                    {% if admin_pool is defined %}
-                        <div class="navbar-text pull-right">{% include admin_pool.getTemplate('user_block') %}</div>
+                        {% if admin_pool is defined %}
+                            <div class="navbar-text pull-right">{% include admin_pool.getTemplate('user_block') %}</div>
 
-                        {% block logo %}
-                            <a href="{{ url('sonata_admin_dashboard') }}" class="brand">
-                                <img src="{{ asset(admin_pool.titlelogo) }}"  alt="{{ admin_pool.title }}">
-                                {{ admin_pool.title }}
-                            </a>
-                        {% endblock %}
+                            {% block logo %}
+                                <a href="{{ url('sonata_admin_dashboard') }}" class="brand">
+                                    <img src="{{ asset(admin_pool.titlelogo) }}"  alt="{{ admin_pool.title }}">
+                                    {{ admin_pool.title }}
+                                </a>
+                            {% endblock %}
 
-                        {% block sonata_nav_menu_before %}{% endblock %}
+                            {% block sonata_nav_menu_before %}{% endblock %}
 
-                        {% block sonata_nav_menu %}
-                            <div class="nav-collapse">
-                                <ul class="nav">
-                                    {% block top_bar_before_nav %} {% endblock %}
-                                    {% block sonata_top_bar_nav %}
-                                        {% if app.security.token and is_granted('ROLE_SONATA_ADMIN') %}
-                                            {% for group in admin_pool.dashboardgroups %}
-                                                {% set display = (group.roles is empty or is_granted('ROLE_SUPER_ADMIN') ) %}
-                                                {% for role in group.roles if not display %}
-                                                    {% set display = is_granted(role) %}
-                                                {% endfor %}
-
-                                                {# Do not display the group label if no item in group is available #}
-                                                {% set item_count = 0 %}
-                                                {% if display %}
-                                                    {% for admin in group.items if item_count == 0 %}
-                                                        {% if admin.hasroute('list') and admin.isGranted('LIST') %}
-                                                            {% set item_count = item_count+1 %}
-                                                        {% endif %}
+                            {% block sonata_nav_menu %}
+                                <div class="nav-collapse">
+                                    <ul class="nav">
+                                        {% block top_bar_before_nav %} {% endblock %}
+                                        {% block sonata_top_bar_nav %}
+                                            {% if app.security.token and is_granted('ROLE_SONATA_ADMIN') %}
+                                                {% for group in admin_pool.dashboardgroups %}
+                                                    {% set display = (group.roles is empty or is_granted('ROLE_SUPER_ADMIN') ) %}
+                                                    {% for role in group.roles if not display %}
+                                                        {% set display = is_granted(role) %}
                                                     {% endfor %}
-                                                {% endif %}
 
-                                                {% if display and (item_count > 0) %}
-                                                <li class="dropdown">
-                                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ group.label|trans({}, group.label_catalogue) }} <span class="caret"></span></a>
-                                                    <ul class="dropdown-menu">
-                                                        {% for admin in group.items %}
+                                                    {# Do not display the group label if no item in group is available #}
+                                                    {% set item_count = 0 %}
+                                                    {% if display %}
+                                                        {% for admin in group.items if item_count == 0 %}
                                                             {% if admin.hasroute('list') and admin.isGranted('LIST') %}
-                                                                <li><a href="{{ admin.generateUrl('list')}}">{{ admin.label|trans({}, admin.translationdomain) }}</a></li>
+                                                                {% set item_count = item_count+1 %}
                                                             {% endif %}
                                                         {% endfor %}
-                                                    </ul>
-                                                </li>
-                                                {% endif %}
-                                            {% endfor %}
+                                                    {% endif %}
+
+                                                    {% if display and (item_count > 0) %}
+                                                    <li class="dropdown">
+                                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ group.label|trans({}, group.label_catalogue) }} <span class="caret"></span></a>
+                                                        <ul class="dropdown-menu">
+                                                            {% for admin in group.items %}
+                                                                {% if admin.hasroute('list') and admin.isGranted('LIST') %}
+                                                                    <li><a href="{{ admin.generateUrl('list')}}">{{ admin.label|trans({}, admin.translationdomain) }}</a></li>
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                        </ul>
+                                                    </li>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            {% endif %}
+                                        {% endblock %}
+                                        {% block top_bar_after_nav %} {% endblock %}
+                                    </ul>
+
+                                    {% block sonata_top_bar_search %}
+                                        {% if app.security.token and is_granted('ROLE_SONATA_ADMIN') %}
+                                            <form action="{{ url('sonata_admin_search') }}" method="GET"  class="navbar-search">
+                                                <div class="input-append">
+                                                    <input type="text" name="q" value="{{ app.request.get('q') }}" class="input-large search-query" placeholder="{{ 'search_placeholder'|trans({}, 'SonataAdminBundle') }}">
+                                                </div>
+                                            </form>
                                         {% endif %}
                                     {% endblock %}
-                                    {% block top_bar_after_nav %} {% endblock %}
-                                </ul>
 
-                                {% block sonata_top_bar_search %}
-                                    {% if app.security.token and is_granted('ROLE_SONATA_ADMIN') %}
-                                        <form action="{{ url('sonata_admin_search') }}" method="GET"  class="navbar-search">
-                                            <div class="input-append">
-                                                <input type="text" name="q" value="{{ app.request.get('q') }}" class="input-large search-query" placeholder="{{ 'search_placeholder'|trans({}, 'SonataAdminBundle') }}">
-                                            </div>
-                                        </form>
-                                    {% endif %}
-                                {% endblock %}
+                                </div>
+                            {% endblock %}
 
-                            </div>
-                        {% endblock %}
+                            {% block sonata_nav_menu_after %}{% endblock %}
 
-                        {% block sonata_nav_menu_after %}{% endblock %}
-
-                    {% endif %}
+                        {% endif %}
+                    </div>
                 </div>
             </div>
-        </div>
+        {% endblock sonata_nav %}
 
         <div class="container-fluid">
             {% block sonata_page_content %}
@@ -189,32 +191,34 @@ file that was distributed with this source code.
                 {% endblock %}
 
                 <div class="row-fluid">
-                    {% if _breadcrumb is not empty or action is defined %}
-                        <div class="span6">
-                            <ul class="breadcrumb">
-                                {% if _breadcrumb is empty %}
-                                    {% if action is defined %}
-                                        {% for menu in admin.breadcrumbs(action) %}
-                                            {% if not loop.last  %}
-                                                <li>
-                                                    {% if menu.uri is not empty %}
-                                                        <a href="{{ menu.uri }}">{{ menu.label }}</a>
-                                                    {% else %}
-                                                        {{ menu.label }}
-                                                    {% endif %}
-                                                    <span class="divider">/</span>
-                                                </li>
-                                            {% else %}
-                                                <li class="active">{{ menu.label }}</li>
-                                            {% endif %}
-                                        {% endfor %}
+                    {% block sonata_breadcrumb %}
+                        {% if _breadcrumb is not empty or action is defined %}
+                            <div class="span6">
+                                <ul class="breadcrumb">
+                                    {% if _breadcrumb is empty %}
+                                        {% if action is defined %}
+                                            {% for menu in admin.breadcrumbs(action) %}
+                                                {% if not loop.last  %}
+                                                    <li>
+                                                        {% if menu.uri is not empty %}
+                                                            <a href="{{ menu.uri }}">{{ menu.label }}</a>
+                                                        {% else %}
+                                                            {{ menu.label }}
+                                                        {% endif %}
+                                                        <span class="divider">/</span>
+                                                    </li>
+                                                {% else %}
+                                                    <li class="active">{{ menu.label }}</li>
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
+                                    {% else %}
+                                        {{ _breadcrumb|raw }}
                                     {% endif %}
-                                {% else %}
-                                    {{ _breadcrumb|raw }}
-                                {% endif %}
-                            </ul>
-                        </div>
-                    {% endif %}
+                                </ul>
+                            </div>
+                        {% endif %}
+                    {% endblock sonata_breadcrumb %}
 
                     {% if _actions is not empty %}
                         <div class="span4 offset2">
