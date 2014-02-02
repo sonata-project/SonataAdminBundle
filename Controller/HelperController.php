@@ -277,7 +277,14 @@ class HelperController
 
             return new JsonResponse(array('status' => 'KO', 'message' => implode("\n", $messages)));
         }
-
+        // Hack to set the datetime values correctly. Otherwise they can't be
+        // set without error. 
+        if($fieldDescription->getType() == 'datetime' || 
+           $fieldDescription->getType() == 'date' ||
+           $fieldDescription->getType() == 'combodate' ||
+           $fieldDescription->getType() == 'time') {
+            $object->setCreatedAt(new \DateTime($object->getCreatedAt()));
+        }
         $admin->update($object);
 
         // render the widget
