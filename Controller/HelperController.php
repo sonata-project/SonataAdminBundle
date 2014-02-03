@@ -263,8 +263,18 @@ class HelperController
             $field        = end($elements);
             $propertyPath = new PropertyPath($field);
         }
-
-        $propertyAccessor->setValue($object, $propertyPath, '' !== $value ? $value : null);
+        // Hack to set the datetime values correctly. Otherwise they can't be
+        // set without error cause of the wrong data type string. 
+        // Required is DateTime object!
+        if($fieldDescription->getType() == 'datetime' || 
+           $fieldDescription->getType() == 'date' ||
+           $fieldDescription->getType() == 'combodate' ||
+           $fieldDescription->getType() == 'time') {
+            $propertyAccessor->setValue($object, $propertyPath, '' !== $value ? new \DateTime($value) : null);
+        }
+        else {
+            $propertyAccessor->setValue($object, $propertyPath, '' !== $value ? $value : null);
+        }
 
         $violations = $this->validator->validateProperty($object, $field);
 
@@ -277,14 +287,7 @@ class HelperController
 
             return new JsonResponse(array('status' => 'KO', 'message' => implode("\n", $messages)));
         }
-        // Hack to set the datetime values correctly. Otherwise they can't be
-        // set without error. 
-        if($fieldDescription->getType() == 'datetime' || 
-           $fieldDescription->getType() == 'date' ||
-           $fieldDescription->getType() == 'combodate' ||
-           $fieldDescription->getType() == 'time') {
-            $object->setCreatedAt(new \DateTime($object->getCreatedAt()));
-        }
+        
         $admin->update($object);
 
         // render the widget
