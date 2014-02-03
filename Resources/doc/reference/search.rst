@@ -23,6 +23,17 @@ The default template values can be configured in the configuration section
                 # other configuration options
                 search:              SonataAdminBundle:Core:search.html.twig
                 search_result_block: SonataAdminBundle:Block:block_search_result.html.twig
+                
+You also need to configure the block in the sonata block config
+
+.. configuration-block::
+
+    .. code-block:: yaml
+
+        sonata_block:
+            blocks:
+                sonata.admin.block.search_result:
+                contexts: [admin]
 
 You can also configure the block template per admin while defining the admin:
 
