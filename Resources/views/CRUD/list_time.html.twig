@@ -10,11 +10,26 @@ file that was distributed with this source code.
 #}
 
 {% extends admin.getTemplate('base_list_field') %}
+{% set isEditable = field_description.options.editable is defined and field_description.options.editable and admin.isGranted('EDIT', object) %}
+{% set xEditableType = field_description.type|sonata_xeditable_type %}
+
+{% if isEditable and xEditableType %}
+    {% block field_span_attributes %}
+        {% spaceless %}
+            {{ parent() }}
+            data-viewformat="H:i:s"
+            data-value={{value|date('H:i:s')}}
+        {% endspaceless %}
+    {% endblock %}
+{% endif %}
 
 {% block field %}
     {%- if value is empty -%}
         &nbsp;
+    {%- elseif field_description.options.format is defined -%}
+        {{ value|date(field_description.options.format) }}
     {%- else -%}
         {{ value|date('H:i:s') }}
     {%- endif -%}
 {% endblock %}
+

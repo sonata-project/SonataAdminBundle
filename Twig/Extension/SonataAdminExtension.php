@@ -106,7 +106,7 @@ class SonataAdminExtension extends \Twig_Extension
     public function renderListElement($object, FieldDescriptionInterface $fieldDescription, $params = array())
     {
         $template = $this->getTemplate($fieldDescription, $fieldDescription->getAdmin()->getTemplate('base_list_field'));
-
+        
         return $this->output($fieldDescription, $template, array_merge($params, array(
             'admin'             => $fieldDescription->getAdmin(),
             'object'            => $object,
@@ -266,6 +266,10 @@ class SonataAdminExtension extends \Twig_Extension
             'currency'   => 'number',
             'percent'    => 'number',
             'url'        => 'url',
+            'combodate'   => 'combodate',
+            'datetime'   => 'datetime',
+            'date'   => 'date',
+            'time'   => 'time',
         );
 
         return isset($mapping[$type]) ? $mapping[$type] : false;
