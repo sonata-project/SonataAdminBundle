@@ -266,10 +266,11 @@ class SonataAdminExtension extends \Twig_Extension
             'currency'   => 'number',
             'percent'    => 'number',
             'url'        => 'url',
-            'combodate'   => 'combodate',
+            'combodate'  => 'combodate',
             'datetime'   => 'datetime',
-            'date'   => 'date',
-            'time'   => 'time',
+            'date'       => 'date',
+            'time'       => 'time',
+            'choice'     => 'select'
         );
 
         return isset($mapping[$type]) ? $mapping[$type] : false;
