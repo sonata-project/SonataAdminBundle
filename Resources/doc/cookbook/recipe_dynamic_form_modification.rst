@@ -12,7 +12,8 @@ In your ``Admin`` class's ``configureFormFields`` method you're able to get the 
     use Sonata\AdminBundle\Admin\Admin;
     use Sonata\AdminBundle\Form\FormMapper;
 
-    class MyModelAdmin extends Admin {
+    class MyModelAdmin extends Admin 
+    {
     // ...
 
       protected function configureFormFields(FormMapper $formMapper)
