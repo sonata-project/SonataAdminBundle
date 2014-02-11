@@ -101,17 +101,19 @@ Fast changes in the list
 -------
 
 For ``boolean`` type can be specified 'editable' parameter, which lets you change the value of this field via AJAX in the list:
-.. code-block:: php
-<?php
- // ...
-    use Sonata\AdminBundle\Admin\Admin;
 
-    class UserAdmin extends Admin
-    {
+.. code-block:: php
+
+    <?php
      // ...
-        protected function configureListFields(ListMapper $listMapper)
+        use Sonata\AdminBundle\Admin\Admin;
+
+        class UserAdmin extends Admin
         {
-            $listMapper
-                ->add('enabled', null, array('editable' => true))
+         // ...
+            protected function configureListFields(ListMapper $listMapper)
+            {
+                $listMapper
+                    ->add('enabled', null, array('editable' => true))
 
 .. _`issues on Github`: https://github.com/sonata-project/SonataAdminBundle/issues/1519
