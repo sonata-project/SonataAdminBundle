@@ -97,4 +97,21 @@ To do:
 - targeting submodel fields using dot-separated notation
 - advanced filter options (global_search)
 
+Fast changes in the list
+-------
+
+For ``boolean`` type can be specified 'editable' parameter, which lets you change the value of this field via AJAX in the list:
+.. code-block:: php
+<?php
+ // ...
+    use Sonata\AdminBundle\Admin\Admin;
+
+    class UserAdmin extends Admin
+    {
+     // ...
+        protected function configureListFields(ListMapper $listMapper)
+        {
+            $listMapper
+                ->add('enabled', null, array('editable' => true))
+
 .. _`issues on Github`: https://github.com/sonata-project/SonataAdminBundle/issues/1519
