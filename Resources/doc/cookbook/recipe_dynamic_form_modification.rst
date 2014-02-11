@@ -25,6 +25,7 @@ In your ``Admin`` class's ``configureFormFields`` method you're able to get the 
         // $subject is your underlying model,
         // do what you need to figure out if you'll have to modify the form
         if ($subject->isNew()) {
+            // The thumbnail field will only be added when the edited item is newly created
             $formMapper->add('thumbnail', 'file');
         }
       }
