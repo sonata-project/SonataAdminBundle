@@ -58,3 +58,4 @@ Cookbook
    cookbook/recipe_image_previews
    cookbook/recipe_row_templates
    cookbook/recipe_sortable_listing
+   cookbook/recipe_dynamic_form_modification
