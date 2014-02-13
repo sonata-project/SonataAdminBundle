@@ -99,7 +99,7 @@ class AdminHelper
 
         $form = $formBuilder->getForm();
         $form->setData($subject);
-        $form->bind($admin->getRequest());
+        $form->submit($admin->getRequest());
 
         // get the field element
         $childFormBuilder = $this->getChildFormBuilder($formBuilder, $elementId);

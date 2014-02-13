@@ -70,8 +70,11 @@ interface AdminExtensionInterface
     public function validate(AdminInterface $admin, ErrorElement $errorElement, $object);
 
     /**
+     * @param AdminInterface      $admin
      * @param ProxyQueryInterface $query
      * @param string              $context
+     *
+     * @return mixed
      */
     public function configureQuery(AdminInterface $admin, ProxyQueryInterface $query, $context = 'list');
 

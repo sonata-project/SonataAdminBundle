@@ -110,7 +110,7 @@ class Datagrid implements DatagridInterface
         $this->formBuilder->add('_per_page', 'hidden');
 
         $this->form = $this->formBuilder->getForm();
-        $this->form->bind($this->values);
+        $this->form->submit($this->values);
 
         $data = $this->form->getData();
 
