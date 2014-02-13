@@ -103,7 +103,6 @@ To create your own RouteBuilder create the PHP class and register it as a servic
 
     use Sonata\AdminBundle\Builder\RouteBuilderInterface;
     use Sonata\AdminBundle\Admin\AdminInterface;
-    use Sonata\AdminBundle\Model\AuditManagerInterface;
     use Sonata\AdminBundle\Route\PathInfoBuilder;
     use Sonata\AdminBundle\Route\RouteCollection;
 
