@@ -287,15 +287,6 @@ General
         <?php
         $form->add('status', null, array('label' => false);
 
-- ``code``: You can set the ``code`` option to a closure if you want to customize the value returned (will take the object as a parameter).
-
-.. code-block:: php
-
-        <?php
-        $form->add('status', null, array('code' => function ($objectWithStatus) {
-            return sprintf("Status: %s", $objectWithStatus->getStatus());
-        });
-
 .. _`Symfony field types`: http://symfony.com/doc/current/book/forms.html#built-in-field-types
 .. _`Symfony choice Field Type docs`: http://symfony.com/doc/current/reference/forms/types/choice.html
 .. _`Symfony PropertyPath`: http://api.symfony.com/2.0/Symfony/Component/Form/Util/PropertyPath.html
