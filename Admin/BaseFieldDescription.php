@@ -331,8 +331,8 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         $parameters = array();
 
         // prefer method name given in the code option
-        if ($code) {
-            $getters[] = $code;
+        if ($this->getOption('code')) {
+            $getters[] = $this->getOption('code');
         }
         // parameters for the method given in the code option
         if($this->getOption('parameters')){
