@@ -1,5 +1,5 @@
-Advance
-=======
+Advanced configuration
+======================
 
 Service Configuration
 ---------------------
