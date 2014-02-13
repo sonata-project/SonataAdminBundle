@@ -42,7 +42,7 @@ Reference Guide
    reference/security
    reference/extensions
    reference/events
-   reference/advance
+   reference/advanced
    reference/console
    reference/preview_mode
    reference/troubleshooting

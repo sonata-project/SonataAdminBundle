@@ -1,5 +1,5 @@
-Advance
-=======
+Advanced configuration
+======================
 
 Service Configuration
 ---------------------
@@ -48,6 +48,24 @@ You have 2 ways of defining the dependencies inside ``services.xml``:
             <argument />
         </service>
 
+.. configuration-block::
+
+    .. code-block:: yaml
+
+        acme.project.admin.project:
+            class: Acme\ProjectBundle\Admin\ProjectAdmin
+            tags:
+                - name: sonata.admin 
+                  manager_type: orm
+                  group: "Project"
+                  label: "Project"
+                  label_translator_strategy: "sonata.admin.label.strategy.native"
+                  route_builder: "sonata.admin.route.path_info"
+            arguments:
+                - ~
+                - Acme\ProjectBundle\Entity\Project
+                - ~
+
 * With a method call, more verbose
 
 .. configuration-block::
@@ -73,6 +91,22 @@ You have 2 ways of defining the dependencies inside ``services.xml``:
                 <argument type="service" id="sonata.admin.route.path_info" />
             </call>
         </service>
+
+.. configuration-block::
+
+    .. code-block:: yaml
+
+        acme.project.admin.project:
+            class: Acme\ProjectBundle\Admin\ProjectAdmin
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Project", label: "Project" }
+            arguments:
+                - ~
+                - Acme\ProjectBundle\Entity\Project
+                - ~
+            calls:
+                - [ setLabelTranslatorStrategy, [ @sonata.admin.label.strategy.native ]]
+                - [ setRouteBuilder, [ @sonata.admin.route.path_info ]]        
 
 If you want to modify the service that is going to be injected, add the following code to your
 application's config file:
@@ -103,7 +137,6 @@ To create your own RouteBuilder create the PHP class and register it as a servic
 
     use Sonata\AdminBundle\Builder\RouteBuilderInterface;
     use Sonata\AdminBundle\Admin\AdminInterface;
-    use Sonata\AdminBundle\Model\AuditManagerInterface;
     use Sonata\AdminBundle\Route\PathInfoBuilder;
     use Sonata\AdminBundle\Route\RouteCollection;
 
@@ -133,6 +166,20 @@ To create your own RouteBuilder create the PHP class and register it as a servic
         <service id="acme.admin.route.entity" class="Acme\AdminBundle\Route\EntityRouterBuilder">
             <argument type="service" id="sonata.admin.audit.manager" />
         </service>
+
+* YAML service registration
+
+.. configuration-block::
+
+    .. code-block:: yaml
+        parameters:
+            acme.admin.entity_route_builder.class: Acme\AdminBundle\Route\EntityRouterBuilder
+
+        services:
+            acme.admin.entity_route_builder:
+                class: %acme.admin.entity_route_builder.class%
+                arguments:
+                    - @sonata.admin.audit.manager
 
 
 Inherited classes
