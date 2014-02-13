@@ -97,6 +97,16 @@ class BaseFieldDescriptionTest extends \PHPUnit_Framework_TestCase
     public function testGetValue()
     {
         $description = new FieldDescription();
+
+        $mock = $this->getMock('stdClass', array('getFake'));
+        $mock->expects($this->once())->method('getFake')->will($this->returnValue(42));
+
+        $this->assertEquals(42, $description->getFieldValue($mock, 'fake'));
+    }
+
+    public function testGetValueCode()
+    {
+        $description = new FieldDescription();
         $description->setOption('code', 'getFoo');
 
         $mock = $this->getMock('stdClass', array('getFoo'));

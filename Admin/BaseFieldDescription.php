@@ -325,14 +325,20 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
      */
     public function getFieldValue($object, $fieldName)
     {
+        $code = $this->getOption('code');
+
+        if (is_callable($code)) {
+            return call_user_func($code, $object);
+        }
+
         $camelizedFieldName = self::camelize($fieldName);
 
         $getters = array();
         $parameters = array();
         
         // prefer method name given in the code option
-        if ($this->getOption('code')) {
-            $getters[] = $this->getOption('code');
+        if ($code) {
+            $getters[] = $code;
         }
         // parameters for the method given in the code option
         if($this->getOption('parameters')){
