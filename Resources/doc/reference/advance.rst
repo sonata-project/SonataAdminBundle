@@ -48,6 +48,24 @@ You have 2 ways of defining the dependencies inside ``services.xml``:
             <argument />
         </service>
 
+.. configuration-block::
+
+    .. code-block:: yaml
+
+        acme.project.admin.project:
+            class: Acme\ProjectBundle\Admin\ProjectAdmin
+            tags:
+                - name: sonata.admin 
+                  manager_type: orm
+                  group: "Project"
+                  label: "Project"
+                  label_translator_strategy: "sonata.admin.label.strategy.native"
+                  route_builder: "sonata.admin.route.path_info"
+            arguments:
+                - ~
+                - Acme\ProjectBundle\Entity\Project
+                - ~
+
 * With a method call, more verbose
 
 .. configuration-block::
@@ -73,6 +91,22 @@ You have 2 ways of defining the dependencies inside ``services.xml``:
                 <argument type="service" id="sonata.admin.route.path_info" />
             </call>
         </service>
+
+.. configuration-block::
+
+    .. code-block:: yaml
+
+        acme.project.admin.project:
+            class: Acme\ProjectBundle\Admin\ProjectAdmin
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Project", label: "Project" }
+            arguments:
+                - ~
+                - Acme\ProjectBundle\Entity\Project
+                - ~
+            calls:
+                - [ setLabelTranslatorStrategy, [ @sonata.admin.label.strategy.native ]]
+                - [ setRouteBuilder, [ @sonata.admin.route.path_info ]]        
 
 If you want to modify the service that is going to be injected, add the following code to your
 application's config file:
