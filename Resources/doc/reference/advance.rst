@@ -133,6 +133,20 @@ To create your own RouteBuilder create the PHP class and register it as a servic
             <argument type="service" id="sonata.admin.audit.manager" />
         </service>
 
+* YAML service registration
+
+.. configuration-block::
+
+    .. code-block:: yaml
+        parameters:
+            acme.admin.entity_route_builder.class: Acme\AdminBundle\Route\EntityRouterBuilder
+
+        services:
+            acme.admin.entity_route_builder:
+                class: %acme.admin.entity_route_builder.class%
+                arguments:
+                    - @sonata.admin.audit.manager
+
 
 Inherited classes
 -----------------
