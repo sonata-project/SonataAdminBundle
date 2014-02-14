@@ -3,8 +3,8 @@
 // if the bundle is within a symfony project, try to reuse the project's autoload
 
 $files = array(
-    __DIR__.'/../../../../../../../app/autoload.php',
-    __DIR__.'/../../../../../../../apps/autoload.php',
+    __DIR__.'/../../../../../app/autoload.php',
+    __DIR__.'/../../../../../apps/autoload.php',
     __DIR__.'/../../vendor/autoload.php',
 );
 
