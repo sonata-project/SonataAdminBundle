@@ -224,9 +224,9 @@ ACL and FriendsOfSymfony/UserBundle
 
 If you want an easy way to handle users, please use:
 
-- https://github.com/FriendsOfSymfony/FOSUserBundle: handle users and groups
+- `FOSUserBundle <https://github.com/FriendsOfSymfony/FOSUserBundle>`_: handle users and groups
   stored in RDMS or MongoDB
-- https://github.com/sonata-project/SonataUserBundle: integrates the
+- `SonataUserBundle <https://github.com/sonata-project/SonataUserBundle>`_: integrates the
   ``FriendsOfSymfony/UserBundle`` with the ``AdminBundle``
 
 The security integration is a work in progress and has some known issues:
@@ -459,9 +459,10 @@ Vocabulary used for Access Control Lists:
   There can be many voters that may have different permission maps. However,
   prevent that multiple voters vote on the same class with overlapping bitmasks.
 
-See the cookbook article "Advanced ACL concepts" for the meaning of the different
-permissions:
-http://symfony.com/doc/current/cookbook/security/acl_advanced.html#pre-authorization-decisions.
+See the cookbook article "`Advanced ACL concepts 
+<http://symfony.com/doc/current/cookbook/security/acl_advanced.html#pre-authorization-decisions.>`_" 
+for the meaning of the different permissions.
+
 
 How is access granted?
 ~~~~~~~~~~~~~~~~~~~~~~

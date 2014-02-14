@@ -31,11 +31,11 @@ So in order to avoid any fatal error, you must return an empty string (or anythi
 
 
 Large filters and long urls problem
--------------------
+-----------------------------------
 
 If you will try to add hundreds filters to single admin class, you will get a problem - very long filter form url generated.
 In most cases you will get server response like *Error 400 Bad Request* OR *Error 414 Request-URI Too Long*. According to 
-http://stackoverflow.com/questions/417142/what-is-the-maximum-length-of-a-url-in-different-browsers
+`a StackOverflow discussion <http://stackoverflow.com/questions/417142/what-is-the-maximum-length-of-a-url-in-different-browsers>`_
 "safe" url length is just around 2000 characters.
 You can fix this issue by adding simple JQuery code on your edit template
 

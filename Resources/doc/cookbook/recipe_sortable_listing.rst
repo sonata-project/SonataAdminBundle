@@ -6,7 +6,7 @@ This is a full working example of how to implement a sortable feature in your So
 Background
 ----------
 
-A sortable behavior is already available for one-to-many relationships (http://sonata-project.org/bundles/doctrine-orm-admin/master/doc/reference/form_field_definition.html#advanced-usage-one-to-many). 
+A sortable behavior is already available for one-to-many relationships (`http://sonata-project.org/bundles/doctrine-orm-admin/master/doc/reference/form_field_definition.html#advanced-usage-one-to-many <http://sonata-project.org/bundles/doctrine-orm-admin/master/doc/reference/form_field_definition.html#advanced-usage-one-to-many>`_). 
 However there is no packaged solution to have some up and down arrows to sort your records such as showed in the following screen
 
 .. figure:: ../images/admin_sortable_listing.png

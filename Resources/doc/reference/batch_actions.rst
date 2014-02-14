@@ -82,7 +82,7 @@ And add this:
         return 'SonataAdminBundle';
     }
 
-See the [Symfony bundle overriding mechanism](http://symfony.com/doc/current/cookbook/bundles/inheritance.html) 
+See the `Symfony bundle overriding mechanism`_
 for further explanation of overriding bundle templates.
 
 
@@ -196,3 +196,5 @@ granularity), the passed query is ``null``.
           $this->admin->generateUrl('list',$this->admin->getFilterParameters())
         );
     }
+
+.. _Symfony bundle overriding mechanism: http://symfony.com/doc/current/cookbook/bundles/inheritance.html
