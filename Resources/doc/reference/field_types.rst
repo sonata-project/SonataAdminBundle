@@ -28,10 +28,10 @@ This is currently limited to scalar types (text, integer, url...).
     will be changed to use localized information.
 
     Option for currency type must be an official ISO code, example : EUR for "euros".
-    List of iso code : http://en.wikipedia.org/wiki/List_of_circulating_currencies
+    List of ISO codes : `http://en.wikipedia.org/wiki/List_of_circulating_currencies <http://en.wikipedia.org/wiki/List_of_circulating_currencies>`_
 
     In ``date`` and ``datetime`` field types, ``format`` pattern must match twig's
-    ``date`` filter specification, available at: http://twig.sensiolabs.org/doc/filters/date.html
+    ``date`` filter specification, available at: `http://twig.sensiolabs.org/doc/filters/date.html <http://twig.sensiolabs.org/doc/filters/date.html>`_
     
 More types might be provided based on the persistency layer defined. Please refer to their
 related documentations.
