@@ -114,8 +114,6 @@ You can specify your templates in the config.yml file, like so:
                 batch_confirmation:  SonataAdminBundle:CRUD:batch_confirmation.html.twig
                 inner_list_row:      SonataAdminBundle:CRUD:list_inner_row.html.twig
                 base_list_field:     SonataAdminBundle:CRUD:base_list_field.html.twig
-                inner_list_row:      SonataAdminBundle:CRUD:list_inner_row.html.twig
-                base_list_field:     SonataAdminBundle:CRUD:base_list_field.html.twig
                 list_block:          SonataAdminBundle:Block:block_admin_list.html.twig
                 user_block:          SonataAdminBundle:Core:user_block.html.twig
                 pager_links:         SonataAdminBundle:Pager:links.html.twig
