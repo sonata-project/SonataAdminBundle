@@ -30,7 +30,11 @@ file that was distributed with this source code.
         <ul>
             {% if pager %}
                 {% for result in pager.getResults() %}
-                    <li><a href="{{ admin.generateObjectUrl('edit', result) }}">{{ admin.toString(result) }}</a></li>
+                    {% if admin.hasRoute('edit') %}
+                        <li><a href="{{ admin.generateObjectUrl('edit', result) }}">{{ admin.toString(result) }}</a></li>
+                    {% else %}
+                        <li><i>{{ admin.toString(result) }}</i></li>
+                    {% endif %}
                 {% else %}
                     {% if admin.hasRoute('create') %}
                         <li><i>{{ 'no_results_found'|trans({}, 'SonataAdminBundle') }} ~ <a href="{{ admin.generateUrl('create') }}">{{ 'add_new_entry'|trans({}, 'SonataAdminBundle') }}</a></i></li>
