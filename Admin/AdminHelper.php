@@ -40,10 +40,64 @@ class AdminHelper
      */
     public function getChildFormBuilder(FormBuilder $formBuilder, $elementId)
     {
+        $recurciveElementId = substr($elementId, strpos($elementId, '_') + 1);
+
         foreach (new FormBuilderIterator($formBuilder) as $name => $formBuilder) {
             if ($name == $elementId) {
                 return $formBuilder;
             }
+
+            if ($formBuilder->count()) {
+                $formBuilder = $this->getChildFormBuilder($formBuilder, $recurciveElementId);
+                if ($formBuilder) {
+                    return $formBuilder;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    protected function getFormFieldDescription(AdminInterface $admin, array $elements)
+    {
+        if (count($elements) > 0) {
+            $elementId = array_shift($elements);
+            $fieldDescription = $admin->getFormFieldDescription($elementId);
+            $recursionAdmin = $fieldDescription->getAssociationAdmin();
+
+            if ($fieldDescription && $recursionAdmin) {
+                $newFieldDescription = $this->getFormFieldDescription($recursionAdmin, $elements);
+                if ($newFieldDescription) {
+                    return $newFieldDescription;
+                }
+            }
+
+            return $fieldDescription;
+        }
+
+        return null;
+    }
+
+    protected function getFormFieldData($formData, array $elements)
+    {
+        if (count($elements) > 0) {
+            $elementId = array_shift($elements);
+
+            $object = null;
+            $method = sprintf('get%s', $this->camelize($elementId));
+            if (isset($formData->$elementId)) {
+                $object = $formData->$elementId;
+            } elseif ($formData->$method()) {
+                $object = $formData->$method();
+            }
+            if ($object) {
+                $newFormData = $this->getFormFieldData($object, $elements);
+                if ($newFormData) {
+                    return $newFormData;
+                }
+            }
+
+            return $formData;
         }
 
         return null;
@@ -101,11 +155,13 @@ class AdminHelper
         $form->setData($subject);
         $form->bind($admin->getRequest());
 
+        $elements = explode('_', substr($elementId, strpos($elementId, '_') + 1));
+
         // get the field element
         $childFormBuilder = $this->getChildFormBuilder($formBuilder, $elementId);
 
         // retrieve the FieldDescription
-        $fieldDescription = $admin->getFormFieldDescription($childFormBuilder->getName());
+        $fieldDescription = $this->getFormFieldDescription($admin, $elements);
 
         try {
             $value = $fieldDescription->getValue($form->getData());
@@ -123,23 +179,14 @@ class AdminHelper
         $objectCount = count($value);
         $postCount   = count($data[$childFormBuilder->getName()]);
 
-        $fields = array_keys($fieldDescription->getAssociationAdmin()->getFormFieldDescriptions());
-
-        // for now, not sure how to do that
-        $value = array();
-        foreach ($fields as $name) {
-            $value[$name] = '';
-        }
-
         // add new elements to the subject
         while ($objectCount < $postCount) {
             // append a new instance into the object
-            $this->addNewInstance($form->getData(), $fieldDescription);
+            $this->addNewInstance($this->getFormFieldData($form->getData(), $elements), $fieldDescription);
             $objectCount++;
         }
 
-        $this->addNewInstance($form->getData(), $fieldDescription);
-        $data[$childFormBuilder->getName()][] = $value;
+        $this->addNewInstance($this->getFormFieldData($form->getData(), $elements), $fieldDescription);
 
         $finalForm = $admin->getFormBuilder()->getForm();
         $finalForm->setData($subject);
