@@ -59,6 +59,12 @@ class AdminHelper
         return null;
     }
 
+
+    /**
+     * @param AdminInterface $admin
+     * @param array     $elements
+     * @return null|\Sonata\AdminBundle\Admin\FieldDescriptionInterface
+     */
     protected function getFormFieldDescription(AdminInterface $admin, array $elements)
     {
         if (count($elements) > 0) {
@@ -79,6 +85,12 @@ class AdminHelper
         return null;
     }
 
+
+    /**
+     * @param mixed $formData
+     * @param array $elements
+     * @return mixed
+     */
     protected function getFormFieldData($formData, array $elements)
     {
         if (count($elements) > 0) {
