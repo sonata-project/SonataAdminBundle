@@ -1038,7 +1038,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      */
     public function hasActiveSubClass()
     {
-        if (count($this->subClasses) > 1 && $this->request) {
+        if (count($this->subClasses) > 0 && $this->request) {
             return null !== $this->getRequest()->query->get('subclass');
         }
 
