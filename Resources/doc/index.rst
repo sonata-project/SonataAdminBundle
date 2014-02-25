@@ -27,6 +27,7 @@ Reference Guide
    reference/select2
    reference/routing
    reference/action_list
+   reference/x_editable
    reference/action_create_edit
    reference/action_show
    reference/action_delete
