@@ -11,6 +11,7 @@
 
 namespace Sonata\AdminBundle\Admin;
 
+use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\PropertyAccess\PropertyPath;
@@ -674,6 +675,13 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      */
     public function postRemove($object)
     {}
+
+    /**
+     * {@inheritdoc}
+     */
+    public function preBatchAction($actionName, ProxyQueryInterface $query, array & $idx, $allElements)
+    {
+    }
 
     /**
      * build the view FieldDescription array

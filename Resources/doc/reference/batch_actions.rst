@@ -136,6 +136,29 @@ This method may return three different values:
         return count($selectedIds) > 0;
     }
 
+(Optional) Executing a pre batch hook
+-------------------------------------
+
+In your admin class you can create a ``preBacthAction`` method to execute something before doing the batch action.
+The main purpose of this method is to alter the query or the list of selected id.
+
+.. code-block:: php
+
+    <?php
+
+    // In your Admin class
+
+    public function preBatchAction($actionName, ProxyQueryInterface $query, array & $idx, $allElements)
+    {
+        // altering the query or the idx array
+        $foo = $query->getParameter('foo')->getValue();
+
+        // Doing something with the foo object
+        // ...
+
+        $query->setParameter('foo', $bar);
+    }
+
 
 Define the core action logic
 ----------------------------
