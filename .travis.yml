@@ -15,8 +15,9 @@ env:
 before_script:
   - composer require symfony/symfony:${SYMFONY_VERSION} --no-update
   - composer install --dev --prefer-source
+  - pip install Sphinx
 
-script: phpunit
+script: phpunit && cd Resources/doc && make html
 
 notifications:
     webhooks: http://sonata-project.org/bundles/admin/master/travis
