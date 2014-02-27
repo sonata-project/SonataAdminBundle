@@ -12,7 +12,7 @@ file that was distributed with this source code.
 {% extends base_template %}
 
 {% block actions %}
-    <div class="sonata-actions btn-group">
+    <div class="btn-group sonata-actions pull-right">
         {% include 'SonataAdminBundle:Button:edit_button.html.twig' %}
         {% include 'SonataAdminBundle:Button:create_button.html.twig' %}
         {% include 'SonataAdminBundle:Button:list_button.html.twig' %}
@@ -33,12 +33,12 @@ file that was distributed with this source code.
                 <input type="hidden" name="_method" value="DELETE">
                 <input type="hidden" name="_sonata_csrf_token" value="{{ csrf_token }}">
 
-                <button type="submit" class="btn btn-danger"><i class="icon-trash icon-white"></i> {{ 'btn_delete'|trans({}, 'SonataAdminBundle') }}</button>
+                <button type="submit" class="btn btn-danger"><i class="glyphicon glyphicon-trash"></i> {{ 'btn_delete'|trans({}, 'SonataAdminBundle') }}</button>
                 {% if admin.hasRoute('edit') and admin.isGranted('EDIT', object) %}
                     {{ 'delete_or'|trans({}, 'SonataAdminBundle') }}
 
                     <a class="btn btn-success" href="{{ admin.generateObjectUrl('edit', object) }}">
-                        <i class="icon-white icon-edit"></i>
+                        <i class="glyphicon glyphicon-edit"></i>
                         {{ 'link_action_edit'|trans({}, 'SonataAdminBundle') }}</a>
                 {% endif %}
             </form>

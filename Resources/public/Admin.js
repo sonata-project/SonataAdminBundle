@@ -59,7 +59,7 @@ var Admin = {
     setup_xeditable: function(subject) {
         jQuery('.x-editable', subject).editable({
             emptyclass: 'editable-empty btn btn-small',
-            emptytext: '<i class="icon-edit"></i>',
+            emptytext: '<i class="glyphicon glyphicon-edit"></i>',
             success: function(response) {
                 if('KO' === response.status) {
                     return response.message;
