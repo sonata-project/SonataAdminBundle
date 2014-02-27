@@ -54,6 +54,7 @@ forget to enable SonataAdminBundle too:
 
 .. code-block:: php
 
+    <?php
     // app/AppKernel.php
     public function registerBundles()
     {
