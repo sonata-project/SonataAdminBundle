@@ -140,7 +140,7 @@ class HelperController
         $formBuilder = $admin->getFormBuilder($subject);
 
         $form = $formBuilder->getForm();
-        $form->bind($request);
+        $form->submit($request);
 
         $view = $this->helper->getChildFormView($form->createView(), $elementId);
 
@@ -252,7 +252,7 @@ class HelperController
             return new JsonResponse(array('status' => 'KO', 'message' => 'The field cannot be edit, editable option must be set to true'));
         }
 
-        $propertyAccessor = PropertyAccess::getPropertyAccessor();
+        $propertyAccessor = PropertyAccess::createPropertyAccessor();
         $propertyPath     = new PropertyPath($field);
 
         // If property path has more than 1 element, take the last object in order to validate it
