@@ -14,18 +14,147 @@ to control what's visible.
 Basic configuration
 -------------------
 
+SonataAdmin Options that may affect the list view:
+
+.. code-block:: yaml
+
+    sonata_admin:
+        templates:
+            list:                       SonataAdminBundle:CRUD:list.html.twig
+            action:                     SonataAdminBundle:CRUD:action.html.twig
+            select:                     SonataAdminBundle:CRUD:list__select.html.twig
+            list_block:                 SonataAdminBundle:Block:block_admin_list.html.twig
+            short_object_description:   SonataAdminBundle:Helper:short-object-description.html.twig
+            batch:                      SonataAdminBundle:CRUD:list__batch.html.twig
+            inner_list_row:             SonataAdminBundle:CRUD:list_inner_row.html.twig
+            base_list_field:            SonataAdminBundle:CRUD:base_list_field.html.twig
+            pager_links:                SonataAdminBundle:Pager:links.html.twig
+            pager_results:              SonataAdminBundle:Pager:results.html.twig
+
+
 To do:
 
-- global (yml) options that affect the list view
 - a note about Routes and how disabling them disables the related action
-- using configureListFields() to set which fields to display
-- setting the identifier, and the available options
-- options available when adding general fields, inc custom templates
-- targeting submodel fields using dot-separated notation
 - adding custom columns
 
+Customizing the fields displayed on the list page
+-------------------------------------------------
 
-Customising the query used to generate the list
+You can customize the columns displayed on the list through the ``configureListFields`` method:
+
+.. code-block:: php
+
+    <?php
+
+    // Example taken from Sonata E-Commerce Product Admin
+
+    public function configureListFields(ListMapper $list)
+    {
+        $list
+            // addIdentifier allows to specify that this column will provide a link to the entity's edition
+            ->addIdentifier('name')
+
+            // You may specify the field type directly as the second argument instead of in the options
+            ->add('isVariation', 'boolean')
+
+            // The type can be guessed as well
+            ->add('enabled', null, array('editable' => true))
+
+            // We can add options to the field depending on the type
+            ->add('price', 'currency', array('currency' => $this->currencyDetector->getCurrency()->getLabel()))
+
+            // Here we specify which method is used to render the label
+            ->add('productCategories', null, array('associated_tostring' => 'getCategory'))
+            ->add('productCollections', null, array('associated_tostring' => 'getCollection'))
+
+            // You may also use dotted-notation to access specific properties of a relation to the entity
+            ->add('image.name')
+
+            // You may also specify the actions you want to be displayed in the list
+            ->add('_action', 'actions', array(
+                'actions' => array(
+                    'show' => array(),
+                    'edit' => array(),
+                    'delete' => array(),
+                )
+            ))
+
+        ;
+    }
+
+Options
+^^^^^^^
+
+.. note::
+
+    * ``(m)`` stands for mandatory
+    * ``(o)`` stands for optional
+
+- ``type`` (m): define the field type - mandatory for the field description itself but will try to detect the type automatically if not specified
+- ``template`` (o): the template used to render the field
+- ``name`` (o): the name used for the column's title
+- ``link_parameters`` (o): add link parameter to the related Admin class when the ``Admin::generateUrl`` is called
+- ``code`` (o): the method name to retrieve the related value
+- ``associated_tostring`` (o): (deprecated, use associated_property option) the method to retrieve the "string" representation of the collection element.
+- ``associated_property`` (o): property path to retrieve the "string" representation of the collection element.
+- ``identifier`` (o): if set to true a link appear on the value to edit the element
+
+Available types and associated options
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. note::
+
+    ``(m)`` means that option is mandatory
+
++-----------+----------------+-----------------------------------------------------------------------+
+| Type      | Options        | Description                                                           |
++===========+================+=======================================================================+
+| actions   | actions        | List of available actions                                             |
++-----------+----------------+-----------------------------------------------------------------------+
+| batch     |                | Renders a checkbox                                                    |
++-----------+----------------+-----------------------------------------------------------------------+
+| select    |                | Renders a select box                                                  |
++-----------+----------------+-----------------------------------------------------------------------+
+| array     |                | Displays an array                                                     |
++-----------+----------------+-----------------------------------------------------------------------+
+| boolean   | editable       | Yes/No; editable allows to edit directly from the list if authorized. |
++-----------+----------------+-----------------------------------------------------------------------+
+| choice    | choices        | Possible choices                                                      |
++           +----------------+-----------------------------------------------------------------------+
+|           | multiple       | Is it a multiple choice option? Defaults to false.                    |
++           +----------------+-----------------------------------------------------------------------+
+|           | delimiter      | Separator of values if multiple.                                      |
++           +----------------+-----------------------------------------------------------------------+
+|           | catalogue      | Translation catalogue.                                                |
++-----------+----------------+-----------------------------------------------------------------------+
+| currency  | currency (m)   | A currency string (EUR or USD for instance).                          |
++-----------+----------------+-----------------------------------------------------------------------+
+| date      | format         | A format understandable by Twig's ``date`` function.                  |
++-----------+----------------+-----------------------------------------------------------------------+
+| datetime  | format         | A format understandable by Twig's ``date`` function.                  |
++-----------+----------------+-----------------------------------------------------------------------+
+| percent   |                | Renders value as a percentage.                                        |
++-----------+----------------+-----------------------------------------------------------------------+
+| string    |                | Renders a simple string.                                              |
++-----------+----------------+-----------------------------------------------------------------------+
+| time      |                | Renders a datetime's time with format ``H:i:s``.                      |
++-----------+----------------+-----------------------------------------------------------------------+
+| trans     | catalogue      | Translates the value with catalogue ``catalogue`` if defined.         |
++-----------+----------------+-----------------------------------------------------------------------+
+| url       | url            | Adds a link with url ``url`` to the displayed value                   |
++           +----------------+-----------------------------------------------------------------------+
+|           | route          | Give a route to generate the url                                      |
++           +                +                                                                       +
+|           |   name         | Route name                                                            |
++           +                +                                                                       +
+|           |   parameters   | Route parameters                                                      |
++           +----------------+-----------------------------------------------------------------------+
+|           | hide_protocol  | Hide http:// or https:// (default false)                              |
++-----------+----------------+-----------------------------------------------------------------------+
+
+If you have the SonataDoctrineORMAdminBundle installed, you have access to more field types, see `SonataDoctrineORMAdminBundle Documentation <http://sonata-project.org/bundles/doctrine-orm-admin/master/doc/reference/list_field_definition.html>`_.
+
+Customizing the query used to generate the list
 -----------------------------------------------
 
 You can customize the list query thanks to the ``createQuery`` method.
@@ -45,7 +174,7 @@ You can customize the list query thanks to the ``createQuery`` method.
     }
 
 
-Customising the sort order
+Customizing the sort order
 --------------------------
 
 Configure the default ordering in the list view

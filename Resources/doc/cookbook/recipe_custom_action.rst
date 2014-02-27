@@ -78,7 +78,7 @@ Or by overwriting the configuration in your ``config.yml``:
                 - AcmeDemoBundle:CRUD
 
 
-For more information about service configuration please refer to Step 3 of :doc:`getting_started`
+For more information about service configuration please refer to Step 3 of :doc:`../reference/getting_started`
 
 Create the custom action in your Controller
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -128,7 +128,7 @@ Create a template for the new action
 You need to tell SonataAdmin how to render your new action. You do that by creating a ``list__action_clone.html.twig`` in the
 namespace of your custom Admin Controller.
 
-.. code-block:: twig
+.. code-block:: html+jinja
 
     {# src/Acme/DemoBundle/Resources/views/CRUD/list__action_clone.html.twig #}
 

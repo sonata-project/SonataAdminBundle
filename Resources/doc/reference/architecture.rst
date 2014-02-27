@@ -158,15 +158,16 @@ which stores instances of ``FieldDescriptionInterface``. Picking up on our previ
 
 .. code-block:: php
 
-   namespace Acme\DemoBundle\Admin;
+    <?php
+    namespace Acme\DemoBundle\Admin;
 
-   use Sonata\AdminBundle\Admin\Admin;
-   use Sonata\AdminBundle\Datagrid\ListMapper;
-   use Sonata\AdminBundle\Datagrid\DatagridMapper;
-   use Sonata\AdminBundle\Form\FormMapper;
+    use Sonata\AdminBundle\Admin\Admin;
+    use Sonata\AdminBundle\Datagrid\ListMapper;
+    use Sonata\AdminBundle\Datagrid\DatagridMapper;
+    use Sonata\AdminBundle\Form\FormMapper;
 
-   class PostAdmin extends Admin
-   {
+    class PostAdmin extends Admin
+    {
        // Fields to be shown on create/edit forms
        protected function configureFormFields(FormMapper $formMapper)
        {
@@ -195,7 +196,7 @@ which stores instances of ``FieldDescriptionInterface``. Picking up on our previ
                ->add('author')
            ;
        }
-   }
+    }
 
 Internally, the provided ``Admin`` class will use these three functions to create three
 ``FieldDescriptionCollection`` instances:

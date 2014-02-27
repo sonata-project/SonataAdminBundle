@@ -152,7 +152,7 @@ We now need to create our Controller, the easiest way is to extend the basic Son
     }
 
 Removing a route
---------------
+----------------
 
 Extending ``Sonata\AdminBundle\Admin\Admin`` will give your Admin classes the following
 default routes:

@@ -62,7 +62,7 @@ Row Templates
 
 It is possible to completely change how each row of results is rendered in the
 list view, by customizing the ``inner_list_row`` and ``base_list_field`` templates.
-For more information about this, see the :doc:`recipe_row_templates`
+For more information about this, see the :doc:`../cookbook/recipe_row_templates`
 cookbook entry.
 
 Other Templates
