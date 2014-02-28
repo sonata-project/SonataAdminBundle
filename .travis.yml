@@ -16,6 +16,7 @@ before_script:
   - composer require symfony/symfony:${SYMFONY_VERSION} --no-update
   - composer install --dev --prefer-source
   - sudo pip install Sphinx
+  - sudo pip install git+https://github.com/fabpot/sphinx-php.git
 
 script: phpunit && cd Resources/doc && make html
 
