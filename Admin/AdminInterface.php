@@ -16,6 +16,7 @@ use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Builder\FormContractorInterface;
 use Sonata\AdminBundle\Builder\ListBuilderInterface;
 use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
+use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
 use Sonata\AdminBundle\Builder\RouteBuilderInterface;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
@@ -715,6 +716,16 @@ interface AdminInterface
      * @return mixed
      */
     public function postRemove($object);
+
+    /**
+     * Call before the batch action, allow you to alter the query and the idx
+     *
+     * @param string              $actionName
+     * @param ProxyQueryInterface $query
+     * @param array               $idx
+     * @param bool                $allElements
+     */
+    public function preBatchAction($actionName, ProxyQueryInterface $query, array & $idx, $allElements);
 
     /**
      * Return array of filter parameters.
