@@ -92,7 +92,7 @@ Later, we will explain how to set up ACL with the
 Role handler
 -----------------
 
-The ``sonata.admin.security.handler.role`` allows you to operate finely on the actions that can be done (den peding on the entity class), without requiring to set up ACL.
+The ``sonata.admin.security.handler.role`` allows you to operate finely on the actions that can be done (depending on the entity class), without requiring to set up ACL.
 
 Configuration
 ~~~~~~~~~~~~~
