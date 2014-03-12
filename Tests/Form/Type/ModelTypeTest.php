@@ -46,7 +46,7 @@ class ModelTypeTest extends TypeTestCase
     }
 
     /**
-     * @dataProvider getCompundOptionTests
+     * @dataProvider getCompoundOptionTests
      */
     public function testCompundOption($expectedCompound, $multiple, $expanded)
     {
@@ -75,7 +75,7 @@ class ModelTypeTest extends TypeTestCase
         $this->assertInstanceOf('Sonata\AdminBundle\Form\ChoiceList\ModelChoiceList', $options['choice_list']);
     }
 
-    public function getCompundOptionTests()
+    public function getCompoundOptionTests()
     {
         return array(
             array(true, true, true), //checkboxes

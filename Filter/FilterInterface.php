@@ -10,6 +10,7 @@
  */
 
 namespace Sonata\AdminBundle\Filter;
+
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 
 interface FilterInterface

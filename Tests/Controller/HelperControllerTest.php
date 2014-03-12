@@ -93,7 +93,7 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \RuntimeException
-     * @expectionMessage Invalid format
+     * @exceptionMessage Invalid format
      */
     public function testgetShortObjectDescriptionActionObjectDoesNotExist()
     {
