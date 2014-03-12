@@ -2362,7 +2362,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $args = func_get_args();
 
         // creates equalTo of all arguments passed to this function
-        $phpunit = $this; // PHP 5.3 compatiblity
+        $phpunit = $this; // PHP 5.3 compatibility
         $argsCheck = array_map(function($item) use ($phpunit) {
             return $phpunit->equalTo($item);
         }, func_get_args());

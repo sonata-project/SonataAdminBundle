@@ -66,9 +66,9 @@ abstract class BaseGroupedMapper extends BaseMapper
      * 
      * @param string $fieldName
      */
-    protected function addFieldToCurrentGroup($fieldName) 
+    protected function addFieldToCurrentGroup($fieldName)
     {
-        // Note this line must happen before the next line. 
+        // Note this line must happen before the next line.
         // See https://github.com/sonata-project/SonataAdminBundle/pull/1351
         $currentGroup = $this->getCurrentGroupName();
         $groups = $this->getGroups();
@@ -87,7 +87,7 @@ abstract class BaseGroupedMapper extends BaseMapper
      * 
      * @return string
      */
-    protected function getCurrentGroupName() 
+    protected function getCurrentGroupName()
     {
         if (!$this->currentGroup) {
             $this->with($this->admin->getLabel());

@@ -216,14 +216,14 @@ class ValidatorsTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider getValidateServicesFiletTests
+     * @dataProvider getValidateServicesFileTests
      */
     public function testValidateServicesFile($expected, $value)
     {
         $this->assertEquals($expected, Validators::validateServicesFile($value));
     }
 
-    public function getValidateServicesFiletTests()
+    public function getValidateServicesFileTests()
     {
         return array(
             array('foobar', 'foobar'),

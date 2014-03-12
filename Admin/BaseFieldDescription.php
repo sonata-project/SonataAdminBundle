@@ -335,7 +335,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
             $getters[] = $this->getOption('code');
         }
         // parameters for the method given in the code option
-        if($this->getOption('parameters')){
+        if ($this->getOption('parameters')) {
             $parameters = $this->getOption('parameters');
         }
         $getters[] = 'get' . $camelizedFieldName;
@@ -343,7 +343,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
 
         foreach ($getters as $getter) {
             if (method_exists($object, $getter)) {
-                return call_user_func_array(array($object, $getter),$parameters);
+                return call_user_func_array(array($object, $getter), $parameters);
             }
         }
 

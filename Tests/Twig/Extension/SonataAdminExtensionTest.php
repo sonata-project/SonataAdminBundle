@@ -617,16 +617,16 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
 
     public function testGetUrlsafeIdentifier()
     {
-        $enitity = new \stdClass();
+        $entity = new \stdClass();
 
         // set admin to pool
         $this->pool->setAdminClasses(array('stdClass'=> array('sonata_admin_foo_service')));
 
         $this->admin->expects($this->once())
             ->method('getUrlsafeIdentifier')
-            ->with($this->equalTo($enitity))
+            ->with($this->equalTo($entity))
             ->will($this->returnValue(1234567));
 
-        $this->assertEquals(1234567, $this->twigExtension->getUrlsafeIdentifier($enitity));
+        $this->assertEquals(1234567, $this->twigExtension->getUrlsafeIdentifier($entity));
     }
 }

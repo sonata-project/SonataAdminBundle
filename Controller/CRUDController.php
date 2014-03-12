@@ -244,8 +244,11 @@ class CRUDController extends Controller
 
                 $this->addFlash(
                     'sonata_flash_success',
-                    $this->admin->trans('flash_delete_success', array('%name%' => $this->admin->toString($object)),
-                    'SonataAdminBundle')
+                    $this->admin->trans(
+                        'flash_delete_success',
+                        array('%name%' => $this->admin->toString($object)),
+                        'SonataAdminBundle'
+                    )
                 );
 
             } catch (ModelManagerException $e) {
@@ -256,8 +259,11 @@ class CRUDController extends Controller
 
                 $this->addFlash(
                     'sonata_flash_error',
-                    $this->admin->trans('flash_delete_error', array('%name%' => $this->admin->toString($object)),
-                    'SonataAdminBundle')
+                    $this->admin->trans(
+                        'flash_delete_error',
+                        array('%name%' => $this->admin->toString($object)),
+                        'SonataAdminBundle'
+                    )
                 );
             }
 
@@ -736,11 +742,12 @@ class CRUDController extends Controller
 
         $allowedExportFormats = (array) $this->admin->getExportFormats();
 
-        if (!in_array($format, $allowedExportFormats) ) {
+        if (!in_array($format, $allowedExportFormats)) {
             throw new \RuntimeException(sprintf('Export in format `%s` is not allowed for class: `%s`. Allowed formats are: `%s`', $format, $this->admin->getClass(), implode(', ', $allowedExportFormats)));
         }
 
-        $filename = sprintf('export_%s_%s.%s',
+        $filename = sprintf(
+            'export_%s_%s.%s',
             strtolower(substr($this->admin->getClass(), strripos($this->admin->getClass(), '\\') + 1)),
             date('Y_m_d_H_i_s', strtotime('now')),
             $format
