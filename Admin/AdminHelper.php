@@ -99,7 +99,7 @@ class AdminHelper
 
         $form = $formBuilder->getForm();
         $form->setData($subject);
-        $form->submit($admin->getRequest());
+        $form->bind($admin->getRequest());
 
         // get the field element
         $childFormBuilder = $this->getChildFormBuilder($formBuilder, $elementId);
@@ -163,14 +163,13 @@ class AdminHelper
         $instance = $fieldDescription->getAssociationAdmin()->getNewInstance();
         $mapping  = $fieldDescription->getAssociationMapping();
 
-        $method = sprintf('add%s', $this->camelize($mapping['fieldName']));
-
+        $targetClassNamespaced = $mapping['targetEntity'];
+        $targetClass = substr($targetClassNamespaced, strrpos($targetClassNamespaced, '\\') + 1);
+        
+        $method = sprintf('add%s', $targetClass);
+        
         if (!method_exists($object, $method)) {
-            $method = rtrim($method, 's');
-
-            if (!method_exists($object, $method)) {
-                throw new \RuntimeException(sprintf('Please add a method %s in the %s class!', $method, ClassUtils::getClass($object)));
-            }
+            throw new \RuntimeException(sprintf('Please add a method %s in the %s class!', $method, ClassUtils::getClass($object)));
         }
 
         $object->$method($instance);
