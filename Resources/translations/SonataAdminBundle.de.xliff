@@ -76,7 +76,7 @@
             </trans-unit>
             <trans-unit id="link_reset_filter">
                 <source>link_reset_filter</source>
-                <target>Löschen</target>
+                <target>Zurücksetzen</target>
             </trans-unit>
             <trans-unit id="title_create">
                 <source>title_create</source>
