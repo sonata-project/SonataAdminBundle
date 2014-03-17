@@ -96,6 +96,9 @@ class ExtensionCompilerPass implements CompilerPassInterface
                     }
                 } else {
                     $class = $this->getManagedClass($admin, $container);
+                    if (!class_exists($class)) {
+                        continue;
+                    }
                     $classReflection = new \ReflectionClass($class);
                     $subjectReflection = new \ReflectionClass($subject);
                 }
