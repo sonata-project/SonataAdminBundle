@@ -101,6 +101,7 @@ file that was distributed with this source code.
                                                 <label class="checkbox" for="{{ admin.uniqid }}_all_elements">
                                                     <input type="checkbox" name="all_elements" id="{{ admin.uniqid }}_all_elements">
                                                     {{ 'all_elements'|trans({}, 'SonataAdminBundle') }}
+                                                     ({{ admin.datagrid.pager.nbresults }})
                                                 </label>
 
                                                 <select name="action" style="width: auto; height: auto">
