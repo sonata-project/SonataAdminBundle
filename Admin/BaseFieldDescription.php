@@ -53,8 +53,8 @@ use Symfony\Component\DependencyInjection\Container;
  *
  * Filter Field options :
  *   - options (o): options given to the Filter object
- *   - field_options (o): options given to the filter field object
- *   - field_type (o): options given to the filter field object
+ *   - field_type (o): the widget class to use to render the field
+ *   - field_options (o): the options to give to the widget
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
