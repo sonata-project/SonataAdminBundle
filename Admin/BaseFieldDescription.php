@@ -90,8 +90,8 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
      */
     protected $fieldMapping;
 
-    /*
-     * var array the ORM parent mapping association
+    /**
+     * @var array the ORM parent mapping association
      */
     protected $parentAssociationMappings;
 
