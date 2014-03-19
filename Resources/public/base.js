@@ -113,7 +113,7 @@ var Admin = {
             }
 
             var target = input,
-                fieldShortDescription = input.closest('.field-container').find('.field-short-description')
+                fieldShortDescription = input.input.closest('.select2-container')
             ;
 
             if (fieldShortDescription.length) {
