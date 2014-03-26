@@ -19,12 +19,12 @@ file that was distributed with this source code.
     {% block show %}{% endblock %}
 
     {% if _list_table|length > 0 or _list_filters|length > 0 %}
-        <div class="row-fluid">
-            <div class="sonata-ba-list {% if _list_filters %}span10{% else %}span12{% endif %}">
+        <div class="row">
+            <div class="sonata-ba-list {% if _list_filters %}col-md-10{% else %}col-md-12{% endif %}">
                 {{ _list_table|raw }}
             </div>
             {% if _list_filters %}
-                <div class="sonata-ba-filter span2">
+                <div class="sonata-ba-filter col-md-2">
                     {{ _list_filters|raw }}
                 </div>
             {% endif %}

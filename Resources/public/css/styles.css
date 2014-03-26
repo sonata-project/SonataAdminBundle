@@ -5,6 +5,7 @@
 
 body {
     background-color: #f8f8f8;
+    padding-top: 50px;
 }
 
 
@@ -14,21 +15,21 @@ body {
     width: 100%;
 }
 
-#page-wrapper {
-    padding: 15px 15px 0;
-    min-height: 568px;
-    background-color: #fff;
-}
+/*#page-wrapper {*/
+    /*padding: 15px 15px 0;*/
+    /*min-height: 568px;*/
+    /*background-color: #fff;*/
+/*}*/
 
-@media(min-width:768px) {
-    #page-wrapper {
-        position: inherit;
-        margin: 0 0 0 250px;
-        padding: 30px 30px 0;
-        min-height: 1300px;
-        border-left: 1px solid #e7e7e7;
-    }
-}
+/*@media(min-width:768px) {*/
+    /*#page-wrapper {*/
+        /*position: inherit;*/
+        /*margin: 0 0 0 250px;*/
+        /*padding: 30px 30px 0;*/
+        /*min-height: 1300px;*/
+        /*border-left: 1px solid #e7e7e7;*/
+    /*}*/
+/*}*/
 
 .navbar-static-side ul li {
     border-bottom: 1px solid #e7e7e7;
@@ -182,21 +183,13 @@ td.sonata-ba-list-label {
 
 /* side filter */
 
-fieldset.filter_legend {
-    border: 1px solid #E4E4E4;
-    border-width: 1px 0 0;
-    font-weight: bold;
-    margin: 0;
-    padding: 0;
-}
-
-legend.filter_legend {
+h4.filter_legend {
     position: relative;
     padding-left: 16px;
     cursor: pointer;
 }
 
-legend.filter_legend:before {
+h4.filter_legend:before {
     content: "";
     display: block;
     width: 0;
@@ -210,7 +203,7 @@ legend.filter_legend:before {
     margin-top: -2px;
 }
 
-legend.filter_legend.active,
+h4.filter_legend.active,
 tr.filter.active * {
     font-weight: bold;
     color: #000;

@@ -12,12 +12,13 @@ file that was distributed with this source code.
 {% extends base_template %}
 
 {% block actions %}
-    <div class="btn-group sonata-actions pull-right">
+    <div class="sonata-actions">
         {% include 'SonataAdminBundle:Core:create_button.html.twig' %}
     </div>
 {% endblock %}
 
-{% block side_menu %}{{ knp_menu_render(admin.sidemenu(action), {'currentClass' : 'active'}, 'list') }}{% endblock %}
+{% block tab_menu %}{{ knp_menu_render(admin.sidemenu(action), {'currentClass' : 'active'}, 'list') }}{% endblock %}
+
 
 {% block list_table %}
 
@@ -112,7 +113,7 @@ file that was distributed with this source code.
                                                     {% endfor %}
                                                 </select>
                                             {% endblock %}
-                                            
+
                                             <input type="submit" class="btn btn-small btn-primary" value="{{ 'btn_batch'|trans({}, 'SonataAdminBundle') }}">
                                         {% endblock %}
                                     {% endif %}
@@ -161,36 +162,44 @@ file that was distributed with this source code.
 
 {% block list_filters %}
     {% if admin.datagrid.filters %}
-        <form class="sonata-filter-form {{ admin.isChild and 1 == admin.datagrid.filters|length ? 'hide' : '' }}" action="{{ admin.generateUrl('list') }}" method="GET" role="form">
-            {{ form_errors(form) }}
-            <fieldset class="filter_legend">
-                <legend class="filter_legend {{ admin.datagrid.hasActiveFilters ? 'active' : 'inactive' }}">{{ 'label_filters'|trans({}, 'SonataAdminBundle') }}</legend>
+        {% form_theme form "SonataAdminBundle:Form:filter_admin_fields.html.twig" %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title filter_legend {{ admin.datagrid.hasActiveFilters ? 'active' : 'inactive' }}">{{ 'label_filters'|trans({}, 'SonataAdminBundle') }}</h4>
+            </div>
 
-                <div class="filter_container {{ admin.datagrid.hasActiveFilters ? 'active' : 'inactive' }}">
-                    <div>
-                        {% for filter in admin.datagrid.filters %}
-                            <div class="clearfix">
-                                <label for="{{ form.children[filter.formName].children['value'].vars.id }}">{{ admin.trans(filter.label, {}, filter.translationDomain) }}</label>
-                                {{ form_widget(form.children[filter.formName].children['type'], {'attr':  form.children[filter.formName].children['type'].vars.attr|default({})|merge({'class': (form.children[filter.formName].children['type'].vars.attr.class|default('') ~ ' span8 sonata-filter-option')|trim})}) }}
-                                {{ form_widget(form.children[filter.formName].children['value'], {'attr': form.children[filter.formName].children['value'].vars.attr|default({})|merge({'class': (form.children[filter.formName].children['value'].vars.attr.class|default('') ~ ' span8')|trim})}) }}
-                            </div>
+            <div class="panel-body">
+                <form class="sonata-filter-form {{ admin.isChild and 1 == admin.datagrid.filters|length ? 'hide' : '' }}" action="{{ admin.generateUrl('list') }}" method="GET" role="form">
+                    {{ form_errors(form) }}
+                        <div class="filter_container {{ admin.datagrid.hasActiveFilters ? 'active' : 'inactive' }}">
+                            {% for filter in admin.datagrid.filters %}
+                                <div class="form-group">
+                                    <label for="{{ form.children[filter.formName].children['value'].vars.id }}">{{ admin.trans(filter.label, {}, filter.translationDomain) }}</label>
+                                    {% set attr = form.children[filter.formName].children['type'].vars.attr|default({}) %}
+                                    {% set attr = attr|merge({'class': (attr.class|default('') ~ ' sonata-filter-option')|trim}) %}
+
+                                    {{ form_widget(form.children[filter.formName].children['type'], {'attr':  attr}) }}
+
+                                    {{ form_widget(form.children[filter.formName].children['value']) }}
+                                </div>
+                            {% endfor %}
+
+                            <input type="hidden" name="filter[_page]" id="filter__page" value="1">
+
+                            {% set foo = form.children['_page'].setRendered() %}
+                            {{ form_rest(form) }}
+
+                            <button type="submit" class="btn btn-primary"><i class="fa fa-filter"></i> {{ 'btn_filter'|trans({}, 'SonataAdminBundle') }}</button>
+
+                            <a class="btn btn-default" href="{{ admin.generateUrl('list', {filters: 'reset'}) }}">{{ 'link_reset_filter'|trans({}, 'SonataAdminBundle') }}</a>
+                        </div>
+
+                        {% for paramKey, paramValue in admin.persistentParameters %}
+                            <input type="hidden" name="{{ paramKey }}" value="{{ paramValue }}">
                         {% endfor %}
-                    </div>
+                </form>
+            </div>
+        </div>
 
-                    <input type="hidden" name="filter[_page]" id="filter__page" value="1">
-
-                    {% set foo = form.children['_page'].setRendered() %}
-                    {{ form_rest(form) }}
-
-                    <input type="submit" class="btn btn-primary" value="{{ 'btn_filter'|trans({}, 'SonataAdminBundle') }}">
-
-                    <a class="btn btn-default" href="{{ admin.generateUrl('list', {filters: 'reset'}) }}">{{ 'link_reset_filter'|trans({}, 'SonataAdminBundle') }}</a>
-                </div>
-
-                {% for paramKey, paramValue in admin.persistentParameters %}
-                    <input type="hidden" name="{{ paramKey }}" value="{{ paramValue }}">
-                {% endfor %}
-            </fieldset>
-        </form>
     {% endif %}
 {% endblock %}

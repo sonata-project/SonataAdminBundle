@@ -1,5 +1,5 @@
 body{
-    padding-top: 60px;
+    padding-top: 70px;
 }
 
 @media (max-width: 978px) {
@@ -66,7 +66,7 @@ div.sonata-ba-field-inline-table textarea.title {
     height: 50px;
 }
 
-fieldset.filter_legend table {
+h4.filter_legend table {
     margin: 10px 0;
 }
 
