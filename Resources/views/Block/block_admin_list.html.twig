@@ -37,12 +37,12 @@ file that was distributed with this source code.
                                     {% if admin.hasroute('create') and admin.isGranted('CREATE') %}
                                         {% if admin.subClasses is empty %}
                                             <a class="btn btn-link" href="{{ admin.generateUrl('create')}}">
-                                                <i class="glyphicon glyphicon-plus"></i>
+                                                <i class="fa fa-plus-circle"></i>
                                                 {% trans from 'SonataAdminBundle' %}link_add{% endtrans %}
                                             </a>
                                         {% else %}
                                             <a class="btn btn-link dropdown-toggle" data-toggle="dropdown" href="#">
-                                                <i class="glyphicon glyphicon-plus"></i>
+                                                <i class="fa fa-plus-circle"></i>
                                                 {% trans from 'SonataAdminBundle' %}link_add{% endtrans %}
                                                 <span class="caret"></span>
                                             </a>
