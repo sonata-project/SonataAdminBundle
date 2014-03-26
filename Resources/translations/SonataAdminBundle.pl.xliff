@@ -390,6 +390,10 @@
                 <source>add_new_entry</source>
                 <target>Dodaj nowy</target>
             </trans-unit>
+            <trans-unit id="form_not_available">
+                <source>form_not_available</source>
+                <target>Formularz niedostępny</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
