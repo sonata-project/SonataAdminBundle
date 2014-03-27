@@ -407,7 +407,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         'view_fields'   => false,
         'view_groups'   => false,
         'routes'        => false,
-        'side_menu'     => false,
+        'tab_menu'      => false,
     );
 
     /**
@@ -502,11 +502,35 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * {@inheritdoc}
+     * DEPRECATED: Use configureTabMenu instead
+     *
+     * @param MenuItemInterface $menu
+     * @param                   $action
+     * @param AdminInterface    $childAdmin
+     *
+     * @return mixed
+     *
+     * @deprecated Use configureTabMenu instead
      */
     protected function configureSideMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
     {
 
+    }
+
+    /**
+     * Configures the tab menu in your admin
+     *
+     * @param MenuItemInterface $menu
+     * @param                   $action
+     * @param AdminInterface    $childAdmin
+     *
+     * @return mixed
+     */
+    protected function configureTabMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
+    {
+        // Use configureSideMenu not to mess with previous overrides
+        // TODO remove once deprecation period is over
+        $this->configureSideMenu($menu, $action, $childAdmin);
     }
 
     /**
@@ -1422,20 +1446,15 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * Build the side menu related to the current action
-     *
-     * @param string                                   $action
-     * @param \Sonata\AdminBundle\Admin\AdminInterface $childAdmin
-     *
-     * @return \Knp\Menu\ItemInterface|boolean
+     * {@inheritdoc}
      */
-    public function buildSideMenu($action, AdminInterface $childAdmin = null)
+    public function buildTabMenu($action, AdminInterface $childAdmin = null)
     {
-        if ($this->loaded['side_menu']) {
+        if ($this->loaded['tab_menu']) {
             return;
         }
 
-        $this->loaded['side_menu'] = true;
+        $this->loaded['tab_menu'] = true;
 
         $menu = $this->menuFactory->createItem('root');
         $menu->setChildrenAttribute('class', 'nav nav-tabs');
@@ -1445,13 +1464,21 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
             $menu->setCurrentUri($this->getRequest()->getBaseUrl().$this->getRequest()->getPathInfo());
         }
 
-        $this->configureSideMenu($menu, $action, $childAdmin);
+        $this->configureTabMenu($menu, $action, $childAdmin);
 
         foreach ($this->getExtensions() as $extension) {
-            $extension->configureSideMenu($this, $menu, $action, $childAdmin);
+            $extension->configureTabMenu($this, $menu, $action, $childAdmin);
         }
 
         $this->menu = $menu;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function buildSideMenu($action, AdminInterface $childAdmin = null)
+    {
+        return $this->buildTabMenu($action, $childAdmin);
     }
 
     /**
