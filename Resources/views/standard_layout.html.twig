@@ -27,7 +27,7 @@ file that was distributed with this source code.
 
         {% block stylesheets %}
             <!-- jQuery code -->
-            <link rel="stylesheet" href="{{ asset('bundles/sonatajquery/themes/flick/jquery-ui-1.8.16.custom.css') }}" media="all">
+            <link rel="stylesheet" href="{{ asset('bundles/sonatajquery/themes/flick/jquery-ui-1.10.4.custom.css') }}" media="all">
 
             <link rel="stylesheet" href="{{ asset('bundles/sonataadmin/sb-admin-v2/css/bootstrap.min.css') }}" media="all">
             <link rel="stylesheet" href="{{ asset("bundles/sonataadmin/sb-admin-v2/font-awesome/css/font-awesome.min.css") }}" />
@@ -57,16 +57,18 @@ file that was distributed with this source code.
                };
             </script>
 
-            <script src="{{ asset('bundles/sonataadmin/sb-admin-v2/js/jquery-1.10.2.js') }}"></script>
+            <script src="{{ asset('bundles/sonatajquery/jquery-1.10.2.js') }}"></script>
+
             <script src="{{ asset('bundles/sonataadmin/sb-admin-v2/js/bootstrap.min.js') }}"></script>
             <script src="{{ asset('bundles/sonataadmin/sb-admin-v2/js/plugins/metisMenu/jquery.metisMenu.js') }}"></script>
             <script src="{{ asset('bundles/sonataadmin/sb-admin-v2/js/plugins/morris/raphael-2.1.0.min.js') }}"></script>
             <script src="{{ asset('bundles/sonataadmin/sb-admin-v2/js/plugins/morris/morris.js') }}"></script>
             <script src="{{ asset('bundles/sonataadmin/sb-admin-v2/js/sb-admin.js') }}"></script>
-            <script src="{{ asset('bundles/sonataadmin/bootstrap3-editable-1.5.1/bootstrap3-editable/js/bootstrap-editable.min.js') }}"></script>
 
-            <script src="{{ asset('bundles/sonataadmin/jquery-ui-1.10.4/minified/jquery-ui.min.js') }}"></script>
-            <script src="{{ asset('bundles/sonataadmin/jquery-ui-1.10.4/minified/i18n/jquery-ui-i18n.min.js') }}"></script>
+            <script src="{{ asset('bundles/sonataadmin/bootstrap3-editable/bootstrap3-editable/js/bootstrap-editable.min.js') }}"></script>
+
+            <script src="{{ asset('bundles/sonatajquery/jquery-ui-1.10.4.js') }}"></script>
+            <script src="{{ asset('bundles/sonatajquery/jquery-ui-i18n.js') }}"></script>
 
             {% if admin_pool is defined and admin_pool.getOption('use_select2') %}
                 <script src="{{ asset("bundles/sonataadmin/select2/select2.min.js") }}"></script>
