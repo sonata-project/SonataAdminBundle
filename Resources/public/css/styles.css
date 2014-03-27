@@ -35,7 +35,6 @@ body {
     border-bottom: 1px solid #e7e7e7;
 }
 
-
 /* navigation */
 
 .navbar-brand {
@@ -51,6 +50,12 @@ body {
 
 .navbar-text .navbar-link {
     padding: 0 10px;
+}
+
+/* breadcrumb */
+
+.sonata-bc ol.breadcrumb {
+    margin-top: 8px;
 }
 
 /* top right */

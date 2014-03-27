@@ -244,8 +244,10 @@ file that was distributed with this source code.
                     </div>
 
                     {% block sonata_page_content %}
-                        {{ _tab_menu|raw }}
-                        <br/>
+                        {% if _tab_menu is not empty %}
+                            {{ _tab_menu|raw }}
+                            <br/>
+                        {% endif %}
 
                         {% block notice %}
                             {% include 'SonataCoreBundle:FlashMessage:render.html.twig' %}
