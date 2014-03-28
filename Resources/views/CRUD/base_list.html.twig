@@ -43,7 +43,9 @@ file that was distributed with this source code.
                                 {% elseif field_description.getOption('code') == '_select' %}
                                     <th class="sonata-ba-list-field-header sonata-ba-list-field-header-select"></th>
                                 {% elseif field_description.name == '_action' and app.request.isXmlHttpRequest %}
-                                        {# Action buttons disabled in ajax view! #}
+                                    {# Action buttons disabled in ajax view! #}
+                                {% elseif field_description.getOption('ajax_hidden') == true and app.request.isXmlHttpRequest %}
+                                    {# Disable fields with 'ajax_hidden' option set to true #}
                                 {% else %}
                                     {% set sortable = false %}
                                     {% if field_description.options.sortable is defined and field_description.options.sortable %}

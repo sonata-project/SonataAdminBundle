@@ -117,6 +117,8 @@ Available types and associated options
 +-----------+----------------+-----------------------------------------------------------------------+
 | array     |                | Displays an array                                                     |
 +-----------+----------------+-----------------------------------------------------------------------+
+| boolean   | ajax_hidden    | Yes/No; ajax_hidden allows to hide list field during an AJAX context. |
++-----------+----------------+-----------------------------------------------------------------------+
 | boolean   | editable       | Yes/No; editable allows to edit directly from the list if authorized. |
 +-----------+----------------+-----------------------------------------------------------------------+
 | choice    | choices        | Possible choices                                                      |
