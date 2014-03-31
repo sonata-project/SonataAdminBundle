@@ -872,7 +872,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         if ($this->isChild() && $this->getParentAssociationMapping()) {
             $parent = $this->getParent()->getObject($this->request->get($this->getParent()->getIdParameter()));
 
-            $propertyAccessor = PropertyAccess::getPropertyAccessor();
+            $propertyAccessor = PropertyAccess::createPropertyAccessor();
             $propertyPath = new PropertyPath($this->getParentAssociationMapping());
 
             $object = $this->getSubject();
