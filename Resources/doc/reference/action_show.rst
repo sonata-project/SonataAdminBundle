@@ -39,6 +39,8 @@ The following is a working example of a ShowAction
     <?php
     // src/Acme/DemoBundle/Admin/PostAdmin.php
 
+    use Sonata\AdminBundle\Show\ShowMapper;
+
     class ClientAdmin extends Admin
     {
         protected function configureShowFields(ShowMapper $showMapper)
