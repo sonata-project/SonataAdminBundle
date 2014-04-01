@@ -28,13 +28,10 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <h4 class="panel-title">
-                                <a href="#{{ admin.uniqid }}_{{ loop.index }}" data-toggle="collapse" data-parent="#accordion">
-                                    <i class="fa fa-exclamation-triangle has-errors hide"></i>
-                                    {{ admin.trans(name, {}, form_group.translation_domain) }}
-                                </a>
+                                {{ admin.trans(name, {}, form_group.translation_domain) }}
                             </h4>
                         </div>
-                        <div class="panel-collapse collapse{% if loop.first %} in{% endif %}" id="{{ admin.uniqid }}_{{ loop.index }}">
+                        <div class="panel{% if loop.first %} in{% endif %}" id="{{ admin.uniqid }}_{{ loop.index }}">
                             <div class="panel-body">
                                 <div class="sonata-ba-collapsed-fields">
                                     {% if form_group.description != false %}
