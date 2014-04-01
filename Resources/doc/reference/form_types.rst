@@ -229,6 +229,7 @@ collection
 ^^^^^^^^^^
 
 This bundle handle the symfony ``collection`` form type by adding:
+
 * an ``add`` button if you set the ``allow_add`` option to ``true``.
 * a ``delete`` button if you set the ``allow_delete`` option to ``true``.
 
