@@ -120,7 +120,37 @@ file that was distributed with this source code.
                                 {% endblock %}
                             </div>
 
+
+
                             <div class="collapse navbar-collapse">
+                                {% block sonata_breadcrumb %}
+                                    {% if _breadcrumb is not empty or action is defined %}
+                                        <div class="col-md-6">
+                                            <ol class="nav navbar-top-links breadcrumb">
+                                                {% if _breadcrumb is empty %}
+                                                    {% if action is defined %}
+                                                        {% for menu in admin.breadcrumbs(action) %}
+                                                            {% if not loop.last  %}
+                                                                <li>
+                                                                    {% if menu.uri is not empty %}
+                                                                        <a href="{{ menu.uri }}">{{ menu.label }}</a>
+                                                                    {% else %}
+                                                                        {{ menu.label }}
+                                                                    {% endif %}
+                                                                </li>
+                                                            {% else %}
+                                                                <li class="active">{{ menu.label }}</li>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    {% endif %}
+                                                {% else %}
+                                                    {{ _breadcrumb|raw }}
+                                                {% endif %}
+                                            </ol>
+                                        </div>
+                                    {% endif %}
+                                {% endblock sonata_breadcrumb %}
+
                                 {% block sonata_top_nav_menu %}
                                     <ul class="nav navbar-top-links navbar-right">
                                         <li class="dropdown">
@@ -215,31 +245,6 @@ file that was distributed with this source code.
 
                     <div class="row">
                         <div class="col-sm-12">
-                            {% block sonata_breadcrumb %}
-                                {% if _breadcrumb is not empty or action is defined %}
-                                    <ol class="breadcrumb">
-                                        {% if _breadcrumb is empty %}
-                                            {% if action is defined %}
-                                                {% for menu in admin.breadcrumbs(action) %}
-                                                    {% if not loop.last  %}
-                                                        <li>
-                                                            {% if menu.uri is not empty %}
-                                                                <a href="{{ menu.uri }}">{{ menu.label }}</a>
-                                                            {% else %}
-                                                                {{ menu.label }}
-                                                            {% endif %}
-                                                        </li>
-                                                    {% else %}
-                                                        <li class="active">{{ menu.label }}</li>
-                                                    {% endif %}
-                                                {% endfor %}
-                                            {% endif %}
-                                        {% else %}
-                                            {{ _breadcrumb|raw }}
-                                        {% endif %}
-                                    </ol>
-                                {% endif %}
-                            {% endblock sonata_breadcrumb %}
                         </div>
                     </div>
 
