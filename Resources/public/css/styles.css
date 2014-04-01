@@ -1,0 +1,248 @@
+/**
+ * SonataAdminBundle Theme based on SB Admin v2.0
+ * http://startbootstrap.com/templates/sb-admin-v2/
+ */
+
+body {
+    background-color: #f8f8f8;
+    padding-top: 50px;
+}
+
+
+/* wrappers */
+
+#wrapper {
+    width: 100%;
+}
+
+/*#page-wrapper {*/
+    /*padding: 15px 15px 0;*/
+    /*min-height: 568px;*/
+    /*background-color: #fff;*/
+/*}*/
+
+/*@media(min-width:768px) {*/
+    /*#page-wrapper {*/
+        /*position: inherit;*/
+        /*margin: 0 0 0 250px;*/
+        /*padding: 30px 30px 0;*/
+        /*min-height: 1300px;*/
+        /*border-left: 1px solid #e7e7e7;*/
+    /*}*/
+/*}*/
+
+.navbar-static-side ul li {
+    border-bottom: 1px solid #e7e7e7;
+}
+
+/* navigation */
+
+.navbar-brand {
+    padding-right: 20px;
+}
+
+.navbar-brand img {
+    height: 28px;
+    margin: 0;
+    padding: 0 5px 0 0;
+    vertical-align: middle;
+}
+
+.navbar-text .navbar-link {
+    padding: 0 10px;
+}
+
+/* breadcrumb */
+
+.sonata-bc ol.breadcrumb {
+    margin-top: 8px;
+}
+
+/* top right */
+
+.navbar-static-top {
+    margin-bottom: 0;
+}
+
+.navbar-top-links > p,
+.navbar-top-links > ul {
+    float: right;
+}
+
+.navbar-top-links li {
+    display: inline-block;
+}
+
+.navbar-top-links li:last-child {
+    margin-right: 15px;
+}
+
+.navbar-top-links li a,
+.navbar-top-links li span {
+    padding: 15px;
+    min-height: 50px;
+}
+.navbar-top-links li a:hover {
+    text-decoration: none;
+}
+
+.navbar-top-links .dropdown-menu li {
+    display: block;
+}
+
+.navbar-top-links .dropdown-menu li:last-child {
+    margin-right: 0;
+}
+
+.navbar-top-links .dropdown-menu li a {
+    padding: 3px 20px;
+    min-height: 0;
+}
+
+.navbar-top-links .dropdown-menu li a div {
+    white-space: normal;
+}
+
+.navbar-top-links .dropdown-messages,
+.navbar-top-links .dropdown-tasks,
+.navbar-top-links .dropdown-alerts {
+    width: 310px;
+    min-width: 0;
+}
+
+.navbar-top-links .dropdown-messages {
+    margin-left: 5px;
+}
+
+.navbar-top-links .dropdown-tasks {
+    margin-left: -59px;
+}
+
+.navbar-top-links .dropdown-alerts {
+    margin-left: -123px;
+}
+
+.navbar-top-links .dropdown-user {
+    right: 0;
+    left: auto;
+}
+
+/* sidebar menu styles */
+
+.sidebar-search {
+    padding: 15px;
+}
+
+.arrow {
+    float: right;
+}
+
+.fa.arrow:before {
+    content: "\f104";
+}
+
+.active > a > .fa.arrow:before {
+    content: "\f107";
+}
+
+.nav-second-level li,
+.nav-third-level li {
+    border-bottom: none !important;
+}
+
+.nav-second-level li a {
+    padding-left: 37px;
+}
+
+.nav-third-level li a {
+    padding-left: 52px;
+}
+
+@media(min-width:768px) {
+    .navbar-static-side {
+        z-index: 1;
+        position: absolute;
+        width: 250px;
+    }
+
+    .navbar-top-links .dropdown-messages,
+    .navbar-top-links .dropdown-tasks,
+    .navbar-top-links .dropdown-alerts {
+        margin-left: auto;
+    }
+}
+
+
+/* Admin table */
+
+table.sonata-ba-list {
+    font-size: 14px;
+}
+
+td.sonata-ba-list-label {
+    color: #565656;
+    font-weight: bold;
+    text-align: right;
+    vertical-align: middle !important;
+}
+
+/* side filter */
+
+h4.filter_legend {
+    position: relative;
+    padding-left: 16px;
+    cursor: pointer;
+}
+
+h4.filter_legend:before {
+    content: "";
+    display: block;
+    width: 0;
+    height: 0;
+    border-top: 4px solid black;
+    border-right: 4px solid transparent;
+    border-left: 4px solid transparent;
+    position: absolute;
+    top: 50%;
+    left: 2px;
+    margin-top: -2px;
+}
+
+h4.filter_legend.active,
+tr.filter.active * {
+    font-weight: bold;
+    color: #000;
+}
+
+form.sonata-filter-form.form-stacked {
+    padding-left: 0;
+}
+
+
+/* Overrides */
+
+/* x-editable */
+td.sonata-ba-list-field .editable {
+    cursor: pointer;
+}
+td.sonata-ba-list-field .btn.editable {
+    border-bottom: solid 1px #BBB;
+}
+td.sonata-ba-list-field .editable-empty:not(.editable-open) {
+    display: none;
+}
+.sonata-ba-list tr:hover .editable-empty {
+    display: inline-block;
+}
+.editable-pre-wrapped {
+    white-space: normal;
+}
+
+/* select2 */
+div.select2-container {
+    margin-left: 0 !important;
+}
+
+div.select2-drop ul {
+    margin: 0 !important;
+}

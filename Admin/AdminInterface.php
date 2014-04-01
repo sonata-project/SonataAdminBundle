@@ -24,6 +24,7 @@ use Sonata\AdminBundle\Validator\ErrorElement;
 use Sonata\AdminBundle\Route\RouteGeneratorInterface;
 
 use Knp\Menu\FactoryInterface as MenuFactoryInterface;
+use Knp\Menu\ItemInterface as MenuItemInterface;
 
 use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -982,4 +983,26 @@ interface AdminInterface
      * @return string
      */
     public function getTranslationLabel($label, $context = '', $type = '');
+
+    /**
+     * DEPRECATED: Use buildTabMenu instead
+     *
+     * @param string                                   $action
+     * @param \Sonata\AdminBundle\Admin\AdminInterface $childAdmin
+     *
+     * @return \Knp\Menu\ItemInterface|boolean
+     *
+     * @deprecated Use buildTabMenu instead
+     */
+    public function buildSideMenu($action, AdminInterface $childAdmin = null);
+
+    /**
+     * Build the tab menu related to the current action
+     *
+     * @param string                                   $action
+     * @param \Sonata\AdminBundle\Admin\AdminInterface $childAdmin
+     *
+     * @return \Knp\Menu\ItemInterface|boolean
+     */
+    public function buildTabMenu($action, AdminInterface $childAdmin = null);
 }

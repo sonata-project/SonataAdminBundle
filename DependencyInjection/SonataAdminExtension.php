@@ -132,11 +132,11 @@ BOOM
          * This is a work in progress, so for now it is hardcoded
          */
         $classes = array(
-            'email'    => 'span5',
-            'textarea' => 'span5',
-            'text'     => 'span5',
-            'choice'   => 'span5',
-            'integer'  => 'span5',
+            'email'    => '',
+            'textarea' => '',
+            'text'     => '',
+            'choice'   => '',
+            'integer'  => '',
             'datetime' => 'sonata-medium-date',
             'date'     => 'sonata-medium-date'
         );

@@ -17,7 +17,7 @@ file that was distributed with this source code.
 
     {{ sonata_block_render_event('sonata.admin.dashboard.top', { 'admin_pool': admin_pool }) }}
 
-    <div class="row-fluid">
+    <div class="row">
         {% set has_center = false %}
         {% for block in blocks %}
             {% if block.position == 'center' %}
@@ -25,7 +25,7 @@ file that was distributed with this source code.
             {% endif %}
         {% endfor %}
 
-        <div class="{% if has_center %}span3{% else %}span6{% endif %}">
+        <div class="{% if has_center %}col-md-3{% else %}col-md-6{% endif %}">
             {% for block in blocks %}
                 {% if block.position == 'left' %}
                     {{ sonata_block_render({ 'type': block.type, 'settings': block.settings}) }}
@@ -34,7 +34,7 @@ file that was distributed with this source code.
         </div>
 
         {% if has_center %}
-            <div class="span4">
+            <div class="col-md-4">
                 {% for block in blocks %}
                     {% if block.position == 'center' %}
                         {{ sonata_block_render({ 'type': block.type, 'settings': block.settings}) }}
@@ -43,7 +43,7 @@ file that was distributed with this source code.
             </div>
         {% endif %}
 
-        <div class="{% if has_center %}span4{% else %}span6{% endif %}">
+        <div class="{% if has_center %}col-md-4{% else %}col-md-6{% endif %}">
             {% for block in blocks %}
                 {% if block.position == 'right' %}
                     {{ sonata_block_render({ 'type': block.type, 'settings': block.settings}) }}
