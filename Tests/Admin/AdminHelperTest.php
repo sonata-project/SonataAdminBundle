@@ -65,18 +65,36 @@ class AdminHelperTest extends \PHPUnit_Framework_TestCase
 
         $pool = new Pool($container, 'title', 'logo.png');
         $helper = new AdminHelper($pool);
-
+        
+        // guess with fieldName property (old way, fallback)
         $admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
         $admin->expects($this->once())->method('getNewInstance')->will($this->returnValue(new \stdClass()));
-
-        $fieldDescription = $this->getMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
-        $fieldDescription->expects($this->once())->method('getAssociationAdmin')->will($this->returnValue($admin));
-        $fieldDescription->expects($this->once())->method('getAssociationMapping')->will($this->returnValue(array('fieldName' => 'fooBar')));
-
+        
         $object = $this->getMock('sdtClass', array('addFooBar'));
         $object->expects($this->once())->method('addFooBar');
 
+        $fieldDescription = $this->getMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+        $fieldDescription->expects($this->once())->method('getAssociationAdmin')->will($this->returnValue($admin));
+        $fieldDescription->expects($this->once())->method('getAssociationMapping')->will($this->returnValue(array(
+            'fieldName' => 'fooBar'
+        )));
+
         $helper->addNewInstance($object, $fieldDescription);
 
+        // guess with the help of targetEntity property
+        $admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $admin->expects($this->once())->method('getNewInstance')->will($this->returnValue(new \stdClass()));
+        
+        $object = $this->getMock('sdtClass', array('addCategory'));
+        $object->expects($this->once())->method('addCategory');
+        
+        $fieldDescription = $this->getMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+        $fieldDescription->expects($this->once())->method('getAssociationAdmin')->will($this->returnValue($admin));
+        $fieldDescription->expects($this->once())->method('getAssociationMapping')->will($this->returnValue(array(
+            'targetEntity' => 'Acme\Foo\Category',
+            'fieldName' => 'categories'
+        )));
+        
+        $helper->addNewInstance($object, $fieldDescription);
     }
 }
