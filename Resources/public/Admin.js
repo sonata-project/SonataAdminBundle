@@ -58,7 +58,7 @@ var Admin = {
 
     setup_xeditable: function(subject) {
         jQuery('.x-editable', subject).editable({
-            emptyclass: 'editable-empty btn btn-small',
+            emptyclass: 'editable-empty btn btn-sm',
             emptytext: '<i class="glyphicon glyphicon-edit"></i>',
             success: function(response) {
                 if('KO' === response.status) {
@@ -116,7 +116,7 @@ var Admin = {
                 fieldShortDescription = input.closest('.field-container').find('.field-short-description'),
                 select2 = input.closest('.select2-container')
                 ;
-    
+
             if (fieldShortDescription.length) {
                 target = fieldShortDescription;
             } else if (select2.length) {

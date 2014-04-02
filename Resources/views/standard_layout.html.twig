@@ -44,6 +44,7 @@ file that was distributed with this source code.
 
             <link rel="stylesheet" href="{{ asset("bundles/sonataadmin/bootstrap3-editable/bootstrap3-editable/css/bootstrap-editable.css") }}" />
             <link rel="stylesheet" href="{{ asset("bundles/sonataadmin/css/styles.css") }}" />
+            <link rel="stylesheet" href="{{ asset("bundles/sonataadmin/css/layout.css") }}" />
         {% endblock %}
 
         {% block javascripts %}
@@ -260,12 +261,11 @@ file that was distributed with this source code.
 
                         {% block sonata_admin_content %}
 
-                            {% if _list_table is empty and _list_filters is empty and _actions is not empty %}
+                            {#{% if _list_table is empty and _list_filters is empty and _actions is not empty %}#}
+                            {% if _actions is not empty %}
                                 <div class="row">
-                                    <div class="col-sm-6 col-sm-offset-6">
-                                        <div class="pull-right">
-                                            {{ _actions|raw }}
-                                        </div>
+                                    <div class="{% if _list_filters|trim %}col-md-10{% else %}col-md-12{% endif %}">
+                                        {{ _actions|raw }}
                                     </div>
                                 </div>
                                 <br/>
@@ -291,16 +291,6 @@ file that was distributed with this source code.
                                 <div class="row">
                                     <div class="sonata-ba-list {% if _list_filters|trim %}col-md-10{% else %}col-md-12{% endif %}">
                                         {{ _list_table|raw }}
-
-                                        {% if _actions is not empty %}
-                                            <div class="row">
-                                                <div class="col-sm-3 col-sm-offset-9">
-                                                    <div class="pull-right">
-                                                        {{ _actions|raw }}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        {% endif %}
                                     </div>
 
                                     {% if _list_filters|trim %}

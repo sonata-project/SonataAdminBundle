@@ -1,5 +1,5 @@
 body{
-    padding-top: 70px;
+    padding-top: 50px;
 }
 
 @media (max-width: 978px) {
@@ -334,8 +334,4 @@ legend.sonata-ba-fieldset-collapsed-description + .sonata-ba-collapsed-fields {
 
 .form-horizontal .control-group {
     margin-bottom: 10px;
-}
-
-span.field-actions {
-    margin-left: 10px;
 }
