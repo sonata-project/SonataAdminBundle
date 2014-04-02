@@ -1457,7 +1457,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         $this->loaded['tab_menu'] = true;
 
         $menu = $this->menuFactory->createItem('root');
-        $menu->setChildrenAttribute('class', 'nav nav-tabs');
+        $menu->setChildrenAttribute('class', 'nav navbar-nav');
 
         // Prevents BC break with KnpMenuBundle v1.x
         if (method_exists($menu, "setCurrentUri")) {
@@ -2078,11 +2078,6 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
         if (!$menu) {
             $menu = $this->menuFactory->createItem('root');
-
-            $menu = $menu->addChild(
-                $this->trans($this->getLabelTranslatorStrategy()->getLabel('dashboard', 'breadcrumb', 'link'), array(), 'SonataAdminBundle'),
-                array('uri' => $this->routeGenerator->generate('sonata_admin_dashboard'))
-            );
         }
 
         $menu = $menu->addChild(
