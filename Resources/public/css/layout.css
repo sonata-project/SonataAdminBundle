@@ -321,7 +321,7 @@ legend.sonata-ba-fieldset-collapsed-description + .sonata-ba-collapsed-fields {
     border-radius: 4px 4px 4px 4px;
     list-style: none outside none;
     margin: 0 15px 0 0;
-    padding: 5px 15px;
+    padding: 4px 15px;
 }
 
 .inner-field-short-description {

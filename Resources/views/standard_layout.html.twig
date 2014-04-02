@@ -140,7 +140,7 @@ file that was distributed with this source code.
                                                                     {% endif %}
                                                                 </li>
                                                             {% else %}
-                                                                <li class="active">{{ menu.label }}</li>
+                                                                <li class="active navbar-text">{{ menu.label }}</li>
                                                             {% endif %}
                                                         {% endfor %}
                                                     {% endif %}
@@ -244,15 +244,32 @@ file that was distributed with this source code.
             {% block sonata_wrapper %}
                 <div id="page-wrapper">
 
-                    <div class="row">
-                        <div class="col-sm-12">
-                        </div>
-                    </div>
-
                     {% block sonata_page_content %}
-                        {% if _tab_menu is not empty %}
-                            {{ _tab_menu|raw }}
-                            <br/>
+                        {% if _tab_menu is not empty or _actions is not empty %}
+                            <nav class="navbar navbar-default" role="navigation">
+                                <div class="container-fluid">
+                                    <div class="navbar-left">
+                                        {% if _tab_menu is not empty %}
+                                            {{ _tab_menu|raw }}
+                                        {% else %}
+                                            <ul class="nav navbar-nav">
+                                                {{ _actions|raw }}
+                                            </ul>
+                                        {% endif %}
+                                    </div>
+
+                                    {% if _actions is not empty and _tab_menu is not empty %}
+                                        <ul class="nav navbar-nav navbar-right">
+                                            <li class="dropdown sonata-actions">
+                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Actions <b class="caret"></b></a>
+                                                <ul class="dropdown-menu" role="menu">
+                                                    {{ _actions|raw }}
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    {% endif %}
+                                </div>
+                            </nav>
                         {% endif %}
 
                         {% block notice %}
@@ -262,14 +279,14 @@ file that was distributed with this source code.
                         {% block sonata_admin_content %}
 
                             {#{% if _list_table is empty and _list_filters is empty and _actions is not empty %}#}
-                            {% if _actions is not empty %}
-                                <div class="row">
-                                    <div class="{% if _list_filters|trim %}col-md-10{% else %}col-md-12{% endif %}">
-                                        {{ _actions|raw }}
-                                    </div>
-                                </div>
-                                <br/>
-                            {% endif %}
+                            {#{% if _actions is not empty %}#}
+                                {#<div class="row">#}
+                                    {#<div class="{% if _list_filters|trim %}col-md-10{% else %}col-md-12{% endif %}">#}
+                                        {#{{ _actions|raw }}#}
+                                    {#</div>#}
+                                {#</div>#}
+                                {#<br/>#}
+                            {#{% endif %}#}
 
                             {% if _preview is not empty %}
                                 <div class="sonata-ba-preview">{{ _preview|raw }}</div>
