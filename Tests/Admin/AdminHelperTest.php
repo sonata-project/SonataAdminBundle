@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the Sonata package.
  *
@@ -9,74 +8,192 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\Admin;
+namespace Sonata\AdminBundle\Admin;
 
-use Sonata\AdminBundle\Admin\AdminHelper;
-use Sonata\AdminBundle\Admin\Pool;
+use Doctrine\Common\Util\ClassUtils;
 use Symfony\Component\Form\FormBuilder;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
-use Sonata\AdminBundle\Admin\AdminInterface;
 use Symfony\Component\Form\FormView;
+use Sonata\AdminBundle\Exception\NoValueException;
+use Sonata\AdminBundle\Util\FormViewIterator;
+use Sonata\AdminBundle\Util\FormBuilderIterator;
+use Sonata\AdminBundle\Admin\BaseFieldDescription;
 
-class AdminHelperTest extends \PHPUnit_Framework_TestCase
+class AdminHelper
 {
+    protected $pool;
 
-    public function testgetChildFormBuilder()
+    /**
+     * @param Pool $pool
+     */
+    public function __construct(Pool $pool)
     {
-        $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
-
-        $pool = new Pool($container, 'title', 'logo.png');
-        $helper = new AdminHelper($pool);
-
-        $formFactory = $this->getMock('Symfony\Component\Form\FormFactoryInterface');
-        $eventDispatcher = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
-
-        $formBuilder = new FormBuilder('test', 'stdClass', $eventDispatcher, $formFactory);
-
-        $childFormBuilder = new FormBuilder('elementId', 'stdClass', $eventDispatcher, $formFactory);
-        $formBuilder->add($childFormBuilder);
-
-        $this->assertNull($helper->getChildFormBuilder($formBuilder, 'foo'));
-        $this->isInstanceOf('Symfony\Component\Form\FormBuilder', $helper->getChildFormBuilder($formBuilder, 'test_elementId'));
+        $this->pool = $pool;
     }
 
-    public function testgetChildFormView()
+    /**
+     * @throws \RuntimeException
+     *
+     * @param \Symfony\Component\Form\FormBuilder $formBuilder
+     * @param string                              $elementId
+     *
+     * @return \Symfony\Component\Form\FormBuilder
+     */
+    public function getChildFormBuilder(FormBuilder $formBuilder, $elementId)
     {
-        $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
+        foreach (new FormBuilderIterator($formBuilder) as $name => $formBuilder) {
+            if ($name == $elementId) {
+                return $formBuilder;
+            }
+        }
 
-        $pool = new Pool($container, 'title', 'logo.png');
-        $helper = new AdminHelper($pool);
-
-        $formView = new FormView();
-        $formView->vars['id'] = 'test';
-        $child = new FormView($formView);
-        $child->vars['id'] = 'test_elementId';
-
-        $this->assertNull($helper->getChildFormView($formView, 'foo'));
-        $this->isInstanceOf('Symfony\Component\Form\FormView', $helper->getChildFormView($formView, 'test_elementId'));
+        return null;
     }
 
-    public function testaddNewInstance()
+    /**
+     * @param \Symfony\Component\Form\FormView $formView
+     * @param string                           $elementId
+     *
+     * @return null|\Symfony\Component\Form\FormView
+     */
+    public function getChildFormView(FormView $formView, $elementId)
     {
-        $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
+        foreach (new \RecursiveIteratorIterator(new FormViewIterator($formView), \RecursiveIteratorIterator::SELF_FIRST) as $name => $formView) {
+            if ($name === $elementId) {
+                return $formView;
+            }
+        }
 
-        $pool = new Pool($container, 'title', 'logo.png');
-        $helper = new AdminHelper($pool);
+        return null;
+    }
 
-        $admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
-        $admin->expects($this->once())->method('getNewInstance')->will($this->returnValue(new \stdClass()));
+    /**
+     * @deprecated
+     *
+     * @param string $code
+     *
+     * @return \Sonata\AdminBundle\Admin\AdminInterface
+     */
+    public function getAdmin($code)
+    {
+        return $this->pool->getInstance($code);
+    }
 
-        $fieldDescription = $this->getMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
-        $fieldDescription->expects($this->once())->method('getAssociationAdmin')->will($this->returnValue($admin));
-        $fieldDescription->expects($this->once())->method('getAssociationMapping')->will($this->returnValue(array('fieldName' => 'fooBar')));
+    /**
+     * Note:
+     *   This code is ugly, but there is no better way of doing it.
+     *   For now the append form element action used to add a new row works
+     *   only for direct FieldDescription (not nested one)
+     *
+     * @throws \RuntimeException
+     *
+     * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
+     * @param object                                   $subject
+     * @param string                                   $elementId
+     *
+     * @return array
+     */
+    public function appendFormFieldElement(AdminInterface $admin, $subject, $elementId)
+    {
+        // retrieve the subject
+        $formBuilder = $admin->getFormBuilder();
 
-        $object = $this->getMock('sdtClass', array('addFooBar'));
-        $object->expects($this->once())->method('addFooBar');
+        $form = $formBuilder->getForm();
+        $form->setData($subject);
+        $form->submit($admin->getRequest());
 
-        $helper->addNewInstance($object, $fieldDescription);
+        // get the field element
+        $childFormBuilder = $this->getChildFormBuilder($formBuilder, $elementId);
 
+        // retrieve the FieldDescription
+        $fieldDescription = $admin->getFormFieldDescription($childFormBuilder->getName());
+
+        try {
+            $value = $fieldDescription->getValue($form->getData());
+        } catch (NoValueException $e) {
+            $value = null;
+        }
+
+        // retrieve the posted data
+        $data = $admin->getRequest()->get($formBuilder->getName());
+
+        if (!isset($data[$childFormBuilder->getName()])) {
+            $data[$childFormBuilder->getName()] = array();
+        }
+
+        $objectCount = count($value);
+        $postCount   = count($data[$childFormBuilder->getName()]);
+
+        $fields = array_keys($fieldDescription->getAssociationAdmin()->getFormFieldDescriptions());
+
+        // for now, not sure how to do that
+        $value = array();
+        foreach ($fields as $name) {
+            $value[$name] = '';
+        }
+
+        // add new elements to the subject
+        while ($objectCount < $postCount) {
+            // append a new instance into the object
+            $this->addNewInstance($form->getData(), $fieldDescription);
+            $objectCount++;
+        }
+
+        $this->addNewInstance($form->getData(), $fieldDescription);
+        $data[$childFormBuilder->getName()][] = $value;
+
+        $finalForm = $admin->getFormBuilder()->getForm();
+        $finalForm->setData($subject);
+
+        // bind the data
+        $finalForm->setData($form->getData());
+
+        return array($fieldDescription, $finalForm);
+    }
+
+    /**
+     * Add a new instance to the related FieldDescriptionInterface value
+     *
+     * @param object                                              $object
+     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
+     *
+     * @throws \RuntimeException
+     */
+    public function addNewInstance($object, FieldDescriptionInterface $fieldDescription)
+    {
+        $instance = $fieldDescription->getAssociationAdmin()->getNewInstance();
+        $mapping  = $fieldDescription->getAssociationMapping();
+
+        if (isset($mapping['targetEntity'])) {
+            $namespace = $mapping['targetEntity'];
+            $name = substr($namespace, strrpos($namespace, '\\') + 1);
+        } else {
+            $name = $this->camelize($mapping['fieldName']);
+        }
+        
+        $method = sprintf('add%s', $name);
+        
+        if (!method_exists($object, $method)) {
+            $method = rtrim($method, 's');
+            
+            if (!method_exists($object, $method)) {
+                throw new \RuntimeException(sprintf('Please add a method %s in the %s class!', $method, ClassUtils::getClass($object)));
+            }
+        }
+
+        $object->$method($instance);
+    }
+
+    /**
+     * Camelize a string
+     *
+     * @static
+     *
+     * @param string $property
+     *
+     * @return string
+     */
+    public function camelize($property)
+    {
+        return BaseFieldDescription::camelize($property);
     }
 }
