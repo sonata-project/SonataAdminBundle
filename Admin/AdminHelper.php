@@ -163,13 +163,21 @@ class AdminHelper
         $instance = $fieldDescription->getAssociationAdmin()->getNewInstance();
         $mapping  = $fieldDescription->getAssociationMapping();
 
-        $targetClassNamespaced = $mapping['targetEntity'];
-        $targetClass = substr($targetClassNamespaced, strrpos($targetClassNamespaced, '\\') + 1);
+        if (isset($mapping['targetEntity'])) {
+            $namespace = $mapping['targetEntity'];
+            $name = substr($namespace, strrpos($namespace, '\\') + 1);
+        } else {
+            $name = $this->camelize($mapping['fieldName']);
+        }
         
-        $method = sprintf('add%s', $targetClass);
+        $method = sprintf('add%s', $name);
         
         if (!method_exists($object, $method)) {
-            throw new \RuntimeException(sprintf('Please add a method %s in the %s class!', $method, ClassUtils::getClass($object)));
+            $method = rtrim($method, 's');
+            
+            if (!method_exists($object, $method)) {
+                throw new \RuntimeException(sprintf('Please add a method %s in the %s class!', $method, ClassUtils::getClass($object)));
+            }
         }
 
         $object->$method($instance);
