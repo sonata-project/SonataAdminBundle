@@ -121,8 +121,6 @@ file that was distributed with this source code.
                                 {% endblock %}
                             </div>
 
-
-
                             <div class="collapse navbar-collapse">
                                 {% block sonata_breadcrumb %}
                                     {% if _breadcrumb is not empty or action is defined %}
@@ -140,7 +138,7 @@ file that was distributed with this source code.
                                                                     {% endif %}
                                                                 </li>
                                                             {% else %}
-                                                                <li class="active navbar-text">{{ menu.label }}</li>
+                                                                <li class="active{% if loop.first %} navbar-text{% endif %}">{{ menu.label }}</li>
                                                             {% endif %}
                                                         {% endfor %}
                                                     {% endif %}
@@ -154,6 +152,69 @@ file that was distributed with this source code.
 
                                 {% block sonata_top_nav_menu %}
                                     <ul class="nav navbar-top-links navbar-right">
+                                        <li class="dropdown">
+                                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                                <i class="fa fa-plus-square fa-fw"></i> <i class="fa fa-caret-down"></i>
+                                            </a>
+                                            {% block sonata_add_menu %}
+                                                {% set itemsPerColumn = admin_pool.getOption('dropdown_max_items_per_column') %}
+                                                {% set columnsCount = (admin_pool.dashboardgroups|length / itemsPerColumn)|round %}
+
+
+                                                <ul class="dropdown-menu{% if columnsCount > 1 %} multi-column{% endif %} dropdown-add"
+                                                    {% if columnsCount > 1 %}style="width: {{ columnsCount*140 }}px;"{% endif %}
+                                                        >
+                                                    {% for group in admin_pool.dashboardgroups %}
+                                                        {% set display = (group.roles is empty or is_granted('ROLE_SUPER_ADMIN') ) %}
+                                                        {% for role in group.roles if not display %}
+                                                            {% set display = is_granted(role) %}
+                                                        {% endfor %}
+
+                                                        {# Do not display the group label if no item in group is available #}
+                                                        {% set item_count = 0 %}
+                                                        {% if display %}
+                                                            {% for admin in group.items if item_count == 0 %}
+                                                                {% if admin.hasroute('list') and admin.isGranted('LIST') %}
+                                                                    {% set item_count = item_count+1 %}
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                        {% endif %}
+
+                                                        {% if display and (item_count > 0) %}
+                                                            {% if columnsCount > 1 and loop.index0 % itemsPerColumn == 0 %}
+                                                                {% if loop.first %}
+                                                                    <div class="row">
+                                                                {% endif %}
+                                                                <div class="col-md-{{ (12/columnsCount)|round }}">
+                                                                    <ul class="dropdown-menu">
+                                                            {% endif %}
+
+                                                            <li role="presentation" class="dropdown-header">{{ group.label|trans({}, group.label_catalogue) }}</li>
+                                                            {% for admin in group.items %}
+                                                                {% if admin.hasroute('create') and admin.isGranted('CREATE') %}
+                                                                    <li role="presentation">
+                                                                        <a role="menuitem" tabindex="-1" href="{{ admin.generateUrl('create')}}">{{ admin.label|trans({}, admin.translationdomain) }}</a>
+                                                                    </li>
+                                                                {% endif %}
+                                                            {% endfor %}
+
+                                                            {% if not loop.last and loop.index % itemsPerColumn != 0 %}
+                                                                <li role="presentation" class="divider"></li>
+                                                            {% endif %}
+
+                                                            {% if loop.length > itemsPerColumn and loop.index % itemsPerColumn == 0 %}
+                                                                    </ul>
+                                                                </div>
+                                                            {% endif %}
+                                                            {% if loop.length > itemsPerColumn and loop.last %}
+                                                                </div>
+                                                            {% endif %}
+                                                        {% endif %}
+                                                    {% endfor %}
+
+                                                {% endblock %}
+                                            </ul>
+                                        </li>
                                         <li class="dropdown">
                                             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                                                 <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
@@ -196,8 +257,8 @@ file that was distributed with this source code.
                                         {% endif %}
                                     {% endblock %}
 
-                                    {% block top_bar_before_nav %} {% endblock %}
-                                    {% block sonata_top_bar_nav %}
+                                    {% block side_bar_before_nav %} {% endblock %}
+                                    {% block side_bar_nav %}
                                         {% if app.security.token and is_granted('ROLE_SONATA_ADMIN') %}
                                             {% for group in admin_pool.dashboardgroups %}
                                                 {% set display = (group.roles is empty or is_granted('ROLE_SUPER_ADMIN') ) %}
@@ -230,7 +291,7 @@ file that was distributed with this source code.
                                             {% endfor %}
                                         {% endif %}
                                     {% endblock %}
-                                    {% block top_bar_after_nav %} {% endblock %}
+                                    {% block side_bar_after_nav %} {% endblock %}
 
                                 {% endblock %}
 
@@ -245,48 +306,36 @@ file that was distributed with this source code.
                 <div id="page-wrapper">
 
                     {% block sonata_page_content %}
-                        {% if _tab_menu is not empty or _actions is not empty %}
-                            <nav class="navbar navbar-default" role="navigation">
-                                <div class="container-fluid">
-                                    <div class="navbar-left">
-                                        {% if _tab_menu is not empty %}
-                                            {{ _tab_menu|raw }}
-                                        {% else %}
-                                            <ul class="nav navbar-nav">
-                                                {{ _actions|raw }}
+                        {% block sonata_page_content_nav %}
+                            {% if _tab_menu is not empty or _actions is not empty %}
+                                <nav class="navbar navbar-default" role="navigation">
+                                    <div class="container-fluid">
+                                        <div class="navbar-left">
+                                            {% if _tab_menu is not empty %}
+                                                {{ _tab_menu|raw }}
+                                            {% endif %}
+                                        </div>
+
+                                        {% if _actions is not empty %}
+                                            <ul class="nav navbar-nav navbar-right">
+                                                <li class="dropdown sonata-actions">
+                                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Actions <b class="caret"></b></a>
+                                                    <ul class="dropdown-menu" role="menu">
+                                                        {{ _actions|raw }}
+                                                    </ul>
+                                                </li>
                                             </ul>
                                         {% endif %}
                                     </div>
-
-                                    {% if _actions is not empty and _tab_menu is not empty %}
-                                        <ul class="nav navbar-nav navbar-right">
-                                            <li class="dropdown sonata-actions">
-                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Actions <b class="caret"></b></a>
-                                                <ul class="dropdown-menu" role="menu">
-                                                    {{ _actions|raw }}
-                                                </ul>
-                                            </li>
-                                        </ul>
-                                    {% endif %}
-                                </div>
-                            </nav>
-                        {% endif %}
+                                </nav>
+                            {% endif %}
+                        {% endblock %}
 
                         {% block notice %}
                             {% include 'SonataCoreBundle:FlashMessage:render.html.twig' %}
                         {% endblock %}
 
                         {% block sonata_admin_content %}
-
-                            {#{% if _list_table is empty and _list_filters is empty and _actions is not empty %}#}
-                            {#{% if _actions is not empty %}#}
-                                {#<div class="row">#}
-                                    {#<div class="{% if _list_filters|trim %}col-md-10{% else %}col-md-12{% endif %}">#}
-                                        {#{{ _actions|raw }}#}
-                                    {#</div>#}
-                                {#</div>#}
-                                {#<br/>#}
-                            {#{% endif %}#}
 
                             {% if _preview is not empty %}
                                 <div class="sonata-ba-preview">{{ _preview|raw }}</div>

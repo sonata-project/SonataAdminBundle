@@ -67,6 +67,24 @@ body {
 
 .sonata-bc .breadcrumb li a {
     display: inline-block;
+    padding-left: 3px;
+    padding-right: 3px;
+}
+
+.sonata-bc .breadcrumb>li+li:before {
+    padding-right: 0;
+    padding-left: 4px;
+}
+
+/* MEGA MENU STYLE
+********************************/
+.dropdown-menu.multi-column .dropdown-menu {
+    display: block !important;
+    position: static !important;
+    margin: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    min-width:100px;
 }
 
 /* top right */

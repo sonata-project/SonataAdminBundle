@@ -78,6 +78,7 @@ class Configuration implements ConfigurationInterface
                         ->booleanNode('confirm_exit')->defaultValue(true)->end()
                         ->booleanNode('use_select2')->defaultValue(true)->end()
                         ->integerNode('pager_links')->defaultValue(null)->end()
+                        ->integerNode('dropdown_max_items_per_column')->defaultValue(2)->end()
                     ->end()
                 ->end()
                 ->arrayNode('dashboard')
