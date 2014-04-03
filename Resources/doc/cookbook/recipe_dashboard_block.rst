@@ -24,7 +24,7 @@ Create a new block class that implements BlockBundleInterface
 
     <?php
 
-    namespace InstitutoStorico\Bundle\NewsletterBundle\Block;
+    namespace Acme\DemoBundle\Block;
 
     use Symfony\Component\HttpFoundation\Response;
 
@@ -59,7 +59,7 @@ Create a new block class that implements BlockBundleInterface
             // merge settings
             $settings = array_merge($this->getDefaultSettings(), $block->getSettings());
 
-            return $this->renderResponse('InstitutoStoricoNewsletterBundle:Block:block_my_newsletter.html.twig', array(
+            return $this->renderResponse('AcmeDemoBundle:Block:block_my_newsletter.html.twig', array(
                 'block'     => $block,
                 'settings'  => $settings
                 ), $response);
@@ -103,7 +103,7 @@ The service declaration looks like this:
 .. code-block:: yaml
 
     sonata.block.service.newsletter:
-        class: InstitutoStorico\Bundle\NewsletterBundle\Block\NewsletterBlockService
+        class: Acme\DemoBundle\NewsletterBundle\Block\NewsletterBlockService
         arguments: [ "sonata.block.service.newsletter", @templating ]
         tags:
             - { name: sonata.block }
