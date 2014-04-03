@@ -23,8 +23,7 @@ use Symfony\Component\Form\FormView;
 
 class AdminHelperTest extends \PHPUnit_Framework_TestCase
 {
-
-    public function testgetChildFormBuilder()
+    public function testGetChildFormBuilder()
     {
         $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
 
@@ -43,7 +42,7 @@ class AdminHelperTest extends \PHPUnit_Framework_TestCase
         $this->isInstanceOf('Symfony\Component\Form\FormBuilder', $helper->getChildFormBuilder($formBuilder, 'test_elementId'));
     }
 
-    public function testgetChildFormView()
+    public function testGetChildFormView()
     {
         $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
 
@@ -59,7 +58,7 @@ class AdminHelperTest extends \PHPUnit_Framework_TestCase
         $this->isInstanceOf('Symfony\Component\Form\FormView', $helper->getChildFormView($formView, 'test_elementId'));
     }
 
-    public function testaddNewInstance()
+    public function testAddNewInstance()
     {
         $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
 
@@ -77,6 +76,5 @@ class AdminHelperTest extends \PHPUnit_Framework_TestCase
         $object->expects($this->once())->method('addFooBar');
 
         $helper->addNewInstance($object, $fieldDescription);
-
     }
 }
