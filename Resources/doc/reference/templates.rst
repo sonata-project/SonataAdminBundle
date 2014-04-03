@@ -72,6 +72,7 @@ There are several other templates that can be customized, enabling you to fine-t
 ``SonataAdminBundle``:
 
 * user_block: customizes the Twig block rendered by default in the top right corner of the admin interface, containing user information. Empty by defautl, see ``SonataUserBundle`` for a real example.
+* add_block: customizes the Twig block rendered by default in the top right corner of the admin interface, providing quick access to create operations on available admin classes.
 * history_revision_timestamp: customizes the way timestamps are rendered when using history related actions.
 * action: a generic template you can use for your custom actions
 * short_object_description: used by the ``getShortObjectDescriptionAction`` action from the ``HelperController``, this template displays a small description of a model instance.
@@ -116,6 +117,7 @@ You can specify your templates in the config.yml file, like so:
                 base_list_field:     SonataAdminBundle:CRUD:base_list_field.html.twig
                 list_block:          SonataAdminBundle:Block:block_admin_list.html.twig
                 user_block:          SonataAdminBundle:Core:user_block.html.twig
+                add_block:           SonataAdminBundle:Core:add_block.html.twig
                 pager_links:         SonataAdminBundle:Pager:links.html.twig
                 pager_results:       SonataAdminBundle:Pager:results.html.twig
                 history_revision_timestamp:  SonataAdminBundle:CRUD:history_revision_timestamp.html.twig

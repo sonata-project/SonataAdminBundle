@@ -56,10 +56,11 @@ Full Configuration Options
             title:                Sonata Admin
             title_logo:           bundles/sonataadmin/logo_title.png
             options:
-                html5_validate:       true      # use html5 validation
-                confirm_exit:         true      # enabled confirmation when quitting with unsaved changes
-                use_select2:          true      # enable select2
-                pager_links:          ~         # pager max links to display
+                html5_validate:                         true      # use html5 validation
+                confirm_exit:                           true      # enabled confirmation when quitting with unsaved changes
+                use_select2:                            true      # enable select2
+                pager_links:                            ~         # pager max links to display
+                dropdown_number_groups_per_colums:          2         # max items per column in dropdown menu (add button in top nav)
             dashboard:
                 groups:
 
@@ -94,6 +95,7 @@ Full Configuration Options
                     label:                ~
             templates:
                 user_block:           SonataAdminBundle:Core:user_block.html.twig
+                add_block:            SonataAdminBundle:Core:add_block.html.twig
                 layout:               SonataAdminBundle::standard_layout.html.twig
                 ajax:                 SonataAdminBundle::ajax_layout.html.twig
                 dashboard:            SonataAdminBundle:Core:dashboard.html.twig
