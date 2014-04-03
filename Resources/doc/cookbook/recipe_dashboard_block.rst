@@ -15,61 +15,127 @@ In order to create a dashboard block, we need to:
 - Add the new service to the Sonata Admin Bundle configuration
 - Verify that the block works as expected
 
-Step 1
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Step 1 - Create a new block class
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Create a new block class that implements BlockBundleInterface
 
-
 .. code-block:: php
 
-    <?php
-    // src/Acme/DemoBundle/Controller/CRUDController.php
+<?php
 
-    namespace Acme\DemoBundle\Controller;
+namespace InstitutoStorico\Bundle\NewsletterBundle\Block;
 
+use Symfony\Component\HttpFoundation\Response;
 
-Admin classes by default use the ``SonataAdmin:CRUD`` controller, this is the third parameter
-of an admin service definition, you need to change it to your own.
+use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Validator\ErrorElement;
 
-Either by using XML:
+use Sonata\BlockBundle\Model\BlockInterface;
+use Sonata\BlockBundle\Block\BaseBlockService;
 
-.. code-block:: xml
+class NewsletterBlockService extends BaseBlockService
+{
+    public function getName()
+    {
+        return 'My Newsletter';
+    }
 
-        <!-- src/Acme/DemoBundle/Resources/config/admin.xml -->
-        ...
+    public function getDefaultSettings()
+    {
+        return array();
+    }
 
-        <service id="acme.demo.admin.car" class="Acme\DemoBundle\Admin\CarAdmin">
+    public function validateBlock(ErrorElement $errorElement, BlockInterface $block)
+    {
+    }
 
-            <tag name="sonata.admin" manager_type="orm" group="Demo" label="Car" />
+    public function buildEditForm(FormMapper $formMapper, BlockInterface $block)
+    {
+    }
 
-            <argument />
-            <argument>Acme\DemoBundle\Entity\Car</argument>
-            <argument>AcmeDemoBundle:CRUD</argument>
+    public function execute(BlockInterface $block, Response $response = null)
+    {
+        // merge settings
+        $settings = array_merge($this->getDefaultSettings(), $block->getSettings());
 
-            ...
+        return $this->renderResponse('InstitutoStoricoNewsletterBundle:Block:block_my_newsletter.html.twig', array(
+            'block'     => $block,
+            'settings'  => $settings
+            ), $response);
+    }
+}
 
-        </service>
+Step 2 - Create a new block template
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-        ...
+The base template from SonataBlockBundle can be overridden here:
 
-Or by overwriting the configuration in your ``config.yml``:
+.. code-block:: html+jinja
+
+    {% extends 'SonataBlockBundle:Block:block_base.html.twig' %}
+
+    {% block block %}
+    <table class="table table-bordered table-striped sonata-ba-list">
+        <thead>
+            <tr>
+                <th colspan="3">Newsletter - inviare</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr>
+                <td>
+                    <div class="btn-group" align="center">
+                        <a class="btn btn-small" href="#">Servizio Newsletter</a>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    {% endblock %}
+
+Step 3 - Create a new block service for your block
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The service declaration looks like this:
 
 .. code-block:: yaml
 
-    # app/config/config.yml
+    sonata.block.service.newsletter:
+        class: InstitutoStorico\Bundle\NewsletterBundle\Block\NewsletterBlockService
+        arguments: [ "sonata.block.service.newsletter", @templating ]
+        tags:
+            - { name: sonata.block }
 
-    services:
-        acme.demo.admin.car:
-            class: Acme\DemoBundle\Admin\CarAdmin
-            tags:
-                - { name: sonata.admin, manager_type: orm, group: Demo, label: Car }
-            arguments:
-                - null
-                - Acme\DemoBundle\Entity\Car
-                - AcmeDemoBundle:CRUD
+Step 4 - Add newly created to Sonata Block Bundle configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+.. code-block:: yaml
 
-For more information about service configuration please refer to Step 3 of :doc:`../reference/getting_started`
+    #Sonata Block Bundle
+    sonata_block:
+        default_contexts: [cms]
+        blocks:
+            sonata.admin.block.admin_list:
+                contexts:   [admin]
+            sonata.block.service.text: ~
+            sonata.block.service.action: ~
+            sonata.block.service.rss: ~
+            sonata.block.service.newsletter: ~
 
+Step 5 - Add newly created service to Sonata Admin Block Bundle configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+.. code-block:: yaml
+
+    # Sonata Admin Generator
+    sonata_admin:
+        ...
+        dashboard:
+            blocks:
+                # display a dashboard block
+                - { position: left, type: sonata.admin.block.admin_list }
+                - { position: left, type: sonata.block.service.newsletter}
+
+Your dashboard block should now be activated in your admin/dashboard
