@@ -22,49 +22,49 @@ Create a new block class that implements BlockBundleInterface
 
 .. code-block:: php
 
-<?php
+    <?php
 
-namespace InstitutoStorico\Bundle\NewsletterBundle\Block;
+    namespace InstitutoStorico\Bundle\NewsletterBundle\Block;
 
-use Symfony\Component\HttpFoundation\Response;
+    use Symfony\Component\HttpFoundation\Response;
 
-use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Validator\ErrorElement;
+    use Sonata\AdminBundle\Form\FormMapper;
+    use Sonata\AdminBundle\Validator\ErrorElement;
 
-use Sonata\BlockBundle\Model\BlockInterface;
-use Sonata\BlockBundle\Block\BaseBlockService;
+    use Sonata\BlockBundle\Model\BlockInterface;
+    use Sonata\BlockBundle\Block\BaseBlockService;
 
-class NewsletterBlockService extends BaseBlockService
-{
-    public function getName()
+    class NewsletterBlockService extends BaseBlockService
     {
-        return 'My Newsletter';
-    }
+        public function getName()
+        {
+            return 'My Newsletter';
+        }
 
-    public function getDefaultSettings()
-    {
-        return array();
-    }
+        public function getDefaultSettings()
+        {
+            return array();
+        }
 
-    public function validateBlock(ErrorElement $errorElement, BlockInterface $block)
-    {
-    }
+        public function validateBlock(ErrorElement $errorElement, BlockInterface $block)
+        {
+        }
 
-    public function buildEditForm(FormMapper $formMapper, BlockInterface $block)
-    {
-    }
+        public function buildEditForm(FormMapper $formMapper, BlockInterface $block)
+        {
+        }
 
-    public function execute(BlockInterface $block, Response $response = null)
-    {
-        // merge settings
-        $settings = array_merge($this->getDefaultSettings(), $block->getSettings());
+        public function execute(BlockInterface $block, Response $response = null)
+        {
+            // merge settings
+            $settings = array_merge($this->getDefaultSettings(), $block->getSettings());
 
-        return $this->renderResponse('InstitutoStoricoNewsletterBundle:Block:block_my_newsletter.html.twig', array(
-            'block'     => $block,
-            'settings'  => $settings
-            ), $response);
+            return $this->renderResponse('InstitutoStoricoNewsletterBundle:Block:block_my_newsletter.html.twig', array(
+                'block'     => $block,
+                'settings'  => $settings
+                ), $response);
+        }
     }
-}
 
 Step 2 - Create a new block template
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -138,4 +138,4 @@ Step 5 - Add newly created service to Sonata Admin Block Bundle configuration
                 - { position: left, type: sonata.admin.block.admin_list }
                 - { position: left, type: sonata.block.service.newsletter}
 
-Your dashboard block should now be activated in your admin/dashboard
+The newsletter block should now be active in your Admin Dashboard. 
