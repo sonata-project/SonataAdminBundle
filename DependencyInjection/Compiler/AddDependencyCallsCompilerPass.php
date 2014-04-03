@@ -270,6 +270,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
         // make sure the default templates are defined
         $definedTemplates = array_merge(array(
             'user_block'               => 'SonataAdminBundle:Core:user_block.html.twig',
+            'add_block'                => 'SonataAdminBundle:Core:add_block.html.twig',
             'layout'                   => 'SonataAdminBundle::standard_layout.html.twig',
             'ajax'                     => 'SonataAdminBundle::ajax_layout.html.twig',
             'dashboard'                => 'SonataAdminBundle:Core:dashboard.html.twig',

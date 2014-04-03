@@ -1,0 +1,57 @@
+{% block user_block %}
+    {% set itemsPerColumn = admin_pool.getOption('dropdown_number_groups_per_colums') %}
+    {% set columnsCount = (admin_pool.dashboardgroups|length / itemsPerColumn)|round %}
+
+
+    <ul class="dropdown-menu{% if columnsCount > 1 %} multi-column{% endif %} dropdown-add"
+        {% if columnsCount > 1 %}style="width: {{ columnsCount*140 }}px;"{% endif %}
+            >
+        {% for group in admin_pool.dashboardgroups %}
+            {% set display = (group.roles is empty or is_granted('ROLE_SUPER_ADMIN') ) %}
+            {% for role in group.roles if not display %}
+                {% set display = is_granted(role) %}
+            {% endfor %}
+
+            {# Do not display the group label if no item in group is available #}
+            {% set item_count = 0 %}
+            {% if display %}
+                {% for admin in group.items if item_count == 0 %}
+                    {% if admin.hasroute('list') and admin.isGranted('LIST') %}
+                        {% set item_count = item_count+1 %}
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+
+            {% if display and (item_count > 0) %}
+                {% if columnsCount > 1 and loop.index0 % itemsPerColumn == 0 %}
+                    {% if loop.first %}
+                        <div class="row">
+                    {% endif %}
+                    <div class="col-md-{{ (12/columnsCount)|round }}">
+                    <ul class="dropdown-menu">
+                {% endif %}
+
+                <li role="presentation" class="dropdown-header">{{ group.label|trans({}, group.label_catalogue) }}</li>
+                {% for admin in group.items %}
+                    {% if admin.hasroute('create') and admin.isGranted('CREATE') %}
+                        <li role="presentation">
+                            <a role="menuitem" tabindex="-1" href="{{ admin.generateUrl('create')}}">{{ admin.label|trans({}, admin.translationdomain) }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+
+                {% if not loop.last and loop.index % itemsPerColumn != 0 %}
+                    <li role="presentation" class="divider"></li>
+                {% endif %}
+
+            {% if loop.length > itemsPerColumn and loop.index % itemsPerColumn == 0 %}
+                </ul>
+                </div>
+            {% endif %}
+                {% if loop.length > itemsPerColumn and loop.last %}
+                    </div>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    </ul>
+{% endblock %}
