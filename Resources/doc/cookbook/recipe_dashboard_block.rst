@@ -18,7 +18,7 @@ In order to create a dashboard block, we need to:
 Step 1
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-First ...
+Create a new block class that implements BlockBundleInterface
 
 
 .. code-block:: php
@@ -72,59 +72,4 @@ Or by overwriting the configuration in your ``config.yml``:
 
 For more information about service configuration please refer to Step 3 of :doc:`../reference/getting_started`
 
-Step 2
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Now it's time to actually create your custom action here, for this example I chose
-to implement a ``clone`` action.
-
-.. code-block:: php
-
-    <?php // src/Acme/DemoBundle/Controller/CRUDController.php
-
-    namespace Acme\DemoBundle\Controller;
-
-    use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-    use Sonata\AdminBundle\Controller\CRUDController as Controller;
-    use Symfony\Component\HttpFoundation\RedirectResponse;
-
-    class CRUDController extends Controller
-    {
-        public function cloneAction()
-        {
-            $id = $this->get('request')->get($this->admin->getIdParameter());
-
-            $object = $this->admin->getObject($id);
-
-            if (!$object) {
-                throw new NotFoundHttpException(sprintf('unable to find the object with id : %s', $id));
-            }
-
-            $clonedObject = clone $object;
-            $clonedObject->setName($object->getName()." (Clone)");
-
-            $this->admin->create($clonedObject);
-
-            $this->addFlash('sonata_flash_success', 'Cloned successfully');
-
-            return new RedirectResponse($this->admin->generateUrl('list'));
-        }
-    }
-
-Here we first get the id of the object, see if it exists then clone it and insert the clone
-as new object. Finally we set a flash message indicating success and redirect to the list view.
-
-Step 3
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-You need to tell SonataAdmin how to render your new action. You do that by creating a ``list__action_clone.html.twig`` in the
-namespace of your custom Admin Controller.
-
-.. code-block:: html+jinja
-
-    {# src/Acme/DemoBundle/Resources/views/CRUD/list__action_clone.html.twig #}
-
-    <a class="btn btn-sm" href="{{ admin.generateObjectUrl('clone', object) }}">clone</a>
-
-Right now ``clone`` is not a known route, we define it in the next step.
 
