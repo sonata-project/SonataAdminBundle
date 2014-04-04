@@ -25,6 +25,8 @@ class Pool
 
     protected $templates    = array();
 
+    protected $assets       = array();
+
     protected $title;
 
     protected $titleLogo;
@@ -36,13 +38,15 @@ class Pool
      * @param string                                                    $title
      * @param string                                                    $logoTitle
      * @param array                                                     $options
+     * @param array                                                     $assets
      */
-    public function __construct(ContainerInterface $container, $title, $logoTitle, $options = array())
+    public function __construct(ContainerInterface $container, $title, $logoTitle, $options = array(), $assets = array())
     {
         $this->container = $container;
         $this->title     = $title;
         $this->titleLogo = $logoTitle;
         $this->options   = $options;
+        $this->assets    = $assets;
     }
 
     /**
@@ -287,6 +291,40 @@ class Pool
         }
 
         return null;
+    }
+
+    /**
+     * @param array $assets
+     *
+     * @return void
+     */
+    public function setAssets(array $assets)
+    {
+        $this->assets = $assets;
+    }
+
+    /**
+     * @return array
+     */
+    public function getAssets()
+    {
+        return $this->assets;
+    }
+
+    /**
+     * @return array
+     */
+    public function getCss()
+    {
+        return $this->assets['css'];
+    }
+
+    /**
+     * @return array
+     */
+    public function getJavascripts()
+    {
+        return $this->assets['javascripts'];
     }
 
     /**

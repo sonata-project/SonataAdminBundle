@@ -109,6 +109,10 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
                     $groups[$resolvedGroupName]['label_catalogue'] = 'SonataAdminBundle';
                 }
 
+                if (empty($group['icon'])) {
+                    $groups[$resolvedGroupName]['icon'] = $groupDefaults[$resolvedGroupName]['icon'];
+                }
+
                 if (!empty($group['item_adds'])) {
                     $groups[$resolvedGroupName]['items'] = array_merge($groups[$resolvedGroupName]['items'], $group['item_adds']);
                 }

@@ -161,12 +161,12 @@ file that was distributed with this source code.
 {% block list_filters %}
     {% if admin.datagrid.filters %}
         {% form_theme form "SonataAdminBundle:Form:filter_admin_fields.html.twig" %}
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h4 class="panel-title filter_legend {{ admin.datagrid.hasActiveFilters ? 'active' : 'inactive' }}">{{ 'label_filters'|trans({}, 'SonataAdminBundle') }}</h4>
+        <div class="box box-primary">
+            <div class="box-header">
+                <h4 class="box-title filter_legend {{ admin.datagrid.hasActiveFilters ? 'active' : 'inactive' }}">{{ 'label_filters'|trans({}, 'SonataAdminBundle') }}</h4>
             </div>
 
-            <div class="panel-body">
+            <div class="box-body">
                 <form class="sonata-filter-form {{ admin.isChild and 1 == admin.datagrid.filters|length ? 'hide' : '' }}" action="{{ admin.generateUrl('list') }}" method="GET" role="form">
                     {{ form_errors(form) }}
                         <div class="filter_container {{ admin.datagrid.hasActiveFilters ? 'active' : 'inactive' }}">

@@ -94,6 +94,7 @@ class Configuration implements ConfigurationInterface
                                 ->children()
                                     ->scalarNode('label')->end()
                                     ->scalarNode('label_catalogue')->end()
+                                    ->scalarNode('icon')->defaultValue('<i class="fa fa-folder"></i>')->end()
                                     ->arrayNode('items')
                                         ->prototype('scalar')->end()
                                     ->end()
@@ -170,6 +171,51 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('base_list_field')->defaultValue('SonataAdminBundle:CRUD:base_list_field.html.twig')->cannotBeEmpty()->end()
                         ->scalarNode('pager_links')->defaultValue('SonataAdminBundle:Pager:links.html.twig')->cannotBeEmpty()->end()
                         ->scalarNode('pager_results')->defaultValue('SonataAdminBundle:Pager:results.html.twig')->cannotBeEmpty()->end()
+                    ->end()
+                ->end()
+
+                ->arrayNode('assets')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->arrayNode('css')
+                            ->defaultValue(array(
+                                'bundles/sonataadmin/admin-lte/css/bootstrap.min.css',
+                                'bundles/sonataadmin/admin-lte/css/font-awesome.min.css',
+                                'bundles/sonataadmin/admin-lte/css/ionicons.min.css',
+                                'bundles/sonataadmin/admin-lte/css/AdminLTE.css',
+
+                                'bundles/sonatajquery/themes/flick/jquery-ui-1.10.4.custom.css',
+
+                                'bundles/sonataadmin/select2/select2.css',
+                                'bundles/sonataadmin/select2/select2-bootstrap.css',
+
+                                'bundles/sonataadmin/bootstrap3-editable/bootstrap3-editable/css/bootstrap-editable.css',
+
+                                'bundles/sonataadmin/css/styles.css',
+                                'bundles/sonataadmin/css/layout.css'
+                            ))
+                            ->prototype('scalar')->end()
+                        ->end()
+                        ->arrayNode('javascripts')
+                            ->defaultValue(array(
+                                'bundles/sonatajquery/jquery-1.10.2.js',
+                                'bundles/sonatajquery/jquery-ui-1.10.4.js',
+                                'bundles/sonatajquery/jquery-ui-i18n.js',
+
+                                'bundles/sonataadmin/jquery/jquery.form.js',
+                                'bundles/sonataadmin/jquery/jquery.confirmExit.js',
+
+                                'bundles/sonataadmin/admin-lte/js/bootstrap.min.js',
+
+                                'bundles/sonataadmin/bootstrap3-editable/bootstrap3-editable/js/bootstrap-editable.min.js',
+
+                                'bundles/sonataadmin/select2/select2.min.js',
+
+                                'bundles/sonataadmin/App.js',
+                                'bundles/sonataadmin/Admin.js',
+                            ))
+                            ->prototype('scalar')->end()
+                        ->end()
                     ->end()
                 ->end()
 

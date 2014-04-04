@@ -31,6 +31,8 @@ class SonataAdminExtension extends Extension
      *
      * @param array            $configs   An array of configuration settings
      * @param ContainerBuilder $container A ContainerBuilder instance
+     *
+     * @throws \RuntimeException
      */
     public function load(array $configs, ContainerBuilder $container)
     {
@@ -79,6 +81,7 @@ BOOM
         $pool->replaceArgument(1, $config['title']);
         $pool->replaceArgument(2, $config['title_logo']);
         $pool->replaceArgument(3, $config['options']);
+        $pool->replaceArgument(4, $config['assets']);
 
         $container->setParameter('sonata.admin.configuration.templates', $config['templates']);
         $container->setParameter('sonata.admin.configuration.admin_services', $config['admin_services']);

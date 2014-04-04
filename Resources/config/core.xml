@@ -10,6 +10,7 @@
             <argument />
             <argument />
             <argument type="collection" />
+            <argument type="collection" />
 
             <call method="setTemplates">
                 <argument>%sonata.admin.configuration.templates%</argument>
