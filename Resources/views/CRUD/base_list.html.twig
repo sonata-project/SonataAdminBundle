@@ -119,10 +119,23 @@ file that was distributed with this source code.
 
                                             <div class="pull-right">
                                                 {% if admin.hasRoute('export') and admin.isGranted("EXPORT") and admin.getExportFormats()|length %}
-                                                    {{ "label_export_download"|trans({}, "SonataAdminBundle") }}
-                                                    {% for format in admin.getExportFormats() %}
-                                                        <a href="{{ admin.generateUrl('export', admin.modelmanager.paginationparameters(admin.datagrid, 0) + {'format' : format}) }}">{{ format }}</a>{% if not loop.last %},{% endif %}
-                                                    {% endfor %}
+                                                    <div class="btn-group">
+                                                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                                            <i class="glyphicon glyphicon-export"></i>
+                                                            {{ "label_export_download"|trans({}, "SonataAdminBundle") }}
+                                                            <span class="caret"></span>
+                                                        </button>
+                                                        <ul class="dropdown-menu">
+                                                            {% for format in admin.getExportFormats() %}
+                                                                <li>
+                                                                    <a href="{{ admin.generateUrl('export', admin.modelmanager.paginationparameters(admin.datagrid, 0) + {'format' : format}) }}">
+                                                                        <i class="glyphicon glyphicon-download"></i>
+                                                                        {{ format|upper }}
+                                                                    </a>
+                                                                <li>
+                                                            {% endfor %}
+                                                        </ul>
+                                                    </div>
 
                                                     &nbsp;-&nbsp;
                                                 {% endif %}
