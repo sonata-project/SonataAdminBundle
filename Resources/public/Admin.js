@@ -1,3 +1,14 @@
+/*
+
+ This file is part of the Sonata package.
+
+ (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+ For the full copyright and license information, please view the LICENSE
+ file that was distributed with this source code.
+
+ */
+
 jQuery(document).ready(function() {
     jQuery('html').removeClass('no-js');
     if (window.SONATA_CONFIG && window.SONATA_CONFIG.CONFIRM_EXIT) {
