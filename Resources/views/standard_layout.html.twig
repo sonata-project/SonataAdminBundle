@@ -125,7 +125,7 @@ file that was distributed with this source code.
                                 {% block sonata_breadcrumb %}
                                     {% if _breadcrumb is not empty or action is defined %}
                                         <div class="col-md-6">
-                                            <ol class="nav navbar-top-links breadcrumb">
+                                            <ol class="nav navbar-top-links breadcrumb col-md-12">
                                                 {% if _breadcrumb is empty %}
                                                     {% if action is defined %}
                                                         {% for menu in admin.breadcrumbs(action) %}
