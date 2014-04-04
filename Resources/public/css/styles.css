@@ -49,6 +49,10 @@ footer a {
     padding: 0 10px;
 }
 
+.right-side > .content-header {
+    padding-bottom: 0;
+}
+
 .content-header .navbar {
     margin-bottom: 0;
 }
