@@ -198,7 +198,8 @@ class ShowMapperTest extends \PHPUnit_Framework_TestCase
                 'fields' => array('fooName1'=>'fooName1', 'fooName2'=>'fooName2', 'fooName3'=>'fooName3', 'fooName4'=>'fooName4'),
                 'description' => false,
                 'translation_domain' => null,
-       )), $this->admin->getShowGroups());
+                'class' => false,
+            )), $this->admin->getShowGroups());
 
         $this->showMapper->reorder(array('fooName3', 'fooName2', 'fooName1', 'fooName4'));
 
@@ -206,10 +207,11 @@ class ShowMapperTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(print_r(array(
             'Group1' =>array(
                 'collapsed' => false,
+                'class' => false,
                 'fields' => array('fooName3'=>'fooName3', 'fooName2'=>'fooName2', 'fooName1'=>'fooName1', 'fooName4'=>'fooName4'),
                 'description' => false,
                 'translation_domain' => null,
-       )), true), print_r($this->admin->getShowGroups(), true));
+            )), true), print_r($this->admin->getShowGroups(), true));
     }
 
     private function getFieldDescriptionMock($name=null, $label=null)
