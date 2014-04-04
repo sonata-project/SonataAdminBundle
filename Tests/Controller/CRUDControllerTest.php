@@ -1250,7 +1250,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateActionSuccess()
     {
-        $this->admin->expects($this->once())
+        $this->admin->expects($this->exactly(2))
             ->method('isGranted')
             ->with($this->equalTo('CREATE'))
             ->will($this->returnValue(true));
@@ -1335,7 +1335,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateActionAjaxSuccess()
     {
-        $this->admin->expects($this->once())
+        $this->admin->expects($this->exactly(2))
             ->method('isGranted')
             ->with($this->equalTo('CREATE'))
             ->will($this->returnValue(true));
