@@ -6,11 +6,11 @@
     ],
     "dependencies": {
         "bootstrap": "~3.1.0",
-        "jquery": "1.11.0"
+        "jquery": "~1.11.0"
     },
     "license": "MIT",
     "private": true,
     "ignore": [
-        "**/.*"
+        "*"
     ]
 }
