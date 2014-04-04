@@ -151,22 +151,24 @@ file that was distributed with this source code.
                                 {% endblock sonata_breadcrumb %}
 
                                 {% block sonata_top_nav_menu %}
-                                    <ul class="nav navbar-top-links navbar-right">
-                                        <li class="dropdown">
-                                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                                <i class="fa fa-plus-square fa-fw"></i> <i class="fa fa-caret-down"></i>
-                                            </a>
-                                            {% include admin_pool.getTemplate('add_block') %}
-                                        </li>
-                                        <li class="dropdown">
-                                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                                <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
-                                            </a>
-                                            <ul class="dropdown-menu dropdown-user">
-                                                {% include admin_pool.getTemplate('user_block') %}
-                                            </ul>
-                                        </li>
-                                    </ul>
+                                    {% if app.security.token and is_granted('ROLE_SONATA_ADMIN') %}
+                                        <ul class="nav navbar-top-links navbar-right">
+                                            <li class="dropdown">
+                                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                                    <i class="fa fa-plus-square fa-fw"></i> <i class="fa fa-caret-down"></i>
+                                                </a>
+                                                {% include admin_pool.getTemplate('add_block') %}
+                                            </li>
+                                            <li class="dropdown">
+                                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                                    <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
+                                                </a>
+                                                <ul class="dropdown-menu dropdown-user">
+                                                    {% include admin_pool.getTemplate('user_block') %}
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    {% endblock %}
                                 {% endblock %}
                             </div>
 
