@@ -1,0 +1,16 @@
+{
+    "name": "sonata-project-admin-bundle",
+    "homepage": "https://sonata-project.org/bundles/admin-bundle",
+    "authors": [
+        "Thomas Rabaix <thomas.rabaix@gmail.com>"
+    ],
+    "dependencies": {
+        "bootstrap": "~3.1.0",
+        "jquery": "1.11.0"
+    },
+    "license": "MIT",
+    "private": true,
+    "ignore": [
+        "**/.*"
+    ]
+}
