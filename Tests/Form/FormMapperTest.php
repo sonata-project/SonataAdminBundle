@@ -43,6 +43,7 @@ class FormMapperTest extends \PHPUnit_Framework_TestCase
                     'fields' => array(),
                     'description' => false,
                     'translation_domain' => null,
+                    'class' => false,
                 )));
 
         $this->formMapper->with('foobar');
@@ -58,6 +59,7 @@ class FormMapperTest extends \PHPUnit_Framework_TestCase
                     'fields' => array(),
                     'description' => false,
                     'translation_domain' => 'Foobar',
+                    'class' => false,
                 )));
 
         $this->formMapper->with('foobar', array(
@@ -73,6 +75,7 @@ class FormMapperTest extends \PHPUnit_Framework_TestCase
                 'fields' => array(),
                 'description' => false,
                 'translation_domain' => 'Foobar',
+                'class' => false,
             )
         );
 
