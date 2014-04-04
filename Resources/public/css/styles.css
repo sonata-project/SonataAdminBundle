@@ -28,6 +28,16 @@ footer a {
     color: #f6f6f6;
 }
 
+body > .header .logo {
+    font-family: 'Source Sans Pro', sans-serif;
+}
+
+.open > .dropdown-menu {
+    animation-duration: .3s;
+    -webkit-animation-duration: .3s;
+    -moz-animation-duration: .3s;
+}
+
 /* navigation */
 
 .navbar-static-side ul li {
