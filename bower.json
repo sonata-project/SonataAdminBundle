@@ -8,6 +8,7 @@
         "bootstrap-sass-official": "~3.1.0",
         "bootstrap": "~3.1.0",
         "jquery": "~1.11.0",
+        "jqueryui": "~1.10.4",
         "x-editable": "~1.5.1",
         "select2": "3.4.3",
         "AdminLTE": "https://github.com/almasaeed2010/AdminLTE.git#1.1"
