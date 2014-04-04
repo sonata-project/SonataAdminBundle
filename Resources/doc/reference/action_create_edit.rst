@@ -28,7 +28,7 @@ FormGroup options
 When adding a form group to your edit/create form, you may specify some options for the group itself.
 
 - ``collapsed``: unused at the moment
-- ``class``: the class for your form group in the admin; by default, the value is set to ``col-md-12`` if you have only one formgroup in your form, otherwise to ``col-md-6``.
+- ``class``: the class for your form group in the admin; by default, the value is set to ``col-md-12``.
 - ``fields``: the fields in your form group (you should NOT override this unless you know what you're doing).
 - ``description``: to complete
 - ``translation_domain``: to complete
