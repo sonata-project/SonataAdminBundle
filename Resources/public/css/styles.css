@@ -223,9 +223,9 @@ td.sonata-ba-list-label {
 
 /* side filter */
 
-h4.filter_legend {
+.box .box-header h4.box-title.filter_legend {
     position: relative;
-    padding-left: 16px;
+    padding-left: 20px;
     cursor: pointer;
 }
 
@@ -241,6 +241,7 @@ h4.filter_legend:before {
     top: 50%;
     left: 2px;
     margin-top: -2px;
+    margin-left: 5px;
 }
 
 h4.filter_legend.active,

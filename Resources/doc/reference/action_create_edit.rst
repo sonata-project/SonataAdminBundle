@@ -3,11 +3,11 @@ Creating and Editing objects
 
 .. note::
 
-    This document is a stub representing a new work in progress. If you're reading 
-    this you can help contribute, **no matter what your experience level with Sonata 
+    This document is a stub representing a new work in progress. If you're reading
+    this you can help contribute, **no matter what your experience level with Sonata
     is**. Check out the `issues on Github`_ for more information about how to get involved.
 
-This document will cover the Create and Edit actions. It will cover configuration 
+This document will cover the Create and Edit actions. It will cover configuration
 of the fields and forms available in these views and any other relevant settings.
 
 
@@ -21,6 +21,36 @@ To do:
 - using configureFormFields() to set which fields to display
 - options available when adding fields, inc custom templates
 - link to the field_types document for more details about specific field types
+
+FormGroup options
+~~~~~~~~~~~~~~~~~
+
+When adding a form group to your edit/create form, you may specify some options for the group itself.
+
+- ``collapsed``: unused at the moment
+- ``class``: the class for your form group in the admin; by default, the value is set to ``col-md-12`` if you have only one formgroup in your form, otherwise to ``col-md-6``.
+- ``fields``: the fields in your form group (you should NOT override this unless you know what you're doing).
+- ``description``: to complete
+- ``translation_domain``: to complete
+
+To specify options, do as follow:
+
+.. code-block:: php
+
+<?php
+
+    public function configureFormFields(FormMapper $formMapper)
+    {
+        $formMapper
+            ->with('Addresses',
+                array(
+                    'class'       => 'col-md-8',
+                    'description' => 'Lorem ipsum',
+                    // ...
+                    ))
+                // ...
+            ->end()
+        ;
 
 
 Embedding other Admins

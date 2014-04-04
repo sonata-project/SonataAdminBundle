@@ -19,6 +19,10 @@ file that was distributed with this source code.
     {% endif %}
 {% endblock%}
 
+{% block navbar_title %}
+    {{ block('title') }}
+{% endblock %}
+
 {% block actions %}
     <li>{% include 'SonataAdminBundle:Button:show_button.html.twig' %}</li>
     <li>{% include 'SonataAdminBundle:Button:history_button.html.twig' %}</li>
