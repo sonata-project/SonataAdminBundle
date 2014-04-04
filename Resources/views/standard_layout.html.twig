@@ -18,6 +18,7 @@ file that was distributed with this source code.
 {% set _title        = block('title') %}
 {% set _breadcrumb   = block('breadcrumb') %}
 {% set _actions      = block('actions') %}
+{% set _navbar_title = block('navbar_title') %}
 <!DOCTYPE html>
 <html {% block html_attributes %}class="no-js"{% endblock %}>
     <head>
@@ -221,6 +222,11 @@ file that was distributed with this source code.
                                 {% block sonata_page_content_nav %}
                                     {% if _tab_menu is not empty or _actions is not empty %}
                                         <nav class="navbar navbar-default" role="navigation">
+                                            {% if _navbar_title is not empty %}
+                                                <div class="navbar-header">
+                                                    <span class="navbar-brand">{{ _navbar_title|raw }}</span>
+                                                </div>
+                                            {% endif %}
                                             <div class="container-fluid">
                                                 <div class="navbar-left">
                                                     {% if _tab_menu is not empty %}

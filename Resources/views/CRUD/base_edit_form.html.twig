@@ -24,8 +24,9 @@
             {% endblock %}
 
             {% block sonata_tab_content %}
+                {% set default_class = admin.formgroups|length > 1 ? 'col-md-6' : 'col-md-12' %}
                 {% for name, form_group in admin.formgroups %}
-                    <div class="col-md-{% if admin.formgroups|length > 1 %}6{% else %}12{% endif %}">
+                    <div class="{{ form_group.class|default(default_class) }}">
                         <div class="box box-success">
                             <div class="box-header">
                                 <h4 class="box-title">
