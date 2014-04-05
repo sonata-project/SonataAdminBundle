@@ -324,7 +324,7 @@
             </trans-unit>
             <trans-unit id="label_export_download">
                 <source>label_export_download</source>
-                <target>دانلود : </target>
+                <target>دانلود</target>
             </trans-unit>
             <trans-unit id="loading_information">
                 <source>loading_information</source>
