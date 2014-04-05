@@ -186,7 +186,7 @@ file that was distributed with this source code.
                                         {% if display and (item_count > 0) %}
                                             <li class="treeview">
                                                 <a href="#">
-                                                    {{ group.icon|raw }}
+                                                    {% if group.icon|default() %}{{ group.icon|raw }}{% endif %}
                                                     <span>{{ group.label|trans({}, group.label_catalogue) }}</span>
                                                     <i class="fa pull-right fa-angle-left"></i>
                                                 </a>
