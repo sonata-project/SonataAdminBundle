@@ -77,4 +77,44 @@ class AdminHelperTest extends \PHPUnit_Framework_TestCase
 
         $helper->addNewInstance($object, $fieldDescription);
     }
+
+    public function testAddNewInstancePlural()
+    {
+        $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
+
+        $pool = new Pool($container, 'title', 'logo.png');
+        $helper = new AdminHelper($pool);
+
+        $admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $admin->expects($this->once())->method('getNewInstance')->will($this->returnValue(new \stdClass()));
+
+        $fieldDescription = $this->getMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+        $fieldDescription->expects($this->once())->method('getAssociationAdmin')->will($this->returnValue($admin));
+        $fieldDescription->expects($this->once())->method('getAssociationMapping')->will($this->returnValue(array('fieldName' => 'fooBars')));
+
+        $object = $this->getMock('sdtClass', array('addFooBar'));
+        $object->expects($this->once())->method('addFooBar');
+
+        $helper->addNewInstance($object, $fieldDescription);
+    }
+
+    public function testAddNewInstanceInflector()
+    {
+        $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
+
+        $pool = new Pool($container, 'title', 'logo.png');
+        $helper = new AdminHelper($pool);
+
+        $admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $admin->expects($this->once())->method('getNewInstance')->will($this->returnValue(new \stdClass()));
+
+        $fieldDescription = $this->getMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+        $fieldDescription->expects($this->once())->method('getAssociationAdmin')->will($this->returnValue($admin));
+        $fieldDescription->expects($this->once())->method('getAssociationMapping')->will($this->returnValue(array('fieldName' => 'entries')));
+
+        $object = $this->getMock('sdtClass', array('addEntry'));
+        $object->expects($this->once())->method('addEntry');
+
+        $helper->addNewInstance($object, $fieldDescription);
+    }
 }
