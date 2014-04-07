@@ -37,21 +37,25 @@ To specify options, do as follow:
 
 .. code-block:: php
 
-<?php
+    <?php
 
-    public function configureFormFields(FormMapper $formMapper)
+    MyAdmin extends Admin
     {
-        $formMapper
-            ->with('Addresses',
-                array(
-                    'class'       => 'col-md-8',
-                    'description' => 'Lorem ipsum',
-                    // ...
-                    ))
-                // ...
-            ->end()
-        ;
+        # ...
 
+        public function configureFormFields(FormMapper $formMapper)
+        {
+            $formMapper
+                ->with('Addresses',
+                    array(
+                        'class'       => 'col-md-8',
+                        'description' => 'Lorem ipsum',
+                        // ...
+                        ))
+                    // ...
+                ->end()
+            ;
+    }
 
 Embedding other Admins
 ----------------------

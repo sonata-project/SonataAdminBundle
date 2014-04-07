@@ -9,6 +9,7 @@ php:
 env:
   - SYMFONY_VERSION=2.3.*
   - SYMFONY_VERSION=2.4.*
+  - SYMFONY_VERSION=2.5.*
   - SYMFONY_VERSION=dev-master
 
 before_script:
@@ -16,7 +17,7 @@ before_script:
   - composer install --dev --prefer-source
   - sudo pip install -r Resources/doc/requirements.txt
 
-script: phpunit && cd Resources/doc && sphinx-build -W -b html -d _build/doctrees . _build/html
+script: make test
 
 notifications:
     webhooks: http://sonata-project.org/bundles/admin/master/travis
