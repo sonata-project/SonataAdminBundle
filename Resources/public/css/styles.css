@@ -38,6 +38,24 @@ body > .header .logo {
     -moz-animation-duration: .3s;
 }
 
+/* Buttons */
+
+.btn.btn-outline {
+    color: inherit;
+    background-color: transparent;
+    transition: all .5s;
+}
+
+.btn.btn-primary.btn-outline:hover,
+.btn.btn-success.btn-outline:hover,
+.btn.btn-info.btn-outline:hover,
+.btn.btn-warning.btn-outline:hover,
+.btn.btn-danger.btn-outline:hover {
+    color: #fff;
+}
+
+
+
 /* navigation */
 
 .navbar-static-side ul li {

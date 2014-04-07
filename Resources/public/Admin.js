@@ -138,7 +138,7 @@ var Admin = {
                 content: message,
                 trigger: 'hover',
                 html: true,
-                placement: 'right',
+                placement: 'top',
                 template: '<div class="popover"><div class="arrow"></div><div class="popover-inner"><div class="popover-content alert-error"><p></p></div></div></div>'
             });
 

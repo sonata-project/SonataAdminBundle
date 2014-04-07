@@ -128,7 +128,7 @@ file that was distributed with this source code.
                                         </a>
                                         {% include admin_pool.getTemplate('add_block') %}
                                     </li>
-                                    <li class="dropdown">
+                                    <li class="dropdown user-menu">
                                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                                             <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
                                         </a>
@@ -145,74 +145,76 @@ file that was distributed with this source code.
         </header>
 
         <div class="wrapper row-offcanvas row-offcanvas-left">
-            <aside class="left-side sidebar-offcanvas">
-                <section class="sidebar">
-                    {% block sonata_side_nav %}
-                        {% block sonata_sidebar_search %}
-                            {% if app.security.token and is_granted('ROLE_SONATA_ADMIN') %}
-                                <form action="{{ url('sonata_admin_search') }}" method="GET" class="sidebar-form" role="search">
-                                    <div class="input-group custom-search-form">
-                                        <input type="text" name="q" value="{{ app.request.get('q') }}" class="form-control" placeholder="{{ 'search_placeholder'|trans({}, 'SonataAdminBundle') }}">
-                                            <span class="input-group-btn">
-                                                <button class="btn btn-flat" type="submit">
-                                                    <i class="fa fa-search"></i>
-                                                </button>
-                                            </span>
-                                    </div>
-                                </form>
-                            {% endif %}
-                        {% endblock sonata_sidebar_search %}
+            {% block sonata_left_side %}
+                <aside class="left-side sidebar-offcanvas">
+                    <section class="sidebar">
+                        {% block sonata_side_nav %}
+                            {% block sonata_sidebar_search %}
+                                {% if app.security.token and is_granted('ROLE_SONATA_ADMIN') %}
+                                    <form action="{{ url('sonata_admin_search') }}" method="GET" class="sidebar-form" role="search">
+                                        <div class="input-group custom-search-form">
+                                            <input type="text" name="q" value="{{ app.request.get('q') }}" class="form-control" placeholder="{{ 'search_placeholder'|trans({}, 'SonataAdminBundle') }}">
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-flat" type="submit">
+                                                        <i class="fa fa-search"></i>
+                                                    </button>
+                                                </span>
+                                        </div>
+                                    </form>
+                                {% endif %}
+                            {% endblock sonata_sidebar_search %}
 
-                        {% block side_bar_before_nav %} {% endblock %}
-                        {% block side_bar_nav %}
-                            {% if app.security.token and is_granted('ROLE_SONATA_ADMIN') %}
-                                <ul class="sidebar-menu">
-                                    {% for group in admin_pool.dashboardgroups %}
-                                        {% set display = (group.roles is empty or is_granted('ROLE_SUPER_ADMIN') ) %}
-                                        {% for role in group.roles if not display %}
-                                            {% set display = is_granted(role) %}
-                                        {% endfor %}
-
-                                        {# Do not display the group label if no item in group is available #}
-                                        {% set item_count = 0 %}
-                                        {% if display %}
-                                            {% for admin in group.items if item_count == 0 %}
-                                                {% if admin.hasroute('list') and admin.isGranted('LIST') %}
-                                                    {% set item_count = item_count+1 %}
-                                                {% endif %}
+                            {% block side_bar_before_nav %} {% endblock %}
+                            {% block side_bar_nav %}
+                                {% if app.security.token and is_granted('ROLE_SONATA_ADMIN') %}
+                                    <ul class="sidebar-menu">
+                                        {% for group in admin_pool.dashboardgroups %}
+                                            {% set display = (group.roles is empty or is_granted('ROLE_SUPER_ADMIN') ) %}
+                                            {% for role in group.roles if not display %}
+                                                {% set display = is_granted(role) %}
                                             {% endfor %}
-                                        {% endif %}
 
-                                        {% if display and (item_count > 0) %}
-                                            <li class="treeview">
-                                                <a href="#">
-                                                    {% if group.icon|default() %}{{ group.icon|raw }}{% endif %}
-                                                    <span>{{ group.label|trans({}, group.label_catalogue) }}</span>
-                                                    <i class="fa pull-right fa-angle-left"></i>
-                                                </a>
-                                                {% set active = false %}
-                                                {% for admin in group.items %}
-                                                    {% if admin.hasroute('list') and admin.isGranted('LIST') and app.request.get('_sonata_admin') == admin.code %}
-                                                        {% set active = true %}
+                                            {# Do not display the group label if no item in group is available #}
+                                            {% set item_count = 0 %}
+                                            {% if display %}
+                                                {% for admin in group.items if item_count == 0 %}
+                                                    {% if admin.hasroute('list') and admin.isGranted('LIST') %}
+                                                        {% set item_count = item_count+1 %}
                                                     {% endif %}
                                                 {% endfor %}
-                                                <ul class="treeview-menu{% if active %} active{% endif %}">
+                                            {% endif %}
+
+                                            {% if display and (item_count > 0) %}
+                                                <li class="treeview">
+                                                    <a href="#">
+                                                        {% if group.icon|default() %}{{ group.icon|raw }}{% endif %}
+                                                        <span>{{ group.label|trans({}, group.label_catalogue) }}</span>
+                                                        <i class="fa pull-right fa-angle-left"></i>
+                                                    </a>
+                                                    {% set active = false %}
                                                     {% for admin in group.items %}
-                                                        {% if admin.hasroute('list') and admin.isGranted('LIST') %}
-                                                            <li{% if app.request.get('_sonata_admin') == admin.code %} class="active"{% endif %}><a href="{{ admin.generateUrl('list')}}"><i class="fa fa-angle-double-right"></i> {{ admin.label|trans({}, admin.translationdomain) }}</a></li>
+                                                        {% if admin.hasroute('list') and admin.isGranted('LIST') and app.request.get('_sonata_admin') == admin.code %}
+                                                            {% set active = true %}
                                                         {% endif %}
                                                     {% endfor %}
-                                                </ul>
-                                            </li>
-                                        {% endif %}
-                                    {% endfor %}
-                                </ul>
-                            {% endif %}
-                        {% endblock side_bar_nav %}
-                        {% block side_bar_after_nav %} {% endblock %}
-                    {% endblock sonata_side_nav %}
-                </section>
-            </aside>
+                                                    <ul class="treeview-menu{% if active %} active{% endif %}">
+                                                        {% for admin in group.items %}
+                                                            {% if admin.hasroute('list') and admin.isGranted('LIST') %}
+                                                                <li{% if app.request.get('_sonata_admin') == admin.code %} class="active"{% endif %}><a href="{{ admin.generateUrl('list')}}"><i class="fa fa-angle-double-right"></i> {{ admin.label|trans({}, admin.translationdomain) }}</a></li>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </ul>
+                                                </li>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
+                            {% endblock side_bar_nav %}
+                            {% block side_bar_after_nav %} {% endblock %}
+                        {% endblock sonata_side_nav %}
+                    </section>
+                </aside>
+            {% endblock sonata_left_side %}
 
             {% block sonata_wrapper %}
                 <aside class="right-side">
@@ -249,14 +251,15 @@ file that was distributed with this source code.
                                     {% endif %}
                                 {% endblock sonata_page_content_nav %}
 
+                            {% endblock sonata_page_content_header %}
+                        </section>
+
+                        <section class="content">
+                            {% block sonata_admin_content %}
+
                                 {% block notice %}
                                     {% include 'SonataCoreBundle:FlashMessage:render.html.twig' %}
                                 {% endblock notice %}
-
-                            {% endblock sonata_page_content_header %}
-                        </section>
-                        <section class="content">
-                            {% block sonata_admin_content %}
 
                                 {% if _preview is not empty %}
                                     <div class="sonata-ba-preview">{{ _preview|raw }}</div>

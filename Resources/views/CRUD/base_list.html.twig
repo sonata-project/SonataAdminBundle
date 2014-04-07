@@ -161,9 +161,9 @@ file that was distributed with this source code.
                 </form>
                 {% endif %}
             {% else %}
-                <p class="notice">
+                <div class="callout callout-info">
                     {{ 'no_result'|trans({}, 'SonataAdminBundle') }}
-                </p>
+                </div>
             {% endif %}
 
             {% block list_footer %}{% endblock %}
