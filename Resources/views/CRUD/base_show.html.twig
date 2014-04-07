@@ -28,20 +28,24 @@ file that was distributed with this source code.
         {% for name, view_group in admin.showgroups %}
             <table class="table table-bordered">
                 {% if name %}
-                    <tr class="sonata-ba-view-title">
-                        <td colspan="2">
-                            {{ admin.trans(name) }}
-                        </td>
-                    </tr>
+                    <thead>
+                        <tr class="sonata-ba-view-title">
+                            <th colspan="2">
+                                {{ admin.trans(name) }}
+                            </th>
+                        </tr>
+                    </thead>
                 {% endif %}
 
-                {% for field_name in view_group.fields %}
-                    <tr class="sonata-ba-view-container">
-                        {% if elements[field_name] is defined %}
-                            {{ elements[field_name]|render_view_element(object) }}
-                        {% endif %}
-                    </tr>
-                {% endfor %}
+                <tbody>
+                    {% for field_name in view_group.fields %}
+                        <tr class="sonata-ba-view-container">
+                            {% if elements[field_name] is defined %}
+                                {{ elements[field_name]|render_view_element(object) }}
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
             </table>
         {% endfor %}
 
