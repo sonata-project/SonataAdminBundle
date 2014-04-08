@@ -121,7 +121,7 @@ Full Configuration Options
                 pager_results:        SonataAdminBundle:Pager:results.html.twig
 
             assets:
-                css:
+                stylesheets:
 
                     # Defaults:
                     - bundles/sonataadmin/admin-lte/css/bootstrap.min.css

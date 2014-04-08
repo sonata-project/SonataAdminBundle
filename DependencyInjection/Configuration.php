@@ -177,7 +177,7 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('assets')
                     ->addDefaultsIfNotSet()
                     ->children()
-                        ->arrayNode('css')
+                        ->arrayNode('stylesheets')
                             ->defaultValue(array(
                                 'bundles/sonataadmin/vendor/bootstrap/dist/css/bootstrap.min.css',
                                 'bundles/sonataadmin/vendor/AdminLTE/css/font-awesome.min.css',

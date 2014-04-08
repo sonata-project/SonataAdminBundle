@@ -41,7 +41,7 @@ class SonataAdminExtension extends Extension
         if (!isset($bundles['SonataCoreBundle'])) {
             throw new \RuntimeException(<<<BOOM
 Boom! you are living on the edge ;) The AdminBundle requires the CoreBundle!
-Please add ``"sonata-project/core-bundle": "~2.2@dev"`` into your composer.json file and add the SonataCoreBundle into the AppKernel');
+Please add ``"sonata-project/core-bundle": "~2.2"`` into your composer.json file and add the SonataCoreBundle into the AppKernel');
 BOOM
             );
         }
@@ -77,11 +77,13 @@ BOOM
         $processor = new Processor();
         $config = $processor->processConfiguration($configuration, $configs);
 
+        $config['options']['javascripts'] = $config['assets']['javascripts'];
+        $config['options']['stylesheets'] = $config['assets']['stylesheets'];
+
         $pool = $container->getDefinition('sonata.admin.pool');
         $pool->replaceArgument(1, $config['title']);
         $pool->replaceArgument(2, $config['title_logo']);
         $pool->replaceArgument(3, $config['options']);
-        $pool->replaceArgument(4, $config['assets']);
 
         $container->setParameter('sonata.admin.configuration.templates', $config['templates']);
         $container->setParameter('sonata.admin.configuration.admin_services', $config['admin_services']);

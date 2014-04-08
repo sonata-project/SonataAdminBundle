@@ -234,6 +234,11 @@ class PoolTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(null, $this->pool->getOption('non_existent_option'));
     }
 
+    public function testOptionDefault()
+    {
+        $this->assertEquals(array(), $this->pool->getOption('nonexistantarray', array()));
+    }
+
     /**
      * @return Symfony\Component\DependencyInjection\ContainerInterface - the mock of container interface
      */

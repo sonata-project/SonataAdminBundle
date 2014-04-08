@@ -29,8 +29,8 @@ file that was distributed with this source code.
 
         {% block stylesheets %}
 
-            {% for css in admin_pool.css %}
-                <link rel="stylesheet" href="{{ asset(css) }}" />
+            {% for stylesheet in admin_pool.getOption('stylesheets', []) %}
+                <link rel="stylesheet" href="{{ asset(stylesheet) }}" />
             {% endfor %}
 
         {% endblock %}
@@ -46,8 +46,8 @@ file that was distributed with this source code.
                };
             </script>
 
-            {% for js in admin_pool.javascripts %}
-                <script src="{{ asset(js) }}"></script>
+            {% for javascript in admin_pool.getOption('javascripts', []) %}
+                <script src="{{ asset(javascript) }}"></script>
             {% endfor %}
 
         {% endblock %}

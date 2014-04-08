@@ -34,19 +34,17 @@ class Pool
     protected $options;
 
     /**
-     * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
-     * @param string                                                    $title
-     * @param string                                                    $logoTitle
-     * @param array                                                     $options
-     * @param array                                                     $assets
+     * @param ContainerInterface $container
+     * @param string             $title
+     * @param string             $logoTitle
+     * @param array              $options
      */
-    public function __construct(ContainerInterface $container, $title, $logoTitle, $options = array(), $assets = array())
+    public function __construct(ContainerInterface $container, $title, $logoTitle, $options = array())
     {
         $this->container = $container;
         $this->title     = $title;
         $this->titleLogo = $logoTitle;
         $this->options   = $options;
-        $this->assets    = $assets;
     }
 
     /**
@@ -294,40 +292,6 @@ class Pool
     }
 
     /**
-     * @param array $assets
-     *
-     * @return void
-     */
-    public function setAssets(array $assets)
-    {
-        $this->assets = $assets;
-    }
-
-    /**
-     * @return array
-     */
-    public function getAssets()
-    {
-        return $this->assets;
-    }
-
-    /**
-     * @return array
-     */
-    public function getCss()
-    {
-        return $this->assets['css'];
-    }
-
-    /**
-     * @return array
-     */
-    public function getJavascripts()
-    {
-        return $this->assets['javascripts'];
-    }
-
-    /**
      * @return string
      */
     public function getTitleLogo()
@@ -344,16 +308,17 @@ class Pool
     }
 
     /**
-     * @param $name
+     * @param string $name
+     * @param mixed  $default
      *
      * @return mixed
      */
-    public function getOption($name)
+    public function getOption($name, $default = null)
     {
         if (isset($this->options[$name])) {
             return $this->options[$name];
         }
 
-        return null;
+        return $default;
     }
 }
