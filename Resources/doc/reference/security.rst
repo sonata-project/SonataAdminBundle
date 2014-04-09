@@ -60,6 +60,7 @@ Using roles:
 
     .. code-block:: yaml
 
+        # app/config/config.yml
         sonata_admin:
             security:
                 handler: sonata.admin.security.handler.role
@@ -119,6 +120,7 @@ So our ``security.yml`` file may look to something like this:
 
     .. code-block:: yaml
 
+        # app/config/security.yml
         security:
             ...
             role_hierarchy:
@@ -209,12 +211,13 @@ Then declare your handler as a service:
             </service>
         ...
 
-And specify it as Sonata security handler on your configuration (``config.yml``):
+And specify it as Sonata security handler on your configuration:
 
 .. configuration-block::
 
     .. code-block:: yaml
 
+        # app/config/config.yml
         sonata_admin:
             security:
                 handler: acme.demo.security.handler.role
@@ -309,6 +312,7 @@ In ``app/config/security.yml``:
 
     .. code-block:: yaml
 
+        # app/config/security.yml
         security:
             providers:
                 fos_userbundle:
@@ -697,6 +701,7 @@ service to use when retrieving your users.
 
     .. code-block:: yaml
 
+        # app/config/config.yml
         sonata_admin:
             security:
                 acl_user_manager: my_user_manager # The name of your service
