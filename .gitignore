@@ -65,3 +65,6 @@ Resources/public/vendor/jqueryui/themes/ui-lightness
 Resources/public/vendor/jqueryui/themes/vader
 
 Resources/public/vendor/jquery/src
+
+Resources/public/vendor/jquery.scrollTo/demo
+Resources/public/vendor/jquery.scrollTo/tests
