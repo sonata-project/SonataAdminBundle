@@ -133,7 +133,8 @@ file that was distributed with this source code.
             {% endblock %}
 
             {% set has_label = sonata_admin.field_description.options.name is defined or label is not sameas(false) %}
-            <div class="col-sm-10 col-md-5 sonata-ba-field sonata-ba-field-{{ sonata_admin.edit }}-{{ sonata_admin.inline }} {% if errors|length > 0 %}sonata-ba-field-error{% endif %} {% if not has_label %}sonata-collection-row-without-label{% endif %}">
+            {% set full_length = sonata_admin.field_description.type in ['sonata_type_model_list', 'sonata_type_collection', 'sonata_page_selector'] %}
+            <div class="col-sm-10 col-md-{% if full_length %}10{% else %}5{% endif %} sonata-ba-field sonata-ba-field-{{ sonata_admin.edit }}-{{ sonata_admin.inline }} {% if errors|length > 0 %}sonata-ba-field-error{% endif %} {% if not has_label %}sonata-collection-row-without-label{% endif %}">
 
                 {{ form_widget(form, {'horizontal': false, 'horizontal_input_wrapper_class': ''}) }} {# {'horizontal': false, 'horizontal_input_wrapper_class': ''} needed to avoid MopaBootstrapBundle messing with the DOM #}
 
