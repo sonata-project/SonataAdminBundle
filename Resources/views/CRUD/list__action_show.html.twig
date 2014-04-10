@@ -10,7 +10,7 @@ file that was distributed with this source code.
 #}
 
 {% if admin.isGranted('VIEW', object) and admin.hasRoute('show') %}
-    <a href="{{ admin.generateObjectUrl('show', object) }}" class="btn btn-small view_link" title="{{ 'action_show'|trans({}, 'SonataAdminBundle') }}">
+    <a href="{{ admin.generateObjectUrl('show', object) }}" class="btn btn-sm btn-default view_link" title="{{ 'action_show'|trans({}, 'SonataAdminBundle') }}">
         <i class="glyphicon glyphicon-zoom-in"></i>
         {{ 'action_show'|trans({}, 'SonataAdminBundle') }}
     </a>
