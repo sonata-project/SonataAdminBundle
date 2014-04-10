@@ -89,12 +89,23 @@ file that was distributed with this source code.
                                                     <script>
                                                         {% block batch_javascript %}
                                                             jQuery(document).ready(function ($) {
-                                                                $('#list_batch_checkbox').click(function () {
-                                                                    $(this).closest('table').find("td input[type='checkbox']").attr('checked', $(this).is(':checked')).parent().parent().toggleClass('sonata-ba-list-row-selected', $(this).is(':checked'));
+                                                                $('#list_batch_checkbox').on('ifChanged', function () {
+                                                                    $(this)
+                                                                        .closest('table')
+                                                                        .find('td.sonata-ba-list-field-batch input[type="checkbox"]')
+                                                                        .iCheck($(this).is(':checked') ? 'check' : 'uncheck')
+                                                                    ;
                                                                 });
-                                                                $("td.sonata-ba-list-field-batch input[type='checkbox']").change(function () {
-                                                                    $(this).parent().parent().toggleClass('sonata-ba-list-row-selected', $(this).is(':checked'));
-                                                                });
+
+                                                                $('td.sonata-ba-list-field-batch input[type="checkbox"]')
+                                                                    .on('ifChanged', function () {
+                                                                        $(this)
+                                                                            .closest('tr')
+                                                                            .toggleClass('sonata-ba-list-row-selected', $(this).is(':checked'))
+                                                                        ;
+                                                                    })
+                                                                    .trigger('ifChanged')
+                                                                ;
                                                             });
                                                         {% endblock %}
                                                     </script>

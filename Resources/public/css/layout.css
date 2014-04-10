@@ -71,17 +71,8 @@ h4.filter_legend table {
 }
 
 
-
-.zebra-striped tbody tr.sonata-ba-list-row-selected td, .zebra-striped tbody tr.sonata-ba-list-row-selected th {
-    background-color: #fcffc4;
-}
-
-.zebra-striped tbody tr.sonata-ba-list-row-selected:nth-child(odd) td, .zebra-striped tbody tr.sonata-ba-list-row-selected:nth-child(odd) th {
-    background-color: #faff9e;
-}
-
-.zebra-striped tbody tr.sonata-ba-list-row-selected:hover td, .zebra-striped tbody tr.sonata-ba-list-row-selected:hover th {
-    background-color: #fdffd8;
+.table-striped tbody tr.sonata-ba-list-row-selected td, .table-striped tbody tr.sonata-ba-list-row-selected th {
+    background-color: #E3F7FE;
 }
 
 table.sonata-ba-list td img {
