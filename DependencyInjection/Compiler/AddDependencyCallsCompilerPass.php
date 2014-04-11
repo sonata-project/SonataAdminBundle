@@ -281,6 +281,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
             'ajax'                     => 'SonataAdminBundle::ajax_layout.html.twig',
             'dashboard'                => 'SonataAdminBundle:Core:dashboard.html.twig',
             'list'                     => 'SonataAdminBundle:CRUD:list.html.twig',
+            'filter'                   => 'SonataAdminBundle:Form:filter_admin_fields.html.twig',
             'show'                     => 'SonataAdminBundle:CRUD:show.html.twig',
             'edit'                     => 'SonataAdminBundle:CRUD:edit.html.twig',
             'history'                  => 'SonataAdminBundle:CRUD:history.html.twig',
