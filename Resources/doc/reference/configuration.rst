@@ -101,6 +101,7 @@ Full Configuration Options
                 dashboard:            SonataAdminBundle:Core:dashboard.html.twig
                 search:               SonataAdminBundle:Core:search.html.twig
                 list:                 SonataAdminBundle:CRUD:list.html.twig
+                filter:               SonataAdminBundle:Form:filter_admin_fields.html.twig
                 show:                 SonataAdminBundle:CRUD:show.html.twig
                 edit:                 SonataAdminBundle:CRUD:edit.html.twig
                 preview:              SonataAdminBundle:CRUD:preview.html.twig

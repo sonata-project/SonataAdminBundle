@@ -110,6 +110,7 @@ You can specify your templates in the config.yml file, like so:
                 acl:     SonataAdminBundle:CRUD:acl.html.twig
                 action:  SonataAdminBundle:CRUD:action.html.twig
                 select:  SonataAdminBundle:CRUD:list__select.html.twig
+                filter:  SonataAdminBundle:Form:filter_admin_fields.html.twig
                 dashboard:           SonataAdminBundle:Core:dashboard.html.twig
                 search:              SonataAdminBundle:Core:search.html.twig
                 batch_confirmation:  SonataAdminBundle:CRUD:batch_confirmation.html.twig
