@@ -11,7 +11,7 @@
 namespace Sonata\AdminBundle\Validator;
 
 use Symfony\Bundle\FrameworkBundle\Validator\ConstraintValidatorFactory;
-use Symfony\Component\Validator\ExecutionContext;
+use Symfony\Component\Validator\ExecutionContextInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\Validator\Constraint;
@@ -39,10 +39,10 @@ class ErrorElement
     /**
      * @param mixed                                                                $subject
      * @param \Symfony\Bundle\FrameworkBundle\Validator\ConstraintValidatorFactory $constraintValidatorFactory
-     * @param \Symfony\Component\Validator\ExecutionContext                        $context
+     * @param \Symfony\Component\Validator\ExecutionContextInterface               $context
      * @param string                                                               $group
      */
-    public function __construct($subject, ConstraintValidatorFactory $constraintValidatorFactory, ExecutionContext $context, $group)
+    public function __construct($subject, ConstraintValidatorFactory $constraintValidatorFactory, ExecutionContextInterface $context, $group)
     {
         $this->subject                    = $subject;
         $this->context                    = $context;
