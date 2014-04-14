@@ -1,5 +1,5 @@
-UPGRADE FROM 2.2 to 2.3 (Bootstrap3 theming)
-============================================
+UPGRADE FROM 2.2 to 2.3
+=======================
 
 ### Dependencies
 
@@ -14,3 +14,6 @@ You'll need to follow the dependencies upgrade instructions.
 
  - ``configureSideMenu`` and ``buildSideMenu`` methods of the ``Admin`` class have been deprecated; they are replaced by ``configureTabMenu`` and ``buildTabMenu``.
 
+### Remove configureShowField
+
+ - ``configureShowField`` has been deprecated since a while now, use ``configureShowFields`` instead => add a ``s``.
