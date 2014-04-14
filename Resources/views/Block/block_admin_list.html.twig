@@ -29,19 +29,19 @@ file that was distributed with this source code.
                             {% for admin in group.items %}
                                 {% if admin.hasroute('create') and admin.isGranted('CREATE') or admin.hasroute('list') and admin.isGranted('LIST') %}
                                             <tr>
-                                                <td class="sonata-ba-list-label">
+                                                <td class="sonata-ba-list-label" width="40%">
                                                     {{ admin.label|trans({}, admin.translationdomain) }}
                                                 </td>
                                                 <td>
                                                     <div class="btn-group">
                                                         {% if admin.hasroute('create') and admin.isGranted('CREATE') %}
                                                             {% if admin.subClasses is empty %}
-                                                                <a class="btn btn-link" href="{{ admin.generateUrl('create')}}">
+                                                                <a class="btn btn-link btn-flat" href="{{ admin.generateUrl('create')}}">
                                                                     <i class="fa fa-plus-circle"></i>
                                                                     {% trans from 'SonataAdminBundle' %}link_add{% endtrans %}
                                                                 </a>
                                                             {% else %}
-                                                                <a class="btn btn-link dropdown-toggle" data-toggle="dropdown" href="#">
+                                                                <a class="btn btn-link btn-flat dropdown-toggle" data-toggle="dropdown" href="#">
                                                                     <i class="fa fa-plus-circle"></i>
                                                                     {% trans from 'SonataAdminBundle' %}link_add{% endtrans %}
                                                                     <span class="caret"></span>
@@ -56,7 +56,7 @@ file that was distributed with this source code.
                                                             {% endif %}
                                                         {% endif %}
                                                         {% if admin.hasroute('list') and admin.isGranted('LIST') %}
-                                                            <a class="btn btn-link" href="{{ admin.generateUrl('list')}}">
+                                                            <a class="btn btn-link btn-flat" href="{{ admin.generateUrl('list')}}">
                                                                 <i class="glyphicon glyphicon-list"></i>
                                                                 {% trans from 'SonataAdminBundle' %}link_list{% endtrans -%}
                                                             </a>
