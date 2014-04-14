@@ -12,6 +12,7 @@
 namespace Sonata\AdminBundle\Admin;
 
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
+use Sonata\CoreBundle\Model\Metadata;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\PropertyAccess\PropertyPath;
@@ -2714,5 +2715,13 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     public function isAclEnabled()
     {
         return $this->getSecurityHandler() instanceof AclSecurityHandlerInterface;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getObjectMetadata($object)
+    {
+        return new Metadata($this->toString($object));
     }
 }
