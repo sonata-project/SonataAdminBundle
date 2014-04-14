@@ -15,7 +15,7 @@ file that was distributed with this source code.
     <li>{% include 'SonataAdminBundle:Core:create_button.html.twig' %}</li>
 {% endblock %}
 
-{% block tab_menu %}{{ knp_menu_render(admin.sidemenu(action), {'currentClass' : 'active'}, 'list') }}{% endblock %}
+{% block tab_menu %}{{ knp_menu_render(admin.sidemenu(action), {'currentClass' : 'active', 'template': 'SonataAdminBundle:Core:tab_menu_template.html.twig'}, 'twig') }}{% endblock %}
 
 
 {% block list_table %}
