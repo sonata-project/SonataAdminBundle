@@ -38,8 +38,12 @@ class AdminHelperTest extends \PHPUnit_Framework_TestCase
         $childFormBuilder = new FormBuilder('elementId', 'stdClass', $eventDispatcher, $formFactory);
         $formBuilder->add($childFormBuilder);
 
+        $childChildFormBuilder = new FormBuilder('subElementId', 'stdClass', $eventDispatcher, $formFactory);
+        $childFormBuilder->add($childChildFormBuilder);
+
         $this->assertNull($helper->getChildFormBuilder($formBuilder, 'foo'));
         $this->isInstanceOf('Symfony\Component\Form\FormBuilder', $helper->getChildFormBuilder($formBuilder, 'test_elementId'));
+        $this->isInstanceOf('Symfony\Component\Form\FormBuilder', $helper->getChildFormBuilder($formBuilder, 'test_elementId_subElementId'));
     }
 
     public function testGetChildFormView()
