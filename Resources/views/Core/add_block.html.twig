@@ -31,9 +31,12 @@
                     <ul class="dropdown-menu">
                 {% endif %}
 
-                <li role="presentation" class="dropdown-header">{{ group.label|trans({}, group.label_catalogue) }}</li>
                 {% for admin in group.items %}
                     {% if admin.hasroute('create') and admin.isGranted('CREATE') %}
+                        {% if loop.first %}
+                            <li role="presentation" class="dropdown-header">{{ group.label|trans({}, group.label_catalogue) }}</li>
+                        {% endif %}
+                        
                         <li role="presentation">
                             <a role="menuitem" tabindex="-1" href="{{ admin.generateUrl('create')}}">{{ admin.label|trans({}, admin.translationdomain) }}</a>
                         </li>
