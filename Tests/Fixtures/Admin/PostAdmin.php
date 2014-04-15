@@ -8,6 +8,8 @@ class PostAdmin extends Admin
 {
     protected $metadataClass = null;
 
+    protected $toStringMethod = 'getBar';
+
     public function setParentAssociationMapping($associationMapping)
     {
         $this->parentAssociationMapping = $associationMapping;

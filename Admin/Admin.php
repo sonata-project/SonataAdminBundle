@@ -219,6 +219,13 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     protected $label;
 
     /**
+     * The method which cast object to string
+     *
+     * @var string
+     */
+    protected $toStringMethod = '__toString';
+
+    /**
      * Whether or not to persist the filters in the session
      *
      * @var boolean
@@ -2636,8 +2643,11 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
             return '';
         }
 
-        if (method_exists($object, '__toString') && null !== $object->__toString()) {
-            return (string) $object;
+        if (method_exists($object, $this->toStringMethod)) {
+            $stringRepresentation = call_user_func(array($object, $this->toStringMethod));
+            if (null !== $stringRepresentation) {
+                return $stringRepresentation;
+            }
         }
 
         return sprintf("%s:%s", ClassUtils::getClass($object), spl_object_hash($object));

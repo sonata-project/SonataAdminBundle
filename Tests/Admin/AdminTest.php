@@ -14,6 +14,7 @@ namespace Sonata\AdminBundle\Tests\Admin;
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Post;
 use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Tag;
+use Sonata\AdminBundle\Tests\Fixtures\Entity\Foo;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooToString;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooToStringNull;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\PostAdmin;
@@ -303,6 +304,10 @@ class AdminTest extends \PHPUnit_Framework_TestCase
 
         $s = new FooToString;
         $this->assertEquals('salut', $admin->toString($s));
+
+        $s = new Foo;
+        $s->setBar('bar');
+        $this->assertEquals('bar', $admin->toString($s));
 
         // To string method is implemented, but returns null
         $s = new FooToStringNull;
