@@ -23,6 +23,13 @@ use Symfony\Component\Form\FormView;
 
 class AdminHelperTest extends \PHPUnit_Framework_TestCase
 {
+    public function testconstruct()
+    {
+        $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
+        $pool = $this->getMock('Sonata\AdminBundle\Admin\Pool', array(), array($container, 'title', 'logo.png'));
+        $this->isInstanceOf('Sonata\AdminBundle\Admin\AdminHelper', new AdminHelper($pool));
+    }
+
     public function testGetChildFormBuilder()
     {
         $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
