@@ -113,10 +113,11 @@ application's config file:
 .. code-block:: yaml
 
     # app/config/config.yml
-    admins:
-        sonata_admin:                                           #method name, you can find the list in the table above
-            sonata.order.admin.order:                           #id of the admin service's
-                model_manager: sonata.order.admin.order.manager #id of the your service
+    sonata_admin:
+        admin_services:
+            sonata.order.admin.order:   # id of the admin service this setting is for
+                model_manager:          # dependency name, from the table above
+                    sonata.order.admin.order.manager  # customised service id
 
 
 Admin Extension
