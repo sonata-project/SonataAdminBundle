@@ -178,8 +178,8 @@ class HelperController
         if ($uniqid) {
             $admin->setUniqid($uniqid);
         }
-        
-        if(!$objectId){
+
+        if (!$objectId){
             $objectId = null;
         }
 

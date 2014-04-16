@@ -121,6 +121,33 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
         $controller->getShortObjectDescriptionAction($request);
     }
 
+    public function testgetShortObjectDescriptionActionEmptyObjectId()
+    {
+        $admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $admin->expects($this->once())->method('setUniqid');
+        $admin->expects($this->once())->method('getObject')->with($this->identicalTo(null))->will($this->returnValue(false));
+
+        $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
+        $container->expects($this->any())->method('get')->will($this->returnValue($admin));
+
+        $twig = new Twig;
+        $request = new Request(array(
+            'code'     => 'sonata.post.admin',
+            'objectId' => "",
+            'uniqid'   => 'asdasd123',
+            '_format'  => 'html'
+        ));
+
+        $pool = new Pool($container, 'title', 'logo');
+
+        $helper = new AdminHelper($pool);
+
+        $validator = $this->getMock('Symfony\Component\Validator\ValidatorInterface');
+        $controller = new HelperController($twig, $pool, $helper, $validator);
+
+        $controller->getShortObjectDescriptionAction($request);
+    }
+
     public function testgetShortObjectDescriptionActionObject()
     {
         $mockTemplate = 'AdminHelperTest:mock-short-object-description.html.twig';
