@@ -281,11 +281,11 @@ class AdminTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('admin_sonata_news_post_comment', $commentAdmin->getBaseRouteName());
 
         $this->assertTrue($postAdmin->hasRoute('show'));
-//        $this->assertTrue($postAdmin->hasRoute('sonata.post.admin.post.show'));
-//        $this->assertTrue($postAdmin->hasRoute('sonata.post.admin.post|sonata.post.admin.comment.show'));
-//        $this->assertTrue($postAdmin->hasRoute('sonata.post.admin.comment.list'));
-//        $this->assertFalse($postAdmin->hasRoute('sonata.post.admin.post|sonata.post.admin.comment.edit'));
-//        $this->assertFalse($commentAdmin->hasRoute('edit'));
+        $this->assertTrue($postAdmin->hasRoute('sonata.post.admin.post.show'));
+        $this->assertTrue($postAdmin->hasRoute('sonata.post.admin.post|sonata.post.admin.comment.show'));
+        $this->assertTrue($postAdmin->hasRoute('sonata.post.admin.comment.list'));
+        $this->assertFalse($postAdmin->hasRoute('sonata.post.admin.post|sonata.post.admin.comment.edit'));
+        $this->assertFalse($commentAdmin->hasRoute('edit'));
     }
 
     /**
