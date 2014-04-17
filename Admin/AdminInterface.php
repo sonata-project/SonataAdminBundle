@@ -770,15 +770,6 @@ interface AdminInterface
     public function createObjectSecurity($object);
 
     /**
-     * Returns the url defined by the $name
-     *
-     * @param string $name
-     *
-     * @return \Symfony\Component\Routing\Route
-     */
-    public function getRoute($name);
-
-    /**
      * @return AdminInterface
      */
     public function getParent();

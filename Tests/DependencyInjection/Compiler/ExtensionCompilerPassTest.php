@@ -283,6 +283,7 @@ class ExtensionCompilerPassTest extends \PHPUnit_Framework_TestCase
             'SonataCoreBundle' => true,
             'KnpMenuBundle' => true
         ));
+        $container->setParameter('kernel.cache_dir', '/tmp');
 
         // Add dependencies for SonataAdminBundle (these services will never get called so dummy classes will do)
         $container

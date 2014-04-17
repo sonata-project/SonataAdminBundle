@@ -12,6 +12,7 @@
 namespace Sonata\AdminBundle\Admin;
 
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
+use Sonata\AdminBundle\Route\RoutesCache;
 use Sonata\CoreBundle\Model\Metadata;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilder;
@@ -451,6 +452,8 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      * @var array [role] => array([permission], [permission])
      */
     protected $securityInformation = array();
+
+    protected $cacheIsGranted = array();
 
     /**
      * {@inheritdoc}
@@ -1145,7 +1148,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      *
      * @return void
      */
-    public function buildRoutes()
+    private function buildRoutes()
     {
         if ($this->loaded['routes']) {
             return;
@@ -1170,38 +1173,17 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function getRoute($name)
-    {
-        $this->buildRoutes();
-
-        if (!$this->routes->has($name)) {
-            return false;
-        }
-
-        return $this->routes->get($name);
-    }
-
-    /**
      * @param string $name
      *
      * @return bool
      */
     public function hasRoute($name)
     {
-        $this->buildRoutes();
-
-        if (
-            ! $this->isChild()
-            && strpos($name, '.') !== false
-            && strpos($name, $this->getBaseCodeRoute() . '|') !== 0
-            && strpos($name, $this->getBaseCodeRoute() . '.') !== 0
-        ) {
-            $name = $this->getCode() . '|' . $name;
+        if (!$this->routeGenerator) {
+            throw new \RuntimeException('RouteGenerator cannot be null');
         }
 
-        return $this->routes->has($name);
+        return $this->routeGenerator->hasAdminRoute($this, $name);
     }
 
     /**
@@ -2494,7 +2476,13 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      */
     public function isGranted($name, $object = null)
     {
-        return $this->securityHandler->isGranted($this, $name, $object ?: $this);
+        $key = md5(json_encode($name) . ($object ? '/'.spl_object_hash($object) : ''));
+
+        if (!array_key_exists($key, $this->cacheIsGranted)) {
+            $this->cacheIsGranted[$key] = $this->securityHandler->isGranted($this, $name, $object ?: $this);
+        }
+
+        return $this->cacheIsGranted[$key];
     }
 
     /**

@@ -15,6 +15,11 @@
 
         <service id="sonata.admin.route.default_generator" class="Sonata\AdminBundle\Route\DefaultRouteGenerator">
             <argument type="service" id="router" />
+            <argument type="service" id="sonata.admin.route.cache" />
+        </service>
+
+        <service id="sonata.admin.route.cache" class="Sonata\AdminBundle\Route\RoutesCache">
+            <argument>%kernel.cache_dir%/sonata/admin</argument>
         </service>
     </services>
 </container>
