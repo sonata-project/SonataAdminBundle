@@ -44,7 +44,7 @@ class RoutesCache
      */
     public function load(AdminInterface $admin)
     {
-        $filename = $this->cacheFolder.'/'.md5($admin->getCode());
+        $filename = $this->cacheFolder.'/route_'.md5($admin->getCode());
 
         $cache = new ConfigCache($filename, $this->debug);
         if (!$cache->isFresh()) {
