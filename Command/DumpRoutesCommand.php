@@ -39,7 +39,8 @@ class DumpRoutesCommand extends ContainerAwareCommand
 
         foreach ($pool->getAdminServiceIds() as $id) {
             $output->writeln(sprintf(' > Generate routes cache for <info>%s</info>', $id));
-            $cache->dump($pool->getInstance($id));
+            $routes = $cache->load($pool->getInstance($id));
+            $output->writeln(sprintf('   Load %d routes', count($routes)));
         }
 
         $output->write("done!");

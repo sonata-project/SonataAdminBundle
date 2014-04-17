@@ -20,6 +20,7 @@
 
         <service id="sonata.admin.route.cache" class="Sonata\AdminBundle\Route\RoutesCache">
             <argument>%kernel.cache_dir%/sonata/admin</argument>
+            <argument>%kernel.debug%</argument>
         </service>
     </services>
 </container>

@@ -32,7 +32,7 @@ class DefaultRouteGeneratorTest extends \PHPUnit_Framework_TestCase
         $router = $this->getMock('\Symfony\Component\Routing\RouterInterface');
         $router->expects($this->once())->method('generate')->will($this->returnValue('/foo/bar'));
 
-        $cache = new RoutesCache($this->cacheTempFolder);
+        $cache = new RoutesCache($this->cacheTempFolder, true);
 
         $generator = new DefaultRouteGenerator($router, $cache);
 
@@ -60,6 +60,7 @@ class DefaultRouteGeneratorTest extends \PHPUnit_Framework_TestCase
         $admin->expects($this->any())->method('getCode')->will($this->returnValue('foo_code'));
         $admin->expects($this->once())->method('getPersistentParameters')->will($this->returnValue(array('abc'=>'a123', 'efg'=>'e456')));
         $admin->expects($this->any())->method('getRoutes')->will($this->returnValue($collection));
+        $admin->expects($this->any())->method('getExtensions')->will($this->returnValue(array()));
 
         $router = $this->getMock('Symfony\Component\Routing\RouterInterface');
         $router->expects($this->once())
@@ -80,7 +81,7 @@ class DefaultRouteGeneratorTest extends \PHPUnit_Framework_TestCase
                 return null;
             }));
 
-        $cache = new RoutesCache($this->cacheTempFolder);
+        $cache = new RoutesCache($this->cacheTempFolder, true);
 
         $generator = new DefaultRouteGenerator($router, $cache);
 
@@ -106,10 +107,11 @@ class DefaultRouteGeneratorTest extends \PHPUnit_Framework_TestCase
         $admin->expects($this->once())->method('hasRequest')->will($this->returnValue(true));
         $admin->expects($this->once())->method('getPersistentParameters')->will($this->returnValue(array()));
         $admin->expects($this->exactly(2))->method('getRoutes')->will($this->returnValue(new RouteCollection('base.Code.Route', 'baseRouteName', 'baseRoutePattern', 'BundleName:ControllerName')));
+        $admin->expects($this->any())->method('getExtensions')->will($this->returnValue(array()));
 
         $router = $this->getMock('Symfony\Component\Routing\RouterInterface');
 
-        $cache = new RoutesCache($this->cacheTempFolder);
+        $cache = new RoutesCache($this->cacheTempFolder, true);
 
         $generator = new DefaultRouteGenerator($router, $cache);
         $generator->generateUrl($admin, 'foo', array());
@@ -138,11 +140,13 @@ class DefaultRouteGeneratorTest extends \PHPUnit_Framework_TestCase
         $admin->expects($this->any())->method('getCode')->will($this->returnValue('foo_code'));
         $admin->expects($this->any())->method('getPersistentParameters')->will($this->returnValue(array('abc'=>'a123', 'efg'=>'e456')));
         $admin->expects($this->any())->method('getRoutes')->will($this->returnValue($childCollection));
+        $admin->expects($this->any())->method('getExtensions')->will($this->returnValue(array()));
 
         $parentAdmin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
         $parentAdmin->expects($this->any())->method('getIdParameter')->will($this->returnValue('childId'));
         $parentAdmin->expects($this->any())->method('getRoutes')->will($this->returnValue($collection));
         $parentAdmin->expects($this->any())->method('getCode')->will($this->returnValue('base.Code.Parent'));
+        $parentAdmin->expects($this->any())->method('getExtensions')->will($this->returnValue(array()));
 
         // no request attached in this test, so this will not be used
         $parentAdmin->expects($this->never())->method('getPersistentParameters')->will($this->returnValue(array('from'=>'parent')));
@@ -180,7 +184,7 @@ class DefaultRouteGeneratorTest extends \PHPUnit_Framework_TestCase
                 return null;
             }));
 
-        $cache = new RoutesCache(sys_get_temp_dir());
+        $cache = new RoutesCache($this->cacheTempFolder, true);
 
         $generator = new DefaultRouteGenerator($router, $cache);
 
@@ -217,7 +221,8 @@ class DefaultRouteGeneratorTest extends \PHPUnit_Framework_TestCase
         $admin->expects($this->any())->method('getUniqid')->will($this->returnValue('foo_uniqueid'));
         $admin->expects($this->any())->method('getCode')->will($this->returnValue('foo_code'));
         $admin->expects($this->once())->method('getPersistentParameters')->will($this->returnValue(array('abc'=>'a123', 'efg'=>'e456')));
-
+        $admin->expects($this->any())->method('getExtensions')->will($this->returnValue(array()));
+        $admin->expects($this->any())->method('getRoutes')->will($this->returnValue($collection));
 
         $router = $this->getMock('Symfony\Component\Routing\RouterInterface');
         $router->expects($this->once())
@@ -244,11 +249,12 @@ class DefaultRouteGeneratorTest extends \PHPUnit_Framework_TestCase
         $parentAdmin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
         $parentAdmin->expects($this->any())->method('getUniqid')->will($this->returnValue('parent_foo_uniqueid'));
         $parentAdmin->expects($this->any())->method('getCode')->will($this->returnValue('parent_foo_code'));
+        $parentAdmin->expects($this->any())->method('getExtensions')->will($this->returnValue(array()));
 
         $fieldDescription->expects($this->any())->method('getAdmin')->will($this->returnValue($parentAdmin));
         $admin->expects($this->any())->method('getParentFieldDescription')->will($this->returnValue($fieldDescription));
 
-        $cache = new RoutesCache(sys_get_temp_dir());
+        $cache = new RoutesCache($this->cacheTempFolder, true);
 
         $generator = new DefaultRouteGenerator($router, $cache);
 

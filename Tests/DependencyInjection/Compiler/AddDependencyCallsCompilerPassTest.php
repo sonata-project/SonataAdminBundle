@@ -175,6 +175,7 @@ class AddDependencyCallsCompilerPassTest extends \PHPUnit_Framework_TestCase
             'KnpMenuBundle' => true
         ));
         $container->setParameter('kernel.cache_dir', '/tmp');
+        $container->setParameter('kernel.debug', true);
 
         // Add dependencies for SonataAdminBundle (these services will never get called so dummy classes will do)
         $container

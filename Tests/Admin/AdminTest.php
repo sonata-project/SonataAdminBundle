@@ -262,7 +262,7 @@ class AdminTest extends \PHPUnit_Framework_TestCase
     {
         $routeGenerator = new DefaultRouteGenerator(
             $this->getMock('Symfony\Component\Routing\RouterInterface'),
-            new RoutesCache($this->cacheTempFolder)
+            new RoutesCache($this->cacheTempFolder, true)
         );
 
         $pathInfo = new \Sonata\AdminBundle\Route\PathInfoBuilder($this->getMock('Sonata\AdminBundle\Model\AuditManagerInterface'));
