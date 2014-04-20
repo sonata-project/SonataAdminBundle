@@ -84,7 +84,8 @@ class AdminHelperTest extends \PHPUnit_Framework_TestCase
         $fieldDescription->expects($this->once())->method('getAssociationMapping')->will($this->returnValue(array('fieldName' => 'fooBar')));
 
         $object = $this->getMock('sdtClass', array('addFooBar'));
-        $object->expects($this->once())->method('addFooBar');
+        $object->expects($this->never())->method('addFooBar');
+        $object->fooBar = null;
 
         $helper->addNewInstance($object, $fieldDescription);
     }
