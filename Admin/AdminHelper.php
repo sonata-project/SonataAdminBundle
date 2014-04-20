@@ -10,13 +10,12 @@
 
 namespace Sonata\AdminBundle\Admin;
 
-use Doctrine\Common\Util\ClassUtils;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormView;
 use Sonata\AdminBundle\Exception\NoValueException;
 use Sonata\AdminBundle\Util\FormViewIterator;
 use Sonata\AdminBundle\Util\FormBuilderIterator;
-use Sonata\AdminBundle\Admin\BaseFieldDescription;
+use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 class AdminHelper
 {
@@ -94,14 +93,8 @@ class AdminHelper
     {
         if (count($elements) > 0) {
             $elementId = array_shift($elements);
-
-            $object = null;
-            $method = sprintf('get%s', $this->camelize($elementId));
-            if (isset($formData->$elementId)) {
-                $object = $formData->$elementId;
-            } elseif ($formData->$method()) {
-                $object = $formData->$method();
-            }
+            $propertyAccessor = new PropertyAccessor();
+            $object = $propertyAccessor->getValue($formData, $elementId);
             if ($object) {
                 $newFormData = $this->getFormFieldData($object, $elements);
                 if ($newFormData) {
@@ -222,30 +215,7 @@ class AdminHelper
         $instance = $fieldDescription->getAssociationAdmin()->getNewInstance();
         $mapping  = $fieldDescription->getAssociationMapping();
 
-        $method = sprintf('add%s', $this->camelize($mapping['fieldName']));
-
-        if (!method_exists($object, $method)) {
-            $method = rtrim($method, 's');
-
-            if (!method_exists($object, $method)) {
-                throw new \RuntimeException(sprintf('Please add a method %s in the %s class!', $method, ClassUtils::getClass($object)));
-            }
-        }
-
-        $object->$method($instance);
-    }
-
-    /**
-     * Camelize a string
-     *
-     * @static
-     *
-     * @param string $property
-     *
-     * @return string
-     */
-    public function camelize($property)
-    {
-        return BaseFieldDescription::camelize($property);
+        $propertyAccessor = new PropertyAccessor();
+        $propertyAccessor->setValue($object, $mapping['fieldName'], [$instance]);
     }
 }
