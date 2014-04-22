@@ -15,7 +15,7 @@ file that was distributed with this source code.
     </td>
 {% endif %}
 
-<td class="sonata-ba-list-field sonata-ba-list-field-inline-fields" colspan="{{ admin.list.elements|length - (admin.list.has('_action') + admin.list.has('batch')) }}">
+<td class="sonata-ba-list-field sonata-ba-list-field-inline-fields" colspan="{{ admin.list.elements|length - (admin.list.has('_action') + admin.list.has('batch')) }}" objectId="{{ admin.id(object) }}>
     {% block row %}{% endblock %}
 </td>
 
