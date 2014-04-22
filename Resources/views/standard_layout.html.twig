@@ -210,7 +210,9 @@ file that was distributed with this source code.
                                     </ul>
                                 {% endif %}
                             {% endblock side_bar_nav %}
-                            {% block side_bar_after_nav %} {% endblock %}
+                            {% block side_bar_after_nav %}
+                                <p class="text-center small" style="border-top: 1px solid #444444; padding-top: 10px"><a href="http://sonata-project.org" rel="noreferrer" target="_blank">sonata project</a></p>
+                            {% endblock %}
                         {% endblock sonata_side_nav %}
                     </section>
                 </aside>
@@ -295,12 +297,6 @@ file that was distributed with this source code.
                     {% endblock sonata_page_content %}
                 </aside>
             {% endblock sonata_wrapper %}
-
-            {% block footer %}
-                <footer>
-                    <p class="text-right"><a href="http://sonata-project.org" rel="noreferrer">Powered by the Sonata Project</a></p>
-                </footer>
-            {% endblock footer %}
         </div>
     </body>
 </html>
