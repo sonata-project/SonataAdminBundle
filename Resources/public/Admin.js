@@ -15,15 +15,9 @@ jQuery(document).ready(function() {
         jQuery('.sonata-ba-form form').confirmExit();
     }
 
-    Admin.setup_select2(document);
-    Admin.setup_xeditable(document);
-    Admin.add_pretty_errors(document);
-    Admin.add_filters(document);
-    Admin.set_object_field_value(document);
-    Admin.setup_collection_buttons(document);
     Admin.setup_per_page_switcher(document);
-    Admin.setup_form_tabs_for_errors(document);
-    Admin.setup_inline_form_errors(document);
+
+    Admin.shared_setup(document);
 });
 
 jQuery(document).on('sonata-admin-append-form-element', function(e) {
@@ -32,6 +26,44 @@ jQuery(document).on('sonata-admin-append-form-element', function(e) {
 
 var Admin = {
 
+    /**
+     * This function must called when a ajax call is done, to ensure
+     * retrieve html is properly setup
+     *
+     * @param subject
+     */
+    shared_setup: function(subject) {
+        Admin.log("[Admin] apply shared_setup");
+        Admin.setup_collection_buttons(document);
+        Admin.set_object_field_value(document);
+        Admin.add_filters(subject);
+        Admin.setup_select2(subject);
+        Admin.setup_xeditable(subject);
+        Admin.add_pretty_errors(subject);
+        Admin.setup_form_tabs_for_errors(subject);
+        Admin.setup_inline_form_errors(subject);
+//        Admin.setup_list_modal(subject);
+    },
+    setup_list_modal: function(modal) {
+        // this will force relation modal to open list of entity in a wider modal
+        // to improve readability
+        jQuery('div.modal-dialog', modal).css({
+            width:  '90%', //choose your width
+            height: '85%',
+            padding: 0
+        });
+        jQuery('div.modal-content', modal).css({
+            'border-radius':'0',
+            height:   '100%',
+            padding: 0
+        });
+        jQuery('.modal-body', modal).css({
+            width:    'auto',
+            height:   '90%',
+            padding: 5,
+            overflow: 'scroll'
+        });
+    },
     setup_select2: function(subject) {
         if (window.SONATA_CONFIG && window.SONATA_CONFIG.USE_SELECT2 && window.Select2) {
             jQuery('select:not([data-sonata-select2="false"])', subject).each(function() {
