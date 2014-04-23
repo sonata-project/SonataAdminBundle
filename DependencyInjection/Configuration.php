@@ -118,6 +118,7 @@ class Configuration implements ConfigurationInterface
                                         ->prototype('variable')->defaultValue(array())->end()
                                     ->end()
                                     ->scalarNode('position')->defaultValue('right')->end()
+                                    ->scalarNode('class')->defaultValue('col-md-4')->end()
                                 ->end()
                             ->end()
                         ->end()

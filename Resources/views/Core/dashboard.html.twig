@@ -17,40 +17,51 @@ file that was distributed with this source code.
 
     {{ sonata_block_render_event('sonata.admin.dashboard.top', { 'admin_pool': admin_pool }) }}
 
+    {% if blocks.top|length > 0 %}
+        <div class="row">
+            {% for block in blocks.top %}
+                <div class="{{ block.class }}">
+                    {{ sonata_block_render({ 'type': block.type, 'settings': block.settings}) }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
     <div class="row">
         {% set has_center = false %}
-        {% for block in blocks %}
-            {% if block.position == 'center' %}
-                {% set has_center = true %}
-            {% endif %}
-        {% endfor %}
 
-        <div class="{% if has_center %}col-md-3{% else %}col-md-6{% endif %}">
-            {% for block in blocks %}
-                {% if block.position == 'left' %}
-                    {{ sonata_block_render({ 'type': block.type, 'settings': block.settings}) }}
-                {% endif %}
+        <div class="{% if blocks.center|length > 0 %}col-md-4{% else %}col-md-6{% endif %}">
+            {% for block in blocks.left %}
+                {{ sonata_block_render({ 'type': block.type, 'settings': block.settings}) }}
             {% endfor %}
         </div>
 
-        {% if has_center %}
+        {% if blocks.center|length > 0 %}
             <div class="col-md-4">
-                {% for block in blocks %}
-                    {% if block.position == 'center' %}
-                        {{ sonata_block_render({ 'type': block.type, 'settings': block.settings}) }}
-                    {% endif %}
+                {% for block in blocks.center %}
+                    {{ sonata_block_render({ 'type': block.type, 'settings': block.settings}) }}
                 {% endfor %}
             </div>
         {% endif %}
 
-        <div class="{% if has_center %}col-md-4{% else %}col-md-6{% endif %}">
-            {% for block in blocks %}
-                {% if block.position == 'right' %}
-                    {{ sonata_block_render({ 'type': block.type, 'settings': block.settings}) }}
-                {% endif %}
+        <div class="{% if blocks.center|length > 0 %}col-md-4{% else %}col-md-6{% endif %}">
+            {% for block in blocks.right %}
+                {{ sonata_block_render({ 'type': block.type, 'settings': block.settings}) }}
             {% endfor %}
         </div>
     </div>
+
+    {% if blocks.bottom|length > 0 %}
+        <div class="row">
+            {% for block in blocks.bottom %}
+                <div class="{{ block.class }}">
+                    {{ sonata_block_render({ 'type': block.type, 'settings': block.settings}) }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+
 
     {{ sonata_block_render_event('sonata.admin.dashboard.bottom', { 'admin_pool': admin_pool }) }}
 

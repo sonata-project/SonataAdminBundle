@@ -274,3 +274,40 @@ In this example, you would have two ``admin_list`` blocks on your dashboard, eac
 of them containing just the respectively configured groups.
 
 .. _`SonataBlock documentation page`:  http://sonata-project.org/bundles/block/master/doc/index.html
+
+Dashboard Layout
+~~~~~~~~~~~~~~~~
+
+Supported positions right now are the following:
+
+* top
+* left
+* center
+* right
+* bottom
+
+The layout is as follows:
+
+TOPTOPTOPTOPTOPTOPTOPTOPTOPTOPTOPTOP
+
+LEFTLEFTLEF CENTERCENTE RIGHTRIGHTRI
+LEFTLEFTLEF CENTERCENTE RIGHTRIGHTRI
+LEFTLEFTLEF CENTERCENTE RIGHTRIGHTRI
+
+BOTTOMBOTTOMBOTTOMBOTTOMBOTTOMBOTTOM
+
+On ``top`` and ``bottom`` positions, you can also specify an optionnal ``class`` option to set the width of the block.
+
+.. configuration-block::
+
+    .. code-block:: yaml
+
+        # app/config/config.yml
+        sonata_admin:
+            dashboard:
+                blocks:
+                    # display one dashboard block in the top zone with a col-md-6 HTML class
+                    -
+                        position: top
+                        class: col-md-6
+                        type: sonata.admin.block.admin_list
