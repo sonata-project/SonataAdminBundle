@@ -295,3 +295,19 @@ LEFTLEFTLEF CENTERCENTE RIGHTRIGHTRI
 LEFTLEFTLEF CENTERCENTE RIGHTRIGHTRI
 
 BOTTOMBOTTOMBOTTOMBOTTOMBOTTOMBOTTOM
+
+On ``top`` and ``bottom`` positions, you can also specify an optionnal ``class`` option to set the width of the block.
+
+.. configuration-block::
+
+    .. code-block:: yaml
+
+        # app/config/config.yml
+        sonata_admin:
+            dashboard:
+                blocks:
+                    # display one dashboard block in the top zone with a col-md-6 HTML class
+                    -
+                        position: top
+                        class: col-md-6
+                        type: sonata.admin.block.admin_list

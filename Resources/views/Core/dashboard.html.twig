@@ -18,10 +18,9 @@ file that was distributed with this source code.
     {{ sonata_block_render_event('sonata.admin.dashboard.top', { 'admin_pool': admin_pool }) }}
 
     {% if blocks.top|length > 0 %}
-        {% set class = 'col-md-' ~ 12 // blocks.top|length %}
         <div class="row">
             {% for block in blocks.top %}
-                <div class="{{ class }}">
+                <div class="{{ block.class }}">
                     {{ sonata_block_render({ 'type': block.type, 'settings': block.settings}) }}
                 </div>
             {% endfor %}
@@ -31,7 +30,7 @@ file that was distributed with this source code.
     <div class="row">
         {% set has_center = false %}
 
-        <div class="{% if blocks.center|length > 0 %}col-md-3{% else %}col-md-6{% endif %}">
+        <div class="{% if blocks.center|length > 0 %}col-md-4{% else %}col-md-6{% endif %}">
             {% for block in blocks.left %}
                 {{ sonata_block_render({ 'type': block.type, 'settings': block.settings}) }}
             {% endfor %}
@@ -53,10 +52,9 @@ file that was distributed with this source code.
     </div>
 
     {% if blocks.bottom|length > 0 %}
-        {% set class = 'col-md-' ~ 12 // blocks.bottom|length %}
         <div class="row">
             {% for block in blocks.bottom %}
-                <div class="{{ class }}">
+                <div class="{{ block.class }}">
                     {{ sonata_block_render({ 'type': block.type, 'settings': block.settings}) }}
                 </div>
             {% endfor %}
