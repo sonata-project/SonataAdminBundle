@@ -274,3 +274,24 @@ In this example, you would have two ``admin_list`` blocks on your dashboard, eac
 of them containing just the respectively configured groups.
 
 .. _`SonataBlock documentation page`:  http://sonata-project.org/bundles/block/master/doc/index.html
+
+Dashboard Layout
+~~~~~~~~~~~~~~~~
+
+Supported positions right now are the following:
+
+* top
+* left
+* center
+* right
+* bottom
+
+The layout is as follows:
+
+TOPTOPTOPTOPTOPTOPTOPTOPTOPTOPTOPTOP
+
+LEFTLEFTLEF CENTERCENTE RIGHTRIGHTRI
+LEFTLEFTLEF CENTERCENTE RIGHTRIGHTRI
+LEFTLEFTLEF CENTERCENTE RIGHTRIGHTRI
+
+BOTTOMBOTTOMBOTTOMBOTTOMBOTTOMBOTTOM
