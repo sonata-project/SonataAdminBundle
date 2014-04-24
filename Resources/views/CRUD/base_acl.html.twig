@@ -35,7 +35,7 @@ file that was distributed with this source code.
                 <tr>
                     <th>{{ "td_username"|trans({}, 'SonataAdminBundle') }}</th>
                     {% for permission in permissions %}
-                    <th>{{ permission }}</th>
+                    <th>{{ permission|trans({}, 'SonataAdminBundle') }}</th>
                     {% endfor %}
                 </tr>
             </thead>
