@@ -78,6 +78,7 @@ class Configuration implements ConfigurationInterface
                         ->booleanNode('confirm_exit')->defaultValue(true)->end()
                         ->booleanNode('use_select2')->defaultValue(true)->end()
                         ->integerNode('pager_links')->defaultValue(null)->end()
+                        ->scalarNode('form_type')->defaultValue('standard')->end()
                         ->integerNode('dropdown_number_groups_per_colums')->defaultValue(2)->end()
                     ->end()
                 ->end()
