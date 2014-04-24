@@ -1,6 +1,4 @@
-# Bootstrap for Sass
-
-[![Build Status](https://secure.travis-ci.org/twbs/bootstrap-sass.png?branch=master)](http://travis-ci.org/twbs/bootstrap-sass)
+# Bootstrap for Sass [![Build Status](http://img.shields.io/travis/twbs/bootstrap-sass.svg)](http://travis-ci.org/twbs/bootstrap-sass)
 
 `bootstrap-sass` is a Sass-powered version of [Bootstrap](http://github.com/twbs/bootstrap), ready to drop right into your Sass powered applications.
 
@@ -15,7 +13,7 @@ Please see the appropriate guide for your environment of choice:
 In your Gemfile you need to add the `bootstrap-sass` gem, and ensure that the `sass-rails` gem is present - it is added to new Rails applications by default.
 
 ```ruby
-gem 'sass-rails', '>= 3.2' # sass-rails needs to be higher than 3.2
+gem 'sass-rails', '>= 3.2'
 gem 'bootstrap-sass', '~> 3.1.1'
 ```
 
@@ -24,8 +22,21 @@ gem 'bootstrap-sass', '~> 3.1.1'
 
 #### Rails 3.2.x
 
-For Rails 3.2.x, make sure that all the gems are moved out of the `:assets` group, and `config.assets.initialize_on_precompile` is set to `true`.
+Rails 3.2 is [no longer maintained for bugfixes](http://guides.rubyonrails.org/maintenance_policy.html), and you should upgrade as soon as possible.
 
+If you must use it, make sure bootstrap-sass is moved out of the `:assets` group.
+This is because, by default in Rails 3.2, assets group gems are not required in `production`.
+However, for pre-compilation to succeed in production, `bootstrap-sass` gem must be required.
+
+Starting with bootstrap-sass v3.1.1.1, due to the structural changes from upstream you will need these
+backported asset pipeline gems on Rails 3.2. There is more on why this is necessary in
+https://github.com/twbs/bootstrap-sass/issues/523 and https://github.com/twbs/bootstrap-sass/issues/578.
+
+```ruby
+gem 'sprockets-rails', '=2.0.0.backport1'
+gem 'sprockets', '=2.2.2.backport2'
+gem 'sass-rails', github: 'guilleiguaran/sass-rails', branch: 'backport'
+```
 
 ### b. Compass without Rails
 
@@ -51,10 +62,16 @@ If you are creating a new Compass project, you can generate it with bootstrap-sa
 bundle exec compass create my-new-project -r bootstrap-sass --using bootstrap
 ```
 
+or, alternatively, if you're not using a Gemfile for your dependencies:
+
+```console
+compass create my-new-project -r bootstrap-sass --using bootstrap
+```
+
 This will create a new Compass project with the following files in it:
 
-* [_variables.scss](/templates/project/_variables.scss.erb) - all of bootstrap variables (override them here).
-* [styles.scss](/templates/project/styles.scss) - main project SCSS file, import `variables` and `bootstrap`.
+* [_variables.scss](/templates/project/_variables.sass.erb) - all of bootstrap variables (override them here).
+* [styles.scss](/templates/project/styles.sass) - main project SCSS file, import `variables` and `bootstrap`.
 
 Some bootstrap-sass mixins may conflict with the Compass ones.
 If this happens, change the import order so that Compass mixins are loaded later.
@@ -67,20 +84,36 @@ Require the gem, and load paths and Sass helpers will be configured automaticall
 require 'bootstrap-sass'
 ```
 
-### d. Bower
+### d. Node.js / Bower
 
-Using bootstrap-sass as a Bower package is still being tested and requires libsass master. You can install it with:
+Using bootstrap-sass as a Bower package is still being tested. It is compatible with node-sass 0.8.3+. You can install it with:
 
 ```bash
-bower install git://github.com/twbs/bootstrap-sass.git
+bower install bootstrap-sass-official
 ```
 
-`bootstrap-sass` is taken so make sure you use the Git URL above.
+`bootstrap-sass` is taken so make sure you use the command above.
 
 Sass, JS, and all other assets are located at [vendor/assets](/vendor/assets).
 
-bootstrap-sass [requires](https://github.com/twbs/bootstrap-sass/issues/409) minimum [Sass number precision][sass-precision] of 10 (default is 5).
+By default, `bower.json` main field list only the main `bootstrap.scss` and all the static assets (fonts and JS).
+This is compatible by default with asset managers such as [wiredep](https://github.com/taptapship/wiredep).
 
+#### Mincer
+
+If you use [mincer][mincer] with node-sass, import bootstrap into a `.css.ejs.scss` file  like so:
+
+```scss
+// Import mincer asset paths helper integration
+@import "bootstrap-mincer";
+@import "bootstrap";
+```
+
+See also this [example manifest.js](/test/dummy_node_mincer/manifest.js) for mincer.
+
+#### Number precision
+
+bootstrap-sass [requires](https://github.com/twbs/bootstrap-sass/issues/409) minimum [Sass number precision][sass-precision] of 10 (default is 5).
 
 When using ruby Sass compiler with the bower version you can enforce the limit with:
 
@@ -88,14 +121,16 @@ When using ruby Sass compiler with the bower version you can enforce the limit w
 ::Sass::Script::Number.precision = [10, ::Sass::Script::Number.precision].max
 ```
 
+Precision option is now available in libsass, but it has not made into node-sass yet.
+
 #### JS and fonts
 
-Assets are discovered automatically on Rails, Sprockets, and Compass, using native asset path helpers.
+Assets are discovered automatically on Rails, Sprockets, Compass, and Node + Mincer, using native asset path helpers.
 
 Otherwise the fonts are referenced as:
 
 ```sass
-"#{$icon-font-path}/#{$icon-font-name}.eot"
+"#{$icon-font-path}#{$icon-font-name}.eot"
 ```
 
 `$icon-font-path` defaults to `bootstrap/`.
@@ -152,7 +187,7 @@ In `application.sass`, replace `@import 'bootstrap'` with:
 
 ### Javascript
 
-We have a helper that includes all Bootstrap javascripts. If you use Rails (or Sprockets separately), 
+We have a helper that includes all Bootstrap javascripts. If you use Rails (or Sprockets separately),
 put this in your Javascript manifest (usually in `application.js`) to load the files in the [correct order](/vendor/assets/javascripts/bootstrap.js):
 
 ```js
@@ -183,12 +218,12 @@ Keeping bootstrap-sass in sync with upstream changes from Bootstrap used to be a
 Upstream changes to the Bootstrap project can now be pulled in using the `convert` rake task.
 
 Here's an example run that would pull down the master branch from the main [twbs/bootstrap](https://github.com/twbs/bootstrap) repo:
-    
+
     rake convert
-    
-This will convert the latest LESS to SASS and update to the latest JS.
+
+This will convert the latest LESS to Sass and update to the latest JS.
 To convert a specific branch or version, pass the branch name or the commit hash as the first task argument:
-    
+
     rake convert[e8a1df5f060bf7e6631554648e0abde150aedbe4]
 
 The latest converter script is located [here][converter] and does the following:
@@ -226,3 +261,4 @@ Michael Hartl's [Rails Tutorial](http://railstutorial.org/), [gitlabhq](http://g
 [antirequire]: https://github.com/twbs/bootstrap-sass/issues/79#issuecomment-4428595
 [jsdocs]: http://getbootstrap.com/javascript/#transitions
 [sass-precision]: http://sass-lang.com/documentation/Sass/Script/Number.html#precision-class_method
+[mincer]: https://github.com/nodeca/mincer
