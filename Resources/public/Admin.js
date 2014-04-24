@@ -66,6 +66,13 @@ var Admin = {
     },
     setup_select2: function(subject) {
         if (window.SONATA_CONFIG && window.SONATA_CONFIG.USE_SELECT2 && window.Select2) {
+
+
+            jQuery("input[type='checkbox'], input[type='radio']", subject).iCheck({
+                checkboxClass: 'icheckbox_minimal',
+                radioClass: 'iradio_minimal'
+            });
+
             jQuery('select:not([data-sonata-select2="false"])', subject).each(function() {
                 var select = $(this);
 
