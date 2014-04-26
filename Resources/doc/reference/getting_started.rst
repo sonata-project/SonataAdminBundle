@@ -197,7 +197,7 @@ file, using the ``load()`` method as described in the `symfony cookbook`_.
 
 .. configuration-block::
 
-    .. code-block:: php
+    .. code-block:: xml
 
         # Acme/DemoBundle/DependencyInjection/AcmeDemoBundleExtension.php for XML configurations
         
@@ -215,7 +215,7 @@ file, using the ``load()`` method as described in the `symfony cookbook`_.
             }
         }
 
-    .. code-block:: php
+    .. code-block:: yaml
 
         # Acme/DemoBundle/DependencyInjection/AcmeDemoBundleExtension.php for YAML configurations
         

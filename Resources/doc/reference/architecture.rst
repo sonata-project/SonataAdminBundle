@@ -284,7 +284,7 @@ To do this, you first need to call the ``addChild`` method in your PostAdmin ser
 .. code-block:: xml
 
     <!-- app/config/config.xml -->
-    <service id="sonata.news.admin.post" class="Sonata\NewsBundle\Admin\CommentAdmin">
+    <service id="sonata.news.admin.post" class="Sonata\NewsBundle\Admin\PostAdmin">
         ...
 
         <call method="addChild">

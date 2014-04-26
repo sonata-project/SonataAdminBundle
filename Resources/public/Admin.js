@@ -34,10 +34,10 @@ var Admin = {
      */
     shared_setup: function(subject) {
         Admin.log("[Admin] apply shared_setup");
-        Admin.setup_collection_buttons(document);
-        Admin.set_object_field_value(document);
-        Admin.add_filters(subject);
+        Admin.setup_collection_buttons(subject);
+        Admin.set_object_field_value(subject);
         Admin.setup_select2(subject);
+        Admin.add_filters(subject);
         Admin.setup_xeditable(subject);
         Admin.add_pretty_errors(subject);
         Admin.setup_form_tabs_for_errors(subject);
@@ -66,6 +66,13 @@ var Admin = {
     },
     setup_select2: function(subject) {
         if (window.SONATA_CONFIG && window.SONATA_CONFIG.USE_SELECT2 && window.Select2) {
+
+
+            jQuery("input[type='checkbox'], input[type='radio']", subject).iCheck({
+                checkboxClass: 'icheckbox_minimal',
+                radioClass: 'iradio_minimal'
+            });
+
             jQuery('select:not([data-sonata-select2="false"])', subject).each(function() {
                 var select = $(this);
 
@@ -138,9 +145,6 @@ var Admin = {
      * @param subject
      */
     add_pretty_errors: function(subject) {
-
-        Admin.setup_select2(subject);
-
         jQuery('div.sonata-ba-field-error', subject).each(function(index, element) {
             var input = jQuery(':input', element);
 
