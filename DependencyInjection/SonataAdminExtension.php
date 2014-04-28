@@ -83,7 +83,8 @@ BOOM
         $pool = $container->getDefinition('sonata.admin.pool');
         $pool->replaceArgument(1, $config['title']);
         $pool->replaceArgument(2, $config['title_logo']);
-        $pool->replaceArgument(3, $config['options']);
+        $pool->replaceArgument(3, $config['title_mode']);
+        $pool->replaceArgument(4, $config['options']);
 
         $container->setParameter('sonata.admin.configuration.templates', $config['templates']);
         $container->setParameter('sonata.admin.configuration.admin_services', $config['admin_services']);

@@ -71,6 +71,11 @@ class Configuration implements ConfigurationInterface
 
                 ->scalarNode('title')->defaultValue('Sonata Admin')->cannotBeEmpty()->end()
                 ->scalarNode('title_logo')->defaultValue('bundles/sonataadmin/logo_title.png')->cannotBeEmpty()->end()
+                ->enumNode('title_mode')
+                    ->values(array('single_text', 'single_image', 'both'))
+                    ->defaultValue('both')
+                    ->cannotBeEmpty()
+                ->end()
                 ->arrayNode('options')
                     ->addDefaultsIfNotSet()
                     ->children()

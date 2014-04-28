@@ -32,6 +32,10 @@ body > .header .logo {
     font-family: 'Source Sans Pro', sans-serif;
 }
 
+.logo img {
+    padding-bottom: 4px;
+}
+
 .open > .dropdown-menu {
     animation-duration: .3s;
     -webkit-animation-duration: .3s;

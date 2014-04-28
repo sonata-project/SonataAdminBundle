@@ -31,19 +31,23 @@ class Pool
 
     protected $titleLogo;
 
+    protected $titleMode;
+
     protected $options;
 
     /**
      * @param ContainerInterface $container
      * @param string             $title
      * @param string             $logoTitle
+     * @param string             $titleMode
      * @param array              $options
      */
-    public function __construct(ContainerInterface $container, $title, $logoTitle, $options = array())
+    public function __construct(ContainerInterface $container, $title, $logoTitle, $titleMode = "both", $options = array())
     {
         $this->container = $container;
         $this->title     = $title;
         $this->titleLogo = $logoTitle;
+        $this->titleMode = $titleMode;
         $this->options   = $options;
     }
 
@@ -305,6 +309,14 @@ class Pool
     public function getTitle()
     {
         return $this->title;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTitleMode()
+    {
+        return $this->titleMode;
     }
 
     /**

@@ -77,8 +77,12 @@ file that was distributed with this source code.
         <header class="header">
             {% block logo %}
                 <a class="logo" href="{{ url('sonata_admin_dashboard') }}">
-                    {#<img src="{{ asset(admin_pool.titlelogo) }}" alt="">#}
-                    {{ admin_pool.title }}
+                    {% if 'single_image' == admin_pool.titleMode or 'both' == admin_pool.titleMode %}
+                        <img src="{{ asset(admin_pool.titlelogo) }}" alt="{{ admin_pool.title }}">{% if 'both' == admin_pool.titleMode %}&nbsp;{% endif %}
+                    {% endif %}
+                    {% if 'single_text' == admin_pool.titleMode or 'both' == admin_pool.titleMode %}
+                        {{ admin_pool.title }}
+                    {% endif %}
                 </a>
             {% endblock %}
             {% block sonata_nav %}
