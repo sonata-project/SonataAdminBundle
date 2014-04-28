@@ -55,13 +55,13 @@ Full Configuration Options
                 acl_user_manager:     ~         # Name of the user manager service used to retrieve ACL users
             title:                Sonata Admin
             title_logo:           bundles/sonataadmin/logo_title.png
-            title_mode:           'both'            # 'both', 'single_text' or 'single_image'
             options:
                 html5_validate:                         true      # use html5 validation
                 confirm_exit:                           true      # enabled confirmation when quitting with unsaved changes
                 use_select2:                            true      # enable select2
                 pager_links:                            ~         # pager max links to display
                 dropdown_number_groups_per_colums:      2         # max items per column in dropdown menu (add button in top nav)
+                title_mode:           'both'                      # 'both', 'single_text' or 'single_image'
             dashboard:
                 groups:
 

@@ -22,7 +22,7 @@ class PoolTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->pool = new Pool($this->getContainer(), 'Sonata Admin', '/path/to/pic.png', 'both', array('foo'=>'bar'));
+        $this->pool = new Pool($this->getContainer(), 'Sonata Admin', '/path/to/pic.png', array('foo'=>'bar'));
     }
 
     public function testGetGroups()
