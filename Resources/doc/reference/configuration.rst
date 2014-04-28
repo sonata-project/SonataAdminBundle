@@ -61,6 +61,7 @@ Full Configuration Options
                 use_select2:                            true      # enable select2
                 pager_links:                            ~         # pager max links to display
                 dropdown_number_groups_per_colums:      2         # max items per column in dropdown menu (add button in top nav)
+                title_mode:           'both'                      # 'both', 'single_text' or 'single_image'
             dashboard:
                 groups:
 
