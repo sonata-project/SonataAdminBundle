@@ -188,7 +188,7 @@ file that was distributed with this source code.
 
 {% block list_filters %}
     {% if admin.datagrid.filters %}
-        {% form_theme form "SonataAdminBundle:Form:filter_admin_fields.html.twig" %}
+        {% form_theme form admin.getTemplate('filter') %}
         <div class="box box-primary">
             <div class="box-header">
                 <h4 class="box-title filter_legend {{ admin.datagrid.hasActiveFilters ? 'active' : 'inactive' }}">{{ 'label_filters'|trans({}, 'SonataAdminBundle') }}</h4>
