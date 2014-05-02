@@ -22,6 +22,7 @@ jQuery(document).ready(function() {
 
 jQuery(document).on('sonata-admin-append-form-element', function(e) {
     Admin.setup_select2(e.target);
+    Admin.setup_icheck(e.target);
 });
 
 var Admin = {
@@ -37,6 +38,7 @@ var Admin = {
         Admin.setup_collection_buttons(subject);
         Admin.set_object_field_value(subject);
         Admin.setup_select2(subject);
+        Admin.setup_icheck(subject);
         Admin.add_filters(subject);
         Admin.setup_xeditable(subject);
         Admin.add_pretty_errors(subject);
@@ -67,12 +69,6 @@ var Admin = {
     setup_select2: function(subject) {
         if (window.SONATA_CONFIG && window.SONATA_CONFIG.USE_SELECT2 && window.Select2) {
 
-
-            jQuery("input[type='checkbox'], input[type='radio']", subject).iCheck({
-                checkboxClass: 'icheckbox_minimal',
-                radioClass: 'iradio_minimal'
-            });
-
             jQuery('select:not([data-sonata-select2="false"])', subject).each(function() {
                 var select = $(this);
 
@@ -102,6 +98,14 @@ var Admin = {
                         .popover(popover.options)
                     ;
                 }
+            });
+        }
+    },
+    setup_icheck: function(subject) {
+        if (window.SONATA_CONFIG && window.SONATA_CONFIG.USE_ICHECK) {
+            jQuery("input[type='checkbox'], input[type='radio']", subject).iCheck({
+                checkboxClass: 'icheckbox_minimal',
+                radioClass: 'iradio_minimal'
             });
         }
     },
