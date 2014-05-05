@@ -14,7 +14,7 @@ file that was distributed with this source code.
 
     {% set label_class = "" %}
     {% if sonata_admin.admin and sonata_admin.admin.getConfigurationPool().getOption('form_type') == 'horizontal' %}
-        {% set label_class = "control-label col-sm-3" %}
+        {% set label_class = "control-label " ~ sonata_admin.admin.getConfigurationPool().getOption('horizontal_class_label') %}
     {% else %}
         {% set label_class = "control-label" %}
     {% endif%}
@@ -124,8 +124,8 @@ file that was distributed with this source code.
     {% set label_class = "" %}
     {% set div_class = "" %}
     {% if sonata_admin.admin and sonata_admin.admin.getConfigurationPool().getOption('form_type') == 'horizontal' %}
-        {% set label_class = "control-label col-sm-3" %}
-        {% set div_class = "col-sm-9 col-md-9" %}
+        {% set label_class = "control-label " ~ sonata_admin.admin.getConfigurationPool().getOption('horizontal_class_label') %}
+        {% set div_class = sonata_admin.admin.getConfigurationPool().getOption('horizontal_class_input') %}
     {% else %}
         {% set label_class = "control-label" %}
     {% endif%}
@@ -153,7 +153,7 @@ file that was distributed with this source code.
             {% endblock %}
 
             {% set has_label = sonata_admin.field_description.options.name is defined or label is not sameas(false) %}
-            <div class="{{ div_class }} sonata-ba-field sonata-ba-field-{{ sonata_admin.edit }}-{{ sonata_admin.inline }} {% if errors|length > 0 %}sonata-ba-field-error{% endif %} {% if not has_label %}sonata-collection-row-without-label{% endif %}">
+            <div class="{% if has_label %}{{ div_class }}{% else %}{{  sonata_admin.admin.getConfigurationPool().getOption('horizontal_class_input_without_label') }}{% endif %} sonata-ba-field sonata-ba-field-{{ sonata_admin.edit }}-{{ sonata_admin.inline }} {% if errors|length > 0 %}sonata-ba-field-error{% endif %} {% if not has_label %}sonata-collection-row-without-label{% endif %}">
 
                 {{ form_widget(form, {'horizontal': false, 'horizontal_input_wrapper_class': ''}) }} {# {'horizontal': false, 'horizontal_input_wrapper_class': ''} needed to avoid MopaBootstrapBundle messing with the DOM #}
 
@@ -223,7 +223,7 @@ file that was distributed with this source code.
 
             {% set div_class = "" %}
             {% if sonata_admin.admin and sonata_admin.admin.getConfigurationPool().getOption('form_type') == 'horizontal' %}
-                {% set div_class = "col-sm-9 col-md-9" %}
+                {% set div_class = sonata_admin.admin.getConfigurationPool().getOption('horizontal_class_input') %}
             {% endif%}
 
             <div class="{{ div_class }} sonata-ba-field sonata-ba-field-{{ sonata_admin.edit }}-{{ sonata_admin.inline }} {% if errors|length > 0 %}sonata-ba-field-error{% endif %}">
