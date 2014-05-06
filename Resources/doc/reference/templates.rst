@@ -1,7 +1,7 @@
 Templates
 =========
 
-``SoantaAdminBundle`` comes with a significant amount of ``twig`` files used to display the
+``SonataAdminBundle`` comes with a significant amount of ``twig`` files used to display the
 different parts of each ``Admin`` action's page. If you read the ``Templates`` part of the :doc:`architecture` section of this guide, you should know by now how these are organized in
 the ``views`` folder. If you haven't, now would be a good time to do it.
 
