@@ -185,6 +185,7 @@ class CRUDController extends Controller
             $modelManager->batchDelete($this->admin->getClass(), $query);
             $this->get('session')->setFlash('sonata_flash_success', 'flash_batch_delete_success');
         } catch ( ModelManagerException $e ) {
+            $this->container->get('logger')->addError($e->getPrevious()->getMessage(), $e->getTrace());
             $this->get('session')->setFlash('sonata_flash_error', 'flash_batch_delete_error');
         }
 
@@ -222,6 +223,7 @@ class CRUDController extends Controller
                 $this->get('session')->setFlash('sonata_flash_success', 'flash_delete_success');
 
             } catch (ModelManagerException $e) {
+                $this->container->get('logger')->addError($e->getPrevious()->getMessage(), $e->getTrace());
 
                 if ($this->isXmlHttpRequest()) {
                     return $this->renderJson(array('result' => 'error'));
