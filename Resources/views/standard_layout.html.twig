@@ -54,6 +54,7 @@ file that was distributed with this source code.
         {% endblock %}
 
         <title>
+        {% block sonata_head_title %}
             {{ 'Admin'|trans({}, 'SonataAdminBundle') }}
 
             {% if _title is not empty %}
@@ -72,6 +73,7 @@ file that was distributed with this source code.
                     {% endfor %}
                 {% endif %}
             {% endif%}
+        {% endblock %}
         </title>
     </head>
     <body {% block body_attributes %}class="sonata-bc skin-black fixed"{% endblock %}>
