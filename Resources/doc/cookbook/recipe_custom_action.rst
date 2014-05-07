@@ -108,7 +108,8 @@ to implement a ``clone`` action.
                 throw new NotFoundHttpException(sprintf('unable to find the object with id : %s', $id));
             }
 
-            $clonedObject = clone $object;
+            $clonedObject = clone $object;  // Careful, you may need to overload the __clone method of your object
+                                            // to set its id to null
             $clonedObject->setName($object->getName()." (Clone)");
 
             $this->admin->create($clonedObject);
