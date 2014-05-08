@@ -90,7 +90,7 @@ class HelperController
 
         $admin->setSubject($subject);
 
-        list($fieldDescription, $form) = $this->helper->appendFormFieldElement($admin, $subject, $elementId);
+        $form = $this->helper->appendFormFieldElement($admin, $subject, $elementId);
 
         /** @var $form \Symfony\Component\Form\Form */
         $view = $this->helper->getChildFormView($form->createView(), $elementId);
