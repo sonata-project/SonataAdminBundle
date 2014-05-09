@@ -193,7 +193,7 @@ class Configuration implements ConfigurationInterface
                                 'bundles/sonataadmin/vendor/AdminLTE/css/ionicons.min.css',
                                 'bundles/sonataadmin/vendor/AdminLTE/css/AdminLTE.css',
 
-                                'bundles/sonataadmin/vendor/jqueryui/themes/flick/jquery-ui.min.css',
+                                'bundles/sonataadmin/vendor/jqueryui/themes/base/jquery-ui.css',
 
                                 'bundles/sonataadmin/vendor/select2/select2.css',
                                 'bundles/sonataadmin/vendor/select2/select2-bootstrap.css',
