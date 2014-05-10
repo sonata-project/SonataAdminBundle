@@ -126,24 +126,30 @@ file that was distributed with this source code.
                             </div>
 
                             {% block sonata_top_nav_menu %}
-                                <div class="navbar-right">
-                                    <ul class="nav navbar-nav">
-                                        <li class="dropdown">
-                                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                                <i class="fa fa-plus-square fa-fw"></i> <i class="fa fa-caret-down"></i>
-                                            </a>
-                                            {% include admin_pool.getTemplate('add_block') %}
-                                        </li>
-                                        <li class="dropdown user-menu">
-                                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                                <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
-                                            </a>
-                                            <ul class="dropdown-menu dropdown-user">
-                                                {% include admin_pool.getTemplate('user_block') %}
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                </div>
+                                {% if admin_pool.dashboardgroups|length or app.user %}
+                                    <div class="navbar-right">
+                                        <ul class="nav navbar-nav">
+                                            {% if admin_pool.dashboardgroups|length %}
+                                                <li class="dropdown">
+                                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                                        <i class="fa fa-plus-square fa-fw"></i> <i class="fa fa-caret-down"></i>
+                                                    </a>
+                                                    {% include admin_pool.getTemplate('add_block') %}
+                                                </li>
+                                            {% endif %}
+                                            {% if app.user %}
+                                                <li class="dropdown user-menu">
+                                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                                        <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
+                                                    </a>
+                                                    <ul class="dropdown-menu dropdown-user">
+                                                        {% include admin_pool.getTemplate('user_block') %}
+                                                    </ul>
+                                                </li>
+                                            {% endif %}
+                                        </ul>
+                                    </div>
+                                {% endif %}
                             {% endblock %}
                         </nav>
                     {% endif %}
