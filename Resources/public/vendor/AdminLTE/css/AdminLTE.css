@@ -1338,6 +1338,7 @@ body > .header .logo .icon {
   border-top-right-radius: 0;
   border-bottom-right-radius: 3px;
   border-bottom-left-radius: 3px;
+  overflow: hidden;
 }
 .box .box-body > table,
 .box .box-body > .table {
