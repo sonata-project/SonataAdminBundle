@@ -326,3 +326,7 @@ legend.sonata-ba-fieldset-collapsed-description + .sonata-ba-collapsed-fields {
 .form-horizontal .control-group {
     margin-bottom: 10px;
 }
+
+.box .box-body {
+    overflow: hidden;
+}
