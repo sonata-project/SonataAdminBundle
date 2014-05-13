@@ -50,3 +50,15 @@ to enable ``allowClear`` or ``data-sonata-select2-allow-clear="false"`` to disab
             'attr'=>array('data-sonata-select2-allow-clear'=>'false')
         )
     )
+
+100% width
+----------
+Select elements with .form-control are set to width: 100%.
+
+.. code-block:: php
+
+    ->add('category', 'sonata_type_model',
+        array(
+            'attr'=>array('class' => 'form-control')
+        )
+    )
