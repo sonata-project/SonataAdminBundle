@@ -12,7 +12,7 @@
 jQuery(document).ready(function() {
     jQuery('html').removeClass('no-js');
     if (window.SONATA_CONFIG && window.SONATA_CONFIG.CONFIRM_EXIT) {
-        jQuery('.sonata-ba-form form').confirmExit();
+        jQuery('.sonata-ba-form form').each( function () { $(this).confirmExit(); } );
     }
 
     Admin.setup_per_page_switcher(document);
@@ -103,7 +103,7 @@ var Admin = {
     },
     setup_icheck: function(subject) {
         if (window.SONATA_CONFIG && window.SONATA_CONFIG.USE_ICHECK) {
-            jQuery("input[type='checkbox'], input[type='radio']", subject).iCheck({
+            jQuery("input[type='checkbox']:not('label.btn>input'), input[type='radio']:not('label.btn>input')", subject).iCheck({
                 checkboxClass: 'icheckbox_minimal',
                 radioClass: 'iradio_minimal'
             });

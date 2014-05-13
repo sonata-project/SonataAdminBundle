@@ -60,6 +60,10 @@ forget to enable SonataAdminBundle too:
         return array(
             // ...
 
+            // The admin requires some twig functions defined in the security
+            // bundle, like is_granted
+            new Symfony\Bundle\SecurityBundle\SecurityBundle(),
+
             // Add your dependencies
             new Sonata\CoreBundle\SonataCoreBundle(),
             new Sonata\BlockBundle\SonataBlockBundle(),

@@ -196,7 +196,7 @@ class Configuration implements ConfigurationInterface
                                 'bundles/sonataadmin/vendor/AdminLTE/css/ionicons.min.css',
                                 'bundles/sonataadmin/vendor/AdminLTE/css/AdminLTE.css',
 
-                                'bundles/sonataadmin/vendor/jqueryui/themes/flick/jquery-ui.min.css',
+                                'bundles/sonataadmin/vendor/jqueryui/themes/base/jquery-ui.css',
 
                                 'bundles/sonataadmin/vendor/select2/select2.css',
                                 'bundles/sonataadmin/vendor/select2/select2-bootstrap.css',
@@ -211,13 +211,12 @@ class Configuration implements ConfigurationInterface
                         ->arrayNode('javascripts')
                             ->defaultValue(array(
                                 'bundles/sonataadmin/vendor/jquery/dist/jquery.min.js',
+                                'bundles/sonataadmin/vendor/bootstrap/dist/js/bootstrap.min.js',
                                 'bundles/sonataadmin/vendor/jqueryui/ui/minified/jquery-ui.min.js',
                                 'bundles/sonataadmin/vendor/jqueryui/ui/minified/i18n/jquery-ui-i18n.min.js',
 
                                 'bundles/sonataadmin/jquery/jquery.form.js',
                                 'bundles/sonataadmin/jquery/jquery.confirmExit.js',
-
-                                'bundles/sonataadmin/vendor/bootstrap/dist/js/bootstrap.min.js',
 
                                 'bundles/sonataadmin/vendor/x-editable/dist/bootstrap3-editable/js/bootstrap-editable.min.js',
 
