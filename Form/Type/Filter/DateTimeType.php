@@ -68,7 +68,7 @@ class DateTimeType extends AbstractType
 
         $builder
             ->add('type', 'choice', array('choices' => $choices, 'required' => false))
-            ->add('value', 'datetime', array_merge(array('required' => false), $options['field_options']))
+            ->add('value', $options['field_type'], array_merge(array('required' => false), $options['field_options']))
         ;
     }
 
