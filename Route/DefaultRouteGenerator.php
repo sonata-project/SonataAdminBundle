@@ -56,8 +56,15 @@ class DefaultRouteGenerator implements RouteGeneratorInterface
      */
     public function generateMenuUrl(AdminInterface $admin, $name, array $parameters = array(), $absolute = false)
     {
+        if (!$admin->isChild()) {
+            if (strpos($name, '.')) {
+                $name = $admin->getCode().'|'.$name;
+            } else {
+                $name = $admin->getCode().'.'.$name;
+            }
+        }
         // if the admin is a child we automatically append the parent's id
-        if ($admin->isChild()) {
+        else {
             // twig template does not accept variable hash key ... so cannot use admin.idparameter ...
             // switch value
             if (isset($parameters['id'])) {
