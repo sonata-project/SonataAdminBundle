@@ -8,6 +8,19 @@ For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 
 #}
+
+{% extends 'form_div_layout.html.twig' %}
+
+{% block form_widget_simple %}
+    {% set attr = attr|merge({'class': attr.class|default('') ~ ' form-control'}) %}
+    {{ parent() }}
+{% endblock form_widget_simple %}
+
+{% block textarea_widget %}
+    {% set attr = attr|merge({'class': attr.class|default('') ~ ' form-control'}) %}
+    {{ parent() }}
+{% endblock textarea_widget %}
+
 {# Labels #}
 {% block form_label %}
 {% spaceless %}

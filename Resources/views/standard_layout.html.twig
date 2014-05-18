@@ -193,18 +193,18 @@ file that was distributed with this source code.
                                                 {% endif %}
 
                                                 {% if display and (item_count > 0) %}
-                                                    <li class="treeview">
+                                                    {% set active = false %}
+                                                    {% for admin in group.items %}
+                                                        {% if admin.hasroute('list') and admin.isGranted('LIST') and app.request.get('_sonata_admin') == admin.code %}
+                                                            {% set active = true %}
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                    <li class="treeview{% if active %} active{% endif %}">
                                                         <a href="#">
                                                             {% if group.icon|default() %}{{ group.icon|raw }}{% endif %}
                                                             <span>{{ group.label|trans({}, group.label_catalogue) }}</span>
                                                             <i class="fa pull-right fa-angle-left"></i>
                                                         </a>
-                                                        {% set active = false %}
-                                                        {% for admin in group.items %}
-                                                            {% if admin.hasroute('list') and admin.isGranted('LIST') and app.request.get('_sonata_admin') == admin.code %}
-                                                                {% set active = true %}
-                                                            {% endif %}
-                                                        {% endfor %}
                                                         <ul class="treeview-menu{% if active %} active{% endif %}">
                                                             {% for admin in group.items %}
                                                                 {% if admin.hasroute('list') and admin.isGranted('LIST') %}

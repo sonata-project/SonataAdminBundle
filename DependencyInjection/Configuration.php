@@ -196,6 +196,8 @@ class Configuration implements ConfigurationInterface
                                 'bundles/sonataadmin/vendor/AdminLTE/css/ionicons.min.css',
                                 'bundles/sonataadmin/vendor/AdminLTE/css/AdminLTE.css',
 
+                                'bundles/sonatacore/vendor/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css',
+
                                 'bundles/sonataadmin/vendor/jqueryui/themes/base/jquery-ui.css',
 
                                 'bundles/sonataadmin/vendor/select2/select2.css',
@@ -211,7 +213,13 @@ class Configuration implements ConfigurationInterface
                         ->arrayNode('javascripts')
                             ->defaultValue(array(
                                 'bundles/sonataadmin/vendor/jquery/dist/jquery.min.js',
+
+                                'bundles/sonatacore/vendor/moment/min/moment.min.js',
+
                                 'bundles/sonataadmin/vendor/bootstrap/dist/js/bootstrap.min.js',
+
+                                'bundles/sonatacore/vendor/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
+
                                 'bundles/sonataadmin/vendor/jqueryui/ui/minified/jquery-ui.min.js',
                                 'bundles/sonataadmin/vendor/jqueryui/ui/minified/i18n/jquery-ui-i18n.min.js',
 
