@@ -69,7 +69,7 @@ class AdminHelper
         // retrieve the subject
         $form = $admin->getFormBuilder()->getForm();
         $form->setData($subject);
-        $form->bind($admin->getRequest());
+        $form->submit($admin->getRequest());
 
         $elementId = preg_replace('#.(\d+)#', '[$1]', implode('.', explode('_', substr($elementId, strpos($elementId, '_') + 1))));
         // append a new instance into the object
