@@ -19,10 +19,10 @@ abstract class BaseGroupedMapper extends BaseMapper
 
     protected $currentGroup;
 
-    protected abstract function getGroups();
+    abstract protected function getGroups();
 
-    protected abstract function setGroups(array $groups);
-
+    abstract protected function setGroups(array $groups);
+    
     /**
      * @param string $name
      * @param array  $options

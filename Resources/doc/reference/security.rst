@@ -91,7 +91,7 @@ Later, we will explain how to set up ACL with the
 ``FriendsOfSymfony/UserBundle``.
 
 Role handler
------------------
+------------
 
 The ``sonata.admin.security.handler.role`` allows you to operate finely on the actions that can be done (depending on the entity class), without requiring to set up ACL.
 
@@ -476,14 +476,14 @@ or a permission (``admin.isGranted``):
 
 - **Token:** a token identifies a user between requests;
 - **Voter:** sort of judge that returns if access is granted of denied, if the
-  voter should not vote for a case, it returns abstrain;
+  voter should not vote for a case, it returns abstain;
 - **AccessDecisionManager:** decides if access is granted or denied according
   a specific strategy. It grants access if at least one (affirmative strategy),
   all (unanimous strategy) or more then half (consensus strategy) of the
   counted votes granted access;
 - **RoleVoter:** votes for all attributes stating with ``ROLE_`` and grants
   access if the user has this role;
-- **RoleHierarchieVoter:** when the role ``ROLE_SONATA_ADMIN`` is voted for,
+- **RoleHierarchyVoter:** when the role ``ROLE_SONATA_ADMIN`` is voted for,
   it also votes "granted" if the user has the role ``ROLE_SUPER_ADMIN``;
 - **AclVoter:** grants access for the permissions of the ``Admin`` class if
   the user has the permission, the user has a permission that is included in

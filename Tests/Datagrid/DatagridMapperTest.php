@@ -225,7 +225,7 @@ class DatagridMapperTest extends \PHPUnit_Framework_TestCase
             'fooName2',
             'fooName3',
             'fooName4',
-       ), array_keys($this->datagrid->getFilters()));
+        ), array_keys($this->datagrid->getFilters()));
 
         $this->datagridMapper->reorder(array('fooName3', 'fooName2', 'fooName1', 'fooName4'));
 
@@ -234,10 +234,10 @@ class DatagridMapperTest extends \PHPUnit_Framework_TestCase
             'fooName2',
             'fooName1',
             'fooName4',
-       ), array_keys($this->datagrid->getFilters()));
+        ), array_keys($this->datagrid->getFilters()));
     }
 
-    private function getFieldDescriptionMock($name=null, $label=null)
+    private function getFieldDescriptionMock($name = null, $label = null)
     {
         $fieldDescription = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\BaseFieldDescription');
 

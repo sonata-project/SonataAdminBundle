@@ -102,7 +102,7 @@ explicitly this defaults to the action name.
     {
         protected function configureRoutes(RouteCollection $collection)
         {
-            $collection->add('myCustom'); #Action gets added automaticly
+            $collection->add('myCustom'); // Action gets added automatically
             $collection->add('view', $this->getRouterIdParameter().'/view');
         }
     }

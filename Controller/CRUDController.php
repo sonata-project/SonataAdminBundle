@@ -204,7 +204,7 @@ class CRUDController extends Controller
         try {
             $modelManager->batchDelete($this->admin->getClass(), $query);
             $this->addFlash('sonata_flash_success', 'flash_batch_delete_success');
-        } catch ( ModelManagerException $e ) {
+        } catch (ModelManagerException $e) {
             $this->addFlash('sonata_flash_error', 'flash_batch_delete_error');
         }
 

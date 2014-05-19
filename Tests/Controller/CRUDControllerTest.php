@@ -112,16 +112,16 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $templating->expects($this->any())
             ->method('renderResponse')
             ->will($this->returnCallback(function($view, array $parameters = array(), Response $response = null) use (&$params, &$template) {
-                    $template = $view;
+                $template = $view;
 
-                    if (null === $response) {
-                        $response = new Response();
-                    }
+                if (null === $response) {
+                    $response = new Response();
+                }
 
-                    $params = $parameters;
+                $params = $parameters;
 
-                    return $response;
-                }));
+                return $response;
+            }));
 
         $this->session = new Session(new MockArraySessionStorage());
 
@@ -142,13 +142,13 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $twig->expects($this->any())
             ->method('getExtension')
             ->will($this->returnCallback(function($name) use ($formExtension) {
-                    switch ($name) {
-                        case 'form':
-                            return $formExtension;
-                    }
+                switch ($name) {
+                    case 'form':
+                        return $formExtension;
+                }
 
-                    return null;
-                }));
+                return null;
+            }));
 
         $exporter = $this->getMock('Sonata\AdminBundle\Export\Exporter');
 
@@ -177,66 +177,66 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->container->expects($this->any())
             ->method('get')
             ->will($this->returnCallback(function($id) use ($pool, $request, $admin, $templating, $twig, $session, $exporter, $auditManager, $adminObjectAclManipulator, $requestStack) {
-                    switch ($id) {
-                        case 'sonata.admin.pool':
-                            return $pool;
-                        case 'request_stack':
-                            return $requestStack;
-                        case 'request':
-                            return $request;
-                        case 'foo.admin':
-                            return $admin;
-                        case 'templating':
-                            return $templating;
-                        case 'twig':
-                            return $twig;
-                        case 'session':
-                            return $session;
-                        case 'sonata.admin.exporter':
-                            return $exporter;
-                        case 'sonata.admin.audit.manager':
-                            return $auditManager;
-                        case 'sonata.admin.object.manipulator.acl.admin':
-                            return $adminObjectAclManipulator;
-                    }
+                switch ($id) {
+                    case 'sonata.admin.pool':
+                        return $pool;
+                    case 'request_stack':
+                        return $requestStack;
+                    case 'request':
+                        return $request;
+                    case 'foo.admin':
+                        return $admin;
+                    case 'templating':
+                        return $templating;
+                    case 'twig':
+                        return $twig;
+                    case 'session':
+                        return $session;
+                    case 'sonata.admin.exporter':
+                        return $exporter;
+                    case 'sonata.admin.audit.manager':
+                        return $auditManager;
+                    case 'sonata.admin.object.manipulator.acl.admin':
+                        return $adminObjectAclManipulator;
+                }
 
-                    return null;
-                }));
+                return null;
+            }));
 
         $this->admin->expects($this->any())
             ->method('getTemplate')
             ->will($this->returnCallback(function($name) {
-                    switch ($name) {
-                        case 'ajax':
-                            return 'SonataAdminBundle::ajax_layout.html.twig';
-                        case 'layout':
-                            return 'SonataAdminBundle::standard_layout.html.twig';
-                        case 'show':
-                            return 'SonataAdminBundle:CRUD:show.html.twig';
-                        case 'edit':
-                            return 'SonataAdminBundle:CRUD:edit.html.twig';
-                        case 'dashboard':
-                            return 'SonataAdminBundle:Core:dashboard.html.twig';
-                        case 'search':
-                            return 'SonataAdminBundle:Core:search.html.twig';
-                        case 'list':
-                            return 'SonataAdminBundle:CRUD:list.html.twig';
-                        case 'preview':
-                            return 'SonataAdminBundle:CRUD:preview.html.twig';
-                        case 'history':
-                            return 'SonataAdminBundle:CRUD:history.html.twig';
-                        case 'acl':
-                            return 'SonataAdminBundle:CRUD:acl.html.twig';
-                        case 'delete':
-                            return 'SonataAdminBundle:CRUD:delete.html.twig';
-                        case 'batch':
-                            return 'SonataAdminBundle:CRUD:list__batch.html.twig';
-                        case 'batch_confirmation':
-                            return 'SonataAdminBundle:CRUD:batch_confirmation.html.twig';
-                    }
+                switch ($name) {
+                    case 'ajax':
+                        return 'SonataAdminBundle::ajax_layout.html.twig';
+                    case 'layout':
+                        return 'SonataAdminBundle::standard_layout.html.twig';
+                    case 'show':
+                        return 'SonataAdminBundle:CRUD:show.html.twig';
+                    case 'edit':
+                        return 'SonataAdminBundle:CRUD:edit.html.twig';
+                    case 'dashboard':
+                        return 'SonataAdminBundle:Core:dashboard.html.twig';
+                    case 'search':
+                        return 'SonataAdminBundle:Core:search.html.twig';
+                    case 'list':
+                        return 'SonataAdminBundle:CRUD:list.html.twig';
+                    case 'preview':
+                        return 'SonataAdminBundle:CRUD:preview.html.twig';
+                    case 'history':
+                        return 'SonataAdminBundle:CRUD:history.html.twig';
+                    case 'acl':
+                        return 'SonataAdminBundle:CRUD:acl.html.twig';
+                    case 'delete':
+                        return 'SonataAdminBundle:CRUD:delete.html.twig';
+                    case 'batch':
+                        return 'SonataAdminBundle:CRUD:list__batch.html.twig';
+                    case 'batch_confirmation':
+                        return 'SonataAdminBundle:CRUD:batch_confirmation.html.twig';
+                }
 
-                    return null;
-                }));
+                return null;
+            }));
 
         $this->admin->expects($this->any())
             ->method('getIdParameter')
@@ -245,24 +245,24 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->admin->expects($this->any())
             ->method('generateUrl')
             ->will($this->returnCallback(function($name, array $parameters = array(), $absolute = false) {
-                    $result = $name;
-                    if (!empty($parameters)) {
-                        $result .= '?'.http_build_query($parameters);
-                    }
+                $result = $name;
+                if (!empty($parameters)) {
+                    $result .= '?'.http_build_query($parameters);
+                }
 
-                    return $result;
-                }));
+                return $result;
+            }));
 
         $this->admin->expects($this->any())
             ->method('generateObjectUrl')
             ->will($this->returnCallback(function($name, $object, array $parameters = array(), $absolute = false) {
-                    $result = get_class($object).'_'.$name;
-                    if (!empty($parameters)) {
-                        $result .= '?'.http_build_query($parameters);
-                    }
+                $result = get_class($object).'_'.$name;
+                if (!empty($parameters)) {
+                    $result .= '?'.http_build_query($parameters);
+                }
 
-                    return $result;
-                }));
+                return $result;
+            }));
 
         $this->controller = new CRUDController();
         $this->controller->setContainer($this->container);
@@ -332,8 +332,8 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->admin->expects($this->once())
             ->method('setUniqid')
             ->will($this->returnCallback(function($uniqid) use (&$uniqueId) {
-                    $uniqueId = $uniqid;
-                }));
+                $uniqueId = $uniqid;
+            }));
 
         $this->request->query->set('uniqid', 123456);
         $this->protectedTestedMethods['configure']->invoke($this->controller);
@@ -349,8 +349,8 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->admin->expects($this->once())
             ->method('setUniqid')
             ->will($this->returnCallback(function($uniqid) use (&$uniqueId) {
-                    $uniqueId = $uniqid;
-                }));
+                $uniqueId = $uniqid;
+            }));
 
         $this->admin->expects($this->once())
             ->method('isChild')

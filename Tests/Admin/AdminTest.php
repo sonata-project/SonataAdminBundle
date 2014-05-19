@@ -848,7 +848,7 @@ class AdminTest extends \PHPUnit_Framework_TestCase
         $securityHandler=$this->getMock('Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface');
         $securityHandler->expects($this->any())
             ->method('isGranted')
-            ->will($this->returnCallback(function (AdminInterface $adminIn, $attributes, $object = nul) use ($admin, $entity) {
+            ->will($this->returnCallback(function (AdminInterface $adminIn, $attributes, $object = null) use ($admin, $entity) {
                 if ($admin == $adminIn && $attributes == 'FOO') {
                     if (($object == $admin) || ($object == $entity)) {
                         return true;

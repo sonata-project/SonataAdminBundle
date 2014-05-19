@@ -150,7 +150,7 @@ To create your own RouteBuilder create the PHP class and register it as a servic
         {
             parent::build($admin,$collection);
             $collection->add('yourSubAction');
-            // Create button will dissappear, delete functionality will be disabled as well
+            // Create button will disappear, delete functionality will be disabled as well
             // No more changes needed!
             $collection->remove('create');
             $collection->remove('delete');

@@ -76,7 +76,7 @@ class ExtensionCompilerPassTest extends \PHPUnit_Framework_TestCase
         $extensionMap = $container->getParameter($this->root . ".extension.map");
 
         $method = new \ReflectionMethod(
-          'Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass', 'flattenExtensionConfiguration'
+            'Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass', 'flattenExtensionConfiguration'
         );
 
         $method->setAccessible(TRUE);

@@ -187,7 +187,7 @@ class ListMapperTest extends \PHPUnit_Framework_TestCase
             'fooName2'=>$fieldDescription2,
             'fooName3'=>$fieldDescription3,
             'fooName4'=>$fieldDescription4,
-       ), $this->fieldDescriptionCollection->getElements());
+        ), $this->fieldDescriptionCollection->getElements());
 
         $this->listMapper->reorder(array('fooName3', 'fooName2', 'fooName1', 'fooName4'));
 
@@ -197,11 +197,11 @@ class ListMapperTest extends \PHPUnit_Framework_TestCase
             'fooName2'=>$fieldDescription2,
             'fooName1'=>$fieldDescription1,
             'fooName4'=>$fieldDescription4,
-       ), true), print_r($this->fieldDescriptionCollection->getElements(), true));
+        ), true), print_r($this->fieldDescriptionCollection->getElements(), true));
 
     }
 
-    private function getFieldDescriptionMock($name=null, $label=null)
+    private function getFieldDescriptionMock($name = null, $label = null)
     {
         $fieldDescription = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\BaseFieldDescription');
 
