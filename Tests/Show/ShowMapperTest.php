@@ -211,10 +211,10 @@ class ShowMapperTest extends \PHPUnit_Framework_TestCase
                 'fields' => array('fooName3'=>'fooName3', 'fooName2'=>'fooName2', 'fooName1'=>'fooName1', 'fooName4'=>'fooName4'),
                 'description' => false,
                 'translation_domain' => null,
-            )), true), print_r($this->admin->getShowGroups(), true));
+       )), true), print_r($this->admin->getShowGroups(), true));
     }
 
-    private function getFieldDescriptionMock($name=null, $label=null)
+    private function getFieldDescriptionMock($name = null, $label = null)
     {
         $fieldDescription = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\BaseFieldDescription');
 

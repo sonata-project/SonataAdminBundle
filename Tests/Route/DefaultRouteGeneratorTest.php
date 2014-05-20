@@ -65,7 +65,7 @@ class DefaultRouteGeneratorTest extends \PHPUnit_Framework_TestCase
         $router = $this->getMock('Symfony\Component\Routing\RouterInterface');
         $router->expects($this->once())
             ->method('generate')
-            ->will($this->returnCallback(function($name, array $parameters = array())  {
+            ->will($this->returnCallback(function($name, array $parameters = array()) {
                 $params = '';
                 if (!empty($parameters)) {
                     $params .= '?'.http_build_query($parameters);
@@ -168,7 +168,7 @@ class DefaultRouteGeneratorTest extends \PHPUnit_Framework_TestCase
         $router = $this->getMock('\Symfony\Component\Routing\RouterInterface');
         $router->expects($this->once())
             ->method('generate')
-            ->will($this->returnCallback(function($name, array $parameters = array())  {
+            ->will($this->returnCallback(function($name, array $parameters = array()) {
                 $params = '';
                 if (!empty($parameters)) {
                     $params .= '?'.http_build_query($parameters);
@@ -227,7 +227,7 @@ class DefaultRouteGeneratorTest extends \PHPUnit_Framework_TestCase
         $router = $this->getMock('Symfony\Component\Routing\RouterInterface');
         $router->expects($this->once())
             ->method('generate')
-            ->will($this->returnCallback(function($name, array $parameters = array())  {
+            ->will($this->returnCallback(function($name, array $parameters = array()) {
                 $params = '';
                 if (!empty($parameters)) {
                     $params .= '?'.http_build_query($parameters);

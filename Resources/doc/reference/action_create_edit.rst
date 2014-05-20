@@ -74,4 +74,4 @@ To do:
 - how to create settings/fields that appear on just one of the create/edit views
   and any controller changes needed to manage them
 
-.. _`issues on Github`: https://github.com/sonata-project/SonataAdminBundle/issues/1519
+.. _`issues on GitHub`: https://github.com/sonata-project/SonataAdminBundle/issues/1519

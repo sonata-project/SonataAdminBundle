@@ -63,7 +63,7 @@ Parameters:
 * **url**: url address (e.g. ``http://example.com``)
 * **route.name**: route name (e.g. ``acme_demo_homepage``)
 * **route.parameters**: array of route parameters (e.g. ``array('type'=>'example', 'display'=>'full')``)
-* **route.absolute**: boolean value, create absolute or relative url address based on ``route.name`` and  ``route.parameters`` (defalut ``false``)
+* **route.absolute**: boolean value, create absolute or relative url address based on ``route.name`` and  ``route.parameters`` (default ``false``)
 * **route.identifier_parameter_name**: parameter added to ``route.parameters``, it's value is an object identifier (e.g. 'id') to create dynamic links based on rendered objects.
 
 .. code-block:: php

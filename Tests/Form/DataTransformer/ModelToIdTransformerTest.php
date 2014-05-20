@@ -51,7 +51,7 @@ class ModelToIdTransformerTest extends \PHPUnit_Framework_TestCase
      */
     public function testReverseTransform($value, $expected)
     {
-        $transformer = new ModelToIdTransformer($this->modelManager,'TEST2');
+        $transformer = new ModelToIdTransformer($this->modelManager, 'TEST2');
 
         $this->modelManager->expects($this->any())->method('find');
 
@@ -74,7 +74,7 @@ class ModelToIdTransformerTest extends \PHPUnit_Framework_TestCase
             ->method('getIdentifierValues')
             ->will($this->returnValue(array(123)));
 
-        $transformer = new ModelToIdTransformer($this->modelManager,'TEST');
+        $transformer = new ModelToIdTransformer($this->modelManager, 'TEST');
 
         $this->assertNull($transformer->transform(null));
         $this->assertNull($transformer->transform(false));
