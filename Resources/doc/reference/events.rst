@@ -32,7 +32,7 @@ ConfigureQueryEvent
 This event is generated when a list query is defined. The event name is: ``sonata.admin.event.configure.query``
 
 BlockEvent
-~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~
 
 Block events help you customize your templates. Available events are :
 

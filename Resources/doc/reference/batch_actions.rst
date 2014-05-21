@@ -139,7 +139,7 @@ This method may return three different values:
 (Optional) Executing a pre batch hook
 -------------------------------------
 
-In your admin class you can create a ``preBacthAction`` method to execute something before doing the batch action.
+In your admin class you can create a ``preBatchAction`` method to execute something before doing the batch action.
 The main purpose of this method is to alter the query or the list of selected id.
 
 .. code-block:: php

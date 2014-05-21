@@ -1,7 +1,7 @@
 Modifying form fields dynamically depending on edited object
 ============================================================
 
-It's a quite common situation when you need to modify your form's fields because of edited object's properties or structure. Let's assume you only want to display an admin form field for new objects and you don't want it to be shown for those objects that have alerady been saved to the database and now are being edited.
+It's a quite common situation when you need to modify your form's fields because of edited object's properties or structure. Let's assume you only want to display an admin form field for new objects and you don't want it to be shown for those objects that have already been saved to the database and now are being edited.
 
 This is a way for you to accomplish this. 
 

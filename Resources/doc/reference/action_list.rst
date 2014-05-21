@@ -5,7 +5,7 @@ The List View
 
     This document is a stub representing a new work in progress. If you're reading
     this you can help contribute, **no matter what your experience level with Sonata
-    is**. Check out the `issues on Github`_ for more information about how to get involved.
+    is**. Check out the `issues on GitHub`_ for more information about how to get involved.
 
 This document will cover the List view which you use to browse the objects in your
 system. It will cover configuration of the list itself and the filters you can use
@@ -228,4 +228,4 @@ To do:
 - targeting submodel fields using dot-separated notation
 - advanced filter options (global_search)
 
-.. _`issues on Github`: https://github.com/sonata-project/SonataAdminBundle/issues/1519
+.. _`issues on GitHub`: https://github.com/sonata-project/SonataAdminBundle/issues/1519

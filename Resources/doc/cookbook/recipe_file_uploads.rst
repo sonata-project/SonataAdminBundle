@@ -299,8 +299,8 @@ happening.
 Notes
 -----
 
-If you are looking for richer media management fucntionality there is a complete SonataMediaBundle
-which caters to this need. It is documentated online and is created and maintained by the same team
+If you are looking for richer media management functionality there is a complete SonataMediaBundle
+which caters to this need. It is documented online and is created and maintained by the same team
 as SonataAdmin.
 
 To learn how to add an image preview to your ImageAdmin take a look at the related cookbook entry.

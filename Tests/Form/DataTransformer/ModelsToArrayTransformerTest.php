@@ -149,7 +149,7 @@ class ModelsToArrayTransformerTest extends \PHPUnit_Framework_TestCase
         $entity2 =  new FooEntity(array('bar'));
         $entity3 =  new FooEntity(array('baz'));
 
-       $this->modelChoiceList->expects($this->any())
+        $this->modelChoiceList->expects($this->any())
             ->method('getEntity')
             ->will($this->returnCallback(function($key) use ($entity1, $entity2, $entity3) {
                 switch ($key) {
@@ -185,7 +185,7 @@ class ModelsToArrayTransformerTest extends \PHPUnit_Framework_TestCase
             ->method('getModelCollectionInstance')
             ->will($this->returnValue(new ArrayCollection()));
 
-       $this->modelChoiceList->expects($this->any())
+        $this->modelChoiceList->expects($this->any())
             ->method('getEntity')
             ->will($this->returnValue(false));
 

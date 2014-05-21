@@ -121,7 +121,7 @@ class Datagrid implements DatagridInterface
 
         if (isset($this->values['_sort_by'])) {
             if (!$this->values['_sort_by'] instanceof FieldDescriptionInterface) {
-                throw new UnexpectedTypeException($this->values['_sort_by'],'FieldDescriptionInterface');
+                throw new UnexpectedTypeException($this->values['_sort_by'], 'FieldDescriptionInterface');
             }
 
             if ($this->values['_sort_by']->isSortable()) {

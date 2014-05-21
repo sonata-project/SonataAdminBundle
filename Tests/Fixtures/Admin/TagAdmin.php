@@ -13,4 +13,3 @@ class TagAdmin extends Admin
         }
     }
 }
-
