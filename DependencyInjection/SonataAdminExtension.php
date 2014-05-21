@@ -154,6 +154,11 @@ BOOM
             $container->removeDefinition('sonata.admin.translator.extractor.jms_translator_bundle');
         }
 
+        //remove non-Mopa compatibility layer
+        if (isset($bundles['MopaBootstrapBundle'])) {
+            $container->removeDefinition('sonata.admin.form.extension.field.mopa');
+        }
+
         // set filter persistence
         $container->setParameter('sonata.admin.configuration.filters.persist', $config['persist_filters']);
 
