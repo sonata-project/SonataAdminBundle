@@ -117,7 +117,7 @@ file that was distributed with this source code.
                                                              ({{ admin.datagrid.pager.nbresults }})
                                                         </label>
 
-                                                        <select name="action" style="width: auto; height: auto">
+                                                        <select name="action" style="width: auto; height: auto" class="form-control">
                                                             {% for action, options in batchactions %}
                                                                 <option value="{{ action }}">{{ options.label }}</option>
                                                             {% endfor %}
