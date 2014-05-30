@@ -390,6 +390,10 @@
                 <source>add_new_entry</source>
                 <target>add new entry</target>
             </trans-unit>
+            <trans-unit id="Actions">
+                <source>Actions</source>
+                <target>Actions</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
