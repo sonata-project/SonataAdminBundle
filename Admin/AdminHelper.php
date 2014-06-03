@@ -96,7 +96,8 @@ class AdminHelper
         $entity = $admin->getSubject();
         $propertyAccessor = new PropertyAccessor();
         $collection = $propertyAccessor->getValue($entity, $elementId);
-        $collection->add(null); //this is magic
+        $entityClassName = $collection->getTypeClass()->getName();
+        $collection->add(new $entityClassName);
         $propertyAccessor->setValue($entity, $elementId, $collection);
     }
 }
