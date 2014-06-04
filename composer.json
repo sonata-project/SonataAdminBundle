@@ -27,7 +27,7 @@
         "symfony/twig-bridge": "~2.3",
         "symfony/class-loader":"~2.3",
         "sensio/generator-bundle": "~2.3",
-        "twig/twig": "~1.12",
+        "twig/twig": "~1.15",
         "twig/extensions": "~1.0",
         "sonata-project/exporter": "~1.0",
         "sonata-project/block-bundle": "~2.2,>=2.2.7",
