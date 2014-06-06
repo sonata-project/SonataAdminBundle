@@ -258,7 +258,8 @@ class HelperController
 
         // Retrieve entity if field has association mapping
         if($mapping = $fieldDescription->getAssociationMapping()) {
-            $relation = $admin->getModelManager()->find($mapping['targetEntity'],$value);
+            $relationAdmin = $this->pool->getAdminByClass($mapping['targetEntity']);
+            $relation = $relationAdmin->getModelManager()->find($mapping['targetEntity'],$value);
             $value = $relation ? $relation : null;
         }
 
