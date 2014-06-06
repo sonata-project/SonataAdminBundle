@@ -258,8 +258,8 @@ class HelperController
 
         // Retrieve entity if field has association mapping
         if($mapping = $fieldDescription->getAssociationMapping()) {
-            $entity = $this->pool->getContainer()->get('doctrine')->getManager()->getRepository($mapping['targetEntity'])->find($value);
-            $value = $entity ? $entity : null;
+            $relation = $admin->getModelManager()->find($mapping['targetEntity'],$value);
+            $value = $relation ? $relation : null;
         }
 
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
