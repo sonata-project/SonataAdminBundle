@@ -258,6 +258,9 @@ class HelperController
 
         // Retrieve entity if field has association mapping
         if($mapping = $fieldDescription->getAssociationMapping()) {
+            if(!$this->pool->hasAdminByClass($mapping['targetEntity'])) {
+                return new JsonResponse(array('status' => 'KO', 'message' => 'The field cannot be edit, relation has no admin configured'));
+            }
             $relationAdmin = $this->pool->getAdminByClass($mapping['targetEntity']);
             $relation = $relationAdmin->getModelManager()->find($mapping['targetEntity'],$value);
             $value = $relation ? $relation : null;
