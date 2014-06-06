@@ -256,6 +256,12 @@ class HelperController
             return new JsonResponse(array('status' => 'KO', 'message' => 'The field cannot be edit, editable option must be set to true'));
         }
 
+        // Retrieve entity if field has association mapping
+        if($mapping = $fieldDescription->getAssociationMapping()) {
+            $entity = $this->pool->getContainer()->get('doctrine')->getManager()->getRepository($mapping['targetEntity'])->find($value);
+            $value = $entity ? $entity : null;
+        }
+
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
         $propertyPath     = new PropertyPath($field);
 
@@ -270,16 +276,20 @@ class HelperController
 
         $propertyAccessor->setValue($object, $propertyPath, '' !== $value ? $value : null);
 
-        $violations = $this->validator->validateProperty($object, $field);
+        // Check validator has validation metadata for this field
+        $metadatas = $this->validator->getMetadataFor($object);
+        if(array_key_exists($field, $metadatas)) {
+            $violations = $this->validator->validateProperty($object, $field);
 
-        if (count($violations)) {
-            $messages = array();
+            if (count($violations)) {
+                $messages = array();
 
-            foreach ($violations as $violation) {
-                $messages[] = $violation->getMessage();
+                foreach ($violations as $violation) {
+                    $messages[] = $violation->getMessage();
+                }
+
+                return new JsonResponse(array('status' => 'KO', 'message' => implode("\n", $messages)));
             }
-
-            return new JsonResponse(array('status' => 'KO', 'message' => implode("\n", $messages)));
         }
 
         $admin->update($object);
