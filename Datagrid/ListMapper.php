@@ -47,7 +47,8 @@ class ListMapper extends BaseMapper
         $fieldDescriptionOptions['identifier'] = true;
 
         if (!isset($fieldDescriptionOptions['route']['name'])) {
-            $fieldDescriptionOptions['route']['name'] = 'edit';
+            $routeName = $this->admin->isGranted('EDIT') ? 'edit' : 'show';
+            $fieldDescriptionOptions['route']['name'] = $routeName;
         }
 
         if (!isset($fieldDescriptionOptions['route']['parameters'])) {
