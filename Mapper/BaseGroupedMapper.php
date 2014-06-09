@@ -37,7 +37,7 @@ abstract class BaseGroupedMapper extends BaseMapper
         if(array_key_exists("tab",$options) && $options["tab"]) {
             $tabs = $this->getTabs();
             if($this->currentTab) {
-                if($tabs[$name]["auto_created"]) {
+                if($tabs[$this->currentTab]["auto_created"]) {
                     throw new \Exception("New tab was added automatically when you have added field or group. You should close current tab before adding new one OR add tabs before adding groups and fields");
                 } else {
                     throw new \Exception("You should close previous tab with end() before adding new tab");
