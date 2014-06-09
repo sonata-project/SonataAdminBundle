@@ -390,8 +390,8 @@
                 <source>add_new_entry</source>
                 <target>add new entry</target>
             </trans-unit>
-            <trans-unit id="Actions">
-                <source>Actions</source>
+            <trans-unit id="link_actions">
+                <source>link_actions</source>
                 <target>Actions</target>
             </trans-unit>
         </body>

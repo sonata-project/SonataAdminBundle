@@ -390,8 +390,8 @@
                 <source>add_new_entry</source>
                 <target>Добавить новую запись</target>
             </trans-unit>
-            <trans-unit id="Actions">
-                <source>Actions</source>
+            <trans-unit id="link_actions">
+                <source>link_actions</source>
                 <target>Действия</target>
             </trans-unit>
         </body>
