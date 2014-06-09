@@ -18,11 +18,14 @@ abstract class BaseGroupedMapper extends BaseMapper
 {
 
     protected $currentGroup;
+    protected $currentTab;
 
     abstract protected function getGroups();
+    abstract protected function getTabs();
 
     abstract protected function setGroups(array $groups);
-    
+    abstract protected function setTabs(array $tabs);
+
     /**
      * @param string $name
      * @param array  $options
@@ -31,24 +34,57 @@ abstract class BaseGroupedMapper extends BaseMapper
      */
     public function with($name, array $options = array())
     {
-        $groups = $this->getGroups();
+        if(array_key_exists("tab",$options) && $options["tab"]) {
+            $tabs = $this->getTabs();
+            if($this->currentTab) {
+                if($tabs[$name]["auto_created"]) {
+                    throw new \Exception("New tab was added automatically when you have added field or group. You should close current tab before adding new one OR add tabs before adding groups and fields");
+                } else {
+                    throw new \Exception("You should close previous tab with end() before adding new tab");
+                }
+            }elseif($this->currentGroup) {
+                throw new \Exception("You should open tab before adding new groups");
+            }
+            if (!isset($tabs[$name])) {
+                $groups[$name] = array();
+            }
 
-        if (!isset($groups[$name])) {
-            $groups[$name] = array();
+            $tabs["name"] = array_merge(array(
+                'auto_created'       => false,
+                'collapsed'          => false,
+                'class'              => false,
+                'groups'             => array(),
+                'description'        => false,
+                'translation_domain' => null,
+            ), $tabs[$name], $options);
+            $this->currentTab = $name;
+        } else {
+            if($this->currentGroup) {
+                throw new \Exception("You should close previous group with end() before adding new tab");
+            }
+            if(!$this->currentTab) {
+                $this->with($this->admin->getLabel(),array("tab"=>true,"auto_created"=>true)); // add new tab automatically
+            }
+            $groups = $this->getGroups();
+            if (!isset($groups[$name])) {
+                $groups[$name] = array();
+            }
+
+            $groups[$name] = array_merge(array('collapsed'          => false,
+                                                'class'              => false,
+                                                'fields'             => array(),
+                                                'description'        => false,
+                                                'translation_domain' => null,
+                                               ),$groups[$name],$options);
+            $this->currentGroup = $name;
+            $this->setGroups($groups);
         }
+        $tabs = $this->getTabs();
 
-        $groups[$name] = array_merge(array(
-            'collapsed'          => false,
-            'class'              => false,
-            'fields'             => array(),
-            'description'        => false,
-            'translation_domain' => null,
-        ), $groups[$name], $options);
-
-        $this->setGroups($groups);
-
-        $this->currentGroup = $name;
-
+        if($this->currentGroup) {
+            $tabs[$this->currentTab]["groups"][] = $this->currentGroup;
+        }
+        $this->setTabs($tabs);
         return $this;
     }
 
@@ -57,7 +93,13 @@ abstract class BaseGroupedMapper extends BaseMapper
      */
     public function end()
     {
-        $this->currentGroup = null;
+        if($this->currentGroup !== null) {
+            $this->currentGroup = null;
+        } elseif($this->currentTab !== null) {
+            $this->currentTab = null;
+        } else {
+            throw new \Exception("No open tabs or groups, you can use end()");
+        }
 
         return $this;
     }
@@ -91,7 +133,7 @@ abstract class BaseGroupedMapper extends BaseMapper
     protected function getCurrentGroupName()
     {
         if (!$this->currentGroup) {
-            $this->with($this->admin->getLabel());
+            $this->with($this->admin->getLabel(),array('auto_created'=>true));
         }
         return $this->currentGroup;
     }
