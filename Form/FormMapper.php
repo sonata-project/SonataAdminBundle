@@ -220,4 +220,20 @@ class FormMapper extends BaseGroupedMapper
     {
         $this->admin->setFormGroups($groups);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getTabs()
+    {
+        return $this->admin->getFormTabs();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function setTabs(array $tabs)
+    {
+        $this->admin->setFormTabs($tabs);
+    }
 }

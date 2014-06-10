@@ -828,6 +828,26 @@ interface AdminInterface
     public function setFormGroups(array $formGroups);
 
     /**
+     * {@inheritdoc}
+     */
+    public function getFormTabs();
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setFormTabs(array $formTabs);
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getShowTabs();
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setShowTabs(array $showTabs);
+
+    /**
      * Remove a form group field
      *
      * @param $key
