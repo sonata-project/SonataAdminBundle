@@ -245,7 +245,7 @@ file that was distributed with this source code.
                                                     {% endif %}
                                                 </div>
 
-                                                {% if _actions is not empty %}
+                                                {% if _actions|replace({ '<li>': '', '</li>': '' })|trim is not empty %}
                                                     <ul class="nav navbar-nav navbar-right">
                                                         <li class="dropdown sonata-actions">
                                                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Actions <b class="caret"></b></a>
