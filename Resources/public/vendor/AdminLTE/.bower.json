@@ -1,13 +1,13 @@
 {
   "name": "AdminLTE",
   "homepage": "https://github.com/almasaeed2010/AdminLTE",
-  "_release": "1.2",
+  "_release": "f31f32b317",
   "_resolution": {
-    "type": "tag",
-    "tag": "1.2",
-    "commit": "41b271f3fc75b1004ef1bcae22b058e13a59c1ba"
+    "type": "branch",
+    "branch": "master",
+    "commit": "f31f32b317cfeb0bc6a0c0c675124c8010e0e9e3"
   },
   "_source": "https://github.com/almasaeed2010/AdminLTE.git",
-  "_target": "1.2",
+  "_target": "master",
   "_originalSource": "https://github.com/almasaeed2010/AdminLTE.git"
 }
