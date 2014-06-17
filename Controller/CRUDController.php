@@ -267,7 +267,7 @@ class CRUDController extends Controller
                 );
             }
 
-            return new RedirectResponse($this->admin->generateUrl('list'));
+            return $this->redirectTo($object);
         }
 
         return $this->render($this->admin->getTemplate('delete'), array(
@@ -380,6 +380,10 @@ class CRUDController extends Controller
                 $params['subclass'] = $this->get('request')->get('subclass');
             }
             $url = $this->admin->generateUrl('create', $params);
+        }
+
+        if ($this->getRestMethod() == 'DELETE') {
+            $url = $this->admin->generateUrl('list');
         }
 
         if (!$url) {

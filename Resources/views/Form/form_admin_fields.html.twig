@@ -106,9 +106,7 @@ file that was distributed with this source code.
         {% endfor %}
         </ul>
     {% else %}
-    {% if sonata_admin.admin and not sonata_admin.admin.getConfigurationPool().getOption('use_select2') %}
-        {% set attr = attr|merge({'class': attr.class|default('') ~ ' form-control'}) %}
-    {% endif %}
+    {% set attr = attr|merge({'class': attr.class|default('') ~ ' form-control'}) %}
     <select {{ block('widget_attributes') }}{% if multiple %} multiple="multiple"{% endif %}>
         {% if empty_value is not none %}
             <option value="">
