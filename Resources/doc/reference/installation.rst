@@ -25,7 +25,7 @@ Selecting and downloading a storage bundle
 ------------------------------------------
 
 SonataAdminBundle is storage agnostic, meaning it can work with several storage
-mechanism. Depending on which you are using on your project, you'll need to install
+mechanisms. Depending on which you are using on your project, you'll need to install
 one of the following bundles. In the respective links you'll find simple installation
 instructions for each of them:
 
