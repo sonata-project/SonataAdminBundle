@@ -131,28 +131,27 @@ class ExplainAdminCommandTest extends \PHPUnit_Framework_TestCase
 
         $this->validatorFactory = $this->getMock('Symfony\Component\Validator\MetadataFactoryInterface');
 
+        $validator = $this->getMock('Symfony\Component\Validator\ValidatorInterface');
+        $validator->expects($this->any())->method('getMetadataFactory')->will($this->returnValue($this->validatorFactory));
+
         // php 5.3 BC
         $admin = $this->admin;
-        $validatorMetadata = $this->validatorFactory;
 
         $container->expects($this->any())
             ->method('get')
-            ->will($this->returnCallback(function($id) use ($container, $admin, $validatorMetadata) {
+            ->will($this->returnCallback(function($id) use ($container, $admin, $validator) {
                 switch ($id) {
                     case 'sonata.admin.pool':
                         $pool = new Pool($container, '', '');
                         $pool->setAdminServiceIds(array('acme.admin.foo', 'acme.admin.bar'));
 
                         return $pool;
-                        break;
 
-                    case 'validator.mapping.class_metadata_factory':
-                        return $validatorMetadata;
-                        break;
+                    case 'validator':
+                        return $validator;
 
                     case 'acme.admin.foo':
                         return $admin;
-                        break;
                 }
 
                 return null;

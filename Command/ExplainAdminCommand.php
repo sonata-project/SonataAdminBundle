@@ -86,7 +86,7 @@ class ExplainAdminCommand extends ContainerAwareCommand
             $output->writeln(sprintf('  - % -25s  % -15s % -15s', $name, $fieldDescription->getType(), $fieldDescription->getTemplate()));
         }
 
-        $validatorFactory = $this->getContainer()->get('validator.mapping.class_metadata_factory');
+        $validatorFactory = $this->getContainer()->get('validator')->getMetadataFactory();
         $metadata = $validatorFactory->getMetadataFor($admin->getClass());
 
         $output->writeln('');
