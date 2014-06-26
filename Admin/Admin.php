@@ -462,6 +462,14 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     /**
      * {@inheritdoc}
      */
+    public function reConfigureFormFields(Form $form)
+    {
+
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function configureListFields(ListMapper $list)
     {
 

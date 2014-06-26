@@ -29,7 +29,7 @@ class AdminType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $admin = $this->getAdmin($options);
+        $admin =  clone $this->getAdmin($options);
 
         if ($options['delete'] && $admin->isGranted('DELETE')) {
             $builder->add('_delete', 'checkbox', array('required' => false, 'mapped' => false));

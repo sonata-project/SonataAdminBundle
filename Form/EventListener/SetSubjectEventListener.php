@@ -44,6 +44,9 @@ class SetSubjectEventListener implements EventSubscriberInterface
 
     public function preSetData(FormEvent $event)
     {
-        $this->admin->setSubject($event->getData());
+        if (null !== $event->getData()) {
+            $this->admin->setSubject($event->getData());
+            $this->admin->reConfigureFormFields($event->getForm());
+        }
     }
 }
