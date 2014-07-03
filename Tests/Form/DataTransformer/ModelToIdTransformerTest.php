@@ -71,8 +71,8 @@ class ModelToIdTransformerTest extends \PHPUnit_Framework_TestCase
     public function testTransform()
     {
         $this->modelManager->expects($this->once())
-            ->method('getIdentifierValues')
-            ->will($this->returnValue(array(123)));
+            ->method('getNormalizedIdentifier')
+            ->will($this->returnValue(123));
 
         $transformer = new ModelToIdTransformer($this->modelManager, 'TEST');
 
