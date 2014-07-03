@@ -298,7 +298,7 @@ The following configuration for the SonataUserBundle defines:
 
     .. code-block:: yaml
 
-        # app/config/security.yml
+        # src/Acme/MyBundle/Resources/config/services.yml
 
         parameters:
             # ... other parameters
