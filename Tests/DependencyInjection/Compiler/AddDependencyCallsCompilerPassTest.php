@@ -111,24 +111,26 @@ class AddDependencyCallsCompilerPassTest extends \PHPUnit_Framework_TestCase
         $this->assertContains('sonata_article_admin', $adminClasses['Sonata\AdminBundle\Tests\DependencyInjection\Article']);
         $this->assertArrayHasKey('Sonata\AdminBundle\Tests\DependencyInjection\News', $adminClasses);
         $this->assertContains('sonata_news_admin', $adminClasses['Sonata\AdminBundle\Tests\DependencyInjection\News']);
+        $newsRouteBuilderMethodCall = current(array_filter(
+            $container->getDefinition('sonata_news_admin')->getMethodCalls(),
+            function ($element) {
+                return $element[0] == 'setRouteBuilder';
+            }
+        ));
         $this->assertSame(
             'sonata.admin.route.path_info',
-            (string) current(array_filter(
-                $container->getDefinition('sonata_news_admin')->getMethodCalls(),
-                function ($element) {
-                    return $element[0] == 'setRouteBuilder';
-                }
-            ))[1][0],
+            (string) $newsRouteBuilderMethodCall[1][0],
             'The news admin uses the orm, and should therefore use the path_info router.'
         );
+        $articleRouteBuilderMethodCall = current(array_filter(
+            $container->getDefinition('sonata_article_admin')->getMethodCalls(),
+            function ($element) {
+                return $element[0] == 'setRouteBuilder';
+            }
+        ));
         $this->assertSame(
             'sonata.admin.route.path_info_slashes',
-            (string) current(array_filter(
-                $container->getDefinition('sonata_article_admin')->getMethodCalls(),
-                function ($element) {
-                    return $element[0] == 'setRouteBuilder';
-                }
-            ))[1][0],
+            (string) $articleRouteBuilderMethodCall[1][0],
             'The article admin uses the odm, and should therefore use the path_info_slashes router.'
         );
     }
