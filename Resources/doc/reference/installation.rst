@@ -45,7 +45,7 @@ Besides the storage layer mentioned on step 2, there are other bundles needed
 for SonataAdminBundle to work:
 
     - `SonataBlockBundle <http://sonata-project.org/bundles/block/master/doc/reference/installation.html>`_
-    - `SonatajQueryBundle <https://github.com/sonata-project/SonatajQueryBundle/blob/documentation/Resources/doc/reference/installation.rst>`_
+    - `SonatajQueryBundle <https://github.com/sonata-project/SonatajQueryBundle/blob/master/Resources/doc/reference/installation.rst>`_
     - `KnpMenuBundle <https://github.com/KnpLabs/KnpMenuBundle/blob/master/Resources/doc/index.md#installation>`_ (Version 1.1.*)
 
 These bundles are automatically downloaded by composer as a dependency of SonataAdminBundle.
