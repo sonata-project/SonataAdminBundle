@@ -111,6 +111,28 @@ class AddDependencyCallsCompilerPassTest extends \PHPUnit_Framework_TestCase
         $this->assertContains('sonata_article_admin', $adminClasses['Sonata\AdminBundle\Tests\DependencyInjection\Article']);
         $this->assertArrayHasKey('Sonata\AdminBundle\Tests\DependencyInjection\News', $adminClasses);
         $this->assertContains('sonata_news_admin', $adminClasses['Sonata\AdminBundle\Tests\DependencyInjection\News']);
+        $newsRouteBuilderMethodCall = current(array_filter(
+            $container->getDefinition('sonata_news_admin')->getMethodCalls(),
+            function ($element) {
+                return $element[0] == 'setRouteBuilder';
+            }
+        ));
+        $this->assertSame(
+            'sonata.admin.route.path_info',
+            (string) $newsRouteBuilderMethodCall[1][0],
+            'The news admin uses the orm, and should therefore use the path_info router.'
+        );
+        $articleRouteBuilderMethodCall = current(array_filter(
+            $container->getDefinition('sonata_article_admin')->getMethodCalls(),
+            function ($element) {
+                return $element[0] == 'setRouteBuilder';
+            }
+        ));
+        $this->assertSame(
+            'sonata.admin.route.path_info_slashes',
+            (string) $articleRouteBuilderMethodCall[1][0],
+            'The article admin uses the odm, and should therefore use the path_info_slashes router.'
+        );
     }
 
     /**
@@ -199,21 +221,43 @@ class AddDependencyCallsCompilerPassTest extends \PHPUnit_Framework_TestCase
         $container
             ->register('form.factory')
             ->setClass('Symfony\Component\Form\FormFactoryInterface');
+        foreach (array(
+            'doctrine_phpcr' => 'PHPCR',
+            'orm'            => 'ORM') as $key => $bundleSubstring) {
+            $container
+                ->register(sprintf('sonata.admin.manager.%s', $key))
+                ->setClass(sprintf(
+                    'Sonata\Doctrine%sAdminBundle\Model\ModelManager',
+                    $bundleSubstring
+                ));
+            $container
+                ->register(sprintf('sonata.admin.builder.%s_form', $key))
+                ->setClass(sprintf(
+                    'Sonata\Doctrine%sAdminBundle\Builder\FormContractor',
+                    $bundleSubstring
+                ));
+            $container
+                ->register(sprintf('sonata.admin.builder.%s_show', $key))
+                ->setClass(sprintf(
+                    'Sonata\Doctrine%sAdminBundle\Builder\ShowBuilder',
+                    $bundleSubstring
+                ));
+            $container
+                ->register(sprintf('sonata.admin.builder.%s_list', $key))
+                ->setClass(sprintf(
+                    'Sonata\Doctrine%sAdminBundle\Builder\ListBuilder',
+                    $bundleSubstring
+                ));
+            $container
+                ->register(sprintf('sonata.admin.builder.%s_datagrid', $key))
+                ->setClass(sprintf(
+                    'Sonata\Doctrine%sAdminBundle\Builder\DatagridBuilder',
+                    $bundleSubstring
+                ));
+        }
         $container
-            ->register('sonata.admin.manager.orm')
-            ->setClass('Sonata\DoctrineORMAdminBundle\Model\ModelManager');
-        $container
-            ->register('sonata.admin.builder.orm_form')
-            ->setClass('Sonata\DoctrineORMAdminBundle\Builder\FormContractor');
-        $container
-            ->register('sonata.admin.builder.orm_show')
-            ->setClass('Sonata\DoctrineORMAdminBundle\Builder\ShowBuilder');
-        $container
-            ->register('sonata.admin.builder.orm_list')
-            ->setClass('Sonata\DoctrineORMAdminBundle\Builder\ListBuilder');
-        $container
-            ->register('sonata.admin.builder.orm_datagrid')
-            ->setClass('Sonata\DoctrineORMAdminBundle\Builder\DatagridBuilder');
+            ->register('sonata.admin.route.path_info_slashes')
+            ->setClass('Sonata\DoctrinePHPCRAdminBundle\Route\PathInfoBuilderSlashes');
         $container
             ->register('sonata.admin.route.cache')
             ->setClass('Sonata\AdminBundle\Route\RoutesCache');
@@ -239,7 +283,7 @@ class AddDependencyCallsCompilerPassTest extends \PHPUnit_Framework_TestCase
             ->register('sonata_article_admin')
             ->setClass('Sonata\AdminBundle\Tests\DependencyInjection\MockAdmin')
             ->setArguments(array('', 'Sonata\AdminBundle\Tests\DependencyInjection\Article', 'SonataAdminBundle:CRUD'))
-            ->addTag('sonata.admin', array('group' => 'sonata_group_one', 'manager_type' => 'orm'));
+            ->addTag('sonata.admin', array('group' => 'sonata_group_one', 'manager_type' => 'doctrine_phpcr'));
 
         return $container;
     }

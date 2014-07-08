@@ -20,11 +20,12 @@ router                        router
 validator                     validator
 security_handler              sonata.admin.security.handler
 menu_factory                  knp_menu.factory
-route_builder                 sonata.admin.route.path_info
+route_builder                 sonata.admin.route.path_info | sonata.admin.route.path_info_slashes
 label_translator_strategy     sonata.admin.label.strategy.form_component
 =========================     =============================================
 
-Note: %manager-type% is to be replaced by the manager type (orm, doctrine_mongodb...)
+Note: %manager-type% is to be replaced by the manager type (orm, doctrine_mongodb...),
+and the default route_builder depends on it.
 
 You have 2 ways of defining the dependencies inside ``services.xml``:
 
