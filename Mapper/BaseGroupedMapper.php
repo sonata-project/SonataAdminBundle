@@ -18,10 +18,10 @@ abstract class BaseGroupedMapper extends BaseMapper
 {
 
     protected $currentGroup;
-    
-    protected abstract function getGroups();
-    
-    protected abstract function setGroups(array $groups);
+
+    abstract protected function getGroups();
+
+    abstract protected function setGroups(array $groups);
     
     /**
      * @param string $name
@@ -32,25 +32,26 @@ abstract class BaseGroupedMapper extends BaseMapper
     public function with($name, array $options = array())
     {
         $groups = $this->getGroups();
-        
+
         if (!isset($groups[$name])) {
             $groups[$name] = array();
         }
 
         $groups[$name] = array_merge(array(
             'collapsed'          => false,
+            'class'              => false,
             'fields'             => array(),
             'description'        => false,
             'translation_domain' => null,
         ), $groups[$name], $options);
-        
+
         $this->setGroups($groups);
 
         $this->currentGroup = $name;
 
         return $this;
     }
-    
+
     /**
      * @return \Sonata\AdminBundle\Mapper\BaseGroupedMapper
      */
@@ -63,12 +64,12 @@ abstract class BaseGroupedMapper extends BaseMapper
 
     /**
      * Add the fieldname to the current group
-     * 
+     *
      * @param string $fieldName
      */
-    protected function addFieldToCurrentGroup($fieldName) 
+    protected function addFieldToCurrentGroup($fieldName)
     {
-        // Note this line must happen before the next line. 
+        // Note this line must happen before the next line.
         // See https://github.com/sonata-project/SonataAdminBundle/pull/1351
         $currentGroup = $this->getCurrentGroupName();
         $groups = $this->getGroups();
@@ -79,20 +80,20 @@ abstract class BaseGroupedMapper extends BaseMapper
     }
 
     /**
-     * Return the name of the currently selected group. The method also makes 
+     * Return the name of the currently selected group. The method also makes
      * sure a valid group name is currently selected
-     * 
+     *
      * Note that this can have the side effect to change the "group" value
      * returned by the getGroup function
-     * 
+     *
      * @return string
      */
-    protected function getCurrentGroupName() 
+    protected function getCurrentGroupName()
     {
         if (!$this->currentGroup) {
             $this->with($this->admin->getLabel());
         }
         return $this->currentGroup;
     }
-    
+
 }

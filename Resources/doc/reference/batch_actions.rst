@@ -82,7 +82,7 @@ And add this:
         return 'SonataAdminBundle';
     }
 
-See the [Symfony bundle overriding mechanism](http://symfony.com/doc/current/cookbook/bundles/inheritance.html) 
+See the `Symfony bundle overriding mechanism`_
 for further explanation of overriding bundle templates.
 
 
@@ -136,15 +136,42 @@ This method may return three different values:
         return count($selectedIds) > 0;
     }
 
+(Optional) Executing a pre batch hook
+-------------------------------------
+
+In your admin class you can create a ``preBatchAction`` method to execute something before doing the batch action.
+The main purpose of this method is to alter the query or the list of selected id.
+
+.. code-block:: php
+
+    <?php
+
+    // In your Admin class
+
+    public function preBatchAction($actionName, ProxyQueryInterface $query, array & $idx, $allElements)
+    {
+        // altering the query or the idx array
+        $foo = $query->getParameter('foo')->getValue();
+
+        // Doing something with the foo object
+        // ...
+
+        $query->setParameter('foo', $bar);
+    }
+
 
 Define the core action logic
 ----------------------------
 
-The method ``batchAction<MyAction>`` will be executed to process your batch. The selected
+The method ``batchAction<MyAction>`` will be executed to process your batch in your ``CRUDController`` class. The selected
 objects are passed to this method through a query argument which can be used to retrieve them. 
 If for some reason it makes sense to perform your batch action without the default selection 
 method (for example you defined another way, at template level, to select model at a lower 
 granularity), the passed query is ``null``.
+
+.. note::
+
+    You can check how to declare your own ``CRUDController`` class in the Architecture section.
 
 .. code-block:: php
 
@@ -196,3 +223,5 @@ granularity), the passed query is ``null``.
           $this->admin->generateUrl('list',$this->admin->getFilterParameters())
         );
     }
+
+.. _Symfony bundle overriding mechanism: http://symfony.com/doc/current/cookbook/bundles/inheritance.html

@@ -11,28 +11,24 @@ file that was distributed with this source code.
 
 {% extends admin.getTemplate('base_list_field') %}
 
-{% block field %}
-{% spaceless %}
-{% if field_description.options.editable is defined and field_description.options.editable and admin.isGranted('EDIT', object) %}
-    {% if value %}
-        <a href="{{ url('sonata_admin_set_object_field_value', { 'context': 'list', 'field': field_description.name, 'objectId': admin.id(object), 'value': 0, 'code': admin.code(object) }) }}" class="sonata-ba-action sonata-ba-edit-inline">
-            <i class="icon-ok-circle"></i>&nbsp;
-            {%- trans from 'SonataAdminBundle' %}label_type_yes{% endtrans -%}
-        </a>
-    {% else %}
-        <a href="{{ url('sonata_admin_set_object_field_value', { 'context': 'list', 'field': field_description.name, 'objectId': admin.id(object), 'value': 1, 'code': admin.code(object) }) }}" class="sonata-ba-action sonata-ba-edit-inline">
-            <i class="icon-ban-circle"></i>&nbsp;
-            {%- trans from 'SonataAdminBundle' %}label_type_no{% endtrans -%}
-        </a>
-    {% endif %}
-{% else %}
-    {% if value %}
-        <i class="icon-ok-circle"></i>&nbsp;
-        {%- trans from 'SonataAdminBundle' %}label_type_yes{% endtrans -%}
-    {% else %}
-        <i class="icon-ban-circle"></i>&nbsp;
-        {%- trans from 'SonataAdminBundle' %}label_type_no{% endtrans -%}
-    {% endif %}
+{% set isEditable = field_description.options.editable is defined and field_description.options.editable and admin.isGranted('EDIT', object) %}
+{% set xEditableType = field_description.type|sonata_xeditable_type %}
+
+{% if isEditable and xEditableType %}
+    {% block field_span_attributes %}
+        {% spaceless %}
+            {{ parent() }}
+            data-source="[{value: 0, text: '{%- trans from 'SonataAdminBundle' %}label_type_no{% endtrans -%}'},{value: 1, text: '{%- trans from 'SonataAdminBundle' %}label_type_yes{% endtrans -%}'}]"
+        {% endspaceless %}
+    {% endblock %}
 {% endif %}
-{% endspaceless %}
+
+{% block field %}
+    {% spaceless %}
+        {% if value %}
+            <span class="label label-success">{%- trans from 'SonataAdminBundle' %}label_type_yes{% endtrans -%}</span>
+        {% else %}
+            <span class="label label-danger">{%- trans from 'SonataAdminBundle' %}label_type_no{% endtrans -%}</span>
+        {% endif %}
+    {% endspaceless %}
 {% endblock %}

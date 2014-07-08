@@ -34,7 +34,7 @@ Accepting the preview will store the entity as if the preview step was never the
 
 
 Simulating front-end rendering
-----------------------------
+------------------------------
 
 Preview can be used to render how the object would look like in your front-end environment.
 
@@ -118,7 +118,7 @@ Hiding the fieldset tags with css (display:none) will be enough to only show the
 
 Or if you prefer less:
 
-.. code-block:: less
+.. code-block:: sass
 
     div.sonata-preview-form {
       fieldset {

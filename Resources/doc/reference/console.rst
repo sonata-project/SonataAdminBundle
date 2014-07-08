@@ -25,9 +25,9 @@ Usage example:
 
 
 sonata:admin:generate
---------------------
+---------------------
 
-The ``sonata:admin:generate`` command generates a new Admin class based on the given model 
+The ``sonata:admin:generate`` command generates a new Admin class based on the given model
 class, registers it as a service and potentially creates a new controller.
 As an argument you need to specify the fully qualified model class.
 All passed arguments and options are used as default values in interactive mode.
@@ -51,9 +51,9 @@ Usage example:
 sonata:admin:list
 -----------------
 
-To see which admin services are available use the ``sonata:admin:list`` command. 
-It prints all the admin service ids available in your application. This command 
-gets the ids from the ``sonata.admin.pool`` service where all the available admin 
+To see which admin services are available use the ``sonata:admin:list`` command.
+It prints all the admin service ids available in your application. This command
+gets the ids from the ``sonata.admin.pool`` service where all the available admin
 services are registered.
 
 Usage example:
@@ -111,6 +111,6 @@ sonata:admin:generate-object-acl
 --------------------------------
 
 The ``sonata:admin:generate-object-acl`` is an interactive command which helps
-you to generate ACL entities for the objects handled by your Admins. See the help 
+you to generate ACL entities for the objects handled by your Admins. See the help
 of the command for more information.
 

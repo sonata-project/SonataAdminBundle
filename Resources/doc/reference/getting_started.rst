@@ -197,30 +197,40 @@ file, using the ``load()`` method as described in the `symfony cookbook`_.
 
 .. configuration-block::
 
-    .. code-block:: php
+    .. code-block:: xml
 
         # Acme/DemoBundle/DependencyInjection/AcmeDemoBundleExtension.php for XML configurations
+        
+        namespace Acme\DemoBundle\DependencyInjection;
 
         use Symfony\Component\DependencyInjection\Loader;
         use Symfony\Component\Config\FileLocator;
-
-        public function load(array $configs, ContainerBuilder $container) {
-            // ...
-            $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-            $loader->load('admin.xml');
+        
+        class AcmeDemoBundleExtension extends Extension
+        {
+            public function load(array $configs, ContainerBuilder $container) {
+                // ...
+                $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+                $loader->load('admin.xml');
+            }
         }
 
-    .. code-block:: php
+    .. code-block:: yaml
 
         # Acme/DemoBundle/DependencyInjection/AcmeDemoBundleExtension.php for YAML configurations
+        
+        namespace Acme\DemoBundle\DependencyInjection;
 
         use Symfony\Component\DependencyInjection\Loader;
         use Symfony\Component\Config\FileLocator;
 
-        public function load(array $configs, ContainerBuilder $container) {
-            // ...
-            $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-            $loader->load('admin.yml');
+        class AcmeDemoBundleExtension extends Extension
+        {
+            public function load(array $configs, ContainerBuilder $container) {
+                // ...
+                $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+                $loader->load('admin.yml');
+            }
         }
 
 Step 4: Configuration

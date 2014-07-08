@@ -65,7 +65,23 @@ class ModelType extends AbstractType
     {
         $resolver->setDefaults(array(
             'compound'          => function (Options $options) {
-                return isset($options['multiple']) ? $options['multiple'] : false;
+                if (isset($options['multiple']) && $options['multiple']) {
+                    if (isset($options['expanded']) && $options['expanded']) {
+                        //checkboxes
+                        return true;
+                    }
+
+                    //select tag (with multiple attribute)
+                    return false;
+                }
+
+                if (isset($options['expanded']) && $options['expanded']) {
+                    //radio buttons
+                    return true;
+                }
+
+                //select tag
+                return false;
             },
 
             'template'          => 'choice',

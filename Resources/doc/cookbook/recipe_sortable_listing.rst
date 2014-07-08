@@ -6,7 +6,7 @@ This is a full working example of how to implement a sortable feature in your So
 Background
 ----------
 
-A sortable behavior is already available for one-to-many relationships (http://sonata-project.org/bundles/doctrine-orm-admin/master/doc/reference/form_field_definition.html#advanced-usage-one-to-many). 
+A sortable behavior is already available for one-to-many relationships (`http://sonata-project.org/bundles/doctrine-orm-admin/master/doc/reference/form_field_definition.html#advanced-usage-one-to-many <http://sonata-project.org/bundles/doctrine-orm-admin/master/doc/reference/form_field_definition.html#advanced-usage-one-to-many>`_). 
 However there is no packaged solution to have some up and down arrows to sort your records such as showed in the following screen
 
 .. figure:: ../images/admin_sortable_listing.png
@@ -39,7 +39,7 @@ First of are going to add a position field in our ``Client`` entity.
 
 
 
-In ``ClientAdmin`` our we are going to add in the ``configureListFields`` method a custom action and use the default twig template provided in the pixSortableBehavioBundle
+In ``ClientAdmin`` our we are going to add in the ``configureListFields`` method a custom action and use the default twig template provided in the PixSortableBehaviorBundle
 
 .. code-block:: php
 
@@ -63,7 +63,7 @@ In order to add new routes for these actions we are also adding the following me
 
 
 
-Now you can update your ``admin.yml`` to use the handler provider by the pixSortableBehavioBundle
+Now you can update your ``admin.yml`` to use the handler provider by the PixSortableBehaviorBundle
 
 .. code-block:: yaml
 

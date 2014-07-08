@@ -199,7 +199,9 @@ abstract class Filter implements FilterInterface
     {
         $values = $this->getValue();
 
-        return !empty($values['value']);
+        return isset($values['value'])
+            && false !== $values['value']
+            && "" !== $values['value'];
     }
 
     /**

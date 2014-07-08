@@ -1,5 +1,11 @@
 {# Widgets #}
 
+{#
+    This file doesn't seem to be used anymore ; commenting it for now in order not to mess with user's configurations.
+    TODO: Remove it and all of its references
+#}
+
+{#
 {% block choice_widget %}
 {% spaceless %}
     {% if expanded %}
@@ -35,11 +41,11 @@
 {% block form_widget_simple %}
 {% spaceless %}
     {% set type = type|default('text') %}
-    <input type="{{ type }}" {{ block('widget_attributes') }} value="{{ value }}" />
+    <input type="{{ type }}" {{ block('widget_attributes') }} value="{{ value }}">
 {% endspaceless %}
 {% endblock form_widget_simple %}
 
-{# Labels #}
+&#123;&#35; Labels &#35;&#125;
 
 {% block form_label %}
 {% spaceless %}
@@ -62,13 +68,13 @@
 {% endspaceless %}
 {% endblock %}
 
-{# Rows #}
+&#123;&#35; Rows &#35;&#125;
 
 {% block form_row %}
 {% spaceless %}
-    <div class="control-group {{ (0 < form_errors(form)|length)? 'error':'' }} ">
+    <div class="form-group {{ (0 < form_errors(form)|length)? 'has-error':'' }} ">
         {{ form_label(form, label|default(null)) }}
-        <div class="controls">
+        <div class="col-sm-10 col-md-5">
             {{ form_widget(form) }}
             {{ form_errors(form) }}
         </div>
@@ -76,15 +82,15 @@
 {% endspaceless %}
 {% endblock form_row %}
 
-{# Misc #}
+&#123;&#35; Misc &#35;&#125;
 
 {% block form_errors %}
 {% spaceless %}
     {% if errors|length > 0 %}
         {% if not form.parent  or 'repeated' in form.vars['block_prefixes'] %}
-            <div class="control-group error">
+            <div class="form-group has-error">
         {% endif %}
-        <span class="help-inline">
+        <span class="help-block">
             {% for error in errors %}
                 {% if loop.first %}
                     {{ error.messageTemplate|trans(error.messageParameters, 'validators') }}
@@ -97,3 +103,4 @@
     {% endif %}
 {% endspaceless %}
 {% endblock form_errors %}
+#}

@@ -31,10 +31,21 @@ class SonataAdminExtension extends Extension
      *
      * @param array            $configs   An array of configuration settings
      * @param ContainerBuilder $container A ContainerBuilder instance
+     *
+     * @throws \RuntimeException
      */
     public function load(array $configs, ContainerBuilder $container)
     {
         $bundles = $container->getParameter('kernel.bundles');
+
+        if (!isset($bundles['SonataCoreBundle'])) {
+            throw new \RuntimeException(<<<BOOM
+Boom! you are living on the edge ;) The AdminBundle requires the CoreBundle!
+Please add ``"sonata-project/core-bundle": "~2.2"`` into your composer.json file and add the SonataCoreBundle into the AppKernel');
+BOOM
+            );
+        }
+
         if (isset($bundles['SonataUserBundle'])) {
             // integrate the SonataUserBundle / FOSUserBundle if the bundle exists
             array_unshift($configs, array(
@@ -65,6 +76,9 @@ class SonataAdminExtension extends Extension
         $configuration = new Configuration();
         $processor = new Processor();
         $config = $processor->processConfiguration($configuration, $configs);
+
+        $config['options']['javascripts'] = $config['assets']['javascripts'];
+        $config['options']['stylesheets'] = $config['assets']['stylesheets'];
 
         $pool = $container->getDefinition('sonata.admin.pool');
         $pool->replaceArgument(1, $config['title']);
@@ -123,11 +137,11 @@ class SonataAdminExtension extends Extension
          * This is a work in progress, so for now it is hardcoded
          */
         $classes = array(
-            'email'    => 'span5',
-            'textarea' => 'span5',
-            'text'     => 'span5',
-            'choice'   => 'span5',
-            'integer'  => 'span5',
+            'email'    => '',
+            'textarea' => '',
+            'text'     => '',
+            'choice'   => '',
+            'integer'  => '',
             'datetime' => 'sonata-medium-date',
             'date'     => 'sonata-medium-date'
         );
@@ -183,15 +197,9 @@ class SonataAdminExtension extends Extension
             "Sonata\\AdminBundle\\Form\\DataTransformer\\ModelsToArrayTransformer",
             "Sonata\\AdminBundle\\Form\\DataTransformer\\ModelToIdTransformer",
             "Sonata\\AdminBundle\\Form\\EventListener\\MergeCollectionListener",
-            "Sonata\\AdminBundle\\Form\\EventListener\\ResizeFormListener",
             "Sonata\\AdminBundle\\Form\\Extension\\Field\\Type\\FormTypeFieldExtension",
             "Sonata\\AdminBundle\\Form\\FormMapper",
             "Sonata\\AdminBundle\\Form\\Type\\AdminType",
-            "Sonata\\AdminBundle\\Form\\Type\\BooleanType",
-            "Sonata\\AdminBundle\\Form\\Type\\CollectionType",
-            "Sonata\\AdminBundle\\Form\\Type\\DateRangeType",
-            "Sonata\\AdminBundle\\Form\\Type\\DateTimeRangeType",
-            "Sonata\\AdminBundle\\Form\\Type\\EqualType",
             "Sonata\\AdminBundle\\Form\\Type\\Filter\\ChoiceType",
             "Sonata\\AdminBundle\\Form\\Type\\Filter\\DateRangeType",
             "Sonata\\AdminBundle\\Form\\Type\\Filter\\DateTimeRangeType",
@@ -199,11 +207,9 @@ class SonataAdminExtension extends Extension
             "Sonata\\AdminBundle\\Form\\Type\\Filter\\DateType",
             "Sonata\\AdminBundle\\Form\\Type\\Filter\\DefaultType",
             "Sonata\\AdminBundle\\Form\\Type\\Filter\\NumberType",
-            "Sonata\\AdminBundle\\Form\\Type\\ImmutableArrayType",
             "Sonata\\AdminBundle\\Form\\Type\\ModelReferenceType",
             "Sonata\\AdminBundle\\Form\\Type\\ModelType",
             "Sonata\\AdminBundle\\Form\\Type\\ModelTypeList",
-            "Sonata\\AdminBundle\\Form\\Type\\TranslatableChoiceType",
             "Sonata\\AdminBundle\\Guesser\\TypeGuesserChain",
             "Sonata\\AdminBundle\\Guesser\\TypeGuesserInterface",
             "Sonata\\AdminBundle\\Model\\AuditManager",

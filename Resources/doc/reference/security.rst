@@ -60,6 +60,7 @@ Using roles:
 
     .. code-block:: yaml
 
+        # app/config/config.yml
         sonata_admin:
             security:
                 handler: sonata.admin.security.handler.role
@@ -90,9 +91,9 @@ Later, we will explain how to set up ACL with the
 ``FriendsOfSymfony/UserBundle``.
 
 Role handler
------------------
+------------
 
-The ``sonata.admin.security.handler.role`` allows you to operate finely on the actions that can be done (den peding on the entity class), without requiring to set up ACL.
+The ``sonata.admin.security.handler.role`` allows you to operate finely on the actions that can be done (depending on the entity class), without requiring to set up ACL.
 
 Configuration
 ~~~~~~~~~~~~~
@@ -119,6 +120,7 @@ So our ``security.yml`` file may look to something like this:
 
     .. code-block:: yaml
 
+        # app/config/security.yml
         security:
             ...
             role_hierarchy:
@@ -209,12 +211,13 @@ Then declare your handler as a service:
             </service>
         ...
 
-And specify it as Sonata security handler on your configuration (``config.yml``):
+And specify it as Sonata security handler on your configuration:
 
 .. configuration-block::
 
     .. code-block:: yaml
 
+        # app/config/config.yml
         sonata_admin:
             security:
                 handler: acme.demo.security.handler.role
@@ -224,9 +227,9 @@ ACL and FriendsOfSymfony/UserBundle
 
 If you want an easy way to handle users, please use:
 
-- https://github.com/FriendsOfSymfony/FOSUserBundle: handle users and groups
+- `FOSUserBundle <https://github.com/FriendsOfSymfony/FOSUserBundle>`_: handle users and groups
   stored in RDMS or MongoDB
-- https://github.com/sonata-project/SonataUserBundle: integrates the
+- `SonataUserBundle <https://github.com/sonata-project/SonataUserBundle>`_: integrates the
   ``FriendsOfSymfony/UserBundle`` with the ``AdminBundle``
 
 The security integration is a work in progress and has some known issues:
@@ -295,7 +298,7 @@ The following configuration for the SonataUserBundle defines:
 
     .. code-block:: yaml
 
-        # app/config/security.yml
+        # src/Acme/MyBundle/Resources/config/services.yml
 
         parameters:
             # ... other parameters
@@ -309,6 +312,7 @@ In ``app/config/security.yml``:
 
     .. code-block:: yaml
 
+        # app/config/security.yml
         security:
             providers:
                 fos_userbundle:
@@ -459,9 +463,10 @@ Vocabulary used for Access Control Lists:
   There can be many voters that may have different permission maps. However,
   prevent that multiple voters vote on the same class with overlapping bitmasks.
 
-See the cookbook article "Advanced ACL concepts" for the meaning of the different
-permissions:
-http://symfony.com/doc/current/cookbook/security/acl_advanced.html#pre-authorization-decisions.
+See the cookbook article "`Advanced ACL concepts 
+<http://symfony.com/doc/current/cookbook/security/acl_advanced.html#pre-authorization-decisions.>`_" 
+for the meaning of the different permissions.
+
 
 How is access granted?
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -471,14 +476,14 @@ or a permission (``admin.isGranted``):
 
 - **Token:** a token identifies a user between requests;
 - **Voter:** sort of judge that returns if access is granted of denied, if the
-  voter should not vote for a case, it returns abstrain;
+  voter should not vote for a case, it returns abstain;
 - **AccessDecisionManager:** decides if access is granted or denied according
   a specific strategy. It grants access if at least one (affirmative strategy),
   all (unanimous strategy) or more then half (consensus strategy) of the
   counted votes granted access;
 - **RoleVoter:** votes for all attributes stating with ``ROLE_`` and grants
   access if the user has this role;
-- **RoleHierarchieVoter:** when the role ``ROLE_SONATA_ADMIN`` is voted for,
+- **RoleHierarchyVoter:** when the role ``ROLE_SONATA_ADMIN`` is voted for,
   it also votes "granted" if the user has the role ``ROLE_SUPER_ADMIN``;
 - **AclVoter:** grants access for the permissions of the ``Admin`` class if
   the user has the permission, the user has a permission that is included in
@@ -696,6 +701,7 @@ service to use when retrieving your users.
 
     .. code-block:: yaml
 
+        # app/config/config.yml
         sonata_admin:
             security:
                 acl_user_manager: my_user_manager # The name of your service

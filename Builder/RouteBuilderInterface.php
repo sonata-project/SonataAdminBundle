@@ -18,8 +18,6 @@ interface RouteBuilderInterface
 {
 
     /**
-     * @abstract
-     *
      * @param \Sonata\AdminBundle\Admin\AdminInterface  $admin
      * @param \Sonata\AdminBundle\Route\RouteCollection $collection
      */

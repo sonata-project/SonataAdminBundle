@@ -25,7 +25,7 @@ Selecting and downloading a storage bundle
 ------------------------------------------
 
 SonataAdminBundle is storage agnostic, meaning it can work with several storage
-mechanism. Depending on which you are using on your project, you'll need to install
+mechanisms. Depending on which you are using on your project, you'll need to install
 one of the following bundles. In the respective links you'll find simple installation
 instructions for each of them:
 
@@ -45,7 +45,6 @@ Besides the storage layer mentioned on step 2, there are other bundles needed
 for SonataAdminBundle to work:
 
     - `SonataBlockBundle <http://sonata-project.org/bundles/block/master/doc/reference/installation.html>`_
-    - `SonatajQueryBundle <https://github.com/sonata-project/SonatajQueryBundle/blob/documentation/Resources/doc/reference/installation.rst>`_
     - `KnpMenuBundle <https://github.com/KnpLabs/KnpMenuBundle/blob/master/Resources/doc/index.md#installation>`_ (Version 1.1.*)
 
 These bundles are automatically downloaded by composer as a dependency of SonataAdminBundle.
@@ -54,15 +53,20 @@ forget to enable SonataAdminBundle too:
 
 .. code-block:: php
 
+    <?php
     // app/AppKernel.php
     public function registerBundles()
     {
         return array(
             // ...
 
+            // The admin requires some twig functions defined in the security
+            // bundle, like is_granted
+            new Symfony\Bundle\SecurityBundle\SecurityBundle(),
+
             // Add your dependencies
+            new Sonata\CoreBundle\SonataCoreBundle(),
             new Sonata\BlockBundle\SonataBlockBundle(),
-            new Sonata\jQueryBundle\SonatajQueryBundle(),
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
             //...
 
@@ -81,6 +85,9 @@ forget to enable SonataAdminBundle too:
     If a dependency is already enabled somewhere in your AppKernel.php,
     you don't need to enable it again.
 
+.. note::
+    Since version 2.3 > SonatajQueryBundle is not required anymore as assets are available in this
+    bundle. The bundle is also registered in bower.io so you can use bower to handle your assets.
 
 Configuring SonataAdminBundle dependencies
 ------------------------------------------

@@ -102,4 +102,29 @@ class FilterTest extends \PHPUnit_Framework_TestCase
 
         $filter->getFieldName();
     }
+
+    /**
+     * @dataProvider isActiveData
+     *
+     * @param $expected
+     * @param $value
+     */
+    public function testIsActive($expected, $value)
+    {
+        $filter = new FilterTest_Filter;
+        $filter->setValue($value);
+
+        $this->assertEquals($expected, $filter->isActive());
+    }
+
+    public function isActiveData()
+    {
+        return array(
+            array(false, array()),
+            array(false, array('value' => null)),
+            array(false, array('value' => "")),
+            array(false, array('value' => false)),
+            array(true, array('value' => "active")),
+        );
+    }
 }

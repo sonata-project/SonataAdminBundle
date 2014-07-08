@@ -23,7 +23,9 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         $config = $processor->processConfiguration(new Configuration(), array());
 
         $this->assertTrue($config['options']['html5_validate']);
+        $this->assertNull($config['options']['pager_links']);
         $this->assertTrue($config['options']['confirm_exit']);
+        $this->assertTrue($config['options']['use_icheck']);
     }
 
     public function testOptionsWithInvalidFormat()

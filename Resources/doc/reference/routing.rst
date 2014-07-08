@@ -102,7 +102,7 @@ explicitly this defaults to the action name.
     {
         protected function configureRoutes(RouteCollection $collection)
         {
-            $collection->add('myCustomAction');
+            $collection->add('myCustom'); // Action gets added automatically
             $collection->add('view', $this->getRouterIdParameter().'/view');
         }
     }
@@ -152,7 +152,7 @@ We now need to create our Controller, the easiest way is to extend the basic Son
     }
 
 Removing a route
---------------
+----------------
 
 Extending ``Sonata\AdminBundle\Admin\Admin`` will give your Admin classes the following
 default routes:

@@ -21,9 +21,9 @@ abstract class BaseMapper
 {
 
     protected $admin;
-    
+
     protected $builder;
-    
+
     /**
      * @param \Sonata\AdminBundle\Builder\BuilderInterface $builder
      * @param \Sonata\AdminBundle\Admin\AdminInterface     $admin
@@ -33,7 +33,7 @@ abstract class BaseMapper
         $this->builder = $builder;
         $this->admin   = $admin;
     }
-    
+
     /**
      * @return \Sonata\AdminBundle\Admin\AdminInterface
      */
@@ -41,33 +41,32 @@ abstract class BaseMapper
     {
         return $this->admin;
     }
-    
+
     /**
      * @param string $key
      *
      * @return mixed
      */
-    public abstract function get($key);
+    abstract public function get($key);
 
     /**
      * @param string $key
      *
      * @return boolean
      */
-    public abstract function has($key);
+    abstract public function has($key);
 
     /**
      * @param string $key
      *
      * @return \Sonata\AdminBundle\Mapper\BaseMapper
      */
-    public abstract function remove($key);
-    
+    abstract public function remove($key);
+
     /**
      * @param array $keys field names
      *
      * @return \Sonata\AdminBundle\Mapper\BaseMapper
      */
-    public abstract function reorder(array $keys);
-    
+    abstract public function reorder(array $keys);
 }

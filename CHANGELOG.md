@@ -1,7 +1,26 @@
 CHANGELOG
 =========
 
+### 2013-12-27
+
+* [BC BREAK] Added KnpMenuBundle v2.x compatibility, ``buildSideMenu`` must now use the ``Admin::generateMenuUrl`` method to generate the route arguments for the KnpMenu options.
+
+### 2013-12-14
+
+* [BC BREAK] Added the ``getTranslationLabel`` method to AdminInterface
+
+### 2013-12-05
+
+* [BC BREAK] Move some classes to SonataCoreBundle, you need to add a new dependency
+
+### 2013-11-23
+
+* [BC BREAK] added ``getBatchActions`` to the AdminInterface
+  If you do not extend the Admin class, you need to add this method to
+  your admin.
+
 ### 2013-10-13
+
 * [BC BREAK] added ``setCurrentChild``, ``getCurrentChild`` to the AdminInterface
   If you do not extend the Admin class, you need to add these methods to
   your admin.

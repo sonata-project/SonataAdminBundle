@@ -81,7 +81,7 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
         $this->formBuilder->expects($this->any())
             ->method('add')
             ->will($this->returnCallback(function($name, $type, $options) use (& $formTypes, $eventDispatcher, $formFactory) {
-                $formTypes[$name] = new FormBuilder($name, 'Sonata\AdminBundle\Tests\Fixtures\Entity\Form\TestEntity', $eventDispatcher,  $formFactory, $options);
+                $formTypes[$name] = new FormBuilder($name, 'Sonata\AdminBundle\Tests\Fixtures\Entity\Form\TestEntity', $eventDispatcher, $formFactory, $options);
 
                 return null;
             }));
@@ -301,10 +301,12 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Symfony\Component\Form\FormBuilder', $this->formBuilder->get('_per_page'));
     }
 
+    /**
+     * @expectedException        \Symfony\Component\Form\Exception\UnexpectedTypeException
+     * @expectedExceptionMessage Expected argument of type "FieldDescriptionInterface", "array" given
+     */
     public function testBuildPagerWithException()
     {
-        $this->setExpectedException('InvalidArgumentException', 'Expected argument of type "FieldDescriptionInterface", "array" given');
-
         $filter = $this->getMock('Sonata\AdminBundle\Filter\FilterInterface');
         $filter->expects($this->once())
             ->method('getName')

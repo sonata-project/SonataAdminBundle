@@ -222,9 +222,22 @@ btn_add and btn_catalogue:
   corresponding button. You can also specify a custom translation catalogue
   for this label, which defaults to ``SonataAdminBundle``.
 
+**TIP**: A jQuery event is fired after a row has been added (``sonata-admin-append-form-element``).
+You can listen to this event to trigger custom javascript (eg: add a calendar widget to a newly added date field)
+
+collection
+^^^^^^^^^^
+
+This bundle handle the symfony ``collection`` form type by adding:
+
+* an ``add`` button if you set the ``allow_add`` option to ``true``.
+* a ``delete`` button if you set the ``allow_delete`` option to ``true``.
+
+**TIP**: A jQuery event is fired after a row has been added (``sonata-admin-append-form-element``).
+You can listen to this event to trigger custom javascript (eg: add a calendar widget to a newly added date field)
+
 **TIP**: A jQuery event is fired after a row has been added (``sonata-collection-item-added``)
-or deleted (``sonata-collection-item-deleted``). You can bind to these events to trigger custom
-javascript imported into your templates (eg: add a calendar widget to a newly added date field)
+or deleted (``sonata-collection-item-deleted``). You can listen to these events to trigger custom javascript.
 
 FieldDescription options
 ^^^^^^^^^^^^^^^^^^^^^^^^
@@ -261,112 +274,6 @@ example above:
 
 Other specific field configuration options are detailed in the related
 abstraction layer documentation.
-
-Other form types
-----------------
-
-The bundle comes with some handy form types which are available from outside the
-scope of the ``SonataAdminBundle``:
-
-sonata_type_immutable_array
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-The ``Immutable Array`` allows you to edit an array property by defining a type
-per key.
-
-The type has a ``keys`` parameter which contains the definition for each key.
-A definition is an array with 3 options :
-
-* key name
-* type : a type name or a ``FormType`` instance
-* related type parameters : please refer to the related form documentation.
-
-Let's say a ``Page`` have options property with some fixed key-pair values, each
-value has a different type : integer, url, or string for instance.
-
-.. code-block:: php
-
-    <?php
-    class Page
-    {
-        protected $options = array(
-            'ttl'       => 1,
-            'redirect'  => ''
-        );
-
-        public function setOptions(array $options)
-        {
-            $this->options = $options;
-        }
-
-        public function getOptions()
-        {
-            return $this->options;
-        }
-    }
-
-Now, the property can be edited by setting a type for each type
-
-.. code-block:: php
-
-        <?php
-        $form->add('options', 'sonata_type_immutable_array', array(
-            'keys' => array(
-                array('ttl',        'text', array('required' => false)),
-                array('redirect',   'url',  array('required' => true)),
-            )
-        ));
-
-
-sonata_type_boolean
-^^^^^^^^^^^^^^^^^^^
-
-The ``boolean`` type is a specialized ``ChoiceType`` where the choices list is
-locked to 'yes' and 'no'.
-
-Note that for backward compatibility reasons, it will set your value to '1' for 'yes' and to '2' for 'no'.
-If you want to map to a boolean value, just set the option ``transform`` to true. For instance, you need
-to do so when mapping to a doctrine boolean.
-
-
-sonata_type_translatable_choice
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Deprecated: use ChoiceType with the translation_domain option instead.
-
-The translatable type is a specialized ``ChoiceType`` where the choices values
-are translated with the Symfony Translator component.
-
-The type has one extra parameter :
-
- * ``catalogue`` : the catalogue name to translate the value
-
-
-.. code-block:: php
-
-    <?php
-
-    // The delivery list
-    class Delivery
-    {
-        public static function getStatusList()
-        {
-            return array(
-                self::STATUS_OPEN      => 'status_open',
-                self::STATUS_PENDING   => 'status_pending',
-                self::STATUS_VALIDATED => 'status_validated',
-                self::STATUS_CANCELLED => 'status_cancelled',
-                self::STATUS_ERROR     => 'status_error',
-                self::STATUS_STOPPED   => 'status_stopped',
-            );
-        }
-    }
-
-    // form usage
-    $form->add('deliveryStatus', 'sonata_type_translatable_choice', array(
-        'choices' => Delivery::getStatusList(),
-        'catalogue' => 'SonataOrderBundle'
-    ))
 
 Types options
 -------------

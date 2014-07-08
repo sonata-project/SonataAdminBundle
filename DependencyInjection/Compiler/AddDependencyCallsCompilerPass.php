@@ -56,20 +56,27 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
                 $arguments = $definition->getArguments();
 
                 $admins[] = $id;
-                $classes[$arguments[1]] = $id;
 
-                $showInDashboard = (boolean) (isset($attributes['show_in_dashboard']) ? $attributes['show_in_dashboard'] : true);
+                if (!isset($classes[$arguments[1]])) {
+                    $classes[$arguments[1]] = array();
+                }
+
+                $classes[$arguments[1]][] = $id;
+
+                $showInDashboard = (boolean) (isset($attributes['show_in_dashboard']) ?  $parameterBag->resolveValue($attributes['show_in_dashboard']) : true);
                 if (!$showInDashboard) {
                     continue;
                 }
 
                 $resolvedGroupName = isset($attributes['group']) ? $parameterBag->resolveValue($attributes['group']) : 'default';
                 $labelCatalogue = isset($attributes['label_catalogue']) ? $attributes['label_catalogue'] : 'SonataAdminBundle';
+                $icon = isset($attributes['icon']) ? $attributes['icon'] : '<i class="fa fa-folder"></i>';
 
                 if (!isset($groupDefaults[$resolvedGroupName])) {
                     $groupDefaults[$resolvedGroupName] = array(
                         'label'           => $resolvedGroupName,
                         'label_catalogue' => $labelCatalogue,
+                        'icon' => $icon,
                         'roles' => array()
                     );
                 }
@@ -102,6 +109,10 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
                 if (empty($group['label_catalogue'])) {
                     $groups[$resolvedGroupName]['label_catalogue'] = 'SonataAdminBundle';
+                }
+
+                if (empty($group['icon'])) {
+                    $groups[$resolvedGroupName]['icon'] = $groupDefaults[$resolvedGroupName]['icon'];
                 }
 
                 if (!empty($group['item_adds'])) {
@@ -190,7 +201,8 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
             'validator'                 => 'validator',
             'security_handler'          => 'sonata.admin.security.handler',
             'menu_factory'              => 'knp_menu.factory',
-            'route_builder'             => 'sonata.admin.route.path_info',
+            'route_builder'             => 'sonata.admin.route.path_info' .
+                (($manager_type == 'doctrine_phpcr') ? '_slashes' : ''),
             'label_translator_strategy' => 'sonata.admin.label.strategy.native'
         );
 
@@ -265,10 +277,12 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
         // make sure the default templates are defined
         $definedTemplates = array_merge(array(
             'user_block'               => 'SonataAdminBundle:Core:user_block.html.twig',
+            'add_block'                => 'SonataAdminBundle:Core:add_block.html.twig',
             'layout'                   => 'SonataAdminBundle::standard_layout.html.twig',
             'ajax'                     => 'SonataAdminBundle::ajax_layout.html.twig',
             'dashboard'                => 'SonataAdminBundle:Core:dashboard.html.twig',
             'list'                     => 'SonataAdminBundle:CRUD:list.html.twig',
+            'filter'                   => 'SonataAdminBundle:Form:filter_admin_fields.html.twig',
             'show'                     => 'SonataAdminBundle:CRUD:show.html.twig',
             'edit'                     => 'SonataAdminBundle:CRUD:edit.html.twig',
             'history'                  => 'SonataAdminBundle:CRUD:history.html.twig',

@@ -54,7 +54,7 @@ class BaseFieldDescriptionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('foo.twig.html', $description->getTemplate());
         $this->assertEquals('fooHelp', $description->getHelp());
 
-        $this->assertCount(1, $description->getOptions());
+        $this->assertCount(2, $description->getOptions());
 
         $description->setHelp('Please enter an integer');
         $this->assertEquals('Please enter an integer', $description->getHelp());
@@ -103,6 +103,35 @@ class BaseFieldDescriptionTest extends \PHPUnit_Framework_TestCase
         $mock->expects($this->once())->method('getFoo')->will($this->returnValue(42));
 
         $this->assertEquals(42, $description->getFieldValue($mock, 'fake'));
+        
+        /**
+         * Test with One parameter int
+         */
+        $arg1 = 38;
+        $oneParameter = array($arg1);
+        $description1 = new FieldDescription();
+        $description1->setOption('code', 'getWithOneParameter');
+        $description1->setOption('parameters', $oneParameter);
+        
+        $mock1 = $this->getMock('stdClass', array('getWithOneParameter'));
+        $returnValue1 = $arg1 + 2;
+        $mock1->expects($this->once())->method('getWithOneParameter')->with($this->equalTo($arg1))->will($this->returnValue($returnValue1));
+        
+        $this->assertEquals(40, $description1->getFieldValue($mock1, 'fake'));
+        
+        /**
+         * Test with Two parameters int
+         */
+        $arg2 = 4;
+        $twoParameters = array($arg1,$arg2);
+        $description2 = new FieldDescription();
+        $description2->setOption('code', 'getWithTwoParameters');
+        $description2->setOption('parameters', $twoParameters);
+        
+        $mock2 = $this->getMock('stdClass', array('getWithTwoParameters'));
+        $returnValue2 = $arg1 + $arg2;
+        $mock2->expects($this->any())->method('getWithTwoParameters')->with($this->equalTo($arg1),$this->equalTo($arg2))->will($this->returnValue($returnValue2));
+        $this->assertEquals(42, $description2->getFieldValue($mock2, 'fake'));
     }
 
     /**

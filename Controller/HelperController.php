@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Validator\ValidatorInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Admin\AdminHelper;
 
@@ -39,15 +40,22 @@ class HelperController
     protected $pool;
 
     /**
-     * @param \Twig_Environment                     $twig
-     * @param \Sonata\AdminBundle\Admin\Pool        $pool
-     * @param \Sonata\AdminBundle\Admin\AdminHelper $helper
+     * @var \Symfony\Component\Validator\ValidatorInterface
      */
-    public function __construct(\Twig_Environment $twig, Pool $pool, AdminHelper $helper)
+    protected $validator;
+
+    /**
+     * @param \Twig_Environment                               $twig
+     * @param \Sonata\AdminBundle\Admin\Pool                  $pool
+     * @param \Sonata\AdminBundle\Admin\AdminHelper           $helper
+     * @param \Symfony\Component\Validator\ValidatorInterface $validator
+     */
+    public function __construct(\Twig_Environment $twig, Pool $pool, AdminHelper $helper, ValidatorInterface $validator)
     {
-        $this->twig   = $twig;
-        $this->pool   = $pool;
-        $this->helper = $helper;
+        $this->twig      = $twig;
+        $this->pool      = $pool;
+        $this->helper    = $helper;
+        $this->validator = $validator;
     }
 
     /**
@@ -132,7 +140,7 @@ class HelperController
         $formBuilder = $admin->getFormBuilder($subject);
 
         $form = $formBuilder->getForm();
-        $form->bind($request);
+        $form->submit($request);
 
         $view = $this->helper->getChildFormView($form->createView(), $elementId);
 
@@ -154,9 +162,10 @@ class HelperController
      */
     public function getShortObjectDescriptionAction(Request $request)
     {
-        $code     = $request->get('code');
-        $objectId = $request->get('objectId');
-        $uniqid   = $request->get('uniqid');
+        $code           = $request->get('code');
+        $objectId       = $request->get('objectId');
+        $uniqid         = $request->get('uniqid');
+        $linkParameters = $request->get('linkParameters', array());
 
         $admin = $this->pool->getInstance($code);
 
@@ -170,10 +179,14 @@ class HelperController
             $admin->setUniqid($uniqid);
         }
 
+        if (!$objectId){
+            $objectId = null;
+        }
+
         $object = $admin->getObject($objectId);
 
-        if (!$object) {
-            throw new NotFoundHttpException();
+        if (!$object && 'html' == $request->get('_format')) {
+            return new Response();
         }
 
         if ('json' == $request->get('_format')) {
@@ -183,9 +196,10 @@ class HelperController
             )));
         } elseif ('html' == $request->get('_format')) {
             return new Response($this->twig->render($admin->getTemplate('short_object_description'), array(
-                'admin'       => $admin,
-                'description' => $admin->toString($object),
-                'object'      => $object,
+                'admin'           => $admin,
+                'description'     => $admin->toString($object),
+                'object'          => $object,
+                'link_parameters' => $linkParameters
             )));
         } else {
             throw new \RuntimeException('Invalid format');
@@ -193,18 +207,19 @@ class HelperController
     }
 
     /**
-     * @param  \Symfony\Component\HttpFoundation\Request  $request
+     * @param  \Symfony\Component\HttpFoundation\Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function setObjectFieldValueAction(Request $request)
     {
-        $field      = $request->get('field');
-        $code       = $request->get('code');
-        $objectId   = $request->get('objectId');
-        $value      = $request->get('value');
-        $context    = $request->get('context');
+        $field    = $request->get('field');
+        $code     = $request->get('code');
+        $objectId = $request->get('objectId');
+        $value    = $request->get('value');
+        $context  = $request->get('context');
 
-        $admin       = $this->pool->getInstance($code);
+        $admin = $this->pool->getInstance($code);
         $admin->setRequest($request);
 
         // alter should be done by using a post method
@@ -216,7 +231,7 @@ class HelperController
             return new JsonResponse(array('status' => 'KO', 'message' => 'Expected a POST Request'));
         }
 
-        $object = $admin->getObject($objectId);
+        $rootObject = $object = $admin->getObject($objectId);
 
         if (!$object) {
             return new JsonResponse(array('status' => 'KO', 'message' => 'Object does not exist'));
@@ -241,10 +256,31 @@ class HelperController
             return new JsonResponse(array('status' => 'KO', 'message' => 'The field cannot be edit, editable option must be set to true'));
         }
 
-        // TODO : call the validator component ...
-        $propertyAccessor = PropertyAccess::getPropertyAccessor();
-        $propertyPath = new PropertyPath($field);
-        $propertyAccessor->setValue($object, $propertyPath, $value);
+        $propertyAccessor = PropertyAccess::createPropertyAccessor();
+        $propertyPath     = new PropertyPath($field);
+
+        // If property path has more than 1 element, take the last object in order to validate it
+        if ($propertyPath->getLength() > 1) {
+            $object = $propertyAccessor->getValue($object, $propertyPath->getParent());
+
+            $elements     = $propertyPath->getElements();
+            $field        = end($elements);
+            $propertyPath = new PropertyPath($field);
+        }
+
+        $propertyAccessor->setValue($object, $propertyPath, '' !== $value ? $value : null);
+
+        $violations = $this->validator->validateProperty($object, $field);
+
+        if (count($violations)) {
+            $messages = array();
+
+            foreach ($violations as $violation) {
+                $messages[] = $violation->getMessage();
+            }
+
+            return new JsonResponse(array('status' => 'KO', 'message' => implode("\n", $messages)));
+        }
 
         $admin->update($object);
 
@@ -253,7 +289,7 @@ class HelperController
         $extension = $this->twig->getExtension('sonata_admin');
         $extension->initRuntime($this->twig);
 
-        $content = $extension->renderListElement($object, $fieldDescription);
+        $content = $extension->renderListElement($rootObject, $fieldDescription);
 
         return new JsonResponse(array('status' => 'OK', 'content' => $content));
     }

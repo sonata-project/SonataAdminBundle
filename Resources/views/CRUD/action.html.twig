@@ -12,13 +12,15 @@ file that was distributed with this source code.
 {% extends base_template %}
 
 {% block actions %}
-    <div class="sonata-actions btn-group">
-        {% include 'SonataAdminBundle:Button:create_button.html.twig' %}
-        {% include 'SonataAdminBundle:Button:list_button.html.twig' %}
-    </div>
+    <li>{% include 'SonataAdminBundle:Button:create_button.html.twig' %}</li>
+    <li>{% include 'SonataAdminBundle:Button:list_button.html.twig' %}</li>
 {% endblock %}
 
-{% block side_menu %}{% if action is defined %}{{ knp_menu_render(admin.sidemenu(action), {'currentClass' : 'active'}, 'list') }}{% endif %}{% endblock %}
+{% block tab_menu %}
+    {% if action is defined %}
+        {{ knp_menu_render(admin.sidemenu(action), {'currentClass' : 'active'}, 'list') }}
+    {% endif %}
+{% endblock %}
 
 {% block content %}
 

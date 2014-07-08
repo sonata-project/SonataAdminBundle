@@ -9,11 +9,32 @@ file that was distributed with this source code.
 
 #}
 
+{% extends 'form_div_layout.html.twig' %}
+
+{% block form_widget_simple %}
+    {% set attr = attr|merge({'class': attr.class|default('') ~ ' form-control'}) %}
+    {{ parent() }}
+{% endblock form_widget_simple %}
+
+{% block textarea_widget %}
+    {% set attr = attr|merge({'class': attr.class|default('') ~ ' form-control'}) %}
+    {{ parent() }}
+{% endblock textarea_widget %}
+
 {# Labels #}
 {% block form_label %}
 {% spaceless %}
+
+    {% set label_class = "" %}
+    {% if sonata_admin.admin and sonata_admin.admin.getConfigurationPool().getOption('form_type') == 'horizontal' %}
+        {% set label_class = "control-label col-sm-3" %}
+    {% else %}
+        {% set label_class = "control-label" %}
+    {% endif%}
+
+    {#{{ sonata_admin.admin.getConfigurationPool().getOption('form_type') }}#}
     {% if label is not sameas(false) %}
-        {% set label_attr = label_attr|merge({'class': label_attr.class|default('') ~ " control-label" }) %}
+        {% set label_attr = label_attr|merge({'class': label_attr.class|default('') ~ label_class }) %}
 
         {% if not compound %}
             {% set label_attr = label_attr|merge({'for': id}) %}
@@ -44,7 +65,6 @@ file that was distributed with this source code.
                 {% else %}
                     {{ sonata_admin.admin.trans(label, {}, sonata_admin.field_description.translationDomain) }}
                 {% endif %}
-                {{ required ? '*' : '' }}
             </label>
         {% endif %}
     {% endif %}
@@ -54,8 +74,8 @@ file that was distributed with this source code.
 {% block widget_container_attributes_choice_widget %}
     {% spaceless %}
         id="{{ id }}"
-        {% for attrname,attrvalue in attr %}{{attrname}}="{% if attrname == 'class' %}unstyled {% endif%}{{attrvalue}}" {% endfor %}
-        {% if "class" not in attr %}class="unstyled"{%endif %}
+        {% for attrname,attrvalue in attr %}{{attrname}}="{% if attrname == 'class' %}list-unstyled {% endif%}{{attrvalue}}" {% endfor %}
+        {% if "class" not in attr %}class="list-unstyled"{%endif %}
     {% endspaceless %}
 {% endblock %}
 
@@ -64,7 +84,7 @@ file that was distributed with this source code.
     <ul {{ block('widget_container_attributes') }}>
         {% for child in form %}
             <li>
-                {{ form_widget(child) }}
+                {{ form_widget(child, {'horizontal': false, 'horizontal_input_wrapper_class': ''}) }} {# {'horizontal': false, 'horizontal_input_wrapper_class': ''} needed to avoid MopaBootstrapBundle messing with the DOM #}
                 {{ form_label(child) }}
             </li>
         {% endfor %}
@@ -79,13 +99,16 @@ file that was distributed with this source code.
         {% for child in form %}
             <li>
                 {% set form_widget_content %}
-                    {{ form_widget(child) }}
+                    {{ form_widget(child, {'horizontal': false, 'horizontal_input_wrapper_class': ''}) }} {# {'horizontal': false, 'horizontal_input_wrapper_class': ''} needed to avoid MopaBootstrapBundle messing with the DOM #}
                 {% endset %}
                 {{ form_label(child, child.vars.label|default(null), { 'in_list_checkbox' : true, 'widget' : form_widget_content } ) }}
             </li>
         {% endfor %}
         </ul>
     {% else %}
+    {% if sonata_admin.admin and not sonata_admin.admin.getConfigurationPool().getOption('use_select2') %}
+        {% set attr = attr|merge({'class': attr.class|default('') ~ ' form-control'}) %}
+    {% endif %}
     <select {{ block('widget_attributes') }}{% if multiple %} multiple="multiple"{% endif %}>
         {% if empty_value is not none %}
             <option value="">
@@ -111,35 +134,44 @@ file that was distributed with this source code.
 {% endblock choice_widget %}
 
 {% block form_row %}
+    {% set label_class = "" %}
+    {% set div_class = "" %}
+    {% if sonata_admin.admin and sonata_admin.admin.getConfigurationPool().getOption('form_type') == 'horizontal' %}
+        {% set label_class = "control-label col-sm-3" %}
+        {% set div_class = "col-sm-9 col-md-9" %}
+    {% else %}
+        {% set label_class = "control-label" %}
+    {% endif%}
+
     {% if sonata_admin is not defined or not sonata_admin_enabled or not sonata_admin.field_description %}
-        <div class="control-group {% if errors|length > 0%} error{% endif %}">
+        <div class="form-group {% if errors|length > 0%} has-error{% endif %}">
             {{ form_label(form, label|default(null)) }}
-            <div class="controls {% if label is not sameas(false) %}sonata-collection-row-without-label{% endif %}">
-                {{ form_widget(form) }}
+            <div class="{% if label is sameas(false) %}sonata-collection-row-without-label{% endif %}">
+                {{ form_widget(form, {'horizontal': false, 'horizontal_input_wrapper_class': ''}) }} {# {'horizontal': false, 'horizontal_input_wrapper_class': ''} needed to avoid MopaBootstrapBundle messing with the DOM #}
                 {% if errors|length > 0 %}
-                    <div class="help-inline sonata-ba-field-error-messages">
+                    <div class="help-block sonata-ba-field-error-messages">
                         {{ form_errors(form) }}
                     </div>
                 {% endif %}
             </div>
         </div>
     {% else %}
-        <div class="control-group{% if errors|length > 0%} error{%endif%}" id="sonata-ba-field-container-{{ id }}">
+        <div class="form-group{% if errors|length > 0%} has-error{%endif%}" id="sonata-ba-field-container-{{ id }}">
             {% block label %}
                 {% if sonata_admin.field_description.options.name is defined %}
-                    {{ form_label(form, sonata_admin.field_description.options.name, { 'attr' : {'class' : 'control-label'} }) }}
+                    {{ form_label(form, sonata_admin.field_description.options.name, { 'attr' : {'class' : label_class} }) }}
                 {% else %}
-                    {{ form_label(form, label|default(null), { 'attr' : {'class' : 'control-label'} }) }}
+                    {{ form_label(form, label|default(null), { 'attr' : {'class' : label_class} }) }}
                 {% endif %}
             {% endblock %}
 
             {% set has_label = sonata_admin.field_description.options.name is defined or label is not sameas(false) %}
-            <div class="controls sonata-ba-field sonata-ba-field-{{ sonata_admin.edit }}-{{ sonata_admin.inline }} {% if errors|length > 0 %}sonata-ba-field-error{% endif %} {% if not has_label %}sonata-collection-row-without-label{% endif %}">
+            <div class="{{ div_class }} sonata-ba-field sonata-ba-field-{{ sonata_admin.edit }}-{{ sonata_admin.inline }} {% if errors|length > 0 %}sonata-ba-field-error{% endif %} {% if not has_label %}sonata-collection-row-without-label{% endif %}">
 
-                {{ form_widget(form) }}
+                {{ form_widget(form, {'horizontal': false, 'horizontal_input_wrapper_class': ''}) }} {# {'horizontal': false, 'horizontal_input_wrapper_class': ''} needed to avoid MopaBootstrapBundle messing with the DOM #}
 
                 {% if errors|length > 0 %}
-                    <div class="help-inline sonata-ba-field-error-messages">
+                    <div class="help-block sonata-ba-field-error-messages">
                         {{ form_errors(form) }}
                     </div>
                 {% endif %}
@@ -156,7 +188,7 @@ file that was distributed with this source code.
 {% spaceless %}
     <div class="sonata-collection-row">
         {% if allow_delete %}
-            <a href="#" class="btn sonata-collection-delete"><i class="icon-remove"></i></a>
+            <a href="#" class="btn sonata-collection-delete"><i class="fa fa-minus-circle"></i></a>
         {% endif %}
         {{ form_row(child) }}
     </div>
@@ -176,7 +208,7 @@ file that was distributed with this source code.
         {% endfor %}
         {{ form_rest(form) }}
         {% if allow_add %}
-            <div><a href="#" class="btn sonata-collection-add"><i class="icon-plus"></i></a></div>
+            <div><a href="#" class="btn sonata-collection-add"><i class="fa fa-plus-circle"></i></a></div>
         {% endif %}
     </div>
 {% endspaceless %}
@@ -198,16 +230,21 @@ file that was distributed with this source code.
 
 {% block sonata_type_immutable_array_widget_row %}
     {% spaceless %}
-        <div class="control-group{% if errors|length > 0%} error{%endif%}" id="sonata-ba-field-container-{{ id }}-{{ key }}">
+        <div class="form-group{% if errors|length > 0%} error{%endif%}" id="sonata-ba-field-container-{{ id }}-{{ key }}">
 
             {{ form_label(child) }}
 
-            <div class="controls sonata-ba-field sonata-ba-field-{{ sonata_admin.edit }}-{{ sonata_admin.inline }} {% if errors|length > 0 %}sonata-ba-field-error{% endif %}">
-                {{ form_widget(child) }}
+            {% set div_class = "" %}
+            {% if sonata_admin.admin and sonata_admin.admin.getConfigurationPool().getOption('form_type') == 'horizontal' %}
+                {% set div_class = "col-sm-9 col-md-9" %}
+            {% endif%}
+
+            <div class="{{ div_class }} sonata-ba-field sonata-ba-field-{{ sonata_admin.edit }}-{{ sonata_admin.inline }} {% if errors|length > 0 %}sonata-ba-field-error{% endif %}">
+                {{ form_widget(child, {'horizontal': false, 'horizontal_input_wrapper_class': ''}) }} {# {'horizontal': false, 'horizontal_input_wrapper_class': ''} needed to avoid MopaBootstrapBundle messing with the DOM #}
             </div>
 
             {% if errors|length > 0 %}
-                <div class="help-inline sonata-ba-field-error-messages">
+                <div class="help-block sonata-ba-field-error-messages">
                     {{ form_errors(child) }}
                 </div>
             {% endif %}

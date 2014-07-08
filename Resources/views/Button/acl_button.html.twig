@@ -10,7 +10,7 @@ file that was distributed with this source code.
 #}
 
 {% if admin.isAclEnabled() and admin.hasRoute('acl') and admin.id(object) and admin.isGranted('MASTER', object)%}
-    <a class="btn sonata-action-element" href="{{ admin.generateObjectUrl('acl', object) }}">
-        <i class="icon-user"></i>
+    <a class="sonata-action-element" href="{{ admin.generateObjectUrl('acl', object) }}">
+        <i class="fa fa-users"></i>
         {{ 'link_action_acl'|trans({}, 'SonataAdminBundle') }}</a>
 {% endif %}

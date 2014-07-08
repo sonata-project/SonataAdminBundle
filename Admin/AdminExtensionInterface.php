@@ -53,6 +53,22 @@ interface AdminExtensionInterface
     public function configureRoutes(AdminInterface $admin, RouteCollection $collection);
 
     /**
+     * DEPRECATED: Use configureTabMenu instead
+     *
+     * @param AdminInterface    $admin
+     * @param MenuItemInterface $menu
+     * @param string            $action
+     * @param AdminInterface    $childAdmin
+     *
+     * @return mixed
+     *
+     * @deprecated
+     */
+    public function configureSideMenu(AdminInterface $admin, MenuItemInterface $menu, $action, AdminInterface $childAdmin = null);
+
+    /**
+     * Builds the tab menu
+     *
      * @param AdminInterface    $admin
      * @param MenuItemInterface $menu
      * @param string            $action
@@ -60,7 +76,7 @@ interface AdminExtensionInterface
      *
      * @return mixed
      */
-    public function configureSideMenu(AdminInterface $admin, MenuItemInterface $menu, $action, AdminInterface $childAdmin = null);
+    public function configureTabMenu(AdminInterface $admin, MenuItemInterface $menu, $action, AdminInterface $childAdmin = null);
 
     /**
      * @param AdminInterface $admin
@@ -70,8 +86,11 @@ interface AdminExtensionInterface
     public function validate(AdminInterface $admin, ErrorElement $errorElement, $object);
 
     /**
+     * @param AdminInterface      $admin
      * @param ProxyQueryInterface $query
      * @param string              $context
+     *
+     * @return mixed
      */
     public function configureQuery(AdminInterface $admin, ProxyQueryInterface $query, $context = 'list');
 
@@ -82,6 +101,23 @@ interface AdminExtensionInterface
      * @param mixed          $object
      */
     public function alterNewInstance(AdminInterface $admin, $object);
+
+    /**
+     * Get a chance to modify object instance
+     *
+     * @param  AdminInterface $admin
+     * @param  $object
+     * @return mixed
+     */
+    public function alterObject(AdminInterface $admin, $object);
+
+    /**
+     * Get a chance to add persistent parameters
+     *
+     * @param  AdminInterface $admin
+     * @return array
+     */
+    public function getPersistentParameters(AdminInterface $admin);
 
     /**
      * @param AdminInterface $admin

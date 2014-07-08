@@ -10,7 +10,7 @@ file that was distributed with this source code.
 #}
 
 {% if admin.hasroute('list') and admin.isGranted('LIST')%}
-    <a class="btn sonata-action-element" href="{{ admin.generateUrl('list') }}">
-        <i class="icon-list"></i>
+    <a class="sonata-action-element" href="{{ admin.generateUrl('list') }}">
+        <i class="fa fa-list"></i>
         {{ 'link_action_list'|trans({}, 'SonataAdminBundle') }}</a>
 {% endif %}

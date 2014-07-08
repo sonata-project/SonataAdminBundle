@@ -10,6 +10,7 @@
             <argument />
             <argument />
             <argument type="collection" />
+            <argument type="collection" />
 
             <call method="setTemplates">
                 <argument>%sonata.admin.configuration.templates%</argument>
@@ -51,6 +52,7 @@
             <argument type="service" id="twig" />
             <argument type="service" id="sonata.admin.pool" />
             <argument type="service" id="sonata.admin.helper" />
+            <argument type="service" id="validator" />
         </service>
 
         <!-- audit manager -->

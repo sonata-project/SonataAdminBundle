@@ -121,6 +121,7 @@ class DatagridMapperTest extends \PHPUnit_Framework_TestCase
             'label' => 'fooLabel',
             'field_name' => 'fooFilterName',
             'placeholder' => 'short_object_description_placeholder',
+            'link_parameters' => array()
         ), $filter->getOptions());
     }
 
@@ -147,6 +148,7 @@ class DatagridMapperTest extends \PHPUnit_Framework_TestCase
             'field_type' => 'foo_field_type',
             'placeholder' => 'short_object_description_placeholder',
             'foo_filter_option' => 'foo_filter_option_value',
+            'link_parameters' => array()
         ), $filter->getOptions());
     }
 
@@ -188,6 +190,24 @@ class DatagridMapperTest extends \PHPUnit_Framework_TestCase
         $this->fail('Failed asserting that exception of type "\RuntimeException" is thrown.');
     }
 
+    public function testAddException2()
+    {
+        try {
+            $this->datagridMapper->getAdmin()
+                ->expects($this->any())
+                ->method('hasFilterFieldDescription')
+                ->will($this->returnValue(true))
+            ;
+            $this->datagridMapper->add('field');
+        } catch (\RuntimeException $e) {
+            $this->assertContains('The field "field" is already defined', $e->getMessage());
+
+            return;
+        }
+
+        $this->fail('Failed asserting that exception of type "\RuntimeException" is thrown.');
+    }
+
     public function testReorder()
     {
         $fieldDescription1 = $this->getFieldDescriptionMock('fooName1', 'fooLabel1');
@@ -205,7 +225,7 @@ class DatagridMapperTest extends \PHPUnit_Framework_TestCase
             'fooName2',
             'fooName3',
             'fooName4',
-       ), array_keys($this->datagrid->getFilters()));
+        ), array_keys($this->datagrid->getFilters()));
 
         $this->datagridMapper->reorder(array('fooName3', 'fooName2', 'fooName1', 'fooName4'));
 
@@ -214,10 +234,10 @@ class DatagridMapperTest extends \PHPUnit_Framework_TestCase
             'fooName2',
             'fooName1',
             'fooName4',
-       ), array_keys($this->datagrid->getFilters()));
+        ), array_keys($this->datagrid->getFilters()));
     }
 
-    private function getFieldDescriptionMock($name=null, $label=null)
+    private function getFieldDescriptionMock($name = null, $label = null)
     {
         $fieldDescription = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\BaseFieldDescription');
 

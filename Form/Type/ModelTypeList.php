@@ -23,7 +23,7 @@ use Sonata\AdminBundle\Form\DataTransformer\ModelToIdTransformer;
 /**
  * This type is used to render an hidden input text and 3 links
  *   - an add form modal
- *   - a list modal to select the targetted entities
+ *   - a list modal to select the targeted entities
  *   - a clear selection link
  */
 class ModelTypeList extends AbstractType

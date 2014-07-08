@@ -41,6 +41,8 @@ abstract class AbstractSonataAdminExtension extends Extension
                         'time'         => 'SonataAdminBundle:CRUD:list_time.html.twig',
                         'datetime'     => 'SonataAdminBundle:CRUD:list_datetime.html.twig',
                         'text'         => 'SonataAdminBundle:CRUD:list_string.html.twig',
+                        'textarea'     => 'SonataAdminBundle:CRUD:list_string.html.twig',
+                        'email'        => 'SonataAdminBundle:CRUD:list_string.html.twig',
                         'trans'        => 'SonataAdminBundle:CRUD:list_trans.html.twig',
                         'string'       => 'SonataAdminBundle:CRUD:list_string.html.twig',
                         'smallint'     => 'SonataAdminBundle:CRUD:list_string.html.twig',

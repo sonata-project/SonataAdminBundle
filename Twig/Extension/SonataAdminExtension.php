@@ -15,6 +15,7 @@ use Doctrine\Common\Util\ClassUtils;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Exception\NoValueException;
 use Sonata\AdminBundle\Admin\Pool;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 
 class SonataAdminExtension extends \Twig_Extension
 {
@@ -54,7 +55,7 @@ class SonataAdminExtension extends \Twig_Extension
             'render_view_element'     => new \Twig_Filter_Method($this, 'renderViewElement', array('is_safe' => array('html'))),
             'render_relation_element' => new \Twig_Filter_Method($this, 'renderRelationElement'),
             'sonata_urlsafeid'        => new \Twig_Filter_Method($this, 'getUrlsafeIdentifier'),
-            'sonata_slugify'          => new \Twig_Filter_Method($this, 'slugify'),
+            'sonata_xeditable_type'   => new \Twig_Filter_Method($this, 'getXEditableType'),
         );
     }
 
@@ -208,13 +209,25 @@ class SonataAdminExtension extends \Twig_Extension
             return $element;
         }
 
-        $method = $fieldDescription->getOption('associated_tostring', '__toString');
+        $propertyPath = $fieldDescription->getOption('associated_property');
 
-        if (!method_exists($element, $method)) {
-            throw new \RunTimeException(sprintf('You must define an `associated_tostring` option or create a `%s::__toString` method to the field option "%s" from service "%s".', get_class($element), $fieldDescription->getName(), $fieldDescription->getAdmin()->getCode()));
+        if (null === $propertyPath) {
+            // For BC kept associated_tostring option behavior
+            $method = $fieldDescription->getOption('associated_tostring', '__toString');
+
+            if (!method_exists($element, $method)) {
+                throw new \RuntimeException(sprintf(
+                    'You must define an `associated_property` option or create a `%s::__toString` method to the field option %s from service %s is ',
+                    get_class($element),
+                    $fieldDescription->getName(),
+                    $fieldDescription->getAdmin()->getCode()
+                ));
+            }
+
+            return call_user_func(array($element, $method));
         }
 
-        return call_user_func(array($element, $method));
+        return PropertyAccess::createPropertyAccessor()->getValue($element, $propertyPath);
     }
 
     /**
@@ -234,31 +247,27 @@ class SonataAdminExtension extends \Twig_Extension
     }
 
     /**
-     * Slugify a text
+     * @param $type
      *
-     * @param $text
-     *
-     * @return string
+     * @return string|bool
      */
-    public function slugify($text)
+    public function getXEditableType($type)
     {
-        // replace non letter or digits by -
-        $text = preg_replace('~[^\\pL\d]+~u', '-', $text);
+        $mapping = array(
+            'boolean'    => 'select',
+            'text'       => 'text',
+            'textarea'   => 'textarea',
+            'email'      => 'email',
+            'string'     => 'text',
+            'smallint'   => 'text',
+            'bigint'     => 'text',
+            'integer'    => 'number',
+            'decimal'    => 'number',
+            'currency'   => 'number',
+            'percent'    => 'number',
+            'url'        => 'url',
+        );
 
-        // trim
-        $text = trim($text, '-');
-
-        // transliterate
-        if (function_exists('iconv')) {
-            $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
-        }
-
-        // lowercase
-        $text = strtolower($text);
-
-        // remove unwanted characters
-        $text = preg_replace('~[^-\w]+~', '', $text);
-
-        return $text;
+        return isset($mapping[$type]) ? $mapping[$type] : false;
     }
 }
