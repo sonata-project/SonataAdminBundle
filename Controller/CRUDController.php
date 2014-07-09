@@ -317,7 +317,7 @@ class CRUDController extends Controller
 
             // persist if the form was valid and if in preview mode the preview was approved
             if ($isFormValid && (!$this->isInPreviewMode() || $this->isPreviewApproved())) {
-                $this->admin->update($object);
+                $object = $this->admin->update($object);
 
                 if ($this->isXmlHttpRequest()) {
                     return $this->renderJson(array(
@@ -530,7 +530,7 @@ class CRUDController extends Controller
                     throw new AccessDeniedException();
                 }
 
-                $this->admin->create($object);
+                $object = $this->admin->create($object);
 
                 if ($this->isXmlHttpRequest()) {
                     return $this->renderJson(array(
