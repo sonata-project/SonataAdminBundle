@@ -35,7 +35,7 @@ body > .header .logo {
 .logo img {
     display: inline;
     padding-bottom: 4px;
-    height: 100%;
+    max-height: 100%;
     max-width: 60px;
 }
 
