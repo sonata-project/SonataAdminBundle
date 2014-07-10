@@ -979,6 +979,10 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($object));
 
         $this->admin->expects($this->once())
+            ->method('update')
+            ->will($this->returnArgument(0));
+
+        $this->admin->expects($this->once())
             ->method('isGranted')
             ->with($this->equalTo('EDIT'))
             ->will($this->returnValue(true));
@@ -1062,6 +1066,10 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->admin->expects($this->once())
             ->method('getObject')
             ->will($this->returnValue($object));
+
+        $this->admin->expects($this->once())
+            ->method('update')
+            ->will($this->returnArgument(0));
 
         $this->admin->expects($this->once())
             ->method('isGranted')
@@ -1261,6 +1269,10 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->method('getNewInstance')
             ->will($this->returnValue($object));
 
+        $this->admin->expects($this->once())
+            ->method('create')
+            ->will($this->returnArgument(0));
+
         $form = $this->getMockBuilder('Symfony\Component\Form\Form')
             ->disableOriginalConstructor()
             ->getMock();
@@ -1345,6 +1357,10 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->admin->expects($this->once())
             ->method('getNewInstance')
             ->will($this->returnValue($object));
+
+        $this->admin->expects($this->once())
+            ->method('create')
+            ->will($this->returnArgument(0));
 
         $form = $this->getMockBuilder('Symfony\Component\Form\Form')
             ->disableOriginalConstructor()
