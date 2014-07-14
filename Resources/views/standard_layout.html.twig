@@ -83,7 +83,7 @@ file that was distributed with this source code.
                             <img src="{{ asset(admin_pool.titlelogo) }}" alt="{{ admin_pool.title }}">{% if 'both' == admin_pool.getOption('title_mode') %}&nbsp;{% endif %}
                         {% endif %}
                         {% if 'single_text' == admin_pool.getOption('title_mode') or 'both' == admin_pool.getOption('title_mode') %}
-                            {{ admin_pool.title }}
+                            <span>{{ admin_pool.title }}</span>
                         {% endif %}
                     </a>
                 {% endblock %}
