@@ -390,6 +390,10 @@
                 <source>add_new_entry</source>
                 <target>añadir nueva entrada</target>
             </trans-unit>
+            <trans-unit id="link_actions">
+                <source>link_actions</source>
+                <target>link_actions</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

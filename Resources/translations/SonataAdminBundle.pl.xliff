@@ -394,6 +394,10 @@
                 <source>form_not_available</source>
                 <target>Formularz niedostępny</target>
             </trans-unit>
+            <trans-unit id="link_actions">
+                <source>link_actions</source>
+                <target>link_actions</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
