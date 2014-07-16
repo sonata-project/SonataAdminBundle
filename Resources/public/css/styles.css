@@ -33,7 +33,17 @@ body > .header .logo {
 }
 
 .logo img {
+    display: inline;
     padding-bottom: 4px;
+    max-height: 100%;
+    max-width: 60px;
+}
+
+.logo span {
+    display: inline-block;
+    line-height: 1;
+    vertical-align: middle;
+    width: 140px;
 }
 
 .open > .dropdown-menu {

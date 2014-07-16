@@ -611,12 +611,18 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
             $extension->preUpdate($this, $object);
         }
 
-        $this->getModelManager()->update($object);
+        $result = $this->getModelManager()->update($object);
+        // BC compatibility
+        if (null !== $result) {
+            $object = $result;
+        }
 
         $this->postUpdate($object);
         foreach ($this->extensions as $extension) {
             $extension->postUpdate($this, $object);
         }
+
+        return $object;
     }
 
     /**
@@ -629,7 +635,11 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
             $extension->prePersist($this, $object);
         }
 
-        $this->getModelManager()->create($object);
+        $result = $this->getModelManager()->create($object);
+        // BC compatibility
+        if (null !== $result) {
+            $object = $result;
+        }
 
         $this->postPersist($object);
         foreach ($this->extensions as $extension) {
@@ -637,6 +647,8 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         }
 
         $this->createObjectSecurity($object);
+
+        return $object;
     }
 
     /**
