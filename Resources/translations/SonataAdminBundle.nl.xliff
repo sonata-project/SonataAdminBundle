@@ -136,7 +136,7 @@
             </trans-unit>
             <trans-unit id="all_elements">
                 <source>all_elements</source>
-                <target>Op alle uitvoeren</target>
+                <target>Alle items</target>
             </trans-unit>
             <trans-unit id='flash_batch_empty'>
                 <source>flash_batch_empty</source>
@@ -176,7 +176,7 @@
             </trans-unit>
             <trans-unit id="link_breadcrumb_dashboard">
                 <source>breadcrumb.link_dashboard</source>
-                <target>&#8962;</target>
+                <target><![CDATA[<i class="fa fa-home"></i>]]></target>
             </trans-unit>
             <trans-unit id="title_delete">
                 <source>title_delete</source>
@@ -388,11 +388,11 @@
             </trans-unit>
             <trans-unit id="add_new_entry">
                 <source>add_new_entry</source>
-                <target>Nieuwe record toevoegen</target>
+                <target>Nieuw item toevoegen</target>
             </trans-unit>
             <trans-unit id="link_actions">
                 <source>link_actions</source>
-                <target>link_actions</target>
+                <target>Acties</target>
             </trans-unit>
         </body>
     </file>
