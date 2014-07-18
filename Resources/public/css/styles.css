@@ -43,8 +43,9 @@ body > .header .logo {
     display: inline-block;
     line-height: 1;
     vertical-align: middle;
-    width: 140px;
+    width: 200px;
 }
+.logo img + span { width: 140px; }
 
 .open > .dropdown-menu {
     animation-duration: .3s;
