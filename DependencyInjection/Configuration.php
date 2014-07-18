@@ -210,6 +210,7 @@ class Configuration implements ConfigurationInterface
                         ->arrayNode('javascripts')
                             ->defaultValue(array(
                                 'bundles/sonataadmin/vendor/jquery/dist/jquery.min.js',
+                                'bundles/sonataadmin/vendor/jquery.scrollTo/jquery.scrollTo.min.js',
 
                                 'bundles/sonatacore/vendor/moment/min/moment.min.js',
 
