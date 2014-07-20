@@ -396,7 +396,7 @@
             </trans-unit>
             <trans-unit id="link_actions">
                 <source>link_actions</source>
-                <target>link_actions</target>
+                <target>Akcje</target>
             </trans-unit>
         </body>
     </file>
