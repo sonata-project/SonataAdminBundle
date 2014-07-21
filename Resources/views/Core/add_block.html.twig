@@ -16,7 +16,7 @@
             {% set item_count = 0 %}
             {% if display %}
                 {% for admin in group.items if item_count == 0 %}
-                    {% if admin.hasroute('list') and admin.isGranted('LIST') %}
+                    {% if admin.hasroute('create') and admin.isGranted('CREATE') %}
                         {% set item_count = item_count+1 %}
                     {% endif %}
                 {% endfor %}
