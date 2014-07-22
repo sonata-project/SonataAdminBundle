@@ -1,178 +1,178 @@
 <?xml version="1.0"?>
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-    <file source-language="en" datatype="plaintext" original="" >
+    <file source-language="en" datatype="plaintext" original="SonataAdminBundle.en.xliff" >
         <body>
             <trans-unit id="sonata_administration">
                 <source>sonata_administration</source>
-                <target>Administration</target>
+                <target>إدارة</target>
             </trans-unit>
             <trans-unit id="action_delete">
                 <source>action_delete</source>
-                <target>Odstranit</target>
+                <target>حذف</target>
             </trans-unit>
             <trans-unit id="btn_batch">
                 <source>btn_batch</source>
-                <target>OK</target>
+                <target>أوافق</target>
             </trans-unit>
             <trans-unit id="btn_create">
                 <source>btn_create</source>
-                <target>Vytvořit</target>
+                <target>إنشاء</target>
             </trans-unit>
             <trans-unit id="btn_create_and_edit_again">
                 <source>btn_create_and_edit_again</source>
-                <target>Vytvořit</target>
+                <target>إنشاء</target>
             </trans-unit>
             <trans-unit id="btn_create_and_create_a_new_one">
                 <source>btn_create_and_create_a_new_one</source>
-                <target>Vytvořit a přidat další</target>
+                <target>إنشاء وإضافة أخرى</target>
             </trans-unit>
             <trans-unit id="btn_create_and_return_to_list">
                 <source>btn_create_and_return_to_list</source>
-                <target>Vytvořit a zpět do seznamu</target>
+                <target>إنشاء والعودة إلى قائمة</target>
             </trans-unit>
             <trans-unit id="btn_filter">
                 <source>btn_filter</source>
-                <target>Filtrovat</target>
+                <target>تصفية</target>
             </trans-unit>
             <trans-unit id="btn_update">
                 <source>btn_update</source>
-                <target>Aktualizovat</target>
+                <target>تحديث</target>
             </trans-unit>
             <trans-unit id="btn_update_and_edit_again">
                 <source>btn_update_and_edit_again</source>
-                <target>Aktualizovat</target>
+                <target>تحديث</target>
             </trans-unit>
             <trans-unit id="btn_update_and_return_to_list">
                 <source>btn_update_and_return_to_list</source>
-                <target>Aktualizovat a zavřít</target>
+                <target>تحديث و اغلاق</target>
             </trans-unit>
             <trans-unit id="link_delete">
                 <source>link_delete</source>
-                <target>Odstranit</target>
+                <target>حذف</target>
             </trans-unit>
             <trans-unit id="link_action_create">
                 <source>link_action_create</source>
-                <target>Přidat nový</target>
+                <target>إضافة جديدة</target>
             </trans-unit>
             <trans-unit id="link_action_list">
                 <source>link_action_list</source>
-                <target>Zpět na výpis</target>
+                <target>العودة إلى قائمة</target>
             </trans-unit>
             <trans-unit id="link_action_show">
                 <source>link_action_show</source>
-                <target>Zobrazit</target>
+                <target>عرض</target>
             </trans-unit>
             <trans-unit id="link_action_edit">
                 <source>link_action_edit</source>
-                <target>Upravit</target>
+                <target>تعديل</target>
             </trans-unit>
             <trans-unit id="link_add">
                 <source>link_add</source>
-                <target>Přidat nový</target>
+                <target>إضافة جديدة</target>
             </trans-unit>
             <trans-unit id="link_list">
                 <source>link_list</source>
-                <target>Výpis</target>
+                <target>قائمة</target>
             </trans-unit>
             <trans-unit id="link_reset_filter">
                 <source>link_reset_filter</source>
-                <target>Reset</target>
+                <target>إعادة تعيين</target>
             </trans-unit>
             <trans-unit id="title_create">
                 <source>title_create</source>
-                <target>Vytvořit</target>
+                <target>إنشاء</target>
             </trans-unit>
             <trans-unit id="title_dashboard">
                 <source>title_dashboard</source>
-                <target>Administrační panel</target>
+                <target>لوحة المشرف</target>
             </trans-unit>
             <trans-unit id="title_edit">
                 <source>title_edit</source>
-                <target>Upravit "%name%"</target>
+                <target>تعديل "%name%"</target>
             </trans-unit>
             <trans-unit id="title_list">
                 <source>title_list</source>
-                <target>Výpis</target>
+                <target>قائمة</target>
             </trans-unit>
             <trans-unit id="link_next_pager">
                 <source>link_next_pager</source>
-                <target>Další</target>
+                <target>التالي</target>
             </trans-unit>
             <trans-unit id="link_previous_pager">
                 <source>link_previous_pager</source>
-                <target>Předchozí</target>
+                <target>سابق</target>
             </trans-unit>
             <trans-unit id="link_first_pager">
                 <source>link_first_pager</source>
-                <target>První</target>
+                <target>الأول</target>
             </trans-unit>
             <trans-unit id="link_last_pager">
                 <source>link_last_pager</source>
-                <target>Poslední</target>
+                <target>آخر</target>
             </trans-unit>
             <trans-unit id="Admin">
                 <source>Admin</source>
-                <target>Admin</target>
+                <target>مشرف</target>
             </trans-unit>
             <trans-unit id="link_expand">
                 <source>link_expand</source>
-                <target>rozbalit/zabalit</target>
+                <target>توسيع / طي</target>
             </trans-unit>
             <trans-unit id="no_result">
                 <source>no_result</source>
-                <target>Žádný výsledek</target>
+                <target>لا نتائج</target>
             </trans-unit>
             <trans-unit id="confirm_msg">
                 <source>confirm_msg</source>
-                <target>Jste si jistí?</target>
+                <target>هل أنت متأكد؟</target>
             </trans-unit>
             <trans-unit id="action_edit">
                 <source>action_edit</source>
-                <target>Upravit</target>
+                <target>تعديل</target>
             </trans-unit>
             <trans-unit id="action_show">
                 <source>action_show</source>
-                <target>Zobrazit</target>
+                <target>عرض</target>
             </trans-unit>
             <trans-unit id="all_elements">
                 <source>all_elements</source>
-                <target>Všechny prvky</target>
+                <target>جميع العناصر</target>
             </trans-unit>
             <trans-unit id='flash_batch_empty'>
-              <source>flash_batch_empty</source>
-              <target>Akce zrušena. Nebyly zvoleny žádné položky.</target>
+                <source>flash_batch_empty</source>
+                <target>الغاء العملية.لم يتم اختيار عنصر</target>
             </trans-unit>
             <trans-unit id='flash_create_success'>
-              <source>flash_create_success</source>
-              <target>Položka úspěšně vytvořena.</target>
+                <source>flash_create_success</source>
+                <target>العنصر "%name%" تم إنشاؤها بنجاح.</target>
             </trans-unit>
             <trans-unit id='flash_create_error'>
-              <source>flash_create_error</source>
-              <target>Během vytváření položky nastala chyba.</target>
+                <source>flash_create_error</source>
+                <target>حدث خطأ أثناء إنشاء العنصر "%name%".</target>
             </trans-unit>
             <trans-unit id='flash_edit_success'>
-              <source>flash_edit_success</source>
-              <target>Položka byla úspěšně upravena.</target>
+                <source>flash_edit_success</source>
+                <target>العنصر "%name%" تم تحديث بنجاح.</target>
             </trans-unit>
             <trans-unit id='flash_edit_error'>
-              <source>flash_edit_error</source>
-              <target>Během úpravy položky nastala chyba.</target>
+                <source>flash_edit_error</source>
+                <target>حدث خطأ أثناء إنشاء العنصر "%name%".</target>
             </trans-unit>
             <trans-unit id='flash_batch_delete_success'>
-              <source>flash_batch_delete_success</source>
-              <target>Zvolené položky byly úspěšně odstraněny.</target>
+                <source>flash_batch_delete_success</source>
+                <target>تم حذف العناصر المحددة بنجاح.</target>
             </trans-unit>
             <trans-unit id='flash_batch_delete_error'>
-              <source>flash_batch_delete_error</source>
-              <target>Během odstraňování zvolených položek došlo k chybě.</target>
+                <source>flash_batch_delete_error</source>
+                <target>حدث خطأ أثناء حذف العناصر المحددة.</target>
             </trans-unit>
             <trans-unit id='flash_delete_error'>
-              <source>flash_delete_error</source>
-              <target>Během odstraňování položky došlo k chybě.</target>
+                <source>flash_delete_error</source>
+                <target>حدث خطأ أثناء حذف العنصر "%name%".</target>
             </trans-unit>
             <trans-unit id='flash_delete_success'>
-              <source>flash_delete_success</source>
-              <target>Položka byla úspěšně odstraněna.</target>
+                <source>flash_delete_success</source>
+                <target>العنصر "%name%" تم حذف بنجاح.</target>
             </trans-unit>
             <trans-unit id="link_breadcrumb_dashboard">
                 <source>breadcrumb.link_dashboard</source>
@@ -180,219 +180,219 @@
             </trans-unit>
             <trans-unit id="title_delete">
                 <source>title_delete</source>
-                <target>Potvrzení odstranění</target>
+                <target>تأكيد الحذف</target>
             </trans-unit>
             <trans-unit id="message_delete_confirmation">
                 <source>message_delete_confirmation</source>
-                <target>Opravdu chcete odstranit zvolený element?</target>
+                <target>هل أنت متأكد أنك تريد حذف العنصر المحدد؟</target>
             </trans-unit>
             <trans-unit id="btn_delete">
                 <source>btn_delete</source>
-                <target>Ano, odstranit</target>
+                <target>نعم، حذف</target>
             </trans-unit>
             <trans-unit id="title_batch_confirmation">
                 <source>title_batch_confirmation</source>
-                <target>Potvrďte dávkovou akci</target>
+                <target>تأكيد العملية'%action%'</target>
             </trans-unit>
             <trans-unit id="message_batch_confirmation">
                 <source>message_batch_confirmation</source>
-                <target>Jste si jistý, že chcete potvrdit tuto akci a spustit ji na vybranou položku?|Jste si jisti, že chcete potvrdit tuto akci a spustit ji na %count% prvky?|Jste si jisti, že chcete potvrdit tuto akci a spustit ji na %count% prvků?</target>
+                <target> هل أنت متأكد أنك تريد تأكيد هذا العمل وتنفيذه ل%count% العناصر المحددة؟</target>
             </trans-unit>
             <trans-unit id="message_batch_all_confirmation">
                 <source>message_batch_all_confirmation</source>
-                <target>Jste si jistý, že chcete potvrdit tuto akci a spustit ji na všechny prvky?</target>
+                <target>هل أنت متأكد أنك تريد تأكيد هذا العمل وتنفيذه لجميع العناصر؟</target>
             </trans-unit>
             <trans-unit id="btn_execute_batch_action">
                 <source>btn_execute_batch_action</source>
-                <target>Ano, spustit</target>
+                <target>نعم، وتنفيذ</target>
             </trans-unit>
             <trans-unit id="label_type_yes">
-              <source>label_type_yes</source>
-              <target>ano</target>
+                <source>label_type_yes</source>
+                <target>نعم</target>
             </trans-unit>
             <trans-unit id="label_type_no">
-              <source>label_type_no</source>
-              <target>ne</target>
+                <source>label_type_no</source>
+                <target>لا</target>
             </trans-unit>
             <trans-unit id="label_type_contains">
-              <source>label_type_contains</source>
-              <target>obsahuje</target>
+                <source>label_type_contains</source>
+                <target>يحتوي</target>
             </trans-unit>
             <trans-unit id="label_type_not_contains">
-              <source>label_type_not_contains</source>
-              <target>neobsahuje</target>
+                <source>label_type_not_contains</source>
+                <target>لا يحتوي</target>
             </trans-unit>
             <trans-unit id="label_type_equals">
-              <source>label_type_equals</source>
-              <target>rovná se</target>
+                <source>label_type_equals</source>
+                <target>يساوي</target>
             </trans-unit>
             <trans-unit id="label_type_not_equals">
-              <source>label_type_not_equals</source>
-              <target>nerovná se</target>
+                <source>label_type_not_equals</source>
+                <target>لا تساوي</target>
             </trans-unit>
             <trans-unit id="label_type_equal">
-              <source>label_type_equal</source>
-              <target>=</target>
+                <source>label_type_equal</source>
+                <target>=</target>
             </trans-unit>
             <trans-unit id="label_type_greater_equal">
-              <source>label_type_greater_equal</source>
-              <target>&gt;=</target>
+                <source>label_type_greater_equal</source>
+                <target>&gt;=</target>
             </trans-unit>
             <trans-unit id="label_type_greater_than">
-              <source>label_type_greater_than</source>
-              <target>&gt;</target>
+                <source>label_type_greater_than</source>
+                <target>&gt;</target>
             </trans-unit>
             <trans-unit id="label_type_less_equal">
-              <source>label_type_less_equal</source>
-              <target>&lt;=</target>
+                <source>label_type_less_equal</source>
+                <target>&lt;=</target>
             </trans-unit>
             <trans-unit id="label_type_less_than">
-              <source>label_type_less_than</source>
-              <target>&lt;</target>
+                <source>label_type_less_than</source>
+                <target>&lt;</target>
             </trans-unit>
             <trans-unit id="label_date_type_equal">
-              <source>label_date_type_equal</source>
-              <target>=</target>
+                <source>label_date_type_equal</source>
+                <target>=</target>
             </trans-unit>
             <trans-unit id="label_date_type_greater_equal">
-              <source>label_date_type_greater_equal</source>
-              <target>&gt;=</target>
+                <source>label_date_type_greater_equal</source>
+                <target>&gt;=</target>
             </trans-unit>
             <trans-unit id="label_date_type_greater_than">
-              <source>label_date_type_greater_than</source>
-              <target>&gt;</target>
+                <source>label_date_type_greater_than</source>
+                <target>&gt;</target>
             </trans-unit>
             <trans-unit id="label_date_type_less_equal">
-              <source>label_date_type_less_equal</source>
-              <target>&lt;=</target>
+                <source>label_date_type_less_equal</source>
+                <target>&lt;=</target>
             </trans-unit>
             <trans-unit id="label_date_type_less_than">
-              <source>label_date_type_less_than</source>
-              <target>&lt;</target>
+                <source>label_date_type_less_than</source>
+                <target>&lt;</target>
             </trans-unit>
             <trans-unit id="label_date_type_null">
-              <source>label_date_type_null</source>
-              <target>je prázdný</target>
+                <source>label_date_type_null</source>
+                <target>فارغة</target>
             </trans-unit>
             <trans-unit id="label_date_type_not_null">
-              <source>label_date_type_not_null</source>
-              <target>není prázdný</target>
+                <source>label_date_type_not_null</source>
+                <target>ليس فارغا</target>
             </trans-unit>
             <trans-unit id="label_date_type_between">
-              <source>label_date_type_between</source>
-              <target>je mezi</target>
+                <source>label_date_type_between</source>
+                <target>بين</target>
             </trans-unit>
             <trans-unit id="label_date_not_between">
-              <source>label_date_type_not_between</source>
-              <target>není mezi</target>
+                <source>label_date_type_not_between</source>
+                <target>ليس بين</target>
             </trans-unit>
             <trans-unit id="label_filters">
-              <source>label_filters</source>
-              <target>Filtry</target>
+                <source>label_filters</source>
+                <target>تصفية</target>
             </trans-unit>
             <trans-unit id="delete_or">
-              <source>delete_or</source>
-              <target>nebo</target>
+                <source>delete_or</source>
+                <target>أو</target>
             </trans-unit>
             <trans-unit id="link_action_history">
                 <source>link_action_history</source>
-                <target>Revize</target>
+                <target>تنقيح</target>
             </trans-unit>
             <trans-unit id="td_action">
                 <source>td_action</source>
-                <target>Akce</target>
+                <target>عملية</target>
             </trans-unit>
             <trans-unit id="td_revision">
                 <source>td_revision</source>
-                <target>Revize</target>
+                <target>تنقيح</target>
             </trans-unit>
             <trans-unit id="td_timestamp">
                 <source>td_timestamp</source>
-                <target>Datum</target>
+                <target>تاريخ</target>
             </trans-unit>
             <trans-unit id="td_username">
                 <source>td_username</source>
-                <target>Autor</target>
+                <target>الكاتب</target>
             </trans-unit>
             <trans-unit id="label_view_revision">
                 <source>label_view_revision</source>
-                <target>Zobrazit revizi</target>
+                <target>عرض مراجعة</target>
             </trans-unit>
             <trans-unit id="list_results_count">
                 <source>list_results_count</source>
-                <target>1 záznam|%count% záznamy|%count% záznamů</target>
+                <target>%count% النتائج</target>
             </trans-unit>
             <trans-unit id="label_export_download">
                 <source>label_export_download</source>
-                <target>Stáhnout</target>
+                <target>تحميل : </target>
             </trans-unit>
             <trans-unit id="loading_information">
                 <source>loading_information</source>
-                <target>Načítání informací…</target>
+                <target>تحميل معلومات…</target>
             </trans-unit>
             <trans-unit id="btn_preview">
                 <source>btn_preview</source>
-                <target>Náhled</target>
+                <target>معاينة</target>
             </trans-unit>
             <trans-unit id="btn_preview_approve">
                 <source>btn_preview_approve</source>
-                <target>Schválit</target>
+                <target>وافق</target>
             </trans-unit>
             <trans-unit id="btn_preview_decline">
                 <source>btn_preview_decline</source>
-                <target>Odmítnout</target>
+                <target>هبوط</target>
             </trans-unit>
             <trans-unit id="label_per_page">
-              <source>label_per_page</source>
-              <target>Zobrazit nejvíce</target>
+                <source>label_per_page</source>
+                <target>في كل صفحة</target>
             </trans-unit>
             <trans-unit id="list_select">
-              <source>list_select</source>
-              <target>Vybrat</target>
+                <source>list_select</source>
+                <target>اختر</target>
             </trans-unit>
             <trans-unit id="confirm_exit">
                 <source>confirm_exit</source>
-                <target>Máte neuložené změny.</target>
+                <target>لديك تغييرات غير محفوظة.</target>
             </trans-unit>
             <trans-unit id="link_edit_acl">
-              <source>link_edit_acl</source>
-              <target>Upravit</target>
+                <source>link_edit_acl</source>
+                <target>تحرير ACL</target>
             </trans-unit>
             <trans-unit id="btn_update_acl">
-              <source>btn_update_acl</source>
-              <target>Aktualizovat</target>
+                <source>btn_update_acl</source>
+                <target>تحديث ACL</target>
             </trans-unit>
             <trans-unit id="flash_acl_update_success">
                 <source>flash_acl_edit_success</source>
-                <target>Oprávnění byly úspěšně aktualizovány.</target>
+                <target>تم تحديث ACL بنجاح.</target>
             </trans-unit>
             <trans-unit id="link_action_acl">
                 <source>link_action_acl</source>
-                <target>Oprávnění</target>
+                <target>ACL</target>
             </trans-unit>
             <trans-unit id="short_object_description_placeholder">
-              <source>short_object_description_placeholder</source>
-              <target></target>
+                <source>short_object_description_placeholder</source>
+                <target>عدم التحديد</target>
             </trans-unit>
             <trans-unit id="title_search_results">
                 <source>title_search_results</source>
-                <target>Výsledky vyhledávání: %query%</target>
+                <target>نتائج البحث: %query%</target>
             </trans-unit>
             <trans-unit id="search_placeholder">
                 <source>search_placeholder</source>
-                <target>Hledat</target>
+                <target>بحث</target>
             </trans-unit>
             <trans-unit id="no_results_found">
                 <source>no_results_found</source>
-                <target>Žádný výsledek</target>
+                <target>لا نتائج لبحثك</target>
             </trans-unit>
             <trans-unit id="add_new_entry">
                 <source>add_new_entry</source>
-                <target>Přidat nový záznam</target>
+                <target>إضافة إدخال جديد</target>
             </trans-unit>
-            <trans-unit id="link_actions">
-                <source>link_actions</source>
-                <target>Akce</target>
+            <trans-unit id="dashboard">
+                <source>Dashboard</source>
+                <target>لوحة المشرف</target>
             </trans-unit>
         </body>
     </file>
