@@ -38,7 +38,7 @@ automatically injected by the bundle:
 * ``ShowBuilder``: builds the show fields
 * ``ListBuilder``: builds the list fields
 * ``DatagridBuilder``: builds the filter fields
-* ``Request``: the http request received
+* ``Request``: the received http request
 * ``RouteBuilder``: allows you to add routes for new actions and remove routes for default actions
 * ``RouterGenerator``: generates the different urls
 * ``SecurityHandler``: handles permissions for model instances and actions
@@ -217,8 +217,8 @@ them are independent of the action in which they are used, like ``name`` or ``ty
 while others are used only in specific actions. More information can be found in the
 ``BaseFieldDescription`` class file.
 
-In most scenarios, you won't actually need to handle the ``FieldDescription`` yourself.
-However, it is important that you know it exists and how it's used, as it seats at the
+In most scenarios, you will not actually need to handle the ``FieldDescription`` yourself.
+However, it is important that you know it exists and how it is used, as it sits at the
 core of ``SonataAdminBundle``.
 
 Templates
@@ -267,7 +267,7 @@ Managing ``Admin`` Service
 Your ``Admin`` service definitions are parsed when Symfony2 is loaded, and handled by
 the ``Pool`` class. This class, available as the ``sonata.admin.pool`` service from the
 DIC, handles the ``Admin`` classes, lazy-loading them on demand (to reduce overhead)
-and matching each of them to a group. It's also responsible for handling the top level
+and matching each of them to a group. It is also responsible for handling the top level
 template files, administration panel title and logo.
 
 
@@ -275,8 +275,8 @@ template files, administration panel title and logo.
 Create child admins
 -------------------
 
-Let's say you have a PostAdmin and a CommentAdmin. You can optionally declare the CommentAdmin
-to be a child of the PostAdmin. This will create new routes like, for example, ``/post/{id}/comment/list``,
+Let us say you have a ``PostAdmin`` and a ``CommentAdmin``. You can optionally declare the ``CommentAdmin``
+to be a child of the ``PostAdmin``. This will create new routes like, for example, ``/post/{id}/comment/list``,
 where the comments will automatically be filtered by post.
 
 To do this, you first need to call the ``addChild`` method in your PostAdmin service configuration :

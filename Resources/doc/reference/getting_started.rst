@@ -164,7 +164,7 @@ instance based on the class you specified before, and accepts three arguments:
 
     1. The Admin service's code (defaults to the service's name)
     2. The model which this Admin class maps (required)
-    3. The controller that will handle the administration actions (defaults to SonataAdminBundle:CRUDController)
+    3. The controller that will handle the administration actions (defaults to ``SonataAdminBundle:CRUDController()``)
 
 Usually you just need to specify the second argument, as the first and third's default
 values will work for most scenarios.
@@ -178,7 +178,7 @@ Symfony2 to load it. There are two ways to do so:
 1 - Importing it in the main config.yml
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Include your new configuration file in the main config.yml (make sure that you
+Include your new configuration file in the main ``config.yml`` (make sure that you
 use the correct file extension):
 
 .. configuration-block::
@@ -268,7 +268,7 @@ Next steps - Security
 As you probably noticed, you were able to access your dashboard and data by just
 typing in the URL. By default, the SonataAdminBundle does not come with any user
 management for ultimate flexibility. However, it is most likely that your application
-requires such feature. The Sonata Project includes a ``SonataUserBundle`` which
+requires such a feature. The Sonata Project includes a ``SonataUserBundle`` which
 integrates the very popular ``FOSUserBundle``. Please refer to the :doc:`security` section of
 this documentation for more information.
 
