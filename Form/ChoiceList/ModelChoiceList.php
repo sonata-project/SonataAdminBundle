@@ -125,9 +125,9 @@ class ModelChoiceList extends SimpleChoiceList
         if (is_array($choices)) {
             $entities = $choices;
         } elseif ($this->query) {
-            $entities = $this->modelManager->executeQuery($this->query);
+            $entities = $this->getModelManager()->executeQuery($this->query);
         } else {
-            $entities = $this->modelManager->findBy($this->class);
+            $entities = $this->getModelManager()->findBy($this->class);
         }
 
         $choices = array();
@@ -147,7 +147,7 @@ class ModelChoiceList extends SimpleChoiceList
                 }
             }
 
-            if (count($this->identifier) > 1) {
+            if (count($this->getIdentifier()) > 1) {
                 // When the identifier consists of multiple field, use
                 // naturally ordered keys to refer to the choices
                 $choices[$key] = $value;
@@ -204,7 +204,7 @@ class ModelChoiceList extends SimpleChoiceList
     public function getEntity($key)
     {
 
-        if (count($this->identifier) > 1) {
+        if (count($this->getIdentifier()) > 1) {
             // $key is a collection index
             $entities = $this->getEntities();
 
@@ -213,7 +213,7 @@ class ModelChoiceList extends SimpleChoiceList
             return isset($this->entities[$key]) ? $this->entities[$key] : null;
         }
 
-        return $this->modelManager->find($this->class, $key);
+        return $this->getModelManager()->find($this->getClass(), $key);
     }
 
     /**
