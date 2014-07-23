@@ -48,7 +48,7 @@ for SonataAdminBundle to work:
     - `KnpMenuBundle <https://github.com/KnpLabs/KnpMenuBundle/blob/master/Resources/doc/index.md#installation>`_ (Version 1.1.*)
 
 These bundles are automatically downloaded by composer as a dependency of SonataAdminBundle.
-However, you have to enable them in your AppKernel.php, and configure them manually. Don't
+However, you have to enable them in your ``AppKernel.php``, and configure them manually. Don't
 forget to enable SonataAdminBundle too:
 
 .. code-block:: php
@@ -82,12 +82,15 @@ forget to enable SonataAdminBundle too:
     }
 
 .. note::
-    If a dependency is already enabled somewhere in your AppKernel.php,
+    If a dependency is already enabled somewhere in your ``AppKernel.php``,
     you don't need to enable it again.
 
 .. note::
     Since version 2.3 > SonatajQueryBundle is not required anymore as assets are available in this
-    bundle. The bundle is also registered in bower.io so you can use bower to handle your assets.
+    bundle. The bundle is also registered in `bower.io <https://github.com/sonata-project/SonataAdminBundle>`_ so
+    you can use bower to handle your assets. To make sure you get the dependencies
+    that match the version of SonataAdminBundle you are using, you can make bower
+    use the local bower dependency file, like this : ``bower require ./vendor/sonata-project/admin-bundle/bower.json``
 
 Configuring SonataAdminBundle dependencies
 ------------------------------------------
@@ -115,7 +118,7 @@ dashboard. To be able to use it, make sure it's enabled on SonataBlockBundle's c
 .. note::
     Don't worry too much if, at this point, you don't yet understand fully
     what a block is. SonataBlockBundle is a useful tool, but it's not vital
-    that you understand right now.
+    that you understand it right now.
 
 Cleaning up
 -----------
@@ -126,7 +129,7 @@ Now, install the assets from the bundles:
 
     php app/console assets:install web
 
-Usually, when installing new bundles, it's good practice to also delete your cache:
+Usually, when installing new bundles, it is a good practice to also delete your cache:
 
 .. code-block:: bash
 
@@ -140,7 +143,7 @@ use it yet.
 If, at this point or during the installation, you come across any errors, don't panic:
 
     -  Read the error message carefully. Try to find out exactly which bundle is causing the error. Is it SonataAdminBundle or one of the dependencies?
-    - Make sure you followed all the instructions correctly, for both SonataAdminBundle and it's dependencies
+    - Make sure you followed all the instructions correctly, for both SonataAdminBundle and its dependencies
     - Odds are that someone already had the same problem, and it's documented somewhere. Check `Google <http://www.google.com>`_, `Sonata Users Group <https://groups.google.com/group/sonata-users>`_, `Symfony2 Users Group <https://groups.google.com/group/symfony2>`_ and `Symfony Forum <forum.symfony-project.org>`_ to see if you can find a solution.
     - Still no luck? Try checking the project's open issues on GitHub.
 

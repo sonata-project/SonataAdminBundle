@@ -42,14 +42,26 @@ Choice
 .. code-block:: php
 
     // For value `prog` is displayed text `In progress`. The `AcmeDemoBundle` catalogue will be used to translate `In progress` message.
-    $listMapper->add('status', 'choice', array('choices'=>array('prep'=>'Prepared', 'prog'=>'In progress', 'done'=>'Done'), 'catalogue' => 'AcmeDemoBundle'));
+    $listMapper->add(
+        'status',
+        'choice',
+        array('choices'=>array('prep'=>'Prepared', 'prog'=>'In progress', 'done'=>'Done'),
+        'catalogue' => 'AcmeDemoBundle'
+    ));
 
 ``choice`` filed type also supports multiple values that can be separated by ``delimiter`` (default delimiter is a comma ",").
 
 .. code-block:: php
 
     // For value `array('r', 'b')` is displayed `text `red | blue`.
-    $listMapper->add('colors', 'choice', array('multiple'=>true, 'delimiter'=>' | ', 'choices'=>array('r'=>'red', 'g'=>'green', 'b'=>'blue')));
+    $listMapper->add(
+        'colors',
+        'choice',
+        array(
+            'multiple' => true,
+            'delimiter' => ' | ',
+            'choices' => array('r'=>'red', 'g'=>'green', 'b'=>'blue'))
+    );
 
 Url
 ^^^

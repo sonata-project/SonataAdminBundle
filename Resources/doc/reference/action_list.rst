@@ -90,14 +90,14 @@ Options
     * ``(m)`` stands for mandatory
     * ``(o)`` stands for optional
 
-- ``type`` (m): define the field type - mandatory for the field description itself but will try to detect the type automatically if not specified
+- ``type`` (m): defines the field type - mandatory for the field description itself but will try to detect the type automatically if not specified
 - ``template`` (o): the template used to render the field
 - ``name`` (o): the name used for the column's title
 - ``link_parameters`` (o): add link parameter to the related Admin class when the ``Admin::generateUrl`` is called
 - ``code`` (o): the method name to retrieve the related value
 - ``associated_tostring`` (o): (deprecated, use associated_property option) the method to retrieve the "string" representation of the collection element.
 - ``associated_property`` (o): property path to retrieve the "string" representation of the collection element.
-- ``identifier`` (o): if set to true a link appear on the value to edit the element
+- ``identifier`` (o): if set to true a link appears on the value to edit the element
 
 Available types and associated options
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

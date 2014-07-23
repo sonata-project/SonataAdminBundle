@@ -88,9 +88,9 @@ Once you have defined this, Sonata Admin looks for it in the following location:
 
 ``src/Acme/DemoBundle/Resources/views/Admin/Display_Client.html.twig``
 
-Now that you have told Sonata Admin where to find the template, it's time to put one in there.
+Now that you have told Sonata Admin where to find the template, it is time to put one in there.
 
-The recommended way to start is to copy the default template, and paste it into it's new home.
+The recommended way to start is to copy the default template, and paste it into its new home.
 
 This ensures that you can update Sonata Admin and keep all of your hard work.
 
