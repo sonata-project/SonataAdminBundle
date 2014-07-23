@@ -42,7 +42,7 @@ class ModelChoiceList extends SimpleChoiceList
      *
      * @var mixed
      */
-    private $entities = array();
+    protected $entities = array();
 
     /**
      * Contains the query builder that builds the query for fetching the
