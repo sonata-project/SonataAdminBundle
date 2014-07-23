@@ -117,6 +117,8 @@ class ModelChoiceList extends SimpleChoiceList
      * @param $choices
      *
      * @return array An array of choices
+     *
+     * @throws \Symfony\Component\Form\Exception\RuntimeException
      */
     protected function load($choices)
     {
