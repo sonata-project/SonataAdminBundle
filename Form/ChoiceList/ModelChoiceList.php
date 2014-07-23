@@ -124,8 +124,8 @@ class ModelChoiceList extends SimpleChoiceList
     {
         if (is_array($choices)) {
             $entities = $choices;
-        } elseif ($this->query) {
-            $entities = $this->getModelManager()->executeQuery($this->query);
+        } elseif ($this->getQuery()) {
+            $entities = $this->getModelManager()->executeQuery($this->getQuery());
         } else {
             $entities = $this->getModelManager()->findBy($this->class);
         }
@@ -214,6 +214,17 @@ class ModelChoiceList extends SimpleChoiceList
         }
 
         return $this->getModelManager()->find($this->getClass(), $key);
+    }
+
+    /**
+     * Returns the query builder that builds the query for fetching the
+     * entities
+     *
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function getQuery()
+    {
+        return $this->query;
     }
 
     /**
