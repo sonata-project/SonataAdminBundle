@@ -114,7 +114,7 @@ abstract class Filter implements FilterInterface
         $fieldName = $this->getOption('field_name');
 
         if (!$fieldName) {
-            throw new \RunTimeException(sprintf('The option `field_name` must be set for field : `%s`', $this->getName()));
+            throw new \RuntimeException(sprintf('The option `field_name` must be set for field: `%s`', $this->getName()));
         }
 
         return $fieldName;
@@ -136,7 +136,7 @@ abstract class Filter implements FilterInterface
         $fieldMapping = $this->getOption('field_mapping');
 
         if (!$fieldMapping) {
-            throw new \RunTimeException(sprintf('The option `field_mapping` must be set for field : `%s`', $this->getName()));
+            throw new \RuntimeException(sprintf('The option `field_mapping` must be set for field: `%s`', $this->getName()));
         }
 
         return $fieldMapping;
@@ -150,16 +150,16 @@ abstract class Filter implements FilterInterface
         $associationMapping = $this->getOption('association_mapping');
 
         if (!$associationMapping) {
-            throw new \RunTimeException(sprintf('The option `association_mapping` must be set for field : `%s`', $this->getName()));
+            throw new \RuntimeException(sprintf('The option `association_mapping` must be set for field: `%s`', $this->getName()));
         }
 
         return $associationMapping;
     }
 
     /**
-     * @param array $options
+     * Set options
      *
-     * @return void
+     * @param array $options
      */
     public function setOptions(array $options)
     {
@@ -167,6 +167,8 @@ abstract class Filter implements FilterInterface
     }
 
     /**
+     * Get options
+     *
      * @return array
      */
     public function getOptions()
@@ -175,9 +177,9 @@ abstract class Filter implements FilterInterface
     }
 
     /**
-     * @param mixed $value
+     * Set value
      *
-     * @return void
+     * @param mixed $value
      */
     public function setValue($value)
     {
@@ -185,6 +187,8 @@ abstract class Filter implements FilterInterface
     }
 
     /**
+     * Get value
+     *
      * @return mixed
      */
     public function getValue()
@@ -205,9 +209,7 @@ abstract class Filter implements FilterInterface
     }
 
     /**
-     * @param string $condition
-     *
-     * @return void
+     * {@inheritdoc}
      */
     public function setCondition($condition)
     {
@@ -215,7 +217,7 @@ abstract class Filter implements FilterInterface
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getCondition()
     {
