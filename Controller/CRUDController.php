@@ -23,17 +23,20 @@ use Symfony\Component\HttpFoundation\Request;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Admin\BaseFieldDescription;
 use Sonata\AdminBundle\Util\AdminObjectAclData;
+use Sonata\AdminBundle\Admin\AdminInterface;
 
 class CRUDController extends Controller
 {
     /**
      * The related Admin class
      *
-     * @var \Sonata\AdminBundle\Admin\AdminInterface
+     * @var AdminInterface
      */
     protected $admin;
 
     /**
+     * Render JSON
+     *
      * @param mixed   $data
      * @param integer $status
      * @param array   $headers
@@ -56,8 +59,9 @@ class CRUDController extends Controller
     }
 
     /**
+     * Returns true if the request is a XMLHttpRequest.
      *
-     * @return boolean true if the request is done by an ajax like query
+     * @return bool True if the request is an XMLHttpRequest, false otherwise
      */
     protected function isXmlHttpRequest()
     {
@@ -96,7 +100,6 @@ class CRUDController extends Controller
      * Contextualize the admin class depends on the current request
      *
      * @throws \RuntimeException
-     * @return void
      */
     protected function configure()
     {
@@ -129,9 +132,9 @@ class CRUDController extends Controller
     }
 
     /**
-     * return the base template name
+     * Returns the base template name
      *
-     * @return string the template name
+     * @return string The template name
      */
     protected function getBaseTemplate()
     {
@@ -143,11 +146,7 @@ class CRUDController extends Controller
     }
 
     /**
-     * @param string   $view
-     * @param array    $parameters
-     * @param Response $response
-     *
-     * @return Response
+     * {@inheritdoc}
      */
     public function render($view, array $parameters = array(), Response $response = null)
     {
@@ -159,11 +158,11 @@ class CRUDController extends Controller
     }
 
     /**
-     * return the Response object associated to the list action
-     *
-     * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
+     * List action
      *
      * @return Response
+     *
+     * @throws AccessDeniedException If access is not granted
      */
     public function listAction()
     {
@@ -186,13 +185,13 @@ class CRUDController extends Controller
     }
 
     /**
-     * execute a batch delete
+     * Execute a batch delete
      *
-     * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
+     * @param ProxyQueryInterface $query
      *
-     * @param \Sonata\AdminBundle\Datagrid\ProxyQueryInterface $query
+     * @return RedirectResponse
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @throws AccessDeniedException If access is not granted
      */
     public function batchActionDelete(ProxyQueryInterface $query)
     {
@@ -212,11 +211,14 @@ class CRUDController extends Controller
     }
 
     /**
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException|\Symfony\Component\Security\Core\Exception\AccessDeniedException
+     * Delete action
      *
-     * @param mixed $id
+     * @param int|string|null $id
      *
      * @return Response|RedirectResponse
+     *
+     * @throws NotFoundHttpException If the object does not exist
+     * @throws AccessDeniedException If access is not granted
      */
     public function deleteAction($id)
     {
@@ -278,15 +280,14 @@ class CRUDController extends Controller
     }
 
     /**
-     * return the Response object associated to the edit action
+     * Edit action
      *
+     * @param int|string|null $id
      *
-     * @param mixed $id
+     * @return Response|RedirectResponse
      *
-     * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
-     *
-     * @return Response
+     * @throws NotFoundHttpException If the object does not exist
+     * @throws AccessDeniedException If access is not granted
      */
     public function editAction($id = null)
     {
@@ -357,11 +358,11 @@ class CRUDController extends Controller
     }
 
     /**
-     * redirect the user depend on this choice
+     * Redirect the user depend on this choice
      *
      * @param object $object
      *
-     * @return Response
+     * @return RedirectResponse
      */
     protected function redirectTo($object)
     {
@@ -394,10 +395,12 @@ class CRUDController extends Controller
     }
 
     /**
-     * return the Response object associated to the batch action
+     * Batch action
      *
-     * @throws \RuntimeException
-     * @return Response
+     * @return Response|RedirectResponse
+     *
+     * @throws NotFoundHttpException If the HTTP method is not POST
+     * @throws \RuntimeException     If the batch action is not defined
      */
     public function batchAction()
     {
@@ -496,10 +499,11 @@ class CRUDController extends Controller
     }
 
     /**
-     * return the Response object associated to the create action
+     * Create action
      *
-     * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
      * @return Response
+     *
+     * @throws AccessDeniedException If access is not granted
      */
     public function createAction()
     {
@@ -572,7 +576,7 @@ class CRUDController extends Controller
     /**
      * Returns true if the preview is requested to be shown
      *
-     * @return boolean
+     * @return bool
      */
     protected function isPreviewRequested()
     {
@@ -582,7 +586,7 @@ class CRUDController extends Controller
     /**
      * Returns true if the preview has been approved
      *
-     * @return boolean
+     * @return bool
      */
     protected function isPreviewApproved()
     {
@@ -595,7 +599,7 @@ class CRUDController extends Controller
      * That means either a preview is requested or the preview has already been shown
      * and it got approved/declined.
      *
-     * @return boolean
+     * @return bool
      */
     protected function isInPreviewMode()
     {
@@ -608,7 +612,7 @@ class CRUDController extends Controller
     /**
      * Returns true if the preview has been declined
      *
-     * @return boolean
+     * @return bool
      */
     protected function isPreviewDeclined()
     {
@@ -616,14 +620,14 @@ class CRUDController extends Controller
     }
 
     /**
-     * return the Response object associated to the view action
+     * Show action
      *
-     * @param null $id
-     *
-     * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     * @param int|string|null $id
      *
      * @return Response
+     *
+     * @throws NotFoundHttpException If the object does not exist
+     * @throws AccessDeniedException If access is not granted
      */
     public function showAction($id = null)
     {
@@ -649,11 +653,14 @@ class CRUDController extends Controller
     }
 
     /**
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException|\Symfony\Component\Security\Core\Exception\AccessDeniedException
+     * Show history revisions for object
      *
-     * @param mixed $id
+     * @param int|string|null $id
      *
      * @return Response
+     *
+     * @throws AccessDeniedException If access is not granted
+     * @throws NotFoundHttpException If the object does not exist or the audit reader is not available
      */
     public function historyAction($id = null)
     {
@@ -687,13 +694,15 @@ class CRUDController extends Controller
     }
 
     /**
-     * @param null   $id
-     * @param string $revision
+     * View history revision of object
      *
-     * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     * @param int|string|null $id
+     * @param string|null     $revision
      *
      * @return Response
+     *
+     * @throws AccessDeniedException If access is not granted
+     * @throws NotFoundHttpException If the object or revision does not exist or the audit reader is not available
      */
     public function historyViewRevisionAction($id = null, $revision = null)
     {
@@ -734,12 +743,14 @@ class CRUDController extends Controller
     }
 
     /**
+     * Export data to specified format
+     *
      * @param Request $request
      *
-     * @throws \RuntimeException
-     * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
-     *
      * @return Response
+     *
+     * @throws AccessDeniedException If access is not granted
+     * @throws \RuntimeException     If the export format is invalid
      */
     public function exportAction(Request $request)
     {
@@ -787,14 +798,14 @@ class CRUDController extends Controller
     }
 
     /**
-     * return the Response object associated to the acl action
+     * Returns the Response object associated to the acl action
      *
-     * @param null $id
+     * @param int|string|null $id
      *
-     * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     * @return Response|RedirectResponse
      *
-     * @return Response
+     * @throws AccessDeniedException If access is not granted.
+     * @throws NotFoundHttpException If the object does not exist or the ACL is not enabled
      */
     public function aclAction($id = null)
     {
@@ -863,11 +874,11 @@ class CRUDController extends Controller
     }
 
     /**
-     * Validate CSRF token for action with out form
+     * Validate CSRF token for action without form
      *
      * @param string $intention
      *
-     * @throws \RuntimeException
+     * @throws HttpException
      */
     protected function validateCsrfToken($intention)
     {
@@ -876,14 +887,16 @@ class CRUDController extends Controller
         }
 
         if (!$this->container->get('form.csrf_provider')->isCsrfTokenValid($intention, $this->get('request')->request->get('_sonata_csrf_token', false))) {
-            throw new HttpException(400, "The csrf token is not valid, CSRF attack ?");
+            throw new HttpException(400, 'The csrf token is not valid, CSRF attack?');
         }
     }
 
     /**
-     * @param $intention
+     * Get CSRF token
      *
-     * @return string
+     * @param string $intention
+     *
+     * @return string|false
      */
     protected function getCsrfToken($intention)
     {
