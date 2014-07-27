@@ -2,7 +2,8 @@ Templates
 =========
 
 ``SonataAdminBundle`` comes with a significant amount of ``twig`` files used to display the
-different parts of each ``Admin`` action's page. If you read the ``Templates`` part of the :doc:`architecture` section of this guide, you should know by now how these are organized in
+different parts of each ``Admin`` action's page. If you read the ``Templates`` part of the
+:doc:`architecture` section of this guide, you should know by now how these are organized in
 the ``views`` folder. If you haven't, now would be a good time to do it.
 
 Besides these, some other views files are included from the storage layer. As their content and
@@ -39,14 +40,14 @@ As seen before, the ``CRUDController`` has several actions that allow you to man
 model instances. Each of those actions uses a specific template file to render its content.
 By default, ``SonataAdminBundle`` uses the following templates for their matching action:
 
-* list: SonataAdminBundle:CRUD:list.html.twig
-* show: SonataAdminBundle:CRUD:show.html.twig
-* edit: SonataAdminBundle:CRUD:edit.html.twig
-* history: SonataAdminBundle:CRUD:history.html.twig
-* preview: SonataAdminBundle:CRUD:preview.html.twig
-* delete: SonataAdminBundle:CRUD:delete.html.twig
-* batch_confirmation: SonataAdminBundle:CRUD:batch_confirmation.html.twig
-* acl: SonataAdminBundle:CRUD:acl.html.twig
+* ``list`` : SonataAdminBundle:CRUD:list.html.twig
+* ``show`` : SonataAdminBundle:CRUD:show.html.twig
+* ``edit`` : SonataAdminBundle:CRUD:edit.html.twig
+* ``history`` : SonataAdminBundle:CRUD:history.html.twig
+* ``preview`` : SonataAdminBundle:CRUD:preview.html.twig
+* ``delete`` : SonataAdminBundle:CRUD:delete.html.twig
+* ``batch_confirmation`` : SonataAdminBundle:CRUD:batch_confirmation.html.twig
+* ``acl`` : SonataAdminBundle:CRUD:acl.html.twig
 
 Notice that all these templates extend other templates, and some do only that. This inheritance
 architecture is designed to help you easily make customizations by extending these templates
@@ -71,16 +72,27 @@ Other Templates
 There are several other templates that can be customized, enabling you to fine-tune
 ``SonataAdminBundle``:
 
-* user_block: customizes the Twig block rendered by default in the top right corner of the admin interface, containing user information. Empty by default, see ``SonataUserBundle`` for a real example.
-* add_block: customizes the Twig block rendered by default in the top right corner of the admin interface, providing quick access to create operations on available admin classes.
-* history_revision_timestamp: customizes the way timestamps are rendered when using history related actions.
-* action: a generic template you can use for your custom actions
-* short_object_description: used by the ``getShortObjectDescriptionAction`` action from the ``HelperController``, this template displays a small description of a model instance.
-* list_block: the template used to render the dashboard's admin mapping lists. More info on the :doc:`dashboard` page.
+* ``user_block`` : customizes the Twig block rendered by default in the top right
+  corner of the admin interface, containing user information.
+  Empty by default, see ``SonataUserBundle`` for a real example.
+* ``add_block`` : customizes the Twig block rendered by default in the top right
+  corner of the admin interface, providing quick access to create operations on
+  available admin classes.
+* ``history_revision_timestamp:`` customizes the way timestamps are rendered when
+  using history related actions.
+* ``action`` : a generic template you can use for your custom actions
+* ``short_object_description`` : used by the ``getShortObjectDescriptionAction``
+  action from the ``HelperController``, this template displays a small
+  description of a model instance.
+* ``list_block`` : the template used to render the dashboard's admin mapping lists.
+  More info on the :doc:`dashboard` page.
 * batch: template used to render the checkboxes that precede each instance on list views.
-* select: when loading list views as part of sonata_admin form types, this template is used to create a button that allows you to select the matching line.
-* pager_links: renders the list of pages displayed at the end of the list view (when more than one page exists)
-* pager_results: renders the dropdown that lets you choose the number of elements per page on list views
+* ``select`` : when loading list views as part of sonata_admin form types, this
+  template is used to create a button that allows you to select the matching line.
+* ``pager_links`` : renders the list of pages displayed at the end of the list view
+  (when more than one page exists)
+* ``pager_results`` : renders the dropdown that lets you choose the number of
+  elements per page on list views
 
 Configuring templates
 ---------------------
