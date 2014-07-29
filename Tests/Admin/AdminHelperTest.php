@@ -86,6 +86,31 @@ class AdminHelperTest extends \PHPUnit_Framework_TestCase
             ->method('getSubject')
             ->will($this->returnValue($entity));
 
+        $fooAdmin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $barAdmin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $barFormFieldDescription = $this->getMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+        $fooFormFieldDescription = $this->getMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+
+        $admin->expects($this->any())
+            ->method('getFormFieldDescription')
+            ->will($this->returnValue($fooFormFieldDescription));
+
+        $fooFormFieldDescription->expects($this->any())
+            ->method('getAssociationAdmin')
+            ->will($this->returnValue($fooAdmin));
+
+        $fooAdmin->expects($this->any())
+            ->method('getFormFieldDescription')
+            ->will($this->returnValue($barFormFieldDescription));
+
+        $barFormFieldDescription->expects($this->any())
+            ->method('getAssociationAdmin')
+            ->will($this->returnValue($barAdmin));
+
+        $barAdmin->expects($this->any())
+            ->method('getClass')
+            ->will($this->returnValue('\stdClass'));
+
         $helper->appendFormFieldElement($admin, $mockForm, 'dummy_foo_bar');
     }
 }
