@@ -13,6 +13,7 @@ namespace Sonata\AdminBundle\Admin;
 use Symfony\Component\Form\FormView;
 use Sonata\AdminBundle\Util\FormViewIterator;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class AdminHelper
 {
@@ -96,8 +97,28 @@ class AdminHelper
         $entity = $admin->getSubject();
         $propertyAccessor = new PropertyAccessor();
         $collection = $propertyAccessor->getValue($entity, $elementId);
-        $entityClassName = $collection->getTypeClass()->getName();
+
+        if ($collection instanceof ArrayCollection) {
+            $entityClassName = $this->entityClassNameFinder($admin, explode('.', preg_replace('#\[\d*?\]#', '', $elementId)));
+        } elseif ($collection instanceof \Doctrine\ORM\PersistentCollection) {
+            //since doctrine 2.4
+            $entityClassName = $collection->getTypeClass()->getName();
+        } else {
+            throw new \Exception('unknown collection class');
+        }
+
         $collection->add(new $entityClassName);
         $propertyAccessor->setValue($entity, $elementId, $collection);
+    }
+
+    protected function entityClassNameFinder(AdminInterface $admin, $elements)
+    {
+        $element = array_shift($elements);
+        $associationAdmin = $admin->getFormFieldDescription($element)->getAssociationAdmin();
+        if (count($elements) == 0) {
+            return $associationAdmin->getClass();
+        } else {
+            return $this->entityClassNameFinder($associationAdmin, $elements);
+        }
     }
 }
