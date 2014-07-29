@@ -685,11 +685,16 @@ class CRUDController extends Controller
         $reader = $manager->getReader($this->admin->getClass());
 
         $revisions = $reader->findRevisions($this->admin->getClass(), $id);
+        $currentRevision = false;
+        if(count($revisions) > 0){
+            $currentRevision = $revisions[0];
+        }
 
         return $this->render($this->admin->getTemplate('history'), array(
             'action'    => 'history',
             'object'    => $object,
             'revisions' => $revisions,
+            'currentRevision' => $currentRevision,
         ));
     }
 
@@ -740,6 +745,65 @@ class CRUDController extends Controller
             'object'   => $object,
             'elements' => $this->admin->getShow(),
         ));
+    }
+
+    /**
+     * Compare history revisions of object
+     *
+     * @param int|string|null $id
+     * @param int|string|null $base_revision
+     * @param int|string|null $compare_revision
+     *
+     * @return Response
+     *
+     * @throws AccessDeniedException If access is not granted
+     * @throws NotFoundHttpException If the object or revision does not exist or the audit reader is not available
+     */
+    public function historyCompareRevisionsAction($id = null, $base_revision = null, $compare_revision = null)
+    {
+        if (false === $this->admin->isGranted('EDIT')) {
+            throw new AccessDeniedException();
+        }
+
+        $id = $this->get('request')->get($this->admin->getIdParameter());
+
+        $object = $this->admin->getObject($id);
+
+        if (!$object) {
+            throw new NotFoundHttpException(sprintf('unable to find the object with id : %s', $id));
+        }
+
+        $manager = $this->get('sonata.admin.audit.manager');
+
+        if (!$manager->hasReader($this->admin->getClass())) {
+            throw new NotFoundHttpException(sprintf('unable to find the audit reader for class : %s', $this->admin->getClass()));
+        }
+
+        $reader = $manager->getReader($this->admin->getClass());
+
+        // retrieve the base revision
+        $base_object = $reader->find($this->admin->getClass(), $id, $base_revision);
+        if (!$base_object) {
+            throw new NotFoundHttpException(sprintf('unable to find the targeted object `%s` from the revision `%s` with classname : `%s`', $id, $base_revision, $this->admin->getClass()));
+        }
+
+        // retrieve the compare revision
+        $compare_object = $reader->find($this->admin->getClass(), $id, $compare_revision);
+        if (!$compare_object) {
+            throw new NotFoundHttpException(sprintf('unable to find the targeted object `%s` from the revision `%s` with classname : `%s`', $id, $compare_revision, $this->admin->getClass()));
+        }
+
+        $this->admin->setSubject($base_object);
+        $comparison = $reader->diff(get_class($base_object), $id, $base_revision, $compare_revision);
+
+        return $this->render($this->admin->getTemplate('show_compare'), array(
+            'action'            => 'show',
+            'object'            => $base_object,
+            'object_compare'    => $compare_object,
+            'elements'          => $this->admin->getShow(),
+            'comparison'        => $comparison
+        ));
+
     }
 
     /**

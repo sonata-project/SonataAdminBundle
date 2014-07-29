@@ -318,6 +318,10 @@
                 <source>label_view_revision</source>
                 <target>Toon revisie</target>
             </trans-unit>
+            <trans-unit id="label_compare_revision">
+                <source>label_compare_revision</source>
+                <target>Vergelijk revisie</target>
+            </trans-unit>
             <trans-unit id="list_results_count">
                 <source>list_results_count</source>
                 <target>1 resultaat|%count% resultaten</target>

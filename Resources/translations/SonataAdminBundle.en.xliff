@@ -318,6 +318,10 @@
                 <source>label_view_revision</source>
                 <target>View Revision</target>
             </trans-unit>
+            <trans-unit id="label_compare_revision">
+                <source>label_compare_revision</source>
+                <target>Compare revision</target>
+            </trans-unit>
             <trans-unit id="list_results_count">
                 <source>list_results_count</source>
                 <target>1 result|%count% results</target>

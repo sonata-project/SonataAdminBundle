@@ -45,10 +45,10 @@ class QueryStringBuilderTest extends \PHPUnit_Framework_TestCase
     public function getBuildTests()
     {
         return array(
-            array(array('list', 'create', 'batch', 'edit', 'delete', 'show', 'export', 'history', 'history_view_revision', 'acl'), true, true, null),
+            array(array('list', 'create', 'batch', 'edit', 'delete', 'show', 'export', 'history', 'history_view_revision', 'history_compare_revisions', 'acl'), true, true, null),
             array(array('list', 'create', 'batch', 'edit', 'delete', 'show', 'export', 'acl'), false, true, null),
-            array(array('list', 'create', 'batch', 'edit', 'delete', 'show', 'export', 'history', 'history_view_revision'), true, false, null),
-            array(array('list', 'create', 'batch', 'edit', 'delete', 'show', 'export', 'history', 'history_view_revision', 'acl'), true, true, $this->getMock('Sonata\AdminBundle\Admin\AdminInterface')),
+            array(array('list', 'create', 'batch', 'edit', 'delete', 'show', 'export', 'history', 'history_view_revision', 'history_compare_revisions'), true, false, null),
+            array(array('list', 'create', 'batch', 'edit', 'delete', 'show', 'export', 'history', 'history_view_revision', 'history_compare_revisions', 'acl'), true, true, $this->getMock('Sonata\AdminBundle\Admin\AdminInterface')),
         );
     }
 
@@ -81,7 +81,7 @@ class QueryStringBuilderTest extends \PHPUnit_Framework_TestCase
 
         $pathBuilder->build($admin, $routeCollection);
 
-        $expectedRoutes = array('list', 'create', 'batch', 'edit', 'delete', 'show', 'export', 'history', 'history_view_revision', 'acl', 'child1.Code.Route.foo', 'child1.Code.Route.bar', 'child2.Code.Route.baz');
+        $expectedRoutes = array('list', 'create', 'batch', 'edit', 'delete', 'show', 'export', 'history', 'history_view_revision', 'history_compare_revisions', 'acl', 'child1.Code.Route.foo', 'child1.Code.Route.bar', 'child2.Code.Route.baz');
         $this->assertCount(count($expectedRoutes), $routeCollection->getElements());
 
         foreach ($expectedRoutes as $expectedRoute) {

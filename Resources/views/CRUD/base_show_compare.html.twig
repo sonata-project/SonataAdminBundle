@@ -1,0 +1,59 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+{% extends 'SonataAdminBundle:CRUD:base_show.html.twig' %}
+
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{% block show %}
+    <div class="sonata-ba-view">
+
+        {{ sonata_block_render_event('sonata.admin.show.top', { 'admin': admin, 'object': object }) }}
+
+        {% for name, view_group in admin.showgroups %}
+            <table class="table table-bordered">
+                {% if name %}
+                    <thead>
+                    <tr class="sonata-ba-view-title">
+                        <th colspan="3">
+                            {{ admin.trans(name) }}
+                        </th>
+                    </tr>
+                    </thead>
+                {% endif %}
+
+                <tbody>
+                {% for field_name, compare in comparison %}
+                    {% set old_value = (compare.same == '' ? compare.old : compare.same)  %}
+                    {% set new_value = (compare.same == '' ? compare.new : compare.same)  %}
+
+                    <tr class="sonata-ba-view-container history-audit-compare{% if(old_value|raw != new_value|raw) %} diff{% endif %}">
+                        {% if elements[field_name] is defined %}
+                            {{ elements[field_name]|render_view_element_compare(old_value, new_value) }}
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% endfor %}
+
+        {{ sonata_block_render_event('sonata.admin.show.bottom', { 'admin': admin, 'object': object }) }}
+
+    </div>
+{% endblock %}

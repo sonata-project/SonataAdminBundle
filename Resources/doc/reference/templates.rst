@@ -114,6 +114,7 @@ You can specify your templates in the config.yml file, like so:
                 ajax:    SonataAdminBundle::ajax_layout.html.twig
                 list:    SonataAdminBundle:CRUD:list.html.twig
                 show:    SonataAdminBundle:CRUD:show.html.twig
+                show_compare:       SonataAdminBundle:CRUD:show_compare.html.twig
                 edit:    SonataAdminBundle:CRUD:edit.html.twig
                 history: SonataAdminBundle:CRUD:history.html.twig
                 preview: SonataAdminBundle:CRUD:preview.html.twig

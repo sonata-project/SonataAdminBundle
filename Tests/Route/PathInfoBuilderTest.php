@@ -32,6 +32,6 @@ class PathInfoBuilderTest extends \PHPUnit_Framework_TestCase
 
         $pathBuilder->build($admin, $routeCollection);
 
-        $this->assertCount(10, $routeCollection->getElements());
+        $this->assertCount(11, $routeCollection->getElements());
     }
 }

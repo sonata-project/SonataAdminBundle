@@ -53,6 +53,7 @@ class SonataAdminExtension extends \Twig_Extension
         return array(
             'render_list_element'     => new \Twig_Filter_Method($this, 'renderListElement', array('is_safe' => array('html'))),
             'render_view_element'     => new \Twig_Filter_Method($this, 'renderViewElement', array('is_safe' => array('html'))),
+            'render_view_element_compare'   => new \Twig_Filter_Method($this, 'renderViewElementCompare', array('is_safe' => array('html'))),
             'render_relation_element' => new \Twig_Filter_Method($this, 'renderRelationElement'),
             'sonata_urlsafeid'        => new \Twig_Filter_Method($this, 'getUrlsafeIdentifier'),
             'sonata_xeditable_type'   => new \Twig_Filter_Method($this, 'getXEditableType'),
@@ -191,6 +192,28 @@ class SonataAdminExtension extends \Twig_Extension
             'field_description' => $fieldDescription,
             'object'            => $object,
             'value'             => $value,
+            'admin'             => $fieldDescription->getAdmin()
+        ));
+    }
+
+    /**
+     * render a compared view element
+     *
+     * @param FieldDescriptionInterface $fieldDescription
+     * @param mixed                     $old_value
+     * @param mixed                     $new_value
+     *
+     * @return string
+     */
+    public function renderViewElementCompare(FieldDescriptionInterface $fieldDescription, $old_value, $new_value)
+    {
+        // The selected template for the comparison should not be defined by the $fieldDescription->getTemplate() for comparing text values
+        $template = $this->environment->loadTemplate('SonataAdminBundle:CRUD:base_show_field_compare.html.twig');
+
+        return $this->output($fieldDescription, $template, array(
+            'field_description' => $fieldDescription,
+            'value'             => $old_value,
+            'value_compare'     => $new_value,
             'admin'             => $fieldDescription->getAdmin()
         ));
     }

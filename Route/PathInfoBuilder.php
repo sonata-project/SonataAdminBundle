@@ -43,6 +43,7 @@ class PathInfoBuilder implements RouteBuilderInterface
         if ($this->manager->hasReader($admin->getClass())) {
             $collection->add('history', $admin->getRouterIdParameter().'/history');
             $collection->add('history_view_revision', $admin->getRouterIdParameter().'/history/{revision}/view');
+            $collection->add('history_compare_revisions', $admin->getRouterIdParameter().'/history/{base_revision}/{compare_revision}/compare');
         }
 
         if ($admin->isAclEnabled()) {
