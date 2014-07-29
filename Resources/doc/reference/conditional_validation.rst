@@ -5,7 +5,7 @@ The inline validation is about delegating model validation to a dedicated servic
 The current validation implementation built in the Symfony2 framework is very powerful
 as it allows to declare validation on a : class, field and getter. However these declarations
 can take a while to code for complex rules. As rules must be a set of a ``Constraint``
-and ``Validator`` instances.
+and a ``Validator`` instances.
 
 The inline validation tries to provide a nice solution by introducing an ``ErrorElement``
 object. The object can be used to check assertions against the model :

@@ -4,7 +4,7 @@ Preview Mode
 Preview Mode is an optional view of an object before it is persisted or updated.
 
 The preview step can be enabled for an admin entity by overriding the public property
-$supportsPreviewMode and setting it to true.
+``$supportsPreviewMode`` and setting it to true.
 
 .. code-block:: php
 

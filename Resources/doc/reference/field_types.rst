@@ -45,11 +45,15 @@ Choice
     $listMapper->add(
         'status',
         'choice',
-        array('choices'=>array('prep'=>'Prepared', 'prog'=>'In progress', 'done'=>'Done'),
+        array('choices' => array(
+            'prep' => 'Prepared',
+            'prog' => 'In progress',
+            'done' => 'Done'
+        ),
         'catalogue' => 'AcmeDemoBundle'
     ));
 
-``choice`` filed type also supports multiple values that can be separated by ``delimiter`` (default delimiter is a comma ",").
+``choice`` field type also supports multiple values that can be separated by ``delimiter`` (default delimiter is a comma ",").
 
 .. code-block:: php
 
@@ -76,24 +80,36 @@ Parameters:
 * **route.name**: route name (e.g. ``acme_demo_homepage``)
 * **route.parameters**: array of route parameters (e.g. ``array('type'=>'example', 'display'=>'full')``)
 * **route.absolute**: boolean value, create absolute or relative url address based on ``route.name`` and  ``route.parameters`` (default ``false``)
-* **route.identifier_parameter_name**: parameter added to ``route.parameters``, it's value is an object identifier (e.g. 'id') to create dynamic links based on rendered objects.
+* **route.identifier_parameter_name**: parameter added to ``route.parameters``, its value is an object identifier (e.g. 'id') to create dynamic links based on rendered objects.
 
 .. code-block:: php
 
-    // Output for value `http://example.com`: `<a href="http://example.com">http://example.com</a>`
+    // Output for value `http://example.com`:
+    // `<a href="http://example.com">http://example.com</a>`
     $listMapper->add('targetUrl', 'url');
 
-    // Output for value `http://example.com`: `<a href="http://example.com">example.com</a>`
+    // Output for value `http://example.com`:
+    // `<a href="http://example.com">example.com</a>`
     $listMapper->add('targetUrl', 'url', array('hide_protocol' => true));
 
-    // Output for value `Homepage of example.com` : `<a href="http://example.com">Homepage of example.com</a>`
+    // Output for value `Homepage of example.com` :
+    // `<a href="http://example.com">Homepage of example.com</a>`
     $listMapper->add('title', 'url', array('url' => 'http://example.com'));
 
-    // Output for value `Acme Blog Homepage`: `<a href="http://blog.example.com">Acme Blog Homepage</a>`
-    $listMapper->add('title', 'url', array('route' => array('name'=>'acme_blog_homepage', 'absolute'=>true)));
+    // Output for value `Acme Blog Homepage`:
+    // `<a href="http://blog.example.com">Acme Blog Homepage</a>`
+    $listMapper->add('title', 'url', array('route' => array(
+        'name' => 'acme_blog_homepage',
+        'absolute' => true
+    )));
 
-    // Output for value `Sonata is great!` (related object has identifier `123`): `<a href="http://blog.example.com/xml/123">Sonata is great!</a>`
-    $listMapper->add('title', 'url', array('route' => array('name'=>'acme_blog_article', 'absolute'=>true, 'parameters'=>array('format'=>'xml'), 'identifier_parameter_name'=>'id')));
+    // Output for value `Sonata is great!` (related object has identifier `123`):
+    // `<a href="http://blog.example.com/xml/123">Sonata is great!</a>`
+    $listMapper->add('title', 'url', array('route' => array(
+        'name' => 'acme_blog_article',
+        'absolute' => true,
+        'parameters' => array('format' => 'xml'),
+        'identifier_parameter_name' => 'id')));
 
 .. note::
 

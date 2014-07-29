@@ -5,7 +5,7 @@ User management
 ---------------
 
 By default, the SonataAdminBundle does not come with any user management,
-however it is most likely the application requires such feature. The Sonata
+however it is most likely the application requires such a feature. The Sonata
 Project includes a ``SonataUserBundle`` which integrates the ``FOSUserBundle``.
 
 The ``FOSUserBundle`` adds support for a database-backed user system in Symfony2.
@@ -44,9 +44,9 @@ change the default value you can set the ``security_handler`` to
 ``sonata.admin.security.handler.acl`` or ``sonata.admin.security.handler.role``.
 
 To quickly secure an admin the role security can be used. It allows to specify
-the actions a user can with the admin. The ACL security system is more advanced
+the actions a user can do with the admin. The ACL security system is more advanced
 and allows to secure the objects. For people using the previous ACL
-implementation, you can switch the security_handler to the role security handler.
+implementation, you can switch the ``security_handler`` to the role security handler.
 
 Configuration
 ~~~~~~~~~~~~~
@@ -93,14 +93,16 @@ Later, we will explain how to set up ACL with the
 Role handler
 ------------
 
-The ``sonata.admin.security.handler.role`` allows you to operate finely on the actions that can be done (depending on the entity class), without requiring to set up ACL.
+The ``sonata.admin.security.handler.role`` allows you to operate finely on the
+actions that can be done (depending on the entity class), without requiring to set up ACL.
 
 Configuration
 ~~~~~~~~~~~~~
 
 First, activate the role security handler as described above.
 
-Each time an user tries to do an action in the admin, Sonata checks if he is either a super admin (``ROLE_SUPER_ADMIN``) **or** has the permission.
+Each time an user tries to do an action in the admin, Sonata checks if he is
+either a super admin (``ROLE_SUPER_ADMIN``) **or** has the permission.
 
 The permissions are:
 
@@ -151,7 +153,7 @@ in the Symfony documentation.
 Usage
 ~~~~~
 
-You can now test if an user is authorized from an Admin class:
+You can now test if a user is authorized from an Admin class:
 
 .. code-block:: php
 
@@ -175,11 +177,13 @@ Or from a Twig template:
             <p>Hello there!</p>
         {% endif %}
 
-Note that you don't have to re-specify the prefix.
+Note that you do not have to re-specify the prefix.
 
-Sonata check those permissions for the action it handles internally. Of course you will have to recheck them in your own code.
+Sonata checks those permissions for the action it handles internally.
+Of course you will have to recheck them in your own code.
 
-Yon can also create your own permissions, for example ``EMAIL`` (which will turn into role ``ROLE_SONATA_ADMIN_DEMO_FOO_EMAIL``).
+Yon can also create your own permissions, for example ``EMAIL``
+(which will turn into role ``ROLE_SONATA_ADMIN_DEMO_FOO_EMAIL``).
 
 Going further
 ~~~~~~~~~~~~~
@@ -227,8 +231,8 @@ ACL and FriendsOfSymfony/UserBundle
 
 If you want an easy way to handle users, please use:
 
-- `FOSUserBundle <https://github.com/FriendsOfSymfony/FOSUserBundle>`_: handle users and groups
-  stored in RDMS or MongoDB
+- `FOSUserBundle <https://github.com/FriendsOfSymfony/FOSUserBundle>`_: handles
+  users and groups stored in RDBMS or MongoDB
 - `SonataUserBundle <https://github.com/sonata-project/SonataUserBundle>`_: integrates the
   ``FriendsOfSymfony/UserBundle`` with the ``AdminBundle``
 
@@ -420,7 +424,8 @@ property ``$securityInformation`` to change this:
 - ``ROLE_SONATA_..._GUEST``
     a guest that is allowed to ``VIEW`` an object and a ``LIST`` of objects;
 - ``ROLE_SONATA_..._STAFF``
-    probably the biggest part of the users, a staff user  has the same permissions as guests and is additionally allowed to ``EDIT`` and ``CREATE`` new objects;
+    probably the biggest part of the users, a staff user  has the same permissions
+    as guests and is additionally allowed to ``EDIT`` and ``CREATE`` new objects;
 - ``ROLE_SONATA_..._EDITOR``
     an editor is granted all access and, compared to the staff users, is allowed to ``DELETE``;
 - ``ROLE_SONATA_..._ADMIN``
@@ -431,7 +436,7 @@ Owner:
 - when an object is created, the currently logged in user is set as owner for
   that object and is granted all access for that object;
 - this means the user owning the object is always allowed to ``DELETE`` the
-  object, even when it only has the staff role.
+  object, even when they only have the staff role.
 
 Vocabulary used for Access Control Lists:
 
@@ -640,7 +645,8 @@ In the templates, or in your code, you can use the Admin method ``isGranted()``:
 List filtering
 ~~~~~~~~~~~~~~
 
-List filtering using ACL is available as a third party bundle: `CoopTilleulsAclSonataAdminExtensionBundle <https://github.com/coopTilleuls/CoopTilleulsAclSonataAdminExtensionBundle>`_.  
+List filtering using ACL is available as a third party bundle:
+`CoopTilleulsAclSonataAdminExtensionBundle <https://github.com/coopTilleuls/CoopTilleulsAclSonataAdminExtensionBundle>`_.
 When enabled, the logged in user will only see the objects for which it has the `VIEW` right (or superior).
 
 ACL editor

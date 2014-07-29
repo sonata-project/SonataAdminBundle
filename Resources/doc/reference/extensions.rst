@@ -30,7 +30,8 @@ Configuration
 There are two ways to configure your extensions and connect them to an admin.
 
 You can include this information in the service definition of your extension.
-Add the tag *sonata.admin.extension* and use the *target* attribute to point to the admin you want to modify. Please note you can specify as many tags you want.
+Add the tag *sonata.admin.extension* and use the *target* attribute to point to
+the admin you want to modify. Please note you can specify as many tags you want.
 Set the *global* attribute to *true* and the extension will be added to all admins.
 
 .. configuration-block::
@@ -67,10 +68,10 @@ extra options you can use to wire your extensions in a more dynamic way. This me
 admins that manage a class of a specific type.
 
 admins:
-    specify one or more admin service id's to which the Extension should be added
+    specify one or more admin service ids to which the Extension should be added
 
 excludes:
-    specify one or more admin service id's to which the Extension should not be added (this will prevent it matching
+    specify one or more admin service ids to which the Extension should not be added (this will prevent it matching
     any of the other settings)
 
 extends:
