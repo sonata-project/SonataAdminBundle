@@ -114,6 +114,7 @@ var Admin = {
         jQuery('.x-editable', subject).editable({
             emptyclass: 'editable-empty btn btn-sm',
             emptytext: '<i class="glyphicon glyphicon-edit"></i>',
+            container: 'body',
             success: function(response) {
                 if('KO' === response.status) {
                     return response.message;
