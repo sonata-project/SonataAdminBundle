@@ -1,14 +1,14 @@
 Showing image previews 
 ======================
 
-This is a full working example of one way to add image previews to your create and 
+This is a full working example of one way to add image previews to your create and
 edit views in SonataAdmin.
 
 
 Pre-requisites
 --------------
 
-- you have already got the image files on a server somewhere and have a helper 
+- you have already got the image files on a server somewhere and have a helper
   method to retrieve a publicly visible URL for that image, in this example that 
   method is called ``Image::getWebPath()``
 - you have already set up an Admin to edit the object that contains the images,
@@ -33,14 +33,14 @@ To do this we need to:
 - create an image tag based on the Image's URL
 - add a 'help' option to a field on the Image form to display the image tag
 
-For the sake of this example we will use some basic CSS to restrict the size of 
+For the sake of this example we will use some basic CSS to restrict the size of
 the preview image (we are not going to generate and save special thumbnails).
 
 
 Basic example - for single layer Admins
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-If we are working directly with our ``ImageAdmin`` class then getting hold of 
+If we are working directly with our ``ImageAdmin`` class then getting hold of
 the ``Image`` instance is simply a case of calling ``$this->getSubject()``. Since
 we are manipulating form fields we do this from within ``ImageAdmin::configureFormFields()``:
 
@@ -81,15 +81,15 @@ We then use CSS to restrict the max size of the image:
         max-width: 200px;
     }
 
-And that's all there is to it!
+And that is all there is to it!
 
-However, this method does not work when the ``ImageAdmin`` can be embedded in other 
+However, this method does not work when the ``ImageAdmin`` can be embedded in other
 Admins using the ``sonata_type_admin`` field type. For that we need...
 
 Advanced example - works with embedded Admins
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-When one Admin is embedded in another Admin, $this->getSubject() does not return the
+When one Admin is embedded in another Admin, ``$this->getSubject()`` does not return the
 instance under management by the embedded Admin. Instead we need to detect that our
 Admin class is embedded and use a different method:
 
@@ -130,7 +130,7 @@ Admin class is embedded and use a different method:
     }
 
 As you can see, the only change is how we retrieve set ``$image`` to the relevant Image instance.
-When our ImageAdmin is embedded we need to get the parent object first then use a getter to 
+When our ImageAdmin is embedded we need to get the parent object first then use a getter to
 retrieve the Image. From there on, everything else is the same.
 
 
