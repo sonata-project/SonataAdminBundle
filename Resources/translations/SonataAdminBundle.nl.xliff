@@ -302,6 +302,10 @@
                 <source>td_action</source>
                 <target>Handeling</target>
             </trans-unit>
+            <trans-unit id="td_compare">
+                <source>td_compare</source>
+                <target>Vergelijk</target>
+            </trans-unit>
             <trans-unit id="td_revision">
                 <source>td_revision</source>
                 <target>Revisies</target>
