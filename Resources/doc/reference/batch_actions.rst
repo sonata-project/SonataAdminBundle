@@ -1,7 +1,7 @@
 Batch actions
 =============
 
-Batch actions are actions triggered on a set of selected objects. By default 
+Batch actions are actions triggered on a set of selected objects. By default,
 Admins have a ``delete`` action which allows you to remove several entries at once.
 
 Defining new actions
@@ -10,12 +10,13 @@ Defining new actions
 To create a new custom batch action which appears in the list view follow these steps:
 
 Override ``getBatchActions()`` in your ``Admin`` class to define the new batch actions
-by adding them to the $actions array. Each entry has two settings:
+by adding them to the ``$actions`` array. Each entry has two settings:
 
 - **label**: The name to use when offering this option to users, should be passed through the translator
-- **ask_confirmation**: defaults to true and means that the user will be asked for confirmation before the batch action is processed
+- **ask_confirmation**: defaults to true and means that the user will be asked
+  for confirmation before the batch action is processed
 
-For example, lets define a new ``merge`` action which takes a number of source items and 
+For example, lets define a new ``merge`` action which takes a number of source items and
 merges them onto a single target item. It should only be available when two conditions are met:
 
 - the EDIT and DELETE routes exist for this Admin (have not been disabled)
@@ -50,7 +51,7 @@ merges them onto a single target item. It should only be available when two cond
 (Optional) Overriding the batch selection template
 --------------------------------------------------
 
-A merge action requires two kind of selection: a set of source objects to merge from
+A merge action requires two kinds of selection: a set of source objects to merge from
 and a target object to merge into. By default, batch_actions only let you select one set
 of objects to manipulate. We can override this behavior by changing our list template 
 (``list__batch.html.twig``) and adding a radio button to choose the target object. 
@@ -99,7 +100,9 @@ This method may return three different values:
 
  - ``true``: The batch action is relevant and can be applied.
  - ``false``: Same as above, with the default "action aborted, no model selected" notification message.
- - a string: The batch action is not relevant given the current request parameters (for example the ``target`` is missing for a ``merge`` action). The returned string is a message displayed to the user.
+ - a string: The batch action is not relevant given the current request parameters
+   (for example the ``target`` is missing for a ``merge`` action).
+   The returned string is a message displayed to the user.
 
 .. code-block:: php
 
@@ -140,7 +143,7 @@ This method may return three different values:
 -------------------------------------
 
 In your admin class you can create a ``preBatchAction`` method to execute something before doing the batch action.
-The main purpose of this method is to alter the query or the list of selected id.
+The main purpose of this method is to alter the query or the list of selected ids.
 
 .. code-block:: php
 

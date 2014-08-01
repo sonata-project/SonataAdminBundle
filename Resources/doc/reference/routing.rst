@@ -251,7 +251,7 @@ can use ``hasParentFieldDescription()`` to detect this case and remove the route
     {
         protected function configureRoutes(RouteCollection $collection)
         {
-            if($this->hasParentFieldDescription()) { // prevent display of "Add new" when embedding this form
+            if ($this->hasParentFieldDescription()) { // prevent display of "Add new" when embedding this form
                 $collection->remove('create');
             }
         }

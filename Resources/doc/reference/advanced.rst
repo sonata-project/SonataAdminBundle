@@ -210,7 +210,7 @@ Lets consider a base class named `Person` and its subclasses `Student` and `Teac
             </service>
         </services>
 
-You will just need to change the way forms are configured in order to take into account this new subclasses:
+You will just need to change the way forms are configured in order to take into account these new subclasses:
 
 .. code-block:: php
 

@@ -3,7 +3,7 @@ Dashboard
 
 The Dashboard is the main landing page. By default it lists your mapped models,
 as defined by your ``Admin`` services. This is useful to help you start using
-``SonataAdminBundle`` right away, but there's much more that you can do to take
+``SonataAdminBundle`` right away, but there is much more that you can do to take
 advantage of the Dashboard.
 
 The Dashboard is, by default, available at ``/admin/dashboard``, which is handled by

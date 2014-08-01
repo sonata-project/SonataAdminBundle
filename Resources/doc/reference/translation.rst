@@ -141,8 +141,9 @@ The ``AdminBundle`` comes with different key label generation strategies:
     ``isValid`` => ``Is Valid``
 * ``sonata.admin.label.strategy.form_component``: The default behavior from the Form Component
     ``isValid`` => ``Isvalid``
-* ``sonata.admin.label.strategy.underscore``: Changes the name into a token suitable for translation by prepending "form.label" to an underscored version of the field name
-    ``isValid`` => ``form.label_is_valid``
+* ``sonata.admin.label.strategy.underscore``: Changes the name into a token suitable
+  for translation by prepending "form.label" to an underscored version of the field name
+  ``isValid`` => ``form.label_is_valid``
 * ``sonata.admin.label.strategy.noop``: does not alter the string
     ``isValid`` => ``isValid``
 
