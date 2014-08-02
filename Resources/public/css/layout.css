@@ -249,7 +249,7 @@ div.sonata-medium-date div {
 .sonata-ba-view-container.history-audit-compare td {
      width: 40%;
 }
-.sonata-ba-view-container.history-audit-compare.diff th {
+.sonata-ba-view-container.history-audit-compare th.diff {
      background: pink;
 }
 
