@@ -794,14 +794,12 @@ class CRUDController extends Controller
         }
 
         $this->admin->setSubject($base_object);
-        $comparison = $reader->diff(get_class($base_object), $id, $base_revision, $compare_revision);
 
         return $this->render($this->admin->getTemplate('show_compare'), array(
             'action'            => 'show',
             'object'            => $base_object,
             'object_compare'    => $compare_object,
-            'elements'          => $this->admin->getShow(),
-            'comparison'        => $comparison
+            'elements'          => $this->admin->getShow()
         ));
     }
 

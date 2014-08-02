@@ -200,20 +200,47 @@ class SonataAdminExtension extends \Twig_Extension
      * render a compared view element
      *
      * @param FieldDescriptionInterface $fieldDescription
-     * @param mixed                     $old_value
-     * @param mixed                     $new_value
+     * @param mixed                     $baseObject
+     * @param mixed                     $compareObject
      *
      * @return string
      */
-    public function renderViewElementCompare(FieldDescriptionInterface $fieldDescription, $old_value, $new_value)
+    public function renderViewElementCompare(FieldDescriptionInterface $fieldDescription, $baseObject, $compareObject)
     {
-        // The selected template for the comparison should not be defined by the $fieldDescription->getTemplate() for comparing text values
-        $template = $this->environment->loadTemplate('SonataAdminBundle:CRUD:base_show_field_compare.html.twig');
+        $template = $this->getTemplate($fieldDescription, 'SonataAdminBundle:CRUD:base_show_field.html.twig');
+
+        try {
+            $baseValue = $fieldDescription->getValue($baseObject);
+        } catch (NoValueException $e) {
+            $baseValue = null;
+        }
+
+        try {
+            $compareValue = $fieldDescription->getValue($compareObject);
+        } catch (NoValueException $e) {
+            $compareValue = null;
+        }
+
+        $baseValueOutput = $template->render(array(
+            'admin'             => $fieldDescription->getAdmin(),
+            'field_description' => $fieldDescription,
+            'value'             => $baseValue
+        ));
+
+        $compareValueOutput = $template->render(array(
+            'field_description' => $fieldDescription,
+            'admin'             => $fieldDescription->getAdmin(),
+            'value'             => $compareValue
+        ));
+
+        // Compare the rendered output of both objects by using the (possibly) overridden field block
+        $isDiff = $baseValueOutput !== $compareValueOutput;
 
         return $this->output($fieldDescription, $template, array(
             'field_description' => $fieldDescription,
-            'value'             => $old_value,
-            'value_compare'     => $new_value,
+            'value'             => $baseValue,
+            'value_compare'     => $compareValue,
+            'is_diff'           => $isDiff,
             'admin'             => $fieldDescription->getAdmin()
         ));
     }
