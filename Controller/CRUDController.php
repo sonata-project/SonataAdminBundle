@@ -685,16 +685,12 @@ class CRUDController extends Controller
         $reader = $manager->getReader($this->admin->getClass());
 
         $revisions = $reader->findRevisions($this->admin->getClass(), $id);
-        $currentRevision = false;
-        if(count($revisions) > 0){
-            $currentRevision = $revisions[0];
-        }
 
         return $this->render($this->admin->getTemplate('history'), array(
-            'action'    => 'history',
-            'object'    => $object,
-            'revisions' => $revisions,
-            'currentRevision' => $currentRevision,
+            'action'            => 'history',
+            'object'            => $object,
+            'revisions'         => $revisions,
+            'currentRevision'   => $revisions ? current($revisions) : false,
         ));
     }
 
