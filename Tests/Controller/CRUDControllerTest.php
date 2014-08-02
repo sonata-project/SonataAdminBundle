@@ -2457,17 +2457,6 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->method('getShow')
             ->will($this->returnValue($fieldDescriptionCollection));
 
-        $reader->expects($this->once())
-            ->method('diff')
-            ->with($this->equalTo('stdClass'), $this->equalTo(123), $this->equalTo(456), $this->equalTo(789))
-            ->will($this->returnValue(array(
-                'id' => array(
-                    'old' => '',
-                    'new' => '',
-                    'same' => 123
-                )
-            )));
-
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $this->controller->historyCompareRevisionsAction(123, 456, 789));
 
         $this->assertEquals($this->admin, $this->parameters['admin']);
@@ -2478,8 +2467,6 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($objectRevision, $this->parameters['object']);
         $this->assertEquals($compareObjectRevision, $this->parameters['object_compare']);
         $this->assertEquals($fieldDescriptionCollection, $this->parameters['elements']);
-        $this->assertEquals(true, is_array($this->parameters['comparison']));
-        $this->assertCount(1, $this->parameters['comparison']);
 
         $this->assertEquals(array(), $this->session->getFlashBag()->all());
         $this->assertEquals('SonataAdminBundle:CRUD:show_compare.html.twig', $this->template);
