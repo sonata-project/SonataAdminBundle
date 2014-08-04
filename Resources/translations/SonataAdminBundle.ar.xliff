@@ -56,7 +56,7 @@
             </trans-unit>
             <trans-unit id="link_action_list">
                 <source>link_action_list</source>
-                <target>العودة إلى قائمة</target>
+                <target>العودة إلى القائمة</target>
             </trans-unit>
             <trans-unit id="link_action_show">
                 <source>link_action_show</source>
@@ -100,7 +100,7 @@
             </trans-unit>
             <trans-unit id="link_previous_pager">
                 <source>link_previous_pager</source>
-                <target>سابق</target>
+                <target>السابق</target>
             </trans-unit>
             <trans-unit id="link_first_pager">
                 <source>link_first_pager</source>
@@ -108,7 +108,7 @@
             </trans-unit>
             <trans-unit id="link_last_pager">
                 <source>link_last_pager</source>
-                <target>آخر</target>
+                <target>الأخير</target>
             </trans-unit>
             <trans-unit id="Admin">
                 <source>Admin</source>
@@ -144,7 +144,7 @@
             </trans-unit>
             <trans-unit id='flash_create_success'>
                 <source>flash_create_success</source>
-                <target>العنصر "%name%" تم إنشاؤها بنجاح.</target>
+                <target>العنصر "%name%" تم إنشاؤه بنجاح.</target>
             </trans-unit>
             <trans-unit id='flash_create_error'>
                 <source>flash_create_error</source>
@@ -152,7 +152,7 @@
             </trans-unit>
             <trans-unit id='flash_edit_success'>
                 <source>flash_edit_success</source>
-                <target>العنصر "%name%" تم تحديث بنجاح.</target>
+                <target>العنصر "%name%" تم تحديثه بنجاح.</target>
             </trans-unit>
             <trans-unit id='flash_edit_error'>
                 <source>flash_edit_error</source>
@@ -172,7 +172,7 @@
             </trans-unit>
             <trans-unit id='flash_delete_success'>
                 <source>flash_delete_success</source>
-                <target>العنصر "%name%" تم حذف بنجاح.</target>
+                <target>العنصر "%name%" تم حذفه بنجاح.</target>
             </trans-unit>
             <trans-unit id="link_breadcrumb_dashboard">
                 <source>breadcrumb.link_dashboard</source>
@@ -196,7 +196,7 @@
             </trans-unit>
             <trans-unit id="message_batch_confirmation">
                 <source>message_batch_confirmation</source>
-                <target> هل أنت متأكد أنك تريد تأكيد هذا العمل وتنفيذه ل%count% العناصر المحددة؟</target>
+                <target>]1,Inf] هل أنت متأكد أنك تريد تأكيد و تنفيذ هذا العمل ل  %count% عناصر المحددة؟|{1} هل أنت متأكد أنك تريد تأكيد و تنفيذ هذا العمل للعنصر المحدد؟</target>
             </trans-unit>
             <trans-unit id="message_batch_all_confirmation">
                 <source>message_batch_all_confirmation</source>
@@ -324,7 +324,7 @@
             </trans-unit>
             <trans-unit id="label_export_download">
                 <source>label_export_download</source>
-                <target>تحميل : </target>
+                <target>تحميل</target>
             </trans-unit>
             <trans-unit id="loading_information">
                 <source>loading_information</source>
@@ -348,7 +348,7 @@
             </trans-unit>
             <trans-unit id="list_select">
                 <source>list_select</source>
-                <target>اختر</target>
+                <target>إختر</target>
             </trans-unit>
             <trans-unit id="confirm_exit">
                 <source>confirm_exit</source>
@@ -388,11 +388,11 @@
             </trans-unit>
             <trans-unit id="add_new_entry">
                 <source>add_new_entry</source>
-                <target>إضافة إدخال جديد</target>
+                <target>إضافة عنصر جديد</target>
             </trans-unit>
-            <trans-unit id="dashboard">
-                <source>Dashboard</source>
-                <target>لوحة المشرف</target>
+            <trans-unit id="link_actions">
+                <source>link_actions</source>
+                <target>لائحة العمليات</target>
             </trans-unit>
         </body>
     </file>
