@@ -136,7 +136,7 @@ We then have the following methods in our ``Image`` class to manage file uploads
      * Updates the hash value to force the preUpdate and postUpdate events to fire
      */
     public function refreshUpdated() {
-        $this->setUpdated(date('Y-m-d H:i:s'));
+        $this->setUpdated(new \DateTime("now"));
     }
 
     // ... the rest of your class lives under here, including the generated fields
