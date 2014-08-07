@@ -640,16 +640,16 @@ class CRUDController extends Controller
      */
     public function historyAction($id = null)
     {
-        if (false === $this->admin->isGranted('EDIT')) {
-            throw new AccessDeniedException();
-        }
-
         $id = $this->get('request')->get($this->admin->getIdParameter());
 
         $object = $this->admin->getObject($id);
 
         if (!$object) {
             throw new NotFoundHttpException(sprintf('unable to find the object with id : %s', $id));
+        }
+
+        if (false === $this->admin->isGranted('EDIT', $object)) {
+            throw new AccessDeniedException();
         }
 
         $manager = $this->get('sonata.admin.audit.manager');
@@ -680,16 +680,16 @@ class CRUDController extends Controller
      */
     public function historyViewRevisionAction($id = null, $revision = null)
     {
-        if (false === $this->admin->isGranted('EDIT')) {
-            throw new AccessDeniedException();
-        }
-
         $id = $this->get('request')->get($this->admin->getIdParameter());
 
         $object = $this->admin->getObject($id);
 
         if (!$object) {
             throw new NotFoundHttpException(sprintf('unable to find the object with id : %s', $id));
+        }
+
+        if (false === $this->admin->isGranted('EDIT', $object)) {
+            throw new AccessDeniedException();
         }
 
         $manager = $this->get('sonata.admin.audit.manager');
