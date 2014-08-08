@@ -70,6 +70,12 @@ class FormMapper extends BaseGroupedMapper
              $fieldName = str_replace('.', '__', $fieldName);
         }
 
+        // change `collection` to `sonata_type_native_collection` form type to
+        // avoid BC break problems
+        if ($type == 'collection') {
+            $type = 'sonata_type_native_collection';
+        }
+
         $label = $fieldName;
 
         $group = $this->addFieldToCurrentGroup($label);

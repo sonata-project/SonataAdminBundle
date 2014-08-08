@@ -116,6 +116,127 @@ class
   calculated from the linked Admin class. You usually should not need to set
   this manually.
 
+sonata_type_model_autocomplete
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Setting a field type of ``sonata_type_model_autocomplete`` will use an instance of
+``ModelAutocompleteType`` to render that field. This Type allows you to choose an existing
+entity from the linked model class. In effect it shows a list of options from
+which you can choose a value. The list of options is loaded dynamically
+with ajax after typing 3 chars (autocomplete). It is best for entities with many
+items.
+
+This field type works by default if the related entity has an admin instance and
+in the related entity datagrid is a string filter on the ``property`` field.
+
+For example, we have an entity class called ``Article`` (in the ``ArticleAdmin``)
+which has a field called ``category`` which maps a relationship to another entity
+class called ``Category``. All we need to do now is add a reference for this field
+in our ``ArticleAdmin`` class and make sure, that in the CategoryAdmin exists
+datagrid filter for the property ``title``.
+
+.. code-block:: php
+
+    class ArticleAdmin extends Admin
+    {
+        protected function configureFormFields(FormMapper $formMapper)
+        {
+            // the dropdown autocomplete list will show only Category entities that contains specified text in "title" attribute
+            $formMapper
+                ->add('category', 'sonata_type_model_autocomplete', array('property'=>'title'))
+            ;
+        }
+    }
+
+    class CategoryAdmin extends Admin
+    {
+        protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+        {
+            // this text filter will be used to retrieve autocomplete fields
+            $formMapper
+                ->add('title')
+            ;
+        }
+    }
+
+The available options are:
+
+property
+  defaults to null. You have to set this to designate which field (or a list of fields) to use for the choice values.
+  This value can be string or array of strings.
+
+class
+  The entity class managed by this field. Defaults to null, but is actually
+  calculated from the linked Admin class. You usually should not need to set
+  this manually.
+
+model_manager
+  defaults to null, but is actually calculated from the linked Admin class.
+  You usually should not need to set this manually.
+
+callback
+  defaults to null. Callable function that can be used to modify the query which is used to retrieve autocomplete items.
+
+.. code-block:: php
+
+    $formMapper
+        ->add('category', 'sonata_type_model_autocomplete', array(
+            'property'=>'title',
+            'callback' => function ($datagrid, $property, $value) {
+                $queryBuilder = $datagrid->getQuery();
+                $queryBuilder->andWhere($queryBuilder->getRootAlias() . '.enabled=1 ');
+                $datagrid->setValue($property, null, $value);
+            },
+        )
+    );
+
+to_string_callback
+  defaults to null. Callable function that can be used to change the default toString behaviour of entity.
+
+.. code-block:: php
+
+    $formMapper
+        ->add('category', 'sonata_type_model_autocomplete', array(
+            'property'=>'title',
+            'to_string_callback' => function($enitity, $property) {
+                return $enitity->getTitle();
+            },
+        )
+    );
+
+multiple
+  defaults to false. Set to true, if you`re field is in many-to-many relation.
+
+placeholder
+  defaults to "". Placeholder is shown when no item is selected.
+
+minimum_input_length
+  defaults to 3. Minimum number of chars that should be typed to load ajax data.
+
+items_per_page
+  defaults to 10. Number of items per one ajax request.
+
+url
+  defaults to "". Target external remote url for ajax requests.
+  You usually should not need to set this manually.
+
+route
+  The route ``name`` with ``parameters`` that is used as target url for ajax
+  requests.
+
+dropdown_css_class
+  defaults to "sonata-autocomplete-dropdown". CSS class of dropdown list.
+
+req_param_name_search
+  defaults to "q". Ajax request parameter name which contains the searched text.
+
+req_param_name_page_number
+  defaults to "_page". Ajax request parameter name which contains the page number.
+
+req_param_name_items_per_page
+  defaults to "_per_page".  Ajax request parameter name which contains the limit of
+  items per page.
+
 sonata_type_admin
 ^^^^^^^^^^^^^^^^^
 
@@ -225,19 +346,23 @@ btn_add and btn_catalogue:
 **TIP**: A jQuery event is fired after a row has been added (``sonata-admin-append-form-element``).
 You can listen to this event to trigger custom javascript (eg: add a calendar widget to a newly added date field)
 
-collection
-^^^^^^^^^^
+sonata_type_native_collection (previously collection)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This bundle handle the symfony ``collection`` form type by adding:
+This bundle handle the native symfony ``collection`` form type by adding:
 
 * an ``add`` button if you set the ``allow_add`` option to ``true``.
 * a ``delete`` button if you set the ``allow_delete`` option to ``true``.
 
-**TIP**: A jQuery event is fired after a row has been added (``sonata-admin-append-form-element``).
-You can listen to this event to trigger custom javascript (eg: add a calendar widget to a newly added date field)
+.. TIP::
 
-**TIP**: A jQuery event is fired after a row has been added (``sonata-collection-item-added``)
-or deleted (``sonata-collection-item-deleted``). You can listen to these events to trigger custom javascript.
+    A jQuery event is fired after a row has been added (``sonata-admin-append-form-element``).
+    You can listen to this event to trigger custom javascript (eg: add a calendar widget to a newly added date field)
+
+.. TIP::
+
+    A jQuery event is fired after a row has been added (``sonata-collection-item-added``)
+    or deleted (``sonata-collection-item-deleted``). You can listen to these events to trigger custom javascript.
 
 FieldDescription options
 ^^^^^^^^^^^^^^^^^^^^^^^^
