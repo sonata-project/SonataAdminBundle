@@ -237,11 +237,13 @@ file that was distributed with this source code.
                                 {% block sonata_page_content_nav %}
                                     {% if _tab_menu is not empty or _actions is not empty %}
                                         <nav class="navbar navbar-default" role="navigation">
-                                            {% if _navbar_title is not empty %}
-                                                <div class="navbar-header">
-                                                    <span class="navbar-brand">{{ _navbar_title|raw }}</span>
-                                                </div>
-                                            {% endif %}
+                                            {% block tab_menu_navbar_header %}
+                                                {% if _navbar_title is not empty %}
+                                                    <div class="navbar-header">
+                                                        <span class="navbar-brand">{{ _navbar_title|raw }}</span>
+                                                    </div>
+                                                {% endif %}
+                                            {% endblock %}
                                             <div class="container-fluid">
                                                 <div class="navbar-left">
                                                     {% if _tab_menu is not empty %}
