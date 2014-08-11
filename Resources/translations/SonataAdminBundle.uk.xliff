@@ -8,8 +8,7 @@
             </trans-unit>
             <trans-unit id="action_delete">
                 <source>action_delete</source>
-                <target>Видалити</target>
-            </trans-unit>
+                <target>Видалити</tar
             <trans-unit id="btn_batch">
                 <source>btn_batch</source>
                 <target>OK</target>
@@ -389,6 +388,34 @@
             <trans-unit id="add_new_entry">
                 <source>add_new_entry</source>
                 <target>add_new_entry</target>
+            </trans-unit>
+            <trans-unit id="acl_view">
+                <source>VIEW</source>
+                <target>VIEW</target>
+            </trans-unit>
+            <trans-unit id="acl_edit">
+                <source>EDIT</source>
+                <target>EDIT</target>
+            </trans-unit>
+            <trans-unit id="acl_delete">
+                <source>DELETE</source>
+                <target>DELETE</target>
+            </trans-unit>
+            <trans-unit id="acl_undelete">
+                <source>UNDELETE</source>
+                <target>UNDELETE</target>
+            </trans-unit>
+            <trans-unit id="acl_master">
+                <source>MASTER</source>
+                <target>MASTER</target>
+            </trans-unit>
+            <trans-unit id="acl_operator">
+                <source>OPERATOR</source>
+                <target>OPERATOR</target>
+            </trans-unit>
+            <trans-unit id="acl_owner">
+                <source>OWNER</source>
+                <target>OWNER</target>
             </trans-unit>
         </body>
     </file>
