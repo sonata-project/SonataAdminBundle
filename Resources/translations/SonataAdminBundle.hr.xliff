@@ -288,7 +288,7 @@
             </trans-unit>
             <trans-unit id="label_filters">
                 <source>label_filters</source>
-                <target>Filtri</target>
+                <target>Filteri</target>
             </trans-unit>
             <trans-unit id="delete_or">
                 <source>delete_or</source>
@@ -344,7 +344,7 @@
             </trans-unit>
             <trans-unit id="label_per_page">
               <source>label_per_page</source>
-              <target>label_per_page</target>
+              <target>Po stranici</target>
             </trans-unit>
             <trans-unit id="list_select">
               <source>list_select</source>
@@ -356,7 +356,7 @@
             </trans-unit>
             <trans-unit id="link_edit_acl">
               <source>link_edit_acl</source>
-              <target>link_edit_acl</target>
+              <target>Uredi ACL</target>
             </trans-unit>
             <trans-unit id="btn_update_acl">
               <source>btn_update_acl</source>
@@ -380,7 +380,7 @@
             </trans-unit>
             <trans-unit id="search_placeholder">
                 <source>search_placeholder</source>
-                <target>search_placeholder</target>
+                <target>Upiši pojam...</target>
             </trans-unit>
             <trans-unit id="no_results_found">
                 <source>no_results_found</source>
