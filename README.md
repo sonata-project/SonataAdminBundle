@@ -44,5 +44,6 @@ License
 This bundle is available under the [MIT license](Resources/meta/LICENSE).
 
 
+
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/sonata-project/sonataadminbundle/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
