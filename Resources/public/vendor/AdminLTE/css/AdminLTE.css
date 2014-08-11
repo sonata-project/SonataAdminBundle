@@ -1252,6 +1252,7 @@ body > .header .logo .icon {
 */
 .box {
   position: relative;
+  display: inline-block;
   background: #ffffff;
   border-top: 2px solid #c1c1c1;
   margin-bottom: 20px;
