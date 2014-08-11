@@ -390,6 +390,34 @@
                 <source>add_new_entry</source>
                 <target>Neuen Eintrag</target>
             </trans-unit>
+            <trans-unit id="acl_view">
+                <source>VIEW</source>
+                <target>VIEW</target>
+            </trans-unit>
+            <trans-unit id="acl_edit">
+                <source>EDIT</source>
+                <target>EDIT</target>
+            </trans-unit>
+            <trans-unit id="acl_delete">
+                <source>DELETE</source>
+                <target>DELETE</target>
+            </trans-unit>
+            <trans-unit id="acl_undelete">
+                <source>UNDELETE</source>
+                <target>UNDELETE</target>
+            </trans-unit>
+            <trans-unit id="acl_master">
+                <source>MASTER</source>
+                <target>MASTER</target>
+            </trans-unit>
+            <trans-unit id="acl_operator">
+                <source>OPERATOR</source>
+                <target>OPERATOR</target>
+            </trans-unit>
+            <trans-unit id="acl_owner">
+                <source>OWNER</source>
+                <target>OPERATOR</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
