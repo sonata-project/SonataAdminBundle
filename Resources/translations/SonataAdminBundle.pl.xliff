@@ -420,7 +420,7 @@
             </trans-unit>
             <trans-unit id="acl_owner">
                 <source>OWNER</source>
-                <target>OPERATOR</target>
+                <target>OWNER</target>
             </trans-unit>
         </body>
     </file>
