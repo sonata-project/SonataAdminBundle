@@ -343,24 +343,24 @@
                 <target>Declínio</target>
             </trans-unit>
             <trans-unit id="label_per_page">
-              <source>label_per_page</source>
-              <target>Por página</target>
+                <source>label_per_page</source>
+                <target>Por página</target>
             </trans-unit>
             <trans-unit id="list_select">
-              <source>list_select</source>
-              <target>Selecionar</target>
+                <source>list_select</source>
+                <target>Selecionar</target>
             </trans-unit>
             <trans-unit id="confirm_exit">
                 <source>confirm_exit</source>
                 <target>Você tem mudanças sem salvar.</target>
             </trans-unit>
             <trans-unit id="link_edit_acl">
-              <source>link_edit_acl</source>
-              <target>Editar ACL</target>
+                <source>link_edit_acl</source>
+                <target>Editar ACL</target>
             </trans-unit>
             <trans-unit id="btn_update_acl">
-              <source>btn_update_acl</source>
-              <target>Atualizar ACL</target>
+                <source>btn_update_acl</source>
+                <target>Atualizar ACL</target>
             </trans-unit>
             <trans-unit id="flash_acl_update_success">
                 <source>flash_acl_edit_success</source>
@@ -371,8 +371,8 @@
                 <target>ACL</target>
             </trans-unit>
             <trans-unit id="short_object_description_placeholder">
-              <source>short_object_description_placeholder</source>
-              <target>Nenhuma seleção</target>
+                <source>short_object_description_placeholder</source>
+                <target>Nenhuma seleção</target>
             </trans-unit>
             <trans-unit id="title_search_results">
                 <source>title_search_results</source>
@@ -394,27 +394,27 @@
                 <source>VIEW</source>
                 <target>Visualizar</target>
             </trans-unit>
-			<trans-unit id="acl_edit">
+            <trans-unit id="acl_edit">
                 <source>EDIT</source>
                 <target>Editar</target>
             </trans-unit>
-			<trans-unit id="acl_delete">
+            <trans-unit id="acl_delete">
                 <source>DELETE</source>
                 <target>Apagar</target>
             </trans-unit>
-			<trans-unit id="acl_undelete">
+            <trans-unit id="acl_undelete">
                 <source>UNDELETE</source>
                 <target>Restaurar</target>
             </trans-unit>
-			<trans-unit id="acl_master">
+            <trans-unit id="acl_master">
                 <source>MASTER</source>
                 <target>Superior</target>
             </trans-unit>
-			<trans-unit id="acl_operator">
+            <trans-unit id="acl_operator">
                 <source>OPERATOR</source>
                 <target>Operador</target>
             </trans-unit>
-			<trans-unit id="acl_owner">
+            <trans-unit id="acl_owner">
                 <source>OWNER</source>
                 <target>Criador</target>
             </trans-unit>
