@@ -337,7 +337,7 @@ class HelperController
         $searchText = $request->get('q');
 
         if (mb_strlen($searchText, 'UTF-8') < $minimumInputLength) {
-            return new JsonResponse(array('status' => 'KO', 'message' => 'Too short search string.', 403));
+            return new JsonResponse(array('status' => 'KO', 'message' => 'Too short search string.'), 403);
         }
 
         $targetAdmin = $fieldDescription->getAssociationAdmin();
