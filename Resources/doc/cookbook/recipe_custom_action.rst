@@ -13,7 +13,7 @@ SonataAdmin provides a very straight-forward way of adding your own custom actio
 To do this we need to:
 
 - extend the ``SonataAdmin:CRUD`` Controller and tell our admin class to use it
-- create the custom action in your Controller
+- create the custom action in our Controller
 - create a template to show the action in the list view
 - add the route and the new action in the Admin class
 
@@ -83,7 +83,7 @@ For more information about service configuration please refer to Step 3 of :doc:
 Create the custom action in your Controller
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Now it's time to actually create your custom action here, for this example I chose
+Now it is time to actually create your custom action here, for this example I chose
 to implement a ``clone`` action.
 
 .. code-block:: php
@@ -121,13 +121,14 @@ to implement a ``clone`` action.
     }
 
 Here we first get the id of the object, see if it exists then clone it and insert the clone
-as new object. Finally we set a flash message indicating success and redirect to the list view.
+as a new object. Finally we set a flash message indicating success and redirect to the list view.
 
 Create a template for the new action
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-You need to tell SonataAdmin how to render your new action. You do that by creating a ``list__action_clone.html.twig`` in the
-namespace of your custom Admin Controller.
+You need to tell SonataAdmin how to render your new action. You do that by
+creating a ``list__action_clone.html.twig`` in the namespace of your custom
+Admin Controller.
 
 .. code-block:: html+jinja
 
@@ -141,7 +142,7 @@ Right now ``clone`` is not a known route, we define it in the next step.
 Bringing it all together
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-What's left now is actually adding your custom action to the admin class.
+What is left now is actually adding your custom action to the admin class.
 
 You have to add the new route in ``configureRoutes``:
 
@@ -153,7 +154,7 @@ You have to add the new route in ``configureRoutes``:
     }
 
 This gives us a route like ``../admin/sonata/demo/car/1/clone``.
-You could also just do ``$collection->add('clone');`` to get a route like ``../admin/sonata/demo/car/clone?id=1``
+You could also just write ``$collection->add('clone');`` to get a route like ``../admin/sonata/demo/car/clone?id=1``
 
 Next we have to add the action in ``configureListFields`` specifying the template we created.
 
@@ -176,7 +177,7 @@ Next we have to add the action in ``configureListFields`` specifying the templat
     }
 
 
-The full example ``CarAdmin.php`` looks like this:
+The full ``CarAdmin.php`` example looks like this:
 
 .. code-block:: php
 
