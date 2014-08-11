@@ -27,9 +27,9 @@ file that was distributed with this source code.
 
     {% set label_class = "" %}
     {% if sonata_admin.admin and sonata_admin.admin.getConfigurationPool().getOption('form_type') == 'horizontal' %}
-        {% set label_class = "control-label col-sm-3" %}
+        {% set label_class = " control-label col-sm-3" %}
     {% else %}
-        {% set label_class = "control-label" %}
+        {% set label_class = " control-label" %}
     {% endif%}
 
     {#{{ sonata_admin.admin.getConfigurationPool().getOption('form_type') }}#}
