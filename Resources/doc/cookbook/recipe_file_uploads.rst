@@ -1,14 +1,14 @@
 Uploading and saving documents (including images) using DoctrineORM and SonataAdmin
 ===================================================================================
 
-This is a full working example of one way to manage the uploading of files using
+This is a full working example of a file upload management method using
 SonataAdmin with the DoctrineORM persistence layer.
 
 
 Pre-requisites
 --------------
 
-- you have already got SonataAdmin and DoctrineORM up and running
+- you already have SonataAdmin and DoctrineORM up and running
 - you already have an Entity class that you wish to be able to connect uploaded
   documents to, in this example that class will be called ``Image``.
 - you already have an Admin set up, in this example it's called ``ImageAdmin``
@@ -20,10 +20,10 @@ Pre-requisites
 The recipe
 ----------
 
-First we'll cover the basics of what your Entity needs to contain to enable document
+First we will cover the basics of what your Entity needs to contain to enable document
 management with Doctrine. There is a good cookbook entry about
 `uploading files with Doctrine and Symfony`_ on the Symfony website, so I will show
-code examples here without going into the details. It's strongly recommended that
+code examples here without going into the details. It is strongly recommended that
 you read that cookbook first.
 
 To get file uploads working with SonataAdmin we need to:
@@ -37,7 +37,7 @@ Basic configuration - the Entity
 
 Following the guidelines from the Symfony cookbook, we have an Entity definition
 that looks something like the YAML below (of course, you can achieve something
-similar with XML or Annotation based definitions too. In this example we are using
+similar with XML or Annotation based definitions too). In this example we are using
 the ``updated`` field to trigger the lifecycle callbacks by setting it based on the
 upload timestamp.
 
@@ -136,7 +136,7 @@ We then have the following methods in our ``Image`` class to manage file uploads
      * Updates the hash value to force the preUpdate and postUpdate events to fire
      */
     public function refreshUpdated() {
-        $this->setUpdated(date('Y-m-d H:i:s'));
+        $this->setUpdated(new \DateTime("now"));
     }
 
     // ... the rest of your class lives under here, including the generated fields
@@ -149,7 +149,7 @@ uploaded file to the filesystem and updates the ``filename`` property of our Ima
 this filename field *is* persisted to the database.
 
 Most of the above is simply from the `uploading files with Doctrine and Symfony`_ cookbook
-entry. It's highly recommended reading!
+entry. It is highly recommended reading!
 
 
 Basic configuration - the Admin class
@@ -158,7 +158,7 @@ Basic configuration - the Admin class
 We need to do two things in Sonata to enable file uploads:
 
 1. Add a file upload widget
-2. Ensure that the Image class's lifecycle events fire when we upload a file
+2. Ensure that the Image class' lifecycle events fire when we upload a file
 
 Both of these are straightforward when you know what to do:
 
@@ -195,7 +195,7 @@ Both of these are straightforward when you know what to do:
         // ...
     }
 
-We mark the ``file`` field as not required since we don't need the user to upload a
+We mark the ``file`` field as not required since we do not need the user to upload a
 new image every time the Image is updated. When a file is uploaded (and nothing else
 is changed on the form) there is no change to the data which Doctrine needs to persist
 so no ``preUpdate`` event would fire. To deal with this we hook into SonataAdmin's
@@ -203,7 +203,7 @@ so no ``preUpdate`` event would fire. To deal with this we hook into SonataAdmin
 that to update an Image field which is persisted. This then ensures that Doctrine's
 lifecycle events are triggered and our Image manages the file upload as expected.
 
-And that's all there is to it!
+And that is all there is to it!
 
 However, this method does not work when the ``ImageAdmin`` is embedded in other
 Admins using the ``sonata_type_admin`` field type. For that we need something more...
@@ -211,12 +211,12 @@ Admins using the ``sonata_type_admin`` field type. For that we need something mo
 Advanced example - works with embedded Admins
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-When one Admin is embedded in another Admin, the child Admin's preUpdate() method is
+When one Admin is embedded in another Admin, the child Admin's ``preUpdate()`` method is
 not triggered when the parent is submitted. To deal with this we need to use the parent
 Admin's lifecycle events to trigger the file management when needed.
 
 In this example we have a Page class which has three one-to-one Image relationships
-defined, linkedImage1 to linkedImage3. The PageAdmin class's form field configuration
+defined, linkedImage1 to linkedImage3. The PageAdmin class' form field configuration
 looks like this:
 
 .. code-block:: php

@@ -18,7 +18,7 @@ file that was distributed with this source code.
 
 {% block tab_menu %}
     {% if action is defined %}
-        {{ knp_menu_render(admin.sidemenu(action), {'currentClass' : 'active'}, 'list') }}
+        {{ knp_menu_render(admin.sidemenu(action), {'currentClass' : 'active', 'template': admin_pool.getTemplate('tab_menu_template')}, 'twig') }}
     {% endif %}
 {% endblock %}
 

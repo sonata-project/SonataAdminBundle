@@ -12,7 +12,7 @@
 jQuery(document).ready(function() {
     jQuery('html').removeClass('no-js');
     if (window.SONATA_CONFIG && window.SONATA_CONFIG.CONFIRM_EXIT) {
-        jQuery('.sonata-ba-form form').each( function () { $(this).confirmExit(); } );
+        jQuery('.sonata-ba-form form').each(function () { $(this).confirmExit(); });
     }
 
     Admin.setup_per_page_switcher(document);

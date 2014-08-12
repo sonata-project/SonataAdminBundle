@@ -152,7 +152,9 @@ class DefaultRouteGeneratorTest extends \PHPUnit_Framework_TestCase
         $parentAdmin->expects($this->never())->method('getPersistentParameters')->will($this->returnValue(array('from'=>'parent')));
 
         $request = $this->getMock('Symfony\Component\HttpFoundation\Request');
-        $request->expects($this->any())
+        $request->attributes = $this->getMock('Symfony\Component\HttpFoundation\ParameterBag');
+        $request->attributes->expects($this->any())->method('has')->will($this->returnValue(true));
+        $request->attributes->expects($this->any())
             ->method('get')
             ->will($this->returnCallback(function($key) {
                 if ($key == 'childId') {

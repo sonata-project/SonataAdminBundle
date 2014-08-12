@@ -1744,6 +1744,10 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException('Symfony\Component\Security\Core\Exception\AccessDeniedException');
 
+        $this->admin->expects($this->any())
+            ->method('getObject')
+            ->will($this->returnValue(new \StdClass()));
+
         $this->admin->expects($this->once())
             ->method('isGranted')
             ->with($this->equalTo('EDIT'))
@@ -1755,11 +1759,6 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
     public function testHistoryActionNotFoundException()
     {
         $this->setExpectedException('Symfony\Component\HttpKernel\Exception\NotFoundHttpException');
-
-        $this->admin->expects($this->once())
-            ->method('isGranted')
-            ->with($this->equalTo('EDIT'))
-            ->will($this->returnValue(true));
 
         $this->admin->expects($this->once())
             ->method('getObject')
@@ -2088,6 +2087,10 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException('Symfony\Component\Security\Core\Exception\AccessDeniedException');
 
+        $this->admin->expects($this->any())
+            ->method('getObject')
+            ->will($this->returnValue(new \StdClass()));
+
         $this->admin->expects($this->once())
             ->method('isGranted')
             ->with($this->equalTo('EDIT'))
@@ -2101,11 +2104,6 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException('Symfony\Component\HttpKernel\Exception\NotFoundHttpException', 'unable to find the object with id : 123');
 
         $this->request->query->set('id', 123);
-
-        $this->admin->expects($this->once())
-            ->method('isGranted')
-            ->with($this->equalTo('EDIT'))
-            ->will($this->returnValue(true));
 
         $this->admin->expects($this->once())
             ->method('getObject')

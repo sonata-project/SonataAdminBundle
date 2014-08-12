@@ -11,9 +11,10 @@ There are many field types that can be used in the list action or show action :
 * **date**: display a formatted date. Accepts an optional ``format`` parameter
 * **datetime**: display a formatted date and time. Accepts an optional ``format`` parameter
 * **text**: display a text
+* **textarea**: display a textarea
 * **trans**: translate the value with a provided ``catalogue`` option
 * **string**: display a text
-* **decimal**: display a number
+* **number**: display a number
 * **currency**: display a number with a provided ``currency`` option
 * **percent**: display a percentage
 * **choice**: uses the given value as index for the ``choices`` array and displays (and optionally translates) the matching value

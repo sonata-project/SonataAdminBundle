@@ -318,19 +318,26 @@ class CRUDController extends Controller
 
             // persist if the form was valid and if in preview mode the preview was approved
             if ($isFormValid && (!$this->isInPreviewMode() || $this->isPreviewApproved())) {
-                $object = $this->admin->update($object);
 
-                if ($this->isXmlHttpRequest()) {
-                    return $this->renderJson(array(
-                        'result'    => 'ok',
-                        'objectId'  => $this->admin->getNormalizedIdentifier($object)
-                    ));
+                try {
+                    $object = $this->admin->update($object);
+
+                    if ($this->isXmlHttpRequest()) {
+                        return $this->renderJson(array(
+                            'result'    => 'ok',
+                            'objectId'  => $this->admin->getNormalizedIdentifier($object)
+                        ));
+                    }
+
+                    $this->addFlash('sonata_flash_success', $this->admin->trans('flash_edit_success', array('%name%' => $this->admin->toString($object)), 'SonataAdminBundle'));
+
+                    // redirect to edit mode
+                    return $this->redirectTo($object);
+
+                } catch (ModelManagerException $e) {
+
+                    $isFormValid = false;
                 }
-
-                $this->addFlash('sonata_flash_success', $this->admin->trans('flash_edit_success', array('%name%' => $this->admin->toString($object)), 'SonataAdminBundle'));
-
-                // redirect to edit mode
-                return $this->redirectTo($object);
             }
 
             // show an error message if the form failed validation
@@ -534,19 +541,25 @@ class CRUDController extends Controller
                     throw new AccessDeniedException();
                 }
 
-                $object = $this->admin->create($object);
+                try {
+                    $object = $this->admin->create($object);
 
-                if ($this->isXmlHttpRequest()) {
-                    return $this->renderJson(array(
-                        'result' => 'ok',
-                        'objectId' => $this->admin->getNormalizedIdentifier($object)
-                    ));
+                    if ($this->isXmlHttpRequest()) {
+                        return $this->renderJson(array(
+                            'result' => 'ok',
+                            'objectId' => $this->admin->getNormalizedIdentifier($object)
+                        ));
+                    }
+
+                    $this->addFlash('sonata_flash_success', $this->admin->trans('flash_create_success', array('%name%' => $this->admin->toString($object)), 'SonataAdminBundle'));
+
+                    // redirect to edit mode
+                    return $this->redirectTo($object);
+
+                } catch (ModelManagerException $e) {
+
+                    $isFormValid = false;
                 }
-
-                $this->addFlash('sonata_flash_success', $this->admin->trans('flash_create_success', array('%name%' => $this->admin->toString($object)), 'SonataAdminBundle'));
-
-                // redirect to edit mode
-                return $this->redirectTo($object);
             }
 
             // show an error message if the form failed validation
@@ -664,16 +677,16 @@ class CRUDController extends Controller
      */
     public function historyAction($id = null)
     {
-        if (false === $this->admin->isGranted('EDIT')) {
-            throw new AccessDeniedException();
-        }
-
         $id = $this->get('request')->get($this->admin->getIdParameter());
 
         $object = $this->admin->getObject($id);
 
         if (!$object) {
             throw new NotFoundHttpException(sprintf('unable to find the object with id : %s', $id));
+        }
+
+        if (false === $this->admin->isGranted('EDIT', $object)) {
+            throw new AccessDeniedException();
         }
 
         $manager = $this->get('sonata.admin.audit.manager');
@@ -706,16 +719,16 @@ class CRUDController extends Controller
      */
     public function historyViewRevisionAction($id = null, $revision = null)
     {
-        if (false === $this->admin->isGranted('EDIT')) {
-            throw new AccessDeniedException();
-        }
-
         $id = $this->get('request')->get($this->admin->getIdParameter());
 
         $object = $this->admin->getObject($id);
 
         if (!$object) {
             throw new NotFoundHttpException(sprintf('unable to find the object with id : %s', $id));
+        }
+
+        if (false === $this->admin->isGranted('EDIT', $object)) {
+            throw new AccessDeniedException();
         }
 
         $manager = $this->get('sonata.admin.audit.manager');

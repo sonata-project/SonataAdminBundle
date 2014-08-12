@@ -300,6 +300,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
             'base_list_field'          => 'SonataAdminBundle:CRUD:base_list_field.html.twig',
             'pager_links'              => 'SonataAdminBundle:Pager:links.html.twig',
             'pager_results'            => 'SonataAdminBundle:Pager:results.html.twig',
+            'tab_menu_template'        => 'SonataAdminBundle:Core:tab_menu_template.html.twig',
         ), $definedTemplates);
 
         $definition->addMethodCall('setTemplates', array($definedTemplates));

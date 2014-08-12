@@ -18,7 +18,7 @@ file that was distributed with this source code.
     <li>{% include 'SonataAdminBundle:Button:create_button.html.twig' %}</li>
 {% endblock %}
 
-{% block tab_menu %}{{ knp_menu_render(admin.sidemenu(action), {'currentClass' : 'active'}, 'list') }}{% endblock %}
+{% block tab_menu %}{{ knp_menu_render(admin.sidemenu(action), {'currentClass' : 'active', 'template': admin_pool.getTemplate('tab_menu_template')}, 'twig') }}{% endblock %}
 
 {% block show %}
     <div class="sonata-ba-view">
