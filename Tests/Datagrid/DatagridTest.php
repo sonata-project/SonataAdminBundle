@@ -505,7 +505,7 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
 
         $this->datagrid->buildPager();
 
-        $this->assertEquals(array('_per_page'=>array('type' => null, value' => '100'), 'foo'=>null), $this->datagrid->getValues());
+        $this->assertEquals(array('_per_page'=>array('type' => null, 'value' => '100'), 'foo'=>null), $this->datagrid->getValues());
         $this->assertInstanceOf('Symfony\Component\Form\FormBuilder', $this->formBuilder->get('fooFormName'));
         $this->assertEquals(array('bar' => 'baz'), $this->formBuilder->get('fooFormName')->getOptions());
         $this->assertInstanceOf('Symfony\Component\Form\FormBuilder', $this->formBuilder->get('_sort_by'));
