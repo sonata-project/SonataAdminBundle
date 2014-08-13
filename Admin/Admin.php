@@ -1075,7 +1075,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      */
     public function hasActiveSubClass()
     {
-        if (count($this->subClasses) > 1 && $this->request) {
+        if (count($this->subClasses) > 0 && $this->request) {
             return null !== $this->getRequest()->query->get('subclass');
         }
 
@@ -1442,11 +1442,6 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
         $menu = $this->menuFactory->createItem('root');
         $menu->setChildrenAttribute('class', 'nav navbar-nav');
-
-        // Prevents BC break with KnpMenuBundle v1.x
-        if (method_exists($menu, "setCurrentUri")) {
-            $menu->setCurrentUri($this->getRequest()->getBaseUrl().$this->getRequest()->getPathInfo());
-        }
 
         $this->configureTabMenu($menu, $action, $childAdmin);
 

@@ -45,7 +45,7 @@ Besides the storage layer mentioned on step 2, there are other bundles needed
 for SonataAdminBundle to work:
 
     - `SonataBlockBundle <http://sonata-project.org/bundles/block/master/doc/reference/installation.html>`_
-    - `KnpMenuBundle <https://github.com/KnpLabs/KnpMenuBundle/blob/master/Resources/doc/index.md#installation>`_ (Version 1.1.*)
+    - `KnpMenuBundle <https://github.com/KnpLabs/KnpMenuBundle/blob/master/Resources/doc/index.md#installation>`_ (Version 2.*)
 
 These bundles are automatically downloaded by composer as a dependency of SonataAdminBundle.
 However, you have to enable them in your ``AppKernel.php``, and configure them manually. Don't

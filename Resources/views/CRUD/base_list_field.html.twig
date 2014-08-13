@@ -10,13 +10,17 @@ file that was distributed with this source code.
 #}
 
 <td class="sonata-ba-list-field sonata-ba-list-field-{{ field_description.type }}" objectId="{{ admin.id(object) }}">
+    {% set route = field_description.options.route.name|default(null) %}
+    {% set action = route == 'show' ? 'VIEW' : route|upper %}
+
     {% if
-            field_description.options.identifier is defined
-        and field_description.options.route is defined
-        and admin.isGranted(field_description.options.route.name == 'show' ? 'VIEW' : field_description.options.route.name|upper, object)
-        and admin.hasRoute(field_description.options.route.name)
+        field_description.options.identifier is defined
+        and route
+        and action
+        and admin.hasRoute(route)
+        and admin.isGranted(action, action in ['VIEW', 'EDIT'] ? object : null)
     %}
-        <a class="sonata-link-identifier" href="{{ admin.generateObjectUrl(field_description.options.route.name, object, field_description.options.route.parameters) }}">
+        <a class="sonata-link-identifier" href="{{ admin.generateObjectUrl(route, object, field_description.options.route.parameters) }}">
             {%- block field %}{{ value }}{% endblock -%}
         </a>
     {% else %}
