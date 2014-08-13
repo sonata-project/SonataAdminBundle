@@ -131,10 +131,8 @@ class Datagrid implements DatagridInterface
         }
 
         $maxPerPage = 25;
-        if (isset($this->values['_per_page']['value'])) {
-            $maxPerPage = $this->values['_per_page']['value'];
-        } elseif (isset($this->values['_per_page'])) {
-            $maxPerPage = $this->values['_per_page'];
+        if (isset($this->values['_per_page'])) {
+            $maxPerPage = is_array($this->values['_per_page']) ? $this->values['_per_page']['value'] : $this->values['_per_page'];
         }
         $this->pager->setMaxPerPage($maxPerPage);
 
