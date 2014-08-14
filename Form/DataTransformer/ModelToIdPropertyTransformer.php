@@ -84,7 +84,9 @@ class ModelToIdPropertyTransformer implements DataTransformerInterface
         if (!$entityOrCollection) {
             return $result;
         }
-        if ($entityOrCollection instanceof \ArrayAccess) {
+        if (substr(get_class($entityOrCollection), -1 * strlen($this->className)) == $this->className) {
+            $collection = array($entityOrCollection);
+        } elseif ($entityOrCollection instanceof \ArrayAccess) {
             $collection = $entityOrCollection;
         } else {
             $collection = array($entityOrCollection);
