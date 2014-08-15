@@ -28,7 +28,7 @@ Customising the query used to show the object from within your Admin class
 
 Setting up a showAction is pretty much the same as a form, which we did in the initial setup.
 
-It is actually a but easier, because we are only concerned with displaying information.
+It is actually a bit easier, because we are only concerned with displaying information.
 
 Smile, the hard part is already done.
 
