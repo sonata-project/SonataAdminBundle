@@ -65,8 +65,10 @@ class ModelAutocompleteType extends AbstractType
         $view->vars['req_param_name_search'] = $options['req_param_name_search'];
         $view->vars['req_param_name_page_number'] = $options['req_param_name_page_number'];
         $view->vars['req_param_name_items_per_page'] = $options['req_param_name_items_per_page'];
+        $view->vars['custom_data_function_block'] = $options['custom_data_function_block'];
 
         // dropdown list css class
+        $view->vars['dropdown_auto_width'] = $options['dropdown_auto_width'];
         $view->vars['dropdown_css_class'] = $options['dropdown_css_class'];
     }
 
@@ -95,8 +97,10 @@ class ModelAutocompleteType extends AbstractType
             'req_param_name_search'           => 'q',
             'req_param_name_page_number'      => '_page',
             'req_param_name_items_per_page'   => '_per_page',
+            'custom_data_function_block'      => null,
 
             // dropdown list css class
+            'dropdown_auto_width'             => false,
             'dropdown_css_class'              => 'sonata-autocomplete-dropdown',
         ));
 
