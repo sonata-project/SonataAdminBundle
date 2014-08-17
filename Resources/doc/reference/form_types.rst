@@ -242,7 +242,7 @@ req_param_name_items_per_page
 custom_data_function_block (advanced)
   defaults to ``null``. This is an advanced option which lets you customise the function which populates the ``data`` sent by the Select2 ajax call.
   
-  To use this option you need to be using a customised version of ``form_admin_fields`` (see the Configuration section of your Sonata storage bundle for more details) and then add a named block to your custom template. Pass the name of that block into this option and it will be used to build the AJAX function. To see how the default implementation works, look at the ``sonata_type_model_autocomplete_widget`` and ``sonata_type_model_autocomplete_widget_default_data_object`` blocks in ``form_admin_fields.html.twig``, noting that the default data is part of ``sonata_type_model_autocomplete_widget_default_data_object`` so you can include this in your customised block if required.
+  For this option to work, you need to be using a customised version of ``form_admin_fields`` (see the Configuration section of your Sonata storage bundle for more details) and then add a named block to your custom template. Pass the name of that block into this option and it will be used by Select2 to build the data to send in the AJAX request. To see how the default implementation works, look at the blocks called ``sonata_type_model_autocomplete_widget`` and ``sonata_type_model_autocomplete_widget_default_data_object`` in the template ``form_admin_fields.html.twig``, noting that the default data is part of ``sonata_type_model_autocomplete_widget_default_data_object`` so you can include this in your customised block if required.
   
   Complete example:
 
