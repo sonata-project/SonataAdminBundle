@@ -1,0 +1,28 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{% extends 'SonataAdminBundle:CRUD:base_show.html.twig' %}
+
+{% block show_title %}
+    <tr class="sonata-ba-view-title">
+        <th colspan="3">
+            {{ admin.trans(name) }}
+        </th>
+    </tr>
+{% endblock %}
+
+{% block show_field %}
+    <tr class="sonata-ba-view-container history-audit-compare">
+        {% if elements[field_name] is defined %}
+            {{ elements[field_name]|render_view_element_compare(object, object_compare) }}
+        {% endif %}
+    </tr>
+{% endblock %}

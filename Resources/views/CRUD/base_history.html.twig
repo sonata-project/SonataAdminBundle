@@ -28,15 +28,23 @@ file that was distributed with this source code.
                     <th>{{ "td_timestamp"|trans({}, 'SonataAdminBundle') }}</th>
                     <th>{{ "td_username"|trans({}, 'SonataAdminBundle') }}</th>
                     <th>{{ "td_action"|trans({}, 'SonataAdminBundle') }}</th>
+                    <th>{{ "td_compare"|trans({}, 'SonataAdminBundle') }}</th>
                 </tr>
             </thead>
             <tbody>
                 {% for revision in revisions %}
-                    <tr>
+                    <tr class="{% if (currentRevision != false and revision.rev == currentRevision.rev) %}current-revision{% endif %}">
                         <td>{{ revision.rev}}</td>
                         <td>{% include admin.getTemplate('history_revision_timestamp') %}</td>
                         <td>{{ revision.username}}</td>
                         <td><a href="{{ admin.generateObjectUrl('history_view_revision', object, {'revision': revision.rev }) }}" class="revision-link" rel="{{ revision.rev }}">{{ "label_view_revision"|trans({}, 'SonataAdminBundle') }}</a></td>
+                        <td>
+                            {% if (currentRevision == false or revision.rev == currentRevision.rev) %}
+                                /
+                            {% else %}
+                                <a href="{{ admin.generateObjectUrl('history_compare_revisions', object, {'base_revision': currentRevision.rev, 'compare_revision': revision.rev }) }}" class="revision-compare-link" rel="{{ revision.rev }}">{{ "label_compare_revision"|trans({}, 'SonataAdminBundle') }}</a>
+                            {% endif %}
+                        </td>
                     </tr>
                 {% endfor %}
             </tbody>
@@ -49,13 +57,20 @@ file that was distributed with this source code.
     <script>
         jQuery(document).ready(function() {
 
-            jQuery('a.revision-link').bind('click', function(event) {
+            jQuery('a.revision-link, a.revision-compare-link').bind('click', function(event) {
                 event.stopPropagation();
                 event.preventDefault();
 
+                action = jQuery(this).hasClass('revision-link')
+                    ? 'show'
+                    : 'compare';
+
                 jQuery('#revision-detail').html('');
-                jQuery('table#revisions tbody tr').removeClass('current');
-                jQuery(this).parent('').removeClass('current');
+
+                if(action == 'show'){
+                    jQuery('table#revisions tbody tr').removeClass('current');
+                    jQuery(this).parent('').removeClass('current');
+                }
 
                 jQuery.ajax({
                     url: jQuery(this).attr('href'),
@@ -66,7 +81,8 @@ file that was distributed with this source code.
                 });
 
                 return false;
-            })
+            });
+
         });
     </script>
 {% endblock %}

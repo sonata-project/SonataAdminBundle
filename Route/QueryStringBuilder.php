@@ -43,6 +43,7 @@ class QueryStringBuilder implements RouteBuilderInterface
         if ($this->manager->hasReader($admin->getClass())) {
             $collection->add('history', '/audit-history');
             $collection->add('history_view_revision', '/audit-history-view');
+            $collection->add('history_compare_revisions', '/audit-history-compare');
         }
 
         if ($admin->isAclEnabled()) {

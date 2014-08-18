@@ -242,6 +242,17 @@ div.sonata-medium-date div {
     background-color: #f5f5f5;
 }
 
+.sonata-ba-view-container.history-audit-compare th {
+     width: 10%;
+}
+
+.sonata-ba-view-container.history-audit-compare td {
+     width: 40%;
+}
+.sonata-ba-view-container.history-audit-compare th.diff {
+     background: pink;
+}
+
 .container-fluid > .sidebar {
     top: auto;
 }
