@@ -190,6 +190,27 @@ callback
         )
     );
 
+callback_with_admin
+  defaults to null. Callable function that can be used to modify the query which is used to retrieve autocomplete items. 
+  Compared to ``callback``, this function also receives the Admin as a parameter and the current request can be accessed
+  within the function using ``$admin->getRequest()``.
+
+.. code-block:: php
+
+    $formMapper
+        ->add('category', 'sonata_type_model_autocomplete', array(
+            'property'=>'title',
+            'callback' => function ($datagrid, $property, $value, $admin) {
+                $queryBuilder = $datagrid->getQuery();
+                $queryBuilder
+                    ->andWhere($queryBuilder->getRootAlias() . '.foo=:barValue')
+                    ->setParameter('barValue', $admin->getRequest()->get('bar'))
+                ;
+                $datagrid->setValue($property, null, $value);
+            },
+        )
+    );
+
 to_string_callback
   defaults to null. Callable function that can be used to change the default toString behaviour of entity.
 
