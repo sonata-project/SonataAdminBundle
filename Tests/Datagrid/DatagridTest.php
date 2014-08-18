@@ -426,16 +426,16 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
 
         $this->pager->expects($this->once())
             ->method('setPage')
-            ->with($this->equalTo('3'))
+            ->with($this->equalTo('13'))
             ->will($this->returnValue(null));
 
         $this->datagrid = new Datagrid($this->query, $this->columns, $this->pager, $this->formBuilder, array());
         $this->datagrid->setValue('_per_page', null, 50);
-        $this->datagrid->setValue('_page', null, 3);
+        $this->datagrid->setValue('_page', null, 13);
 
         $this->datagrid->buildPager();
 
-        $this->assertEquals(array('_page' => array('type'=>null, 'value'=>3), '_per_page' => array('type'=>null, 'value'=>50)), $this->datagrid->getValues());
+        $this->assertEquals(array('_page' => array('type'=>null, 'value'=>13), '_per_page' => array('type'=>null, 'value'=>50)), $this->datagrid->getValues());
         $this->assertInstanceOf('Symfony\Component\Form\FormBuilder', $this->formBuilder->get('_sort_by'));
         $this->assertInstanceOf('Symfony\Component\Form\FormBuilder', $this->formBuilder->get('_sort_order'));
         $this->assertInstanceOf('Symfony\Component\Form\FormBuilder', $this->formBuilder->get('_page'));
