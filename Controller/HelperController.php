@@ -328,6 +328,7 @@ class HelperController
 
         $property           = $formAutocomplete->getConfig()->getAttribute('property');
         $callback           = $formAutocomplete->getConfig()->getAttribute('callback');
+        $callbackWithAdmin  = $formAutocomplete->getConfig()->getAttribute('callback_with_admin');
         $minimumInputLength = $formAutocomplete->getConfig()->getAttribute('minimum_input_length');
         $itemsPerPage       = $formAutocomplete->getConfig()->getAttribute('items_per_page');
         $reqParamPageNumber = $formAutocomplete->getConfig()->getAttribute('req_param_name_page_number');
@@ -342,9 +343,15 @@ class HelperController
         $targetAdmin = $fieldDescription->getAssociationAdmin();
         $datagrid = $targetAdmin->getDatagrid();
 
-        if ($callback !== null) {
+        if ($callbackWithAdmin !== null) {
+            if (!is_callable($callbackWithAdmin)) {
+                throw new \RuntimeException('CallbackWithAdmin does not contain callable function.');
+            }
+
+            call_user_func($callbackWithAdmin, $datagrid, $property, $searchText, $admin);
+        } elseif ($callback !== null) {
             if (!is_callable($callback)) {
-                throw new \RuntimeException('Callback doesn`t contain callable function.');
+                throw new \RuntimeException('Callback does not contain callable function.');
             }
 
             call_user_func($callback, $datagrid, $property, $searchText);
@@ -363,7 +370,7 @@ class HelperController
                 }
             } else {
                 if (!$datagrid->hasFilter($property)) {
-                    throw new \RuntimeException(sprintf('To retrieve autocomplete items, you should add filter "%s" to "%s" in configureDatagridFilters() method.', $prop, get_class($targetAdmin)));
+                    throw new \RuntimeException(sprintf('To retrieve autocomplete items, you should add filter "%s" to "%s" in configureDatagridFilters() method.', $property, get_class($targetAdmin)));
                 }
 
                 $datagrid->setValue($property, null, $searchText);
@@ -382,7 +389,7 @@ class HelperController
         foreach ($results as $entity) {
             if ($toStringCallback !== null) {
                 if (!is_callable($toStringCallback)) {
-                    throw new \RuntimeException('Option "to_string_callback" doesn`t contain callable function.');
+                    throw new \RuntimeException('Option "to_string_callback" does not contain callable function.');
                 }
 
                 $label = call_user_func($toStringCallback, $entity, $property);

@@ -13,7 +13,7 @@ namespace Sonata\AdminBundle\Tests\Form\Type;
 
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 
-use Symfony\Component\Form\Tests\Extension\Core\Type\TypeTestCase;
+use Symfony\Component\Form\Test\TypeTestCase;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ModelAutocompleteTypeTest extends TypeTestCase
@@ -34,6 +34,7 @@ class ModelAutocompleteTypeTest extends TypeTestCase
         $this->assertEquals('Foo', $options['class']);
         $this->assertEquals('bar', $options['property']);
         $this->assertNull($options['callback']);
+        $this->assertNull($options['callback_with_admin']);
 
         $this->assertEquals('', $options['placeholder']);
         $this->assertEquals(3, $options['minimum_input_length']);
