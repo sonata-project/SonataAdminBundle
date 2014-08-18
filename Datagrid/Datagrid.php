@@ -137,11 +137,10 @@ class Datagrid implements DatagridInterface
         $this->pager->setMaxPerPage($maxPerPage);
 
         $page = 1;
-        if (isset($this->values['_page']['value'])) {
-            $page = $this->values['_page']['value'];
-        } elseif (isset($this->values['_page'])) {
-            $page = $this->values['_page'];
+        if (isset($this->values['_page'])) {
+            $page = is_array($this->values['_page']) ? $this->values['_page']['value'] : $this->values['_page'];
         }
+        $this->pager->setPage($page);
         $this->pager->setPage($page);
 
         $this->pager->setQuery($this->query);
