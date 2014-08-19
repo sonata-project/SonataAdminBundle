@@ -83,21 +83,21 @@
 {% endblock %}
 
 {% block linkElement %}
-	<a href="{{ item.uri }}"{{ macros.attributes(item.linkAttributes) }}>
-		{% if item.attribute('icon') is not empty  %}
-    		<i class="{{ item.attribute('icon') }}"></i> 
-    	{% endif %}
-		{{ block('label') }}
-	</a>
+    <a href="{{ item.uri }}"{{ macros.attributes(item.linkAttributes) }}>
+        {% if item.attribute('icon') is not empty  %}
+            <i class="{{ item.attribute('icon') }}"></i>
+        {% endif %}
+        {{ block('label') }}
+    </a>
 {% endblock %}
 
 {% block spanElement %}
-	<span>{{ macros.attributes(item.labelAttributes) }}>
-		{% if item.attribute('icon') is not empty  %}
-    		<i class="{{ item.attribute('icon') }}"></i> 
-    	{% endif %}
-		{{ block('label') }}
-	</span>
+    <span>{{ macros.attributes(item.labelAttributes) }}>
+        {% if item.attribute('icon') is not empty  %}
+            <i class="{{ item.attribute('icon') }}"></i>
+        {% endif %}
+        {{ block('label') }}
+    </span>
 {% endblock %}
 
 {% block dropdownElement %}
@@ -107,11 +107,11 @@
     {%- set attributes = attributes|merge({'class': classes|join(' ')}) %}
     {%- set attributes = attributes|merge({'data-toggle': 'dropdown'}) %}
     <a href="#"{{ macros.attributes(attributes) }}>
-    	{% if item.attribute('icon') is not empty  %}
-    		<i class="{{ item.attribute('icon') }}"></i> 
-    	{% endif %}
-    	{{ block('label') }} 
-    	<b class="caret"></b>
+        {% if item.attribute('icon') is not empty  %}
+            <i class="{{ item.attribute('icon') }}"></i>
+        {% endif %}
+        {{ block('label') }}
+        <b class="caret"></b>
     </a>
 {% endblock %}
 
