@@ -34,7 +34,9 @@ class ModelAutocompleteType extends AbstractType
     {
         $builder->addViewTransformer(new ModelToIdPropertyTransformer($options['model_manager'], $options['class'], $options['property'], $options['multiple'], $options['to_string_callback']), true);
 
-        $builder->add('title', 'text', array('attr'=>array('class'=>'span5'), 'property_path' => '[labels][0]'));
+        $attr = $options['attr'];
+        $attr['class'] = empty($attr['class']) ? 'span5' : ($attr['class'] . ' span5');
+        $builder->add('title', 'text', array('attr'=>$attr, 'property_path' => '[labels][0]'));
         $builder->add('identifiers', 'collection', array('type'=>'hidden', 'allow_add' => true, 'allow_delete' => true));
 
         $builder->setAttribute('property', $options['property']);
@@ -63,8 +65,10 @@ class ModelAutocompleteType extends AbstractType
         $view->vars['req_param_name_search'] = $options['req_param_name_search'];
         $view->vars['req_param_name_page_number'] = $options['req_param_name_page_number'];
         $view->vars['req_param_name_items_per_page'] = $options['req_param_name_items_per_page'];
+        $view->vars['custom_data_function_block'] = $options['custom_data_function_block'];
 
         // dropdown list css class
+        $view->vars['dropdown_auto_width'] = $options['dropdown_auto_width'];
         $view->vars['dropdown_css_class'] = $options['dropdown_css_class'];
     }
 
@@ -93,8 +97,10 @@ class ModelAutocompleteType extends AbstractType
             'req_param_name_search'           => 'q',
             'req_param_name_page_number'      => '_page',
             'req_param_name_items_per_page'   => '_per_page',
+            'custom_data_function_block'      => null,
 
             // dropdown list css class
+            'dropdown_auto_width'             => false,
             'dropdown_css_class'              => 'sonata-autocomplete-dropdown',
         ));
 

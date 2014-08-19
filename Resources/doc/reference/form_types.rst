@@ -224,6 +224,8 @@ route
   The route ``name`` with ``parameters`` that is used as target url for ajax
   requests.
 
+dropdown_auto_width
+  defaults to false. Set to true to enable the `dropdownAutoWidth` Select2 option, which allows the drop downs to be wider than the parent input, sized according to their content.
 dropdown_css_class
   defaults to "sonata-autocomplete-dropdown". CSS class of dropdown list.
 
@@ -236,6 +238,50 @@ req_param_name_page_number
 req_param_name_items_per_page
   defaults to "_per_page".  Ajax request parameter name which contains the limit of
   items per page.
+
+custom_data_function_block (advanced)
+  defaults to ``null``. This is an advanced option which lets you customise the function which populates the ``data`` sent by the Select2 ajax call.
+  
+  For this option to work, you need to be using a customised version of ``form_admin_fields`` (see the Configuration section of your Sonata storage bundle for more details) and then add a named block to your custom template. Pass the name of that block into this option and it will be used by Select2 to build the data to send in the AJAX request. To see how the default implementation works, look at the blocks called ``sonata_type_model_autocomplete_widget`` and ``sonata_type_model_autocomplete_widget_default_data_object`` in the template ``form_admin_fields.html.twig``, noting that the default data is part of ``sonata_type_model_autocomplete_widget_default_data_object`` so you can include this in your customised block if required.
+  
+  Complete example:
+
+.. code-block:: yaml
+
+    # config.yml, define a custom form template
+    sonata_doctrine_orm_admin:
+        templates:
+            form:
+                - YourBundle:Form:form_admin_fields.html.twig
+
+.. code-block:: php
+
+    # FooAdmin.php
+    protected function configureFormFields(FormMapper $formMapper)
+    {
+        $formMapper
+            ->add('bar', sonata_type_model_autocomplete', array(
+                'property'      => 'title',
+                'custom_data_function_block' => 'foo_bar_auto_complete_data_function',
+            ))
+        ;
+    }
+
+.. code-block:: html+jinja
+
+    {# YourBundle:Form:form_admin_fields.html.twig #}
+    
+    {% extends 'SonataDoctrineORMAdminBundle:Form:form_admin_fields.html.twig' %}
+
+    {% block transfer_arrival_flight_auto_complete_data_function %}
+        // put some custom JavaScript code here
+        var foo = $('#{{ form.identifiers.vars.id }}').closest('.foo1').find('select.foo2 :selected').val();
+
+        return {
+            'foo': foo, // add your custom value, then render the default data block
+            {{ block('sonata_type_model_autocomplete_widget_default_data_object') }}
+        };
+    {% endblock %}
 
 sonata_type_admin
 ^^^^^^^^^^^^^^^^^

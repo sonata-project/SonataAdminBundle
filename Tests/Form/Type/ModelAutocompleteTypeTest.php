@@ -13,7 +13,7 @@ namespace Sonata\AdminBundle\Tests\Form\Type;
 
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 
-use Symfony\Component\Form\Tests\Extension\Core\Type\TypeTestCase;
+use Symfony\Component\Form\Test\TypeTestCase;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ModelAutocompleteTypeTest extends TypeTestCase
@@ -45,6 +45,9 @@ class ModelAutocompleteTypeTest extends TypeTestCase
         $this->assertEquals('q', $options['req_param_name_search']);
         $this->assertEquals('_page', $options['req_param_name_page_number']);
         $this->assertEquals('_per_page', $options['req_param_name_items_per_page']);
+
+        $this->assertNull($options['custom_data_function_block']);
+        $this->assertFalse($options['dropdown_auto_width']);
         $this->assertEquals('sonata-autocomplete-dropdown', $options['dropdown_css_class']);
     }
 }

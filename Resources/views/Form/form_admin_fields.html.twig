@@ -278,29 +278,13 @@ file that was distributed with this source code.
                     dataType: 'json',
                     quietMillis: 100,
                     data: function (term, page) { // page is the one-based page number tracked by Select2
-                        return {
-                                //search term
-                                "{{ req_param_name_search }}": term,
-
-                                // page size
-                                "{{ req_param_name_items_per_page }}": {{ items_per_page }},
-
-                                // page number
-                                "{{ req_param_name_page_number }}": page,
-
-                                // admin
-                                'uniqid': "{{ sonata_admin.admin.root.uniqid }}",
-                                'code':   "{{ sonata_admin.admin.root.code }}",
-                                'field':  "{{ name }}"
-
-                                // other parameters
-                                {% if req_params is not empty %},
-                                    {%- for key, value in req_params -%}
-                                        "{{- key|e('js') -}}": "{{- value|e('js') -}}"
-                                        {%- if not loop.last -%}, {% endif -%}
-                                    {%- endfor -%}
-                                {% endif %}
+                        {% if custom_data_function_block|default(false) %}
+                            {{ block(custom_data_function_block) }}
+                        {% else %}
+                            return {
+                                {{ block('sonata_type_model_autocomplete_widget_default_data_object') }}
                             };
+                        {% endif %}
                     },
                     results: function (data, page) {
                         // notice we return the value of more so Select2 knows if more results can be loaded
@@ -331,6 +315,7 @@ file that was distributed with this source code.
                 formatSelection: function (item) {
                     return {% block sonata_type_model_autocomplete_selection_format %}item.label{% endblock %};// format selected item '<b>'+item.label+'</b>';
                 },
+                dropdownAutoWidth: {{ dropdown_auto_width ? 'true' : 'false' }},
                 dropdownCssClass: "{{ dropdown_css_class }}",
                 escapeMarkup: function (m) { return m; } // we do not want to escape markup since we are displaying html in results
             });
@@ -376,3 +361,26 @@ file that was distributed with this source code.
     </script>
 {% endspaceless %}
 {% endblock sonata_type_model_autocomplete_widget %}
+
+{% block sonata_type_model_autocomplete_widget_default_data_object %}
+    //search term
+    "{{ req_param_name_search }}": term,
+
+    // page size
+    "{{ req_param_name_items_per_page }}": {{ items_per_page }},
+
+    // page number
+    "{{ req_param_name_page_number }}": page,
+
+    // other parameters
+    {% if req_params is not empty %}
+        {%- for key, value in req_params -%}
+            "{{- key|e('js') -}}": "{{- value|e('js') -}}",
+        {%- endfor -%}
+    {% endif %}
+
+    // admin
+    'uniqid': "{{ sonata_admin.admin.root.uniqid }}",
+    'code':   "{{ sonata_admin.admin.code }}",
+    'field':  "{{ name }}"
+{% endblock %}
