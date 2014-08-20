@@ -11,6 +11,7 @@
 
 namespace Sonata\AdminBundle\Form\Type;
 
+use Sonata\AdminBundle\Form\EventListener\SetSubjectEventListener;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
@@ -28,17 +29,14 @@ class AdminType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $admin = $this->getAdmin($options);
+        $admin =  clone $this->getAdmin($options);
 
         if ($options['delete'] && $admin->isGranted('DELETE')) {
             $builder->add('_delete', 'checkbox', array('required' => false, 'mapped' => false, 'translation_domain' => $admin->getTranslationDomain()));
         }
 
-        if (!$admin->hasSubject()) {
-            $admin->setSubject($builder->getData());
-        }
-
         $admin->defineFormBuilder($builder);
+        $builder->addEventSubscriber(new SetSubjectEventListener($admin));
 
         $builder->addModelTransformer(new ArrayToModelTransformer($admin->getModelManager(), $admin->getClass()));
     }
