@@ -11,7 +11,6 @@
 
 namespace Sonata\AdminBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -364,7 +363,7 @@ class HelperController
                 }
             } else {
                 if (!$datagrid->hasFilter($property)) {
-                    throw new \RuntimeException(sprintf('To retrieve autocomplete items, you should add filter "%s" to "%s" in configureDatagridFilters() method.', $prop, get_class($targetAdmin)));
+                    throw new \RuntimeException(sprintf('To retrieve autocomplete items, you should add filter "%s" to "%s" in configureDatagridFilters() method.', $property, get_class($targetAdmin)));
                 }
 
                 $datagrid->setValue($property, null, $searchText);
@@ -383,7 +382,7 @@ class HelperController
         foreach ($results as $entity) {
             if ($toStringCallback !== null) {
                 if (!is_callable($toStringCallback)) {
-                    throw new \RuntimeException('Option "to_string_callback" doesn`t contain callable function.');
+                    throw new \RuntimeException('Option "to_string_callback" does not contain callable function.');
                 }
 
                 $label = call_user_func($toStringCallback, $entity, $property);
