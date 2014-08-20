@@ -176,31 +176,18 @@ model_manager
 
 callback
   defaults to null. Callable function that can be used to modify the query which is used to retrieve autocomplete items.
+  The callback should receive three parameters - the Admin instance, the property (or properties) defined as searchable and the 
+  search value entered by the user.
+  
+  From the ``$admin`` parameter it is possible to get the ``Datagrid`` and the ``Request``:
 
 .. code-block:: php
 
     $formMapper
         ->add('category', 'sonata_type_model_autocomplete', array(
             'property'=>'title',
-            'callback' => function ($datagrid, $property, $value) {
-                $queryBuilder = $datagrid->getQuery();
-                $queryBuilder->andWhere($queryBuilder->getRootAlias() . '.enabled=1 ');
-                $datagrid->setValue($property, null, $value);
-            },
-        )
-    );
-
-callback_with_admin
-  defaults to null. Callable function that can be used to modify the query which is used to retrieve autocomplete items. 
-  Compared to ``callback``, this function also receives the Admin as a parameter and the current request can be accessed
-  within the function using ``$admin->getRequest()``.
-
-.. code-block:: php
-
-    $formMapper
-        ->add('category', 'sonata_type_model_autocomplete', array(
-            'property'=>'title',
-            'callback' => function ($datagrid, $property, $value, $admin) {
+            'callback' => function ($admin, $property, $value) {
+                $datagrid = $admin->getDatagrid();
                 $queryBuilder = $datagrid->getQuery();
                 $queryBuilder
                     ->andWhere($queryBuilder->getRootAlias() . '.foo=:barValue')

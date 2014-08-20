@@ -328,7 +328,6 @@ class HelperController
 
         $property           = $formAutocomplete->getConfig()->getAttribute('property');
         $callback           = $formAutocomplete->getConfig()->getAttribute('callback');
-        $callbackWithAdmin  = $formAutocomplete->getConfig()->getAttribute('callback_with_admin');
         $minimumInputLength = $formAutocomplete->getConfig()->getAttribute('minimum_input_length');
         $itemsPerPage       = $formAutocomplete->getConfig()->getAttribute('items_per_page');
         $reqParamPageNumber = $formAutocomplete->getConfig()->getAttribute('req_param_name_page_number');
@@ -343,18 +342,12 @@ class HelperController
         $targetAdmin = $fieldDescription->getAssociationAdmin();
         $datagrid = $targetAdmin->getDatagrid();
 
-        if ($callbackWithAdmin !== null) {
-            if (!is_callable($callbackWithAdmin)) {
-                throw new \RuntimeException('CallbackWithAdmin does not contain callable function.');
-            }
-
-            call_user_func($callbackWithAdmin, $datagrid, $property, $searchText, $admin);
-        } elseif ($callback !== null) {
+        if ($callback !== null) {
             if (!is_callable($callback)) {
                 throw new \RuntimeException('Callback does not contain callable function.');
             }
 
-            call_user_func($callback, $datagrid, $property, $searchText);
+            call_user_func($callback, $targetAdmin, $property, $searchText);
         } else {
             if (is_array($property)) {
                 // multiple properties

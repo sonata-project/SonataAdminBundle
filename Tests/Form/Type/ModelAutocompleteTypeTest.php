@@ -34,7 +34,6 @@ class ModelAutocompleteTypeTest extends TypeTestCase
         $this->assertEquals('Foo', $options['class']);
         $this->assertEquals('bar', $options['property']);
         $this->assertNull($options['callback']);
-        $this->assertNull($options['callback_with_admin']);
 
         $this->assertEquals('', $options['placeholder']);
         $this->assertEquals(3, $options['minimum_input_length']);
