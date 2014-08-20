@@ -1005,6 +1005,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      */
     public function getClass()
     {
+        // see https://github.com/sonata-project/SonataCoreBundle/commit/247eeb0a7ca7211142e101754769d70bc402a5b4
         if ($this->hasSubject() && is_object($this->getSubject())) {
             return ClassUtils::getClass($this->getSubject());
         }
@@ -1013,7 +1014,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
             if (count($this->getSubClasses()) > 0) {
                 $subject = $this->getSubject();
 
-                if ($subject && is_object($this->getSubject())) {
+                if ($subject && is_object($subject)) {
                     return ClassUtils::getClass($subject);
                 }
             }
