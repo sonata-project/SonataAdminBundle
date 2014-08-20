@@ -16,6 +16,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 
+use Symfony\Component\Form\ReversedTransformer;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
@@ -28,15 +29,13 @@ class AdminType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $admin = $this->getAdmin($options);
+        $admin = clone $this->getAdmin($options);
 
         if ($options['delete'] && $admin->isGranted('DELETE')) {
             $builder->add('_delete', 'checkbox', array('required' => false, 'mapped' => false, 'translation_domain' => $admin->getTranslationDomain()));
         }
 
-        if (!$admin->hasSubject()) {
-            $admin->setSubject($builder->getData());
-        }
+        $admin->setSubject($builder->getData());
 
         $admin->defineFormBuilder($builder);
 
