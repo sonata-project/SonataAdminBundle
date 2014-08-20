@@ -153,7 +153,7 @@ datagrid filter for the property ``title``.
         protected function configureDatagridFilters(DatagridMapper $datagridMapper)
         {
             // this text filter will be used to retrieve autocomplete fields
-            $formMapper
+            $datagridMapper
                 ->add('title')
             ;
         }

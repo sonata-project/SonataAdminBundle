@@ -29,21 +29,25 @@ file that was distributed with this source code.
             <table class="table table-bordered">
                 {% if name %}
                     <thead>
-                        <tr class="sonata-ba-view-title">
-                            <th colspan="2">
-                                {{ admin.trans(name) }}
-                            </th>
-                        </tr>
+                        {% block show_title %}
+                            <tr class="sonata-ba-view-title">
+                                <th colspan="2">
+                                    {{ admin.trans(name) }}
+                                </th>
+                            </tr>
+                        {% endblock %}
                     </thead>
                 {% endif %}
 
                 <tbody>
                     {% for field_name in view_group.fields %}
-                        <tr class="sonata-ba-view-container">
-                            {% if elements[field_name] is defined %}
-                                {{ elements[field_name]|render_view_element(object) }}
-                            {% endif %}
-                        </tr>
+                        {% block show_field %}
+                            <tr class="sonata-ba-view-container">
+                                {% if elements[field_name] is defined %}
+                                    {{ elements[field_name]|render_view_element(object) }}
+                                {% endif %}
+                            </tr>
+                        {% endblock %}
                     {% endfor %}
                 </tbody>
             </table>

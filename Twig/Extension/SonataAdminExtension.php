@@ -51,11 +51,12 @@ class SonataAdminExtension extends \Twig_Extension
     public function getFilters()
     {
         return array(
-            'render_list_element'     => new \Twig_Filter_Method($this, 'renderListElement', array('is_safe' => array('html'))),
-            'render_view_element'     => new \Twig_Filter_Method($this, 'renderViewElement', array('is_safe' => array('html'))),
-            'render_relation_element' => new \Twig_Filter_Method($this, 'renderRelationElement'),
-            'sonata_urlsafeid'        => new \Twig_Filter_Method($this, 'getUrlsafeIdentifier'),
-            'sonata_xeditable_type'   => new \Twig_Filter_Method($this, 'getXEditableType'),
+            'render_list_element'           => new \Twig_Filter_Method($this, 'renderListElement', array('is_safe' => array('html'))),
+            'render_view_element'           => new \Twig_Filter_Method($this, 'renderViewElement', array('is_safe' => array('html'))),
+            'render_view_element_compare'   => new \Twig_Filter_Method($this, 'renderViewElementCompare', array('is_safe' => array('html'))),
+            'render_relation_element'       => new \Twig_Filter_Method($this, 'renderRelationElement'),
+            'sonata_urlsafeid'              => new \Twig_Filter_Method($this, 'getUrlsafeIdentifier'),
+            'sonata_xeditable_type'         => new \Twig_Filter_Method($this, 'getXEditableType'),
         );
     }
 
@@ -191,6 +192,55 @@ class SonataAdminExtension extends \Twig_Extension
             'field_description' => $fieldDescription,
             'object'            => $object,
             'value'             => $value,
+            'admin'             => $fieldDescription->getAdmin()
+        ));
+    }
+
+    /**
+     * render a compared view element
+     *
+     * @param FieldDescriptionInterface $fieldDescription
+     * @param mixed                     $baseObject
+     * @param mixed                     $compareObject
+     *
+     * @return string
+     */
+    public function renderViewElementCompare(FieldDescriptionInterface $fieldDescription, $baseObject, $compareObject)
+    {
+        $template = $this->getTemplate($fieldDescription, 'SonataAdminBundle:CRUD:base_show_field.html.twig');
+
+        try {
+            $baseValue = $fieldDescription->getValue($baseObject);
+        } catch (NoValueException $e) {
+            $baseValue = null;
+        }
+
+        try {
+            $compareValue = $fieldDescription->getValue($compareObject);
+        } catch (NoValueException $e) {
+            $compareValue = null;
+        }
+
+        $baseValueOutput = $template->render(array(
+            'admin'             => $fieldDescription->getAdmin(),
+            'field_description' => $fieldDescription,
+            'value'             => $baseValue
+        ));
+
+        $compareValueOutput = $template->render(array(
+            'field_description' => $fieldDescription,
+            'admin'             => $fieldDescription->getAdmin(),
+            'value'             => $compareValue
+        ));
+
+        // Compare the rendered output of both objects by using the (possibly) overridden field block
+        $isDiff = $baseValueOutput !== $compareValueOutput;
+
+        return $this->output($fieldDescription, $template, array(
+            'field_description' => $fieldDescription,
+            'value'             => $baseValue,
+            'value_compare'     => $compareValue,
+            'is_diff'           => $isDiff,
             'admin'             => $fieldDescription->getAdmin()
         ));
     }

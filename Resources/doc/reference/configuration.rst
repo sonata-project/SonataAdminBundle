@@ -105,6 +105,7 @@ Full Configuration Options
                 list:                 SonataAdminBundle:CRUD:list.html.twig
                 filter:               SonataAdminBundle:Form:filter_admin_fields.html.twig
                 show:                 SonataAdminBundle:CRUD:show.html.twig
+                show_compare:         SonataAdminBundle:CRUD:show_compare.html.twig
                 edit:                 SonataAdminBundle:CRUD:edit.html.twig
                 preview:              SonataAdminBundle:CRUD:preview.html.twig
                 history:              SonataAdminBundle:CRUD:history.html.twig

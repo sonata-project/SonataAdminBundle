@@ -302,6 +302,10 @@
                 <source>td_action</source>
                 <target>Action</target>
             </trans-unit>
+            <trans-unit id="td_compare">
+                <source>td_compare</source>
+                <target>Compare</target>
+            </trans-unit>
             <trans-unit id="td_revision">
                 <source>td_revision</source>
                 <target>Revisions</target>
@@ -317,6 +321,10 @@
             <trans-unit id="label_view_revision">
                 <source>label_view_revision</source>
                 <target>View Revision</target>
+            </trans-unit>
+            <trans-unit id="label_compare_revision">
+                <source>label_compare_revision</source>
+                <target>Compare revision</target>
             </trans-unit>
             <trans-unit id="list_results_count">
                 <source>list_results_count</source>
