@@ -191,7 +191,7 @@
                 <target>Sim, remover</target>
             </trans-unit>
             <trans-unit id="title_batch_confirmation">
-                <source>title_batch_confirmation</source>flash_create_error
+                <source>title_batch_confirmation</source>
                 <target>Confirmar ação em massa</target>
             </trans-unit>
             <trans-unit id="message_batch_confirmation">
