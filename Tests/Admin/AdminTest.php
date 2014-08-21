@@ -48,6 +48,45 @@ class AdminTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($baseControllerName, $admin->getBaseControllerName());
     }
 
+    public function testGetClass()
+    {
+        $class = 'Application\Sonata\NewsBundle\Entity\Post';
+        $baseControllerName = 'SonataNewsBundle:PostAdmin';
+
+        $admin = new PostAdmin('sonata.post.admin.post', $class, $baseControllerName);
+
+        $testObject = new \stdClass();
+        $admin->setSubject($testObject);
+        $this->assertEquals('stdClass', $admin->getClass());
+
+        $admin->setSubClasses(array('foo'));
+        $this->assertEquals('stdClass', $admin->getClass());
+
+        $admin->setSubject(null);
+        $admin->setSubClasses(array());
+        $this->assertEquals($class, $admin->getClass());
+
+        $admin->setSubClasses(array('foo' => 'bar'));
+        $admin->setRequest(new Request(array('subclass' => 'foo')));
+        $this->assertEquals('bar', $admin->getClass());
+    }
+
+    /**
+     * @expectedException \RuntimeException
+     * @expectedExceptionMessage Feature not implemented: an embedded admin cannot have subclass
+     */
+    public function testGetClassException()
+    {
+        $class = 'Application\Sonata\NewsBundle\Entity\Post';
+        $baseControllerName = 'SonataNewsBundle:PostAdmin';
+
+        $admin = new PostAdmin('sonata.post.admin.post', $class, $baseControllerName);
+        $admin->setParentFieldDescription(new FieldDescription());
+        $admin->setSubClasses(array('foo' => 'bar'));
+        $admin->setRequest(new Request(array('subclass' => 'foo')));
+        $admin->getClass();
+    }
+
     public function testGetBreadCrumbs()
     {
         $class = 'Application\Sonata\NewsBundle\Entity\Post';
