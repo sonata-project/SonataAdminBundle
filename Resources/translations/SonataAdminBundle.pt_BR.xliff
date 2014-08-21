@@ -144,11 +144,11 @@
             </trans-unit>
             <trans-unit id='flash_create_success'>
                 <source>flash_create_success</source>
-                <target>O item foi criado com sucesso.</target>
+                <target>O item "%name%" foi criado com sucesso.</target>
             </trans-unit>
             <trans-unit id='flash_create_error'>
                 <source>flash_create_error</source>
-                <target>Um erro ocorreu durante a criação do item.</target>
+                <target>Um erro ocorreu durante a criação do item "%name%".</target>
             </trans-unit>
             <trans-unit id='flash_edit_success'>
                 <source>flash_edit_success</source>
@@ -191,7 +191,7 @@
                 <target>Sim, remover</target>
             </trans-unit>
             <trans-unit id="title_batch_confirmation">
-                <source>title_batch_confirmation</source>
+                <source>title_batch_confirmation</source>flash_create_error
                 <target>Confirmar ação em massa</target>
             </trans-unit>
             <trans-unit id="message_batch_confirmation">
