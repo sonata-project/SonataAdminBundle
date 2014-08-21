@@ -1586,6 +1586,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      */
     public function getFormGroups()
     {
+        $this->buildForm();
         return $this->formGroups;
     }
 
