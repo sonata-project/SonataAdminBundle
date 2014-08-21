@@ -265,6 +265,7 @@ div.sonata-medium-date div {
 
 .sonata-collection-delete {
     float: left;
+    box-shadow: none;
 }
 
 .no-js .sonata-collection-add, .no-js .sonata-collection-delete {
