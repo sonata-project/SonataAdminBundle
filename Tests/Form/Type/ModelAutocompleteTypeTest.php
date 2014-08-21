@@ -13,7 +13,7 @@ namespace Sonata\AdminBundle\Tests\Form\Type;
 
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 
-use Symfony\Component\Form\Tests\Extension\Core\Type\TypeTestCase;
+use Symfony\Component\Form\Test\TypeTestCase;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ModelAutocompleteTypeTest extends TypeTestCase
@@ -28,6 +28,7 @@ class ModelAutocompleteTypeTest extends TypeTestCase
 
         $options = $optionResolver->resolve(array('model_manager' => $modelManager, 'class' => 'Foo', 'property'=>'bar'));
 
+        $this->assertEquals(array(), $options['attr']);
         $this->assertTrue($options['compound']);
         $this->assertInstanceOf('Sonata\AdminBundle\Model\ModelManagerInterface', $options['model_manager']);
         $this->assertEquals($modelManager, $options['model_manager']);
