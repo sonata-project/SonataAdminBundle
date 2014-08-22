@@ -16,7 +16,6 @@ namespace Sonata\AdminBundle\Mapper;
  */
 abstract class BaseGroupedMapper extends BaseMapper
 {
-
     protected $currentGroup;
     protected $currentTab;
 
@@ -34,63 +33,109 @@ abstract class BaseGroupedMapper extends BaseMapper
      */
     public function with($name, array $options = array())
     {
-        if (array_key_exists("tab",$options) && $options["tab"]) {
+        /**
+         * The current implementation should work with the following workflow:
+         *
+         *     $formMapper
+         *        ->with('group1')
+         *            ->add('username')
+         *            ->add('password')
+         *        ->end()
+         *        ->with('tab1', array('tab' => true))
+         *            ->with('group1')
+         *                ->add('username')
+         *                ->add('password')
+         *            ->end()
+         *            ->with('group2', array('collapsed' => true))
+         *                ->add('enabled')
+         *                ->add('createdAt')
+         *            ->end()
+         *        ->end();
+         *
+         */
+        $defaultOptions = array(
+            'collapsed'          => false,
+            'class'              => false,
+            'description'        => false,
+            'translation_domain' => null,
+        );
+
+        // Open
+        if (array_key_exists("tab", $options) && $options["tab"]) {
             $tabs = $this->getTabs();
+
             if ($this->currentTab) {
-                if ($tabs[$this->currentTab]["auto_created"]) {
-                    throw new \Exception("New tab was added automatically when you have added field or group. You should close current tab before adding new one OR add tabs before adding groups and fields");
-                } else {
-                    throw new \Exception("You should close previous tab with end() before adding new tab");
-                }
+                throw new \RuntimeException($tabs[$this->currentTab]["auto_created"] ?
+                    "New tab was added automatically when you have added field or group. You should close current tab before adding new one OR add tabs before adding groups and fields" :
+                    "You should close previous tab with end() before adding new tab"
+                );
             } elseif ($this->currentGroup) {
-                throw new \Exception("You should open tab before adding new groups");
+                throw new \RuntimeException("You should open tab before adding new groups");
             }
+
             if (!isset($tabs[$name])) {
                 $tabs[$name] = array();
             }
 
-            $tabs[$name] = array_merge(array(
+            $tabs[$name] = array_merge($defaultOptions, array(
                 'auto_created'       => false,
-                'collapsed'          => false,
-                'class'              => false,
                 'groups'             => array(),
-                'description'        => false,
-                'translation_domain' => null,
             ), $tabs[$name], $options);
 
             $this->currentTab = $name;
+
         } else {
+
             if ($this->currentGroup) {
-                throw new \Exception("You should close previous group with end() before adding new tab");
+                throw new \RuntimeException("You should close previous group with end() before adding new tab");
             }
+
             if (!$this->currentTab) {
-                $this->with($this->admin->getLabel(), array("tab"=>true, "auto_created"=>true)); // add new tab automatically
+                // no tab define
+                $this->with("default", array(
+                    'tab'                => true,
+                    'auto_created'       => true,
+                    'translation_domain' => isset($options['translation_domain']) ? $options['translation_domain'] : null
+                )); // add new tab automatically
             }
-            $name = $this->currentTab.".".$name; // groups with the same name can be on different tabs, so we prefix them in order to make unique group name
+
+            // if no tab is selected, we go the the main one named '_' ..
+            if ($this->currentTab !== "default") {
+                $name = $this->currentTab.".".$name; // groups with the same name can be on different tabs, so we prefix them in order to make unique group name
+            }
+
             $groups = $this->getGroups();
             if (!isset($groups[$name])) {
                 $groups[$name] = array();
             }
 
-            $groups[$name] = array_merge(array(
-                'collapsed'          => false,
-                'class'              => false,
-                'fields'             => array(),
-                'description'        => false,
-                'translation_domain' => null,
-                ),$groups[$name],$options);
+            $groups[$name] = array_merge($defaultOptions, array(
+                'fields' => array(),
+            ), $groups[$name], $options);
 
             $this->currentGroup = $name;
             $this->setGroups($groups);
             $tabs = $this->getTabs();
         }
 
-        if ($this->currentGroup && !in_array($this->currentGroup,$tabs[$this->currentTab]["groups"])) {
+        if ($this->currentGroup && isset($tabs[$this->currentTab]) && !in_array($this->currentGroup, $tabs[$this->currentTab]["groups"])) {
             $tabs[$this->currentTab]["groups"][] = $this->currentGroup;
         }
+
         $this->setTabs($tabs);
 
         return $this;
+    }
+
+    /**
+     * @param       $name
+     * @param array $options
+     *
+     * @return BaseGroupedMapper
+     */
+    public function tab($name, array $options = array())
+    {
+        return $this->with($name, array_merge($options, array('tab' => true)));
     }
 
     /**
@@ -138,10 +183,9 @@ abstract class BaseGroupedMapper extends BaseMapper
     protected function getCurrentGroupName()
     {
         if (!$this->currentGroup) {
-            $this->with($this->admin->getLabel(), array('auto_created'=>true));
+            $this->with($this->admin->getLabel(), array('auto_created' => true));
         }
 
         return $this->currentGroup;
     }
-
 }
