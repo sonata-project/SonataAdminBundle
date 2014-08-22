@@ -267,6 +267,10 @@ div.sonata-medium-date div {
     float: left;
 }
 
+.sonata-collection-add, .sonata-collection-delete {
+    box-shadow: none;
+}
+
 .no-js .sonata-collection-add, .no-js .sonata-collection-delete {
     display: none;
 }

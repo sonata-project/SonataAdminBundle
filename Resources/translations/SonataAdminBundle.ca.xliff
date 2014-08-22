@@ -140,7 +140,7 @@
             </trans-unit>
             <trans-unit id='flash_batch_empty'>
                 <source>flash_batch_empty</source>
-                <target>Acció interrompuda. No hi ha elements a seleccionar.</target>
+                <target>Acció interrompuda. No hi ha elements seleccionats.</target>
             </trans-unit>
             <trans-unit id='flash_create_success'>
                 <source>flash_create_success</source>
@@ -372,7 +372,7 @@
             </trans-unit>
             <trans-unit id="short_object_description_placeholder">
               <source>short_object_description_placeholder</source>
-              <target>Ninguna selecció</target>
+              <target>Cap selecció</target>
             </trans-unit>
             <trans-unit id="title_search_results">
                 <source>title_search_results</source>
@@ -392,7 +392,7 @@
             </trans-unit>
             <trans-unit id="link_actions">
                 <source>link_actions</source>
-                <target>link_actions</target>
+                <target>Accions</target>
             </trans-unit>
         </body>
     </file>
