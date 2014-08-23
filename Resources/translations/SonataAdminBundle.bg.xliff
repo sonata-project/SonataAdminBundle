@@ -388,27 +388,7 @@
             </trans-unit>
             <trans-unit id="link_actions">
                 <source>link_actions</source>
-                <target>Действия</target>
-            </trans-unit>
-            <trans-unit id="search_placeholder">
-                <source>search_placeholder</source>
-                <target>Търси обекти</target>
-            </trans-unit>
-            <trans-unit id="title_search_results">
-                <source>title_search_results</source>
-                <target>Резултати</target>
-            </trans-unit>
-            <trans-unit id="no_results_found">
-                <source>no_results_found</source>
-                <target>Не намерих нищо</target>
-            </trans-unit>
-            <trans-unit id="add_new_entry">
-                <source>add_new_entry</source>
-                <target>Добави</target>
-            </trans-unit>
-            <trans-unit id="Dashboard">
-                <source>Dashboard</source>
-                <target>Табло</target>
+                <target>link_actions</target>
             </trans-unit>
         </body>
     </file>
