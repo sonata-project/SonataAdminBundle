@@ -66,7 +66,7 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
 
         $this->formBuilder->expects($this->any())
             ->method('get')
-            ->will($this->returnCallback(function($name) use (& $formTypes) {
+            ->will($this->returnCallback(function ($name) use (& $formTypes) {
                 if (isset($formTypes[$name])) {
                     return $formTypes[$name];
                 }
@@ -80,7 +80,7 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
 
         $this->formBuilder->expects($this->any())
             ->method('add')
-            ->will($this->returnCallback(function($name, $type, $options) use (& $formTypes, $eventDispatcher, $formFactory) {
+            ->will($this->returnCallback(function ($name, $type, $options) use (& $formTypes, $eventDispatcher, $formFactory) {
                 $formTypes[$name] = new FormBuilder($name, 'Sonata\AdminBundle\Tests\Fixtures\Entity\Form\TestEntity', $eventDispatcher, $formFactory, $options);
 
                 return null;
@@ -93,7 +93,7 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
 
         $this->formBuilder->expects($this->any())
             ->method('getForm')
-            ->will($this->returnCallback(function() use ($form) {
+            ->will($this->returnCallback(function () use ($form) {
                 return $form;
             }));
 
@@ -371,7 +371,10 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Symfony\Component\Form\FormBuilder', $this->formBuilder->get('_per_page'));
     }
 
-    public function testBuildPagerWithPage()
+    /**
+     * @dataProvider getBuildPagerWithPageTests
+     */
+    public function testBuildPagerWithPage($page, $perPage)
     {
         $sortBy = $this->getMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
         $sortBy->expects($this->once())
@@ -388,7 +391,7 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo('3'))
             ->will($this->returnValue(null));
 
-        $this->datagrid = new Datagrid($this->query, $this->columns, $this->pager, $this->formBuilder, array('_sort_by'=>$sortBy, '_page'=>3, '_per_page'=>50));
+        $this->datagrid = new Datagrid($this->query, $this->columns, $this->pager, $this->formBuilder, array('_sort_by'=>$sortBy, '_page'=>$page, '_per_page'=>$perPage));
 
         $filter = $this->getMock('Sonata\AdminBundle\Filter\FilterInterface');
         $filter->expects($this->once())
@@ -417,7 +420,21 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Symfony\Component\Form\FormBuilder', $this->formBuilder->get('_per_page'));
     }
 
-    public function testBuildPagerWithPage2()
+    public function getBuildPagerWithPageTests()
+    {
+        // tests for php 5.3, because isset functionality was changed since php 5.4
+        return array(
+            array(3, 50),
+            array('3', '50'),
+            array(3, '50'),
+            array('3', 50),
+        );
+    }
+
+    /**
+     * @dataProvider getBuildPagerWithPage2Tests
+     */
+    public function testBuildPagerWithPage2($page, $perPage)
     {
         $this->pager->expects($this->once())
             ->method('setMaxPerPage')
@@ -430,8 +447,8 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(null));
 
         $this->datagrid = new Datagrid($this->query, $this->columns, $this->pager, $this->formBuilder, array());
-        $this->datagrid->setValue('_per_page', null, 50);
-        $this->datagrid->setValue('_page', null, 3);
+        $this->datagrid->setValue('_per_page', null, $perPage);
+        $this->datagrid->setValue('_page', null, $page);
 
         $this->datagrid->buildPager();
 
@@ -440,5 +457,16 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Symfony\Component\Form\FormBuilder', $this->formBuilder->get('_sort_order'));
         $this->assertInstanceOf('Symfony\Component\Form\FormBuilder', $this->formBuilder->get('_page'));
         $this->assertInstanceOf('Symfony\Component\Form\FormBuilder', $this->formBuilder->get('_per_page'));
+    }
+
+    public function getBuildPagerWithPage2Tests()
+    {
+        // tests for php 5.3, because isset functionality was changed since php 5.4
+        return array(
+            array(3, 50),
+            array('3', '50'),
+            array(3, '50'),
+            array('3', 50),
+        );
     }
 }
