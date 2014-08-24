@@ -11,8 +11,6 @@
 
 namespace Sonata\AdminBundle\Datagrid;
 
-use Sonata\AdminBundle\Datagrid\PagerInterface;
-use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Filter\FilterInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
@@ -101,8 +99,8 @@ class Datagrid implements DatagridInterface
 
         $this->formBuilder->add('_sort_by', 'hidden');
         $this->formBuilder->get('_sort_by')->addViewTransformer(new CallbackTransformer(
-            function($value) { return $value; },
-            function($value) { return $value instanceof FieldDescriptionInterface ? $value->getName() : $value; }
+            function ($value) { return $value; },
+            function ($value) { return $value instanceof FieldDescriptionInterface ? $value->getName() : $value; }
         ));
 
         $this->formBuilder->add('_sort_order', 'hidden');
@@ -131,19 +129,30 @@ class Datagrid implements DatagridInterface
         }
 
         $maxPerPage = 25;
-        if (isset($this->values['_per_page']['value'])) {
-            $maxPerPage = $this->values['_per_page']['value'];
-        } elseif (isset($this->values['_per_page'])) {
-            $maxPerPage = $this->values['_per_page'];
+        if (isset($this->values['_per_page'])) {
+            // check for `is_array` can be safely removed if php 5.3 support will be dropped
+            if (is_array($this->values['_per_page'])) {
+                if (isset($this->values['_per_page']['value'])) {
+                    $maxPerPage = $this->values['_per_page']['value'];
+                }
+            } else {
+                $maxPerPage = $this->values['_per_page'];
+            }
         }
         $this->pager->setMaxPerPage($maxPerPage);
 
         $page = 1;
-        if (isset($this->values['_page']['value'])) {
-            $page = $this->values['_page']['value'];
-        } elseif (isset($this->values['_page'])) {
-            $page = $this->values['_page'];
+        if (isset($this->values['_page'])) {
+            // check for `is_array` can be safely removed if php 5.3 support will be dropped
+            if (is_array($this->values['_page'])) {
+                if (isset($this->values['_page']['value'])) {
+                    $page = $this->values['_page']['value'];
+                }
+            } else {
+                $page = $this->values['_page'];
+            }
         }
+
         $this->pager->setPage($page);
 
         $this->pager->setQuery($this->query);
