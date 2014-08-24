@@ -426,16 +426,88 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
 
         $this->pager->expects($this->once())
             ->method('setPage')
-            ->with($this->equalTo('3'))
+            ->with($this->equalTo('13'))
             ->will($this->returnValue(null));
 
         $this->datagrid = new Datagrid($this->query, $this->columns, $this->pager, $this->formBuilder, array());
         $this->datagrid->setValue('_per_page', null, 50);
-        $this->datagrid->setValue('_page', null, 3);
+        $this->datagrid->setValue('_page', null, 13);
 
         $this->datagrid->buildPager();
 
-        $this->assertEquals(array('_page' => array('type'=>null, 'value'=>3), '_per_page' => array('type'=>null, 'value'=>50)), $this->datagrid->getValues());
+        $this->assertEquals(array('_page' => array('type'=>null, 'value'=>13), '_per_page' => array('type'=>null, 'value'=>50)), $this->datagrid->getValues());
+        $this->assertInstanceOf('Symfony\Component\Form\FormBuilder', $this->formBuilder->get('_sort_by'));
+        $this->assertInstanceOf('Symfony\Component\Form\FormBuilder', $this->formBuilder->get('_sort_order'));
+        $this->assertInstanceOf('Symfony\Component\Form\FormBuilder', $this->formBuilder->get('_page'));
+        $this->assertInstanceOf('Symfony\Component\Form\FormBuilder', $this->formBuilder->get('_per_page'));
+    }
+
+    public function testBuildPagerWithPerPage()
+    {
+        $this->pager->expects($this->once())
+            ->method('setMaxPerPage')
+            ->with($this->equalTo('100'))
+            ->will($this->returnValue(null));
+
+        $this->datagrid = new Datagrid($this->query, $this->columns, $this->pager, $this->formBuilder, array('_per_page'=>'100'));
+
+        $filter = $this->getMock('Sonata\AdminBundle\Filter\FilterInterface');
+        $filter->expects($this->once())
+            ->method('getName')
+            ->will($this->returnValue('foo'));
+        $filter->expects($this->any())
+            ->method('getFormName')
+            ->will($this->returnValue('fooFormName'));
+        $filter->expects($this->any())
+            ->method('isActive')
+            ->will($this->returnValue(false));
+        $filter->expects($this->any())
+            ->method('getRenderSettings')
+            ->will($this->returnValue(array('foo', array('bar'=>'baz'))));
+
+        $this->datagrid->addFilter($filter);
+
+        $this->datagrid->buildPager();
+
+        $this->assertEquals(array('_per_page'=>'100', 'foo'=>null), $this->datagrid->getValues());
+        $this->assertInstanceOf('Symfony\Component\Form\FormBuilder', $this->formBuilder->get('fooFormName'));
+        $this->assertEquals(array('bar' => 'baz'), $this->formBuilder->get('fooFormName')->getOptions());
+        $this->assertInstanceOf('Symfony\Component\Form\FormBuilder', $this->formBuilder->get('_sort_by'));
+        $this->assertInstanceOf('Symfony\Component\Form\FormBuilder', $this->formBuilder->get('_sort_order'));
+        $this->assertInstanceOf('Symfony\Component\Form\FormBuilder', $this->formBuilder->get('_page'));
+        $this->assertInstanceOf('Symfony\Component\Form\FormBuilder', $this->formBuilder->get('_per_page'));
+    }
+
+    public function testBuildPagerWithPerPageAsArray()
+    {
+        $this->pager->expects($this->once())
+            ->method('setMaxPerPage')
+            ->with($this->equalTo('100'))
+            ->will($this->returnValue(null));
+
+        $this->datagrid = new Datagrid($this->query, $this->columns, $this->pager, $this->formBuilder, array('_per_page'=> array('type' => null, 'value' => '100')));
+
+        $filter = $this->getMock('Sonata\AdminBundle\Filter\FilterInterface');
+        $filter->expects($this->once())
+            ->method('getName')
+            ->will($this->returnValue('foo'));
+        $filter->expects($this->any())
+            ->method('getFormName')
+            ->will($this->returnValue('fooFormName'));
+        $filter->expects($this->any())
+            ->method('isActive')
+            ->will($this->returnValue(false));
+        $filter->expects($this->any())
+            ->method('getRenderSettings')
+            ->will($this->returnValue(array('foo', array('bar'=>'baz'))));
+
+        $this->datagrid->addFilter($filter);
+
+        $this->datagrid->buildPager();
+
+        $this->assertEquals(array('_per_page'=>array('type' => null, 'value' => '100'), 'foo'=>null), $this->datagrid->getValues());
+        $this->assertInstanceOf('Symfony\Component\Form\FormBuilder', $this->formBuilder->get('fooFormName'));
+        $this->assertEquals(array('bar' => 'baz'), $this->formBuilder->get('fooFormName')->getOptions());
         $this->assertInstanceOf('Symfony\Component\Form\FormBuilder', $this->formBuilder->get('_sort_by'));
         $this->assertInstanceOf('Symfony\Component\Form\FormBuilder', $this->formBuilder->get('_sort_order'));
         $this->assertInstanceOf('Symfony\Component\Form\FormBuilder', $this->formBuilder->get('_page'));
