@@ -48,19 +48,24 @@ solve the issue by using the ``preUpdate`` saving hook.
 
     class UserAdmin extends Admin
     {
+        /**
+         * @var UserManagerInterface
+         */
+        protected $userManager;
+        
         protected function configureFormFields(FormMapper $formMapper)
         {
             $formMapper
                 ->with('General')
                     ->add('username')
                     ->add('email')
-                    ->add('plainPassword', 'text')
+                    ->add('plainPassword', 'password', array('required' => false))
                 ->end()
                 ->with('Groups')
                     ->add('groups', 'sonata_type_model', array('required' => false))
                 ->end()
                 ->with('Management')
-                    ->add('roles', 'sonata_security_roles', array( 'multiple' => true))
+                    ->add('roles', 'sonata_security_roles', array('multiple' => true))
                     ->add('locked', null, array('required' => false))
                     ->add('expired', null, array('required' => false))
                     ->add('enabled', null, array('required' => false))
