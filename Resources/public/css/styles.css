@@ -332,3 +332,10 @@ div.select2-container {
 div.select2-drop ul {
     margin: 0 !important;
 }
+
+.right-side > .content-header {
+    padding: 15px 15px 0 15px;
+}
+.alert {
+    margin-left: 0;
+}
