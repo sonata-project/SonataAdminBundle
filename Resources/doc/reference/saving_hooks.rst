@@ -59,7 +59,7 @@ solve the issue by using the ``preUpdate`` saving hook.
                 ->with('General')
                     ->add('username')
                     ->add('email')
-                    ->add('plainPassword', 'text')
+                    ->add('plainPassword', 'password', array('required' => false))
                 ->end()
                 ->with('Groups')
                     ->add('groups', 'sonata_type_model', array('required' => false))
