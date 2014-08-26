@@ -13,6 +13,7 @@ namespace Sonata\AdminBundle\Tests\Form\DataTransformer;
 
 use Sonata\AdminBundle\Form\DataTransformer\ModelToIdPropertyTransformer;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\Foo;
+use Sonata\AdminBundle\Tests\Fixtures\Entity\FooArrayAccess;
 use Doctrine\Common\Collections\ArrayCollection;
 
 class ModelToIdPropertyTransformerTest extends \PHPUnit_Framework_TestCase
@@ -124,6 +125,20 @@ class ModelToIdPropertyTransformerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(array('identifiers' => array(), 'labels' => array()), $transformer->transform(false));
         $this->assertEquals(array('identifiers' => array(), 'labels' => array()), $transformer->transform(0));
         $this->assertEquals(array('identifiers' => array(), 'labels' => array()), $transformer->transform('0'));
+
+        $this->assertEquals(array('identifiers' => array(123), 'labels' => array('example')), $transformer->transform($entity));
+    }
+
+    public function testTransformWorksWithArrayAccessEntity()
+    {
+        $entity = new FooArrayAccess();
+        $entity->setBar('example');
+
+        $this->modelManager->expects($this->once())
+            ->method('getIdentifierValues')
+            ->will($this->returnValue(array(123)));
+
+        $transformer = new ModelToIdPropertyTransformer($this->modelManager, 'Sonata\AdminBundle\Tests\Fixtures\Entity\FooArrayAccess', 'bar', false);
 
         $this->assertEquals(array('identifiers' => array(123), 'labels' => array('example')), $transformer->transform($entity));
     }
