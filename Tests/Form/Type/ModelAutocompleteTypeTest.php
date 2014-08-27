@@ -39,6 +39,7 @@ class ModelAutocompleteTypeTest extends TypeTestCase
         $this->assertEquals('', $options['placeholder']);
         $this->assertEquals(3, $options['minimum_input_length']);
         $this->assertEquals(10, $options['items_per_page']);
+        $this->assertEquals('', $options['width']);
 
         $this->assertEquals('', $options['url']);
         $this->assertEquals(array('name'=>'sonata_admin_retrieve_autocomplete_items', 'parameters'=>array()), $options['route']);
@@ -46,6 +47,8 @@ class ModelAutocompleteTypeTest extends TypeTestCase
         $this->assertEquals('q', $options['req_param_name_search']);
         $this->assertEquals('_page', $options['req_param_name_page_number']);
         $this->assertEquals('_per_page', $options['req_param_name_items_per_page']);
-        $this->assertEquals('sonata-autocomplete-dropdown', $options['dropdown_css_class']);
+        $this->assertEquals('', $options['container_css_class']);
+        $this->assertEquals('', $options['dropdown_css_class']);
+        $this->assertEquals('', $options['dropdown_item_css_class']);
     }
 }

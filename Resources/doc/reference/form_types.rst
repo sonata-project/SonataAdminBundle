@@ -176,9 +176,9 @@ model_manager
 
 callback
   defaults to null. Callable function that can be used to modify the query which is used to retrieve autocomplete items.
-  The callback should receive three parameters - the Admin instance, the property (or properties) defined as searchable and the 
+  The callback should receive three parameters - the Admin instance, the property (or properties) defined as searchable and the
   search value entered by the user.
-  
+
   From the ``$admin`` parameter it is possible to get the ``Datagrid`` and the ``Request``:
 
 .. code-block:: php
@@ -232,8 +232,17 @@ route
   The route ``name`` with ``parameters`` that is used as target url for ajax
   requests.
 
+width
+  defaults to "". Controls the width style attribute of the Select2 container div.
+
+container_css_class
+  defaults to "". Css class that will be added to select2's container tag.
+
 dropdown_css_class
-  defaults to "sonata-autocomplete-dropdown". CSS class of dropdown list.
+  defaults to "". CSS class of dropdown list.
+
+dropdown_item_css_class
+  defaults to "". CSS class of dropdown item.
 
 req_param_name_search
   defaults to "q". Ajax request parameter name which contains the searched text.
@@ -354,7 +363,7 @@ btn_add and btn_catalogue:
 **TIP**: A jQuery event is fired after a row has been added (``sonata-admin-append-form-element``).
 You can listen to this event to trigger custom javascript (eg: add a calendar widget to a newly added date field)
 
-**TIP**: Setting the 'required' option to true does not cause a requirement of 'at least one' child entity. 
+**TIP**: Setting the 'required' option to true does not cause a requirement of 'at least one' child entity.
 Setting the 'required' option to false causes all nested form fields to become not required as well.
 
 sonata_type_native_collection (previously collection)
