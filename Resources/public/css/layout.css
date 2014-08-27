@@ -343,5 +343,6 @@ legend.sonata-ba-fieldset-collapsed-description + .sonata-ba-collapsed-fields {
 }
 
 .box .box-body {
-    overflow: hidden;
+    overflow-x: auto;
+    overflow-y: hidden;
 }
