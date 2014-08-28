@@ -117,16 +117,19 @@ $(function() {
             $(".left-side, html, body").css("min-height", height + "px");
         }
     }
-    //Fire upon load
-    _fix();
-    //Fire when wrapper is resized
-    $(".wrapper").resize(function() {
+    //Let disable stretch behavior if not needed
+    if (false === $("html").hasClass('no-stretch')) {
+        //Fire upon load
         _fix();
-        fix_sidebar();
-    });
+        //Fire when wrapper is resized
+        $(".wrapper").resize(function () {
+            _fix();
+            fix_sidebar();
+        });
 
-    //Fix the fixed layout sidebar scroll bug
-    fix_sidebar();
+        //Fix the fixed layout sidebar scroll bug
+        fix_sidebar();
+    }
 });
 
 function fix_sidebar() {
@@ -407,7 +410,7 @@ function fix_sidebar() {
             g()
         }, e[b])
     }}
-    )(jQuery, this);
+)(jQuery, this);
 
 /*!
  * SlimScroll https://github.com/rochal/jQuery-slimScroll
@@ -422,7 +425,7 @@ function fix_sidebar() {
             function r(d) {
                 if (s) {
                     d = d ||
-                        window.event;
+                    window.event;
                     var c = 0;
                     d.wheelDelta && (c = -d.wheelDelta / 120);
                     d.detail && (c = d.detail / 3);
@@ -621,7 +624,7 @@ function fix_sidebar() {
     }
     function x(a) {
         return a.charAt(0).toUpperCase() +
-            a.slice(1)
+        a.slice(1)
     }
     function L(a, b, d, c) {
         if (!c) {
@@ -697,7 +700,7 @@ function fix_sidebar() {
                     !c[l] && D(a, l);
                 else if (/us|ur/.test(d))
                     g["blur" ==
-                        d ? z : v](x)
+                    d ? z : v](x)
             });
             d.on("click mousedown mouseup mouseover mouseout touchbegin.i touchend.i", function(b) {
                 var d = b[n], e = /wn|up/.test(d) ? w : B;
