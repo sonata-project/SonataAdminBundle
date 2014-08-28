@@ -130,6 +130,7 @@ body > .header .logo {
 
 .dropdown-add .dropdown-menu > li > a {
     white-space: normal;
+    overflow: hidden;
 }
 
 /* top right */
