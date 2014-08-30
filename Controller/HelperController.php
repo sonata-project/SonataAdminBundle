@@ -344,10 +344,10 @@ class HelperController
 
         if ($callback !== null) {
             if (!is_callable($callback)) {
-                throw new \RuntimeException('Callback doesn`t contain callable function.');
+                throw new \RuntimeException('Callback does not contain callable function.');
             }
 
-            call_user_func($callback, $datagrid, $property, $searchText);
+            call_user_func($callback, $targetAdmin, $property, $searchText);
         } else {
             if (is_array($property)) {
                 // multiple properties

@@ -30,6 +30,9 @@ class AdminType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $admin = clone $this->getAdmin($options);
+        if ($admin->hasParentFieldDescription()) {
+            $admin->getParentFieldDescription()->setAssociationAdmin($admin);
+        }
 
         if ($options['delete'] && $admin->isGranted('DELETE')) {
             $builder->add('_delete', 'checkbox', array('required' => false, 'mapped' => false, 'translation_domain' => $admin->getTranslationDomain()));
