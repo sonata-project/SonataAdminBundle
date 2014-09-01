@@ -86,7 +86,7 @@ forget to enable SonataAdminBundle too:
     you don't need to enable it again.
 
 .. note::
-    Since version 2.3 > SonatajQueryBundle is not required anymore as assets are available in this
+    Since version 2.3 SonatajQueryBundle is not required anymore as assets are available in this
     bundle. The bundle is also registered in `bower.io <https://github.com/sonata-project/SonataAdminBundle>`_ so
     you can use bower to handle your assets. To make sure you get the dependencies
     that match the version of SonataAdminBundle you are using, you can make bower
