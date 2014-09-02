@@ -359,12 +359,12 @@ file that was distributed with this source code.
             {% if multiple -%}
                 data = [
                 {%- for key, label_text in value.labels -%}
-                    {id:{{ value.identifiers[key]|e('js') }}, label:'{{ label_text|e('js') }}'}
+                    {id: '{{ value.identifiers[key]|e('js') }}', label:'{{ label_text|e('js') }}'}
                     {%- if not loop.last -%}, {% endif -%}
                 {%- endfor -%}
                 ];
             {%- elseif value.labels[0] is defined -%}
-                data = {id: {{ value.identifiers[0]|e('js') }}, label:'{{ value.labels[0]|e('js') }}'};
+                data = {id: '{{ value.identifiers[0]|e('js') }}', label:'{{ value.labels[0]|e('js') }}'};
             {%- endif  %}
             if (undefined==data.length || 0<data.length) { // Leave placeholder if no data set
                 autocompleteInput.select2('data', data);
