@@ -233,6 +233,21 @@ file, using the ``load()`` method as described in the `symfony cookbook`_.
             }
         }
 
+
+Step 2,3 Alternative: Use sonata:admin:generate
+-----------------------------------------------
+
+The `sonata:admin:generate` command does exactly what is describe above. 
+Full Information can be found here: #HOW DO I DO INTRA-DOC LINKS PROPERLY?
+
+Usage example:
+
+.. code-block:: bash
+
+    php app/console sonata:admin:generate YourNS\FooBundle\Entity\Bar
+
+
+
 Step 4: Configuration
 ---------------------
 
