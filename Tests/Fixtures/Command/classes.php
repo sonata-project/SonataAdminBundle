@@ -1,4 +1,4 @@
-<?php 
+<?php
 namespace Sonata\AdminBundle\Tests\Fixtures\Controller
 {
 abstract class AbstractFooAdminController

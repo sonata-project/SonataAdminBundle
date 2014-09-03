@@ -2,6 +2,10 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
     <file source-language="en" datatype="plaintext" original="SonataAdminBundle.en.xliff" >
         <body>
+            <trans-unit id="sonata_administration">
+                <source>sonata_administration</source>
+                <target>Administration</target>
+            </trans-unit>
             <trans-unit id="action_delete">
                 <source>action_delete</source>
                 <target>Supprimer</target>
@@ -140,19 +144,19 @@
             </trans-unit>
             <trans-unit id='flash_create_success'>
                 <source>flash_create_success</source>
-                <target>L'élément a été créé avec succès.</target>
+                <target>L'élément "%name%" a été créé avec succès.</target>
             </trans-unit>
             <trans-unit id='flash_create_error'>
                 <source>flash_create_error</source>
-                <target>Une erreur est intervenue lors de la création de l'élément.</target>
+                <target>Une erreur est intervenue lors de la création de l'élément "%name%".</target>
             </trans-unit>
             <trans-unit id='flash_edit_success'>
                 <source>flash_edit_success</source>
-                <target>L'élément a été mis à jour avec succès.</target>
+                <target>L'élément "%name%" a été mis à jour avec succès.</target>
             </trans-unit>
             <trans-unit id='flash_edit_error'>
                 <source>flash_edit_error</source>
-                <target>Une erreur est intervenue lors de la mise à jour de l'élément.</target>
+                <target>Une erreur est intervenue lors de la mise à jour de l'élément "%name%".</target>
             </trans-unit>
             <trans-unit id='flash_batch_delete_success'>
                 <source>flash_batch_delete_success</source>
@@ -164,11 +168,11 @@
             </trans-unit>
             <trans-unit id='flash_delete_error'>
                 <source>flash_delete_error</source>
-                <target>Une erreur est intervenue lors de la suppression de l'élément.</target>
+                <target>Une erreur est intervenue lors de la suppression de l'élément "%name%".</target>
             </trans-unit>
             <trans-unit id='flash_delete_success'>
                 <source>flash_delete_success</source>
-                <target>Les éléments ont été supprimés avec succès.</target>
+                <target>L'élément "%name%" a été supprimé avec succès.</target>
             </trans-unit>
             <trans-unit id="link_breadcrumb_dashboard">
                 <source>breadcrumb.link_dashboard</source>
@@ -188,7 +192,7 @@
             </trans-unit>
             <trans-unit id="title_batch_confirmation">
                 <source>title_batch_confirmation</source>
-                <target>Confirmation d'un traitement par lots</target>
+                <target>Confirmation d'un traitement par lots: '%action%'</target>
             </trans-unit>
             <trans-unit id="message_batch_confirmation">
                 <source>message_batch_confirmation</source>
@@ -320,7 +324,7 @@
             </trans-unit>
             <trans-unit id="label_export_download">
                 <source>label_export_download</source>
-                <target>Export : </target>
+                <target>Export</target>
             </trans-unit>
             <trans-unit id="loading_information">
                 <source>loading_information</source>
@@ -385,6 +389,10 @@
             <trans-unit id="add_new_entry">
                 <source>add_new_entry</source>
                 <target>rajouter un élément</target>
+            </trans-unit>
+            <trans-unit id="link_actions">
+                <source>link_actions</source>
+                <target>Liste d'actions</target>
             </trans-unit>
         </body>
     </file>

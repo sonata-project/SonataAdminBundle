@@ -16,6 +16,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 
+use Symfony\Component\Form\ReversedTransformer;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
@@ -28,15 +29,21 @@ class AdminType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $admin = $this->getAdmin($options);
+        $admin = clone $this->getAdmin($options);
+
+        if ($admin->hasParentFieldDescription()) {
+            $admin->getParentFieldDescription()->setAssociationAdmin($admin);
+        }
 
         if ($options['delete'] && $admin->isGranted('DELETE')) {
-            $builder->add('_delete', 'checkbox', array('required' => false, 'mapped' => false));
+            if (!array_key_exists('translation_domain', $options['delete_options']['type_options'])) {
+                $options['delete_options']['type_options']['translation_domain'] = $admin->getTranslationDomain();
+            }
+
+            $builder->add('_delete', $options['delete_options']['type'], $options['delete_options']['type_options']);
         }
 
-        if (!$admin->hasSubject()) {
-            $admin->setSubject($builder->getData());
-        }
+        $admin->setSubject($builder->getData());
 
         $admin->defineFormBuilder($builder);
 
@@ -63,6 +70,13 @@ class AdminType extends AbstractType
             'delete'          => function (Options $options) {
                 return ($options['btn_delete'] !== false);
             },
+            'delete_options'  => array(
+                'type'         => 'checkbox',
+                'type_options' => array(
+                    'required' => false,
+                    'mapped'   => false,
+                ),
+            ),
             'auto_initialize' => false,
             'btn_add'         => 'link_add',
             'btn_list'        => 'link_list',

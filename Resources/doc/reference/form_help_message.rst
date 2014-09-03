@@ -51,7 +51,7 @@ Advanced usage
 ^^^^^^^^^^^^^^
 
 Since help messages can contain HTML they can be used for more advanced solutions.
-See the cookbook entry :doc:`Showing image previews <recipe_image_previews>` for a detailed example of how to 
+See the cookbook entry :doc:`Showing image previews <../cookbook/recipe_image_previews>` for a detailed example of how to
 use help messages to display an image tag.
 
 

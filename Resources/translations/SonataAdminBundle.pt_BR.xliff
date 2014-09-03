@@ -2,6 +2,10 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
     <file source-language="en" datatype="plaintext" original="" >
         <body>
+            <trans-unit id="sonata_administration">
+                <source>sonata_administration</source>
+                <target>Administration</target>
+            </trans-unit>
             <trans-unit id="action_delete">
                 <source>action_delete</source>
                 <target>Deletar</target>
@@ -140,11 +144,11 @@
             </trans-unit>
             <trans-unit id='flash_create_success'>
                 <source>flash_create_success</source>
-                <target>O item foi criado com sucesso.</target>
+                <target>O item "%name%" foi criado com sucesso.</target>
             </trans-unit>
             <trans-unit id='flash_create_error'>
                 <source>flash_create_error</source>
-                <target>Um erro ocorreu durante a criação do item.</target>
+                <target>Um erro ocorreu durante a criação do item "%name%".</target>
             </trans-unit>
             <trans-unit id='flash_edit_success'>
                 <source>flash_edit_success</source>
@@ -180,7 +184,7 @@
             </trans-unit>
             <trans-unit id="message_delete_confirmation">
                 <source>message_delete_confirmation</source>
-                <target>Você tem certeza que deseja remover o item selecionado?</target>
+                <target>Você tem certeza que deseja remover o item "%object%" selecionado?</target>
             </trans-unit>
             <trans-unit id="btn_delete">
                 <source>btn_delete</source>
@@ -320,7 +324,7 @@
             </trans-unit>
             <trans-unit id="label_export_download">
                 <source>label_export_download</source>
-                <target>Download : </target>
+                <target>Download</target>
             </trans-unit>
             <trans-unit id="loading_information">
                 <source>loading_information</source>
@@ -385,6 +389,10 @@
             <trans-unit id="add_new_entry">
                 <source>add_new_entry</source>
                 <target>Adicionar novo item</target>
+            </trans-unit>
+            <trans-unit id="link_actions">
+                <source>link_actions</source>
+                <target>Ações</target>
             </trans-unit>
         </body>
     </file>

@@ -52,7 +52,7 @@ class DateRangeType extends AbstractType
 
         $builder
             ->add('type', 'choice', array('choices' => $choices, 'required' => false))
-            ->add('value', 'sonata_type_date_range', array('field_options' => $options['field_options']))
+            ->add('value', $options['field_type'], array('field_options' => $options['field_options']))
         ;
     }
 

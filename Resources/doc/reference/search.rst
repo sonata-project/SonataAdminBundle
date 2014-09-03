@@ -1,7 +1,7 @@
 Search
 ======
 
-The admin comes with a basic global search available in the upper navigation menu. The search iterates over admin class
+The admin comes with a basic global search available in the upper navigation menu. The search iterates over admin classes
 and look for filter with the option ``global_search`` set to true. If you are using the ``SonataDoctrineORMBundle``
 any text filter will be set to ``true`` by default.
 
@@ -23,6 +23,17 @@ The default template values can be configured in the configuration section
                 # other configuration options
                 search:              SonataAdminBundle:Core:search.html.twig
                 search_result_block: SonataAdminBundle:Block:block_search_result.html.twig
+                
+You also need to configure the block in the sonata block config
+
+.. configuration-block::
+
+    .. code-block:: yaml
+
+        sonata_block:
+            blocks:
+                sonata.admin.block.search_result:
+                contexts: [admin]
 
 You can also configure the block template per admin while defining the admin:
 

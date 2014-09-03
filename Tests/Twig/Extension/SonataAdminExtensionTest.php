@@ -251,11 +251,11 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
             array('<td class="sonata-ba-list-field sonata-ba-list-field-array" objectId="12345"> [1 => First] [2 => Second] </td>', 'array', array(1 => 'First', 2 => 'Second'), array()),
             array('<td class="sonata-ba-list-field sonata-ba-list-field-array" objectId="12345"> </td>', 'array', null, array()),
             array('<td class="sonata-ba-list-field sonata-ba-list-field-boolean" objectId="12345"> <span class="label label-success">yes</span> </td>', 'boolean', true, array('editable'=>false)),
-            array('<td class="sonata-ba-list-field sonata-ba-list-field-boolean" objectId="12345"> <span class="label label-important">no</span> </td>', 'boolean', false, array('editable'=>false)),
-            array('<td class="sonata-ba-list-field sonata-ba-list-field-boolean" objectId="12345"> <span class="label label-important">no</span> </td>', 'boolean', null, array('editable'=>false)),
-            array('<td class="sonata-ba-list-field sonata-ba-list-field-boolean" objectId="12345"> <a href="http://localhost/core/set-object-field-value?context=list&amp;field=fd_name&amp;objectId=12345&amp;value=0&amp;code=xyz" class="sonata-ba-action sonata-ba-edit-inline"><span class="label label-success">yes</span></a> </td>', 'boolean', true, array('editable'=>true)),
-            array('<td class="sonata-ba-list-field sonata-ba-list-field-boolean" objectId="12345"> <a href="http://localhost/core/set-object-field-value?context=list&amp;field=fd_name&amp;objectId=12345&amp;value=1&amp;code=xyz" class="sonata-ba-action sonata-ba-edit-inline"><span class="label label-important">no</span></a> </td>', 'boolean', false, array('editable'=>true)),
-            array('<td class="sonata-ba-list-field sonata-ba-list-field-boolean" objectId="12345"> <a href="http://localhost/core/set-object-field-value?context=list&amp;field=fd_name&amp;objectId=12345&amp;value=1&amp;code=xyz" class="sonata-ba-action sonata-ba-edit-inline"><span class="label label-important">no</span></a> </td>', 'boolean', null, array('editable'=>true)),
+            array('<td class="sonata-ba-list-field sonata-ba-list-field-boolean" objectId="12345"> <span class="label label-danger">no</span> </td>', 'boolean', false, array('editable'=>false)),
+            array('<td class="sonata-ba-list-field sonata-ba-list-field-boolean" objectId="12345"> <span class="label label-danger">no</span> </td>', 'boolean', null, array('editable'=>false)),
+            array('<td class="sonata-ba-list-field sonata-ba-list-field-boolean" objectId="12345"> <span class="x-editable" data-type="select" data-value="1" data-title="Data" data-pk="12345" data-url="/core/set-object-field-value?context=list&amp;field=fd_name&amp;objectId=12345&amp;code=xyz" data-source="[{value: 0, text: \'no\'},{value: 1, text: \'yes\'}]" > <span class="label label-success">yes</span> </span> </td>', 'boolean', true, array('editable'=>true)),
+            array('<td class="sonata-ba-list-field sonata-ba-list-field-boolean" objectId="12345"> <span class="x-editable" data-type="select" data-value="" data-title="Data" data-pk="12345" data-url="/core/set-object-field-value?context=list&amp;field=fd_name&amp;objectId=12345&amp;code=xyz" data-source="[{value: 0, text: \'no\'},{value: 1, text: \'yes\'}]" > <span class="label label-danger">no</span> </span> </td>', 'boolean', false, array('editable'=>true)),
+            array('<td class="sonata-ba-list-field sonata-ba-list-field-boolean" objectId="12345"> <span class="x-editable" data-type="select" data-value="" data-title="Data" data-pk="12345" data-url="/core/set-object-field-value?context=list&amp;field=fd_name&amp;objectId=12345&amp;code=xyz" data-source="[{value: 0, text: \'no\'},{value: 1, text: \'yes\'}]" > <span class="label label-danger">no</span> </span> </td>', 'boolean', null, array('editable'=>true)),
             array('<td class="sonata-ba-list-field sonata-ba-list-field-trans" objectId="12345"> Delete </td>', 'trans', 'action_delete', array('catalogue'=>'SonataAdminBundle')),
             array('<td class="sonata-ba-list-field sonata-ba-list-field-trans" objectId="12345"> </td>', 'trans', null, array('catalogue'=>'SonataAdminBundle')),
             array('<td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345"> Status1 </td>', 'choice', 'Status1', array()),
@@ -530,10 +530,17 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
 
     public function testRenderRelationElementToString()
     {
-        $this->fieldDescription->expects($this->once())
+        $this->fieldDescription->expects($this->exactly(2))
             ->method('getOption')
-            ->with($this->identicalTo('associated_tostring'))
-            ->will($this->returnValue('__toString'));
+            ->will($this->returnCallback(function($value, $default = null) {
+                if ($value == 'associated_property') {
+                    return $default;
+                }
+
+                if ($value == 'associated_tostring') {
+                    return '__toString';
+                }
+            }));
 
        $element = $this->getMock('stdClass', array('__toString'));
        $element->expects($this->any())
@@ -545,10 +552,18 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
 
     public function testRenderRelationElementCustomToString()
     {
-        $this->fieldDescription->expects($this->any())
+        $this->fieldDescription->expects($this->exactly(2))
             ->method('getOption')
-            ->with($this->identicalTo('associated_tostring'))
-            ->will($this->returnValue('customToString'));
+            ->will($this->returnCallback(function($value, $default = null) {
+                if ($value == 'associated_property') {
+                    return $default;
+                }
+
+                if ($value == 'associated_tostring') {
+                    return 'customToString';
+                }
+            }));
+
 
        $element = $this->getMock('stdClass', array('customToString'));
        $element->expects($this->any())
@@ -560,17 +575,21 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
 
     public function testRenderRelationElementMethodNotExist()
     {
-        $this->fieldDescription->expects($this->any())
+        $this->fieldDescription->expects($this->exactly(2))
             ->method('getOption')
-            ->with($this->identicalTo('associated_tostring'))
-            ->will($this->returnValue('nonExistedMethod'));
+
+            ->will($this->returnCallback(function($value, $default = null) {
+                if ($value == 'associated_tostring') {
+                    return 'nonExistedMethod';
+                }
+            }));
 
         $element = new \stdClass();
 
         try {
             $this->twigExtension->renderRelationElement($element, $this->fieldDescription);
         } catch (\RuntimeException $e) {
-            $this->assertContains('You must define an `associated_tostring` option or create a `stdClass::__toString` method to the field option "fd_name" from service "xyz".', $e->getMessage());
+            $this->assertContains('You must define an `associated_property` option or create a `stdClass::__toString', $e->getMessage());
 
             return;
         }
@@ -578,18 +597,36 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
         $this->fail('Failed asserting that exception of type "\RuntimeException" is thrown.');
     }
 
+    public function testRenderRelationElementWithPropertyPath()
+    {
+        $this->fieldDescription->expects($this->exactly(1))
+            ->method('getOption')
+
+            ->will($this->returnCallback(function($value, $default = null) {
+                if ($value == 'associated_property') {
+                    return 'foo';
+                }
+            }));
+
+        $element = new \stdClass();
+        $element->foo = "bar";
+
+        $this->assertEquals('bar', $this->twigExtension->renderRelationElement($element, $this->fieldDescription));
+
+    }
+
     public function testGetUrlsafeIdentifier()
     {
-        $enitity = new \stdClass();
+        $entity = new \stdClass();
 
         // set admin to pool
-        $this->pool->setAdminClasses(array('stdClass'=>'sonata_admin_foo_service'));
+        $this->pool->setAdminClasses(array('stdClass'=> array('sonata_admin_foo_service')));
 
         $this->admin->expects($this->once())
             ->method('getUrlsafeIdentifier')
-            ->with($this->equalTo($enitity))
+            ->with($this->equalTo($entity))
             ->will($this->returnValue(1234567));
 
-        $this->assertEquals(1234567, $this->twigExtension->getUrlsafeIdentifier($enitity));
+        $this->assertEquals(1234567, $this->twigExtension->getUrlsafeIdentifier($entity));
     }
 }

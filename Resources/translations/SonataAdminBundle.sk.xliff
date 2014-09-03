@@ -2,6 +2,10 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
     <file source-language="en" datatype="plaintext" original="" >
         <body>
+            <trans-unit id="sonata_administration">
+                <source>sonata_administration</source>
+                <target>Administration</target>
+            </trans-unit>
             <trans-unit id="action_delete">
                 <source>action_delete</source>
                 <target>Vymazať</target>
@@ -320,7 +324,7 @@
             </trans-unit>
             <trans-unit id="label_export_download">
                 <source>label_export_download</source>
-                <target>Exportovať: </target>
+                <target>Exportovať</target>
             </trans-unit>
             <trans-unit id="loading_information">
                 <source>loading_information</source>
@@ -385,6 +389,10 @@
             <trans-unit id="add_new_entry">
                 <source>add_new_entry</source>
                 <target>Pridať nový záznam</target>
+            </trans-unit>
+            <trans-unit id="link_actions">
+                <source>link_actions</source>
+                <target>Akcie</target>
             </trans-unit>
         </body>
     </file>

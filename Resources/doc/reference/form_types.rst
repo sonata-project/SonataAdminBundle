@@ -116,6 +116,135 @@ class
   calculated from the linked Admin class. You usually should not need to set
   this manually.
 
+sonata_type_model_autocomplete
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Setting a field type of ``sonata_type_model_autocomplete`` will use an instance of
+``ModelAutocompleteType`` to render that field. This Type allows you to choose an existing
+entity from the linked model class. In effect it shows a list of options from
+which you can choose a value. The list of options is loaded dynamically
+with ajax after typing 3 chars (autocomplete). It is best for entities with many
+items.
+
+This field type works by default if the related entity has an admin instance and
+in the related entity datagrid is a string filter on the ``property`` field.
+
+For example, we have an entity class called ``Article`` (in the ``ArticleAdmin``)
+which has a field called ``category`` which maps a relationship to another entity
+class called ``Category``. All we need to do now is add a reference for this field
+in our ``ArticleAdmin`` class and make sure, that in the CategoryAdmin exists
+datagrid filter for the property ``title``.
+
+.. code-block:: php
+
+    class ArticleAdmin extends Admin
+    {
+        protected function configureFormFields(FormMapper $formMapper)
+        {
+            // the dropdown autocomplete list will show only Category entities that contains specified text in "title" attribute
+            $formMapper
+                ->add('category', 'sonata_type_model_autocomplete', array('property'=>'title'))
+            ;
+        }
+    }
+
+    class CategoryAdmin extends Admin
+    {
+        protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+        {
+            // this text filter will be used to retrieve autocomplete fields
+            $datagridMapper
+                ->add('title')
+            ;
+        }
+    }
+
+The available options are:
+
+property
+  defaults to null. You have to set this to designate which field (or a list of fields) to use for the choice values.
+  This value can be string or array of strings.
+
+class
+  The entity class managed by this field. Defaults to null, but is actually
+  calculated from the linked Admin class. You usually should not need to set
+  this manually.
+
+model_manager
+  defaults to null, but is actually calculated from the linked Admin class.
+  You usually should not need to set this manually.
+
+callback
+  defaults to null. Callable function that can be used to modify the query which is used to retrieve autocomplete items.
+  The callback should receive three parameters - the Admin instance, the property (or properties) defined as searchable and the
+  search value entered by the user.
+
+  From the ``$admin`` parameter it is possible to get the ``Datagrid`` and the ``Request``:
+
+.. code-block:: php
+
+    $formMapper
+        ->add('category', 'sonata_type_model_autocomplete', array(
+            'property'=>'title',
+            'callback' => function ($admin, $property, $value) {
+                $datagrid = $admin->getDatagrid();
+                $queryBuilder = $datagrid->getQuery();
+                $queryBuilder
+                    ->andWhere($queryBuilder->getRootAlias() . '.foo=:barValue')
+                    ->setParameter('barValue', $admin->getRequest()->get('bar'))
+                ;
+                $datagrid->setValue($property, null, $value);
+            },
+        )
+    );
+
+to_string_callback
+  defaults to null. Callable function that can be used to change the default toString behaviour of entity.
+
+.. code-block:: php
+
+    $formMapper
+        ->add('category', 'sonata_type_model_autocomplete', array(
+            'property'=>'title',
+            'to_string_callback' => function($enitity, $property) {
+                return $enitity->getTitle();
+            },
+        )
+    );
+
+multiple
+  defaults to false. Set to true, if you`re field is in many-to-many relation.
+
+placeholder
+  defaults to "". Placeholder is shown when no item is selected.
+
+minimum_input_length
+  defaults to 3. Minimum number of chars that should be typed to load ajax data.
+
+items_per_page
+  defaults to 10. Number of items per one ajax request.
+
+url
+  defaults to "". Target external remote url for ajax requests.
+  You usually should not need to set this manually.
+
+route
+  The route ``name`` with ``parameters`` that is used as target url for ajax
+  requests.
+
+dropdown_css_class
+  defaults to "sonata-autocomplete-dropdown". CSS class of dropdown list.
+
+req_param_name_search
+  defaults to "q". Ajax request parameter name which contains the searched text.
+
+req_param_name_page_number
+  defaults to "_page". Ajax request parameter name which contains the page number.
+
+req_param_name_items_per_page
+  defaults to "_per_page".  Ajax request parameter name which contains the limit of
+  items per page.
+
 sonata_type_admin
 ^^^^^^^^^^^^^^^^^
 
@@ -203,8 +332,19 @@ to the underlying forms.
         {
             $formMapper
                 ->add('sales', 'sonata_type_collection', array(
-                    // Prevents the "Delete" option from being displayed
-                    'type_options' => array('delete' => false)
+                    'type_options' => array(
+                        // Prevents the "Delete" option from being displayed
+                        'delete' => false,
+                        'delete_options' => array(
+                            // You may otherwise choose to put the field but hide it
+                            'type'         => 'hidden',
+                            // In that case, you need to fill in the options as well
+                            'type_options' => array(
+                                'mapped'   => false,
+                                'required' => false,
+                            )
+                        )
+                    )
                 ), array(
                     'edit' => 'inline',
                     'inline' => 'table',
@@ -222,9 +362,29 @@ btn_add and btn_catalogue:
   corresponding button. You can also specify a custom translation catalogue
   for this label, which defaults to ``SonataAdminBundle``.
 
-**TIP**: A jQuery event is fired after a row has been added (``sonata-collection-item-added``)
-or deleted (``sonata-collection-item-deleted``). You can bind to these events to trigger custom
-javascript imported into your templates (eg: add a calendar widget to a newly added date field)
+**TIP**: A jQuery event is fired after a row has been added (``sonata-admin-append-form-element``).
+You can listen to this event to trigger custom javascript (eg: add a calendar widget to a newly added date field)
+
+**TIP**: Setting the 'required' option to true does not cause a requirement of 'at least one' child entity.
+Setting the 'required' option to false causes all nested form fields to become not required as well.
+
+sonata_type_native_collection (previously collection)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This bundle handle the native symfony ``collection`` form type by adding:
+
+* an ``add`` button if you set the ``allow_add`` option to ``true``.
+* a ``delete`` button if you set the ``allow_delete`` option to ``true``.
+
+.. TIP::
+
+    A jQuery event is fired after a row has been added (``sonata-admin-append-form-element``).
+    You can listen to this event to trigger custom javascript (eg: add a calendar widget to a newly added date field)
+
+.. TIP::
+
+    A jQuery event is fired after a row has been added (``sonata-collection-item-added``)
+    or deleted (``sonata-collection-item-deleted``). You can listen to these events to trigger custom javascript.
 
 FieldDescription options
 ^^^^^^^^^^^^^^^^^^^^^^^^

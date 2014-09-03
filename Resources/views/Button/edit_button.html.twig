@@ -10,7 +10,7 @@ file that was distributed with this source code.
 #}
 
 {% if admin.hasRoute('edit') and admin.id(object) and admin.isGranted('EDIT', object)%}
-    <a class="btn sonata-action-element" href="{{ admin.generateObjectUrl('edit', object) }}">
-        <i class="icon-edit"></i>
+    <a class="sonata-action-element" href="{{ admin.generateObjectUrl('edit', object) }}">
+        <i class="fa fa-edit"></i>
         {{ 'link_action_edit'|trans({}, 'SonataAdminBundle') }}</a>
 {% endif %}

@@ -38,7 +38,7 @@ automatically injected by the bundle:
 * ``ShowBuilder``: builds the show fields
 * ``ListBuilder``: builds the list fields
 * ``DatagridBuilder``: builds the filter fields
-* ``Request``: the http request received
+* ``Request``: the received http request
 * ``RouteBuilder``: allows you to add routes for new actions and remove routes for default actions
 * ``RouterGenerator``: generates the different urls
 * ``SecurityHandler``: handles permissions for model instances and actions
@@ -158,15 +158,16 @@ which stores instances of ``FieldDescriptionInterface``. Picking up on our previ
 
 .. code-block:: php
 
-   namespace Acme\DemoBundle\Admin;
+    <?php
+    namespace Acme\DemoBundle\Admin;
 
-   use Sonata\AdminBundle\Admin\Admin;
-   use Sonata\AdminBundle\Datagrid\ListMapper;
-   use Sonata\AdminBundle\Datagrid\DatagridMapper;
-   use Sonata\AdminBundle\Form\FormMapper;
+    use Sonata\AdminBundle\Admin\Admin;
+    use Sonata\AdminBundle\Datagrid\ListMapper;
+    use Sonata\AdminBundle\Datagrid\DatagridMapper;
+    use Sonata\AdminBundle\Form\FormMapper;
 
-   class PostAdmin extends Admin
-   {
+    class PostAdmin extends Admin
+    {
        // Fields to be shown on create/edit forms
        protected function configureFormFields(FormMapper $formMapper)
        {
@@ -195,7 +196,7 @@ which stores instances of ``FieldDescriptionInterface``. Picking up on our previ
                ->add('author')
            ;
        }
-   }
+    }
 
 Internally, the provided ``Admin`` class will use these three functions to create three
 ``FieldDescriptionCollection`` instances:
@@ -216,8 +217,8 @@ them are independent of the action in which they are used, like ``name`` or ``ty
 while others are used only in specific actions. More information can be found in the
 ``BaseFieldDescription`` class file.
 
-In most scenarios, you won't actually need to handle the ``FieldDescription`` yourself.
-However, it is important that you know it exists and how it's used, as it seats at the
+In most scenarios, you will not actually need to handle the ``FieldDescription`` yourself.
+However, it is important that you know it exists and how it is used, as it sits at the
 core of ``SonataAdminBundle``.
 
 Templates
@@ -261,15 +262,58 @@ you will also find instructions on how to configure ``SonataAdminBundle`` to use
 instead of the default ones.
 
 Managing ``Admin`` Service
-------------------------------
+--------------------------
 
 Your ``Admin`` service definitions are parsed when Symfony2 is loaded, and handled by
 the ``Pool`` class. This class, available as the ``sonata.admin.pool`` service from the
 DIC, handles the ``Admin`` classes, lazy-loading them on demand (to reduce overhead)
-and matching each of them to a group. It's also responsible for handling the top level
+and matching each of them to a group. It is also responsible for handling the top level
 template files, administration panel title and logo.
 
 
+
+Create child admins
+-------------------
+
+Let us say you have a ``PostAdmin`` and a ``CommentAdmin``. You can optionally declare the ``CommentAdmin``
+to be a child of the ``PostAdmin``. This will create new routes like, for example, ``/post/{id}/comment/list``,
+where the comments will automatically be filtered by post.
+
+To do this, you first need to call the ``addChild`` method in your PostAdmin service configuration :
+
+.. code-block:: xml
+
+    <!-- app/config/config.xml -->
+    <service id="sonata.news.admin.post" class="Sonata\NewsBundle\Admin\PostAdmin">
+        ...
+
+        <call method="addChild">
+            <argument type="service" id="sonata.news.admin.comment" />
+        </call>
+    </service>
+
+Then, you have to set the CommentAdmin ``parentAssociationMapping`` attribute to ``post`` :
+
+.. code-block:: php
+
+    <?php
+    namespace Sonata\NewsBundle\Admin;
+
+    ...
+
+    class CommentAdmin extends Admin
+    {
+        protected $parentAssociationMapping = 'post';
+
+        // OR
+
+        public function getParentAssociationMapping()
+        {
+            return 'post';
+        }
+    }
+
+It also possible to set a dot-separated value, like ``post.author``, if your parent and child admins are not directly related.
 
 .. _`Django Project Website`: http://www.djangoproject.com/
 .. _`CRUD is an acronym`: http://en.wikipedia.org/wiki/CRUD

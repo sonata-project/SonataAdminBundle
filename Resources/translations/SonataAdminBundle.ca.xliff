@@ -2,6 +2,10 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
     <file source-language="en" datatype="plaintext" original="" >
         <body>
+            <trans-unit id="sonata_administration">
+                <source>sonata_administration</source>
+                <target>Administració</target>
+            </trans-unit>
             <trans-unit id="action_delete">
                 <source>action_delete</source>
                 <target>Elimina</target>
@@ -136,7 +140,7 @@
             </trans-unit>
             <trans-unit id='flash_batch_empty'>
                 <source>flash_batch_empty</source>
-                <target>Acció interrompuda. No hi ha elements a seleccionar.</target>
+                <target>Acció interrompuda. No hi ha elements seleccionats.</target>
             </trans-unit>
             <trans-unit id='flash_create_success'>
                 <source>flash_create_success</source>
@@ -224,7 +228,7 @@
             </trans-unit>
             <trans-unit id="label_type_not_equals">
                 <source>label_type_not_equals</source>
-                <target>label_type_not_equals</target>
+                <target>no és igual a</target>
             </trans-unit>
             <trans-unit id="label_type_equal">
                 <source>label_type_equal</source>
@@ -320,7 +324,7 @@
             </trans-unit>
             <trans-unit id="label_export_download">
                 <source>label_export_download</source>
-                <target>Exportar: </target>
+                <target>Exportar</target>
             </trans-unit>
             <trans-unit id="loading_information">
                 <source>loading_information</source>
@@ -368,7 +372,7 @@
             </trans-unit>
             <trans-unit id="short_object_description_placeholder">
               <source>short_object_description_placeholder</source>
-              <target>Ninguna selecció</target>
+              <target>Cap selecció</target>
             </trans-unit>
             <trans-unit id="title_search_results">
                 <source>title_search_results</source>
@@ -385,6 +389,10 @@
             <trans-unit id="add_new_entry">
                 <source>add_new_entry</source>
                 <target>afegir nova entrada</target>
+            </trans-unit>
+            <trans-unit id="link_actions">
+                <source>link_actions</source>
+                <target>Accions</target>
             </trans-unit>
         </body>
     </file>

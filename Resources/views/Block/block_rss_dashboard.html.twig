@@ -1,0 +1,31 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{% extends "SonataBlockBundle:Block:block_core_rss.html.twig" %}
+
+{% block block %}
+    <div class="box box-varning">
+        <div class="box-header">
+            <h3 class="box-title sonata-feed-title"><i class="fa fa-rss"></i> {{ settings.title }}</h3>
+        </div>
+
+        <div class="sonata-feeds-container list-group">
+            {% for feed in feeds %}
+                <a class="list-group-item" href="{{ feed.link}}" rel="nofollow" title="{{ feed.title }}">
+                    <strong>{{ feed.title }}</strong>
+                    <div>{{ feed.description|raw }}</div>
+                </a>
+            {% else %}
+                <div class="list-group-item">No feeds available.</div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

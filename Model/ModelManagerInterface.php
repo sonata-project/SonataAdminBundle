@@ -35,14 +35,14 @@ interface ModelManagerInterface
     /**
      * @param mixed $object
      *
-     * @return void
+     * @return mixed
      */
     public function create($object);
 
     /**
      * @param mixed $object
      *
-     * @return void
+     * @return mixed
      */
     public function update($object);
 

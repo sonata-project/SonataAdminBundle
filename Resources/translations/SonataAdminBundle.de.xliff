@@ -2,6 +2,10 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
     <file source-language="en" datatype="plaintext" original="SonataAdminBundle.en.xliff" >
         <body>
+            <trans-unit id="sonata_administration">
+                <source>sonata_administration</source>
+                <target>Administration</target>
+            </trans-unit>
             <trans-unit id="action_delete">
                 <source>action_delete</source>
                 <target>Löschen</target>
@@ -72,7 +76,7 @@
             </trans-unit>
             <trans-unit id="link_reset_filter">
                 <source>link_reset_filter</source>
-                <target>Löschen</target>
+                <target>Zurücksetzen</target>
             </trans-unit>
             <trans-unit id="title_create">
                 <source>title_create</source>
@@ -139,20 +143,20 @@
                 <target>Aktion abgebrochen. Es waren keine Elemente ausgewählt.</target>
             </trans-unit>
             <trans-unit id="flash_create_success">
-                <source>flash_create_success</source>
-                <target>Element wurde erfolgreich hinzugefügt.</target>
+             <source>flash_create_success</source>
+              <target>Das Element "%name%" wurde erfolgreich hinzugefügt.</target>
             </trans-unit>
             <trans-unit id="flash_create_error">
-                <source>flash_create_error</source>
-                <target>Beim Hinzufügen des Elements ist ein Fehler aufgetreten.</target>
+              <source>flash_create_error</source>
+              <target>Beim Hinzufügen des Elements "%name%" ist ein Fehler aufgetreten.</target>
             </trans-unit>
             <trans-unit id="flash_edit_success">
-                <source>flash_edit_success</source>
-                <target>Element wurde erfolgreich bearbeitet.</target>
+              <source>flash_edit_success</source>
+              <target>Das Element "%name%" wurde erfolgreich bearbeitet.</target>
             </trans-unit>
             <trans-unit id="flash_edit_error">
-                <source>flash_edit_error</source>
-                <target>Beim Bearbeiten des Elements ist ein Fehler aufgetreten.</target>
+              <source>flash_edit_error</source>
+              <target>Beim Bearbeiten des Elements "%name%" ist ein Fehler aufgetreten.</target>
             </trans-unit>
             <trans-unit id="flash_batch_delete_success">
                 <source>flash_batch_delete_success</source>
@@ -163,12 +167,12 @@
                 <target>Beim Löschen der ausgewählten Elemente ist ein Fehler aufgetreten.</target>
             </trans-unit>
             <trans-unit id="flash_delete_error">
-                <source>flash_delete_error</source>
-                <target>Beim Löschen des Elements ist ein Fehler aufgetreten.</target>
+             <source>flash_delete_error</source>
+              <target>Beim Löschen des Elements "%name%" ist ein Fehler aufgetreten.</target>
             </trans-unit>
             <trans-unit id="flash_delete_success">
-                <source>flash_delete_success</source>
-                <target>Element wurde erfolgreich gelöscht.</target>
+              <source>flash_delete_success</source>
+              <target>Das Element "%name%" wurde erfolgreich gelöscht.</target>
             </trans-unit>
             <trans-unit id="link_breadcrumb_dashboard">
                 <source>breadcrumb.link_dashboard</source>
@@ -188,7 +192,7 @@
             </trans-unit>
             <trans-unit id="title_batch_confirmation">
                 <source>title_batch_confirmation</source>
-                <target>Stapel-Aktion bestätigen</target>
+                <target>Stapel-Aktion '%action%' bestätigen</target>
             </trans-unit>
             <trans-unit id="message_batch_confirmation">
                 <source>message_batch_confirmation</source>
@@ -320,7 +324,7 @@
             </trans-unit>
             <trans-unit id="label_export_download">
                 <source>label_export_download</source>
-                <target>Download: </target>
+                <target>Exportieren</target>
             </trans-unit>
             <trans-unit id="loading_information">
                 <source>loading_information</source>
@@ -385,6 +389,10 @@
             <trans-unit id="add_new_entry">
                 <source>add_new_entry</source>
                 <target>Neuen Eintrag</target>
+            </trans-unit>
+            <trans-unit id="link_actions">
+                <source>link_actions</source>
+                <target>Aktionen</target>
             </trans-unit>
         </body>
     </file>

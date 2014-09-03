@@ -20,4 +20,9 @@ class CommentAdmin extends Admin
     {
         $collection->remove('edit');
     }
+
+    public function setParentAssociationMapping($associationMapping)
+    {
+        $this->parentAssociationMapping = $associationMapping;
+    }
 }

@@ -9,7 +9,7 @@ Admin Bundle
 * `SonataDoctrinePhpcrAdminBundle <https://github.com/sonata-project/SonataDoctrinePhpcrAdminBundle>`_: integrates PHPCR with the core admin bundle (early stage)
 * `SonataPropelAdminBundle <https://github.com/sonata-project/SonataPropelAdminBundle>`_: integrates Propel with the core admin bundle (early stage)
 
-The demo website can be found in http://demo.sonata-project.org/admin/dashboard (admin as user and password).
+The demo website can be found in http://demo.sonata-project.org/admin/dashboard (``admin`` as user and password).
 
 Reference Guide
 ---------------
@@ -24,6 +24,7 @@ Reference Guide
    reference/architecture
    reference/dashboard
    reference/search
+   reference/select2
    reference/routing
    reference/action_list
    reference/action_create_edit
@@ -41,7 +42,7 @@ Reference Guide
    reference/security
    reference/extensions
    reference/events
-   reference/advance
+   reference/advanced
    reference/console
    reference/preview_mode
    reference/troubleshooting
@@ -57,3 +58,5 @@ Cookbook
    cookbook/recipe_image_previews
    cookbook/recipe_row_templates
    cookbook/recipe_sortable_listing
+   cookbook/recipe_dynamic_form_modification
+   cookbook/recipe_custom_action

@@ -118,13 +118,13 @@ class GenerateObjectAclCommand extends ContainerAwareCommand
     {
         if ($this->userEntityClass === '') {
             if ($input->getOption('user_entity')) {
-               list($userBundle, $userEntity) = Validators::validateEntityName($input->getOption('user_entity'));
-               $this->userEntityClass = $this->getContainer()->get('doctrine')->getEntityNamespace($userBundle).'\\'.$userEntity;
+                list($userBundle, $userEntity) = Validators::validateEntityName($input->getOption('user_entity'));
+                $this->userEntityClass = $this->getContainer()->get('doctrine')->getEntityNamespace($userBundle).'\\'.$userEntity;
             } else {
                 list($userBundle, $userEntity) = $this->getHelperSet()->get('dialog')->askAndValidate($output, 'Please enter the User Entity shortcut name: ', 'Sonata\AdminBundle\Command\Validators::validateEntityName');
 
                 // Entity exists?
-               $this->userEntityClass = $this->getContainer()->get('doctrine')->getEntityNamespace($userBundle).'\\'.$userEntity;
+                $this->userEntityClass = $this->getContainer()->get('doctrine')->getEntityNamespace($userBundle).'\\'.$userEntity;
             }
         }
 

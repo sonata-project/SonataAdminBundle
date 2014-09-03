@@ -4,7 +4,7 @@ namespace Sonata\AdminBundle\Tests\Fixtures\Bundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class DemoAdminBundle  extends Bundle
+class DemoAdminBundle extends Bundle
 {
     protected $path = null;
 

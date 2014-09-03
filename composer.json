@@ -17,41 +17,40 @@
         }
     ],
     "require": {
-        "symfony/http-foundation": "~2.2",
-        "symfony/form": "~2.2",
-        "symfony/validator": "~2.2",
-        "symfony/security-bundle": "~2.2",
-        "symfony/routing": "~2.2",
-        "symfony/config": "~2.2",
-        "symfony/console": "~2.2",
-        "symfony/twig-bridge": "~2.2",
-        "symfony/class-loader":"~2.2",
-        "sensio/generator-bundle": "~2.2",
-        "twig/twig": "~1.12",
+        "symfony/http-foundation": "~2.3",
+        "symfony/form": "~2.3",
+        "symfony/validator": "~2.3",
+        "symfony/security-bundle": "~2.3",
+        "symfony/routing": "~2.3",
+        "symfony/config": "~2.3",
+        "symfony/console": "~2.3",
+        "symfony/twig-bridge": "~2.3",
+        "symfony/class-loader":"~2.3",
+        "sensio/generator-bundle": "~2.3",
+        "twig/twig": "~1.15",
         "twig/extensions": "~1.0",
-        "knplabs/knp-menu-bundle": "~1.1",
-        "sonata-project/jquery-bundle": "1.8.*",
-        "sonata-project/exporter": "1.*",
+        "sonata-project/exporter": "~1.0",
         "sonata-project/block-bundle": "~2.2,>=2.2.7",
-        "sonata-project/core-bundle": "~2.2@dev",
-        "doctrine/common": "~2.2"
+        "sonata-project/core-bundle": "~2.2",
+        "doctrine/common": "~2.2",
+        "knplabs/knp-menu-bundle": ">=1.1.0,<3.0.0",
+        "knplabs/knp-menu": ">=1.1.0,<3.0.0"
     },
     "require-dev": {
-        "jms/translation-bundle": "*@dev",
-        "symfony/yaml": "~2.2",
+        "jms/translation-bundle": "~1.1",
+        "symfony/yaml": "~2.3",
         "sonata-project/intl-bundle": "~2.1"
     },
     "suggest": {
-        "sonata-project/doctrine-orm-admin-bundle": "2.2.*@dev",
-        "sonata-project/intl-bundle": "2.1.*"
+        "jms/translation-bundle": "Extract message keys from Admins",
+        "sonata-project/intl-bundle": "Add localized date and number into the list"
     },
     "autoload": {
-        "psr-0": { "Sonata\\AdminBundle": "" }
+        "psr-4": { "Sonata\\AdminBundle\\": "" }
     },
-    "target-dir": "Sonata/AdminBundle",
     "extra": {
         "branch-alias": {
-            "dev-master": "2.2.x-dev"
+            "dev-master": "2.3.x-dev"
         }
     }
 }

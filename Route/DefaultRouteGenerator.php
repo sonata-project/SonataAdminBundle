@@ -17,20 +17,24 @@ class DefaultRouteGenerator implements RouteGeneratorInterface
 {
     private $router;
 
+    private $cache;
+
+    private $caches = array();
+
+    private $loaded = array();
+
     /**
-     * @param \Symfony\Component\Routing\RouterInterface $router
+     * @param RouterInterface $router
+     * @param RoutesCache     $cache
      */
-    public function __construct(RouterInterface $router)
+    public function __construct(RouterInterface $router, RoutesCache $cache)
     {
         $this->router = $router;
+        $this->cache  = $cache;
     }
 
     /**
-     * @param string $name
-     * @param array  $parameters
-     * @param bool   $absolute
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function generate($name, array $parameters = array(), $absolute = false)
     {
@@ -38,29 +42,22 @@ class DefaultRouteGenerator implements RouteGeneratorInterface
     }
 
     /**
-     *
-     * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
-     * @param string                                   $name
-     * @param array                                    $parameters
-     * @param bool                                     $absolute
-
-     * @throws \RuntimeException
-
-     * @return string
+     * {@inheritdoc}
      */
     public function generateUrl(AdminInterface $admin, $name, array $parameters = array(), $absolute = false)
     {
-        if (!$admin->isChild()) {
-            if (strpos($name, '.')) {
-                $name = $admin->getCode().'|'.$name;
-            } else {
-                $name = $admin->getCode().'.'.$name;
-            }
-        }
-        // if the admin is a child we automatically append the parent's id
-        else {
-            $name = $admin->getBaseCodeRoute().'.'.$name;
+        $arrayRoute = $this->generateMenuUrl($admin, $name, $parameters, $absolute);
 
+        return $this->router->generate($arrayRoute['route'], $arrayRoute['routeParameters'], $arrayRoute['routeAbsolute']);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function generateMenuUrl(AdminInterface $admin, $name, array $parameters = array(), $absolute = false)
+    {
+        // if the admin is a child we automatically append the parent's id
+        if ($admin->isChild() && $admin->hasRequest() && $admin->getRequest()->attributes->has($admin->getParent()->getIdParameter())) {
             // twig template does not accept variable hash key ... so cannot use admin.idparameter ...
             // switch value
             if (isset($parameters['id'])) {
@@ -68,7 +65,7 @@ class DefaultRouteGenerator implements RouteGeneratorInterface
                 unset($parameters['id']);
             }
 
-            $parameters[$admin->getParent()->getIdParameter()] = $admin->getRequest()->get($admin->getParent()->getIdParameter());
+            $parameters[$admin->getParent()->getIdParameter()] = $admin->getRequest()->attributes->get($admin->getParent()->getIdParameter());
         }
 
         // if the admin is linked to a parent FieldDescription (ie, embedded widget)
@@ -92,12 +89,69 @@ class DefaultRouteGenerator implements RouteGeneratorInterface
             $parameters = array_merge($admin->getPersistentParameters(), $parameters);
         }
 
-        $route = $admin->getRoute($name);
+        $code = $this->getCode($admin, $name);
 
-        if (!$route) {
-            throw new \RuntimeException(sprintf('unable to find the route `%s`', $name));
+        if (!array_key_exists($code, $this->caches)) {
+            throw new \RuntimeException(sprintf('unable to find the route `%s`', $code));
         }
 
-        return $this->router->generate($route->getDefault('_sonata_name'), $parameters, $absolute);
+        return array(
+            'route'           => $this->caches[$code],
+            'routeParameters' => $parameters,
+            'routeAbsolute'   => $absolute
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasAdminRoute(AdminInterface $admin, $name)
+    {
+        return array_key_exists($this->getCode($admin, $name), $this->caches);
+    }
+
+    /**
+     * @param AdminInterface $admin
+     * @param string         $name
+     *
+     * @return string
+     */
+    private function getCode(AdminInterface $admin, $name)
+    {
+        $this->loadCache($admin);
+
+        if ($admin->isChild()) {
+            return $admin->getBaseCodeRoute().'.'.$name;
+        }
+
+        // someone provide the fullname
+        if (array_key_exists($name, $this->caches)) {
+            return $name;
+        }
+
+        // someone provide a code, so it is a child
+        if (strpos($name, '.')) {
+            return $admin->getCode().'|'.$name;
+        }
+
+        return $admin->getCode().'.'.$name;
+    }
+
+    /**
+     * @param AdminInterface $admin
+     */
+    private function loadCache(AdminInterface $admin)
+    {
+        if (in_array($admin->getCode(), $this->loaded)) {
+            return;
+        }
+
+        $this->caches = array_merge($this->cache->load($admin), $this->caches);
+
+        $this->loaded[] = $admin->getCode();
+
+        if ($admin->isChild()) {
+            $this->loadCache($admin->getParent());
+        }
     }
 }

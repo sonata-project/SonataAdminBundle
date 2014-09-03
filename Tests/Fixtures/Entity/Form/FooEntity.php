@@ -6,9 +6,8 @@ class FooEntity
 {
     private $values;
 
-    public function __construct(array $values=array())
+    public function __construct(array $values = array())
     {
         $this->values = $values;
     }
-
 }

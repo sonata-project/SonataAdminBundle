@@ -10,16 +10,30 @@ file that was distributed with this source code.
 #}
 
 <td class="sonata-ba-list-field sonata-ba-list-field-{{ field_description.type }}" objectId="{{ admin.id(object) }}">
+    {% set route = field_description.options.route.name|default(null) %}
+    {% set action = route == 'show' ? 'VIEW' : route|upper %}
+
     {% if
-            field_description.options.identifier is defined
-        and field_description.options.route is defined
-        and admin.isGranted(field_description.options.route.name == 'show' ? 'VIEW' : field_description.options.route.name|upper, object)
-        and admin.hasRoute(field_description.options.route.name)
+        field_description.options.identifier is defined
+        and route
+        and action
+        and admin.hasRoute(route)
+        and admin.isGranted(action, action in ['VIEW', 'EDIT'] ? object : null)
     %}
-        <a href="{{ admin.generateObjectUrl(field_description.options.route.name, object, field_description.options.route.parameters) }}">
+        <a class="sonata-link-identifier" href="{{ admin.generateObjectUrl(route, object, field_description.options.route.parameters) }}">
             {%- block field %}{{ value }}{% endblock -%}
         </a>
     {% else %}
-        {{ block('field') }}
+        {% set isEditable = field_description.options.editable is defined and field_description.options.editable and admin.isGranted('EDIT', object) %}
+        {% set xEditableType = field_description.type|sonata_xeditable_type %}
+
+        {% if isEditable and xEditableType %}
+            {% set url = path('sonata_admin_set_object_field_value', { 'context': 'list', 'field': field_description.name, 'objectId': admin.id(object), 'code': admin.code(object) })  %}
+            <span {% block field_span_attributes %}class="x-editable" data-type="{{ xEditableType }}" data-value="{{ value }}" data-title="{{ field_description.label|trans({}, field_description.translationDomain) }}" data-pk="{{ admin.id(object) }}" data-url="{{ url }}" {% endblock %}>
+                {{ block('field') }}
+            </span>
+        {% else %}
+            {{ block('field') }}
+        {% endif %}
     {% endif %}
 </td>

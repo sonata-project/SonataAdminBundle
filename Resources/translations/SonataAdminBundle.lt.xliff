@@ -2,6 +2,10 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
     <file source-language="lt" datatype="plaintext" original="" >
         <body>
+            <trans-unit id="sonata_administration">
+                <source>sonata_administration</source>
+                <target>Valdymas</target>
+            </trans-unit>
             <trans-unit id="action_delete">
                 <source>action_delete</source>
                 <target>Ištrinti</target>
@@ -12,7 +16,7 @@
             </trans-unit>
             <trans-unit id="btn_create">
                 <source>btn_create</source>
-                <target>Create</target>
+                <target>Sukurti</target>
             </trans-unit>
             <trans-unit id="btn_create_and_edit_again">
                 <source>btn_create_and_edit_again</source>
@@ -36,7 +40,7 @@
             </trans-unit>
             <trans-unit id="btn_update_and_edit_again">
                 <source>btn_update_and_edit_again</source>
-                <target>Saugoti ir redaguoti</target>
+                <target>Saugoti</target>
             </trans-unit>
             <trans-unit id="btn_update_and_return_to_list">
                 <source>btn_update_and_return_to_list</source>
@@ -60,7 +64,7 @@
             </trans-unit>
             <trans-unit id="link_action_edit">
                 <source>link_action_edit</source>
-                <target>Redaguotis</target>
+                <target>Redaguoti</target>
             </trans-unit>
             <trans-unit id="link_add">
                 <source>link_add</source>
@@ -120,7 +124,7 @@
             </trans-unit>
             <trans-unit id="confirm_msg">
                 <source>confirm_msg</source>
-                <target>Ar Jūs įsitikinęs ?</target>
+                <target>Ar Jūs įsitikinęs?</target>
             </trans-unit>
             <trans-unit id="action_edit">
                 <source>action_edit</source>
@@ -156,11 +160,11 @@
             </trans-unit>
             <trans-unit id='flash_batch_delete_success'>
                 <source>flash_batch_delete_success</source>
-                <target>Pasitrinkti įrašai sėkmingai ištrinti.</target>
+                <target>Pasirinkti įrašai sėkmingai ištrinti.</target>
             </trans-unit>
             <trans-unit id='flash_batch_delete_error'>
                 <source>flash_batch_delete_error</source>
-                <target>Trinant Jūsų pasirinktus įrašus įvyko klaida..</target>
+                <target>Trinant Jūsų pasirinktus įrašus įvyko klaida.</target>
             </trans-unit>
             <trans-unit id='flash_delete_error'>
                 <source>flash_delete_error</source>
@@ -188,11 +192,11 @@
             </trans-unit>
             <trans-unit id="title_batch_confirmation">
                 <source>title_batch_confirmation</source>
-                <target>Keletos veiksmų patvirtinimas</target>
+                <target>Keleto veiksmų patvirtinimas</target>
             </trans-unit>
             <trans-unit id="message_batch_confirmation">
                 <source>message_batch_confirmation</source>
-                <target>Ar tikrai norite atlikti šį veiksmą su pažymėtais įrašais?|Ar tikrai norite patvirtinti šį veiksmą ir įvykdyti %count% pažimėtiems elementams?</target>
+                <target>Ar tikrai norite atlikti šį veiksmą su pažymėtam įrašui?|Ar tikrai norite patvirtinti šį veiksmą ir įvykdyti %count% pažymėtiems elementams?|Ar tikrai norite patvirtinti šį veiksmą ir įvykdyti %count% pažymėtų elementų?</target>
             </trans-unit>
             <trans-unit id="message_batch_all_confirmation">
                 <source>message_batch_all_confirmation</source>
@@ -312,19 +316,19 @@
             </trans-unit>
             <trans-unit id="label_view_revision">
                 <source>label_view_revision</source>
-                <target>Peržiūrėti revizija</target>
+                <target>Peržiūrėti reviziją</target>
             </trans-unit>
             <trans-unit id="list_results_count">
                 <source>list_results_count</source>
-                <target>1 rezultatas|%count% resultai(-ų)</target>
+                <target>1 rezultatas|%count% resultatai|%count% resultatų</target>
             </trans-unit>
             <trans-unit id="label_export_download">
                 <source>label_export_download</source>
-                <target>Atsisiųsti : </target>
+                <target>Atsisiųsti</target>
             </trans-unit>
             <trans-unit id="loading_information">
                 <source>loading_information</source>
-                <target>Informacija ruošiama...</target>
+                <target>Informacija ruošiama…</target>
             </trans-unit>
             <trans-unit id="btn_preview">
                 <source>btn_preview</source>
@@ -348,7 +352,7 @@
             </trans-unit>
             <trans-unit id="confirm_exit">
                 <source>confirm_exit</source>
-                <target>Esate meišsaugojęs pakeitimų</target>
+                <target>Esate neišsaugojęs pakeitimų</target>
             </trans-unit>
             <trans-unit id="link_edit_acl">
               <source>link_edit_acl</source>
@@ -385,6 +389,10 @@
             <trans-unit id="add_new_entry">
                 <source>add_new_entry</source>
                 <target>sukurti įrašą</target>
+            </trans-unit>
+            <trans-unit id="link_actions">
+                <source>link_actions</source>
+                <target>Veiksmai</target>
             </trans-unit>
         </body>
     </file>

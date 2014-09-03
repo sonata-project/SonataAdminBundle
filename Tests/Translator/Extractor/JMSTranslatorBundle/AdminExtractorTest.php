@@ -41,7 +41,7 @@ class AdminExtractorTest extends \PHPUnit_Framework_TestCase
         if (!interface_exists('JMS\TranslationBundle\Translation\ExtractorInterface')) {
             $this->markTestSkipped('JMS Translator Bundle does not exist');
         }
-        
+
         $this->fooAdmin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
         $this->barAdmin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
 
@@ -85,11 +85,12 @@ class AdminExtractorTest extends \PHPUnit_Framework_TestCase
         // php 5.3 BC
         $translator = $this->adminExtractor;
 
+        $tester = $this;
         $this->fooAdmin->expects($this->any())
             ->method('getShow')
-            ->will($this->returnCallback(function() use ($translator) {
-                $translator->trans('foo', array(), 'foo_admin_domain');
-                $translator->transChoice('foo', 1, array(), 'foo_admin_domain');
+            ->will($this->returnCallback(function() use ($translator, $tester) {
+                $tester->assertEquals('foo', $translator->trans('foo', array(), 'foo_admin_domain'));
+                $tester->assertEquals('foo', $translator->transChoice('foo', 1, array(), 'foo_admin_domain'));
 
                 return null;
             }));

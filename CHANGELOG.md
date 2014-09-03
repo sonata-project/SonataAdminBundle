@@ -1,6 +1,18 @@
 CHANGELOG
 =========
 
+### 2014-08-08
+ * added new form type ``sonata_type_model_autocomplete``
+ * changed ``collection`` form type to ``sonata_type_native_collection``
+
+### 2013-12-27
+
+* [BC BREAK] Added KnpMenuBundle v2.x compatibility, ``buildSideMenu`` must now use the ``Admin::generateMenuUrl`` method to generate the route arguments for the KnpMenu options.
+
+### 2013-12-14
+
+* [BC BREAK] Added the ``getTranslationLabel`` method to AdminInterface
+
 ### 2013-12-05
 
 * [BC BREAK] Move some classes to SonataCoreBundle, you need to add a new dependency
@@ -10,6 +22,9 @@ CHANGELOG
 * [BC BREAK] added ``getBatchActions`` to the AdminInterface
   If you do not extend the Admin class, you need to add this method to
   your admin.
+
+### 2013-10-26
+ * added new form type ``sonata_type_model_hidden``
 
 ### 2013-10-13
 

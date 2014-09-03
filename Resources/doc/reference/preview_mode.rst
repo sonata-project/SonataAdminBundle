@@ -4,7 +4,7 @@ Preview Mode
 Preview Mode is an optional view of an object before it is persisted or updated.
 
 The preview step can be enabled for an admin entity by overriding the public property
-$supportsPreviewMode and setting it to true.
+``$supportsPreviewMode`` and setting it to true.
 
 .. code-block:: php
 
@@ -34,7 +34,7 @@ Accepting the preview will store the entity as if the preview step was never the
 
 
 Simulating front-end rendering
-----------------------------
+------------------------------
 
 Preview can be used to render how the object would look like in your front-end environment.
 
@@ -102,8 +102,14 @@ a different object you can just set your own variables prior to calling parent()
     {% endblock %}
 
     {% block formactions %}
-        <input class="btn btn-success" type="submit" name="btn_preview_approve" value="{{ 'btn_preview_approve'|trans({}, 'SonataAdminBundle') }}"/>
-        <input class="btn btn-danger" type="submit" name="btn_preview_decline" value="{{ 'btn_preview_decline'|trans({}, 'SonataAdminBundle') }}"/>
+        <button class="btn btn-success" type="submit" name="btn_preview_approve">
+            <i class="glyphicon glyphicon-ok"></i>
+            {{ 'btn_preview_approve'|trans({}, 'SonataAdminBundle') }}
+        </button>
+        <button class="btn btn-danger" type="submit" name="btn_preview_decline">
+            <i class="glyphicon glyphicon-remove"></i>
+            {{ 'btn_preview_decline'|trans({}, 'SonataAdminBundle') }}
+        </button>
     {% endblock %}
 
 Keep in mind that the whole edit form will now appear in your view.
@@ -112,16 +118,16 @@ Hiding the fieldset tags with css (display:none) will be enough to only show the
 
 .. code-block:: css
 
-    div.sonata-preview-form fieldset {
+    .sonata-preview-form .row {
         display: none;
     };
 
 Or if you prefer less:
 
-.. code-block:: less
+.. code-block:: sass
 
     div.sonata-preview-form {
-      fieldset {
+      .row {
         display: none;
       };
     }

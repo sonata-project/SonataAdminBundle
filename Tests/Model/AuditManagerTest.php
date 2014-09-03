@@ -31,17 +31,17 @@ class AuditManagerTest extends \PHPUnit_Framework_TestCase
         $container->expects($this->any())
             ->method('get')
             ->will($this->returnCallback(function($id) use ($fooReader, $barReader) {
-                    switch ($id) {
-                        case 'foo_reader':
-                            return $fooReader;
-                            break;
+                switch ($id) {
+                    case 'foo_reader':
+                        return $fooReader;
+                        break;
 
-                        case 'bar_reader':
-                            return $barReader;
-                            break;
-                    }
+                    case 'bar_reader':
+                        return $barReader;
+                        break;
+                }
 
-                    return null;
+                return null;
             }));
 
         $auditManager = new AuditManager($container);

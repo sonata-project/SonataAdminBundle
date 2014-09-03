@@ -1,0 +1,22 @@
+{
+    "name": "sonata-project-admin-bundle",
+    "homepage": "https://sonata-project.org/bundles/admin-bundle",
+    "authors": [
+        "Thomas Rabaix <thomas.rabaix@gmail.com>"
+    ],
+    "dependencies": {
+        "bootstrap-sass-official": "~3.1.0",
+        "bootstrap": "~3.1.0",
+        "jquery": "~1.11.0",
+        "jqueryui": "~1.10.4",
+        "x-editable": "~1.5.1",
+        "select2": "https://github.com/ivaynberg/select2.git#3.4.6",
+        "AdminLTE": "https://github.com/almasaeed2010/AdminLTE.git#master",
+        "jquery.scrollTo": "~1.4.11"
+    },
+    "license": "MIT",
+    "private": true,
+    "ignore": [
+        "*"
+    ]
+}

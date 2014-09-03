@@ -70,6 +70,12 @@ class FormMapper extends BaseGroupedMapper
              $fieldName = str_replace('.', '__', $fieldName);
         }
 
+        // change `collection` to `sonata_type_native_collection` form type to
+        // avoid BC break problems
+        if ($type == 'collection') {
+            $type = 'sonata_type_native_collection';
+        }
+
         $label = $fieldName;
 
         $group = $this->addFieldToCurrentGroup($label);
@@ -102,6 +108,12 @@ class FormMapper extends BaseGroupedMapper
         } else {
             // Note that the builder var is actually the formContractor:
             $options = array_replace_recursive($this->builder->getDefaultOptions($type, $fieldDescription), $options);
+
+            // be compatible with mopa if not installed, avoid generating an exception for invalid option
+            // force the default to false ...
+            if (!isset($options['label_render'])) {
+                $options['label_render'] = false;
+            }
 
             if (!isset($options['label'])) {
                 $options['label'] = $this->admin->getLabelTranslatorStrategy()->getLabel($fieldDescription->getName(), 'form', 'label');
@@ -151,6 +163,7 @@ class FormMapper extends BaseGroupedMapper
     public function remove($key)
     {
         $this->admin->removeFormFieldDescription($key);
+        $this->admin->removeFieldFromFormGroup($key);
         $this->formBuilder->remove($key);
 
         return $this;

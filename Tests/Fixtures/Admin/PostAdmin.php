@@ -27,4 +27,3 @@ class PostAdmin extends Admin
         return parent::getClassMetaData();
     }
 }
-

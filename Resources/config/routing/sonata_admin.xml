@@ -35,4 +35,8 @@
     <route id="sonata_admin_search" pattern="/search">
         <default key="_controller">SonataAdminBundle:Core:search</default>
     </route>
+
+    <route id="sonata_admin_retrieve_autocomplete_items" pattern="/core/get-autocomplete-items">
+        <default key="_controller">sonata.admin.controller.admin:retrieveAutocompleteItemsAction</default>
+    </route>
 </routes>

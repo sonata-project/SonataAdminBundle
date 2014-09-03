@@ -23,24 +23,27 @@ use Symfony\Component\HttpFoundation\Request;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Admin\BaseFieldDescription;
 use Sonata\AdminBundle\Util\AdminObjectAclData;
+use Sonata\AdminBundle\Admin\AdminInterface;
 
 class CRUDController extends Controller
 {
     /**
      * The related Admin class
      *
-     * @var \Sonata\AdminBundle\Admin\AdminInterface
+     * @var AdminInterface
      */
     protected $admin;
 
     /**
+     * Render JSON
+     *
      * @param mixed   $data
      * @param integer $status
      * @param array   $headers
      *
      * @return Response with json encoded data
      */
-    public function renderJson($data, $status = 200, $headers = array())
+    protected function renderJson($data, $status = 200, $headers = array())
     {
         // fake content-type so browser does not show the download popup when this
         // response is rendered through an iframe (used by the jquery.form.js plugin)
@@ -56,10 +59,11 @@ class CRUDController extends Controller
     }
 
     /**
+     * Returns true if the request is a XMLHttpRequest.
      *
-     * @return boolean true if the request is done by an ajax like query
+     * @return bool True if the request is an XMLHttpRequest, false otherwise
      */
-    public function isXmlHttpRequest()
+    protected function isXmlHttpRequest()
     {
         return $this->get('request')->isXmlHttpRequest() || $this->get('request')->get('_xml_http_request');
     }
@@ -96,9 +100,8 @@ class CRUDController extends Controller
      * Contextualize the admin class depends on the current request
      *
      * @throws \RuntimeException
-     * @return void
      */
-    public function configure()
+    protected function configure()
     {
         $adminCode = $this->container->get('request')->get('_sonata_admin');
 
@@ -129,11 +132,11 @@ class CRUDController extends Controller
     }
 
     /**
-     * return the base template name
+     * Returns the base template name
      *
-     * @return string the template name
+     * @return string The template name
      */
-    public function getBaseTemplate()
+    protected function getBaseTemplate()
     {
         if ($this->isXmlHttpRequest()) {
             return $this->admin->getTemplate('ajax');
@@ -143,11 +146,7 @@ class CRUDController extends Controller
     }
 
     /**
-     * @param string   $view
-     * @param array    $parameters
-     * @param Response $response
-     *
-     * @return Response
+     * {@inheritdoc}
      */
     public function render($view, array $parameters = array(), Response $response = null)
     {
@@ -159,11 +158,11 @@ class CRUDController extends Controller
     }
 
     /**
-     * return the Response object associated to the list action
-     *
-     * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
+     * List action
      *
      * @return Response
+     *
+     * @throws AccessDeniedException If access is not granted
      */
     public function listAction()
     {
@@ -186,13 +185,13 @@ class CRUDController extends Controller
     }
 
     /**
-     * execute a batch delete
+     * Execute a batch delete
      *
-     * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
+     * @param ProxyQueryInterface $query
      *
-     * @param \Sonata\AdminBundle\Datagrid\ProxyQueryInterface $query
+     * @return RedirectResponse
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @throws AccessDeniedException If access is not granted
      */
     public function batchActionDelete(ProxyQueryInterface $query)
     {
@@ -204,7 +203,7 @@ class CRUDController extends Controller
         try {
             $modelManager->batchDelete($this->admin->getClass(), $query);
             $this->addFlash('sonata_flash_success', 'flash_batch_delete_success');
-        } catch ( ModelManagerException $e ) {
+        } catch (ModelManagerException $e) {
             $this->addFlash('sonata_flash_error', 'flash_batch_delete_error');
         }
 
@@ -212,11 +211,14 @@ class CRUDController extends Controller
     }
 
     /**
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException|\Symfony\Component\Security\Core\Exception\AccessDeniedException
+     * Delete action
      *
-     * @param mixed $id
+     * @param int|string|null $id
      *
      * @return Response|RedirectResponse
+     *
+     * @throws NotFoundHttpException If the object does not exist
+     * @throws AccessDeniedException If access is not granted
      */
     public function deleteAction($id)
     {
@@ -242,7 +244,14 @@ class CRUDController extends Controller
                     return $this->renderJson(array('result' => 'ok'));
                 }
 
-                $this->addFlash('sonata_flash_success', 'flash_delete_success');
+                $this->addFlash(
+                    'sonata_flash_success',
+                    $this->admin->trans(
+                        'flash_delete_success',
+                        array('%name%' => $this->admin->toString($object)),
+                        'SonataAdminBundle'
+                    )
+                );
 
             } catch (ModelManagerException $e) {
 
@@ -250,10 +259,17 @@ class CRUDController extends Controller
                     return $this->renderJson(array('result' => 'error'));
                 }
 
-                $this->addFlash('sonata_flash_error', 'flash_delete_error');
+                $this->addFlash(
+                    'sonata_flash_error',
+                    $this->admin->trans(
+                        'flash_delete_error',
+                        array('%name%' => $this->admin->toString($object)),
+                        'SonataAdminBundle'
+                    )
+                );
             }
 
-            return new RedirectResponse($this->admin->generateUrl('list'));
+            return $this->redirectTo($object);
         }
 
         return $this->render($this->admin->getTemplate('delete'), array(
@@ -264,15 +280,14 @@ class CRUDController extends Controller
     }
 
     /**
-     * return the Response object associated to the edit action
+     * Edit action
      *
+     * @param int|string|null $id
      *
-     * @param mixed $id
+     * @return Response|RedirectResponse
      *
-     * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
-     *
-     * @return Response
+     * @throws NotFoundHttpException If the object does not exist
+     * @throws AccessDeniedException If access is not granted
      */
     public function editAction($id = null)
     {
@@ -280,7 +295,6 @@ class CRUDController extends Controller
         $templateKey = 'edit';
 
         $id = $this->get('request')->get($this->admin->getIdParameter());
-
         $object = $this->admin->getObject($id);
 
         if (!$object) {
@@ -298,31 +312,38 @@ class CRUDController extends Controller
         $form->setData($object);
 
         if ($this->getRestMethod() == 'POST') {
-            $form->bind($this->get('request'));
+            $form->submit($this->get('request'));
 
             $isFormValid = $form->isValid();
 
             // persist if the form was valid and if in preview mode the preview was approved
             if ($isFormValid && (!$this->isInPreviewMode() || $this->isPreviewApproved())) {
-                $this->admin->update($object);
 
-                if ($this->isXmlHttpRequest()) {
-                    return $this->renderJson(array(
-                        'result'    => 'ok',
-                        'objectId'  => $this->admin->getNormalizedIdentifier($object)
-                    ));
+                try {
+                    $object = $this->admin->update($object);
+
+                    if ($this->isXmlHttpRequest()) {
+                        return $this->renderJson(array(
+                            'result'    => 'ok',
+                            'objectId'  => $this->admin->getNormalizedIdentifier($object)
+                        ));
+                    }
+
+                    $this->addFlash('sonata_flash_success', $this->admin->trans('flash_edit_success', array('%name%' => $this->admin->toString($object)), 'SonataAdminBundle'));
+
+                    // redirect to edit mode
+                    return $this->redirectTo($object);
+
+                } catch (ModelManagerException $e) {
+
+                    $isFormValid = false;
                 }
-
-                $this->addFlash('sonata_flash_success', 'flash_edit_success');
-
-                // redirect to edit mode
-                return $this->redirectTo($object);
             }
 
             // show an error message if the form failed validation
             if (!$isFormValid) {
                 if (!$this->isXmlHttpRequest()) {
-                    $this->addFlash('sonata_flash_error', 'flash_edit_error');
+                    $this->addFlash('sonata_flash_error', $this->admin->trans('flash_edit_error', array('%name%' => $this->admin->toString($object)), 'SonataAdminBundle'));
                 }
             } elseif ($this->isPreviewRequested()) {
                 // enable the preview template if the form was valid and preview was requested
@@ -344,29 +365,33 @@ class CRUDController extends Controller
     }
 
     /**
-     * redirect the user depend on this choice
+     * Redirect the user depend on this choice
      *
      * @param object $object
      *
-     * @return Response
+     * @return RedirectResponse
      */
-    public function redirectTo($object)
+    protected function redirectTo($object)
     {
         $url = false;
 
-        if ($this->get('request')->get('btn_update_and_list')) {
+        if (null !== $this->get('request')->get('btn_update_and_list')) {
             $url = $this->admin->generateUrl('list');
         }
-        if ($this->get('request')->get('btn_create_and_list')) {
+        if (null !== $this->get('request')->get('btn_create_and_list')) {
             $url = $this->admin->generateUrl('list');
         }
 
-        if ($this->get('request')->get('btn_create_and_create')) {
+        if (null !== $this->get('request')->get('btn_create_and_create')) {
             $params = array();
             if ($this->admin->hasActiveSubClass()) {
                 $params['subclass'] = $this->get('request')->get('subclass');
             }
             $url = $this->admin->generateUrl('create', $params);
+        }
+
+        if ($this->getRestMethod() == 'DELETE') {
+            $url = $this->admin->generateUrl('list');
         }
 
         if (!$url) {
@@ -377,15 +402,19 @@ class CRUDController extends Controller
     }
 
     /**
-     * return the Response object associated to the batch action
+     * Batch action
      *
-     * @throws \RuntimeException
-     * @return Response
+     * @return Response|RedirectResponse
+     *
+     * @throws NotFoundHttpException If the HTTP method is not POST
+     * @throws \RuntimeException     If the batch action is not defined
      */
     public function batchAction()
     {
-        if ($this->getRestMethod() != 'POST') {
-            throw new \RuntimeException('invalid request type, POST expected');
+        $restMethod = $this->getRestMethod();
+
+        if ('POST' !== $restMethod) {
+            throw $this->createNotFoundException(sprintf('Invalid request type "%s", POST expected', $restMethod));
         }
 
         // check the csrf token
@@ -440,10 +469,13 @@ class CRUDController extends Controller
         $askConfirmation = isset($batchActions[$action]['ask_confirmation']) ? $batchActions[$action]['ask_confirmation'] : true;
 
         if ($askConfirmation && $confirmation != 'ok') {
+            $actionLabel = $this->admin->trans($this->admin->getTranslationLabel($action, 'action'));
+
             $formView = $datagrid->getForm()->createView();
 
             return $this->render($this->admin->getTemplate('batch_confirmation'), array(
                 'action'     => 'list',
+                'action_label' => $actionLabel,
                 'datagrid'   => $datagrid,
                 'form'       => $formView,
                 'data'       => $data,
@@ -462,6 +494,8 @@ class CRUDController extends Controller
         $query->setFirstResult(null);
         $query->setMaxResults(null);
 
+        $this->admin->preBatchAction($action, $query, $idx, $allElements);
+
         if (count($idx) > 0) {
             $this->admin->getModelManager()->addIdentifiersToQuery($this->admin->getClass(), $query, $idx);
         } elseif (!$allElements) {
@@ -472,10 +506,11 @@ class CRUDController extends Controller
     }
 
     /**
-     * return the Response object associated to the create action
+     * Create action
      *
-     * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
      * @return Response
+     *
+     * @throws AccessDeniedException If access is not granted
      */
     public function createAction()
     {
@@ -495,30 +530,42 @@ class CRUDController extends Controller
         $form->setData($object);
 
         if ($this->getRestMethod()== 'POST') {
-            $form->bind($this->get('request'));
+            $form->submit($this->get('request'));
 
             $isFormValid = $form->isValid();
 
             // persist if the form was valid and if in preview mode the preview was approved
             if ($isFormValid && (!$this->isInPreviewMode() || $this->isPreviewApproved())) {
-                $this->admin->create($object);
 
-                if ($this->isXmlHttpRequest()) {
-                    return $this->renderJson(array(
-                        'result' => 'ok',
-                        'objectId' => $this->admin->getNormalizedIdentifier($object)
-                    ));
+                if (false === $this->admin->isGranted('CREATE', $object)) {
+                    throw new AccessDeniedException();
                 }
 
-                $this->addFlash('sonata_flash_success','flash_create_success');
-                // redirect to edit mode
-                return $this->redirectTo($object);
+                try {
+                    $object = $this->admin->create($object);
+
+                    if ($this->isXmlHttpRequest()) {
+                        return $this->renderJson(array(
+                            'result' => 'ok',
+                            'objectId' => $this->admin->getNormalizedIdentifier($object)
+                        ));
+                    }
+
+                    $this->addFlash('sonata_flash_success', $this->admin->trans('flash_create_success', array('%name%' => $this->admin->toString($object)), 'SonataAdminBundle'));
+
+                    // redirect to edit mode
+                    return $this->redirectTo($object);
+
+                } catch (ModelManagerException $e) {
+
+                    $isFormValid = false;
+                }
             }
 
             // show an error message if the form failed validation
             if (!$isFormValid) {
                 if (!$this->isXmlHttpRequest()) {
-                    $this->addFlash('sonata_flash_error', 'flash_create_error');
+                    $this->addFlash('sonata_flash_error', $this->admin->trans('flash_create_error', array('%name%' => $this->admin->toString($object)), 'SonataAdminBundle'));
                 }
             } elseif ($this->isPreviewRequested()) {
                 // pick the preview template if the form was valid and preview was requested
@@ -542,7 +589,7 @@ class CRUDController extends Controller
     /**
      * Returns true if the preview is requested to be shown
      *
-     * @return boolean
+     * @return bool
      */
     protected function isPreviewRequested()
     {
@@ -552,7 +599,7 @@ class CRUDController extends Controller
     /**
      * Returns true if the preview has been approved
      *
-     * @return boolean
+     * @return bool
      */
     protected function isPreviewApproved()
     {
@@ -565,7 +612,7 @@ class CRUDController extends Controller
      * That means either a preview is requested or the preview has already been shown
      * and it got approved/declined.
      *
-     * @return boolean
+     * @return bool
      */
     protected function isInPreviewMode()
     {
@@ -578,7 +625,7 @@ class CRUDController extends Controller
     /**
      * Returns true if the preview has been declined
      *
-     * @return boolean
+     * @return bool
      */
     protected function isPreviewDeclined()
     {
@@ -586,14 +633,14 @@ class CRUDController extends Controller
     }
 
     /**
-     * return the Response object associated to the view action
+     * Show action
      *
-     * @param null $id
-     *
-     * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     * @param int|string|null $id
      *
      * @return Response
+     *
+     * @throws NotFoundHttpException If the object does not exist
+     * @throws AccessDeniedException If access is not granted
      */
     public function showAction($id = null)
     {
@@ -619,24 +666,27 @@ class CRUDController extends Controller
     }
 
     /**
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException|\Symfony\Component\Security\Core\Exception\AccessDeniedException
+     * Show history revisions for object
      *
-     * @param mixed $id
+     * @param int|string|null $id
      *
      * @return Response
+     *
+     * @throws AccessDeniedException If access is not granted
+     * @throws NotFoundHttpException If the object does not exist or the audit reader is not available
      */
     public function historyAction($id = null)
     {
-        if (false === $this->admin->isGranted('EDIT')) {
-            throw new AccessDeniedException();
-        }
-
         $id = $this->get('request')->get($this->admin->getIdParameter());
 
         $object = $this->admin->getObject($id);
 
         if (!$object) {
             throw new NotFoundHttpException(sprintf('unable to find the object with id : %s', $id));
+        }
+
+        if (false === $this->admin->isGranted('EDIT', $object)) {
+            throw new AccessDeniedException();
         }
 
         $manager = $this->get('sonata.admin.audit.manager');
@@ -650,33 +700,36 @@ class CRUDController extends Controller
         $revisions = $reader->findRevisions($this->admin->getClass(), $id);
 
         return $this->render($this->admin->getTemplate('history'), array(
-            'action'    => 'history',
-            'object'    => $object,
-            'revisions' => $revisions,
+            'action'            => 'history',
+            'object'            => $object,
+            'revisions'         => $revisions,
+            'currentRevision'   => $revisions ? current($revisions) : false,
         ));
     }
 
     /**
-     * @param null   $id
-     * @param string $revision
+     * View history revision of object
      *
-     * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     * @param int|string|null $id
+     * @param string|null     $revision
      *
      * @return Response
+     *
+     * @throws AccessDeniedException If access is not granted
+     * @throws NotFoundHttpException If the object or revision does not exist or the audit reader is not available
      */
     public function historyViewRevisionAction($id = null, $revision = null)
     {
-        if (false === $this->admin->isGranted('EDIT')) {
-            throw new AccessDeniedException();
-        }
-
         $id = $this->get('request')->get($this->admin->getIdParameter());
 
         $object = $this->admin->getObject($id);
 
         if (!$object) {
             throw new NotFoundHttpException(sprintf('unable to find the object with id : %s', $id));
+        }
+
+        if (false === $this->admin->isGranted('EDIT', $object)) {
+            throw new AccessDeniedException();
         }
 
         $manager = $this->get('sonata.admin.audit.manager');
@@ -704,12 +757,70 @@ class CRUDController extends Controller
     }
 
     /**
-     * @param Request $request
+     * Compare history revisions of object
      *
-     * @throws \RuntimeException
-     * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
+     * @param int|string|null $id
+     * @param int|string|null $base_revision
+     * @param int|string|null $compare_revision
      *
      * @return Response
+     *
+     * @throws AccessDeniedException If access is not granted
+     * @throws NotFoundHttpException If the object or revision does not exist or the audit reader is not available
+     */
+    public function historyCompareRevisionsAction($id = null, $base_revision = null, $compare_revision = null)
+    {
+        if (false === $this->admin->isGranted('EDIT')) {
+            throw new AccessDeniedException();
+        }
+
+        $id = $this->get('request')->get($this->admin->getIdParameter());
+
+        $object = $this->admin->getObject($id);
+
+        if (!$object) {
+            throw new NotFoundHttpException(sprintf('unable to find the object with id : %s', $id));
+        }
+
+        $manager = $this->get('sonata.admin.audit.manager');
+
+        if (!$manager->hasReader($this->admin->getClass())) {
+            throw new NotFoundHttpException(sprintf('unable to find the audit reader for class : %s', $this->admin->getClass()));
+        }
+
+        $reader = $manager->getReader($this->admin->getClass());
+
+        // retrieve the base revision
+        $base_object = $reader->find($this->admin->getClass(), $id, $base_revision);
+        if (!$base_object) {
+            throw new NotFoundHttpException(sprintf('unable to find the targeted object `%s` from the revision `%s` with classname : `%s`', $id, $base_revision, $this->admin->getClass()));
+        }
+
+        // retrieve the compare revision
+        $compare_object = $reader->find($this->admin->getClass(), $id, $compare_revision);
+        if (!$compare_object) {
+            throw new NotFoundHttpException(sprintf('unable to find the targeted object `%s` from the revision `%s` with classname : `%s`', $id, $compare_revision, $this->admin->getClass()));
+        }
+
+        $this->admin->setSubject($base_object);
+
+        return $this->render($this->admin->getTemplate('show_compare'), array(
+            'action'            => 'show',
+            'object'            => $base_object,
+            'object_compare'    => $compare_object,
+            'elements'          => $this->admin->getShow()
+        ));
+    }
+
+    /**
+     * Export data to specified format
+     *
+     * @param Request $request
+     *
+     * @return Response
+     *
+     * @throws AccessDeniedException If access is not granted
+     * @throws \RuntimeException     If the export format is invalid
      */
     public function exportAction(Request $request)
     {
@@ -721,11 +832,12 @@ class CRUDController extends Controller
 
         $allowedExportFormats = (array) $this->admin->getExportFormats();
 
-        if (!in_array($format, $allowedExportFormats) ) {
+        if (!in_array($format, $allowedExportFormats)) {
             throw new \RuntimeException(sprintf('Export in format `%s` is not allowed for class: `%s`. Allowed formats are: `%s`', $format, $this->admin->getClass(), implode(', ', $allowedExportFormats)));
         }
 
-        $filename = sprintf('export_%s_%s.%s',
+        $filename = sprintf(
+            'export_%s_%s.%s',
             strtolower(substr($this->admin->getClass(), strripos($this->admin->getClass(), '\\') + 1)),
             date('Y_m_d_H_i_s', strtotime('now')),
             $format
@@ -756,14 +868,14 @@ class CRUDController extends Controller
     }
 
     /**
-     * return the Response object associated to the acl action
+     * Returns the Response object associated to the acl action
      *
-     * @param null $id
+     * @param int|string|null $id
      *
-     * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     * @return Response|RedirectResponse
      *
-     * @return Response
+     * @throws AccessDeniedException If access is not granted.
+     * @throws NotFoundHttpException If the object does not exist or the ACL is not enabled
      */
     public function aclAction($id = null)
     {
@@ -798,7 +910,7 @@ class CRUDController extends Controller
 
         $request = $this->getRequest();
         if ($request->getMethod() === 'POST') {
-            $form->bind($request);
+            $form->submit($request);
 
             if ($form->isValid()) {
                 $adminObjectAclManipulator->updateAcl($adminObjectAclData);
@@ -824,7 +936,7 @@ class CRUDController extends Controller
      * @param string $type
      * @param string $message
      */
-    public function addFlash($type, $message)
+    protected function addFlash($type, $message)
     {
         $this->get('session')
              ->getFlashBag()
@@ -832,29 +944,31 @@ class CRUDController extends Controller
     }
 
     /**
-     * Validate CSRF token for action with out form
+     * Validate CSRF token for action without form
      *
      * @param string $intention
      *
-     * @throws \RuntimeException
+     * @throws HttpException
      */
-    public function validateCsrfToken($intention)
+    protected function validateCsrfToken($intention)
     {
         if (!$this->container->has('form.csrf_provider')) {
             return;
         }
 
         if (!$this->container->get('form.csrf_provider')->isCsrfTokenValid($intention, $this->get('request')->request->get('_sonata_csrf_token', false))) {
-            throw new HttpException(400, "The csrf token is not valid, CSRF attack ?");
+            throw new HttpException(400, 'The csrf token is not valid, CSRF attack?');
         }
     }
 
     /**
-     * @param $intention
+     * Get CSRF token
      *
-     * @return string
+     * @param string $intention
+     *
+     * @return string|false
      */
-    public function getCsrfToken($intention)
+    protected function getCsrfToken($intention)
     {
         if (!$this->container->has('form.csrf_provider')) {
             return false;

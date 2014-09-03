@@ -126,9 +126,32 @@ class PoolTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($this->pool->getAdminByClass('notexists'));
     }
 
-    public function testGetAdminForClassWhenAdminClassIsSet()
+    /**
+     *
+     * @expectedException \RuntimeException
+     */
+    public function testGetAdminForClassWithInvalidFormat()
     {
         $this->pool->setAdminClasses(array('someclass' => 'sonata.user.admin.group1'));
+        $this->assertTrue($this->pool->hasAdminByClass('someclass'));
+
+        $this->pool->getAdminByClass('someclass');
+    }
+
+    /**
+     *
+     * @expectedException \RuntimeException
+     */
+    public function testGetAdminForClassWithTooManyRegisteredAdmin()
+    {
+        $this->pool->setAdminClasses(array('someclass' => array('sonata.user.admin.group1', 'sonata.user.admin.group2')));
+        $this->assertTrue($this->pool->hasAdminByClass('someclass'));
+        $this->assertEquals('adminUserClass', $this->pool->getAdminByClass('someclass'));
+    }
+
+    public function testGetAdminForClassWhenAdminClassIsSet()
+    {
+        $this->pool->setAdminClasses(array('someclass' => array('sonata.user.admin.group1')));
         $this->assertTrue($this->pool->hasAdminByClass('someclass'));
         $this->assertEquals('adminUserClass', $this->pool->getAdminByClass('someclass'));
     }
@@ -209,6 +232,11 @@ class PoolTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('bar', $this->pool->getOption('foo'));
 
         $this->assertEquals(null, $this->pool->getOption('non_existent_option'));
+    }
+
+    public function testOptionDefault()
+    {
+        $this->assertEquals(array(), $this->pool->getOption('nonexistantarray', array()));
     }
 
     /**

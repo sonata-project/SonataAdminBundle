@@ -13,8 +13,8 @@ namespace Sonata\AdminBundle\Validator;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Bundle\FrameworkBundle\Validator\ConstraintValidatorFactory;
 use Sonata\AdminBundle\Validator\ErrorElement;
+use Symfony\Component\Validator\ConstraintValidatorFactoryInterface;
 
 class InlineValidator extends ConstraintValidator
 {
@@ -24,7 +24,7 @@ class InlineValidator extends ConstraintValidator
      * @param \Symfony\Component\DependencyInjection\ContainerInterface            $container
      * @param \Symfony\Bundle\FrameworkBundle\Validator\ConstraintValidatorFactory $constraintValidatorFactory
      */
-    public function __construct(ContainerInterface $container, ConstraintValidatorFactory $constraintValidatorFactory)
+    public function __construct(ContainerInterface $container, ConstraintValidatorFactoryInterface $constraintValidatorFactory)
     {
         $this->container                  = $container;
         $this->constraintValidatorFactory = $constraintValidatorFactory;

@@ -123,6 +123,13 @@ class AdminEventExtensionTest extends \PHPUnit_Framework_TestCase
         ))->preUpdate($this->getMock('Sonata\AdminBundle\Admin\AdminInterface'), new \stdClass);
     }
 
+    public function testConfigureQuery()
+    {
+        $this->getExtension(array(
+            $this->equalTo('sonata.admin.event.configure.query'),
+        ))->configureQuery($this->getMock('Sonata\AdminBundle\Admin\AdminInterface'), $this->getMock('Sonata\AdminBundle\Datagrid\ProxyQueryInterface'));
+    }
+
     public function testPostUpdate()
     {
         $this->getExtension(array(

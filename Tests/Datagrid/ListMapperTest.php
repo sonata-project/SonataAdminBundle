@@ -34,15 +34,20 @@ class ListMapperTest extends \PHPUnit_Framework_TestCase
      */
     private $fieldDescriptionCollection;
 
+    /**
+     * @var AdminInterface
+     */
+    private $admin;
+
     public function setUp()
     {
         $listBuilder = $this->getMock('Sonata\AdminBundle\Builder\ListBuilderInterface');
         $this->fieldDescriptionCollection = new FieldDescriptionCollection();
-        $admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $this->admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
 
         $listBuilder->expects($this->any())
             ->method('addField')
-            ->will($this->returnCallback(function($list, $type, $fieldDescription, $admin) {
+            ->will($this->returnCallback(function ($list, $type, $fieldDescription, $admin) {
                 $list->add($fieldDescription);
             }));
 
@@ -61,17 +66,17 @@ class ListMapperTest extends \PHPUnit_Framework_TestCase
                 return $fieldDescriptionClone;
             }));
 
-        $admin->expects($this->any())
+        $this->admin->expects($this->any())
             ->method('getModelManager')
             ->will($this->returnValue($modelManager));
 
-        $labelTranslatorStrategy = new NoopLabelTranslatorStrategy;
+        $labelTranslatorStrategy = new NoopLabelTranslatorStrategy();
 
-        $admin->expects($this->any())
+        $this->admin->expects($this->any())
             ->method('getLabelTranslatorStrategy')
             ->will($this->returnValue($labelTranslatorStrategy));
 
-        $this->listMapper = new ListMapper($listBuilder, $this->fieldDescriptionCollection, $admin);
+        $this->listMapper = new ListMapper($listBuilder, $this->fieldDescriptionCollection, $this->admin);
     }
 
     public function testFluidInterface()
@@ -127,7 +132,7 @@ class ListMapperTest extends \PHPUnit_Framework_TestCase
     public function testAddViewInlineAction()
     {
         // ignore E_USER_DEPRECATED error
-        $previousErrorHandler = set_error_handler( function() {}, E_USER_DEPRECATED);
+        $previousErrorHandler = set_error_handler( function () {}, E_USER_DEPRECATED);
 
         $this->assertFalse($this->listMapper->has('_action'));
         $this->listMapper->add('_action', 'actions', array('actions'=>array('view'=>array())));
@@ -157,12 +162,38 @@ class ListMapperTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->listMapper->has('fooName'));
     }
 
-    public function testAddException()
+    public function testAddDuplicateNameException()
+    {
+        $tmpNames = array();
+        $this->admin->expects($this->any())
+            ->method('hasListFieldDescription')
+            ->will($this->returnCallback(function ($name) use (&$tmpNames) {
+                if (isset($tmpNames[$name])) {
+                    return true;
+                }
+                $tmpNames[$name] = $name;
+
+                return false;
+            }));
+
+        try {
+            $this->listMapper->add('fooName');
+            $this->listMapper->add('fooName');
+        } catch (\RuntimeException $e) {
+            $this->assertContains('Duplicate field name "fooName" in list mapper. Names should be unique.', $e->getMessage());
+
+            return;
+        }
+
+        $this->fail('Failed asserting that exception of type "\RuntimeException" is thrown.');
+    }
+
+    public function testAddWrongTypeException()
     {
         try {
             $this->listMapper->add(12345);
         } catch (\RuntimeException $e) {
-            $this->assertContains('Unknown or duplicate field name in list mapper. Field name should be either of FieldDescriptionInterface interface or string. Names should be unique.', $e->getMessage());
+            $this->assertContains('Unknown field name in list mapper. Field name should be either of FieldDescriptionInterface interface or string.', $e->getMessage());
 
             return;
         }
@@ -187,7 +218,7 @@ class ListMapperTest extends \PHPUnit_Framework_TestCase
             'fooName2'=>$fieldDescription2,
             'fooName3'=>$fieldDescription3,
             'fooName4'=>$fieldDescription4,
-       ), $this->fieldDescriptionCollection->getElements());
+        ), $this->fieldDescriptionCollection->getElements());
 
         $this->listMapper->reorder(array('fooName3', 'fooName2', 'fooName1', 'fooName4'));
 
@@ -197,11 +228,11 @@ class ListMapperTest extends \PHPUnit_Framework_TestCase
             'fooName2'=>$fieldDescription2,
             'fooName1'=>$fieldDescription1,
             'fooName4'=>$fieldDescription4,
-       ), true), print_r($this->fieldDescriptionCollection->getElements(), true));
+        ), true), print_r($this->fieldDescriptionCollection->getElements(), true));
 
     }
 
-    private function getFieldDescriptionMock($name=null, $label=null)
+    private function getFieldDescriptionMock($name = null, $label = null)
     {
         $fieldDescription = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\BaseFieldDescription');
 

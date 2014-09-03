@@ -165,6 +165,9 @@ class FormTypeFieldExtension extends AbstractTypeExtension
         $resolver->setDefaults(array(
             'sonata_admin'             => null,
             'sonata_field_description' => null,
+
+            // be compatible with mopa if not installed, avoid generating an exception for invalid option
+            'label_render'             => true,
         ));
     }
 

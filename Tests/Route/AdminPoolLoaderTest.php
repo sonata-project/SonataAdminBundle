@@ -36,22 +36,22 @@ class AdminPoolLoaderTest extends \PHPUnit_Framework_TestCase
 
         $adminPoolLoader = new AdminPoolLoader($pool, array('foo_admin', 'bar_admin'), $container);
 
-        $roureCollection1 = new RouteCollection('base.Code.Route.foo', 'baseRouteNameFoo', 'baseRoutePatternFoo', 'baseControllerNameFoo');
-        $roureCollection2 = new RouteCollection('base.Code.Route.bar', 'baseRouteNameBar', 'baseRoutePatternBar', 'baseControllerNameBar');
+        $routeCollection1 = new RouteCollection('base.Code.Route.foo', 'baseRouteNameFoo', 'baseRoutePatternFoo', 'baseControllerNameFoo');
+        $routeCollection2 = new RouteCollection('base.Code.Route.bar', 'baseRouteNameBar', 'baseRoutePatternBar', 'baseControllerNameBar');
 
-        $roureCollection1->add('foo');
-        $roureCollection2->add('bar');
-        $roureCollection2->add('baz');
+        $routeCollection1->add('foo');
+        $routeCollection2->add('bar');
+        $routeCollection2->add('baz');
 
         $admin1 = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
         $admin1->expects($this->once())
             ->method('getRoutes')
-            ->will($this->returnValue($roureCollection1));
+            ->will($this->returnValue($routeCollection1));
 
         $admin2 = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
         $admin2->expects($this->once())
             ->method('getRoutes')
-            ->will($this->returnValue($roureCollection2));
+            ->will($this->returnValue($routeCollection2));
 
         $pool->expects($this->any())
             ->method('getInstance')
