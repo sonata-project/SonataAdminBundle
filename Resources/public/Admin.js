@@ -70,7 +70,7 @@ var Admin = {
         if (window.SONATA_CONFIG && window.SONATA_CONFIG.USE_SELECT2 && window.Select2) {
 
             jQuery('select:not([data-sonata-select2="false"])', subject).each(function() {
-                var select = $(this);
+                var select = jQuery(this);
 
                 var allowClearEnabled = false;
 
