@@ -385,6 +385,18 @@ class AdminTest extends \PHPUnit_Framework_TestCase
         $admin->getActiveSubClass();
     }
 
+    /**
+     * @covers Sonata\AdminBundle\Admin\Admin::hasActiveSubClass
+     */
+    public function testOnlyOneSubclassNeededToBeActive()
+    {
+        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
+        $admin->setSubClasses(array('extended1' => 'NewsBundle\Entity\PostExtended1'));
+        $request = new \Symfony\Component\HttpFoundation\Request(array('subclass' => 'extended1'));
+        $admin->setRequest($request);
+        $this->assertTrue($admin->hasActiveSubClass());
+    }
+
     public function testGetPerPageOptions()
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
