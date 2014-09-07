@@ -341,3 +341,13 @@ legend.sonata-ba-fieldset-collapsed-description + .sonata-ba-collapsed-fields {
 .form-horizontal .control-group {
     margin-bottom: 10px;
 }
+
+.noscript-warning {
+    background-color: #C70A0A;
+    color: #FFFFFF;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 4px 0;
+    text-align: center;
+    width: 100%;
+}

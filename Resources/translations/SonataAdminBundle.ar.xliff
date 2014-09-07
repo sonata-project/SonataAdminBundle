@@ -394,6 +394,10 @@
                 <source>link_actions</source>
                 <target>لائحة العمليات</target>
             </trans-unit>
+            <trans-unit id="noscript_warning">
+                <source>noscript_warning</source>
+                <target>noscript_warning</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
