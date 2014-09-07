@@ -16,6 +16,7 @@ use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Exception\NoValueException;
 use Sonata\AdminBundle\Admin\Pool;
 use Symfony\Component\PropertyAccess\PropertyAccess;
+use Psr\Log\LoggerInterface;
 
 class SonataAdminExtension extends \Twig_Extension
 {
@@ -30,11 +31,18 @@ class SonataAdminExtension extends \Twig_Extension
     protected $pool;
 
     /**
-     * @param Pool $pool
+     * @var LoggerInterface
      */
-    public function __construct(Pool $pool)
+    protected $logger;
+
+    /**
+     * @param Pool            $pool
+     * @param LoggerInterface $logger
+     */
+    public function __construct(Pool $pool, LoggerInterface $logger = null)
     {
         $this->pool = $pool;
+        $this->logger = $logger;
     }
 
     /**
@@ -77,6 +85,8 @@ class SonataAdminExtension extends \Twig_Extension
     }
 
     /**
+     * Get template
+     *
      * @param FieldDescriptionInterface $fieldDescription
      * @param string                    $defaultTemplate
      *
@@ -84,12 +94,17 @@ class SonataAdminExtension extends \Twig_Extension
      */
     protected function getTemplate(FieldDescriptionInterface $fieldDescription, $defaultTemplate)
     {
-        $templateName = $fieldDescription->getTemplate() ? : $defaultTemplate;
+        $templateName = $fieldDescription->getTemplate() ?: $defaultTemplate;
 
         try {
             $template = $this->environment->loadTemplate($templateName);
         } catch (\Twig_Error_Loader $e) {
+
             $template = $this->environment->loadTemplate($defaultTemplate);
+
+            if (null !== $this->logger) {
+                $this->logger->warning(sprintf('An error occured trying to load the template "%s" for the field "%s", the default template "%s" was used instead: "%s". ', $templateName, $fieldDescription->getFieldName(), $defaultTemplate, $e->getMessage()));
+            }
         }
 
         return $template;
