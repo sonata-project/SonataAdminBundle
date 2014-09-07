@@ -106,6 +106,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
         $this->request = new Request();
         $this->pool = new Pool($this->container, 'title', 'logo.png');
+        $this->pool->setAdminServiceIds(array('foo.admin'));
         $this->request->attributes->set('_sonata_admin', 'foo.admin');
         $this->admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
         $this->parameters = array();
@@ -427,6 +428,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException('RuntimeException', 'Unable to find the admin class related to the current controller (Sonata\AdminBundle\Controller\CRUDController)');
 
+        $this->pool->setAdminServiceIds(array('nonexistent.admin'));
         $this->request->attributes->set('_sonata_admin', 'nonexistent.admin');
         $this->protectedTestedMethods['configure']->invoke($this->controller);
     }
