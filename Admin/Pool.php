@@ -67,6 +67,7 @@ class Pool
      * Returns whether an admin group exists or not.
      *
      * @param string $group
+     *
      * @return bool
      */
     public function hasGroup($group)
@@ -106,7 +107,9 @@ class Pool
      * Returns all admins related to the given $group
      *
      * @param string $group
+     *
      * @return array
+     *
      * @throws \InvalidArgumentException
      */
     public function getAdminsByGroup($group)
@@ -129,7 +132,7 @@ class Pool
     }
 
     /**
-     * return the admin related to the given $class
+     * Return the admin related to the given $class
      *
      * @param string $class
      *
@@ -191,9 +194,15 @@ class Pool
      * @param string $id
      *
      * @return \Sonata\AdminBundle\Admin\AdminInterface
+     *
+     * @throws \InvalidArgumentException
      */
     public function getInstance($id)
     {
+        if (!in_array($id, $this->adminServiceIds)) {
+            throw new \InvalidArgumentException(sprintf('Admin service "%s" not found in admin pool.', $id));
+        }
+
         return $this->container->get($id);
     }
 
