@@ -13,6 +13,7 @@ namespace Sonata\AdminBundle\Tests\Form\DataTransformer;
 
 use Sonata\AdminBundle\Form\DataTransformer\ModelToIdPropertyTransformer;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\Foo;
+use Sonata\AdminBundle\Tests\Fixtures\Entity\FooArrayAccess;
 use Doctrine\Common\Collections\ArrayCollection;
 
 class ModelToIdPropertyTransformerTest extends \PHPUnit_Framework_TestCase
@@ -128,6 +129,20 @@ class ModelToIdPropertyTransformerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(array('identifiers' => array(123), 'labels' => array('example')), $transformer->transform($entity));
     }
 
+    public function testTransformWorksWithArrayAccessEntity()
+    {
+        $entity = new FooArrayAccess();
+        $entity->setBar('example');
+
+        $this->modelManager->expects($this->once())
+            ->method('getIdentifierValues')
+            ->will($this->returnValue(array(123)));
+
+        $transformer = new ModelToIdPropertyTransformer($this->modelManager, 'Sonata\AdminBundle\Tests\Fixtures\Entity\FooArrayAccess', 'bar', false);
+
+        $this->assertEquals(array('identifiers' => array(123), 'labels' => array('example')), $transformer->transform($entity));
+    }
+
     public function testTransformToStringCallback()
     {
         $entity = new Foo();
@@ -143,6 +158,25 @@ class ModelToIdPropertyTransformerTest extends \PHPUnit_Framework_TestCase
         });
 
         $this->assertEquals(array('identifiers' => array(123), 'labels' => array('bazz')), $transformer->transform($entity));
+    }
+
+    /**
+     * @expectedException        \RuntimeException
+     * @expectedExceptionMessage Callback in "to_string_callback" option doesn`t contain callable function.
+     */
+    public function testTransformToStringCallbackException()
+    {
+        $entity = new Foo();
+        $entity->setBar('example');
+        $entity->setBaz('bazz');
+
+        $this->modelManager->expects($this->once())
+            ->method('getIdentifierValues')
+            ->will($this->returnValue(array(123)));
+
+        $transformer = new ModelToIdPropertyTransformer($this->modelManager, 'Sonata\AdminBundle\Tests\Fixtures\Entity\Foo', 'bar', false, '987654');
+
+        $transformer->transform($entity);
     }
 
     public function testTransformMultiple()
@@ -187,5 +221,53 @@ class ModelToIdPropertyTransformerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(array('identifiers' => array(), 'labels' => array()), $transformer->transform('0'));
 
         $this->assertEquals(array('identifiers' => array(123, 456, 789), 'labels' => array('foo', 'bar', 'baz')), $transformer->transform($collection));
+    }
+
+    /**
+     * @expectedException        \InvalidArgumentException
+     * @expectedExceptionMessage A multiple selection must be passed a collection not a single value. Make sure that form option "multiple=false" is set for many-to-one relation and "multiple=true" is set for many-to-many or one-to-many relations.
+     */
+    public function testTransformCollectionException()
+    {
+        $entity = new Foo();
+        $transformer = new ModelToIdPropertyTransformer($this->modelManager, 'Sonata\AdminBundle\Tests\Fixtures\Entity\Foo', 'bar', true);
+        $transformer->transform($entity);
+    }
+
+    /**
+     * @expectedException        \InvalidArgumentException
+     * @expectedExceptionMessage A multiple selection must be passed a collection not a single value. Make sure that form option "multiple=false" is set for many-to-one relation and "multiple=true" is set for many-to-many or one-to-many relations.
+     */
+    public function testTransformArrayAccessException()
+    {
+        $entity = new FooArrayAccess();
+        $entity->setBar('example');
+        $transformer = new ModelToIdPropertyTransformer($this->modelManager, 'Sonata\AdminBundle\Tests\Fixtures\Entity\FooArrayAccess', 'bar', true);
+        $transformer->transform($entity);
+    }
+
+    /**
+     * @expectedException        \InvalidArgumentException
+     * @expectedExceptionMessage A single selection must be passed a single value not a collection. Make sure that form option "multiple=false" is set for many-to-one relation and "multiple=true" is set for many-to-many or one-to-many relations.
+     */
+    public function testTransformEntityException()
+    {
+        $entity1 = new Foo();
+        $entity1->setBar('foo');
+
+        $entity2 = new Foo();
+        $entity2->setBar('bar');
+
+        $entity3 = new Foo();
+        $entity3->setBar('baz');
+
+        $collection = new ArrayCollection();
+        $collection[] = $entity1;
+        $collection[] = $entity2;
+        $collection[] = $entity3;
+
+        $transformer = new ModelToIdPropertyTransformer($this->modelManager, 'Sonata\AdminBundle\Tests\Fixtures\Entity\Foo', 'bar', false);
+
+        $transformer->transform($collection);
     }
 }

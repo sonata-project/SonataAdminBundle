@@ -56,7 +56,7 @@ upload timestamp.
               type:         integer
               generator:    { strategy: AUTO }
           fields:
-            file:
+            filename:
               type:         string
               length:       100
             updated:        # changed when files are uploaded, to force preUpdate and postUpdate to fire

@@ -144,11 +144,11 @@
             </trans-unit>
             <trans-unit id='flash_create_success'>
                 <source>flash_create_success</source>
-                <target>O item foi criado com sucesso.</target>
+                <target>O item "%name%" foi criado com sucesso.</target>
             </trans-unit>
             <trans-unit id='flash_create_error'>
                 <source>flash_create_error</source>
-                <target>Um erro ocorreu durante a criação do item.</target>
+                <target>Um erro ocorreu durante a criação do item "%name%".</target>
             </trans-unit>
             <trans-unit id='flash_edit_success'>
                 <source>flash_edit_success</source>
@@ -393,6 +393,10 @@
             <trans-unit id="link_actions">
                 <source>link_actions</source>
                 <target>Ações</target>
+            </trans-unit>
+            <trans-unit id="noscript_warning">
+                <source>noscript_warning</source>
+                <target>noscript_warning</target>
             </trans-unit>
         </body>
     </file>

@@ -52,9 +52,13 @@ $(function() {
         var bf = box.find(".box-body, .box-footer");
         if (!box.hasClass("collapsed-box")) {
             box.addClass("collapsed-box");
+            //Convert minus into plus
+            $(this).children(".fa-minus").removeClass("fa-minus").addClass("fa-plus");
             bf.slideUp();
         } else {
             box.removeClass("collapsed-box");
+            //Convert plus into minus
+            $(this).children(".fa-plus").removeClass("fa-plus").addClass("fa-minus");
             bf.slideDown();
         }
     });
@@ -67,7 +71,7 @@ $(function() {
         height: "200px",
         alwaysVisible: false,
         size: "3px"
-    }).css("width","100%");
+    }).css("width", "100%");
 
     /*
      * INITIALIZE BUTTON TOGGLE
@@ -99,10 +103,9 @@ $(function() {
      * wrapper gets resized and upon page load. We will use
      * Ben Alman's method for detecting the resize event.
      **/
-    //alert($(window).height());
     function _fix() {
         //Get window height and the wrapper height
-        var height = $(window).height() - $("body > .header").height();
+        var height = $(window).height() - $("body > .header").height() - ($("body > .footer").outerHeight() || 0);
         $(".wrapper").css("min-height", height + "px");
         var content = $(".wrapper").height();
         //If the wrapper height is greater than the window
@@ -114,13 +117,33 @@ $(function() {
             $(".left-side, html, body").css("min-height", height + "px");
         }
     }
-    //Fire upon load
-    _fix();
-    //Fire when wrapper is resized
-    $(".wrapper").resize(function() {
+    //Let disable stretch behavior if not needed
+    if (false === $("html").hasClass('no-stretch')) {
+        //Fire upon load
         _fix();
-    });
+        //Fire when wrapper is resized
+        $(".wrapper").resize(function () {
+            _fix();
+            fix_sidebar();
+        });
+
+        //Fix the fixed layout sidebar scroll bug
+        fix_sidebar();
+    }
 });
+
+function fix_sidebar() {
+    //Make sure the body tag has the .fixed class
+    if (!$("body").hasClass("fixed")) {
+        return;
+    }
+
+    //Add slimscroll
+    $(".sidebar").slimscroll({
+        height: ($(window).height() - $(".header").height()) + "px",
+        color: "rgba(0,0,0,0.2)"
+    });
+}
 
 /*
  * BOX REFRESH BUTTON
@@ -387,15 +410,13 @@ $(function() {
             g()
         }, e[b])
     }}
-    )(jQuery, this);
+)(jQuery, this);
 
 /*!
- * iCheck v1.0.1, http://git.io/arlzeA
- * =================================
- * Powerful jQuery and Zepto plugin for checkboxes and radio buttons customization
+ * SlimScroll https://github.com/rochal/jQuery-slimScroll
+ * =======================================================
  *
- * (c) 2013 Damir Sultanov, http://fronteed.com
- * MIT Licensed
+ * Copyright (c) 2011 Piotr Rochala (http://rocha.la) Dual licensed under the MIT
  */
 (function(f) {
     jQuery.fn.extend({slimScroll: function(h) {
@@ -404,7 +425,7 @@ $(function() {
             function r(d) {
                 if (s) {
                     d = d ||
-                        window.event;
+                    window.event;
                     var c = 0;
                     d.wheelDelta && (c = -d.wheelDelta / 120);
                     d.detail && (c = d.detail / 3);
@@ -603,7 +624,7 @@ $(function() {
     }
     function x(a) {
         return a.charAt(0).toUpperCase() +
-            a.slice(1)
+        a.slice(1)
     }
     function L(a, b, d, c) {
         if (!c) {
@@ -679,7 +700,7 @@ $(function() {
                     !c[l] && D(a, l);
                 else if (/us|ur/.test(d))
                     g["blur" ==
-                        d ? z : v](x)
+                    d ? z : v](x)
             });
             d.on("click mousedown mouseup mouseover mouseout touchbegin.i touchend.i", function(b) {
                 var d = b[n], e = /wn|up/.test(d) ? w : B;

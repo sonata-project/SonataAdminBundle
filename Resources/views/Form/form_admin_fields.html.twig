@@ -289,8 +289,8 @@ file that was distributed with this source code.
                                 "{{ req_param_name_page_number }}": page,
 
                                 // admin
-                                'uniqid': "{{ sonata_admin.admin.root.uniqid }}",
-                                'code':   "{{ sonata_admin.admin.root.code }}",
+                                'uniqid': "{{ sonata_admin.admin.uniqid }}",
+                                'code':   "{{ sonata_admin.admin.code }}",
                                 'field':  "{{ name }}"
 
                                 // other parameters
@@ -306,24 +306,6 @@ file that was distributed with this source code.
                         // notice we return the value of more so Select2 knows if more results can be loaded
                         return {results: data.items, more: data.more};
                     }
-                },
-                initSelection: function(element, callback) {
-                    //remove initial text from input
-                    $(element).val("");
-
-                    var data = [];
-                    {% if multiple -%}
-                        data = [
-                        {%- for key, label_text in value.labels -%}
-                            {id:{{ value.identifiers[key]|e('js') }}, label:'{{ label_text|e('js') }}'}
-                            {%- if not loop.last -%}, {% endif -%}
-                        {%- endfor -%}
-                        ];
-                    {%- elseif value.labels[0] is defined -%}
-                        data = {id: {{ value.identifiers[0]|e('js') }}, label:'{{ value.labels[0]|e('js') }}'};
-                    {%- endif  %}
-
-                    callback(data);
                 },
                 formatResult: function (item) {
                     return {% block sonata_type_model_autocomplete_dropdown_item_format %}'<div class="sonata-autocomplete-dropdown-item">'+item.label+'</div>'{% endblock %};// format of one dropdown item
@@ -357,7 +339,7 @@ file that was distributed with this source code.
                 }
 
                 // remove input
-                if (undefined !== e.removed) {
+                if (undefined !== e.removed && null !== e.removed) {
                     var removedItems = e.removed;
 
                     if(!$.isArray(removedItems)) {
@@ -372,6 +354,21 @@ file that was distributed with this source code.
                 }
             });
 
+            // Initialise the autocomplete
+            var data = [];
+            {% if multiple -%}
+                data = [
+                {%- for key, label_text in value.labels -%}
+                    {id: '{{ value.identifiers[key]|e('js') }}', label:'{{ label_text|e('js') }}'}
+                    {%- if not loop.last -%}, {% endif -%}
+                {%- endfor -%}
+                ];
+            {%- elseif value.labels[0] is defined -%}
+                data = {id: '{{ value.identifiers[0]|e('js') }}', label:'{{ value.labels[0]|e('js') }}'};
+            {%- endif  %}
+            if (undefined==data.length || 0<data.length) { // Leave placeholder if no data set
+                autocompleteInput.select2('data', data);
+            }
         })(jQuery);
     </script>
 {% endspaceless %}

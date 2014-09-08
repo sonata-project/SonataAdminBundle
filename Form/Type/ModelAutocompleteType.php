@@ -34,7 +34,7 @@ class ModelAutocompleteType extends AbstractType
     {
         $builder->addViewTransformer(new ModelToIdPropertyTransformer($options['model_manager'], $options['class'], $options['property'], $options['multiple'], $options['to_string_callback']), true);
 
-        $builder->add('title', 'text', array('attr'=>array('class'=>'span5'), 'property_path' => '[labels][0]'));
+        $builder->add('title', 'text', array('attr'=>$options['attr'], 'property_path' => '[labels][0]'));
         $builder->add('identifiers', 'collection', array('type'=>'hidden', 'allow_add' => true, 'allow_delete' => true));
 
         $builder->setAttribute('property', $options['property']);
@@ -74,6 +74,7 @@ class ModelAutocompleteType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
+            'attr'                            => array(),
             'compound'                        => true,
             'model_manager'                   => null,
             'class'                           => null,

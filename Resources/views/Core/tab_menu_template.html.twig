@@ -92,7 +92,7 @@
 {% endblock %}
 
 {% block spanElement %}
-    <span>{{ macros.attributes(item.labelAttributes) }}>
+    <span {{ macros.attributes(item.labelAttributes) }}>
         {% if item.attribute('icon') is not empty  %}
             <i class="{{ item.attribute('icon') }}"></i>
         {% endif %}

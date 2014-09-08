@@ -176,15 +176,23 @@ model_manager
 
 callback
   defaults to null. Callable function that can be used to modify the query which is used to retrieve autocomplete items.
+  The callback should receive three parameters - the Admin instance, the property (or properties) defined as searchable and the
+  search value entered by the user.
+
+  From the ``$admin`` parameter it is possible to get the ``Datagrid`` and the ``Request``:
 
 .. code-block:: php
 
     $formMapper
         ->add('category', 'sonata_type_model_autocomplete', array(
             'property'=>'title',
-            'callback' => function ($datagrid, $property, $value) {
+            'callback' => function ($admin, $property, $value) {
+                $datagrid = $admin->getDatagrid();
                 $queryBuilder = $datagrid->getQuery();
-                $queryBuilder->andWhere($queryBuilder->getRootAlias() . '.enabled=1 ');
+                $queryBuilder
+                    ->andWhere($queryBuilder->getRootAlias() . '.foo=:barValue')
+                    ->setParameter('barValue', $admin->getRequest()->get('bar'))
+                ;
                 $datagrid->setValue($property, null, $value);
             },
         )
@@ -324,8 +332,19 @@ to the underlying forms.
         {
             $formMapper
                 ->add('sales', 'sonata_type_collection', array(
-                    // Prevents the "Delete" option from being displayed
-                    'type_options' => array('delete' => false)
+                    'type_options' => array(
+                        // Prevents the "Delete" option from being displayed
+                        'delete' => false,
+                        'delete_options' => array(
+                            // You may otherwise choose to put the field but hide it
+                            'type'         => 'hidden',
+                            // In that case, you need to fill in the options as well
+                            'type_options' => array(
+                                'mapped'   => false,
+                                'required' => false,
+                            )
+                        )
+                    )
                 ), array(
                     'edit' => 'inline',
                     'inline' => 'table',
@@ -345,6 +364,9 @@ btn_add and btn_catalogue:
 
 **TIP**: A jQuery event is fired after a row has been added (``sonata-admin-append-form-element``).
 You can listen to this event to trigger custom javascript (eg: add a calendar widget to a newly added date field)
+
+**TIP**: Setting the 'required' option to true does not cause a requirement of 'at least one' child entity.
+Setting the 'required' option to false causes all nested form fields to become not required as well.
 
 sonata_type_native_collection (previously collection)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

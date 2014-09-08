@@ -267,6 +267,10 @@ div.sonata-medium-date div {
     float: left;
 }
 
+.sonata-collection-add, .sonata-collection-delete {
+    box-shadow: none;
+}
+
 .no-js .sonata-collection-add, .no-js .sonata-collection-delete {
     display: none;
 }
@@ -338,6 +342,12 @@ legend.sonata-ba-fieldset-collapsed-description + .sonata-ba-collapsed-fields {
     margin-bottom: 10px;
 }
 
-.box .box-body {
-    overflow: hidden;
+.noscript-warning {
+    background-color: #C70A0A;
+    color: #FFFFFF;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 4px 0;
+    text-align: center;
+    width: 100%;
 }

@@ -4,7 +4,7 @@
         <body>
             <trans-unit id="sonata_administration">
                 <source>sonata_administration</source>
-                <target>Administration</target>
+                <target>Adminisztráció</target>
             </trans-unit>
             <trans-unit id="action_delete">
                 <source>action_delete</source>
@@ -176,7 +176,7 @@
             </trans-unit>
             <trans-unit id="link_breadcrumb_dashboard">
                 <source>breadcrumb.link_dashboard</source>
-                <target>&#8962;</target>
+                <target><![CDATA[<i class="fa fa-home"></i>]]></target>
             </trans-unit>
             <trans-unit id="title_delete">
                 <source>title_delete</source>
@@ -302,6 +302,10 @@
                 <source>td_action</source>
                 <target>Műveletek</target>
             </trans-unit>
+            <trans-unit id="td_compare">
+                <source>td_compare</source>
+                <target>Összehasonlít</target>
+            </trans-unit>
             <trans-unit id="td_revision">
                 <source>td_revision</source>
                 <target>Verziók</target>
@@ -317,6 +321,10 @@
             <trans-unit id="label_view_revision">
                 <source>label_view_revision</source>
                 <target>Verzió mutatása</target>
+            </trans-unit>
+            <trans-unit id="label_compare_revision">
+                <source>label_compare_revision</source>
+                <target>Összehasonlít ezzel a verzióval</target>
             </trans-unit>
             <trans-unit id="list_results_count">
                 <source>list_results_count</source>
@@ -392,7 +400,11 @@
             </trans-unit>
             <trans-unit id="link_actions">
                 <source>link_actions</source>
-                <target>link_actions</target>
+                <target>Műveletek</target>
+            </trans-unit>
+            <trans-unit id="noscript_warning">
+                <source>noscript_warning</source>
+                <target>noscript_warning</target>
             </trans-unit>
         </body>
     </file>

@@ -51,6 +51,17 @@ file that was distributed with this source code.
                 <script src="{{ asset(javascript) }}" type="text/javascript"></script>
             {% endfor %}
 
+            {# localize select2 #}
+            {% if admin_pool is defined and admin_pool.getOption('use_select2') %}
+                {% set locale = app.request.locale %}
+                {% if locale == 'pt' %}{% set locale = 'pt_PT' %}{% endif %}
+
+                {# omit default EN locale #}
+                {% if locale[:2] != 'en' %}
+                    <script src="{{ asset('bundles/sonataadmin/vendor/select2/select2_locale_' ~ locale|replace({'_':'-'}) ~ '.js') }}"></script>
+                {% endif %}
+            {% endif %}
+
         {% endblock %}
 
         <title>
@@ -79,6 +90,13 @@ file that was distributed with this source code.
     <body {% block body_attributes %}class="sonata-bc skin-black fixed"{% endblock %}>
         {% block sonata_header %}
             <header class="header">
+                {% block sonata_header_noscript_warning %}
+                    <noscript>
+                        <div class="noscript-warning">
+                            {{ 'noscript_warning'|trans({}, 'SonataAdminBundle') }}
+                        </div>
+                    </noscript>
+                {% endblock %}
                 {% block logo %}
                     {% spaceless %}
                     <a class="logo" href="{{ url('sonata_admin_dashboard') }}">
