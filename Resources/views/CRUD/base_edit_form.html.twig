@@ -26,32 +26,36 @@
             {% endblock %}
 
             {% block sonata_tab_content %}
-                {% for name, form_group in admin.formgroups %}
-                    <div class="{{ form_group.class|default('col-md-12') }}">
-                        <div class="box box-success">
-                            <div class="box-header">
-                                <h4 class="box-title">
-                                    {{ admin.trans(name, {}, form_group.translation_domain) }}
-                                </h4>
-                            </div>
-                            {#<div class="box{% if loop.first %} in{% endif %}" id="{{ admin.uniqid }}_{{ loop.index }}">#}
-                                <div class="box-body">
-                                    <div class="sonata-ba-collapsed-fields">
-                                        {% if form_group.description != false %}
-                                            <p>{{ form_group.description|raw }}</p>
-                                        {% endif %}
+                {% set has_tab = ((admin.formtabs|length == 1 and admin.formtabs|keys[0] != 'default') or admin.formtabs|length > 1 ) %}
 
-                                        {% for field_name in form_group.fields %}
-                                            {% if admin.formfielddescriptions[field_name] is defined %}
-                                                {{ form_row(form[field_name])}}
-                                            {% endif %}
-                                        {% endfor %}
+                <div class="col-md-12">
+                    {% if has_tab %}
+                        <div class="nav-tabs-custom">
+                            <ul class="nav nav-tabs" role="tablist">
+                                {% for name, form_tab in admin.formtabs %}
+                                    <li{% if loop.index == 1 %} class="active"{% endif %}><a href="#tab_{{ loop.index }}" data-toggle="tab">{{ admin.trans(name, {}, form_tab.translation_domain) }}</a></li>
+                                {% endfor %}
+                            </ul>
+                            <div class="tab-content">
+                                {% for code, form_tab in admin.formtabs %}
+                                    <div class="tab-pane fade{% if loop.first %} in active{% endif %}" id="tab_{{ loop.index }}">
+                                        <div class="box-body">
+                                            <div class="sonata-ba-collapsed-fields">
+                                                {% if form_tab.description != false %}
+                                                    <p>{{ form_tab.description|raw }}</p>
+                                                {% endif %}
+
+                                                {{ form_helper.render_groups(admin, form, form_tab['groups'], has_tab) }}
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            {#</div>#}
+                                {% endfor %}
+                            </div>
                         </div>
-                    </div>
-                {% endfor %}
+                    {% else %}
+                        {{ form_helper.render_groups(admin, form, admin.formtabs['default'].groups, has_tab) }}
+                    {% endif %}
+                </div>
             {% endblock %}
 
             {% block sonata_post_fieldsets %}

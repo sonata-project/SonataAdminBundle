@@ -16,13 +16,15 @@ namespace Sonata\AdminBundle\Mapper;
  */
 abstract class BaseGroupedMapper extends BaseMapper
 {
-
     protected $currentGroup;
+    protected $currentTab;
 
     abstract protected function getGroups();
+    abstract protected function getTabs();
 
     abstract protected function setGroups(array $groups);
-    
+    abstract protected function setTabs(array $tabs);
+
     /**
      * @param string $name
      * @param array  $options
@@ -31,25 +33,112 @@ abstract class BaseGroupedMapper extends BaseMapper
      */
     public function with($name, array $options = array())
     {
-        $groups = $this->getGroups();
-
-        if (!isset($groups[$name])) {
-            $groups[$name] = array();
-        }
-
-        $groups[$name] = array_merge(array(
+        /**
+         * The current implementation should work with the following workflow:
+         *
+         *     $formMapper
+         *        ->with('group1')
+         *            ->add('username')
+         *            ->add('password')
+         *        ->end()
+         *        ->with('tab1', array('tab' => true))
+         *            ->with('group1')
+         *                ->add('username')
+         *                ->add('password')
+         *            ->end()
+         *            ->with('group2', array('collapsed' => true))
+         *                ->add('enabled')
+         *                ->add('createdAt')
+         *            ->end()
+         *        ->end();
+         *
+         */
+        $defaultOptions = array(
             'collapsed'          => false,
             'class'              => false,
-            'fields'             => array(),
             'description'        => false,
             'translation_domain' => null,
-        ), $groups[$name], $options);
+            'name'               => $name,
+        );
 
-        $this->setGroups($groups);
+        $code = $name;
 
-        $this->currentGroup = $name;
+        // Open
+        if (array_key_exists("tab", $options) && $options["tab"]) {
+            $tabs = $this->getTabs();
+
+            if ($this->currentTab) {
+                throw new \RuntimeException($tabs[$this->currentTab]["auto_created"] ?
+                    "New tab was added automatically when you have added field or group. You should close current tab before adding new one OR add tabs before adding groups and fields" :
+                    "You should close previous tab with end() before adding new tab"
+                );
+            } elseif ($this->currentGroup) {
+                throw new \RuntimeException("You should open tab before adding new groups");
+            }
+
+            if (!isset($tabs[$name])) {
+                $tabs[$name] = array();
+            }
+
+            $tabs[$code] = array_merge($defaultOptions, array(
+                'auto_created'       => false,
+                'groups'             => array(),
+            ), $tabs[$code], $options);
+
+            $this->currentTab = $code;
+
+        } else {
+
+            if ($this->currentGroup) {
+                throw new \RuntimeException("You should close previous group with end() before adding new tab");
+            }
+
+            if (!$this->currentTab) {
+                // no tab define
+                $this->with("default", array(
+                    'tab'                => true,
+                    'auto_created'       => true,
+                    'translation_domain' => isset($options['translation_domain']) ? $options['translation_domain'] : null
+                )); // add new tab automatically
+            }
+
+            // if no tab is selected, we go the the main one named '_' ..
+            if ($this->currentTab !== "default") {
+                $code = $this->currentTab.".".$name; // groups with the same name can be on different tabs, so we prefix them in order to make unique group name
+            }
+
+            $groups = $this->getGroups();
+            if (!isset($groups[$code])) {
+                $groups[$code] = array();
+            }
+
+            $groups[$code] = array_merge($defaultOptions, array(
+                'fields' => array(),
+            ), $groups[$code], $options);
+
+            $this->currentGroup = $code;
+            $this->setGroups($groups);
+            $tabs = $this->getTabs();
+        }
+
+        if ($this->currentGroup && isset($tabs[$this->currentTab]) && !in_array($this->currentGroup, $tabs[$this->currentTab]["groups"])) {
+            $tabs[$this->currentTab]["groups"][] = $this->currentGroup;
+        }
+
+        $this->setTabs($tabs);
 
         return $this;
+    }
+
+    /**
+     * @param       $name
+     * @param array $options
+     *
+     * @return BaseGroupedMapper
+     */
+    public function tab($name, array $options = array())
+    {
+        return $this->with($name, array_merge($options, array('tab' => true)));
     }
 
     /**
@@ -57,7 +146,13 @@ abstract class BaseGroupedMapper extends BaseMapper
      */
     public function end()
     {
-        $this->currentGroup = null;
+        if ($this->currentGroup !== null) {
+            $this->currentGroup = null;
+        } elseif ($this->currentTab !== null) {
+            $this->currentTab = null;
+        } else {
+            throw new \Exception("No open tabs or groups, you cannot use end()");
+        }
 
         return $this;
     }
@@ -91,9 +186,9 @@ abstract class BaseGroupedMapper extends BaseMapper
     protected function getCurrentGroupName()
     {
         if (!$this->currentGroup) {
-            $this->with($this->admin->getLabel());
+            $this->with($this->admin->getLabel(), array('auto_created' => true));
         }
+
         return $this->currentGroup;
     }
-
 }
