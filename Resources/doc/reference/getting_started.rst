@@ -238,7 +238,7 @@ Step 2,3 Alternative: Use sonata:admin:generate
 -----------------------------------------------
 
 The `sonata:admin:generate` command does exactly what is describe above. 
-Full Information can be found here: #HOW DO I DO INTRA-DOC LINKS PROPERLY?
+Full Information can be found in the `console reference`_.
 
 Usage example:
 
@@ -294,3 +294,4 @@ details on what can be configured and achieved with SonataAdminBundle.
 
 .. _`symfony cookbook`: http://symfony.com/doc/master/cookbook/bundles/extension.html#using-the-load-method
 .. _`symfony translations page`: http://symfony.com/doc/current/book/translation.html#using-message-domains
+.. _`console reference`: console.rst
