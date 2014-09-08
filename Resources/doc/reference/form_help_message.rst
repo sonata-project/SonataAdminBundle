@@ -46,6 +46,29 @@ Alternative Way To Define Help Messages
         }
     }
 
+Help messages in a sub-field
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code-block:: php
+
+    <?php
+    class ExampleAdmin.php
+    {
+        protected function configureFormFields(FormMapper $formMapper)
+        {
+            $formMapper
+                ->add('enabled')
+                ->add('settings', 'sonata_type_immutable_array', array(
+                    'keys' => array(
+                        array('content', 'textarea', array(
+                            'sonata_admin_help' => 'Set the content'
+                        )),
+                        array('public', 'checkbox', array()),
+                    )
+                );
+        }
+    }
+
 
 Advanced usage
 ^^^^^^^^^^^^^^
@@ -77,4 +100,5 @@ Example
                 ->end();
         }
     }
+
 
