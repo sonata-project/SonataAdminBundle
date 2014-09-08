@@ -58,7 +58,10 @@ abstract class BaseGroupedMapper extends BaseMapper
             'class'              => false,
             'description'        => false,
             'translation_domain' => null,
+            'name'               => $name,
         );
+
+        $code = $name;
 
         // Open
         if (array_key_exists("tab", $options) && $options["tab"]) {
@@ -77,12 +80,12 @@ abstract class BaseGroupedMapper extends BaseMapper
                 $tabs[$name] = array();
             }
 
-            $tabs[$name] = array_merge($defaultOptions, array(
+            $tabs[$code] = array_merge($defaultOptions, array(
                 'auto_created'       => false,
                 'groups'             => array(),
-            ), $tabs[$name], $options);
+            ), $tabs[$code], $options);
 
-            $this->currentTab = $name;
+            $this->currentTab = $code;
 
         } else {
 
@@ -101,19 +104,19 @@ abstract class BaseGroupedMapper extends BaseMapper
 
             // if no tab is selected, we go the the main one named '_' ..
             if ($this->currentTab !== "default") {
-                $name = $this->currentTab.".".$name; // groups with the same name can be on different tabs, so we prefix them in order to make unique group name
+                $code = $this->currentTab.".".$name; // groups with the same name can be on different tabs, so we prefix them in order to make unique group name
             }
 
             $groups = $this->getGroups();
-            if (!isset($groups[$name])) {
-                $groups[$name] = array();
+            if (!isset($groups[$code])) {
+                $groups[$code] = array();
             }
 
-            $groups[$name] = array_merge($defaultOptions, array(
+            $groups[$code] = array_merge($defaultOptions, array(
                 'fields' => array(),
-            ), $groups[$name], $options);
+            ), $groups[$code], $options);
 
-            $this->currentGroup = $name;
+            $this->currentGroup = $code;
             $this->setGroups($groups);
             $tabs = $this->getTabs();
         }

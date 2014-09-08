@@ -394,6 +394,10 @@
                 <source>noscript_warning</source>
                 <target>noscript_warning</target>
             </trans-unit>
+            <trans-unit id="message_form_group_empty">
+                <source>message_form_group_empty</source>
+                <target>message_form_group_empty</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

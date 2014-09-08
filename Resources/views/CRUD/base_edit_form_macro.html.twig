@@ -1,12 +1,12 @@
 {% macro render_groups(admin, form, groups, has_tab) %}
     {% if has_tab %}<div class="row">{% endif %}
-    {% for name in groups %}
-        {% set form_group = admin.formgroups[name] %}
+    {% for code in groups %}
+        {% set form_group = admin.formgroups[code] %}
         <div class="{{ form_group.class }}"> {# default class 'col-md-12' removed because it do not work with tabs#}
             <div class="box box-success">
                 <div class="box-header">
                     <h4 class="box-title">
-                        {{ admin.trans(name, {}, form_group.translation_domain) }}
+                        {{ admin.trans(form_group.name, {}, form_group.translation_domain) }}
                     </h4>
                 </div>
                 {#<div class="box{% if loop.first %} in{% endif %}" id="{{ admin.uniqid }}_{{ loop.index }}">#}
@@ -20,6 +20,8 @@
                             {% if admin.formfielddescriptions[field_name] is defined %}
                                 {{ form_row(form[field_name])}}
                             {% endif %}
+                        {% else %}
+                            <em>{{ 'message_form_group_empty'|trans({}, 'SonataAdminBundle') }}</em>
                         {% endfor %}
                     </div>
                 </div>

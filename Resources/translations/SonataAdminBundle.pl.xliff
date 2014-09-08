@@ -402,6 +402,10 @@
                 <source>noscript_warning</source>
                 <target>Twoja przeglądarka ma wyłączoną obsługę JavaScript. Niektóre funkcje mogą nie działać poprawnie.</target>
             </trans-unit>
+            <trans-unit id="message_form_group_empty">
+                <source>message_form_group_empty</source>
+                <target>message_form_group_empty</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

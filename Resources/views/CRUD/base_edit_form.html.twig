@@ -37,7 +37,7 @@
                                 {% endfor %}
                             </ul>
                             <div class="tab-content">
-                                {% for name, form_tab in admin.formtabs %}
+                                {% for code, form_tab in admin.formtabs %}
                                     <div class="tab-pane fade{% if loop.first %} in active{% endif %}" id="tab_{{ loop.index }}">
                                         <div class="box-body">
                                             <div class="sonata-ba-collapsed-fields">
