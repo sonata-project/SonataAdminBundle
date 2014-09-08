@@ -26,32 +26,56 @@
             {% endblock %}
 
             {% block sonata_tab_content %}
-                {% for name, form_group in admin.formgroups %}
-                    <div class="{{ form_group.class|default('col-md-12') }}">
-                        <div class="box box-success">
-                            <div class="box-header">
-                                <h4 class="box-title">
-                                    {{ admin.trans(name, {}, form_group.translation_domain) }}
-                                </h4>
-                            </div>
-                            {#<div class="box{% if loop.first %} in{% endif %}" id="{{ admin.uniqid }}_{{ loop.index }}">#}
-                                <div class="box-body">
-                                    <div class="sonata-ba-collapsed-fields">
-                                        {% if form_group.description != false %}
-                                            <p>{{ form_group.description|raw }}</p>
-                                        {% endif %}
-
-                                        {% for field_name in form_group.fields %}
-                                            {% if admin.formfielddescriptions[field_name] is defined %}
-                                                {{ form_row(form[field_name])}}
+                <div class="col-md-12">
+                    <div class="nav-tabs-custom">
+                        <ul class="nav nav-tabs">
+                            {% for name, form_tab in admin.formtabs %}
+                                <li{% if loop.index == 1 %} class="active"{% endif %}><a href="#tab_{{ loop.index }}" data-toggle="tab">{{ admin.trans(name, {}, form_tab.translation_domain) }}</a></li>
+                            {% endfor %}
+                        </ul>
+                        <div class="tab-content">
+                            {% for name, form_tab in admin.formtabs %}
+                                <div class="tab-pane{% if loop.first %} active{% endif %}" id="tab_{{ loop.index }}">
+                                    <div class="box-body">
+                                        <div class="sonata-ba-collapsed-fields">
+                                            {% if form_tab.description != false %}
+                                                <p>{{ form_tab.description|raw }}</p>
                                             {% endif %}
-                                        {% endfor %}
+
+                                            {% for name in form_tab.groups %}
+                                                {% set form_group = admin.formgroups[name] %}
+                                                <div class="{{ form_group.class }}"> {# default class 'col-md-12' removed because it do not work with tabs#}
+                                                    <div class="box box-success">
+                                                        <div class="box-header">
+                                                            <h4 class="box-title">
+                                                                {{ admin.trans(name, {}, form_group.translation_domain) }}
+                                                            </h4>
+                                                        </div>
+                                                        {#<div class="box{% if loop.first %} in{% endif %}" id="{{ admin.uniqid }}_{{ loop.index }}">#}
+                                                        <div class="box-body">
+                                                            <div class="sonata-ba-collapsed-fields">
+                                                                {% if form_group.description != false %}
+                                                                    <p>{{ form_group.description|raw }}</p>
+                                                                {% endif %}
+
+                                                                {% for field_name in form_group.fields %}
+                                                                    {% if admin.formfielddescriptions[field_name] is defined %}
+                                                                        {{ form_row(form[field_name])}}
+                                                                    {% endif %}
+                                                                {% endfor %}
+                                                            </div>
+                                                        </div>
+                                                        {#</div>#}
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
                                     </div>
                                 </div>
-                            {#</div>#}
+                            {% endfor %}
                         </div>
                     </div>
-                {% endfor %}
+                </div>
             {% endblock %}
 
             {% block sonata_post_fieldsets %}

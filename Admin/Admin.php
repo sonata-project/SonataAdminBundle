@@ -161,11 +161,25 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     private $formGroups = false;
 
     /**
+     * The form tabs disposition
+     *
+     * @var array|boolean
+     */
+    private $formTabs = false;
+
+    /**
      * The view group disposition
      *
      * @var array|boolean
      */
     private $showGroups = false;
+
+    /**
+     * The view tab disposition
+     *
+     * @var array|boolean
+     */
+    private $showTabs = false;
 
     /**
      * The label class name  (used in the title/breadcrumb ...)
@@ -1620,6 +1634,38 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         $formGroups = $this->getFormGroups();
         $formGroups[$group]['fields'] = array_merge(array_flip($keys), $formGroups[$group]['fields']);
         $this->setFormGroups($formGroups);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFormTabs()
+    {
+        return $this->formTabs;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setFormTabs(array $formTabs)
+    {
+        $this->formTabs = $formTabs;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getShowTabs()
+    {
+        return $this->showTabs;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setShowTabs(array $showTabs)
+    {
+        $this->showTabs = $showTabs;
     }
 
     /**
