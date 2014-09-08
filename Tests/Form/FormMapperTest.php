@@ -88,6 +88,7 @@ class FormMapperTest extends \PHPUnit_Framework_TestCase
             'auto_created' => true,
             'groups' => array('foobar'),
             'tab' => true,
+            'name' => 'default'
         )), $this->admin->getFormTabs());
 
         $this->assertEquals(array('foobar' => array(
@@ -96,6 +97,7 @@ class FormMapperTest extends \PHPUnit_Framework_TestCase
             'description' => false,
             'translation_domain' => null,
             'fields' => array (),
+            'name' => 'foobar'
         )), $this->admin->getFormGroups());
     }
 
@@ -111,6 +113,7 @@ class FormMapperTest extends \PHPUnit_Framework_TestCase
             'description' => false,
             'translation_domain' => 'Foobar',
             'fields' => array (),
+            'name' => 'foobar'
         )), $this->admin->getFormGroups());
 
         $this->assertEquals(array('default' => array (
@@ -121,6 +124,7 @@ class FormMapperTest extends \PHPUnit_Framework_TestCase
             'auto_created' => true,
             'groups' => array('foobar'),
             'tab' => true,
+            'name' => 'default'
         )), $this->admin->getFormTabs());
     }
 
@@ -133,6 +137,7 @@ class FormMapperTest extends \PHPUnit_Framework_TestCase
                 'description' => false,
                 'translation_domain' => 'Foobar',
                 'class' => false,
+                'name' => 'foobar'
             )
         );
 
@@ -170,6 +175,7 @@ class FormMapperTest extends \PHPUnit_Framework_TestCase
             'auto_created' => true,
             'groups' => array ('foobar'),
             'tab' => true,
+            'name' => 'default'
         )), $this->admin->getFormTabs());
 
         $this->assertEquals(array('foobar' => array(
@@ -180,6 +186,7 @@ class FormMapperTest extends \PHPUnit_Framework_TestCase
             'fields' => array(
                 'foo' => 'foo'
             ),
+            'name' => 'foobar'
         )), $this->admin->getFormGroups());
     }
 

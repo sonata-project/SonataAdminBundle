@@ -209,6 +209,7 @@ class ShowMapperTest extends \PHPUnit_Framework_TestCase
                 'description' => false,
                 'translation_domain' => null,
                 'class' => false,
+                'name' => 'Group1'
             )), $this->admin->getShowGroups());
 
         $this->showMapper->reorder(array('fooName3', 'fooName2', 'fooName1', 'fooName4'));
@@ -220,6 +221,7 @@ class ShowMapperTest extends \PHPUnit_Framework_TestCase
                 'class' => false,
                 'description' => false,
                 'translation_domain' => null,
+                'name' => 'Group1',
                 'fields' => array('fooName3'=>'fooName3', 'fooName2'=>'fooName2', 'fooName1'=>'fooName1', 'fooName4'=>'fooName4'),
             )), true), print_r($this->admin->getShowGroups(), true));
     }
