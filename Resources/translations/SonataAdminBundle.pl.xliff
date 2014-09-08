@@ -400,7 +400,7 @@
             </trans-unit>
             <trans-unit id="noscript_warning">
                 <source>noscript_warning</source>
-                <target>noscript_warning</target>
+                <target>Twoja przeglądarka ma wyłączoną obsługę JavaScript. Niektóre funkcje mogą nie działać poprawnie.</target>
             </trans-unit>
         </body>
     </file>
