@@ -13,8 +13,8 @@ file that was distributed with this source code.
 
 {% block form_widget -%}
     {{ parent() }}
-    {% if sonata_admin_help is defined and sonata_admin_help %}
-        <span class="help-block sonata-ba-field-widget-help">{{ sonata_admin_help|raw }}</span>
+    {% if sonata_help is defined and sonata_help %}
+        <span class="help-block sonata-ba-field-widget-help">{{ sonata_help|raw }}</span>
     {% endif %}
 {%- endblock form_widget %}
 

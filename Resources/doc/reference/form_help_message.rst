@@ -61,7 +61,7 @@ Help messages in a sub-field
                 ->add('settings', 'sonata_type_immutable_array', array(
                     'keys' => array(
                         array('content', 'textarea', array(
-                            'sonata_admin_help' => 'Set the content'
+                            'sonata_help' => 'Set the content'
                         )),
                         array('public', 'checkbox', array()),
                     )

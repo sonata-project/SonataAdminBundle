@@ -50,7 +50,7 @@ class FormTypeFieldExtension extends AbstractTypeExtension
         );
 
         $builder->setAttribute('sonata_admin_enabled', false);
-        $builder->setAttribute('sonata_admin_help', false);
+        $builder->setAttribute('sonata_help', false);
 
         if ($options['sonata_field_description'] instanceof FieldDescriptionInterface) {
             $fieldDescription = $options['sonata_field_description'];
@@ -109,7 +109,7 @@ class FormTypeFieldExtension extends AbstractTypeExtension
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $sonataAdmin     = $form->getConfig()->getAttribute('sonata_admin');
-        $sonataAdminHelp = isset($options['sonata_admin_help']) ? $options['sonata_admin_help'] : null;
+        $sonataAdminHelp = isset($options['sonata_help']) ? $options['sonata_help'] : null;
 
         // avoid to add extra information not required by non admin field
         if ($sonataAdmin && $form->getConfig()->getAttribute('sonata_admin_enabled', true)) {
@@ -144,7 +144,7 @@ class FormTypeFieldExtension extends AbstractTypeExtension
             $view->vars['sonata_admin_enabled'] = false;
         }
 
-        $view->vars['sonata_admin_help'] = $sonataAdminHelp;
+        $view->vars['sonata_help'] = $sonataAdminHelp;
         $view->vars['sonata_admin']      = $sonataAdmin;
     }
 
@@ -171,7 +171,7 @@ class FormTypeFieldExtension extends AbstractTypeExtension
 
             // be compatible with mopa if not installed, avoid generating an exception for invalid option
             'label_render'             => true,
-            'sonata_admin_help'        => null
+            'sonata_help'        => null
         ));
     }
 

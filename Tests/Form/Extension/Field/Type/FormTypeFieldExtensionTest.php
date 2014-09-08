@@ -39,11 +39,11 @@ class FormTypeFieldExtensionTest extends \PHPUnit_Framework_TestCase
 
         $this->assertArrayHasKey('sonata_admin', $options);
         $this->assertArrayHasKey('sonata_field_description', $options);
-        $this->assertArrayHasKey('sonata_admin_help', $options);
+        $this->assertArrayHasKey('sonata_help', $options);
 
         $this->assertNull($options['sonata_admin']);
         $this->assertNull($options['sonata_field_description']);
-        $this->assertNull($options['sonata_admin_help']);
+        $this->assertNull($options['sonata_help']);
     }
 
     public function testbuildViewWithNoSonataAdminArray()
@@ -99,7 +99,7 @@ class FormTypeFieldExtensionTest extends \PHPUnit_Framework_TestCase
 
         $extension = new FormTypeFieldExtension();
         $extension->buildView($formView, $form, array(
-            'sonata_admin_help' => 'help text'
+            'sonata_help' => 'help text'
         ));
 
         $this->assertArrayHasKey('block_prefixes', $formView->vars);
@@ -117,6 +117,6 @@ class FormTypeFieldExtensionTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($expected, $formView->vars['block_prefixes']);
         $this->assertTrue($formView->vars['sonata_admin_enabled']);
-        $this->assertEquals('help text', $formView->vars['sonata_admin_help']);
+        $this->assertEquals('help text', $formView->vars['sonata_help']);
     }
 }
