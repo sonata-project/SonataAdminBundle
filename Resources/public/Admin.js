@@ -85,7 +85,7 @@ var Admin = {
                 }
 
                 select.select2({
-                    width: 'resolve',
+                    dropdownAutoWidth: true,
                     minimumResultsForSearch: 10,
                     allowClear: allowClearEnabled
                 });
