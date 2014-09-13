@@ -116,11 +116,22 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $params = &$this->parameters;
         $template = &$this->template;
 
-        $templating = $this->getMock('Symfony\Bundle\FrameworkBundle\Templating\DelegatingEngine', array(), array($this->container, array()));
+        $templating = $this->getMock(
+            'Symfony\Bundle\FrameworkBundle\Templating\DelegatingEngine',
+            array(),
+            array($this->container, array())
+        );
 
         $templating->expects($this->any())
             ->method('renderResponse')
-            ->will($this->returnCallback(function($view, array $parameters = array(), Response $response = null) use (&$params, &$template) {
+            ->will($this->returnCallback(function (
+                $view,
+                array $parameters = array(),
+                Response $response = null
+            ) use (
+                &$params,
+                &$template
+            ) {
                 $template = $view;
 
                 if (null === $response) {
@@ -177,7 +188,9 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $auditManager = $this->auditManager;
         $adminObjectAclManipulator = $this->adminObjectAclManipulator;
 
-        $this->csrfProvider = $this->getMockBuilder('Symfony\Component\Form\Extension\Csrf\CsrfProvider\CsrfProviderInterface')
+        $this->csrfProvider = $this->getMockBuilder(
+            'Symfony\Component\Form\Extension\Csrf\CsrfProvider\CsrfProviderInterface'
+        )
             ->getMock();
 
         $this->csrfProvider->expects($this->any())
@@ -207,7 +220,19 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
         $this->container->expects($this->any())
             ->method('get')
-            ->will($this->returnCallback(function ($id) use ($pool, $request, $admin, $templating, $twig, $session, $exporter, $auditManager, $adminObjectAclManipulator, $requestStack, $csrfProvider) {
+            ->will($this->returnCallback(function ($id) use (
+                $pool,
+                $request,
+                $admin,
+                $templating,
+                $twig,
+                $session,
+                $exporter,
+                $auditManager,
+                $adminObjectAclManipulator,
+                $requestStack,
+                $csrfProvider
+        ) {
                 switch ($id) {
                     case 'sonata.admin.pool':
                         return $pool;
@@ -292,31 +317,46 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
         $this->admin->expects($this->any())
             ->method('generateUrl')
-            ->will($this->returnCallback(function($name, array $parameters = array(), $absolute = false) {
-                $result = $name;
-                if (!empty($parameters)) {
-                    $result .= '?'.http_build_query($parameters);
-                }
+            ->will(
+                $this->returnCallback(
+                    function ($name, array $parameters = array(), $absolute = false) {
+                        $result = $name;
+                        if (!empty($parameters)) {
+                            $result .= '?'.http_build_query($parameters);
+                        }
 
-                return $result;
-            }));
+                        return $result;
+                    }
+                )
+            );
 
         $this->admin->expects($this->any())
             ->method('generateObjectUrl')
-            ->will($this->returnCallback(function($name, $object, array $parameters = array(), $absolute = false) {
-                $result = get_class($object).'_'.$name;
-                if (!empty($parameters)) {
-                    $result .= '?'.http_build_query($parameters);
-                }
+            ->will(
+                $this->returnCallback(
+                    function ($name, $object, array $parameters = array(), $absolute = false) {
+                        $result = get_class($object).'_'.$name;
+                        if (!empty($parameters)) {
+                            $result .= '?'.http_build_query($parameters);
+                        }
 
-                return $result;
-            }));
+                        return $result;
+                    }
+                )
+            );
 
         $this->controller = new CRUDController();
         $this->controller->setContainer($this->container);
 
         // Make some methods public to test them
-        $testedMethods = array('renderJson', 'isXmlHttpRequest', 'configure', 'getBaseTemplate', 'redirectTo', 'addFlash');
+        $testedMethods = array(
+            'renderJson',
+            'isXmlHttpRequest',
+            'configure',
+            'getBaseTemplate',
+            'redirectTo',
+            'addFlash'
+        );
         foreach ($testedMethods as $testedMethod) {
             $method = new \ReflectionMethod('Sonata\\AdminBundle\\Controller\\CRUDController', $testedMethod);
             $method->setAccessible(true);
@@ -418,7 +458,10 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
     public function testConfigureWithException()
     {
-        $this->setExpectedException('RuntimeException', 'There is no `_sonata_admin` defined for the controller `Sonata\AdminBundle\Controller\CRUDController`');
+        $this->setExpectedException(
+            'RuntimeException',
+            'There is no `_sonata_admin` defined for the controller `Sonata\AdminBundle\Controller\CRUDController`'
+        );
 
         $this->request->attributes->remove('_sonata_admin');
         $this->protectedTestedMethods['configure']->invoke($this->controller);
@@ -426,7 +469,11 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
     public function testConfigureWithException2()
     {
-        $this->setExpectedException('RuntimeException', 'Unable to find the admin class related to the current controller (Sonata\AdminBundle\Controller\CRUDController)');
+        $this->setExpectedException(
+            'RuntimeException',
+            'Unable to find the admin class related to the current controller ' .
+            '(Sonata\AdminBundle\Controller\CRUDController)'
+        );
 
         $this->pool->setAdminServiceIds(array('nonexistent.admin'));
         $this->request->attributes->set('_sonata_admin', 'nonexistent.admin');
@@ -435,22 +482,37 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
     public function testGetBaseTemplate()
     {
-        $this->assertEquals('SonataAdminBundle::standard_layout.html.twig', $this->protectedTestedMethods['getBaseTemplate']->invoke($this->controller));
+        $this->assertEquals(
+            'SonataAdminBundle::standard_layout.html.twig',
+            $this->protectedTestedMethods['getBaseTemplate']->invoke($this->controller)
+        );
 
         $this->request->headers->set('X-Requested-With', 'XMLHttpRequest');
-        $this->assertEquals('SonataAdminBundle::ajax_layout.html.twig', $this->protectedTestedMethods['getBaseTemplate']->invoke($this->controller));
+        $this->assertEquals(
+            'SonataAdminBundle::ajax_layout.html.twig',
+            $this->protectedTestedMethods['getBaseTemplate']->invoke($this->controller)
+        );
 
         $this->request->headers->remove('X-Requested-With');
-        $this->assertEquals('SonataAdminBundle::standard_layout.html.twig', $this->protectedTestedMethods['getBaseTemplate']->invoke($this->controller));
+        $this->assertEquals(
+            'SonataAdminBundle::standard_layout.html.twig',
+            $this->protectedTestedMethods['getBaseTemplate']->invoke($this->controller)
+        );
 
         $this->request->attributes->set('_xml_http_request', true);
-        $this->assertEquals('SonataAdminBundle::ajax_layout.html.twig', $this->protectedTestedMethods['getBaseTemplate']->invoke($this->controller));
+        $this->assertEquals(
+            'SonataAdminBundle::ajax_layout.html.twig',
+            $this->protectedTestedMethods['getBaseTemplate']->invoke($this->controller)
+        );
     }
 
     public function testRender()
     {
         $this->parameters = array();
-        $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $this->controller->render('FooAdminBundle::foo.html.twig', array()));
+        $this->assertInstanceOf(
+            'Symfony\Component\HttpFoundation\Response',
+            $this->controller->render('FooAdminBundle::foo.html.twig', array())
+        );
         $this->assertEquals($this->admin, $this->parameters['admin']);
         $this->assertEquals('SonataAdminBundle::standard_layout.html.twig', $this->parameters['base_template']);
         $this->assertEquals($this->pool, $this->parameters['admin_pool']);
@@ -475,7 +537,11 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
     public function testRenderCustomParams()
     {
         $this->parameters = array();
-        $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $this->controller->render('FooAdminBundle::foo.html.twig', array('foo'=>'bar')));
+        $this->assertInstanceOf(
+            'Symfony\Component\HttpFoundation\Response',
+            $this->controller->render('FooAdminBundle::foo.html.twig',
+            array('foo'=>'bar'))
+        );
         $this->assertEquals($this->admin, $this->parameters['admin']);
         $this->assertEquals('SonataAdminBundle::standard_layout.html.twig', $this->parameters['base_template']);
         $this->assertEquals($this->pool, $this->parameters['admin_pool']);
