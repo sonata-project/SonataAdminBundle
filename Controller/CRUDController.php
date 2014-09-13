@@ -24,6 +24,7 @@ use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Admin\BaseFieldDescription;
 use Sonata\AdminBundle\Util\AdminObjectAclData;
 use Sonata\AdminBundle\Admin\AdminInterface;
+use Psr\Log\NullLogger;
 
 class CRUDController extends Controller
 {
@@ -139,6 +140,21 @@ class CRUDController extends Controller
     }
 
     /**
+     * Proxy for the logger service of the container.
+     * If no such service is found, a NullLogger is returned.
+     *
+     * @return Psr\Log\LoggerInterface
+     */
+    protected function getLogger()
+    {
+        if ($this->container->has('logger')) {
+            return $this->container->get('logger');
+        } else {
+            return new NullLogger;
+        }
+    }
+
+    /**
      * Returns the base template name
      *
      * @return string The template name
@@ -215,6 +231,7 @@ class CRUDController extends Controller
             $modelManager->batchDelete($this->admin->getClass(), $query);
             $this->addFlash('sonata_flash_success', 'flash_batch_delete_success');
         } catch (ModelManagerException $e) {
+            $this->getLogger()->error($e->getMessage());
             $this->addFlash('sonata_flash_error', 'flash_batch_delete_error');
         }
 
@@ -268,6 +285,7 @@ class CRUDController extends Controller
                 );
 
             } catch (ModelManagerException $e) {
+                $this->getLogger()->error($e->getMessage());
 
                 if ($this->isXmlHttpRequest()) {
                     return $this->renderJson(array('result' => 'error'));
@@ -356,6 +374,7 @@ class CRUDController extends Controller
                     return $this->redirectTo($object);
 
                 } catch (ModelManagerException $e) {
+                    $this->getLogger()->error($e->getMessage());
 
                     $isFormValid = false;
                 }
@@ -599,6 +618,7 @@ class CRUDController extends Controller
                     return $this->redirectTo($object);
 
                 } catch (ModelManagerException $e) {
+                    $this->getLogger()->error($e->getMessage());
 
                     $isFormValid = false;
                 }
