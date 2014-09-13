@@ -380,3 +380,42 @@ file that was distributed with this source code.
     </script>
 {% endspaceless %}
 {% endblock sonata_type_model_autocomplete_widget %}
+
+{% block sonata_type_choice_field_mask_widget %}
+    {{ block('choice_widget') }}
+    {% set main_form_name = id|slice(0, id|length - name|length) %}
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var allFields = {{ all_fields|json_encode|raw }};
+            var map = {{ map|json_encode|raw }};
+
+            showMaskChoiceEl = $('#{{ main_form_name }}{{ name }}');
+            console.log(showMaskChoiceEl)
+            showMaskChoiceEl.on('change', function () {
+                choice_field_mask_show($(this).val());
+            });
+
+            function choice_field_mask_show(val)
+            {
+                var controlGroupIdFunc = function (field) {
+                    return '#sonata-ba-field-container-{{ main_form_name }}' + field;
+
+                };
+                if (map[val] == undefined) {
+                    $.each(allFields, function (i, field) {
+                        $(controlGroupIdFunc(field)).show();
+                    });
+                    return;
+                }
+
+                $.each(allFields, function (i, field) {
+                    $(controlGroupIdFunc(field)).hide();
+                });
+                $.each(map[val], function (i, field) {
+                    $(controlGroupIdFunc(field)).show();
+                });
+            }
+            choice_field_mask_show(showMaskChoiceEl.val());
+        });
+    </script>
+{% endblock %}

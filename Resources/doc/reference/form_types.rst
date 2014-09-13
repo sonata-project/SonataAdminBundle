@@ -245,6 +245,41 @@ req_param_name_items_per_page
   defaults to "_per_page".  Ajax request parameter name which contains the limit of
   items per page.
 
+sonata_choice_field_mask
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+Setting a field type of ``sonata_choice_field_mask`` will use an instance of
+``ChoiceFieldMaskType`` to render choice field.
+
+According the choice made only associated fields are displayed. The others fields are hidden.
+
+.. code-block:: php
+
+    class AcmeMenuAdmin extends Admin
+    {
+        protected function configureFormFields(FormMapper $formMapper)
+        {
+            $formMapper
+                ->add('linkType', 'sonata_type_choice_field_mask', array(
+                    'choices' =>  array('uri' => 'uri', 'route' => 'route'),
+                    'map' => array(
+                        'route' => array('route', 'parameters'),
+                        'uri' => array('uri'),
+                    ),
+                    'empty_value' => 'Choose an option',
+                    'required' => false
+                ))
+                ->add('route', 'text')
+                ->add('uri', 'text')
+                ->add('parameters')
+            ;
+        }
+    }
+
+map
+  Associative array. Describes the fields that are displayed for each choice.
+    
+    
 sonata_type_admin
 ^^^^^^^^^^^^^^^^^
 
