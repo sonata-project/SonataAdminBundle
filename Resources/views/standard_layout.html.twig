@@ -30,7 +30,7 @@ file that was distributed with this source code.
         {% block stylesheets %}
 
             {% for stylesheet in admin_pool.getOption('stylesheets', []) %}
-                <link rel="stylesheet" type="text/css"  href="{{ asset(stylesheet) }}"  />
+                <link rel="stylesheet" href="{{ asset(stylesheet) }}">
             {% endfor %}
 
         {% endblock %}
@@ -48,7 +48,7 @@ file that was distributed with this source code.
             </script>
 
             {% for javascript in admin_pool.getOption('javascripts', []) %}
-                <script src="{{ asset(javascript) }}" type="text/javascript"></script>
+                <script src="{{ asset(javascript) }}"></script>
             {% endfor %}
 
             {# localize select2 #}
