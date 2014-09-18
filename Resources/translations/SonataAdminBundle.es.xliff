@@ -400,7 +400,7 @@
             </trans-unit>
             <trans-unit id="message_form_group_empty">
                 <source>message_form_group_empty</source>
-                <target>message_form_group_empty</target>
+                <target>No hay campos disponibles.</target>
             </trans-unit>
         </body>
     </file>
