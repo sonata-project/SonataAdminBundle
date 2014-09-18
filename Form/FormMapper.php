@@ -56,6 +56,10 @@ class FormMapper extends BaseGroupedMapper
      */
     public function add($name, $type = null, array $options = array(), array $fieldDescriptionOptions = array())
     {
+        if ($this->apply !== null && !$this->apply) {
+            return $this;
+        }
+
         if ($name instanceof FormBuilder) {
             $fieldName = $name->getName();
         } else {
