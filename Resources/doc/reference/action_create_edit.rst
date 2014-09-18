@@ -46,13 +46,15 @@ To specify options, do as follow:
         public function configureFormFields(FormMapper $formMapper)
         {
             $formMapper
-                ->with('Addresses',
-                    array(
-                        'class'       => 'col-md-8',
-                        'description' => 'Lorem ipsum',
+                ->tab('General') // the tab call is optional
+                    ->with('Addresses',
+                        array(
+                            'class'       => 'col-md-8',
+                            'description' => 'Lorem ipsum',
+                            // ...
+                            ))
                         // ...
-                        ))
-                    // ...
+                    ->end()
                 ->end()
             ;
     }

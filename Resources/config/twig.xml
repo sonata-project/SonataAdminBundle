@@ -9,6 +9,7 @@
             <tag name="twig.extension"/>
 
             <argument type="service" id="sonata.admin.pool" />
+            <argument type="service" id="logger" on-invalid="ignore" />
         </service>
     </services>
 </container>

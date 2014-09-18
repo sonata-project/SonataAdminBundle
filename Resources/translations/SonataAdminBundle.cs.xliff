@@ -394,6 +394,14 @@
                 <source>link_actions</source>
                 <target>Akce</target>
             </trans-unit>
+            <trans-unit id="noscript_warning">
+                <source>noscript_warning</source>
+                <target>Javascript je zakázán ve vašem webovém prohlížeči. Některé funkce nebudou pracovat správně.</target>
+            </trans-unit>
+            <trans-unit id="message_form_group_empty">
+                <source>message_form_group_empty</source>
+                <target>message_form_group_empty</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

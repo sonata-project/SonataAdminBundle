@@ -11,6 +11,13 @@ file that was distributed with this source code.
 
 {% extends 'form_div_layout.html.twig' %}
 
+{% block form_widget -%}
+    {{ parent() }}
+    {% if sonata_help is defined and sonata_help %}
+        <span class="help-block sonata-ba-field-widget-help">{{ sonata_help|raw }}</span>
+    {% endif %}
+{%- endblock form_widget %}
+
 {% block form_widget_simple %}
     {% set attr = attr|merge({'class': attr.class|default('') ~ ' form-control'}) %}
     {{ parent() }}
@@ -359,12 +366,12 @@ file that was distributed with this source code.
             {% if multiple -%}
                 data = [
                 {%- for key, label_text in value.labels -%}
-                    {id:{{ value.identifiers[key]|e('js') }}, label:'{{ label_text|e('js') }}'}
+                    {id: '{{ value.identifiers[key]|e('js') }}', label:'{{ label_text|e('js') }}'}
                     {%- if not loop.last -%}, {% endif -%}
                 {%- endfor -%}
                 ];
             {%- elseif value.labels[0] is defined -%}
-                data = {id: {{ value.identifiers[0]|e('js') }}, label:'{{ value.labels[0]|e('js') }}'};
+                data = {id: '{{ value.identifiers[0]|e('js') }}', label:'{{ value.labels[0]|e('js') }}'};
             {%- endif  %}
             if (undefined==data.length || 0<data.length) { // Leave placeholder if no data set
                 autocompleteInput.select2('data', data);

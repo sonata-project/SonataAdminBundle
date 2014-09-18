@@ -11,17 +11,60 @@
 
 namespace Sonata\AdminBundle\Tests\Form;
 
+use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Form\FormMapper;
+
+class TestAdmin extends Admin
+{
+
+}
 
 class FormMapperTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var \Sonata\AdminBundle\Builder\FormContractorInterface
+     */
+    protected $contractor;
+
+    /**
+     * @var \Symfony\Component\Form\FormBuilder
+     */
+    protected $builder;
+
+    /**
+     * @var \Sonata\AdminBundle\Admin\AdminInterface
+     */
+    protected $admin;
+
+    /**
+     * @var \Sonata\AdminBundle\Model\ModelManagerInterface
+     */
+    protected $modelManager;
+
+    /**
+     * @var \Sonata\AdminBundle\Admin\FieldDescriptionInterface
+     */
+    protected $fieldDescription;
+
+    /**
+     * @var \Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface
+     */
+    protected $labelTranslatorStrategy;
+
+    /**
+     * @var FormMapper
+     */
+    protected $formMapper;
+
     public function setUp()
     {
         $this->contractor = $this->getMock('Sonata\AdminBundle\Builder\FormContractorInterface');
         $this->builder = $this->getMockBuilder('Symfony\Component\Form\FormBuilder')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
+
+        $this->admin = new TestAdmin('code', 'class', 'controller');
+
         $this->modelManager = $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface');
         $this->fieldDescription = $this->getMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
         $this->labelTranslatorStrategy = $this->getMock('Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface');
@@ -35,36 +78,54 @@ class FormMapperTest extends \PHPUnit_Framework_TestCase
 
     public function testWithNoOptions()
     {
-        $this->admin->expects($this->once())
-            ->method('setFormGroups')
-            ->with(array(
-                'foobar' => array(
-                    'collapsed' => false,
-                    'fields' => array(),
-                    'description' => false,
-                    'translation_domain' => null,
-                    'class' => false,
-                )));
-
         $this->formMapper->with('foobar');
+
+        $this->assertEquals(array('default' => array (
+            'collapsed' => false,
+            'class' => false,
+            'description' => false,
+            'translation_domain' => null,
+            'auto_created' => true,
+            'groups' => array('foobar'),
+            'tab' => true,
+            'name' => 'default'
+        )), $this->admin->getFormTabs());
+
+        $this->assertEquals(array('foobar' => array(
+            'collapsed' => false,
+            'class' => false,
+            'description' => false,
+            'translation_domain' => null,
+            'fields' => array (),
+            'name' => 'foobar'
+        )), $this->admin->getFormGroups());
     }
 
     public function testWithOptions()
     {
-        $this->admin->expects($this->once())
-            ->method('setFormGroups')
-            ->with(array(
-                'foobar' => array(
-                    'collapsed' => false,
-                    'fields' => array(),
-                    'description' => false,
-                    'translation_domain' => 'Foobar',
-                    'class' => false,
-                )));
-
         $this->formMapper->with('foobar', array(
             'translation_domain' => 'Foobar',
         ));
+
+        $this->assertEquals(array('foobar' => array(
+            'collapsed' => false,
+            'class' => false,
+            'description' => false,
+            'translation_domain' => 'Foobar',
+            'fields' => array (),
+            'name' => 'foobar'
+        )), $this->admin->getFormGroups());
+
+        $this->assertEquals(array('default' => array (
+            'collapsed' => false,
+            'class' => false,
+            'description' => false,
+            'translation_domain' => 'Foobar',
+            'auto_created' => true,
+            'groups' => array('foobar'),
+            'tab' => true,
+            'name' => 'default'
+        )), $this->admin->getFormTabs());
     }
 
     public function testWithFieldsCascadeTranslationDomain()
@@ -76,24 +137,16 @@ class FormMapperTest extends \PHPUnit_Framework_TestCase
                 'description' => false,
                 'translation_domain' => 'Foobar',
                 'class' => false,
+                'name' => 'foobar'
             )
         );
 
-        $this->admin->expects($this->exactly(2))
-            ->method('setFormGroups');
-
-        $this->admin->expects($this->any())
-            ->method('getFormGroups')
-            ->will($this->returnValue($formGroups));
-
-        $this->admin->expects($this->once())
-            ->method('getModelManager')
-            ->will($this->returnValue($this->modelManager));
+        $this->admin->setModelManager($this->modelManager);
 
         $this->modelManager->expects($this->once())
             ->method('getNewFieldDescriptionInstance')
             ->with(
-                null, // mock admin ->getClass returns null
+                'class',
                 'foo',
                 array(
                     'translation_domain' => 'Foobar',
@@ -106,24 +159,40 @@ class FormMapperTest extends \PHPUnit_Framework_TestCase
             ->method('getDefaultOptions')
             ->will($this->returnValue(array()));
 
-        $this->admin->expects($this->once())
-            ->method('getLabelTranslatorStrategy')
-            ->will($this->returnValue($this->labelTranslatorStrategy));
+        $this->admin->setLabelTranslatorStrategy($this->labelTranslatorStrategy);
 
         $this->formMapper->with('foobar', array(
-            'translation_domain' => 'Foobar'
-        ))
-        ->add('foo', 'bar')
+                'translation_domain' => 'Foobar'
+            ))
+            ->add('foo', 'bar')
         ->end();
+
+        $this->assertEquals(array('default' => array (
+            'collapsed' => false,
+            'class' => false,
+            'description' => false,
+            'translation_domain' => 'Foobar',
+            'auto_created' => true,
+            'groups' => array ('foobar'),
+            'tab' => true,
+            'name' => 'default'
+        )), $this->admin->getFormTabs());
+
+        $this->assertEquals(array('foobar' => array(
+            'collapsed' => false,
+            'class' => false,
+            'description' => false,
+            'translation_domain' => 'Foobar',
+            'fields' => array(
+                'foo' => 'foo'
+            ),
+            'name' => 'foobar'
+        )), $this->admin->getFormGroups());
     }
 
     public function testRemoveCascadeRemoveFieldFromFormGroup()
     {
-        $this->admin->expects($this->once())
-            ->method('removeFieldFromFormGroup')
-            ->with('foo')
-        ;
-
+        $this->formMapper->with('foo');
         $this->formMapper->remove('foo');
     }
 }

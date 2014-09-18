@@ -262,3 +262,18 @@ If you want to use the Tab Menu in a different way, you can replace the Menu Tem
         sonata_admin:
             templates:
                 tab_menu_template:  YourNSAdminBundle:Admin:own_tab_menu_template.html.twig
+
+
+Disable content stretching
+--------------------------
+
+You can disable html, body and sidebar elements stretching. These containers are forced
+to be full height by default. If you use custom layout or just don't need such behavior,
+add **no-stretch** class to <html> tag.
+
+For example:
+
+.. code-block:: html+jinja
+
+    {# YourNS\AdminBundle\Resources\views\standard_layout.html.twig #}
+    {% block html_attributes %}class="no-js no-stretch"{% endblock %}

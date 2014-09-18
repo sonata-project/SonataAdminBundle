@@ -84,92 +84,94 @@ file that was distributed with this source code.
                         {% endblock %}
 
                         {% block table_footer %}
-                            <tr>
-                                <th colspan="{{ admin.list.elements|length - (app.request.isXmlHttpRequest ? (admin.list.has('_action') + admin.list.has('batch')) : 0) }}">
-                                    <div class="form-inline">
-                                        {% if not app.request.isXmlHttpRequest %}
-                                            {% if admin.hasRoute('batch') and batchactions|length > 0  %}
-                                                {% block batch %}
-                                                    <script>
-                                                        {% block batch_javascript %}
-                                                            jQuery(document).ready(function ($) {
-                                                                $('#list_batch_checkbox').on('ifChanged', function () {
-                                                                    $(this)
-                                                                        .closest('table')
-                                                                        .find('td.sonata-ba-list-field-batch input[type="checkbox"]')
-                                                                        .iCheck($(this).is(':checked') ? 'check' : 'uncheck')
+                            <tfoot>
+                                <tr>
+                                    <th colspan="{{ admin.list.elements|length - (app.request.isXmlHttpRequest ? (admin.list.has('_action') + admin.list.has('batch')) : 0) }}">
+                                        <div class="form-inline">
+                                            {% if not app.request.isXmlHttpRequest %}
+                                                {% if admin.hasRoute('batch') and batchactions|length > 0  %}
+                                                    {% block batch %}
+                                                        <script>
+                                                            {% block batch_javascript %}
+                                                                jQuery(document).ready(function ($) {
+                                                                    $('#list_batch_checkbox').on('ifChanged', function () {
+                                                                        $(this)
+                                                                            .closest('table')
+                                                                            .find('td.sonata-ba-list-field-batch input[type="checkbox"]')
+                                                                            .iCheck($(this).is(':checked') ? 'check' : 'uncheck')
+                                                                        ;
+                                                                    });
+
+                                                                    $('td.sonata-ba-list-field-batch input[type="checkbox"]')
+                                                                        .on('ifChanged', function () {
+                                                                            $(this)
+                                                                                .closest('tr')
+                                                                                .toggleClass('sonata-ba-list-row-selected', $(this).is(':checked'))
+                                                                            ;
+                                                                        })
+                                                                        .trigger('ifChanged')
                                                                     ;
                                                                 });
+                                                            {% endblock %}
+                                                        </script>
 
-                                                                $('td.sonata-ba-list-field-batch input[type="checkbox"]')
-                                                                    .on('ifChanged', function () {
-                                                                        $(this)
-                                                                            .closest('tr')
-                                                                            .toggleClass('sonata-ba-list-row-selected', $(this).is(':checked'))
-                                                                        ;
-                                                                    })
-                                                                    .trigger('ifChanged')
-                                                                ;
-                                                            });
+                                                        {% block batch_actions %}
+                                                            <label class="checkbox" for="{{ admin.uniqid }}_all_elements">
+                                                                <input type="checkbox" name="all_elements" id="{{ admin.uniqid }}_all_elements">
+                                                                {{ 'all_elements'|trans({}, 'SonataAdminBundle') }}
+                                                                 ({{ admin.datagrid.pager.nbresults }})
+                                                            </label>
+
+                                                            <select name="action" style="width: auto; height: auto" class="form-control">
+                                                                {% for action, options in batchactions %}
+                                                                    <option value="{{ action }}">{{ options.label }}</option>
+                                                                {% endfor %}
+                                                            </select>
                                                         {% endblock %}
-                                                    </script>
 
-                                                    {% block batch_actions %}
-                                                        <label class="checkbox" for="{{ admin.uniqid }}_all_elements">
-                                                            <input type="checkbox" name="all_elements" id="{{ admin.uniqid }}_all_elements">
-                                                            {{ 'all_elements'|trans({}, 'SonataAdminBundle') }}
-                                                             ({{ admin.datagrid.pager.nbresults }})
-                                                        </label>
-
-                                                        <select name="action" style="width: auto; height: auto" class="form-control">
-                                                            {% for action, options in batchactions %}
-                                                                <option value="{{ action }}">{{ options.label }}</option>
-                                                            {% endfor %}
-                                                        </select>
+                                                        <input type="submit" class="btn btn-small btn-primary" value="{{ 'btn_batch'|trans({}, 'SonataAdminBundle') }}">
                                                     {% endblock %}
-
-                                                    <input type="submit" class="btn btn-small btn-primary" value="{{ 'btn_batch'|trans({}, 'SonataAdminBundle') }}">
-                                                {% endblock %}
-                                            {% endif %}
-
-                                            <div class="pull-right">
-                                                {% if admin.hasRoute('export') and admin.isGranted("EXPORT") and admin.getExportFormats()|length %}
-                                                    <div class="btn-group">
-                                                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                                                            <i class="glyphicon glyphicon-export"></i>
-                                                            {{ "label_export_download"|trans({}, "SonataAdminBundle") }}
-                                                            <span class="caret"></span>
-                                                        </button>
-                                                        <ul class="dropdown-menu">
-                                                            {% for format in admin.getExportFormats() %}
-                                                                <li>
-                                                                    <a href="{{ admin.generateUrl('export', admin.modelmanager.paginationparameters(admin.datagrid, 0) + {'format' : format}) }}">
-                                                                        <i class="glyphicon glyphicon-download"></i>
-                                                                        {{ format|upper }}
-                                                                    </a>
-                                                                <li>
-                                                            {% endfor %}
-                                                        </ul>
-                                                    </div>
-
-                                                    &nbsp;-&nbsp;
                                                 {% endif %}
 
-                                                {% block pager_results %}
-                                                    {% include admin.getTemplate('pager_results') %}
-                                                {% endblock %}
-                                            </div>
-                                        {% endif %}
-                                    </div>
-                                </th>
-                            </tr>
+                                                <div class="pull-right">
+                                                    {% if admin.hasRoute('export') and admin.isGranted("EXPORT") and admin.getExportFormats()|length %}
+                                                        <div class="btn-group">
+                                                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                                                <i class="glyphicon glyphicon-export"></i>
+                                                                {{ "label_export_download"|trans({}, "SonataAdminBundle") }}
+                                                                <span class="caret"></span>
+                                                            </button>
+                                                            <ul class="dropdown-menu">
+                                                                {% for format in admin.getExportFormats() %}
+                                                                    <li>
+                                                                        <a href="{{ admin.generateUrl('export', admin.modelmanager.paginationparameters(admin.datagrid, 0) + {'format' : format}) }}">
+                                                                            <i class="glyphicon glyphicon-download"></i>
+                                                                            {{ format|upper }}
+                                                                        </a>
+                                                                    <li>
+                                                                {% endfor %}
+                                                            </ul>
+                                                        </div>
 
-                            {% block pager_links %}
-                                {% if admin.datagrid.pager.haveToPaginate() %}
-                                    {% include admin.getTemplate('pager_links') %}
-                                {% endif %}
-                            {% endblock %}
+                                                        &nbsp;-&nbsp;
+                                                    {% endif %}
 
+                                                    {% block pager_results %}
+                                                        {% include admin.getTemplate('pager_results') %}
+                                                    {% endblock %}
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </th>
+                                </tr>
+
+                                {% block pager_links %}
+                                    {% if admin.datagrid.pager.haveToPaginate() %}
+                                        {% include admin.getTemplate('pager_links') %}
+                                    {% endif %}
+                                {% endblock %}
+
+                            </tfoot>
                         {% endblock %}
                     </table>
                 {% if admin.hasRoute('batch') %}
@@ -208,9 +210,13 @@ file that was distributed with this source code.
                                     {% set attr = form.children[filter.formName].children['type'].vars.attr|default({}) %}
                                     {% set attr = attr|merge({'class': (attr.class|default('') ~ ' sonata-filter-option')|trim}) %}
 
-                                    {{ form_widget(form.children[filter.formName].children['type'], {'attr':  attr}) }}
+                                    <div>
+                                        {{ form_widget(form.children[filter.formName].children['type'], {'attr':  attr}) }}
+                                    </div>
 
-                                    {{ form_widget(form.children[filter.formName].children['value']) }}
+                                    <div>
+                                        {{ form_widget(form.children[filter.formName].children['value']) }}
+                                    </div>
                                 </div>
                             {% endfor %}
 
