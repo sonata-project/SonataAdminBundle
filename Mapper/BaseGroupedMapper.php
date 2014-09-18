@@ -28,10 +28,14 @@ abstract class BaseGroupedMapper extends BaseMapper
     abstract protected function setTabs(array $tabs);
 
     /**
+     * Add new group or tab (if parameter "tab=true" is available in options)
+     *
      * @param string $name
      * @param array  $options
      *
-     * @return \Sonata\AdminBundle\Mapper\BaseGroupedMapper
+     * @return BaseGroupedMapper
+     *
+     * @throws \RuntimeException
      */
     public function with($name, array $options = array())
     {
@@ -66,16 +70,17 @@ abstract class BaseGroupedMapper extends BaseMapper
         $code = $name;
 
         // Open
-        if (array_key_exists("tab", $options) && $options["tab"]) {
+        if (array_key_exists('tab', $options) && $options['tab']) {
             $tabs = $this->getTabs();
 
             if ($this->currentTab) {
-                throw new \RuntimeException($tabs[$this->currentTab]["auto_created"] ?
-                    "New tab was added automatically when you have added field or group. You should close current tab before adding new one OR add tabs before adding groups and fields" :
-                    "You should close previous tab with end() before adding new tab"
-                );
+                if (isset($tabs[$this->currentTab]['auto_created']) && true === $tabs[$this->currentTab]['auto_created']) {
+                    throw new \RuntimeException('New tab was added automatically when you have added field or group. You should close current tab before adding new one OR add tabs before adding groups and fields.');
+                } else {
+                    throw new \RuntimeException(sprintf('You should close previous tab "%s" with end() before adding new tab "%s".', $this->currentTab, $name));
+                }
             } elseif ($this->currentGroup) {
-                throw new \RuntimeException("You should open tab before adding new groups");
+                throw new \RuntimeException(sprintf('You should open tab before adding new group "%s".', $name));
             }
 
             if (!isset($tabs[$name])) {
@@ -92,12 +97,12 @@ abstract class BaseGroupedMapper extends BaseMapper
         } else {
 
             if ($this->currentGroup) {
-                throw new \RuntimeException("You should close previous group with end() before adding new tab");
+                throw new \RuntimeException(sprintf('You should close previous group "%s" with end() before adding new tab "%s".', $this->currentGroup, $name));
             }
 
             if (!$this->currentTab) {
                 // no tab define
-                $this->with("default", array(
+                $this->with('default', array(
                     'tab'                => true,
                     'auto_created'       => true,
                     'translation_domain' => isset($options['translation_domain']) ? $options['translation_domain'] : null
@@ -105,8 +110,8 @@ abstract class BaseGroupedMapper extends BaseMapper
             }
 
             // if no tab is selected, we go the the main one named '_' ..
-            if ($this->currentTab !== "default") {
-                $code = $this->currentTab.".".$name; // groups with the same name can be on different tabs, so we prefix them in order to make unique group name
+            if ($this->currentTab !== 'default') {
+                $code = $this->currentTab.'.'.$name; // groups with the same name can be on different tabs, so we prefix them in order to make unique group name
             }
 
             $groups = $this->getGroups();
@@ -123,8 +128,8 @@ abstract class BaseGroupedMapper extends BaseMapper
             $tabs = $this->getTabs();
         }
 
-        if ($this->currentGroup && isset($tabs[$this->currentTab]) && !in_array($this->currentGroup, $tabs[$this->currentTab]["groups"])) {
-            $tabs[$this->currentTab]["groups"][] = $this->currentGroup;
+        if ($this->currentGroup && isset($tabs[$this->currentTab]) && !in_array($this->currentGroup, $tabs[$this->currentTab]['groups'])) {
+            $tabs[$this->currentTab]['groups'][] = $this->currentGroup;
         }
 
         $this->setTabs($tabs);
@@ -181,8 +186,10 @@ abstract class BaseGroupedMapper extends BaseMapper
     }
 
     /**
-     * @param       $name
-     * @param array $options
+     * Add new tab
+     *
+     * @param string $name
+     * @param array  $options
      *
      * @return BaseGroupedMapper
      */
@@ -192,7 +199,11 @@ abstract class BaseGroupedMapper extends BaseMapper
     }
 
     /**
-     * @return \Sonata\AdminBundle\Mapper\BaseGroupedMapper
+     * Close the current group or tab
+     *
+     * @return BaseGroupedMapper
+     *
+     * @throws \RuntimeException
      */
     public function end()
     {
@@ -201,7 +212,7 @@ abstract class BaseGroupedMapper extends BaseMapper
         } elseif ($this->currentTab !== null) {
             $this->currentTab = null;
         } else {
-            throw new \Exception("No open tabs or groups, you cannot use end()");
+            throw new \RuntimeException('No open tabs or groups, you cannot use end()');
         }
 
         return $this;
@@ -228,7 +239,7 @@ abstract class BaseGroupedMapper extends BaseMapper
      * Return the name of the currently selected group. The method also makes
      * sure a valid group name is currently selected
      *
-     * Note that this can have the side effect to change the "group" value
+     * Note that this can have the side effect to change the 'group' value
      * returned by the getGroup function
      *
      * @return string

@@ -396,11 +396,11 @@
             </trans-unit>
             <trans-unit id="noscript_warning">
                 <source>noscript_warning</source>
-                <target>noscript_warning</target>
+                <target>Javascript está desconectado en su navegador web. Algunas características no funcionarán correctamente.</target>
             </trans-unit>
             <trans-unit id="message_form_group_empty">
                 <source>message_form_group_empty</source>
-                <target>message_form_group_empty</target>
+                <target>No hay campos disponibles.</target>
             </trans-unit>
         </body>
     </file>
