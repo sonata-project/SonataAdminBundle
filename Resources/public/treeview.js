@@ -73,9 +73,10 @@
         });
     };
 
-    // Default standard registry
-    $(function() {
-        $(defaultRegistry)[pluginName]();
-    });
+    // we disable autoloading as this is handle by the Admin.js class
+    //// Default standard registry
+    //$(function() {
+    //    $(defaultRegistry)[pluginName]();
+    //});
 
 })( jQuery, window, document );

@@ -44,6 +44,8 @@ var Admin = {
         Admin.add_pretty_errors(subject);
         Admin.setup_form_tabs_for_errors(subject);
         Admin.setup_inline_form_errors(subject);
+        Admin.setup_tree_view(subject);
+
 //        Admin.setup_list_modal(subject);
     },
     setup_list_modal: function(modal) {
@@ -385,5 +387,9 @@ var Admin = {
 
             errors.show();
         }
+    },
+
+    setup_tree_view: function(subject) {
+        jQuery('ul.js-treeview', subject).treeView();
     }
 };
