@@ -24,6 +24,7 @@ use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Admin\BaseFieldDescription;
 use Sonata\AdminBundle\Util\AdminObjectAclData;
 use Sonata\AdminBundle\Admin\AdminInterface;
+use Psr\Log\NullLogger;
 
 class CRUDController extends Controller
 {
@@ -106,13 +107,20 @@ class CRUDController extends Controller
         $adminCode = $this->container->get('request')->get('_sonata_admin');
 
         if (!$adminCode) {
-            throw new \RuntimeException(sprintf('There is no `_sonata_admin` defined for the controller `%s` and the current route `%s`', get_class($this), $this->container->get('request')->get('_route')));
+            throw new \RuntimeException(sprintf(
+                'There is no `_sonata_admin` defined for the controller `%s` and the current route `%s`',
+                get_class($this),
+                $this->container->get('request')->get('_route')
+            ));
         }
 
         $this->admin = $this->container->get('sonata.admin.pool')->getAdminByAdminCode($adminCode);
 
         if (!$this->admin) {
-            throw new \RuntimeException(sprintf('Unable to find the admin class related to the current controller (%s)', get_class($this)));
+            throw new \RuntimeException(sprintf(
+                'Unable to find the admin class related to the current controller (%s)',
+                get_class($this)
+            ));
         }
 
         $rootAdmin = $this->admin;
@@ -128,6 +136,21 @@ class CRUDController extends Controller
 
         if ($request->get('uniqid')) {
             $this->admin->setUniqid($request->get('uniqid'));
+        }
+    }
+
+    /**
+     * Proxy for the logger service of the container.
+     * If no such service is found, a NullLogger is returned.
+     *
+     * @return Psr\Log\LoggerInterface
+     */
+    protected function getLogger()
+    {
+        if ($this->container->has('logger')) {
+            return $this->container->get('logger');
+        } else {
+            return new NullLogger;
         }
     }
 
@@ -150,8 +173,12 @@ class CRUDController extends Controller
      */
     public function render($view, array $parameters = array(), Response $response = null)
     {
-        $parameters['admin']         = isset($parameters['admin']) ? $parameters['admin'] : $this->admin;
-        $parameters['base_template'] = isset($parameters['base_template']) ? $parameters['base_template'] : $this->getBaseTemplate();
+        $parameters['admin']         = isset($parameters['admin']) ?
+            $parameters['admin'] :
+            $this->admin;
+        $parameters['base_template'] = isset($parameters['base_template']) ?
+            $parameters['base_template'] :
+            $this->getBaseTemplate();
         $parameters['admin_pool']    = $this->get('sonata.admin.pool');
 
         return parent::render($view, $parameters, $response);
@@ -204,10 +231,14 @@ class CRUDController extends Controller
             $modelManager->batchDelete($this->admin->getClass(), $query);
             $this->addFlash('sonata_flash_success', 'flash_batch_delete_success');
         } catch (ModelManagerException $e) {
+            $this->getLogger()->error($e->getMessage());
             $this->addFlash('sonata_flash_error', 'flash_batch_delete_error');
         }
 
-        return new RedirectResponse($this->admin->generateUrl('list', array('filter' => $this->admin->getFilterParameters())));
+        return new RedirectResponse($this->admin->generateUrl(
+            'list',
+            array('filter' => $this->admin->getFilterParameters())
+        ));
     }
 
     /**
@@ -254,6 +285,7 @@ class CRUDController extends Controller
                 );
 
             } catch (ModelManagerException $e) {
+                $this->getLogger()->error($e->getMessage());
 
                 if ($this->isXmlHttpRequest()) {
                     return $this->renderJson(array('result' => 'error'));
@@ -329,12 +361,20 @@ class CRUDController extends Controller
                         ));
                     }
 
-                    $this->addFlash('sonata_flash_success', $this->admin->trans('flash_edit_success', array('%name%' => $this->admin->toString($object)), 'SonataAdminBundle'));
+                    $this->addFlash(
+                        'sonata_flash_success',
+                        $this->admin->trans(
+                            'flash_edit_success',
+                            array('%name%' => $this->admin->toString($object)),
+                            'SonataAdminBundle'
+                        )
+                    );
 
                     // redirect to edit mode
                     return $this->redirectTo($object);
 
                 } catch (ModelManagerException $e) {
+                    $this->getLogger()->error($e->getMessage());
 
                     $isFormValid = false;
                 }
@@ -343,7 +383,14 @@ class CRUDController extends Controller
             // show an error message if the form failed validation
             if (!$isFormValid) {
                 if (!$this->isXmlHttpRequest()) {
-                    $this->addFlash('sonata_flash_error', $this->admin->trans('flash_edit_error', array('%name%' => $this->admin->toString($object)), 'SonataAdminBundle'));
+                    $this->addFlash(
+                        'sonata_flash_error',
+                        $this->admin->trans(
+                            'flash_edit_error',
+                            array('%name%' => $this->admin->toString($object)),
+                            'SonataAdminBundle'
+                        )
+                    );
                 }
             } elseif ($this->isPreviewRequested()) {
                 // enable the preview template if the form was valid and preview was requested
@@ -463,10 +510,17 @@ class CRUDController extends Controller
         if (true !== $nonRelevantMessage) {
             $this->addFlash('sonata_flash_info', $nonRelevantMessage);
 
-            return new RedirectResponse($this->admin->generateUrl('list', array('filter' => $this->admin->getFilterParameters())));
+            return new RedirectResponse(
+                $this->admin->generateUrl(
+                    'list',
+                    array('filter' => $this->admin->getFilterParameters())
+                )
+            );
         }
 
-        $askConfirmation = isset($batchActions[$action]['ask_confirmation']) ? $batchActions[$action]['ask_confirmation'] : true;
+        $askConfirmation = isset($batchActions[$action]['ask_confirmation']) ?
+            $batchActions[$action]['ask_confirmation'] :
+            true;
 
         if ($askConfirmation && $confirmation != 'ok') {
             $actionLabel = $this->admin->trans($this->admin->getTranslationLabel($action, 'action'));
@@ -551,12 +605,20 @@ class CRUDController extends Controller
                         ));
                     }
 
-                    $this->addFlash('sonata_flash_success', $this->admin->trans('flash_create_success', array('%name%' => $this->admin->toString($object)), 'SonataAdminBundle'));
+                    $this->addFlash(
+                        'sonata_flash_success',
+                        $this->admin->trans(
+                            'flash_create_success',
+                            array('%name%' => $this->admin->toString($object)),
+                            'SonataAdminBundle'
+                        )
+                    );
 
                     // redirect to edit mode
                     return $this->redirectTo($object);
 
                 } catch (ModelManagerException $e) {
+                    $this->getLogger()->error($e->getMessage());
 
                     $isFormValid = false;
                 }
@@ -565,7 +627,14 @@ class CRUDController extends Controller
             // show an error message if the form failed validation
             if (!$isFormValid) {
                 if (!$this->isXmlHttpRequest()) {
-                    $this->addFlash('sonata_flash_error', $this->admin->trans('flash_create_error', array('%name%' => $this->admin->toString($object)), 'SonataAdminBundle'));
+                    $this->addFlash(
+                        'sonata_flash_error',
+                        $this->admin->trans(
+                            'flash_create_error',
+                            array('%name%' => $this->admin->toString($object)),
+                            'SonataAdminBundle'
+                        )
+                    );
                 }
             } elseif ($this->isPreviewRequested()) {
                 // pick the preview template if the form was valid and preview was requested
@@ -692,7 +761,12 @@ class CRUDController extends Controller
         $manager = $this->get('sonata.admin.audit.manager');
 
         if (!$manager->hasReader($this->admin->getClass())) {
-            throw new NotFoundHttpException(sprintf('unable to find the audit reader for class : %s', $this->admin->getClass()));
+            throw new NotFoundHttpException(
+                sprintf(
+                    'unable to find the audit reader for class : %s',
+                    $this->admin->getClass()
+                )
+            );
         }
 
         $reader = $manager->getReader($this->admin->getClass());
@@ -735,7 +809,12 @@ class CRUDController extends Controller
         $manager = $this->get('sonata.admin.audit.manager');
 
         if (!$manager->hasReader($this->admin->getClass())) {
-            throw new NotFoundHttpException(sprintf('unable to find the audit reader for class : %s', $this->admin->getClass()));
+            throw new NotFoundHttpException(
+                sprintf(
+                    'unable to find the audit reader for class : %s',
+                    $this->admin->getClass()
+                )
+            );
         }
 
         $reader = $manager->getReader($this->admin->getClass());
@@ -744,7 +823,14 @@ class CRUDController extends Controller
         $object = $reader->find($this->admin->getClass(), $id, $revision);
 
         if (!$object) {
-            throw new NotFoundHttpException(sprintf('unable to find the targeted object `%s` from the revision `%s` with classname : `%s`', $id, $revision, $this->admin->getClass()));
+            throw new NotFoundHttpException(
+                sprintf(
+                    'unable to find the targeted object `%s` from the revision `%s` with classname : `%s`',
+                    $id,
+                    $revision,
+                    $this->admin->getClass()
+                )
+            );
         }
 
         $this->admin->setSubject($object);
@@ -785,7 +871,12 @@ class CRUDController extends Controller
         $manager = $this->get('sonata.admin.audit.manager');
 
         if (!$manager->hasReader($this->admin->getClass())) {
-            throw new NotFoundHttpException(sprintf('unable to find the audit reader for class : %s', $this->admin->getClass()));
+            throw new NotFoundHttpException(
+                sprintf(
+                    'unable to find the audit reader for class : %s',
+                    $this->admin->getClass()
+                )
+            );
         }
 
         $reader = $manager->getReader($this->admin->getClass());
@@ -793,13 +884,27 @@ class CRUDController extends Controller
         // retrieve the base revision
         $base_object = $reader->find($this->admin->getClass(), $id, $base_revision);
         if (!$base_object) {
-            throw new NotFoundHttpException(sprintf('unable to find the targeted object `%s` from the revision `%s` with classname : `%s`', $id, $base_revision, $this->admin->getClass()));
+            throw new NotFoundHttpException(
+                sprintf(
+                    'unable to find the targeted object `%s` from the revision `%s` with classname : `%s`',
+                    $id,
+                    $base_revision,
+                    $this->admin->getClass()
+                )
+            );
         }
 
         // retrieve the compare revision
         $compare_object = $reader->find($this->admin->getClass(), $id, $compare_revision);
         if (!$compare_object) {
-            throw new NotFoundHttpException(sprintf('unable to find the targeted object `%s` from the revision `%s` with classname : `%s`', $id, $compare_revision, $this->admin->getClass()));
+            throw new NotFoundHttpException(
+                sprintf(
+                    'unable to find the targeted object `%s` from the revision `%s` with classname : `%s`',
+                    $id,
+                    $compare_revision,
+                    $this->admin->getClass()
+                )
+            );
         }
 
         $this->admin->setSubject($base_object);
@@ -833,7 +938,14 @@ class CRUDController extends Controller
         $allowedExportFormats = (array) $this->admin->getExportFormats();
 
         if (!in_array($format, $allowedExportFormats)) {
-            throw new \RuntimeException(sprintf('Export in format `%s` is not allowed for class: `%s`. Allowed formats are: `%s`', $format, $this->admin->getClass(), implode(', ', $allowedExportFormats)));
+            throw new \RuntimeException(
+                sprintf(
+                    'Export in format `%s` is not allowed for class: `%s`. Allowed formats are: `%s`',
+                    $format,
+                    $this->admin->getClass(),
+                    implode(', ', $allowedExportFormats)
+                )
+            );
         }
 
         $filename = sprintf(
@@ -843,7 +955,11 @@ class CRUDController extends Controller
             $format
         );
 
-        return $this->get('sonata.admin.exporter')->getResponse($format, $filename, $this->admin->getDataSourceIterator());
+        return $this->get('sonata.admin.exporter')->getResponse(
+            $format,
+            $filename,
+            $this->admin->getDataSourceIterator()
+        );
     }
 
     /**
@@ -956,7 +1072,10 @@ class CRUDController extends Controller
             return;
         }
 
-        if (!$this->container->get('form.csrf_provider')->isCsrfTokenValid($intention, $this->get('request')->request->get('_sonata_csrf_token', false))) {
+        if (!$this->container->get('form.csrf_provider')->isCsrfTokenValid(
+            $intention,
+            $this->get('request')->request->get('_sonata_csrf_token', false)
+        )) {
             throw new HttpException(400, 'The csrf token is not valid, CSRF attack?');
         }
     }
