@@ -57,7 +57,8 @@ class MergeCollectionListener implements EventSubscriberInterface
             $this->modelManager->collectionClear($collection);
         } else {
             // merge $data into $collection
-            $newCollection = new \Doctrine\Common\Collections\ArrayCollection();
+            $newCollection = $data;
+            $this->modelManager->collectionClear($newCollection);
             foreach ($data as $entity) {
                 if ($this->modelManager->collectionHasElement($collection, $entity)) {
                     $this->modelManager->collectionAddElement($newCollection, $entity);
