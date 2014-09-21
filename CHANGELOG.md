@@ -1,6 +1,9 @@
 CHANGELOG
 =========
 
+### 2014-09-21
+ * added new form type ``sonata_choice_field_mask``
+
 ### 2014-09-19
  * [BC BREAK] ``field_options`` is now directly given to ``value`` form in ``DateRangeType`` and ``DateTimeRangeType`` filters.
 
