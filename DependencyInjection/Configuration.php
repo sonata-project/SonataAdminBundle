@@ -208,7 +208,8 @@ class Configuration implements ConfigurationInterface
                                 'bundles/sonataadmin/vendor/x-editable/dist/bootstrap3-editable/css/bootstrap-editable.css',
 
                                 'bundles/sonataadmin/css/styles.css',
-                                'bundles/sonataadmin/css/layout.css'
+                                'bundles/sonataadmin/css/layout.css',
+                                'bundles/sonataadmin/css/tree.css',
                             ))
                             ->prototype('scalar')->end()
                         ->end()
@@ -235,6 +236,7 @@ class Configuration implements ConfigurationInterface
 
                                 'bundles/sonataadmin/App.js',
                                 'bundles/sonataadmin/Admin.js',
+                                'bundles/sonataadmin/treeview.js',
                             ))
                             ->prototype('scalar')->end()
                         ->end()

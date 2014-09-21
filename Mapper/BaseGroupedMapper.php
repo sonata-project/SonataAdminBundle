@@ -19,6 +19,8 @@ abstract class BaseGroupedMapper extends BaseMapper
     protected $currentGroup;
     protected $currentTab;
 
+    protected $apply;
+
     abstract protected function getGroups();
     abstract protected function getTabs();
 
@@ -131,6 +133,54 @@ abstract class BaseGroupedMapper extends BaseMapper
         }
 
         $this->setTabs($tabs);
+
+        return $this;
+    }
+
+    /**
+     * Only nested add if the condition match FALSE
+     *
+     * @param $bool
+     *
+     * @return $this
+     * @throws \RuntimeException
+     */
+    public function if_true($bool)
+    {
+        if (!$this->apply == null) {
+            throw new \RuntimeException('Cannot nest ifTrue call');
+        }
+
+        $this->apply = ($bool === true);
+
+        return $this;
+    }
+
+    /**
+     * Only nested add if the condition match FALSE
+     *
+     * @param $bool
+     *
+     * @return $this
+     * @throws \RuntimeException
+     */
+    public function if_false($bool)
+    {
+        if (!$this->apply == null) {
+            throw new \RuntimeException('Cannot nest ifTrue call');
+        }
+
+        $this->apply = ($bool === false);
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function end_if()
+    {
+        $this->apply = null;
 
         return $this;
     }

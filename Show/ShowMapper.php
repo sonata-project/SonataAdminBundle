@@ -46,6 +46,10 @@ class ShowMapper extends BaseGroupedMapper
      */
     public function add($name, $type = null, array $fieldDescriptionOptions = array())
     {
+        if ($this->apply !== null && !$this->apply) {
+            return $this;
+        }
+
         $fieldKey = ($name instanceof FieldDescriptionInterface) ? $name->getName() : $name;
 
         $this->addFieldToCurrentGroup($fieldKey);
