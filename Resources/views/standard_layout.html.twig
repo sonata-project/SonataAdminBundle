@@ -269,6 +269,14 @@ file that was distributed with this source code.
                                                     {% endif %}
                                                 </div>
 
+                                                {% if action is defined and action == 'list' and admin.listModes|length > 1 %}
+                                                    <div class="nav navbar-right btn-group">
+                                                        {% for mode, settings in admin.listModes %}
+                                                            <a href="{{ url(app.request.attributes.get('_route'), app.request.query.all|merge({_list_mode: mode})) }}" class="btn btn-default navbar-btn btn-sm{% if admin.getListMode() == mode %} active{% endif %}"><i class="{{ settings.class }}"></i></a>
+                                                        {% endfor %}
+                                                    </div>
+                                                {% endif %}
+
                                                 {% if _actions|replace({ '<li>': '', '</li>': '' })|trim is not empty %}
                                                     <ul class="nav navbar-nav navbar-right">
                                                         <li class="dropdown sonata-actions">

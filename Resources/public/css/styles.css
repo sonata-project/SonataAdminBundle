@@ -333,3 +333,65 @@ div.select2-container {
 div.select2-drop ul {
     margin: 0 !important;
 }
+
+/* Used for the mozaic view */
+td > div.row {
+    padding: 0;
+    margin: 0;
+}
+
+div.mozaic-box {
+    padding: 2px;
+    border-radius: 3px;
+}
+
+div.mozaic-inner-box:hover {
+    background: #ffffff;
+    opacity: 0.8;
+}
+
+div.mozaic-inner-box:hover > div.mozaic-inner-box-default {
+    display: none;
+}
+
+div.mozaic-inner-box:hover > div.mozaic-inner-box-hover {
+    display: block;
+}
+
+div.mozaic-inner-box > div.mozaic-inner-box-default {
+    display: block;
+}
+
+div.mozaic-inner-box > div.mozaic-inner-box-hover {
+    display: none;
+}
+
+div.mozaic-box-outter {
+    background-size: 100% auto;
+}
+
+div.mozaic-inner-box {
+    border: 1px solid #ddd;
+    padding: 5px;
+    min-height: 100px;
+    border-bottom: none;
+    border-radius: 5px 5px 0 0;
+}
+
+div.mozaic-inner-text {
+    background: white;
+    border: 1px solid #ddd;
+    border-top: none;
+    padding: 3px;
+    border-radius: 0 0 5px 5px;
+}
+
+div.mozaic-box.sonata-ba-list-row-selected > div.mozaic-inner-box {
+    border: 1px solid #333;
+    border-bottom: none;
+}
+
+div.mozaic-box.sonata-ba-list-row-selected > div.mozaic-inner-text {
+    border: 1px solid #333;
+    border-top: none;
+}

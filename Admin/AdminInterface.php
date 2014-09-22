@@ -1024,4 +1024,21 @@ interface AdminInterface
      * @return Metadata
      */
     public function getObjectMetadata($object);
+
+    /**
+     * @return array
+     */
+    public function getListModes();
+
+    /**
+     * @param string $mode
+     */
+    public function setListMode($mode);
+
+    /**
+     * return the list mode
+     *
+     * @return string
+     */
+    public function getListMode();
 }

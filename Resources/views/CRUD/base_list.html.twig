@@ -75,11 +75,7 @@ file that was distributed with this source code.
 
                         {% block table_body %}
                             <tbody>
-                                {% for object in admin.datagrid.results %}
-                                    <tr>
-                                        {% include admin.getTemplate('inner_list_row') %}
-                                    </tr>
-                                {% endfor %}
+                                {% include admin.getTemplate('outer_list_rows_' ~ admin.getListMode()) %}
                             </tbody>
                         {% endblock %}
 
@@ -97,15 +93,15 @@ file that was distributed with this source code.
                                                                     $('#list_batch_checkbox').on('ifChanged', function () {
                                                                         $(this)
                                                                             .closest('table')
-                                                                            .find('td.sonata-ba-list-field-batch input[type="checkbox"]')
+                                                                            .find('td.sonata-ba-list-field-batch input[type="checkbox"], div.sonata-ba-list-field-batch input[type="checkbox"]')
                                                                             .iCheck($(this).is(':checked') ? 'check' : 'uncheck')
                                                                         ;
                                                                     });
 
-                                                                    $('td.sonata-ba-list-field-batch input[type="checkbox"]')
+                                                                    $('td.sonata-ba-list-field-batch input[type="checkbox"], div.sonata-ba-list-field-batch input[type="checkbox"]')
                                                                         .on('ifChanged', function () {
                                                                             $(this)
-                                                                                .closest('tr')
+                                                                                .closest('tr, div.sonata-ba-list-field-batch')
                                                                                 .toggleClass('sonata-ba-list-row-selected', $(this).is(':checked'))
                                                                             ;
                                                                         })

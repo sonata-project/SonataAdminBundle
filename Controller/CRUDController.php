@@ -197,6 +197,10 @@ class CRUDController extends Controller
             throw new AccessDeniedException();
         }
 
+        if ($listMode = $this->getRequest()->get('_list_mode')) {
+            $this->admin->setListMode($listMode);
+        }
+
         $datagrid = $this->admin->getDatagrid();
         $formView = $datagrid->getForm()->createView();
 
