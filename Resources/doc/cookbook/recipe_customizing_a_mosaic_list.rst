@@ -101,7 +101,7 @@ The ``ObjectMetadata`` object is returned by the related admin class, for instan
 
 The final view will look like:
 
-.. figure:: ../images/list_mosaic_default.png
+.. figure:: ../images/list_mosaic_custom.png
    :align: center
    :alt: Customize view
    :width: 700px
