@@ -20,6 +20,7 @@
     position: relative;
     margin-bottom: 5px;
     color: #444;
+    background: #fff;
 }
 .sonata-tree__item .label {
     font-size: 12px;
@@ -31,8 +32,8 @@
 }
 .sonata-tree__item .fa-caret-right {
     position: absolute;
-    top: 9px;
-    left: -22px;
+    top: 10px;
+    left: -20px;
     color: #3c8dbc;
 }
 .sonata-tree__item:hover {
@@ -88,15 +89,23 @@
 /**
  * Toggleable tree
  */
+.sonata-tree--toggleable {
+    margin-left: 0;
+}
+
 .sonata-tree--toggleable li > ul {
     display: none;
 }
 .sonata-tree--toggleable .sonata-tree__item {
-    margin-left: 25px;
+    margin-left: 20px;
 }
 .sonata-tree--toggleable .sonata-tree__item .fa-caret-right {
     cursor: pointer;
 }
+.sonata-tree--toggleable .sonata-tree__item:last-child .fa-caret-right {
+    display: none;
+}
+
 .sonata-tree--toggleable .sonata-tree__item .fa-caret-right:after {
     content: '';
     position: absolute;
@@ -104,4 +113,19 @@
     bottom: -5px;
     left: -10px;
     right: -10px;
+}
+
+/**
+ * Smaller tree
+ */
+.sonata-tree--small .sonata-tree__item__edit {
+    font-size: 12px;
+}
+
+.sonata-tree--small .sonata-tree__item {
+    padding: 3px 15px 4px 5px;
+}
+
+.sonata-tree--small .sonata-tree__item .fa-caret-right {
+    top: 7px;
 }

@@ -248,7 +248,7 @@ file that was distributed with this source code.
                     <form class="sonata-filter-form form-horizontal {{ admin.isChild and 1 == admin.datagrid.filters|length ? 'hide' : '' }}" action="{{ admin.generateUrl('list') }}" method="GET" role="form">
                         {{ form_errors(form) }}
 
-                        <div class="row">
+                        <div class="clearfix">
                             <div class="col-md-9">
                                 <div class="filter_container">
                                     {% for filter in admin.datagrid.filters %}
@@ -268,7 +268,7 @@ file that was distributed with this source code.
                                     {% endfor %}
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="pull-right">
                                 <input type="hidden" name="filter[_page]" id="filter__page" value="1">
 
                                 {% set foo = form.children['_page'].setRendered() %}
