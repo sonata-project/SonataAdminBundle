@@ -15,7 +15,9 @@
         defaultRegistry = '.js-treeview',
         defaults = {
             togglersAttribute: '[data-treeview-toggler]',
-            toggledState: 'is-toggled'
+            toggledState: 'is-toggled',
+            activeState: 'is-active',
+            instanceAttribute: 'data-treeview-instance'
         };
 
     function TreeView( element, options ) {
@@ -34,6 +36,8 @@
         init: function() {
             this.setElements();
             this.setEvents();
+            this.setAttributes();
+            this.showActiveElement();
         },
 
         /**
@@ -42,6 +46,13 @@
         setElements: function() {
             this.$element = $(this.element);
             this.$togglers = this.$element.find(this.options.togglersAttribute);
+        },
+
+        /**
+         * Set some attrs
+         */
+        setAttributes: function() {
+            this.$element.attr(this.options.instanceAttribute, true);
         },
 
         /**
@@ -59,6 +70,17 @@
                 $parent = $target.parent();
             $parent.toggleClass(this.options.toggledState);
             $parent.next('ul').slideToggle();
+        },
+
+        /**
+         * Show active element
+         */
+        showActiveElement: function() {
+            var parents = '[' + this.options.instanceAttribute + '] ul, [' + this.options.instanceAttribute + ']';
+            var $activeElement = this.$element.find('.' + this.options.activeState);
+            var $parents = $activeElement.parents(parents);
+            $parents.show();
+            $parents.prev().addClass(this.options.toggledState);
         }
 
     };
