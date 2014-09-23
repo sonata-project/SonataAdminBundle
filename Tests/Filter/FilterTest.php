@@ -38,6 +38,7 @@ class FilterTest extends \PHPUnit_Framework_TestCase
 
         $expected = $options;
         $expected['foo'] = 'bar';
+        $expected['show_filter'] = true;
 
         $this->assertEquals($expected, $filter->getOptions());
         $this->assertEquals('name', $filter->getFieldName());

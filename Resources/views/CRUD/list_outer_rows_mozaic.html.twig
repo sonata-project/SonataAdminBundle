@@ -24,7 +24,7 @@ This template can be customized to match your needs. You should only extends the
 
                 <div class="col-xs-6 col-sm-3 mozaic-box sonata-ba-list-field-batch sonata-ba-list-field" objectId="{{ admin.id(object) }}">
 
-                    <div class="mozaic-box-outter" style="background: url({{ meta.image }}) white no-repeat center center;">
+                    <div class="mozaic-box-outter" style="background: url({% block sonata_mozaic_background %}{{ meta.image }}{% endblock %}) white no-repeat center center; background-size: 100% auto">
                         <div class="mozaic-inner-box">
                             {#
                                 This box will be display when the mouse is not on the box

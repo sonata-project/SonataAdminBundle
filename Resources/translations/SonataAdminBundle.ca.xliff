@@ -402,6 +402,10 @@
                 <source>message_form_group_empty</source>
                 <target>No hi ha camps disponibles.</target>
             </trans-unit>
+            <trans-unit id="link_filters">
+                <source>link_filters</source>
+                <target>link_filters</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

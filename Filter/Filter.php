@@ -45,7 +45,8 @@ abstract class Filter implements FilterInterface
      */
     public function getFormName()
     {
-        /* Symfony default form class sadly can't handle
+        /*
+           Symfony default form class sadly can't handle
            form element with dots in its name (when data
            get bound, the default dataMapper is a PropertyPathMapper).
            So use this trick to avoid any issue.
@@ -163,7 +164,11 @@ abstract class Filter implements FilterInterface
      */
     public function setOptions(array $options)
     {
-        $this->options = array_merge($this->getDefaultOptions(), $options);
+        $this->options = array_merge(
+            array('show_filter' => true),
+            $this->getDefaultOptions(),
+            $options
+        );
     }
 
     /**
