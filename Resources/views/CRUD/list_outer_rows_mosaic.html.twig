@@ -11,9 +11,9 @@ file that was distributed with this source code.
 
 <!--
 This template can be customized to match your needs. You should only extends the template and used the differents block to customize the view:
-    - sonata_mozaic_default_view
-    - sonata_mozaic_hover_view
-    - sonata_mozaic_description
+    - sonata_mosaic_default_view
+    - sonata_mosaic_hover_view
+    - sonata_mosaic_description
 -->
 
 <tr>
@@ -22,15 +22,15 @@ This template can be customized to match your needs. You should only extends the
             {% for object in admin.datagrid.results %}
                 {% set meta = admin.getObjectMetadata(object) %}
 
-                <div class="col-xs-6 col-sm-3 mozaic-box sonata-ba-list-field-batch sonata-ba-list-field" objectId="{{ admin.id(object) }}">
+                <div class="col-xs-6 col-sm-3 mosaic-box sonata-ba-list-field-batch sonata-ba-list-field" objectId="{{ admin.id(object) }}">
 
-                    <div class="mozaic-box-outter" style="background: url({% block sonata_mozaic_background %}{{ meta.image }}{% endblock %}) white no-repeat center center; background-size: 100% auto">
-                        <div class="mozaic-inner-box">
+                    <div class="mosaic-box-outter" style="background: url({% block sonata_mosaic_background %}{{ meta.image }}{% endblock %}) white no-repeat center center; background-size: 100% auto">
+                        <div class="mosaic-inner-box">
                             {#
                                 This box will be display when the mouse is not on the box
                             #}
-                            <div class="mozaic-inner-box-default">
-                                {% block sonata_mozaic_default_view %}
+                            <div class="mosaic-inner-box-default">
+                                {% block sonata_mosaic_default_view %}
                                     <span class="label label-primary pull-right">#{{ admin.id(object) }}</span>
                                 {% endblock %}
                             </div>
@@ -39,18 +39,18 @@ This template can be customized to match your needs. You should only extends the
                                 This box will be display when the mouse is on the box
                                 You can add more description
                             #}
-                            <div class="mozaic-inner-box-hover">
-                                {% block sonata_mozaic_hover_view %}
+                            <div class="mosaic-inner-box-hover">
+                                {% block sonata_mosaic_hover_view %}
                                     <span class="label label-primary pull-right">#{{ admin.id(object) }}</span>
 
                                     {{ meta.description }}
                                 {% endblock %}
                             </div>
                         </div>
-                        <div class="mozaic-inner-text">
+                        <div class="mosaic-inner-text">
                             <input type="checkbox" name="idx[]" value="{{ admin.id(object) }}">
 
-                            {% block sonata_mozaic_description %}
+                            {% block sonata_mosaic_description %}
                                 {% if admin.isGranted('EDIT', object) and admin.hasRoute('edit') %}
                                     <a href="{{ admin.generateUrl('edit', {'id' : object|sonata_urlsafeid }) }}">{{ meta.title|truncate(40) }}</a>
                                 {% elseif admin.isGranted('SHOW', object) and admin.hasRoute('show') %}

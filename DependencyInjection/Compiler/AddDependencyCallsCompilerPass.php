@@ -302,7 +302,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
             'pager_links'                => 'SonataAdminBundle:Pager:links.html.twig',
             'pager_results'              => 'SonataAdminBundle:Pager:results.html.twig',
             'tab_menu_template'          => 'SonataAdminBundle:Core:tab_menu_template.html.twig',
-            'outer_list_rows_mozaic'     => 'SonataAdminBundle:CRUD:list_outer_rows_mozaic.html.twig',
+            'outer_list_rows_mosaic'     => 'SonataAdminBundle:CRUD:list_outer_rows_mosaic.html.twig',
             'outer_list_rows_list'       => 'SonataAdminBundle:CRUD:list_outer_rows_list.html.twig',
             'outer_list_rows_tree'       => 'SonataAdminBundle:CRUD:list_outer_rows_tree.html.twig',
         ), $definedTemplates);

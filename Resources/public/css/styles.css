@@ -334,43 +334,43 @@ div.select2-drop ul {
     margin: 0 !important;
 }
 
-/* Used for the mozaic view */
+/* Used for the mosaic view */
 td > div.row {
     padding: 0;
     margin: 0;
 }
 
-div.mozaic-box {
+div.mosaic-box {
     padding: 2px;
     border-radius: 3px;
 }
 
-div.mozaic-inner-box:hover {
+div.mosaic-inner-box:hover {
     background: #ffffff;
     opacity: 0.8;
 }
 
-div.mozaic-inner-box:hover > div.mozaic-inner-box-default {
+div.mosaic-inner-box:hover > div.mosaic-inner-box-default {
     display: none;
 }
 
-div.mozaic-inner-box:hover > div.mozaic-inner-box-hover {
+div.mosaic-inner-box:hover > div.mosaic-inner-box-hover {
     display: block;
 }
 
-div.mozaic-inner-box > div.mozaic-inner-box-default {
+div.mosaic-inner-box > div.mosaic-inner-box-default {
     display: block;
 }
 
-div.mozaic-inner-box > div.mozaic-inner-box-hover {
+div.mosaic-inner-box > div.mosaic-inner-box-hover {
     display: none;
 }
 
-div.mozaic-box-outter {
+div.mosaic-box-outter {
     background-size: 100% auto;
 }
 
-div.mozaic-inner-box {
+div.mosaic-inner-box {
     border: 1px solid #ddd;
     padding: 5px;
     min-height: 100px;
@@ -378,7 +378,7 @@ div.mozaic-inner-box {
     border-radius: 5px 5px 0 0;
 }
 
-div.mozaic-inner-text {
+div.mosaic-inner-text {
     background: white;
     border: 1px solid #ddd;
     border-top: none;
@@ -386,12 +386,12 @@ div.mozaic-inner-text {
     border-radius: 0 0 5px 5px;
 }
 
-div.mozaic-box.sonata-ba-list-row-selected > div.mozaic-inner-box {
+div.mosaic-box.sonata-ba-list-row-selected > div.mosaic-inner-box {
     border: 1px solid #333;
     border-bottom: none;
 }
 
-div.mozaic-box.sonata-ba-list-row-selected > div.mozaic-inner-text {
+div.mosaic-box.sonata-ba-list-row-selected > div.mosaic-inner-text {
     border: 1px solid #333;
     border-top: none;
 }

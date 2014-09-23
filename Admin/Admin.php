@@ -209,7 +209,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      */
     protected $datagridValues = array(
         '_page'       => 1,
-        '_per_page'   => 25,
+        '_per_page'   => 32,
     );
 
     /**
@@ -217,7 +217,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      *
      * @var array
      */
-    protected $perPageOptions = array(15, 25, 50, 100, 150, 200);
+    protected $perPageOptions = array(16, 32, 64, 128, 192);
 
     /**
      * The code related to the admin
@@ -473,7 +473,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         'list' => array(
             'class' => 'fa fa-list fa-fw',
         ),
-        'mozaic' => array(
+        'mosaic' => array(
             'class' => 'fa fa-th-large fa-fw',
         ),
 //        'tree' => array(

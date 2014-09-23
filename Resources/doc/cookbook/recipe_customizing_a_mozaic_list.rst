@@ -1,4 +1,0 @@
-Customizing a mozaic list
-=========================
-
-
