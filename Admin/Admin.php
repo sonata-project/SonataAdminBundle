@@ -123,7 +123,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      *
      * @var integer
      */
-    protected $maxPerPage = 25;
+    protected $maxPerPage = 32;
 
     /**
      * The maximum number of page numbers to display in the list

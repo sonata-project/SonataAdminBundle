@@ -696,7 +696,7 @@ class AdminTest extends \PHPUnit_Framework_TestCase
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
 
-        $this->assertEquals(array(15, 25, 50, 100, 150, 200), $admin->getPerPageOptions());
+        $this->assertEquals(array(16, 32, 64, 128, 192), $admin->getPerPageOptions());
         $admin->setPerPageOptions(array(500, 1000));
         $this->assertEquals(array(500, 1000), $admin->getPerPageOptions());
     }
@@ -990,7 +990,7 @@ class AdminTest extends \PHPUnit_Framework_TestCase
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
 
-        $this->assertEquals(25, $admin->getMaxPerPage());
+        $this->assertEquals(32, $admin->getMaxPerPage());
 
         $admin->setMaxPerPage(94);
         $this->assertSame(94, $admin->getMaxPerPage());
@@ -1112,12 +1112,11 @@ class AdminTest extends \PHPUnit_Framework_TestCase
 
         $this->assertFalse($admin->determinedPerPageValue('foo'));
         $this->assertFalse($admin->determinedPerPageValue(123));
-        $this->assertTrue($admin->determinedPerPageValue(15));
-        $this->assertTrue($admin->determinedPerPageValue(25));
-        $this->assertTrue($admin->determinedPerPageValue(50));
-        $this->assertTrue($admin->determinedPerPageValue(100));
-        $this->assertTrue($admin->determinedPerPageValue(150));
-        $this->assertTrue($admin->determinedPerPageValue(200));
+        $this->assertTrue($admin->determinedPerPageValue(16));
+        $this->assertTrue($admin->determinedPerPageValue(32));
+        $this->assertTrue($admin->determinedPerPageValue(64));
+        $this->assertTrue($admin->determinedPerPageValue(128));
+        $this->assertTrue($admin->determinedPerPageValue(192));
 
         $admin->setPerPageOptions(array(101, 102, 103));
         $this->assertFalse($admin->determinedPerPageValue(15));
