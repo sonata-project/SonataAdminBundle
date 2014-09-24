@@ -39,6 +39,7 @@ file that was distributed with this source code.
                             {% block table_header %}
                                 <thead>
                                     <tr class="sonata-ba-list-field-header">
+                                        {% block table_header_row_start %}{% endblock table_header_row_start %}
                                         {% for field_description in admin.list.elements %}
                                             {% if admin.hasRoute('batch') and field_description.getOption('code') == '_batch' and batchactions|length > 0 %}
                                                 <th class="sonata-ba-list-field-header sonata-ba-list-field-header-batch">
@@ -69,6 +70,7 @@ file that was distributed with this source code.
                                                 {% endspaceless %}
                                             {% endif %}
                                         {% endfor %}
+                                        {% block table_header_row_end %}{% endblock table_header_row_end %}
                                     </tr>
                                 </thead>
                             {% endblock %}
