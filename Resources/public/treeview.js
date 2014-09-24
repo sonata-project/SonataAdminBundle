@@ -17,6 +17,7 @@
             togglersAttribute: '[data-treeview-toggler]',
             toggledState: 'is-toggled',
             activeState: 'is-active',
+            defaultToggled: '[data-treeview-toggled]',
             instanceAttribute: 'data-treeview-instance'
         };
 
@@ -38,6 +39,7 @@
             this.setEvents();
             this.setAttributes();
             this.showActiveElement();
+            this.showToggledElements();
         },
 
         /**
@@ -46,6 +48,7 @@
         setElements: function() {
             this.$element = $(this.element);
             this.$togglers = this.$element.find(this.options.togglersAttribute);
+            this.$defaultToggled = this.$element.find(this.options.defaultToggled);
         },
 
         /**
@@ -81,6 +84,14 @@
             var $parents = $activeElement.parents(parents);
             $parents.show();
             $parents.prev().addClass(this.options.toggledState);
+        },
+
+        /**
+         * Default visible elements
+         */
+        showToggledElements: function() {
+            this.$defaultToggled.addClass(this.options.toggledState);
+            this.$defaultToggled.next('ul').show();
         }
 
     };
