@@ -219,7 +219,7 @@ file that was distributed with this source code.
                     jQuery('div.sonata-filters-box').slideDown();
                 }
 
-                var target = jQuery('#' + jQuery(e.target).attr('filter-target'));
+                var target = jQuery('div[id="' + jQuery(e.target).attr('filter-target') + '"]');
 
                 if (jQuery(target).is(":visible")) {
                     jQuery('i', this).removeClass('fa-check-square-o');
