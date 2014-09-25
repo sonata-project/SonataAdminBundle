@@ -256,7 +256,7 @@ var Admin = {
             }
 
             var target = jQuery('div[id="' + jQuery(e.target).attr('filter-target') + '"]', filters_container);
-            
+
             if (jQuery(target).is(":visible")) {
                 jQuery('i', this).removeClass('fa-check-square-o');
                 jQuery('i', this).addClass('fa-square-o');

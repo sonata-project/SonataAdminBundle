@@ -127,7 +127,6 @@ Full Configuration Options
 
             assets:
                 stylesheets:
-
                     # Defaults:
                     - bundles/sonataadmin/admin-lte/css/bootstrap.min.css
                     - bundles/sonataadmin/admin-lte/css/font-awesome.min.css
@@ -139,8 +138,9 @@ Full Configuration Options
                     - bundles/sonataadmin/bootstrap3-editable/bootstrap3-editable/css/bootstrap-editable.css
                     - bundles/sonataadmin/css/styles.css
                     - bundles/sonataadmin/css/layout.css
-                javascripts:
+                    - bundles/sonataadmin/css/tree.css
 
+                javascripts:
                     # Defaults:
                     - bundles/sonatajquery/jquery-1.10.2.js
                     - bundles/sonatajquery/jquery-ui-1.10.4.js
@@ -152,6 +152,7 @@ Full Configuration Options
                     - bundles/sonataadmin/select2/select2.min.js
                     - bundles/sonataadmin/App.js
                     - bundles/sonataadmin/Admin.js
+                    - bundles/sonataadmin/treeview.js
 
             extensions:
 
