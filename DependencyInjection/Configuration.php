@@ -193,17 +193,17 @@ class Configuration implements ConfigurationInterface
                     ->children()
                         ->arrayNode('stylesheets')
                             ->defaultValue(array(
-                                'bundles/sonataadmin/vendor/bootstrap/dist/css/bootstrap.min.css',
-                                'bundles/sonataadmin/vendor/AdminLTE/css/font-awesome.min.css',
-                                'bundles/sonataadmin/vendor/AdminLTE/css/ionicons.min.css',
+                                'bundles/sonatacore/vendor/bootstrap/dist/css/bootstrap.min.css',
+                                'bundles/sonatacore/vendor/components-font-awesome/css/font-awesome.min.css',
+                                'bundles/sonatacore/vendor/ionicons/css/ionicons.min.css',
                                 'bundles/sonataadmin/vendor/AdminLTE/css/AdminLTE.css',
 
                                 'bundles/sonatacore/vendor/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css',
 
                                 'bundles/sonataadmin/vendor/jqueryui/themes/base/jquery-ui.css',
 
-                                'bundles/sonataadmin/vendor/select2/select2.css',
-                                'bundles/sonataadmin/vendor/select2/select2-bootstrap.css',
+                                'bundles/sonatacore/vendor/select2/select2.css',
+                                'bundles/sonatacore/vendor/select2/select2-bootstrap.css',
 
                                 'bundles/sonataadmin/vendor/x-editable/dist/bootstrap3-editable/css/bootstrap-editable.css',
 
@@ -215,12 +215,12 @@ class Configuration implements ConfigurationInterface
                         ->end()
                         ->arrayNode('javascripts')
                             ->defaultValue(array(
-                                'bundles/sonataadmin/vendor/jquery/dist/jquery.min.js',
+                                'bundles/sonatacore/vendor/jquery/dist/jquery.min.js',
                                 'bundles/sonataadmin/vendor/jquery.scrollTo/jquery.scrollTo.min.js',
 
                                 'bundles/sonatacore/vendor/moment/min/moment.min.js',
 
-                                'bundles/sonataadmin/vendor/bootstrap/dist/js/bootstrap.min.js',
+                                'bundles/sonatacore/vendor/bootstrap/dist/js/bootstrap.min.js',
 
                                 'bundles/sonatacore/vendor/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
 
@@ -232,7 +232,7 @@ class Configuration implements ConfigurationInterface
 
                                 'bundles/sonataadmin/vendor/x-editable/dist/bootstrap3-editable/js/bootstrap-editable.min.js',
 
-                                'bundles/sonataadmin/vendor/select2/select2.min.js',
+                                'bundles/sonatacore/vendor/select2/select2.min.js',
 
                                 'bundles/sonataadmin/App.js',
                                 'bundles/sonataadmin/Admin.js',
