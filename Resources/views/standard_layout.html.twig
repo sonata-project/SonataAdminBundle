@@ -60,7 +60,7 @@ file that was distributed with this source code.
 
                 {# omit default EN locale #}
                 {% if locale[:2] != 'en' %}
-                    <script src="{{ asset('bundles/sonataadmin/vendor/select2/select2_locale_' ~ locale|replace({'_':'-'}) ~ '.js') }}"></script>
+                    <script src="{{ asset('bundles/sonatacore/vendor/select2/select2_locale_' ~ locale|replace({'_':'-'}) ~ '.js') }}"></script>
                 {% endif %}
             {% endif %}
 
