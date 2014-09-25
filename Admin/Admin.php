@@ -753,6 +753,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         $this->show = new FieldDescriptionCollection();
         $mapper = new ShowMapper($this->showBuilder, $this->show, $this);
 
+        $this->configureShowField($mapper); // necessary
         $this->configureShowFields($mapper);
 
         foreach ($this->getExtensions() as $extension) {
