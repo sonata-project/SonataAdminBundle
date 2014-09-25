@@ -191,12 +191,12 @@ file that was distributed with this source code.
     <ul class="nav navbar-nav navbar-right">
 
         <li class="dropdown sonata-actions">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ 'link_filters'|trans({}, 'SonataAdminBundle') }} <b class="caret"></b></a>
+            <a href="#" class="dropdown-toggle sonata-ba-action" data-toggle="dropdown">{{ 'link_filters'|trans({}, 'SonataAdminBundle') }} <b class="caret"></b></a>
 
             <ul class="dropdown-menu" role="menu">
                 {% for filter in admin.datagrid.filters if filter.options['show_filter']%}
                     <li>
-                        <a href="#" class="sonata-toggle-filter" filter-target="filter-{{ admin.uniqid }}-{{ filter.name }}">
+                        <a href="#" class="sonata-toggle-filter sonata-ba-action" filter-target="filter-{{ admin.uniqid }}-{{ filter.name }}" filter-container="filter-container-{{ admin.uniqid() }}">
                             <i class="fa {{ filter.isActive() ? 'fa-check-square-o' : 'fa-square-o' }}"></i>{{ admin.trans(filter.label, {}, filter.translationDomain) }}
                         </a>
                     </li>
@@ -204,53 +204,13 @@ file that was distributed with this source code.
             </ul>
         </li>
     </ul>
-
-    <script>
-        jQuery(document).ready(function() {
-            jQuery('a.sonata-toggle-filter').on('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-
-                if (jQuery(e.target).attr('sonata-filter') == 'false') {
-                    return;
-                }
-
-                if (jQuery('div.form-group:visible').length == 0) {
-                    jQuery('div.sonata-filters-box').slideDown();
-                }
-
-                var target = jQuery('div[id="' + jQuery(e.target).attr('filter-target') + '"]');
-
-                if (jQuery(target).is(":visible")) {
-                    jQuery('i', this).removeClass('fa-check-square-o');
-                    jQuery('i', this).addClass('fa-square-o');
-
-                    target.hide();
-
-                } else {
-                    jQuery('i', this).removeClass('fa-square-o');
-                    jQuery('i', this).addClass('fa-check-square-o');
-
-                    target.show();
-                }
-
-                if (jQuery('div.form-group:visible').length > 0) {
-                    jQuery('div.sonata-filters-box').slideDown();
-                } else {
-                    jQuery('div.sonata-filters-box').slideUp();
-                }
-            });
-        });
-    </script>
-
-
 {% endblock %}
 
 {% block list_filters %}
     {% if admin.datagrid.filters %}
         {% form_theme form admin.getTemplate('filter') %}
 
-        <div class="col-xs-12 col-md-12 sonata-filters-box" style="display: {{ admin.datagrid.hasActiveFilters ? 'block' : 'none' }}">
+        <div class="col-xs-12 col-md-12 sonata-filters-box" style="display: {{ admin.datagrid.hasActiveFilters ? 'block' : 'none' }}" id="filter-container-{{ admin.uniqid() }}">
             <div class="box box-primary" >
                 <div class="box-body">
                     <form class="sonata-filter-form form-horizontal {{ admin.isChild and 1 == admin.datagrid.filters|length ? 'hide' : '' }}" action="{{ admin.generateUrl('list') }}" method="GET" role="form">
