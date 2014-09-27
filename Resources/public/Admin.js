@@ -34,7 +34,7 @@ var Admin = {
      * @param subject
      */
     shared_setup: function(subject) {
-        Admin.log("[Admin] apply shared_setup");
+        Admin.log("[core|shared_setup] Register services on", subject);
         Admin.setup_collection_buttons(subject);
         Admin.set_object_field_value(subject);
         Admin.setup_select2(subject);
@@ -49,6 +49,7 @@ var Admin = {
 //        Admin.setup_list_modal(subject);
     },
     setup_list_modal: function(modal) {
+        Admin.log('[core|setup_list_modal] configure modal on', modal);
         // this will force relation modal to open list of entity in a wider modal
         // to improve readability
         jQuery('div.modal-dialog', modal).css({
@@ -70,6 +71,7 @@ var Admin = {
     },
     setup_select2: function(subject) {
         if (window.SONATA_CONFIG && window.SONATA_CONFIG.USE_SELECT2 && window.Select2) {
+            Admin.log('[core|setup_select2] configure Select2 on', subject);
 
             jQuery('select:not([data-sonata-select2="false"])', subject).each(function() {
 
@@ -129,6 +131,8 @@ var Admin = {
     },
     setup_icheck: function(subject) {
         if (window.SONATA_CONFIG && window.SONATA_CONFIG.USE_ICHECK) {
+            Admin.log('[core|setup_icheck] configure iCheck on', subject);
+
             jQuery("input[type='checkbox']:not('label.btn>input'), input[type='radio']:not('label.btn>input')", subject).iCheck({
                 checkboxClass: 'icheckbox_minimal',
                 radioClass: 'iradio_minimal'
@@ -137,6 +141,7 @@ var Admin = {
     },
 
     setup_xeditable: function(subject) {
+        Admin.log('[core|setup_xeditable] configure xeditable on', subject);
         jQuery('.x-editable', subject).editable({
             emptyclass: 'editable-empty btn btn-sm',
             emptytext: '<i class="glyphicon glyphicon-edit"></i>',
@@ -176,6 +181,7 @@ var Admin = {
      * @param subject
      */
     add_pretty_errors: function(subject) {
+        Admin.log('[core|add_pretty_errors] configure pretty errors on', subject);
         jQuery('div.sonata-ba-field-error', subject).each(function(index, element) {
             var input = jQuery(':input', element);
 
@@ -232,9 +238,43 @@ var Admin = {
     },
 
     add_filters: function(subject) {
-        jQuery('div.filter_container .sonata-filter-option', subject).hide();
-        jQuery('h4.filter_legend', subject).click(function(event) {
-            jQuery('div.filter_container .sonata-filter-option').toggle();
+        Admin.log('[core|add_filters] configure filters on', subject);
+        jQuery('a.sonata-toggle-filter', subject).on('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            if (jQuery(e.target).attr('sonata-filter') == 'false') {
+                return;
+            }
+
+            Admin.log('[core|add_filters] handle filter container: ', jQuery(e.target).attr('filter-container'))
+
+            var filters_container = jQuery('#' + jQuery(e.target).attr('filter-container'));
+
+            if (jQuery('div.form-group:visible', filters_container).length == 0) {
+                jQuery(filters_container).slideDown();
+            }
+
+            var target = jQuery('div[id="' + jQuery(e.target).attr('filter-target') + '"]', filters_container);
+
+            if (jQuery(target).is(":visible")) {
+                jQuery('i', this).removeClass('fa-check-square-o');
+                jQuery('i', this).addClass('fa-square-o');
+
+                target.hide();
+
+            } else {
+                jQuery('i', this).removeClass('fa-square-o');
+                jQuery('i', this).addClass('fa-check-square-o');
+
+                target.show();
+            }
+
+            if (jQuery('div.form-group:visible', filters_container).length > 0) {
+                jQuery(filters_container).slideDown();
+            } else {
+                jQuery(filters_container).slideUp();
+            }
         });
     },
 
@@ -243,6 +283,7 @@ var Admin = {
      * @param subject
      */
     set_object_field_value: function(subject) {
+        Admin.log('[core|set_object_field_value] set value field on', subject);
 
         this.log(jQuery('a.sonata-ba-edit-inline', subject));
         jQuery('a.sonata-ba-edit-inline', subject).click(function(event) {
@@ -269,6 +310,7 @@ var Admin = {
     },
 
     setup_collection_buttons: function(subject) {
+        Admin.log('[core|setup_collection_buttons] setup collection buttons', subject);
 
         jQuery(subject).on('click', '.sonata-collection-add', function(event) {
             Admin.stopEvent(event);
@@ -302,6 +344,8 @@ var Admin = {
     },
 
     setup_per_page_switcher: function(subject) {
+        Admin.log('[core|setup_per_page_switcher] setup page switcher', subject);
+
         jQuery('select.per-page').change(function(event) {
             jQuery('input[type=submit]').hide();
 
@@ -310,6 +354,8 @@ var Admin = {
     },
 
     setup_form_tabs_for_errors: function(subject) {
+        Admin.log('[core|setup_form_tabs_for_errors] setup form tab\'s errors', subject);
+
         // Switch to first tab with server side validation errors on page load
         jQuery('form', subject).each(function() {
             Admin.show_form_first_tab_with_errors(jQuery(this), '.sonata-ba-field-error');
@@ -329,8 +375,9 @@ var Admin = {
     },
 
     show_form_first_tab_with_errors: function(form, errorSelector) {
-        var tabs = form.find('.nav-tabs a'),
-            firstTabWithErrors;
+        Admin.log('[core|show_form_first_tab_with_errors] show first tab with errors', form);
+
+        var tabs = form.find('.nav-tabs a'), firstTabWithErrors;
 
         tabs.each(function() {
             var id = jQuery(this).attr('href'),
@@ -352,6 +399,8 @@ var Admin = {
     },
 
     setup_inline_form_errors: function(subject) {
+        Admin.log('[core|setup_inline_form_errors] show first tab with errors', subject);
+
         var deleteCheckboxSelector = '.sonata-ba-field-inline-table [id$="_delete"][type="checkbox"]';
 
         jQuery(deleteCheckboxSelector, subject).each(function() {
@@ -366,12 +415,14 @@ var Admin = {
     /**
      * Disable inline form errors when the row is marked for deletion
      */
-    switch_inline_form_errors: function(deleteCheckbox) {
-        var row = deleteCheckbox.closest('.sonata-ba-field-inline-table'),
+    switch_inline_form_errors: function(subject) {
+        Admin.log('[core|switch_inline_form_errors] switch_inline_form_errors', subject);
+
+        var row = subject.closest('.sonata-ba-field-inline-table'),
             errors = row.find('.sonata-ba-field-error-messages')
         ;
 
-        if (deleteCheckbox.is(':checked')) {
+        if (subject.is(':checked')) {
             row
                 .find('[required]')
                 .removeAttr('required')
@@ -390,6 +441,8 @@ var Admin = {
     },
 
     setup_tree_view: function(subject) {
+        Admin.log('[core|setup_tree_view] setup tree view', subject);
+
         jQuery('ul.js-treeview', subject).treeView();
     }
 };

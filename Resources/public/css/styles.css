@@ -306,6 +306,18 @@ form.sonata-filter-form.form-stacked {
     padding-left: 0;
 }
 
+.filter_container .form-group {
+    margin: 5px 0 5px 0;
+}
+
+.filter_container .control-label {
+    padding-top: 3px;
+}
+
+.filter_container .form-control {
+    max-height: 25px;
+}
+
 /* Overrides */
 
 /* x-editable */
@@ -332,4 +344,91 @@ div.select2-container {
 
 div.select2-drop ul {
     margin: 0 !important;
+}
+
+/* Used for the mosaic view */
+td > div.row {
+    padding: 0;
+    margin: 0;
+}
+
+div.mosaic-box {
+    padding: 2px;
+    border-radius: 3px;
+}
+
+
+div.mosaic-inner-box {
+    position: relative;
+}
+
+div.mosaic-inner-box-hover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 4px 4px 0 0;
+    background-color: rgba(255, 255, 255, .8);
+    transition: .25s opacity;
+    padding: 5px 10px;
+}
+
+div.mosaic-inner-box:hover > div.mosaic-inner-box-hover {
+    opacity: 1;
+}
+
+div.mosaic-inner-box > div.mosaic-inner-box-hover {
+    opacity: 0;
+}
+
+div.mosaic-inner-box img {
+    width: 100%;
+    height: auto;
+    border-radius: 4px 4px 0 0;
+}
+
+div.mosaic-box-outter {
+    background-size: 100% auto;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #fff;
+}
+
+div.mosaic-inner-box {
+    height: 100px;
+    border-bottom: none;
+    overflow: hidden;
+}
+
+div.mosaic-inner-text {
+    background: white;
+    border-top: none;
+    padding: 3px;
+    border-radius: 0 0 5px 5px;
+    z-index: 2;
+    position: relative;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.mosaic-inner-link {
+    vertical-align: middle;
+}
+
+.mosaic-box-label {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+div.mosaic-box.sonata-ba-list-row-selected > div.mosaic-inner-box {
+    border: 1px solid #333;
+    border-bottom: none;
+}
+
+div.mosaic-box.sonata-ba-list-row-selected > div.mosaic-inner-text {
+    border: 1px solid #333;
+    border-top: none;
 }

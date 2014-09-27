@@ -176,9 +176,11 @@ class CRUDController extends Controller
         $parameters['admin']         = isset($parameters['admin']) ?
             $parameters['admin'] :
             $this->admin;
+
         $parameters['base_template'] = isset($parameters['base_template']) ?
             $parameters['base_template'] :
             $this->getBaseTemplate();
+
         $parameters['admin_pool']    = $this->get('sonata.admin.pool');
 
         return parent::render($view, $parameters, $response);
@@ -195,6 +197,10 @@ class CRUDController extends Controller
     {
         if (false === $this->admin->isGranted('LIST')) {
             throw new AccessDeniedException();
+        }
+
+        if ($listMode = $this->getRequest()->get('_list_mode')) {
+            $this->admin->setListMode($listMode);
         }
 
         $datagrid = $this->admin->getDatagrid();

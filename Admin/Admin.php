@@ -123,7 +123,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      *
      * @var integer
      */
-    protected $maxPerPage = 25;
+    protected $maxPerPage = 32;
 
     /**
      * The maximum number of page numbers to display in the list
@@ -209,7 +209,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      */
     protected $datagridValues = array(
         '_page'       => 1,
-        '_per_page'   => 25,
+        '_per_page'   => 32,
     );
 
     /**
@@ -217,7 +217,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      *
      * @var array
      */
-    protected $perPageOptions = array(15, 25, 50, 100, 150, 200);
+    protected $perPageOptions = array(16, 32, 64, 128, 192);
 
     /**
      * The code related to the admin
@@ -468,6 +468,18 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     protected $securityInformation = array();
 
     protected $cacheIsGranted = array();
+
+    protected $listModes = array(
+        'list' => array(
+            'class' => 'fa fa-list fa-fw',
+        ),
+        'mosaic' => array(
+            'class' => 'fa fa-th-large fa-fw',
+        ),
+//        'tree' => array(
+//            'class' => 'fa fa-sitemap fa-fw',
+//        ),
+    );
 
     /**
      * {@inheritdoc}
@@ -2046,6 +2058,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     public function getPersistentParameters()
     {
         $parameters = array();
+
         foreach ($this->getExtensions() as $extension) {
             $params = $extension->getPersistentParameters($this);
 
@@ -2770,5 +2783,37 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     public function getObjectMetadata($object)
     {
         return new Metadata($this->toString($object));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getListModes()
+    {
+        return $this->listModes;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setListMode($mode)
+    {
+        if (!$this->hasRequest()) {
+            throw new \RuntimeException(sprintf('No request attached to the current admin: %s', $this->getCode()));
+        }
+
+        $this->getRequest()->getSession()->set(sprintf("%s.list_mode", $this->getCode()), $mode);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getListMode()
+    {
+        if (!$this->hasRequest()) {
+            return 'list';
+        }
+
+        return $this->getRequest()->getSession()->get(sprintf("%s.list_mode", $this->getCode()), 'list');
     }
 }

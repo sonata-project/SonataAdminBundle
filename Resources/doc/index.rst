@@ -60,3 +60,4 @@ Cookbook
    cookbook/recipe_sortable_listing
    cookbook/recipe_dynamic_form_modification
    cookbook/recipe_custom_action
+   cookbook/recipe_customizing_a_mosaic_list
