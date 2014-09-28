@@ -30,11 +30,11 @@ file that was distributed with this source code.
         {% endblock %}
 
         {% block stylesheets %}
-
-            {% for stylesheet in admin_pool.getOption('stylesheets', []) %}
-                <link rel="stylesheet" href="{{ asset(stylesheet) }}">
-            {% endfor %}
-
+            {% if admin_pool is defined %}
+                {% for stylesheet in admin_pool.getOption('stylesheets', []) %}
+                        <link rel="stylesheet" href="{{ asset(stylesheet) }}">
+                {% endfor %}
+            {% endif %}
         {% endblock %}
 
         {% block javascripts %}
@@ -49,9 +49,11 @@ file that was distributed with this source code.
                };
             </script>
 
-            {% for javascript in admin_pool.getOption('javascripts', []) %}
-                <script src="{{ asset(javascript) }}"></script>
-            {% endfor %}
+            {% if admin_pool is defined %}
+                {% for javascript in admin_pool.getOption('javascripts', []) %}
+                    <script src="{{ asset(javascript) }}"></script>
+                {% endfor %}
+            {% endif %}
 
             {# localize select2 #}
             {% if admin_pool is defined and admin_pool.getOption('use_select2') %}
@@ -100,16 +102,18 @@ file that was distributed with this source code.
                     </noscript>
                 {% endblock %}
                 {% block logo %}
-                    {% spaceless %}
-                    <a class="logo" href="{{ url('sonata_admin_dashboard') }}">
-                        {% if 'single_image' == admin_pool.getOption('title_mode') or 'both' == admin_pool.getOption('title_mode') %}
-                            <img src="{{ asset(admin_pool.titlelogo) }}" alt="{{ admin_pool.title }}">
-                        {% endif %}
-                        {% if 'single_text' == admin_pool.getOption('title_mode') or 'both' == admin_pool.getOption('title_mode') %}
-                            <span>{{ admin_pool.title }}</span>
-                        {% endif %}
-                    </a>
-                    {% endspaceless %}
+                    {% if admin_pool is defined %}
+                        {% spaceless %}
+                        <a class="logo" href="{{ url('sonata_admin_dashboard') }}">
+                            {% if 'single_image' == admin_pool.getOption('title_mode') or 'both' == admin_pool.getOption('title_mode') %}
+                                <img src="{{ asset(admin_pool.titlelogo) }}" alt="{{ admin_pool.title }}">
+                            {% endif %}
+                            {% if 'single_text' == admin_pool.getOption('title_mode') or 'both' == admin_pool.getOption('title_mode') %}
+                                <span>{{ admin_pool.title }}</span>
+                            {% endif %}
+                        </a>
+                        {% endspaceless %}
+                    {% endif %}
                 {% endblock %}
                 {% block sonata_nav %}
                     {% if admin_pool is defined %}
