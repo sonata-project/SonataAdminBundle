@@ -280,6 +280,9 @@ file that was distributed with this source code.
                 readonly: {{ read_only ? 'true' : 'false' }},
                 minimumInputLength: {{ minimum_input_length }},
                 multiple: {{ multiple ? 'true' : 'false' }},
+                width: "{{ width }}",
+                containerCssClass: "{{ container_css_class  ~ ' form-control' }} ",
+                dropdownCssClass: "{{ dropdown_css_class }}",
                 ajax: {
                     url:  "{{ url ?: url(route.name, route.parameters|default([])) }}",
                     dataType: 'json',
@@ -315,12 +318,11 @@ file that was distributed with this source code.
                     }
                 },
                 formatResult: function (item) {
-                    return {% block sonata_type_model_autocomplete_dropdown_item_format %}'<div class="sonata-autocomplete-dropdown-item">'+item.label+'</div>'{% endblock %};// format of one dropdown item
+                    return {% block sonata_type_model_autocomplete_dropdown_item_format %}'<div class="{{ dropdown_item_css_class }}">'+item.label+'</div>'{% endblock %};// format of one dropdown item
                 },
                 formatSelection: function (item) {
                     return {% block sonata_type_model_autocomplete_selection_format %}item.label{% endblock %};// format selected item '<b>'+item.label+'</b>';
                 },
-                dropdownCssClass: "{{ dropdown_css_class }}",
                 escapeMarkup: function (m) { return m; } // we do not want to escape markup since we are displaying html in results
             });
 

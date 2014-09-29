@@ -232,8 +232,17 @@ route
   The route ``name`` with ``parameters`` that is used as target url for ajax
   requests.
 
+width
+  defaults to "". Controls the width style attribute of the Select2 container div.
+
+container_css_class
+  defaults to "". Css class that will be added to select2's container tag.
+
 dropdown_css_class
-  defaults to "sonata-autocomplete-dropdown". CSS class of dropdown list.
+  defaults to "". CSS class of dropdown list.
+
+dropdown_item_css_class
+  defaults to "". CSS class of dropdown item.
 
 req_param_name_search
   defaults to "q". Ajax request parameter name which contains the searched text.

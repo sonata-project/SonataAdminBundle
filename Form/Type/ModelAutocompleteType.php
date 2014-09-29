@@ -55,6 +55,7 @@ class ModelAutocompleteType extends AbstractType
         $view->vars['multiple'] = $options['multiple'];
         $view->vars['minimum_input_length'] = $options['minimum_input_length'];
         $view->vars['items_per_page'] = $options['items_per_page'];
+        $view->vars['width'] = $options['width'];
 
         // ajax parameters
         $view->vars['url'] = $options['url'];
@@ -64,8 +65,10 @@ class ModelAutocompleteType extends AbstractType
         $view->vars['req_param_name_page_number'] = $options['req_param_name_page_number'];
         $view->vars['req_param_name_items_per_page'] = $options['req_param_name_items_per_page'];
 
-        // dropdown list css class
+        // CSS classes
+        $view->vars['container_css_class'] = $options['container_css_class'];
         $view->vars['dropdown_css_class'] = $options['dropdown_css_class'];
+        $view->vars['dropdown_item_css_class'] = $options['dropdown_item_css_class'];
     }
 
     /**
@@ -80,6 +83,7 @@ class ModelAutocompleteType extends AbstractType
             'class'                           => null,
             'callback'                        => null,
             'multiple'                        => false,
+            'width'                           => '',
 
             'placeholder'                     => '',
             'minimum_input_length'            => 3, //minimum 3 chars should be typed to load ajax data
@@ -95,8 +99,10 @@ class ModelAutocompleteType extends AbstractType
             'req_param_name_page_number'      => '_page',
             'req_param_name_items_per_page'   => '_per_page',
 
-            // dropdown list css class
-            'dropdown_css_class'              => 'sonata-autocomplete-dropdown',
+            // CSS classes
+            'container_css_class'             => '',
+            'dropdown_css_class'              => '',
+            'dropdown_item_css_class'         => '',
         ));
 
         $resolver->setRequired(array('property'));
