@@ -2081,7 +2081,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     {
         $parameters = $this->getPersistentParameters();
 
-        return isset($parameters[$name]) ? $parameters[$name] : null;
+        return isset($parameters[$name]) && !empty($parameters[$name]) ? $parameters[$name] : null;
     }
 
     /**
