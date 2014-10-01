@@ -249,13 +249,13 @@ var Admin = {
 
             Admin.log('[core|add_filters] handle filter container: ', jQuery(e.target).attr('filter-container'))
 
-            var filters_container = jQuery('#' + jQuery(e.target).attr('filter-container'));
+            var filters_container = jQuery('#' + jQuery(e.currentTarget).attr('filter-container'));
 
             if (jQuery('div.form-group:visible', filters_container).length == 0) {
                 jQuery(filters_container).slideDown();
             }
 
-            var target = jQuery('div[id="' + jQuery(e.target).attr('filter-target') + '"]', filters_container);
+            var target = jQuery('div[id="' + jQuery(e.currentTarget).attr('filter-target') + '"]', filters_container);
 
             if (jQuery(target).is(":visible")) {
                 jQuery('i', this).removeClass('fa-check-square-o');
