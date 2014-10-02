@@ -35,7 +35,7 @@ file that was distributed with this source code.
                     <form action="{{ admin.generateUrl('batch', {'filter': admin.filterParameters}) }}" method="POST" >
                         <input type="hidden" name="_sonata_csrf_token" value="{{ csrf_token }}">
                     {% endif %}
-                        <table class="table table-bordered table-striped">
+                        <table class="{% block sonata_list_table_class %}table table-bordered table-striped{% endblock %}">
                             {% block table_header %}
                                 <thead>
                                     <tr class="sonata-ba-list-field-header">
@@ -61,10 +61,17 @@ file that was distributed with this source code.
                                                 {% endif %}
 
                                                 {% spaceless %}
-                                                    <th class="sonata-ba-list-field-header-{{ field_description.type}} {% if sortable %} sonata-ba-list-field-header-order-{{ sort_by|lower }} {{ sort_active_class }}{% endif %}">
-                                                        {% if sortable %}<a href="{{ admin.generateUrl('list', sort_parameters) }}">{% endif %}
+                                                    <th class="
+                                                        {%- block sonata_list_table_header_th_class -%}
+                                                            sonata-ba-list-field-header-{{ field_description.type}} 
+                                                            {%- if sortable -%}
+                                                                sonata-ba-list-field-header-order-{{ sort_by|lower }} {{ sort_active_class }}
+                                                            {%- endif -%}
+                                                        {%- endblock %}" {% block sonata_list_table_header_th_attribute %}{% endblock -%}
+                                                        >
+                                                        {%- if sortable %}<a href="{{ admin.generateUrl('list', sort_parameters) }}">{% endif -%}
                                                         {{ admin.trans(field_description.label, {}, field_description.translationDomain) }}
-                                                        {% if sortable %}</a>{% endif %}
+                                                        {%- if sortable %}</a>{% endif -%}
                                                     </th>
                                                 {% endspaceless %}
                                             {% endif %}

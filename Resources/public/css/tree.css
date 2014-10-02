@@ -7,6 +7,8 @@
     padding-left: 0;
     margin-left: 15px;
     margin-right: 15px;
+    overflow: hidden;
+    padding-bottom: 10px;
 }
 .sonata-tree ul {
     list-style: none;
@@ -89,10 +91,6 @@
 /**
  * Toggleable tree
  */
-.sonata-tree--toggleable {
-    margin-left: 0;
-}
-
 .sonata-tree--toggleable li > ul {
     display: none;
 }
@@ -118,6 +116,10 @@
 /**
  * Smaller tree
  */
+.sonata-tree--small {
+    margin-left: 0;
+}
+
 .sonata-tree--small .sonata-tree__item__edit {
     font-size: 12px;
 }
