@@ -192,7 +192,7 @@
             </trans-unit>
             <trans-unit id="title_batch_confirmation">
                 <source>title_batch_confirmation</source>
-                <target>Potvrdiť dávkovú operáciu</target>
+                <target>Potvrdiť dávkovú operáciu: '%action%'</target>
             </trans-unit>
             <trans-unit id="message_batch_confirmation">
                 <source>message_batch_confirmation</source>
@@ -400,7 +400,7 @@
             </trans-unit>
             <trans-unit id="message_form_group_empty">
                 <source>message_form_group_empty</source>
-                <target>message_form_group_empty</target>
+                <target>Žiadne položky nie sú k dispozícii.</target>
             </trans-unit>
         </body>
     </file>
