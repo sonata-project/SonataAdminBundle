@@ -404,7 +404,7 @@
             </trans-unit>
             <trans-unit id="message_form_group_empty">
                 <source>message_form_group_empty</source>
-                <target>message_form_group_empty</target>
+                <target>Brak dostępnych pól.</target>
             </trans-unit>
             <trans-unit id="link_filters">
                 <source>link_filters</source>

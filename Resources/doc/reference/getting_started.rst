@@ -57,7 +57,7 @@ be configured, which is done using an Admin class.
 
 An Admin class represents the mapping of your model to each administration action.
 In it, you decide which fields to show on a listing, which to use as filters or what
-to show on an creation/edition form.
+to show in a creation or edition form.
 
 The easiest way to create an Admin class for your model is to extend
 the ``Sonata\AdminBundle\Admin\Admin`` class.
@@ -172,7 +172,7 @@ values will work for most scenarios.
 The ``setTranslationDomain`` call lets you choose which translation domain to use when
 translating labels on the admin pages. More info on the `symfony translations page`_.
 
-Now that you have a configuration file with you admin service, you just need to tell
+Now that you have a configuration file with your admin service, you just need to tell
 Symfony2 to load it. There are two ways to do so:
 
 1 - Importing it in the main config.yml
@@ -237,7 +237,7 @@ Step 4: Configuration
 ---------------------
 
 At this point you have basic administration actions for your model. If you visit ``http://yoursite.local/admin/dashboard`` again, you should now see a panel with
-your model mapped. You can start creating, listing, editing and deleting instances.
+your mapped model. You can start creating, listing, editing and deleting instances.
 
 You probably want to put your own project's name and logo on the top bar.
 
