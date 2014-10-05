@@ -129,27 +129,31 @@ Full Configuration Options
                 stylesheets:
 
                     # Defaults:
-                    - bundles/sonataadmin/admin-lte/css/bootstrap.min.css
-                    - bundles/sonataadmin/admin-lte/css/font-awesome.min.css
-                    - bundles/sonataadmin/admin-lte/css/ionicons.min.css
-                    - bundles/sonataadmin/admin-lte/css/AdminLTE.css
-                    - bundles/sonatajquery/themes/flick/jquery-ui-1.10.4.custom.css
-                    - bundles/sonataadmin/select2/select2.css
-                    - bundles/sonataadmin/select2/select2-bootstrap.css
-                    - bundles/sonataadmin/bootstrap3-editable/bootstrap3-editable/css/bootstrap-editable.css
+                    - bundles/sonataadmin/vendor/bootstrap/dist/css/bootstrap.min.css
+                    - bundles/sonataadmin/vendor/AdminLTE/css/font-awesome.min.css
+                    - bundles/sonataadmin/vendor/AdminLTE/css/ionicons.min.css
+                    - bundles/sonataadmin/vendor/AdminLTE/css/AdminLTE.css
+                    - bundles/sonatacore/vendor/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css
+                    - bundles/sonataadmin/vendor/jqueryui/themes/base/jquery-ui.css
+                    - bundles/sonataadmin/vendor/select2/select2.css
+                    - bundles/sonataadmin/vendor/select2/select2-bootstrap.css
+                    - bundles/sonataadmin/vendor/x-editable/dist/bootstrap3-editable/css/bootstrap-editable.css
                     - bundles/sonataadmin/css/styles.css
                     - bundles/sonataadmin/css/layout.css
                 javascripts:
 
                     # Defaults:
-                    - bundles/sonatajquery/jquery-1.10.2.js
-                    - bundles/sonatajquery/jquery-ui-1.10.4.js
-                    - bundles/sonatajquery/jquery-ui-i18n.js
+                    - bundles/sonataadmin/vendor/jquery/dist/jquery.min.js
+                    - bundles/sonataadmin/vendor/jquery.scrollTo/jquery.scrollTo.min.js
+                    - bundles/sonatacore/vendor/moment/min/moment.min.js
+                    - bundles/sonataadmin/vendor/bootstrap/dist/js/bootstrap.min.js
+                    - bundles/sonatacore/vendor/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js
+                    - bundles/sonataadmin/vendor/jqueryui/ui/minified/jquery-ui.min.js
+                    - bundles/sonataadmin/vendor/jqueryui/ui/minified/i18n/jquery-ui-i18n.min.js
                     - bundles/sonataadmin/jquery/jquery.form.js
                     - bundles/sonataadmin/jquery/jquery.confirmExit.js
-                    - bundles/sonataadmin/admin-lte/js/bootstrap.min.js
-                    - bundles/sonataadmin/bootstrap3-editable/bootstrap3-editable/js/bootstrap-editable.min.js
-                    - bundles/sonataadmin/select2/select2.min.js
+                    - bundles/sonataadmin/vendor/x-editable/dist/bootstrap3-editable/js/bootstrap-editable.min.js
+                    - bundles/sonataadmin/vendor/select2/select2.min.js
                     - bundles/sonataadmin/App.js
                     - bundles/sonataadmin/Admin.js
 
