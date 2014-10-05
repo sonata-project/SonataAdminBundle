@@ -2727,11 +2727,6 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->method('getBatchActions')
             ->will($this->returnValue($batchActions));
 
-        $this->admin->expects($this->once())
-            ->method('getTranslationLabel')
-            ->with($this->equalTo('delete'), $this->equalTo('action'))
-            ->will($this->returnValue('delete_action'));
-
         $data = array('action'=>'delete', 'idx'=>array('123', '456'), 'all_elements'=>false);
 
         $this->request->setMethod('POST');
@@ -2767,6 +2762,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Symfony\Component\Form\FormView', $this->parameters['form']);
         $this->assertEquals($data, $this->parameters['data']);
         $this->assertEquals('csrf-token-123_sonata.batch', $this->parameters['csrf_token']);
+        $this->assertEquals('Foo Bar', $this->parameters['action_label']);
 
         $this->assertEquals(array(), $this->session->getFlashBag()->all());
         $this->assertEquals('SonataAdminBundle:CRUD:batch_confirmation.html.twig', $this->template);
