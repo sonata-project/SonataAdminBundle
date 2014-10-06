@@ -400,11 +400,11 @@
             </trans-unit>
             <trans-unit id="message_form_group_empty">
                 <source>message_form_group_empty</source>
-                <target>message_form_group_empty</target>
+                <target>Žiadne položky nie sú k dispozícii.</target>
             </trans-unit>
             <trans-unit id="link_filters">
                 <source>link_filters</source>
-                <target>link_filters</target>
+                <target>Filtre</target>
             </trans-unit>
         </body>
     </file>

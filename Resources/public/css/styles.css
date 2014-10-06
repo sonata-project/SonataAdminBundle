@@ -318,6 +318,10 @@ form.sonata-filter-form.form-stacked {
     max-height: 25px;
 }
 
+.filter_container .select2-container .select2-choice {
+    height: 23px;
+}
+
 /* Overrides */
 
 /* x-editable */

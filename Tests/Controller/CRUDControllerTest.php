@@ -660,20 +660,32 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('list?filter%5Bfoo%5D=bar', $result->getTargetUrl());
     }
 
-    public function testBatchActionDeleteWithModelManagerException()
+    private function assertLoggerLogsModelManagerException($subject, $method)
     {
-        $modelManager = $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface');
+        $exception = new ModelManagerException(
+            $message           = 'message',
+            1234,
+            new \Exception($previousExceptionMessage = 'very useful message')
+        );
 
-        $message = 'test message';
-        $modelManager->expects($this->once())
-            ->method('batchDelete')
-            ->will($this->returnCallback(function () use ($message) {
-                    throw new ModelManagerException($message);
+        $subject->expects($this->once())
+            ->method($method)
+            ->will($this->returnCallback(function () use ($exception) {
+                    throw $exception;
                 }));
 
         $this->logger->expects($this->once())
             ->method('error')
-            ->with($message);
+            ->with($message, array(
+                'exception' => $exception,
+                'previous_exception_message' => $previousExceptionMessage
+            ));
+    }
+
+    public function testBatchActionDeleteWithModelManagerException()
+    {
+        $modelManager = $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface');
+        $this->assertLoggerLogsModelManagerException($modelManager, 'batchDelete');
 
         $this->admin->expects($this->once())
             ->method('getModelManager')
@@ -934,16 +946,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo('DELETE'))
             ->will($this->returnValue(true));
 
-        $message = 'test message';
-        $this->admin->expects($this->once())
-            ->method('delete')
-            ->will($this->returnCallback(function () use ($message) {
-                    throw new ModelManagerException($message);
-                }));
-
-        $this->logger->expects($this->once())
-            ->method('error')
-            ->with($message);
+        $this->assertLoggerLogsModelManagerException($this->admin, 'delete');
 
         $this->request->setMethod('DELETE');
 
@@ -1087,17 +1090,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
         $this->expectTranslate('flash_delete_error');
 
-        $message = 'test message';
-
-        $this->admin->expects($this->once())
-            ->method('delete')
-            ->will($this->returnCallback(function () use ($message){
-                throw new ModelManagerException($message);
-            }));
-
-        $this->logger->expects($this->once())
-            ->method('error')
-            ->with($message);
+        $this->assertLoggerLogsModelManagerException($this->admin, 'delete');
 
         $this->request->setMethod('DELETE');
         $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.delete');
