@@ -51,7 +51,11 @@ This template can be customized to match your needs. You should only extends the
                             </div>
                         </div>
                         <div class="mosaic-inner-text">
-                            <input type="checkbox" name="idx[]" value="{{ admin.id(object) }}">
+                            {% if (admin.hasRoute('batch') and batchactions|length > 0) or (admin.hasRoute('export') and admin.isGranted("EXPORT") and admin.getExportFormats()|length) %}
+                                <input type="checkbox" name="idx[]" value="{{ admin.id(object) }}">
+                            {% else %}
+                                &nbsp;
+                            {% endif %}
 
                             {% block sonata_mosaic_description %}
                                 {% if admin.isGranted('EDIT', object) and admin.hasRoute('edit') %}
