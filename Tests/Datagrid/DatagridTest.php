@@ -238,6 +238,41 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->datagrid->hasActiveFilters());
     }
 
+    public function testHasDisplayableFilters()
+    {
+        $this->assertFalse($this->datagrid->hasDisplayableFilters());
+
+        $filter1 = $this->getMock('Sonata\AdminBundle\Filter\FilterInterface');
+        $filter1->expects($this->once())
+            ->method('getName')
+            ->will($this->returnValue('foo'));
+        $filter1->expects($this->any())
+            ->method('getOption')
+            ->will($this->returnValue(false));
+        $filter1->expects($this->any())
+            ->method('isActive')
+            ->will($this->returnValue(false));
+
+        $this->datagrid->addFilter($filter1);
+
+        $this->assertFalse($this->datagrid->hasDisplayableFilters());
+
+        $filter2 = $this->getMock('Sonata\AdminBundle\Filter\FilterInterface');
+        $filter2->expects($this->once())
+            ->method('getName')
+            ->will($this->returnValue('bar'));
+        $filter2->expects($this->any())
+            ->method('getOption')
+            ->will($this->returnValue(true));
+        $filter2->expects($this->any())
+            ->method('isActive')
+            ->will($this->returnValue(true));
+
+        $this->datagrid->addFilter($filter2);
+
+        $this->assertTrue($this->datagrid->hasDisplayableFilters());
+    }
+
     public function testGetForm()
     {
         $this->assertInstanceOf('Symfony\Component\Form\Form', $this->datagrid->getForm());

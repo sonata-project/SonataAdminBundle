@@ -96,4 +96,9 @@ interface DatagridInterface
      * @return boolean
      */
     public function hasActiveFilters();
+
+    /**
+     * @return boolean
+     */
+    public function hasDisplayableFilters();
 }
