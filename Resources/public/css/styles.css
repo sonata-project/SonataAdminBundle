@@ -322,6 +322,17 @@ form.sonata-filter-form.form-stacked {
     height: 23px;
 }
 
+body.fixed .sonata-list-table {
+    position: relative;
+    margin-left: 15px;
+    margin-right: 15px;
+    margin-bottom: 5px;
+}
+
+.navbar-nav.navbar-right:last-child {
+    margin-right: 0;
+}
+
 /* Overrides */
 
 /* x-editable */
