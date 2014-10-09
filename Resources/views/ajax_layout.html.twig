@@ -24,6 +24,10 @@ file that was distributed with this source code.
     {% if _list_table is not empty or _list_filters is not empty %}
         <div class="row">
 
+            <div class="navbar navbar-default sonata-list-table">
+
+                <div class="container-fluid">
+
                     {% if admin is defined and action is defined and action == 'list' and admin.listModes|length > 1 %}
                         <div class="nav navbar-right btn-group">
                             {% for mode, settings in admin.listModes %}
@@ -36,7 +40,10 @@ file that was distributed with this source code.
                         {{ _list_filters_actions|raw }}
                     {% endif %}
 
+                </div>
+
             </div>
+        </div>
 
         {% if _list_filters|trim %}
              <div class="row">
