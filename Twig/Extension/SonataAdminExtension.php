@@ -92,6 +92,10 @@ class SonataAdminExtension extends \Twig_Extension
                 'sonata_xeditable_type',
                 array($this, 'getXEditableType')
             ),
+            new \Twig_SimpleFilter(
+                'sonata_xeditable_choices',
+                array($this, 'getXEditableChoices')
+            ),
         );
     }
 
@@ -396,7 +400,7 @@ EOT;
     }
 
     /**
-     * @param array $xEditableTypeMapping
+     * @param string[] $xEditableTypeMapping
      */
     public function setXEditableTypeMapping($xEditableTypeMapping)
     {
@@ -411,5 +415,41 @@ EOT;
     public function getXEditableType($type)
     {
         return isset($this->xEditableTypeMapping[$type]) ? $this->xEditableTypeMapping[$type] : false;
+    }
+
+    /**
+     * Return xEditable choices based on the field description choices options & catalogue options.
+     * With the following choice options:
+     *     ['Status1' => 'Alias1', 'Status2' => 'Alias2']
+     * The method will return:
+     *     [['value' => 'Status1', 'text' => 'Alias1'], ['value' => 'Status2', 'text' => 'Alias2']].
+     *
+     * @param FieldDescriptionInterface $fieldDescription
+     *
+     * @return array
+     */
+    public function getXEditableChoices(FieldDescriptionInterface $fieldDescription)
+    {
+        $choices   = $fieldDescription->getOption('choices', array());
+        $catalogue = $fieldDescription->getOption('catalogue');
+        $xEditableChoices = array();
+        if (!empty($choices)) {
+            reset($choices);
+            $first = current($choices);
+            // the choices are already in the right format
+            if (is_array($first) && array_key_exists('value', $first) && array_key_exists('text', $first)) {
+                $xEditableChoices = $choices;
+            } else {
+                foreach ($choices as $value => $text) {
+                    $text = $catalogue ? $fieldDescription->getAdmin()->trans($text, array(), $catalogue) : $text;
+                    $xEditableChoices[] = array(
+                        'value' => $value,
+                        'text'  => $text,
+                    );
+                }
+            }
+        }
+
+        return $xEditableChoices;
     }
 }

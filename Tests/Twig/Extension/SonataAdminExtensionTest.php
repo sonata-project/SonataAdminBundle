@@ -76,6 +76,11 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
      */
     private $logger;
 
+    /**
+     * @var string[]
+     */
+    private $xEditableTypeMapping;
+
     public function setUp()
     {
         date_default_timezone_set('Europe/London');
@@ -87,8 +92,25 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
         $this->pool->setAdminClasses(array('fooClass' => array('sonata_admin_foo_service')));
 
         $this->logger = $this->getMock('Psr\Log\LoggerInterface');
+        $this->xEditableTypeMapping = array(
+            'choice'     => 'select',
+            'boolean'    => 'select',
+            'text'       => 'text',
+            'textarea'   => 'textarea',
+            'html'       => 'textarea',
+            'email'      => 'email',
+            'string'     => 'text',
+            'smallint'   => 'text',
+            'bigint'     => 'text',
+            'integer'    => 'number',
+            'decimal'    => 'number',
+            'currency'   => 'number',
+            'percent'    => 'number',
+            'url'        => 'url',
+        );
 
         $this->twigExtension = new SonataAdminExtension($this->pool, $this->logger);
+        $this->twigExtension->setXEditableTypeMapping($this->xEditableTypeMapping);
 
         $loader = new StubFilesystemLoader(array(
             __DIR__.'/../../../Resources/views/CRUD',
@@ -148,8 +170,8 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
 
         $this->admin->expects($this->any())
             ->method('trans')
-            ->will($this->returnCallback(function ($id) {
-                return $id;
+            ->will($this->returnCallback(function ($id, $parameters = array(), $domain = null) use ($translator) {
+                return $translator->trans($id, $parameters, $domain);
             }));
 
         $this->adminBar = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
@@ -218,6 +240,12 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
         $this->fieldDescription->expects($this->any())
             ->method('getOptions')
             ->will($this->returnValue($options));
+
+        $this->fieldDescription->expects($this->any())
+            ->method('getOption')
+            ->will($this->returnCallback(function ($name, $default = null) use ($options) {
+                return isset($options[$name]) ? $options[$name] : $default;
+            }));
 
         $this->fieldDescription->expects($this->any())
             ->method('getTemplate')
@@ -639,9 +667,9 @@ EOT
                 'choice',
                 'Foo',
                 array('catalogue' => 'SonataAdminBundle', 'choices' => array(
-                    'Foo'     => 'action_delete',
-                    'Status2' => 'Alias2',
-                    'Status3' => 'Alias3',
+                    'Foo'         => 'action_delete',
+                    'Status2'     => 'Alias2',
+                    'Status3'     => 'Alias3',
                 )),
             ),
             array(
@@ -701,9 +729,9 @@ EOT
                 'choice',
                 array('Foo', 'Status3'),
                 array('catalogue' => 'SonataAdminBundle', 'choices' => array(
-                    'Foo'     => 'action_delete',
-                    'Status2' => 'Alias2',
-                    'Status3' => 'Alias3',
+                    'Foo'         => 'action_delete',
+                    'Status2'     => 'Alias2',
+                    'Status3'     => 'Alias3',
                 ), 'multiple' => true),
             ),
             array(
@@ -717,6 +745,134 @@ EOT
                     'Status2' => '<b>Alias2</b>',
                     'Status3' => '<b>Alias3</b>',
                 ), 'multiple' => true), ),
+            array(
+                <<<EOT
+<td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345">
+    <span
+        class="x-editable"
+        data-type="select"
+        data-value="Status1"
+        data-title="Data"
+        data-pk="12345"
+        data-url="/core/set-object-field-value?context=list&amp;field=fd_name&amp;objectId=12345&amp;code=xyz"
+        data-source="[]"
+    >
+        Status1
+    </span>
+</td>
+EOT
+                ,
+                'choice',
+                'Status1',
+                array('editable' => true),
+            ),
+            array(
+                <<<EOT
+<td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345">
+    <span
+        class="x-editable"
+        data-type="select"
+        data-value="Status1"
+        data-title="Data"
+        data-pk="12345"
+        data-url="/core/set-object-field-value?context=list&amp;field=fd_name&amp;objectId=12345&amp;code=xyz"
+        data-source="[{&quot;value&quot;:&quot;Status1&quot;,&quot;text&quot;:&quot;Alias1&quot;},{&quot;value&quot;:&quot;Status2&quot;,&quot;text&quot;:&quot;Alias2&quot;},{&quot;value&quot;:&quot;Status3&quot;,&quot;text&quot;:&quot;Alias3&quot;}]" >
+        Alias1 </span>
+</td>
+EOT
+                ,
+                'choice',
+                'Status1',
+                array(
+                    'editable' => true,
+                    'choices'  => array(
+                        'Status1' => 'Alias1',
+                        'Status2' => 'Alias2',
+                        'Status3' => 'Alias3',
+                    ),
+                ),
+            ),
+            array(
+                <<<EOT
+<td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345">
+    <span
+        class="x-editable"
+        data-type="select"
+        data-value=""
+        data-title="Data"
+        data-pk="12345"
+        data-url="/core/set-object-field-value?context=list&amp;field=fd_name&amp;objectId=12345&amp;code=xyz"
+        data-source="[{&quot;value&quot;:&quot;Status1&quot;,&quot;text&quot;:&quot;Alias1&quot;},{&quot;value&quot;:&quot;Status2&quot;,&quot;text&quot;:&quot;Alias2&quot;},{&quot;value&quot;:&quot;Status3&quot;,&quot;text&quot;:&quot;Alias3&quot;}]" >
+
+    </span>
+</td>
+EOT
+                ,
+                'choice',
+                null,
+                array(
+                    'editable' => true,
+                    'choices'  => array(
+                        'Status1' => 'Alias1',
+                        'Status2' => 'Alias2',
+                        'Status3' => 'Alias3',
+                    ),
+                ),
+            ),
+            array(
+                <<<EOT
+<td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345">
+    <span
+        class="x-editable"
+        data-type="select"
+        data-value="NoValidKeyInChoices"
+        data-title="Data" data-pk="12345"
+        data-url="/core/set-object-field-value?context=list&amp;field=fd_name&amp;objectId=12345&amp;code=xyz"
+        data-source="[{&quot;value&quot;:&quot;Status1&quot;,&quot;text&quot;:&quot;Alias1&quot;},{&quot;value&quot;:&quot;Status2&quot;,&quot;text&quot;:&quot;Alias2&quot;},{&quot;value&quot;:&quot;Status3&quot;,&quot;text&quot;:&quot;Alias3&quot;}]" >
+        NoValidKeyInChoices
+    </span>
+</td>
+EOT
+                ,
+                'choice',
+                'NoValidKeyInChoices',
+                array(
+                    'editable' => true,
+                    'choices'  => array(
+                        'Status1' => 'Alias1',
+                        'Status2' => 'Alias2',
+                        'Status3' => 'Alias3',
+                    ),
+                ),
+            ),
+            array(
+                <<<EOT
+<td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345">
+    <span
+        class="x-editable"
+        data-type="select"
+        data-value="Foo"
+        data-title="Data"
+        data-pk="12345"
+        data-url="/core/set-object-field-value?context=list&amp;field=fd_name&amp;objectId=12345&amp;code=xyz"
+        data-source="[{&quot;value&quot;:&quot;Foo&quot;,&quot;text&quot;:&quot;Delete&quot;},{&quot;value&quot;:&quot;Status2&quot;,&quot;text&quot;:&quot;Alias2&quot;},{&quot;value&quot;:&quot;Status3&quot;,&quot;text&quot;:&quot;Alias3&quot;}]" >
+         Delete
+    </span>
+</td>
+EOT
+                ,
+                'choice',
+                'Foo',
+                array(
+                    'editable'  => true,
+                    'catalogue' => 'SonataAdminBundle',
+                    'choices'   => array(
+                        'Foo'     => 'action_delete',
+                        'Status2' => 'Alias2',
+                        'Status3' => 'Alias3',
+                    ),
+                ),
+            ),
             array(
                 '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345"> &nbsp; </td>',
                 'url',
@@ -1139,7 +1295,7 @@ EOT
                 '<th>Data</th> <td>Alias1</td>',
                 'choice',
                 'Status1',
-                array('safe' => false, 'choices' => array(
+                array('safe'  => false, 'choices' => array(
                     'Status1' => 'Alias1',
                     'Status2' => 'Alias2',
                     'Status3' => 'Alias3',
@@ -1149,7 +1305,7 @@ EOT
                 '<th>Data</th> <td>NoValidKeyInChoices</td>',
                 'choice',
                 'NoValidKeyInChoices',
-                array('safe' => false, 'choices' => array(
+                array('safe'  => false, 'choices' => array(
                     'Status1' => 'Alias1',
                     'Status2' => 'Alias2',
                     'Status3' => 'Alias3',
@@ -1159,7 +1315,7 @@ EOT
                 '<th>Data</th> <td>Delete</td>',
                 'choice',
                 'Foo',
-                array('safe' => false, 'catalogue' => 'SonataAdminBundle', 'choices' => array(
+                array('safe'  => false, 'catalogue' => 'SonataAdminBundle', 'choices' => array(
                     'Foo'     => 'action_delete',
                     'Status2' => 'Alias2',
                     'Status3' => 'Alias3',
@@ -1169,7 +1325,7 @@ EOT
                 '<th>Data</th> <td>NoValidKeyInChoices</td>',
                 'choice',
                 array('NoValidKeyInChoices'),
-                array('safe' => false, 'choices' => array(
+                array('safe'  => false, 'choices' => array(
                     'Status1' => 'Alias1',
                     'Status2' => 'Alias2',
                     'Status3' => 'Alias3',
@@ -1179,7 +1335,7 @@ EOT
                 '<th>Data</th> <td>NoValidKeyInChoices, Alias2</td>',
                 'choice',
                 array('NoValidKeyInChoices', 'Status2'),
-                array('safe' => false, 'choices' => array(
+                array('safe'  => false, 'choices' => array(
                     'Status1' => 'Alias1',
                     'Status2' => 'Alias2',
                     'Status3' => 'Alias3',
@@ -1189,7 +1345,7 @@ EOT
                 '<th>Data</th> <td>Alias1, Alias3</td>',
                 'choice',
                 array('Status1', 'Status3'),
-                array('safe' => false, 'choices' => array(
+                array('safe'  => false, 'choices' => array(
                     'Status1' => 'Alias1',
                     'Status2' => 'Alias2',
                     'Status3' => 'Alias3',
@@ -1208,7 +1364,7 @@ EOT
                 '<th>Data</th> <td>Delete, Alias3</td>',
                 'choice',
                 array('Foo', 'Status3'),
-                array('safe' => false, 'catalogue' => 'SonataAdminBundle', 'choices' => array(
+                array('safe'  => false, 'catalogue' => 'SonataAdminBundle', 'choices' => array(
                     'Foo'     => 'action_delete',
                     'Status2' => 'Alias2',
                     'Status3' => 'Alias3',
@@ -1218,7 +1374,7 @@ EOT
                 '<th>Data</th> <td><b>Alias1</b>, <b>Alias3</b></td>',
                 'choice',
                 array('Status1', 'Status3'),
-                array('safe' => true, 'choices' => array(
+                array('safe'  => true, 'choices' => array(
                     'Status1' => '<b>Alias1</b>',
                     'Status2' => '<b>Alias2</b>',
                     'Status3' => '<b>Alias3</b>',
@@ -1228,7 +1384,7 @@ EOT
                 '<th>Data</th> <td>&lt;b&gt;Alias1&lt;/b&gt;, &lt;b&gt;Alias3&lt;/b&gt;</td>',
                 'choice',
                 array('Status1', 'Status3'),
-                array('safe' => false, 'choices' => array(
+                array('safe'  => false, 'choices' => array(
                     'Status1' => '<b>Alias1</b>',
                     'Status2' => '<b>Alias2</b>',
                     'Status3' => '<b>Alias3</b>',
@@ -1299,7 +1455,7 @@ EOT
                 '<th>Data</th> <td><a href="http://localhost/foo">Foo</a></td>',
                 'url',
                 'Foo',
-                array('safe' => false, 'route' => array(
+                array('safe'   => false, 'route' => array(
                     'name'     => 'sonata_admin_foo',
                     'absolute' => true,
                 )),
@@ -1318,7 +1474,7 @@ EOT
                 '<th>Data</th> <td><a href="http://localhost/foo">foo/bar?a=b&amp;c=123456789</a></td>',
                 'url',
                 'http://foo/bar?a=b&c=123456789',
-                array('safe' => false, 'route' => array(
+                array('safe'   => false, 'route' => array(
                     'name'     => 'sonata_admin_foo',
                     'absolute' => true,
                 ), 'hide_protocol' => true),
@@ -1327,7 +1483,7 @@ EOT
                 '<th>Data</th> <td><a href="/foo/abcd/efgh?param3=ijkl">Foo</a></td>',
                 'url',
                 'Foo',
-                array('safe' => false, 'route' => array(
+                array('safe'     => false, 'route' => array(
                     'name'       => 'sonata_admin_foo_param',
                     'parameters' => array('param1' => 'abcd', 'param2' => 'efgh', 'param3' => 'ijkl'),
                 )),
@@ -1336,7 +1492,7 @@ EOT
                 '<th>Data</th> <td><a href="http://localhost/foo/abcd/efgh?param3=ijkl">Foo</a></td>',
                 'url',
                 'Foo',
-                array('safe' => false, 'route' => array(
+                array('safe'     => false, 'route' => array(
                     'name'       => 'sonata_admin_foo_param',
                     'absolute'   => true,
                     'parameters' => array(
@@ -1350,7 +1506,7 @@ EOT
                 '<th>Data</th> <td><a href="/foo/obj/abcd/12345/efgh?param3=ijkl">Foo</a></td>',
                 'url',
                 'Foo',
-                array('safe' => false, 'route' => array(
+                array('safe'                    => false, 'route' => array(
                     'name'                      => 'sonata_admin_foo_object',
                     'parameters'                => array(
                         'param1' => 'abcd',
@@ -1364,7 +1520,7 @@ EOT
                 '<th>Data</th> <td><a href="http://localhost/foo/obj/abcd/12345/efgh?param3=ijkl">Foo</a></td>',
                 'url',
                 'Foo',
-                array('safe' => false, 'route' => array(
+                array('safe'                    => false, 'route' => array(
                     'name'                      => 'sonata_admin_foo_object',
                     'absolute'                  => true,
                     'parameters'                => array(
