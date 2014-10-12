@@ -70,6 +70,10 @@
                 <source>link_add</source>
                 <target>添加</target>
             </trans-unit>
+            <trans-unit id="link_edit">
+                <source>link_edit</source>
+                <target>编辑</target>
+            </trans-unit>
             <trans-unit id="link_list">
                 <source>link_list</source>
                 <target>列表</target>

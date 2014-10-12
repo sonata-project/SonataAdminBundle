@@ -70,6 +70,10 @@
                 <source>link_add</source>
                 <target>Nei</target>
             </trans-unit>
+            <trans-unit id="link_edit">
+                <source>link_edit</source>
+                <target>Beaarbechten</target>
+            </trans-unit>
             <trans-unit id="link_list">
                 <source>link_list</source>
                 <target>Lëscht</target>

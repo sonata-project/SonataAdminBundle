@@ -80,8 +80,8 @@ class
   calculated from the linked Admin class. You usually should not need to set
   this manually.
 
-btn_add, btn_list, btn_delete and btn_catalogue:
-  The labels on the ``add``, ``list`` and ``delete`` buttons can be customized
+btn_add, btn_edit, btn_list, btn_delete and btn_catalogue:
+  The labels on the ``add``, ``edit``, ``list`` and ``delete`` buttons can be customized
   with these parameters. Setting any of them to ``false`` will hide the
   corresponding button. You can also specify a custom translation catalogue
   for these labels, which defaults to ``SonataAdminBundle``.
@@ -344,8 +344,8 @@ delete
   defaults to true and indicates that a 'delete' checkbox should be shown allowing
   the user to delete the linked object.
 
-btn_add, btn_list, btn_delete and btn_catalogue:
-  The labels on the ``add``, ``list`` and ``delete`` buttons can be customized
+btn_add, btn_edit, btn_list, btn_delete and btn_catalogue:
+  The labels on the ``add``, ``edit``, ``list`` and ``delete`` buttons can be customized
   with these parameters. Setting any of them to ``false`` will hide the
   corresponding button. You can also specify a custom translation catalogue
   for these labels, which defaults to ``SonataAdminBundle``.
