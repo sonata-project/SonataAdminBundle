@@ -404,7 +404,7 @@
             </trans-unit>
             <trans-unit id="link_filters">
                 <source>link_filters</source>
-                <target>link_filters</target>
+                <target>Filtros</target>
             </trans-unit>
         </body>
     </file>
