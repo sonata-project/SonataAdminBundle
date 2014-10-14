@@ -22,8 +22,7 @@ Pre-requisites
 - you already have SonataAdmin and DoctrineORM up and running
 - you already have an Entity class for which you want to implement a sortable feature. For the purpose of the example we are going to call it ``Client``.
 - you already have an Admin set up, in this example we will call it ``ClientAdmin``
-- you already have gedmo/doctrine-extensions bundle in your project (check stof/doctrine-extensions-bundle 
-for easier integration in your project) with the sortable feature enabled
+- you already have gedmo/doctrine-extensions bundle in your project (check stof/doctrine-extensions-bundle for easier integration in your project) with the sortable feature enabled
 - you already have pixassociates/sortable-behavior-bundle bundle in your project
 
 The recipe
