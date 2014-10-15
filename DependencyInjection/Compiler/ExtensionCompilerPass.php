@@ -73,10 +73,11 @@ class ExtensionCompilerPass implements CompilerPassInterface
     }
 
     /**
-     * @param string $id
-     * @param Definition $admin
+     * @param string           $id
+     * @param Definition       $admin
      * @param ContainerBuilder $container
-     * @param array $extensionMap
+     * @param array            $extensionMap
+     *
      * @return array
      */
     protected function getExtensionsForAdmin($id, Definition $admin, ContainerBuilder $container, array $extensionMap)
@@ -133,8 +134,9 @@ class ExtensionCompilerPass implements CompilerPassInterface
     /**
      * Resolves the class argument of the admin to an actual class (in case of %parameter%)
      *
-     * @param Definition $admin
+     * @param Definition       $admin
      * @param ContainerBuilder $container
+     *
      * @return string
      */
     protected function getManagedClass(Definition $admin, ContainerBuilder $container)
@@ -144,6 +146,7 @@ class ExtensionCompilerPass implements CompilerPassInterface
 
     /**
      * @param array $config
+     *
      * @return array
      */
     protected function flattenExtensionConfiguration(array $config)

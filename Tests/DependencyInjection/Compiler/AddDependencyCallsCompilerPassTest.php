@@ -164,6 +164,28 @@ class AddDependencyCallsCompilerPassTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse(array_key_exists('%sonata.admin.parameter.groupname%', $adminGroups));
     }
 
+    public function testApplyTemplatesConfiguration()
+    {
+        $container = $this->getContainer();
+
+        $this->extension->load(array($this->getConfig()), $container);
+
+        $compilerPass = new AddDependencyCallsCompilerPass();
+        $compilerPass->process($container);
+
+        $calls = $container->getDefinition('sonata_post_admin')->getMethodCalls();
+
+        foreach ($calls as $call) {
+            list($name, $parameters) = $call;
+
+            if ($name !== 'setTemplates') {
+                continue;
+            }
+
+            $this->assertEquals('foobar.twig.html', $parameters[0]['user_block']);
+        }
+    }
+
     /**
      * @return array
      */
@@ -184,8 +206,16 @@ class AddDependencyCallsCompilerPassTest extends \PHPUnit_Framework_TestCase
                         'roles' => array('ROLE_ONE'),
                     ),
                 )
+            ),
+            'admin_services' => array(
+                'sonata_post_admin' => array(
+                    'templates' => array(
+                        'user_block' => 'foobar.twig.html'
+                    )
+                )
             )
         );
+
         return $config;
     }
 

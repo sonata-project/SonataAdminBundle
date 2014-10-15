@@ -61,3 +61,4 @@ Cookbook
    cookbook/recipe_dynamic_form_modification
    cookbook/recipe_custom_action
    cookbook/recipe_customizing_a_mosaic_list
+   cookbook/recipe_overwrite_admin_configuration
