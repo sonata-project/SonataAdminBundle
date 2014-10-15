@@ -967,20 +967,17 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
                     $this->urlize($matches[5], '-')
                 );
             } else {
-                if ($matches[1]==="")
-                {
-                  $this->baseRoutePattern = sprintf('/%s/%s',
-                      $this->urlize($matches[3], '-'),
-                      $this->urlize($matches[5], '-')
-                  );
-                }
-                else
-                {
-                  $this->baseRoutePattern = sprintf('/%s/%s/%s',
-                      $this->urlize($matches[1], '-'),
-                      $this->urlize($matches[3], '-'),
-                      $this->urlize($matches[5], '-')
-                  );
+                if ($matches[1] === "") {
+                    $this->baseRoutePattern = sprintf('/%s/%s',
+                        $this->urlize($matches[3], '-'),
+                        $this->urlize($matches[5], '-')
+                    );
+                } else {
+                    $this->baseRoutePattern = sprintf('/%s/%s/%s',
+                        $this->urlize($matches[1], '-'),
+                        $this->urlize($matches[3], '-'),
+                        $this->urlize($matches[5], '-')
+                    );
                 }
             }
         }
