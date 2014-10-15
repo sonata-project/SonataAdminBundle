@@ -48,12 +48,16 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         $config = $processor->processConfiguration(new Configuration(), array(array(
             'admin_services' => array(
                 'my_admin_id' => array(
-                    'templates' => array('user_block' => 'SonataAdminBundle:mycustomtemplate.html.twig')
+                    'templates' => array(
+                        'form' => array('form.twig.html', 'form_extra.twig.html'),
+                        'view' => array('user_block' => 'SonataAdminBundle:mycustomtemplate.html.twig'),
+                        'filter' => array()
+                    )
                 )
             )
         )));
 
-        $this->assertEquals('SonataAdminBundle:mycustomtemplate.html.twig', $config['admin_services']['my_admin_id']['templates']['user_block']);
+        $this->assertEquals('SonataAdminBundle:mycustomtemplate.html.twig', $config['admin_services']['my_admin_id']['templates']['view']['user_block']);
     }
 
     public function testAdminServicesDefault()
@@ -79,7 +83,12 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
             'route_generator' => null,
             'menu_factory' => null,
             'route_builder' => null,
-            'label_translator_strategy' => null
+            'label_translator_strategy' => null,
+            'templates' => array(
+                'form' => array(),
+                'filter' => array(),
+                'view' => array(),
+            )
         ), $config['admin_services']['my_admin_id']);
     }
 }

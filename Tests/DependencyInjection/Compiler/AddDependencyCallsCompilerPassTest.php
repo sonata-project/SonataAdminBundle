@@ -143,8 +143,7 @@ class AddDependencyCallsCompilerPassTest extends \PHPUnit_Framework_TestCase
         $config = array(
             'dashboard' => array(
                 'groups' => array(
-                    '%sonata.admin.parameter.groupname%' => array(
-                    ),
+                    '%sonata.admin.parameter.groupname%' => array(),
                 )
             )
         );
@@ -210,7 +209,7 @@ class AddDependencyCallsCompilerPassTest extends \PHPUnit_Framework_TestCase
             'admin_services' => array(
                 'sonata_post_admin' => array(
                     'templates' => array(
-                        'user_block' => 'foobar.twig.html'
+                        'view' => array('user_block' => 'foobar.twig.html')
                     )
                 )
             )
