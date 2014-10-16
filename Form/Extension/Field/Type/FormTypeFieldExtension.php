@@ -113,7 +113,7 @@ class FormTypeFieldExtension extends AbstractTypeExtension
         /**
          * We have a child, so we need to upgrade block prefix
          */
-        if ($view->parent->vars['sonata_admin_enabled'] && !$sonataAdmin['admin']) {
+        if ($view->parent && $view->parent->vars['sonata_admin_enabled'] && !$sonataAdmin['admin']) {
             $blockPrefixes    = $view->vars['block_prefixes'];
 
             $baseName = str_replace('.', '_', $view->parent->vars['sonata_admin_code']);

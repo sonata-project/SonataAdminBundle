@@ -169,4 +169,23 @@ class FormTypeFieldExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $formView->vars['block_prefixes']);
         $this->assertTrue($formView->vars['sonata_admin_enabled']);
     }
+
+    public function testbuildViewWithNestedFormWithNoParent()
+    {
+        $eventDispatcher = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
+
+        $formView = new FormView();
+        $options = array();
+        $config = new FormConfigBuilder('test', 'stdClass', $eventDispatcher, $options);
+        $form = new Form($config);
+
+        $extension = new FormTypeFieldExtension();
+        $extension->buildView($formView, $form, array(
+            'sonata_help' => 'help text'
+        ));
+
+        $this->assertArrayNotHasKey('block_prefixes', $formView->vars);
+        $this->assertArrayHasKey('sonata_admin_enabled', $formView->vars);
+        $this->assertArrayHasKey('sonata_admin', $formView->vars);
+    }
 }
