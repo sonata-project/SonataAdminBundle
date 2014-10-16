@@ -138,8 +138,8 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
     /**
      * This method read the attribute keys and configure admin class to use the related dependency
      *
-     * @param \Symfony\Component\DependencyInjection\Definition $definition
-     * @param array                                             $attributes
+     * @param Definition $definition
+     * @param array      $attributes
      */
     public function applyConfigurationFromAttribute(Definition $definition, array $attributes)
     {
@@ -172,11 +172,11 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
     /**
      * Apply the default values required by the AdminInterface to the Admin service definition
      *
-     * @param  \Symfony\Component\DependencyInjection\ContainerBuilder $container
-     * @param  string                                                  $serviceId
-     * @param  array                                                   $attributes
+     * @param  ContainerBuilder $container
+     * @param  string           $serviceId
+     * @param  array            $attributes
      *
-     * @return \Symfony\Component\DependencyInjection\Definition
+     * @return Definition
      */
     public function applyDefaults(ContainerBuilder $container, $serviceId, array $attributes = array())
     {
@@ -187,7 +187,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
         $manager_type = $attributes['manager_type'];
 
-        $addServices = isset($settings[$serviceId]) ? $settings[$serviceId] : array();
+        $overwriteAdminConfiguration = isset($settings[$serviceId]) ? $settings[$serviceId] : array();
 
         $defaultAddServices = array(
             'model_manager'             => sprintf('sonata.admin.manager.%s', $manager_type),
@@ -211,8 +211,8 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
         foreach ($defaultAddServices as $attr => $addServiceId) {
             $method = 'set' . BaseFieldDescription::camelize($attr);
 
-            if (isset($addServices[$attr]) || !$definition->hasMethodCall($method)) {
-                $definition->addMethodCall($method, array(new Reference(isset($addServices[$attr]) ? $addServices[$attr] : $addServiceId)));
+            if (isset($overwriteAdminConfiguration[$attr]) || !$definition->hasMethodCall($method)) {
+                $definition->addMethodCall($method, array(new Reference(isset($overwriteAdminConfiguration[$attr]) ? $overwriteAdminConfiguration[$attr] : $addServiceId)));
             }
         }
 
@@ -234,7 +234,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
         $definition->addMethodCall('setPersistFilters', array($persistFilters));
 
-        $this->fixTemplates($container, $definition);
+        $this->fixTemplates($container, $definition, isset($overwriteAdminConfiguration['templates']) ? $overwriteAdminConfiguration['templates'] : array('view' => array()));
 
         if ($container->hasParameter('sonata.admin.configuration.security.information') && !$definition->hasMethodCall('setSecurityInformation')) {
             $definition->addMethodCall('setSecurityInformation', array('%sonata.admin.configuration.security.information%'));
@@ -246,12 +246,13 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
     }
 
     /**
-     * @param  \Symfony\Component\DependencyInjection\ContainerBuilder $container
-     * @param  \Symfony\Component\DependencyInjection\Definition       $definition
+     * @param ContainerBuilder $container
+     * @param Definition       $definition
+     * @param array            $overwrittenTemplates
      *
      * @return void
      */
-    public function fixTemplates(ContainerBuilder $container, Definition $definition)
+    public function fixTemplates(ContainerBuilder $container, Definition $definition, array $overwrittenTemplates = array())
     {
         $definedTemplates = $container->getParameter('sonata.admin.configuration.templates');
 
@@ -305,7 +306,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
             'outer_list_rows_mosaic'     => 'SonataAdminBundle:CRUD:list_outer_rows_mosaic.html.twig',
             'outer_list_rows_list'       => 'SonataAdminBundle:CRUD:list_outer_rows_list.html.twig',
             'outer_list_rows_tree'       => 'SonataAdminBundle:CRUD:list_outer_rows_tree.html.twig',
-        ), $definedTemplates);
+        ), $definedTemplates, $overwrittenTemplates['view']);
 
         $definition->addMethodCall('setTemplates', array($definedTemplates));
     }

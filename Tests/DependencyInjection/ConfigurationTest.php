@@ -40,4 +40,55 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
             )
         )));
     }
+
+    public function testCustomTemplatesPerAdmin()
+    {
+        $processor = new Processor();
+
+        $config = $processor->processConfiguration(new Configuration(), array(array(
+            'admin_services' => array(
+                'my_admin_id' => array(
+                    'templates' => array(
+                        'form' => array('form.twig.html', 'form_extra.twig.html'),
+                        'view' => array('user_block' => 'SonataAdminBundle:mycustomtemplate.html.twig'),
+                        'filter' => array()
+                    )
+                )
+            )
+        )));
+
+        $this->assertEquals('SonataAdminBundle:mycustomtemplate.html.twig', $config['admin_services']['my_admin_id']['templates']['view']['user_block']);
+    }
+
+    public function testAdminServicesDefault()
+    {
+        $processor = new Processor();
+
+        $config = $processor->processConfiguration(new Configuration(), array(array(
+            'admin_services' => array('my_admin_id' => array())
+        )));
+
+        $this->assertEquals(array(
+            'model_manager' => null,
+            'form_contractor' => null,
+            'show_builder' => null,
+            'list_builder' => null,
+            'datagrid_builder' => null,
+            'translator' => null,
+            'configuration_pool' => null,
+            'validator' => null,
+            'security_handler' => null,
+            'label' => null,
+            'templates' => array(),
+            'route_generator' => null,
+            'menu_factory' => null,
+            'route_builder' => null,
+            'label_translator_strategy' => null,
+            'templates' => array(
+                'form' => array(),
+                'filter' => array(),
+                'view' => array(),
+            )
+        ), $config['admin_services']['my_admin_id']);
+    }
 }
