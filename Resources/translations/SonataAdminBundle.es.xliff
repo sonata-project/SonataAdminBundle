@@ -84,7 +84,7 @@
             </trans-unit>
             <trans-unit id="title_dashboard">
                 <source>title_dashboard</source>
-                <target>Escritorio</target>
+                <target>Panel principal</target>
             </trans-unit>
             <trans-unit id="title_edit">
                 <source>title_edit</source>
@@ -175,8 +175,8 @@
                 <target>Elemento eliminado satisfactoriamente.</target>
             </trans-unit>
             <trans-unit id="link_breadcrumb_dashboard">
-                <source>breadcrumb.link_dashboard</source>
-                <target>&#8962;</target>
+                <source>Panel principal</source>
+                <target><![CDATA[<i class="fa fa-home"></i>]]></target>
             </trans-unit>
             <trans-unit id="title_delete">
                 <source>title_delete</source>
@@ -184,7 +184,7 @@
             </trans-unit>
             <trans-unit id="message_delete_confirmation">
                 <source>message_delete_confirmation</source>
-                <target>¿Está seguro de que quiere borrar el elemento seleccionado?</target>
+                <target>¿Está seguro de que quiere borrar el elemento seleccionado "%object%"?</target>
             </trans-unit>
             <trans-unit id="btn_delete">
                 <source>btn_delete</source>
@@ -396,7 +396,7 @@
             </trans-unit>
             <trans-unit id="noscript_warning">
                 <source>noscript_warning</source>
-                <target>Javascript está desconectado en su navegador web. Algunas características no funcionarán correctamente.</target>
+                <target>Su navegador no soporta JavaScript o se encuentra deshabilitado  Algunas características no funcionarán correctamente.</target>
             </trans-unit>
             <trans-unit id="message_form_group_empty">
                 <source>message_form_group_empty</source>
@@ -404,7 +404,7 @@
             </trans-unit>
             <trans-unit id="link_filters">
                 <source>link_filters</source>
-                <target>link_filters</target>
+                <target>Filtros</target>
             </trans-unit>
         </body>
     </file>
