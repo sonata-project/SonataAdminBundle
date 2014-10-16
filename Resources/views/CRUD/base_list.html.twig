@@ -210,7 +210,7 @@ file that was distributed with this source code.
     {% if admin.datagrid.filters %}
         {% form_theme form admin.getTemplate('filter') %}
 
-        <div class="col-xs-12 col-md-12 sonata-filters-box" style="display: {{ admin.datagrid.hasActiveFilters ? 'block' : 'none' }}" id="filter-container-{{ admin.uniqid() }}">
+        <div class="col-xs-12 col-md-12 sonata-filters-box" style="display: {{ admin.datagrid.hasDisplayableFilters ? 'block' : 'none' }}" id="filter-container-{{ admin.uniqid() }}">
             <div class="box box-primary" >
                 <div class="box-body">
                     <form class="sonata-filter-form form-horizontal {{ admin.isChild and 1 == admin.datagrid.filters|length ? 'hide' : '' }}" action="{{ admin.generateUrl('list') }}" method="GET" role="form">
