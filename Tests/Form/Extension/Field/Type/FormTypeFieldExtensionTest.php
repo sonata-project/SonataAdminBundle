@@ -158,16 +158,31 @@ class FormTypeFieldExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('sonata_admin', $formView->vars);
 
         $expected = array(
-            'form',
-            'field',
-            'text',
-            'parent_code_text',
-            'parent_code_text_settings_format',
-            'parent_code_text_settings_settings_format',
+            'value' => null,
+            'attr'  => array(),
+            'name'  => 'format',
+            'block_prefixes' => array(
+                'form',
+                'field',
+                'text',
+                'parent_code_text',
+                'parent_code_text_settings_format',
+                'parent_code_text_settings_settings_format',
+            ),
+            'sonata_admin_enabled' => true,
+            'sonata_admin' => array(
+                 'admin'             => false,
+                 'field_description' => false,
+                 'name'              => false,
+                 'edit'              => 'standard',
+                 'inline'            => 'natural',
+                 'block_name'        => false,
+                 'class'             => false,
+            ),
+            'sonata_admin_code' => 'parent_code',
         );
 
-        $this->assertEquals($expected, $formView->vars['block_prefixes']);
-        $this->assertTrue($formView->vars['sonata_admin_enabled']);
+        $this->assertEquals($expected, $formView->vars);
     }
 
     public function testbuildViewWithNestedFormWithNoParent()

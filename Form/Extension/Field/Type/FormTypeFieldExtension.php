@@ -127,7 +127,15 @@ class FormTypeFieldExtension extends AbstractTypeExtension
 
             $view->vars['block_prefixes']       = $blockPrefixes;
             $view->vars['sonata_admin_enabled'] = true;
-            $view->vars['sonata_admin']         = array('admin' => false, 'field_description' => false);
+            $view->vars['sonata_admin']         = array(
+                'admin'             => false,
+                'field_description' => false,
+                'name'              => false,
+                'edit'              => 'standard',
+                'inline'            => 'natural',
+                'block_name'        => false,
+                'class'             => false
+            );
             $view->vars['sonata_admin_code']    = $view->parent->vars['sonata_admin_code'];
 
             return;
