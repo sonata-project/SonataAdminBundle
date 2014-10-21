@@ -235,6 +235,7 @@ class Configuration implements ConfigurationInterface
                                 'bundles/sonataadmin/vendor/jquery.scrollTo/jquery.scrollTo.min.js',
 
                                 'bundles/sonatacore/vendor/moment/min/moment.min.js',
+                                'bundles/sonatacore/vendor/moment/min/locales.min.js',
 
                                 'bundles/sonatacore/vendor/bootstrap/dist/js/bootstrap.min.js',
 
