@@ -72,7 +72,7 @@ class AdminHelper
         $form->setData($subject);
         $form->submit($admin->getRequest());
 
-        $elementId = preg_replace('#.(\d+)#', '[$1]', implode('.', explode('_', substr($elementId, strpos($elementId, '_') + 1))));
+        $elementId = preg_replace('#\.(\d+)#', '[$1]', implode('.', explode('_', substr($elementId, strpos($elementId, '_') + 1))));
         // append a new instance into the object
         $this->addNewInstance($admin, $elementId);
 
