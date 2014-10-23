@@ -21,7 +21,10 @@ object. The object can be used to check assertions against the model :
         ->with('settings.title')
             ->assertNotNull(array())
             ->assertNotBlank()
-            ->assertMinLength(array('limit' => 50))
+            // for minimum length constraint
+            ->assertLength(array('min' => 50))
+            // for maximum length constraint
+            ->assertLength(array('max' => 100))
             ->addViolation('ho yeah!')
         ->end();
 
@@ -47,6 +50,9 @@ object. The object can be used to check assertions against the model :
 
     You can also use ``$errorElement->addConstraint(new \Symfony\Component\Validator\Constraints\NotBlank())``
     instead of calling assertNotBlank().
+    
+    You can also use ``$errorElement->addConstraint(new \Symfony\Component\Validator\Constraints\Length(array('min'=>5, 'max'=>100))``
+    instead of calling assertLength().
 
 Using this validator
 --------------------
@@ -117,7 +123,10 @@ Example from the ``SonataPageBundle``
                 ->with('settings.title')
                     ->assertNotNull(array())
                     ->assertNotBlank()
-                    ->assertMinLength(array('limit' => 50))
+                    // for minimum length constraint
+                    ->assertLength(array('min' => 50))
+                    // for maximum length constraint
+                    ->assertLength(array('max' => 100))                    
                     ->addViolation('ho yeah!')
                 ->end();
         }
@@ -143,7 +152,7 @@ the ``Admin`` class itself contains an empty ``validate`` method. This is automa
         {
             $errorElement
                 ->with('name')
-                    ->assertMaxLength(array('limit' => 32))
+                    ->assertLength(array('max' => 32))
                 ->end()
             ;
         }
