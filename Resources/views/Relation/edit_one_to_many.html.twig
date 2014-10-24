@@ -164,7 +164,7 @@ file that was distributed with this source code.
             {% endif %}
 
             {# include association code #}
-            {% include 'SonataDoctrineORMAdminBundle:CRUD:edit_one_association_script.html.twig' %}
+            {% include 'SonataAdminBundle:Relation:edit_one_association_script.html.twig' %}
 
         {% else %}
             <span id="field_actions_{{ id }}" >
@@ -181,9 +181,9 @@ file that was distributed with this source code.
                 {% endif %}
             </span>
 
-            {% include 'SonataDoctrineORMAdminBundle:CRUD:edit_modal.html.twig' %}
+            {% include 'SonataAdminBundle:Relation:edit_modal.html.twig' %}
 
-            {% include 'SonataDoctrineORMAdminBundle:CRUD:edit_many_association_script.html.twig' %}
+            {% include 'SonataAdminBundle:Relation:edit_many_association_script.html.twig' %}
         {% endif %}
     </div>
 {% endif %}
