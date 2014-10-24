@@ -1,0 +1,37 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{% extends admin.getTemplate('base_list_field') %}
+
+{% block field %}
+    {% if field_description.hasassociationadmin and field_description.associationadmin.hasRoute('edit') %}
+        {% for element in value%}
+            {%- if field_description.associationadmin.isGranted('EDIT', value) -%}
+                {{ block('relation_link') }}
+            {%- else -%}
+                {{ block('relation_value') }}
+            {%- endif -%}
+            {% if not loop.last %}, {% endif %}
+        {% endfor %}
+    {% else %}
+        {% for element in value%}
+            {{ block('relation_value') }}{% if not loop.last %}, {% endif %}
+        {% endfor %}
+    {% endif %}
+{% endblock %}
+
+{%- block relation_link -%}
+    <a href="{{ field_description.associationadmin.generateObjectUrl(field_description.options.route.name, element, field_description.options.route.parameters) }}">{{ element|render_relation_element(field_description) }}</a>
+{%- endblock -%}
+
+{%- block relation_value -%}
+    {{ element|render_relation_element(field_description) }}
+{%- endblock -%}
