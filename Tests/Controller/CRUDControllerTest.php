@@ -26,6 +26,7 @@ use Sonata\AdminBundle\Util\AdminObjectAclManipulator;
 use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
 use Sonata\AdminBundle\Tests\Fixtures\Controller\BatchAdminController;
 use Symfony\Component\HttpKernel\Kernel;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Form\Extension\Csrf\CsrfProvider\CsrfProviderInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
@@ -96,6 +97,11 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
      * @var CsrfProviderInterface
      */
     private $csrfProvider;
+
+    /**
+     * @var KernelInterface
+     */
+    private $kernel;
 
     /**
      * {@inheritDoc}
@@ -215,12 +221,14 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->logger = $this->getMock('Psr\Log\LoggerInterface');
         $logger       = $this->logger; // php 5.3 BC
 
-
         $requestStack = null;
         if (Kernel::MINOR_VERSION > 3) {
             $requestStack = new \Symfony\Component\HttpFoundation\RequestStack();
             $requestStack->push($request);
         }
+
+        $this->kernel = $this->getMock('Symfony\Component\HttpKernel\KernelInterface');
+        $kernel = $this->kernel; // php 5.3 BC
 
         $this->container->expects($this->any())
             ->method('get')
@@ -236,7 +244,8 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
                 $adminObjectAclManipulator,
                 $requestStack,
                 $csrfProvider,
-                $logger
+                $logger,
+                $kernel
             ) {
                 switch ($id) {
                     case 'sonata.admin.pool':
@@ -263,6 +272,8 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
                         return $csrfProvider;
                     case 'logger':
                         return $logger;
+                    case 'kernel':
+                        return $kernel;
                 }
 
                 return null;
@@ -702,6 +713,28 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('list?filter%5Bfoo%5D=bar', $result->getTargetUrl());
     }
 
+    public function testBatchActionDeleteWithModelManagerExceptionInDebugMode()
+    {
+        $modelManager = $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface');
+        $this->setExpectedException('Sonata\AdminBundle\Exception\ModelManagerException');
+
+        $modelManager->expects($this->once())
+            ->method('batchDelete')
+            ->will($this->returnCallback(function () {
+                    throw new ModelManagerException();
+                }));
+
+        $this->admin->expects($this->once())
+            ->method('getModelManager')
+            ->will($this->returnValue($modelManager));
+
+        $this->kernel->expects($this->once())
+            ->method('isDebug')
+            ->will($this->returnValue(true));
+
+        $this->controller->batchActionDelete($this->getMock('Sonata\AdminBundle\Datagrid\ProxyQueryInterface'));
+    }
+
     public function testShowActionNotFoundException()
     {
         $this->setExpectedException('Symfony\Component\HttpKernel\Exception\NotFoundHttpException');
@@ -958,6 +991,38 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $response);
         $this->assertEquals(json_encode(array('result'=>'error')), $response->getContent());
         $this->assertEquals(array(), $this->session->getFlashBag()->all());
+    }
+
+    public function testDeleteActionWithModelManagerExceptionInDebugMode()
+    {
+        $this->setExpectedException('Sonata\AdminBundle\Exception\ModelManagerException');
+
+        $object = new \stdClass();
+
+        $this->admin->expects($this->once())
+            ->method('getObject')
+            ->will($this->returnValue($object));
+
+        $this->admin->expects($this->once())
+            ->method('isGranted')
+            ->with($this->equalTo('DELETE'))
+            ->will($this->returnValue(true));
+
+        $this->admin->expects($this->once())
+            ->method('delete')
+            ->will($this->returnCallback(function () {
+                    throw new ModelManagerException();
+                }));
+
+        $this->kernel->expects($this->once())
+            ->method('isDebug')
+            ->will($this->returnValue(true));
+
+        $this->request->setMethod('DELETE');
+        $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.delete');
+
+        $this->controller->deleteAction(1);
+
     }
 
     public function testDeleteActionSuccess1()
