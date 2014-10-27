@@ -117,7 +117,7 @@ service belongs to the ``Content`` group.
                     - Acme\DemoBundle\Entity\Post
                     - ~
 
-In this example, the labels are translated by ``SonataAdminBundle``, using the given
+In this example, the labels are translated by ``AcmeDemoBundle``, using the given
 ``label_catalogue``. So, you can use the above examples to support multiple languages
 in your project.
 

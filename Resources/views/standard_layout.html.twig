@@ -127,6 +127,7 @@ file that was distributed with this source code.
 
                             <div class="navbar-left">
                                 {% block sonata_breadcrumb %}
+                                    <div class="hidden-xs">
                                     {% if _breadcrumb is not empty or action is defined %}
                                         <ol class="nav navbar-top-links breadcrumb">
                                             {% if _breadcrumb is empty %}
@@ -150,6 +151,7 @@ file that was distributed with this source code.
                                             {% endif %}
                                         </ol>
                                     {% endif %}
+                                    </div>
                                 {% endblock sonata_breadcrumb %}
                             </div>
 

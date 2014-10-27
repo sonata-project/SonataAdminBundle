@@ -108,7 +108,39 @@ class FormTypeFieldExtension extends AbstractTypeExtension
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $sonataAdmin     = $form->getConfig()->getAttribute('sonata_admin');
+        $sonataAdmin = $form->getConfig()->getAttribute('sonata_admin');
+
+        /**
+         * We have a child, so we need to upgrade block prefix
+         */
+        if ($view->parent && $view->parent->vars['sonata_admin_enabled'] && !$sonataAdmin['admin']) {
+            $blockPrefixes    = $view->vars['block_prefixes'];
+
+            $baseName = str_replace('.', '_', $view->parent->vars['sonata_admin_code']);
+
+            $baseType = $blockPrefixes[count($blockPrefixes) - 2];
+            $blockSuffix = preg_replace("#^_([a-z0-9]{14})_(.++)$#", "\$2", array_pop($blockPrefixes));
+
+            $blockPrefixes[] = sprintf('%s_%s', $baseName, $baseType);
+            $blockPrefixes[] = sprintf('%s_%s_%s_%s', $baseName, $baseType, $view->parent->vars['name'], $view->vars['name']);
+            $blockPrefixes[] = sprintf('%s_%s_%s_%s', $baseName, $baseType, $view->parent->vars['name'], $blockSuffix);
+
+            $view->vars['block_prefixes']       = $blockPrefixes;
+            $view->vars['sonata_admin_enabled'] = true;
+            $view->vars['sonata_admin']         = array(
+                'admin'             => false,
+                'field_description' => false,
+                'name'              => false,
+                'edit'              => 'standard',
+                'inline'            => 'natural',
+                'block_name'        => false,
+                'class'             => false
+            );
+            $view->vars['sonata_admin_code']    = $view->parent->vars['sonata_admin_code'];
+
+            return;
+        }
+
         $sonataAdminHelp = isset($options['sonata_help']) ? $options['sonata_help'] : null;
 
         // avoid to add extra information not required by non admin field
@@ -116,22 +148,23 @@ class FormTypeFieldExtension extends AbstractTypeExtension
             $sonataAdmin['value'] = $form->getData();
 
             // add a new block types, so the Admin Form element can be tweaked based on the admin code
-            $block_prefixes    = $view->vars['block_prefixes'];
+            $blockPrefixes    = $view->vars['block_prefixes'];
             $baseName = str_replace('.', '_', $sonataAdmin['admin']->getCode());
-            $baseType = $block_prefixes[count($block_prefixes) - 2];
-            $blockSuffix = preg_replace("#^_([a-z0-9]{14})_(.++)$#", "\$2", array_pop($block_prefixes));
+            $baseType = $blockPrefixes[count($blockPrefixes) - 2];
+            $blockSuffix = preg_replace("#^_([a-z0-9]{14})_(.++)$#", "\$2", array_pop($blockPrefixes));
 
-            $block_prefixes[] = sprintf('%s_%s', $baseName, $baseType);
-            $block_prefixes[] = sprintf('%s_%s_%s', $baseName, $sonataAdmin['name'], $baseType);
-            $block_prefixes[] = sprintf('%s_%s_%s_%s', $baseName, $sonataAdmin['name'], $baseType, $blockSuffix);
+            $blockPrefixes[] = sprintf('%s_%s', $baseName, $baseType);
+            $blockPrefixes[] = sprintf('%s_%s_%s', $baseName, $sonataAdmin['name'], $baseType);
+            $blockPrefixes[] = sprintf('%s_%s_%s_%s', $baseName, $sonataAdmin['name'], $baseType, $blockSuffix);
 
             if (isset($sonataAdmin['block_name']) && $sonataAdmin['block_name'] !== false) {
-                $block_prefixes[] = $sonataAdmin['block_name'];
+                $blockPrefixes[] = $sonataAdmin['block_name'];
             }
 
-            $view->vars['block_prefixes'] = $block_prefixes;
+            $view->vars['block_prefixes']       = $blockPrefixes;
             $view->vars['sonata_admin_enabled'] = true;
-            $view->vars['sonata_admin'] = $sonataAdmin;
+            $view->vars['sonata_admin']         = $sonataAdmin;
+            $view->vars['sonata_admin_code']    = $sonataAdmin['admin']->getCode();
 
             $attr = $view->vars['attr'];
 
@@ -144,8 +177,8 @@ class FormTypeFieldExtension extends AbstractTypeExtension
             $view->vars['sonata_admin_enabled'] = false;
         }
 
-        $view->vars['sonata_help'] = $sonataAdminHelp;
-        $view->vars['sonata_admin']      = $sonataAdmin;
+        $view->vars['sonata_help']  = $sonataAdminHelp;
+        $view->vars['sonata_admin'] = $sonataAdmin;
     }
 
     /**

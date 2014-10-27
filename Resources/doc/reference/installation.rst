@@ -90,7 +90,7 @@ forget to enable SonataAdminBundle too:
     bundle. The bundle is also registered in `bower.io <https://github.com/sonata-project/SonataAdminBundle>`_ so
     you can use bower to handle your assets. To make sure you get the dependencies
     that match the version of SonataAdminBundle you are using, you can make bower
-    use the local bower dependency file, like this : ``bower require ./vendor/sonata-project/admin-bundle/bower.json``
+    use the local bower dependency file, like this : ``bower install ./vendor/sonata-project/admin-bundle/bower.json``
 
 Configuring SonataAdminBundle dependencies
 ------------------------------------------
