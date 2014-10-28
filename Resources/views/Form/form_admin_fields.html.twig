@@ -146,12 +146,14 @@ file that was distributed with this source code.
     {% if sonata_admin.admin and sonata_admin.admin.getConfigurationPool().getOption('form_type') == 'horizontal' %}
         {% set label_class = "control-label col-sm-3" %}
         {% set div_class = "col-sm-9 col-md-9" %}
+        {% set wrapper_class = "" %}
     {% else %}
         {% set label_class = "control-label" %}
+        {% set wrapper_class = "form-group" %}
     {% endif%}
 
     {% if sonata_admin is not defined or not sonata_admin_enabled or not sonata_admin.field_description %}
-        <div class="form-group {% if errors|length > 0%} has-error{% endif %}">
+        <div class="{{ wrapper_class }}{% if errors|length > 0%} has-error{% endif %}">
             {{ form_label(form, label|default(null)) }}
             <div class="{% if label is sameas(false) %}sonata-collection-row-without-label{% endif %}">
                 {{ form_widget(form, {'horizontal': false, 'horizontal_input_wrapper_class': ''}) }} {# {'horizontal': false, 'horizontal_input_wrapper_class': ''} needed to avoid MopaBootstrapBundle messing with the DOM #}
