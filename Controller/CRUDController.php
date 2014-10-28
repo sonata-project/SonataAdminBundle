@@ -186,8 +186,12 @@ class CRUDController extends Controller
         return parent::render($view, $parameters, $response);
     }
 
-    private function logModelManagerException($e)
+    private function handleModelManagerException($e)
     {
+        if ($this->get('kernel')->isDebug()) {
+            throw $e;
+        }
+
         $context = array('exception' => $e);
         if ($e->getPrevious()) {
             $context['previous_exception_message'] = $e->getPrevious()->getMessage();
@@ -247,7 +251,7 @@ class CRUDController extends Controller
             $this->addFlash('sonata_flash_success', 'flash_batch_delete_success');
         } catch (ModelManagerException $e) {
 
-            $this->logModelManagerException($e);
+            $this->handleModelManagerException($e);
             $this->addFlash('sonata_flash_error', 'flash_batch_delete_error');
         }
 
@@ -301,7 +305,7 @@ class CRUDController extends Controller
                 );
 
             } catch (ModelManagerException $e) {
-                $this->logModelManagerException($e);
+                $this->handleModelManagerException($e);
 
                 if ($this->isXmlHttpRequest()) {
                     return $this->renderJson(array('result' => 'error'));
@@ -390,7 +394,7 @@ class CRUDController extends Controller
                     return $this->redirectTo($object);
 
                 } catch (ModelManagerException $e) {
-                    $this->logModelManagerException($e);
+                    $this->handleModelManagerException($e);
 
                     $isFormValid = false;
                 }
@@ -634,7 +638,7 @@ class CRUDController extends Controller
                     return $this->redirectTo($object);
 
                 } catch (ModelManagerException $e) {
-                    $this->logModelManagerException($e);
+                    $this->handleModelManagerException($e);
 
                     $isFormValid = false;
                 }
