@@ -104,7 +104,7 @@ file that was distributed with this source code.
                 {% block logo %}
                     {% if admin_pool is defined %}
                         {% spaceless %}
-                        <a class="logo" href="{{ url('sonata_admin_dashboard') }}">
+                        <a class="logo" href="{{ path('sonata_admin_dashboard') }}">
                             {% if 'single_image' == admin_pool.getOption('title_mode') or 'both' == admin_pool.getOption('title_mode') %}
                                 <img src="{{ asset(admin_pool.titlelogo) }}" alt="{{ admin_pool.title }}">
                             {% endif %}
