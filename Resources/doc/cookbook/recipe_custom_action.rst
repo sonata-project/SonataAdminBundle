@@ -100,9 +100,7 @@ to implement a ``clone`` action.
     {
         public function cloneAction()
         {
-            $id = $this->get('request')->get($this->admin->getIdParameter());
-
-            $object = $this->admin->getObject($id);
+            $object = $this->admin->getSubject();
 
             if (!$object) {
                 throw new NotFoundHttpException(sprintf('unable to find the object with id : %s', $id));
