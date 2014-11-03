@@ -425,7 +425,13 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
             new ConstraintViolation('error2', null, array(), null, 'enabled', null),
         ));
 
-        $validator = $this->getMock('Symfony\Component\Validator\ValidatorInterface');
+        if(version_compare(Kernel::VERSION,'2.5','<')) {
+            $validator = $this->getMock('Symfony\Component\Validator\Validator');
+        }
+        else {
+            $validator = $this->getMock('Symfony\Component\Validator\Validator\RecursiveValidator');
+        }
+        
         $validator
             ->expects($this->once())
             ->method('validateProperty')
