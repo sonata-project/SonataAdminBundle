@@ -55,9 +55,14 @@ file that was distributed with this source code.
                 {% endfor %}
             {% endif %}
 
+            {% set locale = app.request.locale %}
+            {# localize moment #}
+            {% if locale[:2] != 'en' %}
+                <script src="{{ asset('bundles/sonatacore/vendor/moment/locale/' ~ locale|replace({'_':'-'}) ~ '.js') }}"></script>
+            {% endif %}
+
             {# localize select2 #}
-            {% if admin_pool is defined and admin_pool.getOption('use_select2') %}
-                {% set locale = app.request.locale %}
+            {% if admin_pool is defined and admin_pool.getOption('use_select2') %}             
                 {% if locale == 'pt' %}{% set locale = 'pt_PT' %}{% endif %}
 
                 {# omit default EN locale #}
