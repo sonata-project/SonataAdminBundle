@@ -56,6 +56,6 @@ class ModelToIdTransformer implements DataTransformerInterface
             return null;
         }
 
-        return current($this->modelManager->getIdentifierValues($entity));
+        return $this->modelManager->getNormalizedIdentifier($entity);
     }
 }

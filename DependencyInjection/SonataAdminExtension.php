@@ -31,6 +31,8 @@ class SonataAdminExtension extends Extension
      *
      * @param array            $configs   An array of configuration settings
      * @param ContainerBuilder $container A ContainerBuilder instance
+     *
+     * @throws \RuntimeException
      */
     public function load(array $configs, ContainerBuilder $container)
     {
@@ -39,7 +41,7 @@ class SonataAdminExtension extends Extension
         if (!isset($bundles['SonataCoreBundle'])) {
             throw new \RuntimeException(<<<BOOM
 Boom! you are living on the edge ;) The AdminBundle requires the CoreBundle!
-Please add ``"sonata-project/core-bundle": "~2.2@dev"`` into your composer.json file and add the SonataCoreBundle into the AppKernel');
+Please add ``"sonata-project/core-bundle": "~2.2"`` into your composer.json file and add the SonataCoreBundle into the AppKernel');
 BOOM
             );
         }
@@ -74,6 +76,9 @@ BOOM
         $configuration = new Configuration();
         $processor = new Processor();
         $config = $processor->processConfiguration($configuration, $configs);
+
+        $config['options']['javascripts'] = $config['assets']['javascripts'];
+        $config['options']['stylesheets'] = $config['assets']['stylesheets'];
 
         $pool = $container->getDefinition('sonata.admin.pool');
         $pool->replaceArgument(1, $config['title']);
@@ -132,11 +137,11 @@ BOOM
          * This is a work in progress, so for now it is hardcoded
          */
         $classes = array(
-            'email'    => 'span5',
-            'textarea' => 'span5',
-            'text'     => 'span5',
-            'choice'   => 'span5',
-            'integer'  => 'span5',
+            'email'    => '',
+            'textarea' => '',
+            'text'     => '',
+            'choice'   => '',
+            'integer'  => '',
             'datetime' => 'sonata-medium-date',
             'date'     => 'sonata-medium-date'
         );
@@ -147,6 +152,11 @@ BOOM
         // remove non used service
         if (!isset($bundles['JMSTranslationBundle'])) {
             $container->removeDefinition('sonata.admin.translator.extractor.jms_translator_bundle');
+        }
+
+        //remove non-Mopa compatibility layer
+        if (isset($bundles['MopaBootstrapBundle'])) {
+            $container->removeDefinition('sonata.admin.form.extension.field.mopa');
         }
 
         // set filter persistence

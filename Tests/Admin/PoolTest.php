@@ -27,6 +27,8 @@ class PoolTest extends \PHPUnit_Framework_TestCase
 
     public function testGetGroups()
     {
+        $this->pool->setAdminServiceIds(array('sonata.user.admin.group1'));
+
         $this->pool->setAdminGroups(array(
             'adminGroup1' => array('sonata.user.admin.group1' => array())
         ));
@@ -52,7 +54,6 @@ class PoolTest extends \PHPUnit_Framework_TestCase
 
     public function testGetDashboardGroups()
     {
-
         $admin_group1 = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
         $admin_group1->expects($this->once())->method('showIn')->will($this->returnValue(true));
 
@@ -69,6 +70,7 @@ class PoolTest extends \PHPUnit_Framework_TestCase
         ));
 
         $pool = new Pool($container, 'Sonata Admin', '/path/to/pic.png');
+        $pool->setAdminServiceIds(array('sonata.user.admin.group1', 'sonata.user.admin.group2', 'sonata.user.admin.group3'));
 
         $pool->setAdminGroups(array(
             'adminGroup1' => array(
@@ -110,6 +112,7 @@ class PoolTest extends \PHPUnit_Framework_TestCase
 
     public function testGetAdminsByGroup()
     {
+        $this->pool->setAdminServiceIds(array('sonata.admin1', 'sonata.admin2', 'sonata.admin3'));
         $this->pool->setAdminGroups(array(
             'adminGroup1' => array('items' => array('sonata.admin1', 'sonata.admin2')),
             'adminGroup2' => array('items' => array('sonata.admin3'))
@@ -151,13 +154,24 @@ class PoolTest extends \PHPUnit_Framework_TestCase
 
     public function testGetAdminForClassWhenAdminClassIsSet()
     {
+        $this->pool->setAdminServiceIds(array('sonata.user.admin.group1'));
         $this->pool->setAdminClasses(array('someclass' => array('sonata.user.admin.group1')));
         $this->assertTrue($this->pool->hasAdminByClass('someclass'));
         $this->assertEquals('adminUserClass', $this->pool->getAdminByClass('someclass'));
     }
 
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Admin service "sonata.news.admin.post" not found in admin pool.
+     */
+    public function testGetInstanceWithUndefinedServiceId()
+    {
+        $this->pool->getInstance('sonata.news.admin.post');
+    }
+
     public function testGetAdminByAdminCode()
     {
+        $this->pool->setAdminServiceIds(array('sonata.news.admin.post'));
         $this->assertEquals('adminUserClass', $this->pool->getAdminByAdminCode('sonata.news.admin.post'));
     }
 
@@ -180,6 +194,7 @@ class PoolTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($adminMock));
 
         $this->pool = new Pool($containerMock, 'Sonata', '/path/to/logo.png');
+        $this->pool->setAdminServiceIds(array('sonata.news.admin.post'));
 
         $this->assertEquals('commentAdminClass', $this->pool->getAdminByAdminCode('sonata.news.admin.post|sonata.news.admin.comment'));
     }
@@ -232,6 +247,11 @@ class PoolTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('bar', $this->pool->getOption('foo'));
 
         $this->assertEquals(null, $this->pool->getOption('non_existent_option'));
+    }
+
+    public function testOptionDefault()
+    {
+        $this->assertEquals(array(), $this->pool->getOption('nonexistantarray', array()));
     }
 
     /**

@@ -4,7 +4,7 @@
         <body>
             <trans-unit id="sonata_administration">
                 <source>sonata_administration</source>
-                <target>Administration</target>
+                <target>Adminisztráció</target>
             </trans-unit>
             <trans-unit id="action_delete">
                 <source>action_delete</source>
@@ -176,7 +176,7 @@
             </trans-unit>
             <trans-unit id="link_breadcrumb_dashboard">
                 <source>breadcrumb.link_dashboard</source>
-                <target>&#8962;</target>
+                <target><![CDATA[<i class="fa fa-home"></i>]]></target>
             </trans-unit>
             <trans-unit id="title_delete">
                 <source>title_delete</source>
@@ -302,9 +302,13 @@
                 <source>td_action</source>
                 <target>Műveletek</target>
             </trans-unit>
+            <trans-unit id="td_compare">
+                <source>td_compare</source>
+                <target>Összehasonlítás</target>
+            </trans-unit>
             <trans-unit id="td_revision">
                 <source>td_revision</source>
-                <target>Verziók</target>
+                <target>Verziószám</target>
             </trans-unit>
             <trans-unit id="td_timestamp">
                 <source>td_timestamp</source>
@@ -318,13 +322,17 @@
                 <source>label_view_revision</source>
                 <target>Verzió mutatása</target>
             </trans-unit>
+            <trans-unit id="label_compare_revision">
+                <source>label_compare_revision</source>
+                <target>Összehasonlítás ezzel a verzióval</target>
+            </trans-unit>
             <trans-unit id="list_results_count">
                 <source>list_results_count</source>
                 <target>1 eredmény|%count% eredmény</target>
             </trans-unit>
             <trans-unit id="label_export_download">
                 <source>label_export_download</source>
-                <target>Letöltés : </target>
+                <target>Letöltés</target>
             </trans-unit>
             <trans-unit id="loading_information">
                 <source>loading_information</source>
@@ -389,6 +397,22 @@
             <trans-unit id="add_new_entry">
                 <source>add_new_entry</source>
                 <target>új elem hozzáadása</target>
+            </trans-unit>
+            <trans-unit id="link_actions">
+                <source>link_actions</source>
+                <target>Műveletek</target>
+            </trans-unit>
+            <trans-unit id="noscript_warning">
+                <source>noscript_warning</source>
+                <target>A böngészőben a Javascript le van tiltva, emiatt néhány funkció nem fog megfelelően működni.</target>
+            </trans-unit>
+            <trans-unit id="message_form_group_empty">
+                <source>message_form_group_empty</source>
+                <target>Nincs elérhető mező.</target>
+            </trans-unit>
+            <trans-unit id="link_filters">
+                <source>link_filters</source>
+                <target>Szűrők</target>
             </trans-unit>
         </body>
     </file>

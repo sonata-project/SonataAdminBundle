@@ -3,9 +3,9 @@ The Show action
 
 .. note::
 
-    This document is a stub representing a new work in progress. If you're reading 
-    this you can help contribute, **no matter what your experience level with Sonata 
-    is**. Check out the ``issues on Github`` _ for more information about how to get involved.
+    This document is a stub representing a new work in progress. If you're reading
+    this you can help contribute, **no matter what your experience level with Sonata
+    is**. Check out the ``issues on GitHub`` _ for more information about how to get involved.
 
 This document will cover the Show action and related configuration options.
 
@@ -38,6 +38,8 @@ The following is a working example of a ShowAction
 
     <?php
     // src/Acme/DemoBundle/Admin/PostAdmin.php
+
+    use Sonata\AdminBundle\Show\ShowMapper;
 
     class ClientAdmin extends Admin
     {
@@ -73,7 +75,7 @@ Setting up a custom show template (very useful)
 
 The first thing you need to do is define it in app/config/config/yml:
 
-.. code-block:: yml
+.. code-block:: yaml
 
     sonata_admin:
         title:      Acme Admin Area
@@ -86,15 +88,15 @@ Once you have defined this, Sonata Admin looks for it in the following location:
 
 ``src/Acme/DemoBundle/Resources/views/Admin/Display_Client.html.twig``
 
-Now that you have told Sonata Admin where to find the template, it's time to put one in there.
+Now that you have told Sonata Admin where to find the template, it is time to put one in there.
 
-The recommended way to start is to copy the default template, and paste it into it's new home.
+The recommended way to start is to copy the default template, and paste it into its new home.
 
 This ensures that you can update Sonata Admin and keep all of your hard work.
 
 The original template can be found in the following location:
 
-``vendor/sonata-project/admin-bundle/Sonata/AdminBundle/Resources/views/CRUD/base_show.html.twig``
+``vendor/sonata-project/admin-bundle/Resources/views/CRUD/base_show.html.twig``
 
 Now that you have a copy of the default template, check to make sure it works.
 

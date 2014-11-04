@@ -46,6 +46,10 @@ class ShowMapper extends BaseGroupedMapper
      */
     public function add($name, $type = null, array $fieldDescriptionOptions = array())
     {
+        if ($this->apply !== null && !$this->apply) {
+            return $this;
+        }
+
         $fieldKey = ($name instanceof FieldDescriptionInterface) ? $name->getName() : $name;
 
         $this->addFieldToCurrentGroup($fieldKey);
@@ -134,5 +138,21 @@ class ShowMapper extends BaseGroupedMapper
     protected function setGroups(array $groups)
     {
         $this->admin->setShowGroups($groups);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getTabs()
+    {
+        return $this->admin->getShowTabs();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function setTabs(array $tabs)
+    {
+        $this->admin->setShowTabs($tabs);
     }
 }

@@ -1,0 +1,62 @@
+{% block user_block %}
+    {% set items_per_column = admin_pool.getOption('dropdown_number_groups_per_colums') %}
+    {% set groups = [] %}
+
+    {% for group in admin_pool.dashboardgroups %}
+        {% set display_group = false %}
+
+        {% for admin in group.items if display_group == false %}
+            {% if admin.hasRoute('create') and admin.isGranted('CREATE') %}
+                {% set display_group = true %}
+                {% set groups = [group]|merge(groups) %}
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
+
+    {% set column_count = (groups|length / items_per_column)|round(0, 'ceil') %}
+
+    <div class="dropdown-menu multi-column dropdown-add"
+        {% if column_count > 1 %}style="width: {{ column_count*140 }}px;"{% endif %}
+            >
+        {% for group in groups|reverse %}
+            {% set display = (group.roles is empty or is_granted('ROLE_SONATA_ADMIN') ) %}
+            {% for role in group.roles if not display %}
+                {% set display = is_granted(role) %}
+            {% endfor %}
+
+            {% if display %}
+
+                {% if loop.first or loop.index0 % items_per_column == 0 %}
+                    {% if loop.first %}
+                        <div class="container-fluid">
+                            <div class="row">
+                    {% else %}
+                        </ul>
+                    {% endif %}
+
+                    <ul class="dropdown-menu{% if column_count > 1 %} col-md-{{ (12/column_count)|round }}{% endif %}">
+                {% endif %}
+
+                {% if loop.index0 % items_per_column != 0 %}
+                    <li role="presentation" class="divider"></li>
+                {% endif %}
+                <li role="presentation" class="dropdown-header">{{ group.label|trans({}, group.label_catalogue) }}</li>
+
+                {% for admin in group.items %}
+                    {% if admin.hasRoute('create') and admin.isGranted('CREATE') %}
+                        <li role="presentation">
+                            <a role="menuitem" tabindex="-1" href="{{ admin.generateUrl('create')}}">{{ admin.label|trans({}, admin.translationdomain) }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+
+                {% if loop.last %}
+                            </ul>
+                        </div>
+                    </div>
+                {% endif %}
+
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endblock %}

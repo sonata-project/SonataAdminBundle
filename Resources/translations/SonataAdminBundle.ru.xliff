@@ -324,7 +324,7 @@
             </trans-unit>
             <trans-unit id="label_export_download">
                 <source>label_export_download</source>
-                <target>Экспорт: </target>
+                <target>Экспорт</target>
             </trans-unit>
             <trans-unit id="loading_information">
                 <source>loading_information</source>
@@ -389,6 +389,22 @@
             <trans-unit id="add_new_entry">
                 <source>add_new_entry</source>
                 <target>Добавить новую запись</target>
+            </trans-unit>
+            <trans-unit id="link_actions">
+                <source>link_actions</source>
+                <target>Действия</target>
+            </trans-unit>
+            <trans-unit id="noscript_warning">
+                <source>noscript_warning</source>
+                <target>В вашем браузере отключен Javascipt. Некоторые функции сайта будут недоступны.</target>
+            </trans-unit>
+            <trans-unit id="message_form_group_empty">
+                <source>message_form_group_empty</source>
+                <target>Нет доступных полей</target>
+            </trans-unit>
+            <trans-unit id="link_filters">
+                <source>link_filters</source>
+                <target>Фильтры</target>
             </trans-unit>
         </body>
     </file>

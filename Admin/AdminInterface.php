@@ -16,6 +16,7 @@ use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Builder\FormContractorInterface;
 use Sonata\AdminBundle\Builder\ListBuilderInterface;
 use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
+use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
 use Sonata\AdminBundle\Builder\RouteBuilderInterface;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
@@ -23,7 +24,9 @@ use Sonata\AdminBundle\Validator\ErrorElement;
 use Sonata\AdminBundle\Route\RouteGeneratorInterface;
 
 use Knp\Menu\FactoryInterface as MenuFactoryInterface;
+use Knp\Menu\ItemInterface as MenuItemInterface;
 
+use Sonata\CoreBundle\Model\Metadata;
 use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -717,6 +720,16 @@ interface AdminInterface
     public function postRemove($object);
 
     /**
+     * Call before the batch action, allow you to alter the query and the idx
+     *
+     * @param string              $actionName
+     * @param ProxyQueryInterface $query
+     * @param array               $idx
+     * @param bool                $allElements
+     */
+    public function preBatchAction($actionName, ProxyQueryInterface $query, array & $idx, $allElements);
+
+    /**
      * Return array of filter parameters.
      *
      * @return array
@@ -755,15 +768,6 @@ interface AdminInterface
      * @param mixed $object
      */
     public function createObjectSecurity($object);
-
-    /**
-     * Returns the url defined by the $name
-     *
-     * @param string $name
-     *
-     * @return \Symfony\Component\Routing\Route
-     */
-    public function getRoute($name);
 
     /**
      * @return AdminInterface
@@ -822,6 +826,26 @@ interface AdminInterface
      * @param array $formGroups
      */
     public function setFormGroups(array $formGroups);
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFormTabs();
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setFormTabs(array $formTabs);
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getShowTabs();
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setShowTabs(array $showTabs);
 
     /**
      * Remove a form group field
@@ -971,4 +995,50 @@ interface AdminInterface
      * @return string
      */
     public function getTranslationLabel($label, $context = '', $type = '');
+
+    /**
+     * DEPRECATED: Use buildTabMenu instead
+     *
+     * @param string                                   $action
+     * @param \Sonata\AdminBundle\Admin\AdminInterface $childAdmin
+     *
+     * @return \Knp\Menu\ItemInterface|boolean
+     *
+     * @deprecated Use buildTabMenu instead
+     */
+    public function buildSideMenu($action, AdminInterface $childAdmin = null);
+
+    /**
+     * Build the tab menu related to the current action
+     *
+     * @param string                                   $action
+     * @param \Sonata\AdminBundle\Admin\AdminInterface $childAdmin
+     *
+     * @return \Knp\Menu\ItemInterface|boolean
+     */
+    public function buildTabMenu($action, AdminInterface $childAdmin = null);
+
+    /**
+     * @param $object
+     *
+     * @return Metadata
+     */
+    public function getObjectMetadata($object);
+
+    /**
+     * @return array
+     */
+    public function getListModes();
+
+    /**
+     * @param string $mode
+     */
+    public function setListMode($mode);
+
+    /**
+     * return the list mode
+     *
+     * @return string
+     */
+    public function getListMode();
 }

@@ -144,11 +144,11 @@
             </trans-unit>
             <trans-unit id='flash_create_success'>
                 <source>flash_create_success</source>
-                <target>O item foi criado com sucesso.</target>
+                <target>O item "%name%" foi criado com sucesso.</target>
             </trans-unit>
             <trans-unit id='flash_create_error'>
                 <source>flash_create_error</source>
-                <target>Um erro ocorreu durante a criação do item.</target>
+                <target>Um erro ocorreu durante a criação do item "%name%".</target>
             </trans-unit>
             <trans-unit id='flash_edit_success'>
                 <source>flash_edit_success</source>
@@ -184,7 +184,7 @@
             </trans-unit>
             <trans-unit id="message_delete_confirmation">
                 <source>message_delete_confirmation</source>
-                <target>Você tem certeza que deseja remover o item selecionado?</target>
+                <target>Você tem certeza que deseja remover o item "%object%" selecionado?</target>
             </trans-unit>
             <trans-unit id="btn_delete">
                 <source>btn_delete</source>
@@ -324,7 +324,7 @@
             </trans-unit>
             <trans-unit id="label_export_download">
                 <source>label_export_download</source>
-                <target>Download : </target>
+                <target>Download</target>
             </trans-unit>
             <trans-unit id="loading_information">
                 <source>loading_information</source>
@@ -389,6 +389,22 @@
             <trans-unit id="add_new_entry">
                 <source>add_new_entry</source>
                 <target>Adicionar novo item</target>
+            </trans-unit>
+            <trans-unit id="link_actions">
+                <source>link_actions</source>
+                <target>Ações</target>
+            </trans-unit>
+            <trans-unit id="noscript_warning">
+                <source>noscript_warning</source>
+                <target>noscript_warning</target>
+            </trans-unit>
+            <trans-unit id="message_form_group_empty">
+                <source>message_form_group_empty</source>
+                <target>message_form_group_empty</target>
+            </trans-unit>
+            <trans-unit id="link_filters">
+                <source>link_filters</source>
+                <target>link_filters</target>
             </trans-unit>
         </body>
     </file>

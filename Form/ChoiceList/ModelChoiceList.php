@@ -134,7 +134,7 @@ class ModelChoiceList extends SimpleChoiceList
         foreach ($entities as $key => $entity) {
             if ($this->propertyPath) {
                 // If the property option was given, use it
-                $propertyAccessor = PropertyAccess::getPropertyAccessor();
+                $propertyAccessor = PropertyAccess::createPropertyAccessor();
                 $value = $propertyAccessor->getValue($entity, $this->propertyPath);
             } else {
                  // Otherwise expect a __toString() method in the entity

@@ -26,6 +26,7 @@ use Symfony\Component\Routing\RequestContext;
 use Sonata\AdminBundle\Exception\NoValueException;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * Test for SonataAdminExtension
@@ -64,6 +65,11 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
      */
     private $pool;
 
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
     public function setUp()
     {
         date_default_timezone_set('Europe/London');
@@ -71,7 +77,9 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
         $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
 
         $this->pool = new Pool($container, '', '');
-        $this->twigExtension = new SonataAdminExtension($this->pool);
+        $this->logger = $this->getMock('Psr\Log\LoggerInterface');
+
+        $this->twigExtension = new SonataAdminExtension($this->pool, $this->logger);
 
         $loader = new StubFilesystemLoader(array(
             __DIR__.'/../../../Resources/views/CRUD',
@@ -126,7 +134,7 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
 
         $this->admin->expects($this->any())
             ->method('trans')
-            ->will($this->returnCallback(function($id) {
+            ->will($this->returnCallback(function ($id) {
                 return $id;
             }));
 
@@ -135,7 +143,7 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
 
         $container->expects($this->any())
             ->method('get')
-            ->will($this->returnCallback(function($id) use ($admin) {
+            ->will($this->returnCallback(function ($id) use ($admin) {
                 if ($id == 'sonata_admin_foo_service') {
                     return $admin;
                 }
@@ -166,6 +174,7 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $this->admin->expects($this->any())
             ->method('getTemplate')
+            ->with($this->equalTo('base_list_field'))
             ->will($this->returnValue('SonataAdminBundle:CRUD:base_list_field.html.twig'));
 
         $this->fieldDescription->expects($this->any())
@@ -182,7 +191,7 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
 
         $this->fieldDescription->expects($this->any())
             ->method('getTemplate')
-            ->will($this->returnCallback(function() use ($type) {
+            ->will($this->returnCallback(function () use ($type) {
                 switch ($type) {
                     case 'string':
                         return 'SonataAdminBundle:CRUD:list_string.html.twig';
@@ -251,11 +260,11 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
             array('<td class="sonata-ba-list-field sonata-ba-list-field-array" objectId="12345"> [1 => First] [2 => Second] </td>', 'array', array(1 => 'First', 2 => 'Second'), array()),
             array('<td class="sonata-ba-list-field sonata-ba-list-field-array" objectId="12345"> </td>', 'array', null, array()),
             array('<td class="sonata-ba-list-field sonata-ba-list-field-boolean" objectId="12345"> <span class="label label-success">yes</span> </td>', 'boolean', true, array('editable'=>false)),
-            array('<td class="sonata-ba-list-field sonata-ba-list-field-boolean" objectId="12345"> <span class="label label-important">no</span> </td>', 'boolean', false, array('editable'=>false)),
-            array('<td class="sonata-ba-list-field sonata-ba-list-field-boolean" objectId="12345"> <span class="label label-important">no</span> </td>', 'boolean', null, array('editable'=>false)),
+            array('<td class="sonata-ba-list-field sonata-ba-list-field-boolean" objectId="12345"> <span class="label label-danger">no</span> </td>', 'boolean', false, array('editable'=>false)),
+            array('<td class="sonata-ba-list-field sonata-ba-list-field-boolean" objectId="12345"> <span class="label label-danger">no</span> </td>', 'boolean', null, array('editable'=>false)),
             array('<td class="sonata-ba-list-field sonata-ba-list-field-boolean" objectId="12345"> <span class="x-editable" data-type="select" data-value="1" data-title="Data" data-pk="12345" data-url="/core/set-object-field-value?context=list&amp;field=fd_name&amp;objectId=12345&amp;code=xyz" data-source="[{value: 0, text: \'no\'},{value: 1, text: \'yes\'}]" > <span class="label label-success">yes</span> </span> </td>', 'boolean', true, array('editable'=>true)),
-            array('<td class="sonata-ba-list-field sonata-ba-list-field-boolean" objectId="12345"> <span class="x-editable" data-type="select" data-value="" data-title="Data" data-pk="12345" data-url="/core/set-object-field-value?context=list&amp;field=fd_name&amp;objectId=12345&amp;code=xyz" data-source="[{value: 0, text: \'no\'},{value: 1, text: \'yes\'}]" > <span class="label label-important">no</span> </span> </td>', 'boolean', false, array('editable'=>true)),
-            array('<td class="sonata-ba-list-field sonata-ba-list-field-boolean" objectId="12345"> <span class="x-editable" data-type="select" data-value="" data-title="Data" data-pk="12345" data-url="/core/set-object-field-value?context=list&amp;field=fd_name&amp;objectId=12345&amp;code=xyz" data-source="[{value: 0, text: \'no\'},{value: 1, text: \'yes\'}]" > <span class="label label-important">no</span> </span> </td>', 'boolean', null, array('editable'=>true)),
+            array('<td class="sonata-ba-list-field sonata-ba-list-field-boolean" objectId="12345"> <span class="x-editable" data-type="select" data-value="" data-title="Data" data-pk="12345" data-url="/core/set-object-field-value?context=list&amp;field=fd_name&amp;objectId=12345&amp;code=xyz" data-source="[{value: 0, text: \'no\'},{value: 1, text: \'yes\'}]" > <span class="label label-danger">no</span> </span> </td>', 'boolean', false, array('editable'=>true)),
+            array('<td class="sonata-ba-list-field sonata-ba-list-field-boolean" objectId="12345"> <span class="x-editable" data-type="select" data-value="" data-title="Data" data-pk="12345" data-url="/core/set-object-field-value?context=list&amp;field=fd_name&amp;objectId=12345&amp;code=xyz" data-source="[{value: 0, text: \'no\'},{value: 1, text: \'yes\'}]" > <span class="label label-danger">no</span> </span> </td>', 'boolean', null, array('editable'=>true)),
             array('<td class="sonata-ba-list-field sonata-ba-list-field-trans" objectId="12345"> Delete </td>', 'trans', 'action_delete', array('catalogue'=>'SonataAdminBundle')),
             array('<td class="sonata-ba-list-field sonata-ba-list-field-trans" objectId="12345"> </td>', 'trans', null, array('catalogue'=>'SonataAdminBundle')),
             array('<td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345"> Status1 </td>', 'choice', 'Status1', array()),
@@ -293,6 +302,54 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public function testRenderListElementNonExistentTemplate()
+    {
+        $this->admin->expects($this->once())
+            ->method('getTemplate')
+            ->with($this->equalTo('base_list_field'))
+            ->will($this->returnValue('SonataAdminBundle:CRUD:base_list_field.html.twig'));
+
+        $this->fieldDescription->expects($this->once())
+            ->method('getValue')
+            ->will($this->returnValue('Foo'));
+
+        $this->fieldDescription->expects($this->once())
+            ->method('getFieldName')
+            ->will($this->returnValue('Foo_name'));
+
+        $this->fieldDescription->expects($this->exactly(2))
+            ->method('getType')
+            ->will($this->returnValue('nonexistent'));
+
+        $this->fieldDescription->expects($this->once())
+            ->method('getTemplate')
+            ->will($this->returnValue('SonataAdminBundle:CRUD:list_nonexistent_template.html.twig'));
+
+        $this->logger->expects($this->once())
+            ->method('warning')
+            ->with(($this->stringStartsWith('An error occured trying to load the template "SonataAdminBundle:CRUD:list_nonexistent_template.html.twig" for the field "Foo_name", the default template "SonataAdminBundle:CRUD:base_list_field.html.twig" was used instead: "Unable to find template "list_nonexistent_template.html.twig')));
+
+         $this->twigExtension->renderListElement($this->object, $this->fieldDescription);
+    }
+
+    /**
+     * @expectedException        Twig_Error_Loader
+     * @expectedExceptionMessage Unable to find template "base_list_nonexistent_field.html.twig"
+     */
+    public function testRenderListElementErrorLoadingTemplate()
+    {
+        $this->admin->expects($this->once())
+            ->method('getTemplate')
+            ->with($this->equalTo('base_list_field'))
+            ->will($this->returnValue('SonataAdminBundle:CRUD:base_list_nonexistent_field.html.twig'));
+
+        $this->fieldDescription->expects($this->once())
+            ->method('getTemplate')
+            ->will($this->returnValue('SonataAdminBundle:CRUD:list_nonexistent_template.html.twig'));
+
+         $this->twigExtension->renderListElement($this->object, $this->fieldDescription);
+    }
+
     /**
      * @dataProvider getRenderViewElementTests
      */
@@ -304,7 +361,7 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
 
         $this->fieldDescription->expects($this->any())
             ->method('getValue')
-            ->will($this->returnCallback(function() use ($value) {
+            ->will($this->returnCallback(function () use ($value) {
                 if ($value instanceof NoValueException) {
                     throw  $value;
                 }
@@ -322,7 +379,7 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
 
         $this->fieldDescription->expects($this->any())
             ->method('getTemplate')
-            ->will($this->returnCallback(function() use ($type) {
+            ->will($this->returnCallback(function () use ($type) {
                 switch ($type) {
                     case 'boolean':
                         return 'SonataAdminBundle:CRUD:show_boolean.html.twig';
@@ -461,7 +518,7 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
 
         $fieldDescription->expects($this->any())
             ->method('getValue')
-            ->will($this->returnCallback(function() {
+            ->will($this->returnCallback(function () {
                 throw new NoValueException();
             }));
 
@@ -479,7 +536,7 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
 
         $fieldDescription->expects($this->any())
             ->method('getValue')
-            ->will($this->returnCallback(function() {
+            ->will($this->returnCallback(function () {
                 throw new NoValueException();
             }));
 
@@ -532,7 +589,7 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $this->fieldDescription->expects($this->exactly(2))
             ->method('getOption')
-            ->will($this->returnCallback(function($value, $default = null) {
+            ->will($this->returnCallback(function ($value, $default = null) {
                 if ($value == 'associated_property') {
                     return $default;
                 }
@@ -554,7 +611,7 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $this->fieldDescription->expects($this->exactly(2))
             ->method('getOption')
-            ->will($this->returnCallback(function($value, $default = null) {
+            ->will($this->returnCallback(function ($value, $default = null) {
                 if ($value == 'associated_property') {
                     return $default;
                 }
@@ -563,7 +620,6 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
                     return 'customToString';
                 }
             }));
-
 
        $element = $this->getMock('stdClass', array('customToString'));
        $element->expects($this->any())
@@ -578,7 +634,7 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
         $this->fieldDescription->expects($this->exactly(2))
             ->method('getOption')
 
-            ->will($this->returnCallback(function($value, $default = null) {
+            ->will($this->returnCallback(function ($value, $default = null) {
                 if ($value == 'associated_tostring') {
                     return 'nonExistedMethod';
                 }
@@ -602,7 +658,7 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
         $this->fieldDescription->expects($this->exactly(1))
             ->method('getOption')
 
-            ->will($this->returnCallback(function($value, $default = null) {
+            ->will($this->returnCallback(function ($value, $default = null) {
                 if ($value == 'associated_property') {
                     return 'foo';
                 }
@@ -617,16 +673,17 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
 
     public function testGetUrlsafeIdentifier()
     {
-        $enitity = new \stdClass();
+        $entity = new \stdClass();
 
         // set admin to pool
+        $this->pool->setAdminServiceIds(array('sonata_admin_foo_service'));
         $this->pool->setAdminClasses(array('stdClass'=> array('sonata_admin_foo_service')));
 
         $this->admin->expects($this->once())
             ->method('getUrlsafeIdentifier')
-            ->with($this->equalTo($enitity))
+            ->with($this->equalTo($entity))
             ->will($this->returnValue(1234567));
 
-        $this->assertEquals(1234567, $this->twigExtension->getUrlsafeIdentifier($enitity));
+        $this->assertEquals(1234567, $this->twigExtension->getUrlsafeIdentifier($entity));
     }
 }

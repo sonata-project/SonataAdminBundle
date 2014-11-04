@@ -11,6 +11,9 @@
 
 namespace Sonata\AdminBundle\Admin;
 
+use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
+use Sonata\AdminBundle\Route\RoutesCache;
+use Sonata\CoreBundle\Model\Metadata;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\PropertyAccess\PropertyPath;
@@ -120,7 +123,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      *
      * @var integer
      */
-    protected $maxPerPage = 25;
+    protected $maxPerPage = 32;
 
     /**
      * The maximum number of page numbers to display in the list
@@ -158,11 +161,25 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     private $formGroups = false;
 
     /**
+     * The form tabs disposition
+     *
+     * @var array|boolean
+     */
+    private $formTabs = false;
+
+    /**
      * The view group disposition
      *
      * @var array|boolean
      */
     private $showGroups = false;
+
+    /**
+     * The view tab disposition
+     *
+     * @var array|boolean
+     */
+    private $showTabs = false;
 
     /**
      * The label class name  (used in the title/breadcrumb ...)
@@ -192,7 +209,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      */
     protected $datagridValues = array(
         '_page'       => 1,
-        '_per_page'   => 25,
+        '_per_page'   => 32,
     );
 
     /**
@@ -200,7 +217,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      *
      * @var array
      */
-    protected $perPageOptions = array(15, 25, 50, 100, 150, 200);
+    protected $perPageOptions = array(16, 32, 64, 128, 192);
 
     /**
      * The code related to the admin
@@ -406,7 +423,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         'view_fields'   => false,
         'view_groups'   => false,
         'routes'        => false,
-        'side_menu'     => false,
+        'tab_menu'      => false,
     );
 
     /**
@@ -450,6 +467,20 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      */
     protected $securityInformation = array();
 
+    protected $cacheIsGranted = array();
+
+    protected $listModes = array(
+        'list' => array(
+            'class' => 'fa fa-list fa-fw',
+        ),
+        'mosaic' => array(
+            'class' => 'fa fa-th-large fa-fw',
+        ),
+//        'tree' => array(
+//            'class' => 'fa fa-sitemap fa-fw',
+//        ),
+    );
+
     /**
      * {@inheritdoc}
      */
@@ -475,19 +506,9 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * @deprecated removed with Symfony 2.2
-     *
      * {@inheritdoc}
      */
-    protected function configureShowField(ShowMapper $show)
-    {
-
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function configureShowFields(ShowMapper $filter)
+    protected function configureShowFields(ShowMapper $show)
     {
 
     }
@@ -501,11 +522,35 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * {@inheritdoc}
+     * DEPRECATED: Use configureTabMenu instead
+     *
+     * @param MenuItemInterface $menu
+     * @param                   $action
+     * @param AdminInterface    $childAdmin
+     *
+     * @return mixed
+     *
+     * @deprecated Use configureTabMenu instead
      */
     protected function configureSideMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
     {
 
+    }
+
+    /**
+     * Configures the tab menu in your admin
+     *
+     * @param MenuItemInterface $menu
+     * @param                   $action
+     * @param AdminInterface    $childAdmin
+     *
+     * @return mixed
+     */
+    protected function configureTabMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
+    {
+        // Use configureSideMenu not to mess with previous overrides
+        // TODO remove once deprecation period is over
+        $this->configureSideMenu($menu, $action, $childAdmin);
     }
 
     /**
@@ -592,12 +637,18 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
             $extension->preUpdate($this, $object);
         }
 
-        $this->getModelManager()->update($object);
+        $result = $this->getModelManager()->update($object);
+        // BC compatibility
+        if (null !== $result) {
+            $object = $result;
+        }
 
         $this->postUpdate($object);
         foreach ($this->extensions as $extension) {
             $extension->postUpdate($this, $object);
         }
+
+        return $object;
     }
 
     /**
@@ -610,7 +661,11 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
             $extension->prePersist($this, $object);
         }
 
-        $this->getModelManager()->create($object);
+        $result = $this->getModelManager()->create($object);
+        // BC compatibility
+        if (null !== $result) {
+            $object = $result;
+        }
 
         $this->postPersist($object);
         foreach ($this->extensions as $extension) {
@@ -618,6 +673,8 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         }
 
         $this->createObjectSecurity($object);
+
+        return $object;
     }
 
     /**
@@ -676,6 +733,13 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     {}
 
     /**
+     * {@inheritdoc}
+     */
+    public function preBatchAction($actionName, ProxyQueryInterface $query, array & $idx, $allElements)
+    {
+    }
+
+    /**
      * build the view FieldDescription array
      *
      * @return void
@@ -689,7 +753,6 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         $this->show = new FieldDescriptionCollection();
         $mapper = new ShowMapper($this->showBuilder, $this->show, $this);
 
-        $this->configureShowField($mapper); // deprecated, use configureShowFields instead
         $this->configureShowFields($mapper);
 
         foreach ($this->getExtensions() as $extension) {
@@ -864,7 +927,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         if ($this->isChild() && $this->getParentAssociationMapping()) {
             $parent = $this->getParent()->getObject($this->request->get($this->getParent()->getIdParameter()));
 
-            $propertyAccessor = PropertyAccess::getPropertyAccessor();
+            $propertyAccessor = PropertyAccess::createPropertyAccessor();
             $propertyPath = new PropertyPath($this->getParentAssociationMapping());
 
             $object = $this->getSubject();
@@ -968,7 +1031,8 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      */
     public function getClass()
     {
-        if ($this->hasSubject()) {
+        // see https://github.com/sonata-project/SonataCoreBundle/commit/247eeb0a7ca7211142e101754769d70bc402a5b4
+        if ($this->hasSubject() && is_object($this->getSubject())) {
             return ClassUtils::getClass($this->getSubject());
         }
 
@@ -976,7 +1040,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
             if (count($this->getSubClasses()) > 0) {
                 $subject = $this->getSubject();
 
-                if ($subject) {
+                if ($subject && is_object($subject)) {
                     return ClassUtils::getClass($subject);
                 }
             }
@@ -1123,7 +1187,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      *
      * @return void
      */
-    public function buildRoutes()
+    private function buildRoutes()
     {
         if ($this->loaded['routes']) {
             return;
@@ -1148,38 +1212,17 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function getRoute($name)
-    {
-        $this->buildRoutes();
-
-        if (!$this->routes->has($name)) {
-            return false;
-        }
-
-        return $this->routes->get($name);
-    }
-
-    /**
      * @param string $name
      *
      * @return bool
      */
     public function hasRoute($name)
     {
-        $this->buildRoutes();
-
-        if (
-            ! $this->isChild()
-            && strpos($name, '.') !== false
-            && strpos($name, $this->getBaseCodeRoute() . '|') !== 0
-            && strpos($name, $this->getBaseCodeRoute() . '.') !== 0
-        ) {
-            $name = $this->getCode() . '|' . $name;
+        if (!$this->routeGenerator) {
+            throw new \RuntimeException('RouteGenerator cannot be null');
         }
 
-        return $this->routes->has($name);
+        return $this->routeGenerator->hasAdminRoute($this, $name);
     }
 
     /**
@@ -1414,36 +1457,39 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * Build the side menu related to the current action
-     *
-     * @param string                                   $action
-     * @param \Sonata\AdminBundle\Admin\AdminInterface $childAdmin
-     *
-     * @return \Knp\Menu\ItemInterface|boolean
+     * {@inheritdoc}
      */
-    public function buildSideMenu($action, AdminInterface $childAdmin = null)
+    public function buildTabMenu($action, AdminInterface $childAdmin = null)
     {
-        if ($this->loaded['side_menu']) {
+        if ($this->loaded['tab_menu']) {
             return;
         }
 
-        $this->loaded['side_menu'] = true;
+        $this->loaded['tab_menu'] = true;
 
         $menu = $this->menuFactory->createItem('root');
-        $menu->setChildrenAttribute('class', 'nav nav-list');
+        $menu->setChildrenAttribute('class', 'nav navbar-nav');
 
         // Prevents BC break with KnpMenuBundle v1.x
         if (method_exists($menu, "setCurrentUri")) {
             $menu->setCurrentUri($this->getRequest()->getBaseUrl().$this->getRequest()->getPathInfo());
         }
 
-        $this->configureSideMenu($menu, $action, $childAdmin);
+        $this->configureTabMenu($menu, $action, $childAdmin);
 
         foreach ($this->getExtensions() as $extension) {
-            $extension->configureSideMenu($this, $menu, $action, $childAdmin);
+            $extension->configureTabMenu($this, $menu, $action, $childAdmin);
         }
 
         $this->menu = $menu;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function buildSideMenu($action, AdminInterface $childAdmin = null)
+    {
+        return $this->buildTabMenu($action, $childAdmin);
     }
 
     /**
@@ -1600,6 +1646,38 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         $formGroups = $this->getFormGroups();
         $formGroups[$group]['fields'] = array_merge(array_flip($keys), $formGroups[$group]['fields']);
         $this->setFormGroups($formGroups);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFormTabs()
+    {
+        return $this->formTabs;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setFormTabs(array $formTabs)
+    {
+        $this->formTabs = $formTabs;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getShowTabs()
+    {
+        return $this->showTabs;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setShowTabs(array $showTabs)
+    {
+        $this->showTabs = $showTabs;
     }
 
     /**
@@ -1980,6 +2058,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     public function getPersistentParameters()
     {
         $parameters = array();
+
         foreach ($this->getExtensions() as $extension) {
             $params = $extension->getPersistentParameters($this);
 
@@ -2469,7 +2548,13 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      */
     public function isGranted($name, $object = null)
     {
-        return $this->securityHandler->isGranted($this, $name, $object ?: $this);
+        $key = md5(json_encode($name) . ($object ? '/'.spl_object_hash($object) : ''));
+
+        if (!array_key_exists($key, $this->cacheIsGranted)) {
+            $this->cacheIsGranted[$key] = $this->securityHandler->isGranted($this, $name, $object ?: $this);
+        }
+
+        return $this->cacheIsGranted[$key];
     }
 
     /**
@@ -2690,5 +2775,45 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     public function isAclEnabled()
     {
         return $this->getSecurityHandler() instanceof AclSecurityHandlerInterface;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getObjectMetadata($object)
+    {
+        return new Metadata($this->toString($object));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getListModes()
+    {
+        return $this->listModes;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setListMode($mode)
+    {
+        if (!$this->hasRequest()) {
+            throw new \RuntimeException(sprintf('No request attached to the current admin: %s', $this->getCode()));
+        }
+
+        $this->getRequest()->getSession()->set(sprintf("%s.list_mode", $this->getCode()), $mode);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getListMode()
+    {
+        if (!$this->hasRequest()) {
+            return 'list';
+        }
+
+        return $this->getRequest()->getSession()->get(sprintf("%s.list_mode", $this->getCode()), 'list');
     }
 }

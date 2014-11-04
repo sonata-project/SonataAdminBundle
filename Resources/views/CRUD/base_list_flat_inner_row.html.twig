@@ -15,12 +15,12 @@ file that was distributed with this source code.
     </td>
 {% endif %}
 
-<td class="sonata-ba-list-field sonata-ba-list-field-inline-fields" colspan="{{ admin.list.elements|length - (admin.list.has('_action') + admin.list.has('batch')) }}">
+<td class="sonata-ba-list-field sonata-ba-list-field-inline-fields" colspan="{{ admin.list.elements|length - (admin.list.has('_action') + admin.list.has('batch')) }}" objectId="{{ admin.id(object) }}">
     {% block row %}{% endblock %}
 </td>
 
 {% if admin.list.has('_action') and not app.request.isXmlHttpRequest %}
-    <td class="sonata-ba-list-field sonata-ba-list-field-_action">
+    <td class="sonata-ba-list-field sonata-ba-list-field-_action" objectId="{{ admin.id(object) }}">
         {{ object|render_list_element(admin.list['_action']) }}
     </td>
 {% endif %}

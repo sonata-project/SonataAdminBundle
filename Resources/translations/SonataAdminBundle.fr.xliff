@@ -144,7 +144,7 @@
             </trans-unit>
             <trans-unit id='flash_create_success'>
                 <source>flash_create_success</source>
-                <target>L'élément "%name%" a été crée avec succès.</target>
+                <target>L'élément "%name%" a été créé avec succès.</target>
             </trans-unit>
             <trans-unit id='flash_create_error'>
                 <source>flash_create_error</source>
@@ -324,7 +324,7 @@
             </trans-unit>
             <trans-unit id="label_export_download">
                 <source>label_export_download</source>
-                <target>Export : </target>
+                <target>Export</target>
             </trans-unit>
             <trans-unit id="loading_information">
                 <source>loading_information</source>
@@ -389,6 +389,22 @@
             <trans-unit id="add_new_entry">
                 <source>add_new_entry</source>
                 <target>rajouter un élément</target>
+            </trans-unit>
+            <trans-unit id="link_actions">
+                <source>link_actions</source>
+                <target>Liste d'actions</target>
+            </trans-unit>
+            <trans-unit id="noscript_warning">
+                <source>noscript_warning</source>
+                <target>Certaines fonctionnalités ne fonctionnent sans JavaScript; merci de l'activer sur votre navigateur.</target>
+            </trans-unit>
+            <trans-unit id="message_form_group_empty">
+                <source>message_form_group_empty</source>
+                <target>Pas de champs disponibles.</target>
+            </trans-unit>
+            <trans-unit id="link_filters">
+                <source>link_filters</source>
+                <target>Filtres</target>
             </trans-unit>
         </body>
     </file>

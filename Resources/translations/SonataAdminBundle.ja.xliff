@@ -390,6 +390,22 @@
                 <source>add_new_entry</source>
                 <target>新規作成</target>
             </trans-unit>
+            <trans-unit id="link_actions">
+                <source>link_actions</source>
+                <target>link_actions</target>
+            </trans-unit>
+            <trans-unit id="noscript_warning">
+                <source>noscript_warning</source>
+                <target>noscript_warning</target>
+            </trans-unit>
+            <trans-unit id="message_form_group_empty">
+                <source>message_form_group_empty</source>
+                <target>message_form_group_empty</target>
+            </trans-unit>
+            <trans-unit id="link_filters">
+                <source>link_filters</source>
+                <target>link_filters</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

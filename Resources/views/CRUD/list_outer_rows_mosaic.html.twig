@@ -1,0 +1,82 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+<!--
+This template can be customized to match your needs. You should only extends the template and used the differents block to customize the view:
+    - sonata_mosaic_default_view
+    - sonata_mosaic_hover_view
+    - sonata_mosaic_description
+-->
+
+<tr>
+    <td colspan="{{ admin.list.elements|length - (app.request.isXmlHttpRequest ? (admin.list.has('_action') + admin.list.has('batch')) : 0) }}">
+        <div class="row">
+            {% for object in admin.datagrid.results %}
+                {% set meta = admin.getObjectMetadata(object) %}
+
+                <div class="col-xs-6 col-sm-3 mosaic-box sonata-ba-list-field-batch sonata-ba-list-field" objectId="{{ admin.id(object) }}">
+
+                    <div class="mosaic-box-outter">
+                        <div class="mosaic-inner-box">
+                            {#
+                                This box will be display when the mouse is not on the box
+                            #}
+
+                            <div class="mosaic-inner-box-default">
+                                {% block sonata_mosaic_background %}
+                                    <img src="{{ meta.image }}" alt="" />
+                                {% endblock %}
+                                {% block sonata_mosaic_default_view %}
+                                    <span class="mosaic-box-label label label-primary pull-right">#{{ admin.id(object) }}</span>
+                                {% endblock %}
+                            </div>
+
+                            {#
+                                This box will be display when the mouse is on the box
+                                You can add more description
+                            #}
+                            <div class="mosaic-inner-box-hover">
+                                {% block sonata_mosaic_hover_view %}
+                                    <span class="mosaic-box-label label label-primary pull-right">#{{ admin.id(object) }}</span>
+                                    {{ meta.description }}
+                                {% endblock %}
+                            </div>
+                        </div>
+                        <div class="mosaic-inner-text">
+                            {% if (admin.hasRoute('batch') and batchactions|length > 0) or (admin.hasRoute('export') and admin.isGranted("EXPORT") and admin.getExportFormats()|length) %}
+                                <input type="checkbox" name="idx[]" value="{{ admin.id(object) }}">
+                            {% else %}
+                                &nbsp;
+                            {% endif %}
+
+                            {% block sonata_mosaic_description %}
+                                {% if admin.isGranted('EDIT', object) and admin.hasRoute('edit') %}
+                                    <a class="mosaic-inner-link" href="{{ admin.generateUrl('edit', {'id' : object|sonata_urlsafeid }) }}">{{ meta.title|truncate(40) }}</a>
+                                {% elseif admin.isGranted('SHOW', object) and admin.hasRoute('show') %}
+                                    <a class="mosaic-inner-link" href="{{ admin.generateUrl('show', {'id' : object|sonata_urlsafeid }) }}">{{ meta.title|truncate(40) }}</a>
+                                {% else %}
+                                    {{ meta.title|truncate(40) }}
+                                {% endif %}
+                            {% endblock %}
+                        </div>
+                    </div>
+                </div>
+
+                {% if loop.index % 4 == 0 %}
+                    <div class="clearfix hidden-xs"></div>
+                {% endif %}
+                {% if loop.index % 2 == 0 %}
+                    <div class="clearfix visible-xs"></div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </td>
+</tr>

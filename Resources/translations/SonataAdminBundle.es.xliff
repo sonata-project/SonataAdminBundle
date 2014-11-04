@@ -4,7 +4,7 @@
         <body>
             <trans-unit id="sonata_administration">
                 <source>sonata_administration</source>
-                <target>Administration</target>
+                <target>Administración</target>
             </trans-unit>
             <trans-unit id="action_delete">
                 <source>action_delete</source>
@@ -76,7 +76,7 @@
             </trans-unit>
             <trans-unit id="link_reset_filter">
                 <source>link_reset_filter</source>
-                <target>Resetear</target>
+                <target>Restablecer</target>
             </trans-unit>
             <trans-unit id="title_create">
                 <source>title_create</source>
@@ -84,7 +84,7 @@
             </trans-unit>
             <trans-unit id="title_dashboard">
                 <source>title_dashboard</source>
-                <target>Dashboard</target>
+                <target>Panel principal</target>
             </trans-unit>
             <trans-unit id="title_edit">
                 <source>title_edit</source>
@@ -112,7 +112,7 @@
             </trans-unit>
             <trans-unit id="Admin">
                 <source>Admin</source>
-                <target>Admin</target>
+                <target>Administrador</target>
             </trans-unit>
             <trans-unit id="link_expand">
                 <source>link_expand</source>
@@ -124,7 +124,7 @@
             </trans-unit>
             <trans-unit id="confirm_msg">
                 <source>confirm_msg</source>
-                <target>¿Estás seguro?</target>
+                <target>¿Está seguro?</target>
             </trans-unit>
             <trans-unit id="action_edit">
                 <source>action_edit</source>
@@ -164,7 +164,7 @@
             </trans-unit>
             <trans-unit id='flash_batch_delete_error'>
                 <source>flash_batch_delete_error</source>
-                <target>Se ha producido un error durante la eliminación de los elementos selecciondaos.</target>
+                <target>Se ha producido un error durante la eliminación de los elementos seleccionados.</target>
             </trans-unit>
             <trans-unit id='flash_delete_error'>
                 <source>flash_delete_error</source>
@@ -175,8 +175,8 @@
                 <target>Elemento eliminado satisfactoriamente.</target>
             </trans-unit>
             <trans-unit id="link_breadcrumb_dashboard">
-                <source>breadcrumb.link_dashboard</source>
-                <target>&#8962;</target>
+                <source>Panel principal</source>
+                <target><![CDATA[<i class="fa fa-home"></i>]]></target>
             </trans-unit>
             <trans-unit id="title_delete">
                 <source>title_delete</source>
@@ -184,7 +184,7 @@
             </trans-unit>
             <trans-unit id="message_delete_confirmation">
                 <source>message_delete_confirmation</source>
-                <target>¿Está seguro que quiere borrar el elemento seleccionado?</target>
+                <target>¿Está seguro de que quiere borrar el elemento seleccionado "%object%"?</target>
             </trans-unit>
             <trans-unit id="btn_delete">
                 <source>btn_delete</source>
@@ -196,11 +196,11 @@
             </trans-unit>
             <trans-unit id="message_batch_confirmation">
                 <source>message_batch_confirmation</source>
-                <target>{0}¿Está seguro que quiere confirmar y ejecutar esta acción para todos los elementos seleccionados?|[1,+Inf[¿Está seguro que quiere confirmar y ejecutar esta acción para todos los %count% elementos seleccionados?</target>
+                <target>{0}¿Está seguro de que quiere confirmar y ejecutar esta acción para todos los elementos seleccionados?|[1,+Inf[¿Está seguro que quiere confirmar y ejecutar esta acción para todos los %count% elementos seleccionados?</target>
             </trans-unit>
             <trans-unit id="message_batch_all_confirmation">
                 <source>message_batch_all_confirmation</source>
-                <target>¿Está seguro que quiere confirmar y ejecutar esta acción para todos los elementos?</target>
+                <target>¿Está seguro de que quiere confirmar y ejecutar esta acción para todos los elementos?</target>
             </trans-unit>
             <trans-unit id="btn_execute_batch_action">
                 <source>btn_execute_batch_action</source>
@@ -324,7 +324,7 @@
             </trans-unit>
             <trans-unit id="label_export_download">
                 <source>label_export_download</source>
-                <target>Exportar: </target>
+                <target>Exportar</target>
             </trans-unit>
             <trans-unit id="loading_information">
                 <source>loading_information</source>
@@ -364,7 +364,7 @@
             </trans-unit>
             <trans-unit id="flash_acl_update_success">
                 <source>flash_acl_edit_success</source>
-                <target>ACL actualitzada correctamente.</target>
+                <target>ACL actualizada correctamente.</target>
             </trans-unit>
             <trans-unit id="link_action_acl">
                 <source>link_action_acl</source>
@@ -389,6 +389,22 @@
             <trans-unit id="add_new_entry">
                 <source>add_new_entry</source>
                 <target>añadir nueva entrada</target>
+            </trans-unit>
+            <trans-unit id="link_actions">
+                <source>link_actions</source>
+                <target>Acciones</target>
+            </trans-unit>
+            <trans-unit id="noscript_warning">
+                <source>noscript_warning</source>
+                <target>Su navegador no soporta JavaScript o se encuentra deshabilitado  Algunas características no funcionarán correctamente.</target>
+            </trans-unit>
+            <trans-unit id="message_form_group_empty">
+                <source>message_form_group_empty</source>
+                <target>No hay campos disponibles.</target>
+            </trans-unit>
+            <trans-unit id="link_filters">
+                <source>link_filters</source>
+                <target>Filtros</target>
             </trans-unit>
         </body>
     </file>

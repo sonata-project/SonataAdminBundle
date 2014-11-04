@@ -46,12 +46,35 @@ Alternative Way To Define Help Messages
         }
     }
 
+Help messages in a sub-field
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code-block:: php
+
+    <?php
+    class ExampleAdmin.php
+    {
+        protected function configureFormFields(FormMapper $formMapper)
+        {
+            $formMapper
+                ->add('enabled')
+                ->add('settings', 'sonata_type_immutable_array', array(
+                    'keys' => array(
+                        array('content', 'textarea', array(
+                            'sonata_help' => 'Set the content'
+                        )),
+                        array('public', 'checkbox', array()),
+                    )
+                );
+        }
+    }
+
 
 Advanced usage
 ^^^^^^^^^^^^^^
 
 Since help messages can contain HTML they can be used for more advanced solutions.
-See the cookbook entry :doc:`Showing image previews <recipe_image_previews>` for a detailed example of how to 
+See the cookbook entry :doc:`Showing image previews <../cookbook/recipe_image_previews>` for a detailed example of how to
 use help messages to display an image tag.
 
 
@@ -77,4 +100,5 @@ Example
                 ->end();
         }
     }
+
 

@@ -124,7 +124,7 @@ class BaseFieldDescriptionTest extends \PHPUnit_Framework_TestCase
          */
         $arg2 = 4;
         $twoParameters = array($arg1,$arg2);
-        $description2 = new FieldDescription();        
+        $description2 = new FieldDescription();
         $description2->setOption('code', 'getWithTwoParameters');
         $description2->setOption('parameters', $twoParameters);
         

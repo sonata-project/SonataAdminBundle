@@ -66,7 +66,7 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
 
         $this->formBuilder->expects($this->any())
             ->method('get')
-            ->will($this->returnCallback(function($name) use (& $formTypes) {
+            ->will($this->returnCallback(function ($name) use (& $formTypes) {
                 if (isset($formTypes[$name])) {
                     return $formTypes[$name];
                 }
@@ -80,8 +80,8 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
 
         $this->formBuilder->expects($this->any())
             ->method('add')
-            ->will($this->returnCallback(function($name, $type, $options) use (& $formTypes, $eventDispatcher, $formFactory) {
-                $formTypes[$name] = new FormBuilder($name, 'Sonata\AdminBundle\Tests\Fixtures\Entity\Form\TestEntity', $eventDispatcher,  $formFactory, $options);
+            ->will($this->returnCallback(function ($name, $type, $options) use (& $formTypes, $eventDispatcher, $formFactory) {
+                $formTypes[$name] = new FormBuilder($name, 'Sonata\AdminBundle\Tests\Fixtures\Entity\Form\TestEntity', $eventDispatcher, $formFactory, $options);
 
                 return null;
             }));
@@ -93,7 +93,7 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
 
         $this->formBuilder->expects($this->any())
             ->method('getForm')
-            ->will($this->returnCallback(function() use ($form) {
+            ->will($this->returnCallback(function () use ($form) {
                 return $form;
             }));
 
@@ -238,6 +238,41 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->datagrid->hasActiveFilters());
     }
 
+    public function testHasDisplayableFilters()
+    {
+        $this->assertFalse($this->datagrid->hasDisplayableFilters());
+
+        $filter1 = $this->getMock('Sonata\AdminBundle\Filter\FilterInterface');
+        $filter1->expects($this->once())
+            ->method('getName')
+            ->will($this->returnValue('foo'));
+        $filter1->expects($this->any())
+            ->method('getOption')
+            ->will($this->returnValue(false));
+        $filter1->expects($this->any())
+            ->method('isActive')
+            ->will($this->returnValue(false));
+
+        $this->datagrid->addFilter($filter1);
+
+        $this->assertFalse($this->datagrid->hasDisplayableFilters());
+
+        $filter2 = $this->getMock('Sonata\AdminBundle\Filter\FilterInterface');
+        $filter2->expects($this->once())
+            ->method('getName')
+            ->will($this->returnValue('bar'));
+        $filter2->expects($this->any())
+            ->method('getOption')
+            ->will($this->returnValue(true));
+        $filter2->expects($this->any())
+            ->method('isActive')
+            ->will($this->returnValue(true));
+
+        $this->datagrid->addFilter($filter2);
+
+        $this->assertTrue($this->datagrid->hasDisplayableFilters());
+    }
+
     public function testGetForm()
     {
         $this->assertInstanceOf('Symfony\Component\Form\Form', $this->datagrid->getForm());
@@ -332,6 +367,16 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
             ->method('isSortable')
             ->will($this->returnValue(true));
 
+        $this->pager->expects($this->once())
+            ->method('setMaxPerPage')
+            ->with($this->equalTo('25'))
+            ->will($this->returnValue(null));
+
+        $this->pager->expects($this->once())
+            ->method('setPage')
+            ->with($this->equalTo('1'))
+            ->will($this->returnValue(null));
+
         $this->datagrid = new Datagrid($this->query, $this->columns, $this->pager, $this->formBuilder, array('_sort_by'=>$sortBy));
 
         $filter = $this->getMock('Sonata\AdminBundle\Filter\FilterInterface');
@@ -359,5 +404,104 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Symfony\Component\Form\FormBuilder', $this->formBuilder->get('_sort_order'));
         $this->assertInstanceOf('Symfony\Component\Form\FormBuilder', $this->formBuilder->get('_page'));
         $this->assertInstanceOf('Symfony\Component\Form\FormBuilder', $this->formBuilder->get('_per_page'));
+    }
+
+    /**
+     * @dataProvider getBuildPagerWithPageTests
+     */
+    public function testBuildPagerWithPage($page, $perPage)
+    {
+        $sortBy = $this->getMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+        $sortBy->expects($this->once())
+            ->method('isSortable')
+            ->will($this->returnValue(true));
+
+        $this->pager->expects($this->once())
+            ->method('setMaxPerPage')
+            ->with($this->equalTo('50'))
+            ->will($this->returnValue(null));
+
+        $this->pager->expects($this->once())
+            ->method('setPage')
+            ->with($this->equalTo('3'))
+            ->will($this->returnValue(null));
+
+        $this->datagrid = new Datagrid($this->query, $this->columns, $this->pager, $this->formBuilder, array('_sort_by'=>$sortBy, '_page'=>$page, '_per_page'=>$perPage));
+
+        $filter = $this->getMock('Sonata\AdminBundle\Filter\FilterInterface');
+        $filter->expects($this->once())
+            ->method('getName')
+            ->will($this->returnValue('foo'));
+        $filter->expects($this->any())
+            ->method('getFormName')
+            ->will($this->returnValue('fooFormName'));
+        $filter->expects($this->any())
+            ->method('isActive')
+            ->will($this->returnValue(false));
+        $filter->expects($this->any())
+            ->method('getRenderSettings')
+            ->will($this->returnValue(array('foo', array('bar'=>'baz'))));
+
+        $this->datagrid->addFilter($filter);
+
+        $this->datagrid->buildPager();
+
+        $this->assertEquals(array('_sort_by'=>$sortBy, 'foo'=>null, '_page' => 3, '_per_page' => 50), $this->datagrid->getValues());
+        $this->assertInstanceOf('Symfony\Component\Form\FormBuilder', $this->formBuilder->get('fooFormName'));
+        $this->assertEquals(array('bar' => 'baz'), $this->formBuilder->get('fooFormName')->getOptions());
+        $this->assertInstanceOf('Symfony\Component\Form\FormBuilder', $this->formBuilder->get('_sort_by'));
+        $this->assertInstanceOf('Symfony\Component\Form\FormBuilder', $this->formBuilder->get('_sort_order'));
+        $this->assertInstanceOf('Symfony\Component\Form\FormBuilder', $this->formBuilder->get('_page'));
+        $this->assertInstanceOf('Symfony\Component\Form\FormBuilder', $this->formBuilder->get('_per_page'));
+    }
+
+    public function getBuildPagerWithPageTests()
+    {
+        // tests for php 5.3, because isset functionality was changed since php 5.4
+        return array(
+            array(3, 50),
+            array('3', '50'),
+            array(3, '50'),
+            array('3', 50),
+        );
+    }
+
+    /**
+     * @dataProvider getBuildPagerWithPage2Tests
+     */
+    public function testBuildPagerWithPage2($page, $perPage)
+    {
+        $this->pager->expects($this->once())
+            ->method('setMaxPerPage')
+            ->with($this->equalTo('50'))
+            ->will($this->returnValue(null));
+
+        $this->pager->expects($this->once())
+            ->method('setPage')
+            ->with($this->equalTo('3'))
+            ->will($this->returnValue(null));
+
+        $this->datagrid = new Datagrid($this->query, $this->columns, $this->pager, $this->formBuilder, array());
+        $this->datagrid->setValue('_per_page', null, $perPage);
+        $this->datagrid->setValue('_page', null, $page);
+
+        $this->datagrid->buildPager();
+
+        $this->assertEquals(array('_page' => array('type'=>null, 'value'=>3), '_per_page' => array('type'=>null, 'value'=>50)), $this->datagrid->getValues());
+        $this->assertInstanceOf('Symfony\Component\Form\FormBuilder', $this->formBuilder->get('_sort_by'));
+        $this->assertInstanceOf('Symfony\Component\Form\FormBuilder', $this->formBuilder->get('_sort_order'));
+        $this->assertInstanceOf('Symfony\Component\Form\FormBuilder', $this->formBuilder->get('_page'));
+        $this->assertInstanceOf('Symfony\Component\Form\FormBuilder', $this->formBuilder->get('_per_page'));
+    }
+
+    public function getBuildPagerWithPage2Tests()
+    {
+        // tests for php 5.3, because isset functionality was changed since php 5.4
+        return array(
+            array(3, 50),
+            array('3', '50'),
+            array(3, '50'),
+            array('3', 50),
+        );
     }
 }

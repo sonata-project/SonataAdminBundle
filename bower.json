@@ -1,0 +1,18 @@
+{
+    "name": "sonata-project-admin-bundle",
+    "homepage": "https://sonata-project.org/bundles/admin-bundle",
+    "authors": [
+        "Thomas Rabaix <thomas.rabaix@gmail.com>"
+    ],
+    "dependencies": {
+        "jqueryui": "~1.10.4",
+        "x-editable": "~1.5.1",
+        "AdminLTE": "https://github.com/almasaeed2010/AdminLTE.git#master",
+        "jquery.scrollTo": "~1.4.11"
+    },
+    "license": "MIT",
+    "private": true,
+    "ignore": [
+        "*"
+    ]
+}

@@ -1,0 +1,35 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{% extends 'SonataAdminBundle::standard_layout.html.twig' %}
+
+{% block sonata_header %}{% endblock %}
+{% block sonata_left_side %}{% endblock %}
+{% block sonata_nav %}{% endblock %}
+{% block sonata_breadcrumb %}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    <style>
+        .content {
+            margin: 0px;
+            padding: 0px;
+        }
+    </style>
+
+{% endblock %}
+
+{% block sonata_wrapper %}
+    {% block sonata_page_content %}
+        {{ parent() }}
+    {% endblock %}
+{% endblock %}

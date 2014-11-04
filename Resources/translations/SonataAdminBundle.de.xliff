@@ -76,7 +76,7 @@
             </trans-unit>
             <trans-unit id="link_reset_filter">
                 <source>link_reset_filter</source>
-                <target>Löschen</target>
+                <target>Zurücksetzen</target>
             </trans-unit>
             <trans-unit id="title_create">
                 <source>title_create</source>
@@ -324,7 +324,7 @@
             </trans-unit>
             <trans-unit id="label_export_download">
                 <source>label_export_download</source>
-                <target>Download: </target>
+                <target>Exportieren</target>
             </trans-unit>
             <trans-unit id="loading_information">
                 <source>loading_information</source>
@@ -389,6 +389,22 @@
             <trans-unit id="add_new_entry">
                 <source>add_new_entry</source>
                 <target>Neuen Eintrag</target>
+            </trans-unit>
+            <trans-unit id="link_actions">
+                <source>link_actions</source>
+                <target>Aktionen</target>
+            </trans-unit>
+            <trans-unit id="noscript_warning">
+                <source>noscript_warning</source>
+                <target>noscript_warning</target>
+            </trans-unit>
+            <trans-unit id="message_form_group_empty">
+                <source>message_form_group_empty</source>
+                <target>message_form_group_empty</target>
+            </trans-unit>
+            <trans-unit id="link_filters">
+                <source>link_filters</source>
+                <target>link_filters</target>
             </trans-unit>
         </body>
     </file>

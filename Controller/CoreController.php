@@ -53,10 +53,22 @@ class CoreController extends Controller
      */
     public function dashboardAction()
     {
+        $blocks = array(
+            'top'    => array(),
+            'left'   => array(),
+            'center' => array(),
+            'right'  => array(),
+            'bottom' => array()
+        );
+
+        foreach ($this->container->getParameter('sonata.admin.configuration.dashboard_blocks') as $block) {
+            $blocks[$block['position']][] = $block;
+        }
+
         return $this->render($this->getAdminPool()->getTemplate('dashboard'), array(
             'base_template'   => $this->getBaseTemplate(),
             'admin_pool'      => $this->container->get('sonata.admin.pool'),
-            'blocks'          => $this->container->getParameter('sonata.admin.configuration.dashboard_blocks')
+            'blocks'          => $blocks
         ));
     }
 

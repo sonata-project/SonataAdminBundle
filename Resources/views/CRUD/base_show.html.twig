@@ -12,15 +12,13 @@ file that was distributed with this source code.
 {% extends base_template %}
 
 {% block actions %}
-    <div class="sonata-actions btn-group">
-        {% include 'SonataAdminBundle:Button:edit_button.html.twig' %}
-        {% include 'SonataAdminBundle:Button:history_button.html.twig' %}
-        {% include 'SonataAdminBundle:Button:create_button.html.twig' %}
-        {% include 'SonataAdminBundle:Button:list_button.html.twig' %}
-    </div>
+    <li>{% include 'SonataAdminBundle:Button:edit_button.html.twig' %}</li>
+    <li>{% include 'SonataAdminBundle:Button:history_button.html.twig' %}</li>
+    <li>{% include 'SonataAdminBundle:Button:list_button.html.twig' %}</li>
+    <li>{% include 'SonataAdminBundle:Button:create_button.html.twig' %}</li>
 {% endblock %}
 
-{% block side_menu %}{{ knp_menu_render(admin.sidemenu(action), {'currentClass' : 'active'}, 'list') }}{% endblock %}
+{% block tab_menu %}{{ knp_menu_render(admin.sidemenu(action), {'currentClass' : 'active', 'template': admin_pool.getTemplate('tab_menu_template')}, 'twig') }}{% endblock %}
 
 {% block show %}
     <div class="sonata-ba-view">
@@ -31,21 +29,25 @@ file that was distributed with this source code.
             <table class="table table-bordered">
                 {% if name %}
                     <thead>
-                        <tr class="sonata-ba-view-title">
-                            <th colspan="2">
-                                {{ admin.trans(name) }}
-                            </th>
-                        </tr>
+                        {% block show_title %}
+                            <tr class="sonata-ba-view-title">
+                                <th colspan="2">
+                                    {{ admin.trans(name) }}
+                                </th>
+                            </tr>
+                        {% endblock %}
                     </thead>
                 {% endif %}
 
                 <tbody>
                     {% for field_name in view_group.fields %}
-                        <tr class="sonata-ba-view-container">
-                            {% if elements[field_name] is defined %}
-                                {{ elements[field_name]|render_view_element(object) }}
-                            {% endif %}
-                        </tr>
+                        {% block show_field %}
+                            <tr class="sonata-ba-view-container">
+                                {% if elements[field_name] is defined %}
+                                    {{ elements[field_name]|render_view_element(object) }}
+                                {% endif %}
+                            </tr>
+                        {% endblock %}
                     {% endfor %}
                 </tbody>
             </table>

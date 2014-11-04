@@ -1,9 +1,9 @@
 <?php
 
 /*
- * This file is part of sonata-project.
+ * This file is part of the Sonata package.
  *
- * (c) 2010 Thomas Rabaix
+ * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -16,6 +16,7 @@ use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Exception\NoValueException;
 use Sonata\AdminBundle\Admin\Pool;
 use Symfony\Component\PropertyAccess\PropertyAccess;
+use Psr\Log\LoggerInterface;
 
 class SonataAdminExtension extends \Twig_Extension
 {
@@ -30,11 +31,18 @@ class SonataAdminExtension extends \Twig_Extension
     protected $pool;
 
     /**
-     * @param Pool $pool
+     * @var LoggerInterface
      */
-    public function __construct(Pool $pool)
+    protected $logger;
+
+    /**
+     * @param Pool            $pool
+     * @param LoggerInterface $logger
+     */
+    public function __construct(Pool $pool, LoggerInterface $logger = null)
     {
         $this->pool = $pool;
+        $this->logger = $logger;
     }
 
     /**
@@ -51,11 +59,12 @@ class SonataAdminExtension extends \Twig_Extension
     public function getFilters()
     {
         return array(
-            'render_list_element'     => new \Twig_Filter_Method($this, 'renderListElement', array('is_safe' => array('html'))),
-            'render_view_element'     => new \Twig_Filter_Method($this, 'renderViewElement', array('is_safe' => array('html'))),
-            'render_relation_element' => new \Twig_Filter_Method($this, 'renderRelationElement'),
-            'sonata_urlsafeid'        => new \Twig_Filter_Method($this, 'getUrlsafeIdentifier'),
-            'sonata_xeditable_type'   => new \Twig_Filter_Method($this, 'getXEditableType'),
+            'render_list_element'           => new \Twig_Filter_Method($this, 'renderListElement', array('is_safe' => array('html'))),
+            'render_view_element'           => new \Twig_Filter_Method($this, 'renderViewElement', array('is_safe' => array('html'))),
+            'render_view_element_compare'   => new \Twig_Filter_Method($this, 'renderViewElementCompare', array('is_safe' => array('html'))),
+            'render_relation_element'       => new \Twig_Filter_Method($this, 'renderRelationElement'),
+            'sonata_urlsafeid'              => new \Twig_Filter_Method($this, 'getUrlsafeIdentifier'),
+            'sonata_xeditable_type'         => new \Twig_Filter_Method($this, 'getXEditableType'),
         );
     }
 
@@ -76,6 +85,8 @@ class SonataAdminExtension extends \Twig_Extension
     }
 
     /**
+     * Get template
+     *
      * @param FieldDescriptionInterface $fieldDescription
      * @param string                    $defaultTemplate
      *
@@ -83,12 +94,17 @@ class SonataAdminExtension extends \Twig_Extension
      */
     protected function getTemplate(FieldDescriptionInterface $fieldDescription, $defaultTemplate)
     {
-        $templateName = $fieldDescription->getTemplate() ? : $defaultTemplate;
+        $templateName = $fieldDescription->getTemplate() ?: $defaultTemplate;
 
         try {
             $template = $this->environment->loadTemplate($templateName);
         } catch (\Twig_Error_Loader $e) {
+
             $template = $this->environment->loadTemplate($defaultTemplate);
+
+            if (null !== $this->logger) {
+                $this->logger->warning(sprintf('An error occured trying to load the template "%s" for the field "%s", the default template "%s" was used instead: "%s". ', $templateName, $fieldDescription->getFieldName(), $defaultTemplate, $e->getMessage()));
+            }
         }
 
         return $template;
@@ -196,6 +212,55 @@ class SonataAdminExtension extends \Twig_Extension
     }
 
     /**
+     * render a compared view element
+     *
+     * @param FieldDescriptionInterface $fieldDescription
+     * @param mixed                     $baseObject
+     * @param mixed                     $compareObject
+     *
+     * @return string
+     */
+    public function renderViewElementCompare(FieldDescriptionInterface $fieldDescription, $baseObject, $compareObject)
+    {
+        $template = $this->getTemplate($fieldDescription, 'SonataAdminBundle:CRUD:base_show_field.html.twig');
+
+        try {
+            $baseValue = $fieldDescription->getValue($baseObject);
+        } catch (NoValueException $e) {
+            $baseValue = null;
+        }
+
+        try {
+            $compareValue = $fieldDescription->getValue($compareObject);
+        } catch (NoValueException $e) {
+            $compareValue = null;
+        }
+
+        $baseValueOutput = $template->render(array(
+            'admin'             => $fieldDescription->getAdmin(),
+            'field_description' => $fieldDescription,
+            'value'             => $baseValue
+        ));
+
+        $compareValueOutput = $template->render(array(
+            'field_description' => $fieldDescription,
+            'admin'             => $fieldDescription->getAdmin(),
+            'value'             => $compareValue
+        ));
+
+        // Compare the rendered output of both objects by using the (possibly) overridden field block
+        $isDiff = $baseValueOutput !== $compareValueOutput;
+
+        return $this->output($fieldDescription, $template, array(
+            'field_description' => $fieldDescription,
+            'value'             => $baseValue,
+            'value_compare'     => $compareValue,
+            'is_diff'           => $isDiff,
+            'admin'             => $fieldDescription->getAdmin()
+        ));
+    }
+
+    /**
      * @throws \RunTimeException
      *
      * @param mixed                     $element
@@ -227,7 +292,7 @@ class SonataAdminExtension extends \Twig_Extension
             return call_user_func(array($element, $method));
         }
 
-        return PropertyAccess::getPropertyAccessor()->getValue($element, $propertyPath);
+        return PropertyAccess::createPropertyAccessor()->getValue($element, $propertyPath);
     }
 
     /**

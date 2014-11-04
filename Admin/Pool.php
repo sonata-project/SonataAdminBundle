@@ -25,6 +25,8 @@ class Pool
 
     protected $templates    = array();
 
+    protected $assets       = array();
+
     protected $title;
 
     protected $titleLogo;
@@ -32,10 +34,10 @@ class Pool
     protected $options;
 
     /**
-     * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
-     * @param string                                                    $title
-     * @param string                                                    $logoTitle
-     * @param array                                                     $options
+     * @param ContainerInterface $container
+     * @param string             $title
+     * @param string             $logoTitle
+     * @param array              $options
      */
     public function __construct(ContainerInterface $container, $title, $logoTitle, $options = array())
     {
@@ -65,6 +67,7 @@ class Pool
      * Returns whether an admin group exists or not.
      *
      * @param string $group
+     *
      * @return bool
      */
     public function hasGroup($group)
@@ -104,7 +107,9 @@ class Pool
      * Returns all admins related to the given $group
      *
      * @param string $group
+     *
      * @return array
+     *
      * @throws \InvalidArgumentException
      */
     public function getAdminsByGroup($group)
@@ -127,7 +132,7 @@ class Pool
     }
 
     /**
-     * return the admin related to the given $class
+     * Return the admin related to the given $class
      *
      * @param string $class
      *
@@ -189,9 +194,15 @@ class Pool
      * @param string $id
      *
      * @return \Sonata\AdminBundle\Admin\AdminInterface
+     *
+     * @throws \InvalidArgumentException
      */
     public function getInstance($id)
     {
+        if (!in_array($id, $this->adminServiceIds)) {
+            throw new \InvalidArgumentException(sprintf('Admin service "%s" not found in admin pool.', $id));
+        }
+
         return $this->container->get($id);
     }
 
@@ -306,16 +317,17 @@ class Pool
     }
 
     /**
-     * @param $name
+     * @param string $name
+     * @param mixed  $default
      *
      * @return mixed
      */
-    public function getOption($name)
+    public function getOption($name, $default = null)
     {
         if (isset($this->options[$name])) {
             return $this->options[$name];
         }
 
-        return null;
+        return $default;
     }
 }

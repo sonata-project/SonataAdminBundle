@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-    <file source-language="en" datatype="plaintext" original="SonataAdminBundle.en.xliff" >
+    <file source-language="en" datatype="plaintext" original="SonataAdminBundle.en.xliff">
         <body>
             <trans-unit id="sonata_administration">
                 <source>sonata_administration</source>
-                <target>Administration</target>
+                <target>Panel administracyjny</target>
             </trans-unit>
             <trans-unit id="action_delete">
                 <source>action_delete</source>
@@ -144,19 +144,19 @@
             </trans-unit>
             <trans-unit id='flash_create_success'>
                 <source>flash_create_success</source>
-                <target>Element został pomyślnie dodany.</target>
+                <target>Element "%name%" został pomyślnie dodany.</target>
             </trans-unit>
             <trans-unit id='flash_create_error'>
                 <source>flash_create_error</source>
-                <target>Pojawił się błąd przy tworzeniu nowego elementu.</target>
+                <target>Pojawił się błąd przy tworzeniu elementu "%name%".</target>
             </trans-unit>
             <trans-unit id='flash_edit_success'>
                 <source>flash_edit_success</source>
-                <target>Element został pomyślnie zaktualizowany.</target>
+                <target>Element "%name%" został pomyślnie zaktualizowany.</target>
             </trans-unit>
             <trans-unit id='flash_edit_error'>
                 <source>flash_edit_error</source>
-                <target>Pojawił się błąd przy aktualizowaniu elementu.</target>
+                <target>Pojawił się błąd przy aktualizowaniu elementu "%name%".</target>
             </trans-unit>
             <trans-unit id='flash_batch_delete_success'>
                 <source>flash_batch_delete_success</source>
@@ -168,11 +168,11 @@
             </trans-unit>
             <trans-unit id='flash_delete_error'>
                 <source>flash_delete_error</source>
-                <target>Pojawił się błąd przy usuwaniu elementu.</target>
+                <target>Pojawił się błąd przy usuwaniu elementu "%name%".</target>
             </trans-unit>
             <trans-unit id='flash_delete_success'>
                 <source>flash_delete_success</source>
-                <target>Element został pomyślnie usunięty.</target>
+                <target>Element "%name%" został pomyślnie usunięty.</target>
             </trans-unit>
             <trans-unit id="link_breadcrumb_dashboard">
                 <source>breadcrumb.link_dashboard</source>
@@ -184,7 +184,7 @@
             </trans-unit>
             <trans-unit id="message_delete_confirmation">
                 <source>message_delete_confirmation</source>
-                <target>Jesteś pewien(na), że chcesz usunąć ten element??</target>
+                <target>Jesteś pewien(na), że chcesz usunąć ten element?</target>
             </trans-unit>
             <trans-unit id="btn_delete">
                 <source>btn_delete</source>
@@ -196,11 +196,11 @@
             </trans-unit>
             <trans-unit id="message_batch_confirmation">
                 <source>message_batch_confirmation</source>
-                <target>Jesteś pewny(na), że chcesz potwierdzić tą akcję i wykonać ją dla jednego zaznaczonego elementu?|Jesteś pewny(na), że chcesz potwierdzić tą akcję i wykonać ją dla %count% zaznaczonych elementów?|Jesteś pewny(na), że chcesz potwierdzić tą akcję i wykonać ją dla %count% zaznaczonych elementów?</target>
+                <target>Jesteś pewny(na), że chcesz potwierdzić tę akcję i wykonać ją dla jednego zaznaczonego elementu?|Jesteś pewny(na), że chcesz potwierdzić tę akcję i wykonać ją dla %count% zaznaczonych elementów?|Jesteś pewny(na), że chcesz potwierdzić tę akcję i wykonać ją dla %count% zaznaczonych elementów?</target>
             </trans-unit>
             <trans-unit id="message_batch_all_confirmation">
                 <source>message_batch_all_confirmation</source>
-                <target>Jesteś pewny(na), że chcesz potwierdzić tą akcję i wykonać ją dla wszystkich elementów?</target>
+                <target>Jesteś pewny(na), że chcesz potwierdzić tę akcję i wykonać ją dla wszystkich elementów?</target>
             </trans-unit>
             <trans-unit id="btn_execute_batch_action">
                 <source>btn_execute_batch_action</source>
@@ -324,7 +324,7 @@
             </trans-unit>
             <trans-unit id="label_export_download">
                 <source>label_export_download</source>
-                <target>Eksportuj : </target>
+                <target>Eksportuj</target>
             </trans-unit>
             <trans-unit id="loading_information">
                 <source>loading_information</source>
@@ -389,6 +389,26 @@
             <trans-unit id="add_new_entry">
                 <source>add_new_entry</source>
                 <target>Dodaj nowy</target>
+            </trans-unit>
+            <trans-unit id="form_not_available">
+                <source>form_not_available</source>
+                <target>Formularz niedostępny</target>
+            </trans-unit>
+            <trans-unit id="link_actions">
+                <source>link_actions</source>
+                <target>Akcje</target>
+            </trans-unit>
+            <trans-unit id="noscript_warning">
+                <source>noscript_warning</source>
+                <target>Twoja przeglądarka ma wyłączoną obsługę JavaScript. Niektóre funkcje mogą nie działać poprawnie.</target>
+            </trans-unit>
+            <trans-unit id="message_form_group_empty">
+                <source>message_form_group_empty</source>
+                <target>Brak dostępnych pól.</target>
+            </trans-unit>
+            <trans-unit id="link_filters">
+                <source>link_filters</source>
+                <target>Filtry</target>
             </trans-unit>
         </body>
     </file>

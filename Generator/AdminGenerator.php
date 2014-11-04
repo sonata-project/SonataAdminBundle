@@ -15,13 +15,12 @@ namespace Sonata\AdminBundle\Generator;
 use Sensio\Bundle\GeneratorBundle\Generator\Generator;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
-use Sonata\AdminBundle\Generator\AbstractBcGenerator;
 
 /**
  * @author Marek Stipek <mario.dweller@seznam.cz>
  * @author Simon Cosandey <simon.cosandey@simseo.ch>
  */
-class AdminGenerator extends AbstractBcGenerator
+class AdminGenerator extends Generator
 {
     /** @var ModelManagerInterface */
     private $modelManager;
@@ -62,7 +61,7 @@ class AdminGenerator extends AbstractBcGenerator
             ));
         }
 
-        $this->renderFileBc('Admin.php.twig', $this->file, array(
+        $this->renderFile('Admin.php.twig', $this->file, array(
             'classBasename' => array_pop($parts),
             'namespace' => implode('\\', $parts),
             'fields' => $this->modelManager->getExportFields($modelClass)

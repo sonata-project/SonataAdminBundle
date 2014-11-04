@@ -1,0 +1,13 @@
+{
+  "name": "AdminLTE",
+  "homepage": "https://github.com/almasaeed2010/AdminLTE",
+  "_release": "e7c61ff4f4",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "e7c61ff4f453f7d0c572a262ec31e44b61630382"
+  },
+  "_source": "https://github.com/almasaeed2010/AdminLTE.git",
+  "_target": "master",
+  "_originalSource": "https://github.com/almasaeed2010/AdminLTE.git"
+}

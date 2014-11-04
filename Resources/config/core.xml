@@ -10,6 +10,7 @@
             <argument />
             <argument />
             <argument type="collection" />
+            <argument type="collection" />
 
             <call method="setTemplates">
                 <argument>%sonata.admin.configuration.templates%</argument>
@@ -68,6 +69,7 @@
         <!-- event -->
         <service id="sonata.admin.event.extension" class="Sonata\AdminBundle\Event\AdminEventExtension">
             <argument type="service" id="event_dispatcher" />
+            <tag name="sonata.admin.extension" global="true" />
         </service>
     </services>
 </container>

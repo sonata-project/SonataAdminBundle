@@ -23,7 +23,7 @@ class Post
         return $this->tags;
     }
 
-    public  function addTag(Tag $tag)
+    public function addTag(Tag $tag)
     {
         $tag->addPost($this);
         $this->tags[] = ($tag);

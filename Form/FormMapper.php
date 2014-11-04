@@ -56,6 +56,10 @@ class FormMapper extends BaseGroupedMapper
      */
     public function add($name, $type = null, array $options = array(), array $fieldDescriptionOptions = array())
     {
+        if ($this->apply !== null && !$this->apply) {
+            return $this;
+        }
+
         if ($name instanceof FormBuilder) {
             $fieldName = $name->getName();
         } else {
@@ -68,6 +72,12 @@ class FormMapper extends BaseGroupedMapper
 
              // fix the form name
              $fieldName = str_replace('.', '__', $fieldName);
+        }
+
+        // change `collection` to `sonata_type_native_collection` form type to
+        // avoid BC break problems
+        if ($type == 'collection') {
+            $type = 'sonata_type_native_collection';
         }
 
         $label = $fieldName;
@@ -213,5 +223,21 @@ class FormMapper extends BaseGroupedMapper
     protected function setGroups(array $groups)
     {
         $this->admin->setFormGroups($groups);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getTabs()
+    {
+        return $this->admin->getFormTabs();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function setTabs(array $tabs)
+    {
+        $this->admin->setFormTabs($tabs);
     }
 }

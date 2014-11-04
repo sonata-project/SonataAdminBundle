@@ -10,25 +10,51 @@ file that was distributed with this source code.
 #}
 
 {% block content %}
-    {% set _list_table   = block('list_table')|trim %}
-    {% set _list_filters = block('list_filters')|trim %}
+    {% set _list_table           = block('list_table')|trim %}
+    {% set _list_filters         = block('list_filters')|trim %}
+    {% set _list_filters_actions = block('list_filters_actions') %}
 
     {% block preview %}{% endblock %}
     {% block form %}{% endblock %}
     {% block list %}{% endblock %}
     {% block show %}{% endblock %}
 
-    {% if _list_table|length > 0 or _list_filters|length > 0 %}
-        <div class="row-fluid">
-            <div class="sonata-ba-list {% if _list_filters %}span10{% else %}span12{% endif %}">
-                {{ _list_table|raw }}
-            </div>
-            {% if _list_filters %}
-                <div class="sonata-ba-filter span2">
-                    {{ _list_filters|raw }}
+
+
+    {% if _list_table is not empty or _list_filters is not empty %}
+        <div class="row">
+
+            <div class="navbar navbar-default sonata-list-table">
+
+                <div class="container-fluid">
+
+                    {% if admin is defined and action is defined and action == 'list' and admin.listModes|length > 1 %}
+                        <div class="nav navbar-right btn-group">
+                            {% for mode, settings in admin.listModes %}
+                                <a href="{{ admin.generateUrl('list', app.request.query.all|merge({_list_mode: mode})) }}" class="btn btn-default navbar-btn btn-sm{% if admin.getListMode() == mode %} active{% endif %}"><i class="{{ settings.class }}"></i></a>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    {% if _list_filters_actions is not empty %}
+                        {{ _list_filters_actions|raw }}
+                    {% endif %}
+
                 </div>
-            {% endif %}
+
+            </div>
         </div>
-    {% endif %}
+
+        {% if _list_filters|trim %}
+             <div class="row">
+                 {{ _list_filters|raw }}
+             </div>
+        {% endif %}
+
+        <div class="row">
+            {{ _list_table|raw }}
+        </div>
+
+     {% endif %}
 
 {% endblock %}

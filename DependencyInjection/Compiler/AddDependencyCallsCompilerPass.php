@@ -70,11 +70,13 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
                 $resolvedGroupName = isset($attributes['group']) ? $parameterBag->resolveValue($attributes['group']) : 'default';
                 $labelCatalogue = isset($attributes['label_catalogue']) ? $attributes['label_catalogue'] : 'SonataAdminBundle';
+                $icon = isset($attributes['icon']) ? $attributes['icon'] : '<i class="fa fa-folder"></i>';
 
                 if (!isset($groupDefaults[$resolvedGroupName])) {
                     $groupDefaults[$resolvedGroupName] = array(
                         'label'           => $resolvedGroupName,
                         'label_catalogue' => $labelCatalogue,
+                        'icon' => $icon,
                         'roles' => array()
                     );
                 }
@@ -109,6 +111,10 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
                     $groups[$resolvedGroupName]['label_catalogue'] = 'SonataAdminBundle';
                 }
 
+                if (empty($group['icon'])) {
+                    $groups[$resolvedGroupName]['icon'] = $groupDefaults[$resolvedGroupName]['icon'];
+                }
+
                 if (!empty($group['item_adds'])) {
                     $groups[$resolvedGroupName]['items'] = array_merge($groups[$resolvedGroupName]['items'], $group['item_adds']);
                 }
@@ -132,8 +138,8 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
     /**
      * This method read the attribute keys and configure admin class to use the related dependency
      *
-     * @param \Symfony\Component\DependencyInjection\Definition $definition
-     * @param array                                             $attributes
+     * @param Definition $definition
+     * @param array      $attributes
      */
     public function applyConfigurationFromAttribute(Definition $definition, array $attributes)
     {
@@ -166,11 +172,11 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
     /**
      * Apply the default values required by the AdminInterface to the Admin service definition
      *
-     * @param  \Symfony\Component\DependencyInjection\ContainerBuilder $container
-     * @param  string                                                  $serviceId
-     * @param  array                                                   $attributes
+     * @param  ContainerBuilder $container
+     * @param  string           $serviceId
+     * @param  array            $attributes
      *
-     * @return \Symfony\Component\DependencyInjection\Definition
+     * @return Definition
      */
     public function applyDefaults(ContainerBuilder $container, $serviceId, array $attributes = array())
     {
@@ -181,7 +187,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
         $manager_type = $attributes['manager_type'];
 
-        $addServices = isset($settings[$serviceId]) ? $settings[$serviceId] : array();
+        $overwriteAdminConfiguration = isset($settings[$serviceId]) ? $settings[$serviceId] : array();
 
         $defaultAddServices = array(
             'model_manager'             => sprintf('sonata.admin.manager.%s', $manager_type),
@@ -195,7 +201,8 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
             'validator'                 => 'validator',
             'security_handler'          => 'sonata.admin.security.handler',
             'menu_factory'              => 'knp_menu.factory',
-            'route_builder'             => 'sonata.admin.route.path_info',
+            'route_builder'             => 'sonata.admin.route.path_info' .
+                (($manager_type == 'doctrine_phpcr') ? '_slashes' : ''),
             'label_translator_strategy' => 'sonata.admin.label.strategy.native'
         );
 
@@ -204,8 +211,8 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
         foreach ($defaultAddServices as $attr => $addServiceId) {
             $method = 'set' . BaseFieldDescription::camelize($attr);
 
-            if (isset($addServices[$attr]) || !$definition->hasMethodCall($method)) {
-                $definition->addMethodCall($method, array(new Reference(isset($addServices[$attr]) ? $addServices[$attr] : $addServiceId)));
+            if (isset($overwriteAdminConfiguration[$attr]) || !$definition->hasMethodCall($method)) {
+                $definition->addMethodCall($method, array(new Reference(isset($overwriteAdminConfiguration[$attr]) ? $overwriteAdminConfiguration[$attr] : $addServiceId)));
             }
         }
 
@@ -227,7 +234,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
         $definition->addMethodCall('setPersistFilters', array($persistFilters));
 
-        $this->fixTemplates($container, $definition);
+        $this->fixTemplates($container, $definition, isset($overwriteAdminConfiguration['templates']) ? $overwriteAdminConfiguration['templates'] : array('view' => array()));
 
         if ($container->hasParameter('sonata.admin.configuration.security.information') && !$definition->hasMethodCall('setSecurityInformation')) {
             $definition->addMethodCall('setSecurityInformation', array('%sonata.admin.configuration.security.information%'));
@@ -239,12 +246,13 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
     }
 
     /**
-     * @param  \Symfony\Component\DependencyInjection\ContainerBuilder $container
-     * @param  \Symfony\Component\DependencyInjection\Definition       $definition
+     * @param ContainerBuilder $container
+     * @param Definition       $definition
+     * @param array            $overwrittenTemplates
      *
      * @return void
      */
-    public function fixTemplates(ContainerBuilder $container, Definition $definition)
+    public function fixTemplates(ContainerBuilder $container, Definition $definition, array $overwrittenTemplates = array())
     {
         $definedTemplates = $container->getParameter('sonata.admin.configuration.templates');
 
@@ -269,29 +277,36 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
         // make sure the default templates are defined
         $definedTemplates = array_merge(array(
-            'user_block'               => 'SonataAdminBundle:Core:user_block.html.twig',
-            'layout'                   => 'SonataAdminBundle::standard_layout.html.twig',
-            'ajax'                     => 'SonataAdminBundle::ajax_layout.html.twig',
-            'dashboard'                => 'SonataAdminBundle:Core:dashboard.html.twig',
-            'list'                     => 'SonataAdminBundle:CRUD:list.html.twig',
-            'show'                     => 'SonataAdminBundle:CRUD:show.html.twig',
-            'edit'                     => 'SonataAdminBundle:CRUD:edit.html.twig',
-            'history'                  => 'SonataAdminBundle:CRUD:history.html.twig',
+            'user_block'                 => 'SonataAdminBundle:Core:user_block.html.twig',
+            'add_block'                  => 'SonataAdminBundle:Core:add_block.html.twig',
+            'layout'                     => 'SonataAdminBundle::standard_layout.html.twig',
+            'ajax'                       => 'SonataAdminBundle::ajax_layout.html.twig',
+            'dashboard'                  => 'SonataAdminBundle:Core:dashboard.html.twig',
+            'list'                       => 'SonataAdminBundle:CRUD:list.html.twig',
+            'filter'                     => 'SonataAdminBundle:Form:filter_admin_fields.html.twig',
+            'show'                       => 'SonataAdminBundle:CRUD:show.html.twig',
+            'show_compare'               => 'SonataAdminBundle:CRUD:show_compare.html.twig',
+            'edit'                       => 'SonataAdminBundle:CRUD:edit.html.twig',
+            'history'                    => 'SonataAdminBundle:CRUD:history.html.twig',
             'history_revision_timestamp' => 'SonataAdminBundle:CRUD:history_revision_timestamp.html.twig',
-            'acl'                      => 'SonataAdminBundle:CRUD:acl.html.twig',
-            'action'                   => 'SonataAdminBundle:CRUD:action.html.twig',
-            'short_object_description' => 'SonataAdminBundle:Helper:short-object-description.html.twig',
-            'preview'                  => 'SonataAdminBundle:CRUD:preview.html.twig',
-            'list_block'               => 'SonataAdminBundle:Block:block_admin_list.html.twig',
-            'delete'                   => 'SonataAdminBundle:CRUD:delete.html.twig',
-            'batch'                    => 'SonataAdminBundle:CRUD:list__batch.html.twig',
-            'select'                   => 'SonataAdminBundle:CRUD:list__select.html.twig',
-            'batch_confirmation'       => 'SonataAdminBundle:CRUD:batch_confirmation.html.twig',
-            'inner_list_row'           => 'SonataAdminBundle:CRUD:list_inner_row.html.twig',
-            'base_list_field'          => 'SonataAdminBundle:CRUD:base_list_field.html.twig',
-            'pager_links'              => 'SonataAdminBundle:Pager:links.html.twig',
-            'pager_results'            => 'SonataAdminBundle:Pager:results.html.twig',
-        ), $definedTemplates);
+            'acl'                        => 'SonataAdminBundle:CRUD:acl.html.twig',
+            'action'                     => 'SonataAdminBundle:CRUD:action.html.twig',
+            'short_object_description'   => 'SonataAdminBundle:Helper:short-object-description.html.twig',
+            'preview'                    => 'SonataAdminBundle:CRUD:preview.html.twig',
+            'list_block'                 => 'SonataAdminBundle:Block:block_admin_list.html.twig',
+            'delete'                     => 'SonataAdminBundle:CRUD:delete.html.twig',
+            'batch'                      => 'SonataAdminBundle:CRUD:list__batch.html.twig',
+            'select'                     => 'SonataAdminBundle:CRUD:list__select.html.twig',
+            'batch_confirmation'         => 'SonataAdminBundle:CRUD:batch_confirmation.html.twig',
+            'inner_list_row'             => 'SonataAdminBundle:CRUD:list_inner_row.html.twig',
+            'base_list_field'            => 'SonataAdminBundle:CRUD:base_list_field.html.twig',
+            'pager_links'                => 'SonataAdminBundle:Pager:links.html.twig',
+            'pager_results'              => 'SonataAdminBundle:Pager:results.html.twig',
+            'tab_menu_template'          => 'SonataAdminBundle:Core:tab_menu_template.html.twig',
+            'outer_list_rows_mosaic'     => 'SonataAdminBundle:CRUD:list_outer_rows_mosaic.html.twig',
+            'outer_list_rows_list'       => 'SonataAdminBundle:CRUD:list_outer_rows_list.html.twig',
+            'outer_list_rows_tree'       => 'SonataAdminBundle:CRUD:list_outer_rows_tree.html.twig',
+        ), $definedTemplates, $overwrittenTemplates['view']);
 
         $definition->addMethodCall('setTemplates', array($definedTemplates));
     }

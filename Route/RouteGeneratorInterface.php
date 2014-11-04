@@ -42,4 +42,12 @@ interface RouteGeneratorInterface
      * @return string
      */
     public function generate($name, array $parameters = array(), $absolute = false);
+
+    /**
+     * @param AdminInterface $admin
+     * @param string         $name
+     *
+     * @return bool
+     */
+    public function hasAdminRoute(AdminInterface $admin, $name);
 }

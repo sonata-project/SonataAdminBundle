@@ -77,7 +77,15 @@ class Configuration implements ConfigurationInterface
                         ->booleanNode('html5_validate')->defaultValue(true)->end()
                         ->booleanNode('confirm_exit')->defaultValue(true)->end()
                         ->booleanNode('use_select2')->defaultValue(true)->end()
+                        ->booleanNode('use_icheck')->defaultValue(true)->end()
                         ->integerNode('pager_links')->defaultValue(null)->end()
+                        ->scalarNode('form_type')->defaultValue('standard')->end()
+                        ->integerNode('dropdown_number_groups_per_colums')->defaultValue(2)->end()
+                        ->enumNode('title_mode')
+                            ->values(array('single_text', 'single_image', 'both'))
+                            ->defaultValue('both')
+                            ->cannotBeEmpty()
+                        ->end()
                     ->end()
                 ->end()
                 ->arrayNode('dashboard')
@@ -93,6 +101,7 @@ class Configuration implements ConfigurationInterface
                                 ->children()
                                     ->scalarNode('label')->end()
                                     ->scalarNode('label_catalogue')->end()
+                                    ->scalarNode('icon')->defaultValue('<i class="fa fa-folder"></i>')->end()
                                     ->arrayNode('items')
                                         ->prototype('scalar')->end()
                                     ->end()
@@ -116,27 +125,44 @@ class Configuration implements ConfigurationInterface
                                         ->prototype('variable')->defaultValue(array())->end()
                                     ->end()
                                     ->scalarNode('position')->defaultValue('right')->end()
+                                    ->scalarNode('class')->defaultValue('col-md-4')->end()
                                 ->end()
                             ->end()
                         ->end()
                     ->end()
                 ->end()
-
                 ->arrayNode('admin_services')
-                    ->useAttributeAsKey('id')
                     ->prototype('array')
                         ->children()
-                            ->scalarNode('model_manager')->end()
-                            ->scalarNode('form_contractor')->end()
-                            ->scalarNode('show_builder')->end()
-                            ->scalarNode('list_builder')->end()
-                            ->scalarNode('datagrid_builder')->end()
-                            ->scalarNode('translator')->end()
-                            ->scalarNode('configuration_pool')->end()
-                            ->scalarNode('router')->end()
-                            ->scalarNode('validator')->end()
-                            ->scalarNode('security_handler')->end()
-                            ->scalarNode('label')->end()
+                            ->scalarNode('model_manager')->defaultValue(null)->end()
+                            ->scalarNode('form_contractor')->defaultValue(null)->end()
+                            ->scalarNode('show_builder')->defaultValue(null)->end()
+                            ->scalarNode('list_builder')->defaultValue(null)->end()
+                            ->scalarNode('datagrid_builder')->defaultValue(null)->end()
+                            ->scalarNode('translator')->defaultValue(null)->end()
+                            ->scalarNode('configuration_pool')->defaultValue(null)->end()
+                            ->scalarNode('route_generator')->defaultValue(null)->end()
+                            ->scalarNode('validator')->defaultValue(null)->end()
+                            ->scalarNode('security_handler')->defaultValue(null)->end()
+                            ->scalarNode('label')->defaultValue(null)->end()
+                            ->scalarNode('menu_factory')->defaultValue(null)->end()
+                            ->scalarNode('route_builder')->defaultValue(null)->end()
+                            ->scalarNode('label_translator_strategy')->defaultValue(null)->end()
+                            ->arrayNode('templates')
+                                ->addDefaultsIfNotSet()
+                                ->children()
+                                    ->arrayNode('form')
+                                        ->prototype('scalar')->end()
+                                    ->end()
+                                    ->arrayNode('filter')
+                                        ->prototype('scalar')->end()
+                                    ->end()
+                                    ->arrayNode('view')
+                                        ->useAttributeAsKey('id')
+                                        ->prototype('scalar')->end()
+                                    ->end()
+                                ->end()
+                            ->end()
                         ->end()
                     ->end()
                 ->end()
@@ -145,12 +171,15 @@ class Configuration implements ConfigurationInterface
                     ->addDefaultsIfNotSet()
                     ->children()
                         ->scalarNode('user_block')->defaultValue('SonataAdminBundle:Core:user_block.html.twig')->cannotBeEmpty()->end()
+                        ->scalarNode('add_block')->defaultValue('SonataAdminBundle:Core:add_block.html.twig')->cannotBeEmpty()->end()
                         ->scalarNode('layout')->defaultValue('SonataAdminBundle::standard_layout.html.twig')->cannotBeEmpty()->end()
                         ->scalarNode('ajax')->defaultValue('SonataAdminBundle::ajax_layout.html.twig')->cannotBeEmpty()->end()
                         ->scalarNode('dashboard')->defaultValue('SonataAdminBundle:Core:dashboard.html.twig')->cannotBeEmpty()->end()
                         ->scalarNode('search')->defaultValue('SonataAdminBundle:Core:search.html.twig')->cannotBeEmpty()->end()
                         ->scalarNode('list')->defaultValue('SonataAdminBundle:CRUD:list.html.twig')->cannotBeEmpty()->end()
+                        ->scalarNode('filter')->defaultValue('SonataAdminBundle:Form:filter_admin_fields.html.twig')->cannotBeEmpty()->end()
                         ->scalarNode('show')->defaultValue('SonataAdminBundle:CRUD:show.html.twig')->cannotBeEmpty()->end()
+                        ->scalarNode('show_compare')->defaultValue('SonataAdminBundle:CRUD:show_compare.html.twig')->cannotBeEmpty()->end()
                         ->scalarNode('edit')->defaultValue('SonataAdminBundle:CRUD:edit.html.twig')->cannotBeEmpty()->end()
                         ->scalarNode('preview')->defaultValue('SonataAdminBundle:CRUD:preview.html.twig')->cannotBeEmpty()->end()
                         ->scalarNode('history')->defaultValue('SonataAdminBundle:CRUD:history.html.twig')->cannotBeEmpty()->end()
@@ -165,9 +194,68 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('batch')->defaultValue('SonataAdminBundle:CRUD:list__batch.html.twig')->cannotBeEmpty()->end()
                         ->scalarNode('batch_confirmation')->defaultValue('SonataAdminBundle:CRUD:batch_confirmation.html.twig')->cannotBeEmpty()->end()
                         ->scalarNode('inner_list_row')->defaultValue('SonataAdminBundle:CRUD:list_inner_row.html.twig')->cannotBeEmpty()->end()
+                        ->scalarNode('outer_list_rows_mosaic')->defaultValue('SonataAdminBundle:CRUD:list_outer_rows_mosaic.html.twig')->cannotBeEmpty()->end()
+                        ->scalarNode('outer_list_rows_list')->defaultValue('SonataAdminBundle:CRUD:list_outer_rows_list.html.twig')->cannotBeEmpty()->end()
+                        ->scalarNode('outer_list_rows_tree')->defaultValue('SonataAdminBundle:CRUD:list_outer_rows_tree.html.twig')->cannotBeEmpty()->end()
                         ->scalarNode('base_list_field')->defaultValue('SonataAdminBundle:CRUD:base_list_field.html.twig')->cannotBeEmpty()->end()
                         ->scalarNode('pager_links')->defaultValue('SonataAdminBundle:Pager:links.html.twig')->cannotBeEmpty()->end()
                         ->scalarNode('pager_results')->defaultValue('SonataAdminBundle:Pager:results.html.twig')->cannotBeEmpty()->end()
+                        ->scalarNode('tab_menu_template')->defaultValue('SonataAdminBundle:Core:tab_menu_template.html.twig')->cannotBeEmpty()->end()
+                    ->end()
+                ->end()
+
+                ->arrayNode('assets')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->arrayNode('stylesheets')
+                            ->defaultValue(array(
+                                'bundles/sonatacore/vendor/bootstrap/dist/css/bootstrap.min.css',
+                                'bundles/sonatacore/vendor/components-font-awesome/css/font-awesome.min.css',
+                                'bundles/sonatacore/vendor/ionicons/css/ionicons.min.css',
+                                'bundles/sonataadmin/vendor/AdminLTE/css/AdminLTE.css',
+
+                                'bundles/sonatacore/vendor/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css',
+
+                                'bundles/sonataadmin/vendor/jqueryui/themes/base/jquery-ui.css',
+
+                                'bundles/sonatacore/vendor/select2/select2.css',
+                                'bundles/sonatacore/vendor/select2/select2-bootstrap.css',
+
+                                'bundles/sonataadmin/vendor/x-editable/dist/bootstrap3-editable/css/bootstrap-editable.css',
+
+                                'bundles/sonataadmin/css/styles.css',
+                                'bundles/sonataadmin/css/layout.css',
+                                'bundles/sonataadmin/css/tree.css',
+                            ))
+                            ->prototype('scalar')->end()
+                        ->end()
+                        ->arrayNode('javascripts')
+                            ->defaultValue(array(
+                                'bundles/sonatacore/vendor/jquery/dist/jquery.min.js',
+                                'bundles/sonataadmin/vendor/jquery.scrollTo/jquery.scrollTo.min.js',
+
+                                'bundles/sonatacore/vendor/moment/min/moment.min.js',
+
+                                'bundles/sonatacore/vendor/bootstrap/dist/js/bootstrap.min.js',
+
+                                'bundles/sonatacore/vendor/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
+
+                                'bundles/sonataadmin/vendor/jqueryui/ui/minified/jquery-ui.min.js',
+                                'bundles/sonataadmin/vendor/jqueryui/ui/minified/i18n/jquery-ui-i18n.min.js',
+
+                                'bundles/sonataadmin/jquery/jquery.form.js',
+                                'bundles/sonataadmin/jquery/jquery.confirmExit.js',
+
+                                'bundles/sonataadmin/vendor/x-editable/dist/bootstrap3-editable/js/bootstrap-editable.min.js',
+
+                                'bundles/sonatacore/vendor/select2/select2.min.js',
+
+                                'bundles/sonataadmin/App.js',
+                                'bundles/sonataadmin/Admin.js',
+                                'bundles/sonataadmin/treeview.js',
+                            ))
+                            ->prototype('scalar')->end()
+                        ->end()
                     ->end()
                 ->end()
 

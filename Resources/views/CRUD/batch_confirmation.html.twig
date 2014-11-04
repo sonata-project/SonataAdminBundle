@@ -12,13 +12,11 @@ file that was distributed with this source code.
 {% extends base_template %}
 
 {% block actions %}
-    <div class="sonata-actions btn-group">
-        {% include 'SonataAdminBundle:Button:list_button.html.twig' %}
-        {% include 'SonataAdminBundle:Button:create_button.html.twig' %}
-    </div>
+    <li>{% include 'SonataAdminBundle:Button:list_button.html.twig' %}</li>
+    <li>{% include 'SonataAdminBundle:Button:create_button.html.twig' %}</li>
 {% endblock %}
 
-{% block side_menu %}{{ knp_menu_render(admin.sidemenu(action), {'currentClass' : 'active'}, 'list') }}{% endblock %}
+{% block tab_menu %}{{ knp_menu_render(admin.sidemenu(action), {'currentClass' : 'active', 'template': admin_pool.getTemplate('tab_menu_template')}, 'twig') }}{% endblock %}
 
 {% block content %}
     <div class="sonata-ba-delete">
@@ -46,7 +44,7 @@ file that was distributed with this source code.
                     {{ 'delete_or'|trans({}, 'SonataAdminBundle') }}
 
                     <a class="btn btn-success" href="{{ admin.generateUrl('list') }}">
-                        <i class="icon-th-list icon-white"></i> {{ 'link_action_list'|trans({}, 'SonataAdminBundle') }}
+                        <i class="glyphicon glyphicon-th-list"></i> {{ 'link_action_list'|trans({}, 'SonataAdminBundle') }}
                     </a>
                 {% endif %}
             </form>

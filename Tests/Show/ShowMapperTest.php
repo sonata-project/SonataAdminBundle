@@ -11,12 +11,18 @@
 
 namespace Sonata\AdminBundle\Tests\Show;
 
+use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
 use Sonata\AdminBundle\Builder\ShowBuilderInterface;
 use Sonata\AdminBundle\Translator\NoopLabelTranslatorStrategy;
+
+class TestAdmin extends Admin
+{
+
+}
 
 /**
  * Test for ShowMapper
@@ -59,6 +65,10 @@ class ShowMapperTest extends \PHPUnit_Framework_TestCase
         $this->admin->expects($this->any())
             ->method('getLabel')
             ->will($this->returnValue('AdminLabel'));
+
+        $this->admin->expects($this->any())
+            ->method('getShowTabs')
+            ->will($this->returnValue(array()));
 
         $this->groups = array();
 
@@ -198,7 +208,9 @@ class ShowMapperTest extends \PHPUnit_Framework_TestCase
                 'fields' => array('fooName1'=>'fooName1', 'fooName2'=>'fooName2', 'fooName3'=>'fooName3', 'fooName4'=>'fooName4'),
                 'description' => false,
                 'translation_domain' => null,
-       )), $this->admin->getShowGroups());
+                'class' => false,
+                'name' => 'Group1'
+            )), $this->admin->getShowGroups());
 
         $this->showMapper->reorder(array('fooName3', 'fooName2', 'fooName1', 'fooName4'));
 
@@ -206,13 +218,15 @@ class ShowMapperTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(print_r(array(
             'Group1' =>array(
                 'collapsed' => false,
-                'fields' => array('fooName3'=>'fooName3', 'fooName2'=>'fooName2', 'fooName1'=>'fooName1', 'fooName4'=>'fooName4'),
+                'class' => false,
                 'description' => false,
                 'translation_domain' => null,
-       )), true), print_r($this->admin->getShowGroups(), true));
+                'name' => 'Group1',
+                'fields' => array('fooName3'=>'fooName3', 'fooName2'=>'fooName2', 'fooName1'=>'fooName1', 'fooName4'=>'fooName4'),
+            )), true), print_r($this->admin->getShowGroups(), true));
     }
 
-    private function getFieldDescriptionMock($name=null, $label=null)
+    private function getFieldDescriptionMock($name = null, $label = null)
     {
         $fieldDescription = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\BaseFieldDescription');
 

@@ -3,7 +3,7 @@
 /*
  * This file is part of the Sonata package.
  *
- * (c) 2010-2011 Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -53,8 +53,8 @@ use Symfony\Component\DependencyInjection\Container;
  *
  * Filter Field options :
  *   - options (o): options given to the Filter object
- *   - field_options (o): options given to the filter field object
- *   - field_type (o): options given to the filter field object
+ *   - field_type (o): the widget class to use to render the field
+ *   - field_options (o): the options to give to the widget
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
@@ -90,8 +90,8 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
      */
     protected $fieldMapping;
 
-    /*
-     * var array the ORM parent mapping association
+    /**
+     * @var array the ORM parent mapping association
      */
     protected $parentAssociationMappings;
 
@@ -335,7 +335,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
             $getters[] = $this->getOption('code');
         }
         // parameters for the method given in the code option
-        if($this->getOption('parameters')){
+        if ($this->getOption('parameters')) {
             $parameters = $this->getOption('parameters');
         }
         $getters[] = 'get' . $camelizedFieldName;
@@ -343,7 +343,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
 
         foreach ($getters as $getter) {
             if (method_exists($object, $getter)) {
-                return call_user_func_array(array($object, $getter),$parameters);
+                return call_user_func_array(array($object, $getter), $parameters);
             }
         }
 

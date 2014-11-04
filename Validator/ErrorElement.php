@@ -160,7 +160,7 @@ class ErrorElement
             return $this->subject;
         }
 
-        $propertyAccessor = PropertyAccess::getPropertyAccessor();
+        $propertyAccessor = PropertyAccess::createPropertyAccessor();
         return $propertyAccessor->getValue($this->subject, $this->getCurrentPropertyPath());
     }
 
