@@ -157,13 +157,10 @@ class SonataAdminExtension extends \Twig_Extension
             throw new \RuntimeException('remove the loop requirement');
         }
 
-        $value = null;
         try {
             $value = $fieldDescription->getValue($object);
         } catch (NoValueException $e) {
-            if ($fieldDescription->getAssociationAdmin()) {
-                $value = $fieldDescription->getAssociationAdmin()->getNewInstance();
-            }
+            $value = null;
         }
 
         return $value;
