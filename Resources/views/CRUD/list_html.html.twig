@@ -1,0 +1,20 @@
+{% extends admin.getTemplate('base_list_field') %}
+
+{% block field %}
+    {%- if value is empty -%}
+        &nbsp;
+    {% else %}
+        {%- if field_description.options.truncate is defined -%}
+            {% set truncate = field_description.options.truncate %}
+            {% set length = truncate.length|default(30) %}
+            {% set preserve = truncate.preserve|default(false) %}
+            {% set separator = truncate.separator|default('...') %}
+            {{ value|striptags|truncate(length, preserve, separator)|raw }}
+        {%- else -%}
+            {%- if field_description.options.strip is defined -%}
+                {% set value = value|striptags %}
+            {%- endif -%}
+            {{ value|raw }}
+        {% endif %}
+    {% endif %}
+{% endblock %}
