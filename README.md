@@ -5,7 +5,8 @@ SonataAdminBundle - The missing Symfony2 Admin Generator
 
 The online documentation of the bundle is in http://sonata-project.org/bundles/admin
 
-The demo website can be found in http://demo.sonata-project.org/admin/dashboard (admin as user and password)
+The demo website can be found in http://demo.sonata-project.org/admin/dashboard    
+**Username and password is:** ```admin```
 
 For contribution to the documentation you can find it on [Resources/doc](https://github.com/sonata-project/SonataAdminBundle/tree/master/Resources/doc).
 
