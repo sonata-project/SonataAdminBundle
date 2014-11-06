@@ -428,8 +428,8 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
         $validator = $this->getMock('Symfony\Component\Validator\ValidatorInterface');
         $validator
             ->expects($this->once())
-            ->method('validateProperty')
-            ->with($bar, 'enabled')
+            ->method('validate')
+            ->with($bar)
             ->will($this->returnValue($violations))
         ;
 
