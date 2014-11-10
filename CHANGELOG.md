@@ -1,6 +1,9 @@
 CHANGELOG
 =========
 
+### 2014-11-04
+ * [BC BREAK] Inline edition now validates the whole object.
+
 ### 2014-09-21
  * added new form type ``sonata_choice_field_mask``
 

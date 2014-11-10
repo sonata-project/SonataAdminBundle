@@ -272,7 +272,7 @@ class HelperController
 
         $propertyAccessor->setValue($object, $propertyPath, '' !== $value ? $value : null);
 
-        $violations = $this->validator->validateProperty($object, $field);
+        $violations = $this->validator->validate($object);
 
         if (count($violations)) {
             $messages = array();
