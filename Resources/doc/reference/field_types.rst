@@ -19,6 +19,7 @@ There are many field types that can be used in the list action or show action :
 * **percent**: display a percentage
 * **choice**: uses the given value as index for the ``choices`` array and displays (and optionally translates) the matching value
 * **url**: display a link
+* **html**: display (and optionally truncate or strip tags from) raw html
 
 Theses types accept an ``editable`` parameter to edit the value from within the list action.
 This is currently limited to scalar types (text, integer, url...).
@@ -115,3 +116,51 @@ Parameters:
 .. note::
 
     Do not use ``url`` type with ``addIdentifier`` method, because it will create invalid nested urls.
+
+Html
+^^^^
+
+Display (and optionally truncate or strip tags from) raw html.
+
+
+Parameters:
+
+* **strip**: Strip HTML and PHP tags from a string
+* **truncate**: Truncate a string to ``length`` characters beginning from start. Implies strip. Beware of html entities. Make sure to configure your html editor to disable entities if you want to use truncate. For instance, use `config.entities <http://docs.ckeditor.com/#!/api/CKEDITOR.config-cfg-entities>`_ for ckeditor
+* **truncate.length**: The length to truncate the string to (default ``30``)
+* **truncate.preserve**: Preserve whole words (default ``false``)
+* **truncate.separator**: Separator to be appended to the trimmed string (default ``...``)
+
+.. code-block:: php
+
+    // Output for value `<p><strong>Creating a Template for the Field</strong> and form</p>`:
+    // `<p><strong>Creating a Template for the Field</strong> and form</p>` (no escaping is done)
+    $listMapper->add('content', 'html');
+
+    // Output for value `<p><strong>Creating a Template for the Field</strong> and form</p>`:
+    // `Creating a Template for the Fi...`
+    $listMapper->add('content', 'html', array('strip' => true));
+
+    // Output for value `<p><strong>Creating a Template for the Field</strong> and form</p>`:
+    // `Créer un Template pour...`
+    $listMapper->add('content', 'html', array('truncate' => true));
+
+    // Output for value `<p><strong>Creating a Template for the Field</strong> and form</p>`:
+    // `Creating a...`
+    $listMapper->add('content', 'html', array('truncate' => array('length' => 10)));
+
+    // Output for value `<p><strong>Creating a Template for the Field</strong> and form</p>`:
+    // `Creating a Template for the Field...`
+    $listMapper->add('content', 'html', array('truncate' => array('preserve' => true)));
+
+    // Output for value `<p><strong>Creating a Template for the Field</strong> and form</p>`:
+    // `Creating a Template for the Fi, etc.`
+    $listMapper->add('content', 'html', array('truncate' => array('separator' => ', etc.')));
+
+    // Output for value `<p><strong>Creating a Template for the Field</strong> and form</p>`:
+    // `Creating a Template for***`
+    $listMapper->add('content', 'html', array('truncate' => array(
+            'length' => 20,
+            'preserve' => true,
+            'separator' => '***'
+        )));
