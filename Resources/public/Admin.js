@@ -64,9 +64,7 @@ var Admin = {
         });
         jQuery('.modal-body', modal).css({
             width:    'auto',
-            height:   '90%',
-            padding: 5,
-            overflow: 'scroll'
+            height:   '90%'
         });
     },
     setup_select2: function(subject) {
