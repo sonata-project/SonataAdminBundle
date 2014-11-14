@@ -6,9 +6,9 @@ This is a full working example of how to implement a sortable feature in your So
 Background
 ----------
 
-`A sortable behavior <http://sonata-project.org/bundles/doctrine-orm-admin/master/doc/reference/form_field_definition.html#advanced-usage-one-to-many>`_ is already available for one-to-many relationships.
-However there is no packaged solution to have some up and down arrows to sort
-your records such as showed in the following screen.
+A sortable behavior is already available for one-to-many relationships (http://sonata-project.org/bundles/doctrine-orm-admin/master/doc/reference/form_field_definition.html#advanced-usage-one-to-many). 
+However there is no packaged solution to have some up and down arrows to sort 
+your records such as showed in the following screen
 
 .. figure:: ../images/admin_sortable_listing.png
    :align: center
@@ -20,18 +20,16 @@ Pre-requisites
 --------------
 
 - you already have SonataAdmin and DoctrineORM up and running
-- you already have an Entity class for which you want to implement a sortable feature.
-  For the purpose of the example we are going to call it ``Client``.
+- you already have an Entity class for which you want to implement a sortable feature. For the purpose of the example we are going to call it ``Client``.
 - you already have an Admin set up, in this example we will call it ``ClientAdmin``
 - you already have gedmo/doctrine-extensions bundle in your project (check stof/doctrine-extensions-bundle
-  or knplabs/doctrine-behaviors for easier integration in your project) with the sortable
-  feature enabled
+for easier integration in your project) with the sortable feature enabled
 - you already have pixassociates/sortable-behavior-bundle bundle in your project
 
 The recipe
 ----------
 
-First of are going to add a position field in our ``Client`` entity.
+First of all we are going to add a position field in our ``Client`` entity.
 
 .. code-block:: php
 
@@ -41,10 +39,32 @@ First of are going to add a position field in our ``Client`` entity.
      */
     private $position;
 
+Then we need to inject the Sortable listener. If you only have the Gedmo bundle enabled, 
+add the listener to your config.yml
+
+.. code-block:: yaml
+
+	services:
+    	    gedmo.listener.sortable:
+                class: Gedmo\Sortable\SortableListener
+            tags:
+                - { name: doctrine.event_subscriber, connection: default }
+            calls:
+                - [ setAnnotationReader, [ @annotation_reader ] ]
+            
+If you have the ``stof/doctrine-extensions-bundle``, you only need to enable the sortable 
+feature in your config.yml such as
+
+.. code-block:: yaml
+
+	stof_doctrine_extensions:
+	    orm:
+                default:
+                    sortable:      true
 
 
 In ``ClientAdmin`` our we are going to add in the ``configureListFields`` method
-a custom action and use the default twig template provided in the PixSortableBehaviorBundle
+a custom action and use the default twig template provided in the pixSortableBehavioBundle
 
 .. code-block:: php
 
@@ -68,7 +88,7 @@ In order to add new routes for these actions we are also adding the following me
 
 
 
-Now you can update your ``admin.yml`` to use the handler provider by the PixSortableBehaviorBundle
+Now you can update your ``services.yml`` to use the handler provider by the pixSortableBehaviorBundle
 
 .. code-block:: yaml
 
@@ -85,10 +105,10 @@ Now you can update your ``admin.yml`` to use the handler provider by the PixSort
 	            - [ setTranslationDomain, [AcmeDemoBundle]]
 
 
-Last tricky part, in order to get the last position available in our twig template
-we inject the service container in our admin class, define a public variable ``$last_position``
-and retrieve the value from our service in the ``configureListFields`` method. We
-also define the sort by field to be position
+Last tricky part, in order to get the last position available in our twig template 
+we inject the service container in our admin class, define a public variable ``$last_position`` 
+and retrieve the value from our service in the ``configureListFields`` method. We 
+also define the sort by field to be position 
 
 .. code-block:: php
 
@@ -129,7 +149,7 @@ also define the sort by field to be position
             ));
     }
 
-And in  the admin.yml add the following call
+And in  the services.yml add the following call
 
 .. code-block:: yaml
     
