@@ -331,6 +331,7 @@ class SonataAdminExtension extends \Twig_Extension
             'currency'   => 'number',
             'percent'    => 'number',
             'url'        => 'url',
+            'choice'     => 'select',
         );
 
         return isset($mapping[$type]) ? $mapping[$type] : false;

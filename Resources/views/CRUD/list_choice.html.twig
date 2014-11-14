@@ -11,6 +11,24 @@ file that was distributed with this source code.
 
 {% extends admin.getTemplate('base_list_field') %}
 
+{% set isEditable = ( field_description.options.multiple is not defined or not field_description.options.multiple ) and field_description.options.choices is defined  and field_description.options.editable is defined and field_description.options.editable and admin.isGranted('EDIT', object) %}
+{% set xEditableType = field_description.type|sonata_xeditable_type %}
+
+{% if isEditable and xEditableType %}
+    {% if field_description.options.empty_data is defined or field_description.options.empty_value is defined %}
+    {% set  editableEmpty = "{value:'" ~ ( field_description.options.empty_data is defined ? field_description.options.empty_data|e : '' ) ~ "', text:'" ~ ( field_description.options.empty_value is defined ? field_description.options.empty_value|e : '' ) ~ "'}," %}
+    {% else %}
+    {% set  editableEmpty = '' %}
+    {% endif %}
+    {% block field_span_attributes %}
+        {% spaceless %}
+            {{ parent() }}
+            data-source="[{{ editableEmpty|raw }}{% for key,data in field_description.options.choices %}{ value: '{{ key }}', text: '{{ data }}' }{{ loop.last ? '': ',' }}{% endfor %}]"
+        {% endspaceless %}
+    {% endblock %}
+{% endif %}
+
+
 {% block field %}
 {% spaceless %}
     {% if field_description.options.choices  is defined %}
