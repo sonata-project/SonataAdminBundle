@@ -68,8 +68,8 @@ abstract class AbstractSonataAdminExtension extends Extension
                         'bigint'       => 'SonataAdminBundle:CRUD:base_show_field.html.twig',
                         'integer'      => 'SonataAdminBundle:CRUD:base_show_field.html.twig',
                         'decimal'      => 'SonataAdminBundle:CRUD:base_show_field.html.twig',
-                        'currency'     => 'SonataAdminBundle:CRUD:base_currency.html.twig',
-                        'percent'      => 'SonataAdminBundle:CRUD:base_percent.html.twig',
+                        'currency'     => 'SonataAdminBundle:CRUD:show_currency.html.twig',
+                        'percent'      => 'SonataAdminBundle:CRUD:show_percent.html.twig',
                         'choice'       => 'SonataAdminBundle:CRUD:show_choice.html.twig',
                         'url'          => 'SonataAdminBundle:CRUD:show_url.html.twig',
                     )
