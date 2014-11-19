@@ -159,6 +159,10 @@ abstract class BaseGroupedMapper extends BaseMapper
     {
         if ($this->currentGroup !== null) {
             $this->currentGroup = null;
+            $tabs = $this->getTabs();
+            if (isset($tabs[$this->currentTab]['tabwith'])) {
+                $this->currentTab = null;
+            }
         } elseif ($this->currentTab !== null) {
             $this->currentTab = null;
         } else {
