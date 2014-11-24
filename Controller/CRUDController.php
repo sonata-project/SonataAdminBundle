@@ -559,8 +559,8 @@ class CRUDController extends Controller
 
         // execute the action, batchActionXxxxx
         $finalAction = sprintf('batchAction%s', ucfirst($camelizedAction));
-        if (!method_exists($this, $finalAction)) {
-            throw new \RuntimeException(sprintf('A `%s::%s` method must be created', get_class($this), $finalAction));
+        if (!is_callable([$this, $finalAction])) {
+            throw new \RuntimeException(sprintf('A `%s::%s` method must be callable', get_class($this), $finalAction));
         }
 
         $query = $datagrid->getQuery();

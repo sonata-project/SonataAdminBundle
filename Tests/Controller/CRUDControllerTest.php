@@ -2663,7 +2663,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
     public function testBatchActionMethodNotExist()
     {
-        $this->setExpectedException('RuntimeException', 'A `Sonata\AdminBundle\Controller\CRUDController::batchActionFoo` method must be created');
+        $this->setExpectedException('RuntimeException', 'A `Sonata\AdminBundle\Controller\CRUDController::batchActionFoo` method must be callable');
 
         $batchActions = array('foo'=>array('label'=>'Foo Bar', 'ask_confirmation' => false));
 
