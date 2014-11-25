@@ -83,7 +83,7 @@ class HelperController
 
         $subject = $admin->getModelManager()->find($admin->getClass(), $objectId);
         if ($objectId && !$subject) {
-            throw new NotFoundHttpException;
+            throw new NotFoundHttpException();
         }
 
         if (!$subject) {
@@ -181,7 +181,7 @@ class HelperController
             $admin->setUniqid($uniqid);
         }
 
-        if (!$objectId){
+        if (!$objectId) {
             $objectId = null;
         }
 
@@ -209,7 +209,7 @@ class HelperController
     }
 
     /**
-     * @param  \Symfony\Component\HttpFoundation\Request $request
+     * @param \Symfony\Component\HttpFoundation\Request $request
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -311,8 +311,7 @@ class HelperController
         $admin = $this->pool->getInstance($request->get('code'));
         $admin->setRequest($request);
 
-        // check user permission
-        if (false === $admin->isGranted('LIST')) {
+        if (false === $admin->isGranted('CREATE') && false === $admin->isGranted('EDIT')) {
             throw new AccessDeniedException();
         }
 
@@ -335,11 +334,17 @@ class HelperController
 
         $searchText = $request->get('q');
 
+        $targetAdmin = $fieldDescription->getAssociationAdmin();
+
+        // check user permission
+        if (false === $targetAdmin->isGranted('LIST')) {
+            throw new AccessDeniedException();
+        }
+
         if (mb_strlen($searchText, 'UTF-8') < $minimumInputLength) {
             return new JsonResponse(array('status' => 'KO', 'message' => 'Too short search string.'), 403);
         }
 
-        $targetAdmin = $fieldDescription->getAssociationAdmin();
         $datagrid = $targetAdmin->getDatagrid();
 
         if ($callback !== null) {
