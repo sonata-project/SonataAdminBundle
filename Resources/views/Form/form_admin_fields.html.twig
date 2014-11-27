@@ -344,7 +344,7 @@ file that was distributed with this source code.
                     }
                 },
                 formatResult: function (item) {
-                    return {% block sonata_type_model_autocomplete_dropdown_item_format %}'<div class="sonata-autocomplete-dropdown-item">'+item.label+'</div>'{% endblock %};// format of one dropdown item
+                    return {% block sonata_type_model_autocomplete_dropdown_item_format %}'<span class="sonata-autocomplete-dropdown-item">'+item.label+'</span>'{% endblock %};// format of one dropdown item
                 },
                 formatSelection: function (item) {
                     return {% block sonata_type_model_autocomplete_selection_format %}item.label{% endblock %};// format selected item '<b>'+item.label+'</b>';
