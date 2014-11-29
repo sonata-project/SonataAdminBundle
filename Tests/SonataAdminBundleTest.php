@@ -28,7 +28,7 @@ class SonataAdminBundleTest extends \PHPUnit_Framework_TestCase
 {
     public function testBuild()
     {
-        $containerBuilder = $this->getMock('Symfony\Component\DependencyInjection\ContainerBuilder');
+        $containerBuilder = $this->getMock('Symfony\Component\DependencyInjection\ContainerBuilder', array('addCompilerPass'));
 
         $containerBuilder->expects($this->exactly(3))
             ->method('addCompilerPass')
