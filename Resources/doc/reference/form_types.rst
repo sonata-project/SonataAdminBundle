@@ -45,7 +45,7 @@ where the options go when you want to use them.
 
 The available options are:
 
-property
+associated_property
   defaults to null. You can set this to a `Symfony PropertyPath`_ compatible
   string to designate which field to use for the choice values.
 
