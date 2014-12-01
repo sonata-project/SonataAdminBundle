@@ -687,10 +687,32 @@ return an iterable collection of users.
         $userManager = $container->get('fos_user.user_manager');
 
         // Display only kevin and anne
-        $kevin = $userManager->findUserByUsername('kevin');
-        $anne = $userManager->findUserByUsername('anne');
+        $users[] = $userManager->findUserByUsername('kevin');
+        $users[] = $userManager->findUserByUsername('anne');
 
-        return array($kevin, $anne);
+        return new \ArrayIterator($users);
+    }
+
+Role list customization
+~~~~~~~~~~~~~~~~~~~~~~~
+
+By default, the ACL editor allows to set permissions for all roles.
+
+To customize displayed role override
+`Sonata\AdminBundle\Controller\CRUDController::getAclRoles()`. This method must
+return an iterable collection of roles.
+
+.. code-block:: php
+
+    /**
+     * {@InheritDoc}
+     */
+    protected function getAclRoles()
+    {
+        // Display only ROLE_BAPTISTE and ROLE_HELENE
+        $roles = array('ROLE_BAPTISTE', 'ROLE_HELENE');
+
+        return new \ArrayIterator($roles);
     }
 
 Custom user manager
