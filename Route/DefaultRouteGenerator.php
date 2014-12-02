@@ -125,8 +125,8 @@ class DefaultRouteGenerator implements RouteGeneratorInterface
         }
 
         // someone provide the fullname
-        if (array_key_exists($name, $this->caches)) {
-            return $name;
+        if ($code = array_search($name, $this->caches)) {
+            return $code;
         }
 
         // someone provide a code, so it is a child
