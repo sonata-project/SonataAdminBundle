@@ -2,6 +2,7 @@ build
 phpunit.xml
 Resources/doc/_build/*
 nbproject
+.idea
 coverage
 composer.lock
 /vendor
