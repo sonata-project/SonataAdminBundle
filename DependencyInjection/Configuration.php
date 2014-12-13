@@ -224,6 +224,7 @@ class Configuration implements ConfigurationInterface
                                 'bundles/sonataadmin/vendor/x-editable/dist/bootstrap3-editable/css/bootstrap-editable.css',
 
                                 'bundles/sonataadmin/css/styles.css',
+                                'bundles/sonataadmin/css/adminlte.css',
                                 'bundles/sonataadmin/css/layout.css',
                                 'bundles/sonataadmin/css/tree.css',
                             ))
