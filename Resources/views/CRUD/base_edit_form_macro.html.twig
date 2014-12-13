@@ -7,6 +7,22 @@
 
     {% for code in groups %}
         {% set form_group = admin.formgroups[code] %}
+<<<<<<< HEAD
+=======
+        <div class="col-md-12 {{ form_group.class }}">
+            <div class="box box-success">
+                <div class="box-header">
+                    <h4 class="box-title">
+                        {{ admin.trans(form_group.name, {}, form_group.translation_domain) }}
+                    </h4>
+                </div>
+                {#<div class="box{% if loop.first %} in{% endif %}" id="{{ admin.uniqid }}_{{ loop.index }}">#}
+                <div class="box-body">
+                    <div class="sonata-ba-collapsed-fields">
+                        {% if form_group.description != false %}
+                            <p>{{ form_group.description|raw }}</p>
+                        {% endif %}
+>>>>>>> Changed tab styles to use the grid
 
         {# Manage calculation to determinate if a new row is necessary #}
         {% set group_class = form_group.class | default('col-md-12') %}
