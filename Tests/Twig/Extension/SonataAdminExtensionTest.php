@@ -51,6 +51,11 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
     private $admin;
 
     /**
+     * @var AdminInterface
+     */
+    private $adminBar;
+
+    /**
      * @var FieldDescriptionInterface
      */
     private $fieldDescription;
@@ -138,14 +143,26 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
                 return $id;
             }));
 
+        $this->adminBar = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $this->adminBar->expects($this->any())
+            ->method('isGranted')
+            ->will($this->returnValue(true));
+        $this->adminBar->expects($this->any())
+            ->method('getNormalizedIdentifier')
+            ->with($this->equalTo($this->object))
+            ->will($this->returnValue(12345));
+
         // for php5.3 BC
-        $admin = $this->admin;
+        $admin    = $this->admin;
+        $adminBar = $this->adminBar;
 
         $container->expects($this->any())
             ->method('get')
-            ->will($this->returnCallback(function ($id) use ($admin) {
+            ->will($this->returnCallback(function ($id) use ($admin, $adminBar) {
                 if ($id == 'sonata_admin_foo_service') {
                     return $admin;
+                } elseif ($id == 'sonata_admin_bar_service') {
+                    return $adminBar;
                 }
 
                 return null;
@@ -685,5 +702,43 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(1234567));
 
         $this->assertEquals(1234567, $this->twigExtension->getUrlsafeIdentifier($entity));
+    }
+
+    public function testGetUrlsafeIdentifier_GivenAdmin_Foo()
+    {
+        $entity = new \stdClass();
+
+        // set admin to pool
+        $this->pool->setAdminServiceIds(array('sonata_admin_foo_service', 'sonata_admin_bar_service'));
+        $this->pool->setAdminClasses(array('stdClass'=> array('sonata_admin_foo_service', 'sonata_admin_bar_service')));
+
+        $this->admin->expects($this->once())
+            ->method('getUrlsafeIdentifier')
+            ->with($this->equalTo($entity))
+            ->will($this->returnValue(1234567));
+
+        $this->adminBar->expects($this->never())
+            ->method('getUrlsafeIdentifier');
+
+        $this->assertEquals(1234567, $this->twigExtension->getUrlsafeIdentifier($entity, $this->admin));
+    }
+
+    public function testGetUrlsafeIdentifier_GivenAdmin_Bar()
+    {
+        $entity = new \stdClass();
+
+        // set admin to pool
+        $this->pool->setAdminServiceIds(array('sonata_admin_foo_service', 'sonata_admin_bar_service'));
+        $this->pool->setAdminClasses(array('stdClass'=> array('sonata_admin_foo_service', 'sonata_admin_bar_service')));
+
+        $this->admin->expects($this->never())
+            ->method('getUrlsafeIdentifier');
+
+        $this->adminBar->expects($this->once())
+            ->method('getUrlsafeIdentifier')
+            ->with($this->equalTo($entity))
+            ->will($this->returnValue(1234567));
+
+        $this->assertEquals(1234567, $this->twigExtension->getUrlsafeIdentifier($entity, $this->adminBar));
     }
 }
