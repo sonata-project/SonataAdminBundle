@@ -12,6 +12,7 @@
 namespace Sonata\AdminBundle\Twig\Extension;
 
 use Doctrine\Common\Util\ClassUtils;
+use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Exception\NoValueException;
 use Sonata\AdminBundle\Admin\Pool;
@@ -298,15 +299,18 @@ class SonataAdminExtension extends \Twig_Extension
     /**
      * Get the identifiers as a string that is save to use in an url.
      *
-     * @param object $model
+     * @param object         $model
+     * @param AdminInterface $admin
      *
      * @return string string representation of the id that is save to use in an url
      */
-    public function getUrlsafeIdentifier($model)
+    public function getUrlsafeIdentifier($model, AdminInterface $admin = null)
     {
-        $admin = $this->pool->getAdminByClass(
-            ClassUtils::getClass($model)
-        );
+        if (is_null($admin)) {
+            $admin = $this->pool->getAdminByClass(
+                ClassUtils::getClass($model)
+            );
+        }
 
         return $admin->getUrlsafeIdentifier($model);
     }
