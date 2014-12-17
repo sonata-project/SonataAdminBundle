@@ -974,6 +974,12 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
                     $this->urlize($matches[5], '-')
                 );
             }
+        }elseif ($this->isChild()) { // the admin class is a child, prefix it with the parent route name
+            preg_match(self::CLASS_REGEX, $this->class, $matches);
+            $this->baseRoutePattern = sprintf('%s/{id}/%s',
+                $this->getParent()->getBaseRoutePattern(),
+                $this->urlize($matches[5], '-')
+            );
         }
 
         return $this->baseRoutePattern;
@@ -1008,6 +1014,12 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
                     $this->urlize($matches[5])
                 );
             }
+        }elseif ($this->isChild()) { // the admin class is a child, prefix it with the parent route name
+            preg_match(self::CLASS_REGEX, $this->class, $matches);
+            $this->baseRouteName = sprintf('%s_%s',
+                $this->getParent()->getBaseRouteName(),
+                $this->urlize($matches[5])
+            );
         }
 
         return $this->baseRouteName;
