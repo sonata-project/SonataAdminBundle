@@ -59,9 +59,9 @@ This template can be customized to match your needs. You should only extends the
 
                             {% block sonata_mosaic_description %}
                                 {% if admin.isGranted('EDIT', object) and admin.hasRoute('edit') %}
-                                    <a class="mosaic-inner-link" href="{{ admin.generateUrl('edit', {'id' : object|sonata_urlsafeid }) }}">{{ meta.title|truncate(40) }}</a>
+                                    <a class="mosaic-inner-link" href="{{ admin.generateUrl('edit', {'id' : object|sonata_urlsafeid(admin) }) }}">{{ meta.title|truncate(40) }}</a>
                                 {% elseif admin.isGranted('SHOW', object) and admin.hasRoute('show') %}
-                                    <a class="mosaic-inner-link" href="{{ admin.generateUrl('show', {'id' : object|sonata_urlsafeid }) }}">{{ meta.title|truncate(40) }}</a>
+                                    <a class="mosaic-inner-link" href="{{ admin.generateUrl('show', {'id' : object|sonata_urlsafeid(admin) }) }}">{{ meta.title|truncate(40) }}</a>
                                 {% else %}
                                     {{ meta.title|truncate(40) }}
                                 {% endif %}
