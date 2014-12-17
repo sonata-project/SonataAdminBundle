@@ -194,10 +194,10 @@ class GenerateAdminCommandTest extends \PHPUnit_Framework_TestCase
 
         $command = $this->application->find('sonata:admin:generate');
 
-        $dialog = $this->getMock('Sensio\Bundle\GeneratorBundle\Command\Helper\DialogHelper', array('askConfirmation', 'askAndValidate'));
+        $dialog = $this->getMock('Sensio\Bundle\GeneratorBundle\Command\Helper\QuestionHelper', array('askConfirmation', 'askAndValidate'));
 
         $dialog->expects($this->any())
-            ->method('askConfirmation')
+            ->method('ask')
             ->will($this->returnCallback(function(OutputInterface $output, $question, $default) {
                 $questionClean = substr($question, 6, strpos($question, '</info>')-6);
 
@@ -215,7 +215,7 @@ class GenerateAdminCommandTest extends \PHPUnit_Framework_TestCase
             }));
 
         $dialog->expects($this->any())
-            ->method('askAndValidate')
+            ->method('ask')
             ->will($this->returnCallback(function(OutputInterface $output, $question, $validator, $attempts = false, $default = null) use ($modelEntity) {
 
                 $questionClean = substr($question, 6, strpos($question, '</info>')-6);
@@ -253,7 +253,7 @@ class GenerateAdminCommandTest extends \PHPUnit_Framework_TestCase
                 return $default;
             }));
 
-        $command->getHelperSet()->set($dialog, 'dialog');
+        $command->getHelperSet()->set($dialog, 'question');
 
         $commandTester = new CommandTester($command);
         $commandTester->execute(array(
