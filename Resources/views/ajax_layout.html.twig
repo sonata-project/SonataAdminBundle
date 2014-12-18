@@ -22,6 +22,7 @@ file that was distributed with this source code.
 
 
     {% if _list_table is not empty or _list_filters is not empty %}
+    <div class="container-fluid">
         <div class="row">
 
             <div class="navbar navbar-default sonata-list-table">
@@ -54,7 +55,7 @@ file that was distributed with this source code.
         <div class="row">
             {{ _list_table|raw }}
         </div>
-
+    </div>
      {% endif %}
 
 {% endblock %}
