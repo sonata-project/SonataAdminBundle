@@ -132,6 +132,15 @@ class BaseFieldDescriptionTest extends \PHPUnit_Framework_TestCase
         $returnValue2 = $arg1 + $arg2;
         $mock2->expects($this->any())->method('getWithTwoParameters')->with($this->equalTo($arg1),$this->equalTo($arg2))->will($this->returnValue($returnValue2));
         $this->assertEquals(42, $description2->getFieldValue($mock2, 'fake'));
+
+        /**
+         * Test with underscored attribute name
+         */
+        $description3  = new FieldDescription();
+        $mock3         = $this->getMock('stdClass', array('getFake'));
+
+        $mock3->expects($this->once())->method('getFake')->will($this->returnValue(42));
+        $this->assertEquals(42, $description3->getFieldValue($mock3, '_fake'));
     }
 
     /**
