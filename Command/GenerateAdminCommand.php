@@ -359,7 +359,7 @@ class GenerateAdminCommand extends ContainerAwareCommand
     }
 
     /**
-     * @return DialogHelper
+     * @return QuestionHelper
      */
     private function getQuestionHelper()
     {
