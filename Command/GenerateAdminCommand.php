@@ -282,9 +282,7 @@ class GenerateAdminCommand extends ContainerAwareCommand
         $questionHelper = $this->getQuestionHelper();
         $question = new Question($questionHelper->getQuestion($question, $default), $default);
 
-        $question->setValidator(
-            explode('::', $validator)
-        );
+        $question->setValidator($validator);
         return $questionHelper->ask($input, $output, $question);
     }
 
