@@ -169,7 +169,7 @@ class GenerateAdminCommand extends ContainerAwareCommand
         $question = new ConfirmationQuestion($questionHelper->getQuestion(
             'Do you want to generate a controller',
             'no', '?'
-        ), true);
+        ), false);
 
         if ($questionHelper->ask($input, $output, $question)) {
             $controllerClassBasename = $this->askAndValidate(
