@@ -221,7 +221,9 @@ file that was distributed with this source code.
                                 <div class="filter_container">
                                     {% for filter in admin.datagrid.filters %}
                                         <div class="form-group" id="filter-{{ admin.uniqid }}-{{ filter.name }}" sonata-filter="{{ filter.options['show_filter'] ? 'true' : 'false' }}" style="display: {% if filter.isActive() and filter.options['show_filter'] %}block{% else %}none{% endif %}">
+                                            {% if filter.label is not sameas(false) %}
                                             <label for="{{ form.children[filter.formName].children['value'].vars.id }}" class="col-sm-3 control-label">{{ admin.trans(filter.label, {}, filter.translationDomain) }}</label>
+                                            {% endif %}
                                             {% set attr = form.children[filter.formName].children['type'].vars.attr|default({}) %}
                                             {#{% set attr = attr|merge({'class': (attr.class|default('') ~ ' sonata-filter-option')|trim}) %}#}
 
