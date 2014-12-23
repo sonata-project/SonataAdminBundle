@@ -55,7 +55,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     const CONTEXT_MENU       = 'menu';
     const CONTEXT_DASHBOARD  = 'dashboard';
 
-    const CLASS_REGEX        = '@((?:[A-Za-z0-9]*\\\)?)(Bundle\\\)?([A-Za-z0-9]+)Bundle\\\(Entity|Document|Model|PHPCR|CouchDocument|Phpcr|Doctrine\\\Orm|Doctrine\\\Phpcr|Doctrine\\\MongoDB|Doctrine\\\CouchDB)\\\(.*)@';
+    const CLASS_REGEX        = '@(?:([A-Za-z0-9]*)\\\)?(Bundle\\\)?([A-Za-z0-9]+)Bundle\\\(Entity|Document|Model|PHPCR|CouchDocument|Phpcr|Doctrine\\\Orm|Doctrine\\\Phpcr|Doctrine\\\MongoDB|Doctrine\\\CouchDB)\\\(.*)@';
 
     /**
      * The class name managed by the admin class
