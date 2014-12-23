@@ -185,8 +185,13 @@ class CRUDController extends Controller
 
         return parent::render($view, $parameters, $response);
     }
-
-    private function handleModelManagerException($e)
+    
+    /**
+     * @param \Exception $e
+     *
+     * @throws \Exception
+     */
+    protected function handleModelManagerException(\Exception $e)
     {
         if ($this->get('kernel')->isDebug()) {
             throw $e;
