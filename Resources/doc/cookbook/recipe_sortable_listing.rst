@@ -63,7 +63,7 @@ feature in your config.yml such as
 
 
 In ``ClientAdmin`` our we are going to add in the ``configureListFields`` method
-a custom action and use the default twig template provided in the pixSortableBehavioBundle
+a custom action and use the default twig template provided in the pixSortableBehaviorBundle
 
 .. code-block:: php
 
