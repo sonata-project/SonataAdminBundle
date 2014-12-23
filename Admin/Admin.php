@@ -990,8 +990,8 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
                 );
             } else {
 
-                $this->baseRouteName = sprintf('admin_%s_%s_%s',
-                    $this->urlize($matches[1]),
+                $this->baseRouteName = sprintf('admin%s_%s_%s',
+                    '_'.$this->urlize($matches[1]) ?: '',
                     $this->urlize($matches[3]),
                     $this->urlize($matches[5])
                 );
