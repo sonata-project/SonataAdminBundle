@@ -13,12 +13,12 @@ namespace Sonata\AdminBundle\Controller;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sonata\AdminBundle\Exception\ModelManagerException;
-use Symfony\Component\HttpFoundation\Request;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Admin\BaseFieldDescription;
 use Sonata\AdminBundle\Util\AdminObjectAclData;
@@ -36,7 +36,7 @@ class CRUDController extends Controller
     /**
      * The current request object
      *
-     * @var \Symfony\Component\HttpFoundation\Request
+     * @var Request
      */
     protected $request;
 
@@ -91,7 +91,7 @@ class CRUDController extends Controller
     }
 
     /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param Request $request
      */
     public function setRequest(Request $request)
     {
@@ -212,7 +212,7 @@ class CRUDController extends Controller
     /**
      * List action
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param Request $request
      *
      * @return Response
      *
@@ -283,8 +283,8 @@ class CRUDController extends Controller
     /**
      * Delete action
      *
-     * @param int|string|null                           $id
-     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param int|string|null $id
+     * @param Request         $request
      *
      * @return Response|RedirectResponse
      *
@@ -359,8 +359,8 @@ class CRUDController extends Controller
     /**
      * Edit action
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param int|string|null                           $id
+     * @param Request         $request
+     * @param int|string|null $id
      *
      * @return Response|RedirectResponse
      *
@@ -504,7 +504,7 @@ class CRUDController extends Controller
     /**
      * Batch action
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param Request $request
      *
      * @return Response|RedirectResponse
      *
@@ -624,7 +624,7 @@ class CRUDController extends Controller
     /**
      * Create action
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param Request $request
      *
      * @return Response
      *
@@ -775,8 +775,8 @@ class CRUDController extends Controller
     /**
      * Show action
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param int|string|null                           $id
+     * @param Request         $request
+     * @param int|string|null $id
      *
      * @return Response
      *
@@ -814,8 +814,8 @@ class CRUDController extends Controller
     /**
      * Show history revisions for object
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param int|string|null                           $id
+     * @param Request         $request
+     * @param int|string|null $id
      *
      * @return Response
      *
@@ -867,9 +867,9 @@ class CRUDController extends Controller
     /**
      * View history revision of object
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param int|string|null                           $id
-     * @param string|null                               $revision
+     * @param Request         $request
+     * @param int|string|null $id
+     * @param string|null     $revision
      *
      * @return Response
      *
@@ -933,10 +933,10 @@ class CRUDController extends Controller
     /**
      * Compare history revisions of object
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param int|string|null                           $id
-     * @param int|string|null                           $base_revision
-     * @param int|string|null                           $compare_revision
+     * @param Request         $request
+     * @param int|string|null $id
+     * @param int|string|null $base_revision
+     * @param int|string|null $compare_revision
      *
      * @return Response
      *
@@ -1019,7 +1019,7 @@ class CRUDController extends Controller
     /**
      * Export data to specified format
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param Request $request
      *
      * @return Response
      *
@@ -1087,8 +1087,8 @@ class CRUDController extends Controller
     /**
      * Returns the Response object associated to the acl action
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param int|string|null                           $id
+     * @param Request         $request
+     * @param int|string|null $id
      *
      * @return  \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      *
