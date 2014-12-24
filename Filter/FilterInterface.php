@@ -54,7 +54,7 @@ interface FilterInterface
     /**
      * Returns the label name
      *
-     * @return string
+     * @return string|bool
      */
     public function getLabel();
 
