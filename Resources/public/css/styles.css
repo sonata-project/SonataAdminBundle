@@ -328,6 +328,7 @@ td.sonata-ba-list-field .editable-empty:not(.editable-open) {
 /* select2 */
 div.select2-container {
     margin-left: 0 !important;
+    width: 100%;
 }
 
 div.select2-drop ul {
