@@ -1,9 +1,9 @@
 The Form View
 =============
 
-You've seen the absolute top of the ice berg in
+You've seen the absolute top of the iceberg in
 :doc:`the previous chapter <creating_an_admin>`. But there is a lot more to
-discover! In the comming chapters, you'll create an Admin class for the more
+discover! In the coming chapters, you'll create an Admin class for the more
 complex ``BlogPost`` model. Meanwhile, you'll learn how to make things a bit
 more pretty.
 
@@ -73,8 +73,8 @@ The ``BlogPost`` model has 4 properties: ``id``, ``title``, ``body``,
 database. This means the form view just needs 3 fields: title, body and
 category.
 
-The title and body fields are simple text and textarea fields, you can add them
-straight away:
+The title and body fields are simple "text" and "textarea" fields, you can add
+them straight away:
 
 .. code-block:: php
 
@@ -119,7 +119,7 @@ As each blog post will only have one category, it renders as a select list:
 
 .. image:: ../images/getting_started_entity_type.png
 
-When an admin would like to create a new category, it needs to go to the
+When an admin would like to create a new category, they need to go to the
 category admin page and create a new category.
 
 Using the Sonata Model Type
@@ -181,7 +181,7 @@ category field to a Meta data group. To do this, use the ``with()`` method:
     }
 
 The first argument is the name/label of the group and the second argument is an
-array of options. For instance, you can pass HTML classes to the group, in
+array of options. For instance, you can pass HTML classes to the group in
 order to tweak the styling:
 
 .. code-block:: php
@@ -232,16 +232,17 @@ Creating a Blog Post
 You've now finished your nice form view for the ``BlogPost`` model. Now it's
 time to test it out by creating a post.
 
-After pressing the "Create"-button, you probably see a green message like:
+After pressing the "Create" button, you probably see a green message like:
 *Item "AppBundle\Entity\BlogPost:00000000192ba93c000000001b786396" has been
 successfully created.*
 
 While it's very friendly of the SonataAdminBundle to notify the admin of a
-succesvol creation, the classname and some sort of hash aren't really nice to
+succesful creation, the classname and some sort of hash aren't really nice to
 read. This is the default string representation of an object in the
 SonataAdminBundle. You can change it by defining a ``__toString()`` magic
 method on your model or by defining a ``toString()`` (note: no underscore
-prefix) method in the Admin class. This recieves the object:
+prefix) method in the Admin class. This recieves the object to transform to a
+string as the first parameter:
 
 .. code-block:: php
 
@@ -266,7 +267,7 @@ Round Up
 --------
 
 In this tutorial, you've made your first contact with the greatest feature of
-the SonataAdminBundle: Being able to customize literary everything. You've
+the SonataAdminBundle: Being able to customize literally everything. You've
 started by creating a simple form and ended up with a nice edit page for your
 admin.
 

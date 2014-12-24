@@ -29,8 +29,8 @@ After this, you'll need to tweak the entities a bit:
         // ...
 
         /**
-        * @ORM\ManyToOne(targetEntity="Category", inversedBy="blogPosts")
-        */
+         * @ORM\ManyToOne(targetEntity="Category", inversedBy="blogPosts")
+         */
         private $category;
 
         public function setCategory(Category $category)
@@ -90,7 +90,7 @@ After this, create the schema for these entities:
 Step 1: Create an Admin Class
 -----------------------------
 
-SonataAdminBundle helps you manage your data using a graphic interface that
+SonataAdminBundle helps you manage your data using a graphical interface that
 will let you create, update or search your model instances. The bundle relies
 on Admin classes to know which models will be managed and how these actions
 will look like.
@@ -133,22 +133,22 @@ easiest way to do this is by extending ``Sonata\AdminBundle\Admin\Admin``.
 So, what does this code do?
 
 * **Line 11-14**: These lines configure which fields are display on the edit
-  and create actions. The ``FormMapper`` behaves similair to the
-  ``FormBuilder`` of the Symfony Form component;
+  and create actions. The ``FormMapper`` behaves similar to the ``FormBuilder``
+  of the Symfony Form component;
 * **Line 16-19**: This method configures the filters, used to filter and sort
   the list of models;
 * **Line 21-24**: Here you specify which fields are shown when all models are
   listed (the ``addIdentifier()`` method means that this field will link to the
   show/edit page of this particular model).
 
-This is the most basic example of the Admin class. You configure a lot more.
-This will be covered by other, more advanced, articles.
+This is the most basic example of the Admin class. You can configure a lot more
+with the Admin class. This will be covered by other, more advanced, articles.
 
 Step 3: Register the Admin class
 --------------------------------
 
 You've now created an Admin class, but there is currently no way for the
-SonataAdminBundle to know that this Admin class exist. To tell the
+SonataAdminBundle to know that this Admin class exists. To tell the
 SonataAdminBundle of the existence of this Admin class, you have to create a
 service and tag it with the ``sonata.admin`` tag:
 
@@ -166,8 +166,8 @@ service and tag it with the ``sonata.admin`` tag:
 
 The constructor of the base Admin class has many arguments. SonataAdminBundle
 provides a compiler pass which takes care of configuring it correctly for you.
-You can often tweak things using tag attributes. The code shown here is the most
-minimal code needed to get it working.
+You can often tweak things using tag attributes. The code shown here is the
+shortest code needed to get it working.
 
 Step 4: Register SonataAdmin custom Routes
 ------------------------------------------
