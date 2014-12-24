@@ -875,7 +875,8 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         // ok, try to limit to add parent filter
         if ($this->isChild() && $this->getParentAssociationMapping() && !$mapper->has($this->getParentAssociationMapping())) {
             $mapper->add($this->getParentAssociationMapping(), null, array(
-                'field_type' => 'sonata_type_model_reference',
+                'label' => false,
+                'field_type' => 'sonata_type_model_hidden',
                 'field_options' => array(
                     'model_manager' => $this->getModelManager()
                 ),
