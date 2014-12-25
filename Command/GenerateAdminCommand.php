@@ -11,7 +11,7 @@
 
 namespace Sonata\AdminBundle\Command;
 
-use Sensio\Bundle\GeneratorBundle\Command\Helper\DialogHelper;
+use Sensio\Bundle\GeneratorBundle\Command\Helper\QuestionHelper;
 use Sonata\AdminBundle\Generator\AdminGenerator;
 use Sonata\AdminBundle\Generator\ControllerGenerator;
 use Sonata\AdminBundle\Manipulator\ServicesManipulator;
@@ -25,6 +25,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Console\Question\Question;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 /**
  * @author Marek Stipek <mario.dweller@seznam.cz>
@@ -128,26 +130,29 @@ class GenerateAdminCommand extends ContainerAwareCommand
      */
     protected function interact(InputInterface $input, OutputInterface $output)
     {
-        $dialog = $this->getDialogHelper();
-        $dialog->writeSection($output, 'Welcome to the Sonata admin generator');
+        $questionHelper = $this->getQuestionHelper();
+        $questionHelper->writeSection($output, 'Welcome to the Sonata admin generator');
         $modelClass = $this->askAndValidate(
             $output,
             'The fully qualified model class',
             $input->getArgument('model'),
-            'Sonata\AdminBundle\Command\Validators::validateClass'
+            'Sonata\AdminBundle\Command\Validators::validateClass',
+            $input
         );
         $modelClassBasename = current(array_slice(explode('\\', $modelClass), -1));
         $bundleName = $this->askAndValidate(
             $output,
             'The bundle name',
             $input->getOption('bundle') ?: $this->getBundleNameFromClass($modelClass),
-            'Sensio\Bundle\GeneratorBundle\Command\Validators::validateBundleName'
+            'Sensio\Bundle\GeneratorBundle\Command\Validators::validateBundleName',
+            $input
         );
         $adminClassBasename = $this->askAndValidate(
             $output,
             'The admin class basename',
             $input->getOption('admin') ?: $modelClassBasename . 'Admin',
-            'Sonata\AdminBundle\Command\Validators::validateAdminClassBasename'
+            'Sonata\AdminBundle\Command\Validators::validateAdminClassBasename',
+            $input
         );
 
         if (count($this->getAvailableManagerTypes()) > 1) {
@@ -155,38 +160,49 @@ class GenerateAdminCommand extends ContainerAwareCommand
                 $output,
                 'The manager type',
                 $input->getOption('manager') ?: $this->getDefaultManagerType(),
-                array($this, 'validateManagerType')
+                array($this, 'validateManagerType'),
+                $input
             );
             $input->setOption('manager', $managerType);
         }
 
-        $question = $dialog->getQuestion('Do you want to generate a controller', 'no', '?');
+        $question = new ConfirmationQuestion($questionHelper->getQuestion(
+            'Do you want to generate a controller',
+            'no', '?'
+        ), false);
 
-        if ($dialog->askConfirmation($output, $question, false)) {
+        if ($questionHelper->ask($input, $output, $question)) {
             $controllerClassBasename = $this->askAndValidate(
                 $output,
                 'The controller class basename',
                 $input->getOption('controller') ?: $modelClassBasename . 'AdminController',
-                'Sonata\AdminBundle\Command\Validators::validateControllerClassBasename'
+                'Sonata\AdminBundle\Command\Validators::validateControllerClassBasename',
+                $input
             );
             $input->setOption('controller', $controllerClassBasename);
         }
 
-        $question = $dialog->getQuestion('Do you want to update the services YAML configuration file', 'yes', '?');
+        $question = new ConfirmationQuestion($questionHelper->getQuestion(
+            'Do you want to update the services YAML configuration file',
+            'yes', '?'
+        ), true);
 
-        if ($dialog->askConfirmation($output, $question)) {
+
+        if ($questionHelper->ask($input, $output, $question)) {
             $path = $this->getBundle($bundleName)->getPath() . '/Resources/config/';
             $servicesFile = $this->askAndValidate(
                 $output,
                 'The services YAML configuration file',
                 is_file($path . 'admin.yml') ? 'admin.yml' : 'services.yml',
-                'Sonata\AdminBundle\Command\Validators::validateServicesFile'
+                'Sonata\AdminBundle\Command\Validators::validateServicesFile',
+                $input
             );
             $id = $this->askAndValidate(
                 $output,
                 'The admin service ID',
                 $this->getAdminServiceId($bundleName, $adminClassBasename),
-                'Sonata\AdminBundle\Command\Validators::validateServiceId'
+                'Sonata\AdminBundle\Command\Validators::validateServiceId',
+                $input
             );
             $input->setOption('services', $servicesFile);
             $input->setOption('id', $id);
@@ -261,11 +277,13 @@ class GenerateAdminCommand extends ContainerAwareCommand
      * @param callable $validator
      * @return mixed
      */
-    private function askAndValidate(OutputInterface $output, $question, $default, $validator)
+    private function askAndValidate(OutputInterface $output, $question, $default, $validator, $input)
     {
-        $dialog = $this->getDialogHelper();
+        $questionHelper = $this->getQuestionHelper();
+        $question = new Question($questionHelper->getQuestion($question, $default), $default);
 
-        return $dialog->askAndValidate($output, $dialog->getQuestion($question, $default), $validator, false, $default);
+        $question->setValidator($validator);
+        return $questionHelper->ask($input, $output, $question);
     }
 
     /**
@@ -345,17 +363,17 @@ class GenerateAdminCommand extends ContainerAwareCommand
     }
 
     /**
-     * @return DialogHelper
+     * @return QuestionHelper
      */
-    private function getDialogHelper()
+    private function getQuestionHelper()
     {
-        $dialogHelper = $this->getHelper('dialog');
+        $questionHelper = $this->getHelper('question');
 
-        if (!$dialogHelper instanceof DialogHelper) {
-            $dialogHelper = new DialogHelper();
-            $this->getHelperSet()->set($dialogHelper);
+        if (!$questionHelper instanceof QuestionHelper) {
+            $questionHelper = new QuestionHelper();
+            $this->getHelperSet()->set($questionHelper);
         }
 
-        return $dialogHelper;
+        return $questionHelper;
     }
 }

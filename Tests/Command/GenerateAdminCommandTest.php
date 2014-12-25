@@ -13,6 +13,7 @@ namespace Sonata\AdminBundle\Tests\Command;
 
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -194,12 +195,12 @@ class GenerateAdminCommandTest extends \PHPUnit_Framework_TestCase
 
         $command = $this->application->find('sonata:admin:generate');
 
-        $dialog = $this->getMock('Sensio\Bundle\GeneratorBundle\Command\Helper\DialogHelper', array('askConfirmation', 'askAndValidate'));
+        $questionHelper = $this->getMock('Sensio\Bundle\GeneratorBundle\Command\Helper\QuestionHelper', array('ask'));
 
-        $dialog->expects($this->any())
-            ->method('askConfirmation')
-            ->will($this->returnCallback(function(OutputInterface $output, $question, $default) {
-                $questionClean = substr($question, 6, strpos($question, '</info>')-6);
+        $questionHelper->expects($this->any())
+            ->method('ask')
+            ->will($this->returnCallback(function(InputInterface $input, OutputInterface $output, $question) use ($modelEntity) {
+                $questionClean = substr($question->getQuestion(), 6, strpos($question->getQuestion(), '</info>')-6);
 
                 switch ($questionClean) {
                     case 'Do you want to generate a controller':
@@ -209,18 +210,6 @@ class GenerateAdminCommandTest extends \PHPUnit_Framework_TestCase
                     case 'Do you want to update the services YAML configuration file':
                         return 'yes';
                         break;
-                }
-
-                return $default;
-            }));
-
-        $dialog->expects($this->any())
-            ->method('askAndValidate')
-            ->will($this->returnCallback(function(OutputInterface $output, $question, $validator, $attempts = false, $default = null) use ($modelEntity) {
-
-                $questionClean = substr($question, 6, strpos($question, '</info>')-6);
-
-                switch ($questionClean) {
                     case 'The fully qualified model class':
                         return $modelEntity;
                         break;
@@ -250,10 +239,10 @@ class GenerateAdminCommandTest extends \PHPUnit_Framework_TestCase
                         break;
                 }
 
-                return $default;
+                return false;
             }));
 
-        $command->getHelperSet()->set($dialog, 'dialog');
+        $command->getHelperSet()->set($questionHelper, 'question');
 
         $commandTester = new CommandTester($command);
         $commandTester->execute(array(
