@@ -27,3 +27,4 @@ notifications:
 matrix:
   allow_failures:
     - php: hhvm
+    - SYMFONY_VERSION=2.7.*@dev
