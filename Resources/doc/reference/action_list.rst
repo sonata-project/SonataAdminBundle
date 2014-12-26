@@ -169,7 +169,7 @@ You can customize the list query thanks to the ``createQuery`` method.
     {
         $query = parent::createQuery($context);
         $query->andWhere(
-            $query->expr()->eq($query->getRootAlias() . '.my_field', ':my_param')
+            $query->expr()->eq($query->getRootAliases()[0] . '.my_field', ':my_param')
         );
         $query->setParameter('my_param', 'my_value');
         return $query;
