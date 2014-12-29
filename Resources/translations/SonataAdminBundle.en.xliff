@@ -318,6 +318,10 @@
                 <source>td_username</source>
                 <target>Author</target>
             </trans-unit>
+            <trans-unit id="td_role">
+                <source>td_role</source>
+                <target>Role</target>
+            </trans-unit>
             <trans-unit id="label_view_revision">
                 <source>label_view_revision</source>
                 <target>View Revision</target>

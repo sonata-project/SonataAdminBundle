@@ -36,9 +36,13 @@ class AdminObjectAclData
      */
     protected $object;
     /**
-     * @var array Users to set ACL for
+     * @var \Traversable Users to set ACL for
      */
     protected $aclUsers;
+    /**
+     * @var \Traversable Roles to set ACL for
+     */
+    protected $aclRoles;
     /**
      * @var array Cache of masks
      */
@@ -46,7 +50,11 @@ class AdminObjectAclData
     /**
      * @var \Symfony\Component\Form\Form
      */
-    protected $form;
+    protected $aclUsersForm;
+    /**
+     * @var \Symfony\Component\Form\Form
+     */
+    protected $aclRolesForm;
     /**
      * @var \Symfony\Component\Security\Acl\Domain\Acl
      */
@@ -75,12 +83,18 @@ class AdminObjectAclData
      * @param mixed                                    $object
      * @param \Traversable                             $aclUsers
      * @param string                                   $maskBuilderClass
+     * @param \Traversable|null                        $aclRoles
      */
-    public function __construct(AdminInterface $admin, $object, \Traversable $aclUsers, $maskBuilderClass)
-    {
+    public function __construct(
+        AdminInterface $admin, $object,
+        \Traversable $aclUsers,
+        $maskBuilderClass,
+        \Traversable $aclRoles = null
+    ) {
         $this->admin = $admin;
         $this->object = $object;
         $this->aclUsers = $aclUsers;
+        $this->aclRoles = (null === $aclRoles) ? new \ArrayIterator() : $aclRoles;
         $this->maskBuilderClass = $maskBuilderClass;
 
         $this->updateMasks();
@@ -109,11 +123,21 @@ class AdminObjectAclData
     /**
      * Gets ACL users
      *
-     * @return array
+     * @return \Traversable
      */
     public function getAclUsers()
     {
         return $this->aclUsers;
+    }
+
+    /**
+     * Gets ACL roles
+     *
+     * @return \Traversable
+     */
+    public function getAclRoles()
+    {
+        return $this->aclRoles;
     }
 
     /**
@@ -154,22 +178,74 @@ class AdminObjectAclData
      *
      * @param  \Symfony\Component\Form\Form                $form
      * @return \Sonata\AdminBundle\Util\AdminObjectAclData
+     *
+     * @deprecated Deprecated since version 2.4. Use setAclUsersForm() instead.
      */
     public function setForm(Form $form)
     {
-        $this->form = $form;
+        trigger_error('setForm() is deprecated since version 2.4. Use setAclUsersForm() instead.', E_USER_DEPRECATED);
 
-        return $this;
+        return $this->setAclUsersForm($form);
     }
 
     /**
      * Gets form
      *
      * @return \Symfony\Component\Form\Form
+     *
+     * @deprecated Deprecated since version 2.4. Use getAclUsersForm() instead.
      */
     public function getForm()
     {
-        return $this->form;
+        trigger_error('getForm() is deprecated since version 2.4. Use getAclUsersForm() instead.', E_USER_DEPRECATED);
+
+        return $this->getAclUsersForm();
+    }
+
+    /**
+     * Sets ACL users form
+     *
+     * @param  \Symfony\Component\Form\Form                $form
+     * @return \Sonata\AdminBundle\Util\AdminObjectAclData
+     */
+    public function setAclUsersForm(Form $form)
+    {
+        $this->aclUsersForm = $form;
+
+        return $this;
+    }
+
+    /**
+     * Gets ACL users form
+     *
+     * @return \Symfony\Component\Form\Form
+     */
+    public function getAclUsersForm()
+    {
+        return $this->aclUsersForm;
+    }
+
+    /**
+     * Sets ACL roles form
+     *
+     * @param  \Symfony\Component\Form\Form                $form
+     * @return \Sonata\AdminBundle\Util\AdminObjectAclData
+     */
+    public function setAclRolesForm(Form $form)
+    {
+        $this->aclRolesForm = $form;
+
+        return $this;
+    }
+
+    /**
+     * Gets ACL roles form
+     *
+     * @return \Symfony\Component\Form\Form
+     */
+    public function getAclRolesForm()
+    {
+        return $this->aclRolesForm;
     }
 
     /**
@@ -222,5 +298,13 @@ class AdminObjectAclData
     public function getSecurityHandler()
     {
         return $this->admin->getSecurityHandler();
+    }
+
+    /**
+     * @return array
+     */
+    public function getSecurityInformation()
+    {
+        return $this->admin->getSecurityHandler()->buildSecurityInformation($this->admin);
     }
 }

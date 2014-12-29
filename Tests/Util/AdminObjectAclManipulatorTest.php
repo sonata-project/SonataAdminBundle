@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\Controller;
+namespace Sonata\AdminBundle\Tests\Util;
 
 use Sonata\AdminBundle\Util\AdminObjectAclManipulator;
 

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\Controller;
+namespace Sonata\AdminBundle\Tests\Util;
 
 use Sonata\AdminBundle\Util\AdminObjectAclData;
 
@@ -21,20 +21,32 @@ class AdminObjectAclDataTest extends \PHPUnit_Framework_TestCase
 
     protected static function createAclUsers()
     {
-        return new \ArrayIterator;
+        return new \ArrayIterator();
+    }
+
+    protected static function createAclRoles()
+    {
+        return new \ArrayIterator();
     }
 
     protected function createAdminObjectAclData($isOwner = true)
     {
-        return new AdminObjectAclData($this->createAdmin($isOwner), new \stdClass(), self::createAclUsers(), '\Symfony\Component\Security\Acl\Permission\MaskBuilder');
+        return new AdminObjectAclData($this->createAdmin($isOwner), new \stdClass(), self::createAclUsers(), '\Symfony\Component\Security\Acl\Permission\MaskBuilder', self::createAclRoles());
     }
 
     protected function createAdmin($isOwner = true)
     {
         $securityHandler = $this->getMock('Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface');
+
         $securityHandler->expects($this->any())
             ->method('getObjectPermissions')
             ->will($this->returnValue(array('VIEW', 'EDIT', 'DELETE', 'UNDELETE', 'OPERATOR', 'MASTER', 'OWNER')))
+        ;
+
+        $securityHandler->expects($this->any())
+            ->method('buildSecurityInformation')
+            ->with($this->isInstanceOf('Sonata\AdminBundle\Admin\AdminInterface'))
+            ->will($this->returnValue(array()))
         ;
 
         $admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
@@ -70,6 +82,12 @@ class AdminObjectAclDataTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('ArrayIterator', $adminObjectAclData->getAclUsers());
     }
 
+    public function testGetAclRoles()
+    {
+        $adminObjectAclData = $this->createAdminObjectAclData();
+        $this->assertInstanceOf('ArrayIterator', $adminObjectAclData->getAclRoles());
+    }
+
     public function testSetAcl()
     {
         $acl = $this->getMock('Symfony\Component\Security\Acl\Domain\Acl', array(), array(), '', false);
@@ -100,6 +118,9 @@ class AdminObjectAclDataTest extends \PHPUnit_Framework_TestCase
         }
     }
 
+    /**
+     * @deprecated
+     */
     public function testSetForm()
     {
         $form = $this->getMock('\Symfony\Component\Form\Form', array(), array(), '', false);
@@ -113,10 +134,50 @@ class AdminObjectAclDataTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @depends testSetForm
+     *
+     * @deprecated
      */
     public function testGetForm($adminObjectAclData)
     {
         $this->isInstanceOf('Symfony\Component\Form\Form', $adminObjectAclData->getForm());
+    }
+
+    public function testSetAclUsersForm()
+    {
+        $form = $this->getMock('\Symfony\Component\Form\Form', array(), array(), '', false);
+        $adminObjectAclData = $this->createAdminObjectAclData();
+        $ret = $adminObjectAclData->setAclUsersForm($form);
+
+        $this->assertEquals($adminObjectAclData, $ret);
+
+        return $adminObjectAclData;
+    }
+
+    /**
+     * @depends testSetAclUsersForm
+     */
+    public function testGetAclUsersForm($adminObjectAclData)
+    {
+        $this->isInstanceOf('Symfony\Component\Form\Form', $adminObjectAclData->getAclUsersForm());
+    }
+
+    public function testSetAclRolesForm()
+    {
+        $form = $this->getMock('\Symfony\Component\Form\Form', array(), array(), '', false);
+        $adminObjectAclData = $this->createAdminObjectAclData();
+        $ret = $adminObjectAclData->setAclRolesForm($form);
+
+        $this->assertEquals($adminObjectAclData, $ret);
+
+        return $adminObjectAclData;
+    }
+
+    /**
+     * @depends testSetAclRolesForm
+     */
+    public function testGetAclRolesForm($adminObjectAclData)
+    {
+        $this->isInstanceOf('Symfony\Component\Form\Form', $adminObjectAclData->getAclRolesForm());
     }
 
     public function testGetPermissions()
@@ -129,7 +190,7 @@ class AdminObjectAclDataTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testgetUserPermissions()
+    public function testGetUserPermissions()
     {
         $adminObjectAclDataOwner = $this->createAdminObjectAclData();
         $this->assertInternalType('array', $adminObjectAclDataOwner->getUserPermissions());
@@ -166,5 +227,12 @@ class AdminObjectAclDataTest extends \PHPUnit_Framework_TestCase
         $adminObjectAclData = $this->createAdminObjectAclData();
 
         $this->isInstanceOf('Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface', $adminObjectAclData->getSecurityHandler());
+    }
+
+    public function testGetSecurityInformation()
+    {
+        $adminObjectAclData = $this->createAdminObjectAclData();
+
+        $this->assertEquals(array(), $adminObjectAclData->getSecurityInformation());
     }
 }
