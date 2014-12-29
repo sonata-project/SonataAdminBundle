@@ -322,6 +322,10 @@
                 <source>label_view_revision</source>
                 <target>Version anzeigen</target>
             </trans-unit>
+            <trans-unit id="list_results_count_prefix">
+                <source>list_results_count_prefix</source>
+                <target>mehr als</target>
+            </trans-unit>
             <trans-unit id="list_results_count">
                 <source>list_results_count</source>
                 <target>{1}1 Ergebnis|]1,Inf] %count% Ergebnisse</target>

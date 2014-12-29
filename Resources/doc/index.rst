@@ -62,3 +62,4 @@ Cookbook
    cookbook/recipe_custom_action
    cookbook/recipe_customizing_a_mosaic_list
    cookbook/recipe_overwrite_admin_configuration
+   cookbook/recipe_improve_performance_large_datasets

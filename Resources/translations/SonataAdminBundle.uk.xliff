@@ -322,6 +322,10 @@
                 <source>label_view_revision</source>
                 <target>Перегляд змін</target>
             </trans-unit>
+            <trans-unit id="list_results_count_prefix">
+                <source>list_results_count_prefix</source>
+                <target>list_results_count_prefix</target>
+            </trans-unit>
             <trans-unit id="list_results_count">
                 <source>list_results_count</source>
                 <target>{0} Данні відсутні |{1} Всього %count% запис |{2,3,4} Всього %count% записи |[5,Inf] Всього %count% записів</target>

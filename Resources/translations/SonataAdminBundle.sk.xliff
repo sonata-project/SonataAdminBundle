@@ -322,6 +322,10 @@
                 <source>label_view_revision</source>
                 <target>Zobraziť revíziu</target>
             </trans-unit>
+            <trans-unit id="list_results_count_prefix">
+                <source>list_results_count_prefix</source>
+                <target>aspoň</target>
+            </trans-unit>
             <trans-unit id="list_results_count">
                 <source>list_results_count</source>
                 <target>1 záznam|%count% záznamy|%count% záznamov</target>

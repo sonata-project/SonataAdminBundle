@@ -17,6 +17,7 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Sonata\AdminBundle\Admin\BaseFieldDescription;
+use Sonata\AdminBundle\Datagrid\Pager;
 
 /**
  * Add all dependencies to the Admin class, this avoid to write too many lines
@@ -172,9 +173,9 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
     /**
      * Apply the default values required by the AdminInterface to the Admin service definition
      *
-     * @param  ContainerBuilder $container
-     * @param  string           $serviceId
-     * @param  array            $attributes
+     * @param ContainerBuilder $container
+     * @param string           $serviceId
+     * @param array            $attributes
      *
      * @return Definition
      */
@@ -216,8 +217,18 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
             }
         }
 
-        if (isset($service['label'])) {
-            $label = $service['label'];
+        if (isset($overwriteAdminConfiguration['pager_type'])) {
+            $pagerType = $overwriteAdminConfiguration['pager_type'];
+        } elseif (isset($attributes['pager_type'])) {
+            $pagerType = $attributes['pager_type'];
+        } else {
+            $pagerType = Pager::TYPE_DEFAULT;
+        }
+
+        $definition->addMethodCall('setPagerType', array($pagerType));
+
+        if (isset($overwriteAdminConfiguration['label'])) {
+            $label = $overwriteAdminConfiguration['label'];
         } elseif (isset($attributes['label'])) {
             $label = $attributes['label'];
         } else {
@@ -267,6 +278,18 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
             if ($method[0] == 'setTemplate') {
                 $definedTemplates[$method[1][0]] = $method[1][1];
                 continue;
+            }
+
+            // set template for simple pager if it is not already overwritten
+            if ($method[0] === 'setPagerType'
+                && $method[1][0] === Pager::TYPE_SIMPLE
+                && (
+                    !isset($definedTemplates['pager_results'])
+                    || $definedTemplates['pager_results'] === 'SonataAdminBundle:Pager:results.html.twig'
+                )
+            ) {
+
+                $definedTemplates['pager_results'] = 'SonataAdminBundle:Pager:simple_pager_results.html.twig';
             }
 
             $methods[$pos] = $method;

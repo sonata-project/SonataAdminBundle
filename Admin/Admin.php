@@ -47,6 +47,7 @@ use Knp\Menu\FactoryInterface as MenuFactoryInterface;
 use Knp\Menu\ItemInterface as MenuItemInterface;
 
 use Doctrine\Common\Util\ClassUtils;
+use Sonata\AdminBundle\Datagrid\Pager;
 
 abstract class Admin implements AdminInterface, DomainObjectInterface
 {
@@ -216,6 +217,13 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      * @var array
      */
     protected $perPageOptions = array(16, 32, 64, 128, 192);
+
+    /**
+     * Pager type
+     *
+     * @var string
+     */
+    protected $pagerType = Pager::TYPE_DEFAULT;
 
     /**
      * The code related to the admin
@@ -2744,6 +2752,26 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     public function getPerPageOptions()
     {
         return $this->perPageOptions;
+    }
+
+    /**
+     * Set pager type
+     *
+     * @param string $pagerType
+     */
+    public function setPagerType($pagerType)
+    {
+        $this->pagerType = $pagerType;
+    }
+
+    /**
+     * Get pager type
+     *
+     * @return string
+     */
+    public function getPagerType()
+    {
+        return $this->pagerType;
     }
 
     /**
