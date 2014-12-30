@@ -110,6 +110,7 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
         $requestContext = new RequestContext();
         $urlGenerator = new UrlGenerator($routeCollection, $requestContext);
         $this->environment->addExtension(new RoutingExtension($urlGenerator));
+        $this->environment->addExtension(new \Twig_Extensions_Extension_Text());
 
         $this->twigExtension->initRuntime($this->environment);
 
@@ -232,6 +233,8 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
                         return 'SonataAdminBundle:CRUD:list_trans.html.twig';
                     case 'url':
                         return 'SonataAdminBundle:CRUD:list_url.html.twig';
+                    case 'html':
+                        return 'SonataAdminBundle:CRUD:list_html.html.twig';
                     case 'nonexistent':
                         // template doesn`t exist
                         return 'SonataAdminBundle:CRUD:list_nonexistent_template.html.twig';
@@ -316,6 +319,54 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
             array('<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345"> <a href="http://localhost/foo/abcd/efgh?param3=ijkl">Foo</a> </td>', 'url', 'Foo', array('route'=>array('name'=>'sonata_admin_foo_param', 'absolute'=>true, 'parameters'=>array('param1'=>'abcd', 'param2'=>'efgh', 'param3'=>'ijkl')))),
             array('<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345"> <a href="/foo/obj/abcd/12345/efgh?param3=ijkl">Foo</a> </td>', 'url', 'Foo', array('route'=>array('name'=>'sonata_admin_foo_object', 'parameters'=>array('param1'=>'abcd', 'param2'=>'efgh', 'param3'=>'ijkl'), 'identifier_parameter_name'=>'barId'))),
             array('<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345"> <a href="http://localhost/foo/obj/abcd/12345/efgh?param3=ijkl">Foo</a> </td>', 'url', 'Foo', array('route'=>array('name'=>'sonata_admin_foo_object', 'absolute'=>true, 'parameters'=>array('param1'=>'abcd', 'param2'=>'efgh', 'param3'=>'ijkl'), 'identifier_parameter_name'=>'barId'))),
+            array(
+                '<td class="sonata-ba-list-field sonata-ba-list-field-html" objectId="12345"> <p><strong>Creating a Template for the Field</strong> and form</p> </td>',
+                'html',
+                '<p><strong>Creating a Template for the Field</strong> and form</p>',
+                array()
+            ),
+            array(
+                '<td class="sonata-ba-list-field sonata-ba-list-field-html" objectId="12345"> Creating a Template for the Field and form </td>',
+                'html',
+                '<p><strong>Creating a Template for the Field</strong> and form</p>',
+                array('strip' => true)
+            ),
+            array(
+                '<td class="sonata-ba-list-field sonata-ba-list-field-html" objectId="12345"> Creating a Template for the Fi... </td>',
+                'html',
+                '<p><strong>Creating a Template for the Field</strong> and form</p>',
+                array('truncate' => true)
+            ),
+            array(
+                '<td class="sonata-ba-list-field sonata-ba-list-field-html" objectId="12345"> Creating a... </td>',
+                'html',
+                '<p><strong>Creating a Template for the Field</strong> and form</p>',
+                array('truncate' => array('length' => 10))
+            ),
+            array(
+                '<td class="sonata-ba-list-field sonata-ba-list-field-html" objectId="12345"> Creating a Template for the Field... </td>',
+                'html',
+                '<p><strong>Creating a Template for the Field</strong> and form</p>',
+                array('truncate' => array('preserve' => true))
+            ),
+            array(
+                '<td class="sonata-ba-list-field sonata-ba-list-field-html" objectId="12345"> Creating a Template for the Fi etc. </td>',
+                'html',
+                '<p><strong>Creating a Template for the Field</strong> and form</p>',
+                array('truncate' => array('separator' => ' etc.'))
+            ),
+            array(
+                '<td class="sonata-ba-list-field sonata-ba-list-field-html" objectId="12345"> Creating a Template for[...] </td>',
+                'html',
+                '<p><strong>Creating a Template for the Field</strong> and form</p>',
+                array(
+                    'truncate' => array(
+                        'length'    => 20,
+                        'preserve'  => true,
+                        'separator' => '[...]'
+                    )
+                )
+            ),
         );
     }
 
@@ -418,6 +469,8 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
                         return 'SonataAdminBundle:CRUD:show_trans.html.twig';
                     case 'url':
                         return 'SonataAdminBundle:CRUD:show_url.html.twig';
+                    case 'html':
+                        return 'SonataAdminBundle:CRUD:show_html.html.twig';
                     default:
                         return false;
                 }
@@ -474,6 +527,54 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
             array('<th>Data</th> <td><a href="http://localhost/foo/abcd/efgh?param3=ijkl">Foo</a></td>', 'url', 'Foo', array('safe'=>false, 'route'=>array('name'=>'sonata_admin_foo_param', 'absolute'=>true, 'parameters'=>array('param1'=>'abcd', 'param2'=>'efgh', 'param3'=>'ijkl')))),
             array('<th>Data</th> <td><a href="/foo/obj/abcd/12345/efgh?param3=ijkl">Foo</a></td>', 'url', 'Foo', array('safe'=>false, 'route'=>array('name'=>'sonata_admin_foo_object', 'parameters'=>array('param1'=>'abcd', 'param2'=>'efgh', 'param3'=>'ijkl'), 'identifier_parameter_name'=>'barId'))),
             array('<th>Data</th> <td><a href="http://localhost/foo/obj/abcd/12345/efgh?param3=ijkl">Foo</a></td>', 'url', 'Foo', array('safe'=>false, 'route'=>array('name'=>'sonata_admin_foo_object', 'absolute'=>true, 'parameters'=>array('param1'=>'abcd', 'param2'=>'efgh', 'param3'=>'ijkl'), 'identifier_parameter_name'=>'barId'))),
+            array(
+                '<th>Data</th> <td><p><strong>Creating a Template for the Field</strong> and form</p> </td>',
+                'html',
+                '<p><strong>Creating a Template for the Field</strong> and form</p>',
+                array()
+            ),
+            array(
+                '<th>Data</th> <td>Creating a Template for the Field and form </td>',
+                'html',
+                '<p><strong>Creating a Template for the Field</strong> and form</p>',
+                array('strip' => true)
+            ),
+            array(
+                '<th>Data</th> <td> Creating a Template for the Fi... </td>',
+                'html',
+                '<p><strong>Creating a Template for the Field</strong> and form</p>',
+                array('truncate' => true)
+            ),
+            array(
+                '<th>Data</th> <td> Creating a... </td>',
+                'html',
+                '<p><strong>Creating a Template for the Field</strong> and form</p>',
+                array('truncate' => array('length' => 10))
+            ),
+            array(
+                '<th>Data</th> <td> Creating a Template for the Field... </td>',
+                'html',
+                '<p><strong>Creating a Template for the Field</strong> and form</p>',
+                array('truncate' => array('preserve' => true))
+            ),
+            array(
+                '<th>Data</th> <td> Creating a Template for the Fi etc. </td>',
+                'html',
+                '<p><strong>Creating a Template for the Field</strong> and form</p>',
+                array('truncate' => array('separator' => ' etc.'))
+            ),
+            array(
+                '<th>Data</th> <td> Creating a Template for[...] </td>',
+                'html',
+                '<p><strong>Creating a Template for the Field</strong> and form</p>',
+                array(
+                    'truncate' => array(
+                        'length'    => 20,
+                        'preserve'  => true,
+                        'separator' => '[...]'
+                    )
+                )
+            ),
 
             // NoValueException
             array('<th>Data</th> <td></td>', 'string', new NoValueException(), array('safe' => false)),

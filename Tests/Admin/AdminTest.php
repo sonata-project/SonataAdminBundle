@@ -437,6 +437,10 @@ class AdminTest extends \PHPUnit_Framework_TestCase
                 'Symfony\Cmf\Bundle\FooBundle\Doctrine\CouchDB\Menu',
                 '/cmf/foo/menu'
             ),
+            array(
+                'AppBundle\Entity\User',
+                '/app/user'
+            ),
         );
     }
 
@@ -463,7 +467,7 @@ class AdminTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetBaseRoutePatternWithUnreconizedClassname()
     {
-        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
+        $admin = new PostAdmin('sonata.post.admin.post', 'News\Entity\Post', 'SonataNewsBundle:PostAdmin');
         $admin->getBaseRoutePattern();
     }
 
@@ -510,7 +514,7 @@ class AdminTest extends \PHPUnit_Framework_TestCase
                 'Symfony\Bundle\BarBarBundle\Doctrine\Phpcr\Menu\Item',
                 'admin_symfony_barbar_menu_item'
             ),
-        array(
+            array(
                 'Symfony\Cmf\Bundle\FooBundle\Doctrine\Orm\Menu',
                 'admin_cmf_foo_menu'
             ),
@@ -521,6 +525,10 @@ class AdminTest extends \PHPUnit_Framework_TestCase
             array(
                 'Symfony\Cmf\Bundle\FooBundle\Doctrine\CouchDB\Menu',
                 'admin_cmf_foo_menu'
+            ),
+            array(
+                'AppBundle\Entity\User',
+                'admin_app_user'
             ),
         );
     }
@@ -570,7 +578,7 @@ class AdminTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetBaseRouteNameWithUnreconizedClassname()
     {
-        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
+        $admin = new PostAdmin('sonata.post.admin.post', 'News\Entity\Post', 'SonataNewsBundle:PostAdmin');
         $admin->getBaseRouteName();
     }
 

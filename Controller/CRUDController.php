@@ -11,6 +11,7 @@
 
 namespace Sonata\AdminBundle\Controller;
 
+use Sonata\AdminBundle\Util\AdminObjectAclManipulator;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -143,14 +144,14 @@ class CRUDController extends Controller
      * Proxy for the logger service of the container.
      * If no such service is found, a NullLogger is returned.
      *
-     * @return Psr\Log\LoggerInterface
+     * @return \Psr\Log\LoggerInterface
      */
     protected function getLogger()
     {
         if ($this->container->has('logger')) {
             return $this->container->get('logger');
         } else {
-            return new NullLogger;
+            return new NullLogger();
         }
     }
 
@@ -1009,8 +1010,44 @@ class CRUDController extends Controller
     }
 
     /**
+     * Gets ACL roles
+     *
+     * @return \Traversable
+     */
+    protected function getAclRoles()
+    {
+        $aclRoles = array();
+        $roleHierarchy = $this->container->getParameter('security.role_hierarchy.roles');
+        $pool = $this->container->get('sonata.admin.pool');
+
+        foreach ($pool->getAdminServiceIds() as $id) {
+            try {
+                $admin = $pool->getInstance($id);
+            } catch (\Exception $e) {
+                continue;
+            }
+
+            $baseRole = $admin->getSecurityHandler()->getBaseRole($admin);
+            foreach ($admin->getSecurityInformation() as $role => $permissions) {
+                $role = sprintf($baseRole, $role);
+                $aclRoles[] = $role;
+            }
+        }
+
+        foreach ($roleHierarchy as $name => $roles) {
+            $aclRoles[] = $name;
+            $aclRoles = array_merge($aclRoles, $roles);
+        }
+
+        $aclRoles = array_unique($aclRoles);
+
+        return is_array($aclRoles) ? new \ArrayIterator($aclRoles) : $aclRoles;
+    }
+
+    /**
      * Returns the Response object associated to the acl action
      *
+     * @param Request         $request
      * @param int|string|null $id
      *
      * @return Response|RedirectResponse
@@ -1018,7 +1055,7 @@ class CRUDController extends Controller
      * @throws AccessDeniedException If access is not granted.
      * @throws NotFoundHttpException If the object does not exist or the ACL is not enabled
      */
-    public function aclAction($id = null)
+    public function aclAction(Request $request, $id = null)
     {
         if (!$this->admin->isAclEnabled()) {
             throw new NotFoundHttpException('ACL are not enabled for this admin');
@@ -1038,36 +1075,49 @@ class CRUDController extends Controller
 
         $this->admin->setSubject($object);
         $aclUsers = $this->getAclUsers();
+        $aclRoles = $this->getAclRoles();
 
         $adminObjectAclManipulator = $this->get('sonata.admin.object.manipulator.acl.admin');
         $adminObjectAclData = new AdminObjectAclData(
             $this->admin,
             $object,
             $aclUsers,
-            $adminObjectAclManipulator->getMaskBuilderClass()
+            $adminObjectAclManipulator->getMaskBuilderClass(),
+            $aclRoles
         );
 
-        $form = $adminObjectAclManipulator->createForm($adminObjectAclData);
+        $aclUsersForm = $adminObjectAclManipulator->createAclUsersForm($adminObjectAclData);
+        $aclRolesForm = $adminObjectAclManipulator->createAclRolesForm($adminObjectAclData);
 
-        $request = $this->getRequest();
         if ($request->getMethod() === 'POST') {
-            $form->submit($request);
+            if ($request->request->has(AdminObjectAclManipulator::ACL_USERS_FORM_NAME)) {
+                $form = $aclUsersForm;
+                $updateMethod = 'updateAclUsers';
+            } elseif ($request->request->has(AdminObjectAclManipulator::ACL_ROLES_FORM_NAME)) {
+                $form = $aclRolesForm;
+                $updateMethod = 'updateAclRoles';
+            }
 
-            if ($form->isValid()) {
-                $adminObjectAclManipulator->updateAcl($adminObjectAclData);
+            if (isset($form)) {
+                $form->submit($request);
 
-                $this->addFlash('sonata_flash_success', 'flash_acl_edit_success');
+                if ($form->isValid()) {
+                    $adminObjectAclManipulator->$updateMethod($adminObjectAclData);
+                    $this->addFlash('sonata_flash_success', 'flash_acl_edit_success');
 
-                return new RedirectResponse($this->admin->generateObjectUrl('acl', $object));
+                    return new RedirectResponse($this->admin->generateObjectUrl('acl', $object));
+                }
             }
         }
 
         return $this->render($this->admin->getTemplate('acl'), array(
-            'action'      => 'acl',
-            'permissions' => $adminObjectAclData->getUserPermissions(),
-            'object'      => $object,
-            'users'       => $aclUsers,
-            'form'        => $form->createView()
+            'action'       => 'acl',
+            'permissions'  => $adminObjectAclData->getUserPermissions(),
+            'object'       => $object,
+            'users'        => $aclUsers,
+            'roles'        => $aclRoles,
+            'aclUsersForm' => $aclUsersForm->createView(),
+            'aclRolesForm' => $aclRolesForm->createView()
         ));
     }
 

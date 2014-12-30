@@ -27,6 +27,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormView;
+use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Foo;
 
 class AdminControllerHelper_Foo
 {
@@ -71,6 +72,49 @@ class AdminControllerHelper_Bar
 
 class HelperControllerTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var AdminInterface
+     */
+    private $admin;
+
+    /**
+     * @var HelperController
+     */
+    private $controller;
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function setUp()
+    {
+        $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
+        $pool = new Pool($container, 'title', 'logo.png');
+        $pool->setAdminServiceIds(array('foo.admin'));
+
+        $this->admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
+
+        $twig = new Twig();
+        $helper = new AdminHelper($pool);
+        $validator = $this->getMock('Symfony\Component\Validator\ValidatorInterface');
+        $this->controller = new HelperController($twig, $pool, $helper, $validator);
+
+        // php 5.3 BC
+        $admin = $this->admin;
+
+        $container->expects($this->any())
+            ->method('get')
+            ->will($this->returnCallback(function ($id) use ($admin) {
+                switch ($id) {
+                    case 'foo.admin':
+                        return $admin;
+                }
+
+                return null;
+            }));
+
+        return;
+    }
+
     /**
      * @expectedException Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
@@ -438,5 +482,204 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
         $response = $controller->setObjectFieldValueAction($request);
 
         $this->assertEquals('{"status":"KO","message":"error1\nerror2"}', $response->getContent() );
+    }
+
+    /**
+     * @expectedException Symfony\Component\Security\Core\Exception\AccessDeniedException
+     * @exceptionMessage Invalid format
+     */
+    public function testRetrieveAutocompleteItemsActionNotGranted()
+    {
+        $this->admin->expects($this->exactly(2))
+            ->method('isGranted')
+             ->will($this->returnCallback(function ($operation) {
+                if ($operation == 'CREATE' || $operation == 'EDIT') {
+                    return false;
+                }
+
+                return null;
+            }));
+
+        $request = new Request(array(
+            'code'     => 'foo.admin',
+        ), array(), array(), array(), array(), array('REQUEST_METHOD' => 'GET', 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'));
+
+        $this->controller->retrieveAutocompleteItemsAction($request);
+    }
+
+    /**
+     * @expectedException Symfony\Component\Security\Core\Exception\AccessDeniedException
+     * @exceptionMessage Autocomplete list can`t be retrieved because the form element is disabled or read_only.
+     */
+    public function testRetrieveAutocompleteItemsActionDisabledFormelememt()
+    {
+        $this->admin->expects($this->once())
+            ->method('isGranted')
+            ->with('CREATE')
+            ->will($this->returnValue(true));
+
+        $entity = new Foo();
+
+        $fieldDescription = $this->getMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+
+        $fieldDescription->expects($this->once())
+            ->method('getType')
+            ->will($this->returnValue('sonata_type_model_autocomplete'));
+
+        $fieldDescription->expects($this->once())
+            ->method('getTargetEntity')
+            ->will($this->returnValue('Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Foo'));
+
+        $fieldDescription->expects($this->once())
+            ->method('getName')
+            ->will($this->returnValue('barField'));
+
+        $this->admin->expects($this->once())
+            ->method('getFormFieldDescriptions')
+            ->will($this->returnValue(null));
+
+        $this->admin->expects($this->once())
+            ->method('getFormFieldDescription')
+            ->with('barField')
+            ->will($this->returnValue($fieldDescription));
+
+        $form = $this->getMockBuilder('Symfony\Component\Form\Form')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->admin->expects($this->once())
+            ->method('getForm')
+            ->will($this->returnValue($form));
+
+        $formType = $this->getMockBuilder('Symfony\Component\Form\Form')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $form->expects($this->once())
+            ->method('get')
+            ->with('barField')
+            ->will($this->returnValue($formType));
+
+        $formConfig = $this->getMockBuilder('Symfony\Component\Form\FormConfigInterface')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $formType->expects($this->once())
+            ->method('getConfig')
+            ->will($this->returnValue($formConfig));
+
+        $formConfig->expects($this->once())
+            ->method('getAttribute')
+            ->with('disabled')
+            ->will($this->returnValue(true));
+
+        $request = new Request(array(
+            'code'  => 'foo.admin',
+            'field' => 'barField'
+        ), array(), array(), array(), array(), array('REQUEST_METHOD' => 'GET', 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'));
+
+        $this->controller->retrieveAutocompleteItemsAction($request);
+    }
+
+    /**
+     * @expectedException Symfony\Component\Security\Core\Exception\AccessDeniedException
+     */
+    public function testRetrieveAutocompleteItemsActionNotGrantedTarget()
+    {
+        $this->admin->expects($this->once())
+            ->method('isGranted')
+            ->with('CREATE')
+            ->will($this->returnValue(true));
+
+        $entity = new Foo();
+
+        $fieldDescription = $this->getMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+
+        $fieldDescription->expects($this->once())
+            ->method('getType')
+            ->will($this->returnValue('sonata_type_model_autocomplete'));
+
+        $fieldDescription->expects($this->once())
+            ->method('getTargetEntity')
+            ->will($this->returnValue('Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Foo'));
+
+        $fieldDescription->expects($this->once())
+            ->method('getName')
+            ->will($this->returnValue('barField'));
+
+        $targetAdmin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
+
+        $fieldDescription->expects($this->once())
+            ->method('getAssociationAdmin')
+            ->will($this->returnValue($targetAdmin));
+
+        $targetAdmin->expects($this->once())
+            ->method('isGranted')
+            ->with('LIST')
+            ->will($this->returnValue(false));
+
+        $this->admin->expects($this->once())
+            ->method('getFormFieldDescriptions')
+            ->will($this->returnValue(null));
+
+        $this->admin->expects($this->once())
+            ->method('getFormFieldDescription')
+            ->with('barField')
+            ->will($this->returnValue($fieldDescription));
+
+        $form = $this->getMockBuilder('Symfony\Component\Form\Form')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->admin->expects($this->once())
+            ->method('getForm')
+            ->will($this->returnValue($form));
+
+        $formType = $this->getMockBuilder('Symfony\Component\Form\Form')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $form->expects($this->once())
+            ->method('get')
+            ->with('barField')
+            ->will($this->returnValue($formType));
+
+        $formConfig = $this->getMockBuilder('Symfony\Component\Form\FormConfigInterface')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $formType->expects($this->any())
+            ->method('getConfig')
+            ->will($this->returnValue($formConfig));
+
+        $formConfig->expects($this->any())
+            ->method('getAttribute')
+            ->will($this->returnCallback(function ($name) {
+                switch ($name) {
+                    case 'disabled':
+                        return false;
+                    case 'property':
+                        return 'fooProperty';
+                    case 'callback':
+                        return null;
+                    case 'minimum_input_length':
+                        return 3;
+                    case 'items_per_page':
+                        return 10;
+                    case 'req_param_name_page_number':
+                        return '_page';
+                    case 'to_string_callback':
+                        return null;
+                }
+
+                return null;
+            }));
+
+        $request = new Request(array(
+            'code'  => 'foo.admin',
+            'field' => 'barField'
+        ), array(), array(), array(), array(), array('REQUEST_METHOD' => 'GET', 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'));
+
+        $this->controller->retrieveAutocompleteItemsAction($request);
     }
 }
