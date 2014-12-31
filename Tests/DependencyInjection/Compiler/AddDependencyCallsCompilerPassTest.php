@@ -34,6 +34,26 @@ class AddDependencyCallsCompilerPassTest extends \PHPUnit_Framework_TestCase
         $this->config    = $this->getConfig();
     }
 
+    public function testTranslatorDisabled()
+    {
+        $this->setExpectedException(
+          'RuntimeException', 'The "translator" service is not yet enabled.
+                It\'s required by SonataAdmin to display all labels properly.
+
+                To learn how to enable the translator service please visit:
+                http://symfony.com/doc/current/book/translation.html#book-translation-configuration
+             '
+        );
+
+        $container = $this->getContainer();
+        $container->removeAlias('translator');
+        $this->extension->load(array($this->config), $container);
+
+        $compilerPass = new AddDependencyCallsCompilerPass();
+        $compilerPass->process($container);
+        $container->compile();
+    }
+
     /**
      * @covers Sonata\AdminBundle\DependencyInjection\Compiler\AddDependencyCallsCompilerPass::process
      */
@@ -313,6 +333,12 @@ class AddDependencyCallsCompilerPassTest extends \PHPUnit_Framework_TestCase
             ->setClass('Sonata\AdminBundle\Tests\DependencyInjection\MockAdmin')
             ->setArguments(array('', 'Sonata\AdminBundle\Tests\DependencyInjection\Article', 'SonataAdminBundle:CRUD'))
             ->addTag('sonata.admin', array('group' => 'sonata_group_one', 'manager_type' => 'doctrine_phpcr'));
+
+        // translator
+        $container
+            ->register('translator.default')
+            ->setClass('Symfony\Bundle\FrameworkBundle\Translation\Translator');
+        $container->setAlias('translator', 'translator.default');
 
         return $container;
     }
