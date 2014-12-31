@@ -350,10 +350,7 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($mockView));
 
         $helper = $this->getMock('Sonata\AdminBundle\Admin\AdminHelper', array('appendFormFieldElement', 'getChildFormView'), array($pool));
-        $helper->expects($this->once())->method('appendFormFieldElement')->will($this->returnValue(array(
-            $this->getMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface'),
-            $mockForm
-        )));
+        $helper->expects($this->once())->method('appendFormFieldElement')->will($this->returnValue($mockForm));
         $helper->expects($this->once())->method('getChildFormView')->will($this->returnValue($mockView));
 
         $controller = new HelperController($twig, $pool, $helper, $validator);
