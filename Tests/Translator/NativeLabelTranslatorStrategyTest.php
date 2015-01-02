@@ -13,7 +13,7 @@ namespace Sonata\AdminBundle\Tests\Translator;
 
 use Sonata\AdminBundle\Translator\NativeLabelTranslatorStrategy;
 
-class NativeTranslatorStrategyTest extends \PHPUnit_Framework_TestCase
+class NativeLabelTranslatorStrategyTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
