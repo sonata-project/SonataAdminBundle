@@ -30,7 +30,7 @@ interface RouteGeneratorInterface
      * @param array                                    $parameters
      * @param bool                                     $absolute
      *
-     * @return string
+     * @return array
      */
     public function generateMenuUrl(AdminInterface $admin, $name, array $parameters = array(), $absolute = false);
 

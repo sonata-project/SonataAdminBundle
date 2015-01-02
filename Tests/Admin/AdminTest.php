@@ -105,7 +105,7 @@ class AdminTest extends \PHPUnit_Framework_TestCase
         );
         $admin->addChild($commentAdmin);
         $admin->setRequest(new Request(array('id' => 42)));
-        $commentAdmin->setRequest(new Request);
+        $commentAdmin->setRequest(new Request());
         $commentAdmin->initialize();
         $admin->initialize();
         $commentAdmin->setCurrentChild($subCommentAdmin);
@@ -133,7 +133,7 @@ class AdminTest extends \PHPUnit_Framework_TestCase
         $modelManager->expects($this->exactly(1))
             ->method('find')
             ->with('Application\Sonata\NewsBundle\Entity\Post', 42)
-            ->will($this->returnValue(new DummySubject));
+            ->will($this->returnValue(new DummySubject()));
 
         $menuFactory->expects($this->exactly(5))
             ->method('createItem')
@@ -152,7 +152,6 @@ class AdminTest extends \PHPUnit_Framework_TestCase
             ->method('generate')
             ->with('sonata_admin_dashboard')
             ->will($this->returnValue('http://somehost.com'));
-
 
         $translatorStrategy->expects($this->exactly(18))
             ->method('getLabel')
@@ -239,16 +238,14 @@ class AdminTest extends \PHPUnit_Framework_TestCase
             )
             ->will($this->returnValue($menu));
 
-
         $admin->getBreadcrumbs('repost');
-        $admin->setSubject(new DummySubject);
+        $admin->setSubject(new DummySubject());
         $admin->getBreadcrumbs('flag');
-
 
         $commentAdmin->getBreadcrumbs('edit');
 
         $commentAdmin->getBreadcrumbs('list');
-        $commentAdmin->setSubject(new DummySubject);
+        $commentAdmin->setSubject(new DummySubject());
         $commentAdmin->getBreadcrumbs('reply');
     }
 
@@ -265,7 +262,7 @@ class AdminTest extends \PHPUnit_Framework_TestCase
         );
         $admin->addChild($commentAdmin);
         $admin->setRequest(new Request(array('id' => 42)));
-        $commentAdmin->setRequest(new Request);
+        $commentAdmin->setRequest(new Request());
         $commentAdmin->initialize();
         $admin->initialize();
 
@@ -318,9 +315,8 @@ class AdminTest extends \PHPUnit_Framework_TestCase
             )
             ->will($this->returnValue($menu));
 
-
         $admin->getBreadcrumbs('repost');
-        $admin->setSubject(new DummySubject);
+        $admin->setSubject(new DummySubject());
         $flagBreadcrumb = $admin->getBreadcrumbs('flag');
         $this->assertSame($flagBreadcrumb, $admin->getBreadcrumbs('flag'));
     }
@@ -604,11 +600,11 @@ class AdminTest extends \PHPUnit_Framework_TestCase
 
         $this->assertNotEmpty($admin->toString($s));
 
-        $s = new FooToString;
+        $s = new FooToString();
         $this->assertEquals('salut', $admin->toString($s));
 
         // To string method is implemented, but returns null
-        $s = new FooToStringNull;
+        $s = new FooToStringNull();
         $this->assertNotEmpty($admin->toString($s));
 
         $this->assertEquals("", $admin->toString(false));

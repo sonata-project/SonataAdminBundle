@@ -13,12 +13,13 @@ namespace Sonata\AdminBundle\Validator;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Sonata\AdminBundle\Validator\ErrorElement;
 use Symfony\Component\Validator\ConstraintValidatorFactoryInterface;
 
 class InlineValidator extends ConstraintValidator
 {
     protected $container;
+
+    protected $constraintValidatorFactory;
 
     /**
      * @param \Symfony\Component\DependencyInjection\ContainerInterface            $container

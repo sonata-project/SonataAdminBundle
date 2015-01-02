@@ -10,8 +10,6 @@
  */
 namespace Sonata\AdminBundle\Admin;
 
-use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
-
 class FieldDescriptionCollection implements \ArrayAccess, \Countable
 {
     protected $elements = array();

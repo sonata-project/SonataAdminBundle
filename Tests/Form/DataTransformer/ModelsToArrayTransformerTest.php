@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Form\DataTransformer;
+namespace Sonata\AdminBundle\Tests\Form\DataTransformer;
 
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Form\Exception\TransformationFailedException;
@@ -41,7 +41,7 @@ class ModelsToArrayTransformerTest extends \PHPUnit_Framework_TestCase
 
         $this->modelChoiceList->expects($this->any())
             ->method('getModelManager')
-            ->will($this->returnCallback(function() use ($modelManager) {
+            ->will($this->returnCallback(function () use ($modelManager) {
                 return $modelManager;
             }));
     }
@@ -55,7 +55,7 @@ class ModelsToArrayTransformerTest extends \PHPUnit_Framework_TestCase
 
         $this->modelChoiceList->expects($this->any())
             ->method('getIdentifierValues')
-            ->will($this->returnCallback(function($entity) use ($identifiers) {
+            ->will($this->returnCallback(function ($entity) use ($identifiers) {
                 if ($entity instanceof FooEntity) {
                     return $identifiers;
                 }
@@ -65,13 +65,13 @@ class ModelsToArrayTransformerTest extends \PHPUnit_Framework_TestCase
 
         $this->modelChoiceList->expects($this->any())
             ->method('getIdentifier')
-            ->will($this->returnCallback(function() use ($identifiers) {
+            ->will($this->returnCallback(function () use ($identifiers) {
                 return $identifiers;
             }));
 
        $this->modelChoiceList->expects($this->any())
             ->method('getEntities')
-            ->will($this->returnCallback(function() {
+            ->will($this->returnCallback(function () {
                 return array('bcd'=>new FooEntity(array('bcd')), 'efg'=>new FooEntity(array('efg')), 'abc'=>new FooEntity(array('abc')));
             }));
 
@@ -151,19 +151,16 @@ class ModelsToArrayTransformerTest extends \PHPUnit_Framework_TestCase
 
         $this->modelChoiceList->expects($this->any())
             ->method('getEntity')
-            ->will($this->returnCallback(function($key) use ($entity1, $entity2, $entity3) {
+            ->will($this->returnCallback(function ($key) use ($entity1, $entity2, $entity3) {
                 switch ($key) {
                     case 'foo':
                         return $entity1;
 
-                        break;
                     case 'bar':
                         return $entity2;
 
-                        break;
                     case 'baz':
                         return $entity3;
-                        break;
                 }
 
                 return null;

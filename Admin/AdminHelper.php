@@ -17,7 +17,6 @@ use Symfony\Component\Form\FormView;
 use Sonata\AdminBundle\Exception\NoValueException;
 use Sonata\AdminBundle\Util\FormViewIterator;
 use Sonata\AdminBundle\Util\FormBuilderIterator;
-use Sonata\AdminBundle\Admin\BaseFieldDescription;
 
 class AdminHelper
 {

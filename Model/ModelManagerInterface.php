@@ -139,7 +139,7 @@ interface ModelManagerInterface
      * @param object $model
      *
      * @return string a string representation of the identifiers for this
-     *      instance
+     *                instance
      */
     public function getNormalizedIdentifier($model);
 

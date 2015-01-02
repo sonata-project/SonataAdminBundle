@@ -81,6 +81,6 @@ class ModelToIdTransformerTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($transformer->transform(0));
         $this->assertNull($transformer->transform('0'));
 
-        $this->assertEquals(123, $transformer->transform(new \stdClass));
+        $this->assertEquals(123, $transformer->transform(new \stdClass()));
     }
 }

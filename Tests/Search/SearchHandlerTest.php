@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Route;
+namespace Sonata\AdminBundle\Tests\Search;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
@@ -28,7 +28,7 @@ class SearchHandlerTest extends \PHPUnit_Framework_TestCase
     public function getPool(AdminInterface $admin = null)
     {
         $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
-        $container->expects($this->any())->method('get')->will($this->returnCallback(function($id) use ($admin) {
+        $container->expects($this->any())->method('get')->will($this->returnCallback(function ($id) use ($admin) {
             if ($id == 'fake') {
                 throw new ServiceNotFoundException('Fake service does not exist');
             }

@@ -61,7 +61,7 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
             throw new \RuntimeException('Invalid state');
         }
 
-        $this->catalogue = new MessageCatalogue;
+        $this->catalogue = new MessageCatalogue();
 
         foreach ($this->adminPool->getAdminServiceIds() as $id) {
             $admin = $this->getAdmin($id);
@@ -104,7 +104,7 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
                         call_user_func_array(array($admin, $method), $args);
                     } catch (\Exception $e) {
                         if ($this->logger) {
-                            $this->logger->err(sprintf('ERROR : admin:%s - Raise an exception : %s', $admin->getCode(), $e->getMessage()));
+                            $this->logger->error(sprintf('ERROR : admin:%s - Raise an exception : %s', $admin->getCode(), $e->getMessage()));
                         }
 
                         throw $e;

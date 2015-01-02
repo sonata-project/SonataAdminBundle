@@ -11,7 +11,6 @@
 
 namespace Sonata\AdminBundle\Export;
 
-use Symfony\Component\HttpFoundation\StreamedResponse;
 use Sonata\CoreBundle\Exporter\Exporter as BaseExporter;
 
 /**

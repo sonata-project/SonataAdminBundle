@@ -41,9 +41,9 @@ interface AuditReaderInterface
 
     /**
      * @param string $className
-     * @param int $id
-     * @param int $oldRevision
-     * @param int $newRevision
+     * @param int    $id
+     * @param int    $oldRevision
+     * @param int    $newRevision
      */
     public function diff($className, $id, $oldRevision, $newRevision);
 }

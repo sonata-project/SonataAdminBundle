@@ -12,8 +12,6 @@
 
 namespace Sonata\AdminBundle\Manipulator;
 
-use Symfony\Component\HttpKernel\Bundle\BundleInterface;
-use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -42,11 +40,11 @@ class ServicesManipulator
     }
 
     /**
-     * @param string $serviceId
-     * @param string $modelClass
-     * @param string $adminClass
-     * @param string $controllerName
-     * @param string $managerType
+     * @param  string            $serviceId
+     * @param  string            $modelClass
+     * @param  string            $adminClass
+     * @param  string            $controllerName
+     * @param  string            $managerType
      * @throws \RuntimeException
      */
     public function addResource($serviceId, $modelClass, $adminClass, $controllerName, $managerType)

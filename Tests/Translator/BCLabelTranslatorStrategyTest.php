@@ -16,7 +16,7 @@ class BCLabelTranslatorStrategyTest extends \PHPUnit_Framework_TestCase
 {
     public function testLabel()
     {
-        $strategy = new BCLabelTranslatorStrategy;
+        $strategy = new BCLabelTranslatorStrategy();
 
         $this->assertEquals('Isvalid', $strategy->getLabel('isValid', 'form', 'label'));
         $this->assertEquals('Plainpassword', $strategy->getLabel('plainPassword', 'form', 'label'));

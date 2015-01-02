@@ -21,7 +21,6 @@ use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
 use Sonata\AdminBundle\Datagrid\PagerInterface;
 use Sonata\AdminBundle\Filter\Filter;
 use Sonata\AdminBundle\Filter\FilterInterface;
-use Sonata\AdminBundle\Translator\NoopLabelTranslatorStrategy;
 
 /**
  * @author Andrej Hudec <pulzarraider@gmail.com>
@@ -62,7 +61,7 @@ class DatagridMapperTest extends \PHPUnit_Framework_TestCase
 
         $datagridBuilder->expects($this->any())
             ->method('addFilter')
-            ->will($this->returnCallback(function($datagrid, $type, $fieldDescription, $admin) use ($filter) {
+            ->will($this->returnCallback(function ($datagrid, $type, $fieldDescription, $admin) use ($filter) {
                 $fieldDescription->setType($type);
 
                 $filterClone = clone $filter;

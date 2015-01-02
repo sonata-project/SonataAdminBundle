@@ -22,6 +22,8 @@ class FormBuilderIterator extends \RecursiveArrayIterator
 
     protected $prefix;
 
+    protected $iterator;
+
     /**
      * @param \Symfony\Component\Form\FormBuilder $formBuilder
      * @param bool                                $prefix

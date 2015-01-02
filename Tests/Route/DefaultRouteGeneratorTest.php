@@ -156,7 +156,7 @@ class DefaultRouteGeneratorTest extends \PHPUnit_Framework_TestCase
         $request->attributes->expects($this->any())->method('has')->will($this->returnValue(true));
         $request->attributes->expects($this->any())
             ->method('get')
-            ->will($this->returnCallback(function($key) {
+            ->will($this->returnCallback(function ($key) {
                 if ($key == 'childId') {
                     return '987654';
                 }

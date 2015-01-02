@@ -40,22 +40,19 @@ class ListAdminCommandTest extends \PHPUnit_Framework_TestCase
 
         $container->expects($this->any())
             ->method('get')
-            ->will($this->returnCallback(function($id) use ($container, $admin1, $admin2) {
+            ->will($this->returnCallback(function ($id) use ($container, $admin1, $admin2) {
                 switch ($id) {
                     case 'sonata.admin.pool':
                         $pool = new Pool($container, '', '');
                         $pool->setAdminServiceIds(array('acme.admin.foo', 'acme.admin.bar'));
 
                         return $pool;
-                        break;
 
                     case 'acme.admin.foo':
                         return $admin1;
-                        break;
 
                     case 'acme.admin.bar':
                         return $admin2;
-                        break;
                 }
 
                 return null;

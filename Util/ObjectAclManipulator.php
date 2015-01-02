@@ -23,7 +23,7 @@ abstract class ObjectAclManipulator implements ObjectAclManipulatorInterface
      *
      * @param OutputInterface      $output
      * @param AdminInterface       $admin
-     * @param \Traversable         $oids              a collection of ObjectIdentityInterface implementations
+     * @param \Traversable         $oids             a collection of ObjectIdentityInterface implementations
      * @param UserSecurityIdentity $securityIdentity
      *
      * @throws \Exception
