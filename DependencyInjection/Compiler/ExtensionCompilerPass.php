@@ -83,7 +83,7 @@ class ExtensionCompilerPass implements CompilerPassInterface
     protected function getExtensionsForAdmin($id, Definition $admin, ContainerBuilder $container, array $extensionMap)
     {
         $extensions = array();
-        $class = $classReflection = $subjectReflection = null;
+        $classReflection = $subjectReflection = null;
 
         $excludes = $extensionMap['excludes'];
         unset($extensionMap['excludes']);

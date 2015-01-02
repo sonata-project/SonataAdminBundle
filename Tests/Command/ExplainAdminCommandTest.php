@@ -125,7 +125,7 @@ class ExplainAdminCommandTest extends \PHPUnit_Framework_TestCase
 
         $this->admin->expects($this->any())
             ->method('getParent')
-            ->will($this->returnCallback(function() use ($adminParent) {
+            ->will($this->returnCallback(function () use ($adminParent) {
                 return $adminParent;
             }));
 
@@ -139,7 +139,7 @@ class ExplainAdminCommandTest extends \PHPUnit_Framework_TestCase
 
         $container->expects($this->any())
             ->method('get')
-            ->will($this->returnCallback(function($id) use ($container, $admin, $validator) {
+            ->will($this->returnCallback(function ($id) use ($container, $admin, $validator) {
                 switch ($id) {
                     case 'sonata.admin.pool':
                         $pool = new Pool($container, '', '');

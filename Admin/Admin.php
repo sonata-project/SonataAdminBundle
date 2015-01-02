@@ -12,7 +12,6 @@
 namespace Sonata\AdminBundle\Admin;
 
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
-use Sonata\AdminBundle\Route\RoutesCache;
 use Sonata\CoreBundle\Model\Metadata;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilder;
@@ -28,7 +27,6 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 
-use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Validator\ErrorElement;
 use Sonata\AdminBundle\Validator\Constraints\InlineConstraint;
 
@@ -264,7 +262,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     /**
      * Reference the parent collection
      *
-     * @var Admin
+     * @var AdminInterface|null
      */
     protected $parent = null;
 
@@ -541,7 +539,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      * Configures the tab menu in your admin
      *
      * @param MenuItemInterface $menu
-     * @param                   $action
+     * @param string            $action
      * @param AdminInterface    $childAdmin
      *
      * @return mixed
@@ -1355,7 +1353,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
         $metadata->addConstraint(new InlineConstraint(array(
             'service' => $this,
-            'method'  => function(ErrorElement $errorElement, $object) use ($admin) {
+            'method'  => function (ErrorElement $errorElement, $object) use ($admin) {
                 /* @var \Sonata\AdminBundle\Admin\AdminInterface $admin */
 
                 // This avoid the main validation to be cascaded to children
@@ -2101,6 +2099,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
         $breadcrumbs = array_reverse($breadcrumbs);
         array_shift($breadcrumbs);
+
         return $breadcrumbs;
     }
 
@@ -2216,13 +2215,13 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * translate a message id
+     * Translate a message id
      *
-     * @param string  $id
-     * @param integer $count
-     * @param array   $parameters
-     * @param null    $domain
-     * @param null    $locale
+     * @param string      $id
+     * @param integer     $count
+     * @param array       $parameters
+     * @param string|null $domain
+     * @param string|null $locale
      *
      * @return string the translated string
      */

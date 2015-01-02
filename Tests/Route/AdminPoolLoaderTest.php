@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Route;
+namespace Sonata\AdminBundle\Tests\Route;
 
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Route\AdminPoolLoader;
@@ -55,7 +55,7 @@ class AdminPoolLoaderTest extends \PHPUnit_Framework_TestCase
 
         $pool->expects($this->any())
             ->method('getInstance')
-            ->will($this->returnCallback(function($id) use ($admin1, $admin2) {
+            ->will($this->returnCallback(function ($id) use ($admin1, $admin2) {
                 switch ($id) {
                     case 'foo_admin':
                         return $admin1;

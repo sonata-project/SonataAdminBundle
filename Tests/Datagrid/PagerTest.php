@@ -311,14 +311,14 @@ class PagerTest extends \PHPUnit_Framework_TestCase
     {
         $this->pager->expects($this->any())
             ->method('getResults')
-            ->will($this->returnValue(array(123 => new \stdClass)));
+            ->will($this->returnValue(array(123 => new \stdClass())));
 
         $this->assertEquals(123, $this->pager->key());
     }
 
     public function testCurrent()
     {
-        $object = new \stdClass;
+        $object = new \stdClass();
 
         $this->pager->expects($this->any())
             ->method('getResults')
@@ -372,19 +372,16 @@ class PagerTest extends \PHPUnit_Framework_TestCase
         $id = 0;
         $query->expects($this->any())
             ->method('execute')
-            ->will($this->returnCallback(function() use (&$id, $object1, $object2, $object3) {
+            ->will($this->returnCallback(function () use (&$id, $object1, $object2, $object3) {
                 switch ($id) {
                     case 0:
                         return array($object1);
-                        break;
 
                     case 1:
                         return array($object2);
-                        break;
 
                     case 2:
                         return array($object3);
-                        break;
                 }
 
                 return null;
@@ -503,19 +500,16 @@ class PagerTest extends \PHPUnit_Framework_TestCase
         $id = 0;
         $query->expects($this->any())
             ->method('execute')
-            ->will($this->returnCallback(function() use (&$id, $object1, $object2, $object3) {
+            ->will($this->returnCallback(function () use (&$id, $object1, $object2, $object3) {
                 switch ($id) {
                     case 0:
                         return array($object1);
-                        break;
 
                     case 1:
                         return array($object2);
-                        break;
 
                     case 2:
                         return array($object3);
-                        break;
                 }
 
                 return null;
@@ -564,19 +558,16 @@ class PagerTest extends \PHPUnit_Framework_TestCase
         $id = 2;
         $query->expects($this->any())
             ->method('execute')
-            ->will($this->returnCallback(function() use (&$id, $object1, $object2, $object3) {
+            ->will($this->returnCallback(function () use (&$id, $object1, $object2, $object3) {
                 switch ($id) {
                     case 0:
                         return array($object1);
-                        break;
 
                     case 1:
                         return array($object2);
-                        break;
 
                     case 2:
                         return array($object3);
-                        break;
                 }
 
                 return null;

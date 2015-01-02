@@ -10,7 +10,6 @@
 
 namespace Sonata\AdminBundle\Tests\Resources;
 
-
 use Sonata\CoreBundle\Test\XliffValidatorTestCase;
 
 class XliffTest extends XliffValidatorTestCase

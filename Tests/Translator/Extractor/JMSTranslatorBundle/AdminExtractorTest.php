@@ -1,6 +1,6 @@
 <?php
 
-namespace Sonata\AdminBundle\Translator\Extractor\JMSTranslatorBundle;
+namespace Sonata\AdminBundle\Tests\Translator\Extractor\JMSTranslatorBundle;
 
 use Symfony\Component\HttpKernel\Log\LoggerInterface;
 use Sonata\AdminBundle\Admin\Pool;
@@ -52,7 +52,7 @@ class AdminExtractorTest extends \PHPUnit_Framework_TestCase
         $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
         $container->expects($this->any())
             ->method('get')
-            ->will($this->returnCallback(function($id) use ($fooAdmin, $barAdmin) {
+            ->will($this->returnCallback(function ($id) use ($fooAdmin, $barAdmin) {
                 switch ($id) {
                     case 'foo_admin':
                         return $fooAdmin;
@@ -88,7 +88,7 @@ class AdminExtractorTest extends \PHPUnit_Framework_TestCase
         $tester = $this;
         $this->fooAdmin->expects($this->any())
             ->method('getShow')
-            ->will($this->returnCallback(function() use ($translator, $tester) {
+            ->will($this->returnCallback(function () use ($translator, $tester) {
                 $tester->assertEquals('foo', $translator->trans('foo', array(), 'foo_admin_domain'));
                 $tester->assertEquals('foo', $translator->transChoice('foo', 1, array(), 'foo_admin_domain'));
 
@@ -113,7 +113,7 @@ class AdminExtractorTest extends \PHPUnit_Framework_TestCase
 
         $this->fooAdmin->expects($this->any())
             ->method('getShow')
-            ->will($this->returnCallback(function() {
+            ->will($this->returnCallback(function () {
                 throw new \RuntimeException('Foo throws exception');
             }));
 

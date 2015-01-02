@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Model;
+namespace Sonata\AdminBundle\Tests\Model;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Sonata\AdminBundle\Model\AuditManager;
@@ -30,15 +30,13 @@ class AuditManagerTest extends \PHPUnit_Framework_TestCase
 
         $container->expects($this->any())
             ->method('get')
-            ->will($this->returnCallback(function($id) use ($fooReader, $barReader) {
+            ->will($this->returnCallback(function ($id) use ($fooReader, $barReader) {
                 switch ($id) {
                     case 'foo_reader':
                         return $fooReader;
-                        break;
 
                     case 'bar_reader':
                         return $barReader;
-                        break;
                 }
 
                 return null;

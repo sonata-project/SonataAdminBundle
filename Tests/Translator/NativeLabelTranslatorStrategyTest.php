@@ -13,7 +13,7 @@ namespace Sonata\AdminBundle\Tests\Translator;
 
 use Sonata\AdminBundle\Translator\NativeLabelTranslatorStrategy;
 
-class NativeTranslatorStrategyTest extends \PHPUnit_Framework_TestCase
+class NativeLabelTranslatorStrategyTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
@@ -21,7 +21,7 @@ class NativeTranslatorStrategyTest extends \PHPUnit_Framework_TestCase
      */
     public function testLabel($expectedLabel, $label)
     {
-        $strategy = new NativeLabelTranslatorStrategy;
+        $strategy = new NativeLabelTranslatorStrategy();
 
         $this->assertEquals($expectedLabel, $strategy->getLabel($label, 'form', 'label'));
     }
