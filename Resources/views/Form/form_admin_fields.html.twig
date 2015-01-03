@@ -107,47 +107,33 @@ file that was distributed with this source code.
 {% endspaceless %}
 {% endblock form_label %}
 
-{% block widget_container_attributes_choice_widget %}
-    {% spaceless %}
-        id="{{ id }}"
-        {% for attrname,attrvalue in attr %}{{attrname}}="{% if attrname == 'class' %}list-unstyled {% endif%}{{attrvalue}}" {% endfor %}
-        {% if "class" not in attr %}class="list-unstyled"{%endif %}
-    {% endspaceless %}
-{% endblock %}
-
 {% block choice_widget_expanded %}
 {% spaceless %}
+    {% set attr = attr|merge({'class': attr.class|default('') ~ ' list-unstyled'}) %}
     <ul {{ block('widget_container_attributes') }}>
-        {% for child in form %}
-            <li>
+    {% for child in form %}
+        <li>
+            {% set form_widget_content %}
                 {{ form_widget(child, {'horizontal': false, 'horizontal_input_wrapper_class': ''}) }} {# {'horizontal': false, 'horizontal_input_wrapper_class': ''} needed to avoid MopaBootstrapBundle messing with the DOM #}
-                {{ form_label(child) }}
-            </li>
-        {% endfor %}
+            {% endset %}
+            {{ form_label(child, child.vars.label|default(null), { 'in_list_checkbox' : true, 'widget' : form_widget_content } ) }}
+        </li>
+    {% endfor %}
     </ul>
 {% endspaceless %}
 {% endblock choice_widget_expanded %}
 
-{% block choice_widget %}
+{% block choice_widget_collapsed %}
 {% spaceless %}
-    {% if compound %}
-        <ul {{ block('widget_container_attributes_choice_widget') }}>
-        {% for child in form %}
-            <li>
-                {% set form_widget_content %}
-                    {{ form_widget(child, {'horizontal': false, 'horizontal_input_wrapper_class': ''}) }} {# {'horizontal': false, 'horizontal_input_wrapper_class': ''} needed to avoid MopaBootstrapBundle messing with the DOM #}
-                {% endset %}
-                {{ form_label(child, child.vars.label|default(null), { 'in_list_checkbox' : true, 'widget' : form_widget_content } ) }}
-            </li>
-        {% endfor %}
-        </ul>
-    {% else %}
+    {% if required and empty_value is none and not empty_value_in_choices and not multiple %}
+        {% set required = false %}
+    {% endif %}
     {% if sonata_admin.admin and not sonata_admin.admin.getConfigurationPool().getOption('use_select2') %}
         {% set attr = attr|merge({'class': attr.class|default('') ~ ' form-control'}) %}
     {% endif %}
     <select {{ block('widget_attributes') }}{% if multiple %} multiple="multiple"{% endif %}>
         {% if empty_value is not none %}
-            <option value="">
+            <option value=""{% if required and value is empty %} selected="selected"{% endif %}>
                 {% if not sonata_admin.admin %}
                     {{- empty_value|trans({}, translation_domain) -}}
                 {% else %}
@@ -165,9 +151,8 @@ file that was distributed with this source code.
         {% set options = choices %}
         {{ block('choice_widget_options') }}
     </select>
-    {% endif %}
 {% endspaceless %}
-{% endblock choice_widget %}
+{% endblock choice_widget_collapsed %}
 
 {% block form_row %}
     {% set label_class = "" %}
