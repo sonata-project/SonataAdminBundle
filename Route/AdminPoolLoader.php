@@ -62,7 +62,7 @@ class AdminPoolLoader extends FileLoader
      */
     public function load($resource, $type = null)
     {
-        $collection = new SymfonyRouteCollection;
+        $collection = new SymfonyRouteCollection();
         foreach ($this->adminServiceIds as $id) {
 
             $admin = $this->pool->getInstance($id);

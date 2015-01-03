@@ -36,8 +36,8 @@ class ControllerGenerator extends Generator
     }
 
     /**
-     * @param BundleInterface $bundle
-     * @param string $controllerClassBasename
+     * @param  BundleInterface   $bundle
+     * @param  string            $controllerClassBasename
      * @throws \RuntimeException
      */
     public function generate(BundleInterface $bundle, $controllerClassBasename)

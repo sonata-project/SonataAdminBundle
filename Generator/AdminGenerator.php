@@ -33,7 +33,7 @@ class AdminGenerator extends Generator
 
     /**
      * @param ModelManagerInterface $modelManager
-     * @param array|string $skeletonDirectories
+     * @param array|string          $skeletonDirectories
      */
     public function __construct(ModelManagerInterface $modelManager, $skeletonDirectories)
     {
@@ -42,9 +42,9 @@ class AdminGenerator extends Generator
     }
 
     /**
-     * @param BundleInterface $bundle
-     * @param string $adminClassBasename
-     * @param string $modelClass
+     * @param  BundleInterface   $bundle
+     * @param  string            $adminClassBasename
+     * @param  string            $modelClass
      * @throws \RuntimeException
      */
     public function generate(BundleInterface $bundle, $adminClassBasename, $modelClass)

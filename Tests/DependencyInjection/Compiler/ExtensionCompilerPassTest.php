@@ -79,7 +79,7 @@ class ExtensionCompilerPassTest extends \PHPUnit_Framework_TestCase
             'Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass', 'flattenExtensionConfiguration'
         );
 
-        $method->setAccessible(TRUE);
+        $method->setAccessible(true);
         $extensionMap = $method->invokeArgs(new ExtensionCompilerPass(), array($extensionMap));
 
         $this->assertArrayHasKey('admins', $extensionMap);
@@ -108,7 +108,7 @@ class ExtensionCompilerPassTest extends \PHPUnit_Framework_TestCase
             'Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass', 'flattenExtensionConfiguration'
         );
 
-        $method->setAccessible(TRUE);
+        $method->setAccessible(true);
         $extensionMap = $method->invokeArgs(new ExtensionCompilerPass(), array($extensionMap));
 
         // Admins
@@ -272,6 +272,7 @@ class ExtensionCompilerPassTest extends \PHPUnit_Framework_TestCase
                 ),
             )
         );
+
         return $config;
     }
 

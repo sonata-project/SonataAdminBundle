@@ -77,19 +77,19 @@ class ShowMapperTest extends \PHPUnit_Framework_TestCase
 
         $this->admin->expects($this->any())
             ->method('getShowGroups')
-            ->will($this->returnCallback(function() use (&$groups) {
+            ->will($this->returnCallback(function () use (&$groups) {
                 return $groups;
             }));
 
         $this->admin->expects($this->any())
             ->method('setShowGroups')
-            ->will($this->returnCallback(function($showGroups) use (&$groups) {
+            ->will($this->returnCallback(function ($showGroups) use (&$groups) {
                 $groups = $showGroups;
             }));
 
         $this->admin->expects($this->any())
             ->method('reorderShowGroup')
-            ->will($this->returnCallback(function($group, $keys) use (&$groups) {
+            ->will($this->returnCallback(function ($group, $keys) use (&$groups) {
                 $showGroups = $groups;
                 $showGroups[$group]['fields'] = array_merge(array_flip($keys), $showGroups[$group]['fields']);
                 $groups = $showGroups;
@@ -114,7 +114,7 @@ class ShowMapperTest extends \PHPUnit_Framework_TestCase
             ->method('getModelManager')
             ->will($this->returnValue($modelManager));
 
-        $labelTranslatorStrategy = new NoopLabelTranslatorStrategy;
+        $labelTranslatorStrategy = new NoopLabelTranslatorStrategy();
 
         $this->admin->expects($this->any())
             ->method('getLabelTranslatorStrategy')
@@ -122,7 +122,7 @@ class ShowMapperTest extends \PHPUnit_Framework_TestCase
 
         $this->showBuilder->expects($this->any())
             ->method('addField')
-            ->will($this->returnCallback(function($list, $type, $fieldDescription, $admin) {
+            ->will($this->returnCallback(function ($list, $type, $fieldDescription, $admin) {
                 $list->add($fieldDescription);
             }));
 

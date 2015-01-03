@@ -61,7 +61,7 @@ class CreateClassCacheCommandTest extends \PHPUnit_Framework_TestCase
 
         $container->expects($this->any())
                 ->method('get')
-                ->will($this->returnCallback(function($id) use ($kernel) {
+                ->will($this->returnCallback(function ($id) use ($kernel) {
                     if ($id == 'kernel') {
                         return $kernel;
                     }

@@ -16,6 +16,8 @@ class FormViewIterator implements \RecursiveIterator
 {
     protected $formView;
 
+    protected $iterator;
+
     /**
      * @param \Symfony\Component\Form\FormView $formView
      */

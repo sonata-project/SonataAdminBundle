@@ -68,7 +68,7 @@ interface AclSecurityHandlerInterface extends SecurityHandlerInterface
      * @abstract
      *
      * @param \Traversable $oids a collection of ObjectIdentityInterface implementations
-     * @param array $sids an array of SecurityIdentityInterface implementations
+     * @param array        $sids an array of SecurityIdentityInterface implementations
      *
      * @throws \Exception
      * @return \SplObjectStorage mapping the passed object identities to ACLs

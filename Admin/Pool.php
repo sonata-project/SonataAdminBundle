@@ -207,7 +207,7 @@ class Pool
     }
 
     /**
-     * @return null|\Symfony\Component\DependencyInjection\ContainerInterface
+     * @return ContainerInterface|null
      */
     public function getContainer()
     {

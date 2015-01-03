@@ -44,7 +44,7 @@ class BaseAdminModelManagerTest extends \PHPUnit_Framework_TestCase
     public function testObject()
     {
         $modelManager = $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface');
-        $modelManager->expects($this->once())->method('find')->will($this->returnCallback(function($class, $id) {
+        $modelManager->expects($this->once())->method('find')->will($this->returnCallback(function ($class, $id) {
             if ($class != 'class') {
                 throw new \RuntimeException('Invalid class argument');
             }
@@ -62,7 +62,7 @@ class BaseAdminModelManagerTest extends \PHPUnit_Framework_TestCase
     public function testCreateQuery()
     {
         $modelManager = $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface');
-        $modelManager->expects($this->once())->method('createQuery')->will($this->returnCallback(function($class) {
+        $modelManager->expects($this->once())->method('createQuery')->will($this->returnCallback(function ($class) {
             if ($class != 'class') {
                 throw new \RuntimeException('Invalid class argument');
             }

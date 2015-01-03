@@ -77,7 +77,7 @@ class RoleSecurityHandlerTest extends \PHPUnit_Framework_TestCase
 
         $this->securityContext->expects($this->any())
             ->method('isGranted')
-            ->will($this->returnCallback(function(array $attributes, $object) {
+            ->will($this->returnCallback(function (array $attributes, $object) {
 
                 if (in_array('ROLE_BATMAN', $attributes)) {
                     return true;
@@ -181,7 +181,7 @@ class RoleSecurityHandlerTest extends \PHPUnit_Framework_TestCase
 
         $this->securityContext->expects($this->any())
             ->method('isGranted')
-            ->will($this->returnCallback(function(array $attributes, $object) {
+            ->will($this->returnCallback(function (array $attributes, $object) {
                 throw new \RuntimeException('Something is wrong');
             }));
 

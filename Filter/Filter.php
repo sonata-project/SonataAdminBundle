@@ -11,8 +11,6 @@
 
 namespace Sonata\AdminBundle\Filter;
 
-use Sonata\AdminBundle\Filter\FilterInterface;
-
 abstract class Filter implements FilterInterface
 {
     protected $name = null;

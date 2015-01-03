@@ -11,8 +11,6 @@
 
 namespace Sonata\AdminBundle\Admin;
 
-use Sonata\AdminBundle\Admin\AdminInterface;
-
 interface FieldDescriptionInterface
 {
 

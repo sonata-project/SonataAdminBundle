@@ -11,7 +11,6 @@
 
 namespace Sonata\AdminBundle\Admin;
 
-use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Exception\NoValueException;
 use Symfony\Component\DependencyInjection\Container;
 
@@ -106,17 +105,17 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     protected $options = array();
 
     /**
-     * @var Admin|null the parent Admin instance
+     * @var AdminInterface|null the parent Admin instance
      */
     protected $parent = null;
 
     /**
-     * @var Admin the related admin instance
+     * @var AdminInterface the related admin instance
      */
     protected $admin;
 
     /**
-     * @var Admin the associated admin class if the object is associated to another entity
+     * @var AdminInterface the associated admin class if the object is associated to another entity
      */
     protected $associationAdmin;
 
@@ -293,9 +292,6 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     }
 
     /**
-     * set the association admin instance (only used if the field is linked to an Admin)
-     *
-     * @param \Sonata\AdminBundle\Admin\AdminInterface $associationAdmin the associated admin
      * {@inheritdoc}
      */
     public function setAssociationAdmin(AdminInterface $associationAdmin)
@@ -479,6 +475,6 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
      */
     public function getTranslationDomain()
     {
-        return $this->getOption('translation_domain') ? : $this->getAdmin()->getTranslationDomain();
+        return $this->getOption('translation_domain') ?: $this->getAdmin()->getTranslationDomain();
     }
 }

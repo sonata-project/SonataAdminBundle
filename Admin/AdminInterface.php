@@ -11,8 +11,6 @@
 
 namespace Sonata\AdminBundle\Admin;
 
-use Sonata\AdminBundle\Admin\Pool;
-use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Builder\FormContractorInterface;
 use Sonata\AdminBundle\Builder\ListBuilderInterface;
 use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
@@ -24,7 +22,6 @@ use Sonata\AdminBundle\Validator\ErrorElement;
 use Sonata\AdminBundle\Route\RouteGeneratorInterface;
 
 use Knp\Menu\FactoryInterface as MenuFactoryInterface;
-use Knp\Menu\ItemInterface as MenuItemInterface;
 
 use Sonata\CoreBundle\Model\Metadata;
 use Symfony\Component\Validator\ValidatorInterface;
@@ -180,7 +177,7 @@ interface AdminInterface
     public function generateMenuUrl($name, array $parameters = array(), $absolute = false);
 
     /**
-     * @return \Sonata\AdminBundle\Model\ModelManagerInterface;
+     * @return \Sonata\AdminBundle\Model\ModelManagerInterface
      */
     public function getModelManager();
 
@@ -233,7 +230,7 @@ interface AdminInterface
 
     /**
      * @return boolean true if a request object is linked to this Admin, false
-     *      otherwise.
+     *                 otherwise.
      */
     public function hasRequest();
 
@@ -570,7 +567,7 @@ interface AdminInterface
      *
      * @param string $code
      *
-     * @return array|null
+     * @return AdminInterface|null
      */
     public function getChild($code);
 
@@ -601,7 +598,7 @@ interface AdminInterface
     public function getObject($id);
 
     /**
-     * @param string $subject
+     * @param object $subject
      *
      * @return mixed
      */
@@ -850,7 +847,7 @@ interface AdminInterface
     /**
      * Remove a form group field
      *
-     * @param $key
+     * @param string $key
      *
      * @return void
      */
