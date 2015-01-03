@@ -16,7 +16,7 @@ The ``Admin`` class maps a specific model to the rich CRUD interface provided by
 ``SonataAdminBundle``. In other words, using your ``Admin`` classes, you can configure
 what is shown by ``SonataAdminBundle`` in each CRUD action for the associated model.
 By now you've seen 3 of those actions in the ``getting started`` page: list,
-filter and form (for creation/editing). However, a fully configured ``Admin`` class
+filter and form (for creation/edition). However, a fully configured ``Admin`` class
 can define more actions:
 
 * ``list``: The fields displayed in the list table
