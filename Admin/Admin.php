@@ -1246,7 +1246,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      */
     public function generateMenuUrl($name, array $parameters = array(), $absolute = false)
     {
-        return $this->routeGenerator->generateMenuUrl($this, $name,$parameters, $absolute);
+        return $this->routeGenerator->generateMenuUrl($this, $name, $parameters, $absolute);
     }
 
     /**

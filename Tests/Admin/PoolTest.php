@@ -16,7 +16,7 @@ use Sonata\AdminBundle\Admin\Pool;
 class PoolTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var Sonata\AdminBundle\Admin\Pool
+     * @var Pool
      */
     private $pool = null;
 

@@ -172,7 +172,7 @@ interface AdminInterface
      * @param array  $parameters
      * @param bool   $absolute
      *
-     * @return string return a complete url
+     * @return array return url parts: 'route', 'routeParameters', 'routeAbsolute'
      */
     public function generateMenuUrl($name, array $parameters = array(), $absolute = false);
 
