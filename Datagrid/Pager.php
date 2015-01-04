@@ -44,7 +44,6 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
         $this->setMaxPerPage($maxPerPage);
     }
 
-
     /**
      * Returns the current pager's max link.
      *
