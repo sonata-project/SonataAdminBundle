@@ -172,9 +172,9 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
     /**
      * Apply the default values required by the AdminInterface to the Admin service definition
      *
-     * @param  ContainerBuilder $container
-     * @param  string           $serviceId
-     * @param  array            $attributes
+     * @param ContainerBuilder $container
+     * @param string           $serviceId
+     * @param array            $attributes
      *
      * @return Definition
      */

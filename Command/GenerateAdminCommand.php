@@ -258,7 +258,7 @@ class GenerateAdminCommand extends ContainerAwareCommand
 
     /**
      * @param OutputInterface $output
-     * @param string $message
+     * @param string          $message
      */
     private function writeError(OutputInterface $output, $message)
     {
@@ -266,11 +266,11 @@ class GenerateAdminCommand extends ContainerAwareCommand
     }
 
     /**
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
-     * @param string $questionText
-     * @param mixed $default
-     * @param callable $validator
+     * @param string          $questionText
+     * @param mixed           $default
+     * @param callable        $validator
      *
      * @return mixed
      */
@@ -280,7 +280,6 @@ class GenerateAdminCommand extends ContainerAwareCommand
 
         if ($questionHelper instanceof DialogHelper) {
             // @todo remove this BC code for SensioGeneratorBundle 2.3/2.4 after dropping  support for Symfony 2.3
-
             return $questionHelper->askAndValidate($output, $questionHelper->getQuestion($questionText, $default), $validator, false, $default);
         }
 

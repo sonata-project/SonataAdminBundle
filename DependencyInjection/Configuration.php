@@ -52,7 +52,7 @@ class Configuration implements ConfigurationInterface
                                 ->performNoDeepMerging()
                                 ->beforeNormalization()
                                     ->ifString()
-                                    ->then(function($v){ return array($v); })
+                                    ->then(function ($v) { return array($v); })
                                 ->end()
                                 ->prototype('scalar')->end()
                             ->end()
