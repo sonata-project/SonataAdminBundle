@@ -186,7 +186,7 @@ class CRUDController extends Controller
 
         return parent::render($view, $parameters, $response);
     }
-    
+
     /**
      * @param \Exception $e
      *
