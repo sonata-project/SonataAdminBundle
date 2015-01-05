@@ -45,7 +45,7 @@ Usage example:
 
 .. code-block:: bash
 
-    php app/console sonata:admin:generate YourNS\FooBundle\Entity\Bar
+    php app/console sonata:admin:generate YourNS/FooBundle/Entity/Bar
 
 
 sonata:admin:list
