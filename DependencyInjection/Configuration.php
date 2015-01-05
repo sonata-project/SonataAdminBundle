@@ -115,11 +115,20 @@ class Configuration implements ConfigurationInterface
                             ->end()
                         ->end()
                         ->arrayNode('blocks')
-                            ->defaultValue(array(array('position' => 'left', 'settings' => array(), 'type' => 'sonata.admin.block.admin_list')))
+                            ->defaultValue(array(array(
+                                'position' => 'left',
+                                'settings' => array(),
+                                'type'     => 'sonata.admin.block.admin_list',
+                                'roles'    => array()
+                            )))
                             ->prototype('array')
                                 ->fixXmlConfig('setting')
                                 ->children()
                                     ->scalarNode('type')->cannotBeEmpty()->end()
+                                    ->arrayNode('roles')
+                                        ->defaultValue(array())
+                                        ->prototype('scalar')->end()
+                                    ->end()
                                     ->arrayNode('settings')
                                         ->useAttributeAsKey('id')
                                         ->prototype('variable')->defaultValue(array())->end()

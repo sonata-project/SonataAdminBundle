@@ -33,8 +33,8 @@ The Dashboard is actually built using ``Blocks`` from ``SonataBlockBundle``. You
 can learn more about this bundle and how to build your own Blocks on the
 `SonataBlock documentation page`_.
 
-The ``Admin`` list
-------------------
+The ``Admin`` list block
+------------------------
 
 The ``Admin`` list is a ``Block`` that fetches information from the ``Admin`` service's
 ``Pool`` and prints it in the nicely formated list you have on your default Dashboard.
@@ -219,6 +219,7 @@ a text block and RSS feed block on the right. The configuration for this scenari
                     -
                         position: right
                         type: sonata.block.service.rss
+                        roles: [POST_READER]
                         settings:
                             title: Sonata Project's Feeds
                             url: http://sonata-project.org/blog/archive.rss
@@ -229,6 +230,9 @@ a text block and RSS feed block on the right. The configuration for this scenari
     Blocks may accept/require additional settings to be passed in order to
     work properly. Refer to the associated documentation/implementation to
     get more information on each block's options and requirements.
+
+    You can also configure the ``roles`` section to configure users that can
+    view the block.
 
 Display two ``Admin`` list blocks with different dashboard groups
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
