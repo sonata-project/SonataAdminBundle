@@ -31,6 +31,16 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
+        // check if translator service exist
+        if (!$container->hasAlias('translator')) {
+            throw new \RuntimeException('The "translator" service is not yet enabled.
+                It\'s required by SonataAdmin to display all labels properly.
+
+                To learn how to enable the translator service please visit:
+                http://symfony.com/doc/current/book/translation.html#book-translation-configuration
+             ');
+        }
+
         $parameterBag = $container->getParameterBag();
         $groupDefaults = $admins = $classes = array();
 
