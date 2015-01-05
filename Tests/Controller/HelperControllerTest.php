@@ -14,6 +14,7 @@ namespace Sonata\AdminBundle\Tests\Controller;
 use Sonata\AdminBundle\Admin\AdminHelper;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Controller\HelperController;
+use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
 use \Twig_Environment as Twig;
@@ -85,7 +86,7 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
         ));
         $pool = new Pool($container, 'title', 'logo');
         $helper = new AdminHelper($pool);
-        $validator = $this->getMock('Symfony\Component\Validator\ValidatorInterface');
+        $validator = $this->getValidator();
         $controller = new HelperController($twig, $pool, $helper, $validator);
 
         $controller->getShortObjectDescriptionAction($request);
@@ -115,7 +116,7 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
 
         $helper = new AdminHelper($pool);
 
-        $validator = $this->getMock('Symfony\Component\Validator\ValidatorInterface');
+        $validator = $this->getValidator();
         $controller = new HelperController($twig, $pool, $helper, $validator);
 
         $controller->getShortObjectDescriptionAction($request);
@@ -142,7 +143,7 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
 
         $helper = new AdminHelper($pool);
 
-        $validator = $this->getMock('Symfony\Component\Validator\ValidatorInterface');
+        $validator = $this->getValidator();
         $controller = new HelperController($twig, $pool, $helper, $validator);
 
         $controller->getShortObjectDescriptionAction($request);
@@ -187,7 +188,7 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
 
         $helper = new AdminHelper($pool);
 
-        $validator = $this->getMock('Symfony\Component\Validator\ValidatorInterface');
+        $validator = $this->getValidator();
 
         $controller = new HelperController($twig, $pool, $helper, $validator);
 
@@ -230,7 +231,7 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
 
         $helper = new AdminHelper($pool);
 
-        $validator = $this->getMock('Symfony\Component\Validator\ValidatorInterface');
+        $validator = $this->getValidator();
 
         $controller = new HelperController($twig, $pool, $helper, $validator);
 
@@ -286,7 +287,7 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
 
         $pool = new Pool($container, 'title', 'logo');
 
-        $validator = $this->getMock('Symfony\Component\Validator\ValidatorInterface');
+        $validator = $this->getValidator();
 
         $mockView = $this->getMockBuilder('Symfony\Component\Form\FormView')
             ->disableOriginalConstructor()
@@ -368,7 +369,7 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
 
         $pool = new Pool($container, 'title', 'logo');
 
-        $validator = $this->getMock('Symfony\Component\Validator\ValidatorInterface');
+        $validator = $this->getValidator();
 
         $dispatcher = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
 
@@ -417,13 +418,8 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
             new ConstraintViolation('error2', null, array(), null, 'enabled', null),
         ));
 
-        if(version_compare(Kernel::VERSION,'2.5','<')) {
-            $validator = $this->getMock('Symfony\Component\Validator\Validator');
-        }
-        else {
-            $validator = $this->getMock('Symfony\Component\Validator\Validator\RecursiveValidator');
-        }
-        
+        $validator = $this->getValidator();
+
         $validator
             ->expects($this->once())
             ->method('validateProperty')
@@ -436,5 +432,25 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
         $response = $controller->setObjectFieldValueAction($request);
 
         $this->assertEquals('{"status":"KO","message":"error1\nerror2"}', $response->getContent() );
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getValidator()
+    {
+        if (version_compare(Kernel::VERSION, '2.5', '<')) {
+            $validator = $this->getMock(
+                'Symfony\Component\Validator\Validator'
+            );
+
+            return $validator;
+        } else {
+            $validator = $this->getMock(
+                'Symfony\Component\Validator\Validator\RecursiveValidator'
+            );
+
+            return $validator;
+        }
     }
 }
