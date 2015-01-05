@@ -60,10 +60,19 @@ Using roles:
 
     .. code-block:: yaml
 
-        # app/config/config.yml
-        sonata_admin:
-            security:
-                handler: sonata.admin.security.handler.role
+    sonata_admin:
+        security:
+            handler: sonata.admin.security.handler.role
+            # role security information
+            information:
+                EDIT: EDIT
+                LIST: LIST
+                CREATE: CREATE
+                VIEW: VIEW
+                DELETE: DELETE
+                EXPORT: EXPORT
+                OPERATOR: OPERATOR
+                MASTER: MASTER
 
 Using ACL:
 
@@ -122,100 +131,18 @@ So our ``security.yml`` file may look to something like this:
 
         # app/config/security.yml
         security:
-            ...
-            role_hierarchy:
-                # for convenience, I decided to gather Sonata roles here
-                ROLE_SONATA_FOO_READER:
-                    - ROLE_SONATA_ADMIN_DEMO_FOO_LIST
-                    - ROLE_SONATA_ADMIN_DEMO_FOO_VIEW
-                ROLE_SONATA_FOO_EDITOR:
-                    - ROLE_SONATA_ADMIN_DEMO_FOO_CREATE
-                    - ROLE_SONATA_ADMIN_DEMO_FOO_EDIT
-                ROLE_SONATA_FOO_ADMIN:
-                    - ROLE_SONATA_ADMIN_DEMO_FOO_DELETE
-                    - ROLE_SONATA_ADMIN_DEMO_FOO_EXPORT
-                # those are the roles I will use (less verbose)
-                ROLE_STAFF:             [ROLE_USER, ROLE_SONATA_FOO_READER]
-                ROLE_ADMIN:             [ROLE_STAFF, ROLE_SONATA_FOO_EDITOR, ROLE_SONATA_FOO_ADMIN]
-                ROLE_SUPER_ADMIN:       [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
-
-            # set access_strategy to unanimous, else you may have unexpected behaviors
-            access_decision_manager:
-                strategy: unanimous
-
-Note that we also set ``access_strategy`` to unanimous.
-It means that if one voter (for example Sonata) refuses access, access will be denied.
-For more information on this subject, please see `changing the access decision strategy`_
-in the Symfony documentation.
-
-Usage
-~~~~~
-
-You can now test if an user is authorized from an Admin class:
-
-.. code-block:: php
-
-        if ($this->isGranted('LIST')) {
-            ...
-        }
-
-From a controller extending ``Sonata\AdminBundle\Controller\CRUDController``:
-
-.. code-block:: php
-
-        if ($this->admin->isGranted('LIST')) {
-            ...
-        }
-
-Or from a Twig template:
-
-.. code-block:: jinja
-
-        {% if is_granted('VIEW') %}
-            <p>Hello there!</p>
-        {% endif %}
-
-Note that you don't have to re-specify the prefix.
-
-Sonata check those permissions for the action it handles internally. Of course you will have to recheck them in your own code.
-
-Yon can also create your own permissions, for example ``EMAIL`` (which will turn into role ``ROLE_SONATA_ADMIN_DEMO_FOO_EMAIL``).
-
-Going further
-~~~~~~~~~~~~~
-
-Because Sonata role handler supplements Symfony2 security, but does not override it, you are free to do more advanced operations.
-For example, you can `create your own voter`_
-
-Customizing the handler behavior
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-If you want to change the handler behavior (for example, to pass the current object to voters), extend
-``Sonata\AdminBundle\Security\Handler\RoleSecurityHandler``, and override the ``isGranted`` method.
-
-Then declare your handler as a service:
-
-.. configuration-block::
-
-    .. code-block:: xml
-
-        <parameters>
-            <parameter key="acme.demo.security.handler.role.class" >Acme\DemoBundle\Security\Handler\RoleSecurityHandler</parameter>
-        </parameters>
-        <services>
-            <service id="acme.demo.security.handler.role" class="%acme.demo.security.handler.role.class%" public="false">
-                <argument type="service" id="security.context" on-invalid="null" />
-                <argument type="collection">
-                    <argument>ROLE_SUPER_ADMIN</argument>
-                </argument>
-            </service>
-        ...
-
-And specify it as Sonata security handler on your configuration:
-
-.. configuration-block::
-
-    .. code-block:: yaml
+            handler: sonata.admin.security.handler.acl
+            # acl security information
+            information:
+                GUEST:    [VIEW, LIST]
+                STAFF:    [EDIT, LIST, CREATE]
+                EDITOR:   [OPERATOR, EXPORT]
+                ADMIN:    [MASTER]
+            # permissions not related to an object instance and also to be available when objects do not exist
+            # the DELETE admin permission means the user is allowed to batch delete objects
+            admin_permissions: [CREATE, LIST, DELETE, UNDELETE, EXPORT, OPERATOR, MASTER]
+            # permission related to the objects
+            object_permissions: [VIEW, EDIT, DELETE, UNDELETE, OPERATOR, MASTER, OWNER]
 
         # app/config/config.yml
         sonata_admin:
@@ -382,13 +309,13 @@ If you have Admin classes, you can install or update the related CRUD ACL rules:
 .. code-block:: sh
 
     # php app/console sonata:admin:setup-acl
-    Starting ACL AdminBundle configuration
-    > install ACL for sonata.media.admin.media
-       - add role: ROLE_SONATA_MEDIA_ADMIN_MEDIA_GUEST, permissions: ["VIEW","LIST"]
-       - add role: ROLE_SONATA_MEDIA_ADMIN_MEDIA_STAFF, permissions: ["EDIT","LIST","CREATE"]
-       - add role: ROLE_SONATA_MEDIA_ADMIN_MEDIA_EDITOR, permissions: ["OPERATOR","EXPORT"]
-       - add role: ROLE_SONATA_MEDIA_ADMIN_MEDIA_ADMIN, permissions: ["MASTER"]
-    ... skipped ...
+        Starting ACL AdminBundle configuration
+        > install ACL for sonata.media.admin.media
+        - add role: ROLE_SONATA_MEDIA_ADMIN_MEDIA_GUEST, permissions: ["VIEW","LIST"]
+        - add role: ROLE_SONATA_MEDIA_ADMIN_MEDIA_STAFF, permissions: ["EDIT","LIST","CREATE"]
+        - add role: ROLE_SONATA_MEDIA_ADMIN_MEDIA_EDITOR, permissions: ["OPERATOR","EXPORT"]
+        - add role: ROLE_SONATA_MEDIA_ADMIN_MEDIA_ADMIN, permissions: ["MASTER"]
+        ... skipped ...
 
 
 If you already have objects, you can generate the object ACL rules for each
@@ -417,14 +344,15 @@ the ``Admin`` class is created for.
 By default each ``Admin`` class contains the following roles, override the
 property ``$securityInformation`` to change this:
 
-- ``ROLE_SONATA_..._GUEST``
-    a guest that is allowed to ``VIEW`` an object and a ``LIST`` of objects;
-- ``ROLE_SONATA_..._STAFF``
-    probably the biggest part of the users, a staff user  has the same permissions as guests and is additionally allowed to ``EDIT`` and ``CREATE`` new objects;
-- ``ROLE_SONATA_..._EDITOR``
-    an editor is granted all access and, compared to the staff users, is allowed to ``DELETE``;
-- ``ROLE_SONATA_..._ADMIN``
-    an administrative user is granted all access and on top of that, the user is allowed to grant other users access.
+ - ``ROLE_SONATA_..._GUEST`` : a guest that is allowed to view an object and a 
+    list of objects;
+ - ``ROLE_SONATA_..._STAFF`` : probably the biggest part of the users, a staff 
+    user  has the same permissions as guests and is additionally allowed to 
+    ``EDIT`` and ``CREATE`` new objects;
+ - ``ROLE_SONATA_..._EDITOR`` : an editor is granted all access and, compared to
+    the staff users, is allowed to ``DELETE`` and ``EXPORT``;
+ - ``ROLE_SONATA_..._ADMIN`` : an administrative user is granted all access and 
+    on top of that, the user is allowed to grant other users access.
 
 Owner:
 

@@ -90,7 +90,12 @@ to customize the ones you need. You can simply extend the ones you want in your 
 and tell ``SonataAdminBundle`` to use your templates instead of the default ones. You can do so
 in several ways.
 
-You can specify your templates in the config.yml file, like so:
+    sonata_admin:
+        templates:
+            # default global templates
+            layout:    SonataAdminBundle::standard_layout.html.twig
+            ajax:      SonataAdminBundle::ajax_layout.html.twig
+            dashboard: SonataAdminBundle:Core:dashboard.html.twig
 
 .. configuration-block::
 

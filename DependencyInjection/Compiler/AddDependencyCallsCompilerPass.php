@@ -68,7 +68,8 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
                     continue;
                 }
 
-                $resolvedGroupName = isset($attributes['group']) ? $parameterBag->resolveValue($attributes['group']) : 'default';
+                $groupName = isset($attributes['group']) ? $attributes['group'] : 'default';
+                $resolvedGroupName = $parameterBag->resolveValue($groupName);
                 $labelCatalogue = isset($attributes['label_catalogue']) ? $attributes['label_catalogue'] : 'SonataAdminBundle';
                 $icon = isset($attributes['icon']) ? $attributes['icon'] : '<i class="fa fa-folder"></i>';
 

@@ -192,10 +192,15 @@ you can create and add more blocks to it.
    :alt: Dashboard
    :width: 500
 
-In this screenshot, in addition to the default ``Admin`` list block on the left, we added
-a text block and RSS feed block on the right. The configuration for this scenario would be:
+    # app/config/config.yml
+    sonata_admin:
+        dashboard:
+            blocks:
+                # display a dashboard block
+                - { position: left, type: sonata.admin.block.admin_list }
 
-.. configuration-block::
+            groups:
+                ... your config ...
 
     .. code-block:: yaml
 
@@ -273,7 +278,12 @@ suit this scenario.
 In this example, you would have two ``admin_list`` blocks on your dashboard, each
 of them containing just the respectively configured groups.
 
-.. _`SonataBlock documentation page`:  http://sonata-project.org/bundles/block/master/doc/index.html
+    # app/config/config.yml
+    sonata_admin:
+        dashboard:
+            blocks:
+                # display a dashboard block
+                - { position: left, type: sonata.admin.block.admin_list }
 
 Dashboard Layout
 ~~~~~~~~~~~~~~~~
@@ -300,7 +310,13 @@ On ``top`` and ``bottom`` positions, you can also specify an optionnal ``class``
 
 .. configuration-block::
 
-    .. code-block:: yaml
+    # app/config/config.yml
+    sonata_admin:
+        dashboard:
+            blocks:
+                # display two dashboard blocks
+                - { position: left,  type: sonata.admin.block.admin_list, settings: { groups: [sonata_page1, sonata_page2] } }
+                - { position: right, type: sonata.admin.block.admin_list, settings: { groups: [sonata_page3] } }
 
         # app/config/config.yml
         sonata_admin:

@@ -47,6 +47,11 @@ to your application's routing file:
 At this point you can already access the (empty) admin dashboard by visiting the url:
 ``http://yoursite.local/admin/dashboard``.
 
+SonataAdminBundle does not impose persistence service (service for handling and
+controlling your models), however most likely your application will use some
+persistence service (like ORM or ODM for database and document stores) therefore
+you can use the following bundles officially supported by Sonata Project's admin
+bundle:
 
 Step 2: Create an Admin class
 -----------------------------
@@ -55,9 +60,8 @@ SonataAdminBundle helps you manage your data using a graphic interface that
 will let you create, update or search your model's instances. Those actions need to
 be configured, which is done using an Admin class.
 
-An Admin class represents the mapping of your model to each administration action.
-In it, you decide which fields to show on a listing, which to use as filters or what
-to show on an creation/edition form.
+Install the persistance service you need and configure it according to its
+related documentation.
 
 The easiest way to create an Admin class for your model is to extend
 the ``Sonata\AdminBundle\Admin\Admin`` class.

@@ -64,7 +64,7 @@
             </trans-unit>
             <trans-unit id="link_action_edit">
                 <source>link_action_edit</source>
-                <target>Editer</target>
+                <target>Éditer</target>
             </trans-unit>
             <trans-unit id="link_add">
                 <source>link_add</source>
@@ -143,8 +143,8 @@
                 <target>Action interrompue. Aucun élément n'a été séléctionné.</target>
             </trans-unit>
             <trans-unit id='flash_create_success'>
-                <source>flash_create_success</source>
-                <target>L'élément "%name%" a été créé avec succès.</target>
+              <source>flash_create_success</source>
+              <target>L'élément a été créé avec succès.</target>
             </trans-unit>
             <trans-unit id='flash_create_error'>
                 <source>flash_create_error</source>

@@ -173,7 +173,7 @@ class RouteCollection
      *
      * @return \Sonata\AdminBundle\Route\RouteCollection
      */
-    public function clearExcept(array $routeList)
+    public function removeAllExcept(array $routeList)
     {
         $routeCodeList = array();
         foreach ($routeList as $name) {
@@ -195,7 +195,7 @@ class RouteCollection
      *
      * @return \Sonata\AdminBundle\Route\RouteCollection
      */
-    public function clear()
+    public function removeAll()
     {
         $this->elements = array();
 
