@@ -226,8 +226,8 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
             }
         }
 
-        if (isset($service['label'])) {
-            $label = $service['label'];
+        if (isset($addServices['label'])) {
+            $label = $addServices['label'];
         } elseif (isset($attributes['label'])) {
             $label = $attributes['label'];
         } else {
