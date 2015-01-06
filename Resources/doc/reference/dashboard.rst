@@ -292,13 +292,13 @@ Supported positions right now are the following:
 
 The layout is as follows:
 
-TOPTOPTOPTOPTOPTOPTOPTOPTOPTOPTOPTOP
+TOP     TOP     TOP
 
-LEFTLEFTLEF CENTERCENTE RIGHTRIGHTRI
-LEFTLEFTLEF CENTERCENTE RIGHTRIGHTRI
-LEFTLEFTLEF CENTERCENTE RIGHTRIGHTRI
+ LEFT CENTER RIGHT
+ LEFT CENTER RIGHT
+ LEFT CENTER RIGHT
 
-BOTTOMBOTTOMBOTTOMBOTTOMBOTTOMBOTTOM
+BOTTOM BOTTOM BOTTOM
 
 On ``top`` and ``bottom`` positions, you can also specify an optionnal ``class`` option to set the width of the block.
 
