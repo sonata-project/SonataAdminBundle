@@ -186,7 +186,7 @@ class CRUDController extends Controller
 
         return parent::render($view, $parameters, $response);
     }
-    
+
     /**
      * @param \Exception $e
      *
@@ -305,7 +305,7 @@ class CRUDController extends Controller
                     'sonata_flash_success',
                     $this->admin->trans(
                         'flash_delete_success',
-                        array('%name%' => $this->admin->toString($object)),
+                        array('%name%' => $this->escapeHtml($this->admin->toString($object))),
                         'SonataAdminBundle'
                     )
                 );
@@ -321,7 +321,7 @@ class CRUDController extends Controller
                     'sonata_flash_error',
                     $this->admin->trans(
                         'flash_delete_error',
-                        array('%name%' => $this->admin->toString($object)),
+                        array('%name%' => $this->escapeHtml($this->admin->toString($object))),
                         'SonataAdminBundle'
                     )
                 );
@@ -391,7 +391,7 @@ class CRUDController extends Controller
                         'sonata_flash_success',
                         $this->admin->trans(
                             'flash_edit_success',
-                            array('%name%' => $this->admin->toString($object)),
+                            array('%name%' => $this->escapeHtml($this->admin->toString($object))),
                             'SonataAdminBundle'
                         )
                     );
@@ -413,7 +413,7 @@ class CRUDController extends Controller
                         'sonata_flash_error',
                         $this->admin->trans(
                             'flash_edit_error',
-                            array('%name%' => $this->admin->toString($object)),
+                            array('%name%' => $this->escapeHtml($this->admin->toString($object))),
                             'SonataAdminBundle'
                         )
                     );
@@ -549,7 +549,7 @@ class CRUDController extends Controller
             true;
 
         if ($askConfirmation && $confirmation != 'ok') {
-            $actionLabel = $this->admin->trans($this->admin->getTranslationLabel($action, 'action'));
+            $actionLabel = $batchActions[$action]['label'];
 
             $formView = $datagrid->getForm()->createView();
 
@@ -635,7 +635,7 @@ class CRUDController extends Controller
                         'sonata_flash_success',
                         $this->admin->trans(
                             'flash_create_success',
-                            array('%name%' => $this->admin->toString($object)),
+                            array('%name%' => $this->escapeHtml($this->admin->toString($object))),
                             'SonataAdminBundle'
                         )
                     );
@@ -657,7 +657,7 @@ class CRUDController extends Controller
                         'sonata_flash_error',
                         $this->admin->trans(
                             'flash_create_error',
-                            array('%name%' => $this->admin->toString($object)),
+                            array('%name%' => $this->escapeHtml($this->admin->toString($object))),
                             'SonataAdminBundle'
                         )
                     );
@@ -1153,6 +1153,18 @@ class CRUDController extends Controller
         )) {
             throw new HttpException(400, 'The csrf token is not valid, CSRF attack?');
         }
+    }
+
+    /**
+     * Escape string for html output
+     *
+     * @param string $s
+     *
+     * @return string
+     */
+    protected function escapeHtml($s)
+    {
+        return htmlspecialchars($s, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
     }
 
     /**

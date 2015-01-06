@@ -138,17 +138,18 @@ abstract class BaseGroupedMapper extends BaseMapper
     }
 
     /**
-     * Only nested add if the condition match FALSE
+     * Only nested add if the condition match true
      *
-     * @param $bool
+     * @param boolean $bool
      *
-     * @return $this
+     * @return BaseGroupedMapper
+     *
      * @throws \RuntimeException
      */
-    public function if_true($bool)
+    public function ifTrue($bool)
     {
-        if (!$this->apply == null) {
-            throw new \RuntimeException('Cannot nest ifTrue call');
+        if ($this->apply !== null) {
+            throw new \RuntimeException('Cannot nest ifTrue or ifFalse call');
         }
 
         $this->apply = ($bool === true);
@@ -157,17 +158,18 @@ abstract class BaseGroupedMapper extends BaseMapper
     }
 
     /**
-     * Only nested add if the condition match FALSE
+     * Only nested add if the condition match false
      *
-     * @param $bool
+     * @param boolean $bool
      *
-     * @return $this
+     * @return BaseGroupedMapper
+     *
      * @throws \RuntimeException
      */
-    public function if_false($bool)
+    public function ifFalse($bool)
     {
-        if (!$this->apply == null) {
-            throw new \RuntimeException('Cannot nest ifTrue call');
+        if ($this->apply !== null) {
+            throw new \RuntimeException('Cannot nest ifTrue or ifFalse call');
         }
 
         $this->apply = ($bool === false);
@@ -178,7 +180,7 @@ abstract class BaseGroupedMapper extends BaseMapper
     /**
      * @return $this
      */
-    public function end_if()
+    public function ifEnd()
     {
         $this->apply = null;
 

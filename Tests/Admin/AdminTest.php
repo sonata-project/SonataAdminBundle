@@ -1042,12 +1042,6 @@ class AdminTest extends \PHPUnit_Framework_TestCase
 
         $this->assertNull($admin->getTemplate('edit'));
 
-        $templates = array(
-            'list' => 'FooAdminBundle:CRUD:list.html.twig',
-            'show' => 'FooAdminBundle:CRUD:show.html.twig',
-            'edit' => 'FooAdminBundle:CRUD:edit.html.twig'
-        );
-
         $admin->setTemplate('edit', 'FooAdminBundle:CRUD:edit.html.twig');
         $admin->setTemplate('show', 'FooAdminBundle:CRUD:show.html.twig');
 

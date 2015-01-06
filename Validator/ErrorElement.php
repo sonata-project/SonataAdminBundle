@@ -161,6 +161,7 @@ class ErrorElement
         }
 
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
+
         return $propertyAccessor->getValue($this->subject, $this->getCurrentPropertyPath());
     }
 

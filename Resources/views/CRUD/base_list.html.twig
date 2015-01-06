@@ -188,22 +188,24 @@ file that was distributed with this source code.
 {% endblock %}
 
 {% block list_filters_actions %}
-    <ul class="nav navbar-nav navbar-right">
+    {%- if admin.datagrid.filters|length %}
+        <ul class="nav navbar-nav navbar-right">
 
-        <li class="dropdown sonata-actions">
-            <a href="#" class="dropdown-toggle sonata-ba-action" data-toggle="dropdown">{{ 'link_filters'|trans({}, 'SonataAdminBundle') }} <b class="caret"></b></a>
+            <li class="dropdown sonata-actions">
+                <a href="#" class="dropdown-toggle sonata-ba-action" data-toggle="dropdown">{{ 'link_filters'|trans({}, 'SonataAdminBundle') }} <b class="caret"></b></a>
 
-            <ul class="dropdown-menu" role="menu">
-                {% for filter in admin.datagrid.filters if filter.options['show_filter']%}
-                    <li>
-                        <a href="#" class="sonata-toggle-filter sonata-ba-action" filter-target="filter-{{ admin.uniqid }}-{{ filter.name }}" filter-container="filter-container-{{ admin.uniqid() }}">
-                            <i class="fa {{ filter.isActive() ? 'fa-check-square-o' : 'fa-square-o' }}"></i>{{ admin.trans(filter.label, {}, filter.translationDomain) }}
-                        </a>
-                    </li>
-                {% endfor %}
-            </ul>
-        </li>
-    </ul>
+                <ul class="dropdown-menu" role="menu">
+                    {% for filter in admin.datagrid.filters if filter.options['show_filter']%}
+                        <li>
+                            <a href="#" class="sonata-toggle-filter sonata-ba-action" filter-target="filter-{{ admin.uniqid }}-{{ filter.name }}" filter-container="filter-container-{{ admin.uniqid() }}">
+                                <i class="fa {{ filter.isActive() ? 'fa-check-square-o' : 'fa-square-o' }}"></i>{{ admin.trans(filter.label, {}, filter.translationDomain) }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </li>
+        </ul>
+    {% endif -%}
 {% endblock %}
 
 {% block list_filters %}

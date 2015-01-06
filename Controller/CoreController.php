@@ -112,8 +112,8 @@ class CoreController extends Controller
 
             $response = new JsonResponse(array(
                 'results' => $results,
-                'page'    => $pager ? (int)$pager->getPage() : false,
-                'total'   => $pager ? (int)$pager->getNbResults() : false
+                'page'    => $pager ? (int) $pager->getPage() : false,
+                'total'   => $pager ? (int) $pager->getNbResults() : false
             ));
             $response->setPrivate();
 

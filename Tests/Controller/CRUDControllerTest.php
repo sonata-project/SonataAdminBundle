@@ -1036,7 +1036,10 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
     }
 
-    public function testDeleteActionSuccess1()
+    /**
+     * @dataProvider getToStringValues
+     */
+    public function testDeleteActionSuccess1($expectedToStringValue, $toStringValue)
     {
         $object = new \stdClass();
 
@@ -1047,9 +1050,9 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->admin->expects($this->once())
             ->method('toString')
             ->with($this->equalTo($object))
-            ->will($this->returnValue('test'));
+            ->will($this->returnValue($toStringValue));
 
-        $this->expectTranslate('flash_delete_success', array('%name%' => 'test'));
+        $this->expectTranslate('flash_delete_success', array('%name%' => $expectedToStringValue), 'SonataAdminBundle');
 
         $this->admin->expects($this->once())
             ->method('isGranted')
@@ -1067,7 +1070,10 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('list', $response->getTargetUrl());
     }
 
-    public function testDeleteActionSuccess2()
+    /**
+     * @dataProvider getToStringValues
+     */
+    public function testDeleteActionSuccess2($expectedToStringValue, $toStringValue)
     {
         $object = new \stdClass();
 
@@ -1080,7 +1086,12 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo('DELETE'))
             ->will($this->returnValue(true));
 
-        $this->expectTranslate('flash_delete_success');
+        $this->admin->expects($this->once())
+            ->method('toString')
+            ->with($this->equalTo($object))
+            ->will($this->returnValue($toStringValue));
+
+        $this->expectTranslate('flash_delete_success', array('%name%' => $expectedToStringValue), 'SonataAdminBundle');
 
         $this->request->setMethod('POST');
         $this->request->request->set('_method', 'DELETE');
@@ -1094,7 +1105,10 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('list', $response->getTargetUrl());
     }
 
-    public function testDeleteActionSuccessNoCsrfTokenProvider()
+    /**
+     * @dataProvider getToStringValues
+     */
+    public function testDeleteActionSuccessNoCsrfTokenProvider($expectedToStringValue, $toStringValue)
     {
         $this->csrfProvider = null;
 
@@ -1109,7 +1123,12 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo('DELETE'))
             ->will($this->returnValue(true));
 
-        $this->expectTranslate('flash_delete_success');
+        $this->admin->expects($this->once())
+            ->method('toString')
+            ->with($this->equalTo($object))
+            ->will($this->returnValue($toStringValue));
+
+        $this->expectTranslate('flash_delete_success', array('%name%' => $expectedToStringValue), 'SonataAdminBundle');
 
         $this->request->setMethod('POST');
         $this->request->request->set('_method', 'DELETE');
@@ -1151,7 +1170,10 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('SonataAdminBundle:CRUD:delete.html.twig', $this->template);
     }
 
-    public function testDeleteActionError()
+    /**
+     * @dataProvider getToStringValues
+     */
+    public function testDeleteActionError($expectedToStringValue, $toStringValue)
     {
         $object = new \stdClass();
 
@@ -1164,7 +1186,12 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo('DELETE'))
             ->will($this->returnValue(true));
 
-        $this->expectTranslate('flash_delete_error');
+        $this->admin->expects($this->once())
+            ->method('toString')
+            ->with($this->equalTo($object))
+            ->will($this->returnValue($toStringValue));
+
+        $this->expectTranslate('flash_delete_error', array('%name%' => $expectedToStringValue), 'SonataAdminBundle');
 
         $this->assertLoggerLogsModelManagerException($this->admin, 'delete');
 
@@ -1270,7 +1297,10 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('SonataAdminBundle:CRUD:edit.html.twig', $this->template);
     }
 
-    public function testEditActionSuccess()
+    /**
+     * @dataProvider getToStringValues
+     */
+    public function testEditActionSuccess($expectedToStringValue, $toStringValue)
     {
         $object = new \stdClass();
 
@@ -1299,7 +1329,12 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->method('isValid')
             ->will($this->returnValue(true));
 
-        $this->expectTranslate('flash_edit_success');
+        $this->admin->expects($this->once())
+            ->method('toString')
+            ->with($this->equalTo($object))
+            ->will($this->returnValue($toStringValue));
+
+        $this->expectTranslate('flash_edit_success', array('%name%' => $expectedToStringValue), 'SonataAdminBundle');
 
         $this->request->setMethod('POST');
 
@@ -1310,7 +1345,10 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('stdClass_edit', $response->getTargetUrl());
     }
 
-    public function testEditActionError()
+    /**
+     * @dataProvider getToStringValues
+     */
+    public function testEditActionError($expectedToStringValue, $toStringValue)
     {
         $object = new \stdClass();
 
@@ -1335,7 +1373,12 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->method('isValid')
             ->will($this->returnValue(false));
 
-        $this->expectTranslate('flash_edit_error');
+        $this->admin->expects($this->once())
+            ->method('toString')
+            ->with($this->equalTo($object))
+            ->will($this->returnValue($toStringValue));
+
+        $this->expectTranslate('flash_edit_error', array('%name%' => $expectedToStringValue), 'SonataAdminBundle');
 
         $this->request->setMethod('POST');
 
@@ -1556,7 +1599,10 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('SonataAdminBundle:CRUD:edit.html.twig', $this->template);
     }
 
-    public function testCreateActionSuccess()
+    /**
+     * @dataProvider getToStringValues
+     */
+    public function testCreateActionSuccess($expectedToStringValue, $toStringValue)
     {
         $object = new \stdClass();
 
@@ -1594,7 +1640,12 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->method('isValid')
             ->will($this->returnValue(true));
 
-        $this->expectTranslate('flash_create_success');
+        $this->admin->expects($this->once())
+            ->method('toString')
+            ->with($this->equalTo($object))
+            ->will($this->returnValue($toStringValue));
+
+        $this->expectTranslate('flash_create_success', array('%name%' => $expectedToStringValue), 'SonataAdminBundle');
 
         $this->request->setMethod('POST');
 
@@ -1645,7 +1696,10 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->controller->createAction();
     }
 
-    public function testCreateActionError()
+    /**
+     * @dataProvider getToStringValues
+     */
+    public function testCreateActionError($expectedToStringValue, $toStringValue)
     {
         $this->admin->expects($this->once())
             ->method('isGranted')
@@ -1670,7 +1724,12 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->method('isValid')
             ->will($this->returnValue(false));
 
-        $this->expectTranslate('flash_create_error');
+        $this->admin->expects($this->once())
+            ->method('toString')
+            ->with($this->equalTo($object))
+            ->will($this->returnValue($toStringValue));
+
+        $this->expectTranslate('flash_create_error', array('%name%' => $expectedToStringValue), 'SonataAdminBundle');
 
         $this->request->setMethod('POST');
 
@@ -2860,11 +2919,6 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->method('getBatchActions')
             ->will($this->returnValue($batchActions));
 
-        $this->admin->expects($this->once())
-            ->method('getTranslationLabel')
-            ->with($this->equalTo('delete'), $this->equalTo('action'))
-            ->will($this->returnValue('delete_action'));
-
         $data = array('action'=>'delete', 'idx'=>array('123', '456'), 'all_elements'=>false);
 
         $this->request->setMethod('POST');
@@ -2900,6 +2954,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Symfony\Component\Form\FormView', $this->parameters['form']);
         $this->assertEquals($data, $this->parameters['data']);
         $this->assertEquals('csrf-token-123_sonata.batch', $this->parameters['csrf_token']);
+        $this->assertEquals('Foo Bar', $this->parameters['action_label']);
 
         $this->assertEquals(array(), $this->session->getFlashBag()->all());
         $this->assertEquals('SonataAdminBundle:CRUD:batch_confirmation.html.twig', $this->template);
@@ -3037,19 +3092,21 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         return $this->csrfProvider;
     }
 
-    private function expectTranslate()
+    public function getToStringValues()
     {
-        $args = func_get_args();
+        return array(
+            array('', ''),
+            array('Foo', 'Foo'),
+            array('&lt;a href=&quot;http://foo&quot;&gt;Bar&lt;/a&gt;', '<a href="http://foo">Bar</a>'),
+            array('&lt;&gt;&amp;&quot;&#039;abcdefghijklmnopqrstuvwxyz*-+.,?_()[]\/', '<>&"\'abcdefghijklmnopqrstuvwxyz*-+.,?_()[]\/'),
+        );
+    }
 
-        // creates equalTo of all arguments passed to this function
-        $phpunit = $this; // PHP 5.3 compatibility
-        $argsCheck = array_map(function ($item) use ($phpunit) {
-            return $phpunit->equalTo($item);
-        }, func_get_args());
-
-        $mock = $this->admin->expects($this->once())->method('trans');
-        // passes all arguments to the 'with' of the $admin->trans method
-        $mock = call_user_func_array(array($mock, 'with'), $argsCheck);
-        $mock->will($this->returnValue($args[0]));
+    private function expectTranslate($id, array $parameters = array(), $domain = null, $locale = null)
+    {
+        $this->admin->expects($this->once())
+            ->method('trans')
+            ->with($this->equalTo($id), $this->equalTo($parameters), $this->equalTo($domain), $this->equalTo($locale))
+            ->will($this->returnValue($id));
     }
 }

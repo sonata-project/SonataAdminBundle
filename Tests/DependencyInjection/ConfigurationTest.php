@@ -91,4 +91,27 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
             )
         ), $config['admin_services']['my_admin_id']);
     }
+
+    public function testDashboardWithoutRoles()
+    {
+        $processor = new Processor();
+        $config = $processor->processConfiguration(new Configuration(), array());
+
+        $this->assertEmpty($config['dashboard']["blocks"][0]["roles"]);
+    }
+
+    public function testDashboardWithRoles()
+    {
+        $processor = new Processor();
+        $config = $processor->processConfiguration(new Configuration(), array(array(
+            "dashboard" => array(
+                "blocks" => array(array(
+                    "roles" => array("ROLE_ADMIN"),
+                    "type"  => "my.type"
+                ))
+            )
+        )));
+
+        $this->assertEquals($config['dashboard']["blocks"][0]["roles"], array("ROLE_ADMIN"));
+    }
 }

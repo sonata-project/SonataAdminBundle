@@ -316,7 +316,7 @@
             </trans-unit>
             <trans-unit id="td_role">
                 <source>td_role</source>
-                <target>td_role</target>
+                <target>Роль</target>
             </trans-unit>
             <trans-unit id="label_view_revision">
                 <source>label_view_revision</source>
@@ -352,63 +352,63 @@
             </trans-unit>
             <trans-unit id="list_select">
               <source>list_select</source>
-              <target>list_select</target>
+              <target>Вибрати</target>
             </trans-unit>
             <trans-unit id="confirm_exit">
                 <source>confirm_exit</source>
-                <target>confirm_exit</target>
+                <target>У вас є незбережені дані</target>
             </trans-unit>
             <trans-unit id="link_edit_acl">
               <source>link_edit_acl</source>
-              <target>link_edit_acl</target>
+              <target>Редагувати ACL</target>
             </trans-unit>
             <trans-unit id="btn_update_acl">
               <source>btn_update_acl</source>
-              <target>btn_update_acl</target>
+              <target>Зберегти ACL</target>
             </trans-unit>
             <trans-unit id="flash_acl_update_success">
                 <source>flash_acl_edit_success</source>
-                <target>flash_acl_update_success</target>
+                <target>ACL успішно збережений</target>
             </trans-unit>
             <trans-unit id="link_action_acl">
                 <source>link_action_acl</source>
-                <target>link_action_acl</target>
+                <target>ACL</target>
             </trans-unit>
             <trans-unit id="short_object_description_placeholder">
               <source>short_object_description_placeholder</source>
-              <target>short_object_description_placeholder</target>
+              <target>Нічого не вибрано</target>
             </trans-unit>
             <trans-unit id="title_search_results">
                 <source>title_search_results</source>
-                <target>title_search_results</target>
+                <target>Результат пошуку: %query%</target>
             </trans-unit>
             <trans-unit id="search_placeholder">
                 <source>search_placeholder</source>
-                <target>search_placeholder</target>
+                <target>Пошук</target>
             </trans-unit>
             <trans-unit id="no_results_found">
                 <source>no_results_found</source>
-                <target>no_results_found</target>
+                <target>Нічого не знайдено</target>
             </trans-unit>
             <trans-unit id="add_new_entry">
                 <source>add_new_entry</source>
-                <target>add_new_entry</target>
+                <target>Додати новий запис</target>
             </trans-unit>
             <trans-unit id="link_actions">
                 <source>link_actions</source>
-                <target>link_actions</target>
+                <target>Дії</target>
             </trans-unit>
             <trans-unit id="noscript_warning">
                 <source>noscript_warning</source>
-                <target>noscript_warning</target>
+                <target>Javascript вимкнений у вашому браузері. Деякі функції не будуть працювати належним чином.</target>
             </trans-unit>
             <trans-unit id="message_form_group_empty">
                 <source>message_form_group_empty</source>
-                <target>message_form_group_empty</target>
+                <target>Немає доступних полів</target>
             </trans-unit>
             <trans-unit id="link_filters">
                 <source>link_filters</source>
-                <target>link_filters</target>
+                <target>Фільтри</target>
             </trans-unit>
         </body>
     </file>
