@@ -96,7 +96,7 @@ Options
 - ``link_parameters`` (o): add link parameter to the related Admin class when the ``Admin::generateUrl`` is called
 - ``code`` (o): the method name to retrieve the related value
 - ``associated_tostring`` (o): (deprecated, use associated_property option) the method to retrieve the "string" representation of the collection element.
-- ``associated_property`` (o): property path to retrieve the "string" representation of the collection element.
+- ``associated_property`` (o): property path to retrieve the "string" representation of the collection element, or a closure with the element as argument and return a string.
 - ``identifier`` (o): if set to true a link appears on the value to edit the element
 
 Available types and associated options

@@ -789,6 +789,25 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
 
     }
 
+    public function testRenderRelationElementWithClosure()
+    {
+        $this->fieldDescription->expects($this->exactly(1))
+            ->method('getOption')
+
+            ->will($this->returnCallback(function ($value, $default = null) {
+                if ($value == 'associated_property') {
+                    return function($element) {
+                        return 'closure '.$element->foo;
+                    };
+                }
+            }));
+
+        $element = new \stdClass();
+        $element->foo = "bar";
+
+        $this->assertEquals('closure bar', $this->twigExtension->renderRelationElement($element, $this->fieldDescription));
+    }
+
     public function testGetUrlsafeIdentifier()
     {
         $entity = new \stdClass();
