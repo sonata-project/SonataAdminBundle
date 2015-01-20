@@ -39,7 +39,7 @@
                             <div class="tab-content">
                                 {% for code, form_tab in admin.formtabs %}
                                     <div class="tab-pane fade{% if loop.first %} in active{% endif %}" id="tab_{{ loop.index }}">
-                                        <div class="box-body">
+                                        <div class="box-body  container-fluid">
                                             <div class="sonata-ba-collapsed-fields">
                                                 {% if form_tab.description != false %}
                                                     <p>{{ form_tab.description|raw }}</p>
