@@ -352,63 +352,63 @@
             </trans-unit>
             <trans-unit id="list_select">
               <source>list_select</source>
-              <target>list_select</target>
+              <target>انتخاب</target>
             </trans-unit>
             <trans-unit id="confirm_exit">
                 <source>confirm_exit</source>
-                <target>confirm_exit</target>
+                <target>خروج ؟</target>
             </trans-unit>
             <trans-unit id="link_edit_acl">
               <source>link_edit_acl</source>
-              <target>link_edit_acl</target>
+              <target>ویرایش دسترسی</target>
             </trans-unit>
             <trans-unit id="btn_update_acl">
               <source>btn_update_acl</source>
-              <target>btn_update_acl</target>
+              <target>به روز رسانی دسترسی</target>
             </trans-unit>
             <trans-unit id="flash_acl_update_success">
                 <source>flash_acl_edit_success</source>
-                <target>flash_acl_update_success</target>
+                <target>دسترسی به روز رسانی شد</target>
             </trans-unit>
             <trans-unit id="link_action_acl">
                 <source>link_action_acl</source>
-                <target>link_action_acl</target>
+                <target>دسترسی</target>
             </trans-unit>
             <trans-unit id="short_object_description_placeholder">
               <source>short_object_description_placeholder</source>
-              <target>short_object_description_placeholder</target>
+              <target>دسترسی</target>
             </trans-unit>
             <trans-unit id="title_search_results">
                 <source>title_search_results</source>
-                <target>title_search_results</target>
+                <target>نتایج جستجو</target>
             </trans-unit>
             <trans-unit id="search_placeholder">
                 <source>search_placeholder</source>
-                <target>search_placeholder</target>
+                <target>جستجو</target>
             </trans-unit>
             <trans-unit id="no_results_found">
                 <source>no_results_found</source>
-                <target>no_results_found</target>
+                <target>نتیجه ای در برنداشت</target>
             </trans-unit>
             <trans-unit id="add_new_entry">
                 <source>add_new_entry</source>
-                <target>add_new_entry</target>
+                <target>افزودن</target>
             </trans-unit>
             <trans-unit id="link_actions">
                 <source>link_actions</source>
-                <target>link_actions</target>
+                <target>اقدامات</target>
             </trans-unit>
             <trans-unit id="noscript_warning">
                 <source>noscript_warning</source>
-                <target>noscript_warning</target>
+                <target>اسکریپ فعال نمی باشد</target>
             </trans-unit>
             <trans-unit id="message_form_group_empty">
                 <source>message_form_group_empty</source>
-                <target>message_form_group_empty</target>
+                <target>گروه نمی تواند خالی باشد</target>
             </trans-unit>
             <trans-unit id="link_filters">
                 <source>link_filters</source>
-                <target>link_filters</target>
+                <target>فیلترها</target>
             </trans-unit>
         </body>
     </file>
