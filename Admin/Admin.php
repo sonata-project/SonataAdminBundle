@@ -2157,7 +2157,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
                 );
             }
 
-        } elseif ($action != 'list' && $this->hasSubject()) {
+        } elseif ($action != 'list' && $action != 'create' && $this->hasSubject()) {
             $menu = $menu->addChild($this->toString($this->getSubject()));
         } elseif ($action != 'list') {
             $menu = $menu->addChild(
