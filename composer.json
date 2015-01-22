@@ -39,6 +39,7 @@
     },
     "require-dev": {
         "jms/translation-bundle": "~1.1",
+        "willdurand/hateoas-bundle": "~1.0@dev",
         "symfony/yaml": "~2.3",
         "sonata-project/intl-bundle": "~2.1"
     },
