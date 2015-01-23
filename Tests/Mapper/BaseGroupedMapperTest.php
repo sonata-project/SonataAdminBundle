@@ -132,6 +132,17 @@ class BaseGroupedMapperTest extends \PHPUnit_Framework_TestCase
         $this->baseGroupedMapper->tab('fooTab');
         $this->baseGroupedMapper->tab('barTab');
     }
+    
+    public function testHasOpenTab()
+    {
+        $this->assertFalse($this->baseGroupedMapper->hasOpenTab(), '->hasOpenTab() returns false when there are no tabs');
+        
+        $this->baseGroupedMapper->tab('fooTab');
+        $this->assertTrue($this->baseGroupedMapper->hasOpenTab(), '->hasOpenTab() returns true when there is an open tab');
+        
+        $this->baseGroupedMapper->end();
+        $this->assertFalse($this->baseGroupedMapper->hasOpenTab(), '->hasOpenTab() returns false when all tabs are closed');
+    }
 
     /**
      * @expectedException        RuntimeException
