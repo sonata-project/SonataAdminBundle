@@ -17,7 +17,7 @@ env:
 before_script:
   - composer selfupdate
   - composer require symfony/symfony:${SYMFONY_VERSION} --no-update
-  - composer install --prefer-source $COMPOSER_FLAGS
+  - composer update --prefer-source $COMPOSER_FLAGS
   - sudo pip install -r Resources/doc/requirements.txt
 
 script: make test
