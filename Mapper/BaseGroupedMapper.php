@@ -219,6 +219,16 @@ abstract class BaseGroupedMapper extends BaseMapper
 
         return $this;
     }
+    
+    /**
+     * Returns a boolean indicating if there is an open tab at the moment.
+     * 
+     * @return boolean
+     */
+    public function hasOpenTab()
+    {
+        return null !== $this->currentTab;
+    }
 
     /**
      * Add the fieldname to the current group
