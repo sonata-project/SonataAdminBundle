@@ -300,6 +300,7 @@ TOP     TOP     TOP
 
 BOTTOM BOTTOM BOTTOM
 
+
 On ``top`` and ``bottom`` positions, you can also specify an optionnal ``class`` option to set the width of the block.
 
 .. configuration-block::
