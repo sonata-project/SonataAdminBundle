@@ -17,4 +17,11 @@ use Sonata\CoreBundle\Validator\Constraints\InlineConstraint as BaseInlineConstr
  */
 class InlineConstraint extends BaseInlineConstraint
 {
+    /**
+     * {@inheritDoc}
+     */
+    public function validatedBy()
+    {
+        return 'sonata.admin.validator.inline';
+    }
 }

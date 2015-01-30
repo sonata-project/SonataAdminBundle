@@ -11,11 +11,25 @@
 namespace Sonata\AdminBundle\Validator;
 
 use Sonata\CoreBundle\Validator\InlineValidator as BaseInlineValidator;
+use Sonata\AdminBundle\Validator\ErrorElement;
 
 /**
  * @deprecated
  */
 class InlineValidator extends BaseInlineValidator
 {
-
+    /**
+     * @param mixed $value
+     *
+     * @return ErrorElement
+     */
+    protected function getErrorElement($value)
+    {
+        return new ErrorElement(
+            $value,
+            $this->constraintValidatorFactory,
+            $this->context,
+            $this->context->getGroup()
+        );
+    }
 }
