@@ -1500,6 +1500,53 @@ class AdminTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(isset($parameters['post__author']));
         $this->assertEquals(array('value' => $authorId), $parameters['post__author']);
     }
+
+    /**
+     * @covers Sonata\AdminBundle\Admin\Admin::getSubject
+     */
+     public function testGetSubject()
+    {
+        $class = 'Application\Sonata\NewsBundle\Entity\Post';
+        $admin = new PostAdmin('sonata.post.admin.post', $class, 'SonataNewsBundle:PostAdmin');
+
+        $modelManager = $this->getMock(
+            'Sonata\AdminBundle\Model\ModelManagerInterface'
+        );
+        $modelManager->expects($this->once())
+            ->method('find')
+            ->with($class, $this->anything())
+            ->will($this->returnValue(new DummySubject()));
+        $admin->setModelManager($modelManager);
+
+        $admin->setRequest(new Request(array('id' => 'any-arbitrary-string')));
+        $admin->initialize();
+
+        $this->assertNotFalse($admin->getSubject());
+    }
+
+    /**
+     * @covers Sonata\AdminBundle\Admin\Admin::getSubject
+     */
+     public function testGetNonExistSubject()
+    {
+        $class = 'Application\Sonata\NewsBundle\Entity\Post';
+        $admin = new PostAdmin('sonata.post.admin.post', $class, 'SonataNewsBundle:PostAdmin');
+
+        $modelManager = $this->getMock(
+            'Sonata\AdminBundle\Model\ModelManagerInterface'
+        );
+        $modelManager->expects($this->once())
+            ->method('find')
+            ->with($class, $this->anything())
+            ->will($this->returnValue(null));
+        $admin->setModelManager($modelManager);
+
+        $admin->setRequest(new Request(array('id' => 'non-exist-subject')));
+        $admin->initialize();
+
+        $this->assertFalse($admin->getSubject());
+    }
+
 }
 
 class DummySubject
