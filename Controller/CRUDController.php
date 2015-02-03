@@ -981,10 +981,13 @@ class CRUDController extends Controller
             $format
         );
 
+        $delimiter = $this->get('sonata.admin.pool')->getOption('export_delimiter');
+
         return $this->get('sonata.admin.exporter')->getResponse(
             $format,
             $filename,
-            $this->admin->getDataSourceIterator()
+            $this->admin->getDataSourceIterator(),
+            $delimiter
         );
     }
 
