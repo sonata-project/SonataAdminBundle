@@ -331,6 +331,7 @@ class HelperController
         $itemsPerPage       = $formAutocomplete->getConfig()->getAttribute('items_per_page');
         $reqParamPageNumber = $formAutocomplete->getConfig()->getAttribute('req_param_name_page_number');
         $toStringCallback   = $formAutocomplete->getConfig()->getAttribute('to_string_callback');
+        $resultItemCallback = $formAutocomplete->getConfig()->getAttribute('response_item_callback');
 
         $searchText = $request->get('q');
 
@@ -396,10 +397,16 @@ class HelperController
                 $label = $resultMetadata->getTitle();
             }
 
-            $items[] = array(
+            $item = array(
                 'id'    => $admin->id($entity),
                 'label' => $label,
             );
+
+            if (is_callable($resultItemCallback)) {
+                $resultItemCallback($admin, $entity, $item);
+            }
+
+            $items[] = $item;
         }
 
         return new JsonResponse(array(
