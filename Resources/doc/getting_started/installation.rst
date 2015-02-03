@@ -15,8 +15,7 @@ following command to download the latest stable version of this bundle:
     $ composer require sonata-project/admin-bundle "2.3.*"
 
 This command requires you to have Composer installed globally, as explained in
-the `installation chapter <https://getcomposer.org/doc/00-intro.md>`_ of the
-Composer documentation.
+the `installation chapter`_ of the Composer documentation.
 
 1.1. Download a Storage Bundle
 ------------------------------
@@ -26,10 +25,10 @@ functionality, it needs storage bundles to be able to communicate with a
 database. Before using the SonataAdminBundle, you have to download one of these
 storage bundles. The official storage bundles are:
 
-* `SonataDoctrineORMAdminBundle <http://sonata-project.org/bundles/doctrine-orm-admin/master/doc/index.html>`_ (integrates the Doctrine ORM);
-* `SonataDoctrineMongoDBAdminBundle <http://sonata-project.org/bundles/mongo-admin/master/doc/index.html>`_ (integrates the Doctrine MongoDB ODM);
-* `SonataPropelAdminBundle <http://sonata-project.org/bundles/propel-admin/master/doc/index.html>`_ (integrates Propel);
-* `SonataDoctrinePhpcrAdminBundle <http://sonata-project.org/bundles/doctrine-phpcr-admin/master/doc/index.html>`_ (integrates the Doctrine PHPCR ODM).
+* `SonataDoctrineORMAdminBundle`_ (integrates the Doctrine ORM);
+* `SonataDoctrineMongoDBAdminBundle`_ (integrates the Doctrine MongoDB ODM);
+* `SonataPropelAdminBundle`_ (integrates Propel);
+* `SonataDoctrinePhpcrAdminBundle`_ (integrates the Doctrine PHPCR ODM).
 
 You can download them in the same way as the SonataAdminBundle. For instance,
 to download the SonataDoctrineORMAdminBundle, execute the following command:
@@ -89,11 +88,11 @@ line in the `app/AppKernel.php` file of your project:
 
 .. note::
 
-    Since version 2.3, SonatajQueryBundle is not required anymore as assets are
-    available in this bundle. The bundle also uses `Bower <http://bower.io/>`_,
-    so you can use bower to handle your assets. To make sure you get the
-    dependencies that match the version of SonataAdminBundle you are using, you
-    can make bower use the local bower dependency file, like this:
+    Since version 2.3, the bundle comes with jQuery and other front-end libs.
+    To update the versions (which isn't required), you can use `Bower`_. To
+    make sure you get the dependencies that match the version of
+    SonataAdminBundle you are using, you can make bower use the local bower
+    dependency file, like this:
 
     .. code-block:: bash
 
@@ -165,3 +164,10 @@ server, you can now visit the admin page on http://localhost:8000/admin
 As you can see, the admin panel is very empty. This is because no bundle has
 provided admin functionality for the admin bundle yet. Fortunately, you'll
 learn how to do this in the :doc:`next chapter <creating_an_admin>`.
+
+.. _`installation chapter`: https://getcomposer.org/doc/00-intro.md
+.. _SonataDoctrineORMAdminBundle: http://sonata-project.org/bundles/doctrine-orm-admin/master/doc/index.html
+.. _SonataMongoDBAdminBundle: http://sonata-project.org/bundles/mongo-admin/master/doc/index.html
+.. _SonataPropelAdminBundle: http://sonata-project.org/bundles/propel-admin/master/doc/index.html
+.. _SonataDoctrinePhpcrAdminBundle: http://sonata-project.org/bundles/doctrine-phpcr-admin/master/doc/index.html
+.. _Bower: http://bower.io/

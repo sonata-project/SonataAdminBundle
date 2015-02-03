@@ -60,7 +60,7 @@ Configuring the Form Mapper
 ---------------------------
 
 If you already know the `Symfony Form component`_, the ``FormMapper`` will look
-very similair.
+very similar.
 
 You use the ``add()`` method to add fields to the form. The first argument is
 the name of the property the field value maps to, the second argument is the
@@ -237,12 +237,11 @@ After pressing the "Create" button, you probably see a green message like:
 successfully created.*
 
 While it's very friendly of the SonataAdminBundle to notify the admin of a
-succesful creation, the classname and some sort of hash aren't really nice to
+successful creation, the classname and some sort of hash aren't really nice to
 read. This is the default string representation of an object in the
-SonataAdminBundle. You can change it by defining a ``__toString()`` magic
-method on your model or by defining a ``toString()`` (note: no underscore
-prefix) method in the Admin class. This recieves the object to transform to a
-string as the first parameter:
+SonataAdminBundle. You can change it by defining a ``toString()`` (note: no
+underscore prefix) method in the Admin class. This receives the object to
+transform to a string as the first parameter:
 
 .. code-block:: php
 
