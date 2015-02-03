@@ -19,7 +19,6 @@ The basic class definition will look the same as the ``CategoryAdmin``:
 
     use Sonata\AdminBundle\Admin\Admin;
     use Sonata\AdminBundle\Datagrid\ListMapper;
-    use Sonata\AdminBundle\Datagrid\DatagridMapper;
     use Sonata\AdminBundle\Form\FormMapper;
 
     class BlogPostAdmin extends Admin
@@ -27,11 +26,6 @@ The basic class definition will look the same as the ``CategoryAdmin``:
         protected function configureFormFields(FormMapper $formMapper)
         {
             // ... configure $formMapper
-        }
-
-        protected function configureDatagridFilters(DatagridMapper $datagridMapper)
-        {
-            // ... configure $datagridMapper
         }
 
         protected function configureListFields(ListMapper $listMapper)
@@ -203,7 +197,7 @@ order to tweak the styling:
 
 This will now result in a much nicer edit page:
 
-.. image:: getting_started_post_edit_grid.png
+.. image:: ../images/getting_started_post_edit_grid.png
 
 Using Tabs
 ~~~~~~~~~~
@@ -270,8 +264,8 @@ the SonataAdminBundle: Being able to customize literally everything. You've
 started by creating a simple form and ended up with a nice edit page for your
 admin.
 
-In the :doc:`next chapter <>`, you're going to look at the list and datagrid
-actions.
+In the :doc:`next chapter <the_list_view>`, you're going to look at the list
+and datagrid actions.
 
 .. _`Symfony Form component`: http://symfony.com/doc/current/book/forms.html
 .. _`field type reference`: http://symfony.com/doc/current/reference/forms/types.html
