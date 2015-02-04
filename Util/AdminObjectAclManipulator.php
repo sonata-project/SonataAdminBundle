@@ -11,6 +11,7 @@
 
 namespace Sonata\AdminBundle\Util;
 
+use Sonata\AdminBundle\Form\Type\AclMatrixType;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -24,6 +25,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * A manipulator for updating ACL related to an object.
  *
  * @author Kévin Dunglas <kevin@les-tilleuls.coop>
+ * @author Baptiste Meyer <baptiste@les-tilleuls.coop>
  */
 class AdminObjectAclManipulator
 {
@@ -155,18 +157,35 @@ class AdminObjectAclManipulator
      */
     protected function buildAcl(AdminObjectAclData $data, Form $form, \Traversable $aclValues)
     {
-        foreach ($aclValues as $aclValue) {
-            $securityIdentity = $this->getSecurityIdentity($aclValue);
+        $masks = $data->getMasks();
+        $acl = $data->getAcl();
+        $matrices = $form->getData();
 
+        foreach ($aclValues as $aclValue) {
+            foreach ($matrices as $key => $matrix) {
+                if ($aclValue instanceof UserInterface) {
+                    if (array_key_exists('user', $matrix) && $aclValue->getUsername() === $matrix['user']) {
+                        $matrices[$key]['acl_value'] = $aclValue;
+                    }
+                } elseif (array_key_exists('role', $matrix) && $aclValue === $matrix['role']) {
+                    $matrices[$key]['acl_value'] = $aclValue;
+                }
+            }
+        }
+
+        foreach ($matrices as $matrix) {
+            if (!isset($matrix['acl_value'])) {
+                continue;
+            }
+
+            $securityIdentity = $this->getSecurityIdentity($matrix['acl_value']);
             $maskBuilder = new $this->maskBuilderClass();
+
             foreach ($data->getUserPermissions() as $permission) {
-                if ($form->get($this->getFieldName($aclValue, $permission))->getData()) {
+                if (isset($matrix[$permission]) && $matrix[$permission] === true) {
                     $maskBuilder->add($permission);
                 }
             }
-
-            $masks = $data->getMasks();
-            $acl = $data->getAcl();
 
             // Restore OWNER and MASTER permissions
             if (!$data->isOwner()) {
@@ -221,8 +240,9 @@ class AdminObjectAclManipulator
         $masks = $data->getMasks();
         $securityInformation = $data->getSecurityInformation();
 
-        foreach ($aclValues as $aclValue) {
+        foreach ($aclValues as $key => $aclValue) {
             $securityIdentity = $this->getSecurityIdentity($aclValue);
+            $permissions = array();
 
             foreach ($data->getUserPermissions() as $permission) {
                 try {
@@ -240,17 +260,15 @@ class AdminObjectAclManipulator
                     $attr['disabled'] = 'disabled';
                 }
 
-                $formBuilder->add(
-                    $this->getFieldName($aclValue, $permission),
-                    'checkbox',
-                    array(
-                        'required' => false,
-                        'data' => $checked,
-                        'disabled' => array_key_exists('disabled', $attr),
-                        'attr' => $attr
-                    )
+                $permissions[$permission] = array(
+                    'required' => false,
+                    'data' => $checked,
+                    'disabled' => array_key_exists('disabled', $attr),
+                    'attr' => $attr,
                 );
             }
+
+            $formBuilder->add($key, new AclMatrixType(), array('permissions' => $permissions, 'acl_value' => $aclValue));
         }
 
         return $formBuilder->getForm();
@@ -268,17 +286,5 @@ class AdminObjectAclManipulator
             ? UserSecurityIdentity::fromAccount($aclValue)
             : new RoleSecurityIdentity($aclValue)
         ;
-    }
-
-    /**
-     * Gets the form field name
-     *
-     * @param  string|\Symfony\Component\Security\Core\User\UserInterface $aclValue
-     * @param  string                                                     $permission
-     * @return string
-     */
-    protected function getFieldName($aclValue, $permission)
-    {
-        return sprintf('%s_%s', ($aclValue instanceof UserInterface) ? $aclValue->getUsername() : $aclValue, $permission);
     }
 }
