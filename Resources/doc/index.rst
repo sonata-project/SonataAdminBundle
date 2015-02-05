@@ -25,6 +25,7 @@ Reference Guide
    reference/dashboard
    reference/search
    reference/select2
+   reference/knp_menu
    reference/routing
    reference/action_list
    reference/action_create_edit
