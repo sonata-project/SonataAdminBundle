@@ -11,6 +11,7 @@
 
 namespace Sonata\AdminBundle\Controller;
 
+use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -347,6 +348,7 @@ class HelperController
         }
 
         $datagrid = $targetAdmin->getDatagrid();
+        $this->clearDatagridFilters($datagrid);
 
         if ($callback !== null) {
             if (!is_callable($callback)) {
@@ -441,5 +443,15 @@ class HelperController
         }
 
         return $fieldDescription;
+    }
+
+    /**
+     * @param DatagridInterface $datagrid
+     */
+    private function clearDatagridFilters(DatagridInterface $datagrid)
+    {
+        foreach ($datagrid->getFilters() as $filter) {
+            $datagrid->setValue($filter->getName(), null, null);
+        }
     }
 }
