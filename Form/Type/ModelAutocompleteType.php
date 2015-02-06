@@ -77,6 +77,7 @@ class ModelAutocompleteType extends AbstractType
         $resolver->setDefaults(array(
             'attr'                            => array(),
             'compound'                        => true,
+            'error_bubbling'                  => false,
             'model_manager'                   => null,
             'class'                           => null,
             'callback'                        => null,
