@@ -1742,10 +1742,8 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     public function getSubject()
     {
         if ($this->subject === null && $this->request) {
-            if (!$this->subject = $this->getModelManager()->find(
-                $this->class,
-                $this->request->get($this->getIdParameter())
-            )) {
+            $id = $this->request->get($this->getIdParameter());
+            if (!$id || !($this->subject = $this->getModelManager()->find($this->class, $id))) {
                 $this->subject = false;
             }
         }
