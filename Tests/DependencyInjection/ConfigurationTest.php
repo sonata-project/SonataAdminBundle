@@ -84,6 +84,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
             'menu_factory' => null,
             'route_builder' => null,
             'label_translator_strategy' => null,
+            'pager_type' => null,
             'templates' => array(
                 'form' => array(),
                 'filter' => array(),

@@ -192,16 +192,46 @@ class AddDependencyCallsCompilerPassTest extends \PHPUnit_Framework_TestCase
         $compilerPass = new AddDependencyCallsCompilerPass();
         $compilerPass->process($container);
 
-        $calls = $container->getDefinition('sonata_post_admin')->getMethodCalls();
+        $callsPostAdmin = $container->getDefinition('sonata_post_admin')->getMethodCalls();
 
-        foreach ($calls as $call) {
+        foreach ($callsPostAdmin as $call) {
             list($name, $parameters) = $call;
 
-            if ($name !== 'setTemplates') {
-                continue;
-            }
+            switch ($name) {
+                case 'setTemplates':
+                    $this->assertEquals('foobar.twig.html', $parameters[0]['user_block']);
+                    $this->assertEquals('SonataAdminBundle:Pager:results.html.twig', $parameters[0]['pager_results']);
+                    break;
 
-            $this->assertEquals('foobar.twig.html', $parameters[0]['user_block']);
+                case 'setLabel':
+                    $this->assertEquals('-', $parameters[0]);
+                    break;
+
+                case 'setPagerType':
+                    $this->assertEquals('default', $parameters[0]);
+                    break;
+            }
+        }
+
+        $callsNewsAdmin = $container->getDefinition('sonata_news_admin')->getMethodCalls();
+
+        foreach ($callsNewsAdmin as $call) {
+            list($name, $parameters) = $call;
+
+            switch ($name) {
+                case 'setTemplates':
+                    $this->assertEquals('foo.twig.html', $parameters[0]['user_block']);
+                    $this->assertEquals('SonataAdminBundle:Pager:simple_pager_results.html.twig', $parameters[0]['pager_results']);
+                    break;
+
+                case 'setLabel':
+                    $this->assertEquals('Foo', $parameters[0]);
+                    break;
+
+                case 'setPagerType':
+                    $this->assertEquals('simple', $parameters[0]);
+                    break;
+            }
         }
     }
 
@@ -230,6 +260,13 @@ class AddDependencyCallsCompilerPassTest extends \PHPUnit_Framework_TestCase
                 'sonata_post_admin' => array(
                     'templates' => array(
                         'view' => array('user_block' => 'foobar.twig.html')
+                    )
+                ),
+                'sonata_news_admin' => array(
+                    'label' => 'Foo',
+                    'pager_type' => 'simple',
+                    'templates'  => array(
+                        'view' => array('user_block' => 'foo.twig.html')
                     )
                 )
             )

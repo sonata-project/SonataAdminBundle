@@ -1,0 +1,31 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{% extends 'SonataAdminBundle:Pager:base_results.html.twig' %}
+
+{% block num_results %}
+    {% if admin.datagrid.pager.lastPage != admin.datagrid.pager.page %}
+        {{ 'list_results_count_prefix' | trans({}, 'SonataAdminBundle') }}
+    {% endif %}
+    {% transchoice admin.datagrid.pager.nbresults with {'%count%': admin.datagrid.pager.nbresults} from 'SonataAdminBundle' %}list_results_count{% endtranschoice %}
+    &nbsp;-&nbsp;
+{% endblock %}
+
+{% block num_pages %}
+    {{ admin.datagrid.pager.page }}
+    /
+    {% if admin.datagrid.pager.lastPage != admin.datagrid.pager.page %}
+        ?
+    {% else %}
+        {{ admin.datagrid.pager.lastpage }}
+    {% endif %}
+    &nbsp;-&nbsp;
+{% endblock %}
