@@ -55,21 +55,25 @@ class DatagridMapper extends BaseMapper
             $filterOptions['field_type'] = $fieldType;
         }
 
-        $filterOptions['field_name'] = isset($filterOptions['field_name']) ? $filterOptions['field_name'] : substr(strrchr('.'.$name, '.'), 1);
-
         if ($name instanceof FieldDescriptionInterface) {
             $fieldDescription = $name;
             $fieldDescription->mergeOptions($filterOptions);
-        } elseif (is_string($name) && !$this->admin->hasFilterFieldDescription($name)) {
+        } elseif (is_string($name)) {
+            if ($this->admin->hasFilterFieldDescription($name)) {
+                throw new \RuntimeException(sprintf('Duplicate field name "%s" in datagrid mapper. Names should be unique.', $name));
+            }
+
+            if (!isset($filterOptions['field_name'])) {
+                 $filterOptions['field_name'] = substr(strrchr('.'.$name, '.'), 1);
+            }
+
             $fieldDescription = $this->admin->getModelManager()->getNewFieldDescriptionInstance(
                 $this->admin->getClass(),
                 $name,
                 $filterOptions
             );
-        } elseif (is_string($name) && $this->admin->hasFilterFieldDescription($name)) {
-            throw new \RuntimeException(sprintf('The field "%s" is already defined', $name));
         } else {
-            throw new \RuntimeException('invalid state');
+            throw new \RuntimeException('Unknown field name in datagrid mapper. Field name should be either of FieldDescriptionInterface interface or string.');
         }
 
         // add the field with the DatagridBuilder

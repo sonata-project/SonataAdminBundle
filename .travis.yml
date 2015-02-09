@@ -15,8 +15,9 @@ env:
   - SYMFONY_VERSION=2.7.*@dev
 
 before_script:
+  - composer selfupdate
   - composer require symfony/symfony:${SYMFONY_VERSION} --no-update
-  - composer install --dev --prefer-source
+  - composer update --prefer-source $COMPOSER_FLAGS
   - sudo pip install -r Resources/doc/requirements.txt
 
 script: make test
@@ -25,6 +26,9 @@ notifications:
     webhooks: http://sonata-project.org/bundles/admin/master/travis
 
 matrix:
+  include:
+    - php: 5.3.3
+      env: SYMFONY_VERSION=2.3.* COMPOSER_FLAGS="--prefer-lowest"
   allow_failures:
     - php: hhvm
     - env: SYMFONY_VERSION=2.7.*@dev

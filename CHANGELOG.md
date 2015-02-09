@@ -2,7 +2,7 @@ CHANGELOG
 =========
 
 ## 2015-01-05
- * [BC BREAK] #2665 - text from Admin's toString method is escaped for html output before adding in flash message to prevent possible XSS vulnerability.### 2014-11-04
+ * [BC BREAK] #2665 - text from Admin's toString method is escaped for html output before adding in flash message to prevent possible XSS vulnerability.
 
 ### 2014-11-04 
 * [BC BREAK] Inline edition now validates the whole object.

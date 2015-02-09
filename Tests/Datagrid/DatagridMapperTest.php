@@ -165,6 +165,19 @@ class DatagridMapperTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('fooName', $fieldDescription->getName());
     }
 
+    public function testAddWithoutFieldName()
+    {
+        $this->datagridMapper->add('foo.bar');
+
+        $this->assertTrue($this->datagridMapper->has('foo.bar'));
+
+        $fieldDescription = $this->datagridMapper->get('foo.bar');
+
+        $this->assertInstanceOf('Sonata\AdminBundle\Filter\FilterInterface', $fieldDescription);
+        $this->assertEquals('foo.bar', $fieldDescription->getName());
+        $this->assertEquals('bar', $fieldDescription->getOption('field_name'));
+    }
+
     public function testAddRemove()
     {
         $this->assertFalse($this->datagridMapper->has('fooName'));
@@ -176,6 +189,7 @@ class DatagridMapperTest extends \PHPUnit_Framework_TestCase
 
         $this->datagridMapper->remove('fooName');
         $this->assertFalse($this->datagridMapper->has('fooName'));
+        $this->assertEquals('fooFilterName', $fieldDescription->getOption('field_name'));
     }
 
     public function testAddException()
@@ -183,7 +197,7 @@ class DatagridMapperTest extends \PHPUnit_Framework_TestCase
         try {
             $this->datagridMapper->add(12345);
         } catch (\RuntimeException $e) {
-            $this->assertContains('invalid state', $e->getMessage());
+            $this->assertContains('Unknown field name in datagrid mapper. Field name should be either of FieldDescriptionInterface interface or string', $e->getMessage());
 
             return;
         }
@@ -191,20 +205,29 @@ class DatagridMapperTest extends \PHPUnit_Framework_TestCase
         $this->fail('Failed asserting that exception of type "\RuntimeException" is thrown.');
     }
 
-    public function testAddException2()
+    public function testAddDuplicateNameException()
     {
-        try {
-            $this->datagridMapper->getAdmin()
-                ->expects($this->any())
-                ->method('hasFilterFieldDescription')
-                ->will($this->returnValue(true))
-            ;
-            $this->datagridMapper->add('field');
-        } catch (\RuntimeException $e) {
-            $this->assertContains('The field "field" is already defined', $e->getMessage());
+        $tmpNames = array();
+        $this->datagridMapper->getAdmin()
+            ->expects($this->exactly(2))
+            ->method('hasFilterFieldDescription')
+            ->will($this->returnCallback(function ($name) use (&$tmpNames) {
+                if (isset($tmpNames[$name])) {
+                    return true;
+                }
+                $tmpNames[$name] = $name;
 
-            return;
-        }
+                return false;
+        }));
+
+        try {
+            $this->datagridMapper->add('fooName');
+            $this->datagridMapper->add('fooName');
+        } catch (\RuntimeException $e) {
+            $this->assertContains('Duplicate field name "fooName" in datagrid mapper. Names should be unique.', $e->getMessage());
+
+        return;
+ }
 
         $this->fail('Failed asserting that exception of type "\RuntimeException" is thrown.');
     }

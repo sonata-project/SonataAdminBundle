@@ -160,6 +160,7 @@ class Configuration implements ConfigurationInterface
                             ->scalarNode('menu_factory')->defaultValue(null)->end()
                             ->scalarNode('route_builder')->defaultValue(null)->end()
                             ->scalarNode('label_translator_strategy')->defaultValue(null)->end()
+                            ->scalarNode('pager_type')->defaultValue(null)->end()
                             ->arrayNode('templates')
                                 ->addDefaultsIfNotSet()
                                 ->children()

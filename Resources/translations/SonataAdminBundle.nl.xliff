@@ -330,6 +330,10 @@
                 <source>label_compare_revision</source>
                 <target>Vergelijk revisie</target>
             </trans-unit>
+            <trans-unit id="list_results_count_prefix">
+                <source>list_results_count_prefix</source>
+                <target>list_results_count_prefix</target>
+            </trans-unit>
             <trans-unit id="list_results_count">
                 <source>list_results_count</source>
                 <target>1 resultaat|%count% resultaten</target>

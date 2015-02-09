@@ -17,6 +17,8 @@ namespace Sonata\AdminBundle\Datagrid;
  */
 abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInterface
 {
+    const TYPE_DEFAULT = 'default';
+    const TYPE_SIMPLE = 'simple';
 
     protected $page = 1;
     protected $maxPerPage = 0;

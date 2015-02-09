@@ -10,51 +10,26 @@
 
 namespace Sonata\AdminBundle\Validator;
 
-use Symfony\Component\Validator\ConstraintValidator;
-use Symfony\Component\Validator\Constraint;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Validator\ConstraintValidatorFactoryInterface;
+use Sonata\CoreBundle\Validator\InlineValidator as BaseInlineValidator;
+use Sonata\AdminBundle\Validator\ErrorElement;
 
-class InlineValidator extends ConstraintValidator
+/**
+ * @deprecated
+ */
+class InlineValidator extends BaseInlineValidator
 {
-    protected $container;
-
-    protected $constraintValidatorFactory;
-
     /**
-     * @param \Symfony\Component\DependencyInjection\ContainerInterface            $container
-     * @param \Symfony\Bundle\FrameworkBundle\Validator\ConstraintValidatorFactory $constraintValidatorFactory
+     * @param mixed $value
+     *
+     * @return ErrorElement
      */
-    public function __construct(ContainerInterface $container, ConstraintValidatorFactoryInterface $constraintValidatorFactory)
+    protected function getErrorElement($value)
     {
-        $this->container                  = $container;
-        $this->constraintValidatorFactory = $constraintValidatorFactory;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function validate($value, Constraint $constraint)
-    {
-        $errorElement = new ErrorElement(
+        return new ErrorElement(
             $value,
             $this->constraintValidatorFactory,
             $this->context,
             $this->context->getGroup()
         );
-
-        if ($constraint->isClosure()) {
-            $function = $constraint->getClosure();
-        } else {
-            if (is_string($constraint->getService())) {
-                $service = $this->container->get($constraint->getService());
-            } else {
-                $service = $constraint->getService();
-            }
-
-            $function = array($service, $constraint->getMethod());
-        }
-
-        call_user_func($function, $errorElement, $value);
     }
 }

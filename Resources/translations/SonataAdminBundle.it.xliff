@@ -322,6 +322,10 @@
                 <source>label_view_revision</source>
                 <target>Visualizza revisione</target>
             </trans-unit>
+            <trans-unit id="list_results_count_prefix">
+                <source>list_results_count_prefix</source>
+                <target>almeno</target>
+            </trans-unit>
             <trans-unit id="list_results_count">
                 <source>list_results_count</source>
                 <target>1 risultato|%count% risultati</target>
