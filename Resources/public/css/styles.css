@@ -451,3 +451,12 @@ div.mosaic-box.sonata-ba-list-row-selected > div.mosaic-inner-text {
 div.form-group div.select2-container {
     width: 80% !important;
 }
+
+div.sonata-filters-box div.form-group div.form-group {
+    margin: 0;    
+}
+
+div.sonata-filters-box div.form-group span.input-group-addon {
+    padding: 3px 10px;
+    font-size: 13px;
+}
