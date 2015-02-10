@@ -206,8 +206,8 @@ to_string_callback
     $formMapper
         ->add('category', 'sonata_type_model_autocomplete', array(
             'property'=>'title',
-            'to_string_callback' => function($enitity, $property) {
-                return $enitity->getTitle();
+            'to_string_callback' => function($entity, $property) {
+                return $entity->getTitle();
             },
         )
     );
