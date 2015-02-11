@@ -295,7 +295,7 @@ file that was distributed with this source code.
                 minimumInputLength: {{ minimum_input_length }},
                 multiple: {{ multiple ? 'true' : 'false' }},
                 ajax: {
-                    url:  "{{ url ?: url(route.name, route.parameters|default([])) }}",
+                    url:  "{{ url ?: path(route.name, route.parameters|default([])) }}",
                     dataType: 'json',
                     quietMillis: 100,
                     data: function (term, page) { // page is the one-based page number tracked by Select2
