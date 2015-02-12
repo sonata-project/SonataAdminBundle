@@ -19,14 +19,13 @@ use Sonata\AdminBundle\Builder\BuilderInterface;
  */
 abstract class BaseMapper
 {
-
     protected $admin;
 
     protected $builder;
 
     /**
-     * @param \Sonata\AdminBundle\Builder\BuilderInterface $builder
-     * @param \Sonata\AdminBundle\Admin\AdminInterface     $admin
+     * @param BuilderInterface   $builder
+     * @param AdminInterface     $admin
      */
     public function __construct(BuilderInterface $builder, AdminInterface $admin)
     {
@@ -35,7 +34,7 @@ abstract class BaseMapper
     }
 
     /**
-     * @return \Sonata\AdminBundle\Admin\AdminInterface
+     * @return AdminInterface
      */
     public function getAdmin()
     {

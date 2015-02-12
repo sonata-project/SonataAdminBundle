@@ -232,7 +232,7 @@ abstract class BaseGroupedMapper extends BaseMapper
     }
 
     /**
-     * Add the fieldname to the current group
+     * Add the field name to the current group
      *
      * @param string $fieldName
      */

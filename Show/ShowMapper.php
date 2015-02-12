@@ -25,9 +25,9 @@ class ShowMapper extends BaseGroupedMapper
     protected $list;
 
     /**
-     * @param \Sonata\AdminBundle\Builder\ShowBuilderInterface     $showBuilder
-     * @param \Sonata\AdminBundle\Admin\FieldDescriptionCollection $list
-     * @param \Sonata\AdminBundle\Admin\AdminInterface             $admin
+     * @param ShowBuilderInterface       $showBuilder
+     * @param FieldDescriptionCollection $list
+     * @param AdminInterface             $admin
      */
     public function __construct(ShowBuilderInterface $showBuilder, FieldDescriptionCollection $list, AdminInterface $admin)
     {
@@ -42,7 +42,7 @@ class ShowMapper extends BaseGroupedMapper
      * @param mixed $type
      * @param array $fieldDescriptionOptions
      *
-     * @return \Sonata\AdminBundle\Show\ShowMapper
+     * @return $this
      */
     public function add($name, $type = null, array $fieldDescriptionOptions = array())
     {
@@ -80,9 +80,7 @@ class ShowMapper extends BaseGroupedMapper
     }
 
     /**
-     * @param string $name
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function get($name)
     {
@@ -90,9 +88,7 @@ class ShowMapper extends BaseGroupedMapper
     }
 
     /**
-     * @param string $key
-     *
-     * @return bool
+     * {@inheritdoc}
      */
     public function has($key)
     {
@@ -100,9 +96,7 @@ class ShowMapper extends BaseGroupedMapper
     }
 
     /**
-     * @param string $key
-     *
-     * @return \Sonata\AdminBundle\Show\ShowMapper
+     * {@inheritdoc}
      */
     public function remove($key)
     {
@@ -113,9 +107,7 @@ class ShowMapper extends BaseGroupedMapper
     }
 
     /**
-     * @param array $keys field names
-     *
-     * @return \Sonata\AdminBundle\Show\ShowMapper
+     * {@inheritdoc}
      */
     public function reorder(array $keys)
     {
