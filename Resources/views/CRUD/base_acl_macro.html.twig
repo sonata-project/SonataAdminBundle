@@ -1,0 +1,55 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{% macro render_form(form, permissions, td_type, admin, admin_pool, object) %}
+    <form class="form-horizontal"
+          action="{{ admin.generateUrl('acl', {'id': admin.id(object), 'uniqid': admin.uniqid, 'subclass': app.request.get('subclass')}) }}" {{ form_enctype(form) }}
+          method="POST"
+            {% if not admin_pool.getOption('html5_validate') %}novalidate="novalidate"{% endif %}
+            >
+        {% if form.vars.errors|length > 0 %}
+            <div class="sonata-ba-form-error">
+                {{ form_errors(form) }}
+            </div>
+        {% endif %}
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th>{{ td_type|trans({}, 'SonataAdminBundle') }}</th>
+                {% for permission in permissions %}
+                    <th>{{ permission }}</th>
+                {% endfor %}
+            </tr>
+            </thead>
+            <tbody>
+                {% for child in form.children if child.vars.name != '_token' %}
+                    <tr>
+                        <td>
+                            {% set typeChild = child['role'] is defined ? child['role'] : child['user'] %}
+                            {{ typeChild.vars.value }}
+                            {{ form_widget(typeChild) }}
+                        </td>
+                        {% for permission in permissions %}
+                            <td>{{ form_widget(child[permission]) }}</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {{ form_row(form._token) }}
+
+        <div class="well well-small form-actions">
+            <input class="btn btn-primary" type="submit" name="btn_create_and_edit" value="{{ 'btn_update_acl'|trans({}, 'SonataAdminBundle') }}">
+        </div>
+    </form>
+{% endmacro %}
