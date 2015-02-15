@@ -308,8 +308,9 @@ class HelperController
      */
     public function retrieveAutocompleteItemsAction(Request $request)
     {
-        $admin = $this->pool->getInstance($request->get('code'));
+        $admin = $this->pool->getInstance($request->get('admin_code'));
         $admin->setRequest($request);
+        $context = $request->get('_context', '');
 
         if (false === $admin->isGranted('CREATE') && false === $admin->isGranted('EDIT')) {
             throw new AccessDeniedException();
@@ -318,19 +319,33 @@ class HelperController
         // subject will be empty to avoid unnecessary database requests and keep autocomplete function fast
         $admin->setSubject($admin->getNewInstance());
 
-        $fieldDescription = $this->retrieveFieldDescription($admin, $request->get('field'));
-        $formAutocomplete = $admin->getForm()->get($fieldDescription->getName());
+        if ($context == 'filter') {
+            // filter
+            $fieldDescription = $this->retrieveFilterFieldDescription($admin, $request->get('field'));
+            $filterAutocomplete = $admin->getDatagrid()->getFilter($fieldDescription->getName());
 
-        if ($formAutocomplete->getConfig()->getAttribute('disabled')) {
-            throw new AccessDeniedException('Autocomplete list can`t be retrieved because the form element is disabled or read_only.');
+            $property           = $filterAutocomplete->getFieldOption('property');
+            $callback           = $filterAutocomplete->getFieldOption('callback');
+            $minimumInputLength = $filterAutocomplete->getFieldOption('minimum_input_length', 3);
+            $itemsPerPage       = $filterAutocomplete->getFieldOption('items_per_page', 10);
+            $reqParamPageNumber = $filterAutocomplete->getFieldOption('req_param_name_page_number', '_page');
+            $toStringCallback   = $filterAutocomplete->getFieldOption('to_string_callback');
+        } else {
+            // create/edit form
+            $fieldDescription = $this->retrieveFormFieldDescription($admin, $request->get('field'));
+            $formAutocomplete = $admin->getForm()->get($fieldDescription->getName());
+
+            if ($formAutocomplete->getConfig()->getAttribute('disabled')) {
+                throw new AccessDeniedException('Autocomplete list can`t be retrieved because the form element is disabled or read_only.');
+            }
+
+            $property           = $formAutocomplete->getConfig()->getAttribute('property');
+            $callback           = $formAutocomplete->getConfig()->getAttribute('callback');
+            $minimumInputLength = $formAutocomplete->getConfig()->getAttribute('minimum_input_length');
+            $itemsPerPage       = $formAutocomplete->getConfig()->getAttribute('items_per_page');
+            $reqParamPageNumber = $formAutocomplete->getConfig()->getAttribute('req_param_name_page_number');
+            $toStringCallback   = $formAutocomplete->getConfig()->getAttribute('to_string_callback');
         }
-
-        $property           = $formAutocomplete->getConfig()->getAttribute('property');
-        $callback           = $formAutocomplete->getConfig()->getAttribute('callback');
-        $minimumInputLength = $formAutocomplete->getConfig()->getAttribute('minimum_input_length');
-        $itemsPerPage       = $formAutocomplete->getConfig()->getAttribute('items_per_page');
-        $reqParamPageNumber = $formAutocomplete->getConfig()->getAttribute('req_param_name_page_number');
-        $toStringCallback   = $formAutocomplete->getConfig()->getAttribute('to_string_callback');
 
         $searchText = $request->get('q');
 
@@ -410,7 +425,7 @@ class HelperController
     }
 
     /**
-     * Retrieve the field description given by field name.
+     * Retrieve the form field description given by field name.
      *
      * @param AdminInterface $admin
      * @param string         $field
@@ -419,7 +434,7 @@ class HelperController
      *
      * @throws \RuntimeException
      */
-    private function retrieveFieldDescription(AdminInterface $admin, $field)
+    private function retrieveFormFieldDescription(AdminInterface $admin, $field)
     {
         $admin->getFormFieldDescriptions();
 
@@ -431,6 +446,33 @@ class HelperController
 
         if ($fieldDescription->getType() !== 'sonata_type_model_autocomplete') {
             throw new \RuntimeException(sprintf('Unsupported form type "%s" for field "%s".', $fieldDescription->getType(), $field));
+        }
+
+        if (null === $fieldDescription->getTargetEntity()) {
+            throw new \RuntimeException(sprintf('No associated entity with field "%s".', $field));
+        }
+
+        return $fieldDescription;
+    }
+
+    /**
+     * Retrieve the filter field description given by field name.
+     *
+     * @param AdminInterface $admin
+     * @param string         $field
+     *
+     * @return \Symfony\Component\Form\FormInterface
+     *
+     * @throws \RuntimeException
+     */
+    private function retrieveFilterFieldDescription(AdminInterface $admin, $field)
+    {
+        $admin->getFilterFieldDescriptions();
+
+        $fieldDescription = $admin->getFilterFieldDescription($field);
+
+        if (!$fieldDescription) {
+            throw new \RuntimeException(sprintf('The field "%s" does not exist.', $field));
         }
 
         if (null === $fieldDescription->getTargetEntity()) {
