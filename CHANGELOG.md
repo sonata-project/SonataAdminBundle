@@ -1,7 +1,7 @@
 CHANGELOG
 =========
 
-### 2015-02-08
+### 2015-02-15
  * [BC BREAK] added ``getFieldOption``, ``setFieldOption`` methods to the FilterInterface
  * [BC BREAK] added the ``getFilterFieldDescription`` method to the AdminInterface
  * [BC BREAK] added the ``getMaxPageLinks``, ``setMaxPageLinks`` methods to the PagerInterface
