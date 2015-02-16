@@ -53,4 +53,18 @@ interface PagerInterface
      * @return array
      */
     public function getResults();
+
+    /**
+     * Sets the maximum number of page numbers.
+     *
+     * @param int $maxPageLinks
+     */
+    public function setMaxPageLinks($maxPageLinks);
+
+    /**
+     * Returns the maximum number of page numbers.
+     *
+     * @return int
+     */
+    public function getMaxPageLinks();
 }

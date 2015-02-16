@@ -13,6 +13,7 @@ namespace Sonata\AdminBundle\Tests\Admin;
 
 use Sonata\AdminBundle\Admin\BaseFieldDescription;
 use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\Tests\Fixtures\Admin\FieldDescription;
 
 class BaseFieldDescriptionTest extends \PHPUnit_Framework_TestCase
 {
@@ -188,50 +189,5 @@ class BaseFieldDescriptionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('FooBar', BaseFieldDescription::camelize('foo_bar'));
         $this->assertEquals('FooBar', BaseFieldDescription::camelize('foo bar'));
         $this->assertEquals('FOoBar', BaseFieldDescription::camelize('fOo bar'));
-    }
-}
-
-class FieldDescription extends BaseFieldDescription
-{
-    public function setAssociationMapping($associationMapping)
-    {
-        // TODO: Implement setAssociationMapping() method.
-    }
-
-    public function getTargetEntity()
-    {
-        // TODO: Implement getTargetEntity() method.
-    }
-
-    public function setFieldMapping($fieldMapping)
-    {
-        // TODO: Implement setFieldMapping() method.
-    }
-
-    public function isIdentifier()
-    {
-        // TODO: Implement isIdentifier() method.
-    }
-
-    /**
-     * set the parent association mappings information
-     *
-     * @param  array $parentAssociationMappings
-     * @return void
-     */
-    public function setParentAssociationMappings(array $parentAssociationMappings)
-    {
-        // TODO: Implement setParentAssociationMappings() method.
-    }
-
-    /**
-     * return the value linked to the description
-     *
-     * @param  $object
-     * @return bool|mixed
-     */
-    public function getValue($object)
-    {
-        // TODO: Implement getValue() method.
     }
 }
