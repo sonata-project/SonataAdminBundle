@@ -254,52 +254,6 @@ class PoolTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(array(), $this->pool->getOption('nonexistantarray', array()));
     }
 
-    public function testGetMenu()
-    {
-        $containerMock = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
-        $routerMock = $this->getMock('Symfony\Component\Routing\RouterInterface');
-
-        $containerMock->expects($this->any())
-            ->method('get')
-            ->will($this->returnValueMap(
-                array(
-                    array('router', 1, $routerMock),
-                    array('request', 1, null)
-                )
-            ));
-
-        $pool = new Pool($containerMock, 'Sonata Admin', '/path/to/pic.png', array('foo'=>'bar'));
-
-        $adminGroups = array(
-            "bar" => array(
-                "label" => "foo",
-                "icon"  => '<i class="fa fa-edit"></i>',
-                "items" => array(
-                            array(
-                                "admin"        => "",
-                                "label"        => "fooLabel",
-                                "route"        => "FooRoute",
-                                "route_params" => array("foo" => "bar"),
-                            )
-                ),
-                "item_adds" => array(),
-                "roles"     => array()
-
-            )
-        );
-        $pool->setAdminGroups($adminGroups);
-        $menu = $pool->getMenu();
-
-        $this->assertInstanceOf('Knp\Menu\ItemInterface', $menu);
-        $this->assertArrayHasKey('bar', $menu->getChildren());
-
-        foreach ($menu->getChildren() as $key => $child) {
-            $this->assertInstanceOf('Knp\Menu\MenuItem', $child);
-            $this->assertEquals("bar", $child->getName());
-            $this->assertEquals($adminGroups["bar"]["label"], $child->getLabel());
-        }
-    }
-
     /**
      * @return Symfony\Component\DependencyInjection\ContainerInterface - the mock of container interface
      */

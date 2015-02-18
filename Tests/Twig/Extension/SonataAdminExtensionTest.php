@@ -11,21 +11,22 @@
 
 namespace Sonata\AdminBundle\Tests\Twig\Extension;
 
-use Sonata\AdminBundle\Twig\Extension\SonataAdminExtension;
 use Sonata\AdminBundle\Admin\Pool;
-use Symfony\Bridge\Twig\Tests\Extension\Fixtures\StubFilesystemLoader;
+use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
+use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\Exception\NoValueException;
+use Sonata\AdminBundle\Twig\Extension\SonataAdminExtension;
+use Symfony\Bridge\Twig\Extension\RoutingExtension;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
+use Symfony\Bridge\Twig\Tests\Extension\Fixtures\StubFilesystemLoader;
+use Symfony\Component\Config\FileLocator;
+use Symfony\Component\Routing\Generator\UrlGenerator;
+use Symfony\Component\Routing\Loader\XmlFileLoader;
+use Symfony\Component\Routing\RequestContext;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Translation\Translator;
 use Symfony\Component\Translation\MessageSelector;
 use Symfony\Component\Translation\Loader\XliffFileLoader;
-use Symfony\Component\Routing\Generator\UrlGenerator;
-use Symfony\Component\Routing\Loader\XmlFileLoader;
-use Symfony\Component\Config\FileLocator;
-use Symfony\Bridge\Twig\Extension\RoutingExtension;
-use Symfony\Component\Routing\RequestContext;
-use Sonata\AdminBundle\Exception\NoValueException;
-use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
-use Sonata\AdminBundle\Admin\AdminInterface;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -71,6 +72,11 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
     private $pool;
 
     /**
+     * @var Router
+     */
+    private $router;
+
+    /**
      * @var LoggerInterface
      */
     private $logger;
@@ -82,9 +88,11 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
         $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
 
         $this->pool = new Pool($container, '', '');
+        $this->router = $this->getMock('Symfony\Component\Routing\RouterInterface');
+
         $this->logger = $this->getMock('Psr\Log\LoggerInterface');
 
-        $this->twigExtension = new SonataAdminExtension($this->pool, $this->logger);
+        $this->twigExtension = new SonataAdminExtension($this->pool, $this->router, $this->logger);
 
         $loader = new StubFilesystemLoader(array(
             __DIR__.'/../../../Resources/views/CRUD',
@@ -860,5 +868,39 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(1234567));
 
         $this->assertEquals(1234567, $this->twigExtension->getUrlsafeIdentifier($entity, $this->adminBar));
+    }
+
+    public function testGetKnpMenu()
+    {
+        $request = $this->getMock('Symfony\Component\HttpFoundation\Request');
+
+        $adminGroups = array(
+            "bar" => array(
+                "label" => "foo",
+                "icon"  => '<i class="fa fa-edit"></i>',
+                "items" => array(
+                    array(
+                        "admin"        => "",
+                        "label"        => "fooLabel",
+                        "route"        => "FooRoute",
+                        "route_params" => array("foo" => "bar"),
+                    )
+                ),
+                "item_adds" => array(),
+                "roles"     => array()
+
+            )
+        );
+        $this->pool->setAdminGroups($adminGroups);
+        $menu = $this->twigExtension->getKnpMenu($request);
+
+        $this->assertInstanceOf('Knp\Menu\ItemInterface', $menu);
+        $this->assertArrayHasKey('bar', $menu->getChildren());
+
+        foreach ($menu->getChildren() as $key => $child) {
+            $this->assertInstanceOf('Knp\Menu\MenuItem', $child);
+            $this->assertEquals("bar", $child->getName());
+            $this->assertEquals($adminGroups["bar"]["label"], $child->getLabel());
+        }
     }
 }

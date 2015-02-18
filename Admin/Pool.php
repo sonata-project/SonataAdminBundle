@@ -13,9 +13,6 @@ namespace Sonata\AdminBundle\Admin;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-use Knp\Menu\MenuFactory;
-use Knp\Menu\ItemInterface;
-
 class Pool
 {
     protected $container = null;
@@ -332,53 +329,5 @@ class Pool
         }
 
         return $default;
-    }
-
-    /**
-     * Create and return a knp MenuItem
-     *
-     * @return ItemInterface
-     */
-    public function getMenu()
-    {
-        $menuFactory = new MenuFactory();
-        $menu = $menuFactory
-            ->createItem('root')
-            ->setExtra('request', $this->container->get('request'))
-        ;
-
-        foreach ($this->getAdminGroups() as $name => $group) {
-            $menu
-                ->addChild($name, array('label' => $group['label']))
-                ->setAttributes(
-                    array(
-                        'icon'  => $group['icon']
-                    )
-                )
-                ->setExtra('roles', $group['roles'])
-            ;
-
-            foreach ($group['items'] as $item) {
-                if (array_key_exists('admin', $item) && $item['admin'] != null) {
-                    $admin             = $this->getInstance($item['admin']);
-                    $label             = $admin->getLabel();
-                    $route             = $admin->generateUrl('list');
-                    $translationDomain = $admin->getTranslationDomain();
-                } else {
-                    $label             = $item['label'];
-                    $route             = $this->container->get('router')->generate($item['route'], $item['route_params']);
-                    $translationDomain = null;
-                    $admin             = null;
-                }
-
-                $menu[$name]
-                    ->addChild($label, array('uri' => $route))
-                    ->setExtra('translationdomain', $translationDomain)
-                    ->setExtra('admin', $admin)
-                ;
-            }
-        }
-
-        return $menu;
     }
 }
