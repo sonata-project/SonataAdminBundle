@@ -85,6 +85,7 @@ class Pool
         foreach ($this->adminGroups as $name => $adminGroup) {
             if (isset($adminGroup['items'])) {
                 foreach ($adminGroup['items'] as $key => $item) {
+                    // Only Admin Group should be returned
                     if ('' != $item['admin']) {
                         $admin = $this->getInstance($item['admin']);
 
@@ -93,6 +94,8 @@ class Pool
                         } else {
                             unset($groups[$name]['items'][$key]);
                         }
+                    } else {
+                        unset($groups[$name]['items'][$key]);
                     }
                 }
             }
