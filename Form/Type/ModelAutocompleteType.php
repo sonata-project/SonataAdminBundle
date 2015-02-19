@@ -18,8 +18,6 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 use Sonata\AdminBundle\Form\DataTransformer\ModelToIdPropertyTransformer;
-use Symfony\Component\OptionsResolver\Options;
-use Symfony\Component\Form\Extension\Core\EventListener\ResizeFormListener;
 
 /**
  * This type defines a standard text field with autocomplete feature.
@@ -36,6 +34,9 @@ class ModelAutocompleteType extends AbstractType
     {
         $builder->addViewTransformer(new ModelToIdPropertyTransformer($options['model_manager'], $options['class'], $options['property'], $options['multiple'], $options['to_string_callback']), true);
 
+        $builder->add('title', 'text', array('attr'=>$options['attr'], 'property_path' => '[labels][0]'));
+        $builder->add('identifiers', 'collection', array('type'=>'hidden', 'allow_add' => true, 'allow_delete' => true));
+
         $builder->setAttribute('property', $options['property']);
         $builder->setAttribute('callback', $options['callback']);
         $builder->setAttribute('minimum_input_length', $options['minimum_input_length']);
@@ -43,14 +44,6 @@ class ModelAutocompleteType extends AbstractType
         $builder->setAttribute('req_param_name_page_number', $options['req_param_name_page_number']);
         $builder->setAttribute('disabled', $options['disabled'] || $options['read_only']);
         $builder->setAttribute('to_string_callback', $options['to_string_callback']);
-
-        if ($options['multiple']) {
-            $resizeListener = new ResizeFormListener(
-                'hidden', array(), true, true, true
-            );
-
-            $builder->addEventSubscriber($resizeListener);
-        }
     }
 
     /**
@@ -58,13 +51,10 @@ class ModelAutocompleteType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $view->vars['admin_code'] = $options['admin_code'];
-
         $view->vars['placeholder'] = $options['placeholder'];
         $view->vars['multiple'] = $options['multiple'];
         $view->vars['minimum_input_length'] = $options['minimum_input_length'];
         $view->vars['items_per_page'] = $options['items_per_page'];
-        $view->vars['width'] = $options['width'];
 
         // ajax parameters
         $view->vars['url'] = $options['url'];
@@ -74,17 +64,8 @@ class ModelAutocompleteType extends AbstractType
         $view->vars['req_param_name_page_number'] = $options['req_param_name_page_number'];
         $view->vars['req_param_name_items_per_page'] = $options['req_param_name_items_per_page'];
 
-        // CSS classes
-        $view->vars['container_css_class'] = $options['container_css_class'];
+        // dropdown list css class
         $view->vars['dropdown_css_class'] = $options['dropdown_css_class'];
-        $view->vars['dropdown_item_css_class'] = $options['dropdown_item_css_class'];
-
-        $view->vars['dropdown_auto_width'] = $options['dropdown_auto_width'];
-
-        // template
-        $view->vars['template'] = $options['template'];
-
-        $view->vars['context'] = $options['context'];
     }
 
     /**
@@ -92,20 +73,13 @@ class ModelAutocompleteType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $compound = function (Options $options) {
-            return $options['multiple'];
-        };
-
         $resolver->setDefaults(array(
             'attr'                            => array(),
-            'compound'                        => $compound,
+            'compound'                        => true,
             'model_manager'                   => null,
             'class'                           => null,
-            'admin_code'                      => null,
             'callback'                        => null,
             'multiple'                        => false,
-            'width'                           => '',
-            'context'                         => '',
 
             'placeholder'                     => '',
             'minimum_input_length'            => 3, //minimum 3 chars should be typed to load ajax data
@@ -121,14 +95,8 @@ class ModelAutocompleteType extends AbstractType
             'req_param_name_page_number'      => '_page',
             'req_param_name_items_per_page'   => '_per_page',
 
-            // CSS classes
-            'container_css_class'            => '',
-            'dropdown_css_class'             => '',
-            'dropdown_item_css_class'        => '',
-
-            'dropdown_auto_width'            => false,
-
-            'template'                        => 'SonataAdminBundle:Form/Type:sonata_type_model_autocomplete.html.twig'
+            // dropdown list css class
+            'dropdown_css_class'              => 'sonata-autocomplete-dropdown',
         ));
 
         $resolver->setRequired(array('property'));

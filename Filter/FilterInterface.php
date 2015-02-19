@@ -116,21 +116,6 @@ interface FilterInterface
     public function getFieldOptions();
 
     /**
-     * Get field option
-     *
-     * @return mixed
-     */
-    public function getFieldOption($name, $default = null);
-
-    /**
-     * Set field option
-     *
-     * @param string $name
-     * @param mixed  $value
-     */
-    public function setFieldOption($name, $value);
-
-    /**
      * @return string
      */
     public function getFieldType();

@@ -22,8 +22,6 @@ use Sonata\AdminBundle\Tests\Fixtures\Admin\PostAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\CommentAdmin;
 use Symfony\Component\HttpFoundation\Request;
 use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\Tests\Fixtures\Admin\ModelAdmin;
-use Sonata\AdminBundle\Tests\Fixtures\Admin\FieldDescription;
 
 class AdminTest extends \PHPUnit_Framework_TestCase
 {
@@ -1501,75 +1499,6 @@ class AdminTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue(isset($parameters['post__author']));
         $this->assertEquals(array('value' => $authorId), $parameters['post__author']);
-    }
-
-    public function testGetFilterFieldDescription()
-    {
-        $modelAdmin = new ModelAdmin('sonata.post.admin.model', 'Application\Sonata\FooBundle\Entity\Model', 'SonataFooBundle:ModelAdmin');
-
-        $fooFieldDescription = new FieldDescription();
-        $barFieldDescription = new FieldDescription();
-        $bazFieldDescription = new FieldDescription();
-
-        $modelManager = $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface');
-        $modelManager->expects($this->exactly(3))
-            ->method('getNewFieldDescriptionInstance')
-            ->will($this->returnCallback(function ($adminClass, $name, $filterOptions) use ($fooFieldDescription, $barFieldDescription, $bazFieldDescription) {
-                switch ($name) {
-                    case 'foo':
-                        $fieldDescription = $fooFieldDescription;
-                        break;
-
-                    case 'bar':
-                        $fieldDescription = $barFieldDescription;
-                        break;
-
-                    case 'baz':
-                        $fieldDescription = $bazFieldDescription;
-                        break;
-
-                    default:
-                        throw new \RuntiemException(sprintf('Unknown filter name "%s"', $name));
-                        break;
-                }
-
-                $fieldDescription->setName($name);
-
-                return $fieldDescription;
-            }));
-
-        $modelAdmin->setModelManager($modelManager);
-
-        $pager = $this->getMock('Sonata\AdminBundle\Datagrid\PagerInterface');
-
-        $datagrid = $this->getMock('Sonata\AdminBundle\Datagrid\DatagridInterface');
-        $datagrid->expects($this->once())
-            ->method('getPager')
-            ->will($this->returnValue($pager));
-
-        $datagridBuilder = $this->getMock('Sonata\AdminBundle\Builder\DatagridBuilderInterface');
-        $datagridBuilder->expects($this->once())
-            ->method('getBaseDatagrid')
-            ->with($this->identicalTo($modelAdmin), array())
-            ->will($this->returnValue($datagrid));
-
-        $datagridBuilder->expects($this->exactly(3))
-            ->method('addFilter')
-            ->will($this->returnCallback(function ($datagrid, $type = null, $fieldDescription, AdminInterface $admin) {
-                $admin->addFilterFieldDescription($fieldDescription->getName(), $fieldDescription);
-                $fieldDescription->mergeOption('field_options', array('required' => false));
-            }));
-
-        $modelAdmin->setDatagridBuilder($datagridBuilder);
-
-        $this->assertSame(array('foo'=>$fooFieldDescription, 'bar'=>$barFieldDescription, 'baz'=>$bazFieldDescription), $modelAdmin->getFilterFieldDescriptions());
-        $this->assertFalse($modelAdmin->hasFilterFieldDescription('fooBar'));
-        $this->assertTrue($modelAdmin->hasFilterFieldDescription('foo'));
-        $this->assertTrue($modelAdmin->hasFilterFieldDescription('bar'));
-        $this->assertTrue($modelAdmin->hasFilterFieldDescription('baz'));
-        $this->assertSame($fooFieldDescription, $modelAdmin->getFilterFieldDescription('foo'));
-        $this->assertSame($barFieldDescription, $modelAdmin->getFilterFieldDescription('bar'));
-        $this->assertSame($bazFieldDescription, $modelAdmin->getFilterFieldDescription('baz'));
     }
 }
 
