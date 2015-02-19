@@ -131,26 +131,30 @@ file that was distributed with this source code.
     {% if sonata_admin.admin and not sonata_admin.admin.getConfigurationPool().getOption('use_select2') %}
         {% set attr = attr|merge({'class': attr.class|default('') ~ ' form-control'}) %}
     {% endif %}
-    <select {{ block('widget_attributes') }}{% if multiple %} multiple="multiple"{% endif %}>
-        {% if empty_value is not none %}
-            <option value=""{% if required and value is empty %} selected="selected"{% endif %}>
-                {% if not sonata_admin.admin %}
-                    {{- empty_value|trans({}, translation_domain) -}}
-                {% else %}
-                    {{- empty_value|trans({}, sonata_admin.field_description.translationDomain) -}}
-                {% endif%}
-            </option>
-        {% endif %}
-        {% if preferred_choices|length > 0 %}
-            {% set options = preferred_choices %}
-            {{ block('choice_widget_options') }}
-            {% if choices|length > 0 %}
-                <option disabled="disabled">{{ separator }}</option>
+    {% if sortable and multiple %}
+        {{ block('sonata_type_choice_multiple_sortable') }}
+    {% else %}
+        <select {{ block('widget_attributes') }}{% if multiple %} multiple="multiple"{% endif %} >
+            {% if empty_value is not none %}
+                <option value=""{% if required and value is empty %} selected="selected"{% endif %}>
+                    {% if not sonata_admin.admin %}
+                        {{- empty_value|trans({}, translation_domain) -}}
+                    {% else %}
+                        {{- empty_value|trans({}, sonata_admin.field_description.translationDomain) -}}
+                    {% endif%}
+                </option>
             {% endif %}
-        {% endif %}
-        {% set options = choices %}
-        {{ block('choice_widget_options') }}
-    </select>
+            {% if preferred_choices|length > 0 %}
+                {% set options = preferred_choices %}
+                {{ block('choice_widget_options') }}
+                {% if choices|length > 0 %}
+                    <option disabled="disabled">{{ separator }}</option>
+                {% endif %}
+            {% endif %}
+            {% set options = choices %}
+            {{ block('choice_widget_options') }}
+        </select>
+    {% endif %}
 {% endspaceless %}
 {% endblock choice_widget_collapsed %}
 
@@ -314,5 +318,16 @@ file that was distributed with this source code.
             choice_field_mask_show(showMaskChoiceEl.val());
         });
 
+    </script>
+{% endblock %}
+
+{%  block sonata_type_choice_multiple_sortable %}
+    <input type="hidden" name="{{ full_name }}" id="{{ id }}" value="{{ value|join(',') }}" />
+    <script>
+        jQuery(document).ready(function() {
+            var $target = jQuery('#{{ id }}');
+
+            Admin.setup_sortable_select2($target, {{ form.vars.choices|json_encode|raw }});
+        });
     </script>
 {% endblock %}

@@ -444,5 +444,47 @@ var Admin = {
         Admin.log('[core|setup_tree_view] setup tree view', subject);
 
         jQuery('ul.js-treeview', subject).treeView();
+    },
+
+    /**
+     * Setup sortable multiple select2
+     */
+    setup_sortable_select2: function(subject, data) {
+        Admin.log('[core|setup_sortable_select2] configure sortable Select2 on', subject);
+
+        var transformedData = [];
+        for (var i = 0 ; i < data.length ; i++) {
+            transformedData[i] = {id: data[i].data, text: data[i].label};
+        }
+
+        subject.select2({
+            data:     transformedData,
+            multiple: true
+        });
+
+        subject.select2("container").find("ul.select2-choices").sortable({
+            containment: 'parent',
+            start: function () {
+                subject.select2("onSortStart");
+            },
+            update: function () {
+                subject.select2("onSortEnd");
+            }
+        });
+
+        // On form submit, transform value to match what is expected by server
+        subject.parents('form:first').submit(function (event) {
+            var values   = subject.val().split(',');
+            var baseName = subject.attr('name');
+            baseName = baseName.substring(0, baseName.length-1);
+            for (var i=0; i<values.length; i++) {
+                jQuery('<input>')
+                    .attr('type', 'hidden')
+                    .attr('name', baseName+i+']')
+                    .val(values[i])
+                    .appendTo(subject.parents('form:first'));
+            }
+            subject.remove();
+        });
     }
 };

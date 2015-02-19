@@ -1,6 +1,9 @@
 CHANGELOG
 =========
 
+## 2015-02-18
+ * [BC BREAK] Integration of KNPMenu for the admin menu. This integration is resetted when the standard layout ``standard_layout.html.twig`` is overrided. The KNPMenu is available in ``sonata_menu.html.twig`` template.
+
 ### 2015-02-15
  * [BC BREAK] added ``getFieldOption``, ``setFieldOption`` methods to the FilterInterface
  * [BC BREAK] added the ``getFilterFieldDescription`` method to the AdminInterface

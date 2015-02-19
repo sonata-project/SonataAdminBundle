@@ -106,7 +106,43 @@ class Configuration implements ConfigurationInterface
                                     ->scalarNode('label_catalogue')->end()
                                     ->scalarNode('icon')->defaultValue('<i class="fa fa-folder"></i>')->end()
                                     ->arrayNode('items')
-                                        ->prototype('scalar')->end()
+                                        ->beforeNormalization()
+                                            ->ifArray()
+                                            ->then(function($items) {
+                                                foreach ($items as $key => $item) {
+                                                    if (is_array($item)) {
+                                                        if (!array_key_exists('label', $item) || !array_key_exists('route', $item)) {
+                                                            throw new \InvalidArgumentException('Expected either parameters "route" and "label" for array items');
+                                                        }
+
+                                                        if (!array_key_exists('route_params', $item)){
+                                                            $items[$key]['route_params'] = array();
+                                                        }
+
+                                                        $items[$key]['admin'] = '';
+                                                    } else {
+                                                        $items[$key] = array(
+                                                            'admin'        => $item,
+                                                            'label'        => '',
+                                                            'route'        => '',
+                                                            'route_params' => array()
+                                                        );
+                                                    }
+                                                }
+
+                                                return $items;
+                                            })
+                                        ->end()
+                                        ->prototype('array')
+                                            ->children()
+                                                ->scalarNode('admin')->end()
+                                                ->scalarNode('label')->end()
+                                                ->scalarNode('route')->end()
+                                                ->arrayNode('route_params')
+                                                    ->prototype('scalar')->end()
+                                                ->end()
+                                            ->end()
+                                        ->end()
                                     ->end()
                                     ->arrayNode('item_adds')
                                         ->prototype('scalar')->end()
@@ -214,6 +250,7 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('pager_links')->defaultValue('SonataAdminBundle:Pager:links.html.twig')->cannotBeEmpty()->end()
                         ->scalarNode('pager_results')->defaultValue('SonataAdminBundle:Pager:results.html.twig')->cannotBeEmpty()->end()
                         ->scalarNode('tab_menu_template')->defaultValue('SonataAdminBundle:Core:tab_menu_template.html.twig')->cannotBeEmpty()->end()
+                        ->scalarNode('knp_menu_template')->defaultValue('SonataAdminBundle:Menu:sonata_menu.html.twig')->cannotBeEmpty()->end()
                     ->end()
                 ->end()
 
