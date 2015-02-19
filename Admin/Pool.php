@@ -84,13 +84,15 @@ class Pool
 
         foreach ($this->adminGroups as $name => $adminGroup) {
             if (isset($adminGroup['items'])) {
-                foreach ($adminGroup['items'] as $key => $id) {
-                    $admin = $this->getInstance($id);
+                foreach ($adminGroup['items'] as $key => $item) {
+                    if ('' != $item['admin']) {
+                        $admin = $this->getInstance($item['admin']);
 
-                    if ($admin->showIn(Admin::CONTEXT_DASHBOARD)) {
-                        $groups[$name]['items'][$key] = $admin;
-                    } else {
-                        unset($groups[$name]['items'][$key]);
+                        if ($admin->showIn(Admin::CONTEXT_DASHBOARD)) {
+                            $groups[$name]['items'][$key] = $admin;
+                        } else {
+                            unset($groups[$name]['items'][$key]);
+                        }
                     }
                 }
             }
