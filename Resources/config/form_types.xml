@@ -49,6 +49,10 @@
             <tag name="form.type_extension" alias="form" />
         </service>
 
+        <service id="sonata.admin.form.extension.choice" class="Sonata\AdminBundle\Form\Extension\ChoiceTypeExtension">
+            <tag name="form.type_extension" alias="choice" />
+        </service>
+
         <!-- Form Filter Type -->
         <service id="sonata.admin.form.filter.type.number" class="Sonata\AdminBundle\Form\Type\Filter\NumberType">
             <tag name="form.type" alias="sonata_type_filter_number" />

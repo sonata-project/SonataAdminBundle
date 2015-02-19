@@ -511,6 +511,19 @@ General
         <?php
         $form->add('status', null, array('label' => false);
 
+ChoiceType
+^^^^^^^^^^
+
+- ``sortable``: This option can be added for multiple choice widget to activate select2 sortable.
+
+.. code-block:: php
+
+        <?php
+        $form->add('multiChoices', 'choice', array(
+            'multiple' => true,
+            'sortable' => true
+        );
+
 .. _`Symfony field types`: http://symfony.com/doc/current/book/forms.html#built-in-field-types
 .. _`Symfony choice Field Type docs`: http://symfony.com/doc/current/reference/forms/types/choice.html
 .. _`Symfony PropertyPath`: http://api.symfony.com/2.0/Symfony/Component/Form/Util/PropertyPath.html
