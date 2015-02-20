@@ -118,7 +118,7 @@ Hiding the fieldset tags with css (display:none) will be enough to only show the
 
 .. code-block:: css
 
-    .sonata-preview-form .row {
+    .sonata-preview-form-container .row {
         display: none;
     };
 
@@ -126,7 +126,7 @@ Or if you prefer less:
 
 .. code-block:: sass
 
-    div.sonata-preview-form {
+    div.sonata-preview-form-container {
       .row {
         display: none;
       };
