@@ -12,12 +12,16 @@
 namespace Sonata\AdminBundle\Twig\Extension;
 
 use Doctrine\Common\Util\ClassUtils;
+use Knp\Menu\MenuFactory;
+use Knp\Menu\ItemInterface;
+use Psr\Log\LoggerInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
-use Sonata\AdminBundle\Exception\NoValueException;
 use Sonata\AdminBundle\Admin\Pool;
+use Sonata\AdminBundle\Exception\NoValueException;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PropertyAccess\PropertyAccess;
-use Psr\Log\LoggerInterface;
+use Symfony\Component\Routing\RouterInterface;
 
 class SonataAdminExtension extends \Twig_Extension
 {
@@ -32,6 +36,11 @@ class SonataAdminExtension extends \Twig_Extension
     protected $pool;
 
     /**
+     * @var RouterInterface
+     */
+    protected $router;
+
+    /**
      * @var LoggerInterface
      */
     protected $logger;
@@ -40,10 +49,11 @@ class SonataAdminExtension extends \Twig_Extension
      * @param Pool            $pool
      * @param LoggerInterface $logger
      */
-    public function __construct(Pool $pool, LoggerInterface $logger = null)
+    public function __construct(Pool $pool, RouterInterface $router, LoggerInterface $logger = null)
     {
-        $this->pool = $pool;
+        $this->pool   = $pool;
         $this->logger = $logger;
+        $this->router = $router;
     }
 
     /**
@@ -60,12 +70,23 @@ class SonataAdminExtension extends \Twig_Extension
     public function getFilters()
     {
         return array(
-            'render_list_element'           => new \Twig_Filter_Method($this, 'renderListElement', array('is_safe' => array('html'))),
-            'render_view_element'           => new \Twig_Filter_Method($this, 'renderViewElement', array('is_safe' => array('html'))),
-            'render_view_element_compare'   => new \Twig_Filter_Method($this, 'renderViewElementCompare', array('is_safe' => array('html'))),
-            'render_relation_element'       => new \Twig_Filter_Method($this, 'renderRelationElement'),
-            'sonata_urlsafeid'              => new \Twig_Filter_Method($this, 'getUrlsafeIdentifier'),
-            'sonata_xeditable_type'         => new \Twig_Filter_Method($this, 'getXEditableType'),
+            'render_list_element'           => new \Twig_Filter_Method($this,   'renderListElement', array('is_safe' => array('html'))),
+            'render_view_element'           => new \Twig_Filter_Method($this,   'renderViewElement', array('is_safe' => array('html'))),
+            'render_view_element_compare'   => new \Twig_Filter_Method($this,   'renderViewElementCompare', array('is_safe' => array('html'))),
+            'render_relation_element'       => new \Twig_Filter_Method($this,   'renderRelationElement'),
+            'sonata_urlsafeid'              => new \Twig_Filter_Method($this,   'getUrlsafeIdentifier'),
+            'sonata_xeditable_type'         => new \Twig_Filter_Method($this,   'getXEditableType'),
+        );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+
+    public function getFunctions()
+    {
+        return array(
+            'sonata_knp_menu_build' => new \Twig_Function_Method($this, 'getKnpMenu')
         );
     }
 
@@ -342,5 +363,56 @@ class SonataAdminExtension extends \Twig_Extension
         );
 
         return isset($mapping[$type]) ? $mapping[$type] : false;
+    }
+
+    /**
+     * Get KnpMenu
+     *
+     * @param Request $request
+     *
+     * @return ItemInterface
+     */
+    public function getKnpMenu(Request $request = null)
+    {
+        $menuFactory = new MenuFactory();
+        $menu = $menuFactory
+            ->createItem('root')
+            ->setExtra('request', $request)
+        ;
+
+        foreach ($this->pool->getAdminGroups() as $name => $group) {
+            $menu
+                ->addChild($name, array('label' => $group['label']))
+                ->setAttributes(
+                    array(
+                        'icon'             => $group['icon'],
+                        'label_catalogue'  => $group['label_catalogue']
+                    )
+                )
+                ->setExtra('roles', $group['roles'])
+            ;
+
+            foreach ($group['items'] as $item) {
+                if (array_key_exists('admin', $item) && $item['admin'] != null) {
+                    $admin             = $this->pool->getInstance($item['admin']);
+                    $label             = $admin->getLabel();
+                    $route             = $admin->generateUrl('list');
+                    $translationDomain = $admin->getTranslationDomain();
+                } else {
+                    $label             = $item['label'];
+                    $route             = $this->router->generate($item['route'], $item['route_params']);
+                    $translationDomain = null;
+                    $admin             = null;
+                }
+
+                $menu[$name]
+                    ->addChild($label, array('uri' => $route))
+                    ->setExtra('translationdomain', $translationDomain)
+                    ->setExtra('admin', $admin)
+                ;
+            }
+        }
+
+        return $menu;
     }
 }

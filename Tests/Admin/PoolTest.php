@@ -74,19 +74,20 @@ class PoolTest extends \PHPUnit_Framework_TestCase
 
         $pool->setAdminGroups(array(
             'adminGroup1' => array(
-                'items' => array('itemKey' => 'sonata.user.admin.group1')
+                'items' => array('itemKey' =>  array('admin' => 'sonata.user.admin.group1', 'label' => '', 'route' => '', 'route_params' => array()))
             ),
             'adminGroup2' => array(
-                'items' => array('itemKey' => 'sonata.user.admin.group2')
+                'items' => array('itemKey' =>  array('admin' => 'sonata.user.admin.group2', 'label' => '', 'route' => '', 'route_params' => array()))
             ),
             'adminGroup3' => array(
-                'items' => array('itemKey' => 'sonata.user.admin.group3')
+                'items' => array('itemKey' =>  array('admin' => 'sonata.user.admin.group3', 'label' => '', 'route' => '', 'route_params' => array()))
             ),
         ));
 
         $groups = $pool->getDashboardGroups();
 
         $this->assertCount(1, $groups);
+        $this->assertEquals($admin_group1, $groups['adminGroup1']['items']['itemKey']);
     }
 
     /**
