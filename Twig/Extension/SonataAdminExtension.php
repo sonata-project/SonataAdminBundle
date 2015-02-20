@@ -385,7 +385,8 @@ class SonataAdminExtension extends \Twig_Extension
                 ->addChild($name, array('label' => $group['label']))
                 ->setAttributes(
                     array(
-                        'icon'  => $group['icon']
+                        'icon'             => $group['icon'],
+                        'label_catalogue'  => $group['label_catalogue']
                     )
                 )
                 ->setExtra('roles', $group['roles'])
