@@ -878,6 +878,7 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
             "bar" => array(
                 "label" => "foo",
                 "icon"  => '<i class="fa fa-edit"></i>',
+                "label_catalogue"  => 'SonataAdminBundle',
                 "items" => array(
                     array(
                         "admin"        => "",
