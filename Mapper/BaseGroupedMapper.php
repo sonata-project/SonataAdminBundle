@@ -33,7 +33,7 @@ abstract class BaseGroupedMapper extends BaseMapper
      * @param string $name
      * @param array  $options
      *
-     * @return BaseGroupedMapper
+     * @return $this
      *
      * @throws \RuntimeException
      */
@@ -142,7 +142,7 @@ abstract class BaseGroupedMapper extends BaseMapper
      *
      * @param boolean $bool
      *
-     * @return BaseGroupedMapper
+     * @return $this
      *
      * @throws \RuntimeException
      */
@@ -162,7 +162,7 @@ abstract class BaseGroupedMapper extends BaseMapper
      *
      * @param boolean $bool
      *
-     * @return BaseGroupedMapper
+     * @return $this
      *
      * @throws \RuntimeException
      */
@@ -193,7 +193,7 @@ abstract class BaseGroupedMapper extends BaseMapper
      * @param string $name
      * @param array  $options
      *
-     * @return BaseGroupedMapper
+     * @return $this
      */
     public function tab($name, array $options = array())
     {
@@ -203,7 +203,7 @@ abstract class BaseGroupedMapper extends BaseMapper
     /**
      * Close the current group or tab
      *
-     * @return BaseGroupedMapper
+     * @return $this
      *
      * @throws \RuntimeException
      */
