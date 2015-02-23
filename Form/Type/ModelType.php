@@ -54,6 +54,7 @@ class ModelType extends AbstractType
     {
         $view->vars['btn_add'] = $options['btn_add'];
         $view->vars['btn_list'] = $options['btn_list'];
+        $view->vars['btn_edit'] = $options['btn_edit'];
         $view->vars['btn_delete'] = $options['btn_delete'];
         $view->vars['btn_catalogue'] = $options['btn_catalogue'];
     }
@@ -93,8 +94,11 @@ class ModelType extends AbstractType
             'query'             => null,
             'choices'           => null,
             'preferred_choices' => array(),
+            'route_generator'   => null,
+            'route_edit_name'   => null,
             'btn_add'           => 'link_add',
             'btn_list'          => 'link_list',
+            'btn_edit'          => 'link_edit',
             'btn_delete'        => 'link_delete',
             'btn_catalogue'     => 'SonataAdminBundle',
             'choice_list'       => function (Options $options, $previousValue) {
@@ -107,7 +111,9 @@ class ModelType extends AbstractType
                     $options['class'],
                     $options['property'],
                     $options['query'],
-                    $options['choices']
+                    $options['choices'],
+                    $options['route_generator'],
+                    $options['route_edit_name']
                 );
             }
         ));

@@ -23,6 +23,7 @@ jQuery(document).ready(function() {
 jQuery(document).on('sonata-admin-append-form-element', function(e) {
     Admin.setup_select2(e.target);
     Admin.setup_icheck(e.target);
+    Admin.setup_select(e.target);
 });
 
 var Admin = {
@@ -45,6 +46,7 @@ var Admin = {
         Admin.setup_form_tabs_for_errors(subject);
         Admin.setup_inline_form_errors(subject);
         Admin.setup_tree_view(subject);
+        Admin.setup_select(subject);
 
 //        Admin.setup_list_modal(subject);
     },
@@ -69,6 +71,45 @@ var Admin = {
             overflow: 'scroll'
         });
     },
+    
+    setup_select: function(subject) {
+       jQuery('select', subject).each(function() {
+            var select = jQuery(this);
+            var fieldContainer = select.closest('div[class="field-container"]');
+            var editBtn = fieldContainer.find('a[class~="sonata_model_edit_btn"]');
+
+            if (editBtn.length) {
+                editBtn.rewriteBtn = function(choice) {
+                    if (choice) {
+                        var href = jQuery(choice).attr('data-sonata-admin-edit-href');
+                        if (href !== undefined && href !== '') {
+                            this.removeClass('disabled');
+                            this.attr('href', href);
+                            return;
+                        }
+                    }
+                    // disable edit link if choice is invalid or removed
+                    this.addClass('disabled');
+                    this.attr('href', null);
+                };
+                
+                // if an entity is already selected
+                var choice = select.find('option:selected:last');
+                editBtn.rewriteBtn(choice);
+                
+                // other cases
+                select.on('change', {btn : editBtn}, function(event) {
+                    Admin.stopEvent(event);
+                    var choice = null;
+                    if (event.added) {
+                        choice = event.added.element[event.added.element.length - 1];
+                    }
+                    editBtn.rewriteBtn(choice);
+                });
+            }
+        });
+    },
+            
     setup_select2: function(subject) {
         if (window.SONATA_CONFIG && window.SONATA_CONFIG.USE_SELECT2 && window.Select2) {
             Admin.log('[core|setup_select2] configure Select2 on', subject);

@@ -70,6 +70,10 @@
                 <source>link_add</source>
                 <target>اضافه کردن جدید</target>
             </trans-unit>
+            <trans-unit id="link_edit">
+                <source>link_edit</source>
+                <target>ویرایش</target>
+            </trans-unit>
             <trans-unit id="link_list">
                 <source>link_list</source>
                 <target>لیست</target>

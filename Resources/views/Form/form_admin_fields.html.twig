@@ -158,6 +158,25 @@ file that was distributed with this source code.
 {% endspaceless %}
 {% endblock choice_widget_collapsed %}
 
+{% block choice_widget_options -%}
+    {% for group_label, choice in options %}
+        {%- if choice is iterable -%}
+            <optgroup label="{{ group_label|trans({}, translation_domain) }}">
+                {% set options = choice %}
+                {{- block('choice_widget_options') -}}
+            </optgroup>
+        {%- else -%}
+            <option 
+            {% if choice.attributes is defined and choice.attributes.routes is defined -%}
+                {% for route_name in choice.attributes.routes | keys -%}
+                    data-sonata-admin-{{ route_name }}-href="{{ attribute(choice.attributes.routes, route_name) }}"
+                {%- endfor -%}
+            {% endif %}
+            value="{{ choice.value }}"{% if choice is selectedchoice(value) %} selected="selected"{% endif %}>{{ choice.label|trans({}, translation_domain) }}</option>
+        {%- endif -%}
+    {% endfor %}
+{%- endblock choice_widget_options %}
+        
 {% block form_row %}
     {% set label_class = "" %}
     {% set div_class = "" %}

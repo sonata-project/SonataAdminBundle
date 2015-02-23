@@ -18,6 +18,9 @@ use Symfony\Component\Form\Exception\InvalidArgumentException;
 use Symfony\Component\Form\Exception\RuntimeException;
 use Symfony\Component\Form\Extension\Core\ChoiceList\SimpleChoiceList;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
+use Sonata\AdminBundle\Form\View\ChoiceView;
+use Symfony\Component\Form\Exception\InvalidConfigurationException;
+use Symfony\Component\Form\FormConfigBuilder;
 
 class ModelChoiceList extends SimpleChoiceList
 {
@@ -71,6 +74,20 @@ class ModelChoiceList extends SimpleChoiceList
      * @var array
      */
     private $reflProperties = array();
+    
+    /**
+     * Route Generator
+     * 
+     * @var \Sonata\AdminBundle\Route\RouteGeneratorInterface 
+     */
+    private $routeGenerator;
+    
+    /**
+     * Route name to edit the target entity
+     * 
+     * @var string
+     */
+    private $routeEditName;
 
     private $propertyPath;
 
@@ -80,12 +97,16 @@ class ModelChoiceList extends SimpleChoiceList
      * @param null                  $property
      * @param null                  $query
      * @param array                 $choices
+     * @param null                  $routeGenerator
+     * @param null                  $routeEditName
      */
-    public function __construct(ModelManagerInterface $modelManager, $class, $property = null, $query = null, $choices = array())
+    public function __construct(ModelManagerInterface $modelManager, $class, $property = null, $query = null, $choices = array(), $routeGenerator = null, $routeEditName = null)
     {
         $this->modelManager   = $modelManager;
         $this->class          = $class;
         $this->query          = $query;
+        $this->routeGenerator = $routeGenerator;
+        $this->routeEditName  = $routeEditName;
         $this->identifier     = $this->modelManager->getIdentifierFieldNames($this->class);
 
         // The property option defines, which property (path) is used for
@@ -95,6 +116,62 @@ class ModelChoiceList extends SimpleChoiceList
         }
 
         parent::__construct($this->load($choices));
+    }
+    
+    /**
+     * Adds a new choice.
+     *
+     * @param array  $bucketForPreferred The bucket where to store the preferred
+     *                                   view objects.
+     * @param array  $bucketForRemaining The bucket where to store the
+     *                                   non-preferred view objects.
+     * @param mixed  $choice             The choice to add.
+     * @param string $label              The label for the choice.
+     * @param array  $preferredChoices   The preferred choices.
+     *
+     * @throws InvalidConfigurationException If no valid value or index could be created.
+     */
+    protected function addChoice(array &$bucketForPreferred, array &$bucketForRemaining, $choice, $label, array $preferredChoices)
+    {
+        $index = $this->createIndex($choice);
+
+        if ('' === $index || null === $index || !FormConfigBuilder::isValidName((string) $index)) {
+            throw new InvalidConfigurationException(sprintf('The index "%s" created by the choice list is invalid. It should be a valid, non-empty Form name.', $index));
+        }
+
+        $value = $this->createValue($choice);
+
+        if (!is_string($value)) {
+            throw new InvalidConfigurationException(sprintf('The value created by the choice list is of type "%s", but should be a string.', gettype($value)));
+        }
+        
+        $attributes = array();
+        if ($this->routeGenerator && is_string($this->routeEditName)) {
+            if (!is_string($this->routeEditName) || $this->routeEditName === '') {
+                throw new InvalidConfigurationException('Edit route name is invalid. It should be  a non empty string');
+            }
+            
+            $attributes['routes'] = array(
+                'edit' => $this->routeGenerator->generate(
+                    $this->routeEditName,
+                    \array_combine(
+                        $this->getIdentifier(),
+                        $this->getIdentifierValues($this->getEntity($choice))
+                    )
+                )
+            );
+        }
+
+        $view = new ChoiceView($choice, $value, $label, $attributes);
+
+        $this->choices[$index] = $this->fixChoice($choice);
+        $this->values[$index] = $value;
+
+        if ($this->isPreferred($choice, $preferredChoices)) {
+            $bucketForPreferred[$index] = $view;
+        } else {
+            $bucketForRemaining[$index] = $view;
+        }
     }
 
     /**

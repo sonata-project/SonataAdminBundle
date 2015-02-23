@@ -70,6 +70,10 @@
                 <source>link_add</source>
                 <target>Add new</target>
             </trans-unit>
+            <trans-unit id="link_edit">
+                <source>link_edit</source>
+                <target>Edit</target>
+            </trans-unit>
             <trans-unit id="link_list">
                 <source>link_list</source>
                 <target>List</target>
