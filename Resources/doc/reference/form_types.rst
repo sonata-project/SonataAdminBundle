@@ -360,6 +360,9 @@ that looks like this:
                 calls:
                     - [ setTranslationDomain, [Acme\DemoBundle]]
 
+.. note::
+
+    Refer to `Getting started documentation`_ to see how to define your admin.yml file.
 
 To embed ``ImageAdmin`` within ``PageAdmin`` we just need to change the reference
 for the ``image1`` field to ``sonata_type_admin`` in our ``PageAdmin`` class:
@@ -528,3 +531,4 @@ ChoiceType
 .. _`Symfony field types`: http://symfony.com/doc/current/book/forms.html#built-in-field-types
 .. _`Symfony choice Field Type docs`: http://symfony.com/doc/current/reference/forms/types/choice.html
 .. _`Symfony PropertyPath`: http://api.symfony.com/2.0/Symfony/Component/Form/Util/PropertyPath.html
+.. _`Getting started documentation`: http://sonata-project.org/bundles/admin/master/doc/reference/getting_started.html#importing-it-in-the-main-config-yml
