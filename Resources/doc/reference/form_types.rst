@@ -348,16 +348,17 @@ that looks like this:
 
         # Acme/DemoBundle/Resources/config/admin.yml
 
-        sonata.admin.image:
-            class: Acme\DemoBundle\Admin\ImageAdmin
-            tags:
-                - { name: sonata.admin, manager_type: orm, label: "Image" }
-            arguments:
-                - ~
-                - Acme\DemoBundle\Entity\Image
-                - 'SonataAdminBundle:CRUD'
-            calls:
-                - [ setTranslationDomain, [Acme\DemoBundle]]
+        services:
+            sonata.admin.image:
+                class: Acme\DemoBundle\Admin\ImageAdmin
+                tags:
+                    - { name: sonata.admin, manager_type: orm, label: "Image" }
+                arguments:
+                    - ~
+                    - Acme\DemoBundle\Entity\Image
+                    - 'SonataAdminBundle:CRUD'
+                calls:
+                    - [ setTranslationDomain, [Acme\DemoBundle]]
 
 
 To embed ``ImageAdmin`` within ``PageAdmin`` we just need to change the reference
