@@ -121,6 +121,9 @@ class ListMapperTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('fooName', $fieldDescription->getOption('label'));
     }
 
+    /**
+     * @group legacy
+     */
     public function testAddViewInlineActionException()
     {
         $this->setExpectedException('PHPUnit_Framework_Error', 'Inline action "view" is deprecated since version 2.2.4. Use inline action "show" instead.');
