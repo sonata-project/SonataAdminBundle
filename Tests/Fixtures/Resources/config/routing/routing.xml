@@ -4,15 +4,15 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
-    <route id="sonata_admin_foo" pattern="/foo">
+    <route id="sonata_admin_foo" path="/foo">
         <default key="_controller">SonataAdminBundle:RouteAdminController:foo</default>
     </route>
 
-    <route id="sonata_admin_foo_param" pattern="/foo/{param1}/{param2}">
+    <route id="sonata_admin_foo_param" path="/foo/{param1}/{param2}">
         <default key="_controller">SonataAdminBundle:RouteAdminController:fooParam</default>
     </route>
 
-    <route id="sonata_admin_foo_object" pattern="/foo/obj/{param1}/{barId}/{param2}">
+    <route id="sonata_admin_foo_object" path="/foo/obj/{param1}/{barId}/{param2}">
         <default key="_controller">SonataAdminBundle:RouteAdminController:fooObject</default>
     </route>
 </routes>
