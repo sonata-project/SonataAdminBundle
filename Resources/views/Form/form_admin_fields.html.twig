@@ -181,7 +181,7 @@ file that was distributed with this source code.
             </div>
         </div>
     {% else %}
-        <div class="form-group{% if errors|length > 0%} has-error{%endif%}" id="sonata-ba-field-container-{{ id }}">
+        <div class="form-group {% if sonata_admin.field_description.options.form_group_class is defined %} {{ sonata_admin.field_description.options.form_group_class }} {% endif %} {% if errors|length > 0%} has-error{%endif%}" id="sonata-ba-field-container-{{ id }}">
             {% block label %}
                 {% if sonata_admin.field_description.options.name is defined %}
                     {{ form_label(form, sonata_admin.field_description.options.name, { 'attr' : {'class' : label_class} }) }}
