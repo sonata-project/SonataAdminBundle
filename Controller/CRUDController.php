@@ -38,15 +38,17 @@ class CRUDController extends Controller
     /**
      * Render JSON.
      *
-     * @param mixed $data
-     * @param int   $status
-     * @param array $headers
+     * @param mixed   $data
+     * @param int     $status
+     * @param array   $headers
+     * @param Request $request
      *
      * @return Response with json encoded data
      */
     protected function renderJson($data, $status = 200, $headers = array(), Request $request = null)
     {
         $request = $this->resolveRequest($request);
+
         // fake content-type so browser does not show the download popup when this
         // response is rendered through an iframe (used by the jquery.form.js plugin)
         //  => don't know yet if it is the best solution
@@ -62,6 +64,8 @@ class CRUDController extends Controller
 
     /**
      * Returns true if the request is a XMLHttpRequest.
+     *
+     * @param Reqeust $request
      *
      * @return bool True if the request is an XMLHttpRequest, false otherwise
      */
@@ -165,6 +169,8 @@ class CRUDController extends Controller
      *
      * @param Request $request
      *
+     * @param Request $request
+     *
      * @return string The template name
      */
     protected function getBaseTemplate(Request $request = null)
@@ -211,6 +217,8 @@ class CRUDController extends Controller
 
     /**
      * List action.
+     *
+     * @param Request $request
      *
      * @param Request $request
      *
@@ -298,9 +306,9 @@ class CRUDController extends Controller
             throw new AccessDeniedException();
         }
 
-        if ($this->getRestMethod() == 'DELETE') {
+        if ($this->getRestMethod($request) == 'DELETE') {
             // check the csrf token
-            $this->validateCsrfToken('sonata.delete');
+            $this->validateCsrfToken('sonata.delete', $request);
 
             try {
                 $this->admin->delete($object);
@@ -379,7 +387,7 @@ class CRUDController extends Controller
         $form->setData($object);
         $form->handleRequest($request);
 
-        if ($this->getRestMethod() == 'POST') {
+        if ($this->getRestMethod($request) == 'POST') {
             $form->submit($request);
 
             $isFormValid = $form->isValid();
@@ -487,6 +495,8 @@ class CRUDController extends Controller
 
     /**
      * Batch action.
+     *
+     * @param Request $request
      *
      * @param Request $request
      *
@@ -604,6 +614,8 @@ class CRUDController extends Controller
      *
      * @param Request $request
      *
+     * @param Request $request
+     *
      * @return Response
      *
      * @throws AccessDeniedException If access is not granted
@@ -626,7 +638,7 @@ class CRUDController extends Controller
         $form = $this->admin->getForm();
         $form->setData($object);
 
-        if ($this->getRestMethod() == 'POST') {
+        if ($this->getRestMethod($request) == 'POST') {
             $form->submit($request);
 
             $isFormValid = $form->isValid();
@@ -642,8 +654,8 @@ class CRUDController extends Controller
 
                     if ($this->isXmlHttpRequest($request)) {
                         return $this->renderJson(array(
-                            'result'   => 'ok',
-                            'objectId' => $this->admin->getNormalizedIdentifier($object),
+                            'result' => 'ok',
+                            'objectId' => $this->admin->getNormalizedIdentifier($object)
                         ), 200, array(), $request);
                     }
 
@@ -701,6 +713,8 @@ class CRUDController extends Controller
      *
      * @param Request $request
      *
+     * @param Request $request
+     *
      * @return bool
      */
     protected function isPreviewRequested(Request $request = null)
@@ -712,6 +726,8 @@ class CRUDController extends Controller
 
     /**
      * Returns true if the preview has been approved.
+     *
+     * @param Request $request
      *
      * @param Request $request
      *
@@ -746,6 +762,8 @@ class CRUDController extends Controller
 
     /**
      * Returns true if the preview has been declined.
+     *
+     * @param Request $request
      *
      * @param Request $request
      *
@@ -835,10 +853,10 @@ class CRUDController extends Controller
         $revisions = $reader->findRevisions($this->admin->getClass(), $id);
 
         return $this->render($this->admin->getTemplate('history'), array(
-            'action'          => 'history',
-            'object'          => $object,
-            'revisions'       => $revisions,
-            'currentRevision' => $revisions ? current($revisions) : false,
+            'action'            => 'history',
+            'object'            => $object,
+            'revisions'         => $revisions,
+            'currentRevision'   => $revisions ? current($revisions) : false,
         ), null, $request);
     }
 
@@ -1141,6 +1159,8 @@ class CRUDController extends Controller
         if (!$this->container->has('form.csrf_provider')) {
             return;
         }
+
+        $request = $this->resolveRequest($request);
 
         if (!$this->container->get('form.csrf_provider')->isCsrfTokenValid(
             $intention,
