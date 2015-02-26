@@ -57,7 +57,7 @@ class ExplainAdminCommand extends ContainerAwareCommand
         $output->writeln('');
         $output->writeln('<info>Routes</info>');
         foreach ($admin->getRoutes()->getElements() as $route) {
-            $output->writeln(sprintf('  - % -25s %s', $route->getDefault('_sonata_name'), $route->getPattern()));
+            $output->writeln(sprintf('  - % -25s %s', $route->getDefault('_sonata_name'), $route->getPath()));
         }
 
         $output->writeln('');
