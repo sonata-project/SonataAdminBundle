@@ -23,7 +23,6 @@ use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
 use Sonata\AdminBundle\Builder\ListBuilderInterface;
 use Symfony\Component\Form\FormBuilder;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
-use Symfony\Component\Validator\Mapping\ElementMetadata;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\Email;
@@ -171,11 +170,18 @@ class ExplainAdminCommandTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo('Acme\Entity\Foo'))
             ->will($this->returnValue($metadata));
 
-        $propertyMetadata = $this->getMockForAbstractClass('Symfony\Component\Validator\Mapping\ElementMetadata');
+        if (class_exists('Symfony\Component\Validator\Mapping\GenericMetadata')) {
+            $class = 'GenericMetadata';
+        } else {
+            // Symfony <2.5 compatibility
+            $class = 'ElementMetadata';
+        }
+
+        $propertyMetadata = $this->getMockForAbstractClass('Symfony\Component\Validator\Mapping\\'.$class);
         $propertyMetadata->constraints = array(new NotNull(), new Length(array('min' => 2, 'max' => 50, 'groups' => array('create', 'edit'),)));
         $metadata->properties = array('firstName' => $propertyMetadata);
 
-        $getterMetadata = $this->getMockForAbstractClass('Symfony\Component\Validator\Mapping\ElementMetadata');
+        $getterMetadata = $this->getMockForAbstractClass('Symfony\Component\Validator\Mapping\\'.$class);
         $getterMetadata->constraints = array(new NotNull(), new Email(array('groups' => array('registration', 'edit'),)));
         $metadata->getters = array('email' => $getterMetadata);
 
