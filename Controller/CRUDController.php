@@ -11,6 +11,7 @@
 
 namespace Sonata\AdminBundle\Controller;
 
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,6 +19,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Exception\ModelManagerException;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Admin\BaseFieldDescription;
@@ -29,7 +31,7 @@ class CRUDController extends Controller
     /**
      * The related Admin class
      *
-     * @var \Sonata\AdminBundle\Admin\AdminInterface
+     * @var AdminInterface
      */
     protected $admin;
 
@@ -148,7 +150,7 @@ class CRUDController extends Controller
      * Proxy for the logger service of the container.
      * If no such service is found, a NullLogger is returned.
      *
-     * @return \Psr\Log\LoggerInterface
+     * @return LoggerInterface
      */
     protected function getLogger()
     {
