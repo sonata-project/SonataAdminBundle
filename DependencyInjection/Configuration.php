@@ -86,6 +86,7 @@ class Configuration implements ConfigurationInterface
                             ->defaultValue('both')
                             ->cannotBeEmpty()
                         ->end()
+                        ->scalarNode('export_delimiter')->defaultValue(',')->end()
                     ->end()
                 ->end()
                 ->arrayNode('dashboard')
