@@ -37,7 +37,6 @@
         "knplabs/knp-menu": ">=1.1.0,<3.0.0"
     },
     "require-dev": {
-      "phpunit/phpunit": "*",
         "jms/translation-bundle": "~1.1",
         "symfony/yaml": "~2.3",
         "sonata-project/intl-bundle": "~2.1"
