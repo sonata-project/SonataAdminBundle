@@ -195,10 +195,10 @@ file that was distributed with this source code.
                 <a href="#" class="dropdown-toggle sonata-ba-action" data-toggle="dropdown">{{ 'link_filters'|trans({}, 'SonataAdminBundle') }} <b class="caret"></b></a>
 
                 <ul class="dropdown-menu" role="menu">
-                    {% for filter in admin.datagrid.filters if filter.options['show_filter']%}
+                    {% for filter in admin.datagrid.filters if (filter.options['show_filter'] is sameas(true) or filter.options['show_filter'] is null) %}
                         <li>
                             <a href="#" class="sonata-toggle-filter sonata-ba-action" filter-target="filter-{{ admin.uniqid }}-{{ filter.name }}" filter-container="filter-container-{{ admin.uniqid() }}">
-                                <i class="fa {{ filter.isActive() ? 'fa-check-square-o' : 'fa-square-o' }}"></i>{{ admin.trans(filter.label, {}, filter.translationDomain) }}
+                                <i class="fa {{ (filter.isActive() or filter.options['show_filter']) ? 'fa-check-square-o' : 'fa-square-o' }}"></i>{{ admin.trans(filter.label, {}, filter.translationDomain) }}
                             </a>
                         </li>
                     {% endfor %}
@@ -222,7 +222,7 @@ file that was distributed with this source code.
                             <div class="col-md-9">
                                 <div class="filter_container">
                                     {% for filter in admin.datagrid.filters %}
-                                        <div class="form-group" id="filter-{{ admin.uniqid }}-{{ filter.name }}" sonata-filter="{{ filter.options['show_filter'] ? 'true' : 'false' }}" style="display: {% if filter.isActive() and filter.options['show_filter'] %}block{% else %}none{% endif %}">
+                                        <div class="form-group" id="filter-{{ admin.uniqid }}-{{ filter.name }}" sonata-filter="{{ (filter.options['show_filter'] is sameas(true) or filter.options['show_filter'] is null) ? 'true' : 'false' }}" style="display: {% if (filter.isActive() and filter.options['show_filter'] is null) or (filter.options['show_filter'] is sameas(true)) %}block{% else %}none{% endif %}">
                                             {% if filter.label is not sameas(false) %}
                                             <label for="{{ form.children[filter.formName].children['value'].vars.id }}" class="col-sm-3 control-label">{{ admin.trans(filter.label, {}, filter.translationDomain) }}</label>
                                             {% endif %}
