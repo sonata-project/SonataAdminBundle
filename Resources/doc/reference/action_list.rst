@@ -221,6 +221,45 @@ To do:
 Filters
 -------
 
+You can add filters to let user control which data will be displayed.
+
+.. code-block:: php
+
+    <?php
+    // src/Acme/DemoBundle/Admin/PostAdmin.php
+
+    use Sonata\AdminBundle\Datagrid\DatagridMapper;;
+
+    class ClientAdmin extends Admin
+    {
+
+        protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+        {
+            $datagridMapper
+                ->add('phone')
+                ->add('email')
+            ;
+        }
+    }
+
+All filters are hidden by defualt for space-saving. User has to check which filter
+he wants to use.
+
+To make the filter always visible (even when it is inactive), set the parameter
+``show_filter`` to ``true``.
+
+.. code-block:: php
+
+    <?php
+
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    {
+        $datagridMapper
+            ->add('phone')
+            ->add('email', null, array('show_filter'=>true))
+        ;
+    }
+
 To do:
 
 - basic filter configuration and options
