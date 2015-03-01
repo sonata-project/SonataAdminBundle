@@ -183,7 +183,7 @@ abstract class Filter implements FilterInterface
     public function setOptions(array $options)
     {
         $this->options = array_merge(
-            array('show_filter' => true),
+            array('show_filter' => true, 'force_display' => false),
             $this->getDefaultOptions(),
             $options
         );
@@ -225,6 +225,10 @@ abstract class Filter implements FilterInterface
     public function isActive()
     {
         $values = $this->getValue();
+
+        if (isset($this->options['force_display']) && $this->options['force_display']) {
+            return true;
+        }
 
         return isset($values['value'])
             && false !== $values['value']

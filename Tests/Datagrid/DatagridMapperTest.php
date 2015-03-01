@@ -121,7 +121,8 @@ class DatagridMapperTest extends \PHPUnit_Framework_TestCase
             'field_name' => 'fooFilterName',
             'placeholder' => 'short_object_description_placeholder',
             'link_parameters' => array(),
-            'show_filter' => true
+            'show_filter' => true,
+            'force_display' => false
         ), $filter->getOptions());
     }
 
@@ -149,7 +150,8 @@ class DatagridMapperTest extends \PHPUnit_Framework_TestCase
             'placeholder' => 'short_object_description_placeholder',
             'foo_filter_option' => 'foo_filter_option_value',
             'link_parameters' => array(),
-            'show_filter' => true
+            'show_filter' => true,
+            'force_display' => false
         ), $filter->getOptions());
     }
 
