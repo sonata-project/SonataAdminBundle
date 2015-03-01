@@ -20,9 +20,7 @@ use Sonata\AdminBundle\Builder\RouteBuilderInterface;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Sonata\AdminBundle\Validator\ErrorElement;
 use Sonata\AdminBundle\Route\RouteGeneratorInterface;
-
 use Knp\Menu\FactoryInterface as MenuFactoryInterface;
-
 use Sonata\CoreBundle\Model\Metadata;
 use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -309,6 +307,15 @@ interface AdminInterface
      * @return string
      */
     public function getIdParameter();
+
+    /**
+     * Returns true if the route $name is available
+     *
+     * @param string $name
+     *
+     * @return bool
+     */
+    public function hasRoute($name);
 
     /**
      * Returns true if the admin has a FieldDescription with the given $name

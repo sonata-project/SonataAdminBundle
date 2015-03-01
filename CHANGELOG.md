@@ -1,6 +1,9 @@
 CHANGELOG
 =========
 
+### 2015-03-01
+ * [BC BREAK] added the ``hasRoute`` method to the AdminInterface
+
 ## 2015-02-18
  * [BC BREAK] Integration of KNPMenu for the admin menu. This integration is resetted when the standard layout ``standard_layout.html.twig`` is overrided. The KNPMenu is available in ``sonata_menu.html.twig`` template.
 
@@ -15,7 +18,7 @@ CHANGELOG
 ## 2015-01-05
  * [BC BREAK] #2665 - text from Admin's toString method is escaped for html output before adding in flash message to prevent possible XSS vulnerability.
 
-### 2014-11-04 
+### 2014-11-04
 * [BC BREAK] Inline edition now validates the whole object.
 
 ### 2014-09-21
