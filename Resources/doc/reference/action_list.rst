@@ -228,7 +228,7 @@ You can add filters to let user control which data will be displayed.
     <?php
     // src/Acme/DemoBundle/Admin/PostAdmin.php
 
-    use Sonata\AdminBundle\Datagrid\DatagridMapper;;
+    use Sonata\AdminBundle\Datagrid\DatagridMapper;
 
     class ClientAdmin extends Admin
     {
