@@ -7,7 +7,9 @@
     "dependencies": {
         "jqueryui": "~1.10.4",
         "x-editable": "~1.5.1",
-        "AdminLTE": "https://github.com/almasaeed2010/AdminLTE.git#master",
+        "admin-lte": "~2.0.1",
+        "iCheck": "~1.0.2",
+        "slimScroll": "~1.3.3",
         "jquery.scrollTo": "~1.4.11"
     },
     "license": "MIT",

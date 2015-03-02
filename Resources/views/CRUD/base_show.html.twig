@@ -26,31 +26,32 @@ file that was distributed with this source code.
         {{ sonata_block_render_event('sonata.admin.show.top', { 'admin': admin, 'object': object }) }}
 
         {% for name, view_group in admin.showgroups %}
-            <table class="table table-bordered">
+            <div class="box box-primary">
                 {% if name %}
-                    <thead>
-                        {% block show_title %}
-                            <tr class="sonata-ba-view-title">
-                                <th colspan="2">
-                                    {{ admin.trans(name) }}
-                                </th>
-                            </tr>
-                        {% endblock %}
-                    </thead>
+                    <div class="box-header with-border">
+                        <h4 class="box-title">
+                            {% block show_title %}
+                                {{ admin.trans(name) }}
+                            {% endblock %}
+                        </h4>
+                    </div>
                 {% endif %}
-
-                <tbody>
-                    {% for field_name in view_group.fields %}
-                        {% block show_field %}
-                            <tr class="sonata-ba-view-container">
-                                {% if elements[field_name] is defined %}
-                                    {{ elements[field_name]|render_view_element(object) }}
-                                {% endif %}
-                            </tr>
-                        {% endblock %}
-                    {% endfor %}
-                </tbody>
-            </table>
+                <div class="box-body table-responsive no-padding">
+                    <table class="table">
+                        <tbody>
+                        {% for field_name in view_group.fields %}
+                            {% block show_field %}
+                                <tr class="sonata-ba-view-container">
+                                    {% if elements[field_name] is defined %}
+                                        {{ elements[field_name]|render_view_element(object) }}
+                                    {% endif %}
+                                </tr>
+                            {% endblock %}
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         {% endfor %}
 
         {{ sonata_block_render_event('sonata.admin.show.bottom', { 'admin': admin, 'object': object }) }}

@@ -12,11 +12,7 @@ file that was distributed with this source code.
 {% extends 'SonataAdminBundle:CRUD:base_show.html.twig' %}
 
 {% block show_title %}
-    <tr class="sonata-ba-view-title">
-        <th colspan="3">
-            {{ admin.trans(name) }}
-        </th>
-    </tr>
+    {{ admin.trans(name) }}
 {% endblock %}
 
 {% block show_field %}

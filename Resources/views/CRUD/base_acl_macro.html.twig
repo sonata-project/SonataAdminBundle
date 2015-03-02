@@ -21,30 +21,40 @@ file that was distributed with this source code.
             </div>
         {% endif %}
 
-        <table class="table">
-            <thead>
-            <tr>
-                <th>{{ td_type|trans({}, 'SonataAdminBundle') }}</th>
-                {% for permission in permissions %}
-                    <th>{{ permission }}</th>
-                {% endfor %}
-            </tr>
-            </thead>
-            <tbody>
-                {% for child in form.children if child.vars.name != '_token' %}
-                    <tr>
-                        <td>
-                            {% set typeChild = child['role'] is defined ? child['role'] : child['user'] %}
-                            {{ typeChild.vars.value }}
-                            {{ form_widget(typeChild) }}
-                        </td>
+        <div class="box box-success">
+            <div class="body table-responsive no-padding">
+                <table class="table">
+                    <colgroup>
+                        <col style="width: 100%;"/>
                         {% for permission in permissions %}
-                            <td>{{ form_widget(child[permission]) }}</td>
+                            <col/>
                         {% endfor %}
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                    </colgroup>
+
+                    {% for child in form.children if child.vars.name != '_token' %}
+                        {% if loop.index0 == 0 or loop.index0 % 10 == 0 %}
+                            <tr>
+                                <th>{{ td_type|trans({}, 'SonataAdminBundle') }}</th>
+                                {% for permission in permissions %}
+                                    <th class="text-right">{{ permission }}</th>
+                                {% endfor %}
+                            </tr>
+                        {% endif %}
+
+                        <tr>
+                            <td>
+                                {% set typeChild = child['role'] is defined ? child['role'] : child['user'] %}
+                                {{ typeChild.vars.value }}
+                                {{ form_widget(typeChild) }}
+                            </td>
+                            {% for permission in permissions %}
+                                <td class="text-right">{{ form_widget(child[permission], { label: false }) }}</td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
 
         {{ form_row(form._token) }}
 
