@@ -24,7 +24,7 @@ use Sonata\AdminBundle\Route\RouteGeneratorInterface;
 
 use Knp\Menu\FactoryInterface as MenuFactoryInterface;
 
-use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\HttpFoundation\Request;
