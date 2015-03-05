@@ -127,7 +127,7 @@ file that was distributed with this source code.
                                                 ({{ admin.datagrid.pager.nbresults }})
                                             </label>
 
-                                            <select name="action" style="width: auto; height: auto" class="form-control">
+                                            <select name="action" style="width: auto; height: auto" {% if admin_pool is defined and not admin_pool.getOption('use_select2') %} class="form-control"{% endif %}>
                                                 {% for action, options in batchactions %}
                                                     <option value="{{ action }}">{{ options.label }}</option>
                                                 {% endfor %}
