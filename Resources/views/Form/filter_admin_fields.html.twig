@@ -16,7 +16,9 @@ file that was distributed with this source code.
 #}
 
 {% block choice_widget_collapsed %}
-    {% set attr = attr|merge({'class': attr.class|default('') ~ ' form-control'}) %}
+    {% if admin_pool is defined and not admin_pool.getOption('use_select2') %}
+        {% set attr = attr|merge({'class': attr.class|default('') ~ ' form-control'}) %}
+    {% endif %}
     {{ parent() }}
 {% endblock choice_widget_collapsed %}
 

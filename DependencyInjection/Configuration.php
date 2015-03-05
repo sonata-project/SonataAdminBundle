@@ -266,7 +266,7 @@ class Configuration implements ConfigurationInterface
                                 'bundles/sonataadmin/vendor/jqueryui/themes/base/jquery-ui.css',
 
                                 'bundles/sonatacore/vendor/select2/select2.css',
-                                'bundles/sonatacore/vendor/select2/select2-bootstrap.css',
+                                'bundles/sonatacore/vendor/select2-bootstrap-css/select2-bootstrap.min.css',
 
                                 'bundles/sonataadmin/vendor/x-editable/dist/bootstrap3-editable/css/bootstrap-editable.css',
 
