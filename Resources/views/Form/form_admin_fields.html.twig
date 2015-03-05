@@ -19,7 +19,10 @@ file that was distributed with this source code.
 {%- endblock form_widget %}
 
 {% block form_widget_simple %}
-    {% set attr = attr|merge({'class': attr.class|default('') ~ ' form-control'}) %}
+    {% set type = type|default('text') %}
+    {% if type != 'file' %}
+        {% set attr = attr|merge({'class': attr.class|default('') ~ ' form-control'}) %}
+    {% endif %}
     {{ parent() }}
 {% endblock form_widget_simple %}
 
