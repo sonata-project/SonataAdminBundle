@@ -22,6 +22,7 @@ use Sonata\AdminBundle\Exception\NoValueException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 
 class SonataAdminExtension extends \Twig_Extension
 {
@@ -41,6 +42,11 @@ class SonataAdminExtension extends \Twig_Extension
     protected $router;
 
     /**
+     * @var SecurityContextInterface
+     */
+    protected $securityContext;
+
+    /**
      * @var LoggerInterface
      */
     protected $logger;
@@ -49,11 +55,12 @@ class SonataAdminExtension extends \Twig_Extension
      * @param Pool            $pool
      * @param LoggerInterface $logger
      */
-    public function __construct(Pool $pool, RouterInterface $router, LoggerInterface $logger = null)
+    public function __construct(Pool $pool, RouterInterface $router, SecurityContextInterface $securityContext, LoggerInterface $logger = null)
     {
         $this->pool   = $pool;
         $this->logger = $logger;
         $this->router = $router;
+        $this->securityContext = $securityContext;
     }
 
     /**
@@ -403,9 +410,13 @@ class SonataAdminExtension extends \Twig_Extension
                     $route             = $admin->generateUrl('list');
                     $translationDomain = $admin->getTranslationDomain();
                 } else {
+                    if (!empty($item['role']) && !$this->securityContext->isGranted($item['role'])) {
+                        continue;
+                    }
+
                     $label             = $item['label'];
                     $route             = $this->router->generate($item['route'], $item['route_params']);
-                    $translationDomain = null;
+                    $translationDomain = $item['translation_domain'];
                     $admin             = null;
                 }
 

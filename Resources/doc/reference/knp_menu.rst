@@ -42,11 +42,15 @@ Add the controller route as an item of the menu
                     label_catalogue:      ~
                     items:
                         - sonata.news.admin.post
-                        - route:        blog_home
-                          label:        Blog
-                        - route:        blog_article
-                          route_params: { articleId: 3 }
-                          label:        Article
+                        - route:              blog_home
+                          label:              Blog
+                          translation_domain: SonataNewsBundle
+                          role:               ROLE_ADMIN
+                        - route:              blog_article
+                          route_params:       { articleId: 3 }
+                          label:              Article
+                          translation_domain: SonataNewsBundle
+                          role:               ROLE_ADMIN
                     ...
 
 Also you can override the template of knp_menu used by sonata. The default one is `SonataAdminBundle:Menu:sonata_menu.html.twig`:
