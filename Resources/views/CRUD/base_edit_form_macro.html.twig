@@ -3,7 +3,7 @@
     {% for code in groups %}
         {% set form_group = admin.formgroups[code] %}
         <div class="{{ form_group.class }}"> {# default class 'col-md-12' removed because it do not work with tabs#}
-            <div class="box box-success">
+            <div class="box box-primary">
                 <div class="box-header">
                     <h4 class="box-title">
                         {{ admin.trans(form_group.name, {}, form_group.translation_domain) }}
