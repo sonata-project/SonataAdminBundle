@@ -134,6 +134,8 @@ class Configuration implements ConfigurationInterface
                                             ->children()
                                                 ->scalarNode('admin')->end()
                                                 ->scalarNode('label')->end()
+                                                ->scalarNode('translation_domain')->end()
+                                                ->scalarNode('role')->end()
                                                 ->scalarNode('route')->end()
                                                 ->arrayNode('route_params')
                                                     ->prototype('scalar')->end()
