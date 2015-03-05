@@ -405,7 +405,7 @@ class SonataAdminExtension extends \Twig_Extension
                 } else {
                     $label             = $item['label'];
                     $route             = $this->router->generate($item['route'], $item['route_params']);
-                    $translationDomain = null;
+                    $translationDomain = $group['label_catalogue'];
                     $admin             = null;
                 }
 
