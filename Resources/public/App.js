@@ -99,7 +99,18 @@ $(function() {
     };
 
     $('[data-toggle="advanced-filter"]').click(function() {
-        $('.advanced-filter').toggle();
+        $('.advanced-filter').toggle('fast', function () {
+            $(this)
+                .find(':input:hidden')
+                .filter(function () { return $(this).val() })
+                .each(function () {
+                    $(this)
+                        .val('')
+                        .trigger('change') // Force select2 to refresh
+                    ;
+                })
+            ;
+        });
     });
 
     /* Sidebar tree view */
