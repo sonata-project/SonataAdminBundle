@@ -263,8 +263,9 @@ div.sonata-medium-date div {
     vertical-align: middle;
 }
 
-.sonata-collection-delete {
-    float: left;
+.sonata-collection-row > .sonata-collection-delete {
+    position: absolute;
+    z-index: 1;
 }
 
 .sonata-collection-add, .sonata-collection-delete {
@@ -273,10 +274,6 @@ div.sonata-medium-date div {
 
 .no-js .sonata-collection-add, .no-js .sonata-collection-delete {
     display: none;
-}
-
-.form-horizontal .sonata-collection-row-without-label {
-    margin-left: 0;
 }
 
 ul.inputs-list {
