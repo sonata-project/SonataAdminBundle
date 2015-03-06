@@ -214,29 +214,27 @@ file that was distributed with this source code.
                     <form class="sonata-filter-form form-horizontal {{ admin.isChild and 1 == admin.datagrid.filters|length ? 'hide' : '' }}" action="{{ admin.generateUrl('list') }}" method="GET" role="form">
                         {{ form_errors(form) }}
 
-                        <div class="clearfix">
-                            <div class="col-md-9">
-                                <div class="filter_container">
-                                    {% for filter in admin.datagrid.filters %}
-                                        <div class="form-group" id="filter-{{ admin.uniqid }}-{{ filter.name }}" sonata-filter="{{ (filter.options['show_filter'] is sameas(true) or filter.options['show_filter'] is null) ? 'true' : 'false' }}" style="display: {% if (filter.isActive() and filter.options['show_filter'] is null) or (filter.options['show_filter'] is sameas(true)) %}block{% else %}none{% endif %}">
-                                            {% if filter.label is not sameas(false) %}
-                                            <label for="{{ form.children[filter.formName].children['value'].vars.id }}" class="col-sm-3 control-label">{{ admin.trans(filter.label, {}, filter.translationDomain) }}</label>
-                                            {% endif %}
-                                            {% set attr = form.children[filter.formName].children['type'].vars.attr|default({}) %}
-                                            {#{% set attr = attr|merge({'class': (attr.class|default('') ~ ' sonata-filter-option')|trim}) %}#}
+                        <div class="row">
+                            <div class="col-sm-9">
+                                {% for filter in admin.datagrid.filters %}
+                                    <div class="form-group" id="filter-{{ admin.uniqid }}-{{ filter.name }}" sonata-filter="{{ (filter.options['show_filter'] is sameas(true) or filter.options['show_filter'] is null) ? 'true' : 'false' }}" style="display: {% if (filter.isActive() and filter.options['show_filter'] is null) or (filter.options['show_filter'] is sameas(true)) %}block{% else %}none{% endif %}">
+                                        {% if filter.label is not sameas(false) %}
+                                        <label for="{{ form.children[filter.formName].children['value'].vars.id }}" class="col-sm-4 control-label">{{ admin.trans(filter.label, {}, filter.translationDomain) }}</label>
+                                        {% endif %}
+                                        {% set attr = form.children[filter.formName].children['type'].vars.attr|default({}) %}
+                                        {#{% set attr = attr|merge({'class': (attr.class|default('') ~ ' sonata-filter-option')|trim}) %}#}
 
-                                            <div class="col-sm-2">
-                                                {{ form_widget(form.children[filter.formName].children['type'], {'attr':  attr}) }}
-                                            </div>
-
-                                            <div class="col-sm-3">
-                                                {{ form_widget(form.children[filter.formName].children['value']) }}
-                                            </div>
+                                        <div class="col-sm-4">
+                                            {{ form_widget(form.children[filter.formName].children['type'], {'attr':  attr}) }}
                                         </div>
-                                    {% endfor %}
-                                </div>
+
+                                        <div class="col-sm-4">
+                                            {{ form_widget(form.children[filter.formName].children['value']) }}
+                                        </div>
+                                    </div>
+                                {% endfor %}
                             </div>
-                            <div class="pull-right">
+                            <div class="col-sm-3 text-center">
                                 <input type="hidden" name="filter[_page]" id="filter__page" value="1">
 
                                 {% set foo = form.children['_page'].setRendered() %}
