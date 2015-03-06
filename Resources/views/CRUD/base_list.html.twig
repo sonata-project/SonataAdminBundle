@@ -188,7 +188,10 @@ file that was distributed with this source code.
         <ul class="nav navbar-nav navbar-right">
 
             <li class="dropdown sonata-actions">
-                <a href="#" class="dropdown-toggle sonata-ba-action" data-toggle="dropdown">{{ 'link_filters'|trans({}, 'SonataAdminBundle') }} <b class="caret"></b></a>
+                <a href="#" class="dropdown-toggle sonata-ba-action" data-toggle="dropdown">
+                    <i class="fa fa-filter"></i>
+                    {{ 'link_filters'|trans({}, 'SonataAdminBundle') }} <b class="caret"></b>
+                </a>
 
                 <ul class="dropdown-menu" role="menu">
                     {% for filter in admin.datagrid.filters if (filter.options['show_filter'] is sameas(true) or filter.options['show_filter'] is null) %}
@@ -219,7 +222,7 @@ file that was distributed with this source code.
                                 {% for filter in admin.datagrid.filters %}
                                     <div class="form-group" id="filter-{{ admin.uniqid }}-{{ filter.name }}" sonata-filter="{{ (filter.options['show_filter'] is sameas(true) or filter.options['show_filter'] is null) ? 'true' : 'false' }}" style="display: {% if (filter.isActive() and filter.options['show_filter'] is null) or (filter.options['show_filter'] is sameas(true)) %}block{% else %}none{% endif %}">
                                         {% if filter.label is not sameas(false) %}
-                                        <label for="{{ form.children[filter.formName].children['value'].vars.id }}" class="col-sm-4 control-label">{{ admin.trans(filter.label, {}, filter.translationDomain) }}</label>
+                                        <label for="{{ form.children[filter.formName].children['value'].vars.id }}" class="col-sm-3 control-label">{{ admin.trans(filter.label, {}, filter.translationDomain) }}</label>
                                         {% endif %}
                                         {% set attr = form.children[filter.formName].children['type'].vars.attr|default({}) %}
                                         {#{% set attr = attr|merge({'class': (attr.class|default('') ~ ' sonata-filter-option')|trim}) %}#}
@@ -230,6 +233,14 @@ file that was distributed with this source code.
 
                                         <div class="col-sm-4">
                                             {{ form_widget(form.children[filter.formName].children['value']) }}
+                                        </div>
+
+                                        <div class="col-sm-1">
+                                            <label class="control-label">
+                                                <a href="#" class="sonata-toggle-filter sonata-ba-action" filter-target="filter-{{ admin.uniqid }}-{{ filter.name }}" filter-container="filter-container-{{ admin.uniqid() }}">
+                                                    <i class="fa fa-minus-circle"></i>
+                                                </a>
+                                            </label>
                                         </div>
                                     </div>
                                 {% endfor %}

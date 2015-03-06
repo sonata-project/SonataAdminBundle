@@ -251,30 +251,41 @@ var Admin = {
 
             var filters_container = jQuery('#' + jQuery(e.currentTarget).attr('filter-container'));
 
-            if (jQuery('div.form-group:visible', filters_container).length == 0) {
+            if (jQuery('div[sonata-filter="true"]:visible', filters_container).length == 0) {
                 jQuery(filters_container).slideDown();
             }
 
-            var target = jQuery('div[id="' + jQuery(e.currentTarget).attr('filter-target') + '"]', filters_container);
+            var targetSelector = jQuery(e.currentTarget).attr('filter-target'),
+                target = jQuery('div[id="' + targetSelector + '"]', filters_container),
+                filterToggler = jQuery('i', '.sonata-toggle-filter[filter-target="' + targetSelector + '"]')
+            ;
 
             if (jQuery(target).is(":visible")) {
-                jQuery('i', this).removeClass('fa-check-square-o');
-                jQuery('i', this).addClass('fa-square-o');
+                filterToggler
+                    .removeClass('fa-check-square-o')
+                    .addClass('fa-square-o')
+                ;
 
                 target.hide();
 
             } else {
-                jQuery('i', this).removeClass('fa-square-o');
-                jQuery('i', this).addClass('fa-check-square-o');
+                filterToggler
+                    .removeClass('fa-square-o')
+                    .addClass('fa-check-square-o')
+                ;
 
                 target.show();
             }
 
-            if (jQuery('div.form-group:visible', filters_container).length > 0) {
+            if (jQuery('div[sonata-filter="true"]:visible', filters_container).length > 0) {
                 jQuery(filters_container).slideDown();
             } else {
                 jQuery(filters_container).slideUp();
             }
+        });
+
+        jQuery('.sonata-filter-form', subject).on('submit', function () {
+            jQuery(this).find(':input:hidden:not([type="hidden"])').val('');
         });
     },
 
