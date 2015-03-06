@@ -93,6 +93,15 @@ $(function() {
         box.slideUp();
     });
 
+    /* Advanced filters */
+    if ($('.advanced-filter :input:visible').filter(function () { return $(this).val() }).length === 0) {
+        $('.advanced-filter').hide();
+    };
+
+    $('[data-toggle="advanced-filter"]').click(function() {
+        $('.advanced-filter').toggle();
+    });
+
     /* Sidebar tree view */
     $(".sidebar .treeview").tree();
 

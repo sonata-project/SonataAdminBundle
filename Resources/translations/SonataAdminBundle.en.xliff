@@ -34,6 +34,10 @@
                 <source>btn_filter</source>
                 <target>Filter</target>
             </trans-unit>
+            <trans-unit id="btn_advanced_filters">
+                <source>btn_advanced_filters</source>
+                <target>Advanced filters</target>
+            </trans-unit>
             <trans-unit id="btn_update">
                 <source>btn_update</source>
                 <target>Update</target>
