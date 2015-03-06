@@ -134,8 +134,8 @@ var Admin = {
             Admin.log('[core|setup_icheck] configure iCheck on', subject);
 
             jQuery("input[type='checkbox']:not('label.btn>input'), input[type='radio']:not('label.btn>input')", subject).iCheck({
-                checkboxClass: 'icheckbox_minimal',
-                radioClass: 'iradio_minimal'
+                checkboxClass: 'icheckbox_flat-blue',
+                radioClass: 'iradio_flat-blue'
             });
         }
     },

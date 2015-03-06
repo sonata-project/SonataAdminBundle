@@ -260,6 +260,7 @@ class Configuration implements ConfigurationInterface
                                 'bundles/sonatacore/vendor/components-font-awesome/css/font-awesome.min.css',
                                 'bundles/sonatacore/vendor/ionicons/css/ionicons.min.css',
                                 'bundles/sonataadmin/vendor/AdminLTE/css/AdminLTE.css',
+                                'bundles/sonataadmin/vendor/AdminLTE/css/iCheck/flat/blue.css',
 
                                 'bundles/sonatacore/vendor/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css',
 
