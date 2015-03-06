@@ -224,7 +224,7 @@ file that was distributed with this source code.
                                         {% set attr = form.children[filter.formName].children['type'].vars.attr|default({}) %}
                                         {#{% set attr = attr|merge({'class': (attr.class|default('') ~ ' sonata-filter-option')|trim}) %}#}
 
-                                        <div class="col-sm-4">
+                                        <div class="col-sm-4 advanced-filter">
                                             {{ form_widget(form.children[filter.formName].children['type'], {'attr':  attr}) }}
                                         </div>
 
@@ -240,9 +240,22 @@ file that was distributed with this source code.
                                 {% set foo = form.children['_page'].setRendered() %}
                                 {{ form_rest(form) }}
 
-                                <button type="submit" class="btn btn-primary"><i class="fa fa-filter"></i> {{ 'btn_filter'|trans({}, 'SonataAdminBundle') }}</button>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fa fa-filter"></i> {{ 'btn_filter'|trans({}, 'SonataAdminBundle') }}
+                                    </button>
 
-                                <a class="btn btn-default" href="{{ admin.generateUrl('list', {filters: 'reset'}) }}">{{ 'link_reset_filter'|trans({}, 'SonataAdminBundle') }}</a>
+                                    <a class="btn btn-default" href="{{ admin.generateUrl('list', {filters: 'reset'}) }}">
+                                        {{ 'link_reset_filter'|trans({}, 'SonataAdminBundle') }}
+                                    </a>
+                                </div>
+
+                                <div class="form-group">
+                                    <a href="#" data-toggle="advanced-filter">
+                                        <i class="fa fa-cogs"></i>
+                                        {{ 'btn_advanced_filters'|trans({}, 'SonataAdminBundle') }}
+                                    </a>
+                                </div>
                             </div>
                         </div>
 
