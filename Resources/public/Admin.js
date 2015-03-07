@@ -78,6 +78,8 @@ var Admin = {
                 var select = jQuery(this);
                 var allowClearEnabled = false;
 
+                select.removeClass('form-control');
+
                 if (select.find('option[value=""]').length) {
                     allowClearEnabled = true;
                 }
