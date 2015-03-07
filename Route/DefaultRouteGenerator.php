@@ -142,16 +142,16 @@ class DefaultRouteGenerator implements RouteGeneratorInterface
      */
     private function loadCache(AdminInterface $admin)
     {
-        if (in_array($admin->getCode(), $this->loaded)) {
-            return;
-        }
-
-        $this->caches = array_merge($this->cache->load($admin), $this->caches);
-
-        $this->loaded[] = $admin->getCode();
-
         if ($admin->isChild()) {
             $this->loadCache($admin->getParent());
+        } else {
+            if (in_array($admin->getCode(), $this->loaded)) {
+                return;
+            }
+
+            $this->caches = array_merge($this->cache->load($admin), $this->caches);
+
+            $this->loaded[] = $admin->getCode();
         }
     }
 }
