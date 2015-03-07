@@ -287,7 +287,7 @@ var Admin = {
         });
 
         jQuery('.sonata-filter-form', subject).on('submit', function () {
-            jQuery(this).find(':input:hidden:not([type="hidden"])').val('');
+            jQuery(this).find('[sonata-filter="true"]:hidden :input').val('');
         });
 
         /* Advanced filters */
