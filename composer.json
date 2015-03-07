@@ -41,7 +41,8 @@
     "require-dev": {
         "jms/translation-bundle": "~1.1",
         "symfony/yaml": "~2.3",
-        "sonata-project/intl-bundle": "~2.1"
+        "sonata-project/intl-bundle": "~2.1",
+        "symfony/phpunit-bridge": "2.7.*@dev"
     },
     "suggest": {
         "jms/translation-bundle": "Extract message keys from Admins",

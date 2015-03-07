@@ -58,7 +58,7 @@ class CoreControllerTest extends \PHPUnit_Framework_TestCase
         $controller = new CoreController();
         $controller->setContainer($container);
 
-        $response = $controller->dashboardAction();
+        $response = $controller->dashboardAction($request);
 
         $this->isInstanceOf('Symfony\Component\HttpFoundation\Response', $response);
     }
@@ -102,7 +102,7 @@ class CoreControllerTest extends \PHPUnit_Framework_TestCase
         $controller = new CoreController();
         $controller->setContainer($container);
 
-        $response = $controller->dashboardAction();
+        $response = $controller->dashboardAction($request);
 
         $this->isInstanceOf('Symfony\Component\HttpFoundation\Response', $response);
     }

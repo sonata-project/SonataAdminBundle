@@ -17,3 +17,14 @@ if (file_exists($file = __DIR__.'/autoload.php')) {
 } elseif (file_exists($file = __DIR__.'/autoload.php.dist')) {
     require_once $file;
 }
+
+// try to get Symfony's PHPunit Bridge
+$files = array_filter(array(
+    __DIR__.'/../../vendor/symfony/symfony/src/Symfony/Bridge/PhpUnit/bootstrap.php',
+    __DIR__.'/../../vendor/symfony/phpunit-bridge/bootstrap.php',
+    __DIR__.'/../../../../../vendor/symfony/symfony/src/Symfony/Bridge/PhpUnit/bootstrap.php',
+    __DIR__.'/../../../../../vendor/symfony/phpunit-bridge/bootstrap.php',
+), 'file_exists');
+if ($files) {
+    require_once current($files);
+}
