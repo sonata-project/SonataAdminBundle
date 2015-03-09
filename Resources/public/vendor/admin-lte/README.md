@@ -35,7 +35,7 @@ git clone https://github.com/YOUR_USERNAME/AdminLTE.git"
 **Bower**
 
 ```
-bower install git://github.com/almasaeed2010/AdminLTE.git
+bower install admin-lte
 ```
 
 **Composer**
@@ -78,13 +78,38 @@ License
 AdminLTE is an open source project by [Almsaeed Studio](http://almsaeedstudio.com) that is licensed under [MIT](http://opensource.org/licenses/MIT). Almsaeed Studio
 reserves the right to change the license of future releases.
 
+Todo List
+---------
+- Light sidebar colors
+- Right sidebar
+- Minified main-sidebar 
+- Right to left support
+- Custom pace style
+
 Legacy Realeases
 ----------------
 AdminLTE 1.x can be easily upgraded to 2.x using [this guide](http://almsaeedstudio.com/themes/AdminLTE/documentation/index.html#browsers), but if you intend to keep using AdminLTE 1.x, you can download the latest release from the [releases](https://github.com/almasaeed2010/AdminLTE/releases) section above.
 
 Change log
 ----------
-**v2.0:**
+**v2.0.3**
+- Bug fixes
+- Fixed extra page when printing issue #264
+- Updated documentation and fixed links scrolling issue
+- Created print.less file (this makes it easier if you want to create a seperate CSS file for printing)
+- Fixed sidebar stretching issue #275
+- Fixed checkbox out of bounds issue in WYISHTML5 editor.
+
+**v2.0.2:**
+- Solved issue with hidden arrow in select inputs.
+
+**v2.0.1:**
+- Updated README.md
+- Fixed versioning issue in CSS, LESS, and JS
+- Updated box-shadow for boxes
+- Updated docs
+
+**v2.0.0:**
 
 - Major layout bug fixes
 - Change in layout mark up
@@ -117,13 +142,13 @@ Change log
 - Bootstrap & jQuery are now hosted locally
 - Created documentation.
 
-**ver 1.2:**
+**ver 1.2.0:**
 
 - Fixed the sidebar scroll issue when using the fixed layout.
 - Added [Bootstrap Social Buttons](http://lipis.github.io/bootstrap-social/ "Bootstrap Social") plugin.
 - Fixed RequireJS bug. Thanks to [StaticSphere](https://github.com/StaticSphere "github user"). 
 
-**ver 1.1:**
+**ver 1.1.0:**
 
 - Added new skin. class: .skin-black
 - Added [pace](http://github.hubspot.com/pace/docs/welcome/ "pace") plugin.
@@ -137,6 +162,8 @@ Image Credits
 [Pickaface](http://pickaface.net/)
 
 [Unsplash](https://unsplash.com/)
+
+[Uifaces](http://uifaces.com/)
 
 Donations
 ---------
