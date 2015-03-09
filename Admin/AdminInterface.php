@@ -18,10 +18,12 @@ use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
 use Sonata\AdminBundle\Builder\RouteBuilderInterface;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
-use Sonata\AdminBundle\Validator\ErrorElement;
 use Sonata\AdminBundle\Route\RouteGeneratorInterface;
 use Knp\Menu\FactoryInterface as MenuFactoryInterface;
+
+use Sonata\CoreBundle\Validator\ErrorElement;
 use Sonata\CoreBundle\Model\Metadata;
+
 use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -758,7 +760,7 @@ interface AdminInterface
 
     /**
      *
-     * @param \Sonata\AdminBundle\Validator\ErrorElement $errorElement
+     * @param \Sonata\CoreBundle\Validator\ErrorElement $errorElement
      * @param mixed                                      $object
      *
      * @return void

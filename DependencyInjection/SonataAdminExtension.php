@@ -248,9 +248,6 @@ BOOM
             "Sonata\\AdminBundle\\Util\\FormViewIterator",
             "Sonata\\AdminBundle\\Util\\ObjectAclManipulator",
             "Sonata\\AdminBundle\\Util\\ObjectAclManipulatorInterface",
-            "Sonata\\AdminBundle\\Validator\\Constraints\\InlineConstraint",
-            "Sonata\\AdminBundle\\Validator\\ErrorElement",
-            "Sonata\\AdminBundle\\Validator\\InlineValidator",
         ));
     }
 
