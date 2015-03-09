@@ -42,10 +42,11 @@ class DatagridMapper extends BaseMapper
      * @param array  $filterOptions
      * @param string $fieldType
      * @param array  $fieldOptions
+     * @param array  $fieldDescriptionOptions
      *
      * @return DatagridMapper
      */
-    public function add($name, $type = null, array $filterOptions = array(), $fieldType = null, $fieldOptions = null)
+    public function add($name, $type = null, array $filterOptions = array(), $fieldType = null, $fieldOptions = null, array $fieldDescriptionOptions = array())
     {
         if (is_array($fieldOptions)) {
             $filterOptions['field_options'] = $fieldOptions;
@@ -70,7 +71,7 @@ class DatagridMapper extends BaseMapper
             $fieldDescription = $this->admin->getModelManager()->getNewFieldDescriptionInstance(
                 $this->admin->getClass(),
                 $name,
-                $filterOptions
+                array_merge($filterOptions, $fieldDescriptionOptions)
             );
         } else {
             throw new \RuntimeException('Unknown field name in datagrid mapper. Field name should be either of FieldDescriptionInterface interface or string.');

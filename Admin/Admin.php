@@ -25,8 +25,10 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
-use Sonata\AdminBundle\Validator\ErrorElement;
-use Sonata\AdminBundle\Validator\Constraints\InlineConstraint;
+
+use Sonata\CoreBundle\Validator\ErrorElement;
+use Sonata\CoreBundle\Validator\Constraints\InlineConstraint;
+
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Sonata\AdminBundle\Builder\FormContractorInterface;
 use Sonata\AdminBundle\Builder\ListBuilderInterface;
@@ -892,6 +894,8 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
                     'model_manager' => $this->getModelManager(),
                 ),
                 'operator_type' => 'hidden',
+            ), null, null, array(
+                'admin_code' => $this->getParent()->getCode()
             ));
         }
 
