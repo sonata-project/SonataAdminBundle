@@ -53,7 +53,7 @@ class AdminPoolLoader extends FileLoader
      */
     public function supports($resource, $type = null)
     {
-        return $type == self::ROUTE_TYPE_NAME;
+        return $type === self::ROUTE_TYPE_NAME;
     }
 
     /**
