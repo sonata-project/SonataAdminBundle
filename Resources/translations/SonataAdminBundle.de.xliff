@@ -332,7 +332,7 @@
             </trans-unit>
             <trans-unit id="list_results_count">
                 <source>list_results_count</source>
-                <target>{1}1 Ergebnis|]1,Inf] %count% Ergebnisse</target>
+                <target>1 Ergebnis|%count% Ergebnisse</target>
             </trans-unit>
             <trans-unit id="label_export_download">
                 <source>label_export_download</source>
