@@ -1,0 +1,14 @@
+{
+  "name": "admin-lte",
+  "homepage": "https://github.com/almasaeed2010/AdminLTE",
+  "version": "2.0.2",
+  "_release": "2.0.2",
+  "_resolution": {
+    "type": "version",
+    "tag": "v2.0.2",
+    "commit": "57fb76966bc7bba09276bffad4cddcde9a311582"
+  },
+  "_source": "git://github.com/almasaeed2010/AdminLTE.git",
+  "_target": "~2.0.1",
+  "_originalSource": "admin-lte"
+}

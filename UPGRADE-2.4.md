@@ -15,3 +15,5 @@ CSS class ``sonata-autocomplete-dropdown-item`` is not automatically added to
 dropdown autocomplete item in ``sonata_type_model_autocomplete``, use option
 ``dropdown_item_css_class`` to set the CSS class of dropdown item.
 
+## Standard Layout
+``sonata_wrapper`` block was moved and is now inside the ``.wrapper`` div of admin lte theme.

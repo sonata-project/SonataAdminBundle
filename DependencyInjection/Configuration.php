@@ -259,8 +259,9 @@ class Configuration implements ConfigurationInterface
                                 'bundles/sonatacore/vendor/bootstrap/dist/css/bootstrap.min.css',
                                 'bundles/sonatacore/vendor/components-font-awesome/css/font-awesome.min.css',
                                 'bundles/sonatacore/vendor/ionicons/css/ionicons.min.css',
-                                'bundles/sonataadmin/vendor/AdminLTE/css/AdminLTE.css',
-                                'bundles/sonataadmin/vendor/AdminLTE/css/iCheck/flat/blue.css',
+                                'bundles/sonataadmin/vendor/admin-lte/dist/css/AdminLTE.min.css',
+                                'bundles/sonataadmin/vendor/admin-lte/dist/css/skins/skin-black.min.css',
+                                'bundles/sonataadmin/vendor/iCheck/skins/flat/blue.css',
 
                                 'bundles/sonatacore/vendor/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css',
 
@@ -298,7 +299,10 @@ class Configuration implements ConfigurationInterface
 
                                 'bundles/sonatacore/vendor/select2/select2.min.js',
 
-                                'bundles/sonataadmin/App.js',
+                                'bundles/sonataadmin/vendor/admin-lte/dist/js/app.min.js',
+                                'bundles/sonataadmin/vendor/iCheck/icheck.min.js',
+                                'bundles/sonataadmin/vendor/slimScroll/jquery.slimscroll.min.js',
+
                                 'bundles/sonataadmin/Admin.js',
                                 'bundles/sonataadmin/treeview.js',
                             ))

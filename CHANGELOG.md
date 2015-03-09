@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+### 2015-03-04
+ * [BC BREAK] Admin LTE 2.0 used. Assets files changed.
+ * [BC BREAK] moved ``sonata_wrapper`` block on ```standard_layout.html.twig```
+ * [BC BREAK] removed ``btn-outline``` from doctrine-orm-admin form actions buttons
+
 ### 2015-03-01
  * [BC BREAK] added the ``hasRoute`` method to the AdminInterface
 

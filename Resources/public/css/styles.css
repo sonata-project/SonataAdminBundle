@@ -8,10 +8,6 @@ html {
     min-height: 100%;
 }
 
-body {
-    margin-bottom: 20px;
-}
-
 footer {
     position: absolute;
     bottom: 0;
@@ -433,7 +429,7 @@ div.mosaic-box.sonata-ba-list-row-selected > div.mosaic-inner-text {
 }
 
 div.sonata-filters-box div.form-group div.form-group {
-    margin: 0;    
+    margin: 0;
 }
 
 div.sonata-filters-box div.form-group span.input-group-addon {
