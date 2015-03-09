@@ -496,3 +496,12 @@ div.sonata-filters-box div.form-group span.input-group-addon {
     padding: 3px 10px;
     font-size: 13px;
 }
+
+/*
+ * Select2 / AdminLTE css conflict workaround.
+ * Wait for issue resolution and apply patch.
+ * Related issue: https://github.com/almasaeed2010/AdminLTE/issues/668
+ */
+.select2-container .select2-selection--single .select2-selection__rendered {
+    margin-top: 0;
+}

@@ -72,9 +72,14 @@ file that was distributed with this source code.
 
                 {# omit default EN locale #}
                 {% if locale[:2] != 'en' %}
-                    <script src="{{ asset('bundles/sonatacore/vendor/select2/select2_locale_' ~ locale|replace({'_':'-'}) ~ '.js') }}"></script>
+                    <script src="{{ asset('bundles/sonatacore/vendor/select2/dist/js/i18n/' ~ locale|replace({'_':'-'}) ~ '.js') }}"></script>
                 {% endif %}
             {% endif %}
+
+            {# Select2 Bootstrap theme #}
+            <script type="text/javascript">
+                $.fn.select2.defaults.set('theme', 'bootstrap');
+            </script>
         {% endblock %}
 
         <title>
@@ -255,7 +260,7 @@ file that was distributed with this source code.
                                                         {% endfor %}
                                                     </div>
                                                 {% endif %}
-                                                
+
                                                 {% block sonata_admin_content_actions_wrappers %}
                                                     {% if _actions|replace({ '<li>': '', '</li>': '' })|trim is not empty %}
                                                         <ul class="nav navbar-nav navbar-right">

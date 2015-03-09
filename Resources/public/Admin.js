@@ -56,7 +56,7 @@ var Admin = {
         });
     },
     setup_select2: function(subject) {
-        if (window.SONATA_CONFIG && window.SONATA_CONFIG.USE_SELECT2 && window.Select2) {
+        if (window.SONATA_CONFIG && window.SONATA_CONFIG.USE_SELECT2) {
             Admin.log('[core|setup_select2] configure Select2 on', subject);
 
             jQuery('select:not([data-sonata-select2="false"])', subject).each(function() {
@@ -64,7 +64,6 @@ var Admin = {
                 var allowClearEnabled = false;
                 var popover           = select.data('popover');
 
-                select.removeClass('form-control');
 
                 if (select.find('option[value=""]').length || select.attr('data-sonata-select2-allow-clear')==='true') {
                     allowClearEnabled = true;
@@ -74,8 +73,9 @@ var Admin = {
 
                 select.select2({
                     width: function(){
-                        return Admin.get_select2_width(this.element);
+                        return Admin.get_select2_width(jQuery(this));
                     },
+                    placeholder: ' ',
                     dropdownAutoWidth: true,
                     minimumResultsForSearch: 10,
                     allowClear: allowClearEnabled
@@ -446,7 +446,7 @@ var Admin = {
 
         subject.select2({
             width: function(){
-                return Admin.get_select2_width(this.element);
+                return Admin.get_select2_width(jQuery(this));
             },
             dropdownAutoWidth: true,
             data: transformedData,
