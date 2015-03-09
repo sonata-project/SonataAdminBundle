@@ -24,13 +24,15 @@ use Sonata\AdminBundle\Exception\NoValueException;
 class FormTypeFieldExtension extends AbstractTypeExtension
 {
     protected $defaultClasses = array();
+    protected $options;
 
     /**
      * @param array $defaultClasses
      */
-    public function __construct(array $defaultClasses = array())
+    public function __construct(array $defaultClasses, array $options)
     {
         $this->defaultClasses = $defaultClasses;
+        $this->options = $options;
     }
 
     /**
@@ -46,7 +48,8 @@ class FormTypeFieldExtension extends AbstractTypeExtension
             'edit'              => 'standard',
             'inline'            => 'natural',
             'field_description' => null,
-            'block_name'        => false
+            'block_name'        => false,
+            'options'           => $this->options,
         );
 
         $builder->setAttribute('sonata_admin_enabled', false);
@@ -134,7 +137,8 @@ class FormTypeFieldExtension extends AbstractTypeExtension
                 'edit'              => 'standard',
                 'inline'            => 'natural',
                 'block_name'        => false,
-                'class'             => false
+                'class'             => false,
+                'options'           => $this->options,
             );
             $view->vars['sonata_admin_code']    = $view->parent->vars['sonata_admin_code'];
 

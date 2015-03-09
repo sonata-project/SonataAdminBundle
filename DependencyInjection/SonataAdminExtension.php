@@ -147,7 +147,8 @@ BOOM
         );
 
         $container->getDefinition('sonata.admin.form.extension.field')
-            ->replaceArgument(0, $classes);
+            ->replaceArgument(0, $classes)
+            ->replaceArgument(1, $config['options']);
 
         // remove non used service
         if (!isset($bundles['JMSTranslationBundle'])) {

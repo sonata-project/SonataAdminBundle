@@ -43,6 +43,7 @@
         <service id="sonata.admin.form.extension.field" class="Sonata\AdminBundle\Form\Extension\Field\Type\FormTypeFieldExtension">
             <tag name="form.type_extension" alias="form" />
             <argument />
+            <argument />
         </service>
 
         <service id="sonata.admin.form.extension.field.mopa" class="Sonata\AdminBundle\Form\Extension\Field\Type\MopaCompatibilityTypeFieldExtension">

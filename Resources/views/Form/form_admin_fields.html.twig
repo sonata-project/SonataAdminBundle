@@ -63,7 +63,7 @@ file that was distributed with this source code.
 {# Labels #}
 {% block form_label %}
 {% spaceless %}
-    {% if label is not sameas(false) and admin_pool is defined and admin_pool.getOption('form_type') == 'horizontal' %}
+    {% if label is not sameas(false) and sonata_admin.options['form_type'] == 'horizontal' %}
         {% set label_class = 'col-sm-3' %}
     {% endif %}
 
@@ -167,7 +167,7 @@ file that was distributed with this source code.
             {% set div_class = div_class ~ ' sonata-collection-row-without-label' %}
         {% endif %}
 
-        {% if admin_pool is defined and admin_pool.getOption('form_type') == 'horizontal' %}
+        {% if sonata_admin.options['form_type'] == 'horizontal' %}
             {% if label is sameas(false) %}
                 {% if 'collection' in form.parent.vars.block_prefixes %}
                     {% set div_class = div_class ~ ' col-sm-12' %}
@@ -266,7 +266,7 @@ file that was distributed with this source code.
             {{ form_label(child) }}
 
             {% set div_class = "" %}
-            {% if admin_pool is defined and admin_pool.getOption('form_type') == 'horizontal' %}
+            {% if sonata_admin.options['form_type'] == 'horizontal' %}
                 {% set div_class = 'col-sm-9' %}
             {% endif%}
 
