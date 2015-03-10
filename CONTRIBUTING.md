@@ -14,13 +14,29 @@ Then, if it appears that it’s a real bug, you may report it using Github by fo
 
 > _NOTE:_ Don’t hesitate giving as much information as you can (OS, PHP version extensions …)
 
-## Sending a Pull Request
+## Pull requests
+
+### Writing a Pull Request
+
+First of all, you must decide on what branch your changes will be based. If you
+are sure the changes your are going to make are fully backward-compatible, you
+should base your changes on the latest stable branch (`2.3` at the moment).
+Otherwise, you should base your changes on the `master` branch. If you
+desperately need to see some commits get merged on the older branches (`2.0`,
+`2.1`, `2.2`), you still can make PR based on them, just be aware these branches
+are no longer supported and your changes will probably not get merged in more
+recent branches.
+
+
+### Sending a Pull Request
 
 When you send a PR, just make sure that:
 
 * You add valid test cases.
 * Tests are green.
 * The related documentation is up-to-date.
+* You make the PR on the same branch you based your changes on. If you see commits
+that you did not make in your PR, you're doing it wrong.
 * Also don't forget to add a comment when you update a PR with a ping to the maintainer (``@username``), so he/she will get a notification.
 
 ## Contributing to the documentation
