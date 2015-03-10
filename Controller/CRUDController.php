@@ -318,6 +318,8 @@ class CRUDController extends Controller
             // check the csrf token
             $this->validateCsrfToken('sonata.delete', $request);
 
+            $objectName = $this->admin->toString($object);
+            
             try {
                 $this->admin->delete($object);
 
@@ -329,7 +331,7 @@ class CRUDController extends Controller
                     'sonata_flash_success',
                     $this->admin->trans(
                         'flash_delete_success',
-                        array('%name%' => $this->escapeHtml($this->admin->toString($object))),
+                        array('%name%' => $this->escapeHtml($objectName)),
                         'SonataAdminBundle'
                     )
                 );
@@ -345,7 +347,7 @@ class CRUDController extends Controller
                     'sonata_flash_error',
                     $this->admin->trans(
                         'flash_delete_error',
-                        array('%name%' => $this->escapeHtml($this->admin->toString($object))),
+                        array('%name%' => $this->escapeHtml($objectName)),
                         'SonataAdminBundle'
                     )
                 );
