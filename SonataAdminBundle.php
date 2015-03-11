@@ -10,6 +10,7 @@
 
 namespace Sonata\AdminBundle;
 
+use Sonata\AdminBundle\DependencyInjection\Compiler\GlobalVariablesCompilerPass;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Sonata\AdminBundle\DependencyInjection\Compiler\AddDependencyCallsCompilerPass;
@@ -26,5 +27,6 @@ class SonataAdminBundle extends Bundle
         $container->addCompilerPass(new AddDependencyCallsCompilerPass());
         $container->addCompilerPass(new AddFilterTypeCompilerPass());
         $container->addCompilerPass(new ExtensionCompilerPass());
+        $container->addCompilerPass(new GlobalVariablesCompilerPass());
     }
 }

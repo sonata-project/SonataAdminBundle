@@ -8,10 +8,6 @@ html {
     min-height: 100%;
 }
 
-body {
-    margin-bottom: 20px;
-}
-
 footer {
     position: absolute;
     bottom: 0;
@@ -306,22 +302,6 @@ form.sonata-filter-form.form-stacked {
     padding-left: 0;
 }
 
-.filter_container .form-group {
-    margin: 5px 0 5px 0;
-}
-
-.filter_container .control-label {
-    padding-top: 3px;
-}
-
-.filter_container .form-control {
-    max-height: 25px;
-}
-
-.filter_container .select2-container .select2-choice {
-    height: 23px;
-}
-
 body.fixed .sonata-list-table {
     position: relative;
     margin-left: 15px;
@@ -353,12 +333,8 @@ td.sonata-ba-list-field .editable-empty:not(.editable-open) {
 }
 
 /* select2 */
-div.select2-container {
-    margin-left: 0 !important;
-}
-
-div.select2-drop ul {
-    margin: 0 !important;
+.select2-choice, .select2-choices, .select2-drop {
+    border-radius: 0 !important;
 }
 
 /* Used for the mosaic view */
@@ -448,12 +424,8 @@ div.mosaic-box.sonata-ba-list-row-selected > div.mosaic-inner-text {
     border-top: none;
 }
 
-div.form-group div.select2-container {
-    width: 80% !important;
-}
-
 div.sonata-filters-box div.form-group div.form-group {
-    margin: 0;    
+    margin: 0;
 }
 
 div.sonata-filters-box div.form-group span.input-group-addon {

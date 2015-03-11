@@ -40,7 +40,10 @@
                 {% if loop.index0 % items_per_column != 0 %}
                     <li role="presentation" class="divider"></li>
                 {% endif %}
-                <li role="presentation" class="dropdown-header">{{ group.label|trans({}, group.label_catalogue) }}</li>
+                <li role="presentation" class="dropdown-header">
+                    {{ group.icon|raw }}
+                    {{ group.label|trans({}, group.label_catalogue) }}
+                </li>
 
                 {% for admin in group.items %}
                     {% if admin.hasRoute('create') and admin.isGranted('CREATE') %}

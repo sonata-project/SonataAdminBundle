@@ -195,18 +195,6 @@ textarea.sonata-medium {
     height: 125px;
 }
 
-div.sonata-medium-date {
-    overflow: hidden;
-}
-
-div.sonata-medium-date select {
-    width: 85px;
-}
-
-div.sonata-medium-date div {
-    float: left;
-}
-
 .sonata-ba-field-inline-table select.sonata-medium,
 .sonata-ba-field-inline-table textarea.sonata-medium,
 .sonata-ba-field-inline-table input.sonata-medium {
@@ -263,20 +251,12 @@ div.sonata-medium-date div {
     vertical-align: middle;
 }
 
-.sonata-collection-delete {
-    float: left;
-}
-
 .sonata-collection-add, .sonata-collection-delete {
     box-shadow: none;
 }
 
 .no-js .sonata-collection-add, .no-js .sonata-collection-delete {
     display: none;
-}
-
-.form-horizontal .sonata-collection-row-without-label {
-    margin-left: 0;
 }
 
 ul.inputs-list {

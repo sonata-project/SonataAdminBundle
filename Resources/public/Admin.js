@@ -78,6 +78,8 @@ var Admin = {
                 var select = jQuery(this);
                 var allowClearEnabled = false;
 
+                select.removeClass('form-control');
+
                 if (select.find('option[value=""]').length) {
                     allowClearEnabled = true;
                 }
@@ -134,8 +136,8 @@ var Admin = {
             Admin.log('[core|setup_icheck] configure iCheck on', subject);
 
             jQuery("input[type='checkbox']:not('label.btn>input'), input[type='radio']:not('label.btn>input')", subject).iCheck({
-                checkboxClass: 'icheckbox_minimal',
-                radioClass: 'iradio_minimal'
+                checkboxClass: 'icheckbox_flat-blue',
+                radioClass: 'iradio_flat-blue'
             });
         }
     },
@@ -143,7 +145,7 @@ var Admin = {
     setup_xeditable: function(subject) {
         Admin.log('[core|setup_xeditable] configure xeditable on', subject);
         jQuery('.x-editable', subject).editable({
-            emptyclass: 'editable-empty btn btn-sm',
+            emptyclass: 'editable-empty btn btn-sm btn-default',
             emptytext: '<i class="glyphicon glyphicon-edit"></i>',
             container: 'body',
             success: function(response) {
@@ -251,30 +253,50 @@ var Admin = {
 
             var filters_container = jQuery('#' + jQuery(e.currentTarget).attr('filter-container'));
 
-            if (jQuery('div.form-group:visible', filters_container).length == 0) {
+            if (jQuery('div[sonata-filter="true"]:visible', filters_container).length == 0) {
                 jQuery(filters_container).slideDown();
             }
 
-            var target = jQuery('div[id="' + jQuery(e.currentTarget).attr('filter-target') + '"]', filters_container);
+            var targetSelector = jQuery(e.currentTarget).attr('filter-target'),
+                target = jQuery('div[id="' + targetSelector + '"]', filters_container),
+                filterToggler = jQuery('i', '.sonata-toggle-filter[filter-target="' + targetSelector + '"]')
+            ;
 
             if (jQuery(target).is(":visible")) {
-                jQuery('i', this).removeClass('fa-check-square-o');
-                jQuery('i', this).addClass('fa-square-o');
+                filterToggler
+                    .removeClass('fa-check-square-o')
+                    .addClass('fa-square-o')
+                ;
 
                 target.hide();
 
             } else {
-                jQuery('i', this).removeClass('fa-square-o');
-                jQuery('i', this).addClass('fa-check-square-o');
+                filterToggler
+                    .removeClass('fa-square-o')
+                    .addClass('fa-check-square-o')
+                ;
 
                 target.show();
             }
 
-            if (jQuery('div.form-group:visible', filters_container).length > 0) {
+            if (jQuery('div[sonata-filter="true"]:visible', filters_container).length > 0) {
                 jQuery(filters_container).slideDown();
             } else {
                 jQuery(filters_container).slideUp();
             }
+        });
+
+        jQuery('.sonata-filter-form', subject).on('submit', function () {
+            jQuery(this).find('[sonata-filter="true"]:hidden :input').val('');
+        });
+
+        /* Advanced filters */
+        if (jQuery('.advanced-filter :input:visible', subject).filter(function () { return jQuery(this).val() }).length === 0) {
+            jQuery('.advanced-filter').hide();
+        };
+
+        jQuery('[data-toggle="advanced-filter"]', subject).click(function() {
+            jQuery('.advanced-filter').toggle();
         });
     },
 

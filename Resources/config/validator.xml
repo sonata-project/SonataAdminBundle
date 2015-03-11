@@ -5,7 +5,7 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <service id="sonata.admin.validator.inline" class="Sonata\AdminBundle\Validator\InlineValidator">
+        <service id="sonata.admin.validator.inline" class="Sonata\CoreBundle\Validator\InlineValidator">
             <argument type="service" id="service_container" />
             <argument type="service" id="validator.validator_factory" />
 

@@ -23,14 +23,14 @@ class FormTypeFieldExtensionTest extends \PHPUnit_Framework_TestCase
 {
     public function testExtendedType()
     {
-        $extension = new FormTypeFieldExtension();
+        $extension = new FormTypeFieldExtension(array(), array());
 
         $this->assertEquals('field', $extension->getExtendedType());
     }
 
     public function testDefaultOptions()
     {
-        $extension = new FormTypeFieldExtension();
+        $extension = new FormTypeFieldExtension(array(), array());
 
         $resolver = new OptionsResolver();
         $extension->setDefaultOptions($resolver);
@@ -60,7 +60,7 @@ class FormTypeFieldExtensionTest extends \PHPUnit_Framework_TestCase
         $config = new FormConfigBuilder('test', 'stdClass', $eventDispatcher, $options);
         $form = new Form($config);
 
-        $extension = new FormTypeFieldExtension();
+        $extension = new FormTypeFieldExtension(array(), array());
         $extension->buildView($formView, $form, array());
 
         $this->assertArrayHasKey('sonata_admin', $formView->vars);
@@ -105,7 +105,7 @@ class FormTypeFieldExtensionTest extends \PHPUnit_Framework_TestCase
 
         $formView->vars['block_prefixes'] = array('form', 'field', 'text', '_s50b26aa76cb96_username');
 
-        $extension = new FormTypeFieldExtension();
+        $extension = new FormTypeFieldExtension(array(), array());
         $extension->buildView($formView, $form, array(
             'sonata_help' => 'help text'
         ));
@@ -148,7 +148,7 @@ class FormTypeFieldExtensionTest extends \PHPUnit_Framework_TestCase
 
         $formView->vars['block_prefixes'] = array('form', 'field', 'text', '_s50b26aa76cb96_settings_format');
 
-        $extension = new FormTypeFieldExtension();
+        $extension = new FormTypeFieldExtension(array(), array());
         $extension->buildView($formView, $form, array(
             'sonata_help' => 'help text'
         ));
@@ -178,6 +178,7 @@ class FormTypeFieldExtensionTest extends \PHPUnit_Framework_TestCase
                  'inline'            => 'natural',
                  'block_name'        => false,
                  'class'             => false,
+                 'options'           => array(),
             ),
             'sonata_admin_code' => 'parent_code',
         );
@@ -194,7 +195,7 @@ class FormTypeFieldExtensionTest extends \PHPUnit_Framework_TestCase
         $config = new FormConfigBuilder('test', 'stdClass', $eventDispatcher, $options);
         $form = new Form($config);
 
-        $extension = new FormTypeFieldExtension();
+        $extension = new FormTypeFieldExtension(array(), array());
         $extension->buildView($formView, $form, array(
             'sonata_help' => 'help text'
         ));

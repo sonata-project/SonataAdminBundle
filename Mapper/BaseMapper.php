@@ -59,14 +59,14 @@ abstract class BaseMapper
     /**
      * @param string $key
      *
-     * @return \Sonata\AdminBundle\Mapper\BaseMapper
+     * @return $this
      */
     abstract public function remove($key);
 
     /**
      * @param array $keys field names
      *
-     * @return \Sonata\AdminBundle\Mapper\BaseMapper
+     * @return $this
      */
     abstract public function reorder(array $keys);
 }

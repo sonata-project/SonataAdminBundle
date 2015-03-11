@@ -14,7 +14,6 @@ namespace Sonata\AdminBundle\Datagrid;
 use Sonata\AdminBundle\Filter\FilterInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
-
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Form\CallbackTransformer;
@@ -224,7 +223,7 @@ class Datagrid implements DatagridInterface
     {
         $this->values[$name] = array(
             'type'  => $operator,
-            'value' => $value
+            'value' => $value,
         );
     }
 
@@ -248,7 +247,8 @@ class Datagrid implements DatagridInterface
     public function hasDisplayableFilters()
     {
         foreach ($this->filters as $name => $filter) {
-            if ($filter->isActive() && $filter->getOption('show_filter', true)) {
+            $showFilter = $filter->getOption('show_filter', null);
+            if (($filter->isActive() && $showFilter === null) || ($showFilter === true)) {
                 return true;
             }
         }

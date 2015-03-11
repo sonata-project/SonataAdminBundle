@@ -21,6 +21,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class AdminPoolLoader extends FileLoader
 {
+
+    const ROUTE_TYPE_NAME = 'sonata_admin';
+
     /**
      * @var \Sonata\AdminBundle\Admin\Pool
      */
@@ -50,11 +53,7 @@ class AdminPoolLoader extends FileLoader
      */
     public function supports($resource, $type = null)
     {
-        if ($type == 'sonata_admin') {
-            return true;
-        }
-
-        return false;
+        return $type === self::ROUTE_TYPE_NAME;
     }
 
     /**

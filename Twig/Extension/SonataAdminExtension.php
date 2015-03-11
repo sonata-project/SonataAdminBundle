@@ -82,11 +82,10 @@ class SonataAdminExtension extends \Twig_Extension
     /**
      * {@inheritDoc}
      */
-
     public function getFunctions()
     {
         return array(
-            'sonata_knp_menu_build' => new \Twig_Function_Method($this, 'getKnpMenu')
+            'sonata_knp_menu_build' => new \Twig_Function_Method($this, 'getKnpMenu'),
         );
     }
 
@@ -121,7 +120,6 @@ class SonataAdminExtension extends \Twig_Extension
         try {
             $template = $this->environment->loadTemplate($templateName);
         } catch (\Twig_Error_Loader $e) {
-
             $template = $this->environment->loadTemplate($defaultTemplate);
 
             if (null !== $this->logger) {
@@ -149,7 +147,7 @@ class SonataAdminExtension extends \Twig_Extension
             'admin'             => $fieldDescription->getAdmin(),
             'object'            => $object,
             'value'             => $this->getValueFromFieldDescription($object, $fieldDescription),
-            'field_description' => $fieldDescription
+            'field_description' => $fieldDescription,
         )));
     }
 
@@ -229,7 +227,7 @@ class SonataAdminExtension extends \Twig_Extension
             'field_description' => $fieldDescription,
             'object'            => $object,
             'value'             => $value,
-            'admin'             => $fieldDescription->getAdmin()
+            'admin'             => $fieldDescription->getAdmin(),
         ));
     }
 
@@ -261,13 +259,13 @@ class SonataAdminExtension extends \Twig_Extension
         $baseValueOutput = $template->render(array(
             'admin'             => $fieldDescription->getAdmin(),
             'field_description' => $fieldDescription,
-            'value'             => $baseValue
+            'value'             => $baseValue,
         ));
 
         $compareValueOutput = $template->render(array(
             'field_description' => $fieldDescription,
             'admin'             => $fieldDescription->getAdmin(),
-            'value'             => $compareValue
+            'value'             => $compareValue,
         ));
 
         // Compare the rendered output of both objects by using the (possibly) overridden field block
@@ -278,7 +276,7 @@ class SonataAdminExtension extends \Twig_Extension
             'value'             => $baseValue,
             'value_compare'     => $compareValue,
             'is_diff'           => $isDiff,
-            'admin'             => $fieldDescription->getAdmin()
+            'admin'             => $fieldDescription->getAdmin(),
         ));
     }
 
@@ -386,7 +384,7 @@ class SonataAdminExtension extends \Twig_Extension
                 ->setAttributes(
                     array(
                         'icon'             => $group['icon'],
-                        'label_catalogue'  => $group['label_catalogue']
+                        'label_catalogue'  => $group['label_catalogue'],
                     )
                 )
                 ->setExtra('roles', $group['roles'])
@@ -395,13 +393,19 @@ class SonataAdminExtension extends \Twig_Extension
             foreach ($group['items'] as $item) {
                 if (array_key_exists('admin', $item) && $item['admin'] != null) {
                     $admin             = $this->pool->getInstance($item['admin']);
+
+                    // skip menu item if no `list` url is available or user doesn't have the LIST access rights
+                    if (!$admin->hasRoute('list') || !$admin->isGranted('LIST')) {
+                        continue;
+                    }
+
                     $label             = $admin->getLabel();
                     $route             = $admin->generateUrl('list');
                     $translationDomain = $admin->getTranslationDomain();
                 } else {
                     $label             = $item['label'];
                     $route             = $this->router->generate($item['route'], $item['route_params']);
-                    $translationDomain = null;
+                    $translationDomain = $group['label_catalogue'];
                     $admin             = null;
                 }
 
