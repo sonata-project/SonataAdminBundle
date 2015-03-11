@@ -242,8 +242,7 @@ You can add filters to let user control which data will be displayed.
         }
     }
 
-All filters are hidden by defualt for space-saving. User has to check which filter
-he wants to use.
+All filters are hidden by default for space-saving. User has to check which filter he wants to use.
 
 To make the filter always visible (even when it is inactive), set the parameter
 ``show_filter`` to ``true``.
@@ -260,10 +259,168 @@ To make the filter always visible (even when it is inactive), set the parameter
         ;
     }
 
+By default the template generates an ``operator`` for a filter which defaults to ``sonata_type_equal``.
+Though this ``operator_type`` is automatically detected it can be changed or even be hidden:
+
+.. code-block:: php
+
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    {
+        $datagridMapper
+            ->add('foo', null, array('operator_type' => 'sonata_type_boolean'))
+            ->add('bar', null, array('operator_type' => 'hidden'))
+        ;
+    }
+
+
+Default filters
+^^^^^^^^^^^^^^^
+
+Default filters can be added to the datagrid values by overriding the ``$datagridValues`` property which is also used for default sorting.
+A filter has a ``value`` and an optional ``type``. If no ``type`` is given the default type ``is equal`` is used.
+
+.. code-block:: php
+
+    protected $datagridValues = array(
+        '_page' => 1,
+        '_sort_order' => 'ASC',
+        '_sort_by' => 'id', 
+        'foo' => array('value' => 'bar')
+    );
+
+Available types are represented through classes which can be found here:
+https://github.com/sonata-project/SonataCoreBundle/tree/master/Form/Type
+
+Types like ``equal`` and ``boolean`` use constants to assign a choice of ``type`` to an ``integer`` for its ``value``:
+
+.. code-block:: php
+
+    class EqualType extends AbstractType
+    {
+        const TYPE_IS_EQUAL = 1;
+        const TYPE_IS_NOT_EQUAL = 2;
+    }
+
+The integers are then passed in the URL of the list action e.g.:
+**/admin/user/user/list?filter[enabled][type]=1&filter[enabled][value]=1**
+
+This is an example using these constants for an ``boolean`` type:
+
+.. code-block:: php
+
+    use Sonata\UserBundle\Admin\Model\UserAdmin as SonataUserAdmin;
+    use SonataCoreBundle/blob/master/Form/Type/EqualType.php;
+    use SonataCoreBundle/blob/master/Form/Type/BooleanType;
+    
+    class UserAdmin extends SonataUserAdmin
+    {
+        protected $datagridValues = array(
+            'enabled' => array(
+                'type'  => EqualType::TYPE_IS_EQUAL, // => 1
+                'value' => BooleanType::TYPE_YES     // => 1
+            )
+        );
+    }
+
+Please note that setting a ``false`` value on a the ``boolean`` type will not work since the type expects an integer of  ``2`` as ``value`` as defined in the class constants:
+
+.. code-block:: php
+
+    class BooleanType extends AbstractType
+    {
+        const TYPE_YES = 1;
+        const TYPE_NO = 2;
+    }
+    
+Default filters can also be added to the datagrid values by overriding the ``getFilterParameters`` method.
+
+.. code-block:: php
+
+    use SonataCoreBundle/blob/master/Form/Type/EqualType.php;
+    use SonataCoreBundle/blob/master/Form/Type/BooleanType;
+    
+    class UserAdmin extends SonataUserAdmin
+    {
+        public function getFilterParameters()
+        {
+            $this->datagridValues = array_merge(array(
+                    'enabled' => array (
+                        'type'  => EqualType::TYPE_IS_EQUAL,
+                        'value' => BooleanType::TYPE_YES
+                    )
+                ), $this->datagridValues);
+    
+            return parent::getFilterParameters();
+        }
+    }
+
+This approach is useful when you need to create dynamic filters.
+
+.. code-block:: php
+
+    class PostAdmin extends SonataUserAdmin
+    {
+        public function getFilterParameters()
+        {
+            // Assuming security context injected
+            if (!$this->securityContext->isGranted('ROLE_ADMIN')) {
+                $user = $this->securityContext->getToken()->getUser();
+                
+                $this->datagridValues = array_merge(array(
+                        'author' => array (
+                            'type'  => EqualType::TYPE_IS_EQUAL,
+                            'value' => $user->getId()
+                        )
+                    ), $this->datagridValues);
+            }
+            
+            return parent::getFilterParameters();
+        }
+    }
+
+Please note that this is not a secure approach to hide posts from others. It's just an example for setting filters on demand.
+
+Callback filter
+^^^^^^^^^^^^^^^
+
+If you have the **SonataDoctrineORMAdminBundle** installed you can use the ``doctrine_orm_callback`` filter type e.g. for creating a full text filter:
+
+.. code-block:: php
+
+    use Sonata\UserBundle\Admin\Model\UserAdmin as SonataUserAdmin;
+    use Sonata\AdminBundle\Datagrid\DatagridMapper;
+    
+    class UserAdmin extends SonataUserAdmin
+    {
+        protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+        {
+            $datagridMapper
+                ->add('full_text', 'doctrine_orm_callback', array(
+                    'callback' => array($this, 'getFullTextFilter'),
+                    'field_type' => 'text'
+                ));
+        }
+     
+        public function getFullTextFilter($queryBuilder, $alias, $field, $value)
+        {
+            if (!$value['value']) {
+                return;
+            }
+     
+            // Use `andWhere` instead of `where` to prevent overriding existing `where` conditions
+            $queryBuilder->andWhere($queryBuilder->expr()->orX(
+                $queryBuilder->expr()->like($alias.'.username', $queryBuilder->expr()->literal('%' . $value['value'] . '%')),
+                $queryBuilder->expr()->like($alias.'.firstName', $queryBuilder->expr()->literal('%' . $value['value'] . '%')),
+                $queryBuilder->expr()->like($alias.'.lastName', $queryBuilder->expr()->literal('%' . $value['value'] . '%'))
+            ));
+     
+            return true;
+        }
+    }
+
 To do:
 
 - basic filter configuration and options
-- how to set default filter values
 - targeting submodel fields using dot-separated notation
 - advanced filter options (global_search)
 
