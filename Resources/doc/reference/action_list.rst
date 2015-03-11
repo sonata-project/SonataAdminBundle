@@ -263,8 +263,8 @@ To make the filter always visible (even when it is inactive), set the parameter
 Default filters
 ^^^^^^^^^^^^^^^
 
-Default filters can be added to the Datagrid Values by overriding the `$datagridValues` property which is also used for default sorting.
-A filter has a `value` and an optional `type`. If no `type` is given the default type `is equal` is used.
+Default filters can be added to the datagrid values by overriding the ``$datagridValues`` property which is also used for default sorting.
+A filter has a ``value`` and an optional ``type``. If no ``type`` is given the default type ``is equal`` is used.
 
 .. code-block:: php
 
@@ -275,10 +275,10 @@ A filter has a `value` and an optional `type`. If no `type` is given the default
         'foo' => array('value' => 'bar')
     );
 
-Available types are represented through Classes which can be found here:
+Available types are represented through classes which can be found here:
 https://github.com/sonata-project/SonataCoreBundle/tree/master/Form/Type
 
-Types like `equal` and `boolean` use constants to assign a choice of `type` to an `integer` for its `value`:
+Types like ``equal`` and ``boolean`` use constants to assign a choice of ``type`` to an ``integer`` for its ``value``:
 
 .. code-block:: php
 
@@ -288,26 +288,28 @@ Types like `equal` and `boolean` use constants to assign a choice of `type` to a
         const TYPE_IS_NOT_EQUAL = 2;
     }
 
-The integers are then passed in the URL of the list action e.g. `/admin/user/user/list?filter[enabled][type]=1&filter[enabled][value]=1`.
-This is an example using these constants for an `boolean` type:
+The integers are then passed in the URL of the list action e.g.:
+**localhost:8000/admin/user/user/list?filter[enabled][type]=1&filter[enabled][value]=1**
+
+This is an example using these constants for an ``boolean`` type:
 
 .. code-block:: php
 
-use Sonata\UserBundle\Admin\Model\UserAdmin as SonataUserAdmin;
-use SonataCoreBundle/blob/master/Form/Type/EqualType.php;
-use SonataCoreBundle/blob/master/Form/Type/BooleanType;
+    use Sonata\UserBundle\Admin\Model\UserAdmin as SonataUserAdmin;
+    use SonataCoreBundle/blob/master/Form/Type/EqualType.php;
+    use SonataCoreBundle/blob/master/Form/Type/BooleanType;
+    
+    class UserAdmin extends SonataUserAdmin
+    {
+        protected $datagridValues = array(
+            'enabled' => array(
+                'type'  => EqualType::TYPE_IS_EQUAL, // => 1
+                'value' => BooleanType::TYPE_YES     // => 1
+            )
+        );
+    }
 
-class UserAdmin extends SonataUserAdmin
-{
-    protected $datagridValues = array(
-        'enabled' => array(
-            'type'  => EqualType::TYPE_IS_EQUAL, // => 1
-            'value' => BooleanType::TYPE_YES     // => 1
-        )
-    );
-}
-
-Please note that setting a `false` value on a the `boolean` type will not work since the type expects a `2` `value` as defined in the class constants:
+Please note that setting a ``false`` value on a the ``boolean`` type will not work since the type expects an integer of  ``2`` as ``value`` as defined in the class constants:
 
 .. code-block:: php
 
@@ -316,6 +318,54 @@ Please note that setting a `false` value on a the `boolean` type will not work s
         const TYPE_YES = 1;
         const TYPE_NO = 2;
     }
+    
+Default filters can also be added to the datagrid values by overriding the ``getFilterParameters`` method.
+
+.. code-block:: php
+
+    use SonataCoreBundle/blob/master/Form/Type/EqualType.php;
+    use SonataCoreBundle/blob/master/Form/Type/BooleanType;
+    
+    class UserAdmin extends SonataUserAdmin
+    {
+        public function getFilterParameters()
+        {
+            $this->datagridValues = array_merge(array(
+                    'enabled' => array (
+                        'type'  => EqualType::TYPE_IS_EQUAL,
+                        'value' => BooleanType::TYPE_YES
+                    )
+                ), $this->datagridValues);
+    
+            return parent::getFilterParameters();
+        }
+    }
+
+This approach is useful when you need to create dynamic filters.
+
+.. code-block:: php
+
+    class PostAdmin extends SonataUserAdmin
+    {
+        public function getFilterParameters()
+        {
+            // Assuming security context injected
+            if (!$this->securityContext->isGranted('ROLE_ADMIN')) {
+                $user = $this->securityContext->getToken()->getUser();
+                
+                $this->datagridValues = array_merge(array(
+                        'author' => array (
+                            'type'  => EqualType::TYPE_IS_EQUAL,
+                            'value' => $user->getId()
+                        )
+                    ), $this->datagridValues);
+            }
+            
+            return parent::getFilterParameters();
+        }
+    }
+
+Please note that this is not a secure approach to hide posts from others. It's just an example for setting filters on demand.
     
 To do:
 
