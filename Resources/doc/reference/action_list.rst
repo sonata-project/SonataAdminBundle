@@ -242,8 +242,7 @@ You can add filters to let user control which data will be displayed.
         }
     }
 
-All filters are hidden by defualt for space-saving. User has to check which filter
-he wants to use.
+All filters are hidden by default for space-saving. User has to check which filter he wants to use.
 
 To make the filter always visible (even when it is inactive), set the parameter
 ``show_filter`` to ``true``.
@@ -259,6 +258,20 @@ To make the filter always visible (even when it is inactive), set the parameter
             ->add('email', null, array('show_filter'=>true))
         ;
     }
+
+By default the template generates an ``operator`` for a filter which defaults to ``sonata_type_equal``.
+Though this ``operator_type`` is automatically detected it can be changed or even be hidden:
+
+.. code-block:: php
+
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    {
+        $datagridMapper
+            ->add('foo', null, array('operator_type' => 'sonata_type_boolean'))
+            ->add('bar', null, array('operator_type' => 'hidden'))
+        ;
+    }
+
 
 Default filters
 ^^^^^^^^^^^^^^^
@@ -289,7 +302,7 @@ Types like ``equal`` and ``boolean`` use constants to assign a choice of ``type`
     }
 
 The integers are then passed in the URL of the list action e.g.:
-**localhost:8000/admin/user/user/list?filter[enabled][type]=1&filter[enabled][value]=1**
+**/admin/user/user/list?filter[enabled][type]=1&filter[enabled][value]=1**
 
 This is an example using these constants for an ``boolean`` type:
 
@@ -366,7 +379,45 @@ This approach is useful when you need to create dynamic filters.
     }
 
 Please note that this is not a secure approach to hide posts from others. It's just an example for setting filters on demand.
+
+Callback filter
+^^^^^^^^^^^^^^^
+
+If you have the **SonataDoctrineORMAdminBundle** installed you can use the ``doctrine_orm_callback`` filter type e.g. for creating a full text filter:
+
+.. code-block:: php
+
+    use Sonata\UserBundle\Admin\Model\UserAdmin as SonataUserAdmin;
+    use Sonata\AdminBundle\Datagrid\DatagridMapper;
     
+    class UserAdmin extends SonataUserAdmin
+    {
+        protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+        {
+            $datagridMapper
+                ->add('full_text', 'doctrine_orm_callback', array(
+                    'callback' => array($this, 'getFullTextFilter'),
+                    'field_type' => 'text'
+                ));
+        }
+     
+        public function getFullTextFilter($queryBuilder, $alias, $field, $value)
+        {
+            if (!$value['value']) {
+                return;
+            }
+     
+            // Use `andWhere` instead of `where` to prevent overriding existing `where` conditions
+            $queryBuilder->andWhere($queryBuilder->expr()->orX(
+                $queryBuilder->expr()->like($alias.'.username', $queryBuilder->expr()->literal('%' . $value['value'] . '%')),
+                $queryBuilder->expr()->like($alias.'.firstName', $queryBuilder->expr()->literal('%' . $value['value'] . '%')),
+                $queryBuilder->expr()->like($alias.'.lastName', $queryBuilder->expr()->literal('%' . $value['value'] . '%'))
+            ));
+     
+            return true;
+        }
+    }
+
 To do:
 
 - basic filter configuration and options
