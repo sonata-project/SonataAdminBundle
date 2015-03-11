@@ -43,7 +43,7 @@ abstract class AdminExtension implements AdminExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function configureShowFields(ShowMapper $filter)
+    public function configureShowFields(ShowMapper $show)
     {}
 
     /**

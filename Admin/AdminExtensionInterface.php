@@ -43,7 +43,7 @@ interface AdminExtensionInterface
     /**
      * @param ShowMapper $filter
      */
-    public function configureShowFields(ShowMapper $filter);
+    public function configureShowFields(ShowMapper $show);
 
     /**
      * @param AdminInterface  $admin
