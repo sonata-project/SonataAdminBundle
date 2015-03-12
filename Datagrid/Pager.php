@@ -355,7 +355,9 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     }
 
     /**
-     * {@inheritdoc}
+     * Returns the maximum number of page numbers.
+     *
+     * @return integer
      */
     public function getMaxPageLinks()
     {
@@ -363,7 +365,9 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     }
 
     /**
-     * {@inheritdoc}
+     * Sets the maximum number of page numbers.
+     *
+     * @param integer $maxPageLinks
      */
     public function setMaxPageLinks($maxPageLinks)
     {

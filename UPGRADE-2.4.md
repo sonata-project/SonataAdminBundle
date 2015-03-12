@@ -7,6 +7,10 @@ You will need to follow the dependencies upgrade instructions.
 
 ## Datagrid builders
 
+<<<<<<< HEAD
+If you have implemented a custom datagrid builder, you must adapt the signature
+of its `addFilter` method to match the one in `DatagridBuilderInterface` again.
+=======
 If you have implemented a custom datagrid builder, you must adapt the signature of its `addFilter` method to match the one in `DatagridBuilderInterface` again.
 
 ## sonata_type_model_autocomplete
@@ -22,3 +26,4 @@ The inline validation has been migrating to CoreBundle. Just rename ``Sonata\Adm
 ## AdminLTE 2
 
 AdminLTE version 2 has been integrated, this should work out of the box if you havn't change templates. If not you can review the upgrade guide here : [http://almsaeedstudio.com/themes/AdminLTE/documentation/index.html#upgrade](http://almsaeedstudio.com/themes/AdminLTE/documentation/index.html#upgrade)
+>>>>>>> origin/master

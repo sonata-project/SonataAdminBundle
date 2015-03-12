@@ -105,9 +105,9 @@ Now you can update your ``services.yml`` to use the handler provider by the pixS
 
 
 Last tricky part, in order to get the last position available in our twig template 
-we inject the position service into our admin class, define a public variable ``$last_position`` 
+we inject the service container in our admin class, define a public variable ``$last_position`` 
 and retrieve the value from our service in the ``configureListFields`` method. We 
-also define the sort by field to be position:
+also define the sort by field to be position 
 
 .. code-block:: php
 
@@ -116,7 +116,13 @@ also define the sort by field to be position:
 
     public $last_position = 0;
 
+    private $container;
     private $positionService;
+
+    public function setContainer(\Symfony\Component\DependencyInjection\ContainerInterface $container)
+    {
+        $this->container = $container;
+    }
 
     public function setPositionService(\Pix\SortableBehaviorBundle\Services\PositionHandler $positionHandler)
     {
@@ -146,6 +152,7 @@ And in  the services.yml add the following call
 
 .. code-block:: yaml
     
+	- [ setContainer, [ @service_container ] ]
 	- [ setPositionService, [@pix_sortable_behavior.position]]
 
 

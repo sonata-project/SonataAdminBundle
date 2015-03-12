@@ -92,26 +92,6 @@ abstract class Filter implements FilterInterface
     /**
      * {@inheritdoc}
      */
-    public function getFieldOption($name, $default = null)
-    {
-        if (isset($this->options['field_options'][$name]) && is_array($this->options['field_options'])) {
-            return $this->options['field_options'][$name];
-        }
-
-        return $default;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setFieldOption($name, $value)
-    {
-        $this->options['field_options'][$name] = $value;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getLabel()
     {
         return $this->getOption('label');

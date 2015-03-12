@@ -15,6 +15,7 @@ namespace Sonata\AdminBundle\Form\DataTransformer;
 use Symfony\Component\Form\DataTransformerInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Doctrine\Common\Util\ClassUtils;
+use RuntimeException;
 
 /**
  * Transform object to ID and property label
@@ -54,27 +55,19 @@ class ModelToIdPropertyTransformer implements DataTransformerInterface
     {
         $collection = $this->modelManager->getModelCollectionInstance($this->className);
 
-        if (empty($value)) {
-            if ($this->multiple) {
+        if (empty($value) || empty($value['identifiers'])) {
+            if (!$this->multiple) {
+                return null;
+            } else {
                 return $collection;
             }
-
-            return null;
         }
 
         if (!$this->multiple) {
-             return $this->modelManager->find($this->className, $value);
+             return $this->modelManager->find($this->className, current($value['identifiers']));
         }
 
-        if (!is_array($value)) {
-            throw new \UnexpectedValueException(sprintf('Value should be array, %s given.', gettype($value)));
-        }
-
-        foreach ($value as $key => $id) {
-            if ($key === '_labels') {
-                continue;
-            }
-
+        foreach ($value['identifiers'] as $id) {
             $collection->add($this->modelManager->find($this->className, $id));
         }
 
@@ -86,12 +79,11 @@ class ModelToIdPropertyTransformer implements DataTransformerInterface
      */
     public function transform($entityOrCollection)
     {
-        $result = array();
+        $result = array('identifiers' => array(), 'labels' => array());
 
         if (!$entityOrCollection) {
             return $result;
         }
-
         if ($this->multiple) {
             if (substr(get_class($entityOrCollection), -1 * strlen($this->className)) == $this->className) {
                 throw new \InvalidArgumentException('A multiple selection must be passed a collection not a single value. Make sure that form option "multiple=false" is set for many-to-one relation and "multiple=true" is set for many-to-many or one-to-many relations.');
@@ -111,7 +103,7 @@ class ModelToIdPropertyTransformer implements DataTransformerInterface
         }
 
         if (empty($this->property)) {
-            throw new \RuntimeException('Please define "property" parameter.');
+            throw new RuntimeException('Please define "property" parameter.');
         }
 
         foreach ($collection as $entity) {
@@ -119,7 +111,7 @@ class ModelToIdPropertyTransformer implements DataTransformerInterface
 
             if ($this->toStringCallback !== null) {
                 if (!is_callable($this->toStringCallback)) {
-                    throw new \RuntimeException('Callback in "to_string_callback" option doesn`t contain callable function.');
+                    throw new RuntimeException('Callback in "to_string_callback" option doesn`t contain callable function.');
                 }
 
                 $label = call_user_func($this->toStringCallback, $entity, $this->property);
@@ -127,12 +119,12 @@ class ModelToIdPropertyTransformer implements DataTransformerInterface
                 try {
                     $label = (string) $entity;
                 } catch (\Exception $e) {
-                    throw new \RuntimeException(sprintf("Unable to convert the entity %s to String, entity must have a '__toString()' method defined", ClassUtils::getClass($entity)), 0, $e);
+                    throw new RuntimeException(sprintf("Unable to convert the entity %s to String, entity must have a '__toString()' method defined", ClassUtils::getClass($entity)), 0, $e);
                 }
             }
 
-            $result[] = $id;
-            $result['_labels'][] = $label;
+            $result['identifiers'][] = $id;
+            $result['labels'][] = $label;
         }
 
         return $result;

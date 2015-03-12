@@ -52,6 +52,8 @@ class FilterTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('>', $filter->getCondition());
     }
 
+<<<<<<< HEAD
+=======
     public function testGetFieldOption()
     {
         $filter = new FooFilter();
@@ -77,6 +79,7 @@ class FilterTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(12345, $filter->getFieldOption('baz'));
     }
 
+>>>>>>> origin/master
     public function testInitialize()
     {
         $filter = new FooFilter();

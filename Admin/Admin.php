@@ -1908,7 +1908,11 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Returns a filter FieldDescription
+     *
+     * @param string $name
+     *
+     * @return array|null
      */
     public function getFilterFieldDescription($name)
     {

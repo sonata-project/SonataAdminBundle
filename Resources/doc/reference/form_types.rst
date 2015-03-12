@@ -232,21 +232,8 @@ route
   The route ``name`` with ``parameters`` that is used as target url for ajax
   requests.
 
-width
-  defaults to "". Controls the width style attribute of the Select2 container div.
-
-dropdown_auto_width
-  defaults to false. Set to true to enable the `dropdownAutoWidth` Select2 option,
-  which allows the drop downs to be wider than the parent input, sized according to their content.
-
-container_css_class
-  defaults to "". Css class that will be added to select2's container tag.
-
 dropdown_css_class
-  defaults to "". CSS class of dropdown list.
-
-dropdown_item_css_class
-  defaults to "". CSS class of dropdown item.
+  defaults to "sonata-autocomplete-dropdown". CSS class of dropdown list.
 
 req_param_name_search
   defaults to "q". Ajax request parameter name which contains the searched text.
@@ -257,34 +244,6 @@ req_param_name_page_number
 req_param_name_items_per_page
   defaults to "_per_page".  Ajax request parameter name which contains the limit of
   items per page.
-
-template
-  defaults to ``SonataAdminBundle:Form/Type:sonata_type_model_autocomplete.html.twig``.
-  Use this option if you want to override the default template of this form type.
-
-.. code-block:: php
-
-    class ArticleAdmin extends Admin
-    {
-        protected function configureFormFields(FormMapper $formMapper)
-        {
-            $formMapper
-                ->add('category', 'sonata_type_model_autocomplete', array(
-                    'property'=>'title',
-                    'template'=>'AcmeAdminBundle:Form/Type:sonata_type_model_autocomplete.html.twig'
-                ))
-            ;
-        }
-    }
-
-.. code-block:: jinja
-
-    {# in Acme/AdminBundle/Resources/views/Form/Type/sonata_type_model_autocomplete.html.twig #}
-
-    {% extends 'SonataAdminBundle:Form/Type:sonata_type_model_autocomplete.html.twig' %}
-
-    {# change the default selection format #}
-    {% block sonata_type_model_autocomplete_selection_format %}'<b>'+item.label+'</b>'{% endblock %}
 
 sonata_choice_field_mask
 ^^^^^^^^^^^^^^^^^^^^^^^^
@@ -319,8 +278,8 @@ According the choice made only associated fields are displayed. The others field
 
 map
   Associative array. Describes the fields that are displayed for each choice.
-
-
+    
+    
 sonata_type_admin
 ^^^^^^^^^^^^^^^^^
 

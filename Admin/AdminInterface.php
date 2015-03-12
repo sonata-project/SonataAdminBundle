@@ -398,15 +398,6 @@ interface AdminInterface
     public function getFilterFieldDescriptions();
 
     /**
-     * Returns a filter FieldDescription
-     *
-     * @param string $name
-     *
-     * @return array|null
-     */
-    public function getFilterFieldDescription($name);
-
-    /**
      * Returns a list depend on the given $object
      *
      * @return \Sonata\AdminBundle\Admin\FieldDescriptionCollection

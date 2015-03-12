@@ -67,7 +67,16 @@ file that was distributed with this source code.
         {% set label_class = 'col-sm-3' %}
     {% endif %}
 
+<<<<<<< HEAD
+    {% set label_class = "" %}
+    {% if sonata_admin.admin and sonata_admin.admin.getConfigurationPool().getOption('form_type') == 'horizontal' %}
+        {% set label_class = " control-label " ~ sonata_admin.admin.getConfigurationPool().getOption('horizontal_class_label') %}
+    {% else %}
+        {% set label_class = " control-label" %}
+    {% endif%}
+=======
     {% set label_class = label_class|default('') ~ ' control-label' %}
+>>>>>>> origin/master
 
     {#{{ sonata_admin.admin.getConfigurationPool().getOption('form_type') }}#}
     {% if label is not sameas(false) %}
@@ -157,10 +166,19 @@ file that was distributed with this source code.
 {% endspaceless %}
 {% endblock choice_widget_collapsed %}
 
+<<<<<<< HEAD
+{% block form_row %}
+    {% set label_class = "" %}
+    {% set div_class = "" %}
+    {% if sonata_admin.admin and sonata_admin.admin.getConfigurationPool().getOption('form_type') == 'horizontal' %}
+        {% set label_class = "control-label " ~ sonata_admin.admin.getConfigurationPool().getOption('horizontal_class_label') %}
+        {% set div_class = sonata_admin.admin.getConfigurationPool().getOption('horizontal_class_input') %}
+=======
 {% block date_widget %}
 {% spaceless %}
     {% if widget == 'single_text' %}
         {{ block('form_widget_simple') }}
+>>>>>>> origin/master
     {% else %}
         {% if row is not defined or row == true %}
             {% set attr = attr|merge({'class': attr.class|default('') ~ ' row' }) %}
@@ -243,7 +261,12 @@ file that was distributed with this source code.
             {% endif %}
         {% endif %}
 
+<<<<<<< HEAD
+            {% set has_label = sonata_admin.field_description.options.name is defined or label is not sameas(false) %}
+            <div class="{% if has_label %}{{ div_class }}{% else %}{{  sonata_admin.admin.getConfigurationPool().getOption('horizontal_class_input_without_label') }}{% endif %} sonata-ba-field sonata-ba-field-{{ sonata_admin.edit }}-{{ sonata_admin.inline }} {% if errors|length > 0 %}sonata-ba-field-error{% endif %} {% if not has_label %}sonata-collection-row-without-label{% endif %}">
+=======
         {{ form_label(form, label|default(null)) }}
+>>>>>>> origin/master
 
         {% if sonata_admin is defined and sonata_admin_enabled %}
             {% set div_class = div_class ~ ' sonata-ba-field-' ~ sonata_admin.edit ~ '-' ~ sonata_admin.inline %}
@@ -334,8 +357,13 @@ file that was distributed with this source code.
             {{ form_label(child) }}
 
             {% set div_class = "" %}
+<<<<<<< HEAD
+            {% if sonata_admin.admin and sonata_admin.admin.getConfigurationPool().getOption('form_type') == 'horizontal' %}
+                {% set div_class = sonata_admin.admin.getConfigurationPool().getOption('horizontal_class_input') %}
+=======
             {% if sonata_admin.options['form_type'] == 'horizontal' %}
                 {% set div_class = 'col-sm-9' %}
+>>>>>>> origin/master
             {% endif%}
 
             <div class="{{ div_class }} sonata-ba-field sonata-ba-field-{{ sonata_admin.edit }}-{{ sonata_admin.inline }} {% if child.vars.errors|length > 0 %}sonata-ba-field-error{% endif %}">
@@ -352,7 +380,125 @@ file that was distributed with this source code.
 {% endblock %}
 
 {% block sonata_type_model_autocomplete_widget %}
-    {% include template %}
+{% spaceless %}
+
+    {{ form_widget(form.title) }}
+
+    {% for child in form %}
+        {% if not child.rendered %}
+            {{ form_widget(child) }}
+        {% endif %}
+    {% endfor %}
+
+    <script>
+        (function ($) {
+            var autocompleteInput = $("#{{ form.title.vars.id }}");
+            autocompleteInput.select2({
+                placeholder: "{{ placeholder }}",
+                allowClear: {{ required ? 'false' : 'true' }},
+                enable: {{ disabled ? 'false' : 'true' }},
+                readonly: {{ read_only ? 'true' : 'false' }},
+                minimumInputLength: {{ minimum_input_length }},
+                multiple: {{ multiple ? 'true' : 'false' }},
+                ajax: {
+                    url:  "{{ url ?: path(route.name, route.parameters|default([])) }}",
+                    dataType: 'json',
+                    quietMillis: 100,
+                    data: function (term, page) { // page is the one-based page number tracked by Select2
+                        return {
+                                //search term
+                                "{{ req_param_name_search }}": term,
+
+                                // page size
+                                "{{ req_param_name_items_per_page }}": {{ items_per_page }},
+
+                                // page number
+                                "{{ req_param_name_page_number }}": page,
+
+                                // admin
+                                'uniqid': "{{ sonata_admin.admin.uniqid }}",
+                                'code':   "{{ sonata_admin.admin.code }}",
+                                'field':  "{{ name }}"
+
+                                // other parameters
+                                {% if req_params is not empty %},
+                                    {%- for key, value in req_params -%}
+                                        "{{- key|e('js') -}}": "{{- value|e('js') -}}"
+                                        {%- if not loop.last -%}, {% endif -%}
+                                    {%- endfor -%}
+                                {% endif %}
+                            };
+                    },
+                    results: function (data, page) {
+                        // notice we return the value of more so Select2 knows if more results can be loaded
+                        return {results: data.items, more: data.more};
+                    }
+                },
+                formatResult: function (item) {
+                    return {% block sonata_type_model_autocomplete_dropdown_item_format %}'<span class="sonata-autocomplete-dropdown-item">'+item.label+'</span>'{% endblock %};// format of one dropdown item
+                },
+                formatSelection: function (item) {
+                    return {% block sonata_type_model_autocomplete_selection_format %}item.label{% endblock %};// format selected item '<b>'+item.label+'</b>';
+                },
+                dropdownCssClass: "{{ dropdown_css_class }}",
+                escapeMarkup: function (m) { return m; } // we do not want to escape markup since we are displaying html in results
+            });
+
+            autocompleteInput.on("change", function(e) {
+
+                // console.log("change "+JSON.stringify({val:e.val, added:e.added, removed:e.removed}));
+
+                // add new input
+                var el = null;
+                if (undefined !== e.added) {
+
+                    var addedItems = e.added;
+
+                    if(!$.isArray(addedItems)) {
+                        addedItems = [addedItems];
+                    }
+
+                    var length = addedItems.length;
+                    for (var i = 0; i < length; i++) {
+                        el = addedItems[i];
+                        $("#{{ form.identifiers.vars.id }}").append('<input type="hidden" name="{{ form.identifiers.vars.full_name }}[]" value="'+el.id+'" />');
+                    }
+                }
+
+                // remove input
+                if (undefined !== e.removed && null !== e.removed) {
+                    var removedItems = e.removed;
+
+                    if(!$.isArray(removedItems)) {
+                        removedItems = [removedItems];
+                    }
+
+                    var length = removedItems.length;
+                    for (var i = 0; i < length; i++) {
+                        el = removedItems[i];
+                        $('#{{ form.identifiers.vars.id }} input:hidden[value="'+el.id+'"]').remove();
+                    }
+                }
+            });
+
+            // Initialise the autocomplete
+            var data = [];
+            {% if multiple -%}
+                data = [
+                {%- for key, label_text in value.labels -%}
+                    {id: '{{ value.identifiers[key]|e('js') }}', label:'{{ label_text|e('js') }}'}
+                    {%- if not loop.last -%}, {% endif -%}
+                {%- endfor -%}
+                ];
+            {%- elseif value.labels[0] is defined -%}
+                data = {id: '{{ value.identifiers[0]|e('js') }}', label:'{{ value.labels[0]|e('js') }}'};
+            {%- endif  %}
+            if (undefined==data.length || 0<data.length) { // Leave placeholder if no data set
+                autocompleteInput.select2('data', data);
+            }
+        })(jQuery);
+    </script>
+{% endspaceless %}
 {% endblock sonata_type_model_autocomplete_widget %}
 
 {% block sonata_type_choice_field_mask_widget %}
