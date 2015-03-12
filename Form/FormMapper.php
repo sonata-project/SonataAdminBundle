@@ -12,8 +12,8 @@ namespace Sonata\AdminBundle\Form;
 
 use Sonata\AdminBundle\Builder\FormContractorInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
-use Symfony\Component\Form\FormBuilder;
 use Sonata\AdminBundle\Mapper\BaseGroupedMapper;
+use Symfony\Component\Form\FormBuilderInterface;
 
 /**
  * This class is use to simulate the Form API
@@ -25,13 +25,13 @@ class FormMapper extends BaseGroupedMapper
 
     /**
      * @param \Sonata\AdminBundle\Builder\FormContractorInterface $formContractor
-     * @param \Symfony\Component\Form\FormBuilder                 $formBuilder
+     * @param \Symfony\Component\Form\FormBuilderInterface        $formBuilder
      * @param \Sonata\AdminBundle\Admin\AdminInterface            $admin
      */
-    public function __construct(FormContractorInterface $formContractor, FormBuilder $formBuilder, AdminInterface $admin)
+    public function __construct(FormContractorInterface $formContractor, FormBuilderInterface $formBuilder, AdminInterface $admin)
     {
         parent::__construct($formContractor, $admin);
-        $this->formBuilder    = $formBuilder;
+        $this->formBuilder = $formBuilder;
     }
 
     /**

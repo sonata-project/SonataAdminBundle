@@ -12,7 +12,7 @@ namespace Sonata\AdminBundle\Admin;
 
 use Doctrine\Common\Inflector\Inflector;
 use Doctrine\Common\Util\ClassUtils;
-use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormView;
 use Sonata\AdminBundle\Exception\NoValueException;
 use Sonata\AdminBundle\Util\FormViewIterator;
@@ -33,12 +33,12 @@ class AdminHelper
     /**
      * @throws \RuntimeException
      *
-     * @param \Symfony\Component\Form\FormBuilder $formBuilder
-     * @param string                              $elementId
+     * @param \Symfony\Component\Form\FormBuilderInterface $formBuilder
+     * @param string                                       $elementId
      *
-     * @return \Symfony\Component\Form\FormBuilder
+     * @return \Symfony\Component\Form\FormBuilderInterface
      */
-    public function getChildFormBuilder(FormBuilder $formBuilder, $elementId)
+    public function getChildFormBuilder(FormBuilderInterface $formBuilder, $elementId)
     {
         foreach (new FormBuilderIterator($formBuilder) as $name => $formBuilder) {
             if ($name == $elementId) {
