@@ -192,7 +192,7 @@ interface AdminInterface
     public function createQuery($context = 'list');
 
     /**
-     * @return \Symfony\Component\Form\FormBuilder the form builder
+     * @return \Symfony\Component\Form\FormBuilderInterface the form builder
      */
     public function getFormBuilder();
 
