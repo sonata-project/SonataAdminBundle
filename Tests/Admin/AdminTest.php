@@ -1426,7 +1426,7 @@ class AdminTest extends \PHPUnit_Framework_TestCase
 
         $postAdmin->expects($this->any())->method('getObject')->will($this->returnValue($post));
 
-        $formBuilder = $this->getMockForAbstractClass('Sonata\AdminBundle\Tests\Form\Builder\FormBuilder');
+        $formBuilder = $this->getMock('Symfony\Component\Form\FormBuilderInterface');
         $formBuilder->expects($this->any())->method('getForm')->will($this->returnValue(null));
 
         $tagAdmin = $this->getMockBuilder('Sonata\AdminBundle\Tests\Fixtures\Admin\TagAdmin')

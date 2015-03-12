@@ -14,7 +14,7 @@ namespace Sonata\AdminBundle\Admin;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\CoreBundle\Model\Metadata;
 use Symfony\Component\Form\Form;
-use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Validator\ValidatorInterface;
@@ -1326,11 +1326,11 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      * This method is being called by the main admin class and the child class,
      * the getFormBuilder is only call by the main admin class
      *
-     * @param \Symfony\Component\Form\FormBuilder $formBuilder
+     * @param \Symfony\Component\Form\FormBuilderInterface $formBuilder
      *
      * @return void
      */
-    public function defineFormBuilder(FormBuilder $formBuilder)
+    public function defineFormBuilder(FormBuilderInterface $formBuilder)
     {
         $mapper = new FormMapper($this->getFormContractor(), $formBuilder, $this);
 
