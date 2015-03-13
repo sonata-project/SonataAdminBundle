@@ -327,6 +327,21 @@ class FormMapperTest extends \PHPUnit_Framework_TestCase
         $this->formMapper->ifFalse(true);
     }
 
+    public function testAddAcceptFormBuilder()
+    {
+        $formBuilder = $this
+            ->getMockBuilder('Symfony\Component\Form\FormBuilder')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $formBuilder->expects($this->any())
+            ->method('getName')
+            ->will($this->returnValue('foo'));
+
+        $this->formMapper->add($formBuilder);
+        $this->assertEquals($this->formMapper->get('foo'), $formBuilder);
+    }
+
     private function getFieldDescriptionMock($name = null, $label = null, $translationDomain = null)
     {
         $fieldDescription = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\BaseFieldDescription');
