@@ -65,6 +65,7 @@ abstract class BaseGroupedMapper extends BaseMapper
             'description'        => false,
             'translation_domain' => null,
             'name'               => $name,
+            'box_class'          => 'box box-primary',
         );
 
         $code = $name;
