@@ -60,14 +60,14 @@ class FormMapper extends BaseGroupedMapper
             return $this;
         }
 
-        if ($name instanceof FormBuilder) {
+        if ($name instanceof FormBuilderInterface) {
             $fieldName = $name->getName();
         } else {
             $fieldName = $name;
         }
 
         // "Dot" notation is not allowed as form name, but can be used as property path to access nested data.
-        if (!$name instanceof FormBuilder && strpos($fieldName, '.')!==false && !isset($options['property_path'])) {
+        if (!$name instanceof FormBuilderInterface && strpos($fieldName, '.')!==false && !isset($options['property_path'])) {
              $options['property_path'] = $fieldName;
 
              // fix the form name
@@ -94,7 +94,7 @@ class FormMapper extends BaseGroupedMapper
 
         $fieldDescription = $this->admin->getModelManager()->getNewFieldDescriptionInstance(
             $this->admin->getClass(),
-            $name instanceof FormBuilder ? $name->getName() : $name,
+            $name instanceof FormBuilderInterface ? $name->getName() : $name,
             $fieldDescriptionOptions
         );
 
@@ -107,7 +107,7 @@ class FormMapper extends BaseGroupedMapper
 
         $this->admin->addFormFieldDescription($fieldName, $fieldDescription);
 
-        if ($name instanceof FormBuilder) {
+        if ($name instanceof FormBuilderInterface) {
             $this->formBuilder->add($name);
         } else {
             // Note that the builder var is actually the formContractor:
@@ -174,7 +174,7 @@ class FormMapper extends BaseGroupedMapper
     }
 
     /**
-     * @return \Symfony\Component\Form\FormBuilder
+     * @return \Symfony\Component\Form\FormBuilderInterface
      */
     public function getFormBuilder()
     {
@@ -186,7 +186,7 @@ class FormMapper extends BaseGroupedMapper
      * @param mixed  $type
      * @param array  $options
      *
-     * @return \Symfony\Component\Form\FormBuilder
+     * @return \Symfony\Component\Form\FormBuilderInterface
      */
     public function create($name, $type = null, array $options = array())
     {
