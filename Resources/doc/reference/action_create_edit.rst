@@ -64,9 +64,9 @@ To specify options, do as follow:
 Here is an example of what you can do with customizing the box_class on a group
 
 .. figure:: ../images/box_class.png
-    :align: center
-       :alt: Dashboard
-           :width: 500
+   :align: center
+   :alt: Box Class
+   :width: 500
 
 Embedding other Admins
 ----------------------
