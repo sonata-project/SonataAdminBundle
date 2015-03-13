@@ -30,6 +30,7 @@ When adding a form group to your edit/create form, you may specify some options 
 - ``collapsed``: unused at the moment
 - ``class``: the class for your form group in the admin; by default, the value is set to ``col-md-12``.
 - ``fields``: the fields in your form group (you should NOT override this unless you know what you're doing).
+- ``box_class``: the class for your form group box in the admin; by default, the value is set to ``box box-primary``.
 - ``description``: to complete
 - ``translation_domain``: to complete
 
@@ -50,6 +51,7 @@ To specify options, do as follow:
                     ->with('Addresses',
                         array(
                             'class'       => 'col-md-8',
+                            'box_class'   => 'box box-solid box-danger',
                             'description' => 'Lorem ipsum',
                             // ...
                             ))
@@ -58,6 +60,13 @@ To specify options, do as follow:
                 ->end()
             ;
     }
+
+Here is an example of what you can do with customizing the box_class on a group
+
+.. figure:: ../images/box_class.png
+    :align: center
+       :alt: Dashboard
+           :width: 500
 
 Embedding other Admins
 ----------------------
