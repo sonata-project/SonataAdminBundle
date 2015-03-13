@@ -97,7 +97,8 @@ class FormMapperTest extends \PHPUnit_Framework_TestCase
             'description' => false,
             'translation_domain' => null,
             'fields' => array (),
-            'name' => 'foobar'
+            'name' => 'foobar',
+            'box_class' => 'box box-primary'
         )), $this->admin->getFormGroups());
     }
 
@@ -125,7 +126,8 @@ class FormMapperTest extends \PHPUnit_Framework_TestCase
             'auto_created' => true,
             'groups' => array('foobar'),
             'tab' => true,
-            'name' => 'default'
+            'name' => 'default',
+            'box_class' => 'box box-primary'
         )), $this->admin->getFormTabs());
     }
 
@@ -168,7 +170,8 @@ class FormMapperTest extends \PHPUnit_Framework_TestCase
             'fields' => array(
                 'foo' => 'foo'
             ),
-            'name' => 'foobar'
+            'name' => 'foobar',
+            'box_class' => 'box box-primary'
         )), $this->admin->getFormGroups());
     }
 

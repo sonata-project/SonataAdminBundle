@@ -356,6 +356,7 @@ class ShowMapperTest extends \PHPUnit_Framework_TestCase
                 'description' => false,
                 'translation_domain' => null,
                 'name' => 'Group1',
+                'box_class' => 'box box-primary',
                 'fields' => array('fooName3'=>'fooName3', 'fooName2'=>'fooName2', 'fooName1'=>'fooName1', 'fooName4'=>'fooName4'),
             )), true), print_r($this->admin->getShowGroups(), true));
     }
