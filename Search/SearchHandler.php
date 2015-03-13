@@ -45,10 +45,16 @@ class SearchHandler
         $datagrid = $admin->getDatagrid();
 
         $found = false;
+        $first = true;
         foreach ($datagrid->getFilters() as $name => $filter) {
             /** @var $filter FilterInterface */
             if ($filter->getOption('global_search', false)) {
-                $filter->setCondition(FilterInterface::CONDITION_OR);
+                if ($first) {
+                    $filter->setCondition(FilterInterface::CONDITION_AND);
+                    $first = false;
+                } else {
+                    $filter->setCondition(FilterInterface::CONDITION_OR);
+                }
                 $datagrid->setValue($name, null, $term);
                 $found = true;
             }
