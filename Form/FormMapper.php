@@ -21,6 +21,9 @@ use Symfony\Component\Form\FormBuilderInterface;
  */
 class FormMapper extends BaseGroupedMapper
 {
+    /**
+     * @var FormBuilderInterface
+     */
     protected $formBuilder;
 
     /**
@@ -142,7 +145,7 @@ class FormMapper extends BaseGroupedMapper
     /**
      * @param string $name
      *
-     * @return \Symfony\Component\Form\FormInterface
+     * @return FormBuilderInterface
      */
     public function get($name)
     {
