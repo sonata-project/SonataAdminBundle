@@ -18,6 +18,9 @@ file that was distributed with this source code.
         {% else %}
             [{{ key }} => {{ val }}]
         {% endif %}
-        {% if field_description.options.inline is not defined or false == field_description.options.inline %}<br>{% endif %}
+
+        {% if not loop.last %}
+            {% if field_description.options.inline is not defined or false == field_description.options.inline %}<br>{% endif %}
+        {% endif %}
     {% endfor %}
 {% endblock %}
