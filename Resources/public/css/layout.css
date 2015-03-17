@@ -195,6 +195,15 @@ textarea.sonata-medium {
     height: 125px;
 }
 
+input[type="file"] {
+    height: 34px;
+}
+
+.sonata-ba-field-standard-natural .field-actions {
+    display: block;
+    margin-top: 5px;
+}
+
 .sonata-ba-field-inline-table select.sonata-medium,
 .sonata-ba-field-inline-table textarea.sonata-medium,
 .sonata-ba-field-inline-table input.sonata-medium {
