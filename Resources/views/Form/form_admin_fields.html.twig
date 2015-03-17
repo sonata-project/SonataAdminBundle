@@ -11,6 +11,18 @@ file that was distributed with this source code.
 
 {% extends 'form_div_layout.html.twig' %}
 
+{% block form_errors -%}
+    {% if errors|length > 0 %}
+        {% if not form.parent %}<div class="alert alert-danger">{% endif %}
+            <ul class="list-unstyled">
+                {% for error in errors %}
+                    <li><i class="glyphicon glyphicon-exclamation-sign"></i> {{ error.message }}</li>
+                {% endfor %}
+            </ul>
+        {% if not form.parent %}</div>{% endif %}
+    {% endif %}
+{%- endblock form_errors %}
+
 {% block form_widget -%}
     {{ parent() }}
     {% if sonata_help is defined and sonata_help %}
