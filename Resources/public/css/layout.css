@@ -103,6 +103,11 @@ div.sonata-actions {
     float: right
 }
 
+.sonata-ba-action.btn:not(:hover) {
+    background: none;
+    color: inherit;
+}
+
 .sonata-ba-list td.sonata-ba-list-field a.sonata-link-identifier {
     font-weight: bold;
 }
