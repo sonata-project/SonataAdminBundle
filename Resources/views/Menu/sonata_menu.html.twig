@@ -58,8 +58,9 @@
 
         <a href="#">
             {% set translation_domain = item.attribute('label_catalogue') %}
-            {% set icon = item.attribute('icon')|default ? item.attribute('icon') : '' %}
-            {{ icon|default|raw }}
+            {% if item.attribute('icon')|default is not empty %}
+                <i class="{{ item.attribute('icon') }}"></i>
+            {% endif %}
             {{ parent() }}
             <i class="fa pull-right fa-angle-left"></i>
         </a>

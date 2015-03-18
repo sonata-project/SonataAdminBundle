@@ -70,6 +70,7 @@ Full Configuration Options
                     id:
                         label:                ~
                         label_catalogue:      ~
+                        icon:                 fa fa-folder
                         items:                []
                         item_adds:            []
                         roles:                []

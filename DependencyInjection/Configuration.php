@@ -101,7 +101,7 @@ class Configuration implements ConfigurationInterface
                                 ->children()
                                     ->scalarNode('label')->end()
                                     ->scalarNode('label_catalogue')->end()
-                                    ->scalarNode('icon')->defaultValue('<i class="fa fa-folder"></i>')->end()
+                                    ->scalarNode('icon')->defaultValue('fa fa-folder')->end()
                                     ->arrayNode('items')
                                         ->beforeNormalization()
                                             ->ifArray()
