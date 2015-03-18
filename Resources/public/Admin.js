@@ -332,22 +332,26 @@ var Admin = {
     },
 
     setup_collection_buttons: function(subject) {
+        var counter = jQuery(subject).closest('[data-prototype]').children().length;
+
         Admin.log('[core|setup_collection_buttons] setup collection buttons', subject);
 
         jQuery(subject).on('click', '.sonata-collection-add', function(event) {
             Admin.stopEvent(event);
+
+            counter++;
 
             var container = jQuery(this).closest('[data-prototype]');
             var proto = container.attr('data-prototype');
             var protoName = container.attr('data-prototype-name') || '__name__';
             // Set field id
             var idRegexp = new RegExp(container.attr('id')+'_'+protoName,'g');
-            proto = proto.replace(idRegexp, container.attr('id')+'_'+(container.children().length - 1));
+            proto = proto.replace(idRegexp, container.attr('id')+'_'+counter);
 
             // Set field name
             var parts = container.attr('id').split('_');
             var nameRegexp = new RegExp(parts[parts.length-1]+'\\]\\['+protoName,'g');
-            proto = proto.replace(nameRegexp, parts[parts.length-1]+']['+(container.children().length - 1));
+            proto = proto.replace(nameRegexp, parts[parts.length-1]+']['+counter);
             jQuery(proto)
                 .insertBefore(jQuery(this).parent())
                 .trigger('sonata-admin-append-form-element')
