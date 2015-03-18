@@ -121,6 +121,13 @@ to implement a ``clone`` action.
 Here we first get the id of the object, see if it exists then clone it and insert the clone
 as a new object. Finally we set a flash message indicating success and redirect to the list view.
 
+If you want to add the current filter parameters to the redirect url you can add them to the `generateUrl` method:
+
+.. code-block:: php
+
+    return new RedirectResponse($this->admin->generateUrl('list', array('filter' => $this->admin->getFilterParameters())));
+
+
 Create a template for the new action
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
