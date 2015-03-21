@@ -154,7 +154,7 @@ Available types and associated options
 |           | hide_protocol  | Hide http:// or https:// (default false)                              |
 +-----------+----------------+-----------------------------------------------------------------------+
 
-If you have the SonataDoctrineORMAdminBundle installed, you have access to more field types, see `SonataDoctrineORMAdminBundle Documentation <http://sonata-project.org/bundles/doctrine-orm-admin/master/doc/reference/list_field_definition.html>`_.
+If you have the SonataDoctrineORMAdminBundle installed, you have access to more field types, see `SonataDoctrineORMAdminBundle Documentation <https://sonata-project.org/bundles/doctrine-orm-admin/master/doc/reference/list_field_definition.html>`_.
 
 Customizing the query used to generate the list
 -----------------------------------------------
@@ -284,7 +284,7 @@ A filter has a ``value`` and an optional ``type``. If no ``type`` is given the d
     protected $datagridValues = array(
         '_page' => 1,
         '_sort_order' => 'ASC',
-        '_sort_by' => 'id', 
+        '_sort_by' => 'id',
         'foo' => array('value' => 'bar')
     );
 
@@ -311,7 +311,7 @@ This is an example using these constants for an ``boolean`` type:
     use Sonata\UserBundle\Admin\Model\UserAdmin as SonataUserAdmin;
     use SonataCoreBundle/blob/master/Form/Type/EqualType.php;
     use SonataCoreBundle/blob/master/Form/Type/BooleanType;
-    
+
     class UserAdmin extends SonataUserAdmin
     {
         protected $datagridValues = array(
@@ -331,14 +331,14 @@ Please note that setting a ``false`` value on a the ``boolean`` type will not wo
         const TYPE_YES = 1;
         const TYPE_NO = 2;
     }
-    
+
 Default filters can also be added to the datagrid values by overriding the ``getFilterParameters`` method.
 
 .. code-block:: php
 
     use SonataCoreBundle/blob/master/Form/Type/EqualType.php;
     use SonataCoreBundle/blob/master/Form/Type/BooleanType;
-    
+
     class UserAdmin extends SonataUserAdmin
     {
         public function getFilterParameters()
@@ -349,7 +349,7 @@ Default filters can also be added to the datagrid values by overriding the ``get
                         'value' => BooleanType::TYPE_YES
                     )
                 ), $this->datagridValues);
-    
+
             return parent::getFilterParameters();
         }
     }
@@ -365,7 +365,7 @@ This approach is useful when you need to create dynamic filters.
             // Assuming security context injected
             if (!$this->securityContext->isGranted('ROLE_ADMIN')) {
                 $user = $this->securityContext->getToken()->getUser();
-                
+
                 $this->datagridValues = array_merge(array(
                         'author' => array (
                             'type'  => EqualType::TYPE_IS_EQUAL,
@@ -373,7 +373,7 @@ This approach is useful when you need to create dynamic filters.
                         )
                     ), $this->datagridValues);
             }
-            
+
             return parent::getFilterParameters();
         }
     }
@@ -389,7 +389,7 @@ If you have the **SonataDoctrineORMAdminBundle** installed you can use the ``doc
 
     use Sonata\UserBundle\Admin\Model\UserAdmin as SonataUserAdmin;
     use Sonata\AdminBundle\Datagrid\DatagridMapper;
-    
+
     class UserAdmin extends SonataUserAdmin
     {
         protected function configureDatagridFilters(DatagridMapper $datagridMapper)
@@ -400,20 +400,20 @@ If you have the **SonataDoctrineORMAdminBundle** installed you can use the ``doc
                     'field_type' => 'text'
                 ));
         }
-     
+
         public function getFullTextFilter($queryBuilder, $alias, $field, $value)
         {
             if (!$value['value']) {
                 return;
             }
-     
+
             // Use `andWhere` instead of `where` to prevent overriding existing `where` conditions
             $queryBuilder->andWhere($queryBuilder->expr()->orX(
                 $queryBuilder->expr()->like($alias.'.username', $queryBuilder->expr()->literal('%' . $value['value'] . '%')),
                 $queryBuilder->expr()->like($alias.'.firstName', $queryBuilder->expr()->literal('%' . $value['value'] . '%')),
                 $queryBuilder->expr()->like($alias.'.lastName', $queryBuilder->expr()->literal('%' . $value['value'] . '%'))
             ));
-     
+
             return true;
         }
     }

@@ -257,6 +257,6 @@ BOOM
      */
     public function getNamespace()
     {
-        return 'http://sonata-project.org/schema/dic/admin';
+        return 'https://sonata-project.org/schema/dic/admin';
     }
 }

@@ -531,4 +531,4 @@ ChoiceType
 .. _`Symfony field types`: http://symfony.com/doc/current/book/forms.html#built-in-field-types
 .. _`Symfony choice Field Type docs`: http://symfony.com/doc/current/reference/forms/types/choice.html
 .. _`Symfony PropertyPath`: http://api.symfony.com/2.0/Symfony/Component/Form/Util/PropertyPath.html
-.. _`Getting started documentation`: http://sonata-project.org/bundles/admin/master/doc/reference/getting_started.html#importing-it-in-the-main-config-yml
+.. _`Getting started documentation`: https://sonata-project.org/bundles/admin/master/doc/reference/getting_started.html#importing-it-in-the-main-config-yml

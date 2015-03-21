@@ -222,7 +222,7 @@ a text block and RSS feed block on the right. The configuration for this scenari
                         roles: [POST_READER]
                         settings:
                             title: Sonata Project's Feeds
-                            url: http://sonata-project.org/blog/archive.rss
+                            url: https://sonata-project.org/blog/archive.rss
 
 
 .. note::
@@ -277,7 +277,7 @@ suit this scenario.
 In this example, you would have two ``admin_list`` blocks on your dashboard, each
 of them containing just the respectively configured groups.
 
-.. _`SonataBlock documentation page`:  http://sonata-project.org/bundles/block/master/doc/index.html
+.. _`SonataBlock documentation page`:  https://sonata-project.org/bundles/block/master/doc/index.html
 
 Dashboard Layout
 ~~~~~~~~~~~~~~~~

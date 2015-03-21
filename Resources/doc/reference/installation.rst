@@ -29,9 +29,9 @@ mechanisms. Depending on which you are using on your project, you'll need to ins
 one of the following bundles. In the respective links you'll find simple installation
 instructions for each of them:
 
-    - `SonataDoctrineORMAdminBundle <http://sonata-project.org/bundles/doctrine-orm-admin/master/doc/reference/installation.html>`_
+    - `SonataDoctrineORMAdminBundle <https://sonata-project.org/bundles/doctrine-orm-admin/master/doc/reference/installation.html>`_
     - `SonataDoctrineMongoDBAdminBundle <https://github.com/sonata-project/SonataDoctrineMongoDBAdminBundle/blob/master/Resources/doc/reference/installation.rst>`_
-    - `SonataPropelAdminBundle <http://sonata-project.org/bundles/propel-admin/master/doc/reference/installation.html>`_
+    - `SonataPropelAdminBundle <https://sonata-project.org/bundles/propel-admin/master/doc/reference/installation.html>`_
     - `SonataDoctrinePhpcrAdminBundle <https://github.com/sonata-project/SonataDoctrinePhpcrAdminBundle/blob/master/Resources/doc/reference/installation.rst>`_
 
 .. note::
@@ -44,7 +44,7 @@ SonataAdminBundle relies on other bundles to implement some features.
 Besides the storage layer mentioned on step 2, there are other bundles needed
 for SonataAdminBundle to work:
 
-    - `SonataBlockBundle <http://sonata-project.org/bundles/block/master/doc/reference/installation.html>`_
+    - `SonataBlockBundle <https://sonata-project.org/bundles/block/master/doc/reference/installation.html>`_
     - `KnpMenuBundle <https://github.com/KnpLabs/KnpMenuBundle/blob/master/Resources/doc/index.md#installation>`_ (Version 2.*)
 
 These bundles are automatically downloaded by composer as a dependency of SonataAdminBundle.

@@ -35,4 +35,4 @@ before_script:
 script: make test
 
 notifications:
-    webhooks: http://sonata-project.org/bundles/admin/master/travis
+    webhooks: https://sonata-project.org/bundles/admin/master/travis

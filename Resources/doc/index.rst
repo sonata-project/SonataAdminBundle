@@ -24,9 +24,6 @@ Reference Guide
    reference/architecture
    reference/dashboard
    reference/search
-   reference/select2
-   reference/knp_menu
-   reference/routing
    reference/action_list
    reference/action_create_edit
    reference/action_show
@@ -36,17 +33,26 @@ Reference Guide
    reference/form_types
    reference/form_help_message
    reference/field_types
+   reference/batch_actions
+   reference/console
+   reference/troubleshooting
+
+Advanced Options
+----------------
+
+.. toctree::
+   :maxdepth: 1
+   :numbered:
+
+   reference/routing
+   reference/translation
    reference/conditional_validation
    reference/templates
-   reference/batch_actions
-   reference/translation
    reference/security
    reference/extensions
    reference/events
-   reference/advanced
-   reference/console
+   reference/advanced_configuration
    reference/preview_mode
-   reference/troubleshooting
 
 Cookbook
 --------
@@ -55,6 +61,8 @@ Cookbook
    :maxdepth: 1
    :numbered:
 
+   cookbook/recipe_select2
+   cookbook/recipe_knp_menu
    cookbook/recipe_file_uploads
    cookbook/recipe_image_previews
    cookbook/recipe_row_templates

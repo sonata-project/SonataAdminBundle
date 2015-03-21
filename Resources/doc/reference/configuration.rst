@@ -1,5 +1,5 @@
-Configuration // Warning: this doc page is not up to date and will be removed soon.
-===================================================================================
+Configuration
+=============
 
 .. note::
     This page will be removed soon, as it's content is being improved and moved to
@@ -52,17 +52,18 @@ Full Configuration Options
                     - OPERATOR
                     - MASTER
                     - OWNER
-                acl_user_manager:     ~         # Name of the user manager service used to retrieve ACL users
-            title:                Sonata Admin
+                acl_user_manager:     null
+            title:                'Sonata Admin'
             title_logo:           bundles/sonataadmin/logo_title.png
             options:
-                html5_validate:                         true      # use html5 validation
-                confirm_exit:                           true      # enabled confirmation when quitting with unsaved changes
-                use_select2:                            true      # enable select2
-                use_icheck:                             true      # enable iCheck
-                pager_links:                            ~         # pager max links to display
-                dropdown_number_groups_per_colums:      2         # max items per column in dropdown menu (add button in top nav)
-                title_mode:           'both'                      # 'both', 'single_text' or 'single_image'
+                html5_validate:       true
+                confirm_exit:         true
+                use_select2:          true
+                use_icheck:           true
+                pager_links:          null
+                form_type:            standard
+                dropdown_number_groups_per_colums:  2
+                title_mode:           ~ # One of "single_text"; "single_image"; "both"
             dashboard:
                 groups:
 
@@ -70,78 +71,99 @@ Full Configuration Options
                     id:
                         label:                ~
                         label_catalogue:      ~
-                        items:                []
+                        icon:                 '<i class="fa fa-folder"></i>'
+                        items:
+                            admin:                ~
+                            label:                ~
+                            route:                ~
+                            route_params:         []
                         item_adds:            []
                         roles:                []
                 blocks:
                     type:                 ~
+                    roles:                []
                     settings:
 
                         # Prototype
-                        id:                   []
+                        id:                   ~
                     position:             right
+                    class:                col-md-4
             admin_services:
+                model_manager:        null
+                form_contractor:      null
+                show_builder:         null
+                list_builder:         null
+                datagrid_builder:     null
+                translator:           null
+                configuration_pool:   null
+                route_generator:      null
+                validator:            null
+                security_handler:     null
+                label:                null
+                menu_factory:         null
+                route_builder:        null
+                label_translator_strategy:  null
+                pager_type:           null
+                templates:
+                    form:                 []
+                    filter:               []
+                    view:
 
-                # Prototype
-                id:
-                    model_manager:        ~
-                    form_contractor:      ~
-                    show_builder:         ~
-                    list_builder:         ~
-                    datagrid_builder:     ~
-                    translator:           ~
-                    configuration_pool:   ~
-                    router:               ~
-                    validator:            ~
-                    security_handler:     ~
-                    label:                ~
+                        # Prototype
+                        id:                   ~
             templates:
-                user_block:           SonataAdminBundle:Core:user_block.html.twig
-                add_block:            SonataAdminBundle:Core:add_block.html.twig
-                layout:               SonataAdminBundle::standard_layout.html.twig
-                ajax:                 SonataAdminBundle::ajax_layout.html.twig
-                dashboard:            SonataAdminBundle:Core:dashboard.html.twig
-                search:               SonataAdminBundle:Core:search.html.twig
-                list:                 SonataAdminBundle:CRUD:list.html.twig
-                filter:               SonataAdminBundle:Form:filter_admin_fields.html.twig
-                show:                 SonataAdminBundle:CRUD:show.html.twig
-                show_compare:         SonataAdminBundle:CRUD:show_compare.html.twig
-                edit:                 SonataAdminBundle:CRUD:edit.html.twig
-                preview:              SonataAdminBundle:CRUD:preview.html.twig
-                history:              SonataAdminBundle:CRUD:history.html.twig
-                acl:                  SonataAdminBundle:CRUD:acl.html.twig
-                history_revision_timestamp:  SonataAdminBundle:CRUD:history_revision_timestamp.html.twig
-                action:               SonataAdminBundle:CRUD:action.html.twig
-                select:               SonataAdminBundle:CRUD:list__select.html.twig
-                list_block:           SonataAdminBundle:Block:block_admin_list.html.twig
-                search_result_block:  SonataAdminBundle:Block:block_search_result.html.twig
-                short_object_description:  SonataAdminBundle:Helper:short-object-description.html.twig
-                delete:               SonataAdminBundle:CRUD:delete.html.twig
-                batch:                SonataAdminBundle:CRUD:list__batch.html.twig
-                batch_confirmation:   SonataAdminBundle:CRUD:batch_confirmation.html.twig
-                inner_list_row:       SonataAdminBundle:CRUD:list_inner_row.html.twig
-                base_list_field:      SonataAdminBundle:CRUD:base_list_field.html.twig
-                pager_links:          SonataAdminBundle:Pager:links.html.twig
-                pager_results:        SonataAdminBundle:Pager:results.html.twig
-                tab_menu_template:    SonataAdminBundle:Core:tab_menu_template.html.twig
-
+                user_block:           'SonataAdminBundle:Core:user_block.html.twig'
+                add_block:            'SonataAdminBundle:Core:add_block.html.twig'
+                layout:               'SonataAdminBundle::standard_layout.html.twig'
+                ajax:                 'SonataAdminBundle::ajax_layout.html.twig'
+                dashboard:            'SonataAdminBundle:Core:dashboard.html.twig'
+                search:               'SonataAdminBundle:Core:search.html.twig'
+                list:                 'SonataAdminBundle:CRUD:list.html.twig'
+                filter:               'SonataAdminBundle:Form:filter_admin_fields.html.twig'
+                show:                 'SonataAdminBundle:CRUD:show.html.twig'
+                show_compare:         'SonataAdminBundle:CRUD:show_compare.html.twig'
+                edit:                 'SonataAdminBundle:CRUD:edit.html.twig'
+                preview:              'SonataAdminBundle:CRUD:preview.html.twig'
+                history:              'SonataAdminBundle:CRUD:history.html.twig'
+                acl:                  'SonataAdminBundle:CRUD:acl.html.twig'
+                history_revision_timestamp:  'SonataAdminBundle:CRUD:history_revision_timestamp.html.twig'
+                action:               'SonataAdminBundle:CRUD:action.html.twig'
+                select:               'SonataAdminBundle:CRUD:list__select.html.twig'
+                list_block:           'SonataAdminBundle:Block:block_admin_list.html.twig'
+                search_result_block:  'SonataAdminBundle:Block:block_search_result.html.twig'
+                short_object_description:  'SonataAdminBundle:Helper:short-object-description.html.twig'
+                delete:               'SonataAdminBundle:CRUD:delete.html.twig'
+                batch:                'SonataAdminBundle:CRUD:list__batch.html.twig'
+                batch_confirmation:   'SonataAdminBundle:CRUD:batch_confirmation.html.twig'
+                inner_list_row:       'SonataAdminBundle:CRUD:list_inner_row.html.twig'
+                outer_list_rows_mosaic:  'SonataAdminBundle:CRUD:list_outer_rows_mosaic.html.twig'
+                outer_list_rows_list:  'SonataAdminBundle:CRUD:list_outer_rows_list.html.twig'
+                outer_list_rows_tree:  'SonataAdminBundle:CRUD:list_outer_rows_tree.html.twig'
+                base_list_field:      'SonataAdminBundle:CRUD:base_list_field.html.twig'
+                pager_links:          'SonataAdminBundle:Pager:links.html.twig'
+                pager_results:        'SonataAdminBundle:Pager:results.html.twig'
+                tab_menu_template:    'SonataAdminBundle:Core:tab_menu_template.html.twig'
+                knp_menu_template:    'SonataAdminBundle:Menu:sonata_menu.html.twig'
             assets:
                 stylesheets:
+
                     # Defaults:
                     - bundles/sonatacore/vendor/bootstrap/dist/css/bootstrap.min.css
                     - bundles/sonatacore/vendor/components-font-awesome/css/font-awesome.min.css
                     - bundles/sonatacore/vendor/ionicons/css/ionicons.min.css
-                    - bundles/sonataadmin/vendor/AdminLTE/css/AdminLTE.css
+                    - bundles/sonataadmin/vendor/admin-lte/dist/css/AdminLTE.min.css
+                    - bundles/sonataadmin/vendor/admin-lte/dist/css/skins/skin-black.min.css
+                    - bundles/sonataadmin/vendor/iCheck/skins/flat/blue.css
                     - bundles/sonatacore/vendor/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css
                     - bundles/sonataadmin/vendor/jqueryui/themes/base/jquery-ui.css
                     - bundles/sonatacore/vendor/select2/select2.css
-                    - bundles/sonatacore/vendor/select2/select2-bootstrap.css
+                    - bundles/sonatacore/vendor/select2-bootstrap-css/select2-bootstrap.min.css
                     - bundles/sonataadmin/vendor/x-editable/dist/bootstrap3-editable/css/bootstrap-editable.css
                     - bundles/sonataadmin/css/styles.css
                     - bundles/sonataadmin/css/layout.css
                     - bundles/sonataadmin/css/tree.css
-
                 javascripts:
+
                     # Defaults:
                     - bundles/sonatacore/vendor/jquery/dist/jquery.min.js
                     - bundles/sonataadmin/vendor/jquery.scrollTo/jquery.scrollTo.min.js
@@ -154,10 +176,11 @@ Full Configuration Options
                     - bundles/sonataadmin/jquery/jquery.confirmExit.js
                     - bundles/sonataadmin/vendor/x-editable/dist/bootstrap3-editable/js/bootstrap-editable.min.js
                     - bundles/sonatacore/vendor/select2/select2.min.js
-                    - bundles/sonataadmin/App.js
+                    - bundles/sonataadmin/vendor/admin-lte/dist/js/app.min.js
+                    - bundles/sonataadmin/vendor/iCheck/icheck.min.js
+                    - bundles/sonataadmin/vendor/slimScroll/jquery.slimscroll.min.js
                     - bundles/sonataadmin/Admin.js
                     - bundles/sonataadmin/treeview.js
-
             extensions:
 
                 # Prototype
@@ -167,5 +190,4 @@ Full Configuration Options
                     implements:           []
                     extends:              []
                     instanceof:           []
-            persist_filters:      false     # set to true to persist filter settings per admin module in the user's session
-
+            persist_filters:      false

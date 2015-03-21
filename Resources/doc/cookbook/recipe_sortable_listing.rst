@@ -6,8 +6,8 @@ This is a full working example of how to implement a sortable feature in your So
 Background
 ----------
 
-A sortable behavior is already available for one-to-many relationships (http://sonata-project.org/bundles/doctrine-orm-admin/master/doc/reference/form_field_definition.html#advanced-usage-one-to-many). 
-However there is no packaged solution to have some up and down arrows to sort 
+A sortable behavior is already available for one-to-many relationships (https://sonata-project.org/bundles/doctrine-orm-admin/master/doc/reference/form_field_definition.html#advanced-usage-one-to-many).
+However there is no packaged solution to have some up and down arrows to sort
 your records such as showed in the following screen
 
 .. figure:: ../images/admin_sortable_listing.png
@@ -38,7 +38,7 @@ First of all we are going to add a position field in our ``Client`` entity.
      */
     private $position;
 
-Then we need to inject the Sortable listener. If you only have the Gedmo bundle enabled, 
+Then we need to inject the Sortable listener. If you only have the Gedmo bundle enabled,
 add the listener to your config.yml
 
 .. code-block:: yaml
@@ -50,8 +50,8 @@ add the listener to your config.yml
                 - { name: doctrine.event_subscriber, connection: default }
             calls:
                 - [ setAnnotationReader, [ @annotation_reader ] ]
-            
-If you have the ``stof/doctrine-extensions-bundle``, you only need to enable the sortable 
+
+If you have the ``stof/doctrine-extensions-bundle``, you only need to enable the sortable
 feature in your config.yml such as
 
 .. code-block:: yaml
@@ -104,9 +104,9 @@ Now you can update your ``services.yml`` to use the handler provider by the pixS
 	            - [ setTranslationDomain, [AcmeDemoBundle]]
 
 
-Last tricky part, in order to get the last position available in our twig template 
-we inject the position service into our admin class, define a public variable ``$last_position`` 
-and retrieve the value from our service in the ``configureListFields`` method. We 
+Last tricky part, in order to get the last position available in our twig template
+we inject the position service into our admin class, define a public variable ``$last_position``
+and retrieve the value from our service in the ``configureListFields`` method. We
 also define the sort by field to be position:
 
 .. code-block:: php
@@ -122,7 +122,7 @@ also define the sort by field to be position:
     {
         $this->positionService = $positionHandler;
     }
-    
+
     protected $datagridValues = array(
         '_page' => 1,
         '_sort_order' => 'ASC',
@@ -145,7 +145,7 @@ also define the sort by field to be position:
 And in  the services.yml add the following call
 
 .. code-block:: yaml
-    
+
 	- [ setPositionService, [@pix_sortable_behavior.position]]
 
 

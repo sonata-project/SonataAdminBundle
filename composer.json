@@ -3,13 +3,13 @@
     "type": "symfony-bundle",
     "description": "Symfony SonataAdminBundle",
     "keywords": ["Admin Generator", "admin", "sonata", "bootstrap"],
-    "homepage": "http://sonata-project.org/bundles/admin",
+    "homepage": "https://sonata-project.org/bundles/admin",
     "license": "MIT",
     "authors": [
         {
             "name": "Thomas Rabaix",
             "email": "thomas.rabaix@sonata-project.org",
-            "homepage": "http://sonata-project.org"
+            "homepage": "https://sonata-project.org"
         },
         {
             "name": "Sonata Community",

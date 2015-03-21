@@ -4,7 +4,7 @@ Sonata respects the symfony’s conventions about contributing to the code. So b
 
 If you happen to find a bug, we kindly request you to report it. However, before submitting it, please:
 
-  * Check the [project documentation available online](http://sonata-project.org/bundles/)
+  * Check the [project documentation available online](https://sonata-project.org/bundles/)
 
 Then, if it appears that it’s a real bug, you may report it using Github by following these 3 points:
 
