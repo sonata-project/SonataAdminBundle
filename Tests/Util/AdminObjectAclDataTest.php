@@ -143,7 +143,7 @@ class AdminObjectAclDataTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetForm($adminObjectAclData)
     {
-        $this->isInstanceOf('Symfony\Component\Form\Form', $adminObjectAclData->getForm());
+        $this->isInstanceOf('Symfony\Component\Form\Form', $adminObjectAclData->getAclUsersForm());
     }
 
     public function testSetAclUsersForm()
