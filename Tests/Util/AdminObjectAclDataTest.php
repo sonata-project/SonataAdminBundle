@@ -127,7 +127,7 @@ class AdminObjectAclDataTest extends \PHPUnit_Framework_TestCase
     {
         $form = $this->getMock('\Symfony\Component\Form\Form', array(), array(), '', false);
         $adminObjectAclData = $this->createAdminObjectAclData();
-        $ret = $adminObjectAclData->setForm($form);
+        $ret = $adminObjectAclData->setAclUsersForm($form);
 
         $this->assertEquals($adminObjectAclData, $ret);
 
