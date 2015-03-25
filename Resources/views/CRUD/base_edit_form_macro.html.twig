@@ -1,53 +1,35 @@
 {% macro render_groups(admin, form, groups, has_tab) %}
     {% if has_tab %}<div class="row">{% endif %}
 
-    {# Row counter for groups sizing #}
-    {% set row_started = false %}
-    {% set row_col_filled = 0 %}
-
     {% for code in groups %}
         {% set form_group = admin.formgroups[code] %}
 
-        {# Manage calculation to determinate if a new row is necessary #}
-        {% set group_class = form_group.class | default('col-md-12') %}
-        {% set group_size = group_class | replace({'col-xs-': '', 'col-sm-': '', 'col-md-': '', 'col-lg-': ''}) %}
-        {% set row_col_filled = row_col_filled + group_size %}
-        {% if not row_started %}
-            {% set row_started = true %}
-            <div class="row">
-        {% elseif row_started and row_col_filled > 12 %}
-            {% set row_col_filled = 0 %}
-            </div><div class="row">
-        {% endif %}
-
-            <div class="{{ group_class }}">
-                <div class="{{ form_group.box_class }}">
-                    <div class="box-header">
-                        <h4 class="box-title">
-                            {{ admin.trans(form_group.name, {}, form_group.translation_domain) }}
-                        </h4>
-                    </div>
-                    {#<div class="box{% if loop.first %} in{% endif %}" id="{{ admin.uniqid }}_{{ loop.index }}">#}
-                    <div class="box-body">
-                        <div class="sonata-ba-collapsed-fields">
-                            {% if form_group.description != false %}
-                                <p>{{ form_group.description|raw }}</p>
-                            {% endif %}
-
-                            {% for field_name in form_group.fields %}
-                                {% if admin.formfielddescriptions[field_name] is defined %}
-                                    {{ form_row(form[field_name])}}
-                                {% endif %}
-                            {% else %}
-                                <em>{{ 'message_form_group_empty'|trans({}, 'SonataAdminBundle') }}</em>
-                            {% endfor %}
-                        </div>
-                    </div>
-                    {#</div>#}
+        <div class="{{ form_group.class | default('col-md-12') }}">
+            <div class="{{ form_group.box_class }}">
+                <div class="box-header">
+                    <h4 class="box-title">
+                        {{ admin.trans(form_group.name, {}, form_group.translation_domain) }}
+                    </h4>
                 </div>
+                {#<div class="box{% if loop.first %} in{% endif %}" id="{{ admin.uniqid }}_{{ loop.index }}">#}
+                <div class="box-body">
+                    <div class="sonata-ba-collapsed-fields">
+                        {% if form_group.description != false %}
+                            <p>{{ form_group.description|raw }}</p>
+                        {% endif %}
+
+                        {% for field_name in form_group.fields %}
+                            {% if admin.formfielddescriptions[field_name] is defined %}
+                                {{ form_row(form[field_name])}}
+                            {% endif %}
+                        {% else %}
+                            <em>{{ 'message_form_group_empty'|trans({}, 'SonataAdminBundle') }}</em>
+                        {% endfor %}
+                    </div>
+                </div>
+                {#</div>#}
             </div>
+        </div>
     {% endfor %}
-    {# Finish last row #}
-    {% if row_started %}</div>{% endif %}
     {% if has_tab %}</div>{% endif %}
 {% endmacro %}
