@@ -998,17 +998,8 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
         $menu = $this->twigExtension->getKnpMenu($request);
 
         $this->assertInstanceOf('Knp\Menu\ItemInterface', $menu);
-        $this->assertArrayHasKey('bar', $menu->getChildren());
-
-        foreach ($menu->getChildren() as $key => $child) {
-            $this->assertInstanceOf('Knp\Menu\MenuItem', $child);
-            $this->assertEquals('bar', $child->getName());
-            $this->assertEquals($adminGroups['bar']['label'], $child->getLabel());
-
-            // menu items
-            $children = $child->getChildren();
-            $this->assertCount(0, $children);
-        }
+        $this->assertArrayNotHasKey('bar', $menu->getChildren());
+        $this->assertCount(0, $menu->getChildren());
     }
 
     public function testGetKnpMenuWithNotGrantedList()
@@ -1045,16 +1036,7 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
         $menu = $this->twigExtension->getKnpMenu($request);
 
         $this->assertInstanceOf('Knp\Menu\ItemInterface', $menu);
-        $this->assertArrayHasKey('bar', $menu->getChildren());
-
-        foreach ($menu->getChildren() as $key => $child) {
-            $this->assertInstanceOf('Knp\Menu\MenuItem', $child);
-            $this->assertEquals('bar', $child->getName());
-            $this->assertEquals($adminGroups['bar']['label'], $child->getLabel());
-
-            // menu items
-            $children = $child->getChildren();
-            $this->assertCount(0, $children);
-        }
+        $this->assertArrayNotHasKey('bar', $menu->getChildren());
+        $this->assertCount(0, $menu->getChildren());
     }
 }

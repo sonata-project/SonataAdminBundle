@@ -415,6 +415,10 @@ class SonataAdminExtension extends \Twig_Extension
                     ->setExtra('admin', $admin)
                 ;
             }
+
+            if (0 === count($menu[$name]->getChildren())) {
+                $menu->removeChild($name);
+            }
         }
 
         return $menu;
