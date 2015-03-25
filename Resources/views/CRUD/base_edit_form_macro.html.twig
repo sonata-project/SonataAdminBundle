@@ -1,5 +1,5 @@
 {% macro render_groups(admin, form, groups, has_tab) %}
-    {% if has_tab %}<div class="row">{% endif %}
+    <div class="row">
 
     {% for code in groups %}
         {% set form_group = admin.formgroups[code] %}
@@ -31,5 +31,5 @@
             </div>
         </div>
     {% endfor %}
-    {% if has_tab %}</div>{% endif %}
+    </div>
 {% endmacro %}
