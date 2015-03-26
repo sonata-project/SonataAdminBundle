@@ -100,7 +100,7 @@ class Configuration implements ConfigurationInterface
                                     ->ifArray()
                                     ->then(function($items) {
                                         if (isset($items['provider'])) {
-                                            $disallowedItems = array('items', 'label', 'label_catalogue');
+                                            $disallowedItems = array('items', 'label');
                                             foreach($disallowedItems as $item) {
                                                 if (isset($items[$item])) {
                                                     throw new \InvalidArgumentException(sprintf('The config value "%s" cannot be used alongside "provider" config value', $item));
