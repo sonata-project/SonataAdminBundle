@@ -279,6 +279,32 @@ of them containing just the respectively configured groups.
 
 .. _`SonataBlock documentation page`:  https://sonata-project.org/bundles/block/master/doc/index.html
 
+
+Statistic Block
+~~~~~~~~~~~~~~~
+
+A statistic block can be used to display a simple counter with a color, an font awesome icon and a text. A
+counter is related to the filters from one admin
+
+.. configuration-block::
+
+    .. code-block:: yaml
+
+        sonata_admin:
+            dashboard:
+                blocks:
+                    -
+                        class:    col-lg-3 col-xs-6          # twitter bootstrap responsive code
+                        position: top                        # zone in the dashboard
+                        type:     sonata.admin.block.stats   # block id
+                        settings:
+                            code:  sonata.page.admin.page    # admin code - service id
+                            icon:  fa-magic                  # font awesome icon
+                            text:  Edited Pages
+                            color: bg-yellow                 # colors: bg-green, bg-red and bg-aqua
+                            filters:                         # filter values
+                                edited: { value: 1 }
+
 Dashboard Layout
 ~~~~~~~~~~~~~~~~
 
