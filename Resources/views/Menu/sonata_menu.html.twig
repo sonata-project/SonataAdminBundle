@@ -31,7 +31,7 @@
             {%- endfor %}
         {%- endif %}
 
-        {%- if item.level == 1%}
+        {%- if item.hasChildren %}
             {%- do item.setAttribute('class', (item.attribute('class')~' treeview')|trim) %}
         {%- endif %}
         {%- if active %}

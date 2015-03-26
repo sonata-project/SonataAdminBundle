@@ -10,6 +10,7 @@
 
             <argument type="service" id="sonata.admin.pool" />
             <argument type="service" id="router" />
+            <argument type="service" id="knp_menu.helper" />
             <argument type="service" id="logger" on-invalid="ignore" />
         </service>
     </services>
