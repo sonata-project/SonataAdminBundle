@@ -90,22 +90,6 @@ class AdminSearchBlockService extends BaseBlockService
     /**
      * {@inheritdoc}
      */
-    public function validateBlock(ErrorElement $errorElement, BlockInterface $block)
-    {
-        // TODO: Implement validateBlock() method.
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function buildEditForm(FormMapper $formMapper, BlockInterface $block)
-    {
-
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getName()
     {
         return 'Admin Search Result';
