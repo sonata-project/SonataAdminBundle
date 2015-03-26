@@ -95,7 +95,9 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
 
         $this->logger = $this->getMock('Psr\Log\LoggerInterface');
 
-        $this->twigExtension = new SonataAdminExtension($this->pool, $this->router, $this->logger);
+        $this->helper = $this->getMockBuilder('Knp\Menu\Twig\Helper')->disableOriginalConstructor()->getMock();
+
+        $this->twigExtension = new SonataAdminExtension($this->pool, $this->router, $this->helper, $this->logger);
 
         $loader = new StubFilesystemLoader(array(
             __DIR__.'/../../../Resources/views/CRUD',
