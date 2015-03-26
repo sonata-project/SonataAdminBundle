@@ -338,7 +338,7 @@ var Admin = {
 
         // Count and save element of each collection
         jQuery(subject).find('[data-prototype]').each(function() {
-            var collection = $(this);
+            var collection = jQuery(this);
             counters[collection.attr('id')] = collection.children().length-1;
         });
 
