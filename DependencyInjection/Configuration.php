@@ -96,6 +96,21 @@ class Configuration implements ConfigurationInterface
                         ->arrayNode('groups')
                             ->useAttributeAsKey('id')
                             ->prototype('array')
+                                ->beforeNormalization()
+                                    ->ifArray()
+                                    ->then(function($items) {
+                                        if (isset($items['provider'])) {
+                                            $disallowedItems = array('items', 'label', 'label_catalogue');
+                                            foreach($disallowedItems as $item) {
+                                                if (isset($items[$item])) {
+                                                    throw new \InvalidArgumentException(sprintf('The config value "%s" cannot be used alongside "provider" config value', $item));
+                                                }
+                                            }
+                                        }
+
+                                        return $items;
+                                    })
+                                ->end()
                                 ->fixXmlConfig('item')
                                 ->fixXmlConfig('item_add')
                                 ->children()
