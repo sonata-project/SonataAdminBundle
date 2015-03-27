@@ -285,6 +285,12 @@ file that was distributed with this source code.
     </div>
 {% endblock form_row %}
 
+{%- block button_row -%}
+    <div class="form-group">
+        {{- form_widget(form) -}}
+    </div>
+{%- endblock button_row -%}
+
 {% block sonata_type_native_collection_widget_row %}
 {% spaceless %}
     <div class="sonata-collection-row">
