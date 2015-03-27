@@ -17,7 +17,9 @@
 
     {%- if item.displayed and display|default %}
         {%- set active = false %}
-        {%- if item.getExtra('admin') is not empty and item.getExtra('admin').hasroute('list') and item.getExtra('admin').isGranted('LIST') and request.get('_sonata_admin') == item.getExtra('admin').code %}
+        {%- if item.getExtra('active') is not empty and item.getExtra('active') %}
+            {%- set active = true %}
+        {%- elseif item.getExtra('admin') is not empty and item.getExtra('admin').hasroute('list') and item.getExtra('admin').isGranted('LIST') and request.get('_sonata_admin') == item.getExtra('admin').code %}
             {%- set active = true %}
         {%- elseif item.route is defined and request.get('_route') == item.route %}
             {%- set active = true %}
@@ -47,7 +49,7 @@
 {% block linkElement %}
     {% spaceless %}
         {% set translation_domain = item.getExtra('translationdomain', 'messages') %}
-        {% set icon = item.level > 1 ? '<i class="fa fa-angle-double-right"></i>' : '' %}
+        {% set icon = item.attribute('icon') ? item.attribute('icon') : (item.level > 1 ? '<i class="fa fa-angle-double-right"></i>' : '') %}
         {% set is_link = true %}
         {{ parent() }}
     {% endspaceless %}
