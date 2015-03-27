@@ -70,10 +70,16 @@ abstract class BaseGroupedMapper extends BaseMapper
             'collapsed' => false,
             'class' => false,
             'description' => false,
+            'label' => $this->admin->getLabelTranslatorStrategy()->getLabel($name, $this->getName(), 'group'),
             'translation_domain' => null,
             'name' => $name,
             'box_class' => 'box box-primary',
         );
+
+        // BC layer for manual label
+        if (strpos($name, '.')) {
+            $defaultOptions['label'] = $name;
+        }
 
         $code = $name;
 
@@ -254,6 +260,16 @@ abstract class BaseGroupedMapper extends BaseMapper
      * @param array $tabs
      */
     abstract protected function setTabs(array $tabs);
+
+    /**
+     * NEXT_MAJOR: make this method abstract.
+     *
+     * @return string
+     */
+    protected function getName()
+    {
+        return 'default';
+    }
 
     /**
      * Add the field name to the current group.
