@@ -83,6 +83,7 @@ class FormMapperTest extends \PHPUnit_Framework_TestCase
             'collapsed' => false,
             'class' => false,
             'description' => false,
+            'label' => null,
             'translation_domain' => null,
             'name' => 'default',
             'box_class' => 'box box-primary',
@@ -95,6 +96,7 @@ class FormMapperTest extends \PHPUnit_Framework_TestCase
             'collapsed' => false,
             'class' => false,
             'description' => false,
+            'label' => null,
             'translation_domain' => null,
             'name' => 'foobar',
             'box_class' => 'box box-primary',
@@ -108,10 +110,12 @@ class FormMapperTest extends \PHPUnit_Framework_TestCase
             'translation_domain' => 'Foobar',
         ));
 
+
         $this->assertSame(array('foobar' => array(
             'collapsed' => false,
             'class' => false,
             'description' => false,
+            'label' => null,
             'translation_domain' => 'Foobar',
             'name' => 'foobar',
             'box_class' => 'box box-primary',
@@ -122,6 +126,7 @@ class FormMapperTest extends \PHPUnit_Framework_TestCase
             'collapsed' => false,
             'class' => false,
             'description' => false,
+            'label' => null,
             'translation_domain' => 'Foobar',
             'name' => 'default',
             'box_class' => 'box box-primary',
@@ -154,6 +159,7 @@ class FormMapperTest extends \PHPUnit_Framework_TestCase
             'collapsed' => false,
             'class' => false,
             'description' => false,
+            'label' => null,
             'translation_domain' => 'Foobar',
             'name' => 'default',
             'box_class' => 'box box-primary',
@@ -166,6 +172,7 @@ class FormMapperTest extends \PHPUnit_Framework_TestCase
             'collapsed' => false,
             'class' => false,
             'description' => false,
+            'label' => null,
             'translation_domain' => 'Foobar',
             'name' => 'foobar',
             'box_class' => 'box box-primary',
