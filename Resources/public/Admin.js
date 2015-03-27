@@ -332,16 +332,29 @@ var Admin = {
     },
 
     setup_collection_buttons: function(subject) {
-        var counter = jQuery(subject).closest('[data-prototype]').children().length;
-
         Admin.log('[core|setup_collection_buttons] setup collection buttons', subject);
+
+        var counters = [];
+
+        // Count and save element of each collection
+        var highestCounterRegexp = new RegExp('_([0-9])+$');
+        jQuery(subject).find('[data-prototype]').each(function() {
+            var collection = jQuery(this);
+            var counter = 0;
+            collection.children().each(function() {
+                var matches = highestCounterRegexp.exec(jQuery(this).find('.form-control').attr('id'));
+                if (matches && matches[1] && matches[1] > counter) {
+                    counter = matches[1];
+                }
+            });
+            counters[collection.attr('id')] = counter;
+        });
 
         jQuery(subject).on('click', '.sonata-collection-add', function(event) {
             Admin.stopEvent(event);
 
-            counter++;
-
             var container = jQuery(this).closest('[data-prototype]');
+            var counter = ++counters[container.attr('id')];
             var proto = container.attr('data-prototype');
             var protoName = container.attr('data-prototype-name') || '__name__';
             // Set field id
