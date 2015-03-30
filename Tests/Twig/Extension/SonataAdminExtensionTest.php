@@ -11,6 +11,8 @@
 
 namespace Sonata\AdminBundle\Tests\Twig\Extension;
 
+use Knp\Menu\MenuFactory;
+use Knp\Menu\MenuItem;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
@@ -95,7 +97,15 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
 
         $this->logger = $this->getMock('Psr\Log\LoggerInterface');
 
-        $this->twigExtension = new SonataAdminExtension($this->pool, $this->router, $this->logger);
+        $menu = new MenuItem('bar', new MenuFactory());
+        $menu->addChild('foo');
+        $this->helper = $this->getMockBuilder('Knp\Menu\Twig\Helper')->disableOriginalConstructor()->getMock();
+        $this->helper->expects($this->any())
+            ->method('get')
+            ->with('my_menu')
+            ->willReturn($menu);
+
+        $this->twigExtension = new SonataAdminExtension($this->pool, $this->router, $this->helper, $this->logger);
 
         $loader = new StubFilesystemLoader(array(
             __DIR__.'/../../../Resources/views/CRUD',
@@ -1038,5 +1048,37 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Knp\Menu\ItemInterface', $menu);
         $this->assertArrayNotHasKey('bar', $menu->getChildren());
         $this->assertCount(0, $menu->getChildren());
+    }
+
+    public function testGetKnpMenuWithProvider()
+    {
+        $request = $this->getMock('Symfony\Component\HttpFoundation\Request');
+
+        $adminGroups = array(
+            "bar" => array(
+                "provider"        => 'my_menu',
+                "label_catalogue" => '',
+                "icon"            => '<i class="fa fa-edit"></i>',
+                "roles"           => array(),
+            ),
+        );
+        $this->pool->setAdminGroups($adminGroups);
+        $menu = $this->twigExtension->getKnpMenu($request);
+
+        $this->assertInstanceOf('Knp\Menu\ItemInterface', $menu);
+        $this->assertArrayHasKey('bar', $menu->getChildren());
+
+        foreach ($menu->getChildren() as $key => $child) {
+            $this->assertInstanceOf('Knp\Menu\MenuItem', $child);
+            $this->assertEquals("bar", $child->getName());
+            $this->assertEquals("bar", $child->getLabel());
+
+            // menu items
+            $children = $child->getChildren();
+            $this->assertCount(1, $children);
+            $this->assertArrayHasKey('foo', $children);
+            $this->assertInstanceOf('Knp\Menu\MenuItem', $child['foo']);
+            $this->assertEquals('foo', $child['foo']->getLabel());
+        }
     }
 }

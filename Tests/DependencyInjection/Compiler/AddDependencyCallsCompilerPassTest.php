@@ -106,6 +106,10 @@ class AddDependencyCallsCompilerPassTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(array('articleId' => 3) , $dashboardGroupsSettings['sonata_group_one']['items'][2]['route_params']);
         $this->assertContains('sonata_news_admin', $dashboardGroupsSettings['sonata_group_one']['item_adds']);
         $this->assertContains('ROLE_ONE', $dashboardGroupsSettings['sonata_group_one']['roles']);
+
+        $this->assertArrayHasKey('sonata_group_two', $dashboardGroupsSettings);
+        $this->assertArrayHasKey('provider', $dashboardGroupsSettings['sonata_group_two']);
+        $this->assertContains('my_menu', $dashboardGroupsSettings['sonata_group_two']['provider']);
     }
 
     /**
@@ -147,6 +151,10 @@ class AddDependencyCallsCompilerPassTest extends \PHPUnit_Framework_TestCase
         $this->assertContains('sonata_news_admin', $adminGroups['sonata_group_one']['item_adds']);
         $this->assertFalse(in_array('sonata_article_admin', $adminGroups['sonata_group_one']['items']));
         $this->assertContains('ROLE_ONE', $adminGroups['sonata_group_one']['roles']);
+
+        $this->assertArrayHasKey('sonata_group_two', $adminGroups);
+        $this->assertArrayHasKey('provider', $adminGroups['sonata_group_two']);
+        $this->assertContains('my_menu', $adminGroups['sonata_group_two']['provider']);
 
         $this->assertArrayHasKey('Sonata\AdminBundle\Tests\DependencyInjection\Post', $adminClasses);
         $this->assertContains('sonata_post_admin', $adminClasses['Sonata\AdminBundle\Tests\DependencyInjection\Post']);
@@ -286,6 +294,9 @@ class AddDependencyCallsCompilerPassTest extends \PHPUnit_Framework_TestCase
                         ),
                         'roles' => array('ROLE_ONE'),
                     ),
+                    'sonata_group_two' => array(
+                        'provider' => 'my_menu',
+                    ),
                 )
             ),
             'admin_services' => array(
@@ -382,6 +393,9 @@ class AddDependencyCallsCompilerPassTest extends \PHPUnit_Framework_TestCase
         $container
             ->register('knp_menu.factory')
             ->setClass('Knp\Menu\Silex\RouterAwareFactory');
+        $container
+            ->register('knp_menu.helper')
+            ->setClass('Knp\Menu\Twig\Helper');
         $container
             ->register('event_dispatcher')
             ->setClass('Symfony\Component\EventDispatcher\EventDispatcherInterface');
