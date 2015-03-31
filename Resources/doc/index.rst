@@ -73,3 +73,4 @@ Cookbook
    cookbook/recipe_overwrite_admin_configuration
    cookbook/recipe_improve_performance_large_datasets
    cookbook/recipe_virtual_field
+   cookbook/recipe_bootlint

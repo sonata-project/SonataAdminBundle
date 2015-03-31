@@ -46,7 +46,7 @@ file that was distributed with this source code.
                 };
                 window.SONATA_TRANSLATIONS = {
                     CONFIRM_EXIT:  '{{ 'confirm_exit'|trans({}, 'SonataAdminBundle')|escape('js') }}'
-               };
+                };
             </script>
 
             {% if admin_pool is defined %}
@@ -71,6 +71,12 @@ file that was distributed with this source code.
                 {% endif %}
             {% endif %}
 
+            {% if admin_pool is defined and admin_pool.getOption('use_bootlint') %}
+                {# Bootlint - https://github.com/twbs/bootlint#in-the-browser #}
+                <script type="text/javascript">
+                    javascript:(function(){var s=document.createElement("script");s.onload=function(){bootlint.showLintReportForCurrentDocument([], {hasProblems: false, problemFree: false});};s.src="https://maxcdn.bootstrapcdn.com/bootlint/latest/bootlint.min.js";document.body.appendChild(s)})();
+                </script>
+            {% endif %}
         {% endblock %}
 
         <title>
