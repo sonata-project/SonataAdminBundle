@@ -291,7 +291,7 @@ file that was distributed with this source code.
         {% if allow_delete %}
             <div class="row">
                 <div class="col-xs-1">
-                    <a href="#" class="btn btn-danger sonata-collection-delete">
+                    <a href="#" class="btn btn-link sonata-collection-delete">
                         <i class="fa fa-minus-circle"></i>
                     </a>
                 </div>
@@ -319,7 +319,7 @@ file that was distributed with this source code.
         {% endfor %}
         {{ form_rest(form) }}
         {% if allow_add %}
-            <div><a href="#" class="btn btn-success sonata-collection-add"><i class="fa fa-plus-circle"></i></a></div>
+            <div><a href="#" class="btn btn-link sonata-collection-add"><i class="fa fa-plus-circle"></i></a></div>
         {% endif %}
     </div>
 {% endspaceless %}
@@ -347,7 +347,7 @@ file that was distributed with this source code.
 
             {% set div_class = "" %}
             {% if sonata_admin.options['form_type'] == 'horizontal' %}
-                {% set div_class = 'col-sm-9' %}
+                {% set div_class = 'col-bsm-9' %}
             {% endif%}
 
             <div class="{{ div_class }} sonata-ba-field sonata-ba-field-{{ sonata_admin.edit }}-{{ sonata_admin.inline }} {% if child.vars.errors|length > 0 %}sonata-ba-field-error{% endif %}">
