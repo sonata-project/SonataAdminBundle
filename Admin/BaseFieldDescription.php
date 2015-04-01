@@ -343,6 +343,10 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
             }
         }
 
+        if (method_exists($object, '__call')) {
+            return call_user_func_array(array($object, '__call'), array($fieldName, $parameters));
+        }
+
         if (isset($object->{$fieldName})) {
             return $object->{$fieldName};
         }
