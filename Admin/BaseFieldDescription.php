@@ -13,6 +13,8 @@ namespace Sonata\AdminBundle\Admin;
 
 use Sonata\AdminBundle\Exception\NoValueException;
 use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
 
 /**
  * A FieldDescription hold the information about a field. A typical
@@ -321,33 +323,24 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
      */
     public function getFieldValue($object, $fieldName)
     {
-        $camelizedFieldName = self::camelize($fieldName);
-
-        $getters = array();
-        $parameters = array();
-
-        // prefer method name given in the code option
-        if ($this->getOption('code')) {
-            $getters[] = $this->getOption('code');
-        }
-        // parameters for the method given in the code option
-        if ($this->getOption('parameters')) {
-            $parameters = $this->getOption('parameters');
-        }
-        $getters[] = 'get' . $camelizedFieldName;
-        $getters[] = 'is' . $camelizedFieldName;
-
-        foreach ($getters as $getter) {
-            if (method_exists($object, $getter)) {
-                return call_user_func_array(array($object, $getter), $parameters);
+        if ($method = $this->getOption('code')) {
+            if (method_exists($object, $method)) {
+                return call_user_func_array(
+                    array($object, $method), $this->getOption('parameters', array())
+                );
             }
         }
 
-        if (isset($object->{$fieldName})) {
-            return $object->{$fieldName};
-        }
+        $accessor = PropertyAccess::createPropertyAccessorBuilder()
+                        ->enableMagicCall()
+                        ->getPropertyAccessor();
 
-        throw new NoValueException(sprintf('Unable to retrieve the value of `%s`', $this->getName()));
+        try {
+            return $accessor->getValue($object, $fieldName);
+
+        } catch (NoSuchPropertyException $e) {
+            throw new NoValueException(sprintf('Unable to retrieve the value of `%s`', $this->getName()));
+        }
     }
 
     /**
