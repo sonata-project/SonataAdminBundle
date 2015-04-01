@@ -347,7 +347,7 @@ file that was distributed with this source code.
 
             {% set div_class = "" %}
             {% if sonata_admin.options['form_type'] == 'horizontal' %}
-                {% set div_class = 'col-bsm-9' %}
+                {% set div_class = 'col-sm-9' %}
             {% endif%}
 
             <div class="{{ div_class }} sonata-ba-field sonata-ba-field-{{ sonata_admin.edit }}-{{ sonata_admin.inline }} {% if child.vars.errors|length > 0 %}sonata-ba-field-error{% endif %}">
