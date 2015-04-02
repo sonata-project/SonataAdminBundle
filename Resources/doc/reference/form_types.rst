@@ -404,6 +404,20 @@ collections. Rows can be added and deleted, and your model abstraction layer may
 allow you to edit fields inline. You can use ``type_options`` to pass values
 to the underlying forms.
 
+If you want to customize some details of the ``delete`` field you can use the 
+``[type_options][delete_options][type_options]`` array, where you can specify any option that a normal form input can have. 
+
+.. note::
+
+    But be careful : if you overwrite this array you have to specify also the other parameters
+    that otherwise are set by default in ``delete_options`` :
+
+    - [delete_options][type] => 'checkbox'
+
+    - [delete_options][type_options][mapped] => false
+
+    - [delete_options][type_options][required] => false
+
 .. code-block:: php
 
     class AcmeProductAdmin extends Admin
@@ -422,6 +436,8 @@ to the underlying forms.
                             'type_options' => array(
                                 'mapped'   => false,
                                 'required' => false,
+                                'label' => 'Fancy Delete', // custom value for delete
+                                'translation_domain' => 'MyCustonDomain' // custom value for delete
                             )
                         )
                     )
