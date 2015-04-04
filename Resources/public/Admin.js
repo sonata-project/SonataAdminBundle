@@ -342,9 +342,9 @@ var Admin = {
             var collection = jQuery(this);
             var counter = 0;
             collection.children().each(function() {
-                var matches = highestCounterRegexp.exec(jQuery(this).find('.form-control').attr('id'));
+                var matches = highestCounterRegexp.exec(jQuery('[id^="sonata-ba-field-container"]', this).attr('id'));
                 if (matches && matches[1] && matches[1] > counter) {
-                    counter = matches[1];
+                    counter = parseInt(matches[1], 10);
                 }
             });
             counters[collection.attr('id')] = counter;
