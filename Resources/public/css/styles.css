@@ -432,3 +432,7 @@ div.sonata-filters-box div.form-group span.input-group-addon {
     padding: 3px 10px;
     font-size: 13px;
 }
+
+span.progress-description > li {
+    list-style: none;
+}
