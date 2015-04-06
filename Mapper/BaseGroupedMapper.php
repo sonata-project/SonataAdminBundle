@@ -31,7 +31,7 @@ abstract class BaseGroupedMapper extends BaseMapper
      * @param string $name
      * @param array  $options
      *
-     * @return BaseGroupedMapper
+     * @return $this
      *
      * @throws \RuntimeException
      */
@@ -141,7 +141,7 @@ abstract class BaseGroupedMapper extends BaseMapper
      * @param string $name
      * @param array  $options
      *
-     * @return BaseGroupedMapper
+     * @return $this
      */
     public function tab($name, array $options = array())
     {
@@ -151,7 +151,7 @@ abstract class BaseGroupedMapper extends BaseMapper
     /**
      * Close the current group or tab
      *
-     * @return BaseGroupedMapper
+     * @return $this
      *
      * @throws \RuntimeException
      */
@@ -173,7 +173,7 @@ abstract class BaseGroupedMapper extends BaseMapper
     }
 
     /**
-     * Add the fieldname to the current group
+     * Add the field name to the current group
      *
      * @param string $fieldName
      */

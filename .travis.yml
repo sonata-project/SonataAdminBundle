@@ -11,7 +11,8 @@ env:
   - SYMFONY_VERSION=2.3.*
   - SYMFONY_VERSION=2.4.*
   - SYMFONY_VERSION=2.5.*
-  - SYMFONY_VERSION=dev-master
+  - SYMFONY_VERSION=2.6.*
+  - SYMFONY_VERSION=2.7.*@dev
 
 before_script:
   - composer require symfony/symfony:${SYMFONY_VERSION} --no-update
@@ -26,3 +27,4 @@ notifications:
 matrix:
   allow_failures:
     - php: hhvm
+    - env: SYMFONY_VERSION=2.7.*@dev

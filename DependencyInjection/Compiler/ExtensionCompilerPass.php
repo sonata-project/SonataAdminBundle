@@ -64,7 +64,7 @@ class ExtensionCompilerPass implements CompilerPassInterface
             $extensions = $this->getExtensionsForAdmin($id, $admin, $container, $extensionMap);
 
             foreach ($extensions as $extension) {
-                if (!$container->hasDefinition($extension)) {
+                if (!$container->has($extension)) {
                     throw new \InvalidArgumentException(sprintf('Unable to find extension service for id %s', $extension));
                 }
                 $admin->addMethodCall('addExtension', array(new Reference($extension)));

@@ -1,6 +1,9 @@
 CHANGELOG
 =========
 
+### 2015-01-05
+ * [BC BREAK] #2665 - text from Admin's toString method is escaped for html output before adding in flash message to prevent possible XSS vulnerability.
+
 ### 2014-08-08
  * added new form type ``sonata_type_model_autocomplete``
  * changed ``collection`` form type to ``sonata_type_native_collection``

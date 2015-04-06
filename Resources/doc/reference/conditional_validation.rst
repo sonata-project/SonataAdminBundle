@@ -108,6 +108,8 @@ Example from the ``SonataPageBundle``
 
     use Sonata\PageBundle\Model\PageInterface;
     use Sonata\AdminBundle\Validator\ErrorElement;
+    use Sonata\BlockBundle\Block\BaseBlockService;
+    use Sonata\BlockBundle\Model\BlockInterface;
 
     class RssBlockService extends BaseBlockService
     {

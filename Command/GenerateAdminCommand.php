@@ -11,6 +11,7 @@
 
 namespace Sonata\AdminBundle\Command;
 
+use Sensio\Bundle\GeneratorBundle\Command\Helper\QuestionHelper;
 use Sensio\Bundle\GeneratorBundle\Command\Helper\DialogHelper;
 use Sonata\AdminBundle\Generator\AdminGenerator;
 use Sonata\AdminBundle\Generator\ControllerGenerator;
@@ -25,6 +26,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Console\Question\Question;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 /**
  * @author Marek Stipek <mario.dweller@seznam.cz>
@@ -128,9 +131,10 @@ class GenerateAdminCommand extends ContainerAwareCommand
      */
     protected function interact(InputInterface $input, OutputInterface $output)
     {
-        $dialog = $this->getDialogHelper();
-        $dialog->writeSection($output, 'Welcome to the Sonata admin generator');
+        $questionHelper = $this->getQuestionHelper();
+        $questionHelper->writeSection($output, 'Welcome to the Sonata admin generator');
         $modelClass = $this->askAndValidate(
+            $input,
             $output,
             'The fully qualified model class',
             $input->getArgument('model'),
@@ -138,12 +142,14 @@ class GenerateAdminCommand extends ContainerAwareCommand
         );
         $modelClassBasename = current(array_slice(explode('\\', $modelClass), -1));
         $bundleName = $this->askAndValidate(
+            $input,
             $output,
             'The bundle name',
             $input->getOption('bundle') ?: $this->getBundleNameFromClass($modelClass),
             'Sensio\Bundle\GeneratorBundle\Command\Validators::validateBundleName'
         );
         $adminClassBasename = $this->askAndValidate(
+            $input,
             $output,
             'The admin class basename',
             $input->getOption('admin') ?: $modelClassBasename . 'Admin',
@@ -152,6 +158,7 @@ class GenerateAdminCommand extends ContainerAwareCommand
 
         if (count($this->getAvailableManagerTypes()) > 1) {
             $managerType = $this->askAndValidate(
+                $input,
                 $output,
                 'The manager type',
                 $input->getOption('manager') ?: $this->getDefaultManagerType(),
@@ -160,10 +167,9 @@ class GenerateAdminCommand extends ContainerAwareCommand
             $input->setOption('manager', $managerType);
         }
 
-        $question = $dialog->getQuestion('Do you want to generate a controller', 'no', '?');
-
-        if ($dialog->askConfirmation($output, $question, false)) {
+        if ($this->askConfirmation($input, $output, 'Do you want to generate a controller', 'no', '?')) {
             $controllerClassBasename = $this->askAndValidate(
+                $input,
                 $output,
                 'The controller class basename',
                 $input->getOption('controller') ?: $modelClassBasename . 'AdminController',
@@ -172,17 +178,17 @@ class GenerateAdminCommand extends ContainerAwareCommand
             $input->setOption('controller', $controllerClassBasename);
         }
 
-        $question = $dialog->getQuestion('Do you want to update the services YAML configuration file', 'yes', '?');
-
-        if ($dialog->askConfirmation($output, $question)) {
+        if ($this->askConfirmation($input, $output, 'Do you want to update the services YAML configuration file', 'yes', '?')) {
             $path = $this->getBundle($bundleName)->getPath() . '/Resources/config/';
             $servicesFile = $this->askAndValidate(
+                $input,
                 $output,
                 'The services YAML configuration file',
                 is_file($path . 'admin.yml') ? 'admin.yml' : 'services.yml',
                 'Sonata\AdminBundle\Command\Validators::validateServicesFile'
             );
             $id = $this->askAndValidate(
+                $input,
                 $output,
                 'The admin service ID',
                 $this->getAdminServiceId($bundleName, $adminClassBasename),
@@ -199,7 +205,9 @@ class GenerateAdminCommand extends ContainerAwareCommand
 
     /**
      * @param string $managerType
+     *
      * @return string
+     *
      * @throws \InvalidArgumentException
      */
     public function validateManagerType($managerType)
@@ -219,7 +227,9 @@ class GenerateAdminCommand extends ContainerAwareCommand
 
     /**
      * @param string $class
+     *
      * @return string|null
+     *
      * @throws \InvalidArgumentException
      */
     private function getBundleNameFromClass($class)
@@ -238,6 +248,7 @@ class GenerateAdminCommand extends ContainerAwareCommand
 
     /**
      * @param string $name
+     *
      * @return BundleInterface
      */
     private function getBundle($name)
@@ -255,21 +266,54 @@ class GenerateAdminCommand extends ContainerAwareCommand
     }
 
     /**
+     * @param InputInterface $input
      * @param OutputInterface $output
-     * @param string $question
+     * @param string $questionText
      * @param mixed $default
      * @param callable $validator
+     *
      * @return mixed
      */
-    private function askAndValidate(OutputInterface $output, $question, $default, $validator)
+    private function askAndValidate(InputInterface $input, OutputInterface $output, $questionText, $default, $validator)
     {
-        $dialog = $this->getDialogHelper();
+        $questionHelper = $this->getQuestionHelper();
 
-        return $dialog->askAndValidate($output, $dialog->getQuestion($question, $default), $validator, false, $default);
+        if ($questionHelper instanceof DialogHelper) {
+            // @todo remove this BC code for SensioGeneratorBundle 2.3/2.4 after dropping  support for Symfony 2.3
+
+            return $questionHelper->askAndValidate($output, $questionHelper->getQuestion($questionText, $default), $validator, false, $default);
+        }
+
+        $question = new Question($questionHelper->getQuestion($questionText, $default), $default);
+
+        $question->setValidator($validator);
+
+        return $questionHelper->ask($input, $output, $question);
+    }
+
+    private function askConfirmation(InputInterface $input, OutputInterface $output, $questionText, $default, $separator)
+    {
+        $questionHelper = $this->getQuestionHelper();
+
+        if ($questionHelper instanceof DialogHelper) {
+            // @todo remove this BC code for SensioGeneratorBundle 2.3/2.4 after dropping  support for Symfony 2.3
+             $question = $questionHelper->getQuestion($questionText, $default, $separator);
+
+             return $questionHelper->askConfirmation($output, $question, ($default === 'no' ? false : true));
+        }
+
+        $question = new ConfirmationQuestion($questionHelper->getQuestion(
+            $questionText,
+            $default,
+            $separator
+        ), ($default === 'no' ? false : true));
+
+        return $questionHelper->ask($input, $output, $question);
     }
 
     /**
      * @return string
+     *
      * @throws \RuntimeException
      */
     private function getDefaultManagerType()
@@ -283,6 +327,7 @@ class GenerateAdminCommand extends ContainerAwareCommand
 
     /**
      * @param string $managerType
+     *
      * @return ModelManagerInterface
      */
     private function getModelManager($managerType)
@@ -293,6 +338,7 @@ class GenerateAdminCommand extends ContainerAwareCommand
     /**
      * @param string $bundleName
      * @param string $adminClassBasename
+     *
      * @return string
      */
     private function getAdminServiceId($bundleName, $adminClassBasename)
@@ -345,17 +391,28 @@ class GenerateAdminCommand extends ContainerAwareCommand
     }
 
     /**
-     * @return DialogHelper
+     * @return QuestionHelper|DialogHelper
      */
-    private function getDialogHelper()
+    private function getQuestionHelper()
     {
-        $dialogHelper = $this->getHelper('dialog');
+        if (class_exists('Sensio\Bundle\GeneratorBundle\Command\Helper\DialogHelper')) {
+            // @todo remove this BC code for SensioGeneratorBundle 2.3/2.4 after dropping  support for Symfony 2.3
+            $questionHelper = $this->getHelper('dialog');
 
-        if (!$dialogHelper instanceof DialogHelper) {
-            $dialogHelper = new DialogHelper();
-            $this->getHelperSet()->set($dialogHelper);
+            if (!$questionHelper instanceof DialogHelper) {
+                $questionHelper = new DialogHelper();
+                $this->getHelperSet()->set($questionHelper);
+            }
+        } else {
+            $questionHelper = $this->getHelper('question');
+
+            if (!$questionHelper instanceof QuestionHelper) {
+                $questionHelper = new QuestionHelper();
+                $this->getHelperSet()->set($questionHelper);
+            }
+
         }
 
-        return $dialogHelper;
+        return $questionHelper;
     }
 }

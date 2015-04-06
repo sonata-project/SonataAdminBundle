@@ -159,6 +159,8 @@ Create either a new ``admin.xml`` or ``admin.yml`` file inside the ``Acme/DemoBu
                calls:
                    - [ setTranslationDomain, [AcmeDemoBundle]]
 
+Example above assumes that you're using SonataDoctrineORMAdminBundle. If you're using SonataDoctrineMongoDBAdminBundle, SonataPropelAdminBundle or SonataDoctrinePhpcrAdminBundle instead, set ``manager_type`` option to ``doctrine_mongodb``, ``propel`` or ``doctrine_phpcr`` respectively.
+
 The basic configuration of an Admin service is quite simple. It creates a service
 instance based on the class you specified before, and accepts three arguments:
 
