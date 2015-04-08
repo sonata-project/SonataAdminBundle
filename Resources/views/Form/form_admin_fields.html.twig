@@ -409,11 +409,10 @@ file that was distributed with this source code.
 
 {%  block sonata_type_choice_multiple_sortable %}
     <input type="hidden" name="{{ full_name }}" id="{{ id }}" value="{{ value|join(',') }}" />
+
     <script>
         jQuery(document).ready(function() {
-            var $target = jQuery('#{{ id }}');
-
-            Admin.setup_sortable_select2($target, {{ form.vars.choices|json_encode|raw }});
+            Admin.setup_sortable_select2(jQuery('#{{ id }}'), {{ form.vars.choices|json_encode|raw }});
         });
     </script>
 {% endblock %}
