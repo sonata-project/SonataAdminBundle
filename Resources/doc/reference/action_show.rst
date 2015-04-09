@@ -21,7 +21,40 @@ To do:
 - targeting submodel fields using dot-separated notation
 - (Note, if this is very similar to the form documentation it can be combined)
 
+Group options
+~~~~~~~~~~~~~
 
+When adding a group to your show page, you may specify some options for the group itself.
+
+- ``collapsed``: unused at the moment
+- ``class``: the class for your group in the admin; by default, the value is set to ``col-md-12``.
+- ``fields``: the fields in your group (you should NOT override this unless you know what you're doing).
+- ``box_class``: the class for your group box in the admin; by default, the value is set to ``box box-primary``.
+- ``description``: to complete
+- ``translation_domain``: to complete
+
+To specify options, do as follow:
+
+.. code-block:: php
+
+    <?php
+
+    MyAdmin extends Admin
+    {
+        public function configureShowFields(ShowMapper $showMapper)
+        {
+            $showMapper
+                ->tab('General') // the tab call is optional
+                    ->with('Addresses', array(
+                        'class'       => 'col-md-8',
+                        'box_class'   => 'box box-solid box-danger',
+                        'description' => 'Lorem ipsum',
+                    ))
+                        // ...
+                    ->end()
+                ->end()
+            ;
+    }
 
 Customising the query used to show the object from within your Admin class
 --------------------------------------------------------------------------
