@@ -139,7 +139,6 @@ class AdminHelper
         }
 
         $this->addNewInstance($form->getData(), $fieldDescription);
-        $data[$childFormBuilder->getName()][] = $value;
 
         $finalForm = $admin->getFormBuilder()->getForm();
         $finalForm->setData($subject);
