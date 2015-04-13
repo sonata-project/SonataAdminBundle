@@ -33,12 +33,12 @@
                         <div class="nav-tabs-custom">
                             <ul class="nav nav-tabs" role="tablist">
                                 {% for name, form_tab in admin.formtabs %}
-                                    <li{% if loop.index == 1 %} class="active"{% endif %}><a href="#tab_{{ loop.index }}" data-toggle="tab"><span class="glyphicon glyphicon-exclamation-sign has-errors hide"></span> {{ admin.trans(name, {}, form_tab.translation_domain) }}</a></li>
+                                    <li{% if loop.index == 1 %} class="active"{% endif %}><a href="#tab_{{ admin.uniqid }}_{{ loop.index }}" data-toggle="tab"><span class="glyphicon glyphicon-exclamation-sign has-errors hide"></span> {{ admin.trans(name, {}, form_tab.translation_domain) }}</a></li>
                                 {% endfor %}
                             </ul>
                             <div class="tab-content">
                                 {% for code, form_tab in admin.formtabs %}
-                                    <div class="tab-pane fade{% if loop.first %} in active{% endif %}" id="tab_{{ loop.index }}">
+                                    <div class="tab-pane fade{% if loop.first %} in active{% endif %}" id="tab_{{ admin.uniqid }}_{{ loop.index }}">
                                         <div class="box-body  container-fluid">
                                             <div class="sonata-ba-collapsed-fields">
                                                 {% if form_tab.description != false %}
