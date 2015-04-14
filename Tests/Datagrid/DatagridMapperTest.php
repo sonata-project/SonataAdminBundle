@@ -12,15 +12,8 @@
 
 namespace Sonata\AdminBundle\Tests\Datagrid;
 
-use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\Datagrid;
-use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
-use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
-use Sonata\AdminBundle\Datagrid\PagerInterface;
-use Sonata\AdminBundle\Filter\Filter;
-use Sonata\AdminBundle\Filter\FilterInterface;
 
 /**
  * @author Andrej Hudec <pulzarraider@gmail.com>
@@ -122,6 +115,7 @@ class DatagridMapperTest extends \PHPUnit_Framework_TestCase
             'placeholder' => 'short_object_description_placeholder',
             'link_parameters' => array(),
             'show_filter' => null,
+            'advanced_filter' => true,
         ), $filter->getOptions());
     }
 
@@ -150,6 +144,7 @@ class DatagridMapperTest extends \PHPUnit_Framework_TestCase
             'foo_filter_option' => 'foo_filter_option_value',
             'link_parameters' => array(),
             'show_filter' => null,
+            'advanced_filter' => true,
         ), $filter->getOptions());
     }
 

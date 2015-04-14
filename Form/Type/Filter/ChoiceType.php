@@ -54,8 +54,10 @@ class ChoiceType extends AbstractType
             self::TYPE_EQUAL           => $this->translator->trans('label_type_equals', array(), 'SonataAdminBundle'),
         );
 
+        $operatorChoices = $options['operator_type'] !== 'hidden' ? array('choices' => $choices) : array();
+
         $builder
-            ->add('type', 'choice', array('choices' => $choices, 'required' => false))
+            ->add('type', $options['operator_type'], array_merge(array('required' => false), $options['operator_options'], $operatorChoices))
             ->add('value', $options['field_type'], array_merge(array('required' => false), $options['field_options']))
         ;
     }
@@ -67,7 +69,9 @@ class ChoiceType extends AbstractType
     {
         $resolver->setDefaults(array(
             'field_type'       => 'choice',
-            'field_options'    => array()
+            'field_options'    => array(),
+            'operator_type'    => 'choice',
+            'operator_options' => [],
         ));
     }
 }

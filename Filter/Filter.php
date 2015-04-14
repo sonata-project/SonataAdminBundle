@@ -183,7 +183,7 @@ abstract class Filter implements FilterInterface
     public function setOptions(array $options)
     {
         $this->options = array_merge(
-            array('show_filter' => null),
+            array('show_filter' => null, 'advanced_filter' => true),
             $this->getDefaultOptions(),
             $options
         );

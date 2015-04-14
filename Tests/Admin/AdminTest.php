@@ -572,7 +572,7 @@ class AdminTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException RuntimeException
+     * @expectedException \RuntimeException
      */
     public function testGetBaseRouteNameWithUnreconizedClassname()
     {
@@ -672,7 +672,7 @@ class AdminTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException RuntimeException
+     * @expectedException \RuntimeException
      */
     public function testNonExistantSubclass()
     {
@@ -1529,7 +1529,7 @@ class AdminTest extends \PHPUnit_Framework_TestCase
                         break;
 
                     default:
-                        throw new \RuntiemException(sprintf('Unknown filter name "%s"', $name));
+                        throw new \RuntimeException(sprintf('Unknown filter name "%s"', $name));
                         break;
                 }
 
