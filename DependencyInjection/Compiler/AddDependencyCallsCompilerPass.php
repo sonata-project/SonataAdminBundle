@@ -23,7 +23,8 @@ use Sonata\AdminBundle\Datagrid\Pager;
  * Add all dependencies to the Admin class, this avoid to write too many lines
  * in the configuration files.
  *
- * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * @package Sonata\AdminBundle\DependencyInjection\Compiler
+ * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class AddDependencyCallsCompilerPass implements CompilerPassInterface
 {

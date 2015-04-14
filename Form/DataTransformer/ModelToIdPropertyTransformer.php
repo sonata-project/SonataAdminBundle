@@ -19,7 +19,8 @@ use Doctrine\Common\Util\ClassUtils;
 /**
  * Transform object to ID and property label
  *
- * @author Andrej Hudec <pulzarraider@gmail.com>
+ * @package Sonata\AdminBundle\Form\DataTransformer
+ * @author  Andrej Hudec <pulzarraider@gmail.com>
  */
 class ModelToIdPropertyTransformer implements DataTransformerInterface
 {
@@ -37,6 +38,8 @@ class ModelToIdPropertyTransformer implements DataTransformerInterface
      * @param ModelManagerInterface $modelManager
      * @param string                $className
      * @param string                $property
+     * @param bool                  $multiple
+     * @param null                  $toStringCallback
      */
     public function __construct(ModelManagerInterface $modelManager, $className, $property, $multiple=false, $toStringCallback=null)
     {

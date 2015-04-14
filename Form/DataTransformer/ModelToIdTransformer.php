@@ -16,8 +16,10 @@ use Symfony\Component\Form\DataTransformerInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 
 /**
+ * Class ModelToIdTransformer
  *
- * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * @package Sonata\AdminBundle\Form\DataTransformer
+ * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class ModelToIdTransformer implements DataTransformerInterface
 {

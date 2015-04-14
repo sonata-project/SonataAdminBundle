@@ -19,6 +19,12 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface;
 
+/**
+ * Class AdminAclManipulator
+ *
+ * @package Sonata\AdminBundle\Util
+ * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ */
 class AdminAclManipulator implements AdminAclManipulatorInterface
 {
     protected $maskBuilderClass;

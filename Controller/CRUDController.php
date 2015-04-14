@@ -27,6 +27,12 @@ use Sonata\AdminBundle\Util\AdminObjectAclData;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Psr\Log\NullLogger;
 
+/**
+ * Class CRUDController
+ *
+ * @package Sonata\AdminBundle\Controller
+ * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ */
 class CRUDController extends Controller
 {
     /**
@@ -66,7 +72,7 @@ class CRUDController extends Controller
     /**
      * Returns true if the request is a XMLHttpRequest.
      *
-     * @param Reqeust $request
+     * @param Request $request
      *
      * @return bool True if the request is an XMLHttpRequest, false otherwise
      */

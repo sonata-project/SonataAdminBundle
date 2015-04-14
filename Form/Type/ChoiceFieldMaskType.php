@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the Sonata package.
  *
@@ -16,6 +17,12 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 
+/**
+ * Class ChoiceFieldMaskType
+ *
+ * @package Sonata\AdminBundle\Form\Type
+ * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ */
 class ChoiceFieldMaskType extends AbstractType
 {
     /**

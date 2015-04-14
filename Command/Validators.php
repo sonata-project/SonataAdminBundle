@@ -11,6 +11,12 @@
 
 namespace Sonata\AdminBundle\Command;
 
+/**
+ * Class Validators
+ *
+ * @package Sonata\AdminBundle\Command
+ * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ */
 class Validators
 {
     /**

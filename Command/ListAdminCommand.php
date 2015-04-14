@@ -14,8 +14,13 @@ namespace Sonata\AdminBundle\Command;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Output\Output;
 
+/**
+ * Class ListAdminCommand
+ *
+ * @package Sonata\AdminBundle\Command
+ * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ */
 class ListAdminCommand extends ContainerAwareCommand
 {
     /**

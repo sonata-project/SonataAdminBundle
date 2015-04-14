@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the Sonata project.
  *
@@ -13,6 +14,12 @@ namespace Sonata\AdminBundle\Route;
 use Sonata\AdminBundle\Admin\Pool;
 use Symfony\Component\HttpKernel\CacheWarmer\CacheWarmerInterface;
 
+/**
+ * Class RoutesCacheWarmUp
+ *
+ * @package Sonata\AdminBundle\Route
+ * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ */
 class RoutesCacheWarmUp implements CacheWarmerInterface
 {
     protected $cache;
@@ -26,7 +33,7 @@ class RoutesCacheWarmUp implements CacheWarmerInterface
     public function __construct(RoutesCache $cache, Pool $pool)
     {
         $this->cache = $cache;
-        $this->pool = $pool;
+        $this->pool  = $pool;
     }
 
     /**

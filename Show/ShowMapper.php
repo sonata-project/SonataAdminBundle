@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the Sonata package.
  *
@@ -8,6 +9,7 @@
  * file that was distributed with this source code.
  *
  */
+
 namespace Sonata\AdminBundle\Show;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
@@ -17,8 +19,11 @@ use Sonata\AdminBundle\Builder\ShowBuilderInterface;
 use Sonata\AdminBundle\Mapper\BaseGroupedMapper;
 
 /**
+ * Class ShowMapper
  * This class is used to simulate the Form API
  *
+ * @package Sonata\AdminBundle\Show
+ * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class ShowMapper extends BaseGroupedMapper
 {

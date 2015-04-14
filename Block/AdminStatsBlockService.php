@@ -14,14 +14,14 @@ namespace Sonata\AdminBundle\Block;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
-use Sonata\CoreBundle\Validator\ErrorElement;
 use Sonata\AdminBundle\Admin\Pool;
-use Sonata\BlockBundle\Model\BlockInterface;
 use Sonata\BlockBundle\Block\BaseBlockService;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
+ * Class AdminStatsBlockService
  *
+ * @package Sonata\AdminBundle\Block
  * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class AdminStatsBlockService extends BaseBlockService

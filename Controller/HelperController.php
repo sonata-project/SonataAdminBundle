@@ -24,6 +24,12 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Sonata\AdminBundle\Filter\FilterInterface;
 
+/**
+ * Class HelperController
+ *
+ * @package Sonata\AdminBundle\Controller
+ * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ */
 class HelperController
 {
     /**

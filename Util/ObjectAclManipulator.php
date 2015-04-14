@@ -16,6 +16,12 @@ use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface;
 
+/**
+ * Class ObjectAclManipulator
+ *
+ * @package Sonata\AdminBundle\Util
+ * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ */
 abstract class ObjectAclManipulator implements ObjectAclManipulatorInterface
 {
     /**

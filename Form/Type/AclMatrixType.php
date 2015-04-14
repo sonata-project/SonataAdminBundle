@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the Sonata package.
  *
@@ -19,8 +20,9 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * This type define an ACL matrix
  *
- * @author Samuel Roze <samuel@sroze.io>
- * @author Baptiste Meyer <baptiste@les-tilleuls.coop>
+ * @package Sonata\AdminBundle\Form\Type
+ * @author  Samuel Roze <samuel@sroze.io>
+ * @author  Baptiste Meyer <baptiste@les-tilleuls.coop>
  */
 class AclMatrixType extends AbstractType
 {

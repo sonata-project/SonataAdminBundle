@@ -24,6 +24,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Routing\RouterInterface;
 
+/**
+ * Class SonataAdminExtension
+ *
+ * @package Sonata\AdminBundle\Twig\Extension
+ * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ */
 class SonataAdminExtension extends \Twig_Extension
 {
     /**
@@ -53,6 +59,8 @@ class SonataAdminExtension extends \Twig_Extension
 
     /**
      * @param Pool            $pool
+     * @param RouterInterface $router
+     * @param Helper          $knpHelper
      * @param LoggerInterface $logger
      */
     public function __construct(Pool $pool, RouterInterface $router, Helper $knpHelper, LoggerInterface $logger = null)

@@ -15,8 +15,11 @@ namespace Sonata\AdminBundle\Manipulator;
 use Symfony\Component\Yaml\Yaml;
 
 /**
- * @author Marek Stipek <mario.dweller@seznam.cz>
- * @author Simon Cosandey <simon.cosandey@simseo.ch>
+ * Class ServicesManipulator
+ *
+ * @package Sonata\AdminBundle\Manipulator
+ * @author  Marek Stipek <mario.dweller@seznam.cz>
+ * @author  Simon Cosandey <simon.cosandey@simseo.ch>
  */
 class ServicesManipulator
 {

@@ -15,6 +15,12 @@ use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 use Symfony\Component\Console\Output\OutputInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
 
+/**
+ * Interface ObjectAclManipulatorInterface
+ *
+ * @package Sonata\AdminBundle\Util
+ * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ */
 interface ObjectAclManipulatorInterface
 {
     /**

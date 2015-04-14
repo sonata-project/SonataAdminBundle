@@ -17,7 +17,10 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
- * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * Class ExtensionCompilerPass
+ *
+ * @package Sonata\AdminBundle\DependencyInjection\Compiler
+ * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class ExtensionCompilerPass implements CompilerPassInterface
 {
@@ -152,11 +155,11 @@ class ExtensionCompilerPass implements CompilerPassInterface
     protected function flattenExtensionConfiguration(array $config)
     {
         $extensionMap = array(
-            'excludes'      => array(),
-            'admins'        => array(),
-            'implements'    => array(),
-            'extends'       => array(),
-            'instanceof'    => array(),
+            'excludes'   => array(),
+            'admins'     => array(),
+            'implements' => array(),
+            'extends'    => array(),
+            'instanceof' => array(),
         );
 
         foreach ($config as $extension => $options) {

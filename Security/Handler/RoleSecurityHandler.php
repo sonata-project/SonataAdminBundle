@@ -15,6 +15,12 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 use Sonata\AdminBundle\Admin\AdminInterface;
 
+/**
+ * Class RoleSecurityHandler
+ *
+ * @package Sonata\AdminBundle\Security\Handler
+ * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ */
 class RoleSecurityHandler implements SecurityHandlerInterface
 {
     protected $securityContext;

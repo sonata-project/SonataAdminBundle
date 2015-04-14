@@ -18,19 +18,16 @@ use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 
-use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\CoreBundle\Validator\ErrorElement;
 use Sonata\AdminBundle\Admin\Pool;
-
-use Sonata\BlockBundle\Model\BlockInterface;
 use Sonata\BlockBundle\Block\BaseBlockService;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
+ * Class AdminSearchBlockService
  *
- * @author     Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * @package Sonata\AdminBundle\Block
+ * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class AdminSearchBlockService extends BaseBlockService
 {

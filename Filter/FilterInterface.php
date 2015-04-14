@@ -13,6 +13,12 @@ namespace Sonata\AdminBundle\Filter;
 
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 
+/**
+ * Interface FilterInterface
+ *
+ * @package Sonata\AdminBundle\Filter
+ * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ */
 interface FilterInterface
 {
     const CONDITION_OR = 'OR';
@@ -117,6 +123,9 @@ interface FilterInterface
 
     /**
      * Get field option
+     *
+     * @param string $name
+     * @param null   $default
      *
      * @return mixed
      */

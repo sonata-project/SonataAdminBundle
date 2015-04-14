@@ -11,6 +11,12 @@
 
 namespace Sonata\AdminBundle\Filter;
 
+/**
+ * Class Filter
+ *
+ * @package Sonata\AdminBundle\Filter
+ * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ */
 abstract class Filter implements FilterInterface
 {
     protected $name = null;

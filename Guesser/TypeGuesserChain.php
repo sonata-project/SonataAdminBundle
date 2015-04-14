@@ -17,7 +17,6 @@ use Symfony\Component\Form\Guess\Guess;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 
 /**
- *
  * The code is based on Symfony2 Form Components
  *
  * @author Bernhard Schussek <bernhard.schussek@symfony.com>

@@ -15,11 +15,15 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Output\Output;
 
+/**
+ * Class ExplainAdminCommand
+ *
+ * @package Sonata\AdminBundle\Command
+ * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ */
 class ExplainAdminCommand extends ContainerAwareCommand
 {
-
     /**
      * {@inheritDoc}
      */

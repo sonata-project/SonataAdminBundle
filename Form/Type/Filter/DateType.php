@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the Sonata package.
  *
@@ -17,6 +18,12 @@ use Symfony\Component\Translation\TranslatorInterface;
 
 use Symfony\Component\Optionsresolver\OptionsResolverInterface;
 
+/**
+ * Class DateType
+ *
+ * @package Sonata\AdminBundle\Form\Type\Filter
+ * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ */
 class DateType extends AbstractType
 {
     const TYPE_GREATER_EQUAL = 1;
@@ -57,13 +64,13 @@ class DateType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $choices = array(
-            self::TYPE_EQUAL            => $this->translator->trans('label_date_type_equal', array(), 'SonataAdminBundle'),
-            self::TYPE_GREATER_EQUAL    => $this->translator->trans('label_date_type_greater_equal', array(), 'SonataAdminBundle'),
-            self::TYPE_GREATER_THAN     => $this->translator->trans('label_date_type_greater_than', array(), 'SonataAdminBundle'),
-            self::TYPE_LESS_EQUAL       => $this->translator->trans('label_date_type_less_equal', array(), 'SonataAdminBundle'),
-            self::TYPE_LESS_THAN        => $this->translator->trans('label_date_type_less_than', array(), 'SonataAdminBundle'),
-            self::TYPE_NULL             => $this->translator->trans('label_date_type_null', array(), 'SonataAdminBundle'),
-            self::TYPE_NOT_NULL         => $this->translator->trans('label_date_type_not_null', array(), 'SonataAdminBundle'),
+            self::TYPE_EQUAL         => $this->translator->trans('label_date_type_equal', array(), 'SonataAdminBundle'),
+            self::TYPE_GREATER_EQUAL => $this->translator->trans('label_date_type_greater_equal', array(), 'SonataAdminBundle'),
+            self::TYPE_GREATER_THAN  => $this->translator->trans('label_date_type_greater_than', array(), 'SonataAdminBundle'),
+            self::TYPE_LESS_EQUAL    => $this->translator->trans('label_date_type_less_equal', array(), 'SonataAdminBundle'),
+            self::TYPE_LESS_THAN     => $this->translator->trans('label_date_type_less_than', array(), 'SonataAdminBundle'),
+            self::TYPE_NULL          => $this->translator->trans('label_date_type_null', array(), 'SonataAdminBundle'),
+            self::TYPE_NOT_NULL      => $this->translator->trans('label_date_type_not_null', array(), 'SonataAdminBundle'),
         );
 
         $builder
@@ -78,8 +85,8 @@ class DateType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'field_type'       => 'date',
-            'field_options'    => array('date_format' => 'yyyy-MM-dd')
+            'field_type'    => 'date',
+            'field_options' => array('date_format' => 'yyyy-MM-dd')
         ));
     }
 }

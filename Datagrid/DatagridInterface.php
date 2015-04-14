@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the Sonata package.
  *
@@ -8,10 +9,17 @@
  * file that was distributed with this source code.
  *
  */
+
 namespace Sonata\AdminBundle\Datagrid;
 
 use Sonata\AdminBundle\Filter\FilterInterface;
 
+/**
+ * Interface DatagridInterface
+ *
+ * @package Sonata\AdminBundle\Datagrid
+ * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ */
 interface DatagridInterface
 {
     /**
@@ -48,6 +56,8 @@ interface DatagridInterface
 
     /**
      * Reorder filters
+     *
+     * @param array $keys
      */
     public function reorderFilters(array $keys);
 

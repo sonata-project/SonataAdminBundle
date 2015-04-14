@@ -20,8 +20,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  * Class ChoiceTypeExtension
  *
  * @package Sonata\AdminBundle\Form\Extension
- *
- * @author Amine Zaghdoudi <amine.zaghdoudi@ekino.com>
+ * @author  Amine Zaghdoudi <amine.zaghdoudi@ekino.com>
  */
 class ChoiceTypeExtension extends AbstractTypeExtension
 {

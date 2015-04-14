@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the Sonata package.
  *
@@ -21,7 +22,10 @@ use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Knp\Menu\ItemInterface as MenuItemInterface;
 
 /**
+ * Interface AdminExtensionInterface
  *
+ * @package Sonata\AdminBundle\Admin
+ * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 interface AdminExtensionInterface
 {
@@ -41,7 +45,7 @@ interface AdminExtensionInterface
     public function configureDatagridFilters(DatagridMapper $filter);
 
     /**
-     * @param ShowMapper $filter
+     * @param ShowMapper $show
      */
     public function configureShowFields(ShowMapper $show);
 

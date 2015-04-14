@@ -20,6 +20,12 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
+/**
+ * Class AdminEventExtension
+ *
+ * @package Sonata\AdminBundle\Event
+ * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ */
 class AdminEventExtension extends AdminExtension
 {
     protected $eventDispatcher;

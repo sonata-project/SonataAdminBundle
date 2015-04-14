@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the Sonata package.
  *
@@ -16,6 +17,12 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
+/**
+ * Class DefaultType
+ *
+ * @package Sonata\AdminBundle\Form\Type\Filter
+ * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ */
 class DefaultType extends AbstractType
 {
     /**

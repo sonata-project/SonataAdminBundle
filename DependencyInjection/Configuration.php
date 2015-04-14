@@ -20,7 +20,8 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  * This information is solely responsible for how the different configuration
  * sections are normalized, and merged.
  *
- * @author Michael Williams <mtotheikle@gmail.com>
+ * @package Sonata\AdminBundle\DependencyInjection
+ * @author  Michael Williams <mtotheikle@gmail.com>
  */
 class Configuration implements ConfigurationInterface
 {

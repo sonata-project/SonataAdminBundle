@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the Sonata package.
  *
@@ -8,14 +9,18 @@
  * file that was distributed with this source code.
  *
  */
+
 namespace Sonata\AdminBundle\Mapper;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Builder\BuilderInterface;
 
 /**
+ * Class BaseMapper
  * This class is used to simulate the Form API
  *
+ * @package Sonata\AdminBundle\Mapper
+ * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 abstract class BaseMapper
 {

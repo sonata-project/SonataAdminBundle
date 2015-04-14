@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the Sonata package.
  *
@@ -21,9 +22,14 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 use Sonata\AdminBundle\Form\DataTransformer\ArrayToModelTransformer;
 use Symfony\Component\PropertyAccess\Exception\NoSuchIndexException;
-use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 
+/**
+ * Class AdminType
+ *
+ * @package Sonata\AdminBundle\Form\Type
+ * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ */
 class AdminType extends AbstractType
 {
     /**

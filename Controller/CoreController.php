@@ -18,6 +18,12 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * Class CoreController
+ *
+ * @package Sonata\AdminBundle\Controller
+ * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ */
 class CoreController extends Controller
 {
     /**

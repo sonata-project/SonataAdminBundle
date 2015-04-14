@@ -59,12 +59,12 @@ class ModelTypeList extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'model_manager'     => null,
-            'class'             => null,
-            'btn_add'           => 'link_add',
-            'btn_list'          => 'link_list',
-            'btn_delete'        => 'link_delete',
-            'btn_catalogue'     => 'SonataAdminBundle'
+            'model_manager' => null,
+            'class'         => null,
+            'btn_add'       => 'link_add',
+            'btn_list'      => 'link_list',
+            'btn_delete'    => 'link_delete',
+            'btn_catalogue' => 'SonataAdminBundle'
         ));
     }
 
