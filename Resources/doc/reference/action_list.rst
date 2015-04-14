@@ -272,6 +272,17 @@ Though this ``operator_type`` is automatically detected it can be changed or eve
         ;
     }
 
+If you don't need the advanced filters, or all your ``operator_type`` are hidden, you can disable them by setting
+``advanced_filter`` to ``false``. You need to disable all advanced filters to make the button disappear.
+
+.. code-block:: php
+
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    {
+        $datagridMapper
+            ->add('bar', null, array('operator_type' => 'hidden', 'advanced_filter' => false))
+        ;
+    }
 
 Default filters
 ^^^^^^^^^^^^^^^

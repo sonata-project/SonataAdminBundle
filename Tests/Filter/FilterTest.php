@@ -11,7 +11,6 @@
 
 namespace Sonata\AdminBundle\Tests\Filter;
 
-use Sonata\AdminBundle\Filter\Filter;
 use Sonata\AdminBundle\Tests\Fixtures\Filter\FooFilter;
 
 class FilterTest extends \PHPUnit_Framework_TestCase
@@ -39,6 +38,7 @@ class FilterTest extends \PHPUnit_Framework_TestCase
         $expected = $options;
         $expected['foo'] = 'bar';
         $expected['show_filter'] = null;
+        $expected['advanced_filter'] = true;
 
         $this->assertEquals($expected, $filter->getOptions());
         $this->assertEquals('name', $filter->getFieldName());
