@@ -14,12 +14,16 @@ namespace Sonata\AdminBundle\Form\Type;
 
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\AbstractType;
-
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\OptionsResolver\Options;
 
 use Sonata\AdminBundle\Form\DataTransformer\ModelToIdTransformer;
 
+/**
+ * Class ModelReferenceType
+ *
+ * @package Sonata\AdminBundle\Form\Type
+ * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ */
 class ModelReferenceType extends AbstractType
 {
     /**

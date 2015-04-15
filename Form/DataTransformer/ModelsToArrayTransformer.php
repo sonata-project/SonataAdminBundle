@@ -17,6 +17,12 @@ use Symfony\Component\Form\DataTransformerInterface;
 
 use Sonata\AdminBundle\Form\ChoiceList\ModelChoiceList;
 
+/**
+ * Class ModelsToArrayTransformer
+ *
+ * @package Sonata\AdminBundle\Form\DataTransformer
+ * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ */
 class ModelsToArrayTransformer implements DataTransformerInterface
 {
     protected $choiceList;

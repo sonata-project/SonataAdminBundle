@@ -17,6 +17,12 @@ use Symfony\Component\Translation\TranslatorInterface;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
+/**
+ * Class ChoiceType
+ *
+ * @package Sonata\AdminBundle\Form\Type\Filter
+ * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ */
 class ChoiceType extends AbstractType
 {
     const TYPE_CONTAINS = 1;
@@ -49,9 +55,9 @@ class ChoiceType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $choices = array(
-            self::TYPE_CONTAINS        => $this->translator->trans('label_type_contains', array(), 'SonataAdminBundle'),
-            self::TYPE_NOT_CONTAINS    => $this->translator->trans('label_type_not_contains', array(), 'SonataAdminBundle'),
-            self::TYPE_EQUAL           => $this->translator->trans('label_type_equals', array(), 'SonataAdminBundle'),
+            self::TYPE_CONTAINS     => $this->translator->trans('label_type_contains', array(), 'SonataAdminBundle'),
+            self::TYPE_NOT_CONTAINS => $this->translator->trans('label_type_not_contains', array(), 'SonataAdminBundle'),
+            self::TYPE_EQUAL        => $this->translator->trans('label_type_equals', array(), 'SonataAdminBundle'),
         );
 
         $operatorChoices = $options['operator_type'] !== 'hidden' ? array('choices' => $choices) : array();

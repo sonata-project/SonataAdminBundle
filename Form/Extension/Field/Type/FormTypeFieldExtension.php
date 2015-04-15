@@ -21,6 +21,12 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Exception\NoValueException;
 
+/**
+ * Class FormTypeFieldExtension
+ *
+ * @package Sonata\AdminBundle\Form\Extension\Field\Type
+ * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ */
 class FormTypeFieldExtension extends AbstractTypeExtension
 {
     protected $defaultClasses = array();

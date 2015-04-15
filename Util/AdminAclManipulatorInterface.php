@@ -16,6 +16,12 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface;
 
+/**
+ * Interface AdminAclManipulatorInterface
+ *
+ * @package Sonata\AdminBundle\Util
+ * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ */
 interface AdminAclManipulatorInterface
 {
     /**

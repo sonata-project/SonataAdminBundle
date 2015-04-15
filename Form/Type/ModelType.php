@@ -26,8 +26,11 @@ use Sonata\AdminBundle\Form\DataTransformer\ModelsToArrayTransformer;
 use Sonata\AdminBundle\Form\DataTransformer\ModelToIdTransformer;
 
 /**
+ * Class ModelType
  * This type define a standard select input with a + sign to add new associated object
  *
+ * @package Sonata\AdminBundle\Form\Type
+ * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class ModelType extends AbstractType
 {

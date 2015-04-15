@@ -13,6 +13,12 @@ namespace Sonata\AdminBundle\Admin;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+/**
+ * Class Pool
+ *
+ * @package Sonata\AdminBundle\Admin
+ * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ */
 class Pool
 {
     protected $container = null;

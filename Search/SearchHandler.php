@@ -16,7 +16,10 @@ use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Filter\FilterInterface;
 
 /**
- * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * Class SearchHandler
+ *
+ * @package Sonata\AdminBundle\Search
+ * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class SearchHandler
 {

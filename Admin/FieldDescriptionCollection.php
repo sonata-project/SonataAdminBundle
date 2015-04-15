@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the Sonata package.
  *
@@ -8,8 +9,15 @@
  * file that was distributed with this source code.
  *
  */
+
 namespace Sonata\AdminBundle\Admin;
 
+/**
+ * Class FieldDescriptionCollection
+ *
+ * @package Sonata\AdminBundle\Admin
+ * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ */
 class FieldDescriptionCollection implements \ArrayAccess, \Countable
 {
     protected $elements = array();

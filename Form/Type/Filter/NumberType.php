@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the Sonata package.
  *
@@ -17,6 +18,12 @@ use Symfony\Component\Translation\TranslatorInterface;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
+/**
+ * Class NumberType
+ *
+ * @package Sonata\AdminBundle\Form\Type\Filter
+ * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ */
 class NumberType extends AbstractType
 {
     const TYPE_GREATER_EQUAL = 1;
@@ -56,11 +63,11 @@ class NumberType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $choices = array(
-            self::TYPE_EQUAL            => $this->translator->trans('label_type_equal', array(), 'SonataAdminBundle'),
-            self::TYPE_GREATER_EQUAL    => $this->translator->trans('label_type_greater_equal', array(), 'SonataAdminBundle'),
-            self::TYPE_GREATER_THAN     => $this->translator->trans('label_type_greater_than', array(), 'SonataAdminBundle'),
-            self::TYPE_LESS_EQUAL       => $this->translator->trans('label_type_less_equal', array(), 'SonataAdminBundle'),
-            self::TYPE_LESS_THAN        => $this->translator->trans('label_type_less_than', array(), 'SonataAdminBundle'),
+            self::TYPE_EQUAL         => $this->translator->trans('label_type_equal', array(), 'SonataAdminBundle'),
+            self::TYPE_GREATER_EQUAL => $this->translator->trans('label_type_greater_equal', array(), 'SonataAdminBundle'),
+            self::TYPE_GREATER_THAN  => $this->translator->trans('label_type_greater_than', array(), 'SonataAdminBundle'),
+            self::TYPE_LESS_EQUAL    => $this->translator->trans('label_type_less_equal', array(), 'SonataAdminBundle'),
+            self::TYPE_LESS_THAN     => $this->translator->trans('label_type_less_than', array(), 'SonataAdminBundle'),
         );
 
         $builder

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the Sonata package.
  *
@@ -8,11 +9,18 @@
  * file that was distributed with this source code.
  *
  */
+
 namespace Sonata\AdminBundle\Route;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Symfony\Component\Routing\RouterInterface;
 
+/**
+ * Class DefaultRouteGenerator
+ *
+ * @package Sonata\AdminBundle\Route
+ * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ */
 class DefaultRouteGenerator implements RouteGeneratorInterface
 {
     private $router;

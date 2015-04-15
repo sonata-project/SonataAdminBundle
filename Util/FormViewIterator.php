@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the Sonata project.
  *
@@ -12,6 +13,12 @@ namespace Sonata\AdminBundle\Util;
 
 use Symfony\Component\Form\FormView;
 
+/**
+ * Class FormViewIterator
+ *
+ * @package Sonata\AdminBundle\Util
+ * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ */
 class FormViewIterator implements \RecursiveIterator
 {
     protected $formView;

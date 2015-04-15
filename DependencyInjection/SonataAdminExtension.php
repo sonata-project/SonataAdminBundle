@@ -13,17 +13,16 @@ namespace Sonata\AdminBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
-
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Definition\Processor;
 
 /**
- * SonataAdminBundleExtension
+ * Class SonataAdminExtension
  *
- * @author      Thomas Rabaix <thomas.rabaix@sonata-project.org>
- * @author      Michael Williams <michael.williams@funsational.com>
+ * @package Sonata\AdminBundle\DependencyInjection
+ * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * @author  Michael Williams <michael.williams@funsational.com>
  */
 class SonataAdminExtension extends Extension
 {

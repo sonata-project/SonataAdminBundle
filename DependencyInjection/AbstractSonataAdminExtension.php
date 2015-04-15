@@ -15,16 +15,19 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
- * AbstractSonataAdminExtension
+ * Class AbstractSonataAdminExtension
+ *
+ * @package Sonata\AdminBundle\DependencyInjection
+ * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 abstract class AbstractSonataAdminExtension extends Extension
 {
-
     /**
      * Fix template configuration
      *
      * @param array            $configs
      * @param ContainerBuilder $container
+     * @param array            $defaultSonataDoctrineConfig
      *
      * @return array
      */

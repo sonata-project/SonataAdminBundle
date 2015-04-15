@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the Sonata package.
  *
@@ -8,6 +9,7 @@
  * file that was distributed with this source code.
  *
  */
+
 namespace Sonata\AdminBundle\Form;
 
 use Sonata\AdminBundle\Builder\FormContractorInterface;
@@ -16,8 +18,11 @@ use Sonata\AdminBundle\Mapper\BaseGroupedMapper;
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
+ * Class FormMapper
  * This class is use to simulate the Form API
  *
+ * @package Sonata\AdminBundle\Form
+ * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class FormMapper extends BaseGroupedMapper
 {

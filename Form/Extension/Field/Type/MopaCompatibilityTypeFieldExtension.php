@@ -23,6 +23,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  * Class MopaCompatibilityTypeFieldExtension
  *
  * @package Sonata\AdminBundle\Form\Extension\Field\Type
+ * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class MopaCompatibilityTypeFieldExtension extends AbstractTypeExtension
 {

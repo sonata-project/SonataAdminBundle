@@ -10,13 +10,15 @@
  */
 
 namespace Sonata\AdminBundle\Twig;
+
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Sonata\AdminBundle\Admin\Pool;
 
 /**
- * GlobalVariables
+ * Class GlobalVariables
  *
- * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * @package Sonata\AdminBundle\Twig
+ * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class GlobalVariables
 {

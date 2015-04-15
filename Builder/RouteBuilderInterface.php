@@ -14,9 +14,14 @@ namespace Sonata\AdminBundle\Builder;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Route\RouteCollection;
 
+/**
+ * Interface RouteBuilderInterface
+ *
+ * @package Sonata\AdminBundle\Builder
+ * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ */
 interface RouteBuilderInterface
 {
-
     /**
      * @param \Sonata\AdminBundle\Admin\AdminInterface  $admin
      * @param \Sonata\AdminBundle\Route\RouteCollection $collection

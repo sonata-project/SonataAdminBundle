@@ -19,6 +19,12 @@ use Symfony\Component\Form\Exception\RuntimeException;
 use Symfony\Component\Form\Extension\Core\ChoiceList\SimpleChoiceList;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 
+/**
+ * Class ModelChoiceList
+ *
+ * @package Sonata\AdminBundle\Form\ChoiceList
+ * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ */
 class ModelChoiceList extends SimpleChoiceList
 {
     /**

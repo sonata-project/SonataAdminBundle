@@ -11,6 +11,12 @@
 
 namespace Sonata\AdminBundle\Exception;
 
+/**
+ * Class NoValueException
+ *
+ * @package Sonata\AdminBundle\Exception
+ * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ */
 class NoValueException extends \Exception
 {
 

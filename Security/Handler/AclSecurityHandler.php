@@ -23,6 +23,12 @@ use Symfony\Component\Security\Acl\Exception\AclNotFoundException;
 use Symfony\Component\Security\Acl\Exception\NotAllAclsFoundException;
 use Sonata\AdminBundle\Admin\AdminInterface;
 
+/**
+ * Class AclSecurityHandler
+ *
+ * @package Sonata\AdminBundle\Security\Handler
+ * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ */
 class AclSecurityHandler implements AclSecurityHandlerInterface
 {
     protected $securityContext;

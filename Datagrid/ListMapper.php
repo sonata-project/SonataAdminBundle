@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the Sonata package.
  *
@@ -8,6 +9,7 @@
  * file that was distributed with this source code.
  *
  */
+
 namespace Sonata\AdminBundle\Datagrid;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
@@ -17,8 +19,11 @@ use Sonata\AdminBundle\Builder\ListBuilderInterface;
 use Sonata\AdminBundle\Mapper\BaseMapper;
 
 /**
+ * Class ListMapper
  * This class is used to simulate the Form API
  *
+ * @package Sonata\AdminBundle\Datagrid
+ * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class ListMapper extends BaseMapper
 {

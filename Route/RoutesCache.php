@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the Sonata project.
  *
@@ -14,6 +15,12 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\Config\Resource\FileResource;
 
+/**
+ * Class RoutesCache
+ *
+ * @package Sonata\AdminBundle\Route
+ * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ */
 class RoutesCache
 {
     /**

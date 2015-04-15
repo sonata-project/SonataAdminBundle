@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the symfony package.
  * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
@@ -11,12 +12,15 @@
 namespace Sonata\AdminBundle\Datagrid;
 
 /**
- * Interface used by the Datagrid to build the query
+ * Interface ProxyQueryInterface
+ * Used by the Datagrid to build the query
+ *
+ * @package Sonata\AdminBundle\Datagrid
+ * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 interface ProxyQueryInterface
 {
     /**
-     *
      * @param array $params
      * @param null  $hydrationMode
      *
