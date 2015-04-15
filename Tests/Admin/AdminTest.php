@@ -1571,6 +1571,33 @@ class AdminTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($barFieldDescription, $modelAdmin->getFilterFieldDescription('bar'));
         $this->assertSame($bazFieldDescription, $modelAdmin->getFilterFieldDescription('baz'));
     }
+
+    public function testGetSubject()
+    {
+        $entity = new Post();
+        $modelManager = $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface');
+        $modelManager
+            ->expects($this->any())
+            ->method('find')
+            ->will($this->returnValue($entity));
+        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
+        $admin->setModelManager($modelManager);
+
+        $admin->setRequest(new Request(array('id' => 'azerty')));
+        $this->assertFalse($admin->getSubject());
+
+        $admin->setSubject(null);
+        $admin->setRequest(new Request(array('id' => 42)));
+        $this->assertEquals($entity, $admin->getSubject());
+
+        $admin->setSubject(null);
+        $admin->setRequest(new Request(array('id' => '4f69bbb5f14a13347f000092')));
+        $this->assertEquals($entity, $admin->getSubject());
+
+        $admin->setSubject(null);
+        $admin->setRequest(new Request(array('id' => '0779ca8d-e2be-11e4-ac58-0242ac11000b')));
+        $this->assertEquals($entity, $admin->getSubject());
+    }
 }
 
 class DummySubject
