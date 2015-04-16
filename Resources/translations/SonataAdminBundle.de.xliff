@@ -320,7 +320,7 @@
             </trans-unit>
             <trans-unit id="td_role">
                 <source>td_role</source>
-                <target>td_role</target>
+                <target>Rolle</target>
             </trans-unit>
             <trans-unit id="label_view_revision">
                 <source>label_view_revision</source>
