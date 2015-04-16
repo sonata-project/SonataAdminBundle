@@ -116,6 +116,8 @@ The permissions are:
 Each permission is relative to an admin: if you try to get a list in FooAdmin (declared as ``sonata.admin.demo.foo``
 service), Sonata will check if the user has the ``ROLE_SONATA_ADMIN_DEMO_FOO_EDIT`` role.
 
+The role name will be based on the name of your admin service. For instance, `acme.blog.post.admin` will become `ROLE_ACME_BLOG_POST_ADMIN_{ACTION}`.
+
 So our ``security.yml`` file may look to something like this:
 
 .. configuration-block::
