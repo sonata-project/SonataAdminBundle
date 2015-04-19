@@ -77,7 +77,7 @@ class ChoiceType extends AbstractType
             'field_type'       => 'choice',
             'field_options'    => array(),
             'operator_type'    => 'choice',
-            'operator_options' => [],
+            'operator_options' => array(),
         ));
     }
 }
