@@ -644,6 +644,21 @@ class CRUDController extends Controller
             throw new AccessDeniedException();
         }
 
+        $class = new \ReflectionClass($this->admin->hasActiveSubClass() ? $this->admin->getActiveSubClass() : $this->admin->getClass());
+
+        if ($class->isAbstract()) {
+            return $this->render(
+                'SonataAdminBundle:CRUD:select_subclass.html.twig',
+                array(
+                    'base_template' => $this->getBaseTemplate(),
+                    'admin'         => $this->admin,
+                    'action'        => 'create',
+                ),
+                null,
+                $request
+            );
+        }
+
         $object = $this->admin->getNewInstance();
 
         $this->admin->setSubject($object);
