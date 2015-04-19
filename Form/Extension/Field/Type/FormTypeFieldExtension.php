@@ -16,6 +16,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
@@ -202,11 +203,19 @@ class FormTypeFieldExtension extends AbstractTypeExtension
     }
 
     /**
-     * Sets the default options
+     * {@inheritdoc}
      *
-     * @param OptionsResolverInterface $resolver Options Resolver
+     * @todo Remove it when bumping requirements to SF 2.7+
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $this->configureOptions($resolver);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'sonata_admin'             => null,

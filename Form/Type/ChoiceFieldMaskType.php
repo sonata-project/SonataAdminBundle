@@ -13,6 +13,7 @@
 namespace Sonata\AdminBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -47,11 +48,26 @@ class ChoiceFieldMaskType extends AbstractType
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
+     *
+     * @todo Remove it when bumping requirements to SF 2.7+
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        parent::setDefaultOptions($resolver);
+        $this->configureOptions($resolver);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        // TODO: Remove conditional parent call when bumping requirements to SF 2.7+
+        if (method_exists('Symfony\Component\Form\AbstractType', 'configureOptions')) {
+            parent::configureOptions($resolver);
+        } else {
+            parent::setDefaultOptions($resolver);
+        }
 
         $resolver->setDefaults(array(
             'map' => array(),
