@@ -237,7 +237,7 @@ file that was distributed with this source code.
                             <div class="col-sm-9">
                                 {% set withAdvancedFilter = false %}
                                 {% for filter in admin.datagrid.filters %}
-                                    <div class="form-group" id="filter-{{ admin.uniqid }}-{{ filter.name }}" sonata-filter="{{ (filter.options['show_filter'] is sameas(true) or filter.options['show_filter'] is null) ? 'true' : 'false' }}" style="display: {% if (filter.isActive() and filter.options['show_filter'] is null) or (filter.options['show_filter'] is sameas(true)) %}block{% else %}none{% endif %}">
+                                    <div class="form-group {% block sonata_list_filter_group_class %}{% endblock %}" id="filter-{{ admin.uniqid }}-{{ filter.name }}" sonata-filter="{{ (filter.options['show_filter'] is sameas(true) or filter.options['show_filter'] is null) ? 'true' : 'false' }}" style="display: {% if (filter.isActive() and filter.options['show_filter'] is null) or (filter.options['show_filter'] is sameas(true)) %}block{% else %}none{% endif %}">
                                         {% if filter.label is not sameas(false) %}
                                             <label for="{{ form.children[filter.formName].children['value'].vars.id }}" class="col-sm-3 control-label">{{ admin.trans(filter.label, {}, filter.translationDomain) }}</label>
                                         {% endif %}
