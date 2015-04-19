@@ -64,8 +64,10 @@
 
             {{ form_rest(form) }}
 
-            {% block formactions %}
+            {% block pre_formactions %}
                 <div class="well well-small form-actions">
+            {% endblock %}
+            {% block formactions %}
                     {% if app.request.isxmlhttprequest %}
                         {% if admin.id(object) is not null %}
                             <button type="submit" class="btn btn-success" name="btn_update"><i class="fa fa-save"></i> {{ 'btn_update'|trans({}, 'SonataAdminBundle') }}</button>
@@ -104,8 +106,10 @@
                             <button class="btn btn-success" type="submit" name="btn_create_and_create"><i class="fa fa-plus-circle"></i> {{ 'btn_create_and_create_a_new_one'|trans({}, 'SonataAdminBundle') }}</button>
                         {% endif %}
                     {% endif %}
-                </div>
             {% endblock formactions %}
+            {% block post_formactions %}
+                </div>
+            {% endblock %}
         </form>
     {% endif%}
 
