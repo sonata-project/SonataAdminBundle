@@ -50,6 +50,35 @@ class GlobalVariables
      */
     public function url($code, $action, $parameters = array(), $absolute = false)
     {
+        list($action, $code) = $this->getCodeAction($code, $action);
+
+        return $this->getAdminPool()->getAdminByAdminCode($code)->generateUrl($action, $parameters, $absolute);
+    }
+
+    /**
+     * @param string $code
+     * @param string $action
+     * @param mixed  $object
+     * @param array  $parameters
+     * @param mixed  $absolute
+     *
+     * @return string
+     */
+    public function objectUrl($code, $action, $object, $parameters = array(), $absolute = false)
+    {
+        list($action, $code) = $this->getCodeAction($code, $action);
+
+        return $this->getAdminPool()->getAdminByAdminCode($code)->generateObjectUrl($action, $object, $parameters, $absolute);
+    }
+
+    /**
+     * @param $code
+     * @param $action
+     *
+     * @return array
+     */
+    private function getCodeAction($code, $action)
+    {
         if ($pipe = strpos('|', $code)) {
             // convert code=sonata.page.admin.page|sonata.page.admin.snapshot, action=list
             // to => sonata.page.admin.page|sonata.page.admin.snapshot.list
@@ -57,6 +86,6 @@ class GlobalVariables
             $code = substr($code, 0, $pipe);
         }
 
-        return $this->getAdminPool()->getAdminByAdminCode($code)->generateUrl($action, $parameters, $absolute);
+        return array($action, $code);
     }
 }
