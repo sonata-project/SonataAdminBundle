@@ -48,7 +48,7 @@ class ModelTypeTest extends TypeTestCase
     /**
      * @dataProvider getCompoundOptionTests
      */
-    public function testCompundOption($expectedCompound, $multiple, $expanded)
+    public function testCompoundOption($expectedCompound, $multiple, $expanded)
     {
         $type = new ModelType();
         $modelManager = $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface');
