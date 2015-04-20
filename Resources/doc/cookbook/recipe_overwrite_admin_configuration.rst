@@ -21,7 +21,7 @@ From the configuration file, you can add a new section named ``admin_services`` 
                 route_generator:            sonata.admin.route.default_generator
                 validator:                  validator
                 security_handler:           sonata.admin.security.handler
-                menu_factor:                knp_menu.factory
+                menu_factory:               knp_menu.factory
                 route_builder:              sonata.admin.route.path_info
                 label_translator_strategy:  sonata.admin.label.strategy.native
 

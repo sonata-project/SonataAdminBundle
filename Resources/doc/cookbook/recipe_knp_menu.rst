@@ -13,7 +13,7 @@ Create your controller:
 
 .. code-block:: php
 
-    class BlogController 
+    class BlogController
     {
         /**
          * @Route("/blog", name="blog_home")
@@ -68,9 +68,9 @@ And voilà, now you have a menu group which contains a link to a sonata admin vi
 Using a menu provider
 ---------------------
 
-As seen above, the main way to declare your menu is by declaring items in your sonata admin config file. In some case you may have to create a more complexe menu depending on your business logic. This is possible by using a menu provider to populate a whole menu group. This is done with the ``provider`` config value.
+As seen above, the main way to declare your menu is by declaring items in your sonata admin config file. In some case you may have to create a more complex menu depending on your business logic. This is possible by using a menu provider to populate a whole menu group. This is done with the ``provider`` config value.
 
-Tthe following configuration uses a menu provider to populate the menu group ``my_group``:
+The following configuration uses a menu provider to populate the menu group ``my_group``:
 
 .. code-block:: yaml
 
@@ -81,7 +81,7 @@ Tthe following configuration uses a menu provider to populate the menu group ``m
                     provider:        'MyBundle:MyMenuProvider:getMyMenu'
                     icon:            '<i class="fa fa-edit"></i>'
 
-With KnpMenuBundle you can create a custom menu by using a builder class or by declaring it as a service. Please see the `Knp documentation <http://symfony.com/doc/current/bundles/KnpMenuBundle/index.html#create-your-first-menu>`_ for further information. 
+With KnpMenuBundle you can create a custom menu by using a builder class or by declaring it as a service. Please see the `Knp documentation <http://symfony.com/doc/current/bundles/KnpMenuBundle/index.html#create-your-first-menu>`_ for further information.
 
 In sonata, whatever the implementation you choose, you only have to provide the menu alias to the provider config key:
 
