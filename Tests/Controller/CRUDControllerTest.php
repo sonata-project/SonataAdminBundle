@@ -991,6 +991,10 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo('DELETE'))
             ->will($this->returnValue(true));
 
+        $this->admin->expects($this->any())
+            ->method('getClass')
+            ->will($this->returnValue('stdClass'));
+
         $this->assertLoggerLogsModelManagerException($this->admin, 'delete');
 
         $this->request->setMethod('DELETE');
@@ -1568,6 +1572,10 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
         $object = new \stdClass();
 
+        $this->admin->expects($this->any())
+            ->method('getClass')
+            ->will($this->returnValue('stdClass'));
+
         $this->admin->expects($this->once())
             ->method('getNewInstance')
             ->will($this->returnValue($object));
@@ -1633,6 +1641,10 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
+        $this->admin->expects($this->any())
+            ->method('getClass')
+            ->will($this->returnValue('stdClass'));
+
         $this->admin->expects($this->once())
             ->method('getForm')
             ->will($this->returnValue($form));
@@ -1684,6 +1696,10 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
+        $this->admin->expects($this->any())
+            ->method('getClass')
+            ->will($this->returnValue('stdClass'));
+
         $this->admin->expects($this->once())
             ->method('getForm')
             ->will($this->returnValue($form));
@@ -1708,6 +1724,10 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(true));
 
         $object = new \stdClass();
+
+        $this->admin->expects($this->any())
+            ->method('getClass')
+            ->will($this->returnValue('stdClass'));
 
         $this->admin->expects($this->once())
             ->method('getNewInstance')
@@ -1792,6 +1812,10 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->method('isValid')
             ->will($this->returnValue(true));
 
+        $this->admin->expects($this->any())
+            ->method('getClass')
+            ->will($this->returnValue('stdClass'));
+
         $this->admin->expects($this->once())
             ->method('getNormalizedIdentifier')
             ->with($this->equalTo($object))
@@ -1823,6 +1847,10 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $form = $this->getMockBuilder('Symfony\Component\Form\Form')
             ->disableOriginalConstructor()
             ->getMock();
+
+        $this->admin->expects($this->any())
+            ->method('getClass')
+            ->will($this->returnValue('stdClass'));
 
         $this->admin->expects($this->once())
             ->method('getForm')
@@ -1871,6 +1899,10 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $form = $this->getMockBuilder('Symfony\Component\Form\Form')
             ->disableOriginalConstructor()
             ->getMock();
+
+        $this->admin->expects($this->any())
+            ->method('getClass')
+            ->will($this->returnValue('stdClass'));
 
         $this->admin->expects($this->once())
             ->method('getForm')
