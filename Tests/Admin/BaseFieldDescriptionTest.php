@@ -157,6 +157,15 @@ class BaseFieldDescriptionTest extends \PHPUnit_Framework_TestCase
         $description->getFieldValue($mock, 'fake');
     }
 
+    public function testGetVirtualValue()
+    {
+        $description = new FieldDescription();
+        $mock = $this->getMock('stdClass', array('getFoo'));
+
+        $description->setOption('virtual_field', true);
+        $description->getFieldValue($mock, 'fake');
+    }
+
     /**
      * @expectedException RuntimeException
      */
