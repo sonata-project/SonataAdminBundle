@@ -262,6 +262,14 @@ table.sonata-ba-list {
     font-size: 14px;
 }
 
+table.sonata-ba-list img {
+    max-width: 100%;
+}
+
+table.sonata-ba-list td {
+    overflow: auto;
+}
+
 td.sonata-ba-list-label {
     color: #565656;
     font-weight: bold;
