@@ -190,4 +190,5 @@ Full Configuration Options
                     implements:           []
                     extends:              []
                     instanceof:           []
+                    uses:                 []
             persist_filters:      false
