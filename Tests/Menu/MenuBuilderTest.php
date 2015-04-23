@@ -19,6 +19,7 @@ class MenuBuilderTest extends \PHPUnit_Framework_TestCase
     private $pool;
     private $provider;
     private $factory;
+    private $eventDispatcher;
     private $builder;
 
     protected function setUp()
@@ -26,8 +27,9 @@ class MenuBuilderTest extends \PHPUnit_Framework_TestCase
         $this->pool = $this->getMockBuilder('Sonata\AdminBundle\Admin\Pool')->disableOriginalConstructor()->getMock();
         $this->provider = $this->getMock('Knp\Menu\Provider\MenuProviderInterface');
         $this->factory = new MenuFactory();
+        $this->eventDispatcher = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
 
-        $this->builder = new MenuBuilder($this->pool, $this->factory, $this->provider);
+        $this->builder = new MenuBuilder($this->pool, $this->factory, $this->provider, $this->eventDispatcher);
     }
 
     public function testGetKnpMenu()
@@ -241,6 +243,30 @@ class MenuBuilderTest extends \PHPUnit_Framework_TestCase
             $this->assertInstanceOf('Knp\Menu\MenuItem', $child['foo']);
             $this->assertEquals('foo', $child['foo']->getLabel());
         }
+    }
+
+    public function testGetKnpMenuAndDispatchEvent()
+    {
+        $adminGroups = array(
+            "bar" => array(
+                "label" => "foo",
+                "icon"  => '<i class="fa fa-edit"></i>',
+                "label_catalogue"  => 'SonataAdminBundle',
+                "items" => array(),
+                "item_adds" => array(),
+                "roles"     => array(),
+            ),
+        );
+
+        $this->preparePool($adminGroups);
+
+        $this->eventDispatcher
+            ->expects($this->once())
+            ->method('dispatch')
+            ->with($this->equalTo('sonata.admin.event.configure.menu.sidebar'), $this->isInstanceOf('Sonata\AdminBundle\Event\ConfigureMenuEvent'))
+        ;
+
+        $this->builder->createSidebarMenu();
     }
 
     private function preparePool($adminGroups, $admin = null)

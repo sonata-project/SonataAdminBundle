@@ -15,6 +15,8 @@ use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
 use Knp\Menu\Provider\MenuProviderInterface;
 use Sonata\AdminBundle\Admin\Pool;
+use Sonata\AdminBundle\Event\ConfigureMenuEvent;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -28,19 +30,22 @@ class MenuBuilder
     private $factory;
     private $provider;
     private $request;
+    private $eventDispatcher;
 
     /**
      * Constructor.
      *
-     * @param Pool                  $pool
-     * @param FactoryInterface      $factory
-     * @param MenuProviderInterface $provider
+     * @param Pool                     $pool
+     * @param FactoryInterface         $factory
+     * @param MenuProviderInterface    $provider
+     * @param EventDispatcherInterface $eventDispatcher
      */
-    public function __construct(Pool $pool, FactoryInterface $factory, MenuProviderInterface $provider)
+    public function __construct(Pool $pool, FactoryInterface $factory, MenuProviderInterface $provider, EventDispatcherInterface $eventDispatcher)
     {
         $this->pool = $pool;
         $this->factory = $factory;
         $this->provider = $provider;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -120,7 +125,10 @@ class MenuBuilder
             }
         }
 
-        return $menu;
+        $event = new ConfigureMenuEvent($this->factory, $menu);
+        $this->eventDispatcher->dispatch(ConfigureMenuEvent::SIDEBAR, $event);
+
+        return $event->getMenu();
     }
 
     /**
