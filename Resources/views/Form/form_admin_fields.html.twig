@@ -259,10 +259,6 @@ file that was distributed with this source code.
 
         {% if sonata_admin is defined and sonata_admin_enabled %}
             {% set div_class = div_class ~ ' sonata-ba-field-' ~ sonata_admin.edit ~ '-' ~ sonata_admin.inline %}
-
-            {% if sonata_admin.edit == 'inline' and sonata_admin.inline == 'table' %}
-                {% set div_class = div_class ~ ' form-inline' %}
-            {% endif %}
         {% endif %}
 
         {% if errors|length > 0 %}
