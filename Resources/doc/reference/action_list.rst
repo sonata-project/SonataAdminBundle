@@ -428,6 +428,29 @@ If you have the **SonataDoctrineORMAdminBundle** installed you can use the ``doc
             return true;
         }
     }
+    
+You can also get the filter type which can be helpful to change the operator type of your condition(s):
+
+.. code-block:: php
+
+    use Sonata\CoreBundle\Form\Type\EqualType;
+
+    class UserAdmin extends SonataUserAdmin
+    {
+        public function getFullTextFilter($queryBuilder, $alias, $field, $value)
+        {
+            if (!$value['value']) {
+                return;
+            }
+            
+            $operator = $value['type'] == EqualType::TYPE_IS_EQUAL ? '=' : '!=';
+            
+            $queryBuilder->andWhere($alias.'.username ' . $operator . ' :username')
+                         ->setParameter('username', $value['value']);
+
+            return true;
+        }
+    }
 
 To do:
 
