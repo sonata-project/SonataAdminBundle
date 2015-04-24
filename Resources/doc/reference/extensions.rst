@@ -86,6 +86,10 @@ instanceof:
     specify one or more classes. If the managed class of an admin extends one of the specified classes or is an instance
     of that class the extension will be added to that admin.
 
+uses:
+    Requires PHP >= 5.4.0. Specify one or more traits. If the managed class of an admin uses one of the specified traits the extension will be
+    added to that admin.
+
 
 .. configuration-block::
 
@@ -106,3 +110,5 @@ instanceof:
                             - Acme\Demo\Document\Blog
                         instanceof:
                             -  Acme\Demo\Document\Page
+                        uses:
+                            -  Acme\Demo\Trait\Timestampable

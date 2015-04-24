@@ -124,6 +124,12 @@ class ExtensionCompilerPass implements CompilerPassInterface
                         $extensions = array_merge($extensions, $extensionList);
                     }
                 }
+
+                if ('uses' == $type) {
+                    if ($this->hasTrait($classReflection, $subject)) {
+                        $extensions = array_merge($extensions, $extensionList);
+                    }
+                }
             }
         }
 
@@ -160,6 +166,7 @@ class ExtensionCompilerPass implements CompilerPassInterface
             'implements' => array(),
             'extends'    => array(),
             'instanceof' => array(),
+            'uses'       => array(),
         );
 
         foreach ($config as $extension => $options) {
@@ -174,5 +181,18 @@ class ExtensionCompilerPass implements CompilerPassInterface
         }
 
         return $extensionMap;
+    }
+
+    protected function hasTrait(\ReflectionClass $class, $traitName)
+    {
+        if (in_array($traitName, $class->getTraitNames())) {
+            return true;
+        }
+
+        if (!$parentClass = $class->getParentClass()) {
+            return false;
+        }
+
+        return $this->hasTrait($parentClass, $traitName);
     }
 }
