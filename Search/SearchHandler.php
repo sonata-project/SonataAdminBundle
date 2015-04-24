@@ -52,7 +52,7 @@ class SearchHandler
             /** @var $filter FilterInterface */
             if ($filter->getOption('global_search', false)) {
                 $filter->setCondition(FilterInterface::CONDITION_OR);
-                $datagrid->setValue($name, null, $term);
+                $datagrid->setValue($filter->getFormName(), null, $term);
                 $found = true;
             }
         }
