@@ -85,6 +85,11 @@ class ListMapper extends BaseMapper
             }
         }
 
+        // Ensure batch and action pseudo-fields are tagged as virtual
+        if (in_array($type, array('action', 'batch', 'select'))) {
+            $fieldDescriptionOptions['virtual_field'] = true;
+        }
+
         if ($name instanceof FieldDescriptionInterface) {
             $fieldDescription = $name;
             $fieldDescription->mergeOptions($fieldDescriptionOptions);

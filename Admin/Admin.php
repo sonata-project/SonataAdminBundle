@@ -783,9 +783,10 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
         if (count($this->getBatchActions()) > 0) {
             $fieldDescription = $this->getModelManager()->getNewFieldDescriptionInstance($this->getClass(), 'batch', array(
-                'label'    => 'batch',
-                'code'     => '_batch',
-                'sortable' => false,
+                'label'         => 'batch',
+                'code'          => '_batch',
+                'sortable'      => false,
+                'virtual_field' => true,
             ));
 
             $fieldDescription->setAdmin($this);
@@ -802,9 +803,10 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
         if ($this->hasRequest() && $this->getRequest()->isXmlHttpRequest()) {
             $fieldDescription = $this->getModelManager()->getNewFieldDescriptionInstance($this->getClass(), 'select', array(
-                'label'    => false,
-                'code'     => '_select',
-                'sortable' => false,
+                'label'         => false,
+                'code'          => '_select',
+                'sortable'      => false,
+                'virtual_field' => false,
             ));
 
             $fieldDescription->setAdmin($this);

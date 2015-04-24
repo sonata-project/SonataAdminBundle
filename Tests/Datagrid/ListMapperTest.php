@@ -212,6 +212,17 @@ class ListMapperTest extends \PHPUnit_Framework_TestCase
         $this->fail('Failed asserting that exception of type "\RuntimeException" is thrown.');
     }
 
+    public function testAutoAddVirtualOption()
+    {
+        foreach (array('action', 'batch', 'select') as $type) {
+            $this->listMapper->add('_'.$type, $type);
+        }
+
+        foreach ($this->fieldDescriptionCollection as $field) {
+           $this->assertTrue($field->isVirtual(), 'Failed asserting that FieldDescription with type "'.$field->getType().'" is tagged with virtual flag.');
+        }
+    }
+
     public function testReorder()
     {
         $fieldDescription1 = $this->getFieldDescriptionMock('fooName1', 'fooLabel1');
