@@ -232,8 +232,32 @@ You will just need to change the way forms are configured in order to take into 
     }
 
 
-Dropdowns in Tab Menu
----------------------
+Tab Menu
+--------
+
+ACL
+^^^
+
+Though the route linked my a menu may be protected the Tab Menu will not automatically check the ACl for you.
+The link will still appear unless you manually check it using the `isGranted` method:
+
+.. code-block:: php
+
+    <?php
+    protected function configureTabMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
+    {
+        // Link will always appear even if it is protected by ACL
+        $menu->addChild($this->trans('Show'), array('uri' => $admin->generateUrl('show', array('id' => $id))));
+
+        // Link will only appear if access to ACL protected url is granted
+        if ($this->isGranted('EDIT')) {
+            $menu->addChild($this->trans('Edit'), array('uri' => $admin->generateUrl('edit', array('id' => $id))));
+        }
+    }
+
+
+Dropdowns
+^^^^^^^^^
 
 You can use dropdowns inside the Tab Menu by default. This can be achieved by using
 the `"dropdown" => true` attribute:
