@@ -43,6 +43,23 @@ class CRUDController extends Controller
     protected $admin;
 
     /**
+     * Shortcut to keep BC.
+     *
+     * @return Request The current request
+     *
+     * @return Request
+     */
+    public function getRequest()
+    {
+        // In Symfony 2.4+ use "request_stack" service instead Controller::getRequest()
+        if ($this->container->has('request_stack')) {
+            return $this->container->get('request_stack')->getCurrentRequest();
+        }
+
+        return parent::getRequest();
+    }
+
+    /**
      * Render JSON
      *
      * @param mixed   $data
@@ -325,7 +342,7 @@ class CRUDController extends Controller
             $this->validateCsrfToken('sonata.delete', $request);
 
             $objectName = $this->admin->toString($object);
-            
+
             try {
                 $this->admin->delete($object);
 
