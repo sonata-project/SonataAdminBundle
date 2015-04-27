@@ -93,7 +93,9 @@ file that was distributed with this source code.
                                 <div class="progress-bar" style="width: 0%"></div>
                             </div>
                             <span class="progress-description">
-                                {% include 'SonataAdminBundle:Button:create_button.html.twig' %}
+                                {% if not app.request.xmlHttpRequest %}
+                                    {% include 'SonataAdminBundle:Button:create_button.html.twig' %}
+                                {% endif %}
                             </span>
                         </div><!-- /.info-box-content -->
                     </div>
