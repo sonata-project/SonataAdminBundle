@@ -84,7 +84,7 @@ The ``ObjectMetadata`` object is returned by the related admin class, for instan
 .. code-block:: jinja
 
     <?php
-    class MediaAdmin extends AdminInterfance
+    class MediaAdmin extends AdminInterface
     {
         // [...] others methods
 
