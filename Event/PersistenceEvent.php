@@ -32,7 +32,7 @@ class PersistenceEvent extends Event
     const TYPE_PRE_PERSIST  = 'pre_persist';
     const TYPE_POST_PERSIST = 'post_persist';
     const TYPE_PRE_REMOVE   = 'pre_remove';
-    const TYPE_POST_REMOVE  = 'post_update';
+    const TYPE_POST_REMOVE  = 'post_remove';
 
     protected $admin;
 
