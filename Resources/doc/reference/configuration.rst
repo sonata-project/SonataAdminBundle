@@ -60,6 +60,7 @@ Full Configuration Options
                 confirm_exit:         true
                 use_select2:          true
                 use_icheck:           true
+                use_bootlint:         false
                 pager_links:          null
                 form_type:            standard
                 dropdown_number_groups_per_colums:  2
