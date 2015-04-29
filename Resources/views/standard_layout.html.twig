@@ -70,13 +70,6 @@ file that was distributed with this source code.
                     <script src="{{ asset('bundles/sonatacore/vendor/select2/select2_locale_' ~ locale|replace({'_':'-'}) ~ '.js') }}"></script>
                 {% endif %}
             {% endif %}
-
-            {% if admin_pool is defined and admin_pool.getOption('use_bootlint') %}
-                {# Bootlint - https://github.com/twbs/bootlint#in-the-browser #}
-                <script type="text/javascript">
-                    javascript:(function(){var s=document.createElement("script");s.onload=function(){bootlint.showLintReportForCurrentDocument([], {hasProblems: false, problemFree: false});};s.src="https://maxcdn.bootstrapcdn.com/bootlint/latest/bootlint.min.js";document.body.appendChild(s)})();
-                </script>
-            {% endif %}
         {% endblock %}
 
         <title>
@@ -321,5 +314,15 @@ file that was distributed with this source code.
             </div>
         {% endblock sonata_wrapper %}
     </div>
+
+    {% if admin_pool is defined and admin_pool.getOption('use_bootlint') %}
+        {% block bootlint %}
+            {# Bootlint - https://github.com/twbs/bootlint#in-the-browser #}
+            <script type="text/javascript">
+                javascript:(function(){var s=document.createElement("script");s.onload=function(){bootlint.showLintReportForCurrentDocument([], {hasProblems: false, problemFree: false});};s.src="https://maxcdn.bootstrapcdn.com/bootlint/latest/bootlint.min.js";document.body.appendChild(s)})();
+            </script>
+        {% endblock %}
+    {% endif %}
+    
     </body>
 </html>
