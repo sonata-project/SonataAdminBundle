@@ -325,7 +325,7 @@ class CRUDController extends Controller
             $this->validateCsrfToken('sonata.delete', $request);
 
             $objectName = $this->admin->toString($object);
-            
+
             try {
                 $this->admin->delete($object);
 
@@ -1266,11 +1266,16 @@ class CRUDController extends Controller
      */
     protected function getCsrfToken($intention)
     {
-        if (!$this->container->has('form.csrf_provider')) {
-            return false;
+        if ($this->container->has('security.csrf.token_manager')) {
+            return $this->container->get('security.csrf.token_manager')->getToken($intention)->getValue();
         }
 
-        return $this->container->get('form.csrf_provider')->generateCsrfToken($intention);
+        // TODO: Remove it when bumping requirements to SF 2.4+
+        if ($this->container->has('form.csrf_provider')) {
+            return $this->container->get('form.csrf_provider')->generateCsrfToken($intention);
+        }
+
+        return false;
     }
 
     /**
