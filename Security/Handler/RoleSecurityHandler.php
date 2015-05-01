@@ -11,6 +11,7 @@
 
 namespace Sonata\AdminBundle\Security\Handler;
 
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 use Sonata\AdminBundle\Admin\AdminInterface;
@@ -23,17 +24,26 @@ use Sonata\AdminBundle\Admin\AdminInterface;
  */
 class RoleSecurityHandler implements SecurityHandlerInterface
 {
-    protected $securityContext;
+    /**
+     * @var TokenStorageInterface|SecurityContextInterface
+     */
+    protected $tokenStorage;
 
     protected $superAdminRoles;
 
     /**
-     * @param \Symfony\Component\Security\Core\SecurityContextInterface $securityContext
-     * @param array                                                     $superAdminRoles
+     * @param TokenStorageInterface|SecurityContextInterface $tokenStorage
+     * @param array                                          $superAdminRoles
+     *
+     * @todo Go back to signature class check when bumping requirements to SF 2.6+
      */
-    public function __construct(SecurityContextInterface $securityContext, array $superAdminRoles)
+    public function __construct($tokenStorage, array $superAdminRoles)
     {
-        $this->securityContext = $securityContext;
+        if (!$tokenStorage instanceof TokenStorageInterface && !$tokenStorage instanceof SecurityContextInterface) {
+            throw new \InvalidArgumentException('Argument 1 should be an instance of Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface or Symfony\Component\Security\Core\SecurityContextInterface');
+        }
+
+        $this->tokenStorage = $tokenStorage;
         $this->superAdminRoles = $superAdminRoles;
     }
 
@@ -51,8 +61,8 @@ class RoleSecurityHandler implements SecurityHandlerInterface
         }
 
         try {
-            return $this->securityContext->isGranted($this->superAdminRoles)
-                || $this->securityContext->isGranted($attributes, $object);
+            return $this->tokenStorage->isGranted($this->superAdminRoles)
+                || $this->tokenStorage->isGranted($attributes, $object);
         } catch (AuthenticationCredentialsNotFoundException $e) {
             return false;
         } catch (\Exception $e) {

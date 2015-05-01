@@ -11,6 +11,8 @@
 
 namespace Sonata\AdminBundle\Security\Handler;
 
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 use Symfony\Component\Security\Acl\Model\MutableAclProviderInterface;
@@ -31,7 +33,16 @@ use Sonata\AdminBundle\Admin\AdminInterface;
  */
 class AclSecurityHandler implements AclSecurityHandlerInterface
 {
-    protected $securityContext;
+    /**
+     * @var TokenStorageInterface|SecurityContextInterface
+     */
+    protected $tokenStorage;
+
+    /**
+     * @var AuthorizationCheckerInterface|SecurityContextInterface
+     */
+    protected $authorizationChecker;
+
     protected $aclProvider;
     protected $superAdminRoles;
     protected $adminPermissions;
@@ -39,17 +50,28 @@ class AclSecurityHandler implements AclSecurityHandlerInterface
     protected $maskBuilderClass;
 
     /**
-     * @param \Symfony\Component\Security\Core\SecurityContextInterface         $securityContext
-     * @param \Symfony\Component\Security\Acl\Model\MutableAclProviderInterface $aclProvider
-     * @param string                                                            $maskBuilderClass
-     * @param array                                                             $superAdminRoles
+     * @param TokenStorageInterface|SecurityContextInterface $tokenStorage
+     * @param TokenStorageInterface|SecurityContextInterface $authorizationChecker
+     * @param MutableAclProviderInterface                    $aclProvider
+     * @param string                                         $maskBuilderClass
+     * @param array                                          $superAdminRoles
+     *
+     * @todo Go back to signature class check when bumping requirements to SF 2.6+
      */
-    public function __construct(SecurityContextInterface $securityContext, MutableAclProviderInterface $aclProvider, $maskBuilderClass, array $superAdminRoles)
+    public function __construct($tokenStorage, $authorizationChecker, MutableAclProviderInterface $aclProvider, $maskBuilderClass, array $superAdminRoles)
     {
-        $this->securityContext  = $securityContext;
-        $this->aclProvider      = $aclProvider;
-        $this->maskBuilderClass = $maskBuilderClass;
-        $this->superAdminRoles  = $superAdminRoles;
+        if (!$tokenStorage instanceof TokenStorageInterface && !$tokenStorage instanceof SecurityContextInterface) {
+            throw new \InvalidArgumentException('Argument 1 should be an instance of Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface or Symfony\Component\Security\Core\SecurityContextInterface');
+        }
+        if (!$authorizationChecker instanceof AuthorizationCheckerInterface && !$authorizationChecker instanceof SecurityContextInterface) {
+            throw new \InvalidArgumentException('Argument 2 should be an instance of Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface or Symfony\Component\Security\Core\SecurityContextInterface');
+        }
+
+        $this->tokenStorage         = $tokenStorage;
+        $this->authorizationChecker = $authorizationChecker;
+        $this->aclProvider          = $aclProvider;
+        $this->maskBuilderClass     = $maskBuilderClass;
+        $this->superAdminRoles      = $superAdminRoles;
     }
 
     /**
@@ -94,7 +116,7 @@ class AclSecurityHandler implements AclSecurityHandlerInterface
         }
 
         try {
-            return $this->securityContext->isGranted($this->superAdminRoles) || $this->securityContext->isGranted($attributes, $object);
+            return $this->authorizationChecker->isGranted($this->superAdminRoles) || $this->authorizationChecker->isGranted($attributes, $object);
         } catch (AuthenticationCredentialsNotFoundException $e) {
             return false;
         } catch (\Exception $e) {
@@ -138,7 +160,7 @@ class AclSecurityHandler implements AclSecurityHandlerInterface
         }
 
         // retrieving the security identity of the currently logged-in user
-        $user             = $this->securityContext->getToken()->getUser();
+        $user             = $this->tokenStorage->getToken()->getUser();
         $securityIdentity = UserSecurityIdentity::fromAccount($user);
 
         $this->addObjectOwner($acl, $securityIdentity);
