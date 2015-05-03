@@ -121,6 +121,7 @@ var Admin = {
             emptyclass: 'editable-empty btn btn-sm btn-default',
             emptytext: '<i class="glyphicon glyphicon-edit"></i>',
             container: 'body',
+            placement: 'auto',
             success: function(response) {
                 if('KO' === response.status) {
                     return response.message;
