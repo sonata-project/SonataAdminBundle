@@ -51,8 +51,8 @@ class RoleSecurityHandler implements SecurityHandlerInterface
         }
 
         try {
-            return $this->securityContext->isGranted($this->superAdminRoles)
-                || $this->securityContext->isGranted($attributes, $object);
+            return $this->securityContext->isGranted($attributes, $object)
+                || $this->securityContext->isGranted($this->superAdminRoles);
         } catch (AuthenticationCredentialsNotFoundException $e) {
             return false;
         } catch (\Exception $e) {

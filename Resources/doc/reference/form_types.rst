@@ -442,7 +442,7 @@ btn_add and btn_catalogue:
   corresponding button. You can also specify a custom translation catalogue
   for this label, which defaults to ``SonataAdminBundle``.
 
-**TIP**: A jQuery event is fired after a row has been added (``sonata-admin-append-form-element``).
+**TIP**: A jQuery event is fired after a row has been added (``sonata.add_element``).
 You can listen to this event to trigger custom javascript (eg: add a calendar widget to a newly added date field)
 
 **TIP**: Setting the 'required' option to true does not cause a requirement of 'at least one' child entity.
