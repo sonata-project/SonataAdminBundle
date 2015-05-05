@@ -142,7 +142,7 @@ BOOM
         }
         $container
             ->getDefinition('sonata.admin.security.handler.role')
-            ->replaceArgument(0, $tokenStorageReference)
+            ->replaceArgument(0, $authorizationCheckerReference)
         ;
         $container
             ->getDefinition('sonata.admin.security.handler.acl')
