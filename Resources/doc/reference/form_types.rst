@@ -85,6 +85,8 @@ btn_add, btn_list, btn_delete and btn_catalogue:
   with these parameters. Setting any of them to ``false`` will hide the
   corresponding button. You can also specify a custom translation catalogue
   for these labels, which defaults to ``SonataAdminBundle``.
+  
+Note: An admin class for the linked model class needs to be defined to render this form type.  
 
 sonata_type_model_hidden
 ^^^^^^^^^^^^^^^^^^^^^^^^
