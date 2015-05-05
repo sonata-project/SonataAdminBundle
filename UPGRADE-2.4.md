@@ -22,3 +22,7 @@ The inline validation has been migrating to CoreBundle. Just rename ``Sonata\Adm
 ## AdminLTE 2
 
 AdminLTE version 2 has been integrated, this should work out of the box if you havn't change templates. If not you can review the upgrade guide here : [http://almsaeedstudio.com/themes/AdminLTE/documentation/index.html#upgrade](http://almsaeedstudio.com/themes/AdminLTE/documentation/index.html#upgrade)
+
+## AclSecurityHandler
+
+In order to fix deprecated issue by spiting `SecurityContextInterface`, `AclSecurityHandler` constructor got a new argument.

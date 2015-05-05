@@ -13,6 +13,7 @@ namespace Sonata\AdminBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Definition\Processor;
@@ -129,6 +130,25 @@ BOOM
         $container->setParameter('sonata.admin.configuration.security.object_permissions', $config['security']['object_permissions']);
 
         $loader->load('security.xml');
+
+        // Set the SecurityContext for Symfony <2.6
+        // TODO: Go back to simple xml configuration when bumping requirements to SF 2.6+
+        if (interface_exists('Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface')) {
+            $tokenStorageReference = new Reference('security.token_storage');
+            $authorizationCheckerReference = new Reference('security.authorization_checker');
+        } else {
+            $tokenStorageReference = new Reference('security.context');
+            $authorizationCheckerReference = new Reference('security.context');
+        }
+        $container
+            ->getDefinition('sonata.admin.security.handler.role')
+            ->replaceArgument(0, $tokenStorageReference)
+        ;
+        $container
+            ->getDefinition('sonata.admin.security.handler.acl')
+            ->replaceArgument(0, $tokenStorageReference)
+            ->replaceArgument(1, $authorizationCheckerReference)
+        ;
 
         $container->setParameter('sonata.admin.extension.map', $config['extensions']);
 
