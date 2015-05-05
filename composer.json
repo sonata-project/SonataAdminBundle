@@ -1,5 +1,6 @@
 {
     "name": "sonata-project/admin-bundle",
+    "version": "dev-bugfix",
     "type": "symfony-bundle",
     "description": "Symfony SonataAdminBundle",
     "keywords": ["Admin Generator", "admin", "sonata", "bootstrap"],
