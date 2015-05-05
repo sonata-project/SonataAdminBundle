@@ -235,7 +235,11 @@ file that was distributed with this source code.
 
 {% block form_row %}
     <div class="form-group{% if errors|length > 0 %} has-error{% endif %}" id="sonata-ba-field-container-{{ id }}">
-        {% set label = sonata_admin.field_description.options.name|default(label)  %}
+       {% if sonata_admin.field_description and sonata_admin.field_description.options %}
+            {% set label = sonata_admin.field_description.options.name|default(label)  %}
+        {% else %}
+            {% set label = false %}
+        {% endif %}
 
         {% set div_class = 'sonata-ba-field' %}
 
