@@ -246,6 +246,11 @@ class CRUDController extends Controller
             throw new AccessDeniedException();
         }
 
+        $preResponse = $this->preList($request);
+        if ($preResponse !== null) {
+            return $preResponse;
+        }
+
         if ($listMode = $request->get('_list_mode')) {
             $this->admin->setListMode($listMode);
         }
@@ -284,7 +289,6 @@ class CRUDController extends Controller
             $modelManager->batchDelete($this->admin->getClass(), $query);
             $this->addFlash('sonata_flash_success', 'flash_batch_delete_success');
         } catch (ModelManagerException $e) {
-
             $this->handleModelManagerException($e);
             $this->addFlash('sonata_flash_error', 'flash_batch_delete_error');
         }
@@ -320,12 +324,17 @@ class CRUDController extends Controller
             throw new AccessDeniedException();
         }
 
-        if ($this->getRestMethod($request) == 'DELETE') {
+        $preResponse = $this->preDelete($request, $object);
+        if ($preResponse !== null) {
+            return $preResponse;
+        }
+
+        if ($this->getRestMethod($request) === 'DELETE') {
             // check the csrf token
             $this->validateCsrfToken('sonata.delete', $request);
 
             $objectName = $this->admin->toString($object);
-            
+
             try {
                 $this->admin->delete($object);
 
@@ -341,7 +350,6 @@ class CRUDController extends Controller
                         'SonataAdminBundle'
                     )
                 );
-
             } catch (ModelManagerException $e) {
                 $this->handleModelManagerException($e);
 
@@ -365,7 +373,7 @@ class CRUDController extends Controller
         return $this->render($this->admin->getTemplate('delete'), array(
             'object'     => $object,
             'action'     => 'delete',
-            'csrf_token' => $this->getCsrfToken('sonata.delete')
+            'csrf_token' => $this->getCsrfToken('sonata.delete'),
         ), null, $request);
     }
 
@@ -397,27 +405,31 @@ class CRUDController extends Controller
             throw new AccessDeniedException();
         }
 
+        $preResponse = $this->preEdit($request, $object);
+        if ($preResponse !== null) {
+            return $preResponse;
+        }
+
         $this->admin->setSubject($object);
 
         /** @var $form \Symfony\Component\Form\Form */
         $form = $this->admin->getForm();
         $form->setData($object);
 
-        if ($this->getRestMethod($request) == 'POST') {
+        if ($this->getRestMethod($request) === 'POST') {
             $form->submit($request);
 
             $isFormValid = $form->isValid();
 
             // persist if the form was valid and if in preview mode the preview was approved
             if ($isFormValid && (!$this->isInPreviewMode($request) || $this->isPreviewApproved($request))) {
-
                 try {
                     $object = $this->admin->update($object);
 
                     if ($this->isXmlHttpRequest($request)) {
                         return $this->renderJson(array(
                             'result'    => 'ok',
-                            'objectId'  => $this->admin->getNormalizedIdentifier($object)
+                            'objectId'  => $this->admin->getNormalizedIdentifier($object),
                         ), 200, array(), $request);
                     }
 
@@ -432,7 +444,6 @@ class CRUDController extends Controller
 
                     // redirect to edit mode
                     return $this->redirectTo($object, $request);
-
                 } catch (ModelManagerException $e) {
                     $this->handleModelManagerException($e);
 
@@ -500,7 +511,7 @@ class CRUDController extends Controller
             $url = $this->admin->generateUrl('create', $params);
         }
 
-        if ($this->getRestMethod($request) == 'DELETE') {
+        if ($this->getRestMethod($request) === 'DELETE') {
             $url = $this->admin->generateUrl('list');
         }
 
@@ -661,20 +672,24 @@ class CRUDController extends Controller
 
         $object = $this->admin->getNewInstance();
 
+        $preResponse = $this->preCreate($request, $object);
+        if ($preResponse !== null) {
+            return $preResponse;
+        }
+
         $this->admin->setSubject($object);
 
         /** @var $form \Symfony\Component\Form\Form */
         $form = $this->admin->getForm();
         $form->setData($object);
 
-        if ($this->getRestMethod($request) == 'POST') {
+        if ($this->getRestMethod($request) === 'POST') {
             $form->submit($request);
 
             $isFormValid = $form->isValid();
 
             // persist if the form was valid and if in preview mode the preview was approved
             if ($isFormValid && (!$this->isInPreviewMode($request) || $this->isPreviewApproved($request))) {
-
                 if (false === $this->admin->isGranted('CREATE', $object)) {
                     throw new AccessDeniedException();
                 }
@@ -685,7 +700,7 @@ class CRUDController extends Controller
                     if ($this->isXmlHttpRequest($request)) {
                         return $this->renderJson(array(
                             'result' => 'ok',
-                            'objectId' => $this->admin->getNormalizedIdentifier($object)
+                            'objectId' => $this->admin->getNormalizedIdentifier($object),
                         ), 200, array(), $request);
                     }
 
@@ -700,7 +715,6 @@ class CRUDController extends Controller
 
                     // redirect to edit mode
                     return $this->redirectTo($object, $request);
-
                 } catch (ModelManagerException $e) {
                     $this->handleModelManagerException($e);
 
@@ -825,6 +839,11 @@ class CRUDController extends Controller
 
         if (false === $this->admin->isGranted('VIEW', $object)) {
             throw new AccessDeniedException();
+        }
+
+        $preResponse = $this->preShow($request, $object);
+        if ($preResponse !== null) {
+            return $preResponse;
         }
 
         $this->admin->setSubject($object);
@@ -1022,7 +1041,7 @@ class CRUDController extends Controller
             'action'            => 'show',
             'object'            => $base_object,
             'object_compare'    => $compare_object,
-            'elements'          => $this->admin->getShow()
+            'elements'          => $this->admin->getShow(),
         ), null, $request);
     }
 
@@ -1204,7 +1223,7 @@ class CRUDController extends Controller
             'users'        => $aclUsers,
             'roles'        => $aclRoles,
             'aclUsersForm' => $aclUsersForm->createView(),
-            'aclRolesForm' => $aclRolesForm->createView()
+            'aclRolesForm' => $aclRolesForm->createView(),
         ), null, $request);
     }
 
@@ -1271,6 +1290,70 @@ class CRUDController extends Controller
         }
 
         return $this->container->get('form.csrf_provider')->generateCsrfToken($intention);
+    }
+
+    /**
+     * This method can be overloaded in your custom CRUD controller.
+     * It's called from createAction.
+     *
+     * @param Request $request
+     * @param mixed   $object
+     *
+     * @return Response|null
+     */
+    protected function preCreate(Request $request, $object)
+    {
+    }
+
+    /**
+     * This method can be overloaded in your custom CRUD controller.
+     * It's called from editAction.
+     *
+     * @param Request $request
+     * @param mixed   $object
+     *
+     * @return Response|null
+     */
+    protected function preEdit(Request $request, $object)
+    {
+    }
+
+    /**
+     * This method can be overloaded in your custom CRUD controller.
+     * It's called from deleteAction.
+     *
+     * @param Request $request
+     * @param mixed   $object
+     *
+     * @return Response|null
+     */
+    protected function preDelete(Request $request, $object)
+    {
+    }
+
+    /**
+     * This method can be overloaded in your custom CRUD controller.
+     * It's called from showAction.
+     *
+     * @param Request $request
+     * @param mixed   $object
+     *
+     * @return Response|null
+     */
+    protected function preShow(Request $request, $object)
+    {
+    }
+
+    /**
+     * This method can be overloaded in your custom CRUD controller.
+     * It's called from listAction.
+     *
+     * @param Request $request
+     *
+     * @return Response|null
+     */
+    protected function preList(Request $request)
+    {
     }
 
     /**

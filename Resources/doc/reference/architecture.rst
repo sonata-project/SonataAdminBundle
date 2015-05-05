@@ -147,6 +147,18 @@ a set of automatically injected dependencies that are useful when implementing s
 scenarios. Refer to the existing ``CRUDController`` actions for examples of how to get
 the best out of them.
 
+In your overloaded CRUDController you can overload also these methods to limit
+the number of duplicated code from SonataAdmin:
+* ``preCreate``: called from ``createAction``
+* ``preEdit``: called from ``editAction``
+* ``preDelete``: called from ``deleteAction``
+* ``preShow``: called from ``showAction``
+* ``preList``: called from ``listAction``
+
+These methods are called after checking the access rights and after retrieving the object
+from database. You can use them if you need to redirect user to some other page under certain conditions.
+
+
 Fields Definition
 -----------------
 

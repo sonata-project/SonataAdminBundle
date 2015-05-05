@@ -30,6 +30,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Form\Extension\Csrf\CsrfProvider\CsrfProviderInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\Tests\Fixtures\Controller\PreCRUDController;
 
 /**
  * Test for CRUDController
@@ -173,7 +174,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
                         return $formExtension;
                 }
 
-                return null;
+                return;
             }));
 
         $exporter = $this->getMock('Sonata\AdminBundle\Export\Exporter');
@@ -277,7 +278,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
                         return $kernel;
                 }
 
-                return null;
+                return;
             }));
 
         // php 5.3
@@ -286,7 +287,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->container->expects($this->any())
             ->method('has')
             ->will($this->returnCallback(function ($id) use ($tthis) {
-                if ($id == 'form.csrf_provider' && $tthis->getCsrfProvider()!==null) {
+                if ($id == 'form.csrf_provider' && $tthis->getCsrfProvider() !== null) {
                     return true;
                 }
 
@@ -305,7 +306,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
                        return array('ROLE_SUPER_ADMIN' => array('ROLE_USER', 'ROLE_SONATA_ADMIN', 'ROLE_ADMIN'));
                 }
 
-                return null;
+                return;
             }));
 
         $this->admin->expects($this->any())
@@ -342,7 +343,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
                         return 'SonataAdminBundle:CRUD:batch_confirmation.html.twig';
                 }
 
-                return null;
+                return;
             }));
 
         $this->admin->expects($this->any())
@@ -389,7 +390,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             'configure',
             'getBaseTemplate',
             'redirectTo',
-            'addFlash'
+            'addFlash',
         );
         foreach ($testedMethods as $testedMethod) {
             $method = new \ReflectionMethod('Sonata\\AdminBundle\\Controller\\CRUDController', $testedMethod);
@@ -400,7 +401,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
     public function testRenderJson1()
     {
-        $data = array('example'=>'123', 'foo'=>'bar');
+        $data = array('example' => '123', 'foo' => 'bar');
 
         $this->request->headers->set('Content-Type', 'application/x-www-form-urlencoded');
         $response = $this->protectedTestedMethods['renderJson']->invoke($this->controller, $data, 200, array(), $this->request);
@@ -411,7 +412,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
     public function testRenderJson2()
     {
-        $data = array('example'=>'123', 'foo'=>'bar');
+        $data = array('example' => '123', 'foo' => 'bar');
 
         $this->request->headers->set('Content-Type', 'multipart/form-data');
         $response = $this->protectedTestedMethods['renderJson']->invoke($this->controller, $data, 200, array(), $this->request);
@@ -422,7 +423,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
     public function testRenderJsonAjax()
     {
-        $data = array('example'=>'123', 'foo'=>'bar');
+        $data = array('example' => '123', 'foo' => 'bar');
 
         $this->request->attributes->set('_xml_http_request', true);
         $this->request->headers->set('Content-Type', 'multipart/form-data');
@@ -505,7 +506,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException(
             'RuntimeException',
-            'Unable to find the admin class related to the current controller ' .
+            'Unable to find the admin class related to the current controller '.
             '(Sonata\AdminBundle\Controller\CRUDController)'
         );
 
@@ -574,7 +575,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf(
             'Symfony\Component\HttpFoundation\Response',
             $this->controller->render('FooAdminBundle::foo.html.twig',
-            array('foo'=>'bar'), null, $this->request)
+            array('foo' => 'bar'), null, $this->request)
         );
         $this->assertEquals($this->admin, $this->parameters['admin']);
         $this->assertEquals('SonataAdminBundle::standard_layout.html.twig', $this->parameters['base_template']);
@@ -587,7 +588,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
     {
         $this->parameters = array();
         $this->request->headers->set('X-Requested-With', 'XMLHttpRequest');
-        $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $this->controller->render('FooAdminBundle::foo.html.twig', array('foo'=>'bar'), null, $this->request));
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $this->controller->render('FooAdminBundle::foo.html.twig', array('foo' => 'bar'), null, $this->request));
         $this->assertEquals($this->admin, $this->parameters['admin']);
         $this->assertEquals('SonataAdminBundle::ajax_layout.html.twig', $this->parameters['base_template']);
         $this->assertEquals($this->pool, $this->parameters['admin_pool']);
@@ -607,6 +608,21 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->controller->listAction($this->request);
     }
 
+    public function testPreList()
+    {
+        $this->admin->expects($this->once())
+            ->method('isGranted')
+            ->with($this->equalTo('LIST'))
+            ->will($this->returnValue(true));
+
+        $controller = new PreCRUDController();
+        $controller->setContainer($this->container);
+
+        $response = $controller->listAction($this->request);
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $response);
+        $this->assertEquals('preList called', $response->getContent());
+    }
+
     public function testListAction()
     {
         $datagrid = $this->getMock('Sonata\AdminBundle\Datagrid\DatagridInterface');
@@ -620,7 +636,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-         $form->expects($this->once())
+        $form->expects($this->once())
             ->method('createView')
             ->will($this->returnValue($this->getMock('Symfony\Component\Form\FormView')));
 
@@ -674,7 +690,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
         $this->admin->expects($this->once())
             ->method('getFilterParameters')
-            ->will($this->returnValue(array('foo'=>'bar')));
+            ->will($this->returnValue(array('foo' => 'bar')));
 
         $result = $this->controller->batchActionDelete($this->getMock('Sonata\AdminBundle\Datagrid\ProxyQueryInterface'));
 
@@ -701,7 +717,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->method('error')
             ->with($message, array(
                 'exception' => $exception,
-                'previous_exception_message' => $previousExceptionMessage
+                'previous_exception_message' => $previousExceptionMessage,
             ));
     }
 
@@ -716,7 +732,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
         $this->admin->expects($this->once())
             ->method('getFilterParameters')
-            ->will($this->returnValue(array('foo'=>'bar')));
+            ->will($this->returnValue(array('foo' => 'bar')));
 
         $result = $this->controller->batchActionDelete($this->getMock('Sonata\AdminBundle\Datagrid\ProxyQueryInterface'));
 
@@ -772,6 +788,28 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(false));
 
         $this->controller->showAction(null, $this->request);
+    }
+
+    public function testPreShow()
+    {
+        $object = new \stdClass();
+        $object->foo = 123456;
+
+        $this->admin->expects($this->once())
+            ->method('getObject')
+            ->will($this->returnValue($object));
+
+        $this->admin->expects($this->once())
+            ->method('isGranted')
+            ->with($this->equalTo('VIEW'))
+            ->will($this->returnValue(true));
+
+        $controller = new PreCRUDController();
+        $controller->setContainer($this->container);
+
+        $response = $controller->showAction(null, $this->request);
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $response);
+        $this->assertEquals('preShow called: 123456', $response->getContent());
     }
 
     public function testShowAction()
@@ -831,10 +869,10 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array('stdClass_edit', array(), false),
-            array('list', array('btn_update_and_list'=>true), false),
-            array('list', array('btn_create_and_list'=>true), false),
-            array('create', array('btn_create_and_create'=>true), false),
-            array('create?subclass=foo', array('btn_create_and_create'=>true, 'subclass'=>'foo'), true),
+            array('list', array('btn_update_and_list' => true), false),
+            array('list', array('btn_create_and_list' => true), false),
+            array('create', array('btn_create_and_create' => true), false),
+            array('create?subclass=foo', array('btn_create_and_create' => true, 'subclass' => 'foo'), true),
         );
     }
 
@@ -869,6 +907,28 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(false));
 
         $this->controller->deleteAction(1, $this->request);
+    }
+
+    public function testPreDelete()
+    {
+        $object = new \stdClass();
+        $object->foo = 123456;
+
+        $this->admin->expects($this->once())
+            ->method('getObject')
+            ->will($this->returnValue($object));
+
+        $this->admin->expects($this->once())
+            ->method('isGranted')
+            ->with($this->equalTo('DELETE'))
+            ->will($this->returnValue(true));
+
+        $controller = new PreCRUDController();
+        $controller->setContainer($this->container);
+
+        $response = $controller->deleteAction(null, $this->request);
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $response);
+        $this->assertEquals('preDelete called: 123456', $response->getContent());
     }
 
     public function testDeleteAction()
@@ -948,7 +1008,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $response = $this->controller->deleteAction(1, $this->request);
 
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $response);
-        $this->assertEquals(json_encode(array('result'=>'ok')), $response->getContent());
+        $this->assertEquals(json_encode(array('result' => 'ok')), $response->getContent());
         $this->assertEquals(array(), $this->session->getFlashBag()->all());
     }
 
@@ -974,7 +1034,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $response = $this->controller->deleteAction(1, $this->request);
 
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $response);
-        $this->assertEquals(json_encode(array('result'=>'ok')), $response->getContent());
+        $this->assertEquals(json_encode(array('result' => 'ok')), $response->getContent());
         $this->assertEquals(array(), $this->session->getFlashBag()->all());
     }
 
@@ -1005,7 +1065,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $response = $this->controller->deleteAction(1, $this->request);
 
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $response);
-        $this->assertEquals(json_encode(array('result'=>'error')), $response->getContent());
+        $this->assertEquals(json_encode(array('result' => 'error')), $response->getContent());
         $this->assertEquals(array(), $this->session->getFlashBag()->all());
     }
 
@@ -1038,7 +1098,6 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.delete');
 
         $this->controller->deleteAction(1, $this->request);
-
     }
 
     /**
@@ -1262,6 +1321,28 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->controller->editAction(null, $this->request);
     }
 
+    public function testPreEdit()
+    {
+        $object = new \stdClass();
+        $object->foo = 123456;
+
+        $this->admin->expects($this->once())
+            ->method('getObject')
+            ->will($this->returnValue($object));
+
+        $this->admin->expects($this->once())
+            ->method('isGranted')
+            ->with($this->equalTo('EDIT'))
+            ->will($this->returnValue(true));
+
+        $controller = new PreCRUDController();
+        $controller->setContainer($this->container);
+
+        $response = $controller->editAction(null, $this->request);
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $response);
+        $this->assertEquals('preEdit called: 123456', $response->getContent());
+    }
+
     public function testEditAction()
     {
         $object = new \stdClass();
@@ -1403,7 +1484,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Symfony\Component\Form\FormView', $this->parameters['form']);
         $this->assertEquals($object, $this->parameters['object']);
 
-        $this->assertEquals(array('sonata_flash_error'=>array('flash_edit_error')), $this->session->getFlashBag()->all());
+        $this->assertEquals(array('sonata_flash_error' => array('flash_edit_error')), $this->session->getFlashBag()->all());
         $this->assertEquals('SonataAdminBundle:CRUD:edit.html.twig', $this->template);
     }
 
@@ -1447,7 +1528,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $response = $this->controller->editAction(null, $this->request);
 
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $response);
-        $this->assertEquals(json_encode(array('result'=>'ok', 'objectId'  => 'foo_normalized')), $response->getContent());
+        $this->assertEquals(json_encode(array('result' => 'ok', 'objectId'  => 'foo_normalized')), $response->getContent());
         $this->assertEquals(array(), $this->session->getFlashBag()->all());
     }
 
@@ -1496,6 +1577,64 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($object, $this->parameters['object']);
 
         $this->assertEquals(array(), $this->session->getFlashBag()->all());
+        $this->assertEquals('SonataAdminBundle:CRUD:edit.html.twig', $this->template);
+    }
+
+    /**
+     * @dataProvider getToStringValues
+     */
+    public function testEditActionWithModelManagerException($expectedToStringValue, $toStringValue)
+    {
+        $object = new \stdClass();
+
+        $this->admin->expects($this->once())
+            ->method('getObject')
+            ->will($this->returnValue($object));
+
+        $this->admin->expects($this->once())
+            ->method('isGranted')
+            ->with($this->equalTo('EDIT'))
+            ->will($this->returnValue(true));
+
+        $form = $this->getMockBuilder('Symfony\Component\Form\Form')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->admin->expects($this->once())
+            ->method('getForm')
+            ->will($this->returnValue($form));
+
+        $form->expects($this->once())
+            ->method('isValid')
+            ->will($this->returnValue(true));
+
+        $this->admin->expects($this->once())
+            ->method('toString')
+            ->with($this->equalTo($object))
+            ->will($this->returnValue($toStringValue));
+
+        $this->expectTranslate('flash_edit_error', array('%name%' => $expectedToStringValue), 'SonataAdminBundle');
+
+        $this->request->setMethod('POST');
+
+        $formView = $this->getMock('Symfony\Component\Form\FormView');
+
+        $form->expects($this->any())
+            ->method('createView')
+            ->will($this->returnValue($formView));
+
+        $this->assertLoggerLogsModelManagerException($this->admin, 'update');
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $this->controller->editAction(null, $this->request));
+
+        $this->assertEquals($this->admin, $this->parameters['admin']);
+        $this->assertEquals('SonataAdminBundle::standard_layout.html.twig', $this->parameters['base_template']);
+        $this->assertEquals($this->pool, $this->parameters['admin_pool']);
+
+        $this->assertEquals('edit', $this->parameters['action']);
+        $this->assertInstanceOf('Symfony\Component\Form\FormView', $this->parameters['form']);
+        $this->assertEquals($object, $this->parameters['object']);
+
+        $this->assertEquals(array('sonata_flash_error' => array('flash_edit_error')), $this->session->getFlashBag()->all());
         $this->assertEquals('SonataAdminBundle:CRUD:edit.html.twig', $this->template);
     }
 
@@ -1561,6 +1700,28 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(false));
 
         $this->controller->createAction($this->request);
+    }
+
+    public function testPreCreate()
+    {
+        $object = new \stdClass();
+        $object->foo = 123456;
+
+        $this->admin->expects($this->once())
+            ->method('isGranted')
+            ->with($this->equalTo('CREATE'))
+            ->will($this->returnValue(true));
+
+        $this->admin->expects($this->once())
+            ->method('getNewInstance')
+            ->will($this->returnValue($object));
+
+        $controller = new PreCRUDController();
+        $controller->setContainer($this->container);
+
+        $response = $controller->createAction($this->request);
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $response);
+        $this->assertEquals('preCreate called: 123456', $response->getContent());
     }
 
     public function testCreateAction()
@@ -1770,7 +1931,66 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Symfony\Component\Form\FormView', $this->parameters['form']);
         $this->assertEquals($object, $this->parameters['object']);
 
-        $this->assertEquals(array('sonata_flash_error'=>array('flash_create_error')), $this->session->getFlashBag()->all());
+        $this->assertEquals(array('sonata_flash_error' => array('flash_create_error')), $this->session->getFlashBag()->all());
+        $this->assertEquals('SonataAdminBundle:CRUD:edit.html.twig', $this->template);
+    }
+
+    /**
+     * @dataProvider getToStringValues
+     */
+    public function testCreateActionWithModelManagerException($expectedToStringValue, $toStringValue)
+    {
+        $this->admin->expects($this->exactly(2))
+            ->method('isGranted')
+            ->with($this->equalTo('CREATE'))
+            ->will($this->returnValue(true));
+
+        $object = new \stdClass();
+
+        $this->admin->expects($this->once())
+            ->method('getNewInstance')
+            ->will($this->returnValue($object));
+
+        $form = $this->getMockBuilder('Symfony\Component\Form\Form')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->admin->expects($this->once())
+            ->method('getForm')
+            ->will($this->returnValue($form));
+
+        $form->expects($this->once())
+            ->method('isValid')
+            ->will($this->returnValue(true));
+
+        $this->admin->expects($this->once())
+            ->method('toString')
+            ->with($this->equalTo($object))
+            ->will($this->returnValue($toStringValue));
+
+        $this->expectTranslate('flash_create_error', array('%name%' => $expectedToStringValue), 'SonataAdminBundle');
+
+        $this->request->setMethod('POST');
+
+        $formView = $this->getMock('Symfony\Component\Form\FormView');
+
+        $form->expects($this->any())
+            ->method('createView')
+            ->will($this->returnValue($formView));
+
+        $this->assertLoggerLogsModelManagerException($this->admin, 'create');
+
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $this->controller->createAction($this->request));
+
+        $this->assertEquals($this->admin, $this->parameters['admin']);
+        $this->assertEquals('SonataAdminBundle::standard_layout.html.twig', $this->parameters['base_template']);
+        $this->assertEquals($this->pool, $this->parameters['admin_pool']);
+
+        $this->assertEquals('create', $this->parameters['action']);
+        $this->assertInstanceOf('Symfony\Component\Form\FormView', $this->parameters['form']);
+        $this->assertEquals($object, $this->parameters['object']);
+
+        $this->assertEquals(array('sonata_flash_error' => array('flash_create_error')), $this->session->getFlashBag()->all());
         $this->assertEquals('SonataAdminBundle:CRUD:edit.html.twig', $this->template);
     }
 
@@ -1827,7 +2047,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $response = $this->controller->createAction($this->request);
 
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $response);
-        $this->assertEquals(json_encode(array('result'=>'ok', 'objectId'  => 'foo_normalized')), $response->getContent());
+        $this->assertEquals(json_encode(array('result' => 'ok', 'objectId'  => 'foo_normalized')), $response->getContent());
         $this->assertEquals(array(), $this->session->getFlashBag()->all());
     }
 
@@ -2801,7 +3021,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($batchActions));
 
         $this->request->setMethod('POST');
-        $this->request->request->set('data', json_encode(array('action'=>'foo', 'idx'=>array('123', '456'), 'all_elements'=>false)));
+        $this->request->request->set('data', json_encode(array('action' => 'foo', 'idx' => array('123', '456'), 'all_elements' => false)));
         $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.batch');
 
         $this->controller->batchAction($this->request);
@@ -2810,7 +3030,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
     public function testBatchActionActionInvalidCsrfToken()
     {
         $this->request->setMethod('POST');
-        $this->request->request->set('data', json_encode(array('action'=>'foo', 'idx'=>array('123', '456'), 'all_elements'=>false)));
+        $this->request->request->set('data', json_encode(array('action' => 'foo', 'idx' => array('123', '456'), 'all_elements' => false)));
         $this->request->request->set('_sonata_csrf_token', 'CSRF-INVALID');
 
         try {
@@ -2825,7 +3045,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException('RuntimeException', 'A `Sonata\AdminBundle\Controller\CRUDController::batchActionFoo` method must be callable');
 
-        $batchActions = array('foo'=>array('label'=>'Foo Bar', 'ask_confirmation' => false));
+        $batchActions = array('foo' => array('label' => 'Foo Bar', 'ask_confirmation' => false));
 
         $this->admin->expects($this->once())
             ->method('getBatchActions')
@@ -2837,7 +3057,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($datagrid));
 
         $this->request->setMethod('POST');
-        $this->request->request->set('data', json_encode(array('action'=>'foo', 'idx'=>array('123', '456'), 'all_elements'=>false)));
+        $this->request->request->set('data', json_encode(array('action' => 'foo', 'idx' => array('123', '456'), 'all_elements' => false)));
         $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.batch');
 
         $this->controller->batchAction($this->request);
@@ -2845,7 +3065,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
     public function testBatchActionWithoutConfirmation()
     {
-        $batchActions = array('delete'=>array('label'=>'Foo Bar', 'ask_confirmation' => false));
+        $batchActions = array('delete' => array('label' => 'Foo Bar', 'ask_confirmation' => false));
 
         $this->admin->expects($this->once())
             ->method('getBatchActions')
@@ -2883,7 +3103,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(true));
 
         $this->request->setMethod('POST');
-        $this->request->request->set('data', json_encode(array('action'=>'delete', 'idx'=>array('123', '456'), 'all_elements'=>false)));
+        $this->request->request->set('data', json_encode(array('action' => 'delete', 'idx' => array('123', '456'), 'all_elements' => false)));
         $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.batch');
 
         $result = $this->controller->batchAction($this->request);
@@ -2895,7 +3115,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
     public function testBatchActionWithoutConfirmation2()
     {
-        $batchActions = array('delete'=>array('label'=>'Foo Bar', 'ask_confirmation' => false));
+        $batchActions = array('delete' => array('label' => 'Foo Bar', 'ask_confirmation' => false));
 
         $this->admin->expects($this->once())
             ->method('getBatchActions')
@@ -2946,13 +3166,13 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
     public function testBatchActionWithConfirmation()
     {
-        $batchActions = array('delete'=>array('label'=>'Foo Bar', 'ask_confirmation' => true));
+        $batchActions = array('delete' => array('label' => 'Foo Bar', 'ask_confirmation' => true));
 
         $this->admin->expects($this->once())
             ->method('getBatchActions')
             ->will($this->returnValue($batchActions));
 
-        $data = array('action'=>'delete', 'idx'=>array('123', '456'), 'all_elements'=>false);
+        $data = array('action' => 'delete', 'idx' => array('123', '456'), 'all_elements' => false);
 
         $this->request->setMethod('POST');
         $this->request->request->set('data', json_encode($data));
@@ -2968,7 +3188,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-         $form->expects($this->once())
+        $form->expects($this->once())
             ->method('createView')
             ->will($this->returnValue($this->getMock('Symfony\Component\Form\FormView')));
 
@@ -2998,7 +3218,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $controller = new BatchAdminController();
         $controller->setContainer($this->container);
 
-        $batchActions = array('foo'=>array('label'=>'Foo Bar', 'ask_confirmation' => false));
+        $batchActions = array('foo' => array('label' => 'Foo Bar', 'ask_confirmation' => false));
 
         $this->admin->expects($this->once())
             ->method('getBatchActions')
@@ -3027,7 +3247,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $controller = new BatchAdminController();
         $controller->setContainer($this->container);
 
-        $batchActions = array('foo'=>array('label'=>'Foo Bar', 'ask_confirmation' => false));
+        $batchActions = array('foo' => array('label' => 'Foo Bar', 'ask_confirmation' => false));
 
         $this->admin->expects($this->once())
             ->method('getBatchActions')
@@ -3053,7 +3273,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
     public function testBatchActionNoItems()
     {
-        $batchActions = array('delete'=>array('label'=>'Foo Bar', 'ask_confirmation' => true));
+        $batchActions = array('delete' => array('label' => 'Foo Bar', 'ask_confirmation' => true));
 
         $this->admin->expects($this->once())
             ->method('getBatchActions')
@@ -3082,7 +3302,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $controller = new BatchAdminController();
         $controller->setContainer($this->container);
 
-        $batchActions = array('bar'=>array('label'=>'Foo Bar', 'ask_confirmation' => false));
+        $batchActions = array('bar' => array('label' => 'Foo Bar', 'ask_confirmation' => false));
 
         $this->admin->expects($this->once())
             ->method('getBatchActions')
