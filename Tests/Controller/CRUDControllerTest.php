@@ -1412,6 +1412,10 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($form));
 
         $form->expects($this->once())
+            ->method('isSubmitted')
+            ->will($this->returnValue(true));
+
+        $form->expects($this->once())
             ->method('isValid')
             ->will($this->returnValue(true));
 
@@ -1454,6 +1458,10 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->admin->expects($this->once())
             ->method('getForm')
             ->will($this->returnValue($form));
+
+        $form->expects($this->once())
+            ->method('isSubmitted')
+            ->will($this->returnValue(true));
 
         $form->expects($this->once())
             ->method('isValid')
@@ -1514,6 +1522,10 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($form));
 
         $form->expects($this->once())
+            ->method('isSubmitted')
+            ->will($this->returnValue(true));
+
+        $form->expects($this->once())
             ->method('isValid')
             ->will($this->returnValue(true));
 
@@ -1552,6 +1564,10 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->admin->expects($this->once())
             ->method('getForm')
             ->will($this->returnValue($form));
+
+        $form->expects($this->once())
+            ->method('isSubmitted')
+            ->will($this->returnValue(true));
 
         $form->expects($this->once())
             ->method('isValid')
@@ -1668,6 +1684,10 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $form->expects($this->any())
             ->method('createView')
             ->will($this->returnValue($formView));
+
+        $form->expects($this->once())
+            ->method('isSubmitted')
+            ->will($this->returnValue(true));
 
         $form->expects($this->once())
             ->method('isValid')
@@ -1811,6 +1831,10 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($form));
 
         $form->expects($this->once())
+            ->method('isSubmitted')
+            ->will($this->returnValue(true));
+
+        $form->expects($this->once())
             ->method('isValid')
             ->will($this->returnValue(true));
 
@@ -1866,6 +1890,10 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($form));
 
         $form->expects($this->once())
+            ->method('isSubmitted')
+            ->will($this->returnValue(true));
+
+        $form->expects($this->once())
             ->method('isValid')
             ->will($this->returnValue(true));
 
@@ -1901,6 +1929,10 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->admin->expects($this->once())
             ->method('getForm')
             ->will($this->returnValue($form));
+
+        $form->expects($this->once())
+            ->method('isSubmitted')
+            ->will($this->returnValue(true));
 
         $form->expects($this->once())
             ->method('isValid')
@@ -2029,6 +2061,10 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($form));
 
         $form->expects($this->once())
+            ->method('isSubmitted')
+            ->will($this->returnValue(true));
+
+        $form->expects($this->once())
             ->method('isValid')
             ->will($this->returnValue(true));
 
@@ -2075,6 +2111,10 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->admin->expects($this->once())
             ->method('getForm')
             ->will($this->returnValue($form));
+
+        $form->expects($this->once())
+            ->method('isSubmitted')
+            ->will($this->returnValue(true));
 
         $form->expects($this->once())
             ->method('isValid')
@@ -2137,6 +2177,10 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $form->expects($this->any())
             ->method('createView')
             ->will($this->returnValue($formView));
+
+        $form->expects($this->once())
+            ->method('isSubmitted')
+            ->will($this->returnValue(true));
 
         $form->expects($this->once())
             ->method('isValid')

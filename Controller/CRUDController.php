@@ -415,10 +415,9 @@ class CRUDController extends Controller
         /** @var $form \Symfony\Component\Form\Form */
         $form = $this->admin->getForm();
         $form->setData($object);
+        $form->handleRequest($request);
 
-        if ($this->getRestMethod($request) === 'POST') {
-            $form->submit($request);
-
+        if ($form->isSubmitted()) {
             $isFormValid = $form->isValid();
 
             // persist if the form was valid and if in preview mode the preview was approved
@@ -682,10 +681,9 @@ class CRUDController extends Controller
         /** @var $form \Symfony\Component\Form\Form */
         $form = $this->admin->getForm();
         $form->setData($object);
+        $form->handleRequest($request);
 
-        if ($this->getRestMethod($request) === 'POST') {
-            $form->submit($request);
-
+        if ($form->isSubmitted()) {
             $isFormValid = $form->isValid();
 
             // persist if the form was valid and if in preview mode the preview was approved
@@ -1205,7 +1203,7 @@ class CRUDController extends Controller
             }
 
             if (isset($form)) {
-                $form->submit($request);
+                $form->handleRequest($request);
 
                 if ($form->isValid()) {
                     $adminObjectAclManipulator->$updateMethod($adminObjectAclData);
