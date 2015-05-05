@@ -1,6 +1,5 @@
 {
     "name": "sonata-project/admin-bundle",
-    "version": "dev-bugfix",
     "type": "symfony-bundle",
     "description": "Symfony SonataAdminBundle",
     "keywords": ["Admin Generator", "admin", "sonata", "bootstrap"],
@@ -56,7 +55,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "2.4.x-dev"
+            "dev-master": "dev-bugfix"
         }
     }
 }
