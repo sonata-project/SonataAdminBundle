@@ -9,7 +9,7 @@ There are many field types that can be used in the list action or show action :
 * **array**: display value from an array
 * **boolean**: display a green or red picture dependant on the boolean value
 * **date**: display a formatted date. Accepts an optional ``format`` parameter
-* **datetime**: display a formatted date and time. Accepts an optional ``format`` parameter
+* **datetime**: display a formatted date and time. Accepts an optional ``format`` and ``timezone`` parameter
 * **text**: display a text
 * **textarea**: display a textarea
 * **trans**: translate the value with a provided ``catalogue`` option
@@ -34,6 +34,10 @@ This is currently limited to scalar types (text, integer, url...).
 
     In ``date`` and ``datetime`` field types, ``format`` pattern must match twig's
     ``date`` filter specification, available at: `http://twig.sensiolabs.org/doc/filters/date.html <http://twig.sensiolabs.org/doc/filters/date.html>`_
+
+    In ``datetime`` field types, ``timezone`` syntax must match twig's
+    ``date`` filter specification, available at: `http://twig.sensiolabs.org/doc/filters/date.html <http://twig.sensiolabs.org/doc/filters/date.html>`_
+    and php timezone list: `https://php.net/manual/en/timezones.php <https://php.net/manual/en/timezones.php>`_
     
 More types might be provided based on the persistency layer defined. Please refer to their
 related documentations.
