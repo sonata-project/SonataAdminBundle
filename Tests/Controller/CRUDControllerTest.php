@@ -1612,6 +1612,10 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo('EDIT'))
             ->will($this->returnValue(true));
 
+        $this->admin->expects($this->any())
+            ->method('getClass')
+            ->will($this->returnValue('stdClass'));
+
         $form = $this->getMockBuilder('Symfony\Component\Form\Form')
             ->disableOriginalConstructor()
             ->getMock();
@@ -1631,6 +1635,9 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
         $this->expectTranslate('flash_edit_error', array('%name%' => $expectedToStringValue), 'SonataAdminBundle');
 
+        $form->expects($this->once())
+            ->method('isSubmitted')
+            ->will($this->returnValue(true));
         $this->request->setMethod('POST');
 
         $formView = $this->getMock('Symfony\Component\Form\FormView');
@@ -1731,6 +1738,10 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->method('isGranted')
             ->with($this->equalTo('CREATE'))
             ->will($this->returnValue(true));
+
+        $this->admin->expects($this->any())
+            ->method('getClass')
+            ->will($this->returnValue('stdClass'));
 
         $this->admin->expects($this->once())
             ->method('getNewInstance')
@@ -1977,6 +1988,10 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo('CREATE'))
             ->will($this->returnValue(true));
 
+        $this->admin->expects($this->any())
+            ->method('getClass')
+            ->will($this->returnValue('stdClass'));
+
         $object = new \stdClass();
 
         $this->admin->expects($this->once())
@@ -2001,6 +2016,10 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($toStringValue));
 
         $this->expectTranslate('flash_create_error', array('%name%' => $expectedToStringValue), 'SonataAdminBundle');
+
+        $form->expects($this->once())
+            ->method('isSubmitted')
+            ->will($this->returnValue(true));
 
         $this->request->setMethod('POST');
 
