@@ -214,7 +214,7 @@ class ListMapperTest extends \PHPUnit_Framework_TestCase
 
     public function testAutoAddVirtualOption()
     {
-        foreach (array('action', 'batch', 'select') as $type) {
+        foreach (array('actions', 'batch', 'select') as $type) {
             $this->listMapper->add('_'.$type, $type);
         }
 
