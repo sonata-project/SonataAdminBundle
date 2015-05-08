@@ -669,21 +669,21 @@ class CRUDController extends Controller
             );
         }
 
-        $object = $this->admin->getNewInstance();
+        $object = null;
 
         $preResponse = $this->preCreate($request, $object);
         if ($preResponse !== null) {
             return $preResponse;
         }
 
-        $this->admin->setSubject($object);
-
         /** @var $form \Symfony\Component\Form\Form */
         $form = $this->admin->getForm();
-        $form->setData($object);
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
+            $object = $form->getData();
+            $this->admin->setSubject($object);
+
             $isFormValid = $form->isValid();
 
             // persist if the form was valid and if in preview mode the preview was approved
