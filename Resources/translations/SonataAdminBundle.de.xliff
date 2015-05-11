@@ -178,6 +178,10 @@
               <source>flash_delete_success</source>
               <target>Das Element "%name%" wurde erfolgreich gelöscht.</target>
             </trans-unit>
+            <trans-unit id="form_not_available">
+              <source>form_not_available</source>
+              <target>Form nicht verfügbar.</target>
+            </trans-unit>
             <trans-unit id="link_breadcrumb_dashboard">
                 <source>breadcrumb.link_dashboard</source>
                 <target>&#8962;</target>
@@ -306,6 +310,10 @@
                 <source>td_action</source>
                 <target>Aktion</target>
             </trans-unit>
+            <trans-unit id="td_compare">
+                <source>td_action</source>
+                <target>Vergleichen</target>
+            </trans-unit>
             <trans-unit id="td_revision">
                 <source>td_revision</source>
                 <target>Versionen</target>
@@ -325,6 +333,10 @@
             <trans-unit id="label_view_revision">
                 <source>label_view_revision</source>
                 <target>Version anzeigen</target>
+            </trans-unit>
+            <trans-unit id="label_compare_revision">
+                <source>label_compare_revision</source>
+                <target>Version vergleichen</target>
             </trans-unit>
             <trans-unit id="list_results_count_prefix">
                 <source>list_results_count_prefix</source>
