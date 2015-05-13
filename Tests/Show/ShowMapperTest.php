@@ -320,6 +320,22 @@ class ShowMapperTest extends \PHPUnit_Framework_TestCase
         $this->fail('Failed asserting that exception of type "\RuntimeException" is thrown.');
     }
 
+    public function testAddDuplicateFieldNameException()
+    {
+        $name = 'name';
+
+        try {
+            $this->showMapper->add($name);
+            $this->showMapper->add($name);
+        } catch (\RuntimeException $e) {
+            $this->assertContains(sprintf('Duplicate field name "%s" in show mapper. Names should be unique.', $name), $e->getMessage());
+
+            return;
+        }
+
+        $this->fail('Failed asserting that duplicate field name exception of type "\RuntimeException" is thrown.');
+    }
+
     public function testReorder()
     {
         $this->assertEquals(array(), $this->admin->getShowGroups());
