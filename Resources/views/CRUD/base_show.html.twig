@@ -26,6 +26,13 @@ file that was distributed with this source code.
         {{ sonata_block_render_event('sonata.admin.show.top', { 'admin': admin, 'object': object }) }}
 
         {% for name, view_group in admin.showgroups %}
+            {% set emptyBlock = null %}
+            {% for field_name in view_group.fields if emptyBlock is null %}
+                {% if elements[field_name] is defined %}
+                    {% set emptyBlock = 1 %}
+                {% endif %}
+            {% endfor %}
+            {% if emptyBlock is not null %}
             <div class="{{ view_group.class | default('col-md-12') }}">
                 <div class="{{ view_group.box_class }}">
                     {% if name %}
@@ -54,6 +61,7 @@ file that was distributed with this source code.
                     </div>
                 </div>
             </div>
+            {% endif %}
         {% endfor %}
 
         {{ sonata_block_render_event('sonata.admin.show.bottom', { 'admin': admin, 'object': object }) }}
