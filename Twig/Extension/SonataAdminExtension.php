@@ -427,7 +427,7 @@ class SonataAdminExtension extends \Twig_Extension
                     $admin             = $this->pool->getInstance($item['admin']);
 
                     // skip menu item if no `list` url is available or user doesn't have the LIST access rights
-                    if (!$admin->hasRoute('list') || !$admin->isGranted('LIST') || !$admin->showIn(Admin::CONTEXT_MENU) {
+                    if (!$admin->hasRoute('list') || !$admin->isGranted('LIST') || !$admin->showIn(Admin::CONTEXT_MENU)) {
                         continue;
                     }
 
