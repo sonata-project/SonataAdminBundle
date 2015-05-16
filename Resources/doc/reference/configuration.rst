@@ -140,6 +140,7 @@ Full Configuration Options
                 outer_list_rows_mosaic:  'SonataAdminBundle:CRUD:list_outer_rows_mosaic.html.twig'
                 outer_list_rows_list:  'SonataAdminBundle:CRUD:list_outer_rows_list.html.twig'
                 outer_list_rows_tree:  'SonataAdminBundle:CRUD:list_outer_rows_tree.html.twig'
+                custom_action:        'SonataAdminBundle:BUTTON:custom_button.html.twig'
                 base_list_field:      'SonataAdminBundle:CRUD:base_list_field.html.twig'
                 pager_links:          'SonataAdminBundle:Pager:links.html.twig'
                 pager_results:        'SonataAdminBundle:Pager:results.html.twig'

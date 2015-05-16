@@ -346,6 +346,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
             'outer_list_rows_mosaic'     => 'SonataAdminBundle:CRUD:list_outer_rows_mosaic.html.twig',
             'outer_list_rows_list'       => 'SonataAdminBundle:CRUD:list_outer_rows_list.html.twig',
             'outer_list_rows_tree'       => 'SonataAdminBundle:CRUD:list_outer_rows_tree.html.twig',
+            'custom_action'              => 'SonataAdminBundle:BUTTON:custom_button.html.twig',
         ), $definedTemplates, $overwrittenTemplates['view']);
 
         $definition->addMethodCall('setTemplates', array($definedTemplates));
