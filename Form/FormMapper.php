@@ -174,6 +174,46 @@ class FormMapper extends BaseGroupedMapper
 
     /**
      * @return FormBuilderInterface
+     *                              Removes a group.
+     *
+     * @param string $group          The group to delete
+     * @param string $tab            The tab the group belongs to, defaults to 'default'
+     * @param bool   $deleteEmptyTab Wether or not the Tab should be deleted, when the deleted group leaves the tab emmpty after deletion
+     */
+    public function removeGroup($group, $tab = 'default', $deleteEmptyTab = false)
+    {
+        $groups = $this->getGroups();
+
+        // When the default tab is used, the tabname is not prepended to the index in the group array
+        if ($tab !== 'default') {
+            $group = $tab.'.'.$group;
+        }
+
+        if (isset($groups[$group])) {
+            foreach ($groups[$group]['fields'] as $field) {
+                $this->remove($field);
+            }
+        }
+        unset($groups[$group]);
+
+        $tabs = $this->getTabs();
+        $key = array_search($group, $tabs[$tab]['groups']);
+
+        if (false !== $key) {
+            unset($tabs[$tab]['groups'][$key]);
+        }
+        if ($deleteEmptyTab && count($tabs[$tab]['groups']) == 0) {
+            unset($tabs[$tab]);
+        }
+
+        $this->setTabs($tabs);
+        $this->setGroups($groups);
+
+        return $this;
+    }
+
+    /**
+     * @return \Symfony\Component\Form\FormBuilderInterface
      */
     public function getFormBuilder()
     {

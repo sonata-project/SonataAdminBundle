@@ -360,4 +360,42 @@ class FormMapperTest extends \PHPUnit_Framework_TestCase
 
         return $fieldDescription;
     }
+
+    public function testGroupRemovingWithoutTab()
+    {
+        $this->formMapper->with('foobar');
+
+        $this->formMapper->removeGroup('foobar');
+
+        $this->assertSame(array(), $this->admin->getFormGroups());
+    }
+
+    public function testGroupRemovingWithTab()
+    {
+        $this->formMapper->tab('mytab')->with('foobar');
+
+        $this->formMapper->removeGroup('foobar', 'mytab');
+
+        $this->assertSame(array(), $this->admin->getFormGroups());
+    }
+
+    public function testGroupRemovingWithoutTabAndWithTabRemoving()
+    {
+        $this->formMapper->with('foobar');
+
+        $this->formMapper->removeGroup('foobar', 'default', true);
+
+        $this->assertSame(array(), $this->admin->getFormGroups());
+        $this->assertSame(array(), $this->admin->getFormTabs());
+    }
+
+    public function testGroupRemovingWithTabAndWithTabRemoving()
+    {
+        $this->formMapper->tab('mytab')->with('foobar');
+
+        $this->formMapper->removeGroup('foobar', 'mytab', true);
+
+        $this->assertSame(array(), $this->admin->getFormGroups());
+        $this->assertSame(array(), $this->admin->getFormTabs());
+    }
 }
