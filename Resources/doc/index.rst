@@ -74,3 +74,4 @@ Cookbook
    cookbook/recipe_improve_performance_large_datasets
    cookbook/recipe_virtual_field
    cookbook/recipe_bootlint
+   cookbook/recipe_delete_field_group
