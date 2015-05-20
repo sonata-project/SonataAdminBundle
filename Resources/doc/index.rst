@@ -88,3 +88,4 @@ Cookbook
    cookbook/recipe_bootlint
    cookbook/recipe_lock_protection
    cookbook/recipe_sortable_sonata_type_model
+   cookbook/recipe_delete_field_group
