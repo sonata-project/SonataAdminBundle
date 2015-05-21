@@ -27,7 +27,6 @@
         "symfony/twig-bridge": "~2.3",
         "symfony/class-loader":"~2.3",
         "symfony/expression-language": "~2.4",
-        "sensio/generator-bundle": "~2.3",
         "symfony/translation":"~2.3",
         "symfony/dependency-injection": "~2.3,>=2.3.3",
         "symfony/property-access": "~2.3",
@@ -42,12 +41,14 @@
     },
     "require-dev": {
         "jms/translation-bundle": "~1.1",
+        "sensio/generator-bundle": "~2.3",
         "symfony/yaml": "~2.3",
         "sonata-project/intl-bundle": "~2.1",
         "symfony/phpunit-bridge": "2.7.*@dev"
     },
     "suggest": {
         "jms/translation-bundle": "Extract message keys from Admins",
+        "sensio/generator-bundle": "Add sonata:admin:generate command",
         "sonata-project/intl-bundle": "Add localized date and number into the list"
     },
     "autoload": {

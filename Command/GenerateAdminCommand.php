@@ -62,6 +62,14 @@ class GenerateAdminCommand extends ContainerAwareCommand
     /**
      * {@inheritDoc}
      */
+    public function isEnabled()
+    {
+        return class_exists('Sensio\\Bundle\\GeneratorBundle\\SensioGeneratorBundle');
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $modelClass = Validators::validateClass($input->getArgument('model'));
