@@ -33,6 +33,12 @@ As an argument you need to specify the fully qualified model class.
 All passed arguments and options are used as default values in interactive mode.
 You can disable the interactive mode with ``--no-interaction`` option.
 
+The command require the SensioGeneratorBundle to work. If you don't already have it, you can install it with :
+
+.. code-block:: bash
+
+    composer require --dev sensio/generator-bundle
+
 Options are:
  * ``bundle``: the bundle name (the default value is determined by the given model class, e.g. "YourNSFooBundle")
  * ``admin``: the admin class basename (by default this adds "Admin" to the model class name, e.g. "BarAdmin")
