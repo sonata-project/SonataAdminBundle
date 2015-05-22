@@ -317,7 +317,14 @@ class HelperController
         $admin->setRequest($request);
         $context = $request->get('_context', '');
 
-        if (false === $admin->isGranted('CREATE') && false === $admin->isGranted('EDIT')) {
+        if ($context == 'filter' && false === $admin->isGranted('LIST')) {
+            throw new AccessDeniedException();
+        }
+
+        if ($context != 'filter'
+            && false === $admin->isGranted('CREATE')
+            && false === $admin->isGranted('EDIT')
+        ) {
             throw new AccessDeniedException();
         }
 
