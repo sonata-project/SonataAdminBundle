@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\Filter;
+namespace Sonata\AdminBundle\Tests\Exporter;
 
 use Sonata\AdminBundle\Export\Exporter;
 use Exporter\Source\SourceIteratorInterface;
@@ -43,7 +43,7 @@ class ExporterTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $response);
         $this->assertEquals($contentType, $response->headers->get('Content-Type'));
-        $this->assertEquals('attachment; filename='.$filename, $response->headers->get('Content-Disposition'));
+        $this->assertRegExp('/^attachment; filename="?'.preg_quote($filename, '/').'"?$/', $response->headers->get('Content-Disposition'));
     }
 
     public function getGetResponseTests()
