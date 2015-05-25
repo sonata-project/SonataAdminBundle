@@ -43,7 +43,7 @@ class ExporterTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $response);
         $this->assertEquals($contentType, $response->headers->get('Content-Type'));
-        $this->assertEquals('attachment; filename='.$filename, $response->headers->get('Content-Disposition'));
+        $this->assertEquals('attachment; filename="'.$filename.'"', $response->headers->get('Content-Disposition'));
     }
 
     public function getGetResponseTests()
