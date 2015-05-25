@@ -1230,12 +1230,18 @@ class CRUDController extends Controller
      *
      * @param string $type
      * @param string $message
+     *
+     * @TODO Remove this method when bumping requirements to Symfony >= 2.6
      */
     protected function addFlash($type, $message)
     {
-        $this->get('session')
-             ->getFlashBag()
-             ->add($type, $message);
+        if (method_exists('Symfony\Bundle\FrameworkBundle\Controller\Controller', 'addFlash')) {
+            parent::addFlash($type, $message);
+        } else {
+            $this->get('session')
+                ->getFlashBag()
+                ->add($type, $message);
+        }
     }
 
     /**

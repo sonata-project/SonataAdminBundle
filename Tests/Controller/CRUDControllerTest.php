@@ -295,6 +295,10 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
                     return true;
                 }
 
+                if ($id == 'session') {
+                    return true;
+                }
+
                 return false;
             }));
 
