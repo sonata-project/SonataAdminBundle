@@ -192,7 +192,7 @@ file that was distributed with this source code.
                         {% block sonata_side_nav %}
                             {% block sonata_sidebar_search %}
                                 {% if app.security.token and is_granted('ROLE_SONATA_ADMIN') %}
-                                    <form action="{{ url('sonata_admin_search') }}" method="GET" class="sidebar-form" role="search">
+                                    <form action="{{ path('sonata_admin_search') }}" method="GET" class="sidebar-form" role="search">
                                         <div class="input-group custom-search-form">
                                             <input type="text" name="q" value="{{ app.request.get('q') }}" class="form-control" placeholder="{{ 'search_placeholder'|trans({}, 'SonataAdminBundle') }}">
                                                 <span class="input-group-btn">
@@ -323,6 +323,6 @@ file that was distributed with this source code.
             </script>
         {% endblock %}
     {% endif %}
-    
+
     </body>
 </html>
