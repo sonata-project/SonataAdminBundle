@@ -433,7 +433,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->request->headers->set('Content-Type', 'multipart/form-data');
         $response = $this->protectedTestedMethods['renderJson']->invoke($this->controller, $data, 200, array(), $this->request);
 
-        $this->assertEquals($response->headers->get('Content-Type'), 'text/plain');
+        $this->assertEquals($response->headers->get('Content-Type'), 'application/json');
         $this->assertEquals(json_encode($data), $response->getContent());
     }
 

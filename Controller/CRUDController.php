@@ -12,6 +12,7 @@
 namespace Sonata\AdminBundle\Controller;
 
 use Sonata\AdminBundle\Util\AdminObjectAclManipulator;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -54,19 +55,7 @@ class CRUDController extends Controller
      */
     protected function renderJson($data, $status = 200, $headers = array(), Request $request = null)
     {
-        $request = $this->resolveRequest($request);
-
-        // fake content-type so browser does not show the download popup when this
-        // response is rendered through an iframe (used by the jquery.form.js plugin)
-        //  => don't know yet if it is the best solution
-        if ($request->get('_xml_http_request')
-            && strpos($request->headers->get('Content-Type'), 'multipart/form-data') === 0) {
-            $headers['Content-Type'] = 'text/plain';
-        } else {
-            $headers['Content-Type'] = 'application/json';
-        }
-
-        return new Response(json_encode($data), $status, $headers);
+        return new JsonResponse($data, $status, $headers);
     }
 
     /**
@@ -697,7 +686,7 @@ class CRUDController extends Controller
 
                     if ($this->isXmlHttpRequest($request)) {
                         return $this->renderJson(array(
-                            'result' => 'ok',
+                            'result'   => 'ok',
                             'objectId' => $this->admin->getNormalizedIdentifier($object),
                         ), 200, array(), $request);
                     }
