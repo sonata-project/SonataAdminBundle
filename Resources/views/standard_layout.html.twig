@@ -25,6 +25,7 @@ file that was distributed with this source code.
 <html {% block html_attributes %}class="no-js"{% endblock %}>
     <head>
         {% block meta_tags %}
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
             <meta charset="UTF-8">
             <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
         {% endblock %}
@@ -47,6 +48,13 @@ file that was distributed with this source code.
                 window.SONATA_TRANSLATIONS = {
                     CONFIRM_EXIT:  '{{ 'confirm_exit'|trans({}, 'SonataAdminBundle')|escape('js') }}'
                 };
+
+                // http://getbootstrap.com/getting-started/#support-ie10-width
+                if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
+                    var msViewportStyle = document.createElement('style');
+                    msViewportStyle.appendChild(document.createTextNode('@-ms-viewport{width:auto!important}'));
+                    document.querySelector('head').appendChild(msViewportStyle);
+                }
             </script>
 
             {% if admin_pool is defined %}
