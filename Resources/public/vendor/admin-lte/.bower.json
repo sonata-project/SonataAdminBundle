@@ -1,6 +1,6 @@
 {
   "name": "AdminLTE",
-  "version": "2.0.3",
+  "version": "2.0.5",
   "homepage": "http://almsaeedstudio.com",
   "authors": [
     "Abdullah Almsaeed <almasaeed2010@gmail.com>"
@@ -9,7 +9,7 @@
   "main": [
     "index2.html",
     "dist/css/AdminLTE.css",
-    "dist/js/AdminLTE.js",
+    "dist/js/app.js",
     "build/less/AdminLTE.less"
   ],
   "keywords": [
@@ -31,11 +31,11 @@
     "composer.json",
     "documentaion"
   ],
-  "_release": "2.0.3",
+  "_release": "2.0.5",
   "_resolution": {
     "type": "version",
-    "tag": "v2.0.3",
-    "commit": "59e2ba0e170aa9402eb17f7fb5815bc4f6628799"
+    "tag": "v2.0.5",
+    "commit": "c25a8710f419a1be142f9b46037be00388a7272c"
   },
   "_source": "git://github.com/almasaeed2010/AdminLTE.git",
   "_target": "~2.0.1",

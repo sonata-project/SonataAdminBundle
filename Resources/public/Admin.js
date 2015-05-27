@@ -16,7 +16,6 @@ jQuery(document).ready(function() {
     }
 
     Admin.setup_per_page_switcher(document);
-
     Admin.shared_setup(document);
 });
 

@@ -29,7 +29,7 @@ Download from Github or [visit Almsaeed Studio](http://almsaeedstudio.com) and d
 - Fork the repository ([here is the guide](https://help.github.com/articles/fork-a-repo/)).
 - Clone to your machine 
 ```
-git clone https://github.com/YOUR_USERNAME/AdminLTE.git"
+git clone https://github.com/YOUR_USERNAME/AdminLTE.git
 ```
 
 **Bower**
@@ -62,7 +62,7 @@ Contribution
 Contribution are always **welcome and recommended**! Here is how:
 
 - Fork the repository ([here is the guide](https://help.github.com/articles/fork-a-repo/)).
-- Clone to your machine ```git clone https://github.com/YOUR_USERNAME/AdminLTE.git"
+- Clone to your machine ```git clone https://github.com/YOUR_USERNAME/AdminLTE.git```
 - Make your changes
 - Create a pull request
 
@@ -92,13 +92,19 @@ AdminLTE 1.x can be easily upgraded to 2.x using [this guide](http://almsaeedstu
 
 Change log
 ----------
+**v2.0.5:**
+- Fixed issue #288
+
+**v2.0.4:**
+- Fixed bower.json to pick up newest release.
+- 
 **v2.0.3**
 - Bug fixes
 - Fixed extra page when printing issue #264
 - Updated documentation and fixed links scrolling issue
 - Created print.less file (this makes it easier if you want to create a seperate CSS file for printing)
 - Fixed sidebar stretching issue #275
-- Fixed checkbox out of bounds issue in WYISHTML5 editor.
+- Fixed checkbox out of bounds issue in WYSIHTML5 editor.
 
 **v2.0.2:**
 - Solved issue with hidden arrow in select inputs.
