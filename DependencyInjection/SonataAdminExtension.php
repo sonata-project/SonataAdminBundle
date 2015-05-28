@@ -72,6 +72,16 @@ BOOM
         $loader->load('validator.xml');
         $loader->load('route.xml');
         $loader->load('block.xml');
+        $loader->load('menu.xml');
+
+        // TODO: Go back on xml configuration when bumping requirements to SF 2.6+
+        $sidebarMenu = $container->getDefinition('sonata.admin.sidebar_menu');
+        if (method_exists($sidebarMenu, 'setFactory')) {
+            $sidebarMenu->setFactory(array(new Reference('sonata.admin.menu_builder'), 'createSidebarMenu'));
+        } else {
+            $sidebarMenu->setFactoryService('sonata.admin.menu_builder');
+            $sidebarMenu->setFactoryMethod('createSidebarMenu');
+        }
 
         $configuration = new Configuration();
         $processor = new Processor();

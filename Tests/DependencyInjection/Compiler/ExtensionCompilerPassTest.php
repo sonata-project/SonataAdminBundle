@@ -356,8 +356,11 @@ class ExtensionCompilerPassTest extends \PHPUnit_Framework_TestCase
             ->register('validator')
             ->setClass('Symfony\Component\Validator\ValidatorInterface');
         $container
-            ->register('knp_menu.helper')
-            ->setClass('Knp\Menu\Twig\Helper');
+            ->register('knp_menu.factory')
+            ->setClass('Knp\Menu\FactoryInterface');
+        $container
+            ->register('knp_menu.menu_provider')
+            ->setClass('Knp\Menu\Provider\MenuProviderInterface');
 
         // Add admin definition's
         $container
