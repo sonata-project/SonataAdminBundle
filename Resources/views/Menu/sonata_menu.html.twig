@@ -60,6 +60,7 @@
         <a href="#">
             {% set translation_domain = item.attribute('label_catalogue') %}
             {% set icon = item.attribute('icon')|default('') %}
+            {{ icon|raw }}
             {{ parent() }}
             <i class="fa pull-right fa-angle-left"></i>
         </a>
