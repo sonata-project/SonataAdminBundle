@@ -95,7 +95,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
                 $groupDefaults[$resolvedGroupName]['items'][] = array(
                     'admin'        => $id,
-                    'label'        => '',
+                    'label'        => !empty($attributes['label'])?$attributes['label']:'',
                     'route'        => '',
                     'route_params' => array()
                 );
@@ -142,6 +142,24 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
             }
         } else {
             $groups = $groupDefaults;
+
+            // sort the default group definition
+            ksort($groups);
+            array_walk(
+                $groups,
+                function(&$element) {
+                    usort(
+                        $element['items'],
+                        function($a, $b) {
+                            if ($a['label'] === $b['label']) {
+                                return 0;
+                            }
+
+                            return $a['label'] < $b['label']?-1:1;
+                        }
+                    );
+                }
+            );
         }
 
         $pool->addMethodCall('setAdminServiceIds', array($admins));
