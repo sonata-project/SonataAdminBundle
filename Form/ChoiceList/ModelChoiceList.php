@@ -48,7 +48,7 @@ class ModelChoiceList extends SimpleChoiceList
      *
      * @var mixed
      */
-    private $entities = array();
+    protected $entities = array();
 
     /**
      * Contains the query builder that builds the query for fetching the
@@ -123,15 +123,17 @@ class ModelChoiceList extends SimpleChoiceList
      * @param $choices
      *
      * @return array An array of choices
+     *
+     * @throws \Symfony\Component\Form\Exception\RuntimeException
      */
     protected function load($choices)
     {
         if (is_array($choices)) {
             $entities = $choices;
-        } elseif ($this->query) {
-            $entities = $this->modelManager->executeQuery($this->query);
+        } elseif ($this->getQuery()) {
+            $entities = $this->getModelManager()->executeQuery($this->getQuery());
         } else {
-            $entities = $this->modelManager->findBy($this->class);
+            $entities = $this->getModelManager()->findBy($this->class);
         }
 
         $choices = array();
@@ -151,7 +153,7 @@ class ModelChoiceList extends SimpleChoiceList
                 }
             }
 
-            if (count($this->identifier) > 1) {
+            if (count($this->getIdentifier()) > 1) {
                 // When the identifier consists of multiple field, use
                 // naturally ordered keys to refer to the choices
                 $choices[$key] = $value;
@@ -208,7 +210,7 @@ class ModelChoiceList extends SimpleChoiceList
     public function getEntity($key)
     {
 
-        if (count($this->identifier) > 1) {
+        if (count($this->getIdentifier()) > 1) {
             // $key is a collection index
             $entities = $this->getEntities();
 
@@ -217,7 +219,18 @@ class ModelChoiceList extends SimpleChoiceList
             return isset($this->entities[$key]) ? $this->entities[$key] : null;
         }
 
-        return $this->modelManager->find($this->class, $key);
+        return $this->getModelManager()->find($this->getClass(), $key);
+    }
+
+    /**
+     * Returns the query builder that builds the query for fetching the
+     * entities
+     *
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function getQuery()
+    {
+        return $this->query;
     }
 
     /**
