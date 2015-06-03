@@ -189,13 +189,12 @@ granularity), the passed query is ``null``.
             throw new AccessDeniedException();
         }
 
-        $request = $this->get('request');
         $modelManager = $this->admin->getModelManager();
 
-        $target = $modelManager->find($this->admin->getClass(), $request->get('targetId'));
+        $idx = $this->get('request')->get('idx');
 
-        if( $target === null){
-            $this->addFlash('sonata_flash_info', 'flash_batch_merge_no_target');
+        if(empty($idx){
+            $this->getFlashBag()->add('sonata_flash_info', 'flash_batch_merge_no_target');
 
             return new RedirectResponse(
               $this->admin->generateUrl('list',$this->admin->getFilterParameters())
@@ -213,14 +212,14 @@ granularity), the passed query is ``null``.
 
             $modelManager->update($selectedModel);
         } catch (\Exception $e) {
-            $this->addFlash('sonata_flash_error', 'flash_batch_merge_error');
+            $this->getFlashBag()->add('sonata_flash_error', 'flash_batch_merge_error');
 
             return new RedirectResponse(
               $this->admin->generateUrl('list',$this->admin->getFilterParameters())
             );
         }
 
-        $this->addFlash('sonata_flash_success', 'flash_batch_merge_success');
+        $this->getFlashBag()->add('sonata_flash_success', 'flash_batch_merge_success');
 
         return new RedirectResponse(
           $this->admin->generateUrl('list',$this->admin->getFilterParameters())
