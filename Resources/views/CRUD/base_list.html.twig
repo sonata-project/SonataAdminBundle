@@ -23,7 +23,8 @@ file that was distributed with this source code.
 
 {% block list_table %}
     <div class="col-xs-12 col-md-12">
-        {% if admin.hasRoute('batch') %}
+        {% set batchactions = admin.batchactions %}
+        {% if admin.hasRoute('batch') and batchactions|length %}
             <form action="{{ admin.generateUrl('batch', {'filter': admin.filterParameters}) }}" method="POST" >
             <input type="hidden" name="_sonata_csrf_token" value="{{ csrf_token }}">
         {% endif %}
@@ -35,7 +36,6 @@ file that was distributed with this source code.
 
                 {% block list_header %}{% endblock %}
 
-                {% set batchactions = admin.batchactions %}
                 {% if admin.datagrid.results|length > 0 %}
                     <table class="table table-bordered table-striped sonata-ba-list">
                         {% block table_header %}
@@ -195,7 +195,7 @@ file that was distributed with this source code.
                 {% endif %}
             {% endblock %}
         </div>
-        {% if admin.hasRoute('batch') %}
+        {% if admin.hasRoute('batch') and batchactions|length %}
             </form>
         {% endif %}
     </div>
