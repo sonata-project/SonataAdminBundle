@@ -23,11 +23,17 @@ file that was distributed with this source code.
     {% endif %}
 {%- endblock form_errors %}
 
+{% block sonata_help %}
+{% spaceless %}
+{% if sonata_help is defined and sonata_help %}
+    <span class="help-block sonata-ba-field-widget-help">{{ sonata_help|raw }}</span>
+{% endif %}
+{% endspaceless %}
+{% endblock %}
+
 {% block form_widget -%}
     {{ parent() }}
-    {% if sonata_help is defined and sonata_help %}
-        <span class="help-block sonata-ba-field-widget-help">{{ sonata_help|raw }}</span>
-    {% endif %}
+    {{ block('sonata_help') }}
 {%- endblock form_widget %}
 
 {% block form_widget_simple %}
