@@ -140,7 +140,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
                     $groups[$resolvedGroupName]['roles'] = $groupDefaults[$resolvedGroupName]['roles'];
                 }
             }
-        } else {
+        } elseif ($parameterBag->resolveValue('sonata.admin.configuration.admin_sort')) {
             $groups = $groupDefaults;
 
             // sort the default group definition
