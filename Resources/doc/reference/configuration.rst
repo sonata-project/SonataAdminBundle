@@ -57,7 +57,7 @@ Full Configuration Options
             title_logo:           bundles/sonataadmin/logo_title.png
             options:
                 html5_validate:       true
-                admin_sort:          false
+                admins_sort:          false
                 confirm_exit:         true
                 use_select2:          true
                 use_icheck:           true

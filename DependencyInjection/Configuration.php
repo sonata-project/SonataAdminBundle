@@ -76,7 +76,7 @@ class Configuration implements ConfigurationInterface
                     ->addDefaultsIfNotSet()
                     ->children()
                         ->booleanNode('html5_validate')->defaultValue(true)->end()
-                        ->booleanNode('admin_sort')->defaultValue(false)->end()
+                        ->booleanNode('admins_sort')->defaultFalse()->end()
                         ->booleanNode('confirm_exit')->defaultValue(true)->end()
                         ->booleanNode('use_select2')->defaultValue(true)->end()
                         ->booleanNode('use_icheck')->defaultValue(true)->end()

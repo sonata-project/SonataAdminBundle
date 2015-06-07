@@ -51,7 +51,7 @@ Configuring the ``Admin`` list
 As you probably noticed by now, the ``Admin`` list groups ``Admin`` mappings together.
 There are several ways in which you can configure these groups.
 The order of all admins is when you defined them. To get a natural sorting add the option
-admin_sort: true.
+admins_sort: true.
 
 Using the ``Admin`` service declaration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

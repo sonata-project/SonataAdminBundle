@@ -95,7 +95,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
                 $groupDefaults[$resolvedGroupName]['items'][] = array(
                     'admin'        => $id,
-                    'label'        => !empty($attributes['label'])?$attributes['label']:'',
+                    'label'        => !empty($attributes['label']) ? $attributes['label'] : '',
                     'route'        => '',
                     'route_params' => array()
                 );
@@ -140,7 +140,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
                     $groups[$resolvedGroupName]['roles'] = $groupDefaults[$resolvedGroupName]['roles'];
                 }
             }
-        } elseif($container->getParameter('sonata.admin.configuration.admin_sort')) {
+        } elseif($container->getParameter('sonata.admin.configuration.admins_sort')) {
             $groups = $groupDefaults;
 
             // sort the default group definition
