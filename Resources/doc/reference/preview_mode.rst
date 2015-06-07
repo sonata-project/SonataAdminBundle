@@ -90,12 +90,14 @@ a different object you can just set your own variables prior to calling parent()
 
     {% use 'SonataAdminBundle:CRUD:base_edit_form.html.twig' with form as parentForm %}
 
+    {% import 'SonataAdminBundle:CRUD:base_edit_form_macro.html.twig' as form_helper %}
+
     {% block templateContent %}     {# a block in 'AcmeDemoBundle::layout.html.twig' expecting article #}
         {% set article = object %}
 
         {{ parent() }}
 
-        <div class="sonata-preview-form">
+        <div class="sonata-preview-form-container">
             {{ block('parentForm') }}
         </div>
 
