@@ -47,13 +47,8 @@ class CoreController extends Controller
      *
      * @return string
      */
-    protected function getBaseTemplate(Request $request = null)
+    protected function getBaseTemplate(Request $request)
     {
-        // to be BC
-        if (null === $request) {
-            $request = $this->getRequest();
-        }
-
         if ($request->isXmlHttpRequest()) {
             return $this->getAdminPool()->getTemplate('ajax');
         }
