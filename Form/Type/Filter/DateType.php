@@ -15,14 +15,12 @@ namespace Sonata\AdminBundle\Form\Type\Filter;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Optionsresolver\OptionsResolverInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
-use Symfony\Component\Optionsresolver\OptionsResolverInterface;
-
 /**
- * Class DateType
+ * Class DateType.
  *
- * @package Sonata\AdminBundle\Form\Type\Filter
  * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class DateType extends AbstractType
@@ -97,7 +95,7 @@ class DateType extends AbstractType
     {
         $resolver->setDefaults(array(
             'field_type'    => 'date',
-            'field_options' => array('date_format' => 'yyyy-MM-dd')
+            'field_options' => array('date_format' => 'yyyy-MM-dd'),
         ));
     }
 }

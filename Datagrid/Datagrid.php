@@ -11,24 +11,23 @@
 
 namespace Sonata\AdminBundle\Datagrid;
 
-use Sonata\AdminBundle\Filter\FilterInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
-use Symfony\Component\Form\Exception\UnexpectedTypeException;
+use Sonata\AdminBundle\Filter\FilterInterface;
 use Symfony\Component\Form\CallbackTransformer;
+use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
- * Class Datagrid
+ * Class Datagrid.
  *
- * @package Sonata\AdminBundle\Datagrid
  * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class Datagrid implements DatagridInterface
 {
     /**
+     * The filter instances.
      *
-     * The filter instances
      * @var array
      */
     protected $filters = array();

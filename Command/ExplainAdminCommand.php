@@ -17,9 +17,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Class ExplainAdminCommand
+ * Class ExplainAdminCommand.
  *
- * @package Sonata\AdminBundle\Command
  * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class ExplainAdminCommand extends ContainerAwareCommand

@@ -11,18 +11,17 @@
 
 namespace Sonata\AdminBundle\Block;
 
-use Sonata\BlockBundle\Block\BlockContextInterface;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\BlockBundle\Block\BaseBlockService;
+use Sonata\BlockBundle\Block\BlockContextInterface;
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
- * Class AdminListBlockService
+ * Class AdminListBlockService.
  *
- * @package Sonata\AdminBundle\Block
  * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class AdminListBlockService extends BaseBlockService
@@ -61,7 +60,7 @@ class AdminListBlockService extends BaseBlockService
             'block'         => $blockContext->getBlock(),
             'settings'      => $settings,
             'admin_pool'    => $this->pool,
-            'groups'        => $visibleGroups
+            'groups'        => $visibleGroups,
         ), $response);
     }
 
@@ -79,12 +78,12 @@ class AdminListBlockService extends BaseBlockService
     public function setDefaultSettings(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'groups' => false
+            'groups' => false,
         ));
 
         if (version_compare(Kernel::VERSION, '2.6', '<')) {
             $resolver->setAllowedTypes(array(
-                'groups' => array('bool', 'array')
+                'groups' => array('bool', 'array'),
             ));
         } else {
             $resolver->setAllowedTypes('groups', array('bool', 'array'));

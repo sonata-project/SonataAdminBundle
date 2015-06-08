@@ -12,20 +12,19 @@
 
 namespace Sonata\AdminBundle\Form\Type;
 
-use Symfony\Component\Form\FormBuilderInterface;
+use Sonata\AdminBundle\Form\DataTransformer\ModelToIdTransformer;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-use Sonata\AdminBundle\Form\DataTransformer\ModelToIdTransformer;
-
 /**
  * This type is used to render an hidden input text and 3 links
  *   - an add form modal
  *   - a list modal to select the targeted entities
- *   - a clear selection link
+ *   - a clear selection link.
  */
 class ModelTypeList extends AbstractType
 {
@@ -75,7 +74,7 @@ class ModelTypeList extends AbstractType
             'btn_add'       => 'link_add',
             'btn_list'      => 'link_list',
             'btn_delete'    => 'link_delete',
-            'btn_catalogue' => 'SonataAdminBundle'
+            'btn_catalogue' => 'SonataAdminBundle',
         ));
     }
 

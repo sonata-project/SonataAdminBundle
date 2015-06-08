@@ -11,17 +11,16 @@
 
 namespace Sonata\AdminBundle\Command;
 
-use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 use Sonata\AdminBundle\Util\ObjectAclManipulatorInterface;
+use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 
 /**
- * Class GenerateObjectAclCommand
+ * Class GenerateObjectAclCommand.
  *
- * @package Sonata\AdminBundle\Command
  * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class GenerateObjectAclCommand extends ContainerAwareCommand
@@ -60,7 +59,7 @@ class GenerateObjectAclCommand extends ContainerAwareCommand
                 '',
                 'If the step option is used, you will be asked if you want to generate the object ACL entities for each Admin.',
                 'You must use the shortcut notation like <comment>AcmeDemoBundle:User</comment> if you want to set an object owner.',
-                ''
+                '',
         ));
 
         if ($input->getOption('user_entity')) {
@@ -74,7 +73,6 @@ class GenerateObjectAclCommand extends ContainerAwareCommand
         }
 
         foreach ($this->getContainer()->get('sonata.admin.pool')->getAdminServiceIds() as $id) {
-
             try {
                 $admin = $this->getContainer()->get($id);
             } catch (\Exception $e) {
@@ -88,7 +86,7 @@ class GenerateObjectAclCommand extends ContainerAwareCommand
             }
 
             $securityIdentity = null;
-            if ($input->getOption('step') && $dialog->askConfirmation($output,"<question>Set an object owner?</question>\n", false)) {
+            if ($input->getOption('step') && $dialog->askConfirmation($output, "<question>Set an object owner?</question>\n", false)) {
                 $username = $dialog->askAndValidate($output, 'Please enter the username: ', 'Sonata\AdminBundle\Command\Validators::validateUsername');
 
                 $securityIdentity = new UserSecurityIdentity($username, $this->getUserEntityClass($input, $output));

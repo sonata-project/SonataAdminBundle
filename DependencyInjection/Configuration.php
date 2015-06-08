@@ -15,12 +15,11 @@ use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 /**
- * This class contains the configuration information for the bundle
+ * This class contains the configuration information for the bundle.
  *
  * This information is solely responsible for how the different configuration
  * sections are normalized, and merged.
  *
- * @package Sonata\AdminBundle\DependencyInjection
  * @author  Michael Williams <mtotheikle@gmail.com>
  */
 class Configuration implements ConfigurationInterface
@@ -100,10 +99,10 @@ class Configuration implements ConfigurationInterface
                             ->prototype('array')
                                 ->beforeNormalization()
                                     ->ifArray()
-                                    ->then(function($items) {
+                                    ->then(function ($items) {
                                         if (isset($items['provider'])) {
                                             $disallowedItems = array('items', 'label');
-                                            foreach($disallowedItems as $item) {
+                                            foreach ($disallowedItems as $item) {
                                                 if (isset($items[$item])) {
                                                     throw new \InvalidArgumentException(sprintf('The config value "%s" cannot be used alongside "provider" config value', $item));
                                                 }
@@ -123,14 +122,14 @@ class Configuration implements ConfigurationInterface
                                     ->arrayNode('items')
                                         ->beforeNormalization()
                                             ->ifArray()
-                                            ->then(function($items) {
+                                            ->then(function ($items) {
                                                 foreach ($items as $key => $item) {
                                                     if (is_array($item)) {
                                                         if (!array_key_exists('label', $item) || !array_key_exists('route', $item)) {
                                                             throw new \InvalidArgumentException('Expected either parameters "route" and "label" for array items');
                                                         }
 
-                                                        if (!array_key_exists('route_params', $item)){
+                                                        if (!array_key_exists('route_params', $item)) {
                                                             $items[$key]['route_params'] = array();
                                                         }
 
@@ -140,7 +139,7 @@ class Configuration implements ConfigurationInterface
                                                             'admin'        => $item,
                                                             'label'        => '',
                                                             'route'        => '',
-                                                            'route_params' => array()
+                                                            'route_params' => array(),
                                                         );
                                                     }
                                                 }
@@ -173,7 +172,7 @@ class Configuration implements ConfigurationInterface
                                 'position' => 'left',
                                 'settings' => array(),
                                 'type'     => 'sonata.admin.block.admin_list',
-                                'roles'    => array()
+                                'roles'    => array(),
                             )))
                             ->prototype('array')
                                 ->fixXmlConfig('setting')

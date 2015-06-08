@@ -12,14 +12,13 @@
 
 namespace Sonata\AdminBundle\Form\DataTransformer;
 
-use Symfony\Component\Form\DataTransformerInterface;
-use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Doctrine\Common\Util\ClassUtils;
+use Sonata\AdminBundle\Model\ModelManagerInterface;
+use Symfony\Component\Form\DataTransformerInterface;
 
 /**
- * Transform object to ID and property label
+ * Transform object to ID and property label.
  *
- * @package Sonata\AdminBundle\Form\DataTransformer
  * @author  Andrej Hudec <pulzarraider@gmail.com>
  */
 class ModelToIdPropertyTransformer implements DataTransformerInterface
@@ -41,7 +40,7 @@ class ModelToIdPropertyTransformer implements DataTransformerInterface
      * @param bool                  $multiple
      * @param null                  $toStringCallback
      */
-    public function __construct(ModelManagerInterface $modelManager, $className, $property, $multiple=false, $toStringCallback=null)
+    public function __construct(ModelManagerInterface $modelManager, $className, $property, $multiple = false, $toStringCallback = null)
     {
         $this->modelManager     = $modelManager;
         $this->className        = $className;
@@ -62,11 +61,11 @@ class ModelToIdPropertyTransformer implements DataTransformerInterface
                 return $collection;
             }
 
-            return null;
+            return;
         }
 
         if (!$this->multiple) {
-             return $this->modelManager->find($this->className, $value);
+            return $this->modelManager->find($this->className, $value);
         }
 
         if (!is_array($value)) {

@@ -11,17 +11,16 @@
 
 namespace Sonata\AdminBundle\Block;
 
-use Sonata\BlockBundle\Block\BlockContextInterface;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\BlockBundle\Block\BaseBlockService;
+use Sonata\BlockBundle\Block\BlockContextInterface;
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
- * Class AdminStatsBlockService
+ * Class AdminStatsBlockService.
  *
- * @package Sonata\AdminBundle\Block
  * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class AdminStatsBlockService extends BaseBlockService
@@ -55,7 +54,7 @@ class AdminStatsBlockService extends BaseBlockService
             $filters['_per_page'] = array('value' => $blockContext->getSetting('limit'));
         }
 
-        foreach($filters as $name => $data) {
+        foreach ($filters as $name => $data) {
             $datagrid->setValue($name, isset($data['type']) ? $data['type'] : null, $data['value']);
         }
 
@@ -67,7 +66,7 @@ class AdminStatsBlockService extends BaseBlockService
             'admin_pool' => $this->pool,
             'admin'      => $admin,
             'pager'      => $datagrid->getPager(),
-            'datagrid'   => $datagrid
+            'datagrid'   => $datagrid,
         ), $response);
     }
 
@@ -85,12 +84,12 @@ class AdminStatsBlockService extends BaseBlockService
     public function setDefaultSettings(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'icon'    => 'fa-line-chart',
-            'text'    => 'Statistics',
-            'color'   => 'bg-aqua',
-            'code'    => false,
-            'filters' => array(),
-            'limit'   => 1000,
+            'icon'     => 'fa-line-chart',
+            'text'     => 'Statistics',
+            'color'    => 'bg-aqua',
+            'code'     => false,
+            'filters'  => array(),
+            'limit'    => 1000,
             'template' => 'SonataAdminBundle:Block:block_stats.html.twig',
         ));
     }

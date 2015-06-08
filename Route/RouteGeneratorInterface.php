@@ -15,9 +15,8 @@ namespace Sonata\AdminBundle\Route;
 use Sonata\AdminBundle\Admin\AdminInterface;
 
 /**
- * Interface RouteGeneratorInterface
+ * Interface RouteGeneratorInterface.
  *
- * @package Sonata\AdminBundle\Route
  * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 interface RouteGeneratorInterface

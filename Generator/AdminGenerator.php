@@ -17,9 +17,8 @@ use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 
 /**
- * Class AdminGenerator
+ * Class AdminGenerator.
  *
- * @package Sonata\AdminBundle\Generator
  * @author  Marek Stipek <mario.dweller@seznam.cz>
  * @author  Simon Cosandey <simon.cosandey@simseo.ch>
  */
@@ -45,9 +44,10 @@ class AdminGenerator extends Generator
     }
 
     /**
-     * @param  BundleInterface   $bundle
-     * @param  string            $adminClassBasename
-     * @param  string            $modelClass
+     * @param BundleInterface $bundle
+     * @param string          $adminClassBasename
+     * @param string          $modelClass
+     *
      * @throws \RuntimeException
      */
     public function generate(BundleInterface $bundle, $adminClassBasename, $modelClass)
@@ -66,8 +66,8 @@ class AdminGenerator extends Generator
 
         $this->renderFile('Admin.php.twig', $this->file, array(
             'classBasename' => array_pop($parts),
-            'namespace' => implode('\\', $parts),
-            'fields' => $this->modelManager->getExportFields($modelClass)
+            'namespace'     => implode('\\', $parts),
+            'fields'        => $this->modelManager->getExportFields($modelClass),
         ));
     }
 

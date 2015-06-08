@@ -12,11 +12,10 @@
 
 namespace Sonata\AdminBundle\Tests\Datagrid;
 
-use Sonata\AdminBundle\Datagrid\Datagrid;
-use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
+use Sonata\AdminBundle\Datagrid\Datagrid;
 use Sonata\AdminBundle\Datagrid\PagerInterface;
-use Sonata\AdminBundle\Filter\FilterInterface;
+use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Symfony\Component\Form\FormBuilder;
 
 /**
@@ -66,7 +65,7 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
 
         $this->formBuilder->expects($this->any())
             ->method('get')
-            ->will($this->returnCallback(function ($name) use (& $formTypes) {
+            ->will($this->returnCallback(function ($name) use (&$formTypes) {
                 if (isset($formTypes[$name])) {
                     return $formTypes[$name];
                 }
@@ -80,7 +79,7 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
 
         $this->formBuilder->expects($this->any())
             ->method('add')
-            ->will($this->returnCallback(function ($name, $type, $options) use (& $formTypes, $eventDispatcher, $formFactory) {
+            ->will($this->returnCallback(function ($name, $type, $options) use (&$formTypes, $eventDispatcher, $formFactory) {
                 $formTypes[$name] = new FormBuilder($name, 'Sonata\AdminBundle\Tests\Fixtures\Entity\Form\TestEntity', $eventDispatcher, $formFactory, $options);
 
                 return;

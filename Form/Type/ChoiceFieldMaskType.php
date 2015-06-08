@@ -13,15 +13,14 @@
 namespace Sonata\AdminBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
- * Class ChoiceFieldMaskType
+ * Class ChoiceFieldMaskType.
  *
- * @package Sonata\AdminBundle\Form\Type
  * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class ChoiceFieldMaskType extends AbstractType

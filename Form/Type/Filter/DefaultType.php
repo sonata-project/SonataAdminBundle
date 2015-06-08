@@ -14,14 +14,12 @@ namespace Sonata\AdminBundle\Form\Type\Filter;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
- * Class DefaultType
+ * Class DefaultType.
  *
- * @package Sonata\AdminBundle\Form\Type\Filter
  * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class DefaultType extends AbstractType
@@ -64,7 +62,7 @@ class DefaultType extends AbstractType
             'operator_type'    => 'hidden',
             'operator_options' => array(),
             'field_type'       => 'text',
-            'field_options'    => array()
+            'field_options'    => array(),
         ));
     }
 }

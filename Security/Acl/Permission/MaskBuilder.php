@@ -15,7 +15,7 @@ use Symfony\Component\Security\Acl\Permission\MaskBuilder as BaseMaskBuilder;
 
 /**
  * {@inheritDoc}
- * - LIST: the SID is allowed to view a list of the domain objects / fields
+ * - LIST: the SID is allowed to view a list of the domain objects / fields.
  */
 class MaskBuilder extends BaseMaskBuilder
 {

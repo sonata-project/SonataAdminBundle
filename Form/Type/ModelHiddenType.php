@@ -12,17 +12,15 @@
 
 namespace Sonata\AdminBundle\Form\Type;
 
-use Symfony\Component\Form\FormBuilderInterface;
+use Sonata\AdminBundle\Form\DataTransformer\ModelToIdTransformer;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-use Sonata\AdminBundle\Form\DataTransformer\ModelToIdTransformer;
-
 /**
- * This type define a standard hidden field, that stored id to a object
+ * This type define a standard hidden field, that stored id to a object.
  *
- * @package Sonata\AdminBundle\Form\Type
  * @author  Andrej Hudec <pulzarraider@gmail.com>
  */
 class ModelHiddenType extends AbstractType

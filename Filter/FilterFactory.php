@@ -14,9 +14,8 @@ namespace Sonata\AdminBundle\Filter;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Class FilterFactory
+ * Class FilterFactory.
  *
- * @package Sonata\AdminBundle\Filter
  * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class FilterFactory implements FilterFactoryInterface

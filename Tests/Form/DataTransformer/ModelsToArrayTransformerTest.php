@@ -11,19 +11,16 @@
 
 namespace Sonata\AdminBundle\Tests\Form\DataTransformer;
 
-use Symfony\Component\Form\Exception\UnexpectedTypeException;
-use Symfony\Component\Form\Exception\TransformationFailedException;
-use Sonata\AdminBundle\Form\DataTransformer\ModelsToArrayTransformer;
-use Sonata\AdminBundle\Form\ChoiceList\ModelChoiceList;
-use Sonata\AdminBundle\Tests\Fixtures\Entity\Form\FooEntity;
 use Doctrine\Common\Collections\ArrayCollection;
+use Sonata\AdminBundle\Form\ChoiceList\ModelChoiceList;
+use Sonata\AdminBundle\Form\DataTransformer\ModelsToArrayTransformer;
+use Sonata\AdminBundle\Tests\Fixtures\Entity\Form\FooEntity;
 
 /**
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
 class ModelsToArrayTransformerTest extends \PHPUnit_Framework_TestCase
 {
-
     private $modelChoiceList;
 
     private $modelManager;
@@ -72,10 +69,10 @@ class ModelsToArrayTransformerTest extends \PHPUnit_Framework_TestCase
                 return $identifiers;
             }));
 
-       $this->modelChoiceList->expects($this->any())
+        $this->modelChoiceList->expects($this->any())
             ->method('getEntities')
             ->will($this->returnCallback(function () {
-                return array('bcd'=>new FooEntity(array('bcd')), 'efg'=>new FooEntity(array('efg')), 'abc'=>new FooEntity(array('abc')));
+                return array('bcd' => new FooEntity(array('bcd')), 'efg' => new FooEntity(array('efg')), 'abc' => new FooEntity(array('abc')));
             }));
 
         $this->assertEquals($expected, $transformer->transform($collection));
@@ -166,7 +163,7 @@ class ModelsToArrayTransformerTest extends \PHPUnit_Framework_TestCase
                         return $entity3;
                 }
 
-                return null;
+                return;
             }));
 
         $collection = $transformer->reverseTransform(array('foo', 'bar'));

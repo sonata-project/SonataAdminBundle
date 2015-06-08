@@ -11,14 +11,14 @@
 
 namespace Sonata\AdminBundle\Tests\Security\Handler;
 
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Security\Handler\RoleSecurityHandler;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
- * Test for RoleSecurityHandler
+ * Test for RoleSecurityHandler.
  *
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */

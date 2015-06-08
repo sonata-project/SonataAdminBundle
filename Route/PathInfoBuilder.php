@@ -12,14 +12,13 @@
 
 namespace Sonata\AdminBundle\Route;
 
-use Sonata\AdminBundle\Builder\RouteBuilderInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\Builder\RouteBuilderInterface;
 use Sonata\AdminBundle\Model\AuditManagerInterface;
 
 /**
- * Class PathInfoBuilder
+ * Class PathInfoBuilder.
  *
- * @package Sonata\AdminBundle\Route
  * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class PathInfoBuilder implements RouteBuilderInterface

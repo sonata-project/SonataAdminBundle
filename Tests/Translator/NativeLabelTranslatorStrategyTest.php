@@ -15,7 +15,6 @@ use Sonata\AdminBundle\Translator\NativeLabelTranslatorStrategy;
 
 class NativeLabelTranslatorStrategyTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @dataProvider getLabelTests
      */

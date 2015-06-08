@@ -11,10 +11,10 @@
 
 namespace Sonata\AdminBundle\Tests\Command;
 
-use Symfony\Component\Console\Application;
-use Symfony\Component\Console\Tester\CommandTester;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Command\ListAdminCommand;
+use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Tester\CommandTester;
 
 /**
  * @author Andrej Hudec <pulzarraider@gmail.com>
@@ -55,7 +55,7 @@ class ListAdminCommandTest extends \PHPUnit_Framework_TestCase
                         return $admin2;
                 }
 
-                return null;
+                return;
             }));
 
         $command->setContainer($container);

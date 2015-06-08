@@ -16,9 +16,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Class ListAdminCommand
+ * Class ListAdminCommand.
  *
- * @package Sonata\AdminBundle\Command
  * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class ListAdminCommand extends ContainerAwareCommand
@@ -39,10 +38,10 @@ class ListAdminCommand extends ContainerAwareCommand
     {
         $pool = $this->getContainer()->get('sonata.admin.pool');
 
-        $output->writeln("<info>Admin services:</info>");
+        $output->writeln('<info>Admin services:</info>');
         foreach ($pool->getAdminServiceIds() as $id) {
             $instance = $this->getContainer()->get($id);
-            $output->writeln(sprintf("  <info>%-40s</info> %-60s",
+            $output->writeln(sprintf('  <info>%-40s</info> %-60s',
                 $id,
                 $instance->getClass()
             ));

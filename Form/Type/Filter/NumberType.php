@@ -15,14 +15,12 @@ namespace Sonata\AdminBundle\Form\Type\Filter;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-
 /**
- * Class NumberType
+ * Class NumberType.
  *
- * @package Sonata\AdminBundle\Form\Type\Filter
  * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class NumberType extends AbstractType

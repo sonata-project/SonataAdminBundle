@@ -12,7 +12,6 @@
 namespace Sonata\AdminBundle\Tests\Admin;
 
 use Sonata\AdminBundle\Admin\BaseFieldDescription;
-use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\FieldDescription;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\Foo;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooCall;
@@ -107,7 +106,7 @@ class BaseFieldDescriptionTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(42, $description->getFieldValue($mock, 'fake'));
 
-        /**
+        /*
          * Test with One parameter int
          */
         $arg1 = 38;
@@ -122,7 +121,7 @@ class BaseFieldDescriptionTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(40, $description1->getFieldValue($mock1, 'fake'));
 
-        /**
+        /*
          * Test with Two parameters int
          */
         $arg2 = 4;
@@ -133,10 +132,10 @@ class BaseFieldDescriptionTest extends \PHPUnit_Framework_TestCase
 
         $mock2 = $this->getMock('stdClass', array('getWithTwoParameters'));
         $returnValue2 = $arg1 + $arg2;
-        $mock2->expects($this->any())->method('getWithTwoParameters')->with($this->equalTo($arg1),$this->equalTo($arg2))->will($this->returnValue($returnValue2));
+        $mock2->expects($this->any())->method('getWithTwoParameters')->with($this->equalTo($arg1), $this->equalTo($arg2))->will($this->returnValue($returnValue2));
         $this->assertEquals(42, $description2->getFieldValue($mock2, 'fake'));
 
-        /**
+        /*
          * Test with underscored attribute name
          */
         $description3  = new FieldDescription();

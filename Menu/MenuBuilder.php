@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the Sonata package.
  *
@@ -65,9 +66,9 @@ class MenuBuilder
             $attributes = array();
 
             $extras = array(
-                'icon' => $group['icon'],
+                'icon'            => $group['icon'],
                 'label_catalogue' => $group['label_catalogue'],
-                'roles' => $group['roles'],
+                'roles'           => $group['roles'],
             );
 
             // Check if the menu group is built by a menu provider
@@ -85,9 +86,9 @@ class MenuBuilder
 
             // The menu group is built by config
             $menu->addChild($name, array(
-                'label' => $group['label'],
+                'label'      => $group['label'],
                 'attributes' => $attributes,
-                'extras' => $extras,
+                'extras'     => $extras,
             ));
 
             foreach ($group['items'] as $item) {
@@ -102,17 +103,17 @@ class MenuBuilder
                     $label = $admin->getLabel();
                     $options = $admin->generateMenuUrl('list');
                     $options['extras'] = array(
-                        'translation_domain' =>$admin->getTranslationDomain(),
-                        'admin' => $admin,
+                        'translation_domain' => $admin->getTranslationDomain(),
+                        'admin'              => $admin,
                     );
                 } else {
                     $label = $item['label'];
                     $options = array(
-                        'route' => $item['route'],
+                        'route'           => $item['route'],
                         'routeParameters' => $item['route_params'],
-                        'extras' => array(
+                        'extras'          => array(
                             'translation_domain' => $group['label_catalogue'],
-                        )
+                        ),
                     );
                 }
 
@@ -131,7 +132,7 @@ class MenuBuilder
     }
 
     /**
-     * Sets the request the service
+     * Sets the request the service.
      *
      * @param Request $request
      */

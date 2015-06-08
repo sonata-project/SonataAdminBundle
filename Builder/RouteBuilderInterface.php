@@ -15,9 +15,8 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Route\RouteCollection;
 
 /**
- * Interface RouteBuilderInterface
+ * Interface RouteBuilderInterface.
  *
- * @package Sonata\AdminBundle\Builder
  * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 interface RouteBuilderInterface

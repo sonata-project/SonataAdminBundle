@@ -16,9 +16,8 @@ use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormFactoryInterface;
 
 /**
- * Interface FormContractorInterface
+ * Interface FormContractorInterface.
  *
- * @package Sonata\AdminBundle\Builder
  * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 interface FormContractorInterface extends BuilderInterface
