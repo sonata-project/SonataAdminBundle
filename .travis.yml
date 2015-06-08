@@ -8,9 +8,6 @@ php:
   - hhvm
   - nightly
 
-env:
-  - SYMFONY_VERSION=2.6.*
-
 matrix:
   include:
     - php: 5.3.3
@@ -20,18 +17,19 @@ matrix:
     - php: 5.6
       env: SYMFONY_VERSION=2.5.*
     - php: 5.6
-      env: SYMFONY_VERSION=2.7.*@dev
+      env: SYMFONY_VERSION=2.6.*
+    - php: 5.6
+      env: SYMFONY_VERSION=2.7.*
     - php: 5.6
       env: SYMFONY_VERSION=2.8.*@dev
   allow_failures:
     - php: hhvm
-    - env: SYMFONY_VERSION=2.7.*@dev
     - env: SYMFONY_VERSION=2.8.*@dev
     - php: nightly
 
 before_script:
   - composer selfupdate
-  - composer require symfony/symfony:${SYMFONY_VERSION} --no-update
+  - if [ "$SYMFONY_VERSION" != "" ]; then composer require "symfony/symfony:${SYMFONY_VERSION}" --no-update; fi;
   - composer update --prefer-source $COMPOSER_FLAGS
   - sudo pip install -r Resources/doc/requirements.txt
 
