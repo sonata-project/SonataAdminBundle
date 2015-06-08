@@ -45,7 +45,7 @@
         "sensio/generator-bundle": "~2.3",
         "symfony/yaml": "~2.3",
         "sonata-project/intl-bundle": "~2.1",
-        "symfony/phpunit-bridge": "2.7.*@dev"
+        "symfony/phpunit-bridge": "~2.7|~3.0"
     },
     "suggest": {
         "jms/translation-bundle": "Extract message keys from Admins",

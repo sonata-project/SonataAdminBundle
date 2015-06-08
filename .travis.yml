@@ -8,6 +8,10 @@ php:
   - 7.0
   - hhvm
 
+env:
+    global:
+        - SYMFONY_DEPRECATIONS_HELPER=weak
+
 matrix:
   fast_finish: true
   include:
@@ -31,6 +35,7 @@ matrix:
 
 before_script:
   - composer selfupdate
+  - if [ "$SYMFONY_VERSION" = "2.8.*@dev" ] || [ "$SYMFONY_VERSION" = "3.0.x-dev as 2" ]; then SYMFONY_DEPRECATIONS_HELPER=strict; fi;
   - if [ "$SYMFONY_VERSION" != "" ]; then composer require "symfony/symfony:${SYMFONY_VERSION}" --no-update; fi;
   - composer update --prefer-source --no-interaction $COMPOSER_FLAGS
   - sudo pip install -r Resources/doc/requirements.txt
