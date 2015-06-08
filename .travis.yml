@@ -23,6 +23,8 @@ env:
 matrix:
   fast_finish: true
   include:
+    - php: 5.6
+      env: CS_FIXER=run
     - php: 5.3
       env: COMPOSER_FLAGS="--prefer-lowest"
     - php: 5.6
@@ -51,7 +53,9 @@ before_script:
   - export PATH=$HOME/.local/bin:$PATH
   - pip install -r Resources/doc/requirements.txt --user `whoami`
 
-script: make test
+script:
+ - if [ "$CS_FIXER" = "run" ]; then make cs_dry_run ; fi;
+ - make test
 
 notifications:
   webhooks: https://sonata-project.org/bundles/admin/master/travis
