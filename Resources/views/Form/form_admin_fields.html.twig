@@ -99,7 +99,14 @@ file that was distributed with this source code.
         {% endif %}
 
         {% if label is empty %}
-            {% set label = name|humanize %}
+            {%- if label_format is not empty -%}
+                {% set label = label_format|replace({
+                    '%name%': name,
+                    '%id%': id,
+                }) %}
+            {%- else -%}
+                {% set label = name|humanize %}
+            {%- endif -%}
         {% endif %}
 
         {% if in_list_checkbox is defined and in_list_checkbox and widget is defined %}
