@@ -5,34 +5,34 @@ php:
   - 5.4
   - 5.5
   - 5.6
+  - 7.0
   - hhvm
-  - nightly
-
-env:
-  - SYMFONY_VERSION=2.6.*
 
 matrix:
+  fast_finish: true
   include:
     - php: 5.3.3
-      env: SYMFONY_VERSION=2.3.* COMPOSER_FLAGS="--prefer-lowest"
+      env: COMPOSER_FLAGS="--prefer-lowest"
     - php: 5.6
       env: SYMFONY_VERSION=2.3.*
     - php: 5.6
-      env: SYMFONY_VERSION=2.5.*
+      env: SYMFONY_VERSION=2.6.*
     - php: 5.6
-      env: SYMFONY_VERSION=2.7.*@dev
+      env: SYMFONY_VERSION=2.7.*
     - php: 5.6
       env: SYMFONY_VERSION=2.8.*@dev
+    - php: 5.6
+      env: SYMFONY_VERSION="3.0.x-dev as 2"
   allow_failures:
+    - php: 7.0
     - php: hhvm
-    - env: SYMFONY_VERSION=2.7.*@dev
     - env: SYMFONY_VERSION=2.8.*@dev
-    - php: nightly
+    - env: SYMFONY_VERSION="3.0.x-dev as 2"
 
 before_script:
   - composer selfupdate
-  - composer require symfony/symfony:${SYMFONY_VERSION} --no-update
-  - composer update --prefer-source $COMPOSER_FLAGS
+  - if [ "$SYMFONY_VERSION" != "" ]; then composer require "symfony/symfony:${SYMFONY_VERSION}" --no-update; fi;
+  - composer update --prefer-source --no-interaction $COMPOSER_FLAGS
   - sudo pip install -r Resources/doc/requirements.txt
 
 script: make test
