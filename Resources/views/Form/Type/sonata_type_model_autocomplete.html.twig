@@ -42,7 +42,7 @@ file that was distributed with this source code.
                 containerCssClass: '{{ container_css_class ~ ' form-control' }}',
                 dropdownCssClass: '{{ dropdown_css_class }}',
                 ajax: {
-                    url:  '{{ url ?: path(route.name, route.parameters|default([])) }}',
+                    url:  '{{ url ?: path(route.name, route.parameters|default([]))|e('js') }}',
                     dataType: 'json',
                     quietMillis: 100,
                     data: function (term, page) { // page is the one-based page number tracked by Select2
