@@ -2,6 +2,7 @@
     <div class="row">
 
     {% for code in groups %}
+        {% if admin.formgroups[code] is defined %}
         {% set form_group = admin.formgroups[code] %}
 
         <div class="{{ form_group.class | default('col-md-12') }}">
@@ -30,6 +31,7 @@
                 {#</div>#}
             </div>
         </div>
+        {% endif %}
     {% endfor %}
     </div>
 {% endmacro %}
