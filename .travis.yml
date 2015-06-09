@@ -26,16 +26,16 @@ matrix:
     - php: 5.6
       env: SYMFONY_VERSION=2.8.*@dev
     - php: 5.6
-      env: SYMFONY_VERSION="3.0.x-dev as 2"
+      env: SYMFONY_VERSION="3.0.x-dev as 2.8"
   allow_failures:
     - php: 7.0
     - php: hhvm
     - env: SYMFONY_VERSION=2.8.*@dev
-    - env: SYMFONY_VERSION="3.0.x-dev as 2"
+    - env: SYMFONY_VERSION="3.0.x-dev as 2.8"
 
 before_script:
   - composer selfupdate
-  - if [ "$SYMFONY_VERSION" = "2.8.*@dev" ] || [ "$SYMFONY_VERSION" = "3.0.x-dev as 2" ]; then SYMFONY_DEPRECATIONS_HELPER=strict; fi;
+  - if [ "$SYMFONY_VERSION" = "2.8.*@dev" ] || [ "$SYMFONY_VERSION" = "3.0.x-dev as 2.8" ]; then SYMFONY_DEPRECATIONS_HELPER=strict; fi;
   - if [ "$SYMFONY_VERSION" != "" ]; then composer require "symfony/symfony:${SYMFONY_VERSION}" --no-update; fi;
   - composer update --prefer-source --no-interaction $COMPOSER_FLAGS
   - sudo pip install -r Resources/doc/requirements.txt
