@@ -15,6 +15,7 @@ namespace Sonata\AdminBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
@@ -25,13 +26,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  */
 class CollectionType extends AbstractType
 {
-    /**
-     * {@inheritDoc}
-     */
-    public function getParent()
-    {
-        return 'collection';
-    }
+
 
     /**
      * {@inheritdoc}
@@ -45,16 +40,29 @@ class CollectionType extends AbstractType
 
     /**
      * {@inheritDoc}
+     *
+     * @todo Remove it when bumping requirements to SF 2.7+
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        parent::setDefaultOptions($resolver);
+       $this->configureOptions($resolver);
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
         $resolver->setDefaults(array(
-            'auto_initialize' => false,
-            'btn_add'         => 'link_add',
-            'btn_delete'      => 'link_delete',
-            'btn_catalogue'   => 'SonataAdminBundle'
+            'btn_add' => 'link_add',
+            'btn_delete' => 'link_delete',
+            'btn_catalogue' => 'SonataAdminBundle'
         ));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getParent()
+    {
+        return 'collection';
     }
 
     /**
