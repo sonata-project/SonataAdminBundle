@@ -58,8 +58,8 @@
 {% block spanElement %}
     {% spaceless %}
         <a href="#">
-            {% set translation_domain = item.attribute('label_catalogue') %}
-            {% set icon = item.attribute('icon')|default('') %}
+            {% set translation_domain = item.extra('label_catalogue') %}
+            {% set icon = item.extra('icon')|default('') %}
             {{ icon|raw }}
             {{ parent() }}
             <i class="fa pull-right fa-angle-left"></i>
