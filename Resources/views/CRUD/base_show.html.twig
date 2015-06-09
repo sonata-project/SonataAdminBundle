@@ -12,6 +12,7 @@ file that was distributed with this source code.
 {% extends base_template %}
 
 {% block actions %}
+    {% include admin.getTemplate('custom_action') %}
     <li>{% include 'SonataAdminBundle:Button:edit_button.html.twig' %}</li>
     <li>{% include 'SonataAdminBundle:Button:history_button.html.twig' %}</li>
     <li>{% include 'SonataAdminBundle:Button:list_button.html.twig' %}</li>

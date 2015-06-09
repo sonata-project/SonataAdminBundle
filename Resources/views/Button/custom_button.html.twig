@@ -1,0 +1,29 @@
+{#
+
+Example of custom action in show, edit form
+
+#}
+
+{#
+
+    {% if (condition1) %}
+        <li>
+        {% if admin.hasroute('customAction1') and admin.id(object) and admin.isGranted('customAction1', object) %}
+            <a class="sonata-action-element" href="{{ admin.generateObjectUrl('customAction1', object) }}">
+                <i class="fa fa-eye"></i>
+                {{ 'link_custom_action1'|trans({}, 'SonataAdminBundle') }}</a>
+        {% endif %}
+        </li>
+    {% endif %}
+
+    {% if (condition2) %}
+        <li>
+        {% if admin.hasroute('customAction2') and admin.id(object) and admin.isGranted('customAction2', object) %}
+            <a class="sonata-action-element" href="{{ admin.generateObjectUrl('customAction2', object) }}">
+                <i class="fa fa-eye"></i>
+                {{ 'link_custom_action2'|trans({}, 'SonataAdminBundle') }}</a>
+        {% endif %}
+        </li>
+    {% endif %}
+
+#}
