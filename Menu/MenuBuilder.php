@@ -62,12 +62,11 @@ class MenuBuilder
         ));
 
         foreach ($this->pool->getAdminGroups() as $name => $group) {
-            $attributes = array(
-                'icon' => $group['icon'],
-                'label_catalogue' => $group['label_catalogue'],
-            );
+            $attributes = array();
 
             $extras = array(
+                'icon' => $group['icon'],
+                'label_catalogue' => $group['label_catalogue'],
                 'roles' => $group['roles'],
             );
 
