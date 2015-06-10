@@ -1,0 +1,6 @@
+/Tests              export-ignore
+/.*                 export-ignore
+/*.md               export-ignore
+/composer.*         export-ignore
+/build.xml          export-ignore
+/phpunit.xml.dist   export-ignore
