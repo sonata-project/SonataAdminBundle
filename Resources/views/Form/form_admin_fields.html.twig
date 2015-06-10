@@ -99,7 +99,7 @@ file that was distributed with this source code.
         {% endif %}
 
         {% if label is empty %}
-            {%- if label_format is not empty -%}
+            {%- if label_format is defined and label_format is not empty -%}
                 {% set label = label_format|replace({
                     '%name%': name,
                     '%id%': id,
