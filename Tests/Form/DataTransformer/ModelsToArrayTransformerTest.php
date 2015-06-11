@@ -28,6 +28,9 @@ class ModelsToArrayTransformerTest extends \PHPUnit_Framework_TestCase
 
     private $modelManager;
 
+    /**
+     * @group legacy
+     */
     public function setUp()
     {
         $this->modelChoiceList = $this->getMockBuilder('Sonata\AdminBundle\Form\ChoiceList\ModelChoiceList')
