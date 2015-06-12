@@ -41,9 +41,10 @@ matrix:
 
 before_script:
   - composer selfupdate
+  - composer config -q github-oauth.github.com $GITHUB_OAUTH_TOKEN
   - if [ "$SYMFONY_VERSION" = "2.8.*@dev" ] || [ "$SYMFONY_VERSION" = "3.0.x-dev as 2.8" ]; then SYMFONY_DEPRECATIONS_HELPER=strict; fi;
   - if [ "$SYMFONY_VERSION" != "" ]; then composer require "symfony/symfony:${SYMFONY_VERSION}" --no-update; fi;
-  - travis_wait composer update --prefer-source --no-interaction $COMPOSER_FLAGS
+  - travis_wait composer update --no-interaction $COMPOSER_FLAGS
   - export PATH=$HOME/.local/bin:$PATH
   - pip install -r Resources/doc/requirements.txt --user `whoami`
 
