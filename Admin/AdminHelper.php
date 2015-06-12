@@ -18,6 +18,8 @@ use Symfony\Component\Form\FormView;
 use Sonata\AdminBundle\Exception\NoValueException;
 use Sonata\AdminBundle\Util\FormViewIterator;
 use Sonata\AdminBundle\Util\FormBuilderIterator;
+use Symfony\Component\PropertyAccess\PropertyAccessor;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Class AdminHelper
@@ -35,25 +37,6 @@ class AdminHelper
     public function __construct(Pool $pool)
     {
         $this->pool = $pool;
-    }
-
-    /**
-     * @throws \RuntimeException
-     *
-     * @param \Symfony\Component\Form\FormBuilderInterface $formBuilder
-     * @param string                                       $elementId
-     *
-     * @return \Symfony\Component\Form\FormBuilderInterface
-     */
-    public function getChildFormBuilder(FormBuilderInterface $formBuilder, $elementId)
-    {
-        foreach (new FormBuilderIterator($formBuilder) as $name => $formBuilder) {
-            if ($name == $elementId) {
-                return $formBuilder;
-            }
-        }
-
-        return null;
     }
 
     /**
@@ -108,82 +91,65 @@ class AdminHelper
         $form->setData($subject);
         $form->handleRequest($admin->getRequest());
 
-        // get the field element
-        $childFormBuilder = $this->getChildFormBuilder($formBuilder, $elementId);
+        $elementId = preg_replace('#.(\d+)#', '[$1]', implode('.', explode('_', substr($elementId, strpos($elementId, '_') + 1))));
 
-        // retrieve the FieldDescription
-        $fieldDescription = $admin->getFormFieldDescription($childFormBuilder->getName());
+        // append a new instance into the object
+        $this->addNewInstance($admin, $elementId);
 
-        try {
-            $value = $fieldDescription->getValue($form->getData());
-        } catch (NoValueException $e) {
-            $value = null;
-        }
-
-        // retrieve the posted data
-        $data = $admin->getRequest()->get($formBuilder->getName());
-
-        if (!isset($data[$childFormBuilder->getName()])) {
-            $data[$childFormBuilder->getName()] = array();
-        }
-
-        $objectCount = count($value);
-        $postCount   = count($data[$childFormBuilder->getName()]);
-
-        $fields = array_keys($fieldDescription->getAssociationAdmin()->getFormFieldDescriptions());
-
-        // for now, not sure how to do that
-        $value = array();
-        foreach ($fields as $name) {
-            $value[$name] = '';
-        }
-
-        // add new elements to the subject
-        while ($objectCount < $postCount) {
-            // append a new instance into the object
-            $this->addNewInstance($form->getData(), $fieldDescription);
-            $objectCount++;
-        }
-
-        $this->addNewInstance($form->getData(), $fieldDescription);
-
+        // return new form with empty row
         $finalForm = $admin->getFormBuilder()->getForm();
         $finalForm->setData($subject);
-
-        // bind the data
         $finalForm->setData($form->getData());
 
-        return array($fieldDescription, $finalForm);
+        return $finalForm;
     }
 
     /**
-     * Add a new instance to the related FieldDescriptionInterface value
+     * Add a new instance
      *
-     * @param object                                              $object
-     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
+     * @param AdminInterface $admin
+     * @param string         $elementId
      *
-     * @throws \RuntimeException
+     * @throws \Exception
      */
-    public function addNewInstance($object, FieldDescriptionInterface $fieldDescription)
+    public function addNewInstance(AdminInterface $admin, $elementId)
     {
-        $instance = $fieldDescription->getAssociationAdmin()->getNewInstance();
-        $mapping  = $fieldDescription->getAssociationMapping();
+        $entity = $admin->getSubject();
 
-        $method = sprintf('add%s', $this->camelize($mapping['fieldName']));
+        $propertyAccessor = new PropertyAccessor();
 
-        if (!method_exists($object, $method)) {
-            $method = rtrim($method, 's');
+        $collection = $propertyAccessor->getValue($entity, $elementId);
 
-            if (!method_exists($object, $method)) {
-                $method = sprintf('add%s', $this->camelize(Inflector::singularize($mapping['fieldName'])));
-
-                if (!method_exists($object, $method)) {
-                    throw new \RuntimeException(sprintf('Please add a method %s in the %s class!', $method, ClassUtils::getClass($object)));
-                }
-            }
+        if ($collection instanceof \Doctrine\ORM\PersistentCollection || $collection instanceof \Doctrine\ODM\MongoDB\PersistentCollection) {
+            //since doctrine 2.4
+            $entityClassName = $collection->getTypeClass()->getName();
+        } elseif ($collection instanceof \Doctrine\Common\Collections\Collection) {
+            $entityClassName = $this->entityClassNameFinder($admin, explode('.', preg_replace('#\[\d*?\]#', '', $elementId)));
+        } else {
+            return;
         }
 
-        $object->$method($instance);
+        if (!method_exists($collection, 'add')){
+            return;
+        }
+
+        $collection->add(new $entityClassName);
+
+        $propertyAccessor->setValue($entity, $elementId, $collection);
+    }
+
+
+    protected function entityClassNameFinder(AdminInterface $admin, $elements)
+    {
+        $element = array_shift($elements);
+
+        $associationAdmin = $admin->getFormFieldDescription($element)->getAssociationAdmin();
+
+        if (count($elements) == 0) {
+            return $associationAdmin->getClass();
+        } else {
+            return $this->entityClassNameFinder($associationAdmin, $elements);
+        }
     }
 
     /**

@@ -11,6 +11,7 @@
 
 namespace Sonata\AdminBundle\Controller;
 
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -98,7 +99,7 @@ class HelperController
 
         $admin->setSubject($subject);
 
-        list(, $form) = $this->helper->appendFormFieldElement($admin, $subject, $elementId);
+        $form = $this->helper->appendFormFieldElement($admin, $subject, $elementId);
 
         /** @var $form \Symfony\Component\Form\Form */
         $view = $this->helper->getChildFormView($form->createView(), $elementId);
@@ -229,7 +230,6 @@ class HelperController
 
         $admin = $this->pool->getInstance($code);
         $admin->setRequest($request);
-
         // alter should be done by using a post method
         if (!$request->isXmlHttpRequest()) {
             return new JsonResponse(array('status' => 'KO', 'message' => 'Expected a XmlHttpRequest request header'));
@@ -270,7 +270,6 @@ class HelperController
         // If property path has more than 1 element, take the last object in order to validate it
         if ($propertyPath->getLength() > 1) {
             $object = $propertyAccessor->getValue($object, $propertyPath->getParent());
-
             $elements     = $propertyPath->getElements();
             $field        = end($elements);
             $propertyPath = new PropertyPath($field);
@@ -282,16 +281,13 @@ class HelperController
 
         if (count($violations)) {
             $messages = array();
-
             foreach ($violations as $violation) {
                 $messages[] = $violation->getMessage();
             }
-
             return new JsonResponse(array('status' => 'KO', 'message' => implode("\n", $messages)));
         }
 
         $admin->update($object);
-
         // render the widget
         // todo : fix this, the twig environment variable is not set inside the extension ...
         $extension = $this->twig->getExtension('sonata_admin');

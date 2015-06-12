@@ -94,8 +94,11 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
         $this->admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
 
         $twig = new Twig();
+
         $helper = new AdminHelper($pool);
+
         $validator = $this->getMock('Symfony\Component\Validator\ValidatorInterface');
+
         $this->controller = new HelperController($twig, $pool, $helper, $validator);
 
         // php 5.3 BC
@@ -121,21 +124,25 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
     public function testgetShortObjectDescriptionActionInvalidAdmin()
     {
         $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
+
         $twig = new Twig();
+
         $request = new Request(array(
             'code'     => 'sonata.post.admin',
             'objectId' => 42,
             'uniqid'   => 'asdasd123'
         ));
+
         $pool = new Pool($container, 'title', 'logo');
         $pool->setAdminServiceIds(array('sonata.post.admin'));
-        $helper = new AdminHelper($pool);
-        $validator = $this->getMock('Symfony\Component\Validator\ValidatorInterface');
-        $controller = new HelperController($twig, $pool, $helper, $validator);
 
+        $helper = new AdminHelper($pool);
+
+        $validator = $this->getMock('Symfony\Component\Validator\ValidatorInterface');
+
+        $controller = new HelperController($twig, $pool, $helper, $validator);
         $controller->getShortObjectDescriptionAction($request);
     }
-
     /**
      * @expectedException \RuntimeException
      * @exceptionMessage Invalid format
@@ -162,8 +169,8 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
         $helper = new AdminHelper($pool);
 
         $validator = $this->getMock('Symfony\Component\Validator\ValidatorInterface');
-        $controller = new HelperController($twig, $pool, $helper, $validator);
 
+        $controller = new HelperController($twig, $pool, $helper, $validator);
         $controller->getShortObjectDescriptionAction($request);
     }
 
@@ -177,6 +184,7 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
         $container->expects($this->any())->method('get')->will($this->returnValue($admin));
 
         $twig = new Twig();
+
         $request = new Request(array(
             'code'     => 'sonata.post.admin',
             'objectId' => "",
@@ -190,8 +198,8 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
         $helper = new AdminHelper($pool);
 
         $validator = $this->getMock('Symfony\Component\Validator\ValidatorInterface');
-        $controller = new HelperController($twig, $pool, $helper, $validator);
 
+        $controller = new HelperController($twig, $pool, $helper, $validator);
         $controller->getShortObjectDescriptionAction($request);
     }
 
@@ -208,7 +216,6 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
             if ($type != 'edit') {
                 return 'invalid name';
             }
-
             return '/ok/url';
         }));
 
@@ -219,7 +226,7 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
 
         $twig->expects($this->once())->method('render')
             ->with($mockTemplate)
-            ->will($this->returnCallback(function ($templateName, $templateParams) {
+            ->will($this->returnCallback(function($templateName, $templateParams) {
                 return sprintf('<a href="%s" target="new">%s</a>', $templateParams['admin']->generateObjectUrl('edit', $templateParams['object']), $templateParams['description']);
             }));
 
@@ -242,6 +249,7 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
         $response = $controller->getShortObjectDescriptionAction($request);
 
         $expected = '<a href="/ok/url" target="new">bar</a>';
+
         $this->assertEquals($expected, $response->getContent());
     }
 
@@ -266,6 +274,7 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
 
         $twig = new Twig();
         $twig->addExtension($adminExtension);
+
         $request = new Request(array(
             'code'     => 'sonata.post.admin',
             'objectId' => 42,
@@ -311,13 +320,11 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
         $mockRenderer = $this->getMockBuilder('Symfony\Bridge\Twig\Form\TwigRendererInterface')
             ->disableOriginalConstructor()
             ->getMock();
-
         $mockRenderer->expects($this->once())
             ->method('searchAndRenderBlock')
             ->will($this->returnValue(new Response()));
 
         $formExtension = $this->getMock('Twig_ExtensionInterface', array('renderListElement', 'initRuntime', 'getTokenParsers', 'getNodeVisitors', 'getFilters', 'getTests', 'getFunctions', 'getOperators', 'getGlobals', 'getName'));
-
         $formExtension->expects($this->once())->method('getName')->will($this->returnValue('form'));
         $formExtension->expects($this->never())->method('searchAndRenderBlock');
         $formExtension->expects($this->never())->method('setTheme');
@@ -325,6 +332,7 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
 
         $twig = new Twig();
         $twig->addExtension($formExtension);
+
         $request = new Request(array(
             'code'     => 'sonata.post.admin',
             'objectId' => 42,
@@ -341,7 +349,6 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
         $mockView = $this->getMockBuilder('Symfony\Component\Form\FormView')
             ->disableOriginalConstructor()
             ->getMock();
-
         $mockForm = $this->getMockBuilder('Symfony\Component\Form\Form')
             ->disableOriginalConstructor()
             ->getMock();
@@ -350,13 +357,11 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($mockView));
 
         $helper = $this->getMock('Sonata\AdminBundle\Admin\AdminHelper', array('appendFormFieldElement', 'getChildFormView'), array($pool));
-        $helper->expects($this->once())->method('appendFormFieldElement')->will($this->returnValue(array(
-            $this->getMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface'),
-            $mockForm
-        )));
+        $helper->expects($this->once())->method('appendFormFieldElement')->will($this->returnValue($mockForm));
         $helper->expects($this->once())->method('getChildFormView')->will($this->returnValue($mockView));
 
         $controller = new HelperController($twig, $pool, $helper, $validator);
+
         $response = $controller->appendFormFieldElementAction($request);
 
         $this->isInstanceOf('Symfony\Component\HttpFoundation\Response', $response);
@@ -372,7 +377,6 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
         $mockView = $this->getMockBuilder('Symfony\Component\Form\FormView')
             ->disableOriginalConstructor()
             ->getMock();
-
         $mockForm = $this->getMockBuilder('Symfony\Component\Form\Form')
             ->disableOriginalConstructor()
             ->getMock();
@@ -395,7 +399,6 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
         $mockRenderer = $this->getMockBuilder('Symfony\Bridge\Twig\Form\TwigRendererInterface')
             ->disableOriginalConstructor()
             ->getMock();
-
         $mockRenderer->expects($this->once())
             ->method('searchAndRenderBlock')
             ->will($this->returnValue(new Response()));
@@ -408,6 +411,7 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
 
         $twig = new Twig();
         $twig->addExtension($formExtension);
+
         $request = new Request(array(
             'code'     => 'sonata.post.admin',
             'objectId' => 42,
@@ -427,6 +431,7 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
         $helper->expects($this->once())->method('getChildFormView')->will($this->returnValue($mockView));
 
         $controller = new HelperController($twig, $pool, $helper, $validator);
+
         $response = $controller->retrieveFormFieldElementAction($request);
 
         $this->isInstanceOf('Symfony\Component\HttpFoundation\Response', $response);
@@ -450,7 +455,12 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
         $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
         $container->expects($this->any())->method('get')->will($this->returnValue($admin));
 
+        $adminExtension = $this->getMock('Twig_ExtensionInterface', array('renderListElement', 'initRuntime', 'getTokenParsers', 'getNodeVisitors', 'getFilters', 'getTests', 'getFunctions', 'getOperators', 'getGlobals', 'getName'));
+        $adminExtension->expects($this->once())->method('getName')->will($this->returnValue('sonata_admin'));
+        $adminExtension->expects($this->any())->method('renderListElement')->will($this->returnValue('<foo />'));
+
         $twig = new Twig();
+        $twig->addExtension($adminExtension);;
         $request = new Request(array(
             'code'     => 'sonata.post.admin',
             'objectId' => 42,
