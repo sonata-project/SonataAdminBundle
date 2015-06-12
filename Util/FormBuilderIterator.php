@@ -120,7 +120,7 @@ class FormBuilderIterator extends \RecursiveArrayIterator
      */
     public function getChildren()
     {
-        return new self($this->formBuilder->get($this->iterator->current()), $this->current());
+        return new self($this->formBuilder->get($this->iterator->current()), $this->prefix.'_'.$this->current()->getName());
     }
 
     /**
