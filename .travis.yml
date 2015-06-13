@@ -12,7 +12,7 @@ sudo: false
 
 cache:
   directories:
-    - $HOME/.composer
+    - $HOME/.composer/cache
     - $HOME/.cache/pip
     - vendor
 
