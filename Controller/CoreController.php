@@ -27,6 +27,23 @@ use Symfony\Component\HttpFoundation\Response;
 class CoreController extends Controller
 {
     /**
+     * Shortcut to keep BC.
+     *
+     * @return Request The current request
+     *
+     * @return Request
+     */
+    public function getRequest()
+    {
+        // In Symfony 2.4+ use "request_stack" service instead Controller::getRequest()
+        if ($this->container->has('request_stack')) {
+            return $this->container->get('request_stack')->getCurrentRequest();
+        }
+
+        return parent::getRequest();
+    }
+
+    /**
      * @return \Sonata\AdminBundle\Admin\Pool
      */
     protected function getAdminPool()
