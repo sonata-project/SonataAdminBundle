@@ -31,7 +31,7 @@ class ModelToIdTransformerTest extends \PHPUnit_Framework_TestCase
                 ->method('find')
                 ->will($this->returnValue(true));
 
-        $this->assertFalse(in_array(false, array("0", 0), true));
+        $this->assertFalse(in_array(false, array('0', 0), true));
 
         // we pass 0 as integer
         $this->assertTrue($transformer->reverseTransform(0));
@@ -64,7 +64,7 @@ class ModelToIdTransformerTest extends \PHPUnit_Framework_TestCase
             array(null, null),
             array(false, false),
             array(array(), null),
-            array("", null)
+            array('', null),
         );
     }
 

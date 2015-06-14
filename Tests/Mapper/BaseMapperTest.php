@@ -13,11 +13,10 @@
 namespace Sonata\AdminBundle\Tests\Mapper;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\Builder\BuilderInterface;
 use Sonata\AdminBundle\Mapper\BaseMapper;
 
 /**
- * Test for BaseMapperTest
+ * Test for BaseMapperTest.
  *
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */

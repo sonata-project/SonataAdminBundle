@@ -11,8 +11,8 @@
 
 namespace Sonata\AdminBundle\Tests\DependencyInjection;
 
-use Sonata\AdminBundle\DependencyInjection\SonataAdminExtension;
 use Sonata\AdminBundle\DependencyInjection\Compiler\AddDependencyCallsCompilerPass;
+use Sonata\AdminBundle\DependencyInjection\SonataAdminExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
@@ -103,7 +103,7 @@ class AddDependencyCallsCompilerPassTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('', $dashboardGroupsSettings['sonata_group_one']['items'][2]['admin']);
         $this->assertEquals('blog_article', $dashboardGroupsSettings['sonata_group_one']['items'][2]['route']);
         $this->assertEquals('Article', $dashboardGroupsSettings['sonata_group_one']['items'][2]['label']);
-        $this->assertEquals(array('articleId' => 3) , $dashboardGroupsSettings['sonata_group_one']['items'][2]['route_params']);
+        $this->assertEquals(array('articleId' => 3), $dashboardGroupsSettings['sonata_group_one']['items'][2]['route_params']);
         $this->assertContains('sonata_news_admin', $dashboardGroupsSettings['sonata_group_one']['item_adds']);
         $this->assertContains('ROLE_ONE', $dashboardGroupsSettings['sonata_group_one']['roles']);
 
@@ -195,8 +195,8 @@ class AddDependencyCallsCompilerPassTest extends \PHPUnit_Framework_TestCase
             'dashboard' => array(
                 'groups' => array(
                     '%sonata.admin.parameter.groupname%' => array(),
-                )
-            )
+                ),
+            ),
         );
 
         $container = $this->getContainer();
@@ -275,44 +275,44 @@ class AddDependencyCallsCompilerPassTest extends \PHPUnit_Framework_TestCase
             'dashboard' => array(
                 'groups' => array(
                     'sonata_group_one' => array(
-                        'label' => 'Group One Label',
+                        'label'           => 'Group One Label',
                         'label_catalogue' => 'SonataAdminBundle',
-                        'items' => array(
+                        'items'           => array(
                             'sonata_post_admin',
                             array(
                                 'route' => 'blog_name',
-                                'label' => 'Blog'
+                                'label' => 'Blog',
                             ),
                             array(
                                 'route'        => 'blog_article',
                                 'label'        => 'Article',
-                                'route_params' => array('articleId' => 3)
+                                'route_params' => array('articleId' => 3),
                             ),
                         ),
                         'item_adds' => array(
-                            'sonata_news_admin'
+                            'sonata_news_admin',
                         ),
                         'roles' => array('ROLE_ONE'),
                     ),
                     'sonata_group_two' => array(
                         'provider' => 'my_menu',
                     ),
-                )
+                ),
             ),
             'admin_services' => array(
                 'sonata_post_admin' => array(
                     'templates' => array(
-                        'view' => array('user_block' => 'foobar.twig.html')
-                    )
+                        'view' => array('user_block' => 'foobar.twig.html'),
+                    ),
                 ),
                 'sonata_news_admin' => array(
-                    'label' => 'Foo',
+                    'label'      => 'Foo',
                     'pager_type' => 'simple',
                     'templates'  => array(
-                        'view' => array('user_block' => 'foo.twig.html')
-                    )
-                )
-            )
+                        'view' => array('user_block' => 'foo.twig.html'),
+                    ),
+                ),
+            ),
         );
 
         return $config;
@@ -323,7 +323,7 @@ class AddDependencyCallsCompilerPassTest extends \PHPUnit_Framework_TestCase
         $container = new ContainerBuilder();
         $container->setParameter('kernel.bundles', array(
             'SonataCoreBundle' => true,
-            'KnpMenuBundle' => true
+            'KnpMenuBundle'    => true,
         ));
         $container->setParameter('kernel.cache_dir', '/tmp');
         $container->setParameter('kernel.debug', true);
@@ -352,7 +352,7 @@ class AddDependencyCallsCompilerPassTest extends \PHPUnit_Framework_TestCase
             ->setClass('Symfony\Component\Form\FormFactoryInterface');
         foreach (array(
             'doctrine_phpcr' => 'PHPCR',
-            'orm'            => 'ORM') as $key => $bundleSubstring) {
+            'orm'            => 'ORM', ) as $key => $bundleSubstring) {
             $container
                 ->register(sprintf('sonata.admin.manager.%s', $key))
                 ->setClass(sprintf(

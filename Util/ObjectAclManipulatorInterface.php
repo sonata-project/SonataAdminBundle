@@ -11,20 +11,19 @@
 
 namespace Sonata\AdminBundle\Util;
 
-use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
-use Symfony\Component\Console\Output\OutputInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 
 /**
- * Interface ObjectAclManipulatorInterface
+ * Interface ObjectAclManipulatorInterface.
  *
- * @package Sonata\AdminBundle\Util
  * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 interface ObjectAclManipulatorInterface
 {
     /**
-     * Batch configure the ACLs for all objects handled by an Admin
+     * Batch configure the ACLs for all objects handled by an Admin.
      *
      * @abstract
      *
@@ -33,7 +32,6 @@ interface ObjectAclManipulatorInterface
      * @param UserSecurityIdentity $securityIdentity
      *
      * @throws \Sonata\AdminBundle\Exception\ModelManagerException
-     * @return void
      */
     public function batchConfigureAcls(OutputInterface $output, AdminInterface $admin, UserSecurityIdentity $securityIdentity = null);
 }

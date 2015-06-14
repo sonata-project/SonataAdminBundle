@@ -12,7 +12,6 @@
 namespace Sonata\AdminBundle\Tests\Admin;
 
 use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
-use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 
 class FieldDescriptionCollectionTest extends \PHPUnit_Framework_TestCase
 {

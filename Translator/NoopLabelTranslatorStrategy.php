@@ -12,9 +12,8 @@
 namespace Sonata\AdminBundle\Translator;
 
 /**
- * Class NoopLabelTranslatorStrategy
+ * Class NoopLabelTranslatorStrategy.
  *
- * @package Sonata\AdminBundle\Translator
  * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class NoopLabelTranslatorStrategy implements LabelTranslatorStrategyInterface

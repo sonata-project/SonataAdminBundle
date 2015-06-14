@@ -55,7 +55,7 @@ class FormMapperTest extends \PHPUnit_Framework_TestCase
 
         $this->modelManager->expects($this->any())
             ->method('getNewFieldDescriptionInstance')
-            ->will($this->returnCallback(function($class, $name, array $options = array()) use ($fieldDescription) {
+            ->will($this->returnCallback(function ($class, $name, array $options = array()) use ($fieldDescription) {
                 $fieldDescriptionClone = clone $fieldDescription;
                 $fieldDescriptionClone->setName($name);
                 $fieldDescriptionClone->setOptions($options);
@@ -79,26 +79,26 @@ class FormMapperTest extends \PHPUnit_Framework_TestCase
     {
         $this->formMapper->with('foobar');
 
-        $this->assertEquals(array('default' => array (
-            'collapsed' => false,
-            'class' => false,
-            'description' => false,
+        $this->assertEquals(array('default' => array(
+            'collapsed'          => false,
+            'class'              => false,
+            'description'        => false,
             'translation_domain' => null,
-            'auto_created' => true,
-            'groups' => array('foobar'),
-            'tab' => true,
-            'name' => 'default',
-            'box_class' => 'box box-primary'
+            'auto_created'       => true,
+            'groups'             => array('foobar'),
+            'tab'                => true,
+            'name'               => 'default',
+            'box_class'          => 'box box-primary',
         )), $this->admin->getFormTabs());
 
         $this->assertEquals(array('foobar' => array(
-            'collapsed' => false,
-            'class' => false,
-            'description' => false,
+            'collapsed'          => false,
+            'class'              => false,
+            'description'        => false,
             'translation_domain' => null,
-            'fields' => array (),
-            'name' => 'foobar',
-            'box_class' => 'box box-primary'
+            'fields'             => array(),
+            'name'               => 'foobar',
+            'box_class'          => 'box box-primary',
         )), $this->admin->getFormGroups());
     }
 
@@ -109,25 +109,25 @@ class FormMapperTest extends \PHPUnit_Framework_TestCase
         ));
 
         $this->assertEquals(array('foobar' => array(
-            'collapsed' => false,
-            'class' => false,
-            'description' => false,
+            'collapsed'          => false,
+            'class'              => false,
+            'description'        => false,
             'translation_domain' => 'Foobar',
-            'fields' => array (),
-            'name' => 'foobar',
-            'box_class' => 'box box-primary'
+            'fields'             => array(),
+            'name'               => 'foobar',
+            'box_class'          => 'box box-primary',
         )), $this->admin->getFormGroups());
 
-        $this->assertEquals(array('default' => array (
-            'collapsed' => false,
-            'class' => false,
-            'description' => false,
+        $this->assertEquals(array('default' => array(
+            'collapsed'          => false,
+            'class'              => false,
+            'description'        => false,
             'translation_domain' => 'Foobar',
-            'auto_created' => true,
-            'groups' => array('foobar'),
-            'tab' => true,
-            'name' => 'default',
-            'box_class' => 'box box-primary'
+            'auto_created'       => true,
+            'groups'             => array('foobar'),
+            'tab'                => true,
+            'name'               => 'default',
+            'box_class'          => 'box box-primary',
         )), $this->admin->getFormTabs());
     }
 
@@ -138,7 +138,7 @@ class FormMapperTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(array()));
 
         $this->formMapper->with('foobar', array(
-                'translation_domain' => 'Foobar'
+                'translation_domain' => 'Foobar',
             ))
             ->add('foo', 'bar')
         ->end();
@@ -150,28 +150,28 @@ class FormMapperTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($this->formMapper->has('foo'));
 
-        $this->assertEquals(array('default' => array (
-            'collapsed' => false,
-            'class' => false,
-            'description' => false,
+        $this->assertEquals(array('default' => array(
+            'collapsed'          => false,
+            'class'              => false,
+            'description'        => false,
             'translation_domain' => 'Foobar',
-            'auto_created' => true,
-            'groups' => array ('foobar'),
-            'tab' => true,
-            'name' => 'default',
-            'box_class' => 'box box-primary'
+            'auto_created'       => true,
+            'groups'             => array('foobar'),
+            'tab'                => true,
+            'name'               => 'default',
+            'box_class'          => 'box box-primary',
         )), $this->admin->getFormTabs());
 
         $this->assertEquals(array('foobar' => array(
-            'collapsed' => false,
-            'class' => false,
-            'description' => false,
+            'collapsed'          => false,
+            'class'              => false,
+            'description'        => false,
             'translation_domain' => 'Foobar',
-            'fields' => array(
-                'foo' => 'foo'
+            'fields'             => array(
+                'foo' => 'foo',
             ),
-            'name' => 'foobar',
-            'box_class' => 'box box-primary'
+            'name'      => 'foobar',
+            'box_class' => 'box box-primary',
         )), $this->admin->getFormGroups());
     }
 
@@ -317,7 +317,7 @@ class FormMapperTest extends \PHPUnit_Framework_TestCase
         $this->formMapper->ifTrue(false);
     }
 
-   /**
+    /**
      * @expectedException        RuntimeException
      * @expectedExceptionMessage Cannot nest ifTrue or ifFalse call
      */

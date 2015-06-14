@@ -12,11 +12,9 @@
 namespace Sonata\AdminBundle\Tests\Admin;
 
 use Sonata\AdminBundle\Admin\Admin;
-use Sonata\AdminBundle\Model\ModelManagerInterface;
 
 class BaseAdminModelManager_Admin extends Admin
 {
-
 }
 
 class BaseAdminModelManagerTest extends \PHPUnit_Framework_TestCase

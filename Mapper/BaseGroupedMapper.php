@@ -14,9 +14,8 @@ namespace Sonata\AdminBundle\Mapper;
 
 /**
  * Class BaseGroupedMapper
- * This class is used to simulate the Form API
+ * This class is used to simulate the Form API.
  *
- * @package Sonata\AdminBundle\Mapper
  * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 abstract class BaseGroupedMapper extends BaseMapper
@@ -33,7 +32,7 @@ abstract class BaseGroupedMapper extends BaseMapper
     abstract protected function setTabs(array $tabs);
 
     /**
-     * Add new group or tab (if parameter "tab=true" is available in options)
+     * Add new group or tab (if parameter "tab=true" is available in options).
      *
      * @param string $name
      * @param array  $options
@@ -44,7 +43,7 @@ abstract class BaseGroupedMapper extends BaseMapper
      */
     public function with($name, array $options = array())
     {
-        /**
+        /*
          * The current implementation should work with the following workflow:
          *
          *     $formMapper
@@ -99,9 +98,7 @@ abstract class BaseGroupedMapper extends BaseMapper
             ), $tabs[$code], $options);
 
             $this->currentTab = $code;
-
         } else {
-
             if ($this->currentGroup) {
                 throw new \RuntimeException(sprintf('You should close previous group "%s" with end() before adding new tab "%s".', $this->currentGroup, $name));
             }
@@ -111,7 +108,7 @@ abstract class BaseGroupedMapper extends BaseMapper
                 $this->with('default', array(
                     'tab'                => true,
                     'auto_created'       => true,
-                    'translation_domain' => isset($options['translation_domain']) ? $options['translation_domain'] : null
+                    'translation_domain' => isset($options['translation_domain']) ? $options['translation_domain'] : null,
                 )); // add new tab automatically
             }
 
@@ -144,9 +141,9 @@ abstract class BaseGroupedMapper extends BaseMapper
     }
 
     /**
-     * Only nested add if the condition match true
+     * Only nested add if the condition match true.
      *
-     * @param boolean $bool
+     * @param bool $bool
      *
      * @return $this
      *
@@ -164,9 +161,9 @@ abstract class BaseGroupedMapper extends BaseMapper
     }
 
     /**
-     * Only nested add if the condition match false
+     * Only nested add if the condition match false.
      *
-     * @param boolean $bool
+     * @param bool $bool
      *
      * @return $this
      *
@@ -194,7 +191,7 @@ abstract class BaseGroupedMapper extends BaseMapper
     }
 
     /**
-     * Add new tab
+     * Add new tab.
      *
      * @param string $name
      * @param array  $options
@@ -207,7 +204,7 @@ abstract class BaseGroupedMapper extends BaseMapper
     }
 
     /**
-     * Close the current group or tab
+     * Close the current group or tab.
      *
      * @return $this
      *
@@ -225,11 +222,11 @@ abstract class BaseGroupedMapper extends BaseMapper
 
         return $this;
     }
-    
+
     /**
      * Returns a boolean indicating if there is an open tab at the moment.
-     * 
-     * @return boolean
+     *
+     * @return bool
      */
     public function hasOpenTab()
     {
@@ -237,7 +234,7 @@ abstract class BaseGroupedMapper extends BaseMapper
     }
 
     /**
-     * Add the field name to the current group
+     * Add the field name to the current group.
      *
      * @param string $fieldName
      */
@@ -255,7 +252,7 @@ abstract class BaseGroupedMapper extends BaseMapper
 
     /**
      * Return the name of the currently selected group. The method also makes
-     * sure a valid group name is currently selected
+     * sure a valid group name is currently selected.
      *
      * Note that this can have the side effect to change the 'group' value
      * returned by the getGroup function

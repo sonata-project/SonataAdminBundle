@@ -18,7 +18,6 @@ use Sonata\AdminBundle\Util\AdminObjectAclData;
  */
 class AdminObjectAclDataTest extends \PHPUnit_Framework_TestCase
 {
-
     protected static function createAclUsers()
     {
         return new \ArrayIterator();

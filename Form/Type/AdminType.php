@@ -12,23 +12,20 @@
 
 namespace Sonata\AdminBundle\Form\Type;
 
+use Sonata\AdminBundle\Form\DataTransformer\ArrayToModelTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
-
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-
-use Sonata\AdminBundle\Form\DataTransformer\ArrayToModelTransformer;
 use Symfony\Component\PropertyAccess\Exception\NoSuchIndexException;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 /**
- * Class AdminType
+ * Class AdminType.
  *
- * @package Sonata\AdminBundle\Form\Type
  * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class AdminType extends AbstractType
@@ -115,7 +112,7 @@ class AdminType extends AbstractType
             'btn_add'         => 'link_add',
             'btn_list'        => 'link_list',
             'btn_delete'      => 'link_delete',
-            'btn_catalogue'   => 'SonataAdminBundle'
+            'btn_catalogue'   => 'SonataAdminBundle',
         ));
     }
 

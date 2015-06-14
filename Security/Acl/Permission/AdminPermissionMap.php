@@ -35,7 +35,7 @@ class AdminPermissionMap implements PermissionMapInterface
 
     /**
      * Map each permission to the permissions it should grant access for
-     * fe. grant access for the view permission if the user has the edit permission
+     * fe. grant access for the view permission if the user has the edit permission.
      *
      * @var array
      */
@@ -47,55 +47,55 @@ class AdminPermissionMap implements PermissionMapInterface
             MaskBuilder::MASK_EDIT,
             MaskBuilder::MASK_OPERATOR,
             MaskBuilder::MASK_MASTER,
-            MaskBuilder::MASK_OWNER
+            MaskBuilder::MASK_OWNER,
         ),
 
         self::PERMISSION_EDIT => array(
             MaskBuilder::MASK_EDIT,
             MaskBuilder::MASK_OPERATOR,
             MaskBuilder::MASK_MASTER,
-            MaskBuilder::MASK_OWNER
+            MaskBuilder::MASK_OWNER,
         ),
 
         self::PERMISSION_CREATE => array(
             MaskBuilder::MASK_CREATE,
             MaskBuilder::MASK_OPERATOR,
             MaskBuilder::MASK_MASTER,
-            MaskBuilder::MASK_OWNER
+            MaskBuilder::MASK_OWNER,
         ),
 
         self::PERMISSION_DELETE => array(
             MaskBuilder::MASK_DELETE,
             MaskBuilder::MASK_OPERATOR,
             MaskBuilder::MASK_MASTER,
-            MaskBuilder::MASK_OWNER
+            MaskBuilder::MASK_OWNER,
         ),
 
         self::PERMISSION_UNDELETE => array(
             MaskBuilder::MASK_UNDELETE,
             MaskBuilder::MASK_OPERATOR,
             MaskBuilder::MASK_MASTER,
-            MaskBuilder::MASK_OWNER
+            MaskBuilder::MASK_OWNER,
         ),
 
         self::PERMISSION_LIST => array(
             MaskBuilder::MASK_LIST,
             MaskBuilder::MASK_OPERATOR,
             MaskBuilder::MASK_MASTER,
-            MaskBuilder::MASK_OWNER
+            MaskBuilder::MASK_OWNER,
         ),
 
         self::PERMISSION_EXPORT => array(
             MaskBuilder::MASK_EXPORT,
             MaskBuilder::MASK_OPERATOR,
             MaskBuilder::MASK_MASTER,
-            MaskBuilder::MASK_OWNER
+            MaskBuilder::MASK_OWNER,
         ),
 
         self::PERMISSION_OPERATOR => array(
             MaskBuilder::MASK_OPERATOR,
             MaskBuilder::MASK_MASTER,
-            MaskBuilder::MASK_OWNER
+            MaskBuilder::MASK_OWNER,
         ),
 
         self::PERMISSION_MASTER => array(
@@ -114,7 +114,7 @@ class AdminPermissionMap implements PermissionMapInterface
     public function getMasks($permission, $object)
     {
         if (!isset($this->map[$permission])) {
-            return null;
+            return;
         }
 
         return $this->map[$permission];

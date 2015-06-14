@@ -13,9 +13,8 @@ namespace Sonata\AdminBundle\Datagrid;
 
 /**
  * Interface ProxyQueryInterface
- * Used by the Datagrid to build the query
+ * Used by the Datagrid to build the query.
  *
- * @package Sonata\AdminBundle\Datagrid
  * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 interface ProxyQueryInterface

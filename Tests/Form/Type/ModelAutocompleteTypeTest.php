@@ -12,7 +12,6 @@
 namespace Sonata\AdminBundle\Tests\Form\Type;
 
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
-
 use Symfony\Component\Form\Test\TypeTestCase;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -26,7 +25,7 @@ class ModelAutocompleteTypeTest extends TypeTestCase
 
         $type->setDefaultOptions($optionResolver);
 
-        $options = $optionResolver->resolve(array('model_manager' => $modelManager, 'class' => 'Foo', 'property'=>'bar'));
+        $options = $optionResolver->resolve(array('model_manager' => $modelManager, 'class' => 'Foo', 'property' => 'bar'));
 
         $this->assertEquals(array(), $options['attr']);
         $this->assertFalse($options['compound']);
@@ -43,7 +42,7 @@ class ModelAutocompleteTypeTest extends TypeTestCase
         $this->assertFalse($options['dropdown_auto_width']);
 
         $this->assertEquals('', $options['url']);
-        $this->assertEquals(array('name'=>'sonata_admin_retrieve_autocomplete_items', 'parameters'=>array()), $options['route']);
+        $this->assertEquals(array('name' => 'sonata_admin_retrieve_autocomplete_items', 'parameters' => array()), $options['route']);
         $this->assertEquals(array(), $options['req_params']);
         $this->assertEquals('q', $options['req_param_name_search']);
         $this->assertEquals('_page', $options['req_param_name_page_number']);

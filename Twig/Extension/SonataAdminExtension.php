@@ -20,9 +20,8 @@ use Sonata\AdminBundle\Exception\NoValueException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
 /**
- * Class SonataAdminExtension
+ * Class SonataAdminExtension.
  *
- * @package Sonata\AdminBundle\Twig\Extension
  * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class SonataAdminExtension extends \Twig_Extension
@@ -100,7 +99,7 @@ class SonataAdminExtension extends \Twig_Extension
     }
 
     /**
-     * Get template
+     * Get template.
      *
      * @param FieldDescriptionInterface $fieldDescription
      * @param string                    $defaultTemplate
@@ -125,7 +124,7 @@ class SonataAdminExtension extends \Twig_Extension
     }
 
     /**
-     * render a list element from the FieldDescription
+     * render a list element from the FieldDescription.
      *
      * @param mixed                     $object
      * @param FieldDescriptionInterface $fieldDescription
@@ -171,7 +170,7 @@ class SonataAdminExtension extends \Twig_Extension
 
     /**
      * return the value related to FieldDescription, if the associated object does no
-     * exists => a temporary one is created
+     * exists => a temporary one is created.
      *
      * @param object                    $object
      * @param FieldDescriptionInterface $fieldDescription
@@ -200,7 +199,7 @@ class SonataAdminExtension extends \Twig_Extension
     }
 
     /**
-     * render a view element
+     * render a view element.
      *
      * @param FieldDescriptionInterface $fieldDescription
      * @param mixed                     $object
@@ -226,7 +225,7 @@ class SonataAdminExtension extends \Twig_Extension
     }
 
     /**
-     * render a compared view element
+     * render a compared view element.
      *
      * @param FieldDescriptionInterface $fieldDescription
      * @param mixed                     $baseObject

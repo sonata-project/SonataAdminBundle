@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the Sonata package.
  *
@@ -10,20 +11,18 @@
 
 namespace Sonata\AdminBundle\Admin;
 
-use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Datagrid\DatagridMapper;
-use Sonata\AdminBundle\Show\ShowMapper;
-use Sonata\AdminBundle\Route\RouteCollection;
-use Sonata\CoreBundle\Validator\ErrorElement;
-use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
-
 use Knp\Menu\ItemInterface as MenuItemInterface;
+use Sonata\AdminBundle\Datagrid\DatagridMapper;
+use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
+use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\AdminBundle\Show\ShowMapper;
+use Sonata\CoreBundle\Validator\ErrorElement;
 
 /**
- * Class AdminExtension
+ * Class AdminExtension.
  *
- * @package Sonata\AdminBundle\Admin
  * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 abstract class AdminExtension implements AdminExtensionInterface
@@ -32,37 +31,43 @@ abstract class AdminExtension implements AdminExtensionInterface
      * {@inheritdoc}
      */
     public function configureFormFields(FormMapper $form)
-    {}
+    {
+    }
 
     /**
      * {@inheritdoc}
      */
     public function configureListFields(ListMapper $list)
-    {}
+    {
+    }
 
     /**
      * {@inheritdoc}
      */
     public function configureDatagridFilters(DatagridMapper $filter)
-    {}
+    {
+    }
 
     /**
      * {@inheritdoc}
      */
     public function configureShowFields(ShowMapper $show)
-    {}
+    {
+    }
 
     /**
      * {@inheritdoc}
      */
     public function configureRoutes(AdminInterface $admin, RouteCollection $collection)
-    {}
+    {
+    }
 
     /**
      * {@inheritdoc}
      */
     public function configureSideMenu(AdminInterface $admin, MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
-    {}
+    {
+    }
 
     /**
      * {@inheritdoc}
@@ -78,25 +83,29 @@ abstract class AdminExtension implements AdminExtensionInterface
      * {@inheritdoc}
      */
     public function validate(AdminInterface $admin, ErrorElement $errorElement, $object)
-    {}
+    {
+    }
 
     /**
      * {@inheritdoc}
      */
     public function configureQuery(AdminInterface $admin, ProxyQueryInterface $query, $context = 'list')
-    {}
+    {
+    }
 
     /**
      * {@inheritdoc}
      */
     public function alterNewInstance(AdminInterface $admin, $object)
-    {}
+    {
+    }
 
     /**
      * {@inheritdoc}
      */
     public function alterObject(AdminInterface $admin, $object)
-    {}
+    {
+    }
 
     /**
      * {@inheritdoc}
@@ -110,35 +119,41 @@ abstract class AdminExtension implements AdminExtensionInterface
      * {@inheritdoc}
      */
     public function preUpdate(AdminInterface $admin, $object)
-    {}
+    {
+    }
 
     /**
      * {@inheritdoc}
      */
     public function postUpdate(AdminInterface $admin, $object)
-    {}
+    {
+    }
 
     /**
      * {@inheritdoc}
      */
     public function prePersist(AdminInterface $admin, $object)
-    {}
+    {
+    }
 
     /**
      * {@inheritdoc}
      */
     public function postPersist(AdminInterface $admin, $object)
-    {}
+    {
+    }
 
     /**
      * {@inheritdoc}
      */
     public function preRemove(AdminInterface $admin, $object)
-    {}
+    {
+    }
 
     /**
      * {@inheritdoc}
      */
     public function postRemove(AdminInterface $admin, $object)
-    {}
+    {
+    }
 }

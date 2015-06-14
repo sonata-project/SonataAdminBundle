@@ -16,7 +16,6 @@ use Sonata\AdminBundle\Route\RouteCollection;
 
 class PathInfoBuilderTest extends \PHPUnit_Framework_TestCase
 {
-
     public function testBuild()
     {
         $audit = $this->getMock('Sonata\AdminBundle\Model\AuditManagerInterface');

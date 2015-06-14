@@ -11,23 +11,19 @@
 
 namespace Sonata\AdminBundle\Builder;
 
-use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 
 /**
- * Interface BuilderInterface
+ * Interface BuilderInterface.
  *
- * @package Sonata\AdminBundle\Builder
  * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 interface BuilderInterface
 {
     /**
-     *
      * @param \Sonata\AdminBundle\Admin\AdminInterface            $admin
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
-     *
-     * @return void
      */
     public function fixFieldDescription(AdminInterface $admin, FieldDescriptionInterface $fieldDescription);
 }

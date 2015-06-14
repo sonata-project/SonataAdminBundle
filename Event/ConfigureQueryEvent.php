@@ -17,13 +17,12 @@ use Symfony\Component\EventDispatcher\Event;
 
 /**
  * This event is sent by hook:
- *   - configureQuery
+ *   - configureQuery.
  *
  * You can register the listener to the event dispatcher by using:
  *   - sonata.admin.event.configure.query
  *   - sonata.admin.event.configure.[admin_code].query  (not implemented yet)
  *
- * @package Sonata\AdminBundle\Event
  * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class ConfigureQueryEvent extends Event

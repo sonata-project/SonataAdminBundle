@@ -11,9 +11,10 @@
 
 namespace Sonata\AdminBundle\Tests\Twig\Extension;
 
-use Sonata\AdminBundle\Admin\Pool;
-use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
+use Psr\Log\LoggerInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
+use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Exception\NoValueException;
 use Sonata\AdminBundle\Twig\Extension\SonataAdminExtension;
 use Symfony\Bridge\Twig\Extension\RoutingExtension;
@@ -23,13 +24,12 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\Loader\XmlFileLoader;
 use Symfony\Component\Routing\RequestContext;
-use Symfony\Component\Translation\Translator;
-use Symfony\Component\Translation\MessageSelector;
 use Symfony\Component\Translation\Loader\XliffFileLoader;
-use Psr\Log\LoggerInterface;
+use Symfony\Component\Translation\MessageSelector;
+use Symfony\Component\Translation\Translator;
 
 /**
- * Test for SonataAdminExtension
+ * Test for SonataAdminExtension.
  *
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
@@ -787,7 +787,7 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
             }));
 
         $element = new \stdClass();
-        $element->foo = "bar";
+        $element->foo = 'bar';
 
         $this->assertEquals('bar', $this->twigExtension->renderRelationElement($element, $this->fieldDescription));
     }
@@ -806,7 +806,7 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
             }));
 
         $element = new \stdClass();
-        $element->foo = "bar";
+        $element->foo = 'bar';
 
         $this->assertEquals('closure bar', $this->twigExtension->renderRelationElement($element, $this->fieldDescription));
     }

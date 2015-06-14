@@ -13,9 +13,8 @@
 namespace Sonata\AdminBundle\Admin;
 
 /**
- * Class FieldDescriptionCollection
+ * Class FieldDescriptionCollection.
  *
- * @package Sonata\AdminBundle\Admin
  * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class FieldDescriptionCollection implements \ArrayAccess, \Countable
@@ -24,8 +23,6 @@ class FieldDescriptionCollection implements \ArrayAccess, \Countable
 
     /**
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
-     *
-     * @return void
      */
     public function add(FieldDescriptionInterface $fieldDescription)
     {
@@ -68,8 +65,6 @@ class FieldDescriptionCollection implements \ArrayAccess, \Countable
 
     /**
      * @param string $name
-     *
-     * @return void
      */
     public function remove($name)
     {

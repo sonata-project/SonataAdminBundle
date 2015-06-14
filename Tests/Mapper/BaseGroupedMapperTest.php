@@ -14,13 +14,12 @@ namespace Sonata\AdminBundle\Tests\Mapper;
 use Sonata\AdminBundle\Mapper\BaseGroupedMapper;
 
 /**
- * Test for BaseGroupedMapper
+ * Test for BaseGroupedMapper.
  *
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
 class BaseGroupedMapperTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var BaseGroupedMapper
      */
@@ -93,7 +92,7 @@ class BaseGroupedMapperTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertCount(0, $this->tabs);
         $this->assertCount(0, $this->groups);
-        $this->assertEquals($this->baseGroupedMapper, $this->baseGroupedMapper->with('fooTab', array('tab'=>true)));
+        $this->assertEquals($this->baseGroupedMapper, $this->baseGroupedMapper->with('fooTab', array('tab' => true)));
         $this->assertCount(1, $this->tabs);
         $this->assertCount(0, $this->groups);
     }
@@ -132,14 +131,14 @@ class BaseGroupedMapperTest extends \PHPUnit_Framework_TestCase
         $this->baseGroupedMapper->tab('fooTab');
         $this->baseGroupedMapper->tab('barTab');
     }
-    
+
     public function testHasOpenTab()
     {
         $this->assertFalse($this->baseGroupedMapper->hasOpenTab(), '->hasOpenTab() returns false when there are no tabs');
-        
+
         $this->baseGroupedMapper->tab('fooTab');
         $this->assertTrue($this->baseGroupedMapper->hasOpenTab(), '->hasOpenTab() returns true when there is an open tab');
-        
+
         $this->baseGroupedMapper->end();
         $this->assertFalse($this->baseGroupedMapper->hasOpenTab(), '->hasOpenTab() returns false when all tabs are closed');
     }

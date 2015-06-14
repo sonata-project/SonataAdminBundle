@@ -12,12 +12,12 @@
 
 namespace Sonata\AdminBundle\Guesser;
 
+use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Form\Guess\Guess;
-use Sonata\AdminBundle\Model\ModelManagerInterface;
 
 /**
- * The code is based on Symfony2 Form Components
+ * The code is based on Symfony2 Form Components.
  *
  * @author Bernhard Schussek <bernhard.schussek@symfony.com>
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
@@ -56,7 +56,7 @@ class TypeGuesserChain implements TypeGuesserInterface
 
     /**
      * Executes a closure for each guesser and returns the best guess from the
-     * return values
+     * return values.
      *
      * @param \Closure $closure The closure to execute. Accepts a guesser
      *                          as argument and should return a Guess instance

@@ -15,9 +15,8 @@ namespace Sonata\AdminBundle\Guesser;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 
 /**
- * Interface TypeGuesserInterface
+ * Interface TypeGuesserInterface.
  *
- * @package Sonata\AdminBundle\Guesser
  * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 interface TypeGuesserInterface

@@ -11,14 +11,13 @@
 
 namespace Sonata\AdminBundle\Builder;
 
-use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
+use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 
 /**
- * Interface ShowBuilderInterface
+ * Interface ShowBuilderInterface.
  *
- * @package Sonata\AdminBundle\Builder
  * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 interface ShowBuilderInterface extends BuilderInterface
@@ -27,8 +26,6 @@ interface ShowBuilderInterface extends BuilderInterface
      * @abstract
      *
      * @param array $options
-     *
-     * @return void
      */
     public function getBaseList(array $options = array());
 
@@ -39,8 +36,6 @@ interface ShowBuilderInterface extends BuilderInterface
      * @param null                                                 $type
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface  $fieldDescription
      * @param \Sonata\AdminBundle\Admin\AdminInterface             $admin
-     *
-     * @return void
      */
     public function addField(FieldDescriptionCollection $list, $type = null, FieldDescriptionInterface $fieldDescription, AdminInterface $admin);
 }

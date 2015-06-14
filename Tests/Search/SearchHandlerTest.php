@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the Sonata project.
  *
@@ -13,13 +14,10 @@ namespace Sonata\AdminBundle\Tests\Search;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Search\SearchHandler;
-use Sonata\AdminBundle\Datagrid\DatagridInterface;
-use Sonata\AdminBundle\Filter\FilterInterface;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 
 class SearchHandlerTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @param AdminInterface $admin
      *

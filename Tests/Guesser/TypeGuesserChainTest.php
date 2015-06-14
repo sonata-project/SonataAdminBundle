@@ -12,15 +12,12 @@
 
 namespace Sonata\AdminBundle\Tests\Guesser;
 
-use Sonata\AdminBundle\Guesser\TypeGuesserInterface;
-use Symfony\Component\Form\Exception\UnexpectedTypeException;
-use Symfony\Component\Form\Guess\Guess;
-use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Guesser\TypeGuesserChain;
+use Symfony\Component\Form\Guess\Guess;
 use Symfony\Component\Form\Guess\TypeGuess;
 
 /**
- * TypeGuesserChain Test
+ * TypeGuesserChain Test.
  *
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */

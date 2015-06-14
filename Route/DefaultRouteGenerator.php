@@ -16,9 +16,8 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 /**
- * Class DefaultRouteGenerator
+ * Class DefaultRouteGenerator.
  *
- * @package Sonata\AdminBundle\Route
  * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class DefaultRouteGenerator implements RouteGeneratorInterface
@@ -106,7 +105,7 @@ class DefaultRouteGenerator implements RouteGeneratorInterface
         return array(
             'route'           => $this->caches[$code],
             'routeParameters' => $parameters,
-            'routeAbsolute'   => $absolute
+            'routeAbsolute'   => $absolute,
         );
     }
 

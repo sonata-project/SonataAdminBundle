@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the Sonata package.
  *
@@ -11,14 +12,12 @@
 
 namespace Sonata\AdminBundle\Form\DataTransformer;
 
+use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Symfony\Component\Form\DataTransformerInterface;
 
-use Sonata\AdminBundle\Model\ModelManagerInterface;
-
 /**
- * Class ModelToIdTransformer
+ * Class ModelToIdTransformer.
  *
- * @package Sonata\AdminBundle\Form\DataTransformer
  * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class ModelToIdTransformer implements DataTransformerInterface
@@ -42,8 +41,8 @@ class ModelToIdTransformer implements DataTransformerInterface
      */
     public function reverseTransform($newId)
     {
-        if (empty($newId) && !in_array($newId, array("0", 0), true)) {
-            return null;
+        if (empty($newId) && !in_array($newId, array('0', 0), true)) {
+            return;
         }
 
         return $this->modelManager->find($this->className, $newId);
@@ -55,7 +54,7 @@ class ModelToIdTransformer implements DataTransformerInterface
     public function transform($entity)
     {
         if (empty($entity)) {
-            return null;
+            return;
         }
 
         return $this->modelManager->getNormalizedIdentifier($entity);

@@ -17,9 +17,8 @@ use Sonata\AdminBundle\Builder\BuilderInterface;
 
 /**
  * Class BaseMapper
- * This class is used to simulate the Form API
+ * This class is used to simulate the Form API.
  *
- * @package Sonata\AdminBundle\Mapper
  * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 abstract class BaseMapper
@@ -29,8 +28,8 @@ abstract class BaseMapper
     protected $builder;
 
     /**
-     * @param BuilderInterface   $builder
-     * @param AdminInterface     $admin
+     * @param BuilderInterface $builder
+     * @param AdminInterface   $admin
      */
     public function __construct(BuilderInterface $builder, AdminInterface $admin)
     {
@@ -56,7 +55,7 @@ abstract class BaseMapper
     /**
      * @param string $key
      *
-     * @return boolean
+     * @return bool
      */
     abstract public function has($key);
 

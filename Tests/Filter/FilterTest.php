@@ -126,9 +126,9 @@ class FilterTest extends \PHPUnit_Framework_TestCase
         return array(
             array(false, array()),
             array(false, array('value' => null)),
-            array(false, array('value' => "")),
+            array(false, array('value' => '')),
             array(false, array('value' => false)),
-            array(true, array('value' => "active")),
+            array(true, array('value' => 'active')),
         );
     }
 
@@ -177,8 +177,8 @@ class FilterTest extends \PHPUnit_Framework_TestCase
     {
         $parentAssociationMapping = array(
             0 => array('fieldName'    => 'user',
-                'targetEntity' => 'Foo\Bar\User',
-                'joinColumns'  => array(
+                'targetEntity'        => 'Foo\Bar\User',
+                'joinColumns'         => array(
                     0 => array(
                         'name'                 => 'user_id',
                         'referencedColumnName' => 'user_id',
