@@ -208,9 +208,13 @@ file that was distributed with this source code.
 
                             {% block side_bar_before_nav %} {% endblock %}
                             {% block side_bar_nav %}
-                                {% if app.user and is_granted('ROLE_SONATA_ADMIN') %}
-                                    {{ knp_menu_render('sonata_admin_sidebar', {template: sonata_admin.adminPool.getTemplate('knp_menu_template')}) }}
-                                {% endif %}
+                                {{ knp_menu_render('sonata_admin_sidebar', {
+                                       currentClass: 'active',
+                                       ancestorClass: 'active',
+                                       branch_class: 'treeview',
+                                       template: sonata_admin.adminPool.getTemplate('knp_menu_template')
+                                   })
+                                }}
                             {% endblock side_bar_nav %}
                             {% block side_bar_after_nav %}
                                 <p class="text-center small" style="border-top: 1px solid #444444; padding-top: 10px">
@@ -255,7 +259,7 @@ file that was distributed with this source code.
                                                         {% endfor %}
                                                     </div>
                                                 {% endif %}
-                                                
+
                                                 {% block sonata_admin_content_actions_wrappers %}
                                                     {% if _actions|replace({ '<li>': '', '</li>': '' })|trim is not empty %}
                                                         <ul class="nav navbar-nav navbar-right">
