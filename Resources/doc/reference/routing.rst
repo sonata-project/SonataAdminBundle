@@ -107,6 +107,25 @@ explicitly this defaults to the action name.
         }
     }
 
+Make use of all route parameters
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+As the ``add`` method create a Symfony ``Route``, you can use all constructor arguments of the ``Route`` as parameters
+in the ``add`` method to set additional settings like this:
+
+.. code-block:: php
+
+    <?php
+    use Sonata\AdminBundle\Route\RouteCollection;
+
+    class MediaAdmin extends Admin
+    {
+        protected function configureRoutes(RouteCollection $collection)
+        {
+            $collection->add('custom_action', $this->getRouterIdParameter().'/custom-action', array(), array(), array(), '', array('https'), array('GET','POST'));
+        }
+    }
+
 Other steps needed to create your new action
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 

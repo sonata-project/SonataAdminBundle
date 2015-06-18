@@ -1,6 +1,9 @@
 CHANGELOG
 =========
 
+### 2015-06-18
+ * Add missing Route constructor parameters to ``RouteCollection:add`` method
+
 ### 2015-03-04
  * [BC BREAK] Admin LTE 2.0 used. Assets files changed.
  * [BC BREAK] moved ``sonata_wrapper`` block on ```standard_layout.html.twig```
