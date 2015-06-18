@@ -46,15 +46,21 @@ class RouteCollection
     }
 
     /**
-     * @param string $name
-     * @param string $pattern
-     * @param array  $defaults
-     * @param array  $requirements
-     * @param array  $options
+     * Add route.
      *
-     * @return \Sonata\AdminBundle\Route\RouteCollection
+     * @param string $name         Name
+     * @param string $pattern      Pattern (will be automatically combined with @see $this->baseRoutePattern and $name
+     * @param array  $defaults     Defaults
+     * @param array  $requirements Requirements
+     * @param array  $options      Options
+     * @param string $host         Host
+     * @param array  $schemes      Schemes
+     * @param array  $methods      Methods
+     * @param string $condition    Condition
+     *
+     * @return RouteCollection
      */
-    public function add($name, $pattern = null, array $defaults = array(), array $requirements = array(), array $options = array())
+    public function add($name, $pattern = null, array $defaults = array(), array $requirements = array(), array $options = array(), $host = '', array $schemes = array(), array $methods = array(), $condition = '')
     {
         $pattern    = $this->baseRoutePattern.'/'.($pattern ?: $name);
         $code       = $this->getCode($name);
@@ -70,8 +76,9 @@ class RouteCollection
 
         $defaults['_sonata_name'] = $routeName;
 
-        $this->elements[$this->getCode($name)] = function () use ($pattern, $defaults, $requirements, $options) {
-            return new Route($pattern, $defaults, $requirements, $options);
+        $this->elements[$this->getCode($name)] = function () use (
+            $pattern, $defaults, $requirements, $options, $host, $schemes, $methods, $condition) {
+            return new Route($pattern, $defaults, $requirements, $options, $host, $schemes, $methods, $condition);
         };
 
         return $this;

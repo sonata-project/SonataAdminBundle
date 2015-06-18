@@ -122,6 +122,51 @@ class RouteCollectionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('baseRouteName_view', $route->getDefault('_sonata_name'));
     }
 
+    public function testRouteWithAllConstructorParameters()
+    {
+        $baseCodeRoute = 'baseCodeRoute';
+        $baseRouteName = 'baseRouteName';
+        $baseRoutePattern = 'baseRoutePattern';
+        $routeCollection = new RouteCollection($baseCodeRoute, $baseRouteName, $baseRoutePattern, 'BundleName:ControllerName');
+
+        $name = 'view';
+        $pattern = 'view';
+        $defaults = array(
+            '_controller' => 'BundleName:ControllerName:viewAction',
+        );
+        $requirements = array(
+            'page' => '\d+',
+        );
+        $options = array(
+            'debug' => true,
+        );
+        $host = 'test.local';
+        $schemes = array(
+            'https',
+        );
+        $methods = array(
+            'GET',
+            'POST',
+        );
+        $condition = "context.getMethod() in ['GET', 'HEAD'] and request.headers.get('User-Agent') matches '/firefox/i'";
+
+        $routeCollection->add($name, $pattern, $defaults, $requirements, $options, $host, $schemes, $methods, $condition);
+
+        $route = $routeCollection->get($name);
+
+        $combinedPattern = '/'.$baseRoutePattern.'/'.($pattern ?: $name);
+
+        $this->assertSame($combinedPattern, $route->getPath());
+        $this->assertArrayHasKey('_controller', $route->getDefaults());
+        $this->assertArrayHasKey('page', $route->getRequirements());
+        $this->assertArrayHasKey('debug', $route->getOptions());
+        $this->assertSame($host, $route->getHost());
+        $this->assertEquals($methods, $route->getMethods());
+        if (method_exists($route, 'getCondition')) {
+            $this->assertSame($condition, $route->getCondition());
+        }
+    }
+
     public function testRouteControllerService()
     {
         $routeCollection = new RouteCollection('baseCodeRoute', 'baseRouteName', 'baseRoutePattern', 'baseControllerServiceName');
