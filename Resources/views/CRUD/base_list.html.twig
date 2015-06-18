@@ -168,7 +168,7 @@ file that was distributed with this source code.
                                                 <li>
                                                     <a href="{{ admin.generateUrl('export', admin.modelmanager.paginationparameters(admin.datagrid, 0) + {'format' : format}) }}">
                                                         <i class="glyphicon glyphicon-download"></i>
-                                                        {{ format|upper }}
+                                                        {{ ("export_format_" ~ format)|trans({}, 'SonataAdminBundle') }}
                                                     </a>
                                                 <li>
                                                     {% endfor %}

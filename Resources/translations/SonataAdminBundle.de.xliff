@@ -350,6 +350,22 @@
                 <source>label_export_download</source>
                 <target>Exportieren</target>
             </trans-unit>
+            <trans-unit id="export_format_json">
+                <source>export_format_json</source>
+                <target>JSON</target>
+            </trans-unit>
+            <trans-unit id="export_format_xml">
+                <source>export_format_xml</source>
+                <target>XML</target>
+            </trans-unit>
+            <trans-unit id="export_format_csv">
+                <source>export_format_csv</source>
+                <target>CSV</target>
+            </trans-unit>
+            <trans-unit id="export_format_xls">
+                <source>export_format_xls</source>
+                <target>XLS</target>
+            </trans-unit>
             <trans-unit id="loading_information">
                 <source>loading_information</source>
                 <target>Informationen werden geladen…</target>
