@@ -205,6 +205,11 @@ This time, you've learned how to make it easy to find posts to edit. You've
 learned how to create a nice list view and how to add options to search, order
 and filter this list.
 
-Now you have one thing to do before having a fully working admin panel:
-Customizing the dashboard to show menu items and group the category and blog
-post admins. This is what you'll learn in :doc:`the next chapter <customize_dashboard>`.
+There might have been some very difficult things, but imagine the difficulty
+writing everything yourself! As you're now already quite good with the basics,
+you can start reading other articles in the documentation, like:
+
+* :doc:`Customizing the Dashboard <../reference/dashboard>`
+* :doc:`Configuring the Security system <../reference/security>`
+* :doc:`Adding export functionality <../reference/action_export>`
+* :doc:`Adding a preview page <../reference/preview_mode>`
