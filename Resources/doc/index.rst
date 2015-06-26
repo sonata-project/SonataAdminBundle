@@ -19,6 +19,9 @@ Getting Started
     :numbered
 
     getting_started/installation
+    getting_started/creating_an_admin
+    getting_started/the_form_view
+    getting_started/the_list_view
 
 Reference Guide
 ---------------
