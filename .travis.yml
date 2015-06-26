@@ -14,7 +14,6 @@ cache:
   directories:
     - $HOME/.composer/cache
     - $HOME/.cache/pip
-    - vendor
 
 env:
   global:
