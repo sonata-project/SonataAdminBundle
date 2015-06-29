@@ -240,19 +240,7 @@ class AdminHelper
         $current = array_shift($fieldPath);
         $method = sprintf('get%s', $this->camelize($current));
 
-        if (!method_exists($object, $method)) {
-            $method = rtrim($method, 's');
-
-            if (!method_exists($object, $method)) {
-                $method = sprintf('get%s', $this->camelize(Inflector::singularize($current)));
-
-                if (!method_exists($object, $method)) {
-                    throw new \RuntimeException(sprintf('Please add a %s method in the %s class!', $method, ClassUtils::getClass($object)));
-                }
-            }
-        }
-
-        if (1 === count($fieldPath)) {
+        if (1 === count($fieldPath)) { //only 1 entry left means we reached the correct
             return $object->$method();
         }
 
