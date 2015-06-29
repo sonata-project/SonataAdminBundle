@@ -342,6 +342,7 @@ class SonataAdminExtension extends \Twig_Extension
             'boolean'    => 'select',
             'text'       => 'text',
             'textarea'   => 'textarea',
+            'html'       => 'textarea',
             'email'      => 'email',
             'string'     => 'text',
             'smallint'   => 'text',
