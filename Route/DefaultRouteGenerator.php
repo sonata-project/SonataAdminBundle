@@ -125,7 +125,7 @@ class DefaultRouteGenerator implements RouteGeneratorInterface
         }
 
         // someone provide a code, so it is a child
-        if (strpos($name, '.')) {
+        if (strpos($name, '.') && array_key_exists($admin->getCode().'|'.$name, $this->caches)) {
             return $admin->getCode().'|'.$name;
         }
 
