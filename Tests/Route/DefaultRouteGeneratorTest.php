@@ -129,6 +129,10 @@ class DefaultRouteGeneratorTest extends \PHPUnit_Framework_TestCase
         $collection->add('foo');
         $collection->addCollection($childCollection);
 
+        $nochildCollection = new RouteCollection('base.Code.Child', 'admin_child', '/foo/', 'BundleName:ControllerName');
+        $nochildCollection->add('bar');
+        $collection->addCollection($nochildCollection);
+
         $admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
         $admin->expects($this->any())->method('isChild')->will($this->returnValue(true));
         $admin->expects($this->any())->method('getCode')->will($this->returnValue('base.Code.Child'));
