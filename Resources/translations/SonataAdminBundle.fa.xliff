@@ -426,10 +426,6 @@
                 <source>noscript_warning</source>
                 <target>اسکریپ فعال نمی باشد</target>
             </trans-unit>
-            <trans-unit id="message_form_group_empty">
-                <source>message_form_group_empty</source>
-                <target>گروه نمی تواند خالی باشد</target>
-            </trans-unit>
             <trans-unit id="link_filters">
                 <source>link_filters</source>
                 <target>فیلترها</target>

@@ -434,10 +434,6 @@
                 <source>noscript_warning</source>
                 <target>Javascript is uitgeschakeld in uw browser. Sommige functies zullen niet goed werken.</target>
             </trans-unit>
-            <trans-unit id="message_form_group_empty">
-                <source>message_form_group_empty</source>
-                <target>Geen velden beschikbaar.</target>
-            </trans-unit>
             <trans-unit id="link_filters">
                 <source>link_filters</source>
                 <target>Filters</target>

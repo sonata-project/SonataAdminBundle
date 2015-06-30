@@ -820,6 +820,8 @@ interface AdminInterface
      * Remove a form group field.
      *
      * @param string $key
+     *
+     * @deprecated since 2.4, will be removed in 3.0
      */
     public function removeFieldFromFormGroup($key);
 

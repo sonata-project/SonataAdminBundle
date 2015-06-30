@@ -426,10 +426,6 @@
                 <source>noscript_warning</source>
                 <target>Javascript je zakázaný vo vašom webovom prehliadači. Niektoré funkcie nebudú pracovať správne.</target>
             </trans-unit>
-            <trans-unit id="message_form_group_empty">
-                <source>message_form_group_empty</source>
-                <target>Žiadne položky nie sú k dispozícii.</target>
-            </trans-unit>
             <trans-unit id="link_filters">
                 <source>link_filters</source>
                 <target>Filtre</target>

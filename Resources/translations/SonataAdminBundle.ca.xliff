@@ -426,10 +426,6 @@
                 <source>noscript_warning</source>
                 <target>Javascript està desconnectat al seu navegador web. Algunes característiques no funcionaran correctament.</target>
             </trans-unit>
-            <trans-unit id="message_form_group_empty">
-                <source>message_form_group_empty</source>
-                <target>No hi ha camps disponibles.</target>
-            </trans-unit>
             <trans-unit id="link_filters">
                 <source>link_filters</source>
                 <target>link_filters</target>

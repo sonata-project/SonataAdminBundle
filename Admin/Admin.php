@@ -1332,7 +1332,40 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
             $extension->configureFormFields($mapper);
         }
 
+        $this->cleanupFormGroupsAndTabs($formBuilder);
         $this->attachInlineValidator();
+    }
+
+    protected function cleanupFormGroupsAndTabs(FormBuilderInterface $formBuilder)
+    {
+        if ($this->formGroups) {
+            foreach ($this->formGroups as $name => &$formGroup) {
+                foreach ($formGroup['fields'] as $field) {
+                    if (!$formBuilder->has($field)) {
+                        unset($formGroup['fields'][$field]);
+                        unset($this->formFieldDescriptions[$field]);
+                    }
+                }
+
+                if (empty($formGroup['fields'])) {
+                    unset($this->formGroups[$name]);
+                }
+            }
+        }
+
+        if ($this->formTabs) {
+            foreach ($this->formTabs as $name => &$formTab) {
+                foreach ($formTab['groups'] as $key => $group) {
+                    if (!isset($this->formGroups[$group])) {
+                        unset($formTab['groups'][$key]);
+                    }
+                }
+
+                if (empty($formTab['groups'])) {
+                    unset($this->formTabs[$name]);
+                }
+            }
+        }
     }
 
     /**
@@ -1625,6 +1658,8 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      */
     public function removeFieldFromFormGroup($key)
     {
+        trigger_error(__METHOD__.' is deprecated since 2.4 and will be removed in 3.0.', E_USER_DEPRECATED);
+
         foreach ($this->formGroups as $name => $formGroup) {
             unset($this->formGroups[$name]['fields'][$key]);
 

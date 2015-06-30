@@ -426,10 +426,6 @@
                 <source>noscript_warning</source>
                 <target>Javascript este dezactivat în browser-ul dvs. Unele funcții nu vor funcționa corect.</target>
             </trans-unit>
-            <trans-unit id="message_form_group_empty">
-                <source>message_form_group_empty</source>
-                <target>Nici un câmp nu este disponibil</target>
-            </trans-unit>
             <trans-unit id="link_filters">
                 <source>link_filters</source>
                 <target>Filtre</target>

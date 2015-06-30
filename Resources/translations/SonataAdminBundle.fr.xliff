@@ -438,10 +438,6 @@
                 <source>noscript_warning</source>
                 <target>Certaines fonctionnalités ne fonctionnent sans JavaScript; merci de l'activer sur votre navigateur.</target>
             </trans-unit>
-            <trans-unit id="message_form_group_empty">
-                <source>message_form_group_empty</source>
-                <target>Pas de champs disponibles.</target>
-            </trans-unit>
             <trans-unit id="link_filters">
                 <source>link_filters</source>
                 <target>Filtres</target>
