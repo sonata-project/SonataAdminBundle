@@ -120,6 +120,23 @@ dashboard. To be able to use it, make sure it's enabled on SonataBlockBundle's c
     what a block is. SonataBlockBundle is a useful tool, but it's not vital
     that you understand it right now.
 
+
+Language localization
+---------------------
+
+In order to have localized menu and dashboard labels, set up the translation strategy:
+
+.. code-block:: yaml
+
+    # app/config/config.yml
+    framework:
+        (...)
+        translator: { fallback: %locale% }
+    
+    # app/config/parameters.yml
+    locale: your_laguage
+
+
 Cleaning up
 -----------
 
