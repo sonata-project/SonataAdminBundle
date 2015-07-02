@@ -30,8 +30,8 @@ file that was distributed with this source code.
         <ul>
             {% if pager %}
                 {% for result in pager.getResults() %}
-                    {% if admin.hasRoute('edit') %}
-                        <li><a href="{{ admin.generateObjectUrl('edit', result) }}">{{ admin.toString(result) }}</a></li>
+                    {% if admin.hasRoute('show') %}
+                        <li><a href="{{ admin.generateObjectUrl('show', result) }}">{{ admin.toString(result) }}</a></li>
                     {% else %}
                         <li><i>{{ admin.toString(result) }}</i></li>
                     {% endif %}
