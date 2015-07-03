@@ -43,7 +43,7 @@ class AdminPoolLoader extends FileLoader
      * @param array                                                     $adminServiceIds
      * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
      */
-    public function __construct(Pool $pool, $adminServiceIds, ContainerInterface $container)
+    public function __construct(Pool $pool, array $adminServiceIds, ContainerInterface $container)
     {
         $this->pool             = $pool;
         $this->adminServiceIds  = $adminServiceIds;
