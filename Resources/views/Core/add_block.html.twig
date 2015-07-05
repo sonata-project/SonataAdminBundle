@@ -54,7 +54,7 @@
                         {% else %}
                             {% for subclass in admin.subclasses|keys %}
                                 <li role="presentation">
-                                    <a role="menuitem" tabindex="-1" href="{{ admin.generateUrl('create', {'subclass': subclass}) }}">{{ subclass|trans({}, admin.translationdomain) }}</a>
+                                    <a role="menuitem" tabindex="-1" href="{{ admin.generateUrl('create', {'subclass': subclass}) }}">{{ (admin.label ~ '_' ~ subclass)|trans({}, admin.translationdomain) }}</a>
                                 </li>
                             {% endfor %}
                         {% endif %}

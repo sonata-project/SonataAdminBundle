@@ -1,6 +1,9 @@
 CHANGELOG
 =========
 
+### 2015-09-28
+ * Update subclass translation
+
 ### 2015-06-18
  * Add missing Route constructor parameters to ``RouteCollection:add`` method
 

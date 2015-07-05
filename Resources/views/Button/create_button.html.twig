@@ -20,7 +20,7 @@ file that was distributed with this source code.
             <li>
                 <a href="{{ admin.generateUrl('create', {'subclass': subclass}) }}">
                     <i class="fa fa-plus-circle"></i>
-                    {{ 'link_action_create'|trans({}, 'SonataAdminBundle') }} {{ subclass|trans({}, admin.translationdomain) }}
+                    {{ 'link_action_create'|trans({}, 'SonataAdminBundle') }} {{ (admin.label ~ '_' ~ subclass)|trans({}, admin.translationdomain) }}
                 </a>
             </li>
         {% endfor %}
