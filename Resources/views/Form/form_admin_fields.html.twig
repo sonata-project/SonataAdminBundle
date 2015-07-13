@@ -155,7 +155,7 @@ file that was distributed with this source code.
         {% set required = false %}
     {% endif %}
     {% set attr = attr|merge({'class': attr.class|default('') ~ ' form-control'}) %}
-    {% if sortable and multiple %}
+    {% if (sortable is defined) and sortable and multiple %}
         {{ block('sonata_type_choice_multiple_sortable') }}
     {% else %}
         <select {{ block('widget_attributes') }}{% if multiple %} multiple="multiple"{% endif %} >
