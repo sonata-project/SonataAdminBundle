@@ -483,15 +483,7 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
                 throw new NoValueException();
             }));
 
-        $fieldDescription->expects($this->any())
-            ->method('getAssociationAdmin')
-            ->will($this->returnValue($this->admin));
-
-        $this->admin->expects($this->once())
-            ->method('getNewInstance')
-            ->will($this->returnValue('foo'));
-
-        $this->assertEquals('foo', $this->twigExtension->getValueFromFieldDescription($object, $fieldDescription));
+        $this->assertEquals(null, $this->twigExtension->getValueFromFieldDescription($object, $fieldDescription));
     }
 
     public function testOutput()
