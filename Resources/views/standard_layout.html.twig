@@ -261,12 +261,16 @@ file that was distributed with this source code.
 
                                                 {% if _actions|replace({ '<li>': '', '</li>': '' })|trim is not empty %}
                                                     <ul class="nav navbar-nav navbar-right">
+                                                    {% if _actions|split('<li>')|length > 2 %}
                                                         <li class="dropdown sonata-actions">
                                                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ 'link_actions'|trans({}, 'SonataAdminBundle') }} <b class="caret"></b></a>
                                                             <ul class="dropdown-menu" role="menu">
                                                                 {{ _actions|raw }}
                                                             </ul>
                                                         </li>
+                                                    {% else %}
+                                                        {{ _actions|raw }}
+                                                    {% endif %}
                                                     </ul>
                                                 {% endif %}
 
