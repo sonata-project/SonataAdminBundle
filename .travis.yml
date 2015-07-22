@@ -13,7 +13,6 @@ sudo: false
 cache:
   directories:
     - $HOME/.composer/cache
-    - $HOME/.composer/vendor
     - $HOME/.cache/pip
 
 env:
