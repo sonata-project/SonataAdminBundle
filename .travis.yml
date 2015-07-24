@@ -5,26 +5,63 @@ php:
   - 5.4
   - 5.5
   - 5.6
+  - 7.0
   - hhvm
 
+sudo: false
+
+cache:
+  directories:
+    - $HOME/.composer/cache
+    - $HOME/.cache/pip
+
 env:
-  - SYMFONY_VERSION=2.3.*
-  - SYMFONY_VERSION=2.4.*
-  - SYMFONY_VERSION=2.5.*
-  - SYMFONY_VERSION=2.6.*
-  - SYMFONY_VERSION=2.7.*@dev
-
-before_script:
-  - composer require symfony/symfony:${SYMFONY_VERSION} --no-update
-  - composer install --dev --prefer-source
-  - sudo pip install -r Resources/doc/requirements.txt
-
-script: make test
-
-notifications:
-    webhooks: http://sonata-project.org/bundles/admin/master/travis
+  global:
+    - PATH="$HOME/.composer/vendor/bin:$PATH"
+    - SYMFONY_DEPRECATIONS_HELPER=weak
 
 matrix:
+  fast_finish: true
+  include:
+    - php: 5.6
+      env: CS_FIXER=run
+    - php: 5.3
+      env: COMPOSER_FLAGS="--prefer-lowest"
+    - php: 5.6
+      env: SYMFONY_VERSION=2.3.*
+    - php: 5.6
+      env: SYMFONY_VERSION=2.4.*
+    - php: 5.6
+      env: SYMFONY_VERSION=2.5.*
+    - php: 5.6
+      env: SYMFONY_VERSION=2.6.*
+    - php: 5.6
+      env: SYMFONY_VERSION=2.7.*
+    - php: 5.6
+      env: SYMFONY_VERSION=2.8.*@dev
+    - php: 5.6
+      env: SYMFONY_VERSION="3.0.x-dev as 2.8"
   allow_failures:
+    - php: 7.0
     - php: hhvm
-    - env: SYMFONY_VERSION=2.7.*@dev
+    - env: SYMFONY_VERSION=2.8.*@dev
+    - env: SYMFONY_VERSION="3.0.x-dev as 2.8"
+
+before_script:
+  - mkdir -p ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d && echo "memory_limit=-1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+  - composer selfupdate
+  - composer config -q -g github-oauth.github.com $GITHUB_OAUTH_TOKEN
+  - composer global require phpunit/phpunit fabpot/php-cs-fixer --no-update
+  - composer global update --prefer-dist --no-interaction
+  - if [ "$SYMFONY_VERSION" = "2.8.*@dev" ] || [ "$SYMFONY_VERSION" = "3.0.x-dev as 2.8" ]; then SYMFONY_DEPRECATIONS_HELPER=strict; fi;
+  - if [ "$SYMFONY_VERSION" != "" ]; then composer require "symfony/symfony:${SYMFONY_VERSION}" --no-update; fi;
+  - travis_wait composer update --prefer-dist --no-interaction $COMPOSER_FLAGS
+  - export PATH=$HOME/.local/bin:$PATH
+  - pip install -r Resources/doc/requirements.txt --user `whoami`
+
+script:
+ - if [ "$CS_FIXER" = "run" ]; then make cs_dry_run ; fi;
+ - make test
+
+notifications:
+  webhooks: https://sonata-project.org/bundles/admin/master/travis

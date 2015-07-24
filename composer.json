@@ -3,13 +3,13 @@
     "type": "symfony-bundle",
     "description": "Symfony SonataAdminBundle",
     "keywords": ["Admin Generator", "admin", "sonata", "bootstrap"],
-    "homepage": "http://sonata-project.org/bundles/admin",
+    "homepage": "https://sonata-project.org/bundles/admin",
     "license": "MIT",
     "authors": [
         {
             "name": "Thomas Rabaix",
             "email": "thomas.rabaix@sonata-project.org",
-            "homepage": "http://sonata-project.org"
+            "homepage": "https://sonata-project.org"
         },
         {
             "name": "Sonata Community",
@@ -40,7 +40,8 @@
     "require-dev": {
         "jms/translation-bundle": "~1.1",
         "symfony/yaml": "~2.3",
-        "sonata-project/intl-bundle": "~2.1"
+        "sonata-project/intl-bundle": "~2.1",
+        "symfony/phpunit-bridge": "~2.7|~3.0"
     },
     "suggest": {
         "jms/translation-bundle": "Extract message keys from Admins",
