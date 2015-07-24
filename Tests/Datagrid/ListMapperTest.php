@@ -121,19 +121,8 @@ class ListMapperTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('fooName', $fieldDescription->getOption('label'));
     }
 
-    public function testAddViewInlineActionException()
-    {
-        $this->setExpectedException('PHPUnit_Framework_Error', 'Inline action "view" is deprecated since version 2.2.4. Use inline action "show" instead.');
-
-        $this->assertFalse($this->listMapper->has('_action'));
-        $this->listMapper->add('_action', 'actions', array('actions'=>array('view'=>array())));
-    }
-
     public function testAddViewInlineAction()
     {
-        // ignore E_USER_DEPRECATED error
-        $previousErrorHandler = set_error_handler( function () {}, E_USER_DEPRECATED);
-
         $this->assertFalse($this->listMapper->has('_action'));
         $this->listMapper->add('_action', 'actions', array('actions'=>array('view'=>array())));
 
@@ -145,8 +134,6 @@ class ListMapperTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('_action', $fieldDescription->getName());
         $this->assertCount(1, $fieldDescription->getOption('actions'));
         $this->assertEquals(array('show'=>array()), $fieldDescription->getOption('actions'));
-
-        set_error_handler($previousErrorHandler);
     }
 
     public function testAddRemove()
