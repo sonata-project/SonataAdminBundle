@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata project.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -11,7 +11,6 @@
 
 namespace Sonata\AdminBundle\Tests\Form\DataTransformer;
 
-use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Form\DataTransformer\ArrayToModelTransformer;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\Form\FooEntity;
 
@@ -54,7 +53,7 @@ class ArrayToModelTransformerTest extends \PHPUnit_Framework_TestCase
         return array(
             array('Sonata\AdminBundle\Tests\Fixtures\Entity\Form\FooEntity'),
             array(array()),
-            array(array('foo'=>'bar')),
+            array(array('foo' => 'bar')),
             array('foo'),
             array(123),
             array(null),

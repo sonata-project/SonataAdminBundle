@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -11,15 +11,13 @@
 
 namespace Sonata\AdminBundle\Form\Extension\Field\Type;
 
+use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
+use Sonata\AdminBundle\Exception\NoValueException;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
-
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-
-use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
-use Sonata\AdminBundle\Exception\NoValueException;
 
 class FormTypeFieldExtension extends AbstractTypeExtension
 {
@@ -46,7 +44,7 @@ class FormTypeFieldExtension extends AbstractTypeExtension
             'edit'              => 'standard',
             'inline'            => 'natural',
             'field_description' => null,
-            'block_name'        => false
+            'block_name'        => false,
         );
 
         $builder->setAttribute('sonata_admin_enabled', false);
@@ -119,7 +117,7 @@ class FormTypeFieldExtension extends AbstractTypeExtension
             $block_prefixes    = $view->vars['block_prefixes'];
             $baseName = str_replace('.', '_', $sonataAdmin['admin']->getCode());
             $baseType = $block_prefixes[count($block_prefixes) - 2];
-            $blockSuffix = preg_replace("#^_([a-z0-9]{14})_(.++)$#", "\$2", array_pop($block_prefixes));
+            $blockSuffix = preg_replace('#^_([a-z0-9]{14})_(.++)$#', "\$2", array_pop($block_prefixes));
 
             $block_prefixes[] = sprintf('%s_%s', $baseName, $baseType);
             $block_prefixes[] = sprintf('%s_%s_%s', $baseName, $sonataAdmin['name'], $baseType);
@@ -149,7 +147,7 @@ class FormTypeFieldExtension extends AbstractTypeExtension
     }
 
     /**
-     * Returns the name of the type being extended
+     * Returns the name of the type being extended.
      *
      * @return string The name of the type being extended
      */
@@ -159,7 +157,7 @@ class FormTypeFieldExtension extends AbstractTypeExtension
     }
 
     /**
-     * Sets the default options
+     * Sets the default options.
      *
      * @param OptionsResolverInterface $resolver Options Resolver
      */
@@ -171,13 +169,13 @@ class FormTypeFieldExtension extends AbstractTypeExtension
 
             // be compatible with mopa if not installed, avoid generating an exception for invalid option
             'label_render'             => true,
-            'sonata_help'        => null
+            'sonata_help'              => null,
         ));
     }
 
     /**
      * return the value related to FieldDescription, if the associated object does no
-     * exists => a temporary one is created
+     * exists => a temporary one is created.
      *
      * @param object                                              $object
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription

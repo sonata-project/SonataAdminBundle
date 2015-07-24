@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -11,16 +11,15 @@
 
 namespace Sonata\AdminBundle\Tests;
 
-use Sonata\AdminBundle\SonataAdminBundle;
-use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
-use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Sonata\AdminBundle\DependencyInjection\Compiler\AddDependencyCallsCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\AddFilterTypeCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Sonata\AdminBundle\SonataAdminBundle;
+use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 
 /**
- * Test for SonataAdminBundle
+ * Test for SonataAdminBundle.
  *
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */

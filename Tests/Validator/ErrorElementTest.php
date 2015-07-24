@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -9,16 +9,14 @@
  * file that was distributed with this source code.
  */
 
-
 namespace Sonata\AdminBundle\Tests\Validator;
 
-use Sonata\AdminBundle\Validator\ErrorElement;
-use Symfony\Component\Validator\ConstraintValidatorFactoryInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Foo;
+use Sonata\AdminBundle\Validator\ErrorElement;
 use Symfony\Component\Validator\Constraints\NotNull;
 
 /**
- * Test for ErrorElement
+ * Test for ErrorElement.
  *
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
@@ -54,14 +52,14 @@ class ErrorElementTest extends \PHPUnit_Framework_TestCase
 
     public function testGetErrors()
     {
-        $this->errorElement->addViolation('Foo error message', array('bar_param'=>'bar_param_lvalue'), 'BAR');
-        $this->assertEquals(array(array('Foo error message', array('bar_param'=>'bar_param_lvalue'), 'BAR')), $this->errorElement->getErrors());
+        $this->errorElement->addViolation('Foo error message', array('bar_param' => 'bar_param_lvalue'), 'BAR');
+        $this->assertEquals(array(array('Foo error message', array('bar_param' => 'bar_param_lvalue'), 'BAR')), $this->errorElement->getErrors());
     }
 
     public function testAddViolation()
     {
-        $this->errorElement->addViolation(array('Foo error message', array('bar_param'=>'bar_param_lvalue'), 'BAR'));
-        $this->assertEquals(array(array('Foo error message', array('bar_param'=>'bar_param_lvalue'), 'BAR')), $this->errorElement->getErrors());
+        $this->errorElement->addViolation(array('Foo error message', array('bar_param' => 'bar_param_lvalue'), 'BAR'));
+        $this->assertEquals(array(array('Foo error message', array('bar_param' => 'bar_param_lvalue'), 'BAR')), $this->errorElement->getErrors());
     }
 
     public function testAddConstraint()
@@ -132,7 +130,7 @@ class ErrorElementTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($this->errorElement, $this->errorElement->with('baz'));
         $this->assertEquals($this->errorElement, $this->errorElement->end());
-        $this->assertEquals($this->errorElement, $this->errorElement->addViolation('Foo error message', array('bar_param'=>'bar_param_lvalue'), 'BAR'));
+        $this->assertEquals($this->errorElement, $this->errorElement->addViolation('Foo error message', array('bar_param' => 'bar_param_lvalue'), 'BAR'));
         $this->assertEquals($this->errorElement, $this->errorElement->addConstraint($constraint));
         $this->assertEquals($this->errorElement, $this->errorElement->assertNotNull());
     }

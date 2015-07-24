@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -11,7 +11,6 @@
 
 namespace Sonata\AdminBundle\Tests\Filter;
 
-use Sonata\AdminBundle\Filter\Filter;
 use Sonata\AdminBundle\Tests\Fixtures\Filter\FooFilter;
 
 class FilterTest extends \PHPUnit_Framework_TestCase
@@ -28,7 +27,7 @@ class FilterTest extends \PHPUnit_Framework_TestCase
             'label'         => 'foo',
             'field_type'    => 'integer',
             'field_options' => array('required' => true),
-            'field_name'    => 'name'
+            'field_name'    => 'name',
         );
 
         $filter->setOptions($options);
@@ -55,7 +54,7 @@ class FilterTest extends \PHPUnit_Framework_TestCase
     {
         $filter = new FooFilter();
         $filter->initialize('name', array(
-            'field_name' => 'bar'
+            'field_name' => 'bar',
         ));
 
         $this->assertEquals('name', $filter->getName());
@@ -100,9 +99,9 @@ class FilterTest extends \PHPUnit_Framework_TestCase
         return array(
             array(false, array()),
             array(false, array('value' => null)),
-            array(false, array('value' => "")),
+            array(false, array('value' => '')),
             array(false, array('value' => false)),
-            array(true, array('value' => "active")),
+            array(true, array('value' => 'active')),
         );
     }
 
@@ -139,7 +138,7 @@ class FilterTest extends \PHPUnit_Framework_TestCase
             'length'     => 200,
             'unique'     => true,
             'nullable'   => false,
-            'declared'   => 'Foo\Bar\User'
+            'declared'   => 'Foo\Bar\User',
         );
 
         $filter = new FooFilter();
@@ -151,18 +150,16 @@ class FilterTest extends \PHPUnit_Framework_TestCase
     {
         $parentAssociationMapping = array(
             0 => array('fieldName'    => 'user',
-                'targetEntity' => 'Foo\Bar\User',
-                'joinColumns'  =>
-                array(
-                    0 =>
-                    array(
+                'targetEntity'        => 'Foo\Bar\User',
+                'joinColumns'         => array(
+                    0 => array(
                         'name'                 => 'user_id',
                         'referencedColumnName' => 'user_id',
-                    )
+                    ),
                 ),
                 'type'         => 2,
                 'mappedBy'     => null,
-            )
+            ),
         );
 
         $filter = new FooFilter();
@@ -191,13 +188,11 @@ class FilterTest extends \PHPUnit_Framework_TestCase
         $associationMapping = array(
             'fieldName'    => 'user',
             'targetEntity' => 'Foo\Bar\User',
-            'joinColumns'  =>
-            array(
-                0 =>
-                array(
+            'joinColumns'  => array(
+                0 => array(
                     'name'                 => 'user_id',
                     'referencedColumnName' => 'user_id',
-                )
+                ),
             ),
             'type'         => 2,
             'mappedBy'     => null,

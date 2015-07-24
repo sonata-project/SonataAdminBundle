@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -11,10 +11,10 @@
 
 namespace Sonata\AdminBundle\Tests\Form\DataTransformer;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Sonata\AdminBundle\Form\DataTransformer\ModelToIdPropertyTransformer;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\Foo;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooArrayAccess;
-use Doctrine\Common\Collections\ArrayCollection;
 
 class ModelToIdPropertyTransformerTest extends \PHPUnit_Framework_TestCase
 {
@@ -56,7 +56,7 @@ class ModelToIdPropertyTransformerTest extends \PHPUnit_Framework_TestCase
             ->method('find')
             ->will($this->returnCallback(function ($className, $value) use ($entity1, $entity2, $entity3) {
                 if ($className != 'Sonata\AdminBundle\Tests\Fixtures\Entity\Foo') {
-                    return null;
+                    return;
                 }
 
                 if ($value == 123) {
@@ -71,7 +71,7 @@ class ModelToIdPropertyTransformerTest extends \PHPUnit_Framework_TestCase
                     return $entity3;
                 }
 
-                return null;
+                return;
             }));
 
         $collection = new ArrayCollection();

@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -22,7 +22,7 @@ use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 interface ModelManagerInterface
 {
     /**
-     * Returns a new FieldDescription
+     * Returns a new FieldDescription.
      *
      * @param string $class
      * @param string $name
@@ -48,8 +48,6 @@ interface ModelManagerInterface
 
     /**
      * @param object $object
-     *
-     * @return void
      */
     public function delete($object);
 
@@ -80,16 +78,12 @@ interface ModelManagerInterface
     /**
      * @param string              $class
      * @param ProxyQueryInterface $queryProxy
-     *
-     * @return void
      */
     public function batchDelete($class, ProxyQueryInterface $queryProxy);
 
     /**
      * @param array  $parentAssociationMapping
      * @param string $class
-     *
-     * @return void
      */
     public function getParentFieldDescription($parentAssociationMapping, $class);
 
@@ -139,7 +133,7 @@ interface ModelManagerInterface
      * @param object $model
      *
      * @return string a string representation of the identifiers for this
-     *      instance
+     *                instance
      */
     public function getNormalizedIdentifier($model);
 
@@ -172,17 +166,15 @@ interface ModelManagerInterface
     public function getModelCollectionInstance($class);
 
     /**
-     * Removes an element from the collection
+     * Removes an element from the collection.
      *
      * @param mixed $collection
      * @param mixed $element
-     *
-     * @return void
      */
     public function collectionRemoveElement(&$collection, &$element);
 
     /**
-     * Add an element from the collection
+     * Add an element from the collection.
      *
      * @param mixed $collection
      * @param mixed $element
@@ -192,17 +184,17 @@ interface ModelManagerInterface
     public function collectionAddElement(&$collection, &$element);
 
     /**
-     * Check if the element exists in the collection
+     * Check if the element exists in the collection.
      *
      * @param mixed $collection
      * @param mixed $element
      *
-     * @return boolean
+     * @return bool
      */
     public function collectionHasElement(&$collection, &$element);
 
     /**
-     * Clear the collection
+     * Clear the collection.
      *
      * @param mixed $collection
      *
@@ -211,7 +203,7 @@ interface ModelManagerInterface
     public function collectionClear(&$collection);
 
     /**
-     * Returns the parameters used in the columns header
+     * Returns the parameters used in the columns header.
      *
      * @param FieldDescriptionInterface $fieldDescription
      * @param DatagridInterface         $datagrid
@@ -236,8 +228,6 @@ interface ModelManagerInterface
     /**
      * @param string $class
      * @param object $instance
-     *
-     * @return void
      */
     public function modelTransform($class, $instance);
 
@@ -275,8 +265,6 @@ interface ModelManagerInterface
      * @param string              $class
      * @param ProxyQueryInterface $query
      * @param array               $idx
-     *
-     * @return void
      */
     public function addIdentifiersToQuery($class, ProxyQueryInterface $query, array $idx);
 }

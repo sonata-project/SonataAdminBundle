@@ -1,19 +1,26 @@
 <?php
 
+/*
+ * This file is part of the Sonata Project package.
+ *
+ * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Sonata\AdminBundle\Translator\Extractor\JMSTranslatorBundle;
 
-use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\HttpKernel\Log\LoggerInterface;
-
+use JMS\TranslationBundle\Model\FileSource;
+use JMS\TranslationBundle\Model\Message;
+use JMS\TranslationBundle\Model\MessageCatalogue;
+use JMS\TranslationBundle\Translation\ExtractorInterface;
+use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
-use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
-
-use JMS\TranslationBundle\Translation\ExtractorInterface;
-use JMS\TranslationBundle\Model\MessageCatalogue;
-use JMS\TranslationBundle\Model\Message;
-use JMS\TranslationBundle\Model\FileSource;
+use Symfony\Component\HttpKernel\Log\LoggerInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class AdminExtractor implements ExtractorInterface, TranslatorInterface, SecurityHandlerInterface, LabelTranslatorStrategyInterface
 {
@@ -49,7 +56,7 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
     }
 
     /**
-     * Extract messages to MessageCatalogue
+     * Extract messages to MessageCatalogue.
      *
      * @return MessageCatalogue
      *
@@ -61,7 +68,7 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
             throw new \RuntimeException('Invalid state');
         }
 
-        $this->catalogue = new MessageCatalogue;
+        $this->catalogue = new MessageCatalogue();
 
         foreach ($this->adminPool->getAdminServiceIds() as $id) {
             $admin = $this->getAdmin($id);
@@ -91,7 +98,7 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
                     array('update'),
                     array('batch'),
                     array('delete'),
-                )
+                ),
             );
 
             if ($this->logger) {

@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -17,12 +17,11 @@ use Symfony\Component\EventDispatcher\Event;
 
 /**
  * This event is sent by hook:
- *   - configureQuery
+ *   - configureQuery.
  *
  * You can register the listener to the event dispatcher by using:
  *   - sonata.admin.event.configure.query
  *   - sonata.admin.event.configure.[admin_code].query  (not implemented yet)
- *
  */
 class ConfigureQueryEvent extends Event
 {

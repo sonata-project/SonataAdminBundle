@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -11,13 +11,12 @@
 
 namespace Sonata\AdminBundle\Builder;
 
-use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 
 interface DatagridBuilderInterface extends BuilderInterface
 {
-
     /**
      * @abstract
      *
@@ -25,8 +24,6 @@ interface DatagridBuilderInterface extends BuilderInterface
      * @param string                                              $type
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
      * @param \Sonata\AdminBundle\Admin\AdminInterface            $admin
-     *
-     * @return void
      */
     public function addFilter(DatagridInterface $datagrid, $type = null, FieldDescriptionInterface $fieldDescription, AdminInterface $admin);
 

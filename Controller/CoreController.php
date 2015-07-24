@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -58,7 +58,7 @@ class CoreController extends Controller
             'left'   => array(),
             'center' => array(),
             'right'  => array(),
-            'bottom' => array()
+            'bottom' => array(),
         );
 
         foreach ($this->container->getParameter('sonata.admin.configuration.dashboard_blocks') as $block) {
@@ -68,7 +68,7 @@ class CoreController extends Controller
         return $this->render($this->getAdminPool()->getTemplate('dashboard'), array(
             'base_template'   => $this->getBaseTemplate(),
             'admin_pool'      => $this->container->get('sonata.admin.pool'),
-            'blocks'          => $blocks
+            'blocks'          => $blocks,
         ));
     }
 
@@ -85,7 +85,6 @@ class CoreController extends Controller
     public function searchAction(Request $request)
     {
         if ($request->get('admin') && $request->isXmlHttpRequest()) {
-
             try {
                 $admin = $this->getAdminPool()->getAdminByAdminCode($request->get('admin'));
             } catch (ServiceNotFoundException $e) {
@@ -105,15 +104,15 @@ class CoreController extends Controller
                     $results[] = array(
                         'label' => $admin->toString($result),
                         'link'  => $admin->generateObjectUrl('edit', $result),
-                        'id'    => $admin->id($result)
+                        'id'    => $admin->id($result),
                     );
                 }
             }
 
             $response = new JsonResponse(array(
                 'results' => $results,
-                'page'    => $pager ? (int)$pager->getPage() : false,
-                'total'   => $pager ? (int)$pager->getNbResults() : false
+                'page'    => $pager ? (int) $pager->getPage() : false,
+                'total'   => $pager ? (int) $pager->getNbResults() : false,
             ));
             $response->setPrivate();
 
@@ -124,7 +123,7 @@ class CoreController extends Controller
             'base_template' => $this->getBaseTemplate(),
             'admin_pool'    => $this->container->get('sonata.admin.pool'),
             'query'         => $request->get('q'),
-            'groups'        => $this->getAdminPool()->getDashboardGroups()
+            'groups'        => $this->getAdminPool()->getDashboardGroups(),
         ));
     }
 }

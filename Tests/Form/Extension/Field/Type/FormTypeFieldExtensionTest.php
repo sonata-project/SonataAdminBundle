@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -12,12 +12,10 @@
 namespace Sonata\AdminBundle\Tests\Form\Extension\Field\Type;
 
 use Sonata\AdminBundle\Form\Extension\Field\Type\FormTypeFieldExtension;
-use Symfony\Component\Form\FormConfigBuilder;
 use Symfony\Component\Form\Form;
-use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\FormConfigBuilder;
 use Symfony\Component\Form\FormView;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class FormTypeFieldExtensionTest extends \PHPUnit_Framework_TestCase
 {
@@ -89,7 +87,7 @@ class FormTypeFieldExtensionTest extends \PHPUnit_Framework_TestCase
         $config = new FormConfigBuilder('test', 'stdClass', $eventDispatcher, $options);
         $config->setAttribute('sonata_admin', array(
             'admin' => $admin,
-            'name' => 'name'
+            'name'  => 'name',
         ));
         $config->setAttribute('sonata_admin_enabled', true);
 
@@ -99,7 +97,7 @@ class FormTypeFieldExtensionTest extends \PHPUnit_Framework_TestCase
 
         $extension = new FormTypeFieldExtension();
         $extension->buildView($formView, $form, array(
-            'sonata_help' => 'help text'
+            'sonata_help' => 'help text',
         ));
 
         $this->assertArrayHasKey('block_prefixes', $formView->vars);

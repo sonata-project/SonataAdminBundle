@@ -1,6 +1,7 @@
 <?php
+
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -12,12 +13,11 @@ namespace Sonata\AdminBundle\Admin;
 
 use Doctrine\Common\Inflector\Inflector;
 use Doctrine\Common\Util\ClassUtils;
+use Sonata\AdminBundle\Exception\NoValueException;
+use Sonata\AdminBundle\Util\FormBuilderIterator;
+use Sonata\AdminBundle\Util\FormViewIterator;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormView;
-use Sonata\AdminBundle\Exception\NoValueException;
-use Sonata\AdminBundle\Util\FormViewIterator;
-use Sonata\AdminBundle\Util\FormBuilderIterator;
-use Sonata\AdminBundle\Admin\BaseFieldDescription;
 
 class AdminHelper
 {
@@ -47,7 +47,7 @@ class AdminHelper
             }
         }
 
-        return null;
+        return;
     }
 
     /**
@@ -64,7 +64,7 @@ class AdminHelper
             }
         }
 
-        return null;
+        return;
     }
 
     /**
@@ -83,7 +83,7 @@ class AdminHelper
      * Note:
      *   This code is ugly, but there is no better way of doing it.
      *   For now the append form element action used to add a new row works
-     *   only for direct FieldDescription (not nested one)
+     *   only for direct FieldDescription (not nested one).
      *
      * @throws \RuntimeException
      *
@@ -136,7 +136,7 @@ class AdminHelper
         while ($objectCount < $postCount) {
             // append a new instance into the object
             $this->addNewInstance($form->getData(), $fieldDescription);
-            $objectCount++;
+            ++$objectCount;
         }
 
         $this->addNewInstance($form->getData(), $fieldDescription);
@@ -152,7 +152,7 @@ class AdminHelper
     }
 
     /**
-     * Add a new instance to the related FieldDescriptionInterface value
+     * Add a new instance to the related FieldDescriptionInterface value.
      *
      * @param object                                              $object
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
@@ -182,7 +182,7 @@ class AdminHelper
     }
 
     /**
-     * Camelize a string
+     * Camelize a string.
      *
      * @static
      *

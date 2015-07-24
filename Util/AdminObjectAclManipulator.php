@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata project.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -13,8 +13,8 @@ namespace Sonata\AdminBundle\Util;
 
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
-use Symfony\Component\Security\Acl\Exception\NoAceFoundException;
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
+use Symfony\Component\Security\Acl\Exception\NoAceFoundException;
 
 /**
  * A manipulator for updating ACL related to an object.
@@ -43,7 +43,7 @@ class AdminObjectAclManipulator
     }
 
     /**
-     * Gets mask builder class name
+     * Gets mask builder class name.
      *
      * @return string
      */
@@ -53,9 +53,10 @@ class AdminObjectAclManipulator
     }
 
     /**
-     * Gets the form
+     * Gets the form.
      *
-     * @param  \Sonata\AdminBundle\Util\AdminObjectAclData $data
+     * @param \Sonata\AdminBundle\Util\AdminObjectAclData $data
+     *
      * @return \Symfony\Component\Form\Form
      */
     public function createForm(AdminObjectAclData $data)
@@ -83,7 +84,7 @@ class AdminObjectAclManipulator
                     $checked = false;
                 }
 
-                $formBuilder->add($aclUser->getId() . $permission, 'checkbox', array('required' => false, 'data' => $checked));
+                $formBuilder->add($aclUser->getId().$permission, 'checkbox', array('required' => false, 'data' => $checked));
             }
         }
 
@@ -94,7 +95,7 @@ class AdminObjectAclManipulator
     }
 
     /**
-     * Updates ACL
+     * Updates ACL.
      *
      * @param \Sonata\AdminBundle\Util\AdminObjectAclData $data
      */
@@ -105,7 +106,7 @@ class AdminObjectAclManipulator
 
             $maskBuilder = new $this->maskBuilderClass();
             foreach ($data->getUserPermissions() as $permission) {
-                if ($data->getForm()->get($aclUser->getId() . $permission)->getData()) {
+                if ($data->getForm()->get($aclUser->getId().$permission)->getData()) {
                     $maskBuilder->add($permission);
                 }
             }

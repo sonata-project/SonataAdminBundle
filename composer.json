@@ -3,13 +3,13 @@
     "type": "symfony-bundle",
     "description": "Symfony SonataAdminBundle",
     "keywords": ["Admin Generator", "admin", "sonata", "bootstrap"],
-    "homepage": "http://sonata-project.org/bundles/admin",
+    "homepage": "https://sonata-project.org/bundles/admin",
     "license": "MIT",
     "authors": [
         {
             "name": "Thomas Rabaix",
             "email": "thomas.rabaix@sonata-project.org",
-            "homepage": "http://sonata-project.org"
+            "homepage": "https://sonata-project.org"
         },
         {
             "name": "Sonata Community",
@@ -27,20 +27,23 @@
         "symfony/twig-bridge": "~2.3",
         "symfony/class-loader":"~2.3",
         "symfony/expression-language": "~2.4",
+        "symfony/property-access": "~2.3",
         "sensio/generator-bundle": "~2.3",
         "twig/twig": "~1.15",
         "twig/extensions": "~1.0",
         "sonata-project/exporter": "~1.0",
         "sonata-project/block-bundle": "~2.2,>=2.2.7,<2.3",
-        "sonata-project/core-bundle": "~2.2",
+        "sonata-project/core-bundle": "^2.2.1",
         "doctrine/common": "~2.2",
+        "doctrine/inflector": "~1.0",
         "knplabs/knp-menu-bundle": ">=1.1.0,<3.0.0",
         "knplabs/knp-menu": ">=1.1.0,<3.0.0"
     },
     "require-dev": {
         "jms/translation-bundle": "~1.1",
         "symfony/yaml": "~2.3",
-        "sonata-project/intl-bundle": "~2.1"
+        "sonata-project/intl-bundle": "~2.1",
+        "symfony/phpunit-bridge": "~2.7|~3.0"
     },
     "suggest": {
         "jms/translation-bundle": "Extract message keys from Admins",

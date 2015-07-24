@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -14,7 +14,7 @@ namespace Sonata\AdminBundle\Tests\Form\Builder;
 use Symfony\Component\Form\Test\FormBuilderInterface;
 
 /**
- * Class FormBuilder
+ * Class FormBuilder.
  *
  * Used to avoid an issue when to mocking FormBuilderInterface directly
  *

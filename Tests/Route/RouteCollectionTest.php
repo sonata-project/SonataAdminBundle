@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -75,7 +75,7 @@ class RouteCollectionTest extends \PHPUnit_Framework_TestCase
         $routeCollection->add('view');
         $routeCollection->add('edit');
         $routeCollection->add('list');
-        $routeCollection->clearExcept(array('create','edit'));
+        $routeCollection->clearExcept(array('create', 'edit'));
         $this->assertTrue($routeCollection->has('create'));
         $this->assertTrue($routeCollection->has('edit'));
         $this->assertFalse($routeCollection->has('view'));

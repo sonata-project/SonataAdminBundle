@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -11,8 +11,8 @@
 
 namespace Sonata\AdminBundle\Tests\DependencyInjection;
 
-use Sonata\AdminBundle\DependencyInjection\SonataAdminExtension;
 use Sonata\AdminBundle\DependencyInjection\Compiler\AddDependencyCallsCompilerPass;
+use Sonata\AdminBundle\DependencyInjection\SonataAdminExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
@@ -145,8 +145,8 @@ class AddDependencyCallsCompilerPassTest extends \PHPUnit_Framework_TestCase
                 'groups' => array(
                     '%sonata.admin.parameter.groupname%' => array(
                     ),
-                )
-            )
+                ),
+            ),
         );
 
         $container = $this->getContainer();
@@ -173,19 +173,20 @@ class AddDependencyCallsCompilerPassTest extends \PHPUnit_Framework_TestCase
             'dashboard' => array(
                 'groups' => array(
                     'sonata_group_one' => array(
-                        'label' => 'Group One Label',
+                        'label'           => 'Group One Label',
                         'label_catalogue' => 'SonataAdminBundle',
-                        'items' => array(
-                            'sonata_post_admin'
+                        'items'           => array(
+                            'sonata_post_admin',
                         ),
                         'item_adds' => array(
-                            'sonata_news_admin'
+                            'sonata_news_admin',
                         ),
                         'roles' => array('ROLE_ONE'),
                     ),
-                )
-            )
+                ),
+            ),
         );
+
         return $config;
     }
 
@@ -194,7 +195,7 @@ class AddDependencyCallsCompilerPassTest extends \PHPUnit_Framework_TestCase
         $container = new ContainerBuilder();
         $container->setParameter('kernel.bundles', array(
             'SonataCoreBundle' => true,
-            'KnpMenuBundle' => true
+            'KnpMenuBundle'    => true,
         ));
         $container->setParameter('kernel.cache_dir', '/tmp');
         $container->setParameter('kernel.debug', true);
@@ -223,7 +224,7 @@ class AddDependencyCallsCompilerPassTest extends \PHPUnit_Framework_TestCase
             ->setClass('Symfony\Component\Form\FormFactoryInterface');
         foreach (array(
             'doctrine_phpcr' => 'PHPCR',
-            'orm'            => 'ORM') as $key => $bundleSubstring) {
+            'orm'            => 'ORM', ) as $key => $bundleSubstring) {
             $container
                 ->register(sprintf('sonata.admin.manager.%s', $key))
                 ->setClass(sprintf(

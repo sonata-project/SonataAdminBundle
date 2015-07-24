@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -14,13 +14,12 @@ namespace Sonata\AdminBundle\Tests\Mapper;
 use Sonata\AdminBundle\Mapper\BaseGroupedMapper;
 
 /**
- * Test for BaseGroupedMapper
+ * Test for BaseGroupedMapper.
  *
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
 class BaseGroupedMapperTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var BaseGroupedMapper
      */
@@ -93,7 +92,7 @@ class BaseGroupedMapperTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertCount(0, $this->tabs);
         $this->assertCount(0, $this->groups);
-        $this->assertEquals($this->baseGroupedMapper, $this->baseGroupedMapper->with('fooTab', array('tab'=>true)));
+        $this->assertEquals($this->baseGroupedMapper, $this->baseGroupedMapper->with('fooTab', array('tab' => true)));
         $this->assertCount(1, $this->tabs);
         $this->assertCount(0, $this->groups);
     }

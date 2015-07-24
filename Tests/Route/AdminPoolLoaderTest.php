@@ -1,6 +1,7 @@
 <?php
+
 /*
- * This file is part of the Sonata project.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -9,9 +10,6 @@
  */
 
 namespace Sonata\AdminBundle\Route;
-
-use Sonata\AdminBundle\Route\RouteCollection;
-use Sonata\AdminBundle\Route\AdminPoolLoader;
 
 /**
  * @author Andrej Hudec <pulzarraider@gmail.com>
@@ -55,7 +53,7 @@ class AdminPoolLoaderTest extends \PHPUnit_Framework_TestCase
 
         $pool->expects($this->any())
             ->method('getInstance')
-            ->will($this->returnCallback(function($id) use ($admin1, $admin2) {
+            ->will($this->returnCallback(function ($id) use ($admin1, $admin2) {
                 switch ($id) {
                     case 'foo_admin':
                         return $admin1;
@@ -63,7 +61,7 @@ class AdminPoolLoaderTest extends \PHPUnit_Framework_TestCase
                         return $admin2;
                 }
 
-                return null;
+                return;
             }));
 
         $collection = $adminPoolLoader->load('foo', 'sonata_admin');

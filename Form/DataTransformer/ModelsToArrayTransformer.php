@@ -1,9 +1,9 @@
 <?php
 
 /*
- * This file is part of the Symfony package.
+ * This file is part of the Sonata Project package.
  *
- * (c) Fabien Potencier <fabien@symfony.com>
+ * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -11,11 +11,10 @@
 
 namespace Sonata\AdminBundle\Form\DataTransformer;
 
-use Symfony\Component\Form\Exception\UnexpectedTypeException;
-use Symfony\Component\Form\Exception\TransformationFailedException;
-use Symfony\Component\Form\DataTransformerInterface;
-
 use Sonata\AdminBundle\Form\ChoiceList\ModelChoiceList;
+use Symfony\Component\Form\DataTransformerInterface;
+use Symfony\Component\Form\Exception\TransformationFailedException;
+use Symfony\Component\Form\Exception\UnexpectedTypeException;
 
 class ModelsToArrayTransformer implements DataTransformerInterface
 {

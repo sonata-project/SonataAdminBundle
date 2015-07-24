@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -11,10 +11,8 @@
 
 namespace Sonata\AdminBundle\Tests\Filter;
 
-use Sonata\AdminBundle\Export\Exporter;
-use Exporter\Source\SourceIteratorInterface;
 use Exporter\Source\ArraySourceIterator;
-use Symfony\Component\HttpFoundation\Response;
+use Sonata\AdminBundle\Export\Exporter;
 
 class ExporterTest extends \PHPUnit_Framework_TestCase
 {
@@ -35,7 +33,7 @@ class ExporterTest extends \PHPUnit_Framework_TestCase
     public function testGetResponse($format, $filename, $contentType)
     {
         $source = new ArraySourceIterator(array(
-            array('foo' => 'bar')
+            array('foo' => 'bar'),
         ));
 
         $exporter = new Exporter();
@@ -43,7 +41,8 @@ class ExporterTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $response);
         $this->assertEquals($contentType, $response->headers->get('Content-Type'));
-        $this->assertEquals('attachment; filename="'.$filename.'"', $response->headers->get('Content-Disposition'));
+        // Quotes does not appear on some sonata versions.
+        $this->assertRegExp('/attachment; filename="?'.$filename.'"?/', $response->headers->get('Content-Disposition'));
     }
 
     public function getGetResponseTests()

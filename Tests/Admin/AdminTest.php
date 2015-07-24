@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -12,16 +12,16 @@
 namespace Sonata\AdminBundle\Tests\Admin;
 
 use Sonata\AdminBundle\Admin\Admin;
+use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Route\DefaultRouteGenerator;
 use Sonata\AdminBundle\Route\RoutesCache;
+use Sonata\AdminBundle\Tests\Fixtures\Admin\CommentAdmin;
+use Sonata\AdminBundle\Tests\Fixtures\Admin\PostAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Post;
 use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Tag;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooToString;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooToStringNull;
-use Sonata\AdminBundle\Tests\Fixtures\Admin\PostAdmin;
-use Sonata\AdminBundle\Tests\Fixtures\Admin\CommentAdmin;
 use Symfony\Component\HttpFoundation\Request;
-use Sonata\AdminBundle\Admin\AdminInterface;
 
 class AdminTest extends \PHPUnit_Framework_TestCase
 {
@@ -105,7 +105,7 @@ class AdminTest extends \PHPUnit_Framework_TestCase
         );
         $admin->addChild($commentAdmin);
         $admin->setRequest(new Request(array('id' => 42)));
-        $commentAdmin->setRequest(new Request);
+        $commentAdmin->setRequest(new Request());
         $commentAdmin->initialize();
         $admin->initialize();
         $commentAdmin->setCurrentChild($subCommentAdmin);
@@ -133,7 +133,7 @@ class AdminTest extends \PHPUnit_Framework_TestCase
         $modelManager->expects($this->exactly(1))
             ->method('find')
             ->with('Application\Sonata\NewsBundle\Entity\Post', 42)
-            ->will($this->returnValue(new DummySubject));
+            ->will($this->returnValue(new DummySubject()));
 
         $menuFactory->expects($this->exactly(5))
             ->method('createItem')
@@ -152,7 +152,6 @@ class AdminTest extends \PHPUnit_Framework_TestCase
             ->method('generate')
             ->with('sonata_admin_dashboard')
             ->will($this->returnValue('http://somehost.com'));
-
 
         $translatorStrategy->expects($this->exactly(18))
             ->method('getLabel')
@@ -239,16 +238,14 @@ class AdminTest extends \PHPUnit_Framework_TestCase
             )
             ->will($this->returnValue($menu));
 
-
         $admin->getBreadcrumbs('repost');
-        $admin->setSubject(new DummySubject);
+        $admin->setSubject(new DummySubject());
         $admin->getBreadcrumbs('flag');
-
 
         $commentAdmin->getBreadcrumbs('edit');
 
         $commentAdmin->getBreadcrumbs('list');
-        $commentAdmin->setSubject(new DummySubject);
+        $commentAdmin->setSubject(new DummySubject());
         $commentAdmin->getBreadcrumbs('reply');
     }
 
@@ -265,7 +262,7 @@ class AdminTest extends \PHPUnit_Framework_TestCase
         );
         $admin->addChild($commentAdmin);
         $admin->setRequest(new Request(array('id' => 42)));
-        $commentAdmin->setRequest(new Request);
+        $commentAdmin->setRequest(new Request());
         $commentAdmin->initialize();
         $admin->initialize();
 
@@ -318,9 +315,8 @@ class AdminTest extends \PHPUnit_Framework_TestCase
             )
             ->will($this->returnValue($menu));
 
-
         $admin->getBreadcrumbs('repost');
-        $admin->setSubject(new DummySubject);
+        $admin->setSubject(new DummySubject());
         $flagBreadcrumb = $admin->getBreadcrumbs('flag');
         $this->assertSame($flagBreadcrumb, $admin->getBreadcrumbs('flag'));
     }
@@ -387,59 +383,59 @@ class AdminTest extends \PHPUnit_Framework_TestCase
         return array(
             array(
                 'Application\Sonata\NewsBundle\Entity\Post',
-                '/sonata/news/post'
+                '/sonata/news/post',
             ),
             array(
                 'Application\Sonata\NewsBundle\Document\Post',
-                '/sonata/news/post'
+                '/sonata/news/post',
             ),
             array(
                 'MyApplication\MyBundle\Entity\Post',
-                '/myapplication/my/post'
+                '/myapplication/my/post',
             ),
             array(
                 'MyApplication\MyBundle\Entity\Post\Category',
-                '/myapplication/my/post-category'
+                '/myapplication/my/post-category',
             ),
             array(
                 'MyApplication\MyBundle\Entity\Product\Category',
-                '/myapplication/my/product-category'
+                '/myapplication/my/product-category',
             ),
             array(
                 'MyApplication\MyBundle\Entity\Other\Product\Category',
-                '/myapplication/my/other-product-category'
+                '/myapplication/my/other-product-category',
             ),
             array(
                 'Symfony\Cmf\Bundle\FooBundle\Document\Menu',
-                '/cmf/foo/menu'
+                '/cmf/foo/menu',
             ),
             array(
                 'Symfony\Cmf\Bundle\FooBundle\Doctrine\Phpcr\Menu',
-                '/cmf/foo/menu'
+                '/cmf/foo/menu',
             ),
             array(
                 'Symfony\Bundle\BarBarBundle\Doctrine\Phpcr\Menu',
-                '/symfony/barbar/menu'
+                '/symfony/barbar/menu',
             ),
             array(
                 'Symfony\Bundle\BarBarBundle\Doctrine\Phpcr\Menu\Item',
-                '/symfony/barbar/menu-item'
+                '/symfony/barbar/menu-item',
             ),
             array(
                 'Symfony\Cmf\Bundle\FooBundle\Doctrine\Orm\Menu',
-                '/cmf/foo/menu'
+                '/cmf/foo/menu',
             ),
             array(
                 'Symfony\Cmf\Bundle\FooBundle\Doctrine\MongoDB\Menu',
-                '/cmf/foo/menu'
+                '/cmf/foo/menu',
             ),
             array(
                 'Symfony\Cmf\Bundle\FooBundle\Doctrine\CouchDB\Menu',
-                '/cmf/foo/menu'
+                '/cmf/foo/menu',
             ),
             array(
                 'AppBundle\Entity\User',
-                '/app/user'
+                '/app/user',
             ),
         );
     }
@@ -476,59 +472,59 @@ class AdminTest extends \PHPUnit_Framework_TestCase
         return array(
             array(
                 'Application\Sonata\NewsBundle\Entity\Post',
-                'admin_sonata_news_post'
+                'admin_sonata_news_post',
             ),
             array(
                 'Application\Sonata\NewsBundle\Document\Post',
-                'admin_sonata_news_post'
+                'admin_sonata_news_post',
             ),
             array(
                 'MyApplication\MyBundle\Entity\Post',
-                'admin_myapplication_my_post'
+                'admin_myapplication_my_post',
             ),
             array(
                 'MyApplication\MyBundle\Entity\Post\Category',
-                'admin_myapplication_my_post_category'
+                'admin_myapplication_my_post_category',
             ),
             array(
                 'MyApplication\MyBundle\Entity\Product\Category',
-                'admin_myapplication_my_product_category'
+                'admin_myapplication_my_product_category',
             ),
             array(
                 'MyApplication\MyBundle\Entity\Other\Product\Category',
-                'admin_myapplication_my_other_product_category'
+                'admin_myapplication_my_other_product_category',
             ),
             array(
                 'Symfony\Cmf\Bundle\FooBundle\Document\Menu',
-                'admin_cmf_foo_menu'
+                'admin_cmf_foo_menu',
             ),
             array(
                 'Symfony\Cmf\Bundle\FooBundle\Doctrine\Phpcr\Menu',
-                'admin_cmf_foo_menu'
+                'admin_cmf_foo_menu',
             ),
             array(
                 'Symfony\Bundle\BarBarBundle\Doctrine\Phpcr\Menu',
-                'admin_symfony_barbar_menu'
+                'admin_symfony_barbar_menu',
             ),
             array(
                 'Symfony\Bundle\BarBarBundle\Doctrine\Phpcr\Menu\Item',
-                'admin_symfony_barbar_menu_item'
+                'admin_symfony_barbar_menu_item',
             ),
             array(
                 'Symfony\Cmf\Bundle\FooBundle\Doctrine\Orm\Menu',
-                'admin_cmf_foo_menu'
+                'admin_cmf_foo_menu',
             ),
             array(
                 'Symfony\Cmf\Bundle\FooBundle\Doctrine\MongoDB\Menu',
-                'admin_cmf_foo_menu'
+                'admin_cmf_foo_menu',
             ),
             array(
                 'Symfony\Cmf\Bundle\FooBundle\Doctrine\CouchDB\Menu',
-                'admin_cmf_foo_menu'
+                'admin_cmf_foo_menu',
             ),
             array(
                 'AppBundle\Entity\User',
-                'admin_app_user'
+                'admin_app_user',
             ),
         );
     }
@@ -604,14 +600,14 @@ class AdminTest extends \PHPUnit_Framework_TestCase
 
         $this->assertNotEmpty($admin->toString($s));
 
-        $s = new FooToString;
+        $s = new FooToString();
         $this->assertEquals('salut', $admin->toString($s));
 
         // To string method is implemented, but returns null
-        $s = new FooToStringNull;
+        $s = new FooToStringNull();
         $this->assertNotEmpty($admin->toString($s));
 
-        $this->assertEquals("", $admin->toString(false));
+        $this->assertEquals('', $admin->toString(false));
     }
 
     public function testIsAclEnabled()
@@ -648,7 +644,7 @@ class AdminTest extends \PHPUnit_Framework_TestCase
         // Just for the record, if there is no inheritance set, the getSubject is not used
         // the getSubject can also lead to some issue
          $admin->setSubject(new \stdClass());
-         $this->assertEquals('stdClass', $admin->getClass());
+        $this->assertEquals('stdClass', $admin->getClass());
 
         $admin->setSubClasses(array('extended1' => 'NewsBundle\Entity\PostExtended1', 'extended2' => 'NewsBundle\Entity\PostExtended2'));
         $this->assertFalse($admin->hasSubClass('test'));
@@ -1033,7 +1029,7 @@ class AdminTest extends \PHPUnit_Framework_TestCase
         $templates = array(
             'list' => 'FooAdminBundle:CRUD:list.html.twig',
             'show' => 'FooAdminBundle:CRUD:show.html.twig',
-            'edit' => 'FooAdminBundle:CRUD:edit.html.twig'
+            'edit' => 'FooAdminBundle:CRUD:edit.html.twig',
         );
 
         $admin->setTemplates($templates);
@@ -1049,7 +1045,7 @@ class AdminTest extends \PHPUnit_Framework_TestCase
         $templates = array(
             'list' => 'FooAdminBundle:CRUD:list.html.twig',
             'show' => 'FooAdminBundle:CRUD:show.html.twig',
-            'edit' => 'FooAdminBundle:CRUD:edit.html.twig'
+            'edit' => 'FooAdminBundle:CRUD:edit.html.twig',
         );
 
         $admin->setTemplate('edit', 'FooAdminBundle:CRUD:edit.html.twig');
@@ -1068,7 +1064,7 @@ class AdminTest extends \PHPUnit_Framework_TestCase
         $templates = array(
             'list' => 'FooAdminBundle:CRUD:list.html.twig',
             'show' => 'FooAdminBundle:CRUD:show.html.twig',
-            'edit' => 'FooAdminBundle:CRUD:edit.html.twig'
+            'edit' => 'FooAdminBundle:CRUD:edit.html.twig',
         );
 
         $admin->setTemplates($templates);
@@ -1142,7 +1138,7 @@ class AdminTest extends \PHPUnit_Framework_TestCase
 
         $entity = new \stdClass();
 
-        $securityHandler=$this->getMock('Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface');
+        $securityHandler = $this->getMock('Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface');
         $securityHandler->expects($this->any())
             ->method('isGranted')
             ->will($this->returnCallback(function (AdminInterface $adminIn, $attributes, $object = null) use ($admin, $entity) {
@@ -1183,7 +1179,7 @@ class AdminTest extends \PHPUnit_Framework_TestCase
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'Acme\NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
 
-        $securityHandler=$this->getMock('Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface');
+        $securityHandler = $this->getMock('Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface');
         $securityHandler->expects($this->any())
             ->method('isGranted')
             ->will($this->returnCallback(function (AdminInterface $adminIn, $attributes, $object = null) use ($admin) {
@@ -1240,10 +1236,10 @@ class AdminTest extends \PHPUnit_Framework_TestCase
 
         $translator->expects($this->once())
             ->method('trans')
-            ->with($this->equalTo('foo'), $this->equalTo(array('name'=>'Andrej')), $this->equalTo('fooMessageDomain'))
+            ->with($this->equalTo('foo'), $this->equalTo(array('name' => 'Andrej')), $this->equalTo('fooMessageDomain'))
             ->will($this->returnValue('fooTranslated'));
 
-        $this->assertEquals('fooTranslated', $admin->trans('foo', array('name'=>'Andrej'), 'fooMessageDomain'));
+        $this->assertEquals('fooTranslated', $admin->trans('foo', array('name' => 'Andrej'), 'fooMessageDomain'));
     }
 
     public function testTransChoiceWithNoTranslator()
@@ -1278,10 +1274,10 @@ class AdminTest extends \PHPUnit_Framework_TestCase
 
         $translator->expects($this->once())
             ->method('transChoice')
-            ->with($this->equalTo('foo'), $this->equalTo(2), $this->equalTo(array('name'=>'Andrej')), $this->equalTo('fooMessageDomain'))
+            ->with($this->equalTo('foo'), $this->equalTo(2), $this->equalTo(array('name' => 'Andrej')), $this->equalTo('fooMessageDomain'))
             ->will($this->returnValue('fooTranslated'));
 
-        $this->assertEquals('fooTranslated', $admin->transChoice('foo', 2, array('name'=>'Andrej'), 'fooMessageDomain'));
+        $this->assertEquals('fooTranslated', $admin->transChoice('foo', 2, array('name' => 'Andrej'), 'fooMessageDomain'));
     }
 
     public function testSetPersistFilters()
@@ -1368,7 +1364,7 @@ class AdminTest extends \PHPUnit_Framework_TestCase
     public function testGetPersistentParametersWithValidExtension()
     {
         $expected = array(
-            'context' => 'foobar'
+            'context' => 'foobar',
         );
 
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
@@ -1463,7 +1459,7 @@ class AdminTest extends \PHPUnit_Framework_TestCase
                     'foo' => 'foo',
                     'bar' => 'bar',
                 ),
-            )
+            ),
         );
 
         $admin = new PostAdmin('sonata.post.admin.post', 'Application\Sonata\NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
@@ -1475,7 +1471,7 @@ class AdminTest extends \PHPUnit_Framework_TestCase
                 'fields' => array(
                     'bar' => 'bar',
                 ),
-            )
+            ),
         ));
 
         $admin->removeFieldFromFormGroup('bar');

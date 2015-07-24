@@ -1,6 +1,7 @@
 <?php
+
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -10,16 +11,14 @@
 
 namespace Sonata\AdminBundle\Admin;
 
-use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Datagrid\DatagridMapper;
-use Sonata\AdminBundle\Show\ShowMapper;
-use Sonata\AdminBundle\Route\RouteCollection;
-use Sonata\AdminBundle\Validator\ErrorElement;
-use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
-
 use Knp\Menu\ItemInterface as MenuItemInterface;
+use Sonata\AdminBundle\Datagrid\DatagridMapper;
+use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
+use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\AdminBundle\Show\ShowMapper;
+use Sonata\AdminBundle\Validator\ErrorElement;
 
 /**
  *
@@ -53,7 +52,7 @@ interface AdminExtensionInterface
     public function configureRoutes(AdminInterface $admin, RouteCollection $collection);
 
     /**
-     * DEPRECATED: Use configureTabMenu instead
+     * DEPRECATED: Use configureTabMenu instead.
      *
      * @param AdminInterface    $admin
      * @param MenuItemInterface $menu
@@ -67,7 +66,7 @@ interface AdminExtensionInterface
     public function configureSideMenu(AdminInterface $admin, MenuItemInterface $menu, $action, AdminInterface $childAdmin = null);
 
     /**
-     * Builds the tab menu
+     * Builds the tab menu.
      *
      * @param AdminInterface    $admin
      * @param MenuItemInterface $menu
@@ -103,18 +102,20 @@ interface AdminExtensionInterface
     public function alterNewInstance(AdminInterface $admin, $object);
 
     /**
-     * Get a chance to modify object instance
+     * Get a chance to modify object instance.
      *
-     * @param  AdminInterface $admin
+     * @param AdminInterface $admin
      * @param  $object
+     *
      * @return mixed
      */
     public function alterObject(AdminInterface $admin, $object);
 
     /**
-     * Get a chance to add persistent parameters
+     * Get a chance to add persistent parameters.
      *
-     * @param  AdminInterface $admin
+     * @param AdminInterface $admin
+     *
      * @return array
      */
     public function getPersistentParameters(AdminInterface $admin);

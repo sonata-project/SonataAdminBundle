@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -11,17 +11,15 @@
 
 namespace Sonata\AdminBundle\Tests\Command;
 
-use Sonata\AdminBundle\Model\ModelManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Console\Application;
-use Symfony\Component\DependencyInjection\Container;
-use Symfony\Component\HttpKernel\KernelInterface;
-use Symfony\Component\Console\Tester\CommandTester;
 use Sonata\AdminBundle\Command\GenerateAdminCommand;
 use Sonata\AdminBundle\Tests\Fixtures\Bundle\DemoAdminBundle;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
+use Symfony\Component\Console\Tester\CommandTester;
+use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 
 /**
  * @author Andrej Hudec <pulzarraider@gmail.com>
@@ -125,14 +123,14 @@ class GenerateAdminCommandTest extends \PHPUnit_Framework_TestCase
         $command = $this->application->find('sonata:admin:generate');
         $commandTester = new CommandTester($command);
         $commandTester->execute(array(
-            'command' => $command->getName(),
-            'model'=>'Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Foo',
-            '--bundle'=>'AcmeDemoBundle',
-            '--admin'=>'FooAdmin',
-            '--controller'=>'FooAdminController',
-            '--services'=>'admin.yml',
-            '--id'=>'acme_demo_admin.admin.foo',
-            ), array('interactive'=>false,));
+            'command'      => $command->getName(),
+            'model'        => 'Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Foo',
+            '--bundle'     => 'AcmeDemoBundle',
+            '--admin'      => 'FooAdmin',
+            '--controller' => 'FooAdminController',
+            '--services'   => 'admin.yml',
+            '--id'         => 'acme_demo_admin.admin.foo',
+            ), array('interactive' => false));
 
         $expectedOutput = '';
         $expectedOutput .= sprintf('%3$sThe admin class "Sonata\AdminBundle\Tests\Fixtures\Bundle\Admin\FooAdmin" has been generated under the file "%1$s%2$sAdmin%2$sFooAdmin.php".%3$s', $this->tempDirectory, DIRECTORY_SEPARATOR, PHP_EOL);
@@ -175,14 +173,14 @@ class GenerateAdminCommandTest extends \PHPUnit_Framework_TestCase
         $command = $this->application->find('sonata:admin:generate');
         $commandTester = new CommandTester($command);
         $commandTester->execute(array(
-            'command' => $command->getName(),
-            'model'=>'Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Foo',
-            '--bundle'=>'AcmeDemoBundle',
-            '--admin'=>'FooAdmin',
-            '--controller'=>'FooAdminController',
-            '--services'=>'admin.yml',
-            '--id'=>'acme_demo_admin.admin.foo',
-            ), array('interactive'=>false,));
+            'command'      => $command->getName(),
+            'model'        => 'Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Foo',
+            '--bundle'     => 'AcmeDemoBundle',
+            '--admin'      => 'FooAdmin',
+            '--controller' => 'FooAdminController',
+            '--services'   => 'admin.yml',
+            '--id'         => 'acme_demo_admin.admin.foo',
+            ), array('interactive' => false));
     }
 
     /**
@@ -199,12 +197,12 @@ class GenerateAdminCommandTest extends \PHPUnit_Framework_TestCase
         // @todo remove this BC code for SensioGeneratorBundle 2.3/2.4 after dropping  support for Symfony 2.3
         // DialogHelper does not exist in SensioGeneratorBundle 2.5+
         if (class_exists('Sensio\Bundle\GeneratorBundle\Command\Helper\DialogHelper')) {
-           $dialog = $this->getMock('Sensio\Bundle\GeneratorBundle\Command\Helper\DialogHelper', array('askConfirmation', 'askAndValidate'));
+            $dialog = $this->getMock('Sensio\Bundle\GeneratorBundle\Command\Helper\DialogHelper', array('askConfirmation', 'askAndValidate'));
 
             $dialog->expects($this->any())
                 ->method('askConfirmation')
-                ->will($this->returnCallback(function(OutputInterface $output, $question, $default) {
-                    $questionClean = substr($question, 6, strpos($question, '</info>')-6);
+                ->will($this->returnCallback(function (OutputInterface $output, $question, $default) {
+                    $questionClean = substr($question, 6, strpos($question, '</info>') - 6);
 
                     switch ($questionClean) {
                         case 'Do you want to generate a controller':
@@ -221,9 +219,9 @@ class GenerateAdminCommandTest extends \PHPUnit_Framework_TestCase
 
             $dialog->expects($this->any())
                 ->method('askAndValidate')
-                ->will($this->returnCallback(function(OutputInterface $output, $question, $validator, $attempts = false, $default = null) use ($modelEntity) {
+                ->will($this->returnCallback(function (OutputInterface $output, $question, $validator, $attempts = false, $default = null) use ($modelEntity) {
 
-                    $questionClean = substr($question, 6, strpos($question, '</info>')-6);
+                    $questionClean = substr($question, 6, strpos($question, '</info>') - 6);
 
                     switch ($questionClean) {
                         case 'The fully qualified model class':
@@ -264,8 +262,8 @@ class GenerateAdminCommandTest extends \PHPUnit_Framework_TestCase
 
             $questionHelper->expects($this->any())
                 ->method('ask')
-                ->will($this->returnCallback(function(InputInterface $input, OutputInterface $output, Question $question) use ($modelEntity) {
-                    $questionClean = substr($question->getQuestion(), 6, strpos($question->getQuestion(), '</info>')-6);
+                ->will($this->returnCallback(function (InputInterface $input, OutputInterface $output, Question $question) use ($modelEntity) {
+                    $questionClean = substr($question->getQuestion(), 6, strpos($question->getQuestion(), '</info>') - 6);
 
                     switch ($questionClean) {
                         // confirmations
@@ -316,7 +314,7 @@ class GenerateAdminCommandTest extends \PHPUnit_Framework_TestCase
         $commandTester = new CommandTester($command);
         $commandTester->execute(array(
             'command' => $command->getName(),
-            'model' => $modelEntity,
+            'model'   => $modelEntity,
             ));
 
         $expectedOutput = PHP_EOL.str_pad('', 41, ' ').PHP_EOL.'  Welcome to the Sonata admin generator  '.PHP_EOL.str_pad('', 41, ' ').PHP_EOL.PHP_EOL;

@@ -1,6 +1,7 @@
 <?php
+
 /*
- * This file is part of the Sonata project.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -10,14 +11,11 @@
 
 namespace Sonata\AdminBundle\Route;
 
-use Symfony\Component\Routing\RouteCollection as SymfonyRouteCollection;
-use Symfony\Component\Routing\Route;
-
+use Sonata\AdminBundle\Admin\Pool;
 use Symfony\Component\Config\Loader\FileLoader;
 use Symfony\Component\Config\Resource\FileResource;
-
-use Sonata\AdminBundle\Admin\Pool;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Routing\RouteCollection as SymfonyRouteCollection;
 
 class AdminPoolLoader extends FileLoader
 {
@@ -62,9 +60,8 @@ class AdminPoolLoader extends FileLoader
      */
     public function load($resource, $type = null)
     {
-        $collection = new SymfonyRouteCollection;
+        $collection = new SymfonyRouteCollection();
         foreach ($this->adminServiceIds as $id) {
-
             $admin = $this->pool->getInstance($id);
 
             foreach ($admin->getRoutes()->getElements() as $code => $route) {

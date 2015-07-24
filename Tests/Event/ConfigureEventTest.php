@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -12,8 +12,8 @@
 namespace Sonata\AdminBundle\Tests\Event;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\Mapper\BaseMapper;
 use Sonata\AdminBundle\Event\ConfigureEvent;
+use Sonata\AdminBundle\Mapper\BaseMapper;
 
 class ConfigureEventTest extends \PHPUnit_Framework_TestCase
 {
