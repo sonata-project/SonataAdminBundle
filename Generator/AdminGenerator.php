@@ -1,13 +1,12 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
  */
 
 namespace Sonata\AdminBundle\Generator;
@@ -33,7 +32,7 @@ class AdminGenerator extends Generator
 
     /**
      * @param ModelManagerInterface $modelManager
-     * @param array|string $skeletonDirectories
+     * @param array|string          $skeletonDirectories
      */
     public function __construct(ModelManagerInterface $modelManager, $skeletonDirectories)
     {
@@ -43,8 +42,9 @@ class AdminGenerator extends Generator
 
     /**
      * @param BundleInterface $bundle
-     * @param string $adminClassBasename
-     * @param string $modelClass
+     * @param string          $adminClassBasename
+     * @param string          $modelClass
+     *
      * @throws \RuntimeException
      */
     public function generate(BundleInterface $bundle, $adminClassBasename, $modelClass)
@@ -63,8 +63,8 @@ class AdminGenerator extends Generator
 
         $this->renderFile('Admin.php.twig', $this->file, array(
             'classBasename' => array_pop($parts),
-            'namespace' => implode('\\', $parts),
-            'fields' => $this->modelManager->getExportFields($modelClass)
+            'namespace'     => implode('\\', $parts),
+            'fields'        => $this->modelManager->getExportFields($modelClass),
         ));
     }
 

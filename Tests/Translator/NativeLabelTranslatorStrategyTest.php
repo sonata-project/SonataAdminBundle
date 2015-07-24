@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -15,13 +15,12 @@ use Sonata\AdminBundle\Translator\NativeLabelTranslatorStrategy;
 
 class NativeLabelTranslatorStrategyTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @dataProvider getLabelTests
      */
     public function testLabel($expectedLabel, $label)
     {
-        $strategy = new NativeLabelTranslatorStrategy;
+        $strategy = new NativeLabelTranslatorStrategy();
 
         $this->assertEquals($expectedLabel, $strategy->getLabel($label, 'form', 'label'));
     }

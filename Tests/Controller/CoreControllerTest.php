@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -11,11 +11,8 @@
 
 namespace Sonata\AdminBundle\Tests\Controller;
 
-use Sonata\AdminBundle\Controller\CoreController;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpFoundation\Response;
 use Sonata\AdminBundle\Admin\Pool;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Sonata\AdminBundle\Controller\CoreController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Kernel;
 
@@ -43,13 +40,13 @@ class CoreControllerTest extends \PHPUnit_Framework_TestCase
             'sonata.admin.pool' => $pool,
             'templating'        => $templating,
             'request'           => $request,
-            'request_stack'     => $requestStack
+            'request_stack'     => $requestStack,
         );
 
-        $container->expects($this->any())->method('get')->will($this->returnCallback(function($id) use ($values) {
+        $container->expects($this->any())->method('get')->will($this->returnCallback(function ($id) use ($values) {
             return $values[$id];
         }));
-        $container->expects($this->any())->method('getParameter')->will($this->returnCallback(function($name) {
+        $container->expects($this->any())->method('getParameter')->will($this->returnCallback(function ($name) {
             if ($name == 'sonata.admin.configuration.dashboard_blocks') {
                 return array();
             }
@@ -65,7 +62,6 @@ class CoreControllerTest extends \PHPUnit_Framework_TestCase
 
     public function testdashboardActionAjaxLayout()
     {
-
         $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
 
         $pool = new Pool($container, 'title', 'logo.png');
@@ -87,18 +83,17 @@ class CoreControllerTest extends \PHPUnit_Framework_TestCase
             'sonata.admin.pool' => $pool,
             'templating'        => $templating,
             'request'           => $request,
-            'request_stack'     => $requestStack
+            'request_stack'     => $requestStack,
         );
 
-        $container->expects($this->any())->method('get')->will($this->returnCallback(function($id) use ($values) {
+        $container->expects($this->any())->method('get')->will($this->returnCallback(function ($id) use ($values) {
             return $values[$id];
         }));
-        $container->expects($this->any())->method('getParameter')->will($this->returnCallback(function($name) {
+        $container->expects($this->any())->method('getParameter')->will($this->returnCallback(function ($name) {
             if ($name == 'sonata.admin.configuration.dashboard_blocks') {
                 return array();
             }
         }));
-
 
         $controller = new CoreController();
         $controller->setContainer($container);
@@ -107,5 +102,4 @@ class CoreControllerTest extends \PHPUnit_Framework_TestCase
 
         $this->isInstanceOf('Symfony\Component\HttpFoundation\Response', $response);
     }
-
 }

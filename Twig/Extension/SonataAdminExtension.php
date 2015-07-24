@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -12,11 +12,11 @@
 namespace Sonata\AdminBundle\Twig\Extension;
 
 use Doctrine\Common\Util\ClassUtils;
-use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
-use Sonata\AdminBundle\Exception\NoValueException;
-use Sonata\AdminBundle\Admin\Pool;
-use Symfony\Component\PropertyAccess\PropertyAccess;
 use Psr\Log\LoggerInterface;
+use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
+use Sonata\AdminBundle\Admin\Pool;
+use Sonata\AdminBundle\Exception\NoValueException;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 
 class SonataAdminExtension extends \Twig_Extension
 {
@@ -85,7 +85,7 @@ class SonataAdminExtension extends \Twig_Extension
     }
 
     /**
-     * Get template
+     * Get template.
      *
      * @param FieldDescriptionInterface $fieldDescription
      * @param string                    $defaultTemplate
@@ -99,7 +99,6 @@ class SonataAdminExtension extends \Twig_Extension
         try {
             $template = $this->environment->loadTemplate($templateName);
         } catch (\Twig_Error_Loader $e) {
-
             $template = $this->environment->loadTemplate($defaultTemplate);
 
             if (null !== $this->logger) {
@@ -111,7 +110,7 @@ class SonataAdminExtension extends \Twig_Extension
     }
 
     /**
-     * render a list element from the FieldDescription
+     * render a list element from the FieldDescription.
      *
      * @param mixed                     $object
      * @param FieldDescriptionInterface $fieldDescription
@@ -127,7 +126,7 @@ class SonataAdminExtension extends \Twig_Extension
             'admin'             => $fieldDescription->getAdmin(),
             'object'            => $object,
             'value'             => $this->getValueFromFieldDescription($object, $fieldDescription),
-            'field_description' => $fieldDescription
+            'field_description' => $fieldDescription,
         )));
     }
 
@@ -157,7 +156,7 @@ class SonataAdminExtension extends \Twig_Extension
 
     /**
      * return the value related to FieldDescription, if the associated object does no
-     * exists => a temporary one is created
+     * exists => a temporary one is created.
      *
      * @param object                    $object
      * @param FieldDescriptionInterface $fieldDescription
@@ -186,7 +185,7 @@ class SonataAdminExtension extends \Twig_Extension
     }
 
     /**
-     * render a view element
+     * render a view element.
      *
      * @param FieldDescriptionInterface $fieldDescription
      * @param mixed                     $object
@@ -207,12 +206,12 @@ class SonataAdminExtension extends \Twig_Extension
             'field_description' => $fieldDescription,
             'object'            => $object,
             'value'             => $value,
-            'admin'             => $fieldDescription->getAdmin()
+            'admin'             => $fieldDescription->getAdmin(),
         ));
     }
 
     /**
-     * render a compared view element
+     * render a compared view element.
      *
      * @param FieldDescriptionInterface $fieldDescription
      * @param mixed                     $baseObject
@@ -239,13 +238,13 @@ class SonataAdminExtension extends \Twig_Extension
         $baseValueOutput = $template->render(array(
             'admin'             => $fieldDescription->getAdmin(),
             'field_description' => $fieldDescription,
-            'value'             => $baseValue
+            'value'             => $baseValue,
         ));
 
         $compareValueOutput = $template->render(array(
             'field_description' => $fieldDescription,
             'admin'             => $fieldDescription->getAdmin(),
-            'value'             => $compareValue
+            'value'             => $compareValue,
         ));
 
         // Compare the rendered output of both objects by using the (possibly) overridden field block
@@ -256,7 +255,7 @@ class SonataAdminExtension extends \Twig_Extension
             'value'             => $baseValue,
             'value_compare'     => $compareValue,
             'is_diff'           => $isDiff,
-            'admin'             => $fieldDescription->getAdmin()
+            'admin'             => $fieldDescription->getAdmin(),
         ));
     }
 

@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -22,7 +22,7 @@ class PoolTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->pool = new Pool($this->getContainer(), 'Sonata Admin', '/path/to/pic.png', array('foo'=>'bar'));
+        $this->pool = new Pool($this->getContainer(), 'Sonata Admin', '/path/to/pic.png', array('foo' => 'bar'));
     }
 
     public function testGetGroups()
@@ -30,13 +30,13 @@ class PoolTest extends \PHPUnit_Framework_TestCase
         $this->pool->setAdminServiceIds(array('sonata.user.admin.group1'));
 
         $this->pool->setAdminGroups(array(
-            'adminGroup1' => array('sonata.user.admin.group1' => array())
+            'adminGroup1' => array('sonata.user.admin.group1' => array()),
         ));
 
         $expectedOutput = array(
             'adminGroup1' => array(
-                'sonata.user.admin.group1' => 'adminUserClass'
-            )
+                'sonata.user.admin.group1' => 'adminUserClass',
+            ),
         );
 
         $this->assertEquals($expectedOutput, $this->pool->getGroups());
@@ -45,7 +45,7 @@ class PoolTest extends \PHPUnit_Framework_TestCase
     public function testHasGroup()
     {
         $this->pool->setAdminGroups(array(
-                'adminGroup1' => array()
+                'adminGroup1' => array(),
             ));
 
         $this->assertTrue($this->pool->hasGroup('adminGroup1'));
@@ -74,13 +74,13 @@ class PoolTest extends \PHPUnit_Framework_TestCase
 
         $pool->setAdminGroups(array(
             'adminGroup1' => array(
-                'items' => array('itemKey' => 'sonata.user.admin.group1')
+                'items' => array('itemKey' => 'sonata.user.admin.group1'),
             ),
             'adminGroup2' => array(
-                'items' => array('itemKey' => 'sonata.user.admin.group2')
+                'items' => array('itemKey' => 'sonata.user.admin.group2'),
             ),
             'adminGroup3' => array(
-                'items' => array('itemKey' => 'sonata.user.admin.group3')
+                'items' => array('itemKey' => 'sonata.user.admin.group3'),
             ),
         ));
 
@@ -95,7 +95,7 @@ class PoolTest extends \PHPUnit_Framework_TestCase
     public function testGetAdminsByGroupWhenGroupNotSet()
     {
         $this->pool->setAdminGroups(array(
-                'adminGroup1' => array()
+                'adminGroup1' => array(),
             ));
 
         $this->pool->getAdminsByGroup('adminGroup2');
@@ -104,7 +104,7 @@ class PoolTest extends \PHPUnit_Framework_TestCase
     public function testGetAdminsByGroupWhenGroupIsEmpty()
     {
         $this->pool->setAdminGroups(array(
-                'adminGroup1' => array()
+                'adminGroup1' => array(),
             ));
 
         $this->assertEquals(array(), $this->pool->getAdminsByGroup('adminGroup1'));
@@ -115,7 +115,7 @@ class PoolTest extends \PHPUnit_Framework_TestCase
         $this->pool->setAdminServiceIds(array('sonata.admin1', 'sonata.admin2', 'sonata.admin3'));
         $this->pool->setAdminGroups(array(
             'adminGroup1' => array('items' => array('sonata.admin1', 'sonata.admin2')),
-            'adminGroup2' => array('items' => array('sonata.admin3'))
+            'adminGroup2' => array('items' => array('sonata.admin3')),
         ));
 
         $this->assertCount(2, $this->pool->getAdminsByGroup('adminGroup1'));
@@ -130,7 +130,6 @@ class PoolTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     *
      * @expectedException \RuntimeException
      */
     public function testGetAdminForClassWithInvalidFormat()
@@ -142,7 +141,6 @@ class PoolTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     *
      * @expectedException \RuntimeException
      */
     public function testGetAdminForClassWithTooManyRegisteredAdmin()

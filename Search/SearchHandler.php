@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -11,11 +11,9 @@
 
 namespace Sonata\AdminBundle\Search;
 
-
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Filter\FilterInterface;
-use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>

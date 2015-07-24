@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -11,19 +11,19 @@
 
 namespace Sonata\AdminBundle\Util;
 
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 
 abstract class ObjectAclManipulator implements ObjectAclManipulatorInterface
 {
     /**
-     * Configure the object ACL for the passed object identities
+     * Configure the object ACL for the passed object identities.
      *
      * @param OutputInterface      $output
      * @param AdminInterface       $admin
-     * @param \Traversable         $oids              a collection of ObjectIdentityInterface implementations
+     * @param \Traversable         $oids             a collection of ObjectIdentityInterface implementations
      * @param UserSecurityIdentity $securityIdentity
      *
      * @throws \Exception
@@ -46,10 +46,10 @@ abstract class ObjectAclManipulator implements ObjectAclManipulatorInterface
         foreach ($oids as $oid) {
             if ($acls->contains($oid)) {
                 $acl = $acls->offsetGet($oid);
-                $countUpdated++;
+                ++$countUpdated;
             } else {
                 $acl = $securityHandler->createAcl($oid);
-                $countAdded++;
+                ++$countAdded;
             }
 
             if (!is_null($securityIdentity)) {

@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata project.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -11,17 +11,17 @@
 
 namespace Sonata\AdminBundle\Security\Handler;
 
-use Symfony\Component\Security\Core\SecurityContextInterface;
-use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
-use Symfony\Component\Security\Acl\Model\MutableAclProviderInterface;
-use Symfony\Component\Security\Acl\Model\AclInterface;
+use Sonata\AdminBundle\Admin\AdminInterface;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
-use Symfony\Component\Security\Acl\Model\ObjectIdentityInterface;
-use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 use Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity;
+use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 use Symfony\Component\Security\Acl\Exception\AclNotFoundException;
 use Symfony\Component\Security\Acl\Exception\NotAllAclsFoundException;
-use Sonata\AdminBundle\Admin\AdminInterface;
+use Symfony\Component\Security\Acl\Model\AclInterface;
+use Symfony\Component\Security\Acl\Model\MutableAclProviderInterface;
+use Symfony\Component\Security\Acl\Model\ObjectIdentityInterface;
+use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 
 class AclSecurityHandler implements AclSecurityHandlerInterface
 {
@@ -101,7 +101,7 @@ class AclSecurityHandler implements AclSecurityHandlerInterface
      */
     public function getBaseRole(AdminInterface $admin)
     {
-        return 'ROLE_' . str_replace('.', '_', strtoupper($admin->getCode())) . '_%s';
+        return 'ROLE_'.str_replace('.', '_', strtoupper($admin->getCode())).'_%s';
     }
 
     /**
@@ -157,7 +157,7 @@ class AclSecurityHandler implements AclSecurityHandlerInterface
         try {
             $acl = $this->aclProvider->findAcl($objectIdentity);
         } catch (AclNotFoundException $e) {
-            return null;
+            return;
         }
 
         return $acl;

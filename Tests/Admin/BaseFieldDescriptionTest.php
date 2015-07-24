@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -12,7 +12,6 @@
 namespace Sonata\AdminBundle\Tests\Admin;
 
 use Sonata\AdminBundle\Admin\BaseFieldDescription;
-use Sonata\AdminBundle\Admin\AdminInterface;
 
 class BaseFieldDescriptionTest extends \PHPUnit_Framework_TestCase
 {
@@ -103,8 +102,8 @@ class BaseFieldDescriptionTest extends \PHPUnit_Framework_TestCase
         $mock->expects($this->once())->method('getFoo')->will($this->returnValue(42));
 
         $this->assertEquals(42, $description->getFieldValue($mock, 'fake'));
-        
-        /**
+
+/*
          * Test with One parameter int
          */
         $arg1 = 38;
@@ -112,14 +111,14 @@ class BaseFieldDescriptionTest extends \PHPUnit_Framework_TestCase
         $description1 = new FieldDescription();
         $description1->setOption('code', 'getWithOneParameter');
         $description1->setOption('parameters', $oneParameter);
-        
+
         $mock1 = $this->getMock('stdClass', array('getWithOneParameter'));
         $returnValue1 = $arg1 + 2;
         $mock1->expects($this->once())->method('getWithOneParameter')->with($this->equalTo($arg1))->will($this->returnValue($returnValue1));
-        
+
         $this->assertEquals(40, $description1->getFieldValue($mock1, 'fake'));
-        
-        /**
+
+/*
          * Test with Two parameters int
          */
         $arg2 = 4;
@@ -127,10 +126,10 @@ class BaseFieldDescriptionTest extends \PHPUnit_Framework_TestCase
         $description2 = new FieldDescription();
         $description2->setOption('code', 'getWithTwoParameters');
         $description2->setOption('parameters', $twoParameters);
-        
+
         $mock2 = $this->getMock('stdClass', array('getWithTwoParameters'));
         $returnValue2 = $arg1 + $arg2;
-        $mock2->expects($this->any())->method('getWithTwoParameters')->with($this->equalTo($arg1),$this->equalTo($arg2))->will($this->returnValue($returnValue2));
+        $mock2->expects($this->any())->method('getWithTwoParameters')->with($this->equalTo($arg1), $this->equalTo($arg2))->will($this->returnValue($returnValue2));
         $this->assertEquals(42, $description2->getFieldValue($mock2, 'fake'));
     }
 
@@ -205,10 +204,9 @@ class FieldDescription extends BaseFieldDescription
     }
 
     /**
-     * set the parent association mappings information
+     * set the parent association mappings information.
      *
-     * @param  array $parentAssociationMappings
-     * @return void
+     * @param array $parentAssociationMappings
      */
     public function setParentAssociationMappings(array $parentAssociationMappings)
     {
@@ -216,9 +214,10 @@ class FieldDescription extends BaseFieldDescription
     }
 
     /**
-     * return the value linked to the description
+     * return the value linked to the description.
      *
      * @param  $object
+     *
      * @return bool|mixed
      */
     public function getValue($object)

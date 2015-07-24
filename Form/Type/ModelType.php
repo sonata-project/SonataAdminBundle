@@ -1,33 +1,30 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
  */
 
 namespace Sonata\AdminBundle\Form\Type;
 
+use Sonata\AdminBundle\Form\ChoiceList\ModelChoiceList;
+use Sonata\AdminBundle\Form\DataTransformer\ModelsToArrayTransformer;
+use Sonata\AdminBundle\Form\DataTransformer\ModelToIdTransformer;
+use Sonata\AdminBundle\Form\EventListener\MergeCollectionListener;
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceListInterface;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-use Sonata\AdminBundle\Form\EventListener\MergeCollectionListener;
-use Sonata\AdminBundle\Form\ChoiceList\ModelChoiceList;
-use Sonata\AdminBundle\Form\DataTransformer\ModelsToArrayTransformer;
-use Sonata\AdminBundle\Form\DataTransformer\ModelToIdTransformer;
-
 /**
- * This type define a standard select input with a + sign to add new associated object
- *
+ * This type define a standard select input with a + sign to add new associated object.
  */
 class ModelType extends AbstractType
 {
@@ -109,7 +106,7 @@ class ModelType extends AbstractType
                     $options['query'],
                     $options['choices']
                 );
-            }
+            },
         ));
     }
 

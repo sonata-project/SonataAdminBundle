@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -12,7 +12,6 @@
 namespace Sonata\AdminBundle\Tests\Form\Type;
 
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
-
 use Symfony\Component\Form\Test\TypeTestCase;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -26,7 +25,7 @@ class ModelAutocompleteTypeTest extends TypeTestCase
 
         $type->setDefaultOptions($optionResolver);
 
-        $options = $optionResolver->resolve(array('model_manager' => $modelManager, 'class' => 'Foo', 'property'=>'bar'));
+        $options = $optionResolver->resolve(array('model_manager' => $modelManager, 'class' => 'Foo', 'property' => 'bar'));
 
         $this->assertEquals(array(), $options['attr']);
         $this->assertTrue($options['compound']);
@@ -41,7 +40,7 @@ class ModelAutocompleteTypeTest extends TypeTestCase
         $this->assertEquals(10, $options['items_per_page']);
 
         $this->assertEquals('', $options['url']);
-        $this->assertEquals(array('name'=>'sonata_admin_retrieve_autocomplete_items', 'parameters'=>array()), $options['route']);
+        $this->assertEquals(array('name' => 'sonata_admin_retrieve_autocomplete_items', 'parameters' => array()), $options['route']);
         $this->assertEquals(array(), $options['req_params']);
         $this->assertEquals('q', $options['req_param_name_search']);
         $this->assertEquals('_page', $options['req_param_name_page_number']);

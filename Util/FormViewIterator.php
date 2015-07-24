@@ -1,6 +1,7 @@
 <?php
+
 /*
- * This file is part of the Sonata project.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -29,7 +30,7 @@ class FormViewIterator implements \RecursiveIterator
      */
     public function getChildren()
     {
-        return new FormViewIterator($this->current());
+        return new self($this->current());
     }
 
     /**

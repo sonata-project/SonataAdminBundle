@@ -1,21 +1,20 @@
 <?php
+
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
  */
 
 namespace Sonata\AdminBundle\Form\Type\Filter;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Translation\TranslatorInterface;
-
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class ChoiceType extends AbstractType
 {
@@ -67,7 +66,7 @@ class ChoiceType extends AbstractType
     {
         $resolver->setDefaults(array(
             'field_type'       => 'choice',
-            'field_options'    => array()
+            'field_options'    => array(),
         ));
     }
 }

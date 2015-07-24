@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata project.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -15,7 +15,7 @@ use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 /**
- * This class contains the configuration information for the bundle
+ * This class contains the configuration information for the bundle.
  *
  * This information is solely responsible for how the different configuration
  * sections are normalized, and merged.
@@ -52,7 +52,7 @@ class Configuration implements ConfigurationInterface
                                 ->performNoDeepMerging()
                                 ->beforeNormalization()
                                     ->ifString()
-                                    ->then(function($v){ return array($v); })
+                                    ->then(function ($v) { return array($v); })
                                 ->end()
                                 ->prototype('scalar')->end()
                             ->end()
@@ -205,7 +205,7 @@ class Configuration implements ConfigurationInterface
                                 'bundles/sonataadmin/vendor/x-editable/dist/bootstrap3-editable/css/bootstrap-editable.css',
 
                                 'bundles/sonataadmin/css/styles.css',
-                                'bundles/sonataadmin/css/layout.css'
+                                'bundles/sonataadmin/css/layout.css',
                             ))
                             ->prototype('scalar')->end()
                         ->end()

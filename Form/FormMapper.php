@@ -1,23 +1,23 @@
 <?php
+
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
  */
+
 namespace Sonata\AdminBundle\Form;
 
-use Sonata\AdminBundle\Builder\FormContractorInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
-use Symfony\Component\Form\FormBuilder;
+use Sonata\AdminBundle\Builder\FormContractorInterface;
 use Sonata\AdminBundle\Mapper\BaseGroupedMapper;
+use Symfony\Component\Form\FormBuilder;
 
 /**
- * This class is use to simulate the Form API
- *
+ * This class is use to simulate the Form API.
  */
 class FormMapper extends BaseGroupedMapper
 {
@@ -25,8 +25,8 @@ class FormMapper extends BaseGroupedMapper
 
     /**
      * @param FormContractorInterface $formContractor
-     * @param FormBuilder                 $formBuilder
-     * @param AdminInterface            $admin
+     * @param FormBuilder             $formBuilder
+     * @param AdminInterface          $admin
      */
     public function __construct(FormContractorInterface $formContractor, FormBuilder $formBuilder, AdminInterface $admin)
     {
@@ -61,8 +61,8 @@ class FormMapper extends BaseGroupedMapper
         }
 
         // "Dot" notation is not allowed as form name, but can be used as property path to access nested data.
-        if (!$name instanceof FormBuilder && strpos($fieldName, '.')!==false && !isset($options['property_path'])) {
-             $options['property_path'] = $fieldName;
+        if (!$name instanceof FormBuilder && strpos($fieldName, '.') !== false && !isset($options['property_path'])) {
+            $options['property_path'] = $fieldName;
 
              // fix the form name
              $fieldName = str_replace('.', '__', $fieldName);

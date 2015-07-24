@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -280,7 +280,7 @@ class PagerTest extends \PHPUnit_Framework_TestCase
         $values = array();
         foreach ($this->pager as $key => $value) {
             $values[$key] = $value;
-            $counter++;
+            ++$counter;
         }
 
         $this->assertEquals(3, $counter);
@@ -311,14 +311,14 @@ class PagerTest extends \PHPUnit_Framework_TestCase
     {
         $this->pager->expects($this->any())
             ->method('getResults')
-            ->will($this->returnValue(array(123 => new \stdClass)));
+            ->will($this->returnValue(array(123 => new \stdClass())));
 
         $this->assertEquals(123, $this->pager->key());
     }
 
     public function testCurrent()
     {
-        $object = new \stdClass;
+        $object = new \stdClass();
 
         $this->pager->expects($this->any())
             ->method('getResults')
@@ -372,7 +372,7 @@ class PagerTest extends \PHPUnit_Framework_TestCase
         $id = 0;
         $query->expects($this->any())
             ->method('execute')
-            ->will($this->returnCallback(function() use (&$id, $object1, $object2, $object3) {
+            ->will($this->returnCallback(function () use (&$id, $object1, $object2, $object3) {
                 switch ($id) {
                     case 0:
                         return array($object1);
@@ -387,7 +387,7 @@ class PagerTest extends \PHPUnit_Framework_TestCase
                         break;
                 }
 
-                return null;
+                return;
             }));
 
         $this->pager->setQuery($query);
@@ -503,7 +503,7 @@ class PagerTest extends \PHPUnit_Framework_TestCase
         $id = 0;
         $query->expects($this->any())
             ->method('execute')
-            ->will($this->returnCallback(function() use (&$id, $object1, $object2, $object3) {
+            ->will($this->returnCallback(function () use (&$id, $object1, $object2, $object3) {
                 switch ($id) {
                     case 0:
                         return array($object1);
@@ -518,7 +518,7 @@ class PagerTest extends \PHPUnit_Framework_TestCase
                         break;
                 }
 
-                return null;
+                return;
             }));
 
         $this->pager->setQuery($query);
@@ -526,13 +526,13 @@ class PagerTest extends \PHPUnit_Framework_TestCase
         $this->pager->setCursor(1);
         $this->assertEquals($object1, $this->pager->getCurrent());
 
-        $id++;
+        ++$id;
         $this->assertEquals($object2, $this->pager->getNext());
 
-        $id++;
+        ++$id;
         $this->assertEquals($object3, $this->pager->getNext());
 
-        $id++;
+        ++$id;
         $this->assertEquals(null, $this->pager->getNext());
     }
 
@@ -564,7 +564,7 @@ class PagerTest extends \PHPUnit_Framework_TestCase
         $id = 2;
         $query->expects($this->any())
             ->method('execute')
-            ->will($this->returnCallback(function() use (&$id, $object1, $object2, $object3) {
+            ->will($this->returnCallback(function () use (&$id, $object1, $object2, $object3) {
                 switch ($id) {
                     case 0:
                         return array($object1);
@@ -579,7 +579,7 @@ class PagerTest extends \PHPUnit_Framework_TestCase
                         break;
                 }
 
-                return null;
+                return;
             }));
 
         $this->pager->setQuery($query);
@@ -587,13 +587,13 @@ class PagerTest extends \PHPUnit_Framework_TestCase
         $this->pager->setCursor(2);
         $this->assertEquals($object3, $this->pager->getCurrent());
 
-        $id--;
+        --$id;
         $this->assertEquals($object2, $this->pager->getPrevious());
 
-        $id--;
+        --$id;
         $this->assertEquals($object1, $this->pager->getPrevious());
 
-        $id--;
+        --$id;
         $this->assertEquals(null, $this->pager->getPrevious());
     }
 
@@ -614,16 +614,16 @@ class PagerTest extends \PHPUnit_Framework_TestCase
     public function testUnserialize()
     {
         $serialized = array(
-            'page' => 6,
-            'maxPerPage' => 7,
-            'maxPageLinks' => 5,
-            'lastPage' => 4,
-            'nbResults' => 30,
-            'cursor' => 3,
-            'parameters' => array('foo'=>'bar'),
+            'page'           => 6,
+            'maxPerPage'     => 7,
+            'maxPageLinks'   => 5,
+            'lastPage'       => 4,
+            'nbResults'      => 30,
+            'cursor'         => 3,
+            'parameters'     => array('foo' => 'bar'),
             'currentMaxLink' => 2,
             'maxRecordLimit' => 22,
-            'countColumn' => array('idx'),
+            'countColumn'    => array('idx'),
         );
 
         $this->pager->expects($this->any())
@@ -640,7 +640,7 @@ class PagerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(array('idx'), $this->pager->getCountColumn());
         $this->assertEquals(30, $this->pager->getNbResults());
         $this->assertEquals(3, $this->pager->getCursor());
-        $this->assertEquals(array('foo'=>'bar'), $this->pager->getParameters());
+        $this->assertEquals(array('foo' => 'bar'), $this->pager->getParameters());
         $this->assertEquals(2, $this->pager->getCurrentMaxLink());
         $this->assertEquals(22, $this->pager->getMaxRecordLimit());
         $this->assertEquals(null, $this->pager->getQuery());

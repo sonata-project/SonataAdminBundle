@@ -1,24 +1,23 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
  */
 
 namespace Sonata\AdminBundle\Form\DataTransformer;
 
-use Symfony\Component\Form\DataTransformerInterface;
-use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Doctrine\Common\Util\ClassUtils;
 use RuntimeException;
+use Sonata\AdminBundle\Model\ModelManagerInterface;
+use Symfony\Component\Form\DataTransformerInterface;
 
 /**
- * Transform object to ID and property label
+ * Transform object to ID and property label.
  *
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
@@ -39,7 +38,7 @@ class ModelToIdPropertyTransformer implements DataTransformerInterface
      * @param string                $className
      * @param string                $property
      */
-    public function __construct(ModelManagerInterface $modelManager, $className, $property, $multiple=false, $toStringCallback=null)
+    public function __construct(ModelManagerInterface $modelManager, $className, $property, $multiple = false, $toStringCallback = null)
     {
         $this->modelManager     = $modelManager;
         $this->className        = $className;
@@ -57,14 +56,14 @@ class ModelToIdPropertyTransformer implements DataTransformerInterface
 
         if (empty($value) || empty($value['identifiers'])) {
             if (!$this->multiple) {
-                return null;
+                return;
             } else {
                 return $collection;
             }
         }
 
         if (!$this->multiple) {
-             return $this->modelManager->find($this->className, current($value['identifiers']));
+            return $this->modelManager->find($this->className, current($value['identifiers']));
         }
 
         foreach ($value['identifiers'] as $id) {

@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -41,9 +41,9 @@ interface AuditReaderInterface
 
     /**
      * @param string $className
-     * @param int $id
-     * @param int $oldRevision
-     * @param int $newRevision
+     * @param int    $id
+     * @param int    $oldRevision
+     * @param int    $newRevision
      */
     public function diff($className, $id, $oldRevision, $newRevision);
 }

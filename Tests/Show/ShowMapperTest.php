@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -12,20 +12,17 @@
 namespace Sonata\AdminBundle\Tests\Show;
 
 use Sonata\AdminBundle\Admin\Admin;
-use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
-use Sonata\AdminBundle\Builder\ShowBuilderInterface;
+use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Translator\NoopLabelTranslatorStrategy;
 
 class TestAdmin extends Admin
 {
-
 }
 
 /**
- * Test for ShowMapper
+ * Test for ShowMapper.
  *
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
@@ -73,23 +70,23 @@ class ShowMapperTest extends \PHPUnit_Framework_TestCase
         $this->groups = array();
 
         // php 5.3 BC
-        $groups = & $this->groups;
+        $groups = &$this->groups;
 
         $this->admin->expects($this->any())
             ->method('getShowGroups')
-            ->will($this->returnCallback(function() use (&$groups) {
+            ->will($this->returnCallback(function () use (&$groups) {
                 return $groups;
             }));
 
         $this->admin->expects($this->any())
             ->method('setShowGroups')
-            ->will($this->returnCallback(function($showGroups) use (&$groups) {
+            ->will($this->returnCallback(function ($showGroups) use (&$groups) {
                 $groups = $showGroups;
             }));
 
         $this->admin->expects($this->any())
             ->method('reorderShowGroup')
-            ->will($this->returnCallback(function($group, $keys) use (&$groups) {
+            ->will($this->returnCallback(function ($group, $keys) use (&$groups) {
                 $showGroups = $groups;
                 $showGroups[$group]['fields'] = array_merge(array_flip($keys), $showGroups[$group]['fields']);
                 $groups = $showGroups;
@@ -102,7 +99,7 @@ class ShowMapperTest extends \PHPUnit_Framework_TestCase
 
         $modelManager->expects($this->any())
             ->method('getNewFieldDescriptionInstance')
-            ->will($this->returnCallback(function($class, $name, array $options = array()) use ($fieldDescription) {
+            ->will($this->returnCallback(function ($class, $name, array $options = array()) use ($fieldDescription) {
                 $fieldDescriptionClone = clone $fieldDescription;
                 $fieldDescriptionClone->setName($name);
                 $fieldDescriptionClone->setOptions($options);
@@ -114,7 +111,7 @@ class ShowMapperTest extends \PHPUnit_Framework_TestCase
             ->method('getModelManager')
             ->will($this->returnValue($modelManager));
 
-        $labelTranslatorStrategy = new NoopLabelTranslatorStrategy;
+        $labelTranslatorStrategy = new NoopLabelTranslatorStrategy();
 
         $this->admin->expects($this->any())
             ->method('getLabelTranslatorStrategy')
@@ -122,7 +119,7 @@ class ShowMapperTest extends \PHPUnit_Framework_TestCase
 
         $this->showBuilder->expects($this->any())
             ->method('addField')
-            ->will($this->returnCallback(function($list, $type, $fieldDescription, $admin) {
+            ->will($this->returnCallback(function ($list, $type, $fieldDescription, $admin) {
                 $list->add($fieldDescription);
             }));
 
@@ -203,27 +200,27 @@ class ShowMapperTest extends \PHPUnit_Framework_TestCase
         $this->showMapper->add($fieldDescription4);
 
         $this->assertEquals(array(
-            'Group1' =>array(
-                'collapsed' => false,
-                'fields' => array('fooName1'=>'fooName1', 'fooName2'=>'fooName2', 'fooName3'=>'fooName3', 'fooName4'=>'fooName4'),
-                'description' => false,
+            'Group1' => array(
+                'collapsed'          => false,
+                'fields'             => array('fooName1' => 'fooName1', 'fooName2' => 'fooName2', 'fooName3' => 'fooName3', 'fooName4' => 'fooName4'),
+                'description'        => false,
                 'translation_domain' => null,
-                'class' => false,
-                'name' => 'Group1'
-            )), $this->admin->getShowGroups());
+                'class'              => false,
+                'name'               => 'Group1',
+            ), ), $this->admin->getShowGroups());
 
         $this->showMapper->reorder(array('fooName3', 'fooName2', 'fooName1', 'fooName4'));
 
         // print_r is used to compare order of items in associative arrays
         $this->assertEquals(print_r(array(
-            'Group1' =>array(
-                'collapsed' => false,
-                'class' => false,
-                'description' => false,
+            'Group1' => array(
+                'collapsed'          => false,
+                'class'              => false,
+                'description'        => false,
                 'translation_domain' => null,
-                'name' => 'Group1',
-                'fields' => array('fooName3'=>'fooName3', 'fooName2'=>'fooName2', 'fooName1'=>'fooName1', 'fooName4'=>'fooName4'),
-            )), true), print_r($this->admin->getShowGroups(), true));
+                'name'               => 'Group1',
+                'fields'             => array('fooName3' => 'fooName3', 'fooName2' => 'fooName2', 'fooName1' => 'fooName1', 'fooName4' => 'fooName4'),
+            ), ), true), print_r($this->admin->getShowGroups(), true));
     }
 
     private function getFieldDescriptionMock($name = null, $label = null)

@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -11,13 +11,12 @@
 
 namespace Sonata\AdminBundle\Util;
 
-use Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity;
-use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
-use Symfony\Component\Security\Acl\Model\AclInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
+use Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity;
+use Symfony\Component\Security\Acl\Model\AclInterface;
 
 class AdminAclManipulator implements AdminAclManipulatorInterface
 {

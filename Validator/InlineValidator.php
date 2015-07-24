@@ -1,6 +1,7 @@
 <?php
+
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -10,10 +11,9 @@
 
 namespace Sonata\AdminBundle\Validator;
 
-use Symfony\Component\Validator\ConstraintValidator;
-use Symfony\Component\Validator\Constraint;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Sonata\AdminBundle\Validator\ErrorElement;
+use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\ConstraintValidatorFactoryInterface;
 
 class InlineValidator extends ConstraintValidator

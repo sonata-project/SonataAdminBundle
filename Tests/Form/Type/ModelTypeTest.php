@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -12,7 +12,6 @@
 namespace Sonata\AdminBundle\Tests\Form\Type;
 
 use Sonata\AdminBundle\Form\Type\ModelType;
-
 use Symfony\Component\Form\Test\TypeTestCase;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -56,7 +55,7 @@ class ModelTypeTest extends TypeTestCase
 
         $type->setDefaultOptions($optionResolver);
 
-        $options = $optionResolver->resolve(array('model_manager' => $modelManager, 'choices' => array(), 'multiple'=>$multiple, 'expanded'=>$expanded));
+        $options = $optionResolver->resolve(array('model_manager' => $modelManager, 'choices' => array(), 'multiple' => $multiple, 'expanded' => $expanded));
 
         $this->assertEquals($expectedCompound, $options['compound']);
         $this->assertEquals('choice', $options['template']);

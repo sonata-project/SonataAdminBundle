@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -18,12 +18,11 @@ use Symfony\Component\EventDispatcher\Event;
  * This event is sent by hook:
  *   - preUpdate | postUpdate
  *   - prePersist | postPersist
- *   - preRemove | postRemove
+ *   - preRemove | postRemove.
  *
  * You can register the listener to the event dispatcher by using:
  *   - sonata.admin.event.persistence.[pre|post]_[persist|update|remove)
  *   - sonata.admin.event.persistence.[admin_code].[pre|post]_[persist|update|remove)  (not implemented yet)
- *
  */
 class PersistenceEvent extends Event
 {

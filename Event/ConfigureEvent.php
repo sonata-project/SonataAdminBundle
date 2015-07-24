@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -20,12 +20,11 @@ use Symfony\Component\EventDispatcher\Event;
  *   - configureFormFields
  *   - configureListFields
  *   - configureDatagridFilters
- *   - configureShowFields
+ *   - configureShowFields.
  *
  * You can register the listener to the event dispatcher by using:
  *   - sonata.admin.event.configure.[form|list|datagrid|show]
  *   - sonata.admin.event.configure.[admin_code].[form|list|datagrid|show] (not implemented yet)
- *
  */
 class ConfigureEvent extends Event
 {

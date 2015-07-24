@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -36,8 +36,8 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
 
         $config = $processor->processConfiguration(new Configuration(), array(array(
             'options' => array(
-                'html5_validate' => '1'
-            )
+                'html5_validate' => '1',
+            ),
         )));
     }
 }

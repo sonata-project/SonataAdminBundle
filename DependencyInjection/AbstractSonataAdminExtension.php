@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata project.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -12,17 +12,15 @@
 namespace Sonata\AdminBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
- * AbstractSonataAdminExtension
+ * AbstractSonataAdminExtension.
  */
 abstract class AbstractSonataAdminExtension extends Extension
 {
-
     /**
-     * Fix template configuration
+     * Fix template configuration.
      *
      * @param array            $configs
      * @param ContainerBuilder $container
@@ -57,26 +55,26 @@ abstract class AbstractSonataAdminExtension extends Extension
                         'html'         => 'SonataAdminBundle:CRUD:list_html.html.twig',
                     ),
                     'show' => array(
-                        'array'        => 'SonataAdminBundle:CRUD:show_array.html.twig',
-                        'boolean'      => 'SonataAdminBundle:CRUD:show_boolean.html.twig',
-                        'date'         => 'SonataAdminBundle:CRUD:show_date.html.twig',
-                        'time'         => 'SonataAdminBundle:CRUD:show_time.html.twig',
-                        'datetime'     => 'SonataAdminBundle:CRUD:show_datetime.html.twig',
-                        'text'         => 'SonataAdminBundle:CRUD:base_show_field.html.twig',
-                        'trans'        => 'SonataAdminBundle:CRUD:show_trans.html.twig',
-                        'string'       => 'SonataAdminBundle:CRUD:base_show_field.html.twig',
-                        'smallint'     => 'SonataAdminBundle:CRUD:base_show_field.html.twig',
-                        'bigint'       => 'SonataAdminBundle:CRUD:base_show_field.html.twig',
-                        'integer'      => 'SonataAdminBundle:CRUD:base_show_field.html.twig',
-                        'decimal'      => 'SonataAdminBundle:CRUD:base_show_field.html.twig',
-                        'currency'     => 'SonataAdminBundle:CRUD:show_currency.html.twig',
-                        'percent'      => 'SonataAdminBundle:CRUD:show_percent.html.twig',
-                        'choice'       => 'SonataAdminBundle:CRUD:show_choice.html.twig',
-                        'url'          => 'SonataAdminBundle:CRUD:show_url.html.twig',
+                        'array'         => 'SonataAdminBundle:CRUD:show_array.html.twig',
+                        'boolean'       => 'SonataAdminBundle:CRUD:show_boolean.html.twig',
+                        'date'          => 'SonataAdminBundle:CRUD:show_date.html.twig',
+                        'time'          => 'SonataAdminBundle:CRUD:show_time.html.twig',
+                        'datetime'      => 'SonataAdminBundle:CRUD:show_datetime.html.twig',
+                        'text'          => 'SonataAdminBundle:CRUD:base_show_field.html.twig',
+                        'trans'         => 'SonataAdminBundle:CRUD:show_trans.html.twig',
+                        'string'        => 'SonataAdminBundle:CRUD:base_show_field.html.twig',
+                        'smallint'      => 'SonataAdminBundle:CRUD:base_show_field.html.twig',
+                        'bigint'        => 'SonataAdminBundle:CRUD:base_show_field.html.twig',
+                        'integer'       => 'SonataAdminBundle:CRUD:base_show_field.html.twig',
+                        'decimal'       => 'SonataAdminBundle:CRUD:base_show_field.html.twig',
+                        'currency'      => 'SonataAdminBundle:CRUD:show_currency.html.twig',
+                        'percent'       => 'SonataAdminBundle:CRUD:show_percent.html.twig',
+                        'choice'        => 'SonataAdminBundle:CRUD:show_choice.html.twig',
+                        'url'           => 'SonataAdminBundle:CRUD:show_url.html.twig',
                         'html'          => 'SonataAdminBundle:CRUD:show_html.html.twig',
-                    )
-                )
-            )
+                    ),
+                ),
+            ),
         );
 
         // let's add some magic, only overwrite template if the SonataIntlBundle is enabled

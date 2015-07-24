@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -11,19 +11,18 @@
 
 namespace Sonata\AdminBundle\Datagrid;
 
-use Sonata\AdminBundle\Filter\FilterInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
-
-use Symfony\Component\Form\FormBuilder;
-use Symfony\Component\Form\Exception\UnexpectedTypeException;
+use Sonata\AdminBundle\Filter\FilterInterface;
 use Symfony\Component\Form\CallbackTransformer;
+use Symfony\Component\Form\Exception\UnexpectedTypeException;
+use Symfony\Component\Form\FormBuilder;
 
 class Datagrid implements DatagridInterface
 {
     /**
+     * The filter instances.
      *
-     * The filter instances
      * @var array
      */
     protected $filters = array();
@@ -224,7 +223,7 @@ class Datagrid implements DatagridInterface
     {
         $this->values[$name] = array(
             'type'  => $operator,
-            'value' => $value
+            'value' => $value,
         );
     }
 
