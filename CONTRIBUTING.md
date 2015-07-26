@@ -27,6 +27,17 @@ desperately need to see some commits get merged on the older branches (`2.0`,
 are no longer supported and your changes will probably not get merged in more
 recent branches.
 
+### Matching coding standards
+
+Before each commit, be sure to match sonata coding standards by running the following command for fix:
+
+```bash
+make cs
+```
+
+And then, add fixed file to your commit before push.
+
+Be sure to add only **your modified files**. If another files are fixed by cs tools, just revert it before commit.
 
 ### Sending a Pull Request
 

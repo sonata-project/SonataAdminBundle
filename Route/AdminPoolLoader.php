@@ -1,6 +1,7 @@
 <?php
+
 /*
- * This file is part of the Sonata project.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -10,17 +11,15 @@
 
 namespace Sonata\AdminBundle\Route;
 
-use Symfony\Component\Routing\RouteCollection as SymfonyRouteCollection;
+use Sonata\AdminBundle\Admin\Pool;
 use Symfony\Component\Config\Loader\FileLoader;
 use Symfony\Component\Config\Resource\FileResource;
-
-use Sonata\AdminBundle\Admin\Pool;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Routing\RouteCollection as SymfonyRouteCollection;
 
 /**
- * Class AdminPoolLoader
+ * Class AdminPoolLoader.
  *
- * @package Sonata\AdminBundle\Route
  * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class AdminPoolLoader extends FileLoader
@@ -44,7 +43,7 @@ class AdminPoolLoader extends FileLoader
      * @param array                                                     $adminServiceIds
      * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
      */
-    public function __construct(Pool $pool, $adminServiceIds, ContainerInterface $container)
+    public function __construct(Pool $pool, array $adminServiceIds, ContainerInterface $container)
     {
         $this->pool             = $pool;
         $this->adminServiceIds  = $adminServiceIds;
@@ -66,7 +65,6 @@ class AdminPoolLoader extends FileLoader
     {
         $collection = new SymfonyRouteCollection();
         foreach ($this->adminServiceIds as $id) {
-
             $admin = $this->pool->getInstance($id);
 
             foreach ($admin->getRoutes()->getElements() as $code => $route) {

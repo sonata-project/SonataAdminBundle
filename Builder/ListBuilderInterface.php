@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -11,14 +11,13 @@
 
 namespace Sonata\AdminBundle\Builder;
 
-use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
+use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 
 /**
- * Interface ListBuilderInterface
+ * Interface ListBuilderInterface.
  *
- * @package Sonata\AdminBundle\Builder
  * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 interface ListBuilderInterface extends BuilderInterface

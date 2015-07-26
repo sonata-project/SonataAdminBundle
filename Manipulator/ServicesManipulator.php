@@ -1,13 +1,12 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
  */
 
 namespace Sonata\AdminBundle\Manipulator;
@@ -15,9 +14,8 @@ namespace Sonata\AdminBundle\Manipulator;
 use Symfony\Component\Yaml\Yaml;
 
 /**
- * Class ServicesManipulator
+ * Class ServicesManipulator.
  *
- * @package Sonata\AdminBundle\Manipulator
  * @author  Marek Stipek <mario.dweller@seznam.cz>
  * @author  Simon Cosandey <simon.cosandey@simseo.ch>
  */
@@ -43,11 +41,12 @@ class ServicesManipulator
     }
 
     /**
-     * @param  string            $serviceId
-     * @param  string            $modelClass
-     * @param  string            $adminClass
-     * @param  string            $controllerName
-     * @param  string            $managerType
+     * @param string $serviceId
+     * @param string $modelClass
+     * @param string $adminClass
+     * @param string $controllerName
+     * @param string $managerType
+     *
      * @throws \RuntimeException
      */
     public function addResource($serviceId, $modelClass, $adminClass, $controllerName, $managerType)
@@ -75,7 +74,7 @@ class ServicesManipulator
                     $code .= "\n";
                 }
             } else {
-                $code .= $code === '' ? '' : "\n" . "services:\n";
+                $code .= $code === '' ? '' : "\n"."services:\n";
             }
         }
 

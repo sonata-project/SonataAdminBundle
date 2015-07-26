@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata project.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -11,14 +11,12 @@
 
 namespace Sonata\AdminBundle\Form\DataTransformer;
 
+use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Symfony\Component\Form\DataTransformerInterface;
 
-use Sonata\AdminBundle\Model\ModelManagerInterface;
-
 /**
- * Class ArrayToModelTransformer
+ * Class ArrayToModelTransformer.
  *
- * @package Sonata\AdminBundle\Form\DataTransformer
  * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class ArrayToModelTransformer implements DataTransformerInterface
@@ -48,7 +46,7 @@ class ArrayToModelTransformer implements DataTransformerInterface
             return $array;
         }
 
-        $instance = new $this->className;
+        $instance = new $this->className();
 
         if (!is_array($array)) {
             return $instance;

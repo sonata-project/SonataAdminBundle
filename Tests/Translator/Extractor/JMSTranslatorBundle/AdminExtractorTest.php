@@ -1,16 +1,23 @@
 <?php
 
+/*
+ * This file is part of the Sonata Project package.
+ *
+ * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Sonata\AdminBundle\Tests\Translator\Extractor\JMSTranslatorBundle;
 
-use Symfony\Component\HttpKernel\Log\LoggerInterface;
-use Sonata\AdminBundle\Admin\Pool;
-use Sonata\AdminBundle\Admin\AdminInterface;
-use JMS\TranslationBundle\Model\MessageCatalogue;
 use JMS\TranslationBundle\Model\Message;
+use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Translator\Extractor\JMSTranslatorBundle\AdminExtractor;
 
 /**
- * Test for AdminExtractor
+ * Test for AdminExtractor.
  *
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
@@ -60,7 +67,7 @@ class AdminExtractorTest extends \PHPUnit_Framework_TestCase
                         return $barAdmin;
                 }
 
-                return null;
+                return;
             }));
 
         $logger = $this->getMock('Symfony\Component\HttpKernel\Log\LoggerInterface');
@@ -92,7 +99,7 @@ class AdminExtractorTest extends \PHPUnit_Framework_TestCase
                 $tester->assertEquals('foo', $translator->trans('foo', array(), 'foo_admin_domain'));
                 $tester->assertEquals('foo', $translator->transChoice('foo', 1, array(), 'foo_admin_domain'));
 
-                return null;
+                return;
             }));
 
         $catalogue = $this->adminExtractor->extract();

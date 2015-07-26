@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata project.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -15,12 +15,11 @@ use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 /**
- * This class contains the configuration information for the bundle
+ * This class contains the configuration information for the bundle.
  *
  * This information is solely responsible for how the different configuration
  * sections are normalized, and merged.
  *
- * @package Sonata\AdminBundle\DependencyInjection
  * @author  Michael Williams <mtotheikle@gmail.com>
  */
 class Configuration implements ConfigurationInterface
@@ -66,7 +65,7 @@ class Configuration implements ConfigurationInterface
                             ->defaultValue(array('VIEW', 'EDIT', 'DELETE', 'UNDELETE', 'OPERATOR', 'MASTER', 'OWNER'))
                             ->prototype('scalar')->end()
                         ->end()
-                        ->scalarNode('acl_user_manager')->defaultValue(null)->end()
+                        ->scalarNode('acl_user_manager')->defaultNull()->end()
                     ->end()
                 ->end()
 
@@ -75,12 +74,12 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('options')
                     ->addDefaultsIfNotSet()
                     ->children()
-                        ->booleanNode('html5_validate')->defaultValue(true)->end()
-                        ->booleanNode('confirm_exit')->defaultValue(true)->end()
-                        ->booleanNode('use_select2')->defaultValue(true)->end()
-                        ->booleanNode('use_icheck')->defaultValue(true)->end()
-                        ->booleanNode('use_bootlint')->defaultValue(false)->end()
-                        ->integerNode('pager_links')->defaultValue(null)->end()
+                        ->booleanNode('html5_validate')->defaultTrue()->end()
+                        ->booleanNode('confirm_exit')->defaultTrue()->end()
+                        ->booleanNode('use_select2')->defaultTrue()->end()
+                        ->booleanNode('use_icheck')->defaultTrue()->end()
+                        ->booleanNode('use_bootlint')->defaultFalse()->end()
+                        ->integerNode('pager_links')->defaultNull()->end()
                         ->scalarNode('form_type')->defaultValue('standard')->end()
                         ->integerNode('dropdown_number_groups_per_colums')->defaultValue(2)->end()
                         ->enumNode('title_mode')
@@ -100,10 +99,10 @@ class Configuration implements ConfigurationInterface
                             ->prototype('array')
                                 ->beforeNormalization()
                                     ->ifArray()
-                                    ->then(function($items) {
+                                    ->then(function ($items) {
                                         if (isset($items['provider'])) {
                                             $disallowedItems = array('items', 'label');
-                                            foreach($disallowedItems as $item) {
+                                            foreach ($disallowedItems as $item) {
                                                 if (isset($items[$item])) {
                                                     throw new \InvalidArgumentException(sprintf('The config value "%s" cannot be used alongside "provider" config value', $item));
                                                 }
@@ -123,14 +122,14 @@ class Configuration implements ConfigurationInterface
                                     ->arrayNode('items')
                                         ->beforeNormalization()
                                             ->ifArray()
-                                            ->then(function($items) {
+                                            ->then(function ($items) {
                                                 foreach ($items as $key => $item) {
                                                     if (is_array($item)) {
                                                         if (!array_key_exists('label', $item) || !array_key_exists('route', $item)) {
                                                             throw new \InvalidArgumentException('Expected either parameters "route" and "label" for array items');
                                                         }
 
-                                                        if (!array_key_exists('route_params', $item)){
+                                                        if (!array_key_exists('route_params', $item)) {
                                                             $items[$key]['route_params'] = array();
                                                         }
 
@@ -140,7 +139,7 @@ class Configuration implements ConfigurationInterface
                                                             'admin'        => $item,
                                                             'label'        => '',
                                                             'route'        => '',
-                                                            'route_params' => array()
+                                                            'route_params' => array(),
                                                         );
                                                     }
                                                 }
@@ -173,7 +172,7 @@ class Configuration implements ConfigurationInterface
                                 'position' => 'left',
                                 'settings' => array(),
                                 'type'     => 'sonata.admin.block.admin_list',
-                                'roles'    => array()
+                                'roles'    => array(),
                             )))
                             ->prototype('array')
                                 ->fixXmlConfig('setting')
@@ -197,21 +196,21 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('admin_services')
                     ->prototype('array')
                         ->children()
-                            ->scalarNode('model_manager')->defaultValue(null)->end()
-                            ->scalarNode('form_contractor')->defaultValue(null)->end()
-                            ->scalarNode('show_builder')->defaultValue(null)->end()
-                            ->scalarNode('list_builder')->defaultValue(null)->end()
-                            ->scalarNode('datagrid_builder')->defaultValue(null)->end()
-                            ->scalarNode('translator')->defaultValue(null)->end()
-                            ->scalarNode('configuration_pool')->defaultValue(null)->end()
-                            ->scalarNode('route_generator')->defaultValue(null)->end()
-                            ->scalarNode('validator')->defaultValue(null)->end()
-                            ->scalarNode('security_handler')->defaultValue(null)->end()
-                            ->scalarNode('label')->defaultValue(null)->end()
-                            ->scalarNode('menu_factory')->defaultValue(null)->end()
-                            ->scalarNode('route_builder')->defaultValue(null)->end()
-                            ->scalarNode('label_translator_strategy')->defaultValue(null)->end()
-                            ->scalarNode('pager_type')->defaultValue(null)->end()
+                            ->scalarNode('model_manager')->defaultNull()->end()
+                            ->scalarNode('form_contractor')->defaultNull()->end()
+                            ->scalarNode('show_builder')->defaultNull()->end()
+                            ->scalarNode('list_builder')->defaultNull()->end()
+                            ->scalarNode('datagrid_builder')->defaultNull()->end()
+                            ->scalarNode('translator')->defaultNull()->end()
+                            ->scalarNode('configuration_pool')->defaultNull()->end()
+                            ->scalarNode('route_generator')->defaultNull()->end()
+                            ->scalarNode('validator')->defaultNull()->end()
+                            ->scalarNode('security_handler')->defaultNull()->end()
+                            ->scalarNode('label')->defaultNull()->end()
+                            ->scalarNode('menu_factory')->defaultNull()->end()
+                            ->scalarNode('route_builder')->defaultNull()->end()
+                            ->scalarNode('label_translator_strategy')->defaultNull()->end()
+                            ->scalarNode('pager_type')->defaultNull()->end()
                             ->arrayNode('templates')
                                 ->addDefaultsIfNotSet()
                                 ->children()
@@ -310,7 +309,7 @@ class Configuration implements ConfigurationInterface
                                 'bundles/sonataadmin/vendor/jqueryui/ui/minified/jquery-ui.min.js',
                                 'bundles/sonataadmin/vendor/jqueryui/ui/minified/i18n/jquery-ui-i18n.min.js',
 
-                                'bundles/sonataadmin/jquery/jquery.form.js',
+                                'bundles/sonataadmin/vendor/jquery-form/jquery.form.js',
                                 'bundles/sonataadmin/jquery/jquery.confirmExit.js',
 
                                 'bundles/sonataadmin/vendor/x-editable/dist/bootstrap3-editable/js/bootstrap-editable.min.js',
@@ -367,7 +366,7 @@ class Configuration implements ConfigurationInterface
                     ->end()
                 ->end()
 
-                ->scalarNode('persist_filters')->defaultValue(false)->end()
+                ->scalarNode('persist_filters')->defaultFalse()->end()
 
             ->end()
         ->end();

@@ -1,6 +1,7 @@
 <?php
+
 /*
- * This file is part of the Sonata project.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -10,8 +11,8 @@
 
 namespace Sonata\AdminBundle\Tests\Route;
 
-use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Route\AdminPoolLoader;
+use Sonata\AdminBundle\Route\RouteCollection;
 
 /**
  * @author Andrej Hudec <pulzarraider@gmail.com>
@@ -63,7 +64,7 @@ class AdminPoolLoaderTest extends \PHPUnit_Framework_TestCase
                         return $admin2;
                 }
 
-                return null;
+                return;
             }));
 
         $collection = $adminPoolLoader->load('foo', 'sonata_admin');

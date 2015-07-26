@@ -2,30 +2,30 @@
 
 {% block root %}
     {%- set listAttributes = item.childrenAttributes|merge({'class': 'sidebar-menu'}) %}
-    {%- set request        = item.getExtra('request') %}
+    {%- set request        = item.extra('request') %}
     {{ block('list') -}}
 {% endblock %}
 
 {% block item %}
     {%- if item.displayed %}
         {#- check role of the group #}
-        {%- set display = (item.getExtra('roles') is empty or is_granted('ROLE_SUPER_ADMIN') ) %}
-        {%- for role in item.getExtra('roles') if not display %}
+        {%- set display = (item.extra('roles') is empty or is_granted('ROLE_SUPER_ADMIN') ) %}
+        {%- for role in item.extra('roles') if not display %}
             {%- set display = is_granted(role) %}
         {%- endfor %}
     {%- endif %}
 
     {%- if item.displayed and display|default %}
         {%- set active = false %}
-        {%- if item.getExtra('active') is not empty and item.getExtra('active') %}
+        {%- if item.extra('active') is not empty and item.extra('active') %}
             {%- set active = true %}
-        {%- elseif item.getExtra('admin') is not empty and item.getExtra('admin').hasroute('list') and item.getExtra('admin').isGranted('LIST') and request.get('_sonata_admin') == item.getExtra('admin').code %}
+        {%- elseif item.extra('admin') is not empty and item.extra('admin').hasroute('list') and item.extra('admin').isGranted('LIST') and request.get('_sonata_admin') == item.extra('admin').code %}
             {%- set active = true %}
         {%- elseif item.route is defined and request.get('_route') == item.route %}
             {%- set active = true %}
         {%- else %}
             {%- for child in item.children if not active %}
-                {%- if child.getExtra('admin') is not empty and child.getExtra('admin').hasroute('list') and child.getExtra('admin').isGranted('LIST') and request.get('_sonata_admin') == child.getExtra('admin').code %}
+                {%- if child.extra('admin') is not empty and child.extra('admin').hasroute('list') and child.extra('admin').isGranted('LIST') and request.get('_sonata_admin') == child.extra('admin').code %}
                     {%- set active = true %}
                 {%-  elseif child.route is defined and request.get('_route') == child.route %}
                     {%- set active = true %}
@@ -48,8 +48,8 @@
 
 {% block linkElement %}
     {% spaceless %}
-        {% set translation_domain = item.getExtra('translationdomain', 'messages') %}
-        {% set icon = item.attribute('icon') ? item.attribute('icon') : (item.level > 1 ? '<i class="fa fa-angle-double-right"></i>' : '') %}
+        {% set translation_domain = item.extra('translation_domain', 'messages') %}
+        {% set icon = item.attribute('icon')|default(item.level > 1 ? '<i class="fa fa-angle-double-right"></i>' : '') %}
         {% set is_link = true %}
         {{ parent() }}
     {% endspaceless %}
@@ -57,15 +57,14 @@
 
 {% block spanElement %}
     {% spaceless %}
-
         <a href="#">
-            {% set translation_domain = item.attribute('label_catalogue') %}
-            {% set icon = item.attribute('icon')|default ? item.attribute('icon') : '' %}
-            {{ icon|default|raw }}
+            {% set translation_domain = item.extra('label_catalogue') %}
+            {% set icon = item.extra('icon')|default('') %}
+            {{ icon|raw }}
             {{ parent() }}
             <i class="fa pull-right fa-angle-left"></i>
         </a>
     {% endspaceless %}
 {% endblock %}
 
-{% block label %}{% if is_link is defined and is_link %}{{ icon|default|raw }}{% endif %}{% if options.allow_safe_labels and item.getExtra('safe_label', false) %}{{ item.label|raw }}{% else %}{{ item.label|trans({}, translation_domain|default('messages')) }}{% endif %}{% endblock %}
+{% block label %}{% if is_link is defined and is_link %}{{ icon|default|raw }}{% endif %}{% if options.allow_safe_labels and item.extra('safe_label', false) %}{{ item.label|raw }}{% else %}{{ item.label|trans({}, translation_domain|default('messages')) }}{% endif %}{% endblock %}

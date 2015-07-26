@@ -1,27 +1,25 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
  */
 
 namespace Sonata\AdminBundle\Form;
 
-use Sonata\AdminBundle\Builder\FormContractorInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\Builder\FormContractorInterface;
 use Sonata\AdminBundle\Mapper\BaseGroupedMapper;
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
  * Class FormMapper
- * This class is use to simulate the Form API
+ * This class is use to simulate the Form API.
  *
- * @package Sonata\AdminBundle\Form
  * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class FormMapper extends BaseGroupedMapper
@@ -73,8 +71,8 @@ class FormMapper extends BaseGroupedMapper
         }
 
         // "Dot" notation is not allowed as form name, but can be used as property path to access nested data.
-        if (!$name instanceof FormBuilderInterface && strpos($fieldName, '.')!==false && !isset($options['property_path'])) {
-             $options['property_path'] = $fieldName;
+        if (!$name instanceof FormBuilderInterface && strpos($fieldName, '.') !== false && !isset($options['property_path'])) {
+            $options['property_path'] = $fieldName;
 
              // fix the form name
              $fieldName = str_replace('.', '__', $fieldName);

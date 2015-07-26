@@ -26,3 +26,7 @@ AdminLTE version 2 has been integrated, this should work out of the box if you h
 ## AclSecurityHandler
 
 In order to fix deprecated issue by spiting `SecurityContextInterface`, `AclSecurityHandler` constructor got a new argument.
+
+## AdminPoolLoader
+
+If you're using a custom implementation of `sonata.admin.route_loader` service, make sure to provide an array as 2nd argument since the type for this argument is now hinted to `array`.

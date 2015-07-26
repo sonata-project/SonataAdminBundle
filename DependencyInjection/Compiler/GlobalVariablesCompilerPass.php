@@ -1,6 +1,7 @@
 <?php
+
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -15,9 +16,8 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
- * Class GlobalVariablesCompilerPass
+ * Class GlobalVariablesCompilerPass.
  *
- * @package Sonata\AdminBundle\DependencyInjection\Compiler
  * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class GlobalVariablesCompilerPass implements CompilerPassInterface

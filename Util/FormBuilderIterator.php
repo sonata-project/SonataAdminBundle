@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata project.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -14,9 +14,8 @@ namespace Sonata\AdminBundle\Util;
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
- * Class FormBuilderIterator
+ * Class FormBuilderIterator.
  *
- * @package Sonata\AdminBundle\Util
  * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class FormBuilderIterator extends \RecursiveArrayIterator

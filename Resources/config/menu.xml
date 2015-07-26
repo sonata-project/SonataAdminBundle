@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="sonata.admin.menu_builder" class="Sonata\AdminBundle\Menu\MenuBuilder">
+            <argument type="service" id="sonata.admin.pool" />
+            <argument type="service" id="knp_menu.factory" />
+            <argument type="service" id="knp_menu.menu_provider" />
+            <argument type="service" id="event_dispatcher" />
+            <call method="setRequest"><argument type="service" id="request" on-invalid="null" strict="false" /></call>
+        </service>
+
+        <service id="sonata.admin.sidebar_menu" class="Knp\Menu\MenuItem">
+            <tag name="knp_menu.menu" alias="sonata_admin_sidebar" />
+        </service>
+    </services>
+</container>

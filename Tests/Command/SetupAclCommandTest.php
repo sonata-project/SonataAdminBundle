@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -11,11 +11,11 @@
 
 namespace Sonata\AdminBundle\Tests\Command;
 
+use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Command\SetupAclCommand;
+use Sonata\AdminBundle\Util\AdminAclManipulatorInterface;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
-use Sonata\AdminBundle\Admin\Pool;
-use Sonata\AdminBundle\Util\AdminAclManipulatorInterface;
 
 /**
  * @author Andrej Hudec <pulzarraider@gmail.com>
@@ -48,7 +48,7 @@ class SetupAclCommandTest extends \PHPUnit_Framework_TestCase
                         return $admin;
                 }
 
-                return null;
+                return;
             }));
 
         $command->setContainer($container);
@@ -118,7 +118,7 @@ class SetupAclCommandTest extends \PHPUnit_Framework_TestCase
                         return $admin;
                 }
 
-                return null;
+                return;
             }));
 
         $command->setContainer($container);

@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata project.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -15,9 +15,8 @@ use Sonata\AdminBundle\Admin\Pool;
 use Symfony\Component\HttpKernel\CacheWarmer\CacheWarmerInterface;
 
 /**
- * Class RoutesCacheWarmUp
+ * Class RoutesCacheWarmUp.
  *
- * @package Sonata\AdminBundle\Route
  * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class RoutesCacheWarmUp implements CacheWarmerInterface

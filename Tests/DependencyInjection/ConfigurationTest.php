@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -36,8 +36,8 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
 
         $config = $processor->processConfiguration(new Configuration(), array(array(
             'options' => array(
-                'html5_validate' => '1'
-            )
+                'html5_validate' => '1',
+            ),
         )));
     }
 
@@ -51,10 +51,10 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
                     'templates' => array(
                         'form'   => array('form.twig.html', 'form_extra.twig.html'),
                         'view'   => array('user_block' => 'SonataAdminBundle:mycustomtemplate.html.twig'),
-                        'filter' => array()
-                    )
-                )
-            )
+                        'filter' => array(),
+                    ),
+                ),
+            ),
         )));
 
         $this->assertEquals('SonataAdminBundle:mycustomtemplate.html.twig', $config['admin_services']['my_admin_id']['templates']['view']['user_block']);
@@ -65,31 +65,31 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         $processor = new Processor();
 
         $config = $processor->processConfiguration(new Configuration(), array(array(
-            'admin_services' => array('my_admin_id' => array())
+            'admin_services' => array('my_admin_id' => array()),
         )));
 
         $this->assertEquals(array(
-            'model_manager' => null,
-            'form_contractor' => null,
-            'show_builder' => null,
-            'list_builder' => null,
-            'datagrid_builder' => null,
-            'translator' => null,
-            'configuration_pool' => null,
-            'validator' => null,
-            'security_handler' => null,
-            'label' => null,
-            'templates' => array(),
-            'route_generator' => null,
-            'menu_factory' => null,
-            'route_builder' => null,
+            'model_manager'             => null,
+            'form_contractor'           => null,
+            'show_builder'              => null,
+            'list_builder'              => null,
+            'datagrid_builder'          => null,
+            'translator'                => null,
+            'configuration_pool'        => null,
+            'validator'                 => null,
+            'security_handler'          => null,
+            'label'                     => null,
+            'templates'                 => array(),
+            'route_generator'           => null,
+            'menu_factory'              => null,
+            'route_builder'             => null,
             'label_translator_strategy' => null,
-            'pager_type' => null,
-            'templates' => array(
-                'form' => array(),
+            'pager_type'                => null,
+            'templates'                 => array(
+                'form'   => array(),
                 'filter' => array(),
-                'view' => array(),
-            )
+                'view'   => array(),
+            ),
         ), $config['admin_services']['my_admin_id']);
     }
 
@@ -98,86 +98,86 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         $processor = new Processor();
         $config = $processor->processConfiguration(new Configuration(), array());
 
-        $this->assertEmpty($config['dashboard']["blocks"][0]["roles"]);
+        $this->assertEmpty($config['dashboard']['blocks'][0]['roles']);
     }
 
     public function testDashboardWithRoles()
     {
         $processor = new Processor();
         $config = $processor->processConfiguration(new Configuration(), array(array(
-            "dashboard" => array(
-                "blocks" => array(array(
-                    "roles" => array("ROLE_ADMIN"),
-                    "type"  => "my.type"
-                ))
-            )
+            'dashboard' => array(
+                'blocks' => array(array(
+                    'roles' => array('ROLE_ADMIN'),
+                    'type'  => 'my.type',
+                )),
+            ),
         )));
 
-        $this->assertEquals($config['dashboard']["blocks"][0]["roles"], array("ROLE_ADMIN"));
+        $this->assertEquals($config['dashboard']['blocks'][0]['roles'], array('ROLE_ADMIN'));
     }
 
     public function testDashboardGroups()
     {
         $processor = new Processor();
         $config = $processor->processConfiguration(new Configuration(), array(array(
-            "dashboard" => array(
-                "groups" => array(
-                    "bar" => array(
-                        "label" => "foo",
-                        "icon"  => '<i class="fa fa-edit"></i>',
-                        "items" => array(
-                            "item1",
-                            "item2",
+            'dashboard' => array(
+                'groups' => array(
+                    'bar' => array(
+                        'label' => 'foo',
+                        'icon'  => '<i class="fa fa-edit"></i>',
+                        'items' => array(
+                            'item1',
+                            'item2',
                             array(
-                                "label" => "fooLabel",
-                                "route" => "fooRoute",
-                                "route_params" => array("bar" => "foo")
+                                'label'        => 'fooLabel',
+                                'route'        => 'fooRoute',
+                                'route_params' => array('bar' => 'foo'),
                             ),
                             array(
-                                "label" => "barLabel",
-                                "route" => "barRoute",
-                            )
-                        )
-                    )
-                )
-            )
+                                'label' => 'barLabel',
+                                'route' => 'barRoute',
+                            ),
+                        ),
+                    ),
+                ),
+            ),
         )));
 
-        $this->assertCount(4, $config['dashboard']["groups"]["bar"]["items"]);
+        $this->assertCount(4, $config['dashboard']['groups']['bar']['items']);
         $this->assertEquals(
-            $config['dashboard']["groups"]["bar"]["items"][0],
+            $config['dashboard']['groups']['bar']['items'][0],
             array(
-                "admin"        => "item1",
-                "route"        => "",
-                "route_params" => array(),
-                "label"        => "",
+                'admin'        => 'item1',
+                'route'        => '',
+                'route_params' => array(),
+                'label'        => '',
             )
         );
         $this->assertEquals(
-            $config['dashboard']["groups"]["bar"]["items"][1],
+            $config['dashboard']['groups']['bar']['items'][1],
             array(
-                "admin"        => "item2",
-                "route"        => "",
-                "route_params" => array(),
-                "label"        => "",
+                'admin'        => 'item2',
+                'route'        => '',
+                'route_params' => array(),
+                'label'        => '',
             )
         );
         $this->assertEquals(
-            $config['dashboard']["groups"]["bar"]["items"][2],
+            $config['dashboard']['groups']['bar']['items'][2],
             array(
-                "admin"        => "",
-                "route"        => "fooRoute",
-                "route_params" => array("bar" => "foo"),
-                "label"        => "fooLabel",
+                'admin'        => '',
+                'route'        => 'fooRoute',
+                'route_params' => array('bar' => 'foo'),
+                'label'        => 'fooLabel',
             )
         );
         $this->assertEquals(
-            $config['dashboard']["groups"]["bar"]["items"][3],
+            $config['dashboard']['groups']['bar']['items'][3],
             array(
-                "admin"        => "",
-                "route"        => "barRoute",
-                "route_params" => array(),
-                "label"        => "barLabel",
+                'admin'        => '',
+                'route'        => 'barRoute',
+                'route_params' => array(),
+                'label'        => 'barLabel',
             )
         );
     }
@@ -188,21 +188,21 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
 
         $processor = new Processor();
         $config = $processor->processConfiguration(new Configuration(), array(array(
-            "dashboard" => array(
-                "groups" => array(
-                    "bar" => array(
-                        "label" => "foo",
-                        "icon" => '<i class="fa fa-edit"></i>',
-                        "items" => array(
-                            "item1",
-                            "item2",
+            'dashboard' => array(
+                'groups' => array(
+                    'bar' => array(
+                        'label' => 'foo',
+                        'icon'  => '<i class="fa fa-edit"></i>',
+                        'items' => array(
+                            'item1',
+                            'item2',
                             array(
-                                "route" => "fooRoute"
-                            )
-                        )
-                    )
-                )
-            )
+                                'route' => 'fooRoute',
+                            ),
+                        ),
+                    ),
+                ),
+            ),
         )));
     }
 }

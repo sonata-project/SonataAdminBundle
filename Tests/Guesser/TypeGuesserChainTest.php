@@ -1,26 +1,22 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
  */
 
 namespace Sonata\AdminBundle\Tests\Guesser;
 
-use Sonata\AdminBundle\Guesser\TypeGuesserInterface;
-use Symfony\Component\Form\Exception\UnexpectedTypeException;
-use Symfony\Component\Form\Guess\Guess;
-use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Guesser\TypeGuesserChain;
+use Symfony\Component\Form\Guess\Guess;
 use Symfony\Component\Form\Guess\TypeGuess;
 
 /**
- * TypeGuesserChain Test
+ * TypeGuesserChain Test.
  *
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */

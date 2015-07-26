@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -12,14 +12,13 @@
 namespace Sonata\AdminBundle\Tests\Form\Type;
 
 use Sonata\AdminBundle\Form\Type\ChoiceFieldMaskType;
-
 use Symfony\Component\Form\Test\TypeTestCase;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ChoiceFieldMaskTypeTest extends TypeTestCase
 {
     public function testGetDefaultOptions()
-        {
+    {
         $type = new ChoiceFieldMaskType();
 
         $optionResolver = new OptionsResolver();
@@ -28,13 +27,12 @@ class ChoiceFieldMaskTypeTest extends TypeTestCase
         $options = $optionResolver->resolve(
             array(
                 'map' => array(
-                    'foo' => array( 'field1', 'field2'),
-                    'bar' => array( 'field3')
-            )
+                    'foo' => array('field1', 'field2'),
+                    'bar' => array('field3'),
+            ),
         ));
 
-        $this->assertSame( array('foo'=> array('field1', 'field2'), 'bar'=> array('field3')), $options['map']);
-
+        $this->assertSame(array('foo' => array('field1', 'field2'), 'bar' => array('field3')), $options['map']);
     }
 
     public function testGetName()
@@ -48,5 +46,4 @@ class ChoiceFieldMaskTypeTest extends TypeTestCase
         $type = new ChoiceFieldMaskType();
         $this->assertEquals('choice', $type->getParent());
     }
-
 }

@@ -1,13 +1,12 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
  */
 
 namespace Sonata\AdminBundle\Datagrid;
@@ -15,9 +14,8 @@ namespace Sonata\AdminBundle\Datagrid;
 use Sonata\AdminBundle\Filter\FilterInterface;
 
 /**
- * Interface DatagridInterface
+ * Interface DatagridInterface.
  *
- * @package Sonata\AdminBundle\Datagrid
  * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 interface DatagridInterface
@@ -38,7 +36,6 @@ interface DatagridInterface
     public function getResults();
 
     /**
-     * @return void
      */
     public function buildPager();
 
@@ -55,7 +52,7 @@ interface DatagridInterface
     public function getFilters();
 
     /**
-     * Reorder filters
+     * Reorder filters.
      *
      * @param array $keys
      */
@@ -103,12 +100,12 @@ interface DatagridInterface
     public function removeFilter($name);
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function hasActiveFilters();
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function hasDisplayableFilters();
 }

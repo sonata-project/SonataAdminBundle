@@ -16,16 +16,19 @@ jQuery(document).ready(function() {
     }
 
     Admin.setup_per_page_switcher(document);
-
+    Admin.setup_collection_buttons(document);
     Admin.shared_setup(document);
 });
 
 jQuery(document).on('sonata-admin-append-form-element', function(e) {
     Admin.setup_select2(e.target);
     Admin.setup_icheck(e.target);
+    Admin.setup_collection_counter(e.target);
 });
 
 var Admin = {
+
+    collectionCounters: [],
 
     /**
      * This function must called when a ajax call is done, to ensure
@@ -35,7 +38,6 @@ var Admin = {
      */
     shared_setup: function(subject) {
         Admin.log("[core|shared_setup] Register services on", subject);
-        Admin.setup_collection_buttons(subject);
         Admin.set_object_field_value(subject);
         Admin.setup_select2(subject);
         Admin.setup_icheck(subject);
@@ -45,6 +47,7 @@ var Admin = {
         Admin.setup_form_tabs_for_errors(subject);
         Admin.setup_inline_form_errors(subject);
         Admin.setup_tree_view(subject);
+        Admin.setup_collection_counter(subject);
 
 //        Admin.setup_list_modal(subject);
     },
@@ -305,10 +308,8 @@ var Admin = {
         });
     },
 
-    setup_collection_buttons: function(subject) {
-        Admin.log('[core|setup_collection_buttons] setup collection buttons', subject);
-
-        var counters = [];
+    setup_collection_counter: function(subject) {
+        Admin.log('[core|setup_collection_counter] setup collection counter', subject);
 
         // Count and save element of each collection
         var highestCounterRegexp = new RegExp('_([0-9])+$');
@@ -321,14 +322,17 @@ var Admin = {
                     counter = parseInt(matches[1], 10);
                 }
             });
-            counters[collection.attr('id')] = counter;
+            Admin.collectionCounters[collection.attr('id')] = counter;
         });
+    },
+
+    setup_collection_buttons: function(subject) {
 
         jQuery(subject).on('click', '.sonata-collection-add', function(event) {
             Admin.stopEvent(event);
 
             var container = jQuery(this).closest('[data-prototype]');
-            var counter = ++counters[container.attr('id')];
+            var counter = ++Admin.collectionCounters[container.attr('id')];
             var proto = container.attr('data-prototype');
             var protoName = container.attr('data-prototype-name') || '__name__';
             // Set field id

@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata project.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -11,15 +11,14 @@
 
 namespace Sonata\AdminBundle\Security\Handler;
 
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
-use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 use Sonata\AdminBundle\Admin\AdminInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
- * Class RoleSecurityHandler
+ * Class RoleSecurityHandler.
  *
- * @package Sonata\AdminBundle\Security\Handler
  * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class RoleSecurityHandler implements SecurityHandlerInterface
@@ -33,7 +32,7 @@ class RoleSecurityHandler implements SecurityHandlerInterface
 
     /**
      * @param AuthorizationCheckerInterface|SecurityContextInterface $authorizationChecker
-     * @param array                                          $superAdminRoles
+     * @param array                                                  $superAdminRoles
      *
      * @todo Go back to signature class check when bumping requirements to SF 2.6+
      */
@@ -75,7 +74,7 @@ class RoleSecurityHandler implements SecurityHandlerInterface
      */
     public function getBaseRole(AdminInterface $admin)
     {
-        return 'ROLE_' . str_replace('.', '_', strtoupper($admin->getCode())) . '_%s';
+        return 'ROLE_'.str_replace('.', '_', strtoupper($admin->getCode())).'_%s';
     }
 
     /**

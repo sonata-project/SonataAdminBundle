@@ -1,26 +1,25 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
  */
 
 namespace Sonata\AdminBundle\Form\Type;
 
-use Symfony\Component\Form\FormBuilderInterface;
+use Sonata\AdminBundle\Form\DataTransformer\ModelToIdPropertyTransformer;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\EventListener\ResizeFormListener;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
+use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Form\FormView;
-use Symfony\Component\Form\FormInterface;
-use Sonata\AdminBundle\Form\DataTransformer\ModelToIdPropertyTransformer;
-use Symfony\Component\OptionsResolver\Options;
-use Symfony\Component\Form\Extension\Core\EventListener\ResizeFormListener;
 
 /**
  * This type defines a standard text field with autocomplete feature.
@@ -126,7 +125,7 @@ class ModelAutocompleteType extends AbstractType
 
             // ajax parameters
             'url'                           => '',
-            'route'                         => array('name'=>'sonata_admin_retrieve_autocomplete_items', 'parameters'=>array()),
+            'route'                         => array('name' => 'sonata_admin_retrieve_autocomplete_items', 'parameters' => array()),
             'req_params'                    => array(),
             'req_param_name_search'         => 'q',
             'req_param_name_page_number'    => '_page',
@@ -139,7 +138,7 @@ class ModelAutocompleteType extends AbstractType
 
             'dropdown_auto_width'           => false,
 
-            'template'                      => 'SonataAdminBundle:Form/Type:sonata_type_model_autocomplete.html.twig'
+            'template'                      => 'SonataAdminBundle:Form/Type:sonata_type_model_autocomplete.html.twig',
         ));
 
         $resolver->setRequired(array('property'));

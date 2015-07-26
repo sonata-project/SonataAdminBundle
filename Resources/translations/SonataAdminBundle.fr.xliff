@@ -306,6 +306,10 @@
                 <source>td_action</source>
                 <target>Action</target>
             </trans-unit>
+            <trans-unit id="td_compare">
+                <source>td_compare</source>
+                <target>Comparer</target>
+            </trans-unit>
             <trans-unit id="td_revision">
                 <source>td_revision</source>
                 <target>Révisions</target>
@@ -326,6 +330,10 @@
                 <source>label_view_revision</source>
                 <target>Afficher la révision</target>
             </trans-unit>
+            <trans-unit id="label_compare_revision">
+                <source>label_compare_revision</source>
+                <target>Comparer la révision</target>
+            </trans-unit>
             <trans-unit id="list_results_count_prefix">
                 <source>list_results_count_prefix</source>
                 <target>au moins</target>
@@ -337,6 +345,22 @@
             <trans-unit id="label_export_download">
                 <source>label_export_download</source>
                 <target>Export</target>
+            </trans-unit>
+            <trans-unit id="export_format_json">
+                <source>export_format_json</source>
+                <target>JSON</target>
+            </trans-unit>
+            <trans-unit id="export_format_xml">
+                <source>export_format_xml</source>
+                <target>XML</target>
+            </trans-unit>
+            <trans-unit id="export_format_csv">
+                <source>export_format_csv</source>
+                <target>CSV</target>
+            </trans-unit>
+            <trans-unit id="export_format_xls">
+                <source>export_format_xls</source>
+                <target>XLS</target>
             </trans-unit>
             <trans-unit id="loading_information">
                 <source>loading_information</source>
@@ -401,6 +425,10 @@
             <trans-unit id="add_new_entry">
                 <source>add_new_entry</source>
                 <target>rajouter un élément</target>
+            </trans-unit>
+            <trans-unit id="form_not_available">
+                <source>form_not_available</source>
+                <target>Formulaire non disponible</target>
             </trans-unit>
             <trans-unit id="link_actions">
                 <source>link_actions</source>

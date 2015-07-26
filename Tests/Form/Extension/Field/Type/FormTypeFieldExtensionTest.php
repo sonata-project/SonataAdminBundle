@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -12,12 +12,10 @@
 namespace Sonata\AdminBundle\Tests\Form\Extension\Field\Type;
 
 use Sonata\AdminBundle\Form\Extension\Field\Type\FormTypeFieldExtension;
-use Symfony\Component\Form\FormConfigBuilder;
 use Symfony\Component\Form\Form;
-use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\FormConfigBuilder;
 use Symfony\Component\Form\FormView;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class FormTypeFieldExtensionTest extends \PHPUnit_Framework_TestCase
 {
@@ -94,7 +92,7 @@ class FormTypeFieldExtensionTest extends \PHPUnit_Framework_TestCase
         $config = new FormConfigBuilder('test', 'stdClass', $eventDispatcher, $options);
         $config->setAttribute('sonata_admin', array(
             'admin' => $admin,
-            'name' => 'name'
+            'name'  => 'name',
         ));
         $config->setAttribute('sonata_admin_enabled', true);
 
@@ -107,7 +105,7 @@ class FormTypeFieldExtensionTest extends \PHPUnit_Framework_TestCase
 
         $extension = new FormTypeFieldExtension(array(), array());
         $extension->buildView($formView, $form, array(
-            'sonata_help' => 'help text'
+            'sonata_help' => 'help text',
         ));
 
         $this->assertArrayHasKey('block_prefixes', $formView->vars);
@@ -150,7 +148,7 @@ class FormTypeFieldExtensionTest extends \PHPUnit_Framework_TestCase
 
         $extension = new FormTypeFieldExtension(array(), array());
         $extension->buildView($formView, $form, array(
-            'sonata_help' => 'help text'
+            'sonata_help' => 'help text',
         ));
 
         $this->assertArrayHasKey('block_prefixes', $formView->vars);
@@ -158,9 +156,9 @@ class FormTypeFieldExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('sonata_admin', $formView->vars);
 
         $expected = array(
-            'value' => null,
-            'attr'  => array(),
-            'name'  => 'format',
+            'value'          => null,
+            'attr'           => array(),
+            'name'           => 'format',
             'block_prefixes' => array(
                 'form',
                 'field',
@@ -170,7 +168,7 @@ class FormTypeFieldExtensionTest extends \PHPUnit_Framework_TestCase
                 'parent_code_text_settings_settings_format',
             ),
             'sonata_admin_enabled' => true,
-            'sonata_admin' => array(
+            'sonata_admin'         => array(
                  'admin'             => false,
                  'field_description' => false,
                  'name'              => false,
@@ -197,7 +195,7 @@ class FormTypeFieldExtensionTest extends \PHPUnit_Framework_TestCase
 
         $extension = new FormTypeFieldExtension(array(), array());
         $extension->buildView($formView, $form, array(
-            'sonata_help' => 'help text'
+            'sonata_help' => 'help text',
         ));
 
         $this->assertArrayNotHasKey('block_prefixes', $formView->vars);

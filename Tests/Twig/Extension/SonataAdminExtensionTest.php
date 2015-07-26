@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -11,11 +11,10 @@
 
 namespace Sonata\AdminBundle\Tests\Twig\Extension;
 
-use Knp\Menu\MenuFactory;
-use Knp\Menu\MenuItem;
-use Sonata\AdminBundle\Admin\Pool;
-use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
+use Psr\Log\LoggerInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
+use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Exception\NoValueException;
 use Sonata\AdminBundle\Twig\Extension\SonataAdminExtension;
 use Symfony\Bridge\Twig\Extension\RoutingExtension;
@@ -25,14 +24,12 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\Loader\XmlFileLoader;
 use Symfony\Component\Routing\RequestContext;
-use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Translation\Translator;
-use Symfony\Component\Translation\MessageSelector;
 use Symfony\Component\Translation\Loader\XliffFileLoader;
-use Psr\Log\LoggerInterface;
+use Symfony\Component\Translation\MessageSelector;
+use Symfony\Component\Translation\Translator;
 
 /**
- * Test for SonataAdminExtension
+ * Test for SonataAdminExtension.
  *
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
@@ -74,11 +71,6 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
     private $pool;
 
     /**
-     * @var Router
-     */
-    private $router;
-
-    /**
      * @var LoggerInterface
      */
     private $logger;
@@ -93,19 +85,9 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
         $this->pool->setAdminServiceIds(array('sonata_admin_foo_service'));
         $this->pool->setAdminClasses(array('fooClass' => array('sonata_admin_foo_service')));
 
-        $this->router = $this->getMock('Symfony\Component\Routing\RouterInterface');
-
         $this->logger = $this->getMock('Psr\Log\LoggerInterface');
 
-        $menu = new MenuItem('bar', new MenuFactory());
-        $menu->addChild('foo');
-        $this->helper = $this->getMockBuilder('Knp\Menu\Twig\Helper')->disableOriginalConstructor()->getMock();
-        $this->helper->expects($this->any())
-            ->method('get')
-            ->with('my_menu')
-            ->willReturn($menu);
-
-        $this->twigExtension = new SonataAdminExtension($this->pool, $this->router, $this->helper, $this->logger);
+        $this->twigExtension = new SonataAdminExtension($this->pool, $this->logger);
 
         $loader = new StubFilesystemLoader(array(
             __DIR__.'/../../../Resources/views/CRUD',
@@ -805,7 +787,7 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
             }));
 
         $element = new \stdClass();
-        $element->foo = "bar";
+        $element->foo = 'bar';
 
         $this->assertEquals('bar', $this->twigExtension->renderRelationElement($element, $this->fieldDescription));
     }
@@ -824,7 +806,7 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
             }));
 
         $element = new \stdClass();
-        $element->foo = "bar";
+        $element->foo = 'bar';
 
         $this->assertEquals('closure bar', $this->twigExtension->renderRelationElement($element, $this->fieldDescription));
     }
@@ -881,204 +863,5 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(1234567));
 
         $this->assertEquals(1234567, $this->twigExtension->getUrlsafeIdentifier($entity, $this->adminBar));
-    }
-
-    public function testGetKnpMenu()
-    {
-        $request = $this->getMock('Symfony\Component\HttpFoundation\Request');
-
-        $adminGroups = array(
-            "bar" => array(
-                "label" => "foo",
-                "icon"  => '<i class="fa fa-edit"></i>',
-                "label_catalogue"  => 'SonataAdminBundle',
-                "items" => array(
-                    array(
-                        "admin"        => "",
-                        "label"        => "fooLabel",
-                        "route"        => "FooRoute",
-                        "route_params" => array("foo" => "bar"),
-                    ),
-                ),
-                "item_adds" => array(),
-                "roles"     => array(),
-
-            ),
-        );
-        $this->pool->setAdminGroups($adminGroups);
-        $menu = $this->twigExtension->getKnpMenu($request);
-
-        $this->assertInstanceOf('Knp\Menu\ItemInterface', $menu);
-        $this->assertArrayHasKey('bar', $menu->getChildren());
-
-        foreach ($menu->getChildren() as $key => $child) {
-            $this->assertInstanceOf('Knp\Menu\MenuItem', $child);
-            $this->assertEquals("bar", $child->getName());
-            $this->assertEquals($adminGroups["bar"]["label"], $child->getLabel());
-
-            // menu items
-            $children = $child->getChildren();
-            $this->assertCount(1, $children);
-            $this->assertArrayHasKey('fooLabel', $children);
-            $this->assertInstanceOf('Knp\Menu\MenuItem', $child['fooLabel']);
-            $this->assertEquals('fooLabel', $child['fooLabel']->getLabel());
-        }
-    }
-
-    public function testGetKnpMenuWithAdmin()
-    {
-        $request = $this->getMock('Symfony\Component\HttpFoundation\Request');
-
-        $adminGroups = array(
-            'bar' => array(
-                'label' => 'foo',
-                'icon'  => '<i class="fa fa-edit"></i>',
-                'label_catalogue'  => 'SonataAdminBundle',
-                'items' => array(
-                    array(
-                        'admin'        => 'sonata_admin_foo_service',
-                        'label'        => 'fooLabel',
-                    ),
-                ),
-                'item_adds' => array(),
-                'roles'     => array(),
-            ),
-        );
-        $this->pool->setAdminGroups($adminGroups);
-
-        $this->admin->expects($this->once())
-            ->method('hasRoute')
-            ->with($this->equalTo('list'))
-            ->will($this->returnValue(true));
-
-        $this->admin->expects($this->any())
-            ->method('isGranted')
-            ->with($this->equalTo('LIST'))
-            ->will($this->returnValue(true));
-
-        $this->admin->expects($this->once())
-            ->method('getLabel')
-            ->will($this->returnValue('foo_admin_label'));
-
-        $menu = $this->twigExtension->getKnpMenu($request);
-
-        $this->assertInstanceOf('Knp\Menu\ItemInterface', $menu);
-        $this->assertArrayHasKey('bar', $menu->getChildren());
-
-        foreach ($menu->getChildren() as $key => $child) {
-            $this->assertInstanceOf('Knp\Menu\MenuItem', $child);
-            $this->assertEquals('bar', $child->getName());
-            $this->assertEquals($adminGroups['bar']['label'], $child->getLabel());
-
-            // menu items
-            $children = $child->getChildren();
-            $this->assertCount(1, $children);
-            $this->assertArrayHasKey('foo_admin_label', $children);
-            $this->assertInstanceOf('Knp\Menu\MenuItem', $child['foo_admin_label']);
-            $this->assertEquals('foo_admin_label', $child['foo_admin_label']->getLabel());
-        }
-    }
-
-    public function testGetKnpMenuWithNoListRoute()
-    {
-        $request = $this->getMock('Symfony\Component\HttpFoundation\Request');
-
-        $adminGroups = array(
-            'bar' => array(
-                'label' => 'foo',
-                'icon'  => '<i class="fa fa-edit"></i>',
-                'label_catalogue'  => 'SonataAdminBundle',
-                'items' => array(
-                    array(
-                        'admin'        => 'sonata_admin_foo_service',
-                        'label'        => 'fooLabel',
-                    ),
-                ),
-                'item_adds' => array(),
-                'roles'     => array(),
-            ),
-        );
-        $this->pool->setAdminGroups($adminGroups);
-
-        $this->admin->expects($this->once())
-            ->method('hasRoute')
-            ->with($this->equalTo('list'))
-            ->will($this->returnValue(false));
-
-        $menu = $this->twigExtension->getKnpMenu($request);
-
-        $this->assertInstanceOf('Knp\Menu\ItemInterface', $menu);
-        $this->assertArrayNotHasKey('bar', $menu->getChildren());
-        $this->assertCount(0, $menu->getChildren());
-    }
-
-    public function testGetKnpMenuWithNotGrantedList()
-    {
-        $request = $this->getMock('Symfony\Component\HttpFoundation\Request');
-
-        $adminGroups = array(
-            'bar' => array(
-                'label' => 'foo',
-                'icon'  => '<i class="fa fa-edit"></i>',
-                'label_catalogue'  => 'SonataAdminBundle',
-                'items' => array(
-                    array(
-                        'admin'        => 'sonata_admin_foo_service',
-                        'label'        => 'fooLabel',
-                    ),
-                ),
-                'item_adds' => array(),
-                'roles'     => array(),
-            ),
-        );
-        $this->pool->setAdminGroups($adminGroups);
-
-        $this->admin->expects($this->once())
-            ->method('hasRoute')
-            ->with($this->equalTo('list'))
-            ->will($this->returnValue(true));
-
-        $this->admin->expects($this->any())
-            ->method('isGranted')
-            ->with($this->equalTo('LIST'))
-            ->will($this->returnValue(false));
-
-        $menu = $this->twigExtension->getKnpMenu($request);
-
-        $this->assertInstanceOf('Knp\Menu\ItemInterface', $menu);
-        $this->assertArrayNotHasKey('bar', $menu->getChildren());
-        $this->assertCount(0, $menu->getChildren());
-    }
-
-    public function testGetKnpMenuWithProvider()
-    {
-        $request = $this->getMock('Symfony\Component\HttpFoundation\Request');
-
-        $adminGroups = array(
-            "bar" => array(
-                "provider"        => 'my_menu',
-                "label_catalogue" => '',
-                "icon"            => '<i class="fa fa-edit"></i>',
-                "roles"           => array(),
-            ),
-        );
-        $this->pool->setAdminGroups($adminGroups);
-        $menu = $this->twigExtension->getKnpMenu($request);
-
-        $this->assertInstanceOf('Knp\Menu\ItemInterface', $menu);
-        $this->assertArrayHasKey('bar', $menu->getChildren());
-
-        foreach ($menu->getChildren() as $key => $child) {
-            $this->assertInstanceOf('Knp\Menu\MenuItem', $child);
-            $this->assertEquals("bar", $child->getName());
-            $this->assertEquals("bar", $child->getLabel());
-
-            // menu items
-            $children = $child->getChildren();
-            $this->assertCount(1, $children);
-            $this->assertArrayHasKey('foo', $children);
-            $this->assertInstanceOf('Knp\Menu\MenuItem', $child['foo']);
-            $this->assertEquals('foo', $child['foo']->getLabel());
-        }
     }
 }

@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -12,22 +12,16 @@
 namespace Sonata\AdminBundle\Twig\Extension;
 
 use Doctrine\Common\Util\ClassUtils;
-use Knp\Menu\MenuFactory;
-use Knp\Menu\ItemInterface;
-use Knp\Menu\Twig\Helper;
 use Psr\Log\LoggerInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Exception\NoValueException;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PropertyAccess\PropertyAccess;
-use Symfony\Component\Routing\RouterInterface;
 
 /**
- * Class SonataAdminExtension
+ * Class SonataAdminExtension.
  *
- * @package Sonata\AdminBundle\Twig\Extension
  * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class SonataAdminExtension extends \Twig_Extension
@@ -43,32 +37,18 @@ class SonataAdminExtension extends \Twig_Extension
     protected $pool;
 
     /**
-     * @var RouterInterface
-     */
-    protected $router;
-
-    /**
-     * @var Helper
-     */
-    protected $knpHelper;
-
-    /**
      * @var LoggerInterface
      */
     protected $logger;
 
     /**
      * @param Pool            $pool
-     * @param RouterInterface $router
-     * @param Helper          $knpHelper
      * @param LoggerInterface $logger
      */
-    public function __construct(Pool $pool, RouterInterface $router, Helper $knpHelper, LoggerInterface $logger = null)
+    public function __construct(Pool $pool, LoggerInterface $logger = null)
     {
         $this->pool      = $pool;
         $this->logger    = $logger;
-        $this->router    = $router;
-        $this->knpHelper = $knpHelper;
     }
 
     /**
@@ -99,9 +79,7 @@ class SonataAdminExtension extends \Twig_Extension
      */
     public function getFunctions()
     {
-        return array(
-            'sonata_knp_menu_build' => new \Twig_Function_Method($this, 'getKnpMenu'),
-        );
+        return array();
     }
 
     /**
@@ -121,7 +99,7 @@ class SonataAdminExtension extends \Twig_Extension
     }
 
     /**
-     * Get template
+     * Get template.
      *
      * @param FieldDescriptionInterface $fieldDescription
      * @param string                    $defaultTemplate
@@ -146,7 +124,7 @@ class SonataAdminExtension extends \Twig_Extension
     }
 
     /**
-     * render a list element from the FieldDescription
+     * render a list element from the FieldDescription.
      *
      * @param mixed                     $object
      * @param FieldDescriptionInterface $fieldDescription
@@ -192,7 +170,7 @@ class SonataAdminExtension extends \Twig_Extension
 
     /**
      * return the value related to FieldDescription, if the associated object does no
-     * exists => a temporary one is created
+     * exists => a temporary one is created.
      *
      * @param object                    $object
      * @param FieldDescriptionInterface $fieldDescription
@@ -221,7 +199,7 @@ class SonataAdminExtension extends \Twig_Extension
     }
 
     /**
-     * render a view element
+     * render a view element.
      *
      * @param FieldDescriptionInterface $fieldDescription
      * @param mixed                     $object
@@ -247,7 +225,7 @@ class SonataAdminExtension extends \Twig_Extension
     }
 
     /**
-     * render a compared view element
+     * render a compared view element.
      *
      * @param FieldDescriptionInterface $fieldDescription
      * @param mixed                     $baseObject
@@ -364,6 +342,7 @@ class SonataAdminExtension extends \Twig_Extension
             'boolean'    => 'select',
             'text'       => 'text',
             'textarea'   => 'textarea',
+            'html'       => 'textarea',
             'email'      => 'email',
             'string'     => 'text',
             'smallint'   => 'text',
@@ -376,82 +355,5 @@ class SonataAdminExtension extends \Twig_Extension
         );
 
         return isset($mapping[$type]) ? $mapping[$type] : false;
-    }
-
-    /**
-     * Get KnpMenu
-     *
-     * @param Request $request
-     *
-     * @return ItemInterface
-     */
-    public function getKnpMenu(Request $request = null)
-    {
-        $menuFactory = new MenuFactory();
-        $menu = $menuFactory
-            ->createItem('root')
-            ->setExtra('request', $request)
-        ;
-
-        foreach ($this->pool->getAdminGroups() as $name => $group) {
-
-            // Check if the menu group is built by a menu provider
-            if (isset($group['provider'])) {
-                $subMenu = $this->knpHelper->get($group['provider']);
-
-                $menu->addChild($subMenu)
-                    ->setAttributes(array(
-                        'icon'            => $group['icon'],
-                        'label_catalogue' => $group['label_catalogue']
-                    ))
-                    ->setExtra('roles', $group['roles']);
-
-                continue;
-            }
-
-            // The menu group is built by config
-            $menu
-                ->addChild($name, array('label' => $group['label']))
-                ->setAttributes(
-                    array(
-                        'icon'             => $group['icon'],
-                        'label_catalogue'  => $group['label_catalogue'],
-                    )
-                )
-                ->setExtra('roles', $group['roles'])
-            ;
-
-            foreach ($group['items'] as $item) {
-                if (array_key_exists('admin', $item) && $item['admin'] != null) {
-                    $admin             = $this->pool->getInstance($item['admin']);
-
-                    // skip menu item if no `list` url is available or user doesn't have the LIST access rights
-                    if (!$admin->hasRoute('list') || !$admin->isGranted('LIST')) {
-                        continue;
-                    }
-
-                    $label             = $admin->getLabel();
-                    $route             = $admin->generateUrl('list');
-                    $translationDomain = $admin->getTranslationDomain();
-                } else {
-                    $label             = $item['label'];
-                    $route             = $this->router->generate($item['route'], $item['route_params']);
-                    $translationDomain = $group['label_catalogue'];
-                    $admin             = null;
-                }
-
-                $menu[$name]
-                    ->addChild($label, array('uri' => $route))
-                    ->setExtra('translationdomain', $translationDomain)
-                    ->setExtra('admin', $admin)
-                ;
-            }
-
-            if (0 === count($menu[$name]->getChildren())) {
-                $menu->removeChild($name);
-            }
-        }
-
-        return $menu;
     }
 }

@@ -23,11 +23,17 @@ file that was distributed with this source code.
     {% endif %}
 {%- endblock form_errors %}
 
+{% block sonata_help %}
+{% spaceless %}
+{% if sonata_help is defined and sonata_help %}
+    <span class="help-block sonata-ba-field-widget-help">{{ sonata_help|raw }}</span>
+{% endif %}
+{% endspaceless %}
+{% endblock %}
+
 {% block form_widget -%}
     {{ parent() }}
-    {% if sonata_help is defined and sonata_help %}
-        <span class="help-block sonata-ba-field-widget-help">{{ sonata_help|raw }}</span>
-    {% endif %}
+    {{ block('sonata_help') }}
 {%- endblock form_widget %}
 
 {% block form_widget_simple %}
@@ -93,7 +99,14 @@ file that was distributed with this source code.
         {% endif %}
 
         {% if label is empty %}
-            {% set label = name|humanize %}
+            {%- if label_format is defined and label_format is not empty -%}
+                {% set label = label_format|replace({
+                    '%name%': name,
+                    '%id%': id,
+                }) %}
+            {%- else -%}
+                {% set label = name|humanize %}
+            {%- endif -%}
         {% endif %}
 
         {% if in_list_checkbox is defined and in_list_checkbox and widget is defined %}
@@ -142,7 +155,7 @@ file that was distributed with this source code.
         {% set required = false %}
     {% endif %}
     {% set attr = attr|merge({'class': attr.class|default('') ~ ' form-control'}) %}
-    {% if sortable and multiple %}
+    {% if (sortable is defined) and sortable and multiple %}
         {{ block('sonata_type_choice_multiple_sortable') }}
     {% else %}
         <select {{ block('widget_attributes') }}{% if multiple %} multiple="multiple"{% endif %} >
@@ -235,7 +248,9 @@ file that was distributed with this source code.
 
 {% block form_row %}
     <div class="form-group{% if errors|length > 0 %} has-error{% endif %}" id="sonata-ba-field-container-{{ id }}">
-        {% set label = sonata_admin.field_description.options.name|default(label)  %}
+        {% if sonata_admin.field_description.options is defined %}
+            {% set label = sonata_admin.field_description.options.name|default(label)  %}
+        {% endif %}
 
         {% set div_class = 'sonata-ba-field' %}
 

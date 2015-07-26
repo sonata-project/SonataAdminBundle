@@ -1,19 +1,18 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
  */
 
 namespace Sonata\AdminBundle\Tests\Datagrid;
 
-use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\Datagrid;
+use Sonata\AdminBundle\Datagrid\DatagridMapper;
 
 /**
  * @author Andrej Hudec <pulzarraider@gmail.com>
@@ -110,12 +109,12 @@ class DatagridMapperTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(array('required' => false), $filter->getFieldOptions());
         $this->assertEquals(array(
             'foo_default_option' => 'bar_default',
-            'label' => 'fooLabel',
-            'field_name' => 'fooFilterName',
-            'placeholder' => 'short_object_description_placeholder',
-            'link_parameters' => array(),
-            'show_filter' => null,
-            'advanced_filter' => true,
+            'label'              => 'fooLabel',
+            'field_name'         => 'fooFilterName',
+            'placeholder'        => 'short_object_description_placeholder',
+            'link_parameters'    => array(),
+            'show_filter'        => null,
+            'advanced_filter'    => true,
         ), $filter->getOptions());
     }
 
@@ -136,15 +135,15 @@ class DatagridMapperTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(array('foo_field_option' => 'baz'), $filter->getFieldOptions());
         $this->assertEquals(array(
             'foo_default_option' => 'bar_custom',
-            'label' => 'fooLabel',
-            'field_name' => 'fooFilterName',
-            'field_options' => array('foo_field_option' => 'baz'),
-            'field_type' => 'foo_field_type',
-            'placeholder' => 'short_object_description_placeholder',
-            'foo_filter_option' => 'foo_filter_option_value',
-            'link_parameters' => array(),
-            'show_filter' => null,
-            'advanced_filter' => true,
+            'label'              => 'fooLabel',
+            'field_name'         => 'fooFilterName',
+            'field_options'      => array('foo_field_option' => 'baz'),
+            'field_type'         => 'foo_field_type',
+            'placeholder'        => 'short_object_description_placeholder',
+            'foo_filter_option'  => 'foo_filter_option_value',
+            'link_parameters'    => array(),
+            'show_filter'        => null,
+            'advanced_filter'    => true,
         ), $filter->getOptions());
     }
 

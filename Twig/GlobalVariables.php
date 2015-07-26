@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -11,13 +11,12 @@
 
 namespace Sonata\AdminBundle\Twig;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Sonata\AdminBundle\Admin\Pool;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Class GlobalVariables
+ * Class GlobalVariables.
  *
- * @package Sonata\AdminBundle\Twig
  * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class GlobalVariables

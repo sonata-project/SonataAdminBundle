@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -11,42 +11,42 @@
 
 namespace Sonata\AdminBundle\Controller;
 
+use Psr\Log\NullLogger;
+use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\Admin\BaseFieldDescription;
+use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
+use Sonata\AdminBundle\Exception\ModelManagerException;
+use Sonata\AdminBundle\Util\AdminObjectAclData;
 use Sonata\AdminBundle\Util\AdminObjectAclManipulator;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sonata\AdminBundle\Exception\ModelManagerException;
-use Symfony\Component\HttpFoundation\Request;
-use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
-use Sonata\AdminBundle\Admin\BaseFieldDescription;
-use Sonata\AdminBundle\Util\AdminObjectAclData;
-use Sonata\AdminBundle\Admin\AdminInterface;
-use Psr\Log\NullLogger;
 
 /**
- * Class CRUDController
+ * Class CRUDController.
  *
- * @package Sonata\AdminBundle\Controller
  * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class CRUDController extends Controller
 {
     /**
-     * The related Admin class
+     * The related Admin class.
      *
      * @var AdminInterface
      */
     protected $admin;
 
     /**
-     * Render JSON
+     * Render JSON.
      *
      * @param mixed   $data
-     * @param integer $status
+     * @param int     $status
      * @param array   $headers
      * @param Request $request
      *
@@ -54,19 +54,7 @@ class CRUDController extends Controller
      */
     protected function renderJson($data, $status = 200, $headers = array(), Request $request = null)
     {
-        $request = $this->resolveRequest($request);
-
-        // fake content-type so browser does not show the download popup when this
-        // response is rendered through an iframe (used by the jquery.form.js plugin)
-        //  => don't know yet if it is the best solution
-        if ($request->get('_xml_http_request')
-            && strpos($request->headers->get('Content-Type'), 'multipart/form-data') === 0) {
-            $headers['Content-Type'] = 'text/plain';
-        } else {
-            $headers['Content-Type'] = 'application/json';
-        }
-
-        return new Response(json_encode($data), $status, $headers);
+        return new JsonResponse($data, $status, $headers);
     }
 
     /**
@@ -115,7 +103,7 @@ class CRUDController extends Controller
     }
 
     /**
-     * Contextualize the admin class depends on the current request
+     * Contextualize the admin class depends on the current request.
      *
      * @throws \RuntimeException
      */
@@ -172,7 +160,7 @@ class CRUDController extends Controller
     }
 
     /**
-     * Returns the base template name
+     * Returns the base template name.
      *
      * @param Request $request
      *
@@ -230,7 +218,7 @@ class CRUDController extends Controller
     }
 
     /**
-     * List action
+     * List action.
      *
      * @param Request $request
      *
@@ -270,7 +258,7 @@ class CRUDController extends Controller
     }
 
     /**
-     * Execute a batch delete
+     * Execute a batch delete.
      *
      * @param ProxyQueryInterface $query
      *
@@ -300,7 +288,7 @@ class CRUDController extends Controller
     }
 
     /**
-     * Delete action
+     * Delete action.
      *
      * @param int|string|null $id
      * @param Request         $request
@@ -378,7 +366,7 @@ class CRUDController extends Controller
     }
 
     /**
-     * Edit action
+     * Edit action.
      *
      * @param int|string|null $id
      * @param Request         $request
@@ -482,7 +470,7 @@ class CRUDController extends Controller
     }
 
     /**
-     * Redirect the user depend on this choice
+     * Redirect the user depend on this choice.
      *
      * @param object  $object
      * @param Request $request
@@ -522,7 +510,7 @@ class CRUDController extends Controller
     }
 
     /**
-     * Batch action
+     * Batch action.
      *
      * @param Request $request
      *
@@ -604,12 +592,12 @@ class CRUDController extends Controller
             $formView = $datagrid->getForm()->createView();
 
             return $this->render($this->admin->getTemplate('batch_confirmation'), array(
-                'action'     => 'list',
+                'action'       => 'list',
                 'action_label' => $actionLabel,
-                'datagrid'   => $datagrid,
-                'form'       => $formView,
-                'data'       => $data,
-                'csrf_token' => $this->getCsrfToken('sonata.batch'),
+                'datagrid'     => $datagrid,
+                'form'         => $formView,
+                'data'         => $data,
+                'csrf_token'   => $this->getCsrfToken('sonata.batch'),
             ), null, $request);
         }
 
@@ -636,7 +624,7 @@ class CRUDController extends Controller
     }
 
     /**
-     * Create action
+     * Create action.
      *
      * @param Request $request
      *
@@ -697,7 +685,7 @@ class CRUDController extends Controller
 
                     if ($this->isXmlHttpRequest($request)) {
                         return $this->renderJson(array(
-                            'result' => 'ok',
+                            'result'   => 'ok',
                             'objectId' => $this->admin->getNormalizedIdentifier($object),
                         ), 200, array(), $request);
                     }
@@ -752,7 +740,7 @@ class CRUDController extends Controller
     }
 
     /**
-     * Returns true if the preview is requested to be shown
+     * Returns true if the preview is requested to be shown.
      *
      * @param Request $request
      *
@@ -766,7 +754,7 @@ class CRUDController extends Controller
     }
 
     /**
-     * Returns true if the preview has been approved
+     * Returns true if the preview has been approved.
      *
      * @param Request $request
      *
@@ -780,7 +768,7 @@ class CRUDController extends Controller
     }
 
     /**
-     * Returns true if the request is in the preview workflow
+     * Returns true if the request is in the preview workflow.
      *
      * That means either a preview is requested or the preview has already been shown
      * and it got approved/declined.
@@ -800,7 +788,7 @@ class CRUDController extends Controller
     }
 
     /**
-     * Returns true if the preview has been declined
+     * Returns true if the preview has been declined.
      *
      * @param Request $request
      *
@@ -814,7 +802,7 @@ class CRUDController extends Controller
     }
 
     /**
-     * Show action
+     * Show action.
      *
      * @param int|string|null $id
      * @param Request         $request
@@ -854,7 +842,7 @@ class CRUDController extends Controller
     }
 
     /**
-     * Show history revisions for object
+     * Show history revisions for object.
      *
      * @param int|string|null $id
      * @param Request         $request
@@ -903,7 +891,7 @@ class CRUDController extends Controller
     }
 
     /**
-     * View history revision of object
+     * View history revision of object.
      *
      * @param int|string|null $id
      * @param string|null     $revision
@@ -966,7 +954,7 @@ class CRUDController extends Controller
     }
 
     /**
-     * Compare history revisions of object
+     * Compare history revisions of object.
      *
      * @param int|string|null $id
      * @param int|string|null $base_revision
@@ -1044,7 +1032,7 @@ class CRUDController extends Controller
     }
 
     /**
-     * Export data to specified format
+     * Export data to specified format.
      *
      * @param Request $request
      *
@@ -1091,7 +1079,7 @@ class CRUDController extends Controller
     }
 
     /**
-     * Gets ACL users
+     * Gets ACL users.
      *
      * @return \Traversable
      */
@@ -1112,7 +1100,7 @@ class CRUDController extends Controller
     }
 
     /**
-     * Gets ACL roles
+     * Gets ACL roles.
      *
      * @return \Traversable
      */
@@ -1147,7 +1135,7 @@ class CRUDController extends Controller
     }
 
     /**
-     * Returns the Response object associated to the acl action
+     * Returns the Response object associated to the acl action.
      *
      * @param int|string|null $id
      * @param Request         $request
@@ -1230,16 +1218,22 @@ class CRUDController extends Controller
      *
      * @param string $type
      * @param string $message
+     *
+     * @TODO Remove this method when bumping requirements to Symfony >= 2.6
      */
     protected function addFlash($type, $message)
     {
-        $this->get('session')
-             ->getFlashBag()
-             ->add($type, $message);
+        if (method_exists('Symfony\Bundle\FrameworkBundle\Controller\Controller', 'addFlash')) {
+            parent::addFlash($type, $message);
+        } else {
+            $this->get('session')
+                ->getFlashBag()
+                ->add($type, $message);
+        }
     }
 
     /**
-     * Validate CSRF token for action without form
+     * Validate CSRF token for action without form.
      *
      * @param string  $intention
      * @param Request $request
@@ -1263,7 +1257,7 @@ class CRUDController extends Controller
     }
 
     /**
-     * Escape string for html output
+     * Escape string for html output.
      *
      * @param string $s
      *
@@ -1275,7 +1269,7 @@ class CRUDController extends Controller
     }
 
     /**
-     * Get CSRF token
+     * Get CSRF token.
      *
      * @param string $intention
      *

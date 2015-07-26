@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -11,29 +11,29 @@
 
 namespace Sonata\AdminBundle\Tests\Controller;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
-use Sonata\AdminBundle\Controller\CRUDController;
+use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
 use Sonata\AdminBundle\Admin\Pool;
-use Symfony\Component\HttpFoundation\Response;
+use Sonata\AdminBundle\Controller\CRUDController;
+use Sonata\AdminBundle\Exception\ModelManagerException;
+use Sonata\AdminBundle\Tests\Fixtures\Controller\BatchAdminController;
+use Sonata\AdminBundle\Tests\Fixtures\Controller\PreCRUDController;
+use Sonata\AdminBundle\Util\AdminObjectAclManipulator;
 use Symfony\Bridge\Twig\Extension\FormExtension;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Form\Extension\Csrf\CsrfProvider\CsrfProviderInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
-use Sonata\AdminBundle\Exception\ModelManagerException;
 use Symfony\Component\HttpFoundation\StreamedResponse;
-use Sonata\AdminBundle\Util\AdminObjectAclManipulator;
-use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
-use Sonata\AdminBundle\Tests\Fixtures\Controller\BatchAdminController;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\HttpKernel\KernelInterface;
-use Symfony\Component\HttpKernel\Exception\HttpException;
-use Symfony\Component\Form\Extension\Csrf\CsrfProvider\CsrfProviderInterface;
-use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\Tests\Fixtures\Controller\PreCRUDController;
 
 /**
- * Test for CRUDController
+ * Test for CRUDController.
  *
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
@@ -295,6 +295,10 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
                     return true;
                 }
 
+                if ($id == 'session') {
+                    return true;
+                }
+
                 return false;
             }));
 
@@ -429,7 +433,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->request->headers->set('Content-Type', 'multipart/form-data');
         $response = $this->protectedTestedMethods['renderJson']->invoke($this->controller, $data, 200, array(), $this->request);
 
-        $this->assertEquals($response->headers->get('Content-Type'), 'text/plain');
+        $this->assertEquals($response->headers->get('Content-Type'), 'application/json');
         $this->assertEquals(json_encode($data), $response->getContent());
     }
 
@@ -716,7 +720,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->logger->expects($this->once())
             ->method('error')
             ->with($message, array(
-                'exception' => $exception,
+                'exception'                  => $exception,
                 'previous_exception_message' => $previousExceptionMessage,
             ));
     }

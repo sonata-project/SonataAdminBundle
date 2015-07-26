@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -75,7 +75,7 @@ class RouteCollectionTest extends \PHPUnit_Framework_TestCase
         $routeCollection->add('view');
         $routeCollection->add('edit');
         $routeCollection->add('list');
-        $routeCollection->clearExcept(array('create','edit'));
+        $routeCollection->clearExcept(array('create', 'edit'));
         $this->assertTrue($routeCollection->has('create'));
         $this->assertTrue($routeCollection->has('edit'));
         $this->assertFalse($routeCollection->has('view'));
@@ -120,6 +120,51 @@ class RouteCollectionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('BundleName:ControllerName:view', $route->getDefault('_controller'));
         $this->assertEquals('baseCodeRoute', $route->getDefault('_sonata_admin'));
         $this->assertEquals('baseRouteName_view', $route->getDefault('_sonata_name'));
+    }
+
+    public function testRouteWithAllConstructorParameters()
+    {
+        $baseCodeRoute = 'baseCodeRoute';
+        $baseRouteName = 'baseRouteName';
+        $baseRoutePattern = 'baseRoutePattern';
+        $routeCollection = new RouteCollection($baseCodeRoute, $baseRouteName, $baseRoutePattern, 'BundleName:ControllerName');
+
+        $name = 'view';
+        $pattern = 'view';
+        $defaults = array(
+            '_controller' => 'BundleName:ControllerName:viewAction',
+        );
+        $requirements = array(
+            'page' => '\d+',
+        );
+        $options = array(
+            'debug' => true,
+        );
+        $host = 'test.local';
+        $schemes = array(
+            'https',
+        );
+        $methods = array(
+            'GET',
+            'POST',
+        );
+        $condition = "context.getMethod() in ['GET', 'HEAD'] and request.headers.get('User-Agent') matches '/firefox/i'";
+
+        $routeCollection->add($name, $pattern, $defaults, $requirements, $options, $host, $schemes, $methods, $condition);
+
+        $route = $routeCollection->get($name);
+
+        $combinedPattern = '/'.$baseRoutePattern.'/'.($pattern ?: $name);
+
+        $this->assertSame($combinedPattern, $route->getPath());
+        $this->assertArrayHasKey('_controller', $route->getDefaults());
+        $this->assertArrayHasKey('page', $route->getRequirements());
+        $this->assertArrayHasKey('debug', $route->getOptions());
+        $this->assertSame($host, $route->getHost());
+        $this->assertEquals($methods, $route->getMethods());
+        if (method_exists($route, 'getCondition')) {
+            $this->assertSame($condition, $route->getCondition());
+        }
     }
 
     public function testRouteControllerService()

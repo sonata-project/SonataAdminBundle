@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata project.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -16,9 +16,8 @@ use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\Config\Resource\FileResource;
 
 /**
- * Class RoutesCache
+ * Class RoutesCache.
  *
- * @package Sonata\AdminBundle\Route
  * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class RoutesCache
@@ -29,7 +28,7 @@ class RoutesCache
     protected $cacheFolder;
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $debug;
 
@@ -47,6 +46,7 @@ class RoutesCache
      * @param AdminInterface $admin
      *
      * @return mixed
+     *
      * @throws \RuntimeException
      */
     public function load(AdminInterface $admin)

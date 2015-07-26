@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata project.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -14,9 +14,8 @@ namespace Sonata\AdminBundle\Security\Handler;
 use Sonata\AdminBundle\Admin\AdminInterface;
 
 /**
- * Class NoopSecurityHandler
+ * Class NoopSecurityHandler.
  *
- * @package Sonata\AdminBundle\Security\Handler
  * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class NoopSecurityHandler implements SecurityHandlerInterface
