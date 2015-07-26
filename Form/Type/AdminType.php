@@ -11,6 +11,7 @@
 
 namespace Sonata\AdminBundle\Form\Type;
 
+use Doctrine\Common\Collections\Collection;
 use Sonata\AdminBundle\Form\DataTransformer\ArrayToModelTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -53,10 +54,23 @@ class AdminType extends AbstractType
         if ($builder->getData() === null) {
             $p = new PropertyAccessor(false, true);
             try {
-                $subject = $p->getValue(
-                    $admin->getParentFieldDescription()->getAdmin()->getSubject(),
-                    $this->getFieldDescription($options)->getFieldName().$options['property_path']
-                );
+                // for PropertyAccessor < 2.5
+                // @todo remove this code for old PropertyAccessor after dropping support for Symfony 2.3
+                if (!method_exists($p, 'isReadable')) {
+                    $subjectCollection = $p->getValue(
+                        $admin->getParentFieldDescription()->getAdmin()->getSubject(),
+                        $this->getFieldDescription($options)->getFieldName()
+                    );
+                    if ($subjectCollection instanceof Collection) {
+                        $subject = $subjectCollection->get(trim($options['property_path'], '[]'));
+                    }
+                } else {
+                    // for PropertyAccessor >= 2.5
+                    $subject = $p->getValue(
+                        $admin->getParentFieldDescription()->getAdmin()->getSubject(),
+                        $this->getFieldDescription($options)->getFieldName().$options['property_path']
+                    );
+                }
                 $builder->setData($subject);
             } catch (NoSuchIndexException $e) {
                 // no object here
