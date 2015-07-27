@@ -20,7 +20,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 /**
  * This type define a standard hidden field, that stored id to a object.
  *
- * @author  Andrej Hudec <pulzarraider@gmail.com>
+ * @author Andrej Hudec <pulzarraider@gmail.com>
  */
 class ModelHiddenType extends AbstractType
 {
