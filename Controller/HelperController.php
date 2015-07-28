@@ -404,8 +404,11 @@ class HelperController
                 'label' => $label,
             );
 
-            if (is_callable($resultItemCallback)) {
-                $resultItemCallback($admin, $entity, $item);
+            if ($resultItemCallback !== null) {
+                if (!is_callable($resultItemCallback)) {
+                    throw new \RuntimeException('Option "result_item_callback" does not contain callable function.');
+                }
+                call_user_func_array($resultItemCallback, array($admin, $entity, &$item));
             }
 
             $items[] = $item;
