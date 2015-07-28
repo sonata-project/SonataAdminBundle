@@ -56,8 +56,8 @@ class AdminGeneratorTest extends \PHPUnit_Framework_TestCase
     {
         $this->adminGenerator->generate($this->bundleMock, 'ModelAdmin', 'Model');
         $file = $this->adminGenerator->getFile();
-        $this->assertEquals('Sonata\AdminBundle\Tests\Fixtures\Admin\ModelAdmin', $this->adminGenerator->getClass());
-        $this->assertEquals('ModelAdmin.php', basename($file));
+        $this->assertSame('Sonata\AdminBundle\Tests\Fixtures\Admin\ModelAdmin', $this->adminGenerator->getClass());
+        $this->assertSame('ModelAdmin.php', basename($file));
         $this->assertFileEquals(__DIR__.'/../Fixtures/Admin/ModelAdmin.php', $file);
 
         try {

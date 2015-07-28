@@ -34,7 +34,7 @@ class NoopSecurityHandlerTest extends \PHPUnit_Framework_TestCase
 
     public function testBuildSecurityInformation()
     {
-        $this->assertEquals(array(), $this->handler->buildSecurityInformation($this->getSonataAdminObject()));
+        $this->assertSame(array(), $this->handler->buildSecurityInformation($this->getSonataAdminObject()));
     }
 
     public function testCreateObjectSecurity()
@@ -49,7 +49,7 @@ class NoopSecurityHandlerTest extends \PHPUnit_Framework_TestCase
 
     public function testGetBaseRole()
     {
-        $this->assertEquals('', $this->handler->getBaseRole($this->getSonataAdminObject()));
+        $this->assertSame('', $this->handler->getBaseRole($this->getSonataAdminObject()));
     }
 
     /**

@@ -75,7 +75,7 @@ class AdminObjectAclDataTest extends \PHPUnit_Framework_TestCase
         $adminObjectAclData = $this->createAdminObjectAclData();
         $ret = $adminObjectAclData->setAcl($acl);
 
-        $this->assertEquals($adminObjectAclData, $ret);
+        $this->assertSame($adminObjectAclData, $ret);
 
         return $adminObjectAclData;
     }
@@ -105,7 +105,7 @@ class AdminObjectAclDataTest extends \PHPUnit_Framework_TestCase
         $adminObjectAclData = $this->createAdminObjectAclData();
         $ret = $adminObjectAclData->setForm($form);
 
-        $this->assertEquals($adminObjectAclData, $ret);
+        $this->assertSame($adminObjectAclData, $ret);
 
         return $adminObjectAclData;
     }

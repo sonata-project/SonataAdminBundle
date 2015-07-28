@@ -41,7 +41,7 @@ class ModelToIdPropertyTransformerTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($transformer->reverseTransform(null));
         $this->assertNull($transformer->reverseTransform(false));
         $this->assertNull($transformer->reverseTransform(12));
-        $this->assertEquals($entity, $transformer->reverseTransform(array('identifiers' => array(123), 'titles' => array('example'))));
+        $this->assertSame($entity, $transformer->reverseTransform(array('identifiers' => array(123), 'titles' => array('example'))));
     }
 
     /**
@@ -83,7 +83,7 @@ class ModelToIdPropertyTransformerTest extends \PHPUnit_Framework_TestCase
 
         $result = $transformer->reverseTransform($params);
         $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $result);
-        $this->assertEquals($expected, $result->getValues());
+        $this->assertSame($expected, $result->getValues());
     }
 
     public function getReverseTransformMultipleTests()
@@ -121,12 +121,12 @@ class ModelToIdPropertyTransformerTest extends \PHPUnit_Framework_TestCase
 
         $transformer = new ModelToIdPropertyTransformer($this->modelManager, 'Sonata\AdminBundle\Tests\Fixtures\Entity\Foo', 'bar', false);
 
-        $this->assertEquals(array('identifiers' => array(), 'labels' => array()), $transformer->transform(null));
-        $this->assertEquals(array('identifiers' => array(), 'labels' => array()), $transformer->transform(false));
-        $this->assertEquals(array('identifiers' => array(), 'labels' => array()), $transformer->transform(0));
-        $this->assertEquals(array('identifiers' => array(), 'labels' => array()), $transformer->transform('0'));
+        $this->assertSame(array('identifiers' => array(), 'labels' => array()), $transformer->transform(null));
+        $this->assertSame(array('identifiers' => array(), 'labels' => array()), $transformer->transform(false));
+        $this->assertSame(array('identifiers' => array(), 'labels' => array()), $transformer->transform(0));
+        $this->assertSame(array('identifiers' => array(), 'labels' => array()), $transformer->transform('0'));
 
-        $this->assertEquals(array('identifiers' => array(123), 'labels' => array('example')), $transformer->transform($entity));
+        $this->assertSame(array('identifiers' => array(123), 'labels' => array('example')), $transformer->transform($entity));
     }
 
     public function testTransformWorksWithArrayAccessEntity()
@@ -140,7 +140,7 @@ class ModelToIdPropertyTransformerTest extends \PHPUnit_Framework_TestCase
 
         $transformer = new ModelToIdPropertyTransformer($this->modelManager, 'Sonata\AdminBundle\Tests\Fixtures\Entity\FooArrayAccess', 'bar', false);
 
-        $this->assertEquals(array('identifiers' => array(123), 'labels' => array('example')), $transformer->transform($entity));
+        $this->assertSame(array('identifiers' => array(123), 'labels' => array('example')), $transformer->transform($entity));
     }
 
     public function testTransformToStringCallback()
@@ -157,7 +157,7 @@ class ModelToIdPropertyTransformerTest extends \PHPUnit_Framework_TestCase
             return $entity->getBaz();
         });
 
-        $this->assertEquals(array('identifiers' => array(123), 'labels' => array('bazz')), $transformer->transform($entity));
+        $this->assertSame(array('identifiers' => array(123), 'labels' => array('bazz')), $transformer->transform($entity));
     }
 
     /**
@@ -215,12 +215,12 @@ class ModelToIdPropertyTransformerTest extends \PHPUnit_Framework_TestCase
 
         $transformer = new ModelToIdPropertyTransformer($this->modelManager, 'Sonata\AdminBundle\Tests\Fixtures\Entity\Foo', 'bar', true);
 
-        $this->assertEquals(array('identifiers' => array(), 'labels' => array()), $transformer->transform(null));
-        $this->assertEquals(array('identifiers' => array(), 'labels' => array()), $transformer->transform(false));
-        $this->assertEquals(array('identifiers' => array(), 'labels' => array()), $transformer->transform(0));
-        $this->assertEquals(array('identifiers' => array(), 'labels' => array()), $transformer->transform('0'));
+        $this->assertSame(array('identifiers' => array(), 'labels' => array()), $transformer->transform(null));
+        $this->assertSame(array('identifiers' => array(), 'labels' => array()), $transformer->transform(false));
+        $this->assertSame(array('identifiers' => array(), 'labels' => array()), $transformer->transform(0));
+        $this->assertSame(array('identifiers' => array(), 'labels' => array()), $transformer->transform('0'));
 
-        $this->assertEquals(array('identifiers' => array(123, 456, 789), 'labels' => array('foo', 'bar', 'baz')), $transformer->transform($collection));
+        $this->assertSame(array('identifiers' => array(123, 456, 789), 'labels' => array('foo', 'bar', 'baz')), $transformer->transform($collection));
     }
 
     /**

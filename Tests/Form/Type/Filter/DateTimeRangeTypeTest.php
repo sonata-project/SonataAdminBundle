@@ -33,6 +33,6 @@ class DateTimeRangeTypeTest extends TypeTestCase
             'field_type'       => 'sonata_type_datetime_range',
             'field_options'    => array('date_format' => 'yyyy-MM-dd'),
         );
-        $this->assertEquals($expected, $options);
+        $this->assertSame($expected, $options);
     }
 }

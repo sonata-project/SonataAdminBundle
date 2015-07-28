@@ -40,7 +40,7 @@ class ExporterTest extends \PHPUnit_Framework_TestCase
         $response = $exporter->getResponse($format, $filename, $source);
 
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $response);
-        $this->assertEquals($contentType, $response->headers->get('Content-Type'));
+        $this->assertSame($contentType, $response->headers->get('Content-Type'));
         // Quotes does not appear on some sonata versions.
         $this->assertRegExp('/attachment; filename="?'.$filename.'"?/', $response->headers->get('Content-Disposition'));
     }

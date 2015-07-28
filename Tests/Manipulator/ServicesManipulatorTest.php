@@ -50,7 +50,7 @@ class ServicesManipulatorTest extends \PHPUnit_Framework_TestCase
             'controller_name',
             'manager_type'
         );
-        $this->assertEquals(
+        $this->assertSame(
             "services:
     service_id:
         class: admin_class
@@ -66,7 +66,7 @@ class ServicesManipulatorTest extends \PHPUnit_Framework_TestCase
             'another_controller_name',
             'another_manager_type'
         );
-        $this->assertEquals(
+        $this->assertSame(
             "services:
     service_id:
         class: admin_class
@@ -115,7 +115,7 @@ class ServicesManipulatorTest extends \PHPUnit_Framework_TestCase
             'controller_name',
             'manager_type'
         );
-        $this->assertEquals(
+        $this->assertSame(
             "services:
     service_id:
         class: admin_class

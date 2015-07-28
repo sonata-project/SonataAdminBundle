@@ -19,8 +19,8 @@ class FilterTest extends \PHPUnit_Framework_TestCase
     {
         $filter = new FooFilter();
 
-        $this->assertEquals('text', $filter->getFieldType());
-        $this->assertEquals(array('required' => false), $filter->getFieldOptions());
+        $this->assertSame('text', $filter->getFieldType());
+        $this->assertSame(array('required' => false), $filter->getFieldOptions());
         $this->assertNull($filter->getLabel());
 
         $options = array(
@@ -32,22 +32,21 @@ class FilterTest extends \PHPUnit_Framework_TestCase
 
         $filter->setOptions($options);
 
-        $this->assertEquals('foo', $filter->getOption('label'));
-        $this->assertEquals('foo', $filter->getLabel());
+        $this->assertSame('foo', $filter->getOption('label'));
+        $this->assertSame('foo', $filter->getLabel());
 
-        $expected = $options;
-        $expected['foo'] = 'bar';
+        $expected = array_merge(array('foo' => 'bar'), $options);
 
-        $this->assertEquals($expected, $filter->getOptions());
-        $this->assertEquals('name', $filter->getFieldName());
+        $this->assertSame($expected, $filter->getOptions());
+        $this->assertSame('name', $filter->getFieldName());
 
-        $this->assertEquals('default', $filter->getOption('fake', 'default'));
+        $this->assertSame('default', $filter->getOption('fake', 'default'));
 
         $filter->setValue(42);
-        $this->assertEquals(42, $filter->getValue());
+        $this->assertSame(42, $filter->getValue());
 
         $filter->setCondition('>');
-        $this->assertEquals('>', $filter->getCondition());
+        $this->assertSame('>', $filter->getCondition());
     }
 
     public function testInitialize()
@@ -57,9 +56,9 @@ class FilterTest extends \PHPUnit_Framework_TestCase
             'field_name' => 'bar',
         ));
 
-        $this->assertEquals('name', $filter->getName());
-        $this->assertEquals('bar', $filter->getOption('field_name'));
-        $this->assertEquals('bar', $filter->getFieldName());
+        $this->assertSame('name', $filter->getName());
+        $this->assertSame('bar', $filter->getOption('field_name'));
+        $this->assertSame('bar', $filter->getFieldName());
     }
 
     public function testLabel()
@@ -67,7 +66,7 @@ class FilterTest extends \PHPUnit_Framework_TestCase
         $filter = new FooFilter();
         $filter->setLabel('foo');
 
-        $this->assertEquals('foo', $filter->getLabel());
+        $this->assertSame('foo', $filter->getLabel());
     }
 
     /**
@@ -91,7 +90,7 @@ class FilterTest extends \PHPUnit_Framework_TestCase
         $filter = new FooFilter();
         $filter->setValue($value);
 
-        $this->assertEquals($expected, $filter->isActive());
+        $this->assertSame($expected, $filter->isActive());
     }
 
     public function isActiveData()
@@ -108,9 +107,9 @@ class FilterTest extends \PHPUnit_Framework_TestCase
     public function testGetTranslationDomain()
     {
         $filter = new FooFilter();
-        $this->assertEquals(null, $filter->getTranslationDomain());
+        $this->assertSame(null, $filter->getTranslationDomain());
         $filter->setOption('translation_domain', 'baz');
-        $this->assertEquals('baz', $filter->getTranslationDomain());
+        $this->assertSame('baz', $filter->getTranslationDomain());
     }
 
     public function testGetFieldMappingException()
@@ -143,7 +142,7 @@ class FilterTest extends \PHPUnit_Framework_TestCase
 
         $filter = new FooFilter();
         $filter->setOption('field_mapping', $fieldMapping);
-        $this->assertEquals($fieldMapping, $filter->getFieldMapping());
+        $this->assertSame($fieldMapping, $filter->getFieldMapping());
     }
 
     public function testGetParentAssociationMappings()
@@ -163,9 +162,9 @@ class FilterTest extends \PHPUnit_Framework_TestCase
         );
 
         $filter = new FooFilter();
-        $this->assertEquals(array(), $filter->getParentAssociationMappings());
+        $this->assertSame(array(), $filter->getParentAssociationMappings());
         $filter->setOption('parent_association_mappings', $parentAssociationMapping);
-        $this->assertEquals($parentAssociationMapping, $filter->getParentAssociationMappings());
+        $this->assertSame($parentAssociationMapping, $filter->getParentAssociationMappings());
     }
 
     public function testGetAssociationMappingException()
@@ -200,6 +199,6 @@ class FilterTest extends \PHPUnit_Framework_TestCase
 
         $filter = new FooFilter();
         $filter->setOption('association_mapping', $associationMapping);
-        $this->assertEquals($associationMapping, $filter->getAssociationMapping());
+        $this->assertSame($associationMapping, $filter->getAssociationMapping());
     }
 }

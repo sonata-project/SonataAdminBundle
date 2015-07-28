@@ -44,7 +44,7 @@ class ConfigureEventTest extends \PHPUnit_Framework_TestCase
 
     public function testGetType()
     {
-        $this->assertEquals('Foo', $this->event->getType());
+        $this->assertSame('Foo', $this->event->getType());
     }
 
     public function testGetAdmin()
@@ -52,7 +52,7 @@ class ConfigureEventTest extends \PHPUnit_Framework_TestCase
         $result = $this->event->getAdmin();
 
         $this->assertInstanceOf('Sonata\AdminBundle\Admin\AdminInterface', $result);
-        $this->assertEquals($this->admin, $result);
+        $this->assertSame($this->admin, $result);
     }
 
     public function testGetMapper()
@@ -60,6 +60,6 @@ class ConfigureEventTest extends \PHPUnit_Framework_TestCase
         $result = $this->event->getMapper();
 
         $this->assertInstanceOf('Sonata\AdminBundle\Mapper\BaseMapper', $result);
-        $this->assertEquals($this->mapper, $result);
+        $this->assertSame($this->mapper, $result);
     }
 }

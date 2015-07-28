@@ -27,24 +27,24 @@ class ModelAutocompleteTypeTest extends TypeTestCase
 
         $options = $optionResolver->resolve(array('model_manager' => $modelManager, 'class' => 'Foo', 'property' => 'bar'));
 
-        $this->assertEquals(array(), $options['attr']);
+        $this->assertSame(array(), $options['attr']);
         $this->assertTrue($options['compound']);
         $this->assertInstanceOf('Sonata\AdminBundle\Model\ModelManagerInterface', $options['model_manager']);
-        $this->assertEquals($modelManager, $options['model_manager']);
-        $this->assertEquals('Foo', $options['class']);
-        $this->assertEquals('bar', $options['property']);
+        $this->assertSame($modelManager, $options['model_manager']);
+        $this->assertSame('Foo', $options['class']);
+        $this->assertSame('bar', $options['property']);
         $this->assertNull($options['callback']);
 
-        $this->assertEquals('', $options['placeholder']);
-        $this->assertEquals(3, $options['minimum_input_length']);
-        $this->assertEquals(10, $options['items_per_page']);
+        $this->assertSame('', $options['placeholder']);
+        $this->assertSame(3, $options['minimum_input_length']);
+        $this->assertSame(10, $options['items_per_page']);
 
-        $this->assertEquals('', $options['url']);
-        $this->assertEquals(array('name' => 'sonata_admin_retrieve_autocomplete_items', 'parameters' => array()), $options['route']);
-        $this->assertEquals(array(), $options['req_params']);
-        $this->assertEquals('q', $options['req_param_name_search']);
-        $this->assertEquals('_page', $options['req_param_name_page_number']);
-        $this->assertEquals('_per_page', $options['req_param_name_items_per_page']);
-        $this->assertEquals('sonata-autocomplete-dropdown', $options['dropdown_css_class']);
+        $this->assertSame('', $options['url']);
+        $this->assertSame(array('name' => 'sonata_admin_retrieve_autocomplete_items', 'parameters' => array()), $options['route']);
+        $this->assertSame(array(), $options['req_params']);
+        $this->assertSame('q', $options['req_param_name_search']);
+        $this->assertSame('_page', $options['req_param_name_page_number']);
+        $this->assertSame('_per_page', $options['req_param_name_items_per_page']);
+        $this->assertSame('sonata-autocomplete-dropdown', $options['dropdown_css_class']);
     }
 }

@@ -130,9 +130,9 @@ class ShowMapperTest extends \PHPUnit_Framework_TestCase
     {
         $fieldDescription = $this->getFieldDescriptionMock('fooName', 'fooLabel');
 
-        $this->assertEquals($this->showMapper, $this->showMapper->add($fieldDescription));
-        $this->assertEquals($this->showMapper, $this->showMapper->remove('fooName'));
-        $this->assertEquals($this->showMapper, $this->showMapper->reorder(array()));
+        $this->assertSame($this->showMapper, $this->showMapper->add($fieldDescription));
+        $this->assertSame($this->showMapper, $this->showMapper->remove('fooName'));
+        $this->assertSame($this->showMapper, $this->showMapper->reorder(array()));
     }
 
     public function testGet()
@@ -142,7 +142,7 @@ class ShowMapperTest extends \PHPUnit_Framework_TestCase
         $fieldDescription = $this->getFieldDescriptionMock('fooName', 'fooLabel');
 
         $this->showMapper->add($fieldDescription);
-        $this->assertEquals($fieldDescription, $this->showMapper->get('fooName'));
+        $this->assertSame($fieldDescription, $this->showMapper->get('fooName'));
     }
 
     public function testAdd()
@@ -154,8 +154,8 @@ class ShowMapperTest extends \PHPUnit_Framework_TestCase
         $fieldDescription = $this->showMapper->get('fooName');
 
         $this->assertInstanceOf('Sonata\AdminBundle\Admin\FieldDescriptionInterface', $fieldDescription);
-        $this->assertEquals('fooName', $fieldDescription->getName());
-        $this->assertEquals('fooName', $fieldDescription->getOption('label'));
+        $this->assertSame('fooName', $fieldDescription->getName());
+        $this->assertSame('fooName', $fieldDescription->getOption('label'));
     }
 
     public function testAddRemove()
@@ -186,7 +186,7 @@ class ShowMapperTest extends \PHPUnit_Framework_TestCase
 
     public function testReorder()
     {
-        $this->assertEquals(array(), $this->admin->getShowGroups());
+        $this->assertSame(array(), $this->admin->getShowGroups());
 
         $fieldDescription1 = $this->getFieldDescriptionMock('fooName1', 'fooLabel1');
         $fieldDescription2 = $this->getFieldDescriptionMock('fooName2', 'fooLabel2');
@@ -199,20 +199,20 @@ class ShowMapperTest extends \PHPUnit_Framework_TestCase
         $this->showMapper->add($fieldDescription3);
         $this->showMapper->add($fieldDescription4);
 
-        $this->assertEquals(array(
+        $this->assertSame(array(
             'Group1' => array(
                 'collapsed'          => false,
-                'fields'             => array('fooName1' => 'fooName1', 'fooName2' => 'fooName2', 'fooName3' => 'fooName3', 'fooName4' => 'fooName4'),
+                'class'              => false,
                 'description'        => false,
                 'translation_domain' => null,
-                'class'              => false,
                 'name'               => 'Group1',
+                'fields'             => array('fooName1' => 'fooName1', 'fooName2' => 'fooName2', 'fooName3' => 'fooName3', 'fooName4' => 'fooName4'),
             ), ), $this->admin->getShowGroups());
 
         $this->showMapper->reorder(array('fooName3', 'fooName2', 'fooName1', 'fooName4'));
 
         // print_r is used to compare order of items in associative arrays
-        $this->assertEquals(print_r(array(
+        $this->assertSame(print_r(array(
             'Group1' => array(
                 'collapsed'          => false,
                 'class'              => false,

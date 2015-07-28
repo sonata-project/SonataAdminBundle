@@ -236,7 +236,7 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
         $response = $controller->getShortObjectDescriptionAction($request);
 
         $expected = '<a href="/ok/url" target="new">bar</a>';
-        $this->assertEquals($expected, $response->getContent());
+        $this->assertSame($expected, $response->getContent());
     }
 
     public function testsetObjectFieldValueAction()
@@ -279,7 +279,7 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
 
         $response = $controller->setObjectFieldValueAction($request);
 
-        $this->assertEquals('{"status":"OK","content":"\u003Cfoo \/\u003E"}', $response->getContent());
+        $this->assertSame('{"status":"OK","content":"\u003Cfoo \/\u003E"}', $response->getContent());
     }
 
     public function testappendFormFieldElementAction()
@@ -475,7 +475,7 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
 
         $response = $controller->setObjectFieldValueAction($request);
 
-        $this->assertEquals('{"status":"KO","message":"error1\nerror2"}', $response->getContent());
+        $this->assertSame('{"status":"KO","message":"error1\nerror2"}', $response->getContent());
     }
 
     /**

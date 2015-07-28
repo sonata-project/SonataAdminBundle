@@ -19,7 +19,7 @@ class UnderscoreLabelTranslatorStrategyTest extends \PHPUnit_Framework_TestCase
     {
         $strategy = new UnderscoreLabelTranslatorStrategy();
 
-        $this->assertEquals('datagrid.label_is_valid', $strategy->getLabel('isValid', 'datagrid', 'label'));
-        $this->assertEquals('breadcrumb.link_is0_valid', $strategy->getLabel('is0Valid', 'breadcrumb', 'link'));
+        $this->assertSame('datagrid.label_is_valid', $strategy->getLabel('isValid', 'datagrid', 'label'));
+        $this->assertSame('breadcrumb.link_is0_valid', $strategy->getLabel('is0Valid', 'breadcrumb', 'link'));
     }
 }
