@@ -98,7 +98,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
     private $csrfProvider;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function setUp()
     {

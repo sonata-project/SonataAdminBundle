@@ -44,7 +44,7 @@ class AdminPoolLoader extends FileLoader
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function supports($resource, $type = null)
     {
@@ -56,7 +56,7 @@ class AdminPoolLoader extends FileLoader
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function load($resource, $type = null)
     {

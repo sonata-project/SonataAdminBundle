@@ -32,7 +32,7 @@ class RoleSecurityHandler implements SecurityHandlerInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function isGranted(AdminInterface $admin, $attributes, $object = null)
     {
@@ -55,7 +55,7 @@ class RoleSecurityHandler implements SecurityHandlerInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getBaseRole(AdminInterface $admin)
     {
@@ -63,7 +63,7 @@ class RoleSecurityHandler implements SecurityHandlerInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function buildSecurityInformation(AdminInterface $admin)
     {
@@ -71,14 +71,14 @@ class RoleSecurityHandler implements SecurityHandlerInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function createObjectSecurity(AdminInterface $admin, $object)
     {
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function deleteObjectSecurity(AdminInterface $admin, $object)
     {

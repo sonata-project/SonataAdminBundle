@@ -39,7 +39,7 @@ class ModelsToArrayTransformer implements DataTransformerInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function transform($collection)
     {
@@ -68,7 +68,7 @@ class ModelsToArrayTransformer implements DataTransformerInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function reverseTransform($keys)
     {

@@ -223,7 +223,7 @@ abstract class Filter implements FilterInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getTranslationDomain()
     {

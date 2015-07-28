@@ -68,7 +68,7 @@ class FieldDescriptionCollection implements \ArrayAccess, \Countable
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function offsetExists($offset)
     {
@@ -76,7 +76,7 @@ class FieldDescriptionCollection implements \ArrayAccess, \Countable
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function offsetGet($offset)
     {
@@ -84,7 +84,7 @@ class FieldDescriptionCollection implements \ArrayAccess, \Countable
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function offsetSet($offset, $value)
     {
@@ -92,7 +92,7 @@ class FieldDescriptionCollection implements \ArrayAccess, \Countable
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function offsetUnset($offset)
     {
@@ -100,7 +100,7 @@ class FieldDescriptionCollection implements \ArrayAccess, \Countable
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function count()
     {

@@ -31,7 +31,7 @@ class AdminGeneratorTest extends \PHPUnit_Framework_TestCase
     private $bundlePath;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function setUp()
     {
@@ -44,7 +44,7 @@ class AdminGeneratorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function tearDown()
     {

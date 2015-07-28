@@ -20,7 +20,7 @@ class InlineConstraint extends Constraint
     protected $method;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function validatedBy()
     {
@@ -44,7 +44,7 @@ class InlineConstraint extends Constraint
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getTargets()
     {
@@ -52,7 +52,7 @@ class InlineConstraint extends Constraint
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getRequiredOptions()
     {

@@ -19,7 +19,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class ExplainAdminCommand extends ContainerAwareCommand
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function configure()
     {
@@ -30,7 +30,7 @@ class ExplainAdminCommand extends ContainerAwareCommand
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {

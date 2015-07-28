@@ -54,7 +54,7 @@ class SonataAdminExtension extends \Twig_Extension
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getFilters()
     {
@@ -69,7 +69,7 @@ class SonataAdminExtension extends \Twig_Extension
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getTokenParsers()
     {
@@ -77,7 +77,7 @@ class SonataAdminExtension extends \Twig_Extension
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getName()
     {

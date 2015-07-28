@@ -30,7 +30,7 @@ class ControllerGeneratorTest extends \PHPUnit_Framework_TestCase
     private $bundlePath;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function setUp()
     {
@@ -40,7 +40,7 @@ class ControllerGeneratorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function tearDown()
     {

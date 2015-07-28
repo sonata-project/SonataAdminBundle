@@ -19,7 +19,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class SetupAclCommand extends ContainerAwareCommand
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function configure()
     {
@@ -28,7 +28,7 @@ class SetupAclCommand extends ContainerAwareCommand
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
