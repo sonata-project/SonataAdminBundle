@@ -14,6 +14,7 @@ namespace Sonata\AdminBundle\Controller;
 use Sonata\AdminBundle\Admin\AdminHelper;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
+use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Filter\FilterInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -331,6 +332,7 @@ class HelperController
         $itemsPerPage       = $formAutocomplete->getConfig()->getAttribute('items_per_page');
         $reqParamPageNumber = $formAutocomplete->getConfig()->getAttribute('req_param_name_page_number');
         $toStringCallback   = $formAutocomplete->getConfig()->getAttribute('to_string_callback');
+        $resultItemCallback = $formAutocomplete->getConfig()->getAttribute('response_item_callback');
 
         $searchText = $request->get('q');
 
@@ -346,6 +348,7 @@ class HelperController
         }
 
         $datagrid = $targetAdmin->getDatagrid();
+        $this->clearDatagridFilters($datagrid);
 
         if ($callback !== null) {
             if (!is_callable($callback)) {
@@ -396,10 +399,16 @@ class HelperController
                 $label = $resultMetadata->getTitle();
             }
 
-            $items[] = array(
+            $item = array(
                 'id'    => $admin->id($entity),
                 'label' => $label,
             );
+
+            if (is_callable($resultItemCallback)) {
+                $resultItemCallback($admin, $entity, $item);
+            }
+
+            $items[] = $item;
         }
 
         return new JsonResponse(array(
@@ -429,14 +438,20 @@ class HelperController
             throw new \RuntimeException(sprintf('The field "%s" does not exist.', $field));
         }
 
-        if ($fieldDescription->getType() !== 'sonata_type_model_autocomplete') {
-            throw new \RuntimeException(sprintf('Unsupported form type "%s" for field "%s".', $fieldDescription->getType(), $field));
-        }
-
         if (null === $fieldDescription->getTargetEntity()) {
             throw new \RuntimeException(sprintf('No associated entity with field "%s".', $field));
         }
 
         return $fieldDescription;
+    }
+
+    /**
+     * @param DatagridInterface $datagrid
+     */
+    private function clearDatagridFilters(DatagridInterface $datagrid)
+    {
+        foreach ($datagrid->getFilters() as $filter) {
+            $datagrid->setValue($filter->getName(), null, null);
+        }
     }
 }
