@@ -25,7 +25,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 class ChoiceFieldMaskType extends AbstractType
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
@@ -56,7 +56,7 @@ class ChoiceFieldMaskType extends AbstractType
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {
@@ -73,7 +73,7 @@ class ChoiceFieldMaskType extends AbstractType
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getParent()
     {
@@ -81,7 +81,7 @@ class ChoiceFieldMaskType extends AbstractType
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getName()
     {

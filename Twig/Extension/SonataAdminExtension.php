@@ -83,7 +83,7 @@ class SonataAdminExtension extends \Twig_Extension
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getTokenParsers()
     {
