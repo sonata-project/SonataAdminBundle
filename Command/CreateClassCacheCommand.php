@@ -24,7 +24,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class CreateClassCacheCommand extends ContainerAwareCommand
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function configure()
     {
@@ -33,7 +33,7 @@ class CreateClassCacheCommand extends ContainerAwareCommand
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {

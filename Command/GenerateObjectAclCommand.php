@@ -31,7 +31,7 @@ class GenerateObjectAclCommand extends ContainerAwareCommand
     protected $userEntityClass = '';
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function configure()
     {
@@ -45,7 +45,7 @@ class GenerateObjectAclCommand extends ContainerAwareCommand
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {

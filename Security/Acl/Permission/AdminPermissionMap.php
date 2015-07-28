@@ -109,7 +109,7 @@ class AdminPermissionMap implements PermissionMapInterface
     );
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getMasks($permission, $object)
     {
@@ -121,7 +121,7 @@ class AdminPermissionMap implements PermissionMapInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function contains($permission)
     {

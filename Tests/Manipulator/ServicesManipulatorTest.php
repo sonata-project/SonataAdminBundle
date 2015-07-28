@@ -25,7 +25,7 @@ class ServicesManipulatorTest extends \PHPUnit_Framework_TestCase
     private $file;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function setUp()
     {
@@ -34,7 +34,7 @@ class ServicesManipulatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function tearDown()
     {

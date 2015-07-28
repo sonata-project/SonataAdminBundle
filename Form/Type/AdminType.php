@@ -30,7 +30,7 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
 class AdminType extends AbstractType
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -142,7 +142,7 @@ class AdminType extends AbstractType
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getName()
     {

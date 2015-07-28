@@ -19,7 +19,7 @@ namespace Sonata\AdminBundle\Translator;
 class UnderscoreLabelTranslatorStrategy implements LabelTranslatorStrategyInterface
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getLabel($label, $context = '', $type = '')
     {

@@ -36,7 +36,7 @@ class ModelToIdTransformer implements DataTransformerInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function reverseTransform($newId)
     {
@@ -48,7 +48,7 @@ class ModelToIdTransformer implements DataTransformerInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function transform($entity)
     {

@@ -77,7 +77,7 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
     private $controller;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function setUp()
     {

@@ -36,7 +36,7 @@ class AdminAclManipulator implements AdminAclManipulatorInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function configureAcls(OutputInterface $output, AdminInterface $admin)
     {
@@ -67,7 +67,7 @@ class AdminAclManipulator implements AdminAclManipulatorInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function addAdminClassAces(OutputInterface $output, AclInterface $acl, AclSecurityHandlerInterface $securityHandler, array $roleInformation = array())
     {

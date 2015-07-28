@@ -479,7 +479,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getTranslationDomain()
     {

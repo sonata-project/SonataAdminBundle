@@ -155,7 +155,7 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function trans($id, array $parameters = array(), $domain = null, $locale = null)
     {
@@ -165,7 +165,7 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function transChoice($id, $number, array $parameters = array(), $domain = null, $locale = null)
     {
@@ -175,7 +175,7 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setLocale($locale)
     {
@@ -183,7 +183,7 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getLocale()
     {
@@ -191,7 +191,7 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function isGranted(AdminInterface $admin, $attributes, $object = null)
     {
@@ -199,35 +199,35 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function buildSecurityInformation(AdminInterface $admin)
     {
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function createObjectSecurity(AdminInterface $admin, $object)
     {
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function deleteObjectSecurity(AdminInterface $admin, $object)
     {
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getBaseRole(AdminInterface $admin)
     {
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getLabel($label, $context = '', $type = '')
     {

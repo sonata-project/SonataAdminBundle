@@ -19,7 +19,7 @@ namespace Sonata\AdminBundle\Translator;
 class NativeLabelTranslatorStrategy implements LabelTranslatorStrategyInterface
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getLabel($label, $context = '', $type = '')
     {

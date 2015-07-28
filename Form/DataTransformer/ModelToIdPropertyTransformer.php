@@ -49,7 +49,7 @@ class ModelToIdPropertyTransformer implements DataTransformerInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function reverseTransform($value)
     {
@@ -83,7 +83,7 @@ class ModelToIdPropertyTransformer implements DataTransformerInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function transform($entityOrCollection)
     {

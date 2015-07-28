@@ -28,7 +28,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 class ModelTypeList extends AbstractType
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -78,7 +78,7 @@ class ModelTypeList extends AbstractType
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getParent()
     {
@@ -86,7 +86,7 @@ class ModelTypeList extends AbstractType
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getName()
     {

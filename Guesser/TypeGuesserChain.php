@@ -44,7 +44,7 @@ class TypeGuesserChain implements TypeGuesserInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function guessType($class, $property, ModelManagerInterface $modelManager)
     {
