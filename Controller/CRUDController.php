@@ -301,7 +301,6 @@ class CRUDController extends Controller
     public function deleteAction($id, Request $request = null)
     {
         $request = $this->resolveRequest($request);
-        $id      = $request->get($this->admin->getIdParameter());
         $object  = $this->admin->getObject($id);
 
         if (!$object) {
@@ -382,7 +381,6 @@ class CRUDController extends Controller
         // the key used to lookup the template
         $templateKey = 'edit';
 
-        $id = $request->get($this->admin->getIdParameter());
         $object = $this->admin->getObject($id);
 
         if (!$object) {
@@ -815,7 +813,6 @@ class CRUDController extends Controller
     public function showAction($id = null, Request $request = null)
     {
         $request = $this->resolveRequest($request);
-        $id = $request->get($this->admin->getIdParameter());
 
         $object = $this->admin->getObject($id);
 
@@ -855,7 +852,6 @@ class CRUDController extends Controller
     public function historyAction($id = null, Request $request = null)
     {
         $request = $this->resolveRequest($request);
-        $id = $request->get($this->admin->getIdParameter());
 
         $object = $this->admin->getObject($id);
 
@@ -905,7 +901,6 @@ class CRUDController extends Controller
     public function historyViewRevisionAction($id = null, $revision = null, Request $request = null)
     {
         $request = $this->resolveRequest($request);
-        $id = $request->get($this->admin->getIdParameter());
 
         $object = $this->admin->getObject($id);
 
@@ -973,8 +968,6 @@ class CRUDController extends Controller
         if (false === $this->admin->isGranted('EDIT')) {
             throw new AccessDeniedException();
         }
-
-        $id = $request->get($this->admin->getIdParameter());
 
         $object = $this->admin->getObject($id);
 
@@ -1152,8 +1145,6 @@ class CRUDController extends Controller
         if (!$this->admin->isAclEnabled()) {
             throw new NotFoundHttpException('ACL are not enabled for this admin');
         }
-
-        $id = $request->get($this->admin->getIdParameter());
 
         $object = $this->admin->getObject($id);
 
