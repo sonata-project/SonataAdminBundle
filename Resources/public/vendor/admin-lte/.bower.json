@@ -30,14 +30,5 @@
     "bower_components",
     "composer.json",
     "documentaion"
-  ],
-  "_release": "2.0.5",
-  "_resolution": {
-    "type": "version",
-    "tag": "v2.0.5",
-    "commit": "c25a8710f419a1be142f9b46037be00388a7272c"
-  },
-  "_source": "git://github.com/almasaeed2010/AdminLTE.git",
-  "_target": "~2.0.1",
-  "_originalSource": "admin-lte"
+  ]
 }
