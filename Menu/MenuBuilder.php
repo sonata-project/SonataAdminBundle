@@ -17,12 +17,12 @@ use Knp\Menu\Provider\MenuProviderInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Event\ConfigureMenuEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Sonata menu builder.
  *
  * @author Martin Hasoň <martin.hason@gmail.com>
+ * @author Alexandru Furculita <alex@furculita.net>
  */
 class MenuBuilder
 {
@@ -42,18 +42,11 @@ class MenuBuilder
     private $provider;
 
     /**
-     * @var Request
-     */
-    private $request;
-
-    /**
      * @var EventDispatcherInterface
      */
     private $eventDispatcher;
 
     /**
-     * Constructor.
-     *
      * @param Pool                     $pool
      * @param FactoryInterface         $factory
      * @param MenuProviderInterface    $provider
@@ -74,88 +67,31 @@ class MenuBuilder
      */
     public function createSidebarMenu()
     {
-        $menu = $this->factory->createItem('root', array(
-            'extras' => array(
-                'request' => $this->request,
-            ),
-        ));
+        $menu = $this->factory->createItem('root');
 
         foreach ($this->pool->getAdminGroups() as $name => $group) {
-            $attributes = array();
-
             $extras = array(
                 'icon'            => $group['icon'],
                 'label_catalogue' => $group['label_catalogue'],
                 'roles'           => $group['roles'],
             );
 
-            // Check if the menu group is built by a menu provider
-            if (isset($group['provider'])) {
-                $subMenu = $this->provider->get($group['provider']);
+            $menuProvider = isset($group['provider']) ? $group['provider'] : 'sonata_group_menu';
+            $subMenu = $this->provider->get(
+                $menuProvider,
+                array(
+                    'name'  => $name,
+                    'group' => $group,
+                )
+            );
 
-                $menu
-                    ->addChild($subMenu)
-                    ->setExtras(array_merge($subMenu->getExtras(), $extras))
-                    ->setAttributes(array_merge($subMenu->getAttributes(), $attributes))
-                ;
-
-                continue;
-            }
-
-            // The menu group is built by config
-            $menu->addChild($name, array(
-                'label'      => $group['label'],
-                'attributes' => $attributes,
-                'extras'     => $extras,
-            ));
-
-            foreach ($group['items'] as $item) {
-                if (isset($item['admin']) && !empty($item['admin'])) {
-                    $admin = $this->pool->getInstance($item['admin']);
-
-                    // skip menu item if no `list` url is available or user doesn't have the LIST access rights
-                    if (!$admin->hasRoute('list') || !$admin->isGranted('LIST')) {
-                        continue;
-                    }
-
-                    $label = $admin->getLabel();
-                    $options = $admin->generateMenuUrl('list');
-                    $options['extras'] = array(
-                        'translation_domain' => $admin->getTranslationDomain(),
-                        'admin'              => $admin,
-                    );
-                } else {
-                    $label = $item['label'];
-                    $options = array(
-                        'route'           => $item['route'],
-                        'routeParameters' => $item['route_params'],
-                        'extras'          => array(
-                            'translation_domain' => $group['label_catalogue'],
-                        ),
-                    );
-                }
-
-                $menu[$name]->addChild($label, $options);
-            }
-
-            if (0 === count($menu[$name]->getChildren())) {
-                $menu->removeChild($name);
-            }
+            $subMenu = $menu->addChild($subMenu);
+            $subMenu->setExtras(array_merge($subMenu->getExtras(), $extras));
         }
 
         $event = new ConfigureMenuEvent($this->factory, $menu);
         $this->eventDispatcher->dispatch(ConfigureMenuEvent::SIDEBAR, $event);
 
         return $event->getMenu();
-    }
-
-    /**
-     * Sets the request the service.
-     *
-     * @param Request $request
-     */
-    public function setRequest(Request $request = null)
-    {
-        $this->request = $request;
     }
 }

@@ -16,5 +16,11 @@
         <service id="sonata.admin.sidebar_menu" class="Knp\Menu\MenuItem">
             <tag name="knp_menu.menu" alias="sonata_admin_sidebar" />
         </service>
+
+        <service id="sonata.admin.menu.group_provider" class="Sonata\AdminBundle\Menu\Provider\GroupMenuProvider" public="false">
+            <argument type="service" id="knp_menu.factory" />
+            <argument type="service" id="sonata.admin.pool" />
+            <tag name="knp_menu.provider" />
+        </service>
     </services>
 </container>

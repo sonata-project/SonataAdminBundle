@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\Twig\Extension;
+namespace Sonata\AdminBundle\Tests\Menu;
 
 use Knp\Menu\MenuFactory;
 use Sonata\AdminBundle\Menu\MenuBuilder;
@@ -20,6 +20,9 @@ class MenuBuilderTest extends \PHPUnit_Framework_TestCase
     private $provider;
     private $factory;
     private $eventDispatcher;
+    /**
+     * @var MenuBuilder
+     */
     private $builder;
 
     protected function setUp()
@@ -32,29 +35,23 @@ class MenuBuilderTest extends \PHPUnit_Framework_TestCase
         $this->builder = new MenuBuilder($this->pool, $this->factory, $this->provider, $this->eventDispatcher);
     }
 
-    public function testGetKnpMenu()
+    public function testGetKnpMenuWithDefaultProvider()
     {
         $adminGroups = array(
             'bar' => array(
-                'label'            => 'foo',
-                'icon'             => '<i class="fa fa-edit"></i>',
-                'label_catalogue'  => 'SonataAdminBundle',
-                'items'            => array(
-                    array(
-                        'admin'        => '',
-                        'label'        => 'fooLabel',
-                        'route'        => 'FooRoute',
-                        'route_params' => array('foo' => 'bar'),
-                    ),
-                ),
-                'item_adds' => array(),
-                'roles'     => array(),
-
+                'icon'            => '<i class="fa fa-edit"></i>',
+                'label_catalogue' => '',
+                'roles'           => array(),
             ),
         );
+
+        $this->provider
+            ->expects($this->once())
+            ->method('get')
+            ->with('sonata_group_menu')
+            ->will($this->returnValue($this->factory->createItem('bar')->addChild('foo')->getParent()));
 
         $this->preparePool($adminGroups);
-
         $menu = $this->builder->createSidebarMenu();
 
         $this->assertInstanceOf('Knp\Menu\ItemInterface', $menu);
@@ -63,151 +60,18 @@ class MenuBuilderTest extends \PHPUnit_Framework_TestCase
         foreach ($menu->getChildren() as $key => $child) {
             $this->assertInstanceOf('Knp\Menu\MenuItem', $child);
             $this->assertSame('bar', $child->getName());
-            $this->assertSame($adminGroups['bar']['label'], $child->getLabel());
+            $this->assertSame('bar', $child->getLabel());
 
             // menu items
             $children = $child->getChildren();
             $this->assertCount(1, $children);
-            $this->assertArrayHasKey('fooLabel', $children);
-            $this->assertInstanceOf('Knp\Menu\MenuItem', $child['fooLabel']);
-            $this->assertSame('fooLabel', $child['fooLabel']->getLabel());
+            $this->assertArrayHasKey('foo', $children);
+            $this->assertInstanceOf('Knp\Menu\MenuItem', $child['foo']);
+            $this->assertSame('foo', $child['foo']->getLabel());
         }
     }
 
-    public function testGetKnpMenuWithAdmin()
-    {
-        $adminGroups = array(
-            'bar' => array(
-                'label'            => 'foo',
-                'icon'             => '<i class="fa fa-edit"></i>',
-                'label_catalogue'  => 'SonataAdminBundle',
-                'items'            => array(
-                    array(
-                        'admin'        => 'sonata_admin_foo_service',
-                        'label'        => 'fooLabel',
-                    ),
-                ),
-                'item_adds' => array(),
-                'roles'     => array(),
-            ),
-        );
-
-        $admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
-        $admin->expects($this->once())
-            ->method('hasRoute')
-            ->with($this->equalTo('list'))
-            ->will($this->returnValue(true))
-        ;
-
-        $admin->expects($this->any())
-            ->method('isGranted')
-            ->with($this->equalTo('LIST'))
-            ->will($this->returnValue(true))
-        ;
-
-        $admin->expects($this->once())
-            ->method('getLabel')
-            ->will($this->returnValue('foo_admin_label'))
-        ;
-
-        $admin->expects($this->once())
-            ->method('generateMenuUrl')
-            ->will($this->returnValue(array()))
-        ;
-
-        $this->preparePool($adminGroups, $admin);
-        $menu = $this->builder->createSidebarMenu();
-
-        $this->assertInstanceOf('Knp\Menu\ItemInterface', $menu);
-        $this->assertArrayHasKey('bar', $menu->getChildren());
-
-        foreach ($menu->getChildren() as $key => $child) {
-            $this->assertInstanceOf('Knp\Menu\MenuItem', $child);
-            $this->assertSame('bar', $child->getName());
-            $this->assertSame($adminGroups['bar']['label'], $child->getLabel());
-
-            // menu items
-            $children = $child->getChildren();
-            $this->assertCount(1, $children);
-            $this->assertArrayHasKey('foo_admin_label', $children);
-            $this->assertInstanceOf('Knp\Menu\MenuItem', $child['foo_admin_label']);
-            $this->assertSame('foo_admin_label', $child['foo_admin_label']->getLabel());
-        }
-    }
-
-    public function testGetKnpMenuWithNoListRoute()
-    {
-        $adminGroups = array(
-            'bar' => array(
-                'label'            => 'foo',
-                'icon'             => '<i class="fa fa-edit"></i>',
-                'label_catalogue'  => 'SonataAdminBundle',
-                'items'            => array(
-                    array(
-                        'admin'        => 'sonata_admin_foo_service',
-                        'label'        => 'fooLabel',
-                    ),
-                ),
-                'item_adds' => array(),
-                'roles'     => array(),
-            ),
-        );
-
-        $admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
-        $admin->expects($this->once())
-            ->method('hasRoute')
-            ->with($this->equalTo('list'))
-            ->will($this->returnValue(false))
-        ;
-
-        $this->preparePool($adminGroups, $admin);
-        $menu = $this->builder->createSidebarMenu();
-
-        $this->assertInstanceOf('Knp\Menu\ItemInterface', $menu);
-        $this->assertArrayNotHasKey('bar', $menu->getChildren());
-        $this->assertCount(0, $menu->getChildren());
-    }
-
-    public function testGetKnpMenuWithNotGrantedList()
-    {
-        $adminGroups = array(
-            'bar' => array(
-                'label'            => 'foo',
-                'icon'             => '<i class="fa fa-edit"></i>',
-                'label_catalogue'  => 'SonataAdminBundle',
-                'items'            => array(
-                    array(
-                        'admin'        => 'sonata_admin_foo_service',
-                        'label'        => 'fooLabel',
-                    ),
-                ),
-                'item_adds' => array(),
-                'roles'     => array(),
-            ),
-        );
-
-        $admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
-        $admin->expects($this->once())
-            ->method('hasRoute')
-            ->with($this->equalTo('list'))
-            ->will($this->returnValue(true))
-        ;
-
-        $admin->expects($this->any())
-            ->method('isGranted')
-            ->with($this->equalTo('LIST'))
-            ->will($this->returnValue(false))
-        ;
-
-        $this->preparePool($adminGroups, $admin);
-        $menu = $this->builder->createSidebarMenu();
-
-        $this->assertInstanceOf('Knp\Menu\ItemInterface', $menu);
-        $this->assertArrayNotHasKey('bar', $menu->getChildren());
-        $this->assertCount(0, $menu->getChildren());
-    }
-
-    public function testGetKnpMenuWithProvider()
+    public function testGetKnpMenuWithSpecifiedProvider()
     {
         $adminGroups = array(
             'bar' => array(
@@ -222,8 +86,7 @@ class MenuBuilderTest extends \PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('get')
             ->with('my_menu')
-            ->will($this->returnValue($this->factory->createItem('bar')->addChild('foo')->getParent()))
-        ;
+            ->will($this->returnValue($this->factory->createItem('bar')->addChild('foo')->getParent()));
 
         $this->preparePool($adminGroups);
         $menu = $this->builder->createSidebarMenu();
@@ -249,12 +112,12 @@ class MenuBuilderTest extends \PHPUnit_Framework_TestCase
     {
         $adminGroups = array(
             'bar' => array(
-                'label'            => 'foo',
-                'icon'             => '<i class="fa fa-edit"></i>',
-                'label_catalogue'  => 'SonataAdminBundle',
-                'items'            => array(),
-                'item_adds'        => array(),
-                'roles'            => array(),
+                'label'           => 'foo',
+                'icon'            => '<i class="fa fa-edit"></i>',
+                'label_catalogue' => 'SonataAdminBundle',
+                'items'           => array(),
+                'item_adds'       => array(),
+                'roles'           => array(),
             ),
         );
 
@@ -263,8 +126,10 @@ class MenuBuilderTest extends \PHPUnit_Framework_TestCase
         $this->eventDispatcher
             ->expects($this->once())
             ->method('dispatch')
-            ->with($this->equalTo('sonata.admin.event.configure.menu.sidebar'), $this->isInstanceOf('Sonata\AdminBundle\Event\ConfigureMenuEvent'))
-        ;
+            ->with(
+                $this->equalTo('sonata.admin.event.configure.menu.sidebar'),
+                $this->isInstanceOf('Sonata\AdminBundle\Event\ConfigureMenuEvent')
+            );
 
         $this->builder->createSidebarMenu();
     }
@@ -273,15 +138,13 @@ class MenuBuilderTest extends \PHPUnit_Framework_TestCase
     {
         $this->pool->expects($this->once())
             ->method('getAdminGroups')
-            ->will($this->returnValue($adminGroups))
-        ;
+            ->will($this->returnValue($adminGroups));
 
         if (null !== $admin) {
             $this->pool->expects($this->once())
                 ->method('getInstance')
                 ->with($this->equalTo('sonata_admin_foo_service'))
-                ->will($this->returnValue($admin))
-            ;
+                ->will($this->returnValue($admin));
         }
     }
 }
