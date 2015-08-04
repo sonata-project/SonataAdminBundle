@@ -1538,13 +1538,17 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo($object))
             ->will($this->returnValue('foo_normalized'));
 
+        $this->admin->expects($this->once())
+            ->method('toString')
+            ->will($this->returnValue('foo'));
+
         $this->request->setMethod('POST');
         $this->request->headers->set('X-Requested-With', 'XMLHttpRequest');
 
         $response = $this->controller->editAction(null, $this->request);
 
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $response);
-        $this->assertEquals(json_encode(array('result' => 'ok', 'objectId'  => 'foo_normalized')), $response->getContent());
+        $this->assertEquals(json_encode(array('result' => 'ok', 'objectId'  => 'foo_normalized', 'objectName' => 'foo')), $response->getContent());
         $this->assertEquals(array(), $this->session->getFlashBag()->all());
     }
 

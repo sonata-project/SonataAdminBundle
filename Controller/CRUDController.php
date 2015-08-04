@@ -415,8 +415,9 @@ class CRUDController extends Controller
 
                     if ($this->isXmlHttpRequest($request)) {
                         return $this->renderJson(array(
-                            'result'    => 'ok',
-                            'objectId'  => $this->admin->getNormalizedIdentifier($object),
+                            'result'     => 'ok',
+                            'objectId'   => $this->admin->getNormalizedIdentifier($object),
+                            'objectName' => $this->escapeHtml($this->admin->toString($object)),
                         ), 200, array(), $request);
                     }
 
