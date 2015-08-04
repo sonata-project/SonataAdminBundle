@@ -302,12 +302,12 @@ class Configuration implements ConfigurationInterface
 
                                 'bundles/sonatacore/vendor/moment/min/moment.min.js',
 
+                                'bundles/sonataadmin/vendor/jqueryui/ui/minified/jquery-ui.min.js',
+                                'bundles/sonataadmin/vendor/jqueryui/ui/minified/i18n/jquery-ui-i18n.min.js',
+
                                 'bundles/sonatacore/vendor/bootstrap/dist/js/bootstrap.min.js',
 
                                 'bundles/sonatacore/vendor/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
-
-                                'bundles/sonataadmin/vendor/jqueryui/ui/minified/jquery-ui.min.js',
-                                'bundles/sonataadmin/vendor/jqueryui/ui/minified/i18n/jquery-ui-i18n.min.js',
 
                                 'bundles/sonataadmin/vendor/jquery-form/jquery.form.js',
                                 'bundles/sonataadmin/jquery/jquery.confirmExit.js',
