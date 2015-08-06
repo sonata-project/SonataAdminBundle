@@ -124,6 +124,7 @@ class Configuration implements ConfigurationInterface
                                     ->scalarNode('label')->end()
                                     ->scalarNode('label_catalogue')->end()
                                     ->scalarNode('icon')->defaultValue('<i class="fa fa-folder"></i>')->end()
+                                    ->scalarNode('on_top')->defaultFalse()->info('Show menu item in side dashboard menu without treeview')->end()
                                     ->scalarNode('provider')->end()
                                     ->arrayNode('items')
                                         ->beforeNormalization()

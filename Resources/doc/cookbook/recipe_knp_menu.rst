@@ -180,6 +180,53 @@ your admin services or simply remove menu items from the ``sonata_admin`` dashbo
                           label:        Blog
                         - sonata.news.admin.news
 
+Show menu item without treeview
+-------------------------------
+
+You can modify the menu to show menu item without treeview. You need to add option ``on_top`` in your admin services
+or in sonata_admin dashboard group configuration:
+
+.. code-block:: yaml
+
+    sonata_admin.admin.post:
+        class: Sonata\AdminBundle\Admin\PostAdmin
+        arguments: [~, Sonata\AdminBundle\Entity\Post, SonataAdminBundle:CRUD]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: admin, label: Post, on_top: true}
+
+.. code-block:: yaml
+
+    # app/config/config.yml
+
+    sonata_admin:
+        dashboard:
+            groups:
+                news:
+                    on_top:               true
+                    label:                ~
+                    label_catalogue:      ~
+                    items:
+                        - sonata.news.admin.post
+
+Your can't use this option for two or more items in the same time, for example:
+
+.. code-block:: yaml
+
+    # app/config/config.yml
+
+    sonata_admin:
+        dashboard:
+            groups:
+                news:
+                    on_top:               true
+                    label:                ~
+                    label_catalogue:      ~
+                    items:
+                        - sonata.news.admin.post
+                        - route:        blog_home
+                          label:        Blog
+
+In this case you have an exception: "You can't use ``on_top`` option with multiple same name groups".
 
 .. _KnpMenu: https://github.com/KnpLabs/KnpMenu
 .. _Knp documentation: http://symfony.com/doc/current/bundles/KnpMenuBundle/index.html#create-your-first-menu

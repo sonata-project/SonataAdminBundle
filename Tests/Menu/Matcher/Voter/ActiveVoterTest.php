@@ -19,7 +19,7 @@ class ActiveVoterTest extends AbstractVoterTest
     /**
      * {@inheritdoc}
      */
-    public function createVoter($dataVoter)
+    public function createVoter($dataVoter, $route)
     {
         return new ActiveVoter();
     }
@@ -30,9 +30,9 @@ class ActiveVoterTest extends AbstractVoterTest
     public function provideData()
     {
         return array(
-            'active'    => array(true, null, true),
-            'no active' => array(false, null, false),
-            'null'      => array(null, null, null),
+            'active'    => array(true, null, true, true),
+            'no active' => array(false, null, false, false),
+            'null'      => array(null, null, null, null),
         );
     }
 
