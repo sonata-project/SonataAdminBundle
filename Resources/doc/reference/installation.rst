@@ -21,6 +21,9 @@ for older versions:
 
     Please provide a version constraint for the sonata-project/admin-bundle requirement: dev-master
 
+.. note::
+    If you are using Symfony 2.8 and upper, you need to require :code:`symfony/security-acl` to make it working.
+
 Selecting and downloading a storage bundle
 ------------------------------------------
 
