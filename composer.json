@@ -21,7 +21,6 @@
         "symfony/form": "~2.3",
         "symfony/validator": "~2.3",
         "symfony/security-bundle": "~2.3",
-        "symfony/security-acl": "~2.3",
         "symfony/routing": "~2.3",
         "symfony/config": "~2.3",
         "symfony/console": "~2.3",
@@ -43,12 +42,14 @@
     "require-dev": {
         "jms/translation-bundle": "~1.1",
         "symfony/yaml": "~2.3",
+        "symfony/security-acl": "~2.4",
         "sonata-project/intl-bundle": "~2.1",
         "symfony/phpunit-bridge": "~2.7|~3.0"
     },
     "suggest": {
         "jms/translation-bundle": "Extract message keys from Admins",
-        "sonata-project/intl-bundle": "Add localized date and number into the list"
+        "sonata-project/intl-bundle": "Add localized date and number into the list",
+        "symfony/security-acl": "To make sonata working with Symfony >=2.8"
     },
     "autoload": {
         "psr-4": { "Sonata\\AdminBundle\\": "" }
