@@ -54,24 +54,27 @@ class AdminType extends AbstractType
         if ($builder->getData() === null) {
             $p = new PropertyAccessor(false, true);
             try {
-                // for PropertyAccessor < 2.5
-                // @todo remove this code for old PropertyAccessor after dropping support for Symfony 2.3
-                if (!method_exists($p, 'isReadable')) {
-                    $subjectCollection = $p->getValue(
-                        $admin->getParentFieldDescription()->getAdmin()->getSubject(),
-                        $this->getFieldDescription($options)->getFieldName()
-                    );
-                    if ($subjectCollection instanceof Collection) {
-                        $subject = $subjectCollection->get(trim($options['property_path'], '[]'));
+                $parentSubject = $admin->getParentFieldDescription()->getAdmin()->getSubject();
+                if ($parentSubject !== null && $parentSubject !== false) {
+                    // for PropertyAccessor < 2.5
+                    // @todo remove this code for old PropertyAccessor after dropping support for Symfony 2.3
+                    if (!method_exists($p, 'isReadable')) {
+                        $subjectCollection = $p->getValue(
+                            $parentSubject,
+                            $this->getFieldDescription($options)->getFieldName()
+                        );
+                        if ($subjectCollection instanceof Collection) {
+                            $subject = $subjectCollection->get(trim($options['property_path'], '[]'));
+                        }
+                    } else {
+                        // for PropertyAccessor >= 2.5
+                        $subject = $p->getValue(
+                            $parentSubject,
+                            $this->getFieldDescription($options)->getFieldName().$options['property_path']
+                        );
                     }
-                } else {
-                    // for PropertyAccessor >= 2.5
-                    $subject = $p->getValue(
-                        $admin->getParentFieldDescription()->getAdmin()->getSubject(),
-                        $this->getFieldDescription($options)->getFieldName().$options['property_path']
-                    );
+                    $builder->setData($subject);
                 }
-                $builder->setData($subject);
             } catch (NoSuchIndexException $e) {
                 // no object here
             }
