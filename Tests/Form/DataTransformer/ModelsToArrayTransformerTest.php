@@ -31,9 +31,16 @@ class ModelsToArrayTransformerTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->modelChoiceList = $this->getMockBuilder('Sonata\AdminBundle\Form\ChoiceList\ModelChoiceList')
-            ->disableOriginalConstructor()
-            ->getMock();
+        // TODO: Remove condition when bumping requirements to SF 2.7+
+        if (class_exists('Symfony\Component\Form\ChoiceList\ArrayChoiceList')) {
+            $this->modelChoiceList = $this->getMockBuilder('Sonata\AdminBundle\Form\ChoiceList\ModelChoiceList')
+                ->disableOriginalConstructor()
+                ->getMock();
+        } else {
+            $this->modelChoiceList = $this->getMockBuilder('Sonata\AdminBundle\Form\ChoiceList\LegacyModelChoiceList')
+                ->disableOriginalConstructor()
+                ->getMock();
+        }
 
         // Symfony < 2.7 BC
         if (class_exists('Symfony\Component\Form\ChoiceList\LegacyChoiceListAdapter')) {

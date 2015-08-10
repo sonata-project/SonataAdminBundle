@@ -41,7 +41,12 @@ class ModelTypeTest extends TypeTestCase
         $this->assertEquals('link_list', $options['btn_list']);
         $this->assertEquals('link_delete', $options['btn_delete']);
         $this->assertEquals('SonataAdminBundle', $options['btn_catalogue']);
-        $this->assertInstanceOf('Sonata\AdminBundle\Form\ChoiceList\ModelChoiceList', $options['choice_list']);
+        // TODO: Remove condition when bumping requirements to SF 2.7+
+        if (class_exists('Symfony\Component\Form\ChoiceList\ArrayChoiceList')) {
+            $this->assertInstanceOf('Sonata\AdminBundle\Form\ChoiceList\ModelChoiceList', $options['choice_list']);
+        } else {
+            $this->assertInstanceOf('Sonata\AdminBundle\Form\ChoiceList\LegacyModelChoiceList', $options['choice_list']);
+        }
     }
 
     /**
@@ -71,7 +76,12 @@ class ModelTypeTest extends TypeTestCase
         $this->assertEquals('link_list', $options['btn_list']);
         $this->assertEquals('link_delete', $options['btn_delete']);
         $this->assertEquals('SonataAdminBundle', $options['btn_catalogue']);
-        $this->assertInstanceOf('Sonata\AdminBundle\Form\ChoiceList\ModelChoiceList', $options['choice_list']);
+        // TODO: Remove condition when bumping requirements to SF 2.7+
+        if (class_exists('Symfony\Component\Form\ChoiceList\ArrayChoiceList')) {
+            $this->assertInstanceOf('Sonata\AdminBundle\Form\ChoiceList\ModelChoiceList', $options['choice_list']);
+        } else {
+            $this->assertInstanceOf('Sonata\AdminBundle\Form\ChoiceList\LegacyModelChoiceList', $options['choice_list']);
+        }
     }
 
     public function getCompoundOptionTests()
