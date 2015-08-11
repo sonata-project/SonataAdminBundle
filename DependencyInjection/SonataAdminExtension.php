@@ -93,6 +93,10 @@ BOOM
         $pool->replaceArgument(2, $config['title_logo']);
         $pool->replaceArgument(3, $config['options']);
 
+        if (false === $config['options']['lock_protection']) {
+            $container->removeDefinition('sonata.admin.lock.extension');
+        }
+
         $container->setParameter('sonata.admin.configuration.templates', $config['templates']);
         $container->setParameter('sonata.admin.configuration.admin_services', $config['admin_services']);
         $container->setParameter('sonata.admin.configuration.dashboard_groups', $config['dashboard']['groups']);

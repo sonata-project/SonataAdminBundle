@@ -162,6 +162,10 @@
                 <source>flash_edit_error</source>
                 <target>Une erreur est intervenue lors de la mise à jour de l'élément "%name%".</target>
             </trans-unit>
+            <trans-unit id='flash_lock_error'>
+                <source>flash_lock_error</source>
+                <target>Un autre utilisateur a modifié l'élément "%name%". Veuillez %link_start%cliquer ici%link_end% pour recharger la page et appliquer les changements à nouveau.</target>
+            </trans-unit>
             <trans-unit id='flash_batch_delete_success'>
                 <source>flash_batch_delete_success</source>
                 <target>Les éléments séléctionnés ont été supprimés avec succès.</target>
