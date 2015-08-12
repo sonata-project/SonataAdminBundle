@@ -438,10 +438,6 @@
                 <source>noscript_warning</source>
                 <target>Javascript is disabled in your web browser. Some features will not work properly.</target>
             </trans-unit>
-            <trans-unit id="message_form_group_empty">
-                <source>message_form_group_empty</source>
-                <target>No fields available.</target>
-            </trans-unit>
             <trans-unit id="link_filters">
                 <source>link_filters</source>
                 <target>Filters</target>

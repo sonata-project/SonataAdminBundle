@@ -438,10 +438,6 @@
                 <source>noscript_warning</source>
                 <target>Javascript ist in ihrem Brwoser deaktiviert. Einige Funktionen werden nicht korrekt funktionieren.</target>
             </trans-unit>
-            <trans-unit id="message_form_group_empty">
-                <source>message_form_group_empty</source>
-                <target>Keine Felder verfügbar.</target>
-            </trans-unit>
             <trans-unit id="link_filters">
                 <source>link_filters</source>
                 <target>Filter</target>

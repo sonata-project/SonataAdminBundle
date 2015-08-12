@@ -426,10 +426,6 @@
                 <source>noscript_warning</source>
                 <target>Su navegador no soporta JavaScript o se encuentra deshabilitado  Algunas características no funcionarán correctamente.</target>
             </trans-unit>
-            <trans-unit id="message_form_group_empty">
-                <source>message_form_group_empty</source>
-                <target>No hay campos disponibles.</target>
-            </trans-unit>
             <trans-unit id="link_filters">
                 <source>link_filters</source>
                 <target>Filtros</target>

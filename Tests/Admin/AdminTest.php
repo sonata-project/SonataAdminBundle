@@ -1446,6 +1446,9 @@ class AdminTest extends \PHPUnit_Framework_TestCase
         return $tagAdmin;
     }
 
+    /**
+     * @group legacy
+     */
     public function testRemoveFieldFromFormGroup()
     {
         $formGroups = array(
@@ -1471,6 +1474,43 @@ class AdminTest extends \PHPUnit_Framework_TestCase
 
         $admin->removeFieldFromFormGroup('bar');
         $this->assertEquals($admin->getFormGroups(), array());
+    }
+
+    public function testDefineFormBuilderCleanupFormGroupsAndTabs()
+    {
+        $admin = $this->getMockBuilder('Sonata\AdminBundle\Tests\Fixtures\Admin\PostAdmin')
+            ->disableOriginalConstructor()
+            ->setMethods(array('attachInlineValidator'))
+            ->getMock()
+        ;
+
+        $formContractor = $this->getMock('Sonata\AdminBundle\Builder\FormContractorInterface');
+        $admin->setFormContractor($formContractor);
+
+        $formGroups = array(
+            'foobar' => array(
+                'fields' => array(
+                    'foo' => 'foo',
+                    'bar' => 'bar',
+                ),
+            ),
+        );
+        $admin->setFormGroups($formGroups);
+        $this->assertEquals($admin->getFormGroups(), $formGroups);
+
+        $formTabs = array(
+            'default' => array(
+                'groups' => array('foo', 'bar', 'foobar'),
+            ),
+        );
+        $admin->setFormTabs($formTabs);
+        $this->assertEquals($admin->getFormTabs(), $formTabs);
+
+        $formBuilder = $this->getMock('Symfony\Component\Form\FormBuilderInterface');
+        $admin->defineFormBuilder($formBuilder);
+
+        $this->assertEquals($admin->getFormGroups(), array());
+        $this->assertEquals($admin->getFormTabs(), array());
     }
 
     public function testGetFilterParameters()

@@ -164,8 +164,6 @@ class FormMapper extends BaseGroupedMapper
      */
     public function remove($key)
     {
-        $this->admin->removeFormFieldDescription($key);
-        $this->admin->removeFieldFromFormGroup($key);
         $this->formBuilder->remove($key);
 
         return $this;

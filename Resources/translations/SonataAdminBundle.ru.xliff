@@ -426,10 +426,6 @@
                 <source>noscript_warning</source>
                 <target>В вашем браузере отключен Javascipt. Некоторые функции сайта будут недоступны.</target>
             </trans-unit>
-            <trans-unit id="message_form_group_empty">
-                <source>message_form_group_empty</source>
-                <target>Нет доступных полей</target>
-            </trans-unit>
             <trans-unit id="link_filters">
                 <source>link_filters</source>
                 <target>Фильтры</target>
