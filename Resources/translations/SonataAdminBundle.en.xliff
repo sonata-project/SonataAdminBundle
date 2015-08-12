@@ -162,6 +162,10 @@
               <source>flash_edit_error</source>
               <target>An error has occurred during update of item "%name%".</target>
             </trans-unit>
+            <trans-unit id='flash_lock_error'>
+                <source>flash_lock_error</source>
+                <target>Another user has modified item "%name%". Please %link_start%click here%link_end% to reload the page and apply the changes again.</target>
+            </trans-unit>
             <trans-unit id='flash_batch_delete_success'>
                 <source>flash_batch_delete_success</source>
                 <target>Selected items have been successfully deleted.</target>

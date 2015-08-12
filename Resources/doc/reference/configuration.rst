@@ -65,6 +65,7 @@ Full Configuration Options
                 form_type:            standard
                 dropdown_number_groups_per_colums:  2
                 title_mode:           ~ # One of "single_text"; "single_image"; "both"
+                lock_protection:      false
             dashboard:
                 groups:
 
