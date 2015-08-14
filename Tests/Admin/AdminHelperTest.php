@@ -13,8 +13,10 @@ namespace Sonata\AdminBundle\Tests\Admin;
 
 use Sonata\AdminBundle\Admin\AdminHelper;
 use Sonata\AdminBundle\Admin\Pool;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\HttpFoundation\Request;
 
 class AdminHelperTest extends \PHPUnit_Framework_TestCase
 {
@@ -111,5 +113,31 @@ class AdminHelperTest extends \PHPUnit_Framework_TestCase
         $object->expects($this->once())->method('addEntry');
 
         $helper->addNewInstance($object, $fieldDescription);
+    }
+
+    public function testAddNewInstanceInAssociation()
+    {
+        $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
+
+        $pool = new Pool($container, 'title', 'logo.png');
+        $helper = new AdminHelper($pool);
+
+        $admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $admin->expects($this->once())->method('getNewInstance')->will($this->returnValue(new \stdClass()));
+
+        $fieldDescription = $this->getMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+        $fieldDescription->expects($this->once())->method('getAssociationAdmin')->will($this->returnValue($admin));
+        $fieldDescription->expects($this->once())->method('getAssociationMapping')->will($this->returnValue(array('fieldName' => 'entries')));
+
+        $grandChild = $this->getMock('sdtClass', array('addEntry'), array(), 'GrandChild');
+        $grandChild->expects($this->once())->method('addEntry');
+
+        $child = $this->getMock('sdtClass', array('getBar'), array(), 'Child');
+        $child->expects($this->once())->method('getBar')->will($this->returnValue($grandChild));
+
+        $object = $this->getMock('sdtClass', array('getFoo'), array(), 'Actual');
+        $object->expects($this->once())->method('getFoo')->will($this->returnValue($child));
+
+        $helper->addNewInstance($object, $fieldDescription, array('foo', 'bar', 'entries'));
     }
 }

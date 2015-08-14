@@ -46,7 +46,7 @@ class AdminHelper
      */
     public function getChildFormBuilder(FormBuilderInterface $formBuilder, $elementId)
     {
-        foreach (new FormBuilderIterator($formBuilder) as $name => $formBuilder) {
+        foreach (new \RecursiveIteratorIterator(new FormBuilderIterator($formBuilder), \RecursiveIteratorIterator::SELF_FIRST) as $name => $formBuilder) {
             if ($name == $elementId) {
                 return $formBuilder;
             }
@@ -85,11 +85,6 @@ class AdminHelper
     }
 
     /**
-     * Note:
-     *   This code is ugly, but there is no better way of doing it.
-     *   For now the append form element action used to add a new row works
-     *   only for direct FieldDescription (not nested one).
-     *
      * @throws \RuntimeException
      *
      * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
@@ -113,6 +108,14 @@ class AdminHelper
         // retrieve the FieldDescription
         $fieldDescription = $admin->getFormFieldDescription($childFormBuilder->getName());
 
+        if (null === $fieldDescription) {
+            //its null because the form field couldnt be found in the main form, so search the childs with the fieldpath
+            $fieldPath = explode('_', $elementId);
+            array_shift($fieldPath);
+
+            $fieldDescription = $this->getChildFieldDescription($admin, $childFormBuilder, $fieldPath);
+        }
+
         try {
             $value = $fieldDescription->getValue($form->getData());
         } catch (NoValueException $e) {
@@ -127,7 +130,7 @@ class AdminHelper
         }
 
         $objectCount = count($value);
-        $postCount   = count($data[$childFormBuilder->getName()]);
+        $postCount = count($data[$childFormBuilder->getName()]);
 
         $fields = array_keys($fieldDescription->getAssociationAdmin()->getFormFieldDescriptions());
 
@@ -140,11 +143,11 @@ class AdminHelper
         // add new elements to the subject
         while ($objectCount < $postCount) {
             // append a new instance into the object
-            $this->addNewInstance($form->getData(), $fieldDescription);
+            $this->addNewInstance($form->getData(), $fieldDescription, isset($fieldPath) ? $fieldPath : array());
             ++$objectCount;
         }
 
-        $this->addNewInstance($form->getData(), $fieldDescription);
+        $this->addNewInstance($form->getData(), $fieldDescription, isset($fieldPath) ? $fieldPath : array());
 
         $finalForm = $admin->getFormBuilder()->getForm();
         $finalForm->setData($subject);
@@ -160,13 +163,18 @@ class AdminHelper
      *
      * @param object                                              $object
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
+     * @param array                                               $fieldPath
      *
      * @throws \RuntimeException
      */
-    public function addNewInstance($object, FieldDescriptionInterface $fieldDescription)
+    public function addNewInstance($object, FieldDescriptionInterface $fieldDescription, $fieldPath = array())
     {
+        if ($fieldPath) {
+            $object = $this->getChildObject($object, $fieldPath);
+        }
+
         $instance = $fieldDescription->getAssociationAdmin()->getNewInstance();
-        $mapping  = $fieldDescription->getAssociationMapping();
+        $mapping = $fieldDescription->getAssociationMapping();
 
         $method = sprintf('add%s', $this->camelize($mapping['fieldName']));
 
@@ -177,7 +185,7 @@ class AdminHelper
                 $method = sprintf('add%s', $this->camelize(Inflector::singularize($mapping['fieldName'])));
 
                 if (!method_exists($object, $method)) {
-                    throw new \RuntimeException(sprintf('Please add a method %s in the %s class!', $method, ClassUtils::getClass($object)));
+                    throw new \RuntimeException(sprintf('Please add a %s method in the %s class!', $method, ClassUtils::getClass($object)));
                 }
             }
         }
@@ -197,5 +205,45 @@ class AdminHelper
     public function camelize($property)
     {
         return BaseFieldDescription::camelize($property);
+    }
+
+    /**
+     * Recursively iterate through all child associations to find the correct FieldDescription.
+     *
+     * @param AdminInterface       $admin
+     * @param FormBuilderInterface $childFormBuilder
+     * @param array                $fieldPath
+     *
+     * @return FieldDescriptionInterface
+     */
+    private function getChildFieldDescription(AdminInterface $admin, FormBuilderInterface $childFormBuilder, array $fieldPath)
+    {
+        $formFieldDescription = $admin->getFormFieldDescription(array_shift($fieldPath));
+
+        if ($childField = $formFieldDescription->getAssociationAdmin()->getFormFieldDescription($childFormBuilder->getName())) {
+            return $childField;
+        }
+
+        return $this->getChildFieldDescription($formFieldDescription->getAssociationAdmin(), $childFormBuilder, $fieldPath);
+    }
+
+    /**
+     * Recursively iterate through all child associations to find the correct entity.
+     *
+     * @param object $object
+     * @param array  $fieldPath
+     *
+     * @return object
+     */
+    private function getChildObject($object, array $fieldPath)
+    {
+        $current = array_shift($fieldPath);
+        $method = sprintf('get%s', $this->camelize($current));
+
+        if (1 === count($fieldPath)) { //only 1 entry left means we reached the correct
+            return $object->$method();
+        }
+
+        return $this->getChildObject($object->$method(), $fieldPath);
     }
 }
