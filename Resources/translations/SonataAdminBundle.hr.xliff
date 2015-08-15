@@ -4,7 +4,7 @@
         <body>
             <trans-unit id="sonata_administration">
                 <source>sonata_administration</source>
-                <target>Administration</target>
+                <target>Administracija</target>
             </trans-unit>
             <trans-unit id="action_delete">
                 <source>action_delete</source>
@@ -28,7 +28,7 @@
             </trans-unit>
             <trans-unit id="btn_create_and_return_to_list">
                 <source>btn_create_and_return_to_list</source>
-                <target>Create and return to list</target>
+                <target>Spremi i zatvori</target>
             </trans-unit>
             <trans-unit id="btn_filter">
                 <source>btn_filter</source>
@@ -196,11 +196,11 @@
             </trans-unit>
             <trans-unit id="message_batch_confirmation">
                 <source>message_batch_confirmation</source>
-                <target>Jeste li sigurni da želite izvršiti ovu naredbu nad odabranim unosom?|Jeste li sigurni da želite izvršiti ovu naredbu na %count% odabranih unosa?|Jeste li sigurni da želite izvršiti ovu naredbu na %count% odabrana unosa?</target>
+                <target>Jeste li sigurni da ovu naredbu želite izvršiti nad odabranim unosom?|Jeste li sigurni da ovu naredbu želite izvršiti nad %count% odabranih unosa?|Jeste li sigurni da ovu naredbu želite izvršiti nad %count% odabrana unosa?</target>
             </trans-unit>
             <trans-unit id="message_batch_all_confirmation">
                 <source>message_batch_all_confirmation</source>
-                <target>message_batch_all_confirmation</target>
+                <target>Jeste li sigurni da ovu naredbu želite izvršiti nad svim unosima?</target>
             </trans-unit>
             <trans-unit id="btn_execute_batch_action">
                 <source>btn_execute_batch_action</source>
@@ -302,6 +302,10 @@
                 <source>td_action</source>
                 <target>Naredba</target>
             </trans-unit>
+            <trans-unit id="td_compare">
+                <source>td_compare</source>
+                <target>Usporedi</target>
+            </trans-unit>
             <trans-unit id="td_revision">
                 <source>td_revision</source>
                 <target>Revizije</target>
@@ -318,6 +322,10 @@
                 <source>label_view_revision</source>
                 <target>Vidi reviziju</target>
             </trans-unit>
+            <trans-unit id="label_compare_revision">
+                <source>label_compare_revision</source>
+                <target>Usporedi reviziju</target>
+            </trans-unit>
             <trans-unit id="list_results_count">
                 <source>list_results_count</source>
                 <target>%count% rezultat|%count% rezultata|%count% rezultata</target>
@@ -332,15 +340,15 @@
             </trans-unit>
             <trans-unit id="btn_preview">
                 <source>btn_preview</source>
-                <target>btn_preview</target>
+                <target>Pregled</target>
             </trans-unit>
             <trans-unit id="btn_preview_approve">
                 <source>btn_preview_approve</source>
-                <target>btn_preview_approve</target>
+                <target>Odobri</target>
             </trans-unit>
             <trans-unit id="btn_preview_decline">
                 <source>btn_preview_decline</source>
-                <target>btn_preview_decline</target>
+                <target>Odbij</target>
             </trans-unit>
             <trans-unit id="label_per_page">
               <source>label_per_page</source>
@@ -348,11 +356,11 @@
             </trans-unit>
             <trans-unit id="list_select">
               <source>list_select</source>
-              <target>list_select</target>
+              <target>Odaberi</target>
             </trans-unit>
             <trans-unit id="confirm_exit">
                 <source>confirm_exit</source>
-                <target>confirm_exit</target>
+                <target>Promjene nisu spremljene.</target>
             </trans-unit>
             <trans-unit id="link_edit_acl">
               <source>link_edit_acl</source>
@@ -360,23 +368,23 @@
             </trans-unit>
             <trans-unit id="btn_update_acl">
               <source>btn_update_acl</source>
-              <target>btn_update_acl</target>
+              <target>Ažuriraj ACL</target>
             </trans-unit>
             <trans-unit id="flash_acl_update_success">
                 <source>flash_acl_edit_success</source>
-                <target>flash_acl_update_success</target>
+                <target>ACL je uspješno ažuriran.</target>
             </trans-unit>
             <trans-unit id="link_action_acl">
                 <source>link_action_acl</source>
-                <target>link_action_acl</target>
+                <target>ACL</target>
             </trans-unit>
             <trans-unit id="short_object_description_placeholder">
               <source>short_object_description_placeholder</source>
-              <target>short_object_description_placeholder</target>
+              <target>Nema odabira</target>
             </trans-unit>
             <trans-unit id="title_search_results">
                 <source>title_search_results</source>
-                <target>title_search_results</target>
+                <target>Rezultati pretraživanja: %query%</target>
             </trans-unit>
             <trans-unit id="search_placeholder">
                 <source>search_placeholder</source>
@@ -384,23 +392,23 @@
             </trans-unit>
             <trans-unit id="no_results_found">
                 <source>no_results_found</source>
-                <target>no_results_found</target>
+                <target>ništa nije pronađeno</target>
             </trans-unit>
             <trans-unit id="add_new_entry">
                 <source>add_new_entry</source>
-                <target>add_new_entry</target>
+                <target>dodaj novi unos</target>
             </trans-unit>
             <trans-unit id="link_actions">
                 <source>link_actions</source>
-                <target>link_actions</target>
+                <target>Akcije</target>
             </trans-unit>
             <trans-unit id="noscript_warning">
                 <source>noscript_warning</source>
-                <target>noscript_warning</target>
+                <target>Vaš internet preglednik ne podržava JavaScript. Neke mogućnosti neće raditi ispravno.</target>
             </trans-unit>
             <trans-unit id="message_form_group_empty">
                 <source>message_form_group_empty</source>
-                <target>message_form_group_empty</target>
+                <target>Nijedno polje.</target>
             </trans-unit>
         </body>
     </file>
