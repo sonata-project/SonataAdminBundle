@@ -1367,6 +1367,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
                     $extension->validate($admin, $errorElement, $object);
                 }
             },
+            'serializingWarning' => true,
         )));
     }
 
