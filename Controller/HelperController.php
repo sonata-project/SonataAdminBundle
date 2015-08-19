@@ -275,6 +275,11 @@ class HelperController
             $propertyPath = new PropertyPath($field);
         }
 
+        // Handle time type has setter expect a DateTime object
+        if($value !== '' && $fieldDescription->getType() == 'date') {
+            $value = new \DateTime($value);
+        }
+
         $propertyAccessor->setValue($object, $propertyPath, '' !== $value ? $value : null);
 
         $violations = $this->validator->validate($object);
