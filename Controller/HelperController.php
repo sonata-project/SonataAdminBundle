@@ -275,7 +275,7 @@ class HelperController
             $propertyPath = new PropertyPath($field);
         }
 
-        // Handle time type has setter expect a DateTime object
+        // Handle date type has setter expect a DateTime object
         if($value !== '' && $fieldDescription->getType() == 'date') {
             $value = new \DateTime($value);
         }
