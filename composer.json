@@ -41,12 +41,17 @@
         "knplabs/knp-menu-bundle": "^2.1.1"
     },
     "require-dev": {
+        "jms/di-extra-bundle": "~1.7",
         "sensio/generator-bundle": "~2.3|~3.0",
         "symfony/yaml": "~2.3|~3.0",
         "sonata-project/intl-bundle": "dev-master",
         "symfony/phpunit-bridge": "~2.7|~3.0"
     },
+    "conflict": {
+        "jms/di-extra-bundle": "<1.7.0"
+    },
     "suggest": {
+        "jms/di-extra-bundle": "Annotations for Admin definition",
         "jms/translation-bundle": "Extract message keys from Admins",
         "sensio/generator-bundle": "Add sonata:admin:generate command",
         "sonata-project/intl-bundle": "Add localized date and number into the list"
