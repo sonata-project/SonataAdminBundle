@@ -186,9 +186,27 @@ class AddDependencyCallsCompilerPassTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    /**
-     * @covers Sonata\AdminBundle\DependencyInjection\Compiler\AddDependencyCallsCompilerPass::process
-     */
+    public function testProcessSortAdmins()
+    {
+        $container = $this->getContainer();
+
+        $config = $this->config;
+        $config['options']['sort_admins'] = true;
+        unset($config['dashboard']['groups']);
+
+        $this->extension->load(array($config), $container);
+
+        $compilerPass = new AddDependencyCallsCompilerPass();
+        $compilerPass->process($container);
+        $container->compile();
+
+        // use array_values to check groups position
+        $adminGroups = array_values($container->get('sonata.admin.pool')->getAdminGroups());
+
+        $this->assertEquals('sonata_group_one', $adminGroups['0']['label'], 'second group in configuration, first in list');
+        $this->assertEquals('1 Entry', $adminGroups[0]['items'][0]['label'], 'second entry for group in configuration, first in list');
+    }
+
     public function testProcessGroupNameAsParameter()
     {
         $config = array(
@@ -402,20 +420,20 @@ class AddDependencyCallsCompilerPassTest extends \PHPUnit_Framework_TestCase
 
         // Add admin definition's
         $container
+            ->register('sonata_news_admin')
+            ->setClass('Sonata\AdminBundle\Tests\DependencyInjection\MockAdmin')
+            ->setArguments(array('', 'Sonata\AdminBundle\Tests\DependencyInjection\News', 'SonataAdminBundle:CRUD'))
+            ->addTag('sonata.admin', array('group' => 'sonata_group_two', 'label' => '5 Entry', 'manager_type' => 'orm'));
+        $container
             ->register('sonata_post_admin')
             ->setClass('Sonata\AdminBundle\Tests\DependencyInjection\MockAdmin')
             ->setArguments(array('', 'Sonata\AdminBundle\Tests\DependencyInjection\Post', 'SonataAdminBundle:CRUD'))
             ->addTag('sonata.admin', array('group' => 'sonata_group_one', 'manager_type' => 'orm'));
         $container
-            ->register('sonata_news_admin')
-            ->setClass('Sonata\AdminBundle\Tests\DependencyInjection\MockAdmin')
-            ->setArguments(array('', 'Sonata\AdminBundle\Tests\DependencyInjection\News', 'SonataAdminBundle:CRUD'))
-            ->addTag('sonata.admin', array('group' => 'sonata_group_two', 'manager_type' => 'orm'));
-        $container
             ->register('sonata_article_admin')
             ->setClass('Sonata\AdminBundle\Tests\DependencyInjection\MockAdmin')
             ->setArguments(array('', 'Sonata\AdminBundle\Tests\DependencyInjection\Article', 'SonataAdminBundle:CRUD'))
-            ->addTag('sonata.admin', array('group' => 'sonata_group_one', 'manager_type' => 'doctrine_phpcr'));
+            ->addTag('sonata.admin', array('group' => 'sonata_group_one', 'label' => '1 Entry', 'manager_type' => 'doctrine_phpcr'));
 
         // translator
         $container
