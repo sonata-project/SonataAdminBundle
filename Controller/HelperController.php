@@ -276,7 +276,7 @@ class HelperController
         }
 
         // Handle date type has setter expect a DateTime object
-        if('' !== $value && $fieldDescription->getType() == 'date') {
+        if ('' !== $value && $fieldDescription->getType() == 'date') {
             $value = new \DateTime($value);
         }
 
