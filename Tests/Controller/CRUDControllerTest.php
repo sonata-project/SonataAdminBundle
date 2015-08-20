@@ -3471,6 +3471,58 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('batchActionBar executed', $result->getContent());
     }
 
+    public function testBatchActionWithRequesData()
+    {
+        $batchActions = array('delete' => array('label' => 'Foo Bar', 'ask_confirmation' => false));
+
+        $this->admin->expects($this->once())
+            ->method('getBatchActions')
+            ->will($this->returnValue($batchActions));
+
+        $datagrid = $this->getMock('\Sonata\AdminBundle\Datagrid\DatagridInterface');
+
+        $query = $this->getMock('\Sonata\AdminBundle\Datagrid\ProxyQueryInterface');
+        $datagrid->expects($this->once())
+            ->method('getQuery')
+            ->will($this->returnValue($query));
+
+        $this->admin->expects($this->once())
+            ->method('getDatagrid')
+            ->will($this->returnValue($datagrid));
+
+        $modelManager = $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface');
+
+        $this->admin->expects($this->once())
+            ->method('isGranted')
+            ->with($this->equalTo('DELETE'))
+            ->will($this->returnValue(true));
+
+        $this->admin->expects($this->any())
+            ->method('getModelManager')
+            ->will($this->returnValue($modelManager));
+
+        $this->admin->expects($this->any())
+            ->method('getClass')
+            ->will($this->returnValue('Foo'));
+
+        $modelManager->expects($this->once())
+            ->method('addIdentifiersToQuery')
+            ->with($this->equalTo('Foo'), $this->equalTo($query), $this->equalTo(array('123', '456')))
+            ->will($this->returnValue(true));
+
+        $this->request->setMethod('POST');
+        $this->request->request->set('data', json_encode(array('action' => 'delete', 'idx' => array('123', '456'), 'all_elements' => false)));
+        $this->request->request->set('foo', 'bar');
+        $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.batch');
+
+        $result = $this->controller->batchAction($this->request);
+
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse', $result);
+        $this->assertSame(array('flash_batch_delete_success'), $this->session->getFlashBag()->get('sonata_flash_success'));
+        $this->assertEquals('list?', $result->getTargetUrl());
+        $this->assertEquals('bar', $this->request->request->get('foo'));
+    }
+
     public function getCsrfProvider()
     {
         return $this->csrfProvider;

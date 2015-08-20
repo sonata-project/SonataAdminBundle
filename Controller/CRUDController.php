@@ -545,7 +545,7 @@ class CRUDController extends Controller
             $action       = $data['action'];
             $idx          = $data['idx'];
             $allElements  = $data['all_elements'];
-            $request->request->replace($data);
+            $request->request->replace(array_merge($request->request->all(), $data));
         } else {
             $request->request->set('idx', $request->get('idx', array()));
             $request->request->set('all_elements', $request->get('all_elements', false));
