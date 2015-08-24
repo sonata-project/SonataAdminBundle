@@ -48,6 +48,7 @@ var Admin = {
         Admin.setup_inline_form_errors(subject);
         Admin.setup_tree_view(subject);
         Admin.setup_collection_counter(subject);
+        Admin.setup_sticky_elements(subject);
 
 //        Admin.setup_list_modal(subject);
     },
@@ -527,6 +528,46 @@ var Admin = {
                     .appendTo(subject.parents('form:first'));
             }
             subject.remove();
+        });
+    },
+
+    setup_sticky_elements: function(subject) {
+        if (window.SONATA_CONFIG && window.SONATA_CONFIG.USE_STICKYFORMS) {
+            Admin.log('[core|setup_sticky_elements] setup sticky elements on', subject);
+
+            var stickyHeader = new Waypoint.Sticky({
+                element: jQuery(subject).find('.content-wrapper nav.navbar')[0],
+                offset:  50
+            });
+
+            var footer = jQuery.find('.content-wrapper .form-actions');
+            var stickyFooter = new Waypoint({
+                element: jQuery.find('.content-wrapper')[0],
+                offset: 'bottom-in-view',
+                handler: function(direction) {
+                    var position = jQuery('.sonata-ba-form form > .row').outerHeight() + jQuery(footer).outerHeight() - 2;
+
+                    if (position < jQuery(footer).offset().top) {
+                        jQuery(footer).removeClass('stuck');
+                    }
+
+                    if (direction == 'up') {
+                        jQuery(footer).addClass('stuck');
+                    }
+                }
+            });
+
+            Admin.handleScroll(footer);
+        }
+    },
+    handleScroll: function(footer) {
+        if (jQuery(window).scrollTop() + jQuery(window).height() != jQuery(document).height()) {
+            jQuery(footer).addClass('stuck');
+        }
+        $(window).scroll(function() {
+            if($(window).scrollTop() + $(window).height() == $(document).height()) {
+                jQuery(footer).removeClass('stuck');
+            }
         });
     }
 };

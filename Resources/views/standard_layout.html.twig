@@ -43,7 +43,8 @@ file that was distributed with this source code.
                 window.SONATA_CONFIG = {
                     CONFIRM_EXIT: {% if admin_pool is defined and admin_pool.getOption('confirm_exit') %}true{% else %}false{% endif %},
                     USE_SELECT2: {% if admin_pool is defined and admin_pool.getOption('use_select2') %}true{% else %}false{% endif %},
-                    USE_ICHECK: {% if admin_pool is defined and admin_pool.getOption('use_icheck') %}true{% else %}false{% endif %}
+                    USE_ICHECK: {% if admin_pool is defined and admin_pool.getOption('use_icheck') %}true{% else %}false{% endif %},
+                    USE_STICKYFORMS: {% if admin_pool is defined and admin_pool.getOption('use_stickyforms') %}true{% else %}false{% endif %}
                 };
                 window.SONATA_TRANSLATIONS = {
                     CONFIRM_EXIT:  '{{ 'confirm_exit'|trans({}, 'SonataAdminBundle')|escape('js') }}'
