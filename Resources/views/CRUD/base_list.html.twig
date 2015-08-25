@@ -206,7 +206,7 @@ file that was distributed with this source code.
                         <div class="filter_container {{ admin.datagrid.hasActiveFilters ? 'active' : 'inactive' }}">
                             {% for filter in admin.datagrid.filters %}
                                 <div class="form-group">
-                                    {% if filter.label is not sameas(false) %}
+                                    {% if filter.label is not same as(false) %}
                                     <label for="{{ form.children[filter.formName].children['value'].vars.id }}">{{ admin.trans(filter.label, {}, filter.translationDomain) }}</label>
                                     {% endif %}
                                     {% set attr = form.children[filter.formName].children['type'].vars.attr|default({}) %}

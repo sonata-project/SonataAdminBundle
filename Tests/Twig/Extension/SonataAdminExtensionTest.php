@@ -41,7 +41,7 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
     private $twigExtension;
 
     /**
-     * @var Twig_Environment
+     * @var \Twig_Environment
      */
     private $environment;
 

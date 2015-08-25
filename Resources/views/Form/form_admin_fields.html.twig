@@ -40,7 +40,7 @@ file that was distributed with this source code.
     {% endif%}
 
     {#{{ sonata_admin.admin.getConfigurationPool().getOption('form_type') }}#}
-    {% if label is not sameas(false) %}
+    {% if label is not same as(false) %}
         {% set label_attr = label_attr|merge({'class': label_attr.class|default('') ~ label_class }) %}
 
         {% if not compound %}
@@ -153,7 +153,7 @@ file that was distributed with this source code.
     {% if sonata_admin is not defined or not sonata_admin_enabled or not sonata_admin.field_description %}
         <div class="form-group {% if errors|length > 0%} has-error{% endif %}">
             {{ form_label(form, label|default(null)) }}
-            <div class="{% if label is sameas(false) %}sonata-collection-row-without-label{% endif %}">
+            <div class="{% if label is same as(false) %}sonata-collection-row-without-label{% endif %}">
                 {{ form_widget(form, {'horizontal': false, 'horizontal_input_wrapper_class': ''}) }} {# {'horizontal': false, 'horizontal_input_wrapper_class': ''} needed to avoid MopaBootstrapBundle messing with the DOM #}
                 {% if errors|length > 0 %}
                     <div class="help-block sonata-ba-field-error-messages">
@@ -172,7 +172,7 @@ file that was distributed with this source code.
                 {% endif %}
             {% endblock %}
 
-            {% set has_label = sonata_admin.field_description.options.name is defined or label is not sameas(false) %}
+            {% set has_label = sonata_admin.field_description.options.name is defined or label is not same as(false) %}
             <div class="{{ div_class }} sonata-ba-field sonata-ba-field-{{ sonata_admin.edit }}-{{ sonata_admin.inline }} {% if errors|length > 0 %}sonata-ba-field-error{% endif %} {% if not has_label %}sonata-collection-row-without-label{% endif %}">
 
                 {{ form_widget(form, {'horizontal': false, 'horizontal_input_wrapper_class': ''}) }} {# {'horizontal': false, 'horizontal_input_wrapper_class': ''} needed to avoid MopaBootstrapBundle messing with the DOM #}
