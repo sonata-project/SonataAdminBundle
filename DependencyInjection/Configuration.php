@@ -80,6 +80,7 @@ class Configuration implements ConfigurationInterface
                         ->booleanNode('use_select2')->defaultTrue()->end()
                         ->booleanNode('use_icheck')->defaultTrue()->end()
                         ->booleanNode('use_bootlint')->defaultFalse()->end()
+                        ->booleanNode('use_stickyforms')->defaultTrue()->end()
                         ->integerNode('pager_links')->defaultNull()->end()
                         ->scalarNode('form_type')->defaultValue('standard')->end()
                         ->integerNode('dropdown_number_groups_per_colums')->defaultValue(2)->end()
@@ -324,6 +325,8 @@ class Configuration implements ConfigurationInterface
                                 'bundles/sonataadmin/vendor/admin-lte/dist/js/app.min.js',
                                 'bundles/sonataadmin/vendor/iCheck/icheck.min.js',
                                 'bundles/sonataadmin/vendor/slimScroll/jquery.slimscroll.min.js',
+                                'bundles/sonataadmin/vendor/waypoints/lib/jquery.waypoints.min.js',
+                                'bundles/sonataadmin/vendor/waypoints/lib/shortcuts/sticky.min.js',
 
                                 'bundles/sonataadmin/Admin.js',
                                 'bundles/sonataadmin/treeview.js',
