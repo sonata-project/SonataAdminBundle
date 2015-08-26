@@ -59,7 +59,7 @@ file that was distributed with this source code.
 
 {% block checkbox_widget %}
     {% spaceless %}
-        {% if label is not sameas(false) and label is empty %}
+        {% if label is not same as(false) and label is empty %}
             {% set label = name|humanize %}
         {% endif %}
         {% if form.parent != null and 'choice' not in form.parent.vars.block_prefixes %}
