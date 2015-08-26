@@ -27,7 +27,7 @@ file that was distributed with this source code.
 
     <h1>{{ 'title_search_results'|trans({'%query%': query}, 'SonataAdminBundle') }}</h1>
 
-    {% if query is defined and query is not sameas(false) %}
+    {% if query is defined and query is not same as(false) %}
         {% set count = 0 %}
         <div class="row">
 
