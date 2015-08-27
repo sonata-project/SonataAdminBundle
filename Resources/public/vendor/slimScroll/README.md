@@ -6,4 +6,3 @@ Demo and more: http://rocha.la/jQuery-slimScroll
 
 Copyright (c) 2011 Piotr Rochala (http://rocha.la)
 Dual licensed under the MIT (http://www.opensource.org/licenses/mit-license.php) and GPL (http://www.opensource.org/licenses/gpl-license.php) licenses.
-

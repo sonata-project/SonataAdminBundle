@@ -24,6 +24,6 @@
     "commit": "0944e1569dd46a05494c3c056e4328884a739a4f"
   },
   "_source": "git://github.com/imakewebthings/waypoints.git",
-  "_target": "~4.0.0",
+  "_target": "^4.0",
   "_originalSource": "waypoints"
 }
