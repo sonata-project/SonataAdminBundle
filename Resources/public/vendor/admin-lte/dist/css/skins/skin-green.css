@@ -13,7 +13,8 @@
 .skin-green .main-header .navbar .nav > li > a:focus,
 .skin-green .main-header .navbar .nav .open > a,
 .skin-green .main-header .navbar .nav .open > a:hover,
-.skin-green .main-header .navbar .nav .open > a:focus {
+.skin-green .main-header .navbar .nav .open > a:focus,
+.skin-green .main-header .navbar .nav > .active > a {
   background: rgba(0, 0, 0, 0.1);
   color: #f6f6f6;
 }
@@ -44,7 +45,7 @@
 .skin-green .main-header .logo {
   background-color: #008d4c;
   color: #ffffff;
-  border-bottom: 0px solid transparent;
+  border-bottom: 0 solid transparent;
 }
 .skin-green .main-header .logo:hover {
   background-color: #008749;
@@ -111,10 +112,10 @@
 }
 .skin-green .sidebar-form input[type="text"] {
   color: #666;
-  border-top-left-radius: 2px !important;
-  border-top-right-radius: 0 !important;
-  border-bottom-right-radius: 0 !important;
-  border-bottom-left-radius: 2px !important;
+  border-top-left-radius: 2px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 2px;
 }
 .skin-green .sidebar-form input[type="text"]:focus,
 .skin-green .sidebar-form input[type="text"]:focus + .input-group-btn .btn {
@@ -126,8 +127,8 @@
 }
 .skin-green .sidebar-form .btn {
   color: #999;
-  border-top-left-radius: 0 !important;
-  border-top-right-radius: 2px !important;
-  border-bottom-right-radius: 2px !important;
-  border-bottom-left-radius: 0 !important;
+  border-top-left-radius: 0;
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+  border-bottom-left-radius: 0;
 }

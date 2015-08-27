@@ -1,7 +1,7 @@
 Introduction
 ============
 
-**AdminLTE** -- is a fully responsive admin template. Based on **Bootstrap 3** framework. Highly customizable and easy to use. Fits many screen resolutions from small mobile devices to large desktops. Check out the live preview now and see for yourself. 
+**AdminLTE** -- is a fully responsive admin template. Based on **[Bootstrap 3](https://github.com/twbs/bootstrap)** framework. Highly customizable and easy to use. Fits many screen resolutions from small mobile devices to large desktops. Check out the live preview now and see for yourself.
 
 **Download & Preview on [Almsaeed Studio](https://almsaeedstudio.com)**
 
@@ -27,7 +27,7 @@ Download from Github or [visit Almsaeed Studio](https://almsaeedstudio.com) and 
 **Github**
 
 - Fork the repository ([here is the guide](https://help.github.com/articles/fork-a-repo/)).
-- Clone to your machine 
+- Clone to your machine
 ```
 git clone https://github.com/YOUR_USERNAME/AdminLTE.git
 ```
@@ -88,11 +88,30 @@ Todo List
 
 Legacy Realeases
 ----------------
-AdminLTE 1.x can be easily upgraded to 2.x using [this guide](https://almsaeedstudio.com/themes/AdminLTE/documentation/index.html#browsers), but if you intend to keep using AdminLTE 1.x, you can download the latest release from the [releases](https://github.com/almasaeed2010/AdminLTE/releases) section above.
+AdminLTE 1.x can be easily upgraded to 2.x using [this guide](https://almsaeedstudio.com/themes/AdminLTE/documentation/index.html#upgrade), but if you intend to keep using AdminLTE 1.x, you can download the latest release from the [releases](https://github.com/almasaeed2010/AdminLTE/releases) section above.
 
 Change log
 ----------
-**v2.2.0**
+**v2.3.0:**
+- Added social widgets (found in the widgets page)
+- Added profile page
+- Fix issue #430 (requires ```.hold-transition``` to be added to ```<body>```)
+- Fix issue #578
+- Fix issue #579
+
+**v2.2.1:**
+- Bug Fixes
+- Removed many ```!important``` statements in css
+- Activate boxWidget automatically when created after the page has loaded
+- Activate sidebar menu treeview links automatically when created after the page has loaded
+- Updated Font Awesome thanks to @Dennis14e
+- Added JSHint to Grunt tasks (Find JS errors)
+- Added CSSLint to Grunt tasks (Find CSS errors)
+- Added Image to Grunt tasks (compress images)
+- Added Clean to Grunt tasks (remove unwanted files like uncompressed images)
+- Updated Bootstrap to 3.3.5
+
+**v2.2.0:**
 - Bug fixes
 - Added support for [Select2](https://select2.github.io/)
 - Updated ChartJS
@@ -146,13 +165,13 @@ Change log
 - Change in layout mark up
 - Added transitions to the sidebar
 - New skins and modified previous skins
-- Change in color scheme to a more complementing scheme 
+- Change in color scheme to a more complementing scheme
 - Added footer support
 - Removed pace.js from the main app.js
 - Added support for collapsed sidebar as an initial state (add .sidebar-collapse to the body tag)
 - Added boxed layout (.layout-boxed)
 - Enhanced consistency in padding and margining
-- Updated Bootstrap to 3.3.2 
+- Updated Bootstrap to 3.3.2
 - Fixed navbar dropdown menu on small screens positioning issues.
 - Updated Ion Icons to 2.0.0
 - Updated FontAwesome to 4.3.0
@@ -177,7 +196,7 @@ Change log
 
 - Fixed the sidebar scroll issue when using the fixed layout.
 - Added [Bootstrap Social Buttons](http://lipis.github.io/bootstrap-social/ "Bootstrap Social") plugin.
-- Fixed RequireJS bug. Thanks to [StaticSphere](https://github.com/StaticSphere "github user"). 
+- Fixed RequireJS bug. Thanks to [StaticSphere](https://github.com/StaticSphere "github user").
 
 **ver 1.1.0:**
 
