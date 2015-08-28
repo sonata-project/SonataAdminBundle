@@ -14,10 +14,10 @@ file that was distributed with this source code.
 {% block field %}
 {% spaceless %}
     {% if value %}
-        <i class="icon-ok-circle"></i>
+        <i class="fa fa-check-circle-o"></i>
         {%- trans from 'SonataAdminBundle' %}label_type_yes{% endtrans -%}
     {% else %}
-        <i class="icon-ban-circle"></i>
+        <i class="fa fa-ban"></i>
         {%- trans from 'SonataAdminBundle' %}label_type_no{% endtrans -%}
     {% endif %}
 {% endspaceless %}
