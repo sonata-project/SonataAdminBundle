@@ -692,7 +692,7 @@ return an iterable collection of users.
         $kevin = $userManager->findUserByUsername('kevin');
         $anne = $userManager->findUserByUsername('anne');
 
-        return array($kevin, $anne);
+        return new \ArrayIterator(array($kevin, $anne));
     }
 
 Custom user manager
