@@ -83,7 +83,7 @@ class ModelsToArrayTransformerTest extends \PHPUnit_Framework_TestCase
                 return array('bcd' => new FooEntity(array('bcd')), 'efg' => new FooEntity(array('efg')), 'abc' => new FooEntity(array('abc')));
             }));
 
-        $this->assertEquals($expected, $transformer->transform($collection));
+        $this->assertSame($expected, $transformer->transform($collection));
     }
 
     public function getTransformTests()
@@ -176,7 +176,7 @@ class ModelsToArrayTransformerTest extends \PHPUnit_Framework_TestCase
 
         $collection = $transformer->reverseTransform(array('foo', 'bar'));
         $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $collection);
-        $this->assertEquals(array($entity1, $entity2), $collection->getValues());
+        $this->assertSame(array($entity1, $entity2), $collection->getValues());
         $this->assertCount(2, $collection);
     }
 

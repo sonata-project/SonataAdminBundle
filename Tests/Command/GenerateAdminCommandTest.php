@@ -137,7 +137,7 @@ class GenerateAdminCommandTest extends \PHPUnit_Framework_TestCase
         $expectedOutput .= sprintf('%3$sThe controller class "Sonata\AdminBundle\Tests\Fixtures\Bundle\Controller\FooAdminController" has been generated under the file "%1$s%2$sController%2$sFooAdminController.php".%3$s', $this->tempDirectory, DIRECTORY_SEPARATOR, PHP_EOL);
         $expectedOutput .= sprintf('%3$sThe service "acme_demo_admin.admin.foo" has been appended to the file "%1$s%2$sResources%2$sconfig%2$sadmin.yml".%3$s', $this->tempDirectory, DIRECTORY_SEPARATOR, PHP_EOL);
 
-        $this->assertEquals($expectedOutput, $commandTester->getDisplay());
+        $this->assertSame($expectedOutput, $commandTester->getDisplay());
 
         $this->assertFileExists($this->tempDirectory.'/Admin/FooAdmin.php');
         $this->assertFileExists($this->tempDirectory.'/Controller/FooAdminController.php');
@@ -304,7 +304,7 @@ class GenerateAdminCommandTest extends \PHPUnit_Framework_TestCase
         $expectedOutput .= sprintf('%3$sThe controller class "Sonata\AdminBundle\Tests\Fixtures\Bundle\Controller\FooAdminController" has been generated under the file "%1$s%2$sController%2$sFooAdminController.php".%3$s', $this->tempDirectory, DIRECTORY_SEPARATOR, PHP_EOL);
         $expectedOutput .= sprintf('%3$sThe service "acme_demo_admin.admin.foo" has been appended to the file "%1$s%2$sResources%2$sconfig%2$sadmin.yml".%3$s', $this->tempDirectory, DIRECTORY_SEPARATOR, PHP_EOL);
 
-        $this->assertEquals($expectedOutput, str_replace("\n", PHP_EOL, str_replace(PHP_EOL, "\n", $commandTester->getDisplay())));
+        $this->assertSame($expectedOutput, str_replace("\n", PHP_EOL, str_replace(PHP_EOL, "\n", $commandTester->getDisplay())));
 
         $this->assertFileExists($this->tempDirectory.'/Admin/FooAdmin.php');
         $this->assertFileExists($this->tempDirectory.'/Controller/FooAdminController.php');
@@ -348,7 +348,7 @@ class GenerateAdminCommandTest extends \PHPUnit_Framework_TestCase
         $this->container->set('sonata.admin.manager.foo', $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface'));
         $this->container->set('sonata.admin.manager.bar', $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface'));
 
-        $this->assertEquals($expected, $this->command->validateManagerType($managerType));
+        $this->assertSame($expected, $this->command->validateManagerType($managerType));
     }
 
     public function getValidateManagerTypeTests()

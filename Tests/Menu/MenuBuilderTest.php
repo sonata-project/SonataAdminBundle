@@ -62,15 +62,15 @@ class MenuBuilderTest extends \PHPUnit_Framework_TestCase
 
         foreach ($menu->getChildren() as $key => $child) {
             $this->assertInstanceOf('Knp\Menu\MenuItem', $child);
-            $this->assertEquals('bar', $child->getName());
-            $this->assertEquals($adminGroups['bar']['label'], $child->getLabel());
+            $this->assertSame('bar', $child->getName());
+            $this->assertSame($adminGroups['bar']['label'], $child->getLabel());
 
             // menu items
             $children = $child->getChildren();
             $this->assertCount(1, $children);
             $this->assertArrayHasKey('fooLabel', $children);
             $this->assertInstanceOf('Knp\Menu\MenuItem', $child['fooLabel']);
-            $this->assertEquals('fooLabel', $child['fooLabel']->getLabel());
+            $this->assertSame('fooLabel', $child['fooLabel']->getLabel());
         }
     }
 
@@ -123,15 +123,15 @@ class MenuBuilderTest extends \PHPUnit_Framework_TestCase
 
         foreach ($menu->getChildren() as $key => $child) {
             $this->assertInstanceOf('Knp\Menu\MenuItem', $child);
-            $this->assertEquals('bar', $child->getName());
-            $this->assertEquals($adminGroups['bar']['label'], $child->getLabel());
+            $this->assertSame('bar', $child->getName());
+            $this->assertSame($adminGroups['bar']['label'], $child->getLabel());
 
             // menu items
             $children = $child->getChildren();
             $this->assertCount(1, $children);
             $this->assertArrayHasKey('foo_admin_label', $children);
             $this->assertInstanceOf('Knp\Menu\MenuItem', $child['foo_admin_label']);
-            $this->assertEquals('foo_admin_label', $child['foo_admin_label']->getLabel());
+            $this->assertSame('foo_admin_label', $child['foo_admin_label']->getLabel());
         }
     }
 
@@ -233,15 +233,15 @@ class MenuBuilderTest extends \PHPUnit_Framework_TestCase
 
         foreach ($menu->getChildren() as $key => $child) {
             $this->assertInstanceOf('Knp\Menu\MenuItem', $child);
-            $this->assertEquals('bar', $child->getName());
-            $this->assertEquals('bar', $child->getLabel());
+            $this->assertSame('bar', $child->getName());
+            $this->assertSame('bar', $child->getLabel());
 
             // menu items
             $children = $child->getChildren();
             $this->assertCount(1, $children);
             $this->assertArrayHasKey('foo', $children);
             $this->assertInstanceOf('Knp\Menu\MenuItem', $child['foo']);
-            $this->assertEquals('foo', $child['foo']->getLabel());
+            $this->assertSame('foo', $child['foo']->getLabel());
         }
     }
 

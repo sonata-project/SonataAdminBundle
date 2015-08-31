@@ -33,8 +33,8 @@ class PagerTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetMaxPerPage1($expectedMaxPerPage, $expectedPage, $maxPerPage, $page)
     {
-        $this->assertEquals(10, $this->pager->getMaxPerPage());
-        $this->assertEquals(1, $this->pager->getPage());
+        $this->assertSame(10, $this->pager->getMaxPerPage());
+        $this->assertSame(1, $this->pager->getPage());
 
         if ($page !== null) {
             $this->pager->setPage($page);
@@ -42,8 +42,8 @@ class PagerTest extends \PHPUnit_Framework_TestCase
 
         $this->pager->setMaxPerPage($maxPerPage);
 
-        $this->assertEquals($expectedPage, $this->pager->getPage());
-        $this->assertEquals($expectedMaxPerPage, $this->pager->getMaxPerPage());
+        $this->assertSame($expectedPage, $this->pager->getPage());
+        $this->assertSame($expectedMaxPerPage, $this->pager->getMaxPerPage());
     }
 
     public function getGetMaxPerPage1Tests()
@@ -62,77 +62,77 @@ class PagerTest extends \PHPUnit_Framework_TestCase
 
     public function testGetMaxPerPage2()
     {
-        $this->assertEquals(10, $this->pager->getMaxPerPage());
-        $this->assertEquals(1, $this->pager->getPage());
+        $this->assertSame(10, $this->pager->getMaxPerPage());
+        $this->assertSame(1, $this->pager->getPage());
 
         $this->pager->setMaxPerPage(0);
         $this->pager->setPage(0);
 
-        $this->assertEquals(0, $this->pager->getMaxPerPage());
-        $this->assertEquals(0, $this->pager->getPage());
+        $this->assertSame(0, $this->pager->getMaxPerPage());
+        $this->assertSame(0, $this->pager->getPage());
 
         $this->pager->setMaxPerPage(12);
 
-        $this->assertEquals(12, $this->pager->getMaxPerPage());
-        $this->assertEquals(1, $this->pager->getPage());
+        $this->assertSame(12, $this->pager->getMaxPerPage());
+        $this->assertSame(1, $this->pager->getPage());
     }
 
     public function testGetMaxPerPage3()
     {
-        $this->assertEquals(10, $this->pager->getMaxPerPage());
-        $this->assertEquals(1, $this->pager->getPage());
+        $this->assertSame(10, $this->pager->getMaxPerPage());
+        $this->assertSame(1, $this->pager->getPage());
 
         $this->pager->setMaxPerPage(0);
 
-        $this->assertEquals(0, $this->pager->getMaxPerPage());
-        $this->assertEquals(0, $this->pager->getPage());
+        $this->assertSame(0, $this->pager->getMaxPerPage());
+        $this->assertSame(0, $this->pager->getPage());
 
         $this->pager->setMaxPerPage(-1);
 
-        $this->assertEquals(1, $this->pager->getMaxPerPage());
-        $this->assertEquals(1, $this->pager->getPage());
+        $this->assertSame(1, $this->pager->getMaxPerPage());
+        $this->assertSame(1, $this->pager->getPage());
     }
 
     public function testGetCurrentMaxLink()
     {
-        $this->assertEquals(1, $this->pager->getCurrentMaxLink());
+        $this->assertSame(1, $this->pager->getCurrentMaxLink());
 
         $this->pager->getLinks();
-        $this->assertEquals(1, $this->pager->getCurrentMaxLink());
+        $this->assertSame(1, $this->pager->getCurrentMaxLink());
 
         $this->callMethod($this->pager, 'setLastPage', array(20));
         $this->pager->getLinks(10);
-        $this->assertEquals(10, $this->pager->getCurrentMaxLink());
+        $this->assertSame(10, $this->pager->getCurrentMaxLink());
 
         $this->pager->setMaxPageLinks(5);
         $this->pager->setPage(2);
-        $this->assertEquals(10, $this->pager->getCurrentMaxLink());
+        $this->assertSame(10, $this->pager->getCurrentMaxLink());
     }
 
     public function testGetMaxRecordLimit()
     {
-        $this->assertEquals(false, $this->pager->getMaxRecordLimit());
+        $this->assertSame(false, $this->pager->getMaxRecordLimit());
 
         $this->pager->setMaxRecordLimit(99);
-        $this->assertEquals(99, $this->pager->getMaxRecordLimit());
+        $this->assertSame(99, $this->pager->getMaxRecordLimit());
     }
 
     public function testGetNbResults()
     {
-        $this->assertEquals(0, $this->pager->getNbResults());
+        $this->assertSame(0, $this->pager->getNbResults());
 
         $this->callMethod($this->pager, 'setNbResults', array(100));
 
-        $this->assertEquals(100, $this->pager->getNbResults());
+        $this->assertSame(100, $this->pager->getNbResults());
     }
 
     public function testCount()
     {
-        $this->assertEquals(0, $this->pager->count());
+        $this->assertSame(0, $this->pager->count());
 
         $this->callMethod($this->pager, 'setNbResults', array(100));
 
-        $this->assertEquals(100, $this->pager->count());
+        $this->assertSame(100, $this->pager->count());
     }
 
     public function testGetQuery()
@@ -140,52 +140,52 @@ class PagerTest extends \PHPUnit_Framework_TestCase
         $query = $this->getMock('Sonata\AdminBundle\Datagrid\ProxyQueryInterface');
 
         $this->pager->setQuery($query);
-        $this->assertEquals($query, $this->pager->getQuery());
+        $this->assertSame($query, $this->pager->getQuery());
     }
 
     public function testGetCountColumn()
     {
-        $this->assertEquals(array('id'), $this->pager->getCountColumn());
+        $this->assertSame(array('id'), $this->pager->getCountColumn());
 
         $this->pager->setCountColumn(array('foo'));
-        $this->assertEquals(array('foo'), $this->pager->getCountColumn());
+        $this->assertSame(array('foo'), $this->pager->getCountColumn());
     }
 
     public function testParameters()
     {
-        $this->assertEquals(null, $this->pager->getParameter('foo', null));
-        $this->assertEquals('bar', $this->pager->getParameter('foo', 'bar'));
+        $this->assertSame(null, $this->pager->getParameter('foo', null));
+        $this->assertSame('bar', $this->pager->getParameter('foo', 'bar'));
         $this->assertFalse($this->pager->hasParameter('foo'));
-        $this->assertEquals(array(), $this->pager->getParameters());
+        $this->assertSame(array(), $this->pager->getParameters());
 
         $this->pager->setParameter('foo', 'foo_value');
 
         $this->assertTrue($this->pager->hasParameter('foo'));
-        $this->assertEquals('foo_value', $this->pager->getParameter('foo', null));
-        $this->assertEquals('foo_value', $this->pager->getParameter('foo', 'bar'));
-        $this->assertEquals(array('foo' => 'foo_value'), $this->pager->getParameters());
+        $this->assertSame('foo_value', $this->pager->getParameter('foo', null));
+        $this->assertSame('foo_value', $this->pager->getParameter('foo', 'bar'));
+        $this->assertSame(array('foo' => 'foo_value'), $this->pager->getParameters());
 
         $this->pager->setParameter('foo', 'baz');
 
         $this->assertTrue($this->pager->hasParameter('foo'));
-        $this->assertEquals('baz', $this->pager->getParameter('foo', null));
-        $this->assertEquals('baz', $this->pager->getParameter('foo', 'bar'));
-        $this->assertEquals(array('foo' => 'baz'), $this->pager->getParameters());
+        $this->assertSame('baz', $this->pager->getParameter('foo', null));
+        $this->assertSame('baz', $this->pager->getParameter('foo', 'bar'));
+        $this->assertSame(array('foo' => 'baz'), $this->pager->getParameters());
 
         $this->pager->setParameter('foo2', 'foo2_value');
 
         $this->assertTrue($this->pager->hasParameter('foo2'));
-        $this->assertEquals('foo2_value', $this->pager->getParameter('foo2', null));
-        $this->assertEquals('foo2_value', $this->pager->getParameter('foo2', 'bar'));
-        $this->assertEquals(array('foo'  => 'baz', 'foo2' => 'foo2_value'), $this->pager->getParameters());
+        $this->assertSame('foo2_value', $this->pager->getParameter('foo2', null));
+        $this->assertSame('foo2_value', $this->pager->getParameter('foo2', 'bar'));
+        $this->assertSame(array('foo'  => 'baz', 'foo2' => 'foo2_value'), $this->pager->getParameters());
     }
 
     public function testGetMaxPageLinks()
     {
-        $this->assertEquals(0, $this->pager->getMaxPageLinks());
+        $this->assertSame(0, $this->pager->getMaxPageLinks());
 
         $this->pager->setMaxPageLinks(123);
-        $this->assertEquals(123, $this->pager->getMaxPageLinks());
+        $this->assertSame(123, $this->pager->getMaxPageLinks());
     }
 
     public function testIsFirstPage()
@@ -199,51 +199,51 @@ class PagerTest extends \PHPUnit_Framework_TestCase
     public function testIsLastPage()
     {
         $this->assertTrue($this->pager->isLastPage());
-        $this->assertEquals(1, $this->pager->getLastPage());
+        $this->assertSame(1, $this->pager->getLastPage());
 
         $this->pager->setPage(10);
         $this->callMethod($this->pager, 'setLastPage', array(50));
-        $this->assertEquals(50, $this->pager->getLastPage());
+        $this->assertSame(50, $this->pager->getLastPage());
         $this->assertFalse($this->pager->isLastPage());
 
         $this->pager->setPage(50);
         $this->assertTrue($this->pager->isLastPage());
 
         $this->callMethod($this->pager, 'setLastPage', array(20));
-        $this->assertEquals(20, $this->pager->getPage());
-        $this->assertEquals(20, $this->pager->getLastPage());
+        $this->assertSame(20, $this->pager->getPage());
+        $this->assertSame(20, $this->pager->getLastPage());
         $this->assertTrue($this->pager->isLastPage());
     }
 
     public function testGetLinks()
     {
-        $this->assertEquals(array(), $this->pager->getLinks());
+        $this->assertSame(array(), $this->pager->getLinks());
 
         $this->pager->setPage(1);
         $this->pager->setMaxPageLinks(1);
-        $this->assertEquals(array(1), $this->pager->getLinks());
-        $this->assertEquals(array(1), $this->pager->getLinks(10));
+        $this->assertSame(array(1), $this->pager->getLinks());
+        $this->assertSame(array(1), $this->pager->getLinks(10));
 
         $this->pager->setPage(1);
         $this->pager->setMaxPageLinks(7);
         $this->callMethod($this->pager, 'setLastPage', array(50));
-        $this->assertEquals(7, count($this->pager->getLinks()));
-        $this->assertEquals(array(1, 2, 3, 4, 5, 6, 7), $this->pager->getLinks());
+        $this->assertSame(7, count($this->pager->getLinks()));
+        $this->assertSame(array(1, 2, 3, 4, 5, 6, 7), $this->pager->getLinks());
 
         $this->pager->setPage(10);
         $this->pager->setMaxPageLinks(12);
-        $this->assertEquals(5, count($this->pager->getLinks(5)));
-        $this->assertEquals(array(8, 9, 10, 11, 12), $this->pager->getLinks(5));
+        $this->assertSame(5, count($this->pager->getLinks(5)));
+        $this->assertSame(array(8, 9, 10, 11, 12), $this->pager->getLinks(5));
 
         $this->pager->setPage(10);
         $this->pager->setMaxPageLinks(6);
-        $this->assertEquals(6, count($this->pager->getLinks()));
-        $this->assertEquals(array(7, 8, 9, 10, 11, 12), $this->pager->getLinks());
+        $this->assertSame(6, count($this->pager->getLinks()));
+        $this->assertSame(array(7, 8, 9, 10, 11, 12), $this->pager->getLinks());
 
         $this->pager->setPage(50);
         $this->pager->setMaxPageLinks(6);
-        $this->assertEquals(6, count($this->pager->getLinks()));
-        $this->assertEquals(array(45, 46, 47, 48, 49, 50), $this->pager->getLinks());
+        $this->assertSame(6, count($this->pager->getLinks()));
+        $this->assertSame(array(45, 46, 47, 48, 49, 50), $this->pager->getLinks());
     }
 
     public function testHaveToPaginate()
@@ -283,9 +283,9 @@ class PagerTest extends \PHPUnit_Framework_TestCase
             ++$counter;
         }
 
-        $this->assertEquals(3, $counter);
-        $this->assertEquals($object3, $value);
-        $this->assertEquals($expectedObjects, $values);
+        $this->assertSame(3, $counter);
+        $this->assertSame($object3, $value);
+        $this->assertSame($expectedObjects, $values);
 
         $this->assertFalse($this->pager->valid());
 
@@ -313,7 +313,7 @@ class PagerTest extends \PHPUnit_Framework_TestCase
             ->method('getResults')
             ->will($this->returnValue(array(123 => new \stdClass())));
 
-        $this->assertEquals(123, $this->pager->key());
+        $this->assertSame(123, $this->pager->key());
     }
 
     public function testCurrent()
@@ -324,26 +324,26 @@ class PagerTest extends \PHPUnit_Framework_TestCase
             ->method('getResults')
             ->will($this->returnValue(array($object)));
 
-        $this->assertEquals($object, $this->pager->current());
+        $this->assertSame($object, $this->pager->current());
     }
 
     public function testGetCursor()
     {
-        $this->assertEquals(1, $this->pager->getCursor());
+        $this->assertSame(1, $this->pager->getCursor());
 
         $this->pager->setCursor(0);
-        $this->assertEquals(1, $this->pager->getCursor());
+        $this->assertSame(1, $this->pager->getCursor());
 
         $this->pager->setCursor(300);
-        $this->assertEquals(0, $this->pager->getCursor());
+        $this->assertSame(0, $this->pager->getCursor());
 
         $this->callMethod($this->pager, 'setNbResults', array(100));
 
         $this->pager->setCursor(5);
-        $this->assertEquals(5, $this->pager->getCursor());
+        $this->assertSame(5, $this->pager->getCursor());
 
         $this->pager->setCursor(300);
-        $this->assertEquals(100, $this->pager->getCursor());
+        $this->assertSame(100, $this->pager->getCursor());
     }
 
     public function testGetObjectByCursor()
@@ -389,92 +389,92 @@ class PagerTest extends \PHPUnit_Framework_TestCase
 
         $this->pager->setQuery($query);
 
-        $this->assertEquals($object1, $this->pager->getObjectByCursor(1));
-        $this->assertEquals(1, $this->pager->getCursor());
+        $this->assertSame($object1, $this->pager->getObjectByCursor(1));
+        $this->assertSame(1, $this->pager->getCursor());
 
         $id = 1;
-        $this->assertEquals($object2, $this->pager->getObjectByCursor(2));
-        $this->assertEquals(2, $this->pager->getCursor());
+        $this->assertSame($object2, $this->pager->getObjectByCursor(2));
+        $this->assertSame(2, $this->pager->getCursor());
 
         $id = 2;
-        $this->assertEquals($object3, $this->pager->getObjectByCursor(3));
-        $this->assertEquals(3, $this->pager->getCursor());
+        $this->assertSame($object3, $this->pager->getObjectByCursor(3));
+        $this->assertSame(3, $this->pager->getCursor());
 
         $id = 3;
-        $this->assertEquals(null, $this->pager->getObjectByCursor(4));
-        $this->assertEquals(3, $this->pager->getCursor());
+        $this->assertSame(null, $this->pager->getObjectByCursor(4));
+        $this->assertSame(3, $this->pager->getCursor());
     }
 
     public function testGetFirstPage()
     {
-        $this->assertEquals(1, $this->pager->getFirstPage());
+        $this->assertSame(1, $this->pager->getFirstPage());
     }
 
     public function testGetNextPage()
     {
-        $this->assertEquals(1, $this->pager->getNextPage());
+        $this->assertSame(1, $this->pager->getNextPage());
 
         $this->pager->setPage(3);
         $this->callMethod($this->pager, 'setLastPage', array(20));
-        $this->assertEquals(4, $this->pager->getNextPage());
+        $this->assertSame(4, $this->pager->getNextPage());
 
         $this->pager->setPage(21);
-        $this->assertEquals(20, $this->pager->getNextPage());
+        $this->assertSame(20, $this->pager->getNextPage());
     }
 
     public function testGetPreviousPage()
     {
-        $this->assertEquals(1, $this->pager->getPreviousPage());
+        $this->assertSame(1, $this->pager->getPreviousPage());
 
         $this->pager->setPage(3);
-        $this->assertEquals(2, $this->pager->getPreviousPage());
+        $this->assertSame(2, $this->pager->getPreviousPage());
 
         $this->pager->setPage(21);
-        $this->assertEquals(20, $this->pager->getPreviousPage());
+        $this->assertSame(20, $this->pager->getPreviousPage());
     }
 
     public function testGetFirstIndice()
     {
-        $this->assertEquals(1, $this->pager->getFirstIndice());
+        $this->assertSame(1, $this->pager->getFirstIndice());
 
         $this->pager->setMaxPerPage(0);
         $this->pager->setPage(0);
-        $this->assertEquals(1, $this->pager->getFirstIndice());
+        $this->assertSame(1, $this->pager->getFirstIndice());
 
         $this->pager->setPage(2);
         $this->pager->setMaxPerPage(10);
-        $this->assertEquals(11, $this->pager->getFirstIndice());
+        $this->assertSame(11, $this->pager->getFirstIndice());
 
         $this->pager->setPage(4);
         $this->pager->setMaxPerPage(7);
-        $this->assertEquals(22, $this->pager->getFirstIndice());
+        $this->assertSame(22, $this->pager->getFirstIndice());
     }
 
     public function testGetLastIndice()
     {
-        $this->assertEquals(0, $this->pager->getLastIndice());
+        $this->assertSame(0, $this->pager->getLastIndice());
 
         $this->pager->setMaxPerPage(0);
         $this->pager->setPage(0);
-        $this->assertEquals(0, $this->pager->getLastIndice());
+        $this->assertSame(0, $this->pager->getLastIndice());
 
         $this->callMethod($this->pager, 'setNbResults', array(100));
 
-        $this->assertEquals(100, $this->pager->getLastIndice());
+        $this->assertSame(100, $this->pager->getLastIndice());
 
         $this->pager->setPage(2);
-        $this->assertEquals(0, $this->pager->getLastIndice());
+        $this->assertSame(0, $this->pager->getLastIndice());
 
         $this->pager->setMaxPerPage(10);
-        $this->assertEquals(20, $this->pager->getLastIndice());
+        $this->assertSame(20, $this->pager->getLastIndice());
 
         $this->pager->setPage(11);
-        $this->assertEquals(100, $this->pager->getLastIndice());
+        $this->assertSame(100, $this->pager->getLastIndice());
     }
 
     public function testGetNext()
     {
-        $this->assertEquals(null, $this->pager->getNext());
+        $this->assertSame(null, $this->pager->getNext());
 
         $object1 = new \stdClass();
         $object1->foo = 'bar1';
@@ -518,21 +518,21 @@ class PagerTest extends \PHPUnit_Framework_TestCase
         $this->pager->setQuery($query);
 
         $this->pager->setCursor(1);
-        $this->assertEquals($object1, $this->pager->getCurrent());
+        $this->assertSame($object1, $this->pager->getCurrent());
 
         ++$id;
-        $this->assertEquals($object2, $this->pager->getNext());
+        $this->assertSame($object2, $this->pager->getNext());
 
         ++$id;
-        $this->assertEquals($object3, $this->pager->getNext());
+        $this->assertSame($object3, $this->pager->getNext());
 
         ++$id;
-        $this->assertEquals(null, $this->pager->getNext());
+        $this->assertSame(null, $this->pager->getNext());
     }
 
     public function testGetPrevious()
     {
-        $this->assertEquals(null, $this->pager->getPrevious());
+        $this->assertSame(null, $this->pager->getPrevious());
 
         $object1 = new \stdClass();
         $object1->foo = 'bar1';
@@ -576,16 +576,16 @@ class PagerTest extends \PHPUnit_Framework_TestCase
         $this->pager->setQuery($query);
 
         $this->pager->setCursor(2);
-        $this->assertEquals($object3, $this->pager->getCurrent());
+        $this->assertSame($object3, $this->pager->getCurrent());
 
         --$id;
-        $this->assertEquals($object2, $this->pager->getPrevious());
+        $this->assertSame($object2, $this->pager->getPrevious());
 
         --$id;
-        $this->assertEquals($object1, $this->pager->getPrevious());
+        $this->assertSame($object1, $this->pager->getPrevious());
 
         --$id;
-        $this->assertEquals(null, $this->pager->getPrevious());
+        $this->assertSame(null, $this->pager->getPrevious());
     }
 
     public function testSerialize()
@@ -599,7 +599,9 @@ class PagerTest extends \PHPUnit_Framework_TestCase
         $this->pager->setMaxPageLinks(6);
 
         $this->pager->unserialize($data);
-        $this->assertEquals($pagerClone, $this->pager);
+        $this->assertSame($pagerClone->getPage(), $this->pager->getPage());
+        $this->assertSame($pagerClone->getMaxPerPage(), $this->pager->getMaxPerPage());
+        $this->assertSame($pagerClone->getMaxPageLinks(), $this->pager->getMaxPageLinks());
     }
 
     public function testUnserialize()
@@ -624,17 +626,17 @@ class PagerTest extends \PHPUnit_Framework_TestCase
 
         $this->pager->unserialize(serialize($serialized));
 
-        $this->assertEquals(7, $this->pager->getMaxPerPage());
-        $this->assertEquals(6, $this->pager->getPage());
-        $this->assertEquals(5, $this->pager->getMaxPageLinks());
-        $this->assertEquals(4, $this->pager->getLastPage());
-        $this->assertEquals(array('idx'), $this->pager->getCountColumn());
-        $this->assertEquals(30, $this->pager->getNbResults());
-        $this->assertEquals(3, $this->pager->getCursor());
-        $this->assertEquals(array('foo' => 'bar'), $this->pager->getParameters());
-        $this->assertEquals(2, $this->pager->getCurrentMaxLink());
-        $this->assertEquals(22, $this->pager->getMaxRecordLimit());
-        $this->assertEquals(null, $this->pager->getQuery());
+        $this->assertSame(7, $this->pager->getMaxPerPage());
+        $this->assertSame(6, $this->pager->getPage());
+        $this->assertSame(5, $this->pager->getMaxPageLinks());
+        $this->assertSame(4, $this->pager->getLastPage());
+        $this->assertSame(array('idx'), $this->pager->getCountColumn());
+        $this->assertSame(30, $this->pager->getNbResults());
+        $this->assertSame(3, $this->pager->getCursor());
+        $this->assertSame(array('foo' => 'bar'), $this->pager->getParameters());
+        $this->assertSame(2, $this->pager->getCurrentMaxLink());
+        $this->assertSame(22, $this->pager->getMaxRecordLimit());
+        $this->assertSame(null, $this->pager->getQuery());
     }
 
     protected function callMethod($obj, $name, array $args = array())

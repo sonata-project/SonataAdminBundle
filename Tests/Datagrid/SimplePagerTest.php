@@ -49,7 +49,7 @@ class SimplePagerTest extends \PHPUnit_Framework_TestCase
         $pager->setQuery($this->proxyQuery);
         $pager->init();
 
-        $this->assertEquals(2, $pager->getLastPage());
+        $this->assertSame(2, $pager->getLastPage());
     }
 
     public function testInitOffset()
@@ -72,7 +72,7 @@ class SimplePagerTest extends \PHPUnit_Framework_TestCase
         $this->pager->setPage(2);
         $this->pager->init();
 
-        $this->assertEquals(3, $this->pager->getLastPage());
+        $this->assertSame(3, $this->pager->getLastPage());
     }
 
     public function testNoPagesPerConfig()
@@ -91,7 +91,7 @@ class SimplePagerTest extends \PHPUnit_Framework_TestCase
         $this->pager->setMaxPerPage(0);
         $this->pager->init();
 
-        $this->assertEquals(0, $this->pager->getLastPage());
+        $this->assertSame(0, $this->pager->getLastPage());
     }
 
     public function testNoPagesForNoResults()

@@ -28,6 +28,6 @@ class AdminObjectAclManipulatorTest extends \PHPUnit_Framework_TestCase
     public function testGetMaskBuilder()
     {
         $adminObjectAclManipulator = $this->createAdminObjectAclManipulator();
-        $this->assertEquals(self::MASK_BUILDER_CLASS, $adminObjectAclManipulator->getMaskBuilderClass());
+        $this->assertSame(self::MASK_BUILDER_CLASS, $adminObjectAclManipulator->getMaskBuilderClass());
     }
 }

@@ -77,8 +77,8 @@ class AddDependencyCallsCompilerPassTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('items', $dashboardGroupsSettings['sonata_group_one']);
         $this->assertArrayHasKey('item_adds', $dashboardGroupsSettings['sonata_group_one']);
         $this->assertArrayHasKey('roles', $dashboardGroupsSettings['sonata_group_one']);
-        $this->assertEquals('Group One Label', $dashboardGroupsSettings['sonata_group_one']['label']);
-        $this->assertEquals('SonataAdminBundle', $dashboardGroupsSettings['sonata_group_one']['label_catalogue']);
+        $this->assertSame('Group One Label', $dashboardGroupsSettings['sonata_group_one']['label']);
+        $this->assertSame('SonataAdminBundle', $dashboardGroupsSettings['sonata_group_one']['label_catalogue']);
         $this->assertArrayHasKey('admin', $dashboardGroupsSettings['sonata_group_one']['items'][0]);
         $this->assertArrayHasKey('route', $dashboardGroupsSettings['sonata_group_one']['items'][0]);
         $this->assertArrayHasKey('label', $dashboardGroupsSettings['sonata_group_one']['items'][0]);
@@ -90,20 +90,20 @@ class AddDependencyCallsCompilerPassTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('route_params', $dashboardGroupsSettings['sonata_group_one']['items'][1]);
         $this->assertContains('blog_name', $dashboardGroupsSettings['sonata_group_one']['items'][1]);
         $this->assertContains('Blog', $dashboardGroupsSettings['sonata_group_one']['items'][1]);
-        $this->assertEquals('', $dashboardGroupsSettings['sonata_group_one']['items'][1]['admin']);
-        $this->assertEquals('blog_name', $dashboardGroupsSettings['sonata_group_one']['items'][1]['route']);
-        $this->assertEquals('Blog', $dashboardGroupsSettings['sonata_group_one']['items'][1]['label']);
-        $this->assertEquals(array(), $dashboardGroupsSettings['sonata_group_one']['items'][1]['route_params']);
+        $this->assertSame('', $dashboardGroupsSettings['sonata_group_one']['items'][1]['admin']);
+        $this->assertSame('blog_name', $dashboardGroupsSettings['sonata_group_one']['items'][1]['route']);
+        $this->assertSame('Blog', $dashboardGroupsSettings['sonata_group_one']['items'][1]['label']);
+        $this->assertSame(array(), $dashboardGroupsSettings['sonata_group_one']['items'][1]['route_params']);
         $this->assertArrayHasKey('admin', $dashboardGroupsSettings['sonata_group_one']['items'][2]);
         $this->assertArrayHasKey('route', $dashboardGroupsSettings['sonata_group_one']['items'][2]);
         $this->assertArrayHasKey('label', $dashboardGroupsSettings['sonata_group_one']['items'][2]);
         $this->assertArrayHasKey('route_params', $dashboardGroupsSettings['sonata_group_one']['items'][2]);
         $this->assertContains('blog_article', $dashboardGroupsSettings['sonata_group_one']['items'][2]);
         $this->assertContains('Article', $dashboardGroupsSettings['sonata_group_one']['items'][2]);
-        $this->assertEquals('', $dashboardGroupsSettings['sonata_group_one']['items'][2]['admin']);
-        $this->assertEquals('blog_article', $dashboardGroupsSettings['sonata_group_one']['items'][2]['route']);
-        $this->assertEquals('Article', $dashboardGroupsSettings['sonata_group_one']['items'][2]['label']);
-        $this->assertEquals(array('articleId' => 3), $dashboardGroupsSettings['sonata_group_one']['items'][2]['route_params']);
+        $this->assertSame('', $dashboardGroupsSettings['sonata_group_one']['items'][2]['admin']);
+        $this->assertSame('blog_article', $dashboardGroupsSettings['sonata_group_one']['items'][2]['route']);
+        $this->assertSame('Article', $dashboardGroupsSettings['sonata_group_one']['items'][2]['label']);
+        $this->assertSame(array('articleId' => 3), $dashboardGroupsSettings['sonata_group_one']['items'][2]['route_params']);
         $this->assertContains('sonata_news_admin', $dashboardGroupsSettings['sonata_group_one']['item_adds']);
         $this->assertContains('ROLE_ONE', $dashboardGroupsSettings['sonata_group_one']['roles']);
 
@@ -144,8 +144,8 @@ class AddDependencyCallsCompilerPassTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('items', $adminGroups['sonata_group_one']);
         $this->assertArrayHasKey('item_adds', $adminGroups['sonata_group_one']);
         $this->assertArrayHasKey('roles', $adminGroups['sonata_group_one']);
-        $this->assertEquals('Group One Label', $adminGroups['sonata_group_one']['label']);
-        $this->assertEquals('SonataAdminBundle', $adminGroups['sonata_group_one']['label_catalogue']);
+        $this->assertSame('Group One Label', $adminGroups['sonata_group_one']['label']);
+        $this->assertSame('SonataAdminBundle', $adminGroups['sonata_group_one']['label_catalogue']);
         $this->assertContains('sonata_post_admin', $adminGroups['sonata_group_one']['items'][0]['admin']);
         $this->assertContains('sonata_news_admin', $adminGroups['sonata_group_one']['items']);
         $this->assertContains('sonata_news_admin', $adminGroups['sonata_group_one']['item_adds']);
@@ -203,8 +203,8 @@ class AddDependencyCallsCompilerPassTest extends \PHPUnit_Framework_TestCase
         // use array_values to check groups position
         $adminGroups = array_values($container->get('sonata.admin.pool')->getAdminGroups());
 
-        $this->assertEquals('sonata_group_one', $adminGroups['0']['label'], 'second group in configuration, first in list');
-        $this->assertEquals('1 Entry', $adminGroups[0]['items'][0]['label'], 'second entry for group in configuration, first in list');
+        $this->assertSame('sonata_group_one', $adminGroups['0']['label'], 'second group in configuration, first in list');
+        $this->assertSame('1 Entry', $adminGroups[0]['items'][0]['label'], 'second entry for group in configuration, first in list');
     }
 
     public function testProcessGroupNameAsParameter()
@@ -248,16 +248,16 @@ class AddDependencyCallsCompilerPassTest extends \PHPUnit_Framework_TestCase
 
             switch ($name) {
                 case 'setTemplates':
-                    $this->assertEquals('foobar.twig.html', $parameters[0]['user_block']);
-                    $this->assertEquals('SonataAdminBundle:Pager:results.html.twig', $parameters[0]['pager_results']);
+                    $this->assertSame('foobar.twig.html', $parameters[0]['user_block']);
+                    $this->assertSame('SonataAdminBundle:Pager:results.html.twig', $parameters[0]['pager_results']);
                     break;
 
                 case 'setLabel':
-                    $this->assertEquals('-', $parameters[0]);
+                    $this->assertSame('-', $parameters[0]);
                     break;
 
                 case 'setPagerType':
-                    $this->assertEquals('default', $parameters[0]);
+                    $this->assertSame('default', $parameters[0]);
                     break;
             }
         }
@@ -269,16 +269,16 @@ class AddDependencyCallsCompilerPassTest extends \PHPUnit_Framework_TestCase
 
             switch ($name) {
                 case 'setTemplates':
-                    $this->assertEquals('foo.twig.html', $parameters[0]['user_block']);
-                    $this->assertEquals('SonataAdminBundle:Pager:simple_pager_results.html.twig', $parameters[0]['pager_results']);
+                    $this->assertSame('foo.twig.html', $parameters[0]['user_block']);
+                    $this->assertSame('SonataAdminBundle:Pager:simple_pager_results.html.twig', $parameters[0]['pager_results']);
                     break;
 
                 case 'setLabel':
-                    $this->assertEquals('Foo', $parameters[0]);
+                    $this->assertSame('Foo', $parameters[0]);
                     break;
 
                 case 'setPagerType':
-                    $this->assertEquals('simple', $parameters[0]);
+                    $this->assertSame('simple', $parameters[0]);
                     break;
             }
         }

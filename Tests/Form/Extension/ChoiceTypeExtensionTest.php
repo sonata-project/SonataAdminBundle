@@ -27,7 +27,7 @@ class ChoiceTypeExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $extension = new ChoiceTypeExtension();
 
-        $this->assertEquals('choice', $extension->getExtendedType());
+        $this->assertSame('choice', $extension->getExtendedType());
     }
 
     public function testDefaultOptionsWithSortable()

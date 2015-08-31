@@ -57,7 +57,7 @@ class RoleSecurityHandlerTest extends \PHPUnit_Framework_TestCase
             ->method('getCode')
             ->will($this->returnValue($code));
 
-        $this->assertEquals($expected, $handler->getBaseRole($this->admin));
+        $this->assertSame($expected, $handler->getBaseRole($this->admin));
     }
 
     public function getBaseRoleTests()
@@ -108,7 +108,7 @@ class RoleSecurityHandlerTest extends \PHPUnit_Framework_TestCase
                 return false;
             }));
 
-        $this->assertEquals($expected, $handler->isGranted($this->admin, $operation, $object));
+        $this->assertSame($expected, $handler->isGranted($this->admin, $operation, $object));
     }
 
     public function getIsGrantedTests()
@@ -210,7 +210,7 @@ class RoleSecurityHandlerTest extends \PHPUnit_Framework_TestCase
     public function testBuildSecurityInformation()
     {
         $handler = $this->getRoleSecurityHandler(array('ROLE_FOO'));
-        $this->assertEquals(array(), $handler->buildSecurityInformation($this->getSonataAdminObject()));
+        $this->assertSame(array(), $handler->buildSecurityInformation($this->getSonataAdminObject()));
     }
 
     /**

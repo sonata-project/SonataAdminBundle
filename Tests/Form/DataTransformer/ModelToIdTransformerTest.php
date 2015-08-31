@@ -55,14 +55,14 @@ class ModelToIdTransformerTest extends \PHPUnit_Framework_TestCase
 
         $this->modelManager->expects($this->any())->method('find');
 
-        $this->assertEquals($expected, $transformer->reverseTransform($value));
+        $this->assertSame($expected, $transformer->reverseTransform($value));
     }
 
     public function getReverseTransformValues()
     {
         return array(
             array(null, null),
-            array(false, false),
+            array(false, null),
             array(array(), null),
             array('', null),
         );
@@ -81,6 +81,6 @@ class ModelToIdTransformerTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($transformer->transform(0));
         $this->assertNull($transformer->transform('0'));
 
-        $this->assertEquals(123, $transformer->transform(new \stdClass()));
+        $this->assertSame(123, $transformer->transform(new \stdClass()));
     }
 }

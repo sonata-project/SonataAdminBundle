@@ -87,9 +87,9 @@ class DatagridMapperTest extends \PHPUnit_Framework_TestCase
     {
         $fieldDescription = $this->getFieldDescriptionMock('fooName', 'fooLabel');
 
-        $this->assertEquals($this->datagridMapper, $this->datagridMapper->add($fieldDescription, null, array('field_name' => 'fooFilterName')));
-        $this->assertEquals($this->datagridMapper, $this->datagridMapper->remove('fooName'));
-        $this->assertEquals($this->datagridMapper, $this->datagridMapper->reorder(array()));
+        $this->assertSame($this->datagridMapper, $this->datagridMapper->add($fieldDescription, null, array('field_name' => 'fooFilterName')));
+        $this->assertSame($this->datagridMapper, $this->datagridMapper->remove('fooName'));
+        $this->assertSame($this->datagridMapper, $this->datagridMapper->reorder(array()));
     }
 
     public function testGet()
@@ -102,19 +102,19 @@ class DatagridMapperTest extends \PHPUnit_Framework_TestCase
 
         $filter = $this->datagridMapper->get('foo.name');
         $this->assertInstanceOf('Sonata\AdminBundle\Filter\FilterInterface', $filter);
-        $this->assertEquals('foo.name', $filter->getName());
-        $this->assertEquals('foo__name', $filter->getFormName());
-        $this->assertEquals('text', $filter->getFieldType());
-        $this->assertEquals('fooLabel', $filter->getLabel());
-        $this->assertEquals(array('required' => false), $filter->getFieldOptions());
-        $this->assertEquals(array(
+        $this->assertSame('foo.name', $filter->getName());
+        $this->assertSame('foo__name', $filter->getFormName());
+        $this->assertSame('text', $filter->getFieldType());
+        $this->assertSame('fooLabel', $filter->getLabel());
+        $this->assertSame(array('required' => false), $filter->getFieldOptions());
+        $this->assertSame(array(
+            'show_filter'        => null,
+            'advanced_filter'    => true,
             'foo_default_option' => 'bar_default',
             'label'              => 'fooLabel',
             'field_name'         => 'fooFilterName',
             'placeholder'        => 'short_object_description_placeholder',
             'link_parameters'    => array(),
-            'show_filter'        => null,
-            'advanced_filter'    => true,
         ), $filter->getOptions());
     }
 
@@ -128,22 +128,22 @@ class DatagridMapperTest extends \PHPUnit_Framework_TestCase
 
         $filter = $this->datagridMapper->get('fooName');
         $this->assertInstanceOf('Sonata\AdminBundle\Filter\FilterInterface', $filter);
-        $this->assertEquals('fooName', $filter->getName());
-        $this->assertEquals('fooName', $filter->getFormName());
-        $this->assertEquals('foo_field_type', $filter->getFieldType());
-        $this->assertEquals('fooLabel', $filter->getLabel());
-        $this->assertEquals(array('foo_field_option' => 'baz'), $filter->getFieldOptions());
-        $this->assertEquals(array(
+        $this->assertSame('fooName', $filter->getName());
+        $this->assertSame('fooName', $filter->getFormName());
+        $this->assertSame('foo_field_type', $filter->getFieldType());
+        $this->assertSame('fooLabel', $filter->getLabel());
+        $this->assertSame(array('foo_field_option' => 'baz'), $filter->getFieldOptions());
+        $this->assertSame(array(
+            'show_filter'        => null,
+            'advanced_filter'    => true,
             'foo_default_option' => 'bar_custom',
             'label'              => 'fooLabel',
             'field_name'         => 'fooFilterName',
+            'foo_filter_option'  => 'foo_filter_option_value',
             'field_options'      => array('foo_field_option' => 'baz'),
             'field_type'         => 'foo_field_type',
             'placeholder'        => 'short_object_description_placeholder',
-            'foo_filter_option'  => 'foo_filter_option_value',
             'link_parameters'    => array(),
-            'show_filter'        => null,
-            'advanced_filter'    => true,
         ), $filter->getOptions());
     }
 
@@ -156,7 +156,7 @@ class DatagridMapperTest extends \PHPUnit_Framework_TestCase
         $fieldDescription = $this->datagridMapper->get('fooName');
 
         $this->assertInstanceOf('Sonata\AdminBundle\Filter\FilterInterface', $fieldDescription);
-        $this->assertEquals('fooName', $fieldDescription->getName());
+        $this->assertSame('fooName', $fieldDescription->getName());
     }
 
     public function testAddWithoutFieldName()
@@ -168,8 +168,8 @@ class DatagridMapperTest extends \PHPUnit_Framework_TestCase
         $fieldDescription = $this->datagridMapper->get('foo.bar');
 
         $this->assertInstanceOf('Sonata\AdminBundle\Filter\FilterInterface', $fieldDescription);
-        $this->assertEquals('foo.bar', $fieldDescription->getName());
-        $this->assertEquals('bar', $fieldDescription->getOption('field_name'));
+        $this->assertSame('foo.bar', $fieldDescription->getName());
+        $this->assertSame('bar', $fieldDescription->getOption('field_name'));
     }
 
     public function testAddRemove()
@@ -183,7 +183,7 @@ class DatagridMapperTest extends \PHPUnit_Framework_TestCase
 
         $this->datagridMapper->remove('fooName');
         $this->assertFalse($this->datagridMapper->has('fooName'));
-        $this->assertEquals('fooFilterName', $fieldDescription->getOption('field_name'));
+        $this->assertSame('fooFilterName', $fieldDescription->getOption('field_name'));
     }
 
     public function testAddException()
@@ -238,7 +238,7 @@ class DatagridMapperTest extends \PHPUnit_Framework_TestCase
         $this->datagridMapper->add($fieldDescription3, null, array('field_name' => 'fooFilterName3'));
         $this->datagridMapper->add($fieldDescription4, null, array('field_name' => 'fooFilterName4'));
 
-        $this->assertEquals(array(
+        $this->assertSame(array(
             'fooName1',
             'fooName2',
             'fooName3',
@@ -247,7 +247,7 @@ class DatagridMapperTest extends \PHPUnit_Framework_TestCase
 
         $this->datagridMapper->reorder(array('fooName3', 'fooName2', 'fooName1', 'fooName4'));
 
-        $this->assertEquals(array(
+        $this->assertSame(array(
             'fooName3',
             'fooName2',
             'fooName1',

@@ -57,7 +57,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
             ),
         )));
 
-        $this->assertEquals('SonataAdminBundle:mycustomtemplate.html.twig', $config['admin_services']['my_admin_id']['templates']['view']['user_block']);
+        $this->assertSame('SonataAdminBundle:mycustomtemplate.html.twig', $config['admin_services']['my_admin_id']['templates']['view']['user_block']);
     }
 
     public function testAdminServicesDefault()
@@ -68,7 +68,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
             'admin_services' => array('my_admin_id' => array()),
         )));
 
-        $this->assertEquals(array(
+        $this->assertSame(array(
             'model_manager'             => null,
             'form_contractor'           => null,
             'show_builder'              => null,
@@ -76,11 +76,10 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
             'datagrid_builder'          => null,
             'translator'                => null,
             'configuration_pool'        => null,
+            'route_generator'           => null,
             'validator'                 => null,
             'security_handler'          => null,
             'label'                     => null,
-            'templates'                 => array(),
-            'route_generator'           => null,
             'menu_factory'              => null,
             'route_builder'             => null,
             'label_translator_strategy' => null,
@@ -113,7 +112,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
             ),
         )));
 
-        $this->assertEquals($config['dashboard']['blocks'][0]['roles'], array('ROLE_ADMIN'));
+        $this->assertSame($config['dashboard']['blocks'][0]['roles'], array('ROLE_ADMIN'));
     }
 
     public function testDashboardGroups()
@@ -144,40 +143,40 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         )));
 
         $this->assertCount(4, $config['dashboard']['groups']['bar']['items']);
-        $this->assertEquals(
+        $this->assertSame(
             $config['dashboard']['groups']['bar']['items'][0],
             array(
                 'admin'        => 'item1',
+                'label'        => '',
                 'route'        => '',
                 'route_params' => array(),
-                'label'        => '',
             )
         );
-        $this->assertEquals(
+        $this->assertSame(
             $config['dashboard']['groups']['bar']['items'][1],
             array(
                 'admin'        => 'item2',
+                'label'        => '',
                 'route'        => '',
                 'route_params' => array(),
-                'label'        => '',
             )
         );
-        $this->assertEquals(
+        $this->assertSame(
             $config['dashboard']['groups']['bar']['items'][2],
             array(
-                'admin'        => '',
+                'label'        => 'fooLabel',
                 'route'        => 'fooRoute',
                 'route_params' => array('bar' => 'foo'),
-                'label'        => 'fooLabel',
+                'admin'        => '',
             )
         );
-        $this->assertEquals(
+        $this->assertSame(
             $config['dashboard']['groups']['bar']['items'][3],
             array(
-                'admin'        => '',
+                'label'        => 'barLabel',
                 'route'        => 'barRoute',
                 'route_params' => array(),
-                'label'        => 'barLabel',
+                'admin'        => '',
             )
         );
     }

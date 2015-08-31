@@ -110,8 +110,8 @@ class AdminExtractorTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('JMS\TranslationBundle\Model\Message', $catalogue->get('foo', 'foo_admin_domain'));
 
         $message = $catalogue->get('foo', 'foo_admin_domain');
-        $this->assertEquals('foo', $message->getId());
-        $this->assertEquals('foo_admin_domain', $message->getDomain());
+        $this->assertSame('foo', $message->getId());
+        $this->assertSame('foo_admin_domain', $message->getDomain());
     }
 
     public function testExtractWithException()
