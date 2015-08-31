@@ -22,7 +22,7 @@
         "symfony/validator": "~2.3",
         "symfony/security-bundle": "~2.3",
         "symfony/routing": "~2.3",
-        "symfony/config": "~2.3",
+        "symfony/config": "^2.3.9",
         "symfony/console": "~2.3",
         "symfony/twig-bridge": "~2.3",
         "symfony/class-loader":"~2.3",
