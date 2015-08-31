@@ -12,20 +12,17 @@
 namespace Sonata\AdminBundle\Form\ChoiceList;
 
 use Sonata\AdminBundle\Model\ModelManagerInterface;
-use Symfony\Component\Form\ChoiceList\ArrayChoiceList;
+use Symfony\Component\Form\Extension\Core\ChoiceList\SimpleChoiceList;
 
 /**
- * Class ModelChoiceList.
+ * Class LegacyModelChoiceList.
  *
- * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * @author Sullivan Senechal <soullivaneuh@gmail.com>
+ *
+ * @TODO Remove it get back unique ModelChoiceList class when bumping requirements to SF 2.7+
  */
-class ModelChoiceList extends ArrayChoiceList
+class LegacyModelChoiceList extends SimpleChoiceList
 {
-    /**
-     * @var ModelChoiceListAdapter
-     */
-    private $adapter;
-
     /**
      * @param ModelManagerInterface $modelManager
      * @param string                $class
