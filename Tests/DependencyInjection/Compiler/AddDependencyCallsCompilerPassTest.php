@@ -58,8 +58,8 @@ class AddDependencyCallsCompilerPassTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('item_adds', $dashboardGroupsSettings['sonata_group_one']);
         $this->assertArrayHasKey('roles', $dashboardGroupsSettings['sonata_group_one']);
 
-        $this->assertEquals('Group One Label', $dashboardGroupsSettings['sonata_group_one']['label']);
-        $this->assertEquals('SonataAdminBundle', $dashboardGroupsSettings['sonata_group_one']['label_catalogue']);
+        $this->assertSame('Group One Label', $dashboardGroupsSettings['sonata_group_one']['label']);
+        $this->assertSame('SonataAdminBundle', $dashboardGroupsSettings['sonata_group_one']['label_catalogue']);
         $this->assertContains('sonata_post_admin', $dashboardGroupsSettings['sonata_group_one']['items']);
         $this->assertContains('sonata_news_admin', $dashboardGroupsSettings['sonata_group_one']['item_adds']);
         $this->assertContains('ROLE_ONE', $dashboardGroupsSettings['sonata_group_one']['roles']);
@@ -97,8 +97,8 @@ class AddDependencyCallsCompilerPassTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('items', $adminGroups['sonata_group_one']);
         $this->assertArrayHasKey('item_adds', $adminGroups['sonata_group_one']);
         $this->assertArrayHasKey('roles', $adminGroups['sonata_group_one']);
-        $this->assertEquals('Group One Label', $adminGroups['sonata_group_one']['label']);
-        $this->assertEquals('SonataAdminBundle', $adminGroups['sonata_group_one']['label_catalogue']);
+        $this->assertSame('Group One Label', $adminGroups['sonata_group_one']['label']);
+        $this->assertSame('SonataAdminBundle', $adminGroups['sonata_group_one']['label_catalogue']);
         $this->assertContains('sonata_post_admin', $adminGroups['sonata_group_one']['items']);
         $this->assertContains('sonata_news_admin', $adminGroups['sonata_group_one']['items']);
         $this->assertContains('sonata_news_admin', $adminGroups['sonata_group_one']['item_adds']);

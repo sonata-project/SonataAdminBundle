@@ -42,24 +42,24 @@ class ErrorElementTest extends \PHPUnit_Framework_TestCase
 
     public function testGetSubject()
     {
-        $this->assertEquals($this->subject, $this->errorElement->getSubject());
+        $this->assertSame($this->subject, $this->errorElement->getSubject());
     }
 
     public function testGetErrorsEmpty()
     {
-        $this->assertEquals(array(), $this->errorElement->getErrors());
+        $this->assertSame(array(), $this->errorElement->getErrors());
     }
 
     public function testGetErrors()
     {
         $this->errorElement->addViolation('Foo error message', array('bar_param' => 'bar_param_lvalue'), 'BAR');
-        $this->assertEquals(array(array('Foo error message', array('bar_param' => 'bar_param_lvalue'), 'BAR')), $this->errorElement->getErrors());
+        $this->assertSame(array(array('Foo error message', array('bar_param' => 'bar_param_lvalue'), 'BAR')), $this->errorElement->getErrors());
     }
 
     public function testAddViolation()
     {
         $this->errorElement->addViolation(array('Foo error message', array('bar_param' => 'bar_param_lvalue'), 'BAR'));
-        $this->assertEquals(array(array('Foo error message', array('bar_param' => 'bar_param_lvalue'), 'BAR')), $this->errorElement->getErrors());
+        $this->assertSame(array(array('Foo error message', array('bar_param' => 'bar_param_lvalue'), 'BAR')), $this->errorElement->getErrors());
     }
 
     public function testAddConstraint()
@@ -113,10 +113,10 @@ class ErrorElementTest extends \PHPUnit_Framework_TestCase
     public function testGetFullPropertyPath()
     {
         $this->errorElement->with('baz');
-        $this->assertEquals('bar.baz', $this->errorElement->getFullPropertyPath());
+        $this->assertSame('bar.baz', $this->errorElement->getFullPropertyPath());
         $this->errorElement->end();
 
-        $this->assertEquals('bar', $this->errorElement->getFullPropertyPath());
+        $this->assertSame('bar', $this->errorElement->getFullPropertyPath());
     }
 
     public function testFluidInterface()
@@ -128,10 +128,10 @@ class ErrorElementTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo($this->subject), $this->equalTo($constraint), $this->equalTo(''), $this->equalTo('foo_admin'))
             ->will($this->returnValue(null));
 
-        $this->assertEquals($this->errorElement, $this->errorElement->with('baz'));
-        $this->assertEquals($this->errorElement, $this->errorElement->end());
-        $this->assertEquals($this->errorElement, $this->errorElement->addViolation('Foo error message', array('bar_param' => 'bar_param_lvalue'), 'BAR'));
-        $this->assertEquals($this->errorElement, $this->errorElement->addConstraint($constraint));
-        $this->assertEquals($this->errorElement, $this->errorElement->assertNotNull());
+        $this->assertSame($this->errorElement, $this->errorElement->with('baz'));
+        $this->assertSame($this->errorElement, $this->errorElement->end());
+        $this->assertSame($this->errorElement, $this->errorElement->addViolation('Foo error message', array('bar_param' => 'bar_param_lvalue'), 'BAR'));
+        $this->assertSame($this->errorElement, $this->errorElement->addConstraint($constraint));
+        $this->assertSame($this->errorElement, $this->errorElement->assertNotNull());
     }
 }

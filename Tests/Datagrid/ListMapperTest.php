@@ -81,9 +81,9 @@ class ListMapperTest extends \PHPUnit_Framework_TestCase
     {
         $fieldDescription = $this->getFieldDescriptionMock('fooName', 'fooLabel');
 
-        $this->assertEquals($this->listMapper, $this->listMapper->add($fieldDescription));
-        $this->assertEquals($this->listMapper, $this->listMapper->remove('fooName'));
-        $this->assertEquals($this->listMapper, $this->listMapper->reorder(array()));
+        $this->assertSame($this->listMapper, $this->listMapper->add($fieldDescription));
+        $this->assertSame($this->listMapper, $this->listMapper->remove('fooName'));
+        $this->assertSame($this->listMapper, $this->listMapper->reorder(array()));
     }
 
     public function testGet()
@@ -93,7 +93,7 @@ class ListMapperTest extends \PHPUnit_Framework_TestCase
         $fieldDescription = $this->getFieldDescriptionMock('fooName', 'fooLabel');
 
         $this->listMapper->add($fieldDescription);
-        $this->assertEquals($fieldDescription, $this->listMapper->get('fooName'));
+        $this->assertSame($fieldDescription, $this->listMapper->get('fooName'));
     }
 
     public function testAddIdentifier()
@@ -115,8 +115,8 @@ class ListMapperTest extends \PHPUnit_Framework_TestCase
         $fieldDescription = $this->listMapper->get('fooName');
 
         $this->assertInstanceOf('Sonata\AdminBundle\Admin\FieldDescriptionInterface', $fieldDescription);
-        $this->assertEquals('fooName', $fieldDescription->getName());
-        $this->assertEquals('fooName', $fieldDescription->getOption('label'));
+        $this->assertSame('fooName', $fieldDescription->getName());
+        $this->assertSame('fooName', $fieldDescription->getOption('label'));
     }
 
     public function testAddViewInlineAction()
@@ -129,9 +129,9 @@ class ListMapperTest extends \PHPUnit_Framework_TestCase
         $fieldDescription = $this->listMapper->get('_action');
 
         $this->assertInstanceOf('Sonata\AdminBundle\Admin\FieldDescriptionInterface', $fieldDescription);
-        $this->assertEquals('_action', $fieldDescription->getName());
+        $this->assertSame('_action', $fieldDescription->getName());
         $this->assertCount(1, $fieldDescription->getOption('actions'));
-        $this->assertEquals(array('show' => array()), $fieldDescription->getOption('actions'));
+        $this->assertSame(array('show' => array()), $fieldDescription->getOption('actions'));
     }
 
     public function testAddRemove()
@@ -198,7 +198,7 @@ class ListMapperTest extends \PHPUnit_Framework_TestCase
         $this->listMapper->add($fieldDescription3);
         $this->listMapper->add($fieldDescription4);
 
-        $this->assertEquals(array(
+        $this->assertSame(array(
             'fooName1' => $fieldDescription1,
             'fooName2' => $fieldDescription2,
             'fooName3' => $fieldDescription3,
@@ -208,7 +208,7 @@ class ListMapperTest extends \PHPUnit_Framework_TestCase
         $this->listMapper->reorder(array('fooName3', 'fooName2', 'fooName1', 'fooName4'));
 
         // print_r is used to compare order of items in associative arrays
-        $this->assertEquals(print_r(array(
+        $this->assertSame(print_r(array(
             'fooName3' => $fieldDescription3,
             'fooName2' => $fieldDescription2,
             'fooName1' => $fieldDescription1,

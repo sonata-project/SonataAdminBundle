@@ -36,7 +36,7 @@ class DefaultRouteGeneratorTest extends \PHPUnit_Framework_TestCase
 
         $generator = new DefaultRouteGenerator($router, $cache);
 
-        $this->assertEquals('/foo/bar', $generator->generate('foo_bar'));
+        $this->assertSame('/foo/bar', $generator->generate('foo_bar'));
     }
 
     /**
@@ -85,7 +85,7 @@ class DefaultRouteGeneratorTest extends \PHPUnit_Framework_TestCase
 
         $generator = new DefaultRouteGenerator($router, $cache);
 
-        $this->assertEquals($expected, $generator->generateUrl($admin, $name, $parameters));
+        $this->assertSame($expected, $generator->generateUrl($admin, $name, $parameters));
     }
 
     public function getGenerateUrlTests()
@@ -190,7 +190,7 @@ class DefaultRouteGeneratorTest extends \PHPUnit_Framework_TestCase
 
         $generator = new DefaultRouteGenerator($router, $cache);
 
-        $this->assertEquals($expected, $generator->generateUrl($type == 'child' ? $admin : $parentAdmin, $name, $parameters));
+        $this->assertSame($expected, $generator->generateUrl($type == 'child' ? $admin : $parentAdmin, $name, $parameters));
     }
 
     public function getGenerateUrlChildTests()
@@ -260,7 +260,7 @@ class DefaultRouteGeneratorTest extends \PHPUnit_Framework_TestCase
 
         $generator = new DefaultRouteGenerator($router, $cache);
 
-        $this->assertEquals($expected, $generator->generateUrl($admin, $name, $parameters));
+        $this->assertSame($expected, $generator->generateUrl($admin, $name, $parameters));
     }
 
     public function getGenerateUrlParentFieldDescriptionTests()
@@ -359,7 +359,7 @@ class DefaultRouteGeneratorTest extends \PHPUnit_Framework_TestCase
 
         // Generate once to populate cache
         $generator->generateUrl($admin, 'bar', $parameters);
-        $this->assertEquals($expected, $generator->generateUrl($standaloneAdmin, $name, $parameters));
+        $this->assertSame($expected, $generator->generateUrl($standaloneAdmin, $name, $parameters));
     }
 
     public function getGenerateUrlLoadCacheTests()

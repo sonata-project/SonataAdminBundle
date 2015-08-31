@@ -39,7 +39,7 @@ class PoolTest extends \PHPUnit_Framework_TestCase
             ),
         );
 
-        $this->assertEquals($expectedOutput, $this->pool->getGroups());
+        $this->assertSame($expectedOutput, $this->pool->getGroups());
     }
 
     public function testHasGroup()
@@ -107,7 +107,7 @@ class PoolTest extends \PHPUnit_Framework_TestCase
                 'adminGroup1' => array(),
             ));
 
-        $this->assertEquals(array(), $this->pool->getAdminsByGroup('adminGroup1'));
+        $this->assertSame(array(), $this->pool->getAdminsByGroup('adminGroup1'));
     }
 
     public function testGetAdminsByGroup()
@@ -147,7 +147,7 @@ class PoolTest extends \PHPUnit_Framework_TestCase
     {
         $this->pool->setAdminClasses(array('someclass' => array('sonata.user.admin.group1', 'sonata.user.admin.group2')));
         $this->assertTrue($this->pool->hasAdminByClass('someclass'));
-        $this->assertEquals('adminUserClass', $this->pool->getAdminByClass('someclass'));
+        $this->assertSame('adminUserClass', $this->pool->getAdminByClass('someclass'));
     }
 
     public function testGetAdminForClassWhenAdminClassIsSet()
@@ -155,7 +155,7 @@ class PoolTest extends \PHPUnit_Framework_TestCase
         $this->pool->setAdminServiceIds(array('sonata.user.admin.group1'));
         $this->pool->setAdminClasses(array('someclass' => array('sonata.user.admin.group1')));
         $this->assertTrue($this->pool->hasAdminByClass('someclass'));
-        $this->assertEquals('adminUserClass', $this->pool->getAdminByClass('someclass'));
+        $this->assertSame('adminUserClass', $this->pool->getAdminByClass('someclass'));
     }
 
     /**
@@ -170,7 +170,7 @@ class PoolTest extends \PHPUnit_Framework_TestCase
     public function testGetAdminByAdminCode()
     {
         $this->pool->setAdminServiceIds(array('sonata.news.admin.post'));
-        $this->assertEquals('adminUserClass', $this->pool->getAdminByAdminCode('sonata.news.admin.post'));
+        $this->assertSame('adminUserClass', $this->pool->getAdminByAdminCode('sonata.news.admin.post'));
     }
 
     public function testGetAdminByAdminCodeForChildClass()
@@ -194,25 +194,25 @@ class PoolTest extends \PHPUnit_Framework_TestCase
         $this->pool = new Pool($containerMock, 'Sonata', '/path/to/logo.png');
         $this->pool->setAdminServiceIds(array('sonata.news.admin.post'));
 
-        $this->assertEquals('commentAdminClass', $this->pool->getAdminByAdminCode('sonata.news.admin.post|sonata.news.admin.comment'));
+        $this->assertSame('commentAdminClass', $this->pool->getAdminByAdminCode('sonata.news.admin.post|sonata.news.admin.comment'));
     }
 
     public function testGetAdminClasses()
     {
         $this->pool->setAdminClasses(array('someclass' => 'sonata.user.admin.group1'));
-        $this->assertEquals(array('someclass' => 'sonata.user.admin.group1'), $this->pool->getAdminClasses());
+        $this->assertSame(array('someclass' => 'sonata.user.admin.group1'), $this->pool->getAdminClasses());
     }
 
     public function testGetAdminGroups()
     {
         $this->pool->setAdminGroups(array('adminGroup1' => 'sonata.user.admin.group1'));
-        $this->assertEquals(array('adminGroup1' => 'sonata.user.admin.group1'), $this->pool->getAdminGroups());
+        $this->assertSame(array('adminGroup1' => 'sonata.user.admin.group1'), $this->pool->getAdminGroups());
     }
 
     public function testGetAdminServiceIds()
     {
         $this->pool->setAdminServiceIds(array('sonata.user.admin.group1', 'sonata.user.admin.group2', 'sonata.user.admin.group3'));
-        $this->assertEquals(array('sonata.user.admin.group1', 'sonata.user.admin.group2', 'sonata.user.admin.group3'), $this->pool->getAdminServiceIds());
+        $this->assertSame(array('sonata.user.admin.group1', 'sonata.user.admin.group2', 'sonata.user.admin.group3'), $this->pool->getAdminServiceIds());
     }
 
     public function testGetContainer()
@@ -227,29 +227,29 @@ class PoolTest extends \PHPUnit_Framework_TestCase
         $this->pool->setTemplates(array('ajax' => 'Foo.html.twig'));
 
         $this->assertNull($this->pool->getTemplate('bar'));
-        $this->assertEquals('Foo.html.twig', $this->pool->getTemplate('ajax'));
+        $this->assertSame('Foo.html.twig', $this->pool->getTemplate('ajax'));
     }
 
     public function testGetTitleLogo()
     {
-        $this->assertEquals('/path/to/pic.png', $this->pool->getTitleLogo());
+        $this->assertSame('/path/to/pic.png', $this->pool->getTitleLogo());
     }
 
     public function testGetTitle()
     {
-        $this->assertEquals('Sonata Admin', $this->pool->getTitle());
+        $this->assertSame('Sonata Admin', $this->pool->getTitle());
     }
 
     public function testGetOption()
     {
-        $this->assertEquals('bar', $this->pool->getOption('foo'));
+        $this->assertSame('bar', $this->pool->getOption('foo'));
 
-        $this->assertEquals(null, $this->pool->getOption('non_existent_option'));
+        $this->assertSame(null, $this->pool->getOption('non_existent_option'));
     }
 
     public function testOptionDefault()
     {
-        $this->assertEquals(array(), $this->pool->getOption('nonexistantarray', array()));
+        $this->assertSame(array(), $this->pool->getOption('nonexistantarray', array()));
     }
 
     /**

@@ -79,24 +79,24 @@ class FormMapperTest extends \PHPUnit_Framework_TestCase
     {
         $this->formMapper->with('foobar');
 
-        $this->assertEquals(array('default' => array(
+        $this->assertSame(array('default' => array(
             'collapsed'          => false,
             'class'              => false,
             'description'        => false,
             'translation_domain' => null,
+            'name'               => 'default',
             'auto_created'       => true,
             'groups'             => array('foobar'),
             'tab'                => true,
-            'name'               => 'default',
         )), $this->admin->getFormTabs());
 
-        $this->assertEquals(array('foobar' => array(
+        $this->assertSame(array('foobar' => array(
             'collapsed'          => false,
             'class'              => false,
             'description'        => false,
             'translation_domain' => null,
-            'fields'             => array(),
             'name'               => 'foobar',
+            'fields'             => array(),
         )), $this->admin->getFormGroups());
     }
 
@@ -106,40 +106,29 @@ class FormMapperTest extends \PHPUnit_Framework_TestCase
             'translation_domain' => 'Foobar',
         ));
 
-        $this->assertEquals(array('foobar' => array(
+        $this->assertSame(array('foobar' => array(
             'collapsed'          => false,
             'class'              => false,
             'description'        => false,
             'translation_domain' => 'Foobar',
-            'fields'             => array(),
             'name'               => 'foobar',
+            'fields'             => array(),
         )), $this->admin->getFormGroups());
 
-        $this->assertEquals(array('default' => array(
+        $this->assertSame(array('default' => array(
             'collapsed'          => false,
             'class'              => false,
             'description'        => false,
             'translation_domain' => 'Foobar',
+            'name'               => 'default',
             'auto_created'       => true,
             'groups'             => array('foobar'),
             'tab'                => true,
-            'name'               => 'default',
         )), $this->admin->getFormTabs());
     }
 
     public function testWithFieldsCascadeTranslationDomain()
     {
-        $formGroups = array(
-            'foobar' => array(
-                'collapsed'          => false,
-                'fields'             => array(),
-                'description'        => false,
-                'translation_domain' => 'Foobar',
-                'class'              => false,
-                'name'               => 'foobar',
-            ),
-        );
-
         $this->admin->setModelManager($this->modelManager);
 
         $this->modelManager->expects($this->once())
@@ -166,26 +155,26 @@ class FormMapperTest extends \PHPUnit_Framework_TestCase
             ->add('foo', 'bar')
         ->end();
 
-        $this->assertEquals(array('default' => array(
+        $this->assertSame(array('default' => array(
             'collapsed'          => false,
             'class'              => false,
             'description'        => false,
             'translation_domain' => 'Foobar',
+            'name'               => 'default',
             'auto_created'       => true,
             'groups'             => array('foobar'),
             'tab'                => true,
-            'name'               => 'default',
         )), $this->admin->getFormTabs());
 
-        $this->assertEquals(array('foobar' => array(
+        $this->assertSame(array('foobar' => array(
             'collapsed'          => false,
             'class'              => false,
             'description'        => false,
             'translation_domain' => 'Foobar',
+            'name'               => 'foobar',
             'fields'             => array(
                 'foo' => 'foo',
             ),
-            'name' => 'foobar',
         )), $this->admin->getFormGroups());
     }
 

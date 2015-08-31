@@ -22,7 +22,7 @@ class NativeLabelTranslatorStrategyTest extends \PHPUnit_Framework_TestCase
     {
         $strategy = new NativeLabelTranslatorStrategy();
 
-        $this->assertEquals($expectedLabel, $strategy->getLabel($label, 'form', 'label'));
+        $this->assertSame($expectedLabel, $strategy->getLabel($label, 'form', 'label'));
     }
 
     public function getLabelTests()

@@ -41,6 +41,6 @@ class BaseMapperTest extends \PHPUnit_Framework_TestCase
 
     public function testGetAdmin()
     {
-        $this->assertEquals($this->admin, $this->baseMapper->getAdmin());
+        $this->assertSame($this->admin, $this->baseMapper->getAdmin());
     }
 }
