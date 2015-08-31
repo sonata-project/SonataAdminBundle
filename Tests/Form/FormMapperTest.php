@@ -168,7 +168,7 @@ class FormMapperTest extends \PHPUnit_Framework_TestCase
             'description'        => false,
             'translation_domain' => 'Foobar',
             'name'               => 'foobar',
-            'box_class' => 'box box-primary',
+            'box_class'          => 'box box-primary',
             'fields'             => array(
                 'foo' => 'foo',
             ),
