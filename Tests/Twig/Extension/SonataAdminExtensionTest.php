@@ -86,7 +86,7 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
             __DIR__.'/../../../Resources/views/CRUD',
         ));
 
-        $this->environment = new \Twig_Environment($loader, array('strict_variables' => true, 'cache' => false, 'autoescape' => true, 'optimizations' => 0));
+        $this->environment = new \Twig_Environment($loader, array('strict_variables' => true, 'cache' => false, 'autoescape' => 'html', 'optimizations' => 0));
         $this->environment->addExtension($this->twigExtension);
 
         // translation extension
