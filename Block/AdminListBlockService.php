@@ -16,7 +16,6 @@ use Sonata\BlockBundle\Block\BaseBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
@@ -81,12 +80,13 @@ class AdminListBlockService extends BaseBlockService
             'groups' => false,
         ));
 
-        if (version_compare(Kernel::VERSION, '2.6', '<')) {
+        // Symfony < 2.6 BC
+        if (method_exists($resolver, 'setNormalizer')) {
+            $resolver->setAllowedTypes('groups', array('bool', 'array'));
+        } else {
             $resolver->setAllowedTypes(array(
                 'groups' => array('bool', 'array'),
             ));
-        } else {
-            $resolver->setAllowedTypes('groups', array('bool', 'array'));
         }
     }
 }
