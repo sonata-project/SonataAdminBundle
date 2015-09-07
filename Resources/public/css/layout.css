@@ -364,3 +364,9 @@ body.fixed .content-header .navbar.stuck {
     z-index: 1;
     border-radius: 0;
 }
+
+@media(max-width:768px) {
+    body.fixed .content-header .navbar.stuck {
+        top:100px;
+    }
+}
