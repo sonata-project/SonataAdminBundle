@@ -537,7 +537,7 @@ var Admin = {
 
             var wrapper = jQuery(subject).find('.content-wrapper');
             var navbar  = jQuery(wrapper).find('nav.navbar');
-            var footer  = jQuery(wrapper).find('.form-actions');
+            var footer  = jQuery(wrapper).find('.sonata-ba-form-actions');
 
             if (navbar.length) {
                 new Waypoint.Sticky({
