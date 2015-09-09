@@ -49,6 +49,7 @@ class AdminSearchBlockServiceTest extends AbstractBlockServiceTest
             'query'      => '',
             'page'       => 0,
             'per_page'   => 10,
+            'icon'       => '<i class="fa fa-list"></i>',
         ), $blockContext);
     }
 }
