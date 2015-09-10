@@ -180,7 +180,7 @@
             </trans-unit>
             <trans-unit id="link_breadcrumb_dashboard">
                 <source>breadcrumb.link_dashboard</source>
-                <target>&#8962;</target>
+                <target><![CDATA[<i class="fa fa-home"></i>]]></target>
             </trans-unit>
             <trans-unit id="title_delete">
                 <source>title_delete</source>
