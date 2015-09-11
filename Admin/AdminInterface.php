@@ -17,6 +17,7 @@ use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
 use Sonata\AdminBundle\Builder\FormContractorInterface;
 use Sonata\AdminBundle\Builder\ListBuilderInterface;
 use Sonata\AdminBundle\Builder\RouteBuilderInterface;
+use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Route\RouteGeneratorInterface;
@@ -116,9 +117,11 @@ interface AdminInterface
     public function attachAdminClass(FieldDescriptionInterface $fieldDescription);
 
     /**
-     * @return \Sonata\AdminBundle\Datagrid\DatagridInterface
+     * @param string $context
+     *
+     * @return DatagridInterface
      */
-    public function getDatagrid();
+    public function getDatagrid($context = 'list');
 
     /**
      * Set base controller name.

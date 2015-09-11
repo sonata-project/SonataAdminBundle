@@ -35,8 +35,9 @@ interface DatagridBuilderInterface extends BuilderInterface
     /**
      * @param AdminInterface $admin
      * @param array          $values
+     * @param string         $context
      *
      * @return DatagridInterface
      */
-    public function getBaseDatagrid(AdminInterface $admin, array $values = array());
+    public function getBaseDatagrid(AdminInterface $admin, array $values = array(), $context = 'list');
 }
