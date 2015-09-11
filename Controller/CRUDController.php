@@ -306,7 +306,7 @@ class CRUDController extends Controller
         $object  = $this->admin->getObject($id);
 
         if (!$object) {
-            throw new NotFoundHttpException(sprintf('unable to find the object with id : %s', $id));
+            throw $this->createNotFoundException(sprintf('unable to find the object with id : %s', $id));
         }
 
         if (false === $this->admin->isGranted('DELETE', $object)) {
@@ -387,7 +387,7 @@ class CRUDController extends Controller
         $object = $this->admin->getObject($id);
 
         if (!$object) {
-            throw new NotFoundHttpException(sprintf('unable to find the object with id : %s', $id));
+            throw $this->createNotFoundException(sprintf('unable to find the object with id : %s', $id));
         }
 
         if (false === $this->admin->isGranted('EDIT', $object)) {
@@ -828,7 +828,7 @@ class CRUDController extends Controller
         $object = $this->admin->getObject($id);
 
         if (!$object) {
-            throw new NotFoundHttpException(sprintf('unable to find the object with id : %s', $id));
+            throw $this->createNotFoundException(sprintf('unable to find the object with id : %s', $id));
         }
 
         if (false === $this->admin->isGranted('VIEW', $object)) {
@@ -868,7 +868,7 @@ class CRUDController extends Controller
         $object = $this->admin->getObject($id);
 
         if (!$object) {
-            throw new NotFoundHttpException(sprintf('unable to find the object with id : %s', $id));
+            throw $this->createNotFoundException(sprintf('unable to find the object with id : %s', $id));
         }
 
         if (false === $this->admin->isGranted('EDIT', $object)) {
@@ -878,7 +878,7 @@ class CRUDController extends Controller
         $manager = $this->get('sonata.admin.audit.manager');
 
         if (!$manager->hasReader($this->admin->getClass())) {
-            throw new NotFoundHttpException(
+            throw $this->createNotFoundException(
                 sprintf(
                     'unable to find the audit reader for class : %s',
                     $this->admin->getClass()
@@ -918,7 +918,7 @@ class CRUDController extends Controller
         $object = $this->admin->getObject($id);
 
         if (!$object) {
-            throw new NotFoundHttpException(sprintf('unable to find the object with id : %s', $id));
+            throw $this->createNotFoundException(sprintf('unable to find the object with id : %s', $id));
         }
 
         if (false === $this->admin->isGranted('EDIT', $object)) {
@@ -928,7 +928,7 @@ class CRUDController extends Controller
         $manager = $this->get('sonata.admin.audit.manager');
 
         if (!$manager->hasReader($this->admin->getClass())) {
-            throw new NotFoundHttpException(
+            throw $this->createNotFoundException(
                 sprintf(
                     'unable to find the audit reader for class : %s',
                     $this->admin->getClass()
@@ -942,7 +942,7 @@ class CRUDController extends Controller
         $object = $reader->find($this->admin->getClass(), $id, $revision);
 
         if (!$object) {
-            throw new NotFoundHttpException(
+            throw $this->createNotFoundException(
                 sprintf(
                     'unable to find the targeted object `%s` from the revision `%s` with classname : `%s`',
                     $id,
@@ -987,13 +987,13 @@ class CRUDController extends Controller
         $object = $this->admin->getObject($id);
 
         if (!$object) {
-            throw new NotFoundHttpException(sprintf('unable to find the object with id : %s', $id));
+            throw $this->createNotFoundException(sprintf('unable to find the object with id : %s', $id));
         }
 
         $manager = $this->get('sonata.admin.audit.manager');
 
         if (!$manager->hasReader($this->admin->getClass())) {
-            throw new NotFoundHttpException(
+            throw $this->createNotFoundException(
                 sprintf(
                     'unable to find the audit reader for class : %s',
                     $this->admin->getClass()
@@ -1006,7 +1006,7 @@ class CRUDController extends Controller
         // retrieve the base revision
         $base_object = $reader->find($this->admin->getClass(), $id, $base_revision);
         if (!$base_object) {
-            throw new NotFoundHttpException(
+            throw $this->createNotFoundException(
                 sprintf(
                     'unable to find the targeted object `%s` from the revision `%s` with classname : `%s`',
                     $id,
@@ -1019,7 +1019,7 @@ class CRUDController extends Controller
         // retrieve the compare revision
         $compare_object = $reader->find($this->admin->getClass(), $id, $compare_revision);
         if (!$compare_object) {
-            throw new NotFoundHttpException(
+            throw $this->createNotFoundException(
                 sprintf(
                     'unable to find the targeted object `%s` from the revision `%s` with classname : `%s`',
                     $id,
@@ -1158,7 +1158,7 @@ class CRUDController extends Controller
         $request = $this->resolveRequest($request);
 
         if (!$this->admin->isAclEnabled()) {
-            throw new NotFoundHttpException('ACL are not enabled for this admin');
+            throw $this->createNotFoundException('ACL are not enabled for this admin');
         }
 
         $id = $request->get($this->admin->getIdParameter());
@@ -1166,7 +1166,7 @@ class CRUDController extends Controller
         $object = $this->admin->getObject($id);
 
         if (!$object) {
-            throw new NotFoundHttpException(sprintf('unable to find the object with id : %s', $id));
+            throw $this->createNotFoundException(sprintf('unable to find the object with id : %s', $id));
         }
 
         if (false === $this->admin->isGranted('MASTER', $object)) {
