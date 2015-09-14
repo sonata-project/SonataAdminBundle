@@ -123,6 +123,7 @@ class Configuration implements ConfigurationInterface
                                 ->children()
                                     ->scalarNode('label')->end()
                                     ->scalarNode('label_catalogue')->end()
+                                    ->scalarNode('show_in_dashboard')->defaultTrue()->info('Show or hide menu item in side dashboard menu')->end()
                                     ->scalarNode('icon')->defaultValue('<i class="fa fa-folder"></i>')->end()
                                     ->scalarNode('provider')->end()
                                     ->arrayNode('items')
