@@ -162,6 +162,10 @@
                 <source>flash_edit_error</source>
                 <target>Во время обновления элемента произошла ошибка.</target>
             </trans-unit>
+            <trans-unit id="flash_lock_error">
+                <source>flash_lock_error</source>
+                <target>flash_lock_error</target>
+            </trans-unit>
             <trans-unit id='flash_batch_delete_success'>
                 <source>flash_batch_delete_success</source>
                 <target>Выбранные элементы были успешно удалены.</target>
@@ -178,9 +182,13 @@
                 <source>flash_delete_success</source>
                 <target>Элемент успешно удален.</target>
             </trans-unit>
+            <trans-unit id="form_not_available">
+                <source>form_not_available</source>
+                <target>form_not_available</target>
+            </trans-unit>
             <trans-unit id="link_breadcrumb_dashboard">
                 <source>breadcrumb.link_dashboard</source>
-                <target>&#8962;</target>
+                <target><![CDATA[<i class="fa fa-home"></i>]]></target>
             </trans-unit>
             <trans-unit id="title_delete">
                 <source>title_delete</source>
@@ -306,6 +314,10 @@
                 <source>td_action</source>
                 <target>Действие</target>
             </trans-unit>
+            <trans-unit id="td_compare">
+                <source>td_compare</source>
+                <target>td_compare</target>
+            </trans-unit>
             <trans-unit id="td_revision">
                 <source>td_revision</source>
                 <target>Изменения</target>
@@ -326,6 +338,10 @@
                 <source>label_view_revision</source>
                 <target>Просмотр изменений</target>
             </trans-unit>
+            <trans-unit id="label_compare_revision">
+                <source>label_compare_revision</source>
+                <target>label_compare_revision</target>
+            </trans-unit>
             <trans-unit id="list_results_count_prefix">
                 <source>list_results_count_prefix</source>
                 <target>Как минимум</target>
@@ -337,6 +353,22 @@
             <trans-unit id="label_export_download">
                 <source>label_export_download</source>
                 <target>Экспорт</target>
+            </trans-unit>
+            <trans-unit id="export_format_json">
+                <source>export_format_json</source>
+                <target>JSON</target>
+            </trans-unit>
+            <trans-unit id="export_format_xml">
+                <source>export_format_xml</source>
+                <target>XML</target>
+            </trans-unit>
+            <trans-unit id="export_format_csv">
+                <source>export_format_csv</source>
+                <target>CSV</target>
+            </trans-unit>
+            <trans-unit id="export_format_xls">
+                <source>export_format_xls</source>
+                <target>XLS</target>
             </trans-unit>
             <trans-unit id="loading_information">
                 <source>loading_information</source>
@@ -355,24 +387,24 @@
                 <target>Отклонить</target>
             </trans-unit>
             <trans-unit id="label_per_page">
-              <source>label_per_page</source>
-              <target>Записей на страницу</target>
+                <source>label_per_page</source>
+                <target>Записей на страницу</target>
             </trans-unit>
             <trans-unit id="list_select">
-              <source>list_select</source>
-              <target>Выбрать</target>
+                <source>list_select</source>
+                <target>Выбрать</target>
             </trans-unit>
             <trans-unit id="confirm_exit">
                 <source>confirm_exit</source>
                 <target>У вас есть несохраненные данные</target>
             </trans-unit>
             <trans-unit id="link_edit_acl">
-              <source>link_edit_acl</source>
-              <target>Редактировать ACL</target>
+                <source>link_edit_acl</source>
+                <target>Редактировать ACL</target>
             </trans-unit>
             <trans-unit id="btn_update_acl">
-              <source>btn_update_acl</source>
-              <target>Обновить ACL</target>
+                <source>btn_update_acl</source>
+                <target>Обновить ACL</target>
             </trans-unit>
             <trans-unit id="flash_acl_update_success">
                 <source>flash_acl_edit_success</source>
@@ -383,8 +415,8 @@
                 <target>ACL</target>
             </trans-unit>
             <trans-unit id="short_object_description_placeholder">
-              <source>short_object_description_placeholder</source>
-              <target>Ничего не выбрано</target>
+                <source>short_object_description_placeholder</source>
+                <target>Ничего не выбрано</target>
             </trans-unit>
             <trans-unit id="title_search_results">
                 <source>title_search_results</source>

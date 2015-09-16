@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -25,7 +25,7 @@ class ServicesManipulatorTest extends \PHPUnit_Framework_TestCase
     private $file;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function setUp()
     {
@@ -34,7 +34,7 @@ class ServicesManipulatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function tearDown()
     {
@@ -50,7 +50,7 @@ class ServicesManipulatorTest extends \PHPUnit_Framework_TestCase
             'controller_name',
             'manager_type'
         );
-        $this->assertEquals(
+        $this->assertSame(
             "services:
     service_id:
         class: admin_class
@@ -66,7 +66,7 @@ class ServicesManipulatorTest extends \PHPUnit_Framework_TestCase
             'another_controller_name',
             'another_manager_type'
         );
-        $this->assertEquals(
+        $this->assertSame(
             "services:
     service_id:
         class: admin_class
@@ -115,7 +115,7 @@ class ServicesManipulatorTest extends \PHPUnit_Framework_TestCase
             'controller_name',
             'manager_type'
         );
-        $this->assertEquals(
+        $this->assertSame(
             "services:
     service_id:
         class: admin_class

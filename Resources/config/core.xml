@@ -72,6 +72,11 @@
             <tag name="sonata.admin.extension" global="true" />
         </service>
 
+        <!-- lock -->
+        <service id="sonata.admin.lock.extension" class="Sonata\AdminBundle\Admin\Extension\LockExtension">
+            <tag name="sonata.admin.extension" global="true" />
+        </service>
+
         <!-- twig -->
         <service id="sonata.admin.twig.global" class="Sonata\AdminBundle\Twig\GlobalVariables" >
             <argument type="service" id="service_container" />

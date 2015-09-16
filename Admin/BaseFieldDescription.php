@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -16,7 +16,7 @@ use Symfony\Component\DependencyInjection\Container;
 
 /**
  * A FieldDescription hold the information about a field. A typical
- * admin instance contains different collections of fields
+ * admin instance contains different collections of fields.
  *
  * - form: used by the form
  * - list: used by the list
@@ -65,12 +65,12 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     protected $name;
 
     /**
-     * @var string|integer the type
+     * @var string|int the type
      */
     protected $type;
 
     /**
-     * @var string|integer the original mapping type
+     * @var string|int the original mapping type
      */
     protected $mappingType;
 
@@ -148,7 +148,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         $this->name = $name;
 
         if (!$this->getFieldName()) {
-            $this->setFieldName(substr(strrchr('.' . $name, '.'), 1));
+            $this->setFieldName(substr(strrchr('.'.$name, '.'), 1));
         }
     }
 
@@ -322,7 +322,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     public function getFieldValue($object, $fieldName)
     {
         if ($this->isVirtual()) {
-           return null;
+            return;
         }
 
         $camelizedFieldName = self::camelize($fieldName);
@@ -338,8 +338,8 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         if ($this->getOption('parameters')) {
             $parameters = $this->getOption('parameters');
         }
-        $getters[] = 'get' . $camelizedFieldName;
-        $getters[] = 'is' . $camelizedFieldName;
+        $getters[] = 'get'.$camelizedFieldName;
+        $getters[] = 'is'.$camelizedFieldName;
 
         foreach ($getters as $getter) {
             if (method_exists($object, $getter)) {
@@ -415,7 +415,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     }
 
     /**
-     * Camelize a string
+     * Camelize a string.
      *
      * @static
      *
@@ -429,7 +429,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     }
 
     /**
-     * Defines the help message
+     * Defines the help message.
      *
      * @param string $help
      */
@@ -479,7 +479,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getTranslationDomain()
     {
@@ -489,7 +489,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     /**
      * Return true if field is virtual.
      *
-     * @return boolean
+     * @return bool
      */
     public function isVirtual()
     {

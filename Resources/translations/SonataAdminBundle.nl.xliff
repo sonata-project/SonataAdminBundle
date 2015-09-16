@@ -162,6 +162,10 @@
                 <source>flash_edit_error</source>
                 <target>Het item kon door een fout niet worden bijgewerkt.</target>
             </trans-unit>
+            <trans-unit id="flash_lock_error">
+                <source>flash_lock_error</source>
+                <target>flash_lock_error</target>
+            </trans-unit>
             <trans-unit id='flash_batch_delete_success'>
                 <source>flash_batch_delete_success</source>
                 <target>De geselecteerde items zijn succesvol verwijderd.</target>
@@ -177,6 +181,10 @@
             <trans-unit id='flash_delete_success'>
                 <source>flash_delete_success</source>
                 <target>Het item is succesvol verwijderd.</target>
+            </trans-unit>
+            <trans-unit id="form_not_available">
+                <source>form_not_available</source>
+                <target>form_not_available</target>
             </trans-unit>
             <trans-unit id="link_breadcrumb_dashboard">
                 <source>breadcrumb.link_dashboard</source>
@@ -346,6 +354,22 @@
                 <source>label_export_download</source>
                 <target>Download</target>
             </trans-unit>
+            <trans-unit id="export_format_json">
+                <source>export_format_json</source>
+                <target>JSON</target>
+            </trans-unit>
+            <trans-unit id="export_format_xml">
+                <source>export_format_xml</source>
+                <target>XML</target>
+            </trans-unit>
+            <trans-unit id="export_format_csv">
+                <source>export_format_csv</source>
+                <target>CSV</target>
+            </trans-unit>
+            <trans-unit id="export_format_xls">
+                <source>export_format_xls</source>
+                <target>XLS</target>
+            </trans-unit>
             <trans-unit id="loading_information">
                 <source>loading_information</source>
                 <target>Laden van informatie...</target>
@@ -363,24 +387,24 @@
                 <target>Afkeuren</target>
             </trans-unit>
             <trans-unit id="label_per_page">
-              <source>label_per_page</source>
-              <target>Aantal per pagina</target>
+                <source>label_per_page</source>
+                <target>Aantal per pagina</target>
             </trans-unit>
             <trans-unit id="list_select">
-              <source>list_select</source>
-              <target>Selecteer</target>
+                <source>list_select</source>
+                <target>Selecteer</target>
             </trans-unit>
             <trans-unit id="confirm_exit">
                 <source>confirm_exit</source>
                 <target>Je hebt niet opgeslagen wijzigingen!</target>
             </trans-unit>
             <trans-unit id="link_edit_acl">
-              <source>link_edit_acl</source>
-              <target>Bewerk ACL</target>
+                <source>link_edit_acl</source>
+                <target>Bewerk ACL</target>
             </trans-unit>
             <trans-unit id="btn_update_acl">
-              <source>btn_update_acl</source>
-              <target>Update ACL</target>
+                <source>btn_update_acl</source>
+                <target>Update ACL</target>
             </trans-unit>
             <trans-unit id="flash_acl_update_success">
                 <source>flash_acl_edit_success</source>
@@ -391,8 +415,8 @@
                 <target>ACL</target>
             </trans-unit>
             <trans-unit id="short_object_description_placeholder">
-              <source>short_object_description_placeholder</source>
-              <target>Geen selectie</target>
+                <source>short_object_description_placeholder</source>
+                <target>Geen selectie</target>
             </trans-unit>
             <trans-unit id="title_search_results">
                 <source>title_search_results</source>

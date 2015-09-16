@@ -1,27 +1,24 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
  */
 
 namespace Sonata\AdminBundle\Form\EventListener;
 
+use Sonata\AdminBundle\Model\ModelManagerInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-
-use Sonata\AdminBundle\Model\ModelManagerInterface;
 
 /**
- * Class MergeCollectionListener
+ * Class MergeCollectionListener.
  *
- * @package Sonata\AdminBundle\Form\EventListener
  * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class MergeCollectionListener implements EventSubscriberInterface
@@ -37,7 +34,7 @@ class MergeCollectionListener implements EventSubscriberInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public static function getSubscribedEvents()
     {

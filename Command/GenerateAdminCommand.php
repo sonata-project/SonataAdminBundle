@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -11,8 +11,8 @@
 
 namespace Sonata\AdminBundle\Command;
 
-use Sensio\Bundle\GeneratorBundle\Command\Helper\QuestionHelper;
 use Sensio\Bundle\GeneratorBundle\Command\Helper\DialogHelper;
+use Sensio\Bundle\GeneratorBundle\Command\Helper\QuestionHelper;
 use Sonata\AdminBundle\Generator\AdminGenerator;
 use Sonata\AdminBundle\Generator\ControllerGenerator;
 use Sonata\AdminBundle\Manipulator\ServicesManipulator;
@@ -23,16 +23,15 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
+use Symfony\Component\Console\Question\Question;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
-use Symfony\Component\Console\Question\Question;
-use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 /**
- * Class GenerateAdminCommand
+ * Class GenerateAdminCommand.
  *
- * @package Sonata\AdminBundle\Command
  * @author  Marek Stipek <mario.dweller@seznam.cz>
  * @author  Simon Cosandey <simon.cosandey@simseo.ch>
  */
@@ -42,7 +41,7 @@ class GenerateAdminCommand extends ContainerAwareCommand
     private $managerTypes;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function configure()
     {
@@ -60,7 +59,7 @@ class GenerateAdminCommand extends ContainerAwareCommand
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function isEnabled()
     {
@@ -68,18 +67,18 @@ class GenerateAdminCommand extends ContainerAwareCommand
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $modelClass = Validators::validateClass($input->getArgument('model'));
         $modelClassBasename = current(array_slice(explode('\\', $modelClass), -1));
         $bundle = $this->getBundle($input->getOption('bundle') ?: $this->getBundleNameFromClass($modelClass));
-        $adminClassBasename = $input->getOption('admin') ?: $modelClassBasename . 'Admin';
+        $adminClassBasename = $input->getOption('admin') ?: $modelClassBasename.'Admin';
         $adminClassBasename = Validators::validateAdminClassBasename($adminClassBasename);
         $managerType = $input->getOption('manager') ?: $this->getDefaultManagerType();
         $modelManager = $this->getModelManager($managerType);
-        $skeletonDirectory = __DIR__ . '/../Resources/skeleton';
+        $skeletonDirectory = __DIR__.'/../Resources/skeleton';
         $adminGenerator = new AdminGenerator($modelManager, $skeletonDirectory);
 
         try {
@@ -138,7 +137,7 @@ class GenerateAdminCommand extends ContainerAwareCommand
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function interact(InputInterface $input, OutputInterface $output)
     {
@@ -163,7 +162,7 @@ class GenerateAdminCommand extends ContainerAwareCommand
             $input,
             $output,
             'The admin class basename',
-            $input->getOption('admin') ?: $modelClassBasename . 'Admin',
+            $input->getOption('admin') ?: $modelClassBasename.'Admin',
             'Sonata\AdminBundle\Command\Validators::validateAdminClassBasename'
         );
 
@@ -183,19 +182,19 @@ class GenerateAdminCommand extends ContainerAwareCommand
                 $input,
                 $output,
                 'The controller class basename',
-                $input->getOption('controller') ?: $modelClassBasename . 'AdminController',
+                $input->getOption('controller') ?: $modelClassBasename.'AdminController',
                 'Sonata\AdminBundle\Command\Validators::validateControllerClassBasename'
             );
             $input->setOption('controller', $controllerClassBasename);
         }
 
         if ($this->askConfirmation($input, $output, 'Do you want to update the services YAML configuration file', 'yes', '?')) {
-            $path = $this->getBundle($bundleName)->getPath() . '/Resources/config/';
+            $path = $this->getBundle($bundleName)->getPath().'/Resources/config/';
             $servicesFile = $this->askAndValidate(
                 $input,
                 $output,
                 'The services YAML configuration file',
-                is_file($path . 'admin.yml') ? 'admin.yml' : 'services.yml',
+                is_file($path.'admin.yml') ? 'admin.yml' : 'services.yml',
                 'Sonata\AdminBundle\Command\Validators::validateServicesFile'
             );
             $id = $this->askAndValidate(
@@ -249,12 +248,12 @@ class GenerateAdminCommand extends ContainerAwareCommand
         /* @var $application Application */
 
         foreach ($application->getKernel()->getBundles() as $bundle) {
-            if (strpos($class, $bundle->getNamespace() . '\\') === 0) {
+            if (strpos($class, $bundle->getNamespace().'\\') === 0) {
                 return $bundle->getName();
             };
         }
 
-        return null;
+        return;
     }
 
     /**
@@ -309,7 +308,7 @@ class GenerateAdminCommand extends ContainerAwareCommand
             // @todo remove this BC code for SensioGeneratorBundle 2.3/2.4 after dropping  support for Symfony 2.3
              $question = $questionHelper->getQuestion($questionText, $default, $separator);
 
-             return $questionHelper->askConfirmation($output, $question, ($default === 'no' ? false : true));
+            return $questionHelper->askConfirmation($output, $question, ($default === 'no' ? false : true));
         }
 
         $question = new ConfirmationQuestion($questionHelper->getQuestion(
@@ -342,7 +341,7 @@ class GenerateAdminCommand extends ContainerAwareCommand
      */
     private function getModelManager($managerType)
     {
-        return $this->getContainer()->get('sonata.admin.manager.' . $managerType);
+        return $this->getContainer()->get('sonata.admin.manager.'.$managerType);
     }
 
     /**
@@ -420,7 +419,6 @@ class GenerateAdminCommand extends ContainerAwareCommand
                 $questionHelper = new QuestionHelper();
                 $this->getHelperSet()->set($questionHelper);
             }
-
         }
 
         return $questionHelper;

@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -55,7 +55,7 @@ class FormMapperTest extends \PHPUnit_Framework_TestCase
 
         $this->modelManager->expects($this->any())
             ->method('getNewFieldDescriptionInstance')
-            ->will($this->returnCallback(function($class, $name, array $options = array()) use ($fieldDescription) {
+            ->will($this->returnCallback(function ($class, $name, array $options = array()) use ($fieldDescription) {
                 $fieldDescriptionClone = clone $fieldDescription;
                 $fieldDescriptionClone->setName($name);
                 $fieldDescriptionClone->setOptions($options);
@@ -79,26 +79,26 @@ class FormMapperTest extends \PHPUnit_Framework_TestCase
     {
         $this->formMapper->with('foobar');
 
-        $this->assertEquals(array('default' => array (
-            'collapsed' => false,
-            'class' => false,
-            'description' => false,
+        $this->assertSame(array('default' => array(
+            'collapsed'          => false,
+            'class'              => false,
+            'description'        => false,
             'translation_domain' => null,
-            'auto_created' => true,
-            'groups' => array('foobar'),
-            'tab' => true,
-            'name' => 'default',
-            'box_class' => 'box box-primary'
+            'name'               => 'default',
+            'box_class'          => 'box box-primary',
+            'auto_created'       => true,
+            'groups'             => array('foobar'),
+            'tab'                => true,
         )), $this->admin->getFormTabs());
 
-        $this->assertEquals(array('foobar' => array(
-            'collapsed' => false,
-            'class' => false,
-            'description' => false,
+        $this->assertSame(array('foobar' => array(
+            'collapsed'          => false,
+            'class'              => false,
+            'description'        => false,
             'translation_domain' => null,
-            'fields' => array (),
-            'name' => 'foobar',
-            'box_class' => 'box box-primary'
+            'name'               => 'foobar',
+            'box_class'          => 'box box-primary',
+            'fields'             => array(),
         )), $this->admin->getFormGroups());
     }
 
@@ -108,26 +108,26 @@ class FormMapperTest extends \PHPUnit_Framework_TestCase
             'translation_domain' => 'Foobar',
         ));
 
-        $this->assertEquals(array('foobar' => array(
-            'collapsed' => false,
-            'class' => false,
-            'description' => false,
+        $this->assertSame(array('foobar' => array(
+            'collapsed'          => false,
+            'class'              => false,
+            'description'        => false,
             'translation_domain' => 'Foobar',
-            'fields' => array (),
-            'name' => 'foobar',
-            'box_class' => 'box box-primary'
+            'name'               => 'foobar',
+            'box_class'          => 'box box-primary',
+            'fields'             => array(),
         )), $this->admin->getFormGroups());
 
-        $this->assertEquals(array('default' => array (
-            'collapsed' => false,
-            'class' => false,
-            'description' => false,
+        $this->assertSame(array('default' => array(
+            'collapsed'          => false,
+            'class'              => false,
+            'description'        => false,
             'translation_domain' => 'Foobar',
-            'auto_created' => true,
-            'groups' => array('foobar'),
-            'tab' => true,
-            'name' => 'default',
-            'box_class' => 'box box-primary'
+            'name'               => 'default',
+            'box_class'          => 'box box-primary',
+            'auto_created'       => true,
+            'groups'             => array('foobar'),
+            'tab'                => true,
         )), $this->admin->getFormTabs());
     }
 
@@ -138,40 +138,40 @@ class FormMapperTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(array()));
 
         $this->formMapper->with('foobar', array(
-                'translation_domain' => 'Foobar'
+                'translation_domain' => 'Foobar',
             ))
             ->add('foo', 'bar')
         ->end();
 
         $fieldDescription = $this->admin->getFormFieldDescription('foo');
-        $this->assertEquals('foo', $fieldDescription->getName());
-        $this->assertEquals('bar', $fieldDescription->getType());
-        $this->assertEquals('Foobar', $fieldDescription->getTranslationDomain());
+        $this->assertSame('foo', $fieldDescription->getName());
+        $this->assertSame('bar', $fieldDescription->getType());
+        $this->assertSame('Foobar', $fieldDescription->getTranslationDomain());
 
         $this->assertTrue($this->formMapper->has('foo'));
 
-        $this->assertEquals(array('default' => array (
-            'collapsed' => false,
-            'class' => false,
-            'description' => false,
+        $this->assertSame(array('default' => array(
+            'collapsed'          => false,
+            'class'              => false,
+            'description'        => false,
             'translation_domain' => 'Foobar',
-            'auto_created' => true,
-            'groups' => array ('foobar'),
-            'tab' => true,
-            'name' => 'default',
-            'box_class' => 'box box-primary'
+            'name'               => 'default',
+            'box_class'          => 'box box-primary',
+            'auto_created'       => true,
+            'groups'             => array('foobar'),
+            'tab'                => true,
         )), $this->admin->getFormTabs());
 
-        $this->assertEquals(array('foobar' => array(
-            'collapsed' => false,
-            'class' => false,
-            'description' => false,
+        $this->assertSame(array('foobar' => array(
+            'collapsed'          => false,
+            'class'              => false,
+            'description'        => false,
             'translation_domain' => 'Foobar',
-            'fields' => array(
-                'foo' => 'foo'
+            'name'               => 'foobar',
+            'box_class'          => 'box box-primary',
+            'fields'             => array(
+                'foo' => 'foo',
             ),
-            'name' => 'foobar',
-            'box_class' => 'box box-primary'
         )), $this->admin->getFormGroups());
     }
 
@@ -317,7 +317,7 @@ class FormMapperTest extends \PHPUnit_Framework_TestCase
         $this->formMapper->ifTrue(false);
     }
 
-   /**
+    /**
      * @expectedException        RuntimeException
      * @expectedExceptionMessage Cannot nest ifTrue or ifFalse call
      */
@@ -339,7 +339,7 @@ class FormMapperTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue('foo'));
 
         $this->formMapper->add($formBuilder);
-        $this->assertEquals($this->formMapper->get('foo'), $formBuilder);
+        $this->assertSame($this->formMapper->get('foo'), $formBuilder);
     }
 
     private function getFieldDescriptionMock($name = null, $label = null, $translationDomain = null)

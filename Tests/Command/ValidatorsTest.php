@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -23,7 +23,7 @@ class ValidatorsTest extends \PHPUnit_Framework_TestCase
      */
     public function testValidateUsername($expected, $value)
     {
-        $this->assertEquals($expected, Validators::validateUsername($value));
+        $this->assertSame($expected, Validators::validateUsername($value));
     }
 
     public function getValidateUsernameTests()
@@ -56,7 +56,7 @@ class ValidatorsTest extends \PHPUnit_Framework_TestCase
      */
     public function testValidateEntityName($expected, $value)
     {
-        $this->assertEquals($expected, Validators::validateEntityName($value));
+        $this->assertSame($expected, Validators::validateEntityName($value));
     }
 
     public function getValidateEntityNameTests()
@@ -96,7 +96,7 @@ class ValidatorsTest extends \PHPUnit_Framework_TestCase
      */
     public function testValidateClass($expected, $value)
     {
-        $this->assertEquals($expected, Validators::validateClass($value));
+        $this->assertSame($expected, Validators::validateClass($value));
     }
 
     public function getValidateClassTests()
@@ -131,7 +131,7 @@ class ValidatorsTest extends \PHPUnit_Framework_TestCase
      */
     public function testValidateAdminClassBasename($expected, $value)
     {
-        $this->assertEquals($expected, Validators::validateAdminClassBasename($value));
+        $this->assertSame($expected, Validators::validateAdminClassBasename($value));
     }
 
     public function getValidateAdminClassBasenameTests()
@@ -167,7 +167,7 @@ class ValidatorsTest extends \PHPUnit_Framework_TestCase
      */
     public function testValidateControllerClassBasename($expected, $value)
     {
-        $this->assertEquals($expected, Validators::validateControllerClassBasename($value));
+        $this->assertSame($expected, Validators::validateControllerClassBasename($value));
     }
 
     public function getValidateControllerClassBasenameTests()
@@ -220,7 +220,7 @@ class ValidatorsTest extends \PHPUnit_Framework_TestCase
      */
     public function testValidateServicesFile($expected, $value)
     {
-        $this->assertEquals($expected, Validators::validateServicesFile($value));
+        $this->assertSame($expected, Validators::validateServicesFile($value));
     }
 
     public function getValidateServicesFileTests()
@@ -241,7 +241,7 @@ class ValidatorsTest extends \PHPUnit_Framework_TestCase
      */
     public function testValidateServiceId($value)
     {
-        $this->assertEquals($value, Validators::validateServiceId($value));
+        $this->assertSame($value, Validators::validateServiceId($value));
     }
 
     public function getValidateServiceIdTests()

@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -11,23 +11,22 @@
 
 namespace Sonata\AdminBundle\Controller;
 
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\PropertyAccess\PropertyAccess;
-use Symfony\Component\PropertyAccess\PropertyPath;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Validator\ValidatorInterface;
-use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Admin\AdminHelper;
 use Sonata\AdminBundle\Admin\AdminInterface;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Filter\FilterInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess\PropertyPath;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Validator\ValidatorInterface;
 
 /**
- * Class HelperController
+ * Class HelperController.
  *
- * @package Sonata\AdminBundle\Controller
  * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class HelperController
@@ -100,7 +99,7 @@ class HelperController
 
         list(, $form) = $this->helper->appendFormFieldElement($admin, $subject, $elementId);
 
-        /** @var $form \Symfony\Component\Form\Form */
+        /* @var $form \Symfony\Component\Form\Form */
         $view = $this->helper->getChildFormView($form->createView(), $elementId);
 
         // render the widget
@@ -200,14 +199,14 @@ class HelperController
         if ('json' == $request->get('_format')) {
             return new JsonResponse(array('result' => array(
                 'id'    => $admin->id($object),
-                'label' => $admin->toString($object)
+                'label' => $admin->toString($object),
             )));
         } elseif ('html' == $request->get('_format')) {
             return new Response($this->twig->render($admin->getTemplate('short_object_description'), array(
                 'admin'           => $admin,
                 'description'     => $admin->toString($object),
                 'object'          => $object,
-                'link_parameters' => $linkParameters
+                'link_parameters' => $linkParameters,
             )));
         } else {
             throw new \RuntimeException('Invalid format');
@@ -276,6 +275,11 @@ class HelperController
             $propertyPath = new PropertyPath($field);
         }
 
+        // Handle date type has setter expect a DateTime object
+        if ('' !== $value && $fieldDescription->getType() == 'date') {
+            $value = new \DateTime($value);
+        }
+
         $propertyAccessor->setValue($object, $propertyPath, '' !== $value ? $value : null);
 
         $violations = $this->validator->validate($object);
@@ -303,7 +307,7 @@ class HelperController
     }
 
     /**
-     * Retrieve list of items for autocomplete form field
+     * Retrieve list of items for autocomplete form field.
      *
      * @param Request $request
      *
@@ -426,7 +430,7 @@ class HelperController
         return new JsonResponse(array(
             'status' => 'OK',
             'more'   => !$pager->isLastPage(),
-            'items'  => $items
+            'items'  => $items,
         ));
     }
 

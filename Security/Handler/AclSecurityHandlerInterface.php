@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata project.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -16,15 +16,14 @@ use Symfony\Component\Security\Acl\Model\AclInterface;
 use Symfony\Component\Security\Acl\Model\ObjectIdentityInterface;
 
 /**
- * Interface AclSecurityHandlerInterface
+ * Interface AclSecurityHandlerInterface.
  *
- * @package Sonata\AdminBundle\Security\Handler
  * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 interface AclSecurityHandlerInterface extends SecurityHandlerInterface
 {
     /**
-     * Set the permissions not related to an object instance and also to be available when objects do not exist
+     * Set the permissions not related to an object instance and also to be available when objects do not exist.
      *
      * @abstract
      *
@@ -33,15 +32,16 @@ interface AclSecurityHandlerInterface extends SecurityHandlerInterface
     public function setAdminPermissions(array $permissions);
 
     /**
-     * Return the permissions not related to an object instance and also to be available when objects do not exist
+     * Return the permissions not related to an object instance and also to be available when objects do not exist.
      *
      * @abstract
+     *
      * @return array
      */
     public function getAdminPermissions();
 
     /**
-     * Set the permissions related to an object instance
+     * Set the permissions related to an object instance.
      *
      * @abstract
      *
@@ -50,15 +50,16 @@ interface AclSecurityHandlerInterface extends SecurityHandlerInterface
     public function setObjectPermissions(array $permissions);
 
     /**
-     * Return the permissions related to an object instance
+     * Return the permissions related to an object instance.
      *
      * @abstract
+     *
      * @return array
      */
     public function getObjectPermissions();
 
     /**
-     * Get the ACL for the passed object identity
+     * Get the ACL for the passed object identity.
      *
      * @abstract
      *
@@ -69,7 +70,7 @@ interface AclSecurityHandlerInterface extends SecurityHandlerInterface
     public function getObjectAcl(ObjectIdentityInterface $objectIdentity);
 
     /**
-     * Find the ACLs for the passed object identities
+     * Find the ACLs for the passed object identities.
      *
      * @abstract
      *
@@ -77,12 +78,13 @@ interface AclSecurityHandlerInterface extends SecurityHandlerInterface
      * @param array        $sids an array of SecurityIdentityInterface implementations
      *
      * @throws \Exception
+     *
      * @return \SplObjectStorage mapping the passed object identities to ACLs
      */
     public function findObjectAcls(\Traversable $oids, array $sids = array());
 
     /**
-     * Add an object owner ACE to the object ACL
+     * Add an object owner ACE to the object ACL.
      *
      * @abstract
      *
@@ -92,17 +94,15 @@ interface AclSecurityHandlerInterface extends SecurityHandlerInterface
     public function addObjectOwner(AclInterface $acl, UserSecurityIdentity $securityIdentity = null);
 
     /**
-     * Add the object class ACE's to the object ACL
+     * Add the object class ACE's to the object ACL.
      *
      * @param AclInterface $acl
      * @param array        $roleInformation
-     *
-     * @return void
      */
     public function addObjectClassAces(AclInterface $acl, array $roleInformation = array());
 
     /**
-     * Create an object ACL
+     * Create an object ACL.
      *
      * @abstract
      *
@@ -113,29 +113,25 @@ interface AclSecurityHandlerInterface extends SecurityHandlerInterface
     public function createAcl(ObjectIdentityInterface $objectIdentity);
 
     /**
-     * Update the ACL
+     * Update the ACL.
      *
      * @abstract
      *
      * @param AclInterface $acl
-     *
-     * @return void
      */
     public function updateAcl(AclInterface $acl);
 
     /**
-     * Delete the ACL
+     * Delete the ACL.
      *
      * @abstract
      *
      * @param ObjectIdentityInterface $objectIdentity
-     *
-     * @return void
      */
     public function deleteAcl(ObjectIdentityInterface $objectIdentity);
 
     /**
-     * Helper method to find the index of a class ACE for a role
+     * Helper method to find the index of a class ACE for a role.
      *
      * @param AclInterface $acl
      * @param string       $role
@@ -145,7 +141,7 @@ interface AclSecurityHandlerInterface extends SecurityHandlerInterface
     public function findClassAceIndexByRole(AclInterface $acl, $role);
 
     /**
-     * Helper method to find the index of a class ACE for a username
+     * Helper method to find the index of a class ACE for a username.
      *
      * @param AclInterface $acl
      * @param string       $username

@@ -1,40 +1,37 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
  */
 
 namespace Sonata\AdminBundle\Form\Type;
 
+use Doctrine\Common\Collections\Collection;
+use Sonata\AdminBundle\Form\DataTransformer\ArrayToModelTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
-
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-
-use Sonata\AdminBundle\Form\DataTransformer\ArrayToModelTransformer;
 use Symfony\Component\PropertyAccess\Exception\NoSuchIndexException;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 /**
- * Class AdminType
+ * Class AdminType.
  *
- * @package Sonata\AdminBundle\Form\Type
  * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class AdminType extends AbstractType
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -57,11 +54,27 @@ class AdminType extends AbstractType
         if ($builder->getData() === null) {
             $p = new PropertyAccessor(false, true);
             try {
-                $subject = $p->getValue(
-                    $admin->getParentFieldDescription()->getAdmin()->getSubject(),
-                    $this->getFieldDescription($options)->getFieldName().$options['property_path']
-                );
-                $builder->setData($subject);
+                $parentSubject = $admin->getParentFieldDescription()->getAdmin()->getSubject();
+                if ($parentSubject !== null && $parentSubject !== false) {
+                    // for PropertyAccessor < 2.5
+                    // @todo remove this code for old PropertyAccessor after dropping support for Symfony 2.3
+                    if (!method_exists($p, 'isReadable')) {
+                        $subjectCollection = $p->getValue(
+                            $parentSubject,
+                            $this->getFieldDescription($options)->getFieldName()
+                        );
+                        if ($subjectCollection instanceof Collection) {
+                            $subject = $subjectCollection->get(trim($options['property_path'], '[]'));
+                        }
+                    } else {
+                        // for PropertyAccessor >= 2.5
+                        $subject = $p->getValue(
+                            $parentSubject,
+                            $this->getFieldDescription($options)->getFieldName().$options['property_path']
+                        );
+                    }
+                    $builder->setData($subject);
+                }
             } catch (NoSuchIndexException $e) {
                 // no object here
             }
@@ -96,7 +109,7 @@ class AdminType extends AbstractType
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {
@@ -115,7 +128,7 @@ class AdminType extends AbstractType
             'btn_add'         => 'link_add',
             'btn_list'        => 'link_list',
             'btn_delete'      => 'link_delete',
-            'btn_catalogue'   => 'SonataAdminBundle'
+            'btn_catalogue'   => 'SonataAdminBundle',
         ));
     }
 
@@ -146,7 +159,7 @@ class AdminType extends AbstractType
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getName()
     {

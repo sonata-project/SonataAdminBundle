@@ -345,3 +345,28 @@ legend.sonata-ba-fieldset-collapsed-description + .sonata-ba-collapsed-fields {
     text-align: center;
     width: 100%;
 }
+
+body.fixed .content-header .navbar.stuck {
+    position:fixed;
+    top:50px;
+    width: 100%;
+    margin-left: -15px;
+    z-index: 1;
+    border-radius: 0;
+}
+
+.form-actions.stuck {
+    position:fixed;
+    bottom:0;
+    width: 100%;
+    margin-left: -15px;
+    margin-bottom: 0;
+    z-index: 1;
+    border-radius: 0;
+}
+
+@media(max-width:768px) {
+    body.fixed .content-header .navbar.stuck {
+        top:100px;
+    }
+}

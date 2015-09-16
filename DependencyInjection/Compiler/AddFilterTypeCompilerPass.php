@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata project.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -11,14 +11,13 @@
 
 namespace Sonata\AdminBundle\DependencyInjection\Compiler;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Class AddFilterTypeCompilerPass
+ * Class AddFilterTypeCompilerPass.
  *
- * @package Sonata\AdminBundle\DependencyInjection\Compiler
  * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class AddFilterTypeCompilerPass implements CompilerPassInterface

@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -12,9 +12,8 @@
 namespace Sonata\AdminBundle\Filter;
 
 /**
- * Class Filter
+ * Class Filter.
  *
- * @package Sonata\AdminBundle\Filter
  * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 abstract class Filter implements FilterInterface
@@ -182,7 +181,7 @@ abstract class Filter implements FilterInterface
     }
 
     /**
-     * Set options
+     * Set options.
      *
      * @param array $options
      */
@@ -196,7 +195,7 @@ abstract class Filter implements FilterInterface
     }
 
     /**
-     * Get options
+     * Get options.
      *
      * @return array
      */
@@ -206,7 +205,7 @@ abstract class Filter implements FilterInterface
     }
 
     /**
-     * Set value
+     * Set value.
      *
      * @param mixed $value
      */
@@ -216,7 +215,7 @@ abstract class Filter implements FilterInterface
     }
 
     /**
-     * Get value
+     * Get value.
      *
      * @return mixed
      */
@@ -234,7 +233,7 @@ abstract class Filter implements FilterInterface
 
         return isset($values['value'])
             && false !== $values['value']
-            && "" !== $values['value'];
+            && '' !== $values['value'];
     }
 
     /**
@@ -254,7 +253,7 @@ abstract class Filter implements FilterInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getTranslationDomain()
     {

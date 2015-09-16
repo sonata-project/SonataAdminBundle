@@ -1,9 +1,9 @@
 <?php
 
 /*
- * This file is part of the Symfony package.
+ * This file is part of the Sonata Project package.
  *
- * (c) Fabien Potencier <fabien@symfony.com>
+ * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -12,17 +12,16 @@
 namespace Sonata\AdminBundle\Form\ChoiceList;
 
 use Doctrine\Common\Util\ClassUtils;
-use Symfony\Component\PropertyAccess\PropertyAccess;
-use Symfony\Component\PropertyAccess\PropertyPath;
+use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Symfony\Component\Form\Exception\InvalidArgumentException;
 use Symfony\Component\Form\Exception\RuntimeException;
 use Symfony\Component\Form\Extension\Core\ChoiceList\SimpleChoiceList;
-use Sonata\AdminBundle\Model\ModelManagerInterface;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess\PropertyPath;
 
 /**
- * Class ModelChoiceList
+ * Class ModelChoiceList.
  *
- * @package Sonata\AdminBundle\Form\ChoiceList
  * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class ModelChoiceList extends SimpleChoiceList
@@ -38,7 +37,7 @@ class ModelChoiceList extends SimpleChoiceList
     private $class;
 
     /**
-     * The entities from which the user can choose
+     * The entities from which the user can choose.
      *
      * This array is either indexed by ID (if the ID is a single field)
      * or by key in the choices array (if the ID consists of multiple fields)
@@ -52,7 +51,7 @@ class ModelChoiceList extends SimpleChoiceList
 
     /**
      * Contains the query builder that builds the query for fetching the
-     * entities
+     * entities.
      *
      * This property should only be accessed through queryBuilder.
      *
@@ -61,7 +60,7 @@ class ModelChoiceList extends SimpleChoiceList
     private $query;
 
     /**
-     * The fields of which the identifier of the underlying class consists
+     * The fields of which the identifier of the underlying class consists.
      *
      * This property should only be accessed through identifier.
      *
@@ -70,7 +69,7 @@ class ModelChoiceList extends SimpleChoiceList
     private $identifier = array();
 
     /**
-     * A cache for \ReflectionProperty instances for the underlying class
+     * A cache for \ReflectionProperty instances for the underlying class.
      *
      * This property should only be accessed through getReflProperty().
      *
@@ -104,7 +103,7 @@ class ModelChoiceList extends SimpleChoiceList
     }
 
     /**
-     * Initializes the choices and returns them
+     * Initializes the choices and returns them.
      *
      * The choices are generated from the entities. If the entities have a
      * composite identifier, the choices are indexed using ascending integers.
@@ -143,7 +142,7 @@ class ModelChoiceList extends SimpleChoiceList
                 $propertyAccessor = PropertyAccess::createPropertyAccessor();
                 $value = $propertyAccessor->getValue($entity, $this->propertyPath);
             } else {
-                 // Otherwise expect a __toString() method in the entity
+                // Otherwise expect a __toString() method in the entity
                 try {
                     $value = (string) $entity;
                 } catch (\Exception $e) {
@@ -177,7 +176,7 @@ class ModelChoiceList extends SimpleChoiceList
     }
 
     /**
-     * Returns the according entities for the choices
+     * Returns the according entities for the choices.
      *
      * If the choices were not initialized, they are initialized now. This
      * is an expensive operation, except if the entities were passed in the
@@ -191,7 +190,7 @@ class ModelChoiceList extends SimpleChoiceList
     }
 
     /**
-     * Returns the entity for the given key
+     * Returns the entity for the given key.
      *
      * If the underlying entities have composite identifiers, the choices
      * are initialized. The key is expected to be the index in the choices
@@ -200,14 +199,14 @@ class ModelChoiceList extends SimpleChoiceList
      * If they have single identifiers, they are either fetched from the
      * internal entity cache (if filled) or loaded from the database.
      *
-     * @param  string $key The choice key (for entities with composite
-     *                     identifiers) or entity ID (for entities with single
-     *                     identifiers)
+     * @param string $key The choice key (for entities with composite
+     *                    identifiers) or entity ID (for entities with single
+     *                    identifiers)
+     *
      * @return object The matching entity
      */
     public function getEntity($key)
     {
-
         if (count($this->identifier) > 1) {
             // $key is a collection index
             $entities = $this->getEntities();
@@ -222,7 +221,7 @@ class ModelChoiceList extends SimpleChoiceList
 
     /**
      * Returns the \ReflectionProperty instance for a property of the
-     * underlying class
+     * underlying class.
      *
      * @param string $property The name of the property
      *
@@ -239,15 +238,17 @@ class ModelChoiceList extends SimpleChoiceList
     }
 
     /**
-     * Returns the values of the identifier fields of an entity
+     * Returns the values of the identifier fields of an entity.
      *
      * Doctrine must know about this entity, that is, the entity must already
      * be persisted or added to the identity map before. Otherwise an
      * exception is thrown.
      *
-     * @param  object                   $entity The entity for which to get the identifier
+     * @param object $entity The entity for which to get the identifier
+     *
      * @throws InvalidArgumentException If the entity does not exist in Doctrine's
-     *                                         identity map
+     *                                  identity map
+     *
      * @return array
      */
     public function getIdentifierValues($entity)
@@ -255,7 +256,7 @@ class ModelChoiceList extends SimpleChoiceList
         try {
             return $this->modelManager->getIdentifierValues($entity);
         } catch (\Exception $e) {
-            throw new InvalidArgumentException(sprintf("Unable to retrieve the identifier values for entity %s", ClassUtils::getClass($entity)), 0, $e);
+            throw new InvalidArgumentException(sprintf('Unable to retrieve the identifier values for entity %s', ClassUtils::getClass($entity)), 0, $e);
         }
     }
 

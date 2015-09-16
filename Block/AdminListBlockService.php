@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata project.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -11,28 +11,26 @@
 
 namespace Sonata\AdminBundle\Block;
 
-use Sonata\BlockBundle\Block\BlockContextInterface;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\BlockBundle\Block\BaseBlockService;
-use Symfony\Component\HttpKernel\Kernel;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Sonata\BlockBundle\Block\BlockContextInterface;
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class AdminListBlockService
+ * Class AdminListBlockService.
  *
- * @package Sonata\AdminBundle\Block
- * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class AdminListBlockService extends BaseBlockService
 {
     protected $pool;
 
     /**
-     * @param string                                                     $name
-     * @param \Symfony\Bundle\FrameworkBundle\Templating\EngineInterface $templating
-     * @param \Sonata\AdminBundle\Admin\Pool                             $pool
+     * @param string          $name
+     * @param EngineInterface $templating
+     * @param Pool            $pool
      */
     public function __construct($name, EngineInterface $templating, Pool $pool)
     {
@@ -61,7 +59,7 @@ class AdminListBlockService extends BaseBlockService
             'block'         => $blockContext->getBlock(),
             'settings'      => $settings,
             'admin_pool'    => $this->pool,
-            'groups'        => $visibleGroups
+            'groups'        => $visibleGroups,
         ), $response);
     }
 
@@ -76,18 +74,19 @@ class AdminListBlockService extends BaseBlockService
     /**
      * {@inheritdoc}
      */
-    public function setDefaultSettings(OptionsResolverInterface $resolver)
+    public function configureSettings(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'groups' => false
+            'groups' => false,
         ));
 
-        if (version_compare(Kernel::VERSION, '2.6', '<')) {
-            $resolver->setAllowedTypes(array(
-                'groups' => array('bool', 'array')
-            ));
-        } else {
+        // Symfony < 2.6 BC
+        if (method_exists($resolver, 'setNormalizer')) {
             $resolver->setAllowedTypes('groups', array('bool', 'array'));
+        } else {
+            $resolver->setAllowedTypes(array(
+                'groups' => array('bool', 'array'),
+            ));
         }
     }
 }

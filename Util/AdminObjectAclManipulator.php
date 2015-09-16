@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata project.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -17,8 +17,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity;
-use Symfony\Component\Security\Acl\Exception\NoAceFoundException;
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
+use Symfony\Component\Security\Acl\Exception\NoAceFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -52,7 +52,7 @@ class AdminObjectAclManipulator
     }
 
     /**
-     * Gets mask builder class name
+     * Gets mask builder class name.
      *
      * @return string
      */
@@ -62,9 +62,10 @@ class AdminObjectAclManipulator
     }
 
     /**
-     * Gets the form
+     * Gets the form.
      *
-     * @param  \Sonata\AdminBundle\Util\AdminObjectAclData $data
+     * @param \Sonata\AdminBundle\Util\AdminObjectAclData $data
+     *
      * @return \Symfony\Component\Form\Form
      *
      * @deprecated Deprecated since version 2.4. Use createAclUsersForm() instead.
@@ -77,9 +78,10 @@ class AdminObjectAclManipulator
     }
 
     /**
-     * Gets the ACL users form
+     * Gets the ACL users form.
      *
-     * @param  \Sonata\AdminBundle\Util\AdminObjectAclData $data
+     * @param \Sonata\AdminBundle\Util\AdminObjectAclData $data
+     *
      * @return \Symfony\Component\Form\Form
      */
     public function createAclUsersForm(AdminObjectAclData $data)
@@ -93,9 +95,10 @@ class AdminObjectAclManipulator
     }
 
     /**
-     * Gets the ACL roles form
+     * Gets the ACL roles form.
      *
-     * @param  \Sonata\AdminBundle\Util\AdminObjectAclData $data
+     * @param \Sonata\AdminBundle\Util\AdminObjectAclData $data
+     *
      * @return \Symfony\Component\Form\Form
      */
     public function createAclRolesForm(AdminObjectAclData $data)
@@ -109,7 +112,7 @@ class AdminObjectAclManipulator
     }
 
     /**
-     * Updates ACL users
+     * Updates ACL users.
      *
      * @param \Sonata\AdminBundle\Util\AdminObjectAclData $data
      */
@@ -122,7 +125,7 @@ class AdminObjectAclManipulator
     }
 
     /**
-     * Updates ACL roles
+     * Updates ACL roles.
      *
      * @param \Sonata\AdminBundle\Util\AdminObjectAclData $data
      */
@@ -135,7 +138,7 @@ class AdminObjectAclManipulator
     }
 
     /**
-     * Updates ACl
+     * Updates ACl.
      *
      * @param \Sonata\AdminBundle\Util\AdminObjectAclData $data
      *
@@ -149,7 +152,7 @@ class AdminObjectAclManipulator
     }
 
     /**
-     * Builds ACL
+     * Builds ACL.
      *
      * @param \Sonata\AdminBundle\Util\AdminObjectAclData $data
      * @param \Symfony\Component\Form\Form                $form
@@ -219,11 +222,12 @@ class AdminObjectAclManipulator
     }
 
     /**
-     * Builds the form
+     * Builds the form.
      *
-     * @param  \Sonata\AdminBundle\Util\AdminObjectAclData  $data
-     * @param  \Symfony\Component\Form\FormBuilderInterface $formBuilder
-     * @param  \Traversable                                 $aclValues
+     * @param \Sonata\AdminBundle\Util\AdminObjectAclData  $data
+     * @param \Symfony\Component\Form\FormBuilderInterface $formBuilder
+     * @param \Traversable                                 $aclValues
+     *
      * @return \Symfony\Component\Form\Form
      */
     protected function buildForm(AdminObjectAclData $data, FormBuilderInterface $formBuilder, \Traversable $aclValues)
@@ -262,9 +266,9 @@ class AdminObjectAclManipulator
 
                 $permissions[$permission] = array(
                     'required' => false,
-                    'data' => $checked,
+                    'data'     => $checked,
                     'disabled' => array_key_exists('disabled', $attr),
-                    'attr' => $attr,
+                    'attr'     => $attr,
                 );
             }
 
@@ -275,9 +279,10 @@ class AdminObjectAclManipulator
     }
 
     /**
-     * Gets a user or a role security identity
+     * Gets a user or a role security identity.
      *
-     * @param  string|\Symfony\Component\Security\Core\User\UserInterface                                                              $aclValue
+     * @param string|\Symfony\Component\Security\Core\User\UserInterface $aclValue
+     *
      * @return \Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity|\Symfony\Component\Security\Acl\Domain\UserSecurityIdentity
      */
     protected function getSecurityIdentity($aclValue)

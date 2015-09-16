@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -16,9 +16,8 @@ use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Filter\FilterInterface;
 
 /**
- * Class SearchHandler
+ * Class SearchHandler.
  *
- * @package Sonata\AdminBundle\Search
  * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class SearchHandler

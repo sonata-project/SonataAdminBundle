@@ -340,6 +340,11 @@ td.sonata-ba-list-field .editable-empty:not(.editable-open) {
     white-space: normal;
 }
 
+/* bootstrap */
+.input-group-addon {
+    width: auto; /* See https://github.com/sonata-project/SonataAdminBundle/issues/2950 */
+}
+
 /* select2 */
 .select2-choice, .select2-choices, .select2-drop {
     border-radius: 0 !important;

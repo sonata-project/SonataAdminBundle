@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -31,20 +31,20 @@ class AdminGeneratorTest extends \PHPUnit_Framework_TestCase
     private $bundlePath;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function setUp()
     {
         $this->adminGenerator = new AdminGenerator(
             $this->createModelManagerMock(),
-            __DIR__ . '/../../Resources/skeleton'
+            __DIR__.'/../../Resources/skeleton'
         );
         $this->bundleMock = $this->createBundleMock();
         $this->bundlePath = $this->bundleMock->getPath();
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function tearDown()
     {
@@ -56,9 +56,9 @@ class AdminGeneratorTest extends \PHPUnit_Framework_TestCase
     {
         $this->adminGenerator->generate($this->bundleMock, 'ModelAdmin', 'Model');
         $file = $this->adminGenerator->getFile();
-        $this->assertEquals('Sonata\AdminBundle\Tests\Fixtures\Admin\ModelAdmin', $this->adminGenerator->getClass());
-        $this->assertEquals('ModelAdmin.php', basename($file));
-        $this->assertFileEquals(__DIR__ . '/../Fixtures/Admin/ModelAdmin.php', $file);
+        $this->assertSame('Sonata\AdminBundle\Tests\Fixtures\Admin\ModelAdmin', $this->adminGenerator->getClass());
+        $this->assertSame('ModelAdmin.php', basename($file));
+        $this->assertFileEquals(__DIR__.'/../Fixtures/Admin/ModelAdmin.php', $file);
 
         try {
             $this->adminGenerator->generate($this->bundleMock, 'ModelAdmin', 'Model');

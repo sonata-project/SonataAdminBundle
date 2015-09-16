@@ -458,4 +458,27 @@ To do:
 - targeting submodel fields using dot-separated notation
 - advanced filter options (global_search)
 
+Visual configuration
+--------------------
+
+You have the possibility to configure your List View to customize the render without overring to whole template.
+You can :
+
+- `header_style`: Customize the style of header (width, color, background, align...)
+- `header_class`: Customize the class of the header
+- `row_align`:    Customize the alignment of the rendered inner cells
+
+.. code-block:: php
+
+    <?php
+
+    public function configureListFields(ListMapper $list)
+    {
+        $list
+            ->add('id', null, array('header_style' => 'width: 5%; text-align: center', 'row_align' => 'center'))
+            ->add('name', 'text', array('header_style' => 'width: 35%')
+            ->add('actions', null, array('header_class' => 'customActions', 'row_align' => 'right')
+        ;
+    }
+
 .. _`issues on GitHub`: https://github.com/sonata-project/SonataAdminBundle/issues/1519

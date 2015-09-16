@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -11,10 +11,9 @@
 
 namespace Sonata\AdminBundle\Tests\Command;
 
+use Sonata\AdminBundle\Command\CreateClassCacheCommand;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
-use Sonata\AdminBundle\Command\CreateClassCacheCommand;
-use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * @author Andrej Hudec <pulzarraider@gmail.com>
@@ -66,7 +65,7 @@ class CreateClassCacheCommandTest extends \PHPUnit_Framework_TestCase
                         return $kernel;
                     }
 
-                    return null;
+                    return;
                 }));
 
         $command->setContainer($container);
@@ -117,7 +116,7 @@ class CreateClassCacheCommandTest extends \PHPUnit_Framework_TestCase
             $commandTester = new CommandTester($command);
             $commandTester->execute(array('command' => $command->getName()));
         } catch (\RuntimeException $e) {
-            $this->assertEquals(sprintf('The file %s/classes.map does not exist', $this->tempDirectory), $e->getMessage());
+            $this->assertSame(sprintf('The file %s/classes.map does not exist', $this->tempDirectory), $e->getMessage());
 
             return;
         }

@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -14,13 +14,12 @@ namespace Sonata\AdminBundle\Tests\Mapper;
 use Sonata\AdminBundle\Mapper\BaseGroupedMapper;
 
 /**
- * Test for BaseGroupedMapper
+ * Test for BaseGroupedMapper.
  *
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
 class BaseGroupedMapperTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var BaseGroupedMapper
      */
@@ -70,21 +69,21 @@ class BaseGroupedMapperTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertCount(0, $this->tabs);
         $this->assertCount(0, $this->groups);
-        $this->assertEquals($this->baseGroupedMapper, $this->baseGroupedMapper->with('fooGroup'));
+        $this->assertSame($this->baseGroupedMapper, $this->baseGroupedMapper->with('fooGroup'));
         $this->assertCount(1, $this->tabs);
         $this->assertCount(1, $this->groups);
     }
 
     public function testEnd()
     {
-        $this->assertEquals($this->baseGroupedMapper, $this->baseGroupedMapper->with('fooGroup'));
+        $this->assertSame($this->baseGroupedMapper, $this->baseGroupedMapper->with('fooGroup'));
     }
 
     public function testTab()
     {
         $this->assertCount(0, $this->tabs);
         $this->assertCount(0, $this->groups);
-        $this->assertEquals($this->baseGroupedMapper, $this->baseGroupedMapper->tab('fooTab'));
+        $this->assertSame($this->baseGroupedMapper, $this->baseGroupedMapper->tab('fooTab'));
         $this->assertCount(1, $this->tabs);
         $this->assertCount(0, $this->groups);
     }
@@ -93,14 +92,14 @@ class BaseGroupedMapperTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertCount(0, $this->tabs);
         $this->assertCount(0, $this->groups);
-        $this->assertEquals($this->baseGroupedMapper, $this->baseGroupedMapper->with('fooTab', array('tab'=>true)));
+        $this->assertSame($this->baseGroupedMapper, $this->baseGroupedMapper->with('fooTab', array('tab' => true)));
         $this->assertCount(1, $this->tabs);
         $this->assertCount(0, $this->groups);
     }
 
     public function testFluidInterface()
     {
-        $this->assertEquals($this->baseGroupedMapper, $this->baseGroupedMapper->tab('fooTab')->with('fooGroup1')->end()->with('fooGroup2')->end()->with('fooGroup3')->end()->end()->tab('barTab')->with('barGroup1')->end()->with('barGroup2')->end()->with('barGroup3')->end()->end());
+        $this->assertSame($this->baseGroupedMapper, $this->baseGroupedMapper->tab('fooTab')->with('fooGroup1')->end()->with('fooGroup2')->end()->with('fooGroup3')->end()->end()->tab('barTab')->with('barGroup1')->end()->with('barGroup2')->end()->with('barGroup3')->end()->end());
     }
 
     /**
@@ -132,14 +131,14 @@ class BaseGroupedMapperTest extends \PHPUnit_Framework_TestCase
         $this->baseGroupedMapper->tab('fooTab');
         $this->baseGroupedMapper->tab('barTab');
     }
-    
+
     public function testHasOpenTab()
     {
         $this->assertFalse($this->baseGroupedMapper->hasOpenTab(), '->hasOpenTab() returns false when there are no tabs');
-        
+
         $this->baseGroupedMapper->tab('fooTab');
         $this->assertTrue($this->baseGroupedMapper->hasOpenTab(), '->hasOpenTab() returns true when there is an open tab');
-        
+
         $this->baseGroupedMapper->end();
         $this->assertFalse($this->baseGroupedMapper->hasOpenTab(), '->hasOpenTab() returns false when all tabs are closed');
     }

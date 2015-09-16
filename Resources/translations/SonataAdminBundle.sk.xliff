@@ -143,44 +143,52 @@
                 <target>Všetky prvky</target>
             </trans-unit>
             <trans-unit id='flash_batch_empty'>
-              <source>flash_batch_empty</source>
-              <target>Akcia bola prerušená. Neboli vybrané žiadne položky.</target>
+                <source>flash_batch_empty</source>
+                <target>Akcia bola prerušená. Neboli vybrané žiadne položky.</target>
             </trans-unit>
             <trans-unit id='flash_create_success'>
-              <source>flash_create_success</source>
-              <target>Položka bola úspešne vytvorená.</target>
+                <source>flash_create_success</source>
+                <target>Položka bola úspešne vytvorená.</target>
             </trans-unit>
             <trans-unit id='flash_create_error'>
-              <source>flash_create_error</source>
-              <target>Pri vytváraní položky nastala chyba.</target>
+                <source>flash_create_error</source>
+                <target>Pri vytváraní položky nastala chyba.</target>
             </trans-unit>
             <trans-unit id='flash_edit_success'>
-              <source>flash_edit_success</source>
-              <target>Položka bola úspešne upravená.</target>
+                <source>flash_edit_success</source>
+                <target>Položka bola úspešne upravená.</target>
             </trans-unit>
             <trans-unit id='flash_edit_error'>
-              <source>flash_edit_error</source>
-              <target>Pri úprave položky nastala chyba.</target>
+                <source>flash_edit_error</source>
+                <target>Pri úprave položky nastala chyba.</target>
+            </trans-unit>
+            <trans-unit id="flash_lock_error">
+                <source>flash_lock_error</source>
+                <target>Iný používateľ zmenil položku "%name%". %link_start%Obnoviť stránku a opätovne aplikovať zmeny.%link_end%</target>
             </trans-unit>
             <trans-unit id='flash_batch_delete_success'>
-              <source>flash_batch_delete_success</source>
-              <target>Vybrané položky boli úspešne odstránené.</target>
+                <source>flash_batch_delete_success</source>
+                <target>Vybrané položky boli úspešne odstránené.</target>
             </trans-unit>
             <trans-unit id='flash_batch_delete_error'>
-              <source>flash_batch_delete_error</source>
-              <target>Pri odstraňovaní vybraných položiek nastala chyba.</target>
+                <source>flash_batch_delete_error</source>
+                <target>Pri odstraňovaní vybraných položiek nastala chyba.</target>
             </trans-unit>
             <trans-unit id='flash_delete_error'>
-              <source>flash_delete_error</source>
-              <target>Pri odstraňovaní položky nastala chyba.</target>
+                <source>flash_delete_error</source>
+                <target>Pri odstraňovaní položky nastala chyba.</target>
             </trans-unit>
             <trans-unit id='flash_delete_success'>
-              <source>flash_delete_success</source>
-              <target>Položka bola úspešne odstránená.</target>
+                <source>flash_delete_success</source>
+                <target>Položka bola úspešne odstránená.</target>
+            </trans-unit>
+            <trans-unit id="form_not_available">
+                <source>form_not_available</source>
+                <target>Formulár nie je k dispozícii.</target>
             </trans-unit>
             <trans-unit id="link_breadcrumb_dashboard">
                 <source>breadcrumb.link_dashboard</source>
-                <target>&#8962;</target>
+                <target><![CDATA[<i class="fa fa-home"></i>]]></target>
             </trans-unit>
             <trans-unit id="title_delete">
                 <source>title_delete</source>
@@ -211,92 +219,92 @@
                 <target>Áno, spustiť</target>
             </trans-unit>
             <trans-unit id="label_type_yes">
-              <source>label_type_yes</source>
-              <target>áno</target>
+                <source>label_type_yes</source>
+                <target>áno</target>
             </trans-unit>
             <trans-unit id="label_type_no">
-              <source>label_type_no</source>
-              <target>nie</target>
+                <source>label_type_no</source>
+                <target>nie</target>
             </trans-unit>
             <trans-unit id="label_type_contains">
-              <source>label_type_contains</source>
-              <target>obsahuje</target>
+                <source>label_type_contains</source>
+                <target>obsahuje</target>
             </trans-unit>
             <trans-unit id="label_type_not_contains">
-              <source>label_type_not_contains</source>
-              <target>neobsahuje</target>
+                <source>label_type_not_contains</source>
+                <target>neobsahuje</target>
             </trans-unit>
             <trans-unit id="label_type_equals">
-              <source>label_type_equals</source>
-              <target>sa rovná</target>
+                <source>label_type_equals</source>
+                <target>sa rovná</target>
             </trans-unit>
             <trans-unit id="label_type_not_equals">
-              <source>label_type_not_equals</source>
-              <target>sa nerovná</target>
+                <source>label_type_not_equals</source>
+                <target>sa nerovná</target>
             </trans-unit>
             <trans-unit id="label_type_equal">
-              <source>label_type_equal</source>
-              <target>=</target>
+                <source>label_type_equal</source>
+                <target>=</target>
             </trans-unit>
             <trans-unit id="label_type_greater_equal">
-              <source>label_type_greater_equal</source>
-              <target>&gt;=</target>
+                <source>label_type_greater_equal</source>
+                <target>&gt;=</target>
             </trans-unit>
             <trans-unit id="label_type_greater_than">
-              <source>label_type_greater_than</source>
-              <target>&gt;</target>
+                <source>label_type_greater_than</source>
+                <target>&gt;</target>
             </trans-unit>
             <trans-unit id="label_type_less_equal">
-              <source>label_type_less_equal</source>
-              <target>&lt;=</target>
+                <source>label_type_less_equal</source>
+                <target>&lt;=</target>
             </trans-unit>
             <trans-unit id="label_type_less_than">
-              <source>label_type_less_than</source>
-              <target>&lt;</target>
+                <source>label_type_less_than</source>
+                <target>&lt;</target>
             </trans-unit>
             <trans-unit id="label_date_type_equal">
-              <source>label_date_type_equal</source>
-              <target>=</target>
+                <source>label_date_type_equal</source>
+                <target>=</target>
             </trans-unit>
             <trans-unit id="label_date_type_greater_equal">
-              <source>label_date_type_greater_equal</source>
-              <target>&gt;=</target>
+                <source>label_date_type_greater_equal</source>
+                <target>&gt;=</target>
             </trans-unit>
             <trans-unit id="label_date_type_greater_than">
-              <source>label_date_type_greater_than</source>
-              <target>&gt;</target>
+                <source>label_date_type_greater_than</source>
+                <target>&gt;</target>
             </trans-unit>
             <trans-unit id="label_date_type_less_equal">
-              <source>label_date_type_less_equal</source>
-              <target>&lt;=</target>
+                <source>label_date_type_less_equal</source>
+                <target>&lt;=</target>
             </trans-unit>
             <trans-unit id="label_date_type_less_than">
-              <source>label_date_type_less_than</source>
-              <target>&lt;</target>
+                <source>label_date_type_less_than</source>
+                <target>&lt;</target>
             </trans-unit>
             <trans-unit id="label_date_type_null">
-              <source>label_date_type_null</source>
-              <target>je prázdny</target>
+                <source>label_date_type_null</source>
+                <target>je prázdny</target>
             </trans-unit>
             <trans-unit id="label_date_type_not_null">
-              <source>label_date_type_not_null</source>
-              <target>nie je prázdny</target>
+                <source>label_date_type_not_null</source>
+                <target>nie je prázdny</target>
             </trans-unit>
             <trans-unit id="label_date_type_between">
-              <source>label_date_type_between</source>
-              <target>je medzi</target>
+                <source>label_date_type_between</source>
+                <target>je medzi</target>
             </trans-unit>
             <trans-unit id="label_date_not_between">
-              <source>label_date_type_not_between</source>
-              <target>nie je medzi</target>
+                <source>label_date_type_not_between</source>
+                <target>nie je medzi</target>
             </trans-unit>
             <trans-unit id="label_filters">
-              <source>label_filters</source>
-              <target>Filtre</target>
+                <source>label_filters</source>
+                <target>Filtre</target>
             </trans-unit>
             <trans-unit id="delete_or">
-              <source>delete_or</source>
-              <target>alebo</target>
+                <source>delete_or</source>
+                <target>alebo</target>
             </trans-unit>
             <trans-unit id="link_action_history">
                 <source>link_action_history</source>
@@ -305,6 +313,10 @@
             <trans-unit id="td_action">
                 <source>td_action</source>
                 <target>Akcia</target>
+            </trans-unit>
+            <trans-unit id="td_compare">
+                <source>td_compare</source>
+                <target>Porovnať</target>
             </trans-unit>
             <trans-unit id="td_revision">
                 <source>td_revision</source>
@@ -326,6 +338,10 @@
                 <source>label_view_revision</source>
                 <target>Zobraziť revíziu</target>
             </trans-unit>
+            <trans-unit id="label_compare_revision">
+                <source>label_compare_revision</source>
+                <target>Porovnať revízie</target>
+            </trans-unit>
             <trans-unit id="list_results_count_prefix">
                 <source>list_results_count_prefix</source>
                 <target>aspoň</target>
@@ -337,6 +353,22 @@
             <trans-unit id="label_export_download">
                 <source>label_export_download</source>
                 <target>Exportovať</target>
+            </trans-unit>
+            <trans-unit id="export_format_json">
+                <source>export_format_json</source>
+                <target>JSON</target>
+            </trans-unit>
+            <trans-unit id="export_format_xml">
+                <source>export_format_xml</source>
+                <target>XML</target>
+            </trans-unit>
+            <trans-unit id="export_format_csv">
+                <source>export_format_csv</source>
+                <target>CSV</target>
+            </trans-unit>
+            <trans-unit id="export_format_xls">
+                <source>export_format_xls</source>
+                <target>XLS</target>
             </trans-unit>
             <trans-unit id="loading_information">
                 <source>loading_information</source>
@@ -355,24 +387,24 @@
                 <target>Odmietnúť</target>
             </trans-unit>
             <trans-unit id="label_per_page">
-              <source>label_per_page</source>
-              <target>Zobraziť najviac</target>
+                <source>label_per_page</source>
+                <target>Zobraziť najviac</target>
             </trans-unit>
             <trans-unit id="list_select">
-              <source>list_select</source>
-              <target>Vybrať</target>
+                <source>list_select</source>
+                <target>Vybrať</target>
             </trans-unit>
             <trans-unit id="confirm_exit">
                 <source>confirm_exit</source>
                 <target>Máte neuložené zmeny.</target>
             </trans-unit>
             <trans-unit id="link_edit_acl">
-              <source>link_edit_acl</source>
-              <target>Upraviť</target>
+                <source>link_edit_acl</source>
+                <target>Upraviť</target>
             </trans-unit>
             <trans-unit id="btn_update_acl">
-              <source>btn_update_acl</source>
-              <target>Aktualizovať</target>
+                <source>btn_update_acl</source>
+                <target>Aktualizovať</target>
             </trans-unit>
             <trans-unit id="flash_acl_update_success">
                 <source>flash_acl_edit_success</source>
@@ -383,8 +415,8 @@
                 <target>Oprávnenia</target>
             </trans-unit>
             <trans-unit id="short_object_description_placeholder">
-              <source>short_object_description_placeholder</source>
-              <target></target>
+                <source>short_object_description_placeholder</source>
+                <target></target>
             </trans-unit>
             <trans-unit id="title_search_results">
                 <source>title_search_results</source>

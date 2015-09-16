@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -12,7 +12,6 @@
 namespace Sonata\AdminBundle\Tests\Form\Type;
 
 use Sonata\AdminBundle\Form\Type\ModelType;
-
 use Symfony\Component\Form\Test\TypeTestCase;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -29,19 +28,19 @@ class ModelTypeTest extends TypeTestCase
         $options = $optionResolver->resolve(array('model_manager' => $modelManager, 'choices' => array()));
 
         $this->assertFalse($options['compound']);
-        $this->assertEquals('choice', $options['template']);
+        $this->assertSame('choice', $options['template']);
         $this->assertFalse($options['multiple']);
         $this->assertFalse($options['expanded']);
         $this->assertInstanceOf('Sonata\AdminBundle\Model\ModelManagerInterface', $options['model_manager']);
         $this->assertNull($options['class']);
         $this->assertNull($options['property']);
         $this->assertNull($options['query']);
-        $this->assertEquals(0, count($options['choices']));
-        $this->assertEquals(0, count($options['preferred_choices']));
-        $this->assertEquals('link_add', $options['btn_add']);
-        $this->assertEquals('link_list', $options['btn_list']);
-        $this->assertEquals('link_delete', $options['btn_delete']);
-        $this->assertEquals('SonataAdminBundle', $options['btn_catalogue']);
+        $this->assertSame(0, count($options['choices']));
+        $this->assertSame(0, count($options['preferred_choices']));
+        $this->assertSame('link_add', $options['btn_add']);
+        $this->assertSame('link_list', $options['btn_list']);
+        $this->assertSame('link_delete', $options['btn_delete']);
+        $this->assertSame('SonataAdminBundle', $options['btn_catalogue']);
         $this->assertInstanceOf('Sonata\AdminBundle\Form\ChoiceList\ModelChoiceList', $options['choice_list']);
     }
 
@@ -56,22 +55,22 @@ class ModelTypeTest extends TypeTestCase
 
         $type->setDefaultOptions($optionResolver);
 
-        $options = $optionResolver->resolve(array('model_manager' => $modelManager, 'choices' => array(), 'multiple'=>$multiple, 'expanded'=>$expanded));
+        $options = $optionResolver->resolve(array('model_manager' => $modelManager, 'choices' => array(), 'multiple' => $multiple, 'expanded' => $expanded));
 
-        $this->assertEquals($expectedCompound, $options['compound']);
-        $this->assertEquals('choice', $options['template']);
-        $this->assertEquals($multiple, $options['multiple']);
-        $this->assertEquals($expanded, $options['expanded']);
+        $this->assertSame($expectedCompound, $options['compound']);
+        $this->assertSame('choice', $options['template']);
+        $this->assertSame($multiple, $options['multiple']);
+        $this->assertSame($expanded, $options['expanded']);
         $this->assertInstanceOf('Sonata\AdminBundle\Model\ModelManagerInterface', $options['model_manager']);
         $this->assertNull($options['class']);
         $this->assertNull($options['property']);
         $this->assertNull($options['query']);
-        $this->assertEquals(0, count($options['choices']));
-        $this->assertEquals(0, count($options['preferred_choices']));
-        $this->assertEquals('link_add', $options['btn_add']);
-        $this->assertEquals('link_list', $options['btn_list']);
-        $this->assertEquals('link_delete', $options['btn_delete']);
-        $this->assertEquals('SonataAdminBundle', $options['btn_catalogue']);
+        $this->assertSame(0, count($options['choices']));
+        $this->assertSame(0, count($options['preferred_choices']));
+        $this->assertSame('link_add', $options['btn_add']);
+        $this->assertSame('link_list', $options['btn_list']);
+        $this->assertSame('link_delete', $options['btn_delete']);
+        $this->assertSame('SonataAdminBundle', $options['btn_catalogue']);
         $this->assertInstanceOf('Sonata\AdminBundle\Form\ChoiceList\ModelChoiceList', $options['choice_list']);
     }
 

@@ -1,4 +1,48 @@
 CHANGE LOG:
+v2.3.0:
+- Added social widgets (found in the widgets page)
+- Added profile page
+- Fix issue #430 (requires ```.hold-transition``` to be added to ```<body>```)
+- Fix issue #578
+- Fix issue #579
+
+v2.2.1:
+- Bug Fixes
+- Removed many ```!important``` statements in css
+- Activate boxWidget automatically when created after the page has loaded
+- Activate sidebar menu treeview links automatically when created after the page has loaded
+- Updated Font Awesome thanks to @Dennis14e
+- Added JSHint to Grunt tasks (Find JS errors)
+- Added CSSLint to Grunt tasks (Find CSS errors)
+- Added Image to Grunt tasks (compress images)
+- Added Clean to Grunt tasks (remove unwanted files like uncompressed images)
+- Updated Bootstrap to 3.3.5
+
+v2.2.0:
+- Bug fixes
+- Added support for [Select2](https://select2.github.io/)
+- Updated ChartJS
+
+v2.1.2:
+- Added explicit BoxWidget activation function issue #450
+- Crushed some bugs
+
+v2.1.1:
+- Fix version error
+
+v2.1.0:
+- Update Ion Icons
+- Added right sidebar ```.control-sidebar```
+- Control sidebar has 2 open effects: slide over content and push content
+- Control sidebar converts to always slide over content on small screens
+- Added 6 new light sidebar skins
+- Updated demo menu
+- Added ChartJS preview page
+- Fixed some minor bugs
+- Added light control sidebar skin
+- Added expand on hover option for sidebar mini
+- Added fixed control sidebar layout
+
 v2.0.5:
 - Fixed issue #288
 
@@ -27,13 +71,13 @@ v2.0.0
 - Change in layout mark up
 - Added transitions to the sidebar
 - New skins and modified previous skins
-- Change in color scheme to a more complementing scheme 
+- Change in color scheme to a more complementing scheme
 - Added footer support
 - Removed pace.js from the main app.js
 - Added support for collapsed sidebar as an initial state (add .sidebar-collapse to the body tag)
 - Added boxed layout (.layout-boxed)
 - Enhanced consistency in padding and margining
-- Updated Bootstrap to 3.3.2 
+- Updated Bootstrap to 3.3.2
 - Fixed navbar dropdown menu on small screens positioning issues.
 - Updated Ion Icons to 2.0.0
 - Updated FontAwesome to 4.3.0

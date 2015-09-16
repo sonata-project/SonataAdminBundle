@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -35,20 +35,20 @@ class MenuBuilderTest extends \PHPUnit_Framework_TestCase
     public function testGetKnpMenu()
     {
         $adminGroups = array(
-            "bar" => array(
-                "label" => "foo",
-                "icon"  => '<i class="fa fa-edit"></i>',
-                "label_catalogue"  => 'SonataAdminBundle',
-                "items" => array(
+            'bar' => array(
+                'label'            => 'foo',
+                'icon'             => '<i class="fa fa-edit"></i>',
+                'label_catalogue'  => 'SonataAdminBundle',
+                'items'            => array(
                     array(
-                        "admin"        => "",
-                        "label"        => "fooLabel",
-                        "route"        => "FooRoute",
-                        "route_params" => array("foo" => "bar"),
+                        'admin'        => '',
+                        'label'        => 'fooLabel',
+                        'route'        => 'FooRoute',
+                        'route_params' => array('foo' => 'bar'),
                     ),
                 ),
-                "item_adds" => array(),
-                "roles"     => array(),
+                'item_adds' => array(),
+                'roles'     => array(),
 
             ),
         );
@@ -62,15 +62,15 @@ class MenuBuilderTest extends \PHPUnit_Framework_TestCase
 
         foreach ($menu->getChildren() as $key => $child) {
             $this->assertInstanceOf('Knp\Menu\MenuItem', $child);
-            $this->assertEquals("bar", $child->getName());
-            $this->assertEquals($adminGroups["bar"]["label"], $child->getLabel());
+            $this->assertSame('bar', $child->getName());
+            $this->assertSame($adminGroups['bar']['label'], $child->getLabel());
 
             // menu items
             $children = $child->getChildren();
             $this->assertCount(1, $children);
             $this->assertArrayHasKey('fooLabel', $children);
             $this->assertInstanceOf('Knp\Menu\MenuItem', $child['fooLabel']);
-            $this->assertEquals('fooLabel', $child['fooLabel']->getLabel());
+            $this->assertSame('fooLabel', $child['fooLabel']->getLabel());
         }
     }
 
@@ -78,10 +78,10 @@ class MenuBuilderTest extends \PHPUnit_Framework_TestCase
     {
         $adminGroups = array(
             'bar' => array(
-                'label' => 'foo',
-                'icon'  => '<i class="fa fa-edit"></i>',
+                'label'            => 'foo',
+                'icon'             => '<i class="fa fa-edit"></i>',
                 'label_catalogue'  => 'SonataAdminBundle',
-                'items' => array(
+                'items'            => array(
                     array(
                         'admin'        => 'sonata_admin_foo_service',
                         'label'        => 'fooLabel',
@@ -123,15 +123,15 @@ class MenuBuilderTest extends \PHPUnit_Framework_TestCase
 
         foreach ($menu->getChildren() as $key => $child) {
             $this->assertInstanceOf('Knp\Menu\MenuItem', $child);
-            $this->assertEquals('bar', $child->getName());
-            $this->assertEquals($adminGroups['bar']['label'], $child->getLabel());
+            $this->assertSame('bar', $child->getName());
+            $this->assertSame($adminGroups['bar']['label'], $child->getLabel());
 
             // menu items
             $children = $child->getChildren();
             $this->assertCount(1, $children);
             $this->assertArrayHasKey('foo_admin_label', $children);
             $this->assertInstanceOf('Knp\Menu\MenuItem', $child['foo_admin_label']);
-            $this->assertEquals('foo_admin_label', $child['foo_admin_label']->getLabel());
+            $this->assertSame('foo_admin_label', $child['foo_admin_label']->getLabel());
         }
     }
 
@@ -139,10 +139,10 @@ class MenuBuilderTest extends \PHPUnit_Framework_TestCase
     {
         $adminGroups = array(
             'bar' => array(
-                'label' => 'foo',
-                'icon'  => '<i class="fa fa-edit"></i>',
+                'label'            => 'foo',
+                'icon'             => '<i class="fa fa-edit"></i>',
                 'label_catalogue'  => 'SonataAdminBundle',
-                'items' => array(
+                'items'            => array(
                     array(
                         'admin'        => 'sonata_admin_foo_service',
                         'label'        => 'fooLabel',
@@ -172,10 +172,10 @@ class MenuBuilderTest extends \PHPUnit_Framework_TestCase
     {
         $adminGroups = array(
             'bar' => array(
-                'label' => 'foo',
-                'icon'  => '<i class="fa fa-edit"></i>',
+                'label'            => 'foo',
+                'icon'             => '<i class="fa fa-edit"></i>',
                 'label_catalogue'  => 'SonataAdminBundle',
-                'items' => array(
+                'items'            => array(
                     array(
                         'admin'        => 'sonata_admin_foo_service',
                         'label'        => 'fooLabel',
@@ -210,11 +210,11 @@ class MenuBuilderTest extends \PHPUnit_Framework_TestCase
     public function testGetKnpMenuWithProvider()
     {
         $adminGroups = array(
-            "bar" => array(
-                "provider"        => 'my_menu',
-                "label_catalogue" => '',
-                "icon"            => '<i class="fa fa-edit"></i>',
-                "roles"           => array(),
+            'bar' => array(
+                'provider'        => 'my_menu',
+                'label_catalogue' => '',
+                'icon'            => '<i class="fa fa-edit"></i>',
+                'roles'           => array(),
             ),
         );
 
@@ -233,28 +233,28 @@ class MenuBuilderTest extends \PHPUnit_Framework_TestCase
 
         foreach ($menu->getChildren() as $key => $child) {
             $this->assertInstanceOf('Knp\Menu\MenuItem', $child);
-            $this->assertEquals("bar", $child->getName());
-            $this->assertEquals("bar", $child->getLabel());
+            $this->assertSame('bar', $child->getName());
+            $this->assertSame('bar', $child->getLabel());
 
             // menu items
             $children = $child->getChildren();
             $this->assertCount(1, $children);
             $this->assertArrayHasKey('foo', $children);
             $this->assertInstanceOf('Knp\Menu\MenuItem', $child['foo']);
-            $this->assertEquals('foo', $child['foo']->getLabel());
+            $this->assertSame('foo', $child['foo']->getLabel());
         }
     }
 
     public function testGetKnpMenuAndDispatchEvent()
     {
         $adminGroups = array(
-            "bar" => array(
-                "label" => "foo",
-                "icon"  => '<i class="fa fa-edit"></i>',
-                "label_catalogue"  => 'SonataAdminBundle',
-                "items" => array(),
-                "item_adds" => array(),
-                "roles"     => array(),
+            'bar' => array(
+                'label'            => 'foo',
+                'icon'             => '<i class="fa fa-edit"></i>',
+                'label_catalogue'  => 'SonataAdminBundle',
+                'items'            => array(),
+                'item_adds'        => array(),
+                'roles'            => array(),
             ),
         );
 

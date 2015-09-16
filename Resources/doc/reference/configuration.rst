@@ -57,6 +57,9 @@ Full Configuration Options
             title_logo:           bundles/sonataadmin/logo_title.png
             options:
                 html5_validate:       true
+
+                # Auto order groups and admins by label or id
+                sort_admins:          false
                 confirm_exit:         true
                 use_select2:          true
                 use_icheck:           true
@@ -65,6 +68,7 @@ Full Configuration Options
                 form_type:            standard
                 dropdown_number_groups_per_colums:  2
                 title_mode:           ~ # One of "single_text"; "single_image"; "both"
+                lock_protection:      false
             dashboard:
                 groups:
 

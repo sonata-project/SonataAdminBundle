@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -12,11 +12,9 @@
 namespace Sonata\AdminBundle\Tests\Admin;
 
 use Sonata\AdminBundle\Admin\Admin;
-use Sonata\AdminBundle\Model\ModelManagerInterface;
 
 class BaseAdminModelManager_Admin extends Admin
 {
-
 }
 
 class BaseAdminModelManagerTest extends \PHPUnit_Framework_TestCase

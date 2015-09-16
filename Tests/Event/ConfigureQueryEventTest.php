@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -42,7 +42,7 @@ class ConfigureQueryEventTest extends \PHPUnit_Framework_TestCase
 
     public function testGetContext()
     {
-        $this->assertEquals('Foo', $this->event->getContext());
+        $this->assertSame('Foo', $this->event->getContext());
     }
 
     public function testGetAdmin()
@@ -50,7 +50,7 @@ class ConfigureQueryEventTest extends \PHPUnit_Framework_TestCase
         $result = $this->event->getAdmin();
 
         $this->assertInstanceOf('Sonata\AdminBundle\Admin\AdminInterface', $result);
-        $this->assertEquals($this->admin, $result);
+        $this->assertSame($this->admin, $result);
     }
 
     public function testGetProxyQuery()
@@ -58,6 +58,6 @@ class ConfigureQueryEventTest extends \PHPUnit_Framework_TestCase
         $result = $this->event->getProxyQuery();
 
         $this->assertInstanceOf('Sonata\AdminBundle\Datagrid\ProxyQueryInterface', $result);
-        $this->assertEquals($this->proxyQuery, $result);
+        $this->assertSame($this->proxyQuery, $result);
     }
 }

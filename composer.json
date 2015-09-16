@@ -22,7 +22,7 @@
         "symfony/validator": "~2.3",
         "symfony/security-bundle": "~2.3",
         "symfony/routing": "~2.3",
-        "symfony/config": "~2.3",
+        "symfony/config": "^2.3.9",
         "symfony/console": "~2.3",
         "symfony/twig-bridge": "~2.3",
         "symfony/class-loader":"~2.3",
@@ -33,8 +33,8 @@
         "twig/twig": "~1.15",
         "twig/extensions": "~1.0",
         "sonata-project/exporter": "~1.0",
-        "sonata-project/block-bundle": "~2.3",
-        "sonata-project/core-bundle": "^2.3.2",
+        "sonata-project/block-bundle": "^2.3.8",
+        "sonata-project/core-bundle": "^2.3.6",
         "doctrine/common": "~2.2",
         "doctrine/inflector": "~1.0",
         "knplabs/knp-menu-bundle": ">=2.0,<3.0.0",
@@ -44,13 +44,15 @@
         "jms/translation-bundle": "~1.1",
         "sensio/generator-bundle": "~2.3",
         "symfony/yaml": "~2.3",
+        "symfony/security-acl": "~2.4",
         "sonata-project/intl-bundle": "~2.1",
-        "symfony/phpunit-bridge": "2.7.*@dev"
+        "symfony/phpunit-bridge": "~2.7|~3.0"
     },
     "suggest": {
         "jms/translation-bundle": "Extract message keys from Admins",
         "sensio/generator-bundle": "Add sonata:admin:generate command",
-        "sonata-project/intl-bundle": "Add localized date and number into the list"
+        "sonata-project/intl-bundle": "Add localized date and number into the list",
+        "symfony/security-acl": "To make sonata working with Symfony >=2.8"
     },
     "autoload": {
         "psr-4": { "Sonata\\AdminBundle\\": "" }

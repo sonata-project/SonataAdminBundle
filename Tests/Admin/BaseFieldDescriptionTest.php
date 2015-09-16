@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -12,7 +12,6 @@
 namespace Sonata\AdminBundle\Tests\Admin;
 
 use Sonata\AdminBundle\Admin\BaseFieldDescription;
-use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\FieldDescription;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\Foo;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooCall;
@@ -24,8 +23,8 @@ class BaseFieldDescriptionTest extends \PHPUnit_Framework_TestCase
         $description = new FieldDescription();
         $description->setName('foo');
 
-        $this->assertEquals('foo', $description->getFieldName());
-        $this->assertEquals('foo', $description->getName());
+        $this->assertSame('foo', $description->getFieldName());
+        $this->assertSame('foo', $description->getName());
     }
 
     public function testOptions()
@@ -34,38 +33,38 @@ class BaseFieldDescriptionTest extends \PHPUnit_Framework_TestCase
         $description->setOption('foo', 'bar');
 
         $this->assertNull($description->getOption('bar'));
-        $this->assertEquals('bar', $description->getOption('foo'));
+        $this->assertSame('bar', $description->getOption('foo'));
 
         $description->mergeOptions(array('settings' => array('value_1', 'value_2')));
         $description->mergeOptions(array('settings' => array('value_1', 'value_3')));
 
-        $this->assertEquals(array('value_1', 'value_2', 'value_1', 'value_3'), $description->getOption('settings'));
+        $this->assertSame(array('value_1', 'value_2', 'value_1', 'value_3'), $description->getOption('settings'));
 
         $description->mergeOption('settings', array('value_4'));
-        $this->assertEquals(array('value_1', 'value_2', 'value_1', 'value_3', 'value_4'), $description->getOption('settings'));
+        $this->assertSame(array('value_1', 'value_2', 'value_1', 'value_3', 'value_4'), $description->getOption('settings'));
 
         $description->mergeOption('bar', array('hello'));
 
         $this->assertCount(1, $description->getOption('bar'));
 
         $description->setOption('label', 'trucmuche');
-        $this->assertEquals('trucmuche', $description->getLabel());
+        $this->assertSame('trucmuche', $description->getLabel());
         $this->assertNull($description->getTemplate());
         $description->setOptions(array('type' => 'integer', 'template' => 'foo.twig.html', 'help' => 'fooHelp'));
 
-        $this->assertEquals('integer', $description->getType());
-        $this->assertEquals('foo.twig.html', $description->getTemplate());
-        $this->assertEquals('fooHelp', $description->getHelp());
+        $this->assertSame('integer', $description->getType());
+        $this->assertSame('foo.twig.html', $description->getTemplate());
+        $this->assertSame('fooHelp', $description->getHelp());
 
         $this->assertCount(2, $description->getOptions());
 
         $description->setHelp('Please enter an integer');
-        $this->assertEquals('Please enter an integer', $description->getHelp());
+        $this->assertSame('Please enter an integer', $description->getHelp());
 
         $description->setMappingType('int');
-        $this->assertEquals('int', $description->getMappingType());
+        $this->assertSame('int', $description->getMappingType());
 
-        $this->assertEquals('short_object_description_placeholder', $description->getOption('placeholder'));
+        $this->assertSame('short_object_description_placeholder', $description->getOption('placeholder'));
         $description->setOptions(array('placeholder' => false));
         $this->assertFalse($description->getOption('placeholder'));
 
@@ -105,9 +104,9 @@ class BaseFieldDescriptionTest extends \PHPUnit_Framework_TestCase
         $mock = $this->getMock('stdClass', array('getFoo'));
         $mock->expects($this->once())->method('getFoo')->will($this->returnValue(42));
 
-        $this->assertEquals(42, $description->getFieldValue($mock, 'fake'));
+        $this->assertSame(42, $description->getFieldValue($mock, 'fake'));
 
-        /**
+        /*
          * Test with One parameter int
          */
         $arg1 = 38;
@@ -120,9 +119,9 @@ class BaseFieldDescriptionTest extends \PHPUnit_Framework_TestCase
         $returnValue1 = $arg1 + 2;
         $mock1->expects($this->once())->method('getWithOneParameter')->with($this->equalTo($arg1))->will($this->returnValue($returnValue1));
 
-        $this->assertEquals(40, $description1->getFieldValue($mock1, 'fake'));
+        $this->assertSame(40, $description1->getFieldValue($mock1, 'fake'));
 
-        /**
+        /*
          * Test with Two parameters int
          */
         $arg2 = 4;
@@ -133,17 +132,17 @@ class BaseFieldDescriptionTest extends \PHPUnit_Framework_TestCase
 
         $mock2 = $this->getMock('stdClass', array('getWithTwoParameters'));
         $returnValue2 = $arg1 + $arg2;
-        $mock2->expects($this->any())->method('getWithTwoParameters')->with($this->equalTo($arg1),$this->equalTo($arg2))->will($this->returnValue($returnValue2));
-        $this->assertEquals(42, $description2->getFieldValue($mock2, 'fake'));
+        $mock2->expects($this->any())->method('getWithTwoParameters')->with($this->equalTo($arg1), $this->equalTo($arg2))->will($this->returnValue($returnValue2));
+        $this->assertSame(42, $description2->getFieldValue($mock2, 'fake'));
 
-        /**
+        /*
          * Test with underscored attribute name
          */
         $description3  = new FieldDescription();
         $mock3         = $this->getMock('stdClass', array('getFake'));
 
         $mock3->expects($this->once())->method('getFake')->will($this->returnValue(42));
-        $this->assertEquals(42, $description3->getFieldValue($mock3, '_fake'));
+        $this->assertSame(42, $description3->getFieldValue($mock3, '_fake'));
     }
 
     /**
@@ -187,19 +186,19 @@ class BaseFieldDescriptionTest extends \PHPUnit_Framework_TestCase
             ->method('getTranslationDomain')
             ->will($this->returnValue('AdminDomain'));
 
-        $this->assertEquals('AdminDomain', $description->getTranslationDomain());
+        $this->assertSame('AdminDomain', $description->getTranslationDomain());
 
         $admin->expects($this->never())
             ->method('getTranslationDomain');
         $description->setOption('translation_domain', 'ExtensionDomain');
-        $this->assertEquals('ExtensionDomain', $description->getTranslationDomain());
+        $this->assertSame('ExtensionDomain', $description->getTranslationDomain());
     }
 
     public function testCamelize()
     {
-        $this->assertEquals('FooBar', BaseFieldDescription::camelize('foo_bar'));
-        $this->assertEquals('FooBar', BaseFieldDescription::camelize('foo bar'));
-        $this->assertEquals('FOoBar', BaseFieldDescription::camelize('fOo bar'));
+        $this->assertSame('FooBar', BaseFieldDescription::camelize('foo_bar'));
+        $this->assertSame('FooBar', BaseFieldDescription::camelize('foo bar'));
+        $this->assertSame('FOoBar', BaseFieldDescription::camelize('fOo bar'));
     }
 
     public function testGetFieldValue()
@@ -208,7 +207,7 @@ class BaseFieldDescriptionTest extends \PHPUnit_Framework_TestCase
         $foo->setBar('Bar');
 
         $description = new FieldDescription();
-        $this->assertEquals('Bar', $description->getFieldValue($foo, 'bar'));
+        $this->assertSame('Bar', $description->getFieldValue($foo, 'bar'));
 
         $this->setExpectedException('Sonata\AdminBundle\Exception\NoValueException');
         $description->getFieldValue($foo, 'inexistantMethod');
@@ -222,7 +221,7 @@ class BaseFieldDescriptionTest extends \PHPUnit_Framework_TestCase
         $description = new FieldDescription();
 
         $description->setOption('code', 'getBaz');
-        $this->assertEquals('Baz', $description->getFieldValue($foo, 'inexistantMethod'));
+        $this->assertSame('Baz', $description->getFieldValue($foo, 'inexistantMethod'));
 
         $description->setOption('code', 'inexistantMethod');
         $this->setExpectedException('Sonata\AdminBundle\Exception\NoValueException');
@@ -236,6 +235,6 @@ class BaseFieldDescriptionTest extends \PHPUnit_Framework_TestCase
 
         $description = new FieldDescription();
         $description->setOption('parameters', $parameters);
-        $this->assertEquals(array('inexistantMethod', $parameters), $description->getFieldValue($foo, 'inexistantMethod'));
+        $this->assertSame(array('inexistantMethod', $parameters), $description->getFieldValue($foo, 'inexistantMethod'));
     }
 }

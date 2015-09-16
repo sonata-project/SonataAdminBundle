@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -12,15 +12,14 @@
 namespace Sonata\AdminBundle\Translator;
 
 /**
- * Class FormLabelTranslatorStrategy
+ * Class FormLabelTranslatorStrategy.
  *
- * @package Sonata\AdminBundle\Translator
  * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class FormLabelTranslatorStrategy implements LabelTranslatorStrategyInterface
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getLabel($label, $context = '', $type = '')
     {

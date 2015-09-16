@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -29,9 +29,9 @@ class ModelTypeListTest extends TypeTestCase
 
         $this->assertNull($options['model_manager']);
         $this->assertNull($options['class']);
-        $this->assertEquals('link_add', $options['btn_add']);
-        $this->assertEquals('link_list', $options['btn_list']);
-        $this->assertEquals('link_delete', $options['btn_delete']);
-        $this->assertEquals('SonataAdminBundle', $options['btn_catalogue']);
+        $this->assertSame('link_add', $options['btn_add']);
+        $this->assertSame('link_list', $options['btn_list']);
+        $this->assertSame('link_delete', $options['btn_delete']);
+        $this->assertSame('SonataAdminBundle', $options['btn_catalogue']);
     }
 }

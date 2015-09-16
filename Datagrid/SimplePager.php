@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -14,16 +14,15 @@ namespace Sonata\AdminBundle\Datagrid;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * Class SimplePager
+ * Class SimplePager.
  *
- * @package Sonata\AdminBundle\Datagrid
  * @author  Lukas Kahwe Smith <smith@pooteeweet.org>
  * @author  Sjoerd Peters <sjoerd.peters@gmail.com>
  */
 class SimplePager extends Pager
 {
     /**
-     * @var  boolean
+     * @var bool
      */
     protected $haveToPaginate;
 
@@ -48,8 +47,8 @@ class SimplePager extends Pager
      * If set to 3 the pager will generate links to the next three pages
      * etc.
      *
-     * @param integer $maxPerPage Number of records to display per page
-     * @param int     $threshold
+     * @param int $maxPerPage Number of records to display per page
+     * @param int $threshold
      */
     public function __construct($maxPerPage = 10, $threshold = 1)
     {
@@ -63,11 +62,11 @@ class SimplePager extends Pager
      *
      * In all other cases an estimate of the total count is returned.
      *
-     * @return integer
+     * @return int
      */
     public function getNbResults()
     {
-        $n = ceil(($this->getLastPage() -1) * $this->getMaxPerPage());
+        $n = ceil(($this->getLastPage() - 1) * $this->getMaxPerPage());
         if ($this->getLastPage() == $this->getPage()) {
             return $n + $this->thresholdCount;
         }
@@ -76,7 +75,7 @@ class SimplePager extends Pager
     }
 
     /**
-     * Get all the results for the pager instance
+     * Get all the results for the pager instance.
      *
      * @param mixed $hydrationMode A hydration mode identifier
      *
@@ -98,7 +97,6 @@ class SimplePager extends Pager
             } else {
                 $this->results = new ArrayCollection(array_slice($this->results, 0, $this->getMaxPerPage()));
             }
-
         } else {
             $this->haveToPaginate = false;
         }
@@ -107,7 +105,7 @@ class SimplePager extends Pager
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function haveToPaginate()
     {
@@ -115,7 +113,7 @@ class SimplePager extends Pager
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function resetIterator()
     {
@@ -124,7 +122,7 @@ class SimplePager extends Pager
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @throws \RuntimeException the QueryBuilder is uninitialized.
      */

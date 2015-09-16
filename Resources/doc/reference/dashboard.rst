@@ -51,6 +51,9 @@ Configuring the ``Admin`` list
 As you probably noticed by now, the ``Admin`` list groups ``Admin`` mappings together.
 There are several ways in which you can configure these groups.
 
+By default the admins are ordered the way you defined them. With the setting ``sort_admins``
+groups and admins will be orderd by their respective label with a fallback to the admin id.
+
 Using the ``Admin`` service declaration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 

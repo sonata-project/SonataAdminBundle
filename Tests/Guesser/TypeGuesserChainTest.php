@@ -1,26 +1,22 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
  */
 
 namespace Sonata\AdminBundle\Tests\Guesser;
 
-use Sonata\AdminBundle\Guesser\TypeGuesserInterface;
-use Symfony\Component\Form\Exception\UnexpectedTypeException;
-use Symfony\Component\Form\Guess\Guess;
-use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Guesser\TypeGuesserChain;
+use Symfony\Component\Form\Guess\Guess;
 use Symfony\Component\Form\Guess\TypeGuess;
 
 /**
- * TypeGuesserChain Test
+ * TypeGuesserChain Test.
  *
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
@@ -59,7 +55,7 @@ class TypeGuesserChainTest extends \PHPUnit_Framework_TestCase
         $property = 'firstName';
 
         $typeGuesserChain = new TypeGuesserChain(array($guesser1, $guesser2, $guesser3));
-        $this->assertEquals($typeGuess2, $typeGuesserChain->guessType($class, $property, $modelManager));
+        $this->assertSame($typeGuess2, $typeGuesserChain->guessType($class, $property, $modelManager));
 
         $typeGuess4 = new TypeGuess('foo4', array(), Guess::LOW_CONFIDENCE);
         $guesser4 = $this->getMock('Sonata\AdminBundle\Guesser\TypeGuesserInterface');
@@ -68,6 +64,6 @@ class TypeGuesserChainTest extends \PHPUnit_Framework_TestCase
                 ->will($this->returnValue($typeGuess4));
 
         $typeGuesserChain = new TypeGuesserChain(array($guesser4, $typeGuesserChain));
-        $this->assertEquals($typeGuess2, $typeGuesserChain->guessType($class, $property, $modelManager));
+        $this->assertSame($typeGuess2, $typeGuesserChain->guessType($class, $property, $modelManager));
     }
 }

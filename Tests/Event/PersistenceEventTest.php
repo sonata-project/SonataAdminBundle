@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -41,7 +41,7 @@ class PersistenceEventTest extends \PHPUnit_Framework_TestCase
 
     public function testGetType()
     {
-        $this->assertEquals('Foo', $this->event->getType());
+        $this->assertSame('Foo', $this->event->getType());
     }
 
     public function testGetAdmin()
@@ -49,11 +49,11 @@ class PersistenceEventTest extends \PHPUnit_Framework_TestCase
         $result = $this->event->getAdmin();
 
         $this->assertInstanceOf('Sonata\AdminBundle\Admin\AdminInterface', $result);
-        $this->assertEquals($this->admin, $result);
+        $this->assertSame($this->admin, $result);
     }
 
     public function testGetObject()
     {
-        $this->assertEquals($this->object, $this->event->getObject());
+        $this->assertSame($this->object, $this->event->getObject());
     }
 }

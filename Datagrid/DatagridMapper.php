@@ -1,13 +1,12 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
  */
 
 namespace Sonata\AdminBundle\Datagrid;
@@ -19,9 +18,8 @@ use Sonata\AdminBundle\Mapper\BaseMapper;
 
 /**
  * Class DatagridMapper
- * This class is use to simulate the Form API
+ * This class is use to simulate the Form API.
  *
- * @package Sonata\AdminBundle\Datagrid
  * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class DatagridMapper extends BaseMapper
@@ -70,7 +68,7 @@ class DatagridMapper extends BaseMapper
             }
 
             if (!isset($filterOptions['field_name'])) {
-                 $filterOptions['field_name'] = substr(strrchr('.'.$name, '.'), 1);
+                $filterOptions['field_name'] = substr(strrchr('.'.$name, '.'), 1);
             }
 
             $fieldDescription = $this->admin->getModelManager()->getNewFieldDescriptionInstance(
@@ -101,7 +99,7 @@ class DatagridMapper extends BaseMapper
     /**
      * @param string $key
      *
-     * @return boolean
+     * @return bool
      */
     public function has($key)
     {

@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -16,15 +16,14 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Class ListAdminCommand
+ * Class ListAdminCommand.
  *
- * @package Sonata\AdminBundle\Command
  * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class ListAdminCommand extends ContainerAwareCommand
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function configure()
     {
@@ -33,16 +32,16 @@ class ListAdminCommand extends ContainerAwareCommand
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $pool = $this->getContainer()->get('sonata.admin.pool');
 
-        $output->writeln("<info>Admin services:</info>");
+        $output->writeln('<info>Admin services:</info>');
         foreach ($pool->getAdminServiceIds() as $id) {
             $instance = $this->getContainer()->get($id);
-            $output->writeln(sprintf("  <info>%-40s</info> %-60s",
+            $output->writeln(sprintf('  <info>%-40s</info> %-60s',
                 $id,
                 $instance->getClass()
             ));
