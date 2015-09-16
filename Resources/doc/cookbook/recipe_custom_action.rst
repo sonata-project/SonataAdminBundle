@@ -180,7 +180,7 @@ Next we have to add the action in ``configureListFields`` specifying the templat
 
             ->add('_action', 'actions', array(
                 'actions' => array(
-                    'Clone' => array(
+                    'clone' => array(
                         'template' => 'AcmeDemoBundle:CRUD:list__action_clone.html.twig'
                     )
                 )
@@ -215,7 +215,7 @@ The full ``CarAdmin.php`` example looks like this:
                 ->add('createdAt')
                 ->add('_action', 'actions', array(
                     'actions' => array(
-                        'Clone' => array(
+                        'clone' => array(
                             'template' => 'AcmeDemoBundle:CRUD:list__action_clone.html.twig'
                         )
                     )
