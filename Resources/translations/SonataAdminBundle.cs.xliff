@@ -143,40 +143,48 @@
                 <target>Všechny prvky</target>
             </trans-unit>
             <trans-unit id='flash_batch_empty'>
-              <source>flash_batch_empty</source>
-              <target>Akce zrušena. Nebyly zvoleny žádné položky.</target>
+                <source>flash_batch_empty</source>
+                <target>Akce zrušena. Nebyly zvoleny žádné položky.</target>
             </trans-unit>
             <trans-unit id='flash_create_success'>
-              <source>flash_create_success</source>
-              <target>Položka úspěšně vytvořena.</target>
+                <source>flash_create_success</source>
+                <target>Položka úspěšně vytvořena.</target>
             </trans-unit>
             <trans-unit id='flash_create_error'>
-              <source>flash_create_error</source>
-              <target>Během vytváření položky nastala chyba.</target>
+                <source>flash_create_error</source>
+                <target>Během vytváření položky nastala chyba.</target>
             </trans-unit>
             <trans-unit id='flash_edit_success'>
-              <source>flash_edit_success</source>
-              <target>Položka byla úspěšně upravena.</target>
+                <source>flash_edit_success</source>
+                <target>Položka byla úspěšně upravena.</target>
             </trans-unit>
             <trans-unit id='flash_edit_error'>
-              <source>flash_edit_error</source>
-              <target>Během úpravy položky nastala chyba.</target>
+                <source>flash_edit_error</source>
+                <target>Během úpravy položky nastala chyba.</target>
+            </trans-unit>
+            <trans-unit id="flash_lock_error">
+                <source>flash_lock_error</source>
+                <target>Jiný uživatel změnil položku "%name%". %link_start%Obnovit stránku a znovu aplikovat změny.%link_end%</target>
             </trans-unit>
             <trans-unit id='flash_batch_delete_success'>
-              <source>flash_batch_delete_success</source>
-              <target>Zvolené položky byly úspěšně odstraněny.</target>
+                <source>flash_batch_delete_success</source>
+                <target>Zvolené položky byly úspěšně odstraněny.</target>
             </trans-unit>
             <trans-unit id='flash_batch_delete_error'>
-              <source>flash_batch_delete_error</source>
-              <target>Během odstraňování zvolených položek došlo k chybě.</target>
+                <source>flash_batch_delete_error</source>
+                <target>Během odstraňování zvolených položek došlo k chybě.</target>
             </trans-unit>
             <trans-unit id='flash_delete_error'>
-              <source>flash_delete_error</source>
-              <target>Během odstraňování položky došlo k chybě.</target>
+                <source>flash_delete_error</source>
+                <target>Během odstraňování položky došlo k chybě.</target>
             </trans-unit>
             <trans-unit id='flash_delete_success'>
-              <source>flash_delete_success</source>
-              <target>Položka byla úspěšně odstraněna.</target>
+                <source>flash_delete_success</source>
+                <target>Položka byla úspěšně odstraněna.</target>
+            </trans-unit>
+            <trans-unit id="form_not_available">
+                <source>form_not_available</source>
+                <target>Formulář není k dispozici</target>
             </trans-unit>
             <trans-unit id="link_breadcrumb_dashboard">
                 <source>breadcrumb.link_dashboard</source>
@@ -211,92 +219,92 @@
                 <target>Ano, spustit</target>
             </trans-unit>
             <trans-unit id="label_type_yes">
-              <source>label_type_yes</source>
-              <target>ano</target>
+                <source>label_type_yes</source>
+                <target>ano</target>
             </trans-unit>
             <trans-unit id="label_type_no">
-              <source>label_type_no</source>
-              <target>ne</target>
+                <source>label_type_no</source>
+                <target>ne</target>
             </trans-unit>
             <trans-unit id="label_type_contains">
-              <source>label_type_contains</source>
-              <target>obsahuje</target>
+                <source>label_type_contains</source>
+                <target>obsahuje</target>
             </trans-unit>
             <trans-unit id="label_type_not_contains">
-              <source>label_type_not_contains</source>
-              <target>neobsahuje</target>
+                <source>label_type_not_contains</source>
+                <target>neobsahuje</target>
             </trans-unit>
             <trans-unit id="label_type_equals">
-              <source>label_type_equals</source>
-              <target>rovná se</target>
+                <source>label_type_equals</source>
+                <target>rovná se</target>
             </trans-unit>
             <trans-unit id="label_type_not_equals">
-              <source>label_type_not_equals</source>
-              <target>nerovná se</target>
+                <source>label_type_not_equals</source>
+                <target>nerovná se</target>
             </trans-unit>
             <trans-unit id="label_type_equal">
-              <source>label_type_equal</source>
-              <target>=</target>
+                <source>label_type_equal</source>
+                <target>=</target>
             </trans-unit>
             <trans-unit id="label_type_greater_equal">
-              <source>label_type_greater_equal</source>
-              <target>&gt;=</target>
+                <source>label_type_greater_equal</source>
+                <target>&gt;=</target>
             </trans-unit>
             <trans-unit id="label_type_greater_than">
-              <source>label_type_greater_than</source>
-              <target>&gt;</target>
+                <source>label_type_greater_than</source>
+                <target>&gt;</target>
             </trans-unit>
             <trans-unit id="label_type_less_equal">
-              <source>label_type_less_equal</source>
-              <target>&lt;=</target>
+                <source>label_type_less_equal</source>
+                <target>&lt;=</target>
             </trans-unit>
             <trans-unit id="label_type_less_than">
-              <source>label_type_less_than</source>
-              <target>&lt;</target>
+                <source>label_type_less_than</source>
+                <target>&lt;</target>
             </trans-unit>
             <trans-unit id="label_date_type_equal">
-              <source>label_date_type_equal</source>
-              <target>=</target>
+                <source>label_date_type_equal</source>
+                <target>=</target>
             </trans-unit>
             <trans-unit id="label_date_type_greater_equal">
-              <source>label_date_type_greater_equal</source>
-              <target>&gt;=</target>
+                <source>label_date_type_greater_equal</source>
+                <target>&gt;=</target>
             </trans-unit>
             <trans-unit id="label_date_type_greater_than">
-              <source>label_date_type_greater_than</source>
-              <target>&gt;</target>
+                <source>label_date_type_greater_than</source>
+                <target>&gt;</target>
             </trans-unit>
             <trans-unit id="label_date_type_less_equal">
-              <source>label_date_type_less_equal</source>
-              <target>&lt;=</target>
+                <source>label_date_type_less_equal</source>
+                <target>&lt;=</target>
             </trans-unit>
             <trans-unit id="label_date_type_less_than">
-              <source>label_date_type_less_than</source>
-              <target>&lt;</target>
+                <source>label_date_type_less_than</source>
+                <target>&lt;</target>
             </trans-unit>
             <trans-unit id="label_date_type_null">
-              <source>label_date_type_null</source>
-              <target>je prázdný</target>
+                <source>label_date_type_null</source>
+                <target>je prázdný</target>
             </trans-unit>
             <trans-unit id="label_date_type_not_null">
-              <source>label_date_type_not_null</source>
-              <target>není prázdný</target>
+                <source>label_date_type_not_null</source>
+                <target>není prázdný</target>
             </trans-unit>
             <trans-unit id="label_date_type_between">
-              <source>label_date_type_between</source>
-              <target>je mezi</target>
+                <source>label_date_type_between</source>
+                <target>je mezi</target>
             </trans-unit>
             <trans-unit id="label_date_not_between">
-              <source>label_date_type_not_between</source>
-              <target>není mezi</target>
+                <source>label_date_type_not_between</source>
+                <target>není mezi</target>
             </trans-unit>
             <trans-unit id="label_filters">
-              <source>label_filters</source>
-              <target>Filtry</target>
+                <source>label_filters</source>
+                <target>Filtry</target>
             </trans-unit>
             <trans-unit id="delete_or">
-              <source>delete_or</source>
-              <target>nebo</target>
+                <source>delete_or</source>
+                <target>nebo</target>
             </trans-unit>
             <trans-unit id="link_action_history">
                 <source>link_action_history</source>
@@ -305,6 +313,10 @@
             <trans-unit id="td_action">
                 <source>td_action</source>
                 <target>Akce</target>
+            </trans-unit>
+            <trans-unit id="td_compare">
+                <source>td_compare</source>
+                <target>Porovnat</target>
             </trans-unit>
             <trans-unit id="td_revision">
                 <source>td_revision</source>
@@ -325,6 +337,10 @@
             <trans-unit id="label_view_revision">
                 <source>label_view_revision</source>
                 <target>Zobrazit revizi</target>
+            </trans-unit>
+            <trans-unit id="label_compare_revision">
+                <source>label_compare_revision</source>
+                <target>Porovnejte revize</target>
             </trans-unit>
             <trans-unit id="list_results_count_prefix">
                 <source>list_results_count_prefix</source>
@@ -371,24 +387,24 @@
                 <target>Odmítnout</target>
             </trans-unit>
             <trans-unit id="label_per_page">
-              <source>label_per_page</source>
-              <target>Zobrazit nejvíce</target>
+                <source>label_per_page</source>
+                <target>Zobrazit nejvíce</target>
             </trans-unit>
             <trans-unit id="list_select">
-              <source>list_select</source>
-              <target>Vybrat</target>
+                <source>list_select</source>
+                <target>Vybrat</target>
             </trans-unit>
             <trans-unit id="confirm_exit">
                 <source>confirm_exit</source>
                 <target>Máte neuložené změny.</target>
             </trans-unit>
             <trans-unit id="link_edit_acl">
-              <source>link_edit_acl</source>
-              <target>Upravit</target>
+                <source>link_edit_acl</source>
+                <target>Upravit</target>
             </trans-unit>
             <trans-unit id="btn_update_acl">
-              <source>btn_update_acl</source>
-              <target>Aktualizovat</target>
+                <source>btn_update_acl</source>
+                <target>Aktualizovat</target>
             </trans-unit>
             <trans-unit id="flash_acl_update_success">
                 <source>flash_acl_edit_success</source>
@@ -399,8 +415,8 @@
                 <target>Oprávnění</target>
             </trans-unit>
             <trans-unit id="short_object_description_placeholder">
-              <source>short_object_description_placeholder</source>
-              <target></target>
+                <source>short_object_description_placeholder</source>
+                <target></target>
             </trans-unit>
             <trans-unit id="title_search_results">
                 <source>title_search_results</source>
