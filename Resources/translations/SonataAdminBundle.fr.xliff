@@ -162,7 +162,7 @@
                 <source>flash_edit_error</source>
                 <target>Une erreur est intervenue lors de la mise à jour de l'élément "%name%".</target>
             </trans-unit>
-            <trans-unit id='flash_lock_error'>
+            <trans-unit id="flash_lock_error">
                 <source>flash_lock_error</source>
                 <target>Un autre utilisateur a modifié l'élément "%name%". Veuillez %link_start%cliquer ici%link_end% pour recharger la page et appliquer les changements à nouveau.</target>
             </trans-unit>
@@ -181,6 +181,10 @@
             <trans-unit id='flash_delete_success'>
                 <source>flash_delete_success</source>
                 <target>L'élément "%name%" a été supprimé avec succès.</target>
+            </trans-unit>
+            <trans-unit id="form_not_available">
+                <source>form_not_available</source>
+                <target>Formulaire non disponible</target>
             </trans-unit>
             <trans-unit id="link_breadcrumb_dashboard">
                 <source>breadcrumb.link_dashboard</source>
@@ -383,24 +387,24 @@
                 <target>Refuser</target>
             </trans-unit>
             <trans-unit id="label_per_page">
-              <source>label_per_page</source>
-              <target>Par page</target>
+                <source>label_per_page</source>
+                <target>Par page</target>
             </trans-unit>
             <trans-unit id="list_select">
-              <source>list_select</source>
-              <target>Sélectionner</target>
+                <source>list_select</source>
+                <target>Sélectionner</target>
             </trans-unit>
             <trans-unit id="confirm_exit">
                 <source>confirm_exit</source>
                 <target>Vous avez effectué des modifications non sauvegardées.</target>
             </trans-unit>
             <trans-unit id="link_edit_acl">
-              <source>link_edit_acl</source>
-              <target>Editer les permissions</target>
+                <source>link_edit_acl</source>
+                <target>Editer les permissions</target>
             </trans-unit>
             <trans-unit id="btn_update_acl">
-              <source>btn_update_acl</source>
-              <target>Mettre à jour les permissions</target>
+                <source>btn_update_acl</source>
+                <target>Mettre à jour les permissions</target>
             </trans-unit>
             <trans-unit id="flash_acl_update_success">
                 <source>flash_acl_edit_success</source>
@@ -411,8 +415,8 @@
                 <target>Permissions</target>
             </trans-unit>
             <trans-unit id="short_object_description_placeholder">
-              <source>short_object_description_placeholder</source>
-              <target>Aucune sélection</target>
+                <source>short_object_description_placeholder</source>
+                <target>Aucune sélection</target>
             </trans-unit>
             <trans-unit id="title_search_results">
                 <source>title_search_results</source>
@@ -429,10 +433,6 @@
             <trans-unit id="add_new_entry">
                 <source>add_new_entry</source>
                 <target>rajouter un élément</target>
-            </trans-unit>
-            <trans-unit id="form_not_available">
-                <source>form_not_available</source>
-                <target>Formulaire non disponible</target>
             </trans-unit>
             <trans-unit id="link_actions">
                 <source>link_actions</source>

@@ -162,6 +162,10 @@
                 <source>flash_edit_error</source>
                 <target>Hiba történt az elem frissítésekor.</target>
             </trans-unit>
+            <trans-unit id="flash_lock_error">
+                <source>flash_lock_error</source>
+                <target>flash_lock_error</target>
+            </trans-unit>
             <trans-unit id='flash_batch_delete_success'>
                 <source>flash_batch_delete_success</source>
                 <target>A kijelölt elemek sikeresen törölve lettek.</target>
@@ -177,6 +181,10 @@
             <trans-unit id='flash_delete_success'>
                 <source>flash_delete_success</source>
                 <target>Az elem sikeresen törölve lett.</target>
+            </trans-unit>
+            <trans-unit id="form_not_available">
+                <source>form_not_available</source>
+                <target>form_not_available</target>
             </trans-unit>
             <trans-unit id="link_breadcrumb_dashboard">
                 <source>breadcrumb.link_dashboard</source>
@@ -379,24 +387,24 @@
                 <target>Elutasítom</target>
             </trans-unit>
             <trans-unit id="label_per_page">
-              <source>label_per_page</source>
-              <target>Oldalanként</target>
+                <source>label_per_page</source>
+                <target>Oldalanként</target>
             </trans-unit>
             <trans-unit id="list_select">
-              <source>list_select</source>
-              <target>Kijelöl</target>
+                <source>list_select</source>
+                <target>Kijelöl</target>
             </trans-unit>
             <trans-unit id="confirm_exit">
                 <source>confirm_exit</source>
                 <target>Nem mentett minden változtatást. Biztosan kilép?</target>
             </trans-unit>
             <trans-unit id="link_edit_acl">
-              <source>link_edit_acl</source>
-              <target>Jogosultságok (ACL) módosítása</target>
+                <source>link_edit_acl</source>
+                <target>Jogosultságok (ACL) módosítása</target>
             </trans-unit>
             <trans-unit id="btn_update_acl">
-              <source>btn_update_acl</source>
-              <target>Jogosultságok (ACL) mentése</target>
+                <source>btn_update_acl</source>
+                <target>Jogosultságok (ACL) mentése</target>
             </trans-unit>
             <trans-unit id="flash_acl_update_success">
                 <source>flash_acl_edit_success</source>
@@ -407,8 +415,8 @@
                 <target>Jogosultságok (ACL)</target>
             </trans-unit>
             <trans-unit id="short_object_description_placeholder">
-              <source>short_object_description_placeholder</source>
-              <target>Nincs kijelölés</target>
+                <source>short_object_description_placeholder</source>
+                <target>Nincs kijelölés</target>
             </trans-unit>
             <trans-unit id="title_search_results">
                 <source>title_search_results</source>
