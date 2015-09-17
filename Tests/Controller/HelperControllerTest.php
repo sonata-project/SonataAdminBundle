@@ -500,6 +500,30 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException Symfony\Component\Security\Core\Exception\AccessDeniedException
+     * @exceptionMessage Invalid format
+     */
+    public function testRetrieveFilterAutocompleteItemsActionNotGranted()
+    {
+        $this->admin->expects($this->exactly(1))
+            ->method('isGranted')
+            ->will($this->returnCallback(function ($operation) {
+                if ($operation == 'LIST') {
+                    return false;
+                }
+
+                return;
+            }));
+
+        $request = new Request(array(
+            'admin_code'     => 'foo.admin',
+            '_context'       => 'filter',
+        ), array(), array(), array(), array(), array('REQUEST_METHOD' => 'GET', 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'));
+
+        $this->controller->retrieveAutocompleteItemsAction($request);
+    }
+
+    /**
+     * @expectedException Symfony\Component\Security\Core\Exception\AccessDeniedException
      * @exceptionMessage Autocomplete list can`t be retrieved because the form element is disabled or read_only.
      */
     public function testRetrieveAutocompleteItemsActionDisabledFormelememt()
