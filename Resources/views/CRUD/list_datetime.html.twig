@@ -15,7 +15,10 @@ file that was distributed with this source code.
     {%- if value is empty -%}
         &nbsp;
     {%- elseif field_description.options.format is defined -%}
-        {{ value|date(field_description.options.format) }}
+        {% set timezone = field_description.options.timezone is defined ? field_description.options.timezone : null %}
+        {{ value|date(field_description.options.format, timezone) }}
+    {%- elseif field_description.options.timezone is defined -%}
+        {{ value|date(null, field_description.options.timezone) }}
     {%- else -%}
         {{ value|date }}
     {%- endif -%}
