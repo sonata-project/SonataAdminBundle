@@ -10,11 +10,15 @@ file that was distributed with this source code.
 #}
 {% spaceless %}
 
-    <input type="text" id="{{ id }}_autocomplete_input" value=""
-        {%- if read_only %} readonly="readonly"{% endif -%}
-        {%- if disabled %} disabled="disabled"{% endif -%}
-        {%- if required %} required="required"{% endif %}
-    />
+    <select type="text" id="{{ id }}_autocomplete_input" name="{{ full_name }}_autocomplete_input"
+            {%- if read_only %} readonly="readonly"{% endif -%}
+            {%- if disabled %} disabled="disabled"{% endif -%}
+            {%- if required %} required="required"{% endif %}
+            >
+            {% if value is not empty %}
+                <option value="{{ value[0] }}">{{ value['_labels'][0] }}</option>
+            {% endif %}
+    </select>
 
     <div id="{{ id }}_hidden_inputs_wrap">
         {% if multiple -%}
