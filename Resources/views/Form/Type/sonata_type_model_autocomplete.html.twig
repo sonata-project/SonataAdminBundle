@@ -10,15 +10,11 @@ file that was distributed with this source code.
 #}
 {% spaceless %}
 
-    <select type="text" id="{{ id }}_autocomplete_input" name="{{ full_name }}_autocomplete_input"
-            {%- if read_only %} readonly="readonly"{% endif -%}
-            {%- if disabled %} disabled="disabled"{% endif -%}
-            {%- if required %} required="required"{% endif %}
-            >
-            {% if value is not empty %}
-                <option value="{{ value[0] }}">{{ value['_labels'][0] }}</option>
-            {% endif %}
-    </select>
+    <input type="text" id="{{ id }}_autocomplete_input" value=""
+        {%- if read_only %} readonly="readonly"{% endif -%}
+        {%- if disabled %} disabled="disabled"{% endif -%}
+        {%- if required %} required="required"{% endif %}
+    />
 
     <div id="{{ id }}_hidden_inputs_wrap">
         {% if multiple -%}
@@ -31,6 +27,9 @@ file that was distributed with this source code.
     </div>
 
     <script>
+        window.opts = {
+            debug: false
+        };
         (function ($) {
             var autocompleteInput = $('#{{ id }}_autocomplete_input');
             autocompleteInput.select2({
