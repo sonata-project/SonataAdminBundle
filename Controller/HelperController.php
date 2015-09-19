@@ -322,11 +322,11 @@ class HelperController
         $admin->setRequest($request);
         $context = $request->get('_context', '');
 
-        if ($context == 'filter' && false === $admin->isGranted('LIST')) {
+        if ($context === 'filter' && false === $admin->isGranted('LIST')) {
             throw new AccessDeniedException();
         }
 
-        if ($context != 'filter'
+        if ($context !== 'filter'
             && false === $admin->isGranted('CREATE')
             && false === $admin->isGranted('EDIT')
         ) {
@@ -336,7 +336,7 @@ class HelperController
         // subject will be empty to avoid unnecessary database requests and keep autocomplete function fast
         $admin->setSubject($admin->getNewInstance());
 
-        if ($context == 'filter') {
+        if ($context === 'filter') {
             // filter
             $fieldDescription = $this->retrieveFilterFieldDescription($admin, $request->get('field'));
             $filterAutocomplete = $admin->getDatagrid()->getFilter($fieldDescription->getName());
