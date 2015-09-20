@@ -153,7 +153,7 @@ class FormTypeFieldExtension extends AbstractTypeExtension
      */
     public function getExtendedType()
     {
-        return 'field';
+        return 'form';
     }
 
     /**
