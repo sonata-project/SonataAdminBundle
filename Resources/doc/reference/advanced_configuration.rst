@@ -282,6 +282,26 @@ If you want to use the Tab Menu in a different way, you can replace the Menu Tem
             templates:
                 tab_menu_template:  AppBundle:Admin:own_tab_menu_template.html.twig
 
+Breadcrumbs dropdowns
+---------------------
+
+You also can customize the breadcrumbs dropdowns by overriding the `configureBreadcrumbsMenu` method
+of an admin or an admin extension :
+
+.. code-block:: php
+
+    <?php
+    protected function configureBreadcrumbsMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
+    {
+        if (!in_array($action, array('edit', 'show'))) {
+            return;
+        }
+
+        if ($this->isGranted('VIEW')) {
+            $menu->addChild($this->trans('default.label_compare'), ['uri' => $admin->generateUrl('compare')]);
+        }
+    }
+
 Disable content stretching
 --------------------------
 

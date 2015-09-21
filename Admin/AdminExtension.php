@@ -65,6 +65,13 @@ abstract class AdminExtension implements AdminExtensionInterface
     /**
      * {@inheritdoc}
      */
+    public function configureBreadcrumbsMenu(AdminInterface $admin, MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
+    {
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function configureSideMenu(AdminInterface $admin, MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
     {
     }
