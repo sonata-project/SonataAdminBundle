@@ -177,14 +177,17 @@ file that was distributed with this source code.
                                             </a>
                                             {% include admin_pool.getTemplate('add_block') %}
                                         </li>
-                                        <li class="dropdown user-menu">
-                                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                                <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
-                                            </a>
-                                            <ul class="dropdown-menu dropdown-user">
-                                                {% include admin_pool.getTemplate('user_block') %}
-                                            </ul>
-                                        </li>
+                                        {% set _user_block = include(admin_pool.getTemplate('user_block')) %}
+                                        {% if _user_block is not empty %}
+                                            <li class="dropdown user-menu">
+                                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                                    <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
+                                                </a>
+                                                <ul class="dropdown-menu dropdown-user">
+                                                    {{ _user_block|raw }}
+                                                </ul>
+                                            </li>
+                                        {% endif %}
                                     </ul>
                                 </div>
                             {% endblock %}
