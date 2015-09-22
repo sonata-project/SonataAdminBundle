@@ -25,7 +25,7 @@ interface DatagridBuilderInterface extends BuilderInterface
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
      * @param \Sonata\AdminBundle\Admin\AdminInterface            $admin
      */
-    public function addFilter(DatagridInterface $datagrid, $type = null, FieldDescriptionInterface $fieldDescription, AdminInterface $admin);
+    public function addFilter(DatagridInterface $datagrid, $type, FieldDescriptionInterface $fieldDescription, AdminInterface $admin);
 
     /**
      * @param \Sonata\AdminBundle\Admin\AdminInterface $admin

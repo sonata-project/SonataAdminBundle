@@ -31,7 +31,7 @@ interface ListBuilderInterface extends BuilderInterface
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
      * @param \Sonata\AdminBundle\Admin\AdminInterface            $admin
      */
-    public function buildField($type = null, FieldDescriptionInterface $fieldDescription, AdminInterface $admin);
+    public function buildField($type, FieldDescriptionInterface $fieldDescription, AdminInterface $admin);
 
     /**
      * Modify a field description and add it to the displayed columns.
@@ -41,5 +41,5 @@ interface ListBuilderInterface extends BuilderInterface
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface  $fieldDescription
      * @param \Sonata\AdminBundle\Admin\AdminInterface             $admin
      */
-    public function addField(FieldDescriptionCollection $list, $type = null, FieldDescriptionInterface $fieldDescription, AdminInterface $admin);
+    public function addField(FieldDescriptionCollection $list, $type, FieldDescriptionInterface $fieldDescription, AdminInterface $admin);
 }

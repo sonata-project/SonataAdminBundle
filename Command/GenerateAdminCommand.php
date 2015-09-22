@@ -240,7 +240,7 @@ class GenerateAdminCommand extends ContainerAwareCommand
         foreach ($application->getKernel()->getBundles() as $bundle) {
             if (strpos($class, $bundle->getNamespace().'\\') === 0) {
                 return $bundle->getName();
-            };
+            }
         }
 
         return;

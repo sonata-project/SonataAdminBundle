@@ -20,9 +20,11 @@ abstract class BaseGroupedMapper extends BaseMapper
     protected $currentTab;
 
     abstract protected function getGroups();
+
     abstract protected function getTabs();
 
     abstract protected function setGroups(array $groups);
+
     abstract protected function setTabs(array $tabs);
 
     /**
