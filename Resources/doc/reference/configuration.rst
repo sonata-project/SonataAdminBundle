@@ -158,7 +158,7 @@ Full Configuration Options
                     - bundles/sonatacore/vendor/ionicons/css/ionicons.min.css
                     - bundles/sonataadmin/vendor/admin-lte/dist/css/AdminLTE.min.css
                     - bundles/sonataadmin/vendor/admin-lte/dist/css/skins/skin-black.min.css
-                    - bundles/sonataadmin/vendor/iCheck/skins/flat/blue.css
+                    - bundles/sonataadmin/vendor/iCheck/skins/square/blue.css
                     - bundles/sonatacore/vendor/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css
                     - bundles/sonataadmin/vendor/jqueryui/themes/base/jquery-ui.css
                     - bundles/sonatacore/vendor/select2/select2.css
