@@ -40,6 +40,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\Security\Acl\Model\DomainObjectInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Validator\ValidatorInterface as LegacyValidatorInterface;
@@ -486,6 +487,13 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 //            'class' => 'fa fa-sitemap fa-fw',
 //        ),
     );
+
+    /**
+     * The Access mapping.
+     *
+     * @var array
+     */
+    protected $accessMapping = array();
 
     /**
      * {@inheritdoc}
@@ -2828,5 +2836,47 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         }
 
         return $this->getRequest()->getSession()->get(sprintf('%s.list_mode', $this->getCode()), 'list');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAccessMapping()
+    {
+        return $this->accessMapping;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function checkAccess($action, $object = null)
+    {
+        $access = array_merge(array(
+            'acl'                     => 'MASTER',
+            'export'                  => 'EXPORT',
+            'historyCompareRevisions' => 'EDIT',
+            'historyViewRevision'     => 'EDIT',
+            'history'                 => 'EDIT',
+            'edit'                    => 'EDIT',
+            'show'                    => 'VIEW',
+            'create'                  => 'CREATE',
+            'delete'                  => 'DELETE',
+            'batchDelete'             => 'DELETE',
+            'list'                    => 'LIST',
+        ), $this->getAccessMapping());
+
+        if (!array_key_exists($action, $access)) {
+            throw new \InvalidArgumentException(sprintf('Action "%s" could not be found in access mapping. Please make sure your action is defined into your admin class accessMapping property.', $action));
+        }
+
+        if (!is_array($access[$action])) {
+            $access[$action] = array($access[$action]);
+        }
+
+        foreach ($access[$action] as $role) {
+            if (false === $this->isGranted($role, $object)) {
+                throw new AccessDeniedException(sprintf('Access Denied to the action %s and role %s', $action, $role));
+            }
+        }
     }
 }

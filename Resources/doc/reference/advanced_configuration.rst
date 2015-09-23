@@ -301,3 +301,61 @@ For example:
 
     {# YourNS\AdminBundle\Resources\views\standard_layout.html.twig #}
     {% block html_attributes %}class="no-js no-stretch"{% endblock %}
+
+
+Custom Action Access Management
+-------------------------------
+
+You can customize the access system inside the CRUDController by adding some entries inside the  `$accessMapping` array in the linked Admin.
+
+.. code-block:: php
+
+    <?php
+    // YourNS\AdminBundle\Admin\CustomAdmin.php
+
+    class CustomAdmin extends Admin
+    {
+        protected $accessMapping = array(
+            'myCustomFoo' => 'EDIT',
+            'myCustomBar' => array('EDIT', 'LIST'),
+        );
+    }
+
+    <?php
+    // YourNS\AdminBundle\Controller\CustomCRUDController.php
+
+    class CustomCRUDController extends CRUDController
+    {
+        public function myCustomFooAction()
+        {
+            $this->admin->checkAccess('myCustomFoo');
+            // If you can't access to EDIT role for the linked admin, an AccessDenied Exception will be throwned
+
+            ...
+        }
+
+        public function myCustomBarAction($object)
+        {
+            $this->admin->checkAccess('myCustomBar', $object);
+            // If you can't access to EDIT AND LIST roles for the linked admin, an AccessDenied Exception will be throwned
+
+            ...
+        }
+        ...
+    }
+
+You can also fully customize how you want to handle your access management by simply overriding `checkAccess` function
+
+.. code-block:: php
+
+    <?php
+    // YourNS\AdminBundle\Admin\CustomAdmin.php
+
+    class CustomAdmin extends Admin
+    {
+        public function checkAccess($action, $object = null)
+        {
+            $this->customAccessLogic();
+        }
+        ...
+    }
