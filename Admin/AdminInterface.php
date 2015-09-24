@@ -1004,4 +1004,19 @@ interface AdminInterface
      * @return string
      */
     public function getListMode();
+
+    /**
+     * Return the controller access mapping.
+     *
+     * @return array
+     */
+    public function getAccessMapping();
+
+    /**
+     * Hook to handle access authorization.
+     *
+     * @param string $action
+     * @param object $object
+     */
+    public function checkAccess($action, $object = null);
 }
