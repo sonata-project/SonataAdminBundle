@@ -24,7 +24,7 @@ Full Configuration Options
 
     .. code-block:: yaml
 
-        # Default configuration for "SonataAdminBundle"
+        # Default configuration for extension with alias: "sonata_admin"
         sonata_admin:
             security:
                 handler:              sonata.admin.security.handler.noop
@@ -64,10 +64,13 @@ Full Configuration Options
                 use_select2:          true
                 use_icheck:           true
                 use_bootlint:         false
+                use_stickyforms:      true
                 pager_links:          null
                 form_type:            standard
                 dropdown_number_groups_per_colums:  2
                 title_mode:           ~ # One of "single_text"; "single_image"; "both"
+
+                # Enable locking when editing an object, if the corresponding object manager supports it.
                 lock_protection:      false
             dashboard:
                 groups:
@@ -77,6 +80,7 @@ Full Configuration Options
                         label:                ~
                         label_catalogue:      ~
                         icon:                 '<i class="fa fa-folder"></i>'
+                        provider:             ~
                         items:
                             admin:                ~
                             label:                ~
@@ -173,10 +177,10 @@ Full Configuration Options
                     - bundles/sonatacore/vendor/jquery/dist/jquery.min.js
                     - bundles/sonataadmin/vendor/jquery.scrollTo/jquery.scrollTo.min.js
                     - bundles/sonatacore/vendor/moment/min/moment.min.js
-                    - bundles/sonatacore/vendor/bootstrap/dist/js/bootstrap.min.js
-                    - bundles/sonatacore/vendor/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js
                     - bundles/sonataadmin/vendor/jqueryui/ui/minified/jquery-ui.min.js
                     - bundles/sonataadmin/vendor/jqueryui/ui/minified/i18n/jquery-ui-i18n.min.js
+                    - bundles/sonatacore/vendor/bootstrap/dist/js/bootstrap.min.js
+                    - bundles/sonatacore/vendor/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js
                     - bundles/sonataadmin/vendor/jquery-form/jquery.form.js
                     - bundles/sonataadmin/jquery/jquery.confirmExit.js
                     - bundles/sonataadmin/vendor/x-editable/dist/bootstrap3-editable/js/bootstrap-editable.min.js
@@ -184,6 +188,8 @@ Full Configuration Options
                     - bundles/sonataadmin/vendor/admin-lte/dist/js/app.min.js
                     - bundles/sonataadmin/vendor/iCheck/icheck.min.js
                     - bundles/sonataadmin/vendor/slimScroll/jquery.slimscroll.min.js
+                    - bundles/sonataadmin/vendor/waypoints/lib/jquery.waypoints.min.js
+                    - bundles/sonataadmin/vendor/waypoints/lib/shortcuts/sticky.min.js
                     - bundles/sonataadmin/Admin.js
                     - bundles/sonataadmin/treeview.js
             extensions:
