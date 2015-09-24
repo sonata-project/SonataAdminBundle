@@ -151,7 +151,7 @@ Available types and associated options
 +           +                +                                                                       +
 |           |   parameters   | Route parameters                                                      |
 +           +----------------+-----------------------------------------------------------------------+
-|           | hide_protocol  | Hide http:// or https:// (default false)                              |
+|           | hide_protocol  | Hide http:// or https:// (default: false)                             |
 +-----------+----------------+-----------------------------------------------------------------------+
 
 If you have the SonataDoctrineORMAdminBundle installed, you have access to more field types, see `SonataDoctrineORMAdminBundle Documentation <https://sonata-project.org/bundles/doctrine-orm-admin/master/doc/reference/list_field_definition.html>`_.
