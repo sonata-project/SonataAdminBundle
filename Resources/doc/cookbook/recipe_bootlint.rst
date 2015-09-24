@@ -22,4 +22,4 @@ To use Bootlint in your admin, you can enable it in ``config.yml``.
 
 Then open your browser debugger to look after some Bootlint warnings on console.
 
-No warning? Congrats! You page is fully Bootstrap compliant! ;)
+No warning? Congrats! Your page is fully Bootstrap compliant! ;)
