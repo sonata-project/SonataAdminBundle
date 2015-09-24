@@ -24,9 +24,9 @@ Resources/public/vendor/admin-lte/Gruntfile.js
 
 Resources/public/vendor/iCheck/skins/all.css
 Resources/public/vendor/iCheck/skins/*/*
-!Resources/public/vendor/iCheck/skins/flat/blue.css
-!Resources/public/vendor/iCheck/skins/flat/blue.png
-!Resources/public/vendor/iCheck/skins/flat/blue@2x.png
+!Resources/public/vendor/iCheck/skins/square/blue.css
+!Resources/public/vendor/iCheck/skins/square/blue.png
+!Resources/public/vendor/iCheck/skins/square/blue@2x.png
 Resources/public/vendor/iCheck/icheck.js
 
 Resources/public/vendor/slimScroll/examples
