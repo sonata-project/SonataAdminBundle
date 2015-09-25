@@ -12,7 +12,7 @@ file that was distributed with this source code.
 {% extends admin.getTemplate('base_list_field') %}
 
 {% block field %}
-    <a class="btn btn-default" href="{{ admin.generateObjectUrl('edit', object) }}">
+    <a class="btn btn-default" href="{{ admin.generateObjectUrl('list', object) }}">
         <i class="glyphicon glyphicon-arrow-right"></i>
         {{ 'list_select'|trans({}, 'SonataAdminBundle') }}
     </a>
