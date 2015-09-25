@@ -83,8 +83,23 @@ BOOM
         $configuration = $this->getConfiguration($configs, $container);
         $config = $this->processConfiguration($configuration, $configs);
 
-        $config['options']['javascripts'] = $config['assets']['javascripts'];
-        $config['options']['stylesheets'] = $config['assets']['stylesheets'];
+        $javascripts = array_unique(
+            array_merge(
+                $config['assets']['javascripts'],
+                $config['assets']['extra_javascripts']
+            )
+        );
+
+        $config['options']['javascripts'] = $javascripts;
+
+        $stylesheets = array_unique(
+            array_merge(
+                $config['assets']['stylesheets'],
+                $config['assets']['extra_stylesheets']
+            )
+        );
+
+        $config['options']['stylesheets'] = $stylesheets;
 
         $pool = $container->getDefinition('sonata.admin.pool');
         $pool->replaceArgument(1, $config['title']);
