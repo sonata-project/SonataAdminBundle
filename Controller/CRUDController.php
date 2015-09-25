@@ -503,7 +503,16 @@ class CRUDController extends Controller
         }
 
         if (!$url) {
-            $url = $this->admin->generateObjectUrl('edit', $object);
+            foreach (array('edit', 'show') as $route) {
+                if ($this->admin->hasRoute($route) && $this->admin->isGranted(strtoupper($route))) {
+                    $url = $this->admin->generateObjectUrl($route, $object);
+                    break;
+                }
+            }
+        }
+
+        if (!$url) {
+            $url = $this->admin->generateUrl('list');
         }
 
         return new RedirectResponse($url);
