@@ -2865,6 +2865,13 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
             'list'                    => 'LIST',
         ), $this->getAccessMapping());
 
+        foreach ($this->extensions as $extension) {
+            // TODO: remove method check in next major release
+            if (method_exists($extension, 'getAccessMapping')) {
+                $access = array_merge($access, $extension->getAccessMapping($this));
+            }
+        }
+
         if (!array_key_exists($action, $access)) {
             throw new \InvalidArgumentException(sprintf('Action "%s" could not be found in access mapping. Please make sure your action is defined into your admin class accessMapping property.', $action));
         }
