@@ -10,6 +10,10 @@
                 <source>action_delete</source>
                 <target>Läschen</target>
             </trans-unit>
+            <trans-unit id="action_delete_icon">
+                <source>action_delete_icon</source>
+                <target><![CDATA[<i class="glyphicon glyphicon-remove"></i>]]></target>
+            </trans-unit>
             <trans-unit id="btn_batch">
                 <source>btn_batch</source>
                 <target>OK</target>
@@ -134,9 +138,17 @@
                 <source>action_edit</source>
                 <target>Beaarbechten</target>
             </trans-unit>
+            <trans-unit id="action_edit_icon">
+                <source>action_edit_icon</source>
+                <target><![CDATA[<i class="glyphicon glyphicon-edit"></i>]]></target>
+            </trans-unit>
             <trans-unit id="action_show">
                 <source>action_show</source>
                 <target>Weisen</target>
+            </trans-unit>
+            <trans-unit id="action_show_icon">
+                <source>action_show_icon</source>
+                <target><![CDATA[<i class="glyphicon glyphicon-zoom-in"></i>]]></target>
             </trans-unit>
             <trans-unit id="all_elements">
                 <source>all_elements</source>
