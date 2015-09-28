@@ -12,9 +12,8 @@ file that was distributed with this source code.
 {% extends admin.getTemplate('base_list_field') %}
 
 {% block field%}
-    {% if field_description.options.catalogue is not defined %}
-        {{value|trans}}
-    {% else %}
-        {{value|trans({}, field_description.options.catalogue)}}
-    {% endif %}
+    {% set translationDomain = field_description.options.catalogue|default(admin.translationDomain) %}
+    {% set valueFormat = field_description.options.format|default('%s') %}
+
+    {{valueFormat|format(value)|trans({}, translationDomain)}}
 {% endblock %}
