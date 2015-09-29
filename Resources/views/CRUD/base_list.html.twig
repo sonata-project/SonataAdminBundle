@@ -159,7 +159,7 @@ file that was distributed with this source code.
                                     {% if admin.hasRoute('export') and admin.isGranted("EXPORT") and admin.getExportFormats()|length %}
                                         <div class="btn-group">
                                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                                                <i class="glyphicon glyphicon-export"></i>
+                                                <i class="fa fa-share-square-o"></i>
                                                 {{ "label_export_download"|trans({}, "SonataAdminBundle") }}
                                                 <span class="caret"></span>
                                             </button>
@@ -167,7 +167,7 @@ file that was distributed with this source code.
                                                 {% for format in admin.getExportFormats() %}
                                                 <li>
                                                     <a href="{{ admin.generateUrl('export', admin.modelmanager.paginationparameters(admin.datagrid, 0) + {'format' : format}) }}">
-                                                        <i class="glyphicon glyphicon-download"></i>
+                                                        <i class="fa fa-arrow-circle-o-down"></i>
                                                         {{ ("export_format_" ~ format)|trans({}, 'SonataAdminBundle') }}
                                                     </a>
                                                 <li>
