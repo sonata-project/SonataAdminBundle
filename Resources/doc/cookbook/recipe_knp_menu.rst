@@ -115,7 +115,7 @@ You can modify the menu via events easily. You can register as many listeners as
 
             $menu->addChild('reports', array(
                 'route' => 'app_reports_index',
-                'labelAttributes' => array('icon' => 'glyphicon glyphicon-stats'),
+                'labelAttributes' => array('icon' => 'fa fa-bar-chart'),
             ))->setLabel('Daily and monthly reports');
         }
     }

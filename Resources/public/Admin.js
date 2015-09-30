@@ -123,7 +123,7 @@ var Admin = {
         Admin.log('[core|setup_xeditable] configure xeditable on', subject);
         jQuery('.x-editable', subject).editable({
             emptyclass: 'editable-empty btn btn-sm btn-default',
-            emptytext: '<i class="glyphicon glyphicon-edit"></i>',
+            emptytext: '<i class="fa fa-pencil"></i>',
             container: 'body',
             placement: 'auto',
             success: function(response) {

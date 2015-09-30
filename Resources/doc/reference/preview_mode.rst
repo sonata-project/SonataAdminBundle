@@ -105,11 +105,11 @@ a different object you can just set your own variables prior to calling parent()
 
     {% block formactions %}
         <button class="btn btn-success" type="submit" name="btn_preview_approve">
-            <i class="glyphicon glyphicon-ok"></i>
+            <i class="fa fa-check"></i>
             {{ 'btn_preview_approve'|trans({}, 'SonataAdminBundle') }}
         </button>
         <button class="btn btn-danger" type="submit" name="btn_preview_decline">
-            <i class="glyphicon glyphicon-remove"></i>
+            <i class="fa fa-times"></i>
             {{ 'btn_preview_decline'|trans({}, 'SonataAdminBundle') }}
         </button>
     {% endblock %}
