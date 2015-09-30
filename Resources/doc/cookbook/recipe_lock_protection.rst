@@ -28,6 +28,7 @@ By default, lock protection is disabled. You can enable it in your ``sonata_admi
                 lock_protection: true
 
 .. note::
-    If the object model manager does not supports object locking,
+
+    If the object model manager does not support object locking,
     the lock protection will not be triggered for the object.
     Currently, only the ``SonataDoctrineORMAdminBundle`` supports it.

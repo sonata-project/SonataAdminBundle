@@ -13,25 +13,31 @@ current object by calling ``$this->getSubject()``. The value returned will be yo
 linked model. Then, you should be able to dynamically add needed fields to the form:
 
 .. code-block:: php
+
+    <?php
+    // src/AppBundle/Admin/PostAdmin
+
+    namespace AppBundle\Admin;
     
     use Sonata\AdminBundle\Admin\Admin;
     use Sonata\AdminBundle\Form\FormMapper;
 
-    class MyModelAdmin extends Admin 
+    classPostAdmin extends Admin
     {
-    // ...
+        // ...
 
-      protected function configureFormFields(FormMapper $formMapper)
-      {
-        // Description field will always be added to the form:
-        $formMapper->add('description', 'textarea');
+        protected function configureFormFields(FormMapper $formMapper)
+        {
+            // Description field will always be added to the form:
+            $formMapper
+                ->add('description', 'textarea')
+            ;
 
-        $subject = $this->getSubject();
+            $subject = $this->getSubject();
 
-        if ($subject->isNew()) {
-            // The thumbnail field will only be added when the edited item is created
-            $formMapper->add('thumbnail', 'file');
+            if ($subject->isNew()) {
+                // The thumbnail field will only be added when the edited item is created
+                $formMapper->add('thumbnail', 'file');
+            }
         }
-      }
     }
-

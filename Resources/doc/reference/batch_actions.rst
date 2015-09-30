@@ -25,8 +25,7 @@ merges them onto a single target item. It should only be available when two cond
 .. code-block:: php
 
     <?php
-
-    // In your Admin class
+    // in your Admin class
 
     public function getBatchActions()
     {
@@ -63,51 +62,67 @@ granularity), the passed query is ``null``.
 .. code-block:: php
 
     <?php
+    // src/AppBundle/Controller/CRUDController.php
 
-    // In Acme/ProjectBundle/Controller/CRUDController.php
+    namespace AppBundle\Controller;
 
-    public function batchActionMerge(ProxyQueryInterface $selectedModelQuery)
+    use Sonata\AdminBundle\Controller\CRUDController as BaseController;
+    use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
+    use Symfony\Component\HttpFoundation\RedirectResponse;
+    use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+
+    class CRUDController extends BaseController
     {
-        if (!$this->admin->isGranted('EDIT') || !$this->admin->isGranted('DELETE')) {
-            throw new AccessDeniedException();
-        }
-
-        $request = $this->get('request');
-        $modelManager = $this->admin->getModelManager();
-
-        $target = $modelManager->find($this->admin->getClass(), $request->get('targetId'));
-
-        if( $target === null){
-            $this->addFlash('sonata_flash_info', 'flash_batch_merge_no_target');
-
-            return new RedirectResponse(
-              $this->admin->generateUrl('list', $this->admin->getFilterParameters())
-            );
-        }
-
-        $selectedModels = $selectedModelQuery->execute();
-
-        // do the merge work here
-
-        try {
-            foreach ($selectedModels as $selectedModel) {
-                $modelManager->delete($selectedModel);
+        /**
+         * @param ProxyQueryInterface $selectedModelQuery
+         *
+         * @return RedirectResponse
+         */
+        public function batchActionMerge(ProxyQueryInterface $selectedModelQuery)
+        {
+            if (!$this->admin->isGranted('EDIT') || !$this->admin->isGranted('DELETE')) {
+                throw new AccessDeniedException();
             }
 
-            $modelManager->update($selectedModel);
-        } catch (\Exception $e) {
-            $this->addFlash('sonata_flash_error', 'flash_batch_merge_error');
+            $request = $this->get('request');
+            $modelManager = $this->admin->getModelManager();
+
+            $target = $modelManager->find($this->admin->getClass(), $request->get('targetId'));
+
+            if ($target === null){
+                $this->addFlash('sonata_flash_info', 'flash_batch_merge_no_target');
+
+                return new RedirectResponse(
+                    $this->admin->generateUrl('list', $this->admin->getFilterParameters())
+                );
+            }
+
+            $selectedModels = $selectedModelQuery->execute();
+
+            // do the merge work here
+
+            try {
+                foreach ($selectedModels as $selectedModel) {
+                    $modelManager->delete($selectedModel);
+                }
+
+                $modelManager->update($selectedModel);
+            } catch (\Exception $e) {
+                $this->addFlash('sonata_flash_error', 'flash_batch_merge_error');
+
+                return new RedirectResponse(
+                    $this->admin->generateUrl('list', $this->admin->getFilterParameters())
+                );
+            }
+
+            $this->addFlash('sonata_flash_success', 'flash_batch_merge_success');
 
             return new RedirectResponse(
-              $this->admin->generateUrl('list', $this->admin->getFilterParameters())
+                $this->admin->generateUrl('list', $this->admin->getFilterParameters())
             );
         }
 
-        $this->addFlash('sonata_flash_success', 'flash_batch_merge_success');
-
-        return new RedirectResponse(
-          $this->admin->generateUrl('list', $this->admin->getFilterParameters())
-        );
+        // ...
     }
 
 
@@ -121,15 +136,15 @@ of objects to manipulate. We can override this behavior by changing our list tem
 
 .. code-block:: html+jinja
 
-    {# in Acme/ProjectBundle/Resources/views/CRUD/list__batch.html.twig #}
-    {# See SonataAdminBundle:CRUD:list__batch.html.twig for the current default template #}
+    {# src/AppBundle/Resources/views/CRUD/list__batch.html.twig #}
+    {# see SonataAdminBundle:CRUD:list__batch.html.twig for the current default template #}
 
     {% extends admin.getTemplate('base_list_field') %}
 
     {% block field %}
         <input type="checkbox" name="idx[]" value="{{ admin.id(object) }}" />
 
-        {# the new radio #}
+        {# the new radio button #}
         <input type="radio" name="targetId" value="{{ admin.id(object) }}" />
     {% endblock %}
 
@@ -139,7 +154,7 @@ And add this:
 .. code-block:: php
 
     <?php
-    // Acme/ProjectBundle/AcmeProjectBundle.php
+    // src/AppBundle/AppBundle.php
 
     public function getParent()
     {
@@ -163,43 +178,51 @@ This method may return three different values:
 
  - ``true``: The batch action is relevant and can be applied.
  - ``false``: Same as above, with the default "action aborted, no model selected" notification message.
- - a string: The batch action is not relevant given the current request parameters
+ - ``string``: The batch action is not relevant given the current request parameters
    (for example the ``target`` is missing for a ``merge`` action).
    The returned string is a message displayed to the user.
 
 .. code-block:: php
 
     <?php
+    // src/AppBundle/Controller/CRUDController.php
 
-    // In Acme/ProjectBundle/Controller/CRUDController.php
+    namespace AppBundle\Controller;
 
-    public function batchActionMergeIsRelevant(array $selectedIds, $allEntitiesSelected)
+    use Sonata\AdminBundle\Controller\CRUDController as BaseController;
+
+    class CRUDController extends BaseController
     {
-        // here you have access to all POST parameters, if you use some custom ones
-        // POST parameters are kept even after the confirmation page.
-        $parameterBag = $this->get('request')->request;
+        public function batchActionMergeIsRelevant(array $selectedIds, $allEntitiesSelected)
+        {
+            // here you have access to all POST parameters, if you use some custom ones
+            // POST parameters are kept even after the confirmation page.
+            $parameterBag = $this->get('request')->request;
 
-        // check that a target has been chosen
-        if (!$parameterBag->has('targetId')) {
-            return 'flash_batch_merge_no_target';
-        }
-
-        $targetId = $parameterBag->get('targetId');
-
-        // if all entities are selected, a merge can be done
-        if ($allEntitiesSelected) {
-            return true;
-        }
-
-        // filter out the target from the selected models
-        $selectedIds = array_filter($selectedIds,
-            function($selectedId) use($targetId){
-                return $selectedId !== $targetId;
+            // check that a target has been chosen
+            if (!$parameterBag->has('targetId')) {
+                return 'flash_batch_merge_no_target';
             }
-        );
 
-        // if at least one but not the target model is selected, a merge can be done.
-        return count($selectedIds) > 0;
+            $targetId = $parameterBag->get('targetId');
+
+            // if all entities are selected, a merge can be done
+            if ($allEntitiesSelected) {
+                return true;
+            }
+
+            // filter out the target from the selected models
+            $selectedIds = array_filter($selectedIds,
+                function($selectedId) use($targetId){
+                    return $selectedId !== $targetId;
+                }
+            );
+
+            // if at least one but not the target model is selected, a merge can be done.
+            return count($selectedIds) > 0;
+        }
+
+        // ...
     }
 
 (Optional) Executing a pre batch hook
@@ -211,8 +234,7 @@ The main purpose of this method is to alter the query or the list of selected id
 .. code-block:: php
 
     <?php
-
-    // In your Admin class
+    // in your Admin class
 
     public function preBatchAction($actionName, ProxyQueryInterface $query, array & $idx, $allElements)
     {
