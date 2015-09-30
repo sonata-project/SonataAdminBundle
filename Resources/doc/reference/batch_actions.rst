@@ -47,6 +47,69 @@ merges them onto a single target item. It should only be available when two cond
         return $actions;
     }
 
+Define the core action logic
+----------------------------
+
+The method ``batchAction<MyAction>`` will be executed to process your batch in your ``CRUDController`` class. The selected
+objects are passed to this method through a query argument which can be used to retrieve them.
+If for some reason it makes sense to perform your batch action without the default selection
+method (for example you defined another way, at template level, to select model at a lower
+granularity), the passed query is ``null``.
+
+.. note::
+
+    You can check how to declare your own ``CRUDController`` class in the Architecture section.
+
+.. code-block:: php
+
+    <?php
+
+    // In Acme/ProjectBundle/Controller/CRUDController.php
+
+    public function batchActionMerge(ProxyQueryInterface $selectedModelQuery)
+    {
+        if (!$this->admin->isGranted('EDIT') || !$this->admin->isGranted('DELETE')) {
+            throw new AccessDeniedException();
+        }
+
+        $request = $this->get('request');
+        $modelManager = $this->admin->getModelManager();
+
+        $target = $modelManager->find($this->admin->getClass(), $request->get('targetId'));
+
+        if( $target === null){
+            $this->addFlash('sonata_flash_info', 'flash_batch_merge_no_target');
+
+            return new RedirectResponse(
+              $this->admin->generateUrl('list', $this->admin->getFilterParameters())
+            );
+        }
+
+        $selectedModels = $selectedModelQuery->execute();
+
+        // do the merge work here
+
+        try {
+            foreach ($selectedModels as $selectedModel) {
+                $modelManager->delete($selectedModel);
+            }
+
+            $modelManager->update($selectedModel);
+        } catch (\Exception $e) {
+            $this->addFlash('sonata_flash_error', 'flash_batch_merge_error');
+
+            return new RedirectResponse(
+              $this->admin->generateUrl('list', $this->admin->getFilterParameters())
+            );
+        }
+
+        $this->addFlash('sonata_flash_success', 'flash_batch_merge_success');
+
+        return new RedirectResponse(
+          $this->admin->generateUrl('list', $this->admin->getFilterParameters())
+        );
+    }
+
 
 (Optional) Overriding the batch selection template
 --------------------------------------------------
@@ -160,70 +223,6 @@ The main purpose of this method is to alter the query or the list of selected id
         // ...
 
         $query->setParameter('foo', $bar);
-    }
-
-
-Define the core action logic
-----------------------------
-
-The method ``batchAction<MyAction>`` will be executed to process your batch in your ``CRUDController`` class. The selected
-objects are passed to this method through a query argument which can be used to retrieve them. 
-If for some reason it makes sense to perform your batch action without the default selection 
-method (for example you defined another way, at template level, to select model at a lower 
-granularity), the passed query is ``null``.
-
-.. note::
-
-    You can check how to declare your own ``CRUDController`` class in the Architecture section.
-
-.. code-block:: php
-
-    <?php
-
-    // In Acme/ProjectBundle/Controller/CRUDController.php
-
-    public function batchActionMerge(ProxyQueryInterface $selectedModelQuery)
-    {
-        if (!$this->admin->isGranted('EDIT') || !$this->admin->isGranted('DELETE')) {
-            throw new AccessDeniedException();
-        }
-
-        $request = $this->get('request');
-        $modelManager = $this->admin->getModelManager();
-
-        $target = $modelManager->find($this->admin->getClass(), $request->get('targetId'));
-
-        if( $target === null){
-            $this->addFlash('sonata_flash_info', 'flash_batch_merge_no_target');
-
-            return new RedirectResponse(
-              $this->admin->generateUrl('list', $this->admin->getFilterParameters())
-            );
-        }
-
-        $selectedModels = $selectedModelQuery->execute();
-
-        // do the merge work here
-
-        try {
-            foreach ($selectedModels as $selectedModel) {
-                $modelManager->delete($selectedModel);
-            }
-
-            $modelManager->update($selectedModel);
-        } catch (\Exception $e) {
-            $this->addFlash('sonata_flash_error', 'flash_batch_merge_error');
-
-            return new RedirectResponse(
-              $this->admin->generateUrl('list', $this->admin->getFilterParameters())
-            );
-        }
-
-        $this->addFlash('sonata_flash_success', 'flash_batch_merge_success');
-
-        return new RedirectResponse(
-          $this->admin->generateUrl('list', $this->admin->getFilterParameters())
-        );
     }
 
 .. _Symfony bundle overriding mechanism: http://symfony.com/doc/current/cookbook/bundles/inheritance.html
