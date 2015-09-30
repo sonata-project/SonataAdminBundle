@@ -22,3 +22,10 @@ If you have implemented a custom admin extension, you must adapt the signature o
 ## SonataAdminExtension
 The Twig filters that come with the bundle will no longer load a default template when used with a missing template.
 The `sonata_admin` twig extension is now final. You may no longer extend it.
+
+## Templates & Scripts
+If you extended the `base_list.html.twig` (or any child) template or the `Admin.js` file, you should replace the following attributes:
+  * `filter-container` with `data-filter-container`
+  * `filter-target` with `data-filter-target`
+  * `objectId` with `data-object-id`
+  * `sonata-filter` with `data-sonata-filter`

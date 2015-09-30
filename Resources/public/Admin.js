@@ -169,19 +169,19 @@ var Admin = {
             e.preventDefault();
             e.stopPropagation();
 
-            if (jQuery(e.target).attr('sonata-filter') == 'false') {
+            if (jQuery(e.target).data('sonata-filter') == 'false') {
                 return;
             }
 
-            Admin.log('[core|add_filters] handle filter container: ', jQuery(e.target).attr('filter-container'))
+            Admin.log('[core|add_filters] handle filter container: ', jQuery(e.target).data('filter-container'));
 
-            var filters_container = jQuery('#' + jQuery(e.currentTarget).attr('filter-container'));
+            var filters_container = jQuery('#' + jQuery(e.currentTarget).data('filter-container'));
 
-            if (jQuery('div[sonata-filter="true"]:visible', filters_container).length == 0) {
+            if (jQuery('div[data-sonata-filter="true"]:visible', filters_container).length == 0) {
                 jQuery(filters_container).slideDown();
             }
 
-            var targetSelector = jQuery(e.currentTarget).attr('filter-target'),
+            var targetSelector = jQuery(e.currentTarget).data('filter-target'),
                 target = jQuery('div[id="' + targetSelector + '"]', filters_container),
                 filterToggler = jQuery('i', '.sonata-toggle-filter[filter-target="' + targetSelector + '"]')
             ;
@@ -203,7 +203,7 @@ var Admin = {
                 target.show();
             }
 
-            if (jQuery('div[sonata-filter="true"]:visible', filters_container).length > 0) {
+            if (jQuery('div[data-sonata-filter="true"]:visible', filters_container).length > 0) {
                 jQuery(filters_container).slideDown();
             } else {
                 jQuery(filters_container).slideUp();
@@ -211,13 +211,13 @@ var Admin = {
         });
 
         jQuery('.sonata-filter-form', subject).on('submit', function () {
-            jQuery(this).find('[sonata-filter="true"]:hidden :input').val('');
+            jQuery(this).find('[data-sonata-filter="true"]:hidden :input').val('');
         });
 
         /* Advanced filters */
         if (jQuery('.advanced-filter :input:visible', subject).filter(function () { return jQuery(this).val() }).length === 0) {
             jQuery('.advanced-filter').hide();
-        };
+        }
 
         jQuery('[data-toggle="advanced-filter"]', subject).click(function() {
             jQuery('.advanced-filter').toggle();

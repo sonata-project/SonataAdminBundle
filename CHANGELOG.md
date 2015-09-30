@@ -4,9 +4,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [4.x]
 ### Added
-- Add the ``configureActionButtons`` method to the AdminInterface
-- Add the ``configureActionButtons`` method to the AdminExtensionInterface
-- Add the ``configureBatchActions`` method to the AdminExtensionInterface
+- Add the `configureActionButtons` method to the AdminInterface
+- Add the `configureActionButtons` method to the AdminExtensionInterface
+- Add the `configureBatchActions` method to the AdminExtensionInterface
 - Added the `getAccessMapping` method to the AdminExtensionInterface
 
 ### Removed
@@ -21,6 +21,7 @@ specified in a field description cannot be found was removed.
   - `sonata.admin.label.strategy.native`
   - `sonata.admin.label.strategy.noop`
   - `sonata.admin.label.strategy.underscore`
+- Replaced custom html attributes with valid `data-*` attributes
 
 ## [3.x]
 ### Added

@@ -9,7 +9,7 @@ file that was distributed with this source code.
 
 #}
 
-<span class="sonata-ba-list-field sonata-ba-list-field-{{ field_description.type }}" objectId="{{ admin.id(object) }}">
+<span class="sonata-ba-list-field sonata-ba-list-field-{{ field_description.type }}" data-object-id="{{ admin.id(object) }}">
     {% if
             field_description.options.identifier is defined
         and field_description.options.route is defined

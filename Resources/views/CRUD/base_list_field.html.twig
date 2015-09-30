@@ -9,7 +9,7 @@ file that was distributed with this source code.
 
 #}
 
-<td class="sonata-ba-list-field sonata-ba-list-field-{{ field_description.type }}" objectId="{{ admin.id(object) }}"{% if field_description.options.row_align is defined %} style="text-align:{{ field_description.options.row_align }}"{% endif %}>
+<td class="sonata-ba-list-field sonata-ba-list-field-{{ field_description.type }}" data-object-id="{{ admin.id(object) }}"{% if field_description.options.row_align is defined %} style="text-align:{{ field_description.options.row_align }}"{% endif %}>
     {% set route = field_description.options.route.name|default(null) %}
     {% set action = route == 'show' ? 'VIEW' : route|upper %}
 
