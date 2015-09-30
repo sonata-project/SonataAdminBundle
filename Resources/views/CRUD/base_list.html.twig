@@ -156,7 +156,7 @@ file that was distributed with this source code.
 
 
                                 <div class="pull-right">
-                                    {% if admin.hasRoute('export') and admin.isGranted("EXPORT") and admin.getExportFormats()|length %}
+                                    {% if admin.hasRoute('export') and admin.isGranted('EXPORT') and admin.getExportFormats()|length %}
                                         <div class="btn-group">
                                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                                                 <i class="fa fa-share-square-o"></i>
@@ -171,7 +171,7 @@ file that was distributed with this source code.
                                                         {{ ("export_format_" ~ format)|trans({}, 'SonataAdminBundle') }}
                                                     </a>
                                                 <li>
-                                                    {% endfor %}
+                                                {% endfor %}
                                             </ul>
                                         </div>
 
