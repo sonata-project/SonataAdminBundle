@@ -65,6 +65,7 @@ class SearchHandler
         $pager = $datagrid->getPager();
         $pager->setPage($page);
         $pager->setMaxPerPage($offset);
+        $pager->init();
 
         return $pager;
     }
