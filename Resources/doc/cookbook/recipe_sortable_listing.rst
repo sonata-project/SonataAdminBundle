@@ -38,28 +38,28 @@ First of all we are going to add a position field in our ``Client`` entity.
      */
     private $position;
 
-Then we need to inject the Sortable listener. If you only have the Gedmo bundle enabled,
-add the listener to your config.yml
-
-.. code-block:: yaml
-
-	services:
-    	    gedmo.listener.sortable:
-                class: Gedmo\Sortable\SortableListener
-            tags:
-                - { name: doctrine.event_subscriber, connection: default }
-            calls:
-                - [ setAnnotationReader, [ @annotation_reader ] ]
-
 If you have the ``stof/doctrine-extensions-bundle``, you only need to enable the sortable
 feature in your config.yml such as
 
 .. code-block:: yaml
 
-	stof_doctrine_extensions:
-	    orm:
-                default:
-                    sortable:      true
+    stof_doctrine_extensions:
+        orm:
+            default:
+                sortable: true
+
+oterwise, if you only have the Gedmo bundle enabled, you have to inject the SortableListener by your own and add the listener to your config.yml
+
+.. code-block:: yaml
+
+    services:
+        gedmo.listener.sortable:
+            class: Gedmo\Sortable\SortableListener
+            tags:
+                - { name: doctrine.event_subscriber, connection: default }
+            calls:
+                - [ setAnnotationReader, [ @annotation_reader ] ]
+
 
 
 In ``ClientAdmin`` our we are going to add in the ``configureListFields`` method
