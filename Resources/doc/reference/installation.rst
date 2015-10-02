@@ -155,9 +155,15 @@ If, at this point or during the installation, you come across any errors, don't 
 
     -  Read the error message carefully. Try to find out exactly which bundle is causing the error. Is it SonataAdminBundle or one of the dependencies?
     - Make sure you followed all the instructions correctly, for both SonataAdminBundle and its dependencies
-    - Odds are that someone already had the same problem, and it's documented somewhere. Check `Google <http://www.google.com>`_, `Sonata Users Group <https://groups.google.com/group/sonata-users>`_, `Symfony2 Users Group <https://groups.google.com/group/symfony2>`_ and `Symfony Forum <forum.symfony-project.org>`_ to see if you can find a solution.
+    - Odds are that someone already had the same problem, and it's documented somewhere. Check Google_, `Sonata Users Group`_, `Symfony2 Users Group`_ and `Symfony Forum`_ to see if you can find a solution.
     - Still no luck? Try checking the project's open issues on GitHub.
 
 After you have successfully installed the above bundles you need to configure
 SonataAdminBundle for administering your models. All that is needed to quickly
 set up SonataAdminBundle is described in the :doc:`getting_started` chapter.
+
+.. _Google: http://www.google.com
+.. _Sonata Users Group: https://groups.google.com/group/sonata-users
+.. _Symfony2 Users Group: https://groups.google.com/group/symfony2
+.. _Symfony Forum: http://forum.symfony-project.org
+

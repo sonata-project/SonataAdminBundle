@@ -166,7 +166,7 @@ Create either a new ``admin.xml`` or ``admin.yml`` file inside the ``AppBundle/R
                 calls:
                     - [ setTranslationDomain, [AppBundle]]
 
-Example above assumes that you're using ``SonataDoctrineORMAdminBundle``.
+The example above assumes that you're using ``SonataDoctrineORMAdminBundle``.
 If you're using ``SonataDoctrineMongoDBAdminBundle``, ``SonataPropelAdminBundle`` or ``SonataDoctrinePhpcrAdminBundle`` instead, set ``manager_type`` option to ``doctrine_mongodb``, ``propel`` or ``doctrine_phpcr`` respectively.
 
 The basic configuration of an Admin service is quite simple. It creates a service
@@ -181,7 +181,7 @@ values will work for most scenarios.
 
 The ``setTranslationDomain`` call lets you choose which translation domain to use when
 translating labels on the admin pages. If you don't call ``setTranslationDomain``, SonataAdmin uses ``messages`` as translation domain.
-More info on the `symfony translations page`_.
+More info on the `Symfony translations page`_.
 
 Now that you have a configuration file with your admin service, you just need to tell
 Symfony2 to load it. There are two ways to do so:
@@ -189,7 +189,7 @@ Symfony2 to load it. There are two ways to do so:
 1 - Have your bundle load it
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Inside your bundle's extension file, using the ``load()`` method as described in the `symfony cookbook`_.
+Inside your bundle's extension file, using the ``load()`` method as described in the `Symfony cookbook`_.
 
 For ``admin.xml`` use:
 
@@ -215,7 +215,7 @@ For ``admin.xml`` use:
             }
         }
 
-and for ``admin.ym``:
+and for ``admin.yml``:
 
     .. code-block:: php
 
@@ -303,5 +303,5 @@ additional models or explore advanced functionalities. The following sections wi
 each address a specific section or functionality of the bundle, giving deeper
 details on what can be configured and achieved with SonataAdminBundle.
 
-.. _`symfony cookbook`: http://symfony.com/doc/master/cookbook/bundles/extension.html#using-the-load-method
-.. _`symfony translations page`: http://symfony.com/doc/current/book/translation.html#using-message-domains
+.. _`Symfony cookbook`: http://symfony.com/doc/master/cookbook/bundles/extension.html#using-the-load-method
+.. _`Symfony translations page`: http://symfony.com/doc/current/book/translation.html#using-message-domains
