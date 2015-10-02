@@ -635,7 +635,7 @@ In the templates, or in your code, you can use the Admin method ``isGranted()``:
     {# use the admin security method  #}
     {% if admin.isGranted('EDIT') %} {# ... #} {% endif %}
 
-    {# or use the default is_granted symfony helper, the following will give the same result #}
+    {# or use the default is_granted Symfony helper, the following will give the same result #}
     {% if is_granted('ROLE_SUPER_ADMIN') or is_granted('EDIT', admin) %} {# ... #} {% endif %}
 
 - check for an admin that the user is allowed to ``DELETE``, the object is added
@@ -646,7 +646,7 @@ In the templates, or in your code, you can use the Admin method ``isGranted()``:
     {# use the admin security method  #}
     {% if admin.isGranted('DELETE', object) %} {# ... #} {% endif %}
 
-    {# or use the default is_granted symfony helper, the following will give the same result #}
+    {# or use the default is_granted Symfony helper, the following will give the same result #}
     {% if is_granted('ROLE_SUPER_ADMIN') or is_granted('DELETE', object) %} {# ... #} {% endif %}
 
 List filtering
@@ -703,7 +703,7 @@ Role list customization
 By default, the ACL editor allows to set permissions for all roles.
 
 To customize displayed role override
-`Sonata\AdminBundle\Controller\CRUDController::getAclRoles()`. This method must
+``Sonata\AdminBundle\Controller\CRUDController::getAclRoles()``. This method must
 return an iterable collection of roles.
 
 .. code-block:: php
@@ -722,7 +722,7 @@ Custom user manager
 If your project does not use `FOSUserBundle`, you can globally configure another
 service to use when retrieving your users.
 
-- Create a service with a method called `findUsers()` returning an iterable
+- Create a service with a method called ``findUsers()`` returning an iterable
   collection of users
 - Update your admin configuration to reference your service name
 

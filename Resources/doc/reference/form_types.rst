@@ -461,7 +461,7 @@ Setting the 'required' option to false causes all nested form fields to become n
 sonata_type_native_collection (previously collection)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This bundle handle the native symfony ``collection`` form type by adding:
+This bundle handle the native Symfony ``collection`` form type by adding:
 
 * an ``add`` button if you set the ``allow_add`` option to ``true``.
 * a ``delete`` button if you set the ``allow_delete`` option to ``true``.

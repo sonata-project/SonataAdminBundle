@@ -41,7 +41,7 @@ Customizing the fields displayed on the list page
 -------------------------------------------------
 
 You can customize the columns displayed on the list through the ``configureListFields`` method.
-Here is an Example from Sonata E-Commerce Product Admin:
+Here is an example from Sonata E-Commerce Product Admin:
 
 .. code-block:: php
 
