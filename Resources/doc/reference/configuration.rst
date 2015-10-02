@@ -12,11 +12,20 @@ Configuration
 
 Configuration options
 
-* ``security``
-    * ``handler``
-        * ``sonata.admin.security.handler.role`` : The default value
-        * ``sonata.admin.security.handler.acl`` : Use this service if you want ACL
+.. configuration-block::
 
+    .. code-block:: yaml
+
+        # app/config/config.yml
+
+        sonata_admin:
+            security:
+
+                # the default value
+                handler: sonata.admin.security.handler.role
+
+                # use this service if you want ACL
+                handler: sonata.admin.security.handler.acl
 
 Full Configuration Options
 --------------------------

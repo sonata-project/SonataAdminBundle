@@ -329,14 +329,15 @@ Supported positions right now are the following:
 
 The layout is as follows:
 
-TOP     TOP     TOP
+.. code-block:: bash
 
- LEFT CENTER RIGHT
- LEFT CENTER RIGHT
- LEFT CENTER RIGHT
+    TOP     TOP     TOP
 
-BOTTOM BOTTOM BOTTOM
+     LEFT CENTER RIGHT
+     LEFT CENTER RIGHT
+     LEFT CENTER RIGHT
 
+    BOTTOM BOTTOM BOTTOM
 
 On ``top`` and ``bottom`` positions, you can also specify an optionnal ``class`` option to set the width of the block.
 

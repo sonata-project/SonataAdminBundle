@@ -82,7 +82,7 @@ Choice
         ;
     }
 
-The ``choice`` field type also supports multiple values that can be separated by a ``delimiter``. The default delimiter is a comma ``,``.
+The ``choice`` field type also supports multiple values that can be separated by a ``delimiter``.
 
 .. code-block:: php
 
@@ -102,22 +102,29 @@ The ``choice`` field type also supports multiple values that can be separated by
         ;
     }
 
-Url
+.. note::
+
+    The default delimiter is a comma ``,``.
+
+URL
 ^^^
 
 Display URL link to external website or controller action.
 
-Parameters:
+You can use the following parameters:
 
-* **hide_protocol**: remove protocol part from the link text
-* **url**: URL address (e.g. ``http://example.com``)
-* **route.name**: route name (e.g. ``acme_blog_homepage``)
-* **route.parameters**: array of route parameters (e.g. ``array('type' => 'example', 'display' => 'full')``)
-* **route.absolute**: boolean value, create absolute or relative url address based on ``route.name`` and  ``route.parameters`` (default ``false``)
-* **route.identifier_parameter_name**: parameter added to ``route.parameters``, its value is an object identifier (e.g. 'id') to create dynamic links based on rendered objects.
+======================================  ==================================================================
+Parameter                               Description
+======================================  ==================================================================
+**hide_protocol**                       remove protocol part from the link text
+**url**                                 URL address (e.g. ``http://example.com``)
+**route.name**                          route name (e.g. ``acme_blog_homepage``)
+**route.parameters**                    array of route parameters (e.g. ``array('type' => 'example', 'display' => 'full')``)
+**route.absolute**                      boolean value, create absolute or relative url address based on ``route.name`` and  ``route.parameters`` (default ``false``)
+**route.identifier_parameter_name**     parameter added to ``route.parameters``, its value is an object identifier (e.g. 'id') to create dynamic links based on rendered objects.
+======================================  ==================================================================
 
 .. code-block:: php
-
 
     public function configureListFields(ListMapper $listMapper)
     {
@@ -162,21 +169,24 @@ Parameters:
 
 .. note::
 
-    Do not use ``url`` type with ``addIdentifier`` method, because it will create invalid nested URLs.
+    Do not use ``url`` type with ``addIdentifier()`` method, because it will create invalid nested URLs.
 
-Html
+HTML
 ^^^^
 
 Display (and optionally truncate or strip tags from) raw html.
 
+You can use the following parameters:
 
-Parameters:
-
-* **strip**: Strip HTML and PHP tags from a string
-* **truncate**: Truncate a string to ``length`` characters beginning from start. Implies strip. Beware of html entities. Make sure to configure your html editor to disable entities if you want to use truncate. For instance, use `config.entities <http://docs.ckeditor.com/#!/api/CKEDITOR.config-cfg-entities>`_ for ckeditor
-* **truncate.length**: The length to truncate the string to (default ``30``)
-* **truncate.preserve**: Preserve whole words (default ``false``)
-* **truncate.separator**: Separator to be appended to the trimmed string (default ``...``)
+========================    ==================================================================
+Parameter                   Description
+========================    ==================================================================
+**strip**                   Strip HTML and PHP tags from a string
+**truncate**                Truncate a string to ``length`` characters beginning from start. Implies strip. Beware of HTML entities. Make sure to configure your HTML editor to disable entities if you want to use truncate. For instance, use `config.entities <http://docs.ckeditor.com/#!/api/CKEDITOR.config-cfg-entities>`_ for ckeditor
+**truncate.length**         The length to truncate the string to (default ``30``)
+**truncate.preserve**       Preserve whole words (default ``false``)
+**truncate.separator**      Separator to be appended to the trimmed string (default ``...``)
+========================    ==================================================================
 
 .. code-block:: php
 

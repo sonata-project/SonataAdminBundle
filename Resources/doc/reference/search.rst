@@ -5,7 +5,6 @@ The admin comes with a basic global search available in the upper navigation men
 and look for filter with the option ``global_search`` set to true. If you are using the ``SonataDoctrineORMBundle``
 any text filter will be set to ``true`` by default.
 
-
 Customization
 -------------
 
@@ -60,4 +59,7 @@ Performance
 -----------
 
 The current implementation can be expensive if you have a lot of entities as the resulting query does a ``LIKE %query% OR LIKE %query%``...
-There is a work in progress to use an async javascript solution to better load data from the database.
+
+.. note::
+
+    There is a work in progress to use an async JavaScript solution to better load data from the database.

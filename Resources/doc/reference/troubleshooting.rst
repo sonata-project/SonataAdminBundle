@@ -11,11 +11,20 @@ For example, if your method looks like that :
 
 .. code-block:: php
 
-    public function __toString()
-    {
-        return $this->getTitle();
-    }
+    <?php
+    // src/AppBundle/Entity/Post.php
 
+    class Post
+    {
+        // ...
+
+        public function __toString()
+        {
+            return $this->getTitle();
+        }
+
+        // ...
+    }
 
 You cannot be sure your object will *always* have a title when the bundle will want to convert it to a string.
 So in order to avoid any fatal error, you must return an empty string
@@ -23,14 +32,23 @@ So in order to avoid any fatal error, you must return an empty string
 
 .. code-block:: php
 
-    public function __toString()
+    <?php
+    // src/AppBundle/Entity/Post.php
+
+    class Post
     {
-        return $this->getTitle() ?: '';
+        // ...
+
+        public function __toString()
+        {
+            return $this->getTitle() ?: '';
+        }
+
+        // ...
     }
 
 
 .. _`__toString`: http://www.php.net/manual/en/language.oop5.magic.php#object.tostring
-
 
 Large filters and long URLs problem
 -----------------------------------
@@ -50,6 +68,7 @@ You can fix this issue by adding a simple JQuery piece of code on your edit temp
                 $(this).addClass('had-value-on-load');
             }
         });
+
         // REMOVE ALL EMPTY INPUT FROM FILTER FORM (except inputs, which has class 'had-value-on-load')
         $(".sonata-filter-form").submit(function() {
             $(".sonata-filter-form input").add(".sonata-filter-form select").each(function(){
@@ -59,5 +78,3 @@ You can fix this issue by adding a simple JQuery piece of code on your edit temp
             });
         });
     });
-
-

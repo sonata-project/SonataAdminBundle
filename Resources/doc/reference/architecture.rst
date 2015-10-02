@@ -26,8 +26,9 @@ list                The fields displayed in the list table
 filter              The fields available for filtering the list
 form                The fields used to create/edit the entity
 show                The fields used to show the entity
-Batch actions       Actions that can be performed on a group of entities (e.g. bulk delete)
+batch actions       Actions that can be performed on a group of entities (e.g. bulk delete)
 =============       =========================================================================
+
 
 The ``Sonata\AdminBundle\Admin\Admin`` class is provided as an easy way to
 map your models, by extending it. However, any implementation of the
@@ -62,7 +63,7 @@ MenuFactory                     generates the side menu, depending on the curren
 
 
 All of these dependencies have default values that you can override when declaring any of
-your ``Admin`` services. This is done using a ``call`` to the matching "setter":
+your ``Admin`` services. This is done using a ``call`` to the matching ``setter`` :
 
 .. configuration-block::
 
@@ -175,7 +176,7 @@ which stores instances of ``FieldDescriptionInterface``. Picking up on our previ
 .. code-block:: php
 
     <?php
-    // src/AppBundle/ADmin/PostAdmin.php
+    // src/AppBundle/Admin/PostAdmin.php
 
     namespace AppBundle\Admin;
 
@@ -197,7 +198,11 @@ which stores instances of ``FieldDescriptionInterface``. Picking up on our previ
                 ->add('author', 'entity', array(
                     'class' => 'AppBundle\Entity\User'
                 ))
-                ->add('body') //if no type is specified, SonataAdminBundle tries to guess it
+
+                // if no type is specified, SonataAdminBundle tries to guess it
+                ->add('body')
+
+                // ...
             ;
         }
 
@@ -315,16 +320,18 @@ where the comments will automatically be filtered by post.
 
 To do this, you first need to call the ``addChild`` method in your PostAdmin service configuration :
 
-.. code-block:: xml
+.. configuration-block::
 
-    <!-- app/config/config.xml -->
-    <service id="sonata.news.admin.post" class="Sonata\NewsBundle\Admin\PostAdmin">
-        ...
+    .. code-block:: xml
 
-        <call method="addChild">
-            <argument type="service" id="sonata.news.admin.comment" />
-        </call>
-    </service>
+        <!-- app/config/config.xml -->
+        <service id="sonata.news.admin.post" class="Sonata\NewsBundle\Admin\PostAdmin">
+            <!-- ... -->
+
+            <call method="addChild">
+                <argument type="service" id="sonata.news.admin.comment" />
+            </call>
+        </service>
 
 Then, you have to set the CommentAdmin ``parentAssociationMapping`` attribute to ``post`` :
 
