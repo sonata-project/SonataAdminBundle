@@ -28,7 +28,6 @@ changed to use the one provided by the ``SonataUserBundle``.
 The install process is available on the dedicated
 `SonataUserBundle's documentation area`_.
 
-
 Security handlers
 -----------------
 
@@ -61,6 +60,7 @@ Using roles:
     .. code-block:: yaml
 
         # app/config/config.yml
+
         sonata_admin:
             security:
                 handler: sonata.admin.security.handler.role
@@ -72,23 +72,26 @@ Using ACL:
     .. code-block:: yaml
 
         # app/config/config.yml
+
         sonata_admin:
             security:
                 handler: sonata.admin.security.handler.acl
+
                 # acl security information
                 information:
                     GUEST:    [VIEW, LIST]
                     STAFF:    [EDIT, LIST, CREATE]
                     EDITOR:   [OPERATOR, EXPORT]
                     ADMIN:    [MASTER]
+
                 # permissions not related to an object instance and also to be available when objects do not exist
                 # the DELETE admin permission means the user is allowed to batch delete objects
                 admin_permissions: [CREATE, LIST, DELETE, UNDELETE, EXPORT, OPERATOR, MASTER]
+
                 # permission related to the objects
                 object_permissions: [VIEW, EDIT, DELETE, UNDELETE, OPERATOR, MASTER, OWNER]
 
-Later, we will explain how to set up ACL with the
-``FriendsOfSymfony/UserBundle``.
+Later, we will explain how to set up ACL with the ``FriendsOfSymfony/UserBundle``.
 
 Role handler
 ------------
@@ -106,15 +109,19 @@ either a super admin (``ROLE_SUPER_ADMIN``) **or** has the permission.
 
 The permissions are:
 
-* LIST: view the list of objects
-* VIEW: view the detail of one object
-* CREATE: create a new object
-* EDIT: update an existing object
-* DELETE: delete an existing object
-* EXPORT (for the native Sonata export links)
+==========   ========================================
+Permission   Description
+==========   ========================================
+LIST         view the list of objects
+VIEW         view the detail of one object
+CREATE       create a new object
+EDIT         update an existing object
+DELETE       delete an existing object
+EXPORT       (for the native Sonata export links)
+==========   ========================================
 
-Each permission is relative to an admin: if you try to get a list in FooAdmin (declared as ``sonata.admin.demo.foo``
-service), Sonata will check if the user has the ``ROLE_SONATA_ADMIN_DEMO_FOO_EDIT`` role.
+Each permission is relative to an admin: if you try to get a list in FooAdmin (declared as ``app.admin.foo``
+service), Sonata will check if the user has the ``ROLE_APP_ADMIN_FOO_EDIT`` role.
 
 The role name will be based on the name of your admin service. For instance, `acme.blog.post.admin` will become `ROLE_ACME_BLOG_POST_ADMIN_{ACTION}`.
 
@@ -125,9 +132,11 @@ So our ``security.yml`` file may look to something like this:
     .. code-block:: yaml
 
         # app/config/security.yml
+
         security:
-            ...
+            # ...
             role_hierarchy:
+
                 # for convenience, I decided to gather Sonata roles here
                 ROLE_SONATA_FOO_READER:
                     - ROLE_SONATA_ADMIN_DEMO_FOO_LIST
@@ -138,6 +147,7 @@ So our ``security.yml`` file may look to something like this:
                 ROLE_SONATA_FOO_ADMIN:
                     - ROLE_SONATA_ADMIN_DEMO_FOO_DELETE
                     - ROLE_SONATA_ADMIN_DEMO_FOO_EXPORT
+
                 # those are the roles I will use (less verbose)
                 ROLE_STAFF:             [ROLE_USER, ROLE_SONATA_FOO_READER]
                 ROLE_ADMIN:             [ROLE_STAFF, ROLE_SONATA_FOO_EDITOR, ROLE_SONATA_FOO_ADMIN]
@@ -159,25 +169,25 @@ You can now test if a user is authorized from an Admin class:
 
 .. code-block:: php
 
-        if ($this->isGranted('LIST')) {
-            ...
-        }
+    if ($this->isGranted('LIST')) {
+        ...
+    }
 
 From a controller extending ``Sonata\AdminBundle\Controller\CRUDController``:
 
 .. code-block:: php
 
-        if ($this->admin->isGranted('LIST')) {
-            ...
-        }
+    if ($this->admin->isGranted('LIST')) {
+        ...
+    }
 
 Or from a Twig template:
 
 .. code-block:: jinja
 
-        {% if is_granted('VIEW') %}
-            <p>Hello there!</p>
-        {% endif %}
+    {% if is_granted('VIEW') %}
+        <p>Hello there!</p>
+    {% endif %}
 
 Note that you do not have to re-specify the prefix.
 
@@ -185,7 +195,7 @@ Sonata checks those permissions for the action it handles internally.
 Of course you will have to recheck them in your own code.
 
 Yon can also create your own permissions, for example ``EMAIL``
-(which will turn into role ``ROLE_SONATA_ADMIN_DEMO_FOO_EMAIL``).
+(which will turn into role ``ROLE_APP_ADMIN_FOO_EMAIL``).
 
 Going further
 ~~~~~~~~~~~~~
@@ -205,17 +215,13 @@ Then declare your handler as a service:
 
     .. code-block:: xml
 
-        <parameters>
-            <parameter key="acme.demo.security.handler.role.class" >Acme\DemoBundle\Security\Handler\RoleSecurityHandler</parameter>
-        </parameters>
         <services>
-            <service id="acme.demo.security.handler.role" class="%acme.demo.security.handler.role.class%" public="false">
+            <service id="aapp.security.handler.role" class="AppBundle\Security\Handler\RoleSecurityHandler" public="false">
                 <argument type="service" id="security.context" on-invalid="null" />
                 <argument type="collection">
                     <argument>ROLE_SUPER_ADMIN</argument>
                 </argument>
             </service>
-        ...
 
 And specify it as Sonata security handler on your configuration:
 
@@ -224,9 +230,10 @@ And specify it as Sonata security handler on your configuration:
     .. code-block:: yaml
 
         # app/config/config.yml
+
         sonata_admin:
             security:
-                handler: acme.demo.security.handler.role
+                handler: app.security.handler.role
 
 ACL and FriendsOfSymfony/UserBundle
 -----------------------------------
@@ -254,8 +261,9 @@ User class (in a custom UserBundle). Do it as follows:
 .. code-block:: php
 
     <?php
+    // src/AppBundle/Entity/User.php
 
-    namespace Acme\UserBundle\Entity;
+    namespace AppBundle\Entity;
 
     use Sonata\UserBundle\Entity\BaseUser as BaseUser;
     use Doctrine\ORM\Mapping as ORM;
@@ -286,10 +294,12 @@ In your ``app/config/config.yml`` you then need to put the following:
 
     .. code-block:: yaml
 
+        # app/config/config.yml
+
         fos_user:
             db_driver: orm
             firewall_name: main
-            user_class: Acme\UserBundle\Entity\User
+            user_class: AppBundle\Entity\User
 
 The following configuration for the SonataUserBundle defines:
 
@@ -304,11 +314,14 @@ The following configuration for the SonataUserBundle defines:
 
     .. code-block:: yaml
 
-        # src/Acme/MyBundle/Resources/config/services.yml
+        # src/AppBundle/Resources/config/services.yml
 
         parameters:
-            # ... other parameters
+
+            # ...
+
             security.acl.permission.map.class: Sonata\AdminBundle\Security\Acl\Permission\AdminPermissionMap
+
             # optionally use a custom MaskBuilder
             #sonata.admin.security.mask.builder.class: Sonata\AdminBundle\Security\Acl\Permission\MaskBuilder
 
@@ -319,6 +332,7 @@ In ``app/config/security.yml``:
     .. code-block:: yaml
 
         # app/config/security.yml
+
         security:
             providers:
                 fos_userbundle:
@@ -337,6 +351,7 @@ In ``app/config/security.yml``:
                     anonymous:    true
 
             access_control:
+
                 # The WDT has to be allowed to anonymous users to avoid requiring the login with the AJAX request
                 - { path: ^/wdt/, role: IS_AUTHENTICATED_ANONYMOUSLY }
                 - { path: ^/profiler/, role: IS_AUTHENTICATED_ANONYMOUSLY }
@@ -363,7 +378,6 @@ In ``app/config/security.yml``:
                 - { path: ^/admin/, role: ROLE_ADMIN }
                 - { path: ^/.*, role: IS_AUTHENTICATED_ANONYMOUSLY }
 
-
             role_hierarchy:
                 ROLE_ADMIN:       [ROLE_USER, ROLE_SONATA_ADMIN]
                 ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
@@ -375,9 +389,9 @@ In ``app/config/security.yml``:
 
 - Create a new root user:
 
-.. code-block:: sh
+.. code-block:: bash
 
-    # php app/console fos:user:create --super-admin
+    $ php app/console fos:user:create --super-admin
         Please choose a username:root
         Please choose an email:root@domain.com
         Please choose a password:root
@@ -385,9 +399,9 @@ In ``app/config/security.yml``:
 
 If you have Admin classes, you can install or update the related CRUD ACL rules:
 
-.. code-block:: sh
+.. code-block:: bash
 
-    # php app/console sonata:admin:setup-acl
+    $ php app/console sonata:admin:setup-acl
     Starting ACL AdminBundle configuration
     > install ACL for sonata.media.admin.media
        - add role: ROLE_SONATA_MEDIA_ADMIN_MEDIA_GUEST, permissions: ["VIEW","LIST"]
@@ -396,11 +410,10 @@ If you have Admin classes, you can install or update the related CRUD ACL rules:
        - add role: ROLE_SONATA_MEDIA_ADMIN_MEDIA_ADMIN, permissions: ["MASTER"]
     ... skipped ...
 
-
 If you already have objects, you can generate the object ACL rules for each
 object of an admin:
 
-.. code-block:: sh
+.. code-block:: bash
 
     $ php app/console sonata:admin:generate-object-acl
 
@@ -474,7 +487,6 @@ See the cookbook article "`Advanced ACL concepts
 <http://symfony.com/doc/current/cookbook/security/acl_advanced.html#pre-authorization-decisions.>`_"
 for the meaning of the different permissions.
 
-
 How is access granted?
 ~~~~~~~~~~~~~~~~~~~~~~
 
@@ -505,56 +517,54 @@ because for example you want to restrict access using extra rules:
 
 - create a custom voter class that extends the ``AclVoter``
 
-  .. code-block:: php
+.. code-block:: php
 
-      <?php
+    <?php
+    // src/AppBundle/Security/Authorization/Voter/UserAclVoter.php
 
-      namespace Acme\DemoBundle\Security\Authorization\Voter;
+    namespace AppBundle\Security\Authorization\Voter;
 
-      use FOS\UserBundle\Model\UserInterface;
-      use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-      use Symfony\Component\Security\Acl\Voter\AclVoter;
+    use FOS\UserBundle\Model\UserInterface;
+    use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+    use Symfony\Component\Security\Acl\Voter\AclVoter;
 
-      class UserAclVoter extends AclVoter
-      {
-          /**
-          * {@InheritDoc}
-          */
-          public function supportsClass($class)
-          {
-              // support the Class-Scope ACL for votes with the custom permission map
-              // return $class === 'Sonata\UserBundle\Admin\Entity\UserAdmin' || $is_subclass_of($class, 'FOS\UserBundle\Model\UserInterface');
-              // if you use php >=5.3.7 you can check the inheritance with is_a($class, 'Sonata\UserBundle\Admin\Entity\UserAdmin');
-              // support the Object-Scope ACL
-              return is_subclass_of($class, 'FOS\UserBundle\Model\UserInterface');
-          }
+    class UserAclVoter extends AclVoter
+    {
+        public function supportsClass($class)
+        {
+            // support the Class-Scope ACL for votes with the custom permission map
+            // return $class === 'Sonata\UserBundle\Admin\Entity\UserAdmin' || $is_subclass_of($class, 'FOS\UserBundle\Model\UserInterface');
+            // if you use php >=5.3.7 you can check the inheritance with is_a($class, 'Sonata\UserBundle\Admin\Entity\UserAdmin');
+            // support the Object-Scope ACL
+            return is_subclass_of($class, 'FOS\UserBundle\Model\UserInterface');
+        }
 
-          public function supportsAttribute($attribute)
-          {
-              return $attribute === 'EDIT' || $attribute === 'DELETE';
-          }
+        public function supportsAttribute($attribute)
+        {
+            return $attribute === 'EDIT' || $attribute === 'DELETE';
+        }
 
-          public function vote(TokenInterface $token, $object, array $attributes)
-          {
-              if (!$this->supportsClass(get_class($object))) {
-                  return self::ACCESS_ABSTAIN;
-              }
+        public function vote(TokenInterface $token, $object, array $attributes)
+        {
+            if (!$this->supportsClass(get_class($object))) {
+                return self::ACCESS_ABSTAIN;
+            }
 
-              foreach ($attributes as $attribute) {
-                  if ($this->supportsAttribute($attribute) && $object instanceof UserInterface) {
-                      if ($object->isSuperAdmin() && !$token->getUser()->isSuperAdmin()) {
-                          // deny a non super admin user to edit a super admin user
-                          return self::ACCESS_DENIED;
-                      }
-                  }
-              }
+            foreach ($attributes as $attribute) {
+                if ($this->supportsAttribute($attribute) && $object instanceof UserInterface) {
+                    if ($object->isSuperAdmin() && !$token->getUser()->isSuperAdmin()) {
+                        // deny a non super admin user to edit a super admin user
+                        return self::ACCESS_DENIED;
+                    }
+                }
+            }
 
-              // use the parent vote with the custom permission map:
-              // return parent::vote($token, $object, $attributes);
-              // otherwise leave the permission voting to the AclVoter that is using the default permission map
-              return self::ACCESS_ABSTAIN;
-          }
-      }
+            // use the parent vote with the custom permission map:
+            // return parent::vote($token, $object, $attributes);
+            // otherwise leave the permission voting to the AclVoter that is using the default permission map
+            return self::ACCESS_ABSTAIN;
+        }
+    }
 
 - optionally create a custom permission map, copy to start the
   ``Sonata\AdminBundle\Security\Acl\Permission\AdminPermissionMap.php`` to
@@ -562,50 +572,45 @@ because for example you want to restrict access using extra rules:
 
 - declare the voter and permission map as a service
 
-    .. configuration-block::
+.. configuration-block::
 
-      .. code-block:: xml
+    .. code-block:: xml
 
-          <!-- src/Acme/DemoBundle/Resources/config/services.xml -->
+        <!-- src/AppBundle/Resources/config/services.xml -->
 
-          <parameters>
-              <parameter key="security.acl.user_voter.class">Acme\DemoBundle\Security\Authorization\Voter\UserAclVoter</parameter>
-              <!-- <parameter key="security.acl.user_permission.map.class">Acme\DemoBundle\Security\Acl\Permission\UserAdminPermissionMap</parameter> -->
-          </parameters>
+        <!-- <service id="security.acl.user_permission.map" class="AppBundle\Security\Acl\Permission\UserAdminPermissionMap" public="false"></service> -->
 
-          <services>
-              <!-- <service id="security.acl.user_permission.map" class="%security.acl.permission.map.class%" public="false"></service> -->
-
-              <service id="security.acl.voter.user_permissions" class="%security.acl.user_voter.class%" public="false">
-                  <tag name="monolog.logger" channel="security" />
-                  <argument type="service" id="security.acl.provider" />
-                  <argument type="service" id="security.acl.object_identity_retrieval_strategy" />
-                  <argument type="service" id="security.acl.security_identity_retrieval_strategy" />
-                  <argument type="service" id="security.acl.permission.map" />
-                  <argument type="service" id="logger" on-invalid="null" />
-                  <tag name="security.voter" priority="255" />
-              </service>
-          </services>
+        <service id="security.acl.voter.user_permissions" class="AppBundle\Security\Authorization\Voter\UserAclVoter" public="false">
+            <tag name="monolog.logger" channel="security" />
+            <argument type="service" id="security.acl.provider" />
+            <argument type="service" id="security.acl.object_identity_retrieval_strategy" />
+            <argument type="service" id="security.acl.security_identity_retrieval_strategy" />
+            <argument type="service" id="security.acl.permission.map" />
+            <argument type="service" id="logger" on-invalid="null" />
+            <tag name="security.voter" priority="255" />
+        </service>
 
 - change the access decision strategy to ``unanimous``
 
-    .. configuration-block::
+.. configuration-block::
 
-      .. code-block:: yaml
+    .. code-block:: yaml
 
-          # app/config/security.yml
-          security:
-              access_decision_manager:
-                  # Strategy can be: affirmative, unanimous or consensus
-                  strategy: unanimous
+        # app/config/security.yml
+
+        security:
+            access_decision_manager:
+
+                # Strategy can be: affirmative, unanimous or consensus
+                strategy: unanimous
 
 - to make this work the permission needs to be checked using the Object ACL
 
   - modify the template (or code) where applicable:
 
-    .. code-block:: html+jinja
+.. code-block:: html+jinja
 
-        {% if admin.isGranted('EDIT', user_object) %} {# ... #} {% endif %}
+    {% if admin.isGranted('EDIT', user_object) %} {# ... #} {% endif %}
 
   - because the object ACL permission is checked, the ACL for the object must
     have been created, otherwise the ``AclVoter`` will deny ``EDIT`` access
@@ -625,24 +630,24 @@ In the templates, or in your code, you can use the Admin method ``isGranted()``:
 
 - check for an admin that the user is allowed to ``EDIT``:
 
-  .. code-block:: html+jinja
+.. code-block:: html+jinja
 
-      {# use the admin security method  #}
-      {% if admin.isGranted('EDIT') %} {# ... #} {% endif %}
+    {# use the admin security method  #}
+    {% if admin.isGranted('EDIT') %} {# ... #} {% endif %}
 
-      {# or use the default is_granted symfony helper, the following will give the same result #}
-      {% if is_granted('ROLE_SUPER_ADMIN') or is_granted('EDIT', admin) %} {# ... #} {% endif %}
+    {# or use the default is_granted symfony helper, the following will give the same result #}
+    {% if is_granted('ROLE_SUPER_ADMIN') or is_granted('EDIT', admin) %} {# ... #} {% endif %}
 
 - check for an admin that the user is allowed to ``DELETE``, the object is added
   to also check if the object owner is allowed to ``DELETE``:
 
-  .. code-block:: html+jinja
+.. code-block:: html+jinja
 
-      {# use the admin security method  #}
-      {% if admin.isGranted('DELETE', object) %} {# ... #} {% endif %}
+    {# use the admin security method  #}
+    {% if admin.isGranted('DELETE', object) %} {# ... #} {% endif %}
 
-      {# or use the default is_granted symfony helper, the following will give the same result #}
-      {% if is_granted('ROLE_SUPER_ADMIN') or is_granted('DELETE', object) %} {# ... #} {% endif %}
+    {# or use the default is_granted symfony helper, the following will give the same result #}
+    {% if is_granted('ROLE_SUPER_ADMIN') or is_granted('DELETE', object) %} {# ... #} {% endif %}
 
 List filtering
 ~~~~~~~~~~~~~~
@@ -681,9 +686,6 @@ return an iterable collection of users.
 
 .. code-block:: php
 
-    /**
-     * {@InheritDoc}
-     */
     protected function getAclUsers()
     {
         $userManager = $container->get('fos_user.user_manager');
@@ -706,9 +708,6 @@ return an iterable collection of roles.
 
 .. code-block:: php
 
-    /**
-     * {@InheritDoc}
-     */
     protected function getAclRoles()
     {
         // Display only ROLE_BAPTISTE and ROLE_HELENE
@@ -732,6 +731,7 @@ service to use when retrieving your users.
     .. code-block:: yaml
 
         # app/config/config.yml
+
         sonata_admin:
             security:
                 acl_user_manager: my_user_manager # The name of your service

@@ -15,7 +15,7 @@ First, configure the ``outer_list_rows_mosaic`` template key:
 .. code-block:: xml
 
        <service id="sonata.media.admin.media" class="%sonata.media.admin.media.class%">
-            <tag name="sonata.admin" manager_type="orm" group="sonata_media" label_catalogue="%sonata.media.admin.media.translation_domain%" label="media" label_translator_strategy="sonata.admin.label.strategy.underscore"/>
+            <tag name="sonata.admin" manager_type="orm" group="sonata_media" label_catalogue="%sonata.media.admin.media.translation_domain%" label="media" label_translator_strategy="sonata.admin.label.strategy.underscore" />
             <argument />
             <argument>%sonata.media.admin.media.entity%</argument>
             <argument>%sonata.media.admin.media.controller%</argument>
@@ -84,6 +84,7 @@ The ``ObjectMetadata`` object is returned by the related admin class, for instan
 .. code-block:: jinja
 
     <?php
+
     class MediaAdmin extends AdminInterface
     {
         // [...] others methods

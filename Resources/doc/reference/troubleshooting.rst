@@ -32,13 +32,13 @@ So in order to avoid any fatal error, you must return an empty string
 .. _`__toString`: http://www.php.net/manual/en/language.oop5.magic.php#object.tostring
 
 
-Large filters and long urls problem
+Large filters and long URLs problem
 -----------------------------------
 
-If you will try to add hundreds of filters to a single admin class, you will get a problem - very long generated filter form url.
+If you will try to add hundreds of filters to a single admin class, you will get a problem - very long generated filter form URL.
 In most cases you will get server response like *Error 400 Bad Request* OR *Error 414 Request-URI Too Long*. According to
 `a StackOverflow discussion <http://stackoverflow.com/questions/417142/what-is-the-maximum-length-of-a-url-in-different-browsers>`_
-"safe" url length is just around 2000 characters.
+"safe" URL length is just around 2000 characters.
 You can fix this issue by adding a simple JQuery piece of code on your edit template :
 
 .. code-block:: javascript

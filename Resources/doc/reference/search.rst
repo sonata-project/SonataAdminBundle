@@ -18,6 +18,8 @@ The default template values can be configured in the configuration section
 
     .. code-block:: yaml
 
+        # app/config/config.yml
+
         sonata_admin:
             templates:
                 # other configuration options
@@ -30,6 +32,8 @@ You also need to configure the block in the sonata block config
 
     .. code-block:: yaml
 
+        # app/config/config.yml
+
         sonata_block:
             blocks:
                 sonata.admin.block.search_result:
@@ -41,17 +45,16 @@ You can also configure the block template per admin while defining the admin:
 
     .. code-block:: xml
 
-        <service id="sonata.admin.post" class="Acme\DemoBundle\Admin\PostAdmin">
-              <tag name="sonata.admin" manager_type="orm" group="Content" label="Post"/>
+        <service id="app.admin.post" class="AppBundle\Admin\PostAdmin">
+              <tag name="sonata.admin" manager_type="orm" group="Content" label="Post" />
               <argument />
-              <argument>Acme\DemoBundle\Entity\Post</argument>
+              <argument>AppBundle\Entity\Post</argument>
               <argument />
               <call method="setTemplate">
                   <argument>search_result_block</argument>
                   <argument>SonataPostBundle:Block:block_search_result.html.twig</argument>
               </call>
           </service>
-
 
 Performance
 -----------

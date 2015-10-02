@@ -21,7 +21,7 @@ Usage example:
 
 .. code-block:: bash
 
-    php app/console cache:create-cache-class
+    $ php app/console cache:create-cache-class
 
 
 sonata:admin:generate
@@ -37,10 +37,10 @@ The command require the SensioGeneratorBundle to work. If you don't already have
 
 .. code-block:: bash
 
-    composer require --dev sensio/generator-bundle
+    $ composer require --dev sensio/generator-bundle
 
 Options are:
- * ``bundle``: the bundle name (the default value is determined by the given model class, e.g. "YourNSFooBundle")
+ * ``bundle``: the bundle name (the default value is determined by the given model class, e.g. "AppBundle" or "YourNSFooBundle")
  * ``admin``: the admin class basename (by default this adds "Admin" to the model class name, e.g. "BarAdmin")
  * ``controller``: the controller class basename (by default this adds "AdminController" to the model class name, e.g. "BarAdminController")
  * ``manager``: the model manager type (by default this is the first registered model manager type, e.g. "orm")
@@ -51,7 +51,7 @@ Usage example:
 
 .. code-block:: bash
 
-    php app/console sonata:admin:generate YourNS/FooBundle/Entity/Bar
+    $ php app/console sonata:admin:generate AppBundle/Entity/Foo
 
 
 sonata:admin:list
@@ -66,7 +66,7 @@ Usage example:
 
 .. code-block:: bash
 
-    php app/console sonata:admin:list
+    $ php app/console sonata:admin:list
 
 
 .. figure:: ../images/console_admin_list.png
@@ -87,7 +87,7 @@ Usage example:
 
 .. code-block:: bash
 
-    php app/console sonata:admin:explain sonata.news.admin.post
+    $ php app/console sonata:admin:explain sonata.news.admin.post
 
 .. figure:: ../images/console_admin_explain.png
    :align: center
@@ -110,7 +110,7 @@ Usage example:
 
 .. code-block:: bash
 
-    php app/console sonata:admin:setup-acl
+    $ php app/console sonata:admin:setup-acl
 
 
 sonata:admin:generate-object-acl
