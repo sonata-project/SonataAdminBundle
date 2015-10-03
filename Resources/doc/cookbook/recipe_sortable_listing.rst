@@ -103,7 +103,7 @@ In order to add new routes for these actions we are also adding the following me
 	    $collection->add('move', $this->getRouterIdParameter().'/move/{position}');
 	}
 
-Now you can update your ``services.yml`` to use the handler provider by the ``pixSortableBehaviorBundle`
+Now you can update your ``services.yml`` to use the handler provider by the ``pixSortableBehaviorBundle``
 
 .. code-block:: yaml
 
