@@ -172,6 +172,9 @@ apps based on the field name. It is reasonable to start with the ``native`` stra
 and then, when the application needs to be translated using generic keys, the
 configuration can be switched to ``underscore``.
 
+If you cannot find a strategy that fits your use case, you can easily implement
+and use your own. If you do, consider contributing your strategy.
+
 The strategy can be quickly configured when the Admin class is registered in
 the Container:
 
