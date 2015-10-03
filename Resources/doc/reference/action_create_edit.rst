@@ -22,6 +22,26 @@ To do:
 - options available when adding fields, inc custom templates
 - link to the field_types document for more details about specific field types
 
+Global options
+~~~~~~~~~~~~~~
+
+There are some options about create and edit actions you might want to set
+globally rather than on an admin-by-admin basis. This can done with the bundle
+configuration.
+
+.. code-block:: yaml
+
+    sonata_admin:
+        options:
+            label_translator_strategy: sonata.admin.label.strategy.native
+
+``options.label_translator_strategy``
+    Defaults to ``sonata.admin.label.strategy.native``. The value should be the
+    id of a service that implements
+    ``Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface``. For
+    more information, see
+    `the dedicated document <reference/label_translator_strategy.rst>`_
+
 FormGroup options
 ~~~~~~~~~~~~~~~~~
 
