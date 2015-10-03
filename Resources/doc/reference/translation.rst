@@ -160,6 +160,12 @@ The ``AdminBundle`` comes with different key label generation strategies:
 ``sonata.admin.label.strategy.noop``
   does not alter the string ``isValid`` => ``isValid``
 
+``sonata.admin.label.strategy.bc``
+  Backwards-Compatible label translator strategy. Labels are as they where
+  before label translator strategies where introduced.
+  ``isValid`` => ``Isvalid``
+  Avoid it if you are creating a new project.
+
 ``sonata.admin.label.strategy.underscore`` will be better for i18n applications
 and ``sonata.admin.label.strategy.native`` will be better for native (single) language
 apps based on the field name. It is reasonable to start with the ``native`` strategy
