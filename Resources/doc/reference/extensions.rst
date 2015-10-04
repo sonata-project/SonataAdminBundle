@@ -15,12 +15,14 @@ alter newly created objects and other admin features.
     {
         public function configureFormFields(FormMapper $formMapper)
         {
-            $formMapper->add('status', 'choice', array(
-                'choices' => array(
-                    'draft' => 'Draft',
-                    'published' => 'Published',
-                ),
-            ));
+            $formMapper
+                ->add('status', 'choice', array(
+                    'choices' => array(
+                        'draft' => 'Draft',
+                        'published' => 'Published',
+                    ),
+                ))
+            ;
         }
     }
 
@@ -39,14 +41,14 @@ Set the *global* attribute to *true* and the extension will be added to all admi
     .. code-block:: yaml
 
         services:
-            acme.demo.publish.extension:
-                class: Acme\Demo\BlogBundle\Admin\Extension\PublishStatusAdminExtension
+            app.publish.extension:
+                class: AppBundle\Admin\Extension\PublishStatusAdminExtension
                 tags:
-                    - { name: sonata.admin.extension, target: acme.demo.admin.article }
-                    - { name: sonata.admin.extension, target: acme.demo.admin.blog }
+                    - { name: sonata.admin.extension, target: app.admin.article }
+                    - { name: sonata.admin.extension, target: app.admin.blog }
 
-            acme.demo.order.extension:
-                class: Acme\Demo\BlogBundle\Admin\Extension\OrderAdminExtension
+            app.order.extension:
+                class: AppBundle\Admin\Extension\OrderAdminExtension
                 tags:
                     - { name: sonata.admin.extension, global: true }
 
@@ -57,13 +59,14 @@ The second option is to add it to your config.yml file.
     .. code-block:: yaml
 
         # app/config/config.yml
-            sonata_admin:
-                extensions:
-                    acme.demo.publish.extension:
-                        admins:
-                            - acme.demo.admin.article
 
-Using the config.yml file has some advantages, it allows you to keep your configuration centralized and it provides some
+        sonata_admin:
+            extensions:
+                app.publish.extension:
+                    admins:
+                        - app.admin.article
+
+Using the ``config.yml`` file has some advantages, it allows you to keep your configuration centralized and it provides some
 extra options you can use to wire your extensions in a more dynamic way. This means you can change the behaviour of all
 admins that manage a class of a specific type.
 
@@ -96,19 +99,20 @@ uses:
     .. code-block:: yaml
 
         # app/config/config.yml
-            sonata_admin:
-                extensions:
-                    acme.demo.publish.extension:
-                        admins:
-                            - acme.demo.admin.article
-                        implements:
-                            - Acme\Demo\Publish\PublishStatusInterface
-                        excludes:
-                            - acme.demo.admin.blog
-                            - acme.demo.admin.news
-                        extends:
-                            - Acme\Demo\Document\Blog
-                        instanceof:
-                            -  Acme\Demo\Document\Page
-                        uses:
-                            -  Acme\Demo\Trait\Timestampable
+
+        sonata_admin:
+            extensions:
+                app.publish.extension:
+                    admins:
+                        - app.admin.article
+                    implements:
+                        - AppBundle\Publish\PublishStatusInterface
+                    excludes:
+                        - app.admin.blog
+                        - app.admin.news
+                    extends:
+                        - AppBundle\Document\Blog
+                    instanceof:
+                        -  AppBundle\Document\Page
+                    uses:
+                        -  AppBundle\Trait\Timestampable

@@ -162,6 +162,10 @@
                 <source>flash_edit_error</source>
                 <target>Elementua ezin izan da behar bezala eguneratu</target>
             </trans-unit>
+            <trans-unit id="flash_lock_error">
+                <source>flash_lock_error</source>
+                <target>flash_lock_error</target>
+            </trans-unit>
             <trans-unit id='flash_batch_delete_success'>
                 <source>flash_batch_delete_success</source>
                 <target>Aukeratutako elementuak behar bezala ezabatu dira</target>
@@ -178,9 +182,13 @@
                 <source>flash_delete_success</source>
                 <target>Behar bezala ezabatu da</target>
             </trans-unit>
+            <trans-unit id="form_not_available">
+                <source>form_not_available</source>
+                <target>form_not_available</target>
+            </trans-unit>
             <trans-unit id="link_breadcrumb_dashboard">
                 <source>breadcrumb.link_dashboard</source>
-                <target>&#8962;</target>
+                <target><![CDATA[<i class="fa fa-home"></i>]]></target>
             </trans-unit>
             <trans-unit id="title_delete">
                 <source>title_delete</source>
@@ -306,6 +314,10 @@
                 <source>td_action</source>
                 <target>Ekintza</target>
             </trans-unit>
+            <trans-unit id="td_compare">
+                <source>td_compare</source>
+                <target>td_compare</target>
+            </trans-unit>
             <trans-unit id="td_revision">
                 <source>td_revision</source>
                 <target>Rebisioak</target>
@@ -325,6 +337,10 @@
             <trans-unit id="label_view_revision">
                 <source>label_view_revision</source>
                 <target>Rebisioa erakutsi</target>
+            </trans-unit>
+            <trans-unit id="label_compare_revision">
+                <source>label_compare_revision</source>
+                <target>label_compare_revision</target>
             </trans-unit>
             <trans-unit id="list_results_count_prefix">
                 <source>list_results_count_prefix</source>
@@ -399,8 +415,8 @@
                 <target>ACL</target>
             </trans-unit>
             <trans-unit id="short_object_description_placeholder">
-              <source>short_object_description_placeholder</source>
-              <target>short_object_description_placeholder</target>
+                <source>short_object_description_placeholder</source>
+                <target>short_object_description_placeholder</target>
             </trans-unit>
             <trans-unit id="title_search_results">
                 <source>title_search_results</source>

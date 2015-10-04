@@ -161,7 +161,7 @@ class GenerateAdminCommandTest extends \PHPUnit_Framework_TestCase
 
         $configServiceContent = file_get_contents($this->tempDirectory.'/Resources/config/admin.yml');
         $this->assertContains('services:'."\n".'    acme_demo_admin.admin.foo', $configServiceContent);
-        $this->assertContains('            - {name: sonata.admin, manager_type: foo, group: admin, label: Foo}', $configServiceContent);
+        $this->assertContains('            - { name: sonata.admin, manager_type: foo, group: admin, label: Foo }', $configServiceContent);
     }
 
     public function testExecuteWithExceptionNoModelManagers()
@@ -328,7 +328,7 @@ class GenerateAdminCommandTest extends \PHPUnit_Framework_TestCase
 
         $configServiceContent = file_get_contents($this->tempDirectory.'/Resources/config/admin.yml');
         $this->assertContains('services:'."\n".'    acme_demo_admin.admin.foo', $configServiceContent);
-        $this->assertContains('            - {name: sonata.admin, manager_type: foo, group: admin, label: Foo}', $configServiceContent);
+        $this->assertContains('            - { name: sonata.admin, manager_type: foo, group: admin, label: Foo }', $configServiceContent);
     }
 
     public function getExecuteInteractiveTests()

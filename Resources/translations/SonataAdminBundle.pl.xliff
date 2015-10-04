@@ -162,6 +162,10 @@
                 <source>flash_edit_error</source>
                 <target>Pojawił się błąd przy aktualizowaniu elementu "%name%".</target>
             </trans-unit>
+            <trans-unit id="flash_lock_error">
+                <source>flash_lock_error</source>
+                <target>flash_lock_error</target>
+            </trans-unit>
             <trans-unit id='flash_batch_delete_success'>
                 <source>flash_batch_delete_success</source>
                 <target>Wybrane elementy zostały pomyślnie usunięte.</target>
@@ -178,9 +182,13 @@
                 <source>flash_delete_success</source>
                 <target>Element "%name%" został pomyślnie usunięty.</target>
             </trans-unit>
+            <trans-unit id="form_not_available">
+                <source>form_not_available</source>
+                <target>Formularz niedostępny</target>
+            </trans-unit>
             <trans-unit id="link_breadcrumb_dashboard">
                 <source>breadcrumb.link_dashboard</source>
-                <target>&#8962;</target>
+                <target><![CDATA[<i class="fa fa-home"></i>]]></target>
             </trans-unit>
             <trans-unit id="title_delete">
                 <source>title_delete</source>
@@ -306,6 +314,10 @@
                 <source>td_action</source>
                 <target>Akcja</target>
             </trans-unit>
+            <trans-unit id="td_compare">
+                <source>td_compare</source>
+                <target>td_compare</target>
+            </trans-unit>
             <trans-unit id="td_revision">
                 <source>td_revision</source>
                 <target>Wersja</target>
@@ -325,6 +337,10 @@
             <trans-unit id="label_view_revision">
                 <source>label_view_revision</source>
                 <target>Pokaż wersję</target>
+            </trans-unit>
+            <trans-unit id="label_compare_revision">
+                <source>label_compare_revision</source>
+                <target>label_compare_revision</target>
             </trans-unit>
             <trans-unit id="list_results_count_prefix">
                 <source>list_results_count_prefix</source>
@@ -371,24 +387,24 @@
                 <target>Odrzuć</target>
             </trans-unit>
             <trans-unit id="label_per_page">
-              <source>label_per_page</source>
-              <target>Na stronie</target>
+                <source>label_per_page</source>
+                <target>Na stronie</target>
             </trans-unit>
             <trans-unit id="list_select">
-              <source>list_select</source>
-              <target>Wybierz</target>
+                <source>list_select</source>
+                <target>Wybierz</target>
             </trans-unit>
             <trans-unit id="confirm_exit">
                 <source>confirm_exit</source>
                 <target>Posiadasz niezapisane zmiany</target>
             </trans-unit>
             <trans-unit id="link_edit_acl">
-              <source>link_edit_acl</source>
-              <target>Edytuj ACL</target>
+                <source>link_edit_acl</source>
+                <target>Edytuj ACL</target>
             </trans-unit>
             <trans-unit id="btn_update_acl">
-              <source>btn_update_acl</source>
-              <target>Aktualizuj ACL</target>
+                <source>btn_update_acl</source>
+                <target>Aktualizuj ACL</target>
             </trans-unit>
             <trans-unit id="flash_acl_update_success">
                 <source>flash_acl_edit_success</source>
@@ -399,8 +415,8 @@
                 <target>ACL</target>
             </trans-unit>
             <trans-unit id="short_object_description_placeholder">
-              <source>short_object_description_placeholder</source>
-              <target>Nie wybrano</target>
+                <source>short_object_description_placeholder</source>
+                <target>Nie wybrano</target>
             </trans-unit>
             <trans-unit id="title_search_results">
                 <source>title_search_results</source>
@@ -417,10 +433,6 @@
             <trans-unit id="add_new_entry">
                 <source>add_new_entry</source>
                 <target>Dodaj nowy</target>
-            </trans-unit>
-            <trans-unit id="form_not_available">
-                <source>form_not_available</source>
-                <target>Formularz niedostępny</target>
             </trans-unit>
             <trans-unit id="link_actions">
                 <source>link_actions</source>

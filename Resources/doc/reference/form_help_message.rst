@@ -12,15 +12,22 @@ Example
 .. code-block:: php
 
     <?php
-    class ExampleAdmin.php
+    // src/AppBundle/Admin/PostAdmin.php
+
+    class PostAdmin extends Admin
     {
         protected function configureFormFields(FormMapper $formMapper)
         {
             $formMapper
                 ->with('General')
-                    ->add('title', null, array('help'=>'Set the title of a web page'))
-                    ->add('keywords', null, array('help'=>'Set the keywords of a web page'))
-                ->end();
+                    ->add('title', null, array(
+                        'help' => 'Set the title of a web page'
+                    ))
+                    ->add('keywords', null, array(
+                        'help' => 'Set the keywords of a web page'
+                    ))
+                ->end()
+            ;
         }
     }
 
@@ -30,7 +37,9 @@ Alternative Way To Define Help Messages
 .. code-block:: php
 
     <?php
-    class ExampleAdmin.php
+    // src/AppBundle/Admin/PostAdmin.php
+
+    class PostAdmin extends Admin
     {
         protected function configureFormFields(FormMapper $formMapper)
         {
@@ -42,7 +51,8 @@ Alternative Way To Define Help Messages
                         'title' => 'Set the title of a web page',
                         'keywords' => 'Set the keywords of a web page',
                     ))
-                ->end();
+                ->end()
+            ;
         }
     }
 
@@ -52,7 +62,9 @@ Help messages in a sub-field
 .. code-block:: php
 
     <?php
-    class ExampleAdmin.php
+    // src/AppBundle/Admin/PostAdmin.php
+
+    class PostAdmin extends Admin
     {
         protected function configureFormFields(FormMapper $formMapper)
         {
@@ -64,11 +76,10 @@ Help messages in a sub-field
                             'sonata_help' => 'Set the content'
                         )),
                         array('public', 'checkbox', array()),
-                    )
-                );
+                ))
+            ;
         }
     }
-
 
 Advanced usage
 ^^^^^^^^^^^^^^
@@ -76,7 +87,6 @@ Advanced usage
 Since help messages can contain HTML they can be used for more advanced solutions.
 See the cookbook entry :doc:`Showing image previews <../cookbook/recipe_image_previews>` for a detailed example of how to
 use help messages to display an image tag.
-
 
 Form Group Descriptions
 -----------------------
@@ -89,16 +99,23 @@ Example
 .. code-block:: php
 
     <?php
-    class ExampleAdmin.php
+    // src/AppBundle/Admin/PostAdmin.php
+
+    class PostAdmin extends Admin
     {
         protected function configureFormFields(FormMapper $formMapper)
         {
             $formMapper
-                ->with('General', array('description' => 'This section contains general settings for the web page'))
-                    ->add('title', null, array('help'=>'Set the title of a web page'))
-                    ->add('keywords', null, array('help'=>'Set the keywords of a web page'))
-                ->end();
+                ->with('General', array(
+                    'description' => 'This section contains general settings for the web page'
+                ))
+                    ->add('title', null, array(
+                        'help' => 'Set the title of a web page'
+                    ))
+                    ->add('keywords', null, array(
+                        'help' => 'Set the keywords of a web page'
+                    ))
+                ->end()
+            ;
         }
     }
-
-

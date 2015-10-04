@@ -2,6 +2,10 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
     <file source-language="en" target-language="bg" datatype="plaintext" original="SonataAdminBundle.en.xliff" >
         <body>
+            <trans-unit id="sonata_administration">
+                <source>sonata_administration</source>
+                <target>sonata_administration</target>
+            </trans-unit>
             <trans-unit id="action_delete">
                 <source>action_delete</source>
                 <target>Изтриване</target>
@@ -158,6 +162,10 @@
                 <source>flash_edit_error</source>
                 <target>Възникна грешка по време на обновяването.</target>
             </trans-unit>
+            <trans-unit id="flash_lock_error">
+                <source>flash_lock_error</source>
+                <target>flash_lock_error</target>
+            </trans-unit>
             <trans-unit id='flash_batch_delete_success'>
                 <source>flash_batch_delete_success</source>
                 <target>Избраните елементи бяха изтрити.</target>
@@ -173,6 +181,10 @@
             <trans-unit id='flash_delete_success'>
                 <source>flash_delete_success</source>
                 <target>Елементът беше изтрит.</target>
+            </trans-unit>
+            <trans-unit id="form_not_available">
+                <source>form_not_available</source>
+                <target>form_not_available</target>
             </trans-unit>
             <trans-unit id="link_breadcrumb_dashboard">
                 <source>breadcrumb.link_dashboard</source>
@@ -302,6 +314,10 @@
                 <source>td_action</source>
                 <target>Действие</target>
             </trans-unit>
+            <trans-unit id="td_compare">
+                <source>td_compare</source>
+                <target>td_compare</target>
+            </trans-unit>
             <trans-unit id="td_revision">
                 <source>td_revision</source>
                 <target>Версии</target>
@@ -321,6 +337,10 @@
             <trans-unit id="label_view_revision">
                 <source>label_view_revision</source>
                 <target>Преглед на версията</target>
+            </trans-unit>
+            <trans-unit id="label_compare_revision">
+                <source>label_compare_revision</source>
+                <target>label_compare_revision</target>
             </trans-unit>
             <trans-unit id="list_results_count_prefix">
                 <source>list_results_count_prefix</source>
@@ -371,20 +391,20 @@
                 <target>На страница</target>
             </trans-unit>
             <trans-unit id="list_select">
-              <source>list_select</source>
-              <target>Избор</target>
+                <source>list_select</source>
+                <target>Избор</target>
             </trans-unit>
             <trans-unit id="confirm_exit">
                 <source>confirm_exit</source>
                 <target>Имате незаписани промени.</target>
             </trans-unit>
             <trans-unit id="link_edit_acl">
-              <source>link_edit_acl</source>
-              <target>Редактиране на ACL</target>
+                <source>link_edit_acl</source>
+                <target>Редактиране на ACL</target>
             </trans-unit>
             <trans-unit id="btn_update_acl">
-              <source>btn_update_acl</source>
-              <target>Запис на ACL</target>
+                <source>btn_update_acl</source>
+                <target>Запис на ACL</target>
             </trans-unit>
             <trans-unit id="flash_acl_update_success">
                 <source>flash_acl_edit_success</source>
@@ -395,8 +415,8 @@
                 <target>ACL (списък за контрол на достъпа)</target>
             </trans-unit>
             <trans-unit id="short_object_description_placeholder">
-              <source>short_object_description_placeholder</source>
-              <target>Нищо не е избрано</target>
+                <source>short_object_description_placeholder</source>
+                <target>Нищо не е избрано</target>
             </trans-unit>
             <trans-unit id="title_search_results">
                 <source>title_search_results</source>

@@ -11,7 +11,7 @@ Use composer to manage your dependencies and download SonataAdminBundle:
 
 .. code-block:: bash
 
-    php composer.phar require sonata-project/admin-bundle
+    $ php composer.phar require sonata-project/admin-bundle
 
 You'll be asked to type in a version constraint. 'dev-master' will get you the latest
 version, compatible with the latest Symfony2 version. Check `packagist <https://packagist.org/packages/sonata-project/admin-bundle>`_
@@ -22,6 +22,7 @@ for older versions:
     Please provide a version constraint for the sonata-project/admin-bundle requirement: dev-master
 
 .. note::
+
     If you are using Symfony 2.8 and upper, you need to require :code:`symfony/security-acl` to make it working.
 
 Selecting and downloading a storage bundle
@@ -38,6 +39,7 @@ instructions for each of them:
     - `SonataDoctrinePhpcrAdminBundle <https://github.com/sonata-project/SonataDoctrinePhpcrAdminBundle/blob/master/Resources/doc/reference/installation.rst>`_
 
 .. note::
+
     Don't know which to choose? Most new users prefer SonataDoctrineORMAdmin, to interact with traditional relational databases (MySQL, PostgreSQL, etc)
 
 Enabling SonataAdminBundle and its dependencies
@@ -58,6 +60,7 @@ forget to enable SonataAdminBundle too:
 
     <?php
     // app/AppKernel.php
+
     public function registerBundles()
     {
         return array(
@@ -80,15 +83,18 @@ forget to enable SonataAdminBundle too:
 
             // Then add SonataAdminBundle
             new Sonata\AdminBundle\SonataAdminBundle(),
+
             // ...
         );
     }
 
 .. note::
+
     If a dependency is already enabled somewhere in your ``AppKernel.php``,
     you don't need to enable it again.
 
 .. note::
+
     Since version 2.3 SonatajQueryBundle is not required anymore as assets are available in this
     bundle. The bundle is also registered in `bower.io <https://github.com/sonata-project/SonataAdminBundle>`_ so
     you can use bower to handle your assets. To make sure you get the dependencies
@@ -110,6 +116,7 @@ dashboard. To be able to use it, make sure it's enabled on SonataBlockBundle's c
     .. code-block:: yaml
 
         # app/config/config.yml
+
         sonata_block:
             default_contexts: [cms]
             blocks:
@@ -119,6 +126,7 @@ dashboard. To be able to use it, make sure it's enabled on SonataBlockBundle's c
                 # Your other blocks
 
 .. note::
+
     Don't worry too much if, at this point, you don't yet understand fully
     what a block is. SonataBlockBundle is a useful tool, but it's not vital
     that you understand it right now.
@@ -130,13 +138,13 @@ Now, install the assets from the bundles:
 
 .. code-block:: bash
 
-    php app/console assets:install web
+    $ php app/console assets:install web
 
 Usually, when installing new bundles, it is a good practice to also delete your cache:
 
 .. code-block:: bash
 
-    php app/console cache:clear
+    $ php app/console cache:clear
 
 At this point, your Symfony2 installation should be fully functional, with no errors
 showing up from SonataAdminBundle or its dependencies. SonataAdminBundle is installed
@@ -147,9 +155,15 @@ If, at this point or during the installation, you come across any errors, don't 
 
     -  Read the error message carefully. Try to find out exactly which bundle is causing the error. Is it SonataAdminBundle or one of the dependencies?
     - Make sure you followed all the instructions correctly, for both SonataAdminBundle and its dependencies
-    - Odds are that someone already had the same problem, and it's documented somewhere. Check `Google <http://www.google.com>`_, `Sonata Users Group <https://groups.google.com/group/sonata-users>`_, `Symfony2 Users Group <https://groups.google.com/group/symfony2>`_ and `Symfony Forum <forum.symfony-project.org>`_ to see if you can find a solution.
+    - Odds are that someone already had the same problem, and it's documented somewhere. Check Google_, `Sonata Users Group`_, `Symfony2 Users Group`_ and `Symfony Forum`_ to see if you can find a solution.
     - Still no luck? Try checking the project's open issues on GitHub.
 
 After you have successfully installed the above bundles you need to configure
 SonataAdminBundle for administering your models. All that is needed to quickly
 set up SonataAdminBundle is described in the :doc:`getting_started` chapter.
+
+.. _Google: http://www.google.com
+.. _Sonata Users Group: https://groups.google.com/group/sonata-users
+.. _Symfony2 Users Group: https://groups.google.com/group/symfony2
+.. _Symfony Forum: http://forum.symfony-project.org
+

@@ -113,8 +113,8 @@ var Admin = {
             Admin.log('[core|setup_icheck] configure iCheck on', subject);
 
             jQuery("input[type='checkbox']:not('label.btn>input'), input[type='radio']:not('label.btn>input')", subject).iCheck({
-                checkboxClass: 'icheckbox_flat-blue',
-                radioClass: 'iradio_flat-blue'
+                checkboxClass: 'icheckbox_square-blue',
+                radioClass: 'iradio_square-blue'
             });
         }
     },
@@ -123,7 +123,7 @@ var Admin = {
         Admin.log('[core|setup_xeditable] configure xeditable on', subject);
         jQuery('.x-editable', subject).editable({
             emptyclass: 'editable-empty btn btn-sm btn-default',
-            emptytext: '<i class="glyphicon glyphicon-edit"></i>',
+            emptytext: '<i class="fa fa-pencil"></i>',
             container: 'body',
             placement: 'auto',
             success: function(response) {

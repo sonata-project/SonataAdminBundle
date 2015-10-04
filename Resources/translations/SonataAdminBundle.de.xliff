@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+﻿<?xml version="1.0"?>
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
     <file source-language="en" datatype="plaintext" original="SonataAdminBundle.en.xliff" >
         <body>
@@ -147,20 +147,24 @@
                 <target>Aktion abgebrochen. Es waren keine Elemente ausgewählt.</target>
             </trans-unit>
             <trans-unit id="flash_create_success">
-             <source>flash_create_success</source>
-              <target>Das Element "%name%" wurde erfolgreich hinzugefügt.</target>
+                <source>flash_create_success</source>
+                <target>Das Element "%name%" wurde erfolgreich hinzugefügt.</target>
             </trans-unit>
             <trans-unit id="flash_create_error">
-              <source>flash_create_error</source>
-              <target>Beim Hinzufügen des Elements "%name%" ist ein Fehler aufgetreten.</target>
+                <source>flash_create_error</source>
+                <target>Beim Hinzufügen des Elements "%name%" ist ein Fehler aufgetreten.</target>
             </trans-unit>
             <trans-unit id="flash_edit_success">
-              <source>flash_edit_success</source>
-              <target>Das Element "%name%" wurde erfolgreich bearbeitet.</target>
+                <source>flash_edit_success</source>
+                <target>Das Element "%name%" wurde erfolgreich bearbeitet.</target>
             </trans-unit>
             <trans-unit id="flash_edit_error">
-              <source>flash_edit_error</source>
-              <target>Beim Bearbeiten des Elements "%name%" ist ein Fehler aufgetreten.</target>
+                <source>flash_edit_error</source>
+                <target>Beim Bearbeiten des Elements "%name%" ist ein Fehler aufgetreten.</target>
+            </trans-unit>
+            <trans-unit id="flash_lock_error">
+                <source>flash_lock_error</source>
+                <target>Ein anderer Nutzer hat das Element "%name%" bearbeitet. Bitte %link_start%klicken Sie hier%link_end%, um die Seite neuzuladen und die neuesten Änderungen zu übernehmen.</target>
             </trans-unit>
             <trans-unit id="flash_batch_delete_success">
                 <source>flash_batch_delete_success</source>
@@ -171,20 +175,20 @@
                 <target>Beim Löschen der ausgewählten Elemente ist ein Fehler aufgetreten.</target>
             </trans-unit>
             <trans-unit id="flash_delete_error">
-             <source>flash_delete_error</source>
-              <target>Beim Löschen des Elements "%name%" ist ein Fehler aufgetreten.</target>
+                <source>flash_delete_error</source>
+                <target>Beim Löschen des Elements "%name%" ist ein Fehler aufgetreten.</target>
             </trans-unit>
             <trans-unit id="flash_delete_success">
-              <source>flash_delete_success</source>
-              <target>Das Element "%name%" wurde erfolgreich gelöscht.</target>
+                <source>flash_delete_success</source>
+                <target>Das Element "%name%" wurde erfolgreich gelöscht.</target>
             </trans-unit>
             <trans-unit id="form_not_available">
-              <source>form_not_available</source>
-              <target>Form nicht verfügbar.</target>
+                <source>form_not_available</source>
+                <target>Form nicht verfügbar.</target>
             </trans-unit>
             <trans-unit id="link_breadcrumb_dashboard">
                 <source>breadcrumb.link_dashboard</source>
-                <target>&#8962;</target>
+                <target><![CDATA[<i class="fa fa-home"></i>]]></target>
             </trans-unit>
             <trans-unit id="title_delete">
                 <source>title_delete</source>
@@ -383,24 +387,24 @@
                 <target>Ablehnen</target>
             </trans-unit>
             <trans-unit id="label_per_page">
-              <source>label_per_page</source>
-              <target>Einträge pro Seite</target>
+                <source>label_per_page</source>
+                <target>Einträge pro Seite</target>
             </trans-unit>
             <trans-unit id="list_select">
-              <source>list_select</source>
-              <target>Auswählen</target>
+                <source>list_select</source>
+                <target>Auswählen</target>
             </trans-unit>
             <trans-unit id="confirm_exit">
                 <source>confirm_exit</source>
                 <target>Es gibt ungespeicherte Änderungen.</target>
             </trans-unit>
             <trans-unit id="link_edit_acl">
-              <source>link_edit_acl</source>
-              <target>Bearbeiten</target>
+                <source>link_edit_acl</source>
+                <target>Bearbeiten</target>
             </trans-unit>
             <trans-unit id="btn_update_acl">
-              <source>btn_update_acl</source>
-              <target>Speichern</target>
+                <source>btn_update_acl</source>
+                <target>Speichern</target>
             </trans-unit>
             <trans-unit id="flash_acl_update_success">
                 <source>flash_acl_edit_success</source>
@@ -411,8 +415,8 @@
                 <target>ACL Manager</target>
             </trans-unit>
             <trans-unit id="short_object_description_placeholder">
-              <source>short_object_description_placeholder</source>
-              <target>Nichts ausgewählt</target>
+                <source>short_object_description_placeholder</source>
+                <target>Nichts ausgewählt</target>
             </trans-unit>
             <trans-unit id="title_search_results">
                 <source>title_search_results</source>

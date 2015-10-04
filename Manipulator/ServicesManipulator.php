@@ -29,7 +29,7 @@ class ServicesManipulator
         class: %s
         arguments: [~, %s, %s]
         tags:
-            - {name: sonata.admin, manager_type: %s, group: admin, label: %s}
+            - { name: sonata.admin, manager_type: %s, group: admin, label: %s }
 ';
 
     /**
