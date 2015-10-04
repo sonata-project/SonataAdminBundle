@@ -65,7 +65,7 @@
             {{ form_rest(form) }}
 
             {% block formactions %}
-                <div class="sonata-ba-form-actions form-actions">
+                <div class="sonata-ba-form-actions well well-small form-actions">
                 {% block sonata_form_actions %}
                     {% if app.request.isxmlhttprequest %}
                         {% if admin.id(object) is not null %}
