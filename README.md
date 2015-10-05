@@ -6,7 +6,9 @@ SonataAdminBundle - The missing Symfony2 Admin Generator
 Demo
 ----
 
-The demo website can be found in http://demo.sonata-project.org/admin/dashboard
+The demo website can be found in http://demo.sonata-project.org
+
+After clicking **Launch your container.** you can use the demo.
 
 **Username and password is:** ```admin```
 
