@@ -5,10 +5,9 @@ The Show action
 
     This document is a stub representing a new work in progress. If you're reading
     this you can help contribute, **no matter what your experience level with Sonata
-    is**. Check out the ``issues on GitHub`` _ for more information about how to get involved.
+    is**. Check out the `issues on GitHub`_ for more information about how to get involved.
 
 This document will cover the Show action and related configuration options.
-
 
 Basic configuration
 -------------------
@@ -38,8 +37,9 @@ To specify options, do as follow:
 .. code-block:: php
 
     <?php
+    // src/AppBundle/Admin/PersonAdmin.php
 
-    MyAdmin extends Admin
+    class PersonAdmin extends Admin
     {
         public function configureShowFields(ShowMapper $showMapper)
         {
@@ -50,7 +50,10 @@ To specify options, do as follow:
                         'box_class'   => 'box box-solid box-danger',
                         'description' => 'Lorem ipsum',
                     ))
-                        // ...
+                    ->add('title')
+
+                    // ...
+
                     ->end()
                 ->end()
             ;
@@ -78,17 +81,19 @@ The following is a working example of a ShowAction
     {
         protected function configureShowFields(ShowMapper $showMapper)
         {
-            // Here we set the fields of the ShowMapper variable, $showMapper (but this can be called anything)
+            // here we set the fields of the ShowMapper variable,
+            // $showMapper (but this can be called anything)
             $showMapper
 
-                 // The default option is to just display the value as text (for boolean this will be 1 or 0)
+                 // The default option is to just display the
+                 // value as text (for boolean this will be 1 or 0)
                 ->add('name')
                 ->add('phone')
                 ->add('email')
 
                  // The boolean option is actually very cool
-                 //  true   shows a check mark and says 'yes'
-                 //  false  shows an 'X' and says 'no'
+                 // true   shows a check mark and the 'yes' label
+                 // false  shows a check mark and the 'no' label
                 ->add('dateCafe', 'boolean')
                 ->add('datePub', 'boolean')
                 ->add('dateClub', 'boolean')
@@ -102,14 +107,15 @@ Setting up a custom show template (very useful)
 
 The first thing you need to do is define it in app/config/config/yml:
 
-.. code-block:: yaml
+.. configuration-block::
 
-    sonata_admin:
-        title:      Acme
-        title_logo: img/logo_small.png
-        templates:
-            show:       AppBundle:Admin:Display_Client.html.twig
+    .. code-block:: yaml
 
+        sonata_admin:
+            title:      Acme
+            title_logo: img/logo_small.png
+            templates:
+                show:       AppBundle:Admin:Display_Client.html.twig
 
 Once you have defined this, Sonata Admin looks for it in the following location:
 
@@ -128,3 +134,5 @@ The original template can be found in the following location:
 Now that you have a copy of the default template, check to make sure it works.
 
 That's it, now go code.
+
+.. _`issues on GitHub`: https://github.com/sonata-project/SonataAdminBundle/issues/1519

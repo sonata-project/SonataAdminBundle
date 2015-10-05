@@ -11,8 +11,8 @@ SonataAdminBundle and create your first admin interface for the models of your a
 * Step 3: Create an Admin service
 * Step 4: Configuration
 
-Step 1: Define SonataAdminBundle routes
----------------------------------------
+Define SonataAdminBundle routes
+-------------------------------
 
 To be able to access SonataAdminBundle's pages, you need to add its routes
 to your application's routing file:
@@ -49,8 +49,8 @@ At this point you can already access the (empty) admin dashboard by visiting the
 ``http://yoursite.local/admin/dashboard``.
 
 
-Step 2: Create an Admin class
------------------------------
+Create an Admin class
+---------------------
 
 SonataAdminBundle helps you manage your data using a graphic interface that
 will let you create, update or search your model's instances. Those actions need to
@@ -68,10 +68,10 @@ This is how a basic Admin class for it could look like:
 
 .. code-block:: php
 
-   <?php
-   // src/AppBundle/Admin/PostAdmin.php
+    <?php
+    // src/AppBundle/Admin/PostAdmin.php
 
-   namespace AppBundle\Admin;
+    namespace AppBundle\Admin;
 
     use Sonata\AdminBundle\Admin\Admin;
     use Sonata\AdminBundle\Show\ShowMapper;
@@ -85,9 +85,17 @@ This is how a basic Admin class for it could look like:
         protected function configureFormFields(FormMapper $formMapper)
         {
             $formMapper
-                ->add('title', 'text', array('label' => 'Post Title'))
-                ->add('author', 'entity', array('class' => 'AppBundle\Entity\User'))
-                ->add('body') // if no type is specified, SonataAdminBundle tries to guess it
+                ->add('title', 'text', array(
+                    'label' => 'Post Title'
+                ))
+                ->add('author', 'entity', array(
+                    'class' => 'AppBundle\Entity\User'
+                ))
+
+                // if no type is specified, SonataAdminBundle tries to guess it
+                ->add('body')
+
+                // ...
            ;
         }
 
@@ -125,14 +133,14 @@ Implementing these four functions is the first step to creating an Admin class.
 Other options are available, that will let you further customize the way your model
 is shown and handled. Those will be covered in more advanced chapters of this manual.
 
-Step 3: Create an Admin service
--------------------------------
+Create an Admin service
+-----------------------
 
 Now that you have created your Admin class, you need to create a service for it. This
 service needs to have the ``sonata.admin`` tag, which is your way of letting
 SonataAdminBundle know that this particular service represents an Admin class:
 
-Create either a new ``admin.xml`` or ``admin.yml`` file inside the ``AppBundle/Resources/config/`` folder:
+Create either a new ``admin.xml`` or ``admin.yml`` file inside the ``src/AppBundle/Resources/config/`` folder:
 
 .. configuration-block::
 
@@ -186,60 +194,58 @@ More info on the `Symfony translations page`_.
 Now that you have a configuration file with your admin service, you just need to tell
 Symfony2 to load it. There are two ways to do so:
 
-1 - Have your bundle load it
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Have your bundle load it
+^^^^^^^^^^^^^^^^^^^^^^^^
 
 Inside your bundle's extension file, using the ``load()`` method as described in the `Symfony cookbook`_.
 
 For ``admin.xml`` use:
 
-.. configuration-block::
+.. code-block:: php
 
-    .. code-block:: php
+    <?php
+    // src/AppBundle/DependencyInjection/AppExtension.php
 
-        <?php
-        // src/AppBundle/DependencyInjection/AppExtension.php
-        
-        namespace AppBundle\DependencyInjection;
+    namespace AppBundle\DependencyInjection;
 
-        use Symfony\Component\DependencyInjection\Loader;
-        use Symfony\Component\Config\FileLocator;
-        
-        class AppExtension extends Extension
-        {
-            public function load(array $configs, ContainerBuilder $container) {
-                // ...
-                $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-                // ...
-                $loader->load('admin.xml');
-            }
+    use Symfony\Component\DependencyInjection\Loader;
+    use Symfony\Component\Config\FileLocator;
+
+    class AppExtension extends Extension
+    {
+        public function load(array $configs, ContainerBuilder $container) {
+            // ...
+            $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+            // ...
+            $loader->load('admin.xml');
         }
+    }
 
 and for ``admin.yml``:
 
-    .. code-block:: php
+.. code-block:: php
 
-        <?php
-        // src/AppBundle/DependencyInjection/AppExtension.php
-        
-        namespace AppBundle\DependencyInjection;
+    <?php
+    // src/AppBundle/DependencyInjection/AppExtension.php
 
-        use Symfony\Component\DependencyInjection\Loader;
-        use Symfony\Component\Config\FileLocator;
+    namespace AppBundle\DependencyInjection;
 
-        class AppExtension extends Extension
+    use Symfony\Component\DependencyInjection\Loader;
+    use Symfony\Component\Config\FileLocator;
+
+    class AppExtension extends Extension
+    {
+        public function load(array $configs, ContainerBuilder $container)
         {
-            public function load(array $configs, ContainerBuilder $container)
-            {
-                // ...
-                $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-                // ...
-                $loader->load('admin.yml');
-            }
+            // ...
+            $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+            // ...
+            $loader->load('admin.yml');
         }
+    }
 
-2 - Importing it in the main config.yml
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Importing it in the main config.yml
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 We recommend the to load the file in the Extension, but this way is possible, too.
 
@@ -260,8 +266,8 @@ use the correct file extension):
             # for yaml
             - { resource: @AppBundle/Resources/config/admin.yml }
 
-Step 4: Configuration
----------------------
+Configuration
+-------------
 
 At this point you have basic administration actions for your model. If you visit ``http://yoursite.local/admin/dashboard`` again, you should now see a panel with
 your mapped model. You can start creating, listing, editing and deleting instances.
