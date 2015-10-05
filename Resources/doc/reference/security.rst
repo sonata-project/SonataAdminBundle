@@ -125,6 +125,10 @@ service), Sonata will check if the user has the ``ROLE_APP_ADMIN_FOO_EDIT`` role
 
 The role name will be based on the name of your admin service. For instance, ``acme.blog.post.admin`` will become ``ROLE_ACME_BLOG_POST_ADMIN_{ACTION}``.
 
+.. note::
+
+    If your admin service is named like ``my.blog.admin.foo_bar`` (note the underscore ``_``) it will become: ``ROLE_MY_BLOG_ADMIN_FOO_BAR_{ACTION}``
+
 So our ``security.yml`` file may look to something like this:
 
 .. configuration-block::
