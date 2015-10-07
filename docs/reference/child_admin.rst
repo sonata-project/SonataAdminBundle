@@ -7,6 +7,10 @@ where the videos will automatically be filtered by post.
 
 To do this, you first need to call the ``addChild`` method in your ``PlaylistAdmin`` service configuration:
 
+To do this, you first need to call the ``addChild`` method in your ``PlaylistAdmin`` service configuration with two arguments,
+the child admin name (in this case ``VideoAdmin`` service) and the Entity field that relates our child Entity with
+its parent :
+
 .. configuration-block::
 
     .. code-block:: xml
@@ -17,6 +21,7 @@ To do this, you first need to call the ``addChild`` method in your ``PlaylistAdm
 
             <call method="addChild">
                 <argument type="service" id="sonata.admin.video" />
+                <argument>playlist</<argument>
             </call>
         </service>
 
