@@ -318,7 +318,9 @@ Let us say you have a ``PostAdmin`` and a ``CommentAdmin``. You can optionally d
 to be a child of the ``PostAdmin``. This will create new routes like, for example, ``/post/{id}/comment/list``,
 where the comments will automatically be filtered by post.
 
-To do this, you first need to call the ``addChild`` method in your PostAdmin service configuration :
+To do this, you first need to call the ``addChild`` method in your ``PostAdmin`` service configuration with two arguments,
+the child admin name (in this case ``CommentAdmin`` service) and the Entity field that relates our child Entity with 
+its parent :
 
 .. configuration-block::
 
@@ -330,29 +332,9 @@ To do this, you first need to call the ``addChild`` method in your PostAdmin ser
 
             <call method="addChild">
                 <argument type="service" id="sonata.news.admin.comment" />
+                <argument>post</argument>
             </call>
         </service>
-
-Then, you have to set the CommentAdmin ``parentAssociationMapping`` attribute to ``post`` :
-
-.. code-block:: php
-
-    <?php
-    namespace Sonata\NewsBundle\Admin;
-
-    // ...
-
-    class CommentAdmin extends Admin
-    {
-        protected $parentAssociationMapping = 'post';
-
-        // OR
-
-        public function getParentAssociationMapping()
-        {
-            return 'post';
-        }
-    }
 
 It also possible to set a dot-separated value, like ``post.author``, if your parent and child admins are not directly related.
 
