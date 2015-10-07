@@ -318,7 +318,9 @@ Let us say you have a ``PostAdmin`` and a ``CommentAdmin``. You can optionally d
 to be a child of the ``PostAdmin``. This will create new routes like, for example, ``/post/{id}/comment/list``,
 where the comments will automatically be filtered by post.
 
-To do this, you first need to call the ``addChild`` method in your PostAdmin service configuration :
+To do this, you first need to call the ``addChild`` method in your ``PostAdmin`` service configuration with two arguments,
+the child admin name (in this case ``CommentAdmin`` service) and the Entity field that relates our child Entity with
+its parent :
 
 .. configuration-block::
 
@@ -330,6 +332,7 @@ To do this, you first need to call the ``addChild`` method in your PostAdmin ser
 
             <call method="addChild">
                 <argument type="service" id="sonata.news.admin.comment" />
+                <argument>post</<argument>
             </call>
         </service>
 
