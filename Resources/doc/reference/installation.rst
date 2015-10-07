@@ -138,7 +138,7 @@ Now, install the assets from the bundles:
 
 .. code-block:: bash
 
-    $ php app/console assets:install web
+    $ php app/console assets:install
 
 Usually, when installing new bundles, it is a good practice to also delete your cache:
 
