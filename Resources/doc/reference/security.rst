@@ -8,7 +8,7 @@ By default, the SonataAdminBundle does not come with any user management,
 however it is most likely the application requires such a feature. The Sonata
 Project includes a ``SonataUserBundle`` which integrates the ``FOSUserBundle``.
 
-The ``FOSUserBundle`` adds support for a database-backed user system in Symfony2.
+The ``FOSUserBundle`` adds support for a database-backed user system in Symfony.
 It provides a flexible framework for user management that aims to handle common
 tasks such as user login, registration and password retrieval.
 
@@ -36,7 +36,7 @@ The security part is managed by a ``SecurityHandler``, the bundle comes with 3 h
 - ``sonata.admin.security.handler.role``: ROLES to handle permissions
 - ``sonata.admin.security.handler.acl``: ACL and ROLES to handle permissions
 - ``sonata.admin.security.handler.noop``: always returns true, can be used
-  with the Symfony2 firewall
+  with the Symfony firewall
 
 The default value is ``sonata.admin.security.handler.noop``, if you want to
 change the default value you can set the ``security_handler`` to
@@ -204,7 +204,7 @@ Yon can also create your own permissions, for example ``EMAIL``
 Going further
 ~~~~~~~~~~~~~
 
-Because Sonata role handler supplements Symfony2 security, but does not override it, you are free to do more advanced operations.
+Because Sonata role handler supplements Symfony security, but does not override it, you are free to do more advanced operations.
 For example, you can `create your own voter`_
 
 Customizing the handler behavior

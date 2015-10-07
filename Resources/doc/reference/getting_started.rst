@@ -192,7 +192,7 @@ translating labels on the admin pages. If you don't call ``setTranslationDomain`
 More info on the `Symfony translations page`_.
 
 Now that you have a configuration file with your admin service, you just need to tell
-Symfony2 to load it. There are two ways to do so:
+Symfony to load it. There are two ways to do so:
 
 Have your bundle load it
 ^^^^^^^^^^^^^^^^^^^^^^^^

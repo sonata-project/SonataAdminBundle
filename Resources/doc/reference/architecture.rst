@@ -111,7 +111,7 @@ or how to build the list view. Inside the ``CRUDController``, you can access the
 
     `CRUD is an acronym`_ for "Create, Read, Update and Delete"
 
-The ``CRUDController`` is no different from any other Symfony2 controller, meaning
+The ``CRUDController`` is no different from any other Symfony controller, meaning
 that you have all the usual options available to you, like getting services from
 the Dependency Injection Container (DIC).
 
@@ -305,7 +305,7 @@ instead of the default ones.
 Managing ``Admin`` Service
 --------------------------
 
-Your ``Admin`` service definitions are parsed when Symfony2 is loaded, and handled by
+Your ``Admin`` service definitions are parsed when Symfony is loaded, and handled by
 the ``Pool`` class. This class, available as the ``sonata.admin.pool`` service from the
 DIC, handles the ``Admin`` classes, lazy-loading them on demand (to reduce overhead)
 and matching each of them to a group. It is also responsible for handling the top level
