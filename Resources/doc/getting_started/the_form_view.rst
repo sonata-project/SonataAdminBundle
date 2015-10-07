@@ -209,7 +209,7 @@ If you get even more options, you can also use multiple tabs by using the
 
     $formMapper
         ->tab('Post')
-            ->group('Content', ...)
+            ->with('Content', ...)
                 // ...
             ->end()
             // ...

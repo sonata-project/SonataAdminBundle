@@ -88,9 +88,9 @@ line in the `app/AppKernel.php` file of your project:
 
 .. note::
 
-    Since version 2.3, the bundle comes with jQuery and other front-end libs.
-    To update the versions (which isn't required), you can use `Bower`_. To
-    make sure you get the dependencies that match the version of
+    Since version 2.3, the bundle comes with jQuery and other front-end
+    libraries. To update the versions (which isn't required), you can use
+    `Bower`_. To make sure you get the dependencies that match the version of
     SonataAdminBundle you are using, you can make bower use the local bower
     dependency file, like this:
 
@@ -114,7 +114,7 @@ admin block:
         blocks:
             # enable the SonataAdminBundle block
             sonata.admin.block.admin_list:
-                contexts:   [admin]
+                contexts: [admin]
             # ...
 
 .. note::
@@ -167,7 +167,7 @@ learn how to do this in the :doc:`next chapter <creating_an_admin>`.
 
 .. _`installation chapter`: https://getcomposer.org/doc/00-intro.md
 .. _SonataDoctrineORMAdminBundle: http://sonata-project.org/bundles/doctrine-orm-admin/master/doc/index.html
-.. _SonataMongoDBAdminBundle: http://sonata-project.org/bundles/mongo-admin/master/doc/index.html
+.. _SonataDoctrineMongoDBAdminBundle: http://sonata-project.org/bundles/mongo-admin/master/doc/index.html
 .. _SonataPropelAdminBundle: http://sonata-project.org/bundles/propel-admin/master/doc/index.html
 .. _SonataDoctrinePhpcrAdminBundle: http://sonata-project.org/bundles/doctrine-phpcr-admin/master/doc/index.html
 .. _Bower: http://bower.io/

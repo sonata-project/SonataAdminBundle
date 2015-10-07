@@ -96,8 +96,8 @@ on Admin classes to know which models will be managed and how these actions
 will look like.
 
 An Admin class decides which fields to show on a listing, which fields are used
-to search and how the create form will look like. Each model will have its own
-Admin class.
+to find entries and how the create form will look like. Each model will have
+its own Admin class.
 
 Knowing this, let's create an Admin class for the ``Category`` entity. The
 easiest way to do this is by extending ``Sonata\AdminBundle\Admin\Admin``.
@@ -132,7 +132,7 @@ easiest way to do this is by extending ``Sonata\AdminBundle\Admin\Admin``.
 
 So, what does this code do?
 
-* **Line 11-14**: These lines configure which fields are display on the edit
+* **Line 11-14**: These lines configure which fields are displayed on the edit
   and create actions. The ``FormMapper`` behaves similar to the ``FormBuilder``
   of the Symfony Form component;
 * **Line 16-19**: This method configures the filters, used to filter and sort
