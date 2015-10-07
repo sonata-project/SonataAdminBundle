@@ -2,7 +2,7 @@ Installation
 ============
 
 SonataAdminBundle can be installed at any moment during a project's lifecycle,
-whether it's a clean Symfony2 installation or an existing project.
+whether it's a clean Symfony installation or an existing project.
 
 Downloading the code
 --------------------
@@ -14,7 +14,7 @@ Use composer to manage your dependencies and download SonataAdminBundle:
     $ php composer.phar require sonata-project/admin-bundle
 
 You'll be asked to type in a version constraint. 'dev-master' will get you the latest
-version, compatible with the latest Symfony2 version. Check `packagist <https://packagist.org/packages/sonata-project/admin-bundle>`_
+version, compatible with the latest Symfony version. Check `packagist <https://packagist.org/packages/sonata-project/admin-bundle>`_
 for older versions:
 
 .. code-block:: bash
@@ -106,7 +106,7 @@ Configuring SonataAdminBundle dependencies
 
 You will need to configure SonataAdminBundle's dependencies. For each of the above
 mentioned bundles, check their respective installation/configuration instructions
-files to see what changes you have to make to your Symfony2 configuration.
+files to see what changes you have to make to your Symfony configuration.
 
 SonataAdminBundle provides a SonataBlockBundle block that's used on the administration
 dashboard. To be able to use it, make sure it's enabled on SonataBlockBundle's configuration:
@@ -146,7 +146,7 @@ Usually, when installing new bundles, it is a good practice to also delete your 
 
     $ php app/console cache:clear
 
-At this point, your Symfony2 installation should be fully functional, with no errors
+At this point, your Symfony installation should be fully functional, with no errors
 showing up from SonataAdminBundle or its dependencies. SonataAdminBundle is installed
 but not yet configured (more on that in the next section), so you won't be able to
 use it yet.

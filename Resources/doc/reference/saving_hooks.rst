@@ -29,7 +29,7 @@ advantage.
 Example used with the FOS/UserBundle
 ------------------------------------
 
-The ``FOSUserBundle`` provides authentication features for your Symfony2 Project,
+The ``FOSUserBundle`` provides authentication features for your Symfony Project,
 and is compatible with Doctrine ORM, Doctrine ODM and Propel. See
 `FOSUserBundle on GitHub`_ for more information.
 
