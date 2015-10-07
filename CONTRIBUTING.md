@@ -71,7 +71,7 @@ If you would like to rename your commit message type:
 
 ```bash
 git commit --amend
-``
+```
 
 Now force push to update your PR:
 
