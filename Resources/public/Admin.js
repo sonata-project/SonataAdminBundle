@@ -114,7 +114,7 @@ var Admin = {
 
             jQuery("input[type='checkbox']:not('label.btn>input'), input[type='radio']:not('label.btn>input')", subject).iCheck({
                 checkboxClass: 'icheckbox_square-blue',
-                radioClass: 'iradio_sqaure-blue'
+                radioClass: 'iradio_square-blue'
             });
         }
     },
