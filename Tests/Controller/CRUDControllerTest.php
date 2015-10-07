@@ -894,6 +894,29 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($expected, $response->getTargetUrl());
     }
 
+    public function testRedirectToWithObject()
+    {
+        $this->admin->expects($this->any())
+            ->method('hasActiveSubclass')
+            ->will($this->returnValue(false));
+
+        $object = new \stdClass();
+
+        $this->admin->expects($this->at(0))
+            ->method('hasRoute')
+            ->with($this->equalTo('edit'))
+            ->will($this->returnValue(true));
+
+        $this->admin->expects($this->any())
+            ->method('isGranted')
+            ->with($this->equalTo(strtoupper('edit')), $object)
+            ->will($this->returnValue(false));
+
+        $response = $this->protectedTestedMethods['redirectTo']->invoke($this->controller, $object, $this->request);
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse', $response);
+        $this->assertSame('list', $response->getTargetUrl());
+    }
+
     public function getRedirectToTests()
     {
         return array(
