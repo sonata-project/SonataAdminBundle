@@ -98,6 +98,7 @@ class AdminSearchBlockService extends BaseBlockService
             'query'      => '',
             'page'       => 0,
             'per_page'   => 10,
+            'icon'       => '<i class="fa fa-list"></i>',
         ));
     }
 }
