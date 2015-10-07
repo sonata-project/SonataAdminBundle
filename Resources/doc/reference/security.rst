@@ -274,14 +274,14 @@ User class (in a custom UserBundle). Do it as follows:
     /**
      * @ORM\Entity
      * @ORM\Table(name="fos_user")
-    \*/
+     */
     class User extends BaseUser
     {
         /**
          * @ORM\Id
          * @ORM\Column(type="integer")
          * @ORM\GeneratedValue(strategy="AUTO")
-         \*/
+         */
         protected $id;
 
         public function __construct()
