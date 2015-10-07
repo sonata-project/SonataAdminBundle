@@ -49,6 +49,35 @@ When you send a PR, just make sure that:
 * You make the PR on the same branch you based your changes on. If you see commits
 that you did not make in your PR, you're doing it wrong.
 * Also don't forget to add a comment when you update a PR with a ping to the maintainer (``@username``), so he/she will get a notification.
+* Squash your commits into one commit. (see the next chapter)
+
+## Squash your commits
+
+If you have 3 commits. So start with:
+
+```bash
+git rebase -i HEAD~3
+```
+
+An editor will be opened with your 3 commits, all prefixed by `pick`.
+
+Replace all `pick` prefixes by `fixup` (or `f`) **except the first commit** of the list.
+
+Save and quit the editor.
+
+After that, all your commits where squashed into the first one and the commit message of the first commit.
+
+If you would like to rename your commit message type:
+
+```bash
+git commit --amend
+``
+
+Now force push to update your PR:
+
+```bash
+git push --force
+```
 
 ## Contributing to the documentation
 
@@ -61,4 +90,4 @@ and you can check the documentation with the command:
     cd Resources/doc/
     rm -rf _build && sphinx-build -W -b html -d _build/doctrees   . _build/html
 
-The html will be available in the ``_build/html`` folder.
+The HTML will be available in the ``_build/html`` folder.
