@@ -1,4 +1,4 @@
-Sonata respects the symfony’s conventions about contributing to the code. So before going further please review the [contributing documentation of Symfony](http://symfony.com/doc/current/contributing/code/patches.html#make-a-pull-request).
+Sonata respects the Symfony's conventions about contributing to the code. So before going further please review the [contributing documentation of Symfony](http://symfony.com/doc/current/contributing/code/patches.html#make-a-pull-request).
 
 ## Reporting bugs
 
@@ -6,13 +6,13 @@ If you happen to find a bug, we kindly request you to report it. However, before
 
   * Check the [project documentation available online](https://sonata-project.org/bundles/)
 
-Then, if it appears that it’s a real bug, you may report it using Github by following these 3 points:
+Then, if it appears that it's a real bug, you may report it using Github by following these 3 points:
 
   * Check if the bug is not already reported!
   * A clear title to resume the issue
   * A description of the workflow needed to reproduce the bug,
 
-> _NOTE:_ Don’t hesitate giving as much information as you can (OS, PHP version extensions …)
+> _NOTE:_ Don't hesitate giving as much information as you can (OS, PHP version extensions...)
 
 ## Pull requests
 
