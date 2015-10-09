@@ -117,6 +117,10 @@ class FormMapper extends BaseGroupedMapper
             // Note that the builder var is actually the formContractor:
             $options = array_replace_recursive($this->builder->getDefaultOptions($type, $fieldDescription), $options);
 
+            if (!isset($options['required']) && $fieldDescription->getType() == 'boolean') {
+                $options['required'] = $options['required'] || false;
+            }
+
             // be compatible with mopa if not installed, avoid generating an exception for invalid option
             // force the default to false ...
             if (!isset($options['label_render'])) {
