@@ -17,22 +17,20 @@ cache:
 
 env:
   global:
-    - PATH="$HOME/.composer/vendor/bin:$PATH"
+    - PATH="$HOME/.local/bin:$HOME/.composer/vendor/bin:$PATH"
     - SYMFONY_DEPRECATIONS_HELPER=weak
 
 matrix:
   fast_finish: true
   include:
-    - php: 5.6
-      env: CS_FIXER=run
     - php: 5.3
       env: COMPOSER_FLAGS="--prefer-lowest"
     - php: 5.6
-      env: SYMFONY_VERSION=2.3.*
+      env: SYMFONY_VERSION=2.3.* TEST_DOC=run
     - php: 5.6
       env: SYMFONY_VERSION=2.6.*
     - php: 5.6
-      env: SYMFONY_VERSION=2.7.*
+      env: SYMFONY_VERSION=2.7.* CS_FIXER=run
     - php: 5.6
       env: SYMFONY_VERSION=2.8.*@dev
     - php: 5.6
@@ -40,24 +38,26 @@ matrix:
   allow_failures:
     - php: 7.0
     - php: hhvm
-    - env: SYMFONY_VERSION=2.8.*@dev
-    - env: SYMFONY_VERSION="3.0.x-dev as 2.8"
+    - env: SYMFONY_VERSION=2.8.*@dev SYMFONY_DEPRECATIONS_HELPER=strict
+    - env: SYMFONY_VERSION="3.0.x-dev as 2.8" SYMFONY_DEPRECATIONS_HELPER=strict
 
-before_script:
+before_install:
   - mkdir -p ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d && echo "memory_limit=-1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
   - composer selfupdate
   - composer config -q -g github-oauth.github.com $GITHUB_OAUTH_TOKEN
-  - composer global require phpunit/phpunit:^4.8 fabpot/php-cs-fixer --no-update
-  - composer global update --prefer-dist --no-interaction
-  - if [ "$SYMFONY_VERSION" = "2.8.*@dev" ] || [ "$SYMFONY_VERSION" = "3.0.x-dev as 2.8" ]; then SYMFONY_DEPRECATIONS_HELPER=strict; fi;
+  - composer global require phpunit/phpunit:^4.8 --no-update
+  - if [ "$CS_FIXER" = "run" ]; then composer global require fabpot/php-cs-fixer --no-update; fi;
   - if [ "$SYMFONY_VERSION" != "" ]; then composer require "symfony/symfony:${SYMFONY_VERSION}" --no-update; fi;
+
+install:
+  - composer global update --prefer-dist --no-interaction
   - travis_wait composer update --prefer-dist --no-interaction $COMPOSER_FLAGS
-  - export PATH=$HOME/.local/bin:$PATH
-  - pip install -r Resources/doc/requirements.txt --user `whoami`
+  - if [ "$TEST_DOC" = "run" ]; then pip install -r Resources/doc/requirements.txt --user `whoami`; fi;
 
 script:
- - if [ "$CS_FIXER" = "run" ]; then make cs_dry_run ; fi;
- - make test
+  - if [ "$CS_FIXER" = "run" ]; then make cs_dry_run ; fi;
+  - if [ "$TEST_DOC" = "run" ]; then make test_doc; fi;
+  - make test
 
 notifications:
   webhooks: https://sonata-project.org/bundles/admin/master/travis
