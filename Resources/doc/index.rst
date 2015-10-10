@@ -16,7 +16,7 @@ Getting Started
 
 .. toctree::
     :maxdepth: 1
-    :numbered
+    :numbered:
 
     getting_started/installation
     getting_started/creating_an_admin
