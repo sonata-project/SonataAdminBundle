@@ -6,6 +6,8 @@ cs_dry_run:
 
 test:
 	phpunit
+
+test_doc:
 	cd Resources/doc && sphinx-build -W -b html -d _build/doctrees . _build/html
 
 bower:
