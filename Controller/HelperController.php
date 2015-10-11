@@ -345,6 +345,7 @@ class HelperController
             return new JsonResponse(array('status' => 'KO', 'message' => 'Too short search string.'), 403);
         }
 
+        $targetAdmin->setPersistFilters(false);
         $datagrid = $targetAdmin->getDatagrid();
 
         if ($callback !== null) {
