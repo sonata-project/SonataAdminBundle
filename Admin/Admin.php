@@ -2125,7 +2125,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
             $menu = $this->menuFactory->createItem('root');
 
             $menu = $menu->addChild(
-                $this->trans($this->getLabelTranslatorStrategy()->getLabel('dashboard', 'breadcrumb', 'link'), array(), 'SonataAdminBundle'),
+                $this->trans('breadcrumb.link_dashboard', array(), 'SonataAdminBundle'),
                 array('uri' => $this->routeGenerator->generate('sonata_admin_dashboard'))
             );
         }
