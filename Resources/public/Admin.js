@@ -39,9 +39,9 @@ var Admin = {
     shared_setup: function(subject) {
         Admin.log("[core|shared_setup] Register services on", subject);
         Admin.set_object_field_value(subject);
+        Admin.add_filters(subject);
         Admin.setup_select2(subject);
         Admin.setup_icheck(subject);
-        Admin.add_filters(subject);
         Admin.setup_xeditable(subject);
         Admin.add_pretty_errors(subject);
         Admin.setup_form_tabs_for_errors(subject);
