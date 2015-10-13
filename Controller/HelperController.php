@@ -22,7 +22,8 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\Validator\ValidatorInterface as LegacyValidatorInterface;
 
 /**
  * Class HelperController.
@@ -47,18 +48,22 @@ class HelperController
     protected $pool;
 
     /**
-     * @var \Symfony\Component\Validator\ValidatorInterface
+     * @var \Symfony\Component\Validator\Validator\ValidatorInterface|\Symfony\Component\Validator\ValidatorInterface
      */
     protected $validator;
 
     /**
-     * @param \Twig_Environment                               $twig
-     * @param \Sonata\AdminBundle\Admin\Pool                  $pool
-     * @param \Sonata\AdminBundle\Admin\AdminHelper           $helper
-     * @param \Symfony\Component\Validator\ValidatorInterface $validator
+     * @param \Twig_Environment                                         $twig
+     * @param \Sonata\AdminBundle\Admin\Pool                            $pool
+     * @param \Sonata\AdminBundle\Admin\AdminHelper                     $helper
+     * @param \Symfony\Component\Validator\Validator\ValidatorInterface $validator
      */
-    public function __construct(\Twig_Environment $twig, Pool $pool, AdminHelper $helper, ValidatorInterface $validator)
+    public function __construct(\Twig_Environment $twig, Pool $pool, AdminHelper $helper, $validator)
     {
+        if (!($validator instanceof ValidatorInterface) && !($validator instanceof LegacyValidatorInterface)) {
+            throw new \InvalidArgumentException('Argument 4 is an instance of '.get_class($validator).', expecting an instance of \Symfony\Component\Validator\Validator\ValidatorInterface or \Symfony\Component\Validator\ValidatorInterface');
+        }
+
         $this->twig      = $twig;
         $this->pool      = $pool;
         $this->helper    = $helper;
