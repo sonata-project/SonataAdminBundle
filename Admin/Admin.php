@@ -123,7 +123,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      *
      * @var int
      */
-    protected $maxPerPage = 25;
+    protected $maxPerPage = 32;
 
     /**
      * The maximum number of page numbers to display in the list.
@@ -209,7 +209,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      */
     protected $datagridValues = array(
         '_page'       => 1,
-        '_per_page'   => 25,
+        '_per_page'   => 32,
     );
 
     /**
@@ -217,7 +217,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      *
      * @var array
      */
-    protected $perPageOptions = array(10, 25, 50, 100, 200);
+    protected $perPageOptions = array(16, 32, 64, 128, 192);
 
     /**
      * Pager type.
