@@ -52,23 +52,26 @@ Here is an example from Sonata E-Commerce Product Admin:
     public function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            // addIdentifier allows to specify that this column will provide a link to the entity's edition
+            // addIdentifier allows to specify that this column
+            // will provide a link to the entity
+            // (edit or show route, depends on your access rights)
             ->addIdentifier('name')
 
-            // You may specify the field type directly as the second argument instead of in the options
+            // you may specify the field type directly as the
+            // second argument instead of in the options
             ->add('isVariation', 'boolean')
 
-            // The type can be guessed as well
+            // if null, the type will be guessed
             ->add('enabled', null, array(
                 'editable' => true
             ))
 
-            // We can add options to the field depending on the type
+            // we can add options to the field depending on the type
             ->add('price', 'currency', array(
                 'currency' => $this->currencyDetector->getCurrency()->getLabel()
             ))
 
-            // Here we specify which method is used to render the label
+            // here we specify which method is used to render the label
             ->add('productCategories', null, array(
                 'associated_tostring' => 'getCategory'
             ))
@@ -76,7 +79,8 @@ Here is an example from Sonata E-Commerce Product Admin:
                 'associated_tostring' => 'getCollection'
             ))
 
-            // You may also use dotted-notation to access specific properties of a relation to the entity
+            // you may also use dotted-notation to access
+            // specific properties of a relation to the entity
             ->add('image.name')
 
             // You may also specify the actions you want to be displayed in the list
@@ -271,6 +275,8 @@ To make the filter always visible (even when it is inactive), set the parameter
             ->add('email', null, array(
                 'show_filter' => true
             ))
+
+            // ...
         ;
     }
 
@@ -288,6 +294,8 @@ Though this ``operator_type`` is automatically detected it can be changed or eve
             ->add('bar', null, array(
                 'operator_type' => 'hidden'
             ))
+
+            // ...
         ;
     }
 
@@ -303,6 +311,8 @@ If you don't need the advanced filters, or all your ``operator_type`` are hidden
                 'operator_type' => 'hidden',
                 'advanced_filter' => false
             ))
+
+            // ...
         ;
     }
 
@@ -443,7 +453,10 @@ If you have the **SonataDoctrineORMAdminBundle** installed you can use the ``doc
                 ->add('full_text', 'doctrine_orm_callback', array(
                     'callback' => array($this, 'getFullTextFilter'),
                     'field_type' => 'text'
-                ));
+                ))
+
+                // ...
+            ;
         }
 
         public function getFullTextFilter($queryBuilder, $alias, $field, $value)
@@ -479,8 +492,10 @@ You can also get the filter type which can be helpful to change the operator typ
 
             $operator = $value['type'] == EqualType::TYPE_IS_EQUAL ? '=' : '!=';
 
-            $queryBuilder->andWhere($alias.'.username ' . $operator . ' :username')
-                         ->setParameter('username', $value['value']);
+            $queryBuilder
+                ->andWhere($alias.'.username '.$operator.' :username')
+                ->setParameter('username', $value['value'])
+            ;
 
             return true;
         }
@@ -520,6 +535,8 @@ You can :
                 'header_class' => 'customActions',
                 'row_align' => 'right'
             )
+
+            // ...
         ;
     }
 
