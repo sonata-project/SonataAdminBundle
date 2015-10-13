@@ -619,6 +619,11 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
     public function testPreList()
     {
+        $this->admin->expects($this->any())
+            ->method('hasRoute')
+            ->with($this->equalTo('list'))
+            ->will($this->returnValue(true));
+
         $this->admin->expects($this->once())
             ->method('checkAccess')
             ->with($this->equalTo('list'))
@@ -635,6 +640,11 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
     public function testListAction()
     {
         $datagrid = $this->getMock('Sonata\AdminBundle\Datagrid\DatagridInterface');
+
+        $this->admin->expects($this->any())
+            ->method('hasRoute')
+            ->with($this->equalTo('list'))
+            ->will($this->returnValue(true));
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
@@ -857,7 +867,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider getRedirectToTests
      */
-    public function testRedirectTo($expected, $queryParams, $hasActiveSubclass)
+    public function testRedirectTo($expected, $route, $queryParams, $hasActiveSubclass)
     {
         $this->admin->expects($this->any())
             ->method('hasActiveSubclass')
@@ -869,19 +879,52 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             $this->request->query->set($key, $value);
         }
 
+        $this->admin->expects($this->any())
+            ->method('hasRoute')
+            ->with($this->equalTo($route))
+            ->will($this->returnValue(true));
+
+        $this->admin->expects($this->any())
+            ->method('isGranted')
+            ->with($this->equalTo(strtoupper($route)))
+            ->will($this->returnValue(true));
+
         $response = $this->protectedTestedMethods['redirectTo']->invoke($this->controller, $object, $this->request);
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse', $response);
         $this->assertSame($expected, $response->getTargetUrl());
     }
 
+    public function testRedirectToWithObject()
+    {
+        $this->admin->expects($this->any())
+            ->method('hasActiveSubclass')
+            ->will($this->returnValue(false));
+
+        $object = new \stdClass();
+
+        $this->admin->expects($this->at(0))
+            ->method('hasRoute')
+            ->with($this->equalTo('edit'))
+            ->will($this->returnValue(true));
+
+        $this->admin->expects($this->any())
+            ->method('isGranted')
+            ->with($this->equalTo(strtoupper('edit')), $object)
+            ->will($this->returnValue(false));
+
+        $response = $this->protectedTestedMethods['redirectTo']->invoke($this->controller, $object, $this->request);
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse', $response);
+        $this->assertSame('list', $response->getTargetUrl());
+    }
+
     public function getRedirectToTests()
     {
         return array(
-            array('stdClass_edit', array(), false),
-            array('list', array('btn_update_and_list' => true), false),
-            array('list', array('btn_create_and_list' => true), false),
-            array('create', array('btn_create_and_create' => true), false),
-            array('create?subclass=foo', array('btn_create_and_create' => true, 'subclass' => 'foo'), true),
+            array('stdClass_edit', 'edit', array(), false),
+            array('list', 'list', array('btn_update_and_list' => true), false),
+            array('list', 'list', array('btn_create_and_list' => true), false),
+            array('create', 'create', array('btn_create_and_create' => true), false),
+            array('create?subclass=foo', 'create', array('btn_create_and_create' => true, 'subclass' => 'foo'), true),
         );
     }
 
@@ -1409,7 +1452,16 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
+            ->with($this->equalTo('edit'));
+
+        $this->admin->expects($this->once())
+            ->method('hasRoute')
             ->with($this->equalTo('edit'))
+            ->will($this->returnValue(true));
+
+        $this->admin->expects($this->once())
+            ->method('isGranted')
+            ->with($this->equalTo('EDIT'))
             ->will($this->returnValue(true));
 
         $form = $this->getMockBuilder('Symfony\Component\Form\Form')
@@ -1882,6 +1934,10 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->admin->expects($this->exactly(2))
             ->method('checkAccess')
             ->will($this->returnCallback(function ($name, $objectIn = null) use ($object) {
+                if ($name == 'edit') {
+                    return true;
+                }
+
                 if ($name != 'create') {
                     return false;
                 }
@@ -1892,6 +1948,16 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
                 return ($objectIn === $object);
             }));
+
+        $this->admin->expects($this->once())
+            ->method('hasRoute')
+            ->with($this->equalTo('edit'))
+            ->will($this->returnValue(true));
+
+        $this->admin->expects($this->once())
+            ->method('isGranted')
+            ->with($this->equalTo('EDIT'))
+            ->will($this->returnValue(true));
 
         $this->admin->expects($this->once())
             ->method('getNewInstance')

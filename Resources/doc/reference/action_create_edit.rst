@@ -55,6 +55,10 @@ To specify options, do as follows:
                         'description' => 'Lorem ipsum',
                         // ...
                     ))
+                    ->add('title')
+
+                    // ...
+
                     ->end()
                 ->end()
             ;

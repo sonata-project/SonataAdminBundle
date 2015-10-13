@@ -285,9 +285,9 @@ If you want to use the Tab Menu in a different way, you can replace the Menu Tem
 Disable content stretching
 --------------------------
 
-You can disable html, body and sidebar elements stretching. These containers are forced
+You can disable ``html``, ``body`` and ``sidebar`` elements stretching. These containers are forced
 to be full height by default. If you use custom layout or just don't need such behavior,
-add **no-stretch** class to <html> tag.
+add ``no-stretch`` class to the ``<html>`` tag.
 
 For example:
 

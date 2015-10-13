@@ -8,7 +8,7 @@ By default, the SonataAdminBundle does not come with any user management,
 however it is most likely the application requires such a feature. The Sonata
 Project includes a ``SonataUserBundle`` which integrates the ``FOSUserBundle``.
 
-The ``FOSUserBundle`` adds support for a database-backed user system in Symfony2.
+The ``FOSUserBundle`` adds support for a database-backed user system in Symfony.
 It provides a flexible framework for user management that aims to handle common
 tasks such as user login, registration and password retrieval.
 
@@ -36,7 +36,7 @@ The security part is managed by a ``SecurityHandler``, the bundle comes with 3 h
 - ``sonata.admin.security.handler.role``: ROLES to handle permissions
 - ``sonata.admin.security.handler.acl``: ACL and ROLES to handle permissions
 - ``sonata.admin.security.handler.noop``: always returns true, can be used
-  with the Symfony2 firewall
+  with the Symfony firewall
 
 The default value is ``sonata.admin.security.handler.noop``, if you want to
 change the default value you can set the ``security_handler`` to
@@ -123,7 +123,11 @@ EXPORT       (for the native Sonata export links)
 Each permission is relative to an admin: if you try to get a list in FooAdmin (declared as ``app.admin.foo``
 service), Sonata will check if the user has the ``ROLE_APP_ADMIN_FOO_EDIT`` role.
 
-The role name will be based on the name of your admin service. For instance, `acme.blog.post.admin` will become `ROLE_ACME_BLOG_POST_ADMIN_{ACTION}`.
+The role name will be based on the name of your admin service. For instance, ``acme.blog.post.admin`` will become ``ROLE_ACME_BLOG_POST_ADMIN_{ACTION}``.
+
+.. note::
+
+    If your admin service is named like ``my.blog.admin.foo_bar`` (note the underscore ``_``) it will become: ``ROLE_MY_BLOG_ADMIN_FOO_BAR_{ACTION}``
 
 So our ``security.yml`` file may look to something like this:
 
@@ -170,7 +174,7 @@ You can now test if a user is authorized from an Admin class:
 .. code-block:: php
 
     if ($this->isGranted('LIST')) {
-        ...
+        // ...
     }
 
 From a controller extending ``Sonata\AdminBundle\Controller\CRUDController``:
@@ -178,7 +182,7 @@ From a controller extending ``Sonata\AdminBundle\Controller\CRUDController``:
 .. code-block:: php
 
     if ($this->admin->isGranted('LIST')) {
-        ...
+        // ...
     }
 
 Or from a Twig template:
@@ -200,7 +204,7 @@ Yon can also create your own permissions, for example ``EMAIL``
 Going further
 ~~~~~~~~~~~~~
 
-Because Sonata role handler supplements Symfony2 security, but does not override it, you are free to do more advanced operations.
+Because Sonata role handler supplements Symfony security, but does not override it, you are free to do more advanced operations.
 For example, you can `create your own voter`_
 
 Customizing the handler behavior
@@ -215,13 +219,12 @@ Then declare your handler as a service:
 
     .. code-block:: xml
 
-        <services>
-            <service id="aapp.security.handler.role" class="AppBundle\Security\Handler\RoleSecurityHandler" public="false">
-                <argument type="service" id="security.context" on-invalid="null" />
-                <argument type="collection">
-                    <argument>ROLE_SUPER_ADMIN</argument>
-                </argument>
-            </service>
+        <service id="app.security.handler.role" class="AppBundle\Security\Handler\RoleSecurityHandler" public="false">
+            <argument type="service" id="security.context" on-invalid="null" />
+            <argument type="collection">
+                <argument>ROLE_SUPER_ADMIN</argument>
+            </argument>
+        </service>
 
 And specify it as Sonata security handler on your configuration:
 
@@ -271,14 +274,14 @@ User class (in a custom UserBundle). Do it as follows:
     /**
      * @ORM\Entity
      * @ORM\Table(name="fos_user")
-    \*/
+     */
     class User extends BaseUser
     {
         /**
          * @ORM\Id
          * @ORM\Column(type="integer")
          * @ORM\GeneratedValue(strategy="AUTO")
-         \*/
+         */
         protected $id;
 
         public function __construct()
@@ -601,7 +604,7 @@ because for example you want to restrict access using extra rules:
         security:
             access_decision_manager:
 
-                # Strategy can be: affirmative, unanimous or consensus
+                # strategy value can be: affirmative, unanimous or consensus
                 strategy: unanimous
 
 - to make this work the permission needs to be checked using the Object ACL
@@ -610,7 +613,9 @@ because for example you want to restrict access using extra rules:
 
 .. code-block:: html+jinja
 
-    {% if admin.isGranted('EDIT', user_object) %} {# ... #} {% endif %}
+    {% if admin.isGranted('EDIT', user_object) %}
+        {# ... #}
+    {% endif %}
 
   - because the object ACL permission is checked, the ACL for the object must
     have been created, otherwise the ``AclVoter`` will deny ``EDIT`` access
@@ -633,10 +638,14 @@ In the templates, or in your code, you can use the Admin method ``isGranted()``:
 .. code-block:: html+jinja
 
     {# use the admin security method  #}
-    {% if admin.isGranted('EDIT') %} {# ... #} {% endif %}
+    {% if admin.isGranted('EDIT') %}
+        {# ... #}
+    {% endif %}
 
     {# or use the default is_granted Symfony helper, the following will give the same result #}
-    {% if is_granted('ROLE_SUPER_ADMIN') or is_granted('EDIT', admin) %} {# ... #} {% endif %}
+    {% if is_granted('ROLE_SUPER_ADMIN') or is_granted('EDIT', admin) %}
+        {# ... #}
+    {% endif %}
 
 - check for an admin that the user is allowed to ``DELETE``, the object is added
   to also check if the object owner is allowed to ``DELETE``:
@@ -644,10 +653,14 @@ In the templates, or in your code, you can use the Admin method ``isGranted()``:
 .. code-block:: html+jinja
 
     {# use the admin security method  #}
-    {% if admin.isGranted('DELETE', object) %} {# ... #} {% endif %}
+    {% if admin.isGranted('DELETE', object) %}
+        {# ... #}
+    {% endif %}
 
     {# or use the default is_granted Symfony helper, the following will give the same result #}
-    {% if is_granted('ROLE_SUPER_ADMIN') or is_granted('DELETE', object) %} {# ... #} {% endif %}
+    {% if is_granted('ROLE_SUPER_ADMIN') or is_granted('DELETE', object) %}
+        {# ... #}
+    {% endif %}
 
 List filtering
 ~~~~~~~~~~~~~~
@@ -681,7 +694,7 @@ By default, the ACL editor allows to set permissions for all users managed by
 ``FOSUserBundle``.
 
 To customize displayed user override
-`Sonata\AdminBundle\Controller\CRUDController::getAclUsers()`. This method must
+``Sonata\AdminBundle\Controller\CRUDController::getAclUsers()``. This method must
 return an iterable collection of users.
 
 .. code-block:: php
@@ -711,7 +724,10 @@ return an iterable collection of roles.
     protected function getAclRoles()
     {
         // Display only ROLE_BAPTISTE and ROLE_HELENE
-        $roles = array('ROLE_BAPTISTE', 'ROLE_HELENE');
+        $roles = array(
+            'ROLE_BAPTISTE',
+            'ROLE_HELENE'
+        );
 
         return new \ArrayIterator($roles);
     }
@@ -734,7 +750,9 @@ service to use when retrieving your users.
 
         sonata_admin:
             security:
-                acl_user_manager: my_user_manager # The name of your service
+
+                # the name of your service
+                acl_user_manager: my_user_manager
 
 .. _`SonataUserBundle's documentation area`: https://sonata-project.org/bundles/user/master/doc/reference/installation.html
 .. _`changing the access decision strategy`: http://symfony.com/doc/2.2/cookbook/security/voters.html#changing-the-access-decision-strategy
