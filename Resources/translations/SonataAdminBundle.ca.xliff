@@ -316,7 +316,7 @@
             </trans-unit>
             <trans-unit id="td_compare">
                 <source>td_compare</source>
-                <target>td_compare</target>
+                <target>Compara</target>
             </trans-unit>
             <trans-unit id="td_revision">
                 <source>td_revision</source>
@@ -340,7 +340,7 @@
             </trans-unit>
             <trans-unit id="label_compare_revision">
                 <source>label_compare_revision</source>
-                <target>label_compare_revision</target>
+                <target>Compara revisió</target>
             </trans-unit>
             <trans-unit id="list_results_count_prefix">
                 <source>list_results_count_prefix</source>
