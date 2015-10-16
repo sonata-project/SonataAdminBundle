@@ -62,6 +62,10 @@
                 <source>link_action_list</source>
                 <target>Torna a la llista</target>
             </trans-unit>
+            <trans-unit id="link_action_create_subclass">
+                <source>link_action_create_subclass</source>
+                <target>link_action_create_subclass</target>
+            </trans-unit>
             <trans-unit id="link_action_show">
                 <source>link_action_show</source>
                 <target>Mostra</target>

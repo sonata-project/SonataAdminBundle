@@ -58,6 +58,10 @@
                 <source>link_action_create</source>
                 <target>Add new</target>
             </trans-unit>
+            <trans-unit id="link_action_create_subclass">
+                <source>link_action_create_subclass</source>
+                <target>Add new %class%</target>
+            </trans-unit>
             <trans-unit id="link_action_list">
                 <source>link_action_list</source>
                 <target>Return to list</target>

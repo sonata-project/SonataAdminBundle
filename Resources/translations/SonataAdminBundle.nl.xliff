@@ -58,6 +58,10 @@
                 <source>link_action_create</source>
                 <target>Nieuwe toevoegen</target>
             </trans-unit>
+            <trans-unit id="link_action_create_subclass">
+                <source>link_action_create_subclass</source>
+                <target>link_action_create_subclass</target>
+            </trans-unit>
             <trans-unit id="link_action_list">
                 <source>link_action_list</source>
                 <target>Terug naar lijst</target>
