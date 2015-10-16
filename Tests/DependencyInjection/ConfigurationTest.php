@@ -204,4 +204,142 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
             ),
         )));
     }
+
+    /**
+     * @dataProvider getAssetsTests
+     */
+    public function testAssets($configs, $expected)
+    {
+        $configuration = new Configuration();
+
+        $reflection = new \ReflectionClass($configuration);
+        $property = $reflection->getProperty('defaultAssets');
+        $property->setAccessible(true);
+        $property->setValue($configuration, array('javascripts' => array('default.js'), 'stylesheets' => array('default.css')));
+
+        $processor = new Processor();
+        $config = $processor->processConfiguration($configuration, array_map(function ($config) {return ['assets' => $config];}, $configs));
+
+        $this->assertEquals($expected, $config['assets']);
+    }
+
+    public function getAssetsTests()
+    {
+        return array(
+            array(// Defaults
+                array(),
+                array('javascripts' => array('default.js'), 'stylesheets' => array('default.css')),
+            ),
+            array(// Replace
+                array(
+                    array(
+                        'javascripts' => array(
+                            'someAsset.js',
+                            'someOtherAsset.js',
+                        ),
+                        'stylesheets' => array(
+                            'someAsset.css',
+                            'someOtherAsset.css',
+                        ),
+                    )
+                ),
+                array(
+                    'javascripts' => array(
+                        'someAsset.js',
+                        'someOtherAsset.js',
+                    ),
+                    'stylesheets' => array(
+                        'someAsset.css',
+                        'someOtherAsset.css',
+                    ),
+                ),
+            ),
+            array(// Append
+                array(
+                    array(
+                        'javascripts' => array(
+                            'append' => array(
+                                'appended.js',
+                            ),
+                        ),
+                        'stylesheets' => array(
+                            'append' => array(
+                                'appended.css',
+                            ),
+                        ),
+                    ),
+                ),
+                array(
+                    'javascripts' => array(
+                        'default.js',
+                        'appended.js',
+                    ),
+                    'stylesheets' => array(
+                        'default.css',
+                        'appended.css',
+                    ),
+                ),
+            ),
+            array(// Remove
+                array(
+                    array(
+                        'javascripts' => array(
+                            'remove' => array(
+                                'default.js',
+                            ),
+                        ),
+                        'stylesheets' => array(
+                            'remove' => array(
+                                'default.css',
+                            ),
+                        ),
+                    ),
+                ),
+                array(
+                    'javascripts' => array(),
+                    'stylesheets' => array(),
+                ),
+            ),
+            array(// Merging append
+                array(
+                    array(
+                        'javascripts' => array(
+                            'append' => array(
+                                'appended1.js',
+                            ),
+                        ),
+                        'stylesheets' => array(
+                            'append' => array(
+                                'appended1.css',
+                            ),
+                        ),
+                    ),
+                    array(
+                        'javascripts' => array(
+                            'append' => array(
+                                'appended2.js',
+                            ),
+                        ),
+                        'stylesheets' => array(
+                            'append' => array(
+                                'appended2.css',
+                            ),
+                        ),
+                    ),
+                ),
+                array(
+                    'javascripts' => array(
+                        'default.js',
+                        'appended1.js',
+                        'appended2.js',
+                    ),
+                    'stylesheets' => array(
+                        'default.css',
+                        'appended1.css',
+                        'appended2.css',
+                    ),
+                ),
+            ),
+        );
+    }
 }

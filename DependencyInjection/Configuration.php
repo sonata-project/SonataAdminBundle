@@ -24,36 +24,8 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  */
 class Configuration implements ConfigurationInterface
 {
-    /**
-     * Generates the configuration tree.
-     *
-     * @return \Symfony\Component\Config\Definition\Builder\TreeBuilder
-     */
-    public function getConfigTreeBuilder()
-    {
-        $defaultStylesheets = array(
-            'bundles/sonatacore/vendor/bootstrap/dist/css/bootstrap.min.css',
-            'bundles/sonatacore/vendor/components-font-awesome/css/font-awesome.min.css',
-            'bundles/sonatacore/vendor/ionicons/css/ionicons.min.css',
-            'bundles/sonataadmin/vendor/admin-lte/dist/css/AdminLTE.min.css',
-            'bundles/sonataadmin/vendor/admin-lte/dist/css/skins/skin-black.min.css',
-            'bundles/sonataadmin/vendor/iCheck/skins/square/blue.css',
-
-            'bundles/sonatacore/vendor/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css',
-
-            'bundles/sonataadmin/vendor/jqueryui/themes/base/jquery-ui.css',
-
-            'bundles/sonatacore/vendor/select2/select2.css',
-            'bundles/sonatacore/vendor/select2-bootstrap-css/select2-bootstrap.min.css',
-
-            'bundles/sonataadmin/vendor/x-editable/dist/bootstrap3-editable/css/bootstrap-editable.css',
-
-            'bundles/sonataadmin/css/styles.css',
-            'bundles/sonataadmin/css/layout.css',
-            'bundles/sonataadmin/css/tree.css',
-        );
-
-        $defaultJavascripts = array(
+    private $defaultAssets = array(
+        'javascripts' => array(
             'bundles/sonatacore/vendor/jquery/dist/jquery.min.js',
             'bundles/sonataadmin/vendor/jquery.scrollTo/jquery.scrollTo.min.js',
 
@@ -81,7 +53,38 @@ class Configuration implements ConfigurationInterface
 
             'bundles/sonataadmin/Admin.js',
             'bundles/sonataadmin/treeview.js',
-        );
+        ),
+        'stylesheets' => array(
+            'bundles/sonatacore/vendor/bootstrap/dist/css/bootstrap.min.css',
+            'bundles/sonatacore/vendor/components-font-awesome/css/font-awesome.min.css',
+            'bundles/sonatacore/vendor/ionicons/css/ionicons.min.css',
+            'bundles/sonataadmin/vendor/admin-lte/dist/css/AdminLTE.min.css',
+            'bundles/sonataadmin/vendor/admin-lte/dist/css/skins/skin-black.min.css',
+            'bundles/sonataadmin/vendor/iCheck/skins/square/blue.css',
+
+            'bundles/sonatacore/vendor/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css',
+
+            'bundles/sonataadmin/vendor/jqueryui/themes/base/jquery-ui.css',
+
+            'bundles/sonatacore/vendor/select2/select2.css',
+            'bundles/sonatacore/vendor/select2-bootstrap-css/select2-bootstrap.min.css',
+
+            'bundles/sonataadmin/vendor/x-editable/dist/bootstrap3-editable/css/bootstrap-editable.css',
+
+            'bundles/sonataadmin/css/styles.css',
+            'bundles/sonataadmin/css/layout.css',
+            'bundles/sonataadmin/css/tree.css',
+        ),
+    );
+
+    /**
+     * Generates the configuration tree.
+     *
+     * @return \Symfony\Component\Config\Definition\Builder\TreeBuilder
+     */
+    public function getConfigTreeBuilder()
+    {
+        $defaultAssets = $this->defaultAssets;
 
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('sonata_admin', 'array');
@@ -329,54 +332,8 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('assets')
                     ->addDefaultsIfNotSet()
                     ->children()
-                        ->arrayNode('stylesheets')
-                            ->defaultValue($defaultStylesheets)
-                            ->prototype('scalar')->end()
-                            ->beforeNormalization()
-                                ->always()
-                                ->then(function ($v) use ($defaultStylesheets) {
-                                    if (!isset($v['append']) & !isset($v['remove'])) {
-                                        return $v;
-                                    }
-
-                                    $stylesheets = $defaultStylesheets;
-
-                                    if (isset($v['append'])) {
-                                        $stylesheets = array_merge($stylesheets, $v['append']);
-                                    }
-
-                                    if (isset($v['remove'])) {
-                                        $stylesheets = array_diff($stylesheets, $v['remove']);
-                                    }
-
-                                    return $stylesheets;
-                                })
-                            ->end()
-                        ->end()
-                        ->arrayNode('javascripts')
-                            ->defaultValue($defaultJavascripts)
-                            ->prototype('scalar')->end()
-                            ->beforeNormalization()
-                                ->always()
-                                ->then(function ($v) use ($defaultJavascripts) {
-                                    if (!isset($v['append']) & !isset($v['remove'])) {
-                                        return $v;
-                                    }
-
-                                    $javascripts = $defaultJavascripts;
-
-                                    if (isset($v['append'])) {
-                                        $javascripts = array_merge($javascripts, $v['append']);
-                                    }
-
-                                    if (isset($v['remove'])) {
-                                        $javascripts = array_diff($javascripts, $v['remove']);
-                                    }
-
-                                    return $javascripts;
-                                })
-                            ->end()
-                        ->end()
+                        ->append($this->createAssetNode('javascripts'))
+                        ->append($this->createAssetNode('stylesheets'))
                     ->end()
                 ->end()
 
@@ -421,8 +378,58 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('persist_filters')->defaultFalse()->end()
 
             ->end()
+            ->validate()
+                ->always(function ($v) use ($defaultAssets) {
+                    foreach ($v['assets'] as $type => &$value) {
+                        if ($value['use']) {
+                            $value = $value['use'];
+
+                            continue;
+                        }
+
+                        $assets = $defaultAssets[$type];
+
+                        if ($value['append']) {
+                            $assets = array_merge($assets, $value['append']);
+                        }
+
+                        if ($value['remove']) {
+                            $assets = array_diff($assets, $value['remove']);
+                        }
+
+                        $value = $assets;
+                    }
+
+                    return $v;
+                })
+            ->end()
         ->end();
 
         return $treeBuilder;
+    }
+
+    private function createAssetNode($type)
+    {
+        $builder = new TreeBuilder();
+        $node = $builder->root($type);
+
+        $node
+            ->addDefaultsIfNotSet()
+            ->children()
+                ->arrayNode('use')->prototype('scalar')->end()->end()
+                ->arrayNode('append')->prototype('scalar')->end()->end()
+                ->arrayNode('remove')->prototype('scalar')->end()->end()
+            ->end()
+            ->beforeNormalization()
+                ->ifTrue(function ($value) {
+                    return array_keys($value) === range(0, count($value) - 1);
+                })
+                ->then(function ($value) {
+                    return ['use' => $value];
+                })
+            ->end()
+        ;
+
+        return $node;
     }
 }
