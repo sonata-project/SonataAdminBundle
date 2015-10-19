@@ -56,7 +56,7 @@ class ServicesManipulatorTest extends \PHPUnit_Framework_TestCase
         class: admin_class
         arguments: [~, class, controller_name]
         tags:
-            - {name: sonata.admin, manager_type: manager_type, group: admin, label: class}\n",
+            - { name: sonata.admin, manager_type: manager_type, group: admin, label: class }\n",
             file_get_contents($this->file)
         );
         $this->servicesManipulator->addResource(
@@ -72,13 +72,13 @@ class ServicesManipulatorTest extends \PHPUnit_Framework_TestCase
         class: admin_class
         arguments: [~, class, controller_name]
         tags:
-            - {name: sonata.admin, manager_type: manager_type, group: admin, label: class}
+            - { name: sonata.admin, manager_type: manager_type, group: admin, label: class }
 
     another_service_id:
         class: another_admin_class
         arguments: [~, another_class, another_controller_name]
         tags:
-            - {name: sonata.admin, manager_type: another_manager_type, group: admin, label: another_class}\n",
+            - { name: sonata.admin, manager_type: another_manager_type, group: admin, label: another_class }\n",
             file_get_contents($this->file)
         );
     }
@@ -121,7 +121,7 @@ class ServicesManipulatorTest extends \PHPUnit_Framework_TestCase
         class: admin_class
         arguments: [~, class, controller_name]
         tags:
-            - {name: sonata.admin, manager_type: manager_type, group: admin, label: class}\n",
+            - { name: sonata.admin, manager_type: manager_type, group: admin, label: class }\n",
             file_get_contents($this->file)
         );
     }

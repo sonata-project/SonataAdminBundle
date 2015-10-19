@@ -39,23 +39,26 @@ To specify options, do as follows:
 .. code-block:: php
 
     <?php
+    // src/AppBundle/Admin/PersonAdmin.php
 
-    class MyAdmin extends Admin
+    class PersonAdmin extends Admin
     {
-        # ...
+        // ...
 
         public function configureFormFields(FormMapper $formMapper)
         {
             $formMapper
                 ->tab('General') // the tab call is optional
-                    ->with('Addresses',
-                        array(
-                            'class'       => 'col-md-8',
-                            'box_class'   => 'box box-solid box-danger',
-                            'description' => 'Lorem ipsum',
-                            // ...
-                            ))
+                    ->with('Addresses', array(
+                        'class'       => 'col-md-8',
+                        'box_class'   => 'box box-solid box-danger',
+                        'description' => 'Lorem ipsum',
                         // ...
+                    ))
+                    ->add('title')
+
+                    // ...
+
                     ->end()
                 ->end()
             ;

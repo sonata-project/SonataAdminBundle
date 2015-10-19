@@ -23,7 +23,7 @@ class FormTypeFieldExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $extension = new FormTypeFieldExtension(array(), array());
 
-        $this->assertSame('field', $extension->getExtendedType());
+        $this->assertSame('form', $extension->getExtendedType());
     }
 
     public function testDefaultOptions()

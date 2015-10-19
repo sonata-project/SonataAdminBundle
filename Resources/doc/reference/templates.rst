@@ -108,6 +108,8 @@ You can specify your templates in the config.yml file, like so:
 
     .. code-block:: yaml
 
+        # app/config/config.yml
+
         sonata_admin:
             templates:
                 layout:                         SonataAdminBundle::standard_layout.html.twig
@@ -150,31 +152,30 @@ specify the templates to use in the ``Admin`` service definition:
 
     .. code-block:: xml
 
-        <service id="sonata.admin.post" class="Acme\DemoBundle\Admin\PostAdmin">
-              <tag name="sonata.admin" manager_type="orm" group="Content" label="Post"/>
-              <argument />
-              <argument>Acme\DemoBundle\Entity\Post</argument>
-              <argument />
-              <call method="setTemplate">
-                  <argument>edit</argument>
-                  <argument>AcmeDemoBundle:PostAdmin:edit.html.twig</argument>
-              </call>
-          </service>
+        <service id="app.admin.post" class="AppBundle\Admin\PostAdmin">
+            <tag name="sonata.admin" manager_type="orm" group="Content" label="Post" />
+            <argument />
+            <argument>AppBundle\Entity\Post</argument>
+            <argument />
+            <call method="setTemplate">
+                <argument>edit</argument>
+                <argument>AppBundle:PostAdmin:edit.html.twig</argument>
+            </call>
+        </service>
 
     .. code-block:: yaml
 
         services:
-            sonata.admin.post:
-                class: Acme\DemoBundle\Admin\PostAdmin
+            app.admin.post:
+                class: AppBundle\Admin\PostAdmin
                 tags:
                     - { name: sonata.admin, manager_type: orm, group: "Content", label: "Post" }
                 arguments:
                     - ~
-                    - Acme\DemoBundle\Entity\Post
+                    - AppBundle\Entity\Post
                     - ~
                 calls:
-                    - [ setTemplate, [edit, AcmeDemoBundle:PostAdmin:edit.html.twig]]
-
+                    - [ setTemplate, [edit, AppBundle:PostAdmin:edit.html.twig]]
 
 .. note::
 
@@ -183,7 +184,6 @@ specify the templates to use in the ``Admin`` service definition:
     context, ``setTemplates(array $templates)`` will replace the whole template list for that
     ``Admin`` class, meaning you have to explicitly pass the full template list in the
     ``$templates`` argument.
-
 
 Changes made using the ``setTemplate()`` and ``setTemplates()`` functions override the customizations
 made in the configuration file, so you can specify a global custom template and then override that

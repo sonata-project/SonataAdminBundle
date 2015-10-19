@@ -40,34 +40,47 @@ To do:
 Customizing the fields displayed on the list page
 -------------------------------------------------
 
-You can customize the columns displayed on the list through the ``configureListFields`` method:
+You can customize the columns displayed on the list through the ``configureListFields`` method.
+Here is an example from Sonata E-Commerce Product Admin:
 
 .. code-block:: php
 
     <?php
 
-    // Example taken from Sonata E-Commerce Product Admin
+    // ...
 
-    public function configureListFields(ListMapper $list)
+    public function configureListFields(ListMapper $listMapper)
     {
-        $list
-            // addIdentifier allows to specify that this column will provide a link to the entity's edition
+        $listMapper
+            // addIdentifier allows to specify that this column
+            // will provide a link to the entity
+            // (edit or show route, depends on your access rights)
             ->addIdentifier('name')
 
-            // You may specify the field type directly as the second argument instead of in the options
+            // you may specify the field type directly as the
+            // second argument instead of in the options
             ->add('isVariation', 'boolean')
 
-            // The type can be guessed as well
-            ->add('enabled', null, array('editable' => true))
+            // if null, the type will be guessed
+            ->add('enabled', null, array(
+                'editable' => true
+            ))
 
-            // We can add options to the field depending on the type
-            ->add('price', 'currency', array('currency' => $this->currencyDetector->getCurrency()->getLabel()))
+            // we can add options to the field depending on the type
+            ->add('price', 'currency', array(
+                'currency' => $this->currencyDetector->getCurrency()->getLabel()
+            ))
 
-            // Here we specify which method is used to render the label
-            ->add('productCategories', null, array('associated_tostring' => 'getCategory'))
-            ->add('productCollections', null, array('associated_tostring' => 'getCollection'))
+            // here we specify which method is used to render the label
+            ->add('productCategories', null, array(
+                'associated_tostring' => 'getCategory'
+            ))
+            ->add('productCollections', null, array(
+                'associated_tostring' => 'getCollection'
+            ))
 
-            // You may also use dotted-notation to access specific properties of a relation to the entity
+            // you may also use dotted-notation to access
+            // specific properties of a relation to the entity
             ->add('image.name')
 
             // You may also specify the actions you want to be displayed in the list
@@ -151,7 +164,7 @@ Available types and associated options
 +           +                +                                                                       +
 |           |   parameters   | Route parameters                                                      |
 +           +----------------+-----------------------------------------------------------------------+
-|           | hide_protocol  | Hide http:// or https:// (default false)                              |
+|           | hide_protocol  | Hide http:// or https:// (default: false)                             |
 +-----------+----------------+-----------------------------------------------------------------------+
 
 If you have the SonataDoctrineORMAdminBundle installed, you have access to more field types, see `SonataDoctrineORMAdminBundle Documentation <https://sonata-project.org/bundles/doctrine-orm-admin/master/doc/reference/list_field_definition.html>`_.
@@ -189,34 +202,36 @@ the ``datagridValues`` array property. All three keys ``_page``, ``_sort_order``
 .. code-block:: php
 
     <?php
+    // src/AppBundle/Admin/PostAdmin.php
 
     use Sonata\AdminBundle\Admin\Admin;
 
-    class PageAdmin extends Admin
+    class PostAdmin extends Admin
     {
         // ...
 
-        /**
-         * Default Datagrid values
-         *
-         * @var array
-         */
         protected $datagridValues = array(
-            '_page' => 1,            // display the first page (default = 1)
-            '_sort_order' => 'DESC', // reverse order (default = 'ASC')
-            '_sort_by' => 'updated'  // name of the ordered field
-                                     // (default = the model's id field, if any)
 
-            // the '_sort_by' key can be of the form 'mySubModel.mySubSubModel.myField'.
+            // display the first page (default = 1)
+            '_page' => 1,
+
+            // reverse order (default = 'ASC')
+            '_sort_order' => 'DESC',
+
+            // name of the ordered field (default = the model's id field, if any)
+            '_sort_by' => 'updatedAt',
         );
 
         // ...
     }
 
+.. note::
+
+    The '_sort_by' key can be of the form ``mySubModel.mySubSubModel.myField``.
+
 To do:
 
 - how to sort by multiple fields (this might be a separate recipe?)
-
 
 Filters
 -------
@@ -226,7 +241,7 @@ You can add filters to let user control which data will be displayed.
 .. code-block:: php
 
     <?php
-    // src/Acme/DemoBundle/Admin/PostAdmin.php
+    // src/AppBundle/Admin/PostAdmin.php
 
     use Sonata\AdminBundle\Datagrid\DatagridMapper;
 
@@ -240,6 +255,8 @@ You can add filters to let user control which data will be displayed.
                 ->add('email')
             ;
         }
+
+        // ...
     }
 
 All filters are hidden by default for space-saving. User has to check which filter he wants to use.
@@ -255,7 +272,11 @@ To make the filter always visible (even when it is inactive), set the parameter
     {
         $datagridMapper
             ->add('phone')
-            ->add('email', null, array('show_filter'=>true))
+            ->add('email', null, array(
+                'show_filter' => true
+            ))
+
+            // ...
         ;
     }
 
@@ -267,8 +288,14 @@ Though this ``operator_type`` is automatically detected it can be changed or eve
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('foo', null, array('operator_type' => 'sonata_type_boolean'))
-            ->add('bar', null, array('operator_type' => 'hidden'))
+            ->add('foo', null, array(
+                'operator_type' => 'sonata_type_boolean'
+            ))
+            ->add('bar', null, array(
+                'operator_type' => 'hidden'
+            ))
+
+            // ...
         ;
     }
 
@@ -280,7 +307,12 @@ If you don't need the advanced filters, or all your ``operator_type`` are hidden
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('bar', null, array('operator_type' => 'hidden', 'advanced_filter' => false))
+            ->add('bar', null, array(
+                'operator_type' => 'hidden',
+                'advanced_filter' => false
+            ))
+
+            // ...
         ;
     }
 
@@ -296,7 +328,9 @@ A filter has a ``value`` and an optional ``type``. If no ``type`` is given the d
         '_page' => 1,
         '_sort_order' => 'ASC',
         '_sort_by' => 'id',
-        'foo' => array('value' => 'bar')
+        'foo' => array(
+            'value' => 'bar'
+        )
     );
 
 Available types are represented through classes which can be found here:
@@ -305,6 +339,11 @@ https://github.com/sonata-project/SonataCoreBundle/tree/master/Form/Type
 Types like ``equal`` and ``boolean`` use constants to assign a choice of ``type`` to an ``integer`` for its ``value``:
 
 .. code-block:: php
+
+    <?php
+    // SonataCoreBundle/Form/Type/EqualType.php
+
+    namespace Sonata\CoreBundle\Form\Type;
 
     class EqualType extends AbstractType
     {
@@ -320,8 +359,8 @@ This is an example using these constants for an ``boolean`` type:
 .. code-block:: php
 
     use Sonata\UserBundle\Admin\Model\UserAdmin as SonataUserAdmin;
-    use SonataCoreBundle/blob/master/Form/Type/EqualType.php;
-    use SonataCoreBundle/blob/master/Form/Type/BooleanType;
+    use Sonata\CoreBundle\Form\Type\EqualType;
+    use Sonata\CoreBundle\Form\Type\BooleanType;
 
     class UserAdmin extends SonataUserAdmin
     {
@@ -337,6 +376,11 @@ Please note that setting a ``false`` value on a the ``boolean`` type will not wo
 
 .. code-block:: php
 
+    <?php
+    // SonataCoreBundle/Form/Type/BooleanType.php
+
+    namespace Sonata\CoreBundle\Form\Type;
+
     class BooleanType extends AbstractType
     {
         const TYPE_YES = 1;
@@ -347,8 +391,8 @@ Default filters can also be added to the datagrid values by overriding the ``get
 
 .. code-block:: php
 
-    use SonataCoreBundle/blob/master/Form/Type/EqualType.php;
-    use SonataCoreBundle/blob/master/Form/Type/BooleanType;
+    use Sonata\CoreBundle\Form\Type\EqualType;
+    use Sonata\CoreBundle\Form\Type\BooleanType;
 
     class UserAdmin extends SonataUserAdmin
     {
@@ -409,7 +453,10 @@ If you have the **SonataDoctrineORMAdminBundle** installed you can use the ``doc
                 ->add('full_text', 'doctrine_orm_callback', array(
                     'callback' => array($this, 'getFullTextFilter'),
                     'field_type' => 'text'
-                ));
+                ))
+
+                // ...
+            ;
         }
 
         public function getFullTextFilter($queryBuilder, $alias, $field, $value)
@@ -428,7 +475,7 @@ If you have the **SonataDoctrineORMAdminBundle** installed you can use the ``doc
             return true;
         }
     }
-    
+
 You can also get the filter type which can be helpful to change the operator type of your condition(s):
 
 .. code-block:: php
@@ -442,11 +489,13 @@ You can also get the filter type which can be helpful to change the operator typ
             if (!$value['value']) {
                 return;
             }
-            
+
             $operator = $value['type'] == EqualType::TYPE_IS_EQUAL ? '=' : '!=';
-            
-            $queryBuilder->andWhere($alias.'.username ' . $operator . ' :username')
-                         ->setParameter('username', $value['value']);
+
+            $queryBuilder
+                ->andWhere($alias.'.username '.$operator.' :username')
+                ->setParameter('username', $value['value'])
+            ;
 
             return true;
         }
@@ -475,9 +524,19 @@ You can :
     public function configureListFields(ListMapper $list)
     {
         $list
-            ->add('id', null, array('header_style' => 'width: 5%; text-align: center', 'row_align' => 'center'))
-            ->add('name', 'text', array('header_style' => 'width: 35%')
-            ->add('actions', null, array('header_class' => 'customActions', 'row_align' => 'right')
+            ->add('id', null, array(
+                'header_style' => 'width: 5%; text-align: center',
+                'row_align' => 'center'
+            ))
+            ->add('name', 'text', array(
+                'header_style' => 'width: 35%'
+            )
+            ->add('actions', null, array(
+                'header_class' => 'customActions',
+                'row_align' => 'right'
+            )
+
+            // ...
         ;
     }
 

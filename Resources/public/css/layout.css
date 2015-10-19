@@ -355,6 +355,10 @@ body.fixed .content-header .navbar.stuck {
     border-radius: 0;
 }
 
+.sonata-search-result-list > li {
+    word-wrap: break-word;
+}
+
 .form-actions.stuck {
     position:fixed;
     bottom:0;

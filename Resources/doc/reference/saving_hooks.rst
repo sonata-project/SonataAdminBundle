@@ -29,10 +29,9 @@ advantage.
 Example used with the FOS/UserBundle
 ------------------------------------
 
-The ``FOSUserBundle`` provides authentication features for your Symfony2 Project,
+The ``FOSUserBundle`` provides authentication features for your Symfony Project,
 and is compatible with Doctrine ORM, Doctrine ODM and Propel. See
-`FOSUserBundle on GitHub 
-<https://github.com/FriendsOfSymfony/FOSUserBundle/>`_ for more information.
+`FOSUserBundle on GitHub`_ for more information.
 
 The user management system requires to perform specific calls when the user
 password or username are updated. This is how the Admin bundle can be used to
@@ -89,7 +88,6 @@ solve the issue by using the ``preUpdate`` saving hook.
         }
     }
 
-
 The service declaration where the ``UserManager`` is injected into the Admin class.
 
 .. configuration-block::
@@ -106,3 +104,5 @@ The service declaration where the ``UserManager`` is injected into the Admin cla
                 <argument type="service" id="fos_user.user_manager" />
             </call>
         </service>
+
+.. _FOSUserBundle on GitHub: https://github.com/FriendsOfSymfony/FOSUserBundle/

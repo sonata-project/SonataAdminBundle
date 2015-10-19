@@ -5,7 +5,6 @@ The admin comes with a basic global search available in the upper navigation men
 and look for filter with the option ``global_search`` set to true. If you are using the ``SonataDoctrineORMBundle``
 any text filter will be set to ``true`` by default.
 
-
 Customization
 -------------
 
@@ -17,6 +16,8 @@ The default template values can be configured in the configuration section
 .. configuration-block::
 
     .. code-block:: yaml
+
+        # app/config/config.yml
 
         sonata_admin:
             templates:
@@ -30,6 +31,8 @@ You also need to configure the block in the sonata block config
 
     .. code-block:: yaml
 
+        # app/config/config.yml
+
         sonata_block:
             blocks:
                 sonata.admin.block.search_result:
@@ -41,10 +44,10 @@ You can also configure the block template per admin while defining the admin:
 
     .. code-block:: xml
 
-        <service id="sonata.admin.post" class="Acme\DemoBundle\Admin\PostAdmin">
-              <tag name="sonata.admin" manager_type="orm" group="Content" label="Post"/>
+        <service id="app.admin.post" class="AppBundle\Admin\PostAdmin">
+              <tag name="sonata.admin" manager_type="orm" group="Content" label="Post" />
               <argument />
-              <argument>Acme\DemoBundle\Entity\Post</argument>
+              <argument>AppBundle\Entity\Post</argument>
               <argument />
               <call method="setTemplate">
                   <argument>search_result_block</argument>
@@ -52,9 +55,11 @@ You can also configure the block template per admin while defining the admin:
               </call>
           </service>
 
-
 Performance
 -----------
 
 The current implementation can be expensive if you have a lot of entities as the resulting query does a ``LIKE %query% OR LIKE %query%``...
-There is a work in progress to use an async javascript solution to better load data from the database.
+
+.. note::
+
+    There is a work in progress to use an async JavaScript solution to better load data from the database.

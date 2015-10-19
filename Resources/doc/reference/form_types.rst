@@ -23,11 +23,15 @@ All we need to do now is add a reference for this field in our ``PageAdmin`` cla
 
 .. code-block:: php
 
+    <?php
+    // src/AppBundle/Admin/PageAdmin.php
+
     class PageAdmin extends Admin
     {
         protected function configureFormFields(FormMapper $formMapper)
         {
             $imageFieldOptions = array(); // see available options below
+
             $formMapper
                 ->add('image1', 'sonata_type_model', $imageFieldOptions)
             ;
@@ -85,8 +89,10 @@ btn_add, btn_list, btn_delete and btn_catalogue:
   with these parameters. Setting any of them to ``false`` will hide the
   corresponding button. You can also specify a custom translation catalogue
   for these labels, which defaults to ``SonataAdminBundle``.
-  
-Note: An admin class for the linked model class needs to be defined to render this form type.  
+
+.. note::
+
+    An admin class for the linked model class needs to be defined to render this form type.
 
 sonata_type_model_hidden
 ^^^^^^^^^^^^^^^^^^^^^^^^
@@ -96,11 +102,14 @@ identifier of related entity.
 
 .. code-block:: php
 
+    <?php
+    // src/AppBundle/Admin/PageAdmin.php
+
     class PageAdmin extends Admin
     {
         protected function configureFormFields(FormMapper $formMapper)
         {
-            // generate hidden form field with id of related Category entity
+            // generates hidden form field with id of related Category entity
             $formMapper
                 ->add('categoryId', 'sonata_type_model_hidden')
             ;
@@ -139,16 +148,27 @@ datagrid filter for the property ``title``.
 
 .. code-block:: php
 
+    <?php
+    // src/AppBundle/Admin/ArticleAdmin.php
+
     class ArticleAdmin extends Admin
     {
         protected function configureFormFields(FormMapper $formMapper)
         {
-            // the dropdown autocomplete list will show only Category entities that contains specified text in "title" attribute
+            // the dropdown autocomplete list will show only Category
+            // entities that contain specified text in "title" attribute
             $formMapper
-                ->add('category', 'sonata_type_model_autocomplete', array('property'=>'title'))
+                ->add('category', 'sonata_type_model_autocomplete', array(
+                    'property' => 'title'
+                ))
             ;
         }
     }
+
+.. code-block:: php
+
+    <?php
+    // src/AppBundle/Admin/CategoryAdmin.php
 
     class CategoryAdmin extends Admin
     {
@@ -187,7 +207,7 @@ callback
 
     $formMapper
         ->add('category', 'sonata_type_model_autocomplete', array(
-            'property'=>'title',
+            'property' => 'title',
             'callback' => function ($admin, $property, $value) {
                 $datagrid = $admin->getDatagrid();
                 $queryBuilder = $datagrid->getQuery();
@@ -197,8 +217,8 @@ callback
                 ;
                 $datagrid->setValue($property, null, $value);
             },
-        )
-    );
+        ))
+    ;
 
 to_string_callback
   defaults to null. Callable function that can be used to change the default toString behaviour of entity.
@@ -207,12 +227,12 @@ to_string_callback
 
     $formMapper
         ->add('category', 'sonata_type_model_autocomplete', array(
-            'property'=>'title',
+            'property' => 'title',
             'to_string_callback' => function($entity, $property) {
                 return $entity->getTitle();
             },
-        )
-    );
+        ))
+    ;
 
 multiple
   defaults to false. Set to true, if you`re field is in many-to-many relation.
@@ -227,11 +247,11 @@ items_per_page
   defaults to 10. Number of items per one ajax request.
 
 url
-  defaults to "". Target external remote url for ajax requests.
+  defaults to "". Target external remote URL for ajax requests.
   You usually should not need to set this manually.
 
 route
-  The route ``name`` with ``parameters`` that is used as target url for ajax
+  The route ``name`` with ``parameters`` that is used as target URL for ajax
   requests.
 
 width
@@ -266,14 +286,17 @@ template
 
 .. code-block:: php
 
+    <?php
+    // src/AppBundle/Admin/ArticleAdmin.php
+
     class ArticleAdmin extends Admin
     {
         protected function configureFormFields(FormMapper $formMapper)
         {
             $formMapper
                 ->add('category', 'sonata_type_model_autocomplete', array(
-                    'property'=>'title',
-                    'template'=>'AcmeAdminBundle:Form/Type:sonata_type_model_autocomplete.html.twig'
+                    'property' => 'title',
+                    'template' => 'AppBundle:Form/Type:sonata_type_model_autocomplete.html.twig',
                 ))
             ;
         }
@@ -281,7 +304,7 @@ template
 
 .. code-block:: jinja
 
-    {# in Acme/AdminBundle/Resources/views/Form/Type/sonata_type_model_autocomplete.html.twig #}
+    {# src/AppBundle/Resources/views/Form/Type/sonata_type_model_autocomplete.html.twig #}
 
     {% extends 'SonataAdminBundle:Form/Type:sonata_type_model_autocomplete.html.twig' %}
 
@@ -298,13 +321,19 @@ According the choice made only associated fields are displayed. The others field
 
 .. code-block:: php
 
-    class AcmeMenuAdmin extends Admin
+    <?php
+    // src/AppBundle/Admin/AppMenuAdmin.php
+
+    class AppMenuAdmin extends Admin
     {
         protected function configureFormFields(FormMapper $formMapper)
         {
             $formMapper
                 ->add('linkType', 'sonata_type_choice_field_mask', array(
-                    'choices' =>  array('uri' => 'uri', 'route' => 'route'),
+                    'choices' => array(
+                        'uri' => 'uri',
+                        'route' => 'route',
+                    ),
                     'map' => array(
                         'route' => array('route', 'parameters'),
                         'uri' => array('uri'),
@@ -348,19 +377,19 @@ that looks like this:
 
     .. code-block:: yaml
 
-        # Acme/DemoBundle/Resources/config/admin.yml
+        # src/AppBundle/Resources/config/admin.yml
 
         services:
-            sonata.admin.image:
-                class: Acme\DemoBundle\Admin\ImageAdmin
+            app.admin.image:
+                class: AppBundle\Admin\ImageAdmin
                 tags:
                     - { name: sonata.admin, manager_type: orm, label: "Image" }
                 arguments:
                     - ~
-                    - Acme\DemoBundle\Entity\Image
+                    - AppBundle\Entity\Image
                     - 'SonataAdminBundle:CRUD'
                 calls:
-                    - [ setTranslationDomain, [Acme\DemoBundle]]
+                    - [ setTranslationDomain, [AppBundle]]
 
 .. note::
 
@@ -370,6 +399,9 @@ To embed ``ImageAdmin`` within ``PageAdmin`` we just need to change the referenc
 for the ``image1`` field to ``sonata_type_admin`` in our ``PageAdmin`` class:
 
 .. code-block:: php
+
+    <?php
+    // src/AppBundle/Admin/PageAdmin.php
 
     class PageAdmin extends Admin
     {
@@ -408,7 +440,10 @@ to the underlying forms.
 
 .. code-block:: php
 
-    class AcmeProductAdmin extends Admin
+    <?php
+    // src/AppBundle/Admin/ProductAdmin.php
+
+    class ProductAdmin extends Admin
     {
         protected function configureFormFields(FormMapper $formMapper)
         {
@@ -432,8 +467,12 @@ to the underlying forms.
                     'inline' => 'table',
                     'sortable' => 'position',
                 ))
+
+                // ...
             ;
         }
+
+        // ...
     }
 
 The available options (which can be passed as a third parameter to ``FormMapper::add()``) are:
@@ -445,7 +484,7 @@ btn_add and btn_catalogue:
   for this label, which defaults to ``SonataAdminBundle``.
 
 **TIP**: A jQuery event is fired after a row has been added (``sonata-admin-append-form-element``).
-You can listen to this event to trigger custom javascript (eg: add a calendar widget to a newly added date field)
+You can listen to this event to trigger custom JavaScript (eg: add a calendar widget to a newly added date field)
 
 **TIP**: Setting the 'required' option to true does not cause a requirement of 'at least one' child entity.
 Setting the 'required' option to false causes all nested form fields to become not required as well.
@@ -453,20 +492,20 @@ Setting the 'required' option to false causes all nested form fields to become n
 sonata_type_native_collection (previously collection)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This bundle handle the native symfony ``collection`` form type by adding:
+This bundle handle the native Symfony ``collection`` form type by adding:
 
 * an ``add`` button if you set the ``allow_add`` option to ``true``.
 * a ``delete`` button if you set the ``allow_delete`` option to ``true``.
 
-.. TIP::
+.. tip::
 
     A jQuery event is fired after a row has been added (``sonata-admin-append-form-element``).
-    You can listen to this event to trigger custom javascript (eg: add a calendar widget to a newly added date field)
+    You can listen to this event to trigger custom JavaScript (eg: add a calendar widget to a newly added date field)
 
-.. TIP::
+.. tip::
 
     A jQuery event is fired after a row has been added (``sonata-collection-item-added``)
-    or deleted (``sonata-collection-item-deleted``). You can listen to these events to trigger custom javascript.
+    or deleted (``sonata-collection-item-deleted``). You can listen to these events to trigger custom JavaScript.
 
 FieldDescription options
 ^^^^^^^^^^^^^^^^^^^^^^^^
@@ -486,19 +525,23 @@ example above:
 
 .. code-block:: php
 
+    <?php
+    // src/AppBundle/Admin/PageAdmin.php
+
     class PageAdmin extends Admin
     {
         protected function configureFormFields(FormMapper $formMapper)
         {
             $formMapper
-                ->add(
-                  'image1',
-                  'sonata_type_admin',
-                  array(),
-                  array('admin_code' => 'sonata.admin.imageSpecial')
-                )
+                ->add('image1', 'sonata_type_admin', array(), array(
+                    'admin_code' => 'sonata.admin.imageSpecial'
+                ))
+
+                // ...
             ;
         }
+
+        // ...
     }
 
 Other specific field configuration options are detailed in the related
@@ -514,8 +557,24 @@ General
 
 .. code-block:: php
 
-        <?php
-        $form->add('status', null, array('label' => false);
+    <?php
+    // src/AppBundle/Admin/PageAdmin.php
+
+    class PageAdmin extends Admin
+    {
+        protected function configureFormFields(FormMapper $formMapper)
+        {
+            $formMapper
+                ->add('status', null, array(
+                    'label' => false
+                ))
+
+                // ...
+            ;
+        }
+
+        // ...
+    }
 
 ChoiceType
 ^^^^^^^^^^
@@ -524,11 +583,25 @@ ChoiceType
 
 .. code-block:: php
 
-        <?php
-        $form->add('multiChoices', 'choice', array(
-            'multiple' => true,
-            'sortable' => true
-        );
+    <?php
+    // src/AppBundle/Admin/PageAdmin.php
+
+    class PageAdmin extends Admin
+    {
+        protected function configureFormFields(FormMapper $formMapper)
+        {
+            $formMapper
+                ->add('multiChoices', 'choice', array(
+                    'multiple' => true,
+                    'sortable' => true,
+                ))
+
+                // ...
+            ;
+        }
+
+        // ...
+    }
 
 .. _`Symfony field types`: http://symfony.com/doc/current/book/forms.html#built-in-field-types
 .. _`Symfony choice Field Type docs`: http://symfony.com/doc/current/reference/forms/types/choice.html

@@ -16,6 +16,7 @@ this in your ``config.yml``:
     .. code-block:: yaml
 
         # app/config/config.yml
+
         sonata_admin:
             templates:
                 dashboard: SonataAdminBundle:Core:dashboard.html.twig
@@ -64,20 +65,20 @@ services:
 
     .. code-block:: xml
 
-        <service id="sonata.admin.post" class="Acme\DemoBundle\Admin\PostAdmin">
+        <service id="app.admin.post" class="AppBundle\Admin\PostAdmin">
               <tag name="sonata.admin" manager_type="orm"
                   group="Content"
-                  label="Post"/>
+                  label="Post" />
               <argument />
-              <argument>Acme\DemoBundle\Entity\Post</argument>
+              <argument>AppBundle\Entity\Post</argument>
               <argument />
           </service>
 
     .. code-block:: yaml
 
         services:
-            sonata.admin.post:
-                class: Acme\DemoBundle\Admin\PostAdmin
+            app.admin.post:
+                class: AppBundle\Admin\PostAdmin
                 tags:
                     - name: sonata.admin
                       manager_type: orm
@@ -85,7 +86,7 @@ services:
                       label: "Post"
                 arguments:
                     - ~
-                    - Acme\DemoBundle\Entity\Post
+                    - AppBundle\Entity\Post
                     - ~
 
 In these examples, notice the ``group`` tag, stating that this particular ``Admin``
@@ -95,38 +96,38 @@ service belongs to the ``Content`` group.
 
     .. code-block:: xml
 
-        <service id="sonata.admin.post" class="Acme\DemoBundle\Admin\PostAdmin">
+        <service id="app.admin.post" class="AppBundle\Admin\PostAdmin">
               <tag name="sonata.admin" manager_type="orm"
-                  group="acme.admin.group.content"
-                  label="acme.admin.model.post" label_catalogue="AcmeDemoBundle"/>
+                  group="app.admin.group.content"
+                  label="app.admin.model.post" label_catalogue="AppBundle" />
               <argument />
-              <argument>Acme\DemoBundle\Entity\Post</argument>
+              <argument>AppBundle\Entity\Post</argument>
               <argument />
           </service>
 
     .. code-block:: yaml
 
         services:
-            sonata.admin.post:
-                class: Acme\DemoBundle\Admin\PostAdmin
+            app.admin.post:
+                class: AppBundle\Admin\PostAdmin
                 tags:
                     - name: sonata.admin
                       manager_type: orm
-                      group: "acme.admin.group.content"
-                      label: "acme.admin.model.post"
-                      label_catalogue: "AcmeDemoBundle"
+                      group: "app.admin.group.content"
+                      label: "app.admin.model.post"
+                      label_catalogue: "AppBundle"
                 arguments:
                     - ~
-                    - Acme\DemoBundle\Entity\Post
+                    - AppBundle\Entity\Post
                     - ~
 
-In this example, the labels are translated by ``AcmeDemoBundle``, using the given
+In this example, the labels are translated by ``AppBundle``, using the given
 ``label_catalogue``. So, you can use the above examples to support multiple languages
 in your project.
 
 .. note::
 
-    You can use parameters (e.g. ``%acme_admin.group_post%``) for the group names
+    You can use parameters (e.g. ``%app_admin.group_post%``) for the group names
     in either scenario.
 
 Using the ``config.yml``
@@ -141,20 +142,23 @@ declarations.
     .. code-block:: yaml
 
         # app/config/config.yml
+
         sonata_admin:
             dashboard:
                 groups:
-                    acme.admin.group.content:
-                        label: acme.admin.group.content
-                        label_catalogue: AcmeDemoBundle
+                    app.admin.group.content:
+                        label: app.admin.group.content
+                        label_catalogue: AppBundle
                         items:
-                            - sonata.admin.post
-                    acme.admin.group.blog:
+                            - app.admin.post
+
+                    app.admin.group.blog:
                         items: ~
                         item_adds:
                             - sonata.admin.page
                         roles: [ ROLE_ONE, ROLE_TWO ]
-                    acme.admin.group.misc: ~
+
+                    app.admin.group.misc: ~
 
 .. note::
 
@@ -162,16 +166,16 @@ declarations.
     not need to use all the displayed options. To use a default value for any setting
     either leave out that key or use the ``~`` value for that option.
 
-This configuration specifies that the ``acme.admin.group.content`` group uses the
-``acme.admin.group.content`` label, which is translated using the ``AcmeDemoBundle``
+This configuration specifies that the ``app.admin.group.content`` group uses the
+``app.admin.group.content`` label, which is translated using the ``AppBundle``
 translation catalogue (the same label and translation configuration that we declared
 previously, in the service definition example).
 
-It also states that the ``acme.admin.group.content`` group contains just the
-``sonata.admin.post`` ``Admin`` mapping, meaning that any other ``Admin`` services
+It also states that the ``app.admin.group.content`` group contains just the
+``app.admin.post`` ``Admin`` mapping, meaning that any other ``Admin`` services
 declared as belonging to this group will not be displayed here.
 
-Secondly, we declare a ``acme.admin.group.blog`` group as having all its default items
+Secondly, we declare a ``app.admin.group.blog`` group as having all its default items
 (i.e. the ones specified in the ``Admin`` service declarations), plus an *additional*
 ``sonata.admin.page`` mapping, that was not initially part of this group.
 
@@ -180,7 +184,7 @@ or ``ROLE_TWO`` privileges will be able to see this group, as opposed to the def
 which allows everyone to see a given group. Users with ``ROLE_SUPER_ADMIN`` are always
 able to see groups that would otherwise be hidden by this configuration option.
 
-The third group, ``acme.admin.group.misc``, is set up as a group which uses all its
+The third group, ``app.admin.group.misc``, is set up as a group which uses all its
 default values, as declared in the service declarations.
 
 
@@ -203,6 +207,7 @@ a text block and RSS feed block on the right. The configuration for this scenari
     .. code-block:: yaml
 
         # app/config/config.yml
+
         sonata_admin:
             dashboard:
                 blocks:
@@ -227,7 +232,6 @@ a text block and RSS feed block on the right. The configuration for this scenari
                             title: Sonata Project's Feeds
                             url: https://sonata-project.org/blog/archive.rss
 
-
 .. note::
 
     Blocks may accept/require additional settings to be passed in order to
@@ -250,9 +254,11 @@ suit this scenario.
     .. code-block:: yaml
 
         # app/config/config.yml
+
         sonata_admin:
             dashboard:
                 blocks:
+
                     # display two dashboard blocks
                     -
                         position: left
@@ -269,10 +275,12 @@ suit this scenario.
                     sonata_page1:
                         items:
                             - sonata.page.admin.myitem1
+
                     sonata_page2:
                         items:
                             - sonata.page.admin.myitem2
                             - sonata.page.admin.myitem3
+
                     sonata_page3:
                         items:
                             - sonata.page.admin.myitem4
@@ -321,14 +329,15 @@ Supported positions right now are the following:
 
 The layout is as follows:
 
-TOP     TOP     TOP
+.. code-block:: bash
 
- LEFT CENTER RIGHT
- LEFT CENTER RIGHT
- LEFT CENTER RIGHT
+    TOP     TOP     TOP
 
-BOTTOM BOTTOM BOTTOM
+     LEFT CENTER RIGHT
+     LEFT CENTER RIGHT
+     LEFT CENTER RIGHT
 
+    BOTTOM BOTTOM BOTTOM
 
 On ``top`` and ``bottom`` positions, you can also specify an optionnal ``class`` option to set the width of the block.
 
@@ -337,10 +346,12 @@ On ``top`` and ``bottom`` positions, you can also specify an optionnal ``class``
     .. code-block:: yaml
 
         # app/config/config.yml
+
         sonata_admin:
             dashboard:
                 blocks:
-                    # display one dashboard block in the top zone with a col-md-6 HTML class
+
+                    # display dashboard block in the top zone with a col-md-6 css class
                     -
                         position: top
                         class: col-md-6

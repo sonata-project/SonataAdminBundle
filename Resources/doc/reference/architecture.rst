@@ -19,12 +19,16 @@ By now you've seen 3 of those actions in the ``getting started`` page: list,
 filter and form (for creation/editing). However, a fully configured ``Admin`` class
 can define more actions:
 
-* ``list``: The fields displayed in the list table
-* ``filter``: The fields available for filtering the list
-* ``form``: The fields used to create/edit the entity
-* ``show``: The fields used to show the entity
-* Batch actions: Actions that can be performed on a group of entities
-  (e.g. bulk delete)
+=============       =========================================================================
+Actions             Description
+=============       =========================================================================
+list                The fields displayed in the list table
+filter              The fields available for filtering the list
+form                The fields used to create/edit the entity
+show                The fields used to show the entity
+batch actions       Actions that can be performed on a group of entities (e.g. bulk delete)
+=============       =========================================================================
+
 
 The ``Sonata\AdminBundle\Admin\Admin`` class is provided as an easy way to
 map your models, by extending it. However, any implementation of the
@@ -32,20 +36,24 @@ map your models, by extending it. However, any implementation of the
 service. For each ``Admin`` service, the following required dependencies are
 automatically injected by the bundle:
 
-* ``ConfigurationPool``: configuration pool where all Admin class instances are stored
-* ``ModelManager``: service which handles specific code relating to your persistence layer (e.g. Doctrine ORM)
-* ``FormContractor``: builds the forms for the edit/create views using the Symfony ``FormBuilder``
-* ``ShowBuilder``: builds the show fields
-* ``ListBuilder``: builds the list fields
-* ``DatagridBuilder``: builds the filter fields
-* ``Request``: the received http request
-* ``RouteBuilder``: allows you to add routes for new actions and remove routes for default actions
-* ``RouterGenerator``: generates the different urls
-* ``SecurityHandler``: handles permissions for model instances and actions
-* ``Validator``: handles model validation
-* ``Translator``: generates translations
-* ``LabelTranslatorStrategy``: a strategy to use when generating labels
-* ``MenuFactory``: generates the side menu, depending on the current action
+=========================       =========================================================================
+Class                           Description
+=========================       =========================================================================
+ConfigurationPool               configuration pool where all Admin class instances are stored
+ModelManager                    service which handles specific code relating to your persistence layer (e.g. Doctrine ORM)
+FormContractor                  builds the forms for the edit/create views using the Symfony ``FormBuilder``
+ShowBuilder                     builds the show fields
+ListBuilder                     builds the list fields
+DatagridBuilder                 builds the filter fields
+Request                         the received http request
+RouteBuilder                    allows you to add routes for new actions and remove routes for default actions
+RouterGenerator                 generates the different URLs
+SecurityHandler                 handles permissions for model instances and actions
+Validator                       handles model validation
+Translator                      generates translations
+LabelTranslatorStrategy         a strategy to use when generating labels
+MenuFactory                     generates the side menu, depending on the current action
+=========================       =========================================================================
 
 .. note::
 
@@ -55,16 +63,16 @@ automatically injected by the bundle:
 
 
 All of these dependencies have default values that you can override when declaring any of
-your ``Admin`` services. This is done using a ``call`` to the matching "setter":
+your ``Admin`` services. This is done using a ``call`` to the matching ``setter`` :
 
 .. configuration-block::
 
     .. code-block:: xml
 
-        <service id="sonata.admin.post" class="Acme\DemoBundle\Admin\PostAdmin">
-              <tag name="sonata.admin" manager_type="orm" group="Content" label="Post"/>
+        <service id="app.admin.post" class="AppBundle\Admin\PostAdmin">
+              <tag name="sonata.admin" manager_type="orm" group="Content" label="Post" />
               <argument />
-              <argument>Acme\DemoBundle\Entity\Post</argument>
+              <argument>AppBundle\Entity\Post</argument>
               <argument />
               <call method="setLabelTranslatorStrategy">
                   <argument>sonata.admin.label.strategy.underscore</argument>
@@ -74,13 +82,13 @@ your ``Admin`` services. This is done using a ``call`` to the matching "setter":
     .. code-block:: yaml
 
         services:
-            sonata.admin.post:
-                class: Acme\DemoBundle\Admin\PostAdmin
+            app.admin.post:
+                class: AppBundle\Admin\PostAdmin
                 tags:
                     - { name: sonata.admin, manager_type: orm, group: "Content", label: "Post" }
                 arguments:
                     - ~
-                    - Acme\DemoBundle\Entity\Post
+                    - AppBundle\Entity\Post
                     - ~
                 calls:
                     - [ setLabelTranslatorStrategy, ["@sonata.admin.label.strategy.underscore"]]
@@ -103,44 +111,42 @@ or how to build the list view. Inside the ``CRUDController``, you can access the
 
     `CRUD is an acronym`_ for "Create, Read, Update and Delete"
 
-The ``CRUDController`` is no different from any other Symfony2 controller, meaning
+The ``CRUDController`` is no different from any other Symfony controller, meaning
 that you have all the usual options available to you, like getting services from
 the Dependency Injection Container (DIC).
 
 This is particularly useful if you decide to extend the ``CRUDController`` to
 add new actions or change the behavior of existing ones. You can specify which controller
 to use when declaring the ``Admin`` service by passing it as the 3rd argument. For example
-to set the controller to ``AcmeDemoBundle:PostAdmin``:
+to set the controller to ``AppBundle:PostAdmin``:
 
 .. configuration-block::
 
     .. code-block:: xml
 
-        <services>
-           <service id="sonata.admin.post" class="Acme\DemoBundle\Admin\PostAdmin">
-              <tag name="sonata.admin" manager_type="orm" group="Content" label="Post"/>
-              <argument />
-              <argument>Acme\DemoBundle\Entity\Post</argument>
-              <argument>AcmeDemoBundle:PostAdmin</argument>
-              <call method="setTranslationDomain">
-                  <argument>AcmeDemoBundle</argument>
-              </call>
-          </service>
-       </services>
+        <service id="app.admin.post" class="AppBundle\Admin\PostAdmin">
+            <tag name="sonata.admin" manager_type="orm" group="Content" label="Post" />
+            <argument />
+            <argument>AppBundle\Entity\Post</argument>
+            <argument>AppBundle:PostAdmin</argument>
+            <call method="setTranslationDomain">
+                <argument>AppBundle</argument>
+            </call>
+        </service>
 
     .. code-block:: yaml
 
         services:
-            sonata.admin.post:
-                class: Acme\DemoBundle\Admin\PostAdmin
+            app.admin.post:
+                class: AppBundle\Admin\PostAdmin
                 tags:
                     - { name: sonata.admin, manager_type: orm, group: "Content", label: "Post" }
                 arguments:
                     - ~
-                    - Acme\DemoBundle\Entity\Post
-                    - AcmeDemoBundle:PostAdmin
+                    - AppBundle\Entity\Post
+                    - AppBundle:PostAdmin
                 calls:
-                    - [ setTranslationDomain, [AcmeDemoBundle]]
+                    - [ setTranslationDomain, [AppBundle]]
 
 When extending ``CRUDController``, remember that the ``Admin`` class already has
 a set of automatically injected dependencies that are useful when implementing several
@@ -158,7 +164,6 @@ the number of duplicated code from SonataAdmin:
 These methods are called after checking the access rights and after retrieving the object
 from database. You can use them if you need to redirect user to some other page under certain conditions.
 
-
 Fields Definition
 -----------------
 
@@ -171,43 +176,65 @@ which stores instances of ``FieldDescriptionInterface``. Picking up on our previ
 .. code-block:: php
 
     <?php
-    namespace Acme\DemoBundle\Admin;
+    // src/AppBundle/Admin/PostAdmin.php
+
+    namespace AppBundle\Admin;
 
     use Sonata\AdminBundle\Admin\Admin;
     use Sonata\AdminBundle\Datagrid\ListMapper;
     use Sonata\AdminBundle\Datagrid\DatagridMapper;
     use Sonata\AdminBundle\Form\FormMapper;
+    use Sonata\AdminBundle\Show\ShowMapper;
 
     class PostAdmin extends Admin
     {
-       // Fields to be shown on create/edit forms
-       protected function configureFormFields(FormMapper $formMapper)
-       {
-           $formMapper
-               ->add('title', 'text', array('label' => 'Post Title'))
-               ->add('author', 'entity', array('class' => 'Acme\DemoBundle\Entity\User'))
-               ->add('body') //if no type is specified, SonataAdminBundle tries to guess it
-           ;
-       }
+        // Fields to be shown on create/edit forms
+        protected function configureFormFields(FormMapper $formMapper)
+        {
+            $formMapper
+                ->add('title', 'text', array(
+                    'label' => 'Post Title'
+                ))
+                ->add('author', 'entity', array(
+                    'class' => 'AppBundle\Entity\User'
+                ))
 
-       // Fields to be shown on filter forms
-       protected function configureDatagridFilters(DatagridMapper $datagridMapper)
-       {
-           $datagridMapper
-               ->add('title')
-               ->add('author')
-           ;
-       }
+                // if no type is specified, SonataAdminBundle tries to guess it
+                ->add('body')
 
-       // Fields to be shown on lists
-       protected function configureListFields(ListMapper $listMapper)
-       {
-           $listMapper
-               ->addIdentifier('title')
-               ->add('slug')
-               ->add('author')
-           ;
-       }
+                // ...
+            ;
+        }
+
+        // Fields to be shown on filter forms
+        protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+        {
+            $datagridMapper
+                ->add('title')
+                ->add('author')
+            ;
+        }
+
+        // Fields to be shown on lists
+        protected function configureListFields(ListMapper $listMapper)
+        {
+            $listMapper
+                ->addIdentifier('title')
+                ->add('slug')
+                ->add('author')
+            ;
+        }
+
+        // Fields to be shown on show action
+        protected function configureShowFields(ShowMapper $showMapper)
+        {
+            $showMapper
+                ->add('id)
+                ->add('title')
+                ->add('slug')
+                ->add('author')
+            ;
+        }
     }
 
 Internally, the provided ``Admin`` class will use these three functions to create three
@@ -219,6 +246,8 @@ Internally, the provided ``Admin`` class will use these three functions to creat
   for title and author
 * ``$listFieldDescriptions``, containing three ``FieldDescriptionInterface`` instances
   for title, slug and author
+* ``$showFieldDescriptions``, containing four ``FieldDescriptionInterface`` instances
+  for id, title, slug and author
 
 The actual ``FieldDescription`` implementation is provided by the storage abstraction
 bundle that you choose during the installation process, based on the
@@ -276,13 +305,11 @@ instead of the default ones.
 Managing ``Admin`` Service
 --------------------------
 
-Your ``Admin`` service definitions are parsed when Symfony2 is loaded, and handled by
+Your ``Admin`` service definitions are parsed when Symfony is loaded, and handled by
 the ``Pool`` class. This class, available as the ``sonata.admin.pool`` service from the
 DIC, handles the ``Admin`` classes, lazy-loading them on demand (to reduce overhead)
 and matching each of them to a group. It is also responsible for handling the top level
 template files, administration panel title and logo.
-
-
 
 Create child admins
 -------------------
@@ -293,16 +320,18 @@ where the comments will automatically be filtered by post.
 
 To do this, you first need to call the ``addChild`` method in your PostAdmin service configuration :
 
-.. code-block:: xml
+.. configuration-block::
 
-    <!-- app/config/config.xml -->
-    <service id="sonata.news.admin.post" class="Sonata\NewsBundle\Admin\PostAdmin">
-        ...
+    .. code-block:: xml
 
-        <call method="addChild">
-            <argument type="service" id="sonata.news.admin.comment" />
-        </call>
-    </service>
+        <!-- app/config/config.xml -->
+        <service id="sonata.news.admin.post" class="Sonata\NewsBundle\Admin\PostAdmin">
+            <!-- ... -->
+
+            <call method="addChild">
+                <argument type="service" id="sonata.news.admin.comment" />
+            </call>
+        </service>
 
 Then, you have to set the CommentAdmin ``parentAssociationMapping`` attribute to ``post`` :
 
@@ -311,7 +340,7 @@ Then, you have to set the CommentAdmin ``parentAssociationMapping`` attribute to
     <?php
     namespace Sonata\NewsBundle\Admin;
 
-    ...
+    // ...
 
     class CommentAdmin extends Admin
     {

@@ -35,33 +35,37 @@ Create your controller:
 
 Add the controller route as an item of the menu:
 
-.. code-block:: yaml
+.. configuration-block::
 
-    # Default configuration for "SonataAdminBundle"
-    sonata_admin:
-        dashboard:
-            groups:
-                news:
-                    label:                ~
-                    label_catalogue:      ~
-                    items:
-                        - sonata.news.admin.post
-                        - route:        blog_home
-                          label:        Blog
-                        - route:        blog_article
-                          route_params: { articleId: 3 }
-                          label:        Article
-                    ...
+    .. code-block:: yaml
+
+        # app/config/config.yml
+
+        sonata_admin:
+            dashboard:
+                groups:
+                    news:
+                        label:                ~
+                        label_catalogue:      ~
+                        items:
+                            - sonata.news.admin.post
+                            - route:        blog_home
+                              label:        Blog
+                            - route:        blog_article
+                              route_params: { articleId: 3 }
+                              label:        Article
 
 You can also override the template of knp_menu used by sonata. The default one is `SonataAdminBundle:Menu:sonata_menu.html.twig`:
 
-.. code-block:: yaml
+.. configuration-block::
 
-    # Default configuration for "SonataAdminBundle"
-    sonata_admin:
-        templates:
-            knp_menu_template:           ApplicationAdminBundle:Menu:custom_knp_menu.html.twig
-        ...
+    .. code-block:: yaml
+
+        # app/config/config.yml
+
+        sonata_admin:
+            templates:
+                knp_menu_template:           ApplicationAdminBundle:Menu:custom_knp_menu.html.twig
 
 And voilà, now you have a menu group which contains a link to a sonata admin via its id, to your blog and to a specific article.
 
@@ -72,14 +76,18 @@ As seen above, the main way to declare your menu is by declaring items in your s
 
 The following configuration uses a menu provider to populate the menu group ``my_group``:
 
-.. code-block:: yaml
+.. configuration-block::
 
-    sonata_admin:
-        dashboard:
-            groups:
-                my_group:
-                    provider:        'MyBundle:MyMenuProvider:getMyMenu'
-                    icon:            '<i class="fa fa-edit"></i>'
+    .. code-block:: yaml
+
+        # app/config/config.yml
+
+        sonata_admin:
+            dashboard:
+                groups:
+                    my_group:
+                        provider:        'MyBundle:MyMenuProvider:getMyMenu'
+                        icon:            '<i class="fa fa-edit"></i>'
 
 With KnpMenuBundle you can create a custom menu by using a builder class or by declaring it as a service. Please see the `Knp documentation`_ for further information.
 
@@ -87,6 +95,9 @@ In sonata, whatever the implementation you choose, you only have to provide the 
 
 * If you are using a builder class, your menu alias should be something like ``MyBundle:MyMenuProvider:getMyMenu``.
 * If you are using a service, your menu alias is the alias set in the ``knp_menu.menu`` tag. In the following example this is ``my_menu_alias``:
+
+.. configuration-block::
+
     .. code-block:: xml
 
         <service id="my_menu_provider" class="MyBundle/MyDirectory/MyMenuProvider">
@@ -102,7 +113,9 @@ You can modify the menu via events easily. You can register as many listeners as
 
 .. code-block:: php
 
+    <?php
     // src/AppBundle/EventListener/MenuBuilderListener.php
+
     namespace AppBundle\EventListener;
 
     use Sonata\AdminBundle\Event\ConfigureMenuEvent;
@@ -113,20 +126,26 @@ You can modify the menu via events easily. You can register as many listeners as
         {
             $menu = $event->getMenu();
 
-            $menu->addChild('reports', array(
+            $child = $menu->addChild('reports', array(
                 'route' => 'app_reports_index',
-                'labelAttributes' => array('icon' => 'glyphicon glyphicon-stats'),
-            ))->setLabel('Daily and monthly reports');
+                'labelAttributes' => array('icon' => 'fa fa-bar-chart'),
+            ));
+
+            $child->setLabel('Daily and monthly reports');
         }
     }
 
-.. code-block:: yaml
+.. configuration-block::
 
-    services:
-        app.menu_listener:
-            class: AppBundle\EventListener\MenuBuilderListener
-            tags:
-                - { name: kernel.event_listener, event: sonata.admin.event.configure.menu.sidebar, method: addMenuItems }
+    .. code-block:: yaml
+
+        # src/AppBundle/Resources/config/services.yml
+
+        services:
+            app.menu_listener:
+                class: AppBundle\EventListener\MenuBuilderListener
+                tags:
+                    - { name: kernel.event_listener, event: sonata.admin.event.configure.menu.sidebar, method: addMenuItems }
 
 Please see the `Using events to allow a menu to be extended`_ for further information.
 
