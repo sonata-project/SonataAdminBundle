@@ -462,6 +462,10 @@
                 <source>no_subclass_available</source>
                 <target>Nem található objektum típus</target>
             </trans-unit>
+            <trans-unit id="label_unknown_user">
+                <source>label_unknown_user</source>
+                <target>label_unknown_user</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

@@ -36,10 +36,8 @@ file that was distributed with this source code.
                             <tr class="{% if (currentRevision != false and revision.rev == currentRevision.rev) %}current-revision{% endif %}">
                                 <td>{{ revision.rev }}</td>
                                 <td>{% include admin.getTemplate('history_revision_timestamp') %}</td>
-                                <td>{{ revision.username }}</td>
-                                <td>
-                                    <a href="{{ admin.generateObjectUrl('history_view_revision', object, {'revision': revision.rev }) }}" class="revision-link" rel="{{ revision.rev }}">{{ 'label_view_revision'|trans({}, 'SonataAdminBundle') }}</a>
-                                </td>
+                                <td>{{ revision.username|default('label_unknown_user'|trans({}, 'SonataAdminBundle')) }}</td>
+                                <td><a href="{{ admin.generateObjectUrl('history_view_revision', object, {'revision': revision.rev }) }}" class="revision-link" rel="{{ revision.rev }}">{{ "label_view_revision"|trans({}, 'SonataAdminBundle') }}</a></td>
                                 <td>
                                     {% if (currentRevision == false or revision.rev == currentRevision.rev) %}
                                         /
