@@ -517,15 +517,18 @@ var Admin = {
 
         // On form submit, transform value to match what is expected by server
         subject.parents('form:first').submit(function (event) {
-            var values   = subject.val().split(',');
-            var baseName = subject.attr('name');
-            baseName = baseName.substring(0, baseName.length-1);
-            for (var i=0; i<values.length; i++) {
-                jQuery('<input>')
-                    .attr('type', 'hidden')
-                    .attr('name', baseName+i+']')
-                    .val(values[i])
-                    .appendTo(subject.parents('form:first'));
+            var values = subject.val().trim();
+            if (values !== '') {
+                var baseName = subject.attr('name');
+                values   = values.split(',');
+                baseName = baseName.substring(0, baseName.length-1);
+                for (var i=0; i<values.length; i++) {
+                    jQuery('<input>')
+                        .attr('type', 'hidden')
+                        .attr('name', baseName+i+']')
+                        .val(values[i])
+                        .appendTo(subject.parents('form:first'));
+                }
             }
             subject.remove();
         });
