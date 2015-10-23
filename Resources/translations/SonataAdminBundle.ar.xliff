@@ -452,15 +452,15 @@
             </trans-unit>
             <trans-unit id="stats_view_more">
                 <source>stats_view_more</source>
-                <target>View more</target>
+                <target>stats_view_more</target>
             </trans-unit>
             <trans-unit id="title_select_subclass">
                 <source>title_select_subclass</source>
-                <target>Select object type</target>
+                <target>title_select_subclass</target>
             </trans-unit>
             <trans-unit id="no_subclass_available">
                 <source>no_subclass_available</source>
-                <target>No object types available</target>
+                <target>no_subclass_available</target>
             </trans-unit>
         </body>
     </file>
