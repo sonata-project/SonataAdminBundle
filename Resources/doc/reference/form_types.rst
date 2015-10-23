@@ -94,6 +94,10 @@ btn_add, btn_list, btn_delete and btn_catalogue:
 
     An admin class for the linked model class needs to be defined to render this form type.
 
+.. note::
+
+    If you need to use a sortable ``sonata_type_model`` check the :doc:`recipe_sortable_sonata_type_model` page.
+
 sonata_type_model_hidden
 ^^^^^^^^^^^^^^^^^^^^^^^^
 Setting a field type of ``sonata_type_model_hidden`` will use an instance of
