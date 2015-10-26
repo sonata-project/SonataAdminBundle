@@ -9,6 +9,8 @@ When defining fields in your Admin classes you can use any of the standard
 there are some special Sonata field types which allow you to work with
 relationships between one entity class and another.
 
+.. _field-types-model:
+
 sonata_type_model
 ^^^^^^^^^^^^^^^^^
 
