@@ -24,16 +24,39 @@ use Symfony\Component\Translation\TranslatorInterface;
 
 class AdminExtractor implements ExtractorInterface, TranslatorInterface, SecurityHandlerInterface, LabelTranslatorStrategyInterface
 {
+    /**
+     * @var LoggerInterface
+     */
     private $logger;
+
+    /**
+     * @var Pool
+     */
     private $adminPool;
+
+    /**
+     * @var string|bool
+     */
     private $catalogue;
+
+    /**
+     * @var string|bool
+     */
     private $translator;
+
+    /**
+     * @var string|bool
+     */
     private $labelStrategy;
+
+    /**
+     * @var string|bool
+     */
     private $domain;
 
     /**
-     * @param \Sonata\AdminBundle\Admin\Pool                    $adminPool
-     * @param \Symfony\Component\HttpKernel\Log\LoggerInterface $logger
+     * @param Pool            $adminPool
+     * @param LoggerInterface $logger
      */
     public function __construct(Pool $adminPool, LoggerInterface $logger = null)
     {
@@ -48,7 +71,7 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
     }
 
     /**
-     * @param \Symfony\Component\HttpKernel\Log\LoggerInterface $logger
+     * @param LoggerInterface $logger
      */
     public function setLogger(LoggerInterface $logger)
     {
@@ -129,7 +152,7 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
     /**
      * @param string $id
      *
-     * @return \Sonata\AdminBundle\Admin\AdminInterface
+     * @return AdminInterface
      */
     private function getAdmin($id)
     {

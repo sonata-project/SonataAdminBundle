@@ -26,10 +26,29 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class MenuBuilder
 {
+    /**
+     * @var Pool
+     */
     private $pool;
+
+    /**
+     * @var FactoryInterface
+     */
     private $factory;
+
+    /**
+     * @var MenuProviderInterface
+     */
     private $provider;
+
+    /**
+     * @var Request
+     */
     private $request;
+
+    /**
+     * @var EventDispatcherInterface
+     */
     private $eventDispatcher;
 
     /**

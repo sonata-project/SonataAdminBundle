@@ -61,8 +61,6 @@ interface AdminExtensionInterface
      * @param string            $action
      * @param AdminInterface    $childAdmin
      *
-     * @return mixed
-     *
      * @deprecated
      */
     public function configureSideMenu(AdminInterface $admin, MenuItemInterface $menu, $action, AdminInterface $childAdmin = null);
@@ -74,8 +72,6 @@ interface AdminExtensionInterface
      * @param MenuItemInterface $menu
      * @param string            $action
      * @param AdminInterface    $childAdmin
-     *
-     * @return mixed
      */
     public function configureTabMenu(AdminInterface $admin, MenuItemInterface $menu, $action, AdminInterface $childAdmin = null);
 
@@ -90,8 +86,6 @@ interface AdminExtensionInterface
      * @param AdminInterface      $admin
      * @param ProxyQueryInterface $query
      * @param string              $context
-     *
-     * @return mixed
      */
     public function configureQuery(AdminInterface $admin, ProxyQueryInterface $query, $context = 'list');
 
@@ -107,9 +101,7 @@ interface AdminExtensionInterface
      * Get a chance to modify object instance.
      *
      * @param AdminInterface $admin
-     * @param  $object
-     *
-     * @return mixed
+     * @param mixed          $object
      */
     public function alterObject(AdminInterface $admin, $object);
 

@@ -26,6 +26,9 @@ use Symfony\Component\Form\FormView;
  */
 class AdminHelper
 {
+    /**
+     * @var Pool
+     */
     protected $pool;
 
     /**
@@ -39,10 +42,10 @@ class AdminHelper
     /**
      * @throws \RuntimeException
      *
-     * @param \Symfony\Component\Form\FormBuilderInterface $formBuilder
-     * @param string                                       $elementId
+     * @param FormBuilderInterface $formBuilder
+     * @param string               $elementId
      *
-     * @return \Symfony\Component\Form\FormBuilderInterface
+     * @return FormBuilderInterface
      */
     public function getChildFormBuilder(FormBuilderInterface $formBuilder, $elementId)
     {
@@ -56,10 +59,10 @@ class AdminHelper
     }
 
     /**
-     * @param \Symfony\Component\Form\FormView $formView
-     * @param string                           $elementId
+     * @param FormView $formView
+     * @param string   $elementId
      *
-     * @return null|\Symfony\Component\Form\FormView
+     * @return null|FormView
      */
     public function getChildFormView(FormView $formView, $elementId)
     {
@@ -77,7 +80,7 @@ class AdminHelper
      *
      * @param string $code
      *
-     * @return \Sonata\AdminBundle\Admin\AdminInterface
+     * @return AdminInterface
      */
     public function getAdmin($code)
     {
@@ -92,9 +95,9 @@ class AdminHelper
      *
      * @throws \RuntimeException
      *
-     * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
-     * @param object                                   $subject
-     * @param string                                   $elementId
+     * @param AdminInterface $admin
+     * @param object         $subject
+     * @param string         $elementId
      *
      * @return array
      */
@@ -158,8 +161,8 @@ class AdminHelper
     /**
      * Add a new instance to the related FieldDescriptionInterface value.
      *
-     * @param object                                              $object
-     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
+     * @param object                    $object
+     * @param FieldDescriptionInterface $fieldDescription
      *
      * @throws \RuntimeException
      */

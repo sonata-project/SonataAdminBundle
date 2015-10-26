@@ -173,7 +173,7 @@ class FormMapper extends BaseGroupedMapper
     }
 
     /**
-     * @return \Symfony\Component\Form\FormBuilderInterface
+     * @return FormBuilderInterface
      */
     public function getFormBuilder()
     {
@@ -185,7 +185,7 @@ class FormMapper extends BaseGroupedMapper
      * @param mixed  $type
      * @param array  $options
      *
-     * @return \Symfony\Component\Form\FormBuilderInterface
+     * @return FormBuilderInterface
      */
     public function create($name, $type = null, array $options = array())
     {

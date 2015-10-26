@@ -22,10 +22,13 @@ use Sonata\AdminBundle\Model\AuditManagerInterface;
  */
 class QueryStringBuilder implements RouteBuilderInterface
 {
+    /**
+     * @var AuditManagerInterface
+     */
     protected $manager;
 
     /**
-     * @param \Sonata\AdminBundle\Model\AuditManagerInterface $manager
+     * @param AuditManagerInterface $manager
      */
     public function __construct(AuditManagerInterface $manager)
     {
@@ -33,8 +36,8 @@ class QueryStringBuilder implements RouteBuilderInterface
     }
 
     /**
-     * @param \Sonata\AdminBundle\Admin\AdminInterface  $admin
-     * @param \Sonata\AdminBundle\Route\RouteCollection $collection
+     * @param AdminInterface  $admin
+     * @param RouteCollection $collection
      */
     public function build(AdminInterface $admin, RouteCollection $collection)
     {

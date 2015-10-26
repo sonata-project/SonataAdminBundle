@@ -13,6 +13,7 @@ namespace Sonata\AdminBundle\Search;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
+use Sonata\AdminBundle\Datagrid\PagerInterface;
 use Sonata\AdminBundle\Filter\FilterInterface;
 
 /**
@@ -22,6 +23,9 @@ use Sonata\AdminBundle\Filter\FilterInterface;
  */
 class SearchHandler
 {
+    /**
+     * @var Pool
+     */
     protected $pool;
 
     /**
@@ -38,7 +42,7 @@ class SearchHandler
      * @param int            $page
      * @param int            $offset
      *
-     * @return \Sonata\AdminBundle\Datagrid\PagerInterface
+     * @return PagerInterface
      *
      * @throws \RuntimeException
      */

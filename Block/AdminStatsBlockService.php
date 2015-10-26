@@ -25,12 +25,15 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class AdminStatsBlockService extends BaseBlockService
 {
+    /**
+     * @var Pool
+     */
     protected $pool;
 
     /**
-     * @param string                                                     $name
-     * @param \Symfony\Bundle\FrameworkBundle\Templating\EngineInterface $templating
-     * @param \Sonata\AdminBundle\Admin\Pool                             $pool
+     * @param string          $name
+     * @param EngineInterface $templating
+     * @param Pool            $pool
      */
     public function __construct($name, EngineInterface $templating, Pool $pool)
     {

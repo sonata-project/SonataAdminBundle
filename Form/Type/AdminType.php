@@ -12,6 +12,8 @@
 namespace Sonata\AdminBundle\Form\Type;
 
 use Doctrine\Common\Collections\Collection;
+use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Form\DataTransformer\ArrayToModelTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -135,7 +137,7 @@ class AdminType extends AbstractType
     /**
      * @param array $options
      *
-     * @return \Sonata\AdminBundle\Admin\FieldDescriptionInterface
+     * @return FieldDescriptionInterface
      *
      * @throws \RuntimeException
      */
@@ -151,7 +153,7 @@ class AdminType extends AbstractType
     /**
      * @param array $options
      *
-     * @return \Sonata\AdminBundle\Admin\AdminInterface
+     * @return AdminInterface
      */
     protected function getAdmin(array $options)
     {

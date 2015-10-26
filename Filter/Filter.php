@@ -18,12 +18,24 @@ namespace Sonata\AdminBundle\Filter;
  */
 abstract class Filter implements FilterInterface
 {
+    /**
+     * @var string|null
+     */
     protected $name = null;
 
+    /**
+     * @var mixed|null
+     */
     protected $value = null;
 
+    /**
+     * @var array
+     */
     protected $options = array();
 
+    /**
+     * @var string
+     */
     protected $condition;
 
     /**

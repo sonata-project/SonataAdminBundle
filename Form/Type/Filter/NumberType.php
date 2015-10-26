@@ -34,10 +34,13 @@ class NumberType extends AbstractType
 
     const TYPE_LESS_THAN = 5;
 
+    /**
+     * @var TranslatorInterface
+     */
     protected $translator;
 
     /**
-     * @param \Symfony\Component\Translation\TranslatorInterface $translator
+     * @param TranslatorInterface $translator
      */
     public function __construct(TranslatorInterface $translator)
     {

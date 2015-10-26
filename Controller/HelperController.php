@@ -15,6 +15,7 @@ use Sonata\AdminBundle\Admin\AdminHelper;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Filter\FilterInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -38,25 +39,25 @@ class HelperController
     protected $twig;
 
     /**
-     * @var \Sonata\AdminBundle\Admin\AdminHelper
+     * @var AdminHelper
      */
     protected $helper;
 
     /**
-     * @var \Sonata\AdminBundle\Admin\Pool
+     * @var Pool
      */
     protected $pool;
 
     /**
-     * @var \Symfony\Component\Validator\Validator\ValidatorInterface|\Symfony\Component\Validator\ValidatorInterface
+     * @var ValidatorInterface|ValidatorInterface
      */
     protected $validator;
 
     /**
-     * @param \Twig_Environment                                         $twig
-     * @param \Sonata\AdminBundle\Admin\Pool                            $pool
-     * @param \Sonata\AdminBundle\Admin\AdminHelper                     $helper
-     * @param \Symfony\Component\Validator\Validator\ValidatorInterface $validator
+     * @param \Twig_Environment  $twig
+     * @param Pool               $pool
+     * @param AdminHelper        $helper
+     * @param ValidatorInterface $validator
      */
     public function __construct(\Twig_Environment $twig, Pool $pool, AdminHelper $helper, $validator)
     {
@@ -71,11 +72,11 @@ class HelperController
     }
 
     /**
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     * @throws NotFoundHttpException
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function appendFormFieldElementAction(Request $request)
     {
@@ -118,11 +119,11 @@ class HelperController
     }
 
     /**
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     * @throws NotFoundHttpException
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function retrieveFormFieldElementAction(Request $request)
     {
@@ -166,11 +167,11 @@ class HelperController
     }
 
     /**
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException|\RuntimeException
+     * @throws NotFoundHttpException|\RuntimeException
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function getShortObjectDescriptionAction(Request $request)
     {
@@ -219,9 +220,9 @@ class HelperController
     }
 
     /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function setObjectFieldValueAction(Request $request)
     {
@@ -453,7 +454,7 @@ class HelperController
      * @param AdminInterface $admin
      * @param string         $field
      *
-     * @return \Symfony\Component\Form\FormInterface
+     * @return FormInterface
      *
      * @throws \RuntimeException
      */
@@ -480,7 +481,7 @@ class HelperController
      * @param AdminInterface $admin
      * @param string         $field
      *
-     * @return \Symfony\Component\Form\FormInterface
+     * @return FormInterface
      *
      * @throws \RuntimeException
      */

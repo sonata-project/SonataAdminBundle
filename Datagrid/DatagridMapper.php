@@ -24,12 +24,15 @@ use Sonata\AdminBundle\Mapper\BaseMapper;
  */
 class DatagridMapper extends BaseMapper
 {
+    /**
+     * @var DatagridInterface
+     */
     protected $datagrid;
 
     /**
-     * @param \Sonata\AdminBundle\Builder\DatagridBuilderInterface $datagridBuilder
-     * @param DatagridInterface                                    $datagrid
-     * @param \Sonata\AdminBundle\Admin\AdminInterface             $admin
+     * @param DatagridBuilderInterface $datagridBuilder
+     * @param DatagridInterface        $datagrid
+     * @param AdminInterface           $admin
      */
     public function __construct(DatagridBuilderInterface $datagridBuilder, DatagridInterface $datagrid, AdminInterface $admin)
     {
@@ -87,9 +90,7 @@ class DatagridMapper extends BaseMapper
     }
 
     /**
-     * @param string $name
-     *
-     * @return \Sonata\AdminBundle\Filter\FilterInterface
+     * {@inheritdoc}
      */
     public function get($name)
     {
@@ -97,9 +98,7 @@ class DatagridMapper extends BaseMapper
     }
 
     /**
-     * @param string $key
-     *
-     * @return bool
+     * {@inheritdoc}
      */
     public function has($key)
     {
@@ -107,9 +106,7 @@ class DatagridMapper extends BaseMapper
     }
 
     /**
-     * @param string $key
-     *
-     * @return \Sonata\AdminBundle\Datagrid\DatagridMapper
+     * {@inheritdoc}
      */
     public function remove($key)
     {
@@ -120,9 +117,7 @@ class DatagridMapper extends BaseMapper
     }
 
     /**
-     * @param array $keys field names
-     *
-     * @return \Sonata\AdminBundle\Datagrid\ListMapper
+     * {@inheritdoc}
      */
     public function reorder(array $keys)
     {

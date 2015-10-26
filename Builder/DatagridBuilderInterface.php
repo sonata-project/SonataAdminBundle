@@ -25,18 +25,18 @@ interface DatagridBuilderInterface extends BuilderInterface
     /**
      * @abstract
      *
-     * @param \Sonata\AdminBundle\Datagrid\DatagridInterface      $datagrid
-     * @param string                                              $type
-     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
-     * @param \Sonata\AdminBundle\Admin\AdminInterface            $admin
+     * @param DatagridInterface         $datagrid
+     * @param string                    $type
+     * @param FieldDescriptionInterface $fieldDescription
+     * @param AdminInterface            $admin
      */
     public function addFilter(DatagridInterface $datagrid, $type, FieldDescriptionInterface $fieldDescription, AdminInterface $admin);
 
     /**
-     * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
-     * @param array                                    $values
+     * @param AdminInterface $admin
+     * @param array          $values
      *
-     * @return \Sonata\AdminBundle\Datagrid\DatagridInterface
+     * @return DatagridInterface
      */
     public function getBaseDatagrid(AdminInterface $admin, array $values = array());
 }

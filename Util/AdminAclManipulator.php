@@ -25,6 +25,9 @@ use Symfony\Component\Security\Acl\Model\AclInterface;
  */
 class AdminAclManipulator implements AdminAclManipulatorInterface
 {
+    /**
+     * @var string
+     */
     protected $maskBuilderClass;
 
     /**

@@ -40,7 +40,7 @@ interface AuditManagerInterface
      *
      * @param string $class
      *
-     * @return \Sonata\AdminBundle\Model\AuditReaderInterface
+     * @return AuditReaderInterface
      *
      * @throws \RuntimeException
      */

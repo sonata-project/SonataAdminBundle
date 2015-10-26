@@ -17,6 +17,7 @@ use Sonata\AdminBundle\Filter\FilterInterface;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
 
 /**
  * Class Datagrid.
@@ -32,20 +33,44 @@ class Datagrid implements DatagridInterface
      */
     protected $filters = array();
 
+    /**
+     * @var array
+     */
     protected $values;
 
+    /**
+     * @var FieldDescriptionCollection
+     */
     protected $columns;
 
+    /**
+     * @var PagerInterface
+     */
     protected $pager;
 
+    /**
+     * @var bool
+     */
     protected $bound = false;
 
+    /**
+     * @var ProxyQueryInterface
+     */
     protected $query;
 
+    /**
+     * @var FormBuilderInterface
+     */
     protected $formBuilder;
 
+    /**
+     * @var FormInterface
+     */
     protected $form;
 
+    /**
+     * @var array
+     */
     protected $results;
 
     /**

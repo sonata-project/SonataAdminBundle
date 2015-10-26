@@ -21,12 +21,24 @@ use Symfony\Component\Routing\RouterInterface;
  */
 class DefaultRouteGenerator implements RouteGeneratorInterface
 {
+    /**
+     * @var RouterInterface
+     */
     private $router;
 
+    /**
+     * @var RoutesCache
+     */
     private $cache;
 
+    /**
+     * @var array
+     */
     private $caches = array();
 
+    /**
+     * @var string[]
+     */
     private $loaded = array();
 
     /**

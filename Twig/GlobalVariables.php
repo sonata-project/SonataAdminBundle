@@ -21,6 +21,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class GlobalVariables
 {
+    /**
+     * @var ContainerInterface
+     */
     protected $container;
 
     /**

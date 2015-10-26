@@ -30,10 +30,13 @@ class ChoiceType extends AbstractType
 
     const TYPE_EQUAL = 3;
 
+    /**
+     * @var TranslatorInterface
+     */
     protected $translator;
 
     /**
-     * @param \Symfony\Component\Translation\TranslatorInterface $translator
+     * @param TranslatorInterface $translator
      */
     public function __construct(TranslatorInterface $translator)
     {

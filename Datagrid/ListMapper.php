@@ -25,6 +25,9 @@ use Sonata\AdminBundle\Mapper\BaseMapper;
  */
 class ListMapper extends BaseMapper
 {
+    /**
+     * @var FieldDescriptionCollection
+     */
     protected $list;
 
     /**
@@ -116,9 +119,7 @@ class ListMapper extends BaseMapper
     }
 
     /**
-     * @param string $name
-     *
-     * @return FieldDescriptionInterface
+     * {@inheritdoc}
      */
     public function get($name)
     {
@@ -126,9 +127,7 @@ class ListMapper extends BaseMapper
     }
 
     /**
-     * @param string $key
-     *
-     * @return bool
+     * {@inheritdoc}
      */
     public function has($key)
     {
@@ -136,9 +135,7 @@ class ListMapper extends BaseMapper
     }
 
     /**
-     * @param string $key
-     *
-     * @return ListMapper
+     * {@inheritdoc}
      */
     public function remove($key)
     {
@@ -149,9 +146,7 @@ class ListMapper extends BaseMapper
     }
 
     /**
-     * @param array $keys field names
-     *
-     * @return ListMapper
+     * {@inheritdoc}
      */
     public function reorder(array $keys)
     {
