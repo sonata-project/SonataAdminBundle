@@ -83,10 +83,12 @@ class ModelToIdPropertyTransformer implements DataTransformerInterface
         if (!$entityOrCollection) {
             return $result;
         }
+
         if ($this->multiple) {
-            if (substr(get_class($entityOrCollection), -1 * strlen($this->className)) == $this->className) {
+            $isArray = is_array($entityOrCollection);
+            if (!$isArray && substr(get_class($entityOrCollection), -1 * strlen($this->className)) == $this->className) {
                 throw new \InvalidArgumentException('A multiple selection must be passed a collection not a single value. Make sure that form option "multiple=false" is set for many-to-one relation and "multiple=true" is set for many-to-many or one-to-many relations.');
-            } elseif ($entityOrCollection instanceof \ArrayAccess) {
+            } elseif ($isArray || ($entityOrCollection instanceof \ArrayAccess)) {
                 $collection = $entityOrCollection;
             } else {
                 throw new \InvalidArgumentException('A multiple selection must be passed a collection not a single value. Make sure that form option "multiple=false" is set for many-to-one relation and "multiple=true" is set for many-to-many or one-to-many relations.');

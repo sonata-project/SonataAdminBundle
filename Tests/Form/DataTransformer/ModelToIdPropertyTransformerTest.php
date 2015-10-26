@@ -195,7 +195,7 @@ class ModelToIdPropertyTransformerTest extends \PHPUnit_Framework_TestCase
         $collection[] = $entity2;
         $collection[] = $entity3;
 
-        $this->modelManager->expects($this->exactly(3))
+        $this->modelManager->expects($this->exactly(6))
             ->method('getIdentifierValues')
             ->will($this->returnCallback(function ($value) use ($entity1, $entity2, $entity3) {
                 if ($value == $entity1) {
@@ -220,7 +220,9 @@ class ModelToIdPropertyTransformerTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(array('identifiers' => array(), 'labels' => array()), $transformer->transform(0));
         $this->assertSame(array('identifiers' => array(), 'labels' => array()), $transformer->transform('0'));
 
-        $this->assertSame(array('identifiers' => array(123, 456, 789), 'labels' => array('foo', 'bar', 'baz')), $transformer->transform($collection));
+        $expected = array('identifiers' => array(123, 456, 789), 'labels' => array('foo', 'bar', 'baz'));
+        $this->assertSame($expected, $transformer->transform($collection));
+        $this->assertSame($expected, $transformer->transform($collection->toArray()));
     }
 
     /**
