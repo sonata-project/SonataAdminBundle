@@ -260,14 +260,17 @@ class CRUDController extends Controller
      * Execute a batch delete.
      *
      * @param ProxyQueryInterface $query
+     * @param Request             $request
      *
      * @return RedirectResponse
      *
      * @throws AccessDeniedException If access is not granted
      */
-    public function batchActionDelete(ProxyQueryInterface $query)
+    public function batchActionDelete(ProxyQueryInterface $query, Request $request = null)
     {
         $this->admin->checkAccess('batchDelete');
+
+        $request = $this->resolveRequest($request);
 
         $modelManager = $this->admin->getModelManager();
         try {
@@ -568,7 +571,7 @@ class CRUDController extends Controller
         $isRelevantAction = sprintf('batchAction%sIsRelevant', ucfirst($camelizedAction));
 
         if (method_exists($this, $isRelevantAction)) {
-            $nonRelevantMessage = call_user_func(array($this, $isRelevantAction), $idx, $allElements);
+            $nonRelevantMessage = call_user_func(array($this, $isRelevantAction), $idx, $allElements, $request);
         } else {
             $nonRelevantMessage = count($idx) != 0 || $allElements; // at least one item is selected
         }
@@ -629,7 +632,7 @@ class CRUDController extends Controller
             $query = null;
         }
 
-        return call_user_func(array($this, $finalAction), $query);
+        return call_user_func(array($this, $finalAction), $query, $request);
     }
 
     /**

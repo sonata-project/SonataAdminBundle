@@ -75,10 +75,11 @@ granularity), the passed query is ``null``.
     {
         /**
          * @param ProxyQueryInterface $selectedModelQuery
+         * @param Request             $request
          *
          * @return RedirectResponse
          */
-        public function batchActionMerge(ProxyQueryInterface $selectedModelQuery)
+        public function batchActionMerge(ProxyQueryInterface $selectedModelQuery, Request $request = null)
         {
             if (!$this->admin->isGranted('EDIT') || !$this->admin->isGranted('DELETE')) {
                 throw new AccessDeniedException();
@@ -193,7 +194,7 @@ This method may return three different values:
 
     class CRUDController extends BaseController
     {
-        public function batchActionMergeIsRelevant(array $selectedIds, $allEntitiesSelected)
+        public function batchActionMergeIsRelevant(array $selectedIds, $allEntitiesSelected, Request $request = null)
         {
             // here you have access to all POST parameters, if you use some custom ones
             // POST parameters are kept even after the confirmation page.
