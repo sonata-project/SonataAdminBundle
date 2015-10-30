@@ -1078,6 +1078,16 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     /**
      * {@inheritdoc}
      */
+    public function addSubClass($subClass)
+    {
+        if (!in_array($subClass, $this->subClasses)) {
+            $this->subClasses[] = $subClass;
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function setSubClasses(array $subClasses)
     {
         $this->subClasses = $subClasses;
