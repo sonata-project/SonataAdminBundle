@@ -10,19 +10,21 @@ file that was distributed with this source code.
 #}
 {% spaceless %}
 
+    {% set attr = attr|merge({'class': attr.class|default('') ~ ' form-control'}) %}
     <input type="text" id="{{ id }}_autocomplete_input" value=""
         {%- if read_only %} readonly="readonly"{% endif -%}
         {%- if disabled %} disabled="disabled"{% endif -%}
         {%- if required %} required="required"{% endif %}
+        class="{{ attr.class }}"
     />
 
     <div id="{{ id }}_hidden_inputs_wrap">
         {% if multiple -%}
             {%- for idx, val in value if idx~'' != '_labels' -%}
-                <input type="hidden" name="{{ full_name }}[]" {%- if disabled %} disabled="disabled"{% endif %} value="{{ val }}">
+                <input type="hidden" name="{{ full_name }}[]" class="{{ attr.class }}" {%- if disabled %} disabled="disabled"{% endif %} value="{{ val }}">
             {%- endfor -%}
         {% else -%}
-            <input type="hidden" name="{{ full_name }}" {%- if disabled %} disabled="disabled"{% endif %} value="{{ value[0]|default('') }}">
+            <input type="hidden" name="{{ full_name }}" class="{{ attr.class }}" {%- if disabled %} disabled="disabled"{% endif %} value="{{ value[0]|default('') }}">
         {% endif -%}
     </div>
 
