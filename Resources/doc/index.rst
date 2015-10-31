@@ -11,6 +11,18 @@ Admin Bundle
 
 The demo website can be found in http://demo.sonata-project.org (``admin`` as user and password).
 
+Getting Started
+---------------
+
+.. toctree::
+    :maxdepth: 1
+    :numbered:
+
+    getting_started/installation
+    getting_started/creating_an_admin
+    getting_started/the_form_view
+    getting_started/the_list_view
+
 Reference Guide
 ---------------
 

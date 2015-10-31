@@ -339,6 +339,12 @@ td.sonata-ba-list-field .editable-empty:not(.editable-open) {
 .editable-pre-wrapped {
     white-space: normal;
 }
+.editable-container .prev:before {
+    content: "\2190 ";
+}
+.editable-container .next:before {
+    content: "\2192 ";
+}
 
 /* bootstrap */
 .input-group-addon {
