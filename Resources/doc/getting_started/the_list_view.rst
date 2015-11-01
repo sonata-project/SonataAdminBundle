@@ -184,7 +184,7 @@ the search field to use the ``name`` property of the Category:
         protected function configureDatagridFilters(DatagridMapper $datagridMapper)
         {
             $datagridMapper
-                ->add('title');
+                ->add('title')
                 ->add('category', null, array(), 'entity', array(
                     'class'    => 'AppBundle\Entity\Category',
                     'property' => 'name',
