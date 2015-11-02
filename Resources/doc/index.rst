@@ -87,3 +87,4 @@ Cookbook
    cookbook/recipe_virtual_field
    cookbook/recipe_bootlint
    cookbook/recipe_lock_protection
+   cookbook/recipe_sortable_sonata_type_model
