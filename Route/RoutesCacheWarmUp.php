@@ -40,7 +40,7 @@ class RoutesCacheWarmUp implements CacheWarmerInterface
      */
     public function isOptional()
     {
-        true;
+        return true;
     }
 
     /**
