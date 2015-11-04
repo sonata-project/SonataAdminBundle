@@ -15,14 +15,29 @@ use Symfony\Component\Routing\Route;
 
 class RouteCollection
 {
+    /**
+     * @var Route[]
+     */
     protected $elements = array();
 
+    /**
+     * @var string
+     */
     protected $baseCodeRoute;
 
+    /**
+     * @var string
+     */
     protected $baseRouteName;
 
+    /**
+     * @var string
+     */
     protected $baseControllerName;
 
+    /**
+     * @var string
+     */
     protected $baseRoutePattern;
 
     /**
@@ -46,7 +61,7 @@ class RouteCollection
      * @param array  $requirements
      * @param array  $options
      *
-     * @return \Sonata\AdminBundle\Route\RouteCollection
+     * @return RouteCollection
      */
     public function add($name, $pattern = null, array $defaults = array(), array $requirements = array(), array $options = array())
     {
@@ -88,7 +103,7 @@ class RouteCollection
     /**
      * @param RouteCollection $collection
      *
-     * @return \Sonata\AdminBundle\Route\RouteCollection
+     * @return RouteCollection
      */
     public function addCollection(RouteCollection $collection)
     {
@@ -114,7 +129,7 @@ class RouteCollection
     }
 
     /**
-     * @return array
+     * @return Route[]
      */
     public function getElements()
     {
@@ -158,7 +173,7 @@ class RouteCollection
     /**
      * @param string $name
      *
-     * @return \Sonata\AdminBundle\Route\RouteCollection
+     * @return RouteCollection
      */
     public function remove($name)
     {
@@ -172,7 +187,7 @@ class RouteCollection
      *
      * @param array $routeList
      *
-     * @return \Sonata\AdminBundle\Route\RouteCollection
+     * @return RouteCollection
      */
     public function clearExcept(array $routeList)
     {
@@ -194,7 +209,7 @@ class RouteCollection
     /**
      * Remove all routes.
      *
-     * @return \Sonata\AdminBundle\Route\RouteCollection
+     * @return RouteCollection
      */
     public function clear()
     {
