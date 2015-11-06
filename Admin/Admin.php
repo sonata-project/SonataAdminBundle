@@ -1158,8 +1158,9 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
         if ($this->hasRoute('delete') && $this->isGranted('DELETE')) {
             $actions['delete'] = array(
-                'label'            => $this->trans('action_delete', array(), 'SonataAdminBundle'),
-                'ask_confirmation' => true, // by default always true
+                'label'              => 'action_delete',
+                'translation_domain' => 'SonataAdminBundle',
+                'ask_confirmation'   => true, // by default always true
             );
         }
 
