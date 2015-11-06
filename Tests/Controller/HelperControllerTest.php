@@ -538,10 +538,6 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
         $fieldDescription = $this->getMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
 
         $fieldDescription->expects($this->once())
-            ->method('getType')
-            ->will($this->returnValue('sonata_type_model_autocomplete'));
-
-        $fieldDescription->expects($this->once())
             ->method('getTargetEntity')
             ->will($this->returnValue('Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Foo'));
 
@@ -609,10 +605,6 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
         $entity = new Foo();
 
         $fieldDescription = $this->getMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
-
-        $fieldDescription->expects($this->once())
-            ->method('getType')
-            ->will($this->returnValue('sonata_type_model_autocomplete'));
 
         $fieldDescription->expects($this->once())
             ->method('getTargetEntity')

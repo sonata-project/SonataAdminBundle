@@ -462,10 +462,6 @@ class HelperController
             throw new \RuntimeException(sprintf('The field "%s" does not exist.', $field));
         }
 
-        if ($fieldDescription->getType() !== 'sonata_type_model_autocomplete') {
-            throw new \RuntimeException(sprintf('Unsupported form type "%s" for field "%s".', $fieldDescription->getType(), $field));
-        }
-
         if (null === $fieldDescription->getTargetEntity()) {
             throw new \RuntimeException(sprintf('No associated entity with field "%s".', $field));
         }
