@@ -98,7 +98,7 @@ btn_add, btn_list, btn_delete and btn_catalogue:
 
 .. note::
 
-    If you need to use a sortable ``sonata_type_model`` check the :doc:`recipe_sortable_sonata_type_model` page.
+    If you need to use a sortable ``sonata_type_model`` check the :doc:`../cookbook/recipe_sortable_sonata_type_model` page.
 
 sonata_type_model_hidden
 ^^^^^^^^^^^^^^^^^^^^^^^^
