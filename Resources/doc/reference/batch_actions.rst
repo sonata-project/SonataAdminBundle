@@ -37,7 +37,8 @@ merges them onto a single target item. It should only be available when two cond
           $this->hasRoute('delete') && $this->isGranted('DELETE')
         ) {
             $actions['merge'] = array(
-                'label' => $this->trans('action_merge', array(), 'SonataAdminBundle'),
+                'label' => 'action_merge',
+                'translation_domain' => 'SonataAdminBundle'
                 'ask_confirmation' => true
             );
 
