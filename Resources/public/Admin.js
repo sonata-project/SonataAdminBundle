@@ -313,7 +313,7 @@ var Admin = {
         Admin.log('[core|setup_collection_counter] setup collection counter', subject);
 
         // Count and save element of each collection
-        var highestCounterRegexp = new RegExp('_([0-9])+$');
+        var highestCounterRegexp = new RegExp('_([0-9]+)[^0-9]*$');
         jQuery(subject).find('[data-prototype]').each(function() {
             var collection = jQuery(this);
             var counter = 0;
