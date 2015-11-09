@@ -14,11 +14,9 @@ file that was distributed with this source code.
 {% block field %}
 {% spaceless %}
     {% if value %}
-        <i class="fa fa-check-circle-o"></i>
-        {%- trans from 'SonataAdminBundle' %}label_type_yes{% endtrans -%}
+        <span class="label label-success">{%- trans from 'SonataAdminBundle' %}label_type_yes{% endtrans -%}</span>
     {% else %}
-        <i class="fa fa-ban"></i>
-        {%- trans from 'SonataAdminBundle' %}label_type_no{% endtrans -%}
+        <span class="label label-danger">{%- trans from 'SonataAdminBundle' %}label_type_no{% endtrans -%}</span>
     {% endif %}
 {% endspaceless %}
 {% endblock %}
