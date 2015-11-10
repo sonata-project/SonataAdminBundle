@@ -78,7 +78,7 @@ Or by overwriting the configuration in your ``config.yml``:
                 - AcmeDemoBundle:CRUD
 
 
-For more information about service configuration please refer to Step 3 of :doc:`../reference/getting_started`
+For more information about service configuration please refer to Step 3 of :doc:`../getting_started/creating_an_admin`
 
 Create the custom action in your Controller
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
