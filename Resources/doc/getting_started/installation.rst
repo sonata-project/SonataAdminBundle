@@ -137,6 +137,11 @@ You can do this by importing them in the routing configuration:
         resource: "@SonataAdminBundle/Resources/config/routing/sonata_admin.xml"
         prefix: /admin
 
+    _sonata_admin:
+        resource: .
+        type: sonata_admin
+        prefix: /admin
+
 Step 5: Preparing your Environment
 ----------------------------------
 

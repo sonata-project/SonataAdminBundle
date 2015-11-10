@@ -169,22 +169,6 @@ provides a compiler pass which takes care of configuring it correctly for you.
 You can often tweak things using tag attributes. The code shown here is the
 shortest code needed to get it working.
 
-Step 4: Register SonataAdmin custom Routes
-------------------------------------------
-
-SonataAdminBundle generates routes for the Admin classes on the fly. To load these
-routes, you have to make sure the routing loader of the SonataAdminBundle is executed:
-
-.. code-block:: yaml
-
-    # app/config/routing.yml
-
-    # ...
-    _sonata_admin:
-        resource: .
-        type: sonata_admin
-        prefix: /admin
-
 View the Category Admin Interface
 ---------------------------------
 
