@@ -32,6 +32,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Security\Csrf\CsrfToken;
 
 /**
  * Test for CRUDController.
@@ -197,26 +198,50 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $auditManager = $this->auditManager;
         $adminObjectAclManipulator = $this->adminObjectAclManipulator;
 
-        $this->csrfProvider = $this->getMockBuilder(
-            'Symfony\Component\Form\Extension\Csrf\CsrfProvider\CsrfProviderInterface'
-        )
-            ->getMock();
+        // Prefer Symfony 2.x interfaces
+        if (interface_exists('Symfony\Component\Form\Extension\Csrf\CsrfProvider\CsrfProviderInterface')) {
+            $this->csrfProvider = $this->getMockBuilder(
+                'Symfony\Component\Form\Extension\Csrf\CsrfProvider\CsrfProviderInterface'
+            )
+                ->getMock();
 
-        $this->csrfProvider->expects($this->any())
-            ->method('generateCsrfToken')
-            ->will($this->returnCallback(function ($intention) {
-                return 'csrf-token-123_'.$intention;
-            }));
+            $this->csrfProvider->expects($this->any())
+                ->method('generateCsrfToken')
+                ->will($this->returnCallback(function ($intention) {
+                    return 'csrf-token-123_'.$intention;
+                }));
 
-        $this->csrfProvider->expects($this->any())
-            ->method('isCsrfTokenValid')
-            ->will($this->returnCallback(function ($intention, $token) {
-                if ($token == 'csrf-token-123_'.$intention) {
-                    return true;
-                }
+            $this->csrfProvider->expects($this->any())
+                ->method('isCsrfTokenValid')
+                ->will($this->returnCallback(function ($intention, $token) {
+                    if ($token == 'csrf-token-123_'.$intention) {
+                        return true;
+                    }
 
-                return false;
-            }));
+                    return false;
+                }));
+        } else {
+            $this->csrfProvider = $this->getMockBuilder(
+                'Symfony\Component\Security\Csrf\CsrfTokenManagerInterface'
+            )
+                ->getMock();
+
+            $this->csrfProvider->expects($this->any())
+                ->method('getToken')
+                ->will($this->returnCallback(function ($intention) {
+                    return new CsrfToken($intention, 'csrf-token-123_'.$intention);
+                }));
+
+            $this->csrfProvider->expects($this->any())
+                ->method('isTokenValid')
+                ->will($this->returnCallback(function ($intention, $token) {
+                    if ((string) $token == 'csrf-token-123_'.$intention) {
+                        return true;
+                    }
+
+                    return false;
+                }));
+        }
 
         // php 5.3 BC
         $csrfProvider = $this->csrfProvider;
@@ -225,7 +250,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $logger       = $this->logger; // php 5.3 BC
 
         $requestStack = null;
-        if (Kernel::MINOR_VERSION > 3) {
+        if ((Kernel::MAJOR_VERSION == 2 && Kernel::MINOR_VERSION > 3) || Kernel::MAJOR_VERSION >= 3) {
             $requestStack = new \Symfony\Component\HttpFoundation\RequestStack();
             $requestStack->push($request);
         }
@@ -272,6 +297,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
                     case 'sonata.admin.object.manipulator.acl.admin':
                         return $adminObjectAclManipulator;
                     case 'form.csrf_provider':
+                    case 'security.csrf.token_manager':
                         return $csrfProvider;
                     case 'logger':
                         return $logger;
@@ -288,7 +314,11 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->container->expects($this->any())
             ->method('has')
             ->will($this->returnCallback(function ($id) use ($tthis) {
-                if ($id == 'form.csrf_provider' && $tthis->getCsrfProvider() !== null) {
+                if ($id == 'form.csrf_provider' && Kernel::MAJOR_VERSION == 2 && $tthis->getCsrfProvider() !== null) {
+                    return true;
+                }
+
+                if ($id == 'security.csrf.token_manager' && Kernel::MAJOR_VERSION >= 3) {
                     return true;
                 }
 
@@ -297,6 +327,10 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
                 }
 
                 if ($id == 'session') {
+                    return true;
+                }
+
+                if ($id == 'templating') {
                     return true;
                 }
 

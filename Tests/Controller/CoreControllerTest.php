@@ -51,6 +51,13 @@ class CoreControllerTest extends \PHPUnit_Framework_TestCase
                 return array();
             }
         }));
+        $container->expects($this->any())->method('has')->will($this->returnCallback(function ($id) {
+            if ($id == 'templating') {
+                return true;
+            }
+
+            return false;
+        }));
 
         $controller = new CoreController();
         $controller->setContainer($container);
@@ -93,6 +100,13 @@ class CoreControllerTest extends \PHPUnit_Framework_TestCase
             if ($name == 'sonata.admin.configuration.dashboard_blocks') {
                 return array();
             }
+        }));
+        $container->expects($this->any())->method('has')->will($this->returnCallback(function ($id) {
+            if ($id == 'templating') {
+                return true;
+            }
+
+            return false;
         }));
 
         $controller = new CoreController();
