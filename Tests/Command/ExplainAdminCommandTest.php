@@ -121,10 +121,18 @@ class ExplainAdminCommandTest extends \PHPUnit_Framework_TestCase
                 return $adminParent;
             }));
 
-        $this->validatorFactory = $this->getMock('Symfony\Component\Validator\MetadataFactoryInterface');
+        // Prefer Symfony 2.x interfaces
+        if (interface_exists('Symfony\Component\Validator\MetadataFactoryInterface')) {
+            $this->validatorFactory = $this->getMock('Symfony\Component\Validator\MetadataFactoryInterface');
 
-        $validator = $this->getMock('Symfony\Component\Validator\ValidatorInterface');
-        $validator->expects($this->any())->method('getMetadataFactory')->will($this->returnValue($this->validatorFactory));
+            $validator = $this->getMock('Symfony\Component\Validator\ValidatorInterface');
+            $validator->expects($this->any())->method('getMetadataFactory')->will($this->returnValue($this->validatorFactory));
+        } else {
+            $this->validatorFactory = $this->getMock('Symfony\Component\Validator\Mapping\Factory\MetadataFactoryInterface');
+
+            $validator = $this->getMock('Symfony\Component\Validator\Validator\ValidatorInterface');
+            $validator->expects($this->any())->method('getMetadataFor')->will($this->returnValue($this->validatorFactory));
+        }
 
         // php 5.3 BC
         $admin = $this->admin;
