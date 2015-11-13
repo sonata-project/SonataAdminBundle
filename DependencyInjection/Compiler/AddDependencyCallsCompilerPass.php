@@ -224,7 +224,13 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
         $definition = $container->getDefinition($serviceId);
         $settings = $container->getParameter('sonata.admin.configuration.admin_services');
 
-        $definition->setScope(ContainerInterface::SCOPE_PROTOTYPE);
+        if (method_exists($definition, 'setShared')) {
+            // Symfony 2.8+
+            $definition->setShared(true);
+        } else {
+            // For Symfony <2.8 compatibility
+            $definition->setScope(ContainerInterface::SCOPE_PROTOTYPE);
+        }
 
         $manager_type = $attributes['manager_type'];
 

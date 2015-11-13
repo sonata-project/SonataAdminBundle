@@ -25,8 +25,18 @@ class DefaultType extends AbstractType
 {
     /**
      * {@inheritdoc}
+     *
+     * @todo Remove when dropping Symfony <2.8 support
      */
     public function getName()
+    {
+        return $this->getBlockPrefix();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBlockPrefix()
     {
         return 'sonata_type_filter_default';
     }

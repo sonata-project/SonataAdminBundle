@@ -13,7 +13,6 @@ namespace Sonata\AdminBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -61,21 +60,31 @@ class AclMatrixType extends AbstractType
             'acl_value',
         ));
 
-        if (version_compare(Kernel::VERSION, '2.6', '<')) {
+        if (method_exists($resolver, 'setDefined')) {
+            $resolver->setAllowedTypes('permissions', 'array');
+            $resolver->setAllowedTypes('acl_value', array('string', '\Symfony\Component\Security\Core\User\UserInterface'));
+        } else {
             $resolver->setAllowedTypes(array(
                 'permissions' => 'array',
                 'acl_value'   => array('string', '\Symfony\Component\Security\Core\User\UserInterface'),
             ));
-        } else {
-            $resolver->setAllowedTypes('permissions', 'array');
-            $resolver->setAllowedTypes('acl_value', array('string', '\Symfony\Component\Security\Core\User\UserInterface'));
         }
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @todo Remove when dropping Symfony <2.8 support
      */
     public function getName()
+    {
+        return $this->getBlockPrefix();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBlockPrefix()
     {
         return 'sonata_type_acl_matrix';
     }
