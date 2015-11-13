@@ -24,7 +24,7 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
  *
  * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class SonataAdminExtension extends \Twig_Extension
+class SonataAdminExtension extends \Twig_Extension implements \Twig_Extension_InitRuntimeInterface
 {
     /**
      * @var \Twig_Environment
