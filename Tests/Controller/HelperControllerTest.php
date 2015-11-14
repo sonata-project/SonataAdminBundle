@@ -729,9 +729,12 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
     {
         $data = array();
 
-        $data['2.4'] = array('Symfony\Component\Validator\ValidatorInterface');
+        // For Symfony <= 2.8
+        if (interface_exists('Symfony\Component\Validator\ValidatorInterface')) {
+            $data['2.4'] = array('Symfony\Component\Validator\ValidatorInterface');
+        }
 
-        // For Symfony 2.5+
+        // For Symfony >= 2.5
         if (interface_exists('Symfony\Component\Validator\Validator\ValidatorInterface')) {
             $data['2.5'] = array('Symfony\Component\Validator\Validator\ValidatorInterface');
         }
