@@ -20,7 +20,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
-use Symfony\Component\HttpKernel\Kernel;
 
 class AdminControllerHelper_Foo
 {
@@ -741,5 +740,4 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
 
         return $data;
     }
-
 }
