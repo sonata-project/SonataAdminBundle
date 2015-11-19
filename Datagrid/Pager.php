@@ -22,20 +22,70 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     const TYPE_DEFAULT = 'default';
     const TYPE_SIMPLE = 'simple';
 
+    /**
+     * @var int
+     */
     protected $page = 1;
+
+    /**
+     * @var int
+     */
     protected $maxPerPage = 0;
+
+    /**
+     * @var int
+     */
     protected $lastPage = 1;
+
+    /**
+     * @var int
+     */
     protected $nbResults = 0;
+
+    /**
+     * @var int
+     */
     protected $cursor = 1;
+
+    /**
+     * @var array
+     */
     protected $parameters = array();
+
+    /**
+     * @var int
+     */
     protected $currentMaxLink = 1;
+
+    /**
+     * @var bool
+     */
     protected $maxRecordLimit = false;
+
+    /**
+     * @var int
+     */
     protected $maxPageLinks = 0;
 
     // used by iterator interface
+    /**
+     * @var array|null
+     */
     protected $results = null;
+
+    /**
+     * @var int
+     */
     protected $resultsCounter = 0;
+
+    /**
+     * @var ProxyQueryInterface|null
+     */
     protected $query = null;
+
+    /**
+     * @var array
+     */
     protected $countColumn = array('id');
 
     /**

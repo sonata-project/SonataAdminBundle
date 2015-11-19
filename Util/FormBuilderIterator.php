@@ -20,19 +20,34 @@ use Symfony\Component\Form\FormBuilderInterface;
  */
 class FormBuilderIterator extends \RecursiveArrayIterator
 {
+    /**
+     * @var \ReflectionProperty
+     */
     protected static $reflection;
 
+    /**
+     * @var FormBuilderInterface
+     */
     protected $formBuilder;
 
+    /**
+     * @var array
+     */
     protected $keys = array();
 
+    /**
+     * @var bool|string
+     */
     protected $prefix;
 
+    /**
+     * @var \ArrayIterator
+     */
     protected $iterator;
 
     /**
-     * @param \Symfony\Component\Form\FormBuilderInterface $formBuilder
-     * @param bool                                         $prefix
+     * @param FormBuilderInterface $formBuilder
+     * @param bool                 $prefix
      */
     public function __construct(FormBuilderInterface $formBuilder, $prefix = false)
     {
@@ -44,7 +59,7 @@ class FormBuilderIterator extends \RecursiveArrayIterator
     /**
      * @static
      *
-     * @param \Symfony\Component\Form\FormBuilderInterface $formBuilder
+     * @param FormBuilderInterface $formBuilder
      *
      * @return array
      */

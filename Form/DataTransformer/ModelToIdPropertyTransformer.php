@@ -22,14 +22,29 @@ use Symfony\Component\Form\DataTransformerInterface;
  */
 class ModelToIdPropertyTransformer implements DataTransformerInterface
 {
+    /**
+     * @var ModelManagerInterface
+     */
     protected $modelManager;
 
+    /**
+     * @var string
+     */
     protected $className;
 
+    /**
+     * @var string
+     */
     protected $property;
 
+    /**
+     * @var bool
+     */
     protected $multiple;
 
+    /**
+     * @var callback
+     */
     protected $toStringCallback;
 
     /**

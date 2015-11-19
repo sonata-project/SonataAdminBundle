@@ -47,7 +47,7 @@ interface PagerInterface
     /**
      * Set query.
      *
-     * @param mixed $query
+     * @param ProxyQueryInterface $query
      */
     public function setQuery($query);
 

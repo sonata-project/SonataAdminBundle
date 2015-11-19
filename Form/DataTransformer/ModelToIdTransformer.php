@@ -21,8 +21,14 @@ use Symfony\Component\Form\DataTransformerInterface;
  */
 class ModelToIdTransformer implements DataTransformerInterface
 {
+    /**
+     * @var ModelManagerInterface
+     */
     protected $modelManager;
 
+    /**
+     * @var string
+     */
     protected $className;
 
     /**

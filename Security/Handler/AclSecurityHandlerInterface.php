@@ -65,7 +65,7 @@ interface AclSecurityHandlerInterface extends SecurityHandlerInterface
      *
      * @param ObjectIdentityInterface $objectIdentity
      *
-     * @return null|\Symfony\Component\Security\Acl\Model\AclInterface or NULL if not found
+     * @return null|AclInterface or NULL if not found
      */
     public function getObjectAcl(ObjectIdentityInterface $objectIdentity);
 

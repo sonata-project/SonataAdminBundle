@@ -20,22 +20,49 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class Pool
 {
+    /**
+     * @var ContainerInterface|null
+     */
     protected $container = null;
 
+    /**
+     * @var string[]
+     */
     protected $adminServiceIds = array();
 
+    /**
+     * @var array
+     */
     protected $adminGroups = array();
 
+    /**
+     * @var array
+     */
     protected $adminClasses = array();
 
-    protected $templates    = array();
+    /**
+     * @var string[]
+     */
+    protected $templates = array();
 
-    protected $assets       = array();
+    /**
+     * @var array
+     */
+    protected $assets = array();
 
+    /**
+     * @var string
+     */
     protected $title;
 
+    /**
+     * @var string
+     */
     protected $titleLogo;
 
+    /**
+     * @var array
+     */
     protected $options;
 
     /**
@@ -203,7 +230,7 @@ class Pool
      *
      * @param string $id
      *
-     * @return \Sonata\AdminBundle\Admin\AdminInterface
+     * @return AdminInterface
      *
      * @throws \InvalidArgumentException
      */

@@ -27,11 +27,19 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  */
 class FormTypeFieldExtension extends AbstractTypeExtension
 {
+    /**
+     * @var array
+     */
     protected $defaultClasses = array();
+
+    /**
+     * @var array
+     */
     protected $options;
 
     /**
      * @param array $defaultClasses
+     * @param array $options
      */
     public function __construct(array $defaultClasses, array $options)
     {
@@ -40,8 +48,7 @@ class FormTypeFieldExtension extends AbstractTypeExtension
     }
 
     /**
-     * @param FormBuilderInterface $builder
-     * @param array                $options
+     * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -93,7 +100,7 @@ class FormTypeFieldExtension extends AbstractTypeExtension
     }
 
     /**
-     * @param \Symfony\Component\Form\FormBuilderInterface $formBuilder
+     * @param FormBuilderInterface $formBuilder
      *
      * @return array
      */
@@ -109,9 +116,7 @@ class FormTypeFieldExtension extends AbstractTypeExtension
     }
 
     /**
-     * @param FormView      $view
-     * @param FormInterface $form
-     * @param array         $options
+     * {@inheritdoc}
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
@@ -190,9 +195,7 @@ class FormTypeFieldExtension extends AbstractTypeExtension
     }
 
     /**
-     * Returns the name of the type being extended.
-     *
-     * @return string The name of the type being extended
+     * {@inheritdoc}
      */
     public function getExtendedType()
     {
@@ -228,8 +231,8 @@ class FormTypeFieldExtension extends AbstractTypeExtension
      * return the value related to FieldDescription, if the associated object does no
      * exists => a temporary one is created.
      *
-     * @param object                                              $object
-     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
+     * @param object                    $object
+     * @param FieldDescriptionInterface $fieldDescription
      *
      * @return mixed
      */

@@ -12,6 +12,7 @@
 namespace Sonata\AdminBundle\Util;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Security\Acl\Domain\Acl;
 
@@ -26,38 +27,47 @@ class AdminObjectAclData
      * @var array Permissions managed only by a OWNER
      */
     protected static $ownerPermissions = array('MASTER', 'OWNER');
+
     /**
-     * @var \Sonata\AdminBundle\Admin\AdminInterface
+     * @var AdminInterface
      */
     protected $admin;
+
     /**
      * @var mixed
      */
     protected $object;
+
     /**
      * @var \Traversable Users to set ACL for
      */
     protected $aclUsers;
+
     /**
      * @var \Traversable Roles to set ACL for
      */
     protected $aclRoles;
+
     /**
      * @var array Cache of masks
      */
     protected $masks;
+
     /**
-     * @var \Symfony\Component\Form\Form
+     * @var Form
      */
     protected $aclUsersForm;
+
     /**
-     * @var \Symfony\Component\Form\Form
+     * @var Form
      */
     protected $aclRolesForm;
+
     /**
-     * @var \Symfony\Component\Security\Acl\Domain\Acl
+     * @var Acl
      */
     protected $acl;
+
     /**
      * @var string
      */
@@ -78,18 +88,14 @@ class AdminObjectAclData
     }
 
     /**
-     * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
-     * @param mixed                                    $object
-     * @param \Traversable                             $aclUsers
-     * @param string                                   $maskBuilderClass
-     * @param \Traversable|null                        $aclRoles
+     * @param AdminInterface    $admin
+     * @param mixed             $object
+     * @param \Traversable      $aclUsers
+     * @param string            $maskBuilderClass
+     * @param \Traversable|null $aclRoles
      */
-    public function __construct(
-        AdminInterface $admin, $object,
-        \Traversable $aclUsers,
-        $maskBuilderClass,
-        \Traversable $aclRoles = null
-    ) {
+    public function __construct(AdminInterface $admin, $object, \Traversable $aclUsers, $maskBuilderClass, \Traversable $aclRoles = null)
+    {
         $this->admin = $admin;
         $this->object = $object;
         $this->aclUsers = $aclUsers;
@@ -102,7 +108,7 @@ class AdminObjectAclData
     /**
      * Gets admin.
      *
-     * @return \Sonata\AdminBundle\Admin\AdminInterface
+     * @return AdminInterface
      */
     public function getAdmin()
     {
@@ -142,9 +148,9 @@ class AdminObjectAclData
     /**
      * Sets ACL.
      *
-     * @param \Symfony\Component\Security\Acl\Domain\Acl $acl
+     * @param Acl $acl
      *
-     * @return \Sonata\AdminBundle\Util\AdminObjectAclData
+     * @return AdminObjectAclData
      */
     public function setAcl(Acl $acl)
     {
@@ -156,7 +162,7 @@ class AdminObjectAclData
     /**
      * Gets ACL.
      *
-     * @return \Symfony\Component\Security\Acl\Domain\Acl
+     * @return Acl
      */
     public function getAcl()
     {
@@ -176,9 +182,9 @@ class AdminObjectAclData
     /**
      * Sets form.
      *
-     * @param \Symfony\Component\Form\Form $form
+     * @param Form $form
      *
-     * @return \Sonata\AdminBundle\Util\AdminObjectAclData
+     * @return AdminObjectAclData
      *
      * @deprecated Deprecated since version 2.4. Use setAclUsersForm() instead.
      */
@@ -192,7 +198,7 @@ class AdminObjectAclData
     /**
      * Gets form.
      *
-     * @return \Symfony\Component\Form\Form
+     * @return Form
      *
      * @deprecated Deprecated since version 2.4. Use getAclUsersForm() instead.
      */
@@ -206,9 +212,9 @@ class AdminObjectAclData
     /**
      * Sets ACL users form.
      *
-     * @param \Symfony\Component\Form\Form $form
+     * @param Form $form
      *
-     * @return \Sonata\AdminBundle\Util\AdminObjectAclData
+     * @return AdminObjectAclData
      */
     public function setAclUsersForm(Form $form)
     {
@@ -220,7 +226,7 @@ class AdminObjectAclData
     /**
      * Gets ACL users form.
      *
-     * @return \Symfony\Component\Form\Form
+     * @return Form
      */
     public function getAclUsersForm()
     {
@@ -230,9 +236,9 @@ class AdminObjectAclData
     /**
      * Sets ACL roles form.
      *
-     * @param \Symfony\Component\Form\Form $form
+     * @param Form $form
      *
-     * @return \Sonata\AdminBundle\Util\AdminObjectAclData
+     * @return AdminObjectAclData
      */
     public function setAclRolesForm(Form $form)
     {
@@ -244,7 +250,7 @@ class AdminObjectAclData
     /**
      * Gets ACL roles form.
      *
-     * @return \Symfony\Component\Form\Form
+     * @return Form
      */
     public function getAclRolesForm()
     {
@@ -296,7 +302,7 @@ class AdminObjectAclData
     /**
      * Gets security handler.
      *
-     * @return \Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface
+     * @return SecurityHandlerInterface
      */
     public function getSecurityHandler()
     {

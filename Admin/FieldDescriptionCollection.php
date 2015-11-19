@@ -18,10 +18,13 @@ namespace Sonata\AdminBundle\Admin;
  */
 class FieldDescriptionCollection implements \ArrayAccess, \Countable
 {
+    /**
+     * @var FieldDescriptionInterface[]
+     */
     protected $elements = array();
 
     /**
-     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
+     * @param FieldDescriptionInterface $fieldDescription
      */
     public function add(FieldDescriptionInterface $fieldDescription)
     {

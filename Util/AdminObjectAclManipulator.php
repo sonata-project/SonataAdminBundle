@@ -33,7 +33,7 @@ class AdminObjectAclManipulator
     const ACL_ROLES_FORM_NAME = 'acl_roles_form';
 
     /**
-     * @var \Symfony\Component\Form\FormFactoryInterface
+     * @var FormFactoryInterface
      */
     protected $formFactory;
     /**
@@ -42,8 +42,8 @@ class AdminObjectAclManipulator
     protected $maskBuilderClass;
 
     /**
-     * @param \Symfony\Component\Form\FormFactoryInterface $formFactory
-     * @param string                                       $maskBuilderClass
+     * @param FormFactoryInterface $formFactory
+     * @param string               $maskBuilderClass
      */
     public function __construct(FormFactoryInterface $formFactory, $maskBuilderClass)
     {
@@ -64,9 +64,9 @@ class AdminObjectAclManipulator
     /**
      * Gets the form.
      *
-     * @param \Sonata\AdminBundle\Util\AdminObjectAclData $data
+     * @param AdminObjectAclData $data
      *
-     * @return \Symfony\Component\Form\Form
+     * @return Form
      *
      * @deprecated Deprecated since version 2.4. Use createAclUsersForm() instead.
      */
@@ -80,9 +80,9 @@ class AdminObjectAclManipulator
     /**
      * Gets the ACL users form.
      *
-     * @param \Sonata\AdminBundle\Util\AdminObjectAclData $data
+     * @param AdminObjectAclData $data
      *
-     * @return \Symfony\Component\Form\Form
+     * @return Form
      */
     public function createAclUsersForm(AdminObjectAclData $data)
     {
@@ -97,9 +97,9 @@ class AdminObjectAclManipulator
     /**
      * Gets the ACL roles form.
      *
-     * @param \Sonata\AdminBundle\Util\AdminObjectAclData $data
+     * @param AdminObjectAclData $data
      *
-     * @return \Symfony\Component\Form\Form
+     * @return Form
      */
     public function createAclRolesForm(AdminObjectAclData $data)
     {
@@ -114,7 +114,7 @@ class AdminObjectAclManipulator
     /**
      * Updates ACL users.
      *
-     * @param \Sonata\AdminBundle\Util\AdminObjectAclData $data
+     * @param AdminObjectAclData $data
      */
     public function updateAclUsers(AdminObjectAclData $data)
     {
@@ -127,7 +127,7 @@ class AdminObjectAclManipulator
     /**
      * Updates ACL roles.
      *
-     * @param \Sonata\AdminBundle\Util\AdminObjectAclData $data
+     * @param AdminObjectAclData $data
      */
     public function updateAclRoles(AdminObjectAclData $data)
     {
@@ -140,7 +140,7 @@ class AdminObjectAclManipulator
     /**
      * Updates ACl.
      *
-     * @param \Sonata\AdminBundle\Util\AdminObjectAclData $data
+     * @param AdminObjectAclData $data
      *
      * @deprecated Deprecated since version 2.4. Use updateAclUsers() instead.
      */
@@ -154,9 +154,9 @@ class AdminObjectAclManipulator
     /**
      * Builds ACL.
      *
-     * @param \Sonata\AdminBundle\Util\AdminObjectAclData $data
-     * @param \Symfony\Component\Form\Form                $form
-     * @param \Traversable                                $aclValues
+     * @param AdminObjectAclData $data
+     * @param Form               $form
+     * @param \Traversable       $aclValues
      */
     protected function buildAcl(AdminObjectAclData $data, Form $form, \Traversable $aclValues)
     {
@@ -224,11 +224,11 @@ class AdminObjectAclManipulator
     /**
      * Builds the form.
      *
-     * @param \Sonata\AdminBundle\Util\AdminObjectAclData  $data
-     * @param \Symfony\Component\Form\FormBuilderInterface $formBuilder
-     * @param \Traversable                                 $aclValues
+     * @param AdminObjectAclData   $data
+     * @param FormBuilderInterface $formBuilder
+     * @param \Traversable         $aclValues
      *
-     * @return \Symfony\Component\Form\Form
+     * @return Form
      */
     protected function buildForm(AdminObjectAclData $data, FormBuilderInterface $formBuilder, \Traversable $aclValues)
     {
@@ -281,9 +281,9 @@ class AdminObjectAclManipulator
     /**
      * Gets a user or a role security identity.
      *
-     * @param string|\Symfony\Component\Security\Core\User\UserInterface $aclValue
+     * @param string|UserInterface $aclValue
      *
-     * @return \Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity|\Symfony\Component\Security\Acl\Domain\UserSecurityIdentity
+     * @return RoleSecurityIdentity|UserSecurityIdentity
      */
     protected function getSecurityIdentity($aclValue)
     {

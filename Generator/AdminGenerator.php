@@ -23,13 +23,19 @@ use Symfony\Component\HttpKernel\Bundle\BundleInterface;
  */
 class AdminGenerator extends Generator
 {
-    /** @var ModelManagerInterface */
+    /**
+     * @var ModelManagerInterface
+     */
     private $modelManager;
 
-    /** @var string|null */
+    /**
+     * @var string|null
+     */
     private $class;
 
-    /** @var string|null */
+    /**
+     * @var string|null
+     */
     private $file;
 
     /**

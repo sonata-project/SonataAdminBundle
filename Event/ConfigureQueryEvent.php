@@ -27,10 +27,19 @@ use Symfony\Component\EventDispatcher\Event;
  */
 class ConfigureQueryEvent extends Event
 {
+    /**
+     * @var AdminInterface
+     */
     protected $admin;
 
+    /**
+     * @var ProxyQueryInterface
+     */
     protected $proxyQuery;
 
+    /**
+     * @var string
+     */
     protected $context;
 
     /**

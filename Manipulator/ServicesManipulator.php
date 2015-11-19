@@ -21,10 +21,14 @@ use Symfony\Component\Yaml\Yaml;
  */
 class ServicesManipulator
 {
-    /** @var string */
+    /**
+     * @var string
+     */
     private $file;
 
-    /** @var string */
+    /**
+     * @var string
+     */
     private $template = '    %s:
         class: %s
         arguments: [~, %s, %s]

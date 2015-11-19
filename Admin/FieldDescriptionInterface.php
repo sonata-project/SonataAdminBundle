@@ -114,14 +114,14 @@ interface FieldDescriptionInterface
     /**
      * set the parent Admin (only used in nested admin).
      *
-     * @param \Sonata\AdminBundle\Admin\AdminInterface $parent
+     * @param AdminInterface $parent
      */
     public function setParent(AdminInterface $parent);
 
     /**
      * return the parent Admin (only used in nested admin).
      *
-     * @return \Sonata\AdminBundle\Admin\AdminInterface
+     * @return AdminInterface
      */
     public function getParent();
 
@@ -177,14 +177,14 @@ interface FieldDescriptionInterface
     /**
      * set the association admin instance (only used if the field is linked to an Admin).
      *
-     * @param \Sonata\AdminBundle\Admin\AdminInterface $associationAdmin the associated admin
+     * @param AdminInterface $associationAdmin the associated admin
      */
     public function setAssociationAdmin(AdminInterface $associationAdmin);
 
     /**
      * return the associated Admin instance (only used if the field is linked to an Admin).
      *
-     * @return \Sonata\AdminBundle\Admin\AdminInterface
+     * @return AdminInterface
      */
     public function getAssociationAdmin();
 
@@ -207,12 +207,12 @@ interface FieldDescriptionInterface
     /**
      * set the admin class linked to this FieldDescription.
      *
-     * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
+     * @param AdminInterface $admin
      */
     public function setAdmin(AdminInterface $admin);
 
     /**
-     * @return \Sonata\AdminBundle\Admin\AdminInterface the admin class linked to this FieldDescription
+     * @return AdminInterface the admin class linked to this FieldDescription
      */
     public function getAdmin();
 

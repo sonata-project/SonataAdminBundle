@@ -42,10 +42,29 @@ class AclSecurityHandler implements AclSecurityHandlerInterface
      */
     protected $authorizationChecker;
 
+    /**
+     * @var MutableAclProviderInterface
+     */
     protected $aclProvider;
+
+    /**
+     * @var array
+     */
     protected $superAdminRoles;
+
+    /**
+     * @var array
+     */
     protected $adminPermissions;
+
+    /**
+     * @var array
+     */
     protected $objectPermissions;
+
+    /**
+     * @var string
+     */
     protected $maskBuilderClass;
 
     /**

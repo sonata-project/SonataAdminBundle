@@ -19,15 +19,39 @@ namespace Sonata\AdminBundle\Mapper;
  */
 abstract class BaseGroupedMapper extends BaseMapper
 {
+    /**
+     * @var string
+     */
     protected $currentGroup;
+
+    /**
+     * @var string
+     */
     protected $currentTab;
 
+    /**
+     * @var bool
+     */
     protected $apply;
 
+    /**
+     * @return array
+     */
     abstract protected function getGroups();
+
+    /**
+     * @return array
+     */
     abstract protected function getTabs();
 
+    /**
+     * @param array $groups
+     */
     abstract protected function setGroups(array $groups);
+
+    /**
+     * @param array $tabs
+     */
     abstract protected function setTabs(array $tabs);
 
     /**

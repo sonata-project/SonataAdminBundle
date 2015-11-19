@@ -181,6 +181,12 @@ class ExtensionCompilerPass implements CompilerPassInterface
         return $extensionMap;
     }
 
+    /**
+     * @param \ReflectionClass $class
+     * @param                  $traitName
+     *
+     * @return bool
+     */
     protected function hasTrait(\ReflectionClass $class, $traitName)
     {
         if (in_array($traitName, $class->getTraitNames())) {

@@ -22,8 +22,14 @@ use Sonata\AdminBundle\Builder\BuilderInterface;
  */
 abstract class BaseMapper
 {
+    /**
+     * @var AdminInterface
+     */
     protected $admin;
 
+    /**
+     * @var BuilderInterface
+     */
     protected $builder;
 
     /**

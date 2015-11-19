@@ -23,6 +23,9 @@ use Symfony\Component\Form\Guess\Guess;
  */
 class TypeGuesserChain implements TypeGuesserInterface
 {
+    /**
+     * @var array
+     */
     protected $guessers = array();
 
     /**

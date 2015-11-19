@@ -11,7 +11,9 @@
 
 namespace Sonata\AdminBundle\Datagrid;
 
+use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
 use Sonata\AdminBundle\Filter\FilterInterface;
+use Symfony\Component\Form\FormInterface;
 
 /**
  * Interface DatagridInterface.
@@ -21,12 +23,12 @@ use Sonata\AdminBundle\Filter\FilterInterface;
 interface DatagridInterface
 {
     /**
-     * @return \Sonata\AdminBundle\Datagrid\PagerInterface
+     * @return PagerInterface
      */
     public function getPager();
 
     /**
-     * @return \Sonata\AdminBundle\Datagrid\ProxyQueryInterface
+     * @return ProxyQueryInterface
      */
     public function getQuery();
 
@@ -40,9 +42,9 @@ interface DatagridInterface
     public function buildPager();
 
     /**
-     * @param \Sonata\AdminBundle\Filter\FilterInterface $filter
+     * @param FilterInterface $filter
      *
-     * @return \Sonata\AdminBundle\Filter\FilterInterface
+     * @return FilterInterface
      */
     public function addFilter(FilterInterface $filter);
 
@@ -64,7 +66,7 @@ interface DatagridInterface
     public function getValues();
 
     /**
-     * @return \Sonata\AdminBundle\Admin\FieldDescriptionCollection
+     * @return FieldDescriptionCollection
      */
     public function getColumns();
 
@@ -76,14 +78,14 @@ interface DatagridInterface
     public function setValue($name, $operator, $value);
 
     /**
-     * @return \Symfony\Component\Form\Form
+     * @return FormInterface
      */
     public function getForm();
 
     /**
      * @param string $name
      *
-     * @return \Sonata\AdminBundle\Filter\FilterInterface
+     * @return FilterInterface
      */
     public function getFilter($name);
 

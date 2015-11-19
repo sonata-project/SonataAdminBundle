@@ -20,14 +20,23 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class AuditManager implements AuditManagerInterface
 {
+    /**
+     * @var array
+     */
     protected $classes = array();
 
+    /**
+     * @var array
+     */
     protected $readers = array();
 
+    /**
+     * @var ContainerInterface
+     */
     protected $container;
 
     /**
-     * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
+     * @param ContainerInterface $container
      */
     public function __construct(ContainerInterface $container)
     {

@@ -27,8 +27,14 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
  */
 class AdminSearchBlockService extends BaseBlockService
 {
+    /**
+     * @var Pool
+     */
     protected $pool;
 
+    /**
+     * @var SearchHandler
+     */
     protected $searchHandler;
 
     /**

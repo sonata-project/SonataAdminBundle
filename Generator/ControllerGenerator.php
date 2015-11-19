@@ -22,10 +22,14 @@ use Symfony\Component\HttpKernel\Bundle\BundleInterface;
  */
 class ControllerGenerator extends Generator
 {
-    /** @var string|null */
+    /**
+     * @var string|null
+     */
     private $class;
 
-    /** @var string|null */
+    /**
+     * @var string|null
+     */
     private $file;
 
     /**

@@ -21,9 +21,9 @@ use Sonata\AdminBundle\Model\ModelManagerInterface;
 interface TypeGuesserInterface
 {
     /**
-     * @param string                                          $class
-     * @param string                                          $property
-     * @param \Sonata\AdminBundle\Model\ModelManagerInterface $modelManager
+     * @param string                $class
+     * @param string                $property
+     * @param ModelManagerInterface $modelManager
      *
      * @return mixed
      */

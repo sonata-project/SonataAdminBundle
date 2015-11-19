@@ -28,6 +28,9 @@ class RoleSecurityHandler implements SecurityHandlerInterface
      */
     protected $authorizationChecker;
 
+    /**
+     * @var array
+     */
     protected $superAdminRoles;
 
     /**

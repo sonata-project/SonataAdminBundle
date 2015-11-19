@@ -35,10 +35,19 @@ class ConfigureEvent extends Event
     const TYPE_FORM     = 'form';
     const TYPE_LIST     = 'list';
 
+    /**
+     * @var AdminInterface
+     */
     protected $admin;
 
+    /**
+     * @var BaseMapper
+     */
     protected $mapper;
 
+    /**
+     * @var string
+     */
     protected $type;
 
     /**
@@ -62,7 +71,7 @@ class ConfigureEvent extends Event
     }
 
     /**
-     * @return \Sonata\AdminBundle\Admin\AdminInterface
+     * @return AdminInterface
      */
     public function getAdmin()
     {
@@ -70,7 +79,7 @@ class ConfigureEvent extends Event
     }
 
     /**
-     * @return \Sonata\AdminBundle\Mapper\BaseMapper
+     * @return BaseMapper
      */
     public function getMapper()
     {

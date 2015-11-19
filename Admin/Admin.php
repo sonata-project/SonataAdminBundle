@@ -13,12 +13,14 @@ namespace Sonata\AdminBundle\Admin;
 
 use Doctrine\Common\Util\ClassUtils;
 use Knp\Menu\FactoryInterface as MenuFactoryInterface;
+use Knp\Menu\ItemInterface;
 use Knp\Menu\ItemInterface as MenuItemInterface;
 use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
 use Sonata\AdminBundle\Builder\FormContractorInterface;
 use Sonata\AdminBundle\Builder\ListBuilderInterface;
 use Sonata\AdminBundle\Builder\RouteBuilderInterface;
 use Sonata\AdminBundle\Builder\ShowBuilderInterface;
+use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\Pager;
@@ -85,6 +87,9 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      */
     protected $listFieldDescriptions = array();
 
+    /**
+     * @var FieldDescriptionCollection
+     */
     private $show;
 
     /**
@@ -107,7 +112,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     protected $formFieldDescriptions = array();
 
     /**
-     * @var \Sonata\AdminBundle\Datagrid\DatagridInterface
+     * @var DatagridInterface
      */
     private $filter;
 
@@ -250,7 +255,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     /**
      * Array of routes related to this admin.
      *
-     * @var \Sonata\AdminBundle\Route\RouteCollection
+     * @var RouteCollection
      */
     protected $routes;
 
@@ -317,7 +322,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     /**
      * The Entity or Document manager.
      *
-     * @var \Sonata\AdminBundle\Model\ModelManagerInterface
+     * @var ModelManagerInterface
      */
     protected $modelManager;
 
@@ -345,14 +350,14 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     /**
      * The related form contractor.
      *
-     * @var \Sonata\AdminBundle\Builder\FormContractorInterface
+     * @var FormContractorInterface
      */
     protected $formContractor;
 
     /**
      * The related list builder.
      *
-     * @var \Sonata\AdminBundle\Builder\ListBuilderInterface
+     * @var ListBuilderInterface
      */
     protected $listBuilder;
 
@@ -366,12 +371,12 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     /**
      * The related datagrid builder.
      *
-     * @var \Sonata\AdminBundle\Builder\DatagridBuilderInterface
+     * @var DatagridBuilderInterface
      */
     protected $datagridBuilder;
 
     /**
-     * @var \Sonata\AdminBundle\Builder\RouteBuilderInterface
+     * @var RouteBuilderInterface
      */
     protected $routeBuilder;
 
@@ -1329,7 +1334,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      * This method is being called by the main admin class and the child class,
      * the getFormBuilder is only call by the main admin class.
      *
-     * @param \Symfony\Component\Form\FormBuilderInterface $formBuilder
+     * @param FormBuilderInterface $formBuilder
      */
     public function defineFormBuilder(FormBuilderInterface $formBuilder)
     {
@@ -1500,10 +1505,10 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * @param string                                   $action
-     * @param \Sonata\AdminBundle\Admin\AdminInterface $childAdmin
+     * @param string         $action
+     * @param AdminInterface $childAdmin
      *
-     * @return \Knp\Menu\ItemInterface
+     * @return ItemInterface
      */
     public function getSideMenu($action, AdminInterface $childAdmin = null)
     {
@@ -1529,7 +1534,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     /**
      * Returns the master admin.
      *
-     * @return \Sonata\AdminBundle\Admin\Admin the root admin class
+     * @return Admin the root admin class
      */
     public function getRoot()
     {
@@ -1835,7 +1840,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      *
      * @param string $name
      *
-     * @return \Sonata\AdminBundle\Admin\FieldDescriptionInterface
+     * @return FieldDescriptionInterface
      */
     public function getShowFieldDescription($name)
     {
@@ -2111,8 +2116,8 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      *
      * Note: the method will be called by the top admin instance (parent => child)
      *
-     * @param string                       $action
-     * @param \Knp\Menu\ItemInterface|null $menu
+     * @param string             $action
+     * @param ItemInterface|null $menu
      *
      * @return array
      */
@@ -2187,7 +2192,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     /**
      * Returns the current child admin instance.
      *
-     * @return \Sonata\AdminBundle\Admin\AdminInterface|null the current child admin instance
+     * @return AdminInterface|null the current child admin instance
      */
     public function getCurrentChildAdmin()
     {
@@ -2317,7 +2322,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * @return \Sonata\AdminBundle\Builder\FormContractorInterface
+     * @return FormContractorInterface
      */
     public function getFormContractor()
     {
@@ -2357,7 +2362,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * @param \Sonata\AdminBundle\Builder\ShowBuilderInterface $showBuilder
+     * @param ShowBuilderInterface $showBuilder
      */
     public function setShowBuilder(ShowBuilderInterface $showBuilder)
     {
@@ -2365,7 +2370,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * @return \Sonata\AdminBundle\Builder\ShowBuilderInterface
+     * @return ShowBuilderInterface
      */
     public function getShowBuilder()
     {
@@ -2397,7 +2402,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * @return \Sonata\AdminBundle\Route\RouteGeneratorInterface
+     * @return RouteGeneratorInterface
      */
     public function getRouteGenerator()
     {
@@ -2437,7 +2442,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * @param \Sonata\AdminBundle\Model\ModelManagerInterface $modelManager
+     * @param ModelManagerInterface $modelManager
      */
     public function setModelManager(ModelManagerInterface $modelManager)
     {

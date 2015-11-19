@@ -37,7 +37,9 @@ use Symfony\Component\HttpKernel\KernelInterface;
  */
 class GenerateAdminCommand extends ContainerAwareCommand
 {
-    /** @var string[] */
+    /**
+     * @var string[]
+     */
     private $managerTypes;
 
     /**
@@ -300,6 +302,15 @@ class GenerateAdminCommand extends ContainerAwareCommand
         return $questionHelper->ask($input, $output, $question);
     }
 
+    /**
+     * @param InputInterface  $input
+     * @param OutputInterface $output
+     * @param string          $questionText
+     * @param string          $default
+     * @param string          $separator
+     *
+     * @return string
+     */
     private function askConfirmation(InputInterface $input, OutputInterface $output, $questionText, $default, $separator)
     {
         $questionHelper = $this->getQuestionHelper();

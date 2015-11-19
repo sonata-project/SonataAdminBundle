@@ -21,8 +21,14 @@ use Symfony\Component\HttpKernel\CacheWarmer\CacheWarmerInterface;
  */
 class RoutesCacheWarmUp implements CacheWarmerInterface
 {
+    /**
+     * @var RoutesCache
+     */
     protected $cache;
 
+    /**
+     * @var Pool
+     */
     protected $pool;
 
     /**

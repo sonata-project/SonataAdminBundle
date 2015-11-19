@@ -23,6 +23,9 @@ use Symfony\Component\Form\FormEvents;
  */
 class LockExtension extends AdminExtension
 {
+    /**
+     * @var string
+     */
     protected $fieldName = '_lock_version';
 
     /**

@@ -23,10 +23,13 @@ use Symfony\Component\Form\FormEvents;
  */
 class MergeCollectionListener implements EventSubscriberInterface
 {
+    /**
+     * @var ModelManagerInterface
+     */
     protected $modelManager;
 
     /**
-     * @param \Sonata\AdminBundle\Model\ModelManagerInterface $modelManager
+     * @param ModelManagerInterface $modelManager
      */
     public function __construct(ModelManagerInterface $modelManager)
     {
@@ -44,7 +47,7 @@ class MergeCollectionListener implements EventSubscriberInterface
     }
 
     /**
-     * @param \Symfony\Component\Form\FormEvent $event
+     * @param FormEvent $event
      */
     public function onBind(FormEvent $event)
     {
