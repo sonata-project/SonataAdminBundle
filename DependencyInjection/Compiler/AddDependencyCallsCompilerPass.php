@@ -226,7 +226,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
         if (method_exists($definition, 'setShared')) {
             // Symfony 2.8+
-            $definition->setShared(true);
+            $definition->setShared(false);
         } else {
             // For Symfony <2.8 compatibility
             $definition->setScope(ContainerInterface::SCOPE_PROTOTYPE);
