@@ -536,6 +536,19 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
+     * Configures the breadcrumb menu in your admin.
+     *
+     * @param MenuItemInterface $menu
+     * @param string            $action
+     * @param AdminInterface    $childAdmin
+     *
+     * @return mixed
+     */
+    protected function configureBreadcrumbsMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
+    {
+    }
+
+    /**
      * DEPRECATED: Use configureTabMenu instead.
      *
      * @param MenuItemInterface $menu
@@ -2099,16 +2112,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
             return $this->getParent()->getBreadcrumbs($action);
         }
 
-        $menu = $this->buildBreadcrumbs($action);
-
-        do {
-            $breadcrumbs[] = $menu;
-        } while ($menu = $menu->getParent());
-
-        $breadcrumbs = array_reverse($breadcrumbs);
-        array_shift($breadcrumbs);
-
-        return $breadcrumbs;
+        return $this->buildBreadcrumbs($action);
     }
 
     /**
@@ -2130,47 +2134,141 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         if (!$menu) {
             $menu = $this->menuFactory->createItem('root');
 
-            $menu = $menu->addChild(
+            $menu->addChild(
                 $this->trans($this->getLabelTranslatorStrategy()->getLabel('dashboard', 'breadcrumb', 'link'), array(), 'SonataAdminBundle'),
                 array('uri' => $this->routeGenerator->generate('sonata_admin_dashboard'))
             );
         }
 
-        $menu = $menu->addChild(
+        $childMenu = $menu->addChild(
             $this->trans($this->getLabelTranslatorStrategy()->getLabel(sprintf('%s_list', $this->getClassnameLabel()), 'breadcrumb', 'link')),
             array('uri' => $this->hasRoute('list') && $this->isGranted('LIST') ? $this->generateUrl('list') : null)
         );
 
         $childAdmin = $this->getCurrentChildAdmin();
 
+        $this->addBreadcrumbsDropdown($childMenu, 'list', $childAdmin);
+
         if ($childAdmin) {
             $id = $this->request->get($this->getIdParameter());
 
-            $menu = $menu->addChild(
+            $childMenu = $menu->addChild(
                 $this->toString($this->getSubject()),
                 array('uri' => $this->hasRoute('edit') && $this->isGranted('EDIT') ? $this->generateUrl('edit', array('id' => $id)) : null)
             );
+
+            $this->addBreadcrumbsDropdown($childMenu, 'edit', $childAdmin);
 
             return $childAdmin->buildBreadcrumbs($action, $menu);
         } elseif ($this->isChild()) {
             if ($action == 'list') {
                 $menu->setUri(false);
             } elseif ($action != 'create' && $this->hasSubject()) {
-                $menu = $menu->addChild($this->toString($this->getSubject()));
+                $childMenu = $menu->addChild($this->toString($this->getSubject()));
+
+                $this->addBreadcrumbsDropdown($childMenu, $action, $childAdmin);
             } else {
-                $menu = $menu->addChild(
+                $childMenu = $menu->addChild(
                     $this->trans($this->getLabelTranslatorStrategy()->getLabel(sprintf('%s_%s', $this->getClassnameLabel(), $action), 'breadcrumb', 'link'))
                 );
+
+                $this->addBreadcrumbsDropdown($childMenu, $action, $childAdmin);
             }
         } elseif ($action != 'list' && $this->hasSubject()) {
-            $menu = $menu->addChild($this->toString($this->getSubject()));
+            $childMenu = $menu->addChild($this->toString($this->getSubject()));
+
+            $this->addBreadcrumbsDropdown($childMenu, $action, $childAdmin);
         } elseif ($action != 'list') {
-            $menu = $menu->addChild(
+            $childMenu = $menu->addChild(
                 $this->trans($this->getLabelTranslatorStrategy()->getLabel(sprintf('%s_%s', $this->getClassnameLabel(), $action), 'breadcrumb', 'link'))
             );
+
+            $this->addBreadcrumbsDropdown($childMenu, $action, $childAdmin);
         }
 
         return $this->breadcrumbs[$action] = $menu;
+    }
+
+    protected function addBreadcrumbsDropdown(MenuItemInterface $menu, $action, $childAdmin = null)
+    {
+        if ('list' === $action) {
+            if ($this->hasRoute('list') && $this->isGranted('LIST')) {
+                $menu
+                    ->addChild(
+                        $this->trans('link_list', array(), 'SonataAdminBundle'),
+                        array('uri' => $this->generateUrl('list'))
+                    )
+                    ->setExtra('icon', 'fa fa-list')
+                ;
+            }
+
+            if ($this->hasRoute('create') && $this->isGranted('CREATE')) {
+                if ($subClasses = $this->getSubClasses()) {
+                    foreach ($subClasses as $subClass) {
+                        $menu
+                            ->addChild(
+                                sprintf('%s %s', $this->trans('link_add', array(), 'SonataAdminBundle'), $this->trans($subClass, array(), $this->getTranslationDomain())),
+                                array('uri' => $this->generateUrl('create', array('subclass' => $subClass)))
+                            )
+                            ->setExtra('icon', 'fa fa-plus-circle')
+                        ;
+                    }
+                } else {
+                    $menu
+                        ->addChild(
+                            $this->trans('link_add', array(), 'SonataAdminBundle'),
+                            array('uri' => $this->generateUrl('create'))
+                        )
+                        ->setExtra('icon', 'fa fa-plus-circle')
+                    ;
+                }
+            }
+        } elseif ('create' !== $action) {
+            $id = $this->request->get($this->getIdParameter());
+
+            $links = array(
+                array(
+                    'route' => 'edit',
+                    'role'  => 'EDIT',
+                    'icon'  => 'fa fa-edit',
+                ),
+                array(
+                    'route' => 'show',
+                    'role'  => 'VIEW',
+                    'icon'  => 'fa fa-eye',
+                ),
+                array(
+                    'route' => 'history',
+                    'role'  => 'EDIT',
+                    'icon'  => 'fa fa-clock-o',
+                ),
+            );
+
+            foreach ($links as $attributes) {
+                if ($this->hasRoute($attributes['route']) && $this->isGranted($attributes['role'])) {
+                    $menu
+                        ->addChild(
+                            $this->trans($this->getLabelTranslatorStrategy()->getLabel(sprintf('%s_'.$attributes['route'], $this->getClassnameLabel()), 'breadcrumb', 'link')),
+                            array('uri' => $this->generateUrl($attributes['route'], array('id' => $id)))
+                        )
+                        ->setExtra('icon', $attributes['icon'])
+                    ;
+                }
+            }
+
+            if ($this->hasRoute('acl') && $this->isGranted('MASTER') && $this->isAclEnabled()) {
+                $menu->addChild(
+                    $this->trans($this->getLabelTranslatorStrategy()->getLabel(sprintf('%s_acl', $this->getClassnameLabel()), 'breadcrumb', 'link')),
+                    array('uri' => $this->generateUrl('acl', array('id' => $id)))
+                );
+            }
+        }
+
+        $this->configureBreadcrumbsMenu($menu, $action, $childAdmin);
+
+        foreach ($this->getExtensions() as $extension) {
+            $extension->configureBreadcrumbsMenu($this, $menu, $action, $childAdmin);
+        }
     }
 
     /**

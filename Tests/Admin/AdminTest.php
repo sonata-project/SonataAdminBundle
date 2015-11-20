@@ -11,6 +11,7 @@
 
 namespace Sonata\AdminBundle\Tests\Admin;
 
+use Knp\Menu\MenuFactory;
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Route\DefaultRouteGenerator;
@@ -146,10 +147,6 @@ class AdminTest extends \PHPUnit_Framework_TestCase
             ->method('setUri')
             ->with($this->identicalTo(false));
 
-        $menu->expects($this->exactly(5))
-            ->method('getParent')
-            ->will($this->returnValue(false));
-
         $routeGenerator->expects($this->exactly(5))
             ->method('generate')
             ->with('sonata_admin_dashboard')
@@ -249,6 +246,111 @@ class AdminTest extends \PHPUnit_Framework_TestCase
         $commentAdmin->getBreadcrumbs('list');
         $commentAdmin->setSubject(new DummySubject());
         $commentAdmin->getBreadcrumbs('reply');
+    }
+
+    public function testGetBreadCrumbsDropdowns()
+    {
+        $menuFactory = new MenuFactory();
+
+        $securityHandler = $this->getMock('Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface');
+        $securityHandler->expects($this->any())
+            ->method('isGranted')
+            ->will($this->returnValue(true))
+        ;
+
+        $routeGenerator = $this->getMock('Sonata\AdminBundle\Route\RouteGeneratorInterface');
+        $routeGenerator->expects($this->any())
+            ->method('hasAdminRoute')
+            ->will($this->returnValue(true))
+        ;
+
+        $modelManager = $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface');
+        $modelManager->expects($this->exactly(1))
+            ->method('find')
+            ->with('Application\Sonata\NewsBundle\Entity\Post', 42)
+            ->will($this->returnValue(new DummySubject()));
+
+        $translatorStrategy = $this->getMock('Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface');
+        $translatorStrategy->expects($this->any())
+            ->method('getLabel')
+            ->will($this->returnCallback(function ($id) {
+                return $id;
+            }))
+        ;
+
+        $postAdmin = new PostAdmin(
+            'sonata.post.admin.post',
+            'Application\Sonata\NewsBundle\Entity\Post',
+            'SonataNewsBundle:PostAdmin'
+        );
+        $commentAdmin = new CommentAdmin(
+            'sonata.post.admin.comment',
+            'Application\Sonata\NewsBundle\Entity\Comment',
+            'SonataNewsBundle:CommentAdmin'
+        );
+
+        foreach (array($postAdmin, $commentAdmin) as $admin) {
+            $admin->setMenuFactory($menuFactory);
+            $admin->setLabelTranslatorStrategy($translatorStrategy);
+            $admin->setRouteGenerator($routeGenerator);
+            $admin->setModelManager($modelManager);
+            $admin->setSecurityHandler($securityHandler);
+        }
+
+        $postAdmin->addChild($commentAdmin);
+        $postAdmin->setRequest(new Request(array('id' => 42)));
+
+        $commentAdmin->setCurrentChild($postAdmin);
+        $commentAdmin->setRequest(new Request());
+        $commentAdmin->initialize();
+
+        $postAdmin->initialize();
+
+        $baseExpectedBreadcrumb = array(
+            'dashboard' => array(),
+            'Post_list' => array(
+                'link_list',
+                'link_add',
+            ),
+            'dummy subject representation' => array(
+                'Post_edit',
+                'Post_show',
+                'Post_history',
+            ),
+            'Comment_list' => array(
+                'link_list',
+                'link_add',
+            ),
+        );
+
+        $expectedBreadcrumbs = array(
+            'list' => array_merge($baseExpectedBreadcrumb, array('Comment_list' => array(
+                'link_list',
+                'link_add',
+            ))),
+            'create' => array_merge($baseExpectedBreadcrumb, array('Comment_create' => array())),
+            'edit'   => array_merge($baseExpectedBreadcrumb, array('Comment_edit' => array(
+                'Comment_edit',
+                'Comment_show',
+                'Comment_history',
+            ))),
+        );
+
+        foreach ($expectedBreadcrumbs as $action => $expectedBreadcrumb) {
+            $breadcrumb = $postAdmin
+                ->getBreadcrumbs($action)
+                ->getChildren()
+            ;
+
+            foreach ($expectedBreadcrumb as $name => $children) {
+                $this->assertArrayHasKey($name, $breadcrumb);
+                $this->assertSame(count($children), $breadcrumb[$name]->count());
+
+                foreach ($children as $childName) {
+                    $this->assertArrayHasKey($childName, $breadcrumb[$name]);
+                }
+            }
+        }
     }
 
     public function testGetBreadCrumbsWithNoCurrentAdmin()

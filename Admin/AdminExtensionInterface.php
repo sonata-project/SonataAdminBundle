@@ -54,6 +54,16 @@ interface AdminExtensionInterface
     public function configureRoutes(AdminInterface $admin, RouteCollection $collection);
 
     /**
+     * @param AdminInterface    $admin
+     * @param MenuItemInterface $menu
+     * @param string            $action
+     * @param AdminInterface    $childAdmin
+     *
+     * @return mixed
+     */
+    public function configureBreadcrumbsMenu(AdminInterface $admin, MenuItemInterface $menu, $action, AdminInterface $childAdmin = null);
+
+    /**
      * DEPRECATED: Use configureTabMenu instead.
      *
      * @param AdminInterface    $admin
