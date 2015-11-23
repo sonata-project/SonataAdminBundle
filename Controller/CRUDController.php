@@ -1364,4 +1364,12 @@ class CRUDController extends Controller
 
         return $request;
     }
+
+    /**
+     * @return Request
+     */
+    public function getRequest()
+    {
+        return $this->container->get('request_stack')->getCurrentRequest();
+    }
 }
