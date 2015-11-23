@@ -30,3 +30,7 @@ In order to fix deprecated issue by spiting `SecurityContextInterface`, `AclSecu
 ## AdminPoolLoader
 
 If you're using a custom implementation of `sonata.admin.route_loader` service, make sure to provide an array as 2nd argument since the type for this argument is now hinted to `array`.
+
+## LegacyModelsToArrayTransformer
+
+The ``ModelsToArrayTransformer`` has been renamed to ``LegacyModelsToArrayTransformer``. ``ModelsToArrayTransformer`` should be only be used with SF2.7+
