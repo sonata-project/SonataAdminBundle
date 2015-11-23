@@ -189,7 +189,7 @@ class CRUDController extends Controller
     {
         $request = $this->resolveRequest($request);
 
-        $parameters['admin']         = isset($parameters['admin']) ?
+        $parameters['admin'] = isset($parameters['admin']) ?
             $parameters['admin'] :
             $this->admin;
 
@@ -197,7 +197,7 @@ class CRUDController extends Controller
             $parameters['base_template'] :
             $this->getBaseTemplate($request);
 
-        $parameters['admin_pool']    = $this->get('sonata.admin.pool');
+        $parameters['admin_pool'] = $this->get('sonata.admin.pool');
 
         return parent::render($view, $parameters, $response);
     }
@@ -382,7 +382,7 @@ class CRUDController extends Controller
         // the key used to lookup the template
         $templateKey = 'edit';
 
-        $id = $request->get($this->admin->getIdParameter());
+        $id     = $request->get($this->admin->getIdParameter());
         $object = $this->admin->getObject($id);
 
         if (!$object) {
@@ -548,18 +548,18 @@ class CRUDController extends Controller
         $confirmation = $request->get('confirmation', false);
 
         if ($data = json_decode($request->get('data'), true)) {
-            $action       = $data['action'];
-            $idx          = $data['idx'];
-            $allElements  = $data['all_elements'];
+            $action      = $data['action'];
+            $idx         = $data['idx'];
+            $allElements = $data['all_elements'];
             $request->request->replace(array_merge($request->request->all(), $data));
         } else {
             $request->request->set('idx', $request->get('idx', array()));
             $request->request->set('all_elements', $request->get('all_elements', false));
 
-            $action       = $request->get('action');
-            $idx          = $request->get('idx');
-            $allElements  = $request->get('all_elements');
-            $data         = $request->request->all();
+            $action      = $request->get('action');
+            $idx         = $request->get('idx');
+            $allElements = $request->get('all_elements');
+            $data        = $request->request->all();
 
             unset($data['_sonata_csrf_token']);
         }
@@ -569,7 +569,7 @@ class CRUDController extends Controller
             throw new \RuntimeException(sprintf('The `%s` batch action is not defined', $action));
         }
 
-        $camelizedAction = BaseFieldDescription::camelize($action);
+        $camelizedAction  = BaseFieldDescription::camelize($action);
         $isRelevantAction = sprintf('batchAction%sIsRelevant', ucfirst($camelizedAction));
 
         if (method_exists($this, $isRelevantAction)) {
@@ -792,9 +792,9 @@ class CRUDController extends Controller
         $request = $this->resolveRequest($request);
 
         return $this->admin->supportsPreviewMode()
-            && ($this->isPreviewRequested($request)
-                || $this->isPreviewApproved($request)
-                || $this->isPreviewDeclined($request));
+        && ($this->isPreviewRequested($request)
+            || $this->isPreviewApproved($request)
+            || $this->isPreviewDeclined($request));
     }
 
     /**
@@ -825,7 +825,7 @@ class CRUDController extends Controller
     public function showAction($id = null, Request $request = null)
     {
         $request = $this->resolveRequest($request);
-        $id = $request->get($this->admin->getIdParameter());
+        $id      = $request->get($this->admin->getIdParameter());
 
         $object = $this->admin->getObject($id);
 
@@ -863,7 +863,7 @@ class CRUDController extends Controller
     public function historyAction($id = null, Request $request = null)
     {
         $request = $this->resolveRequest($request);
-        $id = $request->get($this->admin->getIdParameter());
+        $id      = $request->get($this->admin->getIdParameter());
 
         $object = $this->admin->getObject($id);
 
@@ -889,10 +889,10 @@ class CRUDController extends Controller
         $revisions = $reader->findRevisions($this->admin->getClass(), $id);
 
         return $this->render($this->admin->getTemplate('history'), array(
-            'action'            => 'history',
-            'object'            => $object,
-            'revisions'         => $revisions,
-            'currentRevision'   => $revisions ? current($revisions) : false,
+            'action'          => 'history',
+            'object'          => $object,
+            'revisions'       => $revisions,
+            'currentRevision' => $revisions ? current($revisions) : false,
         ), null, $request);
     }
 
@@ -911,7 +911,7 @@ class CRUDController extends Controller
     public function historyViewRevisionAction($id = null, $revision = null, Request $request = null)
     {
         $request = $this->resolveRequest($request);
-        $id = $request->get($this->admin->getIdParameter());
+        $id      = $request->get($this->admin->getIdParameter());
 
         $object = $this->admin->getObject($id);
 
@@ -1026,10 +1026,10 @@ class CRUDController extends Controller
         $this->admin->setSubject($base_object);
 
         return $this->render($this->admin->getTemplate('show_compare'), array(
-            'action'            => 'show',
-            'object'            => $base_object,
-            'object_compare'    => $compare_object,
-            'elements'          => $this->admin->getShow(),
+            'action'         => 'show',
+            'object'         => $base_object,
+            'object_compare' => $compare_object,
+            'elements'       => $this->admin->getShow(),
         ), null, $request);
     }
 
@@ -1106,9 +1106,9 @@ class CRUDController extends Controller
      */
     protected function getAclRoles()
     {
-        $aclRoles = array();
+        $aclRoles      = array();
         $roleHierarchy = $this->container->getParameter('security.role_hierarchy.roles');
-        $pool = $this->container->get('sonata.admin.pool');
+        $pool          = $this->container->get('sonata.admin.pool');
 
         foreach ($pool->getAdminServiceIds() as $id) {
             try {
@@ -1119,14 +1119,14 @@ class CRUDController extends Controller
 
             $baseRole = $admin->getSecurityHandler()->getBaseRole($admin);
             foreach ($admin->getSecurityInformation() as $role => $permissions) {
-                $role = sprintf($baseRole, $role);
+                $role       = sprintf($baseRole, $role);
                 $aclRoles[] = $role;
             }
         }
 
         foreach ($roleHierarchy as $name => $roles) {
             $aclRoles[] = $name;
-            $aclRoles = array_merge($aclRoles, $roles);
+            $aclRoles   = array_merge($aclRoles, $roles);
         }
 
         $aclRoles = array_unique($aclRoles);
@@ -1168,7 +1168,7 @@ class CRUDController extends Controller
         $aclRoles = $this->getAclRoles();
 
         $adminObjectAclManipulator = $this->get('sonata.admin.object.manipulator.acl.admin');
-        $adminObjectAclData = new AdminObjectAclData(
+        $adminObjectAclData        = new AdminObjectAclData(
             $this->admin,
             $object,
             $aclUsers,
@@ -1181,10 +1181,10 @@ class CRUDController extends Controller
 
         if ($request->getMethod() === 'POST') {
             if ($request->request->has(AdminObjectAclManipulator::ACL_USERS_FORM_NAME)) {
-                $form = $aclUsersForm;
+                $form         = $aclUsersForm;
                 $updateMethod = 'updateAclUsers';
             } elseif ($request->request->has(AdminObjectAclManipulator::ACL_ROLES_FORM_NAME)) {
-                $form = $aclRolesForm;
+                $form         = $aclRolesForm;
                 $updateMethod = 'updateAclRoles';
             }
 
@@ -1249,7 +1249,8 @@ class CRUDController extends Controller
         if (!$this->container->get('form.csrf_provider')->isCsrfTokenValid(
             $intention,
             $request->request->get('_sonata_csrf_token', false)
-        )) {
+        )
+        ) {
             throw new HttpException(400, 'The csrf token is not valid, CSRF attack?');
         }
     }
@@ -1363,5 +1364,17 @@ class CRUDController extends Controller
         }
 
         return $request;
+    }
+
+    /**
+     * @return Request
+     */
+    public function getRequest()
+    {
+        if ($this->container->has('request_stack')) {
+            return $this->container->get('request_stack')->getCurrentRequest();
+        }
+
+        return $this->container->get('request');
     }
 }
