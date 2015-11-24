@@ -46,33 +46,35 @@ file that was distributed with this source code.
 {% endblock %}
 
 {% block list_table %}
-    <div class="box box-primary">
-        <div class="box-header">
-            <h1 class="box-title">
-                {{ admin.trans('element.tree_site_label') }}
-                <div class="btn-group">
-                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                        <strong class="text-info">{{ currentSite.name }}</strong> <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" role="menu">
-                        {% for context in contexts %}
-                            <li>
-                                <a href="{{ admin.generateUrl('tree', { 'context': context.id }) }}">
-                                    {% if currentContext and context.id == currentContext.id %}
-                                        <span class="pull-right">
-                                            <i class="fa fa-check"></i>
-                                        </span>
-                                    {% endif %}
-                                    {{ site.name }}
-                                </a>
-                            </li>
-                        {% endfor%}
-                    </ul>
-                </div>
-            </h1>
-        </div>
-        <div class="box-content">
-            {{ tree.navigate_child(collection, admin, true) }}
+    <div class="col-xs-12 col-md-12">
+        <div class="box box-primary">
+            <div class="box-header">
+                <h1 class="box-title">
+                    {{ admin.trans('element.tree_site_label') }}
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                            <strong class="text-info">{{ currentSite.name }}</strong> <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            {% for context in contexts %}
+                                <li>
+                                    <a href="{{ admin.generateUrl('tree', { 'context': context.id }) }}">
+                                        {% if currentContext and context.id == currentContext.id %}
+                                            <span class="pull-right">
+                                                <i class="fa fa-check"></i>
+                                            </span>
+                                        {% endif %}
+                                        {{ site.name }}
+                                    </a>
+                                </li>
+                            {% endfor%}
+                        </ul>
+                    </div>
+                </h1>
+            </div>
+            <div class="box-content">
+                {{ tree.navigate_child(collection, admin, true) }}
+            </div>
         </div>
     </div>
 {% endblock %}
