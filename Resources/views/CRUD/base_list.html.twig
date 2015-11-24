@@ -294,8 +294,10 @@ file that was distributed with this source code.
                             </div>
                         </div>
 
+                        {% import _self as base_list %}
+                        
                         {% for paramKey, paramValue in admin.persistentParameters %}
-                            <input type="hidden" name="{{ paramKey }}" value="{{ paramValue }}">
+                            {{ base_list.hidden_input(paramKey, paramValue) }}
                         {% endfor %}
                     </form>
                 </div>
@@ -303,3 +305,15 @@ file that was distributed with this source code.
         </div>
     {% endif %}
 {% endblock %}
+
+{% macro hidden_input(paramKey, paramValue) %}
+    {% if paramValue is iterable %}
+        {% import _self as base_list %}
+        
+        {% for key, value in paramValue %}
+            {{ base_list.hidden_input(paramKey ~ '[' ~ key ~ ']', value) }}
+        {% endfor %}
+    {% else %}
+        <input type="hidden" name="{{ paramKey }}" value="{{ paramValue }}">
+    {% endif %}
+{% endmacro %}
