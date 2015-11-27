@@ -4,11 +4,11 @@
         <body>
             <trans-unit id="sonata_administration">
                 <source>sonata_administration</source>
-                <target>Administration</target>
+                <target>Administração</target>
             </trans-unit>
             <trans-unit id="action_delete">
                 <source>action_delete</source>
-                <target>Deletar</target>
+                <target>Excluir</target>
             </trans-unit>
             <trans-unit id="btn_batch">
                 <source>btn_batch</source>
@@ -36,7 +36,7 @@
             </trans-unit>
             <trans-unit id="btn_advanced_filters">
                 <source>btn_advanced_filters</source>
-                <target>btn_advanced_filters</target>
+                <target>Fitros Avançados</target>
             </trans-unit>
             <trans-unit id="btn_update">
                 <source>btn_update</source>
@@ -80,7 +80,7 @@
             </trans-unit>
             <trans-unit id="link_reset_filter">
                 <source>link_reset_filter</source>
-                <target>Resetar</target>
+                <target>Limpar Filtros</target>
             </trans-unit>
             <trans-unit id="title_create">
                 <source>title_create</source>
@@ -88,7 +88,7 @@
             </trans-unit>
             <trans-unit id="title_dashboard">
                 <source>title_dashboard</source>
-                <target>Dashboard</target>
+                <target>Visão Geral</target>
             </trans-unit>
             <trans-unit id="title_edit">
                 <source>title_edit</source>
@@ -128,7 +128,7 @@
             </trans-unit>
             <trans-unit id="confirm_msg">
                 <source>confirm_msg</source>
-                <target>Você tem certeza ?</target>
+                <target>Você tem certeza?</target>
             </trans-unit>
             <trans-unit id="action_edit">
                 <source>action_edit</source>
@@ -164,7 +164,7 @@
             </trans-unit>
             <trans-unit id="flash_lock_error">
                 <source>flash_lock_error</source>
-                <target>flash_lock_error</target>
+                <target>Outro usuário modificou o item "%name%". Por favor, %link_start%clique aqui%link_end% to para recarregar a página e aplicar as mudanças novamente.</target>
             </trans-unit>
             <trans-unit id='flash_batch_delete_success'>
                 <source>flash_batch_delete_success</source>
@@ -184,7 +184,7 @@
             </trans-unit>
             <trans-unit id="form_not_available">
                 <source>form_not_available</source>
-                <target>form_not_available</target>
+                <target>O formulário não está disponível</target>
             </trans-unit>
             <trans-unit id="link_breadcrumb_dashboard">
                 <source>breadcrumb.link_dashboard</source>
@@ -316,7 +316,7 @@
             </trans-unit>
             <trans-unit id="td_compare">
                 <source>td_compare</source>
-                <target>td_compare</target>
+                <target>Comparar</target>
             </trans-unit>
             <trans-unit id="td_revision">
                 <source>td_revision</source>
@@ -332,7 +332,7 @@
             </trans-unit>
             <trans-unit id="td_role">
                 <source>td_role</source>
-                <target>td_role</target>
+                <target>Função</target>
             </trans-unit>
             <trans-unit id="label_view_revision">
                 <source>label_view_revision</source>
@@ -340,11 +340,11 @@
             </trans-unit>
             <trans-unit id="label_compare_revision">
                 <source>label_compare_revision</source>
-                <target>label_compare_revision</target>
+                <target>Comparar revisão</target>
             </trans-unit>
             <trans-unit id="list_results_count_prefix">
                 <source>list_results_count_prefix</source>
-                <target>list_results_count_prefix</target>
+                <target>pelo menos</target>
             </trans-unit>
             <trans-unit id="list_results_count">
                 <source>list_results_count</source>
@@ -384,7 +384,7 @@
             </trans-unit>
             <trans-unit id="btn_preview_decline">
                 <source>btn_preview_decline</source>
-                <target>Declínio</target>
+                <target>Rejeitar</target>
             </trans-unit>
             <trans-unit id="label_per_page">
                 <source>label_per_page</source>
@@ -396,7 +396,7 @@
             </trans-unit>
             <trans-unit id="confirm_exit">
                 <source>confirm_exit</source>
-                <target>Você tem mudanças sem salvar.</target>
+                <target>Você tem mudanças não salvas.</target>
             </trans-unit>
             <trans-unit id="link_edit_acl">
                 <source>link_edit_acl</source>
@@ -440,27 +440,27 @@
             </trans-unit>
             <trans-unit id="noscript_warning">
                 <source>noscript_warning</source>
-                <target>noscript_warning</target>
+                <target>Javascript está desativado no seu navegador. Algumas recursos não funcionarão corretamente.</target>
             </trans-unit>
             <trans-unit id="message_form_group_empty">
                 <source>message_form_group_empty</source>
-                <target>message_form_group_empty</target>
+                <target>Nenhum campo disponível</target>
             </trans-unit>
             <trans-unit id="link_filters">
                 <source>link_filters</source>
-                <target>link_filters</target>
+                <target>Filtros</target>
             </trans-unit>
             <trans-unit id="stats_view_more">
                 <source>stats_view_more</source>
-                <target>stats_view_more</target>
+                <target>Ver mais</target>
             </trans-unit>
             <trans-unit id="title_select_subclass">
                 <source>title_select_subclass</source>
-                <target>title_select_subclass</target>
+                <target>Selecione o tipo do objeto</target>
             </trans-unit>
             <trans-unit id="no_subclass_available">
                 <source>no_subclass_available</source>
-                <target>no_subclass_available</target>
+                <target>Nenhum tipo de objeto disponível</target>
             </trans-unit>
         </body>
     </file>
