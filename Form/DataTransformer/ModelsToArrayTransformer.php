@@ -11,6 +11,7 @@
 
 namespace Sonata\AdminBundle\Form\DataTransformer;
 
+use Sonata\AdminBundle\Form\ChoiceList\LegacyModelChoiceList;
 use Sonata\AdminBundle\Form\ChoiceList\ModelChoiceList;
 use Symfony\Component\Form\ChoiceList\LegacyChoiceListAdapter;
 use Symfony\Component\Form\DataTransformerInterface;

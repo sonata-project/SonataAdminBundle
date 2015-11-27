@@ -11,6 +11,7 @@
 
 namespace Sonata\AdminBundle\Form\Type;
 
+use Sonata\AdminBundle\Form\ChoiceList\LegacyModelChoiceList;
 use Sonata\AdminBundle\Form\ChoiceList\ModelChoiceList;
 use Sonata\AdminBundle\Form\DataTransformer\ModelsToArrayTransformer;
 use Sonata\AdminBundle\Form\DataTransformer\ModelToIdTransformer;
@@ -113,7 +114,18 @@ class ModelType extends AbstractType
                     return $choices;
                 }
 
-                return new ModelChoiceList(
+                // @TODO: Remove condition and just return ModelChoiceList when bumping requirements to SF 2.7+
+                if (class_exists('Symfony\Component\Form\ChoiceList\ArrayChoiceList')) {
+                    return new ModelChoiceList(
+                        $options['model_manager'],
+                        $options['class'],
+                        $options['property'],
+                        $options['query'],
+                        $options['choices']
+                    );
+                }
+
+                return new LegacyModelChoiceList(
                     $options['model_manager'],
                     $options['class'],
                     $options['property'],
