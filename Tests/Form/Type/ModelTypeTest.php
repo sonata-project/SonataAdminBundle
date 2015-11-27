@@ -21,9 +21,14 @@ class ModelTypeTest extends TypeTestCase
     {
         $type = new ModelType();
         $modelManager = $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface');
+
         $optionResolver = new OptionsResolver();
 
-        $type->setDefaultOptions($optionResolver);
+        if (!method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')) {
+            $type->setDefaultOptions($optionResolver);
+        } else {
+            $type->configureOptions($optionResolver);
+        }
 
         $options = $optionResolver->resolve(array('model_manager' => $modelManager, 'choices' => array()));
 
@@ -53,7 +58,11 @@ class ModelTypeTest extends TypeTestCase
         $modelManager = $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface');
         $optionResolver = new OptionsResolver();
 
-        $type->setDefaultOptions($optionResolver);
+        if (!method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')) {
+            $type->setDefaultOptions($optionResolver);
+        } else {
+            $type->configureOptions($optionResolver);
+        }
 
         $options = $optionResolver->resolve(array('model_manager' => $modelManager, 'choices' => array(), 'multiple' => $multiple, 'expanded' => $expanded));
 

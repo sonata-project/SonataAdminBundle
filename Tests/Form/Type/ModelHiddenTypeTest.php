@@ -23,7 +23,11 @@ class ModelHiddenTypeTest extends TypeTestCase
         $modelManager = $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface');
         $optionResolver = new OptionsResolver();
 
-        $type->setDefaultOptions($optionResolver);
+        if (!method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')) {
+            $type->setDefaultOptions($optionResolver);
+        } else {
+            $type->configureOptions($optionResolver);
+        }
 
         $options = $optionResolver->resolve(array('model_manager' => $modelManager, 'class' => '\Foo'));
 

@@ -89,16 +89,14 @@ class ExplainAdminCommand extends ContainerAwareCommand
             $output->writeln(sprintf('  - % -25s  % -15s % -15s', $name, $fieldDescription->getType(), $fieldDescription->getTemplate()));
         }
 
-        $validator = $this->getContainer()->get('validator');
-        // TODO: Remove conditional method when bumping requirements to SF 2.5+
-        if (method_exists($validator, 'getMetadataFor')) {
-            $metadata = $validator->getMetadataFor($admin->getClass());
+        if ($this->getContainer()->has('validator.validator_factory')) {
+            $metadata = $this->getContainer()->get('validator.validator_factory')->getMetadataFor($admin->getClass());
         } else {
-            $metadata = $validator->getMetadataFactory()->getMetadataFor($admin->getClass());
+            $metadata = $this->getContainer()->get('validator')->getMetadataFor($admin->getClass());
         }
 
         $output->writeln('');
-        $output->writeln('<comment>Validation Framework</comment> - http://symfony.com/doc/2.0/book/validation.html');
+        $output->writeln('<comment>Validation Framework</comment> - http://symfony.com/doc/3.0/book/validation.html');
         $output->writeln('<info>Properties constraints</info>');
 
         if (count($metadata->properties) == 0) {

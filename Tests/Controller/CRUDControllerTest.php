@@ -234,8 +234,9 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
             $this->csrfProvider->expects($this->any())
                 ->method('isTokenValid')
-                ->will($this->returnCallback(function ($intention, $token) {
-                    if ((string) $token == 'csrf-token-123_'.$intention) {
+                ->will($this->returnCallback(function (CsrfToken $token) {
+
+                    if ($token->getValue() == 'csrf-token-123_'.$token->getId()) {
                         return true;
                     }
 
@@ -318,7 +319,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
                     return true;
                 }
 
-                if ($id == 'security.csrf.token_manager' && Kernel::MAJOR_VERSION >= 3) {
+                if ($id == 'security.csrf.token_manager' && Kernel::MAJOR_VERSION >= 3  && $tthis->getCsrfProvider() !== null) {
                     return true;
                 }
 

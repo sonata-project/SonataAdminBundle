@@ -30,6 +30,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Security\Csrf\CsrfToken;
 
 /**
  * Class CRUDController.
@@ -1240,17 +1241,18 @@ class CRUDController extends Controller
      */
     protected function validateCsrfToken($intention, Request $request = null)
     {
-        if (!$this->container->has('form.csrf_provider')) {
+        $request = $this->resolveRequest($request);
+        $token = $request->request->get('_sonata_csrf_token', false);
+
+        if ($this->container->has('security.csrf.token_manager')) { // SF3.0
+            $valid = $this->container->get('security.csrf.token_manager')->isTokenValid(new CsrfToken($intention, $token));
+        } elseif ($this->container->has('form.csrf_provider')) { // < SF3.0
+            $valid = $this->container->get('form.csrf_provider')->isCsrfTokenValid($intention, $token);
+        } else {
             return;
         }
 
-        $request = $this->resolveRequest($request);
-
-        if (!$this->container->get('form.csrf_provider')->isCsrfTokenValid(
-            $intention,
-            $request->request->get('_sonata_csrf_token', false)
-        )
-        ) {
+        if (!$valid) {
             throw new HttpException(400, 'The csrf token is not valid, CSRF attack?');
         }
     }

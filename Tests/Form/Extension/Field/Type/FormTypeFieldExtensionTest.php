@@ -31,7 +31,11 @@ class FormTypeFieldExtensionTest extends \PHPUnit_Framework_TestCase
         $extension = new FormTypeFieldExtension(array(), array());
 
         $resolver = new OptionsResolver();
-        $extension->setDefaultOptions($resolver);
+        if (!method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')) {
+            $extension->setDefaultOptions($resolver);
+        } else {
+            $extension->configureOptions($resolver);
+        }
 
         $options = $resolver->resolve();
 
