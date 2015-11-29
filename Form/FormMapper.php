@@ -240,9 +240,22 @@ class FormMapper extends BaseGroupedMapper
     public function setHelps(array $helps = array())
     {
         foreach ($helps as $name => $help) {
-            if ($this->admin->hasFormFieldDescription($name)) {
-                $this->admin->getFormFieldDescription($name)->setHelp($help);
-            }
+            $this->addHelp($name, $help);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param $name
+     * @param $help
+     *
+     * @return FormMapper
+     */
+    public function addHelp($name, $help)
+    {
+        if ($this->admin->hasFormFieldDescription($name)) {
+            $this->admin->getFormFieldDescription($name)->setHelp($help);
         }
 
         return $this;
