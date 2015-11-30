@@ -18,6 +18,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - Fix detection of path when using nested properties with underscores in `AdminHelper:getElementAccessPath` method
 - Fixed bad rendering on datetime field with `single_text` widget for date and time
+- Fixed rendering of empty form groups
 
 ## [3.0.0](https://github.com/sonata-project/SonataAdminBundle/compare/2.3.10...3.0.0) - 2016-05-08
 ### Added
