@@ -255,6 +255,9 @@ items_per_page
 quiet_millis
   defaults to 100. Number of milliseconds to wait for the user to stop typing before issuing the ajax request.
 
+cache
+  defaults to false. Set to true, if the requested pages should be cached by the browser.
+
 url
   defaults to "". Target external remote URL for ajax requests.
   You usually should not need to set this manually.

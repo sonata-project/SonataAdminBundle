@@ -45,6 +45,7 @@ file that was distributed with this source code.
                     url:  '{{ url ?: path(route.name, route.parameters|default([]))|e('js') }}',
                     dataType: 'json',
                     quietMillis: {{ quiet_millis }},
+                    cache: {{ cache ? 'true' : 'false' }},
                     data: function (term, page) { // page is the one-based page number tracked by Select2
                         {% block sonata_type_model_autocomplete_ajax_request_parameters %}
                         return {
