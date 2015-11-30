@@ -252,6 +252,9 @@ minimum_input_length
 items_per_page
   defaults to 10. Number of items per one ajax request.
 
+quiet_millis
+  defaults to 100. Number of milliseconds to wait for the user to stop typing before issuing the ajax request.
+
 url
   defaults to "". Target external remote URL for ajax requests.
   You usually should not need to set this manually.

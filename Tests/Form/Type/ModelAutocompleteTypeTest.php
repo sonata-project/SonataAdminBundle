@@ -38,6 +38,7 @@ class ModelAutocompleteTypeTest extends TypeTestCase
         $this->assertSame('', $options['placeholder']);
         $this->assertSame(3, $options['minimum_input_length']);
         $this->assertSame(10, $options['items_per_page']);
+        $this->assertSame(100, $options['quiet_millis']);
         $this->assertSame('', $options['width']);
         $this->assertFalse($options['dropdown_auto_width']);
 

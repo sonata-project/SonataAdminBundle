@@ -73,6 +73,7 @@ class ModelAutocompleteType extends AbstractType
         $view->vars['req_param_name_search'] = $options['req_param_name_search'];
         $view->vars['req_param_name_page_number'] = $options['req_param_name_page_number'];
         $view->vars['req_param_name_items_per_page'] = $options['req_param_name_items_per_page'];
+        $view->vars['quiet_millis'] = $options['quiet_millis'];
 
         // CSS classes
         $view->vars['container_css_class'] = $options['container_css_class'];
@@ -120,6 +121,7 @@ class ModelAutocompleteType extends AbstractType
             'placeholder'                   => '',
             'minimum_input_length'          => 3, //minimum 3 chars should be typed to load ajax data
             'items_per_page'                => 10, //number of items per page
+            'quiet_millis'                  => 100,
 
             'to_string_callback'            => null,
 
