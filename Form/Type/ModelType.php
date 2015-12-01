@@ -11,13 +11,13 @@
 
 namespace Sonata\AdminBundle\Form\Type;
 
-use Sonata\AdminBundle\Form\ChoiceList\LegacyModelChoiceList;
 use Sonata\AdminBundle\Form\ChoiceList\ModelChoiceList;
+use Sonata\AdminBundle\Form\ChoiceList\ModelChoiceLoader;
+use Sonata\AdminBundle\Form\DataTransformer\LegacyModelsToArrayTransformer;
 use Sonata\AdminBundle\Form\DataTransformer\ModelsToArrayTransformer;
 use Sonata\AdminBundle\Form\DataTransformer\ModelToIdTransformer;
 use Sonata\AdminBundle\Form\EventListener\MergeCollectionListener;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceListInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -39,9 +39,15 @@ class ModelType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         if ($options['multiple']) {
+            if (array_key_exists('choice_loader', $options) && $options['choice_loader'] !== null) { // SF2.7+
+                $builder->addViewTransformer(new ModelsToArrayTransformer($options['choice_list'], $options['model_manager'], $options['class']), true);
+            } else {
+                $builder->addViewTransformer(new LegacyModelsToArrayTransformer($options['choice_list']), true);
+            }
+
             $builder
                 ->addEventSubscriber(new MergeCollectionListener($options['model_manager']))
-                ->addViewTransformer(new ModelsToArrayTransformer($options['choice_list']), true);
+            ;
         } else {
             $builder
                 ->addViewTransformer(new ModelToIdTransformer($options['model_manager'], $options['class']), true)
@@ -75,7 +81,39 @@ class ModelType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $options = array();
+        if (interface_exists('Symfony\Component\Form\ChoiceList\Loader\ChoiceLoaderInterface')) { // SF2.7+
+            $options['choice_loader'] = function (Options $options, $previousValue) {
+                if ($previousValue && count($choices = $previousValue->getChoices())) {
+                    return $choices;
+                }
+
+                return new ModelChoiceLoader(
+                    $options['model_manager'],
+                    $options['class'],
+                    $options['property'],
+                    $options['query'],
+                    $options['choices']
+                );
+
+            };
+        } else {
+            $options['choice_list'] = function (Options $options, $previousValue) {
+                if ($previousValue && count($choices = $previousValue->getChoices())) {
+                    return $choices;
+                }
+
+                return new ModelChoiceList(
+                    $options['model_manager'],
+                    $options['class'],
+                    $options['property'],
+                    $options['query'],
+                    $options['choices']
+                );
+            };
+        }
+
+        $resolver->setDefaults(array_merge($options, array(
             'compound'          => function (Options $options) {
                 if (isset($options['multiple']) && $options['multiple']) {
                     if (isset($options['expanded']) && $options['expanded']) {
@@ -109,31 +147,7 @@ class ModelType extends AbstractType
             'btn_list'          => 'link_list',
             'btn_delete'        => 'link_delete',
             'btn_catalogue'     => 'SonataAdminBundle',
-            'choice_list'       => function (Options $options, $previousValue) {
-                if ($previousValue instanceof ChoiceListInterface && count($choices = $previousValue->getChoices())) {
-                    return $choices;
-                }
-
-                // @TODO: Remove condition and just return ModelChoiceList when bumping requirements to SF 2.7+
-                if (class_exists('Symfony\Component\Form\ChoiceList\ArrayChoiceList')) {
-                    return new ModelChoiceList(
-                        $options['model_manager'],
-                        $options['class'],
-                        $options['property'],
-                        $options['query'],
-                        $options['choices']
-                    );
-                }
-
-                return new LegacyModelChoiceList(
-                    $options['model_manager'],
-                    $options['class'],
-                    $options['property'],
-                    $options['query'],
-                    $options['choices']
-                );
-            },
-        ));
+        )));
     }
 
     /**

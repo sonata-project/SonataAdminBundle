@@ -14,12 +14,11 @@ namespace Sonata\AdminBundle\Tests\Form\DataTransformer;
 use Doctrine\Common\Collections\ArrayCollection;
 use Sonata\AdminBundle\Form\DataTransformer\ModelsToArrayTransformer;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\Form\FooEntity;
-use Symfony\Component\Form\ChoiceList\LegacyChoiceListAdapter;
 
 /**
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
-class ModelsToArrayTransformerTest extends \PHPUnit_Framework_TestCase
+class LegacyModelsToArrayTransformerTest extends \PHPUnit_Framework_TestCase
 {
     private $choiceList;
     private $modelChoiceList;
@@ -31,30 +30,20 @@ class ModelsToArrayTransformerTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        // TODO: Remove condition when bumping requirements to SF 2.7+
-        if (class_exists('Symfony\Component\Form\ChoiceList\ArrayChoiceList')) {
-            $this->modelChoiceList = $this->getMockBuilder('Sonata\AdminBundle\Form\ChoiceList\ModelChoiceList')
-                ->disableOriginalConstructor()
-                ->getMock();
-        } else {
-            $this->modelChoiceList = $this->getMockBuilder('Sonata\AdminBundle\Form\ChoiceList\LegacyModelChoiceList')
-                ->disableOriginalConstructor()
-                ->getMock();
+        if (interface_exists('Symfony\Component\Form\ChoiceList\Loader\ChoiceLoaderInterface')) { // SF2.7+
+            $this->markTestSkipped('Test only available for < SF2.7');
         }
 
-        // Symfony < 2.7 BC
-        if (class_exists('Symfony\Component\Form\ChoiceList\LegacyChoiceListAdapter')) {
-            $this->choiceList = new LegacyChoiceListAdapter($this->modelChoiceList);
-        } else {
-            $this->choiceList = $this->modelChoiceList;
-        }
+        $this->choiceList = $this->getMockBuilder('Sonata\AdminBundle\Form\ChoiceList\ModelChoiceList')
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $this->modelManager = $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface');
 
         // php 5.3 BC
         $modelManager = $this->modelManager;
 
-        $this->modelChoiceList->expects($this->any())
+        $this->choiceList->expects($this->any())
             ->method('getModelManager')
             ->will($this->returnCallback(function () use ($modelManager) {
                 return $modelManager;
@@ -68,7 +57,7 @@ class ModelsToArrayTransformerTest extends \PHPUnit_Framework_TestCase
     {
         $transformer = new ModelsToArrayTransformer($this->choiceList);
 
-        $this->modelChoiceList->expects($this->any())
+        $this->choiceList->expects($this->any())
             ->method('getIdentifierValues')
             ->will($this->returnCallback(function ($entity) use ($identifiers) {
                 if ($entity instanceof FooEntity) {
@@ -78,13 +67,13 @@ class ModelsToArrayTransformerTest extends \PHPUnit_Framework_TestCase
                 return array();
             }));
 
-        $this->modelChoiceList->expects($this->any())
+        $this->choiceList->expects($this->any())
             ->method('getIdentifier')
             ->will($this->returnCallback(function () use ($identifiers) {
                 return $identifiers;
             }));
 
-        $this->modelChoiceList->expects($this->any())
+        $this->choiceList->expects($this->any())
             ->method('getEntities')
             ->will($this->returnCallback(function () {
                 return array('bcd' => new FooEntity(array('bcd')), 'efg' => new FooEntity(array('efg')), 'abc' => new FooEntity(array('abc')));
@@ -164,7 +153,7 @@ class ModelsToArrayTransformerTest extends \PHPUnit_Framework_TestCase
         $entity2 =  new FooEntity(array('bar'));
         $entity3 =  new FooEntity(array('baz'));
 
-        $this->modelChoiceList->expects($this->any())
+        $this->choiceList->expects($this->any())
             ->method('getEntity')
             ->will($this->returnCallback(function ($key) use ($entity1, $entity2, $entity3) {
                 switch ($key) {
@@ -197,7 +186,7 @@ class ModelsToArrayTransformerTest extends \PHPUnit_Framework_TestCase
             ->method('getModelCollectionInstance')
             ->will($this->returnValue(new ArrayCollection()));
 
-        $this->modelChoiceList->expects($this->any())
+        $this->choiceList->expects($this->any())
             ->method('getEntity')
             ->will($this->returnValue(false));
 
