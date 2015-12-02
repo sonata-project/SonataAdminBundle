@@ -117,7 +117,7 @@ class AdminType extends AbstractType
     {
         $resolver->setDefaults(array(
             'delete'          => function (Options $options) {
-                return ($options['btn_delete'] !== false);
+                return $options['btn_delete'] !== false;
             },
             'delete_options'  => array(
                 'type'         => 'checkbox',

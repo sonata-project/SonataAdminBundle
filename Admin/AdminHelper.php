@@ -164,9 +164,9 @@ class AdminHelper
     /**
      * Add a new instance to the related FieldDescriptionInterface value.
      *
-     * @param object                                              $object
+     * @param object                    $object
      * @param FieldDescriptionInterface $fieldDescription
-     * @param array                                               $fieldPath
+     * @param array                     $fieldPath
      *
      * @throws \RuntimeException
      */
