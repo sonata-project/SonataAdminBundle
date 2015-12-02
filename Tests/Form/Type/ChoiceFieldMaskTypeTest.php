@@ -23,7 +23,12 @@ class ChoiceFieldMaskTypeTest extends TypeTestCase
 
         $optionResolver = new OptionsResolver();
 
-        $type->setDefaultOptions($optionResolver);
+        if (!method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')) {
+            $type->setDefaultOptions($optionResolver);
+        } else {
+            $type->configureOptions($optionResolver);
+        }
+
         $options = $optionResolver->resolve(
             array(
                 'map' => array(

@@ -12,7 +12,6 @@
 namespace Sonata\AdminBundle\Form\DataTransformer;
 
 use Sonata\AdminBundle\Form\ChoiceList\ModelChoiceList;
-use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
@@ -20,37 +19,23 @@ use Symfony\Component\Form\Exception\UnexpectedTypeException;
 /**
  * Class ModelsToArrayTransformer.
  *
+ * This class should be use with sf < 2.7 only and will be deprecated with version 3.0
+ *
  * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class ModelsToArrayTransformer implements DataTransformerInterface
+class LegacyModelsToArrayTransformer implements DataTransformerInterface
 {
-    /**
-     * @var ModelManagerInterface
-     */
-    protected $modelManager;
-
-    /**
-     * @var string
-     */
-    protected $class;
-
     /**
      * @var ModelChoiceList
      */
     protected $choiceList;
 
     /**
-     * ModelsToArrayTransformer constructor.
-     *
-     * @param ModelChoiceList       $choiceList
-     * @param ModelManagerInterface $modelManager
-     * @param                       $class
+     * @param ModelChoiceList $choiceList
      */
-    public function __construct(ModelChoiceList $choiceList, ModelManagerInterface $modelManager, $class)
+    public function __construct(ModelChoiceList $choiceList)
     {
-        $this->choiceList   = $choiceList;
-        $this->modelManager = $modelManager;
-        $this->class        = $class;
+        $this->choiceList = $choiceList;
     }
 
     /**
@@ -63,10 +48,20 @@ class ModelsToArrayTransformer implements DataTransformerInterface
         }
 
         $array = array();
-        foreach ($collection as $key => $entity) {
-            $id = implode('~', $this->getIdentifierValues($entity));
 
-            $array[] = $id;
+        if (count($this->choiceList->getIdentifier()) > 1) {
+            // load all choices
+            $availableEntities = $this->choiceList->getEntities();
+
+            foreach ($collection as $entity) {
+                // identify choices by their collection key
+                $key = array_search($entity, $availableEntities);
+                $array[] = $key;
+            }
+        } else {
+            foreach ($collection as $entity) {
+                $array[] = current($this->choiceList->getIdentifierValues($entity));
+            }
         }
 
         return $array;
@@ -77,16 +72,27 @@ class ModelsToArrayTransformer implements DataTransformerInterface
      */
     public function reverseTransform($keys)
     {
+        $collection = $this->choiceList->getModelManager()->getModelCollectionInstance(
+            $this->choiceList->getClass()
+        );
+
+        if (!$collection instanceof \ArrayAccess) {
+            throw new UnexpectedTypeException($collection, '\ArrayAccess');
+        }
+
+        if ('' === $keys || null === $keys) {
+            return $collection;
+        }
+
         if (!is_array($keys)) {
             throw new UnexpectedTypeException($keys, 'array');
         }
 
-        $collection = $this->modelManager->getModelCollectionInstance($this->class);
         $notFound = array();
 
         // optimize this into a SELECT WHERE IN query
         foreach ($keys as $key) {
-            if ($entity = $this->modelManager->find($this->class, $key)) {
+            if ($entity = $this->choiceList->getEntity($key)) {
                 $collection[] = $entity;
             } else {
                 $notFound[] = $key;
@@ -98,19 +104,5 @@ class ModelsToArrayTransformer implements DataTransformerInterface
         }
 
         return $collection;
-    }
-
-    /**
-     * @param object $entity
-     *
-     * @return array
-     */
-    private function getIdentifierValues($entity)
-    {
-        try {
-            return $this->modelManager->getIdentifierValues($entity);
-        } catch (\Exception $e) {
-            throw new \InvalidArgumentException(sprintf('Unable to retrieve the identifier values for entity %s', ClassUtils::getClass($entity)), 0, $e);
-        }
     }
 }

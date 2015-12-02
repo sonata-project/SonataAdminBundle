@@ -41,6 +41,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyPath;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Acl\Model\DomainObjectInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -1240,7 +1241,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     /**
      * {@inheritdoc}
      */
-    public function generateObjectUrl($name, $object, array $parameters = array(), $absolute = false)
+    public function generateObjectUrl($name, $object, array $parameters = array(), $absolute = UrlGeneratorInterface::ABSOLUTE_PATH)
     {
         $parameters['id'] = $this->getUrlsafeIdentifier($object);
 
@@ -1250,7 +1251,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     /**
      * {@inheritdoc}
      */
-    public function generateUrl($name, array $parameters = array(), $absolute = false)
+    public function generateUrl($name, array $parameters = array(), $absolute = UrlGeneratorInterface::ABSOLUTE_PATH)
     {
         return $this->routeGenerator->generateUrl($this, $name, $parameters, $absolute);
     }
@@ -1258,7 +1259,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     /**
      * {@inheritdoc}
      */
-    public function generateMenuUrl($name, array $parameters = array(), $absolute = false)
+    public function generateMenuUrl($name, array $parameters = array(), $absolute = UrlGeneratorInterface::ABSOLUTE_PATH)
     {
         return $this->routeGenerator->generateMenuUrl($this, $name, $parameters, $absolute);
     }

@@ -28,7 +28,7 @@ Form Fields
   - fooTextField               text            SonataAdminBundle:CRUD:foo_text.html.twig
   - barDateTimeField           datetime        SonataAdminBundle:CRUD:bar_datetime.html.twig
 
-Validation Framework - http://symfony.com/doc/2.0/book/validation.html
+Validation Framework - http://symfony.com/doc/3.0/book/validation.html
 Properties constraints
   - firstName
     Symfony\Component\Validator\Constraints\NotNull                        Default
