@@ -135,10 +135,11 @@ class ExplainAdminCommandTest extends \PHPUnit_Framework_TestCase
 
         // php 5.3 BC
         $admin = $this->admin;
+        $validatorFactory = $this->validatorFactory;
 
         $container->expects($this->any())
             ->method('get')
-            ->will($this->returnCallback(function ($id) use ($container, $admin, $validator) {
+            ->will($this->returnCallback(function ($id) use ($container, $admin, $validator, $validatorFactory) {
                 switch ($id) {
                     case 'sonata.admin.pool':
                         $pool = new Pool($container, '', '');
@@ -147,7 +148,7 @@ class ExplainAdminCommandTest extends \PHPUnit_Framework_TestCase
                         return $pool;
 
                     case 'validator.validator_factory':
-                        return $this->validatorFactory;
+                        return $validatorFactory;
 
                     case 'validator':
                         return $validator;
