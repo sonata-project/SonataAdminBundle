@@ -14,34 +14,41 @@ namespace Sonata\AdminBundle\Tests\Form\Extension;
 use Sonata\AdminBundle\Form\Extension\ChoiceTypeExtension;
 use Sonata\CoreBundle\Form\Extension\DependencyInjectionExtension;
 use Symfony\Component\Form\Forms;
+use Symfony\Component\HttpKernel\Kernel;
 
 class ChoiceTypeExtensionTest extends \PHPUnit_Framework_TestCase
 {
     protected function setup()
     {
-        $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
-        $container->expects($this->any())->method('has')->will($this->returnValue(true));
-        $container->expects($this->any())->method('get')
-            ->with($this->equalTo('sonata.admin.form.choice_extension'))
-            ->will($this->returnValue(new ChoiceTypeExtension()));
+        if (version_compare(Kernel::VERSION, '2.8', '<')) {
+            $this->factory = Forms::createFormFactoryBuilder()
+                  ->addTypeExtension(new ChoiceTypeExtension())
+                  ->getFormFactory();
+        } else { // SF2.7+
+            $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
+            $container->expects($this->any())->method('has')->will($this->returnValue(true));
+            $container->expects($this->any())->method('get')
+                ->with($this->equalTo('sonata.admin.form.choice_extension'))
+                ->will($this->returnValue(new ChoiceTypeExtension()));
 
-        $typeServiceIds = array();
-        $typeExtensionServiceIds = array();
-        $guesserServiceIds       = array();
-        $mappingTypes            = array(
-            'choice' => 'Symfony\Component\Form\Extension\Core\Type\ChoiceType',
-        );
-        $extensionTypes          = array(
-            'choice' => array(
-                'sonata.admin.form.choice_extension',
-            ),
-        );
+            $typeServiceIds = array();
+            $typeExtensionServiceIds = array();
+            $guesserServiceIds       = array();
+            $mappingTypes            = array(
+                'choice' => 'Symfony\Component\Form\Extension\Core\Type\ChoiceType',
+            );
+            $extensionTypes          = array(
+                'choice' => array(
+                    'sonata.admin.form.choice_extension',
+                ),
+            );
 
-        $dependency = new DependencyInjectionExtension($container, $typeServiceIds, $typeExtensionServiceIds, $guesserServiceIds, $mappingTypes, $extensionTypes);
+            $dependency = new DependencyInjectionExtension($container, $typeServiceIds, $typeExtensionServiceIds, $guesserServiceIds, $mappingTypes, $extensionTypes);
 
-        $this->factory = Forms::createFormFactoryBuilder()
-            ->addExtension($dependency)
-            ->getFormFactory();
+            $this->factory = Forms::createFormFactoryBuilder()
+                ->addExtension($dependency)
+                ->getFormFactory();
+        }
     }
 
     public function testExtendedType()

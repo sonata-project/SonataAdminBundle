@@ -12,7 +12,7 @@
 namespace Sonata\AdminBundle\Tests\Form\DataTransformer;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Sonata\AdminBundle\Form\DataTransformer\ModelsToArrayTransformer;
+use Sonata\AdminBundle\Form\DataTransformer\LegacyModelsToArrayTransformer;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\Form\FooEntity;
 
 /**
@@ -55,7 +55,7 @@ class LegacyModelsToArrayTransformerTest extends \PHPUnit_Framework_TestCase
      */
     public function testTransform($expected, $collection, $identifiers)
     {
-        $transformer = new ModelsToArrayTransformer($this->choiceList);
+        $transformer = new LegacyModelsToArrayTransformer($this->choiceList);
 
         $this->choiceList->expects($this->any())
             ->method('getIdentifierValues')
@@ -97,7 +97,7 @@ class LegacyModelsToArrayTransformerTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException('Symfony\Component\Form\Exception\UnexpectedTypeException', 'Expected argument of type "\ArrayAccess", "NULL" given');
 
-        $transformer = new ModelsToArrayTransformer($this->choiceList);
+        $transformer = new LegacyModelsToArrayTransformer($this->choiceList);
 
         $this->modelManager->expects($this->any())
             ->method('getModelCollectionInstance')
@@ -110,7 +110,7 @@ class LegacyModelsToArrayTransformerTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException('Symfony\Component\Form\Exception\UnexpectedTypeException', 'Expected argument of type "array", "integer" given');
 
-        $transformer = new ModelsToArrayTransformer($this->choiceList);
+        $transformer = new LegacyModelsToArrayTransformer($this->choiceList);
 
         $this->modelManager->expects($this->any())
             ->method('getModelCollectionInstance')
@@ -124,7 +124,7 @@ class LegacyModelsToArrayTransformerTest extends \PHPUnit_Framework_TestCase
      */
     public function testReverseTransformEmpty($keys)
     {
-        $transformer = new ModelsToArrayTransformer($this->choiceList);
+        $transformer = new LegacyModelsToArrayTransformer($this->choiceList);
 
         $this->modelManager->expects($this->any())
             ->method('getModelCollectionInstance')
@@ -143,7 +143,7 @@ class LegacyModelsToArrayTransformerTest extends \PHPUnit_Framework_TestCase
 
     public function testReverseTransform()
     {
-        $transformer = new ModelsToArrayTransformer($this->choiceList);
+        $transformer = new LegacyModelsToArrayTransformer($this->choiceList);
 
         $this->modelManager->expects($this->any())
             ->method('getModelCollectionInstance')
@@ -180,7 +180,7 @@ class LegacyModelsToArrayTransformerTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException('Symfony\Component\Form\Exception\TransformationFailedException', 'The entities with keys "nonexistent" could not be found');
 
-        $transformer = new ModelsToArrayTransformer($this->choiceList);
+        $transformer = new LegacyModelsToArrayTransformer($this->choiceList);
 
         $this->modelManager->expects($this->any())
             ->method('getModelCollectionInstance')
