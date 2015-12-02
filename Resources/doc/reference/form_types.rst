@@ -319,7 +319,7 @@ template
 
 .. tip::
 
-    A jQuery event is fired after when autocomplete selected value has been changed (``sonata.autocomplete_new_element_selected``).
+    A jQuery event is fired after autocomplete selected value has been changed (``sonata.autocomplete_new_element_selected``).
 
 sonata_choice_field_mask
 ^^^^^^^^^^^^^^^^^^^^^^^^
