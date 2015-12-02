@@ -43,7 +43,7 @@ matrix:
     - php: hhvm
 
 before_script:
-  - phpenv config-rm xdebug.ini || exit 0
+  - (phpenv config-rm xdebug.ini || exit 0)
   - mkdir -p ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d && echo "memory_limit=-1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
   - composer selfupdate
   - composer config -q -g github-oauth.github.com $GITHUB_OAUTH_TOKEN
