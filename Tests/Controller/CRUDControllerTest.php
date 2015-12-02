@@ -215,7 +215,6 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->logger = $this->getMock('Psr\Log\LoggerInterface');
         $logger       = $this->logger; // php 5.3 BC
 
-
         $requestStack = null;
         if (Kernel::MINOR_VERSION > 3) {
             $requestStack = new \Symfony\Component\HttpFoundation\RequestStack();
@@ -1541,7 +1540,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
                     return true;
                 }
 
-                return ($objectIn === $object);
+                return $objectIn === $object;
             }));
 
         $this->admin->expects($this->once())
@@ -1692,7 +1691,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
                     return true;
                 }
 
-                return ($objectIn === $object);
+                return $objectIn === $object;
             }));
 
         $this->admin->expects($this->once())
