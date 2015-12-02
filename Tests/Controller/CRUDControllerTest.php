@@ -3401,11 +3401,16 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
     public function testBatchActionWithConfirmation()
     {
-        $batchActions = array('delete' => array('label' => 'Foo Bar', 'ask_confirmation' => true));
+        $batchActions = array('delete' => array('label' => 'Foo Bar', 'translation_domain' => 'FooBarBaz', 'ask_confirmation' => true));
 
         $this->admin->expects($this->once())
             ->method('getBatchActions')
             ->will($this->returnValue($batchActions));
+
+        $this->admin->expects($this->once())
+            ->method('trans')
+            ->with($this->equalTo('Foo Bar'), $this->anything(), $this->equalTo('FooBarBaz'))
+            ->will($this->returnValue('Foo Bar'));
 
         $data = array('action' => 'delete', 'idx' => array('123', '456'), 'all_elements' => false);
 
