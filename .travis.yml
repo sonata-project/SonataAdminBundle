@@ -23,10 +23,14 @@ env:
 matrix:
   fast_finish: true
   include:
-    - php: 5.6
-      env: CS_FIXER=run
     - php: 5.3
-      env: COMPOSER_FLAGS="--prefer-lowest"
+      env: SYMFONY_VERSION=2.8.*
+    - php: 5.4
+      env: SYMFONY_VERSION=2.8.*
+    - php: 5.6
+      env: SYMFONY_VERSION=2.8.* CS_FIXER=run
+    - php: 5.3
+      env: SYMFONY_VERSION=2.8.* COMPOSER_FLAGS="--prefer-lowest"
     - php: 5.6
       env: SYMFONY_VERSION=2.3.*
     - php: 5.6
@@ -41,12 +45,12 @@ matrix:
     - php: hhvm
 
 before_script:
+  - phpenv config-rm xdebug.ini
   - mkdir -p ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d && echo "memory_limit=-1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
   - composer selfupdate
   - composer config -q -g github-oauth.github.com $GITHUB_OAUTH_TOKEN
   - composer global require phpunit/phpunit:@stable fabpot/php-cs-fixer --no-update
   - composer global update --prefer-dist --no-interaction
-  - if [ "$SYMFONY_VERSION" = "2.8.*" ] || [ "$SYMFONY_VERSION" = "3.0.*" ]; then SYMFONY_DEPRECATIONS_HELPER=weak; fi;
   - if [ "$SYMFONY_VERSION" != "" ]; then composer require "symfony/symfony:${SYMFONY_VERSION}" --no-update; fi;
   - if [ "$ACL_VERSION" != "" ]; then composer require "symfony/security-acl:${ACL_VERSION}" --no-update; fi;
   - travis_wait composer update --prefer-dist --no-interaction $COMPOSER_FLAGS
