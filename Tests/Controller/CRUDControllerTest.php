@@ -1981,7 +1981,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
                     return true;
                 }
 
-                return ($objectIn === $object);
+                return $objectIn === $object;
             }));
 
         $this->admin->expects($this->once())
@@ -2233,7 +2233,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
                     return true;
                 }
 
-                return ($objectIn === $object);
+                return $objectIn === $object;
             }));
 
         $this->admin->expects($this->once())

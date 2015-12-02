@@ -761,7 +761,7 @@ class CRUDController extends Controller
     {
         $request = $this->resolveRequest($request);
 
-        return ($request->get('btn_preview') !== null);
+        return $request->get('btn_preview') !== null;
     }
 
     /**
@@ -775,7 +775,7 @@ class CRUDController extends Controller
     {
         $request = $this->resolveRequest($request);
 
-        return ($request->get('btn_preview_approve') !== null);
+        return $request->get('btn_preview_approve') !== null;
     }
 
     /**
@@ -809,7 +809,7 @@ class CRUDController extends Controller
     {
         $request = $this->resolveRequest($request);
 
-        return ($request->get('btn_preview_decline') !== null);
+        return $request->get('btn_preview_decline') !== null;
     }
 
     /**
