@@ -9,11 +9,11 @@
         </div>
     {% else %}
         <form
-              {% if admin_pool.getOption('form_type') == 'horizontal' %}class="form-horizontal"{% endif %}
+              {% if sonata_admin.adminPool.getOption('form_type') == 'horizontal' %}class="form-horizontal"{% endif %}
               role="form"
               action="{% block sonata_form_action_url %}{{ admin.generateUrl(url, {'id': admin.id(object), 'uniqid': admin.uniqid, 'subclass': app.request.get('subclass')}) }}{% endblock %}" {{ form_enctype(form) }}
               method="POST"
-              {% if not admin_pool.getOption('html5_validate') %}novalidate="novalidate"{% endif %}
+              {% if not sonata_admin.adminPool.getOption('html5_validate') %}novalidate="novalidate"{% endif %}
               >
             {% if form.vars.errors|length > 0 %}
                 <div class="sonata-ba-form-error">
