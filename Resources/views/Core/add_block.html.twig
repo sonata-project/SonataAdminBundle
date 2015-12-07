@@ -1,8 +1,8 @@
 {% block user_block %}
-    {% set items_per_column = admin_pool.getOption('dropdown_number_groups_per_colums') %}
+    {% set items_per_column = sonata_admin.adminPool.getOption('dropdown_number_groups_per_colums') %}
     {% set groups = [] %}
 
-    {% for group in admin_pool.dashboardgroups %}
+    {% for group in sonata_admin.adminPool.dashboardgroups %}
         {% set display_group = false %}
 
         {% for admin in group.items if display_group == false %}
