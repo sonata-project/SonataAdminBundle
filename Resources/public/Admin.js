@@ -358,6 +358,8 @@ var Admin = {
             jQuery(this).trigger('sonata-collection-item-deleted');
 
             jQuery(this).closest('.sonata-collection-row').remove();
+
+            jQuery(this).trigger('sonata-collection-item-deleted-successful');
         });
     },
 
