@@ -176,6 +176,15 @@ BOOM
             'integer'  => '',
             'datetime' => 'sonata-medium-date',
             'date'     => 'sonata-medium-date',
+
+            // SF3+
+            'Symfony\Component\Form\Extension\Core\Type\ChoiceType' => '',
+            'Symfony\Component\Form\Extension\Core\Type\DateType' => 'sonata-medium-date',
+            'Symfony\Component\Form\Extension\Core\Type\DateTimeType' => 'sonata-medium-date',
+            'Symfony\Component\Form\Extension\Core\Type\EmailType' => '',
+            'Symfony\Component\Form\Extension\Core\Type\IntegerType' => '',
+            'Symfony\Component\Form\Extension\Core\Type\TextareaType' => '',
+            'Symfony\Component\Form\Extension\Core\Type\TextType' => '',
         );
 
         $container->getDefinition('sonata.admin.form.extension.field')

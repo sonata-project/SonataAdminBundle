@@ -2,7 +2,7 @@
 
 {% block root %}
     {%- set listAttributes = item.childrenAttributes|merge({'class': 'sidebar-menu'}) %}
-    {%- set request        = item.extra('request') %}
+    {%- set request        = item.extra('request') ?: app.request %}
     {{ block('list') -}}
 {% endblock %}
 
