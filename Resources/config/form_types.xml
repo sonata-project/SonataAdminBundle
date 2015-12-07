@@ -41,17 +41,17 @@
 
         <!-- Form Extension -->
         <service id="sonata.admin.form.extension.field" class="Sonata\AdminBundle\Form\Extension\Field\Type\FormTypeFieldExtension">
-            <tag name="form.type_extension" alias="form" />
+            <tag name="form.type_extension" alias="form" extended-type="Symfony\Component\Form\Extension\Core\Type\FormType" />
             <argument />
             <argument />
         </service>
 
         <service id="sonata.admin.form.extension.field.mopa" class="Sonata\AdminBundle\Form\Extension\Field\Type\MopaCompatibilityTypeFieldExtension">
-            <tag name="form.type_extension" alias="form" />
+            <tag name="form.type_extension" alias="form" extended-type="Symfony\Component\Form\Extension\Core\Type\FormType" />
         </service>
 
         <service id="sonata.admin.form.extension.choice" class="Sonata\AdminBundle\Form\Extension\ChoiceTypeExtension">
-            <tag name="form.type_extension" alias="choice" />
+            <tag name="form.type_extension" alias="choice" extended-type="Symfony\Component\Form\Extension\Core\Type\ChoiceType" />
         </service>
 
         <!-- Form Filter Type -->

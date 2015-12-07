@@ -14,6 +14,7 @@ namespace Sonata\AdminBundle\DependencyInjection\Compiler;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpKernel\Kernel;
 
 /**
  * Class AddFilterTypeCompilerPass.
@@ -31,7 +32,11 @@ class AddFilterTypeCompilerPass implements CompilerPassInterface
         $types      = array();
 
         foreach ($container->findTaggedServiceIds('sonata.admin.filter.type') as $id => $attributes) {
-            $container->getDefinition($id)->setScope(ContainerInterface::SCOPE_PROTOTYPE);
+            if (method_exists($definition, 'setShared')) { // Symfony 2.8+
+                $definition->setShared(false);
+            } else { // For Symfony <2.8 compatibility
+                $definition->setScope(ContainerInterface::SCOPE_PROTOTYPE);
+            }
 
             foreach ($attributes as $eachTag) {
                 $types[$eachTag['alias']] = $id;
