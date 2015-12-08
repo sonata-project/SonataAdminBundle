@@ -115,24 +115,24 @@ BOOM
             case 'sonata.admin.security.handler.role':
                 if (count($config['security']['information']) === 0) {
                     $config['security']['information'] = array(
-                        'EDIT'      => array('EDIT'),
-                        'LIST'      => array('LIST'),
-                        'CREATE'    => array('CREATE'),
-                        'VIEW'      => array('VIEW'),
-                        'DELETE'    => array('DELETE'),
-                        'EXPORT'    => array('EXPORT'),
-                        'OPERATOR'  => array('OPERATOR'),
-                        'MASTER'    => array('MASTER'),
+                        'EDIT'     => array('EDIT'),
+                        'LIST'     => array('LIST'),
+                        'CREATE'   => array('CREATE'),
+                        'VIEW'     => array('VIEW'),
+                        'DELETE'   => array('DELETE'),
+                        'EXPORT'   => array('EXPORT'),
+                        'OPERATOR' => array('OPERATOR'),
+                        'MASTER'   => array('MASTER'),
                     );
                 }
                 break;
             case 'sonata.admin.security.handler.acl':
                 if (count($config['security']['information']) === 0) {
                     $config['security']['information'] = array(
-                        'GUEST'    => array('VIEW', 'LIST'),
-                        'STAFF'    => array('EDIT', 'LIST', 'CREATE'),
-                        'EDITOR'   => array('OPERATOR', 'EXPORT'),
-                        'ADMIN'    => array('MASTER'),
+                        'GUEST'  => array('VIEW', 'LIST'),
+                        'STAFF'  => array('EDIT', 'LIST', 'CREATE'),
+                        'EDITOR' => array('OPERATOR', 'EXPORT'),
+                        'ADMIN'  => array('MASTER'),
                     );
                 }
                 break;
@@ -178,13 +178,13 @@ BOOM
             'date'     => 'sonata-medium-date',
 
             // SF3+
-            'Symfony\Component\Form\Extension\Core\Type\ChoiceType' => '',
-            'Symfony\Component\Form\Extension\Core\Type\DateType' => 'sonata-medium-date',
+            'Symfony\Component\Form\Extension\Core\Type\ChoiceType'   => '',
+            'Symfony\Component\Form\Extension\Core\Type\DateType'     => 'sonata-medium-date',
             'Symfony\Component\Form\Extension\Core\Type\DateTimeType' => 'sonata-medium-date',
-            'Symfony\Component\Form\Extension\Core\Type\EmailType' => '',
-            'Symfony\Component\Form\Extension\Core\Type\IntegerType' => '',
+            'Symfony\Component\Form\Extension\Core\Type\EmailType'    => '',
+            'Symfony\Component\Form\Extension\Core\Type\IntegerType'  => '',
             'Symfony\Component\Form\Extension\Core\Type\TextareaType' => '',
-            'Symfony\Component\Form\Extension\Core\Type\TextType' => '',
+            'Symfony\Component\Form\Extension\Core\Type\TextType'     => '',
         );
 
         $container->getDefinition('sonata.admin.form.extension.field')
