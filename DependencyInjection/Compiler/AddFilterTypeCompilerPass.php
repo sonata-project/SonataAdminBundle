@@ -32,10 +32,11 @@ class AddFilterTypeCompilerPass implements CompilerPassInterface
         $types      = array();
 
         foreach ($container->findTaggedServiceIds('sonata.admin.filter.type') as $id => $attributes) {
-            if (method_exists($definition, 'setShared')) { // Symfony 2.8+
-                $definition->setShared(false);
+            $typeDefinition = $container->getDefinition($id);
+            if (method_exists($typeDefinition, 'setShared')) { // Symfony 2.8+
+                $typeDefinition->setShared(false);
             } else { // For Symfony <2.8 compatibility
-                $definition->setScope(ContainerInterface::SCOPE_PROTOTYPE);
+                $typeDefinition->setScope(ContainerInterface::SCOPE_PROTOTYPE);
             }
 
             foreach ($attributes as $eachTag) {
