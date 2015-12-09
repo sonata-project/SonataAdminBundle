@@ -27,40 +27,16 @@ file that was distributed with this source code.
                     <table class="table table-hover">
                         <tbody>
                             {% for admin in group.items %}
-                                {% if admin.hasRoute('create') and admin.isGranted('CREATE') or admin.hasroute('list') and admin.isGranted('LIST') %}
+                                {% if admin.dashboardActions|length > 0 %}
                                             <tr>
                                                 <td class="sonata-ba-list-label" width="40%">
                                                     {{ admin.label|trans({}, admin.translationdomain) }}
                                                 </td>
                                                 <td>
                                                     <div class="btn-group">
-                                                        {% if admin.hasroute('create') and admin.isGranted('CREATE') %}
-                                                            {% if admin.subClasses is empty %}
-                                                                <a class="btn btn-link btn-flat" href="{{ admin.generateUrl('create')}}">
-                                                                    <i class="fa fa-plus-circle"></i>
-                                                                    {% trans from 'SonataAdminBundle' %}link_add{% endtrans %}
-                                                                </a>
-                                                            {% else %}
-                                                                <a class="btn btn-link btn-flat dropdown-toggle" data-toggle="dropdown" href="#">
-                                                                    <i class="fa fa-plus-circle"></i>
-                                                                    {% trans from 'SonataAdminBundle' %}link_add{% endtrans %}
-                                                                    <span class="caret"></span>
-                                                                </a>
-                                                                <ul class="dropdown-menu">
-                                                                    {% for subclass in admin.subclasses|keys %}
-                                                                        <li>
-                                                                            <a href="{{ admin.generateUrl('create', {'subclass': subclass}) }}">{{ subclass|trans({}, admin.translationdomain) }}</a>
-                                                                        </li>
-                                                                    {% endfor %}
-                                                                </ul>
-                                                            {% endif %}
-                                                        {% endif %}
-                                                        {% if admin.hasroute('list') and admin.isGranted('LIST') %}
-                                                            <a class="btn btn-link btn-flat" href="{{ admin.generateUrl('list')}}">
-                                                                <i class="fa fa-list"></i>
-                                                                {% trans from 'SonataAdminBundle' %}link_list{% endtrans -%}
-                                                            </a>
-                                                        {% endif %}
+                                                        {% for action in admin.dashboardActions %}
+                                                            {% include action.template|default('SonataAdminBundle:CRUD:dashboard__action.html.twig') with {'action': action} %}
+                                                        {% endfor %}
                                                     </div>
                                                 </td>
                                             </tr>

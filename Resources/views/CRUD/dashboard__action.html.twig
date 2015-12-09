@@ -1,0 +1,4 @@
+<a class="btn btn-link btn-flat" href="{{ action.url }}">
+    <i class="fa fa-{{ action.icon }}"></i>
+    {{ action.label|trans({}, action.translation_domain|default('SonataAdminBundle')) }}
+</a>
