@@ -517,7 +517,9 @@ This bundle handle the native Symfony ``collection`` form type by adding:
 .. tip::
 
     A jQuery event is fired after a row has been added (``sonata-collection-item-added``)
-    or deleted (``sonata-collection-item-deleted``). You can listen to these events to trigger custom JavaScript.
+    or before deleted (``sonata-collection-item-deleted``).
+    A jQuery event is fired after a row has been deleted successfully (``sonata-collection-item-deleted-successful``)
+    You can listen to these events to trigger custom JavaScript.
 
 FieldDescription options
 ^^^^^^^^^^^^^^^^^^^^^^^^
