@@ -203,6 +203,8 @@ BOOM
         $container->setParameter('sonata.admin.configuration.filters.persist', $config['persist_filters']);
 
         $this->configureClassesToCompile();
+
+        $this->replacePropertyAccessor($container);
     }
 
     public function configureClassesToCompile()
@@ -296,5 +298,18 @@ BOOM
     public function getNamespace()
     {
         return 'https://sonata-project.org/schema/dic/admin';
+    }
+
+    private function replacePropertyAccessor(ContainerBuilder $container)
+    {
+        if (!$container->has('form.property_accessor')) {
+            return;
+        }
+
+        $pool = $container->getDefinition('sonata.admin.pool');
+        $pool->replaceArgument(4, new Reference('form.property_accessor'));
+
+        $modelChoice = $container->getDefinition('sonata.admin.form.type.model_choice');
+        $modelChoice->replaceArgument(0, new Reference('form.property_accessor'));
     }
 }

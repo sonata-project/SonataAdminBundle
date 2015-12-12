@@ -26,6 +26,7 @@ use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Tag;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooToString;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooToStringNull;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 
 class AdminTest extends \PHPUnit_Framework_TestCase
 {
@@ -1476,6 +1477,14 @@ class AdminTest extends \PHPUnit_Framework_TestCase
 
         $request = $this->getMock('Symfony\Component\HttpFoundation\Request');
         $tagAdmin->setRequest($request);
+
+        $configurationPool = $this->getMockBuilder('Sonata\AdminBundle\Admin\Pool')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $configurationPool->expects($this->any())->method('getPropertyAccessor')->will($this->returnValue(PropertyAccess::createPropertyAccessor()));
+
+        $tagAdmin->setConfigurationPool($configurationPool);
 
         return $tagAdmin;
     }

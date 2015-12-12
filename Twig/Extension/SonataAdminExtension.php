@@ -17,7 +17,6 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Exception\NoValueException;
-use Symfony\Component\PropertyAccess\PropertyAccess;
 
 /**
  * Class SonataAdminExtension.
@@ -293,7 +292,7 @@ class SonataAdminExtension extends \Twig_Extension implements \Twig_Extension_In
             return $propertyPath($element);
         }
 
-        return PropertyAccess::createPropertyAccessor()->getValue($element, $propertyPath);
+        return $this->pool->getPropertyAccessor()->getValue($element, $propertyPath);
     }
 
     /**

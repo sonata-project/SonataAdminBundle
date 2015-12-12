@@ -39,7 +39,6 @@ use Sonata\CoreBundle\Validator\ErrorElement;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Acl\Model\DomainObjectInterface;
@@ -974,7 +973,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         if ($this->isChild() && $this->getParentAssociationMapping()) {
             $parent = $this->getParent()->getObject($this->request->get($this->getParent()->getIdParameter()));
 
-            $propertyAccessor = PropertyAccess::createPropertyAccessor();
+            $propertyAccessor = $this->getConfigurationPool()->getPropertyAccessor();
             $propertyPath = new PropertyPath($this->getParentAssociationMapping());
 
             $object = $this->getSubject();
@@ -1367,8 +1366,6 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         if (isset($this->templates[$name])) {
             return $this->templates[$name];
         }
-
-        return;
     }
 
     /**
