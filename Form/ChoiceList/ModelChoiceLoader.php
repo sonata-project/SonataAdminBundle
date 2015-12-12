@@ -96,7 +96,7 @@ class ModelChoiceLoader implements ChoiceLoaderInterface
                     try {
                         $valueObject = (string) $entity;
                     } catch (\Exception $e) {
-                        throw new RuntimeException(sprintf("Unable to convert the entity %s to String, entity must have a '__toString()' method defined", ClassUtils::getClass($entity)), 0, $e);
+                        throw new RuntimeException(sprintf('Unable to convert the entity "%s" to string, provide "property" option or implement "__toString()" method in your entity.', ClassUtils::getClass($entity)), 0, $e);
                     }
                 }
 
