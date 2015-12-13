@@ -46,6 +46,30 @@ route names for your actions like 'admin_vendor_bundlename_entityname_list'.
 If the Admin fails to find a baseRouteName for your Admin class a ``RuntimeException``
 will be thrown with a related message.
 
+If the admin class is a child of another admin class the route name will be prefixed by the parent route name, example :
+
+.. code-block:: php
+
+    <?php
+    // The parent admin class
+    class PostAdmin extends Admin
+    {
+        protected $baseRouteName = 'sonata_post';
+        // ...
+    }
+
+    // The child admin class
+    class CommentAdmin extends Admin
+    {
+        protected $baseRouteName = 'comment'
+        // will result in routes named :
+        //   sonata_post_comment_list
+        //   sonata_post_comment_create
+        //   etc..
+
+        // ...
+    }
+
 Route patterns (URLs)
 ^^^^^^^^^^^^^^^^^^^^^
 
@@ -67,6 +91,28 @@ use the following code:
 
 You will then have route URLs like ``http://yourdomain.com/admin/foo/list`` and
 ``http://yourdomain.com/admin/foo/1/edit``
+
+If the admin class is a child of another admin class the route pattern will be prefixed by the parent route pattern, example :
+
+.. code-block:: php
+
+    <?php
+    // The parent admin class
+    class PostAdmin extends Admin
+    {
+        protected $baseRoutePattern = 'post';
+        // ...
+    }
+
+    // The child admin class
+    class CommentAdmin extends Admin
+    {
+        protected $baseRoutePattern = 'comment'
+        // ...
+    }
+
+For comment you will then have route URLs like ``http://yourdomain.com/admin/post/{postId}/comment/list`` and
+``http://yourdomain.com/admin/post/{postId}/comment/{commentId}/edit``
 
 Routing usage
 -------------
