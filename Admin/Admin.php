@@ -146,11 +146,25 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     protected $baseRouteName;
 
     /**
+     * The cached base route name.
+     *
+     * @var string
+     */
+    private $cachedBaseRouteName;
+
+    /**
      * The base route pattern used to generate the routing information.
      *
      * @var string
      */
     protected $baseRoutePattern;
+
+    /**
+     * The cached base route pattern.
+     *
+     * @var string
+     */
+    private $cachedBaseRoutePattern;
 
     /**
      * The base name controller used to generate the routing information.
@@ -972,28 +986,40 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      */
     public function getBaseRoutePattern()
     {
-        if (!$this->baseRoutePattern) {
+        if (null !== $this->cachedBaseRoutePattern) {
+            return $this->cachedBaseRoutePattern;
+        }
+
+        if ($this->isChild()) { // the admin class is a child, prefix it with the parent route pattern
+            if (!$this->baseRoutePattern) {
+                preg_match(self::CLASS_REGEX, $this->class, $matches);
+
+                if (!$matches) {
+                    throw new \RuntimeException(sprintf('Please define a default `baseRoutePattern` value for the admin class `%s`', get_class($this)));
+                }
+            }
+
+            $this->cachedBaseRoutePattern = sprintf('%s/{id}/%s',
+                $this->getParent()->getBaseRoutePattern(),
+                $this->baseRoutePattern ?: $this->urlize($matches[5], '-')
+            );
+        } elseif ($this->baseRoutePattern) {
+            $this->cachedBaseRoutePattern = $this->baseRoutePattern;
+        } else {
             preg_match(self::CLASS_REGEX, $this->class, $matches);
 
             if (!$matches) {
                 throw new \RuntimeException(sprintf('Please define a default `baseRoutePattern` value for the admin class `%s`', get_class($this)));
             }
 
-            if ($this->isChild()) { // the admin class is a child, prefix it with the parent route name
-                $this->baseRoutePattern = sprintf('%s/{id}/%s',
-                    $this->getParent()->getBaseRoutePattern(),
-                    $this->urlize($matches[5], '-')
-                );
-            } else {
-                $this->baseRoutePattern = sprintf('/%s%s/%s',
-                    empty($matches[1]) ? '' : $this->urlize($matches[1], '-').'/',
-                    $this->urlize($matches[3], '-'),
-                    $this->urlize($matches[5], '-')
-                );
-            }
+            $this->cachedBaseRoutePattern = sprintf('/%s%s/%s',
+                empty($matches[1]) ? '' : $this->urlize($matches[1], '-').'/',
+                $this->urlize($matches[3], '-'),
+                $this->urlize($matches[5], '-')
+            );
         }
 
-        return $this->baseRoutePattern;
+        return $this->cachedBaseRoutePattern;
     }
 
     /**
@@ -1005,28 +1031,40 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      */
     public function getBaseRouteName()
     {
-        if (!$this->baseRouteName) {
+        if (null !== $this->cachedBaseRouteName) {
+            return $this->cachedBaseRouteName;
+        }
+
+        if ($this->isChild()) { // the admin class is a child, prefix it with the parent route name
+            if (!$this->baseRouteName) {
+                preg_match(self::CLASS_REGEX, $this->class, $matches);
+
+                if (!$matches) {
+                    throw new \RuntimeException(sprintf('Cannot automatically determine base route name, please define a default `baseRouteName` value for the admin class `%s`', get_class($this)));
+                }
+            }
+
+            $this->cachedBaseRouteName = sprintf('%s_%s',
+                $this->getParent()->getBaseRouteName(),
+                $this->baseRouteName ?: $this->urlize($matches[5])
+            );
+        } elseif ($this->baseRouteName) {
+            $this->cachedBaseRouteName = $this->baseRouteName;
+        } else {
             preg_match(self::CLASS_REGEX, $this->class, $matches);
 
             if (!$matches) {
                 throw new \RuntimeException(sprintf('Cannot automatically determine base route name, please define a default `baseRouteName` value for the admin class `%s`', get_class($this)));
             }
 
-            if ($this->isChild()) { // the admin class is a child, prefix it with the parent route name
-                $this->baseRouteName = sprintf('%s_%s',
-                    $this->getParent()->getBaseRouteName(),
-                    $this->urlize($matches[5])
-                );
-            } else {
-                $this->baseRouteName = sprintf('admin_%s%s_%s',
-                    empty($matches[1]) ? '' : $this->urlize($matches[1]).'_',
-                    $this->urlize($matches[3]),
-                    $this->urlize($matches[5])
-                );
-            }
+            $this->cachedBaseRouteName = sprintf('admin_%s%s_%s',
+                empty($matches[1]) ? '' : $this->urlize($matches[1]).'_',
+                $this->urlize($matches[3]),
+                $this->urlize($matches[5])
+            );
         }
 
-        return $this->baseRouteName;
+        return $this->cachedBaseRouteName;
     }
 
     /**
