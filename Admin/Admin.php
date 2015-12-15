@@ -711,6 +711,13 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     /**
      * {@inheritdoc}
      */
+    public function preValidate($object)
+    {
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function preUpdate($object)
     {
     }
