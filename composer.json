@@ -37,7 +37,7 @@
         "sonata-project/core-bundle": "^2.3.10",
         "doctrine/common": "~2.2",
         "doctrine/inflector": "~1.0",
-        "knplabs/knp-menu-bundle": "dev-master"
+        "knplabs/knp-menu-bundle": "^2.1.1"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3|~3.0",
