@@ -13,7 +13,11 @@
                 <div class="box-body">
                     <div class="sonata-ba-collapsed-fields">
                         {% if form_group.description != false %}
-                            <p>{{ form_group.description|raw }}</p>
+                            <p>{{ admin.trans(
+                                    form_group.description,
+                                    {},
+                                    form_group.translation_domain
+                                )|raw }}</p>
                         {% endif %}
 
                         {% for field_name in form_group.fields %}
