@@ -239,7 +239,6 @@ BOOM
             'Sonata\\AdminBundle\\Filter\\FilterFactory',
             'Sonata\\AdminBundle\\Filter\\FilterFactoryInterface',
             'Sonata\\AdminBundle\\Filter\\FilterInterface',
-            'Sonata\\AdminBundle\\Form\\ChoiceList\\ModelChoiceList',
             'Sonata\\AdminBundle\\Form\\DataTransformer\\ArrayToModelTransformer',
             'Sonata\\AdminBundle\\Form\\DataTransformer\\ModelsToArrayTransformer',
             'Sonata\\AdminBundle\\Form\\DataTransformer\\ModelToIdTransformer',
