@@ -359,7 +359,7 @@ var Admin = {
 
             jQuery(this).closest('.sonata-collection-row').remove();
 
-            jQuery(this).trigger('sonata-collection-item-deleted-successful');
+            jQuery(document).trigger('sonata-collection-item-deleted-successful');
         });
     },
 
