@@ -16,6 +16,7 @@ use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
+use Symfony\Component\Form\ChoiceList\LazyChoiceList;
 
 /**
  * Class ModelsToArrayTransformer.
@@ -42,11 +43,11 @@ class ModelsToArrayTransformer implements DataTransformerInterface
     /**
      * ModelsToArrayTransformer constructor.
      *
-     * @param ModelChoiceList       $choiceList
+     * @param ModelChoiceList|LazyChoiceList $choiceList
      * @param ModelManagerInterface $modelManager
      * @param                       $class
      */
-    public function __construct(ModelChoiceList $choiceList, ModelManagerInterface $modelManager, $class)
+    public function __construct($choiceList, ModelManagerInterface $modelManager, $class)
     {
         $this->choiceList   = $choiceList;
         $this->modelManager = $modelManager;
