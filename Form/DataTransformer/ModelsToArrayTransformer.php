@@ -12,6 +12,7 @@
 namespace Sonata\AdminBundle\Form\DataTransformer;
 
 use Sonata\AdminBundle\Form\ChoiceList\ModelChoiceList;
+use Symfony\Component\Form\ChoiceList\LazyChoiceList;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
@@ -42,11 +43,11 @@ class ModelsToArrayTransformer implements DataTransformerInterface
     /**
      * ModelsToArrayTransformer constructor.
      *
-     * @param ModelChoiceList       $choiceList
+     * @param LazyChoiceList       $choiceList
      * @param ModelManagerInterface $modelManager
      * @param                       $class
      */
-    public function __construct(ModelChoiceList $choiceList, ModelManagerInterface $modelManager, $class)
+    public function __construct(LazyChoiceList $choiceList, ModelManagerInterface $modelManager, $class)
     {
         $this->choiceList   = $choiceList;
         $this->modelManager = $modelManager;
