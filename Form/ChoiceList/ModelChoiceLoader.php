@@ -77,10 +77,10 @@ class ModelChoiceLoader implements ChoiceLoaderInterface
     public function loadChoiceList($value = null)
     {
         if (!$this->choiceList) {
-            if (is_array($this->choices)) {
-                $entities = $this->choices;
-            } elseif ($this->query) {
+            if ($this->query) {
                 $entities = $this->modelManager->executeQuery($this->query);
+            } elseif (is_array($this->choices)) {
+                $entities = $this->choices;
             } else {
                 $entities = $this->modelManager->findBy($this->class);
             }
@@ -129,9 +129,9 @@ class ModelChoiceLoader implements ChoiceLoaderInterface
     /**
      * {@inheritdoc}
      */
-    public function loadChoicesForValues(array $choices, $value = null)
+    public function loadChoicesForValues(array $values, $value = null)
     {
-        throw new \RuntimeException('Not implemented, please send us your usecase');
+        return $this->loadChoiceList($value)->getChoicesForValues($values);
     }
 
     /**
@@ -139,7 +139,7 @@ class ModelChoiceLoader implements ChoiceLoaderInterface
      */
     public function loadValuesForChoices(array $choices, $value = null)
     {
-        throw new \RuntimeException('Not implemented, please send us your usecase');
+        return $this->loadChoiceList($value)->getValuesForChoices($choices);
     }
 
     /**
