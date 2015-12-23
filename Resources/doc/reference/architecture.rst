@@ -75,7 +75,7 @@ your ``Admin`` services. This is done using a ``call`` to the matching ``setter`
               <argument>AppBundle\Entity\Post</argument>
               <argument />
               <call method="setLabelTranslatorStrategy">
-                  <argument>sonata.admin.label.strategy.underscore</argument>
+                  <argument type="service" id="sonata.admin.label.strategy.underscore" />
               </call>
           </service>
 
