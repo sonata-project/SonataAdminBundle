@@ -80,6 +80,7 @@ them straight away:
         $formMapper
             ->add('title', 'text')
             ->add('body', 'textarea')
+            ->add('draft', 'checkbox')
         ;
     }
 
