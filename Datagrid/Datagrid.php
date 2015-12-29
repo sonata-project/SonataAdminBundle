@@ -126,15 +126,15 @@ class Datagrid implements DatagridInterface
             $this->formBuilder->add($filter->getFormName(), $type, $options);
         }
 
-        $this->formBuilder->add('_sort_by', 'hidden');
+        $this->formBuilder->add('_sort_by', 'Symfony\Component\Form\Extension\Core\Type\HiddenType');
         $this->formBuilder->get('_sort_by')->addViewTransformer(new CallbackTransformer(
             function ($value) { return $value; },
             function ($value) { return $value instanceof FieldDescriptionInterface ? $value->getName() : $value; }
         ));
 
-        $this->formBuilder->add('_sort_order', 'hidden');
-        $this->formBuilder->add('_page', 'hidden');
-        $this->formBuilder->add('_per_page', 'hidden');
+        $this->formBuilder->add('_sort_order', 'Symfony\Component\Form\Extension\Core\Type\HiddenType');
+        $this->formBuilder->add('_page', 'Symfony\Component\Form\Extension\Core\Type\HiddenType');
+        $this->formBuilder->add('_per_page', 'Symfony\Component\Form\Extension\Core\Type\HiddenType');
 
         $this->form = $this->formBuilder->getForm();
         $this->form->submit($this->values);
