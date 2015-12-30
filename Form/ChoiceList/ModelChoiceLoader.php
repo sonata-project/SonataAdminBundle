@@ -79,7 +79,7 @@ class ModelChoiceLoader implements ChoiceLoaderInterface
         if (!$this->choiceList) {
             if ($this->query) {
                 $entities = $this->modelManager->executeQuery($this->query);
-            } elseif (is_array($this->choices)) {
+            } elseif (is_array($this->choices) && count($this->choices) > 0) {
                 $entities = $this->choices;
             } else {
                 $entities = $this->modelManager->findBy($this->class);
