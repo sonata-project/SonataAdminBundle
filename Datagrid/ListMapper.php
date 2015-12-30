@@ -42,6 +42,14 @@ class ListMapper extends BaseMapper
     }
 
     /**
+     * @return FieldDescriptionCollection
+     */
+    public function getList()
+    {
+        return $this->list;
+    }
+
+    /**
      * @param string $name
      * @param null   $type
      * @param array  $fieldDescriptionOptions
