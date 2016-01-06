@@ -28,24 +28,24 @@ use Sonata\CoreBundle\Validator\ErrorElement;
 interface AdminExtensionInterface
 {
     /**
-     * @param FormMapper $form
+     * @param FormMapper $formMapper
      */
-    public function configureFormFields(FormMapper $form);
+    public function configureFormFields(FormMapper $formMapper);
 
     /**
-     * @param ListMapper $list
+     * @param ListMapper $listMapper
      */
-    public function configureListFields(ListMapper $list);
+    public function configureListFields(ListMapper $listMapper);
 
     /**
-     * @param DatagridMapper $filter
+     * @param DatagridMapper $datagridMapper
      */
-    public function configureDatagridFilters(DatagridMapper $filter);
+    public function configureDatagridFilters(DatagridMapper $datagridMapper);
 
     /**
-     * @param ShowMapper $show
+     * @param ShowMapper $showMapper
      */
-    public function configureShowFields(ShowMapper $show);
+    public function configureShowFields(ShowMapper $showMapper);
 
     /**
      * @param AdminInterface  $admin
