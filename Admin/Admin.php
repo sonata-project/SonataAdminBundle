@@ -607,7 +607,18 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         $datagrid = $this->getDatagrid();
         $datagrid->buildPager();
 
-        return $this->getModelManager()->getDataSourceIterator($datagrid, $this->getExportFields());
+        $fields = array();
+        foreach ($this->getExportFields() as $key => $field) {
+            $label = $this->getTranslationLabel($field, 'export', 'label');
+
+            if ($key != $field) {
+                $label = $key;
+            }
+
+            $fields[$label] =  $field;
+        }
+
+        return $this->getModelManager()->getDataSourceIterator($datagrid, $fields);
     }
 
     /**
