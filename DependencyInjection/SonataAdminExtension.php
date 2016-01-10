@@ -11,7 +11,6 @@
 
 namespace Sonata\AdminBundle\DependencyInjection;
 
-use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
@@ -81,9 +80,8 @@ BOOM
             $sidebarMenu->setFactoryMethod('createSidebarMenu');
         }
 
-        $configuration = new Configuration();
-        $processor = new Processor();
-        $config = $processor->processConfiguration($configuration, $configs);
+        $configuration = $this->getConfiguration($configs, $container);
+        $config = $this->processConfiguration($configuration, $configs);
 
         $config['options']['javascripts'] = $config['assets']['javascripts'];
         $config['options']['stylesheets'] = $config['assets']['stylesheets'];
