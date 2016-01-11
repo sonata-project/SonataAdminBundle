@@ -405,6 +405,10 @@ class CRUDController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
+            //TODO: remove this check for 3.0
+            if (method_exists($this->admin, 'preValidate')) {
+                $this->admin->preValidate($object);
+            }
             $isFormValid = $form->isValid();
 
             // persist if the form was valid and if in preview mode the preview was approved
@@ -686,6 +690,10 @@ class CRUDController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
+            //TODO: remove this check for 3.0
+            if (method_exists($this->admin, 'preValidate')) {
+                $this->admin->preValidate($object);
+            }
             $isFormValid = $form->isValid();
 
             // persist if the form was valid and if in preview mode the preview was approved

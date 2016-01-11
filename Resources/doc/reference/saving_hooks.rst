@@ -1,17 +1,18 @@
 Saving hooks
 ============
 
-When a SonataAdmin is submitted for processing, two events are always called. One
-is before any persistence layer interaction and the other is afterwards, the
+When a SonataAdmin is submitted for processing, there are some events called. One
+is before any persistence layer interaction and the other is afterward. Also between submitting
+and validating for edit and create actions ``preValidate`` event called. The
 events are named as follows:
 
-- new object : ``prePersist($object)`` / ``postPersist($object)``
-- edited object : ``preUpdate($object)`` / ``postUpdate($object)``
+- new object : ``preValidate($object)`` / ``prePersist($object)`` / ``postPersist($object)``
+- edited object : ``preValidate($object)`` / ``preUpdate($object)`` / ``postUpdate($object)``
 - deleted object : ``preRemove($object)`` / ``postRemove($object)``
 
 It is worth noting that the update events are called whenever the Admin is successfully
 submitted, regardless of whether there are any actual persistence layer events. This
-differs from the use of preUpdate and postUpdate events in DoctrineORM and perhaps some
+differs from the use of ``preUpdate`` and ``postUpdate`` events in DoctrineORM and perhaps some
 other persistence layers.
 
 For example: if you submit an edit form without changing any of the values on the form
