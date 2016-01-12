@@ -120,12 +120,16 @@ class ModelChoiceList extends SimpleChoiceList
      */
     protected function load($choices)
     {
-        if (is_array($choices)) {
+        if (is_array($choices) && count($choices) > 0) {
             $entities = $choices;
         } elseif ($this->query) {
             $entities = $this->modelManager->executeQuery($this->query);
         } else {
             $entities = $this->modelManager->findBy($this->class);
+        }
+
+        if (null === $entities) {
+            return array();
         }
 
         $choices = array();
