@@ -60,6 +60,13 @@ class ModelType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
+        // Add SF2.7+ compatibility
+        if (class_exists('Symfony\Component\Form\ChoiceList\LegacyChoiceListAdapter')) {
+            $choices = array();
+        } else {
+            $choices = null;
+        }
+
         $resolver->setDefaults(array(
             'compound'          => function (Options $options) {
                 if (isset($options['multiple']) && $options['multiple']) {
@@ -88,7 +95,7 @@ class ModelType extends AbstractType
             'class'             => null,
             'property'          => null,
             'query'             => null,
-            'choices'           => null,
+            'choices'           => $choices,
             'preferred_choices' => array(),
             'btn_add'           => 'link_add',
             'btn_list'          => 'link_list',
