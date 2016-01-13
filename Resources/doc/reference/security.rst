@@ -536,7 +536,7 @@ because for example you want to restrict access using extra rules:
         public function supportsClass($class)
         {
             // support the Class-Scope ACL for votes with the custom permission map
-            // return $class === 'Sonata\UserBundle\Admin\Entity\UserAdmin' || $is_subclass_of($class, 'FOS\UserBundle\Model\UserInterface');
+            // return $class === 'Sonata\UserBundle\Admin\Entity\UserAdmin' || is_subclass_of($class, 'FOS\UserBundle\Model\UserInterface');
             // if you use php >=5.3.7 you can check the inheritance with is_a($class, 'Sonata\UserBundle\Admin\Entity\UserAdmin');
             // support the Object-Scope ACL
             return is_subclass_of($class, 'FOS\UserBundle\Model\UserInterface');
