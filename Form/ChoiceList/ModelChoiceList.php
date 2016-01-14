@@ -120,7 +120,7 @@ class ModelChoiceList extends SimpleChoiceList
      */
     protected function load($choices)
     {
-        if (is_array($choices)) {
+        if (is_array($choices) && !empty($choices)) {
             $entities = $choices;
         } elseif ($this->query) {
             $entities = $this->modelManager->executeQuery($this->query);
