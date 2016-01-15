@@ -13,7 +13,6 @@ cache:
 env:
   global:
     - PATH="$HOME/.composer/vendor/bin:$PATH"
-    - SYMFONY_DEPRECATIONS_HELPER=weak
 
 matrix:
   fast_finish: true
@@ -24,7 +23,7 @@ matrix:
       env: SYMFONY_VERSION=2.8.*
     - php: 5.6
       env: SYMFONY_VERSION=2.8.* CS_FIXER=run
-    - php: 5.3
+    - php: 5.5
       env: SYMFONY_VERSION=2.3.* COMPOSER_FLAGS="--prefer-lowest"
     - php: 5.6
       env: SYMFONY_VERSION=2.3.*
@@ -33,14 +32,16 @@ matrix:
     - php: 5.6
       env: SYMFONY_VERSION=2.8.*
     - php: 5.5
-      env: SYMFONY_VERSION="3.0.*" ACL_VERSION="dev-master"
+      env: SYMFONY_VERSION=3.0.* ACL_VERSION="dev-master"
     - php: 5.6
-      env: SYMFONY_VERSION="3.0.*" ACL_VERSION="dev-master"
+      env: SYMFONY_VERSION=3.0.* ACL_VERSION="dev-master"
     - php: 7.0
-      env: SYMFONY_VERSION="3.0.*" ACL_VERSION="dev-master"
+      env: SYMFONY_VERSION=3.0.* ACL_VERSION="dev-master"
 
   allow_failures:
     - php: hhvm
+    - php: 5.3
+    - php: 5.4
 
 before_script:
   - (phpenv config-rm xdebug.ini || exit 0)
