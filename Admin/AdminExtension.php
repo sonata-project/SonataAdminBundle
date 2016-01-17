@@ -118,6 +118,14 @@ abstract class AdminExtension implements AdminExtensionInterface
     /**
      * {@inheritdoc}
      */
+    public function getAccessMapping(AdminInterface $admin)
+    {
+        return array();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function preUpdate(AdminInterface $admin, $object)
     {
     }
