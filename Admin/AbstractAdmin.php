@@ -3077,10 +3077,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
         ), $this->getAccessMapping());
 
         foreach ($this->extensions as $extension) {
-            // TODO: remove method check in next major release
-            if (method_exists($extension, 'getAccessMapping')) {
-                $access = array_merge($access, $extension->getAccessMapping($this));
-            }
+            $access = array_merge($access, $extension->getAccessMapping($this));
         }
 
         return $access;
