@@ -69,8 +69,8 @@ var Admin = {
         jQuery('.modal-body', modal).css({
             width:    'auto',
             height:   '90%',
-            padding: 5,
-            overflow: 'scroll'
+            padding: 15
+            overflow: 'auto'
         });
     },
     setup_select2: function(subject) {
