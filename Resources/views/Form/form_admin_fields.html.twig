@@ -87,7 +87,6 @@ file that was distributed with this source code.
 
     {% set label_class = label_class|default('') ~ ' control-label' %}
 
-    {#{{ sonata_admin.admin.getConfigurationPool().getOption('form_type') }}#}
     {% if label is not same as(false) %}
         {% set label_attr = label_attr|merge({'class': label_attr.class|default('') ~ label_class }) %}
 
@@ -151,9 +150,9 @@ file that was distributed with this source code.
 
 {% block choice_widget_collapsed %}
 {% spaceless %}
-
-    {# this line only work with sf<3, as empty_value_in_choices and empty_value are now deprecated#}
-    {% if required and empty_value is defined and empty_value_in_choices is defined and empty_value is none and not empty_value_in_choices and not multiple %}
+    {% if required and placeholder is defined and placeholder is none %}
+        {% set required = false %}
+    {% elseif required and empty_value is defined and empty_value_in_choices is defined and empty_value is none and not empty_value_in_choices and not multiple %}
         {% set required = false %}
     {% endif %}
 
@@ -162,14 +161,20 @@ file that was distributed with this source code.
         {{ block('sonata_type_choice_multiple_sortable') }}
     {% else %}
         <select {{ block('widget_attributes') }}{% if multiple %} multiple="multiple"{% endif %} >
-
-            {# this line only work with sf<3, as empty_value_in_choices and empty_value are now deprecated#}
             {% if empty_value is defined and empty_value is not none %}
                 <option value=""{% if required and value is empty %} selected="selected"{% endif %}>
                     {% if not sonata_admin.admin %}
                         {{- empty_value|trans({}, translation_domain) -}}
                     {% else %}
                         {{- empty_value|trans({}, sonata_admin.field_description.translationDomain) -}}
+                    {% endif%}
+                </option>
+            {% elseif placeholder is defined and placeholder is not none %}
+                <option value=""{% if required and value is empty %} selected="selected"{% endif %}>
+                    {% if not sonata_admin.admin %}
+                        {{- placeholder|trans({}, translation_domain) -}}
+                    {% else %}
+                        {{- placeholder|trans({}, sonata_admin.field_description.translationDomain) -}}
                     {% endif%}
                 </option>
             {% endif %}
