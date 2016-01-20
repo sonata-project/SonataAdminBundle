@@ -421,8 +421,7 @@ interface AdminInterface
     /**
      * @param mixed $entity
      *
-     * @return string a string representation of the identifiers for this
-     *                instance
+     * @return string a string representation of the identifiers for this instance
      */
     public function getNormalizedIdentifier($entity);
 
