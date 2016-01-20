@@ -413,11 +413,15 @@ interface AdminInterface
 
     /**
      * @param mixed $entity
+     *
+     * @return string a string representation of the id that is save to use in an url
      */
     public function getUrlsafeIdentifier($entity);
 
     /**
      * @param mixed $entity
+     *
+     * @return string a string representation of the identifiers for this instance
      */
     public function getNormalizedIdentifier($entity);
 
@@ -562,8 +566,6 @@ interface AdminInterface
 
     /**
      * @param string $uniqId
-     *
-     * @return mixed
      */
     public function setUniqid($uniqId);
 
@@ -583,8 +585,6 @@ interface AdminInterface
 
     /**
      * @param object $subject
-     *
-     * @return mixed
      */
     public function setSubject($subject);
 
@@ -652,58 +652,42 @@ interface AdminInterface
 
     /**
      * @param mixed $object
-     *
-     * @return mixed
      */
     public function delete($object);
 
 //TODO: uncomment this method for 3.0
 //    /**
 //     * @param mixed $object
-//     *
-//     * @return mixed
 //     */
 //    public function preValidate($object);
 
     /**
      * @param mixed $object
-     *
-     * @return mixed
      */
     public function preUpdate($object);
 
     /**
      * @param mixed $object
-     *
-     * @return mixed
      */
     public function postUpdate($object);
 
     /**
      * @param mixed $object
-     *
-     * @return mixed
      */
     public function prePersist($object);
 
     /**
      * @param mixed $object
-     *
-     * @return mixed
      */
     public function postPersist($object);
 
     /**
      * @param mixed $object
-     *
-     * @return mixed
      */
     public function preRemove($object);
 
     /**
      * @param mixed $object
-     *
-     * @return mixed
      */
     public function postRemove($object);
 
