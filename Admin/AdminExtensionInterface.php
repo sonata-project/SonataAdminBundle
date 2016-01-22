@@ -125,6 +125,17 @@ interface AdminExtensionInterface
     // public function getAccessMapping(AdminInterface $admin);
 
     /**
+     * Returns the list of batch actions.
+     *
+     * @param AdminInterface $admin
+     * @param array          $actions
+     *
+     * @return array
+     */
+    // TODO: Uncomment in next major release
+    // public function configureBatchActions(AdminInterface $admin, array $actions);
+
+    /**
      * @param AdminInterface $admin
      * @param mixed          $object
      */
