@@ -1225,6 +1225,13 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
             );
         }
 
+        foreach ($this->getExtensions() as $extension) {
+            // TODO: remove method check in next major release
+            if (method_exists($extension, 'configureBatchActions')) {
+                $actions = $extension->configureBatchActions($this, $actions);
+            }
+        }
+
         return $actions;
     }
 
