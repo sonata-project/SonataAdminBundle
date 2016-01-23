@@ -136,6 +136,17 @@ interface AdminExtensionInterface
     // public function configureBatchActions(AdminInterface $admin, array $actions);
 
     /**
+     * Get a chance to modify export fields.
+     *
+     * @param AdminInterface $admin
+     * @param string[]       $fields
+     *
+     * @return string[]
+     */
+    // TODO: Uncomment in next major release
+    // public function configureExportFields(AdminInterface $admin, array $fields);
+
+    /**
      * @param AdminInterface $admin
      * @param mixed          $object
      */
