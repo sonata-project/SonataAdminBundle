@@ -198,6 +198,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
             'menu_factory',
             'route_builder',
             'label_translator_strategy',
+            'flash_manager',
         );
 
         foreach ($keys as $key) {
@@ -249,6 +250,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
             'route_builder'             => 'sonata.admin.route.path_info'.
                 (($manager_type == 'doctrine_phpcr') ? '_slashes' : ''),
             'label_translator_strategy' => 'sonata.admin.label.strategy.native',
+            'flash_manager'             => 'sonata.admin.flash.manager'
         );
 
         $definition->addMethodCall('setManagerType', array($manager_type));
