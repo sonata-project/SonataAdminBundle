@@ -250,7 +250,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
             'route_builder'             => 'sonata.admin.route.path_info'.
                 (($manager_type == 'doctrine_phpcr') ? '_slashes' : ''),
             'label_translator_strategy' => 'sonata.admin.label.strategy.native',
-            'flash_manager'             => 'sonata.admin.flash.manager'
+            'flash_manager'             => 'sonata.admin.flash.manager',
         );
 
         $definition->addMethodCall('setManagerType', array($manager_type));

@@ -517,7 +517,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     protected $accessMapping = array();
 
     /**
-     * The container for flashBag
+     * The container for flashBag.
      *
      * @var \Sonata\AdminBundle\Flash\FlashManagerInterface
      */

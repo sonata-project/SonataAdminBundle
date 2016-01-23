@@ -1016,12 +1016,14 @@ interface AdminInterface
      */
     public function checkAccess($action, $object = null);
 
-    /**
+    /*
      * Return the flash manager to show flashBag messages.
+     *
+     * @return \Sonata\AdminBundle\Flash\FlashManagerInterface
      */
     // public function getFlashManager();
 
-    /**
+    /*
      * @param \Sonata\AdminBundle\Flash\FlashManagerInterface $flashManager
      */
     // public function setFlashManager(FlashManagerInterface $flashManager);
