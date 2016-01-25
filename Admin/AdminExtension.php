@@ -172,4 +172,12 @@ abstract class AdminExtension implements AdminExtensionInterface
     public function postRemove(AdminInterface $admin, $object)
     {
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configureActionButtons(AdminInterface $admin, $list, $action, $object)
+    {
+        return $list;
+    }
 }

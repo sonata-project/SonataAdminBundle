@@ -170,4 +170,17 @@ interface AdminExtensionInterface
      * @param mixed          $object
      */
     public function postRemove(AdminInterface $admin, $object);
+
+    /*
+     * Get all action buttons for an action
+     *
+     * @param AdminInterface $admin
+     * @param array          $list
+     * @param string         $action
+     * @param mixed          $object
+     *
+     * @return array
+     */
+    // TODO: Uncomment in next major release
+    // public function configureActionButtons(AdminInterface $admin, $list, $action, $object);
 }

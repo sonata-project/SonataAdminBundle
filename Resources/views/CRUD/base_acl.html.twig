@@ -12,10 +12,7 @@ file that was distributed with this source code.
 {% extends base_template %}
 
 {% block actions %}
-    <li>{% include 'SonataAdminBundle:Button:edit_button.html.twig' %}</li>
-    <li>{% include 'SonataAdminBundle:Button:history_button.html.twig' %}</li>
-    <li>{% include 'SonataAdminBundle:Button:show_button.html.twig' %}</li>
-    <li>{% include 'SonataAdminBundle:Button:list_button.html.twig' %}</li>
+    {% include 'SonataAdminBundle:CRUD:action_buttons.html.twig' %}
 {% endblock %}
 
 {% import 'SonataAdminBundle:CRUD:base_acl_macro.html.twig' as acl %}
