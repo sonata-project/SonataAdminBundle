@@ -73,8 +73,10 @@ abstract class BaseWidgetTest extends TypeTestCase
         //different TwigBridge installation directories
         if (is_dir(__DIR__.'/../../../vendor/symfony/twig-bridge/Resources/views/Form')) {
             $twigPaths[] = __DIR__.'/../../../vendor/symfony/twig-bridge/Resources/views/Form';
-        } else {
+        } elseif (is_dir(__DIR__.'/../../../vendor/symfony/symfony/src/Symfony/Bridge/Twig/Resources/views/Form')) {
             $twigPaths[] = __DIR__.'/../../../vendor/symfony/symfony/src/Symfony/Bridge/Twig/Resources/views/Form';
+        } else {
+            $twigPaths[] = __DIR__.'/../../../../../symfony/symfony/src/Symfony/Bridge/Twig/Resources/views/Form';
         }
 
         $loader = new StubFilesystemLoader($twigPaths);
