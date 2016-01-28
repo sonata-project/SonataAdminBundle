@@ -229,7 +229,7 @@ which stores instances of ``FieldDescriptionInterface``. Picking up on our previ
         protected function configureShowFields(ShowMapper $showMapper)
         {
             $showMapper
-                ->add('id)
+                ->add('id')
                 ->add('title')
                 ->add('slug')
                 ->add('author')
