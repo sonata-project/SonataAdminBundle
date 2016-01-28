@@ -25,6 +25,7 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\Pager;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
+use Sonata\AdminBundle\Flash\FlashManagerInterface;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Route\RouteCollection;
@@ -514,6 +515,13 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      * @var array
      */
     protected $accessMapping = array();
+
+    /**
+     * The container for flashBag.
+     *
+     * @var \Sonata\AdminBundle\Flash\FlashManagerInterface
+     */
+    protected $flashManager;
 
     /**
      * {@inheritdoc}
@@ -2962,5 +2970,21 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
                 throw new AccessDeniedException(sprintf('Access Denied to the action %s and role %s', $action, $role));
             }
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFlashManager()
+    {
+        return $this->flashManager;
+    }
+
+    /**
+     * @param \Sonata\AdminBundle\Flash\FlashManagerInterface $flashManager
+     */
+    public function setFlashManager(FlashManagerInterface $flashManager)
+    {
+        $this->flashManager = $flashManager;
     }
 }

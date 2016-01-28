@@ -360,6 +360,9 @@ class AddDependencyCallsCompilerPassTest extends \PHPUnit_Framework_TestCase
             ->register('validator')
             ->setClass('Symfony\Bundle\FrameworkBundle\Validator\Validator');
         $container
+            ->register('session')
+            ->setClass('Symfony\Component\HttpFoundation\Session\Session');
+        $container
             ->register('validator.validator_factory')
             ->setClass('Symfony\Bundle\FrameworkBundle\Validator\ConstraintValidatorFactory');
         $container

@@ -81,5 +81,10 @@
         <service id="sonata.admin.twig.global" class="Sonata\AdminBundle\Twig\GlobalVariables" >
             <argument type="service" id="service_container" />
         </service>
+
+        <!-- flash message -->
+        <service id="sonata.admin.flash.manager" class="Sonata\AdminBundle\Flash\FlashManager" >
+            <argument type="service" id="session" />
+        </service>
     </services>
 </container>
