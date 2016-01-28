@@ -49,13 +49,13 @@ Then we need to inject the Sortable listener. If you only have the Gedmo bundle 
 
 .. code-block:: yaml
 
-	services:
+    services:
         gedmo.listener.sortable:
             class: Gedmo\Sortable\SortableListener
-        tags:
-            - { name: doctrine.event_subscriber, connection: default }
-        calls:
-            - [ setAnnotationReader, [ @annotation_reader ] ]
+            tags:
+                - { name: doctrine.event_subscriber, connection: default }
+            calls:
+                - [ setAnnotationReader, [ "@annotation_reader" ] ]
 
 
 If you have the ``stof/doctrine-extensions-bundle``, you only need to enable the sortable
@@ -194,7 +194,7 @@ And add the following call the ``admin.yml``
 	            - AppBundle\Entity\Client
 	            - 'PixSortableBehaviorBundle:SortableAdmin'
             calls:
-                 - [ setPositionService, [@pix_sortable_behavior.position]]
+                 - [ setPositionService, ["@pix_sortable_behavior.position"]]
 
 You should now have in your listing a new action column with 4 arrows to sort your records.
 

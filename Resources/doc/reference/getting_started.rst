@@ -263,10 +263,10 @@ use the correct file extension):
         imports:
 
             # for xml
-            - { resource: @AppBundle/Resources/config/admin.xml }
+            - { resource: "@AppBundle/Resources/config/admin.xml" }
 
             # for yaml
-            - { resource: @AppBundle/Resources/config/admin.yml }
+            - { resource: "@AppBundle/Resources/config/admin.yml" }
 
 Configuration
 -------------
