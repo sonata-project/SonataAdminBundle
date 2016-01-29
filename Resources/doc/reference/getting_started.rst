@@ -189,7 +189,7 @@ use the correct file extension):
 
         # app/config/config.yml
         imports:
-            - { resource: @AcmeDemoBundle/Resources/config/admin.xml }
+            - { resource: "@AcmeDemoBundle/Resources/config/admin.xml" }
 
 2 - Have your bundle load it
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
