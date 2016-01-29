@@ -41,7 +41,7 @@ Customizing the fields displayed on the list page
 -------------------------------------------------
 
 You can customize the columns displayed on the list through the ``configureListFields`` method.
-Here is an example:
+Here is an example from Sonata E-Commerce Product Admin:
 
 .. code-block:: php
 
@@ -71,10 +71,13 @@ Here is an example:
                 'currency' => $this->currencyDetector->getCurrency()->getLabel()
             ))
 
-            // Here we specify which property is used to render the label of each entity in the list
+            // here we specify which method is used to render the label
             ->add('productCategories', null, array(
-                'associated_property' => 'name')
-            )
+                'associated_property' => 'category'
+            ))
+            ->add('productCollections', null, array(
+                'associated_property' => 'collection'
+            ))
 
             // you may also use dotted-notation to access
             // specific properties of a relation to the entity
@@ -104,10 +107,8 @@ Options
 - ``template`` (o): the template used to render the field
 - ``label`` (o): the name used for the column's title
 - ``link_parameters`` (o): add link parameter to the related Admin class when the ``Admin::generateUrl`` is called
-- ``code`` (o): the method name to retrieve the related value (for example,
-  if you have an `array` type field, you would like to show info prettier
-  than `[0] => 'Value'`; useful when simple getter is not enough).
-  Notice: works with string-like types (string, text, html)
+- ``code`` (o): the method name to retrieve the related value
+- ``associated_tostring`` (o): (deprecated, use ``associated_property`` option) the method to retrieve the "string" representation of the collection element.
 - ``associated_property`` (o): property path to retrieve the "string" representation of the collection element, or a closure with the element as argument and return a string.
 - ``identifier`` (o): if set to true a link appears on the value to edit the element
 
@@ -150,10 +151,6 @@ Available types and associated options
 | percent   |                | Renders value as a percentage.                                        |
 +-----------+----------------+-----------------------------------------------------------------------+
 | string    |                | Renders a simple string.                                              |
-+-----------+----------------+-----------------------------------------------------------------------+
-| text      |                | See 'string'                                                          |
-+-----------+----------------+-----------------------------------------------------------------------+
-| html      |                | Renders string as html                                                |
 +-----------+----------------+-----------------------------------------------------------------------+
 | time      |                | Renders a datetime's time with format ``H:i:s``.                      |
 +-----------+----------------+-----------------------------------------------------------------------+
@@ -513,7 +510,7 @@ To do:
 Visual configuration
 --------------------
 
-You have the possibility to configure your List View to customize the render without overriding to whole template.
+You have the possibility to configure your List View to customize the render without overring to whole template.
 You can :
 
 - `header_style`: Customize the style of header (width, color, background, align...)
