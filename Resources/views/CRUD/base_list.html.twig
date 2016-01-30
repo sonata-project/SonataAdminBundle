@@ -12,11 +12,7 @@ file that was distributed with this source code.
 {% extends base_template %}
 
 {% block actions %}
-{% spaceless %}
-    {% if admin.hasRoute('create') and admin.isGranted('CREATE')%}
-        <li>{% include 'SonataAdminBundle:Core:create_button.html.twig' %}</li>
-    {% endif %}
-{% endspaceless %}
+    {% include 'SonataAdminBundle:CRUD:action_buttons.html.twig' %}
 {% endblock %}
 
 {% block tab_menu %}{{ knp_menu_render(admin.sidemenu(action), {'currentClass' : 'active', 'template': sonata_admin.adminPool.getTemplate('tab_menu_template')}, 'twig') }}{% endblock %}

@@ -24,11 +24,7 @@ file that was distributed with this source code.
 {% endblock %}
 
 {% block actions %}
-    <li>{% include 'SonataAdminBundle:Button:show_button.html.twig' %}</li>
-    <li>{% include 'SonataAdminBundle:Button:history_button.html.twig' %}</li>
-    <li>{% include 'SonataAdminBundle:Button:acl_button.html.twig' %}</li>
-    <li>{% include 'SonataAdminBundle:Button:list_button.html.twig' %}</li>
-    <li>{% include 'SonataAdminBundle:Button:create_button.html.twig' %}</li>
+    {% include 'SonataAdminBundle:CRUD:action_buttons.html.twig' %}
 {% endblock %}
 
 {% block tab_menu %}{{ knp_menu_render(admin.sidemenu(action), {'currentClass' : 'active', 'template': sonata_admin.adminPool.getTemplate('tab_menu_template')}, 'twig') }}{% endblock %}
