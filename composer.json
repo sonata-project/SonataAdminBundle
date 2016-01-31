@@ -30,6 +30,7 @@
         "symfony/translation":"~2.3|~3.0",
         "symfony/dependency-injection": "~2.3,>=2.3.3|~3.0",
         "symfony/property-access": "~2.3|~3.0",
+        "symfony/security-acl": "~2.3|~3.0",
         "twig/twig": "~1.23",
         "twig/extensions": "~1.0",
         "sonata-project/exporter": "~1.0",
@@ -42,15 +43,13 @@
     "require-dev": {
         "sensio/generator-bundle": "~2.3|~3.0",
         "symfony/yaml": "~2.3|~3.0",
-        "symfony/security-acl": "~2.4|~3.0",
         "sonata-project/intl-bundle": "dev-master",
         "symfony/phpunit-bridge": "~2.7|~3.0"
     },
     "suggest": {
         "jms/translation-bundle": "Extract message keys from Admins",
         "sensio/generator-bundle": "Add sonata:admin:generate command",
-        "sonata-project/intl-bundle": "Add localized date and number into the list",
-        "symfony/security-acl": "To make sonata working with Symfony >=2.8"
+        "sonata-project/intl-bundle": "Add localized date and number into the list"
     },
     "autoload": {
         "psr-4": { "Sonata\\AdminBundle\\": "" }
