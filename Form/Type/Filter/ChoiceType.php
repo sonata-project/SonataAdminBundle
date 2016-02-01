@@ -67,12 +67,12 @@ class ChoiceType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $choices = array(
-            self::TYPE_CONTAINS     => $this->translator->trans('label_type_contains', array(), 'SonataAdminBundle'),
-            self::TYPE_NOT_CONTAINS => $this->translator->trans('label_type_not_contains', array(), 'SonataAdminBundle'),
-            self::TYPE_EQUAL        => $this->translator->trans('label_type_equals', array(), 'SonataAdminBundle'),
+            $this->translator->trans('label_type_contains', array(), 'SonataAdminBundle')     => self::TYPE_CONTAINS,
+            $this->translator->trans('label_type_not_contains', array(), 'SonataAdminBundle') => self::TYPE_NOT_CONTAINS,
+            $this->translator->trans('label_type_equals', array(), 'SonataAdminBundle')       => self::TYPE_EQUAL,
         );
 
-        $operatorChoices = $options['operator_type'] !== 'hidden' ? array('choices' => $choices) : array();
+        $operatorChoices = $options['operator_type'] !== 'hidden' ? array('choices' => $choices, 'choices_as_values' => true) : array();
 
         $builder
             ->add('type', $options['operator_type'], array_merge(array('required' => false), $options['operator_options'], $operatorChoices))

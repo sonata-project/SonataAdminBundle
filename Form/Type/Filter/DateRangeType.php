@@ -64,12 +64,12 @@ class DateRangeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $choices = array(
-            self::TYPE_BETWEEN     => $this->translator->trans('label_date_type_between', array(), 'SonataAdminBundle'),
-            self::TYPE_NOT_BETWEEN => $this->translator->trans('label_date_type_not_between', array(), 'SonataAdminBundle'),
+            $this->translator->trans('label_date_type_between', array(), 'SonataAdminBundle')     => self::TYPE_BETWEEN,
+            $this->translator->trans('label_date_type_not_between', array(), 'SonataAdminBundle') => self::TYPE_NOT_BETWEEN,
         );
 
         $builder
-            ->add('type', 'choice', array('choices' => $choices, 'required' => false))
+            ->add('type', 'choice', array('choices' => $choices, 'choices_as_values' => true, 'required' => false))
             ->add('value', $options['field_type'], $options['field_options'])
         ;
     }
