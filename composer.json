@@ -41,6 +41,9 @@
         "knplabs/knp-menu-bundle": ">=1.1.0,<3.0.0",
         "knplabs/knp-menu": ">=1.1.0,<3.0.0"
     },
+    "conflict": {
+        "symfony/security": ">2.8.999"
+    },
     "require-dev": {
         "jms/translation-bundle": "~1.1",
         "symfony/yaml": "~2.3",

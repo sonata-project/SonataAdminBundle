@@ -109,7 +109,7 @@ also define the sort by field to be position
     {
         $this->positionService = $positionHandler;
     }
-    
+
     protected $datagridValues = array(
         '_page' => 1,
         '_sort_order' => 'ASC',
@@ -132,9 +132,9 @@ also define the sort by field to be position
 And in  the admin.yml add the following call
 
 .. code-block:: yaml
-    
-	- [ setContainer, [ @service_container ] ]
-	- [ setPositionService, [@pix_sortable_behavior.position]]
+
+    - [ setContainer, [ "@service_container" ]]
+    - [ setPositionService, [ "@pix_sortable_behavior.position" ]]
 
 
 You should now have in your listing a new action column with 4 arrows to sort your records.

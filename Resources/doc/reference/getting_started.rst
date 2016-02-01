@@ -189,7 +189,7 @@ use the correct file extension):
 
         # app/config/config.yml
         imports:
-            - { resource: @AcmeDemoBundle/Resources/config/admin.xml }
+            - { resource: "@AcmeDemoBundle/Resources/config/admin.xml" }
 
 2 - Have your bundle load it
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -202,12 +202,12 @@ file, using the ``load()`` method as described in the `symfony cookbook`_.
     .. code-block:: xml
 
         # Acme/DemoBundle/DependencyInjection/AcmeDemoBundleExtension.php for XML configurations
-        
+
         namespace Acme\DemoBundle\DependencyInjection;
 
         use Symfony\Component\DependencyInjection\Loader;
         use Symfony\Component\Config\FileLocator;
-        
+
         class AcmeDemoBundleExtension extends Extension
         {
             public function load(array $configs, ContainerBuilder $container) {
@@ -220,7 +220,7 @@ file, using the ``load()`` method as described in the `symfony cookbook`_.
     .. code-block:: yaml
 
         # Acme/DemoBundle/DependencyInjection/AcmeDemoBundleExtension.php for YAML configurations
-        
+
         namespace Acme\DemoBundle\DependencyInjection;
 
         use Symfony\Component\DependencyInjection\Loader;
@@ -244,7 +244,7 @@ your mapped model. You can start creating, listing, editing and deleting instanc
 You probably want to put your own project's name and logo on the top bar.
 
 Put your logo file here ``src/Acme/DemoBundle/Resources/public/img/fancy_acme_logo.png``
-    
+
 Install your assets:
 
 .. code-block:: sh
