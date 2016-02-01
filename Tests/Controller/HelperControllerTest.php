@@ -99,11 +99,7 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
                     case 'foo.admin':
                         return $admin;
                 }
-
-                return;
             }));
-
-        return;
     }
 
     /**
@@ -430,8 +426,6 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
 
         $validator = $this->getMock($validatorInterface);
 
-        $dispatcher = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
-
         $helper = $this->getMock('Sonata\AdminBundle\Admin\AdminHelper', array('getChildFormView'), array($pool));
         $helper->expects($this->once())->method('getChildFormView')->will($this->returnValue($mockView));
 
@@ -624,8 +618,6 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
             ->with('CREATE')
             ->will($this->returnValue(true));
 
-        $entity = new Foo();
-
         $fieldDescription = $this->getMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
 
         $fieldDescription->expects($this->once())
@@ -700,8 +692,6 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
                     case 'to_string_callback':
                         return;
                 }
-
-                return;
             }));
 
         $request = new Request(array(
