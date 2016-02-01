@@ -24,6 +24,7 @@ use Symfony\Bridge\Twig\Extension\FormExtension;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\Extension\Csrf\CsrfProvider\CsrfProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
@@ -175,8 +176,6 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
                     case 'form':
                         return $formExtension;
                 }
-
-                return;
             }));
 
         $exporter = $this->getMock('Sonata\AdminBundle\Export\Exporter');
@@ -251,8 +250,8 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $logger       = $this->logger; // php 5.3 BC
 
         $requestStack = null;
-        if ((Kernel::MAJOR_VERSION == 2 && Kernel::MINOR_VERSION > 3) || Kernel::MAJOR_VERSION >= 3) {
-            $requestStack = new \Symfony\Component\HttpFoundation\RequestStack();
+        if (class_exists('Symfony\Component\HttpFoundation\RequestStack')) {
+            $requestStack = new RequestStack();
             $requestStack->push($request);
         }
 
@@ -305,8 +304,6 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
                     case 'kernel':
                         return $kernel;
                 }
-
-                return;
             }));
 
         // php 5.3
@@ -345,8 +342,6 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
                     case 'security.role_hierarchy.roles':
                        return array('ROLE_SUPER_ADMIN' => array('ROLE_USER', 'ROLE_SONATA_ADMIN', 'ROLE_ADMIN'));
                 }
-
-                return;
             }));
 
         $this->admin->expects($this->any())
@@ -382,8 +377,6 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
                     case 'batch_confirmation':
                         return 'SonataAdminBundle:CRUD:batch_confirmation.html.twig';
                 }
-
-                return;
             }));
 
         $this->admin->expects($this->any())
