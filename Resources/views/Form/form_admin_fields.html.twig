@@ -312,8 +312,10 @@ file that was distributed with this source code.
         {% if allow_delete %}
             <div class="row">
                 <div class="col-xs-1">
-                    <a href="#" class="btn btn-link sonata-collection-delete">
-                        <i class="fa fa-minus-circle"></i>
+                    <a href="#"
+                       class="btn btn-danger btn-sm sonata-ba-action sonata-collection-delete"
+                       title="{{ btn_delete|trans({}, btn_catalogue) }}">
+                        <i class="fa fa-minus-circle"></i> {{ btn_delete|trans({}, btn_catalogue) }}
                     </a>
                 </div>
                 <div class="col-xs-11">
@@ -340,7 +342,13 @@ file that was distributed with this source code.
         {% endfor %}
         {{ form_rest(form) }}
         {% if allow_add %}
-            <div><a href="#" class="btn btn-link sonata-collection-add"><i class="fa fa-plus-circle"></i></a></div>
+            <div>
+                <a href="#"
+                    class="btn btn-success btn-sm sonata-ba-action sonata-collection-add"
+                    title="{{ btn_add|trans({}, btn_catalogue) }}">
+                    <i class="fa fa-plus-circle"></i> {{ btn_add|trans({}, btn_catalogue) }}
+                </a>
+            </div>
         {% endif %}
     </div>
 {% endspaceless %}

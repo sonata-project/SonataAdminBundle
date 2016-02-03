@@ -12,6 +12,10 @@
 namespace Sonata\AdminBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * This type wrap native `collection` form type and render `add` and `delete`
@@ -21,6 +25,37 @@ use Symfony\Component\Form\AbstractType;
  */
 class CollectionType extends AbstractType
 {
+
+
+    /**
+     * {@inheritdoc}
+     */
+    public function buildView(FormView $view, FormInterface $form, array $options)
+    {
+        $view->vars['btn_add'] = $options['btn_add'];
+        $view->vars['btn_delete'] = $options['btn_delete'];
+        $view->vars['btn_catalogue'] = $options['btn_catalogue'];
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @todo Remove it when bumping requirements to SF 2.7+
+     */
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+       $this->configureOptions($resolver);
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults(array(
+            'btn_add' => 'link_add',
+            'btn_delete' => 'link_delete',
+            'btn_catalogue' => 'SonataAdminBundle'
+        ));
+    }
+
     /**
      * {@inheritdoc}
      */

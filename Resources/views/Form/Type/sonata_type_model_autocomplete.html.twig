@@ -11,10 +11,10 @@ file that was distributed with this source code.
 {% spaceless %}
 
     <input type="text" id="{{ id }}_autocomplete_input" value=""
-        {%- if read_only %} readonly="readonly"{% endif -%}
-        {%- if disabled %} disabled="disabled"{% endif -%}
-        {%- if required %} required="required"{% endif %}
-    />
+            {%- if read_only %} readonly="readonly"{% endif -%}
+            {%- if disabled %} disabled="disabled"{% endif -%}
+            {%- if required %} required="required"{% endif %}
+            />
 
     <div id="{{ id }}_hidden_inputs_wrap">
         {% if multiple -%}
@@ -49,37 +49,37 @@ file that was distributed with this source code.
                     data: function (term, page) { // page is the one-based page number tracked by Select2
                         {% block sonata_type_model_autocomplete_ajax_request_parameters %}
                         return {
-                                //search term
-                                '{{ req_param_name_search }}': term,
+                            //search term
+                            '{{ req_param_name_search }}': term,
 
-                                // page size
-                                '{{ req_param_name_items_per_page }}': {{ items_per_page }},
+                            // page size
+                            '{{ req_param_name_items_per_page }}': {{ items_per_page }},
 
-                                // page number
-                                '{{ req_param_name_page_number }}': page,
+                            // page number
+                            '{{ req_param_name_page_number }}': page,
 
-                                // admin
-                                {% if sonata_admin.admin is not null %}
-                                    'uniqid': '{{ sonata_admin.admin.uniqid }}',
-                                    'admin_code': '{{ sonata_admin.admin.code }}',
-                                {% elseif admin_code %}
-                                    'admin_code':  '{{ admin_code }}',
-                                {% endif %}
+                            // admin
+                            {% if sonata_admin.admin is not null %}
+                            'uniqid': '{{ sonata_admin.admin.uniqid }}',
+                            'admin_code': '{{ sonata_admin.admin.code }}',
+                            {% elseif admin_code %}
+                            'admin_code':  '{{ admin_code }}',
+                            {% endif %}
 
-                                {% if context == 'filter' %}
-                                    'field':  '{{ full_name|replace({'filter[': '', '][value]': '', '__':'.'}) }}',
-                                    '_context': 'filter'
-                                {% else %}
-                                    'field':  '{{ name }}'
-                                {% endif %}
+                            {% if context == 'filter' %}
+                            'field':  '{{ full_name|replace({'filter[': '', '][value]': '', '__':'.'}) }}',
+                            '_context': 'filter'
+                            {% else %}
+                            'field':  '{{ name }}'
+                            {% endif %}
 
-                                // other parameters
-                                {% if req_params is not empty %},
-                                    {%- for key, value in req_params -%}
-                                        '{{- key|e('js') -}}': '{{- value|e('js') -}}'
-                                        {%- if not loop.last -%}, {% endif -%}
-                                    {%- endfor -%}
-                                {% endif %}
+                            // other parameters
+                            {% if req_params is not empty %},
+                            {%- for key, value in req_params -%}
+                            '{{- key|e('js') -}}': '{{- value|e('js') -}}'
+                            {%- if not loop.last -%}, {% endif -%}
+                            {%- endfor -%}
+                            {% endif %}
                         };
                         {% endblock %}
                     },
@@ -106,17 +106,17 @@ file that was distributed with this source code.
                     var removedItems = e.removed;
 
                     {% if multiple %}
-                        if(!$.isArray(removedItems)) {
-                            removedItems = [removedItems];
-                        }
+                    if(!$.isArray(removedItems)) {
+                        removedItems = [removedItems];
+                    }
 
-                        var length = removedItems.length;
-                        for (var i = 0; i < length; i++) {
-                            el = removedItems[i];
-                            $('#{{ id }}_hidden_inputs_wrap input:hidden[value="'+el.id+'"]').remove();
-                        }
+                    var length = removedItems.length;
+                    for (var i = 0; i < length; i++) {
+                        el = removedItems[i];
+                        $('#{{ id }}_hidden_inputs_wrap input:hidden[value="'+el.id+'"]').remove();
+                    }
                     {%- else -%}
-                        $('#{{ id }}_hidden_inputs_wrap input:hidden').val('');
+                    $('#{{ id }}_hidden_inputs_wrap input:hidden').val('');
                     {%- endif %}
                 }
 
@@ -127,17 +127,17 @@ file that was distributed with this source code.
                     var addedItems = e.added;
 
                     {% if multiple %}
-                        if(!$.isArray(addedItems)) {
-                            addedItems = [addedItems];
-                        }
+                    if(!$.isArray(addedItems)) {
+                        addedItems = [addedItems];
+                    }
 
-                        var length = addedItems.length;
-                        for (var i = 0; i < length; i++) {
-                            el = addedItems[i];
-                            $('#{{ id }}_hidden_inputs_wrap').append('<input type="hidden" name="{{ full_name }}[]" value="'+el.id+'" />');
-                        }
+                    var length = addedItems.length;
+                    for (var i = 0; i < length; i++) {
+                        el = addedItems[i];
+                        $('#{{ id }}_hidden_inputs_wrap').append('<input type="hidden" name="{{ full_name }}[]" value="'+el.id+'" />');
+                    }
                     {%- else -%}
-                        $('#{{ id }}_hidden_inputs_wrap input:hidden').val(addedItems.id);
+                    $('#{{ id }}_hidden_inputs_wrap input:hidden').val(addedItems.id);
                     {%- endif %}
                 }
             });
@@ -146,10 +146,10 @@ file that was distributed with this source code.
             var data = [];
 
             {%- if value is not empty -%}
-                data = {%- if multiple -%}[ {%- endif -%}
+            data = {%- if multiple -%}[ {%- endif -%}
                 {%- for idx, val  in value if idx~'' != '_labels' -%}
-                    {%- if not loop.first -%}, {% endif -%}
-                    {id: '{{ val|e('js') }}', label:'{{ value['_labels'][idx]|e('js') }}'}
+                {%- if not loop.first -%}, {% endif -%}
+                {id: '{{ val|e('js') }}', label:'{{ value['_labels'][idx]|e('js') }}'}
                 {%- endfor -%}
                 {%- if multiple -%} ] {%- endif -%};
             {% endif -%}
