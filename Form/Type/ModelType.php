@@ -21,6 +21,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\Form\ChoiceList\LazyChoiceList;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -40,7 +41,13 @@ class ModelType extends AbstractType
     {
         if ($options['multiple']) {
             if (array_key_exists('choice_loader', $options) && $options['choice_loader'] !== null) { // SF2.7+
-                $builder->addViewTransformer(new ModelsToArrayTransformer($options['choice_list'], $options['model_manager'], $options['class']), true);
+                $builder->addViewTransformer(
+                    new ModelsToArrayTransformer(
+                        new LazyChoiceList($options['choice_loader']),
+                        $options['model_manager'],
+                        $options['class']),
+                    true
+                );
             } else {
                 $builder->addViewTransformer(new LegacyModelsToArrayTransformer($options['choice_list']), true);
             }
