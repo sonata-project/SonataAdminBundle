@@ -151,6 +151,16 @@ apps based on the field name. It is reasonable to start with the ``native`` stra
 and then, when the application needs to be translated using generic keys, the
 configuration can be switched to ``underscore``.
 
+You can replace default strategy in ``config.yml``:
+
+.. configuration-block::
+
+    .. code-block:: yaml
+
+        services:
+            sonata.admin.label.strategy.default:
+                alias: sonata.admin.label.strategy.underscore
+
 The strategy can be quickly configured when the Admin class is registered in
 the Container:
 

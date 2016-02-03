@@ -248,7 +248,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
             'menu_factory'              => 'knp_menu.factory',
             'route_builder'             => 'sonata.admin.route.path_info'.
                 (($manager_type == 'doctrine_phpcr') ? '_slashes' : ''),
-            'label_translator_strategy' => 'sonata.admin.label.strategy.native',
+            'label_translator_strategy' => 'sonata.admin.label.strategy.default',
         );
 
         $definition->addMethodCall('setManagerType', array($manager_type));
