@@ -234,7 +234,7 @@ class CRUDController extends Controller
     {
         $request = $this->resolveRequest($request);
 
-        $this->admin->checkAccess('list');
+        $this->admin->checkAccess('list', $this->admin->getParent() ? $this->admin->getParent()->getSubject() : null);
 
         $preResponse = $this->preList($request);
         if ($preResponse !== null) {
