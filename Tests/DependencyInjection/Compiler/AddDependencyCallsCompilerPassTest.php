@@ -418,6 +418,9 @@ class AddDependencyCallsCompilerPassTest extends \PHPUnit_Framework_TestCase
             ->register('knp_menu.menu_provider')
             ->setClass('Knp\Menu\Provider\MenuProviderInterface');
         $container
+            ->register('knp_menu.matcher')
+            ->setClass('Knp\Menu\Matcher\MatcherInterface');
+        $container
             ->register('event_dispatcher')
             ->setClass('Symfony\Component\EventDispatcher\EventDispatcherInterface');
 

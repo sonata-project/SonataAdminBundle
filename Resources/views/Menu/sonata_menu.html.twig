@@ -16,31 +16,8 @@
     {%- endif %}
 
     {%- if item.displayed and display|default %}
-        {%- set active = false %}
-        {%- if item.extra('active') is not empty and item.extra('active') %}
-            {%- set active = true %}
-        {%- elseif item.extra('admin') is not empty and item.extra('admin').hasroute('list') and item.extra('admin').isGranted('LIST') and request.get('_sonata_admin') == item.extra('admin').code %}
-            {%- set active = true %}
-        {%- elseif item.route is defined and request.get('_route') == item.route %}
-            {%- set active = true %}
-        {%- else %}
-            {%- for child in item.children if not active %}
-                {%- if child.extra('admin') is not empty and child.extra('admin').hasroute('list') and child.extra('admin').isGranted('LIST') and request.get('_sonata_admin') == child.extra('admin').code %}
-                    {%- set active = true %}
-                {%-  elseif child.route is defined and request.get('_route') == child.route %}
-                    {%- set active = true %}
-                {%- endif %}
-            {%- endfor %}
-        {%- endif %}
-
-        {%- if item.hasChildren %}
-            {%- do item.setAttribute('class', (item.attribute('class')~' treeview')|trim) %}
-        {%- endif %}
-        {%- if active %}
-            {%- do item.setAttribute('class', (item.attribute('class')~' active')|trim) %}
-            {%- do item.setChildrenAttribute('class', (item.childrenAttribute('class')~' active')|trim) %}
-        {%- endif %}
-
+        {% set options = options|merge({branch_class: 'treeview', currentClass: "active"}) %}
+        {%- do item.setChildrenAttribute('class', (item.childrenAttribute('class')~' active')|trim) %}
         {%- do item.setChildrenAttribute('class', (item.childrenAttribute('class')~' treeview-menu')|trim) %}
         {{ parent() }}
     {% endif %}

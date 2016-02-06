@@ -21,5 +21,17 @@
             <argument type="service" id="sonata.admin.pool" />
             <tag name="knp_menu.provider" />
         </service>
+
+        <service id="sonata.admin.menu.matcher.voter.admin" class="Sonata\AdminBundle\Menu\Matcher\Voter\AdminVoter">
+            <tag name="knp_menu.voter" request="true"/>
+        </service>
+        <service id="sonata.admin.menu.matcher.voter.children" class="Sonata\AdminBundle\Menu\Matcher\Voter\ChildrenVoter">
+            <argument type="service" id="knp_menu.matcher"/>
+            <tag name="knp_menu.voter"/>
+        </service>
+        <service id="sonata.admin.menu.matcher.voter.active" class="Sonata\AdminBundle\Menu\Matcher\Voter\ActiveVoter">
+            <tag name="knp_menu.voter"/>
+        </service>
+
     </services>
 </container>
