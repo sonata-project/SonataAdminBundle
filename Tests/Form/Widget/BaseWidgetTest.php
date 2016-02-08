@@ -57,7 +57,7 @@ abstract class BaseWidgetTest extends TypeTestCase
             $this->type.'_admin_fields.html.twig',
         ));
 
-        if (version_compare(Kernel::VERSION, '3.0.0', '>=')) {
+        if (version_compare(Kernel::VERSION, '2.8.0', '>=')) {
             $csrfManagerClass = 'Symfony\Component\Security\Csrf\CsrfTokenManagerInterface';
         } else {
             $csrfManagerClass = 'Symfony\Component\Form\Extension\Csrf\CsrfProvider\CsrfProviderInterface';
