@@ -57,7 +57,7 @@ abstract class BaseWidgetTest extends TypeTestCase
             $this->type.'_admin_fields.html.twig',
         ));
 
-        if (version_compare(Kernel::VERSION, '3.0.0', '>=')) {
+        if (version_compare(Kernel::VERSION, '2.8.0', '>=')) {
             $csrfManagerClass = 'Symfony\Component\Security\Csrf\CsrfTokenManagerInterface';
         } else {
             $csrfManagerClass = 'Symfony\Component\Form\Extension\Csrf\CsrfProvider\CsrfProviderInterface';
@@ -73,8 +73,10 @@ abstract class BaseWidgetTest extends TypeTestCase
         //different TwigBridge installation directories
         if (is_dir(__DIR__.'/../../../vendor/symfony/twig-bridge/Resources/views/Form')) {
             $twigPaths[] = __DIR__.'/../../../vendor/symfony/twig-bridge/Resources/views/Form';
-        } else {
+        } elseif (is_dir(__DIR__.'/../../../vendor/symfony/symfony/src/Symfony/Bridge/Twig/Resources/views/Form')) {
             $twigPaths[] = __DIR__.'/../../../vendor/symfony/symfony/src/Symfony/Bridge/Twig/Resources/views/Form';
+        } else {
+            $twigPaths[] = __DIR__.'/../../../../../symfony/symfony/src/Symfony/Bridge/Twig/Resources/views/Form';
         }
 
         $loader = new StubFilesystemLoader($twigPaths);

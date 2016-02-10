@@ -1015,4 +1015,13 @@ interface AdminInterface
      * @param object $object
      */
     public function checkAccess($action, $object = null);
+
+    /*
+     * Configure buttons for an action
+     *
+     * @param string $action
+     * @param object $object
+     *
+     */
+    // public function configureActionButtons($action, $object = null);
 }

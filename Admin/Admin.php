@@ -596,7 +596,15 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      */
     public function getExportFields()
     {
-        return $this->getModelManager()->getExportFields($this->getClass());
+        $fields = $this->getModelManager()->getExportFields($this->getClass());
+
+        foreach ($this->getExtensions() as $extension) {
+            if (method_exists($extension, 'configureExportFields')) {
+                $fields = $extension->configureExportFields($this, $fields);
+            }
+        }
+
+        return $fields;
     }
 
     /**
@@ -1223,6 +1231,13 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
                 'translation_domain' => 'SonataAdminBundle',
                 'ask_confirmation'   => true, // by default always true
             );
+        }
+
+        foreach ($this->getExtensions() as $extension) {
+            // TODO: remove method check in next major release
+            if (method_exists($extension, 'configureBatchActions')) {
+                $actions = $extension->configureBatchActions($this, $actions);
+            }
         }
 
         return $actions;
@@ -2947,5 +2962,71 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
                 throw new AccessDeniedException(sprintf('Access Denied to the action %s and role %s', $action, $role));
             }
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configureActionButtons($action, $object = null)
+    {
+        $list = array();
+
+        if (in_array($action, array('show', 'edit', 'delete', 'list', 'batch'))) {
+            $list['create'] = array(
+                'template' => 'SonataAdminBundle:Button:create_button.html.twig',
+            );
+        }
+
+        if (in_array($action, array('show', 'delete', 'acl', 'history')) && $object) {
+            $list['edit'] = array(
+                'template' => 'SonataAdminBundle:Button:edit_button.html.twig',
+            );
+        }
+
+        if (in_array($action, array('show', 'edit', 'acl')) && $object) {
+            $list['history'] = array(
+                'template' => 'SonataAdminBundle:Button:history_button.html.twig',
+            );
+        }
+
+        if (in_array($action, array('edit', 'history')) && $object) {
+            $list['acl'] = array(
+                'template' => 'SonataAdminBundle:Button:acl_button.html.twig',
+            );
+        }
+
+        if (in_array($action, array('edit', 'history', 'acl')) && $object) {
+            $list['show'] = array(
+                'template' => 'SonataAdminBundle:Button:show_button.html.twig',
+            );
+        }
+
+        if (in_array($action, array('show', 'edit', 'delete', 'acl', 'batch'))) {
+            $list['list'] = array(
+                'template' => 'SonataAdminBundle:Button:list_button.html.twig',
+            );
+        }
+
+        return $list;
+    }
+
+    /**
+     * @param string $action
+     * @param mixed  $object
+     *
+     * @return array
+     */
+    public function getActionButtons($action, $object = null)
+    {
+        $list = $this->configureActionButtons($action, $object);
+
+        foreach ($this->getExtensions() as $extension) {
+            // TODO: remove method check in next major release
+            if (method_exists($extension, 'configureActionButtons')) {
+                $list = $extension->configureActionButtons($this, $list, $action, $object);
+            }
+        }
+
+        return $list;
     }
 }

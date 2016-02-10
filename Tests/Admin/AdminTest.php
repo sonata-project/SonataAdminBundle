@@ -1632,6 +1632,22 @@ class AdminTest extends \PHPUnit_Framework_TestCase
         $admin->setRequest(new Request(array('id' => '0779ca8d-e2be-11e4-ac58-0242ac11000b')));
         $this->assertSame($entity, $admin->getSubject());
     }
+
+    /**
+     * @covers Sonata\AdminBundle\Admin\Admin::configureActionButtons
+     */
+    public function testGetActionButtonsList()
+    {
+        $expected = array(
+            'create' => array(
+                'template' => 'SonataAdminBundle:Button:create_button.html.twig',
+            ),
+        );
+
+        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
+
+        $this->assertSame($expected, $admin->getActionButtons('list', null));
+    }
 }
 
 class DummySubject

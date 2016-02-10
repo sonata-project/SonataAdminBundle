@@ -103,8 +103,8 @@ You have 2 ways of defining the dependencies inside ``services.xml``:
                 - AppBundle\Entity\Project
                 - ~
             calls:
-                - [ setLabelTranslatorStrategy, [ @sonata.admin.label.strategy.native ]]
-                - [ setRouteBuilder, [ @sonata.admin.route.path_info ]]
+                - [ setLabelTranslatorStrategy, [ "@sonata.admin.label.strategy.native" ]]
+                - [ setRouteBuilder, [ "@sonata.admin.route.path_info" ]]
 
 If you want to modify the service that is going to be injected, add the following code to your
 application's config file:
@@ -176,7 +176,7 @@ To create your own RouteBuilder create the PHP class and register it as a servic
             app.admin.entity_route_builder:
                 class: AppBundle\Route\EntityRouterBuilder
                 arguments:
-                    - @sonata.admin.audit.manager
+                    - "@sonata.admin.audit.manager"
 
 Inherited classes
 -----------------
