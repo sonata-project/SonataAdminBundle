@@ -72,6 +72,10 @@ class ChoiceType extends AbstractType
             self::TYPE_EQUAL        => $this->translator->trans('label_type_equals', array(), 'SonataAdminBundle'),
         );
 
+        if (!method_exists('Symfony\Component\Form\FormTypeInterface', 'setDefaultOptions')) {
+            $choices = array_flip($choices);
+        }
+
         $operatorChoices = $options['operator_type'] !== 'hidden' ? array('choices' => $choices) : array();
 
         $builder
