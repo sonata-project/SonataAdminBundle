@@ -437,6 +437,10 @@ class AdminTest extends \PHPUnit_Framework_TestCase
                 'AppBundle\Entity\User',
                 '/app/user',
             ),
+            array(
+                'App\Entity\User',
+                '/app/user',
+            ),
         );
     }
 
@@ -449,13 +453,16 @@ class AdminTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($expected, $admin->getBaseRoutePattern());
     }
 
-    public function testGetBaseRoutePatternWithChildAdmin()
+    /**
+     * @dataProvider provideGetBaseRoutePattern
+     */
+    public function testGetBaseRoutePatternWithChildAdmin($objFqn, $expected)
     {
-        $postAdmin = new PostAdmin('sonata.post.admin.post', 'Application\Sonata\NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
+        $postAdmin = new PostAdmin('sonata.post.admin.post', $objFqn, 'SonataNewsBundle:PostAdmin');
         $commentAdmin = new CommentAdmin('sonata.post.admin.comment', 'Application\Sonata\NewsBundle\Entity\Comment', 'SonataNewsBundle:CommentAdmin');
         $commentAdmin->setParent($postAdmin);
 
-        $this->assertSame('/sonata/news/post/{id}/comment', $commentAdmin->getBaseRoutePattern());
+        $this->assertSame($expected.'/{id}/comment', $commentAdmin->getBaseRoutePattern());
     }
 
     /**
@@ -463,7 +470,7 @@ class AdminTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetBaseRoutePatternWithUnreconizedClassname()
     {
-        $admin = new PostAdmin('sonata.post.admin.post', 'News\Entity\Post', 'SonataNewsBundle:PostAdmin');
+        $admin = new PostAdmin('sonata.post.admin.post', 'News\Thing\Post', 'SonataNewsBundle:PostAdmin');
         $admin->getBaseRoutePattern();
     }
 
@@ -526,6 +533,10 @@ class AdminTest extends \PHPUnit_Framework_TestCase
                 'AppBundle\Entity\User',
                 'admin_app_user',
             ),
+            array(
+                'App\Entity\User',
+                'admin_app_user',
+            ),
         );
     }
 
@@ -539,7 +550,10 @@ class AdminTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($expected, $admin->getBaseRouteName());
     }
 
-    public function testGetBaseRouteNameWithChildAdmin()
+    /**
+     * @dataProvider provideGetBaseRouteName
+     */
+    public function testGetBaseRouteNameWithChildAdmin($objFqn, $expected)
     {
         $routeGenerator = new DefaultRouteGenerator(
             $this->getMock('Symfony\Component\Routing\RouterInterface'),
@@ -547,7 +561,7 @@ class AdminTest extends \PHPUnit_Framework_TestCase
         );
 
         $pathInfo = new \Sonata\AdminBundle\Route\PathInfoBuilder($this->getMock('Sonata\AdminBundle\Model\AuditManagerInterface'));
-        $postAdmin = new PostAdmin('sonata.post.admin.post', 'Application\Sonata\NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
+        $postAdmin = new PostAdmin('sonata.post.admin.post', $objFqn, 'SonataNewsBundle:PostAdmin');
         $postAdmin->setRouteBuilder($pathInfo);
         $postAdmin->setRouteGenerator($routeGenerator);
         $postAdmin->initialize();
@@ -559,7 +573,7 @@ class AdminTest extends \PHPUnit_Framework_TestCase
 
         $postAdmin->addChild($commentAdmin);
 
-        $this->assertSame('admin_sonata_news_post_comment', $commentAdmin->getBaseRouteName());
+        $this->assertSame($expected.'_comment', $commentAdmin->getBaseRouteName());
 
         $this->assertTrue($postAdmin->hasRoute('show'));
         $this->assertTrue($postAdmin->hasRoute('sonata.post.admin.post.show'));
@@ -574,7 +588,7 @@ class AdminTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetBaseRouteNameWithUnreconizedClassname()
     {
-        $admin = new PostAdmin('sonata.post.admin.post', 'News\Entity\Post', 'SonataNewsBundle:PostAdmin');
+        $admin = new PostAdmin('sonata.post.admin.post', 'News\Thing\Post', 'SonataNewsBundle:PostAdmin');
         $admin->getBaseRouteName();
     }
 
