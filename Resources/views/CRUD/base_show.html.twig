@@ -29,7 +29,7 @@ file that was distributed with this source code.
                         <div class="box-header with-border">
                             <h4 class="box-title">
                                 {% block show_title %}
-                                    {{ admin.trans(name) }}
+                                    {{ admin.trans(name, {}, view_group.translation_domain) }}
                                 {% endblock %}
                             </h4>
                         </div>
