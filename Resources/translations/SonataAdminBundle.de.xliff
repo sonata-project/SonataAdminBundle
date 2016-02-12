@@ -462,6 +462,10 @@
                 <source>no_subclass_available</source>
                 <target>Keine Typen verfügbar.</target>
             </trans-unit>
+            <trans-unit id="label_unknown_user">
+                <source>label_unknown_user</source>
+                <target>unbekannt</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
