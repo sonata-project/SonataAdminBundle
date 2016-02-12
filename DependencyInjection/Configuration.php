@@ -31,6 +31,58 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
+        $defaultStylesheets = array(
+            'bundles/sonatacore/vendor/bootstrap/dist/css/bootstrap.min.css',
+            'bundles/sonatacore/vendor/components-font-awesome/css/font-awesome.min.css',
+            'bundles/sonatacore/vendor/ionicons/css/ionicons.min.css',
+            'bundles/sonataadmin/vendor/admin-lte/dist/css/AdminLTE.min.css',
+            'bundles/sonataadmin/vendor/admin-lte/dist/css/skins/skin-black.min.css',
+            'bundles/sonataadmin/vendor/iCheck/skins/square/blue.css',
+
+            'bundles/sonatacore/vendor/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css',
+
+            'bundles/sonataadmin/vendor/jqueryui/themes/base/jquery-ui.css',
+
+            'bundles/sonatacore/vendor/select2/select2.css',
+            'bundles/sonatacore/vendor/select2-bootstrap-css/select2-bootstrap.min.css',
+
+            'bundles/sonataadmin/vendor/x-editable/dist/bootstrap3-editable/css/bootstrap-editable.css',
+
+            'bundles/sonataadmin/css/styles.css',
+            'bundles/sonataadmin/css/layout.css',
+            'bundles/sonataadmin/css/tree.css',
+        );
+
+        $defaultJavascripts = array(
+            'bundles/sonatacore/vendor/jquery/dist/jquery.min.js',
+            'bundles/sonataadmin/vendor/jquery.scrollTo/jquery.scrollTo.min.js',
+
+            'bundles/sonatacore/vendor/moment/min/moment.min.js',
+
+            'bundles/sonataadmin/vendor/jqueryui/ui/minified/jquery-ui.min.js',
+            'bundles/sonataadmin/vendor/jqueryui/ui/minified/i18n/jquery-ui-i18n.min.js',
+
+            'bundles/sonatacore/vendor/bootstrap/dist/js/bootstrap.min.js',
+
+            'bundles/sonatacore/vendor/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
+
+            'bundles/sonataadmin/vendor/jquery-form/jquery.form.js',
+            'bundles/sonataadmin/jquery/jquery.confirmExit.js',
+
+            'bundles/sonataadmin/vendor/x-editable/dist/bootstrap3-editable/js/bootstrap-editable.min.js',
+
+            'bundles/sonatacore/vendor/select2/select2.min.js',
+
+            'bundles/sonataadmin/vendor/admin-lte/dist/js/app.min.js',
+            'bundles/sonataadmin/vendor/iCheck/icheck.min.js',
+            'bundles/sonataadmin/vendor/slimScroll/jquery.slimscroll.min.js',
+            'bundles/sonataadmin/vendor/waypoints/lib/jquery.waypoints.min.js',
+            'bundles/sonataadmin/vendor/waypoints/lib/shortcuts/sticky.min.js',
+
+            'bundles/sonataadmin/Admin.js',
+            'bundles/sonataadmin/treeview.js',
+        );
+
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('sonata_admin', 'array');
 
@@ -278,60 +330,52 @@ class Configuration implements ConfigurationInterface
                     ->addDefaultsIfNotSet()
                     ->children()
                         ->arrayNode('stylesheets')
-                            ->defaultValue(array(
-                                'bundles/sonatacore/vendor/bootstrap/dist/css/bootstrap.min.css',
-                                'bundles/sonatacore/vendor/components-font-awesome/css/font-awesome.min.css',
-                                'bundles/sonatacore/vendor/ionicons/css/ionicons.min.css',
-                                'bundles/sonataadmin/vendor/admin-lte/dist/css/AdminLTE.min.css',
-                                'bundles/sonataadmin/vendor/admin-lte/dist/css/skins/skin-black.min.css',
-                                'bundles/sonataadmin/vendor/iCheck/skins/square/blue.css',
-
-                                'bundles/sonatacore/vendor/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css',
-
-                                'bundles/sonataadmin/vendor/jqueryui/themes/base/jquery-ui.css',
-
-                                'bundles/sonatacore/vendor/select2/select2.css',
-                                'bundles/sonatacore/vendor/select2-bootstrap-css/select2-bootstrap.min.css',
-
-                                'bundles/sonataadmin/vendor/x-editable/dist/bootstrap3-editable/css/bootstrap-editable.css',
-
-                                'bundles/sonataadmin/css/styles.css',
-                                'bundles/sonataadmin/css/layout.css',
-                                'bundles/sonataadmin/css/tree.css',
-                            ))
+                            ->defaultValue($defaultStylesheets)
                             ->prototype('scalar')->end()
+                            ->beforeNormalization()
+                                ->always()
+                                ->then(function ($v) use ($defaultStylesheets) {
+                                    if (!isset($v['append']) & !isset($v['remove'])) {
+                                        return $v;
+                                    }
+
+                                    $stylesheets = $defaultStylesheets;
+
+                                    if (isset($v['append'])) {
+                                        $stylesheets = array_merge($stylesheets, $v['append']);
+                                    }
+
+                                    if (isset($v['remove'])) {
+                                        $stylesheets = array_diff($stylesheets, $v['remove']);
+                                    }
+
+                                    return $stylesheets;
+                                })
+                            ->end()
                         ->end()
                         ->arrayNode('javascripts')
-                            ->defaultValue(array(
-                                'bundles/sonatacore/vendor/jquery/dist/jquery.min.js',
-                                'bundles/sonataadmin/vendor/jquery.scrollTo/jquery.scrollTo.min.js',
-
-                                'bundles/sonatacore/vendor/moment/min/moment.min.js',
-
-                                'bundles/sonataadmin/vendor/jqueryui/ui/minified/jquery-ui.min.js',
-                                'bundles/sonataadmin/vendor/jqueryui/ui/minified/i18n/jquery-ui-i18n.min.js',
-
-                                'bundles/sonatacore/vendor/bootstrap/dist/js/bootstrap.min.js',
-
-                                'bundles/sonatacore/vendor/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
-
-                                'bundles/sonataadmin/vendor/jquery-form/jquery.form.js',
-                                'bundles/sonataadmin/jquery/jquery.confirmExit.js',
-
-                                'bundles/sonataadmin/vendor/x-editable/dist/bootstrap3-editable/js/bootstrap-editable.min.js',
-
-                                'bundles/sonatacore/vendor/select2/select2.min.js',
-
-                                'bundles/sonataadmin/vendor/admin-lte/dist/js/app.min.js',
-                                'bundles/sonataadmin/vendor/iCheck/icheck.min.js',
-                                'bundles/sonataadmin/vendor/slimScroll/jquery.slimscroll.min.js',
-                                'bundles/sonataadmin/vendor/waypoints/lib/jquery.waypoints.min.js',
-                                'bundles/sonataadmin/vendor/waypoints/lib/shortcuts/sticky.min.js',
-
-                                'bundles/sonataadmin/Admin.js',
-                                'bundles/sonataadmin/treeview.js',
-                            ))
+                            ->defaultValue($defaultJavascripts)
                             ->prototype('scalar')->end()
+                            ->beforeNormalization()
+                                ->always()
+                                ->then(function ($v) use ($defaultJavascripts) {
+                                    if (!isset($v['append']) & !isset($v['remove'])) {
+                                        return $v;
+                                    }
+
+                                    $javascripts = $defaultJavascripts;
+
+                                    if (isset($v['append'])) {
+                                        $javascripts = array_merge($javascripts, $v['append']);
+                                    }
+
+                                    if (isset($v['remove'])) {
+                                        $javascripts = array_diff($javascripts, $v['remove']);
+                                    }
+
+                                    return $javascripts;
+                                })
+                            ->end()
                         ->end()
                     ->end()
                 ->end()
