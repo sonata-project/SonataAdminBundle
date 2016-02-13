@@ -342,7 +342,6 @@ class CRUDController extends Controller
                 }
 
                 $this->addFlashDeleteActionSuccess($objectName);
-
             } catch (ModelManagerException $e) {
                 $this->handleModelManagerException($e);
 
