@@ -38,7 +38,7 @@ The ``Admin`` list block
 ------------------------
 
 The ``Admin`` list is a ``Block`` that fetches information from the ``Admin`` service's
-``Pool`` and prints it in the nicely formated list you have on your default Dashboard.
+``Pool`` and prints it in the nicely formatted list you have on your default Dashboard.
 The ``Admin`` list is defined by the ``sonata.admin.block.admin_list`` service, which is
 implemented by the ``Block\AdminListBlockService`` class. It is then rendered using the
 ``SonataAdminBundle:Block:block_admin_list.html.twig`` template file.
@@ -53,7 +53,7 @@ As you probably noticed by now, the ``Admin`` list groups ``Admin`` mappings tog
 There are several ways in which you can configure these groups.
 
 By default the admins are ordered the way you defined them. With the setting ``sort_admins``
-groups and admins will be orderd by their respective label with a fallback to the admin id.
+groups and admins will be ordered by their respective label with a fallback to the admin id.
 
 Using the ``Admin`` service declaration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -339,7 +339,7 @@ The layout is as follows:
 
     BOTTOM BOTTOM BOTTOM
 
-On ``top`` and ``bottom`` positions, you can also specify an optionnal ``class`` option to set the width of the block.
+On ``top`` and ``bottom`` positions, you can also specify an optional ``class`` option to set the width of the block.
 
 .. configuration-block::
 

@@ -97,7 +97,7 @@ This Extension for example adds a note field to some entities which use a custom
     class NoteAdminExtension extends AdminExtension
     {
 
-        // add this field to the datagrid everytime its available
+        // add this field to the datagrid every time its available
         /**
          * @param DatagridMapper $datagridMapper
          */
