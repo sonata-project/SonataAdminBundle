@@ -113,7 +113,7 @@ to implement a ``clone`` action.
             return new RedirectResponse($this->admin->generateUrl('list'));
 
             // if you have a filtererd list and want to keep your filters after the redirect
-            // return new RedirectResponse($this->admin->generateUrl('list'), $this->admin->getFilterParameters());
+            // return new RedirectResponse($this->admin->generateUrl('list', $this->admin->getFilterParameters()));
         }
     }
 
@@ -134,7 +134,7 @@ and use `sonata_admin_content` block.
 
 .. code-block:: html+jinja
 
-    {% extends 'SonataAdminBundle::standard_layout.html.twig' %} 
+    {% extends 'SonataAdminBundle::standard_layout.html.twig' %}
 
     {% block sonata_admin_content %}
         Your content here
