@@ -178,7 +178,7 @@ also define the sort by field to be position:
 
 .. note::
 
-   To avoid pitfalls, do not rename ``$last_postion`` to ``$lastPostion``, as ``$last_postion`` is used directly in the template.
+   To avoid pitfalls, do not rename ``$last_position`` to ``$lastPosition``, as ``$last_position`` is used directly in the template.
 
 And add the following call the ``admin.yml``
 

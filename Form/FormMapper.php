@@ -178,7 +178,7 @@ class FormMapper extends BaseGroupedMapper
      *
      * @param string $group          The group to delete
      * @param string $tab            The tab the group belongs to, defaults to 'default'
-     * @param bool   $deleteEmptyTab Wether or not the Tab should be deleted, when the deleted group leaves the tab emmpty after deletion
+     * @param bool   $deleteEmptyTab Whether or not the Tab should be deleted, when the deleted group leaves the tab empty after deletion
      */
     public function removeGroup($group, $tab = 'default', $deleteEmptyTab = false)
     {

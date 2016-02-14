@@ -510,7 +510,7 @@ To do:
 Visual configuration
 --------------------
 
-You have the possibility to configure your List View to customize the render without overring to whole template.
+You have the possibility to configure your List View to customize the render without overriding to whole template.
 You can :
 
 - `header_style`: Customize the style of header (width, color, background, align...)
