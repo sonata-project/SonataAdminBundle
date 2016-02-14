@@ -2,7 +2,7 @@
     {% if has_tab %}<div class="row">{% endif %}
     {% for code in groups %}
         {% set form_group = admin.formgroups[code] %}
-        <div class="{{ form_group.class }} {{ no_padding ? "nopadding" }}"> {# default class 'col-md-12' removed because it do not work with tabs#}
+        <div class="{{ form_group.class }} {{ no_padding ? "nopadding" }}">
             <div class="{{ form_group.box_class }}">
                 <div class="box-header">
                     <h4 class="box-title">
