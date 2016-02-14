@@ -59,7 +59,7 @@ to enable ``allowClear`` or ``data-sonata-select2-allow-clear = "false"`` to dis
 
     public function configureFormFields(FormMapper $formMapper)
     {
-        $formMaper
+        $formMapper
             ->add('category', 'sonata_type_model', array(
                 'attr' => array(
                     'data-sonata-select2-allow-clear' => 'false'

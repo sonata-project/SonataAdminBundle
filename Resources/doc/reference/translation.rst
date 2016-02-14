@@ -13,7 +13,7 @@ other Admin classes.
 
 You have two options to configure the catalogue for the Admin class:
 
-* overrride the ``$translationDomain`` property
+* override the ``$translationDomain`` property
 
   .. code-block:: php
 
