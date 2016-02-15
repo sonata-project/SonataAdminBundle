@@ -50,6 +50,11 @@ class ShowMapperTest extends \PHPUnit_Framework_TestCase
      */
     private $groups;
 
+    /**
+     * @var array
+     */
+    private $listShowFields;
+
     public function setUp()
     {
         $this->showBuilder = $this->getMock('Sonata\AdminBundle\Builder\ShowBuilderInterface');
@@ -65,9 +70,11 @@ class ShowMapperTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(array()));
 
         $this->groups = array();
+        $this->listShowFields = array();
 
         // php 5.3 BC
         $groups = &$this->groups;
+        $listShowFields = &$this->listShowFields;
 
         $this->admin->expects($this->any())
             ->method('getShowGroups')
@@ -113,6 +120,18 @@ class ShowMapperTest extends \PHPUnit_Framework_TestCase
         $this->admin->expects($this->any())
             ->method('getLabelTranslatorStrategy')
             ->will($this->returnValue($labelTranslatorStrategy));
+
+        $this->admin->expects($this->any())
+            ->method('hasShowFieldDescription')
+            ->will($this->returnCallback(function ($name) use (&$listShowFields) {
+                if (isset($listShowFields[$name])) {
+                    return true;
+                } else {
+                    $listShowFields[$name] = true;
+
+                    return false;
+                }
+            }));
 
         $this->showBuilder->expects($this->any())
             ->method('addField')
@@ -317,6 +336,22 @@ class ShowMapperTest extends \PHPUnit_Framework_TestCase
         }
 
         $this->fail('Failed asserting that exception of type "\RuntimeException" is thrown.');
+    }
+
+    public function testAddDuplicateFieldNameException()
+    {
+        $name = 'name';
+
+        try {
+            $this->showMapper->add($name);
+            $this->showMapper->add($name);
+        } catch (\RuntimeException $e) {
+            $this->assertContains(sprintf('Duplicate field name "%s" in show mapper. Names should be unique.', $name), $e->getMessage());
+
+            return;
+        }
+
+        $this->fail('Failed asserting that duplicate field name exception of type "\RuntimeException" is thrown.');
     }
 
     public function testReorder()
