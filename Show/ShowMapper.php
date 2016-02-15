@@ -60,12 +60,16 @@ class ShowMapper extends BaseGroupedMapper
         if ($name instanceof FieldDescriptionInterface) {
             $fieldDescription = $name;
             $fieldDescription->mergeOptions($fieldDescriptionOptions);
-        } elseif (is_string($name) && !$this->admin->hasShowFieldDescription($name)) {
-            $fieldDescription = $this->admin->getModelManager()->getNewFieldDescriptionInstance(
-                $this->admin->getClass(),
-                $name,
-                $fieldDescriptionOptions
-            );
+        } elseif (is_string($name)) {
+            if (!$this->admin->hasShowFieldDescription($name)) {
+                $fieldDescription = $this->admin->getModelManager()->getNewFieldDescriptionInstance(
+                    $this->admin->getClass(),
+                    $name,
+                    $fieldDescriptionOptions
+                );
+            } else {
+                throw new \RuntimeException(sprintf('Duplicate field name "%s" in show mapper. Names should be unique.', $name));
+            }
         } else {
             throw new \RuntimeException('invalid state');
         }
