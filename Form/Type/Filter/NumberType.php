@@ -72,15 +72,15 @@ class NumberType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $choices = array(
-            self::TYPE_EQUAL         => $this->translator->trans('label_type_equal', array(), 'SonataAdminBundle'),
-            self::TYPE_GREATER_EQUAL => $this->translator->trans('label_type_greater_equal', array(), 'SonataAdminBundle'),
-            self::TYPE_GREATER_THAN  => $this->translator->trans('label_type_greater_than', array(), 'SonataAdminBundle'),
-            self::TYPE_LESS_EQUAL    => $this->translator->trans('label_type_less_equal', array(), 'SonataAdminBundle'),
-            self::TYPE_LESS_THAN     => $this->translator->trans('label_type_less_than', array(), 'SonataAdminBundle'),
+            $this->translator->trans('label_type_equal', array(), 'SonataAdminBundle')         => self::TYPE_EQUAL,
+            $this->translator->trans('label_type_greater_equal', array(), 'SonataAdminBundle') => self::TYPE_GREATER_EQUAL,
+            $this->translator->trans('label_type_greater_than', array(), 'SonataAdminBundle')  => self::TYPE_GREATER_THAN,
+            $this->translator->trans('label_type_less_equal', array(), 'SonataAdminBundle')    => self::TYPE_LESS_EQUAL,
+            $this->translator->trans('label_type_less_than', array(), 'SonataAdminBundle')     => self::TYPE_LESS_THAN,
         );
 
         $builder
-            ->add('type', 'choice', array('choices' => $choices, 'required' => false))
+            ->add('type', 'choice', array('choices' => $choices, 'choices_as_values' => true, 'required' => false))
             ->add('value', $options['field_type'], array_merge(array('required' => false), $options['field_options']))
         ;
     }
