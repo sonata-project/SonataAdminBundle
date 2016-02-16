@@ -84,6 +84,10 @@ class DateTimeType extends AbstractType
             self::TYPE_NOT_NULL      => $this->translator->trans('label_date_type_not_null', array(), 'SonataAdminBundle'),
         );
 
+        if (!method_exists('Symfony\Component\Form\FormTypeInterface', 'setDefaultOptions')) {
+            $choices = array_flip($choices);
+        }
+
         $builder
             ->add('type', 'choice', array('choices' => $choices, 'required' => false))
             ->add('value', $options['field_type'], array_merge(array('required' => false), $options['field_options']))

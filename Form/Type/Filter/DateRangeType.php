@@ -68,6 +68,10 @@ class DateRangeType extends AbstractType
             self::TYPE_NOT_BETWEEN => $this->translator->trans('label_date_type_not_between', array(), 'SonataAdminBundle'),
         );
 
+        if (!method_exists('Symfony\Component\Form\FormTypeInterface', 'setDefaultOptions')) {
+            $choices = array_flip($choices);
+        }
+
         $builder
             ->add('type', 'choice', array('choices' => $choices, 'required' => false))
             ->add('value', $options['field_type'], $options['field_options'])
