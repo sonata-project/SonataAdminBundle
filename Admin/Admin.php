@@ -2971,7 +2971,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     {
         $list = array();
 
-        if (in_array($action, array('show', 'edit', 'delete', 'list', 'batch'))) {
+        if (in_array($action, array('tree', 'show', 'edit', 'delete', 'list', 'batch'))) {
             $list['create'] = array(
                 'template' => 'SonataAdminBundle:Button:create_button.html.twig',
             );
