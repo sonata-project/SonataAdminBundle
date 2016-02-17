@@ -9,23 +9,6 @@
 
  */
 
-jQuery(document).ready(function() {
-    jQuery('html').removeClass('no-js');
-    if (window.SONATA_CONFIG && window.SONATA_CONFIG.CONFIRM_EXIT) {
-        jQuery('.sonata-ba-form form').each(function () { jQuery(this).confirmExit(); });
-    }
-
-    Admin.setup_per_page_switcher(document);
-    Admin.setup_collection_buttons(document);
-    Admin.shared_setup(document);
-});
-
-jQuery(document).on('sonata-admin-append-form-element', function(e) {
-    Admin.setup_select2(e.target);
-    Admin.setup_icheck(e.target);
-    Admin.setup_collection_counter(e.target);
-});
-
 var Admin = {
 
     collectionCounters: [],
@@ -644,3 +627,20 @@ var Admin = {
         };
     }
 };
+
+jQuery(document).ready(function() {
+    jQuery('html').removeClass('no-js');
+    if (window.SONATA_CONFIG && window.SONATA_CONFIG.CONFIRM_EXIT) {
+        jQuery('.sonata-ba-form form').each(function () { jQuery(this).confirmExit(); });
+    }
+
+    Admin.setup_per_page_switcher(document);
+    Admin.setup_collection_buttons(document);
+    Admin.shared_setup(document);
+});
+
+jQuery(document).on('sonata-admin-append-form-element', function(e) {
+    Admin.setup_select2(e.target);
+    Admin.setup_icheck(e.target);
+    Admin.setup_collection_counter(e.target);
+});
