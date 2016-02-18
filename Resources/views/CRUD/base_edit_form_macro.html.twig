@@ -10,7 +10,7 @@
                     </h4>
                 </div>
                 {#<div class="box{% if loop.first %} in{% endif %}" id="{{ admin.uniqid }}_{{ loop.index }}">#}
-                <div class="box-body">
+                <div class="box-body table-responsive">
                     <div class="sonata-ba-collapsed-fields">
                         {% if form_group.description != false %}
                             <p>{{ form_group.description|raw }}</p>
