@@ -108,7 +108,10 @@ as choice.
             ))
         ;
     }
+.. note::
 
+    'property' field is not supported from Symfony2.7. You should use `choice_label`_ instead.
+    
 As each blog post will only have one category, it renders as a select list:
 
 .. image:: ../images/getting_started_entity_type.png
@@ -270,3 +273,4 @@ and datagrid actions.
 .. _`Symfony Form component`: http://symfony.com/doc/current/book/forms.html
 .. _`field type reference`: http://symfony.com/doc/current/reference/forms/types.html
 .. _`entity field type`: http://symfony.com/doc/current/reference/forms/types/entity.html
+.. _`choice_label`: http://symfony.com/doc/current/reference/forms/types/entity.html#choice-label
