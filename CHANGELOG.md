@@ -4,6 +4,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- Add the ``configureActionButtons`` method to the AdminInterface
+- Add the ``configureActionButtons`` method to the AdminExtensionInterface
 
 ## [3.0.0](https://github.com/olivierlacan/keep-a-changelog/compare/2.3.10...3.0.0) - 2016-05-08
 ### Added

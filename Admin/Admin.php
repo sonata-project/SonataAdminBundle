@@ -3081,10 +3081,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         $list = $this->configureActionButtons($action, $object);
 
         foreach ($this->getExtensions() as $extension) {
-            // TODO: remove method check in next major release
-            if (method_exists($extension, 'configureActionButtons')) {
-                $list = $extension->configureActionButtons($this, $list, $action, $object);
-            }
+            $list = $extension->configureActionButtons($this, $list, $action, $object);
         }
 
         return $list;
