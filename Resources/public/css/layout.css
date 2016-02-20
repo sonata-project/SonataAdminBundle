@@ -35,11 +35,11 @@ div.connection .alert {
 
 div.connection form {
     padding-top: 15px;
-    margin-bottom: 0px;
+    margin-bottom: 0;
 }
 
 div.connection form .form-actions {
-    margin-bottom: 0px;
+    margin-bottom: 0;
 }
 
 div.connection .form-actions {
@@ -52,7 +52,7 @@ div.connection div input.big {
 }
 
 .sonata-bc.sonata-ba-no-side-menu div.container-fluid > div.content {
-    margin-left: 0px;
+    margin-left: 0;
 }
 
 
@@ -189,7 +189,7 @@ em.sonata-ba-field-help {
 }
 
 fieldset legend {
-    padding-left: 0px;
+    padding-left: 0;
 }
 
 select.sonata-medium, textarea.sonata-medium, input.sonata-medium {
@@ -308,7 +308,7 @@ legend.sonata-ba-fieldset-collapsed-description + .sonata-ba-collapsed-fields {
 }
 
 .pagination {
-    margin: 0px;
+    margin: 0;
 }
 
 .field-short-description {
