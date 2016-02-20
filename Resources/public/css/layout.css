@@ -392,4 +392,8 @@ body.fixed .content-header .navbar.stuck {
         overflow: visible !important;
         height: auto !important;
     }
+    .navbar-custom-menu > .navbar-nav > li >.dropdown-menu {
+        width: auto !important;
+        min-width: 230px; /* width of the left sidebar */
+    }
 }
