@@ -36,7 +36,7 @@
             </trans-unit>
             <trans-unit id="btn_advanced_filters">
                 <source>btn_advanced_filters</source>
-                <target>btn_advanced_filters</target>
+                <target>Zaawansowane filtry</target>
             </trans-unit>
             <trans-unit id="btn_update">
                 <source>btn_update</source>
