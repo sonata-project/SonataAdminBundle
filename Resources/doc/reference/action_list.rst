@@ -46,8 +46,6 @@ You can customize the columns displayed on the list through the ``configureListF
 
     <?php
 
-    // Example taken from Sonata E-Commerce Product Admin
-
     public function configureListFields(ListMapper $list)
     {
         $list
@@ -63,9 +61,8 @@ You can customize the columns displayed on the list through the ``configureListF
             // We can add options to the field depending on the type
             ->add('price', 'currency', array('currency' => $this->currencyDetector->getCurrency()->getLabel()))
 
-            // Here we specify which method is used to render the label
-            ->add('productCategories', null, array('associated_tostring' => 'getCategory'))
-            ->add('productCollections', null, array('associated_tostring' => 'getCollection'))
+            // Here we specify which property is used to render the label of each entity in the list
+            ->add('productCategories', null, array('associated_property' => 'name'))
 
             // You may also use dotted-notation to access specific properties of a relation to the entity
             ->add('image.name')
@@ -94,8 +91,10 @@ Options
 - ``template`` (o): the template used to render the field
 - ``label`` (o): the name used for the column's title
 - ``link_parameters`` (o): add link parameter to the related Admin class when the ``Admin::generateUrl`` is called
-- ``code`` (o): the method name to retrieve the related value
-- ``associated_tostring`` (o): (deprecated, use associated_property option) the method to retrieve the "string" representation of the collection element.
+- ``code`` (o): the method name to retrieve the related value (for example,
+  if you have an `array` type field, you would like to show info prettier
+  than `[0] => 'Value'`; useful when simple getter is not enough).
+  Notice: works with string-like types (string, text, html)
 - ``associated_property`` (o): property path to retrieve the "string" representation of the collection element.
 - ``identifier`` (o): if set to true a link appears on the value to edit the element
 
@@ -138,6 +137,10 @@ Available types and associated options
 | percent   |                | Renders value as a percentage.                                        |
 +-----------+----------------+-----------------------------------------------------------------------+
 | string    |                | Renders a simple string.                                              |
++-----------+----------------+-----------------------------------------------------------------------+
+| text      |                | See 'string'                                                          |
++-----------+----------------+-----------------------------------------------------------------------+
+| html      |                | Renders string as html                                                |
 +-----------+----------------+-----------------------------------------------------------------------+
 | time      |                | Renders a datetime's time with format ``H:i:s``.                      |
 +-----------+----------------+-----------------------------------------------------------------------+
