@@ -440,7 +440,7 @@
             </trans-unit>
             <trans-unit id="noscript_warning">
                 <source>noscript_warning</source>
-                <target>Certaines fonctionnalités ne fonctionnent sans JavaScript; merci de l'activer sur votre navigateur.</target>
+                <target>Certaines fonctionnalités ne fonctionnent pas sans JavaScript. Merci de l'activer sur votre navigateur.</target>
             </trans-unit>
             <trans-unit id="message_form_group_empty">
                 <source>message_form_group_empty</source>
