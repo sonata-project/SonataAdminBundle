@@ -53,6 +53,15 @@ that you did not make in your PR, you're doing it wrong.
 
 ## Squash your commits
 
+Sometimes, maintainers will ask you to squash your commits, for example if you
+make a mistake in a first commit, and fix the mistake a second commit. No one
+needs to know about the mistakes you made.
+Please note however, that you do not have to always squash your commits, for
+instance if you fix cs on a file before working it, the cs fix should stay in a
+separate commit, so that the diff of the other commit stays easy to read.
+If you have many commits in your PR that you do not wish to squash together,
+consider making several PRs. That said, here is how to squash commits:
+
 If you have 3 commits. So start with:
 
 ```bash
