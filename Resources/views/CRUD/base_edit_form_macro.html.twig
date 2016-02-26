@@ -18,7 +18,7 @@
 
                         {% for field_name in form_group.fields %}
                             {% if admin.formfielddescriptions[field_name] is defined %}
-                                {% if form[field_name].vars.sonata_admin.field_description.type == 'sonata_type_admin' %}
+                                {% if form[field_name].vars.sonata_admin.field_description and form[field_name].vars.sonata_admin.field_description.type == 'sonata_type_admin' %}
                                     {% set inline_admin = form[field_name].vars.sonata_admin.field_description.associationAdmin %}
                                     {% set inline_form = form[field_name].vars.form %}
                                     {% set inline_groups = [] %}
