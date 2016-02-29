@@ -1,8 +1,10 @@
-{% macro render_groups(admin, form, groups, has_tab, no_padding = false) %}
-    {% if has_tab %}<div class="row">{% endif %}
+{% macro render_groups(admin, form, groups, has_tab) %}
+    <div class="row">
+
     {% for code in groups %}
         {% set form_group = admin.formgroups[code] %}
-        <div class="{{ form_group.class }} {{ no_padding ? "nopadding" }}">
+
+        <div class="{{ form_group.class | default('col-md-12') }}">
             <div class="{{ form_group.box_class }}">
                 <div class="box-header">
                     <h4 class="box-title">
@@ -18,17 +20,7 @@
 
                         {% for field_name in form_group.fields %}
                             {% if admin.formfielddescriptions[field_name] is defined %}
-                                {% if form[field_name].vars.sonata_admin.field_description.type == 'sonata_type_admin' %}
-                                    {% set inline_admin = form[field_name].vars.sonata_admin.field_description.associationAdmin %}
-                                    {% set inline_form = form[field_name].vars.form %}
-                                    {% set inline_groups = [] %}
-                                    {% for formtab in inline_admin.formtabs %}
-                                    {% set inline_groups = inline_groups|merge(formtab.groups) %}
-                                    {% endfor %}
-                                    {{ _self.render_groups(inline_admin, inline_form, inline_groups, true, true) }}
-                                {% else %}
-                                    {{ form_row(form[field_name])}}
-                                {% endif %}
+                                {{ form_row(form[field_name])}}
                             {% endif %}
                         {% else %}
                             <em>{{ 'message_form_group_empty'|trans({}, 'SonataAdminBundle') }}</em>
