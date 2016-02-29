@@ -46,8 +46,6 @@ You can customize the columns displayed on the list through the ``configureListF
 
     <?php
 
-    // Example taken from Sonata E-Commerce Product Admin
-
     public function configureListFields(ListMapper $list)
     {
         $list
