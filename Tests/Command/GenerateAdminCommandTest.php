@@ -72,6 +72,10 @@ class GenerateAdminCommandTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo('AcmeDemoBundle'))
             ->will($this->returnValue($bundle));
 
+        $kernel->expects($this->any())
+            ->method('getContainer')
+            ->will($this->returnValue($this->container));
+
         $this->application = new Application($kernel);
         $this->command = new GenerateAdminCommand();
 
