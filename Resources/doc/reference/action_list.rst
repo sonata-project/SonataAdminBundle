@@ -41,7 +41,7 @@ Customizing the fields displayed on the list page
 -------------------------------------------------
 
 You can customize the columns displayed on the list through the ``configureListFields`` method.
-Here is an example from Sonata E-Commerce Product Admin:
+Here is an example:
 
 .. code-block:: php
 
@@ -71,13 +71,10 @@ Here is an example from Sonata E-Commerce Product Admin:
                 'currency' => $this->currencyDetector->getCurrency()->getLabel()
             ))
 
-            // here we specify which method is used to render the label
+            // Here we specify which property is used to render the label of each entity in the list
             ->add('productCategories', null, array(
-                'associated_tostring' => 'getCategory'
-            ))
-            ->add('productCollections', null, array(
-                'associated_tostring' => 'getCollection'
-            ))
+                'associated_property' => 'name')
+            )
 
             // you may also use dotted-notation to access
             // specific properties of a relation to the entity
@@ -108,7 +105,6 @@ Options
 - ``label`` (o): the name used for the column's title
 - ``link_parameters`` (o): add link parameter to the related Admin class when the ``Admin::generateUrl`` is called
 - ``code`` (o): the method name to retrieve the related value
-- ``associated_tostring`` (o): (deprecated, use associated_property option) the method to retrieve the "string" representation of the collection element.
 - ``associated_property`` (o): property path to retrieve the "string" representation of the collection element, or a closure with the element as argument and return a string.
 - ``identifier`` (o): if set to true a link appears on the value to edit the element
 
