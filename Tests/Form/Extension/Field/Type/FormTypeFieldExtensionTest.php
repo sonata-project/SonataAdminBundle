@@ -23,7 +23,12 @@ class FormTypeFieldExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $extension = new FormTypeFieldExtension(array(), array());
 
-        $this->assertSame('form', $extension->getExtendedType());
+        $this->assertSame(
+            method_exists('Symfony\Component\Form\FormTypeInterface', 'setDefaultOptions') ?
+            'form' :
+            'Symfony\Component\Form\Extension\Core\Type\FormType',
+            $extension->getExtendedType()
+        );
     }
 
     public function testDefaultOptions()
