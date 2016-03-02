@@ -72,7 +72,7 @@ Here is an example from Sonata E-Commerce Product Admin:
             ))
 
             // here we specify which method is used to render the label
-            // (associated_tostring deprecated, use associated_property option)
+            // (associated_tostring is deprecated, use associated_property option)
             ->add('productCategories', null, array(
                 'associated_tostring' => 'getCategory'
             ))
