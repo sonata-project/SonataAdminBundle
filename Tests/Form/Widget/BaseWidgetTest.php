@@ -36,11 +36,33 @@ abstract class BaseWidgetTest extends TypeTestCase
     protected $extension;
 
     /**
+     * @var \Twig_Environment
+     */
+    protected $environment;
+
+    /**
      * Current template type, form or filter.
      *
      * @var string
      */
     protected $type = null;
+
+    /**
+     * @var array
+     */
+    protected $sonataAdmin = array(
+        'name'              => null,
+        'admin'             => null,
+        'value'             => null,
+        'edit'              => 'standard',
+        'inline'            => 'natural',
+        'field_description' => null,
+        'block_name'        => false,
+        'options'           => array(
+            'form_type'  => 'vertical',
+            'use_icheck' => true,
+        ),
+    );
 
     /**
      * {@inheritdoc}
@@ -81,29 +103,18 @@ abstract class BaseWidgetTest extends TypeTestCase
 
         $loader = new StubFilesystemLoader($twigPaths);
 
-        $environment = new \Twig_Environment($loader, array('strict_variables' => true));
-        $environment->addGlobal('sonata_admin', $this->getSonataAdmin());
-        $environment->addExtension(new TranslationExtension(new StubTranslator()));
+        $this->environment = new \Twig_Environment($loader, array('strict_variables' => true));
+        $this->environment->addGlobal('sonata_admin', $this->getSonataAdmin());
+        $this->environment->addExtension(new TranslationExtension(new StubTranslator()));
 
-        $environment->addExtension($this->extension);
+        $this->environment->addExtension($this->extension);
 
-        $this->extension->initRuntime($environment);
+        $this->extension->initRuntime($this->environment);
     }
 
     protected function getSonataAdmin()
     {
-        return array(
-            'name'              => null,
-            'admin'             => null,
-            'value'             => null,
-            'edit'              => 'standard',
-            'inline'            => 'natural',
-            'field_description' => null,
-            'block_name'        => false,
-            'options'           => array(
-                'form_type' => 'vertical',
-            ),
-        );
+        return $this->sonataAdmin;
     }
 
     /**

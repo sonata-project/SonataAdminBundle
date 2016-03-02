@@ -78,6 +78,28 @@ file that was distributed with this source code.
     {% endspaceless %}
 {% endblock percent_widget %}
 
+{% block checkbox_widget -%}
+    {% set parent_label_class = parent_label_class|default('') -%}
+    {% if 'checkbox-inline' in parent_label_class or sonata_admin.options['use_icheck'] %}
+        {{- form_label(form, null, { widget: parent() }) -}}
+    {% else -%}
+        <div class="checkbox">
+            {{- form_label(form, null, { widget: parent() }) -}}
+        </div>
+    {%- endif %}
+{%- endblock checkbox_widget %}
+
+{% block radio_widget -%}
+    {%- set parent_label_class = parent_label_class|default('') -%}
+    {% if 'radio-inline' in parent_label_class or sonata_admin.options['use_icheck'] %}
+        {{- form_label(form, null, { widget: parent() }) -}}
+    {% else -%}
+        <div class="radio">
+            {{- form_label(form, null, { widget: parent() }) -}}
+        </div>
+    {%- endif %}
+{%- endblock radio_widget %}
+
 {# Labels #}
 {% block form_label %}
 {% spaceless %}
@@ -108,29 +130,46 @@ file that was distributed with this source code.
             {%- endif -%}
         {% endif %}
 
-        {% if in_list_checkbox is defined and in_list_checkbox and widget is defined %}
-            <label{% for attrname,attrvalue in attr %} {{attrname}}="{{attrvalue}}"{% endfor %}>
-                {{ widget|raw }}
-                <span>
-                    {% if not sonata_admin.admin %}
-                        {{- label|trans({}, translation_domain) -}}
-                    {% else %}
-                        {{- label|trans({}, sonata_admin.field_description.translationDomain) -}}
-                    {% endif%}
-                </span>
-            </label>
-        {% else %}
-            <label{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>
-                {% if not sonata_admin.admin%}
-                    {{- label|trans({}, translation_domain) -}}
-                {% else %}
-                    {{ sonata_admin.admin.trans(label, {}, sonata_admin.field_description.translationDomain) }}
-                {% endif %}
-            </label>
-        {% endif %}
+        <label{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>
+            {% if not sonata_admin.admin %}
+                {{- label|trans({}, translation_domain) -}}
+            {% else %}
+                {{ sonata_admin.admin.trans(label, {}, sonata_admin.field_description.translationDomain) }}
+            {% endif %}
+        </label>
     {% endif %}
 {% endspaceless %}
 {% endblock form_label %}
+
+{% block checkbox_label -%}
+    {{- block('checkbox_radio_label') -}}
+{%- endblock checkbox_label %}
+
+{% block radio_label -%}
+    {{- block('checkbox_radio_label') -}}
+{%- endblock radio_label %}
+
+{% block checkbox_radio_label %}
+    {% if sonata_admin.admin %}
+        {% set translation_domain = sonata_admin.field_description.translationDomain %}
+    {% endif %}
+    {# Do not display the label if widget is not defined in order to prevent double label rendering #}
+    {% if widget is defined %}
+        {% if required %}
+            {% set label_attr = label_attr|merge({class: (label_attr.class|default('') ~ ' required')|trim}) %}
+        {% endif %}
+        {% if parent_label_class is defined %}
+            {% set label_attr = label_attr|merge({class: (label_attr.class|default('') ~ ' ' ~ parent_label_class)|trim}) %}
+        {% endif %}
+        {% if label is not same as(false) and label is empty %}
+            {% set label = name|humanize %}
+        {% endif %}
+        <label{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>
+            {{- widget|raw -}}
+            {{- label is not same as(false) ? label|trans({}, translation_domain) -}}
+        </label>
+    {% endif %}
+{% endblock checkbox_radio_label %}
 
 {% block choice_widget_expanded %}
 {% spaceless %}
@@ -138,10 +177,7 @@ file that was distributed with this source code.
     <ul {{ block('widget_container_attributes') }}>
     {% for child in form %}
         <li>
-            {% set form_widget_content %}
-                {{ form_widget(child, {'horizontal': false, 'horizontal_input_wrapper_class': ''}) }} {# {'horizontal': false, 'horizontal_input_wrapper_class': ''} needed to avoid MopaBootstrapBundle messing with the DOM #}
-            {% endset %}
-            {{ form_label(child, child.vars.label|default(null), { 'in_list_checkbox' : true, 'widget' : form_widget_content } ) }}
+            {{ form_widget(child, {'horizontal': false, 'horizontal_input_wrapper_class': ''}) }} {# {'horizontal': false, 'horizontal_input_wrapper_class': ''} needed to avoid MopaBootstrapBundle messing with the DOM #}
         </li>
     {% endfor %}
     </ul>
@@ -257,6 +293,7 @@ file that was distributed with this source code.
 {% endblock datetime_widget %}
 
 {% block form_row %}
+    {% set show_label = show_label|default(true) %}
     <div class="form-group{% if errors|length > 0 %} has-error{% endif %}" id="sonata-ba-field-container-{{ id }}">
         {% if sonata_admin.field_description.options is defined %}
             {% set label = sonata_admin.field_description.options.name|default(label)  %}
@@ -268,7 +305,7 @@ file that was distributed with this source code.
             {% set div_class = div_class ~ ' sonata-collection-row-without-label' %}
         {% endif %}
 
-        {% if sonata_admin.options['form_type'] == 'horizontal' %}
+        {% if sonata_admin is defined and sonata_admin.options['form_type'] == 'horizontal' %}
             {% if label is same as(false) %}
                 {% if 'collection' in form.parent.vars.block_prefixes %}
                     {% set div_class = div_class ~ ' col-sm-12' %}
@@ -280,7 +317,9 @@ file that was distributed with this source code.
             {% endif %}
         {% endif %}
 
-        {{ form_label(form, label|default(null)) }}
+        {% if show_label %}
+            {{ form_label(form, label|default(null)) }}
+        {% endif %}
 
         {% if sonata_admin is defined and sonata_admin_enabled %}
             {% set div_class = div_class ~ ' sonata-ba-field-' ~ sonata_admin.edit ~ '-' ~ sonata_admin.inline %}
@@ -305,6 +344,16 @@ file that was distributed with this source code.
         </div>
     </div>
 {% endblock form_row %}
+
+{% block checkbox_row -%}
+    {% set show_label = false %}
+    {{ block('form_row') }}
+{%- endblock checkbox_row %}
+
+{% block radio_row -%}
+    {% set show_label = false %}
+    {{ block('form_row') }}
+{%- endblock radio_row %}
 
 {% block sonata_type_native_collection_widget_row %}
 {% spaceless %}
