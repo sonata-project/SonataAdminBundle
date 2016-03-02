@@ -100,9 +100,10 @@ abstract class BaseWidgetTest extends TypeTestCase
             'inline'            => 'natural',
             'field_description' => null,
             'block_name'        => false,
-            'options'           => array(),
+            'options'           => array(
+                'form_type' => 'vertical',
+            ),
         );
-
     }
 
     /**
