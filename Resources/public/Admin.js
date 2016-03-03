@@ -26,7 +26,6 @@ var Admin = {
         Admin.setup_select2(subject);
         Admin.setup_icheck(subject);
         Admin.setup_xeditable(subject);
-        Admin.add_pretty_errors(subject);
         Admin.setup_form_tabs_for_errors(subject);
         Admin.setup_inline_form_errors(subject);
         Admin.setup_tree_view(subject);
@@ -139,47 +138,11 @@ var Admin = {
     },
 
     /**
-     * display related errors messages
-     *
-     * @param subject
+     * @deprecated in version 2.4
      */
-    add_pretty_errors: function(subject) {
-        Admin.log('[core|add_pretty_errors] configure pretty errors on', subject);
-        jQuery('div.sonata-ba-field-error', subject).each(function(index, element) {
-            var input = jQuery(':input', element);
-
-            if (!input.length) {
-                return;
-            }
-
-            var message = jQuery('div.sonata-ba-field-error-messages', element).html();
-            jQuery('div.sonata-ba-field-error-messages', element).remove();
-
-            if (!message || message.length == 0) {
-                return;
-            }
-
-            var target = input,
-                fieldShortDescription = input.closest('.field-container').find('.field-short-description'),
-                select2 = input.closest('.select2-container')
-                ;
-
-            if (fieldShortDescription.length) {
-                target = fieldShortDescription;
-            } else if (select2.length) {
-                target= select2;
-            }
-
-            target.popover({
-                content: message,
-                trigger: 'hover',
-                html: true,
-                placement: 'top',
-                template: '<div class="popover"><div class="arrow"></div><div class="popover-inner"><div class="popover-content alert-error"><p></p></div></div></div>'
-            });
-
-        });
-    },
+    add_pretty_errors: function() {
+        console.warn('Admin.add_pretty_errors() was deprecated in version 2.4');
+    }
 
     stopEvent: function(event) {
         // https://github.com/sonata-project/SonataAdminBundle/issues/151
