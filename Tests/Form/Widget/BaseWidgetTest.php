@@ -82,11 +82,28 @@ abstract class BaseWidgetTest extends TypeTestCase
         $loader = new StubFilesystemLoader($twigPaths);
 
         $environment = new \Twig_Environment($loader, array('strict_variables' => true));
+        $environment->addGlobal('sonata_admin', $this->getSonataAdmin());
         $environment->addExtension(new TranslationExtension(new StubTranslator()));
 
         $environment->addExtension($this->extension);
 
         $this->extension->initRuntime($environment);
+    }
+
+    protected function getSonataAdmin()
+    {
+        return array(
+            'name'              => null,
+            'admin'             => null,
+            'value'             => null,
+            'edit'              => 'standard',
+            'inline'            => 'natural',
+            'field_description' => null,
+            'block_name'        => false,
+            'options'           => array(
+                'form_type' => 'vertical',
+            ),
+        );
     }
 
     /**
@@ -109,21 +126,6 @@ abstract class BaseWidgetTest extends TypeTestCase
      */
     protected function renderWidget(FormView $view, array $vars = array())
     {
-        $sonataAdmin = $sonataAdmin = array(
-            'name'              => null,
-            'admin'             => null,
-            'value'             => null,
-            'edit'              => 'standard',
-            'inline'            => 'natural',
-            'field_description' => null,
-            'block_name'        => false,
-            'options'           => array(),
-        );
-
-        $vars = array_merge(array(
-            'sonata_admin' => $sonataAdmin,
-        ), $vars);
-
         return (string) $this->extension->renderer->searchAndRenderBlock($view, 'widget', $vars);
     }
 

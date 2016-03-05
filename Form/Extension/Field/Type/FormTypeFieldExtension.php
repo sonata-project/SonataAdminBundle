@@ -205,7 +205,10 @@ class FormTypeFieldExtension extends AbstractTypeExtension
      */
     public function getExtendedType()
     {
-        return 'form';
+        return
+            method_exists('Symfony\Component\Form\FormTypeInterface', 'setDefaultOptions') ?
+            'form' :
+            'Symfony\Component\Form\Extension\Core\Type\FormType';
     }
 
     /**

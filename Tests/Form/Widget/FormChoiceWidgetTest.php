@@ -22,6 +22,30 @@ class FormChoiceWidgetTest extends BaseWidgetTest
         parent::setUp();
     }
 
+    public function testLabelRendering()
+    {
+        $choices = array('some', 'choices');
+        if (!method_exists('Symfony\Component\Form\FormTypeInterface', 'setDefaultOptions')) {
+            $choices = array_flip($choices);
+        }
+
+        $choice = $this->factory->create(
+            $this->getChoiceClass(),
+            null,
+            $this->getDefaultOption() + array(
+                'multiple' => true,
+                'expanded' => true,
+            ) + compact('choices')
+        );
+
+        $html = $this->renderWidget($choice->createView());
+
+        $this->assertContains(
+            '<span>[trans]some[/trans]</span>',
+            $this->cleanHtmlWhitespace($html)
+        );
+    }
+
     public function testDefaultValueRendering()
     {
         $choice = $this->factory->create(
