@@ -14,17 +14,16 @@ namespace Sonata\AdminBundle\Tests\Form\Extension;
 use Sonata\AdminBundle\Form\Extension\ChoiceTypeExtension;
 use Sonata\CoreBundle\Form\Extension\DependencyInjectionExtension;
 use Symfony\Component\Form\Forms;
-use Symfony\Component\HttpKernel\Kernel;
 
 class ChoiceTypeExtensionTest extends \PHPUnit_Framework_TestCase
 {
     protected function setup()
     {
-        if (version_compare(Kernel::VERSION, '2.8', '<')) {
+        if (method_exists('Symfony\Component\Form\FormTypeInterface', 'setDefaultOptions')) {
             $this->factory = Forms::createFormFactoryBuilder()
                   ->addTypeExtension(new ChoiceTypeExtension())
                   ->getFormFactory();
-        } else { // SF2.7+
+        } else {
             $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
             $container->expects($this->any())->method('has')->will($this->returnValue(true));
             $container->expects($this->any())->method('get')

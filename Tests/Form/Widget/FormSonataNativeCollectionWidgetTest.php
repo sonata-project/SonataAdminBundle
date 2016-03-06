@@ -14,7 +14,6 @@ namespace Sonata\AdminBundle\Tests\Form\Widget;
 use Sonata\AdminBundle\Form\Extension\Field\Type\FormTypeFieldExtension;
 use Sonata\AdminBundle\Form\Type\CollectionType;
 use Symfony\Component\Form\Tests\Fixtures\TestExtension;
-use Symfony\Component\HttpKernel\Kernel;
 
 class FormSonataNativeCollectionWidgetTest extends BaseWidgetTest
 {
@@ -57,7 +56,7 @@ class FormSonataNativeCollectionWidgetTest extends BaseWidgetTest
         $extensions = parent::getExtensions();
         $guesser = $this->getMock('Symfony\Component\Form\FormTypeGuesserInterface');
         $extension = new TestExtension($guesser);
-        if (!version_compare(Kernel::VERSION, '2.8.0', '>=')) {
+        if (method_exists('Symfony\Component\Form\FormTypeInterface', 'setDefaultOptions')) {
             $extension->addType(new CollectionType());
         }
 
@@ -71,10 +70,9 @@ class FormSonataNativeCollectionWidgetTest extends BaseWidgetTest
 
     protected function getChoiceClass()
     {
-        if (version_compare(Kernel::VERSION, '2.8.0', '>=')) {
-            return 'Sonata\AdminBundle\Form\Type\CollectionType';
-        } else {
-            return 'sonata_type_native_collection';
-        }
+        return
+            method_exists('Symfony\Component\Form\FormTypeInterface', 'setDefaultOptions') ?
+            'sonata_type_native_collection' :
+            'Sonata\AdminBundle\Form\Type\CollectionType';
     }
 }

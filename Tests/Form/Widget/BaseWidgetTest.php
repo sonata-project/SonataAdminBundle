@@ -19,7 +19,6 @@ use Symfony\Bridge\Twig\Tests\Extension\Fixtures\StubFilesystemLoader;
 use Symfony\Bundle\FrameworkBundle\Tests\Templating\Helper\Fixtures\StubTranslator;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\Test\TypeTestCase;
-use Symfony\Component\HttpKernel\Kernel;
 
 /**
  * Class BaseWidgetTest.
@@ -79,11 +78,10 @@ abstract class BaseWidgetTest extends TypeTestCase
             $this->type.'_admin_fields.html.twig',
         ));
 
-        if (version_compare(Kernel::VERSION, '2.8.0', '>=')) {
-            $csrfManagerClass = 'Symfony\Component\Security\Csrf\CsrfTokenManagerInterface';
-        } else {
-            $csrfManagerClass = 'Symfony\Component\Form\Extension\Csrf\CsrfProvider\CsrfProviderInterface';
-        }
+        $csrfManagerClass =
+            interface_exists('Symfony\Component\Security\Csrf\CsrfTokenManagerInterface') ?
+            'Symfony\Component\Security\Csrf\CsrfTokenManagerInterface' :
+            'Symfony\Component\Form\Extension\Csrf\CsrfProvider\CsrfProviderInterface';
 
         $renderer = new TwigRenderer($rendererEngine, $this->getMock($csrfManagerClass));
 

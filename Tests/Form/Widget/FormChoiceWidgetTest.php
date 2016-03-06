@@ -11,8 +11,6 @@
 
 namespace Sonata\AdminBundle\Tests\Form\Widget;
 
-use Symfony\Component\HttpKernel\Kernel;
-
 class FormChoiceWidgetTest extends BaseWidgetTest
 {
     protected $type = 'form';
@@ -129,11 +127,10 @@ class FormChoiceWidgetTest extends BaseWidgetTest
 
     protected function getChoiceClass()
     {
-        if (version_compare(Kernel::VERSION, '2.8.0', '>=')) {
-            return 'Symfony\Component\Form\Extension\Core\Type\ChoiceType';
-        } else {
-            return 'choice';
-        }
+        return
+            method_exists('Symfony\Component\Form\FormTypeInterface', 'setDefaultOptions') ?
+            'choice' :
+            'Symfony\Component\Form\Extension\Core\Type\ChoiceType';
     }
 
     /**
@@ -142,7 +139,10 @@ class FormChoiceWidgetTest extends BaseWidgetTest
      */
     protected function getDefaultOption()
     {
-        if (version_compare(Kernel::VERSION, '2.6.0', '>=')) {
+        if (method_exists(
+            'Symfony\Component\Form\Tests\AbstractLayoutTest',
+            'testSingleChoiceNonRequiredWithPlaceholder'
+        )) {
             return array(
                 'placeholder' => 'Choose an option',
             );
