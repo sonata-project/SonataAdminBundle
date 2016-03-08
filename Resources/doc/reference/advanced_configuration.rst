@@ -231,7 +231,7 @@ Tab Menu
 ACL
 ^^^
 
-Though the route linked my a menu may be protected the Tab Menu will not automatically check the ACl for you.
+Though the route linked by a menu may be protected the Tab Menu will not automatically check the ACl for you.
 The link will still appear unless you manually check it using the `isGranted` method:
 
 .. code-block:: php
