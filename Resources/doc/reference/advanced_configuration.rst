@@ -282,6 +282,29 @@ If you want to use the Tab Menu in a different way, you can replace the Menu Tem
             templates:
                 tab_menu_template:  AppBundle:Admin:own_tab_menu_template.html.twig
 
+Translations
+^^^^^^^^^^^^
+
+The translation parameters and domain can be customised by using the
+``translation_domain`` and ``translation_parameters`` keys of the extra array
+of data associated with the item, respectively.
+
+.. code-block:: php
+
+    <?php
+    $menuItem->setExtras(array(
+        'translation_parameters' => array('myparam' => 'myvalue'),
+        'translation_domain' => 'My domain',
+    ));
+
+You can also set the translation domain on the menu root, and children will
+inherit it :
+
+.. code-block:: php
+
+    <?php
+    $menu->setExtra('translation_domain', 'My domain');
+
 Disable content stretching
 --------------------------
 
