@@ -41,7 +41,35 @@ class FormChoiceWidgetTest extends BaseWidgetTest
         $html = $this->renderWidget($choice->createView());
 
         $this->assertContains(
-            '<span>[trans]some[/trans]</span>',
+            '<li><label><input type="checkbox" id="choice_0" name="choice[]" value="0" />[trans]some[/trans]</label></li>',
+            $this->cleanHtmlWhitespace($html)
+        );
+    }
+
+    public function testBootstrapLabelRendering()
+    {
+        $sonataAdmin = $this->getSonataAdmin();
+        $sonataAdmin['options']['use_icheck'] = false;
+        $this->environment->addGlobal('sonata_admin', $sonataAdmin);
+
+        $choices = array('some', 'choices');
+        if (!method_exists('Symfony\Component\Form\FormTypeInterface', 'setDefaultOptions')) {
+            $choices = array_flip($choices);
+        }
+
+        $choice = $this->factory->create(
+            $this->getChoiceClass(),
+            null,
+            $this->getDefaultOption() + array(
+                'multiple' => true,
+                'expanded' => true,
+            ) + compact('choices')
+        );
+
+        $html = $this->renderWidget($choice->createView());
+
+        $this->assertContains(
+            '<li><div class="checkbox"><label><input type="checkbox" id="choice_0" name="choice[]" value="0" />[trans]some[/trans]</label></div></li>',
             $this->cleanHtmlWhitespace($html)
         );
     }
