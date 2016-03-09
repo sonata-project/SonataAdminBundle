@@ -23,7 +23,7 @@ use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 class Pool
 {
     /**
-     * @var ContainerInterface|null
+     * @var ContainerInterface
      */
     protected $container;
 
