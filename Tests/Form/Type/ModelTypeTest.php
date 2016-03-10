@@ -14,20 +14,29 @@ namespace Sonata\AdminBundle\Tests\Form\Type;
 use Sonata\AdminBundle\Form\Type\ModelType;
 use Symfony\Component\Form\Test\TypeTestCase;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 
 class ModelTypeTest extends TypeTestCase
 {
+    protected $type;
+
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->type = new ModelType(PropertyAccess::createPropertyAccessor());
+    }
+
     public function testGetDefaultOptions()
     {
-        $type = new ModelType();
         $modelManager = $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface');
 
         $optionResolver = new OptionsResolver();
 
         if (!method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')) {
-            $type->setDefaultOptions($optionResolver);
+            $this->type->setDefaultOptions($optionResolver);
         } else {
-            $type->configureOptions($optionResolver);
+            $this->type->configureOptions($optionResolver);
         }
 
         $options = $optionResolver->resolve(array('model_manager' => $modelManager, 'choices' => array()));
@@ -58,14 +67,13 @@ class ModelTypeTest extends TypeTestCase
      */
     public function testCompoundOption($expectedCompound, $multiple, $expanded)
     {
-        $type = new ModelType();
         $modelManager = $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface');
         $optionResolver = new OptionsResolver();
 
         if (!method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')) {
-            $type->setDefaultOptions($optionResolver);
+            $this->type->setDefaultOptions($optionResolver);
         } else {
-            $type->configureOptions($optionResolver);
+            $this->type->configureOptions($optionResolver);
         }
 
         $options = $optionResolver->resolve(array('model_manager' => $modelManager, 'choices' => array(), 'multiple' => $multiple, 'expanded' => $expanded));

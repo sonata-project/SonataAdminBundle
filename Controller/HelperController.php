@@ -20,7 +20,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -269,12 +268,11 @@ class HelperController
             return new JsonResponse(array('status' => 'KO', 'message' => 'The field cannot be edit, editable option must be set to true'));
         }
 
-        $propertyAccessor = PropertyAccess::createPropertyAccessor();
-        $propertyPath     = new PropertyPath($field);
+        $propertyPath = new PropertyPath($field);
 
         // If property path has more than 1 element, take the last object in order to validate it
         if ($propertyPath->getLength() > 1) {
-            $object = $propertyAccessor->getValue($object, $propertyPath->getParent());
+            $object = $this->pool->getPropertyAccessor()->getValue($object, $propertyPath->getParent());
 
             $elements     = $propertyPath->getElements();
             $field        = end($elements);
@@ -286,7 +284,7 @@ class HelperController
             $value = new \DateTime($value);
         }
 
-        $propertyAccessor->setValue($object, $propertyPath, '' !== $value ? $value : null);
+        $this->pool->getPropertyAccessor()->setValue($object, $propertyPath, '' !== $value ? $value : null);
 
         $violations = $this->validator->validate($object);
 

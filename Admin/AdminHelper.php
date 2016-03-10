@@ -19,7 +19,7 @@ use Sonata\AdminBundle\Util\FormViewIterator;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
-use Symfony\Component\PropertyAccess\PropertyAccessor;
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 /**
  * Class AdminHelper.
@@ -118,7 +118,7 @@ class AdminHelper
         //Child form not found (probably nested one)
         //if childFormBuilder was not found resulted in fatal error getName() method call on non object
         if (!$childFormBuilder) {
-            $propertyAccessor = new PropertyAccessor();
+            $propertyAccessor = $this->pool->getPropertyAccessor();
             $entity = $admin->getSubject();
 
             $path = $this->getElementAccessPath($elementId, $entity);
@@ -249,7 +249,7 @@ class AdminHelper
     }
 
     /**
-     * get access path to element which works with PropertyAccessor.
+     * Get access path to element which works with PropertyAccessor.
      *
      * @param string $elementId expects string in format used in form id field. (uniqueIdentifier_model_sub_model or uniqueIdentifier_model_1_sub_model etc.)
      * @param mixed  $entity
@@ -260,7 +260,7 @@ class AdminHelper
      */
     public function getElementAccessPath($elementId, $entity)
     {
-        $propertyAccessor = new PropertyAccessor();
+        $propertyAccessor = $this->pool->getPropertyAccessor();
 
         $idWithoutUniqueIdentifier = implode('_', explode('_', substr($elementId, strpos($elementId, '_') + 1)));
 
@@ -312,29 +312,29 @@ class AdminHelper
     }
 
     /**
-     * check if given path exists in $entity.
+     * Check if given path exists in $entity.
      *
-     * @param PropertyAccessor $propertyAccessor
-     * @param mixed            $entity
-     * @param string           $path
+     * @param PropertyAccessorInterface $propertyAccessor
+     * @param mixed                     $entity
+     * @param string                    $path
      *
      * @return bool
      *
      * @throws \RuntimeException
      */
-    private function pathExists(PropertyAccessor $propertyAccessor, $entity, $path)
+    private function pathExists(PropertyAccessorInterface $propertyAccessor, $entity, $path)
     {
-        //sf2 <= 2.3 did not have isReadable method for PropertyAccessor
+        // Symfony <= 2.3 did not have isReadable method for PropertyAccessor
         if (method_exists($propertyAccessor, 'isReadable')) {
             return $propertyAccessor->isReadable($entity, $path);
-        } else {
-            try {
-                $propertyAccessor->getValue($entity, $path);
+        }
 
-                return true;
-            } catch (NoSuchPropertyException $e) {
-                return false;
-            }
+        try {
+            $propertyAccessor->getValue($entity, $path);
+
+            return true;
+        } catch (NoSuchPropertyException $e) {
+            return false;
         }
     }
 }

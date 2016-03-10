@@ -12,6 +12,8 @@
 namespace Sonata\AdminBundle\Admin;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 /**
  * Class Pool.
@@ -21,9 +23,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class Pool
 {
     /**
-     * @var ContainerInterface|null
+     * @var ContainerInterface
      */
-    protected $container = null;
+    protected $container;
 
     /**
      * @var string[]
@@ -66,17 +68,23 @@ class Pool
     protected $options;
 
     /**
+     * @var PropertyAccessorInterface
+     */
+    protected $propertyAccessor;
+
+    /**
      * @param ContainerInterface $container
      * @param string             $title
      * @param string             $logoTitle
      * @param array              $options
      */
-    public function __construct(ContainerInterface $container, $title, $logoTitle, $options = array())
+    public function __construct(ContainerInterface $container, $title, $logoTitle, $options = array(), PropertyAccessorInterface $propertyAccessor = null)
     {
         $this->container = $container;
         $this->title     = $title;
         $this->titleLogo = $logoTitle;
         $this->options   = $options;
+        $this->propertyAccessor = $propertyAccessor;
     }
 
     /**
@@ -325,8 +333,6 @@ class Pool
         if (isset($this->templates[$name])) {
             return $this->templates[$name];
         }
-
-        return;
     }
 
     /**
@@ -358,5 +364,14 @@ class Pool
         }
 
         return $default;
+    }
+
+    public function getPropertyAccessor()
+    {
+        if (null === $this->propertyAccessor) {
+            $this->propertyAccessor = PropertyAccess::createPropertyAccessor();
+        }
+
+        return $this->propertyAccessor;
     }
 }
