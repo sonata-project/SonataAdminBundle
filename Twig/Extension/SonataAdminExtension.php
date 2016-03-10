@@ -17,7 +17,6 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Exception\NoValueException;
-use Symfony\Component\PropertyAccess\PropertyAccess;
 
 /**
  * Class SonataAdminExtension.
@@ -275,7 +274,13 @@ class SonataAdminExtension extends \Twig_Extension implements \Twig_Extension_In
 
         if (null === $propertyPath) {
             // For BC kept associated_tostring option behavior
-            $method = $fieldDescription->getOption('associated_tostring', '__toString');
+            $method = $fieldDescription->getOption('associated_tostring');
+
+            if ($method) {
+                @trigger_error('Option "associated_tostring" is deprecated since version 2.3. Use "associated_property" instead.', E_USER_DEPRECATED);
+            } else {
+                $method = '__toString';
+            }
 
             if (!method_exists($element, $method)) {
                 throw new \RuntimeException(sprintf(
@@ -293,7 +298,7 @@ class SonataAdminExtension extends \Twig_Extension implements \Twig_Extension_In
             return $propertyPath($element);
         }
 
-        return PropertyAccess::createPropertyAccessor()->getValue($element, $propertyPath);
+        return $this->pool->getPropertyAccessor()->getValue($element, $propertyPath);
     }
 
     /**

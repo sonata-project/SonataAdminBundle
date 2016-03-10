@@ -24,6 +24,7 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 /**
  * Class ModelType
@@ -33,6 +34,16 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  */
 class ModelType extends AbstractType
 {
+    /**
+     * @var PropertyAccessorInterface
+     */
+    protected $propertyAccessor;
+
+    public function __construct(PropertyAccessorInterface $propertyAccessor)
+    {
+        $this->propertyAccessor = $propertyAccessor;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -82,8 +93,9 @@ class ModelType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $options = array();
+        $propertyAccessor = $this->propertyAccessor;
         if (interface_exists('Symfony\Component\Form\ChoiceList\Loader\ChoiceLoaderInterface')) { // SF2.7+
-            $options['choice_loader'] = function (Options $options, $previousValue) {
+            $options['choice_loader'] = function (Options $options, $previousValue) use ($propertyAccessor) {
                 if ($previousValue && count($choices = $previousValue->getChoices())) {
                     return $choices;
                 }
@@ -93,12 +105,13 @@ class ModelType extends AbstractType
                     $options['class'],
                     $options['property'],
                     $options['query'],
-                    $options['choices']
+                    $options['choices'],
+                    $propertyAccessor
                 );
 
             };
         } else {
-            $options['choice_list'] = function (Options $options, $previousValue) {
+            $options['choice_list'] = function (Options $options, $previousValue) use ($propertyAccessor) {
                 if ($previousValue && count($choices = $previousValue->getChoices())) {
                     return $choices;
                 }
@@ -108,7 +121,8 @@ class ModelType extends AbstractType
                     $options['class'],
                     $options['property'],
                     $options['query'],
-                    $options['choices']
+                    $options['choices'],
+                    $propertyAccessor
                 );
             };
         }

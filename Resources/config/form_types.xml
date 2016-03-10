@@ -12,6 +12,7 @@
         </service>
 
         <service id="sonata.admin.form.type.model_choice" class="Sonata\AdminBundle\Form\Type\ModelType">
+            <argument type="service" id="property_accessor" />
             <tag name="form.type" alias="sonata_type_model" />
         </service>
 
