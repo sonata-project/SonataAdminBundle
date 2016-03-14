@@ -19,11 +19,7 @@ class ChoiceTypeExtensionTest extends \PHPUnit_Framework_TestCase
 {
     protected function setup()
     {
-        if (method_exists('Symfony\Component\Form\FormTypeInterface', 'setDefaultOptions')) {
-            $this->factory = Forms::createFormFactoryBuilder()
-                  ->addTypeExtension(new ChoiceTypeExtension())
-                  ->getFormFactory();
-        } else {
+        if (method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')) {
             $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
             $container->expects($this->any())->method('has')->will($this->returnValue(true));
             $container->expects($this->any())->method('get')
@@ -42,11 +38,22 @@ class ChoiceTypeExtensionTest extends \PHPUnit_Framework_TestCase
                 ),
             );
 
-            $dependency = new DependencyInjectionExtension($container, $typeServiceIds, $typeExtensionServiceIds, $guesserServiceIds, $mappingTypes, $extensionTypes);
+            $dependency = new DependencyInjectionExtension(
+                $container,
+                $typeServiceIds,
+                $typeExtensionServiceIds,
+                $guesserServiceIds,
+                $mappingTypes,
+                $extensionTypes
+            );
 
             $this->factory = Forms::createFormFactoryBuilder()
                 ->addExtension($dependency)
                 ->getFormFactory();
+        } else {
+            $this->factory = Forms::createFormFactoryBuilder()
+                  ->addTypeExtension(new ChoiceTypeExtension())
+                  ->getFormFactory();
         }
     }
 
