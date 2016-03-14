@@ -52,8 +52,7 @@ class ModelsToArrayTransformer implements DataTransformerInterface
     public function __construct($choiceList, ModelManagerInterface $modelManager, $class)
     {
         if (!$choiceList instanceof ModelChoiceList && !$choiceList instanceof ModelChoiceLoader && !$choiceList instanceof LazyChoiceList) {
-            throw new RuntimeException('First param passed to ModelsToArrayTransformer should be instance of ModelChoiceList or LazyChoiceList');
-        }
+            throw new RuntimeException('First param passed to ModelsToArrayTransformer should be instance of ModelChoiceLoader or ModelChoiceList or LazyChoiceList');        }
 
         $this->choiceList   = $choiceList;
         $this->modelManager = $modelManager;
