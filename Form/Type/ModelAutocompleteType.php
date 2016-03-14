@@ -87,6 +87,8 @@ class ModelAutocompleteType extends AbstractType
         $view->vars['template'] = $options['template'];
 
         $view->vars['context'] = $options['context'];
+        
+        $view->vars['read_only'] = $options['read_only'];
     }
 
     /**
@@ -118,6 +120,7 @@ class ModelAutocompleteType extends AbstractType
             'multiple'                      => false,
             'width'                         => '',
             'context'                       => '',
+            'read_only'                     => false,
 
             'placeholder'                   => '',
             'minimum_input_length'          => 3, //minimum 3 chars should be typed to load ajax data
