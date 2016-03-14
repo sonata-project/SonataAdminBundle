@@ -12,6 +12,7 @@
 namespace Sonata\AdminBundle\Form\DataTransformer;
 
 use Sonata\AdminBundle\Form\ChoiceList\ModelChoiceList;
+use Sonata\AdminBundle\Form\ChoiceList\ModelChoiceLoader;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Symfony\Component\Form\ChoiceList\LazyChoiceList;
 use Symfony\Component\Form\DataTransformerInterface;
@@ -50,8 +51,12 @@ class ModelsToArrayTransformer implements DataTransformerInterface
      */
     public function __construct($choiceList, ModelManagerInterface $modelManager, $class)
     {
-        if (!$choiceList instanceof ModelChoiceList && !$choiceList instanceof LazyChoiceList) {
-            throw new RuntimeException('First param passed to ModelsToArrayTransformer should be instance of ModelChoiceList or LazyChoiceList');
+        if (!$choiceList instanceof ModelChoiceList
+            && !$choiceList instanceof ModelChoiceLoader
+            && !$choiceList instanceof LazyChoiceList) {
+            throw new RuntimeException("First param passed to ModelsToArrayTransformer should be instance of 
+                ModelChoiceLoader or ModelChoiceList or LazyChoiceList");
+
         }
 
         $this->choiceList   = $choiceList;
@@ -100,7 +105,9 @@ class ModelsToArrayTransformer implements DataTransformerInterface
         }
 
         if (count($notFound) > 0) {
-            throw new TransformationFailedException(sprintf('The entities with keys "%s" could not be found', implode('", "', $notFound)));
+            throw new TransformationFailedException(
+                sprintf('The entities with keys "%s" could not be found', implode('", "', $notFound))
+            );
         }
 
         return $collection;
@@ -116,7 +123,8 @@ class ModelsToArrayTransformer implements DataTransformerInterface
         try {
             return $this->modelManager->getIdentifierValues($entity);
         } catch (\Exception $e) {
-            throw new \InvalidArgumentException(sprintf('Unable to retrieve the identifier values for entity %s', ClassUtils::getClass($entity)), 0, $e);
+            throw new \InvalidArgumentException(
+                sprintf('Unable to retrieve the identifier values for entity %s', ClassUtils::getClass($entity)), 0, $e);
         }
     }
 }
