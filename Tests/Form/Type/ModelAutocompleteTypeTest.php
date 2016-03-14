@@ -46,6 +46,7 @@ class ModelAutocompleteTypeTest extends TypeTestCase
         $this->assertSame(false, $options['cache']);
         $this->assertSame('', $options['width']);
         $this->assertFalse($options['dropdown_auto_width']);
+        $this->assertFalse($options['read_only']);
 
         $this->assertSame('', $options['url']);
         $this->assertSame(array('name' => 'sonata_admin_retrieve_autocomplete_items', 'parameters' => array()), $options['route']);
