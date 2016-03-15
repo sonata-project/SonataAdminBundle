@@ -64,6 +64,7 @@ Advanced Options
    reference/extensions
    reference/events
    reference/advanced_configuration
+   reference/annotations
    reference/preview_mode
 
 Cookbook

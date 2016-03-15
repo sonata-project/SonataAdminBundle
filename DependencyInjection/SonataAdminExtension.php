@@ -13,6 +13,7 @@ namespace Sonata\AdminBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
@@ -23,7 +24,7 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
  * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  * @author  Michael Williams <michael.williams@funsational.com>
  */
-class SonataAdminExtension extends Extension
+class SonataAdminExtension extends Extension implements PrependExtensionInterface
 {
     /**
      * @param array            $configs   An array of configuration settings
@@ -205,6 +206,27 @@ BOOM
         $this->configureClassesToCompile();
 
         $this->replacePropertyAccessor($container);
+    }
+
+    /**
+     * Allow an extension to prepend the extension configurations.
+     *
+     * @param ContainerBuilder $container
+     */
+    public function prepend(ContainerBuilder $container)
+    {
+        $bundles = $container->getParameter('kernel.bundles');
+
+        if (!isset($bundles['JMSDiExtraBundle'])) {
+            $container->prependExtensionConfig(
+                'jms_di_extra',
+                array(
+                    'annotation_patterns' => array(
+                        'Sonata\AdminBundle\Annotation',
+                    ),
+                )
+            );
+        }
     }
 
     public function configureClassesToCompile()

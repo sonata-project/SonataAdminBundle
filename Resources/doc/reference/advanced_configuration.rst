@@ -120,6 +120,7 @@ application's config file:
                     model_manager:          # dependency name, from the table above
                         sonata.order.admin.order.manager  # customised service id
 
+
 Creating a custom RouteBuilder
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
