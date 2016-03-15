@@ -97,10 +97,10 @@ class ModelChoiceList extends SimpleChoiceList
      */
     public function __construct(ModelManagerInterface $modelManager, $class, $property = null, $query = null, $choices = array(), PropertyAccessorInterface $propertyAccessor = null)
     {
-        $this->modelManager   = $modelManager;
-        $this->class          = $class;
-        $this->query          = $query;
-        $this->identifier     = $this->modelManager->getIdentifierFieldNames($this->class);
+        $this->modelManager = $modelManager;
+        $this->class = $class;
+        $this->query = $query;
+        $this->identifier = $this->modelManager->getIdentifierFieldNames($this->class);
 
         // The property option defines, which property (path) is used for
         // displaying entities as strings

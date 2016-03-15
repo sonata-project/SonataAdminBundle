@@ -72,11 +72,11 @@ class NumberType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $choices = array(
-            self::TYPE_EQUAL         => $this->translator->trans('label_type_equal', array(), 'SonataAdminBundle'),
+            self::TYPE_EQUAL => $this->translator->trans('label_type_equal', array(), 'SonataAdminBundle'),
             self::TYPE_GREATER_EQUAL => $this->translator->trans('label_type_greater_equal', array(), 'SonataAdminBundle'),
-            self::TYPE_GREATER_THAN  => $this->translator->trans('label_type_greater_than', array(), 'SonataAdminBundle'),
-            self::TYPE_LESS_EQUAL    => $this->translator->trans('label_type_less_equal', array(), 'SonataAdminBundle'),
-            self::TYPE_LESS_THAN     => $this->translator->trans('label_type_less_than', array(), 'SonataAdminBundle'),
+            self::TYPE_GREATER_THAN => $this->translator->trans('label_type_greater_than', array(), 'SonataAdminBundle'),
+            self::TYPE_LESS_EQUAL => $this->translator->trans('label_type_less_equal', array(), 'SonataAdminBundle'),
+            self::TYPE_LESS_THAN => $this->translator->trans('label_type_less_than', array(), 'SonataAdminBundle'),
         );
 
         if (!method_exists('Symfony\Component\Form\FormTypeInterface', 'setDefaultOptions')) {
@@ -105,7 +105,7 @@ class NumberType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'field_type'    => 'number',
+            'field_type' => 'number',
             'field_options' => array(),
         ));
     }

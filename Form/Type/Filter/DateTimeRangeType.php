@@ -64,7 +64,7 @@ class DateTimeRangeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $choices = array(
-            self::TYPE_BETWEEN     => $this->translator->trans('label_date_type_between', array(), 'SonataAdminBundle'),
+            self::TYPE_BETWEEN => $this->translator->trans('label_date_type_between', array(), 'SonataAdminBundle'),
             self::TYPE_NOT_BETWEEN => $this->translator->trans('label_date_type_not_between', array(), 'SonataAdminBundle'),
         );
 
@@ -94,7 +94,7 @@ class DateTimeRangeType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'field_type'    => 'sonata_type_datetime_range',
+            'field_type' => 'sonata_type_datetime_range',
             'field_options' => array('date_format' => 'yyyy-MM-dd'),
         ));
     }
