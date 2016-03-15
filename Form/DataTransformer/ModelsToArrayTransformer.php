@@ -46,8 +46,9 @@ class ModelsToArrayTransformer implements DataTransformerInterface
      * ModelsToArrayTransformer constructor.
      *
      * @param ModelChoiceList|LazyChoiceList|ModelChoiceLoader $choiceList
-     * @param ModelManagerInterface $modelManager
+     * @param ModelManagerInterface                            $modelManager
      * @param $class
+     *
      * @throws RuntimeException
      */
     public function __construct($choiceList, ModelManagerInterface $modelManager, $class)
