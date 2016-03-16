@@ -169,8 +169,6 @@ class CRUDController extends Controller
      *
      * @param Request $request
      *
-     * @param Request $request
-     *
      * @return string The template name
      */
     protected function getBaseTemplate(Request $request = null)
@@ -217,8 +215,6 @@ class CRUDController extends Controller
 
     /**
      * List action.
-     *
-     * @param Request $request
      *
      * @param Request $request
      *
@@ -498,8 +494,6 @@ class CRUDController extends Controller
      *
      * @param Request $request
      *
-     * @param Request $request
-     *
      * @return Response|RedirectResponse
      *
      * @throws NotFoundHttpException If the HTTP method is not POST
@@ -614,8 +608,6 @@ class CRUDController extends Controller
      *
      * @param Request $request
      *
-     * @param Request $request
-     *
      * @return Response
      *
      * @throws AccessDeniedException If access is not granted
@@ -654,8 +646,8 @@ class CRUDController extends Controller
 
                     if ($this->isXmlHttpRequest($request)) {
                         return $this->renderJson(array(
-                            'result' => 'ok',
-                            'objectId' => $this->admin->getNormalizedIdentifier($object)
+                            'result'   => 'ok',
+                            'objectId' => $this->admin->getNormalizedIdentifier($object),
                         ), 200, array(), $request);
                     }
 
@@ -713,8 +705,6 @@ class CRUDController extends Controller
      *
      * @param Request $request
      *
-     * @param Request $request
-     *
      * @return bool
      */
     protected function isPreviewRequested(Request $request = null)
@@ -726,8 +716,6 @@ class CRUDController extends Controller
 
     /**
      * Returns true if the preview has been approved.
-     *
-     * @param Request $request
      *
      * @param Request $request
      *
@@ -762,8 +750,6 @@ class CRUDController extends Controller
 
     /**
      * Returns true if the preview has been declined.
-     *
-     * @param Request $request
      *
      * @param Request $request
      *

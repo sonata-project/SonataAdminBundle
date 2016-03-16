@@ -171,11 +171,11 @@ class ExplainAdminCommandTest extends \PHPUnit_Framework_TestCase
         }
 
         $propertyMetadata = $this->getMockForAbstractClass('Symfony\Component\Validator\Mapping\\'.$class);
-        $propertyMetadata->constraints = array(new NotNull(), new Length(array('min' => 2, 'max' => 50, 'groups' => array('create', 'edit'),)));
+        $propertyMetadata->constraints = array(new NotNull(), new Length(array('min' => 2, 'max' => 50, 'groups' => array('create', 'edit'))));
         $metadata->properties = array('firstName' => $propertyMetadata);
 
         $getterMetadata = $this->getMockForAbstractClass('Symfony\Component\Validator\Mapping\\'.$class);
-        $getterMetadata->constraints = array(new NotNull(), new Email(array('groups' => array('registration', 'edit'),)));
+        $getterMetadata->constraints = array(new NotNull(), new Email(array('groups' => array('registration', 'edit'))));
         $metadata->getters = array('email' => $getterMetadata);
 
         $modelManager = $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface');

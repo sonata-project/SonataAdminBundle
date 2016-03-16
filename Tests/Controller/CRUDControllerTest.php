@@ -554,7 +554,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf(
             'Symfony\Component\HttpFoundation\Response',
             $this->controller->render('FooAdminBundle::foo.html.twig',
-            array('foo'=>'bar'), null, $this->request)
+            array('foo' => 'bar'), null, $this->request)
         );
         $this->assertSame($this->admin, $this->parameters['admin']);
         $this->assertSame('SonataAdminBundle::standard_layout.html.twig', $this->parameters['base_template']);
@@ -567,12 +567,12 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
     {
         $this->parameters = array();
         $this->request->headers->set('X-Requested-With', 'XMLHttpRequest');
-        $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $this->controller->render('FooAdminBundle::foo.html.twig', array('foo'=>'bar'), null, $this->request));
-        $this->assertEquals($this->admin, $this->parameters['admin']);
-        $this->assertEquals('SonataAdminBundle::ajax_layout.html.twig', $this->parameters['base_template']);
-        $this->assertEquals($this->pool, $this->parameters['admin_pool']);
-        $this->assertEquals('bar', $this->parameters['foo']);
-        $this->assertEquals('FooAdminBundle::foo.html.twig', $this->template);
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $this->controller->render('FooAdminBundle::foo.html.twig', array('foo' => 'bar'), null, $this->request));
+        $this->assertSame($this->admin, $this->parameters['admin']);
+        $this->assertSame('SonataAdminBundle::ajax_layout.html.twig', $this->parameters['base_template']);
+        $this->assertSame($this->pool, $this->parameters['admin_pool']);
+        $this->assertSame('bar', $this->parameters['foo']);
+        $this->assertSame('FooAdminBundle::foo.html.twig', $this->template);
     }
 
     public function testListActionAccessDenied()
