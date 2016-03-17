@@ -264,6 +264,7 @@ table.sonata-ba-list {
 
 table.sonata-ba-list img {
     max-width: 100%;
+    height: auto;
 }
 
 table.sonata-ba-list td {
