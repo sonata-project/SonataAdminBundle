@@ -1368,7 +1368,7 @@ class CRUDController extends Controller
      *
      * @internal
      */
-    private function resolveRequest(Request $request = null)
+    protected function resolveRequest(Request $request = null)
     {
         if (null === $request) {
             return $this->getRequest();
