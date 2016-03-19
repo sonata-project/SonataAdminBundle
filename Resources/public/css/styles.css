@@ -351,6 +351,50 @@ td.sonata-ba-list-field .editable-empty:not(.editable-open) {
     width: auto; /* See https://github.com/sonata-project/SonataAdminBundle/issues/2950 */
 }
 
+/**
+ * Make checkbox / radio label consistant with other labels
+ */
+.checkbox label,
+.radio label {
+    font-weight: 700;
+}
+
+/**
+ * The iCheck checkboxes & radios have 0 margin by default,
+ * add some space for the label text.
+ */
+.checkbox div[class^="icheckbox"],
+.checkbox-inline div[class^="icheckbox"],
+.radio div[class^="iradio"],
+.radio-inline div[class^="iradio"] {
+    position: relative;
+    margin-top: 4px \9;
+    margin-left: -20px;
+    margin-right: 5px;
+    margin-top: -3px;
+}
+.form-inline .checkbox div[class^="icheckbox"],
+.form-inline .checkbox-inline div[class^="icheckbox"],
+.form-inline .radio div[class^="iradio"],
+.form-inline .radio-inline div[class^="iradio"] {
+    position: relative;
+    margin-top: 4px \9;
+    margin-left: 0;
+    margin-right: 5px;
+    margin-top: -3px;
+}
+/* Hide Delete checkbox on sonata_type_collection tables */
+.sonata-ba-field-inline-table td > div.checkbox > label > .control-label__text {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    border: 0;
+}
+
 /* select2 */
 .select2-choice, .select2-choices, .select2-drop {
     border-radius: 0 !important;
