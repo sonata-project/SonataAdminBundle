@@ -86,7 +86,6 @@ granularity), the passed query is ``null``.
                 throw new AccessDeniedException();
             }
 
-            $request = $this->get('request');
             $modelManager = $this->admin->getModelManager();
 
             $target = $modelManager->find($this->admin->getClass(), $request->get('targetId'));
@@ -199,7 +198,7 @@ This method may return three different values:
         {
             // here you have access to all POST parameters, if you use some custom ones
             // POST parameters are kept even after the confirmation page.
-            $parameterBag = $this->get('request')->request;
+            $parameterBag = $request->request;
 
             // check that a target has been chosen
             if (!$parameterBag->has('targetId')) {
