@@ -313,8 +313,6 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
         $formExtension = $this->getMock('Twig_ExtensionInterface', array('renderListElement', 'initRuntime', 'getTokenParsers', 'getNodeVisitors', 'getFilters', 'getTests', 'getFunctions', 'getOperators', 'getGlobals', 'getName'));
 
         $formExtension->expects($this->once())->method('getName')->will($this->returnValue('form'));
-        $formExtension->expects($this->never())->method('searchAndRenderBlock');
-        $formExtension->expects($this->never())->method('setTheme');
         $formExtension->renderer = $mockRenderer;
 
         $twig = new Twig();
@@ -396,8 +394,6 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
 
         $formExtension = $this->getMock('Twig_ExtensionInterface', array('renderListElement', 'initRuntime', 'getTokenParsers', 'getNodeVisitors', 'getFilters', 'getTests', 'getFunctions', 'getOperators', 'getGlobals', 'getName'));
         $formExtension->expects($this->once())->method('getName')->will($this->returnValue('form'));
-        $formExtension->expects($this->never())->method('searchAndRenderBlock');
-        $formExtension->expects($this->never())->method('setTheme');
         $formExtension->renderer = $mockRenderer;
 
         $twig = new Twig();
