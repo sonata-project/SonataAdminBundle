@@ -55,6 +55,28 @@ You can also configure the block template per admin while defining the admin:
               </call>
           </service>
 
+Configure the default search result action
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+In general the search result generates a link to the edit action of an item or is using the show action, if the edit
+route is disabled or you haven't the required permission. You can change this behaviour by overriding the
+``searchResultActions`` property. The defined action list will we checked successive until a route with the required
+permissions exists. If no route is found, the item will be displayed as a text.
+
+.. code-block:: php
+
+    <?php
+    // src/AppBundle/Admin/PersonAdmin.php
+
+    class PersonAdmin extends AbstractAdmin
+    {
+        // ...
+
+        protected $searchResultActions = array('edit', 'show');
+
+        // ...
+    }
+
 Performance
 -----------
 
