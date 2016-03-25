@@ -14,6 +14,14 @@ following these points:
 * Check if the bug is not already reported!
 * A clear title to sum up the issue
 * A description of the workflow needed to reproduce the bug
+* If your issue is an error page, you must provide us with a stack trace.  With
+  recent version of Symfony, you can even get stack traces as plain text at the
+end of the page. Just look for "Stack Trace (Plain Text)", and copy/paste what
+you see. **Do not** make a screenshot of the stack trace, as screenshots are
+not indexed by search engines and will make it difficult for other people to
+find your bug report. Screenshots should be considered additional data, you
+should always provide a textual description of the bug. It is strongly
+recommended to provide them when reporting UI-related bugs.
 
 > _NOTE:_ Don't hesitate giving as much information as you can (OS, PHP
 > version, extensions...)
