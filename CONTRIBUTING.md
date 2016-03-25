@@ -4,6 +4,8 @@ Symfony](http://symfony.com/doc/current/contributing/code/patches.html#make-a-pu
 
 ## Reporting bugs
 
+If you are not sure this is a bug, consider posting your question on [Stack
+Overflow](http://stackoverflow.com), using one of the sonata tags.
 If you happen to find a bug, we kindly request you to report it. However,
 before submitting it, please check the [project documentation available
 online](https://sonata-project.org/bundles/)
