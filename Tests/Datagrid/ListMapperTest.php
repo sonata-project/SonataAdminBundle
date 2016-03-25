@@ -119,10 +119,28 @@ class ListMapperTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('fooName', $fieldDescription->getOption('label'));
     }
 
-    public function testAddViewInlineAction()
+    /**
+     * @group legacy
+     */
+    public function testLegacyAddViewInlineAction()
     {
         $this->assertFalse($this->listMapper->has('_action'));
         $this->listMapper->add('_action', 'actions', array('actions' => array('view' => array())));
+
+        $this->assertTrue($this->listMapper->has('_action'));
+
+        $fieldDescription = $this->listMapper->get('_action');
+
+        $this->assertInstanceOf('Sonata\AdminBundle\Admin\FieldDescriptionInterface', $fieldDescription);
+        $this->assertSame('_action', $fieldDescription->getName());
+        $this->assertCount(1, $fieldDescription->getOption('actions'));
+        $this->assertSame(array('show' => array()), $fieldDescription->getOption('actions'));
+    }
+
+    public function testAddViewInlineAction()
+    {
+        $this->assertFalse($this->listMapper->has('_action'));
+        $this->listMapper->add('_action', 'actions', array('actions' => array('show' => array())));
 
         $this->assertTrue($this->listMapper->has('_action'));
 
