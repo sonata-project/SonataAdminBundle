@@ -1671,6 +1671,45 @@ class AdminTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame($expected, $admin->getActionButtons('list', null));
     }
+
+    public function testGetSearchResultLink()
+    {
+        $entity = new \stdClass();
+
+        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
+
+        $routeGenerator = $this->getMock('Sonata\AdminBundle\Route\RouteGeneratorInterface');
+        $routeGenerator->expects($this->once())
+            ->method('hasAdminRoute')
+            ->with($admin, 'edit')
+            ->will($this->returnValue(true));
+        $routeGenerator->expects($this->once())
+            ->method('generateUrl')
+            ->will($this->returnValue('edit/123'));
+        $admin->setRouteGenerator($routeGenerator);
+
+        $modelManager = $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface');
+        $modelManager->expects($this->once())
+            ->method('getUrlsafeIdentifier')
+            ->with($this->equalTo($entity))
+            ->will($this->returnValue('foo'));
+        $admin->setModelManager($modelManager);
+
+        $securityHandler = $this->getMock('Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface');
+        $securityHandler->expects($this->any())
+            ->method('isGranted')
+            ->will($this->returnCallback(function (AdminInterface $adminIn, $attributes, $object = null) use ($admin) {
+                if ($admin == $adminIn && $attributes == 'EDIT' && $testObject = $object) {
+                    return true;
+                }
+
+                return false;
+            }));
+
+        $admin->setSecurityHandler($securityHandler);
+
+        $this->assertSame('edit/123', $admin->getSearchResultLink($entity));
+    }
 }
 
 class DummySubject
