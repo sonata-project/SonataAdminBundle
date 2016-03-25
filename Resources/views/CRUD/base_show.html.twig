@@ -11,49 +11,59 @@ file that was distributed with this source code.
 
 {% extends base_template %}
 
+{% import "@Admin/CRUD/base_show_macro.html.twig" as show_helper %}
+
 {% block actions %}
     {% include 'SonataAdminBundle:CRUD:action_buttons.html.twig' %}
 {% endblock %}
 
-{% block tab_menu %}{{ knp_menu_render(admin.sidemenu(action), {'currentClass' : 'active', 'template': sonata_admin.adminPool.getTemplate('tab_menu_template')}, 'twig') }}{% endblock %}
+{% block tab_menu %}
+    {{ knp_menu_render(admin.sidemenu(action), {
+        'currentClass' : 'active',
+        'template': sonata_admin.adminPool.getTemplate('tab_menu_template')
+    }, 'twig') }}
+{% endblock %}
 
 {% block show %}
-    <div class="sonata-ba-view row">
+    {{ sonata_block_render_event('sonata.admin.show.top', { 'admin': admin, 'object': object }) }}
 
-        {{ sonata_block_render_event('sonata.admin.show.top', { 'admin': admin, 'object': object }) }}
+    {% set has_tab = (admin.showtabs|length == 1 and admin.showtabs|keys[0] != 'default') or admin.showtabs|length > 1 %}
 
-        {% for name, view_group in admin.showgroups %}
-            <div class="{{ view_group.class | default('col-md-12') }}">
-                <div class="{{ view_group.box_class }}">
-                    {% if name %}
-                        <div class="box-header with-border">
-                            <h4 class="box-title">
-                                {% block show_title %}
-                                    {{ admin.trans(name, {}, view_group.translation_domain) }}
-                                {% endblock %}
-                            </h4>
+    {% if has_tab %}
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs" role="tablist">
+                {% for name, show_tab in admin.showtabs %}
+                    <li{% if loop.first %} class="active"{% endif %}>
+                        <a href="#tab_{{ admin.uniqid }}_{{ loop.index }}" data-toggle="tab">
+                            <i class="fa fa-exclamation-circle has-errors hide"></i>
+                            {{ admin.trans(name, {}, show_tab.translation_domain) }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+
+            <div class="tab-content">
+                {% for code, show_tab in admin.showtabs %}
+                    <div
+                            class="tab-pane fade{% if loop.first %} in active{% endif %}"
+                            id="tab_{{ admin.uniqid }}_{{ loop.index }}"
+                    >
+                        <div class="box-body  container-fluid">
+                            <div class="sonata-ba-collapsed-fields">
+                                {% if show_tab.description != false %}
+                                    <p>{{ show_tab.description|raw }}</p>
+                                {% endif %}
+
+                                {{ show_helper.render_groups(admin, object, elements, show_tab.groups, has_tab) }}
+                            </div>
                         </div>
-                    {% endif %}
-                    <div class="box-body table-responsive no-padding">
-                        <table class="table">
-                            <tbody>
-                            {% for field_name in view_group.fields %}
-                                {% block show_field %}
-                                    <tr class="sonata-ba-view-container">
-                                        {% if elements[field_name] is defined %}
-                                            {{ elements[field_name]|render_view_element(object) }}
-                                        {% endif %}
-                                    </tr>
-                                {% endblock %}
-                            {% endfor %}
-                            </tbody>
-                        </table>
                     </div>
-                </div>
+                {% endfor %}
             </div>
-        {% endfor %}
+        </div>
+    {% else %}
+        {{ show_helper.render_groups(admin, object, elements, admin.showtabs.default.groups, has_tab) }}
+    {% endif %}
 
-        {{ sonata_block_render_event('sonata.admin.show.bottom', { 'admin': admin, 'object': object }) }}
-
-    </div>
+    {{ sonata_block_render_event('sonata.admin.show.bottom', { 'admin': admin, 'object': object }) }}
 {% endblock %}
