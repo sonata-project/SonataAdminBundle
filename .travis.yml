@@ -7,7 +7,7 @@ sudo: false
 
 cache:
   directories:
-    - $HOME/.composer/cache
+    - $HOME/.composer/cache/files
     - $HOME/.cache/pip
 
 env:

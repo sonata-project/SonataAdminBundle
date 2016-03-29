@@ -116,8 +116,6 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
         $this->environment->addExtension(new RoutingExtension($urlGenerator));
         $this->environment->addExtension(new \Twig_Extensions_Extension_Text());
 
-        $this->twigExtension->initRuntime($this->environment);
-
         // initialize object
         $this->object = new \stdClass();
 
@@ -247,7 +245,7 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
                 }
             }));
 
-        $this->assertSame($expected, trim(preg_replace('/\s+/', ' ', $this->twigExtension->renderListElement($this->object, $this->fieldDescription))));
+        $this->assertSame($expected, trim(preg_replace('/\s+/', ' ', $this->twigExtension->renderListElement($this->environment, $this->object, $this->fieldDescription))));
     }
 
     public function getRenderListElementTests()
@@ -407,7 +405,7 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
             ->method('warning')
             ->with(($this->stringStartsWith('An error occured trying to load the template "SonataAdminBundle:CRUD:list_nonexistent_template.html.twig" for the field "Foo_name", the default template "SonataAdminBundle:CRUD:base_list_field.html.twig" was used instead: "Unable to find template "list_nonexistent_template.html.twig')));
 
-        $this->twigExtension->renderListElement($this->object, $this->fieldDescription);
+        $this->twigExtension->renderListElement($this->environment, $this->object, $this->fieldDescription);
     }
 
     /**
@@ -425,7 +423,7 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
             ->method('getTemplate')
             ->will($this->returnValue('SonataAdminBundle:CRUD:list_nonexistent_template.html.twig'));
 
-        $this->twigExtension->renderListElement($this->object, $this->fieldDescription);
+        $this->twigExtension->renderListElement($this->environment, $this->object, $this->fieldDescription);
     }
 
     /**
@@ -486,7 +484,7 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
                 }
             }));
 
-        $this->assertSame($expected, trim(preg_replace('/\s+/', ' ', $this->twigExtension->renderViewElement($this->fieldDescription, $this->object))));
+        $this->assertSame($expected, trim(preg_replace('/\s+/', ' ', $this->twigExtension->renderViewElement($this->environment, $this->fieldDescription, $this->object))));
     }
 
     public function getRenderViewElementTests()
@@ -702,11 +700,11 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
         $template = $this->environment->loadTemplate('SonataAdminBundle:CRUD:base_list_field.html.twig');
 
         $this->assertSame('<td class="sonata-ba-list-field sonata-ba-list-field-" objectId="12345"> foo </td>',
-                trim(preg_replace('/\s+/', ' ', $this->twigExtension->output($this->fieldDescription, $template, $parameters))));
+                trim(preg_replace('/\s+/', ' ', $this->twigExtension->output($this->fieldDescription, $template, $parameters, $this->environment))));
 
         $this->environment->enableDebug();
         $this->assertSame('<!-- START fieldName: fd_name template: SonataAdminBundle:CRUD:base_list_field.html.twig compiled template: SonataAdminBundle:CRUD:base_list_field.html.twig --> <td class="sonata-ba-list-field sonata-ba-list-field-" objectId="12345"> foo </td> <!-- END - fieldName: fd_name -->',
-                trim(preg_replace('/\s+/', ' ', $this->twigExtension->output($this->fieldDescription, $template, $parameters))));
+                trim(preg_replace('/\s+/', ' ', $this->twigExtension->output($this->fieldDescription, $template, $parameters, $this->environment))));
     }
 
     public function testRenderRelationElementNoObject()

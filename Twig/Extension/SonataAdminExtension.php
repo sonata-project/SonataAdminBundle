@@ -17,6 +17,7 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Exception\NoValueException;
+use Twig_Environment;
 
 /**
  * Class SonataAdminExtension.
@@ -25,11 +26,6 @@ use Sonata\AdminBundle\Exception\NoValueException;
  */
 class SonataAdminExtension extends \Twig_Extension implements \Twig_Extension_InitRuntimeInterface
 {
-    /**
-     * @var \Twig_Environment
-     */
-    protected $environment;
-
     /**
      * @var Pool
      */
@@ -53,19 +49,11 @@ class SonataAdminExtension extends \Twig_Extension implements \Twig_Extension_In
     /**
      * {@inheritdoc}
      */
-    public function initRuntime(\Twig_Environment $environment)
-    {
-        $this->environment = $environment;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getFilters()
     {
         return array(
-            new \Twig_SimpleFilter('render_list_element', array($this, 'renderListElement'), array('is_safe' => array('html'))),
-            new \Twig_SimpleFilter('render_view_element', array($this, 'renderViewElement'), array('is_safe' => array('html'))),
+            new \Twig_SimpleFilter('render_list_element', array($this, 'renderListElement'), array('is_safe' => array('html'), 'needs_environment' => true)),
+            new \Twig_SimpleFilter('render_view_element', array($this, 'renderViewElement'), array('is_safe' => array('html'), 'needs_environment' => true)),
             new \Twig_SimpleFilter('render_view_element_compare', array($this, 'renderViewElementCompare'), array('is_safe' => array('html'))),
             new \Twig_SimpleFilter('render_relation_element', array($this, 'renderRelationElement')),
             new \Twig_SimpleFilter('sonata_urlsafeid', array($this, 'getUrlsafeIdentifier')),
@@ -89,14 +77,14 @@ class SonataAdminExtension extends \Twig_Extension implements \Twig_Extension_In
      *
      * @return \Twig_Template
      */
-    protected function getTemplate(FieldDescriptionInterface $fieldDescription, $defaultTemplate)
+    protected function getTemplate(FieldDescriptionInterface $fieldDescription, $defaultTemplate, Twig_Environment $environment)
     {
         $templateName = $fieldDescription->getTemplate() ?: $defaultTemplate;
 
         try {
-            $template = $this->environment->loadTemplate($templateName);
+            $template = $environment->loadTemplate($templateName);
         } catch (\Twig_Error_Loader $e) {
-            $template = $this->environment->loadTemplate($defaultTemplate);
+            $template = $environment->loadTemplate($defaultTemplate);
 
             if (null !== $this->logger) {
                 $this->logger->warning(sprintf('An error occured trying to load the template "%s" for the field "%s", the default template "%s" was used instead: "%s". ', $templateName, $fieldDescription->getFieldName(), $defaultTemplate, $e->getMessage()));
@@ -115,16 +103,16 @@ class SonataAdminExtension extends \Twig_Extension implements \Twig_Extension_In
      *
      * @return string
      */
-    public function renderListElement($object, FieldDescriptionInterface $fieldDescription, $params = array())
+    public function renderListElement(Twig_Environment $environment, $object, FieldDescriptionInterface $fieldDescription, $params = array())
     {
-        $template = $this->getTemplate($fieldDescription, $fieldDescription->getAdmin()->getTemplate('base_list_field'));
+        $template = $this->getTemplate($fieldDescription, $fieldDescription->getAdmin()->getTemplate('base_list_field'), $environment);
 
         return $this->output($fieldDescription, $template, array_merge($params, array(
             'admin'             => $fieldDescription->getAdmin(),
             'object'            => $object,
             'value'             => $this->getValueFromFieldDescription($object, $fieldDescription),
             'field_description' => $fieldDescription,
-        )));
+        )), $environment);
     }
 
     /**
@@ -134,11 +122,11 @@ class SonataAdminExtension extends \Twig_Extension implements \Twig_Extension_In
      *
      * @return string
      */
-    public function output(FieldDescriptionInterface $fieldDescription, \Twig_Template $template, array $parameters = array())
+    public function output(FieldDescriptionInterface $fieldDescription, \Twig_Template $template, array $parameters = array(), Twig_Environment $environment)
     {
         $content = $template->render($parameters);
 
-        if ($this->environment->isDebug()) {
+        if ($environment->isDebug()) {
             return sprintf("\n<!-- START  \n  fieldName: %s\n  template: %s\n  compiled template: %s\n -->\n%s\n<!-- END - fieldName: %s -->",
                 $fieldDescription->getFieldName(),
                 $fieldDescription->getTemplate(),
@@ -189,9 +177,9 @@ class SonataAdminExtension extends \Twig_Extension implements \Twig_Extension_In
      *
      * @return string
      */
-    public function renderViewElement(FieldDescriptionInterface $fieldDescription, $object)
+    public function renderViewElement(Twig_Environment $environment, FieldDescriptionInterface $fieldDescription, $object)
     {
-        $template = $this->getTemplate($fieldDescription, 'SonataAdminBundle:CRUD:base_show_field.html.twig');
+        $template = $this->getTemplate($fieldDescription, 'SonataAdminBundle:CRUD:base_show_field.html.twig', $environment);
 
         try {
             $value = $fieldDescription->getValue($object);
@@ -204,7 +192,7 @@ class SonataAdminExtension extends \Twig_Extension implements \Twig_Extension_In
             'object'            => $object,
             'value'             => $value,
             'admin'             => $fieldDescription->getAdmin(),
-        ));
+        ), $environment);
     }
 
     /**
@@ -216,9 +204,9 @@ class SonataAdminExtension extends \Twig_Extension implements \Twig_Extension_In
      *
      * @return string
      */
-    public function renderViewElementCompare(FieldDescriptionInterface $fieldDescription, $baseObject, $compareObject)
+    public function renderViewElementCompare(Twig_Environment $environment, FieldDescriptionInterface $fieldDescription, $baseObject, $compareObject)
     {
-        $template = $this->getTemplate($fieldDescription, 'SonataAdminBundle:CRUD:base_show_field.html.twig');
+        $template = $this->getTemplate($fieldDescription, 'SonataAdminBundle:CRUD:base_show_field.html.twig', $environment);
 
         try {
             $baseValue = $fieldDescription->getValue($baseObject);
@@ -253,7 +241,7 @@ class SonataAdminExtension extends \Twig_Extension implements \Twig_Extension_In
             'value_compare'     => $compareValue,
             'is_diff'           => $isDiff,
             'admin'             => $fieldDescription->getAdmin(),
-        ));
+        ), $environment);
     }
 
     /**

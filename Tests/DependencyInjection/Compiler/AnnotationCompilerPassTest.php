@@ -55,6 +55,8 @@ class AnnotationCompilerPassTest extends \PHPUnit_Framework_TestCase
             $meta->tags['sonata.admin'][0],
             array(
                 'manager_type'      => 'orm',
+                'group'             => 'Admin',
+                'label'             => 'Tests\Fixtures\Foo',
                 'show_in_dashboard' => false,
             )
         );
