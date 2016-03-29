@@ -31,7 +31,7 @@ The install process is available on the dedicated
 Security handlers
 -----------------
 
-The security part is managed by a ``SecurityHandler``, the bundle comes with 3 handlers
+The security part is managed by a ``SecurityHandler``, the bundle comes with 3 handlers:
 
 - ``sonata.admin.security.handler.role``: ROLES to handle permissions
 - ``sonata.admin.security.handler.acl``: ACL and ROLES to handle permissions
@@ -104,7 +104,7 @@ Configuration
 
 First, activate the role security handler as described above.
 
-Each time an user tries to do an action in the admin, Sonata checks if he is
+Each time a user tries to do an action in the admin, Sonata checks if he is
 either a super admin (``ROLE_SUPER_ADMIN``) **or** has the permission.
 
 The permissions are:
@@ -129,7 +129,7 @@ The role name will be based on the name of your admin service. For instance, ``a
 
     If your admin service is named like ``my.blog.admin.foo_bar`` (note the underscore ``_``) it will become: ``ROLE_MY_BLOG_ADMIN_FOO_BAR_{ACTION}``
 
-So our ``security.yml`` file may look to something like this:
+So our ``security.yml`` file may look something like this:
 
 .. configuration-block::
 
@@ -310,7 +310,7 @@ The following configuration for the SonataUserBundle defines:
 - the login form for authentication
 - the access control: resources with related required roles, the important
   part is the admin configuration
-- the ``acl`` option to enable the ACL.
+- the ``acl`` option to enable the ACL
 - the ``AdminPermissionMap`` defines the permissions of the Admin class
 
 .. configuration-block::
@@ -459,10 +459,10 @@ Owner:
 Vocabulary used for Access Control Lists:
 
 - **Role:** a user role;
-- **ACL:** a list of access rules, the Admin uses 2 types:
+- **ACL:** a list of access rules, the Admin uses 2 types;
 - **Admin ACL:** created from the Security information of the Admin class
   for  each admin and shares the Access Control Entries that specify what
-  the  user can do (permissions) with the admin
+  the  user can do (permissions) with the admin;
 - **Object ACL:** also created from the security information of the ``Admin``
   class however created for each object, it uses 2 scopes:
 
@@ -497,9 +497,9 @@ In the application the security context is asked if access is granted for a role
 or a permission (``admin.isGranted``):
 
 - **Token:** a token identifies a user between requests;
-- **Voter:** sort of judge that returns if access is granted of denied, if the
+- **Voter:** sort of judge that returns whether access is granted or denied, if the
   voter should not vote for a case, it returns abstain;
-- **AccessDecisionManager:** decides if access is granted or denied according
+- **AccessDecisionManager:** decides whether access is granted or denied according
   a specific strategy. It grants access if at least one (affirmative strategy),
   all (unanimous strategy) or more then half (consensus strategy) of the
   counted votes granted access;
