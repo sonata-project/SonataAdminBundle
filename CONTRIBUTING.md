@@ -9,7 +9,7 @@ before submitting it, please check the [project documentation available
 online](https://sonata-project.org/bundles/)
 
 Then, if it appears that it's a real bug, you may report it using Github by
-following these 3 points:
+following these points:
 
 * Check if the bug is not already reported!
 * A clear title to sum up the issue
