@@ -24,6 +24,12 @@ not indexed by search engines and will make it difficult for other people to
 find your bug report. Screenshots should be considered additional data, you
 should always provide a textual description of the bug. It is strongly
 recommended to provide them when reporting UI-related bugs.
+* If you need to provide code, make sure you know how to get syntactic
+  coloration, in particular with [fenced code
+blocks](https://help.github.com/articles/creating-and-highlighting-code-blocks/).
+When you feel the code is to long, use external code pastebin like
+https://gist.github.com/ or http://hastebin.com/ . If this is not sufficient,
+just create a repository to show the issue.
 
 > _NOTE:_ Don't hesitate giving as much information as you can (OS, PHP
 > version, extensions...)
