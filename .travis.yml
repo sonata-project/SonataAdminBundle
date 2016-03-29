@@ -2,6 +2,7 @@ language: php
 
 php:
   - hhvm
+  - nightly
 
 sudo: false
 
@@ -14,18 +15,17 @@ env:
   global:
     - PATH="$HOME/.composer/vendor/bin:$PATH"
     - SYMFONY_DEPRECATIONS_HELPER=weak
+    - TARGET=test
 
 matrix:
   fast_finish: true
   include:
+    - php: 7.0
+      env: TARGET=cs_dry_run
+    - php: 7.0
+      env: TARGET=docs
     - php: 5.3
-      env: SYMFONY_VERSION=2.8.*
-    - php: 5.4
-      env: SYMFONY_VERSION=2.8.*
-    - php: 5.6
-      env: SYMFONY_VERSION=2.8.* CS_FIXER=run
-    - php: 5.3
-      env: SYMFONY_VERSION=2.3.* COMPOSER_FLAGS="--prefer-lowest"
+      env: COMPOSER_FLAGS="--prefer-lowest --prefer-stable"
     - php: 5.6
       env: SYMFONY_VERSION=2.3.*
     - php: 5.6
@@ -33,14 +33,15 @@ matrix:
     - php: 5.6
       env: SYMFONY_VERSION=2.8.*
     - php: 5.5
-      env: SYMFONY_VERSION="3.0.*" ACL_VERSION="dev-master"
+      env: SYMFONY_VERSION=3.0.*
     - php: 5.6
-      env: SYMFONY_VERSION="3.0.*" ACL_VERSION="dev-master"
+      env: SYMFONY_VERSION=3.0.*
     - php: 7.0
-      env: SYMFONY_VERSION="3.0.*" ACL_VERSION="dev-master"
+      env: SYMFONY_VERSION=3.0.*
 
   allow_failures:
     - php: hhvm
+    - php: nightly
 
 before_script:
   - (phpenv config-rm xdebug.ini || exit 0)
@@ -50,14 +51,12 @@ before_script:
   - composer global require phpunit/phpunit:@stable fabpot/php-cs-fixer --no-update
   - composer global update --prefer-dist --no-interaction
   - if [ "$SYMFONY_VERSION" != "" ]; then composer require "symfony/symfony:${SYMFONY_VERSION}" --no-update; fi;
-  - if [ "$ACL_VERSION" != "" ]; then composer require "symfony/security-acl:${ACL_VERSION}" --no-update; fi;
   - travis_wait composer update --prefer-dist --no-interaction $COMPOSER_FLAGS
   - export PATH=$HOME/.local/bin:$PATH
   - pip install -r Resources/doc/requirements.txt --user `whoami`
 
 script:
- - if [ "$CS_FIXER" = "run" ]; then make cs_dry_run ; fi;
- - make test
+ - make $TARGET
 
 notifications:
   webhooks: https://sonata-project.org/bundles/admin/master/travis

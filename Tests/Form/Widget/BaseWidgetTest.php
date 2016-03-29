@@ -87,17 +87,16 @@ abstract class BaseWidgetTest extends TypeTestCase
 
         $this->extension = new FormExtension($renderer);
 
-        $twigPaths = array(__DIR__.'/../../../Resources/views/Form');
-
         //this is ugly workaround for different build strategies and, possibly,
         //different TwigBridge installation directories
-        if (is_dir(__DIR__.'/../../../vendor/symfony/twig-bridge/Resources/views/Form')) {
-            $twigPaths[] = __DIR__.'/../../../vendor/symfony/twig-bridge/Resources/views/Form';
-        } elseif (is_dir(__DIR__.'/../../../vendor/symfony/symfony/src/Symfony/Bridge/Twig/Resources/views/Form')) {
-            $twigPaths[] = __DIR__.'/../../../vendor/symfony/symfony/src/Symfony/Bridge/Twig/Resources/views/Form';
-        } else {
-            $twigPaths[] = __DIR__.'/../../../../../symfony/symfony/src/Symfony/Bridge/Twig/Resources/views/Form';
-        }
+        $twigPaths = array_filter(array(
+            __DIR__.'/../../../vendor/symfony/twig-bridge/Symfony/Bridge/Twig/Resources/views/Form',
+            __DIR__.'/../../../vendor/symfony/twig-bridge/Resources/views/Form',
+            __DIR__.'/../../../vendor/symfony/symfony/src/Symfony/Bridge/Twig/Resources/views/Form',
+            __DIR__.'/../../../../../symfony/symfony/src/Symfony/Bridge/Twig/Resources/views/Form',
+        ), 'is_dir');
+
+        $twigPaths[] = __DIR__.'/../../../Resources/views/Form';
 
         $loader = new StubFilesystemLoader($twigPaths);
 
