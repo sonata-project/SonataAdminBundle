@@ -73,6 +73,9 @@ When you send a PR, just make sure that:
 * Also don't forget to add a comment when you update a PR with a ping to the
   maintainer (``@username``), so he/she will get a notification.
 * Squash your commits into one commit. (see the next chapter)
+* Some changes, especially UI changes, might affect other bundles. If you think
+  this is the case, we recommend you test your changes against [the Sonata
+sandbox](https://github.com/sonata-project/sandbox).
 
 ## Squash your commits
 
