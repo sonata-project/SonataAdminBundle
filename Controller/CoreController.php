@@ -48,14 +48,9 @@ class CoreController extends Controller
      *
      * @return string
      */
-    protected function getBaseTemplate(Request $request = null)
+    protected function getBaseTemplate()
     {
-        // to be BC
-        if (null === $request) {
-            $request = $this->getRequest();
-        }
-
-        if ($request->isXmlHttpRequest()) {
+        if ($this->getRequest()->isXmlHttpRequest()) {
             return $this->getAdminPool()->getTemplate('ajax');
         }
 
@@ -67,7 +62,7 @@ class CoreController extends Controller
      *
      * @return Response
      */
-    public function dashboardAction(Request $request)
+    public function dashboardAction()
     {
         $blocks = array(
             'top'    => array(),
@@ -82,7 +77,7 @@ class CoreController extends Controller
         }
 
         return $this->render($this->getAdminPool()->getTemplate('dashboard'), array(
-            'base_template'   => $this->getBaseTemplate($request),
+            'base_template'   => $this->getBaseTemplate(),
             'admin_pool'      => $this->container->get('sonata.admin.pool'),
             'blocks'          => $blocks,
         ));
@@ -136,10 +131,29 @@ class CoreController extends Controller
         }
 
         return $this->render($this->container->get('sonata.admin.pool')->getTemplate('search'), array(
-            'base_template' => $this->getBaseTemplate($request),
+            'base_template' => $this->getBaseTemplate(),
             'admin_pool'    => $this->container->get('sonata.admin.pool'),
             'query'         => $request->get('q'),
             'groups'        => $this->getAdminPool()->getDashboardGroups(),
         ));
+    }
+
+    /**
+     * Get the request object from the container.
+     *
+     * This method is compatible with both Symfony 2.3 and Symfony 3
+     *
+     * @deprecated Use the Request action argument. This method will be removed
+     *             in SonataAdminBundle 3.0 and the action methods adjusted.
+     *
+     * @return Request
+     */
+    public function getRequest()
+    {
+        if ($this->container->has('request_stack')) {
+            return $this->container->get('request_stack')->getCurrentRequest();
+        }
+
+        return $this->container->get('request');
     }
 }
