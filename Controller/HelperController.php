@@ -291,7 +291,7 @@ class HelperController
         $extension = $this->twig->getExtension('sonata_admin');
         $extension->initRuntime($this->twig);
 
-        $content = $extension->renderListElement($rootObject, $fieldDescription);
+        $content = $extension->renderListElement($this->twig, $rootObject, $fieldDescription);
 
         return new JsonResponse(array('status' => 'OK', 'content' => $content));
     }
