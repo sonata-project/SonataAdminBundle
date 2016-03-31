@@ -1024,15 +1024,15 @@ class CRUDController extends Controller
     /**
      * Export data to specified format.
      *
+     * @param Request $reques
+     *
      * @return Response
      *
      * @throws AccessDeniedException If access is not granted
      * @throws \RuntimeException     If the export format is invalid
      */
-    public function exportAction()
+    public function exportAction(Request $request)
     {
-        $request = $this->getRequest();
-
         $this->admin->checkAccess('export');
 
         $format = $request->get('format');
