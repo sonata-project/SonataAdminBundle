@@ -18,6 +18,7 @@ use Sonata\AdminBundle\Form\DataTransformer\ModelsToArrayTransformer;
 use Sonata\AdminBundle\Form\DataTransformer\ModelToIdTransformer;
 use Sonata\AdminBundle\Form\EventListener\MergeCollectionListener;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\ChoiceList\LazyChoiceList;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -51,7 +52,13 @@ class ModelType extends AbstractType
     {
         if ($options['multiple']) {
             if (array_key_exists('choice_loader', $options) && $options['choice_loader'] !== null) { // SF2.7+
-                $builder->addViewTransformer(new ModelsToArrayTransformer($options['choice_list'], $options['model_manager'], $options['class']), true);
+                $builder->addViewTransformer(
+                    new ModelsToArrayTransformer(
+                        new LazyChoiceList($options['choice_loader']),
+                        $options['model_manager'],
+                        $options['class']),
+                    true
+                );
             } else {
                 $builder->addViewTransformer(new LegacyModelsToArrayTransformer($options['choice_list']), true);
             }
