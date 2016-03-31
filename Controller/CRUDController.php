@@ -283,7 +283,7 @@ class CRUDController extends Controller
 
         if ($this->getRestMethod() == 'DELETE') {
             // check the csrf token
-            $this->validateCsrfToken('sonata.delete', $request);
+            $this->validateCsrfToken('sonata.delete');
 
             try {
                 $this->admin->delete($object);
@@ -317,7 +317,7 @@ class CRUDController extends Controller
                 );
             }
 
-            return $this->redirectTo($object, $request);
+            return $this->redirectTo($object);
         }
 
         return $this->render($this->admin->getTemplate('delete'), array(
@@ -388,7 +388,7 @@ class CRUDController extends Controller
                     );
 
                     // redirect to edit mode
-                    return $this->redirectTo($object, $request);
+                    return $this->redirectTo($object);
                 } catch (ModelManagerException $e) {
                     $this->logModelManagerException($e);
 
@@ -487,7 +487,7 @@ class CRUDController extends Controller
         }
 
         // check the csrf token
-        $this->validateCsrfToken('sonata.batch', $request);
+        $this->validateCsrfToken('sonata.batch');
 
         $confirmation = $request->get('confirmation', false);
 
@@ -517,7 +517,7 @@ class CRUDController extends Controller
         $isRelevantAction = sprintf('batchAction%sIsRelevant', ucfirst($camelizedAction));
 
         if (method_exists($this, $isRelevantAction)) {
-            $nonRelevantMessage = call_user_func(array($this, $isRelevantAction), $idx, $allElements, $request);
+            $nonRelevantMessage = call_user_func(array($this, $isRelevantAction), $idx, $allElements);
         } else {
             $nonRelevantMessage = count($idx) != 0 || $allElements; // at least one item is selected
         }
@@ -578,7 +578,7 @@ class CRUDController extends Controller
             $query = null;
         }
 
-        return call_user_func(array($this, $finalAction), $query, $request);
+        return call_user_func(array($this, $finalAction), $query);
     }
 
     /**
@@ -639,7 +639,7 @@ class CRUDController extends Controller
                     );
 
                     // redirect to edit mode
-                    return $this->redirectTo($object, $request);
+                    return $this->redirectTo($object);
                 } catch (ModelManagerException $e) {
                     $this->logModelManagerException($e);
 
