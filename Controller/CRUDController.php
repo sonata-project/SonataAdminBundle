@@ -361,9 +361,7 @@ class CRUDController extends Controller
         $form->setData($object);
         $form->handleRequest($request);
 
-        if ($this->getRestMethod() == 'POST') {
-            $form->submit($request);
-
+        if ($request->isMethod('POST')) {
             $isFormValid = $form->isValid();
 
             // persist if the form was valid and if in preview mode the preview was approved
