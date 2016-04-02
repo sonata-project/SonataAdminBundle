@@ -114,12 +114,11 @@ class SonataAdminExtension extends \Twig_Extension implements \Twig_Extension_In
             if (null !== $this->logger) {
                 $this->logger->warning(sprintf(
                     'An error occured trying to load the template "%s" for the field "%s", '.
-                    'the default template "%s" was used instead: "%s". ',
+                    'the default template "%s" was used instead.',
                     $templateName,
                     $fieldDescription->getFieldName(),
-                    $defaultTemplate,
-                    $e->getMessage()
-                ));
+                    $defaultTemplate
+                ), array('exception' => $e));
             }
         }
 

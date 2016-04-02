@@ -976,8 +976,7 @@ EOT
                 "SonataAdminBundle:CRUD:list_nonexistent_template.html.twig"
                 for the field "Foo_name", the default template
                     "SonataAdminBundle:CRUD:base_list_field.html.twig" was used
-                    instead: "Unable to find template
-                    "list_nonexistent_template.html.twig'
+                    instead.'
             ))));
 
         $this->twigExtension->renderListElement($this->environment, $this->object, $this->fieldDescription);
