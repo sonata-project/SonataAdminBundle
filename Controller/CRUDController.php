@@ -1024,7 +1024,7 @@ class CRUDController extends Controller
     /**
      * Export data to specified format.
      *
-     * @param Request $reques
+     * @param Request $request
      *
      * @return Response
      *
