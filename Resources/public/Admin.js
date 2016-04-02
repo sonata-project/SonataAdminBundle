@@ -142,7 +142,7 @@ var Admin = {
      */
     add_pretty_errors: function() {
         console.warn('Admin.add_pretty_errors() was deprecated in version 2.4');
-    }
+    },
 
     stopEvent: function(event) {
         // https://github.com/sonata-project/SonataAdminBundle/issues/151
