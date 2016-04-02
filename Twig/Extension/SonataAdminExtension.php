@@ -166,7 +166,7 @@ class SonataAdminExtension extends \Twig_Extension implements \Twig_Extension_In
     public function output(
         FieldDescriptionInterface $fieldDescription,
         \Twig_Template $template,
-        array $parameters = array(),
+        array $parameters,
         Twig_Environment $environment
     ) {
         $content = $template->render($parameters);
