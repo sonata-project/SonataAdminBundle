@@ -115,4 +115,14 @@
     </a>
 {% endblock %}
 
-{% block label %}{{ item.label|trans }}{% endblock %}
+{% block label %}
+{{-
+    item.label|trans(
+        item.getExtra('translation_params', {}),
+        item.getExtra(
+            'translation_domain',
+            item.getParent() ? item.getParent().getExtra('translation_domain') : null
+        )
+    )
+-}}
+{% endblock %}
