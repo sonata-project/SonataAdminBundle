@@ -17,7 +17,6 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Exception\NoValueException;
-use Twig_Environment;
 
 /**
  * Class SonataAdminExtension.
@@ -103,7 +102,7 @@ class SonataAdminExtension extends \Twig_Extension implements \Twig_Extension_In
     protected function getTemplate(
         FieldDescriptionInterface $fieldDescription,
         $defaultTemplate,
-        Twig_Environment $environment
+        \Twig_Environment $environment
     ) {
         $templateName = $fieldDescription->getTemplate() ?: $defaultTemplate;
 
@@ -137,7 +136,7 @@ class SonataAdminExtension extends \Twig_Extension implements \Twig_Extension_In
      * @return string
      */
     public function renderListElement(
-        Twig_Environment $environment,
+        \Twig_Environment $environment,
         $object,
         FieldDescriptionInterface $fieldDescription,
         $params = array()
@@ -167,7 +166,7 @@ class SonataAdminExtension extends \Twig_Extension implements \Twig_Extension_In
         FieldDescriptionInterface $fieldDescription,
         \Twig_Template $template,
         array $parameters,
-        Twig_Environment $environment
+        \Twig_Environment $environment
     ) {
         $content = $template->render($parameters);
 
@@ -238,7 +237,7 @@ EOT;
      * @return string
      */
     public function renderViewElement(
-        Twig_Environment $environment,
+        \Twig_Environment $environment,
         FieldDescriptionInterface $fieldDescription,
         $object
     ) {
@@ -272,7 +271,7 @@ EOT;
      * @return string
      */
     public function renderViewElementCompare(
-        Twig_Environment $environment,
+        \Twig_Environment $environment,
         FieldDescriptionInterface $fieldDescription,
         $baseObject,
         $compareObject
