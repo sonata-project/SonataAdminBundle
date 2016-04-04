@@ -48,6 +48,20 @@ After this, you'll need to tweak the entities a bit:
 
 .. code-block:: php
 
+Set the default value to ``false``.
+
+.. code-block:: php
+    // src/AppBundle/Entity/BlogPost.php
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="draft", type="boolean")
+     */
+    private $draft = false;
+
+.. code-block:: php
+
+
     // src/AppBundle/Entity/Category.php
 
     // ...
