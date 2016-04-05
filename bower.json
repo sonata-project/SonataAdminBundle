@@ -8,7 +8,6 @@
         "jqueryui": "~1.10",
         "x-editable": "^1.5",
         "admin-lte": "^2.2",
-        "iCheck": "^1.0",
         "slimScroll": "^1.3",
         "jquery.scrollTo": "^1.4",
         "jquery-form": "3.51",

@@ -88,6 +88,11 @@ class ModelAutocompleteType extends AbstractType
         $view->vars['template'] = $options['template'];
 
         $view->vars['context'] = $options['context'];
+
+        $view->vars['btn_catalogue'] = $options['btn_catalogue'];
+        $view->vars['btn_add'] = $options['btn_add'];
+        $view->vars['btn_edit'] = $options['btn_edit'];
+        $view->vars['btn_show'] = $options['btn_show'];
     }
 
     /**
@@ -145,6 +150,11 @@ class ModelAutocompleteType extends AbstractType
             'dropdown_auto_width'           => false,
 
             'template'                      => 'SonataAdminBundle:Form/Type:sonata_type_model_autocomplete.html.twig',
+
+            'btn_catalogue'                 => 'SonataAdminBundle',
+            'btn_add'                       => 'link_add',
+            'btn_edit'                      => 'link_action_edit',
+            'btn_show'                      => 'link_action_show',
         ));
 
         $resolver->setRequired(array('property'));

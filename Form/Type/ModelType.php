@@ -75,6 +75,8 @@ class ModelType extends AbstractType
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $view->vars['btn_add'] = $options['btn_add'];
+        $view->vars['btn_edit'] = $options['btn_edit'];
+        $view->vars['btn_show'] = $options['btn_show'];
         $view->vars['btn_list'] = $options['btn_list'];
         $view->vars['btn_delete'] = $options['btn_delete'];
         $view->vars['btn_catalogue'] = $options['btn_catalogue'];
@@ -161,6 +163,8 @@ class ModelType extends AbstractType
             'choices'           => array(),
             'preferred_choices' => array(),
             'btn_add'           => 'link_add',
+            'btn_edit'          => 'link_action_edit',
+            'btn_show'          => 'link_action_show',
             'btn_list'          => 'link_list',
             'btn_delete'        => 'link_delete',
             'btn_catalogue'     => 'SonataAdminBundle',

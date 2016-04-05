@@ -18,7 +18,11 @@ file that was distributed with this source code.
     {% block field_span_attributes %}
         {% spaceless %}
             {{ parent() }}
-            data-source="[{value: 0, text: '{%- trans from 'SonataAdminBundle' %}label_type_no{% endtrans -%}'},{value: 1, text: '{%- trans from 'SonataAdminBundle' %}label_type_yes{% endtrans -%}'}]"
+            {% set data_source = [
+                {value: 0, text: 'label_type_no'|trans({}, 'SonataAdminBundle')},
+                {value: 1, text: 'label_type_yes'|trans({}, 'SonataAdminBundle')}
+            ] %}
+            data-source="{{ data_source|json_encode|e('html_attr') }}"
         {% endspaceless %}
     {% endblock %}
 {% endif %}
@@ -26,9 +30,9 @@ file that was distributed with this source code.
 {% block field %}
     {% spaceless %}
         {% if value %}
-            <span class="label label-success">{%- trans from 'SonataAdminBundle' %}label_type_yes{% endtrans -%}</span>
+            <span class="label label-success">{{ 'label_type_yes'|trans({}, 'SonataAdminBundle') }}</span>
         {% else %}
-            <span class="label label-danger">{%- trans from 'SonataAdminBundle' %}label_type_no{% endtrans -%}</span>
+            <span class="label label-danger">{{ 'label_type_no'|trans({}, 'SonataAdminBundle') }}</span>
         {% endif %}
     {% endspaceless %}
 {% endblock %}

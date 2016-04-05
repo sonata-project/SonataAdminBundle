@@ -202,6 +202,14 @@
                 <source>btn_delete</source>
                 <target>Yes, delete</target>
             </trans-unit>
+            <trans-unit id="label_list_batch_select">
+                <source>label_list_batch_select</source>
+                <target>Select / deselect all rows</target>
+            </trans-unit>
+            <trans-unit id="label_list_select_row">
+                <source>label_list_select_row</source>
+                <target>Select / deselect this row</target>
+            </trans-unit>
             <trans-unit id="title_batch_confirmation">
                 <source>title_batch_confirmation</source>
                 <target>Confirm batch action '%action%'</target>

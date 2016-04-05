@@ -36,5 +36,8 @@
             </call>
 
         </service>
+        <service id="sonata.admin.twig.helpers_extension" class="Sonata\AdminBundle\Twig\Extension\SonataHelpersExtension">
+            <tag name="twig.extension"/>
+        </service>
     </services>
 </container>

@@ -1,0 +1,39 @@
+.sonata-ba-view-title {
+    font-size: 19px;
+    line-height: 1;
+    color: #404040;
+    *padding: 0 0 5px 0;
+    *line-height: 1.5;
+}
+
+.sonata-ba-view-title td, .sonata-ba-view-title th {
+    border: 0;
+}
+
+.sonata-ba-view-container th {
+    width: 130px;
+}
+
+.sonata-ba-view-container td, .sonata-ba-view-container th {
+    border-bottom: 0;
+    border-top: 1px solid #eee;
+}
+
+.sonata-ba-view-container:nth-child(2n) td, .sonata-ba-view-container:nth-child(2n) th {
+    background-color: #f9f9f9;
+}
+
+.sonata-ba-view-container:nth-child(2n):hover td, .sonata-ba-view-container:nth-child(2n):hover th {
+    background-color: #f5f5f5;
+}
+
+.sonata-ba-view-container.history-audit-compare th {
+    width: 10%;
+}
+
+.sonata-ba-view-container.history-audit-compare td {
+    width: 40%;
+}
+.sonata-ba-view-container.history-audit-compare th.diff {
+    background: pink;
+}

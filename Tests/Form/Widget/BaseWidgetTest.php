@@ -11,6 +11,7 @@
 
 namespace Sonata\AdminBundle\Tests\Form\Widget;
 
+use Sonata\AdminBundle\Twig\Extension\SonataHelpersExtension;
 use Symfony\Bridge\Twig\Extension\FormExtension;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
 use Symfony\Bridge\Twig\Form\TwigRenderer;
@@ -59,7 +60,6 @@ abstract class BaseWidgetTest extends TypeTestCase
         'block_name'        => false,
         'options'           => array(
             'form_type'  => 'vertical',
-            'use_icheck' => true,
         ),
     );
 
@@ -103,6 +103,7 @@ abstract class BaseWidgetTest extends TypeTestCase
         $this->environment = new \Twig_Environment($loader, array('strict_variables' => true));
         $this->environment->addGlobal('sonata_admin', $this->getSonataAdmin());
         $this->environment->addExtension(new TranslationExtension(new StubTranslator()));
+        $this->environment->addExtension(new SonataHelpersExtension());
 
         $this->environment->addExtension($this->extension);
 

@@ -1,0 +1,38 @@
+.fixed .main-header,
+.fixed .main-sidebar {
+    /* promote fixed elements to compositing layers to avoid scrolling perf issues */
+    will-change: transform;
+}
+
+/**
+ * PR #3607: fix for #3570 & #3576
+ * TODO: refactor this to mobile first.
+ */
+@media(max-width:768px) {
+    body.fixed .main-header {
+        position: relative;
+    }
+    body.fixed .content-wrapper,
+    body.fixed .right-side {
+        padding-top: 0;
+    }
+    body.fixed .content-header .navbar.stuck {
+        top: 0;
+        position: relative;
+        margin: 0;
+        width: 100%;
+    }
+    body.fixed .main-sidebar {
+        position: absolute;
+    }
+    /* disable slimScroll */
+    body.fixed .main-sidebar .slimScrollDiv,
+    body.fixed .main-sidebar .sidebar {
+        overflow: visible !important;
+        height: auto !important;
+    }
+    .navbar-custom-menu > .navbar-nav > li >.dropdown-menu {
+        width: auto !important;
+        min-width: 230px; /* width of the left sidebar */
+    }
+}

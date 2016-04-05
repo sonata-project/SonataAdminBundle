@@ -1,0 +1,12 @@
+/* breadcrumb */
+
+.sonata-bc .breadcrumb {
+    padding: 0;
+    margin: 0;
+    background: inherit;
+    float:left;
+}
+
+.sonata-bc .breadcrumb li a {
+    display: inline-block;
+}

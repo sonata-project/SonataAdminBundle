@@ -17,12 +17,20 @@ This template can be customized to match your needs. You should only extends the
 -->
 
 <tr>
-    <td colspan="{{ admin.list.elements|length - (app.request.isXmlHttpRequest ? (admin.list.has('_action') + admin.list.has('batch')) : 0) }}">
+    <td colspan="{{ admin.list.elements|length - (
+        app.request.isXmlHttpRequest ? (admin.list.has('_action') + admin.list.has('batch')) : 0
+    ) }}">
         <div class="row">
             {% for object in admin.datagrid.results %}
                 {% set meta = admin.getObjectMetadata(object) %}
 
-                <div class="col-xs-6 col-sm-3 mosaic-box sonata-ba-list-field-batch sonata-ba-list-field" objectId="{{ admin.id(object) }}">
+                <div class="{{ classlist(
+                    'col-xs-6', 'col-sm-3', 'mosaic-box',
+                    'sonata-ba-list__item',
+                    sonata_list_field_classes({batch: true})
+                ) }}"
+                    data-object-id="{{ admin.id(object) }}"
+                >
 
                     <div class="mosaic-box-outter">
                         <div class="mosaic-inner-box">
@@ -35,7 +43,9 @@ This template can be customized to match your needs. You should only extends the
                                     <img src="{{ meta.image }}" alt="" />
                                 {% endblock %}
                                 {% block sonata_mosaic_default_view %}
-                                    <span class="mosaic-box-label label label-primary pull-right">#{{ admin.id(object) }}</span>
+                                    <span class="mosaic-box-label label label-primary pull-right">
+                                        {{- '#' ~ admin.id(object) -}}
+                                    </span>
                                 {% endblock %}
                             </div>
 
@@ -45,23 +55,45 @@ This template can be customized to match your needs. You should only extends the
                             #}
                             <div class="mosaic-inner-box-hover">
                                 {% block sonata_mosaic_hover_view %}
-                                    <span class="mosaic-box-label label label-primary pull-right">#{{ admin.id(object) }}</span>
+                                    <span class="mosaic-box-label label label-primary pull-right">
+                                        {{- '#' ~ admin.id(object) -}}
+                                    </span>
                                     {{ meta.description }}
                                 {% endblock %}
                             </div>
                         </div>
                         <div class="mosaic-inner-text">
-                            {% if (admin.hasRoute('batch') and batchactions|length > 0) or (admin.hasRoute('export') and admin.isGranted("EXPORT") and admin.getExportFormats()|length) %}
-                                <input type="checkbox" name="idx[]" value="{{ admin.id(object) }}">
+                            {% if (admin.hasRoute('batch') and batchactions|length > 0) or (
+                                admin.hasRoute('export')
+                                and admin.isGranted("EXPORT")
+                                and admin.getExportFormats()|length
+                            ) %}
+                                <div class="checkbox">
+                                    <label for="list_select_{{ admin.id(object) }}">
+                                        <input type="checkbox" name="idx[]" value="{{ admin.id(object) }}" id="list_select_{{ admin.id(object) }}">
+                                        <span class="control-indicator"></span>
+                                        <span class="sr-only">
+                                            {{ 'label_list_select_row'|trans({}, 'SonataAdminBundle') }}
+                                        </span>
+                                    </label>
+                                </div>
                             {% else %}
                                 &nbsp;
                             {% endif %}
 
                             {% block sonata_mosaic_description %}
                                 {% if admin.isGranted('EDIT', object) and admin.hasRoute('edit') %}
-                                    <a class="mosaic-inner-link" href="{{ admin.generateUrl('edit', {'id' : object|sonata_urlsafeid(admin) }) }}">{{ meta.title|truncate(40) }}</a>
+                                    <a class="mosaic-inner-link"
+                                       href="{{ admin.generateUrl('edit', {'id' : object|sonata_urlsafeid(admin) }) }}"
+                                    >
+                                        {{- meta.title|truncate(40) -}}
+                                    </a>
                                 {% elseif admin.isGranted('SHOW', object) and admin.hasRoute('show') %}
-                                    <a class="mosaic-inner-link" href="{{ admin.generateUrl('show', {'id' : object|sonata_urlsafeid(admin) }) }}">{{ meta.title|truncate(40) }}</a>
+                                    <a class="mosaic-inner-link"
+                                       href="{{ admin.generateUrl('show', {'id' : object|sonata_urlsafeid(admin) }) }}"
+                                    >
+                                        {{- meta.title|truncate(40) -}}
+                                    </a>
                                 {% else %}
                                     {{ meta.title|truncate(40) }}
                                 {% endif %}

@@ -1,0 +1,10 @@
+/*
+ * Sortable associations
+ * ----------------------------------------------------------------------------------------------------------------- */
+
+.sonata-ba-sortable-handler {
+    cursor: grab;
+}
+.sonata-ba-sortable td.sonata-ba-sortable-handler {
+    text-align: center;
+}

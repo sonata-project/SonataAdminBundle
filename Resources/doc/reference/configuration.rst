@@ -72,7 +72,6 @@ Full Configuration Options
                 sort_admins:          false
                 confirm_exit:         true
                 use_select2:          true
-                use_icheck:           true
                 use_bootlint:         false
                 use_stickyforms:      true
                 pager_links:          null
@@ -172,7 +171,6 @@ Full Configuration Options
                     - bundles/sonatacore/vendor/ionicons/css/ionicons.min.css
                     - bundles/sonataadmin/vendor/admin-lte/dist/css/AdminLTE.min.css
                     - bundles/sonataadmin/vendor/admin-lte/dist/css/skins/skin-black.min.css
-                    - bundles/sonataadmin/vendor/iCheck/skins/square/blue.css
                     - bundles/sonatacore/vendor/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css
                     - bundles/sonataadmin/vendor/jqueryui/themes/base/jquery-ui.css
                     - bundles/sonatacore/vendor/select2/select2.css
@@ -196,7 +194,6 @@ Full Configuration Options
                     - bundles/sonataadmin/vendor/x-editable/dist/bootstrap3-editable/js/bootstrap-editable.min.js
                     - bundles/sonatacore/vendor/select2/select2.min.js
                     - bundles/sonataadmin/vendor/admin-lte/dist/js/app.min.js
-                    - bundles/sonataadmin/vendor/iCheck/icheck.min.js
                     - bundles/sonataadmin/vendor/slimScroll/jquery.slimscroll.min.js
                     - bundles/sonataadmin/vendor/waypoints/lib/jquery.waypoints.min.js
                     - bundles/sonataadmin/vendor/waypoints/lib/shortcuts/sticky.min.js

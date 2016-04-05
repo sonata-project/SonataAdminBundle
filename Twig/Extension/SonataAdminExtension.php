@@ -13,10 +13,12 @@ namespace Sonata\AdminBundle\Twig\Extension;
 
 use Doctrine\Common\Util\ClassUtils;
 use Psr\Log\LoggerInterface;
+use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Exception\NoValueException;
+use Symfony\Bridge\Twig\AppVariable;
 
 /**
  * Class SonataAdminExtension.
@@ -46,8 +48,8 @@ class SonataAdminExtension extends \Twig_Extension
      */
     public function __construct(Pool $pool, LoggerInterface $logger = null)
     {
-        $this->pool      = $pool;
-        $this->logger    = $logger;
+        $this->pool = $pool;
+        $this->logger = $logger;
     }
 
     /**
@@ -95,6 +97,39 @@ class SonataAdminExtension extends \Twig_Extension
             new \Twig_SimpleFilter(
                 'sonata_xeditable_choices',
                 array($this, 'getXEditableChoices')
+            ),
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFunctions()
+    {
+        return array(
+            new \Twig_SimpleFunction(
+                'sonata_field_description_json',
+                array($this, 'renderFieldDescriptionToJSON'),
+                array(
+                    'needs_context' => true,
+                    'is_safe'       => array('html'),
+                )
+            ),
+            new \Twig_SimpleFunction(
+                'sonata_autocomplete_config_json',
+                array($this, 'renderAutocompleteConfiguration'),
+                array(
+                    'needs_context' => true,
+                    'is_safe'       => array('html'),
+                )
+            ),
+            new \Twig_SimpleFunction(
+                'sonata_body_classes',
+                array($this, 'getBodyClasses'),
+                array(
+                    'needs_context' => true,
+                    'is_safe'       => array('html'),
+                )
             ),
         );
     }
@@ -451,5 +486,200 @@ EOT;
         }
 
         return $xEditableChoices;
+    }
+
+    /**
+     * @param array $context The current Twig context.
+     *
+     * @return string
+     */
+    public function getBodyClasses(array $context)
+    {
+        $classes = array();
+        if (isset($context['admin'])) {
+            /** @var Admin $admin */
+            $admin = $context['admin'];
+            $code = $admin->getCode();
+            if ($admin->isChild()) {
+                $parentCode = $admin->getParent()->getCode();
+                $code = $parentCode.'__'.$code;
+            }
+            $classes[] = str_replace('.', '_', $code);
+        }
+        if (isset($context['action'])) {
+            $classes[] = 'action_'.$context['action'];
+        }
+
+        return implode(' ', $classes);
+    }
+
+    /**
+     * Encodes the information needed by Javascript about a form widget to JSON,
+     * to be used in the association handling client-side code.
+     *
+     * @param array $context The current Twig context.
+     *
+     * @return string
+     */
+    public function renderFieldDescriptionToJSON($context)
+    {
+        /** @var AppVariable $app */
+        $app = $context['app'];
+        $request = $app->getRequest();
+        $sonataAdmin = $context['sonata_admin'];
+        /** @var Admin $admin */
+        $admin = $sonataAdmin['admin'];
+        /** @var FieldDescriptionInterface $fieldDescription */
+        $fieldDescription = $sonataAdmin['field_description'];
+        $root = $admin->getRoot();
+        $associationAdmin = $fieldDescription->getAssociationAdmin();
+        $router = $admin->getRouteGenerator();
+
+        $showRoute = $associationAdmin->hasRoute('show') && $associationAdmin->isGranted('VIEW')
+            ? $associationAdmin->generateUrl('show', array('id' => '__SONATA_OBJECT_ID__'))
+            : ''
+        ;
+        $editRoute = $associationAdmin->hasRoute('edit') && $associationAdmin->isGranted('EDIT')
+            ? $associationAdmin->generateUrl('edit', array('id' => '__SONATA_OBJECT_ID__'))
+            : ''
+        ;
+
+        $config = array(
+            'id'               => $context['id'],
+            'admin'            => $root->getCode(),
+            'associationAdmin' => $associationAdmin->getCode(),
+            'formType'         => $fieldDescription->getType(),
+            'editMode'         => $sonataAdmin['edit'],
+            'label'            => $associationAdmin->trans(
+                $associationAdmin->getLabel(),
+                array(),
+                $associationAdmin->getTranslationDomain()
+            ),
+            'routes' => array(
+                'show'                   => $showRoute,
+                'edit'                   => $editRoute,
+                'shortObjectDescription' => $router->generate('sonata_admin_short_object_information', array(
+                    'objectId'       => '__SONATA_OBJECT_ID__',
+                    'uniqid'         => $associationAdmin->getUniqid(),
+                    'code'           => $associationAdmin->getCode(),
+                    'linkParameters' => $fieldDescription->getOption('link_parameters'),
+                )),
+                'retrieveFormElement' => $router->generate('sonata_admin_retrieve_form_element', array(
+                    'code'      => $root->getCode(),
+                    'elementId' => $context['id'],
+                    'objectId'  => $root->id($root->getSubject()),
+                    'uniqid'    => $root->getUniqid(),
+                    'subclass'  => $admin->getActiveSubclassCode(),
+                )),
+                'appendFormElement' => $router->generate(
+                    'sonata_admin_append_form_element',
+                    array_merge(array(
+                        'code'      => $root->getCode(),
+                        'elementId' => $context['id'],
+                        'objectId'  => $root->id($root->getSubject()),
+                        'uniqid'    => $root->getUniqid(),
+                        'subclass'  => $request->query->get('subclass'),
+                    ), $fieldDescription->getOption('link_parameters', array()))
+                ),
+            ),
+        );
+
+        return json_encode($config, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    }
+
+    /**
+     * Returns a JSON string with the information needed by Javascript for the ModelAutocompleteType.
+     *
+     * @param array $context The current Twig context.
+     *
+     * @return string
+     */
+    public function renderAutocompleteConfiguration($context)
+    {
+        /** @var AppVariable $app */
+        $app = $context['app'];
+        $request = $app->getRequest();
+        $sonataAdmin = $context['sonata_admin'];
+        $router = $this->pool->getContainer()->get('router');
+
+        // set the widget's initial value
+        $values = array();
+        $labels = isset($context['value']['_labels']) ? $context['value']['_labels'] : array();
+        unset($context['value']['_labels']);
+
+        foreach ($context['value'] as $i => $id) {
+            $values[] = array(
+                'id'    => $id,
+                'label' => $labels[$i],
+            );
+        }
+        // convert string values to booleans
+        $multiple = $context['multiple'] ? true : false;
+        $required = $context['required'] ? true : false;
+
+        $allowClearPlaceholder = ($multiple || $required) ? '' : ' ';
+
+        $config = array(
+            'id'      => $context['id'],
+            'name'    => $context['full_name'],
+            'value'   => $multiple ? $values : (!empty($values) ? $values[0] : null),
+            'select2' => array(
+                // allowClear needs placeholder to work properly
+                'placeholder'        => $context['placeholder'] ?: $allowClearPlaceholder,
+                'allowClear'         => $required ? false : true,
+                'enable'             => $context['disabled'] ? false : true,
+                'readonly'           => $context['read_only'],
+                'minimumInputLength' => $context['minimum_input_length'],
+                'multiple'           => $multiple,
+                'width'              => $context['width'],
+                'dropdownAutoWidth'  => $context['dropdown_auto_width'],
+                'containerCssClass'  => $context['container_css_class'].' form-control',
+                'dropdownCssClass'   => $context['dropdown_css_class'],
+                'ajax'               => array(
+                    'url' => $context['url'] ?: $router->generate(
+                        $context['route']['name'],
+                        $context['route']['parameters']
+                    ),
+                    'quietMillis' => $context['quiet_millis'],
+                    'cache'       => $context['cache'],
+                ),
+            ),
+            'dropdownItemCssClass' => $context['dropdown_item_css_class'],
+        );
+
+        $config['requestParameterNames'] = array(
+            'query'      => $context['req_param_name_search'],
+            'pageNumber' => $context['req_param_name_page_number'],
+        );
+
+        $config['requestData'] = $context['req_params'];
+        $config['requestData'][$context['req_param_name_items_per_page']] = $context['items_per_page'];
+
+        // admin is null in filter context
+        if ($sonataAdmin['admin']) {
+            /** @var Admin $admin */
+            $admin = $sonataAdmin['admin'];
+            $config['requestData']['uniqid'] = $admin->getUniqid();
+            $config['requestData']['admin_code'] = $admin->getCode();
+        } elseif ($context['admin_code']) {
+            $config['requestData']['admin_code'] = $context['admin_code'];
+        }
+
+        if ($subclass = $request->query->get('subclass')) {
+            $config['requestData']['subclass'] = $subclass;
+        }
+
+        if ($context['context'] === 'filter') {
+            $config['requestData']['field'] = str_replace(
+                array('filter[', '][value]', '__'),
+                array('', '', '.'),
+                $context['full_name']
+            );
+            $config['requestData']['_context'] = 'filter';
+        } else {
+            $config['requestData']['field'] = $context['name'];
+        }
+
+        return json_encode($config, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
     }
 }

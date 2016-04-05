@@ -1,0 +1,59 @@
+
+.navbar-nav.navbar-right:last-child {
+    margin-right: 0;
+}
+
+/* Content navbar */
+
+.navbar-static-side ul li {
+    border-bottom: 1px solid #e7e7e7;
+}
+@media(min-width:768px) {
+    .navbar-static-side {
+        z-index: 1;
+        position: absolute;
+        width: 250px;
+    }
+}
+
+.navbar-brand {
+    padding-right: 20px;
+}
+
+.navbar-brand img {
+    height: 28px;
+    margin: 0;
+    padding: 0 5px 0 0;
+    vertical-align: middle;
+}
+
+.navbar-text .navbar-link {
+    padding: 0 10px;
+}
+
+.right-side > .content-header {
+    padding-bottom: 0;
+}
+
+.content-header .navbar {
+    margin-bottom: 0;
+}
+
+.content-header .navbar-nav.navbar-right:last-child {
+    margin-right: 0;
+}
+
+/*
+ * Sticky nav
+ */
+body.fixed .content-header .navbar {
+    position: relative;
+}
+body.fixed .content-header .navbar.stuck {
+    position: fixed;
+    top: 50px;
+    width: 100%;
+    margin-left: -15px;
+    z-index: 5;
+    border-radius: 0;
+}

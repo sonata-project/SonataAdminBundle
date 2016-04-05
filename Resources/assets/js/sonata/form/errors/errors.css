@@ -1,0 +1,10 @@
+/* Override AdminLTE over-specific selector... */
+.nav-tabs-custom > .nav-tabs > li.has-error > a {
+    color: #a94442; /* $text-danger */
+}
+.nav-tabs .fa {
+    display: none;
+}
+.nav-tabs .has-error .fa {
+    display: inline-block;
+}

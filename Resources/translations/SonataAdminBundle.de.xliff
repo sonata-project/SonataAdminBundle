@@ -394,6 +394,14 @@
                 <source>list_select</source>
                 <target>Auswählen</target>
             </trans-unit>
+            <trans-unit id="label_list_batch_select">
+                <source>label_list_batch_select</source>
+                <target>Alle Zeilen anwählen / abwählen</target>
+            </trans-unit>
+            <trans-unit id="label_list_select_row">
+                <source>label_list_select_row</source>
+                <target>Zeile anwählen / abwählen</target>
+            </trans-unit>
             <trans-unit id="confirm_exit">
                 <source>confirm_exit</source>
                 <target>Es gibt ungespeicherte Änderungen.</target>
