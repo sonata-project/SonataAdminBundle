@@ -385,6 +385,8 @@ class CRUDController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
+            $object = $form->getData();
+
             //TODO: remove this check for 3.0
             if (method_exists($this->admin, 'preValidate')) {
                 $this->admin->preValidate($object);
@@ -670,6 +672,8 @@ class CRUDController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
+            $object = $form->getData();
+
             //TODO: remove this check for 3.0
             if (method_exists($this->admin, 'preValidate')) {
                 $this->admin->preValidate($object);
