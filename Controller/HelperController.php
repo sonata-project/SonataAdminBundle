@@ -303,7 +303,6 @@ class HelperController
         // render the widget
         // todo : fix this, the twig environment variable is not set inside the extension ...
         $extension = $this->twig->getExtension('sonata_admin');
-        $extension->initRuntime($this->twig);
 
         $content = $extension->renderListElement($this->twig, $rootObject, $fieldDescription);
 
