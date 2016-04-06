@@ -107,7 +107,6 @@ final class SonataAdminExtension extends \Twig_Extension
         return 'sonata_admin';
     }
 
-
     /**
      * render a list element from the FieldDescription.
      *
@@ -135,79 +134,6 @@ final class SonataAdminExtension extends \Twig_Extension
             'value' => $this->getValueFromFieldDescription($object, $fieldDescription),
             'field_description' => $fieldDescription,
         )), $environment);
-    }
-
-    /**
-     * @param FieldDescriptionInterface $fieldDescription
-     * @param \Twig_Template            $template
-     * @param array                     $parameters
-     *
-     * @return string
-     */
-    public function output(
-        FieldDescriptionInterface $fieldDescription,
-        \Twig_Template $template,
-        array $parameters,
-        \Twig_Environment $environment
-    ) {
-        $content = $template->render($parameters);
-
-        if ($environment->isDebug()) {
-            $commentTemplate = <<<'EOT'
-
-<!-- START
-    fieldName: %s
-    template: %s
-    compiled template: %s
-    -->
-    %s
-<!-- END - fieldName: %s -->
-EOT;
-
-            return sprintf(
-                $commentTemplate,
-                $fieldDescription->getFieldName(),
-                $fieldDescription->getTemplate(),
-                $template->getTemplateName(),
-                $content,
-                $fieldDescription->getFieldName()
-            );
-        }
-
-        return $content;
-    }
-
-    /**
-     * return the value related to FieldDescription, if the associated object does no
-     * exists => a temporary one is created.
-     *
-     * @param object                    $object
-     * @param FieldDescriptionInterface $fieldDescription
-     * @param array                     $params
-     *
-     * @throws \RuntimeException
-     *
-     * @return mixed
-     */
-    public function getValueFromFieldDescription(
-        $object,
-        FieldDescriptionInterface $fieldDescription,
-        array $params = array()
-    ) {
-        if (isset($params['loop']) && $object instanceof \ArrayAccess) {
-            throw new \RuntimeException('remove the loop requirement');
-        }
-
-        $value = null;
-        try {
-            $value = $fieldDescription->getValue($object);
-        } catch (NoValueException $e) {
-            if ($fieldDescription->getAssociationAdmin()) {
-                $value = $fieldDescription->getAssociationAdmin()->getNewInstance();
-            }
-        }
-
-        return $value;
     }
 
     /**
@@ -418,6 +344,79 @@ EOT;
         }
 
         return $xEditableChoices;
+    }
+
+    /**
+     * @param FieldDescriptionInterface $fieldDescription
+     * @param \Twig_Template            $template
+     * @param array                     $parameters
+     *
+     * @return string
+     */
+    private function output(
+        FieldDescriptionInterface $fieldDescription,
+        \Twig_Template $template,
+        array $parameters,
+        \Twig_Environment $environment
+    ) {
+        $content = $template->render($parameters);
+
+        if ($environment->isDebug()) {
+            $commentTemplate = <<<'EOT'
+
+<!-- START
+    fieldName: %s
+    template: %s
+    compiled template: %s
+    -->
+    %s
+<!-- END - fieldName: %s -->
+EOT;
+
+            return sprintf(
+                $commentTemplate,
+                $fieldDescription->getFieldName(),
+                $fieldDescription->getTemplate(),
+                $template->getTemplateName(),
+                $content,
+                $fieldDescription->getFieldName()
+            );
+        }
+
+        return $content;
+    }
+
+    /**
+     * return the value related to FieldDescription, if the associated object does no
+     * exists => a temporary one is created.
+     *
+     * @param object                    $object
+     * @param FieldDescriptionInterface $fieldDescription
+     * @param array                     $params
+     *
+     * @throws \RuntimeException
+     *
+     * @return mixed
+     */
+    private function getValueFromFieldDescription(
+        $object,
+        FieldDescriptionInterface $fieldDescription,
+        array $params = array()
+    ) {
+        if (isset($params['loop']) && $object instanceof \ArrayAccess) {
+            throw new \RuntimeException('remove the loop requirement');
+        }
+
+        $value = null;
+        try {
+            $value = $fieldDescription->getValue($object);
+        } catch (NoValueException $e) {
+            if ($fieldDescription->getAssociationAdmin()) {
+                $value = $fieldDescription->getAssociationAdmin()->getNewInstance();
+            }
+        }
+
+        return $value;
     }
 
     /**
