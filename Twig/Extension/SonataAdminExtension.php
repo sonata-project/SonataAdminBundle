@@ -23,17 +23,17 @@ use Sonata\AdminBundle\Exception\NoValueException;
  *
  * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class SonataAdminExtension extends \Twig_Extension
+final class SonataAdminExtension extends \Twig_Extension
 {
     /**
      * @var Pool
      */
-    protected $pool;
+    private $pool;
 
     /**
      * @var LoggerInterface
      */
-    protected $logger;
+    private $logger;
 
     /**
      * @var string[]
@@ -106,6 +106,7 @@ class SonataAdminExtension extends \Twig_Extension
     {
         return 'sonata_admin';
     }
+
 
     /**
      * render a list element from the FieldDescription.
@@ -427,7 +428,7 @@ EOT;
      *
      * @return \Twig_Template
      */
-    protected function getTemplate(
+    private function getTemplate(
         FieldDescriptionInterface $fieldDescription,
         $defaultTemplate,
         \Twig_Environment $environment
