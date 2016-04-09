@@ -95,7 +95,7 @@ abstract class Filter implements FilterInterface
      */
     public function getFieldType()
     {
-        return $this->getOption('field_type', 'text');
+        return $this->getOption('field_type', 'Symfony\Component\Form\Extension\Core\Type\TextType');
     }
 
     /**
