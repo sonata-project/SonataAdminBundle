@@ -528,11 +528,12 @@ interface AdminInterface
     public function supportsPreviewMode();
 
     /**
-     * add an Admin child to the current one.
+     * add an Admin child to the current one linked to child's field.
      *
      * @param AdminInterface $child
+     * @param null|string    $field
      */
-    public function addChild(AdminInterface $child);
+    public function addChild(AdminInterface $child, $field = null);
 
     /**
      * Returns true or false if an Admin child exists for the given $code.

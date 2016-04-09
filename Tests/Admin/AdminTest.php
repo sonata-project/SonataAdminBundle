@@ -108,7 +108,7 @@ class AdminTest extends \PHPUnit_Framework_TestCase
             'Application\Sonata\NewsBundle\Entity\Comment',
             'SonataNewsBundle:CommentAdmin'
         );
-        $admin->addChild($commentAdmin);
+        $admin->addChild($commentAdmin, 'post');
         $admin->setRequest(new Request(array('id' => 42)));
         $commentAdmin->setRequest(new Request());
         $commentAdmin->initialize();
@@ -265,7 +265,7 @@ class AdminTest extends \PHPUnit_Framework_TestCase
             'Application\Sonata\NewsBundle\Entity\Comment',
             'SonataNewsBundle:CommentAdmin'
         );
-        $admin->addChild($commentAdmin);
+        $admin->addChild($commentAdmin, 'post');
         $admin->setRequest(new Request(array('id' => 42)));
         $commentAdmin->setRequest(new Request());
         $commentAdmin->initialize();
@@ -341,7 +341,7 @@ class AdminTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($postAdmin->hasChild('comment'));
 
         $commentAdmin = new CommentAdmin('sonata.post.admin.comment', 'Application\Sonata\NewsBundle\Entity\Comment', 'SonataNewsBundle:CommentAdmin');
-        $postAdmin->addChild($commentAdmin);
+        $postAdmin->addChild($commentAdmin, 'post');
         $this->assertTrue($postAdmin->hasChildren());
         $this->assertTrue($postAdmin->hasChild('sonata.post.admin.comment'));
 
@@ -592,7 +592,7 @@ class AdminTest extends \PHPUnit_Framework_TestCase
         $commentAdmin->setRouteGenerator($routeGenerator);
         $commentAdmin->initialize();
 
-        $postAdmin->addChild($commentAdmin);
+        $postAdmin->addChild($commentAdmin, 'post');
 
         $this->assertSame($expected.'_comment', $commentAdmin->getBaseRouteName());
 
