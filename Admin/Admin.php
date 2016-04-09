@@ -302,11 +302,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     protected $baseCodeRoute = '';
 
     /**
-     * The related field reflection, ie if OrderElement is linked to Order,
-     * then the $parentReflectionProperty must be the ReflectionProperty of
-     * the order (OrderElement::$order).
-     *
-     * @var \ReflectionProperty
+     * @var string
      */
     protected $parentAssociationMapping = null;
 
