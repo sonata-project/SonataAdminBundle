@@ -30,4 +30,8 @@
         </whitelist>
     </filter>
 
+    <php>
+        <ini name="precision" value="8"/>
+    </php>
+
 </phpunit>
