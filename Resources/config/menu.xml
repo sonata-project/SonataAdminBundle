@@ -10,7 +10,6 @@
             <argument type="service" id="knp_menu.factory" />
             <argument type="service" id="knp_menu.menu_provider" />
             <argument type="service" id="event_dispatcher" />
-            <call method="setRequest"><argument type="service" id="request" on-invalid="null" strict="false" /></call>
         </service>
 
         <service id="sonata.admin.sidebar_menu" class="Knp\Menu\MenuItem">
