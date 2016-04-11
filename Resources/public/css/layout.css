@@ -35,11 +35,11 @@ div.connection .alert {
 
 div.connection form {
     padding-top: 15px;
-    margin-bottom: 0px;
+    margin-bottom: 0;
 }
 
 div.connection form .form-actions {
-    margin-bottom: 0px;
+    margin-bottom: 0;
 }
 
 div.connection .form-actions {
@@ -52,7 +52,7 @@ div.connection div input.big {
 }
 
 .sonata-bc.sonata-ba-no-side-menu div.container-fluid > div.content {
-    margin-left: 0px;
+    margin-left: 0;
 }
 
 
@@ -189,7 +189,7 @@ em.sonata-ba-field-help {
 }
 
 fieldset legend {
-    padding-left: 0px;
+    padding-left: 0;
 }
 
 select.sonata-medium, textarea.sonata-medium, input.sonata-medium {
@@ -308,7 +308,7 @@ legend.sonata-ba-fieldset-collapsed-description + .sonata-ba-collapsed-fields {
 }
 
 .pagination {
-    margin: 0px;
+    margin: 0;
 }
 
 .field-short-description {
@@ -370,7 +370,30 @@ body.fixed .content-header .navbar.stuck {
 }
 
 @media(max-width:768px) {
+    body.fixed .main-header {
+        position: relative;
+    }
+    body.fixed .content-wrapper,
+    body.fixed .right-side {
+        padding-top: 0;
+    }
     body.fixed .content-header .navbar.stuck {
-        top:100px;
+        top: 0;
+        position: relative;
+        margin: 0;
+        width: 100%;
+    }
+    body.fixed .main-sidebar {
+        position: absolute;
+    }
+    /* disable slimScroll */
+    body.fixed .main-sidebar .slimScrollDiv,
+    body.fixed .main-sidebar .sidebar {
+        overflow: visible !important;
+        height: auto !important;
+    }
+    .navbar-custom-menu > .navbar-nav > li >.dropdown-menu {
+        width: auto !important;
+        min-width: 230px; /* width of the left sidebar */
     }
 }
