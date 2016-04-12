@@ -23,7 +23,7 @@ use Sonata\AdminBundle\Exception\NoValueException;
  *
  * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class SonataAdminExtension extends \Twig_Extension implements \Twig_Extension_InitRuntimeInterface
+class SonataAdminExtension extends \Twig_Extension
 {
     /**
      * @var Pool
