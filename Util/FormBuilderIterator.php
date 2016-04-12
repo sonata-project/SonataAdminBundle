@@ -66,11 +66,28 @@ class FormBuilderIterator extends \RecursiveArrayIterator
     private static function getKeys(FormBuilderInterface $formBuilder)
     {
         if (!self::$reflection) {
-            self::$reflection = new \ReflectionProperty(get_class($formBuilder), 'children');
+            $class = new \ReflectionClass(get_class($formBuilder));
+            self::$reflection = self::getReflectionPropertyOnClass($class);
             self::$reflection->setAccessible(true);
         }
 
         return array_keys(self::$reflection->getValue($formBuilder));
+    }
+
+    /**
+     * @static
+     *
+     * @param \ReflectionClass $class
+     *
+     * @return \ReflectionProperty
+     */
+    private static function getReflectionPropertyOnClass(\ReflectionClass $class)
+    {
+        if ($class->hasProperty('children')) {
+            return $class->getProperty('children');
+        } elseif (!is_null($parentClass = $class->getParentClass())) {
+            return self::getReflectionPropertyOnClass($parentClass);
+        }
     }
 
     /**
