@@ -26,6 +26,7 @@ matrix:
       env: TARGET=docs
     - php: 5.3
       env: COMPOSER_FLAGS="--prefer-lowest --prefer-stable"
+    - php: 7.0
     - php: 5.6
       env: SYMFONY_VERSION=2.3.*
     - php: 5.6
