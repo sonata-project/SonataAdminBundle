@@ -65,12 +65,7 @@ class FormBuilderIterator extends \RecursiveArrayIterator
      */
     private static function getKeys(FormBuilderInterface $formBuilder)
     {
-        if (!self::$reflection) {
-            self::$reflection = new \ReflectionProperty(get_class($formBuilder), 'children');
-            self::$reflection->setAccessible(true);
-        }
-
-        return array_keys(self::$reflection->getValue($formBuilder));
+        return array_keys($formBuilder->all());
     }
 
     /**
