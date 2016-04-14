@@ -66,7 +66,8 @@ class SonataAdminExtension extends \Twig_Extension
             new \Twig_SimpleFilter(
                 'render_view_element_compare',
                 array($this, 'renderViewElementCompare'),
-                array('is_safe' => array('html'))
+                array('is_safe'     => array('html'),
+                'needs_environment' => true, )
             ),
             new \Twig_SimpleFilter(
                 'render_relation_element',
