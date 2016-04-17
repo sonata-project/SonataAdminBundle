@@ -11,9 +11,25 @@ file that was distributed with this source code.
 
 {% extends admin.getTemplate('base_list_field') %}
 
+{% set is_editable =
+    field_description.options.editable is defined and
+    field_description.options.editable and
+    admin.isGranted('EDIT', object)
+%}
+{% set x_editable_type = field_description.type|sonata_xeditable_type %}
+
+{% if is_editable and x_editable_type %}
+    {% block field_span_attributes %}
+        {% spaceless %}
+            {{ parent() }}
+            data-source="{{ field_description|sonata_xeditable_choices|json_encode }}"
+        {% endspaceless %}
+    {% endblock %}
+{% endif %}
+
 {% block field %}
 {% spaceless %}
-    {% if field_description.options.choices  is defined %}
+    {% if field_description.options.choices is defined %}
         {% if field_description.options.multiple is defined and field_description.options.multiple==true and value is iterable %}
 
             {% set result = '' %}
