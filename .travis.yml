@@ -21,7 +21,7 @@ matrix:
   fast_finish: true
   include:
     - php: 7.0
-      env: TARGET=cs_dry_run
+      env: TARGET=test_cs
     - php: 7.0
       env: TARGET=docs
     - php: 5.3
