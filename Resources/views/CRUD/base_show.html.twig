@@ -61,7 +61,7 @@ file that was distributed with this source code.
                 {% endfor %}
             </div>
         </div>
-    {% else %}
+    {% elseif admin.showtabs is iterable %}
         {{ show_helper.render_groups(admin, object, elements, admin.showtabs.default.groups, has_tab) }}
     {% endif %}
 

@@ -104,7 +104,7 @@ class DatagridMapperTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Sonata\AdminBundle\Filter\FilterInterface', $filter);
         $this->assertSame('foo.name', $filter->getName());
         $this->assertSame('foo__name', $filter->getFormName());
-        $this->assertSame('text', $filter->getFieldType());
+        $this->assertSame('Symfony\Component\Form\Extension\Core\Type\TextType', $filter->getFieldType());
         $this->assertSame('fooLabel', $filter->getLabel());
         $this->assertSame(array('required' => false), $filter->getFieldOptions());
         $this->assertSame(array(
