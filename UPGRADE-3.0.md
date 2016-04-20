@@ -1,4 +1,4 @@
-UPGRADE FROM 2.3 to 2.4
+UPGRADE FROM 2.x to 3.0
 =======================
 
 ### Dependencies
