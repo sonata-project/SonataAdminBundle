@@ -2,7 +2,7 @@ Bootlint
 ========
 
 The admin comes with `Bootlint`_ integration
-since version 2.4.0. Bootlint is an HTML linter for Bootstrap projects.
+since version 3.0. Bootlint is an HTML linter for Bootstrap projects.
 
 You should use it when you want add some contributions on Sonata UI to check
 the eventual Twitter Bootstrap conventions' mistakes.

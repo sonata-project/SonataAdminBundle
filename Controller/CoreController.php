@@ -144,7 +144,7 @@ class CoreController extends Controller
      * This method is compatible with both Symfony 2.3 and Symfony 3
      *
      * @deprecated Use the Request action argument. This method will be removed
-     *             in SonataAdminBundle 3.0 and the action methods adjusted.
+     *             in SonataAdminBundle 4.0 and the action methods adjusted.
      *
      * @return Request
      */
