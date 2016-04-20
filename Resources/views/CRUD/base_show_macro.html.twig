@@ -12,7 +12,7 @@
     {% for code in groups %}
         {% set show_group = admin.showgroups[code] %}
 
-        <div class="{{ show_group.class }} {{ no_padding ? "nopadding" }}">
+        <div class="{{ show_group.class|default('col-md-12') }} {{ no_padding ? 'nopadding' }}">
             <div class="{{ show_group.box_class }}">
                 <div class="box-header">
                     <h4 class="box-title">
