@@ -45,7 +45,7 @@ to download the SonataDoctrineORMAdminBundle, execute the following command:
 Step 2: Enable the Bundle
 -------------------------
 
-Then, enable the bundle and the bundles is relies on by adding the following
+Then, enable the bundle and the bundles it relies on by adding the following
 line in the `app/AppKernel.php` file of your project:
 
 .. code-block:: php
