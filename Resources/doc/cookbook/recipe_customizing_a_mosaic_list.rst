@@ -1,7 +1,7 @@
 Customizing a mosaic list
 =========================
 
-Since version 2.4, the AdminBundle now include a mosaic list mode in order to have a more visual representation.
+Since version 3.0, the AdminBundle now include a mosaic list mode in order to have a more visual representation.
 
 .. figure:: ../images/list_mosaic_default.png
    :align: center

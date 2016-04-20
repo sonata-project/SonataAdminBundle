@@ -138,10 +138,10 @@ var Admin = {
     },
 
     /**
-     * @deprecated in version 2.4
+     * @deprecated in version 3.0
      */
     add_pretty_errors: function() {
-        console.warn('Admin.add_pretty_errors() was deprecated in version 2.4');
+        console.warn('Admin.add_pretty_errors() was deprecated in version 3.0');
     },
 
     stopEvent: function(event) {
