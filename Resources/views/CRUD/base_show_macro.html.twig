@@ -1,11 +1,7 @@
 {% macro render_groups(admin, object, elements, groups, has_tab, no_padding = false) %}
-    {% if has_tab %}
-        <div class="row">
-            {{ block('field_row') }}
-        </div>
-    {% else %}
+    <div class="row">
         {{ block('field_row') }}
-    {% endif %}
+    </div>
 {% endmacro %}
 
 {% block field_row %}
