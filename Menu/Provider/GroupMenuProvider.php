@@ -73,7 +73,7 @@ class GroupMenuProvider implements MenuProviderInterface
                 }
 
                 $label = $admin->getLabel();
-                $options = $admin->generateMenuUrl('list');
+                $options = $admin->generateMenuUrl('list', array(), $item['route_absolute']);
                 $options['extras'] = array(
                     'translation_domain' => $admin->getTranslationDomain(),
                     'admin'              => $admin,
@@ -83,6 +83,7 @@ class GroupMenuProvider implements MenuProviderInterface
                 $options = array(
                     'route'           => $item['route'],
                     'routeParameters' => $item['route_params'],
+                    'routeAbsolute'   => $item['route_absolute'],
                     'extras'          => array(
                         'translation_domain' => $group['label_catalogue'],
                     ),
