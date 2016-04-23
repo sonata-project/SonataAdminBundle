@@ -179,6 +179,8 @@ class FormMapper extends BaseGroupedMapper
      * @param string $group          The group to delete
      * @param string $tab            The tab the group belongs to, defaults to 'default'
      * @param bool   $deleteEmptyTab Whether or not the Tab should be deleted, when the deleted group leaves the tab empty after deletion
+     * 
+     * @return $this
      */
     public function removeGroup($group, $tab = 'default', $deleteEmptyTab = false)
     {
@@ -213,7 +215,7 @@ class FormMapper extends BaseGroupedMapper
     }
 
     /**
-     * @return \Symfony\Component\Form\FormBuilderInterface
+     * @return FormBuilderInterface
      */
     public function getFormBuilder()
     {
