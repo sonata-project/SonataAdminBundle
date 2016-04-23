@@ -117,9 +117,10 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
                             'item1',
                             'item2',
                             array(
-                                'label'        => 'fooLabel',
-                                'route'        => 'fooRoute',
-                                'route_params' => array('bar' => 'foo'),
+                                'label'          => 'fooLabel',
+                                'route'          => 'fooRoute',
+                                'route_params'   => array('bar' => 'foo'),
+                                'route_absolute' => true,
                             ),
                             array(
                                 'label' => 'barLabel',
@@ -135,37 +136,41 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(
             $config['dashboard']['groups']['bar']['items'][0],
             array(
-                'admin'        => 'item1',
-                'label'        => '',
-                'route'        => '',
-                'route_params' => array(),
+                'admin'          => 'item1',
+                'label'          => '',
+                'route'          => '',
+                'route_params'   => array(),
+                'route_absolute' => true,
             )
         );
         $this->assertSame(
             $config['dashboard']['groups']['bar']['items'][1],
             array(
-                'admin'        => 'item2',
-                'label'        => '',
-                'route'        => '',
-                'route_params' => array(),
+                'admin'          => 'item2',
+                'label'          => '',
+                'route'          => '',
+                'route_params'   => array(),
+                'route_absolute' => true,
             )
         );
         $this->assertSame(
             $config['dashboard']['groups']['bar']['items'][2],
             array(
-                'label'        => 'fooLabel',
-                'route'        => 'fooRoute',
-                'route_params' => array('bar' => 'foo'),
-                'admin'        => '',
+                'label'          => 'fooLabel',
+                'route'          => 'fooRoute',
+                'route_params'   => array('bar' => 'foo'),
+                'route_absolute' => true,
+                'admin'          => '',
             )
         );
         $this->assertSame(
             $config['dashboard']['groups']['bar']['items'][3],
             array(
-                'label'        => 'barLabel',
-                'route'        => 'barRoute',
-                'route_params' => array(),
-                'admin'        => '',
+                'label'          => 'barLabel',
+                'route'          => 'barRoute',
+                'route_params'   => array(),
+                'admin'          => '',
+                'route_absolute' => true,
             )
         );
     }

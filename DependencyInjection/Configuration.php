@@ -142,10 +142,11 @@ class Configuration implements ConfigurationInterface
                                                         $items[$key]['admin'] = '';
                                                     } else {
                                                         $items[$key] = array(
-                                                            'admin'        => $item,
-                                                            'label'        => '',
-                                                            'route'        => '',
-                                                            'route_params' => array(),
+                                                            'admin'          => $item,
+                                                            'label'          => '',
+                                                            'route'          => '',
+                                                            'route_params'   => array(),
+                                                            'route_absolute' => true,
                                                         );
                                                     }
                                                 }
@@ -160,6 +161,10 @@ class Configuration implements ConfigurationInterface
                                                 ->scalarNode('route')->end()
                                                 ->arrayNode('route_params')
                                                     ->prototype('scalar')->end()
+                                                ->end()
+                                                ->booleanNode('route_absolute')
+                                                    ->info('Whether the generated url should be absolute')
+                                                    ->defaultTrue()
                                                 ->end()
                                             ->end()
                                         ->end()

@@ -93,10 +93,11 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
                 }
 
                 $groupDefaults[$resolvedGroupName]['items'][] = array(
-                    'admin'        => $id,
-                    'label'        => !empty($attributes['label']) ? $attributes['label'] : '',
-                    'route'        => '',
-                    'route_params' => array(),
+                    'admin'          => $id,
+                    'label'          => !empty($attributes['label']) ? $attributes['label'] : '',
+                    'route'          => '',
+                    'route_params'   => array(),
+                    'route_absolute' => true,
                 );
             }
         }

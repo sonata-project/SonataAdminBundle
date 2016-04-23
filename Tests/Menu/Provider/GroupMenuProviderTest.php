@@ -101,8 +101,9 @@ class GroupMenuProviderTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('foo', $menu->getName());
 
         $children = $menu->getChildren();
-        $this->assertCount(1, $children);
+        $this->assertCount(2, $children);
         $this->assertArrayHasKey('foo_admin_label', $children);
+        $this->assertArrayHasKey('route_label', $children);
         $this->assertInstanceOf('Knp\Menu\MenuItem', $menu['foo_admin_label']);
         $this->assertSame('foo_admin_label', $menu['foo_admin_label']->getLabel());
     }
@@ -112,7 +113,7 @@ class GroupMenuProviderTest extends \PHPUnit_Framework_TestCase
      *
      * @dataProvider getAdminGroups
      */
-    public function testGetKnpMenuWithNoListRoute(array $adminGroups)
+    public function testGetKnpMenuWithListRoute(array $adminGroups)
     {
         $this->pool->expects($this->once())
             ->method('getInstance')
@@ -129,7 +130,8 @@ class GroupMenuProviderTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf('Knp\Menu\ItemInterface', $menu);
         $this->assertArrayNotHasKey('foo_admin_label', $menu->getChildren());
-        $this->assertCount(0, $menu->getChildren());
+        $this->assertArrayHasKey('route_label', $menu->getChildren());
+        $this->assertCount(1, $menu->getChildren());
     }
 
     /**
@@ -137,7 +139,7 @@ class GroupMenuProviderTest extends \PHPUnit_Framework_TestCase
      *
      * @dataProvider getAdminGroups
      */
-    public function testGetKnpMenuWithNotGrantedList(array $adminGroups)
+    public function testGetKnpMenuWithGrantedList(array $adminGroups)
     {
         $this->pool->expects($this->once())
             ->method('getInstance')
@@ -154,7 +156,8 @@ class GroupMenuProviderTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf('Knp\Menu\ItemInterface', $menu);
         $this->assertArrayNotHasKey('foo_admin_label', $menu->getChildren());
-        $this->assertCount(0, $menu->getChildren());
+        $this->assertArrayHasKey('route_label', $menu->getChildren());
+        $this->assertCount(1, $menu->getChildren());
     }
 
     /**
@@ -170,8 +173,16 @@ class GroupMenuProviderTest extends \PHPUnit_Framework_TestCase
                     'label_catalogue' => 'SonataAdminBundle',
                     'items'           => array(
                         array(
-                            'admin' => 'sonata_admin_foo_service',
-                            'label' => 'fooLabel',
+                            'admin'          => 'sonata_admin_foo_service',
+                            'label'          => 'fooLabel',
+                            'route_absolute' => true,
+                        ),
+                        array(
+                            'admin'          => '',
+                            'label'          => 'route_label',
+                            'route'          => 'FooRoute',
+                            'route_params'   => array('foo' => 'bar'),
+                            'route_absolute' => true,
                         ),
                     ),
                     'item_adds'       => array(),
