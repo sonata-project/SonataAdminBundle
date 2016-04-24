@@ -11,6 +11,11 @@
 
             <tag name="validator.constraint_validator" alias="sonata.admin.validator.inline" />
         </service>
+
+        <service id="sonata_admin.validator.validator_wrapper" class="Sonata\AdminBundle\Validator\ValidatorWrapper"
+                 public="false">
+            <argument type="service" id="validator" />
+        </service>
     </services>
 
 </container>
