@@ -1024,4 +1024,14 @@ interface AdminInterface
      *
      */
     // public function configureActionButtons($action, $object = null);
+
+    //TODO: uncomment this method for 4.0
+    /*
+     * Returns the result link for an object.
+     * 
+     * @param mixed $object
+     *
+     * @return string|null
+     */
+    //public function getSearchResultLink($object)
 }

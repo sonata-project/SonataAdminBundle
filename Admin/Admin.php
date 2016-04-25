@@ -246,6 +246,13 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     protected $pagerType = Pager::TYPE_DEFAULT;
 
     /**
+     * Action list for the search result.
+     * 
+     * @var string[]
+     */
+    protected $searchResultActions = array('edit', 'show');
+
+    /**
      * The code related to the admin.
      *
      * @var string
@@ -3025,5 +3032,21 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         }
 
         return $list;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSearchResultLink($object)
+    {
+        if (is_array($this->searchResultActions)) {
+            foreach ($this->searchResultActions as $action) {
+                if ($this->hasRoute($action) && $this->isGranted(strtoupper($action), $object)) {
+                    return $this->generateObjectUrl($action, $object);
+                }
+            }
+        }
+
+        return;
     }
 }
