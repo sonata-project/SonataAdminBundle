@@ -2,45 +2,19 @@
 
 {% block root %}
     {%- set listAttributes = item.childrenAttributes|merge({'class': 'sidebar-menu'}) %}
-    {%- set request        = item.extra('request') ?: app.request %}
     {{ block('list') -}}
 {% endblock %}
 
 {% block item %}
     {%- if item.displayed %}
         {#- check role of the group #}
-        {%- set display = (item.extra('roles') is empty or is_granted('ROLE_SUPER_ADMIN') ) %}
-        {%- for role in item.extra('roles') if not display %}
+        {%- set display = item.extra('roles', []) is empty or is_granted('ROLE_SUPER_ADMIN') %}
+        {%- for role in item.extra('roles', []) if not display %}
             {%- set display = is_granted(role) %}
         {%- endfor %}
     {%- endif %}
 
-    {%- if item.displayed and display|default %}
-        {%- set active = false %}
-        {%- if item.extra('active') is not empty and item.extra('active') %}
-            {%- set active = true %}
-        {%- elseif item.extra('admin') is not empty and item.extra('admin').hasroute('list') and item.extra('admin').isGranted('LIST') and request.get('_sonata_admin') == item.extra('admin').code %}
-            {%- set active = true %}
-        {%- elseif item.route is defined and request.get('_route') == item.route %}
-            {%- set active = true %}
-        {%- else %}
-            {%- for child in item.children if not active %}
-                {%- if child.extra('admin') is not empty and child.extra('admin').hasroute('list') and child.extra('admin').isGranted('LIST') and request.get('_sonata_admin') == child.extra('admin').code %}
-                    {%- set active = true %}
-                {%-  elseif child.route is defined and request.get('_route') == child.route %}
-                    {%- set active = true %}
-                {%- endif %}
-            {%- endfor %}
-        {%- endif %}
-
-        {%- if item.hasChildren %}
-            {%- do item.setAttribute('class', (item.attribute('class')~' treeview')|trim) %}
-        {%- endif %}
-        {%- if active %}
-            {%- do item.setAttribute('class', (item.attribute('class')~' active')|trim) %}
-            {%- do item.setChildrenAttribute('class', (item.childrenAttribute('class')~' active')|trim) %}
-        {%- endif %}
-
+    {%- if item.displayed and display %}
         {%- do item.setChildrenAttribute('class', (item.childrenAttribute('class')~' treeview-menu')|trim) %}
         {{ parent() }}
     {% endif %}
@@ -49,7 +23,7 @@
 {% block linkElement %}
     {% spaceless %}
         {% set translation_domain = item.extra('translation_domain', 'messages') %}
-        {% set icon = item.attribute('icon')|default(item.level > 1 ? '<i class="fa fa-angle-double-right"></i>' : '') %}
+        {% set icon = item.attribute('icon', item.level > 1 ? '<i class="fa fa-angle-double-right"></i>' : '') %}
         {% set is_link = true %}
         {{ parent() }}
     {% endspaceless %}
@@ -59,7 +33,7 @@
     {% spaceless %}
         <a href="#">
             {% set translation_domain = item.extra('label_catalogue') %}
-            {% set icon = item.extra('icon')|default('') %}
+            {% set icon = item.extra('icon', '') %}
             {{ icon|raw }}
             {{ parent() }}
             <i class="fa pull-right fa-angle-left"></i>
