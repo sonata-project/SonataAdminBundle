@@ -272,7 +272,7 @@ class AdminObjectAclManipulator
                 );
             }
 
-            $formBuilder->add($key, new AclMatrixType(), array('permissions' => $permissions, 'acl_value' => $aclValue));
+            $formBuilder->add($key, AclMatrixType::class, array('permissions' => $permissions, 'acl_value' => $aclValue));
         }
 
         return $formBuilder->getForm();
