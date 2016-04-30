@@ -356,3 +356,63 @@ On ``top`` and ``bottom`` positions, you can also specify an optional ``class`` 
                         position: top
                         class: col-md-6
                         type: sonata.admin.block.admin_list
+
+Configuring what actions are available for each item on the dashboard
+---------------------------------------------------------------------
+
+By default. A "list" and a "create" option are available for each item on the
+dashboard. If you created a custom action and want to display it along the
+other two on the dashboard, you can do so by overriding the
+``getDashboardActions()`` method of your admin class:
+
+.. code-block:: php
+
+    <?php
+    // src/AppBundle/Admin/PostAdmin.php
+
+    class PostAdmin extends Admin
+    {
+        // ...
+
+        public function getDashboardActions()
+        {
+            $actions = parent::getDashboardActions();
+
+            $actions['import'] = array(
+                'label'              => 'Import',
+                'url'                => $this->generateUrl('import'),
+                'icon'               => 'import',
+                'translation_domain' => 'SonataAdminBundle', // optional
+                'template'           => 'SonataAdminBundle:CRUD:dashboard__action.html.twig', // optional
+            );
+
+            return $actions;
+        }
+
+    }
+
+You can also hide an action from the dashboard by unsetting it:
+
+.. code-block:: php
+
+    <?php
+    // src/AppBundle/Admin/PostAdmin.php
+
+    class PostAdmin extends Admin
+    {
+        // ...
+
+        public function getDashboardActions()
+        {
+            $actions = parent::getDashboardActions();
+
+            unset($actions['list']);
+
+            return $actions;
+        }
+
+    }
+
+If you do this, you need to be aware that the action is only hidden. it will
+still be available by directly calling its URL, unless you prevent that using
+proper security measures (e.g. ACL or role based).

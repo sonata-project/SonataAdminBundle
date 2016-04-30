@@ -3026,4 +3026,35 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
         return $list;
     }
+
+    /**
+     * Get the list of actions that can be accessed directly from the dashboard.
+     * 
+     * @return array
+     */
+    public function getDashboardActions()
+    {
+        $actions = array();
+
+        if ($this->hasRoute('create') && $this->isGranted('CREATE')) {
+            $actions['create'] = array(
+                'label'              => 'link_add',
+                'translation_domain' => 'SonataAdminBundle',
+                'template'           => 'SonataAdminBundle:CRUD:dashboard__action_create.html.twig',
+                'url'                => $this->generateUrl('create'),
+                'icon'               => 'plus-circle',
+            );
+        }
+
+        if ($this->hasRoute('list') && $this->isGranted('LIST')) {
+            $actions['list'] = array(
+                'label'              => 'link_list',
+                'translation_domain' => 'SonataAdminBundle',
+                'url'                => $this->generateUrl('list'),
+                'icon'               => 'list',
+            );
+        }
+
+        return $actions;
+    }
 }

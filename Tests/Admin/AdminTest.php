@@ -1671,6 +1671,41 @@ class AdminTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame($expected, $admin->getActionButtons('list', null));
     }
+
+    /**
+     * @covers Sonata\AdminBundle\Admin\Admin::getDashboardActions
+     * @dataProvider provideGetBaseRouteName
+     */
+    public function testDefaultDashboardActionsArePresent($objFqn, $expected)
+    {
+        $pathInfo = new \Sonata\AdminBundle\Route\PathInfoBuilder($this->getMock('Sonata\AdminBundle\Model\AuditManagerInterface'));
+
+        $routeGenerator = new DefaultRouteGenerator(
+            $this->getMock('Symfony\Component\Routing\RouterInterface'),
+            new RoutesCache($this->cacheTempFolder, true)
+        );
+
+        $admin = new PostAdmin('sonata.post.admin.post', $objFqn, 'SonataNewsBundle:PostAdmin');
+        $admin->setRouteBuilder($pathInfo);
+        $admin->setRouteGenerator($routeGenerator);
+        $admin->initialize();
+
+        $securityHandler = $this->getMock('Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface');
+        $securityHandler->expects($this->any())
+            ->method('isGranted')
+            ->will($this->returnCallback(function (AdminInterface $adminIn, $attributes, $object = null) use ($admin) {
+                if ($admin == $adminIn && ($attributes == 'CREATE' || $attributes == 'LIST')) {
+                    return true;
+                }
+
+                return false;
+            }));
+
+        $admin->setSecurityHandler($securityHandler);
+
+        $this->assertArrayHasKey('list', $admin->getDashboardActions());
+        $this->assertArrayHasKey('create', $admin->getDashboardActions());
+    }
 }
 
 class DummySubject
