@@ -149,6 +149,38 @@ You can modify the menu via events easily. You can register as many listeners as
 
 Please see the `Using events to allow a menu to be extended`_ for further information.
 
+Hiding menu items
+-----------------
+
+You can modify the menu to hide some menu items. You need to add the ``show_in_dashboard`` option in
+your admin services or simply remove menu items from the ``sonata_admin`` dashboard group configuration:
+
+.. code-block:: yaml
+
+    sonata_admin.admin.post:
+        class: Sonata\AdminBundle\Admin\PostAdmin
+        arguments: [~, Sonata\AdminBundle\Entity\Post, SonataAdminBundle:CRUD]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: admin, label: Post, show_in_dashboard: false}
+
+.. code-block:: yaml
+
+    # app/config/config.yml
+
+    sonata_admin:
+        dashboard:
+            groups:
+                news:
+                    label:                ~
+                    label_catalogue:      ~
+                    items:
+                      # just comment or remove the sonata.news.admin.post declaration to hide it from the menu.
+                      #  - sonata.news.admin.post
+                        - route:        blog_home
+                          label:        Blog
+                        - sonata.news.admin.news
+
+
 .. _KnpMenu: https://github.com/KnpLabs/KnpMenu
 .. _Knp documentation: http://symfony.com/doc/current/bundles/KnpMenuBundle/index.html#create-your-first-menu
 .. _Using events to allow a menu to be extended: http://symfony.com/doc/master/bundles/KnpMenuBundle/events.html
