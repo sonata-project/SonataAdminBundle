@@ -99,6 +99,6 @@ class ServicesManipulator
                 $serviceId,
                 $this->file
             ));
-        };
+        }
     }
 }

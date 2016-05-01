@@ -632,8 +632,6 @@ interface AdminInterface
      */
     public function getDataSourceIterator();
 
-    /**
-     */
     public function configure();
 
     /**

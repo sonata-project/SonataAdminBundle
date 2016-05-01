@@ -37,5 +37,5 @@ interface ShowBuilderInterface extends BuilderInterface
      * @param FieldDescriptionInterface  $fieldDescription
      * @param AdminInterface             $admin
      */
-    public function addField(FieldDescriptionCollection $list, $type = null, FieldDescriptionInterface $fieldDescription, AdminInterface $admin);
+    public function addField(FieldDescriptionCollection $list, $type, FieldDescriptionInterface $fieldDescription, AdminInterface $admin);
 }
