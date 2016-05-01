@@ -10,7 +10,7 @@ file that was distributed with this source code.
 #}
 
 {% for object in admin.datagrid.results %}
-    <tr>
+    <tr class="sonata-ba-list__item" data-object-id="{{ admin.id(object) }}">
         {% include admin.getTemplate('inner_list_row') %}
     </tr>
 {% endfor %}

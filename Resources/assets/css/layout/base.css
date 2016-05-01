@@ -1,0 +1,55 @@
+/**
+ * SonataAdminBundle Theme based on SB Admin v2.0
+ * http://startbootstrap.com/templates/sb-admin-v2/
+*/
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+/*
+ * sonata-bc is a body class.
+ */
+.sonata-bc.sonata-ba-no-side-menu div.container-fluid > div.content {
+    margin-left: 0;
+}
+
+.noscript-warning {
+    background-color: #C70A0A;
+    color: #FFFFFF;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 4px 0;
+    text-align: center;
+    width: 100%;
+}
+
+/*
+ * wat?
+ */
+div.border {
+    border: 1px solid #DDDDDD;
+    border-radius: 6px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.075);
+}
+
+
+/*
+ * admin-bundle/Resources/views/CRUD/base_list.html.twig
+ * admin-bundle/Resources/views/standard_layout.html.twig
+ * formatter-bundle/Resources/views/Ckeditor/browser.html.twig
+ */
+div.sonata-actions {
+    /*margin-top: 18px;*/
+    float: right
+}
+
+.pagination {
+    margin: 0;
+}
+
+.sonata-search-result-list > li {
+    word-wrap: break-word;
+}
+

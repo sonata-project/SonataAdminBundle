@@ -8,6 +8,10 @@ composer.lock
 /vendor
 composer.phar
 .php_cs.cache
+/node_modules
+npm-debug.log
+# sourcemaps
+*.map
 
 # clean up some non bower ready package
 Resources/public/vendor/admin-lte/bootstrap
@@ -21,13 +25,6 @@ Resources/public/vendor/admin-lte/pages
 Resources/public/vendor/admin-lte/plugins
 Resources/public/vendor/admin-lte/*.html
 Resources/public/vendor/admin-lte/Gruntfile.js
-
-Resources/public/vendor/iCheck/skins/all.css
-Resources/public/vendor/iCheck/skins/*/*
-!Resources/public/vendor/iCheck/skins/square/blue.css
-!Resources/public/vendor/iCheck/skins/square/blue.png
-!Resources/public/vendor/iCheck/skins/square/blue@2x.png
-Resources/public/vendor/iCheck/icheck.js
 
 Resources/public/vendor/slimScroll/examples
 Resources/public/vendor/slimScroll/jquery.slimscroll.js

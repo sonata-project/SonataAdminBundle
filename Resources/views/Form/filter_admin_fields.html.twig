@@ -32,55 +32,76 @@ file that was distributed with this source code.
 
 {% block choice_widget_expanded %}
     {% spaceless %}
-        {% set label_attr = label_attr|merge({'class': (label_attr.class|default(''))}) %}
-        {% set label_attr = label_attr|merge({'class': (label_attr.class ~ ' ' ~ (widget_type is defined and widget_type != '' ? (multiple ? 'checkbox' : 'radio') ~ '-' ~ widget_type : ''))}) %}
+
+        {% set label_attr = label_attr|merge({
+            class: classlist(
+                label_attr.class|default,
+                {
+                    ('checkbox-' ~ widget_type): multiple and widget_type|default,
+                    ('radio-' ~ widget_type): widget_type|default
+                }
+            )
+        }) %}
+
+        {% set _child_widgets %}
+            {% for child in form %}
+                {% set _widget %}
+                    <label{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>
+                        {{ form_widget(child, {'attr': {'class': attr.widget_class|default('')}}) }}
+                        <span class="control-indicator"></span>
+                        {{ child.vars.label|trans({}, translation_domain) }}
+                    </label>
+                {% endset %}
+                {% if widget_type is defined and widget_type != 'inline' %}
+                    <div class="{{ multiple ? 'checkbox' : 'radio' }}">
+                        {{ _widget }}
+                    </div>
+                {% else %}
+                    {{ _widget }}
+                {% endif %}
+            {% endfor %}
+        {% endset %}
+
         {% if expanded %}
-            {% set attr = attr|merge({'class': attr.class|default('')}) %}
             <div {{ block('widget_container_attributes') }}>
-        {% endif %}
-        {% for child in form %}
-            {% if widget_type is defined and widget_type != 'inline' %}
-                <div class="{{ multiple ? 'checkbox' : 'radio' }}">
-            {% endif %}
-            <label{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>
-            {{ form_widget(child, {'attr': {'class': attr.widget_class|default('')}}) }}
-            {{ child.vars.label|trans({}, translation_domain) }}
-            </label>
-            {% if widget_type is defined and widget_type != 'inline' %}
-                </div>
-            {% endif %}
-        {% endfor %}
-        {{ block('form_message') }}
-        {% if expanded %}
+                {{ _child_widgets }}
+                {{ block('form_message') }}
             </div>
+        {% else %}
+            {{ _child_widgets }}
+            {{ block('form_message') }}
         {% endif %}
+
     {% endspaceless %}
 {% endblock choice_widget_expanded %}
 
 {% block checkbox_widget %}
     {% spaceless %}
+
         {% if label is not same as(false) and label is empty %}
             {% set label = name|humanize %}
         {% endif %}
+
+        {% set _input_widget %}
+            <input type="checkbox" {{ block('widget_attributes') }} value="{{ value|default('') }}" {{ checked ? 'checked' }} />
+        {% endset %}
+
+        {# not a choice widget ? #}
         {% if form.parent != null and 'choice' not in form.parent.vars.block_prefixes %}
             <div class="checkbox">
-        {% endif %}
-
-        {% if form.parent != null and 'choice' not in form.parent.vars.block_prefixes and label_render is defined %}
-            <label class="{% if inline is defined and inline %}checkbox-inline{% endif %}">
-        {% endif %}
-
-        <input type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %}/>
-        {% if form.parent != null and 'choice' not in form.parent.vars.block_prefixes %}
-            {% if label_render is defined and widget_checkbox_label in ['both', 'widget'] %}
-                {{ label|trans({}, translation_domain) }}
+                <label for="{{ id }}" class="{{ classlist({'checkbox-inline': inline|default(false)}) }}">
+                    {{ _input_widget }}
+                    <span class="control-indicator"></span>
+                    {% if label_render is defined and widget_checkbox_label in ['both', 'widget'] %}
+                        {{ label|trans({}, translation_domain) }}
+                    {% endif %}
                 </label>
-            {% endif %}
-        {% endif %}
-        {% if form.parent != null and 'choice' not in form.parent.vars.block_prefixes %}
             </div>
             {{ block('form_message') }}
+        {% else %}
+            {{ _input_widget }}
         {% endif %}
+
     {% endspaceless %}
 {% endblock checkbox_widget %}
 

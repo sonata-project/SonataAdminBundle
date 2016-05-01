@@ -37,9 +37,19 @@ class FormChoiceWidgetTest extends BaseWidgetTest
         );
 
         $html = $this->renderWidget($choice->createView());
-
+        $expected = <<<EOS
+<li>
+    <div class="checkbox">
+        <label class="">
+            <input type="checkbox" id="choice_0" name="choice[]" value="0" />
+            <span class="control-indicator"></span>
+            <span class="control-label__text">[trans]some[/trans]</span>
+        </label>
+    </div>
+</li>
+EOS;
         $this->assertContains(
-            '<li><div class="checkbox"><label><input type="checkbox" id="choice_0" name="choice[]" value="0" /><span class="control-label__text">[trans]some[/trans]</span></label></div></li>',
+            $this->cleanHtmlWhitespace($expected),
             $this->cleanHtmlWhitespace($html)
         );
     }

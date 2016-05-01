@@ -202,6 +202,14 @@
                 <source>btn_delete</source>
                 <target>Oui, supprimer</target>
             </trans-unit>
+            <trans-unit id="label_list_batch_select">
+                <source>label_list_batch_select</source>
+                <target>Sélectionner / déselectionner tous les éléments pour le traitement par lots</target>
+            </trans-unit>
+            <trans-unit id="label_list_select_row">
+                <source>label_list_select_row</source>
+                <target>Sélectionner / déselectionner cet élément pour le traitement par lots</target>
+            </trans-unit>
             <trans-unit id="title_batch_confirmation">
                 <source>title_batch_confirmation</source>
                 <target>Confirmation d'un traitement par lots : '%action%'</target>

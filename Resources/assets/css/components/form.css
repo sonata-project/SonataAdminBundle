@@ -1,0 +1,33 @@
+
+fieldset legend {
+    padding-left: 0;
+}
+
+input[type="file"] {
+    height: 34px;
+}
+
+.required:after {
+    content: '*';
+}
+
+.form-horizontal .control-group {
+    margin-bottom: 10px;
+}
+
+.input-group-addon {
+    /* See https://github.com/sonata-project/SonataAdminBundle/issues/2950 */
+    width: auto;
+}
+
+/* Hide Delete checkbox on sonata_type_collection tables */
+.sonata-ba-field-inline-table td > .checkbox > label > .control-label__text {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    border: 0;
+}

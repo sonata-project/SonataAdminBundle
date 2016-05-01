@@ -9,7 +9,10 @@ file that was distributed with this source code.
 
 #}
 
-<span class="sonata-ba-list-field sonata-ba-list-field-{{ field_description.type }}" objectId="{{ admin.id(object) }}">
+{# non-BEM classes deprecated in 2.4 #}
+<span class="{{ sonata_list_field_classes({type: field_description.type, flat: true}) }}"
+    data-object-id="{{ admin.id(object) }}"
+>
     {% if
             field_description.options.identifier is defined
         and field_description.options.route is defined

@@ -1,0 +1,23 @@
+/*
+ * sidebar menu styles ?
+ * -------------------- */
+
+.container-fluid > .sidebar {
+    top: auto;
+}
+
+.sidebar-search {
+    padding: 15px;
+}
+
+.arrow {
+    float: right;
+}
+
+.fa.arrow:before {
+    content: "\f104";
+}
+
+.active > a > .fa.arrow:before {
+    content: "\f107";
+}

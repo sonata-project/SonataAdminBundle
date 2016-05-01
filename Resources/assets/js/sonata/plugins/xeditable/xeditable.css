@@ -1,0 +1,21 @@
+td.sonata-ba-list-field .editable {
+    cursor: pointer;
+}
+td.sonata-ba-list-field .btn.editable {
+    border-bottom: solid 1px #BBB;
+}
+td.sonata-ba-list-field .editable-empty:not(.editable-open) {
+    display: none;
+}
+.sonata-ba-list tr:hover .editable-empty {
+    display: inline-block;
+}
+.editable-pre-wrapped {
+    white-space: normal;
+}
+.editable-container .prev:before {
+    content: "\2190 ";
+}
+.editable-container .next:before {
+    content: "\2192 ";
+}

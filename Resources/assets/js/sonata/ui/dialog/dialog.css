@@ -1,0 +1,64 @@
+/**
+ * Make large modals full-width on medium screens.
+ * We really need that screen real estate !
+ */
+.modal-dialog.modal-lg {
+    width: 100vw;
+    height: 100vh;
+    padding: 0;
+    margin: 0;
+}
+.modal-lg .modal-content {
+    height: 100%;
+    padding: 0;
+    border-radius: 0;
+}
+.modal-lg .modal-body {
+    position: relative;
+    height: 90%;
+    padding: 0;
+    overflow: hidden;
+}
+.modal-lg .modal-body-content {
+    height: 100%;
+    overflow: auto;
+    padding: 1rem;
+}
+@media (min-width: 1200px) {
+    /**
+     * Switch back to normal modal on large screens
+     */
+    .modal-dialog.modal-lg {
+        width: 90vw;
+        height: 85vh;
+        margin: 2rem auto;
+    }
+}
+
+/**
+ * Avoid piling up backdrop opacity when multiple modals are open.
+ * This only works with modals added dynamically to the end of the document's body.
+ */
+.modal.in ~ .modal.in,
+.modal-backdrop.in ~ .modal-backdrop.in {
+    background-color: transparent;
+}
+
+/**
+ * The AdminLTE .overlay class works only as a child of .box
+ * We add it here for modals.
+ */
+.modal .overlay {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(255, 255, 255, 0.6);
+}
+
+.overlay.spinner-overlay {
+    /* center spinner in overlay */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}

@@ -1,0 +1,43 @@
+/* Admin table */
+
+td.sonata-ba-list-label {
+    color: #565656;
+    font-weight: bold;
+    text-align: right;
+    vertical-align: middle !important;
+}
+
+body.fixed .sonata-list-table {
+    position: relative;
+    margin-left: 15px;
+    margin-right: 15px;
+    margin-bottom: 5px;
+}
+
+.sonata-ba-list td.sonata-ba-list-field a.sonata-link-identifier {
+    font-weight: bold;
+}
+
+.sonata-ba-list tr:hover td.sonata-ba-list-field.sonata-ba-list-field-select a {
+    visibility: visible;
+}
+
+td.sonata-ba-list-field.sonata-ba-list-field-boolean i {
+    margin-right: 1ex;
+}
+td.sonata-ba-list-field.sonata-ba-list-field-boolean a:hover {
+    text-decoration: none;
+}
+
+td.sonata-ba-list-field.sonata-ba-list-field-currency,
+td.sonata-ba-list-field.sonata-ba-list-field-percent,
+td.sonata-ba-list-field.sonata-ba-list-field-integer {
+    text-align: right;
+}
+
+td.sonata-ba-list-field.sonata-ba-list-field-select {
+    text-align: center;
+}
+td.sonata-ba-list-field.sonata-ba-list-field-select a {
+    visibility: hidden;
+}

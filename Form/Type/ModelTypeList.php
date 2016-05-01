@@ -47,6 +47,8 @@ class ModelTypeList extends AbstractType
             $view->vars['sonata_admin']['edit'] = 'list';
         }
         $view->vars['btn_add'] = $options['btn_add'];
+        $view->vars['btn_edit'] = $options['btn_edit'];
+        $view->vars['btn_show'] = $options['btn_show'];
         $view->vars['btn_list'] = $options['btn_list'];
         $view->vars['btn_delete'] = $options['btn_delete'];
         $view->vars['btn_catalogue'] = $options['btn_catalogue'];
@@ -68,12 +70,14 @@ class ModelTypeList extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'model_manager' => null,
-            'class'         => null,
-            'btn_add'       => 'link_add',
-            'btn_list'      => 'link_list',
-            'btn_delete'    => 'link_delete',
-            'btn_catalogue' => 'SonataAdminBundle',
+            'model_manager'  => null,
+            'class'          => null,
+            'btn_add'        => 'link_add',
+            'btn_edit'       => 'link_action_edit',
+            'btn_show'       => 'link_action_show',
+            'btn_list'       => 'link_list',
+            'btn_delete'     => 'link_delete',
+            'btn_catalogue'  => 'SonataAdminBundle',
         ));
     }
 

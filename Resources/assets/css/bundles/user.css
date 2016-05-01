@@ -1,0 +1,59 @@
+/*
+ * Used in:
+ * user-bundle/Resources/views/Admin/Security/two_step_form.html.twig
+ * Maybe this should be moved to user-bundle ?
+ * ---------------------------------------------------------------------------------------------------------------- */
+
+.connection {
+    position: absolute;
+    left: 50%;
+    top: 35%;
+    width: 460px;
+    margin: -130px 0 0 -250px;
+    box-shadow: 2px 2px 10px #ccc;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+}
+
+.connection .control-group {
+    padding: 0 20px 0 20px;
+}
+
+.connection .alert {
+    margin: 0 20px 20px 20px;
+}
+
+.connection form {
+    padding-top: 15px;
+    margin-bottom: 0;
+}
+
+.connection form .form-actions {
+    margin-bottom: 0;
+}
+
+.connection .form-actions {
+    padding-left: 20px;
+}
+
+.connection div input.big {
+    height: 35px;
+    font-size: 25px;
+}
+
+/*
+ * Legacy input sizing class, should be replaced by sthg more semantic ?
+ */
+select.sonata-medium, textarea.sonata-medium, input.sonata-medium {
+    width: 400px;
+}
+
+textarea.sonata-medium {
+    height: 125px;
+}
+
+.sonata-ba-field-inline-table select.sonata-medium,
+.sonata-ba-field-inline-table textarea.sonata-medium,
+.sonata-ba-field-inline-table input.sonata-medium {
+    width: 150px;
+}

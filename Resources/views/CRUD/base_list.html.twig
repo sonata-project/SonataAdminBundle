@@ -15,13 +15,22 @@ file that was distributed with this source code.
     {% include 'SonataAdminBundle:CRUD:action_buttons.html.twig' %}
 {% endblock %}
 
-{% block tab_menu %}{{ knp_menu_render(admin.sidemenu(action), {'currentClass' : 'active', 'template': sonata_admin.adminPool.getTemplate('tab_menu_template')}, 'twig') }}{% endblock %}
+{% block tab_menu %}
+    {{ knp_menu_render(
+        admin.sidemenu(action),
+        {
+            currentClass: 'active',
+            template: sonata_admin.adminPool.getTemplate('tab_menu_template')
+        },
+        'twig'
+    ) }}
+{% endblock %}
 
 {% block list_table %}
     <div class="col-xs-12 col-md-12">
         {% set batchactions = admin.batchactions %}
         {% if admin.hasRoute('batch') and batchactions|length %}
-            <form action="{{ admin.generateUrl('batch', {'filter': admin.filterParameters}) }}" method="POST" >
+            <form action="{{ admin.generateUrl('batch', {'filter': admin.filterParameters}) }}" method="POST">
             <input type="hidden" name="_sonata_csrf_token" value="{{ csrf_token }}">
         {% endif %}
 
@@ -33,14 +42,26 @@ file that was distributed with this source code.
                 {% block list_header %}{% endblock %}
 
                 {% if admin.datagrid.results|length > 0 %}
-                    <table class="table table-bordered table-striped sonata-ba-list">
+                    <table class="{{ classlist(
+                        'table', 'table-bordered', 'table-striped',
+                        'sonata-ba-list',
+                        'sonata-ba-list--mode-' ~ admin.listMode
+                    ) }}">
                         {% block table_header %}
                             <thead>
                                 <tr class="sonata-ba-list-field-header">
                                     {% for field_description in admin.list.elements %}
                                         {% if admin.hasRoute('batch') and field_description.getOption('code') == '_batch' and batchactions|length > 0 %}
                                             <th class="sonata-ba-list-field-header sonata-ba-list-field-header-batch">
-                                              <input type="checkbox" id="list_batch_checkbox">
+                                                <div class="checkbox">
+                                                    <label for="list_batch_checkbox">
+                                                        <input type="checkbox" id="list_batch_checkbox">
+                                                        <span class="control-indicator"></span>
+                                                        <span class="sr-only">
+                                                            {{ 'label_list_batch_select'|trans({}, 'SonataAdminBundle') }}
+                                                        </span>
+                                                    </label>
+                                                </div>
                                             </th>
                                         {% elseif field_description.getOption('code') == '_select' %}
                                             <th class="sonata-ba-list-field-header sonata-ba-list-field-header-select"></th>
@@ -59,10 +80,23 @@ file that was distributed with this source code.
                                             {% endif %}
 
                                             {% spaceless %}
-                                                <th class="sonata-ba-list-field-header-{{ field_description.type}} {% if sortable %} sonata-ba-list-field-header-order-{{ sort_by|lower }} {{ sort_active_class }}{% endif %}{% if field_description.options.header_class is defined %} {{ field_description.options.header_class }}{% endif %}"{% if field_description.options.header_style is defined %} style="{{ field_description.options.header_style }}"{% endif %}>
-                                                    {% if sortable %}<a href="{{ admin.generateUrl('list', sort_parameters) }}">{% endif %}
+                                                <th class="{{ classlist(
+                                                    'sonata-ba-list-field-header-' ~ field_description.type,
+                                                    sortable ? [
+                                                        'sonata-ba-list-field-header-order-' ~ sort_by|lower,
+                                                        sort_active_class
+                                                    ] : '',
+                                                    field_description.options.header_class|default
+                                                ) }}"
+                                                    style="{{ field_description.options.header_style|default('') }}"
+                                                >
+                                                    {% if sortable %}
+                                                        <a href="{{ admin.generateUrl('list', sort_parameters) }}">
+                                                    {% endif %}
                                                     {{ admin.trans(field_description.label, {}, field_description.translationDomain) }}
-                                                    {% if sortable %}</a>{% endif %}
+                                                    {% if sortable %}
+                                                        </a>
+                                                    {% endif %}
                                                 </th>
                                             {% endspaceless %}
                                         {% endif %}
@@ -107,46 +141,28 @@ file that was distributed with this source code.
                                 <div class="pull-left">
                                     {% if admin.hasRoute('batch') and batchactions|length > 0  %}
                                         {% block batch %}
-                                            <script>
-                                                {% block batch_javascript %}
-                                                    jQuery(document).ready(function ($) {
-                                                        $('#list_batch_checkbox').on('ifChanged', function () {
-                                                            $(this)
-                                                                .closest('table')
-                                                                .find('td.sonata-ba-list-field-batch input[type="checkbox"], div.sonata-ba-list-field-batch input[type="checkbox"]')
-                                                                .iCheck($(this).is(':checked') ? 'check' : 'uncheck')
-                                                            ;
-                                                        });
 
-                                                        $('td.sonata-ba-list-field-batch input[type="checkbox"], div.sonata-ba-list-field-batch input[type="checkbox"]')
-                                                            .on('ifChanged', function () {
-                                                                $(this)
-                                                                    .closest('tr, div.sonata-ba-list-field-batch')
-                                                                    .toggleClass('sonata-ba-list-row-selected', $(this).is(':checked'))
-                                                                ;
-                                                            })
-                                                            .trigger('ifChanged')
-                                                        ;
-                                                    });
-                                                {% endblock %}
-                                            </script>
-
-                                        {% block batch_actions %}
-                                            <label class="checkbox" for="{{ admin.uniqid }}_all_elements">
-                                                <input type="checkbox" name="all_elements" id="{{ admin.uniqid }}_all_elements">
-                                                {{ 'all_elements'|trans({}, 'SonataAdminBundle') }}
-                                                ({{ admin.datagrid.pager.nbresults }})
-                                            </label>
-
-                                            <select name="action" style="width: auto; height: auto" class="form-control">
-                                                {% for action, options in batchactions %}
-                                                    <option value="{{ action }}">{{ options.label|trans({}, options.translation_domain|default(admin.translationDomain)) }}</option>
-                                                {% endfor %}
-                                            </select>
-                                        {% endblock %}
+                                            {% block batch_actions %}
+                                                <div class="checkbox">
+                                                    <label for="{{ admin.uniqid }}_all_elements">
+                                                        <input type="checkbox" name="all_elements" id="{{ admin.uniqid }}_all_elements">
+                                                        <span class="control-indicator"></span>
+                                                        {{ 'all_elements'|trans({}, 'SonataAdminBundle') }}
+                                                        ({{ admin.datagrid.pager.nbresults }})
+                                                    </label>
+                                                </div>
+                                                <select name="action" style="width: auto; height: auto" class="form-control">
+                                                    {% for action, options in batchactions %}
+                                                        <option value="{{ action }}">
+                                                            {{- options.label|trans({}, options.translation_domain|default(admin.translationDomain)) -}}
+                                                        </option>
+                                                    {% endfor %}
+                                                </select>
+                                            {% endblock batch_actions %}
 
                                             <input type="submit" class="btn btn-small btn-primary" value="{{ 'btn_batch'|trans({}, 'SonataAdminBundle') }}">
-                                        {% endblock %}
+
+                                        {% endblock batch %}
                                     {% endif %}
                                 </div>
 
@@ -170,7 +186,6 @@ file that was distributed with this source code.
                                                 {% endfor %}
                                             </ul>
                                         </div>
-
                                         &nbsp;-&nbsp;
                                     {% endif %}
 
@@ -202,16 +217,35 @@ file that was distributed with this source code.
         <ul class="nav navbar-nav navbar-right">
 
             <li class="dropdown sonata-actions">
-                <a href="#" class="dropdown-toggle sonata-ba-action" data-toggle="dropdown">
+                <a role="button" href="#"
+                   class="dropdown-toggle sonata-ba-action"
+                   data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false"
+                   title="{{ 'link_filters'|trans({}, 'SonataAdminBundle') }}"
+                >
                     <i class="fa fa-filter"></i>
-                    {{ 'link_filters'|trans({}, 'SonataAdminBundle') }} <b class="caret"></b>
+                    <span>{{ 'link_filters'|trans({}, 'SonataAdminBundle') }}</span>
+                    <b class="caret"></b>
                 </a>
 
                 <ul class="dropdown-menu" role="menu">
                     {% for filter in admin.datagrid.filters if (filter.options['show_filter'] is same as(true) or filter.options['show_filter'] is null) %}
+                        {% set show_filter = filter.getOption('show_filter', null) %}
+                        {% set is_visible_filter = (filter.active and show_filter is null) or show_filter is sameas(true) %}
+                        {% set filter_id = 'filter-' ~ admin.uniqid ~ '-' ~ filter.name|replace('.', '_') %}
                         <li>
-                            <a href="#" class="sonata-toggle-filter sonata-ba-action" filter-target="filter-{{ admin.uniqid }}-{{ filter.name }}" filter-container="filter-container-{{ admin.uniqid() }}">
-                                <i class="fa {{ (filter.isActive() or filter.options['show_filter']) ? 'fa-check-square-o' : 'fa-square-o' }}"></i>{{ admin.trans(filter.label, {}, filter.translationDomain) }}
+                            <a role="button" href="#"
+                               class="sonata-toggle-filter sonata-ba-action"
+                               data-toggle="collapse"
+                               data-target="#{{ filter_id }}"
+                               aria-controls="{{ filter_id }}"
+                               aria-expanded="{{ (filter.active or filter.options['show_filter']) ? 'true' : 'false' }}"
+                            >
+                                <i class="{{ classlist('fa', {
+                                    'fa-check-square-o': filter.active or filter.options['show_filter'],
+                                    'fa-square-o': not (filter.active and filter.options['show_filter'])
+                                }) }}"></i>
+                                <span>{{ admin.trans(filter.label, {}, filter.translationDomain) }}</span>
                             </a>
                         </li>
                     {% endfor %}
@@ -225,23 +259,51 @@ file that was distributed with this source code.
     {% if admin.datagrid.filters %}
         {% form_theme form admin.getTemplate('filter') %}
 
-        <div class="col-xs-12 col-md-12 sonata-filters-box" style="display: {{ admin.datagrid.hasDisplayableFilters ? 'block' : 'none' }}" id="filter-container-{{ admin.uniqid() }}">
+        <div id="filter-container-{{ admin.uniqid() }}" class="{{ classlist(
+            'col-xs-12',
+            'col-md-12',
+            'sonata-filters-box', {
+                'collapse': true,
+                'in': admin.datagrid.hasDisplayableFilters
+            }
+        ) }}">
             <div class="box box-primary" >
                 <div class="box-body">
-                    <form class="sonata-filter-form form-horizontal {{ admin.isChild and 1 == admin.datagrid.filters|length ? 'hide' : '' }}" action="{{ admin.generateUrl('list') }}" method="GET" role="form">
-                        {{ form_errors(form) }}
+                    <form action="{{ admin.generateUrl('list') }}" method="GET"
+                          class="{{ classlist('sonata-filter-form', 'form-horizontal', {
+                            'hide': admin.isChild and admin.datagrid.filters|length == 1
+                    }) }}">
+
+                        {{- form_errors(form) -}}
 
                         <div class="row">
                             <div class="col-sm-9">
                                 {% set withAdvancedFilter = false %}
                                 {% for filter in admin.datagrid.filters %}
-                                    <div class="form-group {% block sonata_list_filter_group_class %}{% endblock %}" id="filter-{{ admin.uniqid }}-{{ filter.name }}" sonata-filter="{{ (filter.options['show_filter'] is same as(true) or filter.options['show_filter'] is null) ? 'true' : 'false' }}" style="display: {% if (filter.isActive() and filter.options['show_filter'] is null) or (filter.options['show_filter'] is same as(true)) %}block{% else %}none{% endif %}">
+                                    {#
+                                        FIXME: this is a really awkward conditional, this should go on method of the FilterInterface...
+                                        FilterInterface::isHidden() or sthg like that.
+                                    #}
+                                    {% set show_filter = filter.getOption('show_filter', null) %}
+                                    {% set is_displayable_filter = show_filter is null or show_filter is sameas(true) %}
+                                    {% set is_visible_filter = (filter.active and show_filter is null) or show_filter is sameas(true) %}
+                                    {% set filter_id = 'filter-' ~ admin.uniqid ~ '-' ~ filter.name|replace('.', '_') %}
+
+                                    <div class="{{ classlist('form-group', 'sonata-filters__filter', {
+                                        'hidden': not(is_displayable_filter),
+                                        'collapse': true,
+                                        'in': is_visible_filter
+                                    }) }} {% block sonata_list_filter_group_class '' %}"
+                                         id="{{ filter_id }}"
+                                    >
                                         {% if filter.label is not same as(false) %}
-                                            <label for="{{ form.children[filter.formName].children['value'].vars.id }}" class="col-sm-3 control-label">{{ admin.trans(filter.label, {}, filter.translationDomain) }}</label>
+                                            <label for="{{ form.children[filter.formName].children['value'].vars.id }}" class="col-sm-3 control-label">
+                                                {{- admin.trans(filter.label, {}, filter.translationDomain) -}}
+                                            </label>
                                         {% endif %}
                                         {% set attr = form.children[filter.formName].children['type'].vars.attr|default({}) %}
 
-                                        <div class="col-sm-4 advanced-filter">
+                                        <div class="col-sm-4 advanced-filter collapse in">
                                             {{ form_widget(form.children[filter.formName].children['type'], {'attr':  attr}) }}
                                         </div>
 
@@ -251,7 +313,13 @@ file that was distributed with this source code.
 
                                         <div class="col-sm-1">
                                             <label class="control-label">
-                                                <a href="#" class="sonata-toggle-filter sonata-ba-action" filter-target="filter-{{ admin.uniqid }}-{{ filter.name }}" filter-container="filter-container-{{ admin.uniqid() }}">
+                                                <a role="button" href="#"
+                                                   class="sonata-toggle-filter sonata-ba-action"
+                                                   data-toggle="collapse"
+                                                   data-target="#filter-{{ admin.uniqid }}-{{ filter.name }}"
+                                                   aria-controls="filter-{{ admin.uniqid }}-{{ filter.name }}"
+                                                   aria-expanded="{{ is_visible_filter ? 'true' : 'false' }}"
+                                                >
                                                     <i class="fa fa-minus-circle"></i>
                                                 </a>
                                             </label>
@@ -271,7 +339,8 @@ file that was distributed with this source code.
 
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-primary">
-                                        <i class="fa fa-filter"></i> {{ 'btn_filter'|trans({}, 'SonataAdminBundle') }}
+                                        <i class="fa fa-filter"></i>
+                                        {{ 'btn_filter'|trans({}, 'SonataAdminBundle') }}
                                     </button>
 
                                     <a class="btn btn-default" href="{{ admin.generateUrl('list', {filters: 'reset'}) }}">

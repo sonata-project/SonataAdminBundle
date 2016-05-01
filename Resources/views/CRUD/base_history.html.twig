@@ -17,11 +17,11 @@ file that was distributed with this source code.
 
 {% block content %}
 
-    <div class="row">
+    <div class="row sonata-ba-revisions">
         <div class="col-md-5">
             <div class="box box-primary">
                 <div class="box-body table-responsive no-padding">
-                    <table class="table" id="revisions">
+                    <table class="table">
                         <thead>
                         <tr>
                             <th>{{ 'td_revision'|trans({}, 'SonataAdminBundle') }}</th>
@@ -33,16 +33,42 @@ file that was distributed with this source code.
                         </thead>
                         <tbody>
                         {% for revision in revisions %}
-                            <tr class="{% if (currentRevision != false and revision.rev == currentRevision.rev) %}current-revision{% endif %}">
+                            <tr class="{{ classlist('sonata-ba-revisions__revision', {
+                                'sonata-ba-revisions__revision--is-current': (
+                                    currentRevision != false
+                                    and revision.rev == currentRevision.rev
+                                )
+                            }) }}">
                                 <td>{{ revision.rev }}</td>
                                 <td>{% include admin.getTemplate('history_revision_timestamp') %}</td>
-                                <td>{{ revision.username|default('label_unknown_user'|trans({}, 'SonataAdminBundle')) }}</td>
-                                <td><a href="{{ admin.generateObjectUrl('history_view_revision', object, {'revision': revision.rev }) }}" class="revision-link" rel="{{ revision.rev }}">{{ "label_view_revision"|trans({}, 'SonataAdminBundle') }}</a></td>
+                                <td>
+                                    {{- revision.username|default(
+                                        'label_unknown_user'|trans({}, 'SonataAdminBundle')
+                                    ) -}}
+                                </td>
+                                <td>
+                                    <a href="{{ admin.generateObjectUrl(
+                                        'history_view_revision',
+                                        object,
+                                        {revision: revision.rev}
+                                    ) }}" rel="{{ revision.rev }}" data-action="view-revision">
+                                        {{- "label_view_revision"|trans({}, 'SonataAdminBundle') -}}
+                                    </a>
+                                </td>
                                 <td>
                                     {% if (currentRevision == false or revision.rev == currentRevision.rev) %}
                                         /
                                     {% else %}
-                                        <a href="{{ admin.generateObjectUrl('history_compare_revisions', object, {'base_revision': currentRevision.rev, 'compare_revision': revision.rev }) }}" class="revision-compare-link" rel="{{ revision.rev }}">{{ 'label_compare_revision'|trans({}, 'SonataAdminBundle') }}</a>
+                                        <a href="{{ admin.generateObjectUrl(
+                                            'history_compare_revisions',
+                                            object,
+                                            {
+                                                base_revision: currentRevision.rev,
+                                                compare_revision: revision.rev
+                                            }
+                                        ) }}" rel="{{ revision.rev }}" data-action="compare-revision">
+                                            {{- 'label_compare_revision'|trans({}, 'SonataAdminBundle') -}}
+                                        </a>
                                     {% endif %}
                                 </td>
                             </tr>
@@ -52,40 +78,6 @@ file that was distributed with this source code.
                 </div>
             </div>
         </div>
-        <div id="revision-detail" class="col-md-7 revision-detail">
-
-        </div>
+        <div class="col-md-7 sonata-ba-revisions__details"></div>
     </div>
-
-    <script>
-        jQuery(document).ready(function() {
-
-            jQuery('a.revision-link, a.revision-compare-link').bind('click', function(event) {
-                event.stopPropagation();
-                event.preventDefault();
-
-                action = jQuery(this).hasClass('revision-link')
-                    ? 'show'
-                    : 'compare';
-
-                jQuery('#revision-detail').html('');
-
-                if(action == 'show'){
-                    jQuery('table#revisions tbody tr').removeClass('current');
-                    jQuery(this).parent('').removeClass('current');
-                }
-
-                jQuery.ajax({
-                    url: jQuery(this).attr('href'),
-                    dataType: 'html',
-                    success: function(data) {
-                        jQuery('#revision-detail').html(data);
-                    }
-                });
-
-                return false;
-            });
-
-        });
-    </script>
 {% endblock %}

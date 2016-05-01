@@ -1,0 +1,99 @@
+@svg-load checkbox url(checkbox.svg) {
+    path {
+        fill: #fff;
+    }
+}
+@svg-load radio-border url(radio-border.svg) {
+    path {
+        fill: #ccc;
+    }
+}
+@svg-load radio-checked url(radio-checked.svg) {
+    path {
+        fill: hsla(202, 52%, 49%, 1);
+    }
+}
+
+/*
+ * Custom checkboxes & radio buttons
+ * ----------------------------------------------------------------------------------------------------------------- */
+.checkbox,
+.radio {
+    display: inline-block;
+    vertical-align: bottom;
+    padding: 0;
+    margin: 0;
+}
+.checkbox label,
+.radio label {
+    font-weight: 700;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    padding: 0; margin: 0;
+    cursor: pointer;
+}
+.checkbox input,
+.radio input {
+    position: absolute;
+    opacity: 0;
+    /* Put the input behind the label so it doesn't overlay text */
+    z-index: -1;
+}
+
+.checkbox .control-indicator,
+.radio .control-indicator {
+    position: relative;
+    display: block;
+    top: 0; left: 0;
+    width: 1.5em; height: 1.5em;
+    margin-right: .5em;
+    margin-right: 1ch;
+    background: transparent no-repeat center center;
+    background-size: 100% 100%;
+    user-select: none;
+    transition: all 0.2s ease;
+}
+.checkbox input:focus ~ .control-indicator,
+.radio input:focus ~ .control-indicator {
+    border-color: hsla(202, 52%, 49%, 1);
+}
+.checkbox input:checked ~ .control-indicator,
+.radio input:checked ~ .control-indicator {
+    color: #fff;
+    border-color: hsla(202, 52%, 49%, 1);
+}
+
+/* checkbox specific */
+.checkbox .control-indicator {
+    border: 2px solid #ccc;
+}
+.checkbox input:checked ~ .control-indicator {
+    background-color: hsla(202, 52%, 49%, 1);
+    background-image: svg-inline(checkbox);
+}
+
+/* radio specific */
+.radio .control-indicator:before,
+.radio .control-indicator:after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; width: 1.5em; height: 1.5em;
+    background: no-repeat center center;
+    background-size: 100% 100%;
+    transition: opacity .2s;
+}
+.radio .control-indicator:before {
+    opacity: 1;
+    background-image: svg-inline(radio-border);
+}
+.radio .control-indicator:after {
+    opacity: 0;
+    background-image: svg-inline(radio-checked);
+}
+.radio input:checked ~ .control-indicator:before {
+    opacity: 0;
+}
+.radio input:checked ~ .control-indicator:after {
+    opacity: 1;
+}

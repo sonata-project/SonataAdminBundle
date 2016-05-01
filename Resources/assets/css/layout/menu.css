@@ -1,0 +1,109 @@
+.open > .dropdown-menu {
+    /* What animation ??? */
+    animation-duration: .3s;
+}
+
+/* MEGA MENU STYLE
+********************************/
+.dropdown-menu.multi-column .dropdown-menu {
+    display: block !important;
+    position: static !important;
+    margin: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    min-width:100px;
+}
+
+.dropdown-add .dropdown-menu > li > a {
+    white-space: normal;
+    overflow: hidden;
+}
+
+/* top right */
+
+.navbar-static-top {
+    margin-bottom: 0;
+}
+
+.navbar-top-links > p,
+.navbar-top-links > ul {
+    float: right;
+}
+
+.navbar-top-links li {
+    display: inline-block;
+}
+
+.navbar-top-links li a,
+.navbar-top-links li span {
+    padding: 15px;
+    min-height: 50px;
+}
+
+.navbar-top-links li a:hover {
+    text-decoration: none;
+}
+
+.skin-black .navbar .breadcrumb > li  > a:hover {
+    color: #444;
+    background: #f5f5f5;
+}
+
+.skin-black .navbar .dropdown-menu > li > a:hover {
+    background-color: #f5f5f5;
+}
+
+.navbar-top-links .dropdown-menu li {
+    display: block;
+}
+
+.navbar-top-links .dropdown-menu li:last-child {
+    margin-right: 0;
+}
+
+.navbar-top-links .dropdown-menu li a {
+    padding: 3px 20px;
+    min-height: 0;
+}
+
+.navbar-top-links .dropdown-menu li a div {
+    white-space: normal;
+}
+
+.navbar-top-links .dropdown-messages,
+.navbar-top-links .dropdown-tasks,
+.navbar-top-links .dropdown-alerts {
+    width: 310px;
+    min-width: 0;
+}
+
+.navbar-top-links .dropdown-messages {
+    margin-left: 5px;
+}
+
+.navbar-top-links .dropdown-tasks {
+    margin-left: -59px;
+}
+
+.navbar-top-links .dropdown-alerts {
+    margin-left: -123px;
+}
+
+.navbar-top-links .dropdown-user {
+    right: 0;
+    left: auto;
+}
+
+@media(min-width:768px) {
+    .navbar-static-side {
+        z-index: 1;
+        position: absolute;
+        width: 250px;
+    }
+
+    .navbar-top-links .dropdown-messages,
+    .navbar-top-links .dropdown-tasks,
+    .navbar-top-links .dropdown-alerts {
+        margin-left: auto;
+    }
+}

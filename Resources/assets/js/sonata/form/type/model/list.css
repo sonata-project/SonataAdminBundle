@@ -1,0 +1,8 @@
+/*
+ * AJAX loading states
+ * ----------------------------------------------------------------------------------------------------------------- */
+
+.field-short-description.loading {
+    /* center the spinner in association field descriptions */
+    text-align: center;
+}
