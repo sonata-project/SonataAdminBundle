@@ -37,7 +37,7 @@ class InlineConstraintTest extends \PHPUnit_Framework_TestCase
 
     public function testGetClosure()
     {
-        $closure = function () {return 'FOO';};
+        $closure = function () {return 'FOO'; };
 
         $constraint = new InlineConstraint(array('service' => 'foo', 'method' => $closure));
         $this->assertSame($closure, $constraint->getClosure());

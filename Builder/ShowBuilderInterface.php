@@ -32,5 +32,5 @@ interface ShowBuilderInterface extends BuilderInterface
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface  $fieldDescription
      * @param \Sonata\AdminBundle\Admin\AdminInterface             $admin
      */
-    public function addField(FieldDescriptionCollection $list, $type = null, FieldDescriptionInterface $fieldDescription, AdminInterface $admin);
+    public function addField(FieldDescriptionCollection $list, $type, FieldDescriptionInterface $fieldDescription, AdminInterface $admin);
 }

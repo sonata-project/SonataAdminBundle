@@ -48,7 +48,8 @@
         "jms/translation-bundle": "~1.1",
         "symfony/yaml": "~2.3",
         "sonata-project/intl-bundle": "~2.1",
-        "symfony/phpunit-bridge": "~2.7|~3.0"
+        "symfony/phpunit-bridge": "~2.7|~3.0",
+        "sllh/php-cs-fixer-styleci-bridge": "^2.0"
     },
     "suggest": {
         "jms/translation-bundle": "Extract message keys from Admins",
