@@ -19,7 +19,7 @@ class FilterTest extends \PHPUnit_Framework_TestCase
     {
         $filter = new FooFilter();
 
-        $this->assertSame('Symfony\Component\Form\Extension\Core\Type\TextType', $filter->getFieldType());
+        $this->assertSame('text', $filter->getFieldType());
         $this->assertSame(array('required' => false), $filter->getFieldOptions());
         $this->assertNull($filter->getLabel());
 
