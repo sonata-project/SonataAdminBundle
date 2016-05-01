@@ -12,16 +12,16 @@
 namespace Sonata\AdminBundle\Tests\Block;
 
 use Sonata\AdminBundle\Block\AdminListBlockService;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
  */
 class FakeBlockService extends AdminListBlockService
 {
-    public function setDefaultSettings(OptionsResolverInterface $resolver)
+    public function configureSettings(OptionsResolver $resolver)
     {
-        parent::setDefaultSettings($resolver);
+        parent::configureSettings($resolver);
 
         $resolver
             ->setDefaults(array(
