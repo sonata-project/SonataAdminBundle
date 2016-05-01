@@ -1612,7 +1612,7 @@ class AdminTest extends \PHPUnit_Framework_TestCase
 
         $datagridBuilder->expects($this->exactly(3))
             ->method('addFilter')
-            ->will($this->returnCallback(function ($datagrid, $type = null, $fieldDescription, AdminInterface $admin) {
+            ->will($this->returnCallback(function ($datagrid, $type, $fieldDescription, AdminInterface $admin) {
                 $admin->addFilterFieldDescription($fieldDescription->getName(), $fieldDescription);
                 $fieldDescription->mergeOption('field_options', array('required' => false));
             }));
