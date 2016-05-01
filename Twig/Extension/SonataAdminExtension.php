@@ -186,7 +186,7 @@ class SonataAdminExtension extends \Twig_Extension
         $content = $template->render($parameters);
 
         if ($environment->isDebug()) {
-            $commentTemplate = <<<EOT
+            $commentTemplate = <<<'EOT'
 
 <!-- START
     fieldName: %s

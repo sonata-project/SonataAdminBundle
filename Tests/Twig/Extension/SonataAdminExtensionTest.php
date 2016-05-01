@@ -537,7 +537,7 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
                 array('editable' => false),
             ),
             array(
-                <<<EOT
+                <<<'EOT'
 <td class="sonata-ba-list-field sonata-ba-list-field-boolean" objectId="12345">
     <span
         class="x-editable"
@@ -558,7 +558,7 @@ EOT
                 array('editable' => true),
             ),
             array(
-                <<<EOT
+                <<<'EOT'
 <td class="sonata-ba-list-field sonata-ba-list-field-boolean" objectId="12345">
     <span
         class="x-editable"
@@ -578,7 +578,7 @@ EOT
                 array('editable' => true),
             ),
             array(
-                <<<EOT
+                <<<'EOT'
 <td class="sonata-ba-list-field sonata-ba-list-field-boolean" objectId="12345">
     <span
         class="x-editable"
@@ -746,7 +746,7 @@ EOT
                     'Status3' => '<b>Alias3</b>',
                 ), 'multiple' => true), ),
             array(
-                <<<EOT
+                <<<'EOT'
 <td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345">
     <span
         class="x-editable"
@@ -767,7 +767,7 @@ EOT
                 array('editable' => true),
             ),
             array(
-                <<<EOT
+                <<<'EOT'
 <td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345">
     <span
         class="x-editable"
@@ -793,7 +793,7 @@ EOT
                 ),
             ),
             array(
-                <<<EOT
+                <<<'EOT'
 <td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345">
     <span
         class="x-editable"
@@ -820,7 +820,7 @@ EOT
                 ),
             ),
             array(
-                <<<EOT
+                <<<'EOT'
 <td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345">
     <span
         class="x-editable"
@@ -846,7 +846,7 @@ EOT
                 ),
             ),
             array(
-                <<<EOT
+                <<<'EOT'
 <td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345">
     <span
         class="x-editable"
@@ -1744,7 +1744,7 @@ EOT
 
         $this->environment->enableDebug();
         $this->assertSame(
-            $this->removeExtraWhitespace(<<<EOT
+            $this->removeExtraWhitespace(<<<'EOT'
 <!-- START
     fieldName: fd_name
     template: SonataAdminBundle:CRUD:base_list_field.html.twig

@@ -85,7 +85,7 @@ class FormSonataFilterChoiceWidgetTest extends BaseWidgetTest
 
         $mock->expects($this->exactly(3))
             ->method('trans')
-            ->will($this->returnCallback(function ($arg) { return $arg;})
+            ->will($this->returnCallback(function ($arg) { return $arg; })
             );
 
         $extensions = parent::getExtensions();
