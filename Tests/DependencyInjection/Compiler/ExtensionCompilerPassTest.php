@@ -362,6 +362,9 @@ class ExtensionCompilerPassTest extends \PHPUnit_Framework_TestCase
             ->register('knp_menu.factory')
             ->setClass('Knp\Menu\FactoryInterface');
         $container
+            ->register('knp_menu.matcher')
+            ->setClass('Knp\Menu\Matcher\MatcherInterface');
+        $container
             ->register('knp_menu.menu_provider')
             ->setClass('Knp\Menu\Provider\MenuProviderInterface');
 
