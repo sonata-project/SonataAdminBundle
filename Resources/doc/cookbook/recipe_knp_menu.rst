@@ -208,6 +208,13 @@ or in sonata_admin dashboard group configuration:
                     items:
                         - sonata.news.admin.post
 
+.. figure:: ../images/demo_on_top.png
+   :align: center
+   :alt: on_top option
+   :width: 500
+
+In this screenshot, we add ``on_top`` option to ``Tag`` and ``Blog Post`` admin services.
+
 Your can't use this option for two or more items in the same time, for example:
 
 .. code-block:: yaml
