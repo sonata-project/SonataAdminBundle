@@ -1022,4 +1022,15 @@ interface AdminInterface
      *
      */
     // public function configureActionButtons($action, $object = null);
+
+//    TODO: uncomment this method for next major release
+//    /**
+//     * Hook to handle access authorization, without throw Exception
+//     *
+//     * @param string $action
+//     * @param object $object
+//     *
+//     * @return bool
+//     */
+//    public function hasAccess($action, $object = null);
 }

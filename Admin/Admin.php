@@ -2921,9 +2921,11 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Return list routes with permissions name.
+     *
+     * @return array
      */
-    public function checkAccess($action, $object = null)
+    protected function getAccess()
     {
         $access = array_merge(array(
             'acl'                     => 'MASTER',
@@ -2946,6 +2948,16 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
             }
         }
 
+        return $access;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function checkAccess($action, $object = null)
+    {
+        $access = $this->getAccess();
+
         if (!array_key_exists($action, $access)) {
             throw new \InvalidArgumentException(sprintf('Action "%s" could not be found in access mapping. Please make sure your action is defined into your admin class accessMapping property.', $action));
         }
@@ -2959,6 +2971,35 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
                 throw new AccessDeniedException(sprintf('Access Denied to the action %s and role %s', $action, $role));
             }
         }
+    }
+
+    /**
+     * Hook to handle access authorization, without throw Exception.
+     *
+     * @param string $action
+     * @param object $object
+     * 
+     * @return bool
+     */
+    public function hasAccess($action, $object = null)
+    {
+        $access = $this->getAccess();
+
+        if (!array_key_exists($action, $access)) {
+            return false;
+        }
+
+        if (!is_array($access[$action])) {
+            $access[$action] = array($access[$action]);
+        }
+
+        foreach ($access[$action] as $role) {
+            if (false === $this->isGranted($role, $object)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
