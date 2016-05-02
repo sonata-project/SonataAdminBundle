@@ -502,9 +502,6 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         'mosaic' => array(
             'class' => 'fa fa-th-large fa-fw',
         ),
-//        'tree' => array(
-//            'class' => 'fa fa-sitemap fa-fw',
-//        ),
     );
 
     /**
