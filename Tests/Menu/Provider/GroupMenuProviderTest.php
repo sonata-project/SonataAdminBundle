@@ -222,7 +222,8 @@ class GroupMenuProviderTest extends \PHPUnit_Framework_TestCase
     public function getAdminGroupsWithOnTopOption()
     {
         return array(
-            array('foo' => array(
+            array(
+                'foo' => array(
                     'label'           => 'foo_on_top',
                     'icon'            => '<i class="fa fa-edit"></i>',
                     'label_catalogue' => 'SonataAdminBundle',
