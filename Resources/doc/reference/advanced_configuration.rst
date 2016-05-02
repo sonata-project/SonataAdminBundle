@@ -315,9 +315,9 @@ You can add or override filter parameters to the Tab Menu:
 
     <?php
 
+    use Knp\Menu\ItemInterface as MenuItemInterface;
     use Sonata\AdminBundle\Admin\Admin;
     use Sonata\AdminBundle\Admin\AdminInterface;
-    use Knp\Menu\ItemInterface as MenuItemInterface;
     use Sonata\CoreBundle\Form\Type\EqualType;
 
     class DeliveryAdmin extends Admin
