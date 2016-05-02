@@ -63,38 +63,58 @@ class GroupMenuProvider implements MenuProviderInterface
             )
         );
 
-        foreach ($group['items'] as $item) {
-            if (isset($item['admin']) && !empty($item['admin'])) {
-                $admin = $this->pool->getInstance($item['admin']);
+        if (empty($group['on_top'])) {
+            foreach ($group['items'] as $item) {
+                if (isset($item['admin']) && !empty($item['admin'])) {
+                    $admin = $this->pool->getInstance($item['admin']);
 
-                // skip menu item if no `list` url is available or user doesn't have the LIST access rights
-                if (!$admin->hasRoute('list') || !$admin->isGranted('LIST')) {
-                    continue;
+                    // skip menu item if no `list` url is available or user doesn't have the LIST access rights
+                    if (!$admin->hasRoute('list') || !$admin->isGranted('LIST')) {
+                        continue;
+                    }
+
+                    $label = $admin->getLabel();
+                    $options = $admin->generateMenuUrl('list', array(), $item['route_absolute']);
+                    $options['extras'] = array(
+                        'translation_domain' => $admin->getTranslationDomain(),
+                        'admin'              => $admin,
+                    );
+                } else {
+                    $label = $item['label'];
+                    $options = array(
+                        'route'           => $item['route'],
+                        'routeParameters' => $item['route_params'],
+                        'routeAbsolute'   => $item['route_absolute'],
+                        'extras'          => array(
+                            'translation_domain' => $group['label_catalogue'],
+                        ),
+                    );
                 }
 
-                $label = $admin->getLabel();
-                $options = $admin->generateMenuUrl('list', array(), $item['route_absolute']);
-                $options['extras'] = array(
-                    'translation_domain' => $admin->getTranslationDomain(),
-                    'admin'              => $admin,
-                );
-            } else {
-                $label = $item['label'];
-                $options = array(
-                    'route'           => $item['route'],
-                    'routeParameters' => $item['route_params'],
-                    'routeAbsolute'   => $item['route_absolute'],
-                    'extras'          => array(
-                        'translation_domain' => $group['label_catalogue'],
-                    ),
-                );
+                $menuItem->addChild($label, $options);
             }
 
-            $menuItem->addChild($label, $options);
-        }
+            if (false === $menuItem->hasChildren()) {
+                $menuItem->setDisplay(false);
+            }
+        } else {
+            foreach ($group['items'] as $item) {
+                if (isset($item['admin']) && !empty($item['admin'])) {
+                    $admin = $this->pool->getInstance($item['admin']);
 
-        if (false === $menuItem->hasChildren()) {
-            $menuItem->setDisplay(false);
+                    // skip menu item if no `list` url is available or user doesn't have the LIST access rights
+                    if (!$admin->hasRoute('list') || !$admin->isGranted('LIST')) {
+                        continue;
+                    }
+
+                    $options = $admin->generateUrl('list');
+                    $menuItem->setExtra('route', $admin->getBaseRouteName().'_list');
+                    $menuItem->setExtra('on_top', $group['on_top']);
+                    $menuItem->setUri($options);
+                } else {
+                    $menuItem->setUri($item['route']);
+                }
+            }
         }
 
         return $menuItem;

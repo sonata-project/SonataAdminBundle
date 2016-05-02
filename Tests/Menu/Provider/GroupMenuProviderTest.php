@@ -161,6 +161,30 @@ class GroupMenuProviderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param array $adminGroupsOnTopOption
+     *
+     * @dataProvider getAdminGroupsWithOnTopOption
+     */
+    public function testGetMenuProviderOnTopOptions(array $adminGroupsOnTopOption)
+    {
+        $this->pool->expects($this->once())
+            ->method('getInstance')
+            ->with($this->equalTo('sonata_admin_foo_service'))
+            ->will($this->returnValue($this->getAdminMock(true, false)));
+
+        $menu = $this->provider->get(
+            'providerFoo',
+            array(
+                'name'  => 'foo',
+                'group' => $adminGroupsOnTopOption,
+            )
+        );
+
+        $this->assertInstanceOf('Knp\Menu\ItemInterface', $menu);
+        $this->assertCount(0, $menu->getChildren());
+    }
+
+    /**
      * @return array
      */
     public function getAdminGroups()
@@ -183,6 +207,33 @@ class GroupMenuProviderTest extends \PHPUnit_Framework_TestCase
                             'route'          => 'FooRoute',
                             'route_params'   => array('foo' => 'bar'),
                             'route_absolute' => true,
+                        ),
+                    ),
+                    'item_adds'       => array(),
+                    'roles'           => array(),
+                ),
+            ),
+        );
+    }
+
+    /**
+     * @return array
+     */
+    public function getAdminGroupsWithOnTopOption()
+    {
+        return array(
+            array(
+                'foo' => array(
+                    'label'           => 'foo_on_top',
+                    'icon'            => '<i class="fa fa-edit"></i>',
+                    'label_catalogue' => 'SonataAdminBundle',
+                    'on_top'          => true,
+                    'items'           => array(
+                        array(
+                            'admin'          => 'sonata_admin_foo_service',
+                            'label'          => 'fooLabel',
+                            'route_absolute' => true,
+                            'route_params'   => array(),
                         ),
                     ),
                     'item_adds'       => array(),

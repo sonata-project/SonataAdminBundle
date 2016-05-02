@@ -54,6 +54,11 @@ class AdminVoter implements VoterInterface
             $match = true;
         }
 
+        $route = $item->getExtra('route');
+        if ($route && $this->request && $route == $this->request->get('_route')) {
+            $match = true;
+        }
+
         return $match;
     }
 }

@@ -79,6 +79,8 @@ class AddDependencyCallsCompilerPassTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('roles', $dashboardGroupsSettings['sonata_group_one']);
         $this->assertSame('Group One Label', $dashboardGroupsSettings['sonata_group_one']['label']);
         $this->assertSame('SonataAdminBundle', $dashboardGroupsSettings['sonata_group_one']['label_catalogue']);
+        $this->assertSame(false, $dashboardGroupsSettings['sonata_group_one']['on_top']);
+        $this->assertSame(true, $dashboardGroupsSettings['sonata_group_three']['on_top']);
         $this->assertArrayHasKey('admin', $dashboardGroupsSettings['sonata_group_one']['items'][0]);
         $this->assertArrayHasKey('route', $dashboardGroupsSettings['sonata_group_one']['items'][0]);
         $this->assertArrayHasKey('label', $dashboardGroupsSettings['sonata_group_one']['items'][0]);
@@ -146,6 +148,8 @@ class AddDependencyCallsCompilerPassTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('roles', $adminGroups['sonata_group_one']);
         $this->assertSame('Group One Label', $adminGroups['sonata_group_one']['label']);
         $this->assertSame('SonataAdminBundle', $adminGroups['sonata_group_one']['label_catalogue']);
+        $this->assertSame(false, $adminGroups['sonata_group_one']['on_top']);
+        $this->assertSame(true, $adminGroups['sonata_group_three']['on_top']);
         $this->assertContains('sonata_post_admin', $adminGroups['sonata_group_one']['items'][0]['admin']);
         $this->assertContains('sonata_news_admin', $adminGroups['sonata_group_one']['items']);
         $this->assertContains('sonata_news_admin', $adminGroups['sonata_group_one']['item_adds']);
@@ -284,6 +288,158 @@ class AddDependencyCallsCompilerPassTest extends \PHPUnit_Framework_TestCase
         }
     }
 
+    public function testProcessMultipleOnTopOptions()
+    {
+        $container = $this->getContainer();
+
+        $config = $this->config;
+        $this->assertArrayHasKey('sonata_group_four', $config['dashboard']['groups']);
+
+        $config['dashboard']['groups']['sonata_group_four']['items'][] = array(
+            'route'        => 'blog_article',
+            'label'        => 'Article',
+            'route_params' => array('articleId' => 3),
+        );
+
+        $this->extension->load(array($config), $container);
+
+        $compilerPass = new AddDependencyCallsCompilerPass();
+
+        try {
+            $compilerPass->process($container);
+        } catch (\RuntimeException $e) {
+            $this->assertSame('You can\'t use "on_top" option with multiple same name groups.', $e->getMessage());
+
+            return;
+        }
+
+        $this->fail('An expected exception has not been raised.');
+    }
+
+    public function testProcessMultipleOnTopOptionsAdditionalGroup()
+    {
+        $container = $this->getContainer();
+
+        $config = $this->config;
+        $config['dashboard']['groups']['sonata_group_five'] = array(
+            'label'           => 'Group One Label',
+            'label_catalogue' => 'SonataAdminBundle',
+            'on_top'          => true,
+            'items'           => array(
+                'sonata_post_admin',
+                array(
+                    'route' => 'blog_name',
+                    'label' => 'Blog',
+                ),
+                array(
+                    'route'        => 'blog_article',
+                    'label'        => 'Article',
+                    'route_params' => array('articleId' => 3),
+                ),
+            ),
+            'item_adds' => array(
+                'sonata_news_admin',
+            ),
+            'roles' => array('ROLE_ONE'),
+        );
+
+        $this->extension->load(array($config), $container);
+
+        $compilerPass = new AddDependencyCallsCompilerPass();
+
+        try {
+            $compilerPass->process($container);
+        } catch (\RuntimeException $e) {
+            $this->assertSame('You can\'t use "on_top" option with multiple same name groups.', $e->getMessage());
+
+            return;
+        }
+
+        $this->fail('An expected exception has not been raised.');
+    }
+
+    public function testProcessMultipleOnTopOptionsInServiceDefinition()
+    {
+        $container = $this->getContainer();
+
+        $config = $this->config;
+        $config['dashboard']['groups'] = array();
+
+        $this->extension->load(array($config), $container);
+
+        $compilerPass = new AddDependencyCallsCompilerPass();
+        $container
+            ->register('sonata_report_one_admin')
+            ->setClass('Sonata\AdminBundle\Tests\DependencyInjection\MockAdmin')
+            ->setArguments(array('', 'Sonata\AdminBundle\Tests\DependencyInjection\ReportOne', 'SonataAdminBundle:CRUD'))
+            ->addTag('sonata.admin', array('group' => 'sonata_report_group', 'manager_type' => 'orm', 'on_top' => true));
+
+        try {
+            $compilerPass->process($container);
+        } catch (\RuntimeException $e) {
+            $this->assertSame('You can\'t use "on_top" option with multiple same name groups.', $e->getMessage());
+
+            return;
+        }
+
+        $this->fail('An expected exception has not been raised.');
+    }
+
+    public function testProcessMultipleOnTopOptionsInServiceDefinition1()
+    {
+        $container = $this->getContainer();
+
+        $config = $this->config;
+        $config['dashboard']['groups'] = array();
+
+        $this->extension->load(array($config), $container);
+
+        $compilerPass = new AddDependencyCallsCompilerPass();
+        $container
+            ->register('sonata_report_two_admin')
+            ->setClass('Sonata\AdminBundle\Tests\DependencyInjection\MockAdmin')
+            ->setArguments(array('', 'Sonata\AdminBundle\Tests\DependencyInjection\ReportOne', 'SonataAdminBundle:CRUD'))
+            ->addTag('sonata.admin', array('group' => 'sonata_report_group', 'manager_type' => 'orm', 'on_top' => false));
+
+        try {
+            $compilerPass->process($container);
+        } catch (\RuntimeException $e) {
+            $this->assertSame('You can\'t use "on_top" option with multiple same name groups.', $e->getMessage());
+
+            return;
+        }
+
+        $this->fail('An expected exception has not been raised.');
+    }
+
+    public function testProcessMultipleOnTopOptionsInServiceDefinition2()
+    {
+        $container = $this->getContainer();
+
+        $config = $this->config;
+        $config['dashboard']['groups'] = array();
+
+        $this->extension->load(array($config), $container);
+
+        $compilerPass = new AddDependencyCallsCompilerPass();
+        $container
+            ->register('sonata_document_one_admin')
+            ->setClass('Sonata\AdminBundle\Tests\DependencyInjection\MockAdmin')
+            ->setArguments(array('', 'Sonata\AdminBundle\Tests\DependencyInjection\ReportOne', 'SonataAdminBundle:CRUD'))
+            ->addTag('sonata.admin', array('group' => 'sonata_document_group', 'manager_type' => 'orm', 'on_top' => false));
+        $container
+            ->register('sonata_document_two_admin')
+            ->setClass('Sonata\AdminBundle\Tests\DependencyInjection\MockAdmin')
+            ->setArguments(array('', 'Sonata\AdminBundle\Tests\DependencyInjection\ReportOne', 'SonataAdminBundle:CRUD'))
+            ->addTag('sonata.admin', array('group' => 'sonata_document_group', 'manager_type' => 'orm', 'on_top' => false));
+
+        try {
+            $compilerPass->process($container);
+        } catch (\RuntimeException $e) {
+            $this->fail('An expected exception has been raised.');
+        }
+    }
+
     /**
      * @return array
      */
@@ -314,6 +470,17 @@ class AddDependencyCallsCompilerPassTest extends \PHPUnit_Framework_TestCase
                     ),
                     'sonata_group_two' => array(
                         'provider' => 'my_menu',
+                    ),
+                    'sonata_group_three' => array(
+                        'on_top' => true,
+                    ),
+                    'sonata_group_four' => array(
+                        'on_top'          => true,
+                        'label'           => 'Group Four Label',
+                        'label_catalogue' => 'SonataAdminBundle',
+                        'items'           => array(
+                            'sonata_post_admin',
+                        ),
                     ),
                 ),
             ),
@@ -440,6 +607,11 @@ class AddDependencyCallsCompilerPassTest extends \PHPUnit_Framework_TestCase
             ->setClass('Sonata\AdminBundle\Tests\DependencyInjection\MockAdmin')
             ->setArguments(array('', 'Sonata\AdminBundle\Tests\DependencyInjection\Article', 'SonataAdminBundle:CRUD'))
             ->addTag('sonata.admin', array('group' => 'sonata_group_one', 'label' => '1 Entry', 'manager_type' => 'doctrine_phpcr'));
+        $container
+            ->register('sonata_report_admin')
+            ->setClass('Sonata\AdminBundle\Tests\DependencyInjection\MockAdmin')
+            ->setArguments(array('', 'Sonata\AdminBundle\Tests\DependencyInjection\Report', 'SonataAdminBundle:CRUD'))
+            ->addTag('sonata.admin', array('group' => 'sonata_report_group', 'manager_type' => 'orm', 'on_top' => true));
 
         // translator
         $container

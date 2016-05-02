@@ -23,10 +23,11 @@ abstract class AbstractVoterTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param mixed $dataVoter
+     * @param mixed $route
      *
      * @return VoterInterface
      */
-    abstract protected function createVoter($dataVoter);
+    abstract protected function createVoter($dataVoter, $route);
 
     /**
      * @param mixed $data
@@ -38,14 +39,16 @@ abstract class AbstractVoterTest extends \PHPUnit_Framework_TestCase
     /**
      * @param mixed     $itemData
      * @param mixed     $voterData
+     * @param mixed     $route
      * @param bool|null $expected
      *
      * @dataProvider provideData
      */
-    public function testMatching($itemData, $voterData, $expected)
+    public function testMatching($itemData, $voterData, $route, $expected)
     {
         $item = $this->createItem($itemData);
-        $voter = $this->createVoter($voterData);
+        $voter = $this->createVoter($voterData, $route);
+
         $this->assertSame($expected, $voter->matchItem($item));
     }
 }
