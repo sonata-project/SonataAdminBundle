@@ -2978,7 +2978,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      *
      * @param string $action
      * @param object $object
-     * 
+     *
      * @return bool
      */
     public function hasAccess($action, $object = null)
