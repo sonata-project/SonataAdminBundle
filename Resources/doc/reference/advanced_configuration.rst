@@ -306,6 +306,51 @@ inherit it :
     <?php
     $menu->setExtra('translation_domain', 'My domain');
 
+Filter parameters
+^^^^^^^^^^^^^^^^^
+
+You can add or override filter parameters to the Tab Menu:
+
+.. code-block:: php
+
+    <?php
+
+    use Knp\Menu\ItemInterface as MenuItemInterface;
+    use Sonata\AdminBundle\Admin\Admin;
+    use Sonata\AdminBundle\Admin\AdminInterface;
+    use Sonata\CoreBundle\Form\Type\EqualType;
+
+    class DeliveryAdmin extends Admin
+    {
+        protected function configureTabMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
+        {
+            if (!$childAdmin && !in_array($action, array('edit', 'show', 'list'))) {
+                return;
+            }
+
+            if ($action == 'list') {
+                // Get current filter parameters
+                $filterParameters = $this->getFilterParameters();
+
+                // Add or override filter parameters
+                $filterParameters['status'] = array(
+                    'type'  => EqualType::TYPE_IS_EQUAL, // => 1
+                    'value' => Delivery::STATUS_OPEN,
+                );
+
+                // Add filters to uri of tab
+                $menu->addChild('List open deliveries', array('uri' => $this->generateUrl('list', array(
+                    'filter' => $filterParameters,
+                ))));
+
+                return;
+            }
+        }
+    }
+
+The `Delivery` class is based on the `sonata_type_translatable_choice` example inside the Core's documentation:
+http://sonata-project.org/bundles/core/master/doc/reference/form_types.html#sonata-type-translatable-choice
+
 Disable content stretching
 --------------------------
 
