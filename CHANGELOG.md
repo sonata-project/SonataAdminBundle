@@ -20,6 +20,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Add the ``configureActionButtons`` method to the AdminExtensionInterface
 - Add the ``configureBatchActions`` method to the AdminExtensionInterface
 - Added the `getAccessMapping` method to the AdminExtensionInterface
+- Add the `isCurrentRoute` method to the AdminInterface
 
 ### Removed
 - Removed BC handler for deprecated `view` `_action`
