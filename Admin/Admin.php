@@ -1307,6 +1307,31 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     /**
      * {@inheritdoc}
      */
+    public function isCurrentRoute($name, $adminCode = null)
+    {
+        if (!$this->hasRequest()) {
+            return false;
+        }
+
+        $request = $this->getRequest();
+        $route = $request->get('_route');
+
+        if ($adminCode) {
+            $admin = $this->getConfigurationPool()->getAdminByAdminCode($adminCode);
+        } else {
+            $admin = $this;
+        }
+
+        if (!$admin) {
+            return false;
+        }
+
+        return ($admin->getBaseRouteName().'_'.$name) == $route;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function generateObjectUrl($name, $object, array $parameters = array(), $absolute = UrlGeneratorInterface::ABSOLUTE_PATH)
     {
         $parameters['id'] = $this->getUrlsafeIdentifier($object);

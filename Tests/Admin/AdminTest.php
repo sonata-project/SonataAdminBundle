@@ -13,6 +13,7 @@ namespace Sonata\AdminBundle\Tests\Admin;
 
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Route\DefaultRouteGenerator;
 use Sonata\AdminBundle\Route\RoutesCache;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\CommentAdmin;
@@ -25,6 +26,7 @@ use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Post;
 use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Tag;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooToString;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooToStringNull;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
@@ -704,18 +706,26 @@ class AdminTest extends \PHPUnit_Framework_TestCase
             new RoutesCache($this->cacheTempFolder, true)
         );
 
+        $container = new Container();
+        $pool = new Pool($container, 'Sonata Admin', '/path/to/pic.png');
+
         $pathInfo = new \Sonata\AdminBundle\Route\PathInfoBuilder($this->getMock('Sonata\AdminBundle\Model\AuditManagerInterface'));
         $postAdmin = new PostAdmin('sonata.post.admin.post', $objFqn, 'SonataNewsBundle:PostAdmin');
+        $container->set('sonata.post.admin.post', $postAdmin);
+        $postAdmin->setConfigurationPool($pool);
         $postAdmin->setRouteBuilder($pathInfo);
         $postAdmin->setRouteGenerator($routeGenerator);
         $postAdmin->initialize();
 
         $commentAdmin = new CommentAdmin('sonata.post.admin.comment', 'Application\Sonata\NewsBundle\Entity\Comment', 'SonataNewsBundle:CommentAdmin');
+        $container->set('sonata.post.admin.comment', $commentAdmin);
+        $commentAdmin->setConfigurationPool($pool);
         $commentAdmin->setRouteBuilder($pathInfo);
         $commentAdmin->setRouteGenerator($routeGenerator);
         $commentAdmin->initialize();
 
         $postAdmin->addChild($commentAdmin);
+        $pool->setAdminServiceIds(array('sonata.post.admin.post', 'sonata.post.admin.comment'));
 
         $this->assertSame($expected.'_comment', $commentAdmin->getBaseRouteName());
 
@@ -725,6 +735,26 @@ class AdminTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($postAdmin->hasRoute('sonata.post.admin.comment.list'));
         $this->assertFalse($postAdmin->hasRoute('sonata.post.admin.post|sonata.post.admin.comment.edit'));
         $this->assertFalse($commentAdmin->hasRoute('edit'));
+
+        /*
+         * Test the route name from request
+         */
+        $postListRequest = new Request(
+            array(),
+            array(),
+            array(
+                '_route' => $postAdmin->getBaseRouteName().'_list',
+            )
+        );
+
+        $postAdmin->setRequest($postListRequest);
+        $commentAdmin->setRequest($postListRequest);
+
+        $this->assertTrue($postAdmin->isCurrentRoute('list'));
+        $this->assertFalse($postAdmin->isCurrentRoute('create'));
+        $this->assertFalse($commentAdmin->isCurrentRoute('list'));
+        $this->assertTrue($commentAdmin->isCurrentRoute('list', 'sonata.post.admin.post'));
+        $this->assertFalse($commentAdmin->isCurrentRoute('edit', 'sonata.post.admin.post'));
     }
 
     /**
