@@ -19,6 +19,7 @@ use Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity;
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 use Symfony\Component\Security\Acl\Exception\NoAceFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\HttpKernel\Kernel;
 
 /**
  * A manipulator for updating ACL related to an object.
@@ -270,8 +271,19 @@ class AdminObjectAclManipulator
                     'attr'     => $attr,
                 );
             }
-
-            $formBuilder->add($key, 'Sonata\\AdminBundle\\Form\\Type\\AclMatrixType', array('permissions' => $permissions, 'acl_value' => $aclValue));
+            if (3 < Kernel::MAJOR_VERSION) {
+                $formBuilder->add(
+                    $key,
+                    new AclMatrixType(),
+                    array('permissions' => $permissions, 'acl_value' => $aclValue)
+                );
+            } else {
+                $formBuilder->add(
+                    $key,
+                    'Sonata\AdminBundle\Form\Type\AclMatrixType',
+                    array('permissions' => $permissions, 'acl_value' => $aclValue)
+                );
+            }
         }
 
         return $formBuilder->getForm();
