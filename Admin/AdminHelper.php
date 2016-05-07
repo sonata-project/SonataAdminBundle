@@ -19,6 +19,7 @@ use Sonata\AdminBundle\Util\FormViewIterator;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
+use Symfony\Component\PropertyAccess\Exception\UnexpectedTypeException;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 /**
@@ -332,6 +333,8 @@ class AdminHelper
 
             return true;
         } catch (NoSuchPropertyException $e) {
+            return false;
+        } catch (UnexpectedTypeException $e) {
             return false;
         }
     }
