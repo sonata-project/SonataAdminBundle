@@ -18,13 +18,18 @@ use Symfony\Component\Form\FormView;
 
 class AdminHelperTest extends \PHPUnit_Framework_TestCase
 {
-    public function testGetChildFormBuilder()
+    protected $helper;
+
+    public function setUp()
     {
         $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
 
         $pool = new Pool($container, 'title', 'logo.png');
-        $helper = new AdminHelper($pool);
+        $this->helper = new AdminHelper($pool);
+    }
 
+    public function testGetChildFormBuilder()
+    {
         $formFactory = $this->getMock('Symfony\Component\Form\FormFactoryInterface');
         $eventDispatcher = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
 
@@ -33,33 +38,23 @@ class AdminHelperTest extends \PHPUnit_Framework_TestCase
         $childFormBuilder = new FormBuilder('elementId', 'stdClass', $eventDispatcher, $formFactory);
         $formBuilder->add($childFormBuilder);
 
-        $this->assertNull($helper->getChildFormBuilder($formBuilder, 'foo'));
-        $this->isInstanceOf('Symfony\Component\Form\FormBuilder', $helper->getChildFormBuilder($formBuilder, 'test_elementId'));
+        $this->assertNull($this->helper->getChildFormBuilder($formBuilder, 'foo'));
+        $this->isInstanceOf('Symfony\Component\Form\FormBuilder', $this->helper->getChildFormBuilder($formBuilder, 'test_elementId'));
     }
 
     public function testGetChildFormView()
     {
-        $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
-
-        $pool = new Pool($container, 'title', 'logo.png');
-        $helper = new AdminHelper($pool);
-
         $formView = new FormView();
         $formView->vars['id'] = 'test';
         $child = new FormView($formView);
         $child->vars['id'] = 'test_elementId';
 
-        $this->assertNull($helper->getChildFormView($formView, 'foo'));
-        $this->isInstanceOf('Symfony\Component\Form\FormView', $helper->getChildFormView($formView, 'test_elementId'));
+        $this->assertNull($this->helper->getChildFormView($formView, 'foo'));
+        $this->isInstanceOf('Symfony\Component\Form\FormView', $this->helper->getChildFormView($formView, 'test_elementId'));
     }
 
     public function testAddNewInstance()
     {
-        $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
-
-        $pool = new Pool($container, 'title', 'logo.png');
-        $helper = new AdminHelper($pool);
-
         $admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
         $admin->expects($this->once())->method('getNewInstance')->will($this->returnValue(new \stdClass()));
 
@@ -70,16 +65,11 @@ class AdminHelperTest extends \PHPUnit_Framework_TestCase
         $object = $this->getMock('sdtClass', array('addFooBar'));
         $object->expects($this->once())->method('addFooBar');
 
-        $helper->addNewInstance($object, $fieldDescription);
+        $this->helper->addNewInstance($object, $fieldDescription);
     }
 
     public function testAddNewInstancePlural()
     {
-        $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
-
-        $pool = new Pool($container, 'title', 'logo.png');
-        $helper = new AdminHelper($pool);
-
         $admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
         $admin->expects($this->once())->method('getNewInstance')->will($this->returnValue(new \stdClass()));
 
@@ -90,16 +80,11 @@ class AdminHelperTest extends \PHPUnit_Framework_TestCase
         $object = $this->getMock('sdtClass', array('addFooBar'));
         $object->expects($this->once())->method('addFooBar');
 
-        $helper->addNewInstance($object, $fieldDescription);
+        $this->helper->addNewInstance($object, $fieldDescription);
     }
 
     public function testAddNewInstanceInflector()
     {
-        $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
-
-        $pool = new Pool($container, 'title', 'logo.png');
-        $helper = new AdminHelper($pool);
-
         $admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
         $admin->expects($this->once())->method('getNewInstance')->will($this->returnValue(new \stdClass()));
 
@@ -110,27 +95,38 @@ class AdminHelperTest extends \PHPUnit_Framework_TestCase
         $object = $this->getMock('sdtClass', array('addEntry'));
         $object->expects($this->once())->method('addEntry');
 
-        $helper->addNewInstance($object, $fieldDescription);
+        $this->helper->addNewInstance($object, $fieldDescription);
     }
 
     public function testGetElementAccessPath()
     {
-        $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
-
-        $pool = new Pool($container, 'title', 'logo.png');
-        $helper = new AdminHelper($pool);
-
         $object = $this->getMock('stdClass', array('getPathToObject'));
-        $subObject = $this->getMock('stdClass', array('getAnd'));
-        $sub2Object = $this->getMock('stdClass', array('getMore'));
+        $subObject = $this->getMock('stdClass', array('getAnother'));
+        $sub2Object = $this->getMock('stdClass', array('getMoreThings'));
 
         $object->expects($this->atLeastOnce())->method('getPathToObject')->will($this->returnValue(array($subObject)));
-        $subObject->expects($this->atLeastOnce())->method('getAnd')->will($this->returnValue($sub2Object));
-        $sub2Object->expects($this->atLeastOnce())->method('getMore')->will($this->returnValue('Value'));
+        $subObject->expects($this->atLeastOnce())->method('getAnother')->will($this->returnValue($sub2Object));
+        $sub2Object->expects($this->atLeastOnce())->method('getMoreThings')->will($this->returnValue('Value'));
 
-        $path = $helper->getElementAccessPath('uniquePartOfId_path_to_object_0_and_more', $object);
+        $path = $this->helper->getElementAccessPath('uniquePartOfId_path_to_object_0_another_more_things', $object);
 
-        $this->assertSame('path_to_object[0].and.more', $path);
+        $this->assertSame('path_to_object[0].another.more_things', $path);
+    }
+
+    /**
+     * @expectedException        Exception
+     * @expectdExceptionCode     0
+     * @expectedExceptionMessage Could not get element id from uniquePartOfId_path_to_object_0_more_calls Failing part: calls
+     */
+    public function testItThrowsExceptionWhenDoesNotFindTheFullPath()
+    {
+        $object = $this->getMock('stdClass', array('getPathToObject'));
+        $subObject = $this->getMock('stdClass', array('getMore'));
+
+        $object->expects($this->atLeastOnce())->method('getPathToObject')->will($this->returnValue(array($subObject)));
+        $subObject->expects($this->atLeastOnce())->method('getMore')->will($this->returnValue('Value'));
+
+        $path = $this->helper->getElementAccessPath('uniquePartOfId_path_to_object_0_more_calls', $object);
     }
 
     /**
@@ -142,9 +138,6 @@ class AdminHelperTest extends \PHPUnit_Framework_TestCase
      */
     public function testAppendFormFieldElementNested()
     {
-        $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
-        $pool = new Pool($container, 'title', 'logo.png');
-        $helper = new AdminHelper($pool);
         $admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
         $object = $this->getMock('stdClass', array('getSubObject'));
         $simpleObject = $this->getMock('stdClass', array('getSubObject'));
@@ -169,6 +162,6 @@ class AdminHelperTest extends \PHPUnit_Framework_TestCase
         $admin->expects($this->once())->method('getFormBuilder')->will($this->returnValue($formBuilder));
         $admin->expects($this->once())->method('getSubject')->will($this->returnValue($object));
 
-        $helper->appendFormFieldElement($admin, $simpleObject, 'uniquePartOfId_sub_object_0_and_more_0_final_data');
+        $this->helper->appendFormFieldElement($admin, $simpleObject, 'uniquePartOfId_sub_object_0_and_more_0_final_data');
     }
 }

@@ -284,13 +284,11 @@ class AdminHelper
                     $partReturnValue .= $dot.$id;
                     $dot = '.';
                     $id = '';
-                } else {
-                    $dot = '';
                 }
             }
 
-            if ($dot !== '.') {
-                throw new \Exception(sprintf('Could not get element id from %s Failing part: %s', $elementId, $subValue));
+            if (!empty($id)) {
+                throw new \Exception(sprintf('Could not get element id from %s Failing part: %s', $elementId, $id));
             }
 
             //check if array access was in this location originally
