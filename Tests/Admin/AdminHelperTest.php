@@ -18,6 +18,9 @@ use Symfony\Component\Form\FormView;
 
 class AdminHelperTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var AdminHelper
+     */
     protected $helper;
 
     public function setUp()
