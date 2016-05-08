@@ -41,8 +41,6 @@ matrix:
     - php: '7.0'
       env: SYMFONY_VERSION=2.8.*
     - php: '7.0'
-      env: SYMFONY_VERSION=3.0.*
-    - php: '7.0'
       env: SYMFONY_VERSION=dev-master@dev
     - php: '7.0'
       env: SYMFONY_DEPRECATIONS_HELPER=0
