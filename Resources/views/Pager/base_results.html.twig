@@ -23,7 +23,7 @@ file that was distributed with this source code.
     <label class="control-label" for="{{ admin.uniqid }}_per_page">{% trans from 'SonataAdminBundle' %}label_per_page{% endtrans %}</label>
     <select class="per-page small form-control" id="{{ admin.uniqid }}_per_page" style="width: auto">
         {% for per_page in admin.getperpageoptions %}
-            <option {% if per_page == admin.datagrid.pager.maxperpage %}selected="selected"{% endif %} value="{{ admin.generateUrl('list', {'filter': admin.datagrid.values | merge({'_page': 1, '_per_page': per_page})}) }}">
+            <option {% if per_page == admin.datagrid.pager.maxperpage %}selected="selected"{% endif %} value="{{ admin.generateUrl('list', {'filter': admin.datagrid.values|merge({'_page': 1, '_per_page': per_page})}) }}">
                 {{ per_page }}
             </option>
         {% endfor %}

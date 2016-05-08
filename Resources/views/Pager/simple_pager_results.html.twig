@@ -13,7 +13,7 @@ file that was distributed with this source code.
 
 {% block num_results %}
     {% if admin.datagrid.pager.lastPage != admin.datagrid.pager.page %}
-        {{ 'list_results_count_prefix' | trans({}, 'SonataAdminBundle') }}
+        {{ 'list_results_count_prefix'|trans({}, 'SonataAdminBundle') }}
     {% endif %}
     {% transchoice admin.datagrid.pager.nbresults with {'%count%': admin.datagrid.pager.nbresults} from 'SonataAdminBundle' %}list_results_count{% endtranschoice %}
     &nbsp;-&nbsp;
