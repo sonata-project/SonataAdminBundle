@@ -11,8 +11,8 @@
 
 namespace Sonata\AdminBundle\Admin;
 
+use Doctrine\Common\Inflector\Inflector;
 use Sonata\AdminBundle\Exception\NoValueException;
-use Symfony\Component\DependencyInjection\Container;
 
 /**
  * A FieldDescription hold the information about a field. A typical
@@ -325,7 +325,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
             return;
         }
 
-        $camelizedFieldName = self::camelize($fieldName);
+        $camelizedFieldName = Inflector::camelize($fieldName);
 
         $getters = array();
         $parameters = array();
@@ -412,20 +412,6 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     public function getMappingType()
     {
         return $this->mappingType;
-    }
-
-    /**
-     * Camelize a string.
-     *
-     * @static
-     *
-     * @param string $property
-     *
-     * @return string
-     */
-    public static function camelize($property)
-    {
-        return Container::camelize($property);
     }
 
     /**

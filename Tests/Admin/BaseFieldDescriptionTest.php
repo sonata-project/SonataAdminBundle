@@ -11,7 +11,6 @@
 
 namespace Sonata\AdminBundle\Tests\Admin;
 
-use Sonata\AdminBundle\Admin\BaseFieldDescription;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\FieldDescription;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\Foo;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooCall;
@@ -192,13 +191,6 @@ class BaseFieldDescriptionTest extends \PHPUnit_Framework_TestCase
             ->method('getTranslationDomain');
         $description->setOption('translation_domain', 'ExtensionDomain');
         $this->assertSame('ExtensionDomain', $description->getTranslationDomain());
-    }
-
-    public function testCamelize()
-    {
-        $this->assertSame('FooBar', BaseFieldDescription::camelize('foo_bar'));
-        $this->assertSame('FooBar', BaseFieldDescription::camelize('foo bar'));
-        $this->assertSame('FOoBar', BaseFieldDescription::camelize('fOo bar'));
     }
 
     public function testGetFieldValue()
