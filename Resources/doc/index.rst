@@ -11,6 +11,13 @@ Admin Bundle
 
 The demo website can be found in http://demo.sonata-project.org (``admin`` as user and password).
 
+**Usage examples:**
+
+* `SonataMediaBundle <https://github.com/sonata-project/SonataMediaBundle>`_: a media manager bundle
+* `SonataNewsBundle <https://github.com/sonata-project/SonataNewsBundle>`_: a news/blog bundle
+* `SonataPageBundle <https://github.com/sonata-project/SonataPageBundle>`_: a page (CMS like) bundle
+* `SonataUserBundle <https://github.com/sonata-project/SonataUserBundle>`_: integration of FOSUserBundle and SonataAdminBundle
+
 Getting Started
 ---------------
 
