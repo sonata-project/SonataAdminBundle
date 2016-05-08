@@ -1,7 +1,7 @@
 {
     "name": "sonata-project/admin-bundle",
     "type": "symfony-bundle",
-    "description": "Symfony SonataAdminBundle",
+    "description": "The missing Symfony Admin Generator",
     "keywords": ["Admin Generator", "admin", "sonata", "bootstrap"],
     "homepage": "https://sonata-project.org/bundles/admin",
     "license": "MIT",
