@@ -1,6 +1,6 @@
 # Sonata Admin Bundle
 
-Symfony SonataAdminBundle
+The missing Symfony Admin Generator
 
 [![Latest Stable Version](https://poser.pugx.org/sonata-project/admin-bundle/v/stable)](https://packagist.org/packages/sonata-project/admin-bundle)
 [![Latest Unstable Version](https://poser.pugx.org/sonata-project/admin-bundle/v/unstable)](https://packagist.org/packages/sonata-project/admin-bundle)
