@@ -19,6 +19,7 @@ use Sonata\AdminBundle\Util\FormViewIterator;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
+use Symfony\Component\PropertyAccess\Exception\UnexpectedTypeException;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 /**
@@ -284,13 +285,11 @@ class AdminHelper
                     $partReturnValue .= $dot.$id;
                     $dot = '.';
                     $id = '';
-                } else {
-                    $dot = '';
                 }
             }
 
-            if ($dot !== '.') {
-                throw new \Exception(sprintf('Could not get element id from %s Failing part: %s', $elementId, $subValue));
+            if (!empty($id)) {
+                throw new \Exception(sprintf('Could not get element id from %s Failing part: %s', $elementId, $id));
             }
 
             //check if array access was in this location originally
@@ -334,6 +333,8 @@ class AdminHelper
 
             return true;
         } catch (NoSuchPropertyException $e) {
+            return false;
+        } catch (UnexpectedTypeException $e) {
             return false;
         }
     }
