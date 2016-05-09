@@ -7,7 +7,6 @@
 preset: symfony
 
 enabled:
-  - align_double_arrow
   - newline_after_open_tag
   - ordered_use
   - long_array_syntax
@@ -16,10 +15,6 @@ enabled:
 #  - strict_param
 #  - php_unit_construct
 #  - php_unit_strict
-
-disabled:
-  - unalign_double_arrow
-  - unalign_equals
 
 finder:
   exclude:
