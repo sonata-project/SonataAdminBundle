@@ -38,7 +38,7 @@ class ListMapper extends BaseMapper
     public function __construct(ListBuilderInterface $listBuilder, FieldDescriptionCollection $list, AdminInterface $admin)
     {
         parent::__construct($listBuilder, $admin);
-        $this->list        = $list;
+        $this->list = $list;
     }
 
     /**

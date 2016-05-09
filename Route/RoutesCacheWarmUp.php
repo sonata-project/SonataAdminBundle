@@ -38,7 +38,7 @@ class RoutesCacheWarmUp implements CacheWarmerInterface
     public function __construct(RoutesCache $cache, Pool $pool)
     {
         $this->cache = $cache;
-        $this->pool  = $pool;
+        $this->pool = $pool;
     }
 
     /**

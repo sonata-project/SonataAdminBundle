@@ -143,10 +143,10 @@ class Configuration implements ConfigurationInterface
                                                         $items[$key]['admin'] = '';
                                                     } else {
                                                         $items[$key] = array(
-                                                            'admin'          => $item,
-                                                            'label'          => '',
-                                                            'route'          => '',
-                                                            'route_params'   => array(),
+                                                            'admin' => $item,
+                                                            'label' => '',
+                                                            'route' => '',
+                                                            'route_params' => array(),
                                                             'route_absolute' => true,
                                                         );
                                                     }
@@ -183,8 +183,8 @@ class Configuration implements ConfigurationInterface
                             ->defaultValue(array(array(
                                 'position' => 'left',
                                 'settings' => array(),
-                                'type'     => 'sonata.admin.block.admin_list',
-                                'roles'    => array(),
+                                'type' => 'sonata.admin.block.admin_list',
+                                'roles' => array(),
                             )))
                             ->prototype('array')
                                 ->fixXmlConfig('setting')

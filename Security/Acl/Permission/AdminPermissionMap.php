@@ -22,16 +22,16 @@ use Symfony\Component\Security\Acl\Permission\PermissionMapInterface;
  */
 class AdminPermissionMap implements PermissionMapInterface
 {
-    const PERMISSION_VIEW        = 'VIEW';
-    const PERMISSION_EDIT        = 'EDIT';
-    const PERMISSION_CREATE      = 'CREATE';
-    const PERMISSION_DELETE      = 'DELETE';
-    const PERMISSION_UNDELETE    = 'UNDELETE';
-    const PERMISSION_LIST        = 'LIST';
-    const PERMISSION_EXPORT      = 'EXPORT';
-    const PERMISSION_OPERATOR    = 'OPERATOR';
-    const PERMISSION_MASTER      = 'MASTER';
-    const PERMISSION_OWNER       = 'OWNER';
+    const PERMISSION_VIEW = 'VIEW';
+    const PERMISSION_EDIT = 'EDIT';
+    const PERMISSION_CREATE = 'CREATE';
+    const PERMISSION_DELETE = 'DELETE';
+    const PERMISSION_UNDELETE = 'UNDELETE';
+    const PERMISSION_LIST = 'LIST';
+    const PERMISSION_EXPORT = 'EXPORT';
+    const PERMISSION_OPERATOR = 'OPERATOR';
+    const PERMISSION_MASTER = 'MASTER';
+    const PERMISSION_OWNER = 'OWNER';
 
     /**
      * Map each permission to the permissions it should grant access for

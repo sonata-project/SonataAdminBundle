@@ -38,9 +38,9 @@ class CoreControllerTest extends \PHPUnit_Framework_TestCase
 
         $values = array(
             'sonata.admin.pool' => $pool,
-            'templating'        => $templating,
-            'request'           => $request,
-            'request_stack'     => $requestStack,
+            'templating' => $templating,
+            'request' => $request,
+            'request_stack' => $requestStack,
         );
 
         $container->expects($this->any())->method('get')->will($this->returnCallback(function ($id) use ($values) {
@@ -99,9 +99,9 @@ class CoreControllerTest extends \PHPUnit_Framework_TestCase
 
         $values = array(
             'sonata.admin.pool' => $pool,
-            'templating'        => $templating,
-            'request'           => $request,
-            'request_stack'     => $requestStack,
+            'templating' => $templating,
+            'request' => $request,
+            'request_stack' => $requestStack,
         );
 
         $container->expects($this->any())->method('get')->will($this->returnCallback(function ($id) use ($values) {

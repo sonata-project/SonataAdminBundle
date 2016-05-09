@@ -48,22 +48,22 @@ class SonataAdminBundle extends Bundle
     public function registerFormMapping()
     {
         FormHelper::registerFormTypeMapping(array(
-            'sonata_type_admin'                 => 'Sonata\AdminBundle\Form\Type\AdminType',
-            'sonata_type_model'                 => 'Sonata\AdminBundle\Form\Type\ModelType',
-            'sonata_type_model_list'            => 'Sonata\AdminBundle\Form\Type\ModelTypeList',
-            'sonata_type_model_reference'       => 'Sonata\AdminBundle\Form\Type\ModelReferenceType',
-            'sonata_type_model_hidden'          => 'Sonata\AdminBundle\Form\Type\ModelHiddenType',
-            'sonata_type_model_autocomplete'    => 'Sonata\AdminBundle\Form\Type\ModelAutocompleteType',
-            'sonata_type_native_collection'     => 'Sonata\AdminBundle\Form\Type\CollectionType',
-            'sonata_type_choice_field_mask'     => 'Sonata\AdminBundle\Form\Type\ChoiceFieldMaskType',
-            'sonata_type_filter_number'         => 'Sonata\AdminBundle\Form\Type\Filter\NumberType',
-            'sonata_type_filter_choice'         => 'Sonata\AdminBundle\Form\Type\Filter\ChoiceType',
-            'sonata_type_filter_default'        => 'Sonata\AdminBundle\Form\Type\Filter\DefaultType',
-            'sonata_type_filter_date'           => 'Sonata\AdminBundle\Form\Type\Filter\DateType',
-            'sonata_type_filter_date_range'     => 'Sonata\AdminBundle\Form\Type\Filter\DateRangeType',
-            'sonata_type_filter_datetime'       => 'Sonata\AdminBundle\Form\Type\Filter\DateTimeType',
+            'sonata_type_admin' => 'Sonata\AdminBundle\Form\Type\AdminType',
+            'sonata_type_model' => 'Sonata\AdminBundle\Form\Type\ModelType',
+            'sonata_type_model_list' => 'Sonata\AdminBundle\Form\Type\ModelTypeList',
+            'sonata_type_model_reference' => 'Sonata\AdminBundle\Form\Type\ModelReferenceType',
+            'sonata_type_model_hidden' => 'Sonata\AdminBundle\Form\Type\ModelHiddenType',
+            'sonata_type_model_autocomplete' => 'Sonata\AdminBundle\Form\Type\ModelAutocompleteType',
+            'sonata_type_native_collection' => 'Sonata\AdminBundle\Form\Type\CollectionType',
+            'sonata_type_choice_field_mask' => 'Sonata\AdminBundle\Form\Type\ChoiceFieldMaskType',
+            'sonata_type_filter_number' => 'Sonata\AdminBundle\Form\Type\Filter\NumberType',
+            'sonata_type_filter_choice' => 'Sonata\AdminBundle\Form\Type\Filter\ChoiceType',
+            'sonata_type_filter_default' => 'Sonata\AdminBundle\Form\Type\Filter\DefaultType',
+            'sonata_type_filter_date' => 'Sonata\AdminBundle\Form\Type\Filter\DateType',
+            'sonata_type_filter_date_range' => 'Sonata\AdminBundle\Form\Type\Filter\DateRangeType',
+            'sonata_type_filter_datetime' => 'Sonata\AdminBundle\Form\Type\Filter\DateTimeType',
             'sonata_type_filter_datetime_range' => 'Sonata\AdminBundle\Form\Type\Filter\DateTimeRangeType',
-            'tab'                               => 'Mopa\Bundle\BootstrapBundle\Form\Type\TabType',
+            'tab' => 'Mopa\Bundle\BootstrapBundle\Form\Type\TabType',
         ));
 
         FormHelper::registerFormExtensionMapping('form', array(

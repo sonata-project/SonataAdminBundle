@@ -67,9 +67,9 @@ class ChoiceType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $choices = array(
-            self::TYPE_CONTAINS     => $this->translator->trans('label_type_contains', array(), 'SonataAdminBundle'),
+            self::TYPE_CONTAINS => $this->translator->trans('label_type_contains', array(), 'SonataAdminBundle'),
             self::TYPE_NOT_CONTAINS => $this->translator->trans('label_type_not_contains', array(), 'SonataAdminBundle'),
-            self::TYPE_EQUAL        => $this->translator->trans('label_type_equals', array(), 'SonataAdminBundle'),
+            self::TYPE_EQUAL => $this->translator->trans('label_type_equals', array(), 'SonataAdminBundle'),
         );
 
         if (!method_exists('Symfony\Component\Form\FormTypeInterface', 'setDefaultOptions')) {
@@ -100,9 +100,9 @@ class ChoiceType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'field_type'       => 'choice',
-            'field_options'    => array(),
-            'operator_type'    => 'choice',
+            'field_type' => 'choice',
+            'field_options' => array(),
+            'operator_type' => 'choice',
             'operator_options' => array(),
         ));
     }

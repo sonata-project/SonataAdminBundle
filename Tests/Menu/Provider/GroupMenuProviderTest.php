@@ -92,7 +92,7 @@ class GroupMenuProviderTest extends \PHPUnit_Framework_TestCase
         $menu = $this->provider->get(
             'providerFoo',
             array(
-                'name'  => 'foo',
+                'name' => 'foo',
                 'group' => $adminGroups,
             )
         );
@@ -123,7 +123,7 @@ class GroupMenuProviderTest extends \PHPUnit_Framework_TestCase
         $menu = $this->provider->get(
             'providerFoo',
             array(
-                'name'  => 'foo',
+                'name' => 'foo',
                 'group' => $adminGroups,
             )
         );
@@ -149,7 +149,7 @@ class GroupMenuProviderTest extends \PHPUnit_Framework_TestCase
         $menu = $this->provider->get(
             'providerFoo',
             array(
-                'name'  => 'foo',
+                'name' => 'foo',
                 'group' => $adminGroups,
             )
         );
@@ -175,7 +175,7 @@ class GroupMenuProviderTest extends \PHPUnit_Framework_TestCase
         $menu = $this->provider->get(
             'providerFoo',
             array(
-                'name'  => 'foo',
+                'name' => 'foo',
                 'group' => $adminGroupsOnTopOption,
             )
         );
@@ -192,25 +192,25 @@ class GroupMenuProviderTest extends \PHPUnit_Framework_TestCase
         return array(
             array(
                 'bar' => array(
-                    'label'           => 'foo',
-                    'icon'            => '<i class="fa fa-edit"></i>',
+                    'label' => 'foo',
+                    'icon' => '<i class="fa fa-edit"></i>',
                     'label_catalogue' => 'SonataAdminBundle',
-                    'items'           => array(
+                    'items' => array(
                         array(
-                            'admin'          => 'sonata_admin_foo_service',
-                            'label'          => 'fooLabel',
+                            'admin' => 'sonata_admin_foo_service',
+                            'label' => 'fooLabel',
                             'route_absolute' => true,
                         ),
                         array(
-                            'admin'          => '',
-                            'label'          => 'route_label',
-                            'route'          => 'FooRoute',
-                            'route_params'   => array('foo' => 'bar'),
+                            'admin' => '',
+                            'label' => 'route_label',
+                            'route' => 'FooRoute',
+                            'route_params' => array('foo' => 'bar'),
                             'route_absolute' => true,
                         ),
                     ),
-                    'item_adds'       => array(),
-                    'roles'           => array(),
+                    'item_adds' => array(),
+                    'roles' => array(),
                 ),
             ),
         );
@@ -224,20 +224,20 @@ class GroupMenuProviderTest extends \PHPUnit_Framework_TestCase
         return array(
             array(
                 'foo' => array(
-                    'label'           => 'foo_on_top',
-                    'icon'            => '<i class="fa fa-edit"></i>',
+                    'label' => 'foo_on_top',
+                    'icon' => '<i class="fa fa-edit"></i>',
                     'label_catalogue' => 'SonataAdminBundle',
-                    'on_top'          => true,
-                    'items'           => array(
+                    'on_top' => true,
+                    'items' => array(
                         array(
-                            'admin'          => 'sonata_admin_foo_service',
-                            'label'          => 'fooLabel',
+                            'admin' => 'sonata_admin_foo_service',
+                            'label' => 'fooLabel',
                             'route_absolute' => true,
-                            'route_params'   => array(),
+                            'route_params' => array(),
                         ),
                     ),
-                    'item_adds'       => array(),
-                    'roles'           => array(),
+                    'item_adds' => array(),
+                    'roles' => array(),
                 ),
             ),
         );

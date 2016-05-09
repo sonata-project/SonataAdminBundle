@@ -78,11 +78,11 @@ class AdminSearchBlockService extends BaseBlockService
         );
 
         return $this->renderPrivateResponse($admin->getTemplate('search_result_block'), array(
-            'block'         => $blockContext->getBlock(),
-            'settings'      => $blockContext->getSettings(),
-            'admin_pool'    => $this->pool,
-            'pager'         => $pager,
-            'admin'         => $admin,
+            'block' => $blockContext->getBlock(),
+            'settings' => $blockContext->getSettings(),
+            'admin_pool' => $this->pool,
+            'pager' => $pager,
+            'admin' => $admin,
         ), $response);
     }
 
@@ -101,10 +101,10 @@ class AdminSearchBlockService extends BaseBlockService
     {
         $resolver->setDefaults(array(
             'admin_code' => false,
-            'query'      => '',
-            'page'       => 0,
-            'per_page'   => 10,
-            'icon'       => '<i class="fa fa-list"></i>',
+            'query' => '',
+            'page' => 0,
+            'per_page' => 10,
+            'icon' => '<i class="fa fa-list"></i>',
         ));
     }
 }

@@ -59,7 +59,7 @@ class LockExtension extends AdminExtension
 
             $form->add($fieldName, 'hidden', array(
                 'mapped' => false,
-                'data'   => $lockVersion,
+                'data' => $lockVersion,
             ));
         });
     }

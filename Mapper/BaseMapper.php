@@ -39,7 +39,7 @@ abstract class BaseMapper
     public function __construct(BuilderInterface $builder, AdminInterface $admin)
     {
         $this->builder = $builder;
-        $this->admin   = $admin;
+        $this->admin = $admin;
     }
 
     /**

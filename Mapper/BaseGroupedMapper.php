@@ -87,12 +87,12 @@ abstract class BaseGroupedMapper extends BaseMapper
          *
          */
         $defaultOptions = array(
-            'collapsed'          => false,
-            'class'              => false,
-            'description'        => false,
+            'collapsed' => false,
+            'class' => false,
+            'description' => false,
             'translation_domain' => null,
-            'name'               => $name,
-            'box_class'          => 'box box-primary',
+            'name' => $name,
+            'box_class' => 'box box-primary',
         );
 
         $code = $name;
@@ -116,8 +116,8 @@ abstract class BaseGroupedMapper extends BaseMapper
             }
 
             $tabs[$code] = array_merge($defaultOptions, array(
-                'auto_created'       => false,
-                'groups'             => array(),
+                'auto_created' => false,
+                'groups' => array(),
             ), $tabs[$code], $options);
 
             $this->currentTab = $code;
@@ -129,8 +129,8 @@ abstract class BaseGroupedMapper extends BaseMapper
             if (!$this->currentTab) {
                 // no tab define
                 $this->with('default', array(
-                    'tab'                => true,
-                    'auto_created'       => true,
+                    'tab' => true,
+                    'auto_created' => true,
                     'translation_domain' => isset($options['translation_domain']) ? $options['translation_domain'] : null,
                 )); // add new tab automatically
             }

@@ -28,9 +28,9 @@ class AclMatrixTypeTest extends TypeTestCase
         $permissions = array(
             'OWNER' => array(
                 'required' => false,
-                'data'     => false,
+                'data' => false,
                 'disabled' => false,
-                'attr'     => array(),
+                'attr' => array(),
             ),
         );
 
@@ -43,7 +43,7 @@ class AclMatrixTypeTest extends TypeTestCase
         }
 
         $options = $optionResolver->resolve(array(
-            'acl_value'   => $user,
+            'acl_value' => $user,
             'permissions' => $permissions,
         ));
 

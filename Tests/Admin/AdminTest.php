@@ -241,7 +241,7 @@ class AdminTest extends \PHPUnit_Framework_TestCase
         $commentAdmin->setCurrentChild($subCommentAdmin);
 
         $menuFactory = $this->getMock('Knp\Menu\FactoryInterface');
-        $menu        = $this->getMock('Knp\Menu\ItemInterface');
+        $menu = $this->getMock('Knp\Menu\ItemInterface');
         $translatorStrategy = $this->getMock(
             'Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface'
         );
@@ -397,7 +397,7 @@ class AdminTest extends \PHPUnit_Framework_TestCase
         $admin->initialize();
 
         $menuFactory = $this->getMock('Knp\Menu\FactoryInterface');
-        $menu        = $this->getMock('Knp\Menu\ItemInterface');
+        $menu = $this->getMock('Knp\Menu\ItemInterface');
         $translatorStrategy = $this->getMock(
             'Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface'
         );

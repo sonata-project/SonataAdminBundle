@@ -71,16 +71,16 @@ class MenuBuilder
 
         foreach ($this->pool->getAdminGroups() as $name => $group) {
             $extras = array(
-                'icon'            => $group['icon'],
+                'icon' => $group['icon'],
                 'label_catalogue' => $group['label_catalogue'],
-                'roles'           => $group['roles'],
+                'roles' => $group['roles'],
             );
 
             $menuProvider = isset($group['provider']) ? $group['provider'] : 'sonata_group_menu';
             $subMenu = $this->provider->get(
                 $menuProvider,
                 array(
-                    'name'  => $name,
+                    'name' => $name,
                     'group' => $group,
                 )
             );

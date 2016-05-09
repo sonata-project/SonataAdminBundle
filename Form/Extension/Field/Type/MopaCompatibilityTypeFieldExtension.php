@@ -43,8 +43,8 @@ class MopaCompatibilityTypeFieldExtension extends AbstractTypeExtension
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'horizontal_label_class'         => '',
-            'horizontal_label_offset_class'  => '',
+            'horizontal_label_class' => '',
+            'horizontal_label_offset_class' => '',
             'horizontal_input_wrapper_class' => '',
         ));
     }
@@ -54,8 +54,8 @@ class MopaCompatibilityTypeFieldExtension extends AbstractTypeExtension
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $view->vars['horizontal_label_class']         = $options['horizontal_label_class'];
-        $view->vars['horizontal_label_offset_class']  = $options['horizontal_label_offset_class'];
+        $view->vars['horizontal_label_class'] = $options['horizontal_label_class'];
+        $view->vars['horizontal_label_offset_class'] = $options['horizontal_label_offset_class'];
         $view->vars['horizontal_input_wrapper_class'] = $options['horizontal_input_wrapper_class'];
     }
 

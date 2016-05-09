@@ -43,8 +43,8 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
             'admin_services' => array(
                 'my_admin_id' => array(
                     'templates' => array(
-                        'form'   => array('form.twig.html', 'form_extra.twig.html'),
-                        'view'   => array('user_block' => 'SonataAdminBundle:mycustomtemplate.html.twig'),
+                        'form' => array('form.twig.html', 'form_extra.twig.html'),
+                        'view' => array('user_block' => 'SonataAdminBundle:mycustomtemplate.html.twig'),
                         'filter' => array(),
                     ),
                 ),
@@ -61,25 +61,25 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         )));
 
         $this->assertSame(array(
-            'model_manager'             => null,
-            'form_contractor'           => null,
-            'show_builder'              => null,
-            'list_builder'              => null,
-            'datagrid_builder'          => null,
-            'translator'                => null,
-            'configuration_pool'        => null,
-            'route_generator'           => null,
-            'validator'                 => null,
-            'security_handler'          => null,
-            'label'                     => null,
-            'menu_factory'              => null,
-            'route_builder'             => null,
+            'model_manager' => null,
+            'form_contractor' => null,
+            'show_builder' => null,
+            'list_builder' => null,
+            'datagrid_builder' => null,
+            'translator' => null,
+            'configuration_pool' => null,
+            'route_generator' => null,
+            'validator' => null,
+            'security_handler' => null,
+            'label' => null,
+            'menu_factory' => null,
+            'route_builder' => null,
             'label_translator_strategy' => null,
-            'pager_type'                => null,
-            'templates'                 => array(
-                'form'   => array(),
+            'pager_type' => null,
+            'templates' => array(
+                'form' => array(),
                 'filter' => array(),
-                'view'   => array(),
+                'view' => array(),
             ),
         ), $config['admin_services']['my_admin_id']);
     }
@@ -97,7 +97,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
             'dashboard' => array(
                 'blocks' => array(array(
                     'roles' => array('ROLE_ADMIN'),
-                    'type'  => 'my.type',
+                    'type' => 'my.type',
                 )),
             ),
         )));
@@ -112,14 +112,14 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
                 'groups' => array(
                     'bar' => array(
                         'label' => 'foo',
-                        'icon'  => '<i class="fa fa-edit"></i>',
+                        'icon' => '<i class="fa fa-edit"></i>',
                         'items' => array(
                             'item1',
                             'item2',
                             array(
-                                'label'          => 'fooLabel',
-                                'route'          => 'fooRoute',
-                                'route_params'   => array('bar' => 'foo'),
+                                'label' => 'fooLabel',
+                                'route' => 'fooRoute',
+                                'route_params' => array('bar' => 'foo'),
                                 'route_absolute' => true,
                             ),
                             array(
@@ -136,40 +136,40 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(
             $config['dashboard']['groups']['bar']['items'][0],
             array(
-                'admin'          => 'item1',
-                'label'          => '',
-                'route'          => '',
-                'route_params'   => array(),
+                'admin' => 'item1',
+                'label' => '',
+                'route' => '',
+                'route_params' => array(),
                 'route_absolute' => true,
             )
         );
         $this->assertSame(
             $config['dashboard']['groups']['bar']['items'][1],
             array(
-                'admin'          => 'item2',
-                'label'          => '',
-                'route'          => '',
-                'route_params'   => array(),
+                'admin' => 'item2',
+                'label' => '',
+                'route' => '',
+                'route_params' => array(),
                 'route_absolute' => true,
             )
         );
         $this->assertSame(
             $config['dashboard']['groups']['bar']['items'][2],
             array(
-                'label'          => 'fooLabel',
-                'route'          => 'fooRoute',
-                'route_params'   => array('bar' => 'foo'),
+                'label' => 'fooLabel',
+                'route' => 'fooRoute',
+                'route_params' => array('bar' => 'foo'),
                 'route_absolute' => true,
-                'admin'          => '',
+                'admin' => '',
             )
         );
         $this->assertSame(
             $config['dashboard']['groups']['bar']['items'][3],
             array(
-                'label'          => 'barLabel',
-                'route'          => 'barRoute',
-                'route_params'   => array(),
-                'admin'          => '',
+                'label' => 'barLabel',
+                'route' => 'barRoute',
+                'route_params' => array(),
+                'admin' => '',
                 'route_absolute' => true,
             )
         );
@@ -184,7 +184,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
                 'groups' => array(
                     'bar' => array(
                         'label' => 'foo',
-                        'icon'  => '<i class="fa fa-edit"></i>',
+                        'icon' => '<i class="fa fa-edit"></i>',
                         'items' => array(
                             'item1',
                             'item2',

@@ -60,14 +60,14 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
      */
     public function __construct(Pool $adminPool, LoggerInterface $logger = null)
     {
-        $this->logger    = $logger;
+        $this->logger = $logger;
         $this->adminPool = $adminPool;
 
         // state variable
-        $this->catalogue     = false;
-        $this->translator    = false;
+        $this->catalogue = false;
+        $this->translator = false;
         $this->labelStrategy = false;
-        $this->domain        = false;
+        $this->domain = false;
     }
 
     /**
@@ -96,9 +96,9 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
         foreach ($this->adminPool->getAdminServiceIds() as $id) {
             $admin = $this->getAdmin($id);
 
-            $this->translator    = $admin->getTranslator();
+            $this->translator = $admin->getTranslator();
             $this->labelStrategy = $admin->getLabelTranslatorStrategy();
-            $this->domain        = $admin->getTranslationDomain();
+            $this->domain = $admin->getTranslationDomain();
 
             $admin->setTranslator($this);
             $admin->setSecurityHandler($this);
@@ -110,11 +110,11 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
 
             // call the different public method
             $methods = array(
-                'getShow'         => array(array()),
-                'getDatagrid'     => array(array()),
-                'getList'         => array(array()),
-                'getForm'         => array(array()),
-                'getBreadcrumbs'  => array(
+                'getShow' => array(array()),
+                'getDatagrid' => array(array()),
+                'getList' => array(array()),
+                'getForm' => array(array()),
+                'getBreadcrumbs' => array(
                     array('list'),
                     array('edit'),
                     array('create'),

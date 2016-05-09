@@ -51,7 +51,7 @@ class ModelHiddenType extends AbstractType
     {
         $resolver->setDefaults(array(
             'model_manager' => null,
-            'class'         => null,
+            'class' => null,
         ));
     }
 
