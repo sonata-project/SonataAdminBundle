@@ -7,7 +7,7 @@
     "dependencies": {
         "jqueryui": "~1.10",
         "x-editable": "^1.5",
-        "admin-lte": "^2.2",
+        "admin-lte": "^2.3",
         "iCheck": "^1.0",
         "slimScroll": "^1.3",
         "jquery.scrollTo": "^1.4",
