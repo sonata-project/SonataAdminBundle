@@ -14,12 +14,12 @@ namespace Sonata\AdminBundle\Util;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity;
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 use Symfony\Component\Security\Acl\Exception\NoAceFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\HttpKernel\Kernel;
 use Sonata\AdminBundle\Form\Type\AclMatrixType;
 
 /**
@@ -272,16 +272,18 @@ class AdminObjectAclManipulator
                     'attr'     => $attr,
                 );
             }
-            if (3 < Kernel::MAJOR_VERSION) {
+            //@todo Remove when dropping Symfony <2.8 support
+            $aclMatrixType = new AclMatrixType();
+            if (method_exists($aclMatrixType, 'getBlockPrefix')) {
                 $formBuilder->add(
                     $key,
-                    new AclMatrixType(),
+                    'Sonata\AdminBundle\Form\Type\AclMatrixType',
                     array('permissions' => $permissions, 'acl_value' => $aclValue)
                 );
             } else {
                 $formBuilder->add(
                     $key,
-                    'Sonata\AdminBundle\Form\Type\AclMatrixType',
+                    $aclMatrixType,
                     array('permissions' => $permissions, 'acl_value' => $aclValue)
                 );
             }
