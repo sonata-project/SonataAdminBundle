@@ -37,7 +37,7 @@ class FilterFactory implements FilterFactoryInterface
     public function __construct(ContainerInterface $container, array $types = array())
     {
         $this->container = $container;
-        $this->types     = $types;
+        $this->types = $types;
     }
 
     /**

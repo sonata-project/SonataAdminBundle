@@ -66,7 +66,7 @@ class AclMatrixType extends AbstractType
         } else {
             $resolver->setAllowedTypes(array(
                 'permissions' => 'array',
-                'acl_value'   => array('string', '\Symfony\Component\Security\Core\User\UserInterface'),
+                'acl_value' => array('string', '\Symfony\Component\Security\Core\User\UserInterface'),
             ));
         }
     }

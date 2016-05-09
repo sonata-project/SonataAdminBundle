@@ -131,7 +131,7 @@ class ModelType extends AbstractType
         }
 
         $resolver->setDefaults(array_merge($options, array(
-            'compound'          => function (Options $options) {
+            'compound' => function (Options $options) {
                 if (isset($options['multiple']) && $options['multiple']) {
                     if (isset($options['expanded']) && $options['expanded']) {
                         //checkboxes
@@ -151,19 +151,19 @@ class ModelType extends AbstractType
                 return false;
             },
 
-            'template'          => 'choice',
-            'multiple'          => false,
-            'expanded'          => false,
-            'model_manager'     => null,
-            'class'             => null,
-            'property'          => null,
-            'query'             => null,
-            'choices'           => array(),
+            'template' => 'choice',
+            'multiple' => false,
+            'expanded' => false,
+            'model_manager' => null,
+            'class' => null,
+            'property' => null,
+            'query' => null,
+            'choices' => array(),
             'preferred_choices' => array(),
-            'btn_add'           => 'link_add',
-            'btn_list'          => 'link_list',
-            'btn_delete'        => 'link_delete',
-            'btn_catalogue'     => 'SonataAdminBundle',
+            'btn_add' => 'link_add',
+            'btn_list' => 'link_list',
+            'btn_delete' => 'link_delete',
+            'btn_catalogue' => 'SonataAdminBundle',
         )));
     }
 

@@ -49,7 +49,7 @@ class DefaultRouteGenerator implements RouteGeneratorInterface
     public function __construct(RouterInterface $router, RoutesCache $cache)
     {
         $this->router = $router;
-        $this->cache  = $cache;
+        $this->cache = $cache;
     }
 
     /**
@@ -92,15 +92,15 @@ class DefaultRouteGenerator implements RouteGeneratorInterface
             // merge link parameter if any provided by the parent field
             $parameters = array_merge($parameters, $admin->getParentFieldDescription()->getOption('link_parameters', array()));
 
-            $parameters['uniqid']  = $admin->getUniqid();
-            $parameters['code']    = $admin->getCode();
-            $parameters['pcode']   = $admin->getParentFieldDescription()->getAdmin()->getCode();
+            $parameters['uniqid'] = $admin->getUniqid();
+            $parameters['code'] = $admin->getCode();
+            $parameters['pcode'] = $admin->getParentFieldDescription()->getAdmin()->getCode();
             $parameters['puniqid'] = $admin->getParentFieldDescription()->getAdmin()->getUniqid();
         }
 
         if ($name == 'update' || substr($name, -7) == '|update') {
             $parameters['uniqid'] = $admin->getUniqid();
-            $parameters['code']   = $admin->getCode();
+            $parameters['code'] = $admin->getCode();
         }
 
         // allows to define persistent parameters
@@ -115,9 +115,9 @@ class DefaultRouteGenerator implements RouteGeneratorInterface
         }
 
         return array(
-            'route'           => $this->caches[$code],
+            'route' => $this->caches[$code],
             'routeParameters' => $parameters,
-            'routeAbsolute'   => $absolute,
+            'routeAbsolute' => $absolute,
         );
     }
 

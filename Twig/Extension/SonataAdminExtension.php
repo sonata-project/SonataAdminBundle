@@ -46,8 +46,8 @@ class SonataAdminExtension extends \Twig_Extension
      */
     public function __construct(Pool $pool, LoggerInterface $logger = null)
     {
-        $this->pool      = $pool;
-        $this->logger    = $logger;
+        $this->pool = $pool;
+        $this->logger = $logger;
     }
 
     /**
@@ -60,7 +60,7 @@ class SonataAdminExtension extends \Twig_Extension
                 'render_list_element',
                 array($this, 'renderListElement'),
                 array(
-                    'is_safe'           => array('html'),
+                    'is_safe' => array('html'),
                     'needs_environment' => true,
                 )
             ),
@@ -68,7 +68,7 @@ class SonataAdminExtension extends \Twig_Extension
                 'render_view_element',
                 array($this, 'renderViewElement'),
                 array(
-                    'is_safe'           => array('html'),
+                    'is_safe' => array('html'),
                     'needs_environment' => true,
                 )
             ),
@@ -76,7 +76,7 @@ class SonataAdminExtension extends \Twig_Extension
                 'render_view_element_compare',
                 array($this, 'renderViewElementCompare'),
                 array(
-                    'is_safe'           => array('html'),
+                    'is_safe' => array('html'),
                     'needs_environment' => true,
                 )
             ),
@@ -163,9 +163,9 @@ class SonataAdminExtension extends \Twig_Extension
         );
 
         return $this->output($fieldDescription, $template, array_merge($params, array(
-            'admin'             => $fieldDescription->getAdmin(),
-            'object'            => $object,
-            'value'             => $this->getValueFromFieldDescription($object, $fieldDescription),
+            'admin' => $fieldDescription->getAdmin(),
+            'object' => $object,
+            'value' => $this->getValueFromFieldDescription($object, $fieldDescription),
             'field_description' => $fieldDescription,
         )), $environment);
     }
@@ -270,9 +270,9 @@ EOT;
 
         return $this->output($fieldDescription, $template, array(
             'field_description' => $fieldDescription,
-            'object'            => $object,
-            'value'             => $value,
-            'admin'             => $fieldDescription->getAdmin(),
+            'object' => $object,
+            'value' => $value,
+            'admin' => $fieldDescription->getAdmin(),
         ), $environment);
     }
 
@@ -310,15 +310,15 @@ EOT;
         }
 
         $baseValueOutput = $template->render(array(
-            'admin'             => $fieldDescription->getAdmin(),
+            'admin' => $fieldDescription->getAdmin(),
             'field_description' => $fieldDescription,
-            'value'             => $baseValue,
+            'value' => $baseValue,
         ));
 
         $compareValueOutput = $template->render(array(
             'field_description' => $fieldDescription,
-            'admin'             => $fieldDescription->getAdmin(),
-            'value'             => $compareValue,
+            'admin' => $fieldDescription->getAdmin(),
+            'value' => $compareValue,
         ));
 
         // Compare the rendered output of both objects by using the (possibly) overridden field block
@@ -326,10 +326,10 @@ EOT;
 
         return $this->output($fieldDescription, $template, array(
             'field_description' => $fieldDescription,
-            'value'             => $baseValue,
-            'value_compare'     => $compareValue,
-            'is_diff'           => $isDiff,
-            'admin'             => $fieldDescription->getAdmin(),
+            'value' => $baseValue,
+            'value_compare' => $compareValue,
+            'is_diff' => $isDiff,
+            'admin' => $fieldDescription->getAdmin(),
         ), $environment);
     }
 
@@ -430,7 +430,7 @@ EOT;
      */
     public function getXEditableChoices(FieldDescriptionInterface $fieldDescription)
     {
-        $choices   = $fieldDescription->getOption('choices', array());
+        $choices = $fieldDescription->getOption('choices', array());
         $catalogue = $fieldDescription->getOption('catalogue');
         $xEditableChoices = array();
         if (!empty($choices)) {
@@ -444,7 +444,7 @@ EOT;
                     $text = $catalogue ? $fieldDescription->getAdmin()->trans($text, array(), $catalogue) : $text;
                     $xEditableChoices[] = array(
                         'value' => $value,
-                        'text'  => $text,
+                        'text' => $text,
                     );
                 }
             }

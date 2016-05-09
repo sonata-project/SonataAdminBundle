@@ -37,7 +37,7 @@ class DatagridMapper extends BaseMapper
     public function __construct(DatagridBuilderInterface $datagridBuilder, DatagridInterface $datagrid, AdminInterface $admin)
     {
         parent::__construct($datagridBuilder, $admin);
-        $this->datagrid        = $datagrid;
+        $this->datagrid = $datagrid;
     }
 
     /**

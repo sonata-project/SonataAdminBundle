@@ -22,15 +22,15 @@ class AdminVoterTest extends AbstractVoterTest
     public function provideData()
     {
         return array(
-            'no data'              => array(null, null, null, null),
+            'no data' => array(null, null, null, null),
             'no route and granted' => array($this->getAdmin('_sonata_admin'), '_sonata_admin', null, null),
-            'no granted'           => array($this->getAdmin('_sonata_admin', true, false), '_sonata_admin', null, null),
-            'no code'              => array($this->getAdmin('_sonata_admin_code', true, true), '_sonata_admin', null, null),
-            'no code request'      => array($this->getAdmin('_sonata_admin', true, true), '_sonata_admin_unexpected', null, null),
-            'no route'             => array($this->getAdmin('_sonata_admin', false, true), '_sonata_admin', null, null),
-            'has admin'            => array($this->getAdmin('_sonata_admin', true, true), '_sonata_admin', null, true),
-            'direct link'          => array('admin_post', null, 'admin_post', true),
-            'no direct link'       => array('admin_post', null, 'admin_blog', null),
+            'no granted' => array($this->getAdmin('_sonata_admin', true, false), '_sonata_admin', null, null),
+            'no code' => array($this->getAdmin('_sonata_admin_code', true, true), '_sonata_admin', null, null),
+            'no code request' => array($this->getAdmin('_sonata_admin', true, true), '_sonata_admin_unexpected', null, null),
+            'no route' => array($this->getAdmin('_sonata_admin', false, true), '_sonata_admin', null, null),
+            'has admin' => array($this->getAdmin('_sonata_admin', true, true), '_sonata_admin', null, true),
+            'direct link' => array('admin_post', null, 'admin_post', true),
+            'no direct link' => array('admin_post', null, 'admin_blog', null),
         );
     }
 

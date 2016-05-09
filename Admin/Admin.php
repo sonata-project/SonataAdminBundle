@@ -54,10 +54,10 @@ use Symfony\Component\Validator\ValidatorInterface as LegacyValidatorInterface;
  */
 abstract class Admin implements AdminInterface, DomainObjectInterface
 {
-    const CONTEXT_MENU       = 'menu';
-    const CONTEXT_DASHBOARD  = 'dashboard';
+    const CONTEXT_MENU = 'menu';
+    const CONTEXT_DASHBOARD = 'dashboard';
 
-    const CLASS_REGEX        = '@(?:([A-Za-z0-9]*)\\\)?(Bundle\\\)?([A-Za-z0-9]+?)(?:Bundle)?\\\(Entity|Document|Model|PHPCR|CouchDocument|Phpcr|Doctrine\\\Orm|Doctrine\\\Phpcr|Doctrine\\\MongoDB|Doctrine\\\CouchDB)\\\(.*)@';
+    const CLASS_REGEX = '@(?:([A-Za-z0-9]*)\\\)?(Bundle\\\)?([A-Za-z0-9]+?)(?:Bundle)?\\\(Entity|Document|Model|PHPCR|CouchDocument|Phpcr|Doctrine\\\Orm|Doctrine\\\Phpcr|Doctrine\\\MongoDB|Doctrine\\\CouchDB)\\\(.*)@';
 
     /**
      * The class name managed by the admin class.
@@ -227,8 +227,8 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      * @var array
      */
     protected $datagridValues = array(
-        '_page'       => 1,
-        '_per_page'   => 32,
+        '_page' => 1,
+        '_per_page' => 32,
     );
 
     /**
@@ -446,10 +446,10 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      * @var array
      */
     protected $loaded = array(
-        'view_fields'   => false,
-        'view_groups'   => false,
-        'routes'        => false,
-        'tab_menu'      => false,
+        'view_fields' => false,
+        'view_groups' => false,
+        'routes' => false,
+        'tab_menu' => false,
     );
 
     /**
@@ -465,7 +465,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     /**
      * @var array
      */
-    protected $templates  = array();
+    protected $templates = array();
 
     /**
      * @var AdminExtensionInterface[]
@@ -628,9 +628,9 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      */
     public function __construct($code, $class, $baseControllerName)
     {
-        $this->code                 = $code;
-        $this->class                = $class;
-        $this->baseControllerName   = $baseControllerName;
+        $this->code = $code;
+        $this->class = $class;
+        $this->baseControllerName = $baseControllerName;
 
         $this->predefinePerPageOptions();
         $this->datagridValues['_per_page'] = $this->maxPerPage;
@@ -816,9 +816,9 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
         if (count($this->getBatchActions()) > 0) {
             $fieldDescription = $this->getModelManager()->getNewFieldDescriptionInstance($this->getClass(), 'batch', array(
-                'label'         => 'batch',
-                'code'          => '_batch',
-                'sortable'      => false,
+                'label' => 'batch',
+                'code' => '_batch',
+                'sortable' => false,
                 'virtual_field' => true,
             ));
 
@@ -836,9 +836,9 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
         if ($this->hasRequest() && $this->getRequest()->isXmlHttpRequest()) {
             $fieldDescription = $this->getModelManager()->getNewFieldDescriptionInstance($this->getClass(), 'select', array(
-                'label'         => false,
-                'code'          => '_select',
-                'sortable'      => false,
+                'label' => false,
+                'code' => '_select',
+                'sortable' => false,
                 'virtual_field' => false,
             ));
 
@@ -928,9 +928,9 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         // ok, try to limit to add parent filter
         if ($this->isChild() && $this->getParentAssociationMapping() && !$mapper->has($this->getParentAssociationMapping())) {
             $mapper->add($this->getParentAssociationMapping(), null, array(
-                'show_filter'   => false,
-                'label'         => false,
-                'field_type'    => 'sonata_type_model_hidden',
+                'show_filter' => false,
+                'label' => false,
+                'field_type' => 'sonata_type_model_hidden',
                 'field_options' => array(
                     'model_manager' => $this->getModelManager(),
                 ),
@@ -1223,9 +1223,9 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
         if ($this->hasRoute('delete') && $this->isGranted('DELETE')) {
             $actions['delete'] = array(
-                'label'              => 'action_delete',
+                'label' => 'action_delete',
                 'translation_domain' => 'SonataAdminBundle',
-                'ask_confirmation'   => true, // by default always true
+                'ask_confirmation' => true, // by default always true
             );
         }
 
@@ -1456,7 +1456,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
         $metadata->addConstraint(new InlineConstraint(array(
             'service' => $this,
-            'method'  => function (ErrorElement $errorElement, $object) use ($admin) {
+            'method' => function (ErrorElement $errorElement, $object) use ($admin) {
                 /* @var \Sonata\AdminBundle\Admin\AdminInterface $admin */
 
                 // This avoid the main validation to be cascaded to children
@@ -1803,7 +1803,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      */
     public function reorderShowGroup($group, array $keys)
     {
-        $showGroups                   = $this->getShowGroups();
+        $showGroups = $this->getShowGroups();
         $showGroups[$group]['fields'] = array_merge(array_flip($keys), $showGroups[$group]['fields']);
         $this->setShowGroups($showGroups);
     }
@@ -2950,17 +2950,17 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     protected function getAccess()
     {
         $access = array_merge(array(
-            'acl'                     => 'MASTER',
-            'export'                  => 'EXPORT',
+            'acl' => 'MASTER',
+            'export' => 'EXPORT',
             'historyCompareRevisions' => 'EDIT',
-            'historyViewRevision'     => 'EDIT',
-            'history'                 => 'EDIT',
-            'edit'                    => 'EDIT',
-            'show'                    => 'VIEW',
-            'create'                  => 'CREATE',
-            'delete'                  => 'DELETE',
-            'batchDelete'             => 'DELETE',
-            'list'                    => 'LIST',
+            'historyViewRevision' => 'EDIT',
+            'history' => 'EDIT',
+            'edit' => 'EDIT',
+            'show' => 'VIEW',
+            'create' => 'CREATE',
+            'delete' => 'DELETE',
+            'batchDelete' => 'DELETE',
+            'list' => 'LIST',
         ), $this->getAccessMapping());
 
         foreach ($this->extensions as $extension) {
@@ -3101,20 +3101,20 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
 
         if ($this->hasRoute('create') && $this->isGranted('CREATE')) {
             $actions['create'] = array(
-                'label'              => 'link_add',
+                'label' => 'link_add',
                 'translation_domain' => 'SonataAdminBundle',
-                'template'           => 'SonataAdminBundle:CRUD:dashboard__action_create.html.twig',
-                'url'                => $this->generateUrl('create'),
-                'icon'               => 'plus-circle',
+                'template' => 'SonataAdminBundle:CRUD:dashboard__action_create.html.twig',
+                'url' => $this->generateUrl('create'),
+                'icon' => 'plus-circle',
             );
         }
 
         if ($this->hasRoute('list') && $this->isGranted('LIST')) {
             $actions['list'] = array(
-                'label'              => 'link_list',
+                'label' => 'link_list',
                 'translation_domain' => 'SonataAdminBundle',
-                'url'                => $this->generateUrl('list'),
-                'icon'               => 'list',
+                'url' => $this->generateUrl('list'),
+                'icon' => 'list',
             );
         }
 

@@ -109,9 +109,9 @@ class FormSonataFilterChoiceWidgetTest extends BaseWidgetTest
     protected function getDefaultOption()
     {
         return array('field_type' => $this->getChoiceClass(),
-             'field_options'      => array(),
-             'operator_type'      => $this->getChoiceClass(),
-             'operator_options'   => array(),
+             'field_options' => array(),
+             'operator_type' => $this->getChoiceClass(),
+             'operator_options' => array(),
         );
     }
 }

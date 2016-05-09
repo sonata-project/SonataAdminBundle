@@ -80,25 +80,25 @@ class FormMapperTest extends \PHPUnit_Framework_TestCase
         $this->formMapper->with('foobar');
 
         $this->assertSame(array('default' => array(
-            'collapsed'          => false,
-            'class'              => false,
-            'description'        => false,
+            'collapsed' => false,
+            'class' => false,
+            'description' => false,
             'translation_domain' => null,
-            'name'               => 'default',
-            'box_class'          => 'box box-primary',
-            'auto_created'       => true,
-            'groups'             => array('foobar'),
-            'tab'                => true,
+            'name' => 'default',
+            'box_class' => 'box box-primary',
+            'auto_created' => true,
+            'groups' => array('foobar'),
+            'tab' => true,
         )), $this->admin->getFormTabs());
 
         $this->assertSame(array('foobar' => array(
-            'collapsed'          => false,
-            'class'              => false,
-            'description'        => false,
+            'collapsed' => false,
+            'class' => false,
+            'description' => false,
             'translation_domain' => null,
-            'name'               => 'foobar',
-            'box_class'          => 'box box-primary',
-            'fields'             => array(),
+            'name' => 'foobar',
+            'box_class' => 'box box-primary',
+            'fields' => array(),
         )), $this->admin->getFormGroups());
     }
 
@@ -109,25 +109,25 @@ class FormMapperTest extends \PHPUnit_Framework_TestCase
         ));
 
         $this->assertSame(array('foobar' => array(
-            'collapsed'          => false,
-            'class'              => false,
-            'description'        => false,
+            'collapsed' => false,
+            'class' => false,
+            'description' => false,
             'translation_domain' => 'Foobar',
-            'name'               => 'foobar',
-            'box_class'          => 'box box-primary',
-            'fields'             => array(),
+            'name' => 'foobar',
+            'box_class' => 'box box-primary',
+            'fields' => array(),
         )), $this->admin->getFormGroups());
 
         $this->assertSame(array('default' => array(
-            'collapsed'          => false,
-            'class'              => false,
-            'description'        => false,
+            'collapsed' => false,
+            'class' => false,
+            'description' => false,
             'translation_domain' => 'Foobar',
-            'name'               => 'default',
-            'box_class'          => 'box box-primary',
-            'auto_created'       => true,
-            'groups'             => array('foobar'),
-            'tab'                => true,
+            'name' => 'default',
+            'box_class' => 'box box-primary',
+            'auto_created' => true,
+            'groups' => array('foobar'),
+            'tab' => true,
         )), $this->admin->getFormTabs());
     }
 
@@ -151,25 +151,25 @@ class FormMapperTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->formMapper->has('foo'));
 
         $this->assertSame(array('default' => array(
-            'collapsed'          => false,
-            'class'              => false,
-            'description'        => false,
+            'collapsed' => false,
+            'class' => false,
+            'description' => false,
             'translation_domain' => 'Foobar',
-            'name'               => 'default',
-            'box_class'          => 'box box-primary',
-            'auto_created'       => true,
-            'groups'             => array('foobar'),
-            'tab'                => true,
+            'name' => 'default',
+            'box_class' => 'box box-primary',
+            'auto_created' => true,
+            'groups' => array('foobar'),
+            'tab' => true,
         )), $this->admin->getFormTabs());
 
         $this->assertSame(array('foobar' => array(
-            'collapsed'          => false,
-            'class'              => false,
-            'description'        => false,
+            'collapsed' => false,
+            'class' => false,
+            'description' => false,
             'translation_domain' => 'Foobar',
-            'name'               => 'foobar',
-            'box_class'          => 'box box-primary',
-            'fields'             => array(
+            'name' => 'foobar',
+            'box_class' => 'box box-primary',
+            'fields' => array(
                 'foo' => 'foo',
             ),
         )), $this->admin->getFormGroups());

@@ -116,21 +116,21 @@ class AdminType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'delete'          => function (Options $options) {
+            'delete' => function (Options $options) {
                 return $options['btn_delete'] !== false;
             },
-            'delete_options'  => array(
-                'type'         => 'checkbox',
+            'delete_options' => array(
+                'type' => 'checkbox',
                 'type_options' => array(
                     'required' => false,
-                    'mapped'   => false,
+                    'mapped' => false,
                 ),
             ),
             'auto_initialize' => false,
-            'btn_add'         => 'link_add',
-            'btn_list'        => 'link_list',
-            'btn_delete'      => 'link_delete',
-            'btn_catalogue'   => 'SonataAdminBundle',
+            'btn_add' => 'link_add',
+            'btn_list' => 'link_list',
+            'btn_delete' => 'link_delete',
+            'btn_catalogue' => 'SonataAdminBundle',
         ));
     }
 

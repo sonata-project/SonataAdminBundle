@@ -24,10 +24,10 @@ class FilterTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($filter->getLabel());
 
         $options = array(
-            'label'         => 'foo',
-            'field_type'    => 'integer',
+            'label' => 'foo',
+            'field_type' => 'integer',
             'field_options' => array('required' => true),
-            'field_name'    => 'name',
+            'field_name' => 'name',
         );
 
         $filter->setOptions($options);
@@ -36,9 +36,9 @@ class FilterTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('foo', $filter->getLabel());
 
         $expected = array_merge(array(
-            'show_filter'     => null,
+            'show_filter' => null,
             'advanced_filter' => true,
-            'foo'             => 'bar',
+            'foo' => 'bar',
         ), $options);
 
         $this->assertSame($expected, $filter->getOptions());
@@ -160,13 +160,13 @@ class FilterTest extends \PHPUnit_Framework_TestCase
     public function testGetFieldMapping()
     {
         $fieldMapping = array(
-            'fieldName'  => 'username',
-            'type'       => 'string',
+            'fieldName' => 'username',
+            'type' => 'string',
             'columnName' => 'username',
-            'length'     => 200,
-            'unique'     => true,
-            'nullable'   => false,
-            'declared'   => 'Foo\Bar\User',
+            'length' => 200,
+            'unique' => true,
+            'nullable' => false,
+            'declared' => 'Foo\Bar\User',
         );
 
         $filter = new FooFilter();
@@ -177,16 +177,16 @@ class FilterTest extends \PHPUnit_Framework_TestCase
     public function testGetParentAssociationMappings()
     {
         $parentAssociationMapping = array(
-            0 => array('fieldName'    => 'user',
-                'targetEntity'        => 'Foo\Bar\User',
-                'joinColumns'         => array(
+            0 => array('fieldName' => 'user',
+                'targetEntity' => 'Foo\Bar\User',
+                'joinColumns' => array(
                     0 => array(
-                        'name'                 => 'user_id',
+                        'name' => 'user_id',
                         'referencedColumnName' => 'user_id',
                     ),
                 ),
-                'type'         => 2,
-                'mappedBy'     => null,
+                'type' => 2,
+                'mappedBy' => null,
             ),
         );
 
@@ -214,16 +214,16 @@ class FilterTest extends \PHPUnit_Framework_TestCase
     public function testGetAssociationMapping()
     {
         $associationMapping = array(
-            'fieldName'    => 'user',
+            'fieldName' => 'user',
             'targetEntity' => 'Foo\Bar\User',
-            'joinColumns'  => array(
+            'joinColumns' => array(
                 0 => array(
-                    'name'                 => 'user_id',
+                    'name' => 'user_id',
                     'referencedColumnName' => 'user_id',
                 ),
             ),
-            'type'         => 2,
-            'mappedBy'     => null,
+            'type' => 2,
+            'mappedBy' => null,
         );
 
         $filter = new FooFilter();

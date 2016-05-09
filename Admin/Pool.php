@@ -81,9 +81,9 @@ class Pool
     public function __construct(ContainerInterface $container, $title, $logoTitle, $options = array(), PropertyAccessorInterface $propertyAccessor = null)
     {
         $this->container = $container;
-        $this->title     = $title;
+        $this->title = $title;
         $this->titleLogo = $logoTitle;
-        $this->options   = $options;
+        $this->options = $options;
         $this->propertyAccessor = $propertyAccessor;
     }
 

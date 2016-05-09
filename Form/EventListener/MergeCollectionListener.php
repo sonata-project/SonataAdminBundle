@@ -52,7 +52,7 @@ class MergeCollectionListener implements EventSubscriberInterface
     public function onBind(FormEvent $event)
     {
         $collection = $event->getForm()->getData();
-        $data       = $event->getData();
+        $data = $event->getData();
 
         // looks like there is no way to remove other listeners
         $event->stopPropagation();
