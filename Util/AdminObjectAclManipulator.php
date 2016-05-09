@@ -11,6 +11,7 @@
 
 namespace Sonata\AdminBundle\Util;
 
+use Sonata\AdminBundle\Form\Type\AclMatrixType;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -19,7 +20,6 @@ use Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity;
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 use Symfony\Component\Security\Acl\Exception\NoAceFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Sonata\AdminBundle\Form\Type\AclMatrixType;
 
 /**
  * A manipulator for updating ACL related to an object.
