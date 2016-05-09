@@ -5,6 +5,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 
+### Changed
+ - Updated AdminLTE theme to version 2.3.3
+
 ## [3.0.0](https://github.com/sonata-project/SonataAdminBundle/compare/2.3.10...3.0.0) - 2016-05-08
 ### Added
 - Add missing Route constructor parameters to ``RouteCollection:add`` method
