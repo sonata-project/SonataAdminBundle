@@ -462,8 +462,7 @@ class CRUDController extends Controller
     /**
      * Redirect the user depend on this choice.
      *
-     * @param object  $object
-     * @param Request $request
+     * @param object $object
      *
      * @return RedirectResponse
      */
