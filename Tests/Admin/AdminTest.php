@@ -283,53 +283,43 @@ class AdminTest extends \PHPUnit_Framework_TestCase
             ->with('sonata_admin_dashboard')
             ->will($this->returnValue('http://somehost.com'));
 
-        $translatorStrategy->expects($this->exactly(18))
+        $translatorStrategy->expects($this->exactly(13))
             ->method('getLabel')
             ->withConsecutive(
-                array('dashboard'),
                 array('Post_list'),
                 array('Comment_list'),
                 array('Comment_repost'),
 
-                array('dashboard'),
                 array('Post_list'),
                 array('Comment_list'),
                 array('Comment_flag'),
 
-                array('dashboard'),
                 array('Post_list'),
                 array('Comment_list'),
                 array('Comment_edit'),
 
-                array('dashboard'),
                 array('Post_list'),
                 array('Comment_list'),
 
-                array('dashboard'),
                 array('Post_list'),
                 array('Comment_list')
             )
             ->will($this->onConsecutiveCalls(
-                'someLabel',
                 'someOtherLabel',
                 'someInterestingLabel',
                 'someFancyLabel',
 
-                'someCoolLabel',
                 'someTipTopLabel',
                 'someFunkyLabel',
                 'someAwesomeLabel',
 
-                'someLikeableLabel',
                 'someMildlyInterestingLabel',
                 'someWTFLabel',
                 'someBadLabel',
 
-                'someBoringLabel',
                 'someLongLabel',
                 'someEndlessLabel',
 
-                'someAlmostThereLabel',
                 'someOriginalLabel',
                 'someOkayishLabel'
             ));
@@ -337,30 +327,30 @@ class AdminTest extends \PHPUnit_Framework_TestCase
         $menu->expects($this->exactly(24))
             ->method('addChild')
             ->withConsecutive(
-                array('someLabel'),
+                array('breadcrumb.link_dashboard'),
                 array('someOtherLabel'),
                 array('dummy subject representation'),
                 array('someInterestingLabel'),
                 array('someFancyLabel'),
 
-                array('someCoolLabel'),
+                array('breadcrumb.link_dashboard'),
                 array('someTipTopLabel'),
                 array('dummy subject representation'),
                 array('someFunkyLabel'),
                 array('someAwesomeLabel'),
 
-                array('someLikeableLabel'),
+                array('breadcrumb.link_dashboard'),
                 array('someMildlyInterestingLabel'),
                 array('dummy subject representation'),
                 array('someWTFLabel'),
                 array('someBadLabel'),
 
-                array('someBoringLabel'),
+                array('breadcrumb.link_dashboard'),
                 array('someLongLabel'),
                 array('dummy subject representation'),
                 array('someEndlessLabel'),
 
-                array('someAlmostThereLabel'),
+                array('breadcrumb.link_dashboard'),
                 array('someOriginalLabel'),
                 array('dummy subject representation'),
                 array('someOkayishLabel'),
@@ -414,32 +404,29 @@ class AdminTest extends \PHPUnit_Framework_TestCase
             ->with('root')
             ->will($this->returnValue($menu));
 
-        $translatorStrategy->expects($this->exactly(5))
+        $translatorStrategy->expects($this->exactly(3))
             ->method('getLabel')
             ->withConsecutive(
-                array('dashboard'),
                 array('Post_list'),
                 array('Post_repost'),
 
-                array('dashboard'),
                 array('Post_list')
             )
             ->will($this->onConsecutiveCalls(
-                'someLabel',
                 'someOtherLabel',
                 'someInterestingLabel',
-                'someFancyLabel',
+
                 'someCoolLabel'
             ));
 
         $menu->expects($this->exactly(6))
             ->method('addChild')
             ->withConsecutive(
-                array('someLabel'),
+                array('breadcrumb.link_dashboard'),
                 array('someOtherLabel'),
                 array('someInterestingLabel'),
-                array('someFancyLabel'),
 
+                array('breadcrumb.link_dashboard'),
                 array('someCoolLabel'),
                 array('dummy subject representation')
             )
