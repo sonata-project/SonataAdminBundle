@@ -13,7 +13,6 @@ namespace Sonata\AdminBundle\Admin;
 
 use Doctrine\Common\Inflector\Inflector;
 use Sonata\AdminBundle\Exception\NoValueException;
-use Symfony\Component\DependencyInjection\Container;
 
 /**
  * A FieldDescription hold the information about a field. A typical
@@ -413,6 +412,24 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     public function getMappingType()
     {
         return $this->mappingType;
+    }
+
+    /**
+     * Camelize a string.
+     *
+     * @static
+     *
+     * @param string $property
+     *
+     * @return string
+     *
+     * @deprecated Deprecated since version 3.x. Use \Doctrine\Common\Inflector::camelize() instead.
+     */
+    public static function camelize($property)
+    {
+        @trigger_error('camelize() is deprecated since version 3.x and will be removed in 4.0. Use \Doctrine\Common\Inflector::camelize() instead.', E_USER_DEPRECATED);
+
+        return Inflector::camelize($property);
     }
 
     /**
