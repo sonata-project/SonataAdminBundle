@@ -138,8 +138,8 @@ class BaseFieldDescriptionTest extends \PHPUnit_Framework_TestCase
         /*
          * Test with underscored attribute name
          */
-        $description3  = new FieldDescription();
-        $mock3         = $this->getMock('stdClass', array('getFake'));
+        $description3 = new FieldDescription();
+        $mock3 = $this->getMock('stdClass', array('getFake'));
 
         $mock3->expects($this->once())->method('getFake')->will($this->returnValue(42));
         $this->assertSame(42, $description3->getFieldValue($mock3, '_fake'));

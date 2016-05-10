@@ -371,13 +371,13 @@ class ShowMapperTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame(array(
             'Group1' => array(
-                'collapsed'          => false,
-                'class'              => false,
-                'description'        => false,
+                'collapsed' => false,
+                'class' => false,
+                'description' => false,
                 'translation_domain' => null,
-                'name'               => 'Group1',
-                'box_class'          => 'box box-primary',
-                'fields'             => array('fooName1' => 'fooName1', 'fooName2' => 'fooName2', 'fooName3' => 'fooName3', 'fooName4' => 'fooName4'),
+                'name' => 'Group1',
+                'box_class' => 'box box-primary',
+                'fields' => array('fooName1' => 'fooName1', 'fooName2' => 'fooName2', 'fooName3' => 'fooName3', 'fooName4' => 'fooName4'),
             ), ), $this->admin->getShowGroups());
 
         $this->showMapper->reorder(array('fooName3', 'fooName2', 'fooName1', 'fooName4'));
@@ -385,13 +385,13 @@ class ShowMapperTest extends \PHPUnit_Framework_TestCase
         // print_r is used to compare order of items in associative arrays
         $this->assertSame(print_r(array(
             'Group1' => array(
-                'collapsed'          => false,
-                'class'              => false,
-                'description'        => false,
+                'collapsed' => false,
+                'class' => false,
+                'description' => false,
                 'translation_domain' => null,
-                'name'               => 'Group1',
-                'box_class'          => 'box box-primary',
-                'fields'             => array('fooName3' => 'fooName3', 'fooName2' => 'fooName2', 'fooName1' => 'fooName1', 'fooName4' => 'fooName4'),
+                'name' => 'Group1',
+                'box_class' => 'box box-primary',
+                'fields' => array('fooName3' => 'fooName3', 'fooName2' => 'fooName2', 'fooName1' => 'fooName1', 'fooName4' => 'fooName4'),
             ), ), true), print_r($this->admin->getShowGroups(), true));
     }
 

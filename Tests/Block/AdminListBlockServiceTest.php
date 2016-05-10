@@ -48,7 +48,7 @@ class AdminListBlockServiceTest extends AbstractBlockServiceTest
         $blockContext = $this->getBlockContext($blockService);
 
         $this->assertSettings(array(
-            'foo'    => 'bar',
+            'foo' => 'bar',
             'groups' => true,
         ), $blockContext);
     }

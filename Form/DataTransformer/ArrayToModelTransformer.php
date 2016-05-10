@@ -38,7 +38,7 @@ class ArrayToModelTransformer implements DataTransformerInterface
     public function __construct(ModelManagerInterface $modelManager, $className)
     {
         $this->modelManager = $modelManager;
-        $this->className    = $className;
+        $this->className = $className;
     }
 
     /**

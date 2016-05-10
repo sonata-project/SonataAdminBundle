@@ -82,10 +82,10 @@ class Datagrid implements DatagridInterface
      */
     public function __construct(ProxyQueryInterface $query, FieldDescriptionCollection $columns, PagerInterface $pager, FormBuilderInterface $formBuilder, array $values = array())
     {
-        $this->pager       = $pager;
-        $this->query       = $query;
-        $this->values      = $values;
-        $this->columns     = $columns;
+        $this->pager = $pager;
+        $this->query = $query;
+        $this->values = $values;
+        $this->columns = $columns;
         $this->formBuilder = $formBuilder;
     }
 
@@ -252,7 +252,7 @@ class Datagrid implements DatagridInterface
     public function setValue($name, $operator, $value)
     {
         $this->values[$name] = array(
-            'type'  => $operator,
+            'type' => $operator,
             'value' => $value,
         );
     }

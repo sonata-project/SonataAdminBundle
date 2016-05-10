@@ -39,9 +39,9 @@ class MenuBuilderTest extends \PHPUnit_Framework_TestCase
     {
         $adminGroups = array(
             'bar' => array(
-                'icon'            => '<i class="fa fa-edit"></i>',
+                'icon' => '<i class="fa fa-edit"></i>',
                 'label_catalogue' => '',
-                'roles'           => array(),
+                'roles' => array(),
             ),
         );
 
@@ -75,10 +75,10 @@ class MenuBuilderTest extends \PHPUnit_Framework_TestCase
     {
         $adminGroups = array(
             'bar' => array(
-                'provider'        => 'my_menu',
+                'provider' => 'my_menu',
                 'label_catalogue' => '',
-                'icon'            => '<i class="fa fa-edit"></i>',
-                'roles'           => array(),
+                'icon' => '<i class="fa fa-edit"></i>',
+                'roles' => array(),
             ),
         );
 
@@ -112,12 +112,12 @@ class MenuBuilderTest extends \PHPUnit_Framework_TestCase
     {
         $adminGroups = array(
             'bar' => array(
-                'label'           => 'foo',
-                'icon'            => '<i class="fa fa-edit"></i>',
+                'label' => 'foo',
+                'icon' => '<i class="fa fa-edit"></i>',
                 'label_catalogue' => 'SonataAdminBundle',
-                'items'           => array(),
-                'item_adds'       => array(),
-                'roles'           => array(),
+                'items' => array(),
+                'item_adds' => array(),
+                'roles' => array(),
             ),
         );
 

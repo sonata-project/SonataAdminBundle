@@ -111,9 +111,9 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
         $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
         $twig = new \Twig_Environment($this->getMock('\Twig_LoaderInterface'));
         $request = new Request(array(
-            'code'     => 'sonata.post.admin',
+            'code' => 'sonata.post.admin',
             'objectId' => 42,
-            'uniqid'   => 'asdasd123',
+            'uniqid' => 'asdasd123',
         ));
         $pool = new Pool($container, 'title', 'logo');
         $pool->setAdminServiceIds(array('sonata.post.admin'));
@@ -141,9 +141,9 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
 
         $twig = new \Twig_Environment($this->getMock('\Twig_LoaderInterface'));
         $request = new Request(array(
-            'code'     => 'sonata.post.admin',
+            'code' => 'sonata.post.admin',
             'objectId' => 42,
-            'uniqid'   => 'asdasd123',
+            'uniqid' => 'asdasd123',
         ));
 
         $pool = new Pool($container, 'title', 'logo');
@@ -171,10 +171,10 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
 
         $twig = new \Twig_Environment($this->getMock('\Twig_LoaderInterface'));
         $request = new Request(array(
-            'code'     => 'sonata.post.admin',
+            'code' => 'sonata.post.admin',
             'objectId' => '',
-            'uniqid'   => 'asdasd123',
-            '_format'  => 'html',
+            'uniqid' => 'asdasd123',
+            '_format' => 'html',
         ));
 
         $pool = new Pool($container, 'title', 'logo');
@@ -220,10 +220,10 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
             }));
 
         $request = new Request(array(
-            'code'     => 'sonata.post.admin',
+            'code' => 'sonata.post.admin',
             'objectId' => 42,
-            'uniqid'   => 'asdasd123',
-            '_format'  => 'html',
+            'uniqid' => 'asdasd123',
+            '_format' => 'html',
         ));
 
         $pool = new Pool($container, 'title', 'logo');
@@ -266,11 +266,11 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
         $twig = new \Twig_Environment($this->getMock('\Twig_LoaderInterface'));
         $twig->addExtension($adminExtension);
         $request = new Request(array(
-            'code'     => 'sonata.post.admin',
+            'code' => 'sonata.post.admin',
             'objectId' => 42,
-            'field'    => 'enabled',
-            'value'    => 1,
-            'context'  => 'list',
+            'field' => 'enabled',
+            'value' => 1,
+            'context' => 'list',
         ), array(), array(), array(), array(), array('REQUEST_METHOD' => 'POST', 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'));
 
         $pool = new Pool($container, 'title', 'logo');
@@ -326,11 +326,11 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
         $twig = new \Twig_Environment($this->getMock('\Twig_LoaderInterface'));
         $twig->addExtension($formExtension);
         $request = new Request(array(
-            'code'     => 'sonata.post.admin',
+            'code' => 'sonata.post.admin',
             'objectId' => 42,
-            'field'    => 'enabled',
-            'value'    => 1,
-            'context'  => 'list',
+            'field' => 'enabled',
+            'value' => 1,
+            'context' => 'list',
         ), array(), array(), array(), array(), array('REQUEST_METHOD' => 'POST'));
 
         $pool = new Pool($container, 'title', 'logo');
@@ -410,11 +410,11 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
         $twig = new \Twig_Environment($this->getMock('\Twig_LoaderInterface'));
         $twig->addExtension($formExtension);
         $request = new Request(array(
-            'code'     => 'sonata.post.admin',
+            'code' => 'sonata.post.admin',
             'objectId' => 42,
-            'field'    => 'enabled',
-            'value'    => 1,
-            'context'  => 'list',
+            'field' => 'enabled',
+            'value' => 1,
+            'context' => 'list',
         ), array(), array(), array(), array(), array('REQUEST_METHOD' => 'POST'));
 
         $pool = new Pool($container, 'title', 'logo');
@@ -454,11 +454,11 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
 
         $twig = new \Twig_Environment($this->getMock('\Twig_LoaderInterface'));
         $request = new Request(array(
-            'code'     => 'sonata.post.admin',
+            'code' => 'sonata.post.admin',
             'objectId' => 42,
-            'field'    => 'bar.enabled',
-            'value'    => 1,
-            'context'  => 'list',
+            'field' => 'bar.enabled',
+            'value' => 1,
+            'context' => 'list',
         ), array(), array(), array(), array(), array('REQUEST_METHOD' => 'POST', 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'));
 
         $pool = new Pool($container, 'title', 'logo');
@@ -504,7 +504,7 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
             }));
 
         $request = new Request(array(
-            'admin_code'     => 'foo.admin',
+            'admin_code' => 'foo.admin',
         ), array(), array(), array(), array(), array('REQUEST_METHOD' => 'GET', 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'));
 
         $this->controller->retrieveAutocompleteItemsAction($request);
@@ -527,8 +527,8 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
             }));
 
         $request = new Request(array(
-            'admin_code'     => 'foo.admin',
-            '_context'       => 'filter',
+            'admin_code' => 'foo.admin',
+            '_context' => 'filter',
         ), array(), array(), array(), array(), array('REQUEST_METHOD' => 'GET', 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'));
 
         $this->controller->retrieveAutocompleteItemsAction($request);
@@ -597,8 +597,8 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(true));
 
         $request = new Request(array(
-            'admin_code'  => 'foo.admin',
-            'field'       => 'barField',
+            'admin_code' => 'foo.admin',
+            'field' => 'barField',
         ), array(), array(), array(), array(), array('REQUEST_METHOD' => 'GET', 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'));
 
         $this->controller->retrieveAutocompleteItemsAction($request);
@@ -691,8 +691,8 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
             }));
 
         $request = new Request(array(
-            'admin_code'  => 'foo.admin',
-            'field'       => 'barField',
+            'admin_code' => 'foo.admin',
+            'field' => 'barField',
         ), array(), array(), array(), array(), array('REQUEST_METHOD' => 'GET', 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'));
 
         $this->controller->retrieveAutocompleteItemsAction($request);

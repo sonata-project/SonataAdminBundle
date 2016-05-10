@@ -149,9 +149,9 @@ class LegacyModelsToArrayTransformerTest extends \PHPUnit_Framework_TestCase
             ->method('getModelCollectionInstance')
             ->will($this->returnValue(new ArrayCollection()));
 
-        $entity1 =  new FooEntity(array('foo'));
-        $entity2 =  new FooEntity(array('bar'));
-        $entity3 =  new FooEntity(array('baz'));
+        $entity1 = new FooEntity(array('foo'));
+        $entity2 = new FooEntity(array('bar'));
+        $entity3 = new FooEntity(array('baz'));
 
         $this->choiceList->expects($this->any())
             ->method('getEntity')

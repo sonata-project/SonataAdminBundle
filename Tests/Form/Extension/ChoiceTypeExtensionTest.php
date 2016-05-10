@@ -28,11 +28,11 @@ class ChoiceTypeExtensionTest extends \PHPUnit_Framework_TestCase
 
             $typeServiceIds = array();
             $typeExtensionServiceIds = array();
-            $guesserServiceIds       = array();
-            $mappingTypes            = array(
+            $guesserServiceIds = array();
+            $mappingTypes = array(
                 'choice' => 'Symfony\Component\Form\Extension\Core\Type\ChoiceType',
             );
-            $extensionTypes          = array(
+            $extensionTypes = array(
                 'choice' => array(
                     'sonata.admin.form.choice_extension',
                 ),

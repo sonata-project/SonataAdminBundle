@@ -470,10 +470,10 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
         $this->datagrid->buildPager();
 
         $this->assertSame(array(
-            '_sort_by'  => $sortBy,
-            '_page'     => $page,
+            '_sort_by' => $sortBy,
+            '_page' => $page,
             '_per_page' => $perPage,
-            'foo'       => null,
+            'foo' => null,
         ), $this->datagrid->getValues());
         $this->assertInstanceOf('Symfony\Component\Form\FormBuilder', $this->formBuilder->get('fooFormName'));
         $this->assertSame(array('bar' => 'baz'), $this->formBuilder->get('fooFormName')->getOptions());
@@ -517,7 +517,7 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame(array(
             '_per_page' => array('type' => null, 'value' => $perPage),
-            '_page'     => array('type' => null, 'value' => $page),
+            '_page' => array('type' => null, 'value' => $page),
         ), $this->datagrid->getValues());
         $this->assertInstanceOf('Symfony\Component\Form\FormBuilder', $this->formBuilder->get('_sort_by'));
         $this->assertInstanceOf('Symfony\Component\Form\FormBuilder', $this->formBuilder->get('_sort_order'));

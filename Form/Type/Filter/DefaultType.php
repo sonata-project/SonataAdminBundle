@@ -68,10 +68,10 @@ class DefaultType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'operator_type'    => 'hidden',
+            'operator_type' => 'hidden',
             'operator_options' => array(),
-            'field_type'       => 'text',
-            'field_options'    => array(),
+            'field_type' => 'text',
+            'field_options' => array(),
         ));
     }
 }

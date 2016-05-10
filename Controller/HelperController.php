@@ -64,9 +64,9 @@ class HelperController
             throw new \InvalidArgumentException('Argument 4 is an instance of '.get_class($validator).', expecting an instance of \Symfony\Component\Validator\Validator\ValidatorInterface or \Symfony\Component\Validator\ValidatorInterface');
         }
 
-        $this->twig      = $twig;
-        $this->pool      = $pool;
-        $this->helper    = $helper;
+        $this->twig = $twig;
+        $this->pool = $pool;
+        $this->helper = $helper;
         $this->validator = $validator;
     }
 
@@ -79,10 +79,10 @@ class HelperController
      */
     public function appendFormFieldElementAction(Request $request)
     {
-        $code      = $request->get('code');
+        $code = $request->get('code');
         $elementId = $request->get('elementId');
-        $objectId  = $request->get('objectId');
-        $uniqid    = $request->get('uniqid');
+        $objectId = $request->get('objectId');
+        $uniqid = $request->get('uniqid');
 
         $admin = $this->pool->getInstance($code);
         $admin->setRequest($request);
@@ -126,10 +126,10 @@ class HelperController
      */
     public function retrieveFormFieldElementAction(Request $request)
     {
-        $code      = $request->get('code');
+        $code = $request->get('code');
         $elementId = $request->get('elementId');
-        $objectId  = $request->get('objectId');
-        $uniqid    = $request->get('uniqid');
+        $objectId = $request->get('objectId');
+        $uniqid = $request->get('uniqid');
 
         $admin = $this->pool->getInstance($code);
         $admin->setRequest($request);
@@ -174,9 +174,9 @@ class HelperController
      */
     public function getShortObjectDescriptionAction(Request $request)
     {
-        $code           = $request->get('code');
-        $objectId       = $request->get('objectId');
-        $uniqid         = $request->get('uniqid');
+        $code = $request->get('code');
+        $objectId = $request->get('objectId');
+        $uniqid = $request->get('uniqid');
         $linkParameters = $request->get('linkParameters', array());
 
         $admin = $this->pool->getInstance($code);
@@ -203,14 +203,14 @@ class HelperController
 
         if ('json' == $request->get('_format')) {
             return new JsonResponse(array('result' => array(
-                'id'    => $admin->id($object),
+                'id' => $admin->id($object),
                 'label' => $admin->toString($object),
             )));
         } elseif ('html' == $request->get('_format')) {
             return new Response($this->twig->render($admin->getTemplate('short_object_description'), array(
-                'admin'           => $admin,
-                'description'     => $admin->toString($object),
-                'object'          => $object,
+                'admin' => $admin,
+                'description' => $admin->toString($object),
+                'object' => $object,
                 'link_parameters' => $linkParameters,
             )));
         } else {
@@ -225,11 +225,11 @@ class HelperController
      */
     public function setObjectFieldValueAction(Request $request)
     {
-        $field    = $request->get('field');
-        $code     = $request->get('code');
+        $field = $request->get('field');
+        $code = $request->get('code');
         $objectId = $request->get('objectId');
-        $value    = $request->get('value');
-        $context  = $request->get('context');
+        $value = $request->get('value');
+        $context = $request->get('context');
 
         $admin = $this->pool->getInstance($code);
         $admin->setRequest($request);
@@ -274,8 +274,8 @@ class HelperController
         if ($propertyPath->getLength() > 1) {
             $object = $this->pool->getPropertyAccessor()->getValue($object, $propertyPath->getParent());
 
-            $elements     = $propertyPath->getElements();
-            $field        = end($elements);
+            $elements = $propertyPath->getElements();
+            $field = end($elements);
             $propertyPath = new PropertyPath($field);
         }
 
@@ -344,12 +344,12 @@ class HelperController
             $fieldDescription = $this->retrieveFilterFieldDescription($admin, $request->get('field'));
             $filterAutocomplete = $admin->getDatagrid()->getFilter($fieldDescription->getName());
 
-            $property           = $filterAutocomplete->getFieldOption('property');
-            $callback           = $filterAutocomplete->getFieldOption('callback');
+            $property = $filterAutocomplete->getFieldOption('property');
+            $callback = $filterAutocomplete->getFieldOption('callback');
             $minimumInputLength = $filterAutocomplete->getFieldOption('minimum_input_length', 3);
-            $itemsPerPage       = $filterAutocomplete->getFieldOption('items_per_page', 10);
+            $itemsPerPage = $filterAutocomplete->getFieldOption('items_per_page', 10);
             $reqParamPageNumber = $filterAutocomplete->getFieldOption('req_param_name_page_number', '_page');
-            $toStringCallback   = $filterAutocomplete->getFieldOption('to_string_callback');
+            $toStringCallback = $filterAutocomplete->getFieldOption('to_string_callback');
         } else {
             // create/edit form
             $fieldDescription = $this->retrieveFormFieldDescription($admin, $request->get('field'));
@@ -359,12 +359,12 @@ class HelperController
                 throw new AccessDeniedException('Autocomplete list can`t be retrieved because the form element is disabled or read_only.');
             }
 
-            $property           = $formAutocomplete->getConfig()->getAttribute('property');
-            $callback           = $formAutocomplete->getConfig()->getAttribute('callback');
+            $property = $formAutocomplete->getConfig()->getAttribute('property');
+            $callback = $formAutocomplete->getConfig()->getAttribute('callback');
             $minimumInputLength = $formAutocomplete->getConfig()->getAttribute('minimum_input_length');
-            $itemsPerPage       = $formAutocomplete->getConfig()->getAttribute('items_per_page');
+            $itemsPerPage = $formAutocomplete->getConfig()->getAttribute('items_per_page');
             $reqParamPageNumber = $formAutocomplete->getConfig()->getAttribute('req_param_name_page_number');
-            $toStringCallback   = $formAutocomplete->getConfig()->getAttribute('to_string_callback');
+            $toStringCallback = $formAutocomplete->getConfig()->getAttribute('to_string_callback');
         }
 
         $searchText = $request->get('q');
@@ -433,15 +433,15 @@ class HelperController
             }
 
             $items[] = array(
-                'id'    => $admin->id($entity),
+                'id' => $admin->id($entity),
                 'label' => $label,
             );
         }
 
         return new JsonResponse(array(
             'status' => 'OK',
-            'more'   => !$pager->isLastPage(),
-            'items'  => $items,
+            'more' => !$pager->isLastPage(),
+            'items' => $items,
         ));
     }
 

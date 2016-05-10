@@ -23,7 +23,7 @@ class RoutesCacheWarmUpTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $routesCache = $this->getMockBuilder('Sonata\AdminBundle\Route\RoutesCache')->disableOriginalConstructor()->getMock();
-        $pool        = $this->getMockBuilder('Sonata\AdminBundle\Admin\Pool')->disableOriginalConstructor()->getMock();
+        $pool = $this->getMockBuilder('Sonata\AdminBundle\Admin\Pool')->disableOriginalConstructor()->getMock();
 
         $this->routesCacheWarmUp = new RoutesCacheWarmUp($routesCache, $pool);
     }

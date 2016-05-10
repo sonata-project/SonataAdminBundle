@@ -53,10 +53,10 @@ class RouteCollection
      */
     public function __construct($baseCodeRoute, $baseRouteName, $baseRoutePattern, $baseControllerName)
     {
-        $this->baseCodeRoute        = $baseCodeRoute;
-        $this->baseRouteName        = $baseRouteName;
-        $this->baseRoutePattern     = $baseRoutePattern;
-        $this->baseControllerName   = $baseControllerName;
+        $this->baseCodeRoute = $baseCodeRoute;
+        $this->baseRouteName = $baseRouteName;
+        $this->baseRoutePattern = $baseRoutePattern;
+        $this->baseControllerName = $baseControllerName;
     }
 
     /**
@@ -76,9 +76,9 @@ class RouteCollection
      */
     public function add($name, $pattern = null, array $defaults = array(), array $requirements = array(), array $options = array(), $host = '', array $schemes = array(), array $methods = array(), $condition = '')
     {
-        $pattern    = $this->baseRoutePattern.'/'.($pattern ?: $name);
-        $code       = $this->getCode($name);
-        $routeName  = $this->baseRouteName.'_'.$name;
+        $pattern = $this->baseRoutePattern.'/'.($pattern ?: $name);
+        $code = $this->getCode($name);
+        $routeName = $this->baseRouteName.'_'.$name;
 
         if (!isset($defaults['_controller'])) {
             $defaults['_controller'] = $this->baseControllerName.':'.$this->actionify($code);

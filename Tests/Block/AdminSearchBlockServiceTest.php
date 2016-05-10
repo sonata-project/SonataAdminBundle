@@ -46,10 +46,10 @@ class AdminSearchBlockServiceTest extends AbstractBlockServiceTest
 
         $this->assertSettings(array(
             'admin_code' => false,
-            'query'      => '',
-            'page'       => 0,
-            'per_page'   => 10,
-            'icon'       => '<i class="fa fa-list"></i>',
+            'query' => '',
+            'page' => 0,
+            'per_page' => 10,
+            'icon' => '<i class="fa fa-list"></i>',
         ), $blockContext);
     }
 }
