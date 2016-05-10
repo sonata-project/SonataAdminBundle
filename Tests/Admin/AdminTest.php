@@ -217,7 +217,7 @@ class AdminTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($admin->hasAccess('edit_action'));
     }
 
-    public function testGetBreadCrumbs()
+    public function testGetBreadcrumbs()
     {
         $class = 'Application\Sonata\NewsBundle\Entity\Post';
         $baseControllerName = 'SonataNewsBundle:PostAdmin';
@@ -379,7 +379,7 @@ class AdminTest extends \PHPUnit_Framework_TestCase
         $commentAdmin->getBreadcrumbs('reply');
     }
 
-    public function testGetBreadCrumbsWithNoCurrentAdmin()
+    public function testGetBreadcrumbsWithNoCurrentAdmin()
     {
         $class = 'Application\Sonata\NewsBundle\Entity\Post';
         $baseControllerName = 'SonataNewsBundle:PostAdmin';
