@@ -101,7 +101,7 @@ class FormTypeFieldExtensionTest extends \PHPUnit_Framework_TestCase
         $config = new FormConfigBuilder('test', 'stdClass', $eventDispatcher, $options);
         $config->setAttribute('sonata_admin', array(
             'admin' => $admin,
-            'name'  => 'name',
+            'name' => 'name',
         ));
         $config->setAttribute('sonata_admin_enabled', true);
 
@@ -165,9 +165,9 @@ class FormTypeFieldExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('sonata_admin', $formView->vars);
 
         $expected = array(
-            'value'          => null,
-            'attr'           => array(),
-            'name'           => 'format',
+            'value' => null,
+            'attr' => array(),
+            'name' => 'format',
             'block_prefixes' => array(
                 'form',
                 'field',
@@ -177,15 +177,15 @@ class FormTypeFieldExtensionTest extends \PHPUnit_Framework_TestCase
                 'parent_code_text_settings_settings_format',
             ),
             'sonata_admin_enabled' => true,
-            'sonata_admin'         => array(
-                 'admin'             => false,
+            'sonata_admin' => array(
+                 'admin' => false,
                  'field_description' => false,
-                 'name'              => false,
-                 'edit'              => 'standard',
-                 'inline'            => 'natural',
-                 'block_name'        => false,
-                 'class'             => false,
-                 'options'           => array(),
+                 'name' => false,
+                 'edit' => 'standard',
+                 'inline' => 'natural',
+                 'block_name' => false,
+                 'class' => false,
+                 'options' => array(),
             ),
             'sonata_admin_code' => 'parent_code',
         );

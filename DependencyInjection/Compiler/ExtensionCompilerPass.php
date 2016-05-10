@@ -159,12 +159,12 @@ class ExtensionCompilerPass implements CompilerPassInterface
     protected function flattenExtensionConfiguration(array $config)
     {
         $extensionMap = array(
-            'excludes'   => array(),
-            'admins'     => array(),
+            'excludes' => array(),
+            'admins' => array(),
             'implements' => array(),
-            'extends'    => array(),
+            'extends' => array(),
             'instanceof' => array(),
-            'uses'       => array(),
+            'uses' => array(),
         );
 
         foreach ($config as $extension => $options) {

@@ -102,7 +102,7 @@ class LockExtensionTest extends \PHPUnit_Framework_TestCase
                 $this->equalTo('hidden'),
                 $this->equalTo(array(
                     'mapped' => false,
-                    'data'   => 1,
+                    'data' => 1,
                 ))
             );
 

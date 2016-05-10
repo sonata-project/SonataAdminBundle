@@ -27,7 +27,7 @@ class FormSonataNativeCollectionWidgetTest extends BaseWidgetTest
     public function prototypeRenderingProvider()
     {
         return array(
-            'shrinkable collection'   => array(array('allow_delete' => true)),
+            'shrinkable collection' => array(array('allow_delete' => true)),
             'unshrinkable collection' => array(array('allow_delete' => false)),
         );
     }

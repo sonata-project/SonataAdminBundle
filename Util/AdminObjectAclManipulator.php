@@ -266,9 +266,9 @@ class AdminObjectAclManipulator
 
                 $permissions[$permission] = array(
                     'required' => false,
-                    'data'     => $checked,
+                    'data' => $checked,
                     'disabled' => array_key_exists('disabled', $attr),
-                    'attr'     => $attr,
+                    'attr' => $attr,
                 );
             }
 

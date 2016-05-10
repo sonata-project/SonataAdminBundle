@@ -85,11 +85,11 @@ class AclSecurityHandler implements AclSecurityHandlerInterface
             throw new \InvalidArgumentException('Argument 2 should be an instance of Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface or Symfony\Component\Security\Core\SecurityContextInterface');
         }
 
-        $this->tokenStorage         = $tokenStorage;
+        $this->tokenStorage = $tokenStorage;
         $this->authorizationChecker = $authorizationChecker;
-        $this->aclProvider          = $aclProvider;
-        $this->maskBuilderClass     = $maskBuilderClass;
-        $this->superAdminRoles      = $superAdminRoles;
+        $this->aclProvider = $aclProvider;
+        $this->maskBuilderClass = $maskBuilderClass;
+        $this->superAdminRoles = $superAdminRoles;
     }
 
     /**
@@ -172,13 +172,13 @@ class AclSecurityHandler implements AclSecurityHandlerInterface
     {
         // retrieving the ACL for the object identity
         $objectIdentity = ObjectIdentity::fromDomainObject($object);
-        $acl            = $this->getObjectAcl($objectIdentity);
+        $acl = $this->getObjectAcl($objectIdentity);
         if (is_null($acl)) {
             $acl = $this->createAcl($objectIdentity);
         }
 
         // retrieving the security identity of the currently logged-in user
-        $user             = $this->tokenStorage->getToken()->getUser();
+        $user = $this->tokenStorage->getToken()->getUser();
         $securityIdentity = UserSecurityIdentity::fromAccount($user);
 
         $this->addObjectOwner($acl, $securityIdentity);
@@ -250,7 +250,7 @@ class AclSecurityHandler implements AclSecurityHandlerInterface
 
         foreach ($roleInformation as $role => $permissions) {
             $aceIndex = $this->findClassAceIndexByRole($acl, $role);
-            $hasRole  = false;
+            $hasRole = false;
 
             foreach ($permissions as $permission) {
                 // add only the object permissions

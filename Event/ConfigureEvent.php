@@ -30,10 +30,10 @@ use Symfony\Component\EventDispatcher\Event;
  */
 class ConfigureEvent extends Event
 {
-    const TYPE_SHOW     = 'show';
+    const TYPE_SHOW = 'show';
     const TYPE_DATAGRID = 'datagrid';
-    const TYPE_FORM     = 'form';
-    const TYPE_LIST     = 'list';
+    const TYPE_FORM = 'form';
+    const TYPE_LIST = 'list';
 
     /**
      * @var AdminInterface

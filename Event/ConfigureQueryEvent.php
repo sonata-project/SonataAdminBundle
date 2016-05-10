@@ -49,9 +49,9 @@ class ConfigureQueryEvent extends Event
      */
     public function __construct(AdminInterface $admin, ProxyQueryInterface $proxyQuery, $context)
     {
-        $this->admin      = $admin;
+        $this->admin = $admin;
         $this->proxyQuery = $proxyQuery;
-        $this->context    = $context;
+        $this->context = $context;
     }
 
     /**

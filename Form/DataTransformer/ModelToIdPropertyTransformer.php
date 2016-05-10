@@ -56,10 +56,10 @@ class ModelToIdPropertyTransformer implements DataTransformerInterface
      */
     public function __construct(ModelManagerInterface $modelManager, $className, $property, $multiple = false, $toStringCallback = null)
     {
-        $this->modelManager     = $modelManager;
-        $this->className        = $className;
-        $this->property         = $property;
-        $this->multiple         = $multiple;
+        $this->modelManager = $modelManager;
+        $this->className = $className;
+        $this->property = $property;
+        $this->multiple = $multiple;
         $this->toStringCallback = $toStringCallback;
     }
 
@@ -132,7 +132,7 @@ class ModelToIdPropertyTransformer implements DataTransformerInterface
         }
 
         foreach ($collection as $entity) {
-            $id  = current($this->modelManager->getIdentifierValues($entity));
+            $id = current($this->modelManager->getIdentifierValues($entity));
 
             if ($this->toStringCallback !== null) {
                 if (!is_callable($this->toStringCallback)) {

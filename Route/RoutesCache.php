@@ -39,7 +39,7 @@ class RoutesCache
     public function __construct($cacheFolder, $debug)
     {
         $this->cacheFolder = $cacheFolder;
-        $this->debug       = $debug;
+        $this->debug = $debug;
     }
 
     /**

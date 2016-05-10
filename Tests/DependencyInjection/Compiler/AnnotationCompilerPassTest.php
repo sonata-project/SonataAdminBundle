@@ -54,9 +54,9 @@ class AnnotationCompilerPassTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(
             $meta->tags['sonata.admin'][0],
             array(
-                'manager_type'      => 'orm',
-                'group'             => 'Admin',
-                'label'             => 'Tests\Fixtures\Foo',
+                'manager_type' => 'orm',
+                'group' => 'Admin',
+                'label' => 'Tests\Fixtures\Foo',
                 'show_in_dashboard' => false,
             )
         );
@@ -77,9 +77,9 @@ class AnnotationCompilerPassTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(
             $meta->tags['sonata.admin'][0],
             array(
-                'manager_type'      => 'orm',
-                'group'             => 'Admin',
-                'label'             => 'Foo',
+                'manager_type' => 'orm',
+                'group' => 'Admin',
+                'label' => 'Foo',
                 'show_in_dashboard' => true,
             )
         );
@@ -111,9 +111,9 @@ class AnnotationCompilerPassTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(
             $meta->tags['sonata.admin'][0],
             array(
-                'manager_type'      => 'doctrine_mongodb',
-                'group'             => 'myGroup',
-                'label'             => 'myLabel',
+                'manager_type' => 'doctrine_mongodb',
+                'group' => 'myGroup',
+                'label' => 'myLabel',
                 'show_in_dashboard' => false,
             )
         );

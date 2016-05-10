@@ -48,9 +48,9 @@ class AdminPoolLoader extends Loader
      */
     public function __construct(Pool $pool, array $adminServiceIds, ContainerInterface $container)
     {
-        $this->pool             = $pool;
-        $this->adminServiceIds  = $adminServiceIds;
-        $this->container        = $container;
+        $this->pool = $pool;
+        $this->adminServiceIds = $adminServiceIds;
+        $this->container = $container;
     }
 
     /**

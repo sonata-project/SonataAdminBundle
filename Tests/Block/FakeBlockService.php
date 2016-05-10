@@ -25,7 +25,7 @@ class FakeBlockService extends AdminListBlockService
 
         $resolver
             ->setDefaults(array(
-                'foo'    => 'bar',
+                'foo' => 'bar',
                 'groups' => true,
             ))
         ;

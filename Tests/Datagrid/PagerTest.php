@@ -177,7 +177,7 @@ class PagerTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->pager->hasParameter('foo2'));
         $this->assertSame('foo2_value', $this->pager->getParameter('foo2', null));
         $this->assertSame('foo2_value', $this->pager->getParameter('foo2', 'bar'));
-        $this->assertSame(array('foo'  => 'baz', 'foo2' => 'foo2_value'), $this->pager->getParameters());
+        $this->assertSame(array('foo' => 'baz', 'foo2' => 'foo2_value'), $this->pager->getParameters());
     }
 
     public function testGetMaxPageLinks()
@@ -591,7 +591,7 @@ class PagerTest extends \PHPUnit_Framework_TestCase
     public function testSerialize()
     {
         $pagerClone = clone $this->pager;
-        $data  = $this->pager->serialize();
+        $data = $this->pager->serialize();
         $this->assertNotEmpty($data);
 
         $this->pager->setPage(12);
@@ -607,16 +607,16 @@ class PagerTest extends \PHPUnit_Framework_TestCase
     public function testUnserialize()
     {
         $serialized = array(
-            'page'           => 6,
-            'maxPerPage'     => 7,
-            'maxPageLinks'   => 5,
-            'lastPage'       => 4,
-            'nbResults'      => 30,
-            'cursor'         => 3,
-            'parameters'     => array('foo' => 'bar'),
+            'page' => 6,
+            'maxPerPage' => 7,
+            'maxPageLinks' => 5,
+            'lastPage' => 4,
+            'nbResults' => 30,
+            'cursor' => 3,
+            'parameters' => array('foo' => 'bar'),
             'currentMaxLink' => 2,
             'maxRecordLimit' => 22,
-            'countColumn'    => array('idx'),
+            'countColumn' => array('idx'),
         );
 
         $this->pager->expects($this->any())

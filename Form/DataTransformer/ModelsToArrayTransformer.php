@@ -60,9 +60,9 @@ class ModelsToArrayTransformer implements DataTransformerInterface
                 ModelChoiceLoader or ModelChoiceList or LazyChoiceList');
         }
 
-        $this->choiceList   = $choiceList;
+        $this->choiceList = $choiceList;
         $this->modelManager = $modelManager;
-        $this->class        = $class;
+        $this->class = $class;
     }
 
     /**

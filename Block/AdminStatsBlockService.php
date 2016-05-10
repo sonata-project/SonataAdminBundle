@@ -64,12 +64,12 @@ class AdminStatsBlockService extends BaseBlockService
         $datagrid->buildPager();
 
         return $this->renderPrivateResponse($blockContext->getTemplate(), array(
-            'block'      => $blockContext->getBlock(),
-            'settings'   => $blockContext->getSettings(),
+            'block' => $blockContext->getBlock(),
+            'settings' => $blockContext->getSettings(),
             'admin_pool' => $this->pool,
-            'admin'      => $admin,
-            'pager'      => $datagrid->getPager(),
-            'datagrid'   => $datagrid,
+            'admin' => $admin,
+            'pager' => $datagrid->getPager(),
+            'datagrid' => $datagrid,
         ), $response);
     }
 
@@ -87,12 +87,12 @@ class AdminStatsBlockService extends BaseBlockService
     public function configureSettings(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'icon'     => 'fa-line-chart',
-            'text'     => 'Statistics',
-            'color'    => 'bg-aqua',
-            'code'     => false,
-            'filters'  => array(),
-            'limit'    => 1000,
+            'icon' => 'fa-line-chart',
+            'text' => 'Statistics',
+            'color' => 'bg-aqua',
+            'code' => false,
+            'filters' => array(),
+            'limit' => 1000,
             'template' => 'SonataAdminBundle:Block:block_stats.html.twig',
         ));
     }

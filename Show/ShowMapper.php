@@ -35,7 +35,7 @@ class ShowMapper extends BaseGroupedMapper
     public function __construct(ShowBuilderInterface $showBuilder, FieldDescriptionCollection $list, AdminInterface $admin)
     {
         parent::__construct($showBuilder, $admin);
-        $this->list        = $list;
+        $this->list = $list;
     }
 
     /**

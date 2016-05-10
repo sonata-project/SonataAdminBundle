@@ -31,7 +31,7 @@ class AddDependencyCallsCompilerPassTest extends \PHPUnit_Framework_TestCase
         parent::setUp();
 
         $this->extension = new SonataAdminExtension();
-        $this->config    = $this->getConfig();
+        $this->config = $this->getConfig();
     }
 
     public function testTranslatorDisabled()
@@ -296,8 +296,8 @@ class AddDependencyCallsCompilerPassTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('sonata_group_four', $config['dashboard']['groups']);
 
         $config['dashboard']['groups']['sonata_group_four']['items'][] = array(
-            'route'        => 'blog_article',
-            'label'        => 'Article',
+            'route' => 'blog_article',
+            'label' => 'Article',
             'route_params' => array('articleId' => 3),
         );
 
@@ -322,18 +322,18 @@ class AddDependencyCallsCompilerPassTest extends \PHPUnit_Framework_TestCase
 
         $config = $this->config;
         $config['dashboard']['groups']['sonata_group_five'] = array(
-            'label'           => 'Group One Label',
+            'label' => 'Group One Label',
             'label_catalogue' => 'SonataAdminBundle',
-            'on_top'          => true,
-            'items'           => array(
+            'on_top' => true,
+            'items' => array(
                 'sonata_post_admin',
                 array(
                     'route' => 'blog_name',
                     'label' => 'Blog',
                 ),
                 array(
-                    'route'        => 'blog_article',
-                    'label'        => 'Article',
+                    'route' => 'blog_article',
+                    'label' => 'Article',
                     'route_params' => array('articleId' => 3),
                 ),
             ),
@@ -449,17 +449,17 @@ class AddDependencyCallsCompilerPassTest extends \PHPUnit_Framework_TestCase
             'dashboard' => array(
                 'groups' => array(
                     'sonata_group_one' => array(
-                        'label'           => 'Group One Label',
+                        'label' => 'Group One Label',
                         'label_catalogue' => 'SonataAdminBundle',
-                        'items'           => array(
+                        'items' => array(
                             'sonata_post_admin',
                             array(
                                 'route' => 'blog_name',
                                 'label' => 'Blog',
                             ),
                             array(
-                                'route'        => 'blog_article',
-                                'label'        => 'Article',
+                                'route' => 'blog_article',
+                                'label' => 'Article',
                                 'route_params' => array('articleId' => 3),
                             ),
                         ),
@@ -475,10 +475,10 @@ class AddDependencyCallsCompilerPassTest extends \PHPUnit_Framework_TestCase
                         'on_top' => true,
                     ),
                     'sonata_group_four' => array(
-                        'on_top'          => true,
-                        'label'           => 'Group Four Label',
+                        'on_top' => true,
+                        'label' => 'Group Four Label',
                         'label_catalogue' => 'SonataAdminBundle',
-                        'items'           => array(
+                        'items' => array(
                             'sonata_post_admin',
                         ),
                     ),
@@ -491,9 +491,9 @@ class AddDependencyCallsCompilerPassTest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
                 'sonata_news_admin' => array(
-                    'label'      => 'Foo',
+                    'label' => 'Foo',
                     'pager_type' => 'simple',
-                    'templates'  => array(
+                    'templates' => array(
                         'view' => array('user_block' => 'foo.twig.html'),
                     ),
                 ),
@@ -508,7 +508,7 @@ class AddDependencyCallsCompilerPassTest extends \PHPUnit_Framework_TestCase
         $container = new ContainerBuilder();
         $container->setParameter('kernel.bundles', array(
             'SonataCoreBundle' => true,
-            'KnpMenuBundle'    => true,
+            'KnpMenuBundle' => true,
         ));
         $container->setParameter('kernel.cache_dir', '/tmp');
         $container->setParameter('kernel.debug', true);
@@ -540,7 +540,7 @@ class AddDependencyCallsCompilerPassTest extends \PHPUnit_Framework_TestCase
             ->setClass('Symfony\Component\Form\FormFactoryInterface');
         foreach (array(
             'doctrine_phpcr' => 'PHPCR',
-            'orm'            => 'ORM', ) as $key => $bundleSubstring) {
+            'orm' => 'ORM', ) as $key => $bundleSubstring) {
             $container
                 ->register(sprintf('sonata.admin.manager.%s', $key))
                 ->setClass(sprintf(

@@ -108,13 +108,13 @@ class DatagridMapperTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('fooLabel', $filter->getLabel());
         $this->assertSame(array('required' => false), $filter->getFieldOptions());
         $this->assertSame(array(
-            'show_filter'        => null,
-            'advanced_filter'    => true,
+            'show_filter' => null,
+            'advanced_filter' => true,
             'foo_default_option' => 'bar_default',
-            'label'              => 'fooLabel',
-            'field_name'         => 'fooFilterName',
-            'placeholder'        => 'short_object_description_placeholder',
-            'link_parameters'    => array(),
+            'label' => 'fooLabel',
+            'field_name' => 'fooFilterName',
+            'placeholder' => 'short_object_description_placeholder',
+            'link_parameters' => array(),
         ), $filter->getOptions());
     }
 
@@ -134,16 +134,16 @@ class DatagridMapperTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('fooLabel', $filter->getLabel());
         $this->assertSame(array('foo_field_option' => 'baz'), $filter->getFieldOptions());
         $this->assertSame(array(
-            'show_filter'        => null,
-            'advanced_filter'    => true,
+            'show_filter' => null,
+            'advanced_filter' => true,
             'foo_default_option' => 'bar_custom',
-            'label'              => 'fooLabel',
-            'field_name'         => 'fooFilterName',
-            'foo_filter_option'  => 'foo_filter_option_value',
-            'field_options'      => array('foo_field_option' => 'baz'),
-            'field_type'         => 'foo_field_type',
-            'placeholder'        => 'short_object_description_placeholder',
-            'link_parameters'    => array(),
+            'label' => 'fooLabel',
+            'field_name' => 'fooFilterName',
+            'foo_filter_option' => 'foo_filter_option_value',
+            'field_options' => array('foo_field_option' => 'baz'),
+            'field_type' => 'foo_field_type',
+            'placeholder' => 'short_object_description_placeholder',
+            'link_parameters' => array(),
         ), $filter->getOptions());
     }
 
