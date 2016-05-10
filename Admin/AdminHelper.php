@@ -198,13 +198,13 @@ class AdminHelper
         $instance = $fieldDescription->getAssociationAdmin()->getNewInstance();
         $mapping = $fieldDescription->getAssociationMapping();
 
-        $method = sprintf('add%s', $this->camelize($mapping['fieldName']));
+        $method = sprintf('add%s', Inflector::classify($mapping['fieldName']));
 
         if (!method_exists($object, $method)) {
             $method = rtrim($method, 's');
 
             if (!method_exists($object, $method)) {
-                $method = sprintf('add%s', $this->camelize(Inflector::singularize($mapping['fieldName'])));
+                $method = sprintf('add%s', Inflector::classify(Inflector::singularize($mapping['fieldName'])));
 
                 if (!method_exists($object, $method)) {
                     throw new \RuntimeException(sprintf('Please add a method %s in the %s class!', $method, ClassUtils::getClass($object)));
@@ -223,10 +223,21 @@ class AdminHelper
      * @param string $property
      *
      * @return string
+     *
+     * @deprecated Deprecated since version 3.1. Use \Doctrine\Common\Inflector\Inflector::classify() instead.
      */
     public function camelize($property)
     {
-        return BaseFieldDescription::camelize($property);
+        @trigger_error(
+            sprintf(
+                'The %s method is deprecated since 3.1 and will be removed in 4.0. '.
+                'Use \Doctrine\Common\Inflector\Inflector::classify() instead.',
+                __METHOD__
+            ),
+            E_USER_DEPRECATED
+        );
+
+        return Inflector::classify($property);
     }
 
     /**
