@@ -1031,14 +1031,13 @@ interface AdminInterface
      */
     public function checkAccess($action, $object = null);
 
-    /*
-     * Configure buttons for an action
-     *
-     * @param string $action
-     * @param object $object
-     *
-     */
-    // public function configureActionButtons($action, $object = null);
+     /**
+      * Configure buttons for an action.
+      *
+      * @param string $action
+      * @param object $object
+      */
+     public function configureActionButtons($action, $object = null);
 
 //    TODO: uncomment this method for next major release
 //    /**
