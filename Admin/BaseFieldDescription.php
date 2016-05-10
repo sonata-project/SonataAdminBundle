@@ -11,8 +11,8 @@
 
 namespace Sonata\AdminBundle\Admin;
 
+use Doctrine\Common\Inflector\Inflector;
 use Sonata\AdminBundle\Exception\NoValueException;
-use Symfony\Component\DependencyInjection\Container;
 
 /**
  * A FieldDescription hold the information about a field. A typical
@@ -325,7 +325,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
             return;
         }
 
-        $camelizedFieldName = self::camelize($fieldName);
+        $camelizedFieldName = Inflector::classify($fieldName);
 
         $getters = array();
         $parameters = array();
@@ -422,10 +422,21 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
      * @param string $property
      *
      * @return string
+     *
+     * @deprecated Deprecated since version 3.1. Use \Doctrine\Common\Inflector\Inflector::classify() instead.
      */
     public static function camelize($property)
     {
-        return Container::camelize($property);
+        @trigger_error(
+            sprintf(
+                'The %s method is deprecated since 3.1 and will be removed in 4.0. '.
+                'Use \Doctrine\Common\Inflector\Inflector::classify() instead.',
+                __METHOD__
+            ),
+            E_USER_DEPRECATED
+        );
+
+        return Inflector::classify($property);
     }
 
     /**

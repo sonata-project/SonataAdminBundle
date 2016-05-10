@@ -11,10 +11,10 @@
 
 namespace Sonata\AdminBundle\Controller;
 
+use Doctrine\Common\Inflector\Inflector;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\Admin\BaseFieldDescription;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Exception\LockException;
 use Sonata\AdminBundle\Exception\ModelManagerException;
@@ -553,8 +553,8 @@ class CRUDController extends Controller
             throw new \RuntimeException(sprintf('The `%s` batch action is not defined', $action));
         }
 
-        $camelizedAction = BaseFieldDescription::camelize($action);
-        $isRelevantAction = sprintf('batchAction%sIsRelevant', ucfirst($camelizedAction));
+        $camelizedAction = Inflector::classify($action);
+        $isRelevantAction = sprintf('batchAction%sIsRelevant', $camelizedAction);
 
         if (method_exists($this, $isRelevantAction)) {
             $nonRelevantMessage = call_user_func(array($this, $isRelevantAction), $idx, $allElements);
@@ -601,7 +601,7 @@ class CRUDController extends Controller
         }
 
         // execute the action, batchActionXxxxx
-        $finalAction = sprintf('batchAction%s', ucfirst($camelizedAction));
+        $finalAction = sprintf('batchAction%s', $camelizedAction);
         if (!is_callable(array($this, $finalAction))) {
             throw new \RuntimeException(sprintf('A `%s::%s` method must be callable', get_class($this), $finalAction));
         }
