@@ -5,6 +5,10 @@ UPGRADE FROM 2.x to 3.0
 
 You will need to follow the dependencies upgrade instructions.
 
+## Removed BaseFieldDescription::camelize()
+
+If you were using this method, please use `Doctrine\Common\Inflector::camelize()` instead.
+
 ## Datagrid builders
 
 If you have implemented a custom datagrid builder, you must adapt the signature of its `addFilter` method to match the one in `DatagridBuilderInterface` again.

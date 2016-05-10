@@ -11,7 +11,7 @@
 
 namespace Sonata\AdminBundle\DependencyInjection\Compiler;
 
-use Sonata\AdminBundle\Admin\BaseFieldDescription;
+use Doctrine\Common\Inflector\Inflector;
 use Sonata\AdminBundle\Datagrid\Pager;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -221,7 +221,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
         );
 
         foreach ($keys as $key) {
-            $method = 'set'.BaseFieldDescription::camelize($key);
+            $method = 'set'.Inflector::camelize($key);
             if (!isset($attributes[$key]) || $definition->hasMethodCall($method)) {
                 continue;
             }
@@ -274,7 +274,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
         $definition->addMethodCall('setManagerType', array($manager_type));
 
         foreach ($defaultAddServices as $attr => $addServiceId) {
-            $method = 'set'.BaseFieldDescription::camelize($attr);
+            $method = 'set'.Inflector::camelize($attr);
 
             if (isset($overwriteAdminConfiguration[$attr]) || !$definition->hasMethodCall($method)) {
                 $definition->addMethodCall($method, array(new Reference(isset($overwriteAdminConfiguration[$attr]) ? $overwriteAdminConfiguration[$attr] : $addServiceId)));
