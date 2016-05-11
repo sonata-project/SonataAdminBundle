@@ -53,18 +53,16 @@ matrix:
     - env: SYMFONY_VERSION=dev-master@dev
 
 before_install:
-  - echo $PATH
-  - which phpunit
   - if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then mv "$HOME/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini" /tmp; fi;
   - |
       if [ "$TARGET" = 'test' ]; then
-      mkdir --parents /home/travis/.local/bin
+      mkdir "$HOME/bin"
       if [[ "$TRAVIS_PHP_VERSION" < '5.6' ]]; then
-      wget https://phar.phpunit.de/phpunit-old.phar --output-document=/home/travis/.local/bin/phpunit
+      wget https://phar.phpunit.de/phpunit-old.phar --output-document="$HOME/bin/phpunit"
       else
-      wget https://phar.phpunit.de/phpunit.phar --output-document=/home/travis/.local/bin/phpunit
+      wget https://phar.phpunit.de/phpunit.phar --output-document="$HOME/bin/phpunit"
       fi
-      chmod u+x /home/travis/.local/bin/phpunit
+      chmod u+x "$HOME/bin/phpunit"
       which phpunit
       phpunit --version
       composer config --quiet --global github-oauth.github.com $GITHUB_OAUTH_TOKEN
