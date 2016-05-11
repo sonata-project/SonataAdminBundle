@@ -57,7 +57,6 @@ before_install:
   - |
       if [ "$TARGET" = 'test' ]; then
       composer config --quiet --global github-oauth.github.com $GITHUB_OAUTH_TOKEN
-      composer global require phpunit/phpunit:@stable --no-update
       sed --in-place "s/\"dev-master\":/\"dev-${TRAVIS_COMMIT}\":/" composer.json
       if [ "$SYMFONY_VERSION" != "" ]; then
       composer require "symfony/symfony:${SYMFONY_VERSION}" --no-update
@@ -67,7 +66,6 @@ before_install:
 install:
   - |
       if [ "$TARGET" = 'test' ]; then
-      travis_wait composer global update --prefer-dist --no-interaction
       travis_wait composer update --prefer-dist --no-interaction --prefer-stable $COMPOSER_FLAGS
       fi
   - if [ "$TARGET" = 'docs' ]; then pip install -r Resources/doc/requirements.txt --user `whoami`; fi;
