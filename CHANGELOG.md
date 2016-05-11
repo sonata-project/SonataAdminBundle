@@ -7,7 +7,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Add the ``configureActionButtons`` method to the AdminInterface
 - Add the ``configureActionButtons`` method to the AdminExtensionInterface
 
-## [3.0.0](https://github.com/olivierlacan/keep-a-changelog/compare/2.3.10...3.0.0) - 2016-05-08
+### Changed
+ - Updated AdminLTE theme to version 2.3.3
+
+### Removed
+ - Removed BaseFieldDescription::camelize() - (replaced by \Doctrine\Common\Inflector::camelize())
+
+## [3.0.0](https://github.com/sonata-project/SonataAdminBundle/compare/2.3.10...3.0.0) - 2016-05-08
 ### Added
 - Add missing Route constructor parameters to ``RouteCollection:add`` method
 - Add the ``hasRoute`` method to the AdminInterface

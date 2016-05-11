@@ -198,13 +198,13 @@ class AdminHelper
         $instance = $fieldDescription->getAssociationAdmin()->getNewInstance();
         $mapping = $fieldDescription->getAssociationMapping();
 
-        $method = sprintf('add%s', $this->camelize($mapping['fieldName']));
+        $method = sprintf('add%s', Inflector::camelize($mapping['fieldName']));
 
         if (!method_exists($object, $method)) {
             $method = rtrim($method, 's');
 
             if (!method_exists($object, $method)) {
-                $method = sprintf('add%s', $this->camelize(Inflector::singularize($mapping['fieldName'])));
+                $method = sprintf('add%s', Inflector::camelize(Inflector::singularize($mapping['fieldName'])));
 
                 if (!method_exists($object, $method)) {
                     throw new \RuntimeException(sprintf('Please add a method %s in the %s class!', $method, ClassUtils::getClass($object)));
