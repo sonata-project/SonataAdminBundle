@@ -24,11 +24,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 - Admin LTE 2.0 used. Assets files changed.
-- Move ``sonata_wrapper`` block on ```standard_layout.html.twig```
+- Move ``sonata_wrapper`` block on ``standard_layout.html.twig``
 - CSS class ``sonata-autocomplete-dropdown-item`` is not automatically added to dropdown
 autocomplete item in ``sonata_type_model_autocomplete``, use option ``dropdown_item_css_class``
 to set the CSS class of dropdown item.
 - Text from Admin's toString method is escaped for html output before adding in flash message to prevent possible XSS vulnerability.
 
 ### Removed
-- Remove ``btn-outline``` from doctrine-orm-admin form actions buttons
+- Remove ``btn-outline`` from doctrine-orm-admin form actions buttons
