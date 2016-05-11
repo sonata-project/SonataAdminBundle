@@ -65,6 +65,7 @@ before_install:
       wget https://phar.phpunit.de/phpunit.phar --output-file=/home/travis/.local/phpunit
       fi
       chmod u+x /home/travis/.local/phpunit
+      which phpunit
       phpunit --version
       composer config --quiet --global github-oauth.github.com $GITHUB_OAUTH_TOKEN
       sed --in-place "s/\"dev-master\":/\"dev-${TRAVIS_COMMIT}\":/" composer.json
