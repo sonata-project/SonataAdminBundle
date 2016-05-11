@@ -351,6 +351,35 @@ You can add or override filter parameters to the Tab Menu:
 The `Delivery` class is based on the `sonata_type_translatable_choice` example inside the Core's documentation:
 http://sonata-project.org/bundles/core/master/doc/reference/form_types.html#sonata-type-translatable-choice
 
+
+Actions Menu
+------------
+
+You can add custom items to the actions menu for a specific action by overriding the following method:
+
+.. code-block:: php
+
+    public function configureActionButtons($action, $object = null)
+    {
+        $list = parent::configureActionButtons($action, $object);
+
+        if (in_array($action, array('show', 'edit', 'acl')) && $object) {
+            $list['custom'] = array(
+                'template' => 'AppBundle:Button:custom_button.html.twig',
+            );
+        }
+
+        // Remove history action
+        unset($list['history']);
+
+        return $list;
+    }
+
+
+.. figure:: ../images/custom_action_buttons.png
+   :align: center
+   :alt: Custom action buttons
+
 Disable content stretching
 --------------------------
 
