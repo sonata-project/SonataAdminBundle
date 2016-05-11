@@ -21,7 +21,7 @@ cache:
 
 env:
   global:
-    - PATH="$HOME/.composer/vendor/bin:$HOME/.local/bin:$PATH"
+    - PATH="$HOME/.local/bin:$PATH"
     - SYMFONY_DEPRECATIONS_HELPER=weak
     - TARGET=test
 
@@ -58,7 +58,13 @@ before_install:
   - if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then mv "$HOME/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini" /tmp; fi;
   - |
       if [ "$TARGET" = 'test' ]; then
-      phpunit --self-update
+      mkdir /home/travis/.local
+      if [[ "$TRAVIS_PHP_VERSION" < '5.6' ]]; then
+      wget https://phar.phpunit.de/phpunit-old.phar --output-file=/home/travis/.local/phpunit
+      else
+      wget https://phar.phpunit.de/phpunit.phar --output-file=/home/travis/.local/phpunit
+      fi
+      chmod u+x /home/travis/.local/phpunit
       phpunit --version
       composer config --quiet --global github-oauth.github.com $GITHUB_OAUTH_TOKEN
       sed --in-place "s/\"dev-master\":/\"dev-${TRAVIS_COMMIT}\":/" composer.json
