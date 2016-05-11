@@ -892,7 +892,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     /**
      * {@inheritdoc}
      */
-    public function buildDatagrid()
+    public function buildDatagrid($context = 'list')
     {
         if ($this->datagrid) {
             return;
@@ -916,7 +916,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         }
 
         // initialize the datagrid
-        $this->datagrid = $this->getDatagridBuilder()->getBaseDatagrid($this, $filterParameters);
+        $this->datagrid = $this->getDatagridBuilder()->getBaseDatagrid($this, $filterParameters, $context);
 
         $this->datagrid->getPager()->setMaxPageLinks($this->maxPageLinks);
 
@@ -1548,9 +1548,9 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     /**
      * {@inheritdoc}
      */
-    public function getDatagrid()
+    public function getDatagrid($context = 'list')
     {
-        $this->buildDatagrid();
+        $this->buildDatagrid($context);
 
         return $this->datagrid;
     }
