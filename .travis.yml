@@ -60,8 +60,8 @@ before_install:
 
 install:
   - if [ "$TARGET" = 'test' ]; then mkdir "$HOME/bin"; fi;
-  - if [ "$TARGET" = 'test' ]; then if [[ "$TRAVIS_PHP_VERSION" < '5.6' ]]; then wget https://phar.phpunit.de/phpunit-old.phar --output-document="$HOME/bin/phpunit"; fi; fi;
-  - if [ "$TARGET" = 'test' ]; then if [[ ! "$TRAVIS_PHP_VERSION" < '5.6' ]]; then wget https://phar.phpunit.de/phpunit.phar --output-document="$HOME/bin/phpunit"; fi; fi;
+  - if [[ "$TARGET" = 'test' && "$TRAVIS_PHP_VERSION" < '5.6' ]]; then wget https://phar.phpunit.de/phpunit-old.phar --output-document="$HOME/bin/phpunit"; fi
+  - if [[ "$TARGET" = 'test' && ! "$TRAVIS_PHP_VERSION" < '5.6' ]]; then wget https://phar.phpunit.de/phpunit.phar --output-document="$HOME/bin/phpunit"; fi
   - if [ "$TARGET" = 'test' ]; then chmod u+x "$HOME/bin/phpunit"; fi;
   - if [ "$TARGET" = 'test' ]; then travis_wait composer update --prefer-dist --no-interaction --prefer-stable $COMPOSER_FLAGS; fi;
   - if [ "$TARGET" = 'docs' ]; then pip install -r Resources/doc/requirements.txt --user `whoami`; fi;
