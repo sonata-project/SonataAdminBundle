@@ -53,20 +53,20 @@ matrix:
     - env: SYMFONY_VERSION=dev-master@dev
 
 before_install:
-  - if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then mv "$HOME/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini" /tmp; fi;
-  - if [ "$TARGET" = 'test' ]; then composer config --quiet --global github-oauth.github.com $GITHUB_OAUTH_TOKEN; fi;
-  - if [ "$TARGET" = 'test' ]; then sed --in-place "s/\"dev-master\":/\"dev-${TRAVIS_COMMIT}\":/" composer.json; fi;
-  - if [ "$TARGET" = 'test' -a "$SYMFONY_VERSION" != "" ]; then composer require "symfony/symfony:${SYMFONY_VERSION}" --no-update; fi;
+  - [ "$TRAVIS_PHP_VERSION" != "hhvm" ] && mv "$HOME/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini" /tmp
+  - [ "$TARGET" = 'test' ] && composer config --quiet --global github-oauth.github.com $GITHUB_OAUTH_TOKEN
+  - [ "$TARGET" = 'test' ] && sed --in-place "s/\"dev-master\":/\"dev-${TRAVIS_COMMIT}\":/" composer.json
+  - [ "$TARGET" = 'test' -a "$SYMFONY_VERSION" != "" ] && composer require "symfony/symfony:${SYMFONY_VERSION}" --no-update
 
 install:
-  - if [ "$TARGET" = 'test' ]; then mkdir "$HOME/bin"; fi;
-  - if [ "$TARGET" = 'test' ]; then if [[ "$TRAVIS_PHP_VERSION" < '5.6' ]]; then wget https://phar.phpunit.de/phpunit-old.phar --output-document="$HOME/bin/phpunit"; fi; fi;
-  - if [ "$TARGET" = 'test' ]; then if [[ ! "$TRAVIS_PHP_VERSION" < '5.6' ]]; then wget https://phar.phpunit.de/phpunit.phar --output-document="$HOME/bin/phpunit"; fi; fi;
-  - if [ "$TARGET" = 'test' ]; then chmod u+x "$HOME/bin/phpunit"; fi;
-  - if [ "$TARGET" = 'test' ]; then travis_wait composer update --prefer-dist --no-interaction --prefer-stable $COMPOSER_FLAGS; fi;
-  - if [ "$TARGET" = 'docs' ]; then pip install -r Resources/doc/requirements.txt --user `whoami`; fi;
+  - [ "$TARGET" = 'test' ] && mkdir "$HOME/bin"
+  - [ "$TARGET" = 'test' ] && [[ "$TRAVIS_PHP_VERSION" < '5.6' ]] && wget https://phar.phpunit.de/phpunit-old.phar --output-document="$HOME/bin/phpunit"
+  - [ "$TARGET" = 'test' ] && [[ ! "$TRAVIS_PHP_VERSION" < '5.6' ]] && wget https://phar.phpunit.de/phpunit.phar --output-document="$HOME/bin/phpunit"
+  - [ "$TARGET" = 'test' ] && chmod u+x "$HOME/bin/phpunit"
+  - [ "$TARGET" = 'test' ] && travis_wait composer update --prefer-dist --no-interaction --prefer-stable $COMPOSER_FLAGS
+  - [ "$TARGET" = 'docs' ] && pip install -r Resources/doc/requirements.txt --user `whoami`
 
 before_script:
-  - if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then mv /tmp/xdebug.ini "$HOME/.phpenv/versions/$(phpenv version-name)/etc/conf.d"; fi;
+  - [ "$TRAVIS_PHP_VERSION" != "hhvm" ] && mv /tmp/xdebug.ini "$HOME/.phpenv/versions/$(phpenv version-name)/etc/conf.d"
 
 script: make $TARGET
