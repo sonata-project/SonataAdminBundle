@@ -53,10 +53,11 @@ matrix:
     - env: SYMFONY_VERSION=dev-master@dev
 
 before_install:
-  - phpunit --version
   - if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then mv "$HOME/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini" /tmp; fi;
   - |
       if [ "$TARGET" = 'test' ]; then
+      phpunit --self-upgrade
+      phpunit --version
       composer config --quiet --global github-oauth.github.com $GITHUB_OAUTH_TOKEN
       sed --in-place "s/\"dev-master\":/\"dev-${TRAVIS_COMMIT}\":/" composer.json
       if [ "$SYMFONY_VERSION" != "" ]; then
