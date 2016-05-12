@@ -293,15 +293,6 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    private function removeExtraWhitespace($string)
-    {
-        return trim(preg_replace(
-            '/\s+/',
-            ' ',
-            $string
-        ));
-    }
-
     public function getRenderListElementTests()
     {
         return array(
@@ -1932,5 +1923,14 @@ EOT
             ->will($this->returnValue(1234567));
 
         $this->assertSame(1234567, $this->twigExtension->getUrlsafeIdentifier($entity, $this->adminBar));
+    }
+
+    private function removeExtraWhitespace($string)
+    {
+        return trim(preg_replace(
+            '/\s+/',
+            ' ',
+            $string
+        ));
     }
 }

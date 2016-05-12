@@ -47,49 +47,6 @@ class CRUDController extends Controller
     protected $admin;
 
     /**
-     * Render JSON.
-     *
-     * @param mixed $data
-     * @param int   $status
-     * @param array $headers
-     *
-     * @return Response with json encoded data
-     */
-    protected function renderJson($data, $status = 200, $headers = array())
-    {
-        return new JsonResponse($data, $status, $headers);
-    }
-
-    /**
-     * Returns true if the request is a XMLHttpRequest.
-     *
-     * @return bool True if the request is an XMLHttpRequest, false otherwise
-     */
-    protected function isXmlHttpRequest()
-    {
-        $request = $this->getRequest();
-
-        return $request->isXmlHttpRequest() || $request->get('_xml_http_request');
-    }
-
-    /**
-     * Returns the correct RESTful verb, given either by the request itself or
-     * via the "_method" parameter.
-     *
-     * @return string HTTP method, either
-     */
-    protected function getRestMethod()
-    {
-        $request = $this->getRequest();
-
-        if (Request::getHttpMethodParameterOverride() || !$request->request->has('_method')) {
-            return $request->getMethod();
-        }
-
-        return $request->request->get('_method');
-    }
-
-    /**
      * Sets the Container associated with this Controller.
      *
      * @param ContainerInterface $container A ContainerInterface instance
@@ -99,77 +56,6 @@ class CRUDController extends Controller
         $this->container = $container;
 
         $this->configure();
-    }
-
-    /**
-     * Contextualize the admin class depends on the current request.
-     *
-     * @throws \RuntimeException
-     */
-    protected function configure()
-    {
-        $request = $this->getRequest();
-
-        $adminCode = $request->get('_sonata_admin');
-
-        if (!$adminCode) {
-            throw new \RuntimeException(sprintf(
-                'There is no `_sonata_admin` defined for the controller `%s` and the current route `%s`',
-                get_class($this),
-                $request->get('_route')
-            ));
-        }
-
-        $this->admin = $this->container->get('sonata.admin.pool')->getAdminByAdminCode($adminCode);
-
-        if (!$this->admin) {
-            throw new \RuntimeException(sprintf(
-                'Unable to find the admin class related to the current controller (%s)',
-                get_class($this)
-            ));
-        }
-
-        $rootAdmin = $this->admin;
-
-        if ($this->admin->isChild()) {
-            $this->admin->setCurrentChild(true);
-            $rootAdmin = $rootAdmin->getParent();
-        }
-
-        $rootAdmin->setRequest($request);
-
-        if ($request->get('uniqid')) {
-            $this->admin->setUniqid($request->get('uniqid'));
-        }
-    }
-
-    /**
-     * Proxy for the logger service of the container.
-     * If no such service is found, a NullLogger is returned.
-     *
-     * @return LoggerInterface
-     */
-    protected function getLogger()
-    {
-        if ($this->container->has('logger')) {
-            return $this->container->get('logger');
-        } else {
-            return new NullLogger();
-        }
-    }
-
-    /**
-     * Returns the base template name.
-     *
-     * @return string The template name
-     */
-    protected function getBaseTemplate()
-    {
-        if ($this->isXmlHttpRequest()) {
-            return $this->admin->getTemplate('ajax');
-        }
-
-        return $this->admin->getTemplate('layout');
     }
 
     /**
@@ -188,24 +74,6 @@ class CRUDController extends Controller
         $parameters['admin_pool'] = $this->get('sonata.admin.pool');
 
         return parent::render($view, $parameters, $response);
-    }
-
-    /**
-     * @param \Exception $e
-     *
-     * @throws \Exception
-     */
-    protected function handleModelManagerException(\Exception $e)
-    {
-        if ($this->get('kernel')->isDebug()) {
-            throw $e;
-        }
-
-        $context = array('exception' => $e);
-        if ($e->getPrevious()) {
-            $context['previous_exception_message'] = $e->getPrevious()->getMessage();
-        }
-        $this->getLogger()->error($e->getMessage(), $context);
     }
 
     /**
@@ -460,55 +328,6 @@ class CRUDController extends Controller
     }
 
     /**
-     * Redirect the user depend on this choice.
-     *
-     * @param object  $object
-     * @param Request $request
-     *
-     * @return RedirectResponse
-     */
-    protected function redirectTo($object)
-    {
-        $request = $this->getRequest();
-
-        $url = false;
-
-        if (null !== $request->get('btn_update_and_list')) {
-            $url = $this->admin->generateUrl('list');
-        }
-        if (null !== $request->get('btn_create_and_list')) {
-            $url = $this->admin->generateUrl('list');
-        }
-
-        if (null !== $request->get('btn_create_and_create')) {
-            $params = array();
-            if ($this->admin->hasActiveSubClass()) {
-                $params['subclass'] = $request->get('subclass');
-            }
-            $url = $this->admin->generateUrl('create', $params);
-        }
-
-        if ($this->getRestMethod() === 'DELETE') {
-            $url = $this->admin->generateUrl('list');
-        }
-
-        if (!$url) {
-            foreach (array('edit', 'show') as $route) {
-                if ($this->admin->hasRoute($route) && $this->admin->isGranted(strtoupper($route), $object)) {
-                    $url = $this->admin->generateObjectUrl($route, $object);
-                    break;
-                }
-            }
-        }
-
-        if (!$url) {
-            $url = $this->admin->generateUrl('list');
-        }
-
-        return new RedirectResponse($url);
-    }
-
-    /**
      * Batch action.
      *
      * @param Request $request
@@ -737,66 +556,6 @@ class CRUDController extends Controller
             'form' => $view,
             'object' => $object,
         ), null);
-    }
-
-    /**
-     * Returns true if the preview is requested to be shown.
-     *
-     * @param Request $request
-     *
-     * @return bool
-     */
-    protected function isPreviewRequested()
-    {
-        $request = $this->getRequest();
-
-        return $request->get('btn_preview') !== null;
-    }
-
-    /**
-     * Returns true if the preview has been approved.
-     *
-     * @param Request $request
-     *
-     * @return bool
-     */
-    protected function isPreviewApproved()
-    {
-        $request = $this->getRequest();
-
-        return $request->get('btn_preview_approve') !== null;
-    }
-
-    /**
-     * Returns true if the request is in the preview workflow.
-     *
-     * That means either a preview is requested or the preview has already been shown
-     * and it got approved/declined.
-     *
-     * @param Request $request
-     *
-     * @return bool
-     */
-    protected function isInPreviewMode()
-    {
-        return $this->admin->supportsPreviewMode()
-        && ($this->isPreviewRequested()
-            || $this->isPreviewApproved()
-            || $this->isPreviewDeclined());
-    }
-
-    /**
-     * Returns true if the preview has been declined.
-     *
-     * @param Request $request
-     *
-     * @return bool
-     */
-    protected function isPreviewDeclined()
-    {
-        $request = $this->getRequest();
-
-        return $request->get('btn_preview_decline') !== null;
     }
 
     /**
@@ -1065,62 +824,6 @@ class CRUDController extends Controller
     }
 
     /**
-     * Gets ACL users.
-     *
-     * @return \Traversable
-     */
-    protected function getAclUsers()
-    {
-        $aclUsers = array();
-
-        $userManagerServiceName = $this->container->getParameter('sonata.admin.security.acl_user_manager');
-        if ($userManagerServiceName !== null && $this->has($userManagerServiceName)) {
-            $userManager = $this->get($userManagerServiceName);
-
-            if (method_exists($userManager, 'findUsers')) {
-                $aclUsers = $userManager->findUsers();
-            }
-        }
-
-        return is_array($aclUsers) ? new \ArrayIterator($aclUsers) : $aclUsers;
-    }
-
-    /**
-     * Gets ACL roles.
-     *
-     * @return \Traversable
-     */
-    protected function getAclRoles()
-    {
-        $aclRoles = array();
-        $roleHierarchy = $this->container->getParameter('security.role_hierarchy.roles');
-        $pool = $this->container->get('sonata.admin.pool');
-
-        foreach ($pool->getAdminServiceIds() as $id) {
-            try {
-                $admin = $pool->getInstance($id);
-            } catch (\Exception $e) {
-                continue;
-            }
-
-            $baseRole = $admin->getSecurityHandler()->getBaseRole($admin);
-            foreach ($admin->getSecurityInformation() as $role => $permissions) {
-                $role = sprintf($baseRole, $role);
-                $aclRoles[] = $role;
-            }
-        }
-
-        foreach ($roleHierarchy as $name => $roles) {
-            $aclRoles[] = $name;
-            $aclRoles = array_merge($aclRoles, $roles);
-        }
-
-        $aclRoles = array_unique($aclRoles);
-
-        return is_array($aclRoles) ? new \ArrayIterator($aclRoles) : $aclRoles;
-    }
-
-    /**
      * Returns the Response object associated to the acl action.
      *
      * @param int|string|null $id
@@ -1195,6 +898,315 @@ class CRUDController extends Controller
             'aclUsersForm' => $aclUsersForm->createView(),
             'aclRolesForm' => $aclRolesForm->createView(),
         ), null, $request);
+    }
+
+    /**
+     * @return Request
+     */
+    public function getRequest()
+    {
+        if ($this->container->has('request_stack')) {
+            return $this->container->get('request_stack')->getCurrentRequest();
+        }
+
+        return $this->container->get('request');
+    }
+
+    /**
+     * Render JSON.
+     *
+     * @param mixed $data
+     * @param int   $status
+     * @param array $headers
+     *
+     * @return Response with json encoded data
+     */
+    protected function renderJson($data, $status = 200, $headers = array())
+    {
+        return new JsonResponse($data, $status, $headers);
+    }
+
+    /**
+     * Returns true if the request is a XMLHttpRequest.
+     *
+     * @return bool True if the request is an XMLHttpRequest, false otherwise
+     */
+    protected function isXmlHttpRequest()
+    {
+        $request = $this->getRequest();
+
+        return $request->isXmlHttpRequest() || $request->get('_xml_http_request');
+    }
+
+    /**
+     * Returns the correct RESTful verb, given either by the request itself or
+     * via the "_method" parameter.
+     *
+     * @return string HTTP method, either
+     */
+    protected function getRestMethod()
+    {
+        $request = $this->getRequest();
+
+        if (Request::getHttpMethodParameterOverride() || !$request->request->has('_method')) {
+            return $request->getMethod();
+        }
+
+        return $request->request->get('_method');
+    }
+
+    /**
+     * Contextualize the admin class depends on the current request.
+     *
+     * @throws \RuntimeException
+     */
+    protected function configure()
+    {
+        $request = $this->getRequest();
+
+        $adminCode = $request->get('_sonata_admin');
+
+        if (!$adminCode) {
+            throw new \RuntimeException(sprintf(
+                'There is no `_sonata_admin` defined for the controller `%s` and the current route `%s`',
+                get_class($this),
+                $request->get('_route')
+            ));
+        }
+
+        $this->admin = $this->container->get('sonata.admin.pool')->getAdminByAdminCode($adminCode);
+
+        if (!$this->admin) {
+            throw new \RuntimeException(sprintf(
+                'Unable to find the admin class related to the current controller (%s)',
+                get_class($this)
+            ));
+        }
+
+        $rootAdmin = $this->admin;
+
+        if ($this->admin->isChild()) {
+            $this->admin->setCurrentChild(true);
+            $rootAdmin = $rootAdmin->getParent();
+        }
+
+        $rootAdmin->setRequest($request);
+
+        if ($request->get('uniqid')) {
+            $this->admin->setUniqid($request->get('uniqid'));
+        }
+    }
+
+    /**
+     * Proxy for the logger service of the container.
+     * If no such service is found, a NullLogger is returned.
+     *
+     * @return LoggerInterface
+     */
+    protected function getLogger()
+    {
+        if ($this->container->has('logger')) {
+            return $this->container->get('logger');
+        } else {
+            return new NullLogger();
+        }
+    }
+
+    /**
+     * Returns the base template name.
+     *
+     * @return string The template name
+     */
+    protected function getBaseTemplate()
+    {
+        if ($this->isXmlHttpRequest()) {
+            return $this->admin->getTemplate('ajax');
+        }
+
+        return $this->admin->getTemplate('layout');
+    }
+
+    /**
+     * @param \Exception $e
+     *
+     * @throws \Exception
+     */
+    protected function handleModelManagerException(\Exception $e)
+    {
+        if ($this->get('kernel')->isDebug()) {
+            throw $e;
+        }
+
+        $context = array('exception' => $e);
+        if ($e->getPrevious()) {
+            $context['previous_exception_message'] = $e->getPrevious()->getMessage();
+        }
+        $this->getLogger()->error($e->getMessage(), $context);
+    }
+
+    /**
+     * Redirect the user depend on this choice.
+     *
+     * @param object  $object
+     * @param Request $request
+     *
+     * @return RedirectResponse
+     */
+    protected function redirectTo($object)
+    {
+        $request = $this->getRequest();
+
+        $url = false;
+
+        if (null !== $request->get('btn_update_and_list')) {
+            $url = $this->admin->generateUrl('list');
+        }
+        if (null !== $request->get('btn_create_and_list')) {
+            $url = $this->admin->generateUrl('list');
+        }
+
+        if (null !== $request->get('btn_create_and_create')) {
+            $params = array();
+            if ($this->admin->hasActiveSubClass()) {
+                $params['subclass'] = $request->get('subclass');
+            }
+            $url = $this->admin->generateUrl('create', $params);
+        }
+
+        if ($this->getRestMethod() === 'DELETE') {
+            $url = $this->admin->generateUrl('list');
+        }
+
+        if (!$url) {
+            foreach (array('edit', 'show') as $route) {
+                if ($this->admin->hasRoute($route) && $this->admin->isGranted(strtoupper($route), $object)) {
+                    $url = $this->admin->generateObjectUrl($route, $object);
+                    break;
+                }
+            }
+        }
+
+        if (!$url) {
+            $url = $this->admin->generateUrl('list');
+        }
+
+        return new RedirectResponse($url);
+    }
+
+    /**
+     * Returns true if the preview is requested to be shown.
+     *
+     * @param Request $request
+     *
+     * @return bool
+     */
+    protected function isPreviewRequested()
+    {
+        $request = $this->getRequest();
+
+        return $request->get('btn_preview') !== null;
+    }
+
+    /**
+     * Returns true if the preview has been approved.
+     *
+     * @param Request $request
+     *
+     * @return bool
+     */
+    protected function isPreviewApproved()
+    {
+        $request = $this->getRequest();
+
+        return $request->get('btn_preview_approve') !== null;
+    }
+
+    /**
+     * Returns true if the request is in the preview workflow.
+     *
+     * That means either a preview is requested or the preview has already been shown
+     * and it got approved/declined.
+     *
+     * @param Request $request
+     *
+     * @return bool
+     */
+    protected function isInPreviewMode()
+    {
+        return $this->admin->supportsPreviewMode()
+        && ($this->isPreviewRequested()
+            || $this->isPreviewApproved()
+            || $this->isPreviewDeclined());
+    }
+
+    /**
+     * Returns true if the preview has been declined.
+     *
+     * @param Request $request
+     *
+     * @return bool
+     */
+    protected function isPreviewDeclined()
+    {
+        $request = $this->getRequest();
+
+        return $request->get('btn_preview_decline') !== null;
+    }
+
+    /**
+     * Gets ACL users.
+     *
+     * @return \Traversable
+     */
+    protected function getAclUsers()
+    {
+        $aclUsers = array();
+
+        $userManagerServiceName = $this->container->getParameter('sonata.admin.security.acl_user_manager');
+        if ($userManagerServiceName !== null && $this->has($userManagerServiceName)) {
+            $userManager = $this->get($userManagerServiceName);
+
+            if (method_exists($userManager, 'findUsers')) {
+                $aclUsers = $userManager->findUsers();
+            }
+        }
+
+        return is_array($aclUsers) ? new \ArrayIterator($aclUsers) : $aclUsers;
+    }
+
+    /**
+     * Gets ACL roles.
+     *
+     * @return \Traversable
+     */
+    protected function getAclRoles()
+    {
+        $aclRoles = array();
+        $roleHierarchy = $this->container->getParameter('security.role_hierarchy.roles');
+        $pool = $this->container->get('sonata.admin.pool');
+
+        foreach ($pool->getAdminServiceIds() as $id) {
+            try {
+                $admin = $pool->getInstance($id);
+            } catch (\Exception $e) {
+                continue;
+            }
+
+            $baseRole = $admin->getSecurityHandler()->getBaseRole($admin);
+            foreach ($admin->getSecurityInformation() as $role => $permissions) {
+                $role = sprintf($baseRole, $role);
+                $aclRoles[] = $role;
+            }
+        }
+
+        foreach ($roleHierarchy as $name => $roles) {
+            $aclRoles[] = $name;
+            $aclRoles = array_merge($aclRoles, $roles);
+        }
+
+        $aclRoles = array_unique($aclRoles);
+
+        return is_array($aclRoles) ? new \ArrayIterator($aclRoles) : $aclRoles;
     }
 
     /**
@@ -1337,17 +1349,5 @@ class CRUDController extends Controller
      */
     protected function preList(Request $request)
     {
-    }
-
-    /**
-     * @return Request
-     */
-    public function getRequest()
-    {
-        if ($this->container->has('request_stack')) {
-            return $this->container->get('request_stack')->getCurrentRequest();
-        }
-
-        return $this->container->get('request');
     }
 }

@@ -60,37 +60,11 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     const CLASS_REGEX = '@(?:([A-Za-z0-9]*)\\\)?(Bundle\\\)?([A-Za-z0-9]+?)(?:Bundle)?\\\(Entity|Document|Model|PHPCR|CouchDocument|Phpcr|Doctrine\\\Orm|Doctrine\\\Phpcr|Doctrine\\\MongoDB|Doctrine\\\CouchDB)\\\(.*)@';
 
     /**
-     * The class name managed by the admin class.
-     *
-     * @var string
-     */
-    private $class;
-
-    /**
-     * The subclasses supported by the admin class.
-     *
-     * @var array
-     */
-    private $subClasses = array();
-
-    /**
-     * The list collection.
-     *
-     * @var array
-     */
-    private $list;
-
-    /**
      * The list FieldDescription constructed from the configureListField method.
      *
      * @var array
      */
     protected $listFieldDescriptions = array();
-
-    /**
-     * @var FieldDescriptionCollection
-     */
-    private $show;
 
     /**
      * The show FieldDescription constructed from the configureShowFields method.
@@ -100,21 +74,11 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     protected $showFieldDescriptions = array();
 
     /**
-     * @var Form
-     */
-    private $form;
-
-    /**
      * The list FieldDescription constructed from the configureFormField method.
      *
      * @var array
      */
     protected $formFieldDescriptions = array();
-
-    /**
-     * @var DatagridInterface
-     */
-    private $filter;
 
     /**
      * The filter FieldDescription constructed from the configureFilterField method.
@@ -145,13 +109,6 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     protected $baseRouteName;
 
     /**
-     * The cached base route name.
-     *
-     * @var string
-     */
-    private $cachedBaseRouteName;
-
-    /**
      * The base route pattern used to generate the routing information.
      *
      * @var string
@@ -159,46 +116,11 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     protected $baseRoutePattern;
 
     /**
-     * The cached base route pattern.
-     *
-     * @var string
-     */
-    private $cachedBaseRoutePattern;
-
-    /**
      * The base name controller used to generate the routing information.
      *
      * @var string
      */
     protected $baseControllerName;
-
-    /**
-     * The form group disposition.
-     *
-     * @var array|bool
-     */
-    private $formGroups = false;
-
-    /**
-     * The form tabs disposition.
-     *
-     * @var array|bool
-     */
-    private $formTabs = false;
-
-    /**
-     * The view group disposition.
-     *
-     * @var array|bool
-     */
-    private $showGroups = false;
-
-    /**
-     * The view tab disposition.
-     *
-     * @var array|bool
-     */
-    private $showTabs = false;
 
     /**
      * The label class name  (used in the title/breadcrumb ...).
@@ -339,13 +261,6 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      * @var ModelManagerInterface
      */
     protected $modelManager;
-
-    /**
-     * The manager type to use for the admin.
-     *
-     * @var string
-     */
-    private $managerType;
 
     /**
      * The current request object.
@@ -512,69 +427,103 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     protected $accessMapping = array();
 
     /**
-     * {@inheritdoc}
-     */
-    protected function configureFormFields(FormMapper $form)
-    {
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function configureListFields(ListMapper $list)
-    {
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function configureDatagridFilters(DatagridMapper $filter)
-    {
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function configureShowFields(ShowMapper $show)
-    {
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function configureRoutes(RouteCollection $collection)
-    {
-    }
-
-    /**
-     * DEPRECATED: Use configureTabMenu instead.
+     * The class name managed by the admin class.
      *
-     * @param MenuItemInterface $menu
-     * @param                   $action
-     * @param AdminInterface    $childAdmin
-     *
-     * @return mixed
-     *
-     * @deprecated Use configureTabMenu instead
+     * @var string
      */
-    protected function configureSideMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
-    {
-    }
+    private $class;
 
     /**
-     * Configures the tab menu in your admin.
+     * The subclasses supported by the admin class.
      *
-     * @param MenuItemInterface $menu
-     * @param string            $action
-     * @param AdminInterface    $childAdmin
-     *
-     * @return mixed
+     * @var array
      */
-    protected function configureTabMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
+    private $subClasses = array();
+
+    /**
+     * The list collection.
+     *
+     * @var array
+     */
+    private $list;
+
+    /**
+     * @var FieldDescriptionCollection
+     */
+    private $show;
+
+    /**
+     * @var Form
+     */
+    private $form;
+
+    /**
+     * @var DatagridInterface
+     */
+    private $filter;
+
+    /**
+     * The cached base route name.
+     *
+     * @var string
+     */
+    private $cachedBaseRouteName;
+
+    /**
+     * The cached base route pattern.
+     *
+     * @var string
+     */
+    private $cachedBaseRoutePattern;
+
+    /**
+     * The form group disposition.
+     *
+     * @var array|bool
+     */
+    private $formGroups = false;
+
+    /**
+     * The form tabs disposition.
+     *
+     * @var array|bool
+     */
+    private $formTabs = false;
+
+    /**
+     * The view group disposition.
+     *
+     * @var array|bool
+     */
+    private $showGroups = false;
+
+    /**
+     * The view tab disposition.
+     *
+     * @var array|bool
+     */
+    private $showTabs = false;
+
+    /**
+     * The manager type to use for the admin.
+     *
+     * @var string
+     */
+    private $managerType;
+
+    /**
+     * @param string $code
+     * @param string $class
+     * @param string $baseControllerName
+     */
+    public function __construct($code, $class, $baseControllerName)
     {
-        // Use configureSideMenu not to mess with previous overrides
-        // TODO remove once deprecation period is over
-        $this->configureSideMenu($menu, $action, $childAdmin);
+        $this->code = $code;
+        $this->class = $class;
+        $this->baseControllerName = $baseControllerName;
+
+        $this->predefinePerPageOptions();
+        $this->datagridValues['_per_page'] = $this->maxPerPage;
     }
 
     /**
@@ -619,21 +568,6 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      */
     public function validate(ErrorElement $errorElement, $object)
     {
-    }
-
-    /**
-     * @param string $code
-     * @param string $class
-     * @param string $baseControllerName
-     */
-    public function __construct($code, $class, $baseControllerName)
-    {
-        $this->code = $code;
-        $this->class = $class;
-        $this->baseControllerName = $baseControllerName;
-
-        $this->predefinePerPageOptions();
-        $this->datagridValues['_per_page'] = $this->maxPerPage;
     }
 
     /**
@@ -783,73 +717,6 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * build the view FieldDescription array.
-     */
-    protected function buildShow()
-    {
-        if ($this->show) {
-            return;
-        }
-
-        $this->show = new FieldDescriptionCollection();
-        $mapper = new ShowMapper($this->showBuilder, $this->show, $this);
-
-        $this->configureShowFields($mapper);
-
-        foreach ($this->getExtensions() as $extension) {
-            $extension->configureShowFields($mapper);
-        }
-    }
-
-    /**
-     * build the list FieldDescription array.
-     */
-    protected function buildList()
-    {
-        if ($this->list) {
-            return;
-        }
-
-        $this->list = $this->getListBuilder()->getBaseList();
-
-        $mapper = new ListMapper($this->getListBuilder(), $this->list, $this);
-
-        if (count($this->getBatchActions()) > 0) {
-            $fieldDescription = $this->getModelManager()->getNewFieldDescriptionInstance($this->getClass(), 'batch', array(
-                'label' => 'batch',
-                'code' => '_batch',
-                'sortable' => false,
-                'virtual_field' => true,
-            ));
-
-            $fieldDescription->setAdmin($this);
-            $fieldDescription->setTemplate($this->getTemplate('batch'));
-
-            $mapper->add($fieldDescription, 'batch');
-        }
-
-        $this->configureListFields($mapper);
-
-        foreach ($this->getExtensions() as $extension) {
-            $extension->configureListFields($mapper);
-        }
-
-        if ($this->hasRequest() && $this->getRequest()->isXmlHttpRequest()) {
-            $fieldDescription = $this->getModelManager()->getNewFieldDescriptionInstance($this->getClass(), 'select', array(
-                'label' => false,
-                'code' => '_select',
-                'sortable' => false,
-                'virtual_field' => false,
-            ));
-
-            $fieldDescription->setAdmin($this);
-            $fieldDescription->setTemplate($this->getTemplate('select'));
-
-            $mapper->add($fieldDescription, 'select');
-        }
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function getFilterParameters()
@@ -954,38 +821,6 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     public function getParentAssociationMapping()
     {
         return $this->parentAssociationMapping;
-    }
-
-    /**
-     * Build the form FieldDescription collection.
-     */
-    protected function buildForm()
-    {
-        if ($this->form) {
-            return;
-        }
-
-        // append parent object if any
-        // todo : clean the way the Admin class can retrieve set the object
-        if ($this->isChild() && $this->getParentAssociationMapping()) {
-            $parent = $this->getParent()->getObject($this->request->get($this->getParent()->getIdParameter()));
-
-            $propertyAccessor = $this->getConfigurationPool()->getPropertyAccessor();
-            $propertyPath = new PropertyPath($this->getParentAssociationMapping());
-
-            $object = $this->getSubject();
-
-            $value = $propertyAccessor->getValue($object, $propertyPath);
-
-            if (is_array($value) || ($value instanceof \Traversable && $value instanceof \ArrayAccess)) {
-                $value[] = $parent;
-                $propertyAccessor->setValue($object, $propertyPath, $value);
-            } else {
-                $propertyAccessor->setValue($object, $propertyPath, $parent);
-            }
-        }
-
-        $this->form = $this->getFormBuilder()->getForm();
     }
 
     /**
@@ -1149,22 +984,6 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * Gets the subclass corresponding to the given name.
-     *
-     * @param string $name The name of the sub class
-     *
-     * @return string the subclass
-     */
-    protected function getSubClass($name)
-    {
-        if ($this->hasSubClass($name)) {
-            return $this->subClasses[$name];
-        }
-
-        throw new \RuntimeException(sprintf('Unable to find the subclass `%s` for admin `%s`', $name, get_class($this)));
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function hasSubClass($name)
@@ -1260,33 +1079,6 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     public function getIdParameter()
     {
         return $this->isChild() ? 'childId' : 'id';
-    }
-
-    /**
-     * Build all the related urls to the current admin.
-     */
-    private function buildRoutes()
-    {
-        if ($this->loaded['routes']) {
-            return;
-        }
-
-        $this->loaded['routes'] = true;
-
-        $this->routes = new RouteCollection(
-            $this->getBaseCodeRoute(),
-            $this->getBaseRouteName(),
-            $this->getBaseRoutePattern(),
-            $this->getBaseControllerName()
-        );
-
-        $this->routeBuilder->build($this, $this->routes);
-
-        $this->configureRoutes($this->routes);
-
-        foreach ($this->getExtensions() as $extension) {
-            $extension->configureRoutes($this, $this->routes);
-        }
     }
 
     /**
@@ -1434,42 +1226,6 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         }
 
         $this->attachInlineValidator();
-    }
-
-    /**
-     * Attach the inline validator to the model metadata, this must be done once per admin.
-     */
-    protected function attachInlineValidator()
-    {
-        $admin = $this;
-
-        // add the custom inline validation option
-        // TODO: Remove conditional method when bumping requirements to SF 2.5+
-        if (method_exists($this->validator, 'getMetadataFor')) {
-            $metadata = $this->validator->getMetadataFor($this->getClass());
-        } else {
-            $metadata = $this->validator->getMetadataFactory()->getMetadataFor($this->getClass());
-        }
-
-        $metadata->addConstraint(new InlineConstraint(array(
-            'service' => $this,
-            'method' => function (ErrorElement $errorElement, $object) use ($admin) {
-                /* @var \Sonata\AdminBundle\Admin\AdminInterface $admin */
-
-                // This avoid the main validation to be cascaded to children
-                // The problem occurs when a model Page has a collection of Page as property
-                if ($admin->hasSubject() && spl_object_hash($object) !== spl_object_hash($admin->getSubject())) {
-                    return;
-                }
-
-                $admin->validate($errorElement, $object);
-
-                foreach ($admin->getExtensions() as $extension) {
-                    $extension->validate($admin, $errorElement, $object);
-                }
-            },
-            'serializingWarning' => true,
-        )));
     }
 
     /**
@@ -2874,16 +2630,6 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * Predefine per page options.
-     */
-    protected function predefinePerPageOptions()
-    {
-        array_unshift($this->perPageOptions, $this->maxPerPage);
-        $this->perPageOptions = array_unique($this->perPageOptions);
-        sort($this->perPageOptions);
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function isAclEnabled()
@@ -2937,37 +2683,6 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     public function getAccessMapping()
     {
         return $this->accessMapping;
-    }
-
-    /**
-     * Return list routes with permissions name.
-     *
-     * @return array
-     */
-    protected function getAccess()
-    {
-        $access = array_merge(array(
-            'acl' => 'MASTER',
-            'export' => 'EXPORT',
-            'historyCompareRevisions' => 'EDIT',
-            'historyViewRevision' => 'EDIT',
-            'history' => 'EDIT',
-            'edit' => 'EDIT',
-            'show' => 'VIEW',
-            'create' => 'CREATE',
-            'delete' => 'DELETE',
-            'batchDelete' => 'DELETE',
-            'list' => 'LIST',
-        ), $this->getAccessMapping());
-
-        foreach ($this->extensions as $extension) {
-            // TODO: remove method check in next major release
-            if (method_exists($extension, 'getAccessMapping')) {
-                $access = array_merge($access, $extension->getAccessMapping($this));
-            }
-        }
-
-        return $access;
     }
 
     /**
@@ -3113,5 +2828,290 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         }
 
         return $actions;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function configureFormFields(FormMapper $form)
+    {
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function configureListFields(ListMapper $list)
+    {
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function configureDatagridFilters(DatagridMapper $filter)
+    {
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function configureShowFields(ShowMapper $show)
+    {
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function configureRoutes(RouteCollection $collection)
+    {
+    }
+
+    /**
+     * DEPRECATED: Use configureTabMenu instead.
+     *
+     * @param MenuItemInterface $menu
+     * @param                   $action
+     * @param AdminInterface    $childAdmin
+     *
+     * @return mixed
+     *
+     * @deprecated Use configureTabMenu instead
+     */
+    protected function configureSideMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
+    {
+    }
+
+    /**
+     * Configures the tab menu in your admin.
+     *
+     * @param MenuItemInterface $menu
+     * @param string            $action
+     * @param AdminInterface    $childAdmin
+     *
+     * @return mixed
+     */
+    protected function configureTabMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
+    {
+        // Use configureSideMenu not to mess with previous overrides
+        // TODO remove once deprecation period is over
+        $this->configureSideMenu($menu, $action, $childAdmin);
+    }
+
+    /**
+     * build the view FieldDescription array.
+     */
+    protected function buildShow()
+    {
+        if ($this->show) {
+            return;
+        }
+
+        $this->show = new FieldDescriptionCollection();
+        $mapper = new ShowMapper($this->showBuilder, $this->show, $this);
+
+        $this->configureShowFields($mapper);
+
+        foreach ($this->getExtensions() as $extension) {
+            $extension->configureShowFields($mapper);
+        }
+    }
+
+    /**
+     * build the list FieldDescription array.
+     */
+    protected function buildList()
+    {
+        if ($this->list) {
+            return;
+        }
+
+        $this->list = $this->getListBuilder()->getBaseList();
+
+        $mapper = new ListMapper($this->getListBuilder(), $this->list, $this);
+
+        if (count($this->getBatchActions()) > 0) {
+            $fieldDescription = $this->getModelManager()->getNewFieldDescriptionInstance($this->getClass(), 'batch', array(
+                'label' => 'batch',
+                'code' => '_batch',
+                'sortable' => false,
+                'virtual_field' => true,
+            ));
+
+            $fieldDescription->setAdmin($this);
+            $fieldDescription->setTemplate($this->getTemplate('batch'));
+
+            $mapper->add($fieldDescription, 'batch');
+        }
+
+        $this->configureListFields($mapper);
+
+        foreach ($this->getExtensions() as $extension) {
+            $extension->configureListFields($mapper);
+        }
+
+        if ($this->hasRequest() && $this->getRequest()->isXmlHttpRequest()) {
+            $fieldDescription = $this->getModelManager()->getNewFieldDescriptionInstance($this->getClass(), 'select', array(
+                'label' => false,
+                'code' => '_select',
+                'sortable' => false,
+                'virtual_field' => false,
+            ));
+
+            $fieldDescription->setAdmin($this);
+            $fieldDescription->setTemplate($this->getTemplate('select'));
+
+            $mapper->add($fieldDescription, 'select');
+        }
+    }
+
+    /**
+     * Build the form FieldDescription collection.
+     */
+    protected function buildForm()
+    {
+        if ($this->form) {
+            return;
+        }
+
+        // append parent object if any
+        // todo : clean the way the Admin class can retrieve set the object
+        if ($this->isChild() && $this->getParentAssociationMapping()) {
+            $parent = $this->getParent()->getObject($this->request->get($this->getParent()->getIdParameter()));
+
+            $propertyAccessor = $this->getConfigurationPool()->getPropertyAccessor();
+            $propertyPath = new PropertyPath($this->getParentAssociationMapping());
+
+            $object = $this->getSubject();
+
+            $value = $propertyAccessor->getValue($object, $propertyPath);
+
+            if (is_array($value) || ($value instanceof \Traversable && $value instanceof \ArrayAccess)) {
+                $value[] = $parent;
+                $propertyAccessor->setValue($object, $propertyPath, $value);
+            } else {
+                $propertyAccessor->setValue($object, $propertyPath, $parent);
+            }
+        }
+
+        $this->form = $this->getFormBuilder()->getForm();
+    }
+
+    /**
+     * Gets the subclass corresponding to the given name.
+     *
+     * @param string $name The name of the sub class
+     *
+     * @return string the subclass
+     */
+    protected function getSubClass($name)
+    {
+        if ($this->hasSubClass($name)) {
+            return $this->subClasses[$name];
+        }
+
+        throw new \RuntimeException(sprintf('Unable to find the subclass `%s` for admin `%s`', $name, get_class($this)));
+    }
+
+    /**
+     * Attach the inline validator to the model metadata, this must be done once per admin.
+     */
+    protected function attachInlineValidator()
+    {
+        $admin = $this;
+
+        // add the custom inline validation option
+        // TODO: Remove conditional method when bumping requirements to SF 2.5+
+        if (method_exists($this->validator, 'getMetadataFor')) {
+            $metadata = $this->validator->getMetadataFor($this->getClass());
+        } else {
+            $metadata = $this->validator->getMetadataFactory()->getMetadataFor($this->getClass());
+        }
+
+        $metadata->addConstraint(new InlineConstraint(array(
+            'service' => $this,
+            'method' => function (ErrorElement $errorElement, $object) use ($admin) {
+                /* @var \Sonata\AdminBundle\Admin\AdminInterface $admin */
+
+                // This avoid the main validation to be cascaded to children
+                // The problem occurs when a model Page has a collection of Page as property
+                if ($admin->hasSubject() && spl_object_hash($object) !== spl_object_hash($admin->getSubject())) {
+                    return;
+                }
+
+                $admin->validate($errorElement, $object);
+
+                foreach ($admin->getExtensions() as $extension) {
+                    $extension->validate($admin, $errorElement, $object);
+                }
+            },
+            'serializingWarning' => true,
+        )));
+    }
+
+    /**
+     * Predefine per page options.
+     */
+    protected function predefinePerPageOptions()
+    {
+        array_unshift($this->perPageOptions, $this->maxPerPage);
+        $this->perPageOptions = array_unique($this->perPageOptions);
+        sort($this->perPageOptions);
+    }
+
+    /**
+     * Return list routes with permissions name.
+     *
+     * @return array
+     */
+    protected function getAccess()
+    {
+        $access = array_merge(array(
+            'acl' => 'MASTER',
+            'export' => 'EXPORT',
+            'historyCompareRevisions' => 'EDIT',
+            'historyViewRevision' => 'EDIT',
+            'history' => 'EDIT',
+            'edit' => 'EDIT',
+            'show' => 'VIEW',
+            'create' => 'CREATE',
+            'delete' => 'DELETE',
+            'batchDelete' => 'DELETE',
+            'list' => 'LIST',
+        ), $this->getAccessMapping());
+
+        foreach ($this->extensions as $extension) {
+            // TODO: remove method check in next major release
+            if (method_exists($extension, 'getAccessMapping')) {
+                $access = array_merge($access, $extension->getAccessMapping($this));
+            }
+        }
+
+        return $access;
+    }
+
+    /**
+     * Build all the related urls to the current admin.
+     */
+    private function buildRoutes()
+    {
+        if ($this->loaded['routes']) {
+            return;
+        }
+
+        $this->loaded['routes'] = true;
+
+        $this->routes = new RouteCollection(
+            $this->getBaseCodeRoute(),
+            $this->getBaseRouteName(),
+            $this->getBaseRoutePattern(),
+            $this->getBaseControllerName()
+        );
+
+        $this->routeBuilder->build($this, $this->routes);
+
+        $this->configureRoutes($this->routes);
+
+        foreach ($this->getExtensions() as $extension) {
+            $extension->configureRoutes($this, $this->routes);
+        }
     }
 }

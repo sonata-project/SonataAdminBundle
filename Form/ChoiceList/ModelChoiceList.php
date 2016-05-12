@@ -113,6 +113,97 @@ class ModelChoiceList extends SimpleChoiceList
     }
 
     /**
+     * @return array
+     */
+    public function getIdentifier()
+    {
+        return $this->identifier;
+    }
+
+    /**
+     * Returns the according entities for the choices.
+     *
+     * If the choices were not initialized, they are initialized now. This
+     * is an expensive operation, except if the entities were passed in the
+     * "choices" option.
+     *
+     * @return array An array of entities
+     */
+    public function getEntities()
+    {
+        return $this->entities;
+    }
+
+    /**
+     * Returns the entity for the given key.
+     *
+     * If the underlying entities have composite identifiers, the choices
+     * are initialized. The key is expected to be the index in the choices
+     * array in this case.
+     *
+     * If they have single identifiers, they are either fetched from the
+     * internal entity cache (if filled) or loaded from the database.
+     *
+     * @param string $key The choice key (for entities with composite
+     *                    identifiers) or entity ID (for entities with single
+     *                    identifiers)
+     *
+     * @return object The matching entity
+     */
+    public function getEntity($key)
+    {
+        if (count($this->identifier) > 1) {
+            // $key is a collection index
+            $entities = $this->getEntities();
+
+            return isset($entities[$key]) ? $entities[$key] : null;
+        } elseif ($this->entities) {
+            return isset($this->entities[$key]) ? $this->entities[$key] : null;
+        }
+
+        return $this->modelManager->find($this->class, $key);
+    }
+
+    /**
+     * Returns the values of the identifier fields of an entity.
+     *
+     * Doctrine must know about this entity, that is, the entity must already
+     * be persisted or added to the identity map before. Otherwise an
+     * exception is thrown.
+     *
+     * @param object $entity The entity for which to get the identifier
+     *
+     * @throws InvalidArgumentException If the entity does not exist in Doctrine's
+     *                                  identity map
+     *
+     * @return array
+     */
+    public function getIdentifierValues($entity)
+    {
+        try {
+            return $this->modelManager->getIdentifierValues($entity);
+        } catch (\Exception $e) {
+            throw new InvalidArgumentException(sprintf('Unable to retrieve the identifier values for entity %s', ClassUtils::getClass($entity)), 0, $e);
+        }
+    }
+
+    /**
+     * @return ModelManagerInterface
+     */
+    public function getModelManager()
+    {
+        return $this->modelManager;
+    }
+
+    /**
+     * @return string
+     */
+    public function getClass()
+    {
+        return $this->class;
+    }
+
+    /**
      * Initializes the choices and returns them.
      *
      * The choices are generated from the entities. If the entities have a
@@ -182,58 +273,6 @@ class ModelChoiceList extends SimpleChoiceList
     }
 
     /**
-     * @return array
-     */
-    public function getIdentifier()
-    {
-        return $this->identifier;
-    }
-
-    /**
-     * Returns the according entities for the choices.
-     *
-     * If the choices were not initialized, they are initialized now. This
-     * is an expensive operation, except if the entities were passed in the
-     * "choices" option.
-     *
-     * @return array An array of entities
-     */
-    public function getEntities()
-    {
-        return $this->entities;
-    }
-
-    /**
-     * Returns the entity for the given key.
-     *
-     * If the underlying entities have composite identifiers, the choices
-     * are initialized. The key is expected to be the index in the choices
-     * array in this case.
-     *
-     * If they have single identifiers, they are either fetched from the
-     * internal entity cache (if filled) or loaded from the database.
-     *
-     * @param string $key The choice key (for entities with composite
-     *                    identifiers) or entity ID (for entities with single
-     *                    identifiers)
-     *
-     * @return object The matching entity
-     */
-    public function getEntity($key)
-    {
-        if (count($this->identifier) > 1) {
-            // $key is a collection index
-            $entities = $this->getEntities();
-
-            return isset($entities[$key]) ? $entities[$key] : null;
-        } elseif ($this->entities) {
-            return isset($this->entities[$key]) ? $this->entities[$key] : null;
-        }
-
-        return $this->modelManager->find($this->class, $key);
-    }
-
-    /**
      * Returns the \ReflectionProperty instance for a property of the
      * underlying class.
      *
@@ -249,44 +288,5 @@ class ModelChoiceList extends SimpleChoiceList
         }
 
         return $this->reflProperties[$property];
-    }
-
-    /**
-     * Returns the values of the identifier fields of an entity.
-     *
-     * Doctrine must know about this entity, that is, the entity must already
-     * be persisted or added to the identity map before. Otherwise an
-     * exception is thrown.
-     *
-     * @param object $entity The entity for which to get the identifier
-     *
-     * @throws InvalidArgumentException If the entity does not exist in Doctrine's
-     *                                  identity map
-     *
-     * @return array
-     */
-    public function getIdentifierValues($entity)
-    {
-        try {
-            return $this->modelManager->getIdentifierValues($entity);
-        } catch (\Exception $e) {
-            throw new InvalidArgumentException(sprintf('Unable to retrieve the identifier values for entity %s', ClassUtils::getClass($entity)), 0, $e);
-        }
-    }
-
-    /**
-     * @return ModelManagerInterface
-     */
-    public function getModelManager()
-    {
-        return $this->modelManager;
-    }
-
-    /**
-     * @return string
-     */
-    public function getClass()
-    {
-        return $this->class;
     }
 }

@@ -135,6 +135,24 @@ class AdminType extends AbstractType
     }
 
     /**
+     * {@inheritdoc}
+     *
+     * @todo Remove when dropping Symfony <2.8 support
+     */
+    public function getName()
+    {
+        return $this->getBlockPrefix();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBlockPrefix()
+    {
+        return 'sonata_type_admin';
+    }
+
+    /**
      * @param array $options
      *
      * @return FieldDescriptionInterface
@@ -158,23 +176,5 @@ class AdminType extends AbstractType
     protected function getAdmin(array $options)
     {
         return $this->getFieldDescription($options)->getAssociationAdmin();
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @todo Remove when dropping Symfony <2.8 support
-     */
-    public function getName()
-    {
-        return $this->getBlockPrefix();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
-    {
-        return 'sonata_type_admin';
     }
 }
