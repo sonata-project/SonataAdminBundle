@@ -69,6 +69,28 @@ class GenerateAdminCommand extends ContainerAwareCommand
     }
 
     /**
+     * @param string $managerType
+     *
+     * @return string
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function validateManagerType($managerType)
+    {
+        $managerTypes = $this->getAvailableManagerTypes();
+
+        if (!isset($managerTypes[$managerType])) {
+            throw new \InvalidArgumentException(sprintf(
+                'Invalid manager type "%s". Available manager types are "%s".',
+                $managerType,
+                implode('", "', $managerTypes)
+            ));
+        }
+
+        return $managerType;
+    }
+
+    /**
      * {@inheritdoc}
      */
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -213,28 +235,6 @@ class GenerateAdminCommand extends ContainerAwareCommand
         $input->setArgument('model', $modelClass);
         $input->setOption('admin', $adminClassBasename);
         $input->setOption('bundle', $bundleName);
-    }
-
-    /**
-     * @param string $managerType
-     *
-     * @return string
-     *
-     * @throws \InvalidArgumentException
-     */
-    public function validateManagerType($managerType)
-    {
-        $managerTypes = $this->getAvailableManagerTypes();
-
-        if (!isset($managerTypes[$managerType])) {
-            throw new \InvalidArgumentException(sprintf(
-                'Invalid manager type "%s". Available manager types are "%s".',
-                $managerType,
-                implode('", "', $managerTypes)
-            ));
-        }
-
-        return $managerType;
     }
 
     /**

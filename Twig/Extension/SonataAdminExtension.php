@@ -108,40 +108,6 @@ class SonataAdminExtension extends \Twig_Extension
     }
 
     /**
-     * Get template.
-     *
-     * @param FieldDescriptionInterface $fieldDescription
-     * @param string                    $defaultTemplate
-     *
-     * @return \Twig_Template
-     */
-    protected function getTemplate(
-        FieldDescriptionInterface $fieldDescription,
-        $defaultTemplate,
-        \Twig_Environment $environment
-    ) {
-        $templateName = $fieldDescription->getTemplate() ?: $defaultTemplate;
-
-        try {
-            $template = $environment->loadTemplate($templateName);
-        } catch (\Twig_Error_Loader $e) {
-            $template = $environment->loadTemplate($defaultTemplate);
-
-            if (null !== $this->logger) {
-                $this->logger->warning(sprintf(
-                    'An error occured trying to load the template "%s" for the field "%s", '.
-                    'the default template "%s" was used instead.',
-                    $templateName,
-                    $fieldDescription->getFieldName(),
-                    $defaultTemplate
-                ), array('exception' => $e));
-            }
-        }
-
-        return $template;
-    }
-
-    /**
      * render a list element from the FieldDescription.
      *
      * @param mixed                     $object
@@ -451,5 +417,39 @@ EOT;
         }
 
         return $xEditableChoices;
+    }
+
+    /**
+     * Get template.
+     *
+     * @param FieldDescriptionInterface $fieldDescription
+     * @param string                    $defaultTemplate
+     *
+     * @return \Twig_Template
+     */
+    protected function getTemplate(
+        FieldDescriptionInterface $fieldDescription,
+        $defaultTemplate,
+        \Twig_Environment $environment
+    ) {
+        $templateName = $fieldDescription->getTemplate() ?: $defaultTemplate;
+
+        try {
+            $template = $environment->loadTemplate($templateName);
+        } catch (\Twig_Error_Loader $e) {
+            $template = $environment->loadTemplate($defaultTemplate);
+
+            if (null !== $this->logger) {
+                $this->logger->warning(sprintf(
+                    'An error occured trying to load the template "%s" for the field "%s", '.
+                    'the default template "%s" was used instead.',
+                    $templateName,
+                    $fieldDescription->getFieldName(),
+                    $defaultTemplate
+                ), array('exception' => $e));
+            }
+        }
+
+        return $template;
     }
 }
