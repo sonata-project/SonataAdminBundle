@@ -39,7 +39,7 @@ The same applies to the service definition:
 .. code-block:: yaml
 
     # app/config/services.yml
-    
+
     services:
         # ...
         admin.blog_post:
