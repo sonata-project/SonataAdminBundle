@@ -23,17 +23,6 @@ class FormSonataFilterChoiceWidgetTest extends BaseWidgetTest
         parent::setUp();
     }
 
-    protected function cleanHtmlAttributeWhitespace($html)
-    {
-        $html = preg_replace_callback('~<([A-Z0-9]+) \K(.*?)>~i', function ($m) {
-            $replacement = preg_replace('~\s*~', '', $m[0]);
-
-            return $replacement;
-        }, $html);
-
-        return $html;
-    }
-
     public function testDefaultValueRendering()
     {
         $choice = $this->factory->create(
@@ -59,6 +48,17 @@ class FormSonataFilterChoiceWidgetTest extends BaseWidgetTest
             '<option value="3">[trans]label_type_equals[/trans]</option></select>',
             $html
         );
+    }
+
+    protected function cleanHtmlAttributeWhitespace($html)
+    {
+        $html = preg_replace_callback('~<([A-Z0-9]+) \K(.*?)>~i', function ($m) {
+            $replacement = preg_replace('~\s*~', '', $m[0]);
+
+            return $replacement;
+        }, $html);
+
+        return $html;
     }
 
     protected function getParentClass()

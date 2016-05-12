@@ -150,34 +150,6 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
     }
 
     /**
-     * @param string $id
-     *
-     * @return AdminInterface
-     */
-    private function getAdmin($id)
-    {
-        return $this->adminPool->getContainer()->get($id);
-    }
-
-    /**
-     * @param string $id
-     * @param string $domain
-     */
-    private function addMessage($id, $domain)
-    {
-        $message = new Message($id, $domain);
-
-        //        $this->logger->debug(sprintf('extract: %s - domain:%s', $id, $domain));
-
-        $trace = debug_backtrace(false);
-        if (isset($trace[1]['file'])) {
-            $message->addSource(new FileSource($trace[1]['file']));
-        }
-
-        $this->catalogue->add($message);
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function trans($id, array $parameters = array(), $domain = null, $locale = null)
@@ -259,5 +231,33 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
         $this->addMessage($label, $this->domain);
 
         return $label;
+    }
+
+    /**
+     * @param string $id
+     *
+     * @return AdminInterface
+     */
+    private function getAdmin($id)
+    {
+        return $this->adminPool->getContainer()->get($id);
+    }
+
+    /**
+     * @param string $id
+     * @param string $domain
+     */
+    private function addMessage($id, $domain)
+    {
+        $message = new Message($id, $domain);
+
+        //        $this->logger->debug(sprintf('extract: %s - domain:%s', $id, $domain));
+
+        $trace = debug_backtrace(false);
+        if (isset($trace[1]['file'])) {
+            $message->addSource(new FileSource($trace[1]['file']));
+        }
+
+        $this->catalogue->add($message);
     }
 }

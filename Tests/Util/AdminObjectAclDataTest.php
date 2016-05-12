@@ -18,51 +18,6 @@ use Sonata\AdminBundle\Util\AdminObjectAclData;
  */
 class AdminObjectAclDataTest extends \PHPUnit_Framework_TestCase
 {
-    protected static function createAclUsers()
-    {
-        return new \ArrayIterator();
-    }
-
-    protected static function createAclRoles()
-    {
-        return new \ArrayIterator();
-    }
-
-    protected function createAdminObjectAclData($isOwner = true)
-    {
-        return new AdminObjectAclData($this->createAdmin($isOwner), new \stdClass(), self::createAclUsers(), '\Symfony\Component\Security\Acl\Permission\MaskBuilder', self::createAclRoles());
-    }
-
-    protected function createAdmin($isOwner = true)
-    {
-        $securityHandler = $this->getMock('Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface');
-
-        $securityHandler->expects($this->any())
-            ->method('getObjectPermissions')
-            ->will($this->returnValue(array('VIEW', 'EDIT', 'DELETE', 'UNDELETE', 'OPERATOR', 'MASTER', 'OWNER')))
-        ;
-
-        $securityHandler->expects($this->any())
-            ->method('buildSecurityInformation')
-            ->with($this->isInstanceOf('Sonata\AdminBundle\Admin\AdminInterface'))
-            ->will($this->returnValue(array()))
-        ;
-
-        $admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
-
-        $admin->expects($this->any())
-            ->method('isGranted')
-            ->will($this->returnValue($isOwner))
-        ;
-
-        $admin->expects($this->any())
-            ->method('getSecurityHandler')
-            ->will($this->returnValue($securityHandler))
-        ;
-
-        return $admin;
-    }
-
     public function testGetAdmin()
     {
         $adminObjectAclData = $this->createAdminObjectAclData();
@@ -237,5 +192,50 @@ class AdminObjectAclDataTest extends \PHPUnit_Framework_TestCase
         $adminObjectAclData = $this->createAdminObjectAclData();
 
         $this->assertSame(array(), $adminObjectAclData->getSecurityInformation());
+    }
+
+    protected static function createAclUsers()
+    {
+        return new \ArrayIterator();
+    }
+
+    protected static function createAclRoles()
+    {
+        return new \ArrayIterator();
+    }
+
+    protected function createAdminObjectAclData($isOwner = true)
+    {
+        return new AdminObjectAclData($this->createAdmin($isOwner), new \stdClass(), self::createAclUsers(), '\Symfony\Component\Security\Acl\Permission\MaskBuilder', self::createAclRoles());
+    }
+
+    protected function createAdmin($isOwner = true)
+    {
+        $securityHandler = $this->getMock('Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface');
+
+        $securityHandler->expects($this->any())
+            ->method('getObjectPermissions')
+            ->will($this->returnValue(array('VIEW', 'EDIT', 'DELETE', 'UNDELETE', 'OPERATOR', 'MASTER', 'OWNER')))
+        ;
+
+        $securityHandler->expects($this->any())
+            ->method('buildSecurityInformation')
+            ->with($this->isInstanceOf('Sonata\AdminBundle\Admin\AdminInterface'))
+            ->will($this->returnValue(array()))
+        ;
+
+        $admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
+
+        $admin->expects($this->any())
+            ->method('isGranted')
+            ->will($this->returnValue($isOwner))
+        ;
+
+        $admin->expects($this->any())
+            ->method('getSecurityHandler')
+            ->will($this->returnValue($securityHandler))
+        ;
+
+        return $admin;
     }
 }

@@ -1620,42 +1620,6 @@ class AdminTest extends \PHPUnit_Framework_TestCase
         $this->assertContains($post, $tag->getPosts());
     }
 
-    private function createTagAdmin(Post $post)
-    {
-        $postAdmin = $this->getMockBuilder('Sonata\AdminBundle\Tests\Fixtures\Admin\PostAdmin')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $postAdmin->expects($this->any())->method('getObject')->will($this->returnValue($post));
-
-        $formBuilder = $this->getMock('Symfony\Component\Form\FormBuilderInterface');
-        $formBuilder->expects($this->any())->method('getForm')->will($this->returnValue(null));
-
-        $tagAdmin = $this->getMockBuilder('Sonata\AdminBundle\Tests\Fixtures\Admin\TagAdmin')
-            ->disableOriginalConstructor()
-            ->setMethods(array('getFormBuilder'))
-            ->getMock();
-
-        $tagAdmin->expects($this->any())->method('getFormBuilder')->will($this->returnValue($formBuilder));
-        $tagAdmin->setParent($postAdmin);
-
-        $tag = new Tag();
-        $tagAdmin->setSubject($tag);
-
-        $request = $this->getMock('Symfony\Component\HttpFoundation\Request');
-        $tagAdmin->setRequest($request);
-
-        $configurationPool = $this->getMockBuilder('Sonata\AdminBundle\Admin\Pool')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $configurationPool->expects($this->any())->method('getPropertyAccessor')->will($this->returnValue(PropertyAccess::createPropertyAccessor()));
-
-        $tagAdmin->setConfigurationPool($configurationPool);
-
-        return $tagAdmin;
-    }
-
     public function testRemoveFieldFromFormGroup()
     {
         $formGroups = array(
@@ -1858,6 +1822,42 @@ class AdminTest extends \PHPUnit_Framework_TestCase
 
         $this->assertArrayHasKey('list', $admin->getDashboardActions());
         $this->assertArrayHasKey('create', $admin->getDashboardActions());
+    }
+
+    private function createTagAdmin(Post $post)
+    {
+        $postAdmin = $this->getMockBuilder('Sonata\AdminBundle\Tests\Fixtures\Admin\PostAdmin')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $postAdmin->expects($this->any())->method('getObject')->will($this->returnValue($post));
+
+        $formBuilder = $this->getMock('Symfony\Component\Form\FormBuilderInterface');
+        $formBuilder->expects($this->any())->method('getForm')->will($this->returnValue(null));
+
+        $tagAdmin = $this->getMockBuilder('Sonata\AdminBundle\Tests\Fixtures\Admin\TagAdmin')
+            ->disableOriginalConstructor()
+            ->setMethods(array('getFormBuilder'))
+            ->getMock();
+
+        $tagAdmin->expects($this->any())->method('getFormBuilder')->will($this->returnValue($formBuilder));
+        $tagAdmin->setParent($postAdmin);
+
+        $tag = new Tag();
+        $tagAdmin->setSubject($tag);
+
+        $request = $this->getMock('Symfony\Component\HttpFoundation\Request');
+        $tagAdmin->setRequest($request);
+
+        $configurationPool = $this->getMockBuilder('Sonata\AdminBundle\Admin\Pool')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $configurationPool->expects($this->any())->method('getPropertyAccessor')->will($this->returnValue(PropertyAccess::createPropertyAccessor()));
+
+        $tagAdmin->setConfigurationPool($configurationPool);
+
+        return $tagAdmin;
     }
 }
 

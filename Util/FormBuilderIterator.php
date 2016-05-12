@@ -57,18 +57,6 @@ class FormBuilderIterator extends \RecursiveArrayIterator
     }
 
     /**
-     * @static
-     *
-     * @param FormBuilderInterface $formBuilder
-     *
-     * @return array
-     */
-    private static function getKeys(FormBuilderInterface $formBuilder)
-    {
-        return array_keys($formBuilder->all());
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function rewind()
@@ -124,5 +112,17 @@ class FormBuilderIterator extends \RecursiveArrayIterator
     public function hasChildren()
     {
         return count(self::getKeys($this->current())) > 0;
+    }
+
+    /**
+     * @static
+     *
+     * @param FormBuilderInterface $formBuilder
+     *
+     * @return array
+     */
+    private static function getKeys(FormBuilderInterface $formBuilder)
+    {
+        return array_keys($formBuilder->all());
     }
 }
