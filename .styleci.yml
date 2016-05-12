@@ -8,6 +8,7 @@ preset: symfony
 
 enabled:
   - newline_after_open_tag
+  - ordered_class_elements
   - ordered_use
   - long_array_syntax
 # Comment strict rules for the moment. Should be uncomment later to see StyleCI PR results
