@@ -20,14 +20,14 @@ class AdminObjectAclManipulatorTest extends \PHPUnit_Framework_TestCase
 {
     const MASK_BUILDER_CLASS = '\Symfony\Component\Security\Acl\Permission\MaskBuilder';
 
-    protected function createAdminObjectAclManipulator()
-    {
-        return new AdminObjectAclManipulator($this->getMock('Symfony\Component\Form\FormFactoryInterface'), self::MASK_BUILDER_CLASS);
-    }
-
     public function testGetMaskBuilder()
     {
         $adminObjectAclManipulator = $this->createAdminObjectAclManipulator();
         $this->assertSame(self::MASK_BUILDER_CLASS, $adminObjectAclManipulator->getMaskBuilderClass());
+    }
+
+    protected function createAdminObjectAclManipulator()
+    {
+        return new AdminObjectAclManipulator($this->getMock('Symfony\Component\Form\FormFactoryInterface'), self::MASK_BUILDER_CLASS);
     }
 }

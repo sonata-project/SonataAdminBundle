@@ -19,11 +19,6 @@ class TabMenuTest extends BaseMenuTest
 {
     protected $translator;
 
-    protected function getTemplate()
-    {
-        return 'Core/tab_menu_template.html.twig';
-    }
-
     public function getTranslator()
     {
         if (isset($this->translator)) {
@@ -101,5 +96,10 @@ class TabMenuTest extends BaseMenuTest
         $html = $this->renderMenu($menu);
         $this->assertContains('my-translation', $html);
         $this->assertContains('my-other-translation', $html);
+    }
+
+    protected function getTemplate()
+    {
+        return 'Core/tab_menu_template.html.twig';
     }
 }
