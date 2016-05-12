@@ -109,11 +109,6 @@ abstract class BaseWidgetTest extends TypeTestCase
         $this->extension->initRuntime($this->environment);
     }
 
-    protected function getSonataAdmin()
-    {
-        return $this->sonataAdmin;
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -122,6 +117,11 @@ abstract class BaseWidgetTest extends TypeTestCase
         parent::tearDown();
 
         $this->extension = null;
+    }
+
+    protected function getSonataAdmin()
+    {
+        return $this->sonataAdmin;
     }
 
     /**

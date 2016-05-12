@@ -746,28 +746,6 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('list?filter%5Bfoo%5D=bar', $result->getTargetUrl());
     }
 
-    private function assertLoggerLogsModelManagerException($subject, $method)
-    {
-        $exception = new ModelManagerException(
-            $message = 'message',
-            1234,
-            new \Exception($previousExceptionMessage = 'very useful message')
-        );
-
-        $subject->expects($this->once())
-            ->method($method)
-            ->will($this->returnCallback(function () use ($exception) {
-                    throw $exception;
-                }));
-
-        $this->logger->expects($this->once())
-            ->method('error')
-            ->with($message, array(
-                'exception' => $exception,
-                'previous_exception_message' => $previousExceptionMessage,
-            ));
-    }
-
     public function testBatchActionDeleteWithModelManagerException()
     {
         $modelManager = $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface');
@@ -3639,6 +3617,28 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             array('&lt;a href=&quot;http://foo&quot;&gt;Bar&lt;/a&gt;', '<a href="http://foo">Bar</a>'),
             array('&lt;&gt;&amp;&quot;&#039;abcdefghijklmnopqrstuvwxyz*-+.,?_()[]\/', '<>&"\'abcdefghijklmnopqrstuvwxyz*-+.,?_()[]\/'),
         );
+    }
+
+    private function assertLoggerLogsModelManagerException($subject, $method)
+    {
+        $exception = new ModelManagerException(
+            $message = 'message',
+            1234,
+            new \Exception($previousExceptionMessage = 'very useful message')
+        );
+
+        $subject->expects($this->once())
+            ->method($method)
+            ->will($this->returnCallback(function () use ($exception) {
+                    throw $exception;
+                }));
+
+        $this->logger->expects($this->once())
+            ->method('error')
+            ->with($message, array(
+                'exception' => $exception,
+                'previous_exception_message' => $previousExceptionMessage,
+            ));
     }
 
     private function expectTranslate($id, array $parameters = array(), $domain = null, $locale = null)

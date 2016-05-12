@@ -84,44 +84,6 @@ class FormTypeFieldExtension extends AbstractTypeExtension
     }
 
     /**
-     * @param FormBuilderInterface $formBuilder
-     *
-     * @return string
-     */
-    protected function getClass(FormBuilderInterface $formBuilder)
-    {
-        foreach ($this->getTypes($formBuilder) as $type) {
-            if (!method_exists($type, 'getName')) { // SF3.0+
-                $name = get_class($type);
-            } else {
-                $name = $type->getName();
-            }
-
-            if (isset($this->defaultClasses[$name])) {
-                return $this->defaultClasses[$name];
-            }
-        }
-
-        return '';
-    }
-
-    /**
-     * @param FormBuilderInterface $formBuilder
-     *
-     * @return array
-     */
-    protected function getTypes(FormBuilderInterface $formBuilder)
-    {
-        $types = array();
-
-        for ($type = $formBuilder->getType(); null !== $type; $type = $type->getParent()) {
-            array_unshift($types, $type->getInnerType());
-        }
-
-        return $types;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
@@ -262,5 +224,43 @@ class FormTypeFieldExtension extends AbstractTypeExtension
         }
 
         return $value;
+    }
+
+    /**
+     * @param FormBuilderInterface $formBuilder
+     *
+     * @return string
+     */
+    protected function getClass(FormBuilderInterface $formBuilder)
+    {
+        foreach ($this->getTypes($formBuilder) as $type) {
+            if (!method_exists($type, 'getName')) { // SF3.0+
+                $name = get_class($type);
+            } else {
+                $name = $type->getName();
+            }
+
+            if (isset($this->defaultClasses[$name])) {
+                return $this->defaultClasses[$name];
+            }
+        }
+
+        return '';
+    }
+
+    /**
+     * @param FormBuilderInterface $formBuilder
+     *
+     * @return array
+     */
+    protected function getTypes(FormBuilderInterface $formBuilder)
+    {
+        $types = array();
+
+        for ($type = $formBuilder->getType(); null !== $type; $type = $type->getParent()) {
+            array_unshift($types, $type->getInnerType());
+        }
+
+        return $types;
     }
 }

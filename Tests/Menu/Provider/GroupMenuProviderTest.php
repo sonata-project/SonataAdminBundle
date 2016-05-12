@@ -42,36 +42,6 @@ class GroupMenuProviderTest extends \PHPUnit_Framework_TestCase
         $this->provider = new GroupMenuProvider($this->factory, $this->pool);
     }
 
-    /**
-     * @param bool $hasRoute
-     * @param bool $isGranted
-     *
-     * @return MockObject|AdminInterface
-     */
-    private function getAdminMock($hasRoute = true, $isGranted = true)
-    {
-        $admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
-        $admin->expects($this->once())
-            ->method('hasRoute')
-            ->with($this->equalTo('list'))
-            ->will($this->returnValue($hasRoute));
-
-        $admin->expects($this->any())
-            ->method('isGranted')
-            ->with($this->equalTo('LIST'))
-            ->will($this->returnValue($isGranted));
-
-        $admin->expects($this->any())
-            ->method('getLabel')
-            ->will($this->returnValue('foo_admin_label'));
-
-        $admin->expects($this->any())
-            ->method('generateMenuUrl')
-            ->will($this->returnValue(array()));
-
-        return $admin;
-    }
-
     public function testGroupMenuProviderName()
     {
         $this->assertTrue($this->provider->has('sonata_group_menu'));
@@ -241,5 +211,35 @@ class GroupMenuProviderTest extends \PHPUnit_Framework_TestCase
                 ),
             ),
         );
+    }
+
+    /**
+     * @param bool $hasRoute
+     * @param bool $isGranted
+     *
+     * @return MockObject|AdminInterface
+     */
+    private function getAdminMock($hasRoute = true, $isGranted = true)
+    {
+        $admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $admin->expects($this->once())
+            ->method('hasRoute')
+            ->with($this->equalTo('list'))
+            ->will($this->returnValue($hasRoute));
+
+        $admin->expects($this->any())
+            ->method('isGranted')
+            ->with($this->equalTo('LIST'))
+            ->will($this->returnValue($isGranted));
+
+        $admin->expects($this->any())
+            ->method('getLabel')
+            ->will($this->returnValue('foo_admin_label'));
+
+        $admin->expects($this->any())
+            ->method('generateMenuUrl')
+            ->will($this->returnValue(array()));
+
+        return $admin;
     }
 }

@@ -28,36 +28,6 @@ use Symfony\Component\HttpFoundation\Response;
 class CoreController extends Controller
 {
     /**
-     * @return Pool
-     */
-    protected function getAdminPool()
-    {
-        return $this->container->get('sonata.admin.pool');
-    }
-
-    /**
-     * @return SearchHandler
-     */
-    protected function getSearchHandler()
-    {
-        return $this->get('sonata.admin.search.handler');
-    }
-
-    /**
-     * @param Request $request
-     *
-     * @return string
-     */
-    protected function getBaseTemplate()
-    {
-        if ($this->getRequest()->isXmlHttpRequest()) {
-            return $this->getAdminPool()->getTemplate('ajax');
-        }
-
-        return $this->getAdminPool()->getTemplate('layout');
-    }
-
-    /**
      * @param Request $request
      *
      * @return Response
@@ -155,5 +125,35 @@ class CoreController extends Controller
         }
 
         return $this->container->get('request');
+    }
+
+    /**
+     * @return Pool
+     */
+    protected function getAdminPool()
+    {
+        return $this->container->get('sonata.admin.pool');
+    }
+
+    /**
+     * @return SearchHandler
+     */
+    protected function getSearchHandler()
+    {
+        return $this->get('sonata.admin.search.handler');
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return string
+     */
+    protected function getBaseTemplate()
+    {
+        if ($this->getRequest()->isXmlHttpRequest()) {
+            return $this->getAdminPool()->getTemplate('ajax');
+        }
+
+        return $this->getAdminPool()->getTemplate('layout');
     }
 }

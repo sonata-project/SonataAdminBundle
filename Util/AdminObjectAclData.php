@@ -74,20 +74,6 @@ class AdminObjectAclData
     protected $maskBuilderClass;
 
     /**
-     * Cache masks.
-     */
-    protected function updateMasks()
-    {
-        $permissions = $this->getPermissions();
-
-        $reflectionClass = new \ReflectionClass(new $this->maskBuilderClass());
-        $this->masks = array();
-        foreach ($permissions as $permission) {
-            $this->masks[$permission] = $reflectionClass->getConstant('MASK_'.$permission);
-        }
-    }
-
-    /**
      * @param AdminInterface    $admin
      * @param mixed             $object
      * @param \Traversable      $aclUsers
@@ -315,5 +301,19 @@ class AdminObjectAclData
     public function getSecurityInformation()
     {
         return $this->admin->getSecurityHandler()->buildSecurityInformation($this->admin);
+    }
+
+    /**
+     * Cache masks.
+     */
+    protected function updateMasks()
+    {
+        $permissions = $this->getPermissions();
+
+        $reflectionClass = new \ReflectionClass(new $this->maskBuilderClass());
+        $this->masks = array();
+        foreach ($permissions as $permission) {
+            $this->masks[$permission] = $reflectionClass->getConstant('MASK_'.$permission);
+        }
     }
 }
