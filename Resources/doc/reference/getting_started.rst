@@ -277,7 +277,7 @@ your mapped model. You can start creating, listing, editing and deleting instanc
 You probably want to put your own project's name and logo on the top bar.
 
 Put your logo file here ``src/AppBundle/Resources/public/images/fancy_acme_logo.png``
-    
+
 Install your assets:
 
 .. code-block:: bash
