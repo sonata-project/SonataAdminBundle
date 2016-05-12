@@ -354,6 +354,32 @@ Then, you have to set the CommentAdmin ``parentAssociationMapping`` attribute to
         }
     }
 
+To display the CommentAdmin extend the menu in your ``PostAdmin`` class:
+
+.. code-block:: php
+
+    <?php
+    namespace Sonata\NewsBundle\Admin;
+
+    class PostAdmin extends Admin
+    {
+        // ...
+
+        protected function configureSideMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
+        {
+            if (!$childAdmin && !in_array($action, array('edit', 'show'))) { return; }
+
+            $admin = $this->isChild() ? $this->getParent() : $this;
+            $id = $admin->getRequest()->get('id');
+
+            $menu->addChild('Show Post', array('uri' => $admin->generateUrl('show', array('id' => $id))));
+            $menu->addChild('Edit Post', array('uri' => $admin->generateUrl('edit', array('id' => $id))));
+            $menu->addChild('Manage Comments', array(
+                'uri' => $admin->generateUrl('sonata.news.admin.comment.list', array('id' => $id))
+            ));
+        }
+    }
+
 It also possible to set a dot-separated value, like ``post.author``, if your parent and child admins are not directly related.
 
 .. _`Django Project Website`: http://www.djangoproject.com/
