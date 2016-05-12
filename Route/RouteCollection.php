@@ -127,20 +127,6 @@ class RouteCollection
     }
 
     /**
-     * @param $element
-     *
-     * @return Route
-     */
-    private function resolve($element)
-    {
-        if (is_callable($element)) {
-            return call_user_func($element);
-        }
-
-        return $element;
-    }
-
-    /**
      * @return Route[]
      */
     public function getElements()
@@ -282,5 +268,19 @@ class RouteCollection
     public function getBaseRoutePattern()
     {
         return $this->baseRoutePattern;
+    }
+
+    /**
+     * @param $element
+     *
+     * @return Route
+     */
+    private function resolve($element)
+    {
+        if (is_callable($element)) {
+            return call_user_func($element);
+        }
+
+        return $element;
     }
 }

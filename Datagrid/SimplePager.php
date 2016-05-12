@@ -105,15 +105,6 @@ class SimplePager extends Pager
 
     /**
      * {@inheritdoc}
-     */
-    protected function resetIterator()
-    {
-        parent::resetIterator();
-        $this->haveToPaginate = false;
-    }
-
-    /**
-     * {@inheritdoc}
      *
      * @throws \RuntimeException the QueryBuilder is uninitialized.
      */
@@ -159,5 +150,14 @@ class SimplePager extends Pager
     public function getThreshold()
     {
         return $this->threshold;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function resetIterator()
+    {
+        parent::resetIterator();
+        $this->haveToPaginate = false;
     }
 }

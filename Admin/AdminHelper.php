@@ -230,25 +230,6 @@ class AdminHelper
     }
 
     /**
-     * Recursively find the class name of the admin responsible for the element at the end of an association chain.
-     *
-     * @param AdminInterface $admin
-     * @param array          $elements
-     *
-     * @return string
-     */
-    protected function getEntityClassName(AdminInterface $admin, $elements)
-    {
-        $element = array_shift($elements);
-        $associationAdmin = $admin->getFormFieldDescription($element)->getAssociationAdmin();
-        if (count($elements) == 0) {
-            return $associationAdmin->getClass();
-        } else {
-            return $this->getEntityClassName($associationAdmin, $elements);
-        }
-    }
-
-    /**
      * Get access path to element which works with PropertyAccessor.
      *
      * @param string $elementId expects string in format used in form id field. (uniqueIdentifier_model_sub_model or uniqueIdentifier_model_1_sub_model etc.)
@@ -309,6 +290,25 @@ class AdminHelper
         }
 
         return $returnValue;
+    }
+
+    /**
+     * Recursively find the class name of the admin responsible for the element at the end of an association chain.
+     *
+     * @param AdminInterface $admin
+     * @param array          $elements
+     *
+     * @return string
+     */
+    protected function getEntityClassName(AdminInterface $admin, $elements)
+    {
+        $element = array_shift($elements);
+        $associationAdmin = $admin->getFormFieldDescription($element)->getAssociationAdmin();
+        if (count($elements) == 0) {
+            return $associationAdmin->getClass();
+        } else {
+            return $this->getEntityClassName($associationAdmin, $elements);
+        }
     }
 
     /**

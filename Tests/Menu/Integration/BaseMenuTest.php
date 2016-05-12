@@ -24,13 +24,6 @@ use Symfony\Bundle\FrameworkBundle\Tests\Templating\Helper\Fixtures\StubTranslat
  */
 abstract class BaseMenuTest extends \PHPUnit_Framework_TestCase
 {
-    abstract protected function getTemplate();
-
-    protected function getTranslator()
-    {
-        return new StubTranslator();
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -42,6 +35,13 @@ abstract class BaseMenuTest extends \PHPUnit_Framework_TestCase
         );
         $loader = new StubFilesystemLoader($twigPaths);
         $this->environment = new \Twig_Environment($loader, array('strict_variables' => true));
+    }
+
+    abstract protected function getTemplate();
+
+    protected function getTranslator()
+    {
+        return new StubTranslator();
     }
 
     protected function renderMenu(ItemInterface $item, array $options = array())

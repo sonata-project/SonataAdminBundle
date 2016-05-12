@@ -342,25 +342,6 @@ class FormMapperTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($this->formMapper->get('foo'), $formBuilder);
     }
 
-    private function getFieldDescriptionMock($name = null, $label = null, $translationDomain = null)
-    {
-        $fieldDescription = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\BaseFieldDescription');
-
-        if ($name !== null) {
-            $fieldDescription->setName($name);
-        }
-
-        if ($label !== null) {
-            $fieldDescription->setOption('label', $label);
-        }
-
-        if ($translationDomain !== null) {
-            $fieldDescription->setOption('translation_domain', $translationDomain);
-        }
-
-        return $fieldDescription;
-    }
-
     public function testGroupRemovingWithoutTab()
     {
         $this->formMapper->with('foobar');
@@ -397,5 +378,24 @@ class FormMapperTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame(array(), $this->admin->getFormGroups());
         $this->assertSame(array(), $this->admin->getFormTabs());
+    }
+
+    private function getFieldDescriptionMock($name = null, $label = null, $translationDomain = null)
+    {
+        $fieldDescription = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\BaseFieldDescription');
+
+        if ($name !== null) {
+            $fieldDescription->setName($name);
+        }
+
+        if ($label !== null) {
+            $fieldDescription->setOption('label', $label);
+        }
+
+        if ($translationDomain !== null) {
+            $fieldDescription->setOption('translation_domain', $translationDomain);
+        }
+
+        return $fieldDescription;
     }
 }

@@ -35,26 +35,6 @@ abstract class BaseGroupedMapper extends BaseMapper
     protected $apply;
 
     /**
-     * @return array
-     */
-    abstract protected function getGroups();
-
-    /**
-     * @return array
-     */
-    abstract protected function getTabs();
-
-    /**
-     * @param array $groups
-     */
-    abstract protected function setGroups(array $groups);
-
-    /**
-     * @param array $tabs
-     */
-    abstract protected function setTabs(array $tabs);
-
-    /**
      * Add new group or tab (if parameter "tab=true" is available in options).
      *
      * @param string $name
@@ -255,6 +235,26 @@ abstract class BaseGroupedMapper extends BaseMapper
     {
         return null !== $this->currentTab;
     }
+
+    /**
+     * @return array
+     */
+    abstract protected function getGroups();
+
+    /**
+     * @return array
+     */
+    abstract protected function getTabs();
+
+    /**
+     * @param array $groups
+     */
+    abstract protected function setGroups(array $groups);
+
+    /**
+     * @param array $tabs
+     */
+    abstract protected function setTabs(array $tabs);
 
     /**
      * Add the field name to the current group.
