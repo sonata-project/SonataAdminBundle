@@ -194,6 +194,9 @@ class BaseFieldDescriptionTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('ExtensionDomain', $description->getTranslationDomain());
     }
 
+    /**
+     * @group legacy
+     */
     public function testCamelize()
     {
         $this->assertSame('FooBar', BaseFieldDescription::camelize('foo_bar'));

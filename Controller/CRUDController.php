@@ -11,10 +11,10 @@
 
 namespace Sonata\AdminBundle\Controller;
 
+use Doctrine\Common\Inflector\Inflector;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\Admin\BaseFieldDescription;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Exception\LockException;
 use Sonata\AdminBundle\Exception\ModelManagerException;
@@ -373,7 +373,7 @@ class CRUDController extends Controller
             throw new \RuntimeException(sprintf('The `%s` batch action is not defined', $action));
         }
 
-        $camelizedAction = BaseFieldDescription::camelize($action);
+        $camelizedAction = Inflector::classify($action);
         $isRelevantAction = sprintf('batchAction%sIsRelevant', ucfirst($camelizedAction));
 
         if (method_exists($this, $isRelevantAction)) {
@@ -421,7 +421,7 @@ class CRUDController extends Controller
         }
 
         // execute the action, batchActionXxxxx
-        $finalAction = sprintf('batchAction%s', ucfirst($camelizedAction));
+        $finalAction = sprintf('batchAction%s', $camelizedAction);
         if (!is_callable(array($this, $finalAction))) {
             throw new \RuntimeException(sprintf('A `%s::%s` method must be callable', get_class($this), $finalAction));
         }
@@ -1047,8 +1047,7 @@ class CRUDController extends Controller
     /**
      * Redirect the user depend on this choice.
      *
-     * @param object  $object
-     * @param Request $request
+     * @param object $object
      *
      * @return RedirectResponse
      */
