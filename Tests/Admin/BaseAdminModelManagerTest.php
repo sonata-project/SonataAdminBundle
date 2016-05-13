@@ -11,9 +11,9 @@
 
 namespace Sonata\AdminBundle\Tests\Admin;
 
-use Sonata\AdminBundle\Admin\Admin;
+use Sonata\AdminBundle\Admin\AbstractAdmin;
 
-class BaseAdminModelManager_Admin extends Admin
+class BaseAdminModelManager_Admin extends AbstractAdmin
 {
 }
 

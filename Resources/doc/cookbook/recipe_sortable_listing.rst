@@ -129,11 +129,11 @@ also define the sort by field to be position:
 
     namespace AppBundle\Admin;
 
-    use AppBundle\Admin\BaseAdmin as Admin;
+    use Sonata\AdminBundle\AbstractAdmin;
     use Sonata\AdminBundle\Datagrid\ListMapper;
     use Sonata\AdminBundle\Route\RouteCollection;
 
-    class ClientAdmin extends Admin
+    class ClientAdmin extends AbstractAdmin
     {
         public $last_position = 0;
 

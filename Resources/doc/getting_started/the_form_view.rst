@@ -17,11 +17,11 @@ The basic class definition will look the same as the ``CategoryAdmin``:
     // src/AppBundle/Admin/BlogPostAdmin.php
     namespace AppBundle\Admin;
 
-    use Sonata\AdminBundle\Admin\Admin;
+    use Sonata\AdminBundle\Admin\AbstractAdmin;
     use Sonata\AdminBundle\Datagrid\ListMapper;
     use Sonata\AdminBundle\Form\FormMapper;
 
-    class BlogPostAdmin extends Admin
+    class BlogPostAdmin extends AbstractAdmin
     {
         protected function configureFormFields(FormMapper $formMapper)
         {
@@ -39,7 +39,7 @@ The same applies to the service definition:
 .. code-block:: yaml
 
     # app/config/services.yml
-    
+
     services:
         # ...
         admin.blog_post:

@@ -43,7 +43,7 @@ solve the issue by using the ``preUpdate`` saving hook.
     <?php
     namespace FOS\UserBundle\Admin\Entity;
 
-    use Sonata\AdminBundle\Admin\Admin;
+    use Sonata\AdminBundle\Admin\AbstractAdmin;
     use FOS\UserBundle\Model\UserManagerInterface;
 
     class UserAdmin extends Admin
