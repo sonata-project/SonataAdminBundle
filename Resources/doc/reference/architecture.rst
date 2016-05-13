@@ -369,7 +369,7 @@ To display the ``CommentAdmin`` extend the menu in your ``PostAdmin`` class:
     {
         // ...
 
-        protected function configureSideMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
+        protected function configureTabMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
         {
             if (!$childAdmin && !in_array($action, array('edit', 'show'))) {
 
