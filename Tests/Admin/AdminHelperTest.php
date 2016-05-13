@@ -18,6 +18,9 @@ use Symfony\Component\Form\FormView;
 
 class AdminHelperTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @covers Sonata\AdminBundle\Admin\AdminHelper::getChildFormBuilder
+     */
     public function testGetChildFormBuilder()
     {
         $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
@@ -37,6 +40,9 @@ class AdminHelperTest extends \PHPUnit_Framework_TestCase
         $this->isInstanceOf('Symfony\Component\Form\FormBuilder', $helper->getChildFormBuilder($formBuilder, 'test_elementId'));
     }
 
+    /**
+     * @covers Sonata\AdminBundle\Admin\AdminHelper::getChildFormView
+     */
     public function testGetChildFormView()
     {
         $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
@@ -53,6 +59,9 @@ class AdminHelperTest extends \PHPUnit_Framework_TestCase
         $this->isInstanceOf('Symfony\Component\Form\FormView', $helper->getChildFormView($formView, 'test_elementId'));
     }
 
+    /**
+     * @covers Sonata\AdminBundle\Admin\AdminHelper::addNewInstance
+     */
     public function testAddNewInstance()
     {
         $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
@@ -73,6 +82,9 @@ class AdminHelperTest extends \PHPUnit_Framework_TestCase
         $helper->addNewInstance($object, $fieldDescription);
     }
 
+    /**
+     * @covers Sonata\AdminBundle\Admin\AdminHelper::addNewInstance
+     */
     public function testAddNewInstancePlural()
     {
         $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
@@ -93,6 +105,9 @@ class AdminHelperTest extends \PHPUnit_Framework_TestCase
         $helper->addNewInstance($object, $fieldDescription);
     }
 
+    /**
+     * @covers Sonata\AdminBundle\Admin\AdminHelper::addNewInstance
+     */
     public function testAddNewInstanceInflector()
     {
         $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
@@ -113,6 +128,9 @@ class AdminHelperTest extends \PHPUnit_Framework_TestCase
         $helper->addNewInstance($object, $fieldDescription);
     }
 
+    /**
+     * @covers Sonata\AdminBundle\Admin\AdminHelper::getElementAccessPath
+     */
     public function testGetElementAccessPath()
     {
         $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
@@ -139,6 +157,8 @@ class AdminHelperTest extends \PHPUnit_Framework_TestCase
      * @expectedException        Exception
      * @expectedExceptionCode    0
      * @expectedExceptionMessage unknown collection class
+     *
+     * @covers Sonata\AdminBundle\Admin\AdminHelper::appendFormFieldElement
      */
     public function testAppendFormFieldElementNested()
     {

@@ -51,11 +51,18 @@ class FormBuilderIteratorTest extends \PHPUnit_Framework_TestCase
         $this->builder = null;
     }
 
+    /**
+     * @covers Sonata\AdminBundle\Util\FormBuilderIterator::__construct
+     */
     public function testConstructor()
     {
         new FormBuilderIterator($this->builder);
     }
 
+    /**
+     * @covers Sonata\AdminBundle\Util\FormBuilderIterator::__construct
+     * @covers Sonata\AdminBundle\Util\FormBuilderIterator::getChildren
+     */
     public function testGetChildren()
     {
         $this->builder->add('name', 'text');
@@ -63,6 +70,10 @@ class FormBuilderIteratorTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf(get_class($iterator), $iterator->getChildren());
     }
 
+    /**
+     * @covers Sonata\AdminBundle\Util\FormBuilderIterator::__construct
+     * @covers Sonata\AdminBundle\Util\FormBuilderIterator::hasChildren
+     */
     public function testHasChildren()
     {
         $this->builder->add('name', 'text');
