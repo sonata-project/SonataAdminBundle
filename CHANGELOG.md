@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Added AbstractAdmin, replacing Admin
 
+### Fixed
+- Fix detection of path when using nested properties with underscores in `AdminHelper:getElementAccessPath` method
+
 ### Changed
 - Updated AdminLTE theme to version 2.3.3
 

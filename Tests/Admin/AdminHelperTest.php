@@ -104,16 +104,30 @@ class AdminHelperTest extends \PHPUnit_Framework_TestCase
     public function testGetElementAccessPath()
     {
         $object = $this->getMock('stdClass', array('getPathToObject'));
-        $subObject = $this->getMock('stdClass', array('getAnd'));
-        $sub2Object = $this->getMock('stdClass', array('getMore'));
+        $subObject = $this->getMock('stdClass', array('getAnother'));
+        $sub2Object = $this->getMock('stdClass', array('getMoreThings'));
 
         $object->expects($this->atLeastOnce())->method('getPathToObject')->will($this->returnValue(array($subObject)));
-        $subObject->expects($this->atLeastOnce())->method('getAnd')->will($this->returnValue($sub2Object));
-        $sub2Object->expects($this->atLeastOnce())->method('getMore')->will($this->returnValue('Value'));
+        $subObject->expects($this->atLeastOnce())->method('getAnother')->will($this->returnValue($sub2Object));
+        $sub2Object->expects($this->atLeastOnce())->method('getMoreThings')->will($this->returnValue('Value'));
 
-        $path = $this->helper->getElementAccessPath('uniquePartOfId_path_to_object_0_and_more', $object);
+        $path = $this->helper->getElementAccessPath('uniquePartOfId_path_to_object_0_another_more_things', $object);
 
-        $this->assertSame('path_to_object[0].and.more', $path);
+        $this->assertSame('path_to_object[0].another.more_things', $path);
+    }
+
+    public function testItThrowsExceptionWhenDoesNotFindTheFullPath()
+    {
+        $path = 'uniquePartOfId_path_to_object_0_more_calls';
+        $object = $this->getMock('stdClass', array('getPathToObject'));
+        $subObject = $this->getMock('stdClass', array('getMore'));
+
+        $object->expects($this->atLeastOnce())->method('getPathToObject')->will($this->returnValue(array($subObject)));
+        $subObject->expects($this->atLeastOnce())->method('getMore')->will($this->returnValue('Value'));
+
+        $this->setExpectedException('Exception', 'Could not get element id from '.$path.' Failing part: calls');
+
+        $this->helper->getElementAccessPath($path, $object);
     }
 
     public function testAppendFormFieldElementNested()
