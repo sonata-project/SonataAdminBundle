@@ -12,13 +12,14 @@ This document will cover the Show action and related configuration options.
 Basic configuration
 -------------------
 
-To do:
+.. note::
 
-- a note about Routes and how disabling them disables the related action
-- a note about lifecycle events triggered by delete?
-- options available when adding general fields, inc custom templates
-- targeting submodel fields using dot-separated notation
-- (Note, if this is very similar to the form documentation it can be combined)
+    **TODO**:
+    * a note about Routes and how disabling them disables the related action
+    * a note about lifecycle events triggered by delete?
+    * options available when adding general fields, inc custom templates
+    * targeting submodel fields using dot-separated notation
+    * (Note, if this is very similar to the form documentation it can be combined)
 
 Group options
 ~~~~~~~~~~~~~
@@ -50,10 +51,8 @@ To specify options, do as follow:
                         'box_class'   => 'box box-solid box-danger',
                         'description' => 'Lorem ipsum',
                     ))
-                    ->add('title')
-
-                    // ...
-
+                        ->add('title')
+                        // ...
                     ->end()
                 ->end()
             ;

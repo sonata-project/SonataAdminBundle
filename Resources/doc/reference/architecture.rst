@@ -109,7 +109,7 @@ or how to build the list view. Inside the ``CRUDController``, you can access the
 
 .. note::
 
-    `CRUD is an acronym`_ for "Create, Read, Update and Delete"
+    `CRUD`_ is an acronym for "Create, Read, Update and Delete"
 
 The ``CRUDController`` is no different from any other Symfony controller, meaning
 that you have all the usual options available to you, like getting services from
@@ -357,4 +357,4 @@ Then, you have to set the CommentAdmin ``parentAssociationMapping`` attribute to
 It also possible to set a dot-separated value, like ``post.author``, if your parent and child admins are not directly related.
 
 .. _`Django Project Website`: http://www.djangoproject.com/
-.. _`CRUD is an acronym`: http://en.wikipedia.org/wiki/CRUD
+.. _`CRUD`: http://en.wikipedia.org/wiki/CRUD
