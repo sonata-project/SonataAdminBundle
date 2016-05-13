@@ -54,6 +54,7 @@ matrix:
 
 before_install:
   - if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then mv "$HOME/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini" /tmp; fi;
+  - if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then echo "memory_limit=3072M" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini; fi;
   - if [ "$TARGET" = 'test' ]; then composer self-update --stable; fi;
   - if [ "$TARGET" = 'test' ]; then composer config --quiet --global github-oauth.github.com $GITHUB_OAUTH_TOKEN; fi;
   - if [ "$TARGET" = 'test' ]; then sed --in-place "s/\"dev-master\":/\"dev-${TRAVIS_COMMIT}\":/" composer.json; fi;
