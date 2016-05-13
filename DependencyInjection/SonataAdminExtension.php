@@ -232,7 +232,7 @@ BOOM
     public function configureClassesToCompile()
     {
         $this->addClassesToCompile(array(
-            'Sonata\\AdminBundle\\Admin\\Admin',
+            'Sonata\\AdminBundle\\Admin\\AbstractAdmin',
             'Sonata\\AdminBundle\\Admin\\AdminExtension',
             'Sonata\\AdminBundle\\Admin\\AdminExtensionInterface',
             'Sonata\\AdminBundle\\Admin\\AdminHelper',

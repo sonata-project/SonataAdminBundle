@@ -30,7 +30,7 @@ batch actions       Actions that can be performed on a group of entities (e.g. b
 =============       =========================================================================
 
 
-The ``Sonata\AdminBundle\Admin\Admin`` class is provided as an easy way to
+The ``Sonata\AdminBundle\Admin\AbstractAdmin`` class is provided as an easy way to
 map your models, by extending it. However, any implementation of the
 ``Sonata\AdminBundle\Admin\AdminInterface`` can be used to define an ``Admin``
 service. For each ``Admin`` service, the following required dependencies are
@@ -109,7 +109,7 @@ or how to build the list view. Inside the ``CRUDController``, you can access the
 
 .. note::
 
-    `CRUD is an acronym`_ for "Create, Read, Update and Delete"
+    `CRUD`_ is an acronym for "Create, Read, Update and Delete"
 
 The ``CRUDController`` is no different from any other Symfony controller, meaning
 that you have all the usual options available to you, like getting services from
@@ -180,13 +180,13 @@ which stores instances of ``FieldDescriptionInterface``. Picking up on our previ
 
     namespace AppBundle\Admin;
 
-    use Sonata\AdminBundle\Admin\Admin;
+    use Sonata\AdminBundle\Admin\AbstractAdmin;
     use Sonata\AdminBundle\Datagrid\ListMapper;
     use Sonata\AdminBundle\Datagrid\DatagridMapper;
     use Sonata\AdminBundle\Form\FormMapper;
     use Sonata\AdminBundle\Show\ShowMapper;
 
-    class PostAdmin extends Admin
+    class PostAdmin extends AbstractAdmin
     {
         // Fields to be shown on create/edit forms
         protected function configureFormFields(FormMapper $formMapper)
@@ -342,7 +342,7 @@ Then, you have to set the CommentAdmin ``parentAssociationMapping`` attribute to
 
     // ...
 
-    class CommentAdmin extends Admin
+    class CommentAdmin extends AbstractAdmin
     {
         protected $parentAssociationMapping = 'post';
 
@@ -357,4 +357,4 @@ Then, you have to set the CommentAdmin ``parentAssociationMapping`` attribute to
 It also possible to set a dot-separated value, like ``post.author``, if your parent and child admins are not directly related.
 
 .. _`Django Project Website`: http://www.djangoproject.com/
-.. _`CRUD is an acronym`: http://en.wikipedia.org/wiki/CRUD
+.. _`CRUD`: http://en.wikipedia.org/wiki/CRUD

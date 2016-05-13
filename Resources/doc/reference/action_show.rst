@@ -12,13 +12,14 @@ This document will cover the Show action and related configuration options.
 Basic configuration
 -------------------
 
-To do:
+.. note::
 
-- a note about Routes and how disabling them disables the related action
-- a note about lifecycle events triggered by delete?
-- options available when adding general fields, inc custom templates
-- targeting submodel fields using dot-separated notation
-- (Note, if this is very similar to the form documentation it can be combined)
+    **TODO**:
+    * a note about Routes and how disabling them disables the related action
+    * a note about lifecycle events triggered by delete?
+    * options available when adding general fields, inc custom templates
+    * targeting submodel fields using dot-separated notation
+    * (Note, if this is very similar to the form documentation it can be combined)
 
 Group options
 ~~~~~~~~~~~~~
@@ -39,7 +40,7 @@ To specify options, do as follow:
     <?php
     // src/AppBundle/Admin/PersonAdmin.php
 
-    class PersonAdmin extends Admin
+    class PersonAdmin extends AbstractAdmin
     {
         public function configureShowFields(ShowMapper $showMapper)
         {
@@ -50,10 +51,8 @@ To specify options, do as follow:
                         'box_class'   => 'box box-solid box-danger',
                         'description' => 'Lorem ipsum',
                     ))
-                    ->add('title')
-
-                    // ...
-
+                        ->add('title')
+                        // ...
                     ->end()
                 ->end()
             ;
@@ -77,7 +76,7 @@ The following is a working example of a ShowAction
 
     use Sonata\AdminBundle\Show\ShowMapper;
 
-    class ClientAdmin extends Admin
+    class ClientAdmin extends AbstractAdmin
     {
         protected function configureShowFields(ShowMapper $showMapper)
         {

@@ -14,13 +14,14 @@ of the fields and forms available in these views and any other relevant settings
 Basic configuration
 -------------------
 
-To do:
+.. note::
 
-- global (yml) options that affect the create and edit actions
-- a note about Routes and how disabling them disables the related action
-- using configureFormFields() to set which fields to display
-- options available when adding fields, inc custom templates
-- link to the field_types document for more details about specific field types
+    **TODO**:
+    * global (yml) options that affect the create and edit actions
+    * a note about Routes and how disabling them disables the related action
+    * using configureFormFields() to set which fields to display
+    * options available when adding fields, inc custom templates
+    * link to the field_types document for more details about specific field types
 
 FormGroup options
 ~~~~~~~~~~~~~~~~~
@@ -41,7 +42,7 @@ To specify options, do as follows:
     <?php
     // src/AppBundle/Admin/PersonAdmin.php
 
-    class PersonAdmin extends Admin
+    class PersonAdmin extends AbstractAdmin
     {
         // ...
 
@@ -55,10 +56,8 @@ To specify options, do as follows:
                         'description' => 'Lorem ipsum',
                         // ...
                     ))
-                    ->add('title')
-
-                    // ...
-
+                        ->add('title')
+                        // ...
                     ->end()
                 ->end()
             ;
@@ -74,18 +73,19 @@ Here is an example of what you can do with customizing the box_class on a group
 Embedding other Admins
 ----------------------
 
-To do:
+.. note::
 
-- how to embed one Admin in another (1:1, 1:M, M:M)
-- how to access the right object(s) from the embedded Admin's code
-
+    **TODO**:
+    * how to embed one Admin in another (1:1, 1:M, M:M)
+    * how to access the right object(s) from the embedded Admin's code
 
 Customizing just one of the actions
 -----------------------------------
 
-To do:
+.. note::
 
-- how to create settings/fields that appear on just one of the create/edit views
-  and any controller changes needed to manage them
+    **TODO**:
+    * how to create settings/fields that appear on just one of the create/edit views
+    * and any controller changes needed to manage them
 
 .. _`issues on GitHub`: https://github.com/sonata-project/SonataAdminBundle/issues/1519

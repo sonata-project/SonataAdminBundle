@@ -32,10 +32,11 @@ SonataAdmin Options that may affect the list view:
             pager_results:              SonataAdminBundle:Pager:results.html.twig
 
 
-To do:
+.. note::
 
-- a note about Routes and how disabling them disables the related action
-- adding custom columns
+    **TODO**:
+    * a note about Routes and how disabling them disables the related action
+    * adding custom columns
 
 Customizing the fields displayed on the list page
 -------------------------------------------------
@@ -207,9 +208,9 @@ the ``datagridValues`` array property. All three keys ``_page``, ``_sort_order``
     <?php
     // src/AppBundle/Admin/PostAdmin.php
 
-    use Sonata\AdminBundle\Admin\Admin;
+    use Sonata\AdminBundle\Admin\AbstractAdmin;
 
-    class PostAdmin extends Admin
+    class PostAdmin extends AbstractAdmin
     {
         // ...
 
@@ -230,11 +231,11 @@ the ``datagridValues`` array property. All three keys ``_page``, ``_sort_order``
 
 .. note::
 
-    The '_sort_by' key can be of the form ``mySubModel.mySubSubModel.myField``.
+    The ``_sort_by`` key can be of the form ``mySubModel.mySubSubModel.myField``.
 
-To do:
+.. note::
 
-- how to sort by multiple fields (this might be a separate recipe?)
+    **TODO**: how to sort by multiple fields (this might be a separate recipe?)
 
 Filters
 -------
@@ -248,7 +249,7 @@ You can add filters to let user control which data will be displayed.
 
     use Sonata\AdminBundle\Datagrid\DatagridMapper;
 
-    class ClientAdmin extends Admin
+    class ClientAdmin extends AbstractAdmin
     {
 
         protected function configureDatagridFilters(DatagridMapper $datagridMapper)
@@ -504,11 +505,12 @@ You can also get the filter type which can be helpful to change the operator typ
         }
     }
 
-To do:
+.. note::
 
-- basic filter configuration and options
-- targeting submodel fields using dot-separated notation
-- advanced filter options (global_search)
+    **TODO**:
+    * basic filter configuration and options
+    * targeting submodel fields using dot-separated notation
+    * advanced filter options (global_search)
 
 Visual configuration
 --------------------

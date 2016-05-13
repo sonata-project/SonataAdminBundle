@@ -209,14 +209,14 @@ The full ``CarAdmin.php`` example looks like this:
 
     namespace AppBundle\Admin;
 
-    use Sonata\AdminBundle\Admin\Admin;
+    use Sonata\AdminBundle\Admin\AbstractAdmin;
     use Sonata\AdminBundle\Datagrid\DatagridMapper;
     use Sonata\AdminBundle\Datagrid\ListMapper;
     use Sonata\AdminBundle\Form\FormMapper;
     use Sonata\AdminBundle\Route\RouteCollection;
     use Sonata\AdminBundle\Show\ShowMapper;
 
-    class CarAdmin extends Admin
+    class CarAdmin extends AbstractAdmin
     {
         protected function configureRoutes(RouteCollection $collection)
         {

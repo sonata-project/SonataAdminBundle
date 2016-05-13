@@ -22,7 +22,7 @@ After this, you'll need to tweak the entities a bit:
 .. code-block:: php
 
     // src/AppBundle/Entity/BlogPost.php
-    
+
     // ...
     class BlogPost
     {
@@ -45,8 +45,6 @@ After this, you'll need to tweak the entities a bit:
 
         // ...
     }
-
-.. code-block:: php
 
 Set the default value to ``false``.
 
@@ -124,19 +122,19 @@ to find entries and how the create form will look like. Each model will have
 its own Admin class.
 
 Knowing this, let's create an Admin class for the ``Category`` entity. The
-easiest way to do this is by extending ``Sonata\AdminBundle\Admin\Admin``.
+easiest way to do this is by extending ``Sonata\AdminBundle\Admin\AbstractAdmin``.
 
 .. code-block:: php
 
     // src/AppBundle/Admin/CategoryAdmin.php
     namespace AppBundle\Admin;
 
-    use Sonata\AdminBundle\Admin\Admin;
+    use Sonata\AdminBundle\Admin\AbstractAdmin;
     use Sonata\AdminBundle\Datagrid\ListMapper;
     use Sonata\AdminBundle\Datagrid\DatagridMapper;
     use Sonata\AdminBundle\Form\FormMapper;
 
-    class CategoryAdmin extends Admin
+    class CategoryAdmin extends AbstractAdmin
     {
         protected function configureFormFields(FormMapper $formMapper)
         {
@@ -179,9 +177,9 @@ service and tag it with the ``sonata.admin`` tag:
 .. code-block:: yaml
 
     # app/config/services.yml
-    
-    # ...
+
     services:
+        # ...
         admin.category:
             class: AppBundle\Admin\CategoryAdmin
             arguments: [~, AppBundle\Entity\Category, ~]

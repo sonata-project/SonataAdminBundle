@@ -316,11 +316,11 @@ You can add or override filter parameters to the Tab Menu:
     <?php
 
     use Knp\Menu\ItemInterface as MenuItemInterface;
-    use Sonata\AdminBundle\Admin\Admin;
+    use Sonata\AdminBundle\Admin\AbstractAdmin;
     use Sonata\AdminBundle\Admin\AdminInterface;
     use Sonata\CoreBundle\Form\Type\EqualType;
 
-    class DeliveryAdmin extends Admin
+    class DeliveryAdmin extends AbstractAdmin
     {
         protected function configureTabMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
         {
@@ -405,7 +405,7 @@ You can customize the access system inside the CRUDController by adding some ent
     <?php
     // src/AppBundle/Admin/PostAdmin.php
 
-    class CustomAdmin extends Admin
+    class CustomAdmin extends AbstractAdmin
     {
         protected $accessMapping = array(
             'myCustomFoo' => 'EDIT',
@@ -444,7 +444,7 @@ You can also fully customize how you want to handle your access management by si
     <?php
     // src/AppBundle/Admin/CustomAdmin.php
 
-    class CustomAdmin extends Admin
+    class CustomAdmin extends AbstractAdmin
     {
         public function checkAccess($action, $object = null)
         {
