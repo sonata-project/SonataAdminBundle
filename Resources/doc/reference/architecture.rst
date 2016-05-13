@@ -331,7 +331,7 @@ To do this, you first need to call the ``addChild`` method in your PostAdmin ser
             <!-- ... -->
 
             <call method="addChild">
-                <argument type="service" id="sonata.news.admin.comment" />
+                <argument type="serv/home/layton/Projects/SonataAdminBundleice" id="sonata.news.admin.comment" />
             </call>
         </service>
 
@@ -340,7 +340,8 @@ Then, you have to set the CommentAdmin ``parentAssociationMapping`` attribute to
 .. code-block:: php
 
     <?php
-    namespace Sonata\NewsBundle\Admin;
+
+    namespace AppBundle\Admin;
 
     // ...
 
@@ -356,12 +357,13 @@ Then, you have to set the CommentAdmin ``parentAssociationMapping`` attribute to
         }
     }
 
-To display the CommentAdmin extend the menu in your ``PostAdmin`` class:
+To display the ``CommentAdmin`` extend the menu in your ``PostAdmin`` class:
 
 .. code-block:: php
 
     <?php
-    namespace Sonata\NewsBundle\Admin;
+
+    namespace AppBundle\Admin;
 
     class PostAdmin extends Admin
     {
@@ -369,16 +371,24 @@ To display the CommentAdmin extend the menu in your ``PostAdmin`` class:
 
         protected function configureSideMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
         {
-            if (!$childAdmin && !in_array($action, array('edit', 'show'))) { return; }
+            if (!$childAdmin && !in_array($action, array('edit', 'show'))) {
+
+                return;
+            }
 
             $admin = $this->isChild() ? $this->getParent() : $this;
             $id = $admin->getRequest()->get('id');
 
             $menu->addChild('Show Post', array('uri' => $admin->generateUrl('show', array('id' => $id))));
-            $menu->addChild('Edit Post', array('uri' => $admin->generateUrl('edit', array('id' => $id))));
-            $menu->addChild('Manage Comments', array(
-                'uri' => $admin->generateUrl('sonata.news.admin.comment.list', array('id' => $id))
-            ));
+            if (is_granted('EDIT') {
+                $menu->addChild('Edit Post', array('uri' => $admin->generateUrl('edit', array('id' => $id))));
+            }
+
+            if (is_granted('LIST', $admin) {
+                $menu->addChild('Manage Comments', array(
+                    'uri' => $admin->generateUrl('sonata.news.admin.comment.list', array('id' => $id))
+                ));
+            }
         }
     }
 
