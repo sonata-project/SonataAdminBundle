@@ -46,8 +46,6 @@ After this, you'll need to tweak the entities a bit:
         // ...
     }
 
-.. code-block:: php
-
 Set the default value to ``false``.
 
 .. code-block:: php
@@ -179,9 +177,9 @@ service and tag it with the ``sonata.admin`` tag:
 .. code-block:: yaml
 
     # app/config/services.yml
-    
-    # ...
+
     services:
+        # ...
         admin.category:
             class: AppBundle\Admin\CategoryAdmin
             arguments: [~, AppBundle\Entity\Category, ~]
