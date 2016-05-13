@@ -35,6 +35,9 @@ class MenuBuilderTest extends \PHPUnit_Framework_TestCase
         $this->builder = new MenuBuilder($this->pool, $this->factory, $this->provider, $this->eventDispatcher);
     }
 
+    /**
+     * @covers Sonata\AdminBundle\Menu\MenuBuilder::createSidebarMenu
+     */
     public function testGetKnpMenuWithDefaultProvider()
     {
         $adminGroups = array(
@@ -71,6 +74,9 @@ class MenuBuilderTest extends \PHPUnit_Framework_TestCase
         }
     }
 
+    /**
+     * @covers Sonata\AdminBundle\Menu\MenuBuilder::createSidebarMenu
+     */
     public function testGetKnpMenuWithSpecifiedProvider()
     {
         $adminGroups = array(
@@ -108,6 +114,9 @@ class MenuBuilderTest extends \PHPUnit_Framework_TestCase
         }
     }
 
+    /**
+     * @covers Sonata\AdminBundle\Menu\MenuBuilder::createSidebarMenu
+     */
     public function testGetKnpMenuAndDispatchEvent()
     {
         $adminGroups = array(
@@ -134,6 +143,10 @@ class MenuBuilderTest extends \PHPUnit_Framework_TestCase
         $this->builder->createSidebarMenu();
     }
 
+    /**
+     * @covers Sonata\AdminBundle\Admin\Pool::getAdminGroups
+     * @covers Sonata\AdminBundle\Admin\Pool::getInstance
+     */
     private function preparePool($adminGroups, $admin = null)
     {
         $this->pool->expects($this->once())

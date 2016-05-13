@@ -32,6 +32,9 @@ class AdminStatsBlockServiceTest extends AbstractBlockServiceTest
         $this->pool = $this->getMockBuilder('Sonata\AdminBundle\Admin\Pool')->disableOriginalConstructor()->getMock();
     }
 
+    /**
+     * @covers Sonata\AdminBundle\Block\AdminStatsBlockService::configureSettings
+     */
     public function testDefaultSettings()
     {
         $blockService = new AdminStatsBlockService('foo', $this->templating, $this->pool);

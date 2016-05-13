@@ -20,6 +20,12 @@ use Sonata\AdminBundle\Model\AuditManager;
  */
 class AuditManagerTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @covers Sonata\AdminBundle\Model\AuditManager::__construct
+     * @covers Sonata\AdminBundle\Model\AuditManager::hasReader
+     * @covers Sonata\AdminBundle\Model\AuditManager::getReader
+     * @covers Sonata\AdminBundle\Model\AuditManager::setReader
+     */
     public function testGetReader()
     {
         $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
@@ -51,6 +57,10 @@ class AuditManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($fooReader, $auditManager->getReader('Foo\Foo1'));
     }
 
+    /**
+     * @covers Sonata\AdminBundle\Model\AuditManager::__construct
+     * @covers Sonata\AdminBundle\Model\AuditManager::getReader
+     */
     public function testGetReaderWithException()
     {
         $this->setExpectedException('\RuntimeException', 'The class "Foo\Foo" does not have any reader manager');
