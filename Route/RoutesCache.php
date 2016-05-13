@@ -62,7 +62,7 @@ class RoutesCache
             $resources[] = new FileResource($reflection->getFileName());
 
             if (!$admin->getRoutes()) {
-                throw new \RuntimeException('Invalid data type, Admin::getRoutes must return a RouteCollection');
+                throw new \RuntimeException('Invalid data type, AdminInterface::getRoutes must return a RouteCollection');
             }
 
             foreach ($admin->getRoutes()->getElements() as $code => $route) {

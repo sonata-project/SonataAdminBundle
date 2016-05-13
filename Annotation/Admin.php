@@ -13,7 +13,7 @@ namespace Sonata\AdminBundle\Annotation;
 
 use JMS\DiExtraBundle\Annotation\MetadataProcessorInterface;
 use JMS\DiExtraBundle\Metadata\ClassMetadata;
-use Sonata\AdminBundle\Admin\Admin as AdminClass;
+use Sonata\AdminBundle\Admin\AbstractAdmin as AdminClass;
 
 /**
  * Use annotations to define admin classes.

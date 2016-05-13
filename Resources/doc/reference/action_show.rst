@@ -40,7 +40,7 @@ To specify options, do as follow:
     <?php
     // src/AppBundle/Admin/PersonAdmin.php
 
-    class PersonAdmin extends Admin
+    class PersonAdmin extends AbstractAdmin
     {
         public function configureShowFields(ShowMapper $showMapper)
         {
@@ -76,7 +76,7 @@ The following is a working example of a ShowAction
 
     use Sonata\AdminBundle\Show\ShowMapper;
 
-    class ClientAdmin extends Admin
+    class ClientAdmin extends AbstractAdmin
     {
         protected function configureShowFields(ShowMapper $showMapper)
         {

@@ -148,8 +148,8 @@ class GenerateAdminCommandTest extends \PHPUnit_Framework_TestCase
         $this->assertFileExists($this->tempDirectory.'/Resources/config/admin.yml');
 
         $adminContent = file_get_contents($this->tempDirectory.'/Admin/FooAdmin.php');
-        $this->assertContains('class FooAdmin extends Admin', $adminContent);
-        $this->assertContains('use Sonata\AdminBundle\Admin\Admin;', $adminContent);
+        $this->assertContains('class FooAdmin extends AbstractAdmin', $adminContent);
+        $this->assertContains('use Sonata\AdminBundle\Admin\AbstractAdmin;', $adminContent);
         $this->assertContains('use Sonata\AdminBundle\Datagrid\DatagridMapper;', $adminContent);
         $this->assertContains('use Sonata\AdminBundle\Datagrid\ListMapper;', $adminContent);
         $this->assertContains('use Sonata\AdminBundle\Form\FormMapper;', $adminContent);
@@ -315,8 +315,8 @@ class GenerateAdminCommandTest extends \PHPUnit_Framework_TestCase
         $this->assertFileExists($this->tempDirectory.'/Resources/config/admin.yml');
 
         $adminContent = file_get_contents($this->tempDirectory.'/Admin/FooAdmin.php');
-        $this->assertContains('class FooAdmin extends Admin', $adminContent);
-        $this->assertContains('use Sonata\AdminBundle\Admin\Admin;', $adminContent);
+        $this->assertContains('class FooAdmin extends AbstractAdmin', $adminContent);
+        $this->assertContains('use Sonata\AdminBundle\Admin\AbstractAdmin;', $adminContent);
         $this->assertContains('use Sonata\AdminBundle\Datagrid\DatagridMapper;', $adminContent);
         $this->assertContains('use Sonata\AdminBundle\Datagrid\ListMapper;', $adminContent);
         $this->assertContains('use Sonata\AdminBundle\Form\FormMapper;', $adminContent);

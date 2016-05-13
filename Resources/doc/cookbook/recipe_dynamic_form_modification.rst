@@ -19,11 +19,11 @@ Then, you should be able to dynamically add needed fields to the form:
     // src/AppBundle/Admin/PostAdmin
 
     namespace AppBundle\Admin;
-    
-    use Sonata\AdminBundle\Admin\Admin;
+
+    use Sonata\AdminBundle\Admin\AbstractAdmin;
     use Sonata\AdminBundle\Form\FormMapper;
 
-    class PostAdmin extends Admin
+    class PostAdmin extends AbstractAdmin
     {
         // ...
 

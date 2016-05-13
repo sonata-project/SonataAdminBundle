@@ -1,4 +1,4 @@
-Showing image previews 
+Showing image previews
 ======================
 
 This is a full working example of one way to add image previews to your create and
@@ -9,7 +9,7 @@ Pre-requisites
 --------------
 
 - you have already got the image files on a server somewhere and have a helper
-  method to retrieve a publicly visible URL for that image, in this example that 
+  method to retrieve a publicly visible URL for that image, in this example that
   method is called ``Image::getWebPath()``
 - you have already set up an Admin to edit the object that contains the images,
   now you just want to add the previews. In this example that class is called
@@ -95,7 +95,7 @@ Admin class is embedded and use a different method:
 
 .. code-block:: php
 
-    class ImageAdmin extends Admin
+    class ImageAdmin extends AbstractAdmin
     {
         protected function configureFormFields(FormMapper $formMapper)
         {

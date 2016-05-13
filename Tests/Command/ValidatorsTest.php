@@ -81,7 +81,7 @@ class ValidatorsTest extends \PHPUnit_Framework_TestCase
     public function getValidateEntityNamesWithExceptionTests()
     {
         return array(
-            array('Sonata\AdminBundle\Admin\Admin'),
+            array('Sonata\AdminBundle\Admin\AbstractAdmin'),
             array('Sonata/AdminBundle/Admin/Admin'),
             array('Foo/Bar/Controller'),
             array('Foo/BarController'),
@@ -102,8 +102,8 @@ class ValidatorsTest extends \PHPUnit_Framework_TestCase
     public function getValidateClassTests()
     {
         return array(
-            array('Sonata\AdminBundle\Admin\Admin', 'Sonata\AdminBundle\Admin\Admin'),
-            array('Sonata\AdminBundle\Admin\Admin', 'Sonata/AdminBundle/Admin/Admin'),
+            array('Sonata\AdminBundle\Admin\AbstractAdmin', 'Sonata\AdminBundle\Admin\AbstractAdmin'),
+            array('Sonata\AdminBundle\Admin\AbstractAdmin', 'Sonata/AdminBundle/Admin/AbstractAdmin'),
         );
     }
 

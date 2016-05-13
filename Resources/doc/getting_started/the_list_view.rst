@@ -24,7 +24,7 @@ list page to the list view:
     namespace AppBundle\Admin;
 
     // ...
-    class BlogPostAdmin extends Admin
+    class BlogPostAdmin extends AbstractAdmin
     {
         // ...
 
@@ -64,7 +64,7 @@ instead of ``ListMapper#add()``:
     namespace AppBundle\Admin;
 
     // ...
-    class BlogPostAdmin extends Admin
+    class BlogPostAdmin extends AbstractAdmin
     {
         // ...
 
@@ -100,7 +100,7 @@ category.
     namespace AppBundle\Admin;
 
     // ...
-    class BlogPostAdmin extends Admin
+    class BlogPostAdmin extends AbstractAdmin
     {
         // ...
 
@@ -135,7 +135,7 @@ would do something like:
     use Sonata\AdminBundle\Datagrid\DatagridMapper;
 
     // ...
-    class BlogPostAdmin extends Admin
+    class BlogPostAdmin extends AbstractAdmin
     {
         protected function configureDatagridFilters(DatagridMapper $datagridMapper)
         {
@@ -179,7 +179,7 @@ the search field to use the ``name`` property of the Category:
     use Sonata\AdminBundle\Datagrid\DatagridMapper;
 
     // ...
-    class BlogPostAdmin extends Admin
+    class BlogPostAdmin extends AbstractAdmin
     {
         protected function configureDatagridFilters(DatagridMapper $datagridMapper)
         {
