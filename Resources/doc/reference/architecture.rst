@@ -325,11 +325,11 @@ To do this, you first need to call the ``addChild`` method in your PostAdmin ser
     .. code-block:: xml
 
         <!-- app/config/config.xml -->
-        <service id="sonata.news.admin.post" class="Sonata\NewsBundle\Admin\PostAdmin">
+        <service id="sonata.news.admin.post" class="AppBundle\Admin\PostAdmin">
             <!-- ... -->
 
             <call method="addChild">
-                <argument type="serv/home/layton/Projects/SonataAdminBundleice" id="sonata.news.admin.comment" />
+                <argument type="service" id="sonata.news.admin.comment" />
             </call>
         </service>
 
