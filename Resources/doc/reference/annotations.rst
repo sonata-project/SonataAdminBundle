@@ -22,7 +22,7 @@ All you have to do is include Sonata\AdminBundleAnnotations and define the value
 
     namespace AcmeBundle\Admin;
 
-    use Sonata\AdminBundle\Admin\Admin;
+    use Sonata\AdminBundle\Admin\AbstractAdmin;
     use Sonata\AdminBundle\Annotation as Sonata;
 
     /**
@@ -30,7 +30,7 @@ All you have to do is include Sonata\AdminBundleAnnotations and define the value
      *   class="AcmeBundle\Entity\MyEntity"
      * )
      */
-    class MyAdmin extends Admin
+    class MyAdmin extends AbstractAdmin
     {
     }
 

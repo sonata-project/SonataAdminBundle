@@ -1,4 +1,4 @@
-Showing image previews 
+Showing image previews
 ======================
 
 This is a full working example of one way to add image previews to your create and
@@ -9,7 +9,7 @@ Pre-requisites
 --------------
 
 - you have already got the image files on a server somewhere and have a helper
-  method to retrieve a publicly visible URL for that image, in this example that 
+  method to retrieve a publicly visible URL for that image, in this example that
   method is called ``Image::getWebPath()``
 - you have already set up an Admin to edit the object that contains the images,
   now you just want to add the previews. In this example that class is called
@@ -52,18 +52,18 @@ we are manipulating form fields we do this from within ``ImageAdmin::configureFo
         {
             // get the current Image instance
             $image = $this->getSubject();
-            
+
             // use $fileFieldOptions so we can add other options to the field
             $fileFieldOptions = array('required' => false);
             if ($image && ($webPath = $image->getWebPath())) {
                 // get the container so the full path to the image can be set
                 $container = $this->getConfigurationPool()->getContainer();
                 $fullPath = $container->get('request')->getBasePath().'/'.$webPath;
-            
+
                 // add a 'help' option containing the preview's img tag
                 $fileFieldOptions['help'] = '<img src="'.$fullPath.'" class="admin-preview" />';
             }
-            
+
             $formMapper
                 // ... other fields ...
                 ->add('file', 'file', $fileFieldOptions)
@@ -95,7 +95,7 @@ Admin class is embedded and use a different method:
 
 .. code-block:: php
 
-    class ImageAdmin extends Admin
+    class ImageAdmin extends AbstractAdmin
     {
         protected function configureFormFields(FormMapper $formMapper)
         {
@@ -113,14 +113,14 @@ Admin class is embedded and use a different method:
             } else {
                 $image = $this->getSubject();
             }
-            
+
             // use $fileFieldOptions so we can add other options to the field
             $fileFieldOptions = array('required' => false);
             if ($image && ($webPath = $image->getWebPath())) {
                 // add a 'help' option containing the preview's img tag
                 $fileFieldOptions['help'] = '<img src="'.$webPath.'" class="admin-preview" />';
             }
-            
+
             $formMapper
                 // ... other fields ...
                 ->add('file', 'file', $fileFieldOptions)

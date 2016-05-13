@@ -11,7 +11,7 @@ the ``Admin`` class itself contains an empty ``validate`` method. This is automa
     // add this to your existing use statements
     use Sonata\CoreBundle\Validator\ErrorElement;
 
-    class MyAdmin extends Admin
+    class MyAdmin extends AbstractAdmin
     {
         // add this method
         public function validate(ErrorElement $errorElement, $object)

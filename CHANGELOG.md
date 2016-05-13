@@ -4,6 +4,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [3.x]
 ### Added
+- Added AbstractAdmin, replacing Admin
 
 ### Changed
 - Updated AdminLTE theme to version 2.3.3
@@ -11,6 +12,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Deprecated
 - Deprecated `BaseFieldDescription::camelize()`
 - Deprecated `AdminHelper::camelize()`
+- Deprecated `Admin` class
 
 ## [3.0.0](https://github.com/sonata-project/SonataAdminBundle/compare/2.3.10...3.0.0) - 2016-05-08
 ### Added

@@ -11,7 +11,7 @@
 
 namespace Sonata\AdminBundle\Tests\DependencyInjection;
 
-use Sonata\AdminBundle\Admin\Admin;
+use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\SonataAdminExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -415,7 +415,7 @@ class ExtensionCompilerPassTest extends \PHPUnit_Framework_TestCase
     }
 }
 
-class MockAdmin extends Admin
+class MockAdmin extends AbstractAdmin
 {
 }
 

@@ -129,7 +129,7 @@ class Pool
                     if ('' != $item['admin']) {
                         $admin = $this->getInstance($item['admin']);
 
-                        if ($admin->showIn(Admin::CONTEXT_DASHBOARD)) {
+                        if ($admin->showIn(AbstractAdmin::CONTEXT_DASHBOARD)) {
                             $groups[$name]['items'][$key] = $admin;
                         } else {
                             unset($groups[$name]['items'][$key]);

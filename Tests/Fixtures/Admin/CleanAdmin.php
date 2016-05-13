@@ -2,8 +2,8 @@
 
 namespace Sonata\AdminBundle\Tests\Fixtures\Admin;
 
-use Sonata\AdminBundle\Admin\Admin;
+use Sonata\AdminBundle\Admin\AbstractAdmin;
 
-class CleanAdmin extends Admin
+class CleanAdmin extends AbstractAdmin
 {
 }

@@ -30,7 +30,7 @@ batch actions       Actions that can be performed on a group of entities (e.g. b
 =============       =========================================================================
 
 
-The ``Sonata\AdminBundle\Admin\Admin`` class is provided as an easy way to
+The ``Sonata\AdminBundle\Admin\AbstractAdmin`` class is provided as an easy way to
 map your models, by extending it. However, any implementation of the
 ``Sonata\AdminBundle\Admin\AdminInterface`` can be used to define an ``Admin``
 service. For each ``Admin`` service, the following required dependencies are
@@ -180,13 +180,13 @@ which stores instances of ``FieldDescriptionInterface``. Picking up on our previ
 
     namespace AppBundle\Admin;
 
-    use Sonata\AdminBundle\Admin\Admin;
+    use Sonata\AdminBundle\Admin\AbstractAdmin;
     use Sonata\AdminBundle\Datagrid\ListMapper;
     use Sonata\AdminBundle\Datagrid\DatagridMapper;
     use Sonata\AdminBundle\Form\FormMapper;
     use Sonata\AdminBundle\Show\ShowMapper;
 
-    class PostAdmin extends Admin
+    class PostAdmin extends AbstractAdmin
     {
         // Fields to be shown on create/edit forms
         protected function configureFormFields(FormMapper $formMapper)
@@ -342,7 +342,7 @@ Then, you have to set the CommentAdmin ``parentAssociationMapping`` attribute to
 
     // ...
 
-    class CommentAdmin extends Admin
+    class CommentAdmin extends AbstractAdmin
     {
         protected $parentAssociationMapping = 'post';
 
