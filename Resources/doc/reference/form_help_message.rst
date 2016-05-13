@@ -14,7 +14,7 @@ Example
     <?php
     // src/AppBundle/Admin/PostAdmin.php
 
-    class PostAdmin extends Admin
+    class PostAdmin extends AbstractAdmin
     {
         protected function configureFormFields(FormMapper $formMapper)
         {
@@ -41,7 +41,7 @@ All at once
     <?php
     // src/AppBundle/Admin/PostAdmin.php
 
-    class PostAdmin extends Admin
+    class PostAdmin extends AbstractAdmin
     {
         protected function configureFormFields(FormMapper $formMapper)
         {
@@ -65,7 +65,7 @@ or step by step.
     <?php
     // src/AppBundle/Admin/PostAdmin.php
 
-    class PostAdmin extends Admin
+    class PostAdmin extends AbstractAdmin
     {
         protected function configureFormFields(FormMapper $formMapper)
         {
@@ -144,7 +144,7 @@ Help messages in a sub-field
     <?php
     // src/AppBundle/Admin/PostAdmin.php
 
-    class PostAdmin extends Admin
+    class PostAdmin extends AbstractAdmin
     {
         protected function configureFormFields(FormMapper $formMapper)
         {
@@ -181,7 +181,7 @@ Example
     <?php
     // src/AppBundle/Admin/PostAdmin.php
 
-    class PostAdmin extends Admin
+    class PostAdmin extends AbstractAdmin
     {
         protected function configureFormFields(FormMapper $formMapper)
         {

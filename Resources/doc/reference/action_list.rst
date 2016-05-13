@@ -208,9 +208,9 @@ the ``datagridValues`` array property. All three keys ``_page``, ``_sort_order``
     <?php
     // src/AppBundle/Admin/PostAdmin.php
 
-    use Sonata\AdminBundle\Admin\Admin;
+    use Sonata\AdminBundle\Admin\AbstractAdmin;
 
-    class PostAdmin extends Admin
+    class PostAdmin extends AbstractAdmin
     {
         // ...
 
@@ -249,7 +249,7 @@ You can add filters to let user control which data will be displayed.
 
     use Sonata\AdminBundle\Datagrid\DatagridMapper;
 
-    class ClientAdmin extends Admin
+    class ClientAdmin extends AbstractAdmin
     {
 
         protected function configureDatagridFilters(DatagridMapper $datagridMapper)

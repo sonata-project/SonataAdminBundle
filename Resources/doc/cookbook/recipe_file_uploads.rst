@@ -232,7 +232,7 @@ looks like this:
     <?php
     // src/AppBundle/Admin/PostAdmin.php
 
-    class PostAdmin extends Admin
+    class PostAdmin extends AbstractAdmin
     {
         protected function configureFormFields(FormMapper $formMapper)
         {
@@ -264,7 +264,7 @@ In our PostAdmin we then have the following code to manage the relationships' li
     <?php
     // src/AppBundle/Admin/PostAdmin.php
 
-    class PostAdmin extends Admin
+    class PostAdmin extends AbstractAdmin
     {
         // ...
 

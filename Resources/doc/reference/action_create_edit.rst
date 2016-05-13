@@ -42,7 +42,7 @@ To specify options, do as follows:
     <?php
     // src/AppBundle/Admin/PersonAdmin.php
 
-    class PersonAdmin extends Admin
+    class PersonAdmin extends AbstractAdmin
     {
         // ...
 

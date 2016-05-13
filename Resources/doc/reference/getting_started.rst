@@ -61,7 +61,7 @@ In it, you decide which fields to show on a listing, which to use as filters or 
 to show in a creation or edition form.
 
 The easiest way to create an Admin class for your model is to extend
-the ``Sonata\AdminBundle\Admin\Admin`` class.
+the ``Sonata\AdminBundle\Admin\AbstractAdmin`` class.
 
 Suppose your ``AppBundle`` has a ``Post`` entity.
 This is how a basic Admin class for it could look like:
@@ -73,7 +73,7 @@ This is how a basic Admin class for it could look like:
 
     namespace AppBundle\Admin;
 
-    use Sonata\AdminBundle\Admin\Admin;
+    use Sonata\AdminBundle\Admin\AbstractAdmin;
     use Sonata\AdminBundle\Show\ShowMapper;
     use Sonata\AdminBundle\Form\FormMapper;
     use Sonata\AdminBundle\Datagrid\ListMapper;

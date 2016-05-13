@@ -310,11 +310,11 @@ So we are going to start by creating this ``UserBundle\Admin\UserHasExpectations
     <?php
     namespace UserBundle\Admin;
 
-    use Sonata\AdminBundle\Admin\Admin;
+    use Sonata\AdminBundle\Admin\AbstractAdmin;
     use Sonata\AdminBundle\Datagrid\ListMapper;
     use Sonata\AdminBundle\Form\FormMapper;
 
-    class UserHasExpectationsAdmin extends Admin
+    class UserHasExpectationsAdmin extends AbstractAdmin
     {
         /**
          * @param \Sonata\AdminBundle\Form\FormMapper $formMapper
