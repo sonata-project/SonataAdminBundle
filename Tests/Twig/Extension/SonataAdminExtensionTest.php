@@ -293,6 +293,69 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @dataProvider getDeprecatedRenderListElementTests
+     * @group legacy
+     */
+    public function testDeprecatedRenderListElement($expected, $value, array $options)
+    {
+        $this->admin->expects($this->any())
+            ->method('isGranted')
+            ->will($this->returnValue(true));
+
+        $this->admin->expects($this->any())
+            ->method('getTemplate')
+            ->with($this->equalTo('base_list_field'))
+            ->will($this->returnValue('SonataAdminBundle:CRUD:base_list_field.html.twig'));
+
+        $this->fieldDescription->expects($this->any())
+            ->method('getValue')
+            ->will($this->returnValue($value));
+
+        $this->fieldDescription->expects($this->any())
+            ->method('getType')
+            ->will($this->returnValue('nonexistent'));
+
+        $this->fieldDescription->expects($this->any())
+            ->method('getOptions')
+            ->will($this->returnValue($options));
+
+        $this->fieldDescription->expects($this->any())
+            ->method('getOption')
+            ->will($this->returnCallback(function ($name, $default = null) use ($options) {
+                return isset($options[$name]) ? $options[$name] : $default;
+            }));
+
+        $this->fieldDescription->expects($this->any())
+            ->method('getTemplate')
+            ->will($this->returnValue('SonataAdminBundle:CRUD:list_nonexistent_template.html.twig'));
+
+        $this->assertSame(
+            $this->removeExtraWhitespace($expected),
+            $this->removeExtraWhitespace($this->twigExtension->renderListElement(
+                $this->environment,
+                $this->object,
+                $this->fieldDescription
+            ))
+        );
+    }
+
+    public function getDeprecatedRenderListElementTests()
+    {
+        return array(
+            array(
+                '<td class="sonata-ba-list-field sonata-ba-list-field-nonexistent" objectId="12345"> Example </td>',
+                'Example',
+                array(),
+            ),
+            array(
+                '<td class="sonata-ba-list-field sonata-ba-list-field-nonexistent" objectId="12345"> </td>',
+                null,
+                array(),
+            ),
+        );
+    }
+
     public function getRenderListElementTests()
     {
         return array(
@@ -305,18 +368,6 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
             array(
                 '<td class="sonata-ba-list-field sonata-ba-list-field-string" objectId="12345"> </td>',
                 'string',
-                null,
-                array(),
-            ),
-            array(
-                '<td class="sonata-ba-list-field sonata-ba-list-field-nonexistent" objectId="12345"> Example </td>',
-                'nonexistent',
-                'Example',
-                array(),
-            ),
-            array(
-                '<td class="sonata-ba-list-field sonata-ba-list-field-nonexistent" objectId="12345"> </td>',
-                'nonexistent',
                 null,
                 array(),
             ),
@@ -1093,6 +1144,9 @@ EOT
         );
     }
 
+    /**
+     * @group legacy
+     */
     public function testRenderListElementNonExistentTemplate()
     {
         $this->admin->expects($this->once())
@@ -1132,6 +1186,7 @@ EOT
     /**
      * @expectedException        Twig_Error_Loader
      * @expectedExceptionMessage Unable to find template "base_list_nonexistent_field.html.twig"
+     * @group                    legacy
      */
     public function testRenderListElementErrorLoadingTemplate()
     {
