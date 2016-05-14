@@ -1764,16 +1764,35 @@ EOT
                 if ($value == 'associated_property') {
                     return $default;
                 }
-
-                if ($value == 'associated_tostring') {
-                    return '__toString';
-                }
             }));
 
         $element = new FooToString();
         $this->assertSame('salut', $this->twigExtension->renderRelationElement($element, $this->fieldDescription));
     }
 
+    /**
+     * @group legacy
+     */
+    public function testDeprecatedRelationElementToString()
+    {
+        $this->fieldDescription->expects($this->exactly(2))
+            ->method('getOption')
+            ->will($this->returnCallback(function ($value, $default = null) {
+                if ($value == 'associated_tostring') {
+                    return '__toString';
+                }
+            }));
+
+        $element = new FooToString();
+        $this->assertSame(
+            'salut',
+            $this->twigExtension->renderRelationElement($element, $this->fieldDescription)
+        );
+    }
+
+    /**
+     * @group legacy
+     */
     public function testRenderRelationElementCustomToString()
     {
         $this->fieldDescription->expects($this->exactly(2))
@@ -1796,6 +1815,9 @@ EOT
         $this->assertSame('fooBar', $this->twigExtension->renderRelationElement($element, $this->fieldDescription));
     }
 
+    /**
+     * @group legacy
+     */
     public function testRenderRelationElementMethodNotExist()
     {
         $this->fieldDescription->expects($this->exactly(2))
