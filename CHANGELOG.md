@@ -17,6 +17,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Deprecated `AdminHelper::camelize()`
 - Deprecated `Admin` class
 
+### Fixed
+- Fixed bad rendering on datetime field with `single_text` widget for date and time
+
 ## [3.0.0](https://github.com/sonata-project/SonataAdminBundle/compare/2.3.10...3.0.0) - 2016-05-08
 ### Added
 - Add missing Route constructor parameters to `RouteCollection:add` method
