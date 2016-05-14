@@ -289,8 +289,22 @@ file that was distributed with this source code.
         <div {{ block('widget_container_attributes') }}>
             {{ form_errors(form.date) }}
             {{ form_errors(form.time) }}
-            {{ form_widget(form.date, {'row': false, 'input_wrapper_class': 'col-sm-2'}) }}
-            {{ form_widget(form.time, {'row': false, 'input_wrapper_class': 'col-sm-2'}) }}
+
+            {% if form.date.vars.widget == 'single_text' %}
+                <div class="col-sm-2">
+                    {{ form_widget(form.date) }}
+                </div>
+            {% else %}
+                {{ form_widget(form.date, {'row': false, 'input_wrapper_class': 'col-sm-2'}) }}
+            {% endif %}
+
+            {% if form.time.vars.widget == 'single_text' %}
+                <div class="col-sm-2">
+                    {{ form_widget(form.time) }}
+                </div>
+            {% else %}
+                {{ form_widget(form.time, {'row': false, 'input_wrapper_class': 'col-sm-2'}) }}
+            {% endif %}
         </div>
     {% endif %}
 {% endspaceless %}
