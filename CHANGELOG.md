@@ -13,6 +13,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Deprecated `BaseFieldDescription::camelize()`
 - Deprecated `AdminHelper::camelize()`
 - Deprecated `Admin` class
+- Deprecated default template loading on exception mechanism
 
 ### Fixed
 - Fix detection of path when using nested properties with underscores in `AdminHelper:getElementAccessPath` method
