@@ -45,12 +45,22 @@ matrix:
     - php: '7.0'
       env: SYMFONY=dev-master@dev
     - php: '7.0'
+      env: SONATA_CORE=3.*
+    - php: '7.0'
+      env: SONATA_CORE=dev-master@dev
+    - php: '7.0'
+      env: SONATA_BLOCK=3.*
+    - php: '7.0'
+      env: SONATA_BLOCK=dev-master@dev
+    - php: '7.0'
       env: SYMFONY_DEPRECATIONS_HELPER=0
   allow_failures:
     - php: nightly
     - php: hhvm
     - env: SYMFONY_DEPRECATIONS_HELPER=0
     - env: SYMFONY=dev-master@dev
+    - env: SONATA_CORE=dev-master@dev
+    - env: SONATA_BLOCK=dev-master@dev
 
 before_install:
   - if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then mv "$HOME/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini" /tmp; fi;
@@ -59,6 +69,8 @@ before_install:
   - if [ "$TARGET" = 'test' ]; then composer config --quiet --global github-oauth.github.com $GITHUB_OAUTH_TOKEN; fi;
   - if [ "$TARGET" = 'test' ]; then sed --in-place "s/\"dev-master\":/\"dev-${TRAVIS_COMMIT}\":/" composer.json; fi;
   - if [ "$TARGET" = 'test' -a "$SYMFONY" != "" ]; then composer require "symfony/symfony:$SYMFONY" --no-update; fi;
+  - if [ "$TARGET" = 'test' -a "$SONATA_CORE" != "" ]; then composer require "sonata-project/core-bundle:$SONATA_CORE" --no-update; fi;
+  - if [ "$TARGET" = 'test' -a "$SONATA_BLOCK" != "" ]; then composer require "sonata-project/block-bundle:$SONATA_BLOCK" --no-update; fi;
 
 install:
   - if [ "$TARGET" = 'test' ]; then mkdir "$HOME/bin"; fi;
