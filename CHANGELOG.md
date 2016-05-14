@@ -16,6 +16,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Deprecated `BaseFieldDescription::camelize()`
 - Deprecated `AdminHelper::camelize()`
 - Deprecated `Admin` class
+- Deprecated default template loading on exception mechanism
 
 ### Fixed
 - Fixed bad rendering on datetime field with `single_text` widget for date and time
