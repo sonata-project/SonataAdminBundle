@@ -19,6 +19,7 @@ use Sonata\AdminBundle\Util\FormViewIterator;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
+use Symfony\Component\PropertyAccess\Exception\UnexpectedTypeException;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 /**
@@ -254,53 +255,28 @@ class AdminHelper
     {
         $propertyAccessor = $this->pool->getPropertyAccessor();
 
-        $idWithoutUniqueIdentifier = implode('_', explode('_', substr($elementId, strpos($elementId, '_') + 1)));
+        $idWithoutIdentifier = preg_replace('/^[^_]*_/', '', $elementId);
+        $initialPath = preg_replace('#(_(\d+)_)#', '[$2]_', $idWithoutIdentifier);
 
-        //array access of id converted to format which PropertyAccessor understands
-        $initialPath = preg_replace('#(_(\d+)_)#', '[$2]', $idWithoutUniqueIdentifier);
+        $parts = explode('_', $initialPath);
+        $totalPath = '';
+        $currentPath = '';
 
-        $parts = preg_split('#\[\d+\]#', $initialPath);
+        foreach ($parts as $part) {
+            $currentPath .= empty($currentPath) ? $part : '_'.$part;
+            $separator = empty($totalPath) ? '' : '.';
 
-        $partReturnValue = $returnValue = '';
-        $currentEntity = $entity;
-
-        foreach ($parts as $key => $value) {
-            $subParts = explode('_', $value);
-            $id = '';
-            $dot = '';
-
-            foreach ($subParts as $subValue) {
-                $id .= ($id) ? '_'.$subValue : $subValue;
-
-                if ($this->pathExists($propertyAccessor, $currentEntity, $partReturnValue.$dot.$id)) {
-                    $partReturnValue .= $dot.$id;
-                    $dot = '.';
-                    $id = '';
-                } else {
-                    $dot = '';
-                }
-            }
-
-            if ($dot !== '.') {
-                throw new \Exception(sprintf('Could not get element id from %s Failing part: %s', $elementId, $subValue));
-            }
-
-            //check if array access was in this location originally
-            preg_match("#$value\[(\d+)#", $initialPath, $matches);
-
-            if (isset($matches[1])) {
-                $partReturnValue .= '['.$matches[1].']';
-            }
-
-            $returnValue .= $returnValue ? '.'.$partReturnValue : $partReturnValue;
-            $partReturnValue = '';
-
-            if (isset($parts[$key + 1])) {
-                $currentEntity = $propertyAccessor->getValue($entity, $returnValue);
+            if ($this->pathExists($propertyAccessor, $entity, $totalPath.$separator.$currentPath)) {
+                $totalPath .= $separator.$currentPath;
+                $currentPath = '';
             }
         }
 
-        return $returnValue;
+        if (!empty($currentPath)) {
+            throw new \Exception(sprintf('Could not get element id from %s Failing part: %s', $elementId, $currentPath));
+        }
+
+        return $totalPath;
     }
 
     /**
@@ -345,6 +321,8 @@ class AdminHelper
 
             return true;
         } catch (NoSuchPropertyException $e) {
+            return false;
+        } catch (UnexpectedTypeException $e) {
             return false;
         }
     }
