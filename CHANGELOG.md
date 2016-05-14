@@ -12,6 +12,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Added AbstractAdmin, replacing Admin
 
+### Fixed
+- Fix detection of path when using nested properties with underscores in `AdminHelper:getElementAccessPath` method
+
 ### Changed
 - Updated AdminLTE theme to version 2.3.3
 
@@ -19,6 +22,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Deprecated `BaseFieldDescription::camelize()`
 - Deprecated `AdminHelper::camelize()`
 - Deprecated `Admin` class
+
+### Fixed
+- Fixed bad rendering on datetime field with `single_text` widget for date and time
 
 ## [3.0.0](https://github.com/sonata-project/SonataAdminBundle/compare/2.3.10...3.0.0) - 2016-05-08
 ### Added

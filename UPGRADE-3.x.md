@@ -1,5 +1,5 @@
-UPGRADE FROM 3.0 to 3.1
-=======================
+UPGRADE 3.x
+===========
 
 ## Deprecated Admin class
 
