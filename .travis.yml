@@ -33,24 +33,24 @@ matrix:
     - php: '5.3'
       env: COMPOSER_FLAGS="--prefer-lowest"
     - php: '7.0'
-      env: SYMFONY_VERSION=2.3.*
+      env: SYMFONY=2.3.*
     - php: '7.0'
-      env: SYMFONY_VERSION=2.6.*
+      env: SYMFONY=2.6.*
     - php: '7.0'
-      env: SYMFONY_VERSION=2.7.*
+      env: SYMFONY=2.7.*
     - php: '7.0'
-      env: SYMFONY_VERSION=2.8.*
+      env: SYMFONY=2.8.*
     - php: '7.0'
-      env: SYMFONY_VERSION=3.0.*
+      env: SYMFONY=3.0.*
     - php: '7.0'
-      env: SYMFONY_VERSION=dev-master@dev
+      env: SYMFONY=dev-master@dev
     - php: '7.0'
       env: SYMFONY_DEPRECATIONS_HELPER=0
   allow_failures:
     - php: nightly
     - php: hhvm
     - env: SYMFONY_DEPRECATIONS_HELPER=0
-    - env: SYMFONY_VERSION=dev-master@dev
+    - env: SYMFONY=dev-master@dev
 
 before_install:
   - if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then mv "$HOME/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini" /tmp; fi;
@@ -58,7 +58,7 @@ before_install:
   - if [ "$TARGET" = 'test' ]; then composer self-update --stable; fi;
   - if [ "$TARGET" = 'test' ]; then composer config --quiet --global github-oauth.github.com $GITHUB_OAUTH_TOKEN; fi;
   - if [ "$TARGET" = 'test' ]; then sed --in-place "s/\"dev-master\":/\"dev-${TRAVIS_COMMIT}\":/" composer.json; fi;
-  - if [ "$TARGET" = 'test' -a "$SYMFONY_VERSION" != "" ]; then composer require "symfony/symfony:${SYMFONY_VERSION}" --no-update; fi;
+  - if [ "$TARGET" = 'test' -a "$SYMFONY" != "" ]; then composer require "symfony/symfony:$SYMFONY" --no-update; fi;
 
 install:
   - if [ "$TARGET" = 'test' ]; then mkdir "$HOME/bin"; fi;
