@@ -203,6 +203,8 @@ BOOM
         // set filter persistence
         $container->setParameter('sonata.admin.configuration.filters.persist', $config['persist_filters']);
 
+        $container->setParameter('sonata.admin.configuration.mosaic.button.show', $config['is_show_mosaic_button']);
+
         $this->configureClassesToCompile();
 
         $this->replacePropertyAccessor($container);

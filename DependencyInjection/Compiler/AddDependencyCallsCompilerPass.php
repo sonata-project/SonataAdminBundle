@@ -317,6 +317,16 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
         $definition->addMethodCall('initialize');
 
+        if (isset($overwriteAdminConfiguration['is_show_mosaic_button'])) {
+            $isShowMosaicButton = $overwriteAdminConfiguration['is_show_mosaic_button'];
+        } elseif (isset($attributes['is_show_mosaic_button'])) {
+            $isShowMosaicButton = (bool) $attributes['is_show_mosaic_button'];
+        } else {
+            $isShowMosaicButton = (bool) $container->getParameter('sonata.admin.configuration.mosaic.button.show');
+        }
+
+        $definition->addMethodCall('setIsShowMosaicButton', array($isShowMosaicButton));
+
         return $definition;
     }
 

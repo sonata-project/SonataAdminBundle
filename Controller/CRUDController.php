@@ -374,7 +374,7 @@ class CRUDController extends Controller
         }
 
         $camelizedAction = Inflector::classify($action);
-        $isRelevantAction = sprintf('batchAction%sIsRelevant', $camelizedAction);
+        $isRelevantAction = sprintf('batchAction%sIsRelevant', ucfirst($camelizedAction));
 
         if (method_exists($this, $isRelevantAction)) {
             $nonRelevantMessage = call_user_func(array($this, $isRelevantAction), $idx, $allElements);
