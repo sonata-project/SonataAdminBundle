@@ -181,6 +181,9 @@ Full Configuration Options
                     - bundles/sonataadmin/css/styles.css
                     - bundles/sonataadmin/css/layout.css
                     - bundles/sonataadmin/css/tree.css
+
+                # If you need to load some extra stylesheets
+                extra_stylesheets:    []
                 javascripts:
 
                     # Defaults:
@@ -202,6 +205,9 @@ Full Configuration Options
                     - bundles/sonataadmin/vendor/waypoints/lib/shortcuts/sticky.min.js
                     - bundles/sonataadmin/Admin.js
                     - bundles/sonataadmin/treeview.js
+
+                # If you need to load some extra javascripts
+                extra_javascripts:    []
             extensions:
 
                 # Prototype

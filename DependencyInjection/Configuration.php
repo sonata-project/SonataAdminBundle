@@ -307,6 +307,10 @@ class Configuration implements ConfigurationInterface
                             ))
                             ->prototype('scalar')->end()
                         ->end()
+                        ->arrayNode('extra_stylesheets')
+                            ->info('If you need to load some extra stylesheets')
+                            ->prototype('scalar')->end()
+                        ->end()
                         ->arrayNode('javascripts')
                             ->defaultValue(array(
                                 'bundles/sonatacore/vendor/jquery/dist/jquery.min.js',
@@ -337,6 +341,10 @@ class Configuration implements ConfigurationInterface
                                 'bundles/sonataadmin/Admin.js',
                                 'bundles/sonataadmin/treeview.js',
                             ))
+                            ->prototype('scalar')->end()
+                        ->end()
+                        ->arrayNode('extra_javascripts')
+                            ->info('If you need to load some extra javascripts')
                             ->prototype('scalar')->end()
                         ->end()
                     ->end()
