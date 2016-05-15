@@ -1577,6 +1577,33 @@ class AdminTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Sonata\AdminBundle\Admin\AbstractAdmin::showMosaicButton
+     */
+    public function testShowMosaicButton()
+    {
+        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
+        $listModes = $admin->getListModes();
+
+        $admin->showMosaicButton(true);
+
+        $this->assertSame($listModes, $admin->getListModes());
+    }
+
+    /**
+     * @covers Sonata\AdminBundle\Admin\AbstractAdmin::showMosaicButton
+     */
+    public function testShowMosaicButtonHideMosaic()
+    {
+        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
+        $listModes = $admin->getListModes();
+        $expected['list'] = $listModes['list'];
+
+        $admin->showMosaicButton(false);
+
+        $this->assertSame($expected, $admin->getListModes());
+    }
+
+    /**
      * @covers Sonata\AdminBundle\Admin\AbstractAdmin::getDashboardActions
      * @dataProvider provideGetBaseRouteName
      */

@@ -6,6 +6,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Extract the breadcrumbs building part of the `AbstractAdmin` to a separate class
 - Added `AbstractAdmin::getSearchResultLink` method
+- Add the `AbstractAdmin::showMosaicButton` method
+- Add the `show_mosaic_button` option to configuration
 
 ## [3.1.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.0.0...3.1.0) - 2016-05-17
 ### Added
