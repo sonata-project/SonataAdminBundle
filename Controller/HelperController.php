@@ -400,14 +400,15 @@ class HelperController
                     $filter = $datagrid->getFilter($prop);
                     $filter->setCondition(FilterInterface::CONDITION_OR);
 
-                    $datagrid->setValue($prop, null, $searchText);
+                    $datagrid->setValue($filter->getFormName(), null, $searchText);
                 }
             } else {
                 if (!$datagrid->hasFilter($property)) {
                     throw new \RuntimeException(sprintf('To retrieve autocomplete items, you should add filter "%s" to "%s" in configureDatagridFilters() method.', $property, get_class($targetAdmin)));
                 }
 
-                $datagrid->setValue($property, null, $searchText);
+                $filter = $datagrid->getFilter($property);
+                $datagrid->setValue($filter->getFormName(), null, $searchText);
             }
         }
 
