@@ -382,6 +382,8 @@ class Configuration implements ConfigurationInterface
 
                 ->scalarNode('persist_filters')->defaultFalse()->end()
 
+                ->scalarNode('is_show_mosaic_button')->defaultTrue()->info('Is show mosaic button on all admin screens')->end()
+
             ->end()
         ->end();
 

@@ -408,14 +408,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
 
     protected $cacheIsGranted = array();
 
-    protected $listModes = array(
-        'list' => array(
-            'class' => 'fa fa-list fa-fw',
-        ),
-        'mosaic' => array(
-            'class' => 'fa fa-th-large fa-fw',
-        ),
-    );
+    protected $listModes;
 
     /**
      * The Access mapping.
@@ -522,6 +515,8 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
 
         $this->predefinePerPageOptions();
         $this->datagridValues['_per_page'] = $this->maxPerPage;
+
+        $this->initListModes();
     }
 
     /**
@@ -3111,5 +3106,44 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
         foreach ($this->getExtensions() as $extension) {
             $extension->configureRoutes($this, $this->routes);
         }
+    }
+
+    /**
+     * Setting to true will enable mosaic button for
+     * the admin screen.
+     * Setting to false will hide mosaic button for
+     * the admin screen.
+     */
+    public function setIsShowMosaicButton($isShow)
+    {
+        $var = (bool)$isShow;
+
+        if (!$var) {
+            $this->hideMosaicButton();
+            return;
+        }
+
+        $this->showMosaicButton();
+    }
+
+    protected function hideMosaicButton()
+    {
+        unset($this->listModes['mosaic']);
+    }
+
+    protected function initListModes()
+    {
+        $this->listModes = array(
+            'list' => array(
+                'class' => 'fa fa-list fa-fw',
+            )
+        );
+
+        $this->showMosaicButton();
+    }
+
+    protected function showMosaicButton()
+    {
+        $this->listModes['mosaic'] = array('class' => 'fa fa-th-large fa-fw');
     }
 }
