@@ -323,6 +323,10 @@ template
     {# change the default selection format #}
     {% block sonata_type_model_autocomplete_selection_format %}'<b>'+item.label+'</b>'{% endblock %}
 
+.. tip::
+
+    A jQuery event is fired after autocomplete selected value has been changed (``sonata.autocomplete_new_element_selected``).
+
 sonata_choice_field_mask
 ^^^^^^^^^^^^^^^^^^^^^^^^
 

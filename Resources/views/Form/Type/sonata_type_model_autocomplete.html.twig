@@ -106,6 +106,9 @@ file that was distributed with this source code.
 
                 // console.log('change '+JSON.stringify({val:e.val, added:e.added, removed:e.removed}));
 
+                // fire event when user has changed the autocomplete selected value
+                jQuery('#sonata-ba-field-container-{{ id }}').trigger('sonata.autocomplete_new_element_selected');
+
                 // remove input
                 if (undefined !== e.removed && null !== e.removed) {
                     var removedItems = e.removed;
