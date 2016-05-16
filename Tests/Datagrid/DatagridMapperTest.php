@@ -226,6 +226,17 @@ class DatagridMapperTest extends \PHPUnit_Framework_TestCase
         $this->fail('Failed asserting that exception of type "\RuntimeException" is thrown.');
     }
 
+    public function testKeys()
+    {
+        $fieldDescription1 = $this->getFieldDescriptionMock('fooName1', 'fooLabel1');
+        $fieldDescription2 = $this->getFieldDescriptionMock('fooName2', 'fooLabel2');
+
+        $this->datagridMapper->add($fieldDescription1, null, array('field_name' => 'fooFilterName1'));
+        $this->datagridMapper->add($fieldDescription2, null, array('field_name' => 'fooFilterName2'));
+
+        $this->assertSame(array('fooName1', 'fooName2'), $this->datagridMapper->keys());
+    }
+
     public function testReorder()
     {
         $fieldDescription1 = $this->getFieldDescriptionMock('fooName1', 'fooLabel1');

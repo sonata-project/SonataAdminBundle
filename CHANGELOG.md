@@ -5,6 +5,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [3.x]
 ### Added
 - Added AbstractAdmin, replacing Admin
+- Added `BaseMapper::keys` method
 
 ### Changed
 - Updated AdminLTE theme to version 2.3.3
