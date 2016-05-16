@@ -80,6 +80,10 @@ class RouteCollectionTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($routeCollection->has('edit'));
         $this->assertFalse($routeCollection->has('view'));
         $this->assertFalse($routeCollection->has('list'));
+
+        $routeCollection->clearExcept('create');
+        $this->assertTrue($routeCollection->has('create'));
+        $this->assertFalse($routeCollection->has('edit'));
     }
 
     public function testGetWithException()
