@@ -28,7 +28,7 @@ All we need to do now is add a reference for this field in our ``PageAdmin`` cla
     <?php
     // src/AppBundle/Admin/PageAdmin.php
 
-    class PageAdmin extends Admin
+    class PageAdmin extends AbstractAdmin
     {
         protected function configureFormFields(FormMapper $formMapper)
         {
@@ -111,7 +111,7 @@ identifier of related entity.
     <?php
     // src/AppBundle/Admin/PageAdmin.php
 
-    class PageAdmin extends Admin
+    class PageAdmin extends AbstractAdmin
     {
         protected function configureFormFields(FormMapper $formMapper)
         {
@@ -157,7 +157,7 @@ datagrid filter for the property ``title``.
     <?php
     // src/AppBundle/Admin/ArticleAdmin.php
 
-    class ArticleAdmin extends Admin
+    class ArticleAdmin extends AbstractAdmin
     {
         protected function configureFormFields(FormMapper $formMapper)
         {
@@ -176,7 +176,7 @@ datagrid filter for the property ``title``.
     <?php
     // src/AppBundle/Admin/CategoryAdmin.php
 
-    class CategoryAdmin extends Admin
+    class CategoryAdmin extends AbstractAdmin
     {
         protected function configureDatagridFilters(DatagridMapper $datagridMapper)
         {
@@ -301,7 +301,7 @@ template
     <?php
     // src/AppBundle/Admin/ArticleAdmin.php
 
-    class ArticleAdmin extends Admin
+    class ArticleAdmin extends AbstractAdmin
     {
         protected function configureFormFields(FormMapper $formMapper)
         {
@@ -336,7 +336,7 @@ According the choice made only associated fields are displayed. The others field
     <?php
     // src/AppBundle/Admin/AppMenuAdmin.php
 
-    class AppMenuAdmin extends Admin
+    class AppMenuAdmin extends AbstractAdmin
     {
         protected function configureFormFields(FormMapper $formMapper)
         {
@@ -415,7 +415,7 @@ for the ``image1`` field to ``sonata_type_admin`` in our ``PageAdmin`` class:
     <?php
     // src/AppBundle/Admin/PageAdmin.php
 
-    class PageAdmin extends Admin
+    class PageAdmin extends AbstractAdmin
     {
         protected function configureFormFields(FormMapper $formMapper)
         {
@@ -455,7 +455,7 @@ to the underlying forms.
     <?php
     // src/AppBundle/Admin/ProductAdmin.php
 
-    class ProductAdmin extends Admin
+    class ProductAdmin extends AbstractAdmin
     {
         protected function configureFormFields(FormMapper $formMapper)
         {
@@ -542,7 +542,7 @@ example above:
     <?php
     // src/AppBundle/Admin/PageAdmin.php
 
-    class PageAdmin extends Admin
+    class PageAdmin extends AbstractAdmin
     {
         protected function configureFormFields(FormMapper $formMapper)
         {
@@ -574,7 +574,7 @@ General
     <?php
     // src/AppBundle/Admin/PageAdmin.php
 
-    class PageAdmin extends Admin
+    class PageAdmin extends AbstractAdmin
     {
         protected function configureFormFields(FormMapper $formMapper)
         {
@@ -600,7 +600,7 @@ ChoiceType
     <?php
     // src/AppBundle/Admin/PageAdmin.php
 
-    class PageAdmin extends Admin
+    class PageAdmin extends AbstractAdmin
     {
         protected function configureFormFields(FormMapper $formMapper)
         {

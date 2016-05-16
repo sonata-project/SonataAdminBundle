@@ -170,7 +170,7 @@ Both of these are straightforward when you know what to do:
     <?php
     // src/AppBundle/Admin/ImageAdmin.php
 
-    class ImageAdmin extends Admin
+    class ImageAdmin extends AbstractAdmin
     {
         protected function configureFormFields(FormMapper $formMapper)
         {

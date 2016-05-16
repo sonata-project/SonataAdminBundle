@@ -85,7 +85,7 @@ The ``ObjectMetadata`` object is returned by the related admin class, for instan
 
     <?php
 
-    class MediaAdmin extends AdminInterface
+    class MediaAdmin extends AbstractAdmin
     {
         // [...] others methods
 
