@@ -12,13 +12,13 @@
 namespace Sonata\AdminBundle\Admin;
 
 @trigger_error(
-    'The '.__NAMESPACE__.'\AdminExtension class is deprecated since version 3.x and will be removed in 4.0.'
+    'The '.__NAMESPACE__.'\AdminExtension class is deprecated since version 3.1 and will be removed in 4.0.'
     .' Use '.__NAMESPACE__.'\AbstractAdminExtension instead.',
     E_USER_DEPRECATED
 );
 
 /**
- * @deprecated since version 3.x, to be removed in 4.0. Use Sonata\AdminBundle\AbstractAdminExtension instead.
+ * @deprecated since version 3.1, to be removed in 4.0. Use Sonata\AdminBundle\AbstractAdminExtension instead.
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
