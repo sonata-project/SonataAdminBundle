@@ -89,12 +89,12 @@ This Extension for example adds a note field to some entities which use a custom
 
     namespace AppBundle\Admin\Extension;
 
-    use Sonata\AdminBundle\Admin\AdminExtension;
+    use Sonata\AdminBundle\Admin\AbstractAdminExtension;
     use Sonata\AdminBundle\Datagrid\DatagridMapper;
     use Sonata\AdminBundle\Form\FormMapper;
     use Sonata\AdminBundle\Show\ShowMapper;
 
-    class NoteAdminExtension extends AdminExtension
+    class NoteAdminExtension extends AbstractAdminExtension
     {
 
         // add this field to the datagrid every time its available

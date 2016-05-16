@@ -8,10 +8,10 @@ alter newly created objects and other admin features.
 
 .. code-block:: php
 
-    use Sonata\AdminBundle\Admin\AdminExtension;
+    use Sonata\AdminBundle\Admin\AbstractAdminExtension;
     use Sonata\AdminBundle\Form\FormMapper;
 
-    class PublishStatusAdminExtension extends AdminExtension
+    class PublishStatusAdminExtension extends AbstractAdminExtension
     {
         public function configureFormFields(FormMapper $formMapper)
         {

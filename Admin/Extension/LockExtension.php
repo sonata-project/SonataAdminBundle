@@ -11,7 +11,7 @@
 
 namespace Sonata\AdminBundle\Admin\Extension;
 
-use Sonata\AdminBundle\Admin\AdminExtension;
+use Sonata\AdminBundle\Admin\AbstractAdminExtension;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Model\LockInterface;
@@ -21,7 +21,7 @@ use Symfony\Component\Form\FormEvents;
 /**
  * @author Emmanuel Vella <vella.emmanuel@gmail.com>
  */
-class LockExtension extends AdminExtension
+class LockExtension extends AbstractAdminExtension
 {
     /**
      * @var string

@@ -14,6 +14,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Deprecated `BaseFieldDescription::camelize()`
 - Deprecated `AdminHelper::camelize()`
 - Deprecated `Admin` class
+- Deprecated `AdminExtension` class
 - Deprecated default template loading on exception mechanism
 
 ### Fixed
