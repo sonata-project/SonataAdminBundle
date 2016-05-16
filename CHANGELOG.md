@@ -8,6 +8,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Add the ``configureActionButtons`` method to the AdminExtensionInterface
 - Add the ``configureBatchActions`` method to the AdminExtensionInterface
 
+### Removed
+- Removed BC handler for deprecated `view` `_action`
+
 ## [3.x]
 ### Added
 - Added AbstractAdmin, replacing Admin
