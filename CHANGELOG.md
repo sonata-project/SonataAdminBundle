@@ -8,6 +8,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 - Updated AdminLTE theme to version 2.3.3
+- `RouteCollection::clearExcept` can now have a single string argument
 
 ### Deprecated
 - Deprecated `BaseFieldDescription::camelize()`
