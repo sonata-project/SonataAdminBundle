@@ -28,7 +28,7 @@ be added to generate the actual route names.
     <?php
     // src/AppBundle/Admin/PostAdmin.php
 
-    class PostAdmin extends Admin
+    class PostAdmin extends AbstractAdmin
     {
         protected $baseRouteName = 'sonata_post';
         // will result in routes named:
@@ -52,14 +52,14 @@ If the admin class is a child of another admin class the route name will be pref
 
     <?php
     // The parent admin class
-    class PostAdmin extends Admin
+    class PostAdmin extends AbstractAdmin
     {
         protected $baseRouteName = 'sonata_post';
         // ...
     }
 
     // The child admin class
-    class CommentAdmin extends Admin
+    class CommentAdmin extends AbstractAdmin
     {
         protected $baseRouteName = 'comment'
         // will result in routes named :
@@ -84,7 +84,7 @@ use the following code:
     <?php
     // src/AppBundle/Admin/FooAdmin.php
 
-    class FooAdmin extends Admin
+    class FooAdmin extends AbstractAdmin
     {
         protected $baseRoutePattern = 'foo';
     }
@@ -98,14 +98,14 @@ If the admin class is a child of another admin class the route pattern will be p
 
     <?php
     // The parent admin class
-    class PostAdmin extends Admin
+    class PostAdmin extends AbstractAdmin
     {
         protected $baseRoutePattern = 'post';
         // ...
     }
 
     // The child admin class
-    class CommentAdmin extends Admin
+    class CommentAdmin extends AbstractAdmin
     {
         protected $baseRoutePattern = 'comment'
         // ...
@@ -155,7 +155,7 @@ explicitly this defaults to the action name.
 
     use Sonata\AdminBundle\Route\RouteCollection;
 
-    class MediaAdmin extends Admin
+    class MediaAdmin extends AbstractAdmin
     {
         protected function configureRoutes(RouteCollection $collection)
         {
@@ -177,7 +177,7 @@ in the ``add`` method to set additional settings like this:
 
     use Sonata\AdminBundle\Route\RouteCollection;
 
-    class MediaAdmin extends Admin
+    class MediaAdmin extends AbstractAdmin
     {
         protected function configureRoutes(RouteCollection $collection)
         {
@@ -271,7 +271,7 @@ Any single registered route can be easily removed by name:
 
     use Sonata\AdminBundle\Route\RouteCollection;
 
-    class MediaAdmin extends Admin
+    class MediaAdmin extends AbstractAdmin
     {
         protected function configureRoutes(RouteCollection $collection)
         {
@@ -293,7 +293,7 @@ the ``clearExcept()`` method. This method accepts an array of routes you want to
 
     use Sonata\AdminBundle\Route\RouteCollection;
 
-    class MediaAdmin extends Admin
+    class MediaAdmin extends AbstractAdmin
     {
         protected function configureRoutes(RouteCollection $collection)
         {
@@ -314,7 +314,7 @@ If you want to remove all default routes, you can use ``clear()`` method.
 
     use Sonata\AdminBundle\Route\RouteCollection;
 
-    class MediaAdmin extends Admin
+    class MediaAdmin extends AbstractAdmin
     {
         protected function configureRoutes(RouteCollection $collection)
         {
@@ -337,7 +337,7 @@ can use ``hasParentFieldDescription()`` to detect this case and remove the route
 
     use Sonata\AdminBundle\Route\RouteCollection;
 
-    class TagAdmin extends Admin
+    class TagAdmin extends AbstractAdmin
     {
         protected function configureRoutes(RouteCollection $collection)
         {
@@ -361,7 +361,7 @@ method. This method will be used when a link is being generated.
     <?php
     // src/AppBundle/Admin/MediaAdmin.php
 
-    class MediaAdmin extends Admin
+    class MediaAdmin extends AbstractAdmin
     {
         public function getPersistentParameters()
         {
@@ -390,7 +390,7 @@ list action's links to point to a different action, set the ``route`` option in 
     <?php
     // src/AppBundle/Admin/PostAdmin.php
 
-    class PostAdmin extends Admin
+    class PostAdmin extends AbstractAdmin
     {
         public function configureListFields(ListMapper $listMapper)
         {

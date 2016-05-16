@@ -19,7 +19,7 @@ You have two options to configure the catalogue for the Admin class:
 
       <?php
 
-      class PageAdmin extends Admin
+      class PageAdmin extends AbstractAdmin
       {
           protected $translationDomain = 'SonataPageBundle'; // default is 'messages'
       }
@@ -110,7 +110,7 @@ label can be defined as the third argument of the ``add`` method:
 
 .. code-block:: php
 
-    class PageAdmin extends Admin
+    class PageAdmin extends AbstractAdmin
     {
         public function configureFormFields(FormMapper $formMapper)
         {
