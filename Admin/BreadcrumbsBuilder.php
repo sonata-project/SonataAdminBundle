@@ -50,29 +50,22 @@ final class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
         if (!$menu) {
             $menu = $admin->getMenuFactory()->createItem('root');
 
-            $menu = $menu->addChild(
-                $admin->trans(
-                    $admin->getLabelTranslatorStrategy()->getLabel(
-                        'dashboard',
-                        'breadcrumb',
-                        'link'
-                    ),
-                    array(),
-                    'SonataAdminBundle'
-                ),
+            $menu = $this->createMenuItem(
+                $admin,
+                $menu,
+                'dashboard',
+                'SonataAdminBundle',
                 array('uri' => $admin->getRouteGenerator()->generate(
                     'sonata_admin_dashboard'
                 ))
             );
         }
 
-        $menu = $menu->addChild(
-            $admin->trans(
-                $admin->getLabelTranslatorStrategy()->getLabel(sprintf(
-                    '%s_list',
-                    $admin->getClassnameLabel()
-                ), 'breadcrumb', 'link')
-            ),
+        $menu = $this->createMenuItem(
+            $admin,
+            $menu,
+            sprintf('%s_list', $admin->getClassnameLabel()),
+            null,
             array(
                 'uri' => $admin->hasRoute('list') && $admin->isGranted('LIST') ?
                 $admin->generateUrl('list') :
@@ -102,17 +95,46 @@ final class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
         } elseif ('create' !== $action && $admin->hasSubject()) {
             $menu = $menu->addChild($admin->toString($admin->getSubject()));
         } else {
-            $menu = $menu->addChild(
-                $admin->trans(
-                    $admin->getLabelTranslatorStrategy()->getLabel(
-                        sprintf('%s_%s', $admin->getClassnameLabel(), $action),
-                        'breadcrumb',
-                        'link'
-                    )
-                )
+            $menu = $this->createMenuItem(
+                $admin,
+                $menu,
+                sprintf('%s_%s', $admin->getClassnameLabel(), $action)
             );
         }
 
         return $menu;
+    }
+
+    /**
+     * Creates a new menu item from a simple name. The name is normalized and
+     * translated with the specified translation domain.
+     *
+     * @param AdminInterface $admin             used for translation
+     * @param ItemInterface  $menu              will be modified and returned
+     * @param string         $name              the source of the final label
+     * @param string         $translationDomain for label translation
+     * @param array          $options           menu item options
+     *
+     * @return ItemInterface
+     */
+    private function createMenuItem(
+        AdminInterface $admin,
+        ItemInterface $menu,
+        $name,
+        $translationDomain = null,
+        $options = array()
+    ) {
+        return $menu->addChild(
+            $admin->trans(
+                $admin->getLabelTranslatorStrategy()->getLabel(
+                    $name,
+                    'breadcrumb',
+                    'link'
+                ),
+                array(),
+                $translationDomain
+            ),
+            $options
+        );
     }
 }

@@ -345,12 +345,12 @@ class BreadcrumbsBuilderTest extends \PHPUnit_Framework_TestCase
                 'breadcrumb',
                 'link'
             )->willReturn('create my object');
-            $admin->trans('create my object')->willReturn('Créer mon objet')->shouldBeCalled();
-            $menu->addChild('Créer mon objet')->willReturn($menu);
+            $admin->trans('create my object', array(), null)->willReturn('Créer mon objet')->shouldBeCalled();
+            $menu->addChild('Créer mon objet', array())->willReturn($menu);
         }
         $childAdmin = $this->prophesize('Sonata\AdminBundle\Admin\AbstractAdmin');
 
-        $admin->trans('My class')->willReturn('Ma classe');
+        $admin->trans('My class', array(), null)->willReturn('Ma classe');
         $admin->hasRoute('list')->willReturn(true);
         $admin->isGranted('LIST')->willReturn(true);
         $admin->generateUrl('list')->willReturn('/myadmin/list');
