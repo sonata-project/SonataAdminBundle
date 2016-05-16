@@ -114,15 +114,14 @@ interface AdminExtensionInterface
      */
     public function getPersistentParameters(AdminInterface $admin);
 
-    /**
-     * Return the controller access mapping.
-     *
-     * @param AdminInterface $admin
-     *
-     * @return array
-     */
-    // TODO: Uncomment in next major release
-    // public function getAccessMapping(AdminInterface $admin);
+     /**
+      * Return the controller access mapping.
+      *
+      * @param AdminInterface $admin
+      *
+      * @return array
+      */
+     public function getAccessMapping(AdminInterface $admin);
 
     /**
      * Returns the list of batch actions.
