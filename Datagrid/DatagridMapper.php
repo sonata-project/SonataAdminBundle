@@ -108,6 +108,14 @@ class DatagridMapper extends BaseMapper
     /**
      * {@inheritdoc}
      */
+    final public function keys()
+    {
+        return array_keys($this->datagrid->getFilters());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function remove($key)
     {
         $this->admin->removeFilterFieldDescription($key);

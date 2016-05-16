@@ -380,6 +380,20 @@ class FormMapperTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(array(), $this->admin->getFormTabs());
     }
 
+    public function testKeys()
+    {
+        $this->contractor->expects($this->any())
+            ->method('getDefaultOptions')
+            ->will($this->returnValue(array()));
+
+        $this->formMapper
+            ->add('foo', 'bar')
+            ->add('baz', 'foobaz')
+        ;
+
+        $this->assertSame(array('foo', 'baz'), $this->formMapper->keys());
+    }
+
     private function getFieldDescriptionMock($name = null, $label = null, $translationDomain = null)
     {
         $fieldDescription = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\BaseFieldDescription');

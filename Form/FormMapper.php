@@ -163,6 +163,14 @@ class FormMapper extends BaseGroupedMapper
     /**
      * {@inheritdoc}
      */
+    final public function keys()
+    {
+        return array_keys($this->formBuilder->all());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function remove($key)
     {
         $this->admin->removeFormFieldDescription($key);
