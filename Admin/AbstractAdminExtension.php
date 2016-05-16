@@ -21,11 +21,9 @@ use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\CoreBundle\Validator\ErrorElement;
 
 /**
- * Class AdminExtension.
- *
- * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-abstract class AdminExtension implements AdminExtensionInterface
+abstract class AbstractAdminExtension implements AdminExtensionInterface
 {
     /**
      * {@inheritdoc}
