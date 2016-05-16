@@ -183,12 +183,16 @@ class RouteCollection
     /**
      * Remove all routes except routes in $routeList.
      *
-     * @param array $routeList
+     * @param string[]|string $routeList
      *
      * @return RouteCollection
      */
-    public function clearExcept(array $routeList)
+    public function clearExcept($routeList)
     {
+        if (!is_array($routeList)) {
+            $routeList = array($routeList);
+        }
+
         $routeCodeList = array();
         foreach ($routeList as $name) {
             $routeCodeList[] = $this->getCode($name);

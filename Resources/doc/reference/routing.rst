@@ -299,6 +299,8 @@ the ``clearExcept()`` method. This method accepts an array of routes you want to
         {
             // Only `list` and `edit` route will be active
             $collection->clearExcept(array('list', 'edit'));
+            // You can also pass a single string argument
+            $collection->clearExcept('list');
         }
     }
 
