@@ -121,7 +121,7 @@ class AdminTest extends \PHPUnit_Framework_TestCase
         $securityHandler->isGranted($admin, 'CUSTOM_ROLE', $admin)->willReturn(true);
         $securityHandler->isGranted($admin, 'EXTRA_CUSTOM_ROLE', $admin)->willReturn(false);
         $customExtension = $this->prophesize(
-            'Sonata\AdminBundle\Admin\AdminExtension'
+            'Sonata\AdminBundle\Admin\AbstractAdminExtension'
         );
         $customExtension->getAccessMapping($admin)->willReturn(
             array('custom_action' => array('CUSTOM_ROLE', 'EXTRA_CUSTOM_ROLE'))
@@ -159,7 +159,7 @@ class AdminTest extends \PHPUnit_Framework_TestCase
         $securityHandler->isGranted($admin, 'CUSTOM_ROLE', $admin)->willReturn(true);
         $securityHandler->isGranted($admin, 'EXTRA_CUSTOM_ROLE', $admin)->willReturn(false);
         $customExtension = $this->prophesize(
-            'Sonata\AdminBundle\Admin\AdminExtension'
+            'Sonata\AdminBundle\Admin\AbstractAdminExtension'
         );
         $customExtension->getAccessMapping($admin)->willReturn(
             array('custom_action' => array('CUSTOM_ROLE', 'EXTRA_CUSTOM_ROLE'))
@@ -183,7 +183,7 @@ class AdminTest extends \PHPUnit_Framework_TestCase
         $securityHandler->isGranted($admin, 'CUSTOM_ROLE', $admin)->willReturn(true);
         $securityHandler->isGranted($admin, 'EXTRA_CUSTOM_ROLE', $admin)->willReturn(true);
         $customExtension = $this->prophesize(
-            'Sonata\AdminBundle\Admin\AdminExtension'
+            'Sonata\AdminBundle\Admin\AbstractAdminExtension'
         );
         $customExtension->getAccessMapping($admin)->willReturn(
             array('custom_action' => array('CUSTOM_ROLE', 'EXTRA_CUSTOM_ROLE'))
@@ -206,7 +206,7 @@ class AdminTest extends \PHPUnit_Framework_TestCase
         );
         $securityHandler->isGranted($admin, 'EDIT_ROLE', $admin)->willReturn(true);
         $customExtension = $this->prophesize(
-            'Sonata\AdminBundle\Admin\AdminExtension'
+            'Sonata\AdminBundle\Admin\AbstractAdminExtension'
         );
         $customExtension->getAccessMapping($admin)->willReturn(
             array('edit_action' => array('EDIT_ROLE'))
