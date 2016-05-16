@@ -55,7 +55,15 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
     const CONTEXT_MENU = 'menu';
     const CONTEXT_DASHBOARD = 'dashboard';
 
-    const CLASS_REGEX = '@(?:([A-Za-z0-9]*)\\\)?(Bundle\\\)?([A-Za-z0-9]+?)(?:Bundle)?\\\(Entity|Document|Model|PHPCR|CouchDocument|Phpcr|Doctrine\\\Orm|Doctrine\\\Phpcr|Doctrine\\\MongoDB|Doctrine\\\CouchDB)\\\(.*)@';
+    const CLASS_REGEX =
+        '@
+        (?:([A-Za-z0-9]*)\\\)?        # vendor name / app name
+        (Bundle\\\)?                  # optional bundle directory
+        ([A-Za-z0-9]+?)(?:Bundle)?\\\ # bundle name, with optional suffix
+        (
+            Entity|Document|Model|PHPCR|CouchDocument|Phpcr|
+            Doctrine\\\Orm|Doctrine\\\Phpcr|Doctrine\\\MongoDB|Doctrine\\\CouchDB
+        )\\\(.*)@x';
 
     /**
      * The list FieldDescription constructed from the configureListField method.

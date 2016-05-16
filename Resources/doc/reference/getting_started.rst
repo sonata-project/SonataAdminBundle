@@ -79,7 +79,7 @@ This is how a basic Admin class for it could look like:
     use Sonata\AdminBundle\Datagrid\ListMapper;
     use Sonata\AdminBundle\Datagrid\DatagridMapper;
 
-    class PostAdmin extends Admin
+    class PostAdmin extends AbstractAdmin
     {
         // Fields to be shown on create/edit forms
         protected function configureFormFields(FormMapper $formMapper)

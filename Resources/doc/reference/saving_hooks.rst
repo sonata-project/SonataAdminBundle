@@ -46,7 +46,7 @@ solve the issue by using the ``preUpdate`` saving hook.
     use Sonata\AdminBundle\Admin\AbstractAdmin;
     use FOS\UserBundle\Model\UserManagerInterface;
 
-    class UserAdmin extends Admin
+    class UserAdmin extends AbstractAdmin
     {
         protected function configureFormFields(FormMapper $formMapper)
         {

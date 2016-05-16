@@ -248,7 +248,7 @@ Admin class. This receives the object to transform to a string as the first para
     // ...
     use AppBundle\Entity\BlogPost;
 
-    class BlogPostAdmin extends Admin
+    class BlogPostAdmin extends AbstractAdmin
     {
         // ...
 
