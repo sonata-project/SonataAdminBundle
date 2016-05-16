@@ -215,6 +215,17 @@ class ListMapperTest extends \PHPUnit_Framework_TestCase
         }
     }
 
+    public function testKeys()
+    {
+        $fieldDescription1 = $this->getFieldDescriptionMock('fooName1', 'fooLabel1');
+        $fieldDescription2 = $this->getFieldDescriptionMock('fooName2', 'fooLabel2');
+
+        $this->listMapper->add($fieldDescription1);
+        $this->listMapper->add($fieldDescription2);
+
+        $this->assertSame(array('fooName1', 'fooName2'), $this->listMapper->keys());
+    }
+
     public function testReorder()
     {
         $fieldDescription1 = $this->getFieldDescriptionMock('fooName1', 'fooLabel1');
