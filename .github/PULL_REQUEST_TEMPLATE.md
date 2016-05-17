@@ -17,7 +17,7 @@ Closes #
 
 ```markdown
 ### Added
-- Added some stuff
+- Added some `Class::newMethod` to do great stuff
 
 ### Changed
 
@@ -32,7 +32,7 @@ Closes #
 
 ### Subject
 
-<!-- Describe here your Pull Request content -->
+<!-- Describe your Pull Request content here -->
 
 ### To do
 
