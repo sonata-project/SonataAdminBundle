@@ -31,7 +31,7 @@ class ModelAdmin extends AbstractAdmin
             ->add('foo')
             ->add('bar')
             ->add('baz')
-            ->add('_action', 'actions', array(
+            ->add('_action', null, array(
                 'actions' => array(
                     'show' => array(),
                     'edit' => array(),

@@ -186,7 +186,7 @@ Next we have to add the action in ``configureListFields`` specifying the templat
 
              // other fields...
 
-            ->add('_action', 'actions', array(
+            ->add('_action', null, array(
                 'actions' => array(
 
                     // ...
@@ -240,7 +240,7 @@ The full ``CarAdmin.php`` example looks like this:
                 ->add('engine')
                 ->add('rescueEngine')
                 ->add('createdAt')
-                ->add('_action', 'actions', array(
+                ->add('_action', null, array(
                     'actions' => array(
                         'show' => array(),
                         'edit' => array(),

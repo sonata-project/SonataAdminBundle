@@ -75,7 +75,7 @@ and use the default twig template provided in the ``pixSortableBehaviorBundle``
 .. code-block:: php
 
 	$listMapper
-	    ->add('_action', 'actions', array(
+	    ->add('_action', null, array(
             'actions' => array(
                 'move' => array(
                     'template' => 'PixSortableBehaviorBundle:Default:_sort.html.twig'
@@ -165,7 +165,7 @@ also define the sort by field to be position:
             $listMapper
                 ->addIdentifier('name')
                 ->add('enabled')
-                ->add('_action', 'actions', array(
+                ->add('_action', null, array(
                     'actions' => array(
                         'move' => array(
                             'template' => 'AppBundle:Admin:_sort.html.twig'
