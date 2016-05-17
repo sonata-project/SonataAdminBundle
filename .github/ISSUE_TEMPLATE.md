@@ -1,8 +1,12 @@
-Delete this sentence after you read the "Issues" paragraph from the
-"guidelines for contributing" link above.
+<!--
+    Before you open an issue, make sure this one does not already exists.
+    Please also read the "guidelines for contributing" link above before posting.
+-->
 
-If you are reporting a bug, please try to fill in the following, otherwise
-remove it along with this sentence.
+<!--
+    If you are reporting a bug, please try to fill in the following.
+    Otherwise remove it.
+-->
 
 | Question       | Answer
 |----------------|-------------------------------
