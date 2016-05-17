@@ -20,6 +20,7 @@ specified in a field description cannot be found was removed.
 ### Added
 - Added AbstractAdmin, replacing Admin
 - Added `BaseMapper::keys` method
+- Added additional _ALL role check to RoleSecurityHandler 
 
 ### Changed
 - Updated AdminLTE theme to version 2.3.3

@@ -105,6 +105,10 @@ class RoleSecurityHandlerTest extends \PHPUnit_Framework_TestCase
                     return true;
                 }
 
+                if (in_array('ROLE_FOO_BAR_ALL_ALL',$attributes)) {
+                    return true;
+                }
+
                 return false;
             }));
 
@@ -174,6 +178,9 @@ class RoleSecurityHandlerTest extends \PHPUnit_Framework_TestCase
             array(false, array(), 'foo.bar.baz.xyz', 'BAZ', new \stdClass()),
             array(false, array(), 'foo.bar.baz.xyz', array('BAZ'), new \stdClass()),
             array(false, array('ROLE_AUTH_EXCEPTION'), 'foo.bar.baz.xyz', array('BAZ'), new \stdClass()),
+
+            //ALL role
+            array(true, array(),'foo.bar.all','LIST'),
         );
     }
 
