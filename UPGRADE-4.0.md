@@ -18,3 +18,6 @@ If you have implemented a custom admin extension, you must adapt the signature o
  * `configureActionButtons`
  * `configureBatchActions`
  * `getAccessMapping`
+
+## SonataAdminExtension
+The Twig filters that come with the bundle will no longer load a default template when used with a missing template.
