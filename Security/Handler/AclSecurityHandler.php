@@ -137,8 +137,6 @@ class AclSecurityHandler implements AclSecurityHandlerInterface
             return $this->authorizationChecker->isGranted($this->superAdminRoles) || $this->authorizationChecker->isGranted($attributes, $object);
         } catch (AuthenticationCredentialsNotFoundException $e) {
             return false;
-        } catch (\Exception $e) {
-            throw $e;
         }
     }
 
@@ -216,15 +214,10 @@ class AclSecurityHandler implements AclSecurityHandlerInterface
     {
         try {
             $acls = $this->aclProvider->findAcls(iterator_to_array($oids), $sids);
-        } catch (\Exception $e) {
-            if ($e instanceof NotAllAclsFoundException) {
-                $acls = $e->getPartialResult();
-            } elseif ($e instanceof AclNotFoundException) {
-                // if only one oid, this error is thrown
-                $acls = new \SplObjectStorage();
-            } else {
-                throw $e;
-            }
+        } catch (NotAllAclsFoundException $e) {
+            $acls = $e->getPartialResult();
+        } catch (AclNotFoundException $e) { // if only one oid, this error is thrown
+            $acls = new \SplObjectStorage();
         }
 
         return $acls;
