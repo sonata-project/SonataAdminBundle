@@ -67,8 +67,6 @@ class RoleSecurityHandler implements SecurityHandlerInterface
                 || $this->authorizationChecker->isGranted($attributes, $object);
         } catch (AuthenticationCredentialsNotFoundException $e) {
             return false;
-        } catch (\Exception $e) {
-            throw $e;
         }
     }
 
