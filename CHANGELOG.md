@@ -6,24 +6,24 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [3.1.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.0.0...3.1.0) - 2016-05-17
 ### Added
-- Added `AbstractAdmin` class, replacing `Admin` one
-- Added `BaseMapper::keys` method
+- Add `AbstractAdmin` class, replacing `Admin` one
+- Add `BaseMapper::keys` method
 
 ### Changed
-- Updated AdminLTE theme to version 2.3.3
+- Update AdminLTE theme to version 2.3.3
 - `RouteCollection::clearExcept` can now have a single string argument
 
 ### Deprecated
-- Deprecated `BaseFieldDescription::camelize`
-- Deprecated `AdminHelper::camelize`
-- Deprecated `Admin` class
-- Deprecated `AdminExtension` class
-- Deprecated default template loading on exception mechanism
+- Deprecate `BaseFieldDescription::camelize`
+- Deprecate `AdminHelper::camelize`
+- Deprecate `Admin` class
+- Deprecate `AdminExtension` class
+- Deprecate default template loading on exception mechanism
 
 ### Fixed
 - Fix detection of path when using nested properties with underscores in `AdminHelper:getElementAccessPath` method
-- Fixed bad rendering on datetime field with `single_text` widget for date and time
-- Fixed rendering of empty form groups
+- Fix bad rendering on datetime field with `single_text` widget for date and time
+- Fix rendering of empty form groups
 
 ## [3.0.0](https://github.com/sonata-project/SonataAdminBundle/compare/2.3.10...3.0.0) - 2016-05-08
 ### Added
