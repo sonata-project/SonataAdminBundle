@@ -137,8 +137,6 @@ class AclSecurityHandler implements AclSecurityHandlerInterface
             return $this->authorizationChecker->isGranted($this->superAdminRoles) || $this->authorizationChecker->isGranted($attributes, $object);
         } catch (AuthenticationCredentialsNotFoundException $e) {
             return false;
-        } catch (\Exception $e) {
-            throw $e;
         }
     }
 
