@@ -30,6 +30,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - `AbstractAdmin::defineFormBuilder` method is now private
 - `AbstractAdmin::configureActionButtons` method signature has changed
 - Moved default buttons from `AbstractAdmin::configureActionButtons` to `AbstractAdmin::getActionButtons`
+- `AbstractAdmin::getBatchActions` is now final
 
 ### Removed
 - Removed BC handler for deprecated `view` `_action`
