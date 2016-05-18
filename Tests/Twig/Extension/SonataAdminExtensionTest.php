@@ -1584,7 +1584,14 @@ EOT
             ->method('getValue')
             ->will($this->returnValue('test123'));
 
-        $this->assertSame('test123', $this->twigExtension->getValueFromFieldDescription($object, $fieldDescription));
+        $this->assertSame(
+            'test123',
+            $this->getMethodAsPublic('getValueFromFieldDescription')->invoke(
+                $this->twigExtension,
+                $object,
+                $fieldDescription
+            )
+        );
     }
 
     public function testGetValueFromFieldDescriptionWithRemoveLoopException()
@@ -1595,7 +1602,8 @@ EOT
         try {
             $this->assertSame(
                 'anything',
-                $this->twigExtension->getValueFromFieldDescription($object, $fieldDescription, array('loop' => true))
+                $this->getMethodAsPublic('getValueFromFieldDescription')
+                    ->invoke($this->twigExtension, $object, $fieldDescription, array('loop' => true))
             );
         } catch (\RuntimeException $e) {
             $this->assertContains('remove the loop requirement', $e->getMessage());
@@ -1621,7 +1629,14 @@ EOT
             ->method('getAssociationAdmin')
             ->will($this->returnValue(null));
 
-        $this->assertSame(null, $this->twigExtension->getValueFromFieldDescription($object, $fieldDescription));
+        $this->assertSame(
+            null,
+            $this->getMethodAsPublic('getValueFromFieldDescription')->invoke(
+                $this->twigExtension,
+                $object,
+                $fieldDescription
+            )
+        );
     }
 
     public function testGetValueFromFieldDescriptionWithNoValueExceptionNewAdminInstance()
@@ -1643,7 +1658,14 @@ EOT
             ->method('getNewInstance')
             ->will($this->returnValue('foo'));
 
-        $this->assertSame('foo', $this->twigExtension->getValueFromFieldDescription($object, $fieldDescription));
+        $this->assertSame(
+            'foo',
+            $this->getMethodAsPublic('getValueFromFieldDescription')->invoke(
+                $this->twigExtension,
+                $object,
+                $fieldDescription
+            )
+        );
     }
 
     public function testOutput()
@@ -1667,9 +1689,12 @@ EOT
 
         $template = $this->environment->loadTemplate('SonataAdminBundle:CRUD:base_list_field.html.twig');
 
+        $reflection = $this->getMethodAsPublic('output');
+
         $this->assertSame(
             '<td class="sonata-ba-list-field sonata-ba-list-field-" objectId="12345"> foo </td>',
-            $this->removeExtraWhitespace($this->twigExtension->output(
+            $this->removeExtraWhitespace($reflection->invoke(
+                $this->twigExtension,
                 $this->fieldDescription,
                 $template,
                 $parameters,
@@ -1690,7 +1715,13 @@ EOT
 EOT
             ),
             $this->removeExtraWhitespace(
-                $this->twigExtension->output($this->fieldDescription, $template, $parameters, $this->environment)
+                $reflection->invoke(
+                    $this->twigExtension,
+                    $this->fieldDescription,
+                    $template,
+                    $parameters,
+                    $this->environment
+                )
             )
         );
     }
@@ -1889,6 +1920,14 @@ EOT
             ->will($this->returnValue(1234567));
 
         $this->assertSame(1234567, $this->twigExtension->getUrlsafeIdentifier($entity, $this->adminBar));
+    }
+
+    private function getMethodAsPublic($privateMethod)
+    {
+        $reflection = new \ReflectionMethod('Sonata\AdminBundle\Twig\Extension\SonataAdminExtension', $privateMethod);
+        $reflection->setAccessible(true);
+
+        return $reflection;
     }
 
     private function removeExtraWhitespace($string)

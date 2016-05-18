@@ -11,10 +11,16 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Removed
 - Removed BC handler for deprecated `view` `_action`
-
-### Removed
 - The fallback mechanism that loads a default template when the template
 specified in a field description cannot be found was removed.
+- The Sonata Twig extension has been made final, you may no longer extend it to
+  build your own extension (which is deprecated by Twig anyway)
+- Public access to the translator strategy services has been removed, namely:
+  - `sonata.admin.label.strategy.bc`
+  - `sonata.admin.label.strategy.form_component`
+  - `sonata.admin.label.strategy.native`
+  - `sonata.admin.label.strategy.noop`
+  - `sonata.admin.label.strategy.underscore`
 
 ## [3.x]
 ### Added
