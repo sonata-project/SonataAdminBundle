@@ -181,8 +181,7 @@ class FormMapper extends BaseGroupedMapper
     }
 
     /**
-     * @return FormBuilderInterface
-     *                              Removes a group.
+     * Removes a group.
      *
      * @param string $group          The group to delete
      * @param string $tab            The tab the group belongs to, defaults to 'default'
