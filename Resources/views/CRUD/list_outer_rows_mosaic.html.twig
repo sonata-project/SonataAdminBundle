@@ -22,7 +22,7 @@ This template can be customized to match your needs. You should only extends the
             {% for object in admin.datagrid.results %}
                 {% set meta = admin.getObjectMetadata(object) %}
 
-                <div class="col-xs-6 col-sm-3 mosaic-box sonata-ba-list-field-batch sonata-ba-list-field" objectId="{{ admin.id(object) }}">
+                <div class="col-xs-6 col-sm-3 mosaic-box sonata-ba-list-field-batch sonata-ba-list-field" data-object-id="{{ admin.id(object) }}">
 
                     <div class="mosaic-box-outter">
                         <div class="mosaic-inner-box">
