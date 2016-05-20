@@ -169,6 +169,13 @@ interface AdminInterface
     public function generateMenuUrl($name, array $parameters = array(), $absolute = false);
 
     /**
+     * Sets a list of templates.
+     *
+     * @param array $templates
+     */
+    public function setTemplates(array $templates);
+
+    /**
      * @return \Sonata\AdminBundle\Model\ModelManagerInterface
      */
     public function getModelManager();

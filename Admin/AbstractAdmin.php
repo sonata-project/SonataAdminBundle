@@ -1151,7 +1151,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * @param array $templates
+     * {@inheritdoc}
      */
     public function setTemplates(array $templates)
     {
