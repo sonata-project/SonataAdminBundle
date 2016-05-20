@@ -914,6 +914,13 @@ interface AdminInterface
     public function isAclEnabled();
 
     /**
+     * Returns list of supported sub classes.
+     *
+     * @return array
+     */
+    public function getSubClasses();
+
+    /**
      * Sets the list of supported sub classes.
      *
      * @param array $subClasses the list of sub classes
