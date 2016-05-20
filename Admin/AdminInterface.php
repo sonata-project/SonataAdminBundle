@@ -921,6 +921,13 @@ interface AdminInterface
     public function getSubClasses();
 
     /**
+     * Adds a new class to a list of supported sub classes.
+     *
+     * @param $subClass
+     */
+    public function addSubClass($subClass);
+
+    /**
      * Sets the list of supported sub classes.
      *
      * @param array $subClasses the list of sub classes
