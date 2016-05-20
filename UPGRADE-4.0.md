@@ -18,6 +18,7 @@ If you have implemented a custom admin, you must adapt the signature of the foll
  * `getTemplates`
  * `getClassnameLabel`
  * `getPersistentParameter`
+ * `preValidate`
 
 ## AdminExtension
 If you have implemented a custom admin extension, you must adapt the signature of the following new methods to match the one in `AdminExtensionInterface` again:
