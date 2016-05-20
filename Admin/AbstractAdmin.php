@@ -2801,9 +2801,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * Get the list of actions that can be accessed directly from the dashboard.
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function getDashboardActions()
     {

@@ -14,6 +14,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Add the `preValidate` method to the AdminInterface
 - Add the `getSubClasses` method to the AdminInterface
 - Add the `addSubClass` method to the AdminInterface
+- Add the `getDashboardActions` method to the AdminInterface
 - Add the ``configureActionButtons`` method to the AdminExtensionInterface
 - Add the ``configureBatchActions`` method to the AdminExtensionInterface
 - Added the `getAccessMapping` method to the AdminExtensionInterface
