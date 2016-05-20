@@ -409,6 +409,7 @@ class CRUDController extends Controller
             $actionLabel = $this->admin->trans($batchActions[$action]['label'], array(), $translationDomain);
 
             $formView = $datagrid->getForm()->createView();
+            $this->get('twig')->getExtension('form')->renderer->setTheme($formView, $this->admin->getFilterTheme());
 
             return $this->render($this->admin->getTemplate('batch_confirmation'), array(
                 'action' => 'list',
