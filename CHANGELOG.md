@@ -5,6 +5,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [4.x]
 ### Added
 - Add the ``configureActionButtons`` method to the AdminInterface
+- Add the `getExportFields` method to the AdminInterface
 - Add the ``configureActionButtons`` method to the AdminExtensionInterface
 - Add the ``configureBatchActions`` method to the AdminExtensionInterface
 - Added the `getAccessMapping` method to the AdminExtensionInterface

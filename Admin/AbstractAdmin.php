@@ -543,7 +543,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * @return array
+     * {@inheritdoc}
      */
     public function getExportFields()
     {

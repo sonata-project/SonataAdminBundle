@@ -643,6 +643,13 @@ interface AdminInterface
     public function getExportFormats();
 
     /**
+     * Retuns a list of exported fields.
+     *
+     * @return array
+     */
+    public function getExportFields();
+
+    /**
      * Returns SourceIterator.
      *
      * @return \Exporter\Source\SourceIteratorInterface
