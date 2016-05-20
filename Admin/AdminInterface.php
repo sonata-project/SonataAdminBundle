@@ -1088,6 +1088,14 @@ interface AdminInterface
     public function checkAccess($action, $object = null);
 
     /**
+     * @param string $action
+     * @param mixed  $object
+     *
+     * @return array
+     */
+    public function getActionButtons($action, $object = null);
+
+    /**
      * Get the list of actions that can be accessed directly from the dashboard.
      *
      * @return array

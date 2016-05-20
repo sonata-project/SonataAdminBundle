@@ -2784,10 +2784,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * @param string $action
-     * @param mixed  $object
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function getActionButtons($action, $object = null)
     {
