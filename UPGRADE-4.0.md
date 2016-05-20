@@ -1,10 +1,6 @@
 UPGRADE FROM 3.x to 4.0
 =======================
 
-## AdminInterface
-
-If you're using a custom implementation of `AdminInterface`, you need to add realisation of `hasAccess` method.
-
 ## Deprecations
 
 All the deprecated code introduced on 3.x is removed on 4.0.
@@ -15,6 +11,7 @@ See also the [diff code](https://github.com/sonata-project/SonataAdminBundle/com
 
 ## Admin
 If you have implemented a custom admin, you must adapt the signature of the following new methods to match the one in `AdminInterface` again:
+ * `hasAccess`
  * `configureActionButtons`
 
 ## AdminExtension
