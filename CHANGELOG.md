@@ -24,6 +24,10 @@ specified in a field description cannot be found was removed.
 
 ## [3.x]
 ### Added
+- Add the `hasAccess` method to the AdminInterface
+
+## [3.1.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.0.0...3.1.0) - 2016-05-17
+### Added
 - Added AbstractAdmin, replacing Admin
 - Added `BaseMapper::keys` method
 
