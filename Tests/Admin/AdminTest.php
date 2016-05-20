@@ -1792,6 +1792,49 @@ class AdminTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('a query', $admin->createQuery('list'));
     }
 
+    public function testGetDataSourceIterator()
+    {
+        $datagrid = $this->getMock('Sonata\AdminBundle\Datagrid\DatagridInterface');
+        $datagrid->method('buildPager');
+
+        $modelManager = $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface');
+        $modelManager->method('getExportFields')->will($this->returnValue(array(
+            'field',
+            'foo',
+            'bar',
+        )));
+        $modelManager->expects($this->once())->method('getDataSourceIterator')
+            ->with($this->equalTo($datagrid), $this->equalTo(array(
+                'Feld' => 'field',
+                1 => 'foo',
+                2 => 'bar',
+            )));
+
+        $admin = $this->getMockBuilder('Sonata\AdminBundle\Admin\AbstractAdmin')
+            ->disableOriginalConstructor()
+            ->setMethods(array('getDatagrid', 'getTranslationLabel', 'trans'))
+            ->getMockForAbstractClass();
+        $admin->method('getDatagrid')->will($this->returnValue($datagrid));
+        $admin->setModelManager($modelManager);
+
+        $admin->expects($this->any())
+            ->method('getTranslationLabel')
+            ->will($this->returnCallback(function ($label, $context = '', $type = '') {
+                return $context.'.'.$type.'_'.$label;
+            }));
+        $admin->expects($this->any())
+            ->method('trans')
+            ->will($this->returnCallback(function ($label) {
+                if ($label == 'export.label_field') {
+                    return 'Feld';
+                }
+
+                return $label;
+            }));
+
+        $admin->getDataSourceIterator();
+    }
+
     private function createTagAdmin(Post $post)
     {
         $postAdmin = $this->getMockBuilder('Sonata\AdminBundle\Tests\Fixtures\Admin\PostAdmin')
