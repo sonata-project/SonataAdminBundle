@@ -4,6 +4,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [4.x]
 ### Added
+- Add the `hasAccess` method to the AdminInterface
 - Add the ``configureActionButtons`` method to the AdminInterface
 - Add the ``configureActionButtons`` method to the AdminExtensionInterface
 - Add the ``configureBatchActions`` method to the AdminExtensionInterface
