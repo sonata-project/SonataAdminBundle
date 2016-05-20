@@ -176,6 +176,14 @@ interface AdminInterface
     public function setTemplates(array $templates);
 
     /**
+     * Sets a specific template.
+     *
+     * @param string $name
+     * @param string $template
+     */
+    public function setTemplate($name, $template);
+
+    /**
      * @return \Sonata\AdminBundle\Model\ModelManagerInterface
      */
     public function getModelManager();
