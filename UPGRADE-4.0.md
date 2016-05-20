@@ -11,6 +11,7 @@ See also the [diff code](https://github.com/sonata-project/SonataAdminBundle/com
 
 ## Admin
 If you have implemented a custom admin, you must adapt the signature of the following new methods to match the one in `AdminInterface` again:
+ * `hasAccess`
  * `configureActionButtons`
 
 ## AdminExtension

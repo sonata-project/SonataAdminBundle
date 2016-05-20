@@ -2714,12 +2714,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * Hook to handle access authorization, without throw Exception.
-     *
-     * @param string $action
-     * @param object $object
-     *
-     * @return bool
+     * {@inheritdoc}
      */
     public function hasAccess($action, $object = null)
     {
