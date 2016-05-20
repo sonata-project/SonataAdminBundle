@@ -1,6 +1,10 @@
 UPGRADE FROM 3.x to 4.0
 =======================
 
+## AdminInterface
+
+If you're using a custom implementation of `AdminInterface`, you need to add realisation of `hasAccess` method.
+
 ## Deprecations
 
 All the deprecated code introduced on 3.x is removed on 4.0.
