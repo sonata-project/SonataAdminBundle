@@ -2843,35 +2843,35 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @param FormMapper $form
      */
     protected function configureFormFields(FormMapper $form)
     {
     }
 
     /**
-     * {@inheritdoc}
+     * @param ListMapper $list
      */
     protected function configureListFields(ListMapper $list)
     {
     }
 
     /**
-     * {@inheritdoc}
+     * @param DatagridMapper $filter
      */
     protected function configureDatagridFilters(DatagridMapper $filter)
     {
     }
 
     /**
-     * {@inheritdoc}
+     * @param ShowMapper $show
      */
     protected function configureShowFields(ShowMapper $show)
     {
     }
 
     /**
-     * {@inheritdoc}
+     * @param RouteCollection $collection
      */
     protected function configureRoutes(RouteCollection $collection)
     {
