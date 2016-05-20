@@ -1925,9 +1925,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * @param string $name
-     *
-     * @return null|mixed
+     * {@inheritdoc}
      */
     public function getPersistentParameter($name)
     {

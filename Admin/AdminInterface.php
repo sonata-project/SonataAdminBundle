@@ -973,6 +973,13 @@ interface AdminInterface
     public function getPersistentParameters();
 
     /**
+     * @param string $name
+     *
+     * @return null|mixed
+     */
+    public function getPersistentParameter($name);
+
+    /**
      * Get breadcrumbs for $action.
      *
      * @param string $action
