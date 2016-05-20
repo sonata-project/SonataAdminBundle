@@ -169,6 +169,28 @@ interface AdminInterface
     public function generateMenuUrl($name, array $parameters = array(), $absolute = false);
 
     /**
+     * Sets a list of templates.
+     *
+     * @param array $templates
+     */
+    public function setTemplates(array $templates);
+
+    /**
+     * Sets a specific template.
+     *
+     * @param string $name
+     * @param string $template
+     */
+    public function setTemplate($name, $template);
+
+    /**
+     * Get all templates.
+     *
+     * @return array
+     */
+    public function getTemplates();
+
+    /**
      * @return \Sonata\AdminBundle\Model\ModelManagerInterface
      */
     public function getModelManager();
@@ -594,6 +616,13 @@ interface AdminInterface
     public function getUniqid();
 
     /**
+     * Returns the classname label.
+     *
+     * @return string the classname label
+     */
+    public function getClassnameLabel();
+
+    /**
      * @param mixed $id
      *
      * @return mixed
@@ -643,6 +672,13 @@ interface AdminInterface
     public function getExportFormats();
 
     /**
+     * Retuns a list of exported fields.
+     *
+     * @return array
+     */
+    public function getExportFields();
+
+    /**
      * Returns SourceIterator.
      *
      * @return \Exporter\Source\SourceIteratorInterface
@@ -670,11 +706,10 @@ interface AdminInterface
      */
     public function delete($object);
 
-//TODO: uncomment this method for 4.0
-//    /**
-//     * @param mixed $object
-//     */
-//    public function preValidate($object);
+    /**
+     * @param mixed $object
+     */
+    public function preValidate($object);
 
     /**
      * @param mixed $object
@@ -879,6 +914,20 @@ interface AdminInterface
     public function isAclEnabled();
 
     /**
+     * Returns list of supported sub classes.
+     *
+     * @return array
+     */
+    public function getSubClasses();
+
+    /**
+     * Adds a new class to a list of supported sub classes.
+     *
+     * @param $subClass
+     */
+    public function addSubClass($subClass);
+
+    /**
      * Sets the list of supported sub classes.
      *
      * @param array $subClasses the list of sub classes
@@ -935,6 +984,13 @@ interface AdminInterface
      * @return array
      */
     public function getPersistentParameters();
+
+    /**
+     * @param string $name
+     *
+     * @return null|mixed
+     */
+    public function getPersistentParameter($name);
 
     /**
      * Get breadcrumbs for $action.
@@ -1030,6 +1086,21 @@ interface AdminInterface
      * @param object $object
      */
     public function checkAccess($action, $object = null);
+
+    /**
+     * @param string $action
+     * @param mixed  $object
+     *
+     * @return array
+     */
+    public function getActionButtons($action, $object = null);
+
+    /**
+     * Get the list of actions that can be accessed directly from the dashboard.
+     *
+     * @return array
+     */
+    public function getDashboardActions();
 
      /**
       * Configure buttons for an action.

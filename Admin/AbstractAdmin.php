@@ -543,7 +543,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * @return array
+     * {@inheritdoc}
      */
     public function getExportFields()
     {
@@ -1151,7 +1151,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * @param array $templates
+     * {@inheritdoc}
      */
     public function setTemplates(array $templates)
     {
@@ -1159,8 +1159,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * @param string $name
-     * @param string $template
+     * {@inheritdoc}
      */
     public function setTemplate($name, $template)
     {
@@ -1168,7 +1167,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * @return array
+     * {@inheritdoc}
      */
     public function getTemplates()
     {
@@ -1898,9 +1897,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * Returns the classname label.
-     *
-     * @return string the classname label
+     * {@inheritdoc}
      */
     public function getClassnameLabel()
     {
@@ -1928,9 +1925,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * @param string $name
-     *
-     * @return null|mixed
+     * {@inheritdoc}
      */
     public function getPersistentParameter($name)
     {
@@ -2784,10 +2779,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * @param string $action
-     * @param mixed  $object
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function getActionButtons($action, $object = null)
     {
@@ -2801,9 +2793,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * Get the list of actions that can be accessed directly from the dashboard.
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function getDashboardActions()
     {

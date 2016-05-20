@@ -13,6 +13,17 @@ See also the [diff code](https://github.com/sonata-project/SonataAdminBundle/com
 If you have implemented a custom admin, you must adapt the signature of the following new methods to match the one in `AdminInterface` again:
  * `hasAccess`
  * `configureActionButtons`
+ * `getExportFields`
+ * `setTemplates`
+ * `setTemplate`
+ * `getTemplates`
+ * `getClassnameLabel`
+ * `getPersistentParameter`
+ * `preValidate`
+ * `getSubClasses`
+ * `addSubClass`
+ * `getDashboardActions`
+ * `getActionButtons`
 
 ## AdminExtension
 If you have implemented a custom admin extension, you must adapt the signature of the following new methods to match the one in `AdminExtensionInterface` again:

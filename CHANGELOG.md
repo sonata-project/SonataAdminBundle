@@ -6,6 +6,17 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Add the `hasAccess` method to the AdminInterface
 - Add the ``configureActionButtons`` method to the AdminInterface
+- Add the `getExportFields` method to the AdminInterface
+- Add the `setTemplates` method to the AdminInterface
+- Add the `setTemplate` method to the AdminInterface
+- Add the `getTemplates` method to the AdminInterface
+- Add the `getClassnameLabel` method to the AdminInterface
+- Add the `getPersistentParameter` method to the AdminInterface
+- Add the `preValidate` method to the AdminInterface
+- Add the `getSubClasses` method to the AdminInterface
+- Add the `addSubClass` method to the AdminInterface
+- Add the `getDashboardActions` method to the AdminInterface
+- Add the `getActionButtons` method to the AdminInterface
 - Add the ``configureActionButtons`` method to the AdminExtensionInterface
 - Add the ``configureBatchActions`` method to the AdminExtensionInterface
 - Added the `getAccessMapping` method to the AdminExtensionInterface
