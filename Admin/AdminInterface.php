@@ -1083,14 +1083,6 @@ interface AdminInterface
      */
     public function getDashboardActions();
 
-     /**
-      * Configure buttons for an action.
-      *
-      * @param string $action
-      * @param object $object
-      */
-     public function configureActionButtons($action, $object = null);
-
     /**
      * Hook to handle access authorization, without throw Exception.
      *

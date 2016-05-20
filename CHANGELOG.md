@@ -5,7 +5,6 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [4.x]
 ### Added
 - Add the `hasAccess` method to the AdminInterface
-- Add the ``configureActionButtons`` method to the AdminInterface
 - Add the `getExportFields` method to the AdminInterface
 - Add the `setTemplates` method to the AdminInterface
 - Add the `setTemplate` method to the AdminInterface
@@ -21,6 +20,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Add the ``configureBatchActions`` method to the AdminExtensionInterface
 - Added the `getAccessMapping` method to the AdminExtensionInterface
 - Add the `isCurrentRoute` method to the AdminInterface
+
+### Changed
+- `AbstractAdmin::configureActionButtons` method is now protected
 
 ### Removed
 - Removed BC handler for deprecated `view` `_action`

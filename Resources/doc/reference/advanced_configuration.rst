@@ -359,7 +359,7 @@ You can add custom items to the actions menu for a specific action by overriding
 
 .. code-block:: php
 
-    public function configureActionButtons($action, $object = null)
+    protected function configureActionButtons($action, $object = null)
     {
         $list = parent::configureActionButtons($action, $object);
 
