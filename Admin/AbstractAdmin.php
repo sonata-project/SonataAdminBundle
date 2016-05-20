@@ -1346,14 +1346,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function buildSideMenu($action, AdminInterface $childAdmin = null)
-    {
-        return $this->buildTabMenu($action, $childAdmin);
-    }
-
-    /**
      * @param string         $action
      * @param AdminInterface $childAdmin
      *
@@ -1365,7 +1357,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
             return $this->getParent()->getSideMenu($action, $this);
         }
 
-        $this->buildSideMenu($action, $childAdmin);
+        $this->buildTabMenu($action, $childAdmin);
 
         return $this->menu;
     }

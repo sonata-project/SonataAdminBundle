@@ -971,18 +971,6 @@ interface AdminInterface
     public function getTranslationLabel($label, $context = '', $type = '');
 
     /**
-     * DEPRECATED: Use buildTabMenu instead.
-     *
-     * @param string         $action
-     * @param AdminInterface $childAdmin
-     *
-     * @return ItemInterface|bool
-     *
-     * @deprecated Use buildTabMenu instead
-     */
-    public function buildSideMenu($action, AdminInterface $childAdmin = null);
-
-    /**
      * Build the tab menu related to the current action.
      *
      * @param string         $action
