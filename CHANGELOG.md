@@ -9,6 +9,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Add the `setTemplates` method to the AdminInterface
 - Add the `setTemplate` method to the AdminInterface
 - Add the `getTemplates` method to the AdminInterface
+- Add the `getClassnameLabel` method to the AdminInterface
 - Add the ``configureActionButtons`` method to the AdminExtensionInterface
 - Add the ``configureBatchActions`` method to the AdminExtensionInterface
 - Added the `getAccessMapping` method to the AdminExtensionInterface

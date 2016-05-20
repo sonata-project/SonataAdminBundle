@@ -1897,9 +1897,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * Returns the classname label.
-     *
-     * @return string the classname label
+     * {@inheritdoc}
      */
     public function getClassnameLabel()
     {

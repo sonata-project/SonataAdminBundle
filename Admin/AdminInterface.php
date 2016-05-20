@@ -616,6 +616,13 @@ interface AdminInterface
     public function getUniqid();
 
     /**
+     * Returns the classname label.
+     *
+     * @return string the classname label
+     */
+    public function getClassnameLabel();
+
+    /**
      * @param mixed $id
      *
      * @return mixed
