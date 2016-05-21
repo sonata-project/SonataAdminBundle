@@ -1054,6 +1054,8 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
             );
         }
 
+        $actions = $this->configureBatchActions($actions);
+
         foreach ($this->getExtensions() as $extension) {
             $actions = $extension->configureBatchActions($this, $actions);
         }
@@ -2814,39 +2816,51 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @param FormMapper $form
      */
     protected function configureFormFields(FormMapper $form)
     {
     }
 
     /**
-     * {@inheritdoc}
+     * @param ListMapper $list
      */
     protected function configureListFields(ListMapper $list)
     {
     }
 
     /**
-     * {@inheritdoc}
+     * @param DatagridMapper $filter
      */
     protected function configureDatagridFilters(DatagridMapper $filter)
     {
     }
 
     /**
-     * {@inheritdoc}
+     * @param ShowMapper $show
      */
     protected function configureShowFields(ShowMapper $show)
     {
     }
 
     /**
-     * {@inheritdoc}
+     * @param RouteCollection $collection
      */
     protected function configureRoutes(RouteCollection $collection)
     {
     }
+
+     /**
+      * Allows you to customize batch actions.
+      *
+      * @param array $actions List of actions
+      *
+      * @return array
+      */
+     protected function configureBatchActions($actions)
+     {
+         return $actions;
+     }
 
     /**
      * DEPRECATED: Use configureTabMenu instead.

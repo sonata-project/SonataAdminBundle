@@ -26,4 +26,18 @@ class PostAdmin extends AbstractAdmin
 
         return parent::getClassMetaData();
     }
+
+    /**
+     * @param array $actions
+     *
+     * @return array
+     */
+    protected function configureBatchActions($actions)
+    {
+        $actions['foo'] = array(
+            'label' => 'action_foo',
+        );
+
+        return $actions;
+    }
 }

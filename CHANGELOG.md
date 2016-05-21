@@ -36,8 +36,10 @@ specified in a field description cannot be found was removed.
 - Removed deprecated `AbstractAdmin::buildSideMenu` method
 
 ## [3.x]
+
+## [3.1.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.0.0...3.1.0) - 2016-05-17
 ### Added
-- Added AbstractAdmin, replacing Admin
+- Added `AbstractAdmin` class, replacing `Admin` one
 - Added `BaseMapper::keys` method
 
 ### Changed
@@ -45,8 +47,8 @@ specified in a field description cannot be found was removed.
 - `RouteCollection::clearExcept` can now have a single string argument
 
 ### Deprecated
-- Deprecated `BaseFieldDescription::camelize()`
-- Deprecated `AdminHelper::camelize()`
+- Deprecated `BaseFieldDescription::camelize`
+- Deprecated `AdminHelper::camelize`
 - Deprecated `Admin` class
 - Deprecated `AdminExtension` class
 - Deprecated default template loading on exception mechanism
@@ -72,7 +74,7 @@ specified in a field description cannot be found was removed.
 - CSS class `sonata-autocomplete-dropdown-item` is not automatically added to dropdown
 autocomplete item in `sonata_type_model_autocomplete`, use option `dropdown_item_css_class`
 to set the CSS class of dropdown item.
-- Text from Admin's toString method is escaped for html output before adding in flash message to prevent possible XSS vulnerability.
+- Text from `Admin::toString` method is escaped for html output before adding in flash message to prevent possible XSS vulnerability.
 
 ### Removed
 - Remove `btn-outline` from doctrine-orm-admin form actions buttons
