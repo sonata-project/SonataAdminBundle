@@ -23,6 +23,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 - `AbstractAdmin::configureActionButtons` method is now protected
+- `AbstractAdmin::getActionButtons` is now final
 
 ### Removed
 - Removed BC handler for deprecated `view` `_action`
