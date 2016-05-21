@@ -33,6 +33,7 @@ specified in a field description cannot be found was removed.
   - `sonata.admin.label.strategy.native`
   - `sonata.admin.label.strategy.noop`
   - `sonata.admin.label.strategy.underscore`
+- Removed deprecated `AbstractAdmin::buildSideMenu` method
 
 ## [3.x]
 ### Added
