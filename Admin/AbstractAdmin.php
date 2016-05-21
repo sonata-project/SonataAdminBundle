@@ -591,9 +591,9 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Hook to run after initilization
      */
-    public function configure()
+    protected function configure()
     {
     }
 
@@ -765,7 +765,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
     /**
      * {@inheritdoc}
      */
-    public function buildDatagrid()
+    private function buildDatagrid()
     {
         if ($this->datagrid) {
             return;
@@ -927,7 +927,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
      *
      * @return string
      */
-    public function urlize($word, $sep = '_')
+    final protected function urlize($word, $sep = '_')
     {
         return strtolower(preg_replace('/[^a-z0-9_]/i', $sep.'$1', $word));
     }
@@ -1222,7 +1222,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
      *
      * @param FormBuilderInterface $formBuilder
      */
-    public function defineFormBuilder(FormBuilderInterface $formBuilder)
+    private function defineFormBuilder(FormBuilderInterface $formBuilder)
     {
         $mapper = new FormMapper($this->getFormContractor(), $formBuilder, $this);
 

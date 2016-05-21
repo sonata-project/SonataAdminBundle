@@ -678,8 +678,6 @@ interface AdminInterface
      */
     public function getDataSourceIterator();
 
-    public function configure();
-
     /**
      * @param mixed $object
      *
