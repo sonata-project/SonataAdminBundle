@@ -34,6 +34,8 @@ The following methods changed their visiblity to protected:
 If you extend an `AbstractAdmin`, you can't override the following methods anymore, because they are final now:
  * `urlize`
 
+The method signature of `configureActionButtons` has changed. A new parameter `buttonList` was added.
+
 ## AdminExtension
 If you have implemented a custom admin extension, you must adapt the signature of the following new methods to match the one in `AdminExtensionInterface` again:
  * `configureActionButtons`

@@ -28,6 +28,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - `AbstractAdmin::buildDatagrid` method is now private
 - `AbstractAdmin::urlize` method is now protected and final
 - `AbstractAdmin::defineFormBuilder` method is now private
+- `AbstractAdmin::configureActionButtons` method signature has changed
+- Moved default buttons from `AbstractAdmin::configureActionButtons` to `AbstractAdmin::getActionButtons`
 
 ### Removed
 - Removed BC handler for deprecated `view` `_action`

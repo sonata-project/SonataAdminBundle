@@ -2636,13 +2636,51 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
      */
     final public function getActionButtons($action, $object = null)
     {
-        $list = $this->configureActionButtons($action, $object);
+        $buttonList = array();
 
-        foreach ($this->getExtensions() as $extension) {
-            $list = $extension->configureActionButtons($this, $list, $action, $object);
+        if (in_array($action, array('tree', 'show', 'edit', 'delete', 'list', 'batch'))) {
+            $buttonList['create'] = array(
+                'template' => 'SonataAdminBundle:Button:create_button.html.twig',
+            );
         }
 
-        return $list;
+        if (in_array($action, array('show', 'delete', 'acl', 'history')) && $object) {
+            $buttonList['edit'] = array(
+                'template' => 'SonataAdminBundle:Button:edit_button.html.twig',
+            );
+        }
+
+        if (in_array($action, array('show', 'edit', 'acl')) && $object) {
+            $buttonList['history'] = array(
+                'template' => 'SonataAdminBundle:Button:history_button.html.twig',
+            );
+        }
+
+        if (in_array($action, array('edit', 'history')) && $object) {
+            $buttonList['acl'] = array(
+                'template' => 'SonataAdminBundle:Button:acl_button.html.twig',
+            );
+        }
+
+        if (in_array($action, array('edit', 'history', 'acl')) && $object) {
+            $buttonList['show'] = array(
+                'template' => 'SonataAdminBundle:Button:show_button.html.twig',
+            );
+        }
+
+        if (in_array($action, array('show', 'edit', 'delete', 'acl', 'batch'))) {
+            $buttonList['list'] = array(
+                'template' => 'SonataAdminBundle:Button:list_button.html.twig',
+            );
+        }
+
+        $buttonList = $this->configureActionButtons($buttonList, $action, $object);
+
+        foreach ($this->getExtensions() as $extension) {
+            $buttonList = $extension->configureActionButtons($this, $buttonList, $action, $object);
+        }
+
+        return $buttonList;
     }
 
     /**
@@ -2732,52 +2770,15 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
     /**
      * Configure buttons for an action.
      *
-     * @param string $action
-     * @param object $object
+     * @param array  $buttonList List of all action buttons
+     * @param string $action     Current action route
+     * @param object $object     Current object
      *
      * @return array
      */
-    protected function configureActionButtons($action, $object = null)
+    protected function configureActionButtons($buttonList, $action, $object = null)
     {
-        $list = array();
-
-        if (in_array($action, array('tree', 'show', 'edit', 'delete', 'list', 'batch'))) {
-            $list['create'] = array(
-                'template' => 'SonataAdminBundle:Button:create_button.html.twig',
-            );
-        }
-
-        if (in_array($action, array('show', 'delete', 'acl', 'history')) && $object) {
-            $list['edit'] = array(
-                'template' => 'SonataAdminBundle:Button:edit_button.html.twig',
-            );
-        }
-
-        if (in_array($action, array('show', 'edit', 'acl')) && $object) {
-            $list['history'] = array(
-                'template' => 'SonataAdminBundle:Button:history_button.html.twig',
-            );
-        }
-
-        if (in_array($action, array('edit', 'history')) && $object) {
-            $list['acl'] = array(
-                'template' => 'SonataAdminBundle:Button:acl_button.html.twig',
-            );
-        }
-
-        if (in_array($action, array('edit', 'history', 'acl')) && $object) {
-            $list['show'] = array(
-                'template' => 'SonataAdminBundle:Button:show_button.html.twig',
-            );
-        }
-
-        if (in_array($action, array('show', 'edit', 'delete', 'acl', 'batch'))) {
-            $list['list'] = array(
-                'template' => 'SonataAdminBundle:Button:list_button.html.twig',
-            );
-        }
-
-        return $list;
+        return $buttonList;
     }
 
      /**
