@@ -1790,6 +1790,27 @@ class AdminTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Sonata\AdminBundle\Admin\AbstractAdmin::configureBatchActions
+     */
+    public function getBatchActions()
+    {
+        $expected = array(
+            'action' => array(
+                'label' => 'action_delete',
+                'translation_domain' => 'SonataAdminBundle',
+                'ask_confirmation' => true, // by default always true
+            ),
+            'foo' => array(
+                'label' => 'action_foo',
+            ),
+        );
+
+        $modelAdmin = new PostAdmin('sonata.post.admin.model', 'Application\Sonata\FooBundle\Entity\Model', 'SonataFooBundle:ModelAdmin');
+
+        $this->assertSame($expected, $modelAdmin->getBatchActions());
+    }
+
+    /**
      * @covers Sonata\AdminBundle\Admin\AbstractAdmin::getDashboardActions
      * @dataProvider provideGetBaseRouteName
      */
