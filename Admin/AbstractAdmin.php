@@ -1054,6 +1054,8 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
             );
         }
 
+        $actions = $this->configureBatchActions($actions);
+
         foreach ($this->getExtensions() as $extension) {
             // TODO: remove method check in next major release
             if (method_exists($extension, 'configureBatchActions')) {
@@ -2876,6 +2878,18 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
     protected function configureRoutes(RouteCollection $collection)
     {
     }
+
+     /**
+      * Allows you to customize batch actions.
+      *
+      * @param array $actions List of actions
+      *
+      * @return array
+      */
+     protected function configureBatchActions($actions)
+     {
+         return $actions;
+     }
 
     /**
      * DEPRECATED: Use configureTabMenu instead.
