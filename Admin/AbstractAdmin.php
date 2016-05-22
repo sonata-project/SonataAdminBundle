@@ -2729,53 +2729,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
     /**
      * {@inheritdoc}
      */
-    public function configureActionButtons($action, $object = null)
-    {
-        $list = array();
-
-        if (in_array($action, array('tree', 'show', 'edit', 'delete', 'list', 'batch'))) {
-            $list['create'] = array(
-                'template' => 'SonataAdminBundle:Button:create_button.html.twig',
-            );
-        }
-
-        if (in_array($action, array('show', 'delete', 'acl', 'history')) && $object) {
-            $list['edit'] = array(
-                'template' => 'SonataAdminBundle:Button:edit_button.html.twig',
-            );
-        }
-
-        if (in_array($action, array('show', 'edit', 'acl')) && $object) {
-            $list['history'] = array(
-                'template' => 'SonataAdminBundle:Button:history_button.html.twig',
-            );
-        }
-
-        if (in_array($action, array('edit', 'history')) && $object) {
-            $list['acl'] = array(
-                'template' => 'SonataAdminBundle:Button:acl_button.html.twig',
-            );
-        }
-
-        if (in_array($action, array('edit', 'history', 'acl')) && $object) {
-            $list['show'] = array(
-                'template' => 'SonataAdminBundle:Button:show_button.html.twig',
-            );
-        }
-
-        if (in_array($action, array('show', 'edit', 'delete', 'acl', 'batch'))) {
-            $list['list'] = array(
-                'template' => 'SonataAdminBundle:Button:list_button.html.twig',
-            );
-        }
-
-        return $list;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getActionButtons($action, $object = null)
+    final public function getActionButtons($action, $object = null)
     {
         $list = $this->configureActionButtons($action, $object);
 
@@ -2848,6 +2802,57 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
      */
     protected function configureRoutes(RouteCollection $collection)
     {
+    }
+
+    /**
+     * Configure buttons for an action.
+     *
+     * @param string $action
+     * @param object $object
+     *
+     * @return array
+     */
+    protected function configureActionButtons($action, $object = null)
+    {
+        $list = array();
+
+        if (in_array($action, array('tree', 'show', 'edit', 'delete', 'list', 'batch'))) {
+            $list['create'] = array(
+                'template' => 'SonataAdminBundle:Button:create_button.html.twig',
+            );
+        }
+
+        if (in_array($action, array('show', 'delete', 'acl', 'history')) && $object) {
+            $list['edit'] = array(
+                'template' => 'SonataAdminBundle:Button:edit_button.html.twig',
+            );
+        }
+
+        if (in_array($action, array('show', 'edit', 'acl')) && $object) {
+            $list['history'] = array(
+                'template' => 'SonataAdminBundle:Button:history_button.html.twig',
+            );
+        }
+
+        if (in_array($action, array('edit', 'history')) && $object) {
+            $list['acl'] = array(
+                'template' => 'SonataAdminBundle:Button:acl_button.html.twig',
+            );
+        }
+
+        if (in_array($action, array('edit', 'history', 'acl')) && $object) {
+            $list['show'] = array(
+                'template' => 'SonataAdminBundle:Button:show_button.html.twig',
+            );
+        }
+
+        if (in_array($action, array('show', 'edit', 'delete', 'acl', 'batch'))) {
+            $list['list'] = array(
+                'template' => 'SonataAdminBundle:Button:list_button.html.twig',
+            );
+        }
+
+        return $list;
     }
 
      /**

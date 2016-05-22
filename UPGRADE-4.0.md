@@ -25,12 +25,18 @@ If you have implemented a custom admin, you must adapt the signature of the foll
  * `getDashboardActions`
  * `getActionButtons`
  * `isCurrentRoute`
+ 
+The method `configureActionButtons` is now protected.
 
 ## AdminExtension
 If you have implemented a custom admin extension, you must adapt the signature of the following new methods to match the one in `AdminExtensionInterface` again:
  * `configureActionButtons`
  * `configureBatchActions`
  * `getAccessMapping`
+
+## AbstractAdmin
+The API of the following methods was closed by making them final, you can't override this methods anymore:
+ * `getActionButtons`
 
 ## SonataAdminExtension
 The Twig filters that come with the bundle will no longer load a default template when used with a missing template.
