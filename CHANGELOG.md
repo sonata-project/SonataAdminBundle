@@ -24,6 +24,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - `AbstractAdmin::configureActionButtons` method is now protected
 - `AbstractAdmin::getActionButtons` is now final
+- `AbstractAdmin::configure` method is now protected
+- `AbstractAdmin::buildDatagrid` method is now private
+- `AbstractAdmin::urlize` method is now protected and final
+- `AbstractAdmin::defineFormBuilder` method is now private
 
 ### Removed
 - Removed BC handler for deprecated `view` `_action`
@@ -38,6 +42,7 @@ specified in a field description cannot be found was removed.
   - `sonata.admin.label.strategy.noop`
   - `sonata.admin.label.strategy.underscore`
 - Removed deprecated `AbstractAdmin::buildSideMenu` method
+- `AdminInterface::configure` was removed
 
 ## [3.x]
 

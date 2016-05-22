@@ -593,13 +593,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
     /**
      * {@inheritdoc}
      */
-    public function configure()
-    {
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function update($object)
     {
         $this->preUpdate($object);
@@ -763,62 +756,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function buildDatagrid()
-    {
-        if ($this->datagrid) {
-            return;
-        }
-
-        $filterParameters = $this->getFilterParameters();
-
-        // transform _sort_by from a string to a FieldDescriptionInterface for the datagrid.
-        if (isset($filterParameters['_sort_by']) && is_string($filterParameters['_sort_by'])) {
-            if ($this->hasListFieldDescription($filterParameters['_sort_by'])) {
-                $filterParameters['_sort_by'] = $this->getListFieldDescription($filterParameters['_sort_by']);
-            } else {
-                $filterParameters['_sort_by'] = $this->getModelManager()->getNewFieldDescriptionInstance(
-                    $this->getClass(),
-                    $filterParameters['_sort_by'],
-                    array()
-                );
-
-                $this->getListBuilder()->buildField(null, $filterParameters['_sort_by'], $this);
-            }
-        }
-
-        // initialize the datagrid
-        $this->datagrid = $this->getDatagridBuilder()->getBaseDatagrid($this, $filterParameters);
-
-        $this->datagrid->getPager()->setMaxPageLinks($this->maxPageLinks);
-
-        $mapper = new DatagridMapper($this->getDatagridBuilder(), $this->datagrid, $this);
-
-        // build the datagrid filter
-        $this->configureDatagridFilters($mapper);
-
-        // ok, try to limit to add parent filter
-        if ($this->isChild() && $this->getParentAssociationMapping() && !$mapper->has($this->getParentAssociationMapping())) {
-            $mapper->add($this->getParentAssociationMapping(), null, array(
-                'show_filter' => false,
-                'label' => false,
-                'field_type' => 'sonata_type_model_hidden',
-                'field_options' => array(
-                    'model_manager' => $this->getModelManager(),
-                ),
-                'operator_type' => 'hidden',
-            ), null, null, array(
-                'admin_code' => $this->getParent()->getCode(),
-            ));
-        }
-
-        foreach ($this->getExtensions() as $extension) {
-            $extension->configureDatagridFilters($mapper);
-        }
-    }
-
-    /**
      * Returns the name of the parent related field, so the field can be use to set the default
      * value (ie the parent object) or to filter the object.
      *
@@ -917,19 +854,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
         }
 
         return $this->cachedBaseRouteName;
-    }
-
-    /**
-     * urlize the given word.
-     *
-     * @param string $word
-     * @param string $sep  the separator
-     *
-     * @return string
-     */
-    public function urlize($word, $sep = '_')
-    {
-        return strtolower(preg_replace('/[^a-z0-9_]/i', $sep.'$1', $word));
     }
 
     /**
@@ -1214,25 +1138,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
         $this->defineFormBuilder($formBuilder);
 
         return $formBuilder;
-    }
-
-    /**
-     * This method is being called by the main admin class and the child class,
-     * the getFormBuilder is only call by the main admin class.
-     *
-     * @param FormBuilderInterface $formBuilder
-     */
-    public function defineFormBuilder(FormBuilderInterface $formBuilder)
-    {
-        $mapper = new FormMapper($this->getFormContractor(), $formBuilder, $this);
-
-        $this->configureFormFields($mapper);
-
-        foreach ($this->getExtensions() as $extension) {
-            $extension->configureFormFields($mapper);
-        }
-
-        $this->attachInlineValidator();
     }
 
     /**
@@ -2770,6 +2675,26 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
     }
 
     /**
+     * Hook to run after initilization.
+     */
+    protected function configure()
+    {
+    }
+
+    /**
+     * urlize the given word.
+     *
+     * @param string $word
+     * @param string $sep  the separator
+     *
+     * @return string
+     */
+    final protected function urlize($word, $sep = '_')
+    {
+        return strtolower(preg_replace('/[^a-z0-9_]/i', $sep.'$1', $word));
+    }
+
+    /**
      * @param FormMapper $form
      */
     protected function configureFormFields(FormMapper $form)
@@ -3085,6 +3010,81 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
         }
 
         return $access;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    private function buildDatagrid()
+    {
+        if ($this->datagrid) {
+            return;
+        }
+
+        $filterParameters = $this->getFilterParameters();
+
+        // transform _sort_by from a string to a FieldDescriptionInterface for the datagrid.
+        if (isset($filterParameters['_sort_by']) && is_string($filterParameters['_sort_by'])) {
+            if ($this->hasListFieldDescription($filterParameters['_sort_by'])) {
+                $filterParameters['_sort_by'] = $this->getListFieldDescription($filterParameters['_sort_by']);
+            } else {
+                $filterParameters['_sort_by'] = $this->getModelManager()->getNewFieldDescriptionInstance(
+                    $this->getClass(),
+                    $filterParameters['_sort_by'],
+                    array()
+                );
+
+                $this->getListBuilder()->buildField(null, $filterParameters['_sort_by'], $this);
+            }
+        }
+
+        // initialize the datagrid
+        $this->datagrid = $this->getDatagridBuilder()->getBaseDatagrid($this, $filterParameters);
+
+        $this->datagrid->getPager()->setMaxPageLinks($this->maxPageLinks);
+
+        $mapper = new DatagridMapper($this->getDatagridBuilder(), $this->datagrid, $this);
+
+        // build the datagrid filter
+        $this->configureDatagridFilters($mapper);
+
+        // ok, try to limit to add parent filter
+        if ($this->isChild() && $this->getParentAssociationMapping() && !$mapper->has($this->getParentAssociationMapping())) {
+            $mapper->add($this->getParentAssociationMapping(), null, array(
+                'show_filter' => false,
+                'label' => false,
+                'field_type' => 'sonata_type_model_hidden',
+                'field_options' => array(
+                    'model_manager' => $this->getModelManager(),
+                ),
+                'operator_type' => 'hidden',
+            ), null, null, array(
+                'admin_code' => $this->getParent()->getCode(),
+            ));
+        }
+
+        foreach ($this->getExtensions() as $extension) {
+            $extension->configureDatagridFilters($mapper);
+        }
+    }
+
+    /**
+     * This method is being called by the main admin class and the child class,
+     * the getFormBuilder is only call by the main admin class.
+     *
+     * @param FormBuilderInterface $formBuilder
+     */
+    private function defineFormBuilder(FormBuilderInterface $formBuilder)
+    {
+        $mapper = new FormMapper($this->getFormContractor(), $formBuilder, $this);
+
+        $this->configureFormFields($mapper);
+
+        foreach ($this->getExtensions() as $extension) {
+            $extension->configureFormFields($mapper);
+        }
+
+        $this->attachInlineValidator();
     }
 
     /**
