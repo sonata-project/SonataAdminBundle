@@ -376,6 +376,8 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
                         return 'SonataAdminBundle:CRUD:list__batch.html.twig';
                     case 'batch_confirmation':
                         return 'SonataAdminBundle:CRUD:batch_confirmation.html.twig';
+                    case 'batch_edit':
+                        return 'SonataAdminBundle:CRUD:batch_edit.html.twig';
                 }
             }));
 

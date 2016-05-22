@@ -113,6 +113,103 @@ class CRUDController extends Controller
     }
 
     /**
+     * Batch modify different entities.
+     *
+     * @param ProxyQueryInterface $query
+     *
+     * @return Response
+     *
+     * @throws AccessDeniedException If access is not granted
+     */
+    public function batchActionEdit(ProxyQueryInterface $query)
+    {
+        $request = $this->getRequest();
+
+        $this->admin->checkAccess('edit');
+
+        if ($data = json_decode($request->get('data'), true)) {
+        } else {
+            $data = $request->request->all();
+        }
+
+        // the key used to lookup the template
+        $templateKey = 'batch_edit';
+
+        $object = $this->admin->getNewInstance();
+
+        /** @var FormInterface $form */
+        $form = $this->admin->getBatchForm();
+        $form->setData($object);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+            $isFormValid = $form->isValid();
+
+            if ($isFormValid) {
+                $this->admin->checkAccess('batch_edit', $object);
+
+                // TODO: Submit ohne Ausüfhren
+                // TODO: Überschreiben, Erweitern
+                // TODO: Validate, Batch save
+                /*
+                try {
+                    $object = $this->admin->create($object);
+
+                    if ($this->isXmlHttpRequest()) {
+                        return $this->renderJson(array(
+                            'result'   => 'ok',
+                            'objectId' => $this->admin->getNormalizedIdentifier($object),
+                        ), 200, array());
+                    }
+
+                    $this->addFlash(
+                        'sonata_flash_success',
+                        $this->admin->trans(
+                            'flash_create_success',
+                            array('%name%' => $this->escapeHtml($this->admin->toString($object))),
+                            'SonataAdminBundle'
+                        )
+                    );
+
+                    // redirect to edit mode
+                    return $this->redirectTo($object);
+                } catch (ModelManagerException $e) {
+                    $this->handleModelManagerException($e);
+
+                    $isFormValid = false;
+                }
+                 * */
+            }
+
+            // show an error message if the form failed validation
+            if (!$isFormValid) {
+                $this->addFlash(
+                    'sonata_flash_error',
+                    $this->admin->trans('flash_batch_edit_error', array(), 'SonataAdminBundle')
+                );
+            }
+        }
+
+        $datagrid = $this->admin->getDatagrid();
+        $formView = $datagrid->getForm()->createView();
+
+        $batchView = $form->createView();
+
+        // set the theme for the current Admin Form
+        $this->get('twig')->getExtension('form')->renderer->setTheme($batchView, $this->admin->getFormTheme());
+
+        return $this->render($this->admin->getTemplate($templateKey), array(
+            'action' => 'batch_edit',
+            'action_label' => $this->admin->trans($this->admin->getTranslationLabel('edit', 'action', 'batch')),
+            'datagrid' => $datagrid,
+            'form' => $formView,
+            'batchForm' => $batchView,
+            'data' => $data,
+            'csrf_token' => $this->getCsrfToken('sonata.batch'),
+        ), null);
+    }
+
+    /**
      * Execute a batch delete.
      *
      * @param ProxyQueryInterface $query

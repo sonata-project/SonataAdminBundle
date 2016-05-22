@@ -154,6 +154,7 @@ Full Configuration Options
                 delete:               'SonataAdminBundle:CRUD:delete.html.twig'
                 batch:                'SonataAdminBundle:CRUD:list__batch.html.twig'
                 batch_confirmation:   'SonataAdminBundle:CRUD:batch_confirmation.html.twig'
+                batch_edit:           'SonataAdminBundle:CRUD:batch_edit.html.twig'
                 inner_list_row:       'SonataAdminBundle:CRUD:list_inner_row.html.twig'
                 outer_list_rows_mosaic:  'SonataAdminBundle:CRUD:list_outer_rows_mosaic.html.twig'
                 outer_list_rows_list:  'SonataAdminBundle:CRUD:list_outer_rows_list.html.twig'
