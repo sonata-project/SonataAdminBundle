@@ -941,7 +941,7 @@ interface AdminInterface
      *
      * @param string $action
      *
-     * @return array
+     * @return mixed array|Traversable
      */
     public function getBreadcrumbs($action);
 
