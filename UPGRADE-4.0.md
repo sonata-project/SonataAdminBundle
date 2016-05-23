@@ -25,12 +25,12 @@ If you have implemented a custom admin, you must adapt the signature of the foll
  * `getDashboardActions`
  * `getActionButtons`
  * `isCurrentRoute`
-  
+
 The following methods changed their visiblity to protected:
  * `configureActionButtons`
  * `configure`
  * `urlize`
- 
+
 If you extend an `AbstractAdmin`, you can't override the following methods anymore, because they are final now:
  * `urlize`
 
