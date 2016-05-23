@@ -1845,7 +1845,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
      */
     public function getBreadcrumbs($action)
     {
-        return $this->getBreadcrumbsBuilder()->getBreadcrumbs($this, $action);
+        return $this->getBreadcrumbsBuilder()->getBreadcrumbs($action);
     }
 
     /**
@@ -1865,7 +1865,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
         }
 
         return $this->breadcrumbs[$action] = $this->getBreadcrumbsBuilder()
-            ->buildBreadcrumbs($this, $action, $menu);
+            ->buildBreadcrumbs($action, $menu);
     }
 
     /**
@@ -1874,7 +1874,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
     final public function getBreadcrumbsBuilder()
     {
         if ($this->breadcrumbsBuilder === null) {
-            $this->breadcrumbsBuilder = new BreadcrumbsBuilder();
+            $this->breadcrumbsBuilder = new BreadcrumbsBuilder($this);
         }
 
         return $this->breadcrumbsBuilder;

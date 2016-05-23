@@ -266,14 +266,11 @@ class BreadcrumbsBuilderTest extends \PHPUnit_Framework_TestCase
         $breadcrumbs->getParent()->willreturn($root);
         $breadcrumbs = $breadcrumbs->reveal();
         $action = 'my_action';
-        $breadcrumbsBuilder = new BreadcrumbsBuilder();
         $admin = $this->prophesize('Sonata\AdminBundle\Admin\AbstractAdmin');
         $admin->isChild()->willReturn(false);
         $admin->buildBreadcrumbs($action)->willReturn($breadcrumbs);
-        $this->assertSame(array($breadcrumbs), $breadcrumbsBuilder->getBreadcrumbs(
-            $admin->reveal(),
-            $action
-        ));
+        $breadcrumbsBuilder = new BreadcrumbsBuilder($admin->reveal());
+        $this->assertSame(array($breadcrumbs), $breadcrumbsBuilder->getBreadcrumbs($action));
     }
 
     public function testUnitChildGetBreadCrumbs()
@@ -281,16 +278,16 @@ class BreadcrumbsBuilderTest extends \PHPUnit_Framework_TestCase
         $parentMenu = 'parent menu';
 
         $action = 'my_action';
-        $breadcrumbsBuilder = new BreadcrumbsBuilder();
         $parentAdmin = $this->prophesize('Sonata\AdminBundle\Admin\AbstractAdmin');
         $parentAdmin->getBreadcrumbs($action)->willReturn($parentMenu);
         $admin = $this->prophesize('Sonata\AdminBundle\Admin\AbstractAdmin');
         $admin->isChild()->willReturn(true);
         $admin->getParent()->willReturn($parentAdmin->reveal());
+        $breadcrumbsBuilder = new BreadcrumbsBuilder($admin->reveal());
 
         $this->assertSame(
             'parent menu',
-            $breadcrumbsBuilder->getBreadcrumbs($admin->reveal(), $action)
+            $breadcrumbsBuilder->getBreadcrumbs($action)
         );
     }
 
@@ -309,8 +306,6 @@ class BreadcrumbsBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function testUnitBuildBreadcrumbs($action)
     {
-        $breadcrumbsBuilder = new BreadcrumbsBuilder();
-
         $menu = $this->prophesize('Knp\Menu\ItemInterface');
         $menuFactory = $this->prophesize('Knp\Menu\MenuFactory');
         $menuFactory->createItem('root')->willReturn($menu);
@@ -381,6 +376,7 @@ class BreadcrumbsBuilderTest extends \PHPUnit_Framework_TestCase
         $menu->addChild('My subject')->willReturn($menu);
         $menu->addChild('My subject', array('uri' => null))->willReturn($menu);
 
-        $breadcrumbsBuilder->buildBreadCrumbs($admin->reveal(), $action);
+        $breadcrumbsBuilder = new BreadcrumbsBuilder($admin->reveal());
+        $breadcrumbsBuilder->buildBreadCrumbs($action);
     }
 }

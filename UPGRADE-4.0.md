@@ -46,6 +46,20 @@ If you have implemented a custom admin extension, you must adapt the signature o
 The API of the following methods was closed by making them final, you can't override this methods anymore:
  * `getActionButtons`
 
+## BreacrumbsBuilder
+The breadcrumbs builder is now stateful, its interface looses the `$admin` parameters.
+You need to change your calls like this:
+
+```php
+// Before
+$breadcrumbsBuilder->getBreadcrumbs($admin, 'my_action');
+$breadcrumbsBuilder->buildBreadcrumbs($admin, $menu);
+
+// After
+$breadcrumbsBuilder->getBreadcrumbs('my_action');
+$breadcrumbsBuilder->buildBreadcrumbs($menu);
+```
+
 ## SonataAdminExtension
 The Twig filters that come with the bundle will no longer load a default template when used with a missing template.
 The `sonata_admin` twig extension is now final. You may no longer extend it.
