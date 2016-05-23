@@ -47,6 +47,8 @@ specified in a field description cannot be found was removed.
 - `AdminInterface::configure` was removed
 
 ## [3.x]
+### Added
+- Extract the breadcrumbs building part of the `AbstractAdmin` to a separate class
 
 ## [3.1.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.0.0...3.1.0) - 2016-05-17
 ### Added

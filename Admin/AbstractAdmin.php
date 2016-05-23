@@ -518,6 +518,13 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
     private $managerType;
 
     /**
+     * The breadcrumbsBuilder component.
+     *
+     * @var BreadcrumbsBuilderInterface
+     */
+    private $breadcrumbsBuilder;
+
+    /**
      * @param string $code
      * @param string $class
      * @param string $baseControllerName
@@ -1838,20 +1845,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
      */
     public function getBreadcrumbs($action)
     {
-        if ($this->isChild()) {
-            return $this->getParent()->getBreadcrumbs($action);
-        }
-
-        $menu = $this->buildBreadcrumbs($action);
-
-        do {
-            $breadcrumbs[] = $menu;
-        } while ($menu = $menu->getParent());
-
-        $breadcrumbs = array_reverse($breadcrumbs);
-        array_shift($breadcrumbs);
-
-        return $breadcrumbs;
+        return $this->getBreadcrumbsBuilder()->getBreadcrumbs($this, $action);
     }
 
     /**
@@ -1870,50 +1864,32 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
             return $this->breadcrumbs[$action];
         }
 
-        if (!$menu) {
-            $menu = $this->menuFactory->createItem('root');
+        return $this->breadcrumbs[$action] = $this->getBreadcrumbsBuilder()
+            ->buildBreadcrumbs($this, $action, $menu);
+    }
 
-            $menu = $menu->addChild(
-                $this->trans($this->getLabelTranslatorStrategy()->getLabel('dashboard', 'breadcrumb', 'link'), array(), 'SonataAdminBundle'),
-                array('uri' => $this->routeGenerator->generate('sonata_admin_dashboard'))
-            );
+    /**
+     * @return BreadcrumbsBuilderInterface
+     */
+    final public function getBreadcrumbsBuilder()
+    {
+        if ($this->breadcrumbsBuilder === null) {
+            $this->breadcrumbsBuilder = new BreadcrumbsBuilder();
         }
 
-        $menu = $menu->addChild(
-            $this->trans($this->getLabelTranslatorStrategy()->getLabel(sprintf('%s_list', $this->getClassnameLabel()), 'breadcrumb', 'link')),
-            array('uri' => $this->hasRoute('list') && $this->isGranted('LIST') ? $this->generateUrl('list') : null)
-        );
+        return $this->breadcrumbsBuilder;
+    }
 
-        $childAdmin = $this->getCurrentChildAdmin();
+    /**
+     * @param BreadcrumbsBuilderInterface
+     *
+     * @return AbstractAdmin
+     */
+    final public function setBreadcrumbsBuilder(BreadcrumbsBuilderInterface $value)
+    {
+        $this->breadcrumbsBuilder = $value;
 
-        if ($childAdmin) {
-            $id = $this->request->get($this->getIdParameter());
-
-            $menu = $menu->addChild(
-                $this->toString($this->getSubject()),
-                array('uri' => $this->hasRoute('edit') && $this->isGranted('EDIT') ? $this->generateUrl('edit', array('id' => $id)) : null)
-            );
-
-            return $childAdmin->buildBreadcrumbs($action, $menu);
-        }
-
-        if ($action === 'list' && $this->isChild()) {
-            $menu->setUri(false);
-        } elseif ($action !== 'create' && $this->hasSubject()) {
-            $menu = $menu->addChild($this->toString($this->getSubject()));
-        } else {
-            $menu = $menu->addChild(
-                $this->trans(
-                    $this->getLabelTranslatorStrategy()->getLabel(
-                        sprintf('%s_%s', $this->getClassnameLabel(), $action),
-                        'breadcrumb',
-                        'link'
-                    )
-                )
-            );
-        }
-
-        return $this->breadcrumbs[$action] = $menu;
+        return $this;
     }
 
     /**
