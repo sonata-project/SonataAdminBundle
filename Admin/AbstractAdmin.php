@@ -234,7 +234,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
      * then the $parentReflectionProperty must be the ReflectionProperty of
      * the order (OrderElement::$order).
      *
-     * @var \ReflectionProperty
+     * @var \ReflectionProperty|mixed
      */
     protected $parentAssociationMapping = null;
 
@@ -759,11 +759,38 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
      * Returns the name of the parent related field, so the field can be use to set the default
      * value (ie the parent object) or to filter the object.
      *
-     * @return string the name of the parent related field
+     * @return null|string
+     *
+     * @throws \InvalidArgumentException
      */
     public function getParentAssociationMapping()
     {
+        if (is_array($this->parentAssociationMapping) && $this->getParent()) {
+            $parent = $this->getParent()->getCode();
+            if (array_key_exists($parent, $this->parentAssociationMapping)) {
+                return $this->parentAssociationMapping[$parent];
+            }
+            throw new \InvalidArgumentException(sprintf(
+                "There's no association between %s and %s.",
+                $this->getCode(),
+                $this->getParent()->getCode()
+            ));
+        }
+
         return $this->parentAssociationMapping;
+    }
+
+    /**
+     * @param string $code
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function addParentAssociationMapping($code, $value)
+    {
+        $this->parentAssociationMapping[$code] = $value;
+
+        return $this;
     }
 
     /**
@@ -1709,12 +1736,15 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
     /**
      * {@inheritdoc}
      */
-    public function addChild(AdminInterface $child)
+    public function addChild(AdminInterface $child, $field = null)
     {
         $this->children[$child->getCode()] = $child;
 
         $child->setBaseCodeRoute($this->getCode().'|'.$child->getCode());
         $child->setParent($this);
+        if ($field) {
+            $child->addParentAssociationMapping($this->getCode(), $field);
+        }
     }
 
     /**
