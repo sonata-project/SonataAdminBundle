@@ -76,13 +76,13 @@ final class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
         $childAdmin = $admin->getCurrentChildAdmin();
 
         if ($childAdmin) {
-            $id = $admin->getRequest()->get($admin->getIdParameter());
-
             $menu = $menu->addChild(
                 $admin->toString($admin->getSubject()),
                 array(
                     'uri' => $admin->hasRoute('edit') && $admin->isGranted('EDIT') ?
-                    $admin->generateUrl('edit', array('id' => $id)) :
+                    $admin->generateUrl('edit', array(
+                        'id' => $admin->getRequest()->get($admin->getIdParameter()),
+                    )) :
                     null,
                 )
             );
