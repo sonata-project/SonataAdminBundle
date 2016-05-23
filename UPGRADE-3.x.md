@@ -1,6 +1,12 @@
 UPGRADE 3.x
 ===========
 
+## Deprecated override of AbstractAdmin::getBatchActions
+
+Since `AbstractAdmin::configureBatchActions` is present, you should not override `AbstractAdmin::getBatchActions`.
+
+This method will be final in 4.0.
+
 UPGRADE FROM 3.0 to 3.1
 =======================
 
