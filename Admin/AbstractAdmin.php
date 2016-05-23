@@ -416,6 +416,13 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
 
     protected $cacheIsGranted = array();
 
+    /**
+     * Action list for the search result.
+     *
+     * @var string[]
+     */
+    protected $searchResultActions = array('edit', 'show');
+
     protected $listModes = array(
         'list' => array(
             'class' => 'fa fa-list fa-fw',
@@ -2822,6 +2829,20 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
 
     /**
      * @param FormMapper $form
+     */
+    final public function getSearchResultLink($object)
+    {
+        foreach ($this->searchResultActions as $action) {
+            if ($this->hasRoute($action) && $this->isGranted(strtoupper($action), $object)) {
+                return $this->generateObjectUrl($action, $object);
+            }
+        }
+
+        return;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     protected function configureFormFields(FormMapper $form)
     {
