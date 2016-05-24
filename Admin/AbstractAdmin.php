@@ -334,6 +334,8 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
     /**
      * The generated breadcrumbs.
      *
+     * NEXT_MAJOR : remove this property
+     *
      * @var array
      */
     protected $breadcrumbs = array();
@@ -1961,6 +1963,12 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
      */
     public function getBreadcrumbs($action)
     {
+        @trigger_error(
+            'The '.__METHOD__.' method is deprecated since version 3.x and will be removed in 4.0.'.
+            ' Use Sonata\AdminBundle\Admin\BreadcrumbsBuilder::getBreadcrumbs instead.',
+            E_USER_DEPRECATED
+        );
+
         return $this->getBreadcrumbsBuilder()->getBreadcrumbs($this, $action);
     }
 
@@ -1976,6 +1984,11 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
      */
     public function buildBreadcrumbs($action, MenuItemInterface $menu = null)
     {
+        @trigger_error(
+            'The '.__METHOD__.' method is deprecated since version 3.x and will be removed in 4.0.',
+            E_USER_DEPRECATED
+        );
+
         if (isset($this->breadcrumbs[$action])) {
             return $this->breadcrumbs[$action];
         }

@@ -86,7 +86,7 @@ file that was distributed with this source code.
             {% else %}
                 {% if action is defined %}
                     -
-                    {% for menu in admin.breadcrumbs(action) %}
+                    {% for menu in admin.breadcrumbsBuilder.breadcrumbs(action) %}
                         {% if not loop.first %}
                             {%  if loop.index != 2 %}
                                 &gt;
@@ -138,7 +138,7 @@ file that was distributed with this source code.
                                         <ol class="nav navbar-top-links breadcrumb">
                                             {% if _breadcrumb is empty %}
                                                 {% if action is defined %}
-                                                    {% for menu in admin.breadcrumbs(action) %}
+                                                    {% for menu in admin.breadcrumbsBuilder.breadcrumbs(action) %}
                                                         {% if not loop.last  %}
                                                             <li>
                                                                 {% if menu.uri is not empty %}
