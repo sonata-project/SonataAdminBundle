@@ -9,7 +9,7 @@ file that was distributed with this source code.
 
 #}
 
-{% if admin.hasRoute('create') and admin.isGranted('CREATE')%}
+{% if admin.hasRoute('create') and admin.isGranted('CREATE') %}
     {% if admin.subClasses is empty %}
         <a class="sonata-action-element" href="{{ admin.generateUrl('create') }}">
             <i class="fa fa-plus-circle"></i>
