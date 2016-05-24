@@ -1702,6 +1702,9 @@ class AdminTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($builder, $admin->getBreadcrumbsBuilder());
     }
 
+    /**
+     * @group legacy
+     */
     public function testGetBreadcrumbs()
     {
         $admin = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AbstractAdmin', array(
@@ -1715,6 +1718,9 @@ class AdminTest extends \PHPUnit_Framework_TestCase
         $admin->setBreadcrumbsBuilder($builder->reveal())->getBreadcrumbs($action);
     }
 
+    /**
+     * @group legacy
+     */
     public function testBuildBreadcrumbs()
     {
         $admin = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AbstractAdmin', array(
