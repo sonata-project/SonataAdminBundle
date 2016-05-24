@@ -1092,7 +1092,7 @@ interface AdminInterface
     // public function configureActionButtons($action, $object = null);
 
     /**
-     * Hook to handle access authorization, without throw Exception
+     * Hook to handle access authorization, without throw Exception.
      *
      * @param string $action
      * @param object $object

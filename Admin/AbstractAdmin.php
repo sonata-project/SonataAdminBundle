@@ -2696,6 +2696,20 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
     }
 
     /**
+     * @param FormMapper $form
+     */
+    final public function getSearchResultLink($object)
+    {
+        foreach ($this->searchResultActions as $action) {
+            if ($this->hasRoute($action) && $this->isGranted(strtoupper($action), $object)) {
+                return $this->generateObjectUrl($action, $object);
+            }
+        }
+
+        return;
+    }
+
+    /**
      * Hook to run after initilization.
      */
     protected function configure()
@@ -2713,20 +2727,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
     final protected function urlize($word, $sep = '_')
     {
         return strtolower(preg_replace('/[^a-z0-9_]/i', $sep.'$1', $word));
-    }
-
-    /**
-     * @param FormMapper $form
-     */
-    final public function getSearchResultLink($object)
-    {
-        foreach ($this->searchResultActions as $action) {
-            if ($this->hasRoute($action) && $this->isGranted(strtoupper($action), $object)) {
-                return $this->generateObjectUrl($action, $object);
-            }
-        }
-
-        return;
     }
 
     /**
