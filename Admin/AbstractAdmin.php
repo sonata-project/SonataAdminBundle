@@ -65,6 +65,8 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
             Doctrine\\\Orm|Doctrine\\\Phpcr|Doctrine\\\MongoDB|Doctrine\\\CouchDB
         )\\\(.*)@x';
 
+    const MOSAIC_ICON_CLASS = 'fa fa-th-large fa-fw';
+
     /**
      * The list FieldDescription constructed from the configureListField method.
      *
@@ -428,7 +430,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
             'class' => 'fa fa-list fa-fw',
         ),
         'mosaic' => array(
-            'class' => 'fa fa-th-large fa-fw',
+            'class' => self::MOSAIC_ICON_CLASS,
         ),
     );
 
@@ -2825,6 +2827,21 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
         }
 
         return $actions;
+    }
+
+    /**
+     * Setting to true will enable mosaic button for the admin screen.
+     * Setting to false will hide mosaic button for the admin screen.
+     *
+     * @param bool $isShown
+     */
+    final public function showMosaicButton($isShown)
+    {
+        if ($isShown) {
+            $this->listModes['mosaic'] = array('class' => self::MOSAIC_ICON_CLASS);
+        } else {
+            unset($this->listModes['mosaic']);
+        }
     }
 
     /**
