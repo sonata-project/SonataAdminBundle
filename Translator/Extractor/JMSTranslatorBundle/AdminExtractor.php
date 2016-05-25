@@ -104,10 +104,6 @@ final class AdminExtractor implements ExtractorInterface, TranslatorInterface, S
             $admin->setSecurityHandler($this);
             $admin->setLabelTranslatorStrategy($this);
 
-//            foreach ($admin->getChildren() as $child) {
-//                $child->setTranslator($this);
-//            }
-
             // call the different public method
             $methods = array(
                 'getShow' => array(array()),
@@ -259,7 +255,6 @@ final class AdminExtractor implements ExtractorInterface, TranslatorInterface, S
     {
         $message = new Message($id, $domain);
 
-        //        $this->logger->debug(sprintf('extract: %s - domain:%s', $id, $domain));
 
         $trace = debug_backtrace(false);
         if (isset($trace[1]['file'])) {
