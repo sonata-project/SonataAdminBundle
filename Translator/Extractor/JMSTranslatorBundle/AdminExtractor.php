@@ -22,7 +22,7 @@ use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Symfony\Component\HttpKernel\Log\LoggerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
-class AdminExtractor implements
+final class AdminExtractor implements
     ExtractorInterface,
     TranslatorInterface,
     SecurityHandlerInterface,
