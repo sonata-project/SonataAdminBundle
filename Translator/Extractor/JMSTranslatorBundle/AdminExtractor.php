@@ -22,7 +22,11 @@ use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Symfony\Component\HttpKernel\Log\LoggerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
-class AdminExtractor implements ExtractorInterface, TranslatorInterface, SecurityHandlerInterface, LabelTranslatorStrategyInterface
+class AdminExtractor implements
+    ExtractorInterface,
+    TranslatorInterface,
+    SecurityHandlerInterface,
+    LabelTranslatorStrategyInterface
 {
     /**
      * @var LoggerInterface
@@ -125,7 +129,11 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
             );
 
             if ($this->logger) {
-                $this->logger->info(sprintf('Retrieving message from admin:%s - class: %s', $admin->getCode(), get_class($admin)));
+                $this->logger->info(sprintf(
+                    'Retrieving message from admin:%s - class: %s',
+                    $admin->getCode(),
+                    get_class($admin)
+                ));
             }
 
             foreach ($methods as $method => $calls) {
@@ -134,7 +142,11 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
                         call_user_func_array(array($admin, $method), $args);
                     } catch (\Exception $e) {
                         if ($this->logger) {
-                            $this->logger->error(sprintf('ERROR : admin:%s - Raise an exception : %s', $admin->getCode(), $e->getMessage()));
+                            $this->logger->error(sprintf(
+                                'ERROR : admin:%s - Raise an exception : %s',
+                                $admin->getCode(),
+                                $e->getMessage()
+                            ));
                         }
 
                         throw $e;
