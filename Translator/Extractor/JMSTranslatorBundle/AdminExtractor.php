@@ -255,7 +255,6 @@ final class AdminExtractor implements ExtractorInterface, TranslatorInterface, S
     {
         $message = new Message($id, $domain);
 
-
         $trace = debug_backtrace(false);
         if (isset($trace[1]['file'])) {
             $message->addSource(new FileSource($trace[1]['file']));
