@@ -13,6 +13,7 @@ namespace Sonata\AdminBundle\Form\ChoiceList;
 
 use Doctrine\Common\Util\ClassUtils;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
+use Sonata\CoreBundle\Model\Adapter\AdapterInterface;
 use Symfony\Component\Form\ChoiceList\ArrayChoiceList;
 use Symfony\Component\Form\ChoiceList\Loader\ChoiceLoaderInterface;
 use Symfony\Component\Form\Exception\RuntimeException;
@@ -109,7 +110,7 @@ class ModelChoiceLoader implements ChoiceLoaderInterface
                     }
                 }
 
-                $id = implode('~', $this->getIdentifierValues($entity));
+                $id = implode(AdapterInterface::ID_SEPARATOR, $this->getIdentifierValues($entity));
 
                 if (!array_key_exists($valueObject, $choices)) {
                     $choices[$valueObject] = array();

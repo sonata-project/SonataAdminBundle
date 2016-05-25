@@ -26,6 +26,7 @@ use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Post;
 use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Tag;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooToString;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooToStringNull;
+use Sonata\CoreBundle\Model\Adapter\AdapterInterface;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PropertyAccess\PropertyAccess;
@@ -1512,31 +1513,72 @@ class AdminTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($bazFieldDescription, $modelAdmin->getFilterFieldDescription('baz'));
     }
 
-    public function testGetSubject()
+    public function testGetSubjectNoRequest()
     {
-        $entity = new Post();
         $modelManager = $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface');
         $modelManager
-            ->expects($this->any())
-            ->method('find')
-            ->will($this->returnValue($entity));
+            ->expects($this->never())
+            ->method('find');
+
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
         $admin->setModelManager($modelManager);
 
-        $admin->setRequest(new Request(array('id' => 'azerty')));
-        $this->assertFalse($admin->getSubject());
+        $this->assertNull($admin->getSubject());
+    }
 
-        $admin->setSubject(null);
-        $admin->setRequest(new Request(array('id' => 42)));
-        $this->assertSame($entity, $admin->getSubject());
+    /**
+     * @return array
+     */
+    public function provideGetSubject()
+    {
+        return array(
+            array(23),
+            array('azerty'),
+            array('4f69bbb5f14a13347f000092'),
+            array('0779ca8d-e2be-11e4-ac58-0242ac11000b'),
+            array('123'.AdapterInterface::ID_SEPARATOR.'my_type'), // composite keys are supported
+        );
+    }
 
-        $admin->setSubject(null);
-        $admin->setRequest(new Request(array('id' => '4f69bbb5f14a13347f000092')));
-        $this->assertSame($entity, $admin->getSubject());
+    /**
+     * @dataProvider provideGetSubject
+     */
+    public function testGetSubjectFailed($id)
+    {
+        $modelManager = $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface');
+        $modelManager
+            ->expects($this->once())
+            ->method('find')
+            ->with('NewsBundle\Entity\Post', $id)
+            ->will($this->returnValue(null)); // entity not found
 
-        $admin->setSubject(null);
-        $admin->setRequest(new Request(array('id' => '0779ca8d-e2be-11e4-ac58-0242ac11000b')));
+        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
+        $admin->setModelManager($modelManager);
+
+        $admin->setRequest(new Request(array('id' => $id)));
+        $this->assertNull($admin->getSubject());
+    }
+
+    /**
+     * @dataProvider provideGetSubject
+     */
+    public function testGetSubject($id)
+    {
+        $entity = new Post();
+
+        $modelManager = $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface');
+        $modelManager
+            ->expects($this->once())
+            ->method('find')
+            ->with('NewsBundle\Entity\Post', $id)
+            ->will($this->returnValue($entity));
+
+        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
+        $admin->setModelManager($modelManager);
+
+        $admin->setRequest(new Request(array('id' => $id)));
         $this->assertSame($entity, $admin->getSubject());
+        $this->assertSame($entity, $admin->getSubject()); // model manager must be used only once
     }
 
     /**
