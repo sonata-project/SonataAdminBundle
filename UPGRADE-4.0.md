@@ -43,8 +43,9 @@ If you have implemented a custom admin extension, you must adapt the signature o
  * `getAccessMapping`
 
 ## AbstractAdmin
-The API of the following methods was closed by making them final, you can't override this methods anymore:
+The API of the following methods was closed by making them final, you can't override these methods anymore:
  * `getActionButtons`
+ * `getBatchActions`
 
 ## SonataAdminExtension
 The Twig filters that come with the bundle will no longer load a default template when used with a missing template.

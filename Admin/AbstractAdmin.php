@@ -980,7 +980,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
     /**
      * {@inheritdoc}
      */
-    public function getBatchActions()
+    final public function getBatchActions()
     {
         $actions = array();
 
