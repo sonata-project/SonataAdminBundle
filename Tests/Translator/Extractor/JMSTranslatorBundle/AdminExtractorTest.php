@@ -70,7 +70,7 @@ class AdminExtractorTest extends \PHPUnit_Framework_TestCase
                 return;
             }));
 
-        $logger = $this->getMock('Symfony\Component\HttpKernel\Log\LoggerInterface');
+        $logger = $this->getMock('Psr\Log\LoggerInterface');
 
         $this->pool = new Pool($container, '', '');
         $this->pool->setAdminServiceIds(array('foo_admin', 'bar_admin'));
