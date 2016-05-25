@@ -1998,10 +1998,17 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
     }
 
     /**
+     * NEXT_MAJOR : remove this method.
+     *
      * @return BreadcrumbsBuilderInterface
      */
     final public function getBreadcrumbsBuilder()
     {
+        @trigger_error(
+            'The '.__METHOD__.' method is deprecated since version 3.x and will be removed in 4.0.'.
+            ' Use the sonata.admin.breadcrumbs_builder service instead.',
+            E_USER_DEPRECATED
+        );
         if ($this->breadcrumbsBuilder === null) {
             $this->breadcrumbsBuilder = new BreadcrumbsBuilder();
         }
@@ -2010,12 +2017,19 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
     }
 
     /**
+     * NEXT_MAJOR : remove this method.
+     *
      * @param BreadcrumbsBuilderInterface
      *
      * @return AbstractAdmin
      */
     final public function setBreadcrumbsBuilder(BreadcrumbsBuilderInterface $value)
     {
+        @trigger_error(
+            'The '.__METHOD__.' method is deprecated since version 3.x and will be removed in 4.0.'.
+            ' Use the sonata.admin.breadcrumbs_builder service instead.',
+            E_USER_DEPRECATED
+        );
         $this->breadcrumbsBuilder = $value;
 
         return $this;
