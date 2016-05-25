@@ -169,6 +169,28 @@ interface AdminInterface
     public function generateMenuUrl($name, array $parameters = array(), $absolute = false);
 
     /**
+     * Sets a list of templates.
+     *
+     * @param array $templates
+     */
+    public function setTemplates(array $templates);
+
+    /**
+     * Sets a specific template.
+     *
+     * @param string $name
+     * @param string $template
+     */
+    public function setTemplate($name, $template);
+
+    /**
+     * Get all templates.
+     *
+     * @return array
+     */
+    public function getTemplates();
+
+    /**
      * @return \Sonata\AdminBundle\Model\ModelManagerInterface
      */
     public function getModelManager();
@@ -310,19 +332,12 @@ interface AdminInterface
     /**
      * Check the current request is given route or not.
      *
-     * TODO: uncomment this method before releasing 4.0
-     *
-     * ```
-     * $this->isCurrentRoute('create'); // is create page?
-     * $this->isCurrentRoute('edit', 'some.admin.code'); // is some.admin.code admin's edit page?
-     * ```
-     *
      * @param string $name
      * @param string $adminCode
      *
      * @return bool
      */
-    // public function isCurrentRoute($name, $adminCode = null);
+    public function isCurrentRoute($name, $adminCode = null);
 
     /**
      * Returns true if the admin has a FieldDescription with the given $name.
@@ -594,6 +609,13 @@ interface AdminInterface
     public function getUniqid();
 
     /**
+     * Returns the classname label.
+     *
+     * @return string the classname label
+     */
+    public function getClassnameLabel();
+
+    /**
      * @param mixed $id
      *
      * @return mixed
@@ -643,13 +665,18 @@ interface AdminInterface
     public function getExportFormats();
 
     /**
+     * Retuns a list of exported fields.
+     *
+     * @return array
+     */
+    public function getExportFields();
+
+    /**
      * Returns SourceIterator.
      *
      * @return \Exporter\Source\SourceIteratorInterface
      */
     public function getDataSourceIterator();
-
-    public function configure();
 
     /**
      * @param mixed $object
@@ -670,11 +697,10 @@ interface AdminInterface
      */
     public function delete($object);
 
-//TODO: uncomment this method for 4.0
-//    /**
-//     * @param mixed $object
-//     */
-//    public function preValidate($object);
+    /**
+     * @param mixed $object
+     */
+    public function preValidate($object);
 
     /**
      * @param mixed $object
@@ -879,6 +905,20 @@ interface AdminInterface
     public function isAclEnabled();
 
     /**
+     * Returns list of supported sub classes.
+     *
+     * @return array
+     */
+    public function getSubClasses();
+
+    /**
+     * Adds a new class to a list of supported sub classes.
+     *
+     * @param $subClass
+     */
+    public function addSubClass($subClass);
+
+    /**
      * Sets the list of supported sub classes.
      *
      * @param array $subClasses the list of sub classes
@@ -937,6 +977,13 @@ interface AdminInterface
     public function getPersistentParameters();
 
     /**
+     * @param string $name
+     *
+     * @return null|mixed
+     */
+    public function getPersistentParameter($name);
+
+    /**
      * Get breadcrumbs for $action.
      *
      * @param string $action
@@ -969,18 +1016,6 @@ interface AdminInterface
      * @return string
      */
     public function getTranslationLabel($label, $context = '', $type = '');
-
-    /**
-     * DEPRECATED: Use buildTabMenu instead.
-     *
-     * @param string         $action
-     * @param AdminInterface $childAdmin
-     *
-     * @return ItemInterface|bool
-     *
-     * @deprecated Use buildTabMenu instead
-     */
-    public function buildSideMenu($action, AdminInterface $childAdmin = null);
 
     /**
      * Build the tab menu related to the current action.
@@ -1031,25 +1066,40 @@ interface AdminInterface
      */
     public function checkAccess($action, $object = null);
 
-    /*
-     * Configure buttons for an action
+    /**
+     * @param string $action
+     * @param mixed  $object
+     *
+     * @return array
+     */
+    public function getActionButtons($action, $object = null);
+
+    /**
+     * Get the list of actions that can be accessed directly from the dashboard.
+     *
+     * @return array
+     */
+    public function getDashboardActions();
+
+    /**
+     * Hook to handle access authorization, without throw Exception.
      *
      * @param string $action
      * @param object $object
      *
+     * @return bool
      */
     // public function configureActionButtons($action, $object = null);
 
-//    TODO: uncomment this method for next major release
-//    /**
-//     * Hook to handle access authorization, without throw Exception
-//     *
-//     * @param string $action
-//     * @param object $object
-//     *
-//     * @return bool
-//     */
-//    public function hasAccess($action, $object = null);
+    /**
+     * Hook to handle access authorization, without throw Exception.
+     *
+     * @param string $action
+     * @param object $object
+     *
+     * @return bool
+     */
+    public function hasAccess($action, $object = null);
 
     //TODO: uncomment this method for 4.0
     /*

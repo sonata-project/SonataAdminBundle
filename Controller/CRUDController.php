@@ -368,22 +368,13 @@ class CRUDController extends Controller
             unset($data['_sonata_csrf_token']);
         }
 
-        // NEXT_MAJOR: Remove reflection check.
-        $reflector = new \ReflectionMethod($this->admin, 'getBatchActions');
-        if ($reflector->getDeclaringClass()->getName() === get_class($this->admin)) {
-            @trigger_error('Override Sonata\AdminBundle\Admin\AbstractAdmin::getBatchActions method'
-                .' is deprecated since version 3.x.'
-                .' Use Sonata\AdminBundle\Admin\AbstractAdmin::configureBatchActions instead.'
-                .' The method will be final in 4.0.', E_USER_DEPRECATED
-            );
-        }
         $batchActions = $this->admin->getBatchActions();
         if (!array_key_exists($action, $batchActions)) {
             throw new \RuntimeException(sprintf('The `%s` batch action is not defined', $action));
         }
 
         $camelizedAction = Inflector::classify($action);
-        $isRelevantAction = sprintf('batchAction%sIsRelevant', $camelizedAction);
+        $isRelevantAction = sprintf('batchAction%sIsRelevant', ucfirst($camelizedAction));
 
         if (method_exists($this, $isRelevantAction)) {
             $nonRelevantMessage = call_user_func(array($this, $isRelevantAction), $idx, $allElements);
