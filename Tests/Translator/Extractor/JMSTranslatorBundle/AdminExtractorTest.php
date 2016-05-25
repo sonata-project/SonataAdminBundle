@@ -124,6 +124,6 @@ class AdminExtractorTest extends \PHPUnit_Framework_TestCase
                 throw new \RuntimeException('Foo throws exception');
             }));
 
-        $catalogue = $this->adminExtractor->extract();
+        $this->adminExtractor->extract();
     }
 }
