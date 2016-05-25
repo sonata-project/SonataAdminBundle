@@ -21,16 +21,29 @@ use Knp\Menu\ItemInterface;
 final class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
 {
     /**
+     * @var AdminInterface might be the current admin or one of its ancestors.
+     */
+    private $admin;
+
+    /**
+     * @param AdminInterface will be used to get various services. To be replaced by several dependencies
+     */
+    public function __construct(AdminInterface $admin)
+    {
+        $this->admin = $admin;
+    }
+
+    /**
      * {@inheritdoc}
      */
-    public function getBreadcrumbs(AdminInterface $admin, $action)
+    public function getBreadcrumbs($action)
     {
         $breadcrumbs = array();
-        if ($admin->isChild()) {
-            return $admin->getParent()->getBreadcrumbs($action);
+        if ($this->admin->isChild()) {
+            return $this->admin->getParent()->getBreadcrumbs($action);
         }
 
-        $menu = $admin->buildBreadcrumbs($action);
+        $menu = $this->admin->buildBreadcrumbs($action);
 
         do {
             $breadcrumbs[] = $menu;
@@ -45,44 +58,42 @@ final class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function buildBreadcrumbs(AdminInterface $admin, $action, ItemInterface $menu = null)
+    public function buildBreadcrumbs($action, ItemInterface $menu = null)
     {
         if (!$menu) {
-            $menu = $admin->getMenuFactory()->createItem('root');
+            $menu = $this->admin->getMenuFactory()->createItem('root');
 
             $menu = $this->createMenuItem(
-                $admin,
                 $menu,
                 'dashboard',
                 'SonataAdminBundle',
-                array('uri' => $admin->getRouteGenerator()->generate(
+                array('uri' => $this->admin->getRouteGenerator()->generate(
                     'sonata_admin_dashboard'
                 ))
             );
         }
 
         $menu = $this->createMenuItem(
-            $admin,
             $menu,
-            sprintf('%s_list', $admin->getClassnameLabel()),
+            sprintf('%s_list', $this->admin->getClassnameLabel()),
             null,
             array(
-                'uri' => $admin->hasRoute('list') && $admin->isGranted('LIST') ?
-                $admin->generateUrl('list') :
+                'uri' => $this->admin->hasRoute('list') && $this->admin->isGranted('LIST') ?
+                $this->admin->generateUrl('list') :
                 null,
             )
         );
 
-        $childAdmin = $admin->getCurrentChildAdmin();
+        $childAdmin = $this->admin->getCurrentChildAdmin();
 
         if ($childAdmin) {
-            $id = $admin->getRequest()->get($admin->getIdParameter());
-
             $menu = $menu->addChild(
-                $admin->toString($admin->getSubject()),
+                $this->admin->toString($this->admin->getSubject()),
                 array(
-                    'uri' => $admin->hasRoute('edit') && $admin->isGranted('EDIT') ?
-                    $admin->generateUrl('edit', array('id' => $id)) :
+                    'uri' => $this->admin->hasRoute('edit') && $this->admin->isGranted('EDIT') ?
+                    $this->admin->generateUrl('edit', array(
+                        'id' => $this->admin->getRequest()->get($this->admin->getIdParameter()),
+                    )) :
                     null,
                 )
             );
@@ -90,15 +101,14 @@ final class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
             return $childAdmin->buildBreadcrumbs($action, $menu);
         }
 
-        if ('list' === $action && $admin->isChild()) {
+        if ('list' === $action && $this->admin->isChild()) {
             $menu->setUri(false);
-        } elseif ('create' !== $action && $admin->hasSubject()) {
-            $menu = $menu->addChild($admin->toString($admin->getSubject()));
+        } elseif ('create' !== $action && $this->admin->hasSubject()) {
+            $menu = $menu->addChild($this->admin->toString($this->admin->getSubject()));
         } else {
             $menu = $this->createMenuItem(
-                $admin,
                 $menu,
-                sprintf('%s_%s', $admin->getClassnameLabel(), $action)
+                sprintf('%s_%s', $this->admin->getClassnameLabel(), $action)
             );
         }
 
@@ -109,24 +119,22 @@ final class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
      * Creates a new menu item from a simple name. The name is normalized and
      * translated with the specified translation domain.
      *
-     * @param AdminInterface $admin             used for translation
-     * @param ItemInterface  $menu              will be modified and returned
-     * @param string         $name              the source of the final label
-     * @param string         $translationDomain for label translation
-     * @param array          $options           menu item options
+     * @param ItemInterface $menu              will be modified and returned
+     * @param string        $name              the source of the final label
+     * @param string        $translationDomain for label translation
+     * @param array         $options           menu item options
      *
      * @return ItemInterface
      */
     private function createMenuItem(
-        AdminInterface $admin,
         ItemInterface $menu,
         $name,
         $translationDomain = null,
         $options = array()
     ) {
         return $menu->addChild(
-            $admin->trans(
-                $admin->getLabelTranslatorStrategy()->getLabel(
+            $this->admin->trans(
+                $this->admin->getLabelTranslatorStrategy()->getLabel(
                     $name,
                     'breadcrumb',
                     'link'

@@ -25,12 +25,12 @@ If you have implemented a custom admin, you must adapt the signature of the foll
  * `getDashboardActions`
  * `getActionButtons`
  * `isCurrentRoute`
-  
+
 The following methods changed their visiblity to protected:
  * `configureActionButtons`
  * `configure`
  * `urlize`
- 
+
 If you extend an `AbstractAdmin`, you can't override the following methods anymore, because they are final now:
  * `urlize`
 
@@ -45,6 +45,20 @@ If you have implemented a custom admin extension, you must adapt the signature o
 ## AbstractAdmin
 The API of the following methods was closed by making them final, you can't override this methods anymore:
  * `getActionButtons`
+
+## BreacrumbsBuilder
+The breadcrumbs builder is now stateful, its interface looses the `$admin` parameters.
+You need to change your calls like this:
+
+```php
+// Before
+$breadcrumbsBuilder->getBreadcrumbs($admin, 'my_action');
+$breadcrumbsBuilder->buildBreadcrumbs($admin, $menu);
+
+// After
+$breadcrumbsBuilder->getBreadcrumbs('my_action');
+$breadcrumbsBuilder->buildBreadcrumbs($menu);
+```
 
 ## SonataAdminExtension
 The Twig filters that come with the bundle will no longer load a default template when used with a missing template.

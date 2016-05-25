@@ -25,26 +25,20 @@ interface BreadcrumbsBuilderInterface
     /**
      * Get breadcrumbs for $action.
      *
-     * @param AdminInterface $admin
-     * @param string         $action the name of the action we want to get a
-     *                               breadcrumbs for
+     * @param string $action the name of the action we want to get a
+     *                       breadcrumbs for
      *
      * @return mixed array|Traversable the breadcrumbs
      */
-    public function getBreadcrumbs(AdminInterface $admin, $action);
+    public function getBreadcrumbs($action);
 
     /**
      * Builds breadcrumbs for $action, starting from $menu.
      *
      * Note: the method will be called by the top admin instance (parent => child)
      *
-     * @param AdminInterface     $admin
      * @param string             $action
      * @param ItemInterface|null $menu
      */
-    public function buildBreadcrumbs(
-        AdminInterface $admin,
-        $action,
-        ItemInterface $menu = null
-    );
+    public function buildBreadcrumbs($action, ItemInterface $menu = null);
 }

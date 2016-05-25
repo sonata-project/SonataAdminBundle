@@ -1642,7 +1642,7 @@ class AdminTest extends \PHPUnit_Framework_TestCase
             'Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface'
         );
         $action = 'myaction';
-        $builder->getBreadcrumbs($admin, $action)->shouldBeCalled();
+        $builder->getBreadcrumbs($action)->shouldBeCalled();
         $admin->setBreadcrumbsBuilder($builder->reveal())->getBreadcrumbs($action);
     }
 
@@ -1656,7 +1656,7 @@ class AdminTest extends \PHPUnit_Framework_TestCase
         );
         $action = 'myaction';
         $menu = $this->getMock('Knp\Menu\ItemInterface');
-        $builder->buildBreadcrumbs($admin, $action, $menu)
+        $builder->buildBreadcrumbs($action, $menu)
             ->shouldBeCalledTimes(1)
             ->willReturn($menu);
         $admin->setBreadcrumbsBuilder($builder->reveal());
