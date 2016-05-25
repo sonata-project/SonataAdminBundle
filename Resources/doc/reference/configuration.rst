@@ -213,3 +213,4 @@ Full Configuration Options
                     instanceof:           []
                     uses:                 []
             persist_filters:      false
+            show_mosaic_button:   true
