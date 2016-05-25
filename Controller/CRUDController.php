@@ -63,6 +63,9 @@ class CRUDController extends Controller
      */
     public function render($view, array $parameters = array(), Response $response = null)
     {
+        if (!$this->isXmlHttpRequest()) {
+            $parameters['breadcrumbs_builder'] = $this->get('sonata.admin.breadcrumbs_builder');
+        }
         $parameters['admin'] = isset($parameters['admin']) ?
             $parameters['admin'] :
             $this->admin;

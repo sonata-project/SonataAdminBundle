@@ -46,11 +46,17 @@ class CoreController extends Controller
             $blocks[$block['position']][] = $block;
         }
 
-        return $this->render($this->getAdminPool()->getTemplate('dashboard'), array(
+        $parameters = array(
             'base_template' => $this->getBaseTemplate(),
             'admin_pool' => $this->container->get('sonata.admin.pool'),
             'blocks' => $blocks,
-        ));
+        );
+
+        if (!$this->getRequest()->isXmlHttpRequest()) {
+            $parameters['breadcrumbs_builder'] = $this->get('sonata.admin.breadcrumbs_builder');
+        }
+
+        return $this->render($this->getAdminPool()->getTemplate('dashboard'), $parameters);
     }
 
     /**
@@ -102,6 +108,7 @@ class CoreController extends Controller
 
         return $this->render($this->container->get('sonata.admin.pool')->getTemplate('search'), array(
             'base_template' => $this->getBaseTemplate(),
+            'breadcrumbs_builder' => $this->get('sonata.admin.breadcrumbs_builder'),
             'admin_pool' => $this->container->get('sonata.admin.pool'),
             'query' => $request->get('q'),
             'groups' => $this->getAdminPool()->getDashboardGroups(),

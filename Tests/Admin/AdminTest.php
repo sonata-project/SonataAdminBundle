@@ -1680,6 +1680,9 @@ class AdminTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('create', $admin->getDashboardActions());
     }
 
+    /**
+     * @group legacy
+     */
     public function testDefaultBreadcrumbsBuilder()
     {
         $admin = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AbstractAdmin', array(
@@ -1691,6 +1694,9 @@ class AdminTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @group legacy
+     */
     public function testBreadcrumbsBuilderSetter()
     {
         $admin = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AbstractAdmin', array(
