@@ -466,6 +466,26 @@
                 <source>label_unknown_user</source>
                 <target>unbekannt</target>
             </trans-unit>
+            <trans-unit id="batch.action_edit">
+                <source>batch.action_edit</source>
+                <target>Massenbearbeitung</target>
+            </trans-unit>
+            <trans-unit id="batch_edit_title">
+                <source>batch_edit_title</source>
+                <target>Massenbearbeitung</target>
+            </trans-unit>
+            <trans-unit id="batch_edit_data">
+                <source>batch_edit_data</source>
+                <target>Neue Inhalte</target>
+            </trans-unit>
+            <trans-unit id="batch_edit_message_all">
+                <source>batch_edit_message_all</source>
+                <target>Sind Sie sicher, dass Sie alle ausgewählten Elemente bearbeiten wollen?</target>
+            </trans-unit>
+            <trans-unit id="batch_edit_message">
+                <source>batch_edit_message</source>
+                <target>Sind Sie sicher, dass Sie alle ausgewählten Elemente bearbeiten wollen?|Sind Sie sicher dass Sie alle ausgewählten Elemente (%count%) bearbeiten wollen?</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

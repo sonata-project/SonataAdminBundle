@@ -392,6 +392,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
             'batch' => 'SonataAdminBundle:CRUD:list__batch.html.twig',
             'select' => 'SonataAdminBundle:CRUD:list__select.html.twig',
             'batch_confirmation' => 'SonataAdminBundle:CRUD:batch_confirmation.html.twig',
+            'batch_edit' => 'SonataAdminBundle:CRUD:batch_edit.html.twig',
             'inner_list_row' => 'SonataAdminBundle:CRUD:list_inner_row.html.twig',
             'base_list_field' => 'SonataAdminBundle:CRUD:base_list_field.html.twig',
             'pager_links' => 'SonataAdminBundle:Pager:links.html.twig',

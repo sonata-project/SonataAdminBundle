@@ -1,0 +1,120 @@
+{% extends base_template %}
+
+{% block actions %}
+    {% include 'SonataAdminBundle:CRUD:action_buttons.html.twig' %}
+{% endblock %}
+
+{% block tab_menu %}{{ knp_menu_render(admin.sidemenu(action), {'currentClass' : 'active', 'template': sonata_admin.adminPool.getTemplate('tab_menu_template')}, 'twig') }}{% endblock %}
+
+{% block content %}
+    <form
+            {% if admin_pool.getOption('form_type') == 'horizontal' %}class="form-horizontal"{% endif %}
+            role="form"
+            action="{{ admin.generateUrl('batch', {'filter': admin.filterParameters}) }}" {{ form_enctype(form) }}
+            method="POST"
+            {% if not admin_pool.getOption('html5_validate') %}novalidate="novalidate"{% endif %}
+            >
+        <div class="sonata-ba-batch-form">
+            <div class="box box-danger">
+                <div class="box-header">
+                    <h4 class="box-title">{{ "batch_edit_title"|trans({}, 'SonataAdminBundle') }}</h4>
+                </div>
+                <div class="box-body">
+                    {% if data.all_elements %}
+                        <p>{{ 'batch_edit_message_all'|trans({}, 'SonataAdminBundle') }}</p>
+                    {% else %}
+                        <p>{% transchoice data.idx|length with {'%count%': data.idx|length} from 'SonataAdminBundle' %}batch_edit_message{% endtranschoice %}</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="box box-default">
+                <div class="box-header">
+                    <h4 class="box-title">{{ "batch_edit_data"|trans({}, 'SonataAdminBundle') }}</h4>
+                </div>
+                <div class="box-body">
+                    {% if batchForm.vars.errors|length > 0 %}
+                        <div class="sonata-ba-form-error">
+                            {{ form_errors(form) }}
+                        </div>
+                    {% endif %}
+
+                    {% import "SonataAdminBundle:CRUD:base_edit_form_macro.html.twig" as form_helper %}
+
+                    {% if batchForm.vars.errors|length > 0 %}
+                        <div class="sonata-ba-form-error">
+                            {{ form_errors(batchForm) }}
+                        </div>
+                    {% endif %}
+
+                    {% block sonata_pre_fieldsets %}
+                        <div class="row">
+                    {% endblock %}
+
+                    {% block sonata_tab_content %}
+                        {% set has_tab = ((admin.formtabs|length == 1 and admin.formtabs|keys[0] != 'default') or admin.formtabs|length > 1 ) %}
+
+                        <div class="col-md-12">
+                            {% if has_tab %}
+                                <div class="nav-tabs-custom">
+                                    <ul class="nav nav-tabs" role="tablist">
+                                        {% for name, form_tab in admin.formtabs %}
+                                            <li{% if loop.index == 1 %} class="active"{% endif %}><a href="#tab_{{ admin.uniqid }}_{{ loop.index }}" data-toggle="tab"><i class="fa fa-exclamation-circle has-errors hide"></i> {{ admin.trans(name, {}, form_tab.translation_domain) }}</a></li>
+                                        {% endfor %}
+                                    </ul>
+                                    <div class="tab-content">
+                                        {% for code, form_tab in admin.formtabs %}
+                                            <div class="tab-pane fade{% if loop.first %} in active{% endif %}" id="tab_{{ admin.uniqid }}_{{ loop.index }}">
+                                                <div class="box-body  container-fluid">
+                                                    <div class="sonata-ba-collapsed-fields">
+                                                        {% if form_tab.description != false %}
+                                                            <p>{{ form_tab.description|raw }}</p>
+                                                        {% endif %}
+
+                                                        {{ form_helper.render_groups(admin, batchForm, form_tab['groups'], has_tab) }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            {% else %}
+                                {{ form_helper.render_groups(admin, batchForm, admin.formtabs['default'].groups, has_tab) }}
+                            {% endif %}
+                        </div>
+                    {% endblock %}
+
+                    {% block sonata_post_fieldsets %}
+                        </div>
+                    {% endblock %}
+
+                    {{ form_rest(batchForm) }}
+                </div>
+            </div>
+
+            <div class="box box-default">
+                <div class="box-footer clearfix">
+                    <input type="hidden" name="modus" value="save" />
+                    <input type="hidden" name="data" value="{{ data|json_encode }}" />
+                    <input type="hidden" name="_sonata_csrf_token" value="{{ csrf_token }}">
+
+                    <div style="display: none">
+                        {{ form_rest(form) }}
+                    </div>
+
+                    <button type="submit" class="btn btn-success" name="save">
+                        <i class="fa fa-save"></i> {{ 'btn_execute_batch_action'|trans({}, 'SonataAdminBundle') }}
+                    </button>
+
+                    {% if admin.hasRoute('list') and admin.isGranted('LIST') %}
+                        {{ 'delete_or'|trans({}, 'SonataAdminBundle') }}
+
+                        <a class="btn btn-default" href="{{ admin.generateUrl('list') }}">
+                            <i class="fa fa-list"></i> {{ 'link_action_list'|trans({}, 'SonataAdminBundle') }}
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock %}

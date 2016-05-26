@@ -47,6 +47,7 @@ By default, ``SonataAdminBundle`` uses the following templates for their matchin
 * ``preview`` : SonataAdminBundle:CRUD:preview.html.twig
 * ``delete`` : SonataAdminBundle:CRUD:delete.html.twig
 * ``batch_confirmation`` : SonataAdminBundle:CRUD:batch_confirmation.html.twig
+* ``batch_edit`` : SonataAdminBundle:CRUD:batch_edit.html.twig
 * ``acl`` : SonataAdminBundle:CRUD:acl.html.twig
 
 Notice that all these templates extend other templates, and some do only that. This inheritance

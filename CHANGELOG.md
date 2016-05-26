@@ -13,6 +13,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Added `AbstractAdmin` class, replacing `Admin` one
 - Added `BaseMapper::keys` method
+- Added `AbstractAdmin::configureBatchFormFields` method for batch editing
 
 ### Changed
 - Updated AdminLTE theme to version 2.3.3

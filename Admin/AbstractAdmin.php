@@ -38,6 +38,7 @@ use Sonata\CoreBundle\Validator\Constraints\InlineConstraint;
 use Sonata\CoreBundle\Validator\ErrorElement;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -442,6 +443,13 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
     protected $accessMapping = array();
 
     /**
+     * Show batch edit action.
+     * 
+     * @var bool
+     */
+    protected $batchEdit = false;
+
+    /**
      * The class name managed by the admin class.
      *
      * @var string
@@ -471,6 +479,11 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
      * @var Form
      */
     private $form;
+
+    /**
+     * @var FormInterface
+     */
+    private $batchForm;
 
     /**
      * @var DatagridInterface
@@ -1070,6 +1083,14 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
             );
         }
 
+        if ($this->batchEdit && $this->hasRoute('edit') && $this->isGranted('EDIT')) {
+            $actions['edit'] = array(
+                'label' => 'batch.action_edit',
+                'translation_domain' => 'SonataAdminBundle',
+                'ask_confirmation' => false,
+            );
+        }
+
         $actions = $this->configureBatchActions($actions);
 
         foreach ($this->getExtensions() as $extension) {
@@ -1302,6 +1323,16 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
         $this->buildForm();
 
         return $this->form;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBatchForm()
+    {
+        $this->buildBatchForm();
+
+        return $this->batchForm;
     }
 
     /**
@@ -2866,6 +2897,15 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
     }
 
     /**
+     * Defines available fields for batch editing.
+     * 
+     * @param FormMapper $formMapper
+     */
+    protected function configureBatchFormFields(FormMapper $formMapper)
+    {
+    }
+
+    /**
      * @param ListMapper $list
      */
     protected function configureListFields(ListMapper $list)
@@ -3153,5 +3193,49 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
         foreach ($this->getExtensions() as $extension) {
             $extension->configureRoutes($this, $this->routes);
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    private function getBatchFormBuilder()
+    {
+        $this->formOptions['data_class'] = $this->getClass();
+
+        $formBuilder = $this->getFormContractor()->getFormBuilder(
+            $this->getUniqid(),
+            $this->formOptions
+        );
+
+        $this->defineBatchFormBuilder($formBuilder);
+
+        return $formBuilder;
+    }
+
+    /**
+     * This method is being called by the main admin class and the child class,
+     * the getFormBuilder is only call by the main admin class.
+     *
+     * @param FormBuilderInterface $formBuilder
+     */
+    private function defineBatchFormBuilder(FormBuilderInterface $formBuilder)
+    {
+        $mapper = new FormMapper($this->getFormContractor(), $formBuilder, $this);
+
+        $this->configureBatchFormFields($mapper);
+
+        $this->attachInlineValidator();
+    }
+
+    /**
+     * Build the form FieldDescription collection.
+     */
+    private function buildBatchForm()
+    {
+        if ($this->batchForm) {
+            return;
+        }
+
+        $this->batchForm = $this->getBatchFormBuilder()->getForm();
     }
 }
