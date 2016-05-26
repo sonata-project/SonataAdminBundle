@@ -546,3 +546,31 @@ You can :
     }
 
 .. _`issues on GitHub`: https://github.com/sonata-project/SonataAdminBundle/issues/1519
+
+Mosaic view button
+------------------
+
+You have the possibility to show/hide mosaic view button.
+
+.. code-block:: yaml
+
+    sonata_admin:
+        # for hide mosaic view button on all screen using `false`
+        show_mosaic_button:   true
+
+You can show/hide mosaic view button using admin service configuration. You need to add option ``show_mosaic_button``
+in your admin services:
+
+.. code-block:: yaml
+
+    sonata_admin.admin.post:
+        class: Sonata\AdminBundle\Admin\PostAdmin
+        arguments: [~, Sonata\AdminBundle\Entity\Post, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: admin, label: Post, show_mosaic_button: true }
+
+    sonata_admin.admin.news:
+        class: Sonata\AdminBundle\Admin\NewsAdmin
+        arguments: [~, Sonata\AdminBundle\Entity\News, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: admin, label: News, show_mosaic_button: false }

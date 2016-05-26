@@ -1110,4 +1110,13 @@ interface AdminInterface
      * @return string|null
      */
     //public function getSearchResultLink($object)
+
+//    TODO: uncomment this method in 4.0
+//    /**
+//     * Setting to true will enable mosaic button for the admin screen.
+//     * Setting to false will hide mosaic button for the admin screen.
+//     *
+//     * @param bool $isShown
+//     */
+//    public function showMosaicButton($isShown);
 }
