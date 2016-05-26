@@ -14,6 +14,7 @@ namespace Sonata\AdminBundle\Form\DataTransformer;
 use Sonata\AdminBundle\Form\ChoiceList\ModelChoiceList;
 use Sonata\AdminBundle\Form\ChoiceList\ModelChoiceLoader;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
+use Sonata\CoreBundle\Model\Adapter\AdapterInterface;
 use Symfony\Component\Form\ChoiceList\LazyChoiceList;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\RuntimeException;
@@ -76,7 +77,7 @@ class ModelsToArrayTransformer implements DataTransformerInterface
 
         $array = array();
         foreach ($collection as $key => $entity) {
-            $id = implode('~', $this->getIdentifierValues($entity));
+            $id = implode(AdapterInterface::ID_SEPARATOR, $this->getIdentifierValues($entity));
 
             $array[] = $id;
         }
