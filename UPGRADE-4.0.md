@@ -25,12 +25,12 @@ If you have implemented a custom admin, you must adapt the signature of the foll
  * `getDashboardActions`
  * `getActionButtons`
  * `isCurrentRoute`
-  
+
 The following methods changed their visiblity to protected:
  * `configureActionButtons`
  * `configure`
  * `urlize`
- 
+
 If you extend an `AbstractAdmin`, you can't override the following methods anymore, because they are final now:
  * `urlize`
 
@@ -50,3 +50,6 @@ The API of the following methods was closed by making them final, you can't over
 ## SonataAdminExtension
 The Twig filters that come with the bundle will no longer load a default template when used with a missing template.
 The `sonata_admin` twig extension is now final. You may no longer extend it.
+
+## AdminExtractor
+The `AdminExtractor` class is now final, you may no longer extend it.
