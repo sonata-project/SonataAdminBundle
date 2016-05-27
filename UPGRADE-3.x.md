@@ -7,6 +7,11 @@ Since `AbstractAdmin::configureBatchActions` is present, you should not override
 
 This method will be final in 4.0.
 
+## Backward compatibility break for AbstractAdmin::getSubject()
+
+Now `AbstractAdmin::getSubject()` return `null` or `object` of subject entity. Previously,
+`AbstractAdmin::getSubject()` may return `false` if entity identifier not match regexp `/^[0-9A-Fa-f\-]+$/`.
+
 UPGRADE FROM 3.0 to 3.1
 =======================
 
