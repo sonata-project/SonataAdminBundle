@@ -130,7 +130,7 @@ Notes:
     * If your BC PR is accepted, you can do a new one on the `master` branch which remove the deprecated code.
     * SYMFONY DOC REF (same logic)?
 
-If you have a non-BC PR to propose, please first try to create a related BC PR first.
+If you have a non-BC PR to propose, please try to create a related BC PR first.
 This BC PR should mark every piece of code that needs to be removed / uncommented / reworked
 in the corresponding non-BC PR with the following marker comment : `NEXT_MAJOR`.
 When the BC PR is merged in the stable branch, wait for the stable branch to be
