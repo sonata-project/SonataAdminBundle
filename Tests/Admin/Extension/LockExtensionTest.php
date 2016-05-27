@@ -51,7 +51,7 @@ class LockExtensionTest extends \PHPUnit_Framework_TestCase
      */
     private $request;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->modelManager = $this->prophesize('Sonata\AdminBundle\Model\LockInterface');
         $this->admin = $this->prophesize('Sonata\AdminBundle\Admin\AbstractAdmin');
@@ -147,7 +147,7 @@ class LockExtensionTest extends \PHPUnit_Framework_TestCase
     public function testPreUpdateIfRequestDoesNotHaveLockVersion()
     {
         $uniqid = 'admin123';
-        $this->configureAdmin($uniqid);
+        $this->configureAdmin($uniqid, $this->request);
 
         $this->modelManager->lock()->shouldNotBeCalled();
 
