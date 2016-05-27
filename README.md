@@ -10,7 +10,9 @@ The missing Symfony Admin Generator
 [![Monthly Downloads](https://poser.pugx.org/sonata-project/admin-bundle/d/monthly)](https://packagist.org/packages/sonata-project/admin-bundle)
 [![Daily Downloads](https://poser.pugx.org/sonata-project/admin-bundle/d/daily)](https://packagist.org/packages/sonata-project/admin-bundle)
 
-[![Build Status](https://travis-ci.org/sonata-project/SonataAdminBundle.svg?branch=master)](https://travis-ci.org/sonata-project/SonataAdminBundle)
+3.x status: [![Build Status](https://travis-ci.org/sonata-project/SonataAdminBundle.svg?branch=3.x)](https://travis-ci.org/sonata-project/SonataAdminBundle)
+
+master status: [![Build Status](https://travis-ci.org/sonata-project/SonataAdminBundle.svg?branch=master)](https://travis-ci.org/sonata-project/SonataAdminBundle)
 
 ## Documentation
 

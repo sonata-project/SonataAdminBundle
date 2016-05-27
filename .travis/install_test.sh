@@ -13,7 +13,7 @@ wget "https://phar.phpunit.de/${PHPUNIT_PHAR}" --output-document="${HOME}/bin/ph
 chmod u+x "${HOME}/bin/phpunit"
 
 # To be removed when this issue will be resolved: https://github.com/composer/composer/issues/5355
-if [ ${COMPOSER_FLAGS} = '--prefer-lowest' ]; then
+if [ "${COMPOSER_FLAGS}" = '--prefer-lowest' ]; then
     composer update --prefer-dist --no-interaction --prefer-stable --quiet
 fi
 composer update --prefer-dist --no-interaction --prefer-stable ${COMPOSER_FLAGS}
