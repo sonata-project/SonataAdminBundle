@@ -70,3 +70,6 @@ before_script:
   - if [ -x .travis/before_script_${TARGET}.sh ]; then .travis/before_script_${TARGET}.sh; fi;
 
 script: make $TARGET
+
+after_success:
+  - if [ -x .travis/after_success_${TARGET}.sh ]; then .travis/after_success_${TARGET}.sh; fi;
