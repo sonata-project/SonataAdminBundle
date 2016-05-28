@@ -8,7 +8,7 @@ all:
 	@echo "Please choose a task."
 
 test:
-	phpunit -c phpunit.xml.dist
+	phpunit -c phpunit.xml.dist --coverage-clover build/logs/clover.xml
 
 docs:
 	cd Resources/doc && sphinx-build -W -b html -d _build/doctrees . _build/html
