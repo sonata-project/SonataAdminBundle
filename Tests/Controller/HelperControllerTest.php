@@ -496,12 +496,12 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
         $this->admin->expects($this->exactly(2))
             ->method('isGranted')
              ->will($this->returnCallback(function ($operation) {
-                if ($operation == 'CREATE' || $operation == 'EDIT') {
-                    return false;
-                }
+                 if ($operation == 'CREATE' || $operation == 'EDIT') {
+                     return false;
+                 }
 
-                return;
-            }));
+                 return;
+             }));
 
         $request = new Request(array(
             'admin_code' => 'foo.admin',
