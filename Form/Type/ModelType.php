@@ -111,7 +111,6 @@ class ModelType extends AbstractType
                     $options['choices'],
                     $propertyAccessor
                 );
-
             };
         } else {
             $options['choice_list'] = function (Options $options, $previousValue) use ($propertyAccessor) {

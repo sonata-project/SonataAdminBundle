@@ -234,7 +234,6 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             $this->csrfProvider->expects($this->any())
                 ->method('isTokenValid')
                 ->will($this->returnCallback(function (CsrfToken $token) {
-
                     if ($token->getValue() == 'csrf-token-123_'.$token->getId()) {
                         return true;
                     }
@@ -774,8 +773,8 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $modelManager->expects($this->once())
             ->method('batchDelete')
             ->will($this->returnCallback(function () {
-                    throw new ModelManagerException();
-                }));
+                throw new ModelManagerException();
+            }));
 
         $this->admin->expects($this->once())
             ->method('getModelManager')
@@ -1145,8 +1144,8 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->admin->expects($this->once())
             ->method('delete')
             ->will($this->returnCallback(function () {
-                    throw new ModelManagerException();
-                }));
+                throw new ModelManagerException();
+            }));
 
         $this->kernel->expects($this->once())
             ->method('isDebug')
@@ -3680,8 +3679,8 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $subject->expects($this->once())
             ->method($method)
             ->will($this->returnCallback(function () use ($exception) {
-                    throw $exception;
-                }));
+                throw $exception;
+            }));
 
         $this->logger->expects($this->once())
             ->method('error')
