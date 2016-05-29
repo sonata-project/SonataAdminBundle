@@ -222,7 +222,6 @@ class GenerateAdminCommandTest extends \PHPUnit_Framework_TestCase
             $dialog->expects($this->any())
                 ->method('askAndValidate')
                 ->will($this->returnCallback(function (OutputInterface $output, $question, $validator, $attempts = false, $default = null) use ($modelEntity) {
-
                     $questionClean = substr($question, 6, strpos($question, '</info>') - 6);
 
                     switch ($questionClean) {
