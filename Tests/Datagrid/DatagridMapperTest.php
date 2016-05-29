@@ -212,7 +212,7 @@ class DatagridMapperTest extends \PHPUnit_Framework_TestCase
                 $tmpNames[$name] = $name;
 
                 return false;
-        }));
+            }));
 
         try {
             $this->datagridMapper->add('fooName');

@@ -128,8 +128,12 @@ class Datagrid implements DatagridInterface
 
         $this->formBuilder->add('_sort_by', 'hidden');
         $this->formBuilder->get('_sort_by')->addViewTransformer(new CallbackTransformer(
-            function ($value) { return $value; },
-            function ($value) { return $value instanceof FieldDescriptionInterface ? $value->getName() : $value; }
+            function ($value) {
+                return $value;
+            },
+            function ($value) {
+                return $value instanceof FieldDescriptionInterface ? $value->getName() : $value;
+            }
         ));
 
         $this->formBuilder->add('_sort_order', 'hidden');

@@ -108,7 +108,9 @@ class Admin implements MetadataProcessorInterface
             'persist_filters' => $this->persistFilters,
         );
 
-        $tag = array_filter($tag, function ($v) { return !is_null($v); });
+        $tag = array_filter($tag, function ($v) {
+            return !is_null($v);
+        });
         $metadata->tags['sonata.admin'][] = $tag;
         $metadata->arguments = array($this->id, $this->class, $this->baseControllerName);
 
