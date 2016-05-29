@@ -36,7 +36,10 @@ class CoreControllerTest extends \PHPUnit_Framework_TestCase
             $requestStack->push($request);
         }
 
+        $breadcrumbsBuilder = $this->getMock('BreadcrumbsBuilderInterface');
+
         $values = array(
+            'sonata.admin.breadcrumbs_builder' => $breadcrumbsBuilder,
             'sonata.admin.pool' => $pool,
             'templating' => $templating,
             'request' => $request,

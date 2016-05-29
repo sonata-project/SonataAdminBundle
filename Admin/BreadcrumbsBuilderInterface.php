@@ -37,6 +37,7 @@ interface BreadcrumbsBuilderInterface
      * Builds breadcrumbs for $action, starting from $menu.
      *
      * Note: the method will be called by the top admin instance (parent => child)
+     * NEXT_MAJOR : remove this method from the public interface.
      *
      * @param AdminInterface     $admin
      * @param string             $action
