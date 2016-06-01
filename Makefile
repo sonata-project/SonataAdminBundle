@@ -7,6 +7,9 @@
 all:
 	@echo "Please choose a task."
 
+lint:
+	composer validate
+
 test:
 	phpunit -c phpunit.xml.dist --coverage-clover build/logs/clover.xml
 
