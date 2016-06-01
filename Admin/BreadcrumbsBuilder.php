@@ -27,10 +27,10 @@ final class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
     {
         $breadcrumbs = array();
         if ($admin->isChild()) {
-            return $admin->getParent()->getBreadcrumbs($action);
+            return $this->getBreadcrumbs($admin->getParent(), $action);
         }
 
-        $menu = $admin->buildBreadcrumbs($action);
+        $menu = $this->buildBreadcrumbs($admin, $action);
 
         do {
             $breadcrumbs[] = $menu;
@@ -44,6 +44,7 @@ final class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
 
     /**
      * {@inheritdoc}
+     * NEXT_MAJOR : make this method private.
      */
     public function buildBreadcrumbs(AdminInterface $admin, $action, ItemInterface $menu = null)
     {
@@ -87,7 +88,7 @@ final class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
                 )
             );
 
-            return $childAdmin->buildBreadcrumbs($action, $menu);
+            return $this->buildBreadcrumbs($childAdmin, $action, $menu);
         }
 
         if ('list' === $action && $admin->isChild()) {

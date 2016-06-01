@@ -334,6 +334,8 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
     /**
      * The generated breadcrumbs.
      *
+     * NEXT_MAJOR : remove this property
+     *
      * @var array
      */
     protected $breadcrumbs = array();
@@ -1850,6 +1852,12 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
      */
     public function getBreadcrumbs($action)
     {
+        @trigger_error(
+            'The '.__METHOD__.' method is deprecated since version 3.x and will be removed in 4.0.'.
+            ' Use Sonata\AdminBundle\Admin\BreadcrumbsBuilder::getBreadcrumbs instead.',
+            E_USER_DEPRECATED
+        );
+
         return $this->getBreadcrumbsBuilder()->getBreadcrumbs($this, $action);
     }
 
@@ -1865,6 +1873,11 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
      */
     public function buildBreadcrumbs($action, MenuItemInterface $menu = null)
     {
+        @trigger_error(
+            'The '.__METHOD__.' method is deprecated since version 3.x and will be removed in 4.0.',
+            E_USER_DEPRECATED
+        );
+
         if (isset($this->breadcrumbs[$action])) {
             return $this->breadcrumbs[$action];
         }
@@ -1874,10 +1887,17 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
     }
 
     /**
+     * NEXT_MAJOR : remove this method.
+     *
      * @return BreadcrumbsBuilderInterface
      */
     final public function getBreadcrumbsBuilder()
     {
+        @trigger_error(
+            'The '.__METHOD__.' method is deprecated since version 3.x and will be removed in 4.0.'.
+            ' Use the sonata.admin.breadcrumbs_builder service instead.',
+            E_USER_DEPRECATED
+        );
         if ($this->breadcrumbsBuilder === null) {
             $this->breadcrumbsBuilder = new BreadcrumbsBuilder();
         }
@@ -1886,12 +1906,19 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
     }
 
     /**
+     * NEXT_MAJOR : remove this method.
+     *
      * @param BreadcrumbsBuilderInterface
      *
      * @return AbstractAdmin
      */
     final public function setBreadcrumbsBuilder(BreadcrumbsBuilderInterface $value)
     {
+        @trigger_error(
+            'The '.__METHOD__.' method is deprecated since version 3.x and will be removed in 4.0.'.
+            ' Use the sonata.admin.breadcrumbs_builder service instead.',
+            E_USER_DEPRECATED
+        );
         $this->breadcrumbsBuilder = $value;
 
         return $this;

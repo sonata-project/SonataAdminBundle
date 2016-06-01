@@ -55,6 +55,7 @@ Reference Guide
    reference/batch_actions
    reference/console
    reference/troubleshooting
+   reference/breadcrumbs
 
 Advanced Options
 ----------------

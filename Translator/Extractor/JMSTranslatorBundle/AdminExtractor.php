@@ -17,6 +17,7 @@ use JMS\TranslationBundle\Model\MessageCatalogue;
 use JMS\TranslationBundle\Translation\ExtractorInterface;
 use Psr\Log\LoggerInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
@@ -55,6 +56,11 @@ final class AdminExtractor implements ExtractorInterface, TranslatorInterface, S
     private $domain;
 
     /**
+     * @var BreadcrumbsBuilderInterface
+     */
+    private $breadcrumbsBuilder;
+
+    /**
      * @param Pool            $adminPool
      * @param LoggerInterface $logger
      */
@@ -76,6 +82,14 @@ final class AdminExtractor implements ExtractorInterface, TranslatorInterface, S
     public function setLogger(LoggerInterface $logger)
     {
         $this->logger = $logger;
+    }
+
+    /**
+     * NEXT_MAJOR : use a constructor argument instead.
+     */
+    final public function setBreadcrumbsBuilder(BreadcrumbsBuilderInterface $breadcrumbsBuilder)
+    {
+        $this->breadcrumbsBuilder = $breadcrumbsBuilder;
     }
 
     /**
@@ -106,18 +120,19 @@ final class AdminExtractor implements ExtractorInterface, TranslatorInterface, S
 
             // call the different public method
             $methods = array(
-                'getShow' => array(array()),
-                'getDatagrid' => array(array()),
-                'getList' => array(array()),
-                'getForm' => array(array()),
-                'getBreadcrumbs' => array(
-                    array('list'),
-                    array('edit'),
-                    array('create'),
-                    array('update'),
-                    array('batch'),
-                    array('delete'),
-                ),
+                'getShow',
+                'getDatagrid',
+                'getList',
+                'getForm',
+            );
+
+            $actions = array(
+                'list',
+                'edit',
+                'create',
+                'update',
+                'batch',
+                'delete',
             );
 
             if ($this->logger) {
@@ -128,21 +143,38 @@ final class AdminExtractor implements ExtractorInterface, TranslatorInterface, S
                 ));
             }
 
-            foreach ($methods as $method => $calls) {
-                foreach ($calls as $args) {
-                    try {
-                        call_user_func_array(array($admin, $method), $args);
-                    } catch (\Exception $e) {
-                        if ($this->logger) {
-                            $this->logger->error(sprintf(
-                                'ERROR : admin:%s - Raise an exception : %s',
+            foreach ($methods as $method) {
+                try {
+                    $admin->$method();
+                } catch (\Exception $e) {
+                    if ($this->logger) {
+                        $this->logger->error(sprintf(
+                            'ERROR : admin:%s - Raise an exception : %s',
+                            $admin->getCode(),
+                            $e->getMessage()
+                        ));
+                    }
+
+                    throw $e;
+                }
+            }
+
+            foreach ($actions as $action) {
+                try {
+                    $this->breadcrumbsBuilder->getBreadcrumbs($admin, $action);
+                } catch (\Exception $e) {
+                    if ($this->logger) {
+                        $this->logger->error(
+                            sprintf(
+                                'ERROR : admin:%s - Raises an exception : %s',
                                 $admin->getCode(),
                                 $e->getMessage()
-                            ));
-                        }
-
-                        throw $e;
+                            ),
+                            array('exception' => $e)
+                        );
                     }
+
+                    throw $e;
                 }
             }
         }

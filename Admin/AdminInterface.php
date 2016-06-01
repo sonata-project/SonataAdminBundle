@@ -984,6 +984,7 @@ interface AdminInterface
     public function getPersistentParameter($name);
 
     /**
+     * NEXT_MAJOR: remove this signature
      * Get breadcrumbs for $action.
      *
      * @param string $action
