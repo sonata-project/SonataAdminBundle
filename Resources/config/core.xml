@@ -33,6 +33,8 @@
             <argument />
         </service>
 
+        <service id="sonata.admin.breadcrumbs_builder" class="Sonata\AdminBundle\Admin\BreadcrumbsBuilder" />
+
         <!-- Services used to format the label, default is sonata.admin.label.strategy.noop -->
         <service id="sonata.admin.label.strategy.bc"
             class="Sonata\AdminBundle\Translator\BCLabelTranslatorStrategy"
@@ -55,6 +57,9 @@
             <tag name="jms_translation.extractor" alias="sonata_admin"/>
             <argument type="service" id="sonata.admin.pool" />
             <argument type="service" id="logger" on-invalid="ignore" />
+            <call method="setBreadcrumbsBuilder">
+                <service id="sonata.admin.breadcrumbs_builder" />
+            </call>
         </service>
 
         <!-- controller as services -->

@@ -27,3 +27,9 @@ The `AdminExtension` class is deprecated. Use `AbstractAdminExtension` instead.
 
 The Twig extension method that fallback to a default template when the specified one does not exist.
 You can no longer rely on that and should always specify templates that exist.
+
+## Deprecated AbstractAdmin methods
+- `buildBreacrumbs` is deprecated, and no replacement is given, it will become an internal method.
+- `getBreadcrumbs` is deprecated in favor of the homonym method of the `sonata.admin.breadcrumbs_builder` service.
+- The breadcrumbs builder accessors are deprecated,
+the `sonata.admin.breadcrumbs_builder` service should be used directly instead.

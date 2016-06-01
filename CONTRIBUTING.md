@@ -51,7 +51,9 @@ All the sonata team will be glad to review your code changes propositions! :smil
 
 But please, read the following before.
 
-### Coding style
+### The content
+
+#### Coding style
 
 Each project follows [PSR-1](http://www.php-fig.org/psr/psr-1/), [PSR-2](http://www.php-fig.org/psr/psr-2/)
 and [Symfony Coding Standards](http://symfony.com/doc/current/contributing/code/standards.html) for coding style,
@@ -64,9 +66,34 @@ and run this command before committing your modifications:
 php-cs-fixer fix --verbose
 ```
 
+#### The documentation
+
+The documentation is mostly written with the `rst` format. You can test the doc rendering with the `make docs` command.
+
+If your PR contains a new feature, you must add documentation for it.
+
+#### The tests
+
+If your PR contains a fix, tests should be added to prove the bug.
+
+If your PR contains an addition, a new feature, this one has to be fully covered by tests.
+
+Some rules have to be respected about the test:
+
+* Annotations about coverage are prohibited. This concerns:
+  * `@covers`
+  * `@coversDefaultClass`
+  * `@coversNothing`
+  * `@codeCoverageIgnore`
+  * `@codeCoverageIgnoreStart`
+  * `codeCoverageIgnoreEnd`
+* All test methods should be prefixed by `test`. Example: `public function testItReturnsNull()`.
+* As opposed, the `@test` annotation is prohibited.
+* Most of the time, the test class should have the same name as the targeted class, suffixed by `Test`.
+
 ### Writing a Pull Request
 
-#### The content
+#### The subject
 
 Ideally, a Pull Request should concern one and **only one** subject, so that it
 remains clear, and independent changes can be merged quickly.

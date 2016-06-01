@@ -35,7 +35,7 @@ class PoolTest extends \PHPUnit_Framework_TestCase
 
         $expectedOutput = array(
             'adminGroup1' => array(
-                'sonata.user.admin.group1' => 'adminUserClass',
+                'sonata.user.admin.group1' => 'sonata_user_admin_group1_AdminClass',
             ),
         );
 
@@ -74,13 +74,13 @@ class PoolTest extends \PHPUnit_Framework_TestCase
 
         $pool->setAdminGroups(array(
             'adminGroup1' => array(
-                'items' => array('itemKey' => array('admin' => 'sonata.user.admin.group1', 'label' => '', 'route' => '', 'route_params' => array())),
+                'items' => array('itemKey' => $this->getItemArray('sonata.user.admin.group1')),
             ),
             'adminGroup2' => array(
-                'items' => array('itemKey' => array('admin' => 'sonata.user.admin.group2', 'label' => '', 'route' => '', 'route_params' => array())),
+                'items' => array('itemKey' => $this->getItemArray('sonata.user.admin.group2')),
             ),
             'adminGroup3' => array(
-                'items' => array('itemKey' => array('admin' => 'sonata.user.admin.group3', 'label' => '', 'route' => '', 'route_params' => array())),
+                'items' => array('itemKey' => $this->getItemArray('sonata.user.admin.group3')),
             ),
         ));
 
@@ -115,12 +115,22 @@ class PoolTest extends \PHPUnit_Framework_TestCase
     {
         $this->pool->setAdminServiceIds(array('sonata.admin1', 'sonata.admin2', 'sonata.admin3'));
         $this->pool->setAdminGroups(array(
-            'adminGroup1' => array('items' => array('sonata.admin1', 'sonata.admin2')),
-            'adminGroup2' => array('items' => array('sonata.admin3')),
+            'adminGroup1' => array(
+                'items' => array(
+                    $this->getItemArray('sonata.admin1'),
+                    $this->getItemArray('sonata.admin2'),
+                ),
+            ),
+            'adminGroup2' => array(
+                'items' => array($this->getItemArray('sonata.admin3')),
+            ),
         ));
 
-        $this->assertCount(2, $this->pool->getAdminsByGroup('adminGroup1'));
-        $this->assertCount(1, $this->pool->getAdminsByGroup('adminGroup2'));
+        $this->assertEquals(array(
+            'sonata_admin1_AdminClass',
+            'sonata_admin2_AdminClass',
+        ), $this->pool->getAdminsByGroup('adminGroup1'));
+        $this->assertEquals(array('sonata_admin3_AdminClass'), $this->pool->getAdminsByGroup('adminGroup2'));
     }
 
     public function testGetAdminForClassWhenAdminClassIsNotSet()
@@ -146,17 +156,23 @@ class PoolTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetAdminForClassWithTooManyRegisteredAdmin()
     {
-        $this->pool->setAdminClasses(array('someclass' => array('sonata.user.admin.group1', 'sonata.user.admin.group2')));
+        $this->pool->setAdminClasses(array(
+            'someclass' => array('sonata.user.admin.group1', 'sonata.user.admin.group2'),
+        ));
+
         $this->assertTrue($this->pool->hasAdminByClass('someclass'));
-        $this->assertSame('adminUserClass', $this->pool->getAdminByClass('someclass'));
+        $this->pool->getAdminByClass('someclass');
     }
 
     public function testGetAdminForClassWhenAdminClassIsSet()
     {
         $this->pool->setAdminServiceIds(array('sonata.user.admin.group1'));
-        $this->pool->setAdminClasses(array('someclass' => array('sonata.user.admin.group1')));
+        $this->pool->setAdminClasses(array(
+            'someclass' => array('sonata.user.admin.group1'),
+        ));
+
         $this->assertTrue($this->pool->hasAdminByClass('someclass'));
-        $this->assertSame('adminUserClass', $this->pool->getAdminByClass('someclass'));
+        $this->assertSame('sonata_user_admin_group1_AdminClass', $this->pool->getAdminByClass('someclass'));
     }
 
     /**
@@ -171,7 +187,8 @@ class PoolTest extends \PHPUnit_Framework_TestCase
     public function testGetAdminByAdminCode()
     {
         $this->pool->setAdminServiceIds(array('sonata.news.admin.post'));
-        $this->assertSame('adminUserClass', $this->pool->getAdminByAdminCode('sonata.news.admin.post'));
+
+        $this->assertSame('sonata_news_admin_post_AdminClass', $this->pool->getAdminByAdminCode('sonata.news.admin.post'));
     }
 
     public function testGetAdminByAdminCodeForChildClass()
@@ -261,8 +278,20 @@ class PoolTest extends \PHPUnit_Framework_TestCase
         $containerMock = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
         $containerMock->expects($this->any())
             ->method('get')
-            ->will($this->returnValue('adminUserClass'));
+            ->will($this->returnCallback(function ($serviceId) {
+                return str_replace('.', '_', $serviceId).'_AdminClass';
+            }));
 
         return $containerMock;
+    }
+
+    private function getItemArray($serviceId)
+    {
+        return array(
+            'admin' => $serviceId,
+            'label' => '',
+            'route' => '',
+            'route_params' => array(),
+        );
     }
 }
