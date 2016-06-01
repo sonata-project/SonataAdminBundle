@@ -36,7 +36,7 @@
         "twig/twig": "^1.23",
         "twig/extensions": "^1.0",
         "sonata-project/exporter": "^1.0",
-        "sonata-project/block-bundle": "^3.0",
+        "sonata-project/block-bundle": "^3.0 || ^4.0@dev",
         "sonata-project/core-bundle": "^3.0",
         "doctrine/common": "^2.2",
         "doctrine/inflector": "^1.0",
@@ -65,7 +65,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "3.x-dev"
+            "dev-master": "4.x-dev"
         }
     }
 }

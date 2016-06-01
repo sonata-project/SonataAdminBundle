@@ -3216,11 +3216,6 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->controller->batchAction($this->request);
     }
 
-    /**
-     * NEXT_MAJOR: Remove this legacy group.
-     *
-     * @group legacy
-     */
     public function testBatchActionActionNotDefined()
     {
         $this->setExpectedException('RuntimeException', 'The `foo` batch action is not defined');
@@ -3252,11 +3247,6 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    /**
-     * NEXT_MAJOR: Remove this legacy group.
-     *
-     * @group legacy
-     */
     public function testBatchActionMethodNotExist()
     {
         $this->setExpectedException('RuntimeException', 'A `Sonata\AdminBundle\Controller\CRUDController::batchActionFoo` method must be callable');
@@ -3279,11 +3269,6 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->controller->batchAction($this->request);
     }
 
-    /**
-     * NEXT_MAJOR: Remove this legacy group.
-     *
-     * @group legacy
-     */
     public function testBatchActionWithoutConfirmation()
     {
         $batchActions = array('delete' => array('label' => 'Foo Bar', 'ask_confirmation' => false));
@@ -3334,11 +3319,6 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('list?', $result->getTargetUrl());
     }
 
-    /**
-     * NEXT_MAJOR: Remove this legacy group.
-     *
-     * @group legacy
-     */
     public function testBatchActionWithoutConfirmation2()
     {
         $batchActions = array('delete' => array('label' => 'Foo Bar', 'ask_confirmation' => false));
@@ -3390,11 +3370,6 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('list?', $result->getTargetUrl());
     }
 
-    /**
-     * NEXT_MAJOR: Remove this legacy group.
-     *
-     * @group legacy
-     */
     public function testBatchActionWithConfirmation()
     {
         $batchActions = array('delete' => array('label' => 'Foo Bar', 'translation_domain' => 'FooBarBaz', 'ask_confirmation' => true));
@@ -3449,11 +3424,6 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('SonataAdminBundle:CRUD:batch_confirmation.html.twig', $this->template);
     }
 
-    /**
-     * NEXT_MAJOR: Remove this legacy group.
-     *
-     * @group legacy
-     */
     public function testBatchActionNonRelevantAction()
     {
         $controller = new BatchAdminController();
@@ -3483,11 +3453,6 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('list?', $result->getTargetUrl());
     }
 
-    /**
-     * NEXT_MAJOR: Remove this legacy group.
-     *
-     * @group legacy
-     */
     public function testBatchActionNonRelevantAction2()
     {
         $controller = new BatchAdminController();
@@ -3517,11 +3482,6 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('list?', $result->getTargetUrl());
     }
 
-    /**
-     * NEXT_MAJOR: Remove this legacy group.
-     *
-     * @group legacy
-     */
     public function testBatchActionNoItems()
     {
         $batchActions = array('delete' => array('label' => 'Foo Bar', 'ask_confirmation' => true));
@@ -3548,11 +3508,6 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('list?', $result->getTargetUrl());
     }
 
-    /**
-     * NEXT_MAJOR: Remove this legacy group.
-     *
-     * @group legacy
-     */
     public function testBatchActionNoItemsEmptyQuery()
     {
         $controller = new BatchAdminController();
@@ -3596,11 +3551,6 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('batchActionBar executed', $result->getContent());
     }
 
-    /**
-     * NEXT_MAJOR: Remove this legacy group.
-     *
-     * @group legacy
-     */
     public function testBatchActionWithRequesData()
     {
         $batchActions = array('delete' => array('label' => 'Foo Bar', 'ask_confirmation' => false));

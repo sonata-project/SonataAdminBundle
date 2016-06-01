@@ -75,17 +75,6 @@ class ListMapper extends BaseMapper
      */
     public function add($name, $type = null, array $fieldDescriptionOptions = array())
     {
-        // Change deprecated inline action "view" to "show"
-        if ($name == '_action' && $type == 'actions') {
-            if (isset($fieldDescriptionOptions['actions']['view'])) {
-                @trigger_error('Inline action "view" is deprecated since version 2.2.4 and will be removed in 4.0. Use inline action "show" instead.', E_USER_DEPRECATED);
-
-                $fieldDescriptionOptions['actions']['show'] = $fieldDescriptionOptions['actions']['view'];
-
-                unset($fieldDescriptionOptions['actions']['view']);
-            }
-        }
-
         // Ensure batch and action pseudo-fields are tagged as virtual
         if (in_array($type, array('actions', 'batch', 'select'))) {
             $fieldDescriptionOptions['virtual_field'] = true;

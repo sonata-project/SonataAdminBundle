@@ -359,20 +359,18 @@ You can add custom items to the actions menu for a specific action by overriding
 
 .. code-block:: php
 
-    public function configureActionButtons($action, $object = null)
+    protected function configureActionButtons($buttonList, $action, $object = null)
     {
-        $list = parent::configureActionButtons($action, $object);
-
         if (in_array($action, array('show', 'edit', 'acl')) && $object) {
-            $list['custom'] = array(
+            $buttonList['custom'] = array(
                 'template' => 'AppBundle:Button:custom_button.html.twig',
             );
         }
 
         // Remove history action
-        unset($list['history']);
+        unset($buttonList['history']);
 
-        return $list;
+        return $buttonList;
     }
 
 
