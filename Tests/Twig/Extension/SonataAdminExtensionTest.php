@@ -265,6 +265,8 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
                         return 'SonataAdminBundle:CRUD:list_currency.html.twig';
                     case 'percent':
                         return 'SonataAdminBundle:CRUD:list_percent.html.twig';
+                    case 'email':
+                        return 'SonataAdminBundle:CRUD:list_email.html.twig';
                     case 'choice':
                         return 'SonataAdminBundle:CRUD:list_choice.html.twig';
                     case 'array':
@@ -473,6 +475,70 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
                 'currency',
                 null,
                 array('currency' => 'GBP'),
+            ),
+            array(
+                '<td class="sonata-ba-list-field sonata-ba-list-field-email" objectId="12345"> &nbsp; </td>',
+                'email',
+                null,
+                array(),
+            ),
+            array(
+                '<td class="sonata-ba-list-field sonata-ba-list-field-email" objectId="12345"> <a href="mailto:admin@admin.com">admin@admin.com</a> </td>',
+                'email',
+                'admin@admin.com',
+                array(),
+            ),
+            array(
+                '<td class="sonata-ba-list-field sonata-ba-list-field-email" objectId="12345">
+                    <a href="mailto:admin@admin.com">admin@admin.com</a> </td>',
+                'email',
+                'admin@admin.com',
+                array('as_string' => false),
+            ),
+            array(
+                '<td class="sonata-ba-list-field sonata-ba-list-field-email" objectId="12345"> admin@admin.com </td>',
+                'email',
+                'admin@admin.com',
+                array('as_string' => true),
+            ),
+            array(
+                '<td class="sonata-ba-list-field sonata-ba-list-field-email" objectId="12345">
+                    <a href="mailto:admin@admin.com?'.$this->buildTwigLikeUrl(array('subject' => 'Main Theme', 'body' => 'Message Body')).'">admin@admin.com</a>  </td>',
+                'email',
+                'admin@admin.com',
+                array('subject' => 'Main Theme', 'body' => 'Message Body'),
+            ),
+            array(
+                '<td class="sonata-ba-list-field sonata-ba-list-field-email" objectId="12345">
+                    <a href="mailto:admin@admin.com?'.$this->buildTwigLikeUrl(array('subject' => 'Main Theme')).'">admin@admin.com</a>  </td>',
+                'email',
+                'admin@admin.com',
+                array('subject' => 'Main Theme'),
+            ),
+            array(
+                '<td class="sonata-ba-list-field sonata-ba-list-field-email" objectId="12345">
+                    <a href="mailto:admin@admin.com?'.$this->buildTwigLikeUrl(array('body' => 'Message Body')).'">admin@admin.com</a>  </td>',
+                'email',
+                'admin@admin.com',
+                array('body' => 'Message Body'),
+            ),
+            array(
+                '<td class="sonata-ba-list-field sonata-ba-list-field-email" objectId="12345"> admin@admin.com </td>',
+                'email',
+                'admin@admin.com',
+                array('as_string' => true, 'subject' => 'Main Theme', 'body' => 'Message Body'),
+            ),
+            array(
+                '<td class="sonata-ba-list-field sonata-ba-list-field-email" objectId="12345"> admin@admin.com </td>',
+                'email',
+                'admin@admin.com',
+                array('as_string' => true, 'body' => 'Message Body'),
+            ),
+            array(
+                '<td class="sonata-ba-list-field sonata-ba-list-field-email" objectId="12345"> admin@admin.com </td>',
+                'email',
+                'admin@admin.com',
+                array('as_string' => true, 'subject' => 'Main Theme'),
             ),
             array(
                 '<td class="sonata-ba-list-field sonata-ba-list-field-array" objectId="12345">
@@ -1134,6 +1200,8 @@ EOT
                         return 'SonataAdminBundle:CRUD:show_currency.html.twig';
                     case 'percent':
                         return 'SonataAdminBundle:CRUD:show_percent.html.twig';
+                    case 'email':
+                        return 'SonataAdminBundle:CRUD:show_email.html.twig';
                     case 'choice':
                         return 'SonataAdminBundle:CRUD:show_choice.html.twig';
                     case 'array':
@@ -1465,6 +1533,66 @@ EOT
                     ),
                     'identifier_parameter_name' => 'barId',
                 )),
+            ),
+            array(
+                '<th>Data</th> <td> &nbsp;</td>',
+                'email',
+                null,
+                array(),
+            ),
+            array(
+                '<th>Data</th> <td> <a href="mailto:admin@admin.com">admin@admin.com</a></td>',
+                'email',
+                'admin@admin.com',
+                array(),
+            ),
+            array(
+                '<th>Data</th> <td> <a href="mailto:admin@admin.com?'.$this->buildTwigLikeUrl(array('subject' => 'Main Theme', 'body' => 'Message Body')).'">admin@admin.com</a></td>',
+                'email',
+                'admin@admin.com',
+                array('subject' => 'Main Theme', 'body' => 'Message Body'),
+            ),
+            array(
+                '<th>Data</th> <td> <a href="mailto:admin@admin.com?'.$this->buildTwigLikeUrl(array('subject' => 'Main Theme')).'">admin@admin.com</a></td>',
+                'email',
+                'admin@admin.com',
+                array('subject' => 'Main Theme'),
+            ),
+            array(
+                '<th>Data</th> <td> <a href="mailto:admin@admin.com?'.$this->buildTwigLikeUrl(array('body' => 'Message Body')).'">admin@admin.com</a></td>',
+                'email',
+                'admin@admin.com',
+                array('body' => 'Message Body'),
+            ),
+            array(
+                '<th>Data</th> <td> admin@admin.com</td>',
+                'email',
+                'admin@admin.com',
+                array('as_string' => true, 'subject' => 'Main Theme', 'body' => 'Message Body'),
+            ),
+            array(
+                '<th>Data</th> <td> admin@admin.com</td>',
+                'email',
+                'admin@admin.com',
+                array('as_string' => true, 'subject' => 'Main Theme'),
+            ),
+            array(
+                '<th>Data</th> <td> admin@admin.com</td>',
+                'email',
+                'admin@admin.com',
+                array('as_string' => true, 'body' => 'Message Body'),
+            ),
+            array(
+                '<th>Data</th> <td> <a href="mailto:admin@admin.com">admin@admin.com</a></td>',
+                'email',
+                'admin@admin.com',
+                array('as_string' => false),
+            ),
+            array(
+                '<th>Data</th> <td> admin@admin.com</td>',
+                'email',
+                'admin@admin.com',
+                array('as_string' => true),
             ),
             array(
                 '<th>Data</th> <td><p><strong>Creating a Template for the Field</strong> and form</p> </td>',
@@ -1920,6 +2048,25 @@ EOT
             ->will($this->returnValue(1234567));
 
         $this->assertSame(1234567, $this->twigExtension->getUrlsafeIdentifier($entity, $this->adminBar));
+    }
+
+    /**
+     * This method generates url part for Twig layout. Allows to keep BC for PHP 5.3.
+     *
+     * Remove this method for next major release only if PHP 5.3 support will be dropped.
+     *
+     * @param array $url
+     *
+     * @return string
+     */
+    private function buildTwigLikeUrl($url)
+    {
+        if (defined('PHP_QUERY_RFC3986')) {
+            // add htmlspecialchars because twig add it auto
+            return htmlspecialchars(http_build_query($url, '', '&', PHP_QUERY_RFC3986));
+        }
+
+        return htmlspecialchars(http_build_query($url, '', '&'));
     }
 
     private function getMethodAsPublic($privateMethod)
