@@ -984,16 +984,6 @@ interface AdminInterface
     public function getPersistentParameter($name);
 
     /**
-     * NEXT_MAJOR: remove this signature
-     * Get breadcrumbs for $action.
-     *
-     * @param string $action
-     *
-     * @return mixed array|Traversable
-     */
-    public function getBreadcrumbs($action);
-
-    /**
      * Set the current child status.
      *
      * @param bool $currentChild

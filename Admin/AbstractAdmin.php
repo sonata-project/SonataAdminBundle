@@ -332,15 +332,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
     protected $routeGenerator;
 
     /**
-     * The generated breadcrumbs.
-     *
-     * NEXT_MAJOR : remove this property
-     *
-     * @var array
-     */
-    protected $breadcrumbs = array();
-
-    /**
      * @var SecurityHandlerInterface
      */
     protected $securityHandler = null;
@@ -527,13 +518,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
      * @var string
      */
     private $managerType;
-
-    /**
-     * The breadcrumbsBuilder component.
-     *
-     * @var BreadcrumbsBuilderInterface
-     */
-    private $breadcrumbsBuilder;
 
     /**
      * @param string $code
@@ -1845,83 +1829,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
         $parameters = $this->getPersistentParameters();
 
         return isset($parameters[$name]) ? $parameters[$name] : null;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBreadcrumbs($action)
-    {
-        @trigger_error(
-            'The '.__METHOD__.' method is deprecated since version 3.x and will be removed in 4.0.'.
-            ' Use Sonata\AdminBundle\Admin\BreadcrumbsBuilder::getBreadcrumbs instead.',
-            E_USER_DEPRECATED
-        );
-
-        return $this->getBreadcrumbsBuilder()->getBreadcrumbs($this, $action);
-    }
-
-    /**
-     * Generates the breadcrumbs array.
-     *
-     * Note: the method will be called by the top admin instance (parent => child)
-     *
-     * @param string             $action
-     * @param ItemInterface|null $menu
-     *
-     * @return array
-     */
-    public function buildBreadcrumbs($action, MenuItemInterface $menu = null)
-    {
-        @trigger_error(
-            'The '.__METHOD__.' method is deprecated since version 3.x and will be removed in 4.0.',
-            E_USER_DEPRECATED
-        );
-
-        if (isset($this->breadcrumbs[$action])) {
-            return $this->breadcrumbs[$action];
-        }
-
-        return $this->breadcrumbs[$action] = $this->getBreadcrumbsBuilder()
-            ->buildBreadcrumbs($this, $action, $menu);
-    }
-
-    /**
-     * NEXT_MAJOR : remove this method.
-     *
-     * @return BreadcrumbsBuilderInterface
-     */
-    final public function getBreadcrumbsBuilder()
-    {
-        @trigger_error(
-            'The '.__METHOD__.' method is deprecated since version 3.x and will be removed in 4.0.'.
-            ' Use the sonata.admin.breadcrumbs_builder service instead.',
-            E_USER_DEPRECATED
-        );
-        if ($this->breadcrumbsBuilder === null) {
-            $this->breadcrumbsBuilder = new BreadcrumbsBuilder();
-        }
-
-        return $this->breadcrumbsBuilder;
-    }
-
-    /**
-     * NEXT_MAJOR : remove this method.
-     *
-     * @param BreadcrumbsBuilderInterface
-     *
-     * @return AbstractAdmin
-     */
-    final public function setBreadcrumbsBuilder(BreadcrumbsBuilderInterface $value)
-    {
-        @trigger_error(
-            'The '.__METHOD__.' method is deprecated since version 3.x and will be removed in 4.0.'.
-            ' Use the sonata.admin.breadcrumbs_builder service instead.',
-            E_USER_DEPRECATED
-        );
-        $this->breadcrumbsBuilder = $value;
-
-        return $this;
     }
 
     /**
