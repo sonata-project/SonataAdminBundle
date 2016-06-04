@@ -1964,7 +1964,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
     public function getBreadcrumbs($action)
     {
         @trigger_error(
-            'The '.__METHOD__.' method is deprecated since version 3.x and will be removed in 4.0.'.
+            'The '.__METHOD__.' method is deprecated since version 3.2 and will be removed in 4.0.'.
             ' Use Sonata\AdminBundle\Admin\BreadcrumbsBuilder::getBreadcrumbs instead.',
             E_USER_DEPRECATED
         );
@@ -1985,7 +1985,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
     public function buildBreadcrumbs($action, MenuItemInterface $menu = null)
     {
         @trigger_error(
-            'The '.__METHOD__.' method is deprecated since version 3.x and will be removed in 4.0.',
+            'The '.__METHOD__.' method is deprecated since version 3.2 and will be removed in 4.0.',
             E_USER_DEPRECATED
         );
 
@@ -2005,7 +2005,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
     final public function getBreadcrumbsBuilder()
     {
         @trigger_error(
-            'The '.__METHOD__.' method is deprecated since version 3.x and will be removed in 4.0.'.
+            'The '.__METHOD__.' method is deprecated since version 3.2 and will be removed in 4.0.'.
             ' Use the sonata.admin.breadcrumbs_builder service instead.',
             E_USER_DEPRECATED
         );
@@ -2026,7 +2026,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
     final public function setBreadcrumbsBuilder(BreadcrumbsBuilderInterface $value)
     {
         @trigger_error(
-            'The '.__METHOD__.' method is deprecated since version 3.x and will be removed in 4.0.'.
+            'The '.__METHOD__.' method is deprecated since version 3.2 and will be removed in 4.0.'.
             ' Use the sonata.admin.breadcrumbs_builder service instead.',
             E_USER_DEPRECATED
         );

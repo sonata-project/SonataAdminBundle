@@ -375,7 +375,7 @@ class CRUDController extends Controller
         $reflector = new \ReflectionMethod($this->admin, 'getBatchActions');
         if ($reflector->getDeclaringClass()->getName() === get_class($this->admin)) {
             @trigger_error('Override Sonata\AdminBundle\Admin\AbstractAdmin::getBatchActions method'
-                .' is deprecated since version 3.x.'
+                .' is deprecated since version 3.2.'
                 .' Use Sonata\AdminBundle\Admin\AbstractAdmin::configureBatchActions instead.'
                 .' The method will be final in 4.0.', E_USER_DEPRECATED
             );
