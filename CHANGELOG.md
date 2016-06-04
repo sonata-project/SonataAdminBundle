@@ -2,12 +2,26 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [3.x]
+## [3.2.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.1.0...3.2.0) - 2016-06-04
 ### Added
+- Added new field type `email` on the list
+- Added `AbstractAdmin::configureBatchActions` method
 - Extract the breadcrumbs building part of the `AbstractAdmin` to a separate class
 - Added `AbstractAdmin::getSearchResultLink` method
 - Add the `AbstractAdmin::showMosaicButton` method
 - Add the `show_mosaic_button` option to configuration
+
+### Deprecated
+- Overriding `AbstractAdmin::configureBatchActions` is now deprecated
+- `AbstractAdmin::getBreadcrumbs` is deprecated in favor of `BreadcrumbsBuilder::getBreadcrumbs`
+- `AbstractAdmin::buildBreadcrumbs` is deprecated
+- `AbstractAdmin::$breadcrumbs` is deprecated
+
+### Fixed
+- Fix support for composite primary key in `AbstractAdmin::getSubject`
+- Fixed wrong route in `list__select.html.twig`
+- Fixed wrong method call in `list__select.html.twig`
+- Fixed `Pool::getAdminsByGroup()` for the new admin groups values
 
 ## [3.1.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.0.0...3.1.0) - 2016-05-17
 ### Added
