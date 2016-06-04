@@ -55,13 +55,13 @@ class BaseGroupedMapperTest extends \PHPUnit_Framework_TestCase
         $this->baseGroupedMapper->expects($this->any())
             ->method('getGroups')
             ->will($this->returnCallback(function () use ($object) {
-                return $object->getGroups();
+                return $object->getTestGroups();
             }));
 
         $this->baseGroupedMapper->expects($this->any())
             ->method('setGroups')
             ->will($this->returnCallback(function (array $groups) use ($object) {
-                $object->setGroups($groups);
+                $object->setTestGroups($groups);
             }));
     }
 
@@ -162,12 +162,12 @@ class BaseGroupedMapperTest extends \PHPUnit_Framework_TestCase
         $this->tabs = $tabs;
     }
 
-    public function getGroups()
+    public function getTestGroups()
     {
         return $this->groups;
     }
 
-    public function setGroups($groups)
+    public function setTestGroups($groups)
     {
         $this->groups = $groups;
     }
