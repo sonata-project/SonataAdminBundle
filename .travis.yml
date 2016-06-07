@@ -21,6 +21,8 @@ php:
 sudo: false
 
 cache:
+  timeout: 86400
+  pip: true
   directories:
     - $HOME/.composer/cache/files
 
@@ -30,6 +32,7 @@ env:
     - SYMFONY_DEPRECATIONS_HELPER=weak
     - TARGET=test
     - UPSTREAM_URL=https://github.com/sonata-project/SonataAdminBundle.git
+    - XMLLINT_INDENT="    "
 
 matrix:
   fast_finish: true

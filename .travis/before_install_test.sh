@@ -12,7 +12,6 @@ fi
 
 # To be removed when following PR will be merged: https://github.com/travis-ci/travis-build/pull/718
 composer self-update --stable
-composer config --quiet --global github-oauth.github.com $GITHUB_OAUTH_TOKEN
 sed --in-place "s/\"dev-master\":/\"dev-${TRAVIS_COMMIT}\":/" composer.json
 
 if [ "$SYMFONY" != "" ]; then composer require "symfony/symfony:$SYMFONY" --no-update; fi;

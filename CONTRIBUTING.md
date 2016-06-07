@@ -13,8 +13,11 @@ Thanks for your interest in Sonata projects!
 First, check if you are up to date: is your version still supported, and are
 you using the latest patch version?
 
-If you are not sure this is a bug, consider posting your question on [Stack
-Overflow](http://stackoverflow.com), using one of the sonata tags.
+GitHub Issues is for **issues**, as opposed to question on how to use Sonata.
+If you are not sure this is a bug, or simply want to ask such a question,
+please post your question on [Stack Overflow](http://stackoverflow.com/questions/tagged/sonata),
+using the `sonata` tags.
+
 If you happen to find a bug, we kindly request you report it. However,
 before submitting it, please check the [project documentation available
 online](https://sonata-project.org/bundles/).
@@ -88,8 +91,10 @@ Some rules have to be respected about the test:
   * `@codeCoverageIgnoreStart`
   * `@codeCoverageIgnoreEnd`
 * All test methods should be prefixed by `test`. Example: `public function testItReturnsNull()`.
+* All test method names must be in camel case format.
 * As opposed, the `@test` annotation is prohibited.
 * Most of the time, the test class should have the same name as the targeted class, suffixed by `Test`.
+* The `@expectedException*` annotations are prohibited. Use `PHPUnit_Framework_TestCase::setExpectedException()`.
 
 ### Writing a Pull Request
 
