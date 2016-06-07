@@ -112,10 +112,6 @@ div.sonata-actions {
     font-weight: bold;
 }
 
-.sonata-ba-list tr:hover td.sonata-ba-list-field.sonata-ba-list-field-select a {
-    visibility: visible;
-}
-
 td.sonata-ba-list-field.sonata-ba-list-field-boolean i {
     margin-right: 1ex;
 }
@@ -131,9 +127,6 @@ td.sonata-ba-list-field.sonata-ba-list-field-integer {
 
 td.sonata-ba-list-field.sonata-ba-list-field-select {
     text-align: center;
-}
-td.sonata-ba-list-field.sonata-ba-list-field-select a {
-    visibility: hidden;
 }
 
 div.sonata-ba-modal-edit-one-to-one td.sonata-ba-list-field-batch,
