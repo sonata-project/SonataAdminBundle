@@ -1,6 +1,6 @@
-<?xml version="1.0"?>
-<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-    <file source-language="en" datatype="plaintext" original="" >
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+    <file source-language="en" datatype="plaintext" original="">
         <body>
             <trans-unit id="sonata_administration">
                 <source>sonata_administration</source>
@@ -142,23 +142,23 @@
                 <source>all_elements</source>
                 <target>所有元素</target>
             </trans-unit>
-            <trans-unit id='flash_batch_empty'>
+            <trans-unit id="flash_batch_empty">
                 <source>flash_batch_empty</source>
                 <target>暂停操作，没有选择数据</target>
             </trans-unit>
-            <trans-unit id='flash_create_success'>
+            <trans-unit id="flash_create_success">
                 <source>flash_create_success</source>
                 <target>数据已被成功创建</target>
             </trans-unit>
-            <trans-unit id='flash_create_error'>
+            <trans-unit id="flash_create_error">
                 <source>flash_create_error</source>
                 <target>创建时有错误发生</target>
             </trans-unit>
-            <trans-unit id='flash_edit_success'>
+            <trans-unit id="flash_edit_success">
                 <source>flash_edit_success</source>
                 <target>数据已被成功更新</target>
             </trans-unit>
-            <trans-unit id='flash_edit_error'>
+            <trans-unit id="flash_edit_error">
                 <source>flash_edit_error</source>
                 <target>更新时有错误发生</target>
             </trans-unit>
@@ -166,19 +166,19 @@
                 <source>flash_lock_error</source>
                 <target>flash_lock_error</target>
             </trans-unit>
-            <trans-unit id='flash_batch_delete_success'>
+            <trans-unit id="flash_batch_delete_success">
                 <source>flash_batch_delete_success</source>
                 <target>所选择的数据已经被删除</target>
             </trans-unit>
-            <trans-unit id='flash_batch_delete_error'>
+            <trans-unit id="flash_batch_delete_error">
                 <source>flash_batch_delete_error</source>
                 <target>删除时有错误发生</target>
             </trans-unit>
-            <trans-unit id='flash_delete_error'>
+            <trans-unit id="flash_delete_error">
                 <source>flash_delete_error</source>
                 <target>删除时有错误发生</target>
             </trans-unit>
-            <trans-unit id='flash_delete_success'>
+            <trans-unit id="flash_delete_success">
                 <source>flash_delete_success</source>
                 <target>成功删除</target>
             </trans-unit>
