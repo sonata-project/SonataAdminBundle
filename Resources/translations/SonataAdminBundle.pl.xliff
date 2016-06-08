@@ -1,5 +1,5 @@
-<?xml version="1.0"?>
-<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
     <file source-language="en" datatype="plaintext" original="SonataAdminBundle.en.xliff">
         <body>
             <trans-unit id="sonata_administration">
@@ -142,23 +142,23 @@
                 <source>all_elements</source>
                 <target>Wszystkie</target>
             </trans-unit>
-            <trans-unit id='flash_batch_empty'>
+            <trans-unit id="flash_batch_empty">
                 <source>flash_batch_empty</source>
                 <target>Akcja anulowana. Żadne elementy nie zostały zaznaczone.</target>
             </trans-unit>
-            <trans-unit id='flash_create_success'>
+            <trans-unit id="flash_create_success">
                 <source>flash_create_success</source>
                 <target>Element "%name%" został pomyślnie dodany.</target>
             </trans-unit>
-            <trans-unit id='flash_create_error'>
+            <trans-unit id="flash_create_error">
                 <source>flash_create_error</source>
                 <target>Pojawił się błąd przy tworzeniu elementu "%name%".</target>
             </trans-unit>
-            <trans-unit id='flash_edit_success'>
+            <trans-unit id="flash_edit_success">
                 <source>flash_edit_success</source>
                 <target>Element "%name%" został pomyślnie zaktualizowany.</target>
             </trans-unit>
-            <trans-unit id='flash_edit_error'>
+            <trans-unit id="flash_edit_error">
                 <source>flash_edit_error</source>
                 <target>Pojawił się błąd przy aktualizowaniu elementu "%name%".</target>
             </trans-unit>
@@ -166,19 +166,19 @@
                 <source>flash_lock_error</source>
                 <target>flash_lock_error</target>
             </trans-unit>
-            <trans-unit id='flash_batch_delete_success'>
+            <trans-unit id="flash_batch_delete_success">
                 <source>flash_batch_delete_success</source>
                 <target>Wybrane elementy zostały pomyślnie usunięte.</target>
             </trans-unit>
-            <trans-unit id='flash_batch_delete_error'>
+            <trans-unit id="flash_batch_delete_error">
                 <source>flash_batch_delete_error</source>
                 <target>Pojawił się błąd przy usuwaniu wybranych elementów.</target>
             </trans-unit>
-            <trans-unit id='flash_delete_error'>
+            <trans-unit id="flash_delete_error">
                 <source>flash_delete_error</source>
                 <target>Pojawił się błąd przy usuwaniu elementu "%name%".</target>
             </trans-unit>
-            <trans-unit id='flash_delete_success'>
+            <trans-unit id="flash_delete_success">
                 <source>flash_delete_success</source>
                 <target>Element "%name%" został pomyślnie usunięty.</target>
             </trans-unit>
