@@ -16,6 +16,10 @@ Some classes and methods are now `final` and should not be overridden:
 * `Sonata\Admin\AbstractAdmin::getActionButtons`
 * `Sonata\Admin\AbstractAdmin::getBatchActions`
 * `Sonata\Admin\AbstractAdmin::urlize`
+* `Sonata\AdminBundle\DependencyInjection\Compiler\AddDependencyCallsCompilerPass`
+* `Sonata\AdminBundle\DependencyInjection\Compiler\AddFilterTypeCompilerPass`
+* `Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass`
+* `Sonata\AdminBundle\DependencyInjection\Compiler\GlobalVariablesCompilerPass`
 * `Sonata\AdminBundle\DependencyInjection\Configuration`
 * `Sonata\AdminBundle\DependencyInjection\SonataAdminExtension`
 * `Sonata\AdminBundle\Translator\Extractor\JMSTranslatorBundle\AdminExtractor`
