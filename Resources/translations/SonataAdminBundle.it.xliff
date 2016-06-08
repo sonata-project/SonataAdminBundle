@@ -1,6 +1,6 @@
-<?xml version="1.0"?>
-<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-    <file source-language="en" datatype="plaintext" original="" >
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+    <file source-language="en" datatype="plaintext" original="">
         <body>
             <trans-unit id="sonata_administration">
                 <source>sonata_administration</source>
@@ -166,7 +166,7 @@
                 <source>flash_lock_error</source>
                 <target>Un altro utente ha modificato l'oggetto "%name%". Per favore %link_start%clicca qui%link_end% per ricaricare la pagina e applicare di nuovo le modifiche.</target>
             </trans-unit>
-            <trans-unit id='flash_batch_delete_success'>
+            <trans-unit id="flash_batch_delete_success">
                 <source>flash_batch_delete_success</source>
                 <target>Gli elementi selezionati sono stati eliminati con successo.</target>
             </trans-unit>
