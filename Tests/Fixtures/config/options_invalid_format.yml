@@ -1,0 +1,3 @@
+sonata_admin:
+    options:
+        html5_validate: '1'

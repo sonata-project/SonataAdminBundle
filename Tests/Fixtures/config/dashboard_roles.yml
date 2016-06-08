@@ -1,0 +1,5 @@
+sonata_admin:
+    dashboard:
+        block:
+            - roles: [ROLE_ADMIN]
+              type: my.type

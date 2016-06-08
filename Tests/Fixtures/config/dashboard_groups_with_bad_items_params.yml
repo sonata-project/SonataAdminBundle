@@ -1,0 +1,10 @@
+sonata_admin:
+    dashboard:
+        groups:
+            bar:
+                label: foo
+                icon: '<i class="fa fa-edit"></i>'
+                items:
+                    - item1
+                    - item2
+                    - { route: barRoute }

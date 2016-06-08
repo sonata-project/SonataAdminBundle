@@ -1,0 +1,8 @@
+sonata_admin:
+    admin_services:
+        my_admin_id:
+            templates:
+                form: [form.twig.html, form_extra.twig.html]
+                view:
+                    user_block: SonataAdminBundle:mycustomtemplate.html.twig
+                filter: []
