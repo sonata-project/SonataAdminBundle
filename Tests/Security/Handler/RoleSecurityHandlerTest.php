@@ -218,10 +218,10 @@ class RoleSecurityHandlerTest extends \PHPUnit_Framework_TestCase
         $object = new \stdClass();
         $this->authorizationChecker->expects($this->at(0))
             ->method('isGranted')
-            ->with([], $object);
+            ->with(array(), $object);
         $this->authorizationChecker->expects($this->at(1))
             ->method('isGranted')
-            ->with([], $object);
+            ->with(array(), $object);
         $handler->isGranted($this->admin, array(), $object);
     }
 
