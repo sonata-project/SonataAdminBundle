@@ -214,7 +214,7 @@ class RoleSecurityHandlerTest extends \PHPUnit_Framework_TestCase
 
     public function testIsGrantedPassesObjectToSuperAdminCheck()
     {
-        $handler = $this->getRoleSecurityHandler([]);
+        $handler = $this->getRoleSecurityHandler(array());
         $object = new \stdClass();
         $this->authorizationChecker->expects($this->at(0))
             ->method('isGranted')
@@ -222,7 +222,7 @@ class RoleSecurityHandlerTest extends \PHPUnit_Framework_TestCase
         $this->authorizationChecker->expects($this->at(1))
             ->method('isGranted')
             ->with([], $object);
-        $handler->isGranted($this->admin, [], $object);
+        $handler->isGranted($this->admin, array(), $object);
     }
 
     /**
