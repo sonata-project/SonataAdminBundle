@@ -20,7 +20,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *
  * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class AddFilterTypeCompilerPass implements CompilerPassInterface
+final class AddFilterTypeCompilerPass implements CompilerPassInterface
 {
     /**
      * @param ContainerBuilder $container

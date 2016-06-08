@@ -21,7 +21,7 @@ use Symfony\Component\DependencyInjection\Reference;
  *
  * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class ExtensionCompilerPass implements CompilerPassInterface
+final class ExtensionCompilerPass implements CompilerPassInterface
 {
     /**
      * {@inheritdoc}
