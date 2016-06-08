@@ -1,6 +1,6 @@
-<?xml version="1.0"?>
-<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-    <file source-language="en" datatype="plaintext" original="" >
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+    <file source-language="en" datatype="plaintext" original="">
         <body>
             <trans-unit id="sonata_administration">
                 <source>sonata_administration</source>
@@ -142,23 +142,23 @@
                 <source>all_elements</source>
                 <target>Vsi predmeti</target>
             </trans-unit>
-            <trans-unit id='flash_batch_empty'>
+            <trans-unit id="flash_batch_empty">
                 <source>flash_batch_empty</source>
                 <target>Akcija prekinjena. Predmeti niso bili izbrani.</target>
             </trans-unit>
-            <trans-unit id='flash_create_success'>
+            <trans-unit id="flash_create_success">
                 <source>flash_create_success</source>
                 <target>Predmet je bil uspešno ustvarjen.</target>
             </trans-unit>
-            <trans-unit id='flash_create_error'>
+            <trans-unit id="flash_create_error">
                 <source>flash_create_error</source>
                 <target>Pri ustvarjanju predmeta se je pojavila napaka.</target>
             </trans-unit>
-            <trans-unit id='flash_edit_success'>
+            <trans-unit id="flash_edit_success">
                 <source>flash_edit_success</source>
                 <target>Predmet je bil uspešno posodobljen.</target>
             </trans-unit>
-            <trans-unit id='flash_edit_error'>
+            <trans-unit id="flash_edit_error">
                 <source>flash_edit_error</source>
                 <target>Pri posodabljanju predmeta je prišlo do napake.</target>
             </trans-unit>
@@ -166,19 +166,19 @@
                 <source>flash_lock_error</source>
                 <target>flash_lock_error</target>
             </trans-unit>
-            <trans-unit id='flash_batch_delete_success'>
+            <trans-unit id="flash_batch_delete_success">
                 <source>flash_batch_delete_success</source>
                 <target>Izbrani predmeti so bili uspešno izbrisani.</target>
             </trans-unit>
-            <trans-unit id='flash_batch_delete_error'>
+            <trans-unit id="flash_batch_delete_error">
                 <source>flash_batch_delete_error</source>
                 <target>Prišlo je do napake pri brisanju izbranih predmetov.</target>
             </trans-unit>
-            <trans-unit id='flash_delete_error'>
+            <trans-unit id="flash_delete_error">
                 <source>flash_delete_error</source>
                 <target>Pri brisanju predmetov je prišlo do napake.</target>
             </trans-unit>
-            <trans-unit id='flash_delete_success'>
+            <trans-unit id="flash_delete_success">
                 <source>flash_delete_success</source>
                 <target>Predmet je bil uspešno izbrisan.</target>
             </trans-unit>
