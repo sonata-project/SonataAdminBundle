@@ -16,6 +16,7 @@ Some classes and methods are now `final` and should not be overridden:
 * `Sonata\Admin\AbstractAdmin::getActionButtons`
 * `Sonata\Admin\AbstractAdmin::getBatchActions`
 * `Sonata\Admin\AbstractAdmin::urlize`
+* `Sonata\AdminBundle\DependencyInjection\SonataAdminExtension`
 * `Sonata\AdminBundle\Translator\Extractor\JMSTranslatorBundle\AdminExtractor`
 * `Sonata\AdminBundle\Twig\Extension`
 
