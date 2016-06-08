@@ -212,6 +212,19 @@ class RoleSecurityHandlerTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(array(), $handler->buildSecurityInformation($this->getSonataAdminObject()));
     }
 
+    public function testIsGrantedPassesObjectToSuperAdminCheck()
+    {
+        $handler = $this->getRoleSecurityHandler([]);
+        $object = new \stdClass();
+        $this->authorizationChecker->expects($this->at(0))
+            ->method('isGranted')
+            ->with([], $object);
+        $this->authorizationChecker->expects($this->at(1))
+            ->method('isGranted')
+            ->with([], $object);
+        $handler->isGranted($this->admin, [], $object);
+    }
+
     /**
      * @return RoleSecurityHandler
      */
