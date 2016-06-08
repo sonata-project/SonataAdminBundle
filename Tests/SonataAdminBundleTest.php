@@ -11,48 +11,67 @@
 
 namespace Sonata\AdminBundle\Tests;
 
-use Sonata\AdminBundle\DependencyInjection\Compiler\AddDependencyCallsCompilerPass;
-use Sonata\AdminBundle\DependencyInjection\Compiler\AddFilterTypeCompilerPass;
-use Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass;
-use Sonata\AdminBundle\DependencyInjection\Compiler\GlobalVariablesCompilerPass;
+use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractContainerBuilderTestCase;
 use Sonata\AdminBundle\SonataAdminBundle;
-use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
-use Symfony\Component\DependencyInjection\Compiler\PassConfig;
+use Sonata\CoreBundle\Form\FormHelper;
 
 /**
  * Test for SonataAdminBundle.
  *
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
-class SonataAdminBundleTest extends \PHPUnit_Framework_TestCase
+class SonataAdminBundleTest extends AbstractContainerBuilderTestCase
 {
+    /**
+     * @var SonataAdminBundle
+     */
+    private $bundle;
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUp()
+    {
+        parent::setUp();
+
+        $this->bundle = new SonataAdminBundle();
+    }
+
     public function testBuild()
     {
-        $containerBuilder = $this->getMock('Symfony\Component\DependencyInjection\ContainerBuilder', array('addCompilerPass'));
+        $this->bundle->build($this->container);
 
-        $containerBuilder->expects($this->exactly(4))
-            ->method('addCompilerPass')
-            ->will($this->returnCallback(function (CompilerPassInterface $pass, $type = PassConfig::TYPE_BEFORE_OPTIMIZATION) {
-                if ($pass instanceof AddDependencyCallsCompilerPass) {
-                    return;
-                }
+        $passes = $this->container->getCompilerPassConfig()->getPasses();
+        $this->assertCount(5, $passes);
+        $this->assertInstanceOf(
+            'Sonata\AdminBundle\DependencyInjection\Compiler\AddDependencyCallsCompilerPass',
+            $passes[1]
+        );
+        $this->assertInstanceOf(
+            'Sonata\AdminBundle\DependencyInjection\Compiler\AddFilterTypeCompilerPass',
+            $passes[2]
+        );
+        $this->assertInstanceOf(
+            'Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass',
+            $passes[3]
+        );
+        $this->assertInstanceOf(
+            'Sonata\AdminBundle\DependencyInjection\Compiler\GlobalVariablesCompilerPass',
+            $passes[4]
+        );
+    }
 
-                if ($pass instanceof AddFilterTypeCompilerPass) {
-                    return;
-                }
+    public function testBoot()
+    {
+        $this->bundle->boot();
 
-                if ($pass instanceof ExtensionCompilerPass) {
-                    return;
-                }
+        $this->assertContains('Sonata\AdminBundle\Form\Type\AdminType', FormHelper::getFormTypeMapping());
+        $this->assertContains('sonata.admin.form.extension.field', FormHelper::getFormExtensionMapping()['form']);
+    }
 
-                if ($pass instanceof GlobalVariablesCompilerPass) {
-                    return;
-                }
-
-                $this->fail(sprintf('Compiler pass is not one of the expected types. Expects "Sonata\AdminBundle\DependencyInjection\Compiler\AddDependencyCallsCompilerPass", "Sonata\AdminBundle\DependencyInjection\Compiler\AddFilterTypeCompilerPass" or "Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass", but got "%s".', get_class($pass)));
-            }));
-
-        $bundle = new SonataAdminBundle();
-        $bundle->build($containerBuilder);
+    public function testGetContainerExtension()
+    {
+        $this->assertInstanceOf('Sonata\AdminBundle\SonataAdminBundle', $this->bundle);
+        $this->assertInstanceOf('Sonata\AdminBundle\DependencyInjection\SonataAdminExtension', $this->bundle->getContainerExtension());
     }
 }
