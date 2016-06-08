@@ -29,20 +29,10 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
     /**
      * @param array            $configs   An array of configuration settings
      * @param ContainerBuilder $container A ContainerBuilder instance
-     *
-     * @throws \RuntimeException
      */
     public function load(array $configs, ContainerBuilder $container)
     {
         $bundles = $container->getParameter('kernel.bundles');
-
-        if (!isset($bundles['SonataCoreBundle'])) {
-            throw new \RuntimeException(<<<'BOOM'
-Boom! you are living on the edge ;) The AdminBundle requires the CoreBundle!
-Please add ``"sonata-project/core-bundle": "~2.2"`` into your composer.json file and add the SonataCoreBundle into the AppKernel');
-BOOM
-            );
-        }
 
         if (isset($bundles['SonataUserBundle'])) {
             // integrate the SonataUserBundle / FOSUserBundle if the bundle exists
