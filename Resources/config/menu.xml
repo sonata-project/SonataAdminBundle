@@ -1,27 +1,20 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-
-<container xmlns="http://symfony.com/schema/dic/services"
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
-
+<?xml version="1.0" encoding="UTF-8"?>
+<container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
         <service id="sonata.admin.menu_builder" class="Sonata\AdminBundle\Menu\MenuBuilder">
-            <argument type="service" id="sonata.admin.pool" />
-            <argument type="service" id="knp_menu.factory" />
-            <argument type="service" id="knp_menu.menu_provider" />
-            <argument type="service" id="event_dispatcher" />
+            <argument type="service" id="sonata.admin.pool"/>
+            <argument type="service" id="knp_menu.factory"/>
+            <argument type="service" id="knp_menu.menu_provider"/>
+            <argument type="service" id="event_dispatcher"/>
         </service>
-
         <service id="sonata.admin.sidebar_menu" class="Knp\Menu\MenuItem">
-            <tag name="knp_menu.menu" alias="sonata_admin_sidebar" />
+            <tag name="knp_menu.menu" alias="sonata_admin_sidebar"/>
         </service>
-
         <service id="sonata.admin.menu.group_provider" class="Sonata\AdminBundle\Menu\Provider\GroupMenuProvider" public="false">
-            <argument type="service" id="knp_menu.factory" />
-            <argument type="service" id="sonata.admin.pool" />
-            <tag name="knp_menu.provider" />
+            <argument type="service" id="knp_menu.factory"/>
+            <argument type="service" id="sonata.admin.pool"/>
+            <tag name="knp_menu.provider"/>
         </service>
-
         <service id="sonata.admin.menu.matcher.voter.admin" class="Sonata\AdminBundle\Menu\Matcher\Voter\AdminVoter">
             <tag name="knp_menu.voter" request="true"/>
         </service>
@@ -32,6 +25,5 @@
         <service id="sonata.admin.menu.matcher.voter.active" class="Sonata\AdminBundle\Menu\Matcher\Voter\ActiveVoter">
             <tag name="knp_menu.voter"/>
         </service>
-
     </services>
 </container>

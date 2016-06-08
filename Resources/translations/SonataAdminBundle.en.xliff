@@ -1,6 +1,6 @@
-<?xml version="1.0"?>
-<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-    <file source-language="en" datatype="plaintext" original="" >
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+    <file source-language="en" datatype="plaintext" original="">
         <body>
             <trans-unit id="sonata_administration">
                 <source>sonata_administration</source>
@@ -142,23 +142,23 @@
                 <source>all_elements</source>
                 <target>All elements</target>
             </trans-unit>
-            <trans-unit id='flash_batch_empty'>
+            <trans-unit id="flash_batch_empty">
                 <source>flash_batch_empty</source>
                 <target>Action aborted. No items were selected.</target>
             </trans-unit>
-            <trans-unit id='flash_create_success'>
+            <trans-unit id="flash_create_success">
                 <source>flash_create_success</source>
                 <target>Item "%name%" has been successfully created.</target>
             </trans-unit>
-            <trans-unit id='flash_create_error'>
+            <trans-unit id="flash_create_error">
                 <source>flash_create_error</source>
                 <target>An error has occurred during the creation of item "%name%".</target>
             </trans-unit>
-            <trans-unit id='flash_edit_success'>
+            <trans-unit id="flash_edit_success">
                 <source>flash_edit_success</source>
                 <target>Item "%name%" has been successfully updated.</target>
             </trans-unit>
-            <trans-unit id='flash_edit_error'>
+            <trans-unit id="flash_edit_error">
                 <source>flash_edit_error</source>
                 <target>An error has occurred during update of item "%name%".</target>
             </trans-unit>
@@ -166,19 +166,19 @@
                 <source>flash_lock_error</source>
                 <target>Another user has modified item "%name%". Please %link_start%click here%link_end% to reload the page and apply the changes again.</target>
             </trans-unit>
-            <trans-unit id='flash_batch_delete_success'>
+            <trans-unit id="flash_batch_delete_success">
                 <source>flash_batch_delete_success</source>
                 <target>Selected items have been successfully deleted.</target>
             </trans-unit>
-            <trans-unit id='flash_batch_delete_error'>
+            <trans-unit id="flash_batch_delete_error">
                 <source>flash_batch_delete_error</source>
                 <target>An Error has occurred during selected items deletion.</target>
             </trans-unit>
-            <trans-unit id='flash_delete_error'>
+            <trans-unit id="flash_delete_error">
                 <source>flash_delete_error</source>
                 <target>An Error has occurred during deletion of item "%name%".</target>
             </trans-unit>
-            <trans-unit id='flash_delete_success'>
+            <trans-unit id="flash_delete_success">
                 <source>flash_delete_success</source>
                 <target>Item "%name%" has been deleted successfully.</target>
             </trans-unit>

@@ -1,6 +1,6 @@
-<?xml version="1.0"?>
-<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-    <file source-language="en" target-language="bg" datatype="plaintext" original="SonataAdminBundle.en.xliff" >
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+    <file source-language="en" target-language="bg" datatype="plaintext" original="SonataAdminBundle.en.xliff">
         <body>
             <trans-unit id="sonata_administration">
                 <source>sonata_administration</source>
@@ -142,23 +142,23 @@
                 <source>all_elements</source>
                 <target>Всички елементи</target>
             </trans-unit>
-            <trans-unit id='flash_batch_empty'>
+            <trans-unit id="flash_batch_empty">
                 <source>flash_batch_empty</source>
                 <target>Действието беше прекъснато. Няма избрани елементи.</target>
             </trans-unit>
-            <trans-unit id='flash_create_success'>
+            <trans-unit id="flash_create_success">
                 <source>flash_create_success</source>
                 <target>Елементът беше създаден.</target>
             </trans-unit>
-            <trans-unit id='flash_create_error'>
+            <trans-unit id="flash_create_error">
                 <source>flash_create_error</source>
                 <target>Възникна грешка по време на създаването.</target>
             </trans-unit>
-            <trans-unit id='flash_edit_success'>
+            <trans-unit id="flash_edit_success">
                 <source>flash_edit_success</source>
                 <target>Елементът беше обновен.</target>
             </trans-unit>
-            <trans-unit id='flash_edit_error'>
+            <trans-unit id="flash_edit_error">
                 <source>flash_edit_error</source>
                 <target>Възникна грешка по време на обновяването.</target>
             </trans-unit>
@@ -166,19 +166,19 @@
                 <source>flash_lock_error</source>
                 <target>Друг потребител междувременно е променил елемента "%name%". Моля, %link_start%презаредете страницата%link_end% и отново нанесете промените си.</target>
             </trans-unit>
-            <trans-unit id='flash_batch_delete_success'>
+            <trans-unit id="flash_batch_delete_success">
                 <source>flash_batch_delete_success</source>
                 <target>Избраните елементи бяха изтрити.</target>
             </trans-unit>
-            <trans-unit id='flash_batch_delete_error'>
+            <trans-unit id="flash_batch_delete_error">
                 <source>flash_batch_delete_error</source>
                 <target>Възникна грешка по време на изтриването на избраните елементи.</target>
             </trans-unit>
-            <trans-unit id='flash_delete_error'>
+            <trans-unit id="flash_delete_error">
                 <source>flash_delete_error</source>
                 <target>Възникна грешка по време на изтриването.</target>
             </trans-unit>
-            <trans-unit id='flash_delete_success'>
+            <trans-unit id="flash_delete_success">
                 <source>flash_delete_success</source>
                 <target>Елементът беше изтрит.</target>
             </trans-unit>
