@@ -1080,34 +1080,22 @@ interface AdminInterface
      *
      * @return bool
      */
-    // public function configureActionButtons($action, $object = null);
-
-    /**
-     * Hook to handle access authorization, without throw Exception.
-     *
-     * @param string $action
-     * @param object $object
-     *
-     * @return bool
-     */
     public function hasAccess($action, $object = null);
 
-    //TODO: uncomment this method for 4.0
-    /*
-     * Returns the result link for an object.
-     *
-     * @param mixed $object
-     *
-     * @return string|null
-     */
-    //public function getSearchResultLink($object)
+     /**
+      * Returns the result link for an object.
+      *
+      * @param mixed $object
+      *
+      * @return string|null
+      */
+     public function getSearchResultLink($object);
 
-//    TODO: uncomment this method in 4.0
-//    /**
-//     * Setting to true will enable mosaic button for the admin screen.
-//     * Setting to false will hide mosaic button for the admin screen.
-//     *
-//     * @param bool $isShown
-//     */
-//    public function showMosaicButton($isShown);
+      /**
+       * Setting to true will enable mosaic button for the admin screen.
+       * Setting to false will hide mosaic button for the admin screen.
+       *
+       * @param bool $isShown
+       */
+      public function showMosaicButton($isShown);
 }

@@ -2628,10 +2628,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * Setting to true will enable mosaic button for the admin screen.
-     * Setting to false will hide mosaic button for the admin screen.
-     *
-     * @param bool $isShown
+     * {@inheritdoc}
      */
     final public function showMosaicButton($isShown)
     {
@@ -2643,7 +2640,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
     }
 
     /**
-     * @param FormMapper $form
+     * {@inheritdoc}
      */
     final public function getSearchResultLink($object)
     {
