@@ -2873,7 +2873,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
     final public function getSearchResultLink($object)
     {
         foreach ($this->searchResultActions as $action) {
-            if ($this->hasRoute($action) && $this->isGranted(strtoupper($action), $object)) {
+            if ($this->hasRoute($action) && $this->hasAccess($action, $object)) {
                 return $this->generateObjectUrl($action, $object);
             }
         }
