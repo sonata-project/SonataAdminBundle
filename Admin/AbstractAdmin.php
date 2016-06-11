@@ -2654,6 +2654,25 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
     }
 
     /**
+     * This method is being called by the main admin class and the child class,
+     * the getFormBuilder is only call by the main admin class.
+     *
+     * @param FormBuilderInterface $formBuilder
+     */
+    public function defineFormBuilder(FormBuilderInterface $formBuilder)
+    {
+        $mapper = new FormMapper($this->getFormContractor(), $formBuilder, $this);
+
+        $this->configureFormFields($mapper);
+
+        foreach ($this->getExtensions() as $extension) {
+            $extension->configureFormFields($mapper);
+        }
+
+        $this->attachInlineValidator();
+    }
+
+    /**
      * Hook to run after initilization.
      */
     protected function configure()
@@ -3008,25 +3027,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
         foreach ($this->getExtensions() as $extension) {
             $extension->configureDatagridFilters($mapper);
         }
-    }
-
-    /**
-     * This method is being called by the main admin class and the child class,
-     * the getFormBuilder is only call by the main admin class.
-     *
-     * @param FormBuilderInterface $formBuilder
-     */
-    private function defineFormBuilder(FormBuilderInterface $formBuilder)
-    {
-        $mapper = new FormMapper($this->getFormContractor(), $formBuilder, $this);
-
-        $this->configureFormFields($mapper);
-
-        foreach ($this->getExtensions() as $extension) {
-            $extension->configureFormFields($mapper);
-        }
-
-        $this->attachInlineValidator();
     }
 
     /**
