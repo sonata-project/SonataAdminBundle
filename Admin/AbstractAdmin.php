@@ -3016,7 +3016,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
      *
      * @param FormBuilderInterface $formBuilder
      */
-    private function defineFormBuilder(FormBuilderInterface $formBuilder)
+    public function defineFormBuilder(FormBuilderInterface $formBuilder)
     {
         $mapper = new FormMapper($this->getFormContractor(), $formBuilder, $this);
 
