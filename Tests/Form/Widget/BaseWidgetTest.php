@@ -11,7 +11,10 @@
 
 namespace Sonata\AdminBundle\Tests\Form\Widget;
 
+use Sonata\AdminBundle\Twig\Extension\SonataAdminExtension;
 use Symfony\Bridge\Twig\Extension\FormExtension;
+use Symfony\Bridge\Twig\Extension\HttpKernelExtension;
+use Symfony\Bridge\Twig\Extension\RoutingExtension;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
 use Symfony\Bridge\Twig\Form\TwigRenderer;
 use Symfony\Bridge\Twig\Form\TwigRendererEngine;
@@ -101,10 +104,26 @@ abstract class BaseWidgetTest extends TypeTestCase
         $loader = new StubFilesystemLoader($twigPaths);
 
         $this->environment = new \Twig_Environment($loader, array('strict_variables' => true));
-        $this->environment->addGlobal('sonata_admin', $this->getSonataAdmin());
         $this->environment->addExtension(new TranslationExtension(new StubTranslator()));
-
         $this->environment->addExtension($this->extension);
+
+        $fragmentHandler = $this->getMockBuilder('Symfony\Component\HttpKernel\Fragment\FragmentHandler')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->environment->addExtension(new HttpKernelExtension($fragmentHandler));
+
+        $urlGenerator = $this->getMockBuilder('Symfony\Component\Routing\Generator\UrlGenerator')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->environment->addExtension(new RoutingExtension($urlGenerator));
+
+        // Setup sonata extensions
+        $this->environment->addGlobal('sonata_admin', $this->getSonataAdmin());
+        $pool = $this->getMockBuilder('Sonata\AdminBundle\Admin\Pool')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $logger = $this->getMock('Psr\Log\LoggerInterface');
+        $this->environment->addExtension(new SonataAdminExtension($pool, $logger));
 
         $this->extension->initRuntime($this->environment);
     }
