@@ -18,29 +18,29 @@
     ],
     "require": {
         "php": "^5.3 || ^7.0",
-        "symfony/http-foundation": "^2.3 || ^3.0",
-        "symfony/form": "^2.3.5 || ^3.0",
-        "symfony/validator": "^2.3 || ^3.0",
-        "symfony/security-bundle": "^2.3 || ^3.0",
-        "symfony/routing": "^2.3 || ^3.0",
-        "symfony/config": "^2.3.9 || ^3.0",
-        "symfony/console": "^2.3 || ^3.0",
-        "symfony/twig-bridge": "^2.3.5 || ^3.0",
-        "symfony/class-loader":"^2.3 || ^3.0",
-        "symfony/expression-language": "^2.4 || ^3.0",
-        "symfony/templating":"^2.3 || ^3.0",
-        "symfony/translation":"^2.3 || ^3.0",
-        "symfony/dependency-injection": "^2.3.3 || ^3.0",
-        "symfony/property-access": "^2.3 || ^3.0",
-        "symfony/security-acl": "^2.3 || ^3.0",
-        "twig/twig": "^1.23",
-        "twig/extensions": "^1.0",
-        "sonata-project/exporter": "^1.0",
-        "sonata-project/block-bundle": "^3.0",
-        "sonata-project/core-bundle": "^3.0",
         "doctrine/common": "^2.2",
         "doctrine/inflector": "^1.0",
-        "knplabs/knp-menu-bundle": "^2.1.1"
+        "knplabs/knp-menu-bundle": "^2.1.1",
+        "sonata-project/block-bundle": "^3.0",
+        "sonata-project/core-bundle": "^3.0",
+        "sonata-project/exporter": "^1.0",
+        "symfony/class-loader": "^2.3 || ^3.0",
+        "symfony/config": "^2.3.9 || ^3.0",
+        "symfony/console": "^2.3 || ^3.0",
+        "symfony/dependency-injection": "^2.3.3 || ^3.0",
+        "symfony/expression-language": "^2.4 || ^3.0",
+        "symfony/form": "^2.3.5 || ^3.0",
+        "symfony/http-foundation": "^2.3 || ^3.0",
+        "symfony/property-access": "^2.3 || ^3.0",
+        "symfony/routing": "^2.3 || ^3.0",
+        "symfony/security-acl": "^2.3 || ^3.0",
+        "symfony/security-bundle": "^2.3 || ^3.0",
+        "symfony/templating": "^2.3 || ^3.0",
+        "symfony/translation": "^2.3 || ^3.0",
+        "symfony/twig-bridge": "^2.3.5 || ^3.0",
+        "symfony/validator": "^2.3 || ^3.0",
+        "twig/extensions": "^1.0",
+        "twig/twig": "^1.23"
     },
     "require-dev": {
         "jms/di-extra-bundle": "^1.7",
@@ -62,6 +62,9 @@
     },
     "autoload": {
         "psr-4": { "Sonata\\AdminBundle\\": "" }
+    },
+    "config": {
+        "sort-packages": true
     },
     "extra": {
         "branch-alias": {
