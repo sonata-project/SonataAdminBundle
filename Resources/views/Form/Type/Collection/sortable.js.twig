@@ -1,0 +1,48 @@
+(function ($) {
+    var containerSelector = '#field_container_{{ id }} .sonata-ba-{{ table ? 'tbody' : 'tabs' }}';
+    var itemSelector = '.sonata-ba-{{ table ? 'td' : 'field' }}-{{ id }}-{{ sort_field }}';
+    var $sortableContainer = $(containerSelector).sortable({
+        axis: 'y',
+        opacity: 0.6,
+        items: '> {{ table ? 'tr' : 'div' }}',
+        stop: applyPositions()
+    });
+
+    // refresh the sortable container when a new element is added,
+    // the event is triggered in create.js.twig
+    $('#sonata-ba-field-container-{{ id }}').on('sonata.add_element', function () {
+        applyPositions();
+        $sortableContainer.sortable('refresh');
+    });
+
+    applyPositions();
+
+    function applyPositions () {
+        $sortableContainer.find(itemSelector).each(applyPosition);
+        updateInputs();
+    }
+
+    function updateInputs () {
+        $sortableContainer.find(itemSelector + ' input').each(function (n, input) {
+            $(input).val(n + 1);
+        });
+    }
+
+    function applyPosition (_, element) {
+        // remove the sortable handler and put it back
+        var $element = $(element);
+        {% if table %}
+            $element.find('.sonata-ba-sortable-handler').remove();
+            $('<span>')
+                .attr('class', 'sonata-ba-sortable-handler ui-icon ui-icon-grip-solid-horizontal')
+                .appendTo($element);
+        {% else %}
+            var $tabs = $element.closest('.nav-tabs-custom').find('> .nav-tabs');
+            $tabs.find('.sonata-ba-sortable-handler').remove();
+            $('<li class="sonata-ba-sortable-handler pull-right"/>')
+                .prepend('<span class="ui-icon ui-icon-grip-solid-horizontal"/>')
+                .appendTo($tabs);
+        {% endif %}
+        $element.find('input').hide();
+    }
+}(jQuery));

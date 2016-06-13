@@ -1,0 +1,433 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+{#
+
+This code manages the association dialog for the 'sonata_type_model_list' and 'sonata_type_model' widgets
+
+#}
+
+{% set widget = update_short_object_description is defined ? 'model_list' : 'model' %}
+{% set routes = {
+    retrieveFormElement: retrieve_form_element,
+    updateShortObjectDescription: update_short_object_description|default
+} %}
+
+(function ($, Admin) {
+    {# Parameters passed from the widget's template #}
+    var fieldId = '{{ id }}';
+    var fieldLabel = '{{ label }}';
+    var routes = {{ routes|json_encode|raw }};
+
+    /** @type {Dialog} */
+    var dialog;
+
+    /**
+     * @constructor
+     */
+    function Dialog (id, title) {
+        this.$dialog = $('#field_dialog_' + id).appendTo(document.body);
+        this.$body = this.$dialog.find('.modal-body');
+        this.$title = this.$dialog.find('.modal-title').html(title);
+        this.$spinner = $('<div/>')
+            .append('<i class="fa fa-refresh fa-spin fa-3x fa-fw"/>')
+            .append('<span class="sr-only">Loading...</span>')
+            .css({
+                position: 'absolute',
+                top: '50%', left: '50%',
+                transform: 'translate(-50%, -50%)', webkitTransform: 'translate(-50%, -50%)'
+            });
+        Admin.setup_list_modal(this.$dialog);
+    }
+    Dialog.prototype = {
+        show: function () {
+            this.setLoading();
+            this.$dialog.modal('show');
+            return this;
+        },
+        hide: function () {
+            this.$dialog.modal('hide');
+            return this;
+        },
+        setContent: function (body) {
+            this.$body.html(body);
+            Admin.shared_setup(this.$body);
+            return this;
+        },
+        setLoading: function () {
+            this.$body.empty().append(this.$spinner);
+            return this;
+        }
+    };
+
+    /**
+     * Creates the dialog singleton instance if it doesn't exist.
+     */
+    function createDialog () {
+        if (!dialog) {
+            dialog = new Dialog(fieldId, fieldLabel);
+        }
+    }
+
+    /**
+     * Returns whether the given element is an anchor (it's a link to it's current location)
+     *
+     * @param {jQuery} $el
+     * @returns {boolean}
+     */
+    function isAnchor ($el) {
+        var href = ($el.attr('href') || '').trim();
+        return $el.is('a') && (!href || href[0] === '#');
+    }
+
+    /**
+     * Returns the actual input element of the widget
+     *
+     * @returns {jQuery}
+     */
+    function getField () {
+        return $('#' + fieldId);
+    }
+
+    /**
+     * Returns the widget's input element wrapper
+     *
+     * @returns {jQuery}
+     */
+    function getFieldWidget () {
+        return $('#field_widget_' + fieldId);
+    }
+
+    /**
+     * Returns the widget's field container.
+     *
+     * @returns {jQuery}
+     */
+    function getFieldContainer () {
+        return $('#field_container_' + fieldId);
+    }
+
+    {#
+        Create action dialog
+        -------------------------------------------------------------------------------------------------------------
+    #}
+
+    /**
+     * Success handler for the create dialog form submission.
+     *
+     * Updates the related widget depending on it's type (sonata_type_model or sonata_type_model_list).
+     *
+     * @param {string} objectId The identifier of the related model object.
+     */
+    function handleCreateDialogSuccess (objectId) {
+        {% if widget == 'model_list' %}
+            updateShortObjectDescription(objectId);
+        {% else %}
+            retrieveFormElement(objectId);
+        {% endif %}
+    }
+
+    /**
+     * Retrieves the updated form element after a new item has been created,
+     * and replaces our widget with the updated one.
+     *
+     * @param {string} objectId The identifier of the related model object.
+     * @fires 'sonata-admin-append-form-element'
+     */
+    function retrieveFormElement (objectId) {
+        getFieldWidget().closest('form').ajaxSubmit({
+            url: routes.retrieveFormElement,
+            method: 'POST',
+            dataType: 'html',
+            data: {_xml_http_request: true},
+            success: function (html) {
+                getFieldContainer().replaceWith(html);
+                var $newElement = getField().find('[value="' + objectId + '"]');
+                if ($newElement.is("input")) {
+                    $newElement.attr('checked', 'checked');
+                } else {
+                    $newElement.attr('selected', 'selected');
+                }
+                getFieldContainer().trigger('sonata-admin-append-form-element');
+            }
+        });
+    }
+
+    /**
+     * Installs our event handlers for the create dialog body.
+     *
+     * @param {Dialog} dialog
+     */
+    function setupCreateDialog (dialog) {
+        dialog.$body.find('a').on('click', handleCreateDialogClick);
+        dialog.$body.find('form').on('submit', handleCreateDialogSubmit);
+    }
+
+    /**
+     * Handles link clicks in the create dialog.
+     *
+     * We just fetch the url and repopulate the dialog.
+     *
+     * @param {jQuery.Event} event
+     */
+    function handleCreateDialogClick (event) {
+        var $link = $(event.currentTarget);
+        if (isAnchor($link) || $link.hasClass('sonata-ba-action')) {
+            return;
+        }
+        event.preventDefault();
+        event.stopPropagation();
+
+        dialog.setLoading();
+        $.ajax({
+            url: $link.href,
+            data: {_xml_http_request: true}
+        }).done(function (html) {
+            dialog.setContent(html);
+            setupCreateDialog(dialog);
+        });
+    }
+
+    /**
+     * Handles form submissions in the create dialog.
+     *
+     * We submit the form via AJAX and update the related input on success.
+     *
+     * @param {jQuery.Event} event
+     */
+    function handleCreateDialogSubmit (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        var $form = $(event.target);
+
+        dialog.setLoading();
+        $form.ajaxSubmit({
+            url: $form.attr('action'),
+            method: $form.attr('method'),
+            data: {_xml_http_request: true},
+            success: function (data) {
+                dialog.hide();
+                // if the crud action return ok, then the element has been added
+                // so the widget container must be refresh with the last option available
+                if (data.result === 'ok') {
+                    handleCreateDialogSuccess(data.objectId);
+                }
+            }
+        });
+    }
+
+    /**
+     * The event handler for the create button.
+     *
+     * @param {jQuery.Event} event
+     */
+    function handleCreateButtonClicked (event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        var $link = $(event.currentTarget);
+
+        dialog.show();
+        $.ajax({
+            url: $link.attr('href'),
+            dataType: 'html'
+        }).done(function (html) {
+            dialog.setContent(html);
+            setupCreateDialog(dialog);
+        });
+    }
+
+    /**
+     * The inline event handler for the create button.
+     *
+     * It is done this way for historical reasons, and should be refactored to use event delegation.
+     *
+     * @param {HTMLElement} link
+     * @returns {boolean}
+     */
+    window['SonataTypeModelListCreate_' + fieldId] = function (link) {
+        createDialog();
+        // remove the inline event handler and replace it with our own
+        link.onclick = null;
+        $(link).on('click', handleCreateButtonClicked).trigger('click');
+
+        return false;
+    };
+
+    {% if widget == 'model_list' %}
+
+        {#
+            List action dialog
+            ----------------------------------------------------------------------------------------------------------
+        #}
+
+        /**
+         * Updates the input's value with the given identifier, and loads the related object's sort description.
+         *
+         * @param {string} objectId The identifier of the related model object.
+         */
+        function updateShortObjectDescription (objectId) {
+            getField().val(objectId);
+            var $widget = getFieldWidget().empty();
+            if (!objectId) {
+                return;
+            }
+            $('<i class="fa fa-refresh fa-spin fa-fw"/>').css({
+                display: 'block',
+                margin: '0 auto'
+            }).appendTo($widget);
+
+            $.ajax({
+                dataType: 'html',
+                url: routes.updateShortObjectDescription.replace('__SONATA_OBJECT_ID__', objectId)
+            }).done(function (html) {
+                $widget.html(html);
+            });
+        }
+
+        /**
+         * Handles link clicks in the select dialog.
+         *
+         * If the user actually selected a list item, we close the dialog and update the related input.
+         * Otherwise we just fetch the url and repopulate the dialog.
+         *
+         * @param {jQuery.Event} event
+         * @returns {*}
+         */
+        function handleSelectDialogClick (event) {
+            event.preventDefault();
+            event.stopPropagation();
+
+            var $target = $(event.currentTarget);
+            var $selected = $target.closest('.sonata-ba-list-field', dialog.$body);
+
+            // the user does not click on a row column
+            if (!$selected.length) {
+                dialog.setLoading();
+                return $.ajax({
+                    url: $target.attr('href'),
+                    dataType: 'html'
+                }).done(function (html) {
+                    dialog.setContent(html);
+                    setupListDialog(dialog);
+                });
+            }
+
+            dialog.hide();
+            updateShortObjectDescription($selected.attr('objectId'));
+        }
+
+        /**
+         * Handles form submissions in the select dialog.
+         *
+         * This usually means the list has been filtered, or the pager parameters modified,
+         * so we just submit the form via AJAX and load the HTML response.
+         *
+         * @param {jQuery.Event} event
+         */
+        function handleSelectDialogSubmit (event) {
+            event.preventDefault();
+            var $form = $(event.target);
+
+            dialog.setLoading();
+            $form.ajaxSubmit({
+                method: $form.attr('method'),
+                url: $form.attr('action'),
+                dataType: 'html',
+                data: {_xml_http_request: true},
+                success: function (html) {
+                    dialog.setContent(html);
+                    setupListDialog(dialog);
+                }
+            });
+        }
+
+        /**
+         * Installs our event handlers for the list dialog body.
+         *
+         * @param {Dialog} dialog
+         */
+        function setupListDialog (dialog) {
+            dialog.$body.find('a').on('click', handleSelectDialogClick);
+            dialog.$body.find('form').on('submit', handleSelectDialogSubmit);
+        }
+
+        /**
+         * The event handler for the select (list) button.
+         *
+         * @param {jQuery.Event} event
+         */
+        function handleSelectButtonClicked (event) {
+            event.preventDefault();
+            event.stopPropagation();
+
+            var $link = $(event.currentTarget);
+
+            dialog.show();
+            $.ajax({
+                url: $link.attr('href'),
+                dataType: 'html'
+            }).done(function (html) {
+                dialog.setContent(html);
+                setupListDialog(dialog);
+            });
+        }
+
+        /**
+         * The inline event handler for the select (list) button.
+         *
+         * It is done this way for historical reasons, and should be refactored to use event delegation.
+         *
+         * @param {HTMLElement} link
+         * @returns {boolean}
+         */
+        window['SonataTypeModelListSelect_' + fieldId] = function (link) {
+            createDialog();
+            link.onclick = null;
+            $(link).on('click', handleSelectButtonClicked).trigger('click');
+
+            return false;
+        };
+
+        /**
+         * The event handler for the unlink (delete) button.
+         *
+         * @param {jQuery.Event} event
+         */
+        function handleUnlinkClicked (event) {
+            event.preventDefault();
+            var $field = getField();
+
+            if ($field.find('option').length) {
+                $field.attr('selectedIndex', '-1')
+                    .children('option:selected')
+                    .attr('selected', false);
+            }
+
+            updateShortObjectDescription('');
+        }
+
+        /**
+         * The inline event handler for the unlink (delete) button.
+         *
+         * It is done this way for historical reasons, and should be refactored to use event delegation.
+         *
+         * @param {HTMLElement} link
+         * @returns {boolean}
+         */
+        window['SonataTypeModelListUnlink_' + fieldId] = function (link) {
+            link.onclick = null;
+            $(link).on('click', handleUnlinkClicked).trigger('click');
+
+            return false;
+        };
+    {% endif %}
+
+}(jQuery, Admin));

@@ -1,0 +1,49 @@
+<div class="sonata-ba-tabs">
+    {% for nested_group_field in form.children %}
+        <div>
+            <div class="nav-tabs-custom">
+                <ul class="nav nav-tabs">
+                    {% for name, form_group in _association_admin.formGroups %}
+                        <li class="{{ loop.first ? 'active' }}">
+                            <a href="#{{ _association_admin.uniqid }}_{{ loop.parent.loop.index }}_{{ loop.index }}"
+                               data-toggle="tab"
+                            >
+                                <i class="icon-exclamation-sign has-errors hide"></i>
+                                {{ _association_admin.trans(name, {}, form_group.translation_domain) }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+                <div class="tab-content">
+                    {% for name, form_group in _association_admin.formGroups %}
+                        <div class="tab-pane {{ loop.first ? 'active' }}"
+                             id="{{ _association_admin.uniqid }}_{{ loop.parent.loop.index }}_{{ loop.index }}"
+                        >
+                            <fieldset>
+                                <div class="sonata-ba-collapsed-fields">
+                                    {% for field_name in form_group.fields %}
+                                        {% set nested_field = nested_group_field.children[field_name] %}
+                                        <div class="sonata-ba-field-{{ id }}-{{ field_name }}">
+                                            {% if _association_admin.hasFormFieldDescription(field_name) %}
+                                                {{ form_row(nested_field, {
+                                                    inline: 'natural',
+                                                    edit: 'inline'
+                                                }) }}
+                                                {% do nested_group_field.setRendered() %}
+                                            {% else %}
+                                                {{ form_row(nested_field) }}
+                                            {% endif %}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </fieldset>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% if nested_group_field['_delete'] is defined %}
+                {{ form_row(nested_group_field['_delete']) }}
+            {% endif %}
+        </div>
+    {% endfor %}
+</div>

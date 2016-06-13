@@ -1,0 +1,47 @@
+{% set _field_description = sonata_admin.field_description %}
+{% set _association_admin = _field_description.associationAdmin %}
+
+{% set _display_btn_add = (
+    _association_admin.hasAccess('create')
+    and btn_add
+    and not (
+        _field_description.options.limit is defined
+        and form.children|length > _field_description.options.limit
+    )
+) %}
+
+
+<div id="field_container_{{ id }}" class="field-container">
+    <div id="field_widget_{{ id }}" >
+        {{ form_widget(form) }}
+    </div>
+    {% if _display_btn_add %}
+        <div id="field_actions_{{ id }}" class="field-actions">
+            <a  href="{{ _association_admin.generateUrl(
+                    'create',
+                    _field_description.getOption('link_parameters', {})
+                ) }}"
+                onclick="return SonataTypeModelListCreate_{{ id }}(this);"
+                class="btn btn-success btn-sm sonata-ba-action"
+                title="{{ btn_add|trans({}, btn_catalogue) }}"
+            >
+                <i class="fa fa-plus-circle"></i>
+                <span>{{ btn_add|trans({}, btn_catalogue) }}</span>
+            </a>
+        </div>
+        {% include 'SonataAdminBundle:Form/Type/Model:dialog.html.twig' with {id: id} only %}
+        <script>
+            {% include 'SonataAdminBundle:Form/Type/Model:dialog.js.twig' with {
+                id: id,
+                label: _association_admin.label|trans({}, _association_admin.translationDomain),
+                retrieve_form_element: path('sonata_admin_retrieve_form_element', {
+                    elementId: id,
+                    subclass: sonata_admin.admin.getActiveSubclassCode(),
+                    objectId: sonata_admin.admin.root.id(sonata_admin.admin.root.subject),
+                    uniqid: sonata_admin.admin.root.uniqid,
+                    code: sonata_admin.admin.root.code
+                })
+            } only %}
+        </script>
+    {% endif %}
+</div>

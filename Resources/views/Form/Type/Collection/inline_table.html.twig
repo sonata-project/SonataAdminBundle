@@ -1,0 +1,56 @@
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            {% for field_name, nested_field in form.children|first.children %}
+                {% if field_name == '_delete' %}
+                    <th>
+                        {{- 'action_delete'|trans({}, 'SonataAdminBundle') -}}
+                    </th>
+                {% else %}
+                    <th class="{{ [
+                            nested_field.vars['required']  ? 'required' : '',
+                            nested_field.vars['attr']['hidden']|default(false) ? 'hidden' : ''
+                        ]|join(' ') }}"
+                    >
+                        {{ nested_field.vars['sonata_admin'].admin.trans(
+                            nested_field.vars.label,
+                            {},
+                            nested_field.vars.translation_domain
+                        ) }}
+                    </th>
+                {% endif %}
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody class="sonata-ba-tbody">
+        {% for nested_group_field_name, nested_group_field in form.children %}
+            <tr>
+                {% for field_name, nested_field in nested_group_field.children %}
+                    <td class="{{ [
+                            'control-group',
+                            "sonata-ba-td-#{id}-#{field_name}",
+                            nested_field.vars.errors|length ? 'error' : '',
+                            nested_field.vars['attr']['hidden']|default(false) ? 'hidden' : ''
+                        ]|join(' ') }}"
+                    >
+                        {% if _association_admin.formFieldDescriptions[field_name] is defined %}
+                            {{ form_widget(nested_field) }}
+                            {% do nested_group_field.setRendered() %}
+                        {% else %}
+                            {% if field_name == '_delete' %}
+                                {{ form_widget(nested_field, {label_render: false}) }}
+                            {% else %}
+                                {{ form_widget(nested_field) }}
+                            {% endif %}
+                        {% endif %}
+                        {% if nested_field.vars.errors|length %}
+                            <div class="help-inline sonata-ba-field-error-messages">
+                                {{ form_errors(nested_field) }}
+                            </div>
+                        {% endif %}
+                    </td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

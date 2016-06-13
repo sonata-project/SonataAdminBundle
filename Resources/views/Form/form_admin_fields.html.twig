@@ -454,10 +454,6 @@ file that was distributed with this source code.
     {% endspaceless %}
 {% endblock %}
 
-{% block sonata_type_model_autocomplete_widget %}
-    {% include template %}
-{% endblock sonata_type_model_autocomplete_widget %}
-
 {% block sonata_type_choice_field_mask_widget %}
     {{ block('choice_widget') }}
     {% set main_form_name = id|slice(0, id|length - name|length) %}
@@ -506,4 +502,65 @@ file that was distributed with this source code.
             Admin.setup_sortable_select2(jQuery('#{{ id }}'), {{ form.vars.choices|json_encode|raw }});
         });
     </script>
+{% endblock %}
+
+
+{#
+    CRUD association widgets
+    -----------------------------------------------------------------------------------------------------------------
+#}
+
+
+{% block sonata_type_model_widget %}
+    {% if not sonata_admin.field_description.hasAssociationAdmin %}
+        {% if sonata_admin.field_description.describesSingleValuedAssociation %}
+            {{ value|render_relation_element(sonata_admin.field_description) }}
+        {% elseif sonata_admin.field_description.describesCollectionValuedAssociation %}
+            {% for element in value %}
+                {{ element|render_relation_element(sonata_admin.field_description) }}
+            {% endfor %}
+        {% else %}
+            {{ block('choice_widget') }}
+        {% endif %}
+    {% else %}
+        {% include 'SonataAdminBundle:Form/Type:sonata_type_model.html.twig' %}
+    {% endif %}
+{% endblock %}
+
+
+{% block sonata_type_model_list_widget %}
+    {% include 'SonataAdminBundle:Form/Type:sonata_type_model_list.html.twig' %}
+{% endblock %}
+
+
+{% block sonata_type_model_autocomplete_widget %}
+    {% include template %}
+{% endblock %}
+
+
+{% block sonata_type_admin_widget %}
+    {% if not sonata_admin.field_description.hasAssociationAdmin %}
+        {{ value|render_relation_element(sonata_admin.field_description) }}
+    {% elseif sonata_admin.edit == 'inline' %}
+        {% for field_description in sonata_admin.field_description.associationAdmin.formFieldDescriptions %}
+            {{ form_row(form.children[field_description.name]) }}
+        {% endfor %}
+    {% else %}
+        <div id="field_container_{{ id }}" class="field-container">
+            <div id="field_widget_{{ id }}">
+                {{ form_widget(form) }}
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+
+
+{% block sonata_type_collection_widget %}
+    {% if not sonata_admin.field_description.hasAssociationAdmin %}
+        {% for element in value %}
+            {{ element|render_relation_element(sonata_admin.field_description) }}
+        {% endfor %}
+    {% else %}
+        {% include 'SonataAdminBundle:Form/Type:sonata_type_collection.html.twig' %}
+    {% endif %}
 {% endblock %}

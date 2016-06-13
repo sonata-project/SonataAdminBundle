@@ -1,0 +1,44 @@
+(function ($, Admin) {
+    {# Parameters must be passed by the widget's template #}
+    var fieldId = '{{ id }}';
+    var submitUrl = '{{ url }}';
+
+    window['SonataTypeCollectionCreate_' + fieldId] = function (link) {
+        link.onclick = null;
+        $(link).on('click', handleCreateButtonClicked).trigger('click');
+
+        return false;
+    };
+
+    function getFieldContainer () {
+        return $('#field_container_' + fieldId);
+    }
+
+    function handleCreateButtonClicked (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        var $form = $(event.target).closest('form');
+        $form.ajaxSubmit({
+            url: submitUrl,
+            method: 'POST',
+            dataType: 'html',
+            data: {_xml_http_request: true},
+            success: function (html) {
+                if (!html.length) {
+                    return;
+                }
+                getFieldContainer().replaceWith(html);
+                var $newContainer = getFieldContainer();
+
+                Admin.shared_setup($newContainer);
+                if ($form.find('input[type="file"]').length) {
+                    $form.attr('enctype', 'multipart/form-data');
+                    $form.attr('encoding', 'multipart/form-data');
+                }
+
+                $('#sonata-ba-field-container-' + fieldId).trigger('sonata.add_element');
+                $newContainer.trigger('sonata.add_element');
+            }
+        });
+    }
+}(jQuery, Admin));

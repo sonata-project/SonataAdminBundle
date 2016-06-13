@@ -1,0 +1,45 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{% extends 'SonataAdminBundle:CRUD:base_show_field.html.twig' %}
+
+{% block field%}
+    {% set route_name = field_description.options.route.name %}
+
+    <ul class="sonata-ba-association-show-many">
+        {% for element in value %}
+            <li>
+                {% if
+                    field_description.hasAssociationAdmin
+                    and field_description.associationAdmin.hasAccess(route_name, element)
+                %}
+                    {{ block('relation_link') }}
+                {% else %}
+                    {{ block('relation_value') }}
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
+
+{%- block relation_link -%}
+    <a href="{{ field_description.associationAdmin.generateObjectUrl(
+        route_name,
+        element,
+        field_description.options.route.parameters
+    ) }}">
+        {{- element|render_relation_element(field_description) -}}
+    </a>
+{%- endblock -%}
+
+{%- block relation_value -%}
+    {{ element|render_relation_element(field_description) }}
+{%- endblock -%}

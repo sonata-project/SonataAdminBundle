@@ -1,0 +1,93 @@
+{% set _field_description = sonata_admin.field_description %}
+{% set _association_admin = _field_description.associationAdmin %}
+
+{% set _display_btn_list = _association_admin.hasAccess('list') and btn_list %}
+{% set _display_btn_create = _association_admin.hasAccess('create') and btn_add %}
+{% set _display_btn_delete = _association_admin.hasAccess('delete') and btn_delete %}
+
+<div id="field_container_{{ id }}" class="field-container">
+    <span id="field_widget_{{ id }}" class="field-short-description">
+        {% if _association_admin.id(sonata_admin.value) %}
+            {{ render(path('sonata_admin_short_object_information', {
+                code: _association_admin.code,
+                objectId: _association_admin.id(sonata_admin.value),
+                uniqid: _association_admin.uniqid,
+                linkParameters: _field_description.options.link_parameters
+            })) }}
+        {% elseif _field_description.options.placeholder|default %}
+            <span class="inner-field-short-description">
+                {{ _field_description.options.placeholder|trans({}, 'SonataAdminBundle') }}
+            </span>
+        {% endif %}
+    </span>
+    <span id="field_actions_{{ id }}" class="field-actions">
+        <span class="btn-group">
+            {% if _display_btn_list %}
+                <a  href="{{ _association_admin.generateUrl('list') }}"
+                    onclick="return SonataTypeModelListSelect_{{ id }}(this);"
+                    class="btn btn-info btn-sm sonata-ba-action"
+                    title="{{ btn_list|trans({}, btn_catalogue) }}"
+                >
+                    <i class="fa fa-list"></i>
+                    <span>{{ btn_list|trans({}, btn_catalogue) }}</span>
+                </a>
+            {% endif %}
+
+            {% if _display_btn_create %}
+                <a  href="{{ _association_admin.generateUrl('create') }}"
+                    onclick="return SonataTypeModelListCreate_{{ id }}(this);"
+                    class="btn btn-success btn-sm sonata-ba-action"
+                    title="{{ btn_add|trans({}, btn_catalogue) }}"
+                >
+                    <i class="fa fa-plus-circle"></i>
+                    <span>{{ btn_add|trans({}, btn_catalogue) }}</span>
+                </a>
+            {% endif %}
+        </span>
+
+        <span class="btn-group">
+            {% if _display_btn_delete %}
+                <a  href="#"
+                    onclick="return SonataTypeModelListUnlink_{{ id }}(this);"
+                    class="btn btn-danger btn-sm sonata-ba-action"
+                    title="{{ btn_delete|trans({}, btn_catalogue) }}"
+                >
+                    <i class="fa fa-minus-circle"></i>
+                    <span>{{ btn_delete|trans({}, btn_catalogue) }}</span>
+                </a>
+            {% endif %}
+        </span>
+    </span>
+
+    <span style="display: none">
+        {#
+            An invalid/required input must be focusable for accessibility.
+            Since we need to completely hide the form (including for screen-readers),
+            we have to disable client-side validation.
+        #}
+        {{ form_widget(form, {required: false, attr: {novalidate: 'novalidate'}}) }}
+    </span>
+
+    {{ block('sonata_help') }}
+</div>
+
+{% include 'SonataAdminBundle:Form/Type/Model:dialog.html.twig' with {id: id} only %}
+<script>
+    {% include 'SonataAdminBundle:Form/Type/Model:dialog.js.twig' with {
+        id: id,
+        label: _association_admin.label|trans({}, _association_admin.translationDomain),
+        update_short_object_description: path('sonata_admin_short_object_information', {
+            objectId: '__SONATA_OBJECT_ID__',
+            uniqid: _association_admin.uniqid,
+            code: _association_admin.code,
+            linkParameters: _field_description.options.link_parameters
+        }),
+        retrieve_form_element: path('sonata_admin_retrieve_form_element', {
+            elementId: id,
+            subclass: sonata_admin.admin.getActiveSubclassCode(),
+            objectId: sonata_admin.admin.root.id(sonata_admin.admin.root.subject),
+            uniqid: sonata_admin.admin.root.uniqid,
+            code: sonata_admin.admin.root.code
+        })
+    } only %}
+</script>

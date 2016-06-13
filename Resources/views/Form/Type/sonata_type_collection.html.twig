@@ -1,0 +1,76 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{% set _field_description = sonata_admin.field_description %}
+{% set _association_admin = _field_description.associationAdmin %}
+
+{% set _display_btn_add = (
+    _association_admin.hasAccess('create')
+    and btn_add
+    and not (
+        _field_description.options.limit is defined
+        and form.children|length > _field_description.options.limit
+    )
+) %}
+
+
+<div id="field_container_{{ id }}" class="field-container">
+    <div id="field_widget_{{ id }}">
+        {% if sonata_admin.edit == 'inline' %}
+            {% if sonata_admin.inline == 'table' and form.children|length %}
+                {% include 'SonataAdminBundle:Form/Type/Collection:inline_table.html.twig' %}
+            {% elseif form.children|length %}
+                {% include 'SonataAdminBundle:Form/Type/Collection:inline_tabs.html.twig' %}
+            {% endif %}
+        {% else %}
+            {{ form_widget(form) }}
+        {% endif %}
+    </div>
+    {% if _display_btn_add %}
+        <div id="field_actions_{{ id }}" class="field-actions">
+            <a  href="{{ _association_admin.generateUrl(
+                    'create',
+                    _field_description.getOption('link_parameters', {})
+                ) }}"
+                onclick="return SonataTypeCollectionCreate_{{ id }}(this);"
+                class="btn btn-success btn-sm sonata-ba-action"
+                title="{{ btn_add|trans({}, btn_catalogue) }}"
+            >
+                <i class="fa fa-plus-circle"></i>
+                <span>{{ btn_add|trans({}, btn_catalogue) }}</span>
+            </a>
+        </div>
+        <script>
+            {% include 'SonataAdminBundle:Form/Type/Collection:create.js.twig' with {
+                id: id,
+                url: path(
+                    'sonata_admin_append_form_element',
+                    {
+                        code: sonata_admin.admin.root.code,
+                        elementId: id,
+                        objectId: sonata_admin.admin.root.id(sonata_admin.admin.root.subject),
+                        uniqid: sonata_admin.admin.root.uniqid,
+                        subclass: app.request.query.get('subclass'),
+                    } + _field_description.getOption('link_parameters', {})
+                )
+            } only %}
+        </script>
+    {% endif %}
+    {% if _field_description.options.sortable|default %}
+        <script>
+            {% include 'SonataAdminBundle:Form/Type/Collection:sortable.js.twig' with {
+                id: id,
+                sort_field: _field_description.options.sortable,
+                table: sonata_admin.inline == 'table'
+            } only %}
+        </script>
+    {% endif %}
+</div>
