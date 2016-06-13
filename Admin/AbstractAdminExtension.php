@@ -186,4 +186,16 @@ abstract class AbstractAdminExtension implements AdminExtensionInterface
     {
         return $list;
     }
+
+//    TODO: replace this doc block to inheritdoc in NEXT_MAJOR
+//    /**
+//     * Setting to true will enable mosaic button for the admin screen.
+//     * Setting to false will hide mosaic button for the admin screen.
+//     *
+//     * @param AdminInterface $admin
+//     * @param bool $isShown
+//     */
+    public function showMosaicButton(AdminInterface $admin, $isShown)
+    {
+    }
 }

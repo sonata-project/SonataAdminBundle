@@ -194,4 +194,14 @@ interface AdminExtensionInterface
      */
     // TODO: Uncomment in next major release
     // public function configureActionButtons(AdminInterface $admin, $list, $action, $object);
+
+//    TODO: uncomment this method in NEXT_MAJOR
+//    /**
+//     * Setting to true will enable mosaic button for the admin screen.
+//     * Setting to false will hide mosaic button for the admin screen.
+//     *
+//     * @param AdminInterface $admin
+//     * @param bool $isShown
+//     */
+//    public function showMosaicButton(AdminInterface $admin, $isShown);
 }
