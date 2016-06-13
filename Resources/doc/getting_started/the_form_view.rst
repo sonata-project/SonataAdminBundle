@@ -122,7 +122,7 @@ Using the Sonata Model Type
 
 To make life easier for admins, you can use the
 :ref:`sonata_type_model field type <field-types-model>`. This field type will
-also render as a choice field, but it includes a create button to open an
+also render as a choice field, but it includes a create button to open a
 dialog with the admin of the referenced model in it:
 
 .. code-block:: php

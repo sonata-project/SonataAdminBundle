@@ -201,7 +201,7 @@ interface AdminInterface
     public function getManagerType();
 
     /**
-     * @param string $context
+     * @param string $context NEXT_MAJOR: remove this argument
      *
      * @return ProxyQueryInterface
      */

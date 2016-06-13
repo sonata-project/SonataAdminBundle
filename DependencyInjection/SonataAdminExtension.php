@@ -225,7 +225,7 @@ final class SonataAdminExtension extends Extension implements PrependExtensionIn
     {
         $this->addClassesToCompile(array(
             'Sonata\\AdminBundle\\Admin\\AbstractAdmin',
-            'Sonata\\AdminBundle\\Admin\\AdminExtension',
+            'Sonata\\AdminBundle\\Admin\\AbstractAdminExtension',
             'Sonata\\AdminBundle\\Admin\\AdminExtensionInterface',
             'Sonata\\AdminBundle\\Admin\\AdminHelper',
             'Sonata\\AdminBundle\\Admin\\AdminInterface',
