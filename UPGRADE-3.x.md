@@ -1,6 +1,16 @@
 UPGRADE 3.x
 ===========
 
+UPGRADE FROM 3.2 to 3.3
+=======================
+
+## Deprecated AbstractAdmin method argument
+
+The `$context` argument is deprecated and will be removed.
+Instead of relying on it (and using a `switch` statement),
+rely on an abstraction, and inject different implementations of this abstraction in different actions.
+Here is [an example](https://github.com/sonata-project/SonataAdminBundle/pull/3247#issuecomment-217744025).
+
 UPGRADE FROM 3.1 to 3.2
 =======================
 
@@ -36,10 +46,3 @@ You can no longer rely on that and should always specify templates that exist.
 - `getBreadcrumbs` is deprecated in favor of the homonym method of the `sonata.admin.breadcrumbs_builder` service.
 - The breadcrumbs builder accessors are deprecated,
 the `sonata.admin.breadcrumbs_builder` service should be used directly instead.
-
-## Deprecated AbstractAdmin method argument
-
-The `$context` argument is deprecated and will be removed.
-Instead of relying on it (and using a `switch` statement),
-rely on an abstraction, and inject different implementations of this abstraction in different actions.
-Here is [an example](https://github.com/sonata-project/SonataAdminBundle/pull/3247#issuecomment-217744025).

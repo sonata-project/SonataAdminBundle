@@ -1323,7 +1323,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
     {
         if (func_num_args() > 0) {
             @trigger_error(
-                'The $context argument of '.__METHOD.' is deprecated since 3.x, to be removed in 4.0.',
+                'The $context argument of '.__METHOD__.' is deprecated since 3.3, to be removed in 4.0.',
                 E_USER_DEPRECATED
             );
         }
