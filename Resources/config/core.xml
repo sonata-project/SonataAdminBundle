@@ -37,7 +37,7 @@
             <argument type="service" id="sonata.admin.pool"/>
             <argument type="service" id="logger" on-invalid="ignore"/>
             <call method="setBreadcrumbsBuilder">
-                <service id="sonata.admin.breadcrumbs_builder"/>
+                <argument type="service" id="sonata.admin.breadcrumbs_builder"/>
             </call>
         </service>
         <!-- controller as services -->
