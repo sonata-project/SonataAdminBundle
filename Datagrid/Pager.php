@@ -227,9 +227,9 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     {
         if ($this->cursor + 1 > $this->nbResults) {
             return;
-        } else {
-            return $this->retrieveObject($this->cursor + 1);
         }
+
+        return $this->retrieveObject($this->cursor + 1);
     }
 
     /**
@@ -241,9 +241,9 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     {
         if ($this->cursor - 1 < 1) {
             return;
-        } else {
-            return $this->retrieveObject($this->cursor - 1);
         }
+
+        return $this->retrieveObject($this->cursor - 1);
     }
 
     /**
@@ -255,9 +255,9 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     {
         if ($this->page == 0) {
             return 1;
-        } else {
-            return ($this->page - 1) * $this->maxPerPage + 1;
         }
+
+        return ($this->page - 1) * $this->maxPerPage + 1;
     }
 
     /**
@@ -269,13 +269,12 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     {
         if ($this->page == 0) {
             return $this->nbResults;
-        } else {
-            if ($this->page * $this->maxPerPage >= $this->nbResults) {
-                return $this->nbResults;
-            } else {
-                return $this->page * $this->maxPerPage;
-            }
         }
+        if ($this->page * $this->maxPerPage >= $this->nbResults) {
+            return $this->nbResults;
+        }
+
+        return $this->page * $this->maxPerPage;
     }
 
     /**

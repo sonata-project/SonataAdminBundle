@@ -113,8 +113,8 @@ class AdminAclManipulator implements AdminAclManipulatorInterface
             }
 
             return true;
-        } else {
-            return false;
         }
+
+        return false;
     }
 }

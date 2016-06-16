@@ -125,11 +125,10 @@ class ShowMapperTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnCallback(function ($name) use (&$listShowFields) {
                 if (isset($listShowFields[$name])) {
                     return true;
-                } else {
-                    $listShowFields[$name] = true;
-
-                    return false;
                 }
+                $listShowFields[$name] = true;
+
+                return false;
             }));
 
         $this->showBuilder->expects($this->any())

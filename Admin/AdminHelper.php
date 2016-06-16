@@ -293,9 +293,9 @@ class AdminHelper
         $associationAdmin = $admin->getFormFieldDescription($element)->getAssociationAdmin();
         if (count($elements) == 0) {
             return $associationAdmin->getClass();
-        } else {
-            return $this->getEntityClassName($associationAdmin, $elements);
         }
+
+        return $this->getEntityClassName($associationAdmin, $elements);
     }
 
     /**
