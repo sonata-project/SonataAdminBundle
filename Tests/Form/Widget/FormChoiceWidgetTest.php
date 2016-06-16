@@ -118,10 +118,10 @@ class FormChoiceWidgetTest extends BaseWidgetTest
             return array(
                 'placeholder' => 'Choose an option',
             );
-        } else {
-            return array(
+        }
+
+        return array(
                 'empty_value' => 'Choose an option',
             );
-        }
     }
 }

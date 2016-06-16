@@ -105,9 +105,8 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
                 if (isset($groupDefaults[$resolvedGroupName]['on_top']) && $groupDefaults[$resolvedGroupName]['on_top']
                     || $onTop && (count($groupDefaults[$resolvedGroupName]['items']) > 1)) {
                     throw new \RuntimeException('You can\'t use "on_top" option with multiple same name groups.');
-                } else {
-                    $groupDefaults[$resolvedGroupName]['on_top'] = $onTop;
                 }
+                $groupDefaults[$resolvedGroupName]['on_top'] = $onTop;
             }
         }
 
@@ -153,10 +152,9 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
                 if (isset($groups[$resolvedGroupName]['on_top']) && !empty($group['on_top']) && $group['on_top']
                     && (count($groups[$resolvedGroupName]['items']) > 1)) {
                     throw new \RuntimeException('You can\'t use "on_top" option with multiple same name groups.');
-                } else {
-                    if (empty($group['on_top'])) {
-                        $groups[$resolvedGroupName]['on_top'] = $groupDefaults[$resolvedGroupName]['on_top'];
-                    }
+                }
+                if (empty($group['on_top'])) {
+                    $groups[$resolvedGroupName]['on_top'] = $groupDefaults[$resolvedGroupName]['on_top'];
                 }
             }
         } elseif ($container->getParameter('sonata.admin.configuration.sort_admins')) {
