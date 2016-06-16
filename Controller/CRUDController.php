@@ -1019,9 +1019,9 @@ class CRUDController extends Controller
     {
         if ($this->container->has('logger')) {
             return $this->container->get('logger');
-        } else {
-            return new NullLogger();
         }
+
+        return new NullLogger();
     }
 
     /**
