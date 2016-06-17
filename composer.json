@@ -22,7 +22,7 @@
         "doctrine/inflector": "^1.0",
         "knplabs/knp-menu-bundle": "^2.1.1",
         "sonata-project/block-bundle": "^3.0",
-        "sonata-project/core-bundle": "^3.0",
+        "sonata-project/core-bundle": "^3.0.3",
         "sonata-project/exporter": "^1.0",
         "symfony/class-loader": "^2.3 || ^3.0",
         "symfony/config": "^2.3.9 || ^3.0",

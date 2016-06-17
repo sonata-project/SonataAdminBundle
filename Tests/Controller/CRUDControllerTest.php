@@ -178,7 +178,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
                 }
             }));
 
-        $exporter = $this->getMock('Sonata\AdminBundle\Export\Exporter');
+        $exporter = $this->getMock('Sonata\CoreBundle\Export\Exporter');
 
         $exporter->expects($this->any())
             ->method('getResponse')

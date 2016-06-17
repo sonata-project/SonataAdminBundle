@@ -828,7 +828,7 @@ class CRUDController extends Controller
             $format
         );
 
-        return $this->get('sonata.admin.exporter')->getResponse(
+        return $this->get('sonata.core.exporter')->getResponse(
             $format,
             $filename,
             $this->admin->getDataSourceIterator()
