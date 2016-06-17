@@ -8,20 +8,40 @@
     Otherwise remove it.
 -->
 
-| Question       | Answer
-|----------------|-------------------------------
-| Bundle version | composer show sonata-project/*
-| Symfony version| composer show symfony/*
-| php version    | php --version
+### Environment
 
-# Error message
+#### Sonata packages
 
-```
-Error message goes here
+```bash
+$ composer show sonata-project/*
+# Put the result here.
 ```
 
-# Steps to reproduce
+#### Symfony packages
 
-# Expected results
+```bash
+$ composer show symfony/*
+# Put the result here.
+```
 
-# Actual results
+#### PHP version
+
+```bash
+$ php -v
+# Put the result here.
+```
+
+## Subject
+
+<!--
+    Give here as many details as possible.
+    Next sections are for ERRORS only.
+-->
+
+## Steps to reproduce
+
+## Expected results
+
+## Actual results
+
+<!-- If it's an error message or piece of code, use code block tags. -->
