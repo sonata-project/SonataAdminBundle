@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.3.1](https://github.com/sonata-project/SonataAdminBundle/compare/3.3.0...3.3.1) - 2016-06-17
+### Fixed
+- Fixes broken extractor service
+- Make CRUDController::editAction respect optional parameter
+- Not aligned checkbox and radio on horizontal form
+
 ## [3.3.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.2.0...3.3.0) - 2016-06-13
 ### Changed
 - The `Select` button is always visible and has a primary check style in `sonata_type_model_list` popups
