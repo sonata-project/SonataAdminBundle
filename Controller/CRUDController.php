@@ -221,7 +221,7 @@ class CRUDController extends Controller
     /**
      * Edit action.
      *
-     * @param int|string|null $id
+     * @param int|string|null $id Optional ID to use instead of globally provided default.
      *
      * @return Response|RedirectResponse
      *
@@ -234,7 +234,7 @@ class CRUDController extends Controller
         // the key used to lookup the template
         $templateKey = 'edit';
 
-        $id = $request->get($this->admin->getIdParameter());
+        $id = $id ?: $request->get($this->admin->getIdParameter());
         $object = $this->admin->getObject($id);
 
         if (!$object) {
