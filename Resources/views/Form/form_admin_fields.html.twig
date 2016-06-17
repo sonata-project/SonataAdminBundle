@@ -324,7 +324,8 @@ file that was distributed with this source code.
         {% endif %}
 
         {% if sonata_admin is defined and sonata_admin.options['form_type'] == 'horizontal' %}
-            {% if label is same as(false) %}
+            {# Add an offset if no label or is a checkbox/radio #}
+            {% if label is same as(false) or form.vars.checked is defined %}
                 {% if 'collection' in form.parent.vars.block_prefixes %}
                     {% set div_class = div_class ~ ' col-sm-12' %}
                 {% else %}
