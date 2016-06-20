@@ -506,4 +506,12 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     {
         return false !== $this->getOption('virtual_field', false);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    final public function describesAssociation()
+    {
+        return $this->describesSingleValuedAssociation() || $this->describesCollectionValuedAssociation();
+    }
 }

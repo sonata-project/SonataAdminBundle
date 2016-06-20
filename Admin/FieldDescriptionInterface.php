@@ -289,4 +289,25 @@ interface FieldDescriptionInterface
      * @return mixed
      */
     public function getFieldValue($object, $fieldName);
+
+    /**
+     * Returns whether this object describes an association between two related models.
+     *
+     * @return bool
+     */
+    public function describesAssociation();
+
+    /**
+     * Returns whether this object describes a single-valued (N..1) association.
+     *
+     * @return bool
+     */
+    public function describesSingleValuedAssociation();
+
+    /**
+     * Returns whether this object describes a collection-valued (N..*) association.
+     *
+     * @return bool
+     */
+    public function describesCollectionValuedAssociation();
 }
