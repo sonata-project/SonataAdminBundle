@@ -156,8 +156,7 @@ class CRUDController extends Controller
     public function deleteAction($id)
     {
         $request = $this->getRequest();
-        $id = $request->get($this->admin->getIdParameter());
-        $object = $this->admin->getObject($id);
+        $object = $this->admin->getObject($this->resolveSubjectId($request, $id));
 
         if (!$object) {
             throw $this->createNotFoundException(sprintf('unable to find the object with id : %s', $id));
@@ -235,9 +234,7 @@ class CRUDController extends Controller
         // the key used to lookup the template
         $templateKey = 'edit';
 
-        // If the $id variable is provided AND the child ID is not needed, do not reload it.
-        $id = $id && 'id' === $this->admin->getIdParameter() ? $id : $request->get($this->admin->getIdParameter());
-        $object = $this->admin->getObject($id);
+        $object = $this->admin->getObject($this->resolveSubjectId($request, $id));
 
         if (!$object) {
             throw $this->createNotFoundException(sprintf('unable to find the object with id : %s', $id));
@@ -587,9 +584,7 @@ class CRUDController extends Controller
     public function showAction($id = null)
     {
         $request = $this->getRequest();
-        $id = $request->get($this->admin->getIdParameter());
-
-        $object = $this->admin->getObject($id);
+        $object = $this->admin->getObject($this->resolveSubjectId($request, $id));
 
         if (!$object) {
             throw $this->createNotFoundException(sprintf('unable to find the object with id : %s', $id));
@@ -626,9 +621,7 @@ class CRUDController extends Controller
     public function historyAction($id = null)
     {
         $request = $this->getRequest();
-        $id = $request->get($this->admin->getIdParameter());
-
-        $object = $this->admin->getObject($id);
+        $object = $this->admin->getObject($this->resolveSubjectId($request, $id));
 
         if (!$object) {
             throw $this->createNotFoundException(sprintf('unable to find the object with id : %s', $id));
@@ -675,9 +668,7 @@ class CRUDController extends Controller
     public function historyViewRevisionAction($id = null, $revision = null)
     {
         $request = $this->getRequest();
-        $id = $request->get($this->admin->getIdParameter());
-
-        $object = $this->admin->getObject($id);
+        $object = $this->admin->getObject($this->resolveSubjectId($request, $id));
 
         if (!$object) {
             throw $this->createNotFoundException(sprintf('unable to find the object with id : %s', $id));
@@ -741,9 +732,7 @@ class CRUDController extends Controller
 
         $this->admin->checkAccess('historyCompareRevisions');
 
-        $id = $request->get($this->admin->getIdParameter());
-
-        $object = $this->admin->getObject($id);
+        $object = $this->admin->getObject($this->resolveSubjectId($request, $id));
 
         if (!$object) {
             throw $this->createNotFoundException(sprintf('unable to find the object with id : %s', $id));
@@ -861,9 +850,7 @@ class CRUDController extends Controller
             throw $this->createNotFoundException('ACL are not enabled for this admin');
         }
 
-        $id = $request->get($this->admin->getIdParameter());
-
-        $object = $this->admin->getObject($id);
+        $object = $this->admin->getObject($this->resolveSubjectId($request, $id));
 
         if (!$object) {
             throw $this->createNotFoundException(sprintf('unable to find the object with id : %s', $id));
@@ -929,6 +916,27 @@ class CRUDController extends Controller
         }
 
         return $this->container->get('request');
+    }
+
+    /**
+     * Returns the subject ID to use.
+     *
+     * If not provided or concerning a child admin, get it from the request.
+     *
+     * Otherwise, just return the parameter.
+     *
+     * @param Request         $request
+     * @param int|string|null $subjectId
+     *
+     * @return int|null|string
+     */
+    final protected function resolveSubjectId(Request $request, $subjectId = null)
+    {
+        if (is_null($subjectId) || 'id' !== $this->admin->getIdParameter()) {
+            return $request->get($this->admin->getIdParameter());
+        }
+
+        return $subjectId;
     }
 
     /**
