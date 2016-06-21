@@ -221,7 +221,8 @@ class CRUDController extends Controller
     /**
      * Edit action.
      *
-     * @param int|string|null $id Optional ID to use instead of globally provided default.
+     * @param int|string|null $id Optional ID representing the main admin subject.
+     *                            This should not be used for child admins.
      *
      * @return Response|RedirectResponse
      *
@@ -574,7 +575,8 @@ class CRUDController extends Controller
     /**
      * Show action.
      *
-     * @param int|string|null $id
+     * @param int|string|null $id      Optional ID representing the main admin subject.
+     *                                 This should not be used for child admins.
      * @param Request         $request
      *
      * @return Response
@@ -612,7 +614,8 @@ class CRUDController extends Controller
     /**
      * Show history revisions for object.
      *
-     * @param int|string|null $id
+     * @param int|string|null $id      Optional ID representing the main admin subject.
+     *                                 This should not be used for child admins.
      * @param Request         $request
      *
      * @return Response
@@ -659,7 +662,8 @@ class CRUDController extends Controller
     /**
      * View history revision of object.
      *
-     * @param int|string|null $id
+     * @param int|string|null $id       Optional ID representing the main admin subject.
+     *                                  This should not be used for child admins.
      * @param string|null     $revision
      * @param Request         $request
      *
@@ -720,7 +724,8 @@ class CRUDController extends Controller
     /**
      * Compare history revisions of object.
      *
-     * @param int|string|null $id
+     * @param int|string|null $id               Optional ID representing the main admin subject.
+     *                                          This should not be used for child admins.
      * @param int|string|null $base_revision
      * @param int|string|null $compare_revision
      * @param Request         $request
@@ -839,7 +844,8 @@ class CRUDController extends Controller
     /**
      * Returns the Response object associated to the acl action.
      *
-     * @param int|string|null $id
+     * @param int|string|null $id      Optional ID representing the main admin subject.
+     *                                 This should not be used for child admins.
      * @param Request         $request
      *
      * @return Response|RedirectResponse
