@@ -234,7 +234,8 @@ class CRUDController extends Controller
         // the key used to lookup the template
         $templateKey = 'edit';
 
-        $id = $id ?: $request->get($this->admin->getIdParameter());
+        // If the $id variable is provided AND the child ID is not needed, do not reload it.
+        $id = $id && 'id' === $this->admin->getIdParameter() ? $id : $request->get($this->admin->getIdParameter());
         $object = $this->admin->getObject($id);
 
         if (!$object) {
