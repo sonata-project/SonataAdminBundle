@@ -110,16 +110,22 @@ file that was distributed with this source code.
                                             <script>
                                                 {% block batch_javascript %}
                                                     jQuery(document).ready(function ($) {
-                                                        $('#list_batch_checkbox').on('ifChanged', function () {
-                                                            $(this)
+                                                        // Toggle individual checkboxes when the batch checkbox is changed
+                                                        $('#list_batch_checkbox').on('ifChanged change', function () {
+                                                            var checkboxes = $(this)
                                                                 .closest('table')
                                                                 .find('td.sonata-ba-list-field-batch input[type="checkbox"], div.sonata-ba-list-field-batch input[type="checkbox"]')
-                                                                .iCheck($(this).is(':checked') ? 'check' : 'uncheck')
                                                             ;
+                                                            if (window.SONATA_CONFIG.USE_ICHECK) {
+                                                                checkboxes.iCheck($(this).is(':checked') ? 'check' : 'uncheck');
+                                                            } else {
+                                                                checkboxes.prop('checked', this.checked);
+                                                            }
                                                         });
 
+                                                        // Add a CSS class to rows when they are selected
                                                         $('td.sonata-ba-list-field-batch input[type="checkbox"], div.sonata-ba-list-field-batch input[type="checkbox"]')
-                                                            .on('ifChanged', function () {
+                                                            .on('ifChanged change', function () {
                                                                 $(this)
                                                                     .closest('tr, div.sonata-ba-list-field-batch')
                                                                     .toggleClass('sonata-ba-list-row-selected', $(this).is(':checked'))
