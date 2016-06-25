@@ -34,7 +34,8 @@ Github by following these points are taken care of:
 end of the page. Just look for "Stack Trace (Plain Text)", and copy/paste what
 you see. **Do not** make a screenshot of the stack trace, as screenshots are
 not indexed by search engines and will make it difficult for other people to
-find your bug report.
+find your bug report. If you have an issue when using the Symfony CLI,
+use the `-vvv` option to get a stack trace.
 * Screenshots should be considered additional data, and therefore, you should
   always provide a textual description of the bug. It is strongly recommended
 to provide them when reporting UI-related bugs.

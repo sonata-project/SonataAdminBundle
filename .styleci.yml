@@ -23,3 +23,5 @@ enabled:
 finder:
   exclude:
     - 'Tests/Fixtures'
+    # ecommerce special case:
+    - 'Resources/skeleton'
