@@ -20,10 +20,24 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
- * This type is used to render an hidden input text and 3 links
- *   - an add form modal
- *   - a list modal to select the targeted entities
- *   - a clear selection link.
+ * This type can be used to select one associated model from a list.
+ *
+ * The associated model must be in a single-valued association relationship (e.g many-to-one)
+ * with the model currently edited in the parent form.
+ * The associated model must have an admin class registered.
+ *
+ * The selected model's identifier is rendered in an hidden input.
+ *
+ * When a model is selected, a short description is displayed by the widget.
+ * This description can be customized by overriding the associated admin's
+ * `short_object_description` template and/or overriding it's `toString` method.
+ *
+ * The widget also provides three action buttons:
+ *  - a button to open the associated admin list view in a dialog,
+ *    in order to select an associated model.
+ *  - a button to open the associated admin create form in a dialog,
+ *    in order to create and select an associated model.
+ *  - a button to unlink the associated model, if any.
  */
 class ModelListType extends AbstractType
 {
