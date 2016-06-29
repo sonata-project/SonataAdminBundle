@@ -269,7 +269,7 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
             'Sonata\\AdminBundle\\Form\\Type\\Filter\\NumberType',
             'Sonata\\AdminBundle\\Form\\Type\\ModelReferenceType',
             'Sonata\\AdminBundle\\Form\\Type\\ModelType',
-            'Sonata\\AdminBundle\\Form\\Type\\ModelTypeList',
+            'Sonata\\AdminBundle\\Form\\Type\\ModelListType',
             'Sonata\\AdminBundle\\Guesser\\TypeGuesserChain',
             'Sonata\\AdminBundle\\Guesser\\TypeGuesserInterface',
             'Sonata\\AdminBundle\\Model\\AuditManager',
