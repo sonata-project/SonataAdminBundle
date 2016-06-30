@@ -12,7 +12,7 @@
 namespace Sonata\AdminBundle\Tests\Form\ChoiceList;
 
 use Sonata\AdminBundle\Form\ChoiceList\ModelChoiceList;
-use Sonata\CoreBundle\Tests\Fixtures\Bundle\Entity\Foo;
+use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Foo;
 
 class ModelChoiceListTest extends \PHPUnit_Framework_TestCase
 {
