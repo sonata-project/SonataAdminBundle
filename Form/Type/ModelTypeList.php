@@ -11,95 +11,20 @@
 
 namespace Sonata\AdminBundle\Form\Type;
 
-use Sonata\AdminBundle\Form\DataTransformer\ModelToIdTransformer;
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\FormView;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+@trigger_error(
+    'The '.__NAMESPACE__.'\ModelTypeList class is deprecated since version 3.x and will be removed in 4.0.'
+    .' Use '.__NAMESPACE__.'\ModelListType instead.',
+    E_USER_DEPRECATED
+);
 
 /**
  * This type is used to render an hidden input text and 3 links
  *   - an add form modal
  *   - a list modal to select the targeted entities
  *   - a clear selection link.
+ *
+ * @deprecated since version 3.x, to be removed in 4.0. Use ModelListType instead
  */
-class ModelTypeList extends AbstractType
+class ModelTypeList extends ModelListType
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $builder
-            ->resetViewTransformers()
-            ->addViewTransformer(new ModelToIdTransformer($options['model_manager'], $options['class']));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function buildView(FormView $view, FormInterface $form, array $options)
-    {
-        if (isset($view->vars['sonata_admin'])) {
-            // set the correct edit mode
-            $view->vars['sonata_admin']['edit'] = 'list';
-        }
-        $view->vars['btn_add'] = $options['btn_add'];
-        $view->vars['btn_list'] = $options['btn_list'];
-        $view->vars['btn_delete'] = $options['btn_delete'];
-        $view->vars['btn_catalogue'] = $options['btn_catalogue'];
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @todo Remove it when bumping requirements to SF 2.7+
-     */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $this->configureOptions($resolver);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults(array(
-            'model_manager' => null,
-            'class' => null,
-            'btn_add' => 'link_add',
-            'btn_list' => 'link_list',
-            'btn_delete' => 'link_delete',
-            'btn_catalogue' => 'SonataAdminBundle',
-        ));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getParent()
-    {
-        return 'text';
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @todo Remove when dropping Symfony <2.8 support
-     */
-    public function getName()
-    {
-        return $this->getBlockPrefix();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
-    {
-        return 'sonata_type_model_list';
-    }
 }

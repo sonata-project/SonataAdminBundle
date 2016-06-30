@@ -1,6 +1,12 @@
 UPGRADE 3.x
 ===========
 
+## Deprecated ModelTypeList for rename
+
+The `Sonata\AdminBundle\Form\Type\ModelTypeList` class is now deprecated.
+
+Use `Sonata\AdminBundle\Form\Type\ModelListType` instead.
+
 UPGRADE FROM 3.2 to 3.3
 =======================
 
