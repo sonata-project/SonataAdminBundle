@@ -193,8 +193,8 @@ And add the following call the ``admin.yml``
                 - ~
                 - AppBundle\Entity\Client
                 - 'PixSortableBehaviorBundle:SortableAdmin'
-                calls:
-                    - [ setPositionService, ["@pix_sortable_behavior.position"]]
+            calls:
+                - [ setPositionService, ["@pix_sortable_behavior.position"]]
 
 You should now have in your listing a new action column with 4 arrows to sort your records.
 
