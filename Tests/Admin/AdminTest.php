@@ -1526,6 +1526,31 @@ class AdminTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($admin->getSubject());
     }
 
+    public function testGetSideMenu()
+    {
+        $item = $this->getMock('Knp\Menu\ItemInterface');
+        $item
+            ->expects($this->once())
+            ->method('setChildrenAttribute')
+            ->with('class', 'nav navbar-nav');
+        $item
+            ->expects($this->once())
+            ->method('setExtra')
+            ->with('translation_domain', 'foo_bar_baz');
+
+        $menuFactory = $this->getMock('Knp\Menu\FactoryInterface');
+        $menuFactory
+            ->expects($this->once())
+            ->method('createItem')
+            ->will($this->returnValue($item));
+
+        $modelAdmin = new ModelAdmin('sonata.post.admin.model', 'Application\Sonata\FooBundle\Entity\Model', 'SonataFooBundle:ModelAdmin');
+        $modelAdmin->setMenuFactory($menuFactory);
+        $modelAdmin->setTranslationDomain('foo_bar_baz');
+
+        $modelAdmin->getSideMenu('foo');
+    }
+
     /**
      * @return array
      */
