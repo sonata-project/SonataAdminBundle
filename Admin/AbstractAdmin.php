@@ -1244,6 +1244,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
 
         $menu = $this->menuFactory->createItem('root');
         $menu->setChildrenAttribute('class', 'nav navbar-nav');
+        $menu->setExtra('translation_domain', $this->translationDomain);
 
         // Prevents BC break with KnpMenuBundle v1.x
         if (method_exists($menu, 'setCurrentUri')) {
