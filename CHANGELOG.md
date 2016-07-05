@@ -2,6 +2,20 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.4.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.3.2...3.4.0) - 2016-07-05
+### Added
+- Support for select2 v4 (`select2.full.js` file is needed)
+
+### Deprecated
+- The `Sonata\AdminBundle\Form\Type\ModelTypeList` is deprecated for `ModelListType`
+
+### Fixed
+- Ignoring `translation_domain` in tab menu
+
+### Removed
+- Removed useless `ModelAutocompleteType::getParent` override
+- Removed useless `read_only` option definition from `ModelAutocompleteType`
+
 ## [3.3.2](https://github.com/sonata-project/SonataAdminBundle/compare/3.3.1...3.3.2) - 2016-06-23
 ### Fixed
  - Reverted [#3961](https://github.com/sonata-project/SonataAdminBundle/pull/3961) to fix a regression concerning child admins on edit route
