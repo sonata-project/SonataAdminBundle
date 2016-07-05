@@ -16,7 +16,7 @@ use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormFactoryInterface;
 
 /**
- * Interface FormContractorInterface.
+ * This interface should be implemented in persistence bundles.
  *
  * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
@@ -40,6 +40,8 @@ interface FormContractorInterface extends BuilderInterface
     public function getFormBuilder($name, array $options = array());
 
     /**
+     * Should provide Symfony form options.
+     *
      * @abstract
      *
      * @param string                    $type
