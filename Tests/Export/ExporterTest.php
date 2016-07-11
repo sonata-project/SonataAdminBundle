@@ -14,6 +14,11 @@ namespace Sonata\AdminBundle\Tests\Filter;
 use Exporter\Source\ArraySourceIterator;
 use Sonata\AdminBundle\Export\Exporter;
 
+/**
+ * NEXT_MAJOR: remove this class.
+ *
+ * @group legacy
+ */
 class ExporterTest extends \PHPUnit_Framework_TestCase
 {
     /**
