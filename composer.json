@@ -21,7 +21,7 @@
         "doctrine/common": "^2.2",
         "doctrine/inflector": "^1.0",
         "knplabs/knp-menu-bundle": "^2.1.1",
-        "sonata-project/block-bundle": "^3.0",
+        "sonata-project/block-bundle": "^3.1.1",
         "sonata-project/core-bundle": "^3.0",
         "sonata-project/exporter": "^1.0",
         "symfony/class-loader": "^2.3 || ^3.0",
