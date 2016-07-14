@@ -14,12 +14,12 @@ namespace Sonata\AdminBundle\Tests\Block;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Block\AdminSearchBlockService;
 use Sonata\AdminBundle\Search\SearchHandler;
-use Sonata\BlockBundle\Tests\Block\AbstractBlockServiceTest;
+use Sonata\BlockBundle\Test\AbstractBlockServiceTestCase;
 
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
  */
-class AdminSearchBlockServiceTest extends AbstractBlockServiceTest
+class AdminSearchBlockServiceTest extends AbstractBlockServiceTestCase
 {
     /**
      * @var Pool
