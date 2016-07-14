@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\Block;
+namespace Sonata\AdminBundle\Tests\Fixtures\Block;
 
 use Sonata\AdminBundle\Block\AdminListBlockService;
 use Symfony\Component\OptionsResolver\OptionsResolver;
