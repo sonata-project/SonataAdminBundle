@@ -433,7 +433,7 @@ file that was distributed with this source code.
 
 {% block sonata_type_immutable_array_widget_row %}
     {% spaceless %}
-        <div class="form-group{% if child.vars.errors|length > 0%} error{%endif%}" id="sonata-ba-field-container-{{ id }}-{{ key }}">
+        <div class="form-group{% if child.vars.errors|length > 0%} has-error{%endif%}" id="sonata-ba-field-container-{{ id }}-{{ key }}">
 
             {{ form_label(child) }}
 
