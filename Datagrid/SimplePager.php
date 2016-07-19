@@ -106,7 +106,7 @@ class SimplePager extends Pager
     /**
      * {@inheritdoc}
      *
-     * @throws \RuntimeException the QueryBuilder is uninitialized.
+     * @throws \RuntimeException the QueryBuilder is uninitialized
      */
     public function init()
     {
