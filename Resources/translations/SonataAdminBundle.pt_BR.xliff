@@ -4,7 +4,7 @@
         <body>
             <trans-unit id="sonata_administration">
                 <source>sonata_administration</source>
-                <target>Administration</target>
+                <target>Administração</target>
             </trans-unit>
             <trans-unit id="action_delete">
                 <source>action_delete</source>
@@ -124,7 +124,7 @@
             </trans-unit>
             <trans-unit id="confirm_msg">
                 <source>confirm_msg</source>
-                <target>Você tem certeza ?</target>
+                <target>Você tem certeza?</target>
             </trans-unit>
             <trans-unit id="action_edit">
                 <source>action_edit</source>
@@ -160,7 +160,7 @@
             </trans-unit>
             <trans-unit id='flash_batch_delete_success'>
                 <source>flash_batch_delete_success</source>
-                <target>Itens solucionados foram deletados com sucesso.</target>
+                <target>Itens selecionados foram deletados com sucesso.</target>
             </trans-unit>
             <trans-unit id='flash_batch_delete_error'>
                 <source>flash_batch_delete_error</source>
@@ -332,7 +332,7 @@
             </trans-unit>
             <trans-unit id="btn_preview">
                 <source>btn_preview</source>
-                <target>Previsualização</target>
+                <target>Pré-visualização</target>
             </trans-unit>
             <trans-unit id="btn_preview_approve">
                 <source>btn_preview_approve</source>
@@ -396,11 +396,11 @@
             </trans-unit>
             <trans-unit id="noscript_warning">
                 <source>noscript_warning</source>
-                <target>noscript_warning</target>
+                <target>Javascript está desativado no seu navegador. Algumas recursos não funcionarão corretamente.</target>
             </trans-unit>
             <trans-unit id="message_form_group_empty">
                 <source>message_form_group_empty</source>
-                <target>message_form_group_empty</target>
+                <target>Nenhum campo disponível</target>
             </trans-unit>
         </body>
     </file>
