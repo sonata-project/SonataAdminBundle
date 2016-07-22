@@ -370,6 +370,7 @@ class BreadcrumbsBuilderTest extends \PHPUnit_Framework_TestCase
         $adminSubjectMenu->addChild('Ma classe fille', array(
             'uri' => '/myadmin/my-object/mychildadmin/list',
         ))->shouldBeCalled()->willReturn($childMenu->reveal());
+        $adminSubjectMenu->setExtra('safe_label', false)->willReturn($childMenu);
 
         $childMenu->addChild('My subject')
             ->shouldBeCalled()->willReturn($leafMenu->reveal());
@@ -482,7 +483,9 @@ class BreadcrumbsBuilderTest extends \PHPUnit_Framework_TestCase
         $menu->addChild('My subject')->willReturn($menu);
         $menu->addChild('My subject', array('uri' => null))->willReturn($menu);
         $menu->addChild('Ma classe fille', array('uri' => null))->willReturn($menu);
+        $menu->setExtra('safe_label', false)->willReturn($menu);
         $menu->addChild('Mon action', array())->willReturn($menu);
+
 
         $breadcrumbsBuilder->buildBreadCrumbs($admin->reveal(), $action);
     }
