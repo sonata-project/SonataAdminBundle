@@ -238,13 +238,13 @@ interface AdminInterface
     /**
      * @return Request
      *
-     * @throws \RuntimeException if no request is set.
+     * @throws \RuntimeException if no request is set
      */
     public function getRequest();
 
     /**
      * @return bool true if a request object is linked to this Admin, false
-     *              otherwise.
+     *              otherwise
      */
     public function hasRequest();
 
@@ -338,6 +338,15 @@ interface AdminInterface
      * @return bool
      */
     public function isCurrentRoute($name, $adminCode = null);
+
+    /**
+     * Checks if the filter matches the default value.
+     *
+     * @param string $name
+     *
+     * @return bool
+     */
+    public function isDefaultFilterValue($name);
 
     /**
      * Returns true if the admin has a FieldDescription with the given $name.
