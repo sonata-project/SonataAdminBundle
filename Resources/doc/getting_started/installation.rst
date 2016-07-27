@@ -145,8 +145,8 @@ install the assets:
 
 .. code-block:: bash
 
-    $ php app/console cache:clear
-    $ php app/console assets:install
+    $ php bin/console cache:clear
+    $ php bin/console assets:install
 
 The Admin Interface
 -------------------
@@ -157,7 +157,7 @@ server, you can now visit the admin page on http://localhost:8000/admin
 .. note::
 
     This tutorial assumes you are using the build-in server using the
-    ``php app/console server:start`` (or ``server:run``) command.
+    ``php bin/console server:start`` (or ``server:run``) command.
 
 .. image:: ../images/getting_started_empty_dashboard.png
 
