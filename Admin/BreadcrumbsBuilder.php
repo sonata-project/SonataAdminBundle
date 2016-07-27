@@ -86,7 +86,7 @@ final class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
                     $admin->generateUrl('edit', array('id' => $id)) :
                     null,
                 )
-            )->setAttribute('safe', 'false');;
+            )->setAttribute('safe', 'false');
 
             return $this->buildBreadcrumbs($childAdmin, $action, $menu);
         }
