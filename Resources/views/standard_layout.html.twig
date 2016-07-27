@@ -142,7 +142,13 @@ file that was distributed with this source code.
                                                         {% if not loop.last  %}
                                                             <li>
                                                                 {% if menu.uri is not empty %}
-                                                                    <a href="{{ menu.uri }}">{{ menu.label|raw}}</a>
+                                                                    <a href="{{ menu.uri }}">
+                                                                        {% if menu.extra('safe_label', false) %}
+                                                                            {{- menu.label|raw -}}
+                                                                        {% else %}
+                                                                            {{- menu.label -}}
+                                                                        {% endif %}
+                                                                    </a>
                                                                 {% else %}
                                                                     {{ menu.label }}
                                                                 {% endif %}
