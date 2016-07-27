@@ -137,7 +137,18 @@ You can do this by importing them in the routing configuration:
         resource: "@SonataAdminBundle/Resources/config/routing/sonata_admin.xml"
         prefix: /admin
 
-Step 5: Preparing your Environment
+Step 5: Enable the "translator" service
+---------------------------------------
+
+The translator service is required by SonataAdmin to display all labels properly.
+
+.. code-block:: yaml
+
+    # app/config/config.yml
+    framework:
+        translator: { fallbacks: [en] }
+
+Step 6: Preparing your Environment
 ----------------------------------
 
 As with all bundles you install, it's a good practice to clear the cache and
