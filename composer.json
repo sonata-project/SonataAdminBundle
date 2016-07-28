@@ -49,8 +49,7 @@
         "sllh/php-cs-fixer-styleci-bridge": "^2.0",
         "sonata-project/intl-bundle": "^2.2.4",
         "symfony/phpunit-bridge": "^2.7 || ^3.0",
-        "symfony/yaml": "^2.3 || ^3.0",
-        "phpspec/prophecy": "~1.0"
+        "symfony/yaml": "^2.3 || ^3.0"
     },
     "conflict": {
         "jms/di-extra-bundle": "<1.7.0"
