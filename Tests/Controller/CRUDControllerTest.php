@@ -42,6 +42,8 @@ use Symfony\Component\Security\Csrf\CsrfToken;
  * Test for CRUDController.
  *
  * @author Andrej Hudec <pulzarraider@gmail.com>
+ *
+ * @group legacy
  */
 class CRUDControllerTest extends PHPUnit_Framework_TestCase
 {

@@ -60,6 +60,13 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
         $loader->load('block.xml');
         $loader->load('menu.xml');
 
+        if (method_exists('Symfony\Component\DependencyInjection\Definition', 'setDeprecated')) {
+            // NEXT_MAJOR : remove this block
+            $container->getDefinition('sonata.admin.exporter')->setDeprecated(
+                'The service "%service_id%" is deprecated in favor of the "sonata.exporter.exporter" service'
+            );
+        }
+
         // TODO: Go back on xml configuration when bumping requirements to SF 2.6+
         $sidebarMenu = $container->getDefinition('sonata.admin.sidebar_menu');
         if (method_exists($sidebarMenu, 'setFactory')) {

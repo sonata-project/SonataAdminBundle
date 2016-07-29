@@ -819,7 +819,12 @@ class CRUDController extends Controller
             $format
         );
 
-        return $this->get('sonata.admin.exporter')->getResponse(
+        // NEXT_MAJOR : require sonata-project/exporter ^1.6 and remove this
+        $exporter = $this->has('sonata.exporter.exporter') ?
+            $this->get('sonata.exporter.exporter') :
+            $this->get('sonata.admin.exporter');
+
+        return $exporter->getResponse(
             $format,
             $filename,
             $this->admin->getDataSourceIterator()
