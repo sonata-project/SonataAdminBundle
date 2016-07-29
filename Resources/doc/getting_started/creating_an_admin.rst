@@ -14,8 +14,8 @@ using these commands:
 
 .. code-block:: bash
 
-    $ php app/console doctrine:generate:entity --entity="AppBundle:Category" --fields="name:string(255)" --no-interaction
-    $ php app/console doctrine:generate:entity --entity="AppBundle:BlogPost" --fields="title:string(255) body:text draft:boolean" --no-interaction
+    $ php bin/console doctrine:generate:entity --entity="AppBundle:Category" --fields="name:string(255)" --no-interaction
+    $ php bin/console doctrine:generate:entity --entity="AppBundle:BlogPost" --fields="title:string(255) body:text draft:boolean" --no-interaction
 
 After this, you'll need to tweak the entities a bit:
 
@@ -102,7 +102,7 @@ After this, create the schema for these entities:
 
 .. code-block:: bash
 
-    $ php app/console doctrine:schema:create
+    $ php bin/console doctrine:schema:create
 
 .. note::
 
