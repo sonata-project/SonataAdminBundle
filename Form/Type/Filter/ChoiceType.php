@@ -31,6 +31,8 @@ class ChoiceType extends AbstractType
     const TYPE_EQUAL = 3;
 
     /**
+     * @deprecated since 3.x, to be removed with 4.0
+     *
      * @var TranslatorInterface
      */
     protected $translator;
@@ -67,16 +69,31 @@ class ChoiceType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $choices = array(
-            self::TYPE_CONTAINS => $this->translator->trans('label_type_contains', array(), 'SonataAdminBundle'),
-            self::TYPE_NOT_CONTAINS => $this->translator->trans('label_type_not_contains', array(), 'SonataAdminBundle'),
-            self::TYPE_EQUAL => $this->translator->trans('label_type_equals', array(), 'SonataAdminBundle'),
+            self::TYPE_CONTAINS => 'label_type_contains',
+            self::TYPE_NOT_CONTAINS => 'label_type_not_contains',
+            self::TYPE_EQUAL => 'label_type_equals',
         );
 
         if (!method_exists('Symfony\Component\Form\FormTypeInterface', 'setDefaultOptions')) {
             $choices = array_flip($choices);
         }
 
-        $operatorChoices = $options['operator_type'] !== 'hidden' ? array('choices' => $choices) : array();
+        // NEXT_MAJOR: Remove this hack, when dropping support for symfony <2.7
+        if (!method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')) {
+            foreach ($choices as $key => $value) {
+                $choices[$key] = $this->translator->trans($value, array(), 'SonataAdminBundle');
+            }
+        }
+
+        $operatorChoices = array();
+        if ($options['operator_type'] !== 'hidden') {
+            $operatorChoices['choices'] = $choices;
+
+            // NEXT_MAJOR: Remove this hack, when dropping support for symfony <2.7
+            if (method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')) {
+                $operatorChoices['choice_translation_domain'] = 'SonataAdminBundle';
+            }
+        }
 
         $builder
             ->add('type', $options['operator_type'], array_merge(array('required' => false), $options['operator_options'], $operatorChoices))

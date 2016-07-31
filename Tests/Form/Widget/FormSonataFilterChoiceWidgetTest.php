@@ -36,7 +36,7 @@ class FormSonataFilterChoiceWidgetTest extends BaseWidgetTest
 
         $this->assertContains(
             '<option value="1">[trans]label_type_contains[/trans]</option>',
-           $html
+            $html
         );
 
         $this->assertContains(
@@ -83,12 +83,11 @@ class FormSonataFilterChoiceWidgetTest extends BaseWidgetTest
     {
         $mock = $this->getMockBuilder('Symfony\Component\Translation\TranslatorInterface')->getMock();
 
-        $mock->expects($this->exactly(3))
-            ->method('trans')
+        $mock->method('trans')
             ->will($this->returnCallback(function ($arg) {
                 return $arg;
             })
-            );
+        );
 
         $extensions = parent::getExtensions();
         $guesser = $this->getMock('Symfony\Component\Form\FormTypeGuesserInterface');
