@@ -49,7 +49,7 @@ class SonataAdminExtension extends \Twig_Extension
         return array(
             new \Twig_SimpleFilter('render_list_element', array($this, 'renderListElement'), array('is_safe' => array('html'), 'needs_environment' => true)),
             new \Twig_SimpleFilter('render_view_element', array($this, 'renderViewElement'), array('is_safe' => array('html'), 'needs_environment' => true)),
-            new \Twig_SimpleFilter('render_view_element_compare', array($this, 'renderViewElementCompare'), array('is_safe' => array('html'))),
+            new \Twig_SimpleFilter('render_view_element_compare', array($this, 'renderViewElementCompare'), array('is_safe' => array('html'), 'needs_environment' => true)),
             new \Twig_SimpleFilter('render_relation_element', array($this, 'renderRelationElement')),
             new \Twig_SimpleFilter('sonata_urlsafeid', array($this, 'getUrlsafeIdentifier')),
             new \Twig_SimpleFilter('sonata_xeditable_type', array($this, 'getXEditableType')),
