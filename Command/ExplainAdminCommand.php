@@ -89,11 +89,7 @@ class ExplainAdminCommand extends ContainerAwareCommand
             $output->writeln(sprintf('  - % -25s  % -15s % -15s', $name, $fieldDescription->getType(), $fieldDescription->getTemplate()));
         }
 
-        if ($this->getContainer()->has('validator.validator_factory')) {
-            $metadata = $this->getContainer()->get('validator.validator_factory')->getMetadataFor($admin->getClass());
-        } else {
-            $metadata = $this->getContainer()->get('validator')->getMetadataFor($admin->getClass());
-        }
+        $metadata = $this->getContainer()->get('validator')->getMetadataFor($admin->getClass());
 
         $output->writeln('');
         $output->writeln('<comment>Validation Framework</comment> - http://symfony.com/doc/3.0/book/validation.html');
