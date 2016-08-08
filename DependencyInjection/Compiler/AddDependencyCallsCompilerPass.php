@@ -74,7 +74,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
                 $classes[$arguments[1]][] = $id;
 
-                $showInDashboard = (bool) (isset($attributes['show_in_dashboard']) ?  $parameterBag->resolveValue($attributes['show_in_dashboard']) : true);
+                $showInDashboard = (bool) (isset($attributes['show_in_dashboard']) ? $parameterBag->resolveValue($attributes['show_in_dashboard']) : true);
                 if (!$showInDashboard) {
                     continue;
                 }
