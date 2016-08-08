@@ -42,7 +42,7 @@ class ExplainAdminCommand extends ContainerAwareCommand
         $admin = $this->getContainer()->get($input->getArgument('admin'));
 
         if (!$admin instanceof \Sonata\AdminBundle\Admin\AdminInterface) {
-            throw new \RunTimeException(sprintf('Service "%s" is not an admin class', $input->getArgument('admin')));
+            throw new \RuntimeException(sprintf('Service "%s" is not an admin class', $input->getArgument('admin')));
         }
 
         $output->writeln('<comment>AdminBundle Information</comment>');
