@@ -120,7 +120,7 @@ class AclSecurityHandlerTest extends \PHPUnit_Framework_TestCase
         $authorizationChecker = $this->getAuthorizationCheckerMock();
         $authorizationChecker->expects($this->any())
             ->method('isGranted')
-            ->will($this->throwException(new \RunTimeException('FAIL')));
+            ->will($this->throwException(new \RuntimeException('FAIL')));
 
         $aclProvider = $this->getMock('Symfony\Component\Security\Acl\Model\MutableAclProviderInterface');
 
