@@ -58,7 +58,7 @@ class FieldDescriptionCollectionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException        RunTimeException
+     * @expectedException        RuntimeException
      * @expectedExceptionMessage Cannot set value, use add
      */
     public function testArrayAccessSetField()

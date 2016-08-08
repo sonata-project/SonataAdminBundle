@@ -300,7 +300,7 @@ EOT;
     }
 
     /**
-     * @throws \RunTimeException
+     * @throws \RuntimeException
      *
      * @param mixed                     $element
      * @param FieldDescriptionInterface $fieldDescription
