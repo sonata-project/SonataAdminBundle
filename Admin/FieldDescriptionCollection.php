@@ -96,7 +96,7 @@ class FieldDescriptionCollection implements \ArrayAccess, \Countable
      */
     public function offsetSet($offset, $value)
     {
-        throw new \RunTimeException('Cannot set value, use add');
+        throw new \RuntimeException('Cannot set value, use add');
     }
 
     /**
