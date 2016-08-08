@@ -143,7 +143,7 @@ file that was distributed with this source code.
                                                             <li>
                                                                 {% if menu.uri is not empty %}
                                                                     <a href="{{ menu.uri }}">
-                                                                        {% if menu.extra('safe_label', false) %}
+                                                                        {% if menu.extra('safe_label', true) %}
                                                                             {{- menu.label|raw -}}
                                                                         {% else %}
                                                                             {{- menu.label -}}
