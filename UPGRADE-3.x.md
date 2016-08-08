@@ -1,6 +1,10 @@
 UPGRADE 3.x
 ===========
 
+## Deprecated injection of container to GlobalVariables
+
+The `$container` property in `Twig/GlobalVariables` is deprecated.
+
 ## Deprecated ModelTypeList for rename
 
 The `Sonata\AdminBundle\Form\Type\ModelTypeList` class is now deprecated.
