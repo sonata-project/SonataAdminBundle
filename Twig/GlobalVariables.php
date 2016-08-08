@@ -102,7 +102,7 @@ class GlobalVariables
      */
     private function getCodeAction($code, $action)
     {
-        if ($pipe = strpos('|', $code)) {
+        if ($pipe = strpos($code, '|')) {
             // convert code=sonata.page.admin.page|sonata.page.admin.snapshot, action=list
             // to => sonata.page.admin.page|sonata.page.admin.snapshot.list
             $action = $code.'.'.$action;
