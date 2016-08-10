@@ -1627,10 +1627,18 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
     public function setSubject($subject)
     {
         if (!is_a($subject, $this->class, true)) {
-            throw new \RuntimeException(sprintf(
-                'You are trying to set entity %s which is not the one registered with this admin class',
-                get_class($subject)
-            ));
+            trigger_error(
+                sprintf(
+<<<EOT
+You are trying to set entity an instance of "%s",
+which is not the one registered with this admin class ("%s").
+This is deprecated since 3.x and will no longer be supported in 4.0.
+EOT,
+                    get_class($subject),
+                    $this->className
+                ),
+                E_USER_DEPRECATED
+            ); // NEXT_MAJOR : throw an exception instead
         }
 
         $this->subject = $subject;
