@@ -58,17 +58,22 @@ class AdminTest extends \PHPUnit_Framework_TestCase
 
     public function testGetClass()
     {
-        $class = 'Application\Sonata\NewsBundle\Entity\Post';
+        $class = 'Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Post';
         $baseControllerName = 'SonataNewsBundle:PostAdmin';
 
         $admin = new PostAdmin('sonata.post.admin.post', $class, $baseControllerName);
 
-        $testObject = new \stdClass();
-        $admin->setSubject($testObject);
-        $this->assertSame('stdClass', $admin->getClass());
+        $admin->setSubject(new \Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\BlogPost());
+        $this->assertSame(
+            'Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\BlogPost',
+            $admin->getClass()
+        );
 
         $admin->setSubClasses(array('foo'));
-        $this->assertSame('stdClass', $admin->getClass());
+        $this->assertSame(
+            'Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\BlogPost',
+            $admin->getClass()
+        );
 
         $admin->setSubject(null);
         $admin->setSubClasses(array());
@@ -604,18 +609,28 @@ class AdminTest extends \PHPUnit_Framework_TestCase
      */
     public function testSubClass()
     {
-        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
+        $admin = new PostAdmin(
+            'sonata.post.admin.post',
+            'Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Post',
+            'SonataNewsBundle:PostAdmin'
+        );
         $this->assertFalse($admin->hasSubClass('test'));
         $this->assertFalse($admin->hasActiveSubClass());
         $this->assertCount(0, $admin->getSubClasses());
         $this->assertNull($admin->getActiveSubClass());
         $this->assertNull($admin->getActiveSubclassCode());
-        $this->assertSame('NewsBundle\Entity\Post', $admin->getClass());
+        $this->assertSame(
+            'Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Post',
+            $admin->getClass()
+        );
 
         // Just for the record, if there is no inheritance set, the getSubject is not used
         // the getSubject can also lead to some issue
-         $admin->setSubject(new \stdClass());
-        $this->assertSame('stdClass', $admin->getClass());
+        $admin->setSubject(new \Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\BlogPost());
+        $this->assertSame(
+            'Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\BlogPost',
+            $admin->getClass()
+        );
 
         $admin->setSubClasses(array('extended1' => 'NewsBundle\Entity\PostExtended1', 'extended2' => 'NewsBundle\Entity\PostExtended2'));
         $this->assertFalse($admin->hasSubClass('test'));
@@ -624,7 +639,10 @@ class AdminTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(2, $admin->getSubClasses());
         $this->assertNull($admin->getActiveSubClass());
         $this->assertNull($admin->getActiveSubclassCode());
-        $this->assertSame('stdClass', $admin->getClass());
+        $this->assertSame(
+            'Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\BlogPost',
+            $admin->getClass()
+        );
 
         $request = new \Symfony\Component\HttpFoundation\Request(array('subclass' => 'extended1'));
         $admin->setRequest($request);
@@ -632,9 +650,15 @@ class AdminTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($admin->hasSubClass('extended1'));
         $this->assertTrue($admin->hasActiveSubClass());
         $this->assertCount(2, $admin->getSubClasses());
-        $this->assertSame('stdClass', $admin->getActiveSubClass());
+        $this->assertSame(
+            'Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\BlogPost',
+            $admin->getActiveSubClass()
+        );
         $this->assertSame('extended1', $admin->getActiveSubclassCode());
-        $this->assertSame('stdClass', $admin->getClass());
+        $this->assertSame(
+            'Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\BlogPost',
+            $admin->getClass()
+        );
 
         $request->query->set('subclass', 'inject');
         $this->assertNull($admin->getActiveSubclassCode());
@@ -1804,7 +1828,11 @@ class AdminTest extends \PHPUnit_Framework_TestCase
         $formBuilder->expects($this->any())->method('getForm')->will($this->returnValue(null));
 
         $tagAdmin = $this->getMockBuilder('Sonata\AdminBundle\Tests\Fixtures\Admin\TagAdmin')
-            ->disableOriginalConstructor()
+            ->setConstructorArgs(array(
+                'admin.tag',
+                'Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Tag',
+                'MyBundle:MyController'
+            ))
             ->setMethods(array('getFormBuilder'))
             ->getMock();
 

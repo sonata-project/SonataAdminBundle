@@ -1626,7 +1626,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
      */
     public function setSubject($subject)
     {
-        if (!is_a($subject, $this->class, true)) {
+        if (is_object($subject) && !is_a($subject, $this->class, true)) {
             $message = <<<'EOT'
 You are trying to set entity an instance of "%s",
 which is not the one registered with this admin class ("%s").

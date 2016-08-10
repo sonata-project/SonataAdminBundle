@@ -16,6 +16,7 @@ use Sonata\AdminBundle\Tests\Fixtures\Admin\CommentAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\PostAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\DummySubject;
 use Symfony\Component\HttpFoundation\Request;
+use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Comment;
 
 /**
  * This test class contains unit and integration tests. Maybe it could be
@@ -30,18 +31,18 @@ class BreadcrumbsBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetBreadcrumbs()
     {
-        $class = 'Application\Sonata\NewsBundle\Entity\Post';
+        $class = 'Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\DummySubject';
         $baseControllerName = 'SonataNewsBundle:PostAdmin';
 
         $admin = new PostAdmin('sonata.post.admin.post', $class, $baseControllerName);
         $commentAdmin = new CommentAdmin(
             'sonata.post.admin.comment',
-            'Application\Sonata\NewsBundle\Entity\Comment',
+            'Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Comment',
             'SonataNewsBundle:CommentAdmin'
         );
         $subCommentAdmin = new CommentAdmin(
             'sonata.post.admin.comment',
-            'Application\Sonata\NewsBundle\Entity\Comment',
+            'Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Comment',
             'SonataNewsBundle:CommentAdmin'
         );
         $admin->addChild($commentAdmin);
@@ -73,7 +74,7 @@ class BreadcrumbsBuilderTest extends \PHPUnit_Framework_TestCase
 
         $modelManager->expects($this->exactly(1))
             ->method('find')
-            ->with('Application\Sonata\NewsBundle\Entity\Post', 42)
+            ->with('Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\DummySubject', 42)
             ->will($this->returnValue(new DummySubject()));
 
         $menuFactory->expects($this->exactly(5))
@@ -98,26 +99,26 @@ class BreadcrumbsBuilderTest extends \PHPUnit_Framework_TestCase
             ->method('getLabel')
             ->withConsecutive(
                 array('dashboard'),
-                array('Post_list'),
+                array('DummySubject_list'),
                 array('Comment_list'),
                 array('Comment_repost'),
 
                 array('dashboard'),
-                array('Post_list'),
+                array('DummySubject_list'),
                 array('Comment_list'),
                 array('Comment_flag'),
 
                 array('dashboard'),
-                array('Post_list'),
+                array('DummySubject_list'),
                 array('Comment_list'),
                 array('Comment_edit'),
 
                 array('dashboard'),
-                array('Post_list'),
+                array('DummySubject_list'),
                 array('Comment_list'),
 
                 array('dashboard'),
-                array('Post_list'),
+                array('DummySubject_list'),
                 array('Comment_list')
             )
             ->will($this->onConsecutiveCalls(
@@ -175,7 +176,7 @@ class BreadcrumbsBuilderTest extends \PHPUnit_Framework_TestCase
                 array('someOriginalLabel'),
                 array('dummy subject representation'),
                 array('someOkayishLabel'),
-                array('dummy subject representation')
+                array('this is a comment')
             )
             ->will($this->returnValue($menu));
 
@@ -186,7 +187,7 @@ class BreadcrumbsBuilderTest extends \PHPUnit_Framework_TestCase
         $commentAdmin->getBreadcrumbs('edit');
 
         $commentAdmin->getBreadcrumbs('list');
-        $commentAdmin->setSubject(new DummySubject());
+        $commentAdmin->setSubject(new Comment());
         $commentAdmin->getBreadcrumbs('reply');
     }
 
@@ -195,7 +196,7 @@ class BreadcrumbsBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetBreadcrumbsWithNoCurrentAdmin()
     {
-        $class = 'Application\Sonata\NewsBundle\Entity\Post';
+        $class = 'Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\DummySubject';
         $baseControllerName = 'SonataNewsBundle:PostAdmin';
 
         $admin = new PostAdmin('sonata.post.admin.post', $class, $baseControllerName);
@@ -232,11 +233,11 @@ class BreadcrumbsBuilderTest extends \PHPUnit_Framework_TestCase
             ->method('getLabel')
             ->withConsecutive(
                 array('dashboard'),
-                array('Post_list'),
-                array('Post_repost'),
+                array('DummySubject_list'),
+                array('DummySubject_repost'),
 
                 array('dashboard'),
-                array('Post_list')
+                array('DummySubject_list')
             )
             ->will($this->onConsecutiveCalls(
                 'someLabel',
