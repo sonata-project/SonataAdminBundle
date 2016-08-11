@@ -1831,7 +1831,7 @@ class AdminTest extends \PHPUnit_Framework_TestCase
             ->setConstructorArgs(array(
                 'admin.tag',
                 'Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Tag',
-                'MyBundle:MyController'
+                'MyBundle:MyController',
             ))
             ->setMethods(array('getFormBuilder'))
             ->getMock();

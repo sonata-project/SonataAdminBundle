@@ -14,9 +14,9 @@ namespace Sonata\AdminBundle\Tests\Admin;
 use Sonata\AdminBundle\Admin\BreadcrumbsBuilder;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\CommentAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\PostAdmin;
+use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Comment;
 use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\DummySubject;
 use Symfony\Component\HttpFoundation\Request;
-use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Comment;
 
 /**
  * This test class contains unit and integration tests. Maybe it could be
