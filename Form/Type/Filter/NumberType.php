@@ -35,6 +35,8 @@ class NumberType extends AbstractType
     const TYPE_LESS_THAN = 5;
 
     /**
+     * @deprecated since 3.x, to be removed with 4.0
+     *
      * @var TranslatorInterface
      */
     protected $translator;
@@ -72,19 +74,36 @@ class NumberType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $choices = array(
-            self::TYPE_EQUAL => $this->translator->trans('label_type_equal', array(), 'SonataAdminBundle'),
-            self::TYPE_GREATER_EQUAL => $this->translator->trans('label_type_greater_equal', array(), 'SonataAdminBundle'),
-            self::TYPE_GREATER_THAN => $this->translator->trans('label_type_greater_than', array(), 'SonataAdminBundle'),
-            self::TYPE_LESS_EQUAL => $this->translator->trans('label_type_less_equal', array(), 'SonataAdminBundle'),
-            self::TYPE_LESS_THAN => $this->translator->trans('label_type_less_than', array(), 'SonataAdminBundle'),
+            self::TYPE_EQUAL => 'label_type_equal',
+            self::TYPE_GREATER_EQUAL => 'label_type_greater_equal',
+            self::TYPE_GREATER_THAN => 'label_type_greater_than',
+            self::TYPE_LESS_EQUAL => 'label_type_less_equal',
+            self::TYPE_LESS_THAN => 'label_type_less_than',
         );
 
         if (!method_exists('Symfony\Component\Form\FormTypeInterface', 'setDefaultOptions')) {
             $choices = array_flip($choices);
         }
 
+        // NEXT_MAJOR: Remove this hack, when dropping support for symfony <2.7
+        if (!method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')) {
+            foreach ($choices as $key => $value) {
+                $choices[$key] = $this->translator->trans($value, array(), 'SonataAdminBundle');
+            }
+        }
+
+        $choiceOptions = array(
+            'choices' => $choices,
+            'required' => false,
+        );
+
+        // NEXT_MAJOR: Remove this hack, when dropping support for symfony <2.7
+        if (method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')) {
+            $choiceOptions['choice_translation_domain'] = 'SonataAdminBundle';
+        }
+
         $builder
-            ->add('type', 'choice', array('choices' => $choices, 'required' => false))
+            ->add('type', 'choice', $choiceOptions)
             ->add('value', $options['field_type'], array_merge(array('required' => false), $options['field_options']))
         ;
     }
