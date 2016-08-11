@@ -28,6 +28,8 @@ class DateRangeType extends AbstractType
     const TYPE_NOT_BETWEEN = 2;
 
     /**
+     * @deprecated since 3.x, to be removed with 4.0
+     *
      * @var TranslatorInterface
      */
     protected $translator;
@@ -64,16 +66,33 @@ class DateRangeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $choices = array(
-            self::TYPE_BETWEEN => $this->translator->trans('label_date_type_between', array(), 'SonataAdminBundle'),
-            self::TYPE_NOT_BETWEEN => $this->translator->trans('label_date_type_not_between', array(), 'SonataAdminBundle'),
+            self::TYPE_BETWEEN => 'label_date_type_between',
+            self::TYPE_NOT_BETWEEN => 'label_date_type_not_between',
         );
 
         if (!method_exists('Symfony\Component\Form\FormTypeInterface', 'setDefaultOptions')) {
             $choices = array_flip($choices);
         }
 
+        // NEXT_MAJOR: Remove this hack, when dropping support for symfony <2.7
+        if (!method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')) {
+            foreach ($choices as $key => $value) {
+                $choices[$key] = $this->translator->trans($value, array(), 'SonataAdminBundle');
+            }
+        }
+
+        $choiceOptions = array(
+            'choices' => $choices,
+            'required' => false,
+        );
+
+        // NEXT_MAJOR: Remove this hack, when dropping support for symfony <2.7
+        if (method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')) {
+            $choiceOptions['choice_translation_domain'] = 'SonataAdminBundle';
+        }
+
         $builder
-            ->add('type', 'choice', array('choices' => $choices, 'required' => false))
+            ->add('type', 'choice', $choiceOptions)
             ->add('value', $options['field_type'], $options['field_options'])
         ;
     }

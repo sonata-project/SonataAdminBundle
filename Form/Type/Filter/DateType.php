@@ -39,6 +39,8 @@ class DateType extends AbstractType
     const TYPE_NOT_NULL = 7;
 
     /**
+     * @deprecated since 3.x, to be removed with 4.0
+     *
      * @var TranslatorInterface
      */
     protected $translator;
@@ -75,21 +77,38 @@ class DateType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $choices = array(
-            self::TYPE_EQUAL => $this->translator->trans('label_date_type_equal', array(), 'SonataAdminBundle'),
-            self::TYPE_GREATER_EQUAL => $this->translator->trans('label_date_type_greater_equal', array(), 'SonataAdminBundle'),
-            self::TYPE_GREATER_THAN => $this->translator->trans('label_date_type_greater_than', array(), 'SonataAdminBundle'),
-            self::TYPE_LESS_EQUAL => $this->translator->trans('label_date_type_less_equal', array(), 'SonataAdminBundle'),
-            self::TYPE_LESS_THAN => $this->translator->trans('label_date_type_less_than', array(), 'SonataAdminBundle'),
-            self::TYPE_NULL => $this->translator->trans('label_date_type_null', array(), 'SonataAdminBundle'),
-            self::TYPE_NOT_NULL => $this->translator->trans('label_date_type_not_null', array(), 'SonataAdminBundle'),
+            self::TYPE_EQUAL => 'label_date_type_equal',
+            self::TYPE_GREATER_EQUAL => 'label_date_type_greater_equal',
+            self::TYPE_GREATER_THAN => 'label_date_type_greater_than',
+            self::TYPE_LESS_EQUAL => 'label_date_type_less_equal',
+            self::TYPE_LESS_THAN => 'label_date_type_less_than',
+            self::TYPE_NULL => 'label_date_type_null',
+            self::TYPE_NOT_NULL => 'label_date_type_not_null',
         );
 
         if (!method_exists('Symfony\Component\Form\FormTypeInterface', 'setDefaultOptions')) {
             $choices = array_flip($choices);
         }
 
+        // NEXT_MAJOR: Remove this hack, when dropping support for symfony <2.7
+        if (!method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')) {
+            foreach ($choices as $key => $value) {
+                $choices[$key] = $this->translator->trans($value, array(), 'SonataAdminBundle');
+            }
+        }
+
+        $choiceOptions = array(
+            'choices' => $choices,
+            'required' => false,
+        );
+
+        // NEXT_MAJOR: Remove this hack, when dropping support for symfony <2.7
+        if (method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')) {
+            $choiceOptions['choice_translation_domain'] = 'SonataAdminBundle';
+        }
+
         $builder
-            ->add('type', 'choice', array('choices' => $choices, 'required' => false))
+            ->add('type', 'choice', $choiceOptions)
             ->add('value', $options['field_type'], array_merge(array('required' => false), $options['field_options']))
         ;
     }
