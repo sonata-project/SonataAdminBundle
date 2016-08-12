@@ -460,7 +460,7 @@ If you have the **SonataDoctrineORMAdminBundle** installed you can use the ``doc
         protected function configureDatagridFilters(DatagridMapper $datagridMapper)
         {
             $datagridMapper
-                ->add('full_text', 'doctrine_orm_callback', array(
+                ->add('full_text', CallbackFilter::class, array(
                     'callback' => array($this, 'getFullTextFilter'),
                     'field_type' => 'text'
                 ))
