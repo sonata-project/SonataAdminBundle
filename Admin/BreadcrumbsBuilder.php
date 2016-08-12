@@ -88,6 +88,8 @@ final class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
                 )
             );
 
+            $menu->setExtra('safe_label', false);
+
             return $this->buildBreadcrumbs($childAdmin, $action, $menu);
         }
 
