@@ -55,6 +55,12 @@ If you have implemented a custom admin extension, you must adapt the signature o
  * `configureBatchActions`
  * `getAccessMapping`
 
+## BreadcrumbsBuilder
+The `buildBreacrumbs` method may no longer be called from outside the class.
+
+## BreadcrumbsBuilderInterface
+The `buildBreacrumbs` method has been removed from the interface.
+
 ## SonataAdminExtension
 The Twig filters that come with the bundle will no longer load a default template when used with a missing template.
 The `sonata_admin` twig extension is now final. You may no longer extend it.

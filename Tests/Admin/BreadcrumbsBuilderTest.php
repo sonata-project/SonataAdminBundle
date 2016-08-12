@@ -240,6 +240,9 @@ class BreadcrumbsBuilderTest extends \PHPUnit_Framework_TestCase
         $menu->addChild('Ma classe fille', array('uri' => null))->willReturn($menu);
         $menu->addChild('Mon action', array())->willReturn($menu);
 
-        $breadcrumbsBuilder->buildBreadCrumbs($admin->reveal(), $action);
+        $reflection = new \ReflectionMethod('Sonata\AdminBundle\Admin\BreadcrumbsBuilder', 'buildBreadcrumbs');
+        $reflection->setAccessible(true);
+
+        $reflection->invoke($breadcrumbsBuilder, $admin->reveal(), $action);
     }
 }
