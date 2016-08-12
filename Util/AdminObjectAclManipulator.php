@@ -68,7 +68,7 @@ class AdminObjectAclManipulator
      *
      * @return Form
      *
-     * @deprecated Deprecated since version 3.0. Use createAclUsersForm() instead.
+     * @deprecated Deprecated since version 3.0. Use createAclUsersForm() instead
      */
     public function createForm(AdminObjectAclData $data)
     {
@@ -142,7 +142,7 @@ class AdminObjectAclManipulator
      *
      * @param AdminObjectAclData $data
      *
-     * @deprecated Deprecated since version 3.0. Use updateAclUsers() instead.
+     * @deprecated Deprecated since version 3.0. Use updateAclUsers() instead
      */
     public function updateAcl(AdminObjectAclData $data)
     {

@@ -828,7 +828,7 @@ class CRUDController extends Controller
      *
      * @return Response|RedirectResponse
      *
-     * @throws AccessDeniedException If access is not granted.
+     * @throws AccessDeniedException If access is not granted
      * @throws NotFoundHttpException If the object does not exist or the ACL is not enabled
      */
     public function aclAction($id = null)
