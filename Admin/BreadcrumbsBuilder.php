@@ -66,7 +66,7 @@ final class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
             $admin,
             $menu,
             sprintf('%s_list', $admin->getClassnameLabel()),
-            null,
+            $admin->getTranslationDomain(),
             array(
                 'uri' => $admin->hasRoute('list') && $admin->isGranted('LIST') ?
                 $admin->generateUrl('list') :
@@ -101,7 +101,8 @@ final class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
             $menu = $this->createMenuItem(
                 $admin,
                 $menu,
-                sprintf('%s_%s', $admin->getClassnameLabel(), $action)
+                sprintf('%s_%s', $admin->getClassnameLabel(), $action),
+                $admin->getTranslationDomain()
             );
         }
 
@@ -127,15 +128,17 @@ final class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
         $translationDomain = null,
         $options = array()
     ) {
+        $options = array_merge(array(
+            'extras' => array(
+                'translation_domain' => $translationDomain,
+            ),
+        ), $options);
+
         return $menu->addChild(
-            $admin->trans(
-                $admin->getLabelTranslatorStrategy()->getLabel(
-                    $name,
-                    'breadcrumb',
-                    'link'
-                ),
-                array(),
-                $translationDomain
+            $admin->getLabelTranslatorStrategy()->getLabel(
+                $name,
+                'breadcrumb',
+                'link'
             ),
             $options
         );
