@@ -12,6 +12,13 @@ This document will cover the Export action and related configuration options.
 Basic configuration
 -------------------
 
+Translation
+~~~~~~~~~~~
+
+All field names are translated by default.
+An internal mechanism checks if a field matching the translator strategy label exists in the current translation file
+and will use the field name as a fallback.
+
 .. note::
 
     **TODO**:
