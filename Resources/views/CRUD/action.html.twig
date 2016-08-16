@@ -11,9 +11,9 @@ file that was distributed with this source code.
 
 {% extends base_template %}
 
-{% block actions %}
+{%- block actions -%}
     {% include 'SonataAdminBundle:CRUD:action_buttons.html.twig' %}
-{% endblock %}
+{%- endblock -%}
 
 {% block tab_menu %}
     {% if action is defined %}
