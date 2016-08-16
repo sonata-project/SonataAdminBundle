@@ -52,7 +52,8 @@
         "symfony/yaml": "^2.3 || ^3.0"
     },
     "conflict": {
-        "jms/di-extra-bundle": "<1.7.0"
+        "jms/di-extra-bundle": "<1.7.0",
+        "sonata-project/exporter": "1.6.0"
     },
     "suggest": {
         "jms/di-extra-bundle": "Annotations for Admin definition",

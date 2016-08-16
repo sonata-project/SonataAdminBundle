@@ -555,6 +555,8 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
 
     /**
      * {@inheritdoc}
+     *
+     * NEXT_MAJOR: return null to indicate no override
      */
     public function getExportFormats()
     {

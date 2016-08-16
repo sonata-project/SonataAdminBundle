@@ -800,6 +800,10 @@ class CRUDController extends Controller
         $format = $request->get('format');
 
         $allowedExportFormats = (array) $this->admin->getExportFormats();
+        // NEXT_MAJOR: simplify this condition
+        if ($allowedExportFormats == array('json', 'xml', 'csv', 'xls') && $this->has('sonata.exporter.exporter')) {
+            $allowedExportFormats = $this->get('sonata.exporter.exporter')->getAvailableFormats();
+        }
 
         if (!in_array($format, $allowedExportFormats)) {
             throw new \RuntimeException(
@@ -819,7 +823,7 @@ class CRUDController extends Controller
             $format
         );
 
-        // NEXT_MAJOR : require sonata-project/exporter ^1.6 and remove this
+        // NEXT_MAJOR : require sonata-project/exporter ^1.7 and remove this
         $exporter = $this->has('sonata.exporter.exporter') ?
             $this->get('sonata.exporter.exporter') :
             $this->get('sonata.admin.exporter');
