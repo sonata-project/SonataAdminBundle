@@ -417,14 +417,17 @@ class CRUDController extends Controller
             true;
 
         if ($askConfirmation && $confirmation != 'ok') {
-            $translationDomain = $batchActions[$action]['translation_domain'] ?: $this->admin->getTranslationDomain();
-            $actionLabel = $this->admin->trans($batchActions[$action]['label'], array(), $translationDomain);
+            $actionLabel = $batchActions[$action]['label'];
+            $batchTranslationDomain = isset($batchActions[$action]['translation_domain']) ?
+                $batchActions[$action]['translation_domain'] :
+                $this->admin->getTranslationDomain();
 
             $formView = $datagrid->getForm()->createView();
 
             return $this->render($this->admin->getTemplate('batch_confirmation'), array(
                 'action' => 'list',
                 'action_label' => $actionLabel,
+                'batch_translation_domain' => $batchTranslationDomain,
                 'datagrid' => $datagrid,
                 'form' => $formView,
                 'data' => $data,
