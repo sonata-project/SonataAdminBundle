@@ -799,10 +799,28 @@ class CRUDController extends Controller
 
         $format = $request->get('format');
 
-        $allowedExportFormats = (array) $this->admin->getExportFormats();
-        // NEXT_MAJOR: simplify this condition
-        if ($allowedExportFormats == array('json', 'xml', 'csv', 'xls') && $this->has('sonata.exporter.exporter')) {
-            $allowedExportFormats = $this->get('sonata.exporter.exporter')->getAvailableFormats();
+        // NEXT_MAJOR: remove the check
+        if (!$this->has('sonata.admin.admin_exporter')) {
+            @trigger_error(
+                'Not registering the exporter bundle is deprecated since version 3.x.'
+                .' You must register it to be able to use the export action in 4.0.',
+                E_USER_DEPRECATED
+            );
+            $allowedExportFormats = (array) $this->admin->getExportFormats();
+
+            $class = $this->admin->getClass();
+            $filename = sprintf(
+                'export_%s_%s.%s',
+                strtolower(substr($class, strripos($class, '\\') + 1)),
+                date('Y_m_d_H_i_s', strtotime('now')),
+                $format
+            );
+            $exporter = $this->get('sonata.admin.exporter');
+        } else {
+            $adminExporter = $this->get('sonata.admin.admin_exporter');
+            $allowedExportFormats = $adminExporter->getAvailableFormats($this->admin);
+            $filename = $adminExporter->getExportFilename($this->admin, $format);
+            $exporter = $this->get('sonata.exporter.exporter');
         }
 
         if (!in_array($format, $allowedExportFormats)) {
@@ -815,18 +833,6 @@ class CRUDController extends Controller
                 )
             );
         }
-
-        $filename = sprintf(
-            'export_%s_%s.%s',
-            strtolower(substr($this->admin->getClass(), strripos($this->admin->getClass(), '\\') + 1)),
-            date('Y_m_d_H_i_s', strtotime('now')),
-            $format
-        );
-
-        // NEXT_MAJOR : require sonata-project/exporter ^1.7 and remove this
-        $exporter = $this->has('sonata.exporter.exporter') ?
-            $this->get('sonata.exporter.exporter') :
-            $this->get('sonata.admin.exporter');
 
         return $exporter->getResponse(
             $format,
