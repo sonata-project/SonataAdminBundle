@@ -50,17 +50,6 @@ class FormSonataFilterChoiceWidgetTest extends BaseWidgetTest
         );
     }
 
-    protected function cleanHtmlAttributeWhitespace($html)
-    {
-        $html = preg_replace_callback('~<([A-Z0-9]+) \K(.*?)>~i', function ($m) {
-            $replacement = preg_replace('~\s*~', '', $m[0]);
-
-            return $replacement;
-        }, $html);
-
-        return $html;
-    }
-
     protected function getParentClass()
     {
         if (class_exists('Symfony\Component\Form\Extension\Core\Type\RangeType')) {
