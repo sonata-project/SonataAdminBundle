@@ -1643,7 +1643,33 @@ class AdminTest extends \PHPUnit_Framework_TestCase
 
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
 
+        $securityHandler = $this->getMock('Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface');
+        $securityHandler
+            ->expects($this->once())
+            ->method('isGranted')
+            ->with($admin, 'CREATE', $admin)
+            ->will($this->returnValue(true));
+        $admin->setSecurityHandler($securityHandler);
+
         $this->assertSame($expected, $admin->getActionButtons('list', null));
+    }
+
+    /**
+     * @covers Sonata\AdminBundle\Admin\AbstractAdmin::configureActionButtons
+     */
+    public function testGetActionButtonsListCreateDisabled()
+    {
+        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
+
+        $securityHandler = $this->getMock('Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface');
+        $securityHandler
+            ->expects($this->once())
+            ->method('isGranted')
+            ->with($admin, 'CREATE', $admin)
+            ->will($this->returnValue(false));
+        $admin->setSecurityHandler($securityHandler);
+
+        $this->assertSame(array(), $admin->getActionButtons('list', null));
     }
 
     /**

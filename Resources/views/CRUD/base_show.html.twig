@@ -13,9 +13,9 @@ file that was distributed with this source code.
 
 {% import 'SonataAdminBundle:CRUD:base_show_macro.html.twig' as show_helper %}
 
-{% block actions %}
+{%- block actions -%}
     {% include 'SonataAdminBundle:CRUD:action_buttons.html.twig' %}
-{% endblock %}
+{%- endblock -%}
 
 {% block tab_menu %}
     {{ knp_menu_render(admin.sidemenu(action), {
