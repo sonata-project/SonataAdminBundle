@@ -2797,19 +2797,28 @@ EOT;
     {
         $list = array();
 
-        if (in_array($action, array('tree', 'show', 'edit', 'delete', 'list', 'batch')) && $this->hasAccess('create')) {
+        if (in_array($action, array('tree', 'show', 'edit', 'delete', 'list', 'batch'))
+            && $this->hasAccess('create')
+            && $this->hasRoute('create')
+        ) {
             $list['create'] = array(
                 'template' => 'SonataAdminBundle:Button:create_button.html.twig',
             );
         }
 
-        if (in_array($action, array('show', 'delete', 'acl', 'history')) && $this->canAccessObject('edit', $object)) {
+        if (in_array($action, array('show', 'delete', 'acl', 'history'))
+            && $this->canAccessObject('edit', $object)
+            && $this->hasRoute('edit')
+        ) {
             $list['edit'] = array(
                 'template' => 'SonataAdminBundle:Button:edit_button.html.twig',
             );
         }
 
-        if (in_array($action, array('show', 'edit', 'acl')) && $this->canAccessObject('history', $object)) {
+        if (in_array($action, array('show', 'edit', 'acl'))
+            && $this->canAccessObject('history', $object)
+            && $this->hasRoute('history')
+        ) {
             $list['history'] = array(
                 'template' => 'SonataAdminBundle:Button:history_button.html.twig',
             );
@@ -2818,6 +2827,7 @@ EOT;
         if (in_array($action, array('edit', 'history'))
             && $this->isAclEnabled()
             && $this->canAccessObject('acl', $object)
+            && $this->hasRoute('acl')
         ) {
             $list['acl'] = array(
                 'template' => 'SonataAdminBundle:Button:acl_button.html.twig',
@@ -2827,13 +2837,17 @@ EOT;
         if (in_array($action, array('edit', 'history', 'acl'))
             && $this->canAccessObject('show', $object)
             && count($this->getShow()) > 0
+            && $this->hasRoute('show')
         ) {
             $list['show'] = array(
                 'template' => 'SonataAdminBundle:Button:show_button.html.twig',
             );
         }
 
-        if (in_array($action, array('show', 'edit', 'delete', 'acl', 'batch')) && $this->hasAccess('list')) {
+        if (in_array($action, array('show', 'edit', 'delete', 'acl', 'batch'))
+            && $this->hasAccess('list')
+            && $this->hasRoute('list')
+        ) {
             $list['list'] = array(
                 'template' => 'SonataAdminBundle:Button:list_button.html.twig',
             );
@@ -2920,6 +2934,19 @@ EOT;
         }
 
         return;
+    }
+
+    /**
+     * Check object existence and access, without throw Exception.
+     *
+     * @param string $action
+     * @param object $object
+     *
+     * @return bool
+     */
+    public function canAccessObject($action, $object)
+    {
+        return $object && $this->id($object) && $this->hasAccess($action, $object);
     }
 
     /**
@@ -3217,18 +3244,5 @@ EOT;
         foreach ($this->getExtensions() as $extension) {
             $extension->configureRoutes($this, $this->routes);
         }
-    }
-
-    /**
-     * Check object existence and access, without throw Exception.
-     *
-     * @param string $action
-     * @param object $object
-     *
-     * @return bool
-     */
-    private function canAccessObject($action, $object)
-    {
-        return $object && $this->id($object) && $this->hasAccess($action, $object);
     }
 }
