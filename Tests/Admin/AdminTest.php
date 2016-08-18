@@ -1651,6 +1651,14 @@ class AdminTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(true));
         $admin->setSecurityHandler($securityHandler);
 
+        $routeGenerator = $this->getMock('Sonata\AdminBundle\Route\RouteGeneratorInterface');
+        $routeGenerator
+            ->expects($this->once())
+            ->method('hasAdminRoute')
+            ->with($admin, 'create')
+            ->will($this->returnValue(true));
+        $admin->setRouteGenerator($routeGenerator);
+
         $this->assertSame($expected, $admin->getActionButtons('list', null));
     }
 
