@@ -65,7 +65,7 @@ class AdminHelperTest extends \PHPUnit_Framework_TestCase
         $fieldDescription->expects($this->once())->method('getAssociationAdmin')->will($this->returnValue($admin));
         $fieldDescription->expects($this->once())->method('getAssociationMapping')->will($this->returnValue(array('fieldName' => 'fooBar')));
 
-        $object = $this->getMock('sdtClass', array('addFooBar'));
+        $object = $this->getMock('stdClass', array('addFooBar'));
         $object->expects($this->once())->method('addFooBar');
 
         $this->helper->addNewInstance($object, $fieldDescription);
@@ -80,7 +80,7 @@ class AdminHelperTest extends \PHPUnit_Framework_TestCase
         $fieldDescription->expects($this->once())->method('getAssociationAdmin')->will($this->returnValue($admin));
         $fieldDescription->expects($this->once())->method('getAssociationMapping')->will($this->returnValue(array('fieldName' => 'fooBars')));
 
-        $object = $this->getMock('sdtClass', array('addFooBar'));
+        $object = $this->getMock('stdClass', array('addFooBar'));
         $object->expects($this->once())->method('addFooBar');
 
         $this->helper->addNewInstance($object, $fieldDescription);
@@ -95,7 +95,7 @@ class AdminHelperTest extends \PHPUnit_Framework_TestCase
         $fieldDescription->expects($this->once())->method('getAssociationAdmin')->will($this->returnValue($admin));
         $fieldDescription->expects($this->once())->method('getAssociationMapping')->will($this->returnValue(array('fieldName' => 'entries')));
 
-        $object = $this->getMock('sdtClass', array('addEntry'));
+        $object = $this->getMock('stdClass', array('addEntry'));
         $object->expects($this->once())->method('addEntry');
 
         $this->helper->addNewInstance($object, $fieldDescription);
