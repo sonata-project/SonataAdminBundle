@@ -45,6 +45,7 @@
     "require-dev": {
         "jms/di-extra-bundle": "^1.7",
         "jms/translation-bundle": "^1.2",
+        "matthiasnoback/symfony-dependency-injection-test": "^0.1 || ^1.0",
         "sensio/generator-bundle": "^2.3 || ^3.0",
         "sllh/php-cs-fixer-styleci-bridge": "^2.0",
         "sonata-project/exporter": "^1.7",
