@@ -176,8 +176,11 @@ file that was distributed with this source code.
                                 </div>
 
 
+                                {# NEXT_MAJOR : remove this assignment #}
+                                {% set export_formats = export_formats|default(admin.exportFormats) %}
+
                                 <div class="pull-right">
-                                    {% if admin.hasRoute('export') and admin.isGranted('EXPORT') and admin.getExportFormats()|length %}
+                                    {% if admin.hasRoute('export') and admin.isGranted('EXPORT') and export_formats|length %}
                                         <div class="btn-group">
                                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                                                 <i class="fa fa-share-square-o" aria-hidden="true"></i>
@@ -185,7 +188,7 @@ file that was distributed with this source code.
                                                 <span class="caret"></span>
                                             </button>
                                             <ul class="dropdown-menu">
-                                                {% for format in admin.getExportFormats() %}
+                                                {% for format in export_formats %}
                                                 <li>
                                                     <a href="{{ admin.generateUrl('export', admin.modelmanager.paginationparameters(admin.datagrid, 0) + {'format' : format}) }}">
                                                         <i class="fa fa-arrow-circle-o-down" aria-hidden="true"></i>
