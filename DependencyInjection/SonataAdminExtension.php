@@ -91,6 +91,7 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
         $container->setParameter('sonata.admin.configuration.dashboard_groups', $config['dashboard']['groups']);
         $container->setParameter('sonata.admin.configuration.dashboard_blocks', $config['dashboard']['blocks']);
         $container->setParameter('sonata.admin.configuration.sort_admins', $config['options']['sort_admins']);
+        $container->setParameter('sonata.admin.configuration.breadcrumbs', $config['breadcrumbs']);
 
         if (null === $config['security']['acl_user_manager'] && isset($bundles['FOSUserBundle'])) {
             $container->setParameter('sonata.admin.security.acl_user_manager', 'fos_user.user_manager');

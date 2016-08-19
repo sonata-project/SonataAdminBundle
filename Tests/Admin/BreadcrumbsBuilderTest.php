@@ -64,6 +64,19 @@ class BreadcrumbsBuilderTest extends \PHPUnit_Framework_TestCase
             'Sonata\AdminBundle\Model\ModelManagerInterface'
         );
 
+        $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
+        $container->expects($this->any())
+            ->method('getParameter')
+            ->with('sonata.admin.configuration.breadcrumbs')
+            ->will($this->returnValue(array()));
+        $pool = $this->getMockBuilder('Sonata\AdminBundle\Admin\Pool')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $pool->expects($this->any())
+            ->method('getContainer')
+            ->will($this->returnValue($container));
+
+        $admin->setConfigurationPool($pool);
         $admin->setMenuFactory($menuFactory);
         $admin->setLabelTranslatorStrategy($translatorStrategy);
         $admin->setRouteGenerator($routeGenerator);
@@ -184,6 +197,7 @@ class BreadcrumbsBuilderTest extends \PHPUnit_Framework_TestCase
         $admin->setSubject(new DummySubject());
         $admin->getBreadcrumbs('flag');
 
+        $commentAdmin->setConfigurationPool($pool);
         $commentAdmin->getBreadcrumbs('edit');
 
         $commentAdmin->getBreadcrumbs('list');
@@ -260,6 +274,20 @@ class BreadcrumbsBuilderTest extends \PHPUnit_Framework_TestCase
             )
             ->will($this->returnValue($menu));
 
+        $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
+        $container->expects($this->any())
+            ->method('getParameter')
+            ->with('sonata.admin.configuration.breadcrumbs')
+            ->will($this->returnValue(array()));
+        $pool = $this->getMockBuilder('Sonata\AdminBundle\Admin\Pool')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $pool->expects($this->any())
+            ->method('getContainer')
+            ->will($this->returnValue($container));
+
+        $admin->setConfigurationPool($pool);
+
         $admin->getBreadcrumbs('repost');
         $admin->setSubject(new DummySubject());
         $flagBreadcrumb = $admin->getBreadcrumbs('flag');
@@ -287,7 +315,7 @@ class BreadcrumbsBuilderTest extends \PHPUnit_Framework_TestCase
         $leafMenu->getParent()->willReturn($childMenu);
 
         $action = 'my_action';
-        $breadcrumbsBuilder = new BreadcrumbsBuilder();
+        $breadcrumbsBuilder = new BreadcrumbsBuilder(array('child_admin_route' => 'show'));
         $admin = $this->prophesize('Sonata\AdminBundle\Admin\AbstractAdmin');
         $admin->isChild()->willReturn(false);
 
@@ -341,6 +369,11 @@ class BreadcrumbsBuilderTest extends \PHPUnit_Framework_TestCase
         $childAdmin->getSubject()->willReturn('my subject');
         $childAdmin->toString('my subject')->willReturn('My subject');
 
+        $admin->hasAccess('show', 'my subject')->willReturn(true)->shouldBeCalled();
+        $admin->hasRoute('show')->willReturn(true);
+        $admin->generateUrl('show', array('id' => 'my-object'))->willReturn('/myadmin/my-object');
+
+        $admin->trans('My class', array(), null)->willReturn('Ma classe');
         $admin->hasRoute('list')->willReturn(true);
         $admin->isGranted('LIST')->willReturn(true);
         $admin->generateUrl('list')->willReturn('/myadmin/list');

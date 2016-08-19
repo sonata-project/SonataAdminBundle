@@ -12,6 +12,7 @@
 namespace Sonata\AdminBundle\Admin;
 
 use Knp\Menu\ItemInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Stateless breadcrumbs builder (each method needs an Admin object).
@@ -20,6 +21,32 @@ use Knp\Menu\ItemInterface;
  */
 final class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
 {
+    /**
+     * @var string[]
+     */
+    protected $config = array();
+
+    /**
+     * @param string[] $config
+     */
+    public function __construct(array $config = array())
+    {
+        $resolver = new OptionsResolver();
+        $this->configureOptions($resolver);
+
+        $this->config = $resolver->resolve($config);
+    }
+
+    /**
+     * @param OptionsResolver $resolver
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults(array(
+            'child_admin_route' => 'edit',
+        ));
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -82,8 +109,8 @@ final class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
             $menu = $menu->addChild(
                 $admin->toString($admin->getSubject()),
                 array(
-                    'uri' => $admin->hasRoute('edit') && $admin->isGranted('EDIT') ?
-                    $admin->generateUrl('edit', array('id' => $id)) :
+                    'uri' => $admin->hasRoute($this->config['child_admin_route']) && $admin->hasAccess($this->config['child_admin_route'], $admin->getSubject()) ?
+                    $admin->generateUrl($this->config['child_admin_route'], array('id' => $id)) :
                     null,
                 )
             );
