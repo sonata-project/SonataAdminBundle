@@ -271,8 +271,21 @@ class AdminObjectAclManipulator
                     'attr' => $attr,
                 );
             }
-
-            $formBuilder->add($key, new AclMatrixType(), array('permissions' => $permissions, 'acl_value' => $aclValue));
+            //@todo Remove when dropping Symfony <2.8 support
+            $aclMatrixType = new AclMatrixType();
+            if (method_exists($aclMatrixType, 'getBlockPrefix')) {
+                $formBuilder->add(
+                    $key,
+                    'Sonata\AdminBundle\Form\Type\AclMatrixType',
+                    array('permissions' => $permissions, 'acl_value' => $aclValue)
+                );
+            } else {
+                $formBuilder->add(
+                    $key,
+                    $aclMatrixType,
+                    array('permissions' => $permissions, 'acl_value' => $aclValue)
+                );
+            }
         }
 
         return $formBuilder->getForm();
