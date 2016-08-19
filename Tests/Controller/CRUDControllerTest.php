@@ -2429,7 +2429,7 @@ class CRUDControllerTest extends PHPUnit_Framework_TestCase
             ->method('getExportFormats')
             ->will($this->returnValue(array('json')));
 
-        $this->admin->expects($this->once())
+        $this->admin->expects($this->any())
             ->method('getClass')
             ->will($this->returnValue('Foo'));
 
