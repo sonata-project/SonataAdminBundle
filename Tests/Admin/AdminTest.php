@@ -1768,9 +1768,26 @@ class AdminTest extends \PHPUnit_Framework_TestCase
      */
     public function testDefaultBreadcrumbsBuilder()
     {
+        $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
+        $container->expects($this->once())
+            ->method('getParameter')
+            ->with('sonata.admin.configuration.breadcrumbs')
+            ->will($this->returnValue(array()));
+
+        $pool = $this->getMockBuilder('Sonata\AdminBundle\Admin\Pool')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $pool->expects($this->once())
+            ->method('getContainer')
+            ->will($this->returnValue($container));
+
         $admin = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AbstractAdmin', array(
             'admin.my_code', 'My\Class', 'MyBundle:ClassAdmin',
-        ));
+        ), '', true, true, true, array('getConfigurationPool'));
+        $admin->expects($this->once())
+            ->method('getConfigurationPool')
+            ->will($this->returnValue($pool));
+
         $this->assertInstanceOf(
             'Sonata\AdminBundle\Admin\BreadcrumbsBuilder',
             $admin->getBreadcrumbsBuilder()
