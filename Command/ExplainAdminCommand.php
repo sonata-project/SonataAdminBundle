@@ -89,9 +89,18 @@ class ExplainAdminCommand extends ContainerAwareCommand
             $output->writeln(sprintf('  - % -25s  % -15s % -15s', $name, $fieldDescription->getType(), $fieldDescription->getTemplate()));
         }
 
+        $metadata = false;
+
         if ($this->getContainer()->has('validator.validator_factory')) {
-            $metadata = $this->getContainer()->get('validator.validator_factory')->getMetadataFor($admin->getClass());
-        } else {
+            $factory = $this->getContainer()->get('validator.validator_factory');
+
+            if (method_exists($factory, 'getMetadataFor')) {
+                $metadata = $factory->getMetadataFor($admin->getClass());
+            }
+        }
+
+        // NEXT_MAJOR: remove method check in next major release
+        if (!$metadata) {
             $metadata = $this->getContainer()->get('validator')->getMetadataFor($admin->getClass());
         }
 
