@@ -181,6 +181,8 @@ abstract class AbstractAdminExtension implements AdminExtensionInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @deprecated since 3.x, to be removed in 4.0
      */
     public function configureActionButtons(AdminInterface $admin, $list, $action, $object)
     {

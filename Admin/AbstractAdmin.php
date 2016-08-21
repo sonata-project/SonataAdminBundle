@@ -2821,6 +2821,8 @@ EOT;
 
     /**
      * {@inheritdoc}
+     *
+     * @deprecated since 3.x, to be removed in 4.0
      */
     public function configureActionButtons($action, $object = null)
     {
@@ -2890,6 +2892,8 @@ EOT;
      * @param mixed  $object
      *
      * @return array
+     *
+     * @deprecated since 3.x, to be removed in 4.0
      */
     public function getActionButtons($action, $object = null)
     {
