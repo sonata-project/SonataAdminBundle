@@ -293,6 +293,7 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('pager_links')->defaultValue('SonataAdminBundle:Pager:links.html.twig')->cannotBeEmpty()->end()
                         ->scalarNode('pager_results')->defaultValue('SonataAdminBundle:Pager:results.html.twig')->cannotBeEmpty()->end()
                         ->scalarNode('tab_menu_template')->defaultValue('SonataAdminBundle:Core:tab_menu_template.html.twig')->cannotBeEmpty()->end()
+                        ->scalarNode('action_menu_template')->defaultValue('SonataAdminBundle:Core:action_menu_template.html.twig')->cannotBeEmpty()->end()
                         ->scalarNode('knp_menu_template')->defaultValue('SonataAdminBundle:Menu:sonata_menu.html.twig')->cannotBeEmpty()->end()
                         ->scalarNode('action_create')->defaultValue('SonataAdminBundle:CRUD:dashboard__action_create.html.twig')->cannotBeEmpty()->end()
                         ->scalarNode('button_acl')->defaultValue('SonataAdminBundle:Button:acl_button.html.twig')->cannotBeEmpty()->end()

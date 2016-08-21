@@ -193,4 +193,15 @@ interface AdminExtensionInterface
      * @param array          $filterValues
      */
     // public function configureDefaultFilterValues(AdminInterface $admin, array &$filterValues);
+
+    /*
+     * Configures the menu for an action.
+     *
+     * @param AdminInterface    $admin
+     * @param MenuItemInterface $menu
+     * @param string            $action
+     * @param AdminInterface    $childAdmin
+     */
+    // TODO: Uncomment in next major release
+    // public function configureActionMenu(AdminInterface $admin, MenuItemInterface $menu, $action, AdminInterface $childAdmin = null);
 }

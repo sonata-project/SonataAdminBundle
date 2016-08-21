@@ -359,26 +359,30 @@ You can add custom items to the actions menu for a specific action by overriding
 
 .. code-block:: php
 
-    public function configureActionButtons($action, $object = null)
+    protected function configureActionMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
     {
-        $list = parent::configureActionButtons($action, $object);
-
         if (in_array($action, array('show', 'edit', 'acl')) && $object) {
-            $list['custom'] = array(
-                'template' => 'AppBundle:Button:custom_button.html.twig',
-            );
+            $menu->addChild('custom', array('uri' => $this->generateUrl('custom'));
         }
-
-        // Remove history action
-        unset($list['history']);
-
-        return $list;
     }
 
 
 .. figure:: ../images/custom_action_buttons.png
    :align: center
    :alt: Custom action buttons
+
+
+If you want to use the Action Menu in a different way, you can replace the Menu Template:
+
+   .. configuration-block::
+
+       .. code-block:: yaml
+
+           # app/config/config.yml
+
+           sonata_admin:
+               templates:
+                   action_menu_template:  AppBundle:Admin:own_action_menu_template.html.twig
 
 Disable content stretching
 --------------------------

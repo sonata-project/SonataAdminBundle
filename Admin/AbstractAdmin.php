@@ -2820,6 +2820,169 @@ EOT;
     }
 
     /**
+     * Gets the action menu.
+     *
+     * @param string              $action
+     * @param AdminInterface|null $childAdmin
+     *
+     * @return MenuItemInterface
+     */
+    final public function getActionMenu($action, AdminInterface $childAdmin = null)
+    {
+        $menu = $this->menuFactory->createItem('root');
+        $menu->setChildrenAttribute('class', 'nav navbar-nav');
+        $menu->setExtra('translation_domain', $this->translationDomain);
+
+        $object = $this->getSubject();
+
+        if (in_array($action, array('tree', 'show', 'edit', 'delete', 'list', 'batch'))
+            && $this->hasAccess('create')
+            && $this->hasRoute('create')
+        ) {
+            if ($this->getSubClasses()) {
+                $menu->addChild('divider', array(
+                    'label' => '',
+                    'divider' => true,
+                    'attributes' => array(
+                        'class' => 'divider',
+                    ),
+                    'extras' => array(
+                        'translation_domain' => false,
+                    ),
+                ));
+
+                foreach ($this->getSubClasses() as $subClass) {
+                    $menu->createItem('active', array(
+                        'uri' => $this->generateUrl('create', array('subclass' => $subClass)),
+                        'label' => $subClass,
+                        'extras' => array(
+                            'safe_label' => true,
+                        ),
+                        'attributes' => array(
+                            'icon' => 'fa fa-plus-circle',
+                        ),
+                    ));
+                }
+
+                $menu->addChild('divider', array(
+                    'label' => '',
+                    'divider' => true,
+                    'attributes' => array(
+                        'class' => 'divider',
+                    ),
+                    'extras' => array(
+                        'translation_domain' => false,
+                    ),
+                ));
+            } else {
+                $menu->createItem('active', array(
+                    'uri' => $this->generateUrl('create'),
+                    'label' => 'link_action_create',
+                    'extras' => array(
+                        'safe_label' => true,
+                    ),
+                    'attributes' => array(
+                        'icon' => 'fa fa-plus-circle',
+                    ),
+                ));
+            }
+        }
+
+        if (in_array($action, array('show', 'delete', 'acl', 'history'))
+            && $this->canAccessObject('edit', $object)
+            && $this->hasRoute('edit')
+        ) {
+            $menu->createItem('edit', array(
+                'uri' => $this->generateObjectUrl('edit', $object),
+                'label' => 'link_action_edit',
+                'extras' => array(
+                    'safe_label' => true,
+                ),
+                'attributes' => array(
+                    'icon' => 'fa fa-edit',
+                ),
+            ));
+        }
+
+        if (in_array($action, array('show', 'edit', 'acl'))
+            && $this->canAccessObject('history', $object)
+            && $this->hasRoute('history')
+        ) {
+            $menu->createItem('history', array(
+                'uri' => $this->generateObjectUrl('history', $object),
+                'label' => 'link_action_history',
+                'extras' => array(
+                    'safe_label' => true,
+                ),
+                'attributes' => array(
+                    'icon' => 'fa fa-archive',
+                ),
+            ));
+        }
+
+        if (in_array($action, array('edit', 'history'))
+            && $this->isAclEnabled()
+            && $this->canAccessObject('acl', $object)
+            && $this->hasRoute('acl')
+        ) {
+            $menu->createItem('acl', array(
+                'uri' => $this->generateObjectUrl('acl', $object),
+                'label' => 'link_action_acl',
+                'extras' => array(
+                    'safe_label' => true,
+                ),
+                'attributes' => array(
+                    'icon' => 'fa fa-users',
+                ),
+            ));
+        }
+
+        if (in_array($action, array('edit', 'history', 'acl'))
+            && $this->canAccessObject('show', $object)
+            && count($this->getShow()) > 0
+            && $this->hasRoute('show')
+        ) {
+            $menu->createItem('show', array(
+                'uri' => $this->generateObjectUrl('show', $object),
+                'label' => 'link_action_show',
+                'extras' => array(
+                    'safe_label' => true,
+                ),
+                'attributes' => array(
+                    'icon' => 'fa fa-eye',
+                ),
+            ));
+        }
+
+        if (in_array($action, array('show', 'edit', 'delete', 'acl', 'batch'))
+            && $this->hasAccess('list')
+            && $this->hasRoute('list')
+        ) {
+            $menu->createItem('list', array(
+                'uri' => $this->generateUrl('list'),
+                'label' => 'link_action_list',
+                'extras' => array(
+                    'safe_label' => true,
+                ),
+                'attributes' => array(
+                    'icon' => 'fa fa-list',
+                ),
+            ));
+        }
+
+        $this->configureActionMenu($menu, $action, $childAdmin);
+
+        foreach ($this->getExtensions() as $extension) {
+            // NEXT_MAJOR: remove method check in next major release
+            if (method_exists($extension, 'configureActionMenu')) {
+                $extension->configureActionMenu($this, $menu, $action, $childAdmin);
+            }
+        }
+
+        return $menu;
+    }
+
+    /**
      * {@inheritdoc}
      *
      * @deprecated since 3.x, to be removed in 4.0
@@ -3020,6 +3183,17 @@ EOT;
         }
 
         return $defaultFilterValues;
+    }
+
+    /**
+     * Configures the menu for an action.
+     *
+     * @param MenuItemInterface $menu
+     * @param string            $action
+     * @param AdminInterface    $childAdmin
+     */
+    protected function configureActionMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
+    {
     }
 
     /**

@@ -162,6 +162,7 @@ Full Configuration Options
                 pager_links:          'SonataAdminBundle:Pager:links.html.twig'
                 pager_results:        'SonataAdminBundle:Pager:results.html.twig'
                 tab_menu_template:    'SonataAdminBundle:Core:tab_menu_template.html.twig'
+                action_menu_template: 'SonataAdminBundle:Core:action_menu_template.html.twig'
                 knp_menu_template:    'SonataAdminBundle:Menu:sonata_menu.html.twig'
             assets:
                 stylesheets:

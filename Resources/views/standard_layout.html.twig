@@ -13,6 +13,7 @@ file that was distributed with this source code.
 {% set _show                 = block('show') %}
 {% set _list_table           = block('list_table') %}
 {% set _list_filters         = block('list_filters') %}
+{% set _action_menu          = block('action_menu') %}
 {% set _tab_menu             = block('tab_menu') %}
 {% set _content              = block('content') %}
 {% set _title                = block('title') %}
@@ -254,7 +255,7 @@ file that was distributed with this source code.
 
                         {% block sonata_page_content_header %}
                             {% block sonata_page_content_nav %}
-                                {% if _tab_menu is not empty or _actions is not empty or _list_filters_actions is not empty %}
+                                {% if _tab_menu is not empty or _action_menu is not empty or _actions is not empty or _list_filters_actions is not empty %}
                                     <nav class="navbar navbar-default" role="navigation">
                                         <div class="container-fluid">
                                             {% block tab_menu_navbar_header %}
@@ -281,6 +282,10 @@ file that was distributed with this source code.
                                                 {% endif %}
 
                                                 {% block sonata_admin_content_actions_wrappers %}
+                                                    {% if _action_menu is not empty %}
+                                                        {{ _action_menu|raw }}
+                                                    {% endif %}
+
                                                     {% if _actions|replace({ '<li>': '', '</li>': '' })|trim is not empty %}
                                                         <ul class="nav navbar-nav navbar-right">
                                                         {% if _actions|split('</a>')|length > 2 %}

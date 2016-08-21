@@ -137,6 +137,7 @@ You can specify your templates in the config.yml file, like so:
                 pager_links:                    SonataAdminBundle:Pager:links.html.twig
                 pager_results:                  SonataAdminBundle:Pager:results.html.twig
                 tab_menu_template:              SonataAdminBundle:Core:tab_menu_template.html.twig
+                action_menu_template:           SonataAdminBundle:Core:action_menu_template.html.twig
                 history_revision_timestamp:     SonataAdminBundle:CRUD:history_revision_timestamp.html.twig
                 short_object_description:       SonataAdminBundle:Helper:short-object-description.html.twig
                 search_result_block:            SonataAdminBundle:Block:block_search_result.html.twig
