@@ -108,6 +108,11 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
     private $kernel;
 
     /**
+     * @var TranslatorInterface
+     */
+    private $translator;
+
+    /**
      * {@inheritdoc}
      */
     protected function setUp()
@@ -119,6 +124,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->pool->setAdminServiceIds(array('foo.admin'));
         $this->request->attributes->set('_sonata_admin', 'foo.admin');
         $this->admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $this->translator = $this->getMock('Symfony\Component\Translation\TranslatorInterface');
         $this->parameters = array();
         $this->template = '';
 
@@ -160,6 +166,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $request = $this->request;
         $admin = $this->admin;
         $session = $this->session;
+        $translator = $this->translator;
 
         $twig = $this->getMockBuilder('Twig_Environment')
             ->disableOriginalConstructor()
@@ -272,7 +279,8 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
                 $requestStack,
                 $csrfProvider,
                 $logger,
-                $kernel
+                $kernel,
+                $translator
             ) {
                 switch ($id) {
                     case 'sonata.admin.pool':
@@ -302,6 +310,8 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
                         return $logger;
                     case 'kernel':
                         return $kernel;
+                    case 'translator':
+                        return $translator;
                 }
             }));
 
@@ -328,6 +338,10 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
                 }
 
                 if ($id == 'templating') {
+                    return true;
+                }
+
+                if ($id == 'translator') {
                     return true;
                 }
 
@@ -3687,7 +3701,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
     private function expectTranslate($id, array $parameters = array(), $domain = null, $locale = null)
     {
-        $this->admin->expects($this->once())
+        $this->translator->expects($this->once())
             ->method('trans')
             ->with($this->equalTo($id), $this->equalTo($parameters), $this->equalTo($domain), $this->equalTo($locale))
             ->will($this->returnValue($id));

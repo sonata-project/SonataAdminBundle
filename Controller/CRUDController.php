@@ -185,7 +185,7 @@ class CRUDController extends Controller
 
                 $this->addFlash(
                     'sonata_flash_success',
-                    $this->admin->trans(
+                    $this->trans(
                         'flash_delete_success',
                         array('%name%' => $this->escapeHtml($objectName)),
                         'SonataAdminBundle'
@@ -200,7 +200,7 @@ class CRUDController extends Controller
 
                 $this->addFlash(
                     'sonata_flash_error',
-                    $this->admin->trans(
+                    $this->trans(
                         'flash_delete_error',
                         array('%name%' => $this->escapeHtml($objectName)),
                         'SonataAdminBundle'
@@ -277,7 +277,7 @@ class CRUDController extends Controller
 
                     $this->addFlash(
                         'sonata_flash_success',
-                        $this->admin->trans(
+                        $this->trans(
                             'flash_edit_success',
                             array('%name%' => $this->escapeHtml($this->admin->toString($object))),
                             'SonataAdminBundle'
@@ -291,7 +291,7 @@ class CRUDController extends Controller
 
                     $isFormValid = false;
                 } catch (LockException $e) {
-                    $this->addFlash('sonata_flash_error', $this->admin->trans('flash_lock_error', array(
+                    $this->addFlash('sonata_flash_error', $this->trans('flash_lock_error', array(
                         '%name%' => $this->escapeHtml($this->admin->toString($object)),
                         '%link_start%' => '<a href="'.$this->admin->generateObjectUrl('edit', $object).'">',
                         '%link_end%' => '</a>',
@@ -304,7 +304,7 @@ class CRUDController extends Controller
                 if (!$this->isXmlHttpRequest()) {
                     $this->addFlash(
                         'sonata_flash_error',
-                        $this->admin->trans(
+                        $this->trans(
                             'flash_edit_error',
                             array('%name%' => $this->escapeHtml($this->admin->toString($object))),
                             'SonataAdminBundle'
@@ -526,7 +526,7 @@ class CRUDController extends Controller
 
                     $this->addFlash(
                         'sonata_flash_success',
-                        $this->admin->trans(
+                        $this->trans(
                             'flash_create_success',
                             array('%name%' => $this->escapeHtml($this->admin->toString($object))),
                             'SonataAdminBundle'
@@ -547,7 +547,7 @@ class CRUDController extends Controller
                 if (!$this->isXmlHttpRequest()) {
                     $this->addFlash(
                         'sonata_flash_error',
-                        $this->admin->trans(
+                        $this->trans(
                             'flash_create_error',
                             array('%name%' => $this->escapeHtml($this->admin->toString($object))),
                             'SonataAdminBundle'
@@ -1363,5 +1363,22 @@ class CRUDController extends Controller
      */
     protected function preList(Request $request)
     {
+    }
+
+    /**
+     * Translate a message id.
+     *
+     * @param string $id
+     * @param array  $parameters
+     * @param string $domain
+     * @param string $locale
+     *
+     * @return string translated string
+     */
+    final protected function trans($id, array $parameters = array(), $domain = null, $locale = null)
+    {
+        $domain = $domain ?: $this->admin->getTranslationDomain();
+
+        return $this->get('translator')->trans($id, $parameters, $domain, $locale);
     }
 }

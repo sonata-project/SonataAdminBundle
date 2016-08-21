@@ -13,7 +13,7 @@
                 <div class="box-header">
                     <h4 class="box-title">
                         {% block show_title %}
-                            {{ admin.trans(show_group.name, {}, show_group.translation_domain) }}
+                            {{ show_group.name|trans({}, show_group.translation_domain) }}
                         {% endblock %}
                     </h4>
                 </div>
