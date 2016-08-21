@@ -39,7 +39,6 @@ use Sonata\CoreBundle\Validator\ErrorElement;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Acl\Model\DomainObjectInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -324,6 +323,10 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
      * The datagrid instance.
      *
      * @var \Sonata\AdminBundle\Datagrid\DatagridInterface
+     *
+     * @deprecated since 3.x, to be removed in 4.0
+     *
+     * NEXT_MAJOR: remove this property
      */
     protected $datagrid;
 
@@ -464,16 +467,28 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
      * The list collection.
      *
      * @var array
+     *
+     * @deprecated since 3.x, to be removed in 4.0
+     *
+     * NEXT_MAJOR: remove this property
      */
     private $list;
 
     /**
      * @var FieldDescriptionCollection
+     *
+     * @deprecated since 3.x, to be removed in 4.0
+     *
+     * NEXT_MAJOR: remove this property
      */
     private $show;
 
     /**
      * @var Form
+     *
+     * @deprecated since 3.x, to be removed in 4.0
+     *
+     * NEXT_MAJOR: remove this property
      */
     private $form;
 
@@ -537,6 +552,15 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
      * @var BreadcrumbsBuilderInterface
      */
     private $breadcrumbsBuilder;
+
+    /**
+     * The formBuilder component.
+     *
+     * @var AdminBuilder
+     *
+     * NEXT_MAJOR: remove this property
+     */
+    private $adminBuilder;
 
     /**
      * @param string $code
@@ -801,6 +825,10 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @deprecated since 3.x, to be removed in 4.0. Use the AdminBuilder instead
+     *
+     * NEXT_MAJOR: remove this method
      */
     public function buildDatagrid()
     {
@@ -808,61 +836,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
             return;
         }
 
-        $filterParameters = $this->getFilterParameters();
-
-        // transform _sort_by from a string to a FieldDescriptionInterface for the datagrid.
-        if (isset($filterParameters['_sort_by']) && is_string($filterParameters['_sort_by'])) {
-            if ($this->hasListFieldDescription($filterParameters['_sort_by'])) {
-                $filterParameters['_sort_by'] = $this->getListFieldDescription($filterParameters['_sort_by']);
-            } else {
-                $filterParameters['_sort_by'] = $this->getModelManager()->getNewFieldDescriptionInstance(
-                    $this->getClass(),
-                    $filterParameters['_sort_by'],
-                    array()
-                );
-
-                $this->getListBuilder()->buildField(null, $filterParameters['_sort_by'], $this);
-            }
-        }
-
-        // initialize the datagrid
-        $this->datagrid = $this->getDatagridBuilder()->getBaseDatagrid($this, $filterParameters);
-
-        $this->datagrid->getPager()->setMaxPageLinks($this->maxPageLinks);
-
-        $mapper = new DatagridMapper($this->getDatagridBuilder(), $this->datagrid, $this);
-
-        // build the datagrid filter
-        $this->configureDatagridFilters($mapper);
-
-        // ok, try to limit to add parent filter
-        if ($this->isChild() && $this->getParentAssociationMapping() && !$mapper->has($this->getParentAssociationMapping())) {
-            // NEXT_MAJOR: Keep FQCN when bumping Symfony requirement to 2.8+.
-            $modelHiddenType = method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')
-                ? 'Sonata\AdminBundle\Form\Type\ModelHiddenType'
-                : 'sonata_type_model_hidden';
-
-            // NEXT_MAJOR: Keep FQCN when bumping Symfony requirement to 2.8+.
-            $hiddenType = method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')
-                ? 'Symfony\Component\Form\Extension\Core\Type\HiddenType'
-                : 'hidden';
-
-            $mapper->add($this->getParentAssociationMapping(), null, array(
-                'show_filter' => false,
-                'label' => false,
-                'field_type' => $modelHiddenType,
-                'field_options' => array(
-                    'model_manager' => $this->getModelManager(),
-                ),
-                'operator_type' => $hiddenType,
-            ), null, null, array(
-                'admin_code' => $this->getParent()->getCode(),
-            ));
-        }
-
-        foreach ($this->getExtensions() as $extension) {
-            $extension->configureDatagridFilters($mapper);
-        }
+        $this->datagrid = $this->getAdminBuilder()->getDatagrid($this);
     }
 
     /**
@@ -1340,6 +1314,12 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
      */
     public function getForm()
     {
+        @trigger_error(
+            'The '.__METHOD__.' method is deprecated since version 3.x and will be removed in 4.0.'.
+            ' Use Sonata\AdminBundle\Admin\AdminBuilder::getEditForm instead.',
+            E_USER_DEPRECATED
+        );
+
         $this->buildForm();
 
         return $this->form;
@@ -1350,6 +1330,12 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
      */
     public function getList()
     {
+        @trigger_error(
+            'The '.__METHOD__.' method is deprecated since version 3.x and will be removed in 4.0.'.
+            ' Use Sonata\AdminBundle\Admin\AdminBuilder::getList instead.',
+            E_USER_DEPRECATED
+        );
+
         $this->buildList();
 
         return $this->list;
@@ -1380,6 +1366,12 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
      */
     public function getDatagrid()
     {
+        @trigger_error(
+            'The '.__METHOD__.' method is deprecated since version 3.x and will be removed in 4.0.'.
+            ' Use Sonata\AdminBundle\Admin\AdminBuilder::getDatagrid instead.',
+            E_USER_DEPRECATED
+        );
+
         $this->buildDatagrid();
 
         return $this->datagrid;
@@ -2097,6 +2089,21 @@ EOT;
     }
 
     /**
+     * NEXT_MAJOR : remove this method.
+     *
+     * @param AdminBuilder $builder
+     */
+    final public function setAdminBuilder(AdminBuilder $builder)
+    {
+        @trigger_error(
+            'The '.__METHOD__.' method is deprecated since version 3.x and will be removed in 4.0.'.
+            ' Use the sonata.admin.admin_builder service instead.',
+            E_USER_DEPRECATED
+        );
+        $this->adminBuilder = $builder;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function setCurrentChild($currentChild)
@@ -2562,6 +2569,12 @@ EOT;
      */
     public function getShow()
     {
+        @trigger_error(
+            'The '.__METHOD__.' method is deprecated since version 3.x and will be removed in 4.0.'.
+            ' Use Sonata\AdminBundle\Admin\AdminBuilder::getShowForm instead.',
+            E_USER_DEPRECATED
+        );
+
         $this->buildShow();
 
         return $this->show;
@@ -3050,6 +3063,26 @@ EOT;
     }
 
     /**
+     * NEXT_MAJOR : remove this method.
+     *
+     * @return AdminBuilder
+     */
+    final protected function getAdminBuilder()
+    {
+        @trigger_error(
+            'The '.__METHOD__.' method is deprecated since version 3.x and will be removed in 4.0.'.
+            ' Use the sonata.admin.admin_builder service instead.',
+            E_USER_DEPRECATED
+        );
+
+        if ($this->adminBuilder === null) {
+            $this->adminBuilder = new AdminBuilder();
+        }
+
+        return $this->adminBuilder;
+    }
+
+    /**
      * {@inheritdoc}
      */
     protected function configureFormFields(FormMapper $form)
@@ -3129,6 +3162,10 @@ EOT;
 
     /**
      * build the view FieldDescription array.
+     *
+     * @deprecated since 3.x, to be removed in 4.0. Use the AdminBuilder instead
+     *
+     * NEXT_MAJOR: remove this method
      */
     protected function buildShow()
     {
@@ -3136,18 +3173,15 @@ EOT;
             return;
         }
 
-        $this->show = new FieldDescriptionCollection();
-        $mapper = new ShowMapper($this->showBuilder, $this->show, $this);
-
-        $this->configureShowFields($mapper);
-
-        foreach ($this->getExtensions() as $extension) {
-            $extension->configureShowFields($mapper);
-        }
+        $this->show = $this->getAdminBuilder()->getShowForm($this);
     }
 
     /**
      * build the list FieldDescription array.
+     *
+     * @deprecated since 3.x, to be removed in 4.0. Use the AdminBuilder instead
+     *
+     * NEXT_MAJOR: remove this method
      */
     protected function buildList()
     {
@@ -3155,55 +3189,15 @@ EOT;
             return;
         }
 
-        $this->list = $this->getListBuilder()->getBaseList();
-
-        $mapper = new ListMapper($this->getListBuilder(), $this->list, $this);
-
-        if (count($this->getBatchActions()) > 0) {
-            $fieldDescription = $this->getModelManager()->getNewFieldDescriptionInstance(
-                $this->getClass(),
-                'batch',
-                array(
-                    'label' => 'batch',
-                    'code' => '_batch',
-                    'sortable' => false,
-                    'virtual_field' => true,
-                )
-            );
-
-            $fieldDescription->setAdmin($this);
-            $fieldDescription->setTemplate($this->getTemplate('batch'));
-
-            $mapper->add($fieldDescription, 'batch');
-        }
-
-        $this->configureListFields($mapper);
-
-        foreach ($this->getExtensions() as $extension) {
-            $extension->configureListFields($mapper);
-        }
-
-        if ($this->hasRequest() && $this->getRequest()->isXmlHttpRequest()) {
-            $fieldDescription = $this->getModelManager()->getNewFieldDescriptionInstance(
-                $this->getClass(),
-                'select',
-                array(
-                    'label' => false,
-                    'code' => '_select',
-                    'sortable' => false,
-                    'virtual_field' => false,
-                )
-            );
-
-            $fieldDescription->setAdmin($this);
-            $fieldDescription->setTemplate($this->getTemplate('select'));
-
-            $mapper->add($fieldDescription, 'select');
-        }
+        $this->list = $this->getAdminBuilder()->getList($this);
     }
 
     /**
      * Build the form FieldDescription collection.
+     *
+     * @deprecated since 3.x, to be removed in 4.0. Use the AdminBuilder instead
+     *
+     * NEXT_MAJOR: remove this method
      */
     protected function buildForm()
     {
@@ -3211,27 +3205,7 @@ EOT;
             return;
         }
 
-        // append parent object if any
-        // todo : clean the way the Admin class can retrieve set the object
-        if ($this->isChild() && $this->getParentAssociationMapping()) {
-            $parent = $this->getParent()->getObject($this->request->get($this->getParent()->getIdParameter()));
-
-            $propertyAccessor = $this->getConfigurationPool()->getPropertyAccessor();
-            $propertyPath = new PropertyPath($this->getParentAssociationMapping());
-
-            $object = $this->getSubject();
-
-            $value = $propertyAccessor->getValue($object, $propertyPath);
-
-            if (is_array($value) || ($value instanceof \Traversable && $value instanceof \ArrayAccess)) {
-                $value[] = $parent;
-                $propertyAccessor->setValue($object, $propertyPath, $value);
-            } else {
-                $propertyAccessor->setValue($object, $propertyPath, $parent);
-            }
-        }
-
-        $this->form = $this->getFormBuilder()->getForm();
+        $this->form = $this->getAdminBuilder()->getEditForm($this);
     }
 
     /**

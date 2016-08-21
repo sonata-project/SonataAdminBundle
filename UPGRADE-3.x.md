@@ -33,6 +33,12 @@ Please use `Pager::getFirstIndex()` and `Pager::getLastIndex()` instead!
 UPGRADE FROM 3.9 to 3.10
 ========================
 
+## Deprecated AbstractAdmin methods
+
+- `buildDatagrid`, `buildShow`, `buildForm` and `buildList` are deprecated, and no replacement is given, they will become internal methods.
+- `getShow`, `getList`, `getForm` and `getDatagrid` are deprecated in favor of the homonym method of the `sonata.admin.admin_builder` service.
+- The admin builder accessors are deprecated, the `sonata.admin.admin_builder` service should be used directly instead.
+
 ## Deprecated passing no 3rd argument to GroupMenuProvider
 
 Passing no 3rd argument to `Menu\Provider\GroupMenuProvider` is deprecated.

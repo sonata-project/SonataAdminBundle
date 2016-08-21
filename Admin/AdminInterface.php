@@ -114,7 +114,11 @@ interface AdminInterface
     public function attachAdminClass(FieldDescriptionInterface $fieldDescription);
 
     /**
+     * NEXT_MAJOR: remove this signature.
+     *
      * @return \Sonata\AdminBundle\Datagrid\DatagridInterface
+     *
+     * @deprecated since 3.x, to be removed with 4.0
      */
     public function getDatagrid();
 
@@ -205,9 +209,13 @@ interface AdminInterface
     public function getFormFieldDescriptions();
 
     /**
+     * NEXT_MAJOR: remove this signature.
+     *
      * Returns a form depend on the given $object.
      *
      * @return Form
+     *
+     * @deprecated since 3.x, to be removed with 4.0
      */
     public function getForm();
 
@@ -406,9 +414,13 @@ interface AdminInterface
     public function getFilterFieldDescription($name);
 
     /**
+     * NEXT_MAJOR: remove this signature.
+     *
      * Returns a list depend on the given $object.
      *
      * @return FieldDescriptionCollection
+     *
+     * @deprecated since 3.x, to be removed with 4.0
      */
     public function getList();
 
@@ -464,7 +476,11 @@ interface AdminInterface
     public function getValidator();
 
     /**
+     * NEXT_MAJOR: remove this signature.
+     *
      * @return array
+     *
+     * @deprecated since 3.x, to be removed with 4.0
      */
     public function getShow();
 
