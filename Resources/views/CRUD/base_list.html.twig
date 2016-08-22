@@ -206,7 +206,7 @@ file that was distributed with this source code.
 {% endblock %}
 
 {% block list_filters_actions %}
-    {%- if admin.datagrid.hasDisplayableFilters %}
+    {%- if admin.datagrid.filters|length %}
         <ul class="nav navbar-nav navbar-right">
 
             <li class="dropdown sonata-actions">
