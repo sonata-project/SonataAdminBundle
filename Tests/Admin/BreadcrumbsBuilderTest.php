@@ -404,6 +404,9 @@ class BreadcrumbsBuilderTest extends \PHPUnit_Framework_TestCase
 
         $adminListMenu->addChild('My subject', array(
             'uri' => '/myadmin/my-object',
+            'extras' => array(
+                'translation_domain' => false,
+            ),
         ))->shouldBeCalled()->willReturn($adminSubjectMenu->reveal());
 
         $adminSubjectMenu->addChild('My child class', array(
@@ -414,8 +417,11 @@ class BreadcrumbsBuilderTest extends \PHPUnit_Framework_TestCase
         ))->shouldBeCalled()->willReturn($childMenu->reveal());
         $adminSubjectMenu->setExtra('safe_label', false)->willReturn($childMenu);
 
-        $childMenu->addChild('My subject')
-            ->shouldBeCalled()->willReturn($leafMenu->reveal());
+        $childMenu->addChild('My subject', array(
+            'extras' => array(
+                'translation_domain' => false,
+            ),
+        ))->shouldBeCalled()->willReturn($leafMenu->reveal());
 
         $breadcrumbs = $breadcrumbsBuilder->getBreadcrumbs($childAdmin->reveal(), $action);
         $this->assertCount(5, $breadcrumbs);
@@ -529,9 +535,16 @@ class BreadcrumbsBuilderTest extends \PHPUnit_Framework_TestCase
                 'translation_domain' => 'FooBundle',
             ),
         ))->willReturn($menu->reveal());
-        $menu->addChild('My subject')->willReturn($menu);
+        $menu->addChild('My subject', array(
+            'extras' => array(
+                'translation_domain' => false,
+            ),
+        ))->willReturn($menu);
         $menu->addChild('My subject', array(
             'uri' => null,
+            'extras' => array(
+                'translation_domain' => false,
+            ),
         ))->willReturn($menu);
         $menu->addChild('My child class', array(
             'extras' => array(
