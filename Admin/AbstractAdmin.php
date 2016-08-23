@@ -1055,6 +1055,23 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
     /**
      * {@inheritdoc}
      */
+    public function isDefaultFilterValue($name)
+    {
+        $filter = $this->getFilterParameters();
+
+        if (!array_key_exists($name, $filter)) {
+            return false;
+        }
+
+        $default = array_key_exists($name, $this->datagridValues) ? $this->datagridValues[$name]['value'] : null;
+        $value = $filter[$name]['value'];
+
+        return $value == $default;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function generateObjectUrl($name, $object, array $parameters = array(), $absolute = UrlGeneratorInterface::ABSOLUTE_PATH)
     {
         $parameters['id'] = $this->getUrlsafeIdentifier($object);

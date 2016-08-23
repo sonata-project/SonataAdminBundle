@@ -340,6 +340,15 @@ interface AdminInterface
     public function isCurrentRoute($name, $adminCode = null);
 
     /**
+     * Checks if the filter matches the default value.
+     *
+     * @param string $name
+     *
+     * @return bool
+     */
+    public function isDefaultFilterValue($name);
+
+    /**
      * Returns true if the admin has a FieldDescription with the given $name.
      *
      * @param string $name
