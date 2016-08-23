@@ -32,6 +32,20 @@ class BaseGroupedMapperTest extends \PHPUnit_Framework_TestCase
     {
         $admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
         $builder = $this->getMock('Sonata\AdminBundle\Builder\BuilderInterface');
+        $labelStrategy = $this->getMock('Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface');
+        $labelStrategy
+            ->expects($this->any())
+            ->method('getLabel')
+            ->will($this->returnCallback(function ($label) {
+                return 'label_'.strtolower($label);
+            }))
+        ;
+
+        $admin
+            ->expects($this->any())
+            ->method('getLabelTranslatorStrategy')
+            ->will($this->returnValue($labelStrategy))
+        ;
 
         $this->baseGroupedMapper = $this->getMockForAbstractClass('Sonata\AdminBundle\Mapper\BaseGroupedMapper', array($builder, $admin));
 
@@ -150,6 +164,32 @@ class BaseGroupedMapperTest extends \PHPUnit_Framework_TestCase
     public function testEndException()
     {
         $this->baseGroupedMapper->end();
+    }
+
+    public function labelDataProvider()
+    {
+        return array(
+            'nominal use case' => array('fooGroup1', null, 'label_foogroup1'),
+            'custom label' => array('fooGroup1', 'custom_label', 'custom_label'),
+            'legacy call' => array('form.label_foo', null, 'form.label_foo'), // BC layer
+        );
+    }
+
+    /**
+     * @dataProvider labelDataProvider
+     */
+    public function testLabel($name, $label, $expectedLabel)
+    {
+        $options = array();
+
+        if (null !== $label) {
+            $options['label'] = $label;
+        }
+
+        $this->baseGroupedMapper->with($name, $options);
+
+        $this->assertSame('label_default', $this->tabs['default']['label']);
+        $this->assertSame($expectedLabel, $this->groups[$name]['label']);
     }
 
     public function getTabs()

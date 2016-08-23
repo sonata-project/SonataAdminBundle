@@ -301,4 +301,12 @@ class FormMapper extends BaseGroupedMapper
     {
         $this->admin->setFormTabs($tabs);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getName()
+    {
+        return 'form';
+    }
 }

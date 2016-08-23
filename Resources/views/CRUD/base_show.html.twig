@@ -38,7 +38,7 @@ file that was distributed with this source code.
                         <li{% if loop.first %} class="active"{% endif %}>
                             <a href="#tab_{{ admin.uniqid }}_{{ loop.index }}" data-toggle="tab">
                                 <i class="fa fa-exclamation-circle has-errors hide"></i>
-                                {{ admin.trans(name, {}, show_tab.translation_domain) }}
+                                {{ admin.trans(view_group.label, {}, show_tab.translation_domain) }}
                             </a>
                         </li>
                     {% endfor %}
