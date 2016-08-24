@@ -117,6 +117,13 @@ abstract class AbstractAdminDefinition implements AdminDefinitionInterface, Admi
     /**
      * {@inheritdoc}
      */
+    public function configureListQuery(ProxyQueryInterface $query)
+    {
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
     }

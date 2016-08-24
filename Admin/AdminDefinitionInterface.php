@@ -49,6 +49,11 @@ interface AdminDefinitionInterface
     public function configureListFields(ListMapper $listMapperMapper);
 
     /**
+     * @param ProxyQueryInterface $query
+     */
+    public function configureListQuery(ProxyQueryInterface $query);
+
+    /**
      * @param DatagridMapper $datagridMapper
      */
     public function configureDatagridFilters(DatagridMapper $datagridMapper);
