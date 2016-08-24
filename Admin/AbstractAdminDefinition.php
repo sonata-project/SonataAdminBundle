@@ -103,7 +103,7 @@ abstract class AbstractAdminDefinition implements AdminDefinitionInterface, Admi
     /**
      * {@inheritdoc}
      */
-    public function configureFormFields(FormMapper $formMapper)
+    public function configureFormFields(FormMapper $formMapper, $subject)
     {
     }
 
@@ -124,7 +124,7 @@ abstract class AbstractAdminDefinition implements AdminDefinitionInterface, Admi
     /**
      * {@inheritdoc}
      */
-    public function configureShowFields(ShowMapper $showMapper)
+    public function configureShowFields(ShowMapper $showMapper, $subject)
     {
     }
 

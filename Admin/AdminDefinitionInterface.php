@@ -33,8 +33,15 @@ interface AdminDefinitionInterface
 
     /**
      * @param FormMapper $formMapperMapper
+     * @param mixed      $subject
      */
-    public function configureFormFields(FormMapper $formMapperMapper);
+    public function configureFormFields(FormMapper $formMapperMapper, $subject);
+
+    /**
+     * @param ShowMapper $showMapper
+     * @param mixed      $subject
+     */
+    public function configureShowFields(ShowMapper $showMapper, $subject);
 
     /**
      * @param ListMapper $listMapperMapper
@@ -45,11 +52,6 @@ interface AdminDefinitionInterface
      * @param DatagridMapper $datagridMapper
      */
     public function configureDatagridFilters(DatagridMapper $datagridMapper);
-
-    /**
-     * @param ShowMapper $showMapper
-     */
-    public function configureShowFields(ShowMapper $showMapper);
 
     /**
      * @param RouteCollection $routeCollection
