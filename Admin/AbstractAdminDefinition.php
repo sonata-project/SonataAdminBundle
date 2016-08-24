@@ -148,4 +148,11 @@ abstract class AbstractAdminDefinition implements AdminDefinitionInterface, Admi
     public function configureTabMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
     {
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function alterNewInstance($object)
+    {
+    }
 }

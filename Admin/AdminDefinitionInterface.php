@@ -80,4 +80,11 @@ interface AdminDefinitionInterface
      * @return mixed
      */
     public function configureTabMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null);
+
+    /**
+     * Get a chance to modify a newly created instance.
+     *
+     * @param mixed $object
+     */
+    public function alterNewInstance($object);
 }
