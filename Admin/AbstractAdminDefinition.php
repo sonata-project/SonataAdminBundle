@@ -40,6 +40,13 @@ abstract class AbstractAdminDefinition implements AdminDefinitionInterface, Admi
     /**
      * {@inheritdoc}
      */
+    public function configureExportFields(array &$fields)
+    {
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function preValidate($object)
     {
     }

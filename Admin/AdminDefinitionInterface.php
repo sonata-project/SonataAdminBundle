@@ -32,6 +32,11 @@ interface AdminDefinitionInterface
     public function getExportFormats();
 
     /**
+     * @param array $fields
+     */
+    public function configureExportFields(array &$fields);
+
+    /**
      * @param FormMapper $formMapperMapper
      * @param mixed      $subject
      */
