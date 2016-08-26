@@ -181,6 +181,7 @@ Full Configuration Options
                     - bundles/sonataadmin/css/styles.css
                     - bundles/sonataadmin/css/layout.css
                     - bundles/sonataadmin/css/tree.css
+                    - bundles/sonataadmin/css/colors.css
                 javascripts:
 
                     # Defaults:
