@@ -15,6 +15,7 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
 use Sonata\AdminBundle\Builder\ShowBuilderInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Sonata\AdminBundle\Tests\Fixtures\Admin\CleanAdmin;
 use Sonata\AdminBundle\Translator\NoopLabelTranslatorStrategy;
 
 /**
@@ -402,6 +403,56 @@ class ShowMapperTest extends \PHPUnit_Framework_TestCase
                 'box_class' => 'box box-primary',
                 'fields' => array('fooName3' => 'fooName3', 'fooName2' => 'fooName2', 'fooName1' => 'fooName1', 'fooName4' => 'fooName4'),
             ), ), true), print_r($this->admin->getShowGroups(), true));
+    }
+
+    public function testGroupRemovingWithoutTab()
+    {
+        $this->cleanShowMapper();
+
+        $this->showMapper->with('groupfoo1');
+        $this->showMapper->removeGroup('groupfoo1');
+
+        $this->assertSame(array(), $this->admin->getShowGroups());
+    }
+
+    public function testGroupRemovingWithTab()
+    {
+        $this->cleanShowMapper();
+
+        $this->showMapper->tab('mytab')->with('groupfoo2');
+        $this->showMapper->removeGroup('groupfoo2', 'mytab');
+
+        $this->assertSame(array(), $this->admin->getShowGroups());
+    }
+
+    public function testGroupRemovingWithoutTabAndWithTabRemoving()
+    {
+        $this->cleanShowMapper();
+
+        $this->showMapper->with('groupfoo3');
+        $this->showMapper->removeGroup('groupfoo3', 'default', true);
+
+        $this->assertSame(array(), $this->admin->getShowGroups());
+        $this->assertSame(array(), $this->admin->getShowTabs());
+    }
+
+    public function testGroupRemovingWithTabAndWithTabRemoving()
+    {
+        $this->cleanShowMapper();
+
+        $this->showMapper->tab('mytab2')->with('groupfoo4');
+        $this->showMapper->removeGroup('groupfoo4', 'mytab2', true);
+
+        $this->assertSame(array(), $this->admin->getShowGroups());
+        $this->assertSame(array(), $this->admin->getShowTabs());
+    }
+
+    private function cleanShowMapper()
+    {
+        $this->showBuilder = $this->getMock('Sonata\AdminBundle\Builder\ShowBuilderInterface');
+        $this->fieldDescriptionCollection = new FieldDescriptionCollection();
+        $this->admin = new CleanAdmin('code', 'class', 'controller');
+        $this->showMapper = new ShowMapper($this->showBuilder, $this->fieldDescriptionCollection, $this->admin);
     }
 
     private function getFieldDescriptionMock($name = null, $label = null)
