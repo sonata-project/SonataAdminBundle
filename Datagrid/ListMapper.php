@@ -95,7 +95,10 @@ class ListMapper extends BaseMapper
             $fieldDescription->mergeOptions($fieldDescriptionOptions);
         } elseif (is_string($name)) {
             if ($this->admin->hasListFieldDescription($name)) {
-                throw new \RuntimeException(sprintf('Duplicate field name "%s" in list mapper. Names should be unique.', $name));
+                throw new \RuntimeException(sprintf(
+                    'Duplicate field name "%s" in list mapper. Names should be unique.',
+                    $name
+                ));
             }
 
             $fieldDescription = $this->admin->getModelManager()->getNewFieldDescriptionInstance(
@@ -104,11 +107,17 @@ class ListMapper extends BaseMapper
                 $fieldDescriptionOptions
             );
         } else {
-            throw new \RuntimeException('Unknown field name in list mapper. Field name should be either of FieldDescriptionInterface interface or string.');
+            throw new \RuntimeException(
+                'Unknown field name in list mapper. '
+                .'Field name should be either of FieldDescriptionInterface interface or string.'
+            );
         }
 
         if (!$fieldDescription->getLabel()) {
-            $fieldDescription->setOption('label', $this->admin->getLabelTranslatorStrategy()->getLabel($fieldDescription->getName(), 'list', 'label'));
+            $fieldDescription->setOption(
+                'label',
+                $this->admin->getLabelTranslatorStrategy()->getLabel($fieldDescription->getName(), 'list', 'label')
+            );
         }
 
         // add the field with the FormBuilder

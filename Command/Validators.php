@@ -50,7 +50,10 @@ class Validators
         $entity = str_replace('/', '\\', $shortcut);
 
         if (false === $pos = strpos($entity, ':')) {
-            throw new \InvalidArgumentException(sprintf('The entity name must contain a : ("%s" given, expecting something like AcmeBlogBundle:Post)', $entity));
+            throw new \InvalidArgumentException(sprintf(
+                'The entity name must contain a : ("%s" given, expecting something like AcmeBlogBundle:Post)',
+                $entity
+            ));
         }
 
         return array(substr($entity, 0, $pos), substr($entity, $pos + 1));
@@ -90,7 +93,10 @@ class Validators
         $adminClassBasename = str_replace('/', '\\', $adminClassBasename);
 
         if (false !== strpos($adminClassBasename, ':')) {
-            throw new \InvalidArgumentException(sprintf('The admin class name must not contain a : ("%s" given, expecting something like PostAdmin")', $adminClassBasename));
+            throw new \InvalidArgumentException(sprintf(
+                'The admin class name must not contain a : ("%s" given, expecting something like PostAdmin")',
+                $adminClassBasename
+            ));
         }
 
         return $adminClassBasename;
@@ -110,7 +116,11 @@ class Validators
         $controllerClassBasename = str_replace('/', '\\', $controllerClassBasename);
 
         if (false !== strpos($controllerClassBasename, ':')) {
-            throw new \InvalidArgumentException(sprintf('The controller class name must not contain a : ("%s" given, expecting something like PostAdminController")', $controllerClassBasename));
+            throw new \InvalidArgumentException(sprintf(
+                'The controller class name must not contain a : ("%s" given, '
+                .'expecting something like PostAdminController")',
+                $controllerClassBasename
+            ));
         }
 
         if (substr($controllerClassBasename, -10) != 'Controller') {
