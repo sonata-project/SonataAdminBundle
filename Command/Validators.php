@@ -51,7 +51,8 @@ class Validators
 
         if (false === $pos = strpos($entity, ':')) {
             throw new \InvalidArgumentException(sprintf(
-                'The entity name must contain a : ("%s" given, expecting something like AcmeBlogBundle:Post)',
+                'The entity name must contain a ":" (colon sign) '
+                .'("%s" given, expecting something like AcmeBlogBundle:Post)',
                 $entity
             ));
         }
@@ -94,7 +95,8 @@ class Validators
 
         if (false !== strpos($adminClassBasename, ':')) {
             throw new \InvalidArgumentException(sprintf(
-                'The admin class name must not contain a : ("%s" given, expecting something like PostAdmin")',
+                'The admin class name must not contain a ":" (colon sign) '
+                .'("%s" given, expecting something like PostAdmin")',
                 $adminClassBasename
             ));
         }
@@ -117,14 +119,14 @@ class Validators
 
         if (false !== strpos($controllerClassBasename, ':')) {
             throw new \InvalidArgumentException(sprintf(
-                'The controller class name must not contain a : ("%s" given, '
+                'The controller class name must not contain a ":" (colon sign) ("%s" given, '
                 .'expecting something like PostAdminController")',
                 $controllerClassBasename
             ));
         }
 
         if (substr($controllerClassBasename, -10) != 'Controller') {
-            throw new \InvalidArgumentException('The controller class name must end with Controller.');
+            throw new \InvalidArgumentException('The controller class name must end with "Controller".');
         }
 
         return $controllerClassBasename;
