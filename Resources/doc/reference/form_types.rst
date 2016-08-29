@@ -561,6 +561,58 @@ example above:
 Other specific field configuration options are detailed in the related
 abstraction layer documentation.
 
+Adding a FormBuilderInterface
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+You can add Symfony ``FormBuilderInterface`` instances to the ``FormMapper``. This allows you to
+re-use a model form type. When adding a field using a ``FormBuilderInterface``, the type is guessed.
+
+Given you have a ``PostType`` like this:
+
+.. code-block:: php
+
+    <?php
+    // src/AppBundle/Form/PostType.php
+
+    class PostType extends AbstractType
+    {
+        public function buildForm(FormBuilderInterface $builder, array $options)
+        {
+            $builder
+                ->add('author', EntityType::class, [
+                    'class' => User::class
+                ])
+                ->add('title', TextType::class)
+                ->add('body', TextareaType::class)
+            ;
+        }
+    }
+
+you can reuse it like this:
+
+.. code-block:: php
+
+    <?php
+    // src/AppBundle/Admin/Post.php
+
+    class Post extend AbstractAdmin
+    {
+        protected function configureFormFields(FormMapper $formMapper)
+        {
+            $builder = $formMapper->getFormBuilder()->getFormFactory()->createBuilder(PostType::class);
+
+            $formMapper
+                ->with('Post')
+                    ->add($builder->get('title'))
+                    ->add($builder->get('body'))
+                ->end()
+                ->with('Author')
+                    ->add($builder->get('author'))
+                ->end()
+            ;
+        }
+    }
+
+
 Types options
 -------------
 
