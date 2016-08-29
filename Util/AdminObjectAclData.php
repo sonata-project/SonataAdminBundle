@@ -176,7 +176,11 @@ class AdminObjectAclData
      */
     public function setForm(Form $form)
     {
-        @trigger_error('setForm() is deprecated since version 3.0. Use setAclUsersForm() instead.', E_USER_DEPRECATED);
+        @trigger_error(
+            'setForm() is deprecated since version 3.0 and will be removed in 4.0. '
+            .'Use setAclUsersForm() instead.',
+            E_USER_DEPRECATED
+        );
 
         return $this->setAclUsersForm($form);
     }
@@ -190,7 +194,11 @@ class AdminObjectAclData
      */
     public function getForm()
     {
-        @trigger_error('getForm() is deprecated since version 3.0. Use getAclUsersForm() instead.', E_USER_DEPRECATED);
+        @trigger_error(
+            'getForm() is deprecated since version 3.0 and will be removed in 4.0. '
+            .'Use getAclUsersForm() instead.',
+            E_USER_DEPRECATED
+        );
 
         return $this->getAclUsersForm();
     }
