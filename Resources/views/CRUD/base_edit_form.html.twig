@@ -17,11 +17,8 @@
               {% if not sonata_admin.adminPool.getOption('html5_validate') %}novalidate="novalidate"{% endif %}
               {% block sonata_form_attributes %}{% endblock %}
               >
-            {% if form.vars.errors|length > 0 %}
-                <div class="sonata-ba-form-error">
-                    {{ form_errors(form) }}
-                </div>
-            {% endif %}
+
+            {{ include('SonataAdminBundle:Helper:render_form_dismissable_errors.html.twig') }}
 
             {% block sonata_pre_fieldsets %}
                 <div class="row">
