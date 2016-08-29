@@ -404,8 +404,8 @@ class GenerateAdminCommand extends ContainerAwareCommand
      */
     private function getKernel()
     {
-        $application = $this->getApplication();
         /* @var $application Application */
+        $application = $this->getApplication();
 
         return $application->getKernel();
     }
