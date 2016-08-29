@@ -173,10 +173,9 @@ class FormTypeFieldExtension extends AbstractTypeExtension
             'form';
     }
 
+    // NEXT_MAJOR: Remove method, when bumping requirements to SF 2.7+
     /**
      * {@inheritdoc}
-     *
-     * @todo Remove it when bumping requirements to SF 2.7+
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {

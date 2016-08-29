@@ -94,10 +94,9 @@ class ModelAutocompleteType extends AbstractType
         $view->vars['context'] = $options['context'];
     }
 
+    // NEXT_MAJOR: Remove method, when bumping requirements to SF 2.7+
     /**
      * {@inheritdoc}
-     *
-     * @todo Remove it when bumping requirements to SF 2.7+
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
